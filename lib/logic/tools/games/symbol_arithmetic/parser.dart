@@ -2,6 +2,14 @@ import 'dart:isolate';
 
 import 'package:gc_wizard/logic/common/parser/variable_string_expander.dart';
 
+final Map<String, String> operatorList = {
+  '+':' + ',
+  '-':' - ',
+  '*':' * ',
+  '÷':' / '
+};
+
+
 class HashBreakerJobData {
   final String input;
   final String searchMask;
