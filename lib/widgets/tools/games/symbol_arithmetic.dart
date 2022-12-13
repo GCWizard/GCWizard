@@ -84,7 +84,7 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
     );
   }
 
-  Widget _buildTable(int rows, int columns) {
+  Widget _buildTable(int rowCount, int columnCount) {
     return Table(
         border: TableBorder.all(),
         columnWidths: const <int, TableColumnWidth>{
@@ -115,6 +115,40 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
             ],
           ),
         ]
+    );
+  }
+
+  TableRow _buildRow(int rowIndex, int columnCount) {
+    var cells = <Widget>[];
+    for(var x = 0; x < columnCount * 2 + 1; x++) {
+      if (rowIndex % 2 == 0) {
+        if (x % 2 == 0) {
+          cells.add(
+              GCWTextField(
+              )
+          );
+        } else if (x == columnCount * 2 - 1) {
+          cells.add(
+              GCWTextField() //=
+          );
+        } else {
+          cells.add(
+              _operatorDropDown(x, rowIndex)
+          );
+        }
+      } else {
+        if (x % 2 == 0 && x < columnCount * 2) {
+          cells.add(
+              _operatorDropDown(x, rowIndex)
+          );
+        } else {
+          Container();
+        }
+      }
+    }
+
+    return TableRow(
+        children: cells,
     );
   }
 
