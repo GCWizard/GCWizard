@@ -4983,6 +4983,8 @@
   "symboltables_zodiac_z340_description": "Without the letters JKQXZ, because they were not used in the message",
   "symboltables_zodiac_z408_title": "Zodiac Killer Z408",
   "symboltables_zodiac_z408_description": "Without the letters JQZ, because they were not used in the message",
+  "symbol_arithmetic_title": "Symbol Arithmetic",
+  "symbol_arithmetic_description": "Solving a matrix of equations.",
   "symbol_replacer_title": "Symbol Replacer",
   "symbol_replacer_description": "Attempts to automatically identify Symbol Table for an image. Possibility of manual symbol replacement.",
   "symbol_replacer_black_level": "Contrast",

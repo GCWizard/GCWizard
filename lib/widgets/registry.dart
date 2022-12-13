@@ -274,6 +274,7 @@ import 'package:gc_wizard/widgets/tools/games/catan.dart';
 import 'package:gc_wizard/widgets/tools/games/game_of_life/game_of_life.dart';
 import 'package:gc_wizard/widgets/tools/games/scrabble/scrabble_overview.dart';
 import 'package:gc_wizard/widgets/tools/games/sudoku/sudoku_solver.dart';
+import 'package:gc_wizard/widgets/tools/games/symbol_arithmetic.dart';
 import 'package:gc_wizard/widgets/tools/general_tools/grid_generator/grid.dart';
 import 'package:gc_wizard/widgets/tools/images_and_files/animated_image.dart';
 import 'package:gc_wizard/widgets/tools/images_and_files/animated_image_morse_code.dart';
@@ -1105,6 +1106,11 @@ initializeRegistry(BuildContext context) {
     ], searchKeys: [
       'games',
       'games_sudokusolver',
+    ]),
+    GCWTool(tool: SymbolArithmetic(), i18nPrefix: 'symbol_arithmetic', categories: [
+      ToolCategory.GAMES
+    ], searchKeys: [
+      'symbol_arithmetic',
     ]),
     GCWTool(
       tool: SymbolTableSelection(),
