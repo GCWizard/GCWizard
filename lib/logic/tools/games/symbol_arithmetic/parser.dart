@@ -2,6 +2,30 @@ import 'dart:isolate';
 
 import 'package:gc_wizard/logic/common/parser/variable_string_expander.dart';
 
+class SymbolMatrix {
+  var values = <List<String>>[];
+
+  SymbolMatrix (int rowCount, int columnCount) {
+    for(var y = 0; y <= rowCount * 2 + 1; y++){
+      values.add(List<String>.filled(columnCount * 2 + 1, null));
+    }
+  }
+
+  String getOperator(int x, int y) {
+    if (values == null || values.length >= y || values[y] == null ||  values[y].length >= x)
+      return operatorList.keys.first;
+    var value = values[y][x];
+    if (operatorList.containsKey(value)) return operatorList.keys.first;
+    return value;
+  }
+
+  String getValue(int x, int y) {
+    if (values == null || values.length >= y || values[y] == null ||  values[y].length >= x)
+      return null;
+    return values[y][x];
+  }
+}
+
 final Map<String, String> operatorList = {
   '+':' + ',
   '-':' - ',
