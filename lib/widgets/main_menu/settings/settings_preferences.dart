@@ -395,7 +395,7 @@ class SettingsPreferencesState extends State<SettingsPreferences> {
                     ],
                   ));
             })
-            .values
+            .matrix
             .toList());
 
         return Column(

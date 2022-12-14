@@ -530,7 +530,7 @@ class _GCWKeyValueEditor extends State<GCWKeyValueEditor> {
 
   _getEntryValue(dynamic entry) {
     if (widget.keyKeyValueMap != null)
-      return entry.value.values.first;
+      return entry.value.matrix.first;
     else
       return entry.value;
   }

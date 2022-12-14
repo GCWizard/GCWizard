@@ -1,8 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/games/catan.dart';
 import 'package:gc_wizard/logic/tools/games/symbol_arithmetic/parser.dart';
+import 'package:gc_wizard/theme/theme.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
+import 'package:gc_wizard/widgets/common/base/gcw_iconbutton.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_textfield.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_expandable.dart';
@@ -18,9 +22,29 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
   int _rowCount = 2;
   int _columnCount = 2;
   SymbolMatrix _currentMatrix = SymbolMatrix(2, 2);
+  List<List<TextEditingController>> _textEditingControllerArray;
   bool _currentExpanded = true;
   String _currentInput = '';
   GCWSwitchPosition _currentMode = GCWSwitchPosition.left;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _resizeMatrix();
+  }
+
+  @override
+  void dispose() {
+    if (_textEditingControllerArray != null) {
+      for(var y = 0; y < _textEditingControllerArray.length; y++)
+        for(var x = 0; x < _textEditingControllerArray[y].length; x++)
+          if (_textEditingControllerArray[y][x] != null)
+            _textEditingControllerArray[y][x].dispose();
+    }
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +64,11 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
                 title: 'Row Count',
                 value: _rowCount,
                 min: 1,
+                max: 20,
                 onChanged: (value) {
                   setState(() {
                     _rowCount = value;
+                    _resizeMatrix();
                   });
                 },
               ),
@@ -50,32 +76,49 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
                 title: 'Column Count',
                 value: _columnCount,
                 min: 1,
+                max: 20,
                 onChanged: (value) {
                   setState(() {
                     _columnCount = value;
+                    _resizeMatrix();
                   });
                 },
               ),
           ]),
         ),
         _buildTable(_rowCount, _columnCount),
-        GCWTextField(
-          onChanged: (text) {
-            setState(() {
-              _currentInput = text;
-            });
+        GCWIconButton(
+          onPressed: () {
+            var valid = _currentMatrix.isValidMatrix();
+            print(valid.toString());
+            if (valid) {
+              for(var y = 0; y < _currentMatrix.getRowsCount()-2; y+=2){
+                print(_currentMatrix.buildRow(y));
+              }
+              for(var x = 0; x < _currentMatrix.getColumnsCount()-2; x+=2){
+                print(_currentMatrix.buildColumn(x));
+              }
+            }
+
           },
         ),
-        GCWTwoOptionsSwitch(
-          value: _currentMode,
-          leftValue: i18n(context, 'catan_mode_basegame'),
-          rightValue: i18n(context, 'catan_mode_expansion'),
-          onChanged: (value) {
-            setState(() {
-              _currentMode = value;
-            });
-          },
-        ),
+        // GCWTextField(
+        //   onChanged: (text) {
+        //     setState(() {
+        //       _currentInput = text;
+        //     });
+        //   },
+        // ),
+        // GCWTwoOptionsSwitch(
+        //   value: _currentMode,
+        //   leftValue: i18n(context, 'catan_mode_basegame'),
+        //   rightValue: i18n(context, 'catan_mode_expansion'),
+        //   onChanged: (value) {
+        //     setState(() {
+        //       _currentMode = value;
+        //     });
+        //   },
+        // ),
         GCWDefaultOutput(
             child: encodeCatan(
                 _currentInput, _currentMode == GCWSwitchPosition.left ? CatanMode.BASE : CatanMode.EXPANSION)
@@ -85,74 +128,83 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
   }
 
   Widget _buildTable(int rowCount, int columnCount) {
+    var rows = <TableRow>[];
+    for (var i=0; i < _currentMatrix.getRowsCount(); i++)
+      rows.add(_buildTableRow(rowCount, columnCount, i));
+
     return Table(
         border: TableBorder.all(),
-        columnWidths: const <int, TableColumnWidth>{
-          0: IntrinsicColumnWidth(),
-          1: FlexColumnWidth(),
-          2: FixedColumnWidth(64),
-        },
+        columnWidths: _columnWidthConfiguration(columnCount),
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        children: <TableRow>[
-          TableRow(
-            children: <Widget>[
-              Container(
-                //height: 32,
-                color: Colors.green,
-              ),
-              TableCell(
-                verticalAlignment: TableCellVerticalAlignment.top,
-                child: Container(
-                  //height: 32,
-                  //width: 32,
-                  color: Colors.red,
-                ),
-              ),
-              Container(
-                //height: 64,
-                color: Colors.blue,
-              ),
-            ],
-          ),
-        ]
+        children: rows
     );
   }
 
-  TableRow _buildRow(int rowIndex, int columnCount) {
+  TableRow _buildTableRow(int rowCount, int columnCount, int rowIndex) {
     var cells = <Widget>[];
-    for(var x = 0; x < columnCount * 2 + 1; x++) {
+    var textStyle =  gcwTextStyle();
+
+    for(var columnIndex = 0; columnIndex < _currentMatrix.getColumnsCount(); columnIndex++) {
       if (rowIndex % 2 == 0) {
-        if (x % 2 == 0) {
+        if (columnIndex % 2 == 0) {
           cells.add(
-              GCWTextField(
-              )
+            GCWTextField(
+              controller: _getTextEditingController(rowIndex, columnIndex,
+                  _currentMatrix.getValue(rowIndex, columnIndex)),
+              onChanged: (text) {
+                _currentMatrix.setValue(rowIndex, columnIndex, text);
+              }
+            )
           );
-        } else if (x == columnCount * 2 - 1) {
+        } else if (columnIndex == _currentMatrix.getColumnsCount() - 2) {
           cells.add(
-              GCWTextField() //=
+            Text('=',
+              style: textStyle,
+              textAlign: TextAlign.center
+            )
           );
         } else {
           cells.add(
-              _operatorDropDown(x, rowIndex)
+            (rowIndex == _currentMatrix.getRowsCount() - 1)
+            ? Container() // last row
+            : _operatorDropDown(rowIndex, columnIndex)
           );
         }
       } else {
-        if (x % 2 == 0 && x < columnCount * 2) {
+        if (columnIndex % 2 == 0 && columnIndex < _currentMatrix.getColumnsCount() - 1) {
           cells.add(
-              _operatorDropDown(x, rowIndex)
+            (rowIndex == _currentMatrix.getRowsCount() - 2)
+            ? Text('=',
+                style: textStyle,
+                textAlign: TextAlign.center,
+              ) // pre last row
+            : _operatorDropDown(rowIndex, columnIndex)
           );
         } else {
-          Container();
+          cells.add(
+            Container()
+          );
         }
       }
     }
 
     return TableRow(
-        children: cells,
+      children: cells,
     );
   }
 
-  Widget _operatorDropDown(int x, int y) {
+  Map<int, TableColumnWidth> _columnWidthConfiguration(int columnCount) {
+    var config = Map<int, TableColumnWidth>();
+    for(var columnIndex = 0; columnIndex < _currentMatrix.getColumnsCount(); columnIndex++) {
+      if (columnIndex % 2 == 0)
+        config.addAll({columnIndex: FlexColumnWidth()}); //IntrinsicColumnWidth
+      else
+        config.addAll({columnIndex: FixedColumnWidth((columnIndex == _currentMatrix.getColumnsCount() - 2) ? 30 : 60)});
+    }
+    return config;
+  }
+
+  Widget _operatorDropDown(int rowIndex, int columnIndex) {
     //List<GCWDropDownMenuItem>
     var list = <GCWDropDownMenuItem>[];
 
@@ -163,11 +215,45 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
       ));
     });
 
-    GCWDropDownButton(
-        value: _currentMatrix.getOperator(x, y),
+    return GCWDropDownButton(
+        value: _currentMatrix.getOperator(rowIndex, columnIndex),
         items: list,
         onChanged: (newValue) {
-          setState(() {});
-        });
+          setState(() {
+            _currentMatrix.setValue(rowIndex, columnIndex, newValue);
+          });
+        }
+    );
+  }
+
+  void _resizeMatrix() {
+    _currentMatrix = SymbolMatrix(_rowCount, _columnCount, oldMatrix: _currentMatrix);
+    _buildtextEditingControllerArray(_rowCount, _columnCount);
+  }
+
+
+  void _buildtextEditingControllerArray(int rowCount, int columnCount) {
+    var values = List<List<TextEditingController>>.filled(_currentMatrix.getRowsCount(),
+        List<TextEditingController>.filled(_currentMatrix.getColumnsCount(), null));
+
+    if (_textEditingControllerArray != null) {
+      for(var y = 0; y < min(values.length, _textEditingControllerArray.length); y++)
+        for(var x = 0; x < min(values[y].length, _textEditingControllerArray[y].length); x++)
+          values[y][x] = _textEditingControllerArray[y][x];
+
+      for(var y = values.length; y < _textEditingControllerArray.length; y++)
+        for(var x = values[y].length; x < _textEditingControllerArray[y].length; x++)
+          if (_textEditingControllerArray[y][x] != null)
+            _textEditingControllerArray[y][x].dispose();
+    }
+
+    _textEditingControllerArray = values;
+  }
+
+  TextEditingController _getTextEditingController(int rowIndex, int columnIndex, String text) {
+    if (_textEditingControllerArray[rowIndex][columnIndex] == null)
+      _textEditingControllerArray[rowIndex][columnIndex] = TextEditingController();
+
+    _textEditingControllerArray[rowIndex][columnIndex].text = text;
   }
 }
