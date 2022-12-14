@@ -5,6 +5,7 @@ import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/games/catan.dart';
 import 'package:gc_wizard/logic/tools/games/symbol_arithmetic/parser.dart';
 import 'package:gc_wizard/theme/theme.dart';
+import 'package:gc_wizard/widgets/common/base/gcw_dialog.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_iconbutton.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_textfield.dart';
@@ -26,6 +27,7 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
   bool _currentExpanded = true;
   String _currentInput = '';
   GCWSwitchPosition _currentMode = GCWSwitchPosition.left;
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -86,7 +88,13 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
               ),
           ]),
         ),
-        _buildTable(_rowCount, _columnCount),
+        SingleChildScrollView(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            physics: AlwaysScrollableScrollPhysics(),
+            child: _buildTable(_rowCount, _columnCount),
+          ),
+        ),
         GCWIconButton(
           onPressed: () {
             var valid = _currentMatrix.isValidMatrix();
@@ -99,7 +107,6 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
                 print(_currentMatrix.buildColumn(x));
               }
             }
-
           },
         ),
         // GCWTextField(
@@ -196,7 +203,7 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
     var config = Map<int, TableColumnWidth>();
     for(var columnIndex = 0; columnIndex < _currentMatrix.getColumnsCount(); columnIndex++) {
       if (columnIndex % 2 == 0)
-        config.addAll({columnIndex: FlexColumnWidth()}); //IntrinsicColumnWidth
+        config.addAll({columnIndex: FixedColumnWidth(100)}); //IntrinsicColumnWidth FlexColumnWidth()
       else
         config.addAll({columnIndex: FixedColumnWidth((columnIndex == _currentMatrix.getColumnsCount() - 2) ? 30 : 60)});
     }
