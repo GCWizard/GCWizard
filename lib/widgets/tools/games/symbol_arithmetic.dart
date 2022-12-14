@@ -12,7 +12,10 @@ import 'package:gc_wizard/widgets/common/base/gcw_textfield.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_expandable.dart';
 import 'package:gc_wizard/widgets/common/gcw_integer_spinner.dart';
+import 'package:gc_wizard/widgets/common/gcw_paste_button.dart';
+import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
 import 'package:gc_wizard/widgets/common/gcw_twooptions_switch.dart';
+import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class SymbolArithmetic extends StatefulWidget {
   @override
@@ -27,7 +30,6 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
   bool _currentExpanded = true;
   String _currentInput = '';
   GCWSwitchPosition _currentMode = GCWSwitchPosition.left;
-  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -88,6 +90,25 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
               ),
           ]),
         ),
+
+        GCWTextDivider(
+           trailing: Row(children: <Widget>[
+              GCWPasteButton(
+                  iconSize: IconButtonSize.SMALL,
+                  onSelected: _parseClipboard,
+                ),
+              GCWIconButton(
+                size: IconButtonSize.SMALL,
+                icon: Icons.content_copy,
+                onPressed: () {
+                  var copyText = _currentMatrix.toJson();
+                  if (copyText == null) return;
+                  insertIntoGCWClipboard(context, copyText);
+                },
+              )
+          ])
+        ),
+
         SingleChildScrollView(
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -134,6 +155,22 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
     );
   }
 
+  _parseClipboard(text) {
+    setState(() {
+      var matrix = SymbolMatrix.fromJson(text);
+      if (matrix == null) {
+        _currentMatrix = null;
+        _rowCount = 2;
+        _columnCount = 2;
+      } else {
+        _currentMatrix = matrix;
+        _rowCount = matrix.rowCount;
+        _columnCount = matrix.columnCount;
+      }
+      _resizeMatrix();
+    });
+  }
+
   Widget _buildTable(int rowCount, int columnCount) {
     var rows = <TableRow>[];
     for (var i=0; i < _currentMatrix.getRowsCount(); i++)
@@ -149,7 +186,6 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
 
   TableRow _buildTableRow(int rowCount, int columnCount, int rowIndex) {
     var cells = <Widget>[];
-    var textStyle =  gcwTextStyle();
 
     for(var columnIndex = 0; columnIndex < _currentMatrix.getColumnsCount(); columnIndex++) {
       if (rowIndex % 2 == 0) {
@@ -165,10 +201,7 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
           );
         } else if (columnIndex == _currentMatrix.getColumnsCount() - 2) {
           cells.add(
-            Text('=',
-              style: textStyle,
-              textAlign: TextAlign.center
-            )
+            _equalText(rowIndex, columnIndex)
           );
         } else {
           cells.add(
@@ -180,10 +213,7 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
       } else if (columnIndex % 2 == 0 && columnIndex < _currentMatrix.getColumnsCount() - 1) {
         cells.add(
           (rowIndex == _currentMatrix.getRowsCount() - 2)
-          ? Text('=',
-              style: textStyle,
-              textAlign: TextAlign.center,
-            ) // pre last row
+          ? _equalText(rowIndex, columnIndex) // pre last row
           : _operatorDropDown(rowIndex, columnIndex)
         );
       } else {
@@ -208,6 +238,14 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
         config.addAll({columnIndex: FixedColumnWidth((columnIndex == _currentMatrix.getColumnsCount() - 2) ? 30 : 60)});
     }
     return config;
+  }
+
+  Widget _equalText(int rowIndex, int columnIndex) {
+    _currentMatrix.setValue(rowIndex, columnIndex, '=');
+    return Text('=',
+      style: gcwTextStyle(),
+      textAlign: TextAlign.center,
+    );
   }
 
   Widget _operatorDropDown(int rowIndex, int columnIndex) {
@@ -249,7 +287,7 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
           matrix[y][x] = _textEditingControllerArray[y][x];
 
       for(var y = matrix.length; y < _textEditingControllerArray.length; y++)
-        for(var x = matrix[y].length; x < _textEditingControllerArray[y].length; x++)
+        for(var x = matrix[0].length; x < _textEditingControllerArray[y].length; x++)
           if (_textEditingControllerArray[y][x] != null)
             _textEditingControllerArray[y][x].dispose();
     }

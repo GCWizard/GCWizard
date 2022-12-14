@@ -1,5 +1,9 @@
+import 'dart:convert';
 import 'dart:isolate';
 import 'dart:math';
+import 'dart:collection';
+import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:gc_wizard/logic/common/parser/variable_string_expander.dart';
 
@@ -103,6 +107,70 @@ class SymbolMatrix {
         formula += '=';
     }
     return formula;
+  }
+
+  String toJson() {
+    List<MapEntry> json;
+
+    var list = <String>[];
+    list.add(jsonEncode({'columns': columnCount, 'rows': rowCount}));
+    for(var y = 0; y < matrix.length; y++) {
+      for (var x = 0; x < matrix[y].length; x++) {
+        list.add(jsonEncode({'x': x, 'y': y, 'value': matrix[y][x]}));
+      }
+    }
+
+    if (list.isEmpty) return null;
+
+    return jsonEncode(list);
+  }
+
+  // List<MapEntry> _fromJson(List<dynamic> json) {
+  //   var list = <MapEntry>[];
+  //   if (json == null) return null;
+  //   String key;
+  //   String value;
+  //
+  //   json.forEach((jsonEntry) {
+  //     var json = jsonDecode(jsonEntry);
+  //     key = json['key'];
+  //     value = json['value'];
+  //     if (key != null && value != null) list.add(MapEntry(key, value));
+  //   });
+  //
+  //   return list.length == 0 ? null : list;
+  // }
+
+  static SymbolMatrix fromJson(String text) {
+    var list = <Map<String, dynamic>>[];
+    if (text == null) return null;
+    var json = jsonDecode(text);
+    if (json == null) return null;
+
+    json.forEach((jsonEntry) {
+      list.add(jsonDecode(jsonEntry));
+    });
+    if (list.isEmpty) return null;
+
+    SymbolMatrix matrix;
+    for (var element in list) {
+      if (element.keys.contains('columns') &&
+           element.keys.contains('rows')) {
+        matrix = SymbolMatrix(element['rows'], element['columns']);
+        list.remove(element);
+        break;
+      }
+    }
+    if (matrix == null) return null;
+    list.forEach((element) {
+      var x = element['x'];
+      var y = element['y'];
+      var value = element['value'];
+      if (x != null && y != null && value != null)
+        matrix.setValue(y, x, value);
+    });
+
+    return matrix;
   }
 }
 
