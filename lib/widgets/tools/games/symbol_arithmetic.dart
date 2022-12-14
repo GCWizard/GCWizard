@@ -170,22 +170,21 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
             : _operatorDropDown(rowIndex, columnIndex)
           );
         }
+      } else if (columnIndex % 2 == 0 && columnIndex < _currentMatrix.getColumnsCount() - 1) {
+        cells.add(
+          (rowIndex == _currentMatrix.getRowsCount() - 2)
+          ? Text('=',
+              style: textStyle,
+              textAlign: TextAlign.center,
+            ) // pre last row
+          : _operatorDropDown(rowIndex, columnIndex)
+        );
       } else {
-        if (columnIndex % 2 == 0 && columnIndex < _currentMatrix.getColumnsCount() - 1) {
-          cells.add(
-            (rowIndex == _currentMatrix.getRowsCount() - 2)
-            ? Text('=',
-                style: textStyle,
-                textAlign: TextAlign.center,
-              ) // pre last row
-            : _operatorDropDown(rowIndex, columnIndex)
-          );
-        } else {
-          cells.add(
-            Container()
-          );
-        }
+        cells.add(
+          Container()
+        );
       }
+
     }
 
     return TableRow(
@@ -233,21 +232,23 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
 
 
   void _buildtextEditingControllerArray(int rowCount, int columnCount) {
-    var values = List<List<TextEditingController>>.filled(_currentMatrix.getRowsCount(),
-        List<TextEditingController>.filled(_currentMatrix.getColumnsCount(), null));
+
+    var matrix =<List<TextEditingController>>[];
+    for(var y = 0; y < _currentMatrix.getRowsCount(); y++)
+      matrix.add(List<TextEditingController>.filled(_currentMatrix.getColumnsCount(), null));
 
     if (_textEditingControllerArray != null) {
-      for(var y = 0; y < min(values.length, _textEditingControllerArray.length); y++)
-        for(var x = 0; x < min(values[y].length, _textEditingControllerArray[y].length); x++)
-          values[y][x] = _textEditingControllerArray[y][x];
+      for(var y = 0; y < min(matrix.length, _textEditingControllerArray.length); y++)
+        for(var x = 0; x < min(matrix[y].length, _textEditingControllerArray[y].length); x++)
+          matrix[y][x] = _textEditingControllerArray[y][x];
 
-      for(var y = values.length; y < _textEditingControllerArray.length; y++)
-        for(var x = values[y].length; x < _textEditingControllerArray[y].length; x++)
+      for(var y = matrix.length; y < _textEditingControllerArray.length; y++)
+        for(var x = matrix[y].length; x < _textEditingControllerArray[y].length; x++)
           if (_textEditingControllerArray[y][x] != null)
             _textEditingControllerArray[y][x].dispose();
     }
 
-    _textEditingControllerArray = values;
+    _textEditingControllerArray = matrix;
   }
 
   TextEditingController _getTextEditingController(int rowIndex, int columnIndex, String text) {
