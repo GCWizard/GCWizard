@@ -232,7 +232,6 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
 
 
   void _buildtextEditingControllerArray(int rowCount, int columnCount) {
-
     var matrix =<List<TextEditingController>>[];
     for(var y = 0; y < _currentMatrix.getRowsCount(); y++)
       matrix.add(List<TextEditingController>.filled(_currentMatrix.getColumnsCount(), null));
@@ -256,5 +255,7 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
       _textEditingControllerArray[rowIndex][columnIndex] = TextEditingController();
 
     _textEditingControllerArray[rowIndex][columnIndex].text = text;
+
+    return _textEditingControllerArray[rowIndex][columnIndex];
   }
 }
