@@ -13,6 +13,7 @@ import 'package:gc_wizard/widgets/utils/no_animation_material_page_route.dart';
 import 'main_menu/settings/settings_coordinates.dart';
 import 'main_menu/settings/settings_general.dart';
 import 'main_menu/settings/settings_tools.dart';
+import 'main_menu/settings/settings_saverestore.dart';
 
 buildMainMenu(BuildContext context) {
   var header = SizedBox(
@@ -120,6 +121,11 @@ _buildSettingsItem(BuildContext context) {
       'tool': registeredTools.firstWhere((tool) => className(tool.tool) == className(ToolSettings())),
       'toolName': i18n(context, 'mainmenu_settings_tools_title'),
       'icon': Icons.category
+    },
+    {
+      'tool': registeredTools.firstWhere((tool) => className(tool.tool) == className(SaveRestoreSettings())),
+      'toolName': i18n(context, 'mainmenu_settings_saverestore_title'),
+      'icon': Icons.save
     },
   ];
 

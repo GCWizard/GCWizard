@@ -13,11 +13,10 @@ import 'package:gc_wizard/widgets/common/gcw_integer_spinner.dart';
 import 'package:gc_wizard/widgets/common/gcw_onoff_switch.dart';
 import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
 import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
+import 'package:gc_wizard/widgets/main_menu/settings/preferences_utils.dart';
 import 'package:prefs/prefs.dart';
 
 const _PREF_VALUE_MAX_LENGTH = 300;
-
-enum _PrefType { STRING, STRINGLIST, INT, DOUBLE, BOOL }
 
 class SettingsPreferences extends StatefulWidget {
   @override
@@ -177,27 +176,7 @@ class SettingsPreferencesState extends State<SettingsPreferences> {
 
     showGCWAlertDialog(context, i18n(context, 'settings_preferences_warning_save_title'),
         i18n(context, 'settings_preferences_warning_save_text'), () {
-      switch (_getPrefType(key)) {
-        case _PrefType.STRING:
-          Prefs.setString(key, editedValue.toString());
-          break;
-        case _PrefType.INT:
-          if (editedValue is int) Prefs.setInt(key, editedValue);
-          break;
-        case _PrefType.DOUBLE:
-          if (editedValue is double) Prefs.setDouble(key, editedValue);
-          break;
-        case _PrefType.BOOL:
-          if (editedValue is bool) Prefs.setBool(key, editedValue);
-          break;
-        case _PrefType.STRINGLIST:
-          if (editedValue is List<String>) {
-            (editedValue as List<String>).removeWhere((element) => element.isEmpty);
-
-            Prefs.setStringList(key, editedValue);
-          }
-          break;
-      }
+      setUntypedPref(key, editedValue);
 
       setState(() {
         editKey = null;
@@ -209,13 +188,13 @@ class SettingsPreferencesState extends State<SettingsPreferences> {
   _prefValueHasChanged(String key) {
     if (editedValue == null) return false;
 
-    switch (_getPrefType(key)) {
-      case _PrefType.STRING:
-      case _PrefType.INT:
-      case _PrefType.DOUBLE:
-      case _PrefType.BOOL:
+    switch (getPrefType(key)) {
+      case PrefType.STRING:
+      case PrefType.INT:
+      case PrefType.DOUBLE:
+      case PrefType.BOOL:
         return editedValue != Prefs.get(key);
-      case _PrefType.STRINGLIST:
+      case PrefType.STRINGLIST:
         var list = Prefs.get(key);
         if (editedValue.length != list.length) return true;
 
@@ -230,14 +209,14 @@ class SettingsPreferencesState extends State<SettingsPreferences> {
   }
 
   _buildEmptyButton(String key) {
-    switch (_getPrefType(key)) {
-      case _PrefType.STRING:
-      case _PrefType.STRINGLIST:
+    switch (getPrefType(key)) {
+      case PrefType.STRING:
+      case PrefType.STRINGLIST:
         return GCWIconButton(
             icon: Icons.delete,
             onPressed: () {
               setState(() {
-                if (_getPrefType(key) == _PrefType.STRING) {
+                if (getPrefType(key) == PrefType.STRING) {
                   editedValue = '';
                   controllers.first.text = '';
                 } else {
@@ -290,8 +269,8 @@ class SettingsPreferencesState extends State<SettingsPreferences> {
   }
 
   _buildEditView(String key) {
-    switch (_getPrefType(key)) {
-      case _PrefType.STRING:
+    switch (getPrefType(key)) {
+      case PrefType.STRING:
         if (editedValue == null) {
           controllers = [TextEditingController(text: editedValue ?? Prefs.getString(key))];
         }
@@ -303,7 +282,7 @@ class SettingsPreferencesState extends State<SettingsPreferences> {
             });
           },
         );
-      case _PrefType.INT:
+      case PrefType.INT:
         return GCWIntegerSpinner(
           value: editedValue ?? Prefs.getInt(key),
           onChanged: (value) {
@@ -312,7 +291,7 @@ class SettingsPreferencesState extends State<SettingsPreferences> {
             });
           },
         );
-      case _PrefType.DOUBLE:
+      case PrefType.DOUBLE:
         return GCWDoubleSpinner(
           value: editedValue ?? Prefs.getDouble(key),
           onChanged: (value) {
@@ -321,7 +300,7 @@ class SettingsPreferencesState extends State<SettingsPreferences> {
             });
           },
         );
-      case _PrefType.BOOL:
+      case PrefType.BOOL:
         return GCWOnOffSwitch(
           value: editedValue ?? Prefs.getBool(key),
           onChanged: (value) {
@@ -330,7 +309,7 @@ class SettingsPreferencesState extends State<SettingsPreferences> {
             });
           },
         );
-      case _PrefType.STRINGLIST:
+      case PrefType.STRINGLIST:
         if (editedValue == null) {
           editedValue = List<String>.from(Prefs.get(key)).map((e) => e.toString()).toList();
           controllers = [];
@@ -404,37 +383,5 @@ class SettingsPreferencesState extends State<SettingsPreferences> {
     }
   }
 
-  _PrefType _getPrefType(String key) {
-    try {
-      String x = Prefs.get(key);
-      return _PrefType.STRING;
-    } catch (e) {}
 
-    try {
-      List<String> x = Prefs.get(key);
-      return _PrefType.STRINGLIST;
-    } catch (e) {}
-
-    try {
-      List<Object> x = Prefs.get(key);
-      return _PrefType.STRINGLIST;
-    } catch (e) {}
-
-    try {
-      int x = Prefs.get(key);
-      return _PrefType.INT;
-    } catch (e) {}
-
-    try {
-      double x = Prefs.get(key);
-      return _PrefType.DOUBLE;
-    } catch (e) {}
-
-    try {
-      bool x = Prefs.get(key);
-      return _PrefType.BOOL;
-    } catch (e) {}
-
-    return null;
-  }
 }

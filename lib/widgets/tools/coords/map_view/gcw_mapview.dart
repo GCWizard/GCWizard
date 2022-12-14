@@ -387,7 +387,7 @@ class GCWMapViewState extends State<GCWMapView> {
                             i18nPrefix: 'coords_openmap_lineeditor'))).whenComplete(() {
                   setState(() {
                     Navigator.pop(context);
-                    if (child is GCWMapPolyline) {
+                    if (child is GCWMapLine) {
                       _persistanceAdapter.updateMapPolyline(child.parent);
                     }
                   });

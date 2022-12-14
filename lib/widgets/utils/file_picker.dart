@@ -7,7 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:gc_wizard/widgets/utils/file_utils.dart';
 import 'package:gc_wizard/widgets/utils/gcw_file.dart' as local;
 
-const UNSUPPORTED_MOBILE_TYPES = [FileType.GPX];
+// Not supported by file picker plugin
+const UNSUPPORTED_FILEPICKERPLUGIN_TYPES = [FileType.GPX, FileType.GCW];
 final SUPPORTED_IMAGE_TYPES = fileTypesByFileClass(FileClass.IMAGE);
 
 /// Open File Picker dialog
@@ -57,7 +58,7 @@ bool _hasUnsupportedTypes(List<FileType> allowedExtensions) {
   if (kIsWeb) return false;
 
   for (int i = 0; i < allowedExtensions.length; i++) {
-    if (UNSUPPORTED_MOBILE_TYPES.contains(allowedExtensions[i])) return true;
+    if (UNSUPPORTED_FILEPICKERPLUGIN_TYPES.contains(allowedExtensions[i])) return true;
   }
   return false;
 }

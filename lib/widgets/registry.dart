@@ -195,6 +195,7 @@ import 'package:gc_wizard/widgets/tools/crypto_and_encodings/language_games/spoo
 import 'package:gc_wizard/widgets/tools/crypto_and_encodings/maya_numbers.dart';
 import 'package:gc_wizard/widgets/tools/crypto_and_encodings/mexican_army_cipher_wheel.dart';
 import 'package:gc_wizard/widgets/tools/crypto_and_encodings/morse.dart';
+import 'package:gc_wizard/widgets/main_menu/settings/settings_saverestore.dart';
 import 'package:gc_wizard/widgets/tools/crypto_and_encodings/navajo.dart';
 import 'package:gc_wizard/widgets/tools/crypto_and_encodings/numeral_words/numeral_words_converter.dart';
 import 'package:gc_wizard/widgets/tools/crypto_and_encodings/numeral_words/numeral_words_identify_languages.dart';
@@ -2249,6 +2250,7 @@ initializeRegistry(BuildContext context) {
     GCWTool(tool: GeneralSettings(), i18nPrefix: 'settings_general', searchKeys: []),
     GCWTool(tool: CoordinatesSettings(), i18nPrefix: 'settings_coordinates', searchKeys: []),
     GCWTool(tool: ToolSettings(), i18nPrefix: 'settings_tools', searchKeys: []),
+    GCWTool(tool: SaveRestoreSettings(), i18nPrefix: 'settings_saverestore', searchKeys: []),
     GCWTool(tool: Changelog(), i18nPrefix: 'mainmenu_changelog', suppressHelpButton: true, searchKeys: [
       'changelog',
     ]),

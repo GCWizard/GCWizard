@@ -161,7 +161,18 @@ Caches to clean:
 
 Gradle (Windows: users/.gradle)
 Pub cache (Windows: users/appdata/local/pub)
-Android Studio (Windows: users/.android)
+Android Studio
+	Windows: 
+		users/.android
+		users/appdata/local/google/androidstudioX
+			caches
+			compiler
+			compiler-server
+			conversion
+			external-build-system
+			frameworks
+			gradle
+			resource-folder-cache
 IntelliJ (Project Path ./.idea)
 Build Path (Project Path ./build)
 

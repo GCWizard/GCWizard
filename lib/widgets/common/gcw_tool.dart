@@ -178,7 +178,7 @@ class _GCWToolState extends State<GCWTool> {
         .replaceAll(RegExp(r'\s+'), ' ')
         .replaceAll('**', '')
         .replaceAll('/', ' ')
-        .replaceAll(' - ', ' ')
+        .replaceAll('-', ' ')
         .replaceAll(':', '')
         .replaceAll('bit)', '')
         .replaceAll('(', '')

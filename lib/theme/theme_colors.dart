@@ -56,6 +56,14 @@ abstract class ThemeColors {
   Color formulaError();
 }
 
+setThemeColorsByName(String themeColor) {
+  if (themeColor == ThemeType.DARK.toString())
+    setThemeColors(ThemeType.DARK);
+  else if (themeColor == ThemeType.LIGHT.toString()) {
+    setThemeColors(ThemeType.LIGHT);
+  }
+}
+
 setThemeColors(ThemeType type) {
   switch (type) {
     case ThemeType.DARK:

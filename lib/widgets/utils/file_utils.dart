@@ -19,6 +19,7 @@ import 'package:universal_html/html.dart' as html;
 import 'package:unrar_file/unrar_file.dart';
 
 enum FileType {
+  GCW, // GCWizard's own suffix. e.g. for settings
   ZIP,
   RAR,
   TAR,
@@ -46,12 +47,17 @@ enum FileType {
   KMZ,
   LUAC,
   GWC,
-  LUA
+  LUA,
 }
 
 enum FileClass { IMAGE, ARCHIVE, SOUND, DATA, TEXT, BINARY }
 
 const Map<FileType, Map<String, dynamic>> _FILE_TYPES = {
+  // GCWizard's own suffix. e.g. for settings
+  FileType.GCW: {
+    'extensions': ['gcw']
+  },
+
   // https://en.wikipedia.org/wiki/List_of_file_signatures
   // https://wiki.selfhtml.org/wiki/MIME-Type/%C3%9Cbersicht   oder   https://www.iana.org/assignments/media-types/media-types.xhtml
   FileType.JPEG: {

@@ -160,6 +160,7 @@ class SudokuBoardPainter extends CustomPainter {
       }
 
       columns.add(Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: rows,
       ));
     }

@@ -696,16 +696,22 @@ class BundeswehrTalkingBoardObfuscationState extends State<BundeswehrTalkingBoar
     if (text.length != 13) return true;
     List<String> dublicates = [];
     text.split('').forEach((element) {
-      if (dublicates.contains(element)) return true;
+      if (dublicates.contains(element))
+        return;
+      else
+        dublicates.add(element);
     });
-    return false;
+    return (dublicates.length != text.length);
   }
 
   bool _invalidAxisDescription(String text) {
     List<String> dublicates = [];
     text.split('').forEach((element) {
-      if (dublicates.contains(element)) return true;
+      if (dublicates.contains(element))
+        return;
+      else
+        dublicates.add(element);
     });
-    return false;
+    return (dublicates.length != text.length);
   }
 }

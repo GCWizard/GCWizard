@@ -8,7 +8,9 @@ import 'package:gc_wizard/widgets/common/base/gcw_button.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_iconbutton.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_text.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_toast.dart';
+import 'package:gc_wizard/widgets/common/gcw_delete_alertdialog.dart';
 import 'package:gc_wizard/widgets/tools/games/sudoku/sudoku_board.dart';
+import 'package:gc_wizard/widgets/common/gcw_delete_alertdialog.dart';
 
 class SudokuSolver extends StatefulWidget {
   @override
@@ -46,38 +48,38 @@ class SudokuSolverState extends State<SudokuSolver> {
             },
           ),
         ),
+        Container(
+          height: 8 * DOUBLE_DEFAULT_MARGIN
+        ),
         if (_currentSolutions != null && _currentSolutions.length > 1)
-          Container(
-            child: Row(
-              children: [
-                GCWIconButton(
-                  icon: Icons.arrow_back_ios,
-                  onPressed: () {
-                    setState(() {
-                      _currentSolution = (_currentSolution - 1 + _currentSolutions.length) % _currentSolutions.length;
-                      _showSolution();
-                    });
-                  },
+          Row(
+            children: [
+              GCWIconButton(
+                icon: Icons.arrow_back_ios,
+                onPressed: () {
+                  setState(() {
+                    _currentSolution = (_currentSolution - 1 + _currentSolutions.length) % _currentSolutions.length;
+                    _showSolution();
+                  });
+                },
+              ),
+              Expanded(
+                child: GCWText(
+                  align: Alignment.center,
+                  text: '${_currentSolution + 1}/${_currentSolutions.length}' +
+                      (_currentSolutions.length >= _MAX_SOLUTIONS ? ' *' : ''),
                 ),
-                Expanded(
-                  child: GCWText(
-                    align: Alignment.center,
-                    text: '${_currentSolution + 1}/${_currentSolutions.length}' +
-                        (_currentSolutions.length >= _MAX_SOLUTIONS ? ' *' : ''),
-                  ),
-                ),
-                GCWIconButton(
-                  icon: Icons.arrow_forward_ios,
-                  onPressed: () {
-                    setState(() {
-                      _currentSolution = (_currentSolution + 1) % _currentSolutions.length;
-                      _showSolution();
-                    });
-                  },
-                ),
-              ],
-            ),
-            margin: EdgeInsets.only(top: 5 * DOUBLE_DEFAULT_MARGIN),
+              ),
+              GCWIconButton(
+                icon: Icons.arrow_forward_ios,
+                onPressed: () {
+                  setState(() {
+                    _currentSolution = (_currentSolution + 1) % _currentSolutions.length;
+                    _showSolution();
+                  });
+                },
+              ),
+            ],
           ),
         if (_currentSolutions != null && _currentSolutions.length >= _MAX_SOLUTIONS)
           Container(
@@ -135,12 +137,18 @@ class SudokuSolverState extends State<SudokuSolver> {
               child: GCWButton(
                 text: i18n(context, 'sudokusolver_clearall'),
                 onPressed: () {
-                  setState(() {
-                    _currentBoard = List<List<Map<String, dynamic>>>.generate(
-                        9, (index) => List<Map<String, dynamic>>.generate(9, (index) => null));
+                  showDeleteAlertDialog(
+                    context,
+                    i18n(context, 'sudokusolver_clearall_board'),
+                        () {
+                        setState(() {
+                          _currentBoard = List<List<Map<String, dynamic>>>.generate(
+                              9, (index) => List<Map<String, dynamic>>.generate(9, (index) => null));
 
-                    _currentSolutions = null;
-                  });
+                          _currentSolutions = null;
+                        });
+                    },
+                  );
                 },
               ),
               padding: EdgeInsets.only(left: DEFAULT_MARGIN),
