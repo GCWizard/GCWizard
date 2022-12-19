@@ -113,14 +113,13 @@ class SymbolMatrix {
     var list = <String>[];
     for(var y = 0; y < matrix.length; y++) {
       for (var x = 0; x < matrix[y].length; x++) {
-        if ( matrix[y][x] != null || !matrix[y][x].isEmpty)
-          list.add(jsonEncode({'x': x, 'y': y, 'value': matrix[y][x]}));
+        if (matrix[y][x] != null && matrix[y][x].isNotEmpty) {
+          list.add(({'x': x, 'y': y, 'v': matrix[y][x]}).toString());
+        }
       }
     }
 
-    var json = jsonEncode({'columns': columnCount, 'rows': rowCount, 'values': jsonEncode(list)});
-
-    return json;
+    return (jsonEncode({'columns': columnCount, 'rows': rowCount, 'values': list.toString()}).toString());
   }
 
 
@@ -141,7 +140,7 @@ class SymbolMatrix {
         var element = jsonDecode(jsonElement);
         var x = element['x'];
         var y = element['y'];
-        var value = element['value'];
+        var value = element['v'];
         if (x != null && y != null && value != null)
           matrix.setValue(y, x, value);
       }
@@ -149,6 +148,40 @@ class SymbolMatrix {
     return matrix;
   }
 }
+
+
+class ArrayEntry {
+  final int x;
+  final int y;
+  final String value;
+  final bool userDefinied;
+
+  ArrayEntry(this.x, this.y, this.value, this.userDefinied);
+
+  ArrayEntry.fromJson(Map<String, dynamic> json)
+      : x = json['x'],
+        y = json['y'],
+        value = json['v'],
+        userDefinied = json['ud']
+  ;
+
+  Map<String, dynamic> toJson() => {
+    'x': x,
+    'y': y,
+    'v': value,
+    'ud': userDefinied,
+  };
+}
+// class ArrayEntry {
+//   int x;
+//   int y;
+//   ArrayEntry(int x, int y) {
+//     this.x = x;
+//     this.y = y;
+//   }
+//   toJson ()= jsonEncode
+//
+// }
 
 
 final Map<String, String> operatorList = {
