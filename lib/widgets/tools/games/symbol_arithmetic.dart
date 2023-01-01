@@ -55,7 +55,7 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
     return Column(
       children: <Widget>[
         GCWExpandableTextDivider(
-          text: i18n(context, 'Row Count'),
+          text: i18n(context, 'common_row_count'),
           expanded: _currentExpanded,
           onChanged: (value) {
             setState(() {
@@ -65,7 +65,7 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
           child: Column(
             children: <Widget>[
               GCWIntegerSpinner(
-                title: 'Row Count',
+                title: i18n(context, 'common_row_count'),
                 value: _rowCount,
                 min: 1,
                 max: 20,
@@ -77,7 +77,7 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
                 },
               ),
               GCWIntegerSpinner(
-                title: 'Column Count',
+                title: i18n(context, 'common_column_count'),
                 value: _columnCount,
                 min: 1,
                 max: 20,
