@@ -264,14 +264,56 @@ int preCheckCombinations(Map<String, String> substitutions) {
   return count[0]['count'];
 }
 
-// List<String> sortFormulasByKeysCount(List<String> formulas, Map<String, List<int>> keys) {
-//   var sortedKeys = _sortKeyByLength(keys);
-//   var keyCount = new List<int>();
-//
-//   foreach (var formula in formulas)
-//   {
-//     keyCount.Add(_usedKeys(formula, sortedKeys).Count);
-//   }
-//
-//   return _sortByKeyCount(formulas, keyCount);
-// }
+List<String> sortFormulasByUsedSubstitutionsCount(List<String> formulas, Map<String, String> substitutions) {
+  var sortedKeys = _sortKeyByLength(substitutions);
+  var usedSubstitutionsCount = <int>[];
+
+  formulas.forEach((formula) {
+    usedSubstitutionsCount.add(_usedSubstitutions(formula, sortedKeys).length);
+  });
+
+  return _sortByUsedSubstitutionsCount(formulas, usedSubstitutionsCount);
+}
+
+Map<String, String> _sortKeyByLength(Map<String, String> substitutions) {
+  return Map.fromEntries(
+      substitutions.entries.toList()..sort((e1, e2) => e1.key.length.compareTo(e2.key.length)));
+}
+
+Map<String, String> _usedSubstitutions(String formula, Map<String, String> sortedSubstitutions) {
+  var usedKeys = Map<String, String>();
+
+  sortedSubstitutions.forEach((key, value) {
+    if (formula.contains(key)) {
+      usedKeys.addAll({key: value});
+      formula = formula.replaceAll(key, '');
+    }
+  });
+
+  return usedKeys;
+}
+
+List<String> _sortByUsedSubstitutionsCount(List<String> formulas, List<int> keyCount) {
+  var changed = true;
+
+  while (changed) {
+    changed = false;
+
+    for (int i = 0; i < keyCount.length - 1; i++) {
+      if (keyCount[i] > keyCount[i + 1]) {
+        var tmp = keyCount[i];
+        keyCount[i] = keyCount[i + 1];
+        keyCount[i + 1] = tmp;
+
+        var tmp1 = formulas[i];
+        formulas[i] = formulas[i + 1];
+        formulas[i + 1] = tmp1;
+
+        changed = true;
+      }
+    }
+  }
+
+  return formulas;
+}
+

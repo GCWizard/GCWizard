@@ -12,10 +12,12 @@ import 'package:gc_wizard/widgets/common/base/gcw_textfield.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_expandable.dart';
 import 'package:gc_wizard/widgets/common/gcw_integer_spinner.dart';
+import 'package:gc_wizard/widgets/common/gcw_key_value_editor.dart';
 import 'package:gc_wizard/widgets/common/gcw_paste_button.dart';
 import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
 import 'package:gc_wizard/widgets/common/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
+import 'package:gc_wizard/widgets/utils/textinputformatter/variablestring_textinputformatter.dart';
 
 class SymbolArithmetic extends StatefulWidget {
   @override
@@ -23,23 +25,40 @@ class SymbolArithmetic extends StatefulWidget {
 }
 
 class SymbolArithmeticState extends State<SymbolArithmetic> {
+  var _inputController;
+  var _maskController;
+
+  var _currentInput = '';
+  var _currentMask = '';
+  var _currentFromInput = '';
+  var _currentToInput = '';
+
+  var _currentIdCount = 0;
+  var _currentSubstitutions = <int, Map<String, String>>{};
+
   int _rowCount = 2;
   int _columnCount = 2;
   SymbolMatrix _currentMatrix = SymbolMatrix(2, 2);
   List<List<TextEditingController>> _textEditingControllerArray;
   bool _currentExpanded = true;
-  String _currentInput = '';
+  bool _currentValuesExpanded = true;
   GCWSwitchPosition _currentMode = GCWSwitchPosition.left;
 
   @override
   void initState() {
     super.initState();
 
+    _inputController = TextEditingController(text: _currentInput);
+    _maskController = TextEditingController(text: _currentMask);
+
     _resizeMatrix();
   }
 
   @override
   void dispose() {
+    _inputController.dispose();
+    _maskController.dispose();
+
     if (_textEditingControllerArray != null) {
       for(var y = 0; y < _textEditingControllerArray.length; y++)
         for(var x = 0; x < _textEditingControllerArray[y].length; x++)
@@ -48,6 +67,24 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
     }
 
     super.dispose();
+  }
+
+  _addEntry(String currentFromInput, String currentToInput, BuildContext context) {
+    if (currentFromInput.length > 0)
+      _currentSubstitutions.putIfAbsent(++_currentIdCount, () => {currentFromInput: currentToInput});
+  }
+
+  _updateEntry(dynamic id, String key, String value) {
+    _currentSubstitutions[id] = {key: value};
+  }
+
+  _updateNewEntry(String currentFromInput, String currentToInput, BuildContext context) {
+    _currentFromInput = currentFromInput;
+    _currentToInput = currentToInput;
+  }
+
+  _removeEntry(dynamic id, BuildContext context) {
+    _currentSubstitutions.remove(id);
   }
 
   @override
@@ -116,6 +153,7 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
             child: _buildTable(_rowCount, _columnCount),
           ),
         ),
+        _buildVariablesEditor(),
         GCWIconButton(
           onPressed: () {
             var valid = _currentMatrix.isValidMatrix();
@@ -153,6 +191,31 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
                 .join(' '))
       ],
     );
+  }
+
+  Widget _buildVariablesEditor() {
+    return Column(
+      children: <Widget>[
+        GCWExpandableTextDivider(
+          text: i18n(context, 'coords_variablecoordinate_variables'),
+          expanded: _currentValuesExpanded,
+          onChanged: (value) {
+            setState(() {
+              _currentValuesExpanded = value;
+            });
+          },
+          child: GCWKeyValueEditor(
+              keyHintText: i18n(context, 'coords_variablecoordinate_variable'),
+              valueHintText: i18n(context, 'coords_variablecoordinate_possiblevalues'),
+              valueInputFormatters: [VariableStringTextInputFormatter()],
+              valueFlex: 4,
+              onNewEntryChanged: _updateNewEntry,
+              onAddEntry: _addEntry,
+              keyKeyValueMap: _currentSubstitutions,
+              onUpdateEntry: _updateEntry,
+              onRemoveEntry: _removeEntry)
+    )
+    ]);
   }
 
   _parseClipboard(text) {
@@ -273,6 +336,22 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
   void _resizeMatrix() {
     _currentMatrix = SymbolMatrix(_rowCount, _columnCount, oldMatrix: _currentMatrix);
     _buildtextEditingControllerArray(_rowCount, _columnCount);
+  }
+
+  Map<String, String> _getSubstitutions() {
+    var _substitutions = <String, String>{};
+    _currentSubstitutions.entries.forEach((entry) {
+      _substitutions.putIfAbsent(entry.value.keys.first, () => entry.value.values.first);
+    });
+
+    if (_currentFromInput != null &&
+        _currentFromInput.length > 0 &&
+        _currentToInput != null &&
+        _currentToInput.length > 0) {
+      _substitutions.putIfAbsent(_currentFromInput, () => _currentToInput);
+    }
+
+    return _substitutions;
   }
 
 
