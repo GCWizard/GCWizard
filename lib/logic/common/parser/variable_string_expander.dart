@@ -185,7 +185,7 @@ class VariableStringExpander {
     } while (_setIndexes() == false);
   }
 
-  // do the substitution of the variables set with their specific values given by their counted indexes
+  /// do the substitution of the variables set with their specific values given by their counted indexes
   void _substitute() {
     _result = _input;
     for (_variableGroupIndex = 0; _variableGroupIndex < _countVariableGroups; _variableGroupIndex++) {
@@ -263,3 +263,15 @@ int preCheckCombinations(Map<String, String> substitutions) {
 
   return count[0]['count'];
 }
+
+// List<String> sortFormulasByKeysCount(List<String> formulas, Map<String, List<int>> keys) {
+//   var sortedKeys = _sortKeyByLength(keys);
+//   var keyCount = new List<int>();
+//
+//   foreach (var formula in formulas)
+//   {
+//     keyCount.Add(_usedKeys(formula, sortedKeys).Count);
+//   }
+//
+//   return _sortByKeyCount(formulas, keyCount);
+// }
