@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
@@ -287,10 +288,10 @@ class _GCWToolState extends State<GCWTool> {
       return tool;
     }
 
-    return Scrollbar(
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        primary: true,
         child: tool,
-      ),
     );
   }
 }

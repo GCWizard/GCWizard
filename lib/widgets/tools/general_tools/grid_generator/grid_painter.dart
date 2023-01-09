@@ -126,7 +126,6 @@ class GridPainterState extends State<GridPainter> {
                 break;
             }
           }
-          ;
           break;
 
         case GridBoxEnumerationStartDirection.DOWN:
@@ -164,7 +163,6 @@ class GridPainterState extends State<GridPainter> {
                 break;
             }
           }
-          ;
           break;
 
         case GridBoxEnumerationStartDirection.LEFT:
@@ -202,7 +200,6 @@ class GridPainterState extends State<GridPainter> {
                 break;
             }
           }
-          ;
           break;
 
         case GridBoxEnumerationStartDirection.RIGHT:
@@ -240,7 +237,6 @@ class GridPainterState extends State<GridPainter> {
                 break;
             }
           }
-          ;
           break;
       }
     }
@@ -579,7 +575,7 @@ class CustomGridPainter extends CustomPainter {
         paint.color = gridState != null && gridState[i] != null && gridState[i][j] != null
             ? GRID_COLORS[gridState[i][j]]['color']
             : paint.color.withOpacity(0.0);
-        ;
+
         paint.style = PaintingStyle.fill;
 
         _touchCanvas.drawCircle(Offset(x + boxWidth, y + boxHeight), boxWidth * 0.4, paint, onTapDown: (tapDetail) {

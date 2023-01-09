@@ -23,7 +23,7 @@ String getLineData(String analyseLine, String LUAname, String type, String obfus
     result = result.replaceAll('"', '');
   }
 
-  return normalizeText(result).trim();
+  return normalizeWIGText(result).trim();
 }
 
 String getStructData(String analyseLine, String type) {
@@ -80,7 +80,7 @@ String getTextData(String analyseLine, String obfuscator, String dtable) {
     result = 'Player.Name .. ' + result;
   }
 
-  return normalizeText(result);
+  return normalizeWIGText(result);
 }
 
 String _getDetails(String line, String obfuscator, String dtable) {
@@ -117,7 +117,7 @@ String _getDetails(String line, String obfuscator, String dtable) {
     }
   } while (line.length != 0);
 
-  return normalizeText(result);
+  return normalizeWIGText(result);
 }
 
 List<String> getChoicesSingleLine(String choicesLine, String LUAname, String obfuscator, String dtable) {
@@ -153,10 +153,10 @@ String _getCompositeText(String text, String obfuscator, String dtable) {
   } while ((text[i] + text[i + 1] != '")'));
   text = text.substring(i + 2);
   result = result + deobfuscateUrwigoText(hashText, dtable) + text;
-  return normalizeText(result);
+  return normalizeWIGText(result);
 }
 
-String normalizeText(String text) {
+String normalizeWIGText(String text) {
   if (RegExp(r'(WWB_multiplatform_string)').hasMatch(text)) text = removeWWB(text);
   return text
       .replaceAll(String.fromCharCode(92) + '"', "'")

@@ -27,7 +27,7 @@ class SubstitutionBreaker extends StatefulWidget {
 class SubstitutionBreakerState extends State<SubstitutionBreaker> {
   String _currentInput = '';
   SubstitutionBreakerAlphabet _currentAlphabet = SubstitutionBreakerAlphabet.GERMAN;
-  SubstitutionBreakerResult _currentOutput = null;
+  SubstitutionBreakerResult _currentOutput;
 
   var _quadgrams = Map<SubstitutionBreakerAlphabet, Quadgrams>();
   var _isLoading = <bool>[false];

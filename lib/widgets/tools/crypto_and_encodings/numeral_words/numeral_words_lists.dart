@@ -7,6 +7,7 @@ import 'package:gc_wizard/logic/tools/crypto_and_encodings/numeral_words.dart';
 import 'package:gc_wizard/utils/common_utils.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_iconbutton.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
@@ -75,17 +76,14 @@ class NumeralWordsListsState extends State<NumeralWordsLists> {
     numeralWordsOverview = NUMERAL_WORDS[_currentLanguage];
 
     return GCWDefaultOutput(
-      child: Column(
-        children: columnedMultiLineOutput(
-            context,
-            numeralWordsOverview.entries.map((entry) {
+      child: GCWColumnedMultilineOutput(
+          data: numeralWordsOverview.entries.map((entry) {
               if (int.tryParse(entry.value) != null) {
                 return [entry.value, entry.key];
               }
-              ;
             }).toList(),
             flexValues: [1, 3],
-            fontSize: defaultFontSize() + _valueFontsizeOffset),
+            fontSize: defaultFontSize() + _valueFontsizeOffset
       ),
       trailing: ZOOMABLE_LANGUAGE.contains(_currentLanguage)
           ? Row(

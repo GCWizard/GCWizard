@@ -29,7 +29,7 @@ class MagicEyeSolverState extends State<MagicEyeSolver> {
   GCWFile _decodeImage;
   Image.Image _decodeImageData;
   Uint8List _decodeOutData;
-  int _displacement = null;
+  int _displacement;
   GCWFile _encodeHiddenDataImage;
   GCWFile _encodeTextureImage;
   Uint8List _encodeOutData;

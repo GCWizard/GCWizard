@@ -18,7 +18,7 @@ import 'package:gc_wizard/logic/tools/coords/external_libs/net.sf.geographiclib/
  * http://geographiclib.sourceforge.net/
  **********************************************************************/
 
-/**
+/*
  * \brief Lambert Conformal Conic Projection
  *
  * Implementation taken from the report,
@@ -173,7 +173,7 @@ class LambertConformalConic {
     return t != 0 ? eatanhe(t / d) / t : _e2 / d;
   }
 
-  /**
+  /*
    * Constructor with two standard parallels.
    *
    * @param[in] a equatorial radius of ellipsoid (meters)
@@ -425,7 +425,7 @@ class LambertConformalConic {
     _nrho0 = polar ? 0 : _a * _k0 / _scbet0;
   }
 
-  /**
+  /*
    * Forward projection, from geographic to Lambert conformal conic.
    *
    * @param[in] lon0 central meridian longitude (degrees).
@@ -500,7 +500,7 @@ class LambertConformalConic {
     return GeographicLibLambert(x, y, gamma, k);
   }
 
-  /**
+  /*
    * Reverse projection, from Lambert conformal conic to geographic.
    *
    * @param[in] lon0 central meridian longitude (degrees).

@@ -6,9 +6,9 @@ import 'package:gc_wizard/logic/tools/science_and_technology/colors/colors_hue.d
 import 'package:gc_wizard/logic/tools/science_and_technology/colors/colors_rgb.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/colors/colors_yuv.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
 import 'package:gc_wizard/widgets/tools/science_and_technology/colors/base/gcw_colors.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 import 'package:intl/intl.dart';
 
 class ColorTool extends StatefulWidget {
@@ -65,7 +65,7 @@ class ColorToolState extends State<ColorTool> {
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     var colorSpaceOutputs;
 
     switch (_currentOutputColorSpace) {
@@ -159,10 +159,9 @@ class ColorToolState extends State<ColorTool> {
         break;
     }
 
-    var rows = columnedMultiLineOutput(context, colorSpaceOutputs);
-
-    rows.insert(0, GCWTextDivider(text: i18n(context, 'common_output')));
-
-    return Column(children: rows);
+    return GCWColumnedMultilineOutput(
+        firstRows: [GCWTextDivider(text: i18n(context, 'common_output'))],
+        data: colorSpaceOutputs
+    );
   }
 }

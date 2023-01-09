@@ -537,7 +537,7 @@ Tuple2<int, int> _rarVint(Uint8List data, int offset) {
     index++;
   } while (((offset + index) < data.length) & ((data[offset + index - 1] & 0x80) != 0));
 
-  return new Tuple2<int, int>(value, index);
+  return Tuple2<int, int>(value, index);
 }
 
 int mp3FileSize(Uint8List data) {

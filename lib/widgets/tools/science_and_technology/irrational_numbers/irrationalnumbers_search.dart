@@ -6,8 +6,8 @@ import 'package:gc_wizard/utils/common_utils.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_iconbutton.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_text.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_textfield.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class IrrationalNumbersSearch extends StatefulWidget {
   final IrrationalNumber irrationalNumber;
@@ -95,7 +95,7 @@ class IrrationalNumbersSearchState extends State<IrrationalNumbersSearch> {
                   child: GCWText(
                       align: Alignment.center,
                       text:
-                          '${_currentSolution + 1}/${_totalCurrentSolutions}' // + (_currentSolutions.length >= _MAX_SOLUTIONS ? ' *' : ''),
+                          '${_currentSolution + 1}/$_totalCurrentSolutions' // + (_currentSolutions.length >= _MAX_SOLUTIONS ? ' *' : ''),
                       ),
                 ),
                 GCWIconButton(
@@ -113,19 +113,17 @@ class IrrationalNumbersSearchState extends State<IrrationalNumbersSearch> {
 
     var _solution = _solutions[_currentSolution];
 
-    var output = columnedMultiLineOutput(context, [
+    var output = [
       _hasWildCards ? [i18n(context, 'common_value'), _solution.value] : null,
       [i18n(context, 'common_start'), _solution.start],
       [i18n(context, 'common_end'), _solution.end]
-    ], flexValues: [
-      2,
-      3
-    ]);
+    ];
 
     return Column(children: [
       selector,
-      Column(
-        children: output,
+      GCWColumnedMultilineOutput(
+        data: output,
+        flexValues: [2, 3]
       )
     ]);
   }

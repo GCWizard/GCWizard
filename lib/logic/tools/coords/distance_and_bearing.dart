@@ -17,7 +17,7 @@ DistanceBearingData distanceBearing(LatLng coords1, LatLng coords2, Ellipsoid el
   return result;
 }
 
-/** A bit less accurate... Used for Map Polylines and Interval arithmetics **/
+/* A bit less accurate... Used for Map Polylines and Interval arithmetics **/
 DistanceBearingData distanceBearingVincenty(LatLng coords1, LatLng coords2, Ellipsoid ellipsoid) {
   return vincentyInverse(coords1, coords2, ellipsoid);
 }

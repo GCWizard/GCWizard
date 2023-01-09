@@ -3,6 +3,7 @@ import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/coords/data/coordinates.dart';
 import 'package:gc_wizard/logic/tools/coords/utils.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_submit_button.dart';
 import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
@@ -11,7 +12,6 @@ import 'package:gc_wizard/widgets/tools/coords/base/gcw_coords_formatselector.da
 import 'package:gc_wizard/widgets/tools/coords/base/gcw_coords_output.dart';
 import 'package:gc_wizard/widgets/tools/coords/base/utils.dart';
 import 'package:gc_wizard/widgets/tools/coords/map_view/gcw_map_geometries.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class FormatConverter extends StatefulWidget {
   @override
@@ -121,10 +121,9 @@ class FormatConverterState extends State<FormatConverter> {
 
         children.add([name, formatCoordOutput(_currentCoords, outputFormat, ellipsoid)]);
       } catch (e) {}
-      ;
     });
 
-    return GCWDefaultOutput(child: Column(children: columnedMultiLineOutput(context, children)));
+    return GCWDefaultOutput(child: GCWColumnedMultilineOutput( data: children));
   }
 }
 

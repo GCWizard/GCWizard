@@ -50,7 +50,7 @@ class SymbolReplacerState extends State<SymbolReplacer> {
   SymbolReplacerImage _symbolImage;
   local.GCWFile _platformFile;
   double _blackLevel = 50.0;
-  double _similarityLevel = 100.0;
+  double _similarityLevel = 90.0;
   double _similarityCompareLevel = 80.0;
   var _currentSimpleMode = GCWSwitchPosition.left;
   List<GCWDropDownMenuItem> _compareSymbolItems;
@@ -296,7 +296,6 @@ class SymbolReplacerState extends State<SymbolReplacer> {
                   _replaceSymbols(false);
                 });
               }
-              ;
             }),
         Container(width: 5),
         GCWIconButton(
@@ -512,7 +511,6 @@ class SymbolReplacerState extends State<SymbolReplacer> {
 
         return symbolTableViewData.data.images;
       }
-      ;
     }).toList());
 
     return GCWAsyncExecuterParameters(

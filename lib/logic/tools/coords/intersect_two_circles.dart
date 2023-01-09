@@ -11,7 +11,7 @@ class IntersectTwoCirclesJobData {
   final Ellipsoid ells;
 
   IntersectTwoCirclesJobData(
-      {this.coord1 = null, this.radius1 = 0.0, this.coord2 = null, this.radius2 = 0.0, this.ells = null});
+      {this.coord1, this.radius1 = 0.0, this.coord2, this.radius2 = 0.0, this.ells});
 }
 
 class _IntersectTwoCirclesCalculator extends IntervalCalculator {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/logic/tools/coords/data/coordinates.dart';
-import 'package:gc_wizard/widgets/common/gcw_integer_spinner.dart';
+import 'package:gc_wizard/widgets/common/base/gcw_textfield.dart';
+import 'package:gc_wizard/widgets/utils/textinputformatter/integer_textinputformatter.dart';
 
 class GCWCoordsReverseWherigoWaldmeister extends StatefulWidget {
   final Function onChanged;
@@ -25,12 +26,16 @@ class GCWCoordsReverseWherigoWaldmeisterState extends State<GCWCoordsReverseWher
   var _currentB = 0;
   var _currentC = 0;
 
+  IntegerTextInputFormatter _integerInputFormatter;
+
   @override
   void initState() {
     super.initState();
-    _ControllerA = TextEditingController(text: _currentA.toString().padLeft(6, '0'));
-    _ControllerB = TextEditingController(text: _currentB.toString().padLeft(6, '0'));
-    _ControllerC = TextEditingController(text: _currentC.toString().padLeft(6, '0'));
+    _ControllerA = TextEditingController(text: _currentA.toString());
+    _ControllerB = TextEditingController(text: _currentB.toString());
+    _ControllerC = TextEditingController(text: _currentC.toString());
+
+    _integerInputFormatter = IntegerTextInputFormatter(min: 0, max: 999999);
 
     _FocusNodeA = FocusNode();
     _FocusNodeB = FocusNode();
@@ -59,49 +64,40 @@ class GCWCoordsReverseWherigoWaldmeisterState extends State<GCWCoordsReverseWher
       _currentB = int.tryParse(waldmeister.b);
       _currentC = int.tryParse(waldmeister.c);
 
-      _ControllerA.text = _currentA.toString();
-      _ControllerB.text = _currentB.toString();
-      _ControllerC.text = _currentC.toString();
+      _ControllerA.text = waldmeister.a;
+      _ControllerB.text = waldmeister.b;
+      _ControllerC.text = waldmeister.c;
     }
 
     return Column(children: <Widget>[
-      GCWIntegerSpinner(
+      GCWTextField(
         controller: _ControllerA,
         focusNode: _FocusNodeA,
-        value: _currentA,
-        min: 0,
-        max: 999999,
-        leftPadZeros: 6,
+        inputFormatters: [_integerInputFormatter],
         onChanged: (value) {
-          _currentA = value;
+          _currentA = int.tryParse(value);
 
           if (_ControllerA.text.length == 6) FocusScope.of(context).requestFocus(_FocusNodeB);
           _setCurrentValueAndEmitOnChange();
         },
       ),
-      GCWIntegerSpinner(
+      GCWTextField(
         controller: _ControllerB,
         focusNode: _FocusNodeB,
-        value: _currentB,
-        min: 0,
-        max: 999999,
-        leftPadZeros: 6,
+        inputFormatters: [_integerInputFormatter],
         onChanged: (value) {
-          _currentB = value;
+          _currentB = int.tryParse(value);
 
           if (_ControllerB.text.toString().length == 6) FocusScope.of(context).requestFocus(_FocusNodeC);
           _setCurrentValueAndEmitOnChange();
         },
       ),
-      GCWIntegerSpinner(
+      GCWTextField(
         controller: _ControllerC,
         focusNode: _FocusNodeC,
-        value: _currentC,
-        min: 0,
-        max: 999999,
-        leftPadZeros: 6,
+        inputFormatters: [_integerInputFormatter],
         onChanged: (value) {
-          _currentC = value;
+          _currentC = int.tryParse(value);
           _setCurrentValueAndEmitOnChange();
         },
       )

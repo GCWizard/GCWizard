@@ -16,7 +16,7 @@ List<double> beaufortToMeterPerSecond(int beaufort) {
     return [56.1, double.infinity];
   }
 
-  var lowerV = null;
+  var lowerV;
   var upperV = 0.0;
 
   for (int i = 0; i < 570; i++) {

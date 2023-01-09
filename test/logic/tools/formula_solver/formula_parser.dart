@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import "package:flutter_test/flutter_test.dart";
-import 'package:gc_wizard/logic/tools/formula_solver/parser.dart';
+import 'package:gc_wizard/logic/tools/formula_solver/formula_parser.dart';
 import 'package:gc_wizard/persistence/formula_solver/model.dart';
 
 void main() {
@@ -80,11 +80,14 @@ void main() {
       {'formula' : 'sin(0) ', 'values': <String, String>{}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0', 'state': 'ok'}]}}, //Not working because S in Values and so the s of sin will be replaced
 
       //math library testing
-      {'formula' : '36^(1/2)', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '6', 'state': 'ok'}]}},
-      {'formula' : 'phi * 2', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3.2360679775', 'state': 'ok'}]}},
+      {'formula' : '36^(1:2)', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '6', 'state': 'ok'}]}},
+      {'formula' : 'phi × 2', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3.2360679775', 'state': 'ok'}]}},
       {'formula' : 'log(100,10)', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0.5', 'state': 'ok'}]}},
       {'formula' : 'log(10,100)', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2', 'state': 'ok'}]}},
       {'formula' : 'pi', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3.14159265359', 'state': 'ok'}]}},
+      {'formula' : '\u1D28 * \u03A0', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '9.869604401089', 'state': 'ok'}]}},
+      {'formula' : '\u03a6 * \u03c6 + 1', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3.61803398875', 'state': 'ok'}]}},
+      {'formula' : 'A + 1', 'values': {'A': '\u03a6'}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2.61803398875', 'state': 'ok'}]}},
 
       //Referencing values
       {'formula' : 'F', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '1', 'state': 'ok'}]}},
@@ -386,7 +389,7 @@ void main() {
         {'result': 'N 52 [Q3].186 3 6 9 9 10', 'variables': {'R': '3', 'S': '6'}, 'state': 'error'}
       ]}},
 
-      {'formula' : 'N 52 [QR].[S+T*U*2] [R] [S] [R+S] [T] [U]', 'values': [
+      {'formula' : 'N 52 [QR].[S+T×U*2] [R] [S] [R+S] [T] [U]', 'values': [
         FormulaValue('R', '1-3', type: FormulaValueType.INTERPOLATED),
         FormulaValue('S', '2,6', type: FormulaValueType.INTERPOLATED),
         FormulaValue('T', 'S+R', type: FormulaValueType.FIXED),

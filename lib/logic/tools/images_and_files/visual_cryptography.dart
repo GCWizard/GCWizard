@@ -174,7 +174,7 @@ Future<Tuple2<Uint8List, Uint8List>> encodeImage(
     scale = (min<double>(_keyImage.width / 2 / _image.width, _keyImage.height / 2 / _image.height) * 100).toInt();
   }
 
-  if (scale > 0 && scale != 100) _image = Image.copyResize(_image, height: (_image.height * scale / 100).toInt());
+  if (scale > 0 && scale != 100) _image = Image.copyResize(_image, height: _image.height * scale ~/ 100);
 
   if (hasKeyImage) {
     var _dstImage = Image.Image(_keyImage.width ~/ 2, _keyImage.height ~/ 2);

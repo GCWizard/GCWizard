@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:audioplayers/audioplayers.dart'; // https://pub.dev/packages/audioplayers
 import 'package:flutter/foundation.dart';

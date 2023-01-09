@@ -39,7 +39,7 @@ Map<String, List<String>> _createAmscoGrid(String input, String key, bool oneCha
   input = input.toUpperCase();
 
   for (int i = 0; i < key.toString().length; i++) {
-    grid.addAll({key[i]: List<String>()});
+    grid.addAll({key[i]: <String>[]});
   }
 
   int i = 0;
@@ -111,7 +111,6 @@ AmscoOutput decryptAmsco(String input, String key, bool oneCharStart) {
     });
     row += 1;
   }
-  ;
 
   return AmscoOutput(output, _amscoGridToString(grid), ErrorCode.OK);
 }
@@ -134,7 +133,6 @@ String _amscoGridToString(Map<String, List<String>> grid) {
     output += '\n';
     row += 1;
   }
-  ;
 
   return output;
 }

@@ -97,7 +97,6 @@ Future<Uint8List> createImage(Uint8List highImage, Uint8List lowImage, String in
       animation.addFrame(image);
       outList.add(on);
     }
-    ;
 
     // image count optimation
     for (var i = animation.frames.length - 1; i > 0; i--) {
@@ -171,7 +170,6 @@ List<Tuple2<bool, int>> _buildTimeList(List<int> durations, List<bool> onSignal)
       // same signal -> add
       timeList.last = Tuple2<bool, int>(onSignal[i], timeList.last.item2 + durations[i]);
   }
-  ;
   return timeList;
 }
 

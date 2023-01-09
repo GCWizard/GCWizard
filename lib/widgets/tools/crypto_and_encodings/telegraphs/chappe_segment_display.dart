@@ -131,8 +131,6 @@ class ChappeTelegraphSegmentDisplay extends NSegmentDisplay {
                   setSegmentState('10', !currentSegments['10']);
                 });
               else
-                ;
-              else
                 canvas.touchCanvas.drawPath(path10, paint, onTapDown: (tapDetail) {
                   setSegmentState('10', !currentSegments['10']);
                 });

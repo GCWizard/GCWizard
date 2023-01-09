@@ -8,10 +8,10 @@ import 'package:gc_wizard/logic/tools/crypto_and_encodings/general_codebreakers/
 class Bigrams {
   static const int maxAlphabetLength = 32;
 
-  String alphabet = null;
-  Map<String, String> replacementList = null;
+  String alphabet;
+  Map<String, String> replacementList;
   // The bigram with the lowest probability receives the value 0, the one with the greatest probability receives the value 1000000
-  List<List<int>> bigrams = null;
+  List<List<int>> bigrams;
 }
 
 Bigrams getBigrams(VigenereBreakerAlphabet alphabet) {

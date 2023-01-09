@@ -3,6 +3,7 @@ import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/mathematical_constants.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_button.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_tool.dart';
 import 'package:gc_wizard/widgets/selector_lists/e_selection.dart';
@@ -90,7 +91,7 @@ class MathematicalConstantsState extends State<MathematicalConstants> {
     _currentConstant = _orderedConstantKeys.first;
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     Map<String, dynamic> constantData = _constants[_currentConstant];
 
     List<String> names;
@@ -111,8 +112,9 @@ class MathematicalConstantsState extends State<MathematicalConstants> {
       names != null ? [i18n(context, 'mathematical_constants_additionalnames'), names.join('\n')] : null
     ];
 
-    var dataView = Column(
-      children: columnedMultiLineOutput(context, data, flexValues: [1, 2]),
+    var dataView = GCWColumnedMultilineOutput(
+        data: data,
+        flexValues: [1, 2]
     );
 
     var toolLink = _buildToolLink(constantData['tool']);
@@ -122,7 +124,7 @@ class MathematicalConstantsState extends State<MathematicalConstants> {
     );
   }
 
-  _buildToolLink(String toolReference) {
+  Widget _buildToolLink(String toolReference) {
     if (toolReference == null) return Container();
 
     Widget widget;

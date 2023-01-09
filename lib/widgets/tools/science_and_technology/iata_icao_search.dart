@@ -3,9 +3,9 @@ import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/iata_icao.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_button.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_textfield.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_twooptions_switch.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class IATAICAOSearch extends StatefulWidget {
   @override
@@ -106,14 +106,13 @@ class IATAICAOSearchState extends State<IATAICAOSearch> {
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
       // search for name
       if (_currentInputName == null || _currentInputName == "") return Container();
 
       List<List<String>> data = [];
       List<int> flexValues = List<int>.generate(4, (index) => 1);
-      var output;
 
       data = IATA_ICAO_CODES.values
           .where((e) => e['name'] != null && e['name'].toLowerCase().contains(_currentInputName.toLowerCase()))
@@ -133,10 +132,11 @@ class IATAICAOSearchState extends State<IATAICAOSearch> {
         i18n(context, 'common_place')
       ]);
 
-      output = columnedMultiLineOutput(context, data, flexValues: flexValues, copyColumn: 1, hasHeader: true);
-
-      return Column(
-        children: output,
+      return GCWColumnedMultilineOutput(
+          data: data,
+          flexValues: flexValues,
+          copyColumn: 1,
+          hasHeader: true
       );
     } else {
       // search for code
@@ -169,10 +169,12 @@ class IATAICAOSearchState extends State<IATAICAOSearch> {
           i18n(context, 'common_name'),
           i18n(context, 'common_place')
         ]);
-        output = columnedMultiLineOutput(context, data, flexValues: flexValues, copyColumn: 2, hasHeader: true);
 
-        return Column(
-          children: output,
+        return GCWColumnedMultilineOutput(
+            data: data,
+            flexValues: flexValues,
+            copyColumn: 2,
+            hasHeader: true
         );
       } else {
         var data = IATA_ICAO_CODES.values
@@ -197,10 +199,12 @@ class IATAICAOSearchState extends State<IATAICAOSearch> {
           i18n(context, 'common_name'),
           i18n(context, 'common_place')
         ]);
-        output = columnedMultiLineOutput(context, data, flexValues: flexValues, copyColumn: 2, hasHeader: true);
 
-        return Column(
-          children: output,
+        return GCWColumnedMultilineOutput(
+            data: data,
+            flexValues: flexValues,
+            copyColumn: 2,
+            hasHeader: true
         );
       }
     }

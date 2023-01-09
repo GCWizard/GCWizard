@@ -8,6 +8,7 @@ import 'package:gc_wizard/widgets/common/base/gcw_divider.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_iconbutton.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_toast.dart';
 import 'package:gc_wizard/widgets/common/gcw_async_executer.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_exported_file_dialog.dart';
 import 'package:gc_wizard/widgets/common/gcw_gallery.dart';
@@ -15,7 +16,6 @@ import 'package:gc_wizard/widgets/common/gcw_imageview.dart';
 import 'package:gc_wizard/widgets/common/gcw_openfile.dart';
 import 'package:gc_wizard/widgets/common/gcw_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_tool.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 import 'package:gc_wizard/widgets/utils/file_utils.dart';
 import 'package:gc_wizard/widgets/utils/gcw_file.dart' as local;
 import 'package:gc_wizard/widgets/utils/no_animation_material_page_route.dart';
@@ -111,7 +111,6 @@ class AnimatedImageState extends State<AnimatedImage> {
         ]);
       });
     }
-    ;
 
     return Column(children: <Widget>[
       _play
@@ -127,9 +126,13 @@ class AnimatedImageState extends State<AnimatedImage> {
     return Column(children: <Widget>[
       GCWDivider(),
       GCWOutput(
-        child: Column(
-            children: columnedMultiLineOutput(context, durations, flexValues: [1, 2], hasHeader: true, copyAll: true)),
-      )
+        child: GCWColumnedMultilineOutput(
+            data: durations,
+            flexValues: [1, 2],
+            hasHeader: true,
+            copyAll: true
+        )
+      ),
     ]);
   }
 
@@ -145,9 +148,7 @@ class AnimatedImageState extends State<AnimatedImage> {
         }
         list.add(GCWImageViewData(local.GCWFile(bytes: images[i]), description: description));
       }
-      ;
     }
-    ;
     return list;
   }
 

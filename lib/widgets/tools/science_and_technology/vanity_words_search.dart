@@ -6,9 +6,9 @@ import 'package:gc_wizard/utils/common_utils.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_output_text.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_textfield.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class VanityWordsTextSearch extends StatefulWidget {
   @override
@@ -138,8 +138,10 @@ class VanityWordsTextSearchState extends State<VanityWordsTextSearch> {
             ? Container()
             : GCWOutput(
                 title: i18n(context, 'common_outputdetail'),
-                child:
-                    Column(children: columnedMultiLineOutput(context, columnData, flexValues: flexData, copyColumn: 1)),
+                child: GCWColumnedMultilineOutput(
+                    data: columnData,
+                    flexValues: flexData,
+                    copyColumn: 1),
               ),
       ],
     );

@@ -18,8 +18,8 @@ class Geo3x3 {
     var unit = 180.0;
     for (int i = 1; i < level; i++) {
       unit /= 3;
-      final x = (lng2 / unit).toInt();
-      final y = (lat2 / unit).toInt();
+      final x = lng2 ~/ unit;
+      final y = lat2 ~/ unit;
       res += (x + y * 3 + 1).toString();
       lng2 -= x * unit;
       lat2 -= y * unit;
@@ -50,7 +50,7 @@ class Geo3x3 {
       unit /= 3;
       n--;
       lng += n % 3 * unit;
-      lat += (n / 3).toInt() * unit;
+      lat += n ~/ 3 * unit;
       level++;
     }
     lat += unit / 2;

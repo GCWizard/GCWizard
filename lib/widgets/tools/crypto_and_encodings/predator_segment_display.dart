@@ -56,8 +56,6 @@ class PredatorSegmentDisplay extends NSegmentDisplay {
                   setSegmentState('a', !currentSegments['a']);
                 });
               else
-                ;
-              else
                 canvas.touchCanvas.drawPath(pathA, paint, onTapDown: (tapDetail) {
                   setSegmentState('a', !currentSegments['a']);
                 });
@@ -77,8 +75,6 @@ class PredatorSegmentDisplay extends NSegmentDisplay {
                 canvas.touchCanvas.drawPath(pathB, paint, onTapDown: (tapDetail) {
                   setSegmentState('b', !currentSegments['b']);
                 });
-              else
-                ;
               else
                 canvas.touchCanvas.drawPath(pathB, paint, onTapDown: (tapDetail) {
                   setSegmentState('b', !currentSegments['b']);
@@ -100,8 +96,6 @@ class PredatorSegmentDisplay extends NSegmentDisplay {
                   setSegmentState('c', !currentSegments['c']);
                 });
               else
-                ;
-              else
                 canvas.touchCanvas.drawPath(pathC, paint, onTapDown: (tapDetail) {
                   setSegmentState('c', !currentSegments['c']);
                 });
@@ -121,8 +115,6 @@ class PredatorSegmentDisplay extends NSegmentDisplay {
                 canvas.touchCanvas.drawPath(pathD, paint, onTapDown: (tapDetail) {
                   setSegmentState('d', !currentSegments['d']);
                 });
-              else
-                ;
               else
                 canvas.touchCanvas.drawPath(pathD, paint, onTapDown: (tapDetail) {
                   setSegmentState('d', !currentSegments['d']);
@@ -144,8 +136,6 @@ class PredatorSegmentDisplay extends NSegmentDisplay {
                   setSegmentState('e', !currentSegments['e']);
                 });
               else
-                ;
-              else
                 canvas.touchCanvas.drawPath(pathE, paint, onTapDown: (tapDetail) {
                   setSegmentState('e', !currentSegments['e']);
                 });
@@ -165,8 +155,6 @@ class PredatorSegmentDisplay extends NSegmentDisplay {
                 canvas.touchCanvas.drawPath(pathF, paint, onTapDown: (tapDetail) {
                   setSegmentState('f', !currentSegments['f']);
                 });
-              else
-                ;
               else
                 canvas.touchCanvas.drawPath(pathF, paint, onTapDown: (tapDetail) {
                   setSegmentState('f', !currentSegments['f']);
@@ -188,8 +176,6 @@ class PredatorSegmentDisplay extends NSegmentDisplay {
                   setSegmentState('g', !currentSegments['g']);
                 });
               else
-                ;
-              else
                 canvas.touchCanvas.drawPath(pathG, paint, onTapDown: (tapDetail) {
                   setSegmentState('g', !currentSegments['g']);
                 });
@@ -209,8 +195,6 @@ class PredatorSegmentDisplay extends NSegmentDisplay {
                 canvas.touchCanvas.drawPath(pathH, paint, onTapDown: (tapDetail) {
                   setSegmentState('h', !currentSegments['h']);
                 });
-              else
-                ;
               else
                 canvas.touchCanvas.drawPath(pathH, paint, onTapDown: (tapDetail) {
                   setSegmentState('h', !currentSegments['h']);
@@ -232,8 +216,6 @@ class PredatorSegmentDisplay extends NSegmentDisplay {
                   setSegmentState('i', !currentSegments['i']);
                 });
               else
-                ;
-              else
                 canvas.touchCanvas.drawPath(pathI, paint, onTapDown: (tapDetail) {
                   setSegmentState('i', !currentSegments['i']);
                 });
@@ -254,8 +236,6 @@ class PredatorSegmentDisplay extends NSegmentDisplay {
                   setSegmentState('j', !currentSegments['j']);
                 });
               else
-                ;
-              else
                 canvas.touchCanvas.drawPath(pathJ, paint, onTapDown: (tapDetail) {
                   setSegmentState('j', !currentSegments['j']);
                 });
@@ -275,8 +255,6 @@ class PredatorSegmentDisplay extends NSegmentDisplay {
                 canvas.touchCanvas.drawPath(pathK, paint, onTapDown: (tapDetail) {
                   setSegmentState('k', !currentSegments['k']);
                 });
-              else
-                ;
               else
                 canvas.touchCanvas.drawPath(pathK, paint, onTapDown: (tapDetail) {
                   setSegmentState('k', !currentSegments['k']);

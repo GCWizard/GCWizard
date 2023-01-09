@@ -1,6 +1,6 @@
 name: gc_wizard
 description: GC Wizard
-version: 2.3.0+162
+version: 2.3.1+166
 
 environment:
   sdk: ">=2.2.2 <3.0.0"

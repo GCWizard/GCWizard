@@ -1,7 +1,6 @@
 //source: https://github.com/sebbeobe/piet_message_generator
 
 import 'dart:math';
-import 'dart:ui';
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,6 @@ import 'package:gc_wizard/logic/tools/crypto_and_encodings/esoteric_programming_
 import 'package:gc_wizard/logic/tools/images_and_files/binary2image.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:gc_wizard/utils/common_utils.dart';
-import 'package:tuple/tuple.dart';
 
 var _blockHeight = 12;
 var _blockWidth = 12;
@@ -40,14 +38,13 @@ Future<Uint8List> generatePiet(String input) async {
   var direction = Alignment.topRight;
   var nextDirection = Alignment.topRight;
   var pixelIndex = 0;
-  int firstPixelColor = null;
+  int firstPixelColor;
 
   result.forEach((mapEntry) {
     var block = mapEntry.value;
     if (mapEntry == result.last) {
       if (direction == Alignment.bottomLeft) block = _reverseBlock(block, _blockWidth);
     }
-    ;
 
     if (firstPixelColor != null) {
       pixelIndex = _searchFirstPixelIndex(block, direction);
@@ -96,7 +93,6 @@ Future<Uint8List> _convertToImage(List<List<int>> resultLines) {
     colorMap.addAll({mapList[i + 1]: Color(knownColors.elementAt(i) | 0xFF000000)});
     colorMapSwitched.addAll({knownColors.elementAt(i): mapList[i + 1]});
   }
-  ;
 
   resultLines.forEach((line) {
     var row = '';

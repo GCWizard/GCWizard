@@ -16,14 +16,14 @@ class IntersectThreeCirclesJobData {
   final Ellipsoid ells;
 
   IntersectThreeCirclesJobData(
-      {this.coord1 = null,
+      {this.coord1,
       this.dist14 = 0.0,
-      this.coord2 = null,
+      this.coord2,
       this.dist24 = 0.0,
-      this.coord3 = null,
+      this.coord3,
       this.dist34 = 0.0,
       this.accuracy = 0.0,
-      this.ells = null});
+      this.ells});
 }
 
 class Intersect {

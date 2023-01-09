@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/crypto_and_encodings/wasd.dart';
 import 'package:gc_wizard/logic/tools/images_and_files/binary2image.dart';
@@ -41,7 +42,9 @@ class WASDState extends State<WASD> {
   var _currentDown = '↓';
   var _currentRight = '→';
   var _currentMode = GCWSwitchPosition.right; // decode
+  var _currentOutputMode = GCWSwitchPosition.left; // only graphic
   var _currentKeyboardControls = WASD_TYPE.CURSORS;
+
 
   var _maskInputFormatter = WrapperForMaskTextInputFormatter(mask: '#', filter: {"#": RegExp(r'.')});
 
@@ -258,6 +261,8 @@ class WASDState extends State<WASD> {
         if (_currentMode == GCWSwitchPosition.left) // encode
           GCWTextField(
               controller: _encodeController,
+              inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9]')),],
+              hintText: '0123456789',
               onChanged: (text) {
                 setState(() {
                   _currentEncodeInput = text;
@@ -284,6 +289,17 @@ class WASDState extends State<WASD> {
           },
         ),
         if (_currentMode == GCWSwitchPosition.right) //decode
+          GCWTwoOptionsSwitch(
+            leftValue: i18n(context, "wasd_output_mode_g"),
+            rightValue: i18n(context, "wasd_output_mode_t"),
+            value: _currentOutputMode,
+            onChanged: (value) {
+              setState(() {
+                _currentOutputMode = value;
+              });
+            },
+          ),
+        if (_currentMode == GCWSwitchPosition.right) //decode
           GCWDefaultOutput(
               child: _buildGraphicDecodeOutput(),
               trailing: GCWIconButton(
@@ -305,7 +321,9 @@ class WASDState extends State<WASD> {
                   _outEncodeData == null ? null : _exportFile(context, _outEncodeData);
                 },
               )),
-        GCWDefaultOutput(child: _buildOutput())
+        if (_currentMode == GCWSwitchPosition.left ||
+            (_currentMode == GCWSwitchPosition.right && _currentOutputMode == GCWSwitchPosition.right)) //text & graphic
+             GCWDefaultOutput(child: _buildOutput())
       ],
     );
   }

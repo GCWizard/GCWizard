@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/divisor.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_crosstotal_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_crosstotal_switch.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_integer_spinner.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class Divisor extends StatefulWidget {
   @override
@@ -51,7 +51,7 @@ class DivisorState extends State<Divisor> {
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     var divs = divisors(_currentInputN);
 
     return Column(
@@ -59,9 +59,7 @@ class DivisorState extends State<Divisor> {
         GCWDefaultOutput(
           child: _currentCrosstotalMode
               ? divs.join(' ')
-              : Column(
-                  children: columnedMultiLineOutput(context, divs.map((e) => [e]).toList()),
-                ),
+              : GCWColumnedMultilineOutput(data: divs.map((e) => [e]).toList()),
         ),
         if (_currentCrosstotalMode)
           GCWCrosstotalOutput(

@@ -10,7 +10,7 @@ class Ingredient {
   List<String> _errorList;
 
   Ingredient(String ingredient) {
-    _errorList = new List<String>();
+    _errorList = <String>[];
 
     //var tokens = ingredient.replaceAll('-', ' ').split(' ');
     var tokens = ingredient.trim().split(' ');

@@ -3,11 +3,13 @@ import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/coords/converter/dmm.dart';
 import 'package:gc_wizard/logic/tools/coords/converter/dms.dart';
 import 'package:gc_wizard/logic/tools/coords/data/coordinates.dart';
+import 'package:gc_wizard/logic/tools/science_and_technology/astronomy/right_ascension_to_degree.dart';
 import 'package:gc_wizard/theme/theme.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_iconbutton.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_text.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_toast.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_datetime_picker.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_integer_textfield.dart';
@@ -17,11 +19,9 @@ import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
 import 'package:gc_wizard/widgets/common/gcw_toolbar.dart';
 import 'package:gc_wizard/widgets/common/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/widgets/tools/coords/base/gcw_coords_sign_dropdownbutton.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 import 'package:gc_wizard/widgets/utils/textinputformatter/integer_minutesseconds_textinputformatter.dart';
 import 'package:gc_wizard/widgets/utils/textinputformatter/integer_textinputformatter.dart';
 
-import '../../../../logic/tools/science_and_technology/astronomy/right_ascension_to_degree.dart';
 
 class RightAscensionToDegree extends StatefulWidget {
   @override
@@ -528,12 +528,12 @@ class RightAscensionToDegreeState extends State<RightAscensionToDegree> {
 
       var dms = DMSLatitude.from(doubleToDMSPart(output.degrees)).format(6).replaceAll('N ', '').replaceAll('S ', '-');
 
-      var rows = columnedMultiLineOutput(context, [
+      var rows = [
         [getCoordinateFormatByKey(keyCoordsDEC).name, output.toString() + '°'],
         [getCoordinateFormatByKey(keyCoordsDMM).name, dmm],
         [getCoordinateFormatByKey(keyCoordsDMS).name, dms],
-      ]);
-      return GCWDefaultOutput(child: Column(children: rows));
+      ];
+      return GCWDefaultOutput(child: GCWColumnedMultilineOutput(data: rows));
     }
   }
 

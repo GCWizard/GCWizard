@@ -5,11 +5,11 @@ import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/cross_sum.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dialog.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_output_text.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_integer_spinner.dart';
 import 'package:gc_wizard/widgets/common/gcw_multiple_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_submit_button.dart';
 import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 final _ALERT_MAX_OUTPUT = 200;
 final _ALERT_MAX_RANGE = 25000;
@@ -105,15 +105,15 @@ class CrossSumRangeState extends State<CrossSumRange> {
   }
 
   _calculateOutput() {
-    _buildOutput(output) {
+    List<Widget> _buildOutput(output) {
       return [
         GCWOutputText(
           text: '${i18n(context, 'common_count')}: ${output.length}',
           copyText: output.length.toString(),
         ),
-        Column(
-            children:
-                columnedMultiLineOutput(context, List<List<dynamic>>.from(output.map((element) => [element]).toList())))
+        GCWColumnedMultilineOutput(
+            data: List<List<dynamic>>.from(output.map((element) => [element]).toList())
+        )
       ];
     }
 

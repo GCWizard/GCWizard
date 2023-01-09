@@ -1,6 +1,6 @@
 // port from https://lexikon.astronomie.info/java/sunmoon/progs/Astronomy.java
 
-/**
+/*
  *
  * Copyright (C) 2010-2012, Helmut Lehmeyer <helmut.lehmeyer@gmail.com>
  *
@@ -67,7 +67,7 @@ double _mod2Pi(double x) {
   return _mod(x, 2.0 * pi);
 } // Modulo PI
 
-/**
+/*
  * @param lon geographical longitude in degree
  * @return    the name <code>String</code> of a sign
  */
@@ -77,7 +77,7 @@ AstrologicalSign sign(double lon) {
   return signs[(lon * _RAD / 30.0).floor()];
 }
 
-/**
+/*
  * @param day
  * @param month
  * @param year
@@ -96,7 +96,7 @@ AstrologicalSign sign(double lon) {
   return jd + day;
 }*/
 
-/**
+/*
  * @param JD Julian Date
  * @return Julian Date converted to Greenwich Mean Sidereal Time
  */
@@ -109,7 +109,7 @@ double GMST(double JD) {
   return _mod(T0 + UT * 1.002737909, 24.0);
 }
 
-/**
+/*
  * @param JD  Julian Date
  * @param gmst Greenwich mean sidereal
  * @return convert Greenweek mean sidereal time to UT
@@ -123,7 +123,7 @@ double _GMST2UT(double JD, double gmst) {
   return UT;
 }
 
-/**
+/*
  * @param gmst Greenwich mean sidereal
  * @param lon geographical longitude in radians, East is positive
  * @return Local Mean Sidereal Time
@@ -132,7 +132,7 @@ double GMST2LMST(double gmst, double lon) {
   return _mod(gmst + _RAD * lon / 15, 24.0);
 }
 
-/**
+/*
  * Transform ecliptical coordinates (lon/lat) to equatorial coordinates (RA/dec)
  *
  * @param coor
@@ -152,7 +152,7 @@ Coor _ecl2Equ(Coor coor, double TDT) {
   return (coor);
 }
 
-/**
+/*
  * Transform equatorial coordinates (RA/Dec) to horizonal coordinates (azimuth/altitude)
  * Refraction is ignored
  *
@@ -179,7 +179,7 @@ Coor _equ2Altaz(Coor coor, double TDT, double geolat, double lmst) {
   return (coor);
 }
 
-/**
+/*
  * Transform geocentric equatorial coordinates (RA/Dec) to topocentric equatorial coordinates
  *
  * @param coor
@@ -207,7 +207,7 @@ Coor _geoEqu2TopoEqu(Coor coor, Coor observer, double lmst) {
   return (coor);
 }
 
-/**
+/*
  *  Calculate cartesian from polar coordinates
  *
  * @param lon
@@ -225,7 +225,7 @@ Coor equPolar2Cart(double lon, double lat, double distance) {
   return c1;
 }
 
-/**
+/*
  * Calculate observers cartesian equatorial coordinates (x,y,z in celestial frame)
  * from geodetic coordinates (longitude, latitude, height above WGS84 ellipsoid)
  * Currently only used to calculate distance of a body from the observer
@@ -273,7 +273,7 @@ Coor observer2EquCart(double lon, double lat, double height, double gmst, Ellips
   return (cart);
 }
 
-/**
+/*
  * @param TDT
  * @param geolat
  * @param lmst
@@ -313,7 +313,7 @@ Coor sunPosition(double TDT, double earthRadius, [double geolat = 0, double lmst
   return sunCoor;
 }
 
-/**
+/*
  * @param sunCoor
  * @param TDT
  * @param observer
@@ -393,7 +393,7 @@ Coor moonPosition(Coor sunCoor, double TDT, [Coor observer, double lmst = 0, boo
   return moonCoor;
 }
 
-/**
+/*
  * Rough refraction formula using standard atmosphere: 1015 mbar and 10°C
  * Input true altitude in radians, Output: increase in altitude in degrees
  *
@@ -432,7 +432,7 @@ double refraction(double alt) {
   return D; // Lifting by refraction in radians
 }
 
-/**
+/*
  * Correction for refraction and semi-diameter/parallax of body is taken care of in function RiseSet
  *
  * @param corr
@@ -457,7 +457,7 @@ RiseSet _gMSTRiseSet(Coor corr, double lon, double lat, double h) {
   return r1;
 }
 
-/**
+/*
  * Find GMST of rise/set of object from the two calculates
  * (start)points (day 1 and 2) and at midnight UT(0)
  *
@@ -524,7 +524,7 @@ RiseSet _riseSet(double jd0UT, Coor coor1, Coor coor2, double lon, double lat, d
   return rise;
 }
 
-/**
+/*
  * Find (local) time of sunrise and sunset, and twilights
  * JD is the Julian Date of 0h local time (midnight)
  * Accurate to about 1-2 minutes
@@ -599,7 +599,7 @@ RiseSet sunRise(double JD, double deltaT, double lon, double lat, double zone, b
   return rise;
 }
 
-/**
+/*
  * Find local time of moonrise and moonset
  * JD is the Julian Date of 0h local time (midnight)
  * Accurate to about 5 minutes or better
@@ -709,7 +709,7 @@ RiseSet moonRise(double JD, double deltaT, double lon, double lat, double zone, 
   return rise;
 }
 
-/**
+/*
  * set of variables for sun calculations
  */
 class Coor {
@@ -748,7 +748,7 @@ class Coor {
   Coor();
 }
 
-/**
+/*
  * set of variables for sunrise calculations
  */
 class RiseSet {
@@ -768,7 +768,7 @@ class RiseSet {
   RiseSet();
 }
 
-/**
+/*
  * time calculations
  */
 class Time {

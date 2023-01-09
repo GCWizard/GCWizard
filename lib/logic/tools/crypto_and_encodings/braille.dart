@@ -1548,7 +1548,7 @@ Map<String, dynamic> _decodeBrailleDEU(List<String> inputs) {
               });
               displays.add(display);
               i = i + 2;
-              ;
+
             } else if (i + 1 < maxLength) {
               switch (inputs[i + 1]) {
                 case '235':
@@ -1585,7 +1585,6 @@ Map<String, dynamic> _decodeBrailleDEU(List<String> inputs) {
               });
               displays.add(display);
               i = i + 1;
-              ;
             }
             break;
           case '5':

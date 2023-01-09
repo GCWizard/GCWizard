@@ -13,11 +13,11 @@ class IntersectGeodeticAndCircleJobData {
   final Ellipsoid ells;
 
   IntersectGeodeticAndCircleJobData(
-      {this.startGeodetic = null,
+      {this.startGeodetic,
       this.bearingGeodetic = 0.0,
-      this.centerPoint = null,
+      this.centerPoint,
       this.radiusCircle = 0.0,
-      this.ells = null});
+      this.ells});
 }
 
 Future<List<LatLng>> intersectGeodeticAndCircleAsync(dynamic jobData) async {

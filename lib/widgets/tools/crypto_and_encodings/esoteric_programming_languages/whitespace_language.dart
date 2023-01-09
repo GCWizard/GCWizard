@@ -16,11 +16,11 @@ class WhitespaceLanguage extends StatefulWidget {
 }
 
 class WhitespaceLanguageState extends State<WhitespaceLanguage> {
-  WhitespaceResult _currentOutput = null;
+  WhitespaceResult _currentOutput;
 
   String _currentCode = '';
   String _currentInput = '';
-  WhitespaceState _continueState = null;
+  WhitespaceState _continueState;
   var _isStarted = false;
 
   var _currentMode = GCWSwitchPosition.left;

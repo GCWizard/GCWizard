@@ -166,8 +166,8 @@ BigInt getNumberAt(NumberSequencesMode sequence, int n) {
 List getNumbersInRange(NumberSequencesMode sequence, int start, stop) {
   if (start == null || stop == null || start == '' || stop == '') return [-1];
 
-  List numberList = new List();
-  List<String> sequenceList = new List<String>();
+  List numberList = <dynamic>[];
+  List<String> sequenceList = <String>[];
 
   var numberSequenceFunction = _getNumberSequenceFunction(sequence);
   if (numberSequenceFunction != null) {
@@ -247,7 +247,7 @@ List getNumbersInRange(NumberSequencesMode sequence, int start, stop) {
       index = index + 1;
     }
   } else if (sequence == NumberSequencesMode.RECAMAN) {
-    List<BigInt> recamanSequence = new List<BigInt>();
+    List<BigInt> recamanSequence = <BigInt>[];
     BigInt number;
     BigInt pn0 = Zero;
     BigInt index = Zero;
@@ -280,7 +280,7 @@ List getNumbersInRange(NumberSequencesMode sequence, int start, stop) {
       index = index + 1;
     }
   } else if (sequence == NumberSequencesMode.BELL) {
-    List<BigInt> bellList = new List<BigInt>();
+    List<BigInt> bellList = <BigInt>[];
     BigInt number;
     int index = 0;
     while (index <= stop) {
@@ -358,9 +358,9 @@ PositionOfSequenceOutput getFirstPositionOfSequence(NumberSequencesMode sequence
   BigInt pn1 = One;
   int index = 0;
   String numberString = '';
-  List<String> sequenceList = new List<String>();
+  List<String> sequenceList = <String>[];
 
-  RegExp expr = new RegExp(r'(' + check + ')');
+  RegExp expr = RegExp(r'(' + check + ')');
 
   var numberSequenceFunction = _getNumberSequenceFunction(sequence);
   if (numberSequenceFunction != null) {
@@ -464,7 +464,7 @@ PositionOfSequenceOutput getFirstPositionOfSequence(NumberSequencesMode sequence
       }
     }
   } else if (sequence == NumberSequencesMode.RECAMAN) {
-    List<int> recamanSequence = new List<int>();
+    List<int> recamanSequence = <int>[];
     int index = 0;
     int maxIndex = 111111;
     int pn0 = 0;
@@ -507,7 +507,7 @@ PositionOfSequenceOutput getFirstPositionOfSequence(NumberSequencesMode sequence
       }
     }
   } else if (sequence == NumberSequencesMode.BELL) {
-    List<BigInt> bellList = new List<BigInt>();
+    List<BigInt> bellList = <BigInt>[];
     while (index <= maxIndex) {
       if (index == 0)
         number = One;
@@ -577,8 +577,8 @@ List getNumbersWithNDigits(NumberSequencesMode sequence, int digits) {
 
   BigInt number;
 
-  List numberList = new List();
-  List<String> sequenceList = new List<String>();
+  List numberList = <dynamic>[];
+  List<String> sequenceList = <String>[];
 
   var numberSequenceFunction = _getNumberSequenceFunction(sequence);
   if (numberSequenceFunction != null) {
@@ -647,7 +647,7 @@ List getNumbersWithNDigits(NumberSequencesMode sequence, int digits) {
     }
   } else if (sequence == NumberSequencesMode.RECAMAN) {
     BigInt pn0 = Zero;
-    List<BigInt> recamanSequence = new List<BigInt>();
+    List<BigInt> recamanSequence = <BigInt>[];
     for (int index = 0; index < 11111; index++) {
       if (index == 0)
         number = Zero;
@@ -673,7 +673,7 @@ List getNumbersWithNDigits(NumberSequencesMode sequence, int digits) {
       index = index + One;
     }
   } else if (sequence == NumberSequencesMode.BELL) {
-    List<BigInt> bellList = new List<BigInt>();
+    List<BigInt> bellList = <BigInt>[];
     BigInt number = One;
     int index = 0;
     while (number.toString().length < digits + 1) {

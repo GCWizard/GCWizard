@@ -28,7 +28,7 @@ Future<MapViewDAO> importCoordinatesFile(GCWFile file) async {
       return parseCoordinatesFile(xml, kmlFormat: true);
       break;
     case FileType.KMZ:
-      InputStream input = new InputStream(file.bytes.buffer.asByteData());
+      InputStream input = InputStream(file.bytes.buffer.asByteData());
       // Decode the Zip file
       final archive = ZipDecoder().decodeBuffer(input);
       if (archive.files.isNotEmpty) {
@@ -44,7 +44,7 @@ Future<MapViewDAO> importCoordinatesFile(GCWFile file) async {
 }
 
 MapViewDAO parseCoordinatesFile(String xml, {bool kmlFormat = false}) {
-  MapViewDAO result = null;
+  MapViewDAO result;
   try {
     var xmlDoc = XmlDocument.parse(xml);
     if (kmlFormat)
@@ -120,7 +120,7 @@ class _GpxReader {
     var lat = xmlElement.getAttribute('lat');
     var lon = xmlElement.getAttribute('lon');
     if (lat != null && lon != null) {
-      var wpt = GCWMapPoint(point: new LatLng(double.tryParse(lat), double.tryParse(lon)), isEditable: true);
+      var wpt = GCWMapPoint(point: LatLng(double.tryParse(lat), double.tryParse(lon)), isEditable: true);
       wpt.markerText = xmlElement.getElement('name')?.innerText;
       if (wpt.markerText == null || wpt.markerText.length == 0)
         wpt.markerText = xmlElement.getElement('desc')?.innerText;
@@ -130,13 +130,13 @@ class _GpxReader {
   }
 
   GCWMapPolyline _readLine(XmlElement xmlElement) {
-    var line = new GCWMapPolyline(points: <GCWMapPoint>[]);
+    var line = GCWMapPolyline(points: <GCWMapPoint>[]);
 
     xmlElement.findAllElements('trkpt').forEach((trkpt) {
       var lat = trkpt.getAttribute('lat');
       var lon = trkpt.getAttribute('lon');
       if (lat != null && lon != null) {
-        line.points.add(GCWMapPoint(point: new LatLng(double.tryParse(lat), double.tryParse(lon)), isEditable: true));
+        line.points.add(GCWMapPoint(point: LatLng(double.tryParse(lat), double.tryParse(lon)), isEditable: true));
       }
     });
     return line;
@@ -213,7 +213,7 @@ class _KmlReader {
       var lat = coordinates.group(2);
       var lon = coordinates.group(1);
       if (lat != null && lon != null) {
-        var wpt = GCWMapPoint(point: new LatLng(double.tryParse(lat), double.tryParse(lon)));
+        var wpt = GCWMapPoint(point: LatLng(double.tryParse(lat), double.tryParse(lon)));
         wpt.markerText = xmlElement.getElement('name')?.innerText;
         if (wpt.markerText == null || wpt.markerText.length == 0)
           wpt.markerText = xmlElement.getElement('description')?.innerText;
@@ -300,9 +300,9 @@ bool _completeCircle(GCWMapPolyline line, List<GCWMapPoint> points) {
   if (line.points.length < 36) return false;
 
   var pt1 = line.points[0].point;
-  var pt2 = line.points[(line.points.length / 2).toInt()].point;
-  var pt3 = line.points[(line.points.length / 4).toInt()].point;
-  var pt4 = line.points[(line.points.length * 3 / 4).toInt()].point;
+  var pt2 = line.points[line.points.length ~/ 2].point;
+  var pt3 = line.points[line.points.length ~/ 4].point;
+  var pt4 = line.points[line.points.length * 3 ~/ 4].point;
   var ells = defaultEllipsoid();
 
   DistanceBearingData length1 = distanceBearing(pt1, pt2, ells);
@@ -330,7 +330,7 @@ bool _completeCircle(GCWMapPolyline line, List<GCWMapPoint> points) {
     dist = distanceBearing(wpt.point, center.point, ells).distance;
     if ((dist - radius).abs() > distToller) return false;
   });
-  center.circle = new GCWMapCircle(centerPoint: center.point, radius: radius, color: line.color);
+  center.circle = GCWMapCircle(centerPoint: center.point, radius: radius, color: line.color);
   center.circleColorSameAsPointColor = (center.color == center.circle.color);
   return true;
 }

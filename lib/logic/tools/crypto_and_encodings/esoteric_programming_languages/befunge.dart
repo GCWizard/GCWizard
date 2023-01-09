@@ -62,7 +62,6 @@ class Stack {
       content.removeAt(content.length - 1);
       return element;
     }
-    ;
   }
 
   bool isEmpty() {

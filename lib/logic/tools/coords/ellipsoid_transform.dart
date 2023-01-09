@@ -45,8 +45,8 @@ class EllipsoidTransformation {
 
   EllipsoidTransformation(Ellipsoid _srcElls, Ellipsoid _dstElls, double ex, double ey, double ez, double dx, double dy,
       double dz, double m) {
-    mRParam = new _Vector(ex, ey, ez);
-    mTParam = new _Vector(dx, dy, dz);
+    mRParam = _Vector(ex, ey, ez);
+    mTParam = _Vector(dx, dy, dz);
     mDeformation = m;
     srcElls = _srcElls;
     dstElls = _dstElls;

@@ -7,6 +7,7 @@ import 'package:gc_wizard/logic/tools/coords/utils.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/astronomy/shadow_length.dart';
 import 'package:gc_wizard/theme/fixed_colors.dart';
 import 'package:gc_wizard/utils/settings/preferences.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_datetime_picker.dart';
 import 'package:gc_wizard/widgets/common/gcw_distance.dart';
 import 'package:gc_wizard/widgets/common/gcw_output.dart';
@@ -16,7 +17,6 @@ import 'package:gc_wizard/widgets/tools/coords/base/gcw_coords_output.dart';
 import 'package:gc_wizard/widgets/tools/coords/base/gcw_coords_outputformat_distance.dart';
 import 'package:gc_wizard/widgets/tools/coords/base/utils.dart';
 import 'package:gc_wizard/widgets/tools/coords/map_view/gcw_map_geometries.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:prefs/prefs.dart';
 
@@ -86,7 +86,7 @@ class ShadowLengthState extends State<ShadowLength> {
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     var shadowLen = shadowLength(
         _currentHeight, _currentCoords, defaultEllipsoid(), _currentDateTime['datetime'], _currentDateTime['timezone']);
 
@@ -129,11 +129,11 @@ class ShadowLengthState extends State<ShadowLength> {
       [i18n(context, 'astronomy_position_altitude'), format.format(shadowLen.sunPosition.altitude) + '°'],
     ];
 
-    var rowsSunData = columnedMultiLineOutput(context, outputsSun);
-    rowsSunData.insert(0, GCWTextDivider(text: i18n(context, 'astronomy_sunposition_title')));
+    var rowsSunData = GCWColumnedMultilineOutput(
+        firstRows: [GCWTextDivider(text: i18n(context, 'astronomy_sunposition_title'))],
+        data: outputsSun
+    );
 
-    var output = rowsSunData;
-    output.insertAll(0, [outputShadow, outputLocation]);
-    return Column(children: output);
+    return Column(children: [outputShadow, outputLocation, rowsSunData]);
   }
 }

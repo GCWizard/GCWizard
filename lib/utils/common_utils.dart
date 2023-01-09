@@ -377,3 +377,30 @@ dynamic round(double number, {int precision: 0}) {
   var exp = pow(10, precision);
   return (number * exp).round() / exp;
 }
+
+String removeControlCharacters(String input) {
+  if (input == null || input.isEmpty)
+    return input;
+
+  var removedCodes = input.codeUnits.where((element) => element >= 32).toList();
+  return String.fromCharCodes(removedCodes);
+}
+
+String normalizeCharacters(String input) {
+  if (input == null || input.isEmpty)
+    return input;
+
+  final Map<String, String> _ALTERNATE_CHARACTERS = {
+    // https://www.compart.com/de/unicode/category/Zs and Tab
+    ' ': '\u0009\u000B\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2007\u2008\u2009\u200A\u202F\u205F\u3000',
+    '"': '\u201e\u201f\u201d\u201c',
+    '\'': '\u201b\u201a\u2019\u2018',
+    '-': '\u2014\u2013\u02d7\u2212\u2012',
+  };
+
+  _ALTERNATE_CHARACTERS.forEach((key, value) {
+    input = input.replaceAll(RegExp('[$value]'), key);
+  });
+
+  return input;
+}

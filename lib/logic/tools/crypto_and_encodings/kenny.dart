@@ -3,7 +3,7 @@ import 'package:gc_wizard/logic/tools/science_and_technology/numeral_bases.dart'
 import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:gc_wizard/utils/common_utils.dart';
 
-/**
+/*
  * Main idea of algorithm:
  * Kenny's Code works as follows: mmm, mmp, mmf, mpm, mpp, mpf, mfm, mfp, mff, pmm, ...
  * If you changed m = 0, p = 1, f = 2, you'd simply get 0, 1, 2, 10, 11, 12, 20, 21, 22, 100, ...
@@ -46,7 +46,7 @@ encryptKenny(String input, List<String> replaceCharacters, bool caseSensitive) {
   return output;
 }
 
-/**
+/*
  * For decoding, the method searches for valid letter triples. mmam wouldn't be valid, for example,
  * these letter will be ignored.
  * If theres a valid triple found, it will be converted in the way decribed above.

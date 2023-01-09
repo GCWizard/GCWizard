@@ -12,13 +12,13 @@ class TrifidOutput {
 TrifidOutput encryptTrifid(String input, int blockSize, {PolybiosMode mode: PolybiosMode.AZ09, String alphabet}) {
   if (input == null || input == '') return TrifidOutput('', '');
 
-  Map<String, String> EncodeMatrix = new Map<String, String>();
-  Map<String, String> DecodeMatrix = new Map<String, String>();
+  Map<String, String> EncodeMatrix = Map<String, String>();
+  Map<String, String> DecodeMatrix = Map<String, String>();
 
-  List<String> line1 = new List<String>();
-  List<String> line2 = new List<String>();
-  List<String> line3 = new List<String>();
-  List<String> result = new List<String>();
+  List<String> line1 = <String>[];
+  List<String> line2 = <String>[];
+  List<String> line3 = <String>[];
+  List<String> result = <String>[];
 
   input = input.toUpperCase();
   alphabet = alphabet.toUpperCase();
@@ -67,9 +67,9 @@ TrifidOutput decryptTrifid(String input, int blockSize, {PolybiosMode mode: Poly
   input = input.toUpperCase();
   alphabet = alphabet.toUpperCase();
 
-  Map<String, String> EncodeMatrix = new Map<String, String>();
-  Map<String, String> DecodeMatrix = new Map<String, String>();
-  List<String> result = new List<String>();
+  Map<String, String> EncodeMatrix = Map<String, String>();
+  Map<String, String> DecodeMatrix = Map<String, String>();
+  List<String> result = <String>[];
   String line1 = '';
   String line2 = '';
   String line3 = '';

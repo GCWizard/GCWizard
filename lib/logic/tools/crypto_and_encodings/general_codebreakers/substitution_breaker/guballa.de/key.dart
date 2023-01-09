@@ -23,10 +23,10 @@ class Key {
   This example was taken from Wikipedia <https://en.wikipedia.org/wiki/Substitution_cipher>
   */
 
-  String _alphabet = null;
-  String _key = null;
-  Map<String, String> _encode = null;
-  Map<String, String> _decode = null;
+  String _alphabet;
+  String _key;
+  Map<String, String> _encode;
+  Map<String, String> _decode;
 
   /// Uses a key and an alphabet for transcoding substitution ciphers.
   /// :param key: The key to use. Must have the same length than alphabet. (It is case insensitive.)

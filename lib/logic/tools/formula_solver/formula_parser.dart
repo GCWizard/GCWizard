@@ -25,6 +25,8 @@ const RECURSIVE_FORMULA_REPLACEMENT_END = '\u0000}';
 const SAFED_FUNCTION_MARKER = '\x01';
 const SAFED_RECURSIVE_FORMULA_MARKER = '\x02';
 
+const _PHI = 1.6180339887498948482045868343656381177;
+
 class FormulaParser {
   ContextModel _context;
   Parser parser;
@@ -39,7 +41,15 @@ class FormulaParser {
     'log2e': log2e,
     'log10e': log10e,
     'pi': pi,
-    'phi': 1.6180339887498948482045868343656381177,
+    '\u03A0': pi,
+    '\u03C0': pi,
+    '\u220F': pi,
+    '\u1D28': pi,
+    'phi': _PHI,
+    '\u03A6': _PHI,
+    '\u03C6': _PHI,
+    '\u03d5': _PHI,
+    '\u0278': _PHI,
     'sqrt1_2': sqrt1_2,
     'sqrt2': sqrt2,
   };
@@ -111,14 +121,9 @@ class FormulaParser {
 
   // different minus/hyphens/dashes
   static final Map<String, String> alternateOperators = {
-    '-': '—–˗−‒',
+    //'-': '—–˗−‒', // not required here, because normalized in common_utils.normalizeCharacters()
     '/': ':÷',
     '*': '×•',
-  };
-
-  static final Map<String, String> alternateSpaces = {
-    // https://www.compart.com/de/unicode/category/Zs and Tab
-    ' ': '\u0009\u000B\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2007\u2008\u2009\u200A\u202F\u205F\u3000',
   };
 
   FormulaParser({unlimitedExpanded: false}) {
@@ -200,17 +205,11 @@ class FormulaParser {
     return formula;
   }
 
-  static String normalizeSpaces(String formula) {
-    alternateSpaces.forEach((key, value) {
-      formula = formula.replaceAll(RegExp('[$value]'), key);
-    });
 
-    return formula;
-  }
 
   Map<String, dynamic> _parseFormula(String formula, List<FormulaValue> values, bool expandValues) {
+    formula = normalizeCharacters(formula);
     formula = normalizeMathematicalSymbols(formula);
-    formula = normalizeSpaces(formula);
     safedFormulasMap = {};
 
     List<FormulaValue> preparedValues = _prepareValues(values);

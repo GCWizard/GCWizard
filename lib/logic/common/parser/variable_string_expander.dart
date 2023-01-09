@@ -164,7 +164,7 @@ class VariableStringExpander {
 
   void _generateCartesianVariables() {
     var progress = 0;
-    int progressStep = max((_countCombinations / 100).toInt(), 1); // 100 steps
+    int progressStep = max(_countCombinations ~/ 100, 1); // 100 steps
 
     do {
       _substitute();

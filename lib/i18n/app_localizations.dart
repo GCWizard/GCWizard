@@ -48,7 +48,7 @@ class AppLocalizations {
 
   Future<Map<String, String>> loadLang(langCode) async {
     // Load the language JSON file from the "lang" folder
-    String jsonString = await rootBundle.loadString('assets/i18n/${langCode}.json');
+    String jsonString = await rootBundle.loadString('assets/i18n/$langCode.json');
     Map<String, dynamic> jsonMap = json.decode(jsonString);
 
     Map<String, String> _strings = jsonMap.map((key, value) {
@@ -80,7 +80,7 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   @override
   Future<AppLocalizations> load(Locale locale) async {
     // AppLocalizations class is where the JSON loading actually runs
-    AppLocalizations localizations = new AppLocalizations(locale);
+    AppLocalizations localizations = AppLocalizations(locale);
     await localizations.load();
     return localizations;
   }
@@ -89,7 +89,7 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
-/**
+/*
  * Supports variables: Give parameter list. Converts:
  * %s1 -> parameter 1 (list index 0)
  * %s2 -> parameter 2 (list index 1),

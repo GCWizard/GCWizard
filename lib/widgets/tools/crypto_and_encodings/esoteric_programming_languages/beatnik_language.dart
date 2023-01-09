@@ -6,12 +6,12 @@ import 'package:gc_wizard/theme/theme.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_output_text.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_textfield.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_onoff_switch.dart';
 import 'package:gc_wizard/widgets/common/gcw_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
 import 'package:gc_wizard/widgets/common/gcw_twooptions_switch.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class Beatnik extends StatefulWidget {
   @override
@@ -139,7 +139,7 @@ class BeatnikState extends State<Beatnik> {
             .add([_output.debug[i].pc, _output.debug[i].command, _output.debug[i].stack, _output.debug[i].output]);
       }
     }
-    ;
+
     _outputData = buildOutputText(_output.output);
 
     return Column(
@@ -226,8 +226,10 @@ class BeatnikState extends State<Beatnik> {
                           ]),
                           GCWOutput(
                             title: i18n(context, 'common_programming_debug'),
-                            child: Column(
-                                children: columnedMultiLineOutput(context, _columnData, flexValues: [1, 2, 3, 3])),
+                            child: GCWColumnedMultilineOutput(
+                                data: _columnData,
+                                flexValues: [1, 2, 3, 3]
+                            ),
                           ),
                         ])
                       : Container(),

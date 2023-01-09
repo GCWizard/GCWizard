@@ -318,7 +318,7 @@ Future<dynamic> _downloadFileAsync(dynamic jobData) async {
       return 'common_loadfile_exception_responsestatus';
     }
     _total = response.contentLength ?? 0;
-    int progressStep = max((_total / 100).toInt(), 1);
+    int progressStep = max(_total ~/ 100, 1);
 
     await response.stream.listen((value) {
       _bytes.addAll(value);

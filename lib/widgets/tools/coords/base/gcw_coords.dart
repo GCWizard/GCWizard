@@ -392,7 +392,7 @@ class GCWCoordsState extends State<GCWCoords> {
             _currentCoordsFormat = newValue;
             _setCurrentValueAndEmitOnChange();
           }
-          FocusScope.of(context).requestFocus(new FocusNode()); //Release focus from previous edited field
+          FocusScope.of(context).requestFocus(FocusNode()); //Release focus from previous edited field
         });
       },
     );

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/games/scrabble/scrabble_sets.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class ScrabbleOverview extends StatefulWidget {
   @override
@@ -37,7 +37,7 @@ class ScrabbleOverviewState extends State<ScrabbleOverview> {
     );
   }
 
-  _calculateOutput() {
+  Widget _calculateOutput() {
     var data = <List<dynamic>>[
       [
         i18n(context, 'common_letter'),
@@ -49,8 +49,10 @@ class ScrabbleOverviewState extends State<ScrabbleOverview> {
       return [entry.key.replaceAll(' ', String.fromCharCode(9251)), entry.value.value, entry.value.frequency];
     }).toList());
 
-    return Column(
-      children: columnedMultiLineOutput(context, data, hasHeader: true, copyColumn: 0),
+    return GCWColumnedMultilineOutput(
+        data: data,
+        hasHeader: true,
+        copyColumn: 0
     );
   }
 }

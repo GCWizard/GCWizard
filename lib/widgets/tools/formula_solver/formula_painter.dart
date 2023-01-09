@@ -1,4 +1,4 @@
-import 'package:gc_wizard/logic/tools/formula_solver/parser.dart';
+import 'package:gc_wizard/logic/tools/formula_solver/formula_parser.dart';
 import 'package:gc_wizard/utils/common_utils.dart';
 
 class FormulaPainter {
@@ -49,12 +49,12 @@ class FormulaPainter {
     _variables = _toUpperCaseAndSort(_variables);
     _variablesRegEx = _variables.map((variable) => variable).join('|');
 
+    formula = normalizeCharacters(formula);
     formula = FormulaParser.normalizeMathematicalSymbols(formula);
-    formula = FormulaParser.normalizeSpaces(formula);
     formula = formula.toUpperCase();
     this.formula = formula;
 
-    RegExp regExp = new RegExp(r'(\[)(.+?|\s*)(\])');
+    RegExp regExp = RegExp(r'(\[)(.+?|\s*)(\])');
     var matches = regExp.allMatches(formula);
     if (matches.isNotEmpty) {
       // formel references
@@ -400,7 +400,6 @@ class FormulaPainter {
       default:
         return false;
     }
-    ;
   }
 
   bool _numberFunction(String functionName) {
@@ -413,7 +412,6 @@ class FormulaPainter {
       default:
         return false;
     }
-    ;
   }
 
   String _coloredSpecialFunctionsLiteral(String result, List<String> parts) {
@@ -468,7 +466,18 @@ class FormulaPainter {
   }
 
   List<String> _isConstant(String formula) {
-    RegExp regex = RegExp(r'^\b(' + _constantsRegEx + r')\b');
+    //extract all non-ascii chars, like Pi or Phi
+    var specialChars = _constantsRegEx.replaceAll(RegExp(r'[A-Za-z0-9\|_]'), '');
+    //add special chars to allowed character (next to \w == ASCII chars)
+    var wordChars = r'[\w' + specialChars + r']';
+    // \b does not allow non-ASCII chars
+    //https://stackoverflow.com/a/61754724/3984221
+    // so, \b must be manipulated. Following expressing equals the internal representation of \b, which is now enhanced
+    // to use the specialChars as well
+    //https://stackoverflow.com/a/12712840/3984221
+    var wordBoundary = '(?:(?<!$wordChars)(?=$wordChars)|(?<=$wordChars)(?!$wordChars))';
+    RegExp regex = RegExp('^$wordBoundary(' + _constantsRegEx + ')$wordBoundary');
+
     var match = regex.firstMatch(formula);
 
     return (match == null) ? null : [match.group(0)];

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart' as filePicker;
 import 'package:flutter/foundation.dart' show kIsWeb;

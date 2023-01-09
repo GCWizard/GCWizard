@@ -24,6 +24,7 @@ import 'package:gc_wizard/widgets/common/base/gcw_text.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_toast.dart';
 import 'package:gc_wizard/widgets/common/gcw_async_executer.dart';
 import 'package:gc_wizard/widgets/common/gcw_code_textfield.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_expandable.dart';
 import 'package:gc_wizard/widgets/common/gcw_exported_file_dialog.dart';
@@ -419,7 +420,7 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
         ));
   }
 
-  _buildOutput(BuildContext context) {
+  Widget _buildOutput(BuildContext context) {
     if ((_GWCbytes == null || _GWCbytes == []) && (_LUAbytes == null || _LUAbytes == [])) return Container();
 
     if (_WherigoCartridgeGWC == null && _WherigoCartridgeLUA == null) {
@@ -513,9 +514,9 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
               ),
             ]),
           ),
-          Column(
-              children:
-                  (_outputHeader.join('') == '[]') ? [Container()] : columnedMultiLineOutput(context, _outputHeader))
+            GCWColumnedMultilineOutput(
+                data: (_outputHeader.join('') == '[]') ? [[]] : _outputHeader
+            )
         ]);
         break;
 
@@ -648,9 +649,10 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
                 ),
               ],
             ),
-            Column(
-                children: columnedMultiLineOutput(context, _outputMedia(_WherigoCartridgeLUA.Media[_mediaIndex - 1]),
-                    flexValues: [1, 3]))
+            GCWColumnedMultilineOutput(
+                data: _outputMedia(_WherigoCartridgeLUA.Media[_mediaIndex - 1]),
+                flexValues: [1, 3]
+            )
           ]);
         }
 
@@ -740,7 +742,10 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
                         i18n(context, 'wherigo_error_invalid_mediafile_2') +
                         '\n'),
             if (_outputMedia != null)
-              Column(children: columnedMultiLineOutput(context, _outputMedia, flexValues: [1, 3])),
+              GCWColumnedMultilineOutput(
+                  data: _outputMedia,
+                  flexValues: [1, 3]
+              )
           ],
         );
 
@@ -901,10 +906,10 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
                   _getFileFrom(_WherigoCartridgeLUA.Characters[_characterIndex - 1].CharacterMediaName)),
               suppressedButtons: {GCWImageViewButtons.ALL},
             ),
-          Column(
-              children: columnedMultiLineOutput(
-                  context, _outputCharacter(_WherigoCartridgeLUA.Characters[_characterIndex - 1]),
-                  flexValues: [1, 3]))
+            GCWColumnedMultilineOutput(
+              data: _outputCharacter(_WherigoCartridgeLUA.Characters[_characterIndex - 1]),
+              flexValues: [1, 3]
+            )
         ]);
         break;
 
@@ -987,9 +992,10 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
               imageData: GCWImageViewData(_getFileFrom(_WherigoCartridgeLUA.Zones[_zoneIndex - 1].ZoneMediaName)),
               suppressedButtons: {GCWImageViewButtons.ALL},
             ),
-          Column(
-              children: columnedMultiLineOutput(context, _outputZone(_WherigoCartridgeLUA.Zones[_zoneIndex - 1]),
-                  flexValues: [1, 3]))
+            GCWColumnedMultilineOutput(
+              data: _outputZone(_WherigoCartridgeLUA.Zones[_zoneIndex - 1]),
+              flexValues: [1, 3]
+            )
         ]);
         break;
 
@@ -1046,9 +1052,10 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
               imageData: GCWImageViewData(_getFileFrom(_WherigoCartridgeLUA.Inputs[_inputIndex - 1].InputMedia)),
               suppressedButtons: {GCWImageViewButtons.ALL},
             ),
-          Column(
-              children: columnedMultiLineOutput(context, _outputInput(_WherigoCartridgeLUA.Inputs[_inputIndex - 1]),
-                  flexValues: [1, 3])),
+            GCWColumnedMultilineOutput(
+              data: _outputInput(_WherigoCartridgeLUA.Inputs[_inputIndex - 1]),
+              flexValues: [1, 3]
+            ),
           (_WherigoCartridgeLUA.Inputs[_inputIndex - 1].InputAnswers != null)
               ? Row(
                   children: <Widget>[
@@ -1089,13 +1096,12 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
                   _WherigoCartridgeLUA.Inputs[_inputIndex - 1].InputAnswers.length > 0)
               ? Column(
                   children: <Widget>[
-                    Column(
-                        children: columnedMultiLineOutput(
-                            context,
-                            _outputAnswer(_WherigoCartridgeLUA.Inputs[_inputIndex - 1],
+                    GCWColumnedMultilineOutput(
+                            data: _outputAnswer(_WherigoCartridgeLUA.Inputs[_inputIndex - 1],
                                 _WherigoCartridgeLUA.Inputs[_inputIndex - 1].InputAnswers[_answerIndex - 1]),
                             copyColumn: 1,
-                            flexValues: [2, 3, 3])),
+                            flexValues: [2, 3, 3]
+                    ),
                     GCWExpandableTextDivider(
                       expanded: false,
                       text: i18n(context, 'wherigo_output_answeractions'),
@@ -1169,9 +1175,10 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
               imageData: GCWImageViewData(_getFileFrom(_WherigoCartridgeLUA.Tasks[_taskIndex - 1].TaskMedia)),
               suppressedButtons: {GCWImageViewButtons.ALL},
             ),
-          Column(
-              children: columnedMultiLineOutput(context, _outputTask(_WherigoCartridgeLUA.Tasks[_taskIndex - 1]),
-                  flexValues: [1, 3]))
+            GCWColumnedMultilineOutput(
+              data: _outputTask(_WherigoCartridgeLUA.Tasks[_taskIndex - 1]),
+              flexValues: [1, 3]
+            )
         ]);
         break;
 
@@ -1218,9 +1225,10 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
               ),
             ],
           ),
-          Column(
-              children: columnedMultiLineOutput(context, _outputTimer(_WherigoCartridgeLUA.Timers[_timerIndex - 1]),
-                  flexValues: [1, 3]))
+          GCWColumnedMultilineOutput(
+            data: _outputTimer(_WherigoCartridgeLUA.Timers[_timerIndex - 1]),
+            flexValues: [1, 3]
+          )
         ]);
         break;
 
@@ -1311,9 +1319,10 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
               imageData: GCWImageViewData(_getFileFrom(_WherigoCartridgeLUA.Items[_itemIndex - 1].ItemMedia)),
               suppressedButtons: {GCWImageViewButtons.ALL},
             ),
-          Column(
-              children: columnedMultiLineOutput(context, _outputItem(_WherigoCartridgeLUA.Items[_itemIndex - 1]),
-                  flexValues: [1, 3]))
+            GCWColumnedMultilineOutput(
+              data: _outputItem(_WherigoCartridgeLUA.Items[_itemIndex - 1]),
+              flexValues: [1, 3]
+            )
         ]);
         break;
 
@@ -1403,15 +1412,15 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
               ),
             ],
           ),
-          Column(
-              children: columnedMultiLineOutput(
-                  context, _outputIdentifier(_WherigoCartridgeLUA.Variables[_identifierIndex - 1]))),
+          GCWColumnedMultilineOutput(
+            data: _outputIdentifier(_WherigoCartridgeLUA.Variables[_identifierIndex - 1])
+          ),
           GCWExpandableTextDivider(
             expanded: false,
             text: i18n(context, 'wherigo_output_identifier_details'),
-            child: Column(
-                children: columnedMultiLineOutput(
-                    context, _outputIdentifierDetails(_WherigoCartridgeLUA.Variables[_identifierIndex - 1]))),
+            child: GCWColumnedMultilineOutput(
+                data: _outputIdentifierDetails(_WherigoCartridgeLUA.Variables[_identifierIndex - 1])
+            ),
           ),
         ]);
         break;
@@ -1828,7 +1837,6 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
           if (RSHash(input.InputChoices[i].toLowerCase()).toString() == hash)
             result.add([i18n(context, 'wherigo_output_answerdecrypted'), input.InputChoices[i], null]);
         }
-        ;
       }
     } else {
       result = [
@@ -1943,9 +1951,11 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
     result.add(GCWExpandableTextDivider(
       text: i18n(context, 'wherigo_header_signature'),
       expanded: false,
-      child: Column(
-        children: columnedMultiLineOutput(context, content,
-            suppressCopyButtons: true, flexValues: [1, 3, 2], hasHeader: true),
+      child: GCWColumnedMultilineOutput(
+          data: content,
+          suppressCopyButtons: true,
+          flexValues: [1, 3, 2],
+          hasHeader: true
       ),
     ));
 
@@ -1970,9 +1980,11 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
     result.add(GCWExpandableTextDivider(
       text: i18n(context, 'wherigo_data_mediafiles'),
       expanded: false,
-      child: Column(
-        children: columnedMultiLineOutput(context, content,
-            suppressCopyButtons: true, flexValues: [1, 3, 2], hasHeader: true),
+      child: GCWColumnedMultilineOutput(
+          data: content,
+          suppressCopyButtons: true,
+          flexValues: [1, 3, 2],
+          hasHeader: true
       ),
     ));
 
@@ -2008,9 +2020,11 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
     result.add(GCWExpandableTextDivider(
       text: i18n(context, 'wherigo_data_header'),
       expanded: false,
-      child: Column(
-        children: columnedMultiLineOutput(context, content,
-            suppressCopyButtons: true, flexValues: [1, 3, 2], hasHeader: true),
+      child: GCWColumnedMultilineOutput(
+          data: content,
+          suppressCopyButtons: true,
+          flexValues: [1, 3, 2],
+          hasHeader: true
       ),
     ));
     offset = offset + LENGTH_INT + readInt(bytes, offset);
@@ -2028,9 +2042,11 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
     result.add(GCWExpandableTextDivider(
       text: i18n(context, 'wherigo_data_luabytecode'),
       expanded: false,
-      child: Column(
-        children: columnedMultiLineOutput(context, content,
-            suppressCopyButtons: true, flexValues: [1, 3, 2], hasHeader: true),
+      child: GCWColumnedMultilineOutput(
+          data: content,
+          suppressCopyButtons: true,
+          flexValues: [1, 3, 2],
+          hasHeader: true
       ),
     ));
     offset = offset + LENGTH_INT + readInt(bytes, offset);
@@ -2092,9 +2108,11 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
     result.add(GCWExpandableTextDivider(
       text: i18n(context, 'wherigo_data_mediafiles'),
       expanded: false,
-      child: Column(
-        children: columnedMultiLineOutput(context, content,
-            suppressCopyButtons: true, flexValues: [1, 3, 2], hasHeader: true),
+      child: GCWColumnedMultilineOutput(
+          data: content,
+          suppressCopyButtons: true,
+          flexValues: [1, 3, 2],
+          hasHeader: true
       ),
     ));
     return result;
@@ -2489,9 +2507,12 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
         _expertMode ? [i18n(context, 'wherigo_header_splashscreen'), _WherigoCartridgeGWC.Splashscreen] : null,
         [i18n(context, 'wherigo_header_player'), _WherigoCartridgeGWC.Player],
         _expertMode ? [i18n(context, 'wherigo_header_playerid'), _WherigoCartridgeGWC.PlayerID.toString()] : null,
-        [i18n(context, 'wherigo_header_completion'), _WherigoCartridgeGWC.CompletionCode],
+        [i18n(context, 'wherigo_header_completion'), (_WherigoCartridgeGWC.CompletionCode.length > 15) ? _WherigoCartridgeGWC.CompletionCode.substring(0,15) : _WherigoCartridgeGWC.CompletionCode],
         _expertMode
             ? [i18n(context, 'wherigo_header_lengthcompletion'), _WherigoCartridgeGWC.LengthOfCompletionCode.toString()]
+            : null,
+        _expertMode
+            ? [i18n(context, 'wherigo_header_completion_full'), _WherigoCartridgeGWC.CompletionCode]
             : null,
         [
           i18n(context, 'wherigo_header_cartridgename'),

@@ -13,7 +13,7 @@ class CenterPointJobData {
   final LatLng coord3;
   final Ellipsoid ells;
 
-  CenterPointJobData({this.coord1 = null, this.coord2 = null, this.coord3 = null, this.ells = null});
+  CenterPointJobData({this.coord1, this.coord2, this.coord3, this.ells});
 }
 
 Map<String, dynamic> centerPointTwoPoints(LatLng coord1, LatLng coord2, Ellipsoid ells) {

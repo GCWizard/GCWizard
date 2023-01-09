@@ -1,9 +1,6 @@
-/*** https://ktuusj.medium.com/flutter-custom-selection-toolbar-3acbe7937dd3 ***/
-import 'package:flutter/cupertino.dart';
+/* https://ktuusj.medium.com/flutter-custom-selection-toolbar-3acbe7937dd3 ***/
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gc_wizard/widgets/common/gcw_paste_button.dart';
 import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 

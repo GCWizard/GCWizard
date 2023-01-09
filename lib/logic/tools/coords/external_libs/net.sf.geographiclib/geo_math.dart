@@ -15,20 +15,20 @@ import 'dart:math';
 import 'package:gc_wizard/logic/tools/coords/external_libs/net.sf.geographiclib/math.dart';
 import 'package:gc_wizard/logic/tools/coords/external_libs/net.sf.geographiclib/pair.dart';
 
-/**
+/*
  * Mathematical functions needed by GeographicLib.
  * <p>
  * Define mathematical functions and constants so that any version of Java
  * can be used.
  **********************************************************************/
 class GeoMath {
-  /**
+  /*
    * The number of binary digits in the fraction of a double precision
    * number (equivalent to C++'s {@code numeric_limits<double>::digits}).
    **********************************************************************/
   static final int digits = 53;
 
-  /**
+  /*
    * Square a number.
    * <p>
    * @param x the argument.
@@ -38,7 +38,7 @@ class GeoMath {
     return x * x;
   }
 
-  /**
+  /*
    * The inverse hyperbolic sine function.  This is defined in terms of
    * Math::log1p(\e x) in order to maintain accuracy near \e x = 0.  In
    * addition, the odd parity of the function is enforced.
@@ -75,7 +75,7 @@ class GeoMath {
     }
   }
 
-  /**
+  /*
    * The inverse hyperbolic tangent function.  This is defined in terms of
    * Math.log1p(<i>x</i>) in order to maintain accuracy near <i>x</i> = 0.
    * In addition, the odd parity of the function is enforced.
@@ -89,7 +89,7 @@ class GeoMath {
     return x > 0 ? y : (x < 0 ? -y : x);
   }
 
-  /**
+  /*
    * Normalize a sine cosine pair.
    * <p>
    * @param p return parameter for normalized quantities with sinx<sup>2</sup>
@@ -103,7 +103,7 @@ class GeoMath {
     p.second = cosx / r;
   }
 
-  /**
+  /*
    * The error-free sum of two numbers.
    * <p>
    * @param u the first number in the sum.
@@ -126,7 +126,7 @@ class GeoMath {
     p.second = t;
   }
 
-  /**
+  /*
    * The hypotenuse function avoiding underflow and overflow.
    *
    * @param[in] x
@@ -140,7 +140,7 @@ class GeoMath {
     return a * sqrt(1 + b * b);
   }
 
-  /**
+  /*
    * exp(\e x) - 1 accurate near \e x = 0.  This is taken from
    * N. J. Higham, Accuracy and Stability of Numerical Algorithms, 2nd
    * Edition (SIAM, 2002), Sec 1.14.1, p 19.
@@ -161,7 +161,7 @@ class GeoMath {
             : x * z / log(y);
   }
 
-  /**
+  /*
    * Evaluate a polynomial.
    * <p>
    * @param N the order of the polynomial.
@@ -182,7 +182,7 @@ class GeoMath {
     return y;
   }
 
-  /**
+  /*
    * Coarsen a value close to zero.
    * <p>
    * @param x the argument
@@ -205,7 +205,7 @@ class GeoMath {
     return x < 0 ? -y : y;
   }
 
-  /**
+  /*
    * The remainder function.
    * <p>
    * @param x the numerator of the division
@@ -219,7 +219,7 @@ class GeoMath {
     return x < -y / 2 ? x + y : (x < y / 2 ? x : x - y);
   }
 
-  /**
+  /*
    * Normalize an angle.
    * <p>
    * @param x the angle in degrees.
@@ -232,7 +232,7 @@ class GeoMath {
     return x == -180 ? 180 : x;
   }
 
-  /**
+  /*
    * Normalize a latitude.
    * <p>
    * @param x the angle in degrees.
@@ -243,7 +243,7 @@ class GeoMath {
     return x.abs() > 90 ? null : x;
   }
 
-  /**
+  /*
    * The exact difference of two angles reduced to (&minus;180&deg;, 180&deg;].
    * <p>
    * @param x the first angle in degrees.
@@ -263,7 +263,7 @@ class GeoMath {
     sum(p, d == 180 && t > 0 ? -180 : d, t);
   }
 
-  /**
+  /*
    * Evaluate the sine and cosine function with the argument in degrees
    *
    * @param p return Pair(<i>s</i>, <i>t</i>) with <i>s</i> = sin(<i>x</i>) and
@@ -312,7 +312,7 @@ class GeoMath {
     p.second = cosx;
   }
 
-  /**
+  /*
    * Evaluate the atan2 function with the result in degrees
    *
    * @param y the sine of the angle
@@ -365,7 +365,7 @@ class GeoMath {
     return ang;
   }
 
-  /**
+  /*
    * Test for finiteness.
    * <p>
    * @param x the argument.

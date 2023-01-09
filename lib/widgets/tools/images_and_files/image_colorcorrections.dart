@@ -206,125 +206,127 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
         if (_currentPreview != null)
           Expanded(
               child: SingleChildScrollView(
-            child: Column(
-              children: [
-                GCWOnOffSwitch(
-                    title: i18n(context, 'image_colorcorrections_invert'),
-                    value: _currentInvert,
-                    onChanged: (value) {
-                      setState(() {
-                        _currentInvert = value;
-                      });
-                    }),
-                GCWOnOffSwitch(
-                    title: i18n(context, 'image_colorcorrections_grayscale'),
-                    value: _currentGrayscale,
-                    onChanged: (value) {
-                      setState(() {
-                        _currentGrayscale = value;
-                      });
-                    }),
-                GCWSlider(
-                    title: i18n(context, 'image_colorcorrections_brightness'),
-                    value: _currentBrightness,
-                    min: -255,
-                    max: 255,
-                    onChanged: (value) {
-                      setState(() {
-                        _currentBrightness = value;
-                      });
-                    }),
-                GCWSlider(
-                    title: i18n(context, 'image_colorcorrections_exposure'),
-                    value: _currentExposure,
-                    min: 0.0,
-                    max: 2.0,
-                    onChanged: (value) {
-                      setState(() {
-                        _currentExposure = value;
-                      });
-                    }),
-                GCWSlider(
-                    title: i18n(context, 'image_colorcorrections_saturation'),
-                    value: _currentSaturation,
-                    min: -1.0,
-                    max: 1.0,
-                    onChanged: (value) {
-                      setState(() {
-                        _currentSaturation = value;
-                      });
-                    }),
-                GCWSlider(
-                    title: i18n(context, 'image_colorcorrections_contrast'),
-                    value: _currentContrast,
-                    min: -255,
-                    max: 255,
-                    onChanged: (value) {
-                      setState(() {
-                        _currentContrast = value;
-                      });
-                    }),
-                GCWSlider(
-                    title: i18n(context, 'image_colorcorrections_gamma'),
-                    value: _currentGamma,
-                    min: 0.01,
-                    max: 6.99,
-                    onChanged: (value) {
-                      setState(() {
-                        _currentGamma = value;
-                      });
-                    }),
-                GCWSlider(
-                    title: i18n(context, 'image_colorcorrections_hue'),
-                    value: _currentHue,
-                    min: -180.0,
-                    max: 180.0,
-                    onChanged: (value) {
-                      setState(() {
-                        _currentHue = value;
-                      });
-                    }),
-                GCWSlider(
-                    title: i18n(context, 'image_colorcorrections_red'),
-                    value: _currentRed,
-                    min: -255.0,
-                    max: 255.0,
-                    onChanged: (value) {
-                      setState(() {
-                        _currentRed = value;
-                      });
-                    }),
-                GCWSlider(
-                    title: i18n(context, 'image_colorcorrections_green'),
-                    value: _currentGreen,
-                    min: -255.0,
-                    max: 255.0,
-                    onChanged: (value) {
-                      setState(() {
-                        _currentGreen = value;
-                      });
-                    }),
-                GCWSlider(
-                    title: i18n(context, 'image_colorcorrections_blue'),
-                    value: _currentBlue,
-                    min: -255.0,
-                    max: 255.0,
-                    onChanged: (value) {
-                      setState(() {
-                        _currentBlue = value;
-                      });
-                    }),
-                GCWSlider(
-                    title: i18n(context, 'image_colorcorrections_edges'),
-                    value: _currentEdgeDetection,
-                    min: 0.0,
-                    max: 1.0,
-                    onChanged: (value) {
-                      setState(() {
-                        _currentEdgeDetection = value;
-                      });
-                    })
-              ],
+                physics: AlwaysScrollableScrollPhysics(),
+                primary: true,
+                child: Column(
+                  children: [
+                  GCWOnOffSwitch(
+                      title: i18n(context, 'image_colorcorrections_invert'),
+                      value: _currentInvert,
+                      onChanged: (value) {
+                        setState(() {
+                          _currentInvert = value;
+                        });
+                      }),
+                  GCWOnOffSwitch(
+                      title: i18n(context, 'image_colorcorrections_grayscale'),
+                      value: _currentGrayscale,
+                      onChanged: (value) {
+                        setState(() {
+                          _currentGrayscale = value;
+                        });
+                      }),
+                  GCWSlider(
+                      title: i18n(context, 'image_colorcorrections_brightness'),
+                      value: _currentBrightness,
+                      min: -255,
+                      max: 255,
+                      onChanged: (value) {
+                        setState(() {
+                          _currentBrightness = value;
+                        });
+                      }),
+                  GCWSlider(
+                      title: i18n(context, 'image_colorcorrections_exposure'),
+                      value: _currentExposure,
+                      min: 0.0,
+                      max: 2.0,
+                      onChanged: (value) {
+                        setState(() {
+                          _currentExposure = value;
+                        });
+                      }),
+                  GCWSlider(
+                      title: i18n(context, 'image_colorcorrections_saturation'),
+                      value: _currentSaturation,
+                      min: -1.0,
+                      max: 1.0,
+                      onChanged: (value) {
+                        setState(() {
+                          _currentSaturation = value;
+                        });
+                      }),
+                  GCWSlider(
+                      title: i18n(context, 'image_colorcorrections_contrast'),
+                      value: _currentContrast,
+                      min: -255,
+                      max: 255,
+                      onChanged: (value) {
+                        setState(() {
+                          _currentContrast = value;
+                        });
+                      }),
+                  GCWSlider(
+                      title: i18n(context, 'image_colorcorrections_gamma'),
+                      value: _currentGamma,
+                      min: 0.01,
+                      max: 6.99,
+                      onChanged: (value) {
+                        setState(() {
+                          _currentGamma = value;
+                        });
+                      }),
+                  GCWSlider(
+                      title: i18n(context, 'image_colorcorrections_hue'),
+                      value: _currentHue,
+                      min: -180.0,
+                      max: 180.0,
+                      onChanged: (value) {
+                        setState(() {
+                          _currentHue = value;
+                        });
+                      }),
+                  GCWSlider(
+                      title: i18n(context, 'image_colorcorrections_red'),
+                      value: _currentRed,
+                      min: -255.0,
+                      max: 255.0,
+                      onChanged: (value) {
+                        setState(() {
+                          _currentRed = value;
+                        });
+                      }),
+                  GCWSlider(
+                      title: i18n(context, 'image_colorcorrections_green'),
+                      value: _currentGreen,
+                      min: -255.0,
+                      max: 255.0,
+                      onChanged: (value) {
+                        setState(() {
+                          _currentGreen = value;
+                        });
+                      }),
+                  GCWSlider(
+                      title: i18n(context, 'image_colorcorrections_blue'),
+                      value: _currentBlue,
+                      min: -255.0,
+                      max: 255.0,
+                      onChanged: (value) {
+                        setState(() {
+                          _currentBlue = value;
+                        });
+                      }),
+                  GCWSlider(
+                      title: i18n(context, 'image_colorcorrections_edges'),
+                      value: _currentEdgeDetection,
+                      min: 0.0,
+                      max: 1.0,
+                      onChanged: (value) {
+                        setState(() {
+                          _currentEdgeDetection = value;
+                        });
+                      })
+                ],
             ),
           ))
       ],

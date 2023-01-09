@@ -10,6 +10,7 @@ import 'package:gc_wizard/logic/tools/images_and_files/hidden_data.dart';
 import 'package:gc_wizard/utils/settings/preferences.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_button.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_toast.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_imageview.dart';
 import 'package:gc_wizard/widgets/common/gcw_openfile.dart';
@@ -19,7 +20,6 @@ import 'package:gc_wizard/widgets/tools/coords/base/gcw_coords_output.dart';
 import 'package:gc_wizard/widgets/tools/coords/base/utils.dart';
 import 'package:gc_wizard/widgets/tools/coords/map_view/gcw_map_geometries.dart';
 import 'package:gc_wizard/widgets/tools/images_and_files/hidden_data.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 import 'package:gc_wizard/widgets/utils/file_picker.dart';
 import 'package:gc_wizard/widgets/utils/file_utils.dart';
 import 'package:gc_wizard/widgets/utils/gcw_file.dart' as local;
@@ -187,12 +187,11 @@ class _ExifReaderState extends State<ExifReader> {
       _tableTags.forEach((section, tags) {
         widgets.add(GCWOutput(
             title: i18n(context, "exif_section_" + section) ?? section ?? '',
-            child: Column(
-              children: columnedMultiLineOutput(
-                context,
-                tags == null ? [] : tags,
-              ),
-            )));
+            child: GCWColumnedMultilineOutput(
+                data: tags == null ? [] : tags,
+            ),
+          )
+        );
       });
     }
   }
@@ -228,9 +227,10 @@ class _ExifReaderState extends State<ExifReader> {
     if (data.isNotEmpty) {
       widgets.add(GCWOutput(
           title: fileType.toString().split('.').last,
-          child: Column(
-            children: columnedMultiLineOutput(context, data),
-          )));
+          child: GCWColumnedMultilineOutput(
+              data: data),
+          )
+      );
     }
   }
 
@@ -256,18 +256,17 @@ class _ExifReaderState extends State<ExifReader> {
 
       widgets.add(GCWOutput(
           title: i18n(context, "exif_section_file"),
-          child: Column(
-              children: columnedMultiLineOutput(
-            context,
-            [
-              [i18n(context, 'exif_filename'), platformFile.name ?? ''],
-              [i18n(context, 'exif_filesize_bytes'), platformFile.bytes?.length ?? 0],
-              [i18n(context, 'exif_filesize_kb'), (platformFile.bytes?.length / 1024).ceil() ?? 0],
-              lastModified != null ? ['lastModified', formatDate(_file?.lastModifiedSync())] : null,
-              lastAccessed != null ? ['lastAccessed', formatDate(_file?.lastAccessedSync())] : null,
-              [i18n(context, 'exif_extension'), platformFile.extension ?? '']
-            ],
-          ))));
+          child: GCWColumnedMultilineOutput(
+            data: [
+                    [i18n(context, 'exif_filename'), platformFile.name ?? ''],
+                    [i18n(context, 'exif_filesize_bytes'), platformFile.bytes?.length ?? 0],
+                    [i18n(context, 'exif_filesize_kb'), (platformFile.bytes?.length / 1024).ceil() ?? 0],
+                    lastModified != null ? ['lastModified', formatDate(_file?.lastModifiedSync())] : null,
+                    lastAccessed != null ? ['lastAccessed', formatDate(_file?.lastAccessedSync())] : null,
+                    [i18n(context, 'exif_extension'), platformFile.extension ?? '']
+                  ],
+          )
+      ));
     }
   }
 
@@ -275,22 +274,21 @@ class _ExifReaderState extends State<ExifReader> {
     if (image != null) {
       widgets.add(GCWOutput(
           title: i18n(context, 'exif_section_image'),
-          child: Column(
-              children: columnedMultiLineOutput(
-            context,
-            [
-              [i18n(context, 'exif_width'), image.width ?? ''],
-              [i18n(context, 'exif_height'), image.height ?? ''],
-              ['Blend Method', image.blendMethod ?? ''],
-              ['Channels', image.channels ?? ''],
-              ['ICC Color Profile', image.iccProfile ?? ''],
-              // Only for frames within an animation
-              // [i18n(context, 'exif_duration'), image.duration ?? ''],
-              // ['Offset X', image.xOffset ?? ''],
-              // ['Offset Y', image.yOffset ?? ''],
-              // image.exif
-            ],
-          ))));
+          child: GCWColumnedMultilineOutput(
+              data: [
+                      [i18n(context, 'exif_width'), image.width ?? ''],
+                      [i18n(context, 'exif_height'), image.height ?? ''],
+                      ['Blend Method', image.blendMethod ?? ''],
+                      ['Channels', image.channels ?? ''],
+                      ['ICC Color Profile', image.iccProfile ?? ''],
+                      // Only for frames within an animation
+                      // [i18n(context, 'exif_duration'), image.duration ?? ''],
+                      // ['Offset X', image.xOffset ?? ''],
+                      // ['Offset Y', image.yOffset ?? ''],
+                      // image.exif
+                    ],
+          )
+    ));
     }
   }
 

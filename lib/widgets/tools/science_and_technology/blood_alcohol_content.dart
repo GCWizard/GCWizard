@@ -7,12 +7,12 @@ import 'package:gc_wizard/logic/common/units/volume.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/alcohol.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_text.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_double_spinner.dart';
 import 'package:gc_wizard/widgets/common/gcw_integer_spinner.dart';
 import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
 import 'package:gc_wizard/widgets/common/units/gcw_unit_input.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 import 'package:intl/intl.dart';
 
 class BloodAlcoholContent extends StatefulWidget {
@@ -128,7 +128,7 @@ class BloodAlcoholContentState extends State<BloodAlcoholContent> {
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     var alcMass = alcoholMassInG(VOLUME_MILLILITER.fromCubicMeter(_currentVolume), _currentPercent);
     var nf = NumberFormat('0.000');
 
@@ -163,8 +163,6 @@ class BloodAlcoholContentState extends State<BloodAlcoholContent> {
       data.add(['Widmark/Watson/Eicker', result == 0.0 ? '-' : (nf.format(result) + ' ‰')]);
     }
 
-    return Column(
-      children: columnedMultiLineOutput(context, data),
-    );
+    return GCWColumnedMultilineOutput(data: data);
   }
 }

@@ -17,7 +17,7 @@ class SubstitutionBreakerJobData {
   final String input;
   final Quadgrams quadgrams;
 
-  SubstitutionBreakerJobData({this.input = '', this.quadgrams = null});
+  SubstitutionBreakerJobData({this.input = '', this.quadgrams});
 }
 
 class SubstitutionBreakerResult {

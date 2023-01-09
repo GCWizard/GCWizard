@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/recycling.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 
 class Recycling extends StatefulWidget {
   @override
@@ -22,7 +22,11 @@ class RecyclingState extends State<Recycling> {
     data.insert(
         0, [i18n(context, 'recycling_code'), i18n(context, 'recycling_short'), i18n(context, 'recycling_name')]);
 
-    return Column(
-        children: columnedMultiLineOutput(context, data, flexValues: [1, 2, 4], hasHeader: true, copyColumn: 1));
+    return GCWColumnedMultilineOutput(
+        data: data,
+        flexValues: [1, 2, 4],
+        hasHeader: true,
+        copyColumn: 1
+    );
   }
 }

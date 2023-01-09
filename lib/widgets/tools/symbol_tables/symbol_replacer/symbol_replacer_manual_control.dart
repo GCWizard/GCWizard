@@ -207,7 +207,6 @@ class SymbolReplacerManualControlState extends State<SymbolReplacerManualControl
         flex: 1,
       );
     }
-    ;
 
     return Expanded(
       child: Column(children: [

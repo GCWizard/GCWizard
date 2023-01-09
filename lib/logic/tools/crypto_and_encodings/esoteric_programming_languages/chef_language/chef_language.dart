@@ -7,9 +7,9 @@ import 'package:gc_wizard/logic/tools/science_and_technology/primes/primes.dart'
 import 'package:gc_wizard/utils/common_utils.dart';
 
 List<String> _getAuxiliaryRecipe(String name, int value, List<String> ingredientOne, ingredientTwo, String language) {
-  List<String> output = new List<String>();
+  List<String> output = <String>[];
   bool combine = true;
-  List<BigInt> nList = new List<BigInt>();
+  List<BigInt> nList = <BigInt>[];
   int nOne = 0;
   int nTwo = 0;
 
@@ -54,29 +54,28 @@ String generateChef(
   int value = 0;
   int i = 0;
   var output = StringBuffer();
-  List<String> outputElements = new List<String>(); // store the output elements
-  List<String> methodList = new List<String>(); // store the methods
-  List<String> ingredientList = new List<String>(); // store the ingredients
-  Map<String, List<String>> auxiliaryRecipes = new Map<String, List<String>>(); // store the auxiliary recipes
+  List<String> outputElements = <String>[]; // store the output elements
+  List<String> methodList = <String>[]; // store the methods
+  List<String> ingredientList = <String>[]; // store the ingredients
+  Map<String, List<String>> auxiliaryRecipes = Map<String, List<String>>(); // store the auxiliary recipes
 
-  Map<int, String> amount = new Map<int, String>(); // store the already got value
-  Map<String, String> ingredientListed = new Map<String, String>(); // store the already used ingredients
+  Map<int, String> amount = Map<int, String>(); // store the already got value
+  Map<String, String> ingredientListed = Map<String, String>(); // store the already used ingredients
 
-  List<String> itemList = new List<String>(); // List with all ingredients
-  List<String> itemListLiquid = new List<String>(); // List with only liquid ingredients
-  List<String> itemListDry = new List<String>(); // List with only dry ingredients
-  List<String> itemListMeasuresLiquid = new List<String>(); // List with measures for liquid ingredients
-  List<String> itemListMeasuresDry = new List<String>(); // List with measures for dry ingredients
-  List<String> itemListMeasure = new List<String>(); // List with all measures
-  List<List<String>> itemListAuxiliary =
-      new List<List<String>>(); // List with strinds to generate title of an aux recipe
+  List<String> itemList = <String>[]; // List with all ingredients
+  List<String> itemListLiquid = <String>[]; // List with only liquid ingredients
+  List<String> itemListDry = <String>[]; // List with only dry ingredients
+  List<String> itemListMeasuresLiquid = <String>[]; // List with measures for liquid ingredients
+  List<String> itemListMeasuresDry = <String>[]; // List with measures for dry ingredients
+  List<String> itemListMeasure = <String>[]; // List with all measures
+  List<List<String>> itemListAuxiliary = <List<String>>[]; // List with strinds to generate title of an aux recipe
 
   String item = '';
   String measure = '';
   String auxiliaryName = '';
 
-  List<String> ingredientOne = new List<String>(); // store 1st ingredient, amount an measure for aux recipe
-  List<String> ingredientTwo = new List<String>(); // store 2nd ingredient, amount an measure for aux recipe
+  List<String> ingredientOne = <String>[]; // store 1st ingredient, amount an measure for aux recipe
+  List<String> ingredientTwo = <String>[]; // store 2nd ingredient, amount an measure for aux recipe
 
   Random random = new Random();
 
@@ -320,7 +319,7 @@ bool isValid(String input) {
 }
 
 List<String> interpretChef(String language, recipe, input) {
-  if (recipe == null || recipe == '') return new List<String>();
+  if (recipe == null || recipe == '') return <String>[];
 
   return decodeChef(language, normalizeUmlauts(recipe.toLowerCase().replaceAll(RegExp(r' +'), ' ')), input);
 }
@@ -380,13 +379,13 @@ class Chef {
   Chef(String readRecipe, language) {
     if (readRecipe == '' || readRecipe == null) return;
 
-    this.meal = new List<String>();
+    this.meal = <String>[];
     valid = true;
-    error = new List<String>();
+    error = <String>[];
     recipes = new Map<String, Recipe>();
     liquefyMissing = true;
     int progress = 0;
-    Recipe r = null;
+    Recipe r;
     String title = '';
     String line = '';
     bool mainrecipeFound = false;
@@ -589,7 +588,7 @@ class Chef {
         }
       }
     }
-    ; // for each element of the recipe
+    // for each element of the recipe
 
     if (mainrecipe == null) {
       valid = false;

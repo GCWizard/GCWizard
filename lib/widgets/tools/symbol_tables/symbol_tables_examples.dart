@@ -129,6 +129,12 @@ class SymbolTableExamplesState extends State<SymbolTableExamples> {
       );
     }).toList();
 
-    return SingleChildScrollView(child: Column(children: symbols));
+    return SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        primary: true,
+        child: Column(
+            children: symbols
+        )
+    );
   }
 }

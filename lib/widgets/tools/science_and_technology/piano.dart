@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/piano.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_dropdown_spinner.dart';
 import 'package:gc_wizard/widgets/common/gcw_twooptions_switch.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class Piano extends StatefulWidget {
   @override
@@ -82,15 +82,13 @@ class PianoState extends State<Piano> {
                 },
               ),
         GCWDefaultOutput(
-          child: Column(
-            children: _buildOutput(),
-          ),
+          child: _buildOutput()
         ),
       ],
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     if (_isColorSort) {
       var chosenColor = _currentColor == GCWSwitchPosition.left ? 'white' : 'black';
       var data = PIANO_KEYS.entries.where((element) => element.value['color'].endsWith(chosenColor)).map((element) {
@@ -99,23 +97,27 @@ class PianoState extends State<Piano> {
 
       data.insert(0, [i18n(context, 'piano_number'), i18n(context, 'piano_frequency')]);
 
-      return columnedMultiLineOutput(context, data, hasHeader: true, flexValues: [1, 2]);
+      return GCWColumnedMultilineOutput(
+          data: data,
+          hasHeader: true,
+          flexValues: [1, 2]
+      );
     } else {
       var keyNumber = PIANO_KEYS.keys.toList()[_currentIndex];
 
-      return columnedMultiLineOutput(context, [
-        [i18n(context, 'piano_number'), PIANO_KEYS[keyNumber]['number']],
-        [i18n(context, 'piano_color'), i18n(context, PIANO_KEYS[keyNumber]['color'])],
-        [i18n(context, 'piano_frequency'), PIANO_KEYS[keyNumber]['frequency']],
-        [i18n(context, 'piano_helmholtz'), PIANO_KEYS[keyNumber]['helmholtz']],
-        [i18n(context, 'piano_scientific'), PIANO_KEYS[keyNumber]['scientific']],
-        [i18n(context, 'piano_german'), PIANO_KEYS[keyNumber]['german']],
-        [i18n(context, 'piano_midi'), PIANO_KEYS[keyNumber]['midi']],
-        [i18n(context, 'piano_latin'), PIANO_KEYS[keyNumber]['latin']],
-      ], flexValues: [
-        1,
-        2
-      ]);
+      return GCWColumnedMultilineOutput(
+          data: [
+                  [i18n(context, 'piano_number'), PIANO_KEYS[keyNumber]['number']],
+                  [i18n(context, 'piano_color'), i18n(context, PIANO_KEYS[keyNumber]['color'])],
+                  [i18n(context, 'piano_frequency'), PIANO_KEYS[keyNumber]['frequency']],
+                  [i18n(context, 'piano_helmholtz'), PIANO_KEYS[keyNumber]['helmholtz']],
+                  [i18n(context, 'piano_scientific'), PIANO_KEYS[keyNumber]['scientific']],
+                  [i18n(context, 'piano_german'), PIANO_KEYS[keyNumber]['german']],
+                  [i18n(context, 'piano_midi'), PIANO_KEYS[keyNumber]['midi']],
+                  [i18n(context, 'piano_latin'), PIANO_KEYS[keyNumber]['latin']],
+                ],
+          flexValues: [1, 2]
+      );
     }
   }
 }

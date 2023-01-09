@@ -25,7 +25,7 @@ class PietResult {
       this.error = false,
       this.errorText = '',
       this.finished = true,
-      this.state = null});
+      this.state});
 }
 
 var _input_required = false;

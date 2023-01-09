@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/dna.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 
 class DNAAminoAcidsTable extends StatefulWidget {
   @override
@@ -43,8 +43,9 @@ class DNAAminoAcidsTableState extends State<DNAAminoAcidsTable> {
 
     acids.sort((a, b) => a[0].compareTo(b[0]));
 
-    return Column(
-      children: columnedMultiLineOutput(context, acids, flexValues: [3, 1, 1, 2]),
+    return GCWColumnedMultilineOutput(
+        data: acids,
+        flexValues: [3, 1, 1, 2]
     );
   }
 }

@@ -3,8 +3,8 @@ import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/ip_codes.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_text.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class IPCodes extends StatefulWidget {
   @override
@@ -47,21 +47,16 @@ class IPCodesState extends State<IPCodes> {
     return effect + example;
   }
 
-  _buildOutput() {
-    var children = columnedMultiLineOutput(
-        context,
-        IP_CODES[_currentIPClass].map((key) {
-          return [key, _ipTexts(key)];
-        }).toList(),
-        flexValues: [1, 4]);
-
-    children.insert(
-        0,
-        Container(
-          child: GCWText(text: i18n(context, 'ipcodes_${_currentIPClass}_description')),
-          padding: EdgeInsets.only(bottom: 10),
-        ));
-
-    return Column(children: children);
+  Widget _buildOutput() {
+    return GCWColumnedMultilineOutput(
+        firstRows: [Container(
+                      child: GCWText(text: i18n(context, 'ipcodes_${_currentIPClass}_description')),
+                      padding: EdgeInsets.only(bottom: 10),
+                    )],
+        data: IP_CODES[_currentIPClass].map((key) {
+                return [key, _ipTexts(key)];
+              }).toList(),
+        flexValues: [1, 4]
+    );
   }
 }

@@ -30,8 +30,8 @@ class PietState extends State<Piet> {
   GCWFile _originalData;
   String _currentInterpreterInput;
   String _currentGeneratorInput;
-  PietResult _currentInterpreterOutput = null;
-  Uint8List _currentGeneratorOutput = null;
+  PietResult _currentInterpreterOutput;
+  Uint8List _currentGeneratorOutput;
   var _isStarted = false;
   var _currentMode = GCWSwitchPosition.left;
   TextEditingController _inputGeneratorController;

@@ -190,8 +190,8 @@ Map<String, String> replaceMap(int rotation, int multiplier, Alphabet alphabet){
             map = fillMap(16, 6, offset, map);
             map = fillMap(37, 6, offset, map);
             map = fillMap(58, 5, offset, map);
-        };
-    };
+        }
+    }
   } else if (alphabet == alphabetEnglish) {
     switch (rotation) {
       case 3:
@@ -218,8 +218,8 @@ Map<String, String> replaceMap(int rotation, int multiplier, Alphabet alphabet){
             map = fillMap(51, 2, offset, map);
             map = fillMap(79, 1, offset, map);
             map = fillMap(0, 1, offset, map);
-        };
-    };
+        }
+    }
   } else if (alphabet == alphabetRussian1) {
     switch (rotation) {
       case 1:
@@ -245,8 +245,8 @@ Map<String, String> replaceMap(int rotation, int multiplier, Alphabet alphabet){
             map = fillMap(37, 1, offset, map);
             map = fillMap(55, 1, offset, map);
             map = fillMap(91, 1, offset, map);
-        };
-    };
+        }
+    }
   } else if (alphabet == alphabetSpanish2) {
     switch (rotation) {
       case 6:
@@ -267,8 +267,8 @@ Map<String, String> replaceMap(int rotation, int multiplier, Alphabet alphabet){
             map = fillMap(15, 7, offset, map);
             map = fillMap(07, 3, offset, map);
             map = fillMap(03, 3, offset, map);
-        };
-    };
+        }
+    }
   } else if (alphabet == alphabetGreek1) {
     switch (rotation) {
       case 500:
@@ -292,8 +292,8 @@ Map<String, String> replaceMap(int rotation, int multiplier, Alphabet alphabet){
             map = fillMap(73, 7, offset, map);
             map = fillMap(21, 3, offset, map);
             map = fillMap(38, 1, offset, map);
-        };
-    };
+        }
+    }
   }
 
   return map;

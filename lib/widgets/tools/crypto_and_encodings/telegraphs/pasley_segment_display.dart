@@ -124,8 +124,6 @@ class PasleyTelegraphSegmentDisplay extends NSegmentDisplay {
                   setSegmentState('3', !currentSegments['3']);
                 });
               else
-                ;
-              else
                 canvas.touchCanvas.drawPath(path30, paint, onTapDown: (tapDetail) {
                   setSegmentState('3', !currentSegments['3']);
                 });
@@ -145,8 +143,6 @@ class PasleyTelegraphSegmentDisplay extends NSegmentDisplay {
                 canvas.touchCanvas.drawPath(path40, paint, onTapDown: (tapDetail) {
                   setSegmentState('4', !currentSegments['4']);
                 });
-              else
-                ;
               else
                 canvas.touchCanvas.drawPath(path40, paint, onTapDown: (tapDetail) {
                   setSegmentState('4', !currentSegments['4']);
@@ -168,8 +164,6 @@ class PasleyTelegraphSegmentDisplay extends NSegmentDisplay {
                   setSegmentState('5', !currentSegments['5']);
                 });
               else
-                ;
-              else
                 canvas.touchCanvas.drawPath(path50, paint, onTapDown: (tapDetail) {
                   setSegmentState('5', !currentSegments['5']);
                 });
@@ -190,8 +184,6 @@ class PasleyTelegraphSegmentDisplay extends NSegmentDisplay {
                   setSegmentState('6', !currentSegments['6']);
                 });
               else
-                ;
-              else
                 canvas.touchCanvas.drawPath(path60, paint, onTapDown: (tapDetail) {
                   setSegmentState('6', !currentSegments['6']);
                 });
@@ -211,8 +203,6 @@ class PasleyTelegraphSegmentDisplay extends NSegmentDisplay {
                 canvas.touchCanvas.drawPath(path70, paint, onTapDown: (tapDetail) {
                   setSegmentState('7', !currentSegments['7']);
                 });
-              else
-                ;
               else
                 canvas.touchCanvas.drawPath(path70, paint, onTapDown: (tapDetail) {
                   setSegmentState('7', !currentSegments['7']);

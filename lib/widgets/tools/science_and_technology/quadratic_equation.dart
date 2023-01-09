@@ -6,8 +6,8 @@ import 'package:gc_wizard/logic/tools/science_and_technology/quadratic_equation.
 import 'package:gc_wizard/theme/theme.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_output_text.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_textfield.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 import 'package:gc_wizard/widgets/utils/textinputformatter/double_textinputformatter.dart';
 
 class QuadraticEquation extends StatefulWidget {
@@ -96,17 +96,16 @@ class QuadraticEquationState extends State<QuadraticEquation> {
     result = solveQuadraticEquation(_currentA, _currentB, _currentC);
     if (result[''] == null)
       return GCWDefaultOutput(
-          child: Column(
-        children: columnedMultiLineOutput(
-            context,
-            result.entries.map((entry) {
-              if (entry.key.startsWith('quad'))
-                return [i18n(context, entry.key), i18n(context, entry.value)];
-              else
-                return [entry.key, entry.value];
-            }).toList(),
-            flexValues: [1, 1]),
-      ));
+          child: GCWColumnedMultilineOutput(
+              data: result.entries.map((entry) {
+                    if (entry.key.startsWith('quad'))
+                      return [i18n(context, entry.key), i18n(context, entry.value)];
+                    else
+                      return [entry.key, entry.value];
+                  }).toList(),
+              flexValues: [1, 1]
+          ),
+      );
     else
       return Container();
   }

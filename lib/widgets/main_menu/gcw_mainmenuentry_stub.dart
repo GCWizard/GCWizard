@@ -39,6 +39,7 @@ class GCWMainMenuEntryStubState extends State<GCWMainMenuEntryStub> {
               padding: EdgeInsets.only(top: 50),
             )
           ],
-        ));
+        )
+    );
   }
 }

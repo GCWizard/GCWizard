@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
 import 'package:gc_wizard/widgets/main_menu/gcw_mainmenuentry_stub.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class Licenses extends StatefulWidget {
   @override
@@ -14,8 +14,7 @@ class LicensesState extends State<Licenses> {
   Widget build(BuildContext context) {
     var content = Column(children: [
       GCWTextDivider(text: i18n(context, 'licenses_usedflutterlibraries')),
-      Column(
-        children: columnedMultiLineOutput(null, [
+      GCWColumnedMultilineOutput(data: [
           ['archive', 'Apache 2.0 License'],
           ['audioplayers', 'MIT License'],
           ['auto_size_text', 'MIT License'],
@@ -55,17 +54,14 @@ class LicensesState extends State<Licenses> {
           ['uuid', 'MIT License'],
           ['url_launcher', 'BSD-3-Clause License'],
           ['utility', 'MIT License']
-        ]),
-      ),
+      ]),
       GCWTextDivider(text: i18n(context, 'licenses_fonts')),
-      Column(
-        children: columnedMultiLineOutput(null, [
-          ['Roboto', 'Google Fonts', 'Apache License, Version 2.0']
-        ]),
+      GCWColumnedMultilineOutput(
+        data: [['Roboto', 'Google Fonts', 'Apache License, Version 2.0']]
       ),
       GCWTextDivider(text: i18n(context, 'licenses_additionalcode')),
-      Column(
-        children: columnedMultiLineOutput(null, [
+      GCWColumnedMultilineOutput(
+        data: [
           ['Astronomy Functions', 'astronomie.info, jgiesen.de', null],
           ['Base58', 'Dark Launch', ''],
           ['Base91', 'Joachim Henke', 'BSD-3-Clause License'],
@@ -96,11 +92,11 @@ class LicensesState extends State<Licenses> {
           ['Vigenère Breaker', 'Jens Guballa (guballa.de)', null],
           ['Whitespace Interpreter', 'Adam Papenhausen', 'MIT License'],
           ['Wherigo Analyzer', 'WFoundation\ngithub.com/WFoundation', ''],
-        ]),
+        ]
       ),
       GCWTextDivider(text: i18n(context, 'licenses_symboltablesources')),
-      Column(
-        children: columnedMultiLineOutput(null, [
+      GCWColumnedMultilineOutput(
+        data: [
           ['several', 'myGeoTools'],
           ['several', 'Wikipedia'],
           [i18n(context, 'symboltables_alien_mushrooms_title'), '(Personal Use)'],
@@ -131,14 +127,12 @@ class LicensesState extends State<Licenses> {
           [i18n(context, 'symboltables_sanluca_title'), 'Leadermassimo (wikimafia.it) (CC BY-SA 4.0)'],
           [i18n(context, 'symboltables_solmisation_title'), 'www.breitkopf.de (Personal Use)'],
           [i18n(context, 'symboltables_vulcanian_title'), '(Personal Use)'],
-        ], flexValues: [
-          1,
-          2
-        ]),
+        ],
+        flexValues: [1, 2]
       ),
       GCWTextDivider(text: i18n(context, 'licenses_telegraphs')),
-      Column(
-        children: columnedMultiLineOutput(null, [
+      GCWColumnedMultilineOutput(
+        data: [
           [
             i18n(context, 'telegraph_edelcrantz_title'),
             'Gerard Holzmann,\nSilvia Rubio Hernández\nAnders Lindeberg-Lindvet, Curator Tekniskamuseet Stockholm\nErika Tanhua-Piiroinen, Tampere University Finland'
@@ -161,7 +155,7 @@ class LicensesState extends State<Licenses> {
             'Bilddatenbank der Museumsstiftung Post und Telekommunikation (CC BY-SA)'
           ],
           [i18n(context, 'telegraph_schillingcanstatt_title'), 'Volker Aschoff'],
-        ]),
+        ]
       ),
     ]);
 

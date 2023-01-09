@@ -212,7 +212,6 @@ class _SteganoState extends State<Stegano> {
     if (_encoding) {
       return loading();
     }
-    ;
 
     if (_encodedPictureData == null) {
       return [];
@@ -235,7 +234,6 @@ class _SteganoState extends State<Stegano> {
     if (_encoding) {
       return loading();
     }
-    ;
 
     if (_decodedText == null) {
       return [];
@@ -265,7 +263,7 @@ class _SteganoState extends State<Stegano> {
         //child: CircularProgressIndicator(),
         child: CircularProgressIndicator(
           backgroundColor: Colors.white,
-          valueColor: new AlwaysStoppedAnimation<Color>(Colors.amber),
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),
           strokeWidth: 8, //20,
         ),
       )

@@ -61,9 +61,7 @@ class GCWCoordsMGRSState extends State<GCWCoordsMGRS> {
       _currentLonZone['value'] = mgrs.utmZone.lonZone;
       _currentLatZone = mgrs.utmZone.latZone;
       _currentDigraphEasting = mgrs.digraph[0];
-      ;
       _currentDigraphNorthing = mgrs.digraph[1];
-      ;
 
       _LonZoneController.text = _currentLonZone['value'].toString();
       _EastingController.text = _currentEasting['value'].toString();

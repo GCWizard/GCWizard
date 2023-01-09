@@ -71,7 +71,6 @@ class AlphabetValues {
 
         text = text.substring(i);
       }
-      ;
     }
 
     return output;

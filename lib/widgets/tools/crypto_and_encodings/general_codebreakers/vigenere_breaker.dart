@@ -24,7 +24,7 @@ class VigenereBreaker extends StatefulWidget {
 class VigenereBreakerState extends State<VigenereBreaker> {
   String _currentInput = '';
   VigenereBreakerAlphabet _currentAlphabet = VigenereBreakerAlphabet.GERMAN;
-  VigenereBreakerResult _currentOutput = null;
+  VigenereBreakerResult _currentOutput;
   bool _currentAutokey = false;
   bool _currentNonLetters = false;
   var _minKeyLengthController;

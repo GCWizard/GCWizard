@@ -3,6 +3,7 @@ import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/physical_constants.dart';
 import 'package:gc_wizard/theme/theme.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
@@ -49,7 +50,7 @@ class PhysicalConstantsState extends State<PhysicalConstants> {
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     Map<String, dynamic> constantData = PHYSICAL_CONSTANTS[_currentConstant];
 
     var data = [
@@ -74,12 +75,14 @@ class PhysicalConstantsState extends State<PhysicalConstants> {
           : null
     ];
 
-    return Column(
-      children: columnedMultiLineOutput(context, data, flexValues: [2, 3, 2], copyColumn: 1),
+    return GCWColumnedMultilineOutput(
+      data: data,
+      flexValues: [2, 3, 2],
+      copyColumn: 1,
     );
   }
 
-  _buildExponent(exponent) {
+  Widget _buildExponent(exponent) {
     if (exponent == null) return null;
 
     return RichText(

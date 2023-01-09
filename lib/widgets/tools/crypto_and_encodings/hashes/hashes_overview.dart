@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/crypto_and_encodings/hashes/hashes.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_textfield.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_expandable.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class HashOverview extends StatefulWidget {
   @override
@@ -56,6 +56,6 @@ class _HashOverviewState extends State<HashOverview> {
       rows.add([i18n(context, key + '_title'), function(_currentValue, _currentKey)]);
     });
 
-    return GCWDefaultOutput(child: Column(children: columnedMultiLineOutput(context, rows)));
+    return GCWDefaultOutput(child: GCWColumnedMultilineOutput(data: rows));
   }
 }

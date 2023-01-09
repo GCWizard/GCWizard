@@ -22,7 +22,7 @@ class MultiDecoderToolEsotericLanguageMalbolge extends GCWMultiDecoderTool {
                       return null;
                     else if (!element.startsWith('malbolge_')) output = output + element + '\n';
                   }
-                  ;
+
                   output = output.trim();
                   return output?.isEmpty ? null : output;
                 }

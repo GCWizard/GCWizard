@@ -26,7 +26,7 @@ class ReplaceSymbolsInput {
       this.symbolImage,
       this.compareSymbols,
       this.similarityCompareLevel: 80.0,
-      this.mergeDistance}) {}
+      this.mergeDistance});
 }
 
 Future<SymbolReplacerImage> replaceSymbolsAsync(dynamic jobData) async {
@@ -54,7 +54,7 @@ Future<SymbolReplacerImage> replaceSymbols(Uint8List image, int blackLevel, doub
   if ((image == null) && (symbolImage == null)) return null;
   if (symbolImage == null) symbolImage = SymbolReplacerImage(image);
 
-  symbolImage.splitAndGroupSymbols((blackLevel * 255 / 100).toInt(), similarityLevel,
+  symbolImage.splitAndGroupSymbols(blackLevel * 255 ~/ 100, similarityLevel,
       gap: gap,
       compareSymbols: compareSymbols,
       similarityCompareLevel: similarityCompareLevel,
@@ -172,7 +172,7 @@ class SymbolReplacerImage {
       List<Map<String, SymbolReplacerSymbolData>> compareSymbols,
       double similarityCompareLevel = 80,
       bool groupSymbols = true,
-      double mergeDistance = null}) {
+      double mergeDistance}) {
     if (_image == null) return;
     if (_bmp == null) _bmp = Image.decodeImage(_image);
     if (_bmp == null) return;
@@ -239,6 +239,7 @@ class SymbolReplacerImage {
       _useCompareSymbols(_usedCompareSymbolsImage);
       _usedCompareSymbols = compareSymbols;
       this.compareSymbols = compareSymbols;
+      mergeSymbolGroups();
     }
 
     // rebuild image
@@ -286,6 +287,27 @@ class SymbolReplacerImage {
 
     removeFromGroup(symbols.first);
     for (var i = 1; i < symbols.length; i++) addToGroup(symbols[i], symbols.first.symbolGroup);
+  }
+
+  /// <summary>
+  /// merge SymbolGroups with same compareSymbol
+  /// </summary>
+  mergeSymbolGroups() {
+    if ((symbolGroups == null) || symbolGroups.isEmpty) return;
+
+    for (var i= 0; i< symbolGroups.length; i++) {
+      var compareSymbol = symbolGroups[i].compareSymbol;
+      if (compareSymbol != null) {
+        var groups = symbolGroups.where((group) => group.compareSymbol == compareSymbol).toList();
+        if (groups.length > 1) {
+          for (var x = groups.length - 1; x > 0; x--) {
+            for (var y = groups.elementAt(x).symbols.length - 1; y >= 0; y--) {
+              _addSymbolToGroup(groups.elementAt(x).symbols[y], groups.elementAt(0));
+            }
+          }
+        }
+      }
+    }
   }
 
   /// <summary>
@@ -510,7 +532,6 @@ class SymbolReplacerImage {
           group.symbols.add(symbol1);
           symbol1.symbolGroup = group;
         }
-        ;
       }
     }
   }
@@ -596,13 +617,12 @@ class SymbolReplacerImage {
     // calc possible steps
     if (_mergeDistanceSteps == null) _mergeDistanceSteps = _calcMergeDistances();
 
-    var minLineDistance = null;
+    double minLineDistance;
 
     for (var i = 0; i < lines.length - 1; i++) {
       var dist = lines[i + 1].size.top - lines[i].size.bottom;
       if (dist > 0 && (minLineDistance == null || minLineDistance > dist)) minLineDistance = dist;
     }
-    ;
 
     var _mergeDistance = 0.0;
     // calc init merge distance
@@ -977,262 +997,19 @@ class ImageHashing {
   /// http://folk.uio.no/davidjo/computing.php
   /// </summary>
   static final _bitCounts = Uint8List.fromList([
-    0,
-    1,
-    1,
-    2,
-    1,
-    2,
-    2,
-    3,
-    1,
-    2,
-    2,
-    3,
-    2,
-    3,
-    3,
-    4,
-    1,
-    2,
-    2,
-    3,
-    2,
-    3,
-    3,
-    4,
-    2,
-    3,
-    3,
-    4,
-    3,
-    4,
-    4,
-    5,
-    1,
-    2,
-    2,
-    3,
-    2,
-    3,
-    3,
-    4,
-    2,
-    3,
-    3,
-    4,
-    3,
-    4,
-    4,
-    5,
-    2,
-    3,
-    3,
-    4,
-    3,
-    4,
-    4,
-    5,
-    3,
-    4,
-    4,
-    5,
-    4,
-    5,
-    5,
-    6,
-    1,
-    2,
-    2,
-    3,
-    2,
-    3,
-    3,
-    4,
-    2,
-    3,
-    3,
-    4,
-    3,
-    4,
-    4,
-    5,
-    2,
-    3,
-    3,
-    4,
-    3,
-    4,
-    4,
-    5,
-    3,
-    4,
-    4,
-    5,
-    4,
-    5,
-    5,
-    6,
-    2,
-    3,
-    3,
-    4,
-    3,
-    4,
-    4,
-    5,
-    3,
-    4,
-    4,
-    5,
-    4,
-    5,
-    5,
-    6,
-    3,
-    4,
-    4,
-    5,
-    4,
-    5,
-    5,
-    6,
-    4,
-    5,
-    5,
-    6,
-    5,
-    6,
-    6,
-    7,
-    1,
-    2,
-    2,
-    3,
-    2,
-    3,
-    3,
-    4,
-    2,
-    3,
-    3,
-    4,
-    3,
-    4,
-    4,
-    5,
-    2,
-    3,
-    3,
-    4,
-    3,
-    4,
-    4,
-    5,
-    3,
-    4,
-    4,
-    5,
-    4,
-    5,
-    5,
-    6,
-    2,
-    3,
-    3,
-    4,
-    3,
-    4,
-    4,
-    5,
-    3,
-    4,
-    4,
-    5,
-    4,
-    5,
-    5,
-    6,
-    3,
-    4,
-    4,
-    5,
-    4,
-    5,
-    5,
-    6,
-    4,
-    5,
-    5,
-    6,
-    5,
-    6,
-    6,
-    7,
-    2,
-    3,
-    3,
-    4,
-    3,
-    4,
-    4,
-    5,
-    3,
-    4,
-    4,
-    5,
-    4,
-    5,
-    5,
-    6,
-    3,
-    4,
-    4,
-    5,
-    4,
-    5,
-    5,
-    6,
-    4,
-    5,
-    5,
-    6,
-    5,
-    6,
-    6,
-    7,
-    3,
-    4,
-    4,
-    5,
-    4,
-    5,
-    5,
-    6,
-    4,
-    5,
-    5,
-    6,
-    5,
-    6,
-    6,
-    7,
-    4,
-    5,
-    5,
-    6,
-    5,
-    6,
-    6,
-    7,
-    5,
-    6,
-    6,
-    7,
-    6,
-    7,
-    7,
-    8
+    0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, 1, 2, 2, 3,
+    2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 1, 2, 2, 3, 2, 3, 3, 4,
+    2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5,
+    4, 5, 5, 6, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
+    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 2, 3, 3, 4,
+    3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6,
+    4, 5, 5, 6, 5, 6, 6, 7, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4,
+    3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5,
+    4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 2, 3, 3, 4, 3, 4, 4, 5,
+    3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6,
+    5, 6, 6, 7, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
+    4, 5, 5, 6, 5, 6, 6, 7, 5, 6, 6, 7, 6, 7, 7, 8
   ]);
 
   /// <summary>
@@ -1268,12 +1045,12 @@ class ImageHashing {
         int gray = (pixel & 0x00ff0000) >> 16;
         gray += (pixel & 0x0000ff00) >> 8;
         gray += (pixel & 0x000000ff);
-        gray = (gray / 12).toInt();
+        gray = gray ~/ 12;
 
         grayscale[x + (y * 8)] = gray;
         averageValue += gray;
       }
-    averageValue = (averageValue / 64).toInt();
+    averageValue = averageValue ~/ 64;
 
     // Compute the hash: each bit is a pixel
     // 1 = higher than average, 0 = lower than average

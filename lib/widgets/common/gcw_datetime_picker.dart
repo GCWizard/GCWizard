@@ -283,7 +283,7 @@ class GCWDateTimePickerState extends State<GCWDateTimePicker> {
         ): 4
       });
     }
-    ;
+
     if (widget.config.contains(DateTimePickerConfig.DATE) || widget.config.contains(DateTimePickerConfig.DAY)) {
       widgets.addAll({
         GCWIntegerSpinner(
@@ -476,7 +476,7 @@ class GCWDateTimePickerState extends State<GCWDateTimePicker> {
 
     var hoursStr = tzHours < 0 ? tzHours.toString() : '+$tzHours';
     var minutesStr = tzMinutes.toString().padLeft(2, '0');
-    var out = '$hoursStr:${minutesStr} h';
+    var out = '$hoursStr:$minutesStr h';
 
     return out;
   }

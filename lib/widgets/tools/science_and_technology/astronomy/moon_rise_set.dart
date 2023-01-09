@@ -4,11 +4,11 @@ import 'package:gc_wizard/logic/tools/coords/data/coordinates.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/astronomy/julian_date.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/astronomy/moon_rise_set.dart' as logic;
 import 'package:gc_wizard/utils/common_utils.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_datetime_picker.dart';
 import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
 import 'package:gc_wizard/widgets/tools/coords/base/gcw_coords.dart';
 import 'package:gc_wizard/widgets/tools/coords/base/utils.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class MoonRiseSet extends StatefulWidget {
   @override
@@ -50,7 +50,7 @@ class MoonRiseSetState extends State<MoonRiseSet> {
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     var moonRise = logic.MoonRiseSet(
         _currentCoords,
         JulianDate(_currentDateTime['datetime'], _currentDateTime['timezone']),
@@ -72,10 +72,9 @@ class MoonRiseSetState extends State<MoonRiseSet> {
       ],
     ];
 
-    var rows = columnedMultiLineOutput(context, outputs);
-
-    rows.insert(0, GCWTextDivider(text: i18n(context, 'common_output')));
-
-    return Column(children: rows);
+    return GCWColumnedMultilineOutput(
+        firstRows: [GCWTextDivider(text: i18n(context, 'common_output'))],
+        data: outputs
+    );
   }
 }

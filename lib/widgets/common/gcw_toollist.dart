@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/theme/theme.dart';
 import 'package:gc_wizard/theme/theme_colors.dart';
@@ -23,11 +25,21 @@ class GCWToolList extends StatefulWidget {
 class _GCWToolListState extends State<GCWToolList> {
   @override
   Widget build(BuildContext context) {
-    return _buildItems();
+
+    return ScrollConfiguration(
+      behavior: ScrollConfiguration.of(context).copyWith(
+        dragDevices: {
+          PointerDeviceKind.touch,
+          PointerDeviceKind.mouse
+        },
+      ),
+      child: _buildItems(),
+    );
   }
 
   Widget _buildItems() {
     return ListView.separated(
+      physics: AlwaysScrollableScrollPhysics(),
       itemCount: widget.toolList.length,
       separatorBuilder: (BuildContext context, int index) => Divider(),
       itemBuilder: (BuildContext context, int i) {

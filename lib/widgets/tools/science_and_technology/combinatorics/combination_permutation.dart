@@ -4,10 +4,10 @@ import 'package:gc_wizard/logic/tools/science_and_technology/combinatorics/combi
 import 'package:gc_wizard/logic/tools/science_and_technology/combinatorics/permutation.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_output_text.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_textfield.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_onoff_switch.dart';
 import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class CombinationPermutation extends StatefulWidget {
   @override
@@ -44,7 +44,7 @@ class CombinationPermutationState extends State<CombinationPermutation> {
     );
   }
 
-  _buildOutput(BuildContext context) {
+  Widget _buildOutput(BuildContext context) {
     if (_currentInput == null || _currentInput.length == 0) {
       return GCWDefaultOutput();
     }
@@ -58,17 +58,15 @@ class CombinationPermutationState extends State<CombinationPermutation> {
       return [combination, permutations.join(' ')];
     }).toList();
 
-    var rows = columnedMultiLineOutput(context, outputData, flexValues: [1, 3]);
+    var rows = GCWColumnedMultilineOutput(
+        data:  outputData,
+        flexValues: [1, 3],
+        firstRows: [GCWOutputText(
+                      text: '${i18n(context, 'common_count')}: $count',
+                      copyText: count.toString(),
+                    )]
+    );
 
-    rows.insert(
-        0,
-        GCWOutputText(
-          text: '${i18n(context, 'common_count')}: $count',
-          copyText: count.toString(),
-        ));
-
-    rows.insert(0, GCWTextDivider(text: i18n(context, 'common_output')));
-
-    return Column(children: rows);
+    return Column(children: [GCWTextDivider(text: i18n(context, 'common_output')), rows]);
   }
 }

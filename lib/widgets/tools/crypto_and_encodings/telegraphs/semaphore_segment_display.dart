@@ -79,8 +79,6 @@ class SemaphoreSegmentDisplay extends NSegmentDisplay {
                   }
                 });
               else
-                ;
-              else
                 canvas.touchCanvas.drawPath(pathL1, paint, onTapDown: (tapDetail) {
                   setSegmentState('l1', !currentSegments['l1']);
                   if (currentSegments['l1']) {

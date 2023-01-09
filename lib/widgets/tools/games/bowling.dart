@@ -7,6 +7,7 @@ import 'package:gc_wizard/logic/tools/games/bowling.dart';
 import 'package:gc_wizard/theme/theme.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_iconbutton.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_text.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_integer_spinner.dart';
 import 'package:gc_wizard/widgets/common/gcw_output.dart';
@@ -159,9 +160,11 @@ class BowlingState extends State<Bowling> {
     return Column(
       children: <Widget>[
         GCWDefaultOutput(
-          child: Column(
-            children: columnedMultiLineOutput(context, _buildBowlingScoreTable(),
-                hasHeader: true, copyColumn: 4, flexValues: [2, 1, 1, 1, 2, 3]),
+          child: GCWColumnedMultilineOutput(
+            data: _buildBowlingScoreTable(),
+            hasHeader: true,
+            copyColumn: 4,
+            flexValues: [2, 1, 1, 1, 2, 3]
           ),
         ),
         GCWTextDivider(

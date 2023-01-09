@@ -21,7 +21,7 @@ const ASCII_SHIFT = 33;
 
 const BASE85_POW = [1, 85, 85 * 85, 85 * 85 * 85, 85 * 85 * 85 * 85];
 
-/**
+/*
  * A very simple method that helps encode for Ascii85 / base85
  * The version that is likely most similar that is implemented here would be the Adobe version.
  * @see <a href="https://en.wikipedia.org/wiki/Ascii85">Ascii85</a>
@@ -77,7 +77,7 @@ String _encodeChunk(int value) {
   return encodedChunk;
 }
 
-/**
+/*
  * This is a very simple base85 decoder. It respects the 'z' optimization for empty chunks, and
  * strips whitespace between characters to respect line limits.
  * @see <a href="https://en.wikipedia.org/wiki/Ascii85">Ascii85</a>

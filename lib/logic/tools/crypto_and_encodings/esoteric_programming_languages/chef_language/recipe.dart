@@ -21,7 +21,7 @@ class Recipe {
     this.comment = '';
     this.serves = 0;
     this.error = false;
-    this.errorList = new List<String>();
+    this.errorList = <String>[];
     this.liquefyMissing = false;
   }
 
@@ -73,7 +73,6 @@ class Recipe {
         this.methods.add(m);
       }
     }
-    ;
   }
 
   void setCookingTime(String cookingtime, language) {

@@ -61,6 +61,8 @@ void main() {
       {'formula' : 'pi', 'values': values, 'expectedOutput' : 'gg'},
       {'formula' : 'pi * A', 'values': values, 'expectedOutput' : 'gggbbr'},
       {'formula' : 'E * PI', 'values': values, 'expectedOutput' : 'rrbbgg'},
+      {'formula' : 'π', 'values': values, 'expectedOutput' : 'g'},
+      {'formula' : 'E * π', 'values': values, 'expectedOutput' : 'rrbbg'},
       {'formula' : 'E [PI]', 'values': values, 'expectedOutput' : 'ttbggb'},
       {'formula' : '[A*B*2].[C+d+D];', 'values': values, 'expectedOutput' : 'brbrbgbtbrbrbrbt'},
       {'formula' : 'N 52 [QR].[S+T*U*2] E 12 [V*W].[XY + Z]', 'values': values, 'expectedOutput' : 'tttttbrrbtbrbrbrbgbttttttbrbrbtbrrrbbrb'},

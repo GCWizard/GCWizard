@@ -26,7 +26,7 @@ Future<Map<String, IfdTag>> parseExif(local.GCWFile file) async {
         //debug: true, //XMP (experimental)
         //strict: false,
         truncateTags: false);
-  } on Exception catch (e) {
+  } on Exception {
     // silent error
   }
 
@@ -78,7 +78,7 @@ LatLng completeGPSData(Map<String, IfdTag> data) {
       return decToLatLon(DEC(_lat, _lng));
     }
   } catch (error) {
-    print("silent error: ${error}");
+    print("silent error: $error");
   }
 
   return null;
@@ -88,7 +88,7 @@ LatLng completeGPSData(Map<String, IfdTag> data) {
 ///  Use location from XMP section
 ///
 LatLng completeGPSDataFromXmp(Map<String, dynamic> xmpTags) {
-  LatLng point = null;
+  LatLng point;
   try {
     if (xmpTags.containsKey(RDF_LOCATION)) {
       String latlng = xmpTags[RDF_LOCATION];
@@ -98,7 +98,7 @@ LatLng completeGPSDataFromXmp(Map<String, dynamic> xmpTags) {
       }
     }
   } catch (error) {
-    print("silent error: ${error}");
+    print("silent error: $error");
   }
 
   return point;

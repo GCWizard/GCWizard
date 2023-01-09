@@ -8,13 +8,13 @@ import 'package:gc_wizard/theme/theme.dart';
 import 'package:gc_wizard/theme/theme_colors.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_button.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_tool.dart';
 import 'package:gc_wizard/widgets/common/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/widgets/tools/science_and_technology/colors/base/gcw_colors.dart';
 import 'package:gc_wizard/widgets/tools/science_and_technology/colors/color_tool.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 import 'package:gc_wizard/widgets/utils/no_animation_material_page_route.dart';
 
 class PantoneColorCodes extends StatefulWidget {
@@ -114,7 +114,7 @@ class PantoneColorCodesState extends State<PantoneColorCodes> {
     ];
   }
 
-  _buildColorToPantoneOutput() {
+  Widget _buildColorToPantoneOutput() {
     RGB rgb = convertColorSpace(_currentInputColor, _currentColorSpace, keyColorSpaceRGB);
     List<Map<String, String>> similarPantones = findSimilarPantoneColors(rgb, _colors);
 
@@ -128,24 +128,28 @@ class PantoneColorCodesState extends State<PantoneColorCodes> {
         title: similarPantones.length == 1
             ? i18n(context, 'common_output')
             : i18n(context, 'pantonecolorcodes_mode_colorstoral_similarcolorsfound'),
-        child: Column(
-          children: columnedMultiLineOutput(context, similarPantones.map((e) => _buildPantoneColorOutput(e)).toList(),
-              flexValues: [1, 1, 2], copyColumn: 2),
-        ));
+        child: GCWColumnedMultilineOutput(
+                  data:  similarPantones.map((e) => _buildPantoneColorOutput(e)).toList(),
+                  flexValues: [1, 1, 2],
+                  copyColumn: 2
+              ),
+        );
   }
 
-  _buildPantoneToColorOutput() {
+  Widget _buildPantoneToColorOutput() {
     var rgbColor = HexCode(_currentValue['colorcode']).toRGB();
 
     var name = _currentValue['name'];
     if (name == null || name.isEmpty) name = 'common_unknown';
 
-    var children = columnedMultiLineOutput(context, [
-      ['Name', i18n(context, name)],
-      ['Hex Color Code', _currentValue['colorcode']],
-      ['RGB', rgbColor.toRBGString()],
-      ['CMYK', CMYK.fromRGB(rgbColor).toCMYKString()],
-    ]);
+    List<Widget> children = [GCWColumnedMultilineOutput(
+                              data : [
+                                      ['Name', i18n(context, name)],
+                                      ['Hex Color Code', _currentValue['colorcode']],
+                                      ['RGB', rgbColor.toRBGString()],
+                                      ['CMYK', CMYK.fromRGB(rgbColor).toCMYKString()],
+                                    ]
+                              )];
 
     children.add(Container(
       margin: EdgeInsets.only(top: 10 * DEFAULT_MARGIN),

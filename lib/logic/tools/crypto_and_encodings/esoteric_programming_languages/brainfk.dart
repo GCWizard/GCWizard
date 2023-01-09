@@ -82,7 +82,7 @@ String interpretBrainfk(String code, {String input}) {
 }
 
 // Dart port/fork of https://github.com/anars/BrainJuck/blob/master/source/com/anars/brainjuck/Generator.java
-/**
+/*
  * BrainJuck - Rapid Application Development with only 3 bits!
  *
  * Generator - Brainf**k Code Generator

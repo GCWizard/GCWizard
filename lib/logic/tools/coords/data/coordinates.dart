@@ -502,7 +502,7 @@ class MGRS extends BaseCoordinates {
 
   @override
   String toString() {
-    return '${utmZone.lonZone}${utmZone.latZone} ${digraph} ${doubleFormat.format(easting)} ${doubleFormat.format(northing)}';
+    return '${utmZone.lonZone}${utmZone.latZone} $digraph ${doubleFormat.format(easting)} ${doubleFormat.format(northing)}';
   }
 }
 
@@ -528,7 +528,7 @@ class SwissGrid extends BaseCoordinates {
 
   @override
   String toString() {
-    return 'Y: ${easting}\nX: ${northing}';
+    return 'Y: $easting\nX: $northing';
   }
 }
 
@@ -574,7 +574,7 @@ class DutchGrid extends BaseCoordinates {
 
   @override
   String toString() {
-    return 'X: ${x}\nY: ${y}';
+    return 'X: $x\nY: $y';
   }
 }
 
@@ -601,7 +601,7 @@ class GaussKrueger extends BaseCoordinates {
 
   @override
   String toString() {
-    return 'R: ${easting}\nH: ${northing}';
+    return 'R: $easting\nH: $northing';
   }
 }
 
@@ -628,7 +628,7 @@ class Lambert extends BaseCoordinates {
 
   @override
   String toString() {
-    return 'X: ${easting}\nY: ${northing}';
+    return 'X: $easting\nY: $northing';
   }
 }
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/utils/crosstotals.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 enum CROSSTOTAL_INPUT_TYPE { LETTERS, NUMBERS }
 
@@ -101,16 +101,16 @@ class _GCWCrosstotalOutputState extends State<GCWCrosstotalOutput> {
     return Column(
       children: [
         GCWTextDivider(text: i18n(context, 'crosstotal_commonsums'), suppressTopSpace: true),
-        Column(
-          children: columnedMultiLineOutput(context, crosstotalValuesCommon, flexValues: [2, 1]),
+        GCWColumnedMultilineOutput(
+          data: crosstotalValuesCommon,
+          flexValues: [2, 1],
         ),
         GCWTextDivider(text: i18n(context, 'crosstotal_othersums')),
-        Column(
-          children: columnedMultiLineOutput(context, crosstotalValuesOthers, flexValues: [2, 1]),
+        GCWColumnedMultilineOutput(
+          data: crosstotalValuesOthers,
+          flexValues: [2, 1]
         ),
       ],
     );
-
-    return Column(children: columnedMultiLineOutput(context, crosstotalValuesOthers, flexValues: [2, 1]));
   }
 }

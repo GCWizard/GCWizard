@@ -17,11 +17,11 @@ class IntersectBearingJobData {
   final bool crossbearing;
 
   IntersectBearingJobData(
-      {this.coord1 = null,
+      {this.coord1,
       this.az13 = 0.0,
-      this.coord2 = null,
+      this.coord2,
       this.az23 = 0.0,
-      this.ells = null,
+      this.ells,
       this.crossbearing = false});
 }
 
@@ -121,7 +121,7 @@ class IntersectFourPointsJobData {
   final Ellipsoid ells;
 
   IntersectFourPointsJobData(
-      {this.coord11 = null, this.coord12 = null, this.coord21 = null, this.coord22 = null, this.ells = null});
+      {this.coord11, this.coord12, this.coord21, this.coord22, this.ells});
 }
 
 Future<LatLng> intersectFourPointsAsync(dynamic jobData) async {

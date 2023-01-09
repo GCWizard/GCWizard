@@ -450,10 +450,10 @@ class WherigoCartridgeLUA {
       this.CountryID = '',
       this.StateID = '',
       this.UseLogging = '',
-      this.CreateDate = null,
-      this.PublishDate = null,
-      this.UpdateDate = null,
-      this.LastPlayedDate = null,
+      this.CreateDate,
+      this.PublishDate,
+      this.UpdateDate,
+      this.LastPlayedDate,
       this.httpCode = '',
       this.httpMessage = ''});
 }

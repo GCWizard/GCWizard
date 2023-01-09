@@ -131,7 +131,6 @@ Actual Release:
 			- change bundle identifier in XCode/Info.plist in ios/Runner to de.sman42.gcWizardGold
 			- change Display Name to GC Wizard Gold
 		- Release process same
-		- After releases don't forget to restore normal version (git reset --HARD)
 	- Web:
 		- Rename /app/ directory to /app_<current_version> -- e.g. new version is 5.2.0 and old version was 5.1.4, the new dir would be /app_5.1.4
 		- Rename /app_test/ to /app/
@@ -139,6 +138,7 @@ Actual Release:
 	
 After Release:
 
+    - Restore local workspace repos from gold to normal version (git reset --hard)
 	- Remind the release in forums and social media
 	- GitHub:
 		- Merge your version branch onto master branch
@@ -149,6 +149,7 @@ After Release:
 		- Currently the next version branch is main branch on Github because most contributors don't check the destination branch for a PR and the reviewer misses this as well regularly ;) So, if this practise should be continued:
 			- Go to GitHub settings and set relevant branch as main branch instead of master 
 		- Propagate new status to developers
+    - Crowdin: Hide last "changelog" string (Past changelog don't need to be translated)
 
 ==============================
 Common Build Error Fixes:

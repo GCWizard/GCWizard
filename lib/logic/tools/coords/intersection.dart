@@ -11,7 +11,7 @@ class IntersectionJobData {
   final double beta;
   final Ellipsoid ells;
 
-  IntersectionJobData({this.coord1 = null, this.alpha = 0.0, this.coord2 = null, this.beta = 0.0, this.ells = null});
+  IntersectionJobData({this.coord1, this.alpha = 0.0, this.coord2, this.beta = 0.0, this.ells});
 }
 
 Future<List<LatLng>> intersectionAsync(dynamic jobData) async {

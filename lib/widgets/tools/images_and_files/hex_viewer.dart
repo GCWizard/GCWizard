@@ -185,13 +185,14 @@ class HexViewerState extends State<HexViewer> {
             Expanded(
               child: Container(
                 child: NotificationListener<ScrollNotification>(
-                  child: SingleChildScrollView(
-                    controller: _scrollControllerHex,
-                    scrollDirection: Axis.horizontal,
-                    child: GCWText(
-                      text: hexText,
-                      style: gcwMonotypeTextStyle(),
-                    ),
+                    child: SingleChildScrollView(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        controller: _scrollControllerHex,
+                        scrollDirection: Axis.horizontal,
+                        child: GCWText(
+                          text: hexText,
+                          style: gcwMonotypeTextStyle(),
+                        ),
                   ),
                   onNotification: (ScrollNotification scrollNotification) {
                     if (_isASCIIScrolling) return false;
@@ -217,6 +218,7 @@ class HexViewerState extends State<HexViewer> {
                 child: Container(
                   child: NotificationListener<ScrollNotification>(
                     child: SingleChildScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
                       controller: _scrollControllerASCII,
                       scrollDirection: Axis.horizontal,
                       child: GCWText(

@@ -552,4 +552,42 @@ void main() {
       });
     });
   });
+
+  group("CommonUtils.normalizeCharacters", () {
+    List<Map<String, dynamic>> _inputsToExpected = [
+      {'input' : null, 'expectedOutput' : null},
+      {'input' : '', 'expectedOutput' : ''},
+
+      {'input' : '\u0009\u000B\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2007\u2008\u2009\u200A\u202F\u205F\u3000', 'expectedOutput' : '                 '},
+      {'input' : '\u201e\u201f\u201d\u201c', 'expectedOutput' : '""""'},
+      {'input' : '\u201b\u201a\u2019\u2018', 'expectedOutput' : '\'\'\'\''},
+      {'input' : '—–˗−‒', 'expectedOutput' : '-----'},
+
+      {'input' : '—\u2019\u2005\u201c', 'expectedOutput' : '-\' "'},
+    ];
+
+    _inputsToExpected.forEach((elem) {
+      test('input: ${elem['input']}', () {
+        var _actual = normalizeCharacters(elem['input']);
+        expect(_actual, elem['expectedOutput']);
+      });
+    });
+  });
+
+  group("CommonUtils.removeControlCharacters", () {
+    List<Map<String, dynamic>> _inputsToExpected = [
+      {'input' : null, 'expectedOutput' : null},
+      {'input' : '', 'expectedOutput' : ''},
+
+      {'input' : '\u0000\u0001\u001f', 'expectedOutput' : ''},
+      {'input' : '\u0000\u0020\u001f', 'expectedOutput' : ' '},
+    ];
+
+    _inputsToExpected.forEach((elem) {
+      test('input: ${elem['input']}', () {
+        var _actual = removeControlCharacters(elem['input']);
+        expect(_actual, elem['expectedOutput']);
+      });
+    });
+  });
 }

@@ -67,7 +67,6 @@ class MusicNotesState extends State<MusicNotes> {
             default:
               return null;
           }
-          ;
         }).toList(),
       ),
       GCWTwoOptionsSwitch(

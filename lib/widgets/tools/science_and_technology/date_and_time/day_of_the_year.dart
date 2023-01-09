@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/common/date_utils.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/date_and_time/day_of_the_year.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_datetime_picker.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_integer_spinner.dart';
@@ -156,21 +157,23 @@ class DayOfTheYearState extends State<DayOfTheYear> {
 
     children.add(GCWOutput(
       title: 'ISO 8601',
-      child: Column(
-          children: columnedMultiLineOutput(context, [
-        [i18n(context, 'dates_weekday_number'), outputData.weekday],
-        [i18n(context, 'dates_week_number'), outputData.weekNumberIso],
-      ])),
+      child: GCWColumnedMultilineOutput(
+          data: [
+                  [i18n(context, 'dates_weekday_number'), outputData.weekday],
+                  [i18n(context, 'dates_week_number'), outputData.weekNumberIso],
+                ]
+          ),
     ));
 
     children.add(GCWOutput(
         title: i18n(context, 'dates_day_of_the_year_alternative'),
-        child: Column(
-          children: columnedMultiLineOutput(context, [
-            [i18n(context, 'dates_weekday_number'), outputData.weekdayAlternate],
-            [i18n(context, 'dates_week_number'), outputData.weekNumberAlternate],
-          ]),
-        )));
+        child: GCWColumnedMultilineOutput(
+            data: [
+                    [i18n(context, 'dates_weekday_number'), outputData.weekdayAlternate],
+                    [i18n(context, 'dates_week_number'), outputData.weekNumberAlternate],
+                  ]
+          ),
+        ));
 
     return Column(children: children);
   }

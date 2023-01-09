@@ -86,7 +86,6 @@ String decodeSearchWord(
       case decodeOutFormat.Word:
         return wordLabel + ": " + _findWordIndex(e, wordList).toString();
     }
-    ;
   }).join('\n');
 
   return out;
@@ -451,7 +450,7 @@ Tuple2<_wordClass, int> _selectRandomLetterPosition(String letter, List<_wordCla
   var letterCountTmp = 0;
   var letterWordList = <_wordClass>[];
   var letterPosition = 0;
-  var outWord = null;
+  var outWord;
   var outLetterPosition = 0;
 
   var regexp = RegExp(letter, caseSensitive: false);
@@ -480,7 +479,6 @@ Tuple2<_wordClass, int> _selectRandomLetterPosition(String letter, List<_wordCla
         letterCountTmp += 1;
       });
     }
-    ;
   }
   return Tuple2<_wordClass, int>(outWord, outLetterPosition);
 }

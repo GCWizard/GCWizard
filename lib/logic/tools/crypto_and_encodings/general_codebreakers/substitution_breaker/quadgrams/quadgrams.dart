@@ -14,9 +14,9 @@ import 'package:gc_wizard/logic/tools/crypto_and_encodings/general_codebreakers/
 
 class Quadgrams extends guballa.Quadgrams {
   static const int maxAlphabetLength = 32;
-  Map<int, List<int>> quadgramsCompressed = null;
+  Map<int, List<int>> quadgramsCompressed;
   String assetLocation;
-  List<int> _quadgrams = null;
+  List<int> _quadgrams;
 
   List<int> quadgrams() {
     if (_quadgrams != null) return _quadgrams;
@@ -45,7 +45,7 @@ class Quadgrams extends guballa.Quadgrams {
                 (quadgrams[i + 4] == 0) | (quadgrams[i + 4] == null) &&
                 (quadgrams[i + 5] == 0) | (quadgrams[i + 5] == null)) ||
             (i + zeroCount >= quadgrams.length)) {
-          var quadgramList = List<int>();
+          var quadgramList = <int>[];
           quadgramList.addAll(quadgrams.getRange(
               blockStart, (i + zeroCount >= quadgrams.length) ? quadgrams.length : min(i + 1, quadgrams.length)));
           map.addAll({blockStart: quadgramList});

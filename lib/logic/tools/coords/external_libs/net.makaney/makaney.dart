@@ -1,6 +1,6 @@
 import 'dart:math';
 
-/*****
+/*
  * Dart port from
  * http://www.makaney.net/mkc_standard.html
  */

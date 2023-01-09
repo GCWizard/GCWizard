@@ -19,6 +19,7 @@ import 'package:gc_wizard/widgets/common/gcw_text_export.dart';
 import 'package:gc_wizard/widgets/common/gcw_tool.dart';
 import 'package:gc_wizard/widgets/tools/formula_solver/formula_solver_formulas.dart';
 import 'package:gc_wizard/widgets/utils/no_animation_material_page_route.dart';
+import 'package:gc_wizard/utils/common_utils.dart';
 
 class FormulaSolverFormulaGroups extends StatefulWidget {
   @override
@@ -106,6 +107,7 @@ class FormulaSolverFormulaGroupsState extends State<FormulaSolverFormulaGroups> 
 
   _importFromClipboard(String data) {
     try {
+      data = normalizeCharacters(data);
       var group = FormulaGroup.fromJson(jsonDecode(data));
       group.name = _createImportGroupName(group.name);
 
@@ -139,6 +141,7 @@ class FormulaSolverFormulaGroupsState extends State<FormulaSolverFormulaGroups> 
   _exportGroup(FormulaGroup group) {
     var mode = TextExportMode.QR;
     String text = jsonEncode(group.toMap()).toString();
+    text = normalizeCharacters(text);
     var contentWidget = GCWTextExport(
       text: text,
       onModeChanged: (value) {

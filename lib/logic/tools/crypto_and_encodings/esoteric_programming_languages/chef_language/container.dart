@@ -57,7 +57,7 @@ class Container {
   }
 
   List<String> getContent() {
-    List<String> out = new List<String>();
+    List<String> out = <String>[];
     for (int i = _contents.length - 1; i >= 0; i--) {
       out.add(_contents[i].getValue().toString());
     }

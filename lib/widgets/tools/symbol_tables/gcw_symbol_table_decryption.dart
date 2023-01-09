@@ -103,8 +103,9 @@ class GCWSymbolTableDecryptionState extends State<GCWSymbolTableDecryption> {
               ]),
               Flexible(
                   child: SingleChildScrollView(
-                controller: _scrollController,
-                child: widget.onAfterDecrypt != null
+                      physics: AlwaysScrollableScrollPhysics(),
+                      controller: _scrollController,
+                      child: widget.onAfterDecrypt != null
                     ? Column(
                         children: [
                           GCWOutput(title: i18n(context, 'common_input'), child: _decryptionOutput),

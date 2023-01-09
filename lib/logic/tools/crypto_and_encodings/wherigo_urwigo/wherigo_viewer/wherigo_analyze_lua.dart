@@ -1135,7 +1135,7 @@ Future<Map<String, dynamic>> getCartridgeLUA(Uint8List byteListLUA, bool getLUAo
                     lines[i + 1].trim().startsWith('function') ||
                     lines[i + 1].trim().startsWith(LUAname + '.Visible')) sectionText = false;
               } while (sectionText);
-              text = normalizeText(text.replaceAll(']]', '').replaceAll('<BR>', '\n'));
+              text = normalizeWIGText(text.replaceAll(']]', '').replaceAll('<BR>', '\n'));
             }
           }
 

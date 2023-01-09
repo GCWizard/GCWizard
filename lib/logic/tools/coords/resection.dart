@@ -13,12 +13,12 @@ class ResectionJobData {
   final Ellipsoid ells;
 
   ResectionJobData(
-      {this.coord1 = null,
+      {this.coord1,
       this.angle12 = 0.0,
-      this.coord2 = null,
+      this.coord2,
       this.angle23 = 0.0,
-      this.coord3 = null,
-      this.ells = null});
+      this.coord3,
+      this.ells});
 }
 
 class _ResectionCalculator extends IntervalCalculator {

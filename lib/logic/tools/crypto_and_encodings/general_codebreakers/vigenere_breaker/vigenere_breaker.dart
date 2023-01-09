@@ -30,9 +30,9 @@ class VigenereBreakerJobData {
 
   VigenereBreakerJobData(
       {this.input = '',
-      this.vigenereBreakerType = null,
+      this.vigenereBreakerType,
       this.ignoreNonLetters = false,
-      this.alphabet = null,
+      this.alphabet,
       this.keyLengthMin = 0,
       this.keyLengthMax = 0});
 }

@@ -54,7 +54,7 @@ int magicEyeSolver(Image.Image image) {
   if (image == null) return null;
 
   var testedLines = _computeTestedLines(image);
-  int maxDisplacementAllowed = (image.width / 3).toInt();
+  int maxDisplacementAllowed = image.width ~/ 3;
 
   var differences = <double>[]; // displacement=0 is considered as unavailable so set a high value for it
 
@@ -180,7 +180,7 @@ Tuple2<Uint8List, MagicEyeErrorCode> generateImage(
   if (hiddenDataImage == null || texture == null) return null;
 
   _textureWidth = _separation;
-  _textureHeight = ((_separation * texture.height) / texture.width).toInt();
+  _textureHeight = (_separation * texture.height) ~/ texture.width;
 
   // Cache some intermediaries
   _lineWidth = resolutionX;
@@ -201,7 +201,7 @@ Tuple2<Uint8List, MagicEyeErrorCode> generateImage(
       _depthScale = 1;
     }
   }
-  _midpoint = (_lineWidth / 2).toInt();
+  _midpoint = _lineWidth ~/ 2;
 
   // Convert texture to RGB24 and scale it to fit the separation (preserving ratio but doubling width for HQ mode)
   var bmTexture = Image.copyResize(texture, width: _textureWidth, height: _textureHeight);
@@ -359,7 +359,7 @@ _setStereoPixel(int x, int y, RGBPixel pixel) {
 }
 
 Image.Image _generateColoredDotsTexture(int resX, int resY) {
-  Random random = new Random();
+  Random random = Random();
   var pixels = Uint8List(resX * resY * _channelCount); // (RGBA)
 
   for (int i = 0; i < pixels.length; i++) pixels[i] = random.nextInt(256);

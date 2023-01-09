@@ -1,11 +1,6 @@
 /* forked and minimized from https://github.com/fluttercandies/flutter_hsvcolor_picker; */
 
-import "package:flutter/foundation.dart";
-import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
-import "package:flutter/painting.dart";
-import "package:flutter/rendering.dart";
-import "package:flutter/widgets.dart";
 
 class SliderPicker extends StatefulWidget {
   final double min;

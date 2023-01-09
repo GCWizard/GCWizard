@@ -30,7 +30,7 @@ RC4Output cryptRC4(
   var outList = _rc4(inputList, keyList);
   var out = formatOutput(outList, outputFormat);
 
-  return new RC4Output(out, ErrorCode.OK);
+  return RC4Output(out, ErrorCode.OK);
 }
 
 List<int> _rc4(List<int> input, List<int> key) {

@@ -3,9 +3,7 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
 import 'package:flutter_map_tappable_polyline/flutter_map_tappable_polyline.dart';
@@ -639,7 +637,6 @@ class GCWMapViewState extends State<GCWMapView> {
                   _mapController.move(pastedCoordinate.first.toLatLng(), _mapController.zoom);
                 });
               }
-              ;
             },
           )),
       GCWIconButton(

@@ -70,7 +70,11 @@ class GCWSymbolTableTextToSymbolsState extends State<GCWSymbolTableTextToSymbols
       children: <Widget>[
         widget.fixed
             ? _buildEncryptionOutput(widget.countColumns)
-            : Expanded(child: SingleChildScrollView(child: _buildEncryptionOutput(widget.countColumns))),
+            : Expanded(child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                primary: true,
+                child: _buildEncryptionOutput(widget.countColumns)
+              )),
         widget.showExportButton && _encryptionHasImages
             ? GCWButton(
                 text: i18n(context, 'common_exportfile_saveoutput'),

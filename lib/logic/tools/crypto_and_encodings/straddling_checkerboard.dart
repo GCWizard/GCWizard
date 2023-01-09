@@ -24,9 +24,9 @@ StraddlingCheckerboardOutput encryptStraddlingCheckerboard(
     return StraddlingCheckerboardOutput('straddlingcheckerboard_wrong_order_error', '');
 
   try {
-    Map<String, String> EncodeMatrix = new Map<String, String>();
-    Map<String, String> DecodeMatrix = new Map<String, String>();
-    List<String> result = new List<String>();
+    Map<String, String> EncodeMatrix = Map<String, String>();
+    Map<String, String> DecodeMatrix = Map<String, String>();
+    List<String> result = <String>[];
 
     DecodeMatrix = _buildDecodeMatrix(key, columnOrder, matrix4x10, alphabetWord, mode: mode, alphabet: alphabet);
     if (DecodeMatrix['ERROR'] != null)
@@ -69,8 +69,8 @@ StraddlingCheckerboardOutput decryptStraddlingCheckerboard(
     return StraddlingCheckerboardOutput('straddlingcheckerboard_wrong_order_error', '');
 
   try {
-    Map<String, String> DecodeMatrix = new Map<String, String>();
-    List<String> result = new List<String>();
+    Map<String, String> DecodeMatrix = Map<String, String>();
+    List<String> result = <String>[];
 
     DecodeMatrix = _buildDecodeMatrix(key, columnOrder, matrix4x10, alphabetWord, mode: mode, alphabet: alphabet);
     if (DecodeMatrix['ERROR'] != null)
@@ -134,8 +134,8 @@ bool _invalidColumnOrder(String columnOrder) {
 
 Map<String, String> _buildDecodeMatrix(String key, String columnOrder, bool matrix4x10, String alphabetWord,
     {PolybiosMode mode: PolybiosMode.AZ09, String alphabet}) {
-  Map<String, String> result = new Map<String, String>();
-  List<String> usedAlphabet = new List<String>();
+  Map<String, String> result = Map<String, String>();
+  List<String> usedAlphabet = <String>[];
   String line1 = '';
   String line2 = '';
   String line3 = '';

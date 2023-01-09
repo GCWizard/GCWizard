@@ -1,4 +1,4 @@
-/***
+/*
  *  Dart port of https://github.com/djvanderlaan/rijksdriehoek/blob/master/js/rijksdriehoek.js
  *  MIT license
  *

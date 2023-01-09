@@ -107,8 +107,6 @@ class PophamTelegraphSegmentDisplay extends NSegmentDisplay {
                   setSegmentState('1', !currentSegments['1']);
                 });
               else
-                ;
-              else
                 canvas.touchCanvas.drawPath(path10, paint, onTapDown: (tapDetail) {
                   setSegmentState('1', !currentSegments['1']);
                 });
@@ -304,8 +302,6 @@ class PophamTelegraphSegmentDisplay extends NSegmentDisplay {
                 canvas.touchCanvas.drawPath(pathd0, paint, onTapDown: (tapDetail) {
                   setSegmentState('d', !currentSegments['d']);
                 });
-              else
-                ;
               else
                 canvas.touchCanvas.drawPath(pathd0, paint, onTapDown: (tapDetail) {
                   setSegmentState('d', !currentSegments['d']);

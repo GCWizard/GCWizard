@@ -6,10 +6,10 @@ import 'package:gc_wizard/logic/tools/coords/data/ellipsoid.dart';
 import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_text.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_double_textfield.dart';
 import 'package:gc_wizard/widgets/common/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/widgets/tools/coords/base/utils.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class GCWCoordsEllipsoid extends StatefulWidget {
   final Function onChanged;
@@ -167,10 +167,8 @@ class GCWCoordsEllipsoidState extends State<GCWCoordsEllipsoid> {
       [i18n(context, 'coords_ellipsoid_inverseflattening'), _currentEllipsoid.invf],
     ];
 
-    var rows = columnedMultiLineOutput(context, ellipsoidData);
-
     return Padding(
-      child: Column(children: rows),
+      child: GCWColumnedMultilineOutput(data: ellipsoidData),
       padding: EdgeInsets.only(top: 20),
     );
   }

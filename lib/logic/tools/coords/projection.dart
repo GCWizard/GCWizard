@@ -22,7 +22,7 @@ LatLng projectionRadian(LatLng coord, double bearingRad, double distance, Ellips
   return projection(coord, radianToDeg(bearingRad), distance, ellipsoid);
 }
 
-/** A bit less accurate... Used for Map Polylines **/
+/// A bit less accurate... Used for Map Polylines
 LatLng projectionVincenty(LatLng coord, double bearing, double distance, Ellipsoid ellipsoid) {
   if (distance == 0.0) return coord;
 

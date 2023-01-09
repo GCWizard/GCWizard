@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/astronomy/seasons.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_integer_spinner.dart';
 import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 import 'package:intl/intl.dart';
 
 class Seasons extends StatefulWidget {
@@ -85,10 +85,10 @@ class SeasonsState extends State<Seasons> {
       ],
     ];
 
-    var rowsData = columnedMultiLineOutput(context, outputs, flexValues: [1, 2]);
-
-    rowsData.insert(0, GCWTextDivider(text: i18n(context, 'common_output')));
-
-    return Column(children: rowsData);
+    return GCWColumnedMultilineOutput(
+        firstRows: [GCWTextDivider(text: i18n(context, 'common_output'))],
+        data: outputs,
+        flexValues: [1, 2]
+    );
   }
 }

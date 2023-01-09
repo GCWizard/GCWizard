@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/numeral_bases.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_textfield.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_numeralbase_spinner.dart';
 import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
 import 'package:gc_wizard/widgets/common/gcw_twooptions_switch.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 List<int> _COMMON_BASES = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 60];
 
@@ -83,7 +83,7 @@ class NumeralBasesState extends State<NumeralBases> {
     );
   }
 
-  _buildOutput(BuildContext context) {
+  Widget _buildOutput(BuildContext context) {
     if (_currentInput == null || _currentInput.length == 0) {
       return GCWDefaultOutput();
     }
@@ -113,10 +113,11 @@ class NumeralBasesState extends State<NumeralBases> {
         outputValues.add([calculateableToBases[i], values[i]]);
       }
 
-      var rows = columnedMultiLineOutput(context, outputValues, flexValues: [1, 3]);
-      rows.insert(0, GCWTextDivider(text: i18n(context, 'common_output')));
-
-      return Column(children: rows);
+      return GCWColumnedMultilineOutput(
+          firstRows: [GCWTextDivider(text: i18n(context, 'common_output'))],
+          data: outputValues,
+          flexValues: [1, 3]
+      );
     }
   }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_symbol_container.dart';
 import 'package:gc_wizard/widgets/tools/symbol_tables/symbol_table_data.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 const _WEATHERSYMBOL_CLASSES = ['ww', 'w', 'a', 'n', 'c', 'cl', 'cm', 'ch'];
 
@@ -64,24 +64,21 @@ class WeatherSymbolsState extends State<WeatherSymbols> {
     if (_data == null || _data.isEmpty) return null;
 
     SymbolTableData data = _data[_currentWeatherSymbolClazz];
-    return Column(
-      children: columnedMultiLineOutput(
-        context,
-        data.images.map((Map<String, SymbolData> image) {
-          return [
-            image.keys.first,
-            Container(
-              child: GCWSymbolContainer(
-                symbol: Image.memory(image.values.first.bytes),
-              ),
-              padding: EdgeInsets.all(10.0),
-            ),
-            i18n(context, 'weathersymbols_${_currentWeatherSymbolClazz}_${image.keys.first}')
-          ];
-        }).toList(),
+    return GCWColumnedMultilineOutput(
+        data: data.images.map((Map<String, SymbolData> image) {
+                return [
+                  image.keys.first,
+                  Container(
+                    child: GCWSymbolContainer(
+                      symbol: Image.memory(image.values.first.bytes),
+                    ),
+                    padding: EdgeInsets.all(10.0),
+                  ),
+                  i18n(context, 'weathersymbols_${_currentWeatherSymbolClazz}_${image.keys.first}')
+                ];
+              }).toList(),
         copyColumn: 2,
         flexValues: [1, 2, 6],
-      ),
     );
   }
 }

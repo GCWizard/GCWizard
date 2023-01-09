@@ -187,7 +187,6 @@ class RabbitState extends State<Rabbit> {
       }
       return GCWDefaultOutput();
     }
-    ;
 
     return GCWDefaultOutput(
       child: _currentOutput.output,

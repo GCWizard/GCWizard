@@ -73,7 +73,7 @@ String _createDecryptOutput(String input, String keyStream, Map<String, int> alp
 }
 
 List<int> createDeck() {
-  var deck = new List<int>();
+  var deck = <int>[];
   // Bridge cards +2 joker
   for (int i = 0; i < 54; i++) deck.add(i + 1);
 
@@ -155,7 +155,7 @@ List<int> _cycleDeck(List<int> deck) {
   var firstjoker = jokerAPos < jokerBPos ? jokerAPos : jokerBPos;
   var secondjoker = jokerAPos < jokerBPos ? jokerBPos : jokerAPos;
 
-  var newDeck = new List<int>();
+  var newDeck = <int>[];
   var positionFrom = secondjoker + 1;
   var count = (deckSize - 1) - secondjoker;
   newDeck = _copyToDeck(deck, newDeck, positionFrom, count);
@@ -175,7 +175,7 @@ List<int> _cycleDeck(List<int> deck) {
 // Step 4 (take off and leave the bottom card on the bottom)
 List<int> _takeOff(List<int> deck, int liftOffPosition) {
   var deckSize = deck.length;
-  var newDeck = new List<int>();
+  var newDeck = <int>[];
   var positionFrom = liftOffPosition;
   if (positionFrom == _JOKER_B) positionFrom = _JOKER_A;
   var count = (deckSize - 1) - positionFrom;

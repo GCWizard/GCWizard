@@ -120,7 +120,7 @@ String encodeWASD(String input, List<String> controlSet) {
   controlSet = _normalizeControlSet(controlSet);
 
   input = input.toUpperCase();
-  Random rnd = new Random();
+  Random rnd = Random();
   List<String> result = [];
   input.split('').forEach((element) {
     if (WASD_ENCODE[element] == null)
@@ -209,7 +209,7 @@ String decodeWASDGraphic(String input, List<String> controlSet) {
   int minSentenceX = 0;
   int minSentenceY = 0;
 
-  Map<String, String> sentence = new Map();
+  Map<String, String> sentence = Map();
 
   var direction = WASD_DIRECTION.START;
 
@@ -227,7 +227,7 @@ String decodeWASDGraphic(String input, List<String> controlSet) {
 
     direction = WASD_DIRECTION.START;
 
-    Map<String, String> letter = new Map();
+    Map<String, String> letter = Map();
 
     word.split('').forEach((element) {
       switch (element) {
@@ -348,7 +348,7 @@ String decodeWASDGraphic(String input, List<String> controlSet) {
 
     if (minLetterX < 0) xOffset = -1 * minLetterX;
 
-    Map<String, String> transformedLetter = new Map();
+    Map<String, String> transformedLetter = Map();
     letter.forEach((key, value) {
       transformedLetter[(int.parse(key.split('|')[0]) + xOffset).toString() +
           '|' +

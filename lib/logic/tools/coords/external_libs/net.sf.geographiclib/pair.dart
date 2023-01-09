@@ -11,17 +11,17 @@
 
  **********************************************************************/
 
-/**
+/*
  * A pair of double precision numbers.
  * <p>
  * This duplicates the C++ class {@code std::pair<double, double>}.
  **********************************************************************/
 class Pair {
-  /**
+  /*
    * The first member of the pair.
    **********************************************************************/
   double first;
-  /**
+  /*
    * The second member of the pair.
    **********************************************************************/
   double second;

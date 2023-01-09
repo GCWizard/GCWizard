@@ -23,7 +23,7 @@ class WhitespaceResult {
       this.error = false,
       this.errorText = '',
       this.finished = true,
-      this.state = null});
+      this.state});
 }
 
 class WhitespaceState {
@@ -271,7 +271,6 @@ class _Interpreter {
           _FlowControl().parse();
           break;
       }
-      ;
     }
     if (_loading) {
       if (_dbg) print('Finished marking labels. Starting program sequence...');

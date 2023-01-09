@@ -27,10 +27,7 @@ class _GridConfiguration {
   _GridConfiguration(this.type, this.width, this.height,
       {this.enumeration,
       this.columnEnumeration,
-      this.rowEnumeration,
-      this.enumerationStart,
-      this.enumerationStartDirection,
-      this.enumerationBehaviour});
+      this.rowEnumeration});
 }
 
 final _GRID_CUSTOM_KEY = 'grid_custom';

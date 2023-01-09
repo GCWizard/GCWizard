@@ -166,9 +166,9 @@ malbolgeOutput interpretMalbolge(String program, String STDIN, bool strict) {
   String opcode = '';
   bool halt = false;
   int input = 0;
-  List<String> output = new List<String>();
-  List<String> assembler = new List<String>();
-  List<String> mnemonic = new List<String>();
+  List<String> output = <String>[];
+  List<String> assembler = <String>[];
+  List<String> mnemonic = <String>[];
   String STDOUT = '';
 
   while (!halt) {
@@ -234,7 +234,7 @@ malbolgeOutput interpretMalbolge(String program, String STDIN, bool strict) {
         halt = true;
         break;
     }
-    ;
+
     if (strict) {
       if (memory[c] < 33 || memory[c] > 126) {
         output.addAll([
@@ -252,7 +252,7 @@ malbolgeOutput interpretMalbolge(String program, String STDIN, bool strict) {
         ]);
         return malbolgeOutput(output, assembler, mnemonic);
       }
-      ;
+
       memory[c] = xlat2.codeUnitAt(memory[c] - 33);
     } else {
       if (33 <= memory[c] && memory[c] <= 126) {

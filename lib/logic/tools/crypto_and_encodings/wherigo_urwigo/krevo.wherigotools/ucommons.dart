@@ -1,6 +1,6 @@
 import 'dart:math';
 
-/**
+/*
  * Port from https://github.com/Krevo/WherigoTools/blob/master/ucommons.php
  *
  * MIT License

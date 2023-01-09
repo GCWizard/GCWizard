@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/date_and_time/day_calculator.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_datetime_picker.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_onoff_switch.dart';
 import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class DayCalculator extends StatefulWidget {
   @override
@@ -81,15 +81,16 @@ class DayCalculatorState extends State<DayCalculator> {
       return GCWDefaultOutput();
     }
 
-    var rows = columnedMultiLineOutput(context, [
+    var rows = [
       [i18n(context, 'dates_daycalculator_days'), outputData.days],
       [i18n(context, 'dates_daycalculator_hours'), outputData.hours],
       [i18n(context, 'dates_daycalculator_minutes'), outputData.minutes],
       [i18n(context, 'dates_daycalculator_seconds'), outputData.seconds]
-    ]);
+    ];
 
-    rows.insert(0, GCWTextDivider(text: i18n(context, 'common_output')));
-
-    return Column(children: rows);
+    return GCWColumnedMultilineOutput(
+        firstRows: [GCWTextDivider(text: i18n(context, 'common_output'))],
+        data: rows
+    );
   }
 }

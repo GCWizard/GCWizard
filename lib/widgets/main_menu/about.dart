@@ -38,7 +38,7 @@ class AboutState extends State<About> {
   _buildUrl(String key) {
     return Container(
         child: Row(children: <Widget>[
-          Expanded(child: GCWText(text: i18n(context, 'about_${key}')), flex: 2),
+          Expanded(child: GCWText(text: i18n(context, 'about_$key')), flex: 2),
           Expanded(
               child: InkWell(
                 child: Text(
@@ -78,6 +78,7 @@ class AboutState extends State<About> {
         _buildUrl('faq'),
         _buildUrl('blog'),
         _buildUrl('twitter'),
+        _buildUrl('mastodon'),
         _buildUrl('facebook'),
         _buildUrl('webversion'),
         GCWDivider(),

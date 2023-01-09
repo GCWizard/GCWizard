@@ -6,7 +6,7 @@ class BreakerResult {
   double fitness;
 
   BreakerResult({
-    this.key = null,
+    this.key,
     this.fitness = 0,
   });
 }

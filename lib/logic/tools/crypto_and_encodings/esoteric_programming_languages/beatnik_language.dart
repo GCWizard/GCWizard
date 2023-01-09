@@ -34,7 +34,7 @@ BeatnikOutput generateBeatnik(var ScrabbleVersion, output) {
   int h = 0;
   int r = 0;
   int add = 0;
-  List<int> assembler = new List<int>();
+  List<int> assembler = <int>[];
 
   // reverse input - because we have to use a stack
   output = output.split('').reversed.join('');
@@ -82,8 +82,8 @@ BeatnikOutput generateBeatnik(var ScrabbleVersion, output) {
   // add opCode for halt
   assembler.add(17);
 
-  List<String> assemblerProgramm = new List<String>();
-  List<String> mnemonicProgramm = new List<String>();
+  List<String> assemblerProgramm = <String>[];
+  List<String> mnemonicProgramm = <String>[];
   for (int i = 0; i < assembler.length; i++) {
     if (assembler[i] == 5 || assembler[i] == 13 || assembler[i] == 14 || assembler[i] == 15 || assembler[i] == 16) {
       assemblerProgramm.add(assembler[i].toString() + ' ' + assembler[i + 1].toString());
@@ -102,7 +102,7 @@ class BeatnikStack {
   List<int> _stack;
 
   BeatnikStack() {
-    _stack = new List<int>();
+    _stack = <int>[];
   }
 
   void push(int c) {
@@ -206,7 +206,6 @@ bool _checkNormalize(List<String> instructions) {
       i = instructions.length;
     }
   }
-  ;
   return result;
 }
 
@@ -217,10 +216,10 @@ BeatnikOutput interpretBeatnik(var ScrabbleVersion, String sourcecode, input) {
   var _currentValues = [];
   int value = 0;
 
-  List<int> assembler = new List<int>();
-  List<String> scrabbleProgram = new List<String>();
+  List<int> assembler = <int>[];
+  List<String> scrabbleProgram = <String>[];
   bool normalized = _checkNormalize(sourcecode.split(' '));
-  List<String> program = new List<String>();
+  List<String> program = <String>[];
 
   if (normalized)
     program = sourcecode.split(' ');
@@ -247,9 +246,9 @@ BeatnikOutput interpretBeatnik(var ScrabbleVersion, String sourcecode, input) {
     }
   }
 
-  List<DebugOutput> debugProgram = new List<DebugOutput>();
-  List<String> assemblerProgram = new List<String>();
-  List<String> mnemonicProgram = new List<String>();
+  List<DebugOutput> debugProgram = <DebugOutput>[];
+  List<String> assemblerProgram = <String>[];
+  List<String> mnemonicProgram = <String>[];
   String space = '';
   String output = '';
   bool exit = false;

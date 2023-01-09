@@ -4,10 +4,10 @@ import 'package:gc_wizard/logic/tools/crypto_and_encodings/alphabet_values.dart'
 import 'package:gc_wizard/logic/tools/crypto_and_encodings/gade.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_textfield.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_onoff_switch.dart';
 import 'package:gc_wizard/widgets/common/gcw_output.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class Gade extends StatefulWidget {
   @override
@@ -58,7 +58,7 @@ class GadeState extends State<Gade> {
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     String _input;
     if (_currentParseLetters) {
       _input = AlphabetValues(alphabet: alphabetAZ.alphabet)
@@ -77,18 +77,18 @@ class GadeState extends State<Gade> {
       children: [
         GCWOutput(
             title: i18n(context, 'common_input'),
-            child: Column(
-                children: columnedMultiLineOutput(context, [
-              [i18n(context, 'gade_parsed'), _input],
-              [i18n(context, 'gade_sorted'), sortedStr]
-            ]))),
+            child: GCWColumnedMultilineOutput(
+            data: [
+                    [i18n(context, 'gade_parsed'), _input],
+                    [i18n(context, 'gade_sorted'), sortedStr]
+                  ]
+            )
+        ),
         GCWDefaultOutput(
-          child: Column(
-            children: columnedMultiLineOutput(
-                null,
-                buildGade(_input).entries.map((entry) {
-                  return [entry.key, entry.value];
-                }).toList()),
+          child: GCWColumnedMultilineOutput(
+              data: buildGade(_input).entries.map((entry) {
+                            return [entry.key, entry.value];
+                          }).toList()
           ),
         )
       ],

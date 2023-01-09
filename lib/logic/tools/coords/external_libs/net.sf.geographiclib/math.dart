@@ -1,18 +1,18 @@
 import 'dart:math';
 
-/**
+/*
  * Constant by which to multiply an angular value in degrees to obtain an
  * angular value in radians.
  */
 final double _DEGREES_TO_RADIANS = 0.017453292519943295;
 
-/**
+/*
  * Constant by which to multiply an angular value in radians to obtain an
  * angular value in degrees.
  */
 final double _RADIANS_TO_DEGREES = 57.29577951308232;
 
-/**
+/*
  * Converts an angle measured in degrees to an approximately
  * equivalent angle measured in radians.  The conversion from
  * degrees to radians is generally inexact.
@@ -25,7 +25,7 @@ double toRadians(double angdeg) {
   return angdeg * _DEGREES_TO_RADIANS;
 }
 
-/**
+/*
  * Converts an angle measured in radians to an approximately
  * equivalent angle measured in degrees.  The conversion from
  * radians to degrees is generally inexact; users should
@@ -40,7 +40,7 @@ double toDegrees(double angrad) {
   return angrad * _RADIANS_TO_DEGREES;
 }
 
-/**
+/*
  * @summary Copy the sign.
  * @param {number} x gives the magitude of the result.
  * @param {number} y gives the sign of the result.

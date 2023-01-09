@@ -4,12 +4,12 @@ import 'package:gc_wizard/logic/common/date_utils.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/maya_calendar.dart';
 import 'package:gc_wizard/theme/theme.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_iconbutton.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_integer_spinner.dart';
 import 'package:gc_wizard/widgets/common/gcw_segmentdisplay_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_toolbar.dart';
 import 'package:gc_wizard/widgets/common/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/widgets/tools/crypto_and_encodings/maya_numbers_segment_display.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class MayaCalendar extends StatefulWidget {
   @override
@@ -170,14 +170,12 @@ class MayaCalendarState extends State<MayaCalendar> {
       return Column(
         children: <Widget>[
           _buildDigitalOutput(segments['displays']),
-          Column(
-            children: columnedMultiLineOutput(
-                context,
-                outputDates.entries.map((entry) {
-                  return [entry.key, entry.value];
-                }).toList(),
-                flexValues: [1, 1]),
-          )
+          GCWColumnedMultilineOutput(
+            data: outputDates.entries.map((entry) {
+                    return [entry.key, entry.value];
+                  }).toList(),
+            flexValues: [1, 1]
+          ),
         ],
       );
     } else {
@@ -201,14 +199,12 @@ class MayaCalendarState extends State<MayaCalendar> {
       return Column(
         children: <Widget>[
           _buildDigitalOutput(segments['displays']),
-          Column(
-            children: columnedMultiLineOutput(
-                context,
-                outputDates.entries.map((entry) {
-                  return [entry.key, entry.value];
-                }).toList(),
-                flexValues: [1, 1]),
-          )
+          GCWColumnedMultilineOutput(
+            data: outputDates.entries.map((entry) {
+                    return [entry.key, entry.value];
+                  }).toList(),
+            flexValues: [1, 1]
+          ),
         ],
       );
     }

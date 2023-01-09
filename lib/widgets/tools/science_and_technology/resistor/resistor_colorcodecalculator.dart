@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/resistor.dart';
 import 'package:gc_wizard/theme/theme.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_integer_spinner.dart';
 import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
 import 'package:gc_wizard/widgets/tools/science_and_technology/resistor/gcw_resistor_band_dropdownbutton.dart';
 import 'package:gc_wizard/widgets/tools/science_and_technology/resistor/resistor_formatter.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class ResistorColorCodeCalculator extends StatefulWidget {
   @override
@@ -204,8 +204,8 @@ class ResistorColorCodeCalculatorState extends State<ResistorColorCodeCalculator
     );
   }
 
-  _buildOutput() {
-    var rows = [];
+  Widget _buildOutput() {
+    var outputs = [[]];
 
     ResistorValue resistorValue;
 
@@ -249,7 +249,7 @@ class ResistorColorCodeCalculatorState extends State<ResistorColorCodeCalculator
 
     resistorValue = getResistorValue(colors);
     if (resistorValue.value != null) {
-      var outputs = [
+      outputs = [
         [
           i18n(context, 'resistor_value'),
           formatResistorValue(resistorValue.value) + ' ' + formatResistorTolerance(resistorValue.tolerance)
@@ -265,12 +265,12 @@ class ResistorColorCodeCalculatorState extends State<ResistorColorCodeCalculator
               ]
             : null
       ];
-
-      rows = columnedMultiLineOutput(context, outputs, flexValues: [2, 3]);
     }
 
-    rows.insert(0, GCWTextDivider(text: i18n(context, 'common_output')));
-
-    return Column(children: rows);
+    return GCWColumnedMultilineOutput(
+        firstRows: [GCWTextDivider(text: i18n(context, 'common_output'))],
+        data: outputs,
+        flexValues: [2, 3]
+    );
   }
 }

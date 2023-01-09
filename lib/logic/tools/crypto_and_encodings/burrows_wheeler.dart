@@ -9,7 +9,7 @@ BWTOutput encryptBurrowsWheeler(String plain, indexChar) {
   if (plain == '' || plain == null) return BWTOutput('', '');
 
   int len = plain.length;
-  List<String> matrix = new List<String>();
+  List<String> matrix = <String>[];
 
   matrix.add(plain);
   for (int i = 0; i < len - 1; i++) {

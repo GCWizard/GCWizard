@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/coords/parser/latlon.dart';
 import 'package:gc_wizard/logic/tools/crypto_and_encodings/substitution.dart';
-import 'package:gc_wizard/logic/tools/formula_solver/parser.dart';
+import 'package:gc_wizard/logic/tools/formula_solver/formula_parser.dart';
 import 'package:gc_wizard/persistence/formula_solver/json_provider.dart';
 import 'package:gc_wizard/persistence/formula_solver/model.dart';
 import 'package:gc_wizard/persistence/variable_coordinate/json_provider.dart' as var_coords_provider;

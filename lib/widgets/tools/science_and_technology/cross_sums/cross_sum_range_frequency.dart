@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/cross_sum.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dialog.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_integer_spinner.dart';
 import 'package:gc_wizard/widgets/common/gcw_submit_button.dart';
 import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
 import 'package:gc_wizard/widgets/common/gcw_twooptions_switch.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 final _ALERT_MAX_RANGE = 25000;
 
@@ -100,7 +100,7 @@ class CrossSumRangeFrequencyState extends State<CrossSumRangeFrequency> {
     });
   }
 
-  _calculateOutput() {
+  Widget _calculateOutput() {
     var outputData = _currentFrequencies.entries.map((frequency) {
       return [frequency.key, frequency.value];
     }).toList();
@@ -111,6 +111,6 @@ class CrossSumRangeFrequencyState extends State<CrossSumRangeFrequency> {
       outputData.sort((a, b) => b[1].compareTo(a[1]));
     }
 
-    return Column(children: columnedMultiLineOutput(context, outputData));
+    return GCWColumnedMultilineOutput(data: outputData);
   }
 }

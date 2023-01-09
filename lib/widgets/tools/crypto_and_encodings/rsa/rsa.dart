@@ -3,12 +3,12 @@ import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/crypto_and_encodings/rsa.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_textfield.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_toast.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_submit_button.dart';
 import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
 import 'package:gc_wizard/widgets/common/gcw_twooptions_switch.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 import 'package:gc_wizard/widgets/utils/textinputformatter/integer_textinputformatter.dart';
 
 class RSA extends StatefulWidget {
@@ -142,22 +142,21 @@ class RSAState extends State<RSA> {
         }
       }
 
-      var calculatedParameters = columnedMultiLineOutput(context, [
+      var calculatedParameters = [
         d != null ? [i18n(context, 'rsa_d'), d] : null,
         [i18n(context, 'rsa_n'), N(p, q)],
         [i18n(context, 'rsa_phi'), phi(p, q)]
-      ], flexValues: [
-        1,
-        2
-      ]);
+      ];
 
       outputChildren.add(
         GCWTextDivider(text: i18n(context, 'rsa_rsa_calculatedparameters')),
       );
 
-      outputChildren.addAll(calculatedParameters);
-
-      _output = Column(children: outputChildren);
+      _output = GCWColumnedMultilineOutput(
+          firstRows: outputChildren,
+          data: calculatedParameters,
+          flexValues: [1, 2]
+      );
     } catch (exception) {
       _output = null;
       showToast(i18n(context, exception.message));

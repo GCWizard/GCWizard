@@ -1,4 +1,4 @@
-/**
+/*
  * Port from https://github.com/Krevo/WherigoTools/blob/master/readustring.php
  * Port from Dennis Treysa
  *

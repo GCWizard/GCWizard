@@ -62,7 +62,6 @@ class FormulaSolverFormulaValuesState extends State<FormulaSolverFormulaValues> 
       insertFormulaValue(newValue, widget.group);
 
       _newKeyController.text = _maxLetter();
-      ;
     }
   }
 

@@ -4,10 +4,10 @@ import 'package:gc_wizard/logic/tools/crypto_and_encodings/wherigo_urwigo/krevo.
 import 'package:gc_wizard/logic/tools/crypto_and_encodings/wherigo_urwigo/urwigo_tools.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_button.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_textfield.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_integer_spinner.dart';
 import 'package:gc_wizard/widgets/common/gcw_twooptions_switch.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class UrwigoHashBreaker extends StatefulWidget {
   @override
@@ -92,11 +92,13 @@ class UrwigoHashBreakerState extends State<UrwigoHashBreaker> {
   Widget _buildOutput(BuildContext context) {
     if (_currentMode == GCWSwitchPosition.right) {
       return GCWDefaultOutput(
-          child: Column(
-              children: columnedMultiLineOutput(context, [
-        [i18n(context, 'common_letters'), _currentOutputAlphabetical],
-        [i18n(context, 'common_numbers'), _currentOutputNumeric]
-      ])));
+          child: GCWColumnedMultilineOutput(
+              data: [
+                      [i18n(context, 'common_letters'), _currentOutputAlphabetical],
+                      [i18n(context, 'common_numbers'), _currentOutputNumeric]
+                    ]
+          )
+      );
     } else {
       return GCWDefaultOutput(child: RSHash(_currentTextInput).toString());
     }

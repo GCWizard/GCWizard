@@ -332,7 +332,6 @@ Map<String, dynamic> decodeCistercian(String input) {
     else
       out = out + ' ' + digit.toString();
   }
-  ;
 
   return {'displays': displays, 'text': out};
 }

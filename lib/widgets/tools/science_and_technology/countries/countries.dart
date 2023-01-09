@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/countries.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_twooptions_switch.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class Countries extends StatefulWidget {
   final List<String> fields;
@@ -67,8 +67,7 @@ class CountriesState extends State<Countries> {
     );
   }
 
-  _buildOutput() {
-    var output;
+  Widget _buildOutput() {
 
     var field = _currentSort == 0 ? widget.fields[0] : widget.fields[_currentSort - 1];
     var flexValues = List<int>.generate(widget.fields.length, (index) => 1);
@@ -100,10 +99,10 @@ class CountriesState extends State<Countries> {
       return a[1].compareTo(b[1]);
     });
 
-    output = columnedMultiLineOutput(context, data, flexValues: flexValues, copyColumn: 1);
-
-    return Column(
-      children: output,
+    return GCWColumnedMultilineOutput(
+      data: data,
+      flexValues: flexValues,
+      copyColumn: 1
     );
   }
 }

@@ -3795,7 +3795,7 @@ NumeralWordsOutput _isNumeralWordBelow1000(String input, NumeralWordsLanguage la
   String pattern = '';
   int numberBefore = 0;
   int numberAfter = 0;
-  List<String> decode = new List<String>();
+  List<String> decode = <String>[];
   NumeralWordsOutput resultBefore;
   NumeralWordsOutput resultAfter;
   switch (language) {

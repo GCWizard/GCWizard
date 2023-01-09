@@ -89,7 +89,7 @@ class CowOutput {
 }
 
 List<int> memoryBlocksArray = List<int>.generate(MEMORY_SIZE, (int index) => 0);
-List<String> debug = new List<String>();
+List<String> debug = <String>[];
 int currentBlockIndex = 0;
 String error = '';
 bool halt = false;
@@ -101,8 +101,8 @@ String STDOUT = '';
 CowOutput interpretCow(String code, {String STDIN}) {
   if (code == null || code.length == 0) return CowOutput('', '', []);
 
-  code = code.replaceAll(new RegExp(r'\s'), '');
-  List<int> opcodesArray = new List<int>();
+  code = code.replaceAll(RegExp(r'\s'), '');
+  List<int> opcodesArray = <int>[];
   int numberOfInstructions = 0;
 
   for (int i = 0; i < code.length ~/ 3; i++) {

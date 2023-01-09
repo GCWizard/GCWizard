@@ -22,8 +22,8 @@ class Kitchen {
       String language) {
     this.valid = true;
     this.exception = false;
-    this.meal = new List<String>();
-    this.error = new List<String>();
+    this.meal = <String>[];
+    this.error = <String>[];
     this.recipes = recipes;
     this.liquefyMissing = true;
     //start with at least 1 mixing bowl.

@@ -4,10 +4,10 @@ import 'package:gc_wizard/logic/common/date_utils.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/date_and_time/calendar.dart';
 import 'package:gc_wizard/logic/tools/science_and_technology/maya_calendar.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
+import 'package:gc_wizard/widgets/common/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_date_picker.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_double_spinner.dart';
-import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 
 class Calendar extends StatefulWidget {
   @override
@@ -81,7 +81,7 @@ class CalendarState extends State<Calendar> {
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     double jd = 0.0;
     Map output = new Map();
     switch (_currentCalendarSystem) {
@@ -162,14 +162,13 @@ class CalendarState extends State<Calendar> {
         _DateOutputToString(context, JulianDateToPotrzebieCalendar(jd), CalendarSystem.POTRZEBIECALENDAR);
 
     return GCWDefaultOutput(
-        child: Column(
-      children: columnedMultiLineOutput(
-          context,
-          output.entries.map((entry) {
-            return [i18n(context, entry.key), entry.value];
-          }).toList(),
-          flexValues: [1, 1]),
-    ));
+        child: GCWColumnedMultilineOutput(
+            data: output.entries.map((entry) {
+                    return [i18n(context, entry.key), entry.value];
+                  }).toList(),
+            flexValues: [1, 1]
+          ),
+    );
   }
 
   String _HebrewDateToString(DateOutput HebrewDate, double jd) {

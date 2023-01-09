@@ -25,7 +25,7 @@ class PietStack {
   }
 
   int divide() {
-    _applyTernaryIf((int s1, int s2) => (s2 / s1).toInt(), (_, int s2) => s2 != 0);
+    _applyTernaryIf((int s1, int s2) => s2 ~/ s1, (_, int s2) => s2 != 0);
   }
 
   int mod() {
