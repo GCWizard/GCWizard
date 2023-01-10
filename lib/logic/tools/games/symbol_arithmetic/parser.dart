@@ -149,41 +149,6 @@ class SymbolMatrix {
   }
 }
 
-
-class ArrayEntry {
-  final int x;
-  final int y;
-  final String value;
-  final bool userDefinied;
-
-  ArrayEntry(this.x, this.y, this.value, this.userDefinied);
-
-  ArrayEntry.fromJson(Map<String, dynamic> json)
-      : x = json['x'],
-        y = json['y'],
-        value = json['v'],
-        userDefinied = json['ud']
-  ;
-
-  Map<String, dynamic> toJson() => {
-    'x': x,
-    'y': y,
-    'v': value,
-    'ud': userDefinied,
-  };
-}
-// class ArrayEntry {
-//   int x;
-//   int y;
-//   ArrayEntry(int x, int y) {
-//     this.x = x;
-//     this.y = y;
-//   }
-//   toJson ()= jsonEncode
-//
-// }
-
-
 final Map<String, String> operatorList = {
   '+':'+',
   '-':'-',
@@ -245,3 +210,68 @@ Map<String, dynamic> breakHash(
 
   return {'state': 'ok', 'text': results[0]['text']};
 }
+
+bool _solveFormula(String formula, Dictionary<String, int> binds)
+{
+  foreach (var bind in binds)
+  {
+    formula = formula.Replace(bind.Key, bind.Value.ToString());
+  }
+  var exp = new Expression(formula);
+  return (bool)exp.Eval();
+}
+
+
+List<String> sortFormulasByUsedSubstitutionsCount(List<String> formulas, Map<String, String> substitutions) {
+  var sortedKeys = _sortSubstitutionsByLength(substitutions);
+  var usedSubstitutionsCount = <int>[];
+
+  formulas.forEach((formula) {
+    usedSubstitutionsCount.add(_usedSubstitutions(formula, sortedKeys).length);
+  });
+
+  return _sortByUsedSubstitutionsCount(formulas, usedSubstitutionsCount);
+}
+
+Map<String, String> _sortSubstitutionsByLength(Map<String, String> substitutions) {
+  return Map.fromEntries(
+      substitutions.entries.toList()..sort((e1, e2) => e1.key.length.compareTo(e2.key.length)));
+}
+
+Map<String, String> _usedSubstitutions(String formula, Map<String, String> sortedSubstitutions) {
+  var usedKeys = Map<String, String>();
+
+  sortedSubstitutions.forEach((key, value) {
+    if (formula.contains(key)) {
+      usedKeys.addAll({key: value});
+      formula = formula.replaceAll(key, '');
+    }
+  });
+
+  return usedKeys;
+}
+
+List<String> _sortByUsedSubstitutionsCount(List<String> formulas, List<int> keyCount) {
+  var changed = true;
+
+  while (changed) {
+    changed = false;
+
+    for (int i = 0; i < keyCount.length - 1; i++) {
+      if (keyCount[i] > keyCount[i + 1]) {
+        var tmp = keyCount[i];
+        keyCount[i] = keyCount[i + 1];
+        keyCount[i + 1] = tmp;
+
+        var tmp1 = formulas[i];
+        formulas[i] = formulas[i + 1];
+        formulas[i + 1] = tmp1;
+
+        changed = true;
+      }
+    }
+  }
+
+  return formulas;
+}
+

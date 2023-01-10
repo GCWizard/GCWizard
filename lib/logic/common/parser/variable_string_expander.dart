@@ -75,7 +75,7 @@ class VariableStringExpander {
 
   int _countCombinations;
 
-  // Expands a "compressed" variable group like "5-10" to "5,6,7,8,9,10"
+  /// Expands a "compressed" variable group like "5-10" to "5,6,7,8,9,10"
   List<String> _expandVariableGroup(String group) {
     var output;
 
@@ -263,57 +263,3 @@ int preCheckCombinations(Map<String, String> substitutions) {
 
   return count[0]['count'];
 }
-
-List<String> sortFormulasByUsedSubstitutionsCount(List<String> formulas, Map<String, String> substitutions) {
-  var sortedKeys = _sortKeyByLength(substitutions);
-  var usedSubstitutionsCount = <int>[];
-
-  formulas.forEach((formula) {
-    usedSubstitutionsCount.add(_usedSubstitutions(formula, sortedKeys).length);
-  });
-
-  return _sortByUsedSubstitutionsCount(formulas, usedSubstitutionsCount);
-}
-
-Map<String, String> _sortKeyByLength(Map<String, String> substitutions) {
-  return Map.fromEntries(
-      substitutions.entries.toList()..sort((e1, e2) => e1.key.length.compareTo(e2.key.length)));
-}
-
-Map<String, String> _usedSubstitutions(String formula, Map<String, String> sortedSubstitutions) {
-  var usedKeys = Map<String, String>();
-
-  sortedSubstitutions.forEach((key, value) {
-    if (formula.contains(key)) {
-      usedKeys.addAll({key: value});
-      formula = formula.replaceAll(key, '');
-    }
-  });
-
-  return usedKeys;
-}
-
-List<String> _sortByUsedSubstitutionsCount(List<String> formulas, List<int> keyCount) {
-  var changed = true;
-
-  while (changed) {
-    changed = false;
-
-    for (int i = 0; i < keyCount.length - 1; i++) {
-      if (keyCount[i] > keyCount[i + 1]) {
-        var tmp = keyCount[i];
-        keyCount[i] = keyCount[i + 1];
-        keyCount[i + 1] = tmp;
-
-        var tmp1 = formulas[i];
-        formulas[i] = formulas[i + 1];
-        formulas[i + 1] = tmp1;
-
-        changed = true;
-      }
-    }
-  }
-
-  return formulas;
-}
-
