@@ -6,6 +6,9 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:gc_wizard/logic/common/parser/variable_string_expander.dart';
+import 'package:gc_wizard/logic/tools/crypto_and_encodings/substitution.dart';
+import 'package:gc_wizard/logic/tools/formula_solver/formula_parser.dart';
+import 'package:math_expressions/math_expressions.dart';
 
 class SymbolMatrix {
   List<List<String>> matrix;
@@ -157,25 +160,20 @@ final Map<String, String> operatorList = {
 };
 
 
-class HashBreakerJobData {
-  final String input;
-  final String searchMask;
+class SymbolArithmeticJobData {
+  final List<String> formulas;
   final Map<String, String> substitutions;
-  final Function hashFunction;
 
-  HashBreakerJobData({
-    this.input = '',
-    this.searchMask = '',
+  SymbolArithmeticJobData({
+    this.formulas,
     this.substitutions,
-    this.hashFunction,
   });
 }
 
-Future<Map<String, dynamic>> breakHashAsync(dynamic jobData) async {
+Future<Map<String, dynamic>> solveSymbolArithmeticAsync(dynamic jobData) async {
   if (jobData == null) return null;
 
-  var output = breakHash(jobData.parameters.input, jobData.parameters.searchMask, jobData.parameters.substitutions,
-      jobData.parameters.hashFunction,
+  var output = solveSymbolArithmetic(jobData.parameters.formulas, jobData.parameters.substitutions,
       sendAsyncPort: jobData.sendAsyncPort);
 
   if (jobData.sendAsyncPort != null) jobData.sendAsyncPort.send(output);
@@ -183,43 +181,54 @@ Future<Map<String, dynamic>> breakHashAsync(dynamic jobData) async {
   return output;
 }
 
-Map<String, dynamic> breakHash(
-    String input, String searchMask, Map<String, String> substitutions, Function hashFunction,
+Map<String, dynamic> solveSymbolArithmetic(
+    List<String> formulas, Map<String, String> substitutions,
     {SendPort sendAsyncPort}) {
-  if (input == null ||
-      input.length == 0 ||
-      searchMask == null ||
-      searchMask.length == 0 ||
-      substitutions == null ||
-      hashFunction == null) return null;
+  if (formulas == null ||
+      formulas.length == 0 ||
+      substitutions == null) return null;
 
-  input = input.toLowerCase();
-  var expander = VariableStringExpander(searchMask, substitutions, onAfterExpandedText: (expandedText) {
-    var withoutBrackets = expandedText.replaceAll(RegExp(r'[\[\]]'), '');
-    var hashValue = hashFunction(withoutBrackets).toLowerCase();
+  ContextModel _context = ContextModel();
+  Parser parser;
+  var substitutedFormula = formulas.first;
+  List<Map<String, dynamic>> expandedFormulas;
 
-    if (hashValue == input)
-      return withoutBrackets;
-    else
-      return null;
-  }, breakCondition: VariableStringExpanderBreakCondition.BREAK_ON_FIRST_FOUND, sendAsyncPort: sendAsyncPort);
 
-  var results = expander.run();
-
-  if (results == null || results.length == 0) return {'state': 'not_found'};
-
-  return {'state': 'ok', 'text': results[0]['text']};
-}
-
-bool _solveFormula(String formula, Dictionary<String, int> binds)
-{
-  foreach (var bind in binds)
-  {
-    formula = formula.Replace(bind.Key, bind.Value.ToString());
+  try {
+    expandedFormulas = VariableStringExpander(substitutedFormula, substitutions).run();
+  } catch (e) {
+    return {'state': FormulaState.STATE_SINGLE_ERROR, 'result': substitutedFormula};
   }
-  var exp = new Expression(formula);
-  return (bool)exp.Eval();
+
+  Expression expression = parser.parse(formulas.first);
+  var result = expression.evaluate(EvaluationType.REAL, _context);
+
+
+  // var expander = VariableStringExpander(formulas.first, substitutions, onAfterExpandedText: (expandedText) {
+  //   var withoutBrackets = expandedText.replaceAll(RegExp(r'[\[\]]'), '');
+  //
+  //   if (hashValue == input)
+  //     return withoutBrackets;
+  //   else
+  //     return null;
+  // }, sendAsyncPort: sendAsyncPort);
+  //
+  // var results = expander.run();
+  //
+  // if (results == null || results.length == 0) return {'state': 'not_found'};
+  //
+  // return {'state': 'ok', 'text': results[0]['text']};
 }
+
+// bool _solveFormula(String formula, Dictionary<String, int> binds)
+// {
+//   foreach (var bind in binds)
+//   {
+//     formula = formula.Replace(bind.Key, bind.Value.ToString());
+//   }
+//   var exp = new Expression(formula);
+//   return (bool)exp.Eval();
+// }
 
 
 List<String> sortFormulasByUsedSubstitutionsCount(List<String> formulas, Map<String, String> substitutions) {
