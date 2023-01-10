@@ -195,12 +195,7 @@ Map<String, dynamic> solveSymbolArithmetic(
 
   var usedSubstitutions = _usedSubstitutions(substitutedFormula, substitutions);
   try {
-    var expander = VariableStringExpander(substitutedFormula, usedSubstitutions, onAfterExpandedText: (expandedText) {
-      Expression expression = parser.parse(expandedText);
-      return expression.evaluate(EvaluationType.REAL, _context) == 0 ? expandedText : null;
-    });
-
-    expandedFormulas = expander.run();
+    expandedFormulas = _solveFormula(substitutedFormula, usedSubstitutions, parser, _context);
   } catch (e) {
     return {'state': FormulaState.STATE_SINGLE_ERROR, 'result': substitutedFormula};
   }
@@ -223,15 +218,14 @@ print(expandedFormulas);
    return {'state': 'ok', 'variables': expandedFormulas.first['variables']};
 }
 
-// bool _solveFormula(String formula, Dictionary<String, int> binds)
-// {
-//   foreach (var bind in binds)
-//   {
-//     formula = formula.Replace(bind.Key, bind.Value.ToString());
-//   }
-//   var exp = new Expression(formula);
-//   return (bool)exp.Eval();
-// }
+List<Map<String, dynamic>> _solveFormula(String formula, Map<String, String> substitutions, Parser parser, ContextModel _context) {
+    var expander = VariableStringExpander(formula, substitutions, onAfterExpandedText: (expandedText) {
+      Expression expression = parser.parse(expandedText);
+      return expression.evaluate(EvaluationType.REAL, _context) == 0 ? expandedText : null;
+    });
+
+    return expander.run();
+}
 
 // bool _checkFormula(string formula, Dictionary<String, int> binds)
 // {
