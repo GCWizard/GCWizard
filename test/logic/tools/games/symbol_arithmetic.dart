@@ -2,7 +2,7 @@ import 'dart:math';
 
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/logic/tools/formula_solver/formula_parser.dart';
-import 'package:gc_wizard/logic/tools/games/symbol_arithmetic/parser.dart';
+import 'package:gc_wizard/logic/tools/games/symbol_arithmetic.dart';
 import 'package:gc_wizard/persistence/formula_solver/model.dart';
 
 void main() {
@@ -43,8 +43,8 @@ void main() {
       // {'formula' : null, 'expectedOutput' : {'state': 'error', 'output': [{'result': null, 'state': 'error'}]}},
       // {'formula' : {''}.toList(), 'expectedOutput' : {'state': 'error', 'output': [{'result': '', 'state': 'error'}]}},
       // {'formula' : {' '}.toList(), 'expectedOutput' : {'state': 'error', 'output': [{'result': '', 'state': 'error'}]}},
-      {'formula' : {'E'}.toList(), 'values': values, 'expectedOutput' : {'state': 'error', 'output': [{'result': 'A', 'state': 'error'}]}},
-      {'formula' : {'E-(2)'}.toList(), 'values': values, 'expectedOutput' : {'state': 'error', 'output': [{'result': 'A', 'state': 'error'}]}},
+      {'formula' : {'E'}.toList(), 'values': values, 'expectedOutput' : {'state': 'ok', 'variables': 1.0}},
+      {'formula' : {'E-(2)'}.toList(), 'values': values, 'expectedOutput' : {'state': 'ok', 'variables': -1.0}},
       // {'formula' : {'A'}.toList(), 'values': null, 'expectedOutput' : {'state': 'error', 'output': [{'result': 'A', 'state': 'error'}]}},
       // {'formula' : '0', 'values': null, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0', 'state': 'ok'}]}},
       // {'formula' : 'A', 'values': <String, String>{}, 'expectedOutput' : {'state': 'error', 'output': [{'result': 'A', 'state': 'error'}]}},

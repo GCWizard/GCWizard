@@ -215,9 +215,9 @@ print(result);
   //
   // var results = expander.run();
   //
-  // if (results == null || results.length == 0) return {'state': 'not_found'};
-  //
-  // return {'state': 'ok', 'text': results[0]['text']};
+   if (result == null) return {'state': 'not_found'};
+
+   return {'state': 'ok', 'variables': result};
 }
 
 // bool _solveFormula(String formula, Dictionary<String, int> binds)

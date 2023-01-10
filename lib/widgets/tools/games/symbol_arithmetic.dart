@@ -3,17 +3,18 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/games/catan.dart';
-import 'package:gc_wizard/logic/tools/games/symbol_arithmetic/parser.dart';
+import 'package:gc_wizard/logic/tools/games/symbol_arithmetic.dart';
 import 'package:gc_wizard/theme/theme.dart';
-import 'package:gc_wizard/widgets/common/base/gcw_dialog.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_iconbutton.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_textfield.dart';
+import 'package:gc_wizard/widgets/common/gcw_async_executer.dart';
 import 'package:gc_wizard/widgets/common/gcw_default_output.dart';
 import 'package:gc_wizard/widgets/common/gcw_expandable.dart';
 import 'package:gc_wizard/widgets/common/gcw_integer_spinner.dart';
 import 'package:gc_wizard/widgets/common/gcw_key_value_editor.dart';
 import 'package:gc_wizard/widgets/common/gcw_paste_button.dart';
+import 'package:gc_wizard/widgets/common/gcw_submit_button.dart';
 import 'package:gc_wizard/widgets/common/gcw_text_divider.dart';
 import 'package:gc_wizard/widgets/common/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
@@ -29,6 +30,7 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
   var _maskController;
 
   var _currentInput = '';
+  var _currentOutput = '';
   var _currentMask = '';
   var _currentFromInput = '';
   var _currentToInput = '';
@@ -154,6 +156,7 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
           ),
         ),
         _buildVariablesEditor(),
+        _buildSubmitButton(),
         GCWIconButton(
           onPressed: () {
             var valid = _currentMatrix.isValidMatrix();
@@ -168,23 +171,6 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
             }
           },
         ),
-        // GCWTextField(
-        //   onChanged: (text) {
-        //     setState(() {
-        //       _currentInput = text;
-        //     });
-        //   },
-        // ),
-        // GCWTwoOptionsSwitch(
-        //   value: _currentMode,
-        //   leftValue: i18n(context, 'catan_mode_basegame'),
-        //   rightValue: i18n(context, 'catan_mode_expansion'),
-        //   onChanged: (value) {
-        //     setState(() {
-        //       _currentMode = value;
-        //     });
-        //   },
-        // ),
         GCWDefaultOutput(
             child: encodeCatan(
                 _currentInput, _currentMode == GCWSwitchPosition.left ? CatanMode.BASE : CatanMode.EXPANSION)
@@ -214,8 +200,37 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
               keyKeyValueMap: _currentSubstitutions,
               onUpdateEntry: _updateEntry,
               onRemoveEntry: _removeEntry)
-    )
+        )
     ]);
+  }
+
+  _onDoCalculation() async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Center(
+          child: Container(
+            child: GCWAsyncExecuter(
+              isolatedFunction: solveSymbolArithmeticAsync,
+              parameter: _buildJobData(),
+              onReady: (data) => _showOutput(data),
+              isOverlay: true,
+            ),
+            height: 220,
+            width: 150,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildSubmitButton() {
+    return GCWSubmitButton(
+      onPressed: () async {
+        _onDoCalculation();
+      },
+    );
   }
 
   _parseClipboard(text) {
@@ -352,6 +367,41 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
     }
 
     return _substitutions;
+  }
+
+  List<String> _getFormulas() {
+    if (!_currentMatrix.isValidMatrix()) return null;
+    var formulas = <String>[];
+    for(var y = 0; y < _currentMatrix.getRowsCount()-2; y+=2)
+      formulas.add(_currentMatrix.buildRowFromula(y));
+
+    for(var x = 0; x < _currentMatrix.getColumnsCount()-2; x+=2)
+      formulas.add(_currentMatrix.buildColumnFormula(x));
+  }
+
+  Future<GCWAsyncExecuterParameters> _buildJobData() async {
+    _currentOutput = '';
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
+
+    var _substitutions = _getSubstitutions();
+    var _formulas = _getFormulas();
+
+    return GCWAsyncExecuterParameters(SymbolArithmeticJobData(
+        formulas: _formulas,
+        substitutions: _substitutions));
+  }
+
+  _showOutput(Map<String, dynamic> output) {
+    if (output == null || output['state'] == null || output['state'] == 'not_found') {
+      _currentOutput = i18n(context, 'hashes_hashbreaker_solutionnotfound');
+    } else
+      _currentOutput = output['text'];
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
   }
 
 
