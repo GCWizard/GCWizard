@@ -86,7 +86,7 @@ class SymbolMatrix {
     return true;
   }
 
-  String buildRow(int y) {
+  String buildRowFromula(int y) {
     var formula = '';
     for (var x = 0; x < matrix[y].length; x++) {
       if (x % 2 == 0)
@@ -94,12 +94,12 @@ class SymbolMatrix {
       else if (x < getColumnsCount() - 2)
         formula += operatorList[matrix[y][x]];
       else
-        formula += '=';
+        formula += '-('; //=
     }
-    return formula;
+    return formula + ')';
   }
 
-  String buildColumn(int x) {
+  String buildColumnFormula(int x) {
     var formula = '';
     for (var y = 0; y < matrix.length; y++) {
       if (y % 2 == 0)
@@ -107,9 +107,9 @@ class SymbolMatrix {
       else if (y < getRowsCount() - 2)
         formula += operatorList[matrix[y][x]];
       else
-        formula += '=';
+        formula += '-('; //=
     }
-    return formula;
+    return formula + ')';
   }
 
   String toJson() {
@@ -200,9 +200,9 @@ Map<String, dynamic> solveSymbolArithmetic(
     return {'state': FormulaState.STATE_SINGLE_ERROR, 'result': substitutedFormula};
   }
 
-  Expression expression = parser.parse(formulas.first);
+  Expression expression = parser.parse(expandedFormulas.first['text']);
   var result = expression.evaluate(EvaluationType.REAL, _context);
-
+print(result);
 
   // var expander = VariableStringExpander(formulas.first, substitutions, onAfterExpandedText: (expandedText) {
   //   var withoutBrackets = expandedText.replaceAll(RegExp(r'[\[\]]'), '');

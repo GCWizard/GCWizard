@@ -160,10 +160,10 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
             print(valid.toString());
             if (valid) {
               for(var y = 0; y < _currentMatrix.getRowsCount()-2; y+=2){
-                print(_currentMatrix.buildRow(y));
+                print(_currentMatrix.buildRowFromula(y));
               }
               for(var x = 0; x < _currentMatrix.getColumnsCount()-2; x+=2){
-                print(_currentMatrix.buildColumn(x));
+                print(_currentMatrix.buildColumnFormula(x));
               }
             }
           },
