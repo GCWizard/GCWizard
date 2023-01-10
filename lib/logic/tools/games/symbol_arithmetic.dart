@@ -193,16 +193,19 @@ Map<String, dynamic> solveSymbolArithmetic(
   var substitutedFormula = formulas.first;
   List<Map<String, dynamic>> expandedFormulas;
 
-
+  var usedSubstitutions = _usedSubstitutions(substitutedFormula, substitutions);
   try {
-    expandedFormulas = VariableStringExpander(substitutedFormula, substitutions).run();
+    var expander = VariableStringExpander(substitutedFormula, usedSubstitutions, onAfterExpandedText: (expandedText) {
+      Expression expression = parser.parse(expandedText);
+      return expression.evaluate(EvaluationType.REAL, _context) == 0 ? expandedText : null;
+    });
+
+    expandedFormulas = expander.run();
   } catch (e) {
     return {'state': FormulaState.STATE_SINGLE_ERROR, 'result': substitutedFormula};
   }
 
-  Expression expression = parser.parse(expandedFormulas.first['text']);
-  var result = expression.evaluate(EvaluationType.REAL, _context);
-print(result);
+print(expandedFormulas);
 
   // var expander = VariableStringExpander(formulas.first, substitutions, onAfterExpandedText: (expandedText) {
   //   var withoutBrackets = expandedText.replaceAll(RegExp(r'[\[\]]'), '');
@@ -215,9 +218,9 @@ print(result);
   //
   // var results = expander.run();
   //
-   if (result == null) return {'state': 'not_found'};
+   if (expandedFormulas == null) return {'state': 'not_found'};
 
-   return {'state': 'ok', 'variables': result};
+   return {'state': 'ok', 'variables': expandedFormulas.first['variables']};
 }
 
 // bool _solveFormula(String formula, Dictionary<String, int> binds)
@@ -230,6 +233,33 @@ print(result);
 //   return (bool)exp.Eval();
 // }
 
+// bool _checkFormula(string formula, Dictionary<String, int> binds)
+// {
+//   foreach (var bind in binds)
+//   {
+//     formula = formula.Replace(bind.Key, bind.Value.ToString());
+//   }
+//   var exp = new Expression(formula);
+//   return (bool)exp.Eval();
+// }
+
+/// create new possible substitutions lists
+List<Map<String, String>> mergeSolutions(Map<String, String> substitutions, List<Map<String, String>> solutions) {
+  var newKeyValues = <Map<String, String>>[];
+  solutions.forEach((solution) {
+    var _keyValues = Map<String, String>();
+
+    substitutions.forEach((key, value) {
+      if (solution.containsKey(key))
+        _keyValues.addAll({key: solution[key]});
+      else
+        _keyValues.addAll({key: value});
+    });
+    newKeyValues.add(_keyValues);
+  });
+
+  return newKeyValues;
+}
 
 List<String> sortFormulasByUsedSubstitutionsCount(List<String> formulas, Map<String, String> substitutions) {
   var sortedKeys = _sortSubstitutionsByLength(substitutions);
@@ -248,16 +278,16 @@ Map<String, String> _sortSubstitutionsByLength(Map<String, String> substitutions
 }
 
 Map<String, String> _usedSubstitutions(String formula, Map<String, String> sortedSubstitutions) {
-  var usedKeys = Map<String, String>();
+  var usedSubstitutions = Map<String, String>();
 
   sortedSubstitutions.forEach((key, value) {
     if (formula.contains(key)) {
-      usedKeys.addAll({key: value});
+      usedSubstitutions.addAll({key: value});
       formula = formula.replaceAll(key, '');
     }
   });
 
-  return usedKeys;
+  return usedSubstitutions;
 }
 
 List<String> _sortByUsedSubstitutionsCount(List<String> formulas, List<int> keyCount) {
