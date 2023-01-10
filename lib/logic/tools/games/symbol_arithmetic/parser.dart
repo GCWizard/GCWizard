@@ -189,7 +189,7 @@ Map<String, dynamic> solveSymbolArithmetic(
       substitutions == null) return null;
 
   ContextModel _context = ContextModel();
-  Parser parser;
+  Parser parser = Parser();
   var substitutedFormula = formulas.first;
   List<Map<String, dynamic>> expandedFormulas;
 
