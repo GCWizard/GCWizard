@@ -36,75 +36,62 @@ void main() {
     Map<String, String> values = {
       'A':'3', 'B':'20', 'C': '100', 'D': '5', 'E': '1-3'
     };
+    Map<String, String> values1 = {
+      'baum':'0-100', 'schneemann':'0-100', 'stern': '0-100', 'schlitten': '0-100', 'weihnachtsmann': '0-100', 'glocken': '0-100'
+    };
+    Map<String, String> values2 = {
+      'mutze':'0-100', 'glocken':'0-100', 'stern': '0-100', 'kugel': '0-100', 'baum': '0-100', 'kerze': '0-100'
+    };
+    Map<String, String> values3 = {
+      'schnee':'0-100', 'mann':'0-100', 'schleife': '0-100', 'baum': '0-100'
+    };
 
     List<Map<String, dynamic>> _inputsToExpected = [
-      // {'formula' : null, 'values': null, 'expectedOutput' : {'state': 'error', 'output': [{'result': null, 'state': 'error'}]}},
-      // {'formula' : null, 'values': <String, String>{}, 'expectedOutput' : {'state': 'error', 'output': [{'result': null, 'state': 'error'}]}},
-      // {'formula' : null, 'expectedOutput' : {'state': 'error', 'output': [{'result': null, 'state': 'error'}]}},
-      // {'formula' : {''}.toList(), 'expectedOutput' : {'state': 'error', 'output': [{'result': '', 'state': 'error'}]}},
-      // {'formula' : {' '}.toList(), 'expectedOutput' : {'state': 'error', 'output': [{'result': '', 'state': 'error'}]}},
-      {'formula' : {'E-(2)'}.toList(), 'values': values, 'expectedOutput' : {'state': 'ok', 'variables': -1.0}},
-      {'formula' : {'E'}.toList(), 'values': values, 'expectedOutput' : {'state': 'ok', 'variables': 1.0}},
-      // {'formula' : {'A'}.toList(), 'values': null, 'expectedOutput' : {'state': 'error', 'output': [{'result': 'A', 'state': 'error'}]}},
-      // {'formula' : '0', 'values': null, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0', 'state': 'ok'}]}},
-      // {'formula' : 'A', 'values': <String, String>{}, 'expectedOutput' : {'state': 'error', 'output': [{'result': 'A', 'state': 'error'}]}},
-      // {'formula' : '0', 'values': <String, String>{}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0', 'state': 'ok'}]}},
-      //
-      // {'formula' : 'A', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3', 'state': 'ok'}]}},
-      // {'formula' : 'AB', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '320', 'state': 'ok'}]}},
-      // {'formula' : 'A+B', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '23', 'state': 'ok'}]}},
-      // {'formula' : 'A + B', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '23', 'state': 'ok'}]}},
-      // {'formula' : '[A + B]', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '23', 'state': 'ok'}]}},
-      // {'formula' : '[A] + [B]', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3 + 20', 'state': 'ok'}]}},
-      // {'formula' : 'AB + C', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '420', 'state': 'ok'}]}},
-      // {'formula' : '(AB) + C', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '420', 'state': 'ok'}]}},
-      // {'formula' : 'A(B + C)', 'values': values, 'expectedOutput' : {'state': 'error', 'output': [{'result': '3(20 + 100)', 'state': 'error'}]}},
-      // {'formula' : '[A][(B + C)]', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3120', 'state': 'ok'}]}},
-      // {'formula' : 'A*(B + C)', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '360', 'state': 'ok'}]}},
-      // {'formula' : '[]', 'values': values, 'expectedOutput' : {'state': 'error', 'output': [{'result': '[]', 'state': 'error'}]}},
-      // {'formula' : '()', 'values': values, 'expectedOutput' : {'state': 'error', 'output': [{'result': '()', 'state': 'error'}]}},
-      // {'formula' : '?!', 'values': values, 'expectedOutput' : {'state': 'error', 'output': [{'result': '?!', 'state': 'error'}]}},
-      // {'formula' : 'A []', 'values': values, 'expectedOutput' : {'state': 'error', 'output': [{'result': '3 []', 'state': 'error'}]}},
-      // {'formula' : 'N []', 'values': values, 'expectedOutput' : {'state': 'error', 'output': [{'result': 'N []', 'state': 'error'}]}},
-      // {'formula' : 'N', 'values': values, 'expectedOutput' : {'state': 'error', 'output': [{'result': 'N', 'state': 'error'}]}},
-      // {'formula' : 'E', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3.14159265359', 'state': 'ok'}]}},
-      // {'formula' : 'e', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3.14159265359', 'state': 'ok'}]}},
-      // {'formula' : 'Pi', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3.14159265359', 'state': 'ok'}]}},
-      // {'formula' : 'pi', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3.14159265359', 'state': 'ok'}]}},
-      // {'formula' : 'pi * A', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '9.424777960769', 'state': 'ok'}]}},
-      // {'formula' : 'E * PI', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '9.869604401089', 'state': 'ok'}]}},
-      // {'formula' : 'E [PI]', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': 'E 3.14159265359', 'state': 'ok'}]}},
-      // {'formula' : '[A*B*2].[C+d+D];', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '120.110;', 'state': 'ok'}]}},
-      // {'formula' : 'N 52 [QR].[S+T*U*2] E 12 [V*W].[XY + Z]', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': 'N 52 10.680 E 12 36.354', 'state': 'ok'}]}},
-      // {'formula' : 'N 42 [A].[AB0] E 13 [BB].[(A+B)*100]', 'values': {'A': '1'}, 'expectedOutput' : {'state': 'error', 'output': [{'result': 'N 42 1.[1B0] E 13 [BB].[(1+B)*100]', 'state': 'error'}]}},
-      //
-      // //Trim empty space
-      // {'formula' : 'sin(0) ', 'values': <String, String>{}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0', 'state': 'ok'}]}}, //Not working because S in Values and so the s of sin will be replaced
-      //
-      // //math library testing
-      // {'formula' : '36^(1:2)', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '6', 'state': 'ok'}]}},
-      // {'formula' : 'phi × 2', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3.2360679775', 'state': 'ok'}]}},
-      // {'formula' : 'log(100,10)', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0.5', 'state': 'ok'}]}},
-      // {'formula' : 'log(10,100)', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2', 'state': 'ok'}]}},
-      // {'formula' : 'pi', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3.14159265359', 'state': 'ok'}]}},
-      // {'formula' : '\u1D28 * \u03A0', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '9.869604401089', 'state': 'ok'}]}},
-      // {'formula' : '\u03a6 * \u03c6 + 1', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3.61803398875', 'state': 'ok'}]}},
-      // {'formula' : 'A + 1', 'values': {'A': '\u03a6'}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2.61803398875', 'state': 'ok'}]}},
-      //
-      // //Referencing values
-      // {'formula' : 'F', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '1', 'state': 'ok'}]}},
-      // {'formula' : 'G', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '18', 'state': 'ok'}]}},
-      // {'formula' : '[G] + [F]', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '18 + 1', 'state': 'ok'}]}},
-      // {'formula' : '[G + F]', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '19', 'state': 'ok'}]}},
-      //
-      // // special characters
-      // {'formula' : 'A\u0009+\u00A0B', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '23', 'state': 'ok'}]}},
+      // {'formulas' : null, 'values': null, 'expectedOutput' : {'state': 'error', 'output': [{'result': null, 'state': 'error'}]}},
+      // {'formulas' : null, 'values': <String, String>{}, 'expectedOutput' : {'state': 'error', 'output': [{'result': null, 'state': 'error'}]}},
+      // {'formulas' : null, 'expectedOutput' : {'state': 'error', 'output': [{'result': null, 'state': 'error'}]}},
+      // {'formulas' : {''}.toList(), 'expectedOutput' : {'state': 'error', 'output': [{'result': '', 'state': 'error'}]}},
+      // {'formulas' : {' '}.toList(), 'expectedOutput' : {'state': 'error', 'output': [{'result': '', 'state': 'error'}]}},
+      {'formulas' : {'E-(2)'}.toList(), 'values': values, 'expectedOutput' : {'state': 'ok', 'variables': -1.0}},
+      {'formulas' : {'E'}.toList(), 'values': values, 'expectedOutput' : {'state': 'ok', 'variables': 1.0}},
+      {'formulas' : {'baum*schneemann+stern-schlitten*baum-glocken-(41)',
+        'glocken+weihnachtsmann*stern+schneemann+stern+weihnachtsmann-(26)',
+        'stern+glocken*stern-glocken*glocken+stern-(24)',
+        'schneemann+baum*stern+stern*baum-schlitten-(65)',
+        'glocken-schlitten+stern*baum+baum-stern-(27)',
+        'schneemann*stern+stern-weihnachtsmann+glocken*baum-(77)',
+        'baum*glocken+stern*schneemann-glocken*schneemann-(53)',
+        'schneemann+weihnachtsmann*glocken*baum-schlitten+stern-(24)',
+        'stern+stern*stern+stern*stern-stern-(98)',
+        'schlitten*schneemann+glocken+stern*baum+weihnachtsmann-(31)',
+        'baum+stern*glocken+baum*baum-glocken-(32)',
+        'glocken*weihnachtsmann+stern-schlitten+stern*baum-(37)'}.toList(), 'values': values1, 'expectedOutput' : {'state': 'ok',
+        'variables': '{{baum: 4}{schneemann: 9}{stern: 7}{schlitten: 0}{weihnachtsmann: 1}{glocken: 2}}'}},
 
+      {'formulas' : {'mutze+mutze+glocken+glocken+stern+kugel-(49)',
+        'kerze+stern+kerze+baum+kugel+kugel-(67)',
+        'kugel+baum+stern+kerze+kugel+kugel-(56)',
+        'mutze+mutze+mutze+mutze+baum+kugel-(36)',
+        'kugel+baum+baum+kugel+baum+kugel-(60)',
+        'mutze+mutze+mutze+mutze+stern+kugel-(25)',
+        'mutze+kerze+kugel+mutze+kugel+mutze-(47)',
+        'mutze+stern+baum+mutze+baum+mutze-(37)',
+        'glocken+kerze+stern+mutze+baum+mutze-(56)',
+        'glocken+baum+kerze+mutze+kugel+mutze-(63)',
+        'stern+kugel+kugel+baum+baum+stern-(42)',
+        'kugel+kugel+kugel+kugel+kugel+kugel-(48)'}.toList(), 'values': values2, 'expectedOutput' : {'state': 'ok',
+        'variables': '{{mutze: 4}{glocken: 16}{stern: 1}{kugel: 8}{baum: 12}{kerze: 19}}'}},
+
+      {'formulas' : {'schnee*mann-(1428)',
+        'schleife-baum-(12)',
+        'schnee*schleife-(840)',
+        'mann-baum-(33)'}.toList(), 'values': values3, 'expectedOutput' : {'state': 'ok',
+        'variables': '{{schnee: 21}{mann: 68}{schleife: 40}}'}},
     ];
 
     _inputsToExpected.forEach((elem) {
-      test('formula: ${elem['formula']}, values: ${elem['values']}', () {
-        var _actual = solveSymbolArithmetic(elem['formula'], elem['values']);
+      test('formulas: ${elem['formula']}, values: ${elem['values']}', () {
+        var _actual = solveSymbolArithmetic(elem['formulas'], elem['values']);
         expect(_actual, elem['expectedOutput']);
 
         // if (elem['values'] == null) {
