@@ -140,6 +140,7 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
                 size: IconButtonSize.SMALL,
                 icon: Icons.content_copy,
                 onPressed: () {
+                  _currentMatrix.substitutions = _getSubstitutions();
                   var copyText = _currentMatrix.toJson();
                   if (copyText == null) return;
                   insertIntoGCWClipboard(context, copyText);

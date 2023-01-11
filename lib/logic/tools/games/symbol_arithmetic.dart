@@ -12,6 +12,7 @@ import 'package:math_expressions/math_expressions.dart';
 
 class SymbolMatrix {
   List<List<String>> matrix;
+  Map<String, String> substitutions;
   var columnCount;
   var rowCount;
 
@@ -122,7 +123,20 @@ class SymbolMatrix {
       }
     }
 
-    return (jsonEncode({'columns': columnCount, 'rows': rowCount, 'values': list.toString()}).toString());
+    return (jsonEncode({'columns': columnCount, 'rows': rowCount,
+      'values': list.toString(), 'substitutions': _toJsonSubstitutions(substitutions)}).toString());
+  }
+
+  static _toJsonSubstitutions(Map<String, String> substitutions) {
+    if (substitutions == null) return null;
+    var list = <String>[];
+    substitutions.forEach((key, value) {
+      list.add(jsonEncode({'key': key, 'value': value}));
+    });
+
+    if (list.isEmpty) return null;
+
+    return jsonEncode(list);
   }
 
 
@@ -148,7 +162,24 @@ class SymbolMatrix {
           matrix.setValue(y, x, value);
       }
     }
+    matrix.substitutions = _fromJsonSubstitutions(jsonDecode(json)['substitutions']);
     return matrix;
+  }
+
+  static Map<String, String> _fromJsonSubstitutions(List<dynamic> json) {
+    var substitutions = Map<String, String>();
+    if (json == null) return null;
+    String key;
+    String value;
+
+    json.forEach((jsonEntry) {
+      var json = jsonDecode(jsonEntry);
+      key = json['key'];
+      value = json['value'];
+      if (key != null && value != null) substitutions.addAll({key: value});
+    });
+
+    return substitutions.length == 0 ? null : substitutions;
   }
 }
 
