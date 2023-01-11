@@ -214,7 +214,11 @@ print(solutions);
   //
    if (solutions == null) return {'state': 'not_found'};
 
-   return {'state': 'ok', 'variables': solutions.first};
+  var results = <Map<String, dynamic>>[];
+  for (var solution in solutions)
+    results.add({'variables': solution});
+
+  return {'state': 'ok', 'results': results};
 }
 
 List<Map<String, String>> _solver(List<String> formulas, Map<String, String> substitutions,
