@@ -253,7 +253,7 @@ List<Map<String, dynamic>> _solveFormula(String formula, Map<String, String> sub
     Parser parser, ContextModel _context) {
   var expander = VariableStringExpander(formula, substitutions, onAfterExpandedText: (expandedText) {
     Expression expression = parser.parse(expandedText);
-    return expression.evaluate(EvaluationType.REAL, _context) == 0 ? expandedText : null;
+    return expression.evaluate(EvaluationType.REAL, _context) == 0 ? '' : null;
   });
   return expander.run();
 }
