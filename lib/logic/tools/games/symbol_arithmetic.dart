@@ -218,41 +218,64 @@ print(expandedFormulas);
    return {'state': 'ok', 'variables': expandedFormulas.first['variables']};
 }
 
-List<Map<String, dynamic>> _solveFormula(String formula, Map<String, String> substitutions, Parser parser, ContextModel _context) {
-    var expander = VariableStringExpander(formula, substitutions, onAfterExpandedText: (expandedText) {
-      Expression expression = parser.parse(expandedText);
-      return expression.evaluate(EvaluationType.REAL, _context) == 0 ? expandedText : null;
-    });
+List<Map<String, String>> _solver(List<String> formulas, Map<String, String> substitutions,
+    Parser parser, ContextModel _context) {
 
-    return expander.run();
+  List<Map<String, String>> solutions;
+  List<Map<String, String>> newSubstitutions;
+
+  for (int i = 0; i < formulas.length; i++) {
+    solutions = _solveFormula(formulas[i], substitutions, parser, _context);
+    if (solutions != null && solutions.length > 0) {
+      // formula solved ?
+      if (solutions.length == 1) {
+        formulas.removeAt(i);
+        i--;
+      }
+      newSubstitutions = mergeSolutions(substitutions, solutions);
+      // all formulas solved ?
+      if (formulas.length == 0)
+        return newSubstitutions;
+
+      newSubstitutions.forEach((_keyValues) {
+        // check other substitution in suluton tree
+        newSubstitutions = _solver(formulas, _keyValues, parser, _context);
+        // all formulas solved ?
+        if (formulas.length == 0)
+          return newSubstitutions;
+      });
+    }
+  }
+
+  return newSubstitutions;
 }
 
-// bool _checkFormula(string formula, Dictionary<String, int> binds)
-// {
-//   foreach (var bind in binds)
-//   {
-//     formula = formula.Replace(bind.Key, bind.Value.ToString());
-//   }
-//   var exp = new Expression(formula);
-//   return (bool)exp.Eval();
-// }
+List<Map<String, dynamic>> _solveFormula(String formula, Map<String, String> substitutions,
+    Parser parser, ContextModel _context) {
+  var expander = VariableStringExpander(formula, substitutions, onAfterExpandedText: (expandedText) {
+    Expression expression = parser.parse(expandedText);
+    return expression.evaluate(EvaluationType.REAL, _context) == 0 ? expandedText : null;
+  });
+
+  return expander.run();
+}
 
 /// create new possible substitutions lists
 List<Map<String, String>> mergeSolutions(Map<String, String> substitutions, List<Map<String, String>> solutions) {
-  var newKeyValues = <Map<String, String>>[];
+  var newSubstitutions = <Map<String, String>>[];
   solutions.forEach((solution) {
-    var _keyValues = Map<String, String>();
+    var _substitutions= Map<String, String>();
 
     substitutions.forEach((key, value) {
       if (solution.containsKey(key))
-        _keyValues.addAll({key: solution[key]});
+        _substitutions.addAll({key: solution[key]});
       else
-        _keyValues.addAll({key: value});
+        _substitutions.addAll({key: value});
     });
-    newKeyValues.add(_keyValues);
+    newSubstitutions.add(_substitutions);
   });
 
-  return newKeyValues;
+  return newSubstitutions;
 }
 
 List<String> sortFormulasByUsedSubstitutionsCount(List<String> formulas, Map<String, String> substitutions) {
