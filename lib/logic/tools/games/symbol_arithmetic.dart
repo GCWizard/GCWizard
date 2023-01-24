@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:core';
+import 'dart:core';
 import 'dart:isolate';
 import 'dart:math';
 import 'dart:collection';
@@ -8,6 +10,7 @@ import 'dart:typed_data';
 import 'package:gc_wizard/logic/common/parser/variable_string_expander.dart';
 import 'package:gc_wizard/logic/tools/crypto_and_encodings/substitution.dart';
 import 'package:gc_wizard/logic/tools/formula_solver/formula_parser.dart';
+import 'package:gc_wizard/utils/common_utils.dart';
 import 'package:math_expressions/math_expressions.dart';
 
 class SymbolMatrix {
@@ -361,5 +364,118 @@ List<String> _sortByCurrentSubstitutionsCount(List<String> formulas, List<int> k
   }
 
   return formulas;
+}
+
+class Helper {
+  void Swap(List<int> list, int from, int to) {
+    var temp = list[to];
+    list[to] = list[from];
+    list[from] = temp;
+  }
+
+  Iterable<Iterable<int>> IterativeHeapPermute(List<int> A) sync* {
+    var n = A.length;
+    var c = <int>[n];
+
+    yield A;
+
+    var i = 0; // error on wiki page says 1 should be 0
+
+    while (i < n) {
+      if (c[i] < i) {
+        if ((i & 1) == 0)
+          Swap(A, 0, i);
+        else
+          Swap(A, c[i], i);
+
+        yield A;
+
+        c[i]++;
+        i = 0; // error on wiki page says 1 should be 0
+      }
+      c[i] = 0;
+      i++;
+    }
+  }
+
+
+  Iterable<List<int>> Combinations(Iterable<int> values, int k) {
+    return (k == 0)
+      ? {<int>[]}
+      : selectMany(mapIndexed(values, (e, i) => Combinations(values.skip(i + 1), k - 1).map((c) => c.insert(0, e))));
+
+    // values.selectMany((e, i) => Combinations(values.skip(i + 1), k - 1).map((c) => c.insert(0, e)));
+    }
+
+  Iterable<E> mapIndexed<T, E>(Iterable<T> items, E Function(T item, int index) f) sync* {
+    var index = 0;
+
+    for (final item in items) {
+      yield f(item, index);
+      index = index + 1;
+    }
+  }
+
+  Iterable<TResult> selectMany<TResult>(Iterable<TResult> items) sync* {
+    for (final item in items) {
+      yield item;
+    }
+  }
+
+
+  Iterable<Iterable<int>> KPerms(List<int> values, int k) {
+
+  return (k == values.length)
+    ? IterativeHeapPermute(values)
+    : selectMany(mapIndexed(Combinations(values, k),(e, i) => IterativeHeapPermute(e.ToList())));;
+
+  //    : Combinations(values, k).SelectMany(v => IterativeHeapPermute(v.ToList()));
+  }
+
+
+  Iterable<Iterable<int>> Transpose(Iterable<Iterable<int>> list) {
+    return (list.isEmpty)
+        ? list
+        : Iterable<int>.generate(list.first.length).map((x) => list.map((y) => y.elementAt(x) ?? 0));
+    //Enumerable.Range(0, list.First().Count()).Select(x => list.Select(y => y.ElementAtOrDefault(x)));
+  }
+
+  Iterable<String> Unknowns(String equation) {
+    return equation.split('').where((c) => !" +=".contains(c)).toSet();
+  }
+
+
+  Map<String, int> MapCharsToTokens(Iterable<String> chars) {
+    return switchMapKeyValue(chars.toList().asMap());
+
+    // return chars.map((c, i) => (c, i)).ToDictionary(kvp => kvp.c, kvp => kvp.i);
+  }
+
+  List<List<int>> Tokenise(Map<String, int> tokens, String input) {
+    return input.replaceAll("==", "=").replaceAll(" ", "")
+        .split(new RegExp(r"\+="))
+        .map((item) => item.split('').map((c) => tokens[c]).toList()).toList();
+  }
+
+
+  HashSet<int> NoLeadingZero(Iterable<Iterable<int>> input) {
+    return HashSet.from(input.map((f) => f.first));
+  }
+
+  List<bool> BuildZeroMask(HashSet<int> noZeroSet, int size) {
+    return Iterable<int>.generate(size).map((z) => !noZeroSet.contains(z)).toList();
+  }
+
+// List<(int target, List<MapEntry<int key, int count>>)>
+  List<MapEntry<int, List<MapEntry<int, int>>>> Parse(Iterable<Iterable<int>> input) {
+    var list = input.map((l) => l.toList().reversed.map((i) => i + 1)) // ElementAtOrDefault default is 0
+        .toList().reversed;
+    return Transpose(list)
+        .map((r) => r.where((i) => i > 0).map((i) => i - 1)) // ElementAtOrDefault default is 0
+        .map((col) => (col.first, col.Skip(1).GroupBy(i => i).map((grp) => (grp.Key, grp.Count())).toList())).toList();
+  }
+//
+// final List<int> Range = Iterable<int>.generate(10).toList();
+
 }
 
