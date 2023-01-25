@@ -88,7 +88,7 @@ void main() {
         'mann-baum-(33)'}.toList(), 'values': values3, 'expectedOutput' : {'state': 'ok',
         'variables': '{{schnee: 21}{mann: 68}{schleife: 40}}'}},
     ];
-
+Solve("BASE + BALL = GAMES");
     _inputsToExpected.forEach((elem) {
       test('formulas: ${elem['formula']}, values: ${elem['values']}', () {
         var _actual = solveSymbolArithmetic(elem['formulas'], elem['values']);
