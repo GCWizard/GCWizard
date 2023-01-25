@@ -444,6 +444,11 @@ class Helper {
   }
 
   static Iterable<Iterable<int>> _kPerms(List<int> values, int k) {
+
+    var l1= <int>[1,2,3];
+    var l2= <int>[1,2,3];
+    // var l3 = _selectMany({l1,l2});
+    // l3=l3;
     return (k == values.length)
       ? _iterativeHeapPermute(values)
       : _selectMany(_combinations(values, k).map((e) => _iterativeHeapPermute(e)));
@@ -498,8 +503,20 @@ class Helper {
     }
   }
 
-  static Iterable<TResult> _selectMany<TResult>(Iterable<Iterable<TResult>> items) {
-    return items.reduce((a, b) => a.followedBy(b));
+  static Iterable<TResult> _selectMany<TResult>(Iterable<Iterable<TResult>> items) { //Iterable<TResult>
+    // var planets = <String>['Earth', 'Jupiter'];
+    // var updated = planets.followedBy(['Mars', 'Venus']);
+    // updated=updated;
+    // var lt = items.reduce((a, b) => a.followedBy(b));
+    // lt=lt;
+    // Set<TResult> kk = lt;
+    if (items.isEmpty)
+      return null;
+    var result = items.first;
+    items.skip(1).forEach((element) {
+      result = result.followedBy(element);
+    });
+    return result; //items..elementAt(0).followedBy(items.elementAt(1)); //items.reduce((a, b) => a.followedBy(b));
   }
 
   static TResult _elementAtOrDefault<TResult>(Iterable<TResult> items, int index, TResult _default) {
