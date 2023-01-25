@@ -368,30 +368,27 @@ List<String> _sortByCurrentSubstitutionsCount(List<String> formulas, List<int> k
   return formulas;
 }
 
-Map<String, int> Solve(String equation)
-{
-  var chars = Helper.Unknowns(equation);
+Map<String, int> Solve(String equation) {
+  var chars = Helper._unknowns(equation);
   var k = chars.length;
-  var tokens = Helper.Tokenise(Helper.MapCharsToTokens(chars), equation);
-  var columns = Helper.Parse(tokens);
-  var zeroMask = Helper.BuildZeroMask(Helper.NoLeadingZero(tokens), k);
+  var tokens = Helper._tokenise(Helper._mapCharsToTokens(chars), equation);
+  var columns = Helper._parse(tokens);
+  var zeroMask = Helper._buildZeroMask(Helper._noLeadingZero(tokens), k);
 
-  bool CanBeZero(Iterable<int> perm)
-  {
+  bool _canBeZero(Iterable<int> perm) {
     var found = perm.toList().indexOf(0);
     return found == -1 || zeroMask[found];
   }
 
-  var res1 = Helper.KPerms(Range, k).first;
-  var res = Helper.KPerms(Range, k).where((l) => CanBeZero(l)).where((p) => ColSum(columns, p)).first;
+  var res = Helper._kPerms(_range, k).where((l) => _canBeZero(l)).where((p) => _colSum(columns, p)).first;
   return res != null
-      ? Map<String, int>.fromIterables(chars, res)// res.Zip(chars, (i, c) => (c, i)).ToDictionary((kvp) => kvp.c, kvp => kvp.i)
-      : null; // throw new ArgumentException();
+    ? Map<String, int>.fromIterables(chars, res)// res.Zip(chars, (i, c) => (c, i)).ToDictionary((kvp) => kvp.c, kvp => kvp.i)
+    : null; // throw new ArgumentException();
 }
 
-final List<int> Range = Iterable<int>.generate(10).toList();
+final List<int> _range = Iterable<int>.generate(10).toList();
 
-bool ColSum(List<MapEntry<int, List<MapEntry<int, int>>>> cols, List<int> perm){
+bool _colSum(List<MapEntry<int, List<MapEntry<int, int>>>> cols, List<int> perm){
   var carry = 0;
 
   cols.forEach((e) {
@@ -399,27 +396,22 @@ bool ColSum(List<MapEntry<int, List<MapEntry<int, int>>>> cols, List<int> perm){
     var xs =  e.value;
     var sum = xs.map((k) => k.value * perm[k.key]).sum + carry;
     if (perm[y] == sum % 10)
-      carry = (sum / 10).toInt();
+      carry = sum ~/ 10;
     else
       return false;
   });
   return carry == 0;
 }
 
-void Swap(List<int> list, int from, int to) {
-  var temp = list[to];
-  list[to] = list[from];
-  list[from] = temp;
-}
 
 class Helper {
-  static void Swap(List<int> list, int from, int to) {
+  static void _swap(List<int> list, int from, int to) {
     var temp = list[to];
     list[to] = list[from];
     list[from] = temp;
   }
 
-  static Iterable<Iterable<int>> IterativeHeapPermute(List<int> A) sync* {
+  static Iterable<Iterable<int>> _iterativeHeapPermute(List<int> A) sync* {
     var n = A.length;
     var c = <int>[n];
 
@@ -430,9 +422,9 @@ class Helper {
     while (i < n) {
       if (c[i] < i) {
         if ((i & 1) == 0)
-          Swap(A, 0, i);
+          _swap(A, 0, i);
         else
-          Swap(A, c[i], i);
+          _swap(A, c[i], i);
 
         yield A;
 
@@ -445,13 +437,59 @@ class Helper {
   }
 
 
-  static Iterable<Iterable<int>> Combinations(Iterable<int> values, int k) {
+  static Iterable<Iterable<int>> _combinations(Iterable<int> values, int k) {
     return (k == 0)
       ? {<int>[]}
-      : selectMany(mapIndexed(values, (e, i) => Combinations(values.skip(i + 1), k - 1).map((c) => e.followedBy(c))));
-    }
+      : _selectMany(_mapIndexed(values, (e, i) => _combinations(values.skip(i + 1), k - 1).map((c) => e.followedBy(c))));
+  }
 
-  static Iterable<E> mapIndexed<T, E>(Iterable<T> items, E Function(T item, int index) f) sync* {
+  static Iterable<Iterable<int>> _kPerms(List<int> values, int k) {
+    return (k == values.length)
+      ? _iterativeHeapPermute(values)
+      : _selectMany(_combinations(values, k).map((e) => _iterativeHeapPermute(e)));
+
+    //    : Combinations(values, k).SelectMany(v => IterativeHeapPermute(v.ToList()));
+  }
+
+  static Iterable<Iterable<int>> _transpose(Iterable<Iterable<int>> list) {
+    return (list.isEmpty)
+      ? list
+      : Iterable<int>.generate(list.first.length).map((x) => list.map((y) => _elementAtOrDefault(y, x, 0)));
+  }
+
+  static Iterable<String> _unknowns(String equation) {
+    return equation.split('').where((c) => !" +=".contains(c)).toSet();
+  }
+
+  static Map<String, int> _mapCharsToTokens(Iterable<String> chars) {
+    return switchMapKeyValue(chars.toList().asMap());
+  }
+
+  static List<List<int>> _tokenise(Map<String, int> tokens, String input) {
+    return input.replaceAll("==", "=").replaceAll(" ", "")
+        .split(RegExp(r"\+|="))
+        .map((item) => item.split('').map((c) => tokens[c]).toList()).toList();
+  }
+
+  static HashSet<int> _noLeadingZero(Iterable<Iterable<int>> input) {
+    return HashSet.from(input.map((f) => f.first));
+  }
+
+  static List<bool> _buildZeroMask(HashSet<int> noZeroSet, int size) {
+    return Iterable<int>.generate(size).map((z) => !noZeroSet.contains(z)).toList();
+  }
+
+  static List<MapEntry<int, List<MapEntry<int, int>>>> _parse(Iterable<Iterable<int>> input) {
+    var list = input.map((l) => l.toList().reversed.map((i) => i + 1)) // ElementAtOrDefault default is 0
+        .toList().reversed;
+
+    var l1 = _transpose(list);
+    var l2 = l1.map((r) => r.where((i) => i > 0).map((i) => i - 1)); // ElementAtOrDefault default is 0
+    var l3 = l2.map((col) => MapEntry<int, List<MapEntry<int, int>>>(col.first, groupBy(col.skip(1), (i) => i).map((grpKey, grpValue) => MapEntry<int, int>(grpKey, grpValue.length)).entries .toList())); //.map((grp) => (grp.Key, grp.Count())).toList())).toList();
+    return l3.toList();
+  }
+
+  static Iterable<E> _mapIndexed<T, E>(Iterable<T> items, E Function(T item, int index) f) sync* {
     var index = 0;
 
     for (final item in items) {
@@ -460,77 +498,16 @@ class Helper {
     }
   }
 
-  static Iterable<TResult> selectMany<TResult>(Iterable<Iterable<TResult>> items) {
+  static Iterable<TResult> _selectMany<TResult>(Iterable<Iterable<TResult>> items) {
     return items.reduce((a, b) => a.followedBy(b));
   }
 
-  static TResult elementAtOrDefault<TResult>(Iterable<TResult> items, int index, TResult _default) {
+  static TResult _elementAtOrDefault<TResult>(Iterable<TResult> items, int index, TResult _default) {
     try{
       return items.elementAt(index);
     } catch (e) {
       return _default;
     }
-  }
-
-
-  static Iterable<Iterable<int>> KPerms(List<int> values, int k) {
-    return (k == values.length)
-      ? IterativeHeapPermute(values)
-      : selectMany(Combinations(values, k).map((e) => IterativeHeapPermute(e)));
-
-    //    : Combinations(values, k).SelectMany(v => IterativeHeapPermute(v.ToList()));
-  }
-
-
-  static Iterable<Iterable<int>> Transpose(Iterable<Iterable<int>> list) {
-    var numbers = Iterable<int>.generate(list.first.length).toList();
-    numbers.forEach((x) {
-      var xx= list.map((y) => elementAtOrDefault(y, x, 0)).toList();
-    xx = xx;
-      });
-
-    return (list.isEmpty)
-        ? list
-        : Iterable<int>.generate(list.first.length).map((x) => list.map((y) => elementAtOrDefault(y, x, 0)));
-    //Enumerable.Range(0, list.First().Count()).Select(x => list.Select(y => y.ElementAtOrDefault(x)));
-  }
-
-  static Iterable<String> Unknowns(String equation) {
-    return equation.split('').where((c) => !" +=".contains(c)).toSet();
-  }
-
-
-  static Map<String, int> MapCharsToTokens(Iterable<String> chars) {
-    //return mapIndexed(chars, (e, i)
-    return switchMapKeyValue(chars.toList().asMap());
-    //return chars.map((c, i) => (c, i)).ToDictionary(kvp => kvp.c, kvp => kvp.i)
-    // return chars.map((c, i) => (c, i)).ToDictionary(kvp => kvp.c, kvp => kvp.i);
-  }
-
-  static List<List<int>> Tokenise(Map<String, int> tokens, String input) {
-    return input.replaceAll("==", "=").replaceAll(" ", "")
-        .split(RegExp(r"\+|="))
-        .map((item) => item.split('').map((c) => tokens[c]).toList()).toList();
-  }
-
-
-  static HashSet<int> NoLeadingZero(Iterable<Iterable<int>> input) {
-    return HashSet.from(input.map((f) => f.first));
-  }
-
-  static List<bool> BuildZeroMask(HashSet<int> noZeroSet, int size) {
-    return Iterable<int>.generate(size).map((z) => !noZeroSet.contains(z)).toList();
-  }
-
-// List<(int target, List<MapEntry<int key, int count>>)>
-  static List<MapEntry<int, List<MapEntry<int, int>>>> Parse(Iterable<Iterable<int>> input) {
-    var list = input.map((l) => l.toList().reversed.map((i) => i + 1)) // ElementAtOrDefault default is 0
-        .toList().reversed;
-
-    var l1 = Transpose(list);
-    var l2 = l1.map((r) => r.where((i) => i > 0).map((i) => i - 1)); // ElementAtOrDefault default is 0
-    var l3 = l2.map((col) => MapEntry<int, List<MapEntry<int, int>>>(col.first, groupBy(col.skip(1), (i) => i).map((grpKey, grpValue) => MapEntry<int, int>(grpKey, grpValue.length)).entries .toList())); //.map((grp) => (grp.Key, grp.Count())).toList())).toList();
-    return l3.toList();
   }
 
 }
