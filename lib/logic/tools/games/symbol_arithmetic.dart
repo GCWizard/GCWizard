@@ -464,6 +464,14 @@ class Helper {
     return items.reduce((a, b) => a.followedBy(b));
   }
 
+  static TResult elementAtOrDefault<TResult>(Iterable<TResult> items, int index, TResult _default) {
+    try{
+      return items.elementAt(index);
+    } catch (e) {
+      return _default;
+    }
+  }
+
 
   static Iterable<Iterable<int>> KPerms(List<int> values, int k) {
     return (k == values.length)
@@ -475,9 +483,15 @@ class Helper {
 
 
   static Iterable<Iterable<int>> Transpose(Iterable<Iterable<int>> list) {
+    var numbers = Iterable<int>.generate(list.first.length).toList();
+    numbers.forEach((x) {
+      var xx= list.map((y) => elementAtOrDefault(y, x, 0)).toList();
+    xx = xx;
+      });
+
     return (list.isEmpty)
         ? list
-        : Iterable<int>.generate(list.first.length).map((x) => list.map((y) => y.elementAt(x) ?? 0));
+        : Iterable<int>.generate(list.first.length).map((x) => list.map((y) => elementAtOrDefault(y, x, 0)));
     //Enumerable.Range(0, list.First().Count()).Select(x => list.Select(y => y.ElementAtOrDefault(x)));
   }
 
