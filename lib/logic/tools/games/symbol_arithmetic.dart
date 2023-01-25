@@ -4,6 +4,7 @@ import 'dart:core';
 import 'dart:isolate';
 import 'dart:math';
 import 'dart:collection';
+import "package:collection/collection.dart";
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -399,12 +400,10 @@ class Helper {
   }
 
 
-  Iterable<List<int>> Combinations(Iterable<int> values, int k) {
+  Iterable<Iterable<int>> Combinations(Iterable<int> values, int k) {
     return (k == 0)
       ? {<int>[]}
-      : selectMany(mapIndexed(values, (e, i) => Combinations(values.skip(i + 1), k - 1).map((c) => c.insert(0, e))));
-
-    // values.selectMany((e, i) => Combinations(values.skip(i + 1), k - 1).map((c) => c.insert(0, e)));
+      : selectMany(mapIndexed(values, (e, i) => Combinations(values.skip(i + 1), k - 1).map((c) => e.followedBy(c))));
     }
 
   Iterable<E> mapIndexed<T, E>(Iterable<T> items, E Function(T item, int index) f) sync* {
@@ -416,20 +415,17 @@ class Helper {
     }
   }
 
-  Iterable<TResult> selectMany<TResult>(Iterable<TResult> items) sync* {
-    for (final item in items) {
-      yield item;
-    }
+  Iterable<TResult> selectMany<TResult>(Iterable<Iterable<TResult>> items) {
+    return items.reduce((a, b) => a.followedBy(b));
   }
 
 
   Iterable<Iterable<int>> KPerms(List<int> values, int k) {
+    return (k == values.length)
+      ? IterativeHeapPermute(values)
+      : selectMany(Combinations(values, k).map((e) => IterativeHeapPermute(e)));
 
-  return (k == values.length)
-    ? IterativeHeapPermute(values)
-    : selectMany(mapIndexed(Combinations(values, k),(e, i) => IterativeHeapPermute(e.ToList())));;
-
-  //    : Combinations(values, k).SelectMany(v => IterativeHeapPermute(v.ToList()));
+    //    : Combinations(values, k).SelectMany(v => IterativeHeapPermute(v.ToList()));
   }
 
 
@@ -470,9 +466,11 @@ class Helper {
   List<MapEntry<int, List<MapEntry<int, int>>>> Parse(Iterable<Iterable<int>> input) {
     var list = input.map((l) => l.toList().reversed.map((i) => i + 1)) // ElementAtOrDefault default is 0
         .toList().reversed;
-    return Transpose(list)
-        .map((r) => r.where((i) => i > 0).map((i) => i - 1)) // ElementAtOrDefault default is 0
-        .map((col) => (col.first, col.Skip(1).GroupBy(i => i).map((grp) => (grp.Key, grp.Count())).toList())).toList();
+
+    var l1 = Transpose(list);
+    var l2 = l1.map((r) => r.where((i) => i > 0).map((i) => i - 1)); // ElementAtOrDefault default is 0
+    var l3 = l2.map((col) => MapEntry<int, List<MapEntry<int, int>>>(col.first, groupBy(col.skip(1), (i) => i).map((grpKey, grpValue) => MapEntry<int, int>(grpKey, grpValue.length)).entries .toList())); //.map((grp) => (grp.Key, grp.Count())).toList())).toList();
+    return l3.toList();
   }
 //
 // final List<int> Range = Iterable<int>.generate(10).toList();
