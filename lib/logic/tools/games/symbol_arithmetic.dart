@@ -447,8 +447,8 @@ class Helper {
 
     var l1= <int>[1,2,3];
     var l2= <int>[1,2,3];
-    // var l3 = _selectMany({l1,l2});
-    // l3=l3;
+     var l3 = _selectMany({l1,l2});
+     l3=l3;
     return (k == values.length)
       ? _iterativeHeapPermute(values)
       : _selectMany(_combinations(values, k).map((e) => _iterativeHeapPermute(e)));
@@ -499,24 +499,44 @@ class Helper {
 
     for (final item in items) {
       yield f(item, index);
-      index = index + 1;
+      index += 1;
     }
   }
 
   static Iterable<TResult> _selectMany<TResult>(Iterable<Iterable<TResult>> items) { //Iterable<TResult>
-    // var planets = <String>['Earth', 'Jupiter'];
-    // var updated = planets.followedBy(['Mars', 'Venus']);
-    // updated=updated;
-    // var lt = items.reduce((a, b) => a.followedBy(b));
-    // lt=lt;
-    // Set<TResult> kk = lt;
-    if (items.isEmpty)
+    if (items == null || items.isEmpty)
       return null;
-    var result = items.first;
+    var result = items.elementAt(0);
     items.skip(1).forEach((element) {
       result = result.followedBy(element);
     });
-    return result; //items..elementAt(0).followedBy(items.elementAt(1)); //items.reduce((a, b) => a.followedBy(b));
+    return result;
+    // var planets = <String>['Earth', 'Jupiter'];
+    // var updated = planets.followedBy(['Mars', 'Venus']);
+    // updated=updated;
+    // planets.
+    // // var lt = items.reduce((a, b) => a.followedBy(b));
+    // // lt=lt;
+    // // Set<TResult> kk = lt;
+    // mergeSolutions(substitutions, solutions)
+    // return items.merge(items);
+    // return items..merge ((index, r) => r);
+    // return items.reduce((value, element) => null).mapIndexed ((index, r) => r);
+
+
+    // items.mapIndexed((index, element) => null)
+    // var index = 0;
+    // for (final item in items) {
+    //   yield items.elementAt(index);
+    //   index += 1;
+    // };
+    // if (items.isEmpty)
+    //   return null;
+    // var result = items.first;
+    // items.skip(1).forEach((element) {
+    //   result = result.followedBy(element);
+    // });
+    // return result; //items..elementAt(0).followedBy(items.elementAt(1)); //items.reduce((a, b) => a.followedBy(b));
   }
 
   static TResult _elementAtOrDefault<TResult>(Iterable<TResult> items, int index, TResult _default) {
