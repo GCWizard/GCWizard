@@ -388,14 +388,14 @@ Map<String, int> Solve(String equation) {
 
 final List<int> _range = Iterable<int>.generate(10).toList();
 
-bool _colSum(List<MapEntry<int, List<MapEntry<int, int>>>> cols, List<int> perm){
+bool _colSum(List<MapEntry<int, List<MapEntry<int, int>>>> cols, Iterable<int> perm){
   var carry = 0;
 
   cols.forEach((e) {
     var y = e.key;
     var xs =  e.value;
-    var sum = xs.map((k) => k.value * perm[k.key]).sum + carry;
-    if (perm[y] == sum % 10)
+    var sum = xs.map((k) => k.value * perm.elementAt(k.key)).sum + carry;
+    if (perm.elementAt(y) == sum % 10)
       carry = sum ~/ 10;
     else
       return false;
@@ -411,7 +411,7 @@ class Helper {
     list[from] = temp;
   }
 
-  static Iterable<Iterable<int>> _iterativeHeapPermute(List<int> A) sync* {
+  static Iterable<Iterable<int>> _iterativeHeapPermute(Iterable<int> A) sync* {
     var n = A.length;
     var c = <int>[n];
 
@@ -440,15 +440,18 @@ class Helper {
   static Iterable<Iterable<int>> _combinations(Iterable<int> values, int k) {
     return (k == 0)
       ? {<int>[]}
-      : _selectMany(_mapIndexed(values, (e, i) => _combinations(values.skip(i + 1), k - 1).map((c) => e.followedBy(c))));
+      : _selectMany(_mapIndexed(values, (e, i) => _combinations(values.skip(i + 1), k - 1).map((c) =>
+    (e== null || c.isEmpty)
+        ? {}
+        : e.followedBy(c))));
   }
 
   static Iterable<Iterable<int>> _kPerms(List<int> values, int k) {
 
-    var l1= <int>[1,2,3];
-    var l2= <int>[1,2,3];
-     var l3 = _selectMany({l1,l2});
-     l3=l3;
+    // var l1= <int>[1,2,3];
+    // var l2= <int>[1,2,3];
+    //  var l3 = _selectMany({l1,l2});
+    //  l3=l3;
     return (k == values.length)
       ? _iterativeHeapPermute(values)
       : _selectMany(_combinations(values, k).map((e) => _iterativeHeapPermute(e)));
@@ -498,6 +501,8 @@ class Helper {
     var index = 0;
 
     for (final item in items) {
+      if (item == null )
+        continue;
       yield f(item, index);
       index += 1;
     }
@@ -505,7 +510,7 @@ class Helper {
 
   static Iterable<TResult> _selectMany<TResult>(Iterable<Iterable<TResult>> items) { //Iterable<TResult>
     if (items == null || items.isEmpty)
-      return null;
+      return {};
     var result = items.elementAt(0);
     items.skip(1).forEach((element) {
       result = result.followedBy(element);
