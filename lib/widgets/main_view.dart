@@ -177,7 +177,7 @@ import 'package:gc_wizard/widgets/tools/formula_solver/formula_solver_formulagro
 import 'package:gc_wizard/widgets/tools/games/catan.dart';
 import 'package:gc_wizard/widgets/tools/games/bowling.dart';
 import 'package:gc_wizard/widgets/tools/games/sudoku/sudoku_solver.dart';
-import 'package:gc_wizard/widgets/tools/games/symbol_arithmetic.dart';
+import 'package:gc_wizard/widgets/tools/games/alphametics.dart';
 import 'package:gc_wizard/widgets/tools/images_and_files/animated_image.dart';
 import 'package:gc_wizard/widgets/tools/images_and_files/animated_image_morse_code.dart';
 import 'package:gc_wizard/widgets/tools/images_and_files/binary2image.dart';
@@ -462,6 +462,7 @@ void _initStaticToolList() {
       className(AlcoholMass()),
       className(ALGOL()),
       className(AlphabetValues()),
+      className(Alphametics()),
       className(Amsco()),
       className(AnimatedImage()),
       className(AnimatedImageMorseCode()),
@@ -659,7 +660,6 @@ void _initStaticToolList() {
       className(SummerSimmerIndex()),
       className(SunPosition()),
       className(SunRiseSet()),
-      className(SymbolArithmetic()),
       className(SymbolReplacer()),
       className(SymbolTableSelection()),
       className(TapCode()),

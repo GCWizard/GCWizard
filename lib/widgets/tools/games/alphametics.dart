@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/i18n/app_localizations.dart';
 import 'package:gc_wizard/logic/tools/games/catan.dart';
-import 'package:gc_wizard/logic/tools/games/symbol_arithmetic.dart';
+import 'package:gc_wizard/logic/tools/games/alphametics.dart';
 import 'package:gc_wizard/theme/theme.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_dropdownbutton.dart';
 import 'package:gc_wizard/widgets/common/base/gcw_iconbutton.dart';
@@ -20,12 +20,12 @@ import 'package:gc_wizard/widgets/common/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/widgets/utils/common_widget_utils.dart';
 import 'package:gc_wizard/widgets/utils/textinputformatter/variablestring_textinputformatter.dart';
 
-class SymbolArithmetic extends StatefulWidget {
+class Alphametics extends StatefulWidget {
   @override
-  SymbolArithmeticState createState() => SymbolArithmeticState();
+  AlphameticsState createState() => AlphameticsState();
 }
 
-class SymbolArithmeticState extends State<SymbolArithmetic> {
+class AlphameticsState extends State<Alphametics> {
   var _inputController;
   var _maskController;
 
@@ -213,7 +213,7 @@ class SymbolArithmeticState extends State<SymbolArithmetic> {
         return Center(
           child: Container(
             child: GCWAsyncExecuter(
-              isolatedFunction: solveSymbolArithmeticAsync,
+              isolatedFunction: solveAlphameticsAsync,
               parameter: _buildJobData(),
               onReady: (data) => _showOutput(data),
               isOverlay: true,

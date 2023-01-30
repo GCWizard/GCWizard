@@ -205,7 +205,7 @@ class SymbolArithmeticJobData {
   });
 }
 
-Future<Map<String, dynamic>> solveSymbolArithmeticAsync(dynamic jobData) async {
+Future<Map<String, dynamic>> solveAlphameticsAsync(dynamic jobData) async {
   if (jobData == null) return null;
 
   var output = solveSymbolArithmetic(jobData.parameters.formulas, jobData.parameters.substitutions,

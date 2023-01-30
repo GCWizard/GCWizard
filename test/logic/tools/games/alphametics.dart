@@ -2,7 +2,7 @@ import 'dart:math';
 
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/logic/tools/formula_solver/formula_parser.dart';
-import 'package:gc_wizard/logic/tools/games/symbol_arithmetic.dart';
+import 'package:gc_wizard/logic/tools/games/alphametics.dart';
 import 'package:gc_wizard/persistence/formula_solver/model.dart';
 
 void main() {
@@ -32,7 +32,7 @@ void main() {
     };
   }
 
-  group("SymbolArithmetic.solve:", () {
+  group("Alphametics.solve:", () {
 
     List<Map<String, dynamic>> _inputsToExpected = [
       // {'input' : null, 'expectedOutput' : null},

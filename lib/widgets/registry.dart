@@ -270,12 +270,12 @@ import 'package:gc_wizard/widgets/tools/crypto_and_encodings/z22.dart';
 import 'package:gc_wizard/widgets/tools/crypto_and_encodings/zamonian_numbers.dart';
 import 'package:gc_wizard/widgets/tools/crypto_and_encodings/zc1.dart';
 import 'package:gc_wizard/widgets/tools/formula_solver/formula_solver_formulagroups.dart';
+import 'package:gc_wizard/widgets/tools/games/alphametics.dart';
 import 'package:gc_wizard/widgets/tools/games/bowling.dart';
 import 'package:gc_wizard/widgets/tools/games/catan.dart';
 import 'package:gc_wizard/widgets/tools/games/game_of_life/game_of_life.dart';
 import 'package:gc_wizard/widgets/tools/games/scrabble/scrabble_overview.dart';
 import 'package:gc_wizard/widgets/tools/games/sudoku/sudoku_solver.dart';
-import 'package:gc_wizard/widgets/tools/games/symbol_arithmetic.dart';
 import 'package:gc_wizard/widgets/tools/general_tools/grid_generator/grid.dart';
 import 'package:gc_wizard/widgets/tools/images_and_files/animated_image.dart';
 import 'package:gc_wizard/widgets/tools/images_and_files/animated_image_morse_code.dart';
@@ -449,6 +449,11 @@ initializeRegistry(BuildContext context) {
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: [
       'alphabetvalues',
+    ]),
+    GCWTool(tool: Alphametics(), i18nPrefix: 'symbol_arithmetic', categories: [
+      ToolCategory.GAMES
+    ], searchKeys: [
+      'symbol_arithmetic',
     ]),
     GCWTool(tool: Amsco(), i18nPrefix: 'amsco', categories: [
       ToolCategory.CRYPTOGRAPHY
@@ -1107,11 +1112,6 @@ initializeRegistry(BuildContext context) {
     ], searchKeys: [
       'games',
       'games_sudokusolver',
-    ]),
-    GCWTool(tool: SymbolArithmetic(), i18nPrefix: 'symbol_arithmetic', categories: [
-      ToolCategory.GAMES
-    ], searchKeys: [
-      'symbol_arithmetic',
     ]),
     GCWTool(
       tool: SymbolTableSelection(),
