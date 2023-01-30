@@ -368,7 +368,10 @@ List<String> _sortByCurrentSubstitutionsCount(List<String> formulas, List<int> k
 }
 
 Map<String, int> Solve(String equation) {
+  if (equation == null) return null;
+
   var chars = Helper._unknowns(equation);
+  if (chars.isEmpty) return Map<String, int>();
   var k = chars.length;
   var tokens = Helper._tokenise(Helper._mapCharsToTokens(chars), equation);
   var columns = Helper._parse(tokens);
@@ -554,7 +557,6 @@ class Helper {
 }
 
 String getOutput(String equation, Map<String, int> result) {
-  //var substitutions  =Map<String,String>();
   Map<String,String> substitutions = Map.from(result);
   return substitution(equation, substitutions);
 }
