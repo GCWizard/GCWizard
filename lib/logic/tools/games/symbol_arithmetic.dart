@@ -9,7 +9,6 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:gc_wizard/logic/common/parser/variable_string_expander.dart';
-import 'package:gc_wizard/logic/tools/crypto_and_encodings/book_cipher.dart';
 import 'package:gc_wizard/logic/tools/crypto_and_encodings/substitution.dart';
 import 'package:gc_wizard/logic/tools/formula_solver/formula_parser.dart';
 import 'package:gc_wizard/utils/common_utils.dart';
@@ -553,4 +552,11 @@ class Helper {
   }
 
 }
+
+String getOutput(String equation, Map<String, int> result) {
+  //var substitutions  =Map<String,String>();
+  Map<String,String> substitutions = Map.from(result);
+  return substitution(equation, substitutions);
+}
+
 
