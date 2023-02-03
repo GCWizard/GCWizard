@@ -1,17 +1,13 @@
 import 'dart:convert';
 import 'dart:core';
-import 'dart:core';
 import 'dart:isolate';
 import 'dart:math';
 import 'dart:collection';
 import "package:collection/collection.dart";
-import 'dart:math';
-import 'dart:typed_data';
-
-import 'package:gc_wizard/logic/common/parser/variable_string_expander.dart';
-import 'package:gc_wizard/logic/tools/crypto_and_encodings/substitution.dart';
-import 'package:gc_wizard/logic/tools/formula_solver/formula_parser.dart';
-import 'package:gc_wizard/utils/common_utils.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitution.dart';
+import 'package:gc_wizard/tools/formula_solver/logic/formula_parser.dart';
+import 'package:gc_wizard/utils/collection_utils.dart';
+import 'package:gc_wizard/utils/variable_string_expander.dart';
 import 'package:math_expressions/math_expressions.dart';
 
 class SymbolMatrix {

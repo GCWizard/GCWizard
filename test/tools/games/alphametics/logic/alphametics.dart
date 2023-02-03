@@ -1,9 +1,8 @@
 import 'dart:math';
 
 import "package:flutter_test/flutter_test.dart";
-import 'package:gc_wizard/logic/tools/formula_solver/formula_parser.dart';
-import 'package:gc_wizard/logic/tools/games/alphametics.dart';
-import 'package:gc_wizard/persistence/formula_solver/model.dart';
+import 'package:gc_wizard/tools/formula_solver/logic/formula_parser.dart';
+import 'package:gc_wizard/tools/games/alphametics/logic/alphametics.dart';
 
 void main() {
   _formulaStateToString(FormulaState state) {
