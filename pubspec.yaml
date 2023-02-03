@@ -51,6 +51,7 @@ dependencies:
   uuid: ^3.0.6
   url_launcher: ^6.1.6
   utility: ^1.0.3
+  week_of_year: ^2.0.0
 
 dev_dependencies:
   flutter_test:

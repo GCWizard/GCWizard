@@ -1,4 +1,4 @@
-import 'package:gc_wizard/utils/common_utils.dart';
+import 'package:gc_wizard/utils/collection_utils.dart';
 
 const alphabet_09 = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9};
 final alphabet_09Indexes = switchMapKeyValue(alphabet_09);

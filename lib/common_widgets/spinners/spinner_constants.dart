@@ -1,0 +1,1 @@
+enum SpinnerLayout { HORIZONTAL, VERTICAL }

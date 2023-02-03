@@ -92,3 +92,4 @@ howtocode/
 /external_helpers/crowdin/crowdin_token.sh
 /ios/build
 crowdin.yml
+/.vscode
