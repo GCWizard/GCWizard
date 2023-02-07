@@ -506,6 +506,12 @@ class Helper {
     }
   }
 
+// https://stackoverflow.com/questions/15413248/how-to-flatten-a-list
+
+//var flat = a.expand((i) => i).toList();
+
+  ///List<T> flatten<T>(Iterable<Iterable<T>> list) =>
+  //     [for (var sublist in list) ...sublist];
   static Iterable<TResult> _selectMany<TResult>(Iterable<Iterable<TResult>> items) { //Iterable<TResult>
     if (items == null || items.isEmpty)
       return {};
@@ -555,6 +561,15 @@ class Helper {
 String getOutput(String equation, Map<String, int> result) {
   Map<String,String> substitutions = Map.from(result);
   return substitution(equation, substitutions);
+}
+
+Iterable<Iterable<int>> Permutations1(Iterable<Iterable<int>> sequences) {
+  Iterable<Iterable<int>> emptyList = [<int>[]];
+return sequences.Aggregate( emptyList,
+(accumulator, sequence) =>
+from accseq in accumulator
+from item in sequence.Where(value => !accseq.Contains(value))
+select accseq.Concat(new[] { item }));
 }
 
 
