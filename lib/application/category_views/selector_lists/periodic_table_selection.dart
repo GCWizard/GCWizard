@@ -9,16 +9,18 @@ import 'package:gc_wizard/tools/science_and_technology/periodic_table/periodic_t
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class PeriodicTableSelection extends GCWSelection {
+  const PeriodicTableSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(PeriodicTable()),
-        className(PeriodicTableDataView()),
-        className(AtomicNumbersToText()),
+        className(const PeriodicTable()),
+        className(const PeriodicTableDataView(atomicNumber: 1,)),
+        className(const AtomicNumbersToText()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

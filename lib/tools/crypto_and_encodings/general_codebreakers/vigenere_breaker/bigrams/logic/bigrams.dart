@@ -9,13 +9,13 @@ import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/vigene
 class Bigrams {
   static const int maxAlphabetLength = 32;
 
-  String alphabet;
-  Map<String, String> replacementList;
+  late String alphabet;
+  Map<String, String>? replacementList;
   // The bigram with the lowest probability receives the value 0, the one with the greatest probability receives the value 1000000
-  List<List<int>> bigrams;
+  late List<List<int>> bigrams;
 }
 
-Bigrams getBigrams(VigenereBreakerAlphabet alphabet) {
+Bigrams? getBigrams(VigenereBreakerAlphabet alphabet) {
   switch (alphabet) {
     case VigenereBreakerAlphabet.ENGLISH:
       return EnglishBigrams();
@@ -30,10 +30,10 @@ Bigrams getBigrams(VigenereBreakerAlphabet alphabet) {
   }
 }
 
-double calc_fitnessBigrams(String txt, Bigrams bigrams) {
-  if (txt == null || txt == '') return null;
+double? calc_fitnessBigrams(String txt, Bigrams? bigrams) {
+  if (txt.isEmpty) return null;
 
-  if ((bigrams == null) || (bigrams.alphabet == null) || (bigrams.bigrams == null)) return null;
+  if (bigrams == null) return null;
 
   var fitness = 0;
   var plain_bin = <int>[];
@@ -42,9 +42,9 @@ double calc_fitnessBigrams(String txt, Bigrams bigrams) {
     plain_bin.add(char);
   });
 
-  if (plain_bin.length < 2)
-    // More than two characters from the given alphabet are required
+  if (plain_bin.length < 2) {
     return null;
+  }
 
   for (var idx = 0; idx < (plain_bin.length - 1); idx++) {
     var ch1 = plain_bin[idx];

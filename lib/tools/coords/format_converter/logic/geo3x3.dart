@@ -3,15 +3,14 @@ import 'package:latlong2/latlong.dart';
 
 part 'package:gc_wizard/tools/coords/format_converter/logic/external_libs/taisukef.geo3x3/geo3x3.dart';
 
-LatLng geo3x3ToLatLon(Geo3x3 geo3x3) {
+LatLng? geo3x3ToLatLon(Geo3x3 geo3x3) {
   var latLon = _Geo3x3.decode(geo3x3.text.toUpperCase());
   return latLon == null ? null : LatLng(latLon[0], latLon[1]);
 }
 
-Geo3x3 parseGeo3x3(String input) {
-  if (input == null) return null;
+Geo3x3? parseGeo3x3(String input) {
   input = input.trim();
-  if (input == '') return null;
+  if (input.isEmpty) return null;
 
   input = input.toUpperCase();
   if (RegExp(r'[EeWw][1-9]+').hasMatch(input)) {

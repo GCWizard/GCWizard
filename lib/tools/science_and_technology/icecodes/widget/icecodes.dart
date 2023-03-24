@@ -6,6 +6,8 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/tools/science_and_technology/icecodes/logic/icecodes.dart';
 
 class IceCodes extends StatefulWidget {
+  const IceCodes({Key? key}) : super(key: key);
+
   @override
   IceCodesState createState() => IceCodesState();
 }
@@ -31,7 +33,7 @@ class IceCodesState extends State<IceCodes> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        GCWDropDown(
+        GCWDropDown<IceCodeSystem>(
           value: _currentIceCodeSystem,
           onChanged: (value) {
             setState(() {
@@ -61,7 +63,7 @@ class IceCodesState extends State<IceCodes> {
           }).toList(),
         ),
         if (_currentIceCodeSystem == IceCodeSystem.BALTIC)
-          GCWDropDown(
+          GCWDropDown<IceCodeSubSystem>(
             value: _currentIceCodeSubSystemBaltic,
             onChanged: (value) {
               setState(() {
@@ -77,7 +79,7 @@ class IceCodesState extends State<IceCodes> {
             }).toList(),
           ),
         if (_currentIceCodeSystem == IceCodeSystem.EU)
-          GCWDropDown(
+          GCWDropDown<IceCodeSubSystem>(
             value: _currentIceCodeSubSystemEU,
             onChanged: (value) {
               setState(() {
@@ -93,7 +95,7 @@ class IceCodesState extends State<IceCodes> {
             }).toList(),
           ),
         if (_currentIceCodeSystem == IceCodeSystem.WMO)
-          GCWDropDown(
+          GCWDropDown<IceCodeSubSystem>(
             value: _currentIceCodeSubSystemWMO,
             onChanged: (value) {
               setState(() {
@@ -114,13 +116,15 @@ class IceCodesState extends State<IceCodes> {
   }
 
   Widget _buildOutput() {
-    var iceCode = ICECODES[_currentIceCodeSystem];
+    var iceCodeSubSystem = ICECODES[_currentIceCodeSystem]?[_currentIceCodeSubSystem];
+    if (iceCodeSubSystem == null) return const GCWDefaultOutput();
+
     return GCWDefaultOutput(
       child: GCWColumnedMultilineOutput(
-        data: iceCode[_currentIceCodeSubSystem].entries.map((entry) {
+        data: iceCodeSubSystem.entries.map((entry) {
                 return [entry.key, i18n(context, entry.value)];
               }).toList(),
-        flexValues: [1, 5]
+        flexValues: const [1, 5]
       )
     );
   }

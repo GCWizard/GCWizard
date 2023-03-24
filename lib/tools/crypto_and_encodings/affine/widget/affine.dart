@@ -10,13 +10,15 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/affine/logic/affine.dart';
 
 class Affine extends StatefulWidget {
+  const Affine({Key? key}) : super(key: key);
+
   @override
   AffineState createState() => AffineState();
 }
 
 class AffineState extends State<Affine> {
-  TextEditingController _encodeController;
-  TextEditingController _decodeController;
+  late TextEditingController _encodeController;
+  late TextEditingController _decodeController;
 
   var _currentEncodeInput = '';
   var _currentDecodeInput = '';
@@ -106,8 +108,9 @@ class AffineState extends State<Affine> {
 
     if (_currentMode == GCWSwitchPosition.left) {
       output = encodeAffine(_currentEncodeInput, keyA, keyB);
-    } else
+    } else {
       output = decodeAffine(_currentDecodeInput, keyA, keyB);
+    }
 
     return GCWOutputText(
       text: output,

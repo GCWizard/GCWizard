@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
@@ -18,34 +20,27 @@ import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors_rgb.d
 import 'package:gc_wizard/tools/science_and_technology/colors/ral_color_codes/logic/ral_color_codes.dart';
 
 class RALColorCodes extends StatefulWidget {
+  const RALColorCodes({Key? key}) : super(key: key);
+
   @override
   RALColorCodesState createState() => RALColorCodesState();
 }
 
 class RALColorCodesState extends State<RALColorCodes> {
-  var _currentValue;
-  List<Map<String, String>> _colors;
+  late MapEntry<String, RalColor> _currentValue;
+  List<MapEntry<String, RalColor>> _colors = [];
 
   var _currentMode = GCWSwitchPosition.left;
 
-  dynamic _currentInputColor = RGB(50, 175, 187);
-  String _currentColorSpace = keyColorSpaceRGB;
+  var _currentInput = GCWColorValue(ColorSpaceKey.RGB, RGB(50, 175, 187));
 
   @override
   void initState() {
     super.initState();
 
-    _colors = RAL_COLOR_CODES
-        .map((key, value) {
-          var val = Map<String, String>.from(value);
-          val.putIfAbsent('key', () => key);
+    _colors = RAL_COLOR_CODES.entries.toList();
 
-          return MapEntry(key, val);
-        })
-        .values
-        .toList();
-
-    _colors.sort((a, b) => a['key'].compareTo(b['key']));
+    _colors.sort((a, b) => a.key.compareTo(b.key));
     _currentValue = _colors[0];
   }
 
@@ -66,7 +61,7 @@ class RALColorCodesState extends State<RALColorCodes> {
         _currentMode == GCWSwitchPosition.left
             ? Column(
                 children: [
-                  GCWDropDown(
+                  GCWDropDown<MapEntry<String, RalColor>>(
                       value: _currentValue,
                       onChanged: (newValue) {
                         setState(() {
@@ -74,7 +69,7 @@ class RALColorCodesState extends State<RALColorCodes> {
                         });
                       },
                       items: _colors.map((color) {
-                        return GCWDropDownMenuItem(value: color, child: color['key']);
+                        return GCWDropDownMenuItem(value: color, child: color.key);
                       }).toList()),
                   GCWDefaultOutput(child: _buildRALToColorOutput())
                 ],
@@ -82,12 +77,10 @@ class RALColorCodesState extends State<RALColorCodes> {
             : Column(
                 children: [
                   GCWColors(
-                    color: _currentInputColor,
-                    colorSpace: _currentColorSpace,
+                    colorsValue: _currentInput,
                     onChanged: (value) {
                       setState(() {
-                        _currentColorSpace = value['colorSpace'];
-                        _currentInputColor = value['color'];
+                        _currentInput = value;
                       });
                     },
                   ),
@@ -98,12 +91,12 @@ class RALColorCodesState extends State<RALColorCodes> {
     );
   }
 
-  List<dynamic> _buildRALColorOutput(Map<String, String> ral) {
-    var rgb = HexCode(ral['colorcode']).toRGB();
+  List<Object> _buildRALColorOutput(MapEntry<String, RalColor> ral) {
+    var rgb = HexCode(ral.value.colorcode).toRGB();
 
     return [
       Container(
-        margin: EdgeInsets.only(right: 4 * DOUBLE_DEFAULT_MARGIN),
+        margin: const EdgeInsets.only(right: 4 * DOUBLE_DEFAULT_MARGIN),
         height: 50,
         width: 50,
         decoration: BoxDecoration(
@@ -112,16 +105,16 @@ class RALColorCodesState extends State<RALColorCodes> {
           color: Color.fromRGBO(rgb.red.round(), rgb.green.round(), rgb.blue.round(), 1.0),
         ),
       ),
-      ral['ralcode'],
-      i18n(context, ral['name']) + '\n' + ral['colorcode']
+      ral.key,
+      i18n(context, ral.value.name) + '\n' + ral.value.colorcode
     ];
   }
 
-  _buildColorToRALOutput() {
-    RGB rgb = convertColorSpace(_currentInputColor, _currentColorSpace, keyColorSpaceRGB);
-    List<Map<String, String>> similarRALs = findSimilarRALColors(rgb);
+  Widget _buildColorToRALOutput() {
+    var rgb = convertColorSpace(_currentInput, ColorSpaceKey.RGB);
+    var similarRALs = findSimilarRALColors(rgb.toRGB());
 
-    if (similarRALs == null || similarRALs.isEmpty) {
+    if (similarRALs.isEmpty) {
       return GCWDefaultOutput(
         child: i18n(context, 'ralcolorcodes_mode_colorstoral_nocolorfound'),
       );
@@ -132,30 +125,30 @@ class RALColorCodesState extends State<RALColorCodes> {
             ? i18n(context, 'common_output')
             : i18n(context, 'ralcolorcodes_mode_colorstoral_similarcolorsfound'),
         child: GCWColumnedMultilineOutput(
-                  data: similarRALs.map((e) => _buildRALColorOutput(e)).toList(),
-                  flexValues: [1, 2, 2],
+                  data: similarRALs.entries.map((e) => _buildRALColorOutput(e)).toList(),
+                  flexValues: const [1, 2, 2],
                   copyColumn: 1
               ),
         );
   }
 
-  _buildRALToColorOutput() {
-    var rgbColor = HexCode(_currentValue['colorcode']).toRGB();
+  Widget _buildRALToColorOutput() {
+    var rgbColor = HexCode(_currentValue.value.colorcode).toRGB();
 
-    var name = _currentValue['name'];
-    if (name == null || name.isEmpty) name = 'common_unknown';
+    var name = _currentValue.value.name;
+    if (name.isEmpty) name = 'common_unknown';
 
     List<Widget> children = [GCWColumnedMultilineOutput(
-                              data : [
-                                      ['Name', i18n(context, name)],
-                                      ['Hex Color Code', _currentValue['colorcode']],
-                                      ['RGB', rgbColor.toRBGString()],
-                                      ['CMYK', CMYK.fromRGB(rgbColor).toCMYKString()],
-                              ]
+                                data : [
+                                  ['Name', i18n(context, name)],
+                                  ['Hex Color Code', _currentValue.value.colorcode],
+                                  ['RGB', rgbColor.toRBGString()],
+                                  ['CMYK', CMYK.fromRGB(rgbColor).toCMYKString()],
+                                ]
                             )];
 
     children.add(Container(
-      margin: EdgeInsets.only(top: 10 * DEFAULT_MARGIN),
+      margin: const EdgeInsets.only(top: 10 * DEFAULT_MARGIN),
       height: 200,
       width: 400,
       decoration: BoxDecoration(
@@ -173,8 +166,8 @@ class RALColorCodesState extends State<RALColorCodes> {
     return Column(children: children);
   }
 
-  _showElement(RGB color) {
-    Navigator.of(context).push(NoAnimationMaterialPageRoute(
-        builder: (context) => GCWTool(tool: ColorTool(color: color), i18nPrefix: 'colors')));
+  void _showElement(RGB color) {
+    Navigator.of(context).push(NoAnimationMaterialPageRoute<GCWTool>(
+        builder: (context) => GCWTool(tool: ColorTool(color: color), id: 'colors')));
   }
 }

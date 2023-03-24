@@ -26,11 +26,11 @@ class XMP {
   /// print(result.toString());
   ///
   ///```
-  static Map<String, dynamic> extract(Uint8List source, {bool raw = false}) {
+  static Map<String, Object> extract(Uint8List? source, {bool raw = false}) {
     if (source is! Uint8List) {
       throw Exception('Not a Uint8List');
     } else {
-      var result = <String, dynamic>{};
+      var result = <String, Object>{};
       var buffer = latin1.decode(source, allowInvalid: false);
       int offsetBegin = buffer.indexOf(_markerBegin);
       if (offsetBegin != -1) {
@@ -46,26 +46,26 @@ class XMP {
           }
 
           // First rdf:Description
-          var rdf_Description = xml.descendants.where((node) => node is XmlElement).toList();
-          rdf_Description.forEach((element) {
+          var rdf_Description = xml.descendants.whereType<XmlElement>().toList();
+          for (var element in rdf_Description) {
             _addAttribute(result, element, raw);
-          });
+          }
 
           // Other selected known tags
-          [_listingTextTags].forEach((headerTag) {
-            headerTag.forEach((tag) {
+          for (var headerTag in [_listingTextTags]) {
+            for (var tag in headerTag) {
               var tags = xml.findAllElements(tag);
               if (tags.isNotEmpty) {
-                tags.forEach((element) {
+                for (var element in tags) {
                   var textList =
-                      element.descendants.where((node) => node is XmlText && !node.text.trim().isEmpty).toList();
-                  textList.forEach((text) {
+                      element.descendants.where((node) => node is XmlText && node.text.trim().isNotEmpty).toList();
+                  for (var text in textList) {
                     _addAttributeList(raw ? tag : camelToNormal(tag), text.text, result);
-                  });
-                });
+                  }
+                }
               }
-            });
-          });
+            }
+          }
           return result;
         } else {
           return {'Exception': 'Invalid Data'};
@@ -79,18 +79,18 @@ class XMP {
   static void _addAttribute(Map<String, dynamic> result, XmlElement element, bool raw) {
     var attributeList = element.attributes.toList();
 
-    var headerName;
+    String headerName = '';
 
     if (!raw) {
-      var temporaryElement = element;
-      var temporaryName = temporaryElement.name.toString().toLowerCase();
+      XmlElement? temporaryElement = element;
+      String? temporaryName = temporaryElement.name.toString().toLowerCase();
 
       while (!_envelopeTags.every((element) => element != temporaryName)) {
-        temporaryElement = temporaryElement.parentElement;
+        temporaryElement = temporaryElement?.parentElement;
         if (temporaryElement == null) {
           break;
         }
-        temporaryName = temporaryElement?.name?.toString()?.toLowerCase();
+        temporaryName = temporaryElement.name.toString().toLowerCase();
       }
       headerName = (temporaryElement?.name ?? element.name).toString();
       if (headerName == 'null') {
@@ -99,24 +99,24 @@ class XMP {
       }
     }
 
-    attributeList.forEach((attribute) {
+    for (var attribute in attributeList) {
       var attr = attribute.name.toString();
       if (!attr.contains('xmlns:') && !attr.contains('xml:')) {
         var endName = attribute.name.toString();
         var value = attribute.value.toString();
-        result[(raw ? '$endName' : '${camelToNormal(headerName)} ${camelToNormal(endName)}').toString().trim()] =
-            value ?? '';
+        result[(raw ? endName : '${camelToNormal(headerName)} ${camelToNormal(endName)}').toString().trim()] =
+            value;
       }
-    });
+    }
 
     element.children.toList().forEach((child) {
       if (child is! XmlText) {
-        _addAttribute(result, child, raw);
+        _addAttribute(result, child as XmlElement, raw);
       }
     });
   }
 
-  static String camelToNormal(String text) {
+  static String camelToNormal(String? text) {
     if (text == null || text.isEmpty) {
       return '';
     }
@@ -133,7 +133,7 @@ class XMP {
       return replace;
     }
 
-    return text.nameCase();
+    return text!.nameCase();
   }
 
   static void _addAttributeList(String key, String text, Map<String, dynamic> result) {

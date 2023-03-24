@@ -8,15 +8,17 @@ import 'package:gc_wizard/tools/crypto_and_encodings/bundeswehr_talkingboard/bun
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class BundeswehrTalkingBoardSelection extends GCWSelection {
+  const BundeswehrTalkingBoardSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(BundeswehrTalkingBoardAuthentification()),
-        className(BundeswehrTalkingBoardObfuscation()),
+        className(const BundeswehrTalkingBoardAuthentification()),
+        className(const BundeswehrTalkingBoardObfuscation()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

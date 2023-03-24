@@ -14,26 +14,32 @@ const MDT_CCITT1_OPTION_MODE_DENARY = 'common_numeralbase_denary';
 const MDT_CCITT1_OPTION_MODE_BINARY = 'common_numeralbase_binary';
 
 class MultiDecoderToolCcitt1 extends AbstractMultiDecoderTool {
-  MultiDecoderToolCcitt1({Key key, int id, String name, Map<String, dynamic> options, BuildContext context})
+  MultiDecoderToolCcitt1({
+    Key? key,
+    required int id,
+    required String name,
+    required Map<String, Object?> options,
+    required BuildContext context})
       : super(
             key: key,
             id: id,
             name: name,
             internalToolName: MDT_INTERNALNAMES_CCITT1,
             onDecode: (String input, String key) {
-              if (options[MDT_CCITT1_OPTION_MODE] == MDT_CCITT1_OPTION_MODE_BINARY) {
-                return decodeTeletypewriter(
-                    textToBinaryList(input).map((value) {
-                      return int.tryParse(convertBase(value, 2, 10));
-                    }).toList(),
-                    TeletypewriterCodebook.CCITT_ITA1_EU);
-              } else
-                return decodeTeletypewriter(textToIntList(input), TeletypewriterCodebook.CCITT_ITA1_EU);
+              if (checkStringFormatOrDefaultOption(MDT_INTERNALNAMES_CCITT1, options, MDT_CCITT1_OPTION_MODE) == MDT_CCITT1_OPTION_MODE_BINARY) {
+                var intValues = textToBinaryList(input).map((value) {
+                  return int.tryParse(convertBase(value, 2, 10));
+                }).toList();
+                return decodeTeletypewriter(intValues.whereType<int>().toList(),
+                    TeletypewriterCodebook.BAUDOT_54123);
+              } else {
+                return decodeTeletypewriter(textToIntList(input), TeletypewriterCodebook.BAUDOT_54123);
+              }
             },
             options: options,
             configurationWidget: MultiDecoderToolConfiguration(widgets: {
-              MDT_CCITT1_OPTION_MODE: GCWStatefulDropDown(
-                value: options[MDT_CCITT1_OPTION_MODE],
+              MDT_CCITT1_OPTION_MODE: GCWStatefulDropDown<String>(
+                value: checkStringFormatOrDefaultOption(MDT_INTERNALNAMES_CCITT1, options, MDT_CCITT1_OPTION_MODE),
                 onChanged: (newValue) {
                   options[MDT_CCITT1_OPTION_MODE] = newValue;
                 },

@@ -2,26 +2,27 @@ import 'dart:convert';
 
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/tools/coords/map_view/persistence/model.dart';
+import 'package:gc_wizard/utils/json_utils.dart';
 import 'package:gc_wizard/utils/persistence_utils.dart';
 import 'package:prefs/prefs.dart';
 
 void refreshMapViews() {
   var rawMapViews = Prefs.getStringList(PREFERENCE_MAPVIEW_MAPVIEWS);
-  if (rawMapViews == null || rawMapViews.length == 0) return;
+  if (rawMapViews.isEmpty) return;
 
-  mapViews = rawMapViews.where((view) => view.length > 0).map((view) {
-    return MapViewDAO.fromJson(jsonDecode(view));
+  mapViews = rawMapViews.where((view) => view.isNotEmpty).map((view) {
+    return MapViewDAO.fromJson(asJsonMap(jsonDecode(view)));
   }).toList();
 }
 
-clearMapViewDAO(MapViewDAO view) {
+void clearMapViewDAO(MapViewDAO view) {
   view.polylines.clear();
   view.points.clear();
 
   _saveData();
 }
 
-_saveData() {
+void _saveData() {
   var jsonData = mapViews.map((view) => jsonEncode(view.toMap())).toList();
 
   Prefs.setStringList(PREFERENCE_MAPVIEW_MAPVIEWS, jsonData);
@@ -97,5 +98,5 @@ String jsonMapViewData(MapViewDAO view) {
 }
 
 MapViewDAO restoreJsonMapViewData(String view) {
-  return MapViewDAO.fromJson(jsonDecode(view));
+  return MapViewDAO.fromJson(asJsonMap(jsonDecode(view)));
 }

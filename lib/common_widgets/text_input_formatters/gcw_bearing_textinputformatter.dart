@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
+import 'package:gc_wizard/common_widgets/text_input_formatters/gcw_double_textinputformatter.dart';
 
-class GCWBearingTextInputFormatter extends TextInputFormatter {
+class GCWBearingTextInputFormatter extends GCWDoubleTextInputFormatter {
   GCWBearingTextInputFormatter();
 
   @override

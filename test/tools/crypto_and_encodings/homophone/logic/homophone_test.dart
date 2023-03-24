@@ -7,9 +7,8 @@ import 'package:gc_wizard/utils/collection_utils.dart';
 
 void main() {
   group("Homophone.encryptGenerated:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
 
-      {'input' : null, 'errorcode': HomophoneErrorCode.OK, 'alphabet': alphabetGerman1, 'rotation': 1, 'multiplier': 1, 'expectedOutput' : ''},
       {'input' : '', 'errorcode': HomophoneErrorCode.OK, 'alphabet': alphabetGerman1, 'rotation': 3, 'multiplier': 1, 'expectedOutput' : ''},
 
       {'input' : 'Test', 'errorcode': HomophoneErrorCode.OK, 'alphabet': alphabetGerman1, 'rotation': 1, 'multiplier': 3, 'expectedOutput': '58 48 37 58'},
@@ -18,67 +17,65 @@ void main() {
       {'input' : 'КОНТРОЛЬНАЯ РАБОТА', 'errorcode': HomophoneErrorCode.OK, 'alphabet': alphabetRussian1, 'rotation': 1, 'multiplier': 9, 'expectedOutput': '42 04 41 02 21 04 69 55 41 09 91 21 09 72 04 02 09'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, alphabet: ${elem['alphabet']}, rotation: ${elem['rotation']}, multiplier: ${elem['multiplier']}', () {
-        var _actual;
-        _actual = encryptHomophoneWithGeneratedKey(elem['input'], elem['alphabet'], elem['rotation'], elem['multiplier']);
-        Map<String, String> map ;
-        map = replaceMap(elem['rotation'], elem['multiplier'], elem['alphabet']);
+        var _actual = encryptHomophoneWithGeneratedKey(elem['input'] as String, elem['alphabet'] as Alphabet, elem['rotation'] as int, elem['multiplier'] as int);
+
+        var map = replaceMap(elem['rotation'] as int, elem['multiplier'] as int, elem['alphabet'] as Alphabet);
         var output = changeOutput(_actual.output, map);
         expect(_actual.errorCode, elem['errorcode']);
         expect(output, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Homophone.encryptKeyList:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    //alternative result because random number generator implemented
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : 'Test', 'errorcode': HomophoneErrorCode.OK, 'alphabet': alphabetGerman1,
         'keyList': '36 56 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 30 21 22 23 24 25 26 27 28 29 40 31 32 33 34 35 0 37 38 39 20 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 1 57 58 59 60 61 62 63 64 65 66 67 68 69 80 71 72 73 74 75 76 77 78 79 90 81 82 83 84 85 86 87 88 89 70 91 92 93 94 95 96 97 98 99',
-        'expectedOutput': '85 15 78 85'},
+        'expectedOutput': ['85 15 78 85', '85 15 90 85',  '85 40 78 85', '85 40 90 85', '85 21 90 85', '85 31 90 85', '85 21 78 85']},
       {'input' : 'Test', 'errorcode': HomophoneErrorCode.CUSTOM_KEY_COUNT, 'alphabet': alphabetGerman1,
         'keyList': '36 56 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 30 21 22 23 24 25 26 27 28 29 40 31 32 33 34 35 0 37 38 39 20 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 1 57 58 59 60 61 62 63 64 65 66 67 68 69 80 71 72 73 74 75 76 77 78 79 90 81 82 83 84 85 86 87 88 89 70 91 92 93 94 95 96 97 98 99 99',
-        'expectedOutput': ''},
+        'expectedOutput': [''], },
 
       {'input' : 'Test', 'errorcode': HomophoneErrorCode.CUSTOM_KEY_DUPLICATE, 'alphabet': alphabetGerman1,
         'keyList': '36 56 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 40 21 22 23 24 25 26 27 28 29 40 31 32 33 34 35 0 37 38 39 20 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 1 57 58 59 60 61 62 63 64 65 66 67 68 69 80 71 72 73 74 75 76 77 78 79 90 81 82 83 84 85 86 87 88 89 70 91 92 93 94 95 96 97 98 99',
-        'expectedOutput': '85 15 90 85'},
+        'expectedOutput': ['85 15 78 85', '85 15 90 85',  '85 40 78 85', '85 40 90 85', '85 21 90 85', '85 31 90 85', '85 21 78 85']},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, alphabet: ${elem['alphabet']}, keyList: ${elem['keyList']}', () {
-        var _actual;
-        _actual = encryptHomophoneWithKeyList(elem['input'], elem['alphabet'], textToIntList(elem['keyList']));
+        var _actual = encryptHomophoneWithKeyList(elem['input'] as String, elem['alphabet'] as Alphabet, textToIntList(elem['keyList'] as String));
         Map<String, String> map ;
-        map = replaceOwnMap(elem['keyList'], elem['alphabet']);
+        map = replaceOwnMap(elem['keyList'] as String, elem['alphabet'] as Alphabet);
         var output = changeOutput(_actual.output, map);
         expect(_actual.errorCode, elem['errorcode']);
-        expect(output, elem['expectedOutput']);
+        var result = (elem['expectedOutput'] as List<String>).contains(output);
+        expect(result, true, reason: output);
       });
-    });
+    }
   });
 
   group("Homophone.encryptKeyMap:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : 'Test', 'errorcode': HomophoneErrorCode.OK, 'keyMap': {'E': [9], 'S': [80], 'T': [90]}, 'expectedOutput': '90 09 80 90'},
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : 'Test', 'errorcode': HomophoneErrorCode.OK, 'keyMap': {'E': [9], 'S': [80], 'T': [90]}, 'multiplier': 1, 'expectedOutput': '90 09 80 90'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, keyMap: ${elem['keyMap']}', () {
-        var _actual;
-        _actual = encryptHomophoneWithKeyMap(elem['input'], elem['keyMap']);
-        Map<String, String> map ;
-        map = replaceMap(elem['rotation'], elem['multiplier'], elem['alphabet']);
+        var _actual = encryptHomophoneWithKeyMap(elem['input'] as String, elem['keyMap'] as Map<String, List<int>>);
+        Map<String, String> map;
+        map = replaceMap(elem['rotation'] as int?, elem['multiplier'] as int?, elem['alphabet'] as Alphabet?);
         var output = changeOutput(_actual.output, map);
         expect(_actual.errorCode, elem['errorcode']);
         expect(output, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Homophone.decryptGenerated:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'errorcode': HomophoneErrorCode.OK, 'alphabet': alphabetGerman1, 'rotation': 1, 'multiplier': 1, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'errorcode': HomophoneErrorCode.OK, 'alphabet': alphabetGerman1, 'rotation': 3, 'multiplier': 1, 'expectedOutput' : ''},
       {'input' : 'T', 'errorcode': HomophoneErrorCode.OK, 'alphabet': alphabetGerman1, 'rotation': 3, 'multiplier': 1, 'expectedOutput' : ''},
 
@@ -89,18 +86,17 @@ void main() {
       {'expectedOutput' : 'ΔΟΚΙΜ', 'errorcode': HomophoneErrorCode.OK, 'alphabet': alphabetGreek1, 'rotation': 500, 'multiplier': 31, 'input': '27 60 64 54 19'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, alphabet: ${elem['alphabet']}, rotation: ${elem['rotation']}, multiplier: ${elem['multiplier']}', () {
-        var _actual;
-        _actual = decryptHomophoneWithGeneratedKey(elem['input'], elem['alphabet'], elem['rotation'], elem['multiplier']);
+        var _actual = decryptHomophoneWithGeneratedKey(elem['input'] as String , elem['alphabet'] as Alphabet, elem['rotation'] as int, elem['multiplier'] as int);
         expect(_actual.errorCode, elem['errorcode']);
         expect(_actual.output, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Homophone.decryptKeyList:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'expectedOutput' : 'TEST', 'errorcode': HomophoneErrorCode.OK, 'alphabet': alphabetGerman1,
         'keyList': '36 56 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 30 21 22 23 24 25 26 27 28 29 40 31 32 33 34 35 0 37 38 39 20 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 1 57 58 59 60 61 62 63 64 65 66 67 68 69 80 71 72 73 74 75 76 77 78 79 90 81 82 83 84 85 86 87 88 89 70 91 92 93 94 95 96 97 98 99',
         'input': '70 27 81 89'},
@@ -119,30 +115,28 @@ void main() {
         'input': '70 27 81 89'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']},alphabet: ${elem['alphabet']}, keyList: ${elem['keyList']}', () {
-        var _actual;
-        _actual = decryptHomophoneWithKeyList(elem['input'], elem['alphabet'], textToIntList(elem['keyList']));
+        var _actual = decryptHomophoneWithKeyList(elem['input'] as String , elem['alphabet'] as Alphabet, textToIntList(elem['keyList'] as String));
         expect(_actual.errorCode, elem['errorcode']);
         expect(_actual.output, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Homophone.decryptMap:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'expectedOutput' : 'TEST', 'errorcode': HomophoneErrorCode.OK,
         'keyMap': {'E': [9], 'S': [80], 'T': [90]}, 'input': '90 09 80 90'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, keyMap: ${elem['keyMap']}', () {
-        var _actual;
-        _actual = decryptHomophoneWithKeyMap(elem['input'], elem['keyMap']);
+        var _actual = decryptHomophoneWithKeyMap(elem['input'] as String, elem['keyMap'] as Map<String, List<int>>?);
         expect(_actual.errorCode, elem['errorcode']);
         expect(_actual.output, elem['expectedOutput']);
       });
-    });
+    }
   });
 }
 
@@ -164,15 +158,15 @@ Map<String, String> fillMapOwn(int startIndex, int startOffset, int count, int o
 
 // create substition Table
 // to change random number to first number in the row
-Map<String, String> replaceMap(int rotation, int multiplier, Alphabet alphabet){
-  var map = Map<String, String>();
+Map<String, String> replaceMap(int? rotation, int? multiplier, Alphabet? alphabet){
+  var map = <String, String>{};
 
   if (alphabet == alphabetGerman1) {
     switch (rotation) {
       case 1:
         switch (multiplier) {
           case 3:
-            var offset = multiplier;
+            var offset = multiplier!;
             map = fillMap(3, 5, offset, map);
             map = fillMap(21, 1, offset, map);
             map = fillMap(21, 1, offset, map);
@@ -197,7 +191,7 @@ Map<String, String> replaceMap(int rotation, int multiplier, Alphabet alphabet){
       case 3:
         switch (multiplier) {
           case 7:
-            var offset = multiplier;
+            var offset = multiplier!;
             map = fillMap(21, 7, offset, map);
             map = fillMap(77, 1, offset, map);
             map = fillMap(91, 2, offset, map);
@@ -225,7 +219,7 @@ Map<String, String> replaceMap(int rotation, int multiplier, Alphabet alphabet){
       case 1:
         switch (multiplier) {
           case 9:
-            var offset = multiplier;
+            var offset = multiplier!;
             map = fillMap(09, 6, offset, map);
             map = fillMap(72, 1, offset, map);
             map = fillMap(90, 3, offset, map);
@@ -252,7 +246,7 @@ Map<String, String> replaceMap(int rotation, int multiplier, Alphabet alphabet){
       case 6:
         switch (multiplier) {
           case 99:
-            var offset = multiplier;
+            var offset = multiplier!;
             map = fillMap(94, 11, offset, map);
             map = fillMap(81, 3, offset, map);
             map = fillMap(77, 4, offset, map);
@@ -274,7 +268,7 @@ Map<String, String> replaceMap(int rotation, int multiplier, Alphabet alphabet){
       case 500:
         switch (multiplier) {
           case 31:
-            var offset = multiplier;
+            var offset = multiplier!;
             map = fillMap(00, 12, offset, map);
             map = fillMap(34, 1, offset, map);
             map = fillMap(96, 1, offset, map);
@@ -302,7 +296,7 @@ Map<String, String> replaceMap(int rotation, int multiplier, Alphabet alphabet){
 // create substition Table
 // to change random number to first number in the row
 Map<String, String> replaceOwnMap(String keyList, Alphabet alphabet){
-  var map = Map<String, String>();
+  var map = <String, String>{};
 
   if (alphabet == alphabetGerman1) {
     var offset = 1;
@@ -338,10 +332,11 @@ Map<String, String> replaceOwnMap(String keyList, Alphabet alphabet){
   return map;
 }
 
-String changeOutput(String input, Map<String, String> replaceNumbers){
-  if (replaceNumbers != null)
+String changeOutput(String input, Map<String, String>? replaceNumbers){
+  if (replaceNumbers != null) {
     replaceNumbers.forEach((key, value){
       input = substitution(input, replaceNumbers);
     });
+  }
   return input;
 }

@@ -20,7 +20,7 @@ _Vector multiply(_Vector v, double s) {
 }
 
 class _Matrix {
-  List<List<double>> M;
+  late List<List<double>> M;
 
   _Matrix(double M00, double M01, double M02, double M10, double M11, double M12, double M20, double M21, double M22) {
     M = [
@@ -37,11 +37,11 @@ class _Matrix {
 }
 
 class EllipsoidTransformation {
-  _Vector mRParam;
-  _Vector mTParam;
-  double mDeformation;
-  Ellipsoid srcElls;
-  Ellipsoid dstElls;
+  late _Vector mRParam;
+  late _Vector mTParam;
+  late double mDeformation;
+  late Ellipsoid srcElls;
+  late Ellipsoid dstElls;
 
   EllipsoidTransformation(Ellipsoid _srcElls, Ellipsoid _dstElls, double ex, double ey, double ez, double dx, double dy,
       double dz, double m) {
@@ -66,139 +66,80 @@ class EllipsoidTransformation {
   }
 }
 
-final List<List<dynamic>> _transformationsGK = [
-  [ELLIPSOID_NAME_BESSEL1841, ELLIPSOID_NAME_WGS84, -1.040, -0.350, 3.080, 582.0, 105.0, 414.0, 8.3e-6], //GK1 2001
-  [ELLIPSOID_NAME_BESSEL1841, ELLIPSOID_NAME_WGS84, -0.202, -0.045, 2.455, 598.1, 73.7, 418.2, 6.7e-6], //GK2 1995
-  [ELLIPSOID_NAME_BESSEL1841, ELLIPSOID_NAME_WGS84, -0.105, -0.013, 2.378, 584.8, 67.0, 400.3, 10.29e-6], //GK3 D-Nord
-  [ELLIPSOID_NAME_BESSEL1841, ELLIPSOID_NAME_WGS84, 0.796, 0.052, 3.601, 590.5, 69.5, 411.6, 8.3e-6], //GK4 D-Mitte
-  [ELLIPSOID_NAME_BESSEL1841, ELLIPSOID_NAME_WGS84, -0.894, -0.068, 1.563, 597.1, 71.4, 412.1, 7.58e-6], //GK5 D-Süd
+const List<_TransformationData> _transformationsGK = [
+  _TransformationData(
+      ELLIPSOID_NAME_BESSEL1841, ELLIPSOID_NAME_WGS84, -1.040, -0.350, 3.080, 582.0, 105.0, 414.0, 8.3e-6), //GK1 2001
+  _TransformationData(
+      ELLIPSOID_NAME_BESSEL1841, ELLIPSOID_NAME_WGS84, -0.202, -0.045, 2.455, 598.1, 73.7, 418.2, 6.7e-6), //GK2 1995
+  _TransformationData(ELLIPSOID_NAME_BESSEL1841, ELLIPSOID_NAME_WGS84, -0.105, -0.013, 2.378, 584.8, 67.0, 400.3,
+      10.29e-6), //GK3 D-Nord
+  _TransformationData(
+      ELLIPSOID_NAME_BESSEL1841, ELLIPSOID_NAME_WGS84, 0.796, 0.052, 3.601, 590.5, 69.5, 411.6, 8.3e-6), //GK4 D-Mitte
+  _TransformationData(
+      ELLIPSOID_NAME_BESSEL1841, ELLIPSOID_NAME_WGS84, -0.894, -0.068, 1.563, 597.1, 71.4, 412.1, 7.58e-6), //GK5 D-Süd
 ];
 
-final List<Map<String, dynamic>> transformableDates = [
-  {'name': '$ELLIPSOID_NAME_WGS84', 'transformationIndex': null, 'ellipsoid': getEllipsoidByName(ELLIPSOID_NAME_WGS84)},
-  {
-    'name': '$ELLIPSOID_NAME_BESSEL1841: DHDN(Potsdam) 2001',
-    'transformationIndex': 0,
-    'ellipsoid': getEllipsoidByName(ELLIPSOID_NAME_BESSEL1841)
-  },
-  {
-    'name': '$ELLIPSOID_NAME_BESSEL1841: DHDN(Potsdam) 1995',
-    'transformationIndex': 1,
-    'ellipsoid': getEllipsoidByName(ELLIPSOID_NAME_BESSEL1841)
-  },
-  {
-    'name': '$ELLIPSOID_NAME_BESSEL1841: MGI',
-    'transformationIndex': 4,
-    'ellipsoid': getEllipsoidByName(ELLIPSOID_NAME_BESSEL1841)
-  },
-  {
-    'name': '$ELLIPSOID_NAME_BESSEL1841: LV95',
-    'transformationIndex': 5,
-    'ellipsoid': getEllipsoidByName(ELLIPSOID_NAME_BESSEL1841)
-  },
-  {
-    'name': '$ELLIPSOID_NAME_KRASOVSKY1940: S42/83(Pulkowo) 2001',
-    'transformationIndex': 3,
-    'ellipsoid': getEllipsoidByName(ELLIPSOID_NAME_KRASOVSKY1940)
-  },
-  {
-    'name': '$ELLIPSOID_NAME_KRASOVSKY1940: S42/83(Pulkowo) 1995',
-    'transformationIndex': 2,
-    'ellipsoid': getEllipsoidByName(ELLIPSOID_NAME_KRASOVSKY1940)
-  },
-  {
-    'name': '$ELLIPSOID_NAME_AIRY1830: OSGB36',
-    'transformationIndex': 6,
-    'ellipsoid': getEllipsoidByName(ELLIPSOID_NAME_AIRY1830)
-  },
-  {
-    'name': '$ELLIPSOID_NAME_AIRYMODIFIED: IRL 1965',
-    'transformationIndex': 7,
-    'ellipsoid': getEllipsoidByName(ELLIPSOID_NAME_AIRYMODIFIED)
-  },
-  {
-    'name': '$ELLIPSOID_NAME_HAYFORD1924: ED50',
-    'transformationIndex': 8,
-    'ellipsoid': getEllipsoidByName(ELLIPSOID_NAME_HAYFORD1924)
-  },
-  {
-    'name': '$ELLIPSOID_NAME_CLARKE1866',
-    'transformationIndex': 9,
-    'ellipsoid': getEllipsoidByName(ELLIPSOID_NAME_CLARKE1866)
-  },
+class TransformableDate {
+  final String name;
+  final int? transformationIndex;
+  final Ellipsoid ellipsoid;
+
+  const TransformableDate(this.name, this.transformationIndex, this.ellipsoid);
+}
+
+final List<TransformableDate> transformableDates = [
+  TransformableDate(ELLIPSOID_NAME_WGS84, null, getEllipsoidByName(ELLIPSOID_NAME_WGS84)!),
+  TransformableDate(
+      '$ELLIPSOID_NAME_BESSEL1841: DHDN(Potsdam) 2001', 0, getEllipsoidByName(ELLIPSOID_NAME_BESSEL1841)!),
+  TransformableDate(
+      '$ELLIPSOID_NAME_BESSEL1841: DHDN(Potsdam) 1995', 1, getEllipsoidByName(ELLIPSOID_NAME_BESSEL1841)!),
+  TransformableDate('$ELLIPSOID_NAME_BESSEL1841: MGI', 4, getEllipsoidByName(ELLIPSOID_NAME_BESSEL1841)!),
+  TransformableDate('$ELLIPSOID_NAME_BESSEL1841: LV95', 5, getEllipsoidByName(ELLIPSOID_NAME_BESSEL1841)!),
+  TransformableDate(
+      '$ELLIPSOID_NAME_KRASOVSKY1940: S42/83(Pulkowo) 2001', 3, getEllipsoidByName(ELLIPSOID_NAME_KRASOVSKY1940)!),
+  TransformableDate(
+      '$ELLIPSOID_NAME_KRASOVSKY1940: S42/83(Pulkowo) 1995', 2, getEllipsoidByName(ELLIPSOID_NAME_KRASOVSKY1940)!),
+  TransformableDate('$ELLIPSOID_NAME_AIRY1830: OSGB36', 6, getEllipsoidByName(ELLIPSOID_NAME_AIRY1830)!),
+  TransformableDate('$ELLIPSOID_NAME_AIRYMODIFIED: IRL 1965', 7, getEllipsoidByName(ELLIPSOID_NAME_AIRYMODIFIED)!),
+  TransformableDate('$ELLIPSOID_NAME_HAYFORD1924: ED50', 8, getEllipsoidByName(ELLIPSOID_NAME_HAYFORD1924)!),
+  TransformableDate(ELLIPSOID_NAME_CLARKE1866, 9, getEllipsoidByName(ELLIPSOID_NAME_CLARKE1866)!),
 ];
 
-final List<List<dynamic>> _transformations = [
-  [
-    ELLIPSOID_NAME_BESSEL1841,
-    ELLIPSOID_NAME_WGS84,
-    -0.202,
-    -0.045,
-    2.455,
-    598.1,
-    73.7,
-    418.2,
-    6.7e-6
-  ], //DHDN(Potsdam) 2001
-  [
-    ELLIPSOID_NAME_BESSEL1841,
-    ELLIPSOID_NAME_WGS84,
-    -1.04,
-    -0.35,
-    3.08,
-    582.0,
-    105.0,
-    414.0,
-    8.3e-6
-  ], //DHDN(Potsdam) 1995
-  [
-    ELLIPSOID_NAME_KRASOVSKY1940,
-    ELLIPSOID_NAME_WGS84,
-    0.02,
-    -0.26,
-    -0.13,
-    24.0,
-    -123.0,
-    -94.0,
-    1.1e-6
-  ], //S42/83(Pulkowo) 1995
-  [
-    ELLIPSOID_NAME_KRASOVSKY1940,
-    ELLIPSOID_NAME_WGS84,
-    0.063,
-    0.247,
-    0.041,
-    24.9,
-    -126.4,
-    -93.2,
-    1.01e-6
-  ], //S42/83(Pulkowo) 2001
-  [ELLIPSOID_NAME_BESSEL1841, ELLIPSOID_NAME_WGS84, -5.137, -1.474, -5.297, 577.326, 90.129, 463.919, 2.423e-6], //MGI
-  [ELLIPSOID_NAME_BESSEL1841, ELLIPSOID_NAME_WGS84, 0.0, 0.0, 0.0, 674.374, 15.056, 405.346, 0.0e-6], //LV95
-  [
-    ELLIPSOID_NAME_AIRY1830,
-    ELLIPSOID_NAME_WGS84,
-    -0.1502,
-    -0.247,
-    -0.8421,
-    446.448,
-    -125.157,
-    542.06,
-    -20.4894e-6
-  ], //OSGB36
-  [
-    ELLIPSOID_NAME_AIRYMODIFIED,
-    ELLIPSOID_NAME_WGS84,
-    -0.202,
-    -0.045,
-    2.455,
-    482.53,
-    -130.596,
-    564.557,
-    8.15e-6
-  ], //Irland 1965
-  [ELLIPSOID_NAME_HAYFORD1924, ELLIPSOID_NAME_WGS84, -0.4, 0.2, -0.4, -102.0, -102.0, -129.0, 2.5e-6], //ED50
-  [ELLIPSOID_NAME_CLARKE1866, ELLIPSOID_NAME_WGS84, 0.0, 0.0, 0.0, -8.0, 160.0, 176.0, 0.0e-6] //Clarke 1866
+class _TransformationData {
+  final String from;
+  final String to;
+  final double ex;
+  final double ey;
+  final double ez;
+  final double dx;
+  final double dy;
+  final double dz;
+  final double m;
+
+  const _TransformationData(this.from, this.to, this.ex, this.ey, this.ez, this.dx, this.dy, this.dz, this.m);
+}
+
+const List<_TransformationData> _transformations = [
+  _TransformationData(ELLIPSOID_NAME_BESSEL1841, ELLIPSOID_NAME_WGS84, -0.202, -0.045, 2.455, 598.1, 73.7, 418.2,
+      6.7e-6), //DHDN(Potsdam) 2001
+  _TransformationData(ELLIPSOID_NAME_BESSEL1841, ELLIPSOID_NAME_WGS84, -1.04, -0.35, 3.08, 582.0, 105.0, 414.0,
+      8.3e-6), //DHDN(Potsdam) 2001
+  _TransformationData(ELLIPSOID_NAME_KRASOVSKY1940, ELLIPSOID_NAME_WGS84, 0.02, -0.26, -0.13, 24.0, -123.0, -94.0,
+      1.1e-6), //DHDN(Potsdam) 2001
+  _TransformationData(ELLIPSOID_NAME_KRASOVSKY1940, ELLIPSOID_NAME_WGS84, 0.063, 0.247, 0.041, 24.9, -126.4, -93.2,
+      1.01e-6), //DHDN(Potsdam) 2001
+  _TransformationData(ELLIPSOID_NAME_BESSEL1841, ELLIPSOID_NAME_WGS84, -5.137, -1.474, -5.297, 577.326, 90.129, 463.919,
+      2.423e-6), //DHDN(Potsdam) 2001
+  _TransformationData(ELLIPSOID_NAME_BESSEL1841, ELLIPSOID_NAME_WGS84, 0.0, 0.0, 0.0, 674.374, 15.056, 405.346,
+      0.0e-6), //DHDN(Potsdam) 2001
+  _TransformationData(ELLIPSOID_NAME_AIRY1830, ELLIPSOID_NAME_WGS84, -0.1502, -0.247, -0.8421, 446.448, -125.157,
+      542.06, -20.4894e-6), //DHDN(Potsdam) 2001
+  _TransformationData(ELLIPSOID_NAME_AIRYMODIFIED, ELLIPSOID_NAME_WGS84, -0.202, -0.045, 2.455, 482.53, -130.596,
+      564.557, 8.15e-6), //DHDN(Potsdam) 2001
+  _TransformationData(ELLIPSOID_NAME_HAYFORD1924, ELLIPSOID_NAME_WGS84, -0.4, 0.2, -0.4, -102.0, -102.0, -129.0,
+      2.5e-6), //DHDN(Potsdam) 2001
+  _TransformationData(
+      ELLIPSOID_NAME_CLARKE1866, ELLIPSOID_NAME_WGS84, 0.0, 0.0, 0.0, -8.0, 160.0, 176.0, 0.0e-6) //Clarke 1866
 ];
 
 EllipsoidTransformation _getTransformation(Ellipsoid srcElls, Ellipsoid dstElls, int index, bool back) {
@@ -206,13 +147,13 @@ EllipsoidTransformation _getTransformation(Ellipsoid srcElls, Ellipsoid dstElls,
   EllipsoidTransformation trans = EllipsoidTransformation(
       srcElls,
       dstElls,
-      _transformations[index][2],
-      _transformations[index][3],
-      _transformations[index][4],
-      _transformations[index][5],
-      _transformations[index][6],
-      _transformations[index][7],
-      _transformations[index][8]);
+      _transformations[index].ex,
+      _transformations[index].ey,
+      _transformations[index].ez,
+      _transformations[index].dx,
+      _transformations[index].dy,
+      _transformations[index].dz,
+      _transformations[index].m);
 
   if (back) {
     return trans.invert();
@@ -226,13 +167,13 @@ EllipsoidTransformation _getTransformationGK(Ellipsoid srcElls, Ellipsoid dstEll
   EllipsoidTransformation trans = EllipsoidTransformation(
       srcElls,
       dstElls,
-      _transformationsGK[index][2],
-      _transformationsGK[index][3],
-      _transformationsGK[index][4],
-      _transformationsGK[index][5],
-      _transformationsGK[index][6],
-      _transformationsGK[index][7],
-      _transformationsGK[index][8]);
+      _transformationsGK[index].ex,
+      _transformationsGK[index].ey,
+      _transformationsGK[index].ez,
+      _transformationsGK[index].dx,
+      _transformationsGK[index].dy,
+      _transformationsGK[index].dz,
+      _transformationsGK[index].m);
 
   if (back) {
     return trans.invert();
@@ -245,11 +186,11 @@ LatLng ellipsoidTransformLatLng(LatLng coord, int transformationIndex, bool back
   Ellipsoid srcElls;
   Ellipsoid dstElls;
   if (!GK) {
-    srcElls = getEllipsoidByName(_transformations[transformationIndex][0]);
-    dstElls = getEllipsoidByName(_transformations[transformationIndex][1]);
+    srcElls = getEllipsoidByName(_transformations[transformationIndex].from)!;
+    dstElls = getEllipsoidByName(_transformations[transformationIndex].to)!;
   } else {
-    srcElls = getEllipsoidByName(_transformationsGK[transformationIndex][0]);
-    dstElls = getEllipsoidByName(_transformationsGK[transformationIndex][1]);
+    srcElls = getEllipsoidByName(_transformationsGK[transformationIndex].from)!;
+    dstElls = getEllipsoidByName(_transformationsGK[transformationIndex].to)!;
   }
 
   if (srcElls.name == dstElls.name) {
@@ -272,10 +213,11 @@ LatLng ellipsoidTransformLatLng(LatLng coord, int transformationIndex, bool back
   _Vector mV = _Vector(mVx, mVy, mVz);
 
   EllipsoidTransformation trans;
-  if (!GK)
+  if (!GK) {
     trans = _getTransformation(srcElls, dstElls, transformationIndex, back);
-  else
+  } else {
     trans = _getTransformationGK(srcElls, dstElls, transformationIndex, back);
+  }
 
   _Vector RotV = trans.RotationMatrix().multiply(mV);
   _Vector dV = trans.RotationMatrix().multiply(trans.mTParam);

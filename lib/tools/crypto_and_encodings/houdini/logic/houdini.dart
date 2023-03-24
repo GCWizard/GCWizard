@@ -1,6 +1,6 @@
 enum HoudiniMode { NUMBERS, LETTERS }
 
-final _KEYWORDS_NUMBERS = {
+const Map<String, String> _KEYWORDS_NUMBERS = {
   '1': 'PRAY',
   '2': 'ANSWER',
   '3': 'SAY',
@@ -12,7 +12,7 @@ final _KEYWORDS_NUMBERS = {
   '9': 'LOOK',
   '0': 'BEQUICK'
 };
-final _KEYWORDS_LETTERS = {
+const Map<String, String> _KEYWORDS_LETTERS = {
   'A': 'PRAY',
   'B': 'ANSWER',
   'C': 'SAY',
@@ -25,10 +25,10 @@ final _KEYWORDS_LETTERS = {
   'J': 'BEQUICK'
 };
 
-Map<int, String> decodeHoudini(String input, HoudiniMode mode) {
-  if (input == null || input.isEmpty) return null;
+Map<int, String>? decodeHoudini(String input, HoudiniMode mode) {
+  if (input.isEmpty) return null;
 
-  var replaceMap;
+  Map<String, String> replaceMap;
   if (mode == HoudiniMode.LETTERS) {
     replaceMap = _KEYWORDS_LETTERS;
   } else {
@@ -69,7 +69,7 @@ Map<int, String> _encodeHoudiniNumbers(String input) {
 
 Map<int, String> _encodeHoudiniLetters(String input) {
   var output = input.toUpperCase().replaceAllMapped(RegExp(r'[A-J]'), (match) {
-    return _KEYWORDS_LETTERS[match.group(0)] + ' ';
+    return _KEYWORDS_LETTERS[match.group(0)]! + ' ';
   });
 
   output = output.trim().replaceAll('BEQUICK', 'BE QUICK');
@@ -77,8 +77,8 @@ Map<int, String> _encodeHoudiniLetters(String input) {
   return {0: output};
 }
 
-Map<int, String> encodeHoudini(String input, HoudiniMode mode) {
-  if (input == null || input.isEmpty) return null;
+Map<int, String>? encodeHoudini(String input, HoudiniMode mode) {
+  if (input.isEmpty) return null;
 
   if (mode == HoudiniMode.LETTERS) {
     return _encodeHoudiniLetters(input);

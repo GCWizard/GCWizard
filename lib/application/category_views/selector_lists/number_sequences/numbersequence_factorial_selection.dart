@@ -7,18 +7,20 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/factoria
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceFactorialSelection extends GCWSelection {
+  const NumberSequenceFactorialSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(NumberSequenceFactorialNthNumber()),
-        className(NumberSequenceFactorialRange()),
-        className(NumberSequenceFactorialDigits()),
-        className(NumberSequenceFactorialCheckNumber()),
-        className(NumberSequenceFactorialContainsDigits()),
+        className(const NumberSequenceFactorialNthNumber()),
+        className(const NumberSequenceFactorialRange()),
+        className(const NumberSequenceFactorialDigits()),
+        className(const NumberSequenceFactorialCheckNumber()),
+        className(const NumberSequenceFactorialContainsDigits()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

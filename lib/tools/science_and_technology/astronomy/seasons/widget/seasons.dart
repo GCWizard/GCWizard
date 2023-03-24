@@ -7,6 +7,8 @@ import 'package:gc_wizard/tools/science_and_technology/astronomy/seasons/logic/s
 import 'package:intl/intl.dart';
 
 class Seasons extends StatefulWidget {
+  const Seasons({Key? key}) : super(key: key);
+
   @override
   SeasonsState createState() => SeasonsState();
 }
@@ -47,40 +49,40 @@ class SeasonsState extends State<Seasons> {
     var outputs = [
       [
         i18n(context, 'astronomy_seasons_spring'),
-        dateFormat.format(season['spring']) + ' ' + timeFormat.format(season['spring']) + ' GMT'
+        dateFormat.format(season.spring) + ' ' + timeFormat.format(season.spring) + ' GMT'
       ],
       [
         i18n(context, 'astronomy_seasons_summer'),
-        dateFormat.format(season['summer']) + ' ' + timeFormat.format(season['summer']) + ' GMT'
+        dateFormat.format(season.summer) + ' ' + timeFormat.format(season.summer) + ' GMT'
       ],
       [
         i18n(context, 'astronomy_seasons_autumn'),
-        dateFormat.format(season['autumn']) + ' ' + timeFormat.format(season['autumn']) + ' GMT'
+        dateFormat.format(season.autumn) + ' ' + timeFormat.format(season.autumn) + ' GMT'
       ],
       [
         i18n(context, 'astronomy_seasons_winter'),
-        dateFormat.format(season['winter']) + ' ' + timeFormat.format(season['winter']) + ' GMT'
+        dateFormat.format(season.winter) + ' ' + timeFormat.format(season.winter) + ' GMT'
       ],
       [
         i18n(context, 'astronomy_seasons_perihelion'),
-        dateFormat.format(perihel['datetime']) +
+        dateFormat.format(perihel.datetime) +
             ' ' +
-            timeFormat.format(perihel['datetime']) +
+            timeFormat.format(perihel.datetime) +
             ' GMT\n' +
             i18n(context, 'astronomy_seasons_distance') +
             ' = ' +
-            NumberFormat('0.0000000').format(perihel['distance']) +
+            NumberFormat('0.0000000').format(perihel.value) +
             ' AU'
       ],
       [
         i18n(context, 'astronomy_seasons_aphelion'),
-        dateFormat.format(aphel['datetime']) +
+        dateFormat.format(aphel.datetime) +
             ' ' +
-            timeFormat.format(aphel['datetime']) +
+            timeFormat.format(aphel.datetime) +
             ' GMT\n' +
             i18n(context, 'astronomy_seasons_distance') +
             ' = ' +
-            NumberFormat('0.0000000').format(aphel['distance']) +
+            NumberFormat('0.0000000').format(aphel.value) +
             ' AU'
       ],
     ];
@@ -88,7 +90,7 @@ class SeasonsState extends State<Seasons> {
     return GCWColumnedMultilineOutput(
         firstRows: [GCWTextDivider(text: i18n(context, 'common_output'))],
         data: outputs,
-        flexValues: [1, 2]
+        flexValues: const [1, 2]
     );
   }
 }

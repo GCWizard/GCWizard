@@ -7,18 +7,20 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/pell/wid
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequencePellSelection extends GCWSelection {
+  const NumberSequencePellSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(NumberSequencePellNthNumber()),
-        className(NumberSequencePellRange()),
-        className(NumberSequencePellDigits()),
-        className(NumberSequencePellCheckNumber()),
-        className(NumberSequencePellContainsDigits()),
+        className(const NumberSequencePellNthNumber()),
+        className(const NumberSequencePellRange()),
+        className(const NumberSequencePellDigits()),
+        className(const NumberSequencePellCheckNumber()),
+        className(const NumberSequencePellContainsDigits()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

@@ -3,9 +3,10 @@ import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:latlong2/latlong.dart';
 
 LatLng reverseWIGWaldmeisterToLatLon(ReverseWherigoWaldmeister waldmeister) {
-  int a = int.tryParse(waldmeister.a);
-  int b = int.tryParse(waldmeister.b);
-  int c = int.tryParse(waldmeister.c);
+  var a = waldmeister.a;
+  var b = waldmeister.b;
+  var c = waldmeister.c;
+
   int _latSign = 1;
   int _lonSign = 1;
   double _lon, _lat;
@@ -69,7 +70,7 @@ ReverseWherigoWaldmeister latLonToReverseWIGWaldmeister(LatLng coord) {
   var _lat = coord.latitude;
   var _lon = coord.longitude;
 
-  double _a4, _b3, _c3, _tempb3, _tempc3;
+  late double _a4, _b3, _c3, _tempb3, _tempc3;
   String a, b, c;
 
   if (_lat < 0 && _lon < 0) {
@@ -204,21 +205,25 @@ ReverseWherigoWaldmeister latLonToReverseWIGWaldmeister(LatLng coord) {
         ((_lon % 10000000 - _lon % 1000000) ~/ 1000000).toString();
   }
 
-  return ReverseWherigoWaldmeister(a, b, c);
+  return ReverseWherigoWaldmeister(int.parse(a), int.parse(b), int.parse(c));
 }
 
-ReverseWherigoWaldmeister parseReverseWherigoWaldmeister(String input) {
-  RegExp regExp = RegExp(r'^\s*([0-9]+)(\s*,\s*|\s+)([0-9]+)(\s*,\s*|\s+)([0-9]+)\s*$');
+ReverseWherigoWaldmeister? parseReverseWherigoWaldmeister(String input) {
+  RegExp regExp = RegExp(r'^\s*(\d+)(\s*,\s*|\s+)(\d+)(\s*,\s*|\s+)(\d+)\s*$');
   var matches = regExp.allMatches(input);
-  if (matches.length == 0) return null;
+  if (matches.isEmpty) return null;
 
   var match = matches.elementAt(0);
 
-  var a = int.tryParse(match.group(1));
-  var b = int.tryParse(match.group(3));
-  var c = int.tryParse(match.group(5));
+  if (match.group(1) == null || match.group(3) == null || match.group(5) == null) {
+    return null;
+  }
+
+  var a = int.tryParse(match.group(1)!);
+  var b = int.tryParse(match.group(3)!);
+  var c = int.tryParse(match.group(5)!);
 
   if (a == null || b == null || c == null) return null;
 
-  return ReverseWherigoWaldmeister(match.group(1), match.group(3), match.group(5));
+  return ReverseWherigoWaldmeister(a, b, c);
 }

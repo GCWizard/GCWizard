@@ -1,3 +1,4 @@
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/coords/intersect_two_circles/logic/intersect_two_circles.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
@@ -16,21 +17,21 @@ class IntersectThreeCirclesJobData {
   final Ellipsoid ells;
 
   IntersectThreeCirclesJobData(
-      {this.coord1,
+      {required this.coord1,
       this.dist14 = 0.0,
-      this.coord2,
+      required this.coord2,
       this.dist24 = 0.0,
-      this.coord3,
+      required this.coord3,
       this.dist34 = 0.0,
       this.accuracy = 0.0,
-      this.ells});
+      required this.ells});
 }
 
 class Intersect {
   LatLng coords;
   double accuracy;
 
-  Intersect({this.coords, this.accuracy});
+  Intersect({required this.coords, required this.accuracy});
 }
 
 List<Intersect> _distIntersection(
@@ -54,20 +55,24 @@ List<Intersect> _distIntersection(
   return _output;
 }
 
-Future<List<Intersect>> intersectThreeCirclesAsync(dynamic jobData) async {
-  if (jobData == null) return null;
+Future<List<Intersect>> intersectThreeCirclesAsync(GCWAsyncExecuterParameters? jobData) async {
+  if (jobData?.parameters is! IntersectThreeCirclesJobData) {
+    throw Exception('Unexpected data for Intersect 3 Circles');
+  }
+
+  var data = jobData!.parameters as IntersectThreeCirclesJobData;
 
   var output = intersectThreeCircles(
-      jobData.parameters.coord1,
-      jobData.parameters.dist14,
-      jobData.parameters.coord2,
-      jobData.parameters.dist24,
-      jobData.parameters.coord3,
-      jobData.parameters.dist34,
-      jobData.parameters.accuracy,
-      jobData.parameters.ells);
+      data.coord1,
+      data.dist14,
+      data.coord2,
+      data.dist24,
+      data.coord3,
+      data.dist34,
+      data.accuracy,
+      data.ells);
 
-  if (jobData.sendAsyncPort != null) jobData.sendAsyncPort.send(output);
+  jobData.sendAsyncPort?.send(output);
 
   return output;
 }

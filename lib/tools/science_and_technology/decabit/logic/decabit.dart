@@ -2,7 +2,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitu
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
-const AZToDecabit = {
+const Map<int, String> _AZToDecabit = {
   0: '--+-+++-+-',
   1: '+--+++--+-',
   2: '+--++-+-+-',
@@ -131,38 +131,38 @@ const AZToDecabit = {
   125: '----+++++-',
   126: '++++++++++'
 };
-final AZToDecabitInt = AZToDecabit.map((k, v) => MapEntry(k.toString(), v));
-final AZToDecabitStr = AZToDecabit.map((k, v) => MapEntry(String.fromCharCode(k), v));
-final DecabitToAZInt = AZToDecabit.map((k, v) => MapEntry(v, k.toString()));
-final DecabitToAZStr = AZToDecabit.map((k, v) => MapEntry(v, String.fromCharCode(k)));
+final _AZToDecabitInt = _AZToDecabit.map((k, v) => MapEntry(k.toString(), v));
+final _AZToDecabitStr = _AZToDecabit.map((k, v) => MapEntry(String.fromCharCode(k), v));
+final _DecabitToAZInt = _AZToDecabit.map((k, v) => MapEntry(v, k.toString()));
+final _DecabitToAZStr = _AZToDecabit.map((k, v) => MapEntry(v, String.fromCharCode(k)));
 
-encryptDecabit(String input, Map<String, String> replaceCharacters, bool numericMode) {
-  if (input == null || input.length == 0) return '';
+String encryptDecabit(String input, Map<String, String> replaceCharacters, bool numericMode) {
+  if (input.isEmpty) return '';
 
-  var decabit;
+  String decabit;
 
   if (numericMode) {
     decabit = normalizeUmlauts(input)
         .split(RegExp(r'\D'))
-        .where((character) => AZToDecabit[int.tryParse(character)] != null)
+        .where((character) => _AZToDecabit[int.tryParse(character)] != null)
         // Parse string and convert back to eliminate leading zeros
-        .map((character) => substitution(int.tryParse(character).toString(), AZToDecabitInt))
+        .map((character) => substitution(int.tryParse(character).toString(), _AZToDecabitInt))
         .join(' ');
   } else {
     decabit = normalizeUmlauts(input)
         .split('')
-        .where((character) => AZToDecabitStr[character] != null)
-        .map((character) => substitution(character, AZToDecabitStr))
+        .where((character) => _AZToDecabitStr[character] != null)
+        .map((character) => substitution(character, _AZToDecabitStr))
         .join(' ');
   }
 
-  if (replaceCharacters != null) decabit = substitution(decabit, replaceCharacters);
+  decabit = substitution(decabit, replaceCharacters);
 
   return decabit;
 }
 
-decryptDecabit(String input, Map<String, String> replaceCharacters, bool numericMode) {
-  if (input == null || input.length == 0) return '';
+String decryptDecabit(String input, Map<String, String>? replaceCharacters, bool numericMode) {
+  if (input.isEmpty) return '';
 
   if (replaceCharacters != null) input = substitution(input, switchMapKeyValue(replaceCharacters));
 
@@ -172,19 +172,20 @@ decryptDecabit(String input, Map<String, String> replaceCharacters, bool numeric
   int i = 0;
   while (i <= input.length - 10) {
     var chunk = input.substring(i, i + 10);
-    var character;
+    String? character;
 
     if (numericMode) {
-      if (DecabitToAZInt[chunk] != null) character = DecabitToAZInt[chunk] + ' ';
+      if (_DecabitToAZInt[chunk] != null) character = _DecabitToAZInt[chunk]! + ' ';
     } else {
-      if (DecabitToAZStr[chunk] != null) character = DecabitToAZStr[chunk];
+      if (_DecabitToAZStr[chunk] != null) character = _DecabitToAZStr[chunk];
     }
 
     if (character != null) {
       out += character;
       i += 10;
-    } else
+    } else {
       i += 1;
+    }
   }
 
   if (numericMode) out = out.trim();

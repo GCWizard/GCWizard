@@ -16,7 +16,6 @@ import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
 import 'package:image/image.dart' as img;
-import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart';
 
 enum GCWImageViewButtons { ALL, SAVE, VIEW_IN_TOOLS }
@@ -25,26 +24,26 @@ enum GCWImageViewOpenInTools { METADATA, HEXVIEW, COLORCORRECTIONS, HIDDENDATA, 
 
 class GCWImageViewData {
   final GCWFile file;
-  final String description;
-  final bool marked;
+  final String? description;
+  final bool? marked;
 
   const GCWImageViewData(this.file, {this.description, this.marked});
 }
 
 class GCWImageView extends StatefulWidget {
-  final GCWImageViewData imageData;
+  final GCWImageViewData? imageData;
   final bool toolBarRight;
-  final String extension;
-  final String fileName;
-  final Set<GCWImageViewButtons> suppressedButtons;
-  final int maxHeightInPreview;
-  final Function onBeforeLoadBigImage;
-  final Set<GCWImageViewOpenInTools> suppressOpenInTool;
+  final String? extension;
+  final String? fileName;
+  final Set<GCWImageViewButtons>? suppressedButtons;
+  final int? maxHeightInPreview;
+  final Future<GCWFile?> Function()? onBeforeLoadBigImage;
+  final Set<GCWImageViewOpenInTools>? suppressOpenInTool;
 
   const GCWImageView(
-      {Key key,
-      @required this.imageData,
-      this.toolBarRight: true,
+      {Key? key,
+      required this.imageData,
+      this.toolBarRight = true,
       this.extension,
       this.fileName,
       this.suppressedButtons,
@@ -58,10 +57,10 @@ class GCWImageView extends StatefulWidget {
 }
 
 class _GCWImageViewState extends State<GCWImageView> {
-  MemoryImage _image;
-  MemoryImage _previewImage;
+  MemoryImage? _image;
+  MemoryImage? _previewImage;
 
-  PhotoViewScaleStateController _scaleStateController;
+  late PhotoViewScaleStateController _scaleStateController;
 
   @override
   void initState() {
@@ -75,26 +74,29 @@ class _GCWImageViewState extends State<GCWImageView> {
     super.dispose();
   }
 
-  _resizeImage() {
-    img.Image image = img.decodeImage(widget.imageData.file.bytes);
-    if (image.height > widget.maxHeightInPreview) {
+  MemoryImage? _resizeImage() {
+    if (widget.imageData?.file.bytes == null) return null;
+    img.Image? image = img.decodeImage(widget.imageData!.file.bytes);
+    if (image != null && widget.maxHeightInPreview != null && image.height > widget.maxHeightInPreview!) {
       img.Image resized = img.copyResize(image, height: widget.maxHeightInPreview);
 
       return MemoryImage(encodeTrimmedPng(resized));
     } else {
-      return MemoryImage(widget.imageData.file.bytes);
+      return MemoryImage(widget.imageData!.file.bytes);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     try {
-      if (widget.imageData != null) _image = MemoryImage(widget.imageData.file.bytes);
+      if (widget.imageData?.file.bytes != null) {
+        _image = MemoryImage(widget.imageData!.file.bytes);
 
-      if (widget.maxHeightInPreview == null)
-        _previewImage = MemoryImage(widget.imageData.file.bytes);
-      else {
-        _previewImage = _resizeImage();
+        if (widget.maxHeightInPreview == null) {
+          _previewImage = MemoryImage(widget.imageData!.file.bytes);
+        } else {
+          _previewImage = _resizeImage();
+        }
       }
     } catch (e) {
       _image = null;
@@ -126,7 +128,7 @@ class _GCWImageViewState extends State<GCWImageView> {
     ]);
   }
 
-  _createPhotoView() {
+  Column _createPhotoView() {
     return Column(
       children: [
         Container(
@@ -146,11 +148,11 @@ class _GCWImageViewState extends State<GCWImageView> {
             ),
           ),
         ),
-        if ((widget.imageData.description ?? '').trim().length > 0)
+        if ((widget.imageData?.description ?? '').trim().isNotEmpty)
           Container(
-              padding: EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(top: 10),
               child: GCWText(
-                text: widget.imageData.description.trim(),
+                text: (widget.imageData?.description ?? '').trim(),
                 align: Alignment.center,
               ))
       ],
@@ -158,24 +160,25 @@ class _GCWImageViewState extends State<GCWImageView> {
   }
 
   bool _hasToolButtons() {
-    return widget.suppressedButtons == null || !widget.suppressedButtons.contains(GCWImageViewButtons.ALL);
+    return widget.suppressedButtons == null || !widget.suppressedButtons!.contains(GCWImageViewButtons.ALL);
   }
 
-  _createToolbar() {
+  List<Widget> _createToolbar() {
     var iconSize = widget.toolBarRight ? IconButtonSize.NORMAL : IconButtonSize.SMALL;
-    var padding = widget.toolBarRight ? 2 * DOUBLE_DEFAULT_MARGIN : null;
 
     return [
       GCWIconButton(
           icon: Icons.zoom_out_map,
           size: iconSize,
           onPressed: () {
-            if (widget.onBeforeLoadBigImage != null) {
-              widget.onBeforeLoadBigImage().then((imgData) {
-                openInFullScreen(context, imgData.bytes);
-              });
-            } else {
-              openInFullScreen(context, widget.imageData.file.bytes);
+            if (widget.imageData?.file.bytes != null) {
+              if (widget.onBeforeLoadBigImage != null) {
+                widget.onBeforeLoadBigImage!().then((imgData) {
+                  if (imgData != null) openInFullScreen(context, imgData.bytes);
+                });
+              } else {
+                openInFullScreen(context, widget.imageData!.file.bytes);
+              }
             }
           }),
       GCWIconButton(
@@ -184,111 +187,109 @@ class _GCWImageViewState extends State<GCWImageView> {
           onPressed: () {
             _scaleStateController.scaleState = PhotoViewScaleState.initial;
           }),
-      if (widget.suppressedButtons == null || widget.suppressedButtons.length == 1)
+      if (widget.suppressedButtons == null || widget.suppressedButtons!.length == 1)
         widget.toolBarRight
-            ? Container(height: widget.suppressedButtons != null && widget.suppressedButtons.length == 1 ? 108 : 60)
+            ? Container(height: widget.suppressedButtons != null && widget.suppressedButtons!.length == 1 ? 108 : 60)
             : Expanded(
                 child: Container(),
               ),
-      if (widget.suppressedButtons == null || !widget.suppressedButtons.contains(GCWImageViewButtons.SAVE))
+      if (widget.suppressedButtons == null || !widget.suppressedButtons!.contains(GCWImageViewButtons.SAVE))
         GCWIconButton(
             icon: Icons.save,
             size: iconSize,
             onPressed: () {
-              var imgData;
+              Uint8List? imgData;
               if (widget.onBeforeLoadBigImage != null) {
-                widget.onBeforeLoadBigImage().then((imgData) {
-                  _exportFile(context, imgData.bytes);
+                widget.onBeforeLoadBigImage!().then((imgData) {
+                  if (imgData != null) _exportFile(context, imgData.bytes);
                 });
               } else {
-                imgData = widget.imageData.file.bytes;
-                _exportFile(context, imgData);
+                imgData = widget.imageData?.file.bytes;
+                if (imgData != null) _exportFile(context, imgData);
               }
             }),
-      if (widget.suppressedButtons == null || !widget.suppressedButtons.contains(GCWImageViewButtons.VIEW_IN_TOOLS))
+      if (widget.suppressedButtons == null || !widget.suppressedButtons!.contains(GCWImageViewButtons.VIEW_IN_TOOLS))
         GCWPopupMenu(
             iconData: Icons.open_in_new,
             size: iconSize,
             menuItemBuilder: (context) => [
                   if (widget.suppressOpenInTool == null ||
-                      !widget.suppressOpenInTool.contains(GCWImageViewOpenInTools.METADATA))
+                      !widget.suppressOpenInTool!.contains(GCWImageViewOpenInTools.METADATA))
                     GCWPopupMenuItem(
                       child: iconedGCWPopupMenuItem(context, Icons.info_outline, 'exif_openinmetadata'),
                       action: (index) => setState(() {
                         if (widget.onBeforeLoadBigImage != null) {
-                          widget.onBeforeLoadBigImage().then((imgData) {
-                            openInMetadataViewer(context, imgData);
+                          widget.onBeforeLoadBigImage!().then((imgData) {
+                            if (imgData != null) openInMetadataViewer(context, imgData);
                           });
-                        } else {
-                          openInMetadataViewer(context, widget.imageData.file);
+                        } else if (widget.imageData?.file != null) {
+                          openInMetadataViewer(context, widget.imageData!.file);
                         }
                       }),
                     ),
                   if (widget.suppressOpenInTool == null ||
-                      !widget.suppressOpenInTool.contains(GCWImageViewOpenInTools.HEXVIEW))
+                      !widget.suppressOpenInTool!.contains(GCWImageViewOpenInTools.HEXVIEW))
                     GCWPopupMenuItem(
                       child: iconedGCWPopupMenuItem(context, Icons.text_snippet_outlined, 'hexviewer_openinhexviewer'),
                       action: (index) => setState(() {
                         if (widget.onBeforeLoadBigImage != null) {
-                          widget.onBeforeLoadBigImage().then((imgData) {
-                            openInHexViewer(context, imgData);
+                          widget.onBeforeLoadBigImage!().then((imgData) {
+                            if (imgData != null) openInHexViewer(context, imgData);
                           });
-                        } else {
-                          openInHexViewer(context, widget.imageData.file);
+                        } else if (widget.imageData?.file != null) {
+                          openInHexViewer(context, widget.imageData!.file);
                         }
                       }),
                     ),
                   if (widget.suppressOpenInTool == null ||
-                      !widget.suppressOpenInTool.contains(GCWImageViewOpenInTools.HIDDENDATA))
+                      !widget.suppressOpenInTool!.contains(GCWImageViewOpenInTools.HIDDENDATA))
                     GCWPopupMenuItem(
                       child: iconedGCWPopupMenuItem(context, Icons.search, 'hiddendata_openinhiddendata'),
                       action: (index) => setState(() {
                         if (widget.onBeforeLoadBigImage != null) {
-                          widget.onBeforeLoadBigImage().then((imgData) {
-                            openInHiddenData(context, imgData);
+                          widget.onBeforeLoadBigImage!().then((imgData) {
+                            if (imgData != null) openInHiddenData(context, imgData);
                           });
-                        } else {
-                          openInHiddenData(context, widget.imageData.file);
+                        } else if (widget.imageData?.file != null) {
+                          openInHiddenData(context, widget.imageData!.file);
                         }
                       }),
                     ),
                   if (widget.suppressOpenInTool == null ||
-                      !widget.suppressOpenInTool.contains(GCWImageViewOpenInTools.COLORCORRECTIONS))
+                      !widget.suppressOpenInTool!.contains(GCWImageViewOpenInTools.COLORCORRECTIONS))
                     GCWPopupMenuItem(
                         child: iconedGCWPopupMenuItem(
                             context, Icons.brush, 'image_colorcorrections_openincolorcorrection'),
                         action: (index) => setState(() {
                               if (widget.onBeforeLoadBigImage != null) {
-                                widget.onBeforeLoadBigImage().then((imgData) {
-                                  openInColorCorrections(context, imgData);
+                                widget.onBeforeLoadBigImage!().then((imgData) {
+                                  if (imgData != null) openInColorCorrections(context, imgData);
                                 });
-                              } else {
-                                openInColorCorrections(context, widget.imageData.file);
+                              } else if (widget.imageData?.file != null) {
+                                openInColorCorrections(context, widget.imageData!.file);
                               }
                             })),
                   if (widget.suppressOpenInTool == null ||
-                      !widget.suppressOpenInTool.contains(GCWImageViewOpenInTools.FLIPROTATE))
+                      !widget.suppressOpenInTool!.contains(GCWImageViewOpenInTools.FLIPROTATE))
                     GCWPopupMenuItem(
                         child: iconedGCWPopupMenuItem(context, Icons.brush, 'image_fliprotate_openinfliprotate'),
                         action: (index) => setState(() {
                               if (widget.onBeforeLoadBigImage != null) {
-                                widget.onBeforeLoadBigImage().then((imgData) {
-                                  openInFlipRotate(context, imgData);
+                                widget.onBeforeLoadBigImage!().then((imgData) {
+                                  if (imgData != null) openInFlipRotate(context, imgData);
                                 });
-                              } else {
-                                openInFlipRotate(context, widget.imageData.file);
+                              } else if (widget.imageData?.file != null) {
+                                openInFlipRotate(context, widget.imageData!.file);
                               }
                             })),
                 ])
     ];
   }
 
-  _exportFile(BuildContext context, Uint8List data) async {
-    String timestamp = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
-    String outputFilename = 'img_${timestamp}.png';
+  Future<void> _exportFile(BuildContext context, Uint8List data) async {
+    await saveByteDataToFile(context, data, buildFileNameWithDate('img_', FileType.PNG)).then((value) {
+      if (value) showExportedFileDialog(context, contentWidget: imageContent(context, data));
+    });
 
-    var value = await saveByteDataToFile(context, data, outputFilename);
-
-    if (value != null) showExportedFileDialog(context, fileType: FileType.PNG);
   }
 }

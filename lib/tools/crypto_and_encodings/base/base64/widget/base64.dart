@@ -3,5 +3,5 @@ import 'package:gc_wizard/tools/crypto_and_encodings/base/_common/logic/base.dar
 import 'package:gc_wizard/tools/crypto_and_encodings/base/_common/widget/base.dart';
 
 class Base64 extends AbstractBase {
-  Base64({Key key}) : super(key: key, encode: encodeBase64, decode: decodeBase64);
+  const Base64({Key? key}) : super(key: key, encode: encodeBase64, decode: decodeBase64);
 }

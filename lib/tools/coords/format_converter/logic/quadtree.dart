@@ -7,7 +7,7 @@ import 'package:latlong2/latlong.dart';
 var _TILESIZE = 256;
 const int _DEFAULT_PRECISION = 40;
 
-Quadtree latLonToQuadtree(LatLng coord, {int precision: _DEFAULT_PRECISION}) {
+Quadtree latLonToQuadtree(LatLng coord, {int precision = _DEFAULT_PRECISION}) {
   var x = (_TILESIZE / 2.0) + coord.longitude * (_TILESIZE / 360.0);
 
   var siny = sin(degreesToRadian(coord.latitude));
@@ -53,10 +53,10 @@ LatLng quadtreeToLatLon(Quadtree quadtree) {
   return LatLng(lat, lon);
 }
 
-Quadtree parseQuadtree(String input) {
-  if (input == null || input == '') return null;
+Quadtree? parseQuadtree(String input) {
+  if (input.isEmpty) return null;
 
   if (input.length != input.replaceAll(RegExp(r'[^0123]'), '').length) return null;
 
-  return Quadtree(input.split('').map((character) => int.tryParse(character)).toList());
+  return Quadtree(input.split('').map((character) => int.parse(character)).toList());
 }

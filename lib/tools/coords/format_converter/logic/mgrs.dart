@@ -33,7 +33,7 @@ MGRS latLonToMGRS(LatLng coord, Ellipsoid ells) {
   return MGRS(_utm.zone, _digraph, _easting, _northing);
 }
 
-List<List<dynamic>> latitudeBandConstants = [
+List<List<num>> latitudeBandConstants = [
   [2, 1100000.0, -72.0, -80.5, 0.0],
   [3, 2000000.0, -64.0, -72.0, 2000000.0],
   [4, 2800000.0, -56.0, -64.0, 2000000.0],
@@ -72,7 +72,7 @@ UTMREF convertMGRSToUTM(MGRS mgrs) {
 
   if (set_number == 0) set_number = 6;
 
-  var ltr2_low_value;
+  int ltr2_low_value = 0;
   if ((set_number == 1) || (set_number == 4)) {
     ltr2_low_value = alphabet.indexOf('A');
   } else if ((set_number == 2) || (set_number == 5)) {
@@ -81,20 +81,22 @@ UTMREF convertMGRSToUTM(MGRS mgrs) {
     ltr2_low_value = alphabet.indexOf('S');
   }
 
-  var false_northing;
+  double false_northing;
 
-  if ((set_number % 2) == 0)
+  if ((set_number % 2) == 0) {
     false_northing = 500000.0;
-  else
+  } else {
     false_northing = 0.0;
+  }
 
   var squareLetter1 = alphabet.indexOf(mgrs.digraph[0]);
   var squareLetter2 = alphabet.indexOf(mgrs.digraph[1]);
 
   grid_northing = squareLetter2 * 100000.0;
   grid_easting = (squareLetter1 - ltr2_low_value + 1) * 100000.0;
-  if ((ltr2_low_value == alphabet.indexOf('J')) && (squareLetter1 > alphabet.indexOf('O')))
+  if ((ltr2_low_value == alphabet.indexOf('J')) && (squareLetter1 > alphabet.indexOf('O'))) {
     grid_easting = grid_easting - 100000;
+  }
 
   if (squareLetter2 > alphabet.indexOf('O')) grid_northing = grid_northing - 100000;
 
@@ -103,18 +105,18 @@ UTMREF convertMGRSToUTM(MGRS mgrs) {
   if (grid_northing >= 2000000) grid_northing = grid_northing - 2000000;
 
   var letter = alphabet.indexOf(mgrs.utmZone.latZone);
-  var min_northing;
-  var northing_offset;
+  double min_northing = 0.0;
+  double northing_offset = 0.0;
 
   if ((letter >= alphabet.indexOf('C')) && (letter <= alphabet.indexOf('H'))) {
-    min_northing = latitudeBandConstants[letter - 2][1];
-    northing_offset = latitudeBandConstants[letter - 2][4];
+    min_northing = latitudeBandConstants[letter - 2][1].toDouble();
+    northing_offset = latitudeBandConstants[letter - 2][4].toDouble();
   } else if ((letter >= alphabet.indexOf('J')) && (letter <= alphabet.indexOf('N'))) {
-    min_northing = latitudeBandConstants[letter - 3][1];
-    northing_offset = latitudeBandConstants[letter - 3][4];
+    min_northing = latitudeBandConstants[letter - 3][1].toDouble();
+    northing_offset = latitudeBandConstants[letter - 3][4].toDouble();
   } else if ((letter >= alphabet.indexOf('P')) && (letter <= alphabet.indexOf('X'))) {
-    min_northing = latitudeBandConstants[letter - 4][1];
-    northing_offset = latitudeBandConstants[letter - 4][4];
+    min_northing = latitudeBandConstants[letter - 4][1].toDouble();
+    northing_offset = latitudeBandConstants[letter - 4][4].toDouble();
   }
 
   grid_northing = grid_northing - false_northing;
@@ -136,16 +138,16 @@ LatLng mgrsToLatLon(MGRS mgrs, Ellipsoid ells) {
   return UTMREFtoLatLon(utm, ells);
 }
 
-MGRS parseMGRS(String input) {
-  RegExp regExp = RegExp(r'^\s*(\d+)\s?([A-Z])\s?([A-Z]{2})\s?([0-9\.]+)\s+([0-9\.]+)\s*$');
+MGRS? parseMGRS(String input) {
+  RegExp regExp = RegExp(r'^\s*(\d+)\s?([A-Z])\s?([A-Z]{2})\s?([\d.]+)\s+([\d.]+)\s*$');
   var matches = regExp.allMatches(input);
-  var _lonZoneString = '';
-  var _latZone = '';
-  var _digraph = '';
-  var _eastingString = '';
-  var _northingString = '';
+  String? _lonZoneString = '';
+  String? _latZone = '';
+  String? _digraph = '';
+  String? _eastingString = '';
+  String? _northingString = '';
 
-  if (matches.length > 0) {
+  if (matches.isNotEmpty) {
     var match = matches.elementAt(0);
     _lonZoneString = match.group(1);
     _latZone = match.group(2);
@@ -153,20 +155,28 @@ MGRS parseMGRS(String input) {
     _eastingString = match.group(4);
     _northingString = match.group(5);
   }
-  if (matches.length == 0) {
-    regExp = RegExp(r'^\s*(\d+)\s?([A-Z])\s?([A-Z]{2})\s?([0-9]{10})\s*$');
+  if (matches.isEmpty) {
+    regExp = RegExp(r'^\s*(\d+)\s?([A-Z])\s?([A-Z]{2})\s?(\d{10})\s*$');
     matches = regExp.allMatches(input);
-    if (matches.length > 0) {
+    if (matches.isNotEmpty) {
       var match = matches.elementAt(0);
       _lonZoneString = match.group(1);
       _latZone = match.group(2);
       _digraph = match.group(3);
-      _eastingString = match.group(4).substring(0, 5);
-      _northingString = match.group(4).substring(5);
+      _eastingString = match.group(4)?.substring(0, 5);
+      _northingString = match.group(4)?.substring(5);
     }
   }
 
-  if (matches.length == 0) return null;
+  if (matches.isEmpty) return null;
+  if (_lonZoneString == null
+    || _latZone == null
+    || _digraph == null
+    || _eastingString == null
+    || _northingString == null
+  ) {
+    return null;
+  }
 
   var _lonZone = int.tryParse(_lonZoneString);
   if (_lonZone == null) return null;
@@ -191,9 +201,9 @@ MGRS parseMGRS(String input) {
 // Values with a point are not changed
 // discussed with Mark on 3.2.2021
 double fillUpNumber(double number, String text, int length) {
-  if (text.contains('.'))
+  if (text.contains('.')) {
     return number;
-  else {
+  } else {
     text = text.padRight(length, '0');
     return double.parse(text);
   }

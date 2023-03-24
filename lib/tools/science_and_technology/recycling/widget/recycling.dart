@@ -4,6 +4,8 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.d
 import 'package:gc_wizard/tools/science_and_technology/recycling/logic/recycling.dart';
 
 class Recycling extends StatefulWidget {
+  const Recycling({Key? key}) : super(key: key);
+
   @override
   RecyclingState createState() => RecyclingState();
 }
@@ -13,9 +15,9 @@ class RecyclingState extends State<Recycling> {
   Widget build(BuildContext context) {
     List<List<dynamic>> data = RECYCLING_CODES.entries.map((entry) {
       return <dynamic>[
-        entry.key.replaceAll(RegExp(r'[^0-9]'), ''),
+        entry.key.replaceAll(RegExp(r'\D'), ''),
         entry.value['short'],
-        i18n(context, entry.value['name'])
+        i18n(context, entry.value['name']!)
       ];
     }).toList();
 
@@ -24,7 +26,7 @@ class RecyclingState extends State<Recycling> {
 
     return GCWColumnedMultilineOutput(
         data: data,
-        flexValues: [1, 2, 4],
+        flexValues: const [1, 2, 4],
         hasHeader: true,
         copyColumn: 1
     );

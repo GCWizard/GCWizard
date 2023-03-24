@@ -13,7 +13,7 @@ class PolybiosOutput {
 }
 
 String _sanitizeAlphabet(String alphabet) {
-  if (alphabet == null || alphabet == '') return '';
+  if (alphabet.isEmpty) return '';
 
   alphabet += alphabet_AZ.keys.join();
   alphabet += alphabet_09.keys.join();
@@ -24,16 +24,16 @@ String _sanitizeAlphabet(String alphabet) {
   return alphabet.split('').toSet().join();
 }
 
-String createPolybiosAlphabet(int gridDimension,
-    {String firstLetters: '',
-    PolybiosMode mode: PolybiosMode.AZ09,
-    String fillAlphabet: '',
-    AlphabetModificationMode modificationMode: AlphabetModificationMode.J_TO_I}) {
-  if (firstLetters == null) firstLetters = '';
+String? createPolybiosAlphabet(int gridDimension,
+    {String? firstLetters = '',
+    PolybiosMode mode = PolybiosMode.AZ09,
+    String? fillAlphabet,
+    AlphabetModificationMode? modificationMode = AlphabetModificationMode.J_TO_I}) {
+  firstLetters ??= '';
 
-  if (fillAlphabet == null) fillAlphabet = '';
+  fillAlphabet ??= '';
 
-  if (modificationMode == null) modificationMode = AlphabetModificationMode.J_TO_I;
+  modificationMode ??= AlphabetModificationMode.J_TO_I;
 
   switch (gridDimension) {
     case 5:
@@ -111,7 +111,7 @@ String createPolybiosAlphabet(int gridDimension,
 // }
 
 Map<String, List<int>> createPolybiosGrid(String input, int dimension) {
-  var grid = Map<String, List<int>>();
+  var grid = <String, List<int>>{};
 
   input = input.substring(0, min(input.length, dimension * dimension));
 
@@ -126,14 +126,13 @@ String polybiosGridCharacterByCoordinate(Map<String, List<int>> grid, int row, i
   return grid.entries.firstWhere((entry) => entry.value[0] == row && entry.value[1] == column).key;
 }
 
-PolybiosOutput encryptPolybios(String input, String key,
-    {PolybiosMode mode: PolybiosMode.AZ09,
-    String fillAlphabet,
-    String firstLetters,
-    AlphabetModificationMode modificationMode: AlphabetModificationMode.J_TO_I}) {
-  if (input == null || key == null) return null; //TODO Exception
+PolybiosOutput? encryptPolybios(String input, String key,
+    {PolybiosMode mode = PolybiosMode.AZ09,
+    String? fillAlphabet,
+    String? firstLetters,
+    AlphabetModificationMode? modificationMode = AlphabetModificationMode.J_TO_I}) {
 
-  if (modificationMode == null) modificationMode = AlphabetModificationMode.J_TO_I;
+  modificationMode ??= AlphabetModificationMode.J_TO_I;
 
   int dim = key.length;
   if (dim != 5 && dim != 6) return null; //TODO Exception
@@ -151,11 +150,9 @@ PolybiosOutput encryptPolybios(String input, String key,
 
   Map<String, List<int>> grid = createPolybiosGrid(alphabet, dim);
 
-  if (grid == null) return null;
-
   var output = input.split('').where((character) => alphabet.contains(character)).map((character) {
     var coords = grid[character];
-    if (coords == null) return '';
+    if (coords == null || coords.length < 2) return '';
 
     return '${key[coords[0]]}${key[coords[1]]}';
   }).join(' ');
@@ -163,14 +160,13 @@ PolybiosOutput encryptPolybios(String input, String key,
   return PolybiosOutput(output, polybiosGridToString(grid, key));
 }
 
-PolybiosOutput decryptPolybios(String input, String key,
-    {PolybiosMode mode: PolybiosMode.AZ09,
-    String fillAlphabet,
-    String firstLetters,
-    AlphabetModificationMode modificationMode: AlphabetModificationMode.J_TO_I}) {
-  if (input == null || key == null) return null; //TODO Exception
+PolybiosOutput? decryptPolybios(String input, String key,
+    {PolybiosMode mode = PolybiosMode.AZ09,
+    String? fillAlphabet,
+    String? firstLetters,
+    AlphabetModificationMode? modificationMode = AlphabetModificationMode.J_TO_I}) {
 
-  if (modificationMode == null) modificationMode = AlphabetModificationMode.J_TO_I;
+  modificationMode ??= AlphabetModificationMode.J_TO_I;
 
   int dim = key.length;
   if (dim != 5 && dim != 6) return null; //TODO Exception
@@ -184,11 +180,9 @@ PolybiosOutput decryptPolybios(String input, String key,
 
   if (input.length % 2 != 0) input = input.substring(0, input.length - 1);
 
-  if (input.length == 0) return null; //TODO: Exception
+  if (input.isEmpty) return null; //TODO: Exception
 
   var grid = createPolybiosGrid(alphabet, dim);
-
-  if (grid == null) return null;
 
   String out = '';
 
@@ -209,13 +203,13 @@ String polybiosGridToString(Map<String, List<int>> grid, String key) {
   var output = '  | ' + key.split('').join(' ');
   output += '\n--+' + '-' * key.length * 2;
 
-  grid.entries.forEach((entry) {
+  for (var entry in grid.entries) {
     if (entry.value[0] > currentRow) {
       currentRow++;
       output += '\n' + key[currentRow] + ' |';
     }
     output += ' ' + entry.key;
-  });
+  }
 
   return output;
 }

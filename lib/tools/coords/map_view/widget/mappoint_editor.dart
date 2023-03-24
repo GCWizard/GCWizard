@@ -6,6 +6,8 @@ import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_distance.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/length.dart';
 
@@ -15,20 +17,18 @@ class MapPointEditor extends StatefulWidget {
   final GCWMapPoint mapPoint;
   Length lengthUnit;
 
-  MapPointEditor({Key key, this.mapPoint, this.lengthUnit}) : super(key: key) {
-    if (lengthUnit == null) lengthUnit = LENGTH_METER;
-  }
+  MapPointEditor({Key? key, required this.mapPoint, required this.lengthUnit}) : super(key: key);
 
   @override
   MapPointEditorState createState() => MapPointEditorState();
 }
 
 class MapPointEditorState extends State<MapPointEditor> {
-  var _nameController;
+  late TextEditingController _nameController;
 
   var _currentRadius = _DEFAULT_RADIUS;
-  HSVColor _currentMarkerColorPickerColor;
-  HSVColor _currentCircleColorPickerColor;
+  late HSVColor _currentMarkerColorPickerColor;
+  late HSVColor _currentCircleColorPickerColor;
 
   @override
   void initState() {
@@ -37,14 +37,15 @@ class MapPointEditorState extends State<MapPointEditor> {
     _nameController = TextEditingController(text: widget.mapPoint.markerText ?? '');
 
     if (widget.mapPoint.hasCircle()) {
-      _currentRadius = widget.lengthUnit.fromMeter(widget.mapPoint.circle.radius);
+      _currentRadius = widget.lengthUnit.fromMeter(widget.mapPoint.circle!.radius);
     }
 
     _currentMarkerColorPickerColor = HSVColor.fromColor(widget.mapPoint.color);
-    if (widget.mapPoint.hasCircle() && !widget.mapPoint.circleColorSameAsPointColor)
-      _currentCircleColorPickerColor = HSVColor.fromColor(widget.mapPoint.circle.color);
-    else
+    if (widget.mapPoint.hasCircle() && !widget.mapPoint.circleColorSameAsPointColor) {
+      _currentCircleColorPickerColor = HSVColor.fromColor(widget.mapPoint.circle!.color);
+    } else {
       _currentCircleColorPickerColor = HSVColor.fromColor(widget.mapPoint.color);
+    }
   }
 
   @override
@@ -68,17 +69,22 @@ class MapPointEditorState extends State<MapPointEditor> {
       GCWCoords(
         title: i18n(context, 'coords_openmap_pointeditor_point_coordinate'),
         coordinates: widget.mapPoint.point,
-        coordsFormat: widget.mapPoint.coordinateFormat,
+        coordsFormat: widget.mapPoint.coordinateFormat ?? defaultCoordinateFormat,
         restoreCoordinates: true,
-        onChanged: (ret) {
+        onChanged: (BaseCoordinate ret) {
           setState(() {
-            widget.mapPoint.coordinateFormat = ret['coordsFormat'];
-            widget.mapPoint.point = ret['value'];
+            if (ret.toLatLng() == null) {
+              return;
+            }
+
+            widget.mapPoint.coordinateFormat = ret.format;
+            widget.mapPoint.point = ret.toLatLng()!;
           });
         },
       ),
       GCWTextDivider(text: i18n(context, 'coords_openmap_pointeditor_point_color')),
       Container(
+        padding: const EdgeInsets.only(bottom: 20.0),
         child: GCWColorPicker(
           hsvColor: _currentMarkerColorPickerColor,
           onChanged: (color) {
@@ -88,7 +94,6 @@ class MapPointEditorState extends State<MapPointEditor> {
             });
           },
         ),
-        padding: EdgeInsets.only(bottom: 20.0),
       ),
       GCWTextDivider(text: i18n(context, 'coords_openmap_pointeditor_circle')),
       GCWOnOffSwitch(
@@ -98,6 +103,7 @@ class MapPointEditorState extends State<MapPointEditor> {
           setState(() {
             if (value) {
               widget.mapPoint.circle = GCWMapCircle(
+                centerPoint: widget.mapPoint.point,
                 radius: _currentRadius,
               );
             } else {
@@ -116,7 +122,7 @@ class MapPointEditorState extends State<MapPointEditor> {
                   unit: widget.lengthUnit,
                   onChanged: (value) {
                     _currentRadius = value;
-                    widget.mapPoint.circle.radius = _currentRadius;
+                    widget.mapPoint.circle!.radius = _currentRadius;
                     widget.mapPoint.update();
                   },
                 ),
@@ -133,16 +139,16 @@ class MapPointEditorState extends State<MapPointEditor> {
                 widget.mapPoint.circleColorSameAsPointColor
                     ? Container()
                     : Container(
+                        padding: const EdgeInsets.only(bottom: 20.0),
                         child: GCWColorPicker(
                           hsvColor: _currentCircleColorPickerColor,
                           onChanged: (color) {
                             setState(() {
                               _currentCircleColorPickerColor = color;
-                              widget.mapPoint.circle.color = _currentCircleColorPickerColor.toColor();
+                              widget.mapPoint.circle!.color = _currentCircleColorPickerColor.toColor();
                             });
                           },
                         ),
-                        padding: EdgeInsets.only(bottom: 20.0),
                       ),
               ],
             )

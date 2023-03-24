@@ -9,16 +9,18 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/7_segment
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class SegmentDisplaySelection extends GCWSelection {
+  const SegmentDisplaySelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(SevenSegments()),
-        className(FourteenSegments()),
-        className(SixteenSegments()),
+        className(const SevenSegments()),
+        className(const FourteenSegments()),
+        className(const SixteenSegments()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

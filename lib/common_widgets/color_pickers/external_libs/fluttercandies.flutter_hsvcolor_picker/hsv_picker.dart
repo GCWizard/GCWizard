@@ -7,19 +7,16 @@ class _SliderPicker extends StatefulWidget {
   final double max;
   final double value;
   final ValueChanged<double> onChanged;
-  final List<Color> colors;
-  final Widget child;
+  final List<Color>? colors;
 
   const _SliderPicker({
-    Key key,
+    Key? key,
     this.min = 0.0,
     this.max = 1.0,
-    @required this.value,
-    @required this.onChanged,
-    this.colors,
-    this.child,
-  })  : assert(value != null),
-        assert(value >= min && value <= max),
+    required this.value,
+    required this.onChanged,
+    this.colors
+  })  : assert(value >= min && value <= max),
         super(key: key);
 
   @override
@@ -35,68 +32,68 @@ class _SliderPickerState extends State<_SliderPicker> {
   void setRatio(double ratio) => super.widget.onChanged((ratio * (max - min) + min).clamp(min, max));
 
   void onPanUpdate(DragUpdateDetails details, BoxConstraints box) {
-    RenderBox renderBox = super.context.findRenderObject();
-    Offset offset = renderBox.globalToLocal(details.globalPosition);
+    RenderBox? renderBox = super.context.findRenderObject() as RenderBox?;
+    Offset offset = renderBox?.globalToLocal(details.globalPosition) ?? Offset.zero;
     double ratio = offset.dx / box.maxWidth;
-    super.setState(() => this.setRatio(ratio));
+    super.setState(() => setRatio(ratio));
   }
 
-  BorderRadius radius = const BorderRadius.all(const Radius.circular(20.0));
+  BorderRadius radius = const BorderRadius.all(Radius.circular(20.0));
 
   Widget buildSlider(double maxWidth) {
-    return new Container(
+    return SizedBox(
         width: maxWidth,
-        child: new CustomMultiChildLayout(delegate: new _SliderLayout(), children: <Widget>[
+        child: CustomMultiChildLayout(delegate: _SliderLayout(), children: <Widget>[
           //Track
-          new LayoutId(
+          LayoutId(
               id: _SliderLayout.track,
               child: (super.widget.colors == null)
                   ?
 
                   //child
-                  new DecoratedBox(
+                  DecoratedBox(
                       decoration: BoxDecoration(
-                          borderRadius: this.radius, border: new Border.all(color: Colors.grey, width: 1)),
-                      child: new ClipRRect(borderRadius: this.radius, child: super.widget.child))
+                          borderRadius: radius, border: Border.all(color: Colors.grey, width: 1)),
+                      child: ClipRRect(borderRadius: radius))
                   :
 
                   //Color
-                  new DecoratedBox(
+                  DecoratedBox(
                       decoration: BoxDecoration(
-                          borderRadius: this.radius,
-                          border: new Border.all(color: Colors.grey, width: 1),
-                          gradient: new LinearGradient(colors: super.widget.colors)))),
+                          borderRadius: radius,
+                          border: Border.all(color: Colors.grey, width: 1),
+                          gradient: LinearGradient(colors: super.widget.colors!)))),
 
           //Thumb
-          new LayoutId(
+          LayoutId(
               id: _SliderLayout.thumb,
-              child: new Transform(
-                transform: new Matrix4.identity()..translate(_ThumbPainter.getWidth(this.getRatio(), maxWidth)),
-                child: new CustomPaint(painter: new _ThumbPainter()),
+              child: Transform(
+                transform: Matrix4.identity()..translate(_ThumbPainter.getWidth(getRatio(), maxWidth)),
+                child: CustomPaint(painter: _ThumbPainter()),
               )),
 
           //GestureContainer
-          new LayoutId(id: _SliderLayout.gestureContainer, child: new LayoutBuilder(builder: this.buildGestureDetector))
+          LayoutId(id: _SliderLayout.gestureContainer, child: LayoutBuilder(builder: buildGestureDetector))
         ]));
   }
 
   Widget buildGestureDetector(BuildContext context, BoxConstraints box) {
-    return new GestureDetector(
-        child: new Container(color: const Color(0)), onPanUpdate: (detail) => this.onPanUpdate(detail, box));
+    return GestureDetector(
+        child: Container(color: const Color(0x00000000)), onPanUpdate: (detail) => onPanUpdate(detail, box));
   }
 
   @override
   Widget build(BuildContext context) {
-    return new SizedBox(
-        height: 40.0, child: new LayoutBuilder(builder: (context, box) => this.buildSlider(box.maxWidth)));
+    return SizedBox(
+        height: 40.0, child: LayoutBuilder(builder: (context, box) => buildSlider(box.maxWidth)));
   }
 }
 
 /// Slider
 class _SliderLayout extends MultiChildLayoutDelegate {
-  static final String track = "track";
-  static final String thumb = "thumb";
-  static final String gestureContainer = "gesturecontainer";
+  static const String track = "track";
+  static const String thumb = "thumb";
+  static const String gestureContainer = "gesturecontainer";
 
   @override
   void performLayout(Size size) {
@@ -126,11 +123,11 @@ class _ThumbPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final Paint paintWhite = new Paint()
+    final Paint paintWhite = Paint()
       ..color = Colors.white
       ..strokeWidth = 4
       ..style = PaintingStyle.stroke;
-    final Paint paintBlack = new Paint()
+    final Paint paintBlack = Paint()
       ..color = Colors.black
       ..strokeWidth = 6
       ..style = PaintingStyle.stroke;
@@ -147,49 +144,48 @@ class _HSVPicker extends StatefulWidget {
   final HSVColor color;
   final ValueChanged<HSVColor> onChanged;
 
-  _HSVPicker({Key key, @required this.color, @required this.onChanged})
-      : assert(color != null),
-        super(key: key);
+  const _HSVPicker({Key? key, required this.color, required this.onChanged})
+      : super(key: key);
 
   @override
-  _HSVPickerState createState() => new _HSVPickerState();
+  _HSVPickerState createState() => _HSVPickerState();
 }
 
 class _HSVPickerState extends State<_HSVPicker> {
   HSVColor get color => super.widget.color;
 
   //Hue
-  void hueOnChange(double value) => super.widget.onChanged(this.color.withHue(value));
+  void hueOnChange(double value) => super.widget.onChanged(color.withHue(value));
   List<Color> get hueColors => [
-        this.color.withHue(0.0).toColor(),
-        this.color.withHue(60.0).toColor(),
-        this.color.withHue(120.0).toColor(),
-        this.color.withHue(180.0).toColor(),
-        this.color.withHue(240.0).toColor(),
-        this.color.withHue(300.0).toColor(),
-        this.color.withHue(0.0).toColor()
+        color.withHue(0.0).toColor(),
+        color.withHue(60.0).toColor(),
+        color.withHue(120.0).toColor(),
+        color.withHue(180.0).toColor(),
+        color.withHue(240.0).toColor(),
+        color.withHue(300.0).toColor(),
+        color.withHue(0.0).toColor()
       ];
 
   //Saturation
-  void saturationOnChange(double value) => super.widget.onChanged(this.color.withSaturation(value));
+  void saturationOnChange(double value) => super.widget.onChanged(color.withSaturation(value));
   List<Color> get saturationColors =>
-      [this.color.withSaturation(0.0).toColor(), this.color.withSaturation(1.0).toColor()];
+      [color.withSaturation(0.0).toColor(), color.withSaturation(1.0).toColor()];
 
   //Value
-  void valueOnChange(double value) => super.widget.onChanged(this.color.withValue(value));
-  List<Color> get valueColors => [this.color.withValue(0.0).toColor(), this.color.withValue(1.0).toColor()];
+  void valueOnChange(double value) => super.widget.onChanged(color.withValue(value));
+  List<Color> get valueColors => [color.withValue(0.0).toColor(), color.withValue(1.0).toColor()];
 
   Widget buildTitle(String title, String text) {
-    return new SizedBox(
+    return SizedBox(
         height: 34.0,
-        child: new Row(children: <Widget>[
-          new Opacity(opacity: 0.5, child: new Text(title, style: Theme.of(context).textTheme.headline6)),
-          new Expanded(
-              child: new Align(
+        child: Row(children: <Widget>[
+          Opacity(opacity: 0.5, child: Text(title, style: Theme.of(context).textTheme.titleLarge)),
+          Expanded(
+              child: Align(
                   alignment: Alignment.centerRight,
-                  child: new Text(
+                  child: Text(
                     text,
-                    style: Theme.of(context).textTheme.headline5.copyWith(fontSize: 18),
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontSize: 18),
                   )))
         ]));
   }
@@ -201,22 +197,22 @@ class _HSVPickerState extends State<_HSVPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return new Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+    return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
       //Hue
-      new _SliderPicker(
-          value: this.color.hue, min: 0.0, max: 360.0, onChanged: this.hueOnChange, colors: this.hueColors),
+      _SliderPicker(
+          value: color.hue, min: 0.0, max: 360.0, onChanged: hueOnChange, colors: hueColors),
 
       //Saturation
-      new _SliderPicker(
-          value: this.color.saturation,
+      _SliderPicker(
+          value: color.saturation,
           min: 0.0,
           max: 1.0,
-          onChanged: this.saturationOnChange,
-          colors: this.saturationColors),
+          onChanged: saturationOnChange,
+          colors: saturationColors),
 
       //Value
-      new _SliderPicker(
-          value: this.color.value, min: 0.0, max: 1.0, onChanged: this.valueOnChange, colors: this.valueColors)
+      _SliderPicker(
+          value: color.value, min: 0.0, max: 1.0, onChanged: valueOnChange, colors: valueColors)
     ]);
   }
 }

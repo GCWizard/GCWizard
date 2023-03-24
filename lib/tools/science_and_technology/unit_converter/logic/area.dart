@@ -1,21 +1,21 @@
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit.dart';
 
 class Area extends Unit {
-  Function toSquareMeter;
-  Function fromSquareMeter;
+  late double Function (double) toSquareMeter;
+  late double Function (double) fromSquareMeter;
 
   Area({
-    String name,
-    String symbol,
-    bool isReference: false,
-    double inSquareMeters: 1.0,
+    required String name,
+    required String symbol,
+    bool isReference = false,
+    required double inSquareMeters,
   }) : super(name, symbol, isReference, (e) => e * inSquareMeters, (e) => e / inSquareMeters) {
-    toSquareMeter = this.toReference;
-    fromSquareMeter = this.fromReference;
+    toSquareMeter = toReference;
+    fromSquareMeter = fromReference;
   }
 }
 
-final AREA_SQUAREMETER = Area(name: 'common_unit_area_m2_name', symbol: 'm\u00B2', isReference: true);
+final AREA_SQUAREMETER = Area(name: 'common_unit_area_m2_name', symbol: 'm\u00B2', inSquareMeters: 1.0, isReference: true);
 
 final AREA_SQUAREKILOMETER =
     Area(name: 'common_unit_area_km2_name', symbol: 'km\u00B2', inSquareMeters: 1000.0 * 1000.0);
@@ -48,11 +48,11 @@ final AREA_SQUAREMILE = Area(name: 'common_unit_area_sqmi_name', symbol: 'sq mi'
 
 final AREA_ACRE = Area(name: 'common_unit_area_ac_name', symbol: 'ac', inSquareMeters: 43560.0 * 0.3048 * 0.3048);
 
-final AREA_SECTION = Area(name: 'common_unit_area_section_name', symbol: null, inSquareMeters: 1609.344 * 1609.344);
+final AREA_SECTION = Area(name: 'common_unit_area_section_name', symbol: '', inSquareMeters: 1609.344 * 1609.344);
 
-final AREA_SOCCERFIELD = Area(name: 'common_unit_area_sofi_name', symbol: null, inSquareMeters: 68.0 * 105.0);
+final AREA_SOCCERFIELD = Area(name: 'common_unit_area_sofi_name', symbol: '', inSquareMeters: 68.0 * 105.0);
 
-final List<Unit> areas = [
+final List<Area> areas = [
   AREA_SQUAREMILLIMETER,
   AREA_SQUARECENTIMETER,
   AREA_SQUAREDEZIMETER,

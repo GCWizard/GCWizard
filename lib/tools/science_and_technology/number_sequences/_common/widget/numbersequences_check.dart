@@ -8,7 +8,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 class NumberSequenceCheckNumber extends StatefulWidget {
   final NumberSequencesMode mode;
   final int maxIndex;
-  const NumberSequenceCheckNumber({Key key, this.mode, this.maxIndex}) : super(key: key);
+  const NumberSequenceCheckNumber({Key? key, required this.mode, required this.maxIndex}) : super(key: key);
 
   @override
   NumberSequenceCheckNumberState createState() => NumberSequenceCheckNumberState();
@@ -16,7 +16,7 @@ class NumberSequenceCheckNumber extends StatefulWidget {
 
 class NumberSequenceCheckNumberState extends State<NumberSequenceCheckNumber> {
   String _currentInputN = '0';
-  TextEditingController currentInputController;
+  late TextEditingController currentInputController;
 
   @override
   void initState() {
@@ -37,14 +37,15 @@ class NumberSequenceCheckNumberState extends State<NumberSequenceCheckNumber> {
         GCWTextField(
           controller: currentInputController,
           inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+            FilteringTextInputFormatter.allow(RegExp(r'\d')),
           ],
           onChanged: (text) {
             setState(() {
-              if (text == null || text == '')
+              if (text.isEmpty) {
                 _currentInputN = '0';
-              else
+              } else {
                 _currentInputN = text;
+              }
             });
           },
         ),
@@ -53,10 +54,10 @@ class NumberSequenceCheckNumberState extends State<NumberSequenceCheckNumber> {
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     var checked = checkNumber(widget.mode, BigInt.parse(_currentInputN), widget.maxIndex);
 
-    var output;
+    String output;
     if (checked >= 0) {
       output = i18n(context, 'numbersequence_check_isinsequence', parameters: [checked]);
     } else {

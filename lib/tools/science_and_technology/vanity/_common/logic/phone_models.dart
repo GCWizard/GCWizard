@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:gc_wizard/tools/science_and_technology/vanity/_common/workflows/_simple.dart';
 import 'package:gc_wizard/tools/science_and_technology/vanity/_common/workflows/motorola_cd930.dart';
 import 'package:gc_wizard/tools/science_and_technology/vanity/_common/workflows/motorola_razr_v3.dart';
@@ -49,17 +50,17 @@ enum PhoneCaseMode { LOWER_CASE, UPPER_CASE, CAMEL_CASE, NUMBERS, SPECIAL_CHARAC
 const PHONE_STATEMODEL_START = '[*]';
 
 class PhoneModel {
-  String name;
-  Map<String, Map<String, String>> defaultCaseStateModel;
-  Map<PhoneInputLanguage, Map<String, Map<String, String>>> specificCaseStateModels;
-  List<Map<PhoneCaseMode, Map<String, String>>> characterMap;
-  List<List<PhoneInputLanguage>> languages;
+  final String name;
+  late Map<String, Map<String, String>> defaultCaseStateModel;
+  Map<PhoneInputLanguage, Map<String, Map<String, String>>>? specificCaseStateModels;
+  final List<Map<PhoneCaseMode, Map<String, String>>> characterMap;
+  final List<List<PhoneInputLanguage>> languages;
 
-  PhoneModel(this.name, String defaultCaseStateModelRaw, Map<PhoneInputLanguage, String> specificCaseStateModelsRaw,
+  PhoneModel(this.name, String defaultCaseStateModelRaw, Map<PhoneInputLanguage, String>? specificCaseStateModelsRaw,
       this.characterMap, this.languages) {
-    this.defaultCaseStateModel = _initializeCaseStateModel(defaultCaseStateModelRaw);
-    if (specificCaseStateModelsRaw != null && specificCaseStateModelsRaw.length > 0) {
-      this.specificCaseStateModels = specificCaseStateModelsRaw.map((key, value) {
+    defaultCaseStateModel = _initializeCaseStateModel(defaultCaseStateModelRaw);
+    if (specificCaseStateModelsRaw != null && specificCaseStateModelsRaw.isNotEmpty) {
+      specificCaseStateModels = specificCaseStateModelsRaw.map((key, value) {
         return MapEntry(key, _initializeCaseStateModel(value));
       });
     }
@@ -67,7 +68,7 @@ class PhoneModel {
 
   @override
   String toString() {
-    return this.name;
+    return name;
   }
 }
 
@@ -82,7 +83,7 @@ Map<String, Map<String, String>> _initializeCaseStateModel(String rawStateModel)
     line = line.trim();
     if (line.isEmpty || line.startsWith(RegExp(r"['@]"))) return;
 
-    var transitionPattern;
+    RegExp transitionPattern;
     if (_isStartState(line)) {
       transitionPattern = RegExp(r'(.+?)\s*-->\s*(.+)');
     } else {
@@ -92,20 +93,20 @@ Map<String, Map<String, String>> _initializeCaseStateModel(String rawStateModel)
     final match = transitionPattern.firstMatch(line);
     if (match == null) return;
 
-    final startState = match.group(1);
+    final startState = match.group(1) ?? '';
 
     if (stateModel[startState] == null) stateModel[startState] = {};
 
-    final destinationState = match.group(2);
+    final String destinationState = match.group(2) ?? '';
 
-    var transitionCharacters;
-    if (!_isStartState(line)) transitionCharacters = match.group(3);
+    String transitionCharacters = '';
+    if (!_isStartState(line)) transitionCharacters = match.group(3) ?? '';
 
     if (_isStartState(line)) {
-      stateModel[startState].putIfAbsent('', () => destinationState);
+      stateModel[startState]!.putIfAbsent('', () => destinationState);
     } else {
       transitionCharacters.split('').forEach((character) {
-        stateModel[startState].putIfAbsent(character, () => destinationState);
+        stateModel[startState]!.putIfAbsent(character, () => destinationState);
       });
     }
   });
@@ -136,8 +137,8 @@ const NAME_PHONEMODEL_SIEMENS_S55 = 'Siemens S55';
 const NAME_PHONEMODEL_SONYERICSSON_K700I = 'Sony Ericsson K700i';
 const NAME_PHONEMODEL_SONYERICSSON_T300 = 'Sony Ericsson T300';
 
-PhoneModel phoneModelByName(String name) {
-  return PHONE_MODELS.firstWhere((element) => element.name == name, orElse: () => null);
+PhoneModel? phoneModelByName(String name) {
+  return PHONE_MODELS.firstWhereOrNull((element) => element.name == name);
 }
 
 final PHONEMODEL_SIMPLE_SPACE_0 = PhoneModel(NAME_PHONEMODEL_SIMPLE_SPACE_0, PHONEMODEL_SIMPLE_STATES, null, [

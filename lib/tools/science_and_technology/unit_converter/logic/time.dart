@@ -1,13 +1,13 @@
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit.dart';
 
 class Time extends Unit {
-  Function toSeconds;
-  Function fromSeconds;
+  late double Function (double) toSeconds;
+  late double Function (double) fromSeconds;
 
-  Time({String name, String symbol, bool isReference: false, double inSeconds})
+  Time({required String name, required String symbol, bool isReference = false, required double inSeconds})
       : super(name, symbol, isReference, (e) => e * inSeconds, (e) => e / inSeconds) {
-    toSeconds = this.toReference;
-    fromSeconds = this.fromReference;
+    toSeconds = toReference;
+    fromSeconds = fromReference;
   }
 }
 
@@ -19,7 +19,7 @@ final TIME_HOUR = Time(name: 'common_unit_time_h_name', symbol: 'h', inSeconds: 
 
 final TIME_MINUTE = Time(name: 'common_unit_time_min_name', symbol: 'min', inSeconds: 60.0);
 
-final TIME_SECOND = Time(name: 'common_unit_time_s_name', symbol: 's', isReference: true);
+final TIME_SECOND = Time(name: 'common_unit_time_s_name', symbol: 's', inSeconds: 1.0, isReference: true);
 
 // https://webmadness.net/blog/?post=knuth
 final TIME_WOLVERTON = Time(name: 'common_unit_time_wolverton_name', symbol: 'wl', inSeconds: 0.864);
@@ -36,7 +36,7 @@ final TIME_MINGO = Time(name: 'common_unit_time_mingo_name', symbol: 'mi', inSec
 
 final TIME_COWZNOFSKI = Time(name: 'common_unit_time_cowznofski_name', symbol: 'cow', inSeconds: 8640000.0);
 
-final List<Unit> times = [
+final List<Time> times = [
   TIME_WEEK,
   TIME_DAY,
   TIME_HOUR,

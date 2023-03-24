@@ -5,7 +5,11 @@ import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/multi_
 const MDT_INTERNALNAMES_ATBASH = 'multidecoder_tool_atbash_title';
 
 class MultiDecoderToolAtbash extends AbstractMultiDecoderTool {
-  MultiDecoderToolAtbash({Key key, int id, String name, Map<String, dynamic> options})
+  MultiDecoderToolAtbash({
+    Key? key,
+    required int id,
+    required String name,
+    required Map<String, Object?> options})
       : super(
             key: key,
             id: id,

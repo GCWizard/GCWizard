@@ -7,13 +7,15 @@ import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_langua
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class Cow extends StatefulWidget {
+  const Cow({Key? key}) : super(key: key);
+
   @override
   CowState createState() => CowState();
 }
 
 class CowState extends State<Cow> {
-  var _textController;
-  var _inputController;
+  late TextEditingController _textController;
+  late TextEditingController _inputController;
 
   var _currentText = '';
   var _currentInput = '';
@@ -74,14 +76,15 @@ class CowState extends State<Cow> {
     );
   }
 
-  _calculateOutput() {
+  String _calculateOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
       try {
         CowOutput output = interpretCow(_currentText, STDIN: _currentInput);
-        if (output.error == '')
+        if (output.error.isEmpty) {
           return output.output;
-        else
+        } else {
           return output.output + '\n' + i18n(context, output.error);
+        }
       } on FormatException catch (e) {
         return printErrorMessage(context, e.message);
       }

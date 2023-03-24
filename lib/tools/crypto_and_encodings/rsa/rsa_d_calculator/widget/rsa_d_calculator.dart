@@ -8,6 +8,8 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rsa/logic/rsa.dart';
 
 class RSADCalculator extends StatefulWidget {
+  const RSADCalculator({Key? key}) : super(key: key);
+
   @override
   RSADCalculatorState createState() => RSADCalculatorState();
 }
@@ -17,8 +19,8 @@ class RSADCalculatorState extends State<RSADCalculator> {
   String _currentP = '';
   String _currentQ = '';
 
-  var _integerInputFormatter = GCWIntegerTextInputFormatter(min: 0);
-  Widget _output;
+  final _integerInputFormatter = GCWIntegerTextInputFormatter(min: 0);
+  Widget? _output;
 
   @override
   Widget build(BuildContext context) {
@@ -58,18 +60,15 @@ class RSADCalculatorState extends State<RSADCalculator> {
             });
           },
         ),
-        _output ?? GCWDefaultOutput(),
+        _output ?? const GCWDefaultOutput(),
       ],
     );
   }
 
-  _calculateOutput() {
-    if (_currentE == null ||
-        _currentE.length == 0 ||
-        _currentP == null ||
-        _currentP.length == 0 ||
-        _currentQ == null ||
-        _currentQ.length == 0) {
+  void _calculateOutput() {
+    if (_currentE.isEmpty ||
+        _currentP.isEmpty ||
+        _currentQ.isEmpty) {
       _output = null;
     }
 
@@ -80,7 +79,7 @@ class RSADCalculatorState extends State<RSADCalculator> {
 
       _output = GCWDefaultOutput(child: calculateD(e, p, q).toString());
     } catch (exception) {
-      showToast(i18n(context, exception.message));
+      showToast(i18n(context, exception.toString()));
       _output = null;
     }
   }

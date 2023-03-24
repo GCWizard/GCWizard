@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
+import 'package:gc_wizard/utils/complex_return_types.dart';
 
 class GCWIntegerListTextField extends StatefulWidget {
-  final TextEditingController controller;
-  final Function onChanged;
-  final hintText;
+  final TextEditingController? controller;
+  final void Function(IntegerListText) onChanged;
+  final String? hintText;
 
   const GCWIntegerListTextField({
-    Key key,
-    this.onChanged,
+    Key? key,
+    required this.onChanged,
     this.controller,
     this.hintText,
   }) : super(key: key);
@@ -27,7 +28,7 @@ class _GCWIntegerListTextFieldState extends State<GCWIntegerListTextField> {
       onChanged: (text) {
         setState(() {
           var list = textToIntList(text);
-          widget.onChanged({'text': text, 'values': list});
+          widget.onChanged(IntegerListText(text, list));
         });
       },
       controller: widget.controller,

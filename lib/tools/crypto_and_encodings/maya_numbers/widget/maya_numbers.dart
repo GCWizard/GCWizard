@@ -8,9 +8,13 @@ import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/maya_numbers/logic/maya_numbers.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/maya_numbers/widget/maya_numbers_segment_display.dart';
+import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
+import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/n_segment_display.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/segmentdisplay_output.dart';
 
 class MayaNumbers extends StatefulWidget {
+  const MayaNumbers({Key? key}) : super(key: key);
+
   @override
   MayaNumbersState createState() => MayaNumbersState();
 }
@@ -18,7 +22,7 @@ class MayaNumbers extends StatefulWidget {
 class MayaNumbersState extends State<MayaNumbers> {
   var _currentEncodeInput = 0;
 
-  List<List<String>> _currentDisplays = [];
+  var _currentDisplays = Segments.Empty();
   var _currentMode = GCWSwitchPosition.right;
 
   @override
@@ -50,16 +54,10 @@ class MayaNumbersState extends State<MayaNumbers> {
     ]);
   }
 
-  _buildVisualDecryption() {
-    Map<String, bool> currentDisplay;
+  Widget _buildVisualDecryption() {
+    var currentDisplay = buildSegmentMap(_currentDisplays);
 
-    var displays = _currentDisplays;
-    if (displays != null && displays.length > 0)
-      currentDisplay = Map<String, bool>.fromIterable(displays.last ?? [], key: (e) => e, value: (e) => true);
-    else
-      currentDisplay = {};
-
-    var onChanged = (Map<String, bool> d) {
+    onChanged(Map<String, bool> d) {
       setState(() {
         var newSegments = <String>[];
         d.forEach((key, value) {
@@ -67,19 +65,15 @@ class MayaNumbersState extends State<MayaNumbers> {
           newSegments.add(key);
         });
 
-        newSegments.sort();
-
-        if (_currentDisplays.length == 0) _currentDisplays.add([]);
-
-        _currentDisplays[_currentDisplays.length - 1] = newSegments;
+        _currentDisplays.replaceLastSegment(newSegments);
       });
-    };
+    }
 
     return Column(
       children: <Widget>[
         Container(
           width: 180,
-          padding: EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
+          padding: const EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
           child: Row(
             children: <Widget>[
               Expanded(
@@ -96,7 +90,7 @@ class MayaNumbersState extends State<MayaNumbers> {
             icon: Icons.space_bar,
             onPressed: () {
               setState(() {
-                _currentDisplays.add([]);
+                _currentDisplays.addEmptySegment();
               });
             },
           ),
@@ -104,7 +98,7 @@ class MayaNumbersState extends State<MayaNumbers> {
             icon: Icons.backspace,
             onPressed: () {
               setState(() {
-                if (_currentDisplays.length > 0) _currentDisplays.removeLast();
+                _currentDisplays.removeLastSegment();
               });
             },
           ),
@@ -112,7 +106,7 @@ class MayaNumbersState extends State<MayaNumbers> {
             icon: Icons.clear,
             onPressed: () {
               setState(() {
-                _currentDisplays = [];
+                _currentDisplays = Segments.Empty();
               });
             },
           )
@@ -121,7 +115,7 @@ class MayaNumbersState extends State<MayaNumbers> {
     );
   }
 
-  Widget _buildDigitalOutput(List<List<String>> segments) {
+  Widget _buildDigitalOutput(Segments segments) {
     return SegmentDisplayOutput(
         segmentFunction: (displayedSegments, readOnly) {
           return MayaNumbersSegmentDisplay(segments: displayedSegments, readOnly: readOnly);
@@ -141,15 +135,13 @@ class MayaNumbersState extends State<MayaNumbers> {
       );
     } else {
       //decode
-      var output = _currentDisplays.map((character) {
-        if (character != null) return character.join();
-      }).toList();
+      var output = _currentDisplays.buildOutput();
       var segments = decodeMayaNumbers(output);
       return Column(
         children: <Widget>[
-          _buildDigitalOutput(segments['displays']),
-          GCWOutput(title: i18n(context, 'mayanumbers_single_numbers'), child: segments['numbers'].join(' ')),
-          GCWOutput(title: i18n(context, 'mayanumbers_vigesimal'), child: segments['vigesimal'])
+          _buildDigitalOutput(segments),
+          GCWOutput(title: i18n(context, 'mayanumbers_single_numbers'), child: (segments.numbers).join(' ')),
+          GCWOutput(title: i18n(context, 'mayanumbers_vigesimal'), child: segments.vigesimal)
         ],
       );
     }

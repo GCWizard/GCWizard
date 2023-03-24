@@ -1,48 +1,46 @@
 part of 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
 
 class _GCWCoordsSwissGrid extends StatefulWidget {
-  final Function onChanged;
-  final BaseCoordinates coordinates;
+  final void Function(SwissGrid) onChanged;
+  final BaseCoordinate coordinates;
 
-  const _GCWCoordsSwissGrid({Key key, this.onChanged, this.coordinates}) : super(key: key);
+  const _GCWCoordsSwissGrid({Key? key, required this.onChanged, required this.coordinates}) : super(key: key);
 
   @override
   _GCWCoordsSwissGridState createState() => _GCWCoordsSwissGridState();
 }
 
 class _GCWCoordsSwissGridState extends State<_GCWCoordsSwissGrid> {
-  TextEditingController _EastingController;
-  TextEditingController _NorthingController;
+  late TextEditingController _EastingController;
+  late TextEditingController _NorthingController;
 
-  var _currentEasting = {'text': '', 'value': 0.0};
-  var _currentNorthing = {'text': '', 'value': 0.0};
+  var _currentEasting = defaultDoubleText;
+  var _currentNorthing = defaultDoubleText;
 
   @override
   void initState() {
     super.initState();
-    _EastingController = TextEditingController(text: _currentEasting['text']);
-    _NorthingController = TextEditingController(text: _currentNorthing['text']);
+    _EastingController = TextEditingController(text: _currentEasting.text);
+    _NorthingController = TextEditingController(text: _currentNorthing.text);
   }
 
   @override
   void dispose() {
-    _EastingController?.dispose();
-    _NorthingController?.dispose();
+    _EastingController.dispose();
+    _NorthingController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.coordinates != null) {
-      var swissGrid = widget.coordinates is SwissGrid
-          ? widget.coordinates as SwissGrid
-          : SwissGrid.fromLatLon(widget.coordinates.toLatLng(), defaultEllipsoid());
-      _currentEasting['value'] = swissGrid.easting;
-      _currentNorthing['value'] = swissGrid.northing;
+    var swissGrid = widget.coordinates is SwissGrid
+        ? widget.coordinates as SwissGrid
+        : SwissGrid.fromLatLon(widget.coordinates.toLatLng() ?? defaultCoordinate, defaultEllipsoid);
+    _currentEasting.value = swissGrid.easting;
+    _currentNorthing.value = swissGrid.northing;
 
-      _EastingController.text = _currentEasting['value'].toString();
-      _NorthingController.text = _currentNorthing['value'].toString();
-    }
+    _EastingController.text = _currentEasting.value.toString();
+    _NorthingController.text = _currentNorthing.value.toString();
 
     return Column(children: <Widget>[
       GCWDoubleTextField(
@@ -66,7 +64,7 @@ class _GCWCoordsSwissGridState extends State<_GCWCoordsSwissGrid> {
     ]);
   }
 
-  _setCurrentValueAndEmitOnChange() {
-    widget.onChanged(SwissGrid(_currentEasting['value'], _currentNorthing['value']));
+  void _setCurrentValueAndEmitOnChange() {
+    widget.onChanged(SwissGrid(_currentEasting.value, _currentNorthing.value));
   }
 }

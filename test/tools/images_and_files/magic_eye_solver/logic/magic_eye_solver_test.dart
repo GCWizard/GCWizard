@@ -15,7 +15,7 @@ Uint8List _getFileData(String name) {
 void main() {
 
   group("magic_eye_solver.decodeImageAsync:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : 'atomium.jpg', 'expectedOutput' : 70},
       {'input' : 'dino.png', 'expectedOutput' : 120},
       {'input' : 'dino2.png', 'expectedOutput' : 120},
@@ -25,12 +25,12 @@ void main() {
       {'input' : 'thumbsup.jpg', 'expectedOutput' : 56},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () async {
-        var _actual = await decodeImage(_getFileData(elem['input']), null, null);
-        expect(_actual.item3, elem['expectedOutput']);
+        var _actual = await decodeImage(_getFileData(elem['input'] as String), null, null);
+        expect(_actual?.item3, elem['expectedOutput']);
       });
-    });
+    }
   });
 
 }

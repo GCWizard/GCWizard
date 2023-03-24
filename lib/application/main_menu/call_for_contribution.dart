@@ -7,9 +7,12 @@ import 'package:gc_wizard/application/navigation/no_animation_material_page_rout
 import 'package:gc_wizard/application/registry.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_divider.dart';
+import 'package:gc_wizard/common_widgets/gcw_tool.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class CallForContribution extends StatefulWidget {
+  const CallForContribution({Key? key}) : super(key: key);
+
   @override
   CallForContributionState createState() => CallForContributionState();
 }
@@ -31,7 +34,7 @@ class CallForContributionState extends State<CallForContribution> {
         ),
         TextSpan(
             text: i18n(context, 'callforcontribution_7'),
-            recognizer: new TapGestureRecognizer()
+            recognizer: TapGestureRecognizer()
               ..onTap = () {
                 launchUrl(Uri.parse('https://github.com/S-Man42/GCWizard'));
               },
@@ -72,11 +75,11 @@ class CallForContributionState extends State<CallForContribution> {
         ),
         TextSpan(
             text: i18n(context, 'callforcontribution_24'),
-            recognizer: new TapGestureRecognizer()
+            recognizer: TapGestureRecognizer()
               ..onTap = () {
-                Navigator.of(context).push(NoAnimationMaterialPageRoute(
+                Navigator.of(context).push(NoAnimationMaterialPageRoute<GCWTool>(
                     builder: (context) =>
-                        registeredTools.firstWhere((tool) => className(tool.tool) == className(About()))));
+                        registeredTools.firstWhere((tool) => className(tool.tool) == className(const About()))));
               },
             style: gcwHyperlinkTextStyle()),
         TextSpan(text: i18n(context, 'callforcontribution_25'), style: boldTextStyle),
@@ -95,7 +98,7 @@ class CallForContributionState extends State<CallForContribution> {
             launchUrl(Uri.parse(i18n(context, 'common_support_link')));
           },
         ),
-        GCWDivider(),
+        const GCWDivider(),
         content
       ],
     ));

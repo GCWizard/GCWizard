@@ -11,6 +11,8 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/complex_numbers/logic/complex_numbers.dart';
 
 class ComplexNumbers extends StatefulWidget {
+  const ComplexNumbers({Key? key}) : super(key: key);
+
   @override
   ComplexNumbersState createState() => ComplexNumbersState();
 }
@@ -20,10 +22,10 @@ class ComplexNumbersState extends State<ComplexNumbers> {
   var _currentB = '';
   var _currentRadius = '';
   var _currentAngle = '';
-  var _aController;
-  var _bController;
-  var _radiusController;
-  var _angleController;
+  late TextEditingController _aController;
+  late TextEditingController _bController;
+  late TextEditingController _radiusController;
+  late TextEditingController _angleController;
 
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
 
@@ -121,7 +123,7 @@ class ComplexNumbersState extends State<ComplexNumbers> {
   }
 
   Widget _buildOutput(BuildContext context) {
-    Map<String, String> coordinates = new Map<String, String>();
+    Map<String, String> coordinates = <String, String>{};
     if (_currentMode == GCWSwitchPosition.right) {
       coordinates = CartesianToPolar(_currentA, _currentB);
     } else {
@@ -130,10 +132,10 @@ class ComplexNumbersState extends State<ComplexNumbers> {
 
     return GCWDefaultOutput(
         child: GCWColumnedMultilineOutput(
-            data: coordinates.entries.map((entry) {
-                    if (entry.key != '') return [i18n(context, entry.key), entry.value];
+            data: coordinates.entries.where((entry) => entry.key.isNotEmpty).map((entry) {
+                    return [i18n(context, entry.key), entry.value];
                   }).toList(),
-            flexValues: [1, 1]
+            flexValues: const [1, 1]
             ),
     );
   }

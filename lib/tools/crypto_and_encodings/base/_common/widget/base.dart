@@ -5,17 +5,17 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/base/_common/logic/base.dart';
 
 abstract class AbstractBase extends StatefulWidget {
-  final Function encode;
-  final Function decode;
+  final String Function(String) encode;
+  final String Function(String) decode;
 
-  AbstractBase({Key key, this.encode, this.decode}) : super(key: key);
+  const AbstractBase({Key? key, required this.encode, required this.decode}) : super(key: key);
 
   @override
   AbstractBaseState createState() => AbstractBaseState();
 }
 
 class AbstractBaseState extends State<AbstractBase> {
-  var _inputController;
+  late TextEditingController _inputController;
 
   String _currentInput = '';
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;

@@ -1,9 +1,11 @@
+import 'package:collection/collection.dart';
+
 enum NucleobaseSequenceType { NORMAL, START, STOP }
 
 class AminoAcid {
-  final String name;
-  final String symbolShort;
-  final String symbolLong;
+  final String? name;
+  final String? symbolShort;
+  final String? symbolLong;
   final List<String> nucleobaseSequences;
   final NucleobaseSequenceType type;
 
@@ -38,25 +40,22 @@ List<AminoAcid> aminoAcids = [
   AminoAcid('dna_aminoacid_glycine', 'G', 'Gly', ['GGU', 'GGG', 'GGA', 'GGC'], NucleobaseSequenceType.NORMAL),
 ];
 
-AminoAcid aminoAcidBySymbolShort(String symbolShort) {
-  return aminoAcids.firstWhere(
-      (element) => element.symbolShort != null && element.symbolShort.toUpperCase() == symbolShort.toUpperCase(),
-      orElse: () => null);
+AminoAcid? aminoAcidBySymbolShort(String symbolShort) {
+  return aminoAcids.firstWhereOrNull(
+      (element) => element.symbolShort != null && element.symbolShort!.toUpperCase() == symbolShort.toUpperCase());
 }
 
-AminoAcid aminoAcidBySymbolLong(String symbolLong) {
-  return aminoAcids.firstWhere(
-      (element) => element.symbolLong != null && element.symbolLong.toUpperCase() == symbolLong.toUpperCase(),
-      orElse: () => null);
+AminoAcid? aminoAcidBySymbolLong(String symbolLong) {
+  return aminoAcids.firstWhereOrNull(
+      (element) => element.symbolLong != null && element.symbolLong!.toUpperCase() == symbolLong.toUpperCase());
 }
 
-AminoAcid aminoAcidByNucleobaseSequence(String sequence) {
-  return aminoAcids.firstWhere((element) => element.nucleobaseSequences.contains(sequence.toUpperCase()),
-      orElse: () => null);
+AminoAcid? aminoAcidByNucleobaseSequence(String sequence) {
+  return aminoAcids.firstWhereOrNull((element) => element.nucleobaseSequences.contains(sequence.toUpperCase()));
 }
 
 String encodeRNANucleobaseSequence(String input) {
-  if (input == null || input.length == 0) return '';
+  if (input.isEmpty) return '';
 
   return input.toUpperCase().split('').map((character) {
     var aminoAcid = aminoAcidBySymbolShort(character);
@@ -71,43 +70,45 @@ String encodeDNANucleobaseSequence(String input) {
 }
 
 String encodeRNASymbolLong(String input) {
-  if (input == null || input.length == 0) return '';
+  if (input.isEmpty) return '';
 
   return input.toUpperCase().split('').map((character) {
     var aminoAcid = aminoAcidBySymbolShort(character);
     if (aminoAcid == null) return '';
 
-    return aminoAcid.symbolLong.toUpperCase();
+    return (aminoAcid.symbolLong ?? '').toUpperCase();
   }).join('');
 }
 
 List<AminoAcid> decodeDNANucleobaseSequence(String input) {
-  if (input == null || input.length == 0) return [];
+  if (input.isEmpty) return [];
 
   return decodeRNANucleobaseSequence(input.toUpperCase().replaceAll(RegExp(r'[^ATCG]'), '').replaceAll('T', 'U'));
 }
 
 List<AminoAcid> decodeRNANucleobaseSequence(String input) {
-  if (input == null || input.length < 3) return [];
+  if (input.length < 3) return [];
 
   input = input.toUpperCase().replaceAll(RegExp(r'[^AUCG]'), '');
 
-  while (input.length % 3 != 0) input = input.substring(0, input.length - 1);
+  while (input.length % 3 != 0) {
+    input = input.substring(0, input.length - 1);
+  }
 
-  if (input.length == 0) return [];
+  if (input.isEmpty) return [];
 
   var out = <AminoAcid>[];
   for (int i = 0; i < input.length; i = i + 3) {
     var sequence = input.substring(i, i + 3);
     var aminoAcid = aminoAcidByNucleobaseSequence(sequence);
-    out.add(aminoAcid);
+    if (aminoAcid != null) out.add(aminoAcid);
   }
 
   return out;
 }
 
 String decodeRNASymbolLong(String input) {
-  if (input == null || input.length < 3) return '';
+  if (input.length < 3) return '';
 
   input = input.toUpperCase();
 
@@ -120,7 +121,7 @@ String decodeRNASymbolLong(String input) {
       continue;
     }
 
-    out += aminoAcid.symbolShort;
+    out += aminoAcid.symbolShort ?? '';
     input = input.substring(3, input.length);
   }
 

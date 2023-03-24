@@ -8,6 +8,8 @@ import 'package:gc_wizard/tools/science_and_technology/compound_interest/logic/c
 import 'package:intl/intl.dart';
 
 class CompoundInterest extends StatefulWidget {
+  const CompoundInterest({Key? key}) : super(key: key);
+
   @override
   CompoundInterestState createState() => CompoundInterestState();
 }
@@ -17,7 +19,7 @@ const _MODE_ORIGINALPRINCIPALSUM = 'compoundinterest_modes_originalprincipalsum'
 const _MODE_ANNUALRATE = 'compoundinterest_modes_annualrate';
 const _MODE_TOTALYEARS = 'compoundinterest_modes_totalyears';
 
-final _MODES = [
+const _MODES = [
   _MODE_PRINCIPALSUM,
   _MODE_ORIGINALPRINCIPALSUM,
   _MODE_ANNUALRATE,
@@ -38,7 +40,7 @@ class CompoundInterestState extends State<CompoundInterest> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        GCWDropDown(
+        GCWDropDown<String>(
           value: _currentMode,
           items: _MODES.map((mode) {
             return GCWDropDownMenuItem(
@@ -110,7 +112,7 @@ class CompoundInterestState extends State<CompoundInterest> {
           },
         ),
         _currentCompoundInterest
-            ? GCWDropDown(
+            ? GCWDropDown<COMPOUND_FREQUENCY>(
                 value: _currentCompoundFrequency,
                 title: i18n(context, 'compoundinterest_compoundfrequency'),
                 items: COMPOUND_FREQUENCY.values.map((freq) {
@@ -147,7 +149,7 @@ class CompoundInterestState extends State<CompoundInterest> {
     }
   }
 
-  _buildOutput() {
+  String _buildOutput() {
     var number = 0.0;
     var frequency = compoundFrequency(_currentCompoundFrequency);
 
@@ -187,7 +189,7 @@ class CompoundInterestState extends State<CompoundInterest> {
       }
     }
 
-    var formatString;
+    String formatString;
     switch (_currentMode) {
       case _MODE_PRINCIPALSUM:
         formatString = '0.000';
@@ -201,6 +203,8 @@ class CompoundInterestState extends State<CompoundInterest> {
       case _MODE_TOTALYEARS:
         formatString = '0.000#####';
         break;
+      default:
+        formatString = '0.000';
     }
 
     return NumberFormat(formatString).format(number) + (_currentMode == _MODE_ANNUALRATE ? ' %' : '');

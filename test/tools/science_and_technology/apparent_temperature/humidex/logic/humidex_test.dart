@@ -4,7 +4,7 @@ import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/temp
 
 void main() {
   group("humidex.calculate:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'temperature' : 0.0, 'humidity' : 0.0, 'temperatureUnit' : TEMPERATURE_CELSIUS, 'isHumidity' : true, 'expectedOutput' : '-5.556'},
       {'temperature' : 27.0, 'humidity' : 40.0, 'temperatureUnit' : TEMPERATURE_CELSIUS, 'isHumidity' : true, 'expectedOutput' : '29.364'},
       {'temperature' : 27.0, 'humidity' : 100.0, 'temperatureUnit' : TEMPERATURE_CELSIUS, 'isHumidity' : true, 'expectedOutput' : '41.243'},
@@ -14,11 +14,11 @@ void main() {
       {'temperature' : 30.0, 'humidity' : 25.0, 'temperatureUnit' : TEMPERATURE_CELSIUS, 'isHumidity' : false, 'expectedOutput' : '42.375'},
     ];
 
-    _inputsToExpected.forEach((elem) {
-      test('temperature: ${elem['temperature']}, humidity: ${elem['humidity']}, temperatureUnit: ${elem['temperatureUnit'].symbol}, isHumidity: ${elem['isHumidity']}', () {
-        var _actual = calculateHumidex(elem['temperature'], elem['humidity'], elem['temperatureUnit'], elem['isHumidity']);
+    for (var elem in _inputsToExpected) {
+      test('temperature: ${elem['temperature']}, humidity: ${elem['humidity']}, temperatureUnit: ${(elem['temperatureUnit'] as Temperature).symbol}, isHumidity: ${elem['isHumidity']}', () {
+        var _actual = calculateHumidex(elem['temperature'] as double, elem['humidity'] as double, elem['temperatureUnit'] as Temperature, elem['isHumidity'] as bool);
         expect(_actual.toStringAsFixed(3), elem['expectedOutput']);
       });
-    });
+    }
   });
 }

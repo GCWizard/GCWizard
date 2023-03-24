@@ -7,14 +7,16 @@ import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/_common/logic
 import 'package:gc_wizard/tools/science_and_technology/vanity/_common/logic/vanity_words.dart';
 
 class VanityWordsList extends StatefulWidget {
+  const VanityWordsList({Key? key}) : super(key: key);
+
   @override
   VanityWordsListState createState() => VanityWordsListState();
 }
 
 class VanityWordsListState extends State<VanityWordsList> {
-  TextEditingController _decodeController;
+  late TextEditingController _decodeController;
 
-  var _currentDecodeInput = '';
+  final _currentDecodeInput = '';
   var _currentLanguage = NumeralWordsLanguage.DEU;
 
   @override
@@ -33,7 +35,7 @@ class VanityWordsListState extends State<VanityWordsList> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        GCWDropDown(
+        GCWDropDown<NumeralWordsLanguage>(
           value: _currentLanguage,
           onChanged: (value) {
             setState(() {
@@ -53,9 +55,10 @@ class VanityWordsListState extends State<VanityWordsList> {
   }
 
   Widget _buildOutput(BuildContext context) {
-    Map<String, String> vanityWordsOverview = new Map<String, String>();
-    vanityWordsOverview = VanWords[_currentLanguage];
-    if (_currentLanguage == NumeralWordsLanguage.DEU) NUMERAL_WORDS[_currentLanguage]['fünf'] = '5';
+    var vanityWordsOverview = VanWords[_currentLanguage];
+    if (vanityWordsOverview == null) return Container();
+
+    if (_currentLanguage == NumeralWordsLanguage.DEU) NUMERAL_WORDS[_currentLanguage]?['fünf'] = '5';
 
     return GCWDefaultOutput(
         child: GCWColumnedMultilineOutput(
@@ -63,12 +66,12 @@ class VanityWordsListState extends State<VanityWordsList> {
                     return [
                       entry.key,
                       entry.value,
-                      NUMERAL_WORDS[_currentLanguage][(entry.value).toLowerCase()].toString().startsWith('numeralwords_')
-                          ? i18n(context, NUMERAL_WORDS[_currentLanguage][(entry.value).toLowerCase()]) + ' '
-                          : NUMERAL_WORDS[_currentLanguage][entry.value.toLowerCase()]
+                      (NUMERAL_WORDS[_currentLanguage]?[(entry.value).toLowerCase()] ?? '').startsWith('numeralwords_')
+                          ? i18n(context, NUMERAL_WORDS[_currentLanguage]?[(entry.value).toLowerCase()] ?? '')  + ' '
+                          : NUMERAL_WORDS[_currentLanguage]?[entry.value.toLowerCase()]
                     ];
                   }).toList(),
-          flexValues: [2, 2, 1]
+          flexValues: const [2, 2, 1]
         ),
     );
   }

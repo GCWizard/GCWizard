@@ -31,12 +31,8 @@ void main() {
       "Schon strahlt der Plastikbaum voll Pracht.";
 
   group("book_cipher.encodeText:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'text' : null, 'outFormat' : encodeOutFormat.RowWordCharacter, 'expectedOutput' : '', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\_', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
-      {'input' : null, 'text' : '', 'outFormat' : encodeOutFormat.RowWordCharacter, 'expectedOutput' : '', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\_', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
-      {'input' : null, 'text' : 'und', 'outFormat' : encodeOutFormat.RowWordCharacter, 'expectedOutput' : '', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\_', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'text' : '', 'outFormat' : encodeOutFormat.RowWordCharacter, 'expectedOutput' : '', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\_', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
-      {'input' : '', 'text' : null, 'outFormat' : encodeOutFormat.RowWordCharacter, 'expectedOutput' : '', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\_', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
       {'input' : '', 'text' : 'und', 'outFormat' : encodeOutFormat.RowWordCharacter, 'expectedOutput' : '', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\_', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
 
       {'input' : test2, 'text' : 'und', 'outFormat' : encodeOutFormat.SectionRowWordCharacter, 'expectedOutput' : '2.2.1.1 1.4.5.1 1.2.1.1', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\_', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
@@ -53,29 +49,25 @@ void main() {
       {'input' : text2, 'text' : '8', 'outFormat' : encodeOutFormat.RowWordCharacter, 'expectedOutput' : '?.?.?', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\_', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : false, 'onlyFirstWordLetter' : true},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeText(elem['input'], elem['text'], elem['outFormat'],
-            spacesOn: elem['spacesOn'],
-            emptyLinesOn: elem['emptyLinesOn'],
-            ignoreSymbols: elem['ignoreSymbols'],
-            diacriticsOn: elem['diacriticsOn'],
-            azOn: elem['azOn'],
-            numbersOn: elem['numbersOn'],
-            onlyFirstWordLetter: elem['onlyFirstWordLetter']
+        var _actual = encodeText(elem['input'] as String, elem['text'] as String, elem['outFormat'] as encodeOutFormat,
+            spacesOn: elem['spacesOn'] as bool,
+            emptyLinesOn: elem['emptyLinesOn'] as bool,
+            ignoreSymbols: elem['ignoreSymbols'] as String,
+            diacriticsOn: elem['diacriticsOn'] as bool,
+            azOn: elem['azOn'] as bool,
+            numbersOn: elem['numbersOn'] as bool,
+            onlyFirstWordLetter: elem['onlyFirstWordLetter'] as bool
         );
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("book_cipher.decodeSearchWord:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'word' : null, 'outFormat' : decodeOutFormat.RowWord, 'expectedOutput' : '', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\_', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
-      {'input' : null, 'word' : '', 'outFormat' : decodeOutFormat.RowWord, 'expectedOutput' : '', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\_', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
-      {'input' : null, 'word' : 'und', 'outFormat' : decodeOutFormat.RowWord, 'expectedOutput' : '', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\_', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'word' : '', 'outFormat' : decodeOutFormat.RowWord, 'expectedOutput' : '', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\_', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
-      {'input' : '', 'word' : null, 'outFormat' : decodeOutFormat.RowWord, 'expectedOutput' : '', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\_', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
       {'input' : '', 'word' : 'und', 'outFormat' : decodeOutFormat.RowWord, 'expectedOutput' : '', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\_', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
 
       {'input' : text1, 'word' : 'und', 'outFormat' : decodeOutFormat.SectionRowWord, 'expectedOutput' : ': 1, : 1, : 1\n: 2, : 2, : 1', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\_', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
@@ -86,20 +78,20 @@ void main() {
       {'input' : text1, 'word' : 'so', 'outFormat' : decodeOutFormat.Word, 'expectedOutput' : ': 11\n: 26', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\_', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeSearchWord(elem['input'], elem['word'], elem['outFormat'], "", "", "",
-            spacesOn: elem['spacesOn'],
-            emptyLinesOn: elem['emptyLinesOn'],
-            ignoreSymbols: elem['ignoreSymbols'],
-            diacriticsOn: elem['diacriticsOn'],
-            azOn: elem['azOn'],
-            numbersOn: elem['numbersOn'],
-            onlyFirstWordLetter: elem['onlyFirstWordLetter']
+        var _actual = decodeSearchWord(elem['input'] as String, elem['word'] as String, elem['outFormat'] as decodeOutFormat, "", "", "",
+            spacesOn: elem['spacesOn'] as bool,
+            emptyLinesOn: elem['emptyLinesOn'] as bool,
+            ignoreSymbols: elem['ignoreSymbols'] as String,
+            diacriticsOn: elem['diacriticsOn'] as bool,
+            azOn: elem['azOn'] as bool,
+            numbersOn: elem['numbersOn'] as bool,
+            onlyFirstWordLetter: elem['onlyFirstWordLetter'] as bool
         );
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("book_cipher.decodeFindWord:", () {
@@ -121,12 +113,8 @@ Stasi-Offziere in ihrer Arbeit unterstützen sollten. Von
 die Potsdamer Bezirksverwaltung. Ihm folgte bis 1990
 Helmut Schickart (1931–1993). ''';
 
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'positions' : null, 'searchFormat' : searchFormat.RowWord, 'expectedOutput' : '', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
-      {'input' : null, 'positions' : '', 'searchFormat' : searchFormat.RowWord, 'expectedOutput' : '', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
-      {'input' : null, 'positions' : 'und', 'searchFormat' : searchFormat.RowWord, 'expectedOutput' : '', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'positions' : '', 'searchFormat' : searchFormat.RowWord, 'expectedOutput' : '', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
-      {'input' : '', 'positions' : null, 'searchFormat' : searchFormat.RowWord, 'expectedOutput' : '', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
       {'input' : '', 'positions' : 'und', 'searchFormat' : searchFormat.RowWord, 'expectedOutput' : '', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
 
       {'input' : text1, 'positions' : '1-1-1', 'searchFormat' : searchFormat.SectionRowWord, 'expectedOutput' : 'UND', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
@@ -173,25 +161,25 @@ Helmut Schickart (1931–1993). ''';
 
       {'input' : 'TEILEN IST EINE SIEBEN TESTWEISE', 'positions' : '1.1 1.3´1.4 1.5', 'searchFormat' : searchFormat.RowWord, 'expectedOutput' : 'TEST', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\_', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : true},
 
-      {'input' : testText1, 'positions' : '4,12; 1,3; 14,3; 1,7; 14,3; 12,1; 2,4; 3,14; 2,2; 4,4; 9,37; 8,4; 14,13; 15,4; 6,8; 7,11; 3,5; 14,4; 14,5; 16,21; 15,4; 14,3; 6,8; 6,6; 1,5', 'searchFormat' : searchFormat.RowCharacter, 'expectedOutput' : 'F 7 79 2E 4 5 2F 1 3 72 E', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : null, 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
+      {'input' : testText1, 'positions' : '4,12; 1,3; 14,3; 1,7; 14,3; 12,1; 2,4; 3,14; 2,2; 4,4; 9,37; 8,4; 14,13; 15,4; 6,8; 7,11; 3,5; 14,4; 14,5; 16,21; 15,4; 14,3; 6,8; 6,6; 1,5', 'searchFormat' : searchFormat.RowCharacter, 'expectedOutput' : 'F 7 79 2E 4 5 2F 1 3 72 E', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
 
-      {'input' : 'Helmut Schickart (1931–1993).', 'positions' : ' 1,21; ', 'searchFormat' : searchFormat.SectionCharacter, 'expectedOutput' : '3', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : null, 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
+      {'input' : 'Helmut Schickart (1931–1993).', 'positions' : ' 1,21; ', 'searchFormat' : searchFormat.SectionCharacter, 'expectedOutput' : '3', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
 
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeFindWord(elem['input'], elem['positions'], elem['searchFormat'],
-            spacesOn: elem['spacesOn'],
-            emptyLinesOn: elem['emptyLinesOn'],
-            ignoreSymbols: elem['ignoreSymbols'],
-            diacriticsOn: elem['diacriticsOn'],
-            azOn: elem['azOn'],
-            numbersOn: elem['numbersOn'],
-            onlyFirstWordLetter: elem['onlyFirstWordLetter']
+        var _actual = decodeFindWord(elem['input'] as String, elem['positions'] as String, elem['searchFormat'] as searchFormat,
+            spacesOn: elem['spacesOn'] as bool,
+            emptyLinesOn: elem['emptyLinesOn'] as bool,
+            ignoreSymbols: elem['ignoreSymbols'] as String,
+            diacriticsOn: elem['diacriticsOn'] as bool,
+            azOn: elem['azOn'] as bool,
+            numbersOn: elem['numbersOn'] as bool,
+            onlyFirstWordLetter: elem['onlyFirstWordLetter'] as bool
         );
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 }

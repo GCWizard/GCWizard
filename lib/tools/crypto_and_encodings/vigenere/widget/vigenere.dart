@@ -8,13 +8,15 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/vigenere/logic/vigenere.dart';
 
 class Vigenere extends StatefulWidget {
+  const Vigenere({Key? key}) : super(key: key);
+
   @override
   VigenereState createState() => VigenereState();
 }
 
 class VigenereState extends State<Vigenere> {
-  var _inputController;
-  var _keyController;
+  late TextEditingController _inputController;
+  late TextEditingController _keyController;
 
   String _currentInput = '';
   String _currentKey = '';
@@ -60,6 +62,7 @@ class VigenereState extends State<Vigenere> {
         ),
         GCWIntegerSpinner(
           title: 'A',
+          value: _currentAValue,
           onChanged: (value) {
             setState(() {
               _currentAValue = value;

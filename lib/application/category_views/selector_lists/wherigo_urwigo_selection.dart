@@ -10,17 +10,19 @@ import 'package:gc_wizard/tools/wherigo/wherigo_analyze/widget/wherigo_analyze.d
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class WherigoSelection extends GCWSelection {
+  const WherigoSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(UrwigoHashBreaker()),
-        className(UrwigoTextDeobfuscation()),
-        className(EarwigoTextDeobfuscation()),
-        className(WherigoAnalyze()),
+        className(const UrwigoHashBreaker()),
+        className(const UrwigoTextDeobfuscation()),
+        className(const EarwigoTextDeobfuscation()),
+        className(const WherigoAnalyze()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

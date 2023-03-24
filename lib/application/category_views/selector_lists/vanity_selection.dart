@@ -10,17 +10,19 @@ import 'package:gc_wizard/tools/science_and_technology/vanity/vanity_words_searc
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class VanitySelection extends GCWSelection {
+  const VanitySelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(VanitySingletap()),
-        className(VanityMultitap()),
-        className(VanityWordsList()),
-        className(VanityWordsTextSearch()),
+        className(const VanitySingletap()),
+        className(const VanityMultitap()),
+        className(const VanityWordsList()),
+        className(const VanityWordsTextSearch()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

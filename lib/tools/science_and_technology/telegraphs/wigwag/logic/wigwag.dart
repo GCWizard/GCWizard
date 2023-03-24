@@ -1,23 +1,24 @@
+import 'package:gc_wizard/tools/science_and_technology/teletypewriter/_common/logic/teletypewriter.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
 
 enum WigWagCodebook { ORIGINAL, GENERALSERVICECODE1860, GENERALSERVICECODE1872 }
 
-Map<WigWagCodebook, Map<String, String>> CCITT_CODEBOOK = {
-  WigWagCodebook.ORIGINAL: {
-    'title': 'telegraph_wigwag_original_title',
-    'subtitle': 'telegraph_wigwag_original_description'
-  },
-  WigWagCodebook.GENERALSERVICECODE1860: {
-    'title': 'telegraph_wigwag_general_title',
-    'subtitle': 'telegraph_wigwag_general_description'
-  },
-  WigWagCodebook.GENERALSERVICECODE1872: {
-    'title': 'telegraph_wigwag_general_1872_title',
-    'subtitle': 'telegraph_wigwag_general_1872_description'
-  },
+const Map<WigWagCodebook, CodebookConfig> CCITT_CODEBOOK = {
+  WigWagCodebook.ORIGINAL: CodebookConfig(
+    title: 'telegraph_wigwag_original_title',
+    subtitle: 'telegraph_wigwag_original_description'
+  ),
+  WigWagCodebook.GENERALSERVICECODE1860: CodebookConfig(
+    title: 'telegraph_wigwag_general_title',
+    subtitle: 'telegraph_wigwag_general_description'
+  ),
+  WigWagCodebook.GENERALSERVICECODE1872: CodebookConfig(
+    title: 'telegraph_wigwag_general_1872_title',
+    subtitle: 'telegraph_wigwag_general_1872_description'
+  ),
 };
 
-final Map<String, int> originalCode = {
+const Map<String, int> _originalCode = {
   'ENDOFWORD': 3,
   'ENDOFSENTENCE': 33,
   'ENDOFMESSAGE': 333,
@@ -66,7 +67,7 @@ final Map<String, int> originalCode = {
   'Z': 2222,
 };
 
-final Map<String, int> generalCode1860 = {
+const Map<String, int> _generalCode1860 = {
   'ENDOFWORD': 3,
   'ENDOFSENTENCE': 33,
   'ENDOFMESSAGE': 333,
@@ -115,7 +116,7 @@ final Map<String, int> generalCode1860 = {
   'Z': 113,
 };
 
-final Map<String, int> generalCode1872 = {
+const Map<String, int> _generalCode1872 = {
   'ENDOFWORD': 5,
   'ENDOFSENTENCE': 55,
   'ENDOFMESSAGE': 555,
@@ -174,18 +175,18 @@ final Map<String, int> generalCode1872 = {
 };
 
 String encodeWigWag(String plainText, WigWagCodebook language) {
-  if (plainText == '' || plainText == null) return '';
+  if (plainText.isEmpty) return '';
 
-  var codebook;
+  Map<String, int> codebook;
   switch (language) {
     case WigWagCodebook.ORIGINAL:
-      codebook = originalCode;
+      codebook = _originalCode;
       break;
     case WigWagCodebook.GENERALSERVICECODE1860:
-      codebook = generalCode1860;
+      codebook = _generalCode1860;
       break;
     case WigWagCodebook.GENERALSERVICECODE1872:
-      codebook = generalCode1872;
+      codebook = _generalCode1872;
       break;
   }
 
@@ -212,9 +213,9 @@ String encodeWigWag(String plainText, WigWagCodebook language) {
       .split(' ');
 
   for (int i = 0; i < encode.length; i++) {
-    if (codebook[encode[i]] != null)
+    if (codebook[encode[i]] != null) {
       output.add(codebook[encode[i]].toString());
-    else {
+    } else {
       var encodeElement = encode[i].split('');
       for (int j = 0; j < encodeElement.length; j++) {
         output.add(codebook[encodeElement[j]].toString());
@@ -225,25 +226,25 @@ String encodeWigWag(String plainText, WigWagCodebook language) {
 }
 
 String decodeWigWag(List<int> cypherText, WigWagCodebook language) {
-  if (cypherText == [] || cypherText == null) return '';
+  if (cypherText.isEmpty) return '';
 
-  var codebook;
+  Map<int, String> codebook;
   switch (language) {
     case WigWagCodebook.ORIGINAL:
-      codebook = switchMapKeyValue(originalCode);
+      codebook = switchMapKeyValue(_originalCode);
       break;
     case WigWagCodebook.GENERALSERVICECODE1860:
-      codebook = switchMapKeyValue(generalCode1860);
+      codebook = switchMapKeyValue(_generalCode1860);
       break;
     case WigWagCodebook.GENERALSERVICECODE1872:
-      codebook = switchMapKeyValue(generalCode1872);
+      codebook = switchMapKeyValue(_generalCode1872);
       break;
   }
 
   List<String> output = [];
-  cypherText.forEach((element) {
-    if (codebook[element] != null) output.add(codebook[element]);
-  });
+  for (var element in cypherText) {
+    if (codebook[element] != null) output.add(codebook[element]!);
+  }
   return output
       .join(' ')
       .replaceAll('ENDOFWORD', 'END OF WORD')

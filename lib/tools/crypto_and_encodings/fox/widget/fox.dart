@@ -5,6 +5,8 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/fox/logic/fox.dart';
 
 class Fox extends StatefulWidget {
+  const Fox({Key? key}) : super(key: key);
+
   @override
   FoxState createState() => FoxState();
 }
@@ -40,7 +42,7 @@ class FoxState extends State<Fox> {
     );
   }
 
-  _buildOutput() {
+  String _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
       return encodeFox(_currentInput);
     } else {

@@ -1,24 +1,16 @@
-import 'dart:math';
+part of 'package:gc_wizard/tools/formula_solver/widget/formula_solver_formulagroups.dart';
 
-import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
-import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
-import 'package:gc_wizard/common_widgets/gcw_key_value_editor.dart';
-import 'package:gc_wizard/tools/formula_solver/persistence/json_provider.dart';
-import 'package:gc_wizard/tools/formula_solver/persistence/model.dart';
-import 'package:gc_wizard/utils/alphabets.dart';
-
-class FormulaSolverFormulaValues extends StatefulWidget {
+class _FormulaSolverFormulaValues extends StatefulWidget {
   final FormulaGroup group;
 
-  const FormulaSolverFormulaValues({Key key, this.group}) : super(key: key);
+  const _FormulaSolverFormulaValues({Key? key, required this.group}) : super(key: key);
 
   @override
-  FormulaSolverFormulaValuesState createState() => FormulaSolverFormulaValuesState();
+  _FormulaSolverFormulaValuesState createState() => _FormulaSolverFormulaValuesState();
 }
 
-class FormulaSolverFormulaValuesState extends State<FormulaSolverFormulaValues> {
-  TextEditingController _newKeyController;
+class _FormulaSolverFormulaValuesState extends State<_FormulaSolverFormulaValues> {
+  late TextEditingController _newKeyController;
 
   @override
   void initState() {
@@ -37,27 +29,27 @@ class FormulaSolverFormulaValuesState extends State<FormulaSolverFormulaValues> 
 
   String _maxLetter() {
     int maxLetterIndex = 0;
-    widget.group.values.forEach((value) {
-      if (value.key.length != 1) return;
+    for (var value in widget.group.values) {
+      if (value.key.length != 1) continue;
       var alphabetIndex = alphabet_AZ[value.key.toUpperCase()];
-      if (alphabetIndex == null) return;
+      if (alphabetIndex == null) continue;
 
       maxLetterIndex = max(maxLetterIndex, alphabetIndex);
-    });
+    }
 
-    if (maxLetterIndex < 26) {
-      return alphabet_AZIndexes[maxLetterIndex + 1];
+    if (alphabet_AZIndexes.keys.contains(maxLetterIndex)) {
+      return alphabet_AZIndexes[maxLetterIndex + 1]!;
     }
 
     return '';
   }
 
-  _updateValue(FormulaValue value) {
+  void _updateValue(FormulaValue value) {
     updateFormulaValue(value, widget.group);
   }
 
-  _addEntry(String currentFromInput, String currentToInput, FormulaValueType type, BuildContext context) {
-    if (currentFromInput.length > 0) {
+  void _addEntry(String currentFromInput, String currentToInput, FormulaValueType type, BuildContext context) {
+    if (currentFromInput.isNotEmpty) {
       var newValue = FormulaValue(currentFromInput, currentToInput, type: type);
       insertFormulaValue(newValue, widget.group);
 
@@ -65,7 +57,7 @@ class FormulaSolverFormulaValuesState extends State<FormulaSolverFormulaValues> 
     }
   }
 
-  _updateEntry(dynamic id, String key, String value, FormulaValueType type) {
+  void _updateEntry(Object id, String key, String value, FormulaValueType type) {
     var entry = widget.group.values.firstWhere((element) => element.id == id);
     entry.key = key;
     entry.value = value;
@@ -75,8 +67,8 @@ class FormulaSolverFormulaValuesState extends State<FormulaSolverFormulaValues> 
     });
   }
 
-  _removeEntry(dynamic id, BuildContext context) {
-    deleteFormulaValue(id, widget.group);
+  void _removeEntry(Object id, BuildContext context) {
+    deleteFormulaValue(id as int, widget.group);
   }
 
   @override

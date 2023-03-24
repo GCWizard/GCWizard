@@ -8,10 +8,11 @@
 
 part of 'package:gc_wizard/tools/coords/format_converter/logic/geohex.dart';
 
-final String _VERSION = "3.2.2";
-final String _h_key = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-final double _h_base = 20037508.34;
-final double _h_deg = pi * (30.0 / 180.0);
+// ignore: unused_element
+const String _VERSION = "3.2.2";
+const String _h_key = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+const double _h_base = 20037508.34;
+const double _h_deg = pi * (30.0 / 180.0);
 final double _h_k = tan(_h_deg);
 
 final RegExp _INC15 = RegExp(r'[15]');
@@ -23,28 +24,25 @@ class _Zone {
   final int x;
   final int y;
   final String code;
-  int _level;
 
-  _Zone(this.lat, this.lon, this.x, this.y, this.code) {
-    this._level = this.getLevel();
-  }
+  _Zone(this.lat, this.lon, this.x, this.y, this.code);
 
   int getLevel() {
-    return this.code.length - 2;
+    return code.length - 2;
   }
 
   double getHexSize() {
-    return _calcHexSize(this.getLevel());
+    return _calcHexSize(getLevel());
   }
 
   List<_Loc> getHexCoords() {
-    double h_lat = this.lat;
-    double h_lon = this.lon;
+    double h_lat = lat;
+    double h_lon = lon;
     _XY h_xy = _loc2xy(h_lon, h_lat);
     double h_x = h_xy.x;
     double h_y = h_xy.y;
     double h_deg = tan(pi * (60.0 / 180.0));
-    double h_size = this.getHexSize();
+    double h_size = getHexSize();
     double h_top = _xy2loc(h_x, h_y + h_deg * h_size).lat;
     double h_btm = _xy2loc(h_x, h_y - h_deg * h_size).lat;
 
@@ -119,9 +117,9 @@ _XY _getXYByCode(String code) {
   String h_dec9 = (_h_key.indexOf(code[0]) * 30 + _h_key.indexOf(code[1])).toString() + code.substring(2);
   if (_regMatch(h_dec9[0], _INC15) && _regMatch(h_dec9[1], _EXC125) && _regMatch(h_dec9[2], _EXC125)) {
     if (h_dec9[0] == '5') {
-      h_dec9 = "7" + h_dec9.substring(1, h_dec9.length);
+      h_dec9 = '7' + h_dec9.substring(1, h_dec9.length);
     } else if (h_dec9[0] == '1') {
-      h_dec9 = "3" + h_dec9.substring(1, h_dec9.length);
+      h_dec9 = '3' + h_dec9.substring(1, h_dec9.length);
     }
   }
 
@@ -133,7 +131,7 @@ _XY _getXYByCode(String code) {
 
   String h_dec3 = '';
   for (int i = 0; i < d9xlen; i++) {
-    int dec9i = int.tryParse(h_dec9[i]);
+    int dec9i = int.parse(h_dec9[i]);
     String h_dec0 = dec9i.toRadixString(3);
     if (h_dec0.length == 1) {
       h_dec3 += '0';
@@ -150,7 +148,7 @@ _XY _getXYByCode(String code) {
   }
 
   for (int i = 0; i <= level + 2; i++) {
-    int h_pow = pow(3, level + 2 - i);
+    int h_pow = pow(3, level + 2 - i).toInt();
     if (h_decx[i] == '0') {
       h_x -= h_pow;
     } else if (h_decx[i] == '2') {
@@ -178,7 +176,7 @@ _Zone _getZoneByXY(double x, double y, int level) {
   _Loc z_loc = _xy2loc(h_lon, h_lat);
   double z_loc_x = z_loc.lon;
   double z_loc_y = z_loc.lat;
-  int max_hsteps = pow(3, level + 2);
+  int max_hsteps = pow(3, level + 2).toInt();
   int hsteps = (h_x - h_y).abs();
 
   if (hsteps == max_hsteps) {
@@ -241,7 +239,7 @@ _Zone _getZoneByXY(double x, double y, int level) {
   }
 
   String h_2 = h_code.substring(3);
-  int h_1 = int.tryParse(h_code.substring(0, 3));
+  int h_1 = int.parse(h_code.substring(0, 3));
   int h_a1 = (h_1 / 30).floor();
   int h_a2 = h_1 % 30;
   String h_code_r = _h_key[h_a1] + _h_key[h_a2] + h_2.toString();
@@ -249,7 +247,7 @@ _Zone _getZoneByXY(double x, double y, int level) {
 }
 
 _XY _adjustXY(int x, int y, int level) {
-  int max_hsteps = pow(3, level + 2);
+  int max_hsteps = pow(3, level + 2).toInt();
   int hsteps = (x - y).abs();
 
   if (hsteps == max_hsteps && x > y) {

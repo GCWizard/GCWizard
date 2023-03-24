@@ -19,18 +19,20 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/prussia_telegr
 part 'package:gc_wizard/tools/science_and_technology/telegraphs/prussia_telegraph/widget/prussia_telegraph_segment_display.dart';
 
 class PrussiaTelegraph extends StatefulWidget {
+  const PrussiaTelegraph({Key? key}) : super(key: key);
+
   @override
   PrussiaTelegraphState createState() => PrussiaTelegraphState();
 }
 
 class PrussiaTelegraphState extends State<PrussiaTelegraph> {
   var _currentEncodeInput = '';
-  var _encodeInputController;
+  late TextEditingController _encodeInputController;
 
-  var _decodeInputController;
+  late TextEditingController _decodeInputController;
   var _currentDecodeInput = '';
 
-  List<List<String>> _currentDisplays = [];
+  var _currentDisplays = Segments.Empty();
   var _currentMode = GCWSwitchPosition.right;
   var _currentDecodeMode = GCWSwitchPosition.right; // text - visual
 
@@ -103,15 +105,9 @@ class PrussiaTelegraphState extends State<PrussiaTelegraph> {
   }
 
   Widget _buildVisualDecryption() {
-    Map<String, bool> currentDisplay;
+    var currentDisplay = buildSegmentMap(_currentDisplays);
 
-    var displays = _currentDisplays;
-    if (displays != null && displays.length > 0)
-      currentDisplay = Map<String, bool>.fromIterable(displays.last ?? [], key: (e) => e, value: (e) => true);
-    else
-      currentDisplay = {};
-
-    var onChanged = (Map<String, bool> d) {
+    onChanged(Map<String, bool> d) {
       setState(() {
         var newSegments = <String>[];
         d.forEach((key, value) {
@@ -119,19 +115,15 @@ class PrussiaTelegraphState extends State<PrussiaTelegraph> {
           newSegments.add(key);
         });
 
-        newSegments.sort();
-
-        if (_currentDisplays.length == 0) _currentDisplays.add([]);
-
-        _currentDisplays[_currentDisplays.length - 1] = newSegments;
+        _currentDisplays.replaceLastSegment(newSegments);
       });
-    };
+    }
 
     return Column(
       children: <Widget>[
         Container(
           width: 180,
-          padding: EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
+          padding: const EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
           child: Row(
             children: <Widget>[
               Expanded(
@@ -148,7 +140,7 @@ class PrussiaTelegraphState extends State<PrussiaTelegraph> {
             icon: Icons.space_bar,
             onPressed: () {
               setState(() {
-                _currentDisplays.add([]);
+                _currentDisplays.addEmptySegment();
               });
             },
           ),
@@ -156,7 +148,7 @@ class PrussiaTelegraphState extends State<PrussiaTelegraph> {
             icon: Icons.backspace,
             onPressed: () {
               setState(() {
-                if (_currentDisplays.length > 0) _currentDisplays.removeLast();
+                _currentDisplays.removeLastSegment();
               });
             },
           ),
@@ -164,7 +156,7 @@ class PrussiaTelegraphState extends State<PrussiaTelegraph> {
             icon: Icons.clear,
             onPressed: () {
               setState(() {
-                _currentDisplays = [];
+                _currentDisplays = Segments.Empty();
               });
             },
           )
@@ -173,10 +165,10 @@ class PrussiaTelegraphState extends State<PrussiaTelegraph> {
     );
   }
 
-  List<List<String>> _buildShutters(List<List<String>> segments) {
+  Segments _buildShutters(Segments segments) {
     List<List<String>> result = [];
-    segments.forEach((element) {
-      if (element != null) if (int.tryParse(element.join('')) != null) {
+    for (var element in segments.displays) {
+      if (int.tryParse(element.join('')) != null) {
         List<String> resultElement = [];
         switch (element[0]) {
           case '0':
@@ -269,17 +261,18 @@ class PrussiaTelegraphState extends State<PrussiaTelegraph> {
             break;
         }
         result.add(resultElement);
-      } else
+      } else {
         result.add(element);
-    });
-    return result;
+      }
+    }
+    return Segments(displays: result);
   }
 
-  String _buildCodelets(List<List<String>> segments) {
+  String _buildCodelets(Segments segments) {
     List<String> result = [];
-    segments.forEach((codelet) {
-      if (codelet != null) result.add(codelet.join(''));
-    });
+    for (var codelet in segments.displays) {
+      result.add(codelet.join(''));
+    }
     return result.join(' ');
   }
 
@@ -287,7 +280,7 @@ class PrussiaTelegraphState extends State<PrussiaTelegraph> {
     return text;
   }
 
-  Widget _buildDigitalOutput(List<List<String>> segments) {
+  Widget _buildDigitalOutput(Segments segments) {
     segments = _buildShutters(segments);
     return SegmentDisplayOutput(
         segmentFunction: (displayedSegments, readOnly) {
@@ -314,21 +307,19 @@ class PrussiaTelegraphState extends State<PrussiaTelegraph> {
       );
     } else {
       //decode
-      var segments;
+      SegmentsText segments;
       if (_currentDecodeMode == GCWSwitchPosition.left) {
         // text
         segments = decodeTextPrussianTelegraph(_currentDecodeInput.toUpperCase());
       } else {
         // visual
-        var output = _currentDisplays.map((character) {
-          if (character != null) return character.join();
-        }).toList();
+        var output = _currentDisplays.buildOutput();
         segments = decodeVisualPrussianTelegraph(output);
       }
       return Column(
         children: <Widget>[
-          GCWOutput(title: i18n(context, 'telegraph_text'), child: _segmentsToText(segments['text'])),
-          _buildDigitalOutput(segments['displays']),
+          GCWOutput(title: i18n(context, 'telegraph_text'), child: _segmentsToText(segments.text)),
+          _buildDigitalOutput(segments),
         ],
       );
     }

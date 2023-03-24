@@ -7,20 +7,24 @@ const MDT_INTERNALNAMES_ONETIMEPAD = 'multidecoder_tool_onetimepad_title';
 const MDT_ONETIMEPAD_OPTION_KEY = 'onetimepad_keyoffset';
 
 class MultiDecoderToolOneTimePad extends AbstractMultiDecoderTool {
-  MultiDecoderToolOneTimePad({Key key, int id, String name, Map<String, dynamic> options})
+  MultiDecoderToolOneTimePad({
+    Key? key,
+    required int id,
+    required String name,
+    required Map<String, Object?> options})
       : super(
             key: key,
             id: id,
             name: name,
             internalToolName: MDT_INTERNALNAMES_ONETIMEPAD,
             onDecode: (String input, String key) {
-              return decryptOneTimePad(input, key, keyOffset: options[MDT_ONETIMEPAD_OPTION_KEY] - 1);
+              return decryptOneTimePad(input, key, keyOffset: checkIntFormatOrDefaultOption(MDT_INTERNALNAMES_ONETIMEPAD, options, MDT_ONETIMEPAD_OPTION_KEY) - 1);
             },
             requiresKey: true,
             options: options,
             configurationWidget: MultiDecoderToolConfiguration(widgets: {
               MDT_ONETIMEPAD_OPTION_KEY: GCWIntegerSpinner(
-                  value: options[MDT_ONETIMEPAD_OPTION_KEY],
+                  value: checkIntFormatOrDefaultOption(MDT_INTERNALNAMES_ONETIMEPAD, options, MDT_ONETIMEPAD_OPTION_KEY),
                   onChanged: (value) {
                     options[MDT_ONETIMEPAD_OPTION_KEY] = value;
                   }),

@@ -7,6 +7,6 @@ String encryptTrithemius(String input, {int aValue = 0}) {
   return encryptVigenere(input, trithemiusKey, false, aValue: aValue);
 }
 
-String decryptTrithemius(String input, {int aValue: 0}) {
+String decryptTrithemius(String input, {int aValue = 0}) {
   return decryptVigenere(input, trithemiusKey, false, aValue: aValue);
 }

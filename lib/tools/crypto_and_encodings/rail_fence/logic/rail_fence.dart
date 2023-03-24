@@ -1,5 +1,5 @@
-_sanitizePassword(String password, int key) {
-  if (password == null) password = '';
+String _sanitizePassword(String? password, int key) {
+  password ??= '';
 
   password = password.toUpperCase().replaceAll(RegExp('[^A-Z]'), 'Z');
 
@@ -10,7 +10,7 @@ _sanitizePassword(String password, int key) {
   return password;
 }
 
-_applyPasswordToMatrix(List<List<String>> matrix, String password) {
+List<List<String>> _applyPasswordToMatrix(List<List<String>> matrix, String password) {
   var orderedPassword = password.split('').asMap().entries.toList();
   orderedPassword.sort((a, b) => a.value.compareTo(b.value));
 
@@ -18,9 +18,9 @@ _applyPasswordToMatrix(List<List<String>> matrix, String password) {
   indexedPassword.sort((a, b) => a.value.key.compareTo(b.value.key));
 
   var shuffledMatrix = <List<String>>[];
-  indexedPassword.forEach((character) {
+  for (var character in indexedPassword) {
     shuffledMatrix.add(matrix[character.key]);
-  });
+  }
 
   return shuffledMatrix;
 }
@@ -52,8 +52,8 @@ List<List<String>> _fillMatrix(String input, int key) {
   return matrix;
 }
 
-String encryptRailFence(String input, int key, {int offset, String password}) {
-  if (input == null || input.length == 0) return '';
+String encryptRailFence(String input, int key, {int? offset, String? password}) {
+  if (input.isEmpty) return '';
 
   if (key < 2) return input;
 
@@ -67,17 +67,17 @@ String encryptRailFence(String input, int key, {int offset, String password}) {
   matrix = _applyPasswordToMatrix(matrix, password);
 
   var out = '';
-  matrix.forEach((row) {
-    row.forEach((cell) {
+  for (var row in matrix) {
+    for (var cell in row) {
       if (cell != '.') out += cell;
-    });
-  });
+    }
+  }
 
   return out.replaceAll('\x00', '');
 }
 
-String decryptRailFence(String input, int key, {int offset, String password}) {
-  if (input == null || input.length == 0) return '';
+String decryptRailFence(String input, int key, {int? offset, String? password}) {
+  if (input.isEmpty) return '';
 
   if (key < 2) return input;
 

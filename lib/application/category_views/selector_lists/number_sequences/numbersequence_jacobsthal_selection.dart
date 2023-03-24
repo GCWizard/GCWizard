@@ -7,18 +7,20 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsth
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceJacobsthalSelection extends GCWSelection {
+  const NumberSequenceJacobsthalSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(NumberSequenceJacobsthalNthNumber()),
-        className(NumberSequenceJacobsthalRange()),
-        className(NumberSequenceJacobsthalDigits()),
-        className(NumberSequenceJacobsthalCheckNumber()),
-        className(NumberSequenceJacobsthalContainsDigits()),
+        className(const NumberSequenceJacobsthalNthNumber()),
+        className(const NumberSequenceJacobsthalRange()),
+        className(const NumberSequenceJacobsthalDigits()),
+        className(const NumberSequenceJacobsthalCheckNumber()),
+        className(const NumberSequenceJacobsthalContainsDigits()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

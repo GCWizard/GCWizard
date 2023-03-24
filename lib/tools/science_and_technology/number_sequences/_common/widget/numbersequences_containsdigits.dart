@@ -9,7 +9,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 class NumberSequenceContainsDigits extends StatefulWidget {
   final NumberSequencesMode mode;
   final int maxIndex;
-  const NumberSequenceContainsDigits({Key key, this.mode, this.maxIndex}) : super(key: key);
+  const NumberSequenceContainsDigits({Key? key, required this.mode, required this.maxIndex}) : super(key: key);
 
   @override
   NumberSequenceContainsDigitsState createState() => NumberSequenceContainsDigitsState();
@@ -18,19 +18,7 @@ class NumberSequenceContainsDigits extends StatefulWidget {
 class NumberSequenceContainsDigitsState extends State<NumberSequenceContainsDigits> {
   int currentInputN = 0;
 
-  Widget _currentOutput;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _currentOutput = GCWDefaultOutput();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  Widget _currentOutput = const GCWDefaultOutput();
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +43,7 @@ class NumberSequenceContainsDigitsState extends State<NumberSequenceContainsDigi
     );
   }
 
-  _buildOutput() {
+  void _buildOutput() {
     List<List<String>> columnData = [];
     PositionOfSequenceOutput detailedOutput;
 
@@ -72,7 +60,7 @@ class NumberSequenceContainsDigitsState extends State<NumberSequenceContainsDigi
     _currentOutput = GCWDefaultOutput(
         child: GCWColumnedMultilineOutput(
             data: columnData,
-            flexValues: [4, 2, 1],
+            flexValues: const [4, 2, 1],
             copyColumn: 0,
             hasHeader: true
         ));

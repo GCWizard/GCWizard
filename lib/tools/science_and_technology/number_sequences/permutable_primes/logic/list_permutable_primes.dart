@@ -1,4 +1,4 @@
-List<String> permutable_primes = [
+const List<String> permutable_primes = [
   '2',
   '3',
   '5',

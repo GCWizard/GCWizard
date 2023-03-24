@@ -3,5 +3,5 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/gauss_weber_te
 import 'package:gc_wizard/tools/science_and_technology/telegraphs/gauss_weber_telegraph/widget/gauss_weber_telegraph.dart';
 
 class SchillingCanstattTelegraph extends GaussWeberTelegraph {
-  SchillingCanstattTelegraph({Key key}) : super(key: key, mode: GaussWeberTelegraphMode.SCHILLING_CANSTATT);
+  const SchillingCanstattTelegraph({Key? key}) : super(key: key, mode: GaussWeberTelegraphMode.SCHILLING_CANSTATT);
 }

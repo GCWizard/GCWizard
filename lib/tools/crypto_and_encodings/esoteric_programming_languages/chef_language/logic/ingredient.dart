@@ -3,33 +3,31 @@ part of 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_langu
 enum _State { Dry, Liquid }
 
 class _Ingredient {
-  String _name;
-  int _amount;
-  _State _state;
-  bool _error;
-  List<String> _errorList;
+  String? _name;
+  int? _amount;
+  _State? _state;
+  final bool _error = false;
+  final _errorList = <String>[];
 
   _Ingredient(String ingredient) {
-    _errorList = <String>[];
-
     //var tokens = ingredient.replaceAll('-', ' ').split(' ');
     var tokens = ingredient.trim().split(' ');
     int i = 0;
     _state = _State.Dry;
-    if (RegExp(r'^([0-9]+)[ a-z]*').hasMatch(tokens[i])) {
-      _amount = int.parse(RegExp(r'^([0-9]+)[ a-zäöüß]*').firstMatch(tokens[i]).group(1));
+    if (RegExp(r'^(\d+)[ a-z]*').hasMatch(tokens[i])) {
+      _amount = int.parse(RegExp(r'^(\d+)[ a-zäöüß]*').firstMatch(tokens[i])!.group(1)!);
       i++;
       if (i < tokens.length) {
-        if (_MeasureType.hasMatch(tokens[i])) {
+        if (_CHEF_MeasureType.hasMatch(tokens[i])) {
           _state = _State.Dry;
           i++;
-        } else if (_MeasureDry.hasMatch(tokens[i])) {
+        } else if (_CHEF_MeasureDry.hasMatch(tokens[i])) {
           _state = _State.Dry;
           i++;
-        } else if (_MeasureLiquid.hasMatch(tokens[i])) {
+        } else if (_CHEF_MeasureLiquid.hasMatch(tokens[i])) {
           _state = _State.Liquid;
           i++;
-        } else if (_MeasureElse.hasMatch(tokens[i])) {
+        } else if (_CHEF_MeasureElse.hasMatch(tokens[i])) {
           i++;
         }
       } else {
@@ -42,10 +40,10 @@ class _Ingredient {
     }
     _name = '';
     while (i < tokens.length) {
-      _name = _name + tokens[i] + (i == tokens.length - 1 ? '' : ' ');
+      _name = _name! + tokens[i] + (i == tokens.length - 1 ? '' : ' ');
       i++;
     }
-    _name = _name
+    _name = _name!
         .replaceAll('teaspoons', '')
         .replaceAll('teaspoon', '')
         .replaceAll('tablespoons', '')
@@ -71,20 +69,21 @@ class _Ingredient {
         .replaceAll('prisen', '')
         .replaceAll('prise', '')
         .trim();
-    if (_name == '') {
+    if (_name!.isEmpty) {
       _name = 'INVALID';
     }
   }
 
-  int getAmount() {
+  int? getAmount() {
     return _amount;
   }
 
-  void setAmount(int n) {
+  void setAmount(int? n) {
+    if (n == null) throw const FormatException('setAmount');
     _amount = n;
   }
 
-  _State getState() {
+  _State? getState() {
     return _state;
   }
 
@@ -100,7 +99,7 @@ class _Ingredient {
     _state = _State.Dry;
   }
 
-  String getName() {
+  String? getName() {
     return _name;
   }
 

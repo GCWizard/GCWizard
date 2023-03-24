@@ -157,6 +157,8 @@ int _letterToValue(String letter) {
       return 34;
     case "z":
       return 35;
+    default:
+      return 0;
   }
 }
 
@@ -239,11 +241,11 @@ ReverseWherigoDay1976 latLonToReverseWIGDay1976(LatLng coord) {
   return ReverseWherigoDay1976(a + b + c + d + e, _vZmW2 + _2kSJl + _5mF + _tFCg + _vRGT);
 }
 
-ReverseWherigoDay1976 parseReverseWherigoDay1976(String input) {
+ReverseWherigoDay1976? parseReverseWherigoDay1976(String input) {
   input = input.toLowerCase();
-  RegExp regExp = RegExp(r'^\s*([0-9a-z]+)(\s*,\s*|\s+)([0-9a-z]+)\s*$');
+  RegExp regExp = RegExp(r'^\s*([\da-z]+)(\s*,\s*|\s+)([\da-z]+)\s*$');
   var matches = regExp.allMatches(input);
-  if (matches.length == 0) return null;
+  if (matches.isEmpty) return null;
 
   var match = matches.elementAt(0);
 
@@ -252,5 +254,5 @@ ReverseWherigoDay1976 parseReverseWherigoDay1976(String input) {
 
   if (a == null || b == null || a.length < 5 || b.length < 5) return null;
 
-  return ReverseWherigoDay1976(match.group(1), match.group(3));
+  return ReverseWherigoDay1976(a, b);
 }

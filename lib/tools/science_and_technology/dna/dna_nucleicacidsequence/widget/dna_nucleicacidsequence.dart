@@ -8,6 +8,8 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/dna/logic/dna.dart';
 
 class DNANucleicAcidSequence extends StatefulWidget {
+  const DNANucleicAcidSequence({Key? key}) : super(key: key);
+
   @override
   DNANucleicAcidSequenceState createState() => DNANucleicAcidSequenceState();
 }
@@ -52,9 +54,9 @@ class DNANucleicAcidSequenceState extends State<DNANucleicAcidSequence> {
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
-      var output;
+      String output;
 
       if (_currentDNAMode == GCWSwitchPosition.left) {
         output = encodeDNANucleobaseSequence(_currentInput);

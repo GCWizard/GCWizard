@@ -18,6 +18,8 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/w
 part 'package:gc_wizard/tools/crypto_and_encodings/cistercian_numbers/widget/cistercian_numbers_segment_display.dart';
 
 class CistercianNumbers extends StatefulWidget {
+  const CistercianNumbers({Key? key}) : super(key: key);
+
   @override
   CistercianNumbersState createState() => CistercianNumbersState();
 }
@@ -25,9 +27,9 @@ class CistercianNumbers extends StatefulWidget {
 class CistercianNumbersState extends State<CistercianNumbers> {
   final _DEFAULT_SEGMENT = ['k'];
 
-  var _inputEncodeController;
+  late TextEditingController _inputEncodeController;
   var _currentEncodeInput = '';
-  List<List<String>> _currentDisplays;
+  var _currentDisplays = Segments.Empty();
   var _currentMode = GCWSwitchPosition.right; //encrypt decrypt
 
   @override
@@ -35,7 +37,7 @@ class CistercianNumbersState extends State<CistercianNumbers> {
     super.initState();
 
     _inputEncodeController = TextEditingController(text: _currentEncodeInput);
-    _currentDisplays = [_DEFAULT_SEGMENT];
+    _currentDisplays = Segments(displays: [_DEFAULT_SEGMENT]);
   }
 
   @override
@@ -75,17 +77,10 @@ class CistercianNumbersState extends State<CistercianNumbers> {
     ]);
   }
 
-  _buildVisualDecryption() {
-    Map<String, bool> currentDisplay;
+  Widget _buildVisualDecryption() {
+    var currentDisplay = buildSegmentMap(_currentDisplays);
 
-    var displays = _currentDisplays; //<List<String>>[];
-    if (displays != null && displays.length > 0)
-      currentDisplay = Map<String, bool>.fromIterable(displays.last ?? [],
-          key: (e) => e, value: (e) => true);
-    else
-      currentDisplay = {};
-
-    var onChanged = (Map<String, bool> d) {
+    onChanged(Map<String, bool> d) {
       setState(() {
         var newSegments = <String>[];
         d.forEach((key, value) {
@@ -93,19 +88,15 @@ class CistercianNumbersState extends State<CistercianNumbers> {
           newSegments.add(key);
         });
 
-        newSegments.sort();
-
-        if (_currentDisplays.length == 0) _currentDisplays.add([]);
-
-        _currentDisplays[_currentDisplays.length - 1] = newSegments;
+        _currentDisplays.replaceLastSegment(newSegments);
       });
-    };
+    }
 
     return Column(
       children: <Widget>[
         Container(
           width: 180,
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
               top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
           child: Row(
             children: <Widget>[
@@ -123,7 +114,7 @@ class CistercianNumbersState extends State<CistercianNumbers> {
             icon: Icons.space_bar,
             onPressed: () {
               setState(() {
-                _currentDisplays.add(_DEFAULT_SEGMENT);
+                _currentDisplays.addSegment(_DEFAULT_SEGMENT);
               });
             },
           ),
@@ -131,7 +122,7 @@ class CistercianNumbersState extends State<CistercianNumbers> {
             icon: Icons.backspace,
             onPressed: () {
               setState(() {
-                if (_currentDisplays.length > 0) _currentDisplays.removeLast();
+                _currentDisplays.removeLastSegment();
               });
             },
           ),
@@ -139,7 +130,7 @@ class CistercianNumbersState extends State<CistercianNumbers> {
             icon: Icons.clear,
             onPressed: () {
               setState(() {
-                _currentDisplays = [_DEFAULT_SEGMENT];
+                _currentDisplays = Segments(displays:[_DEFAULT_SEGMENT]);
               });
             },
           )
@@ -148,7 +139,7 @@ class CistercianNumbersState extends State<CistercianNumbers> {
     );
   }
 
-  Widget _buildDigitalOutput(List<List<String>> segments) {
+  Widget _buildDigitalOutput(Segments segments) {
     return SegmentDisplayOutput(
         segmentFunction: (displayedSegments, readOnly) {
           return _CistercianNumbersSegmentDisplay(
@@ -169,14 +160,12 @@ class CistercianNumbersState extends State<CistercianNumbers> {
       );
     } else {
       //decode
-      var output = _currentDisplays.map((character) {
-        if (character != null) return character.join();
-      }).join(' ');
+      var output = _currentDisplays.buildOutput().join(' ');
       var segments = decodeCistercian(output);
       return Column(
         children: <Widget>[
-          _buildDigitalOutput(segments['displays']),
-          GCWDefaultOutput(child: segments['text'])
+          _buildDigitalOutput(segments),
+          GCWDefaultOutput(child: segments.text)
         ],
       );
     }

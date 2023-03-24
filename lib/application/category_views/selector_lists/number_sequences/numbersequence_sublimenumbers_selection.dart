@@ -7,18 +7,20 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/sublime_
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceSublimeNumbersSelection extends GCWSelection {
+  const NumberSequenceSublimeNumbersSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(NumberSequenceSublimeNumbersNthNumber()),
-        className(NumberSequenceSublimeNumbersRange()),
-        className(NumberSequenceSublimeNumbersDigits()),
-        className(NumberSequenceSublimeNumbersCheckNumber()),
-        className(NumberSequenceSublimeNumbersContainsDigits()),
+        className(const NumberSequenceSublimeNumbersNthNumber()),
+        className(const NumberSequenceSublimeNumbersRange()),
+        className(const NumberSequenceSublimeNumbersDigits()),
+        className(const NumberSequenceSublimeNumbersCheckNumber()),
+        className(const NumberSequenceSublimeNumbersContainsDigits()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

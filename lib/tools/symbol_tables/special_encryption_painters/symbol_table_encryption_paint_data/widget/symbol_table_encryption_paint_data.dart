@@ -4,20 +4,22 @@ import 'package:gc_wizard/tools/symbol_tables/special_encryption_painters/symbol
 import 'package:gc_wizard/tools/symbol_tables/special_encryption_painters/symbol_table_encryption_sizes/widget/symbol_table_encryption_sizes.dart';
 
 class SymbolTablePaintData {
-  Canvas canvas;
+  late Canvas canvas;
   SymbolTableData data;
   SymbolTableEncryptionSizes sizes;
   List<int> imageIndexes;
-  Function onCanvasChanged;
 
-  SymbolTablePaintData({this.canvas, this.sizes, this.data, this.imageIndexes, this.onCanvasChanged});
+  SymbolTablePaintData({
+    required this.sizes,
+    required this.data,
+    required this.imageIndexes});
 }
 
 class SymbolTableEncryptionPainter extends CustomPainter {
   final SymbolTablePaintData paintData;
   final SymbolTableEncryption encryption;
 
-  const SymbolTableEncryptionPainter({this.paintData, this.encryption});
+  const SymbolTableEncryptionPainter({required this.paintData, required this.encryption});
 
   @override
   void paint(Canvas canvas, Size size) {

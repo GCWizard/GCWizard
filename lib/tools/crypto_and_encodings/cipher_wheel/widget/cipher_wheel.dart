@@ -6,14 +6,14 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/cipher_wheel/logic/cipher_wheel.dart';
 
 class CipherWheel extends StatefulWidget {
-  const CipherWheel();
+  const CipherWheel({Key? key}) : super(key: key);
 
   @override
   CipherWheelState createState() => CipherWheelState();
 }
 
 class CipherWheelState extends State<CipherWheel> {
-  var _controller;
+  late TextEditingController _controller;
 
   String _currentInput = '';
   int _currentKey = 1;
@@ -68,12 +68,12 @@ class CipherWheelState extends State<CipherWheel> {
     );
   }
 
-  _calculateOutput() {
+  void _calculateOutput() {
     if (_currentMode == GCWSwitchPosition.right) {
       var input = _currentInput
-          .split(RegExp('[^0-9]+'))
-          .where((number) => number != null && number.length > 0)
-          .map((number) => int.tryParse(number))
+          .split(RegExp(r'\D+'))
+          .where((number) => number.isNotEmpty)
+          .map((number) => int.tryParse(number)!)
           .toList();
       _output = decryptCipherWheel(input, _currentKey);
     } else {

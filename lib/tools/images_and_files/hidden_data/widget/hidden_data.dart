@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
@@ -20,21 +22,21 @@ import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
 import 'package:intl/intl.dart';
 
 class HiddenData extends StatefulWidget {
-  final GCWFile platformFile;
+  final GCWFile? file;
 
-  const HiddenData({Key key, this.platformFile}) : super(key: key);
+  const HiddenData({Key? key, this.file}) : super(key: key);
 
   @override
   HiddenDataState createState() => HiddenDataState();
 }
 
 class HiddenDataState extends State<HiddenData> {
-  TextEditingController _hideController;
+  late TextEditingController _hideController;
 
-  GCWFile _unHideFile;
+  GCWFile? _unHideFile;
 
-  GCWFile _publicFile;
-  GCWFile _secretFile;
+  GCWFile? _publicFile;
+  GCWFile? _secretFile;
 
   var _currentMode = GCWSwitchPosition.right;
   var _currentHideMode = GCWSwitchPosition.left;
@@ -57,8 +59,8 @@ class HiddenDataState extends State<HiddenData> {
 
   @override
   Widget build(BuildContext context) {
-    if (_unHideFile == null && widget.platformFile != null) {
-      _unHideFile = widget.platformFile;
+    if (_unHideFile == null && widget.file != null) {
+      _unHideFile = widget.file;
     }
 
     return Column(
@@ -129,19 +131,23 @@ class HiddenDataState extends State<HiddenData> {
             },
           ),
         Container(height: 15),
-        GCWDivider(),
+        const GCWDivider(),
         GCWButton(
           text: i18n(context, 'hiddendata_hideandsave'),
           onPressed: () {
-            var data;
-            if (_currentHideMode == GCWSwitchPosition.left) {
-              data = mergeFiles([_publicFile.bytes, _currentHideInput]);
-            } else {
-              data = mergeFiles([_publicFile.bytes, _secretFile.bytes]);
+            Uint8List? data;
+            if (_publicFile?.bytes != null) {
+              if (_currentHideMode == GCWSwitchPosition.left) {
+                data = mergeFiles([_publicFile!.bytes, _currentHideInput]);
+              } else {
+                if (_secretFile?.bytes != null) {
+                  data = mergeFiles([_publicFile!.bytes, _secretFile!.bytes]);
+                }
+              }
             }
-
             _exportFile(
-                context, GCWFile(name: 'hidden_' + DateFormat('yyyyMMdd_HHmmss').format(DateTime.now()), bytes: data));
+                context,
+                data == null ? null : GCWFile(name: 'hidden_' + DateFormat('yyyyMMdd_HHmmss').format(DateTime.now()), bytes: data));
           },
         )
       ],
@@ -167,8 +173,8 @@ class HiddenDataState extends State<HiddenData> {
         ),
 
         GCWDefaultOutput(
-          child: _buildOutput(),
           suppressCopyButton: true,
+          child: _buildOutput(),
         )
       ],
     );
@@ -178,43 +184,46 @@ class HiddenDataState extends State<HiddenData> {
     if (_unHideFile == null) return Container();
 
     var _complete = false;
-    var _hiddenDataList = hiddenData(_unHideFile);
+    var _hiddenDataList = hiddenData(_unHideFile!);
     _hiddenDataList.then((value) {
       _complete = true;
     });
 
     return FutureBuilder(
         future: _hiddenDataList,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (!_complete)
+        builder: (BuildContext context, AsyncSnapshot<List<GCWFile>> snapshot) {
+          if (!_complete) {
             return GCWOutputText(text: i18n(context, 'common_please_wait'), suppressCopyButton: true);
-          else if (snapshot.data == null || snapshot.data.isEmpty)
+          } else if ((snapshot.data == null) || snapshot.data!.isEmpty) {
             return GCWOutputText(text: i18n(context, 'hiddendata_nohiddendatafound'), suppressCopyButton: true);
-          else
-            return GCWFilesOutput(files: snapshot.data);
+          } else {
+            return GCWFilesOutput(files: snapshot.data!);
+          }
         });
   }
 
-  _exportFile(BuildContext context, GCWFile file) async {
-    if (file.bytes == null) {
+  Future<void> _exportFile(BuildContext context, GCWFile? file) async {
+    if (file?.bytes == null) {
       showToast(i18n(context, 'hiddendata_datanotreadable'));
       return;
     }
 
-    var fileName = file.name.replaceFirst(HIDDEN_FILE_IDENTIFIER, 'hidden_file');
-    var ext = file.name.split('.');
+    var fileName = (file!.name ?? '').replaceFirst(HIDDEN_FILE_IDENTIFIER, 'hidden_file');
+    var ext = (file.name ?? '').split('.');
 
     if (ext.length <= 1 || ext.last.length >= 5) fileName = fileName + '.' + fileExtension(file.fileType);
 
-    var value = await saveByteDataToFile(context, file.bytes, fileName);
-    if (value != null) showExportedFileDialog(context, fileType: file.fileType);
+    await saveByteDataToFile(context, file.bytes, fileName).then((value) {
+      var content = fileClass(file.fileType) == FileClass.IMAGE ? imageContent(context, file.bytes) : null;
+      if (value) showExportedFileDialog(context, contentWidget: content) ;
+    });
   }
 }
 
-openInHiddenData(BuildContext context, GCWFile file) {
+void openInHiddenData(BuildContext context, GCWFile file) {
   Navigator.push(
       context,
-      NoAnimationMaterialPageRoute(
+      NoAnimationMaterialPageRoute<GCWTool>(
           builder: (context) => GCWTool(
-              tool: HiddenData(platformFile: file), toolName: i18n(context, 'hiddendata_title'), i18nPrefix: '')));
+              tool: HiddenData(file: file), toolName: i18n(context, 'hiddendata_title'), id: 'hiddendata')));
 }

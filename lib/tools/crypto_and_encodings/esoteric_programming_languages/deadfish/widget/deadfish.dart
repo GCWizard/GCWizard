@@ -6,6 +6,8 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/deadfish/logic/deadfish.dart';
 
 class Deadfish extends StatefulWidget {
+  const Deadfish({Key? key}) : super(key: key);
+
   @override
   DeadfishState createState() => DeadfishState();
 }
@@ -49,24 +51,24 @@ class DeadfishState extends State<Deadfish> {
     );
   }
 
-  _buildOutput() {
-    if (_currentInput == null) return '';
-
+  String _buildOutput() {
     if (_currentMode == GCWSwitchPosition.right) {
       var encoded = encodeDeadfish(_currentInput);
-      if (_currentDeadfishMode == GCWSwitchPosition.right) //XKCD
+      if (_currentDeadfishMode == GCWSwitchPosition.right) {
         encoded = encoded.replaceAll('i', 'x').replaceAll('s', 'k').replaceAll('o', 'c');
+      }
 
       return encoded;
     } else {
       var decodeable = _currentInput;
-      if (_currentDeadfishMode == GCWSwitchPosition.right) //XKCD
+      if (_currentDeadfishMode == GCWSwitchPosition.right) {
         decodeable = decodeable
             .toLowerCase()
             .replaceAll(RegExp(r'[iso]'), '')
             .replaceAll('x', 'i')
             .replaceAll('k', 's')
             .replaceAll('c', 'o');
+      }
 
       return decodeDeadfish(decodeable);
     }

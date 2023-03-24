@@ -7,9 +7,9 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class GCWGallery extends StatefulWidget {
   final List<GCWImageViewData> imageData;
-  final Function onDoubleTap;
+  final void Function(int)? onDoubleTap;
 
-  const GCWGallery({Key key, @required this.imageData, this.onDoubleTap}) : super(key: key);
+  const GCWGallery({Key? key, required this.imageData, this.onDoubleTap}) : super(key: key);
 
   @override
   _GCWGalleryState createState() => _GCWGalleryState();
@@ -19,7 +19,7 @@ class _GCWGalleryState extends State<GCWGallery> {
   int _currentImageIndex = 0;
   List<Image> _validImages = [];
 
-  ItemScrollController _scrollController;
+  late ItemScrollController _scrollController;
 
   @override
   void initState() {
@@ -32,19 +32,14 @@ class _GCWGalleryState extends State<GCWGallery> {
     _validImages = [];
 
     widget.imageData.asMap().forEach((index, element) {
-      MemoryImage _img;
       try {
-        if (widget.imageData[index] != null) _img = MemoryImage(widget.imageData[index].file.bytes);
-
-        if (_img != null) {
-          _validImages.add(Image.memory(widget.imageData[index].file.bytes));
-        }
+        _validImages.add(Image.memory(widget.imageData[index].file.bytes));
       } catch (e) {}
     });
 
     if (_currentImageIndex >= _validImages.length) _currentImageIndex = 0;
 
-    if (_validImages.length == 0) return Container();
+    if (_validImages.isEmpty) return Container();
 
     return Column(children: <Widget>[
       Stack(
@@ -56,7 +51,7 @@ class _GCWGalleryState extends State<GCWGallery> {
               size: IconButtonSize.SMALL,
               onPressed: () {
                 setState(() {
-                  _currentImageIndex = modulo(_currentImageIndex - 1, _validImages.length);
+                  _currentImageIndex = modulo(_currentImageIndex - 1, _validImages.length).toInt();
                   _scrollController.jumpTo(index: _currentImageIndex, alignment: 0.4);
                 });
               },
@@ -64,11 +59,11 @@ class _GCWGalleryState extends State<GCWGallery> {
           ),
           //Expanded(child: Container(),)
           Container(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
             child: GCWImageView(
               imageData: widget.imageData[_currentImageIndex],
               toolBarRight: false,
             ),
-            padding: EdgeInsets.symmetric(horizontal: 30),
           ),
 
           Positioned(
@@ -79,7 +74,7 @@ class _GCWGalleryState extends State<GCWGallery> {
                 size: IconButtonSize.SMALL,
                 onPressed: () {
                   setState(() {
-                    _currentImageIndex = modulo(_currentImageIndex + 1, _validImages.length);
+                    _currentImageIndex = modulo(_currentImageIndex + 1, _validImages.length).toInt();
                     _scrollController.jumpTo(index: _currentImageIndex, alignment: 0.5);
                   });
                 },
@@ -87,7 +82,7 @@ class _GCWGalleryState extends State<GCWGallery> {
         ],
       ),
       Container(
-        margin: EdgeInsets.only(top: 10),
+        margin: const EdgeInsets.only(top: 10),
         height: 50,
         child: ScrollablePositionedList.builder(
             itemScrollController: _scrollController,
@@ -101,7 +96,7 @@ class _GCWGalleryState extends State<GCWGallery> {
                     });
                   },
                   onDoubleTap: () {
-                    widget.onDoubleTap(index);
+                    if (widget.onDoubleTap != null) widget.onDoubleTap!(index);
                   },
                 )),
       )
@@ -110,16 +105,17 @@ class _GCWGalleryState extends State<GCWGallery> {
 
   Widget imageDecoration(int index, bool currentImage) {
     var marked = (index < widget.imageData.length ? widget.imageData[index].marked : false) ?? false;
-    if (currentImage)
+    if (currentImage) {
       return Container(
           decoration: BoxDecoration(
-              border: Border.all(color: marked ? themeColors().focused() : themeColors().accent(), width: 5)),
+              border: Border.all(color: marked ? themeColors().focused() : themeColors().secondary(), width: 5)),
           child: _validImages[index]);
-    else if (marked)
+    } else if (marked) {
       return Container(
           decoration: BoxDecoration(border: Border.all(color: themeColors().focused(), width: 2)),
           child: _validImages[index]);
-    else
+    } else {
       return _validImages[index];
+    }
   }
 }

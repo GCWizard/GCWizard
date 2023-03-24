@@ -7,18 +7,20 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/catalan/
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceCatalanSelection extends GCWSelection {
+  const NumberSequenceCatalanSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(NumberSequenceCatalanNthNumber()),
-        className(NumberSequenceCatalanRange()),
-        className(NumberSequenceCatalanDigits()),
-        className(NumberSequenceCatalanCheckNumber()),
-        className(NumberSequenceCatalanContainsDigits()),
+        className(const NumberSequenceCatalanNthNumber()),
+        className(const NumberSequenceCatalanRange()),
+        className(const NumberSequenceCatalanDigits()),
+        className(const NumberSequenceCatalanCheckNumber()),
+        className(const NumberSequenceCatalanContainsDigits()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

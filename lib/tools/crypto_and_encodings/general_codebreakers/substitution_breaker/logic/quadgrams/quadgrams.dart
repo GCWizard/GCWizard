@@ -2,22 +2,22 @@ part of 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/subst
 
 class Quadgrams extends _Quadgrams {
   static const int maxAlphabetLength = 32;
-  Map<int, List<int>> quadgramsCompressed;
-  String assetLocation;
-  List<int> _quadgrams;
+  Map<int, List<int>>? quadgramsCompressed;
+  late String assetLocation;
+  List<int>? _quadgrams;
 
-  List<int> quadgrams() {
+  List<int>? quadgrams() {
     if (_quadgrams != null) return _quadgrams;
 
     if (quadgramsCompressed == null) return null;
 
-    _quadgrams = decompressQuadgrams(quadgramsCompressed, pow(Quadgrams.maxAlphabetLength, 3) * alphabet.length);
+    _quadgrams = decompressQuadgrams(quadgramsCompressed!, (pow(Quadgrams.maxAlphabetLength, 3) * alphabet.length).toInt());
     quadgramsCompressed = null;
     return _quadgrams;
   }
 
   static Map<int, List<int>> compressQuadgrams(List<int> quadgrams) {
-    var map = Map<int, List<int>>();
+    var map = <int, List<int>>{};
     var blockStart = -1;
     const int zeroCount = 5;
 
@@ -27,11 +27,11 @@ class Quadgrams extends _Quadgrams {
       if (blockStart >= 0) {
         // if five 0 => new list
         if (((i + zeroCount < quadgrams.length) &&
-            (quadgrams[i + 1] == 0) | (quadgrams[i + 1] == null) &&
-            (quadgrams[i + 2] == 0) | (quadgrams[i + 2] == null) &&
-            (quadgrams[i + 3] == 0) | (quadgrams[i + 3] == null) &&
-            (quadgrams[i + 4] == 0) | (quadgrams[i + 4] == null) &&
-            (quadgrams[i + 5] == 0) | (quadgrams[i + 5] == null)) ||
+            (quadgrams[i + 1] == 0) &&
+            (quadgrams[i + 2] == 0) &&
+            (quadgrams[i + 3] == 0) &&
+            (quadgrams[i + 4] == 0) &&
+            (quadgrams[i + 5] == 0)) ||
             (i + zeroCount >= quadgrams.length)) {
           var quadgramList = <int>[];
           quadgramList.addAll(quadgrams.getRange(
@@ -45,9 +45,8 @@ class Quadgrams extends _Quadgrams {
     return map;
   }
 
-  static List<int> decompressQuadgrams(Map<int, List<int>> quadgramsCompressed, int size) {
-    if (quadgramsCompressed == null) return null;
-    var list = List<int>(size);
+  static List<int>? decompressQuadgrams(Map<int, List<int>> quadgramsCompressed, int size) {
+    var list = List<int>.filled(size, 0);
 
     list.fillRange(0, list.length, 0);
 
@@ -60,30 +59,31 @@ class Quadgrams extends _Quadgrams {
   }
 
   static String quadgramsMapToString(Map<int, List<int>> quadgramsCompressed) {
-    var sb = new StringBuffer();
+    var sb = StringBuffer();
     bool first = true;
     bool firstEntry = true;
     String out = '';
     var idx = 0;
     sb.write('{"');
     quadgramsCompressed.forEach((idx, values) {
-      if (firstEntry)
+      if (firstEntry) {
         firstEntry = false;
-      else
+      } else {
         sb.write(',"');
+      }
       sb.write(idx.toString());
       sb.write('":');
       sb.write('[');
       first = true;
-      values.forEach((val) {
-        if (first)
+      for (var val in values) {
+        if (first) {
           first = false;
-        else
+        } else {
           sb.write(',');
-        if (val == null) val = 0;
+        }
         out = val.round().toString();
         sb.write(out);
-      });
+      }
       sb.write(']');
     });
     sb.write('}');
@@ -103,16 +103,17 @@ class Quadgrams extends _Quadgrams {
   }
 
   static String quadgramsListToString(List<int> quadgrams) {
-    var sb = new StringBuffer();
+    var sb = StringBuffer();
     bool first = true;
     var idx = 0;
     String out = '';
-    quadgrams.forEach((val) {
-      if (first)
+    for (var val in quadgrams) {
+      if (first) {
         first = false;
-      else
+      } else {
         sb.write(',');
-      if (val == null) val = 0;
+      }
+
       out = val.round().toString();
       sb.write(out);
       idx += out.length + 1;
@@ -120,7 +121,7 @@ class Quadgrams extends _Quadgrams {
         sb.write("\n");
         idx = 0;
       }
-    });
+    }
     return sb.toString();
   }
 }

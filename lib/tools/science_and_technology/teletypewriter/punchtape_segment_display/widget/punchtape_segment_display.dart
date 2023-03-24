@@ -16,13 +16,15 @@ const _INITIAL_SEGMENTS = <String, bool>{
   '8': false
 };
 
+
 class PUNCHTAPESegmentDisplay extends NSegmentDisplay {
-  final Map<String, bool> segments;
-  final bool readOnly;
-  final Function onChanged;
   final TeletypewriterCodebook codeBook;
 
-  PUNCHTAPESegmentDisplay(this.codeBook, {Key key, this.segments, this.readOnly: false, this.onChanged})
+  PUNCHTAPESegmentDisplay(this.codeBook, {
+      Key? key,
+      required Map<String, bool> segments,
+      bool readOnly = false,
+      void Function(Map<String, bool>)? onChanged})
       : super(
             key: key,
             initialSegments: _INITIAL_SEGMENTS,
@@ -32,8 +34,8 @@ class PUNCHTAPESegmentDisplay extends NSegmentDisplay {
             type: SegmentDisplayType.CUSTOM,
             customPaint: (GCWTouchCanvas canvas, Size size, Map<String, bool> currentSegments, Function setSegmentState,
                 Color segment_color_on, Color segment_color_off) {
-              int punchHoles = PUNCHTAPE_DEFINITION[codeBook]['punchHoles'];
-              int sprocketHole = PUNCHTAPE_DEFINITION[codeBook]['sprocketHole'];
+              int punchHoles = PUNCHTAPE_DEFINITION[codeBook]!.punchHoles;
+              int sprocketHole = PUNCHTAPE_DEFINITION[codeBook]!.sprocketHole;
 
               var paint = defaultSegmentPaint();
               var SEGMENTS_COLOR_ON = segment_color_on;
@@ -53,7 +55,7 @@ class PUNCHTAPESegmentDisplay extends NSegmentDisplay {
                 coordsList.add(x);
                 coordsList.add(30);
                 circles[i.toString()] = [];
-                circles[i.toString()].addAll(coordsList);
+                circles[i.toString()]!.addAll(coordsList);
                 x = x + 30;
               }
               //circles = {'1': [10, 30], '2': [40, 30], '3': [100, 30],'4': [130, 30],'5': [160, 30]};
@@ -73,13 +75,13 @@ class PUNCHTAPESegmentDisplay extends NSegmentDisplay {
               });
 
               circles.forEach((key, value) {
-                paint.color = currentSegments[key] ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
+                paint.color = segmentActive(currentSegments, key) ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
                 canvas.touchCanvas.drawCircle(
                     Offset(size.width / _PUNCHTAPE_RELATIVE_DISPLAY_WIDTH * value[0],
                         size.height / _PUNCHTAPE_RELATIVE_DISPLAY_HEIGHT * value[1]),
                     pointSize,
                     paint, onTapDown: (tapDetail) {
-                  setSegmentState(key, !currentSegments[key]);
+                  setSegmentState(key, !segmentActive(currentSegments, key));
                 });
 
                 if (size.height < 50) return;

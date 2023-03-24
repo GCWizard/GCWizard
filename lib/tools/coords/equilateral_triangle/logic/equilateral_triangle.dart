@@ -1,3 +1,4 @@
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/coords/intersect_two_circles/logic/intersect_two_circles.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
@@ -8,15 +9,18 @@ class EquilateralTriangleJobData {
   final LatLng coord2;
   final Ellipsoid ells;
 
-  EquilateralTriangleJobData({this.coord1, this.coord2, this.ells});
+  EquilateralTriangleJobData({required this.coord1, required this.coord2, required this.ells});
 }
 
-Future<List<LatLng>> equilateralTriangleAsync(dynamic jobData) async {
-  if (jobData == null) return null;
+Future<List<LatLng>> equilateralTriangleAsync(GCWAsyncExecuterParameters? jobData) async {
+  if (jobData?.parameters is! EquilateralTriangleJobData) {
+    throw Exception('Unexpected data for Equilateral Triangle');
+  }
 
-  var output = equilateralTriangle(jobData.parameters.coord1, jobData.parameters.coord2, jobData.parameters.ells);
+  var data = jobData!.parameters as EquilateralTriangleJobData;
+  var output = equilateralTriangle(data.coord1, data.coord2, data.ells);
 
-  if (jobData.sendAsyncPort != null) jobData.sendAsyncPort.send(output);
+  jobData.sendAsyncPort?.send(output);
 
   return output;
 }

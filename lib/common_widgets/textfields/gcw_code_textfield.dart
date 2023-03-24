@@ -13,23 +13,23 @@ enum CodeHighlightingLanguage { LUA }
 
 class GCWCodeTextField extends StatefulWidget {
   final TextEditingController controller;
-  final Map<String, TextStyle> patternMap; // Regexes
-  final Map<String, TextStyle> stringMap; // complete strings
-  final Map<String, TextStyle> theme;
-  final TextStyle textStyle;
+  final Map<String, TextStyle>? patternMap; // Regexes
+  final Map<String, TextStyle>? stringMap; // complete strings
+  final Map<String, TextStyle>? theme;
+  final TextStyle? textStyle;
   final bool readOnly;
-  final bool wrap;
-  final CodeHighlightingLanguage language;
-  final GCWCodeTextFieldLineNumberStyle lineNumberStyle;
+  final bool? wrap;
+  final CodeHighlightingLanguage? language;
+  final GCWCodeTextFieldLineNumberStyle? lineNumberStyle;
 
   const GCWCodeTextField(
-      {Key key,
-      this.controller,
+      {Key? key,
+      required this.controller,
       this.stringMap,
       this.patternMap,
       this.theme,
       this.textStyle,
-      this.readOnly: true,
+      this.readOnly = true,
       this.wrap,
       this.language,
       this.lineNumberStyle})
@@ -40,14 +40,14 @@ class GCWCodeTextField extends StatefulWidget {
 }
 
 class _GCWCodeTextFieldState extends State<GCWCodeTextField> {
-  Mode _language;
+  Mode? _language;
 
   @override
   void initState() {
     super.initState();
 
     if (widget.language != null) {
-      switch (widget.language) {
+      switch (widget.language!) {
         case CodeHighlightingLanguage.LUA:
           _language = lua;
       }
@@ -58,9 +58,9 @@ class _GCWCodeTextFieldState extends State<GCWCodeTextField> {
   Widget build(BuildContext context) {
     return CodeTheme(
       data: CodeThemeData(styles:
-          widget.theme ?? Prefs.getString(PREFERENCE_THEME_COLOR) == ThemeType.DARK.toString()
+          widget.theme ?? (Prefs.getString(PREFERENCE_THEME_COLOR) == ThemeType.DARK.toString()
               ? atomOneDarkTheme
-              : atomOneLightTheme
+              : atomOneLightTheme)
           ),
       child: CodeField(
           controller: CodeController(
@@ -71,12 +71,12 @@ class _GCWCodeTextFieldState extends State<GCWCodeTextField> {
           readOnly: widget.readOnly,
           selectionControls: GCWTextSelectionControls(),
           wrap: widget.wrap ?? false,
-          textStyle: widget.textStyle ?? TextStyle(fontFamily: 'SourceCode'),
+          textStyle: widget.textStyle ?? const TextStyle(fontFamily: 'SourceCode'),
           lineNumberStyle: widget.lineNumberStyle != null
               ? LineNumberStyle(
-                  width: widget.lineNumberStyle.width,
+                  width: widget.lineNumberStyle!.width,
                 )
-              : LineNumberStyle(width: 0.0, margin: 0.0, textStyle: TextStyle(fontSize: 0.1, color: Colors.black87)),
+              : const LineNumberStyle(width: 0.0, margin: 0.0, textStyle: TextStyle(fontSize: 0.1, color: Colors.black87)),
         )
     );
   }

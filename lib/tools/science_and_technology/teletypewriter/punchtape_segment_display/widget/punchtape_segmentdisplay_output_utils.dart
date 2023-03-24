@@ -1,31 +1,31 @@
 part of 'package:gc_wizard/tools/science_and_technology/teletypewriter/punchtape_segment_display/widget/punchtape_segmentdisplay_output.dart';
 
-_exportFile(BuildContext context, Uint8List data) async {
-  var value =
-  await saveByteDataToFile(context, data, 'img_' + DateFormat('yyyyMMdd_HHmmss').format(DateTime.now()) + '.png');
-
-  if (value != null) showExportedFileDialog(context, fileType: FileType.PNG, contentWidget: Image.memory(data));
+Future<void> _exportFile(BuildContext context, Uint8List? data) async {
+  if (data == null) return;
+  await saveByteDataToFile(context, data, buildFileNameWithDate('img_', FileType.PNG)).then((value) {
+    if (value) showExportedFileDialog(context, contentWidget: imageContent(context, data));
+  });
 }
 
-Widget _buildPunchtapeSegmentDisplayOutput(List<dynamic> displays) {
+Widget _buildPunchtapeSegmentDisplayOutput(List<Widget> displays) {
   var rows = <Widget>[];
 
   for (var displayIndex = 0; displayIndex < displays.length; displayIndex++) {
     var columns = <Widget>[];
-    var widget;
+    Widget widget;
     var display = displays[displayIndex];
 
     widget = Container(
       width: 200,
       height: 40,
+      padding: const EdgeInsets.all(2),
       child: display,
-      padding: EdgeInsets.all(2),
     );
 
     columns.add(Expanded(
         child: Container(
+          padding: const EdgeInsets.all(3),
           child: widget,
-          padding: EdgeInsets.all(3),
         )));
 
     rows.add(Row(
@@ -33,7 +33,7 @@ Widget _buildPunchtapeSegmentDisplayOutput(List<dynamic> displays) {
     ));
   }
 
-  return Container(
+  return SizedBox(
       width: 300,
       child: Column(
         children: rows,
@@ -48,9 +48,7 @@ Future<ui.Image> _buildPunchtapeSegmentDisplayImage(List<NSegmentDisplay> displa
   var rowWidth = 0.0;
   var rowHeight = 0.0;
   var images = <ui.Image>[];
-  var offset = ui.Offset(0, bounds);
-
-  if (displays == null) return null;
+  var offset = const ui.Offset(0, bounds);
 
   // create images
   for (var i = 0; i < displays.length; i++) {
@@ -58,12 +56,12 @@ Future<ui.Image> _buildPunchtapeSegmentDisplayImage(List<NSegmentDisplay> displa
   }
 
   // calc image size
-  images.forEach((image) {
+  for (var image in images) {
     rowWidth = max(rowWidth, image.width.toDouble() + 2 * padding);
     width = max(width, rowWidth);
     rowHeight += image.height + 6 * padding;
     height = max(height, rowHeight);
-  });
+  }
 
   width = width + 2 * bounds;
   height = height + 2 * bounds;

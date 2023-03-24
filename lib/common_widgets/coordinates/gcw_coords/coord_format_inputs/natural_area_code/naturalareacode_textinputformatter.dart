@@ -1,11 +1,7 @@
 part of 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
 
 class _NaturalAreaCodeTextInputFormatter extends TextInputFormatter {
-  RegExp _exp;
-
-  _NaturalAreaCodeTextInputFormatter() {
-    _exp = new RegExp('^[0-9BCDFGHJKLMNPQRSTVWXZ]*\$');
-  }
+  final RegExp _exp = RegExp('^[0-9BCDFGHJKLMNPQRSTVWXZ]*\$');
 
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {

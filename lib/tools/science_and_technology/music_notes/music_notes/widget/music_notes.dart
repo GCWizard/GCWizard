@@ -17,22 +17,25 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/l
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/n_segment_display.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/segmentdisplay_output.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/segmentdisplay_painter.dart';
+import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_container.dart';
 import 'package:gc_wizard/utils/constants.dart';
 
 part 'package:gc_wizard/tools/science_and_technology/music_notes/music_notes/widget/music_notes_segment_display.dart';
 
 class MusicNotes extends StatefulWidget {
+  const MusicNotes({Key? key}) : super(key: key);
+
   @override
   MusicNotesState createState() => MusicNotesState();
 }
 
 class MusicNotesState extends State<MusicNotes> {
   String _currentEncodeInput = '';
-  TextEditingController _encodeController;
-  var _gcwTextStyle = gcwTextStyle();
+  late TextEditingController _encodeController;
+  final _gcwTextStyle = gcwTextStyle();
   var _currentCode = NotesCodebook.TREBLE;
 
-  List<List<String>> _currentDisplays = [];
+  var _currentDisplays = Segments.Empty();
   var _currentMode = GCWSwitchPosition.right;
 
   @override
@@ -51,7 +54,7 @@ class MusicNotesState extends State<MusicNotes> {
   @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
-      GCWDropDown(
+      GCWDropDown<NotesCodebook>(
         value: _currentCode,
         onChanged: (value) {
           setState(() {
@@ -61,19 +64,17 @@ class MusicNotesState extends State<MusicNotes> {
         items: NotesCodebook.values.map((codeBook) {
           switch (codeBook) {
             case NotesCodebook.ALT:
-              var tool = registeredTools.firstWhere((tool) => tool.i18nPrefix.contains('altoclef'));
+              var tool = registeredTools.firstWhere((tool) => tool.id.contains('altoclef'));
               return GCWDropDownMenuItem(
-                  value: NotesCodebook.ALT, child: _buildDropDownMenuItem(tool.icon, tool.toolName, null));
+                  value: NotesCodebook.ALT, child: _buildDropDownMenuItem(tool.icon, tool.toolName!, null));
             case NotesCodebook.TREBLE:
-              var tool = registeredTools.firstWhere((tool) => tool.i18nPrefix.contains('trebleclef'));
+              var tool = registeredTools.firstWhere((tool) => tool.id.contains('trebleclef'));
               return GCWDropDownMenuItem(
-                  value: NotesCodebook.TREBLE, child: _buildDropDownMenuItem(tool.icon, tool.toolName, null));
+                  value: NotesCodebook.TREBLE, child: _buildDropDownMenuItem(tool.icon, tool.toolName!, null));
             case NotesCodebook.BASS:
-              var tool = registeredTools.firstWhere((tool) => tool.i18nPrefix.contains('bassclef'));
+              var tool = registeredTools.firstWhere((tool) => tool.id.contains('bassclef'));
               return GCWDropDownMenuItem(
-                  value: NotesCodebook.BASS, child: _buildDropDownMenuItem(tool.icon, tool.toolName, null));
-            default:
-              return null;
+                  value: NotesCodebook.BASS, child: _buildDropDownMenuItem(tool.icon, tool.toolName!, null));
           }
         }).toList(),
       ),
@@ -104,16 +105,10 @@ class MusicNotesState extends State<MusicNotes> {
   }
 
   Widget _buildVisualDecryption() {
-    Map<String, bool> currentDisplay;
-
-    var displays = _currentDisplays;
-    if (displays != null && displays.length > 0) {
-      currentDisplay = Map<String, bool>.fromIterable(displays.last ?? [], key: (e) => e, value: (e) => true);
-      currentDisplay.remove(altClef);
-      currentDisplay.remove(bassClef);
-      currentDisplay.remove(trebleClef);
-    } else
-      currentDisplay = {};
+    var currentDisplay = buildSegmentMap(_currentDisplays);
+    currentDisplay.remove(altClef);
+    currentDisplay.remove(bassClef);
+    currentDisplay.remove(trebleClef);
 
     switch (_currentCode) {
       case NotesCodebook.ALT:
@@ -127,7 +122,7 @@ class MusicNotesState extends State<MusicNotes> {
         break;
     }
 
-    var onChanged = (Map<String, bool> d) {
+    onChanged(Map<String, bool> d) {
       setState(() {
         var newSegments = <String>[];
         d.forEach((key, value) {
@@ -135,20 +130,16 @@ class MusicNotesState extends State<MusicNotes> {
           newSegments.add(key);
         });
 
-        newSegments.sort();
-
-        if (_currentDisplays.length == 0) _currentDisplays.add([]);
-
-        _currentDisplays[_currentDisplays.length - 1] = newSegments;
+        _currentDisplays.replaceLastSegment(newSegments);
       });
-    };
+    }
 
     return Column(
       children: <Widget>[
         Container(
           width: 180,
           height: 300,
-          padding: EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
+          padding: const EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
           child: Row(
             children: <Widget>[
               Expanded(
@@ -165,7 +156,7 @@ class MusicNotesState extends State<MusicNotes> {
             icon: Icons.space_bar,
             onPressed: () {
               setState(() {
-                _currentDisplays.add([]);
+                _currentDisplays.addEmptySegment();
               });
             },
           ),
@@ -173,7 +164,7 @@ class MusicNotesState extends State<MusicNotes> {
             icon: Icons.backspace,
             onPressed: () {
               setState(() {
-                if (_currentDisplays.length > 0) _currentDisplays.removeLast();
+                _currentDisplays.removeLastSegment();
               });
             },
           ),
@@ -181,7 +172,7 @@ class MusicNotesState extends State<MusicNotes> {
             icon: Icons.clear,
             onPressed: () {
               setState(() {
-                _currentDisplays = [];
+                _currentDisplays = Segments.Empty();
               });
             },
           )
@@ -190,7 +181,7 @@ class MusicNotesState extends State<MusicNotes> {
     );
   }
 
-  Widget _buildDigitalOutput(List<List<String>> segments) {
+  Widget _buildDigitalOutput(Segments segments) {
     return SegmentDisplayOutput(
         segmentFunction: (displayedSegments, readOnly) {
           displayedSegments = filterVisibleHelpLines(displayedSegments);
@@ -205,7 +196,7 @@ class MusicNotesState extends State<MusicNotes> {
   Widget _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
       //encode
-      List<List<String>> segments = encodeNotes(_currentEncodeInput, _currentCode, _buildTranslationMap(_currentCode));
+      var segments = encodeNotes(_currentEncodeInput, _currentCode, _buildTranslationMap(_currentCode));
       return Column(
         children: <Widget>[
           _buildDigitalOutput(segments),
@@ -213,15 +204,13 @@ class MusicNotesState extends State<MusicNotes> {
       );
     } else {
       //decode
-      var output = _currentDisplays.map((character) {
-        if (character != null) return character.join();
-      }).toList();
+      var output = _currentDisplays.buildOutput();
       var segments = decodeNotes(output, _currentCode);
 
       return Column(
         children: <Widget>[
-          _buildDigitalOutput(segments['displays']),
-          GCWDefaultOutput(child: _normalize(segments['chars'], _currentCode)),
+          _buildDigitalOutput(segments),
+          GCWDefaultOutput(child: _normalize(segments.chars, _currentCode)),
         ],
       );
     }
@@ -231,21 +220,21 @@ class MusicNotesState extends State<MusicNotes> {
     return input.map((note) {
       switch (codeBook) {
         case NotesCodebook.ALT:
-          return i18n(context, 'symboltables_notes_names_altoclef_' + note) ?? UNKNOWN_ELEMENT;
+          return i18n(context, 'symboltables_notes_names_altoclef_' + note, ifTranslationNotExists: UNKNOWN_ELEMENT);
         case NotesCodebook.BASS:
-          return i18n(context, 'symboltables_notes_names_bassclef_' + note) ?? UNKNOWN_ELEMENT;
+          return i18n(context, 'symboltables_notes_names_bassclef_' + note, ifTranslationNotExists: UNKNOWN_ELEMENT);
         case NotesCodebook.TREBLE:
-          return i18n(context, 'symboltables_notes_names_trebleclef_' + note) ?? UNKNOWN_ELEMENT;
+          return i18n(context, 'symboltables_notes_names_trebleclef_' + note, ifTranslationNotExists: UNKNOWN_ELEMENT);
       }
     }).join(' ');
   }
 
   Map<String, String> _buildTranslationMap(NotesCodebook codeBook) {
     var keys = possibleNoteKeys(codeBook);
-    var translationMap = Map<String, String>();
+    var translationMap = <String, String>{};
     String translation;
 
-    keys.forEach((note) {
+    for (var note in keys) {
       switch (codeBook) {
         case NotesCodebook.ALT:
           translation = i18n(context, 'symboltables_notes_names_altoclef_' + note);
@@ -257,18 +246,18 @@ class MusicNotesState extends State<MusicNotes> {
           translation = i18n(context, 'symboltables_notes_names_trebleclef_' + note);
           break;
         default:
-          translation = null;
+          translation = '';
       }
-      if (translation != null && translation != '') translationMap.addAll({note: translation});
-    });
+      if (translation.isNotEmpty) translationMap.addAll({note: translation});
+    }
     return translationMap;
   }
 
-  Widget _buildDropDownMenuItem(dynamic icon, String toolName, String description) {
+  Widget _buildDropDownMenuItem(GCWSymbolContainer? icon, String toolName, String? description) {
     return Row(children: [
       Container(
+        margin: const EdgeInsets.only(left: 2, top: 2, bottom: 2, right: 10),
         child: (icon != null) ? icon : Container(width: 50),
-        margin: EdgeInsets.only(left: 2, top: 2, bottom: 2, right: 10),
       ),
       Expanded(
           child: Column(

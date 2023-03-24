@@ -8,17 +8,20 @@ import 'package:gc_wizard/tools/symbol_tables/_common/widget/symbol_table.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class TomTomSelection extends GCWSelection {
+  const TomTomSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
-      if (className(element.tool) == className(SymbolTable()) && (element.tool as SymbolTable).symbolKey == 'tomtom')
+      if (className(element.tool) == className(const SymbolTable()) && (element.tool as SymbolTable).symbolKey == 'tomtom') {
         return true;
+      }
 
       return [
-        className(TomTom()),
+        className(const TomTom()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

@@ -1,15 +1,14 @@
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/crypto_and_encodings/abaddon/logic/abaddon.dart';
 
-final _A = YEN + YEN + MY;
-final _N = YEN + YEN + THORN;
-final _Z = THORN + YEN + THORN;
-final _SPACE = YEN + MY + MY;
+const _A = YEN + YEN + MY;
+const _N = YEN + YEN + THORN;
+const _Z = THORN + YEN + THORN;
+const _SPACE = YEN + MY + MY;
 
 void main() {
   group("AbaddonCode.encryptAbaddon:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
       {'input' : '', 'replaceCharacters': null, 'expectedOutput' : ''},
       {'input' : '', 'replaceCharacters': <String, String>{}, 'expectedOutput' : ''},
@@ -32,17 +31,16 @@ void main() {
       {'input' : 'ANZ', 'replaceCharacters': {YEN: 'a', MY: 'b', THORN: 'c'}, 'expectedOutput' : 'aabaaccac'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, replaceCharacter: ${elem['replaceCharacters']}', () {
-        var _actual = encryptAbaddon(elem['input'], elem['replaceCharacters']);
+        var _actual = encryptAbaddon(elem['input'] as String, elem['replaceCharacters'] as Map<String, String>?);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("AbaddonCode.decryptAbaddon:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
       {'input' : '', 'replaceCharacters': null, 'expectedOutput' : ''},
       {'input' : '', 'replaceCharacters': <String, String>{}, 'expectedOutput' : ''},
@@ -75,11 +73,11 @@ void main() {
       {'input' : '001002202', 'replaceCharacters': {YEN: '', MY: '', THORN: ''}, 'expectedOutput' : ''},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, replaceCharacter: ${elem['replaceCharacters']}', () {
-        var _actual = decryptAbaddon(elem['input'], elem['replaceCharacters']);
+        var _actual = decryptAbaddon(elem['input'] as String, elem['replaceCharacters'] as Map<String, String>?);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 }

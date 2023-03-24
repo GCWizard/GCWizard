@@ -3,25 +3,27 @@ import 'package:gc_wizard/application/i18n/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/text_input_formatters/gcw_bearing_textinputformatter.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_double_textfield.dart';
+import 'package:gc_wizard/utils/complex_return_types.dart';
+import 'package:gc_wizard/utils/constants.dart';
 
 class GCWAngle extends StatefulWidget {
-  final Function onChanged;
-  final String hintText;
+  final void Function(DoubleText) onChanged;
+  final String? hintText;
 
-  const GCWAngle({Key key, this.onChanged, this.hintText}) : super(key: key);
+  const GCWAngle({Key? key, required this.onChanged, this.hintText}) : super(key: key);
 
   @override
   _GCWAngleState createState() => _GCWAngleState();
 }
 
 class _GCWAngleState extends State<GCWAngle> {
-  TextEditingController _angleController;
-  var _currentAngle = {'text': '', 'value': 0.0};
+  late TextEditingController _angleController;
+  var _currentAngle = defaultDoubleText;
 
   @override
   void initState() {
     super.initState();
-    _angleController = TextEditingController(text: _currentAngle['text']);
+    _angleController = TextEditingController(text: _currentAngle.text);
   }
 
   @override
@@ -39,16 +41,15 @@ class _GCWAngleState extends State<GCWAngle> {
           hintText: widget.hintText ?? i18n(context, 'common_bearing_hint'),
           controller: _angleController,
           textInputFormatter: GCWBearingTextInputFormatter(),
-          onChanged: (ret) {
+          onChanged: (DoubleText ret) {
             setState(() {
-              _currentAngle['value'] = ret['value'];
-              _currentAngle['text'] = ret['text'];
+              _currentAngle = ret;
               widget.onChanged(_currentAngle);
             });
           },
         ),
       ),
-      Expanded(
+      const Expanded(
         flex: 1,
         child: GCWText(text: '°'),
       ),

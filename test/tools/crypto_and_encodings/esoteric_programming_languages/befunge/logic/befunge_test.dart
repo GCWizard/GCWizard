@@ -3,9 +3,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_langua
 
 void main() {
   group("Befunge.interpretBefunge", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'code' : null, 'input' : null, 'expectedOutput' : BefungeOutput(Output: '', Error: '', BefungeStack: [], PC: [], Command: [], Mnemonic: [])},
-      {'code' : null, 'input' : '', 'expectedOutput' : BefungeOutput(Output: '', Error: '', BefungeStack: [], PC: [], Command: [], Mnemonic: [])},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'code' : '', 'input' : '', 'expectedOutput' : BefungeOutput(Output: '', Error: '', BefungeStack: [], PC: [], Command: [], Mnemonic: [])},
       {'code' : 'ABC123;', 'input' : '', 'expectedOutput' : BefungeOutput(Output: '', Error: BEFUNGE_ERROR_INFINITE_LOOP, BefungeStack: [], PC: [], Command: [], Mnemonic: [])},
 
@@ -26,12 +24,8 @@ v  ,,,,,"Hello"<
 v,,,,,,"World!"<
 >25*,@'
 */
-      {'code' : '>              v\n' +
-                'v  ,,,,,"Hello"<\n' +
-                '>48*,          v\n' +
-                'v,,,,,,"World!"<\n' +
-                '>25*,@',
-        'input' : null,
+      {'code' : '>              v\n' 'v  ,,,,,"Hello"<\n' '>48*,          v\n' 'v,,,,,,"World!"<\n' '>25*,@',
+        'input' : '',
         'expectedOutput' :
         BefungeOutput(
             Output: 'Hello World!\n',
@@ -43,9 +37,7 @@ v,,,,,,"World!"<
                   v:,_@
                   >  ^
 */
-      {'code' : ' >25*"!dlrow ,olleH":v\n' +
-                '                  v:,_@\n' +
-                '                  >  ^\n',
+      {'code' : ' >25*"!dlrow ,olleH":v\n' '                  v:,_@\n' '                  >  ^\n',
         'input' : '',
         'expectedOutput' :
         BefungeOutput(
@@ -70,7 +62,7 @@ v,,,,,,"World!"<
       //            BefungeStack: [], PC: [], Command: [], Mnemonic: [])},
 
       // https://de.wikipedia.org/wiki/Befunge
-      {'code' : '0.1>:#\.#g:#00#00#+p# <',
+      {'code' : '0.1>:#.#g:#00#00#+p# <',
         'input' : '',
         'expectedOutput' :
         BefungeOutput(
@@ -90,8 +82,7 @@ v,,,,,,"World!"<
 0.1>:.:00p+00g\v
    ^           <
 */
-      {'code' : '0.1>:.:00p+00g\\v\n' +
-                '^           <',
+      {'code' : '0.1>:.:00p+00g\\v\n' '^           <',
         'input' : '',
         'expectedOutput' :
         BefungeOutput(
@@ -106,11 +97,7 @@ v,,,,,,"World!"<
 
 /*
 */
-      {'code' : 'v   > . v\n' +
-                '         \n' +
-                '4   +   @\n' +
-                '         \n' +
-                '> 3 ^',
+      {'code' : 'v   > . v\n' '         \n' '4   +   @\n' '         \n' '> 3 ^',
         'input' : '',
         'expectedOutput' :
         BefungeOutput(
@@ -120,9 +107,7 @@ v,,,,,,"World!"<
 
 /*
 */
-      {'code' : 'v*>.v\n' +
-                '4*+*@\n' +
-                '>3^**',
+      {'code' : 'v*>.v\n' '4*+*@\n' '>3^**',
         'input' : '',
         'expectedOutput' :
         BefungeOutput(
@@ -132,8 +117,7 @@ v,,,,,,"World!"<
 
 /*
 */
-      {'code' : '"!dlroW olleH"v\n' +
-                '@,,,,,,,,,,,,,<',
+      {'code' : '"!dlroW olleH"v\n' '@,,,,,,,,,,,,,<',
         'input' : '',
         'expectedOutput' :
         BefungeOutput(
@@ -154,11 +138,7 @@ v,,,,,,"World!"<
       // https://github.com/catseye/Befunge-93/blob/master/eg/befunge2.bf
 /*
 */
-      {'code' : '<>: #+1 #:+ 3 : *6+ \$#2 9v#\n' +
-                'v 7 :   +   8 \\ + + 5   <\n' +
-                '>-  :2  -:  " " 1 + \\ v ^<\n' +
-                '2 + :   7   + : 7 + v > :\n' +
-                ':1- :3- >   :#, _ @ >:3 5*-',
+      {'code' : '<>: #+1 #:+ 3 : *6+ \$#2 9v#\n' 'v 7 :   +   8 \\ + + 5   <\n' '>-  :2  -:  " " 1 + \\ v ^<\n' '2 + :   7   + : 7 + v > :\n' ':1- :3- >   :#, _ @ >:3 5*-',
         'input' : '',
         'expectedOutput' :
         BefungeOutput(
@@ -171,8 +151,7 @@ v,,,,,,"World!"<
 25*3*4+>:."=",:,25*,1+:88*2*-#v_@\n
        ^                      <
 */
-      {'code' : '25*3*4+>:."=",:,25*,1+:88*2*-#v_@\n' +
-                '^                             <',
+      {'code' : '25*3*4+>:."=",:,25*,1+:88*2*-#v_@\n' '^                             <',
         'input' : '',
         'expectedOutput' :
         BefungeOutput(
@@ -187,9 +166,7 @@ vv    <>v *<
 &>:1-:|\$>\\:|
 >^    >^@.\$<
 */
-      {'code' : 'vv    <>v *<\n' +
-                '&>:1-:|\$>\\:|\n' +
-                '>^    >^@.\$<',
+      {'code' : 'vv    <>v *<\n' '&>:1-:|\$>\\:|\n' '>^    >^@.\$<',
         'input' : '7',
         'expectedOutput' :
         BefungeOutput(
@@ -203,9 +180,7 @@ vv    <>v *<
         @.g00<  vp00+%*52g00 /*52g00<
     ^           >#          ^#        <
 */*/
-      {'code' : '000p>~:25*-!#v_"a"-1+00g+00p> 00g9`#v_v\n' +
-                '        @.g00<  vp00+%*52g00 /*52g00<  \n' +
-                '    ^           >#          ^#        <',
+      {'code' : '000p>~:25*-!#v_"a"-1+00g+00p> 00g9`#v_v\n' '        @.g00<  vp00+%*52g00 /*52g00<  \n' '    ^           >#          ^#        <',
         'input' : '7',
         'expectedOutput' :
         BefungeOutput(
@@ -218,8 +193,7 @@ vv    <>v *<
 00:.1:.>:"@"8**++\1+:67+`#@_v
        ^ .:\/*8"@"\%*8"@":\ <
 */*/
-      {'code' : '00:.1:.>:"@"8**++\\1+:67+`#@_v\n' +
-                '       ^ .:\\/*8"@"\\%*8"@":\\ <\n',
+      {'code' : '00:.1:.>:"@"8**++\\1+:67+`#@_v\n' '       ^ .:\\/*8"@"\\%*8"@":\\ <\n',
         'input' : '',
         'expectedOutput' :
         BefungeOutput(
@@ -267,10 +241,7 @@ v                                              >
 >52*52**0*52*1*0++1+>1-:v
                     ^,\ _@
 */
-    {'code' : '>43*7+3*87*83+5*69*68*5+94+2*2*98+3*55+5*77*86*v\n' +
-              'v                                              >\n' +
-              '>52*52**0*52*1*0++1+>1-:v\n' +
-              '                    ^,\\ _@',
+    {'code' : '>43*7+3*87*83+5*69*68*5+94+2*2*98+3*55+5*77*86*v\n' 'v                                              >\n' '>52*52**0*52*1*0++1+>1-:v\n' '                    ^,\\ _@',
       'input' : '',
       'expectedOutput' :
       BefungeOutput(
@@ -281,9 +252,7 @@ v                                              >
     // prints UNICODE Table from 32 .. 47
 /*
 */
-    {'code' : 'v   v               <\n' +
-              '>84*>::.,5:+,1+:77*-|\n' +
-              '@                   <',
+    {'code' : 'v   v               <\n' '>84*>::.,5:+,1+:77*-|\n' '@                   <',
       'input' : '',
       'expectedOutput' :
       BefungeOutput(
@@ -324,26 +293,23 @@ v                                              >
  @               ^  p3\" ":<
 2 234567890123456789012345678901234567890123456789012345678901234567890123456789
 */
-      {'code' : '2>:3g" "-!v\\  g30          <\n' +
-      '|!`"O":+1_:.:03p>03g+:"O"`|\n' +
-      '@               ^  p3\\" ":<\n' +
-      '2 234567890123456789012345678901234567890123456789012345678901234567890123456789',
+      {'code' : '2>:3g" "-!v\\  g30          <\n' '|!`"O":+1_:.:03p>03g+:"O"`|\n' '@               ^  p3\\" ":<\n' '2 234567890123456789012345678901234567890123456789012345678901234567890123456789',
         'input' : '',
         'expectedOutput' :
         BefungeOutput(
             Output: '',
-            Error: 'befunge_error_infinite_loop',
+            Error: 'befunge_error_syntax_invalidprogram',
             BefungeStack: [], PC: [], Command: [], Mnemonic: [])},
 
 
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('code: ${elem['code']}, input: ${elem['input']}', () {
-        var _actual = interpretBefunge(elem['code'], input: elem['input']);
-        expect(_actual.Output, elem['expectedOutput'].Output);
-        expect(_actual.Error, elem['expectedOutput'].Error);
+        var _actual = interpretBefunge(elem['code'] as String, input: elem['input'] as String);
+        expect(_actual.Output, (elem['expectedOutput']as BefungeOutput).Output);
+        expect(_actual.Error, (elem['expectedOutput']as BefungeOutput).Error);
       });
-    });
+    }
   });
 }

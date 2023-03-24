@@ -4,31 +4,26 @@ import 'package:intl/intl.dart';
 
 String formatResistorValue(double value) {
   var formatter = NumberFormat('0.####');
-  return formatter.format(value) + ' ' + String.fromCharCode(937);
+  return formatter.format(value) + ' \u03A9';
 }
 
 String formatResistorTolerancedValueInterval(List<double> valueInterval) {
   var formatter = NumberFormat('0.############');
-  return formatter.format(valueInterval[0]) +
-      ' ' +
-      String.fromCharCode(937) +
-      ' - ' +
-      formatter.format(valueInterval[1]) +
-      ' ' +
-      String.fromCharCode(937);
+  return formatter.format(valueInterval[0]) + ' \u03A9 - ' +
+      formatter.format(valueInterval[1]) + ' \u03A9';
 }
 
 String formatResistorTolerance(double tolerance) {
   var formatter = NumberFormat('0.##');
-  return String.fromCharCode(177) + ' ' + formatter.format(tolerance * 100) + ' %';
+  return '\u00B1 ' + formatter.format(tolerance * 100) + ' %';
 }
 
 RichText formatResistorTemperatureCoefficient(double temperatureCoefficient, TextStyle textStyle) {
   return RichText(
       text: TextSpan(style: textStyle, children: [
-    TextSpan(text: temperatureCoefficient.floor().toString() + ' ' + String.fromCharCode(215) + ' 10'),
+    TextSpan(text: temperatureCoefficient.floor().toString() + ' \u00D7 10'),
     superscriptedTextForRichText('-6', textStyle: textStyle),
-    TextSpan(text: ' K'),
+    const TextSpan(text: ' K'),
     superscriptedTextForRichText('-1', textStyle: textStyle),
   ]));
 }
@@ -39,7 +34,7 @@ RichText formatResistorMultiplier(double multiplier, TextStyle textStyle) {
 
   return RichText(
     text: TextSpan(style: textStyle, children: [
-      TextSpan(text: String.fromCharCode(215) + ' 10'),
+      const TextSpan(text: '\u00D7 10'),
       superscriptedTextForRichText(valueExponential[1].replaceFirst('+', ''), textStyle: textStyle),
       TextSpan(text: ' = ${formatter.format(multiplier).replaceAll(',', ' ')}')
     ]),

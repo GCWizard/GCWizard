@@ -4,6 +4,8 @@ import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/tools/science_and_technology/primes/_common/logic/primes.dart';
 
 class NthPrime extends StatefulWidget {
+  const NthPrime({Key? key}) : super(key: key);
+
   @override
   NthPrimeState createState() => NthPrimeState();
 }

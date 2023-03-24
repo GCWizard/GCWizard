@@ -8,30 +8,33 @@ import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coord
 import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/common_widgets/gcw_distance.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coord_format_getter.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
+import 'package:gc_wizard/utils/constants.dart';
+import 'package:latlong2/latlong.dart';
 
 class WaypointProjection extends StatefulWidget {
+  const WaypointProjection({Key? key}) : super(key: key);
+
   @override
   WaypointProjectionState createState() => WaypointProjectionState();
 }
 
 class WaypointProjectionState extends State<WaypointProjection> {
-  var _currentCoords = defaultCoordinate;
+  var _currentCoords = defaultBaseCoordinate;
   var _currentDistance = 0.0;
-  var _currentBearing = {'text': '', 'value': 0.0};
+  var _currentBearing = defaultDoubleText;
   var _currentReverse = false;
 
   var _currentValues = [defaultCoordinate];
   var _currentMapPoints = <GCWMapPoint>[];
   var _currentMapPolylines = <GCWMapPolyline>[];
-  var _currentCoordsFormat = defaultCoordFormat();
 
-  var _currentOutputFormat = defaultCoordFormat();
-  List<String> _currentOutput = <String>[];
+  var _currentOutput = <String>[];
+  var _currentOutputFormat = defaultCoordinateFormat;
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +42,10 @@ class WaypointProjectionState extends State<WaypointProjection> {
       children: <Widget>[
         GCWCoords(
           title: i18n(context, 'coords_waypointprojection_start'),
-          coordsFormat: _currentCoordsFormat,
-          onChanged: (ret) {
+          coordsFormat: _currentCoords.format,
+          onChanged: (BaseCoordinate ret) {
             setState(() {
-              _currentCoordsFormat = ret['coordsFormat'];
-              _currentCoords = ret['value'];
+              _currentCoords = ret;
             });
           },
         ),
@@ -94,25 +96,28 @@ class WaypointProjectionState extends State<WaypointProjection> {
     );
   }
 
-  _calculateOutput() {
+  void _calculateOutput() {
     if (_currentReverse) {
-      _currentValues =
-          reverseProjection(_currentCoords, _currentBearing['value'], _currentDistance, defaultEllipsoid());
-      if (_currentValues == null || _currentValues.length == 0) {
+      if (_currentCoords.toLatLng() == null) {
+        return;
+      }
+
+      _currentValues = reverseProjection(_currentCoords.toLatLng()!, _currentBearing.value, _currentDistance, defaultEllipsoid);
+      if (_currentValues.isEmpty) {
         _currentOutput = [i18n(context, 'coords_waypointprojection_reverse_nocoordinatefound')];
         return;
       }
 
       _currentMapPoints = [
         GCWMapPoint(
-            point: _currentCoords,
+            point: _currentCoords.toLatLng()!,
             markerText: i18n(context, 'coords_waypointprojection_start'),
-            coordinateFormat: _currentCoordsFormat)
+            coordinateFormat: _currentCoords.format)
       ];
 
       _currentMapPolylines = <GCWMapPolyline>[];
 
-      _currentValues.forEach((projection) {
+      for (var projection in _currentValues) {
         var projectionMapPoint = GCWMapPoint(
             point: projection,
             color: COLOR_MAP_CALCULATEDPOINT,
@@ -122,15 +127,15 @@ class WaypointProjectionState extends State<WaypointProjection> {
         _currentMapPoints.add(projectionMapPoint);
 
         _currentMapPolylines.add(GCWMapPolyline(points: [projectionMapPoint, _currentMapPoints[0]]));
-      });
+      }
     } else {
-      _currentValues = [projection(_currentCoords, _currentBearing['value'], _currentDistance, defaultEllipsoid())];
+      _currentValues = [projection(_currentCoords.toLatLng()!, _currentBearing.value, _currentDistance, defaultEllipsoid)];
 
       _currentMapPoints = [
         GCWMapPoint(
-            point: _currentCoords,
+            point: _currentCoords.toLatLng()!,
             markerText: i18n(context, 'coords_waypointprojection_start'),
-            coordinateFormat: _currentCoordsFormat),
+            coordinateFormat: _currentCoords.format),
         GCWMapPoint(
             point: _currentValues[0],
             color: COLOR_MAP_CALCULATEDPOINT,
@@ -143,8 +148,8 @@ class WaypointProjectionState extends State<WaypointProjection> {
       ];
     }
 
-    _currentOutput = _currentValues.map((projection) {
-      return formatCoordOutput(projection, _currentOutputFormat, defaultEllipsoid());
+    _currentOutput = _currentValues.map((LatLng value) {
+      return formatCoordOutput(value, _currentOutputFormat, defaultEllipsoid);
     }).toList();
   }
 }

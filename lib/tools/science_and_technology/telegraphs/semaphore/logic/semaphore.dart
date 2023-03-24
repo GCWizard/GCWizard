@@ -1,7 +1,8 @@
+import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/constants.dart';
 
-final Map<String, List<String>> CODEBOOK_SEMAPHORE = {
+const Map<String, List<String>> _CODEBOOK_SEMAPHORE = {
   'A': ['l4', 'r5'],
   'B': ['l3', 'r5'],
   'C': ['l2', 'r5'],
@@ -47,7 +48,7 @@ final Map<String, List<String>> CODEBOOK_SEMAPHORE = {
   'symboltables_semaphore_rest': ['l5', 'r5'],
 };
 
-final Map<String, String> LETTER2DIGIT = {
+const Map<String, String> _LETTER2DIGIT = {
   '1': 'A',
   '2': 'B',
   '3': 'C',
@@ -60,11 +61,11 @@ final Map<String, String> LETTER2DIGIT = {
   '0': 'K',
 };
 
-final Map<String, String> DIGIT2LETTER = switchMapKeyValue(LETTER2DIGIT);
+final Map<String, String> _DIGIT2LETTER = switchMapKeyValue(_LETTER2DIGIT);
 
-final NUMBER = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
+const _NUMBER = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
 
-final LETTER = {
+const _LETTER = {
   'A',
   'B',
   'C',
@@ -93,53 +94,50 @@ final LETTER = {
   'Z'
 };
 
-List<List<String>> encodeSemaphore(String input) {
-  if (input == null) return [];
-
+Segments encodeSemaphore(String input) {
   List<String> inputs = input.toUpperCase().split('');
   List<List<String>> result = [];
   bool number_follows = false;
   bool letter_follows = false;
   for (int i = 0; i < inputs.length; i++) {
-    if (LETTER.contains(inputs[i]) && !letter_follows) {
+    if (_LETTER.contains(inputs[i]) && !letter_follows) {
       letter_follows = true;
       number_follows = false;
-      result.add(CODEBOOK_SEMAPHORE['symboltables_semaphore_letters_following']);
+      result.add(_CODEBOOK_SEMAPHORE['symboltables_semaphore_letters_following']!);
     }
-    if (NUMBER.contains(inputs[i]) && !number_follows) {
+    if (_NUMBER.contains(inputs[i]) && !number_follows) {
       number_follows = true;
       letter_follows = false;
-      result.add(CODEBOOK_SEMAPHORE['symboltables_semaphore_numerals_following']);
+      result.add(_CODEBOOK_SEMAPHORE['symboltables_semaphore_numerals_following']!);
     }
-    if (CODEBOOK_SEMAPHORE[inputs[i]] != null) result.add(CODEBOOK_SEMAPHORE[inputs[i]]);
+    if (_CODEBOOK_SEMAPHORE[inputs[i]] != null) result.add(_CODEBOOK_SEMAPHORE[inputs[i]]!);
   }
-  return result;
+  return Segments(displays: result);
 }
 
-Map<String, dynamic> decodeSemaphore(List<String> inputs) {
-  if (inputs == null || inputs.length == 0) return {'displays': <List<String>>[], 'chars': []};
+SegmentsChars decodeSemaphore(List<String> inputs) {
+  if (inputs.isEmpty) return SegmentsChars(displays: <List<String>>[], chars: []);
 
   var displays = <List<String>>[];
   var segment = <String>[];
-  bool number_follows = false;
   bool letter_follows = true;
 
-  Map<List<String>, String> CODEBOOK = switchMapKeyValue(CODEBOOK_SEMAPHORE);
+  Map<List<String>, String> CODEBOOK = switchMapKeyValue(_CODEBOOK_SEMAPHORE);
 
-  inputs.forEach((element) {
+  for (var element in inputs) {
     segment = _stringToSegment(element);
     displays.add(segment);
-  });
+  }
 
-  List<String> text = inputs.where((input) => input != null).map((input) {
+  List<String> text = inputs.map((input) {
     var char = '';
     var charH = '';
-    var symbol = '';
+    String symbol = '';
 
     if (CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] == null) {
       char = char + UNKNOWN_ELEMENT;
     } else {
-      symbol = CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()];
+      symbol = CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ?? '';
       if (symbol == 'symboltables_semaphore_letters_following' ||
           symbol == 'symboltables_semaphore_numerals_following' ||
           symbol == 'symboltables_semaphore_cancel' ||
@@ -148,11 +146,9 @@ Map<String, dynamic> decodeSemaphore(List<String> inputs) {
         switch (symbol) {
           case 'symboltables_semaphore_letters_following':
             if (letter_follows) char = char + 'J';
-            number_follows = false;
             letter_follows = true;
             break;
           case 'symboltables_semaphore_numerals_following':
-            number_follows = true;
             letter_follows = false;
             break;
           case 'symboltables_semaphore_rest':
@@ -164,23 +160,26 @@ Map<String, dynamic> decodeSemaphore(List<String> inputs) {
             break;
         }
       } else {
-        if (letter_follows) if (LETTER.contains(symbol))
+        if (letter_follows) {
+          if (_LETTER.contains(symbol)) {
+            charH = symbol;
+          } else {
+            charH = _LETTER2DIGIT[symbol]!;
+          }
+        } else if (_NUMBER.contains(symbol)) {
           charH = symbol;
-        else
-          charH = LETTER2DIGIT[symbol];
-        else if (NUMBER.contains(symbol))
-          charH = symbol;
-        else
-          charH = DIGIT2LETTER[symbol];
+        } else {
+          charH = _DIGIT2LETTER[symbol]!;
+        }
 
-        if (charH != null) char = char + charH;
+        char = char + charH;
       }
     }
 
     return char;
   }).toList();
 
-  return {'displays': displays, 'chars': text};
+  return SegmentsChars(displays: displays, chars: text);
 }
 
 List<String> _stringToSegment(String input) {

@@ -1,6 +1,6 @@
 import 'package:gc_wizard/tools/science_and_technology/astronomy/_common/logic/astronomy_constants.dart';
 
-String getAstrologicalSign(AstrologicalSign sign) {
+String? getAstrologicalSign(AstrologicalSign sign) {
   switch (sign) {
     case AstrologicalSign.ARIES:
       return 'astronomy_signs_aries';
@@ -31,7 +31,7 @@ String getAstrologicalSign(AstrologicalSign sign) {
   }
 }
 
-String getMoonPhase(MoonPhase phase) {
+String? getMoonPhase(MoonPhase phase) {
   switch (phase) {
     case MoonPhase.NEW_MOON:
       return 'astronomy_moonphase_newmoon';

@@ -3,9 +3,7 @@ import 'package:gc_wizard/tools/science_and_technology/combinatorics/combination
 
 void main() {
   group("Combinatorics.Combinations.generateCombinations:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'avoidDuplicates': true, 'expectedOutput' : []},
-      {'input' : null, 'avoidDuplicates': false, 'expectedOutput' : []},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'avoidDuplicates': true, 'expectedOutput' : []},
       {'input' : '', 'avoidDuplicates': false, 'expectedOutput' : []},
 
@@ -15,11 +13,11 @@ void main() {
       {'input' : 'AbbC', 'avoidDuplicates': false, 'expectedOutput' : ['A', 'b', 'b', 'C', 'Ab', 'Ab', 'AC', 'bb', 'bC', 'bC', 'Abb', 'AbC', 'AbC', 'bbC', 'AbbC']},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, avoidDuplicates: ${elem['avoidDuplicates']}', () {
-        var _actual = generateCombinations(elem['input'], avoidDuplicates: elem['avoidDuplicates']);
+        var _actual = generateCombinations(elem['input'] as String, avoidDuplicates: elem['avoidDuplicates'] as bool);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 }

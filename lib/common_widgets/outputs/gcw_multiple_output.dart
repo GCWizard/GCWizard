@@ -4,18 +4,16 @@ import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
 
 class GCWMultipleOutput extends StatefulWidget {
-  final List<dynamic> children;
+  final List<Object?> children;
+  final String? title;
   final bool suppressDefaultTitle;
-  final Widget trailing;
-  final Function onExportCoordinates;
-  final String title;
+  final Widget? trailing;
 
   const GCWMultipleOutput(
-      {Key key,
-      @required this.children,
-      this.suppressDefaultTitle: false,
+      {Key? key,
+      required this.children,
+      this.suppressDefaultTitle = false,
       this.trailing,
-      this.onExportCoordinates,
       this.title})
       : super(key: key);
 
@@ -34,9 +32,10 @@ class _GCWMultipleOutputState extends State<GCWMultipleOutput> {
       );
     }).toList();
 
-    if (!widget.suppressDefaultTitle)
+    if (!widget.suppressDefaultTitle) {
       children.insert(
-          0, GCWTextDivider(text: this.widget.title ?? i18n(context, 'common_output'), trailing: widget.trailing));
+          0, GCWTextDivider(text: widget.title ?? i18n(context, 'common_output'), trailing: widget.trailing));
+    }
 
     return Column(children: children);
   }

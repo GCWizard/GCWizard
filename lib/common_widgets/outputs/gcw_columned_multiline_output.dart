@@ -6,26 +6,28 @@ import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 
 class GCWColumnedMultilineOutput extends StatefulWidget {
-  final List<List<dynamic>> data;
+  //TODO: Is input data type correctly defined? Is there a better way than List<List<...>>? Own return type?
+  // -> I found lists with different types (example -> blood_alcohol -> dynamic list)
+  final List<List<Object?>> data;
   final List<int> flexValues;
-  final int copyColumn;
+  final int? copyColumn;
   final bool suppressCopyButtons;
   final bool hasHeader;
   final bool copyAll;
-  final List<Function> tappables;
+  final List<void Function()>? tappables;
   final double fontSize;
-  final List<Widget> firstRows;
+  final List<Widget>? firstRows;
 
   const GCWColumnedMultilineOutput(
-      {Key key,
-        @required this.data,
+      {Key? key,
+        required this.data,
         this.flexValues = const [],
         this.copyColumn,
-        this.suppressCopyButtons: false,
-        this.hasHeader: false,
-        this.copyAll: false,
+        this.suppressCopyButtons = false,
+        this.hasHeader = false,
+        this.copyAll = false,
         this.tappables,
-        this.fontSize,
+        this.fontSize = 0.0,
         this.firstRows})
       : super(key: key);
 
@@ -38,7 +40,7 @@ class _GCWColumnedMultilineOutputState extends State<GCWColumnedMultilineOutput>
   Widget build(BuildContext context) {
 
     var rows = _columnedMultiLineOutputRows();
-    if (widget.firstRows != null) rows.insertAll(0, widget.firstRows);
+    if (widget.firstRows != null) rows.insertAll(0, widget.firstRows!);
 
     return Column(
       children: rows
@@ -52,7 +54,7 @@ class _GCWColumnedMultilineOutputState extends State<GCWColumnedMultilineOutput>
     var copyColumn = widget.copyColumn;
 
     int index = 0;
-    return widget.data.where((row) => row != null).map((rowData) {
+    return widget.data.map((rowData) {
       Widget output;
 
       var columns = rowData
@@ -61,39 +63,43 @@ class _GCWColumnedMultilineOutputState extends State<GCWColumnedMultilineOutput>
             var textStyle = gcwTextStyle(fontSize: widget.fontSize);
             if (isFirst && widget.hasHeader) textStyle = textStyle.copyWith(fontWeight: FontWeight.bold);
 
-            var child;
+            Widget child;
 
             if (column is Widget) {
               child = column;
             } else {
-              if (widget.tappables == null || widget.tappables.isEmpty) {
+              if (widget.tappables == null || widget.tappables!.isEmpty) {
                 child = GCWText(text: column != null ? column.toString() : '', style: textStyle);
               } else {
                 child = Text(column != null ? column.toString() : '', style: textStyle);
               }
             }
 
-            return MapEntry(index, Expanded(child: child, flex: index < widget.flexValues.length ? widget.flexValues[index] : 1));
+            return MapEntry(index, Expanded(flex: index < widget.flexValues.length ? widget.flexValues[index] : 1, child: child));
           })
           .values
           .toList();
 
-      if (copyColumn == null) copyColumn = rowData.length - 1;
-      var copyText = rowData[copyColumn] is Widget ? null : rowData[copyColumn].toString();
-      if (isFirst && widget.hasHeader && widget.copyAll) {
-        copyText = '';
-        widget.data.where((row) => row != null).skip(1).forEach((dataRow) {
-          copyText += dataRow[copyColumn].toString() + '\n';
-        });
+      String? copyText;
+      copyColumn ??= rowData.length - 1;
+      if (copyColumn != null && copyColumn! >= 0) {
+        copyText = rowData[copyColumn!] is Widget ? null : rowData[copyColumn!].toString();
+        if (isFirst && widget.hasHeader && widget.copyAll) {
+          copyText = '';
+          widget.data.skip(1).forEach((dataRow) {
+            copyText = (copyText ?? '') + dataRow[copyColumn!].toString() + '\n';
+          });
+        }
       }
 
       var row = Container(
+        margin: const EdgeInsets.only(top: 6, bottom: 6),
         child: Row(
           children: [
             Expanded(
               child: Row(children: columns),
             ),
-            context == null || copyText == null || copyText.length == 0
+            copyText == null || copyText!.isEmpty
                 ? Container(width: 21.0)
                 : Container(
                     child: (((isFirst && widget.hasHeader) & !widget.copyAll) || widget.suppressCopyButtons)
@@ -103,13 +109,12 @@ class _GCWColumnedMultilineOutputState extends State<GCWColumnedMultilineOutput>
                             iconSize: 14,
                             size: IconButtonSize.TINY,
                             onPressed: () {
-                              insertIntoGCWClipboard(context, copyText);
+                              insertIntoGCWClipboard(context, copyText!);
                             },
                   )     ,
             )
           ],
         ),
-        margin: EdgeInsets.only(top: 6, bottom: 6),
       );
 
       if (odd) {
@@ -123,8 +128,8 @@ class _GCWColumnedMultilineOutputState extends State<GCWColumnedMultilineOutput>
 
       if (widget.tappables != null) {
         return InkWell(
+          onTap: widget.tappables![index++],
           child: output,
-          onTap: widget.tappables[index++],
         );
       } else {
         return output;

@@ -20,13 +20,14 @@ const _EUROBRAILLE_RELATIVE_DISPLAY_WIDTH = 51;
 const _EUROBRAILLE_RELATIVE_DISPLAY_HEIGHT = 130;
 const _EUROBRAILLE_RADIUS = 12;
 
-class BrailleEuroSegmentDisplay extends NSegmentDisplay {
-  final Map<String, bool> segments;
-  final bool readOnly;
-  final Function onChanged;
-  final bool tapeStyle;
 
-  BrailleEuroSegmentDisplay({Key key, this.segments, this.readOnly: false, this.onChanged, this.tapeStyle: false})
+class BrailleEuroSegmentDisplay extends NSegmentDisplay {
+
+  BrailleEuroSegmentDisplay({
+      Key? key,
+      required Map<String, bool> segments,
+      bool readOnly = false,
+      void Function(Map<String, bool>)? onChanged})
       : super(
             key: key,
             initialSegments: _INITIAL_SEGMENTS,
@@ -52,7 +53,7 @@ class BrailleEuroSegmentDisplay extends NSegmentDisplay {
               };
 
               circles.forEach((key, value) {
-                paint.color = currentSegments[key] ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
+                paint.color = segmentActive(currentSegments, key) ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
 
                 var pointSize = size.height / _EUROBRAILLE_RELATIVE_DISPLAY_HEIGHT * _EUROBRAILLE_RADIUS;
 
@@ -61,7 +62,7 @@ class BrailleEuroSegmentDisplay extends NSegmentDisplay {
                         size.height / _EUROBRAILLE_RELATIVE_DISPLAY_HEIGHT * value[1]),
                     size.height / _EUROBRAILLE_RELATIVE_DISPLAY_HEIGHT * _EUROBRAILLE_RADIUS,
                     paint, onTapDown: (tapDetail) {
-                  setSegmentState(key, !currentSegments[key]);
+                  setSegmentState(key, !segmentActive(currentSegments, key));
                 });
 
                 if (size.height < 50) return;

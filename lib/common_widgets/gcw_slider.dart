@@ -5,22 +5,22 @@ import 'package:gc_wizard/common_widgets/gcw_text.dart';
 
 class GCWSlider extends StatefulWidget {
   final String title;
-  final Function onChanged;
-  final Function onChangeEnd;
+  final void Function(double) onChanged;
+  final void Function(double)? onChangeEnd;
   final double value;
   final double min;
   final double max;
   final bool suppressReset;
 
   const GCWSlider(
-      {Key key,
-      this.title,
-      this.value,
-      this.onChanged,
+      {Key? key,
+      required this.title,
+      required this.value,
+      required this.onChanged,
       this.onChangeEnd,
-      this.min,
-      this.max,
-      this.suppressReset: false})
+      required this.min,
+      required this.max,
+      this.suppressReset = false})
       : super(key: key);
 
   @override
@@ -28,9 +28,9 @@ class GCWSlider extends StatefulWidget {
 }
 
 class _GCWSliderState extends State<GCWSlider> {
-  var _currentValue;
+  late double _currentValue;
 
-  var _initialValue;
+  late double _initialValue;
 
   @override
   void initState() {
@@ -43,27 +43,27 @@ class _GCWSliderState extends State<GCWSlider> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        if ((widget.title ?? '').length > 0) Expanded(child: GCWText(text: widget.title + ':')),
+        if (widget.title.isNotEmpty) Expanded(child: GCWText(text: widget.title + ':')),
         Expanded(
+          flex: 3,
           child: Slider(
-            value: widget.value ?? _currentValue,
+            value: widget.value,
             min: widget.min,
             max: widget.max,
             onChanged: (value) {
               setState(() {
                 _currentValue = value;
-                if (widget.onChanged != null) widget.onChanged(_currentValue);
+                widget.onChanged(_currentValue);
               });
             },
             onChangeEnd: (value) {
               setState(() {
-                if (widget.onChangeEnd != null) widget.onChangeEnd(_currentValue);
+                if (widget.onChangeEnd != null) widget.onChangeEnd!(_currentValue);
               });
             },
             activeColor: themeColors().switchThumb2(),
             inactiveColor: themeColors().switchTrack2(),
           ),
-          flex: 3,
         ),
         if (!widget.suppressReset)
           GCWIconButton(
@@ -72,8 +72,8 @@ class _GCWSliderState extends State<GCWSlider> {
             onPressed: () {
               setState(() {
                 _currentValue = _initialValue;
-                if (widget.onChanged != null) widget.onChanged(_currentValue);
-                if (widget.onChangeEnd != null) widget.onChangeEnd(_currentValue);
+                widget.onChanged(_currentValue);
+                if (widget.onChangeEnd != null) widget.onChangeEnd!(_currentValue);
               });
             },
           )

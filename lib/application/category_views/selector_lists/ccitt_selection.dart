@@ -14,26 +14,31 @@ import 'package:gc_wizard/tools/symbol_tables/_common/widget/symbol_table.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class CCITTSelection extends GCWSelection {
+  const CCITTSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
-      if (className(element.tool) == className(SymbolTable())) if ((element.tool as SymbolTable).symbolKey ==
-              'ita1_1926' ||
-          (element.tool as SymbolTable).symbolKey == 'ita1_1929' ||
-          (element.tool as SymbolTable).symbolKey == 'ita2_1929' ||
-          (element.tool as SymbolTable).symbolKey == 'ita3_1931') return true;
+      if (className(element.tool) == className(const SymbolTable())) {
+        if ((element.tool as SymbolTable).symbolKey == 'ita1_1926' ||
+            (element.tool as SymbolTable).symbolKey == 'ita1_1929' ||
+            (element.tool as SymbolTable).symbolKey == 'ita2_1929' ||
+            (element.tool as SymbolTable).symbolKey == 'ita3_1931') {
+          return true;
+        }
+      }
 
       return [
-        className(CCITT1()),
-        className(CCITT2()),
-        className(CCITT3()),
-        className(CCITT4()),
-        className(CCITT5()),
-        className(CCIR476()),
-        className(TeletypewriterPunchTape()),
+        className(const CCITT1()),
+        className(const CCITT2()),
+        className(const CCITT3()),
+        className(const CCITT4()),
+        className(const CCITT5()),
+        className(const CCIR476()),
+        className(const TeletypewriterPunchTape()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

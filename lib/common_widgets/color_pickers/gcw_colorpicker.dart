@@ -5,17 +5,17 @@ import 'package:gc_wizard/application/theme/theme_colors.dart';
 part 'package:gc_wizard/common_widgets/color_pickers/external_libs/fluttercandies.flutter_hsvcolor_picker/hsv_picker.dart';
 
 class GCWColorPicker extends StatefulWidget {
-  final Function onChanged;
+  final void Function(HSVColor) onChanged;
   final HSVColor hsvColor;
 
-  const GCWColorPicker({Key key, @required this.hsvColor, @required this.onChanged}) : super(key: key);
+  const GCWColorPicker({Key? key, required this.hsvColor, required this.onChanged}) : super(key: key);
 
   @override
   GCWColorPickerState createState() => GCWColorPickerState();
 }
 
 class GCWColorPickerState extends State<GCWColorPicker> {
-  HSVColor _currentColor;
+  late HSVColor _currentColor;
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +29,10 @@ class GCWColorPickerState extends State<GCWColorPicker> {
           decoration: BoxDecoration(
             border: Border.all(color: themeColors().mainFont(), width: 1),
             shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.all(Radius.circular(3 * ROUNDED_BORDER_RADIUS)),
+            borderRadius: const BorderRadius.all(Radius.circular(3 * ROUNDED_BORDER_RADIUS)),
             color: _currentColor.toColor(),
           ),
-          margin: EdgeInsets.only(right: 7 * DEFAULT_MARGIN),
+          margin: const EdgeInsets.only(right: 7 * DEFAULT_MARGIN),
         ),
         Expanded(
             child: _HSVPicker(

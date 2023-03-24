@@ -1,19 +1,15 @@
 import 'package:diacritic/diacritic.dart';
 
-List<int> _validateAndSanitizeList(List<int> list) {
-  if (list == null) return null;
-
-  list.removeWhere((element) => element == null);
-
+List<int>? _validateAndSanitizeList(List<int> list) {
   if (list.isEmpty) return null;
 
   return list;
 }
 
 bool _containsNegativeValue(List<int> list) {
-  if (list == null) return false;
-
-  for (int i = 0; i < list.length; i++) if (list[i] != null && list[i] < 0) return true;
+  for (int i = 0; i < list.length; i++) {
+    if (list[i] < 0) return true;
+  }
 
   return false;
 }
@@ -36,12 +32,12 @@ List<BigInt> _intListToIntDigitList(List<BigInt> list) {
       .toList()
       .join()
       .split('')
-      .map((element) => BigInt.tryParse(element))
+      .map((element) => BigInt.tryParse(element) ?? BigInt.zero)
       .toList();
 }
 
 List<BigInt> _numberToIntDigitList(BigInt number) {
-  return number.toString().split('').map((element) => BigInt.tryParse(element)).toList();
+  return number.toString().split('').map((element) => BigInt.tryParse(element) ?? BigInt.zero).toList();
 }
 
 BigInt _crossSumNumber(BigInt number) {
@@ -83,14 +79,14 @@ BigInt sumCrossSumIterated(List<int> list) {
   return _crossSumNumberIterated(s);
 }
 
-BigInt sumCrossSumAlternatedBackward(List<int> list) {
+BigInt? sumCrossSumAlternatedBackward(List<int> list) {
   if (_containsNegativeValue(list)) return null;
 
   BigInt s = sum(list);
   return _crossSumAlternatedBackward([s]);
 }
 
-BigInt sumCrossSumAlternatedForward(List<int> list) {
+BigInt? sumCrossSumAlternatedForward(List<int> list) {
   if (_containsNegativeValue(list)) return null;
 
   BigInt s = sum(list);
@@ -102,14 +98,14 @@ BigInt productCrossSumIterated(List<int> list) {
   return _crossSumNumberIterated(p);
 }
 
-BigInt productCrossSumAlternatedBackward(List<int> list) {
+BigInt? productCrossSumAlternatedBackward(List<int> list) {
   if (_containsNegativeValue(list)) return null;
 
   BigInt p = product(list);
   return _crossSumAlternatedBackward([p]);
 }
 
-BigInt productCrossSumAlternatedForward(List<int> list) {
+BigInt? productCrossSumAlternatedForward(List<int> list) {
   if (_containsNegativeValue(list)) return null;
 
   BigInt p = product(list);
@@ -164,7 +160,7 @@ BigInt _crossSumAlternatedForward(List<BigInt> list) {
   });
 }
 
-BigInt crossSumAlternatedForward(List<int> list) {
+BigInt? crossSumAlternatedForward(List<int> list) {
   if (_containsNegativeValue(list)) return null;
 
   if (_validateAndSanitizeList(list) == null) return BigInt.zero;
@@ -180,7 +176,7 @@ BigInt _crossSumAlternatedBackward(List<BigInt> list) {
   });
 }
 
-BigInt crossSumAlternatedBackward(List<int> list) {
+BigInt? crossSumAlternatedBackward(List<int> list) {
   if (_containsNegativeValue(list)) return null;
 
   if (_validateAndSanitizeList(list) == null) return BigInt.zero;
@@ -188,7 +184,7 @@ BigInt crossSumAlternatedBackward(List<int> list) {
   return _crossSumAlternatedBackward(list.map((e) => BigInt.from(e)).toList());
 }
 
-BigInt crossProductAlternated(List<int> list) {
+BigInt? crossProductAlternated(List<int> list) {
   if (_containsNegativeValue(list)) return null;
 
   if (_validateAndSanitizeList(list) == null) return BigInt.zero;
@@ -217,25 +213,17 @@ BigInt crossProduct(List<int> list) {
 }
 
 int countCharacters(List<int> list) {
-  if (list == null) return 0;
-
   return list.length;
 }
 
 int countDistinctCharacters(List<int> list) {
-  if (list == null) return 0;
-
   return list.toSet().length;
 }
 
 int countLetters(String text) {
-  if (text == null) return 0;
-
   return removeDiacritics(text).toUpperCase().replaceAll(RegExp('[^A-Zß\u1e9e]'), '').length;
 }
 
 int countDigits(String text) {
-  if (text == null) return 0;
-
-  return text.replaceAll(RegExp(r'[^0-9]'), '').length;
+  return text.replaceAll(RegExp(r'\D'), '').length;
 }

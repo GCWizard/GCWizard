@@ -10,15 +10,15 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/gauss_weber_te
 class GaussWeberTelegraph extends StatefulWidget {
   final GaussWeberTelegraphMode mode;
 
-  GaussWeberTelegraph({Key key, this.mode: GaussWeberTelegraphMode.GAUSS_WEBER_ORIGINAL}) : super(key: key);
+  const GaussWeberTelegraph({Key? key, this.mode = GaussWeberTelegraphMode.GAUSS_WEBER_ORIGINAL}) : super(key: key);
 
   @override
   GaussWeberTelegraphState createState() => GaussWeberTelegraphState();
 }
 
 class GaussWeberTelegraphState extends State<GaussWeberTelegraph> {
-  var _decodeController;
-  var _encodeController;
+  late TextEditingController _decodeController;
+  late TextEditingController _encodeController;
 
   String _currentDecodeInput = '';
   String _currentEncodeInput = '';
@@ -47,7 +47,7 @@ class GaussWeberTelegraphState extends State<GaussWeberTelegraph> {
     return Column(
       children: <Widget>[
         if (widget.mode == GaussWeberTelegraphMode.WHEATSTONE_COOKE_5)
-          GCWDropDown(
+          GCWDropDown<GaussWeberTelegraphMode>(
             value: _currentNeedleNumber,
             onChanged: (value) {
               setState(() {
@@ -57,8 +57,8 @@ class GaussWeberTelegraphState extends State<GaussWeberTelegraph> {
             items: WHEATSTONECOOKENEEDLENUMBER.entries.map((mode) {
               return GCWDropDownMenuItem(
                   value: mode.key,
-                  child: i18n(context, mode.value['title']),
-                  subtitle: mode.value['subtitle'] != null ? i18n(context, mode.value['subtitle']) : null);
+                  child: i18n(context, mode.value.title),
+                  subtitle: mode.value.subtitle.isNotEmpty ? i18n(context, mode.value.subtitle) : null);
             }).toList(),
           ),
         _currentMode == GCWSwitchPosition.left
@@ -91,7 +91,7 @@ class GaussWeberTelegraphState extends State<GaussWeberTelegraph> {
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     if (widget.mode == GaussWeberTelegraphMode.GAUSS_WEBER_ORIGINAL) {
       if (_currentMode == GCWSwitchPosition.left) {
         var outputOriginal =
@@ -116,17 +116,19 @@ class GaussWeberTelegraphState extends State<GaussWeberTelegraph> {
                 .replaceAll('telegraph_schillingcanstatt_finish', i18n(context, 'telegraph_schillingcanstatt_finish')));
       }
     } else {
-      var output;
+      String output;
       if (_currentMode == GCWSwitchPosition.left) {
-        if (widget.mode == GaussWeberTelegraphMode.WHEATSTONE_COOKE_5)
+        if (widget.mode == GaussWeberTelegraphMode.WHEATSTONE_COOKE_5) {
           output = encodeGaussWeberTelegraph(_currentEncodeInput, _currentNeedleNumber);
-        else
+        } else {
           output = encodeGaussWeberTelegraph(_currentEncodeInput, widget.mode);
+        }
       } else {
-        if (widget.mode == GaussWeberTelegraphMode.WHEATSTONE_COOKE_5)
+        if (widget.mode == GaussWeberTelegraphMode.WHEATSTONE_COOKE_5) {
           output = decodeGaussWeberTelegraph(_currentDecodeInput, _currentNeedleNumber);
-        else
+        } else {
           output = decodeGaussWeberTelegraph(_currentDecodeInput, widget.mode);
+        }
         output = output
             .replaceAll('telegraph_schillingcanstatt_stop', i18n(context, 'telegraph_schillingcanstatt_stop'))
             .replaceAll('telegraph_schillingcanstatt_goon', i18n(context, 'telegraph_schillingcanstatt_goon'))

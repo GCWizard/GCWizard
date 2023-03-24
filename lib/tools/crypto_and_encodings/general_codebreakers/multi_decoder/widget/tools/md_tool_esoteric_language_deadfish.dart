@@ -12,8 +12,12 @@ const MDT_ESOTERIC_LANGUAGES_DEADFISH_OPTION_IDSO = 'deadfish_mode_left';
 const MDT_ESOTERIC_LANGUAGES_DEADFISH_OPTION_XKCD = 'deadfish_mode_right';
 
 class MultiDecoderToolEsotericLanguageDeadfish extends AbstractMultiDecoderTool {
-  MultiDecoderToolEsotericLanguageDeadfish(
-      {Key key, int id, String name, Map<String, dynamic> options, BuildContext context})
+  MultiDecoderToolEsotericLanguageDeadfish({
+    Key? key,
+    required int id,
+    required String name,
+    required Map<String, Object?> options,
+    required BuildContext context})
       : super(
             key: key,
             id: id,
@@ -23,24 +27,25 @@ class MultiDecoderToolEsotericLanguageDeadfish extends AbstractMultiDecoderTool 
             onDecode: (String input, String key) {
               try {
                 var decodeable = input;
-                if (options[MDT_ESOTERIC_LANGUAGE_DEADFISH_OPTION_MODE] ==
-                    MDT_ESOTERIC_LANGUAGES_DEADFISH_OPTION_XKCD) //XKCD
+                var option = checkStringFormatOrDefaultOption(MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_DEADFISH, options, MDT_ESOTERIC_LANGUAGE_DEADFISH_OPTION_MODE);
+                if (option == MDT_ESOTERIC_LANGUAGES_DEADFISH_OPTION_XKCD) {
                   decodeable = decodeable
                       .toLowerCase()
                       .replaceAll(RegExp(r'[iso]'), '')
                       .replaceAll('x', 'i')
                       .replaceAll('k', 's')
                       .replaceAll('c', 'o');
+                }
 
                 var output = decodeDeadfish(decodeable);
-                return output?.trim().isEmpty ? null : output;
+                return output.trim().isEmpty ? null : output;
               } catch (e) {}
               return null;
             },
             options: options,
             configurationWidget: MultiDecoderToolConfiguration(widgets: {
-              MDT_ESOTERIC_LANGUAGE_DEADFISH_OPTION_MODE: GCWStatefulDropDown(
-                value: options[MDT_ESOTERIC_LANGUAGE_DEADFISH_OPTION_MODE],
+              MDT_ESOTERIC_LANGUAGE_DEADFISH_OPTION_MODE: GCWStatefulDropDown<String>(
+                value: checkStringFormatOrDefaultOption(MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_DEADFISH, options, MDT_ESOTERIC_LANGUAGE_DEADFISH_OPTION_MODE),
                 onChanged: (newValue) {
                   options[MDT_ESOTERIC_LANGUAGE_DEADFISH_OPTION_MODE] = newValue;
                 },

@@ -22,14 +22,14 @@ enum _PietOps {
 }
 
 class _BaseOperations {
-  _PietStack _stack;
-  Function _getExitedBlock;
-  Function _toggleDirectionPointer;
-  Function _toggleCodelChooser;
-  _PietSession _session;
+  late _PietStack _stack;
+  late _PietBlock Function() _getExitedBlock;
+  late void Function(int) _toggleDirectionPointer;
+  late void Function(int) _toggleCodelChooser;
+  late _PietSession _session;
 
-  _BaseOperations(_PietStack stack, _PietSession session, Function getExitedBlock, Function toggleDirectionPointer,
-      Function toggleCodelChooser) {
+  _BaseOperations(_PietStack stack, _PietSession session, _PietBlock Function() getExitedBlock, void Function(int) toggleDirectionPointer,
+      void Function(int) toggleCodelChooser) {
     _stack = stack;
     _session = session;
     _getExitedBlock = getExitedBlock;
@@ -42,7 +42,6 @@ class _BaseOperations {
   /// </summary>
   void push() {
     _PietBlock exitedBlock = _getExitedBlock();
-    if (exitedBlock == null) return;
 
     _stack.push(exitedBlock.blockCount);
   }
@@ -50,7 +49,7 @@ class _BaseOperations {
   /// <summary>
   /// Pops the top value off the stack and discards it
   /// </summary>
-  int pop() {
+  int? pop() {
     return _stack.pop();
   }
 
@@ -71,7 +70,7 @@ class _BaseOperations {
   }
 
   int mod() {
-    _stack.mod();
+    return _stack.mod();
   }
 
   int not() {
@@ -107,10 +106,11 @@ class _BaseOperations {
 
   void inChar() {
     var val = _session.readChar();
-    if (val != null && val.isNotEmpty)
-      val.runes.forEach((char) {
+    if (val != null && val.isNotEmpty) {
+      for (var char in val.runes) {
         _stack.push(char);
-      });
+      }
+    }
   }
 
   void outNumeric() {
@@ -125,23 +125,23 @@ class _BaseOperations {
 
   Map<_PietOps, void Function()> getMap() {
     return {
-      _PietOps.Push: this.push,
-      _PietOps.Pop: this.pop,
-      _PietOps.Add: this.add,
-      _PietOps.Subtract: this.subtract,
-      _PietOps.Multiply: this.multiply,
-      _PietOps.Divide: this.divide,
-      _PietOps.Mod: this.mod,
-      _PietOps.Not: this.not,
-      _PietOps.Greater: this.greater,
-      _PietOps.Pointer: this.pointer,
-      _PietOps.Switch: this.switch_,
-      _PietOps.Duplicate: this.duplicate,
-      _PietOps.Roll: this.roll,
-      _PietOps.InputChar: this.inChar,
-      _PietOps.InputNumber: this.inNumber,
-      _PietOps.OutputNumber: this.outNumeric,
-      _PietOps.OutputChar: this.outChar
+      _PietOps.Push: push,
+      _PietOps.Pop: pop,
+      _PietOps.Add: add,
+      _PietOps.Subtract: subtract,
+      _PietOps.Multiply: multiply,
+      _PietOps.Divide: divide,
+      _PietOps.Mod: mod,
+      _PietOps.Not: not,
+      _PietOps.Greater: greater,
+      _PietOps.Pointer: pointer,
+      _PietOps.Switch: switch_,
+      _PietOps.Duplicate: duplicate,
+      _PietOps.Roll: roll,
+      _PietOps.InputChar: inChar,
+      _PietOps.InputNumber: inNumber,
+      _PietOps.OutputNumber: outNumeric,
+      _PietOps.OutputChar: outChar
     };
   }
 }

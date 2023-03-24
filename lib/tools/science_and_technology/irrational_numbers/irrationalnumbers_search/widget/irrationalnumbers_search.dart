@@ -12,7 +12,7 @@ import 'package:gc_wizard/utils/string_utils.dart';
 class IrrationalNumbersSearch extends StatefulWidget {
   final IrrationalNumber irrationalNumber;
 
-  const IrrationalNumbersSearch({Key key, this.irrationalNumber}) : super(key: key);
+  const IrrationalNumbersSearch({Key? key, required this.irrationalNumber}) : super(key: key);
 
   @override
   IrrationalNumbersSearchState createState() => IrrationalNumbersSearchState();
@@ -20,14 +20,14 @@ class IrrationalNumbersSearch extends StatefulWidget {
 
 class IrrationalNumbersSearchState extends State<IrrationalNumbersSearch> {
   var _currentInput = '';
-  IrrationalNumberCalculator _calculator;
+  late IrrationalNumberCalculator _calculator;
   var _hasWildCards = false;
 
   var _totalCurrentSolutions = 0;
   var _currentSolution = 0;
-  var _controller;
+  late TextEditingController _controller;
 
-  var _errorMessage;
+  String? _errorMessage;
 
   List<IrrationalNumberDecimalOccurence> _solutions = [];
 
@@ -55,9 +55,9 @@ class IrrationalNumbersSearchState extends State<IrrationalNumbersSearch> {
             setState(() {
               _currentInput = ret;
               try {
-                _solutions = _calculator.decimalOccurences(_currentInput.toString());
+                _solutions = _calculator.decimalOccurences(_currentInput);
                 _errorMessage = null;
-              } catch (e) {
+              } on FormatException catch (e) {
                 _errorMessage = e.message;
               }
               _hasWildCards = !isOnlyNumerals(_currentInput);
@@ -70,17 +70,18 @@ class IrrationalNumbersSearchState extends State<IrrationalNumbersSearch> {
     );
   }
 
-  _calculateOutput() {
-    if (_errorMessage != null) return i18n(context, _errorMessage);
+  Object _calculateOutput() {
+    if (_errorMessage != null) return i18n(context, _errorMessage!);
 
     if (_currentInput.isEmpty) return '';
 
     _totalCurrentSolutions = _solutions.length;
 
-    if (_solutions.length == 0) return '';
+    if (_solutions.isEmpty) return '';
 
-    var selector = (_totalCurrentSolutions != null && _totalCurrentSolutions > 1)
+    var selector = (_totalCurrentSolutions > 1)
         ? Container(
+            margin: const EdgeInsets.symmetric(vertical: 5 * DOUBLE_DEFAULT_MARGIN),
             child: Row(
               children: [
                 GCWIconButton(
@@ -107,14 +108,13 @@ class IrrationalNumbersSearchState extends State<IrrationalNumbersSearch> {
                   },
                 ),
               ],
-            ),
-            margin: EdgeInsets.symmetric(vertical: 5 * DOUBLE_DEFAULT_MARGIN))
+            ))
         : Container();
 
     var _solution = _solutions[_currentSolution];
 
     var output = [
-      _hasWildCards ? [i18n(context, 'common_value'), _solution.value] : null,
+      _hasWildCards ? [i18n(context, 'common_value'), _solution.value] : <String>[],
       [i18n(context, 'common_start'), _solution.start],
       [i18n(context, 'common_end'), _solution.end]
     ];
@@ -123,7 +123,7 @@ class IrrationalNumbersSearchState extends State<IrrationalNumbersSearch> {
       selector,
       GCWColumnedMultilineOutput(
         data: output,
-        flexValues: [2, 3]
+        flexValues: const [2, 3]
       )
     ]);
   }

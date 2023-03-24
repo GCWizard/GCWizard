@@ -2,27 +2,31 @@
 // https://trepo.tuni.fi/bitstream/handle/10024/102557/1513599679.pdf?sequence=1&isAllowed=y
 // https://en.wikipedia.org/wiki/Telegraph_code#Edelcrantz_code
 
+// ignore_for_file: equal_keys_in_map
+
+import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
+import 'package:gc_wizard/tools/science_and_technology/teletypewriter/_common/logic/teletypewriter.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/constants.dart';
 
 enum EdelcrantzCodebook { YEAR_1795, YEAR_1808, MUSEUM }
 
-Map<EdelcrantzCodebook, Map<String, String>> MURRAY_CODEBOOK = {
-  EdelcrantzCodebook.YEAR_1795: {
-    'title': 'telegraph_edelcrantz_1795_title',
-    'subtitle': 'telegraph_edelcrantz_1795_description'
-  },
-  EdelcrantzCodebook.YEAR_1808: {
-    'title': 'telegraph_edelcrantz_1808_title',
-    'subtitle': 'telegraph_edelcrantz_1808_description'
-  },
-  EdelcrantzCodebook.MUSEUM: {
-    'title': 'telegraph_edelcrantz_museum_title',
-    'subtitle': 'telegraph_edelcrantz_museum_description'
-  },
+const Map<EdelcrantzCodebook, CodebookConfig> MURRAY_CODEBOOK = {
+  EdelcrantzCodebook.YEAR_1795: CodebookConfig(
+    title: 'telegraph_edelcrantz_1795_title',
+    subtitle: 'telegraph_edelcrantz_1795_description'
+  ),
+  EdelcrantzCodebook.YEAR_1808: CodebookConfig(
+    title: 'telegraph_edelcrantz_1808_title',
+    subtitle: 'telegraph_edelcrantz_1808_description'
+  ),
+  EdelcrantzCodebook.MUSEUM: CodebookConfig(
+    title: 'telegraph_edelcrantz_museum_title',
+    subtitle: 'telegraph_edelcrantz_museum_description'
+  ),
 };
 
-final CODEBOOK_EDELCRANTZ_1795 = {
+const _CODEBOOK_EDELCRANTZ_1795 = {
   '000': ' ',
   '001': '1',
   '002': '2',
@@ -537,7 +541,7 @@ final CODEBOOK_EDELCRANTZ_1795 = {
   '777': ' ',
 };
 
-final CODEBOOK_EDELCRANTZ_1808 = {
+final _CODEBOOK_EDELCRANTZ_1808 = {
   '000': ' ',
   '001': '1',
   '002': '2',
@@ -1092,7 +1096,7 @@ final CODEBOOK_EDELCRANTZ_1808 = {
   '775': 'om',
   '776': 'on',
   '777': ' ',
-  'a001': '',
+  'a000': '',
   'a001': '',
   'a002': '',
   'a003': '',
@@ -1606,7 +1610,7 @@ final CODEBOOK_EDELCRANTZ_1808 = {
   'a777': '',
 };
 
-final CODEBOOK_EDELCRANTZ_MUSEUM = {
+const _CODEBOOK_EDELCRANTZ_MUSEUM = {
   '000': '0',
   '001': '1',
   '002': '2',
@@ -1661,7 +1665,7 @@ final CODEBOOK_EDELCRANTZ_MUSEUM = {
   '300': 'im',
   '301': 'is',
   '302': 'it',
-  '302': 'j',
+  '303': 'j',
   '304': 'ja',
   '305': 'jo',
   '306': 'k',
@@ -1771,111 +1775,111 @@ final CODEBOOK_EDELCRANTZ_MUSEUM = {
 };
 
 String _nightTime(String code) {
-  if (code.startsWith('a'))
+  if (code.startsWith('a')) {
     return ('a' + (777 - int.parse(code.substring(1))).toString().padLeft(3, '0'));
-  else
+  } else {
     return (777 - int.parse(code)).toString().padLeft(3, '0');
+  }
 }
 
-List<List<String>> encodeEdelcrantzTelegraph(String input, EdelcrantzCodebook language, bool daytime) {
-  if (input == null || input == '') return <List<String>>[];
+Segments encodeEdelcrantzTelegraph(String input, EdelcrantzCodebook language, bool daytime) {
+  if (input.isEmpty) return Segments.Empty();
 
   List<List<String>> encodedText = [];
-  var CODEBOOK;
+  Map<String, String> CODEBOOK;
   switch (language) {
     case EdelcrantzCodebook.YEAR_1795:
-      CODEBOOK = switchMapKeyValue(CODEBOOK_EDELCRANTZ_1795);
+      CODEBOOK = switchMapKeyValue(_CODEBOOK_EDELCRANTZ_1795);
       break;
     case EdelcrantzCodebook.YEAR_1808:
-      CODEBOOK = switchMapKeyValue(CODEBOOK_EDELCRANTZ_1808);
+      CODEBOOK = switchMapKeyValue(_CODEBOOK_EDELCRANTZ_1808);
       break;
     case EdelcrantzCodebook.MUSEUM:
-      CODEBOOK = switchMapKeyValue(CODEBOOK_EDELCRANTZ_MUSEUM);
+      CODEBOOK = switchMapKeyValue(_CODEBOOK_EDELCRANTZ_MUSEUM);
       break;
   }
 
   input.split('').forEach((element) {
-    if (CODEBOOK[element] != null) if (daytime)
-      encodedText.add(CODEBOOK[element].split(''));
-    else
-      encodedText.add(_nightTime(CODEBOOK[element]).split(''));
+    if (CODEBOOK[element] != null) {
+      if (daytime) {
+        encodedText.add(CODEBOOK[element]!.split(''));
+      } else {
+        encodedText.add(_nightTime(CODEBOOK[element] ?? '').split(''));
+      }
+    }
   });
-  return encodedText;
+  return Segments(displays: encodedText);
 }
 
-Map<String, dynamic> decodeVisualEdelcrantzTelegraph(List<String> inputs, EdelcrantzCodebook language, bool daytime) {
-  if (inputs == null || inputs.length == 0)
-    return {
-      'displays': <List<String>>[],
-      'text': '',
-    };
+SegmentsText decodeVisualEdelcrantzTelegraph(List<String>? inputs, EdelcrantzCodebook language, bool daytime) {
+  if (inputs == null || inputs.isEmpty) return SegmentsText(displays: [], text: '');
 
   var displays = <List<String>>[];
   var segment = <String>[];
   String text = '';
 
-  var CODEBOOK;
+  Map<String, String> CODEBOOK;
   switch (language) {
     case EdelcrantzCodebook.YEAR_1795:
-      CODEBOOK = CODEBOOK_EDELCRANTZ_1795;
+      CODEBOOK = _CODEBOOK_EDELCRANTZ_1795;
       break;
     case EdelcrantzCodebook.YEAR_1808:
-      CODEBOOK = CODEBOOK_EDELCRANTZ_1808;
+      CODEBOOK = _CODEBOOK_EDELCRANTZ_1808;
       break;
     case EdelcrantzCodebook.MUSEUM:
-      CODEBOOK = CODEBOOK_EDELCRANTZ_MUSEUM;
+      CODEBOOK = _CODEBOOK_EDELCRANTZ_MUSEUM;
       break;
   }
 
-  inputs.forEach((element) {
+  for (var element in inputs) {
     segment = _stringToSegment(element);
     displays.add(segment);
-    if (CODEBOOK[segmentToCode(segment)] != null) if (daytime)
-      text = text + CODEBOOK[segmentToCode(segment)];
-    else
-      text = text + CODEBOOK[_nightTime(segmentToCode(segment))];
-    else
+    if (CODEBOOK[segmentToCode(segment)] != null) {
+      if (daytime) {
+        text = text + CODEBOOK[segmentToCode(segment)]!;
+      } else {
+        text = text + CODEBOOK[_nightTime(segmentToCode(segment))]!;
+      }
+    } else {
       text = text + UNKNOWN_ELEMENT;
-  });
+    }
+  }
 
-  return {'displays': displays, 'text': text};
+  return SegmentsText(displays: displays, text: text);
 }
 
-Map<String, dynamic> decodeTextEdelcrantzTelegraph(String inputs, EdelcrantzCodebook language, bool daytime) {
-  if (inputs == null || inputs.length == 0)
-    return {
-      'displays': <List<String>>[],
-      'text': '',
-    };
+SegmentsText decodeTextEdelcrantzTelegraph(String inputs, EdelcrantzCodebook language, bool daytime) {
+  if (inputs.isEmpty) return SegmentsText(displays: [], text: '');
 
   var displays = <List<String>>[];
   String text = '';
 
-  var CODEBOOK;
+  Map<String, String> CODEBOOK;
   switch (language) {
     case EdelcrantzCodebook.YEAR_1795:
-      CODEBOOK = CODEBOOK_EDELCRANTZ_1795;
+      CODEBOOK = _CODEBOOK_EDELCRANTZ_1795;
       break;
     case EdelcrantzCodebook.YEAR_1808:
-      CODEBOOK = CODEBOOK_EDELCRANTZ_1808;
+      CODEBOOK = _CODEBOOK_EDELCRANTZ_1808;
       break;
     case EdelcrantzCodebook.MUSEUM:
-      CODEBOOK = CODEBOOK_EDELCRANTZ_MUSEUM;
+      CODEBOOK = _CODEBOOK_EDELCRANTZ_MUSEUM;
       break;
   }
 
   inputs.split(' ').forEach((element) {
     if (CODEBOOK[element] != null) {
-      if (daytime)
-        text = text + CODEBOOK[element];
-      else
-        text = text + CODEBOOK[_nightTime(element)];
+      if (daytime) {
+        text += CODEBOOK[element]!;
+      } else {
+        text += CODEBOOK[_nightTime(element)] ?? '';
+      }
     } else {
-      text = text + UNKNOWN_ELEMENT;
+      text += UNKNOWN_ELEMENT;
     }
     displays.add(_buildShutters(element));
   });
-  return {'displays': displays, 'text': text};
+  return SegmentsText(displays: displays, text: text);
 }
 
 List<String> _stringToSegment(String input) {
@@ -1893,8 +1897,6 @@ String segmentToCode(List<String> segment) {
   int b = 0;
   int c = 0;
 
-  String A = '';
-
   if (segment.contains('a1')) a = a + 1;
   if (segment.contains('a2')) a = a + 2;
   if (segment.contains('a3')) a = a + 4;
@@ -1904,17 +1906,17 @@ String segmentToCode(List<String> segment) {
   if (segment.contains('c1')) c = c + 1;
   if (segment.contains('c2')) c = c + 2;
   if (segment.contains('c3')) c = c + 4;
-  if (segment.contains('t0'))
+  if (segment.contains('t0')) {
     return 'a' + a.toString() + b.toString() + c.toString();
-  else
+  } else {
     return a.toString() + b.toString() + c.toString();
+  }
 }
 
 List<String> _buildShutters(String segments) {
   List<String> resultElement = [];
-  bool A = false;
+
   if (segments.length == 4 && segments.startsWith('a')) {
-    A = true;
     segments = segments.substring(1);
     resultElement = ['t0'];
   }

@@ -14,13 +14,14 @@ const _INITIAL_SEGMENTS = <String, bool>{
   'g': false
 };
 
-class MayaNumbersSegmentDisplay extends NSegmentDisplay {
-  final Map<String, bool> segments;
-  final bool readOnly;
-  final Function onChanged;
-  final bool tapeStyle;
 
-  MayaNumbersSegmentDisplay({Key key, this.segments, this.readOnly: false, this.onChanged, this.tapeStyle: false})
+class MayaNumbersSegmentDisplay extends NSegmentDisplay {
+
+  MayaNumbersSegmentDisplay({
+    Key? key,
+    required Map<String, bool> segments,
+    bool readOnly = false,
+    void Function(Map<String, bool>)? onChanged})
       : super(
             key: key,
             initialSegments: _INITIAL_SEGMENTS,
@@ -34,7 +35,7 @@ class MayaNumbersSegmentDisplay extends NSegmentDisplay {
               var SEGMENTS_COLOR_ON = segment_color_on;
               var SEGMENTS_COLOR_OFF = segment_color_off;
 
-              paint.color = currentSegments['a'] ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
+              paint.color = segmentActive(currentSegments, 'a') ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
               var pathA = Path();
               pathA.moveTo(size.width / SEGMENTS_RELATIVE_DISPLAY_WIDTH * 1,
                   size.height / SEGMENTS_RELATIVE_DISPLAY_HEIGHT * 73);
@@ -47,10 +48,10 @@ class MayaNumbersSegmentDisplay extends NSegmentDisplay {
               pathA.close();
 
               canvas.touchCanvas.drawPath(pathA, paint, onTapDown: (tapDetail) {
-                setSegmentState('a', !currentSegments['a']);
+                setSegmentState('a', !segmentActive(currentSegments, 'a'));
               });
 
-              paint.color = currentSegments['b'] ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
+              paint.color = segmentActive(currentSegments, 'b') ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
               var pathB = Path();
               pathB.moveTo(size.width / SEGMENTS_RELATIVE_DISPLAY_WIDTH * 1,
                   size.height / SEGMENTS_RELATIVE_DISPLAY_HEIGHT * 53);
@@ -63,10 +64,10 @@ class MayaNumbersSegmentDisplay extends NSegmentDisplay {
               pathB.close();
 
               canvas.touchCanvas.drawPath(pathB, paint, onTapDown: (tapDetail) {
-                setSegmentState('b', !currentSegments['b']);
+                setSegmentState('b', !segmentActive(currentSegments, 'b'));
               });
 
-              paint.color = currentSegments['c'] ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
+              paint.color = segmentActive(currentSegments, 'c') ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
               var pathC = Path();
               pathC.moveTo(size.width / SEGMENTS_RELATIVE_DISPLAY_WIDTH * 1,
                   size.height / SEGMENTS_RELATIVE_DISPLAY_HEIGHT * 33);
@@ -79,43 +80,43 @@ class MayaNumbersSegmentDisplay extends NSegmentDisplay {
               pathC.close();
 
               canvas.touchCanvas.drawPath(pathC, paint, onTapDown: (tapDetail) {
-                setSegmentState('c', !currentSegments['c']);
+                setSegmentState('c', !segmentActive(currentSegments, 'c'));
               });
 
-              paint.color = currentSegments['d'] ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
+              paint.color = segmentActive(currentSegments, 'd') ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
               canvas.touchCanvas.drawCircle(
                   Offset(size.width / SEGMENTS_RELATIVE_DISPLAY_WIDTH * 10.5,
                       size.height / SEGMENTS_RELATIVE_DISPLAY_HEIGHT * 18.2),
                   size.height / SEGMENTS_RELATIVE_DISPLAY_HEIGHT * 6.8,
                   paint, onTapDown: (tapDetail) {
-                setSegmentState('d', !currentSegments['d']);
+                setSegmentState('d', !segmentActive(currentSegments, 'd'));
               });
 
-              paint.color = currentSegments['e'] ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
+              paint.color = segmentActive(currentSegments, 'e') ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
               canvas.touchCanvas.drawCircle(
                   Offset(size.width / SEGMENTS_RELATIVE_DISPLAY_WIDTH * 28.5,
                       size.height / SEGMENTS_RELATIVE_DISPLAY_HEIGHT * 18.2),
                   size.height / SEGMENTS_RELATIVE_DISPLAY_HEIGHT * 6.8,
                   paint, onTapDown: (tapDetail) {
-                setSegmentState('e', !currentSegments['e']);
+                setSegmentState('e', !segmentActive(currentSegments, 'e'));
               });
 
-              paint.color = currentSegments['f'] ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
+              paint.color = segmentActive(currentSegments, 'f') ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
               canvas.touchCanvas.drawCircle(
                   Offset(size.width / SEGMENTS_RELATIVE_DISPLAY_WIDTH * 46.5,
                       size.height / SEGMENTS_RELATIVE_DISPLAY_HEIGHT * 18.2),
                   size.height / SEGMENTS_RELATIVE_DISPLAY_HEIGHT * 6.8,
                   paint, onTapDown: (tapDetail) {
-                setSegmentState('f', !currentSegments['f']);
+                setSegmentState('f', !segmentActive(currentSegments, 'f'));
               });
 
-              paint.color = currentSegments['g'] ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
+              paint.color = segmentActive(currentSegments, 'g') ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
               canvas.touchCanvas.drawCircle(
                   Offset(size.width / SEGMENTS_RELATIVE_DISPLAY_WIDTH * 64.5,
                       size.height / SEGMENTS_RELATIVE_DISPLAY_HEIGHT * 18.2),
                   size.height / SEGMENTS_RELATIVE_DISPLAY_HEIGHT * 6.8,
                   paint, onTapDown: (tapDetail) {
-                setSegmentState('g', !currentSegments['g']);
+                setSegmentState('g', !segmentActive(currentSegments, 'g'));
               });
             });
 }

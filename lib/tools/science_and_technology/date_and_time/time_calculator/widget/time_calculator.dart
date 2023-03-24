@@ -8,32 +8,28 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/utils/datetime_utils.dart';
 
-// enabling int value to get passed as reference
-class _WrapperForInt {
-  int value;
-  _WrapperForInt(this.value);
-}
-
 class TimeCalculator extends StatefulWidget {
+  const TimeCalculator({Key? key}) : super(key: key);
+
   @override
   TimeCalculatorState createState() => TimeCalculatorState();
 }
 
 class TimeCalculatorState extends State<TimeCalculator> {
   var _currentMode = GCWSwitchPosition.left;
-  Duration _currentStartTime;
-  Duration _currentEndTime;
+  late Duration _currentStartTime;
+  late Duration _currentEndTime;
 
-  TextEditingController _startDaysController;
-  TextEditingController _startHoursController;
-  TextEditingController _startMinutesController;
-  TextEditingController _startSecondsController;
+  late TextEditingController _startDaysController;
+  late TextEditingController _startHoursController;
+  late TextEditingController _startMinutesController;
+  late TextEditingController _startSecondsController;
 
   @override
   void initState() {
     super.initState();
-    _currentStartTime = Duration();
-    _currentEndTime = Duration();
+    _currentStartTime = const Duration();
+    _currentEndTime = const Duration();
 
     _startDaysController = TextEditingController(text: _currentStartTime.inDays.toString());
     _startHoursController = TextEditingController(text: _currentStartTime.inHours.remainder(24).toString());
@@ -47,7 +43,7 @@ class TimeCalculatorState extends State<TimeCalculator> {
       children: <Widget>[
         GCWTextDivider(text: i18n(context, 'dates_timecalculator_starttime')),
         GCWDateTimePicker(
-          config: {DateTimePickerConfig.DAY, DateTimePickerConfig.TIME, DateTimePickerConfig.SECOND_AS_INT},
+          config: const {DateTimePickerConfig.DAY, DateTimePickerConfig.TIME, DateTimePickerConfig.SECOND_AS_INT},
           dayController: _startDaysController,
           hoursController: _startHoursController,
           minutesController: _startMinutesController,
@@ -57,7 +53,7 @@ class TimeCalculatorState extends State<TimeCalculator> {
           duration: _currentStartTime,
           onChanged: (value) {
             setState(() {
-              _currentStartTime = value['duration'];
+              _currentStartTime = value.duration;
             });
           },
         ),
@@ -74,13 +70,13 @@ class TimeCalculatorState extends State<TimeCalculator> {
         ),
         GCWTextDivider(text: i18n(context, 'dates_timecalculator_endtime')),
         GCWDateTimePicker(
-          config: {DateTimePickerConfig.DAY, DateTimePickerConfig.TIME, DateTimePickerConfig.SECOND_AS_INT},
+          config: const {DateTimePickerConfig.DAY, DateTimePickerConfig.TIME, DateTimePickerConfig.SECOND_AS_INT},
           minDays: 0,
           maxDays: null,
           duration: _currentEndTime,
           onChanged: (value) {
             setState(() {
-              _currentEndTime = value['duration'];
+              _currentEndTime = value.duration;
             });
           },
         ),
@@ -91,12 +87,13 @@ class TimeCalculatorState extends State<TimeCalculator> {
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     Duration finalTime;
-    if (_currentMode == GCWSwitchPosition.left)
+    if (_currentMode == GCWSwitchPosition.left) {
       finalTime = _currentStartTime + _currentEndTime;
-    else
+    } else {
       finalTime = _currentStartTime - _currentEndTime;
+    }
 
     var output = formatDurationToHHmmss(finalTime, milliseconds: false);
 

@@ -29,7 +29,7 @@ void main() {
     var beer =          '''bCBA@?>=<;:9876543210/.-,+*)('&%\$#"!~}|{zyxwvutsrqponmlkjihgfedcba`_^]\\[ZYXWVUTSRQPONMLKJIHGFEDCBA@?!7<;:9876543210/.-&J*)('&%\$#"!~}|{zyxwvutsrqponmlkjihgfHdcba`_^]\\[ZYXWVUTSRQPONMLKJIHGFED=a\$@?8\\<5:9870T4-210)M-,l*#Gh&%\$#"!~}|{zs9wvun4rqponmlkjihgfedcba`_^]\\[ZYXWVOsSRKPONMLKJIHGFE>bBA@?>=}54X876543210/.-,+*)('&%\$d"!~}|u;yxZvutsrqponmlkjihgfedcba`Y}W\\UyYXWV8Nr5QJONMLKJIHG@dDC%A@?>=<;:9876/S3210/.-,%\$H('&f|{A!~}|{]s9Zvutsrqj0ngle+ihgfedcE"`_A]\\[ZYXQuUTSRKPONMLEiIHG@?c=BA@?>7[;:z876543210/(-,+*#G'~%\${Ab~w|{zyr87utsUqjonmle+ihgfedcba`_^]\\>ZYXQuUT6RKoONM/EiI+GF?cCB\$@?>=<5Y927654-Q10/.-,+*)('&f\$#"!~w=^zyrwvo5srqponmlkjihJfedcba`_^]VzZYXQVUTMqQPON0FEiIHGFED&BA@?>=<;:92V65u-Q1*/(L,%*)('&%\$#"!~}|u;yxwvXnm3qponmlkjihJf_%cba`Y^]\\[TxRWVUTSLpPONMLKJCHGF?cC%;_?87[;:9876543s1*)M-,+*)('&%\$#"!~}|{]yxwvutsrk1ongle+ihgfedFba`Y}]\\[Z<XWVUTMRQJnN0LKJIHGF?cCBA@?>=<;:9876543210/.n,+\$H('&%\$#"!~}|{zyxqvutm3kponmle+ihgfedcE"C_^]\\[TxXWVUTSR4PONMLEi,HGFE>bBA#?>7<;:98765.R21q/(L,+*)('&%\$#"!~w|u;\\xwvun4rkpoh.lkjihgfedcE"`_^]\\[ZYXW9UTSRQPONMLKJIHAeEDCBA@?>=};4X876543s10/.',+*)('&%\${A!~}|{zyxwvutsrqpRnmlkjihgfedcba`_^W{[ZYXWV8NrRQPONML.JIHAeED=BA@?8\\<5:981U5u3,P0/.-m+*)(!Ef|{A!x}|{t:xwvutVlqponmf,jihgfedcE"`_^]\\>ZYXQuUTSRQPONML.JIHAeE>CBA@?8\\65Y987w5.R21q/.'K+*)('&f\$#"!~}v<]sxwvun4rqponmlkjihgfedcbD`_^]VzZYXQVUTMqQP2HMLKJIHG@dDCBA@?>=<;:9876v43210/.-,%I)('&%\$#"!aw={zsxwvo5srqpRnmlkjiha'edcE"`_^]\\[ZYXWVUT6RKoINGkKJIH*@EDCBA:^!=<;:98765432+O/.-,+*)('~%\${A!aw={zyxZvutmrk1onmlkjihgfedFb[!_^]\\[=SwWVU7SLpJONMLKJIHG@dD&<A@?>=<;:3Wx65432+O/o-,+\$H('&%\$#zy?}|{zyxwputsrqpong-kjihJ`_%cba`_^]VUy<RWVUTSRQPONGkKJIHGFEDCBA@?!7<5Y9876543210/.-,+*)('&%\$#"!~}|{z\\xq7otsrqponmlkd*hgfedcb[`_^W{[ZSXWVUTSRQPONMLKJIHGFEDC<`@?>=<|:3W76543210/o-,+*)('&}C#"b~}|{tyr8vutsrqponmlkjihgfedcbD`_^]VzZYXQVUTSRQJnNML.DIHG@dD&BA@?8\\<|:9876/S-210)Mn,+*)('&%\$#"!~}|{zyxq7utsrqpRhmf,jihgfedcbD`_^]VzZYRQuUTS5QPINMFjJI+GF?cCBA@?!=<;:987654-Qr0)Mn&+*)('&%\${A!~}|{]yxwvutsrqponmle+ihgfedcba`_^]\\[=Sw:VUTSRKoINGkKJIH*@E>b<A@?8\\};:9870T4-,P0/.-m%*)"F&%\$d"!~}|u;\\xq7otsrqponmlkd*bg`&dcba`_^@\\[ZYXWVUTSLpPINMLKJCgAFEDCBA@?8\\}54X876543210/.-,+*)('&%\$d"!~}|{zyxwvutsrqponmlkjihgfedcba`_^]\\[ZYXWVUNrRQPONMLKDIHGF?c&<A@?>=<;4X87654t210/.-,%I)('g%\$#"!~}|{zyxwp6tsrkpong-kjihgfedcbD`_^]\\[TxX:VOTMqQPO1MLKDhHGFEDC%A@?>=<;:3Wx654-Qr0/.-,+*)('~D\${"!~}|{t:xZvutsrqponmlkjihgfedcba`Y}]\\[ZYXWV8TMRQJnNMLKJCgGFE>CBA@?>7[|:981U54t21*/.-&J*)i!E%\$#"!~}|{z\\xq7utslqj0ngle+ihgfedcE"C_^]\\[TxXWVUTSRQP2NMLEiIHGFE'CBA@?>7[;{9276543210)M-,+*)(!E%\$#"!~}|{ts9wvunsrqponmlkjihgfedcba`_^]\\[TxXWPUTSRQJnNMFjJIHGFE'=aA@?>=<;498765.Rs10).-,+*)"F&%e#"!~}|{zs9wvutVrqponmlkjihg`&dcba`_X]VzZYXWPUTSRKoONM/KJIHGF?cCBA@?>=<|:9876543,P0/.-m+*)(!Ef|#"!~}|{zyr8%''';
     //                     bCBA@?>=<;:9876543210/.-,+*)('&%$#"!~}|{zyxwvutsrqponmlkjihgfedcba`_^]\[ZYXWVUTSRQPONMLKJIHGFEDCBA@?!7<;:9876543210/.-&J*)('&%$#"!~}|{zyxwvutsrqponmlkjihgfHdcba`_^]\[ZYXWVUTSRQPONMLKJIHGFED=a$@?8\<5:9870T4-210)M-,l*#Gh&%$#"!~}|{zs9wvun4rqponmlkjihgfedcba`_^]\[ZYXWVOsSRKPONMLKJIHGFE>bBA@?>=}54X876543210/.-,+*)('&%$d"!~}|u;yxZvutsrqponmlkjihgfedcba`Y}W\UyYXWV8Nr5QJONMLKJIHG@dDC%A@?>=<;:9876/S3210/.-,%$H('&f|{A!~}|{]s9Zvutsrqj0ngle+ihgfedcE"`_A]\[ZYXQuUTSRKPONMLEiIHG@?c=BA@?>7[;:z876543210/(-,+*#G'~%${Ab~w|{zyr87utsUqjonmle+ihgfedcba`_^]\>ZYXQuUT6RKoONM/EiI+GF?cCB$@?>=<5Y927654-Q10/.-,+*)('&f$#"!~w=^zyrwvo5srqponmlkjihJfedcba`_^]VzZYXQVUTMqQPON0FEiIHGFED&BA@?>=<;:92V65u-Q1*/(L,%*)('&%$#"!~}|u;yxwvXnm3qponmlkjihJf_%cba`Y^]\[TxRWVUTSLpPONMLKJCHGF?cC%;_?87[;:9876543s1*)M-,+*)('&%$#"!~}|{]yxwvutsrk1ongle+ihgfedFba`Y}]\[Z<XWVUTMRQJnN0LKJIHGF?cCBA@?>=<;:9876543210/.n,+$H('&%$#"!~}|{zyxqvutm3kponmle+ihgfedcE"C_^]\[TxXWVUTSR4PONMLEi,HGFE>bBA#?>7<;:98765.R21q/(L,+*)('&%$#"!~w|u;\\xwvun4rkpoh.lkjihgfedcE"`_^]\[ZYXW9UTSRQPONMLKJIHAeEDCBA@?>=};4X876543s10/.',+*)('&%${A!~}|{zyxwvutsrqpRnmlkjihgfedcba`_^W{[ZYXWV8NrRQPONML.JIHAeED=BA@?8\<5:981U5u3,P0/.-m+*)(!Ef|{A!x}|{t:xwvutVlqponmf,jihgfedcE"`_^]\>ZYXQuUTSRQPONML.JIHAeE>CBA@?8\65Y987w5.R21q/.'K+*)('&f$#"!~}v<]sxwvun4rqponmlkjihgfedcbD`_^]VzZYXQVUTMqQP2HMLKJIHG@dDCBA@?>=<;:9876v43210/.-,%I)('&%$#"!aw={zsxwvo5srqpRnmlkjiha'edcE"`_^]\[ZYXWVUT6RKoINGkKJIH*@EDCBA:^!=<;:98765432+O/.-,+*)('~%${A!aw={zyxZvutmrk1onmlkjihgfedFb[!_^]\[=SwWVU7SLpJONMLKJIHG@dD&<A@?>=<;:3Wx65432+O/o-,+$H('&%$#zy?}|{zyxwputsrqpong-kjihJ`_%cba`_^]VUy<RWVUTSRQPONGkKJIHGFEDCBA@?!7<5Y9876543210/.-,+*)('&%$#"!~}|{z\\xq7otsrqponmlkd*hgfedcb[`_^W{[ZSXWVUTSRQPONMLKJIHGFEDC<`@?>=<|:3W76543210/o-,+*)('&}C#"b~}|{tyr8vutsrqponmlkjihgfedcbD`_^]VzZYXQVUTSRQJnNML.DIHG@dD&BA@?8\<|:9876/S-210)Mn,+*)('&%$#"!~}|{zyxq7utsrqpRhmf,jihgfedcbD`_^]VzZYRQuUTS5QPINMFjJI+GF?cCBA@?!=<;:987654-Qr0)Mn&+*)('&%${A!~}|{]yxwvutsrqponmle+ihgfedcba`_^]\[=Sw:VUTSRKoINGkKJIH*@E>b<A@?8\};:9870T4-,P0/.-m%*)"F&%$d"!~}|u;\\xq7otsrqponmlkd*bg`&dcba`_^@\[ZYXWVUTSLpPINMLKJCgAFEDCBA@?8\}54X876543210/.-,+*)('&%$d"!~}|{zyxwvutsrqponmlkjihgfedcba`_^]\[ZYXWVUNrRQPONMLKDIHGF?c&<A@?>=<;4X87654t210/.-,%I)('g%$#"!~}|{zyxwp6tsrkpong-kjihgfedcbD`_^]\[TxX:VOTMqQPO1MLKDhHGFEDC%A@?>=<;:3Wx654-Qr0/.-,+*)('~D${"!~}|{t:xZvutsrqponmlkjihgfedcba`Y}]\[ZYXWV8TMRQJnNMLKJCgGFE>CBA@?>7[|:981U54t21*/.-&J*)i!E%$#"!~}|{z\\xq7utslqj0ngle+ihgfedcE"C_^]\[TxXWVUTSRQP2NMLEiIHGFE'CBA@?>7[;{9276543210)M-,+*)(!E%$#"!~}|{ts9wvunsrqponmlkjihgfedcba`_^]\[TxXWPUTSRQJnNMFjJIHGFE'=aA@?>=<;498765.Rs10).-,+*)"F&%e#"!~}|{zs9wvutVrqponmlkjihg`&dcba`_X]VzZYXWPUTSRKoONM/KJIHGF?cCBA@?>=<|:9876543,P0/.-m+*)(!Ef|#"!~}|{zyr8%
 
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '',  'program' : HelloWorld, 'expectedOutput' : ['Hello World!']},
       {'input' : '',  'program' : Welcome, 'expectedOutput' : ['Welcome']},
       {'input' : '',  'program' : blank, 'expectedOutput' : ['']},
@@ -39,17 +39,17 @@ void main() {
       {'input' : '',  'program' : beer, 'expectedOutput' : ['Bottles of beer on the wall, 99 bottles of beer.\\nTake one down and pass it around, 98 bottles of beer on the wall.\\n\\n98 Bottles of beer on the wall, 98 bottles of beer.\\nTake one down and pass it around, ']},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretMalbolge(elem['program'], elem['input'], false).output;
+        var _actual = interpretMalbolge(elem['program'] as String, elem['input'] as String, false).output;
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("malbolge.generator", () {
 
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '',  'expectedOutput' : "ioooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooov"},
       {'input' : 'Hello World!',      'expectedOutput' : "ioooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooopooooooooooooooooop<ooo*oop<pooop<pop<oooooooooooooooopoop<oooooo*<ooooo*ooop<ooopooooop<*ooooooooop<oo*op<ooopooooooop<*oopoooooooop<v"},
       {'input' : 'Welcome',           'expectedOutput' : "iooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo*oooooop<ooooooo*oop<pooop<ooooo*oooooooooooooop<*ooooooooooooooooooooooooooooooooop<pooop<*ooop<v"},
@@ -57,12 +57,12 @@ void main() {
       {'input' : 'Mark mag Malbolge', 'expectedOutput' : 'iooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo*oooopooooooop<*op<oooopoooooooooooooooooooooooooooooooooooooooooooooooooooooooop<ooo*op<ooop<oooooooooooooooooop<oo*oop<ooooooopooooop<ooo*pop<oo*oop<oopooooooop<ooo*op<oooo*ooooooop<*ooooooooooooooooooooooop<ooopop<ooopooop<ooo*oooooooooooooooooooooop<v'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = generateMalbolge(elem['input']).assembler.join('');
+        var _actual = generateMalbolge(elem['input'] as String).assembler.join('');
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
 }

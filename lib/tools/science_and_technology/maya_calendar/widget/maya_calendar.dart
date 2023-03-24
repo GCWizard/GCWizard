@@ -8,20 +8,24 @@ import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/maya_numbers/widget/maya_numbers_segment_display.dart';
 import 'package:gc_wizard/tools/science_and_technology/maya_calendar/logic/maya_calendar.dart';
+import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
+import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/n_segment_display.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/segmentdisplay_output.dart';
 import 'package:intl/intl.dart';
 
 class MayaCalendar extends StatefulWidget {
+  const MayaCalendar({Key? key}) : super(key: key);
+
   @override
   MayaCalendarState createState() => MayaCalendarState();
 }
 
 class MayaCalendarState extends State<MayaCalendar> {
-  var _currentEncodeInput = 0;
-  var _currentLongCount = '';
-  var _longCountController;
+  int _currentEncodeInput = 0;
+  final String _currentLongCount = '';
+  late TextEditingController _longCountController;
 
-  List<List<String>> _currentDisplays = [];
+  var _currentDisplays = Segments.Empty();
   var _currentMode = GCWSwitchPosition.right;
 
   @override
@@ -66,16 +70,10 @@ class MayaCalendarState extends State<MayaCalendar> {
     ]);
   }
 
-  _buildVisualDecryption() {
-    Map<String, bool> currentDisplay;
+  Widget _buildVisualDecryption() {
+    var currentDisplay = buildSegmentMap(_currentDisplays);
 
-    var displays = _currentDisplays;
-    if (displays != null && displays.length > 0)
-      currentDisplay = Map<String, bool>.fromIterable(displays.last ?? [], key: (e) => e, value: (e) => true);
-    else
-      currentDisplay = {};
-
-    var onChanged = (Map<String, bool> d) {
+    onChanged(Map<String, bool> d) {
       setState(() {
         var newSegments = <String>[];
         d.forEach((key, value) {
@@ -83,19 +81,15 @@ class MayaCalendarState extends State<MayaCalendar> {
           newSegments.add(key);
         });
 
-        newSegments.sort();
-
-        if (_currentDisplays.length == 0) _currentDisplays.add([]);
-
-        _currentDisplays[_currentDisplays.length - 1] = newSegments;
+        _currentDisplays.replaceLastSegment(newSegments);
       });
-    };
+    }
 
     return Column(
       children: <Widget>[
         Container(
           width: 180,
-          padding: EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
+          padding: const EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
           child: Row(
             children: <Widget>[
               Expanded(
@@ -112,7 +106,7 @@ class MayaCalendarState extends State<MayaCalendar> {
             icon: Icons.space_bar,
             onPressed: () {
               setState(() {
-                _currentDisplays.add([]);
+                _currentDisplays.addEmptySegment();
               });
             },
           ),
@@ -120,7 +114,7 @@ class MayaCalendarState extends State<MayaCalendar> {
             icon: Icons.backspace,
             onPressed: () {
               setState(() {
-                if (_currentDisplays.length > 0) _currentDisplays.removeLast();
+                _currentDisplays.removeLastSegment();
               });
             },
           ),
@@ -128,7 +122,7 @@ class MayaCalendarState extends State<MayaCalendar> {
             icon: Icons.clear,
             onPressed: () {
               setState(() {
-                _currentDisplays = [];
+                _currentDisplays = Segments.Empty();
               });
             },
           )
@@ -137,7 +131,7 @@ class MayaCalendarState extends State<MayaCalendar> {
     );
   }
 
-  Widget _buildDigitalOutput(List<List<String>> segments) {
+  Widget _buildDigitalOutput(Segments segments) {
     return SegmentDisplayOutput(
         segmentFunction: (displayedSegments, readOnly) {
           return MayaNumbersSegmentDisplay(segments: displayedSegments, readOnly: readOnly);
@@ -147,62 +141,59 @@ class MayaCalendarState extends State<MayaCalendar> {
   }
 
   Widget _buildOutput() {
-    Map outputDates = new Map();
+    var outputDates = <String, Object>{};
     var dateFormat = DateFormat('yMMMMd', Localizations.localeOf(context).toString());
 
     if (_currentMode == GCWSwitchPosition.left) {
       //encode
       var segments = encodeMayaCalendar(_currentEncodeInput);
-      var gregorian = MayaDayCountToGregorianCalendar(MayaLongCountToMayaDayCount(segments['numbers']));
-      var julian = MayaDayCountToJulianCalendar(MayaLongCountToMayaDayCount(segments['numbers']));
+      var gregorian = MayaDayCountToGregorianCalendar(MayaLongCountToMayaDayCount(segments.numbers));
+      var julian = MayaDayCountToJulianCalendar(MayaLongCountToMayaDayCount(segments.numbers));
 
-      outputDates[i18n(context, 'mayacalendar_system_longcount')] = MayaLongCount(segments['numbers']) +
+      outputDates[i18n(context, 'mayacalendar_system_longcount')] = MayaLongCount(segments.numbers) +
           '\n' +
-          MayaLongCountToTzolkin(segments['numbers']) +
+          MayaLongCountToTzolkin(segments.numbers) +
           '   ' +
-          MayaLongCountToHaab(segments['numbers']);
-      outputDates[i18n(context, 'mayacalendar_juliandate')] =
-          MayaDayCountToJulianDate(MayaLongCountToMayaDayCount(segments['numbers']));
+          MayaLongCountToHaab(segments.numbers);
+      outputDates[i18n(context, 'mayacalendar_juliandate')] = MayaDayCountToJulianDate(MayaLongCountToMayaDayCount(segments.numbers));
       outputDates[i18n(context, 'mayacalendar_gregoriancalendar')] = dateFormat.format(gregorian);
       outputDates[i18n(context, 'mayacalendar_juliancalendar')] = dateFormat.format(julian);
 
       return Column(
         children: <Widget>[
-          _buildDigitalOutput(segments['displays']),
+          _buildDigitalOutput(segments),
           GCWColumnedMultilineOutput(
             data: outputDates.entries.map((entry) {
                     return [entry.key, entry.value];
                   }).toList(),
-            flexValues: [1, 1]
+            flexValues: const [1, 1]
           ),
         ],
       );
     } else {
       //decode
-      var output = _currentDisplays.map((character) {
-        if (character != null) return character.join();
-      }).toList();
+      var output = _currentDisplays.buildOutput();
       var segments = decodeMayaCalendar(output);
-      var gregorian = MayaDayCountToGregorianCalendar(segments['vigesimal']);
-      var julian = MayaDayCountToJulianCalendar(segments['vigesimal']);
+      var gregorian = MayaDayCountToGregorianCalendar(segments.vigesimal.toInt());
+      var julian = MayaDayCountToJulianCalendar(segments.vigesimal.toInt());
 
-      outputDates[i18n(context, 'mayacalendar_daycount')] = segments['vigesimal'];
-      outputDates[i18n(context, 'mayacalendar_system_longcount')] = MayaLongCount(segments['numbers']) +
+      outputDates[i18n(context, 'mayacalendar_daycount')] = segments.vigesimal;
+      outputDates[i18n(context, 'mayacalendar_system_longcount')] = MayaLongCount(segments.numbers) +
           '\n' +
-          MayaLongCountToTzolkin(segments['numbers']) +
+          MayaLongCountToTzolkin(segments.numbers) +
           '   ' +
-          MayaLongCountToHaab(segments['numbers']);
-      outputDates[i18n(context, 'mayacalendar_juliandate')] = MayaDayCountToJulianDate(segments['vigesimal']);
+          MayaLongCountToHaab(segments.numbers);
+      outputDates[i18n(context, 'mayacalendar_juliandate')] = MayaDayCountToJulianDate(segments.vigesimal.toInt());
       outputDates[i18n(context, 'mayacalendar_gregoriancalendar')] = dateFormat.format(gregorian);
       outputDates[i18n(context, 'mayacalendar_juliancalendar')] = dateFormat.format(julian);
       return Column(
         children: <Widget>[
-          _buildDigitalOutput(segments['displays']),
+          _buildDigitalOutput(segments),
           GCWColumnedMultilineOutput(
             data: outputDates.entries.map((entry) {
                     return [entry.key, entry.value];
                   }).toList(),
-            flexValues: [1, 1]
+            flexValues: const [1, 1]
           ),
         ],
       );

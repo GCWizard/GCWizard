@@ -1,10 +1,12 @@
 // https://www.history.navy.mil/research/library/online-reading-room/title-list-alphabetically/n/navajo-code-talker-dictionary.html
 // https://www.ancestrycdn.com/aa-k12/1112/assets/Navajo-Code-Talkers-dictionary.pdf
 
+// ignore_for_file: equal_keys_in_map
+
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/constants.dart';
 
-final Map NAVAJO_ENCODE_ALPHABET = {
+const Map<String, String> _NAVAJO_ENCODE_ALPHABET = {
   // although the dictionary has several encodings, these are used by kryptografie.de
   // dcode.fr uses all letters randomly for encoding
   'A': 'WOL-LA-CHEE',
@@ -35,7 +37,7 @@ final Map NAVAJO_ENCODE_ALPHABET = {
   'Z': 'BESH-DO-TLIZ',
 };
 
-final Map NAVAJO_ENCODE_DICTIONARY = {
+final Map<String, String> _NAVAJO_ENCODE_DICTIONARY = {
   'CORPS': 'DIN-NEH-IH',
   'DIVISION': 'ASHIH-HI',
   'REGIMENT': 'TABAHA',
@@ -77,7 +79,7 @@ final Map NAVAJO_ENCODE_DICTIONARY = {
   'FIGHTERPLANE': 'DA-HE-TIH-HI',
   'BOMBERPLANE': 'JAY-SHO',
   'PATROLPLANE': 'GA-GIH',
-  'TRANSPORT': 'ATSAH',
+  'TRANSPORT': 'ATSAH', //double entry ??
   'SHIPS': 'TOH-DINEH-IH',
   'BATTLESHIP': 'LO-TSO',
   'AIRCRAFT': 'TSIDI-MOFFA-YE-HI',
@@ -301,7 +303,7 @@ final Map NAVAJO_ENCODE_DICTIONARY = {
   'ESTABLISH': 'HAS-TAY-DZAH',
   'ESTIMATE': 'BIH-KE-TSE-HOD-DES-KEZ',
   'EVACUATE': 'HA-NA',
-  'EXCEPT': 'NEH-DIH',
+  // 'EXCEPT': 'NEH-DIH', // double entry
   'EXCEPT': 'NA-WOL-NE',
   'EXCHANGE': 'ALH-NAHL-YAH',
   'EXECUTE': 'A-DO-NIL',
@@ -652,9 +654,9 @@ final Map NAVAJO_ENCODE_DICTIONARY = {
   'ZONE': 'BIH-NA-HAS-DZOH',
 };
 
-Map NAVAJO_DECODE_DICTIONARY = switchMapKeyValue(NAVAJO_ENCODE_DICTIONARY);
+final Map<String, String> _NAVAJO_DECODE_DICTIONARY = switchMapKeyValue(_NAVAJO_ENCODE_DICTIONARY);
 
-Map NAVAJO_DECODE_ALPHABET = switchMapKeyValue(NAVAJO_ENCODE_ALPHABET);
+final Map<String, String> _NAVAJO_DECODE_ALPHABET = switchMapKeyValue(_NAVAJO_ENCODE_ALPHABET);
 
 String shrinkText(String input) {
   return input
@@ -729,65 +731,70 @@ String enfoldText(String input) {
 }
 
 String decodeNavajo(String cipherText, bool useOnlyAlphabet) {
-  NAVAJO_DECODE_ALPHABET['BE-LA-SANA'] = 'A';
-  NAVAJO_DECODE_ALPHABET['TSE-NILL'] = 'A';
-  NAVAJO_DECODE_ALPHABET['TSE-NIHL'] = 'A';
-  NAVAJO_DECODE_ALPHABET['NA-HASH-CHID'] = 'B';
-  NAVAJO_DECODE_ALPHABET['TOISH-JEH'] = 'B';
-  NAVAJO_DECODE_ALPHABET['TLA-GIN'] = 'C';
-  NAVAJO_DECODE_ALPHABET['BA-GOSHI'] = 'C';
-  NAVAJO_DECODE_ALPHABET['CHINDI'] = 'D';
-  NAVAJO_DECODE_ALPHABET['LHA-CHA-EH'] = 'D';
-  NAVAJO_DECODE_ALPHABET['AH-JAH'] = 'E';
-  NAVAJO_DECODE_ALPHABET['AH-NAH'] = 'E';
-  NAVAJO_DECODE_ALPHABET['TSA-E-DONIN-EE'] = 'F';
-  NAVAJO_DECODE_ALPHABET['CHUO'] = 'F';
-  NAVAJO_DECODE_ALPHABET['AH-TAD'] = 'G';
-  NAVAJO_DECODE_ALPHABET['JEHA'] = 'G';
-  NAVAJO_DECODE_ALPHABET['CHA'] = 'H';
-  NAVAJO_DECODE_ALPHABET['TSE-GAH'] = 'H';
-  NAVAJO_DECODE_ALPHABET['YEH-HES'] = 'I';
-  NAVAJO_DECODE_ALPHABET['A-CHI'] = 'I';
-  NAVAJO_DECODE_ALPHABET['YIL-DOI'] = 'J';
-  NAVAJO_DECODE_ALPHABET['TKELE-CHO-GI'] = 'J';
-  NAVAJO_DECODE_ALPHABET['AH-YA-TSINNE'] = 'J';
-  NAVAJO_DECODE_ALPHABET['BA-AH-NE-DI-TININ'] = 'K';
-  NAVAJO_DECODE_ALPHABET['JAD-HO-LONI'] = 'K';
-  NAVAJO_DECODE_ALPHABET['KLIZZIE-YAZZI'] = 'K';
-  NAVAJO_DECODE_ALPHABET['DIBEH-YAZZI'] = 'L';
-  NAVAJO_DECODE_ALPHABET['NASH-DOIE-TSO'] = 'L';
-  NAVAJO_DECODE_ALPHABET['AH-JAD'] = 'L';
-  NAVAJO_DECODE_ALPHABET['BE-TAS-TNI'] = 'M';
-  NAVAJO_DECODE_ALPHABET['TSIN-TLITI'] = 'M';
-  NAVAJO_DECODE_ALPHABET['A-CHIN'] = 'N';
-  NAVAJO_DECODE_ALPHABET['TSAH'] = 'N';
-  NAVAJO_DECODE_ALPHABET['TLO-CHIN'] = 'O';
-  NAVAJO_DECODE_ALPHABET['A-KHA'] = 'O';
-  NAVAJO_DECODE_ALPHABET['NE-AHS-JSH'] = 'O';
-  NAVAJO_DECODE_ALPHABET['CLA-GI-AIH'] = 'P';
-  NAVAJO_DECODE_ALPHABET['BI-SODIH'] = 'P';
-  NAVAJO_DECODE_ALPHABET['NE-ZHONI'] = 'P';
-  NAVAJO_DECODE_ALPHABET['DAH-NES-TSA'] = 'R';
-  NAVAJO_DECODE_ALPHABET['AH-LOSZ'] = 'R';
-  NAVAJO_DECODE_ALPHABET['KLESH'] = 'S';
-  NAVAJO_DECODE_ALPHABET['A-WOH'] = 'T';
-  NAVAJO_DECODE_ALPHABET['D-AH'] = 'T';
-  NAVAJO_DECODE_ALPHABET['SHI-DA'] = 'U';
-  NAVAJO_DECODE_ALPHABET['BSEH-DO-GLIZ'] = 'Z';
+  _NAVAJO_DECODE_ALPHABET['BE-LA-SANA'] = 'A';
+  _NAVAJO_DECODE_ALPHABET['TSE-NILL'] = 'A';
+  _NAVAJO_DECODE_ALPHABET['TSE-NIHL'] = 'A';
+  _NAVAJO_DECODE_ALPHABET['NA-HASH-CHID'] = 'B';
+  _NAVAJO_DECODE_ALPHABET['TOISH-JEH'] = 'B';
+  _NAVAJO_DECODE_ALPHABET['TLA-GIN'] = 'C';
+  _NAVAJO_DECODE_ALPHABET['BA-GOSHI'] = 'C';
+  _NAVAJO_DECODE_ALPHABET['CHINDI'] = 'D';
+  _NAVAJO_DECODE_ALPHABET['LHA-CHA-EH'] = 'D';
+  _NAVAJO_DECODE_ALPHABET['AH-JAH'] = 'E';
+  _NAVAJO_DECODE_ALPHABET['AH-NAH'] = 'E';
+  _NAVAJO_DECODE_ALPHABET['TSA-E-DONIN-EE'] = 'F';
+  _NAVAJO_DECODE_ALPHABET['CHUO'] = 'F';
+  _NAVAJO_DECODE_ALPHABET['AH-TAD'] = 'G';
+  _NAVAJO_DECODE_ALPHABET['JEHA'] = 'G';
+  _NAVAJO_DECODE_ALPHABET['CHA'] = 'H';
+  _NAVAJO_DECODE_ALPHABET['TSE-GAH'] = 'H';
+  _NAVAJO_DECODE_ALPHABET['YEH-HES'] = 'I';
+  _NAVAJO_DECODE_ALPHABET['A-CHI'] = 'I';
+  _NAVAJO_DECODE_ALPHABET['YIL-DOI'] = 'J';
+  _NAVAJO_DECODE_ALPHABET['TKELE-CHO-GI'] = 'J';
+  _NAVAJO_DECODE_ALPHABET['AH-YA-TSINNE'] = 'J';
+  _NAVAJO_DECODE_ALPHABET['BA-AH-NE-DI-TININ'] = 'K';
+  _NAVAJO_DECODE_ALPHABET['JAD-HO-LONI'] = 'K';
+  _NAVAJO_DECODE_ALPHABET['KLIZZIE-YAZZI'] = 'K';
+  _NAVAJO_DECODE_ALPHABET['DIBEH-YAZZI'] = 'L';
+  _NAVAJO_DECODE_ALPHABET['NASH-DOIE-TSO'] = 'L';
+  _NAVAJO_DECODE_ALPHABET['AH-JAD'] = 'L';
+  _NAVAJO_DECODE_ALPHABET['BE-TAS-TNI'] = 'M';
+  _NAVAJO_DECODE_ALPHABET['TSIN-TLITI'] = 'M';
+  _NAVAJO_DECODE_ALPHABET['A-CHIN'] = 'N';
+  _NAVAJO_DECODE_ALPHABET['TSAH'] = 'N';
+  _NAVAJO_DECODE_ALPHABET['TLO-CHIN'] = 'O';
+  _NAVAJO_DECODE_ALPHABET['A-KHA'] = 'O';
+  _NAVAJO_DECODE_ALPHABET['NE-AHS-JSH'] = 'O';
+  _NAVAJO_DECODE_ALPHABET['CLA-GI-AIH'] = 'P';
+  _NAVAJO_DECODE_ALPHABET['BI-SODIH'] = 'P';
+  _NAVAJO_DECODE_ALPHABET['NE-ZHONI'] = 'P';
+  _NAVAJO_DECODE_ALPHABET['DAH-NES-TSA'] = 'R';
+  _NAVAJO_DECODE_ALPHABET['AH-LOSZ'] = 'R';
+  _NAVAJO_DECODE_ALPHABET['KLESH'] = 'S';
+  _NAVAJO_DECODE_ALPHABET['A-WOH'] = 'T';
+  _NAVAJO_DECODE_ALPHABET['D-AH'] = 'T';
+  _NAVAJO_DECODE_ALPHABET['SHI-DA'] = 'U';
+  _NAVAJO_DECODE_ALPHABET['BSEH-DO-GLIZ'] = 'Z';
 
   List<String> result = <String>[];
-  if (cipherText == null || cipherText == '') return '';
+  if (cipherText.isEmpty) return '';
   cipherText = cipherText.toUpperCase().replaceAll(RegExp(r'\s{3,}'), '  ');
   cipherText.split('  ').forEach((element) {
     element.split(' ').forEach((element) {
-      if (NAVAJO_DECODE_ALPHABET[element] == null) if (useOnlyAlphabet)
-        result.add(UNKNOWN_ELEMENT);
-      else if (NAVAJO_DECODE_DICTIONARY[element] == null)
-        result.add(UNKNOWN_ELEMENT);
-      else
-        result.add(enfoldText(NAVAJO_DECODE_DICTIONARY[element]));
-      else
-        result.add(NAVAJO_DECODE_ALPHABET[element]);
+      if (_NAVAJO_DECODE_ALPHABET[element] == null) {
+        if (useOnlyAlphabet) {
+          result.add(UNKNOWN_ELEMENT);
+        } else {
+          if (_NAVAJO_DECODE_DICTIONARY[element] == null) {
+            result.add(UNKNOWN_ELEMENT);
+          } else {
+            result.add(enfoldText(_NAVAJO_DECODE_DICTIONARY[element]!));
+          }
+        }
+      } else {
+        result.add(_NAVAJO_DECODE_ALPHABET[element]!); // ToDo Thomas double else ??
+      }
     });
     result.add(' ');
   });
@@ -796,15 +803,16 @@ String decodeNavajo(String cipherText, bool useOnlyAlphabet) {
 
 String encodeNavajo(String plainText, bool useOnlyAlphabet) {
   List<String> result = <String>[];
-  if (plainText == null || plainText == '') return '';
+  if (plainText.isEmpty) return '';
 
   shrinkText(plainText.toUpperCase()).split(' ').forEach((element) {
-    if (useOnlyAlphabet)
+    if (useOnlyAlphabet) {
       result.add(encodeLetterWise(element));
-    else if (NAVAJO_ENCODE_DICTIONARY[element] == null)
+    } else if (_NAVAJO_ENCODE_DICTIONARY[element] == null) {
       result.add(encodeLetterWise(element));
-    else
-      result.add(NAVAJO_ENCODE_DICTIONARY[element]);
+    } else {
+      result.add(_NAVAJO_ENCODE_DICTIONARY[element]!);
+    }
     result.add('');
   });
   return result.join(' ').trim();
@@ -813,10 +821,11 @@ String encodeNavajo(String plainText, bool useOnlyAlphabet) {
 String encodeLetterWise(String plainText) {
   List<String> result = <String>[];
   plainText.split('').forEach((element) {
-    if (NAVAJO_ENCODE_ALPHABET[element] == null)
+    if (_NAVAJO_ENCODE_ALPHABET[element] == null) {
       result.add(element);
-    else
-      result.add(NAVAJO_ENCODE_ALPHABET[element]);
+    } else {
+      result.add(_NAVAJO_ENCODE_ALPHABET[element]!);
+    }
   });
   return result.join(' ');
 }

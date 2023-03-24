@@ -49,7 +49,7 @@ List<double> _rijksdriehoek(double lon, double lat) {
     var p = R[i]['p'];
     var q = R[i]['q'];
     var r = R[i]['R'];
-    x += r * pow(dLat, p) * pow(dLon, q);
+    x += r! * pow(dLat, p!) * pow(dLon, q!);
   }
 
   var y = _Y0;
@@ -57,7 +57,7 @@ List<double> _rijksdriehoek(double lon, double lat) {
     var p = S[i]['p'];
     var q = S[i]['q'];
     var s = S[i]['S'];
-    y += s * pow(dLat, p) * pow(dLon, q);
+    y += s! * pow(dLat, p!) * pow(dLon, q!);
   }
 
   return [x, y];
@@ -98,7 +98,7 @@ List<double> _rijksdriehoekInverse(double x, double y) {
     var p = K[i]['p'];
     var q = K[i]['q'];
     var k = K[i]['K'];
-    lat += k * pow(dx, p) * pow(dy, q) / 3600.0;
+    lat += k! * pow(dx, p!) * pow(dy, q!) / 3600.0;
   }
 
   var lon = _LON0;
@@ -106,7 +106,7 @@ List<double> _rijksdriehoekInverse(double x, double y) {
     var p = L[i]['p'];
     var q = L[i]['q'];
     var l = L[i]['L'];
-    lon += l * pow(dx, p) * pow(dy, q) / 3600.0;
+    lon += l! * pow(dx, p!) * pow(dy, q!) / 3600.0;
   }
 
   return [lon, lat];

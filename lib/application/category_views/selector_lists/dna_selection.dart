@@ -9,16 +9,18 @@ import 'package:gc_wizard/tools/science_and_technology/dna/dna_nucleicacidsequen
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class DNASelection extends GCWSelection {
+  const DNASelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(DNANucleicAcidSequence()),
-        className(DNAAminoAcids()),
-        className(DNAAminoAcidsTable()),
+        className(const DNANucleicAcidSequence()),
+        className(const DNAAminoAcids()),
+        className(const DNAAminoAcidsTable()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

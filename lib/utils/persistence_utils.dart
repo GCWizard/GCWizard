@@ -1,5 +1,5 @@
-int newID(List<int> existingIDs) {
-  if (existingIDs.length == 0) return 1;
+int newID(List<int?> existingIDs) {
+  if (existingIDs.isEmpty) return 1;
 
   existingIDs.sort();
 
@@ -7,5 +7,5 @@ int newID(List<int> existingIDs) {
     if (!existingIDs.contains(i)) return i;
   }
 
-  return null;
+  throw Exception('No id generated');
 }

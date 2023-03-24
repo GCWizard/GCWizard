@@ -9,16 +9,19 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/braille/braille_euro_segment_display/widget/braille_euro_segment_display.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/braille/logic/braille.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/braille/widget/braille_segment_display.dart';
+import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/segmentdisplay_output.dart';
 
 class BrailleDotNumbers extends StatefulWidget {
+  const BrailleDotNumbers({Key? key}) : super(key: key);
+
   @override
   BrailleDotNumbersState createState() => BrailleDotNumbersState();
 }
 
 class BrailleDotNumbersState extends State<BrailleDotNumbers> {
-  TextEditingController _encodeController;
-  TextEditingController _decodeController;
+  late TextEditingController _encodeController;
+  late TextEditingController _decodeController;
 
   String _currentEncodeInput = '';
   String _currentDecodeInput = '';
@@ -27,7 +30,7 @@ class BrailleDotNumbersState extends State<BrailleDotNumbers> {
 
   var _currentMode = GCWSwitchPosition.right;
 
-  var _decodeInputFormatter = WrapperForMaskTextInputFormatter(
+  final _decodeInputFormatter = WrapperForMaskTextInputFormatter(
       mask: '#' * 100000, filter: {"#": RegExp(r'[0-9\s]')});
 
   @override
@@ -50,7 +53,7 @@ class BrailleDotNumbersState extends State<BrailleDotNumbers> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        GCWDropDown(
+        GCWDropDown<BrailleLanguage>(
           value: _currentLanguage,
           onChanged: (value) {
             setState(() {
@@ -60,10 +63,8 @@ class BrailleDotNumbersState extends State<BrailleDotNumbers> {
           items: BRAILLE_LANGUAGES.entries.map((mode) {
             return GCWDropDownMenuItem(
                 value: mode.key,
-                child: i18n(context, mode.value['title']),
-                subtitle: mode.value['subtitle'] != null
-                    ? i18n(context, mode.value['subtitle'])
-                    : null);
+                child: i18n(context, mode.value.title),
+                subtitle: i18n(context, mode.value.subtitle));
           }).toList(),
         ),
         if (_currentMode == GCWSwitchPosition.left)
@@ -98,30 +99,31 @@ class BrailleDotNumbersState extends State<BrailleDotNumbers> {
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
-      if (_currentEncodeInput == null || _currentEncodeInput.isEmpty)
-        return GCWDefaultOutput();
+      if (_currentEncodeInput.isEmpty) {
+        return const GCWDefaultOutput();
+      }
 
-      List<List<String>> segments =
-          encodeBraille(_currentEncodeInput, _currentLanguage);
+      var segments = encodeBraille(_currentEncodeInput, _currentLanguage);
       return Column(
         children: <Widget>[
           _buildDigitalOutput(segments),
           GCWDefaultOutput(
-              child: segments.map((segment) => segment.join()).join(' '))
+              child: segments.displays.map((segment) => segment.join()).join(' '))
         ],
       );
     } else {
-      if (_currentDecodeInput == null || _currentDecodeInput.isEmpty)
-        return GCWDefaultOutput();
+      if (_currentDecodeInput.isEmpty) {
+        return const GCWDefaultOutput();
+      }
 
       var segments = decodeBraille(
           _currentDecodeInput.split(RegExp(r'\s+')).toList(),
           _currentLanguage,
           true);
-      var segmentsBasicDigits;
-      var segmentsBasicLetters;
+      SegmentsChars? segmentsBasicDigits;
+      SegmentsChars? segmentsBasicLetters;
       if (_currentLanguage == BrailleLanguage.SIMPLE) {
         segmentsBasicDigits = decodeBraille(
             _currentDecodeInput.split(RegExp(r'\s+')).toList(),
@@ -134,23 +136,23 @@ class BrailleDotNumbersState extends State<BrailleDotNumbers> {
       }
       return Column(
         children: <Widget>[
-          _buildDigitalOutput(segments['displays']),
+          _buildDigitalOutput(segments),
           if (_currentLanguage != BrailleLanguage.BASIC)
-            GCWDefaultOutput(child: segments['chars'].join()),
+            GCWDefaultOutput(child: segments.chars.join()),
           if (_currentLanguage == BrailleLanguage.SIMPLE)
             Column(
               children: [
-                if (segmentsBasicLetters['chars'].join().toUpperCase() !=
-                    segments['chars'].join())
+                if ((segmentsBasicLetters?.chars ?? []).join().toUpperCase() !=
+                    segments.chars.join())
                   GCWOutput(
                     title: i18n(context, 'brailledotnumbers_basic_letters'),
-                    child: segmentsBasicLetters['chars'].join().toUpperCase(),
+                    child: segmentsBasicLetters?.chars.join().toUpperCase(),
                   ),
-                if (segmentsBasicDigits['chars'].join().toUpperCase() !=
-                    segments['chars'].join())
+                if (segmentsBasicDigits?.chars.join().toUpperCase() !=
+                    segments.chars.join())
                   GCWOutput(
                     title: i18n(context, 'brailledotnumbers_basic_digits'),
-                    child: segmentsBasicDigits['chars'].join().toUpperCase(),
+                    child: segmentsBasicDigits?.chars.join().toUpperCase(),
                   ),
               ],
             )
@@ -159,15 +161,16 @@ class BrailleDotNumbersState extends State<BrailleDotNumbers> {
     }
   }
 
-  Widget _buildDigitalOutput(List<List<String>> segments) {
+  Widget _buildDigitalOutput(Segments segments) {
     return SegmentDisplayOutput(
         segmentFunction: (displayedSegments, readOnly) {
-          if (_currentLanguage == BrailleLanguage.EUR)
+          if (_currentLanguage == BrailleLanguage.EUR) {
             return BrailleEuroSegmentDisplay(
                 segments: displayedSegments, readOnly: readOnly);
-          else
+          } else {
             return BrailleSegmentDisplay(
                 segments: displayedSegments, readOnly: readOnly);
+          }
         },
         segments: segments,
         readOnly: true);

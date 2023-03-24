@@ -29,7 +29,7 @@ void main() async {
 class App extends StatelessWidget {
   final AppLanguage appLanguage;
 
-  App({this.appLanguage});
+  const App({Key? key, required this.appLanguage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class App extends StatelessWidget {
               title: 'GC Wizard',
               supportedLocales: SUPPORTED_LOCALES.keys,
               locale: model.appLocal,
-              localizationsDelegates: [
+              localizationsDelegates: const [
                 AppLocalizations.delegate,
                 GlobalMaterialLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
@@ -49,13 +49,13 @@ class App extends StatelessWidget {
               ],
               theme: buildTheme(),
               debugShowCheckedModeBanner: false,
-              home: MainView(),
+              home: const MainView(),
               navigatorKey: NavigationService.instance.navigationKey,
               routes: {
                 // Required extra way because normal Navigator.of(context) way
                 // crashes because of some NULL problems on TextSelectionControls menu
                 'clipboard_editor': (BuildContext context) => GCWTool(
-                    tool: GCWClipboardEditor(), toolName: i18n(context, 'clipboardeditor_title'), i18nPrefix: '')
+                    tool: const GCWClipboardEditor(), toolName: i18n(context, 'clipboardeditor_title'), id: '')
               },
             );
           });

@@ -11,28 +11,27 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_double_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coord_format_getter.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/segment_bearings/logic/segment_bearings.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:gc_wizard/utils/constants.dart';
+import 'package:latlong2/latlong.dart';
 
 class SegmentBearings extends StatefulWidget {
+  const SegmentBearings({Key? key}) : super(key: key);
+
   @override
   SegmentBearingsState createState() => SegmentBearingsState();
 }
 
 class SegmentBearingsState extends State<SegmentBearings> {
-  var _currentCoordsStart = defaultCoordinate;
-  var _currentCoords1 = defaultCoordinate;
-  var _currentCoords2 = defaultCoordinate;
-
-  var _currentCoordsFormatStart = defaultCoordFormat();
-  var _currentCoordsFormat1 = defaultCoordFormat();
-  var _currentCoordsFormat2 = defaultCoordFormat();
+  var _currentCoordsStart = defaultBaseCoordinate;
+  var _currentCoords1 = defaultBaseCoordinate;
+  var _currentCoords2 = defaultBaseCoordinate;
 
   var _currentInput1Mode = GCWSwitchPosition.left;
   var _currentInput2Mode = GCWSwitchPosition.left;
@@ -45,7 +44,7 @@ class SegmentBearingsState extends State<SegmentBearings> {
   var _currentMapPoints = <GCWMapPoint>[];
   var _currentMapPolylines = <GCWMapPolyline>[];
 
-  var _currentOutputFormat = defaultCoordFormat();
+  var _currentOutputFormat = defaultCoordinateFormat;
 
   List<String> _currentOutputs = [];
   Widget _currentBearingOutput = Container();
@@ -56,11 +55,10 @@ class SegmentBearingsState extends State<SegmentBearings> {
       children: <Widget>[
         GCWCoords(
           title: i18n(context, 'coords_segmentbearings_start'),
-          coordsFormat: _currentCoordsFormatStart,
+          coordsFormat: _currentCoordsStart.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoordsFormatStart = ret['coordsFormat'];
-              _currentCoordsStart = ret['value'];
+              _currentCoordsStart = ret;
             });
           },
         ),
@@ -88,11 +86,10 @@ class SegmentBearingsState extends State<SegmentBearings> {
               )
             : GCWCoords(
                 notitle: true,
-                coordsFormat: _currentCoordsFormat1,
+                coordsFormat: _currentCoords1.format,
                 onChanged: (ret) {
                   setState(() {
-                    _currentCoordsFormat1 = ret['coordsFormat'];
-                    _currentCoords1 = ret['value'];
+                    _currentCoords1 = ret;
                   });
                 },
               ),
@@ -120,11 +117,10 @@ class SegmentBearingsState extends State<SegmentBearings> {
               )
             : GCWCoords(
                 notitle: true,
-                coordsFormat: _currentCoordsFormat2,
+                coordsFormat: _currentCoords2.format,
                 onChanged: (ret) {
                   setState(() {
-                    _currentCoordsFormat2 = ret['coordsFormat'];
-                    _currentCoords2 = ret['value'];
+                    _currentCoords2 = ret;
                   });
                 },
               ),
@@ -173,48 +169,48 @@ class SegmentBearingsState extends State<SegmentBearings> {
     );
   }
 
-  _calculateOutput() {
-    var ells = defaultEllipsoid();
+  void _calculateOutput() {
+    var ells = defaultEllipsoid;
 
     var startMapPoint = GCWMapPoint(
-        point: _currentCoordsStart,
+        point: _currentCoordsStart.toLatLng()!,
         markerText: i18n(context, 'coords_segmentbearings_start'),
-        coordinateFormat: _currentCoordsFormatStart);
+        coordinateFormat: _currentCoordsStart.format);
 
-    var endPoint1;
-    var bearing1;
-    var format1;
+    LatLng endPoint1;
+    double bearing1;
+    CoordinateFormat format1;
     if (_currentInput1Mode == GCWSwitchPosition.left) {
-      endPoint1 = projection(_currentCoordsStart, _currentBearing1, _currentDistance, ells);
+      endPoint1 = projection(_currentCoordsStart.toLatLng()!, _currentBearing1, _currentDistance, ells);
       bearing1 = _currentBearing1;
-      format1 = defaultCoordFormat();
+      format1 = defaultCoordinateFormat;
     } else {
-      endPoint1 = _currentCoords1;
-      bearing1 = distanceBearing(_currentCoordsStart, _currentCoords1, ells).bearingAToB;
-      format1 = _currentCoordsFormat1;
+      endPoint1 = _currentCoords1.toLatLng()!;
+      bearing1 = distanceBearing(_currentCoordsStart.toLatLng()!, _currentCoords1.toLatLng()!, ells).bearingAToB;
+      format1 = _currentCoords1.format;
     }
 
     var endMapPoint1 = GCWMapPoint(
         point: endPoint1, markerText: i18n(context, 'coords_segmentbearings_end1'), coordinateFormat: format1);
 
-    var endPoint2;
-    var bearing2;
-    var format2;
+    LatLng endPoint2;
+    double bearing2;
+    CoordinateFormat format2;
     if (_currentInput2Mode == GCWSwitchPosition.left) {
-      endPoint2 = projection(_currentCoordsStart, _currentBearing2, _currentDistance, ells);
+      endPoint2 = projection(_currentCoordsStart.toLatLng()!, _currentBearing2, _currentDistance, ells);
       bearing2 = _currentBearing2;
-      format2 = defaultCoordFormat();
+      format2 = defaultCoordinateFormat;
     } else {
-      endPoint2 = _currentCoords2;
-      bearing2 = distanceBearing(_currentCoordsStart, _currentCoords2, ells).bearingAToB;
-      format2 = _currentCoordsFormat2;
+      endPoint2 = _currentCoords2.toLatLng()!;
+      bearing2 = distanceBearing(_currentCoordsStart.toLatLng()!, _currentCoords2.toLatLng()!, ells).bearingAToB;
+      format2 = _currentCoords2.format;
     }
 
     var endMapPoint2 = GCWMapPoint(
         point: endPoint2, markerText: i18n(context, 'coords_segmentbearings_end2'), coordinateFormat: format2);
 
     var segments =
-        segmentBearings(_currentCoordsStart, bearing1, bearing2, _currentDistance, _currentSegmentCount, ells);
+        segmentBearings(_currentCoordsStart.toLatLng()!, bearing1, bearing2, _currentDistance, _currentSegmentCount, ells);
 
     _currentMapPoints = [startMapPoint, endMapPoint1];
     _currentMapPolylines = [
@@ -225,7 +221,7 @@ class SegmentBearingsState extends State<SegmentBearings> {
               .toColor())
     ];
 
-    segments['points'].asMap().forEach((index, point) {
+    segments.points.asMap().forEach((index, point) {
       var mapPoint = GCWMapPoint(
         point: point,
         markerText: i18n(context, 'coords_segmentbearings_end') + ' ' + (index + 1).toString(),
@@ -244,11 +240,11 @@ class SegmentBearingsState extends State<SegmentBearings> {
     _currentMapPoints.add(endMapPoint2);
     _currentMapPolylines.add(GCWMapPolyline(points: [startMapPoint, endMapPoint2]));
 
-    _currentOutputs = List<String>.from(segments['points'].map((point) {
-      return formatCoordOutput(point, _currentOutputFormat, defaultEllipsoid());
+    _currentOutputs = List<String>.from(segments.points.map((point) {
+      return formatCoordOutput(point, _currentOutputFormat, defaultEllipsoid);
     }).toList());
 
-    var bearingOutput = doubleFormat.format(segments['segmentAngle']);
+    var bearingOutput = doubleFormat.format(segments.segmentAngle);
     _currentBearingOutput = GCWDefaultOutput(
       child: i18n(context, 'coords_segmentbearings_segmentangle') + ': ' + bearingOutput,
       copyText: bearingOutput,

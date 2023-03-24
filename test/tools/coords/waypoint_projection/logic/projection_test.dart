@@ -8,7 +8,7 @@ import 'package:latlong2/latlong.dart';
 
 void main() {
   group("Projection.reverseProjection:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'coord' : LatLng(-67.54191968624406, 178.01621612330604), 'expectedOutput': LatLng(-67.48849337725231, 177.43970441425847), 'bearing': 103.87456562228434, 'distance': 25325.028166351105},
       {'coord' : LatLng(67.52065020309101, 116.15017978871731), 'expectedOutput': LatLng(67.46333237570478, 114.91858552958274), 'bearing': 82.5065605601814, 'distance': 53020.22653140148},
       {'coord' : LatLng(75.96130646717049, 83.13727857890729), 'expectedOutput': LatLng(75.93570642257264, 85.6363578154352), 'bearing': 273.62677269316185, 'distance': 67813.25176684314},
@@ -20,16 +20,17 @@ void main() {
       {'coord' : LatLng(50.9824, 011.0930833333), 'expectedOutput': LatLng(37.459265, -78.848104), 'bearing': 45.631928848, 'distance': 6885736.0},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('coord: ${elem['coord']}, bearing: ${elem['bearing']}, distance: ${elem['distance']}', () {
-        var actual = reverseProjection(elem['coord'], elem['bearing'], elem['distance'], getEllipsoidByName(ELLIPSOID_NAME_WGS84));
+        var actual = reverseProjection(elem['coord'] as LatLng, elem['bearing'] as double, elem['distance'] as double, getEllipsoidByName(ELLIPSOID_NAME_WGS84)!);
         var equals = false;
         for (LatLng l in actual) {
-          if (equalsLatLng(l, elem['expectedOutput']))
+          if (equalsLatLng(l, elem['expectedOutput'] as LatLng, tolerance: 1e-5)) {
             equals = true;
+          }
         }
         expect(equals, true);
       });
-    });
+    }
   });
 }

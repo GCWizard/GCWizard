@@ -3,8 +3,7 @@ import 'package:gc_wizard/tools/science_and_technology/decabit/logic/decabit.dar
 
 void main() {
   group("Decabit.encryptDecabit:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'numericMode' : false, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'numericMode' : false, 'expectedOutput' : ''},
       {'input' : '', 'replaceCharacters' : null, 'numericMode' : false, 'expectedOutput' : ''},
       {'input' : '', 'replaceCharacters' : <String, String>{}, 'numericMode' : false, 'expectedOutput' : ''},
@@ -39,17 +38,16 @@ void main() {
       {'input' : '0 63 126', 'replaceCharacters': {'+': '-', '-': '+'}, 'numericMode' : true, 'expectedOutput' : '++-+---+-+ --+++--++- ----------'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, replaceCharacter: ${elem['replaceCharacters']}, numericMode: ${elem['numericMode']}', () {
-        var _actual = encryptDecabit(elem['input'], elem['replaceCharacters'], elem['numericMode']);
+        var _actual = encryptDecabit(elem['input'] as String, (elem['replaceCharacters'] ?? <String, String>{}) as Map<String, String>, elem['numericMode'] as bool);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Decabit.decryptDecabit:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'numericMode' : false, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'numericMode' : false, 'expectedOutput' : ''},
       {'input' : '', 'replaceCharacters' : null, 'numericMode' : false, 'expectedOutput' : ''},
       {'input' : '', 'replaceCharacters' : <String, String>{}, 'numericMode' : false, 'expectedOutput' : ''},
@@ -96,11 +94,11 @@ void main() {
       {'input' : '+- +-+-++-+-- +---+-+++- +-+---+++- -+--++-++- +---+++-+- +-+-++-+-- +-+++---+- +++-++---- +-+-++-+-- -+++--+-+- -+++-+-+-- +++-+---+- -++--+++-- -+-+--+++- +-+-++-+-- +++-++---- ++--+--++- +-+-+---++ +-+-++-+-- +-+---+-++ +-++--+-+- -+-+--+++- +-+-++-+-- ++--+--++- +--+-+-++- ++-++---+- +-+-++-+-- +---+-+++- +-+---+++- -+--', 'numericMode' : false, 'expectedOutput' : '>Grad 47 Punkt 706 Ost 013 Gr'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, replaceCharacter: ${elem['replaceCharacters']}, numericMode: ${elem['numericMode']}', () {
-        var _actual = decryptDecabit(elem['input'], elem['replaceCharacters'], elem['numericMode']);
+        var _actual = decryptDecabit(elem['input'] as String, (elem['replaceCharacters'] ?? <String, String>{}) as Map<String, String>, elem['numericMode']as bool);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 }

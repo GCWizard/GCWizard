@@ -1,5 +1,7 @@
 import 'dart:isolate';
 
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
+import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/variable_string_expander.dart';
 
 class HashBreakerJobData {
@@ -11,30 +13,30 @@ class HashBreakerJobData {
   HashBreakerJobData({
     this.input = '',
     this.searchMask = '',
-    this.substitutions,
-    this.hashFunction,
+    required this.substitutions,
+    required this.hashFunction,
   });
 }
 
-Future<Map<String, dynamic>> breakHashAsync(dynamic jobData) async {
-  if (jobData == null) return null;
+Future<BoolText?> breakHashAsync(GCWAsyncExecuterParameters? jobData) async {
+  if (jobData?.parameters is! HashBreakerJobData) return null;
 
-  var output = breakHash(jobData.parameters.input, jobData.parameters.searchMask, jobData.parameters.substitutions,
-      jobData.parameters.hashFunction,
+  var data = jobData!.parameters as HashBreakerJobData;
+  var output = breakHash(data.input, data.searchMask, data.substitutions,
+      data.hashFunction,
       sendAsyncPort: jobData.sendAsyncPort);
 
-  if (jobData.sendAsyncPort != null) jobData.sendAsyncPort.send(output);
+  jobData.sendAsyncPort?.send(output);
 
   return output;
 }
 
-Map<String, dynamic> breakHash(
-    String input, String searchMask, Map<String, String> substitutions, Function hashFunction,
-    {SendPort sendAsyncPort}) {
-  if (input == null ||
-      input.length == 0 ||
+BoolText? breakHash(
+    String input, String? searchMask, Map<String, String>? substitutions, Function? hashFunction,
+    {SendPort? sendAsyncPort}) {
+  if (input.isEmpty ||
       searchMask == null ||
-      searchMask.length == 0 ||
+      searchMask.isEmpty ||
       substitutions == null ||
       hashFunction == null) return null;
 
@@ -43,15 +45,16 @@ Map<String, dynamic> breakHash(
     var withoutBrackets = expandedText.replaceAll(RegExp(r'[\[\]]'), '');
     var hashValue = hashFunction(withoutBrackets).toLowerCase();
 
-    if (hashValue == input)
+    if (hashValue == input) {
       return withoutBrackets;
-    else
+    } else {
       return null;
+    }
   }, breakCondition: VariableStringExpanderBreakCondition.BREAK_ON_FIRST_FOUND, sendAsyncPort: sendAsyncPort);
 
   var results = expander.run();
 
-  if (results == null || results.length == 0) return {'state': 'not_found'};
+  if (results.isEmpty) return BoolText('', false);
 
-  return {'state': 'ok', 'text': results[0]['text']};
+  return BoolText(results[0].text!, true);
 }

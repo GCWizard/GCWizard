@@ -1,25 +1,27 @@
+import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
+import 'package:gc_wizard/tools/science_and_technology/teletypewriter/_common/logic/teletypewriter.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/constants.dart';
 
 enum ChappeCodebook { ALPHABET, CODEPOINTS, DIGITS, KULIBIN }
 
-Map<ChappeCodebook, Map<String, String>> CHAPPE_CODEBOOK = {
-  ChappeCodebook.DIGITS: {'title': 'telegraph_chappe_digits_title', 'subtitle': 'telegraph_chappe_digits_description'},
-  ChappeCodebook.CODEPOINTS: {
-    'title': 'telegraph_chappe_codepoints_title',
-    'subtitle': 'telegraph_chappe_codepoints_description'
-  },
-  ChappeCodebook.ALPHABET: {
-    'title': 'telegraph_chappe_alphabet_title',
-    'subtitle': 'telegraph_chappe_alphabet_description'
-  },
-  ChappeCodebook.KULIBIN: {
-    'title': 'telegraph_chappe_kulibin_title',
-    'subtitle': 'telegraph_chappe_kulibin_description'
-  },
+const Map<ChappeCodebook, CodebookConfig> CHAPPE_CODEBOOK = {
+  ChappeCodebook.DIGITS: CodebookConfig(title: 'telegraph_chappe_digits_title', subtitle: 'telegraph_chappe_digits_description'),
+  ChappeCodebook.CODEPOINTS: CodebookConfig(
+    title: 'telegraph_chappe_codepoints_title',
+    subtitle: 'telegraph_chappe_codepoints_description'
+  ),
+  ChappeCodebook.ALPHABET: CodebookConfig(
+    title: 'telegraph_chappe_alphabet_title',
+    subtitle: 'telegraph_chappe_alphabet_description'
+  ),
+  ChappeCodebook.KULIBIN: CodebookConfig(
+    title: 'telegraph_chappe_kulibin_title',
+    subtitle: 'telegraph_chappe_kulibin_description'
+  ),
 };
 
-final Map<String, List<String>> CODEBOOK_CHAPPE_DIGITS = {
+const Map<String, List<String>> _CODEBOOK_CHAPPE_DIGITS = {
   '1': ['30', '70'],
   '2': ['10', '50'],
   '3': ['30', '3r', '70'],
@@ -32,7 +34,7 @@ final Map<String, List<String>> CODEBOOK_CHAPPE_DIGITS = {
   '0': ['10', '50', '5l'],
 };
 
-final Map<String, List<String>> CODEBOOK_CHAPPE_ALPHABET = {
+const Map<String, List<String>> _CODEBOOK_CHAPPE_ALPHABET = {
   'A': ['10', '1r', '50', '5l'],
   'B': ['20', '2r', '60', '6l'],
   'C': ['30', '3r', '70', '7l'],
@@ -71,7 +73,7 @@ final Map<String, List<String>> CODEBOOK_CHAPPE_ALPHABET = {
   '&': ['20', '60', '6l'],
 };
 
-final Map<String, List<String>> CODEBOOK_CHAPPE_CODEPOINTS = {
+const Map<String, List<String>> _CODEBOOK_CHAPPE_CODEPOINTS = {
   '1': ['30', '3o', '70'],
   '2': ['30', '3u', '70'],
   '3': ['30', '70', '7o'],
@@ -166,7 +168,7 @@ final Map<String, List<String>> CODEBOOK_CHAPPE_CODEPOINTS = {
   '92': ['10', '1l', '50', '5a'],
 };
 
-final Map<String, List<String>> CODEBOOK_KULIBIN = {
+const Map<String, List<String>> _CODEBOOK_KULIBIN = {
   'A': ['10', '1r', '50', '5l'],
   'B': ['20', '2r', '60', '6l'],
   'C': ['30', '3r', '70', '7l'],
@@ -205,86 +207,81 @@ final Map<String, List<String>> CODEBOOK_KULIBIN = {
   '&': ['20', '60', '6l'],
 };
 
-List<List<String>> encodeChappe(String input, ChappeCodebook language) {
-  if (input == null) return [];
-
+Segments encodeChappe(String input, ChappeCodebook language) {
   List<String> inputs = [];
-  if (language == ChappeCodebook.CODEPOINTS)
+  if (language == ChappeCodebook.CODEPOINTS) {
     inputs = input.split(' ');
-  else
+  } else {
     inputs = input.split('');
+  }
   List<List<String>> result = [];
 
-  var CODEBOOK;
+  Map<String, List<String>> CODEBOOK;
   switch (language) {
     case ChappeCodebook.ALPHABET:
-      CODEBOOK = CODEBOOK_CHAPPE_ALPHABET;
+      CODEBOOK = _CODEBOOK_CHAPPE_ALPHABET;
       break;
     case ChappeCodebook.CODEPOINTS:
-      CODEBOOK = CODEBOOK_CHAPPE_CODEPOINTS;
+      CODEBOOK = _CODEBOOK_CHAPPE_CODEPOINTS;
       break;
     case ChappeCodebook.DIGITS:
-      CODEBOOK = CODEBOOK_CHAPPE_DIGITS;
+      CODEBOOK = _CODEBOOK_CHAPPE_DIGITS;
       break;
     case ChappeCodebook.KULIBIN:
-      CODEBOOK = CODEBOOK_KULIBIN;
+      CODEBOOK = _CODEBOOK_KULIBIN;
       break;
   }
 
   for (int i = 0; i < inputs.length; i++) {
     if (CODEBOOK[inputs[i].toUpperCase()] != null) {
-      result.add(CODEBOOK[inputs[i].toUpperCase()]);
+      result.add(CODEBOOK[inputs[i].toUpperCase()]!);
     }
   }
-  return result;
+  return Segments(displays: result);
 }
 
-Map<String, dynamic> decodeVisualChappe(List<String> inputs, ChappeCodebook language) {
-  if (inputs == null || inputs.length == 0)
-    return {
-      'displays': <List<String>>[],
-      'chars': [0]
-    };
+SegmentsText decodeVisualChappe(List<String>? inputs, ChappeCodebook language) {
+  if (inputs == null || inputs.isEmpty) return SegmentsText(displays: [], text: '');
 
   var displays = <List<String>>[];
   var segment = <String>[];
 
-  Map<List<String>, String> CODEBOOK = Map<List<String>, String>();
+  Map<List<String>, String> CODEBOOK = <List<String>, String>{};
 
   switch (language) {
     case ChappeCodebook.ALPHABET:
-      CODEBOOK = switchMapKeyValue(CODEBOOK_CHAPPE_ALPHABET);
+      CODEBOOK = switchMapKeyValue(_CODEBOOK_CHAPPE_ALPHABET);
       break;
     case ChappeCodebook.CODEPOINTS:
-      CODEBOOK = switchMapKeyValue(CODEBOOK_CHAPPE_CODEPOINTS);
+      CODEBOOK = switchMapKeyValue(_CODEBOOK_CHAPPE_CODEPOINTS);
       break;
     case ChappeCodebook.DIGITS:
-      CODEBOOK = switchMapKeyValue(CODEBOOK_CHAPPE_DIGITS);
+      CODEBOOK = switchMapKeyValue(_CODEBOOK_CHAPPE_DIGITS);
       break;
     case ChappeCodebook.KULIBIN:
-      CODEBOOK = switchMapKeyValue(CODEBOOK_KULIBIN);
+      CODEBOOK = switchMapKeyValue(_CODEBOOK_KULIBIN);
       break;
   }
 
-  inputs.forEach((element) {
+  for (var element in inputs) {
     segment = _stringToSegment(element);
     displays.add(segment);
-  });
+  }
 
-  List<String> text = inputs.where((input) => input != null).map((input) {
+  List<String> text = inputs.map((input) {
     var char = '';
     var charH = '';
 
     if (CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] == null) {
       char = char + UNKNOWN_ELEMENT;
     } else {
-      charH = CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()];
+      charH = CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ?? '';
       char = char + charH;
     }
 
     return char;
   }).toList();
-  return {'displays': displays, 'chars': text.join(' ')};
+  return SegmentsText(displays: displays, text: text.join(' '));
 }
 
 List<String> _stringToSegment(String input) {
@@ -296,44 +293,41 @@ List<String> _stringToSegment(String input) {
       j = j + 2;
     }
     return result;
-  } else
+  } else {
     return [];
+  }
 }
 
-Map<String, dynamic> decodeTextChappeTelegraph(String inputs, ChappeCodebook language) {
-  if (inputs == null || inputs.length == 0)
-    return {
-      'displays': <List<String>>[],
-      'text': '',
-    };
+SegmentsText decodeTextChappeTelegraph(String inputs, ChappeCodebook language) {
+  if (inputs.isEmpty) return SegmentsText(displays: [], text: '');
 
   var displays = <List<String>>[];
   String text = '';
 
-  Map<String, List<String>> CODEBOOK = Map<String, List<String>>();
+  Map<String, List<String>> CODEBOOK = <String, List<String>>{};
 
   switch (language) {
     case ChappeCodebook.ALPHABET:
-      CODEBOOK = CODEBOOK_CHAPPE_ALPHABET;
+      CODEBOOK = _CODEBOOK_CHAPPE_ALPHABET;
       break;
     case ChappeCodebook.CODEPOINTS:
-      CODEBOOK = CODEBOOK_CHAPPE_CODEPOINTS;
+      CODEBOOK = _CODEBOOK_CHAPPE_CODEPOINTS;
       break;
     case ChappeCodebook.DIGITS:
-      CODEBOOK = CODEBOOK_CHAPPE_DIGITS;
+      CODEBOOK = _CODEBOOK_CHAPPE_DIGITS;
       break;
     case ChappeCodebook.KULIBIN:
-      CODEBOOK = CODEBOOK_KULIBIN;
+      CODEBOOK = _CODEBOOK_KULIBIN;
       break;
   }
 
   inputs.split(' ').forEach((element) {
     if (CODEBOOK[element] != null) {
-      text = text + element;
+      text += element;
+      displays.add(CODEBOOK[element]!);
     } else {
-      text = text + UNKNOWN_ELEMENT;
+      text += UNKNOWN_ELEMENT;
     }
-    displays.add(CODEBOOK[element]);
   });
-  return {'displays': displays, 'text': text};
+  return SegmentsText(displays: displays, text: text);
 }

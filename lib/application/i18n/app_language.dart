@@ -9,25 +9,26 @@ class AppLanguage extends ChangeNotifier {
   static const Locale _defaultAppLocale = DEFAULT_LOCALE; // Locale('en', 'US');
   Locale _appLocale = _defaultAppLocale;
 
-  Locale get appLocal => _appLocale ?? _defaultAppLocale;
+  Locale get appLocal => _appLocale;
   Future<Locale> fetchLocale() async {
     var prefs = await SharedPreferences.getInstance();
-    String lang = prefs.getString(PREFERENCE_LANGUAGE_CODE);
+    String? lang = prefs.getString(PREFERENCE_LANGUAGE_CODE);
     if (lang == null) {
-      Locale platformLocale = getPlatformLocale();
+      Locale platformLocale = _getPlatformLocale();
       _appLocale = isLocaleSupported(platformLocale) ? platformLocale : _defaultAppLocale;
       return _appLocale;
+    } else {
+      _appLocale = Locale(lang);
+      return _appLocale;
     }
-    _appLocale = Locale(lang);
-    return _appLocale;
   }
 
-  Locale getPlatformLocale() {
+  Locale _getPlatformLocale() {
     final String lang = ui.window.locale.languageCode.split("_")[0];
     return Locale(lang);
   }
 
-  void changeLocale(Locale locale) async {
+  void _changeLocale(Locale locale) async {
     var prefs = await SharedPreferences.getInstance();
     if (_appLocale.languageCode == locale.languageCode) {
       // no need to change
@@ -42,6 +43,6 @@ class AppLanguage extends ChangeNotifier {
 
   void changeLanguage(String languageCode) {
     Locale locale = Locale(languageCode);
-    changeLocale(locale);
+    _changeLocale(locale);
   }
 }

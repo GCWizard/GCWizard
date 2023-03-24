@@ -19,12 +19,12 @@ class malbolgeOutput {
   malbolgeOutput(this.output, this.assembler, this.mnemonic);
 }
 
-final xlat1 = "+b(29e*j1VMEKLyC})8&m#~W>qxdRp0wkrUo[D7,XTcA\"lI.v%{gJh4G\\-=O@5`_3i<?Z';FNQuY]szf\$!BS/|t:Pn6^Ha";
+const _xlat1 = "+b(29e*j1VMEKLyC})8&m#~W>qxdRp0wkrUo[D7,XTcA\"lI.v%{gJh4G\\-=O@5`_3i<?Z';FNQuY]szf\$!BS/|t:Pn6^Ha";
 
-final xlat2 = "5z]&gqtyfr\$(we4{WP)H-Zn,[%\\3dL+Q;>U!pJS72FhOA1CB6v^=I_0/8|jsb9m<.TVac`uY*MK'X~xDl}REokN:#?G\"i@";
+const _xlat2 = "5z]&gqtyfr\$(we4{WP)H-Zn,[%\\3dL+Q;>U!pJS72FhOA1CB6v^=I_0/8|jsb9m<.TVac`uY*MK'X~xDl}REokN:#?G\"i@";
 
-final validInstructions = {'j', 'i', '*', 'p', '<', '/', 'v', 'o'};
-final opCodeList = {
+const _validInstructions = {'j', 'i', '*', 'p', '<', '/', 'v', 'o'};
+const _opCodeList = {
   'i': 'jmp [d]',
   '4': 'i',
   '<': 'out a',
@@ -43,15 +43,15 @@ final opCodeList = {
   '68': 'o'
 };
 
-final MB_OUT = 5;
-final MB_ROT = 39;
-final MB_OPR = 62;
-final MB_NOP = 68;
-final MB_HALT = 81;
+const _MB_OUT = 5;
+const _MB_ROT = 39;
+const _MB_OPR = 62;
+const _MB_NOP = 68;
+const _MB_HALT = 81;
 
-final p9 = [1, 9, 81, 729, 6561];
+const _p9 = [1, 9, 81, 729, 6561];
 
-final o = [
+const _o = [
   [4, 3, 3, 1, 0, 0, 1, 0, 0],
   [4, 3, 5, 1, 0, 2, 1, 0, 2],
   [5, 5, 4, 2, 2, 1, 2, 2, 1],
@@ -63,75 +63,82 @@ final o = [
   [8, 8, 7, 8, 8, 7, 5, 5, 4],
 ];
 
-int opr(int x, y) {
+int _opr(int x, int y) {
   int i = 0;
   for (int j = 0; j < 5; j++) {
-    i = i + o[(y ~/ p9[j]) % 9][(x ~/ p9[j]) % 9] * p9[j];
+    i = i + _o[(y ~/ _p9[j]) % 9][(x ~/ _p9[j]) % 9] * _p9[j];
   }
   return i;
 }
 
-int rotateR(int n) {
+int _rotateR(int n) {
   return (n ~/ 3 + (n % 3) * 19683);
 }
 
-String format(int n) {
+String _format(int n) {
   String output = n.toString();
-  for (int i = output.length; i < 6; i++) output = ' ' + output;
+  for (int i = output.length; i < 6; i++) {
+    output = ' ' + output;
+  }
   return output;
 }
 
-bool instructionListNormalized(String instructionList) {
+bool _instructionListNormalized(String instructionList) {
   bool result = true;
-  for (int i = 0; i < instructionList.length; i++)
-    if (!validInstructions.contains(instructionList[i])) {
+  for (int i = 0; i < instructionList.length; i++) {
+    if (!_validInstructions.contains(instructionList[i])) {
       result = false;
       break;
     }
+  }
   return result;
 }
 
-String normalize(String instructionList) {
+String _normalize(String instructionList) {
   // Converts ASCII-representation to Malbolge-style instructions
   String returnString = '';
   String tempChar = '';
   for (int x = 0; x < instructionList.length; x++) {
-    tempChar = xlat1[((instructionList.codeUnitAt(x) + x - 33) % 94)];
-    if (validInstructions.contains(tempChar)) returnString = returnString + tempChar;
+    tempChar = _xlat1[((instructionList.codeUnitAt(x) + x - 33) % 94)];
+    if (_validInstructions.contains(tempChar)) returnString = returnString + tempChar;
   }
   return returnString;
 }
 
-String reverseNormalize(String instructionList) {
+String _reverseNormalize(String instructionList) {
   // Converts from Malbolge-style instructions to actual ASCII-representation
   String returnString = '';
   String tempChar = '';
   for (int x = 0; x < instructionList.length; x++) {
-    if (validInstructions.contains(instructionList[x])) {
+    if (_validInstructions.contains(instructionList[x])) {
       // Checks to see if the instructions provided are valid
-      tempChar = String.fromCharCode(((index(xlat1, instructionList[x]) - x) % 94) + 33);
+      tempChar = String.fromCharCode(((_index(_xlat1, instructionList[x]) - x) % 94) + 33);
       returnString = returnString + tempChar;
-    } else
+    } else {
       return "Invalid program string";
+    }
   }
   return returnString;
 }
 
-int index(String s, c) {
-  for (int i = 0; i < s.length; i++) if (s[i] == c) return i;
+int _index(String s, String c) {
+  for (int i = 0; i < s.length; i++) {
+    if (s[i] == c) return i;
+  }
   return -1;
 }
 
-List<int> memory = new List<int>(59049); // program
-List<int> memory_runtime = new List<int>(59049); // memory at runtime: with encrypted commands
-int last_A_val = 0; // last value of A register
+var _memory = List<int>.filled(59049, 0); // program
+var _memory_runtime = List<int>.filled(59049, 0); // memory at runtime: with encrypted commands
+int _last_A_val = 0; // last value of A register
 
 malbolgeOutput interpretMalbolge(String program, String STDIN, bool strict) {
-  if (program.length < 2)
+  if (program.length < 2) {
     return malbolgeOutput(
         ['common_programming_error_invalid_program', 'common_programming_error_program_to_short'], [], []);
+  }
 
-  if (instructionListNormalized(program)) program = reverseNormalize(program);
+  if (_instructionListNormalized(program)) program = _reverseNormalize(program);
 
   // load program
   int charCode = 0;
@@ -140,23 +147,24 @@ malbolgeOutput interpretMalbolge(String program, String STDIN, bool strict) {
   while (i < program.length) {
     charCode = program.codeUnitAt(i);
     if (charCode < 127 && charCode > 32) {
-      if (!validInstructions.contains(xlat1[(charCode - 33 + i) % 94]))
+      if (!_validInstructions.contains(_xlat1[(charCode - 33 + i) % 94])) {
         return malbolgeOutput([
           'common_programming_error_invalid_program',
           'common_programming_error_invalid_character',
-          'Position ' + i.toString() + ': ' + xlat1[(charCode - 33 + i) % 94]
+          'Position ' + i.toString() + ': ' + _xlat1[(charCode - 33 + i) % 94]
         ], [], []);
+      }
     }
     if (i == 59049) {
       return malbolgeOutput(
           ['common_programming_error_invalid_program', 'common_programming_error_program_to_big'], [], []);
     }
-    memory[i] = charCode;
+    _memory[i] = charCode;
     i++;
   }
   // fill memory with op(i-1, i-2)
   while (i < 59049) {
-    memory[i] = opr(memory[i - 1], memory[i - 2]);
+    _memory[i] = _opr(_memory[i - 1], _memory[i - 2]);
     i++;
   }
   // execute programm
@@ -173,13 +181,13 @@ malbolgeOutput interpretMalbolge(String program, String STDIN, bool strict) {
 
   while (!halt) {
     if (strict) {
-      if (memory[c] < 33 || memory[c] > 126) {
+      if (_memory[c] < 33 || _memory[c] > 126) {
         output.addAll([
           STDOUT,
           '',
           'common_programming_error_runtime',
           'common_programming_error_invalid_opcode',
-          'opCode: ' + memory[c].toString() + ' ' + String.fromCharCode(memory[c]),
+          'opCode: ' + _memory[c].toString() + ' ' + String.fromCharCode(_memory[c]),
           'common_programming_error_infinite_loop',
           '',
           'STACK TRACE ----------',
@@ -190,26 +198,26 @@ malbolgeOutput interpretMalbolge(String program, String STDIN, bool strict) {
         return malbolgeOutput(output, assembler, mnemonic);
       }
     }
-    opcode = xlat1[(memory[c] - 33 + c) % 94];
-    assembler.add(format(c) + '   ' + opcode);
-    mnemonic.add(opCodeList[opcode]);
+    opcode = _xlat1[(_memory[c] - 33 + c) % 94];
+    assembler.add(_format(c) + '   ' + opcode);
+    mnemonic.add(_opCodeList[opcode]!);
 
     switch (opcode) {
       case 'j': //    40     mov d, [d]
-        d = memory[d];
+        d = _memory[d];
         break;
 
       case 'i': //     4     c = [d]
-        c = memory[d];
+        c = _memory[d];
         break;
 
       case '*': //    39     a = [d] = rotr [d]
-        a = memory[d] = rotateR(memory[d]);
+        a = _memory[d] = _rotateR(_memory[d]);
         //a = memory[d];
         break;
 
       case 'p': //    62     a = [d] = crazy(a, [d])
-        a = memory[d] = opr(a, memory[d]);
+        a = _memory[d] = _opr(a, _memory[d]);
         //a = memory[d];
         break;
 
@@ -236,13 +244,13 @@ malbolgeOutput interpretMalbolge(String program, String STDIN, bool strict) {
     }
 
     if (strict) {
-      if (memory[c] < 33 || memory[c] > 126) {
+      if (_memory[c] < 33 || _memory[c] > 126) {
         output.addAll([
           STDOUT,
           '',
           'common_programming_error_runtime',
           'common_programming_error_invalid_opcode',
-          'opCode: ' + memory[c].toString() + ' ' + String.fromCharCode(memory[c]),
+          'opCode: ' + _memory[c].toString() + ' ' + String.fromCharCode(_memory[c]),
           (opcode == 'i') ? 'common_programming_error_illegal_jump' : 'common_programming_error_illegal_write',
           '',
           'STACK TRACE ----------',
@@ -253,21 +261,23 @@ malbolgeOutput interpretMalbolge(String program, String STDIN, bool strict) {
         return malbolgeOutput(output, assembler, mnemonic);
       }
 
-      memory[c] = xlat2.codeUnitAt(memory[c] - 33);
+      _memory[c] = _xlat2.codeUnitAt(_memory[c] - 33);
     } else {
-      if (33 <= memory[c] && memory[c] <= 126) {
-        memory[c] = xlat2.codeUnitAt(memory[c] - 33);
+      if (33 <= _memory[c] && _memory[c] <= 126) {
+        _memory[c] = _xlat2.codeUnitAt(_memory[c] - 33);
       }
     }
 
-    if (c == 59048)
+    if (c == 59048) {
       c = 0;
-    else
+    } else {
       c++;
-    if (d == 59048)
+    }
+    if (d == 59048) {
       d = 0;
-    else
+    } else {
       d++;
+    }
   }
   output.add(STDOUT);
   return malbolgeOutput(output, assembler, mnemonic);
@@ -279,10 +289,10 @@ malbolgeOutput generateMalbolge(String out_s) {
   int i;
 
   // first character: b -> cause a jump to address 98 which will be encrypted first
-  memory_runtime[0] = memory[0] = 98;
+  _memory_runtime[0] = _memory[0] = 98;
   // fill skipped memory cells with NOPs
   for (i = 1; i < 99; i++) {
-    create_malbolge_command(MB_NOP, i);
+    _create_malbolge_command(_MB_NOP, i);
   }
   // Malbolge program execution continues with data pointer at 1 and program counter at 99
   C = 99;
@@ -297,7 +307,7 @@ malbolgeOutput generateMalbolge(String out_s) {
 
     do {
       // load character to A register
-      command_length = generate_character(C, out_s[index]);
+      command_length = _generate_character(C, out_s[index]);
       index++;
     } while (command_length < 0 && index < out_s.length);
 
@@ -309,7 +319,7 @@ malbolgeOutput generateMalbolge(String out_s) {
       break;
     } else {
       // print A register
-      create_malbolge_command(MB_OUT, C);
+      _create_malbolge_command(_MB_OUT, C);
       C++;
     }
   } // while
@@ -318,17 +328,17 @@ malbolgeOutput generateMalbolge(String out_s) {
     C = 59047;
   }
   // halt
-  create_malbolge_command(MB_HALT, C);
+  _create_malbolge_command(_MB_HALT, C);
   C++;
 
   for (i = 0; i < C; i++) {
     // create output
-    malbolgeProgram += String.fromCharCode(memory[i]);
+    malbolgeProgram += String.fromCharCode(_memory[i]);
   }
-  return malbolgeOutput([malbolgeProgram], [normalize(malbolgeProgram)], []);
+  return malbolgeOutput([malbolgeProgram], [_normalize(malbolgeProgram)], []);
 }
 
-int generate_character(int C, String goal) {
+int _generate_character(int C, String goal) {
   // Current size of the search window.
   int window_size = 1;
   int i;
@@ -338,7 +348,7 @@ int generate_character(int C, String goal) {
     return -1;
   }
 
-  if (String.fromCharCode(last_A_val) == goal) {
+  if (String.fromCharCode(_last_A_val) == goal) {
     // goal's value is in the A register already.
     return 0;
   }
@@ -354,38 +364,38 @@ int generate_character(int C, String goal) {
     do {
       int inner_opr_pos = rotPos + 1;
       do {
-        int cur_A_val = last_A_val;
+        int cur_A_val = _last_A_val;
 
         for (i = C; i < C + rotPos; i++) {
-          create_malbolge_command(MB_NOP, i);
+          _create_malbolge_command(_MB_NOP, i);
         }
 
         if (rotPos >= 0) {
-          create_malbolge_command(MB_ROT, C + rotPos);
-          cur_A_val = rotateR(memory_runtime[C + rotPos - 98]);
+          _create_malbolge_command(_MB_ROT, C + rotPos);
+          cur_A_val = _rotateR(_memory_runtime[C + rotPos - 98]);
         }
 
         for (i = C + rotPos + 1; i < C + inner_opr_pos; i++) {
-          create_malbolge_command(MB_NOP, i);
+          _create_malbolge_command(_MB_NOP, i);
         }
 
         if (inner_opr_pos < window_size - 1) {
-          create_malbolge_command(MB_OPR, C + inner_opr_pos);
-          cur_A_val = opr(cur_A_val, memory_runtime[C + inner_opr_pos - 98]);
+          _create_malbolge_command(_MB_OPR, C + inner_opr_pos);
+          cur_A_val = _opr(cur_A_val, _memory_runtime[C + inner_opr_pos - 98]);
           for (i = C + inner_opr_pos + 1; i < C + window_size; i++) {
-            create_malbolge_command(MB_NOP, i);
+            _create_malbolge_command(_MB_NOP, i);
           }
         }
 
         if (rotPos < window_size - 1) {
-          create_malbolge_command(MB_OPR, C + window_size - 1);
-          cur_A_val = opr(cur_A_val, memory_runtime[C + window_size - 1 - 98]);
+          _create_malbolge_command(_MB_OPR, C + window_size - 1);
+          cur_A_val = _opr(cur_A_val, _memory_runtime[C + window_size - 1 - 98]);
         }
 
         if (String.fromCharCode(cur_A_val % 256) == goal) {
           // Success.
           // Update last_A_val and return length of Malbolge code sequence.
-          last_A_val = cur_A_val;
+          _last_A_val = cur_A_val;
           return window_size;
         }
 
@@ -400,15 +410,15 @@ int generate_character(int C, String goal) {
   return -1;
 }
 
-void create_malbolge_command(int command, int position) {
+void _create_malbolge_command(int command, int position) {
   command = (command - (position) % 94 + 94) % 94;
   if (command < 33) {
     command += 94;
   }
-  memory[position] = command;
+  _memory[position] = command;
   if (position >= 98) {
-    memory_runtime[position] = xlat2[memory[position] - 33].codeUnitAt(0);
+    _memory_runtime[position] = _xlat2[_memory[position] - 33].codeUnitAt(0);
   } else {
-    memory_runtime[position] = memory[position];
+    _memory_runtime[position] = _memory[position];
   }
 }

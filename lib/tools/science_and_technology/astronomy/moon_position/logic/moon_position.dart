@@ -10,22 +10,22 @@ import 'package:latlong2/latlong.dart';
 class MoonPosition {
   final LUNATION = 29.530589;
 
-  double distanceToEarthCenter;
-  double distanceToObserver;
-  double eclipticLongitude;
-  double eclipticLatitude;
-  double rightAscension;
-  double declination;
-  double azimuth;
-  double altitude;
-  double diameter;
-  int phaseNumber;
-  MoonPhase phaseName;
-  double age;
-  AstrologicalSign astrologicalSign;
-  double illumination;
-  double greenwichSiderealTime;
-  double localSiderealTime;
+  late double distanceToEarthCenter;
+  late double distanceToObserver;
+  late double eclipticLongitude;
+  late double eclipticLatitude;
+  late double rightAscension;
+  late double declination;
+  late double azimuth;
+  late double altitude;
+  late double diameter;
+  late int phaseNumber;
+  late MoonPhase phaseName;
+  late double age;
+  late AstrologicalSign astrologicalSign;
+  late double illumination;
+  late double greenwichSiderealTime;
+  late double localSiderealTime;
 
   MoonPosition(LatLng coords, JulianDate julianDate, Ellipsoid ellipsoid) {
     greenwichSiderealTime = GMST(julianDate.julianDate);

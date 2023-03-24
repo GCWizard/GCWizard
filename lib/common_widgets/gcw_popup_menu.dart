@@ -8,28 +8,28 @@ import 'package:gc_wizard/utils/math_utils.dart';
 class GCWPopupMenu extends StatefulWidget {
   final List<GCWPopupMenuItem> Function(BuildContext context) menuItemBuilder;
   final IconData iconData;
-  final Widget customIcon;
-  final double rotateDegrees;
-  final IconButtonSize size;
-  final Color iconColor;
-  final Color backgroundColor;
+  final Widget? customIcon;
+  final double? rotateDegrees;
+  final IconButtonSize? size;
+  final Color? iconColor;
+  final Color? backgroundColor;
   final bool isTextSelectionToolBarButton;
-  final EdgeInsets textSelectionToolBarButtonPadding;
-  final String textSelectionToolBarButtonLabel;
+  final EdgeInsets? textSelectionToolBarButtonPadding;
+  final String? textSelectionToolBarButtonLabel;
 
-  final Function onBeforePressed;
+  final Function? onBeforePressed;
 
   const GCWPopupMenu({
-    Key key,
-    this.menuItemBuilder,
-    this.iconData,
+    Key? key,
+    required this.menuItemBuilder,
+    required this.iconData,
     this.customIcon,
     this.rotateDegrees,
-    this.size: IconButtonSize.NORMAL,
+    this.size = IconButtonSize.NORMAL,
     this.iconColor,
     this.backgroundColor,
     this.onBeforePressed,
-    this.isTextSelectionToolBarButton: false,
+    this.isTextSelectionToolBarButton = false,
     this.textSelectionToolBarButtonPadding,
     this.textSelectionToolBarButtonLabel,
   }) : super(key: key);
@@ -39,12 +39,12 @@ class GCWPopupMenu extends StatefulWidget {
 }
 
 class GCWPopupMenuState extends State<GCWPopupMenu> {
-  List<PopupMenuEntry<dynamic>> _menuItems;
-  var _menuAction;
+  List<PopupMenuEntry<int>>? _menuItems;
+  List<void Function(int)>? _menuAction;
 
-  RelativeRect _menuPosition;
+  RelativeRect? _menuPosition;
 
-  _afterLayout() {
+  void _afterLayout() {
     //copied from the native PopupMenu code
     final RenderBox button = context.findRenderObject() as RenderBox;
     final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
@@ -61,9 +61,9 @@ class GCWPopupMenuState extends State<GCWPopupMenu> {
   Widget build(BuildContext context) {
     if (widget.isTextSelectionToolBarButton) {
       return TextSelectionToolbarTextButton(
-        padding: widget.textSelectionToolBarButtonPadding,
+        padding: widget.textSelectionToolBarButtonPadding!,
         onPressed: _onPressed,
-        child: Text(widget.textSelectionToolBarButtonLabel),
+        child: Text(widget.textSelectionToolBarButtonLabel!),
       );
     }
 
@@ -77,12 +77,14 @@ class GCWPopupMenuState extends State<GCWPopupMenu> {
         onPressed: _onPressed);
   }
 
-  _onPressed() {
-    if (widget.onBeforePressed != null) widget.onBeforePressed();
+  void _onPressed() {
+    if (widget.onBeforePressed != null) widget.onBeforePressed!();
 
     var items = widget.menuItemBuilder(context).asMap().map((index, GCWPopupMenuItem item) {
-      return MapEntry<PopupMenuEntry<dynamic>, Function>(
-          item.isDivider ? PopupMenuDivider() : PopupMenuItem(child: item.child, value: index), item.action);
+      return MapEntry<PopupMenuEntry<int>, void Function(int)>(
+          item.isDivider
+              ? const PopupMenuDivider() as PopupMenuEntry<int>
+              : PopupMenuItem(value: index, child: item.child), item.action);
     });
 
     _afterLayout();
@@ -90,51 +92,49 @@ class GCWPopupMenuState extends State<GCWPopupMenu> {
     _menuItems = items.keys.toList();
     _menuAction = items.values.toList();
 
-    showMenu(
+    showMenu<int>(
       context: context,
-      position: _menuPosition,
-      items: _menuItems,
+      position: _menuPosition!,
+      items: _menuItems!,
       elevation: 8.0,
-      color: themeColors().accent(),
+      color: themeColors().secondary(),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(ROUNDED_BORDER_RADIUS),
       ),
-    ).then((itemSelected) {
-      if (itemSelected == null || itemSelected < 0 || itemSelected >= _menuAction.length) return;
+    ).then((int? itemSelected) {
+      if (itemSelected == null || itemSelected < 0 || itemSelected >= _menuAction!.length) return;
 
-      if (_menuAction[itemSelected] == null) return;
-
-      _menuAction[itemSelected](itemSelected);
+      _menuAction![itemSelected](itemSelected);
     });
   }
 }
 
 class GCWPopupMenuItem {
   final Widget child;
-  final Function action;
-  final Function onLongPress;
+  final void Function(int) action;
+  final void Function()? onLongPress;
   final bool isDivider;
 
-  GCWPopupMenuItem({this.child, this.action, this.onLongPress, this.isDivider: false});
+  GCWPopupMenuItem({required this.child, required this.action, this.onLongPress, this.isDivider = false});
 }
 
-iconedGCWPopupMenuItem(BuildContext context, IconData icon, String title,
-    {double rotateDegrees: 0.0, Function onLongPress}) {
+Row iconedGCWPopupMenuItem(BuildContext context, IconData icon, String title,
+    {double rotateDegrees = 0.0, Function? onLongPress}) {
   var color = themeColors().dialogText();
 
   return Row(
     children: [
       GestureDetector(
         child: Container(
+          padding: const EdgeInsets.only(right: 10),
           child: Transform.rotate(
             angle: degreesToRadian(rotateDegrees),
             child: Icon(icon, color: color),
           ),
-          padding: EdgeInsets.only(right: 10),
         ),
-        onLongPress: onLongPress,
+        onLongPress: () => onLongPress,
       ),
-      Text(i18n(context, title) ?? title, style: TextStyle(color: color))
+      Text(i18n(context, title, ifTranslationNotExists: title), style: TextStyle(color: color))
     ],
   );
 }

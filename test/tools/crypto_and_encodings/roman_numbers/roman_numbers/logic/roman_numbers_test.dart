@@ -3,8 +3,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/roman_numbers/roman_numbers
 
 void main() {
   group("RomanNumbers.encodeRomanNumbers:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : -1, 'expectedOutput' : ''},
       {'input' : 0, 'expectedOutput' : ''},
 
@@ -69,17 +68,21 @@ void main() {
       {'input' : 5111, 'type': RomanNumberType.ONLY_ADDITION, 'expectedOutput' : 'MMMMMCXI'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, type: ${elem['type']}', () {
-        var _actual = encodeRomanNumbers(elem['input'], type: elem['type']);
-        expect(_actual, elem['expectedOutput']);
+        if (elem['type'] == null) {
+          var _actual = encodeRomanNumbers(elem['input'] as int);
+          expect(_actual, elem['expectedOutput']);
+        } else {
+          var _actual = encodeRomanNumbers(elem['input'] as int, type: elem['type'] as RomanNumberType);
+          expect(_actual, elem['expectedOutput']);
+        }
       });
-    });
+    }
   });
 
   group("RomanNumbers.decodeRomanNumbers:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : null},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : null},
       {'input' : 'Ab', 'expectedOutput' : null},
       {'input' : 'AbI', 'expectedOutput' : 1},
@@ -211,11 +214,16 @@ void main() {
       {'input' : 'SVRGE O IEHOVA ATQVE DISPERGE INIMICOS TVOS', 'expectedOutput' : 1625, 'type': RomanNumberType.ONLY_ADDITION},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, type: ${elem['type']}', () {
-        var _actual = decodeRomanNumbers(elem['input'], type: elem['type']);
-        expect(_actual, elem['expectedOutput']);
+        if (elem['type'] == null) {
+          var _actual = decodeRomanNumbers(elem['input'] as String);
+          expect(_actual, elem['expectedOutput']);
+        } else {
+          var _actual = decodeRomanNumbers(elem['input'] as String, type: elem['type'] as RomanNumberType);
+          expect(_actual, elem['expectedOutput']);
+        }
       });
-    });
+    }
   });
 }

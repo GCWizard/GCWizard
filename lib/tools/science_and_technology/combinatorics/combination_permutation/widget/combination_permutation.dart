@@ -10,6 +10,8 @@ import 'package:gc_wizard/tools/science_and_technology/combinatorics/combination
 import 'package:gc_wizard/tools/science_and_technology/combinatorics/permutation/logic/permutation.dart';
 
 class CombinationPermutation extends StatefulWidget {
+  const CombinationPermutation({Key? key}) : super(key: key);
+
   @override
   CombinationPermutationState createState() => CombinationPermutationState();
 }
@@ -45,8 +47,8 @@ class CombinationPermutationState extends State<CombinationPermutation> {
   }
 
   Widget _buildOutput(BuildContext context) {
-    if (_currentInput == null || _currentInput.length == 0) {
-      return GCWDefaultOutput();
+    if (_currentInput.isEmpty) {
+      return const GCWDefaultOutput();
     }
 
     List<String> combinations = generateCombinations(_currentInput, avoidDuplicates: !_currentShowDuplicates);
@@ -60,7 +62,7 @@ class CombinationPermutationState extends State<CombinationPermutation> {
 
     var rows = GCWColumnedMultilineOutput(
         data:  outputData,
-        flexValues: [1, 3],
+        flexValues: const [1, 3],
         firstRows: [GCWOutputText(
                       text: '${i18n(context, 'common_count')}: $count',
                       copyText: count.toString(),

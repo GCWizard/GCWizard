@@ -3,8 +3,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/morse/logic/morse.dart';
 
 void main() {
   group("Morse.encodeMorse:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : 'SOS', 'expectedOutput' : '... --- ...'},
@@ -13,17 +12,16 @@ void main() {
         , 'expectedOutput' : '.--.- .--.- .-.- ...--.. .-.-.- -....- ..--.- .--.-.'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeMorse(elem['input']);
+        var _actual = encodeMorse(elem['input'] as String);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Morse.decodeMorse:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : 'SOS', 'input' : '... --- ...'},
@@ -34,11 +32,11 @@ void main() {
         , 'input' : '.--.- .--.- .-.- ...--.. .-.-.- -....- ..--.- .--.-.'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeMorse(elem['input']);
+        var _actual = decodeMorse(elem['input'] as String);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 }

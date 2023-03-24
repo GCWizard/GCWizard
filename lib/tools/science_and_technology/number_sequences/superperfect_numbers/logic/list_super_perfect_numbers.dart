@@ -1,4 +1,4 @@
-List<String> superperfect_numbers = [
+const List<String> superperfect_numbers = [
   '2',
   '4',
   '16',

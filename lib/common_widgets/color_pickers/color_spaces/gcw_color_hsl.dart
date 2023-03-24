@@ -1,10 +1,10 @@
 part of 'package:gc_wizard/common_widgets/color_pickers/gcw_colors.dart';
 
 class _GCWColorHSL extends StatefulWidget {
-  final Function onChanged;
-  final HSL color;
+  final void Function(HSL) onChanged;
+  final HSL? color;
 
-  const _GCWColorHSL({Key key, this.onChanged, this.color}) : super(key: key);
+  const _GCWColorHSL({Key? key, required this.onChanged, this.color}) : super(key: key);
 
   @override
   _GCWColorHSLState createState() => _GCWColorHSLState();
@@ -18,9 +18,9 @@ class _GCWColorHSLState extends State<_GCWColorHSL> {
   @override
   Widget build(BuildContext context) {
     if (widget.color != null) {
-      _currentHue = widget.color.hue;
-      _currentSaturation = widget.color.saturation * 100.0;
-      _currentLightness = widget.color.lightness * 100.0;
+      _currentHue = widget.color!.hue;
+      _currentSaturation = widget.color!.saturation * 100.0;
+      _currentLightness = widget.color!.lightness * 100.0;
     }
 
     return Column(
@@ -62,7 +62,7 @@ class _GCWColorHSLState extends State<_GCWColorHSL> {
     );
   }
 
-  _emitOnChange() {
+  void _emitOnChange() {
     widget.onChanged(HSL(_currentHue, _currentSaturation / 100.0, _currentLightness / 100.0));
   }
 }

@@ -10,20 +10,24 @@ part of 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/subst
 Future<BreakerResult> generateQuadgrams(
     File corpus_fh, File quadgram_fh, File asset_fh, String className, String assetName, String alphabet) async {
   _alphabet = BreakerKey.check_alphabet(alphabet);
-  if (_alphabet.length > Quadgrams.maxAlphabetLength) {
+  if (_alphabet == null || _alphabet!.isEmpty) {
     // Alphabet must have less or equal than 32 characters
-    return BreakerResult(alphabet: _alphabet, errorCode: BreakerErrorCode.ALPHABET_TOO_LONG);
+    return BreakerResult(alphabet: _alphabet ?? '', errorCode: BreakerErrorCode.ALPHABET_TOO_SHORT);
+  }
+  if (_alphabet!.length > Quadgrams.maxAlphabetLength) {
+    // Alphabet must have less or equal than 32 characters
+    return BreakerResult(alphabet: _alphabet ?? '', errorCode: BreakerErrorCode.ALPHABET_TOO_LONG);
   }
 
-  var iterator = _file_iterator(corpus_fh, _alphabet);
+  var iterator = _file_iterator(corpus_fh, _alphabet!);
   var quadgram_val = 0;
   var quadgrams =
-      List.filled(pow(Quadgrams.maxAlphabetLength, 3) * Quadgrams.maxAlphabetLength, 0.0); //_alphabet.length
+      List.filled((pow(Quadgrams.maxAlphabetLength, 3) * Quadgrams.maxAlphabetLength).toInt(), 0.0); //_alphabet.length
   quadgrams.fillRange(0, quadgrams.length, 0);
 
   var idx = 0;
   try {
-    iterator.forEach((numerical_char) {
+    for (var numerical_char in iterator) {
       switch (idx) {
         case 0:
           quadgram_val = numerical_char;
@@ -37,7 +41,7 @@ Future<BreakerResult> generateQuadgrams(
           quadgrams[quadgram_val] += 1;
       }
       idx += 1;
-    });
+    }
   } on Exception {
     // More than three characters from the given alphabet are required
     return BreakerResult(errorCode: BreakerErrorCode.WRONG_GENERATE_TEXT);
@@ -45,19 +49,19 @@ Future<BreakerResult> generateQuadgrams(
 
   double quadgram_sum = 0;
   double quadgram_min = 10000000; //??
-  quadgrams.forEach((val) {
+  for (var val in quadgrams) {
     if (val != 0) {
       quadgram_sum += val;
       quadgram_min = min(quadgram_min, val);
     }
-  });
+  }
   var offset = log(quadgram_min / 10 / quadgram_sum);
 
   double prop = 0;
   double new_val = 0;
   double norm = 0;
   idx = 0;
-  quadgrams.forEach((val) {
+  for (var val in quadgrams) {
     if (val != 0) {
       prop = val / quadgram_sum;
       new_val = log(prop) - offset;
@@ -65,26 +69,26 @@ Future<BreakerResult> generateQuadgrams(
       norm += prop * new_val;
     }
     idx += 1;
-  });
+  }
 
   idx = 0;
-  quadgrams.forEach((quadgram) {
+  for (var quadgram in quadgrams) {
     if (quadgram != 0) quadgrams[idx] = (quadgram / norm * 1000);
     idx += 1;
-  });
+  }
 
   // Just for curiosity: determine the most frequent quadgram
   idx = 0;
   var max_idx = 0;
   var max_val = 0.0;
-  quadgrams.forEach((val) {
+  for (var val in quadgrams) {
     if (val > max_val) {
       max_val = val;
       max_idx = idx;
     }
 
     idx += 1;
-  });
+  }
 
   // now construct the ASCII representation from the index
   var max_chars = <String>[];
@@ -108,14 +112,14 @@ Future<BreakerResult> generateQuadgrams(
 ///          Lower values indicate more random text, while values significantly
 ///          greater than 100 indicate (nonsense) text with too much frequently used
 ///          quadgrams (e.g., ``tionioningatheling``).
-double _calc_fitness(Iterable<int> iterator) {
+double? _calc_fitness(Iterable<int> iterator) {
   var quadgrams = _quadgrams;
   var fitness = 0;
   var nbr_quadgrams = 0;
   var quadgram_val = 0;
   var idx = 0;
   try {
-    iterator.forEach((numerical_char) {
+    for (var numerical_char in iterator) {
       switch (idx) {
         case 0:
           quadgram_val = numerical_char;
@@ -126,11 +130,11 @@ double _calc_fitness(Iterable<int> iterator) {
           break;
         default:
           quadgram_val = ((quadgram_val & 0x7FFF) << 5) + numerical_char;
-          fitness += quadgrams[quadgram_val];
+          fitness += quadgrams![quadgram_val];
           nbr_quadgrams += 1;
       }
       idx += 1;
-    });
+    }
   } on Exception {
     // More than three characters from the given alphabet are required"
     return null;
@@ -152,15 +156,15 @@ double _calc_fitness(Iterable<int> iterator) {
 ///          Lower values indicate more random text, while values significantly
 ///          greater than 100 indicate (nonsense) text with too much frequently used
 ///          quadgrams (e.g., ``tionioningatheling``).
-double calc_fitness(String txt, {String alphabet = DEFAULT_ALPHABET, List<int> quadgrams = null}) {
-  if (txt == null || txt == '') return null;
+double? calc_fitness(String txt, {String alphabet = DEFAULT_ALPHABET, List<int>? quadgrams}) {
+  if (txt.isEmpty) return null;
 
-  if (alphabet != null) _alphabet = alphabet;
-  if (_alphabet == null) _alphabet = DEFAULT_ALPHABET;
+  _alphabet = alphabet;
+  _alphabet ??= DEFAULT_ALPHABET;
 
   if (quadgrams != null) _quadgrams = quadgrams;
 
-  return _calc_fitness(iterateText(txt, _alphabet));
+  return _calc_fitness(iterateText(txt, _alphabet!));
 }
 
 /// Implements an iterator for a given file based text file
@@ -189,11 +193,11 @@ Iterable<int> _file_iterator(File file_fh, String alphabet) sync* {
 ///          Lower values indicate more random text, while values significantly
 ///          greater than 100 indicate (nonsense) text with too much frequently used
 ///          quadgrams (e.g., ``tionioningatheling``).
-double calc_fitness_file(File cleartext_fh, {String alphabet = DEFAULT_ALPHABET, List<int> quadgrams = null}) {
-  if (alphabet != null) _alphabet = alphabet;
-  if (_alphabet == null) _alphabet = DEFAULT_ALPHABET;
+double? calc_fitness_file(File cleartext_fh, {String alphabet = DEFAULT_ALPHABET, List<int>? quadgrams}) {
+  _alphabet = alphabet;
+  _alphabet ??= DEFAULT_ALPHABET;
 
   if (quadgrams != null) _quadgrams = quadgrams;
 
-  return _calc_fitness(_file_iterator(cleartext_fh, _alphabet));
+  return _calc_fitness(_file_iterator(cleartext_fh, _alphabet!));
 }

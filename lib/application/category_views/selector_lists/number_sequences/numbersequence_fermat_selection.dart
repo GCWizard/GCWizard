@@ -7,18 +7,20 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/fermat/w
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceFermatSelection extends GCWSelection {
+  const NumberSequenceFermatSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(NumberSequenceFermatNthNumber()),
-        className(NumberSequenceFermatRange()),
-        className(NumberSequenceFermatDigits()),
-        className(NumberSequenceFermatCheckNumber()),
-        className(NumberSequenceFermatContainsDigits()),
+        className(const NumberSequenceFermatNthNumber()),
+        className(const NumberSequenceFermatRange()),
+        className(const NumberSequenceFermatDigits()),
+        className(const NumberSequenceFermatCheckNumber()),
+        className(const NumberSequenceFermatContainsDigits()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

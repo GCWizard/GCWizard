@@ -4,7 +4,7 @@ class GCWToolBar extends StatefulWidget {
   final List<Widget> children;
   final List<int> flexValues;
 
-  const GCWToolBar({Key key, this.children, this.flexValues}) : super(key: key);
+  const GCWToolBar({Key? key, required this.children, this.flexValues= const []}) : super(key: key);
 
   @override
   _GCWToolBarState createState() => _GCWToolBarState();
@@ -15,15 +15,15 @@ class _GCWToolBarState extends State<GCWToolBar> {
   Widget build(BuildContext context) {
     var children = widget.children.map((child) {
       return Expanded(
-        child: Padding(
-          child: child,
-          padding: EdgeInsets.only(
-            right: 2,
-          ),
-        ),
-        flex: ((widget.flexValues == null) || (widget.children.length != widget.flexValues.length))
+        flex: ((widget.flexValues.isEmpty) || (widget.children.length != widget.flexValues.length))
             ? 1
             : widget.flexValues[widget.children.indexOf(child)],
+        child: Padding(
+          padding: const EdgeInsets.only(
+            right: 2,
+          ),
+          child: child,
+        ),
       );
     }).toList();
 

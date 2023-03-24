@@ -15,28 +15,29 @@ LatLng dutchGridToLatLon(DutchGrid dutchGrid) {
   return LatLng(latLon[1], latLon[0]);
 }
 
-DutchGrid parseDutchGrid(String input) {
-  RegExp regExp = RegExp(r'^\s*([\-0-9\.]+)(\s*\,\s*|\s+)([\-0-9\.]+)\s*$');
+DutchGrid? parseDutchGrid(String input) {
+  RegExp regExp = RegExp(r'^\s*([\-\d.]+)(\s*,\s*|\s+)([\-\d.]+)\s*$');
   var matches = regExp.allMatches(input);
-  var _xString = '';
-  var _yString = '';
+  String? _xString = '';
+  String? _yString = '';
 
-  if (matches.length > 0) {
+  if (matches.isNotEmpty) {
     var match = matches.elementAt(0);
     _xString = match.group(1);
     _yString = match.group(3);
   }
-  if (matches.length == 0) {
-    regExp = RegExp(r'^\s*(X|x)\:?\s*([\-0-9\.]+)(\s*\,?\s*)(Y|y)\:?\s*([\-0-9\.]+)\s*$');
+  if (matches.isEmpty) {
+    regExp = RegExp(r'^\s*([Xx]):?\s*([\-\d.]+)(\s*,?\s*)([Yy]):?\s*([\-\d.]+)\s*$');
     matches = regExp.allMatches(input);
-    if (matches.length > 0) {
+    if (matches.isNotEmpty) {
       var match = matches.elementAt(0);
       _xString = match.group(2);
       _yString = match.group(5);
     }
   }
 
-  if (matches.length == 0) return null;
+  if (matches.isEmpty) return null;
+  if (_xString == null || _yString == null) return null;
 
   var x = double.tryParse(_xString);
   if (x == null) return null;

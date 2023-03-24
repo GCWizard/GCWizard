@@ -11,7 +11,7 @@ enum CalendarSystem {
   MAYACALENDAR,
 }
 
-final Map<int, String> MONTH_ISLAMIC = {
+const Map<int, String> MONTH_ISLAMIC = {
   1: 'Muharram',
   2: 'Safar',
   3: 'Rabi al-Awwal',
@@ -25,7 +25,7 @@ final Map<int, String> MONTH_ISLAMIC = {
   11: 'Dhu l-Kada',
   12: 'Dhu l-Hidjdja'
 };
-final Map<int, String> MONTH_PERSIAN = {
+const Map<int, String> MONTH_PERSIAN = {
   1: 'Farwardin',
   2: 'Ordibehescht',
   3: 'Chordād',
@@ -39,7 +39,7 @@ final Map<int, String> MONTH_PERSIAN = {
   11: 'Bahman',
   12: 'Esfand'
 };
-final Map<int, String> MONTH_COPTIC = {
+const Map<int, String> MONTH_COPTIC = {
   1: 'Thoth',
   2: 'Paophi',
   3: 'Athyr',
@@ -53,7 +53,7 @@ final Map<int, String> MONTH_COPTIC = {
   11: 'Epiphi',
   12: 'Mesori'
 };
-final Map<int, String> MONTH_HEBREW = {
+const Map<int, String> MONTH_HEBREW = {
   1: 'Tishri',
   2: 'Heshvan',
   3: 'Kislev',
@@ -68,7 +68,7 @@ final Map<int, String> MONTH_HEBREW = {
   12: 'Av',
   13: 'Elul'
 };
-final Map<int, String> MONTH_POTRZEBIE = {
+const Map<int, String> MONTH_POTRZEBIE = {
   1: 'Tales',
   2: 'Calculated',
   3: 'To',
@@ -80,7 +80,7 @@ final Map<int, String> MONTH_POTRZEBIE = {
   9: 'Jugular',
   10: 'Vein',
 };
-final Map<int, String> WEEKDAY_ISLAMIC = {
+const Map<int, String> WEEKDAY_ISLAMIC = {
   1: 'yaum al-ahad',
   2: 'yaum al-ithnayna',
   3: 'yaum ath-thalatha',
@@ -90,7 +90,7 @@ final Map<int, String> WEEKDAY_ISLAMIC = {
   7: 'yaum as-sabt'
 };
 
-final Map<int, String> WEEKDAY_PERSIAN = {
+const Map<int, String> WEEKDAY_PERSIAN = {
   1: 'Schambé',
   2: 'yek – Schambé',
   3: 'do – Schambé',
@@ -100,7 +100,7 @@ final Map<int, String> WEEKDAY_PERSIAN = {
   7: 'Djomé'
 };
 
-final Map<int, String> WEEKDAY_HEBREW = {
+const Map<int, String> WEEKDAY_HEBREW = {
   1: 'Jom Rischon',
   2: 'Jom Scheni',
   3: 'Jom Schlischi',

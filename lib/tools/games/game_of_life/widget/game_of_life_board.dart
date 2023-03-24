@@ -4,10 +4,10 @@ import 'package:touchable/touchable.dart';
 
 class GameOfLifeBoard extends StatefulWidget {
   final int size;
-  final Function onChanged;
+  final void Function(List<List<bool>>) onChanged;
   final List<List<bool>> state;
 
-  GameOfLifeBoard({Key key, this.size, this.onChanged, this.state}) : super(key: key);
+  const GameOfLifeBoard({Key? key, required this.size, required this.onChanged, required this.state}) : super(key: key);
 
   @override
   GameOfLifeBoardState createState() => GameOfLifeBoardState();
@@ -22,12 +22,12 @@ class GameOfLifeBoardState extends State<GameOfLifeBoard> {
             child: AspectRatio(
                 aspectRatio: 1 / 1,
                 child: CanvasTouchDetector(
-                  gesturesToOverride: [GestureType.onTapDown],
+                  gesturesToOverride: const [GestureType.onTapDown],
                   builder: (context) {
                     return CustomPaint(
                         painter: GameOfLifePainter(context, widget.size, widget.state, (int x, int y, bool value) {
                       setState(() {
-                        widget.state[x][y] = value ?? false;
+                        widget.state[x][y] = value;
                         widget.onChanged(widget.state);
                       });
                     }));
@@ -42,7 +42,7 @@ class GameOfLifePainter extends CustomPainter {
   final int size;
   final List<List<bool>> state;
   final BuildContext context;
-  final Function(int, int, bool) onSetCell;
+  final void Function(int, int, bool) onSetCell;
 
   GameOfLifePainter(this.context, this.size, this.state, this.onSetCell);
 
@@ -62,14 +62,14 @@ class GameOfLifePainter extends CustomPainter {
         var x = j * boxSize;
         var y = i * boxSize;
 
-        var isSet = state != null && state[i] != null && state[i][j] != null && state[i][j] == true;
+        var isSet = state[i][j] == true;
 
         paint.color = isSet ? themeColors().mainFont() : themeColors().gridBackground();
         paint.style = PaintingStyle.fill;
 
         _touchCanvas.drawRect(Rect.fromLTWH(x, y, boxSize, boxSize), paint);
 
-        paint.color = themeColors().accent();
+        paint.color = themeColors().secondary();
 
         if (this.size > 50) paint.color = paint.color.withOpacity(0.0);
 
@@ -83,10 +83,11 @@ class GameOfLifePainter extends CustomPainter {
       }
     }
 
-    if (this.size > 50)
+    if (this.size > 50) {
       paint.color = paint.color.withOpacity(0.0);
-    else
-      paint.color = themeColors().accent();
+    } else {
+      paint.color = themeColors().secondary();
+    }
 
     _touchCanvas.drawLine(Offset(size.height, 0.0), Offset(size.height, size.width), paint);
     _touchCanvas.drawLine(Offset(0.0, size.width), Offset(size.height, size.width), paint);

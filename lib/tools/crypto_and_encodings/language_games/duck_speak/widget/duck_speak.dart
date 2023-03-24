@@ -6,6 +6,8 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/duck_speak/logic/duck_speak.dart';
 
 class DuckSpeak extends StatefulWidget {
+  const DuckSpeak({Key? key}) : super(key: key);
+
   @override
   DuckSpeakState createState() => DuckSpeakState();
 }
@@ -48,18 +50,16 @@ class DuckSpeakState extends State<DuckSpeak> {
     );
   }
 
-  _buildOutput() {
-    if (_currentInput == null) return '';
-
+  String _buildOutput() {
     if (_currentDuckSpeakMode == GCWSwitchPosition.left) {
       return _currentMode == GCWSwitchPosition.left ? encodeDuckSpeak(_currentInput) : decodeDuckSpeak(_currentInput);
     } else {
       if (_currentMode == GCWSwitchPosition.left) {
         var numbers = _currentInput
-            .replaceAll(RegExp(r'[^0-9]'), '')
+            .replaceAll(RegExp(r'\D'), '')
             .split('')
             .map((number) => int.tryParse(number))
-            .where((number) => number != null)
+            .whereType<int>()
             .toList();
         return encodeDuckSpeakNumbers(numbers);
       } else {

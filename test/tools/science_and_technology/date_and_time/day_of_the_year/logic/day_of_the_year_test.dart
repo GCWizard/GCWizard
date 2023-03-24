@@ -3,9 +3,7 @@ import 'package:gc_wizard/tools/science_and_technology/date_and_time/day_of_the_
 
 void main() {
   group("DayOfTheYear.calculateDayInfos:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'year' : null, 'day': null, 'expectedOutput' : null},
-
+    List<Map<String, Object?>> _inputsToExpected = [
       {'year' : 2022, 'day': 60, 'expectedOutput' : DayOfTheYearOutput(DateTime(2022, 3, 1), 60, 2, 3, 9, 10)},
       {'year' : 2022, 'day': 59, 'expectedOutput' : DayOfTheYearOutput(DateTime(2022, 2, 28), 59, 1, 2, 9, 10)},
       {'year' : 2022, 'day': 58, 'expectedOutput' : DayOfTheYearOutput(DateTime(2022, 2, 27), 58, 7, 1, 8, 10)},
@@ -22,27 +20,22 @@ void main() {
       {'year' : 2022, 'day': 0,   'expectedOutput' : DayOfTheYearOutput(DateTime(2021, 12, 31), 365, 5, 6, 52, 53)},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('year: ${elem['year']}, day: ${elem['day']}', () {
-        DayOfTheYearOutput _actual = calculateDayInfos(elem['year'], elem['day']);
-        if (_actual == null)
-          expect(_actual, elem['expectedOutput']);
-        else {
-          expect(_actual.date, elem['expectedOutput'].date);
-          expect(_actual.dayNumber, elem['expectedOutput'].dayNumber);
-          expect(_actual.weekday, elem['expectedOutput'].weekday);
-          expect(_actual.weekdayAlternate, elem['expectedOutput'].weekdayAlternate);
-          expect(_actual.weekNumberIso, elem['expectedOutput'].weekNumberIso);
-          expect(_actual.weekNumberAlternate, elem['expectedOutput'].weekNumberAlternate);
-        }
+        var _actual = calculateDayInfos(elem['year'] as int, elem['day'] as int);
+
+        expect(_actual.date, (elem['expectedOutput'] as DayOfTheYearOutput).date);
+        expect(_actual.dayNumber, (elem['expectedOutput'] as DayOfTheYearOutput).dayNumber);
+        expect(_actual.weekday, (elem['expectedOutput'] as DayOfTheYearOutput).weekday);
+        expect(_actual.weekdayAlternate, (elem['expectedOutput'] as DayOfTheYearOutput).weekdayAlternate);
+        expect(_actual.weekNumberIso, (elem['expectedOutput'] as DayOfTheYearOutput).weekNumberIso);
+        expect(_actual.weekNumberAlternate, (elem['expectedOutput'] as DayOfTheYearOutput).weekNumberAlternate);
       });
-    });
+    }
   });
 
   group("DayOfTheYear.isoWeekOfYear:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : null},
-
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : DateTime(2020, 1, 1), 'expectedOutput' : 1},
       {'input' : DateTime(2021, 1, 1), 'expectedOutput' : 53},
       {'input' : DateTime(2022, 1, 1), 'expectedOutput' : 52},
@@ -60,11 +53,11 @@ void main() {
       {'input' : DateTime(2021, 2, 29), 'expectedOutput' : 9},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = isoWeekOfYear(elem['input']);
+        var _actual = isoWeekOfYear(elem['input'] as DateTime);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 }

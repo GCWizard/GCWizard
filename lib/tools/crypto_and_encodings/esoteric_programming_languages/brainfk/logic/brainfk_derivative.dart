@@ -6,18 +6,18 @@ import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
 class BrainfkDerivatives {
-  Map<String, String> substitutions;
-  final String commandDelimiter;
+  late Map<String, String> substitutions;
+  final String? commandDelimiter;
 
-  BrainfkDerivatives(
-      {pointerShiftLeftInstruction,
-      pointerShiftRightInstruction,
-      decreaseValueInstruction,
-      increaseValueInstruction,
-      startLoopInstruction,
-      endLoopInstruction,
-      inputInstruction,
-      outputInstruction,
+  BrainfkDerivatives({
+      required String pointerShiftLeftInstruction,
+      required String pointerShiftRightInstruction,
+      required String decreaseValueInstruction,
+      required String increaseValueInstruction,
+      required String startLoopInstruction,
+      required String endLoopInstruction,
+      required String inputInstruction,
+      required String outputInstruction,
       this.commandDelimiter}) {
     substitutions = {
       pointerShiftRightInstruction: '>',
@@ -54,8 +54,8 @@ class BrainfkDerivatives {
     return code.toUpperCase().replaceAll(RegExp('[^$allChars]'), '').replaceAll(RegExp(r'\s'), '');
   }
 
-  String interpretBrainfkDerivatives(String code, {String input}) {
-    if (code == null || code.length == 0) return '';
+  String interpretBrainfkDerivatives(String code, {String? input}) {
+    if (code.isEmpty) return '';
 
     var brainfk = '';
     code = _sanitizeCode(code);
@@ -65,7 +65,7 @@ class BrainfkDerivatives {
       _sanitizedSubstitutions.putIfAbsent(entry.key.toUpperCase().replaceAll(RegExp(r'\s'), ''), () => entry.value);
     }
 
-    while (code.length > 0) {
+    while (code.isNotEmpty) {
       var chunk = '';
       var i = 0;
       while (_sanitizedSubstitutions[chunk] == null && i < code.length) {
@@ -74,7 +74,7 @@ class BrainfkDerivatives {
       }
 
       try {
-        brainfk += _sanitizedSubstitutions[chunk];
+        brainfk += _sanitizedSubstitutions[chunk] ?? '';
       } catch (e) {} //if there is no fitting substitution, ignore it.
 
       code = code.substring(min(i, code.length));
@@ -84,11 +84,12 @@ class BrainfkDerivatives {
   }
 
   String generateBrainfkDerivative(String text) {
-    if (text == null || text.length == 0) return '';
+    if (text.isEmpty) return '';
 
     var brainfk = generateBrainfk(text);
-    if (commandDelimiter != null && commandDelimiter.isNotEmpty)
-      brainfk = insertEveryNthCharacter(brainfk, 1, commandDelimiter);
+    if (commandDelimiter != null && commandDelimiter!.isNotEmpty) {
+      brainfk = insertEveryNthCharacter(brainfk, 1, commandDelimiter!);
+    }
 
     return substitution(brainfk, switchMapKeyValue(substitutions));
   }
@@ -96,19 +97,19 @@ class BrainfkDerivatives {
 
 // https://esolangs.org/wiki/Trivial_brainfuck_substitution
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_OMAM = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_OMAM = BrainfkDerivatives(
     pointerShiftRightInstruction: 'hold your horses now',
     pointerShiftLeftInstruction: 'sleep until the sun goes down',
     increaseValueInstruction: 'through the woods we ran',
     decreaseValueInstruction: 'deep into the mountain sound',
-    outputInstruction: 'don' + "'" + 't listen to a word i say',
+    outputInstruction: 'don' "'" 't listen to a word i say',
     inputInstruction: 'the screams all sound the same',
     startLoopInstruction: '	though the truth may vary',
     endLoopInstruction: 'this ship will carry',
     commandDelimiter: '\n');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_REVOLUTION9 = BrainfkDerivatives(
-    pointerShiftRightInstruction: 'It' + "'" + 's alright',
+final BrainfkDerivatives _BRAINFKDERIVATIVE_REVOLUTION9 = BrainfkDerivatives(
+    pointerShiftRightInstruction: 'It' "'" 's alright',
     pointerShiftLeftInstruction: 'turn me on, dead man',
     increaseValueInstruction: 'Number 9',
     decreaseValueInstruction: 'if you become naked',
@@ -123,18 +124,14 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_DETAILEDFK = BrainfkDerivatives(
     pointerShiftLeftInstruction: 'MOVE THE MEMORY POINTER ONE CELL TO THE LEFT',
     increaseValueInstruction: 'INCREMENT THE CELL UNDER THE MEMORY POINTER BY ONE',
     decreaseValueInstruction: 'DECREMENT THE CELL UNDER THE MEMORY POINTER BY ONE',
-    outputInstruction: 'PRINT THE CELL UNDER THE MEMORY POINTER' + "'" + 'S VALUE AS AN ASCII CHARACTER',
+    outputInstruction: 'PRINT THE CELL UNDER THE MEMORY POINTER' "'" 'S VALUE AS AN ASCII CHARACTER',
     inputInstruction:
-        'REPLACE THE CELL UNDER THE MEMORY POINTER' + "'" + 'S VALUE WITH THE ASCII CHARACTER CODE OF USER INPUT',
-    startLoopInstruction: 'IF THE CELL UNDER THE MEMORY POINTER' +
-        "'" +
-        'S VALUE IS ZERO INSTEAD OF READING THE NEXT COMMAND IN THE PROGRAM JUMP TO THE CORRESPONDING COMMAND EQUIVALENT TO THE ] COMMAND IN BRAINFUCK',
-    endLoopInstruction: 'IF THE CELL UNDER THE MEMORY POINTER' +
-        "'" +
-        'S VALUE IS NOT ZERO INSTEAD OF READING THE NEXT COMMAND IN THE PROGRAM JUMP TO THE CORRESPONDING COMMAND EQUIVALENT TO THE [ COMMAND IN BRAINFUCK',
+        'REPLACE THE CELL UNDER THE MEMORY POINTER' "'" 'S VALUE WITH THE ASCII CHARACTER CODE OF USER INPUT',
+    startLoopInstruction: 'IF THE CELL UNDER THE MEMORY POINTER' "'" 'S VALUE IS ZERO INSTEAD OF READING THE NEXT COMMAND IN THE PROGRAM JUMP TO THE CORRESPONDING COMMAND EQUIVALENT TO THE ] COMMAND IN BRAINFUCK',
+    endLoopInstruction: 'IF THE CELL UNDER THE MEMORY POINTER' "'" 'S VALUE IS NOT ZERO INSTEAD OF READING THE NEXT COMMAND IN THE PROGRAM JUMP TO THE CORRESPONDING COMMAND EQUIVALENT TO THE [ COMMAND IN BRAINFUCK',
     commandDelimiter: '\n');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_GERMAN = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_GERMAN = BrainfkDerivatives(
     pointerShiftRightInstruction: 'Links',
     pointerShiftLeftInstruction: 'Rechts',
     increaseValueInstruction: 'Addition',
@@ -145,7 +142,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_GERMAN = BrainfkDerivatives(
     endLoopInstruction: 'Schleifenende',
     commandDelimiter: '\n');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_COLONOSCOPY = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_COLONOSCOPY = BrainfkDerivatives(
     pointerShiftRightInstruction: ';};',
     pointerShiftLeftInstruction: ';{;',
     increaseValueInstruction: ';;};',
@@ -155,7 +152,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_COLONOSCOPY = BrainfkDerivatives(
     startLoopInstruction: '{{;',
     endLoopInstruction: '}};');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_KONFK = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_KONFK = BrainfkDerivatives(
     pointerShiftRightInstruction: 'うんうんうん',
     pointerShiftLeftInstruction: 'うんうんたん',
     increaseValueInstruction: 'うんたんうん',
@@ -165,7 +162,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_KONFK = BrainfkDerivatives(
     startLoopInstruction: 'たんたんうん',
     endLoopInstruction: 'たんたんたん');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_FKBEES = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_FKBEES = BrainfkDerivatives(
     pointerShiftRightInstruction: 'f',
     pointerShiftLeftInstruction: 'u',
     increaseValueInstruction: 'c',
@@ -175,7 +172,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_FKBEES = BrainfkDerivatives(
     startLoopInstruction: 'E',
     endLoopInstruction: 's');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_PSSCRIPT = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_PSSCRIPT = BrainfkDerivatives(
     pointerShiftRightInstruction: '8=D',
     pointerShiftLeftInstruction: '8==D',
     increaseValueInstruction: '8===D',
@@ -185,7 +182,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_PSSCRIPT = BrainfkDerivatives(
     startLoopInstruction: '8=======D',
     endLoopInstruction: '8========D');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_ALPHK = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_ALPHK = BrainfkDerivatives(
     pointerShiftRightInstruction: 'a',
     pointerShiftLeftInstruction: 'c',
     increaseValueInstruction: 'e',
@@ -195,7 +192,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_ALPHK = BrainfkDerivatives(
     startLoopInstruction: 'p',
     endLoopInstruction: 's');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_REVERSEFK = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_REVERSEFK = BrainfkDerivatives(
     pointerShiftRightInstruction: '<',
     pointerShiftLeftInstruction: '>',
     increaseValueInstruction: '-',
@@ -205,7 +202,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_REVERSEFK = BrainfkDerivatives(
     startLoopInstruction: ']',
     endLoopInstruction: '[');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_BTJZXGQUARTFRQIFJLV = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_BTJZXGQUARTFRQIFJLV = BrainfkDerivatives(
     pointerShiftRightInstruction: 'f',
     pointerShiftLeftInstruction: 'rqi',
     increaseValueInstruction: 'qua',
@@ -215,7 +212,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_BTJZXGQUARTFRQIFJLV = BrainfkDerivati
     startLoopInstruction: 'btj',
     endLoopInstruction: 'zxg');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_BINARYFK = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_BINARYFK = BrainfkDerivatives(
     pointerShiftRightInstruction: '010',
     pointerShiftLeftInstruction: '011',
     increaseValueInstruction: '000',
@@ -225,7 +222,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_BINARYFK = BrainfkDerivatives(
     startLoopInstruction: '110',
     endLoopInstruction: '111');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_TERNARY = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_TERNARY = BrainfkDerivatives(
     pointerShiftRightInstruction: '01',
     pointerShiftLeftInstruction: '00',
     increaseValueInstruction: '11',
@@ -235,7 +232,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_TERNARY = BrainfkDerivatives(
     startLoopInstruction: '02',
     endLoopInstruction: '12');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_KENNYSPEAK = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_KENNYSPEAK = BrainfkDerivatives(
     pointerShiftRightInstruction: 'mmp',
     pointerShiftLeftInstruction: 'mmm',
     increaseValueInstruction: 'mpp',
@@ -245,7 +242,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_KENNYSPEAK = BrainfkDerivatives(
     startLoopInstruction: 'mmf',
     endLoopInstruction: 'mpf');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_MORSEFK = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_MORSEFK = BrainfkDerivatives(
     pointerShiftRightInstruction: '.--',
     pointerShiftLeftInstruction: '--.',
     increaseValueInstruction: '..-',
@@ -255,7 +252,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_MORSEFK = BrainfkDerivatives(
     startLoopInstruction: '---',
     endLoopInstruction: '...');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_BLUB = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_BLUB = BrainfkDerivatives(
     pointerShiftRightInstruction: 'Blub. Blub?',
     pointerShiftLeftInstruction: 'Blub? Blub.',
     increaseValueInstruction: 'Blub. Blub.',
@@ -287,7 +284,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_SHORTOOK = BrainfkDerivatives(
     startLoopInstruction: '!?',
     endLoopInstruction: '?!');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_NAK = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_NAK = BrainfkDerivatives(
     pointerShiftRightInstruction: 'Nak. Nak?',
     pointerShiftLeftInstruction: 'Nak? Nak.',
     increaseValueInstruction: 'Nak. Nak.',
@@ -298,7 +295,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_NAK = BrainfkDerivatives(
     endLoopInstruction: 'Nak? Nak!',
     commandDelimiter: ' ');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_PIKALANG = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_PIKALANG = BrainfkDerivatives(
     pointerShiftRightInstruction: 'pipi',
     pointerShiftLeftInstruction: 'pichu',
     increaseValueInstruction: 'pi',
@@ -309,7 +306,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_PIKALANG = BrainfkDerivatives(
     endLoopInstruction: 'chu',
     commandDelimiter: ' ');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_PEWLANG = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_PEWLANG = BrainfkDerivatives(
     pointerShiftRightInstruction: 'pew',
     pointerShiftLeftInstruction: 'Pew',
     increaseValueInstruction: 'pEw',
@@ -320,7 +317,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_PEWLANG = BrainfkDerivatives(
     endLoopInstruction: 'PEW',
     commandDelimiter: ' ');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_ROADRUNNER = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_ROADRUNNER = BrainfkDerivatives(
     pointerShiftRightInstruction: 'meeP',
     pointerShiftLeftInstruction: 'Meep',
     increaseValueInstruction: 'mEEp',
@@ -331,7 +328,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_ROADRUNNER = BrainfkDerivatives(
     endLoopInstruction: 'MEEp',
     commandDelimiter: ' ');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_ZZZ = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_ZZZ = BrainfkDerivatives(
     pointerShiftRightInstruction: 'zz',
     pointerShiftLeftInstruction: '-zz',
     increaseValueInstruction: 'z',
@@ -341,7 +338,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_ZZZ = BrainfkDerivatives(
     startLoopInstruction: 'z+z',
     endLoopInstruction: 'z-z');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_SCREAMCODE = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_SCREAMCODE = BrainfkDerivatives(
     pointerShiftRightInstruction: 'AAAH',
     pointerShiftLeftInstruction: 'AAAAGH',
     increaseValueInstruction: 'F*CK',
@@ -352,7 +349,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_SCREAMCODE = BrainfkDerivatives(
     endLoopInstruction: 'OWIE',
     commandDelimiter: ' ');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_FLUFFLEPUFF = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_FLUFFLEPUFF = BrainfkDerivatives(
     pointerShiftRightInstruction: 'b',
     pointerShiftLeftInstruction: 't',
     increaseValueInstruction: 'pf',
@@ -362,7 +359,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_FLUFFLEPUFF = BrainfkDerivatives(
     startLoopInstruction: '*gasp*',
     endLoopInstruction: '*pomf*');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_TRIPLET = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_TRIPLET = BrainfkDerivatives(
     pointerShiftRightInstruction: '001',
     pointerShiftLeftInstruction: '100',
     increaseValueInstruction: '111',
@@ -372,7 +369,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_TRIPLET = BrainfkDerivatives(
     startLoopInstruction: '110',
     endLoopInstruction: '011');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE_UWU = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE_UWU = BrainfkDerivatives(
     pointerShiftRightInstruction: 'OwO',
     pointerShiftLeftInstruction: '°w°',
     increaseValueInstruction: 'UwU',
@@ -383,7 +380,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_UWU = BrainfkDerivatives(
     endLoopInstruction: '-w-',
     commandDelimiter: ' ');
 
-final BrainfkDerivatives BRAINFKDERIVATIVE___FK = BrainfkDerivatives(
+final BrainfkDerivatives _BRAINFKDERIVATIVE___FK = BrainfkDerivatives(
     pointerShiftRightInstruction: '!!!!!#',
     pointerShiftLeftInstruction: '!!!!!!#',
     increaseValueInstruction: '!!!!!!!#',
@@ -406,33 +403,33 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_CUSTOM = BrainfkDerivatives(
 // NEVER EVER CHANGE THE NAMES! (the value strings of the map);
 // They are used as keys in the multi decoder
 final Map<BrainfkDerivatives, String> BRAINFK_DERIVATIVES = {
-  BRAINFKDERIVATIVE___FK: '!!F**k',
-  BRAINFKDERIVATIVE_ALPHK: 'Alph**k',
-  BRAINFKDERIVATIVE_BINARYFK: 'BinaryFuck',
-  BRAINFKDERIVATIVE_BLUB: 'Blub',
-  BRAINFKDERIVATIVE_BTJZXGQUARTFRQIFJLV: 'Btjzxgquartfrqifjlv',
-  BRAINFKDERIVATIVE_COLONOSCOPY: 'Colonoscopy',
+  _BRAINFKDERIVATIVE___FK: '!!F**k',
+  _BRAINFKDERIVATIVE_ALPHK: 'Alph**k',
+  _BRAINFKDERIVATIVE_BINARYFK: 'BinaryFuck',
+  _BRAINFKDERIVATIVE_BLUB: 'Blub',
+  _BRAINFKDERIVATIVE_BTJZXGQUARTFRQIFJLV: 'Btjzxgquartfrqifjlv',
+  _BRAINFKDERIVATIVE_COLONOSCOPY: 'Colonoscopy',
   BRAINFKDERIVATIVE_DETAILEDFK: 'DetailedF**k',
-  BRAINFKDERIVATIVE_FLUFFLEPUFF: 'Fluffle Puff',
-  BRAINFKDERIVATIVE_FKBEES: 'f**kbeEs',
-  BRAINFKDERIVATIVE_GERMAN: 'GERMAN',
-  BRAINFKDERIVATIVE_KENNYSPEAK: 'Kenny Speak',
-  BRAINFKDERIVATIVE_KONFK: 'K-on F**k',
-  BRAINFKDERIVATIVE_MORSEFK: 'MorseF**k',
-  BRAINFKDERIVATIVE_NAK: 'Nak',
-  BRAINFKDERIVATIVE_OMAM: 'Omam',
+  _BRAINFKDERIVATIVE_FLUFFLEPUFF: 'Fluffle Puff',
+  _BRAINFKDERIVATIVE_FKBEES: 'f**kbeEs',
+  _BRAINFKDERIVATIVE_GERMAN: 'GERMAN',
+  _BRAINFKDERIVATIVE_KENNYSPEAK: 'Kenny Speak',
+  _BRAINFKDERIVATIVE_KONFK: 'K-on F**k',
+  _BRAINFKDERIVATIVE_MORSEFK: 'MorseF**k',
+  _BRAINFKDERIVATIVE_NAK: 'Nak',
+  _BRAINFKDERIVATIVE_OMAM: 'Omam',
   BRAINFKDERIVATIVE_OOK: 'Ook',
-  BRAINFKDERIVATIVE_PSSCRIPT: 'P***sScript',
-  BRAINFKDERIVATIVE_PEWLANG: 'PewLang',
-  BRAINFKDERIVATIVE_PIKALANG: 'PikaLang',
-  BRAINFKDERIVATIVE_REVERSEFK: 'ReverseF**k',
-  BRAINFKDERIVATIVE_REVOLUTION9: 'Revolution 9',
-  BRAINFKDERIVATIVE_ROADRUNNER: 'Roadrunner',
-  BRAINFKDERIVATIVE_SCREAMCODE: 'ScreamCode',
+  _BRAINFKDERIVATIVE_PSSCRIPT: 'P***sScript',
+  _BRAINFKDERIVATIVE_PEWLANG: 'PewLang',
+  _BRAINFKDERIVATIVE_PIKALANG: 'PikaLang',
+  _BRAINFKDERIVATIVE_REVERSEFK: 'ReverseF**k',
+  _BRAINFKDERIVATIVE_REVOLUTION9: 'Revolution 9',
+  _BRAINFKDERIVATIVE_ROADRUNNER: 'Roadrunner',
+  _BRAINFKDERIVATIVE_SCREAMCODE: 'ScreamCode',
   BRAINFKDERIVATIVE_SHORTOOK: 'Short Ook',
-  BRAINFKDERIVATIVE_TERNARY: 'Ternary',
-  BRAINFKDERIVATIVE_TRIPLET: 'Triplet',
-  BRAINFKDERIVATIVE_UWU: 'UwU',
-  BRAINFKDERIVATIVE_ZZZ: 'ZZZ',
+  _BRAINFKDERIVATIVE_TERNARY: 'Ternary',
+  _BRAINFKDERIVATIVE_TRIPLET: 'Triplet',
+  _BRAINFKDERIVATIVE_UWU: 'UwU',
+  _BRAINFKDERIVATIVE_ZZZ: 'ZZZ',
   BRAINFKDERIVATIVE_CUSTOM: 'Custom',
 };

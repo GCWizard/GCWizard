@@ -7,18 +7,20 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/lychrel/
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceLychrelSelection extends GCWSelection {
+  const NumberSequenceLychrelSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(NumberSequenceLychrelNthNumber()),
-        className(NumberSequenceLychrelRange()),
-        className(NumberSequenceLychrelDigits()),
-        className(NumberSequenceLychrelCheckNumber()),
-        className(NumberSequenceLychrelContainsDigits()),
+        className(const NumberSequenceLychrelNthNumber()),
+        className(const NumberSequenceLychrelRange()),
+        className(const NumberSequenceLychrelDigits()),
+        className(const NumberSequenceLychrelCheckNumber()),
+        className(const NumberSequenceLychrelContainsDigits()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

@@ -14,35 +14,35 @@ import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/gcw_tool.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
-buildMainMenu(BuildContext context) {
+Drawer buildMainMenu(BuildContext context) {
   var header = SizedBox(
     height: 120.0,
     child: DrawerHeader(
+      decoration: BoxDecoration(
+        color: themeColors().dialog(),
+      ),
       child: Row(
         children: <Widget>[
           Container(
             padding: const EdgeInsets.all(2.5),
-            child: Image.asset(
-              'assets/logo/circle_border_128.png',
-            ),
             width: 50.0,
             height: 50.0,
             decoration: BoxDecoration(
               color: themeColors().dialogText(),
               shape: BoxShape.circle,
             ),
+            child: Image.asset(
+              'assets/logo/circle_border_128.png',
+            ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 20),
+            padding: const EdgeInsets.only(left: 20),
             child: GCWText(
               text: i18n(context, 'common_app_title'),
               style: TextStyle(color: themeColors().dialogText(), fontSize: 22.0),
             ),
           )
         ],
-      ),
-      decoration: BoxDecoration(
-        color: themeColors().dialog(),
       ),
     ),
   );
@@ -51,14 +51,17 @@ buildMainMenu(BuildContext context) {
   menuEntries.add(_buildSettingsItem(context));
 
   final otherMenuItems = [
-    {
-      'tool': registeredTools.firstWhere((tool) => className(tool.tool) == className(Changelog())),
-      'icon': Icons.show_chart
-    },
-    {'tool': registeredTools.firstWhere((tool) => className(tool.tool) == className(About())), 'icon': Icons.info},
+    _CategoryMetaData(
+      registeredTools.firstWhere((tool) => className(tool.tool) == className(const Changelog())),
+      Icons.show_chart
+    ),
+    _CategoryMetaData(
+      registeredTools.firstWhere((tool) => className(tool.tool) == className(const About())),
+      Icons.info
+    )
   ];
 
-  menuEntries.addAll(otherMenuItems.map((item) {
+  menuEntries.addAll(otherMenuItems.map((_CategoryMetaData item) {
     return _buildMenuItem(context, item);
   }).toList());
 
@@ -72,8 +75,8 @@ buildMainMenu(BuildContext context) {
               child: Row(
                 children: <Widget>[
                   Container(
+                    padding: const EdgeInsets.only(left: 15, right: 15),
                     child: Icon(Icons.group, color: themeColors().dialogText()),
-                    padding: EdgeInsets.only(left: 15, right: 15),
                   ),
                   Text(
                     i18n(context, 'mainmenu_callforcontribution_title'),
@@ -84,9 +87,9 @@ buildMainMenu(BuildContext context) {
               )),
           onTap: () {
             Navigator.pop(context); //close Drawer
-            Navigator.of(context).push(NoAnimationMaterialPageRoute(
+            Navigator.of(context).push(NoAnimationMaterialPageRoute<GCWTool>(
                 builder: (context) =>
-                    registeredTools.firstWhere((tool) => className(tool.tool) == className(CallForContribution()))));
+                    registeredTools.firstWhere((tool) => className(tool.tool) == className(const CallForContribution()))));
           })
     ],
   );
@@ -107,24 +110,33 @@ buildMainMenu(BuildContext context) {
   ));
 }
 
-_buildSettingsItem(BuildContext context) {
+class _CategoryMetaData {
+  final GCWTool tool;
+  final String? toolName;
+  final IconData icon;
+
+  _CategoryMetaData(this.tool, this.icon, [this.toolName]);
+}
+
+ExpansionTile _buildSettingsItem(BuildContext context) {
+  // TODO class type
   final settingsItems = [
-    {
-      'tool': registeredTools.firstWhere((tool) => className(tool.tool) == className(GeneralSettings())),
-      'toolName': i18n(context, 'mainmenu_settings_general_title'),
-      'icon': Icons.settings
-    },
-    {
-      'tool': registeredTools.firstWhere((tool) => className(tool.tool) == className(CoordinatesSettings())),
-      'toolName': i18n(context, 'mainmenu_settings_coordinates_title'),
-      'icon': Icons.language
-    },
-    {
-      'tool': registeredTools.firstWhere((tool) => className(tool.tool) == className(ToolSettings())),
-      'toolName': i18n(context, 'mainmenu_settings_tools_title'),
-      'icon': Icons.category
-    },
-    // ML 12/2022: Postponed to 3.0.0 because of encoding issues
+    _CategoryMetaData(
+      registeredTools.firstWhere((tool) => className(tool.tool) == className(const GeneralSettings())),
+      Icons.settings,
+      i18n(context, 'mainmenu_settings_general_title'),
+    ),
+    _CategoryMetaData (
+      registeredTools.firstWhere((tool) => className(tool.tool) == className(const CoordinatesSettings())),
+      Icons.language,
+      i18n(context, 'mainmenu_settings_coordinates_title'),
+    ),
+    _CategoryMetaData (
+      registeredTools.firstWhere((tool) => className(tool.tool) == className(const ToolSettings())),
+      Icons.category,
+      i18n(context, 'mainmenu_settings_tools_title'),
+    )
+    // TODO ML 12/2022: Postponed to 3.0.0 because of encoding issues
     // {
     //   'tool': registeredTools.firstWhere((tool) => className(tool.tool) == className(SaveRestoreSettings())),
     //   'toolName': i18n(context, 'mainmenu_settings_saverestore_title'),
@@ -134,30 +146,30 @@ _buildSettingsItem(BuildContext context) {
 
   return ExpansionTile(
       title: Text(i18n(context, 'mainmenu_settings_title'), style: _menuItemStyle()),
-      iconColor: themeColors().accent(),
-      collapsedIconColor: themeColors().accent(),
+      iconColor: themeColors().secondary(),
+      collapsedIconColor: themeColors().secondary(),
       leading: Icon(
         Icons.settings,
         color: themeColors().mainFont(),
       ),
       children: settingsItems.map((item) {
-        return Padding(padding: EdgeInsets.only(left: 25), child: _buildMenuItem(context, item));
+        return Padding(padding: const EdgeInsets.only(left: 25), child: _buildMenuItem(context, item));
       }).toList());
 }
 
-ListTile _buildMenuItem(BuildContext context, item) {
+ListTile _buildMenuItem(BuildContext context, _CategoryMetaData item) {
   return ListTile(
       leading: Icon(
-        item['icon'],
+        item.icon,
         color: themeColors().mainFont(),
       ),
-      title: Text(item['toolName'] ?? (item['tool'] as GCWTool).toolName, style: _menuItemStyle()),
+      title: Text(item.toolName ?? item.tool.toolName ?? '', style: _menuItemStyle()),
       onTap: () {
         Navigator.pop(context); //close Drawer
-        Navigator.of(context).push(NoAnimationMaterialPageRoute(builder: (context) => item['tool']));
+        Navigator.of(context).push(NoAnimationMaterialPageRoute<GCWTool>(builder: (BuildContext context) => item.tool));
       });
 }
 
-_menuItemStyle() {
+TextStyle _menuItemStyle() {
   return TextStyle(color: themeColors().mainFont(), fontSize: defaultFontSize(), fontWeight: FontWeight.normal);
 }

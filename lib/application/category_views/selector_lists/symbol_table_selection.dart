@@ -9,11 +9,13 @@ import 'package:gc_wizard/tools/symbol_tables/_common/widget/symbol_table.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class SymbolTableSelection extends GCWSelection {
+  const SymbolTableSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(SymbolTable()),
+        className(const SymbolTable()),
       ].contains(className(element.tool));
     }).toList();
 
@@ -21,22 +23,22 @@ class SymbolTableSelection extends GCWSelection {
 
     _toolList.insert(0, registeredTools.firstWhere((element) {
       return [
-        className(SymbolReplacer()),
+        className(const SymbolReplacer()),
       ].contains(className(element.tool));
     }));
 
     _toolList.insert(0, registeredTools.firstWhere((element) {
       return [
-        className(SymbolTableExamplesSelect()),
+        className(const SymbolTableExamplesSelect()),
       ].contains(className(element.tool));
     }));
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }
 
 String symboltablesDownloadLink(BuildContext context) {
-  final _SUPPORTED_LANGUAGES = ['de', 'en', 'fr', 'ko', 'nl', 'sv', 'se'];
+  const _SUPPORTED_LANGUAGES = ['de', 'en', 'fr', 'ko', 'nl', 'sv', 'se'];
   var locale = Localizations.localeOf(context).languageCode;
 
   var usedLocale = 'en';

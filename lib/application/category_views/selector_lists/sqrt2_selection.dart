@@ -7,16 +7,18 @@ import 'package:gc_wizard/tools/science_and_technology/irrational_numbers/sqrt2/
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class SQRT2Selection extends GCWSelection {
+  const SQRT2Selection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(SQRT2NthDecimal()),
-        className(SQRT2DecimalRange()),
-        className(SQRT2Search()),
+        className(const SQRT2NthDecimal()),
+        className(const SQRT2DecimalRange()),
+        className(const SQRT2Search()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

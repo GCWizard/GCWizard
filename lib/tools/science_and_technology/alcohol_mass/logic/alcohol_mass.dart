@@ -32,7 +32,7 @@ Map<String, double> bloodAlcoholInPermilleWidmark(
     BloodAlcoholGender gender, double alcoholMassInG, double massOfPersonInKG) {
   if (alcoholMassInG <= 0.0 || massOfPersonInKG <= 0.0) return {'min': 0.0, 'max': 0.0};
 
-  var waterRatio;
+  List<double> waterRatio;
   switch (gender) {
     case BloodAlcoholGender.MEN:
       waterRatio = [0.68, 0.7];
@@ -51,11 +51,11 @@ Map<String, double> bloodAlcoholInPermilleWidmark(
   };
 }
 
-double bloodAlcoholInPermilleWidmarkSeidl(
+double? bloodAlcoholInPermilleWidmarkSeidl(
     BloodAlcoholGender gender, double alcoholMassInG, double massOfPersonInKG, double bodyHeightInCM) {
   if (alcoholMassInG <= 0.0 || massOfPersonInKG <= 0.0 || bodyHeightInCM <= 0.0) return 0.0;
 
-  var waterRatio;
+  double waterRatio;
   switch (gender) {
     case BloodAlcoholGender.WOMEN:
       waterRatio = 0.31233 - 0.006446 * massOfPersonInKG + 0.004466 * bodyHeightInCM;
@@ -70,11 +70,11 @@ double bloodAlcoholInPermilleWidmarkSeidl(
   return _bloodAlcoholInPermille(waterRatio, alcoholMassInG, massOfPersonInKG);
 }
 
-double bloodAlcoholInPermilleWidmarkUlrich(
+double? bloodAlcoholInPermilleWidmarkUlrich(
     BloodAlcoholGender gender, double alcoholMassInG, double massOfPersonInKG, double bodyHeightInCM) {
   if (alcoholMassInG <= 0.0 || massOfPersonInKG <= 0.0 || bodyHeightInCM <= 0.0) return 0.0;
 
-  var waterRatio;
+  double waterRatio;
   switch (gender) {
     case BloodAlcoholGender.MEN:
       waterRatio = 0.715 - 0.00462 * massOfPersonInKG + 0.0022 * bodyHeightInCM;
@@ -97,11 +97,11 @@ double _bloodAlcoholInPermilleWidmarkWatson(
   return _bloodAlcoholInPermille(waterRatio, alcoholMassInG, massOfPersonInKG);
 }
 
-double bloodAlcoholInPermilleWidmarkWatson(
+double? bloodAlcoholInPermilleWidmarkWatson(
     BloodAlcoholGender gender, double alcoholMassInG, double massOfPersonInKG, double bodyHeightInCM, int age) {
   if (alcoholMassInG <= 0.0 || massOfPersonInKG <= 0.0 || bodyHeightInCM <= 0.0 || age <= 0) return 0.0;
 
-  var volumeWaterInBodyInL;
+  double volumeWaterInBodyInL;
 
   switch (gender) {
     case BloodAlcoholGender.MEN:
@@ -117,11 +117,11 @@ double bloodAlcoholInPermilleWidmarkWatson(
   return _bloodAlcoholInPermilleWidmarkWatson(volumeWaterInBodyInL, alcoholMassInG, massOfPersonInKG);
 }
 
-double bloodAlcoholInPermilleWidmarkWatsonEicker(
+double? bloodAlcoholInPermilleWidmarkWatsonEicker(
     BloodAlcoholGender gender, double alcoholMassInG, double massOfPersonInKG, double bodyHeightInCM, int age) {
   if (alcoholMassInG <= 0.0 || massOfPersonInKG <= 0.0 || bodyHeightInCM <= 0.0 || age <= 0) return 0.0;
 
-  var volumeWaterInBodyInL;
+  double volumeWaterInBodyInL;
 
   switch (gender) {
     case BloodAlcoholGender.WOMEN:

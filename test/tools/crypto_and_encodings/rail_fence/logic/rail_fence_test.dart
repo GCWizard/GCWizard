@@ -3,9 +3,8 @@ import 'package:gc_wizard/tools/crypto_and_encodings/rail_fence/logic/rail_fence
 
 void main() {
   group("RailFence.encrypt:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
-      {'input' : '', 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '', 'key': 4, 'expectedOutput' : ''},
 
       {'input' : 'DIESISTEINEGEHEIMEBOTSCHAFT', 'key': 4, 'expectedOutput': 'DTEBAISEGHEOHFEIIEEMTCTSNIS'},
       {'input' : 'DIESISTEINEGEHEIMEBOTSCHAFT', 'key': 4, 'offset': 2, 'expectedOutput': 'IEMCSSNGIESHDETIEEBTATIEHOF'},
@@ -13,29 +12,30 @@ void main() {
       {'input' : 'DIESISTEINEGEHEIMEBOTSCHAFT', 'key': 4, 'offset': 2, 'password': 'KLAR', 'expectedOutput': 'SSNGIESHDETIEEBTATIEMCIEHOF'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, key: ${elem['key']}, offset: ${elem['offset']}, password: ${elem['password']}', () {
-        var _actual;
+        String _actual;
         if (elem['offset'] == null) {
-          if (elem['password'] == null)
-            _actual = encryptRailFence(elem['input'], elem['key']);
-          else
-            _actual = encryptRailFence(elem['input'], elem['key'], password: elem['password']);
+          if (elem['password'] == null) {
+            _actual = encryptRailFence(elem['input'] as String, elem['key'] as int);
+          } else {
+            _actual = encryptRailFence(elem['input'] as String, elem['key'] as int, password: elem['password'] as String?);
+          }
         } else {
-          if (elem['password'] == null)
-            _actual = encryptRailFence(elem['input'], elem['key'], offset: elem['offset']);
-          else
-            _actual = encryptRailFence(elem['input'], elem['key'], offset: elem['offset'], password: elem['password']);
+          if (elem['password'] == null) {
+            _actual = encryptRailFence(elem['input'] as String, elem['key'] as int, offset: elem['offset'] as int);
+          } else {
+            _actual = encryptRailFence(elem['input'] as String, elem['key'] as int, offset: elem['offset'] as int, password: elem['password'] as String?);
+          }
         }
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("RailFence.decrypt:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
-      {'input' : '', 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '', 'key': 4, 'expectedOutput' : ''},
 
       {'expectedOutput' : 'DIESISTEINEGEHEIMEBOTSCHAFT', 'key': 4, 'input': 'DTEBAISEGHEOHFEIIEEMTCTSNIS'},
       {'expectedOutput' : 'DIESISTEINEGEHEIMEBOTSCHAFT', 'key': 4, 'offset': 2, 'input': 'IEMCSSNGIESHDETIEEBTATIEHOF'},
@@ -43,22 +43,24 @@ void main() {
       {'expectedOutput' : 'DIESISTEINEGEHEIMEBOTSCHAFT', 'key': 4, 'offset': 2, 'password': 'KLAR', 'input': 'SSNGIESHDETIEEBTATIEMCIEHOF'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, key: ${elem['key']}, offset: ${elem['offset']}, password: ${elem['password']}', () {
-        var _actual;
+        String _actual;
         if (elem['offset'] == null) {
-          if (elem['password'] == null)
-            _actual = decryptRailFence(elem['input'], elem['key']);
-          else
-            _actual = decryptRailFence(elem['input'], elem['key'], password: elem['password']);
+          if (elem['password'] == null) {
+            _actual = decryptRailFence(elem['input'] as String, elem['key'] as int);
+          } else {
+            _actual = decryptRailFence(elem['input'] as String, elem['key'] as int, password: elem['password'] as String?);
+          }
         } else {
-          if (elem['password'] == null)
-            _actual = decryptRailFence(elem['input'], elem['key'], offset: elem['offset']);
-          else
-            _actual = decryptRailFence(elem['input'], elem['key'], offset: elem['offset'], password: elem['password']);
+          if (elem['password'] == null) {
+            _actual = decryptRailFence(elem['input'] as String, elem['key'] as int, offset: elem['offset'] as int);
+          } else {
+            _actual = decryptRailFence(elem['input'] as String, elem['key'] as int, offset: elem['offset'] as int, password: elem['password'] as String?);
+          }
         }
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 }

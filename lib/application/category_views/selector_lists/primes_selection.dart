@@ -11,18 +11,20 @@ import 'package:gc_wizard/tools/science_and_technology/primes/primes_primeindex/
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class PrimesSelection extends GCWSelection {
+  const PrimesSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(NthPrime()),
-        className(IsPrime()),
-        className(NearestPrime()),
-        className(PrimeIndex()),
-        className(IntegerFactorization())
+        className(const NthPrime()),
+        className(const IsPrime()),
+        className(const NearestPrime()),
+        className(const PrimeIndex()),
+        className(const IntegerFactorization())
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

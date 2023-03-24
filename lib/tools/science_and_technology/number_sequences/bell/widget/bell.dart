@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_check.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_containsdigits.dart';
@@ -6,21 +7,21 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequenceBellCheckNumber extends NumberSequenceCheckNumber {
-  NumberSequenceBellCheckNumber() : super(mode: NumberSequencesMode.BELL, maxIndex: 555);
+  const NumberSequenceBellCheckNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.BELL, maxIndex: 555);
 }
 
 class NumberSequenceBellDigits extends NumberSequenceDigits {
-  NumberSequenceBellDigits() : super(mode: NumberSequencesMode.BELL, maxDigits: 1111);
+  const NumberSequenceBellDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.BELL, maxDigits: 1111);
 }
 
 class NumberSequenceBellRange extends NumberSequenceRange {
-  NumberSequenceBellRange() : super(mode: NumberSequencesMode.BELL, maxIndex: 555);
+  const NumberSequenceBellRange({Key? key}) : super(key: key, mode: NumberSequencesMode.BELL, maxIndex: 555);
 }
 
 class NumberSequenceBellNthNumber extends NumberSequenceNthNumber {
-  NumberSequenceBellNthNumber() : super(mode: NumberSequencesMode.BELL, maxIndex: 555);
+  const NumberSequenceBellNthNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.BELL, maxIndex: 555);
 }
 
 class NumberSequenceBellContainsDigits extends NumberSequenceContainsDigits {
-  NumberSequenceBellContainsDigits() : super(mode: NumberSequencesMode.BELL, maxIndex: 555);
+  const NumberSequenceBellContainsDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.BELL, maxIndex: 555);
 }

@@ -17,11 +17,13 @@ import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/gcw_toast.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
+import 'package:gc_wizard/utils/json_utils.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
-import 'package:intl/intl.dart';
 import 'package:prefs/prefs.dart';
 
 class SaveRestoreSettings extends StatefulWidget {
+  const SaveRestoreSettings({Key? key}) : super(key: key);
+
   @override
   SaveRestoreSettingsState createState() => SaveRestoreSettingsState();
 }
@@ -39,9 +41,9 @@ class SaveRestoreSettingsState extends State<SaveRestoreSettings> {
           onPressed: () {
             var keys = Set<String>.from(Prefs.getKeys());
             var prefsMap = <String, dynamic>{};
-            keys.forEach((key) {
+            for (var key in keys) {
               prefsMap.putIfAbsent(key, () => Prefs.get(key));
-            });
+            }
             var json = jsonEncode(prefsMap);
 
             //Uint8 is not enough here for special some special characters or Korean characters!!!
@@ -64,15 +66,18 @@ class SaveRestoreSettingsState extends State<SaveRestoreSettings> {
                 showOpenFileDialog(context, [FileType.GCW], (GCWFile file) {
                   try {
                     var jsonString = String.fromCharCodes(file.bytes);
-                    Map<String, dynamic> prefsMap = jsonDecode(jsonString);
+                    var decoded = jsonDecode(jsonString);
+                    Map<String, Object?> prefsMap = asJsonMap(decoded);
 
                     initDefaultSettings(PreferencesInitMode.REINIT_ALL);
-                    prefsMap.entries.forEach((entry) {
-                      setUntypedPref(entry.key, entry.value);
-                    });
+                    for (var entry in prefsMap.entries) {
+                      if (entry.value == null) continue;
+                      
+                      setUntypedPref(entry.key, entry.value!);
+                    }
 
                     setState(() {
-                      setThemeColorsByName(Prefs.get(PREFERENCE_THEME_COLOR));
+                      setThemeColorsByName(Prefs.getString(PREFERENCE_THEME_COLOR));
                       AppBuilder.of(context).rebuild();
                     });
 
@@ -87,22 +92,19 @@ class SaveRestoreSettingsState extends State<SaveRestoreSettings> {
           },
         ),
         Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             child: GCWText(
                 text: i18n(context, 'settings_saverestore_restore_restart'),
                 style: gcwTextStyle().copyWith(fontSize: defaultFontSize() - 2)
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 15)
+            )
         ),
       ],
     );
   }
 
-  _exportSettings(BuildContext context, Uint8List data) async {
-    String timestamp = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
-    String outputFilename = 'settings_${timestamp}.gcw';
-
-    await saveByteDataToFile(context, data, outputFilename);
-
-    showToast(i18n(context, 'settings_saverestore_save_success'));
+  Future<void> _exportSettings(BuildContext context, Uint8List data) async {
+    await saveByteDataToFile(context, data, buildFileNameWithDate('settings_', FileType.GCW)).then((value) {
+      if (value) showToast(i18n(context, 'settings_saverestore_save_success'));
+    });
   }
 }

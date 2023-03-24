@@ -36,16 +36,14 @@
 // and forwarded to geocache.wizard@gmail.com
 //---------------------------------------------------------
 
-import 'package:gc_wizard/utils/collection_utils.dart';
+const _ERROR_COW_INVALIDCODE = 'common_programming_error_invalid_opcode';
+const _ERROR_COW_LOOPNOTOPEND = 'cow_error_nomatchingMOO';
+const _ERROR_COW_LOOPNOTCLOSED = 'cow_error_nomatchingmoo';
+const _ERROR_COW_MEMORYOUTOFBOUNDS = 'common_programming_error_memoryoutofbounds';
+const _ERROR_COW_INFINITELOOP = 'common_programming_error_infinite_loop';
+const _ERROR_COW_MAXITERATIONS = 'common_programming_error_maxiterations';
 
-final ERROR_COW_INVALIDCODE = 'common_programming_error_invalid_opcode';
-final ERROR_COW_LOOPNOTOPEND = 'cow_error_nomatchingMOO';
-final ERROR_COW_LOOPNOTCLOSED = 'cow_error_nomatchingmoo';
-final ERROR_COW_MEMORYOUTOFBOUNDS = 'common_programming_error_memoryoutofbounds';
-final ERROR_COW_INFINITELOOP = 'common_programming_error_infinite_loop';
-final ERROR_COW_MAXITERATIONS = 'common_programming_error_maxiterations';
-
-final commandsMooToInteger = {
+const _commandsMooToInteger = {
   'moo': 0,
   'mOo': 1,
   'moO': 2,
@@ -60,8 +58,7 @@ final commandsMooToInteger = {
   'oom': 11
 };
 
-final commandsIntegerToMoo = switchMapKeyValue(commandsMooToInteger);
-final mnemonicList = {
+const _mnemonicList = {
   0: 'jump loop start',
   1: 'dec mem',
   2: 'inc mem',
@@ -76,9 +73,8 @@ final mnemonicList = {
   11: 'input int [mem]'
 };
 
-final MEMORY_SIZE = 256;
-final MAX_NUMBER_OF_INSTRUCTIONS = 512;
-final MAX_ITERATIONS = 9999999;
+const _MEMORY_SIZE = 256;
+const _MAX_ITERATIONS = 9999999;
 
 class CowOutput {
   String output = '';
@@ -88,54 +84,55 @@ class CowOutput {
   CowOutput(this.output, this.error, this.debug);
 }
 
-List<int> memoryBlocksArray = List<int>.generate(MEMORY_SIZE, (int index) => 0);
-List<String> debug = <String>[];
-int currentBlockIndex = 0;
-String error = '';
-bool halt = false;
-int reg = 0;
-bool isRegisterInitialized = false;
-int inputPointer = 0;
-String STDOUT = '';
+List<int> _memoryBlocksArray = List<int>.generate(_MEMORY_SIZE, (int index) => 0);
+List<String> _debug = <String>[];
+int _currentBlockIndex = 0;
+String _error = '';
+bool _halt = false;
+int _reg = 0;
+bool _isRegisterInitialized = false;
+int _inputPointer = 0;
+String _STDOUT = '';
 
-CowOutput interpretCow(String code, {String STDIN}) {
-  if (code == null || code.length == 0) return CowOutput('', '', []);
+CowOutput interpretCow(String code, {String? STDIN}) {
+  if (code.isEmpty) return CowOutput('', '', []);
 
   code = code.replaceAll(RegExp(r'\s'), '');
   List<int> opcodesArray = <int>[];
   int numberOfInstructions = 0;
 
   for (int i = 0; i < code.length ~/ 3; i++) {
-    if (commandsMooToInteger[code.substring(i * 3, i * 3 + 3)] != null) {
-      opcodesArray.add(commandsMooToInteger[code.substring(i * 3, i * 3 + 3)]);
+    if (_commandsMooToInteger[code.substring(i * 3, i * 3 + 3)] != null) {
+      opcodesArray.add(_commandsMooToInteger[code.substring(i * 3, i * 3 + 3)]!);
       numberOfInstructions++;
     }
   }
 
-  for (int i = 0; i < MEMORY_SIZE; i++) memoryBlocksArray[i] = 0;
-  currentBlockIndex = 0;
-  halt = false;
-  reg = 0;
-  isRegisterInitialized = false;
-  inputPointer = 0;
-  STDOUT = '';
-  error = '';
+  for (int i = 0; i < _MEMORY_SIZE; i++) {
+    _memoryBlocksArray[i] = 0;
+  }
+  _currentBlockIndex = 0;
+  _halt = false;
+  _reg = 0;
+  _isRegisterInitialized = false;
+  _inputPointer = 0;
+  _STDOUT = '';
+  _error = '';
 
   int iterations = 0;
   int prog_pos = 0;
 
-  while (prog_pos < numberOfInstructions && !halt) {
-    debug.add(mnemonicList[opcodesArray[prog_pos]]);
-    prog_pos = _execCommand(opcodesArray[prog_pos], opcodesArray, prog_pos, numberOfInstructions, STDIN);
+  while (prog_pos < numberOfInstructions && !_halt) {
+    _debug.add(_mnemonicList[opcodesArray[prog_pos]] ?? '');
+    prog_pos = _execCommand(opcodesArray[prog_pos], opcodesArray, prog_pos, numberOfInstructions, STDIN ?? '');
     iterations++;
-    if (iterations > MAX_ITERATIONS) {
-      error = ERROR_COW_MAXITERATIONS;
-      halt = true;
+    if (iterations > _MAX_ITERATIONS) {
+      _error = _ERROR_COW_MAXITERATIONS;
+      _halt = true;
     }
   }
-  ;
 
-  return CowOutput(STDOUT, error, debug);
+  return CowOutput(_STDOUT, _error, _debug);
 }
 
 int _execCommand(
@@ -158,35 +155,36 @@ int _execCommand(
             moo_count++;
             break;
           case 7: //MOO
-            if (moo_count == 0)
+            if (moo_count == 0) {
               return instructionIndex;
-            else
+            } else {
               moo_count--;
+            }
             break;
         }
         instructionIndex--;
       }
-      error = ERROR_COW_LOOPNOTOPEND;
-      halt = true;
+      _error = _ERROR_COW_LOOPNOTOPEND;
+      _halt = true;
       break;
 
     case 1: // mOo
       // Moves current memory position back one block
-      if (currentBlockIndex > 0) {
-        currentBlockIndex--;
+      if (_currentBlockIndex > 0) {
+        _currentBlockIndex--;
       } else {
-        error = ERROR_COW_MEMORYOUTOFBOUNDS;
-        halt = true;
+        _error = _ERROR_COW_MEMORYOUTOFBOUNDS;
+        _halt = true;
       }
       break;
 
     case 2: // moO
       // Moves current memory position forward one block
-      if (currentBlockIndex < MEMORY_SIZE - 1) {
-        currentBlockIndex++;
+      if (_currentBlockIndex < _MEMORY_SIZE - 1) {
+        _currentBlockIndex++;
       } else {
-        error = ERROR_COW_MEMORYOUTOFBOUNDS;
-        halt = true;
+        _error = _ERROR_COW_MEMORYOUTOFBOUNDS;
+        _halt = true;
       }
       break;
 
@@ -196,16 +194,16 @@ int _execCommand(
       // (for example, if the current memory block contains a 2, then the moO command is executed).
       // An invalid command exits the running program.
       // Cannot call itself, as it would cause an infinite loop.
-      if (memoryBlocksArray[currentBlockIndex] == commandCode) {
-        error = ERROR_COW_INFINITELOOP;
-        halt = true;
+      if (_memoryBlocksArray[_currentBlockIndex] == commandCode) {
+        _error = _ERROR_COW_INFINITELOOP;
+        _halt = true;
       } else {
-        if (memoryBlocksArray[currentBlockIndex] >= 0 && memoryBlocksArray[currentBlockIndex] <= 11) {
+        if (_memoryBlocksArray[_currentBlockIndex] >= 0 && _memoryBlocksArray[_currentBlockIndex] <= 11) {
           _execCommand(
-              memoryBlocksArray[currentBlockIndex], instructionsArray, instructionIndex, instructionIndex, STDIN);
+              _memoryBlocksArray[_currentBlockIndex], instructionsArray, instructionIndex, instructionIndex, STDIN);
         } else {
-          error = ERROR_COW_INVALIDCODE;
-          halt = true;
+          _error = _ERROR_COW_INVALIDCODE;
+          _halt = true;
         }
       }
       break;
@@ -213,22 +211,22 @@ int _execCommand(
     case 4: // Moo
       // If current memory block has a 0 in it, read a single ASCII character from STDIN and store it in the current memory block.
       // If the current memory block is not 0, then print the ASCII character that corresponds to the value in the current memory block to STDOUT.
-      if (memoryBlocksArray[currentBlockIndex] == 0) {
-        memoryBlocksArray[currentBlockIndex] = STDIN.codeUnitAt(inputPointer);
-        inputPointer++;
+      if (_memoryBlocksArray[_currentBlockIndex] == 0) {
+        _memoryBlocksArray[_currentBlockIndex] = STDIN.codeUnitAt(_inputPointer);
+        _inputPointer++;
       } else {
-        STDOUT = STDOUT + String.fromCharCode(memoryBlocksArray[currentBlockIndex] % 256);
+        _STDOUT = _STDOUT + String.fromCharCode(_memoryBlocksArray[_currentBlockIndex] % 256);
       }
       break;
 
     case 5: // MOo
       // Decrement current block value by 1
-      memoryBlocksArray[currentBlockIndex]--;
+      _memoryBlocksArray[_currentBlockIndex]--;
       break;
 
     case 6: // MoO
       // Increment current block value by 1
-      memoryBlocksArray[currentBlockIndex]++;
+      _memoryBlocksArray[_currentBlockIndex]++;
       break;
 
     case 7: // MOO
@@ -236,17 +234,18 @@ int _execCommand(
       // If current memory block value is not 0, then continue with next command.
       // Note that the fact that it skips the command immediately following it has interesting ramifications for where the matching moo command really is.
       // For example, the following will match the second and not the first moo: OOO MOO moo moo
-      if (memoryBlocksArray[currentBlockIndex] == 0) {
+      if (_memoryBlocksArray[_currentBlockIndex] == 0) {
         MOO_count = 0;
         instructionIndex += 2; // Skip next instruction
 
         while (instructionIndex < numberOfInstructions) {
           switch (instructionsArray[instructionIndex]) {
             case 0: // moo
-              if (MOO_count == 0)
+              if (MOO_count == 0) {
                 return instructionIndex + 1;
-              else
+              } else {
                 MOO_count--;
+              }
               break;
             case 7: //MOO
               MOO_count++;
@@ -254,24 +253,25 @@ int _execCommand(
           }
           instructionIndex++;
         }
-        error = ERROR_COW_LOOPNOTCLOSED;
-        halt = true;
+        _error = _ERROR_COW_LOOPNOTCLOSED;
+        _halt = true;
       }
       break;
 
     case 8: // OOO
       // Set current memory block value to zero
-      memoryBlocksArray[currentBlockIndex] = 0;
+      _memoryBlocksArray[_currentBlockIndex] = 0;
       break;
 
     case 9: // MMM
       // If no current value in register, copy current memory block value.
       // If there is a value in the register, then paste that value into the current memory block and clear the register.
-      if (!isRegisterInitialized)
-        reg = memoryBlocksArray[currentBlockIndex];
-      else
-        memoryBlocksArray[currentBlockIndex] = reg;
-      isRegisterInitialized = !isRegisterInitialized;
+      if (!_isRegisterInitialized) {
+        _reg = _memoryBlocksArray[_currentBlockIndex];
+      } else {
+        _memoryBlocksArray[_currentBlockIndex] = _reg;
+      }
+      _isRegisterInitialized = !_isRegisterInitialized;
       break;
 
     case 10: // OOM - Print value of current memory block to STDOUT as an integer
@@ -279,22 +279,22 @@ int _execCommand(
 
       // Added the newline (\n) because the 99bottles and Fibonacci examples assume this,
       // even though the language specification doesn't say anything about it
-      STDOUT = STDOUT + memoryBlocksArray[currentBlockIndex].toString() + '\n';
+      _STDOUT = _STDOUT + _memoryBlocksArray[_currentBlockIndex].toString() + '\n';
       break;
 
     case 11: // oom
       // Read an integer from STDIN and put it into the current memory block
       String digit = '';
-      while (int.tryParse(STDIN[inputPointer]) != null) {
-        digit = digit + STDIN[inputPointer];
-        inputPointer++;
+      while (int.tryParse(STDIN[_inputPointer]) != null) {
+        digit = digit + STDIN[_inputPointer];
+        _inputPointer++;
       }
-      memoryBlocksArray[currentBlockIndex] = int.parse(digit);
+      _memoryBlocksArray[_currentBlockIndex] = int.parse(digit);
       break;
 
     default:
-      error = ERROR_COW_INVALIDCODE;
-      halt = true;
+      _error = _ERROR_COW_INVALIDCODE;
+      _halt = true;
   }
   // If MOO or moo did not return, go to the next instruction
   return instructionIndex + 1;

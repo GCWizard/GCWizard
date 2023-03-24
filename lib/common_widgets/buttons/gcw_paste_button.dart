@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -17,23 +16,23 @@ import 'package:intl/intl.dart';
 import 'package:prefs/prefs.dart';
 
 class GCWPasteButton extends StatefulWidget {
-  final Function onSelected;
-  final Function onBeforePressed;
-  final IconButtonSize iconSize;
-  final Widget customIcon;
-  final Color backgroundColor;
-  final bool isTextSelectionToolBarButton;
-  final EdgeInsets textSelectionToolBarButtonPadding;
-  final String textSelectionToolBarButtonLabel;
+  final void Function(String) onSelected;
+  final void Function()? onBeforePressed;
+  final IconButtonSize? iconSize;
+  final Widget? customIcon;
+  final Color? backgroundColor;
+  final bool? isTextSelectionToolBarButton;
+  final EdgeInsets? textSelectionToolBarButtonPadding;
+  final String? textSelectionToolBarButtonLabel;
 
   const GCWPasteButton(
-      {Key key,
-      this.onSelected,
+      {Key? key,
+      required this.onSelected,
       this.onBeforePressed,
       this.iconSize,
       this.customIcon,
       this.backgroundColor,
-      this.isTextSelectionToolBarButton: false,
+      this.isTextSelectionToolBarButton = false,
       this.textSelectionToolBarButtonPadding,
       this.textSelectionToolBarButtonLabel})
       : super(key: key);
@@ -53,26 +52,26 @@ class GCWPasteButtonState extends State<GCWPasteButton> {
       backgroundColor: widget.backgroundColor,
       menuItemBuilder: (context) => _buildMenuItems(context),
       onBeforePressed: widget.onBeforePressed,
-      isTextSelectionToolBarButton: widget.isTextSelectionToolBarButton,
+      isTextSelectionToolBarButton: widget.isTextSelectionToolBarButton ?? false,
       textSelectionToolBarButtonLabel: widget.textSelectionToolBarButtonLabel,
       textSelectionToolBarButtonPadding: widget.textSelectionToolBarButtonPadding,
     ));
   }
 
-  _buildMenuItems(BuildContext context) {
+  List<GCWPopupMenuItem> _buildMenuItems(BuildContext context) {
     var menuItems = [
       GCWPopupMenuItem(
         child: Text(i18n(context, 'common_clipboard_fromdeviceclipboard'), style: gcwDialogTextStyle()),
         action: (index) {
           try {
-            Clipboard.getData('text/plain').then((data) {
-              if (data.text.length == 0) {
+            Clipboard.getData('text/plain').then((ClipboardData? data) {
+              if (data == null || data.text == null || data.text!.isEmpty) {
                 showToast(i18n(context, 'common_clipboard_notextdatafound'));
                 return;
               }
 
-              widget.onSelected(data.text);
-              insertIntoGCWClipboard(context, data.text, useGlobalClipboard: false);
+              widget.onSelected(data.text!);
+              insertIntoGCWClipboard(context, data.text!, useGlobalClipboard: false);
             });
           } catch (e) {}
         },
@@ -80,53 +79,70 @@ class GCWPasteButtonState extends State<GCWPasteButton> {
       GCWPopupMenuItem(
           child: GCWTextDivider(
             suppressTopSpace: true,
-            style: gcwDialogTextStyle(),
             trailing: GCWIconButton(
               icon: Icons.settings,
               size: IconButtonSize.SMALL,
               iconColor: themeColors().dialogText(),
+              onPressed: () => {},
             ),
+            text: '', // TODO: A GCWTextDivider without any text is a simple GCWDivider, but the GCWDivider currently does not support 'suppressTopSpace' and 'trailing'; Move both attributes to GCWDivider
           ),
           action: (index) {
             NavigationService.instance.navigateTo('clipboard_editor');
           })
     ];
 
-    var gcwClipboard = Prefs.getStringList(PREFERENCE_CLIPBOARD_ITEMS).map((clipboardItem) {
-      var item = jsonDecode(clipboardItem);
+    var gcwClipboard = Prefs.getStringList(PREFERENCE_CLIPBOARD_ITEMS)
+        .map((String clipboardItem) {
+          return ClipboardItem.fromJson(clipboardItem);
+        })
+        .where((ClipboardItem? item) => item != null)
+        .map((ClipboardItem? item) => item as ClipboardItem)
+        .map((ClipboardItem item) {
+          var dateFormat = DateFormat('yMd', Localizations.localeOf(context).toString());
+          var timeFormat = DateFormat('Hms', Localizations.localeOf(context).toString());
 
-      var datetime = DateTime.fromMillisecondsSinceEpoch(int.tryParse(item['created']));
-      var dateFormat = DateFormat('yMd', Localizations.localeOf(context).toString());
-      var timeFormat = DateFormat('Hms', Localizations.localeOf(context).toString());
+          return GCWPopupMenuItem(
+              child: Container(
+                padding: const EdgeInsets.only(bottom: 15),
+                child: Column(
+                  children: [
+                    Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          dateFormat.format(item.datetime) + ' ' + timeFormat.format(item.datetime),
+                          style: gcwDialogTextStyle().copyWith(fontSize: max(fontSizeSmall(), 10)),
+                        )),
+                    Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          item.text,
+                          style: gcwDialogTextStyle(),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        )),
+                  ],
+                ),
+              ),
+              action: (int index) {
+                if (index <= 2) {
+                  return;
+                }
 
-      return GCWPopupMenuItem(
-          child: Container(
-            child: Column(
-              children: [
-                Align(
-                    child: Text(
-                      dateFormat.format(datetime) + ' ' + timeFormat.format(datetime),
-                      style: gcwDialogTextStyle().copyWith(fontSize: max(fontSizeSmall(), 10)),
-                    ),
-                    alignment: Alignment.centerLeft),
-                Align(
-                    child: Text(
-                      item['text'],
-                      style: gcwDialogTextStyle(),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    alignment: Alignment.centerLeft),
-              ],
-            ),
-            padding: EdgeInsets.only(bottom: 15),
-          ),
-          action: (index) {
-            var pasteData = jsonDecode(Prefs.getStringList(PREFERENCE_CLIPBOARD_ITEMS)[index - 2])['text'];
-            widget.onSelected(pasteData);
-            insertIntoGCWClipboard(context, pasteData, useGlobalClipboard: false);
-          });
-    }).toList();
+                var list = Prefs.getStringList(PREFERENCE_CLIPBOARD_ITEMS);
+                if (list.length < 2) {
+                  return;
+                }
+
+                var item = ClipboardItem.fromJson(list[index - 2]);
+                if (item == null) {
+                  return;
+                }
+
+                widget.onSelected(item.text);
+                insertIntoGCWClipboard(context, item.text, useGlobalClipboard: false);
+              });
+        }).toList();
 
     menuItems.addAll(gcwClipboard);
     return menuItems;

@@ -1,7 +1,8 @@
 part of 'package:gc_wizard/tools/images_and_files/hidden_data/logic/hidden_data.dart';
 
 /// calculate the file size
-int _fileSize(Uint8List bytes) {
+int? _fileSize(Uint8List? bytes) {
+  if (bytes == null) return null;
   FileType detectedFileType = getFileType(bytes);
 
   switch (detectedFileType) {
@@ -26,7 +27,21 @@ int _fileSize(Uint8List bytes) {
   }
 }
 
-int _jpgImageSize(Uint8List data) {
+/// File size calculation is possible for these data types
+List<FileType> _fileSizeCalculationAviable() {
+  return <FileType>[
+    FileType.JPEG,
+    FileType.PNG,
+    FileType.GIF,
+    FileType.BMP,
+    FileType.ZIP,
+    FileType.RAR,
+    FileType.TAR,
+    FileType.MP3
+  ];
+}
+
+int? _jpgImageSize(Uint8List? data) {
   var sum = 0;
   if (data == null) return null;
   if (getFileType(data) != FileType.JPEG) return null;
@@ -52,22 +67,24 @@ int _jpgImageSize(Uint8List data) {
 
 int __jpgSegmentLength(Uint8List data, int offset) {
   // Data Segment and not SOS Segment
-  if ((offset + 3 < data.length) & (data[offset] == 0xFF) & (data[offset + 1] != 0xDA))
+  if ((offset + 3 < data.length) & (data[offset] == 0xFF) & (data[offset + 1] != 0xDA)) {
     return 256 * data[offset + 2] + data[offset + 3] + 2;
+  }
   return 0;
 }
 
 int __jpgSosSegmentLength(Uint8List data, int offset) {
   //  SOS Segment ?
-  if ((offset + 1 < data.length) & (data[offset] == 0xFF) & (data[offset + 1] == 0xDA))
-    for (int i = offset + 2; i < data.length - 1; i++)
-      // EOI-Segment ?
+  if ((offset + 1 < data.length) & (data[offset] == 0xFF) & (data[offset + 1] == 0xDA)) {
+    for (int i = offset + 2; i < data.length - 1; i++) {
       if (data[i] == 0xFF && data[i + 1] == 0xD9) return i - offset + 2;
+    }
+  }
 
   return 0;
 }
 
-int _pngImageSize(Uint8List data) {
+int? _pngImageSize(Uint8List? data) {
   var startIndex = 0;
   var endIndex = 0;
   if (data == null) return null;
@@ -101,7 +118,7 @@ int _pngImageSize(Uint8List data) {
   return endIndex;
 }
 
-int _gifImageSize(Uint8List data) {
+int? _gifImageSize(Uint8List? data) {
   if (data == null) return null;
   if (getFileType(data) != FileType.GIF) return null;
 
@@ -115,18 +132,17 @@ int _gifImageSize(Uint8List data) {
     if (offset + 1 >= data.length) return data.length;
 
     // Application Extension, Comment Extension
-    if ((data[offset] == 0x21) & ((data[offset + 1] == 0xFF) | (data[offset] == 0xFE)))
+    if ((data[offset] == 0x21) & ((data[offset + 1] == 0xFF) | (data[offset] == 0xFE))) {
       offset = __gifExtensionBlock(data, offset);
-    else {
+    } else {
       //Graphics Control Extension (option)
       offset = __gifExtensionBlock(data, offset);
 
       if (offset + 1 >= data.length) return data.length;
 
-      if ((data[offset] == 0x21) & (data[offset + 1] == 0xFF))
-        // Plain Text Extension
+      if ((data[offset] == 0x21) & (data[offset + 1] == 0xFF)) {
         offset = __gifExtensionBlock(data, offset);
-      else {
+      } else {
         //Image Descriptor
         offset += 10;
 
@@ -169,16 +185,16 @@ int __gifColorMap(Uint8List data, int offset, int countOffset) {
   return offset;
 }
 
-int _zipFileSize(Uint8List data) {
+int? _zipFileSize(Uint8List? data) {
   if (data == null) return null;
-  if (getFileType(data) != '.zip') return null;
+  if (getFileType(data) != FileType.ZIP) return null;
 
   var offset = 0;
   if (offset + 30 > data.length) return null;
 
   // ZIP Signature file header
-  while (
-  (data[offset] == 0x50) & (data[offset + 1] == 0x4B) & (data[offset + 2] == 0x03) & (data[offset + 3] == 0x04)) {
+  while (offset + 30 <= data.length &&
+    (data[offset] == 0x50) & (data[offset + 1] == 0x4B) & (data[offset + 2] == 0x03) & (data[offset + 3] == 0x04)) {
     offset += 30;
 
     var fileNameLength = data.buffer.asByteData(offset - 4, 2).getInt16(0, Endian.little);
@@ -204,10 +220,20 @@ int _zipFileSize(Uint8List data) {
 
       offset += fileNameLength + extraFieldLength + commentLength;
       fileHeaderFound = true;
-    }
 
-    // header end central directory
-    else if ((data[offset] == 0x50) &
+    } else if ((data[offset] == 0x50) &
+    (data[offset + 1] == 0x4B) &
+    (data[offset + 2] == 0x07) &
+    (data[offset + 3] == 0x08)) {
+      if (offset + 12 > data.length) return null;
+
+      var compressedSize = data.buffer.asByteData(offset + 8, 4).getInt32(0, Endian.little);
+      // 4 Byte uncompressedSize
+      offset += 12 + compressedSize;
+      fileHeaderFound = true;
+
+      // header end central directory
+    } else if ((data[offset] == 0x50) &
     (data[offset + 1] == 0x4B) &
     (data[offset + 2] == 0x05) &
     (data[offset + 3] == 0x06)) {
@@ -222,7 +248,7 @@ int _zipFileSize(Uint8List data) {
   return offset;
 }
 
-int _bmpImageSize(Uint8List data) {
+int? _bmpImageSize(Uint8List? data) {
   if (data == null) return null;
   if (getFileType(data) != FileType.BMP) return null;
 
@@ -231,7 +257,7 @@ int _bmpImageSize(Uint8List data) {
   return data.buffer.asByteData(offset + 2).getInt32(0, Endian.little);
 }
 
-int _rarFileSize(Uint8List data) {
+int? _rarFileSize(Uint8List? data) {
   if (data == null) return null;
   if (getFileType(data) != FileType.RAR) return null;
 
@@ -249,8 +275,9 @@ int _rarFileSize(Uint8List data) {
   (data[offset + 6] == 0x01) &
   (data[offset + 7] == 0x00)) {
     offset += 8;
-  } else
+  } else {
     return null;
+  }
 
   do {
     archiveBlockFound = false;
@@ -297,7 +324,7 @@ int _rarFileSize(Uint8List data) {
 
         var nameArray = data.sublist(offset, offset + nameLength.item1);
         var name = utf8.decode(nameArray);
-        if ((name != null) & (name.length > 0)) fileNames.add(name);
+        if (name.isNotEmpty) fileNames.add(name);
         offset += nameLength.item1; //Name
 
         break;
@@ -325,7 +352,7 @@ int _rarFileSize(Uint8List data) {
 Tuple2<int, int> __rarVint(Uint8List data, int offset) {
   var index = 0;
   var value = 0;
-  if (offset >= data.length) return Tuple2<int, int>(0, 0);
+  if (offset >= data.length) return const Tuple2<int, int>(0, 0);
 
   do {
     value |= ((data[offset + index] & 0x7F) << index * 7);
@@ -335,7 +362,7 @@ Tuple2<int, int> __rarVint(Uint8List data, int offset) {
   return Tuple2<int, int>(value, index);
 }
 
-int _mp3FileSize(Uint8List data) {
+int? _mp3FileSize(Uint8List? data) {
   if (data == null) return null;
   if (getFileType(data) != FileType.MP3) return null;
 
@@ -417,22 +444,24 @@ int __mp3Vint(Uint8List data, int offset) {
   if (offset + 3 >= data.length) return 0;
 
   // big EndianFormat
-  for (int i = 0; i < 4; i++) value |= ((data[offset + 3 - i] & 0x7F) << i * 7);
+  for (int i = 0; i < 4; i++) {
+    value |= ((data[offset + 3 - i] & 0x7F) << i * 7);
+  }
 
   return value;
 }
 
-int _tarFileSize(Uint8List data) {
+int? _tarFileSize(Uint8List? data) {
   if (data == null) return null;
   if (getFileType(data) != FileType.TAR) return null;
 
   const int headerSize = 512;
   const int blockSize = 512;
   var magicByteOffset = magicBytesOffset(FileType.TAR) ?? 0;
-  var offset = 0;
+  int? offset = 0;
   var fileNames = <String>[];
 
-  while (offset + headerSize < data.length) {
+  while (offset! + headerSize < data.length) {
     // ustar
     if ((data[offset + magicByteOffset] == 0x75) &
     (data[offset + magicByteOffset + 1] == 0x73) &
@@ -451,20 +480,22 @@ int _tarFileSize(Uint8List data) {
 
       var fileSizeString =
       convertBase(utf8.decode(trimNullBytes(Uint8List.fromList(data.skip(offset + 124).take(12).toList()))), 8, 10);
-      if ((fileSizeString == null) || (fileSizeString == '')) return null;
+      if (fileSizeString.isEmpty) return null;
       var fileSize = int.parse(fileSizeString);
       var usedSize = (fileSize / blockSize.toDouble()).ceil() * blockSize + headerSize;
       if ((fileSize < 0) || ((offset + usedSize) > data.length)) return null;
       offset += usedSize.toInt();
       fileNames.add(utf8.decode(trimNullBytes(Uint8List.fromList(data.skip(offset + 0).take(100).toList()))));
-    } else
+    } else {
       break;
+    }
   }
 
-  if ((offset + 2 * blockSize) <= data.length)
+  if ((offset + 2 * blockSize) <= data.length) {
     offset = data.skip(offset).take(2 * blockSize).any((element) => element == 0x0) ? offset + (2 * blockSize) : null;
-  else
+  } else {
     offset = null;
+  }
 
   return offset;
 }

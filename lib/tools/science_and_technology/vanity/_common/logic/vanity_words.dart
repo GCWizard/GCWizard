@@ -5,6 +5,8 @@
 //
 // 678068550685506386047230386303863 07865807432360386308437
 
+// ignore_for_file: equal_keys_in_map
+
 import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/_common/logic/numeral_words.dart';
 
 class VanityWordsDecodeOutput {
@@ -12,10 +14,11 @@ class VanityWordsDecodeOutput {
   final String numWord;
   final String digit;
   final bool ambigous;
+
   VanityWordsDecodeOutput(this.number, this.numWord, this.digit, this.ambigous);
 }
 
-final VanityToDEU = {
+const VanityToDEU = {
   '6855': 'NULL',
   '3467': 'EINS',
   '9934': 'ZWEI',
@@ -37,7 +40,7 @@ final VanityToDEU = {
   '78658': 'PUNKT',
   '642487': 'NICHTS',
 };
-final VanityToENG = {
+const VanityToENG = {
   '9376': 'ZERO',
   '663': 'ONE',
   '896': 'TWO',
@@ -55,7 +58,7 @@ final VanityToENG = {
   '334733': 'DEGREE',
   '76468': 'POINT',
 };
-final VanityToFRA = {
+const VanityToFRA = {
   '9376': 'ZÉRO',
   '86': 'UN',
   '3389': 'DEUX',
@@ -73,7 +76,7 @@ final VanityToFRA = {
   '33473': 'DEGRÉ',
   '76468': 'POINT',
 };
-final VanityToITA = {
+const VanityToITA = {
   '9376': 'ZERO',
   '866': 'UNO',
   '383': 'DUE',
@@ -91,7 +94,7 @@ final VanityToITA = {
   '47236': 'GRADO',
   '78686': 'PUNTO',
 };
-final VanityToDNK = {
+const VanityToDNK = {
   '685': 'NUL',
   '36': 'EN',
   '86': 'TO',
@@ -109,7 +112,7 @@ final VanityToDNK = {
   '4723': 'GRAD',
   '78658': 'PUNKT',
 };
-final VanityToESP = {
+const VanityToESP = {
   '2376': 'CERO',
   '876': 'UNO',
   '872': 'UNA',
@@ -128,7 +131,7 @@ final VanityToESP = {
   '47236': 'GRADO',
   '78686': 'PUNTO',
 };
-final VanityToNLD = {
+const VanityToNLD = {
   '685': 'NUL',
   '336': 'EEN',
   '9933': 'TWEE',
@@ -146,7 +149,7 @@ final VanityToNLD = {
   '47223': 'GRAAD',
   '7868': 'PUNT',
 };
-final VanityToNOR = {
+const VanityToNOR = {
   '685': 'NUL',
   '36': 'EN',
   '388': 'ETT',
@@ -166,7 +169,7 @@ final VanityToNOR = {
   '4723': 'GRAD',
   '78658': 'PUNKT',
 };
-final VanityToPOL = {
+const VanityToPOL = {
   '9376': 'ZERO',
   '53336': 'JEDEN',
   '53362': 'JEDNA',
@@ -187,7 +190,7 @@ final VanityToPOL = {
   '7867436': 'STOPIEŃ',
   '78658': 'PUNKT',
 };
-final VanityToPOR = {
+const VanityToPOR = {
   '9376': 'ZERO',
   '86': 'UM',
   '3647': 'DOIS',
@@ -206,7 +209,7 @@ final VanityToPOR = {
   '4728': 'GRAU',
   '76686': 'PONTO',
 };
-final VanityToSWE = {
+const VanityToSWE = {
   '8655': 'NOLL',
   '36': 'EN',
   '388': 'ETT',
@@ -225,7 +228,7 @@ final VanityToSWE = {
   '4723': 'GRAD',
   '78658': 'PUNKT',
 };
-final VanityToRUS = {
+const VanityToRUS = {
   '665': 'NOL',
   '685': 'NUL',
   '2363': 'ADNA',
@@ -247,7 +250,7 @@ final VanityToRUS = {
   '4723': 'GRAD',
   '862454': 'TOCHKI',
 };
-final VanityToVOL = {
+const VanityToVOL = {
   '737': 'SER',
   '225': 'BAL',
   '835': 'TEL',
@@ -266,12 +269,12 @@ final VanityToEPO = {
   '874': 'TRI',
   '5927': 'KVAR',
   '5946': 'KVIN',
-  '737': 'SES',
+  '737': 'SES', //double entry ??
   '737': 'SEP',
   '65': 'OK',
   '628': 'NAŬ',
 };
-final VanityToSOL = {
+const VanityToSOL = {
   '76536': 'SOLDO',
   '733636': 'REDODO',
   '736464': 'REMIMI',
@@ -283,7 +286,7 @@ final VanityToSOL = {
   '646473': 'MIMIRE',
   '646432': 'MIMIFA',
 };
-final VanityToLAT = {
+const VanityToLAT = {
   '93786': 'ZERUM',
   '685586': 'NULLUM',
   '8687': 'UNUS',
@@ -299,7 +302,7 @@ final VanityToLAT = {
   '66836': 'NOVEM',
 };
 
-Map VanWords = {
+final Map<NumeralWordsLanguage, Map<String, String>> VanWords = {
   NumeralWordsLanguage.DEU: VanityToDEU,
   NumeralWordsLanguage.ENG: VanityToENG,
   NumeralWordsLanguage.FRA: VanityToFRA,
@@ -318,7 +321,7 @@ Map VanWords = {
   NumeralWordsLanguage.LAT: VanityToLAT
 };
 
-Map<NumeralWordsLanguage, String> VANITYWORDS_LANGUAGES = {
+const Map<NumeralWordsLanguage, String> VANITYWORDS_LANGUAGES = {
   NumeralWordsLanguage.DEU: 'common_language_german',
   NumeralWordsLanguage.ENG: 'common_language_english',
   NumeralWordsLanguage.FRA: 'common_language_french',
@@ -337,16 +340,16 @@ Map<NumeralWordsLanguage, String> VANITYWORDS_LANGUAGES = {
   NumeralWordsLanguage.LAT: 'common_language_latin'
 };
 
-List<VanityWordsDecodeOutput> decodeVanityWords(String text, NumeralWordsLanguage language) {
+List<VanityWordsDecodeOutput> decodeVanityWords(String? text, NumeralWordsLanguage language) {
   List<VanityWordsDecodeOutput> output = <VanityWordsDecodeOutput>[];
-  if (text == null || text == '') {
+  if (text == null || text.isEmpty) {
     output.add(VanityWordsDecodeOutput('', '', '', false));
     return output;
   }
 
   // build map to identify numeral words
-  Map decodingTable = new Map();
-  VanWords[language].forEach((key, value) {
+  var decodingTable = <String, String>{};
+  VanWords[language]!.forEach((key, value) {
     //decodingTable[key] = removeAccents(value);
     decodingTable[key] = (value);
   });
@@ -358,15 +361,15 @@ List<VanityWordsDecodeOutput> decodeVanityWords(String text, NumeralWordsLanguag
   bool ambigous = false;
   String hDigits = '';
   String hWord = '';
-  text = text.replaceAll('\n', '0').replaceAll(' ', '0');
+  text = text.replaceAll('\n', ' ');
   //text = text.replaceAll('\n', '').replaceAll('0', '').replaceAll('1', '').replaceAll(' ', '');
-  while (text.length > 0) {
+  while (text!.isNotEmpty) {
     found = false;
     ambigous = false;
     hDigits = '';
     hWord = '';
     decodingTable.forEach((digits, word) {
-      if (text.startsWith(digits)) {
+      if (text!.startsWith(digits)) {
         if (!found) {
           hDigits = digits;
           hWord = word;
@@ -375,25 +378,25 @@ List<VanityWordsDecodeOutput> decodeVanityWords(String text, NumeralWordsLanguag
           // already found
           ambigous = true;
           output.add(
-              VanityWordsDecodeOutput(hDigits, hWord, NUMERAL_WORDS[language][hWord.toString().toLowerCase()], true));
+              VanityWordsDecodeOutput(hDigits, hWord, NUMERAL_WORDS[language]![hWord.toLowerCase()]!, true));
           output
-              .add(VanityWordsDecodeOutput(digits, word, NUMERAL_WORDS[language][word.toString().toLowerCase()], true));
+              .add(VanityWordsDecodeOutput(digits, word, NUMERAL_WORDS[language]![word.toLowerCase()]!, true));
         }
       }
     }); // end decodingTable.forEach
 
     if (found && !ambigous) {
       output
-          .add(VanityWordsDecodeOutput(hDigits, hWord, NUMERAL_WORDS[language][hWord.toString().toLowerCase()], false));
-      if (hDigits.length > 0) {
+          .add(VanityWordsDecodeOutput(hDigits, hWord, NUMERAL_WORDS[language]![hWord.toLowerCase()]!, false));
+      if (hDigits.isNotEmpty) {
         text = text.substring(hDigits.length);
       }
     }
     if (!found) {
       output.add(VanityWordsDecodeOutput('?', '', '', false));
-      if (text.length > 0) text = text.substring(1);
+      if (text.isNotEmpty) text = text.substring(1);
     }
     if (ambigous) text = '';
-  } // end while text.length > 0
+  } // end while text.isNotEmpty
   return output;
 }

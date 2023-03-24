@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-final Map<int, String> WEEKDAY = {
+const Map<int, String> WEEKDAY = {
   1: 'dates_weekday_monday',
   2: 'dates_weekday_tuesday',
   3: 'dates_weekday_wednesday',
@@ -10,7 +10,7 @@ final Map<int, String> WEEKDAY = {
   7: 'dates_weekday_sunday'
 };
 
-final Map<int, String> MONTH = {
+const Map<int, String> MONTH = {
   1: 'common_month_january',
   2: 'common_month_february',
   3: 'common_month_march',
@@ -27,19 +27,19 @@ final Map<int, String> MONTH = {
 
 enum _CalendarType{JULIAN, GREGORIAN}
 
-DateTime JulianDateToGregorianCalendar(double jd) {
+DateTime julianDateToGregorianCalendar(double jd) {
   return _JDToCal(jd, _CalendarType.GREGORIAN);
 }
 
-DateTime JulianDateToJulianCalendar(double jd) {
+DateTime julianDateToJulianCalendar(double jd) {
   return _JDToCal(jd, _CalendarType.JULIAN);
 }
 
-double GregorianCalendarToJulianDate(DateTime date) {
+double gregorianCalendarToJulianDate(DateTime date) {
   return _calToJD(date, _CalendarType.GREGORIAN);
 }
 
-double JulianCalendarToJulianDate(DateTime date) {
+double julianCalendarToJulianDate(DateTime date) {
   return _calToJD(date, _CalendarType.JULIAN);
 }
 
@@ -86,17 +86,15 @@ DateTime _JDToCal(double jd, _CalendarType type) {
   return DateTime(year, month, day.truncate());
 }
 
-String replaceMonthNameWithCustomString(DateTime date, String datePattern, String locale, String customMonth) {
-  if (date == null || datePattern == null || locale == null || customMonth == null)
-    return null;
-
-  if (!datePattern.contains('MMMM'))
-    return null;
-
+String replaceMonthNameWithCustomString(DateTime date, String datePattern, String locale, String? customMonth) {
   var dateStr = DateFormat(datePattern, locale).format(date);
+  if (!datePattern.contains('MMMM')) {
+    return dateStr;
+  }
+
   var monthName = DateFormat('MMMM', locale).format(date);
 
-  return dateStr.replaceFirst(monthName, customMonth);
+  return dateStr.replaceFirst(monthName, customMonth ?? '');
 }
 
 String formatDaysToNearestUnit(double days) {
@@ -123,8 +121,7 @@ DateTime hoursToHHmmss(double hours) {
   return DateTime(0, 1, 1, h, min, sec, milliSec);
 }
 
-String formatHoursToHHmmss(double hours, {milliseconds: true, limitHours: true}) {
-  if (hours == null) return null;
+String formatHoursToHHmmss(double hours, {bool milliseconds = true, bool limitHours = true}) {
   var time = hoursToHHmmss(hours);
 
   var h = time.hour;
@@ -151,9 +148,7 @@ String formatHoursToHHmmss(double hours, {milliseconds: true, limitHours: true})
   return '$hourStr:$minutesStr:$secondsStr';
 }
 
-String formatDurationToHHmmss(Duration duration, {days: true, milliseconds: true, limitHours: true}) {
-  if (duration == null) return null;
-
+String formatDurationToHHmmss(Duration duration, {bool days = true, bool milliseconds = true, bool limitHours = true}) {
   var sign = duration.isNegative ? '-' : '';
   var _duration = duration.abs();
   var hours = days ? _duration.inHours.remainder(24) : _duration.inHours;

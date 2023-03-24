@@ -1,7 +1,7 @@
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
-Map<String, String> _MAP = {
+const Map<String, String> _MAP = {
   '11': 'A',
   '12': 'B',
   '13': 'C',
@@ -32,7 +32,7 @@ Map<String, String> _MAP = {
 };
 
 String encodeFox(String input) {
-  if (input == null || input.isEmpty) return '';
+  if (input.isEmpty) return '';
 
   var encodeMap = switchMapKeyValue(_MAP);
 
@@ -51,7 +51,7 @@ String encodeFox(String input) {
 }
 
 String decodeFox(String input) {
-  if (input == null || input.isEmpty) return '';
+  if (input.isEmpty) return '';
 
   input = input.replaceAll(RegExp(r'[^1-9]'), '');
   input = insertEveryNthCharacter(input, 2, ' ');

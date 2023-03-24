@@ -1,4 +1,4 @@
-List<String> mersenne_exponents = [
+const List<String> mersenne_exponents = [
   '2',
   '3',
   '5',

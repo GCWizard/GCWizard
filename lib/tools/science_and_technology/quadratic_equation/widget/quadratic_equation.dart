@@ -11,6 +11,8 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/quadratic_equation/logic/quadratic_equation.dart';
 
 class QuadraticEquation extends StatefulWidget {
+  const QuadraticEquation({Key? key}) : super(key: key);
+
   @override
   QuadraticEquationState createState() => QuadraticEquationState();
 }
@@ -19,9 +21,9 @@ class QuadraticEquationState extends State<QuadraticEquation> {
   var _currentA = '0.0';
   var _currentB = '0.0';
   var _currentC = '0.0';
-  var _aController;
-  var _bController;
-  var _cController;
+  late TextEditingController _aController;
+  late TextEditingController _bController;
+  late TextEditingController _cController;
 
   @override
   void initState() {
@@ -92,21 +94,23 @@ class QuadraticEquationState extends State<QuadraticEquation> {
   }
 
   Widget _buildOutput(BuildContext context) {
-    Map<String, String> result = new Map<String, String>();
+    Map<String, String> result = <String, String>{};
     result = solveQuadraticEquation(_currentA, _currentB, _currentC);
-    if (result[''] == null)
+    if (result[''] == null) {
       return GCWDefaultOutput(
           child: GCWColumnedMultilineOutput(
               data: result.entries.map((entry) {
-                    if (entry.key.startsWith('quad'))
+                    if (entry.key.startsWith('quad')) {
                       return [i18n(context, entry.key), i18n(context, entry.value)];
-                    else
+                    } else {
                       return [entry.key, entry.value];
+                    }
                   }).toList(),
-              flexValues: [1, 1]
+              flexValues: const [1, 1]
           ),
       );
-    else
+    } else {
       return Container();
+    }
   }
 }

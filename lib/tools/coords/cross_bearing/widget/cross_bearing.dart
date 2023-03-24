@@ -6,33 +6,34 @@ import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart'
 import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_bearing.dart';
 import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_outputformat.dart';
-import 'package:gc_wizard/common_widgets/gcw_async_executer.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/coords/intersect_lines/logic/intersect_lines.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coord_format_getter.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
+import 'package:gc_wizard/utils/constants.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 
 class CrossBearing extends StatefulWidget {
+  const CrossBearing({Key? key}) : super(key: key);
+
   @override
   CrossBearingState createState() => CrossBearingState();
 }
 
 class CrossBearingState extends State<CrossBearing> {
-  LatLng _currentIntersection;
+  LatLng? _currentIntersection;
 
-  var _currentCoordsFormat1 = defaultCoordFormat();
-  var _currentCoords1 = defaultCoordinate;
-  var _currentBearing1 = {'text': '', 'value': 0.0};
+  var _currentCoords1 = defaultBaseCoordinate;
+  var _currentBearing1 = defaultDoubleText;
 
-  var _currentCoordsFormat2 = defaultCoordFormat();
-  var _currentCoords2 = defaultCoordinate;
-  var _currentBearing2 = {'text': '', 'value': 0.0};
+  var _currentCoords2 = defaultBaseCoordinate;
+  var _currentBearing2 = defaultDoubleText;
 
-  var _currentOutputFormat = defaultCoordFormat();
+  var _currentOutputFormat = defaultCoordinateFormat;
   List<String> _currentOutput = [];
 
   var _currentMapPoints = <GCWMapPoint>[];
@@ -44,11 +45,10 @@ class CrossBearingState extends State<CrossBearing> {
       children: <Widget>[
         GCWCoords(
           title: i18n(context, 'coords_crossbearing_coord1'),
-          coordsFormat: _currentCoordsFormat1,
+          coordsFormat: _currentCoords1.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoordsFormat1 = ret['coordsFormat'];
-              _currentCoords1 = ret['value'];
+              _currentCoords1 = ret;
             });
           },
         ),
@@ -61,11 +61,10 @@ class CrossBearingState extends State<CrossBearing> {
         ),
         GCWCoords(
           title: i18n(context, 'coords_crossbearing_coord2'),
-          coordsFormat: _currentCoordsFormat2,
+          coordsFormat: _currentCoords2.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoordsFormat2 = ret['coordsFormat'];
-              _currentCoords2 = ret['value'];
+              _currentCoords2 = ret;
             });
           },
         ),
@@ -103,17 +102,17 @@ class CrossBearingState extends State<CrossBearing> {
   }
 
   GCWMapPoint _getEndLine1() {
-    final _ells = defaultEllipsoid();
+    final _ells = defaultEllipsoid;
 
-    var mapPoint;
+    GCWMapPoint mapPoint;
     if (_currentIntersection == null) {
-      var distance1To2 = distanceBearing(_currentCoords1, _currentCoords2, _ells).distance;
+      var distance1To2 = distanceBearing(_currentCoords1.toLatLng()!, _currentCoords2.toLatLng()!, _ells).distance;
       mapPoint = GCWMapPoint(
-          point: projection(_currentCoords1, _currentBearing1['value'], distance1To2 / 2.0, _ells), isVisible: false);
+          point: projection(_currentCoords1.toLatLng()!, _currentBearing1.value, distance1To2 / 2.0, _ells), isVisible: false);
     } else {
-      var distance1ToIntersect = distanceBearing(_currentIntersection, _currentCoords1, _ells).distance;
+      var distance1ToIntersect = distanceBearing(_currentIntersection!, _currentCoords1.toLatLng()!, _ells).distance;
       mapPoint = GCWMapPoint(
-          point: projection(_currentIntersection, _currentBearing1['value'], distance1ToIntersect * 1.5, _ells),
+          point: projection(_currentIntersection!, _currentBearing1.value, distance1ToIntersect * 1.5, _ells),
           isVisible: false);
     }
 
@@ -122,17 +121,17 @@ class CrossBearingState extends State<CrossBearing> {
   }
 
   GCWMapPoint _getEndLine2() {
-    final _ells = defaultEllipsoid();
+    final _ells = defaultEllipsoid;
 
-    var mapPoint;
+    GCWMapPoint mapPoint;
     if (_currentIntersection == null) {
-      var distance2To1 = distanceBearing(_currentCoords2, _currentCoords1, _ells).distance;
+      var distance2To1 = distanceBearing(_currentCoords2.toLatLng()!, _currentCoords1.toLatLng()!, _ells).distance;
       mapPoint = GCWMapPoint(
-          point: projection(_currentCoords2, _currentBearing2['value'], distance2To1 / 2.0, _ells), isVisible: false);
+          point: projection(_currentCoords2.toLatLng()!, _currentBearing2.value, distance2To1 / 2.0, _ells), isVisible: false);
     } else {
-      var distance2ToIntersect = distanceBearing(_currentIntersection, _currentCoords2, _ells).distance;
+      var distance2ToIntersect = distanceBearing(_currentIntersection!, _currentCoords2.toLatLng()!, _ells).distance;
       mapPoint = GCWMapPoint(
-          point: projection(_currentIntersection, _currentBearing2['value'], distance2ToIntersect * 1.5, _ells),
+          point: projection(_currentIntersection!, _currentBearing2.value, distance2ToIntersect * 1.5, _ells),
           isVisible: false);
     }
 
@@ -142,20 +141,20 @@ class CrossBearingState extends State<CrossBearing> {
 
   Widget _buildSubmitButton() {
     return GCWSubmitButton(onPressed: () async {
-      await showDialog(
+      await showDialog<bool>(
         context: context,
         barrierDismissible: false,
         builder: (context) {
           return Center(
-            child: Container(
-              child: GCWAsyncExecuter(
+            child: SizedBox(
+              height: 220,
+              width: 150,
+              child: GCWAsyncExecuter<LatLng?>(
                 isolatedFunction: intersectBearingsAsync,
-                parameter: _buildJobData(),
+                parameter: _buildJobData,
                 onReady: (data) => _showOutput(data),
                 isOverlay: true,
               ),
-              height: 220,
-              width: 150,
             ),
           );
         },
@@ -165,26 +164,26 @@ class CrossBearingState extends State<CrossBearing> {
 
   Future<GCWAsyncExecuterParameters> _buildJobData() async {
     return GCWAsyncExecuterParameters(IntersectBearingJobData(
-        coord1: _currentCoords1,
-        az13: _currentBearing1['value'],
-        coord2: _currentCoords2,
-        az23: _currentBearing2['value'],
-        ells: defaultEllipsoid(),
+        coord1: _currentCoords1.toLatLng()!,
+        az13: _currentBearing1.value,
+        coord2: _currentCoords2.toLatLng()!,
+        az23: _currentBearing2.value,
+        ells: defaultEllipsoid,
         crossbearing: true));
   }
 
-  _showOutput(LatLng output) {
+  void _showOutput(LatLng? output) {
     _currentIntersection = output;
 
     _currentMapPoints = [
       GCWMapPoint(
-          point: _currentCoords1,
+          point: _currentCoords1.toLatLng()!,
           markerText: i18n(context, "coords_crossbearing_coord1"),
-          coordinateFormat: _currentCoordsFormat1),
+          coordinateFormat: _currentCoords1.format),
       GCWMapPoint(
-          point: _currentCoords2,
+          point: _currentCoords2.toLatLng()!,
           markerText: i18n(context, "coords_crossbearing_coord2"),
-          coordinateFormat: _currentCoordsFormat2)
+          coordinateFormat: _currentCoords2.format)
     ];
 
     if (_currentIntersection == null) {
@@ -196,12 +195,12 @@ class CrossBearingState extends State<CrossBearing> {
     }
 
     _currentMapPoints.add(GCWMapPoint(
-        point: _currentIntersection,
+        point: _currentIntersection!,
         color: COLOR_MAP_CALCULATEDPOINT,
         markerText: i18n(context, "coords_common_intersection"),
         coordinateFormat: _currentOutputFormat));
 
-    _currentOutput = [formatCoordOutput(_currentIntersection, _currentOutputFormat, defaultEllipsoid())];
+    _currentOutput = [formatCoordOutput(_currentIntersection!, _currentOutputFormat, defaultEllipsoid)];
 
     _currentMapPolylines = [
       GCWMapPolyline(points: [_getStartLine1(), _getEndLine1()]),

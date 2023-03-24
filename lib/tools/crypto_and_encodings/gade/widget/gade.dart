@@ -10,12 +10,14 @@ import 'package:gc_wizard/tools/crypto_and_encodings/gade/logic/gade.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
 
 class Gade extends StatefulWidget {
+  const Gade({Key? key}) : super(key: key);
+
   @override
   GadeState createState() => GadeState();
 }
 
 class GadeState extends State<Gade> {
-  var _GadeInputController;
+  late TextEditingController _GadeInputController;
   String _currentGadeInput = '';
 
   bool _currentParseLetters = true;
@@ -66,10 +68,10 @@ class GadeState extends State<Gade> {
           .where((e) => e != null)
           .join(' ');
     } else {
-      _input = _currentGadeInput.replaceAll(RegExp(r'[^0-9]'), '');
+      _input = _currentGadeInput.replaceAll(RegExp(r'\D'), '');
     }
 
-    var sorted = _input.replaceAll(RegExp(r'[^0-9]'), '').split('').toList();
+    var sorted = _input.replaceAll(RegExp(r'\D'), '').split('').toList();
     sorted.sort();
     var sortedStr = sorted.join();
 

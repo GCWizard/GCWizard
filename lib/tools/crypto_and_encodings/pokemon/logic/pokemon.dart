@@ -3,7 +3,7 @@
 
 import 'package:gc_wizard/utils/constants.dart';
 
-Map<String, String> _POKEMON = {
+const Map<String, String> _POKEMON = {
 // http://fbcs.bplaced.net/multi_encoder_decoder.html
   'g': 'ar',
   'v': 'as',
@@ -34,7 +34,7 @@ Map<String, String> _POKEMON = {
   ' ': ' ',
 };
 
-List<Map<String, String>> _DECODE_POKEMON = [
+const List<Map<String, String>> _DECODE_POKEMON = [
   {'same': 'ef'},
   {'saman': 'ek'},
   {'samon': 'eb'},
@@ -94,14 +94,16 @@ List<Map<String, String>> _DECODE_POKEMON = [
 ];
 
 String encodePokemon(String plainText) {
-  if (plainText == null || plainText == '') return '';
+  if (plainText.isEmpty) return '';
   String result = '';
-  for (int i = 0; i < plainText.length; i++) result = result + _POKEMON[plainText[i].toLowerCase()];
+  for (int i = 0; i < plainText.length; i++) {
+    result = result + (_POKEMON[plainText[i].toLowerCase()] ?? '');
+  }
   return result.toUpperCase();
 }
 
 String decodePokemon(String chiffreText) {
-  if (chiffreText == null || chiffreText == '') return '';
+  if (chiffreText.isEmpty) return '';
 
   List<String> result = [];
   chiffreText = chiffreText.toLowerCase();
@@ -118,7 +120,7 @@ String _decode(String input) {
 
   if (cypher.length == 1) return UNKNOWN_ELEMENT;
 
-  while (cypher.length > 0 && iteration > 0) {
+  while (cypher.isNotEmpty && iteration > 0) {
     iteration--;
     int j = 0;
     while (j < _DECODE_POKEMON.length) {
@@ -131,7 +133,7 @@ String _decode(String input) {
       j++;
     }
   }
-  if (result == '' || cypher.length > 0) result = UNKNOWN_ELEMENT;
+  if (result.isEmpty || cypher.isNotEmpty) result = UNKNOWN_ELEMENT;
 
   return result;
 }

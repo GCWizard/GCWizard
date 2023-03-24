@@ -7,18 +7,20 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/superper
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceSuperPerfectNumbersSelection extends GCWSelection {
+  const NumberSequenceSuperPerfectNumbersSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(NumberSequenceSuperPerfectNumbersNthNumber()),
-        className(NumberSequenceSuperPerfectNumbersRange()),
-        className(NumberSequenceSuperPerfectNumbersDigits()),
-        className(NumberSequenceSuperPerfectNumbersCheckNumber()),
-        className(NumberSequenceSuperPerfectNumbersContainsDigits()),
+        className(const NumberSequenceSuperPerfectNumbersNthNumber()),
+        className(const NumberSequenceSuperPerfectNumbersRange()),
+        className(const NumberSequenceSuperPerfectNumbersDigits()),
+        className(const NumberSequenceSuperPerfectNumbersCheckNumber()),
+        className(const NumberSequenceSuperPerfectNumbersContainsDigits()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

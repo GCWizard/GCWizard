@@ -16,6 +16,8 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/w
 part 'package:gc_wizard/tools/crypto_and_encodings/babylon_numbers/widget/babylon_numbers_segment_display.dart';
 
 class BabylonNumbers extends StatefulWidget {
+  const BabylonNumbers({Key? key}) : super(key: key);
+
   @override
   BabylonNumbersState createState() => BabylonNumbersState();
 }
@@ -23,7 +25,7 @@ class BabylonNumbers extends StatefulWidget {
 class BabylonNumbersState extends State<BabylonNumbers> {
   var _currentEncodeInput = 0;
 
-  List<List<String>> _currentDisplays = [];
+  var _currentDisplays = Segments.Empty();
   var _currentMode = GCWSwitchPosition.right;
 
   @override
@@ -57,17 +59,10 @@ class BabylonNumbersState extends State<BabylonNumbers> {
     ]);
   }
 
-  _buildVisualDecryption() {
-    Map<String, bool> currentDisplay;
+  Widget _buildVisualDecryption() {
+    var currentDisplay = buildSegmentMap(_currentDisplays);
 
-    var displays = _currentDisplays;
-    if (displays != null && displays.length > 0)
-      currentDisplay = Map<String, bool>.fromIterable(displays.last ?? [],
-          key: (e) => e, value: (e) => true);
-    else
-      currentDisplay = {};
-
-    var onChanged = (Map<String, bool> d) {
+    onChanged(Map<String, bool> d) {
       setState(() {
         var newSegments = <String>[];
         d.forEach((key, value) {
@@ -75,19 +70,15 @@ class BabylonNumbersState extends State<BabylonNumbers> {
           newSegments.add(key);
         });
 
-        newSegments.sort();
-
-        if (_currentDisplays.length == 0) _currentDisplays.add([]);
-
-        _currentDisplays[_currentDisplays.length - 1] = newSegments;
+        _currentDisplays.replaceLastSegment(newSegments);
       });
-    };
+    }
 
     return Column(
       children: <Widget>[
         Container(
           width: 200,
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
               top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 10),
           child: Row(
             children: <Widget>[
@@ -105,7 +96,7 @@ class BabylonNumbersState extends State<BabylonNumbers> {
             icon: Icons.space_bar,
             onPressed: () {
               setState(() {
-                _currentDisplays.add([]);
+                _currentDisplays.addEmptySegment();
               });
             },
           ),
@@ -113,7 +104,7 @@ class BabylonNumbersState extends State<BabylonNumbers> {
             icon: Icons.backspace,
             onPressed: () {
               setState(() {
-                if (_currentDisplays.length > 0) _currentDisplays.removeLast();
+                _currentDisplays.removeLastSegment();
               });
             },
           ),
@@ -121,7 +112,7 @@ class BabylonNumbersState extends State<BabylonNumbers> {
             icon: Icons.clear,
             onPressed: () {
               setState(() {
-                _currentDisplays = [];
+                _currentDisplays = Segments.Empty();
               });
             },
           )
@@ -130,7 +121,7 @@ class BabylonNumbersState extends State<BabylonNumbers> {
     );
   }
 
-  Widget _buildDigitalOutput(List<List<String>> segments) {
+  Widget _buildDigitalOutput(Segments segments) {
     return SegmentDisplayOutput(
         segmentFunction: (displayedSegments, readOnly) {
           return _BabylonNumbersSegmentDisplay(
@@ -151,19 +142,17 @@ class BabylonNumbersState extends State<BabylonNumbers> {
       );
     } else {
       //decode
-      var output = _currentDisplays.map((character) {
-        if (character != null) return character.join();
-      }).toList();
+      var output = _currentDisplays.buildOutput();
       var segments = decodeBabylonNumbers(output);
       return Column(
         children: <Widget>[
-          _buildDigitalOutput(segments['displays']),
+          _buildDigitalOutput(segments),
           GCWOutput(
               title: i18n(context, 'babylonnumbers_single_numbers'),
-              child: segments['numbers'].join(' ')),
+              child: segments.numbers.join(' ')),
           GCWOutput(
               title: i18n(context, 'babylonnumbers_sexagesimal'),
-              child: segments['sexagesimal'])
+              child: segments.sexagesimal)
         ],
       );
     }

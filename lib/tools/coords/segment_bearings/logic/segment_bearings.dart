@@ -2,18 +2,26 @@ import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:latlong2/latlong.dart';
 
-Map<String, dynamic> segmentBearings(
+class SegmentedAngle {
+  final List<LatLng> points;
+  final double segmentAngle;
+
+  SegmentedAngle(this.points, this.segmentAngle);
+}
+
+SegmentedAngle segmentBearings(
     LatLng coord, double angle1, double angle2, double distance, int countSegments, Ellipsoid ells) {
-  if (countSegments < 2) return null;
+  if (countSegments < 1) {
+    countSegments = 1;
+  }
 
   var angles = <double>[];
-  if (angle1 != null) angles.add(angle1);
-  if (angle2 != null) {
-    if (angle1 == null || angle1 != angle2) angles.add(angle2);
-  }
+  angles.add(angle1);
+  if (angle1 != angle2) angles.add(angle2);
+
   angles.sort();
 
-  if (angles.length == 0) angles.add(0.0);
+  if (angles.isEmpty) angles.add(0.0);
   if (angles.length == 1) angles.add(angles.first + 360.0);
 
   var segmentAngle = (angles.last - angles.first) / countSegments;
@@ -25,5 +33,5 @@ Map<String, dynamic> segmentBearings(
     points.add(projection(coord, (i * segmentAngle) + angles.first, distance, ells));
   }
 
-  return {'points': points, 'segmentAngle': segmentAngle};
+  return SegmentedAngle(points, segmentAngle);
 }

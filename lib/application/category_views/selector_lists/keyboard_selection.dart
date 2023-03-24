@@ -8,15 +8,17 @@ import 'package:gc_wizard/tools/science_and_technology/keyboard/keyboard_numbers
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class KeyboardSelection extends GCWSelection {
+  const KeyboardSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(KeyboardLayout()),
-        className(KeyboardNumbers()),
+        className(const KeyboardLayout()),
+        className(const KeyboardNumbers()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

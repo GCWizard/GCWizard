@@ -6,12 +6,13 @@ import 'package:gc_wizard/application/theme/theme_colors.dart';
 final TextStyle _textStyle = gcwTextStyle().copyWith(color: themeColors().dialogText());
 final TextStyle _boldTextStyle = _textStyle.copyWith(fontWeight: FontWeight.bold);
 
-showGCWDialog(BuildContext context, String title, Widget child, List<Widget> buttons,
-    {cancelButton: true, closeOnOutsideTouch: false}) {
-  if (cancelButton)
+void showGCWDialog(BuildContext context, String title, Widget? child, List<Widget> buttons,
+    {bool cancelButton = true, bool closeOnOutsideTouch = false}) {
+  if (cancelButton) {
     buttons.add(GCWDialogButton(
       text: i18n(context, 'common_cancel'),
     ));
+  }
 
   AlertDialog dialog = AlertDialog(
       title: Text(title),
@@ -21,7 +22,7 @@ showGCWDialog(BuildContext context, String title, Widget child, List<Widget> but
       titleTextStyle: _boldTextStyle,
       contentTextStyle: _textStyle);
 
-  showDialog(
+  showDialog<bool>(
     context: context,
     barrierDismissible: closeOnOutsideTouch,
     builder: (BuildContext context) {
@@ -30,7 +31,8 @@ showGCWDialog(BuildContext context, String title, Widget child, List<Widget> but
   );
 }
 
-showGCWAlertDialog(BuildContext context, String title, String text, Function onOKPressed, {cancelButton: true}) {
+void showGCWAlertDialog(BuildContext context, String title, String text,
+    void Function()? onOKPressed, {bool cancelButton = true}) {
   GCWDialogButton _okButton = GCWDialogButton(text: i18n(context, 'common_ok'), onPressed: onOKPressed);
 
   showGCWDialog(context, title, Text(text), [_okButton], cancelButton: cancelButton);
@@ -38,10 +40,11 @@ showGCWAlertDialog(BuildContext context, String title, String text, Function onO
 
 class GCWDialogButton extends StatefulWidget {
   final String text;
-  final Function onPressed;
+  final void Function()? onPressed;
   final bool suppressClose;
 
-  const GCWDialogButton({Key key, this.text, this.onPressed, this.suppressClose: false}) : super(key: key);
+  const GCWDialogButton({Key? key, required this.text, this.onPressed, this.suppressClose = false})
+      : super(key: key);
 
   @override
   _GCWDialogButtonState createState() => _GCWDialogButtonState();
@@ -59,8 +62,8 @@ class _GCWDialogButtonState extends State<GCWDialogButton> {
       onPressed: () {
         if (!widget.suppressClose) Navigator.of(context).pop();
 
-        if (widget.onPressed != null) widget.onPressed();
-      },
+        if (widget.onPressed != null) widget.onPressed!();
+      }
     );
   }
 }

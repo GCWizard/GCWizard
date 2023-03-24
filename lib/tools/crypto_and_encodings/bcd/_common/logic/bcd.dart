@@ -9,7 +9,7 @@
 
 import 'package:gc_wizard/utils/collection_utils.dart';
 
-final DigitToBCDOriginal = {
+final _DigitToBCDOriginal = {
   '0': "0000",
   '1': '0001',
   '2': '0010',
@@ -21,7 +21,7 @@ final DigitToBCDOriginal = {
   '8': '1000',
   '9': '1001'
 };
-final DigitToBCDAiken = {
+final _DigitToBCDAiken = {
   '0': '0000',
   '1': '0001',
   '2': '0010',
@@ -33,7 +33,7 @@ final DigitToBCDAiken = {
   '8': '1110',
   '9': '1111'
 };
-final DigitToBCDStibitz = {
+final _DigitToBCDStibitz = {
   '0': '0011',
   '1': '0100',
   '2': '0101',
@@ -45,7 +45,7 @@ final DigitToBCDStibitz = {
   '8': '1011',
   '9': '1100'
 };
-final DigitToBCDGray = {
+final _DigitToBCDGray = {
   '0': '0000',
   '1': '0001',
   '2': '0011',
@@ -57,7 +57,7 @@ final DigitToBCDGray = {
   '8': '1100',
   '9': '1101'
 };
-final DigitToBCDGlixon = {
+final _DigitToBCDGlixon = {
   '0': '0000',
   '1': '0001',
   '2': '0011',
@@ -69,7 +69,7 @@ final DigitToBCDGlixon = {
   '8': '1100',
   '9': '1000'
 };
-final DigitToBCDOBrien = {
+final _DigitToBCDOBrien = {
   '0': '0001',
   '1': '0011',
   '2': '0010',
@@ -81,7 +81,7 @@ final DigitToBCDOBrien = {
   '8': '1011',
   '9': '1001'
 };
-final DigitToBCDPetherick = {
+final _DigitToBCDPetherick = {
   '0': '0101',
   '1': '0001',
   '2': '0011',
@@ -93,7 +93,7 @@ final DigitToBCDPetherick = {
   '8': '1001',
   '9': '1101'
 };
-final DigitToBCDTompkins = {
+final _DigitToBCDTompkins = {
   '0': '0010',
   '1': '0011',
   '2': '0111',
@@ -105,7 +105,7 @@ final DigitToBCDTompkins = {
   '8': '1011',
   '9': '1010'
 };
-final DigitToBCDGrayExcess = {
+final _DigitToBCDGrayExcess = {
   '0': '0010',
   '1': '0110',
   '2': '0111',
@@ -117,7 +117,7 @@ final DigitToBCDGrayExcess = {
   '8': '1111',
   '9': '1011'
 };
-final DigitToBCDLibawCraig = {
+final _DigitToBCDLibawCraig = {
   '0': '00000',
   '1': '00001',
   '2': '00011',
@@ -129,7 +129,7 @@ final DigitToBCDLibawCraig = {
   '8': '11000',
   '9': '10000'
 };
-final DigitToBCD2of5 = {
+final _DigitToBCD2of5 = {
   '0': '00011',
   '1': '00101',
   '2': '00110',
@@ -141,7 +141,7 @@ final DigitToBCD2of5 = {
   '8': '10100',
   '9': '11000'
 };
-final DigitToBCD2of5Postnet = {
+final _DigitToBCD2of5Postnet = {
   '0': '11000',
   '1': '00011',
   '2': '00101',
@@ -153,7 +153,7 @@ final DigitToBCD2of5Postnet = {
   '8': '10010',
   '9': '10100'
 };
-final DigitToBCD2of5Planet = {
+final _DigitToBCD2of5Planet = {
   '0': '00111',
   '1': '11100',
   '2': '11010',
@@ -165,7 +165,7 @@ final DigitToBCD2of5Planet = {
   '8': '01101',
   '9': '01011'
 };
-final DigitToBCDHamming = {
+final _DigitToBCDHamming = {
   '0': '0000000',
   '1': '0000111',
   '2': '0011001',
@@ -177,7 +177,7 @@ final DigitToBCDHamming = {
   '8': '1001011',
   '9': '1001100'
 };
-final DigitToBCDBiquinaer = {
+final _DigitToBCDBiquinaer = {
   '0': '1000001',
   '1': '1000010',
   '2': '1000100',
@@ -189,7 +189,7 @@ final DigitToBCDBiquinaer = {
   '8': '0101000',
   '9': '0110000'
 };
-final DigitToBCD1of10 = {
+final _DigitToBCD1of10 = {
   '0': '0000000001',
   '1': '0000000010',
   '2': '0000000100',
@@ -202,22 +202,22 @@ final DigitToBCD1of10 = {
   '9': '1000000000'
 };
 
-var _BCDOriginalToDigit = switchMapKeyValue(DigitToBCDOriginal);
-var _BCDAikenToDigit = switchMapKeyValue(DigitToBCDAiken);
-var _BCDStibitzToDigit = switchMapKeyValue(DigitToBCDStibitz);
-var _BCDGrayToDigit = switchMapKeyValue(DigitToBCDGray);
-var _BCDGlixonToDigit = switchMapKeyValue(DigitToBCDGlixon);
-var _BCDOBrienToDigit = switchMapKeyValue(DigitToBCDOBrien);
-var _BCDPetherickToDigit = switchMapKeyValue(DigitToBCDPetherick);
-var _BCDTompkinsToDigit = switchMapKeyValue(DigitToBCDTompkins);
-var _BCDLibawCraigToDigit = switchMapKeyValue(DigitToBCDLibawCraig);
-var _BCDGrayExcessToDigit = switchMapKeyValue(DigitToBCDGrayExcess);
-var _BCDHammingToDigit = switchMapKeyValue(DigitToBCDHamming);
-var _BCD1of10ToDigit = switchMapKeyValue(DigitToBCD1of10);
-var _BCD2of5ToDigit = switchMapKeyValue(DigitToBCD2of5);
-var _BCD2of5PlanetToDigit = switchMapKeyValue(DigitToBCD2of5Planet);
-var _BCD2of5PostnetToDigit = switchMapKeyValue(DigitToBCD2of5Postnet);
-var _BCDBiquinaerToDigit = switchMapKeyValue(DigitToBCDBiquinaer);
+var _BCDOriginalToDigit = switchMapKeyValue(_DigitToBCDOriginal);
+var _BCDAikenToDigit = switchMapKeyValue(_DigitToBCDAiken);
+var _BCDStibitzToDigit = switchMapKeyValue(_DigitToBCDStibitz);
+var _BCDGrayToDigit = switchMapKeyValue(_DigitToBCDGray);
+var _BCDGlixonToDigit = switchMapKeyValue(_DigitToBCDGlixon);
+var _BCDOBrienToDigit = switchMapKeyValue(_DigitToBCDOBrien);
+var _BCDPetherickToDigit = switchMapKeyValue(_DigitToBCDPetherick);
+var _BCDTompkinsToDigit = switchMapKeyValue(_DigitToBCDTompkins);
+var _BCDLibawCraigToDigit = switchMapKeyValue(_DigitToBCDLibawCraig);
+var _BCDGrayExcessToDigit = switchMapKeyValue(_DigitToBCDGrayExcess);
+var _BCDHammingToDigit = switchMapKeyValue(_DigitToBCDHamming);
+var _BCD1of10ToDigit = switchMapKeyValue(_DigitToBCD1of10);
+var _BCD2of5ToDigit = switchMapKeyValue(_DigitToBCD2of5);
+var _BCD2of5PlanetToDigit = switchMapKeyValue(_DigitToBCD2of5Planet);
+var _BCD2of5PostnetToDigit = switchMapKeyValue(_DigitToBCD2of5Postnet);
+var _BCDBiquinaerToDigit = switchMapKeyValue(_DigitToBCDBiquinaer);
 
 enum BCDType {
   ORIGINAL,
@@ -239,57 +239,57 @@ enum BCDType {
 }
 
 String encodeBCD(String input, BCDType type) {
-  if (input == null || input == '') return '';
+  if (input.isEmpty) return '';
 
-  var bcdMap;
+  Map<String, String> bcdMap;
   switch (type) {
     case BCDType.ORIGINAL:
-      bcdMap = DigitToBCDOriginal;
+      bcdMap = _DigitToBCDOriginal;
       break;
     case BCDType.AIKEN:
-      bcdMap = DigitToBCDAiken;
+      bcdMap = _DigitToBCDAiken;
       break;
     case BCDType.STIBITZ:
-      bcdMap = DigitToBCDStibitz;
+      bcdMap = _DigitToBCDStibitz;
       break;
     case BCDType.GRAY:
-      bcdMap = DigitToBCDGray;
+      bcdMap = _DigitToBCDGray;
       break;
     case BCDType.GLIXON:
-      bcdMap = DigitToBCDGlixon;
+      bcdMap = _DigitToBCDGlixon;
       break;
     case BCDType.OBRIEN:
-      bcdMap = DigitToBCDOBrien;
+      bcdMap = _DigitToBCDOBrien;
       break;
     case BCDType.PETHERICK:
-      bcdMap = DigitToBCDPetherick;
+      bcdMap = _DigitToBCDPetherick;
       break;
     case BCDType.TOMPKINS:
-      bcdMap = DigitToBCDTompkins;
+      bcdMap = _DigitToBCDTompkins;
       break;
     case BCDType.LIBAWCRAIG:
-      bcdMap = DigitToBCDLibawCraig;
+      bcdMap = _DigitToBCDLibawCraig;
       break;
     case BCDType.GRAYEXCESS:
-      bcdMap = DigitToBCDGrayExcess;
+      bcdMap = _DigitToBCDGrayExcess;
       break;
     case BCDType.TWOOFFIVE:
-      bcdMap = DigitToBCD2of5;
+      bcdMap = _DigitToBCD2of5;
       break;
     case BCDType.PLANET:
-      bcdMap = DigitToBCD2of5Planet;
+      bcdMap = _DigitToBCD2of5Planet;
       break;
     case BCDType.POSTNET:
-      bcdMap = DigitToBCD2of5Postnet;
+      bcdMap = _DigitToBCD2of5Postnet;
       break;
     case BCDType.ONEOFTEN:
-      bcdMap = DigitToBCD1of10;
+      bcdMap = _DigitToBCD1of10;
       break;
     case BCDType.HAMMING:
-      bcdMap = DigitToBCDHamming;
+      bcdMap = _DigitToBCDHamming;
       break;
     case BCDType.BIQUINARY:
-      bcdMap = DigitToBCDBiquinaer;
+      bcdMap = _DigitToBCDBiquinaer;
       break;
   }
 
@@ -301,9 +301,9 @@ String encodeBCD(String input, BCDType type) {
 }
 
 String decodeBCD(String input, BCDType type) {
-  if (input == null || input == '') return '';
+  if (input.isEmpty) return '';
 
-  var bcdMap;
+  Map<String, String> bcdMap;
   switch (type) {
     case BCDType.ORIGINAL:
       bcdMap = _BCDOriginalToDigit;
@@ -357,6 +357,6 @@ String decodeBCD(String input, BCDType type) {
 
   return input.split(RegExp(r'[^01]')).map((bcd) {
     var character = bcdMap[bcd];
-    return character != null ? character : '';
+    return character ?? '';
   }).join();
 }

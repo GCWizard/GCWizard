@@ -19,23 +19,23 @@ class GCWSymbolTableSymbolMatrix extends StatefulWidget {
   final MediaQueryData mediaQueryData;
   final Iterable<Map<String, SymbolData>> imageData;
   final bool selectable;
-  final Function onChanged;
-  final Function onSymbolTapped;
+  final void Function() onChanged;
+  final void Function(String, SymbolData) onSymbolTapped;
   final bool overlayOn;
   final String symbolKey;
   final bool fixed;
 
   const GCWSymbolTableSymbolMatrix(
-      {Key key,
-      this.imageData,
-      this.countColumns,
-      this.mediaQueryData,
-      this.onChanged,
-      this.selectable: false,
-      this.onSymbolTapped,
-      this.fixed: false,
-      this.overlayOn: true,
-      this.symbolKey})
+      {Key? key,
+      required this.imageData,
+      required this.countColumns,
+      required this.mediaQueryData,
+      required this.onChanged,
+      this.selectable = false,
+      required this.onSymbolTapped,
+      this.fixed = false,
+      this.overlayOn = true,
+      this.symbolKey = ''})
       : super(key: key);
 
   @override
@@ -43,8 +43,8 @@ class GCWSymbolTableSymbolMatrix extends StatefulWidget {
 }
 
 class GCWSymbolTableSymbolMatrixState extends State<GCWSymbolTableSymbolMatrix> {
-  var _currentShowOverlayedSymbols = true;
-  Iterable<Map<String, SymbolData>> _imageData;
+  late bool _currentShowOverlayedSymbols;
+  late Iterable<Map<String, SymbolData>> _imageData;
 
   @override
   void initState() {
@@ -64,6 +64,7 @@ class GCWSymbolTableSymbolMatrixState extends State<GCWSymbolTableSymbolMatrix> 
       Row(
         children: <Widget>[
           Expanded(
+              flex: 4,
               child: GCWOnOffSwitch(
                 value: _currentShowOverlayedSymbols,
                 title: i18n(context, 'symboltables_showoverlay'),
@@ -77,15 +78,14 @@ class GCWSymbolTableSymbolMatrixState extends State<GCWSymbolTableSymbolMatrix> 
                     _currentShowOverlayedSymbols = value;
                   });
                 },
-              ),
-              flex: 4),
-          widget.symbolKey == null
+              )),
+          widget.symbolKey.isEmpty
               ? Container(width: 20)
               : GCWIconButton(
-                  icon: Icons.app_registration,
-                  onPressed: () {
-                    openInSymbolReplacer(context, widget.symbolKey, widget.imageData);
-                  }),
+              icon: Icons.app_registration,
+              onPressed: () {
+                openInSymbolReplacer(context, widget.symbolKey);
+              }),
           Container(width: 15),
           GCWSymbolTableZoomButtons(
               countColumns: widget.countColumns, mediaQueryData: widget.mediaQueryData, onChanged: widget.onChanged)
@@ -95,19 +95,17 @@ class GCWSymbolTableSymbolMatrixState extends State<GCWSymbolTableSymbolMatrix> 
           ? _buildDecryptionButtonMatrix(widget.countColumns, widget.selectable, widget.onSymbolTapped)
           : Expanded(
               child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   primary: true,
                   child: _buildDecryptionButtonMatrix(widget.countColumns, widget.selectable, widget.onSymbolTapped)))
     ]);
   }
 
-  _showSpaceSymbolInOverlay(text) {
+  String _showSpaceSymbolInOverlay(String text) {
     return text == ' ' ? String.fromCharCode(9251) : text;
   }
 
-  _buildDecryptionButtonMatrix(int countColumns, bool selectable, Function onSymbolTapped) {
-    if (_imageData == null) return Container();
-
+  Widget _buildDecryptionButtonMatrix(int countColumns, bool selectable, Function onSymbolTapped) {
     var rows = <Widget>[];
     var countRows = (_imageData.length / countColumns).floor();
 
@@ -119,7 +117,7 @@ class GCWSymbolTableSymbolMatrixState extends State<GCWSymbolTableSymbolMatrix> 
       var columns = <Widget>[];
 
       for (var j = 0; j < countColumns; j++) {
-        var widget;
+        Widget widget;
         var imageIndex = i * countColumns + j;
 
         if (imageIndex < _imageData.length) {
@@ -138,7 +136,15 @@ class GCWSymbolTableSymbolMatrixState extends State<GCWSymbolTableSymbolMatrix> 
                 ),
                 _currentShowOverlayedSymbols
                     ? Opacity(
+                        opacity: 0.85,
                         child: Container(
+                          //TODO: Using GCWText instead: Currently it would expand the textfield width to max.
+                          height: defaultFontSize() + 5,
+                          decoration: ShapeDecoration(
+                              color: colors.dialog(),
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(ROUNDED_BORDER_RADIUS)),
+                              )),
                           //TODO: Using GCWText instead: Currently it would expand the textfield width to max.
                           child: AutoSizeText(
                             _showSpaceSymbolInOverlay(symbolText),
@@ -146,14 +152,7 @@ class GCWSymbolTableSymbolMatrixState extends State<GCWSymbolTableSymbolMatrix> 
                             maxLines: 2,
                             minFontSize: 9.0,
                           ),
-                          height: defaultFontSize() + 5,
-                          decoration: ShapeDecoration(
-                              color: colors.dialog(),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(ROUNDED_BORDER_RADIUS)),
-                              )),
-                        ),
-                        opacity: 0.85)
+                        ))
                     : Container()
               ],
             ),
@@ -174,8 +173,8 @@ class GCWSymbolTableSymbolMatrixState extends State<GCWSymbolTableSymbolMatrix> 
 
         columns.add(Expanded(
             child: Container(
+          padding: const EdgeInsets.all(3),
           child: widget,
-          padding: EdgeInsets.all(3),
         )));
       }
 
@@ -189,13 +188,13 @@ class GCWSymbolTableSymbolMatrixState extends State<GCWSymbolTableSymbolMatrix> 
     );
   }
 
-  openInSymbolReplacer(BuildContext context, String symbolKey, List<Map<String, SymbolData>> imageData) {
+  void openInSymbolReplacer(BuildContext context, String symbolKey) {
     Navigator.push(
         context,
-        NoAnimationMaterialPageRoute(
+        NoAnimationMaterialPageRoute<GCWTool>(
             builder: (context) => GCWTool(
-                tool: SymbolReplacer(imageData: imageData, symbolKey: symbolKey),
+                tool: SymbolReplacer(symbolKey: symbolKey),
                 toolName: i18n(context, 'symbol_replacer_title'),
-                i18nPrefix: '')));
+                id: 'symbol_replacer')));
   }
 }

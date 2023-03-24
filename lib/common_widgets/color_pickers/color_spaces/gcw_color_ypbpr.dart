@@ -1,10 +1,10 @@
 part of 'package:gc_wizard/common_widgets/color_pickers/gcw_colors.dart';
 
 class _GCWColorYPbPr extends StatefulWidget {
-  final Function onChanged;
-  final YPbPr color;
+  final void Function(YPbPr) onChanged;
+  final YPbPr? color;
 
-  const _GCWColorYPbPr({Key key, this.onChanged, this.color}) : super(key: key);
+  const _GCWColorYPbPr({Key? key, required this.onChanged, this.color}) : super(key: key);
 
   @override
   _GCWColorYPbPrState createState() => _GCWColorYPbPrState();
@@ -18,9 +18,9 @@ class _GCWColorYPbPrState extends State<_GCWColorYPbPr> {
   @override
   Widget build(BuildContext context) {
     if (widget.color != null) {
-      _currentY = widget.color.y * 100.0;
-      _currentPb = widget.color.pb * 100.0;
-      _currentPr = widget.color.pr * 100.0;
+      _currentY = widget.color!.y * 100.0;
+      _currentPb = widget.color!.pb * 100.0;
+      _currentPr = widget.color!.pr * 100.0;
     }
 
     return Column(
@@ -62,7 +62,7 @@ class _GCWColorYPbPrState extends State<_GCWColorYPbPr> {
     );
   }
 
-  _emitOnChange() {
+  void _emitOnChange() {
     widget.onChanged(YPbPr(_currentY / 100.0, _currentPb / 100.0, _currentPr / 100.0));
   }
 }

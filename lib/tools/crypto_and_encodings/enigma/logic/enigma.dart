@@ -1,16 +1,17 @@
 import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
+import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
 enum EnigmaRotorType { STANDARD, ENTRY_ROTOR, REFLECTOR }
 
 class EnigmaRotor {
-  String name;
-  String alphabet;
-  String turnovers; // see https://en.wikipedia.org/wiki/Enigma_machine#Turnover
-  EnigmaRotorType type;
+  final String name;
+  final String alphabet;
+  final String turnovers; // see https://en.wikipedia.org/wiki/Enigma_machine#Turnover
+  final EnigmaRotorType type;
 
-  EnigmaRotor(this.name, this.alphabet, {this.turnovers: '', this.type: EnigmaRotorType.STANDARD});
+  const EnigmaRotor(this.name, this.alphabet, {this.turnovers = '', this.type = EnigmaRotorType.STANDARD});
 
   @override
   String toString() {
@@ -18,11 +19,11 @@ class EnigmaRotor {
   }
 }
 
-final String defaultRotorStandard = 'I, Enigma I \'Wehrmacht\'';
-final String defaultRotorEntryRotor = 'ETW, Enigma I \'Wehrmacht\'';
-final String defaultRotorReflector = 'UKW B, M3 + M4 \'Wehrmacht\'';
+const String defaultRotorStandard = 'I, Enigma I \'Wehrmacht\'';
+const String defaultRotorEntryRotor = 'ETW, Enigma I \'Wehrmacht\'';
+const String defaultRotorReflector = 'UKW B, M3 + M4 \'Wehrmacht\'';
 
-final List<EnigmaRotor> allEnigmaRotors = [
+const List<EnigmaRotor> allEnigmaRotors = [
   // Enigma I, M3, M4 (Kriegsmarine)
   EnigmaRotor(defaultRotorEntryRotor, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', type: EnigmaRotorType.ENTRY_ROTOR),
   EnigmaRotor(defaultRotorStandard, 'EKMFLGDQVZNTOWYHXUSPAIBRCJ', turnovers: 'Q'),
@@ -108,31 +109,31 @@ EnigmaRotor getEnigmaRotorByName(String name) {
 
 class EnigmaRotorConfiguration {
   EnigmaRotor rotor;
-  int offset;
-  int setting;
+  int offset = 0;
+  int setting = 0;
 
-  EnigmaRotorConfiguration(this.rotor, {var offset: 1, var setting: 1}) {
+  EnigmaRotorConfiguration(this.rotor, {Object offset = 1, Object setting = 1}) {
     if (offset is int) {
       this.offset = offset - 1;
     } else if (offset is String) {
-      this.offset = alphabet_AZ[offset.toUpperCase()] - 1;
+      this.offset = alphabet_AZ[offset.toUpperCase()]! - 1;
     }
 
     if (setting is int) {
       this.setting = setting - 1;
     } else if (setting is String) {
-      this.setting = alphabet_AZ[setting.toUpperCase()] - 1;
+      this.setting = alphabet_AZ[setting.toUpperCase()]! - 1;
     }
   }
 
-  get settingWithOffset {
+  int get settingWithOffset {
     return (setting - offset + 26) % 26;
   }
 
   EnigmaRotorConfiguration clone() {
-    return EnigmaRotorConfiguration(this.rotor,
-        offset: this.offset + 1, // +1 because the constructor subtracts one
-        setting: this.setting + 1);
+    return EnigmaRotorConfiguration(rotor,
+        offset: offset + 1, // +1 because the constructor subtracts one
+        setting: setting + 1);
   }
 
   @override
@@ -145,7 +146,7 @@ class EnigmaKey {
   List<EnigmaRotorConfiguration> rotorConfigurations;
   Map<String, String> plugboard = {};
 
-  _createPlugboard(Map<String, String> plugboard) {
+  void _createPlugboard(Map<String, String> plugboard) {
     plugboard.forEach((k, v) => this.plugboard.putIfAbsent(k.toUpperCase(), () => v.toUpperCase()));
 
     // When A->B in plugboard, B->A has to be in there as well
@@ -154,7 +155,7 @@ class EnigmaKey {
     inversePlugboard.forEach((k, v) => this.plugboard.putIfAbsent(k.toUpperCase(), () => v.toUpperCase()));
   }
 
-  EnigmaKey(this.rotorConfigurations, {Map<String, String> plugboard: const {}}) {
+  EnigmaKey(this.rotorConfigurations, {Map<String, String> plugboard = const {}}) {
     _createPlugboard(plugboard);
   }
 
@@ -164,21 +165,21 @@ class EnigmaKey {
   }
 }
 
-_normalizeInput(String input) {
+String _normalizeInput(String input) {
   input = normalizeUmlauts(input).toUpperCase();
   input = input.replaceAll(RegExp(r'[^A-Z]'), '');
   return input;
 }
 
-_rotorConfigCausesTurnover(EnigmaRotorConfiguration configuration) {
-  var letter = alphabet_AZIndexes[configuration.setting + 1];
+bool _rotorConfigCausesTurnover(EnigmaRotorConfiguration configuration) {
+  var letter = alphabet_AZIndexes[configuration.setting + 1]!;
   return configuration.rotor.turnovers.contains(letter);
 }
 
-_stepping(List<EnigmaRotorConfiguration> configurations) {
+void _stepping(List<EnigmaRotorConfiguration> configurations) {
   int i = 0;
   bool selfTurnover = false;
-  bool turnoverThroughPrevious;
+  bool turnoverThroughPrevious = false;
   do {
     var currentConfig = configurations[i];
 
@@ -192,20 +193,21 @@ _stepping(List<EnigmaRotorConfiguration> configurations) {
   } while (i < configurations.length);
 }
 
-_standardRotorConfigurations(EnigmaKey key) {
+List<EnigmaRotorConfiguration> _standardRotorConfigurations(EnigmaKey key) {
   return key.rotorConfigurations.where((position) => position.rotor.type == EnigmaRotorType.STANDARD).toList();
 }
 
-_rotorConfigurations(EnigmaKey key) {
+List<int> _rotorConfigurations(EnigmaKey key) {
   return key.rotorConfigurations.map((configuration) => configuration.setting).toList();
 }
 
-Map<String, dynamic> calculateEnigma(String input, EnigmaKey key) {
-  if (input == null || _standardRotorConfigurations(key).length == 0)
-    return {'text': '', 'rotorSettingAfter': _rotorConfigurations(key)};
+IntegerListText calculateEnigma(String input, EnigmaKey key) {
+  if (_standardRotorConfigurations(key).isEmpty) {
+    return IntegerListText('', _rotorConfigurations(key));
+  }
 
   input = _normalizeInput(input);
-  if (input.length == 0) return {'text': '', 'rotorSettingAfter': _rotorConfigurations(key)};
+  if (input.isEmpty) return IntegerListText('', _rotorConfigurations(key));
 
   var output = '';
 
@@ -220,13 +222,13 @@ Map<String, dynamic> calculateEnigma(String input, EnigmaKey key) {
     while (rotorNumber < key.rotorConfigurations.length) {
       var rotor = key.rotorConfigurations[rotorNumber];
       // rotor (alphabet) rotated by value of setting
-      var letterIndex = (alphabet_AZ[letter] - 1 + rotor.settingWithOffset) % 26;
+      var letterIndex = (alphabet_AZ[letter]! - 1 + rotor.settingWithOffset) % 26;
       // mapping alphabet to rotor alphabet
       letter = rotor.rotor.alphabet[letterIndex];
 
       // normalize output to natural alphabet for further rotors
-      letterIndex = (alphabet_AZ[letter] - 1 - rotor.settingWithOffset + 26) % 26;
-      letter = alphabet_AZIndexes[letterIndex + 1];
+      letterIndex = (alphabet_AZ[letter]! - 1 - rotor.settingWithOffset + 26) % 26;
+      letter = alphabet_AZIndexes[letterIndex + 1]!;
 
       rotorNumber++;
     }
@@ -238,11 +240,11 @@ Map<String, dynamic> calculateEnigma(String input, EnigmaKey key) {
       while (rotorNumber >= 0) {
         var rotor = key.rotorConfigurations[rotorNumber];
 
-        var letterIndex = (alphabet_AZ[letter] - 1 + rotor.settingWithOffset) % 26;
-        letter = alphabet_AZIndexes[letterIndex + 1];
+        var letterIndex = (alphabet_AZ[letter]! - 1 + rotor.settingWithOffset) % 26;
+        letter = alphabet_AZIndexes[letterIndex + 1]!;
 
         letterIndex = rotor.rotor.alphabet.indexOf(letter);
-        letter = alphabet_AZIndexes[(letterIndex - rotor.settingWithOffset + 26) % 26 + 1];
+        letter = alphabet_AZIndexes[(letterIndex - rotor.settingWithOffset + 26) % 26 + 1]!;
 
         rotorNumber--;
       }
@@ -253,19 +255,19 @@ Map<String, dynamic> calculateEnigma(String input, EnigmaKey key) {
     output += letter;
   });
 
-  return {'text': output, 'rotorSettingAfter': _rotorConfigurations(key)};
+  return IntegerListText(output, _rotorConfigurations(key));
 }
 
 // Sometimes the message has been encrypted twice. The first decryption showed a pattern: three letters, repeated once, e.g. ABCABC
 // at the beginning. This 3-letter pattern was used as rotor setting for the second decryption
 // PS: the 3 depends on the number of rotors; when there are four rotors, there will be 4-letter pattern
-List<Map<String, dynamic>> calculateEnigmaWithMessageKey(String input, EnigmaKey key) {
+List<IntegerListText> calculateEnigmaWithMessageKey(String input, EnigmaKey key) {
   var firstResult = calculateEnigma(input, key);
-  var firstCalculation = firstResult['text'];
+  String firstCalculation = firstResult.text;
 
-  if (firstCalculation.length == 0) return [firstResult];
+  if (firstCalculation.isEmpty) return [firstResult];
 
-  List<Map<String, dynamic>> output = [firstResult];
+  List<IntegerListText> output = [firstResult];
 
   var standardRotorConfigurations = _standardRotorConfigurations(key);
   var numberRotors = standardRotorConfigurations.length;
@@ -276,15 +278,15 @@ List<Map<String, dynamic>> calculateEnigmaWithMessageKey(String input, EnigmaKey
     var pattern = firstCalculation
         .substring(0, numberRotors)
         .split('')
-        .map((letter) => alphabet_AZ[letter] - 1)
+        .map((letter) => alphabet_AZ[letter]! - 1)
         .toList() // map to alphabet index
         .reversed
         .toList(); // backwards because of the typically inverse order of the rotors
 
     int i = 0;
-    standardRotorConfigurations.forEach((configuration) {
+    for (var configuration in standardRotorConfigurations) {
       configuration.setting = pattern[i++];
-    });
+    }
 
     output.add(calculateEnigma(input.replaceAll(' ', '').substring(numberRotors * 2), key));
   }

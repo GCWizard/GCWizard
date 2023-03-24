@@ -1,17 +1,17 @@
 part of 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
 
 class _GCWCoordsGeoHex extends StatefulWidget {
-  final Function onChanged;
-  final BaseCoordinates coordinates;
+  final void Function(GeoHex?) onChanged;
+  final GeoHex coordinates;
 
-  const _GCWCoordsGeoHex({Key key, this.onChanged, this.coordinates}) : super(key: key);
+  const _GCWCoordsGeoHex({Key? key, required this.onChanged, required this.coordinates}) : super(key: key);
 
   @override
   _GCWCoordsGeoHexState createState() => _GCWCoordsGeoHexState();
 }
 
 class _GCWCoordsGeoHexState extends State<_GCWCoordsGeoHex> {
-  TextEditingController _controller;
+  late TextEditingController _controller;
   var _currentCoord = '';
 
   @override
@@ -28,14 +28,10 @@ class _GCWCoordsGeoHexState extends State<_GCWCoordsGeoHex> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.coordinates != null) {
-      var geohHex = widget.coordinates is GeoHex
-          ? widget.coordinates as GeoHex
-          : GeoHex.fromLatLon(widget.coordinates.toLatLng(), 20);
-      _currentCoord = geohHex.text;
+    var geohHex = widget.coordinates;
+    _currentCoord = geohHex.text;
 
-      _controller.text = _currentCoord;
-    }
+    _controller.text = _currentCoord;
 
     return Column(children: <Widget>[
       GCWTextField(
@@ -51,7 +47,7 @@ class _GCWCoordsGeoHexState extends State<_GCWCoordsGeoHex> {
     ]);
   }
 
-  _setCurrentValueAndEmitOnChange() {
+  void _setCurrentValueAndEmitOnChange() {
     try {
       widget.onChanged(GeoHex.parse(_currentCoord));
     } catch (e) {}

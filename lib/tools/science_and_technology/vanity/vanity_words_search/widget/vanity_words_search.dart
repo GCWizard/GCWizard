@@ -11,24 +11,25 @@ import 'package:gc_wizard/tools/science_and_technology/vanity/_common/logic/vani
 import 'package:gc_wizard/utils/string_utils.dart';
 
 class VanityWordsTextSearch extends StatefulWidget {
+  const VanityWordsTextSearch({Key? key}) : super(key: key);
+
   @override
   VanityWordsTextSearchState createState() => VanityWordsTextSearchState();
 }
 
 class VanityWordsTextSearchState extends State<VanityWordsTextSearch> {
-  TextEditingController _decodeController;
+  late TextEditingController _decodeController;
 
   var _currentDecodeInput = '';
   var _currentLanguage = NumeralWordsLanguage.DEU;
 
-  Map<NumeralWordsLanguage, String> _languageList;
+  final Map<NumeralWordsLanguage, String> _languageList= {};
 
   @override
   void initState() {
     super.initState();
     _decodeController = TextEditingController(text: _currentDecodeInput);
 
-    _languageList = {};
     _languageList.addAll(VANITYWORDS_LANGUAGES);
   }
 
@@ -42,7 +43,7 @@ class VanityWordsTextSearchState extends State<VanityWordsTextSearch> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        GCWDropDown(
+        GCWDropDown<NumeralWordsLanguage>(
           value: _currentLanguage,
           onChanged: (value) {
             setState(() {
@@ -75,43 +76,47 @@ class VanityWordsTextSearchState extends State<VanityWordsTextSearch> {
   }
 
   Widget _buildOutput(BuildContext context) {
-    List<VanityWordsDecodeOutput> detailedOutput = new List<VanityWordsDecodeOutput>();
+    var detailedOutput = <VanityWordsDecodeOutput>[];
     detailedOutput = decodeVanityWords(removeAccents(_currentDecodeInput.toLowerCase()), _currentLanguage);
 
     String output = '';
     int ambigous = 0;
     for (int i = 0; i < detailedOutput.length; i++) {
-      if (detailedOutput[i].number != '') if (ambigous > 0 || detailedOutput[i].ambigous) {
-        if (ambigous == 0) {
-          output = output +
-              ' (' +
-              (detailedOutput[i].digit.startsWith('numeralwords_')
-                  ? ' ' + i18n(context, detailedOutput[i].digit) + ' '
-                  : detailedOutput[i].digit);
-          ambigous++;
-        } else if (ambigous == 1) {
-          output = output +
-              '  | ' +
-              (detailedOutput[i].digit.startsWith('numeralwords_')
-                  ? ' ' + i18n(context, detailedOutput[i].digit) + ' '
-                  : detailedOutput[i].digit) +
-              ') - ' +
-              i18n(context, 'vanity_words_search_ambigous');
-          ambigous++;
+      if (detailedOutput[i].number.isNotEmpty) {
+        if (ambigous > 0 || detailedOutput[i].ambigous) {
+          if (ambigous == 0) {
+            output = output +
+                ' (' +
+                (detailedOutput[i].digit.startsWith('numeralwords_')
+                    ? ' ' + i18n(context, detailedOutput[i].digit) + ' '
+                    : detailedOutput[i].digit);
+            ambigous++;
+          } else if (ambigous == 1) {
+            output = output +
+                '  | ' +
+                (detailedOutput[i].digit.startsWith('numeralwords_')
+                    ? ' ' + i18n(context, detailedOutput[i].digit) + ' '
+                    : detailedOutput[i].digit) +
+                ') - ' +
+                i18n(context, 'vanity_words_search_ambigous');
+            ambigous++;
+          }
+        } else {
+          if (detailedOutput[i].number == '?') {
+            output = output + '.';
+          } else if (detailedOutput[i].digit.toString() == 'null') {
+            output = output + ' ';
+          } else {
+            output = output +
+                (detailedOutput[i].digit.startsWith('numeralwords_')
+                    ? ' ' + i18n(context, detailedOutput[i].digit) + ' '
+                    : detailedOutput[i].digit);
+          }
         }
-      } else if (detailedOutput[i].number == '?')
-        output = output + '.';
-      else if (detailedOutput[i].digit.toString() == 'null')
-        output = output + ' ';
-      else
-        output = output +
-            (detailedOutput[i].digit.startsWith('numeralwords_')
-                ? ' ' + i18n(context, detailedOutput[i].digit) + ' '
-                : detailedOutput[i].digit);
+      }
     }
 
-    List<List<String>> columnData = new List<List<String>>();
-    var flexData;
+    List<List<String>> columnData = <List<String>>[];
 
     ambigous = 0;
     for (int i = 0; i < detailedOutput.length; i++) {
@@ -127,20 +132,19 @@ class VanityWordsTextSearchState extends State<VanityWordsTextSearch> {
         ]);
       }
     }
-    flexData = [2, 2, 1];
 
     return Column(
       children: <Widget>[
         GCWOutputText(
           text: output,
         ),
-        output.length == 0
+        output.isEmpty
             ? Container()
             : GCWOutput(
                 title: i18n(context, 'common_outputdetail'),
                 child: GCWColumnedMultilineOutput(
                     data: columnData,
-                    flexValues: flexData,
+                    flexValues: const [2, 2, 1],
                     copyColumn: 1),
               ),
       ],

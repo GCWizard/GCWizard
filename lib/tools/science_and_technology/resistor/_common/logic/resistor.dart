@@ -5,10 +5,10 @@ enum ResistorBandType { FIRST, SECOND, THIRD, MULTIPLIER, TOLERANCE, TEMPERATURE
 // source: https://en.wikipedia.org/wiki/Electronic_color_code#cite_note-IEC_60062_2016ECC-7
 enum ResistorBandColor { PINK, SILVER, GOLD, BLACK, BROWN, RED, ORANGE, YELLOW, GREEN, BLUE, VIOLET, GREY, WHITE }
 
-final defaultResistorBandColor = ResistorBandColor.BROWN;
+const defaultResistorBandColor = ResistorBandColor.BROWN;
 
 // source: https://de.wikipedia.org/wiki/Widerstand_(Bauelement)#Angaben_auf_Widerst%C3%A4nden
-final Map<ResistorBandColor, Map<ResistorBandType, double>> _RESISTOR_VALUES_THREE_AND_FOUR_BANDS = {
+const Map<ResistorBandColor, Map<ResistorBandType, double>> _RESISTOR_VALUES_THREE_AND_FOUR_BANDS = {
   ResistorBandColor.PINK: {ResistorBandType.MULTIPLIER: 1e-3},
   ResistorBandColor.SILVER: {ResistorBandType.MULTIPLIER: 1e-2, ResistorBandType.TOLERANCE: 0.1},
   ResistorBandColor.GOLD: {ResistorBandType.MULTIPLIER: 1e-1, ResistorBandType.TOLERANCE: 0.05},
@@ -55,7 +55,7 @@ final Map<ResistorBandColor, Map<ResistorBandType, double>> _RESISTOR_VALUES_THR
 };
 
 // source: Temperature coefficient: https://web.archive.org/web/20180723125246/https://www.sis.se/api/document/preview/8021442/
-final Map<ResistorBandColor, Map<ResistorBandType, double>> _RESISTOR_VALUES_FIVE_AND_SIX_BANDS = {
+const Map<ResistorBandColor, Map<ResistorBandType, double>> _RESISTOR_VALUES_FIVE_AND_SIX_BANDS = {
   ResistorBandColor.PINK: {ResistorBandType.MULTIPLIER: 1e-3},
   ResistorBandColor.SILVER: {ResistorBandType.MULTIPLIER: 1e-2, ResistorBandType.TOLERANCE: 0.1},
   ResistorBandColor.GOLD: {ResistorBandType.MULTIPLIER: 1e-1, ResistorBandType.TOLERANCE: 0.05},
@@ -135,7 +135,7 @@ final Map<ResistorBandColor, Map<ResistorBandType, double>> _RESISTOR_VALUES_FIV
   }
 };
 
-ResistorBandType getResistorBandTypeByNumberAndPosition(int numberBands, int position) {
+ResistorBandType? getResistorBandTypeByNumberAndPosition(int numberBands, int position) {
   if (numberBands < 5) {
     switch (position) {
       case 1:
@@ -169,7 +169,7 @@ ResistorBandType getResistorBandTypeByNumberAndPosition(int numberBands, int pos
   }
 }
 
-int getPositionByNumberAndType(int numberBands, ResistorBandType type) {
+int? getPositionByNumberAndType(int numberBands, ResistorBandType type) {
   if (numberBands < 5) {
     switch (type) {
       case ResistorBandType.FIRST:
@@ -211,18 +211,19 @@ List<ResistorBandColor> getResistorColorsByBandType(ResistorBandType type) {
 }
 
 class ResistorValue {
-  final double value;
-  final double tolerance;
-  final double temperatureCoefficient;
+  final double? value;
+  final double? tolerance;
+  final double? temperatureCoefficient;
 
   const ResistorValue(this.value, this.tolerance, {this.temperatureCoefficient});
 
   List<double> get tolerancedValueInterval {
-    return [value - value * tolerance, value + value * tolerance];
+    if (value == null || tolerance == null) return [];
+    return [value! - value! * tolerance!, value! + value! * tolerance!];
   }
 }
 
-double _getResistorValueByTypeAndColor(
+double? _getResistorValueByTypeAndColor(
   int numberBands,
   ResistorBandType bandType,
   ResistorBandColor color,
@@ -242,12 +243,13 @@ double _getResistorValueByTypeAndColor(
 }
 
 ResistorValue _getThreeOrFourBandResistorValue(int numberBands, List<ResistorBandColor> colors) {
-  var value = (_getResistorValueByTypeAndColor(numberBands, ResistorBandType.FIRST, colors[0]) ?? 0.0) +
+  double? value = (_getResistorValueByTypeAndColor(numberBands, ResistorBandType.FIRST, colors[0]) ?? 0.0) +
       (_getResistorValueByTypeAndColor(numberBands, ResistorBandType.SECOND, colors[1]) ?? 0.0);
 
-  value *= _getResistorValueByTypeAndColor(numberBands, ResistorBandType.MULTIPLIER, colors[2]);
+  var resistorValue = _getResistorValueByTypeAndColor(numberBands, ResistorBandType.MULTIPLIER, colors[2]);
+  value = resistorValue == null ? null : value * resistorValue;
 
-  var tolerance = 0.2;
+  double? tolerance = 0.2;
   if (numberBands == 4) {
     tolerance = _getResistorValueByTypeAndColor(numberBands, ResistorBandType.TOLERANCE, colors[3]);
   }
@@ -256,15 +258,16 @@ ResistorValue _getThreeOrFourBandResistorValue(int numberBands, List<ResistorBan
 }
 
 ResistorValue _getFiveOrSixBandResistorValue(int numberBands, List<ResistorBandColor> colors) {
-  var value = (_getResistorValueByTypeAndColor(numberBands, ResistorBandType.FIRST, colors[0]) ?? 0.0) +
+  double? value = (_getResistorValueByTypeAndColor(numberBands, ResistorBandType.FIRST, colors[0]) ?? 0.0) +
       (_getResistorValueByTypeAndColor(numberBands, ResistorBandType.SECOND, colors[1]) ?? 0.0) +
       (_getResistorValueByTypeAndColor(numberBands, ResistorBandType.THIRD, colors[2]) ?? 0.0);
 
-  value *= _getResistorValueByTypeAndColor(numberBands, ResistorBandType.MULTIPLIER, colors[3]);
+  var resistorValue = _getResistorValueByTypeAndColor(numberBands, ResistorBandType.MULTIPLIER, colors[3]);
+  value = resistorValue == null ? null : value * resistorValue;
 
   var tolerance = _getResistorValueByTypeAndColor(numberBands, ResistorBandType.TOLERANCE, colors[4]);
 
-  var temperaturCoefficient;
+  double? temperaturCoefficient;
   if (numberBands == 6) {
     temperaturCoefficient =
         _getResistorValueByTypeAndColor(numberBands, ResistorBandType.TEMPERATURE_COEFFICIENT, colors[5]);
@@ -274,30 +277,28 @@ ResistorValue _getFiveOrSixBandResistorValue(int numberBands, List<ResistorBandC
 }
 
 Map<ResistorBandColor, double> getResistorBandValues(
-    int numberBands, ResistorBandType type, List<ResistorBandColor> colors) {
-  if (colors == null) return null;
+    int numberBands, ResistorBandType type, List<ResistorBandColor>? colors) {
+  if (colors == null) return {};
 
   return Map.fromIterable(colors,
-      key: (color) => color,
+      key: (color) => color as ResistorBandColor,
       value: (color) {
         switch (numberBands) {
           case 1:
           case 2:
           case 3:
           case 4:
-            return _RESISTOR_VALUES_THREE_AND_FOUR_BANDS[color][type];
+            return _RESISTOR_VALUES_THREE_AND_FOUR_BANDS[color]![type]!;
           case 5:
           case 6:
-            return _RESISTOR_VALUES_FIVE_AND_SIX_BANDS[color][type];
+            return _RESISTOR_VALUES_FIVE_AND_SIX_BANDS[color]![type]!;
           default:
-            return null;
+            return 0;
         }
       });
 }
 
 ResistorValue getResistorValue(List<ResistorBandColor> colors) {
-  if (colors == null) return null;
-
   switch (colors.length) {
     case 3:
       return _getThreeOrFourBandResistorValue(3, colors);
@@ -308,42 +309,40 @@ ResistorValue getResistorValue(List<ResistorBandColor> colors) {
     case 6:
       return _getFiveOrSixBandResistorValue(6, colors);
     default:
-      return null;
+      return const ResistorValue(null, 0);
   }
 }
 
-double eia96(int code, {String multiplicator: 'A'}) {
+double eia96(int? code, {String multiplicator = 'A'}) {
   if (code == null) return 0.0;
 
   var multiplicatorValue = 1.0;
 
-  if (multiplicator != null) {
-    switch (multiplicator.toUpperCase()) {
-      case 'Y':
-        multiplicatorValue = 0.01;
-        break;
-      case 'X':
-        multiplicatorValue = 0.1;
-        break;
-      case 'A':
-        multiplicatorValue = 1.0;
-        break;
-      case 'B':
-        multiplicatorValue = 10.0;
-        break;
-      case 'C':
-        multiplicatorValue = 100.0;
-        break;
-      case 'D':
-        multiplicatorValue = 1000.0;
-        break;
-      case 'E':
-        multiplicatorValue = 10000.0;
-        break;
-      case 'F':
-        multiplicatorValue = 100000.0;
-        break;
-    }
+  switch (multiplicator.toUpperCase()) {
+    case 'Y':
+      multiplicatorValue = 0.01;
+      break;
+    case 'X':
+      multiplicatorValue = 0.1;
+      break;
+    case 'A':
+      multiplicatorValue = 1.0;
+      break;
+    case 'B':
+      multiplicatorValue = 10.0;
+      break;
+    case 'C':
+      multiplicatorValue = 100.0;
+      break;
+    case 'D':
+      multiplicatorValue = 1000.0;
+      break;
+    case 'E':
+      multiplicatorValue = 10000.0;
+      break;
+    case 'F':
+      multiplicatorValue = 100000.0;
+      break;
   }
 
   return (100.0 * pow(10.0, (code.toDouble() - 1.0) / 96.0) + 0.5).floor() * multiplicatorValue;

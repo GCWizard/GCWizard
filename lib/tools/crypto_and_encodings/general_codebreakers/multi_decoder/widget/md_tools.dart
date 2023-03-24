@@ -1,6 +1,6 @@
 part of 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/multi_decoder/widget/multi_decoder.dart';
 
-final List<String> _mdtToolsRegistry = [
+const List<String> _mdtToolsRegistry = [
   MDT_INTERNALNAMES_ROTATION,
   MDT_INTERNALNAMES_ROT5,
   MDT_INTERNALNAMES_ROT18,
@@ -46,7 +46,8 @@ final List<String> _mdtToolsRegistry = [
   MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_WHITESPACE,
 ];
 
-final _initialOptions = <String, Map<String, dynamic>>{
+/// all multiDecoder default options
+final _initialOptions = <String, Map<String, Object>>{
   MDT_INTERNALNAMES_ALPHABETVALUES: {
     MDT_ALPHABETVALUES_OPTION_ALPHABET: 'alphabet_name_az'
   },
@@ -60,7 +61,7 @@ final _initialOptions = <String, Map<String, dynamic>>{
     MDT_CCITT2_OPTION_MODE: MDT_CCITT2_OPTION_MODE_BINARY
   },
   MDT_INTERNALNAMES_COORDINATEFORMATS: {
-    MDT_COORDINATEFORMATS_OPTION_FORMAT: keyCoordsUTM
+    MDT_COORDINATEFORMATS_OPTION_FORMAT: CoordinateFormatKey.UTM
   },
   MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_BEATNIK: {
     MDT_ESOTERIC_LANGUAGE_BEATNIK_OPTION_MODE: scrabbleID_EN
@@ -85,8 +86,8 @@ final _initialOptions = <String, Map<String, dynamic>>{
   },
   MDT_INTERNALNAMES_KEYBOARDLAYOUT: {
     MDT_KEYBOARDLAYOUT_OPTION_FROM:
-        getKeyboardByType(KeyboardType.QWERTY_US_INT).name,
-    MDT_KEYBOARDLAYOUT_OPTION_TO: getKeyboardByType(KeyboardType.QWERTZ_T1).name
+        getKeyboardByType(KeyboardType.QWERTY_US_INT)?.name ?? '',
+    MDT_KEYBOARDLAYOUT_OPTION_TO: getKeyboardByType(KeyboardType.QWERTZ_T1)?.name ?? ''
   },
   MDT_INTERNALNAMES_KEYBOARDNUMBERS: {
     MDT_KEYBOARDNUMBERS_OPTION_TYPE: 'keyboard_mode_qwertz_ristome_dvorak'
@@ -111,30 +112,49 @@ final _initialOptions = <String, Map<String, dynamic>>{
   },
   MDT_INTERNALNAMES_VIGENERE: {MDT_VIGENERE_OPTION_KEY: 1},
   MDT_INTERNALNAMES_WASD: {
-    MDT_WASD_OPTION_SET: KEYBOARD_CONTROLS[WASD_TYPE.NWSE]
+    MDT_WASD_OPTION_SET: KEYBOARD_CONTROLS[WASD_TYPE.NWSE]!
   },
 };
 
-_multiDecoderToolOptionToGCWMultiDecoderToolOptions(
-    List<MultiDecoderToolOption> mdtOptions) {
-  var gcwOptions = <String, dynamic>{};
+Object? getDefaultValue(String internalToolName, String option) {
+  return _initialOptions[internalToolName]?[option];
+}
 
-  mdtOptions.forEach((option) {
+String checkStringFormatOrDefaultOption(String internalToolName, Map<String, Object?> options, String option) {
+  var value = options[option];
+  if (value is String) return value;
+  value = getDefaultValue(internalToolName, option);
+  if (value is String) return value;
+
+  throw Exception('invalid tool option');
+}
+
+int checkIntFormatOrDefaultOption(String internalToolName, Map<String, Object?> options, String option) {
+  var value = options[option];
+  if (value is int) return value;
+  value = getDefaultValue(internalToolName, option);
+  if (value is int) return value;
+
+  throw Exception('invalid tool option');
+}
+
+Map<String, Object?> _multiDecoderToolOptionToGCWMultiDecoderToolOptions(
+    List<MultiDecoderToolOption> mdtOptions) {
+  var gcwOptions = <String, Object?>{};
+
+  for (var option in mdtOptions) {
     gcwOptions.putIfAbsent(option.name, () => option.value);
-  });
+  }
 
   return gcwOptions;
 }
 
-AbstractMultiDecoderTool _multiDecoderToolToGCWMultiDecoderTool(
-    BuildContext context, MultiDecoderToolEntity mdtTool) {
+/// all multiDecoder tools
+AbstractMultiDecoderTool _multiDecoderToolToGCWMultiDecoderTool(BuildContext context, MultiDecoderToolEntity mdtTool) {
   AbstractMultiDecoderTool gcwTool;
 
-  var options =
-      _initialOptions[mdtTool.internalToolName] ?? <String, dynamic>{};
-  if (mdtTool.options != null && mdtTool.options.length > 0)
-    options =
-        _multiDecoderToolOptionToGCWMultiDecoderToolOptions(mdtTool.options);
+  var options = _initialOptions[mdtTool.internalToolName] ?? <String, Object?>{};
+  if (mdtTool.options.isNotEmpty) options = _multiDecoderToolOptionToGCWMultiDecoderToolOptions(mdtTool.options);
 
   switch (mdtTool.internalToolName) {
     case MDT_INTERNALNAMES_ALPHABETVALUES:
@@ -360,12 +380,16 @@ AbstractMultiDecoderTool _multiDecoderToolToGCWMultiDecoderTool(
           options: options,
           context: context);
       break;
+    default:
+      gcwTool = MultiDecoderToolDummy();
+      break;
   }
 
   return gcwTool;
 }
 
-_initializeMultiToolDecoder(BuildContext context) {
+/// default configuration
+void _initializeMultiToolDecoder(BuildContext context) {
   var newTools = [
     MultiDecoderToolEntity(
         i18n(context, MDT_INTERNALNAMES_ROT5), MDT_INTERNALNAMES_ROT5),
@@ -435,69 +459,69 @@ _initializeMultiToolDecoder(BuildContext context) {
         ]),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
         MDT_INTERNALNAMES_COORDINATEFORMATS, options: [
-      MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT, keyCoordsUTM)
+      MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.UTM)
     ]),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
         MDT_INTERNALNAMES_COORDINATEFORMATS, options: [
-      MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT, keyCoordsMGRS)
+      MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.MGRS)
     ]),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
         MDT_INTERNALNAMES_COORDINATEFORMATS, options: [
-      MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT, keyCoordsXYZ)
+      MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.XYZ)
     ]),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
         MDT_INTERNALNAMES_COORDINATEFORMATS, options: [
       MultiDecoderToolOption(
-          MDT_COORDINATEFORMATS_OPTION_FORMAT, keyCoordsMaidenhead)
+          MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.MAIDENHEAD)
     ]),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
         MDT_INTERNALNAMES_COORDINATEFORMATS,
         options: [
           MultiDecoderToolOption(
-              MDT_COORDINATEFORMATS_OPTION_FORMAT, keyCoordsNaturalAreaCode)
+              MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.NATURAL_AREA_CODE)
         ]),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
         MDT_INTERNALNAMES_COORDINATEFORMATS, options: [
       MultiDecoderToolOption(
-          MDT_COORDINATEFORMATS_OPTION_FORMAT, keyCoordsGeohash)
+          MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.GEOHASH)
     ]),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
         MDT_INTERNALNAMES_COORDINATEFORMATS, options: [
       MultiDecoderToolOption(
-          MDT_COORDINATEFORMATS_OPTION_FORMAT, keyCoordsGeoHex)
+          MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.GEOHEX)
     ]),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
         MDT_INTERNALNAMES_COORDINATEFORMATS, options: [
       MultiDecoderToolOption(
-          MDT_COORDINATEFORMATS_OPTION_FORMAT, keyCoordsGeo3x3)
+          MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.GEO3X3)
     ]),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
         MDT_INTERNALNAMES_COORDINATEFORMATS, options: [
       MultiDecoderToolOption(
-          MDT_COORDINATEFORMATS_OPTION_FORMAT, keyCoordsMakaney)
+          MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.MAKANEY)
     ]),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
         MDT_INTERNALNAMES_COORDINATEFORMATS,
         options: [
           MultiDecoderToolOption(
-              MDT_COORDINATEFORMATS_OPTION_FORMAT, keyCoordsOpenLocationCode)
+              MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.OPEN_LOCATION_CODE)
         ]),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
         MDT_INTERNALNAMES_COORDINATEFORMATS, options: [
       MultiDecoderToolOption(
-          MDT_COORDINATEFORMATS_OPTION_FORMAT, keyCoordsQuadtree)
+          MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.QUADTREE)
     ]),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
         MDT_INTERNALNAMES_COORDINATEFORMATS,
         options: [
           MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT,
-              keyCoordsReverseWherigoWaldmeister)
+              CoordinateFormatKey.REVERSE_WIG_WALDMEISTER)
         ]),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
         MDT_INTERNALNAMES_COORDINATEFORMATS,
         options: [
           MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT,
-              keyCoordsReverseWherigoDay1976)
+              CoordinateFormatKey.REVERSE_WIG_DAY1976)
         ]),
     MultiDecoderToolEntity(
         i18n(context, MDT_INTERNALNAMES_VIGENERE), MDT_INTERNALNAMES_VIGENERE),
@@ -598,7 +622,7 @@ _initializeMultiToolDecoder(BuildContext context) {
             options: [MultiDecoderToolOption(MDT_ROTATION_OPTION_KEY, i)]));
   }
 
-  newTools.reversed.forEach((tool) {
+  for (var tool in newTools.reversed) {
     insertMultiDecoderTool(tool);
-  });
+  }
 }

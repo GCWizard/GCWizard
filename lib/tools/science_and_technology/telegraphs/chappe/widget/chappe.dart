@@ -18,18 +18,20 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/chappe/logic/c
 part 'package:gc_wizard/tools/science_and_technology/telegraphs/chappe/widget/chappe_segment_display.dart';
 
 class ChappeTelegraph extends StatefulWidget {
+  const ChappeTelegraph({Key? key}) : super(key: key);
+
   @override
   ChappeTelegraphState createState() => ChappeTelegraphState();
 }
 
 class ChappeTelegraphState extends State<ChappeTelegraph> {
   String _currentEncodeInput = '';
-  TextEditingController _encodeController;
+  late TextEditingController _encodeController;
 
-  TextEditingController _decodeInputController;
+  late TextEditingController _decodeInputController;
   String _currentDecodeInput = '';
 
-  List<List<String>> _currentDisplays = [];
+  Segments _currentDisplays = Segments.Empty();
   var _currentMode = GCWSwitchPosition.right;
   var _currentDecodeMode = GCWSwitchPosition.right; // text - visual
 
@@ -53,7 +55,7 @@ class ChappeTelegraphState extends State<ChappeTelegraph> {
   @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
-      GCWDropDown(
+      GCWDropDown<ChappeCodebook>(
         value: _currentLanguage,
         onChanged: (value) {
           setState(() {
@@ -63,8 +65,8 @@ class ChappeTelegraphState extends State<ChappeTelegraph> {
         items: CHAPPE_CODEBOOK.entries.map((mode) {
           return GCWDropDownMenuItem(
               value: mode.key,
-              child: i18n(context, mode.value['title']),
-              subtitle: mode.value['subtitle'] != null ? i18n(context, mode.value['subtitle']) : null);
+              child: i18n(context, mode.value.title),
+              subtitle: i18n(context, mode.value.subtitle));
         }).toList(),
       ),
       GCWTwoOptionsSwitch(
@@ -118,16 +120,10 @@ class ChappeTelegraphState extends State<ChappeTelegraph> {
     ]);
   }
 
-  _buildVisualDecryption() {
-    Map<String, bool> currentDisplay;
+  Widget _buildVisualDecryption() {
+    var currentDisplay = buildSegmentMap(_currentDisplays);
 
-    var displays = _currentDisplays;
-    if (displays != null && displays.length > 0)
-      currentDisplay = Map<String, bool>.fromIterable(displays.last ?? [], key: (e) => e, value: (e) => true);
-    else
-      currentDisplay = {};
-
-    var onChanged = (Map<String, bool> d) {
+    onChanged(Map<String, bool> d) {
       setState(() {
         var newSegments = <String>[];
         d.forEach((key, value) {
@@ -135,20 +131,16 @@ class ChappeTelegraphState extends State<ChappeTelegraph> {
           newSegments.add(key);
         });
 
-        newSegments.sort();
-
-        if (_currentDisplays.length == 0) _currentDisplays.add([]);
-
-        _currentDisplays[_currentDisplays.length - 1] = newSegments;
+        _currentDisplays.replaceLastSegment(newSegments);
       });
-    };
+    }
 
     return Column(
       children: <Widget>[
         Container(
           width: 300,
           //height: 200,
-          padding: EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
+          padding: const EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
           child: Row(
             children: <Widget>[
               Expanded(
@@ -165,7 +157,7 @@ class ChappeTelegraphState extends State<ChappeTelegraph> {
             icon: Icons.space_bar,
             onPressed: () {
               setState(() {
-                _currentDisplays.add([]);
+                _currentDisplays.addEmptySegment();
               });
             },
           ),
@@ -173,7 +165,7 @@ class ChappeTelegraphState extends State<ChappeTelegraph> {
             icon: Icons.backspace,
             onPressed: () {
               setState(() {
-                if (_currentDisplays.length > 0) _currentDisplays.removeLast();
+                _currentDisplays.removeLastSegment();
               });
             },
           ),
@@ -181,7 +173,7 @@ class ChappeTelegraphState extends State<ChappeTelegraph> {
             icon: Icons.clear,
             onPressed: () {
               setState(() {
-                _currentDisplays = [];
+                _currentDisplays = Segments.Empty();
               });
             },
           )
@@ -190,7 +182,7 @@ class ChappeTelegraphState extends State<ChappeTelegraph> {
     );
   }
 
-  Widget _buildDigitalOutput(List<List<String>> segments) {
+  Widget _buildDigitalOutput(Segments segments) {
     return SegmentDisplayOutput(
         segmentFunction: (displayedSegments, readOnly) {
           return _ChappeTelegraphSegmentDisplay(segments: displayedSegments, readOnly: readOnly);
@@ -202,7 +194,7 @@ class ChappeTelegraphState extends State<ChappeTelegraph> {
   Widget _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
       //encode
-      List<List<String>> segments = encodeChappe(_currentEncodeInput, _currentLanguage);
+      var segments = encodeChappe(_currentEncodeInput, _currentLanguage);
       return Column(
         children: <Widget>[
           _buildDigitalOutput(segments),
@@ -210,21 +202,19 @@ class ChappeTelegraphState extends State<ChappeTelegraph> {
       );
     } else {
       //decode
-      var segments;
+      SegmentsText segments;
       if (_currentDecodeMode == GCWSwitchPosition.left) {
         // decode text mode
         segments = decodeTextChappeTelegraph(_currentDecodeInput.toUpperCase(), _currentLanguage);
       } else {
         // decode visual mode
-        var output = _currentDisplays.map((character) {
-          if (character != null) return character.join();
-        }).toList();
+        var output = _currentDisplays.buildOutput();
         segments = decodeVisualChappe(output, _currentLanguage);
       }
       return Column(
         children: <Widget>[
-          GCWOutput(title: i18n(context, 'telegraph_text'), child: segments['chars']),
-          _buildDigitalOutput(segments['displays']),
+          GCWOutput(title: i18n(context, 'telegraph_text'), child: segments.text),
+          _buildDigitalOutput(segments),
         ],
       );
     }

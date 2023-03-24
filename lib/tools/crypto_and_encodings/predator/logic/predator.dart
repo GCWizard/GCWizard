@@ -1,7 +1,8 @@
+import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/constants.dart';
 
-final Map<String, List<String>> CODEBOOK_PREDATOR = {
+const Map<String, List<String>> _CODEBOOK_PREDATOR = {
   'a': ['b', 'f', 'h'],
   'b': ['b', 'd', 'f', 'h'],
   'c': ['b'],
@@ -66,45 +67,43 @@ final Map<String, List<String>> CODEBOOK_PREDATOR = {
   '9': ['b', 'e', 'f', 'g', 'h'],
 };
 
-List<List<String>> encodePredator(String input) {
-  if (input == null) return [];
+Segments encodePredator(String input) {
 
   List<String> inputs = input.split('');
   List<List<String>> result = [];
   for (int i = 0; i < inputs.length; i++) {
-    if (CODEBOOK_PREDATOR[inputs[i]] != null) result.add(CODEBOOK_PREDATOR[inputs[i]]);
+    if (_CODEBOOK_PREDATOR[inputs[i]] != null) result.add(_CODEBOOK_PREDATOR[inputs[i]]!);
   }
-  return result;
+  return Segments(displays: result);
 }
 
-Map<String, dynamic> decodePredator(List<String> inputs) {
-  if (inputs == null || inputs.length == 0) return {'displays': <List<String>>[], 'chars': []};
+SegmentsChars decodePredator(List<String>? inputs) {
+  if (inputs == null || inputs.isEmpty) return SegmentsChars(displays: [], chars: []);
 
   var displays = <List<String>>[];
   var segment = <String>[];
 
-  Map<List<String>, String> CODEBOOK = switchMapKeyValue(CODEBOOK_PREDATOR);
+  Map<List<String>, String> CODEBOOK = switchMapKeyValue(_CODEBOOK_PREDATOR);
 
-  inputs.forEach((element) {
+  for (var element in inputs) {
     segment = _stringToSegment(element);
     displays.add(segment);
-  });
+  }
 
-  List<String> text = inputs.where((input) => input != null).map((input) {
+  List<String> text = inputs.map((input) {
     var char = '';
-    var charH = '';
 
     if (CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] == null) {
       char = char + UNKNOWN_ELEMENT;
     } else {
-      charH = CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()];
-      char = char + charH;
+      var charH = CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()];
+      char = char + (charH ?? '');
     }
 
     return char;
   }).toList();
 
-  return {'displays': displays, 'chars': text};
+  return SegmentsChars(displays: displays, chars: text);
 }
 
 List<String> _stringToSegment(String input) {

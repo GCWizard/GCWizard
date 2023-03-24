@@ -3,5 +3,5 @@ import 'package:gc_wizard/tools/crypto_and_encodings/base/_common/logic/base.dar
 import 'package:gc_wizard/tools/crypto_and_encodings/base/_common/widget/base.dart';
 
 class Base32 extends AbstractBase {
-  Base32({Key key}) : super(key: key, encode: encodeBase32, decode: decodeBase32);
+  const Base32({Key? key}) : super(key: key, encode: encodeBase32, decode: decodeBase32);
 }

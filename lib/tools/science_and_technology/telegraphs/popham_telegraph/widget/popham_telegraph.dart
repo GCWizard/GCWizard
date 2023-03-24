@@ -17,18 +17,17 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/popham_telegra
 part 'package:gc_wizard/tools/science_and_technology/telegraphs/popham_telegraph/widget/popham_segment_display.dart';
 
 class PophamTelegraph extends StatefulWidget {
+  const PophamTelegraph({Key? key}) : super(key: key);
+
   @override
   PophamTelegraphState createState() => PophamTelegraphState();
 }
 
 class PophamTelegraphState extends State<PophamTelegraph> {
   String _currentEncodeInput = '';
-  TextEditingController _encodeController;
+  late TextEditingController _encodeController;
 
-  TextEditingController _decodeInputController;
-  String _currentDecodeInput = '';
-
-  List<List<String>> _currentDisplays = [];
+  Segments _currentDisplays = Segments.Empty();
   var _currentMode = GCWSwitchPosition.right;
 
   @override
@@ -76,16 +75,10 @@ class PophamTelegraphState extends State<PophamTelegraph> {
     ]);
   }
 
-  _buildVisualDecryption() {
-    Map<String, bool> currentDisplay;
+  Widget _buildVisualDecryption() {
+    var currentDisplay = buildSegmentMap(_currentDisplays);
 
-    var displays = _currentDisplays;
-    if (displays != null && displays.length > 0)
-      currentDisplay = Map<String, bool>.fromIterable(displays.last ?? [], key: (e) => e, value: (e) => true);
-    else
-      currentDisplay = {};
-
-    var onChanged = (Map<String, bool> d) {
+    onChanged(Map<String, bool> d) {
       setState(() {
         var newSegments = <String>[];
         d.forEach((key, value) {
@@ -93,20 +86,16 @@ class PophamTelegraphState extends State<PophamTelegraph> {
           newSegments.add(key);
         });
 
-        newSegments.sort();
-
-        if (_currentDisplays.length == 0) _currentDisplays.add([]);
-
-        _currentDisplays[_currentDisplays.length - 1] = newSegments;
+        _currentDisplays.replaceLastSegment(newSegments);
       });
-    };
+    }
 
     return Column(
       children: <Widget>[
         Container(
           width: 180,
           //height: 250,
-          padding: EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
+          padding: const EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
           child: Row(
             children: <Widget>[
               Expanded(
@@ -123,7 +112,7 @@ class PophamTelegraphState extends State<PophamTelegraph> {
             icon: Icons.space_bar,
             onPressed: () {
               setState(() {
-                _currentDisplays.add([]);
+                _currentDisplays.addEmptySegment();
               });
             },
           ),
@@ -131,7 +120,7 @@ class PophamTelegraphState extends State<PophamTelegraph> {
             icon: Icons.backspace,
             onPressed: () {
               setState(() {
-                if (_currentDisplays.length > 0) _currentDisplays.removeLast();
+                _currentDisplays.removeLastSegment();
               });
             },
           ),
@@ -139,7 +128,7 @@ class PophamTelegraphState extends State<PophamTelegraph> {
             icon: Icons.clear,
             onPressed: () {
               setState(() {
-                _currentDisplays = [];
+                _currentDisplays = Segments.Empty();
               });
             },
           )
@@ -148,7 +137,7 @@ class PophamTelegraphState extends State<PophamTelegraph> {
     );
   }
 
-  Widget _buildDigitalOutput(List<List<String>> segments) {
+  Widget _buildDigitalOutput(Segments segments) {
     return SegmentDisplayOutput(
         segmentFunction: (displayedSegments, readOnly) {
           return _PophamTelegraphSegmentDisplay(segments: displayedSegments, readOnly: readOnly);
@@ -160,7 +149,7 @@ class PophamTelegraphState extends State<PophamTelegraph> {
   Widget _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
       //encode
-      List<List<String>> segments = encodePopham(_currentEncodeInput);
+      var segments = encodePopham(_currentEncodeInput);
       return Column(
         children: <Widget>[
           _buildDigitalOutput(segments),
@@ -168,17 +157,15 @@ class PophamTelegraphState extends State<PophamTelegraph> {
       );
     } else {
       //decode
-      var segments;
+      SegmentsText segments;
       // decode visual mode
-      var output = _currentDisplays.map((character) {
-        if (character != null) return character.join();
-      }).toList();
+      var output = _currentDisplays.buildOutput();
       segments = decodeVisualPopham(output);
 
       return Column(
         children: <Widget>[
-          GCWOutput(title: i18n(context, 'telegraph_text'), child: segments['chars']),
-          _buildDigitalOutput(segments['displays']),
+          GCWOutput(title: i18n(context, 'telegraph_text'), child: segments.text),
+          _buildDigitalOutput(segments),
         ],
       );
     }

@@ -6,11 +6,11 @@ import 'package:gc_wizard/tools/wherigo/krevo/logic/ucommons.dart';
 
 enum HASH { ALPHABETICAL, NUMERIC }
 
-String findHashAlphabetical(int hashToFind, int len) {
+String? findHashAlphabetical(int hashToFind, int len) {
   return findHash(hashToFind, len);
 }
 
-String findHashNumeric(int hashToFind, int len) {
+String? findHashNumeric(int hashToFind, int len) {
   var max = pow(26, len);
   for (var i = 0; i < max; i++) {
     var s = urwigoConvBase(i, '0123456789', '01234567890').padLeft(len, '0');
@@ -23,11 +23,10 @@ String findHashNumeric(int hashToFind, int len) {
   return null;
 }
 
-String breakUrwigoHash(int input, HASH type) {
-  if (input == null) return '';
-  if (input < 0 || input >= 65535) return '';
+String? breakUrwigoHash(int input, HASH type) {
+  if (input < 0 || input >= 65535) return null;
 
-  var out;
+  String? out;
 
   for (int i = 1; i <= 5; i++) {
     type == HASH.ALPHABETICAL ? out = findHashAlphabetical(input, i) : out = findHashNumeric(input, i);
@@ -38,20 +37,21 @@ String breakUrwigoHash(int input, HASH type) {
 }
 
 String deobfuscateUrwigoText(String text, String dtable) {
-  if (text == null || text.isEmpty) return '';
+  if (text.isEmpty) return '';
 
-  if (dtable == null || dtable.isEmpty) return '';
+  if (dtable.isEmpty) return '';
 
-  if (dtable == 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@.-~')
+  if (dtable == 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@.-~') {
     return gsub_wig(text);
-  else
-    return readustring(text, dtable) ?? '';
+  } else {
+    return readustring(text, dtable);
+  }
 }
 
 String obfuscateUrwigoText(String text, String dtable) {
-  if (text == null || text.isEmpty) return '';
+  if (text.isEmpty) return '';
 
-  if (dtable == null || dtable.isEmpty) return '';
+  if (dtable.isEmpty) return '';
 
   var searchReplace = {
     8: "\\b", // x08   backspace
@@ -76,12 +76,15 @@ String obfuscateUrwigoText(String text, String dtable) {
     } else {
       codeUnit = 1 + char.codeUnitAt(0);
     }
-    if (searchReplace[codeUnit] == null) if (32 <= codeUnit && codeUnit < 127)
-      result = result + String.fromCharCode(codeUnit);
-    else
-      result = result + '\\' + codeUnit.toString().padLeft(3, '0');
-    else
-      result = result + searchReplace[codeUnit];
+    if (searchReplace[codeUnit] == null) {
+      if (32 <= codeUnit && codeUnit < 127) {
+        result = result + String.fromCharCode(codeUnit);
+      } else {
+        result = result + '\\' + codeUnit.toString().padLeft(3, '0');
+      }
+    } else {
+      result = result + searchReplace[codeUnit]!;
+    }
   });
 
   return result;

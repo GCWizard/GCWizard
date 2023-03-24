@@ -1,8 +1,6 @@
 part of 'package:gc_wizard/application/theme/theme_colors.dart';
 
 class _ThemeColorsLight extends ThemeColors {
-  ThemeData _base;
-
   static const _creme = Color(0xFFF5F3ED);
   static const _darkGray = Color(0xFF404040);
   static const _gray = Color(0xFF919191);
@@ -10,13 +8,11 @@ class _ThemeColorsLight extends ThemeColors {
 
   @override
   ThemeData base() {
-    if (_base == null) _base = ThemeData.light();
-
-    return _base;
+    return ThemeData.light();
   }
 
   @override
-  Color accent() {
+  Color secondary() {
     return Colors.orange;
   }
 
@@ -87,12 +83,12 @@ class _ThemeColorsLight extends ThemeColors {
 
   @override
   Color switchThumb2() {
-    return accent();
+    return secondary();
   }
 
   @override
   Color switchTrack2() {
-    return accent().withOpacity(0.5);
+    return secondary().withOpacity(0.5);
   }
 
   @override
@@ -110,25 +106,25 @@ class _ThemeColorsLight extends ThemeColors {
 
   @override
   Color checkBoxCheckColor() {
-    return accent();
+    return secondary();
   }
 
   @override
   Color checkBoxFocusColor() {
-    return accent().withOpacity(0.5);
+    return secondary().withOpacity(0.5);
   }
 
   @override
   Color checkBoxHoverColor() {
-    return accent();
+    return secondary();
   }
 
   @override
   Color checkBoxOverlayColor(Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled)) {
-      return accent().withOpacity(0.5);
+      return secondary().withOpacity(0.5);
     }
-    return accent().withOpacity(0.5);
+    return secondary().withOpacity(0.5);
   }
 
   @override
@@ -158,12 +154,12 @@ class _ThemeColorsLight extends ThemeColors {
 
   @override
   Color formulaNumber() {
-    return Color.fromRGBO(48, 145, 0, 1);
+    return const Color.fromRGBO(48, 145, 0, 1);
   }
 
   @override
   Color formulaVariable() {
-    return Color.fromRGBO(255, 135, 0, 1);
+    return const Color.fromRGBO(255, 135, 0, 1);
   }
 
   @override

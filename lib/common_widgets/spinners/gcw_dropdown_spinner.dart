@@ -6,14 +6,14 @@ import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/spinners/spinner_constants.dart';
 
 class GCWDropDownSpinner extends StatefulWidget {
-  final Function onChanged;
-  final index;
-  final List<dynamic> items;
+  final void Function(int) onChanged;
+  final int index;
+  final List<Object> items;
   final SpinnerLayout layout;
-  final String title;
+  final String? title;
 
   const GCWDropDownSpinner(
-      {Key key, this.onChanged, this.title, this.index, this.items, this.layout: SpinnerLayout.HORIZONTAL})
+      {Key? key, required this.onChanged, this.title, required this.index, required this.items, this.layout = SpinnerLayout.HORIZONTAL})
       : super(key: key);
 
   @override
@@ -21,15 +21,15 @@ class GCWDropDownSpinner extends StatefulWidget {
 }
 
 class GCWDropDownSpinnerState extends State<GCWDropDownSpinner> {
-  int _currentIndex;
+  late int _currentIndex;
 
-  _increaseValue() {
+  void _increaseValue() {
     setState(() {
       _setValueAndEmitOnChange((_currentIndex + 1) % widget.items.length);
     });
   }
 
-  _decreaseValue() {
+  void _decreaseValue() {
     setState(() {
       _setValueAndEmitOnChange((_currentIndex - 1) % widget.items.length);
     });
@@ -37,27 +37,27 @@ class GCWDropDownSpinnerState extends State<GCWDropDownSpinner> {
 
   @override
   Widget build(BuildContext context) {
-    _currentIndex = widget.index ?? 0;
+    _currentIndex = widget.index;
 
     if (widget.layout == SpinnerLayout.HORIZONTAL) {
       return Row(
         children: <Widget>[
           _buildTitle(),
           Expanded(
+              flex: 3,
               child: Row(
                 children: <Widget>[
                   Container(
+                    margin: const EdgeInsets.only(right: DEFAULT_MARGIN),
                     child: GCWIconButton(icon: Icons.remove, onPressed: _decreaseValue),
-                    margin: EdgeInsets.only(right: DEFAULT_MARGIN),
                   ),
                   Expanded(child: _buildDropDown()),
                   Container(
+                    margin: const EdgeInsets.only(left: DEFAULT_MARGIN),
                     child: GCWIconButton(icon: Icons.add, onPressed: _increaseValue),
-                    margin: EdgeInsets.only(left: DEFAULT_MARGIN),
                   )
                 ],
-              ),
-              flex: 3)
+              ))
         ],
       );
     } else {
@@ -80,20 +80,21 @@ class GCWDropDownSpinnerState extends State<GCWDropDownSpinner> {
   }
 
   Widget _buildTitle() {
-    return widget.title == null ? Container() : Expanded(child: GCWText(text: widget.title + ':'), flex: 1);
+    return widget.title == null ? Container() : Expanded(flex: 1, child: GCWText(text: widget.title! + ':'));
   }
 
-  _buildDropDown() {
+  Container _buildDropDown() {
     return Container(
-      child: GCWDropDown(
-        value: (widget.index ?? _currentIndex) % widget.items.length,
-        onChanged: (newValue) {
+      padding: const EdgeInsets.symmetric(horizontal: DEFAULT_MARGIN),
+      child: GCWDropDown<int>(
+        value: widget.index % widget.items.length,
+        onChanged: (int newValue) {
           setState(() {
             _setValueAndEmitOnChange(newValue);
           });
         },
-        items: (widget.items is List<GCWDropDownMenuItem>)
-            ? widget.items
+        items: (widget.items is List<GCWDropDownMenuItem<int>>)
+            ? widget.items as List<GCWDropDownMenuItem<int>>
             : widget.items
                 .asMap()
                 .map((index, item) {
@@ -102,11 +103,10 @@ class GCWDropDownSpinnerState extends State<GCWDropDownSpinner> {
                 .values
                 .toList(),
       ),
-      padding: EdgeInsets.symmetric(horizontal: DEFAULT_MARGIN),
     );
   }
 
-  _setValueAndEmitOnChange(int newIndex) {
+  void _setValueAndEmitOnChange(int newIndex) {
     _currentIndex = newIndex;
     widget.onChanged(_currentIndex);
   }

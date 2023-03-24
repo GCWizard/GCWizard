@@ -1,35 +1,35 @@
 part of 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
 
-class GCWCoordsMGRS extends StatefulWidget {
-  final Function onChanged;
-  final BaseCoordinates coordinates;
+class _GCWCoordsMGRS extends StatefulWidget {
+  final void Function(MGRS) onChanged;
+  final MGRS coordinates;
 
-  const GCWCoordsMGRS({Key key, this.onChanged, this.coordinates}) : super(key: key);
+  const _GCWCoordsMGRS({Key? key, required this.onChanged, required this.coordinates}) : super(key: key);
 
   @override
   _GCWCoordsMGRSState createState() => _GCWCoordsMGRSState();
 }
 
-class _GCWCoordsMGRSState extends State<GCWCoordsMGRS> {
-  TextEditingController _LonZoneController;
-  TextEditingController _EastingController;
-  TextEditingController _NorthingController;
+class _GCWCoordsMGRSState extends State<_GCWCoordsMGRS> {
+  late TextEditingController _LonZoneController;
+  late TextEditingController _EastingController;
+  late TextEditingController _NorthingController;
 
   var _currentLatZone = 'A';
   var _currentDigraphEasting = 'A';
   var _currentDigraphNorthing = 'A';
 
-  var _currentLonZone = {'text': '', 'value': 0};
-  var _currentEasting = {'text': '', 'value': 0.0};
-  var _currentNorthing = {'text': '', 'value': 0.0};
+  var _currentLonZone = defaultIntegerText;
+  var _currentEasting = defaultDoubleText;
+  var _currentNorthing = defaultDoubleText;
 
   @override
   void initState() {
     super.initState();
-    _LonZoneController = TextEditingController(text: _currentLonZone['text']);
+    _LonZoneController = TextEditingController(text: _currentLonZone.text);
 
-    _EastingController = TextEditingController(text: _currentEasting['text']);
-    _NorthingController = TextEditingController(text: _currentNorthing['text']);
+    _EastingController = TextEditingController(text: _currentEasting.text);
+    _NorthingController = TextEditingController(text: _currentNorthing.text);
   }
 
   @override
@@ -42,45 +42,42 @@ class _GCWCoordsMGRSState extends State<GCWCoordsMGRS> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.coordinates != null) {
-      var mgrs = widget.coordinates is MGRS
-          ? widget.coordinates as MGRS
-          : MGRS.fromLatLon(widget.coordinates.toLatLng(), defaultEllipsoid());
-      _currentEasting['value'] = mgrs.easting;
-      _currentNorthing['value'] = mgrs.northing;
+    var mgrs = widget.coordinates;
+    _currentEasting.value = mgrs.easting;
+    _currentNorthing.value = mgrs.northing;
 
-      _currentLonZone['value'] = mgrs.utmZone.lonZone;
-      _currentLatZone = mgrs.utmZone.latZone;
-      _currentDigraphEasting = mgrs.digraph[0];
-      _currentDigraphNorthing = mgrs.digraph[1];
+    _currentLonZone.value = mgrs.utmZone.lonZone;
+    _currentLatZone = mgrs.utmZone.latZone;
+    _currentDigraphEasting = mgrs.digraph[0];
+    _currentDigraphNorthing = mgrs.digraph[1];
 
-      _LonZoneController.text = _currentLonZone['value'].toString();
-      _EastingController.text = _currentEasting['value'].toString();
-      _NorthingController.text = _currentNorthing['value'].toString();
-    }
+    _LonZoneController.text = _currentLonZone.value.toString();
+    _EastingController.text = _currentEasting.value.toString();
+    _NorthingController.text = _currentNorthing.value.toString();
 
     return Column(children: <Widget>[
       Row(
         children: <Widget>[
           Expanded(
               child: Container(
+            padding: const EdgeInsets.only(right: DEFAULT_MARGIN),
             child: GCWIntegerTextField(
                 hintText: i18n(context, 'coords_formatconverter_mgrs_lonzone'),
                 textInputFormatter: _UTMLonZoneTextInputFormatter(),
                 controller: _LonZoneController,
-                onChanged: (ret) {
+                onChanged: (IntegerText ret) {
                   setState(() {
                     _currentLonZone = ret;
                     //   _setCurrentValueAndEmitOnChange();
                   });
                 }),
-            padding: EdgeInsets.only(right: DEFAULT_MARGIN),
           )),
           Expanded(
               child: Container(
-                  child: GCWDropDown(
+                  padding: const EdgeInsets.only(left: DEFAULT_MARGIN),
+                  child: GCWDropDown<String>(
                     value: _currentLatZone,
-                    onChanged: (newValue) {
+                    onChanged: (String newValue) {
                       setState(() {
                         _currentLatZone = newValue;
                         // _setCurrentValueAndEmitOnChange();
@@ -92,17 +89,17 @@ class _GCWCoordsMGRSState extends State<GCWCoordsMGRS> {
                         child: char,
                       );
                     }).toList(),
-                  ),
-                  padding: EdgeInsets.only(left: DEFAULT_MARGIN))),
+                  ))),
         ],
       ),
       Row(
         children: <Widget>[
           Expanded(
               child: Container(
-            child: GCWDropDown(
+            padding: const EdgeInsets.only(right: DEFAULT_MARGIN),
+            child: GCWDropDown<String>(
               value: _currentDigraphEasting,
-              onChanged: (newValue) {
+              onChanged: (String newValue) {
                 setState(() {
                   _currentDigraphEasting = newValue;
                   // _setCurrentValueAndEmitOnChange();
@@ -115,13 +112,13 @@ class _GCWCoordsMGRSState extends State<GCWCoordsMGRS> {
                 );
               }).toList(),
             ),
-            padding: EdgeInsets.only(right: DEFAULT_MARGIN),
           )),
           Expanded(
               child: Container(
-            child: GCWDropDown(
+            padding: const EdgeInsets.only(left: DEFAULT_MARGIN),
+            child: GCWDropDown<String>(
               value: _currentDigraphNorthing,
-              onChanged: (newValue) {
+              onChanged: (String newValue) {
                 setState(() {
                   _currentDigraphNorthing = newValue;
                   //_setCurrentValueAndEmitOnChange();
@@ -134,7 +131,6 @@ class _GCWCoordsMGRSState extends State<GCWCoordsMGRS> {
                 );
               }).toList(),
             ),
-            padding: EdgeInsets.only(left: DEFAULT_MARGIN),
           ))
         ],
       ),
@@ -161,14 +157,14 @@ class _GCWCoordsMGRSState extends State<GCWCoordsMGRS> {
     ]);
   }
 
-  _setCurrentValueAndEmitOnChange() {
-    double easting = _currentEasting['value'];
+  void _setCurrentValueAndEmitOnChange() {
+    double easting = _currentEasting.value;
     easting = fillUpNumber(easting, _EastingController.text, 5);
 
-    double northing = _currentNorthing['value'];
+    double northing = _currentNorthing.value;
     northing = fillUpNumber(northing, _NorthingController.text, 5);
 
-    var _lonZone = _currentLonZone['value'];
+    var _lonZone = _currentLonZone.value;
     var zone = UTMZone(_lonZone, _lonZone, _currentLatZone);
     var mgrs = MGRS(zone, _currentDigraphEasting + _currentDigraphNorthing, easting, northing);
 

@@ -6,34 +6,43 @@ import 'package:gc_wizard/tools/coords/segment_line/logic/segment_line.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:gc_wizard/utils/constants.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 
 class CenterPointJobData {
   final LatLng coord1;
   final LatLng coord2;
   final LatLng coord3;
-  final Ellipsoid ells;
+  final Ellipsoid ellipsoid;
 
-  CenterPointJobData({this.coord1, this.coord2, this.coord3, this.ells});
+  CenterPointJobData({required this.coord1, required this.coord2, required this.coord3, required this.ellipsoid});
 }
 
-Map<String, dynamic> centerPointTwoPoints(LatLng coord1, LatLng coord2, Ellipsoid ells) {
+class CenterPointDistance {
+  final LatLng centerPoint;
+  final double distance;
+
+  CenterPointDistance(this.centerPoint, this.distance);
+}
+
+CenterPointDistance centerPointTwoPoints(LatLng coord1, LatLng coord2, Ellipsoid ells) {
   var segments = segmentLine(coord1, coord2, 2, ells);
 
-  return {'centerPoint': segments['points'].first, 'distance': segments['segmentDistance']};
+  return CenterPointDistance(segments.points.first, segments.segmentLength);
 }
 
-Future<List<Map<String, dynamic>>> centerPointThreePointsAsync(dynamic jobData) async {
-  if (jobData == null) return null;
+// TODO Mike Please check Map and dynamic for Async calculation
+Future<List<CenterPointDistance>?> centerPointThreePointsAsync(GCWAsyncExecuterParameters? jobData) async {
+  if (jobData is! CenterPointJobData) return null;
 
-  var output = centerPointThreePoints(
-      jobData.parameters.coord1, jobData.parameters.coord2, jobData.parameters.coord3, jobData.parameters.ells);
+  var data = jobData!.parameters as CenterPointJobData;
+  var output = centerPointThreePoints(data.coord1, data.coord2, data.coord3, data.ellipsoid);
 
-  if (jobData.sendAsyncPort != null) jobData.sendAsyncPort.send(output);
+  jobData.sendAsyncPort?.send(output);
 
   return output;
 }
 
-List<Map<String, dynamic>> centerPointThreePoints(LatLng coord1, LatLng coord2, LatLng coord3, Ellipsoid ells) {
+List<CenterPointDistance> centerPointThreePoints(LatLng coord1, LatLng coord2, LatLng coord3, Ellipsoid ells) {
   if (coord1 == coord2) {
     return [centerPointTwoPoints(coord1, coord3, ells)];
   }
@@ -65,7 +74,7 @@ List<Map<String, dynamic>> centerPointThreePoints(LatLng coord1, LatLng coord2, 
   // }
 
   _result.sort((a, b) {
-    return a['distance'].compareTo(b['distance']);
+    return a.distance.compareTo(b.distance);
   });
 
   return _result;
@@ -76,7 +85,7 @@ List<Map<String, dynamic>> centerPointThreePoints(LatLng coord1, LatLng coord2, 
 // Because of its random factor it is not necessarily given that an intersection point is found
 // although there is always such a point between to geodetics (e.g. at the back side of the sphere)
 
-Map<String, dynamic> _calculateCenterPointThreePoints(LatLng coord1, LatLng coord2, LatLng coord3, Ellipsoid ells) {
+CenterPointDistance _calculateCenterPointThreePoints(LatLng coord1, LatLng coord2, LatLng coord3, Ellipsoid ells) {
   double lat = (coord1.latitude + coord2.latitude + coord3.latitude) / 3.0;
   double lon = (coord1.longitude + coord2.longitude + coord3.longitude) / 3.0;
   var calculatedPoint = LatLng(lat, lon);
@@ -117,10 +126,12 @@ Map<String, dynamic> _calculateCenterPointThreePoints(LatLng coord1, LatLng coor
       dist *= 1.5; //adjusted these values empirical
       d = newD;
       distSum = newDistSum;
-    } else if (newD > d || newDistSum > distSum + 1000000) dist /= 1.2;
+    } else if (newD > d || newDistSum > distSum + 1000000) {
+      dist /= 1.2;
+    }
   }
 
-  return {'centerPoint': calculatedPoint, 'distance': dist1};
+  return CenterPointDistance(calculatedPoint, dist1);
 }
 
 double _checkDist(double dist1, double dist2, double dist3) {

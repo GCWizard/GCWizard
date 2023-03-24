@@ -45,13 +45,14 @@ class PuzzleSymbolTableEncryption extends SymbolTableEncryption {
         var imageIndex = i * countColumns + j;
 
         if (imageIndex < imageIndexes.length) {
-          if (imageIndexes[imageIndex] != null) {
-            var image = data.images[imageIndexes[imageIndex]].values.first.specialEncryptionImage;
+          var image = data.images[imageIndexes[imageIndex]].values.first.specialEncryptionImage;
 
+          if (image != null) {
             paintImage(
                 canvas: canvas,
                 fit: BoxFit.contain,
-                rect: Rect.fromLTWH(j * symbolSize + TILE_OFFSET, i * symbolSize + TILE_OFFSET, symbolSize, symbolSize),
+                rect: Rect.fromLTWH(
+                    j * symbolSize + TILE_OFFSET, i * symbolSize + TILE_OFFSET, symbolSize, symbolSize),
                 image: image);
           }
         }

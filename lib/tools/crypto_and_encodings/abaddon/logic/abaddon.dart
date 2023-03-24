@@ -2,11 +2,11 @@ import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitu
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
-final YEN = String.fromCharCode(165);
-final MY = String.fromCharCode(181);
-final THORN = String.fromCharCode(254);
+const YEN = '\u00A5'; //¥
+const MY = '\u00B5'; //µ
+const THORN = '\u00FE'; //þ
 
-final AZToAbaddon = {
+const _AZToAbaddon = {
   'A': '$YEN$YEN$MY',
   'B': '$YEN$THORN$YEN',
   'C': '$THORN$MY$MY',
@@ -36,14 +36,14 @@ final AZToAbaddon = {
   ' ': '$YEN$MY$MY'
 };
 
-encryptAbaddon(String input, Map<String, String> replaceCharacters) {
-  if (input == null || input.length == 0) return '';
+String encryptAbaddon(String input, Map<String, String>? replaceCharacters) {
+  if (input.isEmpty) return '';
 
   var abaddon = normalizeUmlauts(input)
       .toUpperCase()
       .split('')
-      .where((character) => AZToAbaddon[character] != null)
-      .map((character) => substitution(character, AZToAbaddon))
+      .where((character) => _AZToAbaddon[character] != null)
+      .map((character) => substitution(character, _AZToAbaddon))
       .join();
 
   if (replaceCharacters != null) abaddon = substitution(abaddon, replaceCharacters);
@@ -51,12 +51,12 @@ encryptAbaddon(String input, Map<String, String> replaceCharacters) {
   return abaddon;
 }
 
-decryptAbaddon(String input, Map<String, String> replaceCharacters) {
-  if (input == null || input.length == 0) return '';
+String decryptAbaddon(String input, Map<String, String>? replaceCharacters) {
+  if (input.isEmpty) return '';
 
   if (replaceCharacters != null) input = substitution(input, switchMapKeyValue(replaceCharacters));
 
-  final abaddonToAZ = switchMapKeyValue(AZToAbaddon);
+  final abaddonToAZ = switchMapKeyValue(_AZToAbaddon);
   input = input.replaceAll(RegExp(r'[^' + YEN + MY + THORN + ']'), '');
 
   return RegExp(r'[' + YEN + MY + THORN + ']{3,3}')

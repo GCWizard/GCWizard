@@ -2,17 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_stateful_dropdown.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_metadata.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coord_format_getter.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/multi_decoder/widget/multi_decoder.dart';
+import 'package:gc_wizard/utils/data_type_utils/object_type_utils.dart';
 import 'package:latlong2/latlong.dart';
 
 const MDT_INTERNALNAMES_COORDINATEFORMATS = 'multidecoder_tool_coordinateformats_title';
 const MDT_COORDINATEFORMATS_OPTION_FORMAT = 'multidecoder_tool_coordinateformats_option_format';
 
 class MultiDecoderToolCoordinateFormats extends AbstractMultiDecoderTool {
-  MultiDecoderToolCoordinateFormats({Key key, int id, String name, Map<String, dynamic> options, BuildContext context})
+  MultiDecoderToolCoordinateFormats({
+    Key? key,
+    required int id,
+    required String name,
+    required Map<String, Object?> options,
+    required BuildContext context})
       : super(
             key: key,
             id: id,
@@ -20,98 +28,109 @@ class MultiDecoderToolCoordinateFormats extends AbstractMultiDecoderTool {
             internalToolName: MDT_INTERNALNAMES_COORDINATEFORMATS,
             onDecode: (String input, String key) {
               input = input.replaceAll(RegExp(r'\s+'), ' ').toUpperCase();
-              LatLng coords;
+              LatLng? coords;
               try {
-                switch (options[MDT_COORDINATEFORMATS_OPTION_FORMAT]) {
-                  case keyCoordsDEC:
+                switch (getCoordinateFormatKey(options, MDT_COORDINATEFORMATS_OPTION_FORMAT)) {
+                  case CoordinateFormatKey.DEC:
                     coords = DEC.parse(input, wholeString: true)?.toLatLng();
                     break;
-                  case keyCoordsDMM:
+                  case CoordinateFormatKey.DMM:
                     coords = DMM.parse(input, wholeString: true)?.toLatLng();
                     break;
-                  case keyCoordsDMS:
+                  case CoordinateFormatKey.DMS:
                     coords = DMS.parse(input, wholeString: true)?.toLatLng();
                     break;
-                  case keyCoordsUTM:
-                    coords = UTMREF.parse(input)?.toLatLng(ells: defaultEllipsoid());
+                  case CoordinateFormatKey.UTM:
+                    coords = UTMREF.parse(input)?.toLatLng(ells: defaultEllipsoid);
                     break;
-                  case keyCoordsMGRS:
-                    coords = MGRS.parse(input)?.toLatLng(ells: defaultEllipsoid());
+                  case CoordinateFormatKey.MGRS:
+                    coords = MGRS.parse(input)?.toLatLng(ells: defaultEllipsoid);
                     break;
-                  case keyCoordsXYZ:
-                    coords = XYZ.parse(input)?.toLatLng(ells: defaultEllipsoid());
+                  case CoordinateFormatKey.XYZ:
+                    coords = XYZ.parse(input)?.toLatLng(ells: defaultEllipsoid);
                     break;
-                  case keyCoordsSwissGrid:
-                    coords = SwissGrid.parse(input)?.toLatLng(ells: defaultEllipsoid());
+                  case CoordinateFormatKey.SWISS_GRID:
+                    coords = SwissGrid.parse(input)?.toLatLng(ells: defaultEllipsoid);
                     break;
-                  case keyCoordsSwissGridPlus:
-                    coords = SwissGridPlus.parse(input)?.toLatLng(ells: defaultEllipsoid());
+                  case CoordinateFormatKey.SWISS_GRID_PLUS:
+                    coords = SwissGridPlus.parse(input)?.toLatLng(ells: defaultEllipsoid);
                     break;
-                  case keyCoordsGaussKrueger:
-                    coords = GaussKrueger.parse(input)?.toLatLng(ells: defaultEllipsoid());
+                  case CoordinateFormatKey.GAUSS_KRUEGER:
+                    coords = GaussKrueger.parse(input)?.toLatLng(ells: defaultEllipsoid);
                     break;
-                  case keyCoordsLambert:
-                    coords = Lambert.parse(input)?.toLatLng(ells: defaultEllipsoid());
+                  case CoordinateFormatKey.LAMBERT:
+                    coords = Lambert.parse(input)?.toLatLng(ells: defaultEllipsoid);
                     break;
-                  case keyCoordsDutchGrid:
+                  case CoordinateFormatKey.DUTCH_GRID:
                     coords = DutchGrid.parse(input)?.toLatLng();
                     break;
-                  case keyCoordsMaidenhead:
+                  case CoordinateFormatKey.MAIDENHEAD:
                     coords = Maidenhead.parse(input)?.toLatLng();
                     break;
-                  case keyCoordsMercator:
-                    coords = Mercator.parse(input)?.toLatLng(ells: defaultEllipsoid());
+                  case CoordinateFormatKey.MERCATOR:
+                    coords = Mercator.parse(input)?.toLatLng(ells: defaultEllipsoid);
                     break;
-                  case keyCoordsNaturalAreaCode:
+                  case CoordinateFormatKey.NATURAL_AREA_CODE:
                     coords = NaturalAreaCode.parse(input)?.toLatLng();
                     break;
-                  case keyCoordsGeohash:
+                  case CoordinateFormatKey.GEOHASH:
                     coords = Geohash.parse(input)?.toLatLng();
                     break;
-                  case keyCoordsGeoHex:
+                  case CoordinateFormatKey.GEOHEX:
                     coords = GeoHex.parse(input)?.toLatLng();
                     break;
-                  case keyCoordsGeo3x3:
+                  case CoordinateFormatKey.GEO3X3:
                     coords = Geo3x3.parse(input)?.toLatLng();
                     break;
-                  case keyCoordsOpenLocationCode:
+                  case CoordinateFormatKey.OPEN_LOCATION_CODE:
                     coords = OpenLocationCode.parse(input)?.toLatLng();
                     break;
-                  case keyCoordsQuadtree:
+                  case CoordinateFormatKey.QUADTREE:
                     coords = Quadtree.parse(input)?.toLatLng();
                     break;
-                  case keyCoordsReverseWherigoWaldmeister:
+                  case CoordinateFormatKey.REVERSE_WIG_WALDMEISTER:
                     coords = ReverseWherigoWaldmeister.parse(input)?.toLatLng();
                     break;
-                  case keyCoordsReverseWherigoDay1976:
+                  case CoordinateFormatKey.REVERSE_WIG_DAY1976:
                     coords = ReverseWherigoDay1976.parse(input)?.toLatLng();
                     break;
-                  case keyCoordsSlippyMap:
+                  case CoordinateFormatKey.SLIPPY_MAP:
                     coords = SlippyMap.parse(input)?.toLatLng();
                     break;
-                  case keyCoordsMakaney:
+                  case CoordinateFormatKey.MAKANEY:
                     coords = Makaney.parse(input)?.toLatLng();
                     break;
+                  default:
+                    coords = null;
                 }
               } catch (e) {}
 
               if (coords == null) return null;
 
-              return formatCoordOutput(coords, defaultCoordFormat(), defaultEllipsoid());
+              return formatCoordOutput(coords, defaultCoordinateFormat, defaultEllipsoid);
             },
             options: options,
             configurationWidget: MultiDecoderToolConfiguration(widgets: {
-              MDT_COORDINATEFORMATS_OPTION_FORMAT: GCWStatefulDropDown(
-                value: options[MDT_COORDINATEFORMATS_OPTION_FORMAT],
+              MDT_COORDINATEFORMATS_OPTION_FORMAT: GCWStatefulDropDown<CoordinateFormatKey>(
+                value: getCoordinateFormatKey(options, MDT_COORDINATEFORMATS_OPTION_FORMAT),
                 onChanged: (newValue) {
                   options[MDT_COORDINATEFORMATS_OPTION_FORMAT] = newValue;
                 },
-                items: allCoordFormats.where((format) => format.key != keyCoordsSlippyMap).map((format) {
-                  return GCWDropDownMenuItem(
-                    value: format.key,
-                    child: i18n(context, format.name) ?? format.name,
+                items: allCoordinateFormatMetadata.where((format) => format.type != CoordinateFormatKey.SLIPPY_MAP).map((format) {
+                  return GCWDropDownMenuItem<CoordinateFormatKey>(
+                    value: format.type,
+                    child: i18n(context, format.name, ifTranslationNotExists: format.name),
                   );
                 }).toList(),
               ),
             }));
+}
+
+CoordinateFormatKey getCoordinateFormatKey(Map<String, Object?> options, String option) {
+  var key = checkStringFormatOrDefaultOption(MDT_INTERNALNAMES_COORDINATEFORMATS, options, MDT_COORDINATEFORMATS_OPTION_FORMAT);
+  var formatKey = coordinateFormatMetadataByPersistenceKey(key)?.type;
+  if (formatKey != null) return formatKey;
+
+  key = toStringOrNull(getDefaultValue(MDT_INTERNALNAMES_COORDINATEFORMATS, MDT_COORDINATEFORMATS_OPTION_FORMAT)) ?? '';
+  return coordinateFormatMetadataByPersistenceKey(key)?.type ?? defaultCoordinateFormat.type;
 }

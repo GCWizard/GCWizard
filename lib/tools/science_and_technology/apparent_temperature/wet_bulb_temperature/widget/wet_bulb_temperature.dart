@@ -14,6 +14,8 @@ import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit_category.dart';
 
 class WetBulbTemperature extends StatefulWidget {
+  const WetBulbTemperature({Key? key}) : super(key: key);
+
   @override
   WetBulbTemperatureState createState() => WetBulbTemperatureState();
 }
@@ -55,7 +57,7 @@ class WetBulbTemperatureState extends State<WetBulbTemperature> {
           },
         ),
         GCWTextDivider(text: i18n(context, 'common_outputunit')),
-        GCWUnitDropDown(
+        GCWUnitDropDown<Unit>(
           value: _currentOutputUnit,
           onlyShowSymbols: false,
           unitList: temperatures,
@@ -92,9 +94,12 @@ class WetBulbTemperatureState extends State<WetBulbTemperature> {
           children: [
             Container(
                 width: 50,
+                padding: const EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN),
                 child: GCWIconButton(
-                    icon: Icons.wb_sunny, iconColor: _colorWBT(WBT_C), backgroundColor: Color(0xFF4d4d4d)),
-                padding: EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN)),
+                    icon: Icons.wb_sunny, iconColor: _colorWBT(WBT_C), backgroundColor: const Color(0xFF4d4d4d),
+                    onPressed: () {  },
+                ),
+            ),
             Expanded(
               child: GCWOutput(
                 child: i18n(context, hintWBT),
@@ -107,50 +112,66 @@ class WetBulbTemperatureState extends State<WetBulbTemperature> {
   }
 
   String _calculateHintWBT(double WBT) {
-    if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.PURPLE]) if (WBT >
-        WBT_HEAT_STRESS[
-            WBT_HEATSTRESS_CONDITION.BLUE]) if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.LIGHT_BLUE]) if (WBT >
-        WBT_HEAT_STRESS[
-            WBT_HEATSTRESS_CONDITION.GREEN]) if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.ORANGE]) if (WBT >
-        WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.RED]) if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.RED])
-      return 'wet_bulb_temperature_index_wbt_dark_red';
-    else
-      return 'wet_bulb_temperature_index_wbt_red';
-    else
-      return 'wet_bulb_temperature_index_wbt_orange';
-    else
-      return 'wet_bulb_temperature_index_wbt_green';
-    else
-      return 'wet_bulb_temperature_index_wbt_light_blue';
-    else
-      return 'wet_bulb_temperature_index_wbt_blue';
-    else
-      return 'wet_bulb_temperature_index_wbt_purple';
-    else
+    if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.PURPLE]!) {
+      if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.BLUE]!) {
+        if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.LIGHT_BLUE]!) {
+          if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.GREEN]!) {
+            if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.ORANGE]!) {
+              if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.RED]!) {
+                if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.RED]!) {
+                  return 'wet_bulb_temperature_index_wbt_dark_red';
+                } else {
+                  return 'wet_bulb_temperature_index_wbt_red';
+                }
+              } else {
+                return 'wet_bulb_temperature_index_wbt_orange';
+              }
+            } else {
+              return 'wet_bulb_temperature_index_wbt_green';
+            }
+          } else {
+            return 'wet_bulb_temperature_index_wbt_light_blue';
+          }
+        } else {
+          return 'wet_bulb_temperature_index_wbt_blue';
+        }
+      } else {
+        return 'wet_bulb_temperature_index_wbt_purple';
+      }
+    } else {
       return 'wet_bulb_temperature_index_wbt_black';
+    }
   }
 
   Color _colorWBT(double WBT) {
-    if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.PURPLE]) if (WBT >
-        WBT_HEAT_STRESS[
-            WBT_HEATSTRESS_CONDITION.BLUE]) if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.LIGHT_BLUE]) if (WBT >
-        WBT_HEAT_STRESS[
-            WBT_HEATSTRESS_CONDITION.GREEN]) if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.ORANGE]) if (WBT >
-        WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.RED]) if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.DARK_RED])
-      return Colors.red[900];
-    else
-      return Colors.red;
-    else
-      return Colors.orange;
-    else
-      return Colors.green;
-    else
-      return Colors.lightBlue[200];
-    else
-      return Colors.blue;
-    else
-      return Colors.purple;
-    else
+    if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.PURPLE]!) {
+      if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.BLUE]!) {
+        if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.LIGHT_BLUE]!) {
+          if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.GREEN]!) {
+            if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.ORANGE]!) {
+              if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.RED]!) {
+                if (WBT > WBT_HEAT_STRESS[WBT_HEATSTRESS_CONDITION.DARK_RED]!) {
+                  return Colors.red[900]!;
+                } else {
+                  return Colors.red;
+                }
+              } else {
+                return Colors.orange;
+              }
+            } else {
+              return Colors.green;
+            }
+          } else {
+            return Colors.lightBlue[200]!;
+          }
+        } else {
+          return Colors.blue;
+        }
+      } else {
+        return Colors.purple;
+      }
+    } else {
       return Colors.white;
+    }
   }
 }

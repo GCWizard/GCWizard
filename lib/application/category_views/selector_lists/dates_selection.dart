@@ -12,19 +12,21 @@ import 'package:gc_wizard/tools/science_and_technology/date_and_time/weekday/wid
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class DatesSelection extends GCWSelection {
+  const DatesSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(DayCalculator()),
-        className(TimeCalculator()),
-        className(Weekday()),
-        className(DayOfTheYear()),
-        className(Calendar()),
-        className(MayaCalendarSelection()),
+        className(const DayCalculator()),
+        className(const TimeCalculator()),
+        className(const Weekday()),
+        className(const DayOfTheYear()),
+        className(const Calendar()),
+        className(const MayaCalendarSelection()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

@@ -1,43 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/app_localizations.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
 import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_angle.dart';
 import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_outputformat.dart';
-import 'package:gc_wizard/common_widgets/gcw_async_executer.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/coords/intersection/logic/intersection.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/distance_bearing.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
+import 'package:gc_wizard/utils/constants.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coord_format_getter.dart';
+
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 
 class Intersection extends StatefulWidget {
+  const Intersection({Key? key}) : super(key: key);
+
   @override
   IntersectionState createState() => IntersectionState();
 }
 
 class IntersectionState extends State<Intersection> {
-  var _currentIntersections = [];
+  var _currentIntersections = <LatLng?>[];
 
-  var _currentCoordsFormat1 = defaultCoordFormat();
-  var _currentCoords1 = defaultCoordinate;
-  var _currentAngle1 = {'text': '', 'value': 0.0};
+  var _currentCoords1 = defaultBaseCoordinate;
+  var _currentAngle1 = defaultDoubleText;
 
-  var _currentCoordsFormat2 = defaultCoordFormat();
-  var _currentCoords2 = defaultCoordinate;
-  var _currentAngle2 = {'text': '', 'value': 0.0};
+  var _currentCoords2 = defaultBaseCoordinate;
+  var _currentAngle2 = defaultDoubleText;
 
-  var _currentOutputFormat = defaultCoordFormat();
+  var _currentOutputFormat = defaultCoordinateFormat;
   List<String> _currentOutput = [];
   var _currentMapPoints = <GCWMapPoint>[];
   List<GCWMapPolyline> _currentMapPolylines = [];
-  dynamic _ells;
+  final Ellipsoid _ellipsoid = defaultEllipsoid;
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +48,10 @@ class IntersectionState extends State<Intersection> {
       children: <Widget>[
         GCWCoords(
           title: i18n(context, 'coords_intersection_coorda'),
-          coordsFormat: _currentCoordsFormat1,
+          coordsFormat: _currentCoords1.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoordsFormat1 = ret['coordsFormat'];
-              _currentCoords1 = ret['value'];
+              _currentCoords1 = ret;
             });
           },
         ),
@@ -63,11 +65,10 @@ class IntersectionState extends State<Intersection> {
         ),
         GCWCoords(
           title: i18n(context, 'coords_intersection_coordb'),
-          coordsFormat: _currentCoordsFormat2,
+          coordsFormat: _currentCoords2.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoordsFormat2 = ret['coordsFormat'];
-              _currentCoords2 = ret['value'];
+              _currentCoords2 = ret;
             });
           },
         ),
@@ -95,20 +96,20 @@ class IntersectionState extends State<Intersection> {
 
   Widget _buildSubmitButton() {
     return GCWSubmitButton(onPressed: () async {
-      await showDialog(
+      await showDialog<bool>(
         context: context,
         barrierDismissible: false,
         builder: (context) {
           return Center(
-            child: Container(
-              child: GCWAsyncExecuter(
+            child: SizedBox(
+              height: 220,
+              width: 150,
+              child: GCWAsyncExecuter<List<LatLng?>>(
                 isolatedFunction: intersectionAsync,
-                parameter: _buildJobData(),
+                parameter: _buildJobData,
                 onReady: (data) => _showOutput(data),
                 isOverlay: true,
               ),
-              height: 220,
-              width: 150,
             ),
           );
         },
@@ -117,64 +118,52 @@ class IntersectionState extends State<Intersection> {
   }
 
   Future<GCWAsyncExecuterParameters> _buildJobData() async {
-    _ells = defaultEllipsoid();
     return GCWAsyncExecuterParameters(IntersectionJobData(
-        coord1: _currentCoords1,
-        alpha: _currentAngle1['value'],
-        coord2: _currentCoords2,
-        beta: _currentAngle2['value'],
-        ells: defaultEllipsoid()));
+        coord1: _currentCoords1.toLatLng()!,
+        alpha: _currentAngle1.value,
+        coord2: _currentCoords2.toLatLng()!,
+        beta: _currentAngle2.value,
+        ells: _ellipsoid));
   }
 
-  _showOutput(List<LatLng> output) {
-    if (output == null) {
-      _currentOutput = [];
-
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {});
-      });
-      return;
-    }
-
+  void _showOutput(List<LatLng?> output) {
     _currentIntersections = output;
-
-    var ells = _ells;
 
     _currentMapPoints = [
       GCWMapPoint(
-          point: _currentCoords1,
+          point: _currentCoords1.toLatLng()!,
           markerText: i18n(context, 'coords_intersection_coorda'),
-          coordinateFormat: _currentCoordsFormat1),
+          coordinateFormat: _currentCoords1.format),
       GCWMapPoint(
-          point: _currentCoords2,
+          point: _currentCoords2.toLatLng()!,
           markerText: i18n(context, 'coords_intersection_coordb'),
-          coordinateFormat: _currentCoordsFormat2)
+          coordinateFormat: _currentCoords2.format)
     ];
 
     _currentMapPolylines = [
       GCWMapPolyline(points: [_currentMapPoints[0], _currentMapPoints[1]])
     ];
 
-    DistanceBearingData crs = distanceBearing(_currentCoords1, _currentCoords2, ells);
+    DistanceBearingData crs = distanceBearing(_currentCoords1.toLatLng()!, _currentCoords2.toLatLng()!, _ellipsoid);
     _currentIntersections.asMap().forEach((index, intersection) {
-      var _crsAB;
-      var _crsBA;
+      double _crsAB;
+      double _crsBA;
 
       if (index == 0) {
-        _crsAB = crs.bearingAToB + _currentAngle1['value'];
-        _crsBA = crs.bearingBToA - _currentAngle2['value'];
+        _crsAB = crs.bearingAToB + _currentAngle1.value;
+        _crsBA = crs.bearingBToA - _currentAngle2.value;
       } else {
-        _crsAB = crs.bearingAToB - _currentAngle1['value'];
-        _crsBA = crs.bearingBToA + _currentAngle2['value'];
+        _crsAB = crs.bearingAToB - _currentAngle1.value;
+        _crsBA = crs.bearingBToA + _currentAngle2.value;
       }
 
       GCWMapPoint endPoint1MapPoint;
       GCWMapPoint endPoint2MapPoint;
 
       if (intersection == null) {
-        var dist = distanceBearing(_currentCoords1, _currentCoords2, ells).distance;
-        var endPoint1 = projection(_currentCoords1, _crsAB, dist * 3, ells);
-        var endPoint2 = projection(_currentCoords2, _crsBA, dist * 3, ells);
+        var dist = distanceBearing(_currentCoords1.toLatLng()!, _currentCoords2.toLatLng()!, _ellipsoid).distance;
+        var endPoint1 = projection(_currentCoords1.toLatLng()!, _crsAB, dist * 3, _ellipsoid);
+        var endPoint2 = projection(_currentCoords2.toLatLng()!, _crsBA, dist * 3, _ellipsoid);
 
         endPoint1MapPoint = GCWMapPoint(point: endPoint1, isVisible: false);
         endPoint2MapPoint = GCWMapPoint(point: endPoint2, isVisible: false);
@@ -192,11 +181,11 @@ class IntersectionState extends State<Intersection> {
                   .toColor()),
         ]);
       } else {
-        var distance1ToIntersect = distanceBearing(_currentCoords1, intersection, ells).distance;
-        var endPoint1 = projection(_currentCoords1, _crsAB, distance1ToIntersect * 1.5, ells);
+        var distance1ToIntersect = distanceBearing(_currentCoords1.toLatLng()!, intersection, _ellipsoid).distance;
+        var endPoint1 = projection(_currentCoords1.toLatLng()!, _crsAB, distance1ToIntersect * 1.5, _ellipsoid);
 
-        var distance2ToIntersect = distanceBearing(_currentCoords2, intersection, ells).distance;
-        var endPoint2 = projection(_currentCoords2, _crsBA, distance2ToIntersect * 1.5, ells);
+        var distance2ToIntersect = distanceBearing(_currentCoords2.toLatLng()!, intersection, _ellipsoid).distance;
+        var endPoint2 = projection(_currentCoords2.toLatLng()!, _crsBA, distance2ToIntersect * 1.5, _ellipsoid);
 
         endPoint1MapPoint = GCWMapPoint(point: endPoint1, isVisible: false);
         endPoint2MapPoint = GCWMapPoint(point: endPoint2, isVisible: false);
@@ -218,7 +207,7 @@ class IntersectionState extends State<Intersection> {
       _currentMapPoints.addAll([endPoint1MapPoint, endPoint2MapPoint]);
     });
 
-    if (_currentIntersections == null || (_currentIntersections[0] == null && _currentIntersections[1] == null)) {
+    if (_currentIntersections[0] == null && _currentIntersections[1] == null) {
       _currentOutput = [i18n(context, "coords_intersect_nointersection")];
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {});
@@ -227,15 +216,17 @@ class IntersectionState extends State<Intersection> {
     }
 
     _currentMapPoints.addAll(_currentIntersections
+        .where((intersection) => intersection != null)
         .map((intersection) => GCWMapPoint(
-            point: intersection,
+            point: intersection!,
             color: COLOR_MAP_CALCULATEDPOINT,
             markerText: i18n(context, 'coords_common_intersection'),
             coordinateFormat: _currentOutputFormat))
         .toList());
 
     _currentOutput = _currentIntersections
-        .map((intersection) => formatCoordOutput(intersection, _currentOutputFormat, defaultEllipsoid()))
+        .where((intersection) => intersection != null)
+        .map((intersection) => formatCoordOutput(intersection!, _currentOutputFormat, defaultEllipsoid))
         .toList();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {

@@ -1,25 +1,50 @@
+import 'package:gc_wizard/utils/data_type_utils/object_type_utils.dart';
+import 'package:gc_wizard/utils/json_utils.dart';
+
 List<FormulaGroup> formulaGroups = [];
 
 class FormulaGroup {
-  int id;
-  String name;
+  int? id;
+  late String name;
   List<Formula> formulas = [];
   List<FormulaValue> values = [];
 
   FormulaGroup(this.name);
 
-  Map<String, dynamic> toMap() => {
+  Map<String, Object?> toMap() => {
         'id': id,
         'name': name,
         'formulas': formulas.map((formula) => formula.toMap()).toList(),
         'values': values.map((value) => value.toMap()).toList(),
       };
 
-  FormulaGroup.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        id = json['id'],
-        formulas = List<Formula>.from(json['formulas'].map((formula) => Formula.fromJson(formula))),
-        values = List<FormulaValue>.from(json['values'].map((value) => FormulaValue.fromJson(value)));
+  FormulaGroup.fromJson(Map<String, Object?> json) {
+    name = toStringOrNull(json['name']) ?? ''; // TODO Proper default types if key is not in map
+    id = toIntOrNull(json['id']);
+
+    var formulasRaw = toObjectWithNullableContentListOrNull(json['formulas']);
+    formulas = <Formula>[];
+    if (formulasRaw != null) {
+      for (var element in formulasRaw) {
+        var formula = asJsonMapOrNull(element);
+        if (formula == null) continue;
+
+        formulas.add(Formula.fromJson(formula));
+      }
+    }
+
+    var valuesRaw = toObjectWithNullableContentListOrNull(json['values']);
+    values = <FormulaValue>[];
+    if (valuesRaw != null) {
+      for (var element in valuesRaw) {
+        var value = asJsonMapOrNull(element);
+        if (value == null) continue;
+
+        values.add(FormulaValue.fromJson(value));
+      }
+    }
+  }
+
 
   @override
   String toString() {
@@ -28,27 +53,27 @@ class FormulaGroup {
 }
 
 class Formula {
-  int id;
+  int? id;
   String formula;
-  String name;
+  String? name;
 
   Formula(this.formula);
 
-  Map<String, dynamic> toMap() {
+  Map<String, Object?> toMap() {
     var map = {
       'id': id,
       'formula': formula,
     };
 
-    if (name != null && name.isNotEmpty) map.putIfAbsent('name', () => name);
+    if (name != null && name!.isNotEmpty) map.putIfAbsent('name', () => name);
 
     return map;
   }
 
-  Formula.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        formula = json['formula'],
-        name = json['name'];
+  Formula.fromJson(Map<String, Object?> json)
+      : id = toIntOrNull(json['id']),
+        formula = toStringOrNull(json['formula']) ?? '', // TODO Proper default types if key is not in map
+        name = toStringOrNull(json['name']) ?? '';
 
   static Formula fromFormula(Formula formula) {
     var newFormula = Formula(formula.formula);
@@ -68,7 +93,7 @@ enum FormulaValueType { FIXED, INTERPOLATED, TEXT }
 const _FORMULAVALUETYPE_INTERPOLATE = 'interpolate';
 const _FORMULAVALUETYPE_TEXT = 'text';
 
-FormulaValueType _readType(String jsonType) {
+FormulaValueType _readType(String? jsonType) {
   switch (jsonType) {
     case _FORMULAVALUETYPE_INTERPOLATE:
       return FormulaValueType.INTERPOLATED;
@@ -80,27 +105,27 @@ FormulaValueType _readType(String jsonType) {
 }
 
 class FormulaValue {
-  int id;
+  int? id;
   String key;
   String value;
-  FormulaValueType type;
+  FormulaValueType? type;
 
   FormulaValue(this.key, this.value, {this.type});
+  
+  FormulaValue.fromJson(Map<String, Object?> json)
+      : id = toIntOrNull(json['id']),
+        key = toStringOrNull(json['key']) ?? '',  // TODO Proper default types if key is not in map
+        value = toStringOrNull(json['value']) ?? '',
+        type = _readType(json['type'] as String?);
 
-  FormulaValue.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        key = json['key'],
-        value = json['value'],
-        type = _readType(json['type']);
-
-  Map<String, dynamic> toMap() {
+  Map<String, Object?> toMap() {
     var map = {
       'id': id,
       'key': key,
       'value': value,
     };
 
-    var mapType;
+    String? mapType;
     switch (type) {
       case FormulaValueType.INTERPOLATED:
         mapType = _FORMULAVALUETYPE_INTERPOLATE;

@@ -2,10 +2,20 @@ import 'dart:collection';
 import 'dart:isolate';
 import 'dart:math';
 
+import 'package:gc_wizard/utils/complex_return_types.dart';
+
 final RegExp VARIABLESTRING =
-    RegExp(r'^((\s*\d+(\s*\-\s*(\d*|\d+\s*#\s*\d*))?)\s*,)*(\s*\d*|(\s*\d+\s*\-\s*(\d*|\d+\s*#\s*\d*)))\s*$');
+    RegExp(r'^((\s*\d+(\s*-\s*(\d*|\d+\s*#\s*\d*))?)\s*,)*(\s*\d*|(\s*\d+\s*-\s*(\d*|\d+\s*#\s*\d*)))\s*$');
 
 enum VariableStringExpanderBreakCondition { RUN_ALL, BREAK_ON_FIRST_FOUND }
+
+class VariableStringExpanderValue {
+  final String? text;
+  final Map<String, String>? variables;
+  final int? count;
+
+  VariableStringExpanderValue({this.text, this.variables, this.count});
+}
 
 /*
   - Takes a string which contains an arbitrary number of variables, e.g. "A B C"
@@ -43,10 +53,10 @@ enum VariableStringExpanderBreakCondition { RUN_ALL, BREAK_ON_FIRST_FOUND }
      - Decision for 2. Best Cost/Price-Balance
  */
 class VariableStringExpander {
-  String _input;
-  Map<String, String> _substitutions;
-  Function onAfterExpandedText;
-  SendPort sendAsyncPort;
+  final String _input;
+  final Map<String, String>? _substitutions;
+  String? Function(String)? onAfterExpandedText;
+  SendPort? sendAsyncPort;
 
   VariableStringExpanderBreakCondition breakCondition;
   bool orderAndUnique;
@@ -56,68 +66,71 @@ class VariableStringExpander {
       this.breakCondition = VariableStringExpanderBreakCondition.RUN_ALL,
       this.orderAndUnique = true,
       this.sendAsyncPort}) {
-    if (this.onAfterExpandedText == null) this.onAfterExpandedText = (e) => e;
+    onAfterExpandedText ??= (e) => e;
   }
 
-  List<List<String>> _expandedVariableGroups = [];
-  List<String> _substitutionKeys = [];
+  final List<List<String>> _expandedVariableGroups = [];
+  final List<String> _substitutionKeys = [];
 
-  List<String> _variableGroups;
-  int _countVariableGroups;
-  String _variableGroup;
+  List<String> _variableGroups = [];
+  int _countVariableGroups = -1;
+  String _variableGroup = '';
 
-  List<Map<String, dynamic>> _results = [];
-  List<String> _uniqueResults = [];
+  final List<VariableStringExpanderValue> _results = [];
+  final List<String> _uniqueResults = [];
 
-  List<int> _variableValueIndexes = [];
-  List<int> _countVariableValues = [];
+  final List<int> _variableValueIndexes = [];
+  final List<int> _countVariableValues = [];
   int _currentVariableIndex = -1;
 
-  int _countCombinations;
+  int _countCombinations = -1;
 
   /// Expands a "compressed" variable group like "5-10" to "5,6,7,8,9,10"
   List<String> _expandVariableGroup(String group) {
-    var output;
+    dynamic output; // Explicit dynamic type is intended here!
 
-    if (orderAndUnique)
+    if (orderAndUnique) {
       output = SplayTreeSet<String>();
-    else
+    } else {
       output = <String>[];
-
-    if (group == null) return [];
+    }
 
     group = group.replaceAll(RegExp(r'[^\d,\-#]'), '');
 
-    if (group.length == 0) return [];
+    if (group.isEmpty) return [];
 
     var ranges = group.split(',');
-    ranges.forEach((range) {
+    for (var range in ranges) {
       var rangeParts = range.split('#');
       var rangeBounds = rangeParts[0].split('-');
       if (rangeBounds.length == 1) {
         output.add(int.tryParse(rangeBounds[0]).toString());
-        return;
+        continue;
       }
 
-      var start = int.tryParse(rangeBounds[0]);
-      var end = int.tryParse(rangeBounds[1]);
+      var start = int.parse(rangeBounds[0]);
+      var end = int.parse(rangeBounds[1]);
 
       if (start == end) {
         output.add(start.toString());
-        return;
+        continue;
       }
 
       var increment = 1;
-      if (rangeParts.length > 1) increment = int.tryParse(rangeParts[1]);
+      if (rangeParts.length > 1) increment = int.parse(rangeParts[1]);
 
       if (start < end) {
-        for (int i = start; i <= end; i += increment) output.add(i.toString());
+        for (int i = start; i <= end; i += increment) {
+          output.add(i.toString());
+        }
       } else {
-        for (int i = start; i >= end; i -= increment) output.add(i.toString());
+        for (int i = start; i >= end; i -= increment) {
+          output.add(i.toString());
+        }
       }
-    });
+    }
 
-    return output.toList();
+    return output.toList() as List<String>;
   }
 
   // counting indexes like a normal numeral system:
@@ -149,8 +162,9 @@ class VariableStringExpander {
     return false;
   }
 
-  int _variableGroupIndex, _variableValueIndex;
-  String _result;
+  int _variableGroupIndex = -1;
+  int _variableValueIndex = -1;
+  String? _result = '';
 
   Map<String, String> _getCurrentVariables() {
     Map<String, String> variables = {};
@@ -169,18 +183,20 @@ class VariableStringExpander {
     do {
       _substitute();
 
-      _result = onAfterExpandedText(_result);
-      if (_result != null) {
-        if (_uniqueResults.contains(_result)) continue;
-
-        _results.add({'text': _result, 'variables': _getCurrentVariables()});
-
-        if (breakCondition == VariableStringExpanderBreakCondition.BREAK_ON_FIRST_FOUND) break;
+      if (_result == null) continue;
+      if (onAfterExpandedText != null) {
+        _result = onAfterExpandedText!(_result!);
       }
+
+      if (_result == null || _uniqueResults.contains(_result)) continue;
+
+      _results.add(VariableStringExpanderValue(text: _result, variables: _getCurrentVariables()));
+
+      if (breakCondition == VariableStringExpanderBreakCondition.BREAK_ON_FIRST_FOUND) break;
 
       progress++;
       if (sendAsyncPort != null && (progress % progressStep == 0)) {
-        sendAsyncPort.send({'progress': progress / _countCombinations});
+        sendAsyncPort!.send(DoubleText('progress', progress / _countCombinations));
       }
     } while (_setIndexes() == false);
   }
@@ -198,31 +214,31 @@ class VariableStringExpander {
             );
       }
 
-      _result = _result.replaceFirst(_variableGroups[_variableGroupIndex], _variableGroup);
+      _result = _result!.replaceFirst(_variableGroups[_variableGroupIndex], _variableGroup);
     }
   }
 
-  List<Map<String, dynamic>> run({onlyPrecheck: false}) {
-    if (_input == null || _input.length == 0) return [];
+  List<VariableStringExpanderValue> run({bool onlyPrecheck = false}) {
+    if (_input.isEmpty) return [];
 
-    if (_substitutions == null || _substitutions.length == 0) {
+    if (_substitutions == null || _substitutions!.isEmpty) {
       return [
-        {'text': _input, 'variables': {}}
+        VariableStringExpanderValue(text: _input)
       ];
     }
 
     // expand all groups, initialize lists
-    for (MapEntry<String, String> substitution in _substitutions.entries) {
+    for (MapEntry<String, String> substitution in _substitutions!.entries) {
       if (!VARIABLESTRING.hasMatch(substitution.value)) {
         return [
-          {'text': _input, 'variables': {}}
+          VariableStringExpanderValue(text: _input)
         ];
       }
 
       _substitutionKeys.add(substitution.key.toUpperCase());
       var group = _expandVariableGroup(substitution.value);
 
-      if (group.length > 0) {
+      if (group.isNotEmpty) {
         _expandedVariableGroups.add(group);
 
         _countVariableValues.add(group.length);
@@ -235,14 +251,14 @@ class VariableStringExpander {
     _countCombinations = _countVariableValues.fold(1, (previousValue, element) => previousValue * element);
     if (onlyPrecheck) {
       return [
-        {'count': _countCombinations}
+        VariableStringExpanderValue(count: _countCombinations)
       ];
     }
 
     // Find matching formula groups
     RegExp regExp = RegExp(r'\[.+?\]');
     if (regExp.hasMatch(_input)) {
-      _variableGroups = regExp.allMatches(_input.trim()).map((elem) => elem.group(0)).toList();
+      _variableGroups = regExp.allMatches(_input.trim()).map((elem) => elem.group(0)!).toList();
     } else {
       _variableGroups = [_input];
     }
@@ -256,10 +272,11 @@ class VariableStringExpander {
 }
 
 int preCheckCombinations(Map<String, String> substitutions) {
-  if (substitutions == null || substitutions.isEmpty) return 0;
+  if (substitutions.isEmpty) return 0;
 
-  var expander = VariableStringExpander('DUMMY', substitutions, onAfterExpandedText: (e) => false);
-  var count = expander.run(onlyPrecheck: true);
+  var expander = VariableStringExpander('DUMMY', substitutions, onAfterExpandedText: (e) => null);
+  var result = expander.run(onlyPrecheck: true);
+  if (result.isEmpty || result.first.count == null) return 0;
 
-  return count[0]['count'];
+  return result.first.count!;
 }

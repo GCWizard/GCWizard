@@ -31,38 +31,40 @@ import 'package:gc_wizard/common_widgets/gcw_toollist.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceSelection extends GCWSelection {
+  const NumberSequenceSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(NumberSequenceFactorialSelection()),
-        className(NumberSequenceFibonacciSelection()),
-        className(NumberSequenceMersenneSelection()),
-        className(NumberSequenceMersennePrimesSelection()),
-        className(NumberSequenceMersenneExponentsSelection()),
-        className(NumberSequenceMersenneFermatSelection()),
-        className(NumberSequenceFermatSelection()),
-        className(NumberSequencePerfectNumbersSelection()),
-        className(NumberSequenceSuperPerfectNumbersSelection()),
-        className(NumberSequencePrimaryPseudoPerfectNumbersSelection()),
-        className(NumberSequenceWeirdNumbersSelection()),
-        className(NumberSequenceSublimeNumbersSelection()),
-        className(NumberSequencePermutablePrimesSelection()),
-        className(NumberSequenceLuckyNumbersSelection()),
-        className(NumberSequenceHappyNumbersSelection()),
-        className(NumberSequenceBellSelection()),
-        className(NumberSequenceCatalanSelection()),
-        className(NumberSequenceJacobsthalSelection()),
-        className(NumberSequenceJacobsthalLucasSelection()),
-        className(NumberSequenceJacobsthalOblongSelection()),
-        className(NumberSequenceLucasSelection()),
-        className(NumberSequencePellSelection()),
-        className(NumberSequencePellLucasSelection()),
-        className(NumberSequenceRecamanSelection()),
-        className(NumberSequenceLychrelSelection()),
+        className(const NumberSequenceFactorialSelection()),
+        className(const NumberSequenceFibonacciSelection()),
+        className(const NumberSequenceMersenneSelection()),
+        className(const NumberSequenceMersennePrimesSelection()),
+        className(const NumberSequenceMersenneExponentsSelection()),
+        className(const NumberSequenceMersenneFermatSelection()),
+        className(const NumberSequenceFermatSelection()),
+        className(const NumberSequencePerfectNumbersSelection()),
+        className(const NumberSequenceSuperPerfectNumbersSelection()),
+        className(const NumberSequencePrimaryPseudoPerfectNumbersSelection()),
+        className(const NumberSequenceWeirdNumbersSelection()),
+        className(const NumberSequenceSublimeNumbersSelection()),
+        className(const NumberSequencePermutablePrimesSelection()),
+        className(const NumberSequenceLuckyNumbersSelection()),
+        className(const NumberSequenceHappyNumbersSelection()),
+        className(const NumberSequenceBellSelection()),
+        className(const NumberSequenceCatalanSelection()),
+        className(const NumberSequenceJacobsthalSelection()),
+        className(const NumberSequenceJacobsthalLucasSelection()),
+        className(const NumberSequenceJacobsthalOblongSelection()),
+        className(const NumberSequenceLucasSelection()),
+        className(const NumberSequencePellSelection()),
+        className(const NumberSequencePellLucasSelection()),
+        className(const NumberSequenceRecamanSelection()),
+        className(const NumberSequenceLychrelSelection()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

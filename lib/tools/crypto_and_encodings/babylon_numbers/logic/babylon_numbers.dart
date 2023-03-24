@@ -1,6 +1,7 @@
 import 'package:gc_wizard/tools/science_and_technology/numeral_bases/logic/numeral_bases.dart';
+import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
 
-final Map<int, List<String>> _numbersToSegments = {
+const Map<int, List<String>> _numbersToSegments = {
   0: [],
   1: ['f'],
   2: ['f', 'g'],
@@ -63,22 +64,17 @@ final Map<int, List<String>> _numbersToSegments = {
   59: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n'],
 };
 
-List<List<String>> encodeBabylonNumbers(int input) {
-  if (input == null) return <List<String>>[];
-
+Segments encodeBabylonNumbers(int input) {
   var sexagesimal = convertBase(input.toString(), 10, 60);
-  return sexagesimal.split('').map((digit) {
-    return _numbersToSegments[int.tryParse(convertBase(digit, 60, 10))];
+  var result =  sexagesimal.split('').map((digit) {
+    return _numbersToSegments[int.tryParse(convertBase(digit, 60, 10))] ?? [];
   }).toList();
+
+  return Segments(displays: result);
 }
 
-Map<String, dynamic> decodeBabylonNumbers(List<String> inputs) {
-  if (inputs == null || inputs.length == 0)
-    return {
-      'displays': <List<String>>[],
-      'numbers': [0],
-      'sexagesimal': BigInt.zero
-    };
+SegmentsSexagesimal decodeBabylonNumbers(List<String> inputs) {
+  if (inputs.isEmpty) return SegmentsSexagesimal(displays: [], numbers: [0], sexagesimal: BigInt.zero);
 
   var oneCharacters = ['f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n'];
   var tenCharacters = [
@@ -91,7 +87,7 @@ Map<String, dynamic> decodeBabylonNumbers(List<String> inputs) {
 
   var displays = <List<String>>[];
 
-  List<int> numbers = inputs.where((input) => input != null).map((input) {
+  List<int> numbers = inputs.map((input) {
     var number = 0;
     var display = <String>[];
     input.toLowerCase().split('').forEach((segment) {
@@ -115,5 +111,5 @@ Map<String, dynamic> decodeBabylonNumbers(List<String> inputs) {
 
   var total = convertBase(numbers.map((number) => convertBase(number.toString(), 10, 60)).join(), 60, 10);
 
-  return {'displays': displays, 'numbers': numbers, 'sexagesimal': BigInt.tryParse(total)};
+  return SegmentsSexagesimal(displays: displays, numbers: numbers, sexagesimal: BigInt.tryParse(total) ?? BigInt.zero);
 }

@@ -15,85 +15,85 @@ Uint8List _getFileData(String name) {
 
 void main() {
   var signal1 = <Tuple2<bool, int>>[
-      Tuple2<bool, int>(true, 400),
-      Tuple2<bool, int>(true, 400),
-      Tuple2<bool, int>(true, 400),
-      Tuple2<bool, int>(true, 1000),
-      Tuple2<bool, int>(true, 1000),
-      Tuple2<bool, int>(true, 1000),
-      Tuple2<bool, int>(false, 400),
-      Tuple2<bool, int>(false, 400),
-      Tuple2<bool, int>(false, 400),
-      Tuple2<bool, int>(false, 1000),
-      Tuple2<bool, int>(false, 1000),
-      Tuple2<bool, int>(false, 1000),
-      Tuple2<bool, int>(false, 1000),
-      Tuple2<bool, int>(false, 1500),
-      Tuple2<bool, int>(false, 1500)];
+      const Tuple2<bool, int>(true, 400),
+      const Tuple2<bool, int>(true, 400),
+      const Tuple2<bool, int>(true, 400),
+      const Tuple2<bool, int>(true, 1000),
+      const Tuple2<bool, int>(true, 1000),
+      const Tuple2<bool, int>(true, 1000),
+      const Tuple2<bool, int>(false, 400),
+      const Tuple2<bool, int>(false, 400),
+      const Tuple2<bool, int>(false, 400),
+      const Tuple2<bool, int>(false, 1000),
+      const Tuple2<bool, int>(false, 1000),
+      const Tuple2<bool, int>(false, 1000),
+      const Tuple2<bool, int>(false, 1000),
+      const Tuple2<bool, int>(false, 1500),
+      const Tuple2<bool, int>(false, 1500)];
 
   var signal2 = <Tuple2<bool, int>>[
-      Tuple2<bool, int>(true, 400),
-      Tuple2<bool, int>(true, 400),
-      Tuple2<bool, int>(true, 1000),
-      Tuple2<bool, int>(true, 400),
-      Tuple2<bool, int>(true, 1000),
-      Tuple2<bool, int>(true, 1000),
-      Tuple2<bool, int>(false, 1500),
-      Tuple2<bool, int>(false, 1500),
-      Tuple2<bool, int>(false, 400),
-      Tuple2<bool, int>(false, 400),
-      Tuple2<bool, int>(false, 1000),
-      Tuple2<bool, int>(false, 1000),
-      Tuple2<bool, int>(false, 400),
-      Tuple2<bool, int>(false, 1000),
-      Tuple2<bool, int>(false, 1000)];
+      const Tuple2<bool, int>(true, 400),
+      const Tuple2<bool, int>(true, 400),
+      const Tuple2<bool, int>(true, 1000),
+      const Tuple2<bool, int>(true, 400),
+      const Tuple2<bool, int>(true, 1000),
+      const Tuple2<bool, int>(true, 1000),
+      const Tuple2<bool, int>(false, 1500),
+      const Tuple2<bool, int>(false, 1500),
+      const Tuple2<bool, int>(false, 400),
+      const Tuple2<bool, int>(false, 400),
+      const Tuple2<bool, int>(false, 1000),
+      const Tuple2<bool, int>(false, 1000),
+      const Tuple2<bool, int>(false, 400),
+      const Tuple2<bool, int>(false, 1000),
+      const Tuple2<bool, int>(false, 1000)];
 
   var signal3 = <Tuple2<bool, int>>[
-      Tuple2<bool, int>(true, 380),
-      Tuple2<bool, int>(true, 400),
-      Tuple2<bool, int>(true, 1050),
-      Tuple2<bool, int>(true, 420),
-      Tuple2<bool, int>(true, 950),
-      Tuple2<bool, int>(true, 1000),
-      Tuple2<bool, int>(false, 1500),
-      Tuple2<bool, int>(false, 1500),
-      Tuple2<bool, int>(false, 400),
-      Tuple2<bool, int>(false, 380),
-      Tuple2<bool, int>(false, 950),
-      Tuple2<bool, int>(false, 1020),
-      Tuple2<bool, int>(false, 420),
-      Tuple2<bool, int>(false, 1000),
-      Tuple2<bool, int>(false, 1000)];
+      const Tuple2<bool, int>(true, 380),
+      const Tuple2<bool, int>(true, 400),
+      const Tuple2<bool, int>(true, 1050),
+      const Tuple2<bool, int>(true, 420),
+      const Tuple2<bool, int>(true, 950),
+      const Tuple2<bool, int>(true, 1000),
+      const Tuple2<bool, int>(false, 1500),
+      const Tuple2<bool, int>(false, 1500),
+      const Tuple2<bool, int>(false, 400),
+      const Tuple2<bool, int>(false, 380),
+      const Tuple2<bool, int>(false, 950),
+      const Tuple2<bool, int>(false, 1020),
+      const Tuple2<bool, int>(false, 420),
+      const Tuple2<bool, int>(false, 1000),
+      const Tuple2<bool, int>(false, 1000)];
 
   var signal4 = <Tuple2<bool, int>>[
-      Tuple2<bool, int>(true, 400),
-      Tuple2<bool, int>(false, 400)];
+      const Tuple2<bool, int>(true, 400),
+      const Tuple2<bool, int>(false, 400)];
 
   var signal5 = <Tuple2<bool, int>>[
-      Tuple2<bool, int>(true, 400),
-      Tuple2<bool, int>(false, 400),
-      Tuple2<bool, int>(false, 600)];
+      const Tuple2<bool, int>(true, 400),
+      const Tuple2<bool, int>(false, 400),
+      const Tuple2<bool, int>(false, 600)];
 
 
   group("animated_image_morse_code.foundSignalTimes:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : signal1, 'expectedOutput' : Tuple3<int, int, int>(700, 700, 1250 )},
-      {'input' : signal2, 'expectedOutput' : Tuple3<int, int, int>(700, 700, 1250 )},
-      {'input' : signal3, 'expectedOutput' : Tuple3<int, int, int>(685, 685, 1260 )},
-      {'input' : signal4, 'expectedOutput' : Tuple3<int, int, int>(400, 400, 400 )},
-      {'input' : signal5, 'expectedOutput' : Tuple3<int, int, int>(400, 500, 500 )},
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : signal1, 'expectedOutput' : const Tuple3<int, int, int>(700, 700, 1250 )},
+      {'input' : signal2, 'expectedOutput' : const Tuple3<int, int, int>(700, 700, 1250 )},
+      {'input' : signal3, 'expectedOutput' : const Tuple3<int, int, int>(685, 685, 1260 )},
+      {'input' : signal4, 'expectedOutput' : const Tuple3<int, int, int>(400, 400, 400 )},
+      {'input' : signal5, 'expectedOutput' : const Tuple3<int, int, int>(400, 500, 500 )},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = foundSignalTimes(elem['input']);
+        var _actual = foundSignalTimes(elem['input'] as List<Tuple2<bool, int>>);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("animated_image_morse_code.analyseImageMorseCode:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : 'Der kleine Preuße.gif', ''
           'expectedOutputMorse' : ' | ..-. ..- . -. ..-. -.. .-. . .. -.. .-. . .. .- -.-. .... - -. . ..- -. -. ..- .-.. .-.. -. . ..- -. | -. ..- .-.. -. ..- .-.. .-.. .- -.-. .... - --.. .-- . .. -. . ..- -. ... . -.-. .... ... -. . .. | -. ...- .. . .-. ',
           'expectedOutputText' : ' FUENFDREIDREIACHTNEUNNULLNEUN NULNULLACHTZWEINEUNSECHSNEI NVIER'},
@@ -105,34 +105,34 @@ void main() {
         'expectedOutputText' : ' BUECHERWURM'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () async {
-        var _outData = await analyseImageMorseCode(_getFileData(elem['input']));
-        List<int> durations = _outData["durations"];
-        List<Uint8List> images = _outData["images"];
-        List<List<int>> imagesFiltered = _outData["imagesFiltered"];
+        var _outData = await analyseImageMorseCode(_getFileData(elem['input'] as String));
+        var durations = _outData?.durations;
+        var images = _outData?.images;
+        var imagesFiltered = _outData?.imagesFiltered;
 
-        var _marked =  List.filled(images.length, false);
+        var _marked =  List.filled(images!.length, false);
 
         if (elem['secondMarked'] != null) {
-          imagesFiltered[1].forEach((idx) {
+          for (var idx in imagesFiltered![1]) {
             _marked[idx] = true;
-          });
-          imagesFiltered[2].forEach((idx) {
+          }
+          for (var idx in imagesFiltered[2]) {
             _marked[idx] = true;
-          });
+          }
         } else {
-          imagesFiltered[0].forEach((idx) {
+          for (var idx in imagesFiltered![0]) {
             _marked[idx] = true;
-          });
+          }
         }
 
 
-        var _actual = decodeMorseCode(durations, _marked);
-        expect(_actual['morse'], elem['expectedOutputMorse']);
-        expect(_actual['text'], elem['expectedOutputText']);
+        var _actual = decodeMorseCode(durations!, _marked);
+        expect(_actual!.morseCode, elem['expectedOutputMorse']);
+        expect(_actual.text, elem['expectedOutputText']);
       });
-    });
+    }
   });
 
 }

@@ -3,19 +3,20 @@ import 'dart:convert';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/tools/coords/variable_coordinate/persistence/model.dart';
 import 'package:gc_wizard/tools/formula_solver/persistence/model.dart' as formula_model;
+import 'package:gc_wizard/utils/json_utils.dart';
 import 'package:gc_wizard/utils/persistence_utils.dart';
 import 'package:prefs/prefs.dart';
 
 void refreshFormulas() {
   var formulasList = Prefs.getStringList(PREFERENCE_COORD_VARIABLECOORDINATE_FORMULAS);
-  if (formulasList == null || formulasList.length == 0) return;
+  if (formulasList.isEmpty) return;
 
-  formulas = formulasList.where((formula) => formula.length > 0).map((formula) {
-    return Formula.fromJson(jsonDecode(formula));
+  formulas = formulasList.where((formula) => formula.isNotEmpty).map((formula) {
+    return Formula.fromJson(asJsonMap(jsonDecode(formula)));
   }).toList();
 }
 
-_saveData() {
+void _saveData() {
   var jsonData = formulas.map((formula) => jsonEncode(formula.toMap())).toList();
 
   Prefs.setStringList(PREFERENCE_COORD_VARIABLECOORDINATE_FORMULAS, jsonData);

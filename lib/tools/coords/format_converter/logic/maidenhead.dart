@@ -2,9 +2,9 @@ import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:latlong2/latlong.dart';
 
-LatLng maidenheadToLatLon(Maidenhead maidenhead) {
+LatLng? maidenheadToLatLon(Maidenhead maidenhead) {
   var _maidenhead = maidenhead.text;
-  if (_maidenhead == null || _maidenhead == '') return null;
+  if (_maidenhead.isEmpty) return null;
   _maidenhead = _maidenhead.toUpperCase();
 
   int res = 1;
@@ -17,22 +17,22 @@ LatLng maidenheadToLatLon(Maidenhead maidenhead) {
     for (int i = 0; i < _maidenhead.length; i += 2) {
       if (res == 1) {
         if (!RegExp(r'[A-Z]{2}').hasMatch(_maidenhead.substring(0, 2))) return null;
-        lon = ((alphabet_AZ[_maidenhead[0]] - 1) * 20).toDouble();
-        lat = ((alphabet_AZ[_maidenhead[1]] - 1) * 10).toDouble();
+        lon = ((alphabet_AZ[_maidenhead[0]]! - 1) * 20).toDouble();
+        lat = ((alphabet_AZ[_maidenhead[1]]! - 1) * 10).toDouble();
         res = 2;
       } else if (res % 2 == 1) {
         reslon /= 24;
         reslat /= 24;
         if (!RegExp(r'[A-Z]{2}').hasMatch(_maidenhead.substring(i, i + 2))) return null;
-        lon += (alphabet_AZ[_maidenhead[i]] - 1).toDouble() * reslon;
-        lat += (alphabet_AZ[_maidenhead[i + 1]] - 1).toDouble() * reslat;
+        lon += (alphabet_AZ[_maidenhead[i]]! - 1).toDouble() * reslon;
+        lat += (alphabet_AZ[_maidenhead[i + 1]]! - 1).toDouble() * reslat;
         ++res;
       } else {
         reslon /= 10;
         reslat /= 10;
-        if (!RegExp(r'[0-9]{2}').hasMatch(_maidenhead.substring(i, i + 2))) return null;
-        lon += int.tryParse(_maidenhead[i]) * reslon;
-        lat += int.tryParse(_maidenhead[i + 1]) * reslat;
+        if (!RegExp(r'\d{2}').hasMatch(_maidenhead.substring(i, i + 2))) return null;
+        lon += int.parse(_maidenhead[i]) * reslon;
+        lat += int.parse(_maidenhead[i + 1]) * reslat;
         ++res;
       }
     }
@@ -46,10 +46,9 @@ LatLng maidenheadToLatLon(Maidenhead maidenhead) {
   return LatLng(lat, lon);
 }
 
-Maidenhead parseMaidenhead(String input) {
-  if (input == null) return null;
+Maidenhead? parseMaidenhead(String input) {
   input = input.trim();
-  if (input == '') return null;
+  if (input.isEmpty) return null;
 
   var _maidenhead = Maidenhead(input);
   return maidenheadToLatLon(_maidenhead) == null ? null : _maidenhead;
@@ -71,11 +70,11 @@ Maidenhead latLonToMaidenhead(LatLng coord) {
     lon -= intlon * 20.0;
     intlat = (lat / 10.0).floor();
     lat -= intlat * 10.0;
-    out += alphabet_AZIndexes[intlon + 1];
-    out += alphabet_AZIndexes[intlat + 1];
+    out += alphabet_AZIndexes[intlon + 1] ?? '';
+    out += alphabet_AZIndexes[intlat + 1] ?? '';
   }
 
-  if (resolution >= 2.0) {
+  if (resolution >= 2) {
     intlon = (lon / 2.0).floor();
     lon -= intlon * 2.0;
     intlat = (lat).floor();
@@ -98,8 +97,8 @@ Maidenhead latLonToMaidenhead(LatLng coord) {
       intlat = (lat / reslat).floor();
       lat -= intlat * reslat;
 
-      out += alphabet_AZIndexes[intlon + 1];
-      out += alphabet_AZIndexes[intlat + 1];
+      out += alphabet_AZIndexes[intlon + 1] ?? '';
+      out += alphabet_AZIndexes[intlat + 1] ?? '';
     } else {
       reslon /= 10.0;
       reslat /= 10.0;

@@ -9,7 +9,7 @@ void main() {
     //https://esolangs.org/wiki/beatnik
     //http://cliffle.com/esoterica/beatnik/
     //   does not work - to much adds => delete two - baser, lilac
-    //                 - numbers wrong: queasy => queasiest
+    //                 - numbers wrong: queasy => queassiest
     //                 - prints in thw wrong order
 
     String HelloWorld = '''Soars, larkspurs, rains. 
@@ -105,7 +105,7 @@ Nude pagoda careens.''';
     String Alphabet = '''Ho humbuzz, Dionysus. | orgasm if I feel altruistic & alone...
     Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch?! Ha!
     Monarchies spoil; language intermediates everyone!''';
-    String Cliffle = '''Baa, badassed areas!
+    String Cliffle = '''Baa, badasssed areas!
 Jarheads' arses
       queasy nude adverbs!
     Dare address abase adder? *bares baser dadas* HA!
@@ -115,7 +115,7 @@ Ends, addends,
    duodena sounded amends.''';
     String CliffleCorrect = '''Baa, badassed areas!
 Jarheads' arses
-      queasiest nude adverbs!
+      queassiest nude adverbs!
     Dare address abase adder? *bares  dadas* HA!
 Equalize, add bezique, bra emblaze.
   He (quezal), aeons liable.  Label  "bulla," ocean sauce!
@@ -167,24 +167,24 @@ DU BIST DIE BEUTE DES TOURISMUS'!
 
 DIE IRONIE IST UNSER VERLUST AN STARKER ETHIK - SO ZIEMLICH.''';
 
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'scrabbleSet' : scrabbleID_EN, 'sourcecode' : HelloWorld, 'input' : '', 'expectedOutput' : ['Hello, world!']},
-      {'scrabbleSet' : scrabbleID_EN, 'sourcecode' : Rudimentary, 'input' : 'a', 'expectedOutput' : ['h']},
-      {'scrabbleSet' : scrabbleID_EN, 'sourcecode' : Alphabet, 'input' : '', 'expectedOutput' : [' !"#\$%&'+"'"+'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~']},
-      {'scrabbleSet' : scrabbleID_EN, 'sourcecode' : Cliffle, 'input' : '', 'expectedOutput' : ['beatnik_error_runtime','beatnik_error_runtime_stack','beatnik_error_runtime_add']},
-      {'scrabbleSet' : scrabbleID_EN, 'sourcecode' : CliffleCorrect, 'input' : '', 'expectedOutput' : ['Hi']},
-      {'scrabbleSet' : scrabbleID_D, 'sourcecode' : GC2M99K, 'input' : '', 'expectedOutput' : ['Cache bei:N51°15.176 E6° 32.373']},
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'scrabbleSet' : scrabbleID_EN, 'sourcecode' : HelloWorld, 'input' : '', 'expectedOutput' : BeatnikOutput(['Hello, world!\n'], [], [], [], [])},
+      {'scrabbleSet' : scrabbleID_EN, 'sourcecode' : Rudimentary, 'input' : 'a', 'expectedOutput' : BeatnikOutput(['h'], [], [], [], [])},
+      {'scrabbleSet' : scrabbleID_EN, 'sourcecode' : Alphabet, 'input' : '', 'expectedOutput' : BeatnikOutput([' !"#\$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'], [], [], [], [])},
+      {'scrabbleSet' : scrabbleID_EN, 'sourcecode' : Cliffle, 'input' : '', 'expectedOutput' : BeatnikOutput(['common_programming_error_runtime','beatnik_error_runtime_stack','beatnik_error_runtime_add'], [], [], [], [])},
+      {'scrabbleSet' : scrabbleID_EN, 'sourcecode' : CliffleCorrect, 'input' : '', 'expectedOutput' : BeatnikOutput(['\niH'], [], [], [], [])},
+      {'scrabbleSet' : scrabbleID_D, 'sourcecode' : GC2M99K, 'input' : '', 'expectedOutput' : BeatnikOutput(['Cache bei:N51°15.176 E6° 32.373'], [], [], [], [])},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretBeatnik(elem['scrabbleSet'], elem['sourcecode'], elem['input']);
-        var length = elem['expectedOutput'].length;
+        var _actual = interpretBeatnik(elem['scrabbleSet'] as String, elem['sourcecode'] as String, elem['input'] as String);
+        var length = (elem['expectedOutput'] as BeatnikOutput).output.length;
         for (int i = 0; i < length; i++) {
-          expect(_actual.output[i], elem['expectedOutput'][i]);
+          expect(_actual.output[i], (elem['expectedOutput'] as BeatnikOutput).output[i]);
         }
       });
-    });
+    }
   });
 
 

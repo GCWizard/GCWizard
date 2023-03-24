@@ -4,9 +4,9 @@ import 'package:gc_wizard/tools/science_and_technology/astronomy/_common/logic/j
 import 'package:latlong2/latlong.dart';
 
 class MoonRiseSet {
-  double rise;
-  double transit;
-  double set;
+  late double rise;
+  late double transit;
+  late double set;
 
   MoonRiseSet(LatLng coords, JulianDate julianDate, Duration timezone, Ellipsoid ellipsoid) {
     RiseSet riseSet = moonRise(julianDate.julianDateUTCNoon, julianDate.deltaT, coords.longitudeInRad,

@@ -18,25 +18,27 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/wigwag/widget/
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class TelegraphSelection extends GCWSelection {
+  const TelegraphSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(ChappeTelegraph()),
-        className(EdelcrantzTelegraph()),
-        className(MurrayTelegraph()),
-        className(OhlsenTelegraph()),
-        className(PasleyTelegraph()),
-        className(PophamTelegraph()),
-        className(PrussiaTelegraph()),
-        className(SemaphoreTelegraph()),
-        className(WigWagSemaphoreTelegraph()),
-        className(GaussWeberTelegraph()),
-        className(SchillingCanstattTelegraph()),
-        className(WheatstoneCookeNeedleTelegraph()),
+        className(const ChappeTelegraph()),
+        className(const EdelcrantzTelegraph()),
+        className(const MurrayTelegraph()),
+        className(const OhlsenTelegraph()),
+        className(const PasleyTelegraph()),
+        className(const PophamTelegraph()),
+        className(const PrussiaTelegraph()),
+        className(const SemaphoreTelegraph()),
+        className(const WigWagSemaphoreTelegraph()),
+        className(const GaussWeberTelegraph()),
+        className(const SchillingCanstattTelegraph()),
+        className(const WheatstoneCookeNeedleTelegraph()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

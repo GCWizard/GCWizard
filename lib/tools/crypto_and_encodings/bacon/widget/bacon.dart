@@ -7,12 +7,14 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/bacon/logic/bacon.dart';
 
 class Bacon extends StatefulWidget {
+  const Bacon({Key? key}) : super(key: key);
+
   @override
   BaconState createState() => BaconState();
 }
 
 class BaconState extends State<Bacon> {
-  var _controller;
+  late TextEditingController _controller;
 
   var _currentInput = '';
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
@@ -78,7 +80,7 @@ class BaconState extends State<Bacon> {
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
       _output = encodeBacon(_currentInput, _inversMode, _binaryMode == GCWSwitchPosition.right);
     } else {

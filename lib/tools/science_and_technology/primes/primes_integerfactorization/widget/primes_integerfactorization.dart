@@ -4,9 +4,9 @@ import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/tools/science_and_technology/primes/_common/logic/primes.dart';
 
 class IntegerFactorization extends StatefulWidget {
-  final String numberLabel;
+  final String? numberLabel;
 
-  const IntegerFactorization({Key key, this.numberLabel}) : super(key: key);
+  const IntegerFactorization({Key? key, this.numberLabel}) : super(key: key);
 
   @override
   IntegerFactorizationState createState() => IntegerFactorizationState();

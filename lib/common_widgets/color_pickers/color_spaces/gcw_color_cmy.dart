@@ -1,10 +1,10 @@
 part of 'package:gc_wizard/common_widgets/color_pickers/gcw_colors.dart';
 
 class _GCWColorCMY extends StatefulWidget {
-  final Function onChanged;
-  final CMY color;
+  final void Function(CMY) onChanged;
+  final CMY? color;
 
-  const _GCWColorCMY({Key key, this.onChanged, this.color}) : super(key: key);
+  const _GCWColorCMY({Key? key, required this.onChanged, this.color}) : super(key: key);
 
   @override
   _GCWColorCMYState createState() => _GCWColorCMYState();
@@ -18,9 +18,9 @@ class _GCWColorCMYState extends State<_GCWColorCMY> {
   @override
   Widget build(BuildContext context) {
     if (widget.color != null) {
-      _currentCyan = widget.color.cyan * 100.0;
-      _currentMagenta = widget.color.magenta * 100.0;
-      _currentYellow = widget.color.yellow * 100.0;
+      _currentCyan = widget.color!.cyan * 100.0;
+      _currentMagenta = widget.color!.magenta * 100.0;
+      _currentYellow = widget.color!.yellow * 100.0;
     }
 
     return Column(
@@ -62,7 +62,7 @@ class _GCWColorCMYState extends State<_GCWColorCMY> {
     );
   }
 
-  _emitOnChange() {
+  void _emitOnChange() {
     widget.onChanged(CMY(_currentCyan / 100.0, _currentMagenta / 100.0, _currentYellow / 100.0));
   }
 }

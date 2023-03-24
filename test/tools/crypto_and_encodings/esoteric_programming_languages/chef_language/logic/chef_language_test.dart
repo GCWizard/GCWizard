@@ -78,7 +78,7 @@ Pour contents of the mixing bowl into the baking dish.
 Serves 1.
 ''';
 
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'language' : 'ENG', 'auxilary' : false, 'input' : '', 'title' : '',   'remark' : '', 'time' : '', 'temperature' : '', 'expectedOutput' : testNull},
       {'language' : 'ENG', 'auxilary' : false, 'input' : '', 'title' : 'Marks marvellous must have',   'remark' : '', 'time' : '',   'temperature' : '', 'expectedOutput' : testTitle},
       {'language' : 'ENG', 'auxilary' : false, 'input' : '', 'title' : 'Marks marvellous must have', 'remark' : 'to be a wizard',   'time' : '',   'temperature' : '', 'expectedOutput' : testTitleComments},
@@ -86,12 +86,12 @@ Serves 1.
       {'language' : 'ENG', 'auxilary' : false, 'input' : '', 'title' : 'Marks marvellous must have',   'remark' : 'to be a wizard', 'time' : '50', 'temperature' : '180', 'expectedOutput' : testTitleCommentsTimeTemp},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = generateChef(elem['language'], elem['title'], elem['remark'], elem['time'], elem['temperature'], elem['input'], elem['auxilary']);
+        var _actual = generateChef(elem['language'] as String, elem['title'] as String, elem['remark'] as String, elem['time'] as String, elem['temperature'] as String, elem['input'] as String, elem['auxilary'] as bool);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("chef_language.interpretChef:", () {
@@ -126,7 +126,8 @@ Serves 1.
 
 ''';
 
-    // OK OK     SELFMADE A mysterious marmelade cake.
+    // SELFMADE A mysterious marmelade cake.
+    // fehlerfrei im Emulator
     var test13 = '''A mysterious marmelade cake. 
 
 Giving power to the brain while waiting for an idea.
@@ -157,10 +158,9 @@ Put baking soda into the mixing bowl.
 Liquefy contents of the mixing bowl.
 Pour contents of the mixing bowl into the baking dish. 
 
-Serves 1.
-''';
+Serves 1.''';
 
-        List<Map<String, dynamic>> _inputsToExpected = [
+        List<Map<String, Object?>> _inputsToExpected = [
       {'language' : 'ENG', 'input' : '',   'recipe' : test0, 'expectedOutput' : []},
       {'language' : 'ENG', 'input' : '',   'recipe' : test12,   'isValid' : true, 'expectedOutput' : ['Koordinaten\r\n'
       '\r\n'
@@ -170,15 +170,15 @@ Serves 1.
       {'language' : 'ENG', 'input' : '',   'recipe' : test13,   'isValid' : true, 'expectedOutput' : ['n 432 e 708']},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'], elem['recipe'].toLowerCase(), elem['input']);
-        var length = elem['expectedOutput'].length;
+        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        var length = (elem['expectedOutput'] as List<dynamic>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], elem['expectedOutput'][i]);
+          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
-    });
+    }
   }); // group
 
   group("chef_language.MethodExamples", () {
@@ -449,7 +449,7 @@ Refrigerate for 1 hours.
 
 Serves 1.''';
 
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'language' : 'ENG', 'input' : '5',  'recipe' : take, 'expectedOutput' : ['5']},
       {'language' : 'ENG', 'input' : '',  'recipe' : take, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_missing_input']},
       {'language' : 'ENG', 'input' : '',   'recipe' : put,   'isValid' : true, 'expectedOutput' : ['10']},
@@ -470,15 +470,15 @@ Serves 1.''';
       {'language' : 'ENG', 'input' : '',   'recipe' : refrigeratenumber,   'isValid' : true, 'expectedOutput' : ['PA']},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'], elem['recipe'].toLowerCase(), elem['input']);
-        var length = elem['expectedOutput'].length;
+        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        var length = (elem['expectedOutput'] as List<dynamic>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], elem['expectedOutput'][i]);
+          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
-    });
+    }
   });
 
   group("chef_language.testErrors", () {
@@ -736,34 +736,34 @@ Pour contents of the mixing bowl into the baking dish.
 
 Serves.''';
 
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'language' : 'ENG', 'input' : '',  'recipe' : testNoInput, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_missing_input']},
-      {'language' : 'ENG', 'input' : '',   'recipe' : testPutNoInput,   'isValid' : true, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_method_step','1 : Type.Verb','chef_error_runtime_ingredient_not_found']},
-      {'language' : 'ENG', 'input' : '',   'recipe' : testFoldEmptyBow,   'isValid' : true, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_folded_from_empty_mixing_bowl','chef_error_runtime_method_step','1 : Type.Fold => 1']},
-      {'language' : 'ENG', 'input' : '',   'recipe' : testAddEmptyBowl,   'isValid' : true, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_add_to_empty_mixing_bowl','chef_error_runtime_method_step','1 : Type.Add => 1']},
-      {'language' : 'ENG', 'input' : '',   'recipe' : testRemoveEmptyBowl,   'isValid' : true, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_remove_from_empty_mixing_bowl','chef_error_runtime_method_step','1 : Type.Remove => 1']},
-      {'language' : 'ENG', 'input' : '',   'recipe' : testCombineEmptyBowl,   'isValid' : true, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_combine_with_empty_mixing_bowl','chef_error_runtime_method_step','1 : Type.Combine => 1']},
-      {'language' : 'ENG', 'input' : '',   'recipe' : testDivideEmptyBowl,   'isValid' : true, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_divide_from_empty_mixing_bowl','chef_error_runtime_method_step','1 : Type.Divide => 1']},
+      {'language' : 'ENG', 'input' : '',   'recipe' : testPutNoInput,   'isValid' : true, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_method_loop','1 : _CHEF_Method.Verb',]},
+      {'language' : 'ENG', 'input' : '',   'recipe' : testFoldEmptyBow,   'isValid' : true, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_folded_from_empty_mixing_bowl','chef_error_runtime_method_step','1 : _CHEF_Method.Fold => 1']},
+      {'language' : 'ENG', 'input' : '',   'recipe' : testAddEmptyBowl,   'isValid' : true, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_add_to_empty_mixing_bowl','chef_error_runtime_method_step','1 : _CHEF_Method.Add => 1']},
+      {'language' : 'ENG', 'input' : '',   'recipe' : testRemoveEmptyBowl,   'isValid' : true, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_remove_from_empty_mixing_bowl','chef_error_runtime_method_step','1 : _CHEF_Method.Remove => 1']},
+      {'language' : 'ENG', 'input' : '',   'recipe' : testCombineEmptyBowl,   'isValid' : true, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_combine_with_empty_mixing_bowl','chef_error_runtime_method_step','1 : _CHEF_Method.Combine => 1']},
+      {'language' : 'ENG', 'input' : '',   'recipe' : testDivideEmptyBowl,   'isValid' : true, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_divide_from_empty_mixing_bowl','chef_error_runtime_method_step','1 : _CHEF_Method.Divide => 1']},
       {'language' : 'ENG', 'input' : '',   'recipe' : testAddryNoIngredients,   'isValid' : true, 'expectedOutput' : ['0']},
       {'language' : 'ENG', 'input' : '',   'recipe' : testLiquefyEmptyBowl,   'isValid' : true, 'expectedOutput' : ['']},
-      {'language' : 'ENG', 'input' : '',   'recipe' : testStirEmptyBowl,   'isValid' : true, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_stir_empty_mixing_bowl','chef_error_runtime_method_step','1 : Type.Stir => 1']},
+      {'language' : 'ENG', 'input' : '',   'recipe' : testStirEmptyBowl,   'isValid' : true, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_stir_empty_mixing_bowl','chef_error_runtime_method_step','1 : _CHEF_Method.Stir => 1']},
       {'language' : 'ENG', 'input' : '',   'recipe' : testStirNoIngredient,   'isValid' : true, 'expectedOutput' : ['4351']},
       {'language' : 'ENG', 'input' : '',   'recipe' : testStirEmptyIngredient,   'isValid' : true, 'expectedOutput' : ['5431']},
-      {'language' : 'ENG', 'input' : '',   'recipe' : testLoopWrongEnd,   'isValid' : true, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_method_loop','1 : Type.Verb',]},
+      {'language' : 'ENG', 'input' : '',   'recipe' : testLoopWrongEnd,   'isValid' : true, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_method_loop','1 : _CHEF_Method.Verb',]},
       {'language' : 'ENG', 'input' : '',   'recipe' : testLoopWrongStart,   'isValid' : true, 'expectedOutput' : ['chef_error_syntax','chef_error_syntax_method','1 : count',]},
-      {'language' : 'ENG', 'input' : '',   'recipe' : testServeNoRecipe,   'isValid' : true, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_method_step','3 : Type.Verb']},
+      {'language' : 'ENG', 'input' : '',   'recipe' : testServeNoRecipe,   'isValid' : true, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_method_loop','3 : _CHEF_Method.Verb']},
       {'language' : 'ENG', 'input' : '',   'recipe' : testServeNoNumber,   'isValid' : true, 'expectedOutput' : ['chef_error_syntax','chef_error_syntax_serves','chef_error_syntax_serves_without_number','serves.']},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'], elem['recipe'].toLowerCase(), elem['input']);
-        var length = elem['expectedOutput'].length;
+        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        var length = (elem['expectedOutput'] as List<dynamic>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], elem['expectedOutput'][i]);
+          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
-    });
+    }
   });
 
   group("chef_language.generatedRecipes", () {
@@ -1064,7 +1064,7 @@ Method.
 Put powdered sugar into the mixing bowl.
 Add cocoa powder into the mixing bowl.''';
 
-      List<Map<String, dynamic>> _inputsToExpected = [
+      List<Map<String, Object?>> _inputsToExpected = [
         {'language' : 'DEU', 'input' : '',  'recipe' : testDEUgenerated, 'expectedOutput' : ['Test']},
         {'language' : 'DEU', 'input' : '',  'recipe' : testDEUgenerateoNoAux, 'expectedOutput' : ['n 437 e 708']},
         {'language' : 'DEU', 'input' : '',  'recipe' : testDEUgeneratedAux, 'expectedOutput' : ['n 437 e 708']},
@@ -1074,15 +1074,15 @@ Add cocoa powder into the mixing bowl.''';
         {'language' : 'ENG', 'input' : '',  'recipe' : testENGgeneratedAuxDouble, 'expectedOutput' : ['N48° 44.859 E8° 0.282']},
       ];
 
-      _inputsToExpected.forEach((elem) {
+      for (var elem in _inputsToExpected) {
         test('input: ${elem['input']}', () {
-          var _actual = interpretChef(elem['language'], elem['recipe'].toLowerCase(), elem['input']);
-          var length = elem['expectedOutput'].length;
+          var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+          var length = (elem['expectedOutput'] as List<String>).length;
           for (int i = 0; i < length; i++) {
-            expect(_actual[i], elem['expectedOutput'][i]);
+            expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
           }
         });
-      });
+      }
   });
 
   group("chef_language.deuAnweisungen", () {
@@ -1337,7 +1337,7 @@ Einfrieren für 1 Stunde.
 
 Portionen: 1.''';
 
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'language' : 'DEU', 'input' : '5',  'recipe' : nehme, 'expectedOutput' : ['5']},
       {'language' : 'DEU', 'input' : '',  'recipe' : nehme, 'expectedOutput' : ['common_programming_error_runtime','chef_error_runtime_missing_input']},
       {'language' : 'DEU', 'input' : '',   'recipe' : gebe,   'isValid' : true, 'expectedOutput' : ['10']},
@@ -1358,15 +1358,15 @@ Portionen: 1.''';
       {'language' : 'DEU', 'input' : '',   'recipe' : gefriereNummer,   'isValid' : true, 'expectedOutput' : ['PA']},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'], elem['recipe'].toLowerCase(), elem['input']);
-        var length = elem['expectedOutput'].length;
+        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        var length = (elem['expectedOutput'] as List<dynamic>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], elem['expectedOutput'][i]);
+          expect(_actual[i], (elem['expectedOutput'] as List<dynamic>)[i]);
         }
       });
-    });
+    }
   });
 
   group("chef_language.progopedia.acme-chef", () {
@@ -1405,7 +1405,7 @@ Put hazelnuts into the mixing bowl.
 Liquify contents of the mixing bowl.
 Pour contents of the mixing bowl into the baking dish.
 
-Serves 1.'''; // works in emulator - but why
+Serves 1.''';
     var Factorial = '''Factorial as a Piece of Cake.
 
 This recipe calculates and prints factorials of first integers.
@@ -1475,17 +1475,9 @@ Pour contents of 2nd mixing bowl into the baking dish.
 
 Serves 1.''';
 
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'language' : 'ENG', 'input' : '',  'recipe' : HelloWorld, 'expectedOutput' : ['Hello, World!\n']},
-      {'language' : 'ENG', 'input' : '',  'recipe' : Factorial, 'expectedOutput' : ['0! = 1\n' +
-        '1! = 1\n' +
-        '2! = 2\n' +
-        '3! = 6\n' +
-        '4! = 24\n' +
-        '5! = 120\n' +
-        '6! = 720\n' +
-        '7! = 5040\n' +
-        '8! = 40320\n' +
+      {'language' : 'ENG', 'input' : '',  'recipe' : Factorial, 'expectedOutput' : ['0! = 1\n' '1! = 1\n' '2! = 2\n' '3! = 6\n' '4! = 24\n' '5! = 120\n' '6! = 720\n' '7! = 5040\n' '8! = 40320\n' +
         '9! = 362880\n' +
         '10! = 3628800\n' +
         '11! = 39916800\n' +
@@ -1498,15 +1490,15 @@ Serves 1.''';
       {'language' : 'ENG', 'input' : '',   'recipe' : Fibonacci,  'expectedOutput' : ['1123581321345589144233377610987']},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'], elem['recipe'].toLowerCase(), elem['input']);
-        var length = elem['expectedOutput'].length;
+        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        var length = (elem['expectedOutput'] as List<String>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], elem['expectedOutput'][i]);
+          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
-    });
+    }
   });
 
   group("chef_language.progopedia.acme-chef-1.01", () {
@@ -1616,17 +1608,9 @@ Pour contents of 2nd mixing bowl into the baking dish.
 
 Serves 1.''';
 
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'language' : 'ENG', 'input' : '',  'recipe' : HelloWorld, 'expectedOutput' : ['Hello, World!\n']},
-      {'language' : 'ENG', 'input' : '',  'recipe' : Factorial, 'expectedOutput' : ['0! = 1\n' +
-          '1! = 1\n' +
-          '2! = 2\n' +
-          '3! = 6\n' +
-          '4! = 24\n' +
-          '5! = 120\n' +
-          '6! = 720\n' +
-          '7! = 5040\n' +
-          '8! = 40320\n' +
+      {'language' : 'ENG', 'input' : '',  'recipe' : Factorial, 'expectedOutput' : ['0! = 1\n' '1! = 1\n' '2! = 2\n' '3! = 6\n' '4! = 24\n' '5! = 120\n' '6! = 720\n' '7! = 5040\n' '8! = 40320\n' +
           '9! = 362880\n' +
           '10! = 3628800\n' +
           '11! = 39916800\n' +
@@ -1639,15 +1623,15 @@ Serves 1.''';
       {'language' : 'ENG', 'input' : '',   'recipe' : Fibonacci,  'expectedOutput' : ['1123581321345589144233377610987']},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'], elem['recipe'].toLowerCase(), elem['input']);
-        var length = elem['expectedOutput'].length;
+        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        var length = (elem['expectedOutput'] as List<String>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], elem['expectedOutput'][i]);
+          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
-    });
+    }
   });
 
   group("chef_language.metacpan.acme-chef-1.01.examples", () {
@@ -1914,8 +1898,7 @@ Put creeps into the mixing bowl.
 Liquify contents of the mixing bowl.
 Pour contents of the mixing bowl into the baking dish.
 
-Serves 1.
-'''; // run in the emulator
+Serves 1.'''; // run in the emulator
     var stdin = '''STDIN stew.
 
 Read flour from STDIN and output it.
@@ -1929,7 +1912,7 @@ Put flour into mixing bowl.
 Pour contents of the mixing bowl into the baking dish.
 Refrigerate for 1 hour.''';
 
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'language' : 'ENG', 'input' : '',   'recipe' : exp,   'isValid' : true, 'expectedOutput' : ['8']},
       {'language' : 'ENG', 'input' : '',   'recipe' : fac,   'isValid' : true, 'expectedOutput' : ['12624120720504040320362880362880039916800479001600']},
       {'language' : 'ENG', 'input' : '',   'recipe' : fib,   'isValid' : true, 'expectedOutput' : ['common_programming_error_runtime']},
@@ -1939,15 +1922,15 @@ Refrigerate for 1 hour.''';
       {'language' : 'ENG', 'input' : '5',   'recipe' : stdin,   'isValid' : true, 'expectedOutput' : ['5']},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'], elem['recipe'].toLowerCase(), elem['input']);
-        var length = elem['expectedOutput'].length;
+        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        var length = (elem['expectedOutput'] as List<String>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], elem['expectedOutput'][i]);
+          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
-    });
+    }
   });
 
   group("chef_language.mike-worth-HelloWorld", () {
@@ -2017,19 +2000,19 @@ Liquify contents of the mixing bowl.
 Pour contents of the mixing bowl into the baking dish.
 Refrigerate for 1 hour.''';
 
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'language' : 'ENG', 'input' : '',  'recipe' : HelloWorld, 'expectedOutput' : ['Hello world!']},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'], elem['recipe'].toLowerCase(), elem['input']);
-        var length = elem['expectedOutput'].length;
+        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        var length = (elem['expectedOutput'] as List<dynamic>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], elem['expectedOutput'][i]);
+          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
-    });
+    }
   });
 
   group("chef_language.99bottlesOfBeer", () {
@@ -2224,19 +2207,19 @@ Enjoy the beer until Drinked. Pour contents of the mixing bowl into the baking d
 
 Serves 1.''';
 
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'language' : 'ENG', 'input' : '',  'recipe' : BottlesOfBeer, 'expectedOutput' : ['99 Bottles of beer on the wall, 99 bottles of beer.\nTake one down and pass it around, 98 bottles of beer on the wall.\n\n98 Bottles of beer on the wall, 98 bottles of beer.\nTake one down and pass it around, 97 bottles of beer on the wall.\n\n97 Bottles of beer on the wall, 97 bottles of beer.\nTake one down and pass it around, 96 bottles of beer on the wall.\n\n96 Bottles of beer on the wall, 96 bottles of beer.\nTake one down and pass it around, 95 bottles of beer on the wall.\n\n95 Bottles of beer on the wall, 95 bottles of beer.\nTake one down and pass it around, 94 bottles of beer on the wall.\n\n94 Bottles of beer on the wall, 94 bottles of beer.\nTake one down and pass it around, 93 bottles of beer on the wall.\n\n93 Bottles of beer on the wall, 93 bottles of beer.\nTake one down and pass it around, 92 bottles of beer on the wall.\n\n92 Bottles of beer on the wall, 92 bottles of beer.\nTake one down and pass it around, 91 bottles of beer on the wall.\n\n91 Bottles of beer on the wall, 91 bottles of beer.\nTake one down and pass it around, 90 bottles of beer on the wall.\n\n90 Bottles of beer on the wall, 90 bottles of beer.\nTake one down and pass it around, 89 bottles of beer on the wall.\n\n89 Bottles of beer on the wall, 89 bottles of beer.\nTake one down and pass it around, 88 bottles of beer on the wall.\n\n88 Bottles of beer on the wall, 88 bottles of beer.\nTake one down and pass it around, 87 bottles of beer on the wall.\n\n87 Bottles of beer on the wall, 87 bottles of beer.\nTake one down and pass it around, 86 bottles of beer on the wall.\n\n86 Bottles of beer on the wall, 86 bottles of beer.\nTake one down and pass it around, 85 bottles of beer on the wall.\n\n85 Bottles of beer on the wall, 85 bottles of beer.\nTake one down and pass it around, 84 bottles of beer on the wall.\n\n84 Bottles of beer on the wall, 84 bottles of beer.\nTake one down and pass it around, 83 bottles of beer on the wall.\n\n83 Bottles of beer on the wall, 83 bottles of beer.\nTake one down and pass it around, 82 bottles of beer on the wall.\n\n82 Bottles of beer on the wall, 82 bottles of beer.\nTake one down and pass it around, 81 bottles of beer on the wall.\n\n81 Bottles of beer on the wall, 81 bottles of beer.\nTake one down and pass it around, 80 bottles of beer on the wall.\n\n80 Bottles of beer on the wall, 80 bottles of beer.\nTake one down and pass it around, 79 bottles of beer on the wall.\n\n79 Bottles of beer on the wall, 79 bottles of beer.\nTake one down and pass it around, 78 bottles of beer on the wall.\n\n78 Bottles of beer on the wall, 78 bottles of beer.\nTake one down and pass it around, 77 bottles of beer on the wall.\n\n77 Bottles of beer on the wall, 77 bottles of beer.\nTake one down and pass it around, 76 bottles of beer on the wall.\n\n76 Bottles of beer on the wall, 76 bottles of beer.\nTake one down and pass it around, 75 bottles of beer on the wall.\n\n75 Bottles of beer on the wall, 75 bottles of beer.\nTake one down and pass it around, 74 bottles of beer on the wall.\n\n74 Bottles of beer on the wall, 74 bottles of beer.\nTake one down and pass it around, 73 bottles of beer on the wall.\n\n73 Bottles of beer on the wall, 73 bottles of beer.\nTake one down and pass it around, 72 bottles of beer on the wall.\n\n72 Bottles of beer on the wall, 72 bottles of beer.\nTake one down and pass it around, 71 bottles of beer on the wall.\n\n71 Bottles of beer on the wall, 71 bottles of beer.\nTake one down and pass it around, 70 bottles of beer on the wall.\n\n70 Bottles of beer on the wall, 70 bottles of beer.\nTake one down and pass it around, 69 bottles of beer on the wall.\n\n69 Bottles of beer on the wall, 69 bottles of beer.\nTake one down and pass it around, 68 bottles of beer on the wall.\n\n68 Bottles of beer on the wall, 68 bottles of beer.\nTake one down and pass it around, 67 bottles of beer on the wall.\n\n67 Bottles of beer on the wall, 67 bottles of beer.\nTake one down and pass it around, 66 bottles of beer on the wall.\n\n66 Bottles of beer on the wall, 66 bottles of beer.\nTake one down and pass it around, 65 bottles of beer on the wall.\n\n65 Bottles of beer on the wall, 65 bottles of beer.\nTake one down and pass it around, 64 bottles of beer on the wall.\n\n64 Bottles of beer on the wall, 64 bottles of beer.\nTake one down and pass it around, 63 bottles of beer on the wall.\n\n63 Bottles of beer on the wall, 63 bottles of beer.\nTake one down and pass it around, 62 bottles of beer on the wall.\n\n62 Bottles of beer on the wall, 62 bottles of beer.\nTake one down and pass it around, 61 bottles of beer on the wall.\n\n61 Bottles of beer on the wall, 61 bottles of beer.\nTake one down and pass it around, 60 bottles of beer on the wall.\n\n60 Bottles of beer on the wall, 60 bottles of beer.\nTake one down and pass it around, 59 bottles of beer on the wall.\n\n59 Bottles of beer on the wall, 59 bottles of beer.\nTake one down and pass it around, 58 bottles of beer on the wall.\n\n58 Bottles of beer on the wall, 58 bottles of beer.\nTake one down and pass it around, 57 bottles of beer on the wall.\n\n57 Bottles of beer on the wall, 57 bottles of beer.\nTake one down and pass it around, 56 bottles of beer on the wall.\n\n56 Bottles of beer on the wall, 56 bottles of beer.\nTake one down and pass it around, 55 bottles of beer on the wall.\n\n55 Bottles of beer on the wall, 55 bottles of beer.\nTake one down and pass it around, 54 bottles of beer on the wall.\n\n54 Bottles of beer on the wall, 54 bottles of beer.\nTake one down and pass it around, 53 bottles of beer on the wall.\n\n53 Bottles of beer on the wall, 53 bottles of beer.\nTake one down and pass it around, 52 bottles of beer on the wall.\n\n52 Bottles of beer on the wall, 52 bottles of beer.\nTake one down and pass it around, 51 bottles of beer on the wall.\n\n51 Bottles of beer on the wall, 51 bottles of beer.\nTake one down and pass it around, 50 bottles of beer on the wall.\n\n50 Bottles of beer on the wall, 50 bottles of beer.\nTake one down and pass it around, 49 bottles of beer on the wall.\n\n49 Bottles of beer on the wall, 49 bottles of beer.\nTake one down and pass it around, 48 bottles of beer on the wall.\n\n48 Bottles of beer on the wall, 48 bottles of beer.\nTake one down and pass it around, 47 bottles of beer on the wall.\n\n47 Bottles of beer on the wall, 47 bottles of beer.\nTake one down and pass it around, 46 bottles of beer on the wall.\n\n46 Bottles of beer on the wall, 46 bottles of beer.\nTake one down and pass it around, 45 bottles of beer on the wall.\n\n45 Bottles of beer on the wall, 45 bottles of beer.\nTake one down and pass it around, 44 bottles of beer on the wall.\n\n44 Bottles of beer on the wall, 44 bottles of beer.\nTake one down and pass it around, 43 bottles of beer on the wall.\n\n43 Bottles of beer on the wall, 43 bottles of beer.\nTake one down and pass it around, 42 bottles of beer on the wall.\n\n42 Bottles of beer on the wall, 42 bottles of beer.\nTake one down and pass it around, 41 bottles of beer on the wall.\n\n41 Bottles of beer on the wall, 41 bottles of beer.\nTake one down and pass it around, 40 bottles of beer on the wall.\n\n40 Bottles of beer on the wall, 40 bottles of beer.\nTake one down and pass it around, 39 bottles of beer on the wall.\n\n39 Bottles of beer on the wall, 39 bottles of beer.\nTake one down and pass it around, 38 bottles of beer on the wall.\n\n38 Bottles of beer on the wall, 38 bottles of beer.\nTake one down and pass it around, 37 bottles of beer on the wall.\n\n37 Bottles of beer on the wall, 37 bottles of beer.\nTake one down and pass it around, 36 bottles of beer on the wall.\n\n36 Bottles of beer on the wall, 36 bottles of beer.\nTake one down and pass it around, 35 bottles of beer on the wall.\n\n35 Bottles of beer on the wall, 35 bottles of beer.\nTake one down and pass it around, 34 bottles of beer on the wall.\n\n34 Bottles of beer on the wall, 34 bottles of beer.\nTake one down and pass it around, 33 bottles of beer on the wall.\n\n33 Bottles of beer on the wall, 33 bottles of beer.\nTake one down and pass it around, 32 bottles of beer on the wall.\n\n32 Bottles of beer on the wall, 32 bottles of beer.\nTake one down and pass it around, 31 bottles of beer on the wall.\n\n31 Bottles of beer on the wall, 31 bottles of beer.\nTake one down and pass it around, 30 bottles of beer on the wall.\n\n30 Bottles of beer on the wall, 30 bottles of beer.\nTake one down and pass it around, 29 bottles of beer on the wall.\n\n29 Bottles of beer on the wall, 29 bottles of beer.\nTake one down and pass it around, 28 bottles of beer on the wall.\n\n28 Bottles of beer on the wall, 28 bottles of beer.\nTake one down and pass it around, 27 bottles of beer on the wall.\n\n27 Bottles of beer on the wall, 27 bottles of beer.\nTake one down and pass it around, 26 bottles of beer on the wall.\n\n26 Bottles of beer on the wall, 26 bottles of beer.\nTake one down and pass it around, 25 bottles of beer on the wall.\n\n25 Bottles of beer on the wall, 25 bottles of beer.\nTake one down and pass it around, 24 bottles of beer on the wall.\n\n24 Bottles of beer on the wall, 24 bottles of beer.\nTake one down and pass it around, 23 bottles of beer on the wall.\n\n23 Bottles of beer on the wall, 23 bottles of beer.\nTake one down and pass it around, 22 bottles of beer on the wall.\n\n22 Bottles of beer on the wall, 22 bottles of beer.\nTake one down and pass it around, 21 bottles of beer on the wall.\n\n21 Bottles of beer on the wall, 21 bottles of beer.\nTake one down and pass it around, 20 bottles of beer on the wall.\n\n20 Bottles of beer on the wall, 20 bottles of beer.\nTake one down and pass it around, 19 bottles of beer on the wall.\n\n19 Bottles of beer on the wall, 19 bottles of beer.\nTake one down and pass it around, 18 bottles of beer on the wall.\n\n18 Bottles of beer on the wall, 18 bottles of beer.\nTake one down and pass it around, 17 bottles of beer on the wall.\n\n17 Bottles of beer on the wall, 17 bottles of beer.\nTake one down and pass it around, 16 bottles of beer on the wall.\n\n16 Bottles of beer on the wall, 16 bottles of beer.\nTake one down and pass it around, 15 bottles of beer on the wall.\n\n15 Bottles of beer on the wall, 15 bottles of beer.\nTake one down and pass it around, 14 bottles of beer on the wall.\n\n14 Bottles of beer on the wall, 14 bottles of beer.\nTake one down and pass it around, 13 bottles of beer on the wall.\n\n13 Bottles of beer on the wall, 13 bottles of beer.\nTake one down and pass it around, 12 bottles of beer on the wall.\n\n12 Bottles of beer on the wall, 12 bottles of beer.\nTake one down and pass it around, 11 bottles of beer on the wall.\n\n11 Bottles of beer on the wall, 11 bottles of beer.\nTake one down and pass it around, 10 bottles of beer on the wall.\n\n10 Bottles of beer on the wall, 10 bottles of beer.\nTake one down and pass it around, 9 bottles of beer on the wall.\n\n9 Bottles of beer on the wall, 9 bottles of beer.\nTake one down and pass it around, 8 bottles of beer on the wall.\n\n8 Bottles of beer on the wall, 8 bottles of beer.\nTake one down and pass it around, 7 bottles of beer on the wall.\n\n7 Bottles of beer on the wall, 7 bottles of beer.\nTake one down and pass it around, 6 bottles of beer on the wall.\n\n6 Bottles of beer on the wall, 6 bottles of beer.\nTake one down and pass it around, 5 bottles of beer on the wall.\n\n5 Bottles of beer on the wall, 5 bottles of beer.\nTake one down and pass it around, 4 bottles of beer on the wall.\n\n4 Bottles of beer on the wall, 4 bottles of beer.\nTake one down and pass it around, 3 bottles of beer on the wall.\n\n3 Bottles of beer on the wall, 3 bottles of beer.\nTake one down and pass it around, 2 bottles of beer on the wall.\n\n2 Bottles of beer on the wall, 2 bottles of beer.\nTake one down and pass it around, 1 bottles of beer on the wall.\n\n1 Bottle of beer on the wall, 1 bottle of beer.\nTake one down and pass it around, no more bottles of beer on the wall.\n\nNo more bottle of beer on the wall, no more bottle of beer...\nGo to the store and buy some more...99 Bottles of beer.']},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'], elem['recipe'].toLowerCase(), elem['input']);
-        var length = elem['expectedOutput'].length;
+        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        var length = (elem['expectedOutput'] as List<String>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], elem['expectedOutput'][i]);
+          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
-    });
+    }
   });
 
   group("chef_language.joostrijneveld", () {
@@ -2576,7 +2559,7 @@ Shake the carrots until shaken.
 Pour contents of the mixing bowl into the baking dish.
 
 Serves 1.''';
-    var TuringsTastyTortillas = '''''';
+    // var TuringsTastyTortillas = '''''';
     var TuringsTortillasNotEdible = '''Turings Tortillas
 
 This is a universal turing machine in Chef. What? Yeah, really. It is. Just make sure you deliver a large enough tape.
@@ -2713,7 +2696,7 @@ Pour contents of the 2nd mixing bowl into the baking dish.
 
 Serves 1.''';
 
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'language' : 'ENG', 'input' : '5 7 4 6 3 8',  'recipe' : BubbledAndBacon, 'expectedOutput' : ['34678']},
       {'language' : 'ENG', 'input' : '12',  'recipe' : FactorialAndFish, 'expectedOutput' : ['479001600']},
       {'language' : 'ENG', 'input' : '12',  'recipe' : FibonacciDuFromage, 'expectedOutput' : ['1123581321345589144']},
@@ -2726,15 +2709,15 @@ Serves 1.''';
       {'language' : 'ENG', 'input' : '8 1 1 0 1 1 1 1 0 3 1 1 1 1 1 1 0 1 1 2 2 1 1 1 2 2 0 0 0 3 3 1 0 0 0 3 0 0 0 0 0',  'recipe' : TuringsTortillasNotEdible, 'expectedOutput' : ['11111100']},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'], elem['recipe'].toLowerCase(), elem['input']);
-        var length = elem['expectedOutput'].length;
+        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        var length = (elem['expectedOutput'] as List<String>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], elem['expectedOutput'][i]);
+          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
-    });
+    }
   });
 
   group("chef_language.correctFaultyRecipes", () {
@@ -2812,7 +2795,7 @@ Mehl in die Schüssel geben. Milch in die Schüssel geben. Schüssel in eine Ser
 
 Portionen: 1.''';
 
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'language' : 'DEU', 'input' : '',  'recipe' : NoTitle, 'expectedOutput' : ['55249']},
       {'language' : 'DEU', 'input' : '',  'recipe' : IngredientsBlankLines, 'expectedOutput' : ['55249']},
       {'language' : 'DEU', 'input' : '',  'recipe' : MethodsBlankLines, 'expectedOutput' : ['55249']},
@@ -2821,15 +2804,15 @@ Portionen: 1.''';
       {'language' : 'DEU', 'input' : '',  'recipe' : FormatWithSpaces, 'expectedOutput' : ['55249']},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'], elem['recipe'].toLowerCase(), elem['input']);
-        var length = elem['expectedOutput'].length;
+        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        var length = (elem['expectedOutput'] as List<String>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], elem['expectedOutput'][i]);
+          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
-    });
+    }
   });
 
   group("chef_language.realGeoCaches", () {
@@ -2889,6 +2872,7 @@ Method.
 Clean mixing bowl. Put sauerkraut into mixing bowl. Remove einhornhaar. Combine schweine into mixing bowl. Add pfeffer. Put wasser into mixing bowl. Remove sauerkraut. Add einhornhaar. Put wasser into mixing bowl. Remove einhornhaar. Divide pfeffer into mixing bowl. Put schweine into mixing bowl. Combine petersilie into mixing bowl. Add sauerkraut. Put sauerkraut into mixing bowl. Combine sauerkraut into mixing bowl. Add einhornhaar. Put wasser into mixing bowl. Put sauerkraut into mixing bowl. Combine sauerkraut into mixing bowl. Put schweine into mixing bowl. Combine petersilie into mixing bowl.''';
 
     // https://www.geocaching.com/geocache/GC9CAQJ #18 Oma Krimhildes gesunder Strudel
+    // läuft fehlerfrei im Emulator
     var GC9CAQJ = '''Oma Krimhildes Strudel 
 
 Zutaten:
@@ -2920,8 +2904,8 @@ Champignons in die Schüssel geben.
 Honig in die Schüssel geben.
 Schüssel in eine Servierschale stürzen.
 
-Portionen: 1.
-''';
+Portionen: 1.''';
+    // läuft fehlerfrei im Emulator
     var GC9CAQJKorrigiert = '''Oma Krimhildes Strudel 
 
 Zutaten:
@@ -2954,8 +2938,7 @@ Honig in die Schüssel geben.
 Inhalt der Schüssel auf dem Stövchen erhitzen.
 Schüssel in eine Servierschale stürzen.
 
-Portionen: 1.
-''';
+Portionen: 1.''';
 
     // https://www.geocaching.com/geocache/GC7NYHW_backe-backe-kuchen
     var GC7NYHW = '''Zutaten:
@@ -3063,25 +3046,25 @@ Eier aus dem Kühlschrank nehmen. Eier in die Schüssel geben. Mehl in die Schü
 
 Portionen: 1.''';
 
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'language' : 'ENG', 'input' : '',  'recipe' : GC6HRCE, 'expectedOutput' : ['21m296g E013 17.699N52 25.763']},
-      {'language' : 'DEU', 'input' : '',  'recipe' : GC9CAQJ, 'expectedOutput' : ['809711711510111098114ot1310']},  // works in emulator
-      {'language' : 'DEU', 'input' : '',  'recipe' : GC9CAQJKorrigiert, 'expectedOutput' : ['Pausenbrot']}, // works in emulator
+      {'language' : 'DEU', 'input' : '',  'recipe' : GC9CAQJ, 'expectedOutput' : ['809711711510111098114ot1310', '','chef_warning_liquefy_missing_title', '» Inhalt der Schüssel auf dem Stövchen erhitzen. «', 'chef_warning_liquefy_missing_hint', '» Schüssel in eine Servierschale stürzen. «']},  // works in emulator
+      {'language' : 'DEU', 'input' : '',  'recipe' : GC9CAQJKorrigiert, 'expectedOutput' : ['Pausenbrot\r\n']}, // works in emulator
       {'language' : 'DEU', 'input' : '',  'recipe' : GC7NYHW, 'expectedOutput' : ['5256176325256.565452326932484857176324848.55249']},
       {'language' : 'DEU', 'input' : '',  'recipe' : GC8WY5T, 'expectedOutput' : ['783253491763250534651525332326932541763251494657515213106511010310110811032105110325410932Hö104101']},
       {'language' : 'DEU', 'input' : '',  'recipe' : GC8WY5TCorrect, 'expectedOutput' : ['N 51° 25.345  E 6° 31.934\r\nAngeln in 6m Höhe']},
       {'language' : 'DEU', 'input' : '109 3',  'recipe' : GC82M59, 'expectedOutput' : ['5248176327048109']}, //52 48 176 3270 48 109
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'], elem['recipe'].toLowerCase(), elem['input']);
-        var length = elem['expectedOutput'].length;
+        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        var length = (elem['expectedOutput'] as List<String>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], elem['expectedOutput'][i]);
+          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
-    });
+    }
   });
 
 }

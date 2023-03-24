@@ -9,6 +9,8 @@ import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_containe
 const _WEATHERSYMBOL_CLASSES = ['ww', 'w', 'a', 'n', 'c', 'cl', 'cm', 'ch'];
 
 class WeatherSymbols extends StatefulWidget {
+  const WeatherSymbols({Key? key}) : super(key: key);
+
   @override
   WeatherSymbolsState createState() => WeatherSymbolsState();
 }
@@ -16,7 +18,7 @@ class WeatherSymbols extends StatefulWidget {
 class WeatherSymbolsState extends State<WeatherSymbols> {
   var _currentWeatherSymbolClazz = 'ww';
 
-  Map<String, SymbolTableData> _data = {};
+  final Map<String, SymbolTableData> _data = {};
 
   @override
   void initState() {
@@ -25,7 +27,7 @@ class WeatherSymbolsState extends State<WeatherSymbols> {
     _initialize();
   }
 
-  Future _initialize() async {
+  Future<void> _initialize() async {
     for (String clazz in _WEATHERSYMBOL_CLASSES) {
       var symbolTableData = SymbolTableData(context, 'weather_$clazz');
       await symbolTableData.initialize();
@@ -40,7 +42,7 @@ class WeatherSymbolsState extends State<WeatherSymbols> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        GCWDropDown(
+        GCWDropDown<String>(
           value: _currentWeatherSymbolClazz,
           onChanged: (value) {
             setState(() {
@@ -60,25 +62,25 @@ class WeatherSymbolsState extends State<WeatherSymbols> {
     );
   }
 
-  _buildOutput() {
-    if (_data == null || _data.isEmpty) return null;
+  Widget _buildOutput() {
+    if (_data.isEmpty) return Container();
 
-    SymbolTableData data = _data[_currentWeatherSymbolClazz];
+    SymbolTableData data = _data[_currentWeatherSymbolClazz]!;
     return GCWColumnedMultilineOutput(
         data: data.images.map((Map<String, SymbolData> image) {
                 return [
                   image.keys.first,
                   Container(
+                    padding: const EdgeInsets.all(10.0),
                     child: GCWSymbolContainer(
                       symbol: Image.memory(image.values.first.bytes),
                     ),
-                    padding: EdgeInsets.all(10.0),
                   ),
                   i18n(context, 'weathersymbols_${_currentWeatherSymbolClazz}_${image.keys.first}')
                 ];
               }).toList(),
         copyColumn: 2,
-        flexValues: [1, 2, 6],
+        flexValues: const [1, 2, 6],
     );
   }
 }

@@ -95,15 +95,16 @@ part of 'package:gc_wizard/tools/coords/_common/logic/external_libs/net.sf.geogr
  *   }
  * }}</pre>
  **********************************************************************/
-class _GeodesicLine {
-  static final int _nC1_ = Geodesic.nC1_;
-  static final int _nC1p_ = Geodesic.nC1p_;
-  static final int _nC2_ = Geodesic.nC2_;
-  static final int _nC3_ = Geodesic.nC3_;
-  static final int _nC4_ = Geodesic.nC4_;
 
-  double _lat1, _lon1, _azi1;
-  double _a,
+class _GeodesicLine {
+  static const int _nC1_ = Geodesic.nC1_;
+  static const int _nC1p_ = Geodesic.nC1p_;
+  static const int _nC2_ = Geodesic.nC2_;
+  static const int _nC3_ = Geodesic.nC3_;
+  static const int _nC4_ = Geodesic.nC4_;
+
+  late double _lat1, _lon1, _azi1;
+  late double _a,
       _f,
       _b,
       _c2,
@@ -128,10 +129,10 @@ class _GeodesicLine {
       _B31,
       _A4,
       _B41;
-  double _a13, _s13;
+  // late double _a13, _s13;
   // index zero elements of _C1a, _C1pa, _C2a, _C3a are unused
-  List<double> _C1a, _C1pa, _C2a, _C3a, _C4a; // all the elements of _C4a are used
-  int _caps;
+  late List<double> _C1a, _C1pa, _C2a, _C3a, _C4a; // all the elements of _C4a are used
+  late int _caps;
   /*
    * Constructor for a geodesic line staring at latitude <i>lat1</i>, longitude
    * <i>lon1</i>, and azimuth <i>azi1</i> (all in degrees) with a subset of the
@@ -180,7 +181,7 @@ class _GeodesicLine {
   _GeodesicLine(Geodesic g, double lat1, double lon1, double azi1, int caps) {
     azi1 = _GeoMath.AngNormalize(azi1);
     double salp1, calp1;
-    _Pair p = new _Pair();
+    _Pair p = _Pair();
     // Guard against underflow in salp0
     _GeoMath.sincosd(p, _GeoMath.AngRound(azi1));
     salp1 = p.first;
@@ -326,9 +327,9 @@ class _GeodesicLine {
   GeodesicData Position(bool arcmode, double s12_a12, int outmask) {
     outmask &= _caps & _GeodesicMask.OUT_MASK;
     GeodesicData r = GeodesicData();
-    if (!(_Init() && (arcmode || (_caps & (_GeodesicMask.OUT_MASK & _GeodesicMask.DISTANCE_IN)) != 0)))
-      // Uninitialized or impossible distance calculation requested
+    if (!(_Init() && (arcmode || (_caps & (_GeodesicMask.OUT_MASK & _GeodesicMask.DISTANCE_IN)) != 0))) {
       return r;
+    }
     r.lat1 = _lat1;
     r.azi1 = _azi1;
     r.lon1 = ((outmask & _GeodesicMask.LONG_UNROLL) != 0) ? _lon1 : _GeoMath.AngNormalize(_lon1);
@@ -399,9 +400,9 @@ class _GeodesicLine {
     sbet2 = _calp0 * ssig2;
     // Alt: cbet2 = Math.hypot(csig2, salp0 * ssig2);
     cbet2 = _hypot(_salp0, _calp0 * csig2);
-    if (cbet2 == 0)
-      // I.e., salp0 = 0, csig2 = 0.  Break the degeneracy in this case
+    if (cbet2 == 0) {
       cbet2 = csig2 = Geodesic.tiny_;
+    }
     // tan(alp0) = cos(sig2)*tan(alp2)
     salp2 = _salp0;
     calp2 = _calp0 * csig2; // No need to normalize
@@ -435,10 +436,9 @@ class _GeodesicLine {
       double B22 = Geodesic.SinCosSeries(true, ssig2, csig2, _C2a),
           AB2 = (1 + _A2m1) * (B22 - _B21),
           J12 = (_A1m1 - _A2m1) * sig12 + (AB1 - AB2);
-      if ((outmask & _GeodesicMask.REDUCEDLENGTH) != 0)
-        // Add parens around (_csig1 * ssig2) and (_ssig1 * csig2) to ensure
-        // accurate cancellation in the case of coincident points.
+      if ((outmask & _GeodesicMask.REDUCEDLENGTH) != 0) {
         r.m12 = _b * ((dn2 * (_csig1 * ssig2) - _dn1 * (_ssig1 * csig2)) - _csig1 * csig2 * J12);
+      }
       if ((outmask & _GeodesicMask.GEODESICSCALE) != 0) {
         double t = _k2 * (ssig2 - _ssig1) * (ssig2 + _ssig1) / (_dn1 + dn2);
         r.M12 = csig12 + (t * ssig2 - csig2 * J12) * _ssig1 / _dn1;

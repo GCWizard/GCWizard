@@ -20,8 +20,9 @@ int _assembleBit(Uint8List byte) {
   return assembled;
 }
 
-String _decodeSteganoMessageFromImage(_SteganoDecodeRequest req) {
-  Image origin = decodeImage(req.imageData);
+String? _decodeSteganoMessageFromImage(_SteganoDecodeRequest req) {
+  Image? origin = decodeImage(req.imageData);
+  if (origin == null) return null;
   Uint8List img = origin.getBytes();
 
   Uint8List extracted = Uint8List(img.length);
@@ -56,9 +57,9 @@ String _decodeSteganoMessageFromImage(_SteganoDecodeRequest req) {
   Uint8List sanitized = Uint8List.fromList(byteMsg.getRange(0, lastNonZeroIdx + 1).toList());
   String msg = String.fromCharCodes(sanitized);
 
-  String token = req.key;
+  String? token = req.key;
   if (req.canEncrypt()) {
-    crypto.Key key = crypto.Key.fromUtf8(_steganoPadKey(token));
+    crypto.Key key = crypto.Key.fromUtf8(_steganoPadKey(token!));
     crypto.IV iv = crypto.IV.fromLength(16);
     crypto.Encrypter encrypter = crypto.Encrypter(crypto.AES(key));
     crypto.Encrypted encryptedMsg = crypto.Encrypted.fromBase64(msg);
@@ -68,6 +69,5 @@ String _decodeSteganoMessageFromImage(_SteganoDecodeRequest req) {
 }
 
 Future<String> _decodeSteganoMessageFromImageAsync(_SteganoDecodeRequest req) async {
-  final String res = await compute(_decodeSteganoMessageFromImage, req);
-  return res;
+  return compute(_decodeSteganoMessageFromImage as ComputeCallback<_SteganoDecodeRequest, String>, req);
 }

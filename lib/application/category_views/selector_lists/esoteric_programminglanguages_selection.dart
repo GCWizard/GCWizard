@@ -18,27 +18,29 @@ import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_langua
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class EsotericProgrammingLanguageSelection extends GCWSelection {
+  const EsotericProgrammingLanguageSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(Beatnik()),
-        className(Befunge()),
-        className(Brainfk()),
-        className(Chef()),
-        className(Cow()),
-        className(Deadfish()),
-        className(Hohoho()),
-        className(KarolRobot()),
-        className(Malbolge()),
+        className(const Beatnik()),
+        className(const Befunge()),
+        className(const Brainfk()),
+        className(const Chef()),
+        className(const Cow()),
+        className(const Deadfish()),
+        className(const Hohoho()),
+        className(const KarolRobot()),
+        className(const Malbolge()),
         className(Ook()),
-        className(Piet()),
-        className(WhitespaceLanguage()),
+        className(const Piet()),
+        className(const WhitespaceLanguage()),
       ].contains(className(element.tool));
     }).toList();
 
     _toolList.sort((a, b) => sortToolList(a, b));
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

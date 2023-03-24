@@ -101,10 +101,10 @@ const _decode = <int>[
   14, 15, 16, -2, -2, -2, 17, 18, 19, -2, -2, -2, -2, -2, -2, -2,
 ]; //
 
-bool _matchesPattern(String string, Pattern pattern) => string.indexOf(pattern) >= 0;
+bool _matchesPattern(String string, Pattern pattern) => string.contains(pattern);
 
 bool _isValid(String code) {
-  if (code == null || code.length == 1) {
+  if (code.length == 1) {
     return false;
   }
 
@@ -133,7 +133,7 @@ bool _isValid(String code) {
     if (padMatch.length != 1) {
       return false;
     }
-    var matchLength = padMatch.first.group(0).length;
+    var matchLength = padMatch.first.group(0)!.length;
     if (matchLength.isOdd || matchLength > separatorPosition - 2) {
       return false;
     }
@@ -149,10 +149,11 @@ bool _isValid(String code) {
   }
 
   // Check code contains only valid characters.
-  var filterCallback = (ch) => !(ch > _decode.length || _decode[ch] < -1);
+  filterCallback(int ch) => !(ch > _decode.length || _decode[ch] < -1);
   return code.codeUnits.every(filterCallback);
 }
 
+// ignore: unused_element
 num _clipLatitude(num latitude) => latitude.clamp(-90.0, 90.0);
 
 /// Compute the latitude precision value for a given code length.
@@ -160,23 +161,12 @@ num _clipLatitude(num latitude) => latitude.clamp(-90.0, 90.0);
 /// Lengths <= 10 have the same precision for latitude and longitude, but
 /// lengths > 10 have different precisions due to the grid method having fewer
 /// columns than rows.
-num _computeLatitudePrecision(int codeLength) {
-  if (codeLength <= 10) {
-    return pow(encodingBase, (codeLength ~/ -2) + 2);
-  }
-  return 1 / (pow(encodingBase, 3) * pow(gridRows, codeLength - 10));
-}
-
-/// Normalize a [longitude] into the range -180 to 180, not including 180.
-num _normalizeLongitude(num longitude) {
-  while (longitude < -180) {
-    longitude += 360;
-  }
-  while (longitude >= 180) {
-    longitude -= 360;
-  }
-  return longitude;
-}
+// num _computeLatitudePrecision(int codeLength) {
+//   if (codeLength <= 10) {
+//     return pow(encodingBase, (codeLength ~/ -2) + 2);
+//   }
+//   return 1 / (pow(encodingBase, 3) * pow(gridRows, codeLength - 10));
+// }
 
 /// Determines if a [code] is a valid short code.
 ///
@@ -244,8 +234,6 @@ bool _isFull(String code) {
 /// * [codeLength]: The number of significant digits in the output code, not
 /// including any separator characters.
 OpenLocationCode latLonToOpenLocationCode(LatLng coords, {int codeLength = pairCodeLength}) {
-  if (codeLength == 0) return null;
-
   if (codeLength % 2 == 1) codeLength--;
 
   var code = '';
@@ -296,7 +284,7 @@ OpenLocationCode latLonToOpenLocationCode(LatLng coords, {int codeLength = pairC
   return OpenLocationCode(code.substring(0, codeLength) + (padding * (separatorPosition - codeLength)) + separator);
 }
 
-OpenLocationCode parseOpenLocationCode(String input) {
+OpenLocationCode? parseOpenLocationCode(String input) {
   var openLocationCode = OpenLocationCode(input);
   return openLocationCodeToLatLon(openLocationCode) == null ? null : openLocationCode;
 }
@@ -318,8 +306,8 @@ String _sanitizeOLCode(String olc) {
 }
 
 /// Decodes an Open Location Code into the location coordinates.
-LatLng openLocationCodeToLatLon(OpenLocationCode openLocationCode) {
-  if (openLocationCode == null || openLocationCode.text == null || openLocationCode.text.isEmpty) return null;
+LatLng? openLocationCodeToLatLon(OpenLocationCode openLocationCode) {
+  if (openLocationCode.text.isEmpty) return null;
 
   var len = openLocationCode.text.replaceAll('+', '').length;
   if (len <= 10 && len.isOdd) return null;

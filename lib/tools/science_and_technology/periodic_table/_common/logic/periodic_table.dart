@@ -1,5 +1,8 @@
+import 'package:collection/collection.dart';
+
 import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/utils/datetime_utils.dart';
+import 'package:tuple/tuple.dart';
 
 enum GroupType { MAIN_GROUP, SUB_GROUP }
 
@@ -67,7 +70,7 @@ class PeriodicTableElement {
   final double electronegativity;
   final double meltingPoint;
   final double boilingPoint;
-  IUPACGroupName iupacGroupName;
+  IUPACGroupName? iupacGroupName;
   final bool isRadioactive;
   final bool isSynthetic;
   final int period;
@@ -76,9 +79,9 @@ class PeriodicTableElement {
   final int mostCommonIsotop;
   final double halfLife; //German: Halbwertszeit
   final List<String> comments;
-  int mainGroup;
-  int subGroup;
-  StateOfMatter stateOfMatter;
+  int? mainGroup;
+  int? subGroup;
+  late StateOfMatter stateOfMatter;
 
   PeriodicTableElement(
       this.name,
@@ -95,63 +98,64 @@ class PeriodicTableElement {
       this.density,
       this.mostCommonIsotop,
       this.halfLife, //German: Halbwertszeit
-      {this.comments: const []}) {
+      {this.comments = const []}) {
     var group = iupacGroupToMainSubGroup(iupacGroup);
-    if (group['type'] == GroupType.MAIN_GROUP)
-      this.mainGroup = group['value'];
-    else
-      this.subGroup = group['value'];
-
-    if (this.boilingPoint == -double.infinity && this.meltingPoint == -double.infinity) {
-      this.stateOfMatter = StateOfMatter.UNKNOWN;
-    } else if (this.boilingPoint > -double.infinity && this.boilingPoint < 20) {
-      this.stateOfMatter = StateOfMatter.GAS;
-    } else if (this.meltingPoint > -double.infinity && this.meltingPoint < 20) {
-      this.stateOfMatter = StateOfMatter.LIQUID;
+    if (group?.item1 == GroupType.MAIN_GROUP) {
+      mainGroup = group?.item2;
     } else {
-      this.stateOfMatter = StateOfMatter.SOLID;
+      subGroup = group?.item2;
     }
 
-    switch (this.iupacGroup) {
+    if (boilingPoint == -double.infinity && meltingPoint == -double.infinity) {
+      stateOfMatter = StateOfMatter.UNKNOWN;
+    } else if (boilingPoint > -double.infinity && boilingPoint < 20) {
+      stateOfMatter = StateOfMatter.GAS;
+    } else if (meltingPoint > -double.infinity && meltingPoint < 20) {
+      stateOfMatter = StateOfMatter.LIQUID;
+    } else {
+      stateOfMatter = StateOfMatter.SOLID;
+    }
+
+    switch (iupacGroup) {
       case 1:
-        this.iupacGroupName = IUPACGroupName.ALKALI_METALS;
+        iupacGroupName = IUPACGroupName.ALKALI_METALS;
         break;
       case 2:
-        this.iupacGroupName = IUPACGroupName.ALKALINE_EARTH_METALS;
+        iupacGroupName = IUPACGroupName.ALKALINE_EARTH_METALS;
         break;
       case 13:
-        this.iupacGroupName = IUPACGroupName.EARTH_METALS;
+        iupacGroupName = IUPACGroupName.EARTH_METALS;
         break;
       case 14:
-        this.iupacGroupName = IUPACGroupName.TETRELS;
+        iupacGroupName = IUPACGroupName.TETRELS;
         break;
       case 15:
-        this.iupacGroupName = IUPACGroupName.PNICTOGENS;
+        iupacGroupName = IUPACGroupName.PNICTOGENS;
         break;
       case 16:
-        this.iupacGroupName = IUPACGroupName.CHALCOGENS;
+        iupacGroupName = IUPACGroupName.CHALCOGENS;
         break;
       case 17:
-        this.iupacGroupName = IUPACGroupName.HALOGENS;
+        iupacGroupName = IUPACGroupName.HALOGENS;
         break;
       case 18:
-        this.iupacGroupName = IUPACGroupName.NOBLE_GASES;
+        iupacGroupName = IUPACGroupName.NOBLE_GASES;
         break;
     }
 
-    if (this.atomicNumber >= 57 && this.atomicNumber <= 71) {
-      this.iupacGroupName = IUPACGroupName.LANTHANIDES;
-    } else if (this.atomicNumber >= 89 && this.atomicNumber <= 103) {
-      this.iupacGroupName = IUPACGroupName.ACTINIDES;
+    if (atomicNumber >= 57 && atomicNumber <= 71) {
+      iupacGroupName = IUPACGroupName.LANTHANIDES;
+    } else if (atomicNumber >= 89 && atomicNumber <= 103) {
+      iupacGroupName = IUPACGroupName.ACTINIDES;
     }
   }
 
-  get formattedHalfLife {
-    return formatDaysToNearestUnit(this.halfLife);
+  String get formattedHalfLife {
+    return formatDaysToNearestUnit(halfLife);
   }
 
-  get formattedDensity {
-    return (this.density < 0.1) ? this.density.toStringAsExponential() : this.density.toString();
+  String get formattedDensity {
+    return (density < 0.1) ? density.toStringAsExponential() : density.toString();
   }
 
   @override
@@ -160,9 +164,9 @@ class PeriodicTableElement {
   }
 }
 
-Map<String, dynamic> iupacGroupToMainSubGroup(int iupacGroup) {
-  var value;
-  var type;
+Tuple2<GroupType, int>? iupacGroupToMainSubGroup(int iupacGroup) {
+  int value;
+  GroupType type;
 
   if ([1, 2].contains(iupacGroup)) {
     type = GroupType.MAIN_GROUP;
@@ -179,9 +183,11 @@ Map<String, dynamic> iupacGroupToMainSubGroup(int iupacGroup) {
   } else if ([13, 14, 15, 16, 17, 18].contains(iupacGroup)) {
     type = GroupType.MAIN_GROUP;
     value = iupacGroup - 10;
+  } else {
+    return null;
   }
 
-  return {'type': type, 'value': value};
+  return Tuple2<GroupType, int>(type, value);
 }
 
 final List<PeriodicTableElement> allPeriodicTableElements = [
@@ -559,24 +565,24 @@ final List<PeriodicTableElement> allPeriodicTableElements = [
 ];
 
 String atomicNumbersToText(List<int> atomicNumbers) {
-  if (atomicNumbers == null || atomicNumbers.isEmpty) return '';
+  if (atomicNumbers.isEmpty) return '';
 
   return atomicNumbers.map((atomicNumber) {
     var element =
-        allPeriodicTableElements.firstWhere((element) => element.atomicNumber == atomicNumber, orElse: () => null);
+        allPeriodicTableElements.firstWhereOrNull((element) => element.atomicNumber == atomicNumber);
     return element != null ? element.chemicalSymbol : UNKNOWN_ELEMENT;
   }).join();
 }
 
-List<int> textToAtomicNumbers(String input) {
-  if (input == null || input.isEmpty) return <int>[];
+List<int?> textToAtomicNumbers(String input) {
+  if (input.isEmpty) return <int>[];
   input = input.replaceAll(RegExp(r'[^A-Za-z]'), '');
   if (input.isEmpty) return <int>[];
 
   var chemSymbol = RegExp(r'[A-Z][a-z]*');
   return chemSymbol.allMatches(input).map((symbol) {
-    var element =
-        allPeriodicTableElements.firstWhere((element) => element.chemicalSymbol == symbol.group(0), orElse: () => null);
+    PeriodicTableElement? element =
+        allPeriodicTableElements.firstWhereOrNull((element) => element.chemicalSymbol == symbol.group(0));
     if (element == null) return null;
 
     return element.atomicNumber;

@@ -3,27 +3,26 @@ import 'package:gc_wizard/tools/crypto_and_encodings/prime_alphabet/logic/prime_
 
 void main() {
   group("PrimeAlphabet.decryptPrimeAlphabetWithoutOffset:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : <int>[], 'expectedOutput' : ''},
 
       {'input' : [2,3,5,89,97,101], 'expectedOutput' : 'ABCXYZ'},
-      {'input' : [2,null,5,89,97,101], 'expectedOutput' : 'A<?>CXYZ'},
+      // {'input' : [2,null,5,89,97,101], 'expectedOutput' : 'A<?>CXYZ'},
       {'input' : [2,103,241], 'expectedOutput' : 'AAA'},
 
       {'input' : [-1,0,1,2,3,4,5,42,89,97,100,101], 'expectedOutput' : '<?><?><?>AB<?>C<?>XY<?>Z'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decryptPrimeAlphabet(elem['input']);
+        var _actual = decryptPrimeAlphabet(elem['input'] as List<int>);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("PrimeAlphabet.decryptPrimeAlphabetWithOffset:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : [3,5,89,97,101], 'firstRecognizedPrime': 3, 'expectedOutput' : 'ABWXY'},
       {'input' : [3,5,89,97,101], 'firstRecognizedPrime': 4, 'expectedOutput' : '<?>AVWX'},
       {'input' : [3,5,89,97,101], 'firstRecognizedPrime': 5, 'expectedOutput' : '<?>AVWX'},
@@ -44,33 +43,37 @@ void main() {
       {'input' : [3,5,89,97,101,103,107,109,229,233,239], 'firstRecognizedPrime': 84, 'expectedOutput' : '<?><?>ABCDEFABC'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, firstRecognizedPrime: ${elem['firstRecognizedPrime']}', () {
-        var _actual = decryptPrimeAlphabet(elem['input'], firstRecognizedPrime: elem['firstRecognizedPrime']);
-        expect(_actual, elem['expectedOutput']);
+        if (elem['firstRecognizedPrime'] == null) {
+          var _actual = decryptPrimeAlphabet(elem['input'] as List<int>);
+          expect(_actual, elem['expectedOutput']);
+        } else {
+          var _actual = decryptPrimeAlphabet(
+              elem['input'] as List<int>, firstRecognizedPrime: elem['firstRecognizedPrime'] as int);
+          expect(_actual, elem['expectedOutput']);
+        }
       });
-    });
+    }
   });
 
   group("PrimeAlphabet.encryptPrimeAlphabetWithoutOffset:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : <int>[]},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : <int>[]},
 
       {'input' : 'ABCXYZ', 'expectedOutput' : [2,3,5,89,97,101]},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encryptPrimeAlphabet(elem['input']);
+        var _actual = encryptPrimeAlphabet(elem['input'] as String);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("PrimeAlphabet.encryptPrimeAlphabetWithOffset:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : <int>[]},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : <int>[]},
 
       {'input' : 'ABCDWXYZ',  'firstRecognizedPrime': 3,  'lastRecognizedPrime': 103,  'expectedOutput' : [3, 5, 7, 11, 89, 97, 101, 103]},
@@ -102,27 +105,32 @@ void main() {
       {'input' : 'ABCDWXYZ',  'firstRecognizedPrime': 461,  'lastRecognizedPrime': 463,  'expectedOutput' : [461, 463, null, null, null, null, null, null]},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, firstRecognizedPrime: ${elem['firstRecognizedPrime']}, lastRecognizedPrime: ${elem['lastRecognizedPrime']}', () {
-        var _actual = encryptPrimeAlphabet(elem['input'], firstRecognizedPrime: elem['firstRecognizedPrime'], lastRecognizedPrime: elem['lastRecognizedPrime']);
-        expect(_actual, elem['expectedOutput']);
+        if (elem['firstRecognizedPrime'] == null || elem['lastRecognizedPrime'] == null) {
+          var _actual = encryptPrimeAlphabet(elem['input'] as String);
+          expect(_actual, elem['expectedOutput']);
+        } else {
+          var _actual = encryptPrimeAlphabet(elem['input'] as String, firstRecognizedPrime: elem['firstRecognizedPrime'] as int, lastRecognizedPrime: elem['lastRecognizedPrime'] as int);
+          expect(_actual, elem['expectedOutput']);
+        }
       });
-    });
+    }
   });
 
   group("PrimeAlphabet.encryptPrimeAlphabetHomophone:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : 'ABCDWXYZ',  'firstRecognizedPrime': 2,  'lastRecognizedPrime': 1097},
       {'input' : 'ABCDWXYZ',  'firstRecognizedPrime': 2,  'lastRecognizedPrime': 233},
       {'input' : 'ABCDWXYZ',  'firstRecognizedPrime': 401,  'lastRecognizedPrime': 1097},
       {'input' : 'ABCDWXYZ',  'firstRecognizedPrime': 461,  'lastRecognizedPrime': 1097},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, firstRecognizedPrime: ${elem['firstRecognizedPrime']}, lastRecognizedPrime: ${elem['lastRecognizedPrime']}', () {
-        var _actual = encryptPrimeAlphabet(elem['input'], firstRecognizedPrime: elem['firstRecognizedPrime'], lastRecognizedPrime: elem['lastRecognizedPrime']);
-        expect(decryptPrimeAlphabet(_actual, firstRecognizedPrime: elem['firstRecognizedPrime']), elem['input']);
+        var _actual = encryptPrimeAlphabet(elem['input'] as String, firstRecognizedPrime: elem['firstRecognizedPrime'] as int, lastRecognizedPrime: elem['lastRecognizedPrime'] as int);
+        expect(decryptPrimeAlphabet(_actual, firstRecognizedPrime: elem['firstRecognizedPrime'] as int), elem['input'] as String);
       });
-    });
+    }
   });
 }

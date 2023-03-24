@@ -6,7 +6,7 @@ import 'package:path/path.dart' as path;
 var testDirPath = 'test/tools/images_and_files/exif_reader/resources/';
 
 List<io.FileSystemEntity> readSamples() {
-  io.Directory dir = new io.Directory(testDirPath);
+  io.Directory dir = io.Directory(testDirPath);
   Set<String> allowedExtensions = {'.jpg', '.tiff'};
   var files = dir.listSync(recursive: true).where((file) => (allowedExtensions.contains(getFileExtension(file.path))));
   return files.toList();

@@ -9,7 +9,7 @@ import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 class IrrationalNumbersDecimalRange extends StatefulWidget {
   final IrrationalNumber irrationalNumber;
 
-  const IrrationalNumbersDecimalRange({Key key, this.irrationalNumber}) : super(key: key);
+  const IrrationalNumbersDecimalRange({Key? key, required this.irrationalNumber}) : super(key: key);
 
   @override
   IrrationalNumbersDecimalRangeState createState() => IrrationalNumbersDecimalRangeState();
@@ -18,7 +18,7 @@ class IrrationalNumbersDecimalRange extends StatefulWidget {
 class IrrationalNumbersDecimalRangeState extends State<IrrationalNumbersDecimalRange> {
   int _currentStart = 1;
   int _currentLength = 1;
-  IrrationalNumberCalculator _calculator;
+  late IrrationalNumberCalculator _calculator;
 
   @override
   void initState() {
@@ -61,7 +61,7 @@ class IrrationalNumbersDecimalRangeState extends State<IrrationalNumbersDecimalR
     );
   }
 
-  _calculateOutput() {
+  String _calculateOutput() {
     if (_currentStart < 1) return '';
 
     try {

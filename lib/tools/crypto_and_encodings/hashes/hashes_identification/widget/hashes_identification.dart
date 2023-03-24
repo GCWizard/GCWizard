@@ -6,6 +6,8 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/hashes/logic/hashes.dart';
 
 class HashIdentification extends StatefulWidget {
+  const HashIdentification({Key? key}) : super(key: key);
+
   @override
   _HashIdentificationState createState() => _HashIdentificationState();
 }
@@ -36,14 +38,13 @@ class _HashIdentificationState extends State<HashIdentification> {
     });
 
     HASHKEY_FUNCTIONS.forEach((key, function) {
-      if (_possibleHash(function(_currentValue, null))) rows.add([i18n(context, key + '_title')]);
+      if (_possibleHash(function(_currentValue, ''))) rows.add([i18n(context, key + '_title')]);
     });
 
     return GCWDefaultOutput(child: GCWColumnedMultilineOutput(data: rows));
   }
 
   bool _possibleHash(String hash) {
-    if (hash == null || _currentValue == null) return false;
-    return hash?.length == _currentValue.length;
+    return hash.length == _currentValue.length;
   }
 }

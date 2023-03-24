@@ -5,25 +5,26 @@ import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
 import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_outputformat.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/antipodes/logic/antipodes.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coord_format_getter.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
+import 'package:latlong2/latlong.dart';
 
 class Antipodes extends StatefulWidget {
+  const Antipodes({Key? key}) : super(key: key);
+
   @override
   AntipodesState createState() => AntipodesState();
 }
 
 class AntipodesState extends State<Antipodes> {
-  var _currentCoords = defaultCoordinate;
+  var _currentCoords = defaultBaseCoordinate;
 
-  var _currentValues = [defaultCoordinate];
+  var _currentValues = <LatLng>[];
   var _currentMapPoints = <GCWMapPoint>[];
-  var _currentCoordsFormat = defaultCoordFormat();
 
-  var _currentOutputFormat = defaultCoordFormat();
+  var _currentOutputFormat = defaultCoordinateFormat;
   List<String> _currentOutput = <String>[];
 
   @override
@@ -32,11 +33,10 @@ class AntipodesState extends State<Antipodes> {
       children: <Widget>[
         GCWCoords(
           title: i18n(context, 'coords_antipodes_coorda'),
-          coordsFormat: _currentCoordsFormat,
+          coordsFormat: _currentCoords.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoordsFormat = ret['coordsFormat'];
-              _currentCoords = ret['value'];
+              _currentCoords = ret;
             });
           },
         ),
@@ -63,14 +63,14 @@ class AntipodesState extends State<Antipodes> {
     );
   }
 
-  _calculateOutput() {
-    _currentValues = [antipodes(_currentCoords)];
+  void _calculateOutput() {
+    _currentValues = [antipodes(_currentCoords.toLatLng()!)];
 
     _currentMapPoints = [
       GCWMapPoint(
-          point: _currentCoords,
+          point: _currentCoords.toLatLng()!,
           markerText: i18n(context, 'coords_antipodes_coorda'),
-          coordinateFormat: _currentCoordsFormat),
+          coordinateFormat: _currentCoords.format),
       GCWMapPoint(
           point: _currentValues[0],
           color: COLOR_MAP_CALCULATEDPOINT,
@@ -78,8 +78,8 @@ class AntipodesState extends State<Antipodes> {
           coordinateFormat: _currentOutputFormat),
     ];
 
-    _currentOutput = _currentValues.map((coord) {
-      return formatCoordOutput(coord, _currentOutputFormat, defaultEllipsoid());
+    _currentOutput = _currentValues.map((LatLng coord) {
+      return formatCoordOutput(coord, _currentOutputFormat, defaultEllipsoid);
     }).toList();
   }
 }

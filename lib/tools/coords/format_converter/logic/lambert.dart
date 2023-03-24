@@ -1,3 +1,5 @@
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
@@ -25,25 +27,25 @@ class _LambertDefinition {
   final double latitudeOfOrigin; // lat0 φ0
   final double standardParallel1; // stdlat1 φ1
   final double standardParallel2; // stdlat2 φ2
-  final double scaleFactor; // k0
+  // final double scaleFactor; // k0
   final double falseEasting; // x0
   final double falseNorthing; // y1
 
   const _LambertDefinition(
-      {this.centralMeridian,
-      this.latitudeOfOrigin,
-      this.standardParallel1,
-      this.standardParallel2,
-      this.scaleFactor,
-      this.falseEasting,
-      this.falseNorthing});
+      {required this.centralMeridian,
+      required this.latitudeOfOrigin,
+      required this.standardParallel1,
+      required this.standardParallel2,
+      // this.scaleFactor,
+      required this.falseEasting,
+      required this.falseNorthing});
 }
 
 //https://www.spatialreference.org/ref/epsg/<epsg number>/html/
 
-final Map<LambertType, _LambertDefinition> _LambertDefinitions = {
+const Map<CoordinateFormatKey, _LambertDefinition> _LambertDefinitions = {
   //EPSG 2154, LAMB93, RGF93, Reseau Geodesique Francais 1993
-  LambertType.LAMBERT_93: _LambertDefinition(
+  CoordinateFormatKey.LAMBERT93: _LambertDefinition(
       centralMeridian: 3.0,
       latitudeOfOrigin: 46.5,
       standardParallel1: 49.0,
@@ -51,7 +53,7 @@ final Map<LambertType, _LambertDefinition> _LambertDefinitions = {
       falseEasting: 700000.0,
       falseNorthing: 6600000.0),
   //EPSG 3812, Belgian Lambert 2008
-  LambertType.LAMBERT_2008: _LambertDefinition(
+  CoordinateFormatKey.LAMBERT2008: _LambertDefinition(
       centralMeridian: 4.359215833333335,
       latitudeOfOrigin: 50.79781500000001,
       standardParallel1: 49.833333333333336,
@@ -59,7 +61,7 @@ final Map<LambertType, _LambertDefinition> _LambertDefinitions = {
       falseEasting: 649328.0,
       falseNorthing: 665262.0),
   //EPSG 31370
-  LambertType.LAMBERT_72: _LambertDefinition(
+  CoordinateFormatKey.LAMBERT72: _LambertDefinition(
       centralMeridian: 4.367486666666666,
       latitudeOfOrigin: 90.0,
       standardParallel1: 51.16666723333333,
@@ -67,7 +69,7 @@ final Map<LambertType, _LambertDefinition> _LambertDefinitions = {
       falseEasting: 150000.013,
       falseNorthing: 5400088.438),
   //EPSG 3034
-  LambertType.ETRS89_LCC: _LambertDefinition(
+  CoordinateFormatKey.ETRS89LCC: _LambertDefinition(
       centralMeridian: 10.0,
       latitudeOfOrigin: 52.0,
       standardParallel1: 35.0,
@@ -75,7 +77,7 @@ final Map<LambertType, _LambertDefinition> _LambertDefinitions = {
       falseEasting: 4000000.0,
       falseNorthing: 2800000.0),
   //EPSG 3942, RGF93
-  LambertType.L93_CC42: _LambertDefinition(
+  CoordinateFormatKey.LAMBERT93_CC42: _LambertDefinition(
       centralMeridian: 3.0,
       latitudeOfOrigin: 42.0,
       standardParallel1: 41.25,
@@ -83,7 +85,7 @@ final Map<LambertType, _LambertDefinition> _LambertDefinitions = {
       falseEasting: 1700000.0,
       falseNorthing: 1200000.0),
   //EPSG 3943, RGF93
-  LambertType.L93_CC43: _LambertDefinition(
+  CoordinateFormatKey.LAMBERT93_CC43: _LambertDefinition(
       centralMeridian: 3.0,
       latitudeOfOrigin: 43.0,
       standardParallel1: 42.25,
@@ -91,7 +93,7 @@ final Map<LambertType, _LambertDefinition> _LambertDefinitions = {
       falseEasting: 1700000.0,
       falseNorthing: 2200000.0),
   //EPSG 3944, RGF93
-  LambertType.L93_CC44: _LambertDefinition(
+  CoordinateFormatKey.LAMBERT93_CC44: _LambertDefinition(
       centralMeridian: 3.0,
       latitudeOfOrigin: 44.0,
       standardParallel1: 43.25,
@@ -99,7 +101,7 @@ final Map<LambertType, _LambertDefinition> _LambertDefinitions = {
       falseEasting: 1700000.0,
       falseNorthing: 3200000.0),
   //EPSG 3945, RGF93
-  LambertType.L93_CC45: _LambertDefinition(
+  CoordinateFormatKey.LAMBERT93_CC45: _LambertDefinition(
       centralMeridian: 3.0,
       latitudeOfOrigin: 45.0,
       standardParallel1: 44.25,
@@ -107,7 +109,7 @@ final Map<LambertType, _LambertDefinition> _LambertDefinitions = {
       falseEasting: 1700000.0,
       falseNorthing: 4200000.0),
   //EPSG 3946, RGF93
-  LambertType.L93_CC46: _LambertDefinition(
+  CoordinateFormatKey.LAMBERT93_CC46: _LambertDefinition(
       centralMeridian: 3.0,
       latitudeOfOrigin: 46.0,
       standardParallel1: 45.25,
@@ -115,7 +117,7 @@ final Map<LambertType, _LambertDefinition> _LambertDefinitions = {
       falseEasting: 1700000.0,
       falseNorthing: 5200000.0),
   //EPSG 3947, RGF93
-  LambertType.L93_CC47: _LambertDefinition(
+  CoordinateFormatKey.LAMBERT93_CC47: _LambertDefinition(
       centralMeridian: 3.0,
       latitudeOfOrigin: 47.0,
       standardParallel1: 46.25,
@@ -123,7 +125,7 @@ final Map<LambertType, _LambertDefinition> _LambertDefinitions = {
       falseEasting: 1700000.0,
       falseNorthing: 6200000.0),
   //EPSG 3948, RGF93
-  LambertType.L93_CC48: _LambertDefinition(
+  CoordinateFormatKey.LAMBERT93_CC48: _LambertDefinition(
       centralMeridian: 3.0,
       latitudeOfOrigin: 48.0,
       standardParallel1: 47.25,
@@ -131,7 +133,7 @@ final Map<LambertType, _LambertDefinition> _LambertDefinitions = {
       falseEasting: 1700000.0,
       falseNorthing: 7200000.0),
   //EPSG 3949, RGF93
-  LambertType.L93_CC49: _LambertDefinition(
+  CoordinateFormatKey.LAMBERT93_CC49: _LambertDefinition(
       centralMeridian: 3.0,
       latitudeOfOrigin: 49.0,
       standardParallel1: 48.25,
@@ -139,7 +141,7 @@ final Map<LambertType, _LambertDefinition> _LambertDefinitions = {
       falseEasting: 1700000.0,
       falseNorthing: 8200000.0),
   //EPSG 3950, RGF93
-  LambertType.L93_CC50: _LambertDefinition(
+  CoordinateFormatKey.LAMBERT93_CC50: _LambertDefinition(
       centralMeridian: 3.0,
       latitudeOfOrigin: 50.0,
       standardParallel1: 49.25,
@@ -151,8 +153,12 @@ final Map<LambertType, _LambertDefinition> _LambertDefinitions = {
 // https://sourceforge.net/p/geographiclib/discussion/1026621/thread/87c3cb91af/
 // https://sourceforge.net/p/geographiclib/code/ci/release/tree/examples/example-LambertConformalConic.cpp#l36
 
-Lambert latLonToLambert(LatLng latLon, LambertType type, Ellipsoid ellipsoid) {
-  var specificLambert = _LambertDefinitions[type];
+Lambert latLonToLambert(LatLng latLon, CoordinateFormatKey subtype, Ellipsoid ellipsoid) {
+  if (!isSubtypeOfCoordinateFormat(CoordinateFormatKey.LAMBERT, subtype)) {
+    subtype = defaultLambertType;
+  }
+
+  _LambertDefinition specificLambert = _LambertDefinitions[subtype] ?? _LambertDefinitions[defaultLambertType]!;
 
   LambertConformalConic lambertCC = _lambertConformalConic(specificLambert, ellipsoid);
   GeographicLibLambert transformation = _transformLambertFalseXY(specificLambert, lambertCC);
@@ -162,11 +168,11 @@ Lambert latLonToLambert(LatLng latLon, LambertType type, Ellipsoid ellipsoid) {
 
   GeographicLibLambert lambert = lambertCC.forward(specificLambert.centralMeridian, latLon.latitude, latLon.longitude);
 
-  return Lambert(type, lambert.x - x0, lambert.y - y0);
+  return Lambert(subtype, lambert.x - x0, lambert.y - y0);
 }
 
 LatLng lambertToLatLon(Lambert lambert, Ellipsoid ellipsoid) {
-  var specificLambert = _LambertDefinitions[lambert.type];
+  _LambertDefinition specificLambert = _LambertDefinitions[lambert.format.subtype]!;
 
   LambertConformalConic lambertCC = _lambertConformalConic(specificLambert, ellipsoid);
   GeographicLibLambert transformation = _transformLambertFalseXY(specificLambert, lambertCC);
@@ -200,28 +206,31 @@ LambertConformalConic _lambertConformalConic(_LambertDefinition specificLambert,
   return lambertCC;
 }
 
-Lambert parseLambert(String input, {type: DefaultLambertType}) {
-  RegExp regExp = RegExp(r'^\s*([\-0-9\.]+)(\s*\,\s*|\s+)([\-0-9\.]+)\s*$');
+Lambert? parseLambert(String input, {CoordinateFormatKey subtype = defaultLambertType}) {
+  RegExp regExp = RegExp(r'^\s*([\-\d.]+)(\s*,\s*|\s+)([\-\d.]+)\s*$');
   var matches = regExp.allMatches(input);
-  var _eastingString = '';
-  var _northingString = '';
+  String? _eastingString = '';
+  String? _northingString = '';
 
-  if (matches.length > 0) {
+  if (matches.isNotEmpty) {
     var match = matches.elementAt(0);
     _eastingString = match.group(1);
     _northingString = match.group(3);
   }
-  if (matches.length == 0) {
-    regExp = RegExp(r'^\s*(X|x)\:?\s*([\-0-9\.]+)(\s*\,?\s*)(Y|y)\:?\s*([\-0-9\.]+)\s*$');
+  if (matches.isEmpty) {
+    regExp = RegExp(r'^\s*([Xx]):?\s*([\-\d.]+)(\s*,?\s*)([Yy]):?\s*([\-\d.]+)\s*$');
     matches = regExp.allMatches(input);
-    if (matches.length > 0) {
+    if (matches.isNotEmpty) {
       var match = matches.elementAt(0);
       _eastingString = match.group(2);
       _northingString = match.group(5);
     }
   }
 
-  if (matches.length == 0) return null;
+  if (matches.isEmpty) return null;
+  if (_eastingString == null || _northingString == null) {
+    return null;
+  }
 
   var _easting = double.tryParse(_eastingString);
   if (_easting == null) return null;
@@ -229,5 +238,5 @@ Lambert parseLambert(String input, {type: DefaultLambertType}) {
   var _northing = double.tryParse(_northingString);
   if (_northing == null) return null;
 
-  return Lambert(type, _easting, _northing);
+  return Lambert(subtype, _easting, _northing);
 }

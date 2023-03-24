@@ -4,12 +4,8 @@ import 'package:gc_wizard/tools/crypto_and_encodings/_common/logic/crypt_alphabe
 
 void main() {
   group("Playfair.encodePlayfair:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'key': null, 'mode': AlphabetModificationMode.J_TO_I, 'expectedOutput' : ''},
-      {'input' : '', 'key': null, 'mode': AlphabetModificationMode.J_TO_I, 'expectedOutput' : ''},
-      {'input' : null, 'key': '', 'mode': AlphabetModificationMode.J_TO_I, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'key': '', 'mode': AlphabetModificationMode.J_TO_I, 'expectedOutput' : ''},
-      {'input' : 'A', 'key': null, 'mode': AlphabetModificationMode.J_TO_I, 'expectedOutput' : 'CV'},
       {'input' : 'A', 'key': '', 'mode': AlphabetModificationMode.J_TO_I, 'expectedOutput' : 'CV'},
 
       {'input' : 'AX', 'key': '', 'mode': AlphabetModificationMode.J_TO_I, 'expectedOutput' : 'CV'},
@@ -32,21 +28,17 @@ void main() {
       {'input' : 'Laboulaye lady will lead to Cibola temples of gold', 'key': 'DEATH', 'mode': AlphabetModificationMode.J_TO_I, 'expectedOutput' : 'ME IK QO TX CQ TE ZX CO MW QC TE HN FB IK ME HA KR QC UN GI KM AV'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, key: ${elem['key']}, mode: ${elem['mode']}', () {
-        var _actual = encryptPlayfair(elem['input'], elem['key'], mode: elem['mode']);
+        var _actual = encryptPlayfair(elem['input'] as String, elem['key'] as String, mode: elem['mode'] as AlphabetModificationMode);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Playfair.decodePlayfair:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'key': null, 'mode': AlphabetModificationMode.J_TO_I, 'expectedOutput' : ''},
-      {'input' : '', 'key': null, 'mode': AlphabetModificationMode.J_TO_I, 'expectedOutput' : ''},
-      {'input' : null, 'key': '', 'mode': AlphabetModificationMode.J_TO_I, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'key': '', 'mode': AlphabetModificationMode.J_TO_I, 'expectedOutput' : ''},
-      {'expectedOutput' : 'AX', 'key': null, 'mode': AlphabetModificationMode.J_TO_I, 'input' : 'CV'},
       {'expectedOutput' : 'AX', 'key': '', 'mode': AlphabetModificationMode.J_TO_I, 'input' : 'CV'},
 
       {'expectedOutput' : 'AX', 'key': '', 'mode': AlphabetModificationMode.J_TO_I, 'input' : 'CV'},
@@ -66,11 +58,11 @@ void main() {
       {'expectedOutput' : 'LABOULAYELADYWILLXLEADTOCIBOLATEMPLESOFGOLDX', 'key': 'DEATH', 'mode': AlphabetModificationMode.J_TO_I, 'input' : 'MEIKQOTXCQTEZXCOMWQCTEHNFBIKMEHAKRQCUNGIKMAV'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, key: ${elem['key']}, mode: ${elem['mode']}', () {
-        var _actual = decryptPlayfair(elem['input'], elem['key'], mode: elem['mode']);
+        var _actual = decryptPlayfair(elem['input'] as String, elem['key'] as String, mode: elem['mode'] as AlphabetModificationMode);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 }

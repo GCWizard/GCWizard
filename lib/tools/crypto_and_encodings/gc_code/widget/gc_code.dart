@@ -7,12 +7,14 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/gc_code/logic/gc_code.dart';
 
 class GCCode extends StatefulWidget {
+  const GCCode({Key? key}) : super(key: key);
+
   @override
   GCCodeState createState() => GCCodeState();
 }
 
 class GCCodeState extends State<GCCode> {
-  var _gcCodeInputController;
+  late TextEditingController _gcCodeInputController;
 
   String _currentGCCodeInput = 'GC';
   int _currentID = 1;
@@ -65,7 +67,7 @@ class GCCodeState extends State<GCCode> {
     );
   }
 
-  _buildOutput(BuildContext context) {
+  String _buildOutput(BuildContext context) {
     var output = '';
 
     if (_currentMode == GCWSwitchPosition.right) {

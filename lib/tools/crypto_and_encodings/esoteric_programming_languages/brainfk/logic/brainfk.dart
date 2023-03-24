@@ -1,17 +1,17 @@
 import 'dart:math';
 
-final ERROR_BRAINFK_LOOPNOTCLOSED = 'common_programming_error_loopnotclosed';
-final ERROR_BRAINFK_LOOPNOTOPENED = 'common_programming_error_loopnotopened';
+const _ERROR_BRAINFK_LOOPNOTCLOSED = 'common_programming_error_loopnotclosed';
+const _ERROR_BRAINFK_LOOPNOTOPENED = 'common_programming_error_loopnotopened';
 
-final MAX_MEMORY = 32768;
+const _MAX_MEMORY = 32768;
 
-String interpretBrainfk(String code, {String input}) {
-  if (code == null || code.length == 0) return '';
+String interpretBrainfk(String code, {String? input}) {
+  if (code.isEmpty) return '';
 
   var instructions = code.split('');
 
   var pointer = 0;
-  var data = List<int>.generate(MAX_MEMORY, (index) => 0);
+  var data = List<int>.generate(_MAX_MEMORY, (index) => 0);
   var out = '';
 
   var inputPointer = 0;
@@ -50,7 +50,7 @@ String interpretBrainfk(String code, {String input}) {
           var nestedLoopCount = 1;
           while (nestedLoopCount > 0) {
             i++;
-            if (i >= instructions.length) throw FormatException(ERROR_BRAINFK_LOOPNOTCLOSED);
+            if (i >= instructions.length) throw const FormatException(_ERROR_BRAINFK_LOOPNOTCLOSED);
 
             switch (instructions[i]) {
               case '[':
@@ -69,7 +69,7 @@ String interpretBrainfk(String code, {String input}) {
         }
         break;
       case ']':
-        if (loopStack.isEmpty) throw FormatException(ERROR_BRAINFK_LOOPNOTOPENED);
+        if (loopStack.isEmpty) throw const FormatException(_ERROR_BRAINFK_LOOPNOTOPENED);
 
         i = loopStack.removeLast();
         continue;

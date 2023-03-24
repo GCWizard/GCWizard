@@ -4,42 +4,43 @@ import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit_category.dart';
 
-class GCWUnitDropDown extends StatefulWidget {
-  final Function onChanged;
-  final Unit value;
-  final List<Unit> unitList;
-  final UnitCategory unitCategory;
+class GCWUnitDropDown<T extends Unit> extends StatefulWidget {
+  final void Function(T) onChanged;
+  final T value;
+  final List<T>? unitList;
+  final UnitCategory? unitCategory;
   final bool onlyShowSymbols;
 
   const GCWUnitDropDown(
-      {Key key, this.onChanged, this.value, this.unitList, this.onlyShowSymbols: true, this.unitCategory})
+      {Key? key, required this.onChanged, required this.value, this.unitList,
+        this.onlyShowSymbols = true, this.unitCategory})
       : super(key: key);
 
   @override
-  GCWUnitDropDownState createState() => GCWUnitDropDownState();
+  GCWUnitDropDownState<T> createState() => GCWUnitDropDownState<T>();
 }
 
-class GCWUnitDropDownState extends State<GCWUnitDropDown> {
-  var _currentUnit;
+class GCWUnitDropDownState<T extends Unit> extends State<GCWUnitDropDown<T>> {
+  late T _currentUnit;
 
   @override
   Widget build(BuildContext context) {
-    var _currentUnitList = widget.unitList ?? widget.unitCategory.units;
+    List<T> _currentUnitList = (widget.unitList ?? widget.unitCategory?.units ?? <T>[]) as List<T>;
 
-    return GCWDropDown(
-        value: widget.value ?? _currentUnit,
-        onChanged: (newValue) {
+    return GCWDropDown<T>(
+        value: widget.value,
+        onChanged: (T newValue) {
           setState(() {
             _currentUnit = newValue;
-            widget.onChanged(newValue);
+            widget.onChanged(_currentUnit);
           });
         },
         items: _currentUnitList.map((unit) {
-          return GCWDropDownMenuItem(
+          return GCWDropDownMenuItem<T>(
               value: unit,
               child: widget.onlyShowSymbols
-                  ? unit.symbol ?? ''
-                  : (i18n(context, unit.name) + (unit.symbol == null ? '' : ' (${unit.symbol})')));
+                  ? unit.symbol
+                  : (i18n(context, unit.name) + ' (${unit.symbol})'));
         }).toList());
   }
 }

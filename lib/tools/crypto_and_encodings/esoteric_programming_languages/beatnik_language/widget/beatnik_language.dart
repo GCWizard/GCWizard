@@ -14,14 +14,16 @@ import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_langua
 import 'package:gc_wizard/tools/games/scrabble/logic/scrabble_sets.dart';
 
 class Beatnik extends StatefulWidget {
+  const Beatnik({Key? key}) : super(key: key);
+
   @override
   BeatnikState createState() => BeatnikState();
 }
 
 class BeatnikState extends State<Beatnik> {
-  var _programmController;
-  var _inputController;
-  var _outputController;
+  late TextEditingController _programmController;
+  late TextEditingController _inputController;
+  late TextEditingController _outputController;
 
   var _currentProgram = '';
   var _currentInput = '';
@@ -83,7 +85,7 @@ class BeatnikState extends State<Beatnik> {
                   GCWTextDivider(
                     text: i18n(context, 'beatnik_hint_scrabble'),
                   ),
-                  GCWDropDown(
+                  GCWDropDown<String>(
                     value: _currentScrabbleVersion,
                     onChanged: (value) {
                       setState(() {
@@ -179,6 +181,7 @@ class BeatnikState extends State<Beatnik> {
                                     child: Align(
                                         alignment: Alignment.topCenter,
                                         child: Container(
+                                          padding: const EdgeInsets.only(right: DEFAULT_MARGIN),
                                           child: Column(children: <Widget>[
                                             GCWTextDivider(text: i18n(context, 'beatnik_hint_code_scrabble')),
                                             GCWOutputText(
@@ -186,7 +189,6 @@ class BeatnikState extends State<Beatnik> {
                                               isMonotype: true,
                                             ),
                                           ]),
-                                          padding: EdgeInsets.only(right: DEFAULT_MARGIN),
                                         )))
                                 : Container(),
                             Expanded(
@@ -194,6 +196,7 @@ class BeatnikState extends State<Beatnik> {
                                 child: Align(
                                   alignment: Alignment.topCenter,
                                   child: Container(
+                                    padding: const EdgeInsets.only(right: DEFAULT_MARGIN),
                                     child: Column(
                                       children: <Widget>[
                                         GCWTextDivider(text: i18n(context, 'common_programming_code_assembler')),
@@ -203,7 +206,6 @@ class BeatnikState extends State<Beatnik> {
                                         ),
                                       ],
                                     ),
-                                    padding: EdgeInsets.only(right: DEFAULT_MARGIN),
                                   ),
                                 )),
                             Expanded(
@@ -211,6 +213,7 @@ class BeatnikState extends State<Beatnik> {
                                 child: Align(
                                   alignment: Alignment.topCenter,
                                   child: Container(
+                                    padding: const EdgeInsets.only(left: DEFAULT_MARGIN),
                                     child: Column(
                                       children: <Widget>[
                                         GCWTextDivider(text: i18n(context, 'common_programming_code_mnemonic')),
@@ -220,7 +223,6 @@ class BeatnikState extends State<Beatnik> {
                                         ),
                                       ],
                                     ),
-                                    padding: EdgeInsets.only(left: DEFAULT_MARGIN),
                                   ),
                                 )),
                           ]),
@@ -228,7 +230,7 @@ class BeatnikState extends State<Beatnik> {
                             title: i18n(context, 'common_programming_debug'),
                             child: GCWColumnedMultilineOutput(
                                 data: _columnData,
-                                flexValues: [1, 2, 3, 3]
+                                flexValues: const [1, 2, 3, 3]
                             ),
                           ),
                         ])
@@ -248,6 +250,7 @@ class BeatnikState extends State<Beatnik> {
                         child: Align(
                           alignment: Alignment.topCenter,
                           child: Container(
+                            padding: const EdgeInsets.only(right: DEFAULT_MARGIN),
                             child: Column(
                               children: <Widget>[
                                 GCWTextDivider(text: i18n(context, 'common_programming_code_assembler')),
@@ -257,7 +260,6 @@ class BeatnikState extends State<Beatnik> {
                                 ),
                               ],
                             ),
-                            padding: EdgeInsets.only(right: DEFAULT_MARGIN),
                           ),
                         )),
                     Expanded(
@@ -265,6 +267,7 @@ class BeatnikState extends State<Beatnik> {
                         child: Align(
                           alignment: Alignment.topCenter,
                           child: Container(
+                            padding: const EdgeInsets.only(left: DEFAULT_MARGIN),
                             child: Column(
                               children: <Widget>[
                                 GCWTextDivider(text: i18n(context, 'common_programming_code_mnemonic')),
@@ -274,7 +277,6 @@ class BeatnikState extends State<Beatnik> {
                                 ),
                               ],
                             ),
-                            padding: EdgeInsets.only(left: DEFAULT_MARGIN),
                           ),
                         )),
                   ],
@@ -286,12 +288,13 @@ class BeatnikState extends State<Beatnik> {
 
   String buildOutputText(List<String> outputList) {
     String output = '';
-    outputList.forEach((element) {
+    for (var element in outputList) {
       if (element.startsWith('beatnik_') || element.startsWith('common_programming_')) {
         output = output + i18n(context, element) + '\n';
-      } else
+      } else {
         output = output + element + '\n';
-    });
+      }
+    }
     return output.trim();
   }
 }

@@ -20,13 +20,14 @@ const _INITIAL_SEGMENTS = <String, bool>{
   'dp': false
 };
 
-class FourteenSegmentDisplay extends NSegmentDisplay {
-  final Map<String, bool> segments;
-  final bool readOnly;
-  final Function onChanged;
-  final bool tapeStyle;
 
-  FourteenSegmentDisplay({Key key, this.segments, this.readOnly: false, this.onChanged, this.tapeStyle: false})
+class FourteenSegmentDisplay extends NSegmentDisplay {
+
+  FourteenSegmentDisplay({
+      Key? key,
+      required Map<String, bool> segments,
+      bool readOnly = false,
+      void Function(Map<String, bool>)? onChanged})
       : super(
             key: key,
             initialSegments: _INITIAL_SEGMENTS,

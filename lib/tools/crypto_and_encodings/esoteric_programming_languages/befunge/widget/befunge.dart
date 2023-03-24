@@ -13,22 +13,24 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/befunge/logic/befunge.dart';
 
 class Befunge extends StatefulWidget {
+  const Befunge({Key? key}) : super(key: key);
+
   @override
   BefungeState createState() => BefungeState();
 }
 
 class BefungeState extends State<Befunge> {
-  var _befungeGenerateController;
-  var _befungeInterpretController;
-  var _inputController;
+  late TextEditingController _befungeGenerateController;
+  late TextEditingController _befungeInterpretController;
+  late TextEditingController _inputController;
 
   var _currentGenerate = '';
   var _currentInterpret = '';
   var _currentInput = '';
 
   GCWSwitchPosition _currentMode = GCWSwitchPosition.left;
-  var _codeGenerateController;
-  var _sourceCodeGenerated = '';
+  late TextEditingController _codeGenerateController;
+  final _sourceCodeGenerated = '';
 
   @override
   void initState() {
@@ -103,10 +105,11 @@ class BefungeState extends State<Befunge> {
     if (_currentMode == GCWSwitchPosition.left) {
       BefungeOutput output = interpretBefunge(_currentInterpret, input: _currentInput);
       String outputText = '';
-      if (output.Error == '')
+      if (output.Error.isEmpty) {
         outputText = output.Output;
-      else
+      } else {
         outputText = output.Output + '\n' + i18n(context, output.Error);
+      }
 
       List<List<String>> columnData = <List<String>>[];
       columnData.add(['PC', 'Cmd', 'Mnemonic', 'Stack']);
@@ -129,19 +132,15 @@ class BefungeState extends State<Befunge> {
             text: i18n(context, 'common_programming_debug'),
             child: GCWColumnedMultilineOutput(
                 data: columnData,
-                flexValues: [2, 2, 3, 5],
+                flexValues: const [2, 2, 3, 5],
                 suppressCopyButtons: true,
                 hasHeader: true,
             )
           )
         ],
       );
-    } else
+    } else {
       return GCWDefaultOutput(
-        child: GCWCodeTextField(
-          controller: _codeGenerateController,
-          textStyle: gcwMonotypeTextStyle(),
-        ),
         trailing: Row(
           children: <Widget>[
             GCWIconButton(
@@ -149,12 +148,17 @@ class BefungeState extends State<Befunge> {
               size: IconButtonSize.SMALL,
               icon: Icons.content_copy,
               onPressed: () {
-                var copyText = _codeGenerateController.text != null ? _codeGenerateController.text : '';
+                var copyText = _codeGenerateController.text;
                 insertIntoGCWClipboard(context, copyText);
               },
             ),
           ],
         ),
+        child: GCWCodeTextField(
+          controller: _codeGenerateController,
+          textStyle: gcwMonotypeTextStyle(),
+        ),
       );
+    }
   }
 }

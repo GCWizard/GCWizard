@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:math';
 
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
@@ -25,7 +27,7 @@ LatLng xyzToLatLon(XYZ xyz, Ellipsoid ells) {
   return LatLng(radianToDeg(lat), radianToDeg(lon));
 }
 
-XYZ latLonToXYZ(LatLng coord, Ellipsoid ells, {double h: 0.0}) {
+XYZ latLonToXYZ(LatLng coord, Ellipsoid ells, {double h = 0.0}) {
   var lat = coord.latitudeInRad;
   var lon = coord.longitudeInRad;
   var v = ells.a / sqrt(1 - ells.e2 * sin(lat) * sin(lat));
@@ -37,25 +39,25 @@ XYZ latLonToXYZ(LatLng coord, Ellipsoid ells, {double h: 0.0}) {
   return XYZ(x, y, z);
 }
 
-XYZ parseXYZ(String input) {
+XYZ? parseXYZ(String input) {
   RegExp regExp = RegExp(r'^\s*([\-0-9\.]+)(\s*,\s*|\s+)([\-0-9\.]+)(\s*,\s*|\s+)([\-0-9\.]+)\s*$');
   var matches = regExp.allMatches(input);
 
-  var xString = '';
-  var yString = '';
-  var zString = '';
+  String? xString = '';
+  String? yString = '';
+  String? zString = '';
 
-  if (matches.length > 0) {
+  if (matches.isNotEmpty) {
     var match = matches.elementAt(0);
     xString = match.group(1);
     yString = match.group(3);
     zString = match.group(5);
   }
-  if (matches.length == 0) {
+  if (matches.isEmpty) {
     regExp =
         RegExp(r'^\s*(X|x)\:?\s*([\-0-9\.]+)(\s*\,?\s*)(Y|y)\:?\s*([\-0-9\.]+)(\s*\,?\s*)(Z|z)\:?\s*([\-0-9\.]+)\s*$');
     matches = regExp.allMatches(input);
-    if (matches.length > 0) {
+    if (matches.isNotEmpty) {
       var match = matches.elementAt(0);
       xString = match.group(2);
       yString = match.group(5);
@@ -63,7 +65,10 @@ XYZ parseXYZ(String input) {
     }
   }
 
-  if (matches.length == 0) return null;
+  if (matches.isEmpty) return null;
+  if (xString == null || yString == null || zString == null) {
+    return null;
+  }
 
   var x = double.tryParse(xString);
   var y = double.tryParse(yString);

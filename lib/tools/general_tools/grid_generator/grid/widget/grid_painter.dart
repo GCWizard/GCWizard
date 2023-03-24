@@ -21,6 +21,7 @@ final _GRID_COLORS = {
   _GridPaintColor.GREEN: {'color': Colors.green, 'fontColor': Colors.black},
 };
 
+
 class _GridPainter extends StatefulWidget {
   final _GridType type;
   final int countRows;
@@ -34,41 +35,40 @@ class _GridPainter extends StatefulWidget {
   _GridBoxEnumerationStartDirection boxEnumerationStartDirection;
 
   _GridPainter({
-    Key key,
-    this.type: _GridType.BOXES,
-    this.countRows: 10,
-    this.countColumns: 10,
-    this.tapColor: _GridPaintColor.BLACK,
-    this.boxEnumeration,
-    this.columnEnumeration,
-    this.rowEnumeration,
-    this.boxEnumerationStart,
-    this.boxEnumerationStartDirection,
-    this.boxEnumerationBehaviour,
-  }) : super(key: key) {
-    if (boxEnumerationStart == null) boxEnumerationStart = _GridEnumerationStart.TOP_LEFT;
-    if (boxEnumerationStartDirection == null) boxEnumerationStartDirection = _GridBoxEnumerationStartDirection.RIGHT;
-    if (boxEnumerationBehaviour == null) boxEnumerationBehaviour = _GridBoxEnumerationBehaviour.ALIGNED;
-  }
+    Key? key,
+    this.type = _GridType.BOXES,
+    this.countRows = 10,
+    this.countColumns = 10,
+    this.tapColor = _GridPaintColor.BLACK,
+    required this.boxEnumeration,
+    required this.columnEnumeration,
+    required this.rowEnumeration,
+    this.boxEnumerationStart = _GridEnumerationStart.TOP_LEFT,
+    this.boxEnumerationStartDirection = _GridBoxEnumerationStartDirection.RIGHT,
+    this.boxEnumerationBehaviour = _GridBoxEnumerationBehaviour.ALIGNED,
+  }) : super(key: key);
 
   @override
   _GridPainterState createState() => _GridPainterState();
 }
 
 class _GridPainterState extends State<_GridPainter> {
-  Map<int, Map<int, _GridPaintColor>> gridState;
-  List<String> _boxEnumeration;
-  List<String> _originalBoxEnumeration;
+  Map<int, Map<int, _GridPaintColor>>? gridState;
+  List<String>? _boxEnumeration;
+  List<String>? _originalBoxEnumeration;
 
-  List<String> _fillBoxEnumeration() {
-    if (widget.boxEnumeration == null || widget.boxEnumeration.isEmpty) return null;
+  List<String>? _fillBoxEnumeration() {
+    if (widget.boxEnumeration.isEmpty) return null;
 
-    List<List<String>> helper = List.generate(widget.countRows, (_) => List.generate(widget.countColumns, (_) => null));
-    var boxEnumeration;
-    if (widget.boxEnumeration.length > widget.countColumns * widget.countRows)
+    var helper = List<List<String?>>.generate(
+        widget.countRows, (index) => List<String?>.generate(widget.countColumns, (index) => null));
+
+    List<String> boxEnumeration;
+    if (widget.boxEnumeration.length > widget.countColumns * widget.countRows) {
       boxEnumeration = widget.boxEnumeration.sublist(0, widget.countRows * widget.countColumns);
-    else
+    } else {
       boxEnumeration = widget.boxEnumeration;
+    }
 
     var i = widget.boxEnumerationStart == _GridEnumerationStart.TOP_LEFT ||
             widget.boxEnumerationStart == _GridEnumerationStart.TOP_RIGHT
@@ -117,7 +117,6 @@ class _GridPainterState extends State<_GridPainter> {
                   j--;
                   currentDirection = _GridBoxEnumerationStartDirection.LEFT;
                 }
-
                 break;
             }
           }
@@ -154,7 +153,6 @@ class _GridPainterState extends State<_GridPainter> {
                   j--;
                   currentDirection = _GridBoxEnumerationStartDirection.LEFT;
                 }
-
                 break;
             }
           }
@@ -239,7 +237,7 @@ class _GridPainterState extends State<_GridPainter> {
     var output = <String>[];
     for (int i = 0; i < widget.countRows; i++) {
       for (int j = 0; j < widget.countColumns; j++) {
-        output.add(helper[i][j]);
+        output.add(helper[i][j] ?? '');
       }
     }
 
@@ -259,7 +257,7 @@ class _GridPainterState extends State<_GridPainter> {
             child: AspectRatio(
                 aspectRatio: widget.countColumns / widget.countRows,
                 child: CanvasTouchDetector(
-                    gesturesToOverride: [GestureType.onTapDown],
+                    gesturesToOverride: const [GestureType.onTapDown],
                     builder: (context) {
                       return CustomPaint(
                           painter: _CustomGridPainter(
@@ -268,18 +266,18 @@ class _GridPainterState extends State<_GridPainter> {
                               widget.countRows,
                               widget.countColumns,
                               widget.tapColor,
-                              _boxEnumeration,
+                              _boxEnumeration ?? [],
                               widget.columnEnumeration,
                               widget.rowEnumeration,
-                              gridState, (int i, int j, int countRows, int countColumns, _TapMode mode) {
+                              gridState ?? {}, (int i, int j, int countRows, int countColumns, _TapMode mode) {
                         setState(() {
-                          if (gridState == null) gridState = <int, Map<int, _GridPaintColor>>{};
+                          gridState ??= <int, Map<int, _GridPaintColor>>{};
 
-                          if (gridState[i] == null) {
-                            gridState[i] = <int, _GridPaintColor>{};
+                          if (gridState![i] == null) {
+                            gridState![i] = <int, _GridPaintColor>{};
                           }
 
-                          var delete = gridState[i][j] == widget.tapColor;
+                          var delete = gridState![i]![j] == widget.tapColor;
 
                           switch (mode) {
                             case _TapMode.ALL:
@@ -310,14 +308,15 @@ class _GridPainterState extends State<_GridPainter> {
   }
 
   void _setColor(int i, int j, bool delete) {
-    if (gridState[i] == null) {
-      gridState[i] = <int, _GridPaintColor>{};
+    if (gridState == null) return;
+    if (gridState![i] == null) {
+      gridState![i] = <int, _GridPaintColor>{};
     }
 
-    gridState[i].remove(j);
+    gridState![i]!.remove(j);
 
     if (!delete) {
-      gridState[i].putIfAbsent(j, () => widget.tapColor);
+      gridState![i]!.putIfAbsent(j, () => widget.tapColor);
     }
   }
 }
@@ -332,7 +331,7 @@ class _CustomGridPainter extends CustomPainter {
   final List<String> columnEnumeration;
   final List<String> rowEnumeration;
   final Map<int, Map<int, _GridPaintColor>> gridState;
-  final Function(int, int, int, int, _TapMode) onTapped;
+  final void Function(int, int, int, int, _TapMode) onTapped;
 
   _CustomGridPainter(
     this.context,
@@ -347,8 +346,7 @@ class _CustomGridPainter extends CustomPainter {
     this.onTapped,
   );
 
-  String _getEnumeration(List<String> enumeration, int index) {
-    if (enumeration == null) return null;
+  String? _getEnumeration(List<String> enumeration, int index) {
     if (index >= enumeration.length) return null;
 
     return enumeration[index];
@@ -380,7 +378,7 @@ class _CustomGridPainter extends CustomPainter {
     double boxWidth = size.width / _countColumns;
     double boxHeight = size.height / _countRows;
 
-    paint.color = themeColors().accent();
+    paint.color = themeColors().secondary();
     paint.strokeWidth = _strokeWidth();
 
     for (int i = 0; i < _countRows - 1; i++) {
@@ -400,8 +398,8 @@ class _CustomGridPainter extends CustomPainter {
         var x = j * boxWidth;
         var y = i * boxHeight;
 
-        String enumerationTextColumn;
-        String enumerationTextRow;
+        String? enumerationTextColumn;
+        String? enumerationTextRow;
         if (i == 0) {
           enumerationTextColumn = _getEnumeration(columnEnumeration, j);
         }
@@ -432,8 +430,8 @@ class _CustomGridPainter extends CustomPainter {
         var x = j * boxWidth / 2;
         var y = i * boxHeight / 2;
 
-        if (gridState != null && gridState[i] != null && gridState[i][j] != null) {
-          paint.color = _GRID_COLORS[gridState[i][j]]['color'];
+        if (gridState[i] != null && gridState[i]![j] != null) {
+          paint.color = _GRID_COLORS[gridState[i]?[j]]?['color'] ?? Colors.black;
           paint.style = PaintingStyle.stroke;
           paint.strokeWidth = 6;
 
@@ -504,7 +502,7 @@ class _CustomGridPainter extends CustomPainter {
     double boxWidth = size.width / _countColumns;
     double boxHeight = size.height / _countRows;
 
-    paint.color = themeColors().accent();
+    paint.color = themeColors().secondary();
     paint.strokeWidth = _strokeWidth();
 
     for (int i = 0; i < _countRows - 1; i++) {
@@ -524,8 +522,8 @@ class _CustomGridPainter extends CustomPainter {
         var x = j * boxWidth;
         var y = i * boxHeight;
 
-        String enumerationTextColumn;
-        String enumerationTextRow;
+        String? enumerationTextColumn;
+        String? enumerationTextRow;
         if (i == 0) {
           enumerationTextColumn = _getEnumeration(columnEnumeration, j);
         }
@@ -567,8 +565,8 @@ class _CustomGridPainter extends CustomPainter {
         var x = j * boxWidth;
         var y = i * boxHeight;
 
-        paint.color = gridState != null && gridState[i] != null && gridState[i][j] != null
-            ? _GRID_COLORS[gridState[i][j]]['color']
+        paint.color = gridState[i] != null && gridState[i]![j] != null
+            ? (_GRID_COLORS[gridState[i]?[j]]?['color']) ?? Colors.black
             : paint.color.withOpacity(0.0);
 
         paint.style = PaintingStyle.fill;
@@ -595,15 +593,15 @@ class _CustomGridPainter extends CustomPainter {
         var x = j * boxWidth;
         var y = i * boxHeight;
 
-        paint.color = gridState != null && gridState[i] != null && gridState[i][j] != null
-            ? _GRID_COLORS[gridState[i][j]]['color']
+        paint.color = gridState[i] != null && gridState[i]![j] != null
+            ? (_GRID_COLORS[gridState[i]?[j]]?['color']) ?? Colors.black
             : themeColors().gridBackground();
         paint.style = PaintingStyle.fill;
 
         if (i == 0 || j == 0) paint.color = paint.color.withOpacity(0.0);
 
         _touchCanvas.drawRect(Rect.fromLTWH(x, y, boxWidth, boxHeight), paint, onTapDown: (tapDetail) {
-          var mode;
+          _TapMode mode;
           if (i == 0 && j == 0) {
             mode = _TapMode.ALL;
           } else if (i == 0) {
@@ -617,7 +615,7 @@ class _CustomGridPainter extends CustomPainter {
           onTapped(i, j, _countRows, countColumns, mode);
         });
 
-        paint.color = themeColors().accent();
+        paint.color = themeColors().secondary();
         paint.strokeWidth = _strokeWidth();
 
         _touchCanvas.drawLine(
@@ -625,7 +623,7 @@ class _CustomGridPainter extends CustomPainter {
         _touchCanvas.drawLine(
             Offset(0.0, y + boxHeight), Offset(size.height * (countColumns / countRows), y + boxHeight), paint);
 
-        var enumerationText;
+        String? enumerationText;
 
         if (i == 0 && j == 0) continue;
 
@@ -639,8 +637,8 @@ class _CustomGridPainter extends CustomPainter {
 
         if (enumerationText == null || enumerationText.isEmpty) continue;
 
-        var textColor = gridState != null && gridState[i] != null && gridState[i][j] != null && i > 0 && j > 0
-            ? _GRID_COLORS[gridState[i][j]]['fontColor']
+        var textColor = gridState[i] != null && gridState[i]![j] != null && i > 0 && j > 0
+            ? (_GRID_COLORS[gridState[i]?[j]]?['fontColor']) ?? Colors.white
             : themeColors().mainFont();
 
         TextPainter textPainter = _setFontSize(textColor, enumerationText, boxHeight, boxWidth);
@@ -661,7 +659,7 @@ class _CustomGridPainter extends CustomPainter {
     TextSpan span;
     do {
       fontSize -= 0.5;
-      span = TextSpan(style: gcwTextStyle().copyWith(color: textColor, fontSize: fontSize), text: text ?? '');
+      span = TextSpan(style: gcwTextStyle().copyWith(color: textColor, fontSize: fontSize), text: text);
       textPainter = TextPainter(text: span, textDirection: TextDirection.ltr);
       textPainter.layout();
     } while (textPainter.height > maxHeight * 0.9 || textPainter.width > maxWidth * 0.9);

@@ -4,15 +4,15 @@ import 'package:gc_wizard/tools/science_and_technology/astronomy/_common/logic/j
 import 'package:latlong2/latlong.dart';
 
 class SunRiseSet {
-  double astronomicalMorning;
-  double nauticalMorning;
-  double civilMorning;
-  double rise;
-  double transit;
-  double set;
-  double civilEvening;
-  double nauticalEvening;
-  double astronomicalEvening;
+  late double astronomicalMorning;
+  late double nauticalMorning;
+  late double civilMorning;
+  late double rise;
+  late double transit;
+  late double set;
+  late double civilEvening;
+  late double nauticalEvening;
+  late double astronomicalEvening;
 
   SunRiseSet(LatLng coords, JulianDate julianDate, Duration timezone, Ellipsoid ellipsoid) {
     RiseSet riseSet = sunRise(julianDate.julianDateUTCNoon, julianDate.deltaT, coords.longitudeInRad,

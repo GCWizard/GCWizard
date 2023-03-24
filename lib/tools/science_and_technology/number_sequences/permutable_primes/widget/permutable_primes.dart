@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_check.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_containsdigits.dart';
@@ -6,21 +7,21 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequencePermutablePrimesCheckNumber extends NumberSequenceCheckNumber {
-  NumberSequencePermutablePrimesCheckNumber() : super(mode: NumberSequencesMode.PERMUTABLE_PRIMES, maxIndex: 23);
+  const NumberSequencePermutablePrimesCheckNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.PERMUTABLE_PRIMES, maxIndex: 23);
 }
 
 class NumberSequencePermutablePrimesDigits extends NumberSequenceDigits {
-  NumberSequencePermutablePrimesDigits() : super(mode: NumberSequencesMode.PERMUTABLE_PRIMES, maxDigits: 317);
+  const NumberSequencePermutablePrimesDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.PERMUTABLE_PRIMES, maxDigits: 317);
 }
 
 class NumberSequencePermutablePrimesRange extends NumberSequenceRange {
-  NumberSequencePermutablePrimesRange() : super(mode: NumberSequencesMode.PERMUTABLE_PRIMES, maxIndex: 23);
+  const NumberSequencePermutablePrimesRange({Key? key}) : super(key: key, mode: NumberSequencesMode.PERMUTABLE_PRIMES, maxIndex: 23);
 }
 
 class NumberSequencePermutablePrimesNthNumber extends NumberSequenceNthNumber {
-  NumberSequencePermutablePrimesNthNumber() : super(mode: NumberSequencesMode.PERMUTABLE_PRIMES, maxIndex: 23);
+  const NumberSequencePermutablePrimesNthNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.PERMUTABLE_PRIMES, maxIndex: 23);
 }
 
 class NumberSequencePermutablePrimesContainsDigits extends NumberSequenceContainsDigits {
-  NumberSequencePermutablePrimesContainsDigits() : super(mode: NumberSequencesMode.PERMUTABLE_PRIMES, maxIndex: 23);
+  const NumberSequencePermutablePrimesContainsDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.PERMUTABLE_PRIMES, maxIndex: 23);
 }

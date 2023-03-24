@@ -4,6 +4,8 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/atbash/logic/atbash.dart';
 
 class Atbash extends StatefulWidget {
+  const Atbash({Key? key}) : super(key: key);
+
   @override
   AtbashState createState() => AtbashState();
 }

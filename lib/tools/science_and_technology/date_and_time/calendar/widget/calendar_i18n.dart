@@ -1,6 +1,6 @@
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar/logic/calendar_constants.dart';
 
-Map<CalendarSystem, String> CALENDAR_SYSTEM = {
+const Map<CalendarSystem, String> CALENDAR_SYSTEM = {
   CalendarSystem.JULIANDATE: 'dates_calendar_system_juliandate',
   CalendarSystem.JULIANCALENDAR: 'dates_calendar_system_juliancalendar',
   CalendarSystem.MODIFIEDJULIANDATE: 'dates_calendar_system_modifiedjuliandate',

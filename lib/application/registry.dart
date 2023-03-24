@@ -243,7 +243,6 @@ import 'package:gc_wizard/tools/crypto_and_encodings/vigenere/widget/vigenere.da
 import 'package:gc_wizard/tools/crypto_and_encodings/wasd/widget/wasd.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/zamonian_numbers/widget/zamonian_numbers.dart';
 import 'package:gc_wizard/tools/formula_solver/widget/formula_solver_formulagroups.dart';
-import 'package:gc_wizard/tools/games/alphametics/widget/alphametics.dart';
 import 'package:gc_wizard/tools/games/bowling/widget/bowling.dart';
 import 'package:gc_wizard/tools/games/catan/widget/catan.dart';
 import 'package:gc_wizard/tools/games/game_of_life/widget/game_of_life.dart';
@@ -414,706 +413,701 @@ import 'package:gc_wizard/tools/wherigo/urwigo_hashbreaker/widget/urwigo_hashbre
 import 'package:gc_wizard/tools/wherigo/urwigo_text_deobfuscation/widget/urwigo_text_deobfuscation.dart';
 import 'package:gc_wizard/tools/wherigo/wherigo_analyze/widget/wherigo_analyze.dart';
 
-List<GCWTool> registeredTools;
+List<GCWTool> registeredTools = [];
 
-initializeRegistry(BuildContext context) {
+void initializeRegistry(BuildContext context) {
   registeredTools = [
     //MainSelection
-    GCWTool(tool: Abaddon(), i18nPrefix: 'abaddon', categories: [
+    GCWTool(tool: const Abaddon(), id: 'abaddon', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'abaddon',
     ]),
-    GCWTool(tool: ADFGVX(), i18nPrefix: 'adfgvx', categories: [
+    GCWTool(tool: const ADFGVX(), id: 'adfgvx', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'adfgvx',
     ]),
-    GCWTool(tool: Affine(), i18nPrefix: 'affine', categories: [
+    GCWTool(tool: const Affine(), id: 'affine', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'affine',
     ]),
-    GCWTool(tool: AlcoholMass(), i18nPrefix: 'alcoholmass', categories: [
+    GCWTool(tool: const AlcoholMass(), id: 'alcoholmass', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'alcoholmass',
     ]),
-    GCWTool(tool: ALGOL(), i18nPrefix: 'algol', categories: [
+    GCWTool(tool: const ALGOL(), id: 'algol', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'algol',
     ]),
-    GCWTool(tool: AlphabetValues(), i18nPrefix: 'alphabetvalues', categories: [
+    GCWTool(tool: const AlphabetValues(), id: 'alphabetvalues', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'alphabetvalues',
     ]),
-    GCWTool(tool: Alphametics(), i18nPrefix: 'symbol_arithmetic', categories: [
-      ToolCategory.GAMES
-    ], searchKeys: [
-      'symbol_arithmetic',
-    ]),
-    GCWTool(tool: Amsco(), i18nPrefix: 'amsco', categories: [
+    GCWTool(tool: const Amsco(), id: 'amsco', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'amsco',
     ]),
-    GCWTool(tool: AnimatedImage(), i18nPrefix: 'animated_image', isBeta: true, categories: [
+    GCWTool(tool: const AnimatedImage(), id: 'animated_image', isBeta: true, categories: const [
       ToolCategory.IMAGES_AND_FILES
-    ], searchKeys: [
+    ], searchKeys: const [
       'animated_images',
     ]),
-    GCWTool(tool: AnimatedImageMorseCode(), i18nPrefix: 'animated_image_morse_code', isBeta: true, categories: [
+    GCWTool(tool: const AnimatedImageMorseCode(), id: 'animated_image_morse_code', isBeta: true, categories: const [
       ToolCategory.IMAGES_AND_FILES
-    ], searchKeys: [
+    ], searchKeys: const [
       'animated_images_morse_code',
       'animated_images',
     ]),
     GCWTool(
-        tool: ApparentTemperatureSelection(),
-        i18nPrefix: 'apparenttemperature_selection',
-        categories: [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-        searchKeys: []),
-    GCWTool(tool: ASCIIValues(), i18nPrefix: 'asciivalues', categories: [
+        tool: const ApparentTemperatureSelection(),
+        id: 'apparenttemperature_selection',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+        searchKeys: const []),
+    GCWTool(tool: const ASCIIValues(), id: 'asciivalues', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'asciivalues',
       'binary',
     ]),
-    GCWTool(tool: AstronomySelection(), i18nPrefix: 'astronomy_selection', categories: [
+    GCWTool(tool: const AstronomySelection(), id: 'astronomy_selection', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'astronomy',
     ]),
-    GCWTool(tool: Atbash(), i18nPrefix: 'atbash', categories: [
+    GCWTool(tool: const Atbash(), id: 'atbash', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'atbash',
     ]),
     GCWTool(
-        tool: BabylonNumbersSelection(),
-        i18nPrefix: 'babylonnumbers_selection',
-        categories: [ToolCategory.CRYPTOGRAPHY],
-        searchKeys: []),
-    GCWTool(tool: Bacon(), i18nPrefix: 'bacon', categories: [
+        tool: const BabylonNumbersSelection(),
+        id: 'babylonnumbers_selection',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const []),
+    GCWTool(tool: const Bacon(), id: 'bacon', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'bacon',
       'binary',
     ]),
     GCWTool(
-        tool: BaseSelection(), i18nPrefix: 'base_selection', categories: [ToolCategory.CRYPTOGRAPHY], searchKeys: []),
-    GCWTool(tool: BCDSelection(), i18nPrefix: 'bcd_selection', categories: [
+        tool: const BaseSelection(), id: 'base_selection', categories: const [ToolCategory.CRYPTOGRAPHY], searchKeys: const []),
+    GCWTool(tool: const BCDSelection(), id: 'bcd_selection', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'binary',
     ]),
-    GCWTool(tool: BloodAlcoholContent(), i18nPrefix: 'bloodalcoholcontent', categories: [
+    GCWTool(tool: const BloodAlcoholContent(), id: 'bloodalcoholcontent', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'alcoholmass',
       'bloodalcoholcontent',
     ]),
     GCWTool(
-        tool: BrailleSelection(),
-        i18nPrefix: 'braille_selection',
-        categories: [ToolCategory.CRYPTOGRAPHY],
-        searchKeys: []),
+        tool: const BrailleSelection(),
+        id: 'braille_selection',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const []),
     GCWTool(
-        tool: BeaufortSelection(),
-        i18nPrefix: 'beaufort_selection',
-        categories: [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-        searchKeys: []),
-    GCWTool(tool: Beghilos(), i18nPrefix: 'beghilos', categories: [
+        tool: const BeaufortSelection(),
+        id: 'beaufort_selection',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+        searchKeys: const []),
+    GCWTool(tool: const Beghilos(), id: 'beghilos', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'beghilos',
       'segments',
       'segements_seven',
     ]),
-    GCWTool(tool: Bifid(), i18nPrefix: 'bifid', categories: [
+    GCWTool(tool: const Bifid(), id: 'bifid', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'bifid',
     ]),
-    GCWTool(tool: Binary(), i18nPrefix: 'binary', categories: [
+    GCWTool(tool: const Binary(), id: 'binary', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'binary',
     ]),
-    GCWTool(tool: Binary2Image(), i18nPrefix: 'binary2image', isBeta: true, categories: [
+    GCWTool(tool: const Binary2Image(), id: 'binary2image', isBeta: true, categories: const [
       ToolCategory.IMAGES_AND_FILES
-    ], searchKeys: [
+    ], searchKeys: const [
       'binary',
       'barcodes',
       'images',
     ]),
-    GCWTool(tool: BookCipher(), i18nPrefix: 'book_cipher', categories: [
+    GCWTool(tool: const BookCipher(), id: 'book_cipher', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'bookcipher',
     ]),
-    GCWTool(tool: Bowling(), i18nPrefix: 'bowling', categories: [
+    GCWTool(tool: const Bowling(), id: 'bowling', categories: const [
       ToolCategory.GAMES
-    ], searchKeys: [
+    ], searchKeys: const [
       'bowling',
     ]),
     GCWTool(
-        tool: BundeswehrTalkingBoardSelection(),
-        i18nPrefix: 'bundeswehr_talkingboard_selection',
-        categories: [ToolCategory.CRYPTOGRAPHY],
-        searchKeys: []),
-    GCWTool(tool: BurrowsWheeler(), i18nPrefix: 'burrowswheeler', categories: [
+        tool: const BundeswehrTalkingBoardSelection(),
+        id: 'bundeswehr_talkingboard_selection',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const []),
+    GCWTool(tool: const BurrowsWheeler(), id: 'burrowswheeler', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'burroeswheeler',
     ]),
-    GCWTool(tool: Caesar(), i18nPrefix: 'caesar', categories: [
+    GCWTool(tool: const Caesar(), id: 'caesar', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'rotation',
       'caesar',
     ]),
-    GCWTool(tool: Catan(), i18nPrefix: 'catan', categories: [
+    GCWTool(tool: const Catan(), id: 'catan', categories: const [
       ToolCategory.GAMES
-    ], searchKeys: [
+    ], searchKeys: const [
       'catan',
     ]),
     GCWTool(
-        tool: CCITTSelection(), i18nPrefix: 'ccitt_selection', categories: [ToolCategory.CRYPTOGRAPHY], searchKeys: []),
-    GCWTool(tool: Chao(), i18nPrefix: 'chao', categories: [
+        tool: const CCITTSelection(), id: 'ccitt_selection', categories: const [ToolCategory.CRYPTOGRAPHY], searchKeys: const []),
+    GCWTool(tool: const Chao(), id: 'chao', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'chao',
     ]),
-    GCWTool(tool: CipherWheel(), i18nPrefix: 'cipherwheel', categories: [
+    GCWTool(tool: const CipherWheel(), id: 'cipherwheel', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'cipherwheel',
     ]),
     GCWTool(
-        tool: CistercianNumbersSelection(),
-        i18nPrefix: 'cistercian_selection',
-        categories: [ToolCategory.CRYPTOGRAPHY],
-        searchKeys: []),
+        tool: const CistercianNumbersSelection(),
+        id: 'cistercian_selection',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const []),
     GCWTool(
-        tool: ColorsSelection(),
-        i18nPrefix: 'colors_selection',
-        categories: [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-        searchKeys: []),
+        tool: const ColorsSelection(),
+        id: 'colors_selection',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+        searchKeys: const []),
     GCWTool(
-        tool: CombinatoricsSelection(),
-        i18nPrefix: 'combinatorics_selection',
-        categories: [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-        searchKeys: []),
-    GCWTool(tool: ComplexNumbers(), i18nPrefix: 'complex_numbers', categories: [
+        tool: const CombinatoricsSelection(),
+        id: 'combinatorics_selection',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+        searchKeys: const []),
+    GCWTool(tool: const ComplexNumbers(), id: 'complex_numbers', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'complexnumbers',
     ]),
-    GCWTool(tool: CompoundInterest(), i18nPrefix: 'compoundinterest', categories: [
+    GCWTool(tool: const CompoundInterest(), id: 'compoundinterest', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'compoundinterest',
     ]),
-    GCWTool(tool: CoordsSelection(), i18nPrefix: 'coords_selection', searchKeys: [
+    GCWTool(tool: const CoordsSelection(), id: 'coords_selection', searchKeys: const [
       'coordinates',
     ]),
     GCWTool(
-        tool: CountriesSelection(),
-        i18nPrefix: 'countries_selection',
-        categories: [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-        searchKeys: []),
+        tool: const CountriesSelection(),
+        id: 'countries_selection',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+        searchKeys: const []),
     GCWTool(
-        tool: CrossSumSelection(),
-        i18nPrefix: 'crosssum_selection',
-        categories: [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-        searchKeys: []),
-    GCWTool(tool: CryptographySelection(), i18nPrefix: 'cryptography_selection', searchKeys: [
+        tool: const CrossSumSelection(),
+        id: 'crosssum_selection',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+        searchKeys: const []),
+    GCWTool(tool: const CryptographySelection(), id: 'cryptography_selection', searchKeys: const [
       'cryptographyselection',
     ]),
-    GCWTool(tool: DatesSelection(), i18nPrefix: 'dates_selection', categories: [
+    GCWTool(tool: const DatesSelection(), id: 'dates_selection', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'dates',
     ]),
-    GCWTool(tool: Decabit(), i18nPrefix: 'decabit', categories: [
+    GCWTool(tool: const Decabit(), id: 'decabit', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'decabit',
     ]),
-    GCWTool(tool: Divisor(), i18nPrefix: 'divisor', categories: [
+    GCWTool(tool: const Divisor(), id: 'divisor', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'divisor',
     ]),
     GCWTool(
-        tool: DNASelection(),
-        i18nPrefix: 'dna_selection',
-        categories: [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-        searchKeys: []),
-    GCWTool(tool: DTMF(), i18nPrefix: 'dtmf', categories: [
+        tool: const DNASelection(),
+        id: 'dna_selection',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+        searchKeys: const []),
+    GCWTool(tool: const DTMF(), id: 'dtmf', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'dtmf',
     ]),
-    GCWTool(tool: EnclosedAreas(), i18nPrefix: 'enclosedareas', categories: [
+    GCWTool(tool: const EnclosedAreas(), id: 'enclosedareas', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'enclosedareas',
     ]),
-    GCWTool(tool: ESelection(), i18nPrefix: 'e_selection', categories: [
+    GCWTool(tool: const ESelection(), id: 'e_selection', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'e',
       'irrationalnumbers',
     ]),
-    GCWTool(tool: Enigma(), i18nPrefix: 'enigma', categories: [
+    GCWTool(tool: const Enigma(), id: 'enigma', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'enigma',
     ]),
     GCWTool(
-        tool: EsotericProgrammingLanguageSelection(),
-        i18nPrefix: 'esotericprogramminglanguages_selection',
-        categories: [
+        tool: const EsotericProgrammingLanguageSelection(),
+        id: 'esotericprogramminglanguages_selection',
+        categories: const [
           ToolCategory.CRYPTOGRAPHY
         ],
-        searchKeys: [
+        searchKeys: const [
           'esotericprogramminglanguage',
         ]),
-    GCWTool(tool: ExifReader(), i18nPrefix: 'exif', isBeta: true, categories: [
+    GCWTool(tool: const ExifReader(), id: 'exif', isBeta: true, categories: const [
       ToolCategory.IMAGES_AND_FILES
-    ], searchKeys: [
+    ], searchKeys: const [
       'exif',
     ]),
     GCWTool(
-      tool: FormulaSolverFormulaGroups(),
-      i18nPrefix: 'formulasolver',
-      searchKeys: [
+      tool: const FormulaSolverFormulaGroups(),
+      id: 'formulasolver',
+      searchKeys: const [
         'formulasolver',
       ],
     ),
-    GCWTool(tool: Fox(), i18nPrefix: 'fox', categories: [
+    GCWTool(tool: const Fox(), id: 'fox', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'fox',
     ]),
-    GCWTool(tool: Gade(), i18nPrefix: 'gade', categories: [
+    GCWTool(tool: const Gade(), id: 'gade', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'gade',
     ]),
     GCWTool(
-      tool: GamesSelection(),
-      i18nPrefix: 'games_selection',
-      searchKeys: [
+      tool: const GamesSelection(),
+      id: 'games_selection',
+      searchKeys: const [
         'games',
       ],
     ),
-    GCWTool(tool: GameOfLife(), i18nPrefix: 'gameoflife', categories: [
+    GCWTool(tool: const GameOfLife(), id: 'gameoflife', categories: const [
       ToolCategory.GAMES
-    ], searchKeys: [
+    ], searchKeys: const [
       'gameoflife',
     ]),
-    GCWTool(tool: GCCode(), i18nPrefix: 'gccode', categories: [
+    GCWTool(tool: const GCCode(), id: 'gccode', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'gccode',
     ]),
-    GCWTool(tool: GeneralCodebreakersSelection(), i18nPrefix: 'generalcodebreakers_selection', searchKeys: [
+    GCWTool(tool: const GeneralCodebreakersSelection(), id: 'generalcodebreakers_selection', searchKeys: const [
       'codebreaker',
     ]),
-    GCWTool(tool: Gray(), i18nPrefix: 'gray', categories: [
+    GCWTool(tool: const Gray(), id: 'gray', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'binary',
       'gray',
     ]),
-    GCWTool(tool: Grid(), i18nPrefix: 'grid', categories: [
+    GCWTool(tool: const Grid(), id: 'grid', categories: const [
       ToolCategory.GAMES
-    ], searchKeys: [
+    ], searchKeys: const [
       'grid',
     ]),
-    GCWTool(tool: GuitarStrings(), i18nPrefix: 'guitarstrings', categories: [
+    GCWTool(tool: const GuitarStrings(), id: 'guitarstrings', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'music',
       'guitar',
     ]),
     GCWTool(
-        tool: HashSelection(), i18nPrefix: 'hashes_selection', categories: [ToolCategory.CRYPTOGRAPHY], searchKeys: []),
-    GCWTool(tool: Hexadecimal(), i18nPrefix: 'hexadecimal', categories: [
+        tool: const HashSelection(), id: 'hashes_selection', categories: const [ToolCategory.CRYPTOGRAPHY], searchKeys: const []),
+    GCWTool(tool: const Hexadecimal(), id: 'hexadecimal', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'hexadecimal',
     ]),
-    GCWTool(tool: HexString2File(), i18nPrefix: 'hexstring2file', isBeta: true, categories: [
+    GCWTool(tool: const HexString2File(), id: 'hexstring2file', isBeta: true, categories: const [
       ToolCategory.IMAGES_AND_FILES
-    ], searchKeys: [
+    ], searchKeys: const [
       'hexadecimal',
       'hexstring2file',
     ]),
-    GCWTool(tool: HexViewer(), i18nPrefix: 'hexviewer', categories: [
+    GCWTool(tool: const HexViewer(), id: 'hexviewer', categories: const [
       ToolCategory.IMAGES_AND_FILES
-    ], searchKeys: [
+    ], searchKeys: const [
       'hexadecimal',
       'hexviewer',
     ]),
-    GCWTool(tool: HiddenData(), i18nPrefix: 'hiddendata', isBeta: true, categories: [
+    GCWTool(tool: const HiddenData(), id: 'hiddendata', isBeta: true, categories: const [
       ToolCategory.IMAGES_AND_FILES
-    ], searchKeys: [
+    ], searchKeys: const [
       'hiddendata',
     ]),
-    GCWTool(tool: Homophone(), i18nPrefix: 'homophone', categories: [
+    GCWTool(tool: const Homophone(), id: 'homophone', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'homophone',
     ]),
-    GCWTool(tool: Houdini(), i18nPrefix: 'houdini', categories: [
+    GCWTool(tool: const Houdini(), id: 'houdini', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'houdini',
     ]),
     GCWTool(
-      tool: IATAICAOSearch(),
-      i18nPrefix: 'iataicao',
-      categories: [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-      searchKeys: [
+      tool: const IATAICAOSearch(),
+      id: 'iataicao',
+      categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+      searchKeys: const [
         'iataicao',
       ],
     ),
     GCWTool(
-      tool: IceCodesSelection(),
-      i18nPrefix: 'icecodes_selection',
-      categories: [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-      searchKeys: [],
+      tool: const IceCodesSelection(),
+      id: 'icecodes_selection',
+      categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+      searchKeys: const [],
     ),
-    GCWTool(tool: ILLIAC(), i18nPrefix: 'illiac', categories: [
+    GCWTool(tool: const ILLIAC(), id: 'illiac', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'illiac',
     ]),
-    GCWTool(tool: ImagesAndFilesSelection(), i18nPrefix: 'imagesandfiles_selection', isBeta: true, searchKeys: [
+    GCWTool(tool: const ImagesAndFilesSelection(), id: 'imagesandfiles_selection', isBeta: true, searchKeys: const [
       'images',
       'imagesandfilesselection',
     ]),
     GCWTool(
-        tool: ImageColorCorrections(),
+        tool: const ImageColorCorrections(),
         autoScroll: false,
-        categories: [ToolCategory.IMAGES_AND_FILES],
-        i18nPrefix: 'image_colorcorrections',
+        categories: const [ToolCategory.IMAGES_AND_FILES],
+        id: 'image_colorcorrections',
         isBeta: true,
-        searchKeys: [
+        searchKeys: const [
           'images',
           'color',
           'image_colorcorrections',
         ]),
     GCWTool(
-        tool: ImageFlipRotate(),
-        categories: [ToolCategory.IMAGES_AND_FILES],
-        i18nPrefix: 'image_fliprotate',
-        searchKeys: [
+        tool: const ImageFlipRotate(),
+        categories: const [ToolCategory.IMAGES_AND_FILES],
+        id: 'image_fliprotate',
+        searchKeys: const [
           'images',
           'image_fliprotate',
         ]),
     GCWTool(
-        tool: IPCodes(),
-        i18nPrefix: 'ipcodes',
-        categories: [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-        searchKeys: ['ipcodes']),
-    GCWTool(tool: Kamasutra(), i18nPrefix: 'kamasutra', categories: [
+        tool: const IPCodes(),
+        id: 'ipcodes',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+        searchKeys: const ['ipcodes']),
+    GCWTool(tool: const Kamasutra(), id: 'kamasutra', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'rotation',
       'kamasutra',
     ]),
-    GCWTool(tool: Kenny(), i18nPrefix: 'kenny', categories: [
+    GCWTool(tool: const Kenny(), id: 'kenny', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'kenny',
     ]),
-    GCWTool(tool: KeyboardLayout(), i18nPrefix: 'keyboard_layout', searchKeys: [
+    GCWTool(tool: const KeyboardLayout(), id: 'keyboard_layout', searchKeys: const [
       'keyboard',
     ]),
-    GCWTool(tool: KeyboardNumbers(), i18nPrefix: 'keyboard_numbers', searchKeys: ['keyboard', 'keyboard_numbers']),
+    GCWTool(tool: const KeyboardNumbers(), id: 'keyboard_numbers', searchKeys: const ['keyboard', 'keyboard_numbers']),
     GCWTool(
-        tool: KeyboardSelection(),
-        i18nPrefix: 'keyboard_selection',
-        categories: [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-        searchKeys: []),
+        tool: const KeyboardSelection(),
+        id: 'keyboard_selection',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+        searchKeys: const []),
     GCWTool(
-        tool: LanguageGamesSelection(),
-        i18nPrefix: 'languagegames_selection',
-        categories: [ToolCategory.CRYPTOGRAPHY],
-        searchKeys: []),
+        tool: const LanguageGamesSelection(),
+        id: 'languagegames_selection',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const []),
     GCWTool(
-        tool: MagicEyeSolver(),
-        i18nPrefix: 'magic_eye',
+        tool: const MagicEyeSolver(),
+        id: 'magic_eye',
         isBeta: true,
-        categories: [ToolCategory.IMAGES_AND_FILES],
-        searchKeys: ['magic_eye', 'images']),
-    GCWTool(tool: MathematicalConstants(), i18nPrefix: 'mathematical_constants', categories: [
+        categories: const [ToolCategory.IMAGES_AND_FILES],
+        searchKeys: const ['magic_eye', 'images']),
+    GCWTool(tool: const MathematicalConstants(), id: 'mathematical_constants', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'mathematical_constants',
     ]),
     GCWTool(
-        tool: MayaCalendarSelection(),
-        categories: [ToolCategory.CRYPTOGRAPHY],
-        i18nPrefix: 'mayacalendar_selection',
-        searchKeys: []),
+        tool: const MayaCalendarSelection(),
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        id: 'mayacalendar_selection',
+        searchKeys: const []),
     GCWTool(
-        tool: MayaNumbersSelection(),
-        i18nPrefix: 'mayanumbers_selection',
-        categories: [ToolCategory.CRYPTOGRAPHY],
-        searchKeys: []),
-    GCWTool(tool: MexicanArmyCipherWheel(), i18nPrefix: 'mexicanarmycipherwheel', categories: [
+        tool: const MayaNumbersSelection(),
+        id: 'mayanumbers_selection',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const []),
+    GCWTool(tool: const MexicanArmyCipherWheel(), id: 'mexicanarmycipherwheel', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'cipherwheel',
       'mexicanarmycipherwheel',
     ]),
     GCWTool(
-        tool: MorseSelection(), i18nPrefix: 'morse_selection', categories: [ToolCategory.CRYPTOGRAPHY], searchKeys: []),
-    GCWTool(tool: MultiDecoder(), i18nPrefix: 'multidecoder', categories: [
+        tool: const MorseSelection(), id: 'morse_selection', categories: const [ToolCategory.CRYPTOGRAPHY], searchKeys: const []),
+    GCWTool(tool: const MultiDecoder(), id: 'multidecoder', categories: const [
       ToolCategory.GENERAL_CODEBREAKERS
-    ], searchKeys: [
+    ], searchKeys: const [
       'multidecoder',
     ]),
     GCWTool(
-        tool: MusicNotes(),
-        i18nPrefix: 'music_notes',
-        categories: [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-        searchKeys: ['music', 'music_notes']),
-    GCWTool(tool: Navajo(), i18nPrefix: 'navajo', categories: [
+        tool: const MusicNotes(),
+        id: 'music_notes',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+        searchKeys: const ['music', 'music_notes']),
+    GCWTool(tool: const Navajo(), id: 'navajo', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'navajo',
     ]),
     GCWTool(
-        tool: NumberSequenceSelection(),
-        i18nPrefix: 'numbersequence',
-        categories: [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-        searchKeys: []),
-    GCWTool(tool: NumeralBases(), i18nPrefix: 'numeralbases', categories: [
+        tool: const NumberSequenceSelection(),
+        id: 'numbersequence',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+        searchKeys: const []),
+    GCWTool(tool: const NumeralBases(), id: 'numeralbases', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'binary',
       'numeralbases',
     ]),
     GCWTool(
-        tool: NumeralWordsSelection(),
-        i18nPrefix: 'numeralwords_selection',
-        categories: [ToolCategory.CRYPTOGRAPHY],
-        searchKeys: []),
-    GCWTool(tool: OneTimePad(), i18nPrefix: 'onetimepad', categories: [
+        tool: const NumeralWordsSelection(),
+        id: 'numeralwords_selection',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const []),
+    GCWTool(tool: const OneTimePad(), id: 'onetimepad', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'onetimepad',
     ]),
-    GCWTool(tool: PeriodicTableSelection(), i18nPrefix: 'periodictable_selection', categories: [
+    GCWTool(tool: const PeriodicTableSelection(), id: 'periodictable_selection', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'periodictable',
     ]),
-    GCWTool(tool: PhiSelection(), i18nPrefix: 'phi_selection', categories: [
+    GCWTool(tool: const PhiSelection(), id: 'phi_selection', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'phi',
       'irrationalnumbers',
     ]),
-    GCWTool(tool: Piano(), i18nPrefix: 'piano', categories: [
+    GCWTool(tool: const Piano(), id: 'piano', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'music'
           'music_notes',
       'piano',
     ]),
-    GCWTool(tool: PiSelection(), i18nPrefix: 'pi_selection', categories: [
+    GCWTool(tool: const PiSelection(), id: 'pi_selection', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'pi',
       'irrationalnumbers',
     ]),
-    GCWTool(tool: PhysicalConstants(), i18nPrefix: 'physical_constants', categories: [
+    GCWTool(tool: const PhysicalConstants(), id: 'physical_constants', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'physical_constants',
     ]),
-    GCWTool(tool: Playfair(), i18nPrefix: 'playfair', categories: [
+    GCWTool(tool: const Playfair(), id: 'playfair', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'playfair',
     ]),
-    GCWTool(tool: Pokemon(), i18nPrefix: 'pokemon_code', categories: [
+    GCWTool(tool: const Pokemon(), id: 'pokemon_code', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'pokemon',
     ]),
-    GCWTool(tool: Polybios(), i18nPrefix: 'polybios', categories: [
+    GCWTool(tool: const Polybios(), id: 'polybios', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'polybios',
     ]),
     GCWTool(
-        tool: PredatorSelection(),
-        i18nPrefix: 'predator_selection',
-        categories: [ToolCategory.CRYPTOGRAPHY],
-        searchKeys: []),
-    GCWTool(tool: PrimeAlphabet(), i18nPrefix: 'primealphabet', categories: [
+        tool: const PredatorSelection(),
+        id: 'predator_selection',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const []),
+    GCWTool(tool: const PrimeAlphabet(), id: 'primealphabet', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'primes',
       'primealphabet',
     ]),
     GCWTool(
-        tool: PrimesSelection(),
-        i18nPrefix: 'primes_selection',
-        categories: [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-        searchKeys: []),
-    GCWTool(tool: Projectiles(), i18nPrefix: 'projectiles', categories: [
+        tool: const PrimesSelection(),
+        id: 'primes_selection',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+        searchKeys: const []),
+    GCWTool(tool: const Projectiles(), id: 'projectiles', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'projectiles',
     ]),
-    GCWTool(tool: QrCode(), i18nPrefix: 'qr_code', isBeta: true, categories: [
+    GCWTool(tool: const QrCode(), id: 'qr_code', isBeta: true, categories: const [
       ToolCategory.IMAGES_AND_FILES
-    ], searchKeys: [
+    ], searchKeys: const [
       'qrcode',
     ]),
-    GCWTool(tool: QuadraticEquation(), i18nPrefix: 'quadratic_equation', categories: [
+    GCWTool(tool: const QuadraticEquation(), id: 'quadratic_equation', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'quadraticequation',
     ]),
-    GCWTool(tool: Rabbit(), i18nPrefix: 'rabbit', categories: [
+    GCWTool(tool: const Rabbit(), id: 'rabbit', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'rabbit',
     ]),
-    GCWTool(tool: RailFence(), i18nPrefix: 'railfence', categories: [
+    GCWTool(tool: const RailFence(), id: 'railfence', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'railfence',
     ]),
-    GCWTool(tool: RC4(), i18nPrefix: 'rc4', categories: [
+    GCWTool(tool: const RC4(), id: 'rc4', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'rc4',
     ]),
-    GCWTool(tool: Recycling(), i18nPrefix: 'recycling', categories: [
+    GCWTool(tool: const Recycling(), id: 'recycling', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'recycling',
     ]),
     GCWTool(
-        tool: ResistorSelection(),
-        i18nPrefix: 'resistor_selection',
-        categories: [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-        searchKeys: []),
-    GCWTool(tool: Reverse(), i18nPrefix: 'reverse', categories: [
+        tool: const ResistorSelection(),
+        id: 'resistor_selection',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+        searchKeys: const []),
+    GCWTool(tool: const Reverse(), id: 'reverse', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'reverse',
     ]),
     GCWTool(
-        tool: RomanNumbersSelection(),
-        i18nPrefix: 'romannumbers',
-        categories: [ToolCategory.CRYPTOGRAPHY],
-        searchKeys: []),
+        tool: const RomanNumbersSelection(),
+        id: 'romannumbers',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const []),
     GCWTool(
-        tool: RotationSelection(),
-        i18nPrefix: 'rotation_selection',
-        categories: [ToolCategory.CRYPTOGRAPHY],
-        searchKeys: []),
-    GCWTool(tool: RSASelection(), i18nPrefix: 'rsa_selection', categories: [
+        tool: const RotationSelection(),
+        id: 'rotation_selection',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const []),
+    GCWTool(tool: const RSASelection(), id: 'rsa_selection', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'primes',
     ]),
-    GCWTool(tool: ScienceAndTechnologySelection(), i18nPrefix: 'scienceandtechnology_selection', searchKeys: [
+    GCWTool(tool: const ScienceAndTechnologySelection(), id: 'scienceandtechnology_selection', searchKeys: const [
       'scienceandtechnologyselection',
     ]),
     GCWTool(
-        tool: ScrabbleSelection(),
-        i18nPrefix: 'scrabble_selection',
-        categories: [ToolCategory.GAMES],
-        searchKeys: ['games']),
+        tool: const ScrabbleSelection(),
+        id: 'scrabble_selection',
+        categories: const [ToolCategory.GAMES],
+        searchKeys: const ['games']),
     GCWTool(
-        tool: SegmentDisplaySelection(),
-        i18nPrefix: 'segmentdisplay_selection',
-        categories: [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-        searchKeys: []),
+        tool: const SegmentDisplaySelection(),
+        id: 'segmentdisplay_selection',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+        searchKeys: const []),
     GCWTool(
-        tool: ShadoksSelection(),
-        i18nPrefix: 'shadoks_selection',
-        categories: [ToolCategory.CRYPTOGRAPHY],
-        searchKeys: []),
-    GCWTool(tool: SilverRatioSelection(), i18nPrefix: 'silverratio_selection', categories: [
+        tool: const ShadoksSelection(),
+        id: 'shadoks_selection',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const []),
+    GCWTool(tool: const SilverRatioSelection(), id: 'silverratio_selection', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'silverratio',
       'irrationalnumbers',
     ]),
-    GCWTool(tool: Skytale(), i18nPrefix: 'skytale', categories: [
+    GCWTool(tool: const Skytale(), id: 'skytale', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'skytale',
     ]),
-    GCWTool(tool: Solitaire(), i18nPrefix: 'solitaire', categories: [
+    GCWTool(tool: const Solitaire(), id: 'solitaire', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'solitaire',
     ]),
-    GCWTool(tool: SQRT2Selection(), i18nPrefix: 'sqrt2_selection', categories: [
+    GCWTool(tool: const SQRT2Selection(), id: 'sqrt2_selection', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'sqrt',
       'irrationalnumbers',
     ]),
-    GCWTool(tool: SQRT3Selection(), i18nPrefix: 'sqrt3_selection', categories: [
+    GCWTool(tool: const SQRT3Selection(), id: 'sqrt3_selection', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'sqrt',
       'irrationalnumbers',
     ]),
-    GCWTool(tool: SQRT5Selection(), i18nPrefix: 'sqrt5_selection', categories: [
+    GCWTool(tool: const SQRT5Selection(), id: 'sqrt5_selection', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'sqrt',
       'irrationalnumbers',
     ]),
-    GCWTool(tool: Stegano(), i18nPrefix: 'stegano', isBeta: true, categories: [
+    GCWTool(tool: const Stegano(), id: 'stegano', isBeta: true, categories: const [
       ToolCategory.IMAGES_AND_FILES
-    ], searchKeys: [
+    ], searchKeys: const [
       'stegano',
     ]),
-    GCWTool(tool: StraddlingCheckerboard(), i18nPrefix: 'straddlingcheckerboard', categories: [
+    GCWTool(tool: const StraddlingCheckerboard(), id: 'straddlingcheckerboard', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'straddlingcheckerboard',
     ]),
-    GCWTool(tool: Substitution(), i18nPrefix: 'substitution', categories: [
+    GCWTool(tool: const Substitution(), id: 'substitution', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'substitution',
     ]),
-    GCWTool(tool: SubstitutionBreaker(), i18nPrefix: 'substitutionbreaker', categories: [
+    GCWTool(tool: const SubstitutionBreaker(), id: 'substitutionbreaker', categories: const [
       ToolCategory.GENERAL_CODEBREAKERS
-    ], searchKeys: [
+    ], searchKeys: const [
       'codebreaker',
       'substitutionbreaker',
     ]),
-    GCWTool(tool: SudokuSolver(), i18nPrefix: 'sudokusolver', categories: [
+    GCWTool(tool: const SudokuSolver(), id: 'sudokusolver', categories: const [
       ToolCategory.GAMES
-    ], searchKeys: [
+    ], searchKeys: const [
       'games',
       'games_sudokusolver',
     ]),
     GCWTool(
-      tool: SymbolTableSelection(),
+      tool: const SymbolTableSelection(),
       buttonList: [
         GCWToolActionButtonsEntry(
             showDialog: true,
@@ -1122,32 +1116,32 @@ initializeRegistry(BuildContext context) {
             text: 'symboltables_selection_download_dialog_text',
             icon: Icons.file_download),
       ],
-      i18nPrefix: 'symboltables_selection',
-      searchKeys: [],
+      id: 'symboltables_selection',
+      searchKeys: const [],
     ),
-    GCWTool(tool: TapCode(), i18nPrefix: 'tapcode', categories: [
+    GCWTool(tool: const TapCode(), id: 'tapcode', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'tapcode',
     ]),
-    GCWTool(tool: Tapir(), i18nPrefix: 'tapir', categories: [
+    GCWTool(tool: const Tapir(), id: 'tapir', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'tapir',
     ]),
     GCWTool(
-        tool: TelegraphSelection(),
-        i18nPrefix: 'telegraph_selection',
-        categories: [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-        searchKeys: []),
+        tool: const TelegraphSelection(),
+        id: 'telegraph_selection',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+        searchKeys: const []),
     GCWTool(
-        tool: TeletypewriterSelection(),
-        i18nPrefix: 'teletypewriter_selection',
-        categories: [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-        searchKeys: []),
-    GCWTool(tool: TeletypewriterPunchTape(), i18nPrefix: 'punchtape', categories: [
+        tool: const TeletypewriterSelection(),
+        id: 'teletypewriter_selection',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+        searchKeys: const []),
+    GCWTool(tool: const TeletypewriterPunchTape(), id: 'punchtape', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'ccitt',
       'ccitt_1',
       'ccitt_2',
@@ -1162,100 +1156,100 @@ initializeRegistry(BuildContext context) {
       'symbol_baudot'
     ]),
     GCWTool(
-        tool: TextAnalysis(),
-        i18nPrefix: 'textanalysis',
-        categories: [ToolCategory.CRYPTOGRAPHY],
-        searchKeys: ['alphabetvalues', 'asciivalues', 'textanalysis']),
-    GCWTool(tool: Trifid(), i18nPrefix: 'trifid', categories: [
+        tool: const TextAnalysis(),
+        id: 'textanalysis',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const ['alphabetvalues', 'asciivalues', 'textanalysis']),
+    GCWTool(tool: const Trifid(), id: 'trifid', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'trifid',
     ]),
     GCWTool(
-        tool: TomTomSelection(),
-        i18nPrefix: 'tomtom_selection',
-        categories: [ToolCategory.CRYPTOGRAPHY],
-        searchKeys: []),
-    GCWTool(tool: TTS(), i18nPrefix: 'tts', categories: [
+        tool: const TomTomSelection(),
+        id: 'tomtom_selection',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const []),
+    GCWTool(tool: const TTS(), id: 'tts', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'tts',
     ]),
-    GCWTool(tool: UnitConverter(), i18nPrefix: 'unitconverter', categories: [
+    GCWTool(tool: const UnitConverter(), id: 'unitconverter', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'unitconverter',
     ]),
     GCWTool(
-        tool: VanitySelection(),
-        i18nPrefix: 'vanity_selection',
-        categories: [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-        searchKeys: []),
+        tool: const VanitySelection(),
+        id: 'vanity_selection',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+        searchKeys: const []),
     GCWTool(
-        tool: VigenereSelection(),
-        i18nPrefix: 'vigenere_selection',
-        categories: [ToolCategory.CRYPTOGRAPHY],
-        searchKeys: []),
+        tool: const VigenereSelection(),
+        id: 'vigenere_selection',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const []),
     GCWTool(
-        tool: VisualCryptography(),
-        i18nPrefix: 'visual_cryptography',
+        tool: const VisualCryptography(),
+        id: 'visual_cryptography',
         isBeta: true,
-        categories: [ToolCategory.IMAGES_AND_FILES, ToolCategory.CRYPTOGRAPHY],
-        searchKeys: ['visualcryptography', 'images']),
-    GCWTool(tool: WASD(), i18nPrefix: 'wasd', categories: [
+        categories: const [ToolCategory.IMAGES_AND_FILES, ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const ['visualcryptography', 'images']),
+    GCWTool(tool: const WASD(), id: 'wasd', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'wasd',
     ]),
     GCWTool(
-        tool: WherigoSelection(),
-        i18nPrefix: 'wherigourwigo_selection',
-        categories: [ToolCategory.CRYPTOGRAPHY],
-        searchKeys: []),
+        tool: const WherigoSelection(),
+        id: 'wherigourwigo_selection',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const []),
     GCWTool(
-        tool: WeatherSymbols(),
-        i18nPrefix: 'weathersymbols',
-        categories: [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-        searchKeys: ['weather', 'weather_clouds', 'weather_a']),
-    GCWTool(tool: Z22(), i18nPrefix: 'z22', categories: [
+        tool: const WeatherSymbols(),
+        id: 'weathersymbols',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+        searchKeys: const ['weather', 'weather_clouds', 'weather_a']),
+    GCWTool(tool: const Z22(), id: 'z22', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'z22',
     ]),
-    GCWTool(tool: ZamonianNumbers(), autoScroll: false, i18nPrefix: 'zamoniannumbers', categories: [
+    GCWTool(tool: ZamonianNumbers(), autoScroll: false, id: 'zamoniannumbers', categories: const [
       ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: [
+    ], searchKeys: const [
       'symbol_zamonian',
     ]),
-    GCWTool(tool: ZC1(), i18nPrefix: 'zc1', categories: [
+    GCWTool(tool: const ZC1(), id: 'zc1', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ], searchKeys: [
+    ], searchKeys: const [
       'zc1',
     ]),
 
     //ApparentTemperatureSelection  ********************************************************************************************
-    GCWTool(tool: HeatIndex(), i18nPrefix: 'heatindex', searchKeys: [
+    GCWTool(tool: const HeatIndex(), id: 'heatindex', searchKeys: const [
       'apparenttemperature',
       'apparenttemperature_heatindex',
     ]),
-    GCWTool(tool: Humidex(), i18nPrefix: 'humidex', searchKeys: [
+    GCWTool(tool: const Humidex(), id: 'humidex', searchKeys: const [
       'apparenttemperature',
       'apparenttemperature_humidex',
     ]),
-    GCWTool(tool: SummerSimmerIndex(), i18nPrefix: 'summersimmerindex', searchKeys: [
+    GCWTool(tool: const SummerSimmerIndex(), id: 'summersimmerindex', searchKeys: const [
       'apparenttemperature',
       'apparenttemperature_summersimmerindex',
     ]),
-    GCWTool(tool: Windchill(), i18nPrefix: 'windchill', searchKeys: [
+    GCWTool(tool: const Windchill(), id: 'windchill', searchKeys: const [
       'apparenttemperature',
       'apparenttemperature_windchill',
     ]),
-    GCWTool(tool: WetBulbTemperature(), i18nPrefix: 'wet_bulb_temperature', searchKeys: [
+    GCWTool(tool: const WetBulbTemperature(), id: 'wet_bulb_temperature', searchKeys: const [
       'apparenttemperature',
       'apparenttemperature_wet_bulb_temperature',
     ]),
 
-    GCWTool(tool: Zodiac(), i18nPrefix: 'zodiac', searchKeys: [
+    GCWTool(tool: const Zodiac(), id: 'zodiac', searchKeys: const [
       'symbol_alchemy',
       'symbol_planets',
       'symbol_zodiacsigns',
@@ -1263,238 +1257,238 @@ initializeRegistry(BuildContext context) {
     ]),
 
     //AstronomySelection  ********************************************************************************************
-    GCWTool(tool: SunRiseSet(), i18nPrefix: 'astronomy_sunriseset', searchKeys: [
+    GCWTool(tool: const SunRiseSet(), id: 'astronomy_sunriseset', searchKeys: const [
       'astronomy',
       'astronomy_riseset',
       'astronomy_sun',
       'astronomy_sunriseset',
     ]),
-    GCWTool(tool: SunPosition(), i18nPrefix: 'astronomy_sunposition', searchKeys: [
+    GCWTool(tool: const SunPosition(), id: 'astronomy_sunposition', searchKeys: const [
       'astronomy',
       'astronomy_position',
       'astronomy_sun',
     ]),
-    GCWTool(tool: MoonRiseSet(), i18nPrefix: 'astronomy_moonriseset', searchKeys: [
+    GCWTool(tool: const MoonRiseSet(), id: 'astronomy_moonriseset', searchKeys: const [
       'astronomy',
       'astronomy_riseset',
       'astronomy_moon',
     ]),
-    GCWTool(tool: MoonPosition(), i18nPrefix: 'astronomy_moonposition', searchKeys: [
+    GCWTool(tool: const MoonPosition(), id: 'astronomy_moonposition', searchKeys: const [
       'astronomy',
       'astronomy_position',
       'astronomy_moon',
       'astronomy_moonposition',
     ]),
-    GCWTool(tool: EasterSelection(), i18nPrefix: 'astronomy_easter_selection', searchKeys: [
+    GCWTool(tool: const EasterSelection(), id: 'astronomy_easter_selection', searchKeys: const [
       'easter_date',
     ]),
-    GCWTool(tool: Seasons(), i18nPrefix: 'astronomy_seasons', searchKeys: [
+    GCWTool(tool: const Seasons(), id: 'astronomy_seasons', searchKeys: const [
       'astronomy',
       'astronomy_seasons',
     ]),
-    GCWTool(tool: ShadowLength(), i18nPrefix: 'shadowlength', searchKeys: [
+    GCWTool(tool: const ShadowLength(), id: 'shadowlength', searchKeys: const [
       'astronomy',
       'astronomy_shadow_length',
     ]),
-    GCWTool(tool: RightAscensionToDegree(), i18nPrefix: 'right_ascension_to_degree', categories: [], searchKeys: [
+    GCWTool(tool: const RightAscensionToDegree(), id: 'right_ascension_to_degree', categories: const [], searchKeys: const [
       'astronomy',
       'right_ascension_to_degree',
       'coordinates',
     ]),
 
     //Babylon Numbers Selection **************************************************************************************
-    GCWTool(tool: BabylonNumbers(), i18nPrefix: 'babylonnumbers', searchKeys: [
+    GCWTool(tool: const BabylonNumbers(), id: 'babylonnumbers', searchKeys: const [
       'babylonian_numerals',
     ]),
 
     //BaseSelection **************************************************************************************************
-    GCWTool(tool: Base16(), i18nPrefix: 'base_base16', searchKeys: [
+    GCWTool(tool: const Base16(), id: 'base_base16', searchKeys: const [
       'base',
       'base16',
     ]),
-    GCWTool(tool: Base32(), i18nPrefix: 'base_base32', searchKeys: [
+    GCWTool(tool: const Base32(), id: 'base_base32', searchKeys: const [
       'base',
       'base32',
     ]),
-    GCWTool(tool: Base58(), i18nPrefix: 'base_base58', searchKeys: [
+    GCWTool(tool: const Base58(), id: 'base_base58', searchKeys: const [
       'base',
       'base58',
     ]),
-    GCWTool(tool: Base64(), i18nPrefix: 'base_base64', searchKeys: [
+    GCWTool(tool: const Base64(), id: 'base_base64', searchKeys: const [
       'base',
       'base64',
     ]),
-    GCWTool(tool: Base85(), i18nPrefix: 'base_base85', searchKeys: [
+    GCWTool(tool: const Base85(), id: 'base_base85', searchKeys: const [
       'base',
       'base85',
     ]),
-    GCWTool(tool: Base91(), i18nPrefix: 'base_base91', searchKeys: [
+    GCWTool(tool: const Base91(), id: 'base_base91', searchKeys: const [
       'base',
       'base91',
     ]),
-    GCWTool(tool: Base122(), i18nPrefix: 'base_base122', searchKeys: [
+    GCWTool(tool: const Base122(), id: 'base_base122', searchKeys: const [
       'base',
       'base122',
     ]),
 
     //BCD selection **************************************************************************************************
-    GCWTool(tool: BCDOriginal(), i18nPrefix: 'bcd_original', searchKeys: [
+    GCWTool(tool: const BCDOriginal(), id: 'bcd_original', searchKeys: const [
       'bcd',
       'bcdoriginal',
     ]),
-    GCWTool(tool: BCDAiken(), i18nPrefix: 'bcd_aiken', searchKeys: [
+    GCWTool(tool: const BCDAiken(), id: 'bcd_aiken', searchKeys: const [
       'bcd',
       'bcdaiken',
     ]),
-    GCWTool(tool: BCDGlixon(), i18nPrefix: 'bcd_glixon', searchKeys: [
+    GCWTool(tool: const BCDGlixon(), id: 'bcd_glixon', searchKeys: const [
       'bcd',
       'bcdglixon',
     ]),
-    GCWTool(tool: BCDGray(), i18nPrefix: 'bcd_gray', searchKeys: [
+    GCWTool(tool: const BCDGray(), id: 'bcd_gray', searchKeys: const [
       'bcd',
       'bcdgray',
     ]),
-    GCWTool(tool: BCDLibawCraig(), i18nPrefix: 'bcd_libawcraig', searchKeys: [
+    GCWTool(tool: const BCDLibawCraig(), id: 'bcd_libawcraig', searchKeys: const [
       'bcd',
       'bcdlibawcraig',
     ]),
-    GCWTool(tool: BCDOBrien(), i18nPrefix: 'bcd_obrien', searchKeys: [
+    GCWTool(tool: const BCDOBrien(), id: 'bcd_obrien', searchKeys: const [
       'bcd',
       'bcdobrien',
     ]),
-    GCWTool(tool: BCDPetherick(), i18nPrefix: 'bcd_petherick', searchKeys: [
+    GCWTool(tool: const BCDPetherick(), id: 'bcd_petherick', searchKeys: const [
       'bcd',
       'bcdpetherick',
     ]),
-    GCWTool(tool: BCDStibitz(), i18nPrefix: 'bcd_stibitz', searchKeys: [
+    GCWTool(tool: const BCDStibitz(), id: 'bcd_stibitz', searchKeys: const [
       'bcd',
       'bcdstibitz',
     ]),
-    GCWTool(tool: BCDTompkins(), i18nPrefix: 'bcd_tompkins', searchKeys: [
+    GCWTool(tool: const BCDTompkins(), id: 'bcd_tompkins', searchKeys: const [
       'bcd',
       'bcdtompkins',
     ]),
-    GCWTool(tool: BCDHamming(), i18nPrefix: 'bcd_hamming', searchKeys: [
+    GCWTool(tool: const BCDHamming(), id: 'bcd_hamming', searchKeys: const [
       'bcd',
       'bcdhamming',
     ]),
-    GCWTool(tool: BCDBiquinary(), i18nPrefix: 'bcd_biquinary', searchKeys: [
+    GCWTool(tool: const BCDBiquinary(), id: 'bcd_biquinary', searchKeys: const [
       'bcd',
       'bcd2of5',
       'bcdbiquinary',
     ]),
-    GCWTool(tool: BCD2of5Planet(), i18nPrefix: 'bcd_2of5planet', searchKeys: [
+    GCWTool(tool: const BCD2of5Planet(), id: 'bcd_2of5planet', searchKeys: const [
       'bcd',
       'bcd2of5',
       'bcd2of5planet',
     ]),
-    GCWTool(tool: BCD2of5Postnet(), i18nPrefix: 'bcd_2of5postnet', searchKeys: [
+    GCWTool(tool: const BCD2of5Postnet(), id: 'bcd_2of5postnet', searchKeys: const [
       'bcd',
       'bcd2of5',
       'bcd2of5postnet',
     ]),
-    GCWTool(tool: BCD2of5(), i18nPrefix: 'bcd_2of5', searchKeys: [
+    GCWTool(tool: const BCD2of5(), id: 'bcd_2of5', searchKeys: const [
       'bcd',
       'bcd2of5',
     ]),
-    GCWTool(tool: BCD1of10(), i18nPrefix: 'bcd_1of10', searchKeys: [
+    GCWTool(tool: const BCD1of10(), id: 'bcd_1of10', searchKeys: const [
       'bcd',
       'bcd1of10',
     ]),
-    GCWTool(tool: BCDGrayExcess(), i18nPrefix: 'bcd_grayexcess', searchKeys: [
+    GCWTool(tool: const BCDGrayExcess(), id: 'bcd_grayexcess', searchKeys: const [
       'bcd',
       'bcdgrayexcess',
     ]),
 
     // Beaufort Selection *******************************************************************************************
-    GCWTool(tool: Beaufort(), i18nPrefix: 'beaufort', searchKeys: [
+    GCWTool(tool: const Beaufort(), id: 'beaufort', searchKeys: const [
       'beaufort',
     ]),
 
     // BundeswehrTalkingBoard Selection *******************************************************************************************
     GCWTool(
-        tool: BundeswehrTalkingBoardAuthentification(),
-        i18nPrefix: 'bundeswehr_talkingboard_auth',
-        categories: [],
-        searchKeys: [
+        tool: const BundeswehrTalkingBoardAuthentification(),
+        id: 'bundeswehr_talkingboard_auth',
+        categories: const [],
+        searchKeys: const [
           'bundeswehr_talkingboard_auth',
           'bundeswehr_talkingboard',
         ]),
     GCWTool(
-        tool: BundeswehrTalkingBoardObfuscation(),
-        i18nPrefix: 'bundeswehr_talkingboard_code',
-        categories: [],
-        searchKeys: [
+        tool: const BundeswehrTalkingBoardObfuscation(),
+        id: 'bundeswehr_talkingboard_code',
+        categories: const [],
+        searchKeys: const [
           'bundeswehr_talkingboard',
           'bundeswehr_talkingboard_code',
         ]),
 
     //Braille Selection ****************************************************************
-    GCWTool(tool: Braille(), i18nPrefix: 'braille', searchKeys: [
+    GCWTool(tool: const Braille(), id: 'braille', searchKeys: const [
       'braille',
     ]),
-    GCWTool(tool: BrailleDotNumbers(), i18nPrefix: 'brailledotnumbers', searchKeys: [
+    GCWTool(tool: const BrailleDotNumbers(), id: 'brailledotnumbers', searchKeys: const [
       'braille',
     ]),
 
     //CCITT Selection **********************************************************************************************
-    GCWTool(tool: CCITT1(), i18nPrefix: 'ccitt_1', searchKeys: ['ccitt', 'ccitt_1', 'symbol_baudot']),
-    GCWTool(tool: CCITT2(), i18nPrefix: 'ccitt_2', searchKeys: [
+    GCWTool(tool: const CCITT1(), id: 'ccitt_1', searchKeys: const ['ccitt', 'ccitt_1', 'symbol_baudot']),
+    GCWTool(tool: const CCITT2(), id: 'ccitt_2', searchKeys: const [
       'ccitt',
       'ccitt_2',
       'teletypewriter',
       'symbol_murraybaudot',
     ]),
-    GCWTool(tool: CCITT3(), i18nPrefix: 'ccitt_3', searchKeys: [
+    GCWTool(tool: const CCITT3(), id: 'ccitt_3', searchKeys: const [
       'ccitt',
       'ccitt_3',
       'teletypewriter',
     ]),
-    GCWTool(tool: CCITT4(), i18nPrefix: 'ccitt_4', searchKeys: [
+    GCWTool(tool: const CCITT4(), id: 'ccitt_4', searchKeys: const [
       'ccitt',
       'ccitt_4',
       'teletypewriter',
     ]),
-    GCWTool(tool: CCITT5(), i18nPrefix: 'ccitt_5', searchKeys: [
+    GCWTool(tool: const CCITT5(), id: 'ccitt_5', searchKeys: const [
       'ccitt',
       'ccitt_5',
       'teletypewriter',
     ]),
-    GCWTool(tool: CCIR476(), i18nPrefix: 'ccitt_ccir476', searchKeys: [
+    GCWTool(tool: const CCIR476(), id: 'ccitt_ccir476', searchKeys: const [
       'ccitt',
       'ccitt_ccir_476',
       'teletypewriter',
     ]),
 
     //Cistercian Selection *****************************************************************************************
-    GCWTool(tool: CistercianNumbers(), i18nPrefix: 'cistercian', searchKeys: [
+    GCWTool(tool: const CistercianNumbers(), id: 'cistercian', searchKeys: const [
       'cistercian',
     ]),
 
     //ColorsSelection **********************************************************************************************
-    GCWTool(tool: ColorTool(), i18nPrefix: 'colors', searchKeys: [
+    GCWTool(tool: const ColorTool(), id: 'colors', searchKeys: const [
       'color',
       'colorpicker',
     ]),
-    GCWTool(tool: RALColorCodes(), i18nPrefix: 'ralcolorcodes', searchKeys: [
+    GCWTool(tool: const RALColorCodes(), id: 'ralcolorcodes', searchKeys: const [
       'color',
       'ralcolorcodes',
     ]),
-    GCWTool(tool: PantoneColorCodes(), i18nPrefix: 'pantonecolorcodes', searchKeys: [
+    GCWTool(tool: const PantoneColorCodes(), id: 'pantonecolorcodes', searchKeys: const [
       'color',
       'pantonecolorcodes',
     ]),
 
     //CombinatoricsSelection ***************************************************************************************
-    GCWTool(tool: Combination(), i18nPrefix: 'combinatorics_combination', searchKeys: [
+    GCWTool(tool: const Combination(), id: 'combinatorics_combination', searchKeys: const [
       'combinatorics',
       'combinatorics_combination',
     ]),
-    GCWTool(tool: Permutation(), i18nPrefix: 'combinatorics_permutation', searchKeys: [
+    GCWTool(tool: const Permutation(), id: 'combinatorics_permutation', searchKeys: const [
       'combinatorics',
       'combinatorics_permutation',
     ]),
-    GCWTool(tool: CombinationPermutation(), i18nPrefix: 'combinatorics_combinationpermutation', searchKeys: [
+    GCWTool(tool: const CombinationPermutation(), id: 'combinatorics_combinationpermutation', searchKeys: const [
       'combinatorics',
       'combinatorics_combination',
       'combinatorics_permutation',
@@ -1502,297 +1496,297 @@ initializeRegistry(BuildContext context) {
 
     //CoordsSelection **********************************************************************************************
     GCWTool(
-        tool: WaypointProjection(),
-        i18nPrefix: 'coords_waypointprojection',
+        tool: const WaypointProjection(),
+        id: 'coords_waypointprojection',
         iconPath: 'assets/icons/coords/icon_waypoint_projection.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_compassrose',
           'coordinates_waypointprojection',
         ]),
     GCWTool(
-        tool: DistanceBearing(),
-        i18nPrefix: 'coords_distancebearing',
+        tool: const DistanceBearing(),
+        id: 'coords_distancebearing',
         iconPath: 'assets/icons/coords/icon_distance_and_bearing.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_distancebearing',
         ]),
     GCWTool(
-        tool: FormatConverter(),
-        i18nPrefix: 'coords_formatconverter',
+        tool: const FormatConverter(),
+        id: 'coords_formatconverter',
         iconPath: 'assets/icons/coords/icon_format_converter.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_formatconverter',
         ]),
     GCWTool(
-        tool: MapView(),
+        tool: const MapView(),
         autoScroll: false,
         suppressToolMargin: true,
-        i18nPrefix: 'coords_openmap',
+        id: 'coords_openmap',
         iconPath: 'assets/icons/coords/icon_free_map.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_mapview',
         ]),
     GCWTool(
-        tool: VariableCoordinateFormulas(),
-        i18nPrefix: 'coords_variablecoordinate',
+        tool: const VariableCoordinateFormulas(),
+        id: 'coords_variablecoordinate',
         iconPath: 'assets/icons/coords/icon_variable_coordinate.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'formulasolver',
           'coordinates_variablecoordinateformulas',
         ]),
     GCWTool(
-        tool: DMMOffset(),
-        i18nPrefix: 'coords_dmmoffset',
+        tool: const DMMOffset(),
+        id: 'coords_dmmoffset',
         iconPath: 'assets/icons/coords/icon_dmm_offset.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_mapview',
         ]),
     GCWTool(
-        tool: CoordinateAveraging(),
-        i18nPrefix: 'coords_averaging',
+        tool: const CoordinateAveraging(),
+        id: 'coords_averaging',
         iconPath: 'assets/icons/coords/icon_coordinate_measurement.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_coordinateaveraging',
         ]),
     GCWTool(
-        tool: CenterTwoPoints(),
-        i18nPrefix: 'coords_centertwopoints',
+        tool: const CenterTwoPoints(),
+        id: 'coords_centertwopoints',
         iconPath: 'assets/icons/coords/icon_center_two_points.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_centertwopoints',
         ]),
     GCWTool(
-        tool: CentroidArithmeticMean(),
-        i18nPrefix: 'coords_centroid',
+        tool: const CentroidArithmeticMean(),
+        id: 'coords_centroid',
         iconPath: 'assets/icons/coords/icon_centroid.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_centroid',
           'coordinates_arithmeticmean',
         ]),
     GCWTool(
-        tool: CentroidCenterOfGravity(),
-        i18nPrefix: 'coords_centroid_centerofgravity',
+        tool: const CentroidCenterOfGravity(),
+        id: 'coords_centroid_centerofgravity',
         iconPath: 'assets/icons/coords/icon_centroid.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_centroid',
           'coordinates_centerofgravity',
         ]),
     GCWTool(
-        tool: CenterThreePoints(),
-        i18nPrefix: 'coords_centerthreepoints',
+        tool: const CenterThreePoints(),
+        id: 'coords_centerthreepoints',
         iconPath: 'assets/icons/coords/icon_center_three_points.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_centerthreepoints',
         ]),
     GCWTool(
-        tool: SegmentLine(),
-        i18nPrefix: 'coords_segmentline',
+        tool: const SegmentLine(),
+        id: 'coords_segmentline',
         iconPath: 'assets/icons/coords/icon_segment_line.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_segmentline',
         ]),
     GCWTool(
-        tool: SegmentBearings(),
-        i18nPrefix: 'coords_segmentbearings',
+        tool: const SegmentBearings(),
+        id: 'coords_segmentbearings',
         iconPath: 'assets/icons/coords/icon_segment_bearings.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_segmentbearing',
         ]),
     GCWTool(
-        tool: CrossBearing(),
-        i18nPrefix: 'coords_crossbearing',
+        tool: const CrossBearing(),
+        id: 'coords_crossbearing',
         iconPath: 'assets/icons/coords/icon_cross_bearing.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_crossbearing',
         ]),
     GCWTool(
-        tool: IntersectBearings(),
-        i18nPrefix: 'coords_intersectbearings',
+        tool: const IntersectBearings(),
+        id: 'coords_intersectbearings',
         iconPath: 'assets/icons/coords/icon_intersect_bearings.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_compassrose',
           'coordinates_intersectbearing',
         ]),
     GCWTool(
-        tool: IntersectFourPoints(),
-        i18nPrefix: 'coords_intersectfourpoints',
+        tool: const IntersectFourPoints(),
+        id: 'coords_intersectfourpoints',
         iconPath: 'assets/icons/coords/icon_intersect_four_points.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_intersectfourpoints',
         ]),
     GCWTool(
-        tool: IntersectGeodeticAndCircle(),
-        i18nPrefix: 'coords_intersectbearingcircle',
+        tool: const IntersectGeodeticAndCircle(),
+        id: 'coords_intersectbearingcircle',
         iconPath: 'assets/icons/coords/icon_intersect_bearing_and_circle.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_compassrose',
           'coordinates_intersectgeodeticandcircle',
         ]),
     GCWTool(
-        tool: IntersectTwoCircles(),
-        i18nPrefix: 'coords_intersecttwocircles',
+        tool: const IntersectTwoCircles(),
+        id: 'coords_intersecttwocircles',
         iconPath: 'assets/icons/coords/icon_intersect_two_circles.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_intersecttwocircles',
         ]),
     GCWTool(
-        tool: IntersectThreeCircles(),
-        i18nPrefix: 'coords_intersectthreecircles',
+        tool: const IntersectThreeCircles(),
+        id: 'coords_intersectthreecircles',
         iconPath: 'assets/icons/coords/icon_intersect_three_circles.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_intersectthreecircles',
         ]),
     GCWTool(
-        tool: Antipodes(),
-        i18nPrefix: 'coords_antipodes',
+        tool: const Antipodes(),
+        id: 'coords_antipodes',
         iconPath: 'assets/icons/coords/icon_antipodes.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_antipodes',
         ]),
     GCWTool(
-        tool: Intersection(),
-        i18nPrefix: 'coords_intersection',
+        tool: const Intersection(),
+        id: 'coords_intersection',
         iconPath: 'assets/icons/coords/icon_intersection.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_intersection',
         ]),
     GCWTool(
-        tool: Resection(),
-        i18nPrefix: 'coords_resection',
+        tool: const Resection(),
+        id: 'coords_resection',
         iconPath: 'assets/icons/coords/icon_resection.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_resection',
         ]),
     GCWTool(
-        tool: EquilateralTriangle(),
-        i18nPrefix: 'coords_equilateraltriangle',
+        tool: const EquilateralTriangle(),
+        id: 'coords_equilateraltriangle',
         iconPath: 'assets/icons/coords/icon_equilateral_triangle.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_equilateraltriangle',
         ]),
     GCWTool(
-        tool: EllipsoidTransform(),
-        i18nPrefix: 'coords_ellipsoidtransform',
+        tool: const EllipsoidTransform(),
+        id: 'coords_ellipsoidtransform',
         iconPath: 'assets/icons/coords/icon_ellipsoid_transform.png',
-        categories: [
+        categories: const [
           ToolCategory.COORDINATES
         ],
-        searchKeys: [
+        searchKeys: const [
           'coordinates',
           'coordinates_ellipsoidtransform',
         ]),
 
     //Countries Selection ******************************************************************************************
 
-    GCWTool(tool: CountriesCallingCodes(), i18nPrefix: 'countries_callingcode', searchKeys: [
+    GCWTool(tool: CountriesCallingCodes(), id: 'countries_callingcode', searchKeys: const [
       'countries',
       'countries_callingcodes',
     ]),
-    GCWTool(tool: CountriesIOCCodes(), i18nPrefix: 'countries_ioccode', searchKeys: [
+    GCWTool(tool: CountriesIOCCodes(), id: 'countries_ioccode', searchKeys: const [
       'countries',
       'countries_ioccodes',
     ]),
-    GCWTool(tool: CountriesISOCodes(), i18nPrefix: 'countries_isocode', searchKeys: [
+    GCWTool(tool: CountriesISOCodes(), id: 'countries_isocode', searchKeys: const [
       'countries',
       'countries_isocodes',
     ]),
-    GCWTool(tool: CountriesVehicleCodes(), i18nPrefix: 'countries_vehiclecode', searchKeys: [
+    GCWTool(tool: CountriesVehicleCodes(), id: 'countries_vehiclecode', searchKeys: const [
       'countries',
       'countries_vehiclecodes',
     ]),
-    GCWTool(tool: CountriesFlags(), i18nPrefix: 'countries_flags', searchKeys: [
+    GCWTool(tool: const CountriesFlags(), id: 'countries_flags', searchKeys: const [
       'countries',
       'symbol_flags',
       'countries_flags',
@@ -1800,2228 +1794,2228 @@ initializeRegistry(BuildContext context) {
 
     //CrossSumSelection *******************************************************************************************
 
-    GCWTool(tool: CrossSum(), i18nPrefix: 'crosssum_crosssum', searchKeys: [
+    GCWTool(tool: const CrossSum(), id: 'crosssum_crosssum', searchKeys: const [
       'crosssums',
     ]),
-    GCWTool(tool: CrossSumRange(), i18nPrefix: 'crosssum_range', searchKeys: [
+    GCWTool(tool: const CrossSumRange(), id: 'crosssum_range', searchKeys: const [
       'crosssums',
       'crossumrange',
     ]),
-    GCWTool(tool: IteratedCrossSumRange(), i18nPrefix: 'crosssum_range_iterated', searchKeys: [
+    GCWTool(tool: const IteratedCrossSumRange(), id: 'crosssum_range_iterated', searchKeys: const [
       'crosssums',
       'iteratedcrosssumrange',
     ]),
-    GCWTool(tool: CrossSumRangeFrequency(), i18nPrefix: 'crosssum_range_frequency', searchKeys: [
+    GCWTool(tool: const CrossSumRangeFrequency(), id: 'crosssum_range_frequency', searchKeys: const [
       'crosssums',
       'crossumrange',
       'iteratedcrossumrangefrequency',
     ]),
-    GCWTool(tool: IteratedCrossSumRangeFrequency(), i18nPrefix: 'crosssum_range_iterated_frequency', searchKeys: [
+    GCWTool(tool: const IteratedCrossSumRangeFrequency(), id: 'crosssum_range_iterated_frequency', searchKeys: const [
       'crosssums',
       'crossumrange',
       'crosssumrangefrequency',
     ]),
 
     //DatesSelection **********************************************************************************************
-    GCWTool(tool: DayCalculator(), i18nPrefix: 'dates_daycalculator', searchKeys: [
+    GCWTool(tool: const DayCalculator(), id: 'dates_daycalculator', searchKeys: const [
       'dates',
       'dates_daycalculator',
     ]),
-    GCWTool(tool: TimeCalculator(), i18nPrefix: 'dates_timecalculator', searchKeys: [
+    GCWTool(tool: const TimeCalculator(), id: 'dates_timecalculator', searchKeys: const [
       'dates',
       'dates_timecalculator',
     ]),
-    GCWTool(tool: Weekday(), i18nPrefix: 'dates_weekday', searchKeys: [
+    GCWTool(tool: const Weekday(), id: 'dates_weekday', searchKeys: const [
       'dates',
       'dates_weekday',
     ]),
-    GCWTool(tool: DayOfTheYear(), i18nPrefix: 'dates_day_of_the_year', searchKeys: [
+    GCWTool(tool: const DayOfTheYear(), id: 'dates_day_of_the_year', searchKeys: const [
       'dates',
       'dates_day_of_the_year',
     ]),
-    GCWTool(tool: Calendar(), i18nPrefix: 'dates_calendar', searchKeys: [
+    GCWTool(tool: const Calendar(), id: 'dates_calendar', searchKeys: const [
       'dates',
       'dates_calendar',
     ]),
 
     //DNASelection ************************************************************************************************
-    GCWTool(tool: DNANucleicAcidSequence(), i18nPrefix: 'dna_nucleicacidsequence', searchKeys: [
+    GCWTool(tool: const DNANucleicAcidSequence(), id: 'dna_nucleicacidsequence', searchKeys: const [
       'dna',
       'dnanucleicacidsequence',
     ]),
-    GCWTool(tool: DNAAminoAcids(), i18nPrefix: 'dna_aminoacids', searchKeys: [
+    GCWTool(tool: const DNAAminoAcids(), id: 'dna_aminoacids', searchKeys: const [
       'dna',
       'dnaaminoacids',
     ]),
-    GCWTool(tool: DNAAminoAcidsTable(), i18nPrefix: 'dna_aminoacids_table', searchKeys: [
+    GCWTool(tool: const DNAAminoAcidsTable(), id: 'dna_aminoacids_table', searchKeys: const [
       'dna',
       'dnaamonoacidstable',
     ]),
 
     //E Selection *************************************************************************************************
-    GCWTool(tool: ENthDecimal(), i18nPrefix: 'irrationalnumbers_nthdecimal', searchKeys: [
+    GCWTool(tool: const ENthDecimal(), id: 'irrationalnumbers_nthdecimal', searchKeys: const [
       'enthdecimal',
     ]),
-    GCWTool(tool: EDecimalRange(), i18nPrefix: 'irrationalnumbers_decimalrange', searchKeys: [
+    GCWTool(tool: const EDecimalRange(), id: 'irrationalnumbers_decimalrange', searchKeys: const [
       'edecimalrange',
     ]),
-    GCWTool(tool: ESearch(), i18nPrefix: 'irrationalnumbers_search', searchKeys: [
+    GCWTool(tool: const ESearch(), id: 'irrationalnumbers_search', searchKeys: const [
       'esearch',
     ]),
 
     //Easter Selection ***************************************************************************************
-    GCWTool(tool: EasterDate(), i18nPrefix: 'astronomy_easter_easterdate', searchKeys: [
+    GCWTool(tool: const EasterDate(), id: 'astronomy_easter_easterdate', searchKeys: const [
       'easter_date',
     ]),
-    GCWTool(tool: EasterYears(), i18nPrefix: 'astronomy_easter_easteryears', searchKeys: [
+    GCWTool(tool: const EasterYears(), id: 'astronomy_easter_easteryears', searchKeys: const [
       'easter_date',
       'easter_years',
     ]),
 
     //Esoteric Programming Language Selection ****************************************************************
-    GCWTool(tool: Beatnik(), i18nPrefix: 'beatnik', searchKeys: [
+    GCWTool(tool: const Beatnik(), id: 'beatnik', searchKeys: const [
       'esotericprogramminglanguage',
       'esoteric_beatnik',
     ]),
-    GCWTool(tool: Befunge(), i18nPrefix: 'befunge', isBeta: true, searchKeys: [
+    GCWTool(tool: const Befunge(), id: 'befunge', isBeta: true, searchKeys: const [
       'esotericprogramminglanguage',
       'befunge',
     ]),
-    GCWTool(tool: Brainfk(), i18nPrefix: 'brainfk', searchKeys: [
+    GCWTool(tool: const Brainfk(), id: 'brainfk', searchKeys: const [
       'esotericprogramminglanguage',
       'esoteric_brainfk',
     ]),
-    GCWTool(tool: Cow(), i18nPrefix: 'cow', searchKeys: [
+    GCWTool(tool: const Cow(), id: 'cow', searchKeys: const [
       'esotericprogramminglanguage',
       'esoteric_cow',
     ]),
-    GCWTool(tool: Chef(), i18nPrefix: 'chef', searchKeys: [
+    GCWTool(tool: const Chef(), id: 'chef', searchKeys: const [
       'esotericprogramminglanguage',
       'esoteric_chef',
     ]),
-    GCWTool(tool: Deadfish(), i18nPrefix: 'deadfish', searchKeys: [
+    GCWTool(tool: const Deadfish(), id: 'deadfish', searchKeys: const [
       'esotericprogramminglanguage',
       'esoteric_deadfish',
     ]),
     GCWTool(
-        tool: Hohoho(),
-        i18nPrefix: 'hohoho',
-        searchKeys: ['esotericprogramminglanguage', 'esoteric_hohoho', 'christmas']),
-    GCWTool(tool: KarolRobot(), i18nPrefix: 'karol_robot', searchKeys: [
+        tool: const Hohoho(),
+        id: 'hohoho',
+        searchKeys: const ['esotericprogramminglanguage', 'esoteric_hohoho', 'christmas']),
+    GCWTool(tool: const KarolRobot(), id: 'karol_robot', searchKeys: const [
       'esoteric_karol_robot',
     ]),
-    GCWTool(tool: Malbolge(), i18nPrefix: 'malbolge', searchKeys: [
+    GCWTool(tool: const Malbolge(), id: 'malbolge', searchKeys: const [
       'esotericprogramminglanguage',
       'esoteric_malbolge',
     ]),
-    GCWTool(tool: Ook(), i18nPrefix: 'ook', searchKeys: [
+    GCWTool(tool: Ook(), id: 'ook', searchKeys: const [
       'esotericprogramminglanguage',
       'esoteric_brainfk',
       'esoteric_ook',
     ]),
     GCWTool(
-        tool: Piet(),
-        i18nPrefix: 'piet',
+        tool: const Piet(),
+        id: 'piet',
         isBeta: true,
-        searchKeys: ['esotericprogramminglanguage', 'esoteric_piet', 'color', 'images']),
-    GCWTool(tool: WhitespaceLanguage(), i18nPrefix: 'whitespace_language', searchKeys: [
+        searchKeys: const ['esotericprogramminglanguage', 'esoteric_piet', 'color', 'images']),
+    GCWTool(tool: const WhitespaceLanguage(), id: 'whitespace_language', searchKeys: const [
       'esotericprogramminglanguage',
       'esoteric_whitespacelanguage',
     ]),
 
     //Hash Selection *****************************************************************************************
-    GCWTool(tool: HashBreaker(), i18nPrefix: 'hashes_hashbreaker', categories: [
+    GCWTool(tool: const HashBreaker(), id: 'hashes_hashbreaker', categories: const [
       ToolCategory.GENERAL_CODEBREAKERS
-    ], searchKeys: [
+    ], searchKeys: const [
       'codebreaker',
       'hashes',
       'hashbreaker',
     ]),
-    GCWTool(tool: UrwigoHashBreaker(), i18nPrefix: 'urwigo_hashbreaker', searchKeys: [
+    GCWTool(tool: const UrwigoHashBreaker(), id: 'urwigo_hashbreaker', searchKeys: const [
       'wherigo',
       'urwigo',
       'hashes',
       'hashbreaker',
     ]),
-    GCWTool(tool: HashOverview(), i18nPrefix: 'hashes_overview', searchKeys: ['hashes', 'hashes_overview']),
+    GCWTool(tool: const HashOverview(), id: 'hashes_overview', searchKeys: const ['hashes', 'hashes_overview']),
     GCWTool(
-        tool: HashIdentification(),
-        i18nPrefix: 'hashes_identification',
-        searchKeys: ['hashes', 'hashes_identification']),
-    GCWTool(tool: SHA1(), i18nPrefix: 'hashes_sha1', searchKeys: [
+        tool: const HashIdentification(),
+        id: 'hashes_identification',
+        searchKeys: const ['hashes', 'hashes_identification']),
+    GCWTool(tool: const SHA1(), id: 'hashes_sha1', searchKeys: const [
       'hashes',
       'hashes_sha1',
     ]),
-    GCWTool(tool: SHA1HMac(), i18nPrefix: 'hashes_sha1hmac', searchKeys: [
+    GCWTool(tool: const SHA1HMac(), id: 'hashes_sha1hmac', searchKeys: const [
       'hashes',
       'hashes_sha1',
       'hashes_hmac',
     ]),
-    GCWTool(tool: SHA224(), i18nPrefix: 'hashes_sha224', searchKeys: [
+    GCWTool(tool: const SHA224(), id: 'hashes_sha224', searchKeys: const [
       'hashes',
       'hashes_sha2',
       'hashes_sha224',
     ]),
-    GCWTool(tool: SHA224HMac(), i18nPrefix: 'hashes_sha224hmac', searchKeys: [
+    GCWTool(tool: const SHA224HMac(), id: 'hashes_sha224hmac', searchKeys: const [
       'hashes',
       'hashes_sha2',
       'hashes_sha224',
       'hashes_hmac',
     ]),
-    GCWTool(tool: SHA256(), i18nPrefix: 'hashes_sha256', searchKeys: [
+    GCWTool(tool: const SHA256(), id: 'hashes_sha256', searchKeys: const [
       'hashes',
       'hashes_sha2',
       'hashes_sha256',
     ]),
-    GCWTool(tool: SHA256HMac(), i18nPrefix: 'hashes_sha256hmac', searchKeys: [
+    GCWTool(tool: const SHA256HMac(), id: 'hashes_sha256hmac', searchKeys: const [
       'hashes',
       'hashes_sha2',
       'hashes_sha256',
       'hashes_hmac',
     ]),
-    GCWTool(tool: SHA384(), i18nPrefix: 'hashes_sha384', searchKeys: [
+    GCWTool(tool: const SHA384(), id: 'hashes_sha384', searchKeys: const [
       'hashes',
       'hashes_sha2',
       'hashes_sha384',
     ]),
-    GCWTool(tool: SHA384HMac(), i18nPrefix: 'hashes_sha384hmac', searchKeys: [
+    GCWTool(tool: const SHA384HMac(), id: 'hashes_sha384hmac', searchKeys: const [
       'hashes',
       'hashes_sha2',
       'hashes_sha384',
       'hashes_hmac',
     ]),
-    GCWTool(tool: SHA512(), i18nPrefix: 'hashes_sha512', searchKeys: [
+    GCWTool(tool: const SHA512(), id: 'hashes_sha512', searchKeys: const [
       'hashes',
       'hashes_sha2',
       'hashes_sha512',
     ]),
-    GCWTool(tool: SHA512HMac(), i18nPrefix: 'hashes_sha512hmac', searchKeys: [
+    GCWTool(tool: const SHA512HMac(), id: 'hashes_sha512hmac', searchKeys: const [
       'hashes',
       'hashes_sha2',
       'hashes_sha512',
       'hashes_hmac',
     ]),
-    GCWTool(tool: SHA512_224(), i18nPrefix: 'hashes_sha512.224', searchKeys: [
+    GCWTool(tool: const SHA512_224(), id: 'hashes_sha512.224', searchKeys: const [
       'hashes',
       'hashes_sha2',
       'hashes_sha512_224',
     ]),
-    GCWTool(tool: SHA512_224HMac(), i18nPrefix: 'hashes_sha512.224hmac', searchKeys: [
+    GCWTool(tool: const SHA512_224HMac(), id: 'hashes_sha512.224hmac', searchKeys: const [
       'hashes',
       'hashes_sha2',
       'hashes_sha512_224',
       'hashes_hmac',
     ]),
-    GCWTool(tool: SHA512_256(), i18nPrefix: 'hashes_sha512.256', searchKeys: [
+    GCWTool(tool: const SHA512_256(), id: 'hashes_sha512.256', searchKeys: const [
       'hashes',
       'hashes_sha2',
       'hashes_sha512_256',
     ]),
-    GCWTool(tool: SHA512_256HMac(), i18nPrefix: 'hashes_sha512.256hmac', searchKeys: [
+    GCWTool(tool: const SHA512_256HMac(), id: 'hashes_sha512.256hmac', searchKeys: const [
       'hashes',
       'hashes_sha2',
       'hashes_sha512_256',
       'hashes_hmac',
     ]),
-    GCWTool(tool: SHA3_224(), i18nPrefix: 'hashes_sha3.224', searchKeys: [
+    GCWTool(tool: const SHA3_224(), id: 'hashes_sha3.224', searchKeys: const [
       'hashes',
       'hashes_sha3',
       'hashes_sha3_224',
     ]),
-    GCWTool(tool: SHA3_224HMac(), i18nPrefix: 'hashes_sha3.224hmac', searchKeys: [
+    GCWTool(tool: const SHA3_224HMac(), id: 'hashes_sha3.224hmac', searchKeys: const [
       'hashes',
       'hashes_sha3',
       'hashes_sha3_224',
       'hashes_hmac',
     ]),
-    GCWTool(tool: SHA3_256(), i18nPrefix: 'hashes_sha3.256', searchKeys: [
+    GCWTool(tool: const SHA3_256(), id: 'hashes_sha3.256', searchKeys: const [
       'hashes',
       'hashes_sha3',
       'hashes_sha3_256',
     ]),
-    GCWTool(tool: SHA3_256HMac(), i18nPrefix: 'hashes_sha3.256hmac', searchKeys: [
+    GCWTool(tool: const SHA3_256HMac(), id: 'hashes_sha3.256hmac', searchKeys: const [
       'hashes',
       'hashes_sha3',
       'hashes_sha3_256',
       'hashes_hmac',
     ]),
-    GCWTool(tool: SHA3_384(), i18nPrefix: 'hashes_sha3.384', searchKeys: [
+    GCWTool(tool: const SHA3_384(), id: 'hashes_sha3.384', searchKeys: const [
       'hashes',
       'hashes_sha3',
       'hashes_sha3_384',
     ]),
-    GCWTool(tool: SHA3_384HMac(), i18nPrefix: 'hashes_sha3.384hmac', searchKeys: [
+    GCWTool(tool: const SHA3_384HMac(), id: 'hashes_sha3.384hmac', searchKeys: const [
       'hashes',
       'hashes_sha3',
       'hashes_sha3_384',
       'hashes_hmac',
     ]),
-    GCWTool(tool: SHA3_512(), i18nPrefix: 'hashes_sha3.512', searchKeys: [
+    GCWTool(tool: const SHA3_512(), id: 'hashes_sha3.512', searchKeys: const [
       'hashes',
       'hashes_sha3',
       'hashes_sha3_512',
     ]),
-    GCWTool(tool: SHA3_512HMac(), i18nPrefix: 'hashes_sha3.512hmac', searchKeys: [
+    GCWTool(tool: const SHA3_512HMac(), id: 'hashes_sha3.512hmac', searchKeys: const [
       'hashes',
       'hashes_sha3',
       'hashes_sha3_512',
       'hashes_hmac',
     ]),
-    GCWTool(tool: Keccak_128(), i18nPrefix: 'hashes_keccak128', searchKeys: [
+    GCWTool(tool: const Keccak_128(), id: 'hashes_keccak128', searchKeys: const [
       'hashes',
       'hashes_sha3',
       'hashes_keccak',
       'hashes_keccak_128',
     ]),
-    GCWTool(tool: Keccak_224(), i18nPrefix: 'hashes_keccak224', searchKeys: [
+    GCWTool(tool: const Keccak_224(), id: 'hashes_keccak224', searchKeys: const [
       'hashes',
       'hashes_sha3',
       'hashes_keccak',
       'hashes_keccak_224',
     ]),
-    GCWTool(tool: Keccak_256(), i18nPrefix: 'hashes_keccak256', searchKeys: [
+    GCWTool(tool: const Keccak_256(), id: 'hashes_keccak256', searchKeys: const [
       'hashes',
       'hashes_sha3',
       'hashes_keccak',
       'hashes_keccak_256',
     ]),
-    GCWTool(tool: Keccak_288(), i18nPrefix: 'hashes_keccak288', searchKeys: [
+    GCWTool(tool: const Keccak_288(), id: 'hashes_keccak288', searchKeys: const [
       'hashes',
       'hashes_sha3',
       'hashes_keccak',
       'hashes_keccak_288',
     ]),
-    GCWTool(tool: Keccak_384(), i18nPrefix: 'hashes_keccak384', searchKeys: [
+    GCWTool(tool: const Keccak_384(), id: 'hashes_keccak384', searchKeys: const [
       'hashes',
       'hashes_sha3',
       'hashes_keccak',
       'hashes_keccak_384',
     ]),
-    GCWTool(tool: Keccak_512(), i18nPrefix: 'hashes_keccak512', searchKeys: [
+    GCWTool(tool: const Keccak_512(), id: 'hashes_keccak512', searchKeys: const [
       'hashes',
       'hashes_sha3',
       'hashes_keccak',
       'hashes_keccak_512',
     ]),
-    GCWTool(tool: RIPEMD_128(), i18nPrefix: 'hashes_ripemd128', searchKeys: [
+    GCWTool(tool: const RIPEMD_128(), id: 'hashes_ripemd128', searchKeys: const [
       'hashes',
       'hashes_ripemd',
       'hashes_ripemd_128',
     ]),
-    GCWTool(tool: RIPEMD_128HMac(), i18nPrefix: 'hashes_ripemd128hmac', searchKeys: [
+    GCWTool(tool: const RIPEMD_128HMac(), id: 'hashes_ripemd128hmac', searchKeys: const [
       'hashes',
       'hashes_ripemd',
       'hashes_ripemd_128',
       'hashes_hmac',
     ]),
-    GCWTool(tool: RIPEMD_160(), i18nPrefix: 'hashes_ripemd160', searchKeys: [
+    GCWTool(tool: const RIPEMD_160(), id: 'hashes_ripemd160', searchKeys: const [
       'hashes',
       'hashes_ripemd',
       'hashes_ripemd_160',
     ]),
-    GCWTool(tool: RIPEMD_160HMac(), i18nPrefix: 'hashes_ripemd160hmac', searchKeys: [
+    GCWTool(tool: const RIPEMD_160HMac(), id: 'hashes_ripemd160hmac', searchKeys: const [
       'hashes',
       'hashes_ripemd',
       'hashes_ripemd_160',
       'hashes_hmac',
     ]),
-    GCWTool(tool: RIPEMD_256(), i18nPrefix: 'hashes_ripemd256', searchKeys: [
+    GCWTool(tool: const RIPEMD_256(), id: 'hashes_ripemd256', searchKeys: const [
       'hashes',
       'hashes_ripemd',
       'hashes_ripemd_256',
     ]),
-    GCWTool(tool: RIPEMD_256HMac(), i18nPrefix: 'hashes_ripemd256hmac', searchKeys: [
+    GCWTool(tool: const RIPEMD_256HMac(), id: 'hashes_ripemd256hmac', searchKeys: const [
       'hashes',
       'hashes_ripemd',
       'hashes_ripemd_256',
       'hashes_hmac',
     ]),
-    GCWTool(tool: RIPEMD_320(), i18nPrefix: 'hashes_ripemd320', searchKeys: [
+    GCWTool(tool: const RIPEMD_320(), id: 'hashes_ripemd320', searchKeys: const [
       'hashes',
       'hashes_ripemd',
       'hashes_ripemd_320',
     ]),
-    GCWTool(tool: RIPEMD_320HMac(), i18nPrefix: 'hashes_ripemd320hmac', searchKeys: [
+    GCWTool(tool: const RIPEMD_320HMac(), id: 'hashes_ripemd320hmac', searchKeys: const [
       'hashes',
       'hashes_ripemd',
       'hashes_ripemd_320',
       'hashes_hmac',
     ]),
-    GCWTool(tool: MD2(), i18nPrefix: 'hashes_md2', searchKeys: [
+    GCWTool(tool: const MD2(), id: 'hashes_md2', searchKeys: const [
       'hashes',
       'hashes_md2',
     ]),
-    GCWTool(tool: MD2HMac(), i18nPrefix: 'hashes_md2hmac', searchKeys: [
+    GCWTool(tool: const MD2HMac(), id: 'hashes_md2hmac', searchKeys: const [
       'hashes',
       'hashes_md2',
       'hashes_hmac',
     ]),
-    GCWTool(tool: MD4(), i18nPrefix: 'hashes_md4', searchKeys: [
+    GCWTool(tool: const MD4(), id: 'hashes_md4', searchKeys: const [
       'hashes',
       'hashes_md4',
     ]),
-    GCWTool(tool: MD4HMac(), i18nPrefix: 'hashes_md4hmac', searchKeys: [
+    GCWTool(tool: const MD4HMac(), id: 'hashes_md4hmac', searchKeys: const [
       'hashes',
       'hashes_md4',
       'hashes_hmac',
     ]),
-    GCWTool(tool: MD5(), i18nPrefix: 'hashes_md5', searchKeys: [
+    GCWTool(tool: const MD5(), id: 'hashes_md5', searchKeys: const [
       'hashes',
       'hashes_md5',
     ]),
-    GCWTool(tool: MD5HMac(), i18nPrefix: 'hashes_md5hmac', searchKeys: [
+    GCWTool(tool: const MD5HMac(), id: 'hashes_md5hmac', searchKeys: const [
       'hashes',
       'hashes_md5',
       'hashes_hmac',
     ]),
-    GCWTool(tool: Tiger_192(), i18nPrefix: 'hashes_tiger192', searchKeys: [
+    GCWTool(tool: const Tiger_192(), id: 'hashes_tiger192', searchKeys: const [
       'hashes',
       'hashes_tiger_192',
     ]),
-    GCWTool(tool: Tiger_192HMac(), i18nPrefix: 'hashes_tiger192hmac', searchKeys: [
+    GCWTool(tool: const Tiger_192HMac(), id: 'hashes_tiger192hmac', searchKeys: const [
       'hashes',
       'hashes_tiger_192',
       'hashes_hmac',
     ]),
-    GCWTool(tool: Whirlpool_512(), i18nPrefix: 'hashes_whirlpool512', searchKeys: [
+    GCWTool(tool: const Whirlpool_512(), id: 'hashes_whirlpool512', searchKeys: const [
       'hashes',
       'hashes_whirlpool_512',
     ]),
-    GCWTool(tool: Whirlpool_512HMac(), i18nPrefix: 'hashes_whirlpool512hmac', searchKeys: [
+    GCWTool(tool: const Whirlpool_512HMac(), id: 'hashes_whirlpool512hmac', searchKeys: const [
       'hashes',
       'hashes_whirlpool_512',
       'hashes_hmac',
     ]),
-    GCWTool(tool: BLAKE2b_160(), i18nPrefix: 'hashes_blake2b160', searchKeys: [
+    GCWTool(tool: const BLAKE2b_160(), id: 'hashes_blake2b160', searchKeys: const [
       'hashes',
       'hashes_blake2b',
       'hashes_blake2b_160',
     ]),
-    GCWTool(tool: BLAKE2b_224(), i18nPrefix: 'hashes_blake2b224', searchKeys: [
+    GCWTool(tool: const BLAKE2b_224(), id: 'hashes_blake2b224', searchKeys: const [
       'hashes',
       'hashes_blake2b',
       'hashes_blake2b_224',
     ]),
-    GCWTool(tool: BLAKE2b_256(), i18nPrefix: 'hashes_blake2b256', searchKeys: [
+    GCWTool(tool: const BLAKE2b_256(), id: 'hashes_blake2b256', searchKeys: const [
       'hashes',
       'hashes_blake2b',
       'hashes_blake2b_256',
     ]),
-    GCWTool(tool: BLAKE2b_384(), i18nPrefix: 'hashes_blake2b384', searchKeys: [
+    GCWTool(tool: const BLAKE2b_384(), id: 'hashes_blake2b384', searchKeys: const [
       'hashes',
       'hashes_blake2b',
       'hashes_blake2b_384',
     ]),
-    GCWTool(tool: BLAKE2b_512(), i18nPrefix: 'hashes_blake2b512', searchKeys: [
+    GCWTool(tool: const BLAKE2b_512(), id: 'hashes_blake2b512', searchKeys: const [
       'hashes',
       'hashes_blake2b',
       'hashes_blake2b_512',
     ]),
 
     // IceCodeSelection *********************************************************************************************
-    GCWTool(tool: IceCodes(), i18nPrefix: 'icecodes', searchKeys: [
+    GCWTool(tool: const IceCodes(), id: 'icecodes', searchKeys: const [
       'icecodes',
     ]),
 
     //Language Games Selection *******************************************************************************
-    GCWTool(tool: ChickenLanguage(), i18nPrefix: 'chickenlanguage', searchKeys: [
+    GCWTool(tool: const ChickenLanguage(), id: 'chickenlanguage', searchKeys: const [
       'languagegames',
       'languagegames_chickenlanguage',
     ]),
-    GCWTool(tool: DuckSpeak(), i18nPrefix: 'duckspeak', searchKeys: [
+    GCWTool(tool: const DuckSpeak(), id: 'duckspeak', searchKeys: const [
       'languagegames',
       'duckspeak',
     ]),
-    GCWTool(tool: PigLatin(), i18nPrefix: 'piglatin', searchKeys: [
+    GCWTool(tool: const PigLatin(), id: 'piglatin', searchKeys: const [
       'languagegames',
       'languagegames_piglatin',
     ]),
-    GCWTool(tool: RobberLanguage(), i18nPrefix: 'robberlanguage', searchKeys: [
+    GCWTool(tool: const RobberLanguage(), id: 'robberlanguage', searchKeys: const [
       'languagegames',
       'languagegames_robberlanguage',
     ]),
-    GCWTool(tool: SpoonLanguage(), i18nPrefix: 'spoonlanguage', searchKeys: [
+    GCWTool(tool: const SpoonLanguage(), id: 'spoonlanguage', searchKeys: const [
       'languagegames',
       'languagegames_spoonlanguage',
     ]),
 
     //Main Menu **********************************************************************************************
-    GCWTool(tool: GeneralSettings(), i18nPrefix: 'settings_general', searchKeys: []),
-    GCWTool(tool: CoordinatesSettings(), i18nPrefix: 'settings_coordinates', searchKeys: []),
-    GCWTool(tool: ToolSettings(), i18nPrefix: 'settings_tools', searchKeys: []),
-    GCWTool(tool: SaveRestoreSettings(), i18nPrefix: 'settings_saverestore', searchKeys: []),
-    GCWTool(tool: Changelog(), i18nPrefix: 'mainmenu_changelog', suppressHelpButton: true, searchKeys: [
+    GCWTool(tool: const GeneralSettings(), id: 'settings_general', searchKeys: const []),
+    GCWTool(tool: const CoordinatesSettings(), id: 'settings_coordinates', searchKeys: const []),
+    GCWTool(tool: const ToolSettings(), id: 'settings_tools', searchKeys: const []),
+    GCWTool(tool: const SaveRestoreSettings(), id: 'settings_saverestore', searchKeys: const []),
+    GCWTool(tool: const Changelog(), id: 'mainmenu_changelog', suppressHelpButton: true, searchKeys: const [
       'changelog',
     ]),
-    GCWTool(tool: About(), i18nPrefix: 'mainmenu_about', suppressHelpButton: true, searchKeys: [
+    GCWTool(tool: const About(), id: 'mainmenu_about', suppressHelpButton: true, searchKeys: const [
       'about',
     ]),
     GCWTool(
-        tool: CallForContribution(),
-        i18nPrefix: 'mainmenu_callforcontribution',
+        tool: const CallForContribution(),
+        id: 'mainmenu_callforcontribution',
         suppressHelpButton: true,
-        searchKeys: [
+        searchKeys: const [
           'callforcontribution',
         ]),
-    GCWTool(tool: Licenses(), i18nPrefix: 'licenses', suppressHelpButton: true, searchKeys: [
+    GCWTool(tool: const Licenses(), id: 'licenses', suppressHelpButton: true, searchKeys: const [
       'licenses',
     ]),
 
     //MayaCalendar Selection **************************************************************************************
-    GCWTool(tool: MayaCalendar(), i18nPrefix: 'mayacalendar', searchKeys: [
+    GCWTool(tool: const MayaCalendar(), id: 'mayacalendar', searchKeys: const [
       'calendar',
       'maya_calendar',
     ]),
 
     //MayaNumbers Selection **************************************************************************************
-    GCWTool(tool: MayaNumbers(), i18nPrefix: 'mayanumbers', searchKeys: [
+    GCWTool(tool: const MayaNumbers(), id: 'mayanumbers', searchKeys: const [
       'mayanumbers',
     ]),
 
     //Morse Selection ****************************************************************
-    GCWTool(tool: Morse(), i18nPrefix: 'morse', searchKeys: [
+    GCWTool(tool: const Morse(), id: 'morse', searchKeys: const [
       'morse',
     ]),
 
     //NumeralWordsSelection ****************************************************************************************
-    GCWTool(tool: NumeralWordsTextSearch(), i18nPrefix: 'numeralwords_textsearch', searchKeys: [
+    GCWTool(tool: const NumeralWordsTextSearch(), id: 'numeralwords_textsearch', searchKeys: const [
       'numeralwords',
       'numeralwords_lang',
       'numeralwordstextsearch',
     ]),
-    GCWTool(tool: NumeralWordsLists(), i18nPrefix: 'numeralwords_lists', searchKeys: [
+    GCWTool(tool: const NumeralWordsLists(), id: 'numeralwords_lists', searchKeys: const [
       'numeralwords',
       'numeralwords_lang',
       'numeralwordslists',
     ]),
-    GCWTool(tool: NumeralWordsConverter(), i18nPrefix: 'numeralwords_converter', searchKeys: [
+    GCWTool(tool: const NumeralWordsConverter(), id: 'numeralwords_converter', searchKeys: const [
       'numeralwords',
       'numeralwordsconverter',
     ]),
-    GCWTool(tool: NumeralWordsIdentifyLanguages(), i18nPrefix: 'numeralwords_identify_languages', searchKeys: [
+    GCWTool(tool: const NumeralWordsIdentifyLanguages(), id: 'numeralwords_identify_languages', searchKeys: const [
       'numeralwords',
       'numeralwords_identifylanguages',
     ]),
 
     //NumberSequenceSelection ****************************************************************************************
-    GCWTool(tool: NumberSequenceFactorialSelection(), i18nPrefix: 'numbersequence_factorial', searchKeys: [
+    GCWTool(tool: const NumberSequenceFactorialSelection(), id: 'numbersequence_factorial', searchKeys: const [
       'numbersequence',
       'numbersequence_factorialselection',
     ]),
-    GCWTool(tool: NumberSequenceFibonacciSelection(), i18nPrefix: 'numbersequence_fibonacci', searchKeys: [
+    GCWTool(tool: const NumberSequenceFibonacciSelection(), id: 'numbersequence_fibonacci', searchKeys: const [
       'numbersequence',
       'numbersequence_fibonacciselection',
     ]),
-    GCWTool(tool: NumberSequenceMersenneSelection(), i18nPrefix: 'numbersequence_mersenne', searchKeys: [
+    GCWTool(tool: const NumberSequenceMersenneSelection(), id: 'numbersequence_mersenne', searchKeys: const [
       'numbersequence',
       'numbersequence_mersenneselection',
     ]),
-    GCWTool(tool: NumberSequenceMersennePrimesSelection(), i18nPrefix: 'numbersequence_mersenneprimes', searchKeys: [
+    GCWTool(tool: const NumberSequenceMersennePrimesSelection(), id: 'numbersequence_mersenneprimes', searchKeys: const [
       'numbersequence',
       'primes',
       'numbersequence_mersenneprimesselection',
     ]),
     GCWTool(
-        tool: NumberSequenceMersenneExponentsSelection(),
-        i18nPrefix: 'numbersequence_mersenneexponents',
-        searchKeys: [
+        tool: const NumberSequenceMersenneExponentsSelection(),
+        id: 'numbersequence_mersenneexponents',
+        searchKeys: const [
           'numbersequence',
           'numbersequence_mersenneexponentsselection',
         ]),
-    GCWTool(tool: NumberSequenceMersenneFermatSelection(), i18nPrefix: 'numbersequence_mersennefermat', searchKeys: [
+    GCWTool(tool: const NumberSequenceMersenneFermatSelection(), id: 'numbersequence_mersennefermat', searchKeys: const [
       'numbersequence',
       'numbersequence_mersennefermatselection',
     ]),
-    GCWTool(tool: NumberSequenceFermatSelection(), i18nPrefix: 'numbersequence_fermat', searchKeys: [
+    GCWTool(tool: const NumberSequenceFermatSelection(), id: 'numbersequence_fermat', searchKeys: const [
       'numbersequence',
       'numbersequence_fermatselection',
     ]),
-    GCWTool(tool: NumberSequencePerfectNumbersSelection(), i18nPrefix: 'numbersequence_perfectnumbers', searchKeys: [
+    GCWTool(tool: const NumberSequencePerfectNumbersSelection(), id: 'numbersequence_perfectnumbers', searchKeys: const [
       'numbersequence',
       'numbersequence_perfectnumbersselection',
     ]),
     GCWTool(
-        tool: NumberSequenceSuperPerfectNumbersSelection(),
-        i18nPrefix: 'numbersequence_superperfectnumbers',
-        searchKeys: [
+        tool: const NumberSequenceSuperPerfectNumbersSelection(),
+        id: 'numbersequence_superperfectnumbers',
+        searchKeys: const [
           'numbersequence',
           'numbersequence_superperfectnumbersselection',
         ]),
     GCWTool(
-        tool: NumberSequencePrimaryPseudoPerfectNumbersSelection(),
-        i18nPrefix: 'numbersequence_primarypseudoperfectnumbers',
-        searchKeys: [
+        tool: const NumberSequencePrimaryPseudoPerfectNumbersSelection(),
+        id: 'numbersequence_primarypseudoperfectnumbers',
+        searchKeys: const [
           'numbersequence',
           'numbersequence_primarypseudoperfectnumbersselection',
         ]),
-    GCWTool(tool: NumberSequenceWeirdNumbersSelection(), i18nPrefix: 'numbersequence_weirdnumbers', searchKeys: [
+    GCWTool(tool: const NumberSequenceWeirdNumbersSelection(), id: 'numbersequence_weirdnumbers', searchKeys: const [
       'numbersequence',
       'numbersequence_weirdnumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceSublimeNumbersSelection(), i18nPrefix: 'numbersequence_sublimenumbers', searchKeys: [
+    GCWTool(tool: const NumberSequenceSublimeNumbersSelection(), id: 'numbersequence_sublimenumbers', searchKeys: const [
       'numbersequence',
       'numbersequence_sublimenumbersselection',
     ]),
     GCWTool(
-        tool: NumberSequencePermutablePrimesSelection(),
-        i18nPrefix: 'numbersequence_permutableprimes',
-        searchKeys: [
+        tool: const NumberSequencePermutablePrimesSelection(),
+        id: 'numbersequence_permutableprimes',
+        searchKeys: const [
           'numbersequence',
           'primes',
           'numbersequence_permutableprimesselection',
         ]),
-    GCWTool(tool: NumberSequenceLuckyNumbersSelection(), i18nPrefix: 'numbersequence_luckynumbers', searchKeys: [
+    GCWTool(tool: const NumberSequenceLuckyNumbersSelection(), id: 'numbersequence_luckynumbers', searchKeys: const [
       'numbersequence',
       'numbersequence_luckynumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceHappyNumbersSelection(), i18nPrefix: 'numbersequence_happynumbers', searchKeys: [
+    GCWTool(tool: const NumberSequenceHappyNumbersSelection(), id: 'numbersequence_happynumbers', searchKeys: const [
       'numbersequence',
       'numbersequence_happynumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceBellSelection(), i18nPrefix: 'numbersequence_bell', searchKeys: [
+    GCWTool(tool: const NumberSequenceBellSelection(), id: 'numbersequence_bell', searchKeys: const [
       'numbersequence',
       'numbersequence_bellselection',
     ]),
-    GCWTool(tool: NumberSequencePellSelection(), i18nPrefix: 'numbersequence_pell', searchKeys: [
+    GCWTool(tool: const NumberSequencePellSelection(), id: 'numbersequence_pell', searchKeys: const [
       'numbersequence',
       'numbersequence_pellselection',
     ]),
-    GCWTool(tool: NumberSequenceLucasSelection(), i18nPrefix: 'numbersequence_lucas', searchKeys: [
+    GCWTool(tool: const NumberSequenceLucasSelection(), id: 'numbersequence_lucas', searchKeys: const [
       'numbersequence',
       'numbersequence_lucasselection',
     ]),
-    GCWTool(tool: NumberSequencePellLucasSelection(), i18nPrefix: 'numbersequence_pelllucas', searchKeys: [
+    GCWTool(tool: const NumberSequencePellLucasSelection(), id: 'numbersequence_pelllucas', searchKeys: const [
       'numbersequence',
       'numbersequence_pelllucasselection',
     ]),
-    GCWTool(tool: NumberSequenceJacobsthalSelection(), i18nPrefix: 'numbersequence_jacobsthal', searchKeys: [
+    GCWTool(tool: const NumberSequenceJacobsthalSelection(), id: 'numbersequence_jacobsthal', searchKeys: const [
       'numbersequence',
       'numbersequence_jacobsthalselection',
     ]),
-    GCWTool(tool: NumberSequenceJacobsthalLucasSelection(), i18nPrefix: 'numbersequence_jacobsthallucas', searchKeys: [
+    GCWTool(tool: const NumberSequenceJacobsthalLucasSelection(), id: 'numbersequence_jacobsthallucas', searchKeys: const [
       'numbersequence',
       'numbersequence_jacobsthallucasselection',
     ]),
     GCWTool(
-        tool: NumberSequenceJacobsthalOblongSelection(),
-        i18nPrefix: 'numbersequence_jacobsthaloblong',
-        searchKeys: [
+        tool: const NumberSequenceJacobsthalOblongSelection(),
+        id: 'numbersequence_jacobsthaloblong',
+        searchKeys: const [
           'numbersequence',
           'numbersequence_jacobsthaloblongselection',
         ]),
-    GCWTool(tool: NumberSequenceCatalanSelection(), i18nPrefix: 'numbersequence_catalan', searchKeys: [
+    GCWTool(tool: const NumberSequenceCatalanSelection(), id: 'numbersequence_catalan', searchKeys: const [
       'numbersequence',
       'numbersequence_catalanselection',
     ]),
-    GCWTool(tool: NumberSequenceRecamanSelection(), i18nPrefix: 'numbersequence_recaman', searchKeys: [
+    GCWTool(tool: const NumberSequenceRecamanSelection(), id: 'numbersequence_recaman', searchKeys: const [
       'numbersequence',
       'numbersequence_recamanselection',
     ]),
-    GCWTool(tool: NumberSequenceLychrelSelection(), i18nPrefix: 'numbersequence_lychrel', searchKeys: [
+    GCWTool(tool: const NumberSequenceLychrelSelection(), id: 'numbersequence_lychrel', searchKeys: const [
       'numbersequence',
       'numbersequence_lychrelselection',
     ]),
 
     //NumberSequenceSelection Factorial ****************************************************************************************
-    GCWTool(tool: NumberSequenceFactorialNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequenceFactorialNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_factorialselection',
     ]),
-    GCWTool(tool: NumberSequenceFactorialRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequenceFactorialRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_factorialselection',
     ]),
-    GCWTool(tool: NumberSequenceFactorialCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequenceFactorialCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_factorialselection',
     ]),
-    GCWTool(tool: NumberSequenceFactorialDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequenceFactorialDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_factorialselection',
     ]),
-    GCWTool(tool: NumberSequenceFactorialContainsDigits(), i18nPrefix: 'numbersequence_containsdigits', searchKeys: [
+    GCWTool(tool: const NumberSequenceFactorialContainsDigits(), id: 'numbersequence_containsdigits', searchKeys: const [
       'numbersequence_factorialselection',
     ]),
 
     //NumberSequenceSelection Mersenne-Fermat ****************************************************************************************
-    GCWTool(tool: NumberSequenceMersenneFermatNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequenceMersenneFermatNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_mersennefermatselection',
     ]),
-    GCWTool(tool: NumberSequenceMersenneFermatRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequenceMersenneFermatRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_mersennefermatselection',
     ]),
-    GCWTool(tool: NumberSequenceMersenneFermatCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequenceMersenneFermatCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_mersennefermatselection',
     ]),
-    GCWTool(tool: NumberSequenceMersenneFermatDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequenceMersenneFermatDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_mersennefermatselection',
     ]),
     GCWTool(
-        tool: NumberSequenceMersenneFermatContainsDigits(),
-        i18nPrefix: 'numbersequence_containsdigits',
-        searchKeys: [
+        tool: const NumberSequenceMersenneFermatContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        searchKeys: const [
           'numbersequence_mersennefermatselection',
         ]),
 
     //NumberSequenceSelection Fermat ****************************************************************************************
-    GCWTool(tool: NumberSequenceFermatNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequenceFermatNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_fermatselection',
     ]),
-    GCWTool(tool: NumberSequenceFermatRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequenceFermatRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_fermatselection',
     ]),
-    GCWTool(tool: NumberSequenceFermatCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequenceFermatCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_fermatselection',
     ]),
-    GCWTool(tool: NumberSequenceFermatDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequenceFermatDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_fermatselection',
     ]),
-    GCWTool(tool: NumberSequenceFermatContainsDigits(), i18nPrefix: 'numbersequence_containsdigits', searchKeys: [
+    GCWTool(tool: const NumberSequenceFermatContainsDigits(), id: 'numbersequence_containsdigits', searchKeys: const [
       'numbersequence_fermatselection',
     ]),
 
     //NumberSequenceSelection Lucas ****************************************************************************************
-    GCWTool(tool: NumberSequenceLucasNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequenceLucasNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_lucasselection',
     ]),
-    GCWTool(tool: NumberSequenceLucasRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequenceLucasRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_lucasselection',
     ]),
-    GCWTool(tool: NumberSequenceLucasCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequenceLucasCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_lucasselection',
     ]),
-    GCWTool(tool: NumberSequenceLucasDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequenceLucasDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_lucasselection',
     ]),
-    GCWTool(tool: NumberSequenceLucasContainsDigits(), i18nPrefix: 'numbersequence_containsdigits', searchKeys: [
+    GCWTool(tool: const NumberSequenceLucasContainsDigits(), id: 'numbersequence_containsdigits', searchKeys: const [
       'numbersequence_lucasselection',
     ]),
 
     //NumberSequenceSelection Fibonacci ****************************************************************************************
-    GCWTool(tool: NumberSequenceFibonacciNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequenceFibonacciNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_fibonacciselection',
     ]),
-    GCWTool(tool: NumberSequenceFibonacciRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequenceFibonacciRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_fibonacciselection',
     ]),
-    GCWTool(tool: NumberSequenceFibonacciCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequenceFibonacciCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_fibonacciselection',
     ]),
-    GCWTool(tool: NumberSequenceFibonacciDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequenceFibonacciDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_fibonacciselection',
     ]),
-    GCWTool(tool: NumberSequenceFibonacciContainsDigits(), i18nPrefix: 'numbersequence_containsdigits', searchKeys: [
+    GCWTool(tool: const NumberSequenceFibonacciContainsDigits(), id: 'numbersequence_containsdigits', searchKeys: const [
       'numbersequence_fibonacciselection',
     ]),
 
     //NumberSequenceSelection Mersenne ****************************************************************************************
-    GCWTool(tool: NumberSequenceMersenneNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequenceMersenneNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_mersenneselection',
     ]),
-    GCWTool(tool: NumberSequenceMersenneRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequenceMersenneRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_mersenneselection',
     ]),
-    GCWTool(tool: NumberSequenceMersenneCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequenceMersenneCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_mersenneselection',
     ]),
-    GCWTool(tool: NumberSequenceMersenneDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequenceMersenneDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_mersenneselection',
     ]),
-    GCWTool(tool: NumberSequenceMersenneContainsDigits(), i18nPrefix: 'numbersequence_containsdigits', searchKeys: [
+    GCWTool(tool: const NumberSequenceMersenneContainsDigits(), id: 'numbersequence_containsdigits', searchKeys: const [
       'numbersequence_mersenneselection',
     ]),
 
     //NumberSequenceSelection Bell ****************************************************************************************
-    GCWTool(tool: NumberSequenceBellNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequenceBellNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_bellselection',
     ]),
-    GCWTool(tool: NumberSequenceBellRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequenceBellRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_bellselection',
     ]),
-    GCWTool(tool: NumberSequenceBellCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequenceBellCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_bellselection',
     ]),
-    GCWTool(tool: NumberSequenceBellDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequenceBellDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_bellselection',
     ]),
-    GCWTool(tool: NumberSequenceBellContainsDigits(), i18nPrefix: 'numbersequence_containsdigits', searchKeys: [
+    GCWTool(tool: const NumberSequenceBellContainsDigits(), id: 'numbersequence_containsdigits', searchKeys: const [
       'numbersequence_bellselection',
     ]),
 
     //NumberSequenceSelection Pell ****************************************************************************************
-    GCWTool(tool: NumberSequencePellNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequencePellNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_pellselection',
     ]),
-    GCWTool(tool: NumberSequencePellRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequencePellRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_pellselection',
     ]),
-    GCWTool(tool: NumberSequencePellCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequencePellCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_pellselection',
     ]),
-    GCWTool(tool: NumberSequencePellDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequencePellDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_pellselection',
     ]),
-    GCWTool(tool: NumberSequencePellContainsDigits(), i18nPrefix: 'numbersequence_containsdigits', searchKeys: [
+    GCWTool(tool: const NumberSequencePellContainsDigits(), id: 'numbersequence_containsdigits', searchKeys: const [
       'numbersequence_pellselection',
     ]),
 
     //NumberSequenceSelection Pell-Lucas ****************************************************************************************
-    GCWTool(tool: NumberSequencePellLucasNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequencePellLucasNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_pelllucasselection',
     ]),
-    GCWTool(tool: NumberSequencePellLucasRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequencePellLucasRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_pelllucasselection',
     ]),
-    GCWTool(tool: NumberSequencePellLucasCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequencePellLucasCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_pelllucasselection',
     ]),
-    GCWTool(tool: NumberSequencePellLucasDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequencePellLucasDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_pelllucasselection',
     ]),
-    GCWTool(tool: NumberSequencePellLucasContainsDigits(), i18nPrefix: 'numbersequence_containsdigits', searchKeys: [
+    GCWTool(tool: const NumberSequencePellLucasContainsDigits(), id: 'numbersequence_containsdigits', searchKeys: const [
       'numbersequence_pelllucasselection',
     ]),
 
     //NumberSequenceSelection Jacobsthal ****************************************************************************************
-    GCWTool(tool: NumberSequenceJacobsthalNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequenceJacobsthalNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_jacobsthalselection',
     ]),
-    GCWTool(tool: NumberSequenceJacobsthalRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequenceJacobsthalRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_jacobsthalselection',
     ]),
-    GCWTool(tool: NumberSequenceJacobsthalCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequenceJacobsthalCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_jacobsthalselection',
     ]),
-    GCWTool(tool: NumberSequenceJacobsthalDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequenceJacobsthalDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_jacobsthalselection',
     ]),
-    GCWTool(tool: NumberSequenceJacobsthalContainsDigits(), i18nPrefix: 'numbersequence_containsdigits', searchKeys: [
+    GCWTool(tool: const NumberSequenceJacobsthalContainsDigits(), id: 'numbersequence_containsdigits', searchKeys: const [
       'numbersequence_jacobsthalselection',
     ]),
 
     //NumberSequenceSelection Jacobsthal-Lucas ****************************************************************************************
-    GCWTool(tool: NumberSequenceJacobsthalLucasNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequenceJacobsthalLucasNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_jacobsthallucasselection',
     ]),
-    GCWTool(tool: NumberSequenceJacobsthalLucasRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequenceJacobsthalLucasRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_jacobsthallucasselection',
     ]),
-    GCWTool(tool: NumberSequenceJacobsthalLucasCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequenceJacobsthalLucasCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_jacobsthallucasselection',
     ]),
-    GCWTool(tool: NumberSequenceJacobsthalLucasDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequenceJacobsthalLucasDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_jacobsthallucasselection',
     ]),
     GCWTool(
-        tool: NumberSequenceJacobsthalLucasContainsDigits(),
-        i18nPrefix: 'numbersequence_containsdigits',
-        searchKeys: [
+        tool: const NumberSequenceJacobsthalLucasContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        searchKeys: const [
           'numbersequence_jacobsthallucasselection',
         ]),
 
     //NumberSequenceSelection Jacobsthal Oblong ****************************************************************************************
-    GCWTool(tool: NumberSequenceJacobsthalOblongNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequenceJacobsthalOblongNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_jacobsthaloblongselection',
     ]),
-    GCWTool(tool: NumberSequenceJacobsthalOblongRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequenceJacobsthalOblongRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_jacobsthaloblongselection',
     ]),
-    GCWTool(tool: NumberSequenceJacobsthalOblongCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequenceJacobsthalOblongCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_jacobsthaloblongselection',
     ]),
-    GCWTool(tool: NumberSequenceJacobsthalOblongDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequenceJacobsthalOblongDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_jacobsthaloblongselection',
     ]),
     GCWTool(
-        tool: NumberSequenceJacobsthalOblongContainsDigits(),
-        i18nPrefix: 'numbersequence_containsdigits',
-        searchKeys: [
+        tool: const NumberSequenceJacobsthalOblongContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        searchKeys: const [
           'numbersequence_jacobsthaloblongselection',
         ]),
 
     //NumberSequenceSelection Catalan ****************************************************************************************
-    GCWTool(tool: NumberSequenceCatalanNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequenceCatalanNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_catalanselection',
     ]),
-    GCWTool(tool: NumberSequenceCatalanRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequenceCatalanRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_catalanselection',
     ]),
-    GCWTool(tool: NumberSequenceCatalanCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequenceCatalanCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_catalanselection',
     ]),
-    GCWTool(tool: NumberSequenceCatalanDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequenceCatalanDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_catalanselection',
     ]),
-    GCWTool(tool: NumberSequenceCatalanContainsDigits(), i18nPrefix: 'numbersequence_containsdigits', searchKeys: [
+    GCWTool(tool: const NumberSequenceCatalanContainsDigits(), id: 'numbersequence_containsdigits', searchKeys: const [
       'numbersequence_catalanselection',
     ]),
 
     //NumberSequenceSelection Recaman ****************************************************************************************
-    GCWTool(tool: NumberSequenceRecamanNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequenceRecamanNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_recamanselection',
     ]),
-    GCWTool(tool: NumberSequenceRecamanRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequenceRecamanRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_recamanselection',
     ]),
-    GCWTool(tool: NumberSequenceRecamanCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequenceRecamanCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_recamanselection',
     ]),
-    GCWTool(tool: NumberSequenceRecamanDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequenceRecamanDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_recamanselection',
     ]),
-    GCWTool(tool: NumberSequenceRecamanContainsDigits(), i18nPrefix: 'numbersequence_containsdigits', searchKeys: [
+    GCWTool(tool: const NumberSequenceRecamanContainsDigits(), id: 'numbersequence_containsdigits', searchKeys: const [
       'numbersequence_recamanselection',
     ]),
 
     //NumberSequenceSelection Mersenne Primes ****************************************************************************************
-    GCWTool(tool: NumberSequenceMersennePrimesNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequenceMersennePrimesNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_mersenneprimesselection',
     ]),
-    GCWTool(tool: NumberSequenceMersennePrimesRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequenceMersennePrimesRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_mersenneprimesselection',
     ]),
-    GCWTool(tool: NumberSequenceMersennePrimesCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequenceMersennePrimesCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_mersenneprimesselection',
     ]),
-    GCWTool(tool: NumberSequenceMersennePrimesDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequenceMersennePrimesDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_mersenneprimesselection',
     ]),
     GCWTool(
-        tool: NumberSequenceMersennePrimesContainsDigits(),
-        i18nPrefix: 'numbersequence_containsdigits',
-        searchKeys: [
+        tool: const NumberSequenceMersennePrimesContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        searchKeys: const [
           'numbersequence_mersenneprimesselection',
         ]),
 
     //NumberSequenceSelection Mersenne Exponents ****************************************************************************************
-    GCWTool(tool: NumberSequenceMersenneExponentsNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequenceMersenneExponentsNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_mersenneexponentsselection',
     ]),
-    GCWTool(tool: NumberSequenceMersenneExponentsRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequenceMersenneExponentsRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_mersenneexponentsselection',
     ]),
-    GCWTool(tool: NumberSequenceMersenneExponentsCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequenceMersenneExponentsCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_mersenneexponentsselection',
     ]),
-    GCWTool(tool: NumberSequenceMersenneExponentsDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequenceMersenneExponentsDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_mersenneexponentsselection',
     ]),
     GCWTool(
-        tool: NumberSequenceMersenneExponentsContainsDigits(),
-        i18nPrefix: 'numbersequence_containsdigits',
-        searchKeys: [
+        tool: const NumberSequenceMersenneExponentsContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        searchKeys: const [
           'numbersequence_mersenneexponentsselection',
         ]),
 
     //NumberSequenceSelection Perfect numbers ****************************************************************************************
-    GCWTool(tool: NumberSequencePerfectNumbersNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequencePerfectNumbersNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_perfectnumbersselection',
     ]),
-    GCWTool(tool: NumberSequencePerfectNumbersRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequencePerfectNumbersRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_perfectnumbersselection',
     ]),
-    GCWTool(tool: NumberSequencePerfectNumbersCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequencePerfectNumbersCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_perfectnumbersselection',
     ]),
-    GCWTool(tool: NumberSequencePerfectNumbersDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequencePerfectNumbersDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_perfectnumbersselection',
     ]),
     GCWTool(
-        tool: NumberSequencePerfectNumbersContainsDigits(),
-        i18nPrefix: 'numbersequence_containsdigits',
-        searchKeys: [
+        tool: const NumberSequencePerfectNumbersContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        searchKeys: const [
           'numbersequence_perfectnumbersselection',
         ]),
 
     //NumberSequenceSelection SuperPerfect numbers ****************************************************************************************
-    GCWTool(tool: NumberSequenceSuperPerfectNumbersNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequenceSuperPerfectNumbersNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_superperfectnumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceSuperPerfectNumbersRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequenceSuperPerfectNumbersRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_superperfectnumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceSuperPerfectNumbersCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequenceSuperPerfectNumbersCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_superperfectnumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceSuperPerfectNumbersDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequenceSuperPerfectNumbersDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_superperfectnumbersselection',
     ]),
     GCWTool(
-        tool: NumberSequenceSuperPerfectNumbersContainsDigits(),
-        i18nPrefix: 'numbersequence_containsdigits',
-        searchKeys: [
+        tool: const NumberSequenceSuperPerfectNumbersContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        searchKeys: const [
           'numbersequence_superperfectnumbersselection',
         ]),
 
     //NumberSequenceSelection Weird numbers ****************************************************************************************
-    GCWTool(tool: NumberSequenceWeirdNumbersNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequenceWeirdNumbersNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_weirdnumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceWeirdNumbersRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequenceWeirdNumbersRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_weirdnumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceWeirdNumbersCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequenceWeirdNumbersCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_weirdnumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceWeirdNumbersDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequenceWeirdNumbersDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_weirdnumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceWeirdNumbersContainsDigits(), i18nPrefix: 'numbersequence_containsdigits', searchKeys: [
+    GCWTool(tool: const NumberSequenceWeirdNumbersContainsDigits(), id: 'numbersequence_containsdigits', searchKeys: const [
       'numbersequence_weirdnumbersselection',
     ]),
 
     //NumberSequenceSelection Sublime numbers ****************************************************************************************
-    GCWTool(tool: NumberSequenceSublimeNumbersNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequenceSublimeNumbersNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_sublimenumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceSublimeNumbersRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequenceSublimeNumbersRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_sublimenumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceSublimeNumbersCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequenceSublimeNumbersCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_sublimenumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceSublimeNumbersDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequenceSublimeNumbersDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_sublimenumbersselection',
     ]),
     GCWTool(
-        tool: NumberSequenceSublimeNumbersContainsDigits(),
-        i18nPrefix: 'numbersequence_containsdigits',
-        searchKeys: [
+        tool: const NumberSequenceSublimeNumbersContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        searchKeys: const [
           'numbersequence_sublimenumbersselection',
         ]),
 
     //NumberSequenceSelection Lucky numbers ****************************************************************************************
-    GCWTool(tool: NumberSequenceLuckyNumbersNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequenceLuckyNumbersNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_luckynumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceLuckyNumbersRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequenceLuckyNumbersRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_luckynumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceLuckyNumbersCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequenceLuckyNumbersCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_luckynumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceLuckyNumbersDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequenceLuckyNumbersDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_luckynumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceLuckyNumbersContainsDigits(), i18nPrefix: 'numbersequence_containsdigits', searchKeys: [
+    GCWTool(tool: const NumberSequenceLuckyNumbersContainsDigits(), id: 'numbersequence_containsdigits', searchKeys: const [
       'numbersequence_luckynumbersselection',
     ]),
 
     //NumberSequenceSelection Happy numbers ****************************************************************************************
-    GCWTool(tool: NumberSequenceHappyNumbersNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequenceHappyNumbersNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_happynumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceHappyNumbersRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequenceHappyNumbersRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_happynumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceHappyNumbersCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequenceHappyNumbersCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_happynumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceHappyNumbersDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequenceHappyNumbersDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_happynumbersselection',
     ]),
-    GCWTool(tool: NumberSequenceHappyNumbersContainsDigits(), i18nPrefix: 'numbersequence_containsdigits', searchKeys: [
+    GCWTool(tool: const NumberSequenceHappyNumbersContainsDigits(), id: 'numbersequence_containsdigits', searchKeys: const [
       'numbersequence_happynumbersselection',
     ]),
 
     //NumberSequenceSelection PseudoPerfect numbers ****************************************************************************************
-    GCWTool(tool: NumberSequencePrimaryPseudoPerfectNumbersNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequencePrimaryPseudoPerfectNumbersNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_primarypseudoperfectnumbersselection',
     ]),
-    GCWTool(tool: NumberSequencePrimaryPseudoPerfectNumbersRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequencePrimaryPseudoPerfectNumbersRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_primarypseudoperfectnumbersselection',
     ]),
     GCWTool(
-        tool: NumberSequencePrimaryPseudoPerfectNumbersCheckNumber(),
-        i18nPrefix: 'numbersequence_check',
-        searchKeys: [
+        tool: const NumberSequencePrimaryPseudoPerfectNumbersCheckNumber(),
+        id: 'numbersequence_check',
+        searchKeys: const [
           'numbersequence_primarypseudoperfectnumbersselection',
         ]),
-    GCWTool(tool: NumberSequencePrimaryPseudoPerfectNumbersDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequencePrimaryPseudoPerfectNumbersDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_primarypseudoperfectnumbersselection',
     ]),
     GCWTool(
-        tool: NumberSequencePrimaryPseudoPerfectNumbersContainsDigits(),
-        i18nPrefix: 'numbersequence_containsdigits',
-        searchKeys: [
+        tool: const NumberSequencePrimaryPseudoPerfectNumbersContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        searchKeys: const [
           'numbersequence_primarypseudoperfectnumbersselection',
         ]),
 
     //NumberSequenceSelection Lychrel numbers ****************************************************************************************
-    GCWTool(tool: NumberSequenceLychrelNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequenceLychrelNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_lychrelselection',
     ]),
-    GCWTool(tool: NumberSequenceLychrelRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequenceLychrelRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_lychrelselection',
     ]),
-    GCWTool(tool: NumberSequenceLychrelCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequenceLychrelCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_lychrelselection',
     ]),
-    GCWTool(tool: NumberSequenceLychrelDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequenceLychrelDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_lychrelselection',
     ]),
-    GCWTool(tool: NumberSequenceLychrelContainsDigits(), i18nPrefix: 'numbersequence_containsdigits', searchKeys: [
+    GCWTool(tool: const NumberSequenceLychrelContainsDigits(), id: 'numbersequence_containsdigits', searchKeys: const [
       'numbersequence_lychrelselection',
     ]),
 
     //NumberSequenceSelection Mersenne Primes ****************************************************************************************
-    GCWTool(tool: NumberSequencePermutablePrimesNthNumber(), i18nPrefix: 'numbersequence_nth', searchKeys: [
+    GCWTool(tool: const NumberSequencePermutablePrimesNthNumber(), id: 'numbersequence_nth', searchKeys: const [
       'numbersequence_permutableprimesselection',
     ]),
-    GCWTool(tool: NumberSequencePermutablePrimesRange(), i18nPrefix: 'numbersequence_range', searchKeys: [
+    GCWTool(tool: const NumberSequencePermutablePrimesRange(), id: 'numbersequence_range', searchKeys: const [
       'numbersequence_permutableprimesselection',
     ]),
-    GCWTool(tool: NumberSequencePermutablePrimesCheckNumber(), i18nPrefix: 'numbersequence_check', searchKeys: [
+    GCWTool(tool: const NumberSequencePermutablePrimesCheckNumber(), id: 'numbersequence_check', searchKeys: const [
       'numbersequence_permutableprimesselection',
     ]),
-    GCWTool(tool: NumberSequencePermutablePrimesDigits(), i18nPrefix: 'numbersequence_digits', searchKeys: [
+    GCWTool(tool: const NumberSequencePermutablePrimesDigits(), id: 'numbersequence_digits', searchKeys: const [
       'numbersequence_permutableprimesselection',
     ]),
     GCWTool(
-        tool: NumberSequencePermutablePrimesContainsDigits(),
-        i18nPrefix: 'numbersequence_containsdigits',
-        searchKeys: [
+        tool: const NumberSequencePermutablePrimesContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        searchKeys: const [
           'numbersequence_permutableprimesselection',
         ]),
 
     //PeriodicTableSelection ***************************************************************************************
-    GCWTool(tool: PeriodicTable(), i18nPrefix: 'periodictable', searchKeys: []),
-    GCWTool(tool: PeriodicTableDataView(), i18nPrefix: 'periodictable_dataview', searchKeys: [
+    GCWTool(tool: const PeriodicTable(), id: 'periodictable', searchKeys: const []),
+    GCWTool(tool: const PeriodicTableDataView(atomicNumber: 1,), id: 'periodictable_dataview', searchKeys: const [
       'periodictabledataview',
     ]),
-    GCWTool(tool: AtomicNumbersToText(), i18nPrefix: 'atomicnumberstotext', searchKeys: [
+    GCWTool(tool: const AtomicNumbersToText(), id: 'atomicnumberstotext', searchKeys: const [
       'periodictable_atomicnumbers',
     ]),
 
     //Phi Selection **********************************************************************************************
-    GCWTool(tool: PhiNthDecimal(), i18nPrefix: 'irrationalnumbers_nthdecimal', searchKeys: [
+    GCWTool(tool: const PhiNthDecimal(), id: 'irrationalnumbers_nthdecimal', searchKeys: const [
       'irrationalnumbers',
       'phidecimalrange',
     ]),
-    GCWTool(tool: PhiDecimalRange(), i18nPrefix: 'irrationalnumbers_decimalrange', searchKeys: [
+    GCWTool(tool: const PhiDecimalRange(), id: 'irrationalnumbers_decimalrange', searchKeys: const [
       'irrationalnumbers',
       'phidecimalrange',
     ]),
-    GCWTool(tool: PhiSearch(), i18nPrefix: 'irrationalnumbers_search', searchKeys: [
+    GCWTool(tool: const PhiSearch(), id: 'irrationalnumbers_search', searchKeys: const [
       'irrationalnumbers',
       'phisearch',
     ]),
 
     //Pi Selection **********************************************************************************************
-    GCWTool(tool: PiNthDecimal(), i18nPrefix: 'irrationalnumbers_nthdecimal', searchKeys: [
+    GCWTool(tool: const PiNthDecimal(), id: 'irrationalnumbers_nthdecimal', searchKeys: const [
       'irrationalnumbers',
       'pinthdecimal',
     ]),
-    GCWTool(tool: PiDecimalRange(), i18nPrefix: 'irrationalnumbers_decimalrange', searchKeys: [
+    GCWTool(tool: const PiDecimalRange(), id: 'irrationalnumbers_decimalrange', searchKeys: const [
       'irrationalnumbers',
       'pidecimalrange',
     ]),
-    GCWTool(tool: PiSearch(), i18nPrefix: 'irrationalnumbers_search', searchKeys: [
+    GCWTool(tool: const PiSearch(), id: 'irrationalnumbers_search', searchKeys: const [
       'irrationalnumbers',
       'pisearch',
     ]),
 
     //Predator Selection **************************************************************************************
-    GCWTool(tool: Predator(), i18nPrefix: 'predator', searchKeys: [
+    GCWTool(tool: const Predator(), id: 'predator', searchKeys: const [
       'predator',
     ]),
 
     //PrimesSelection **********************************************************************************************
-    GCWTool(tool: NthPrime(), i18nPrefix: 'primes_nthprime', searchKeys: [
+    GCWTool(tool: const NthPrime(), id: 'primes_nthprime', searchKeys: const [
       'primes',
       'primes_nthprime',
     ]),
-    GCWTool(tool: IsPrime(), i18nPrefix: 'primes_isprime', searchKeys: [
+    GCWTool(tool: const IsPrime(), id: 'primes_isprime', searchKeys: const [
       'primes',
       'primes_isprime',
     ]),
-    GCWTool(tool: NearestPrime(), i18nPrefix: 'primes_nearestprime', searchKeys: [
+    GCWTool(tool: const NearestPrime(), id: 'primes_nearestprime', searchKeys: const [
       'primes',
       'primes_nearestprime',
     ]),
-    GCWTool(tool: PrimeIndex(), i18nPrefix: 'primes_primeindex', searchKeys: [
+    GCWTool(tool: const PrimeIndex(), id: 'primes_primeindex', searchKeys: const [
       'primes',
       'primes_primeindex',
     ]),
-    GCWTool(tool: IntegerFactorization(), i18nPrefix: 'primes_integerfactorization', searchKeys: [
+    GCWTool(tool: const IntegerFactorization(), id: 'primes_integerfactorization', searchKeys: const [
       'primes',
       'primes_integerfactorization',
     ]),
 
     //ResistorSelection **********************************************************************************************
-    GCWTool(tool: ResistorColorCodeCalculator(), i18nPrefix: 'resistor_colorcodecalculator', searchKeys: [
+    GCWTool(tool: const ResistorColorCodeCalculator(), id: 'resistor_colorcodecalculator', searchKeys: const [
       'resistor',
       'color',
       'resistor_colorcode',
     ]),
-    GCWTool(tool: ResistorEIA96(), i18nPrefix: 'resistor_eia96', searchKeys: [
+    GCWTool(tool: const ResistorEIA96(), id: 'resistor_eia96', searchKeys: const [
       'resistor',
       'resistoreia96',
     ]),
 
     //RomanNumbersSelection **********************************************************************************************
-    GCWTool(tool: RomanNumbers(), i18nPrefix: 'romannumbers', searchKeys: [
+    GCWTool(tool: const RomanNumbers(), id: 'romannumbers', searchKeys: const [
       'roman_numbers',
     ]),
-    GCWTool(tool: Chronogram(), i18nPrefix: 'chronogram', searchKeys: [
+    GCWTool(tool: const Chronogram(), id: 'chronogram', searchKeys: const [
       'roman_numbers',
       'chronogram',
     ]),
 
     //RotationSelection **********************************************************************************************
-    GCWTool(tool: Rot13(), i18nPrefix: 'rotation_rot13', searchKeys: [
+    GCWTool(tool: Rot13(), id: 'rotation_rot13', searchKeys: const [
       'rotation',
       'rotation_rot13',
     ]),
-    GCWTool(tool: Rot5(), i18nPrefix: 'rotation_rot5', searchKeys: [
+    GCWTool(tool: Rot5(), id: 'rotation_rot5', searchKeys: const [
       'rotation',
       'rotation_rot5',
     ]),
-    GCWTool(tool: Rot18(), i18nPrefix: 'rotation_rot18', searchKeys: [
+    GCWTool(tool: Rot18(), id: 'rotation_rot18', searchKeys: const [
       'rotation',
       'rotation_rot18',
     ]),
-    GCWTool(tool: Rot47(), i18nPrefix: 'rotation_rot47', searchKeys: [
+    GCWTool(tool: Rot47(), id: 'rotation_rot47', searchKeys: const [
       'rotation',
       'rotation_rot47',
     ]),
-    GCWTool(tool: Rot123(), i18nPrefix: 'rotation_rot123', searchKeys: [
+    GCWTool(tool: const Rot123(), id: 'rotation_rot123', searchKeys: const [
       'rotation',
       'rotation_rot123',
     ]),
-    GCWTool(tool: RotationGeneral(), i18nPrefix: 'rotation_general', searchKeys: [
+    GCWTool(tool: const RotationGeneral(), id: 'rotation_general', searchKeys: const [
       'rotation',
     ]),
 
     // RSA *******************************************************************************************************
-    GCWTool(tool: RSA(), i18nPrefix: 'rsa_rsa', searchKeys: [
+    GCWTool(tool: const RSA(), id: 'rsa_rsa', searchKeys: const [
       'rsa',
     ]),
-    GCWTool(tool: RSAEChecker(), i18nPrefix: 'rsa_e.checker', searchKeys: [
+    GCWTool(tool: const RSAEChecker(), id: 'rsa_e.checker', searchKeys: const [
       'rsa',
       'rsa_echecker',
     ]),
-    GCWTool(tool: RSADChecker(), i18nPrefix: 'rsa_d.checker', searchKeys: [
+    GCWTool(tool: const RSADChecker(), id: 'rsa_d.checker', searchKeys: const [
       'rsa',
       'rsa_dchecker',
     ]),
-    GCWTool(tool: RSADCalculator(), i18nPrefix: 'rsa_d.calculator', searchKeys: [
+    GCWTool(tool: const RSADCalculator(), id: 'rsa_d.calculator', searchKeys: const [
       'rsa',
       'rsa_dcalculator',
     ]),
-    GCWTool(tool: RSANCalculator(), i18nPrefix: 'rsa_n.calculator', searchKeys: [
+    GCWTool(tool: const RSANCalculator(), id: 'rsa_n.calculator', searchKeys: const [
       'rsa',
       'rsa_ncalculator',
     ]),
-    GCWTool(tool: RSAPhiCalculator(), i18nPrefix: 'rsa_phi.calculator', searchKeys: ['rsa']),
-    GCWTool(tool: RSAPrimesCalculator(), i18nPrefix: 'rsa_primes.calculator', searchKeys: ['rsa', 'primes']),
+    GCWTool(tool: const RSAPhiCalculator(), id: 'rsa_phi.calculator', searchKeys: const ['rsa']),
+    GCWTool(tool: const RSAPrimesCalculator(), id: 'rsa_primes.calculator', searchKeys: const ['rsa', 'primes']),
 
     //Scrabble Selection *****************************************************************************************
 
-    GCWTool(tool: Scrabble(), i18nPrefix: 'scrabble', searchKeys: [
+    GCWTool(tool: const Scrabble(), id: 'scrabble', searchKeys: const [
       'games_scrabble',
     ]),
-    GCWTool(tool: ScrabbleOverview(), i18nPrefix: 'scrabbleoverview', searchKeys: [
+    GCWTool(tool: const ScrabbleOverview(), id: 'scrabbleoverview', searchKeys: const [
       'games_scrabble',
     ]),
 
     //Segments Display *******************************************************************************************
     GCWTool(
-        tool: SevenSegments(),
-        i18nPrefix: 'segmentdisplay_7segments',
+        tool: const SevenSegments(),
+        id: 'segmentdisplay_7segments',
         iconPath: 'assets/icons/science_and_technology/icon_7segment_display.png',
-        searchKeys: [
+        searchKeys: const [
           'segments',
           'segments_seven',
         ]),
     GCWTool(
-        tool: FourteenSegments(),
-        i18nPrefix: 'segmentdisplay_14segments',
+        tool: const FourteenSegments(),
+        id: 'segmentdisplay_14segments',
         iconPath: 'assets/icons/science_and_technology/icon_14segment_display.png',
-        searchKeys: [
+        searchKeys: const [
           'segments',
           'segments_fourteen',
         ]),
     GCWTool(
-        tool: SixteenSegments(),
-        i18nPrefix: 'segmentdisplay_16segments',
+        tool: const SixteenSegments(),
+        id: 'segmentdisplay_16segments',
         iconPath: 'assets/icons/science_and_technology/icon_16segment_display.png',
-        searchKeys: [
+        searchKeys: const [
           'segments',
           'segments_sixteen',
         ]),
 
     //Shadoks Selection ******************************************************************************************
-    GCWTool(tool: ShadoksNumbers(), i18nPrefix: 'shadoksnumbers', searchKeys: [
+    GCWTool(tool: const ShadoksNumbers(), id: 'shadoksnumbers', searchKeys: const [
       'shadoksnumbers',
     ]),
 
     //Silver Ratio Selection **********************************************************************************************
-    GCWTool(tool: SilverRatioNthDecimal(), i18nPrefix: 'irrationalnumbers_nthdecimal', searchKeys: [
+    GCWTool(tool: const SilverRatioNthDecimal(), id: 'irrationalnumbers_nthdecimal', searchKeys: const [
       'silverratiodecimalrange',
     ]),
-    GCWTool(tool: SilverRatioDecimalRange(), i18nPrefix: 'irrationalnumbers_decimalrange', searchKeys: [
+    GCWTool(tool: const SilverRatioDecimalRange(), id: 'irrationalnumbers_decimalrange', searchKeys: const [
       'silverratiodecimalrange',
     ]),
-    GCWTool(tool: SilverRatioSearch(), i18nPrefix: 'irrationalnumbers_search', searchKeys: [
+    GCWTool(tool: const SilverRatioSearch(), id: 'irrationalnumbers_search', searchKeys: const [
       'silverratiosearch',
     ]),
 
     //SQRT 2 Selection **********************************************************************************************
-    GCWTool(tool: SQRT2NthDecimal(), i18nPrefix: 'irrationalnumbers_nthdecimal', searchKeys: [
+    GCWTool(tool: const SQRT2NthDecimal(), id: 'irrationalnumbers_nthdecimal', searchKeys: const [
       '',
     ]),
-    GCWTool(tool: SQRT2DecimalRange(), i18nPrefix: 'irrationalnumbers_decimalrange', searchKeys: [
+    GCWTool(tool: const SQRT2DecimalRange(), id: 'irrationalnumbers_decimalrange', searchKeys: const [
       '',
     ]),
-    GCWTool(tool: SQRT2Search(), i18nPrefix: 'irrationalnumbers_search', searchKeys: [
+    GCWTool(tool: const SQRT2Search(), id: 'irrationalnumbers_search', searchKeys: const [
       '',
     ]),
 
     //SQRT 3 Selection **********************************************************************************************
-    GCWTool(tool: SQRT3NthDecimal(), i18nPrefix: 'irrationalnumbers_nthdecimal', searchKeys: [
+    GCWTool(tool: const SQRT3NthDecimal(), id: 'irrationalnumbers_nthdecimal', searchKeys: const [
       '',
     ]),
-    GCWTool(tool: SQRT3DecimalRange(), i18nPrefix: 'irrationalnumbers_decimalrange', searchKeys: [
+    GCWTool(tool: const SQRT3DecimalRange(), id: 'irrationalnumbers_decimalrange', searchKeys: const [
       '',
     ]),
-    GCWTool(tool: SQRT3Search(), i18nPrefix: 'irrationalnumbers_search', searchKeys: [
+    GCWTool(tool: const SQRT3Search(), id: 'irrationalnumbers_search', searchKeys: const [
       '',
     ]),
 
     //SQRT 5 Selection **********************************************************************************************
-    GCWTool(tool: SQRT5NthDecimal(), i18nPrefix: 'irrationalnumbers_nthdecimal', searchKeys: [
+    GCWTool(tool: const SQRT5NthDecimal(), id: 'irrationalnumbers_nthdecimal', searchKeys: const [
       '',
     ]),
-    GCWTool(tool: SQRT5DecimalRange(), i18nPrefix: 'irrationalnumbers_decimalrange', searchKeys: [
+    GCWTool(tool: const SQRT5DecimalRange(), id: 'irrationalnumbers_decimalrange', searchKeys: const [
       '',
     ]),
-    GCWTool(tool: SQRT5Search(), i18nPrefix: 'irrationalnumbers_search', searchKeys: [
+    GCWTool(tool: const SQRT5Search(), id: 'irrationalnumbers_search', searchKeys: const [
       '',
     ]),
 
     //Symbol Tables **********************************************************************************************
-    GCWTool(tool: SymbolTableExamplesSelect(), autoScroll: false, i18nPrefix: 'symboltablesexamples', searchKeys: [
+    GCWTool(tool: const SymbolTableExamplesSelect(), autoScroll: false, id: 'symboltablesexamples', searchKeys: const [
       'symbol',
       'symboltablesexamples',
     ]),
     GCWTool(
-      tool: SymbolReplacer(),
-      i18nPrefix: 'symbol_replacer',
+      tool: const SymbolReplacer(),
+      id: 'symbol_replacer',
       isBeta: true,
-      searchKeys: [
+      searchKeys: const [
         'symbol_replacer',
       ],
-      categories: [ToolCategory.GENERAL_CODEBREAKERS],
+      categories: const [ToolCategory.GENERAL_CODEBREAKERS],
     ),
 
-    GCWSymbolTableTool(symbolKey: 'adlam', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'adlam', symbolSearchStrings: const [
       'symbol_adlam',
     ]),
-    GCWSymbolTableTool(symbolKey: 'albhed', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'albhed', symbolSearchStrings: const [
       'symbol_albhed',
     ]),
-    GCWSymbolTableTool(symbolKey: 'alchemy', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'alchemy', symbolSearchStrings: const [
       'symbol_alchemy',
     ]),
-    GCWSymbolTableTool(symbolKey: 'alchemy_alphabet', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'alchemy_alphabet', symbolSearchStrings: const [
       'symbol_alchemy_alphabet',
     ]),
-    GCWSymbolTableTool(symbolKey: 'alien_mushrooms', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'alien_mushrooms', symbolSearchStrings: const [
       'symbol_alien_mushrooms',
     ]),
-    GCWSymbolTableTool(symbolKey: 'angerthas_cirth', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'angerthas_cirth', symbolSearchStrings: const [
       'symbol_lordoftherings',
       'symbol_runes',
       'symbol_angerthas_cirth',
     ]),
-    GCWSymbolTableTool(symbolKey: 'alphabetum_arabum', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'alphabetum_arabum', symbolSearchStrings: const [
       'symbol_alphabetum_arabum',
     ]),
-    GCWSymbolTableTool(symbolKey: 'alphabetum_egiptiorum', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'alphabetum_egiptiorum', symbolSearchStrings: const [
       'symbol_alphabetum_egiptiorum',
     ]),
-    GCWSymbolTableTool(symbolKey: 'alphabetum_gothicum', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'alphabetum_gothicum', symbolSearchStrings: const [
       'symbol_alphabetum_gothicum',
     ]),
-    GCWSymbolTableTool(symbolKey: 'antiker', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'antiker', symbolSearchStrings: const [
       'symbol_antiker',
     ]),
-    GCWSymbolTableTool(symbolKey: 'arabic_indian_numerals', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'arabic_indian_numerals', symbolSearchStrings: const [
       'symbol_arabic_indian_numerals',
     ]),
-    GCWSymbolTableTool(symbolKey: 'arcadian', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'arcadian', symbolSearchStrings: const [
       'symbol_arcadian',
     ]),
-    GCWSymbolTableTool(symbolKey: 'ath', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'ath', symbolSearchStrings: const [
       'symbol_ath',
     ]),
-    GCWSymbolTableTool(symbolKey: 'atlantean', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'atlantean', symbolSearchStrings: const [
       'symbol_atlantean',
     ]),
-    GCWSymbolTableTool(symbolKey: 'aurebesh', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'aurebesh', symbolSearchStrings: const [
       'symbol_aurebesh',
     ]),
-    GCWSymbolTableTool(symbolKey: 'australian_sign_language', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'australian_sign_language', symbolSearchStrings: const [
       'symbol_signlanguage',
       'symbol_australian_sign_language',
     ]),
-    GCWSymbolTableTool(symbolKey: 'babylonian_numerals', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'babylonian_numerals', symbolSearchStrings: const [
       'babylonian_numerals',
     ]),
-    GCWSymbolTableTool(symbolKey: 'ballet', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'ballet', symbolSearchStrings: const [
       'symbol_ballet',
     ]),
-    GCWSymbolTableTool(symbolKey: 'barbier', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'barbier', symbolSearchStrings: const [
       'braille',
       'symbol_barbier',
     ]),
-    GCWSymbolTableTool(symbolKey: 'barcode39', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'barcode39', symbolSearchStrings: const [
       'barcodes',
       'barcode39',
     ]),
-    GCWSymbolTableTool(symbolKey: 'baudot_1888', symbolSearchStrings: ['ccitt', 'symbol_baudot', 'teletypewriter']),
-    GCWSymbolTableTool(symbolKey: 'baudot_54123', symbolSearchStrings: ['ccitt', 'symbol_baudot', 'teletypewriter']),
-    GCWSymbolTableTool(symbolKey: 'birds_on_a_wire', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'baudot_1888', symbolSearchStrings: const ['ccitt', 'symbol_baudot', 'teletypewriter']),
+    GCWSymbolTableTool(symbolKey: 'baudot_54123', symbolSearchStrings: const ['ccitt', 'symbol_baudot', 'teletypewriter']),
+    GCWSymbolTableTool(symbolKey: 'birds_on_a_wire', symbolSearchStrings: const [
       'symbol_birds_on_a_wire',
     ]),
-    GCWSymbolTableTool(symbolKey: 'blox', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'blox', symbolSearchStrings: const [
       'symbol_blox',
     ]),
-    GCWSymbolTableTool(symbolKey: 'brahmi_numerals', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'brahmi_numerals', symbolSearchStrings: const [
       'symbol_brahmi_numerals',
     ]),
-    GCWSymbolTableTool(symbolKey: 'braille_de', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'braille_de', symbolSearchStrings: const [
       'braille',
     ]),
-    GCWSymbolTableTool(symbolKey: 'braille_en', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'braille_en', symbolSearchStrings: const [
       'braille',
     ]),
-    GCWSymbolTableTool(symbolKey: 'braille_eu', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'braille_eu', symbolSearchStrings: const [
       'braille',
       'braille_euro',
     ]),
-    GCWSymbolTableTool(symbolKey: 'braille_fr', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'braille_fr', symbolSearchStrings: const [
       'braille',
     ]),
-    GCWSymbolTableTool(symbolKey: 'british_sign_language', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'british_sign_language', symbolSearchStrings: const [
       'symbol_signlanguage',
       'symbol_british_sign_language',
     ]),
-    GCWSymbolTableTool(symbolKey: 'chain_of_death_direction', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'chain_of_death_direction', symbolSearchStrings: const [
       'symbol_chain_of_death_direction',
     ]),
-    GCWSymbolTableTool(symbolKey: 'chain_of_death_pairs', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'chain_of_death_pairs', symbolSearchStrings: const [
       'symbol_chain_of_death_pairs',
     ]),
-    GCWSymbolTableTool(symbolKey: 'chappe_1794', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'chappe_1794', symbolSearchStrings: const [
       'telegraph',
       'symbol_chappe',
       'symbol_chappe_1794',
     ]),
-    GCWSymbolTableTool(symbolKey: 'chappe_1809', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'chappe_1809', symbolSearchStrings: const [
       'telegraph',
       'symbol_chappe',
       'symbol_chappe_1809',
     ]),
-    GCWSymbolTableTool(symbolKey: 'chappe_v1', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'chappe_v1', symbolSearchStrings: const [
       'telegraph',
       'symbol_chappe',
       'symbol_chappe_v1',
     ]),
-    GCWSymbolTableTool(symbolKey: 'cherokee', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'cherokee', symbolSearchStrings: const [
       'symbol_cherokee',
     ]),
-    GCWSymbolTableTool(symbolKey: 'chinese_numerals', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'chinese_numerals', symbolSearchStrings: const [
       'symbol_chinese_numerals',
     ]),
-    GCWSymbolTableTool(symbolKey: 'christmas', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'christmas', symbolSearchStrings: const [
       'christmas',
     ]),
-    GCWSymbolTableTool(symbolKey: 'cirth_erebor', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'cirth_erebor', symbolSearchStrings: const [
       'symbol_runes',
       'symbol_lordoftherings',
       'symbol_cirtherebor',
     ]),
-    GCWSymbolTableTool(symbolKey: 'cistercian', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'cistercian', symbolSearchStrings: const [
       'cistercian',
     ]),
-    GCWSymbolTableTool(symbolKey: 'color_add', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'color_add', symbolSearchStrings: const [
       'color',
       'symbol_color_add',
     ]),
-    GCWSymbolTableTool(symbolKey: 'color_code', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'color_code', symbolSearchStrings: const [
       'color',
       'symbol_color_code',
     ]),
-    GCWSymbolTableTool(symbolKey: 'color_honey', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'color_honey', symbolSearchStrings: const [
       'color',
       'symbol_color_honey',
     ]),
-    GCWSymbolTableTool(symbolKey: 'color_tokki', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'color_tokki', symbolSearchStrings: const [
       'color',
       'symbol_color_tokki',
     ]),
-    GCWSymbolTableTool(symbolKey: 'cookewheatstone_1', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'cookewheatstone_1', symbolSearchStrings: const [
       'telegraph',
       'symbol_cookewheatstone',
       'symbol_cookewheatstone_1',
     ]),
-    GCWSymbolTableTool(symbolKey: 'cookewheatstone_2', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'cookewheatstone_2', symbolSearchStrings: const [
       'telegraph',
       'symbol_cookewheatstone',
       'symbol_cookewheatstone_2',
     ]),
-    GCWSymbolTableTool(symbolKey: 'cookewheatstone_5', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'cookewheatstone_5', symbolSearchStrings: const [
       'telegraph',
       'symbol_cookewheatstone',
       'symbol_cookewheatstone_5',
     ]),
-    GCWSymbolTableTool(symbolKey: 'country_flags', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'country_flags', symbolSearchStrings: const [
       'countries',
       'symbol_flags',
       'countries_flags',
     ]),
-    GCWSymbolTableTool(symbolKey: 'covenant', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'covenant', symbolSearchStrings: const [
       'symbol_covenant',
     ]),
-    GCWSymbolTableTool(symbolKey: 'crystal', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'crystal', symbolSearchStrings: const [
       'symbol_crystal',
     ]),
-    GCWSymbolTableTool(symbolKey: 'cyrillic', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'cyrillic', symbolSearchStrings: const [
       'symbol_cyrillic',
     ]),
-    GCWSymbolTableTool(symbolKey: 'cyrillic_numbers', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'cyrillic_numbers', symbolSearchStrings: const [
       'symbol_cyrillic_numbers',
     ]),
-    GCWSymbolTableTool(symbolKey: 'daedric', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'daedric', symbolSearchStrings: const [
       'symbol_daedric',
     ]),
-    GCWSymbolTableTool(symbolKey: 'dagger', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'dagger', symbolSearchStrings: const [
       'symbol_dagger',
     ]),
-    GCWSymbolTableTool(symbolKey: 'dancing_men', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'dancing_men', symbolSearchStrings: const [
       'symbol_dancing_men',
     ]),
-    GCWSymbolTableTool(symbolKey: 'deafblind', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'deafblind', symbolSearchStrings: const [
       'symbol_signlanguage',
       'symbol_deafblind',
     ]),
-    GCWSymbolTableTool(symbolKey: 'devanagari_numerals', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'devanagari_numerals', symbolSearchStrings: const [
       'symbol_devanagari_numerals',
     ]),
-    GCWSymbolTableTool(symbolKey: 'dni', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'dni', symbolSearchStrings: const [
       'symbol_dni',
     ]),
-    GCWSymbolTableTool(symbolKey: 'dni_colors', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'dni_colors', symbolSearchStrings: const [
       'color',
       'symbol_dni_colors',
     ]),
-    GCWSymbolTableTool(symbolKey: 'dni_numbers', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'dni_numbers', symbolSearchStrings: const [
       'symbol_dni_numbers',
     ]),
-    GCWSymbolTableTool(symbolKey: 'doop_speak', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'doop_speak', symbolSearchStrings: const [
       'symbol_doop',
     ]),
-    GCWSymbolTableTool(symbolKey: 'dorabella', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'dorabella', symbolSearchStrings: const [
       'symbol_dorabella',
     ]),
-    GCWSymbolTableTool(symbolKey: 'doremi', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'doremi', symbolSearchStrings: const [
       'symbol_doremi',
     ]),
-    GCWSymbolTableTool(symbolKey: 'dragon_language', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'dragon_language', symbolSearchStrings: const [
       'symbol_dragon_language',
     ]),
-    GCWSymbolTableTool(symbolKey: 'dragon_runes', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'dragon_runes', symbolSearchStrings: const [
       'symbol_dragon_runes',
     ]),
-    GCWSymbolTableTool(symbolKey: 'eastern_arabic_indian_numerals', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'eastern_arabic_indian_numerals', symbolSearchStrings: const [
       'symbol_eastern_arabic_indian_numerals',
     ]),
-    GCWSymbolTableTool(symbolKey: 'egyptian_numerals', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'egyptian_numerals', symbolSearchStrings: const [
       'symbol_egyptian_numerals',
     ]),
-    GCWSymbolTableTool(symbolKey: 'elia', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'elia', symbolSearchStrings: const [
       'elia',
     ]),
-    GCWSymbolTableTool(symbolKey: 'enochian', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'enochian', symbolSearchStrings: const [
       'symbol_enochian',
     ]),
-    GCWSymbolTableTool(symbolKey: 'eurythmy', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'eurythmy', symbolSearchStrings: const [
       'symbol_eurythmy',
     ]),
-    GCWSymbolTableTool(symbolKey: 'face_it', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'face_it', symbolSearchStrings: const [
       'symbol_face_it',
     ]),
-    GCWSymbolTableTool(symbolKey: 'fakoo', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'fakoo', symbolSearchStrings: const [
       'symbol_fakoo',
     ]),
-    GCWSymbolTableTool(symbolKey: 'fez', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'fez', symbolSearchStrings: const [
       'symbol_fez',
     ]),
-    GCWSymbolTableTool(symbolKey: 'finger', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'finger', symbolSearchStrings: const [
       'symbol_signlanguage',
       'symbol_finger',
     ]),
-    GCWSymbolTableTool(symbolKey: 'finger_numbers', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'finger_numbers', symbolSearchStrings: const [
       'symbol_signlanguage',
       'symbol_finger_numbers',
     ]),
-    GCWSymbolTableTool(symbolKey: 'flags', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'flags', symbolSearchStrings: const [
       'symbol_flags',
     ]),
-    GCWSymbolTableTool(symbolKey: 'flags_german_kriegsmarine', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'flags_german_kriegsmarine', symbolSearchStrings: const [
       'symbol_flags',
       'symbol_flags_german_kriegsmarine',
     ]),
-    GCWSymbolTableTool(symbolKey: 'flags_nato', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'flags_nato', symbolSearchStrings: const [
       'symbol_flags',
       'symbol_flags_nato',
     ]),
-    GCWSymbolTableTool(symbolKey: 'flags_rn_howe', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'flags_rn_howe', symbolSearchStrings: const [
       'symbol_flags',
       'symbol_flags_rn_howe',
     ]),
-    GCWSymbolTableTool(symbolKey: 'flags_rn_marryat', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'flags_rn_marryat', symbolSearchStrings: const [
       'symbol_flags',
       'symbol_flags_rn_marryat',
     ]),
-    GCWSymbolTableTool(symbolKey: 'flags_rn_popham', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'flags_rn_popham', symbolSearchStrings: const [
       'symbol_flags',
       'symbol_flags_rn_popham',
     ]),
-    GCWSymbolTableTool(symbolKey: 'fonic', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'fonic', symbolSearchStrings: const [
       'symbol_fonic',
     ]),
-    GCWSymbolTableTool(symbolKey: 'four_triangles', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'four_triangles', symbolSearchStrings: const [
       'symbol_four_triangles',
     ]),
-    GCWSymbolTableTool(symbolKey: 'freemason', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'freemason', symbolSearchStrings: const [
       'symbol_freemason',
     ]),
-    GCWSymbolTableTool(symbolKey: 'freemason_v2', symbolSearchStrings: ['symbol_freemason']),
-    GCWSymbolTableTool(symbolKey: 'futurama', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'freemason_v2', symbolSearchStrings: const ['symbol_freemason']),
+    GCWSymbolTableTool(symbolKey: 'futurama', symbolSearchStrings: const [
       'symbol_futurama',
     ]),
-    GCWSymbolTableTool(symbolKey: 'futurama_2', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'futurama_2', symbolSearchStrings: const [
       'symbol_futurama_2',
     ]),
-    GCWSymbolTableTool(symbolKey: 'gallifreyan', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'gallifreyan', symbolSearchStrings: const [
       'symbol_gallifreyan',
     ]),
-    GCWSymbolTableTool(symbolKey: 'gargish', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'gargish', symbolSearchStrings: const [
       'symbol_gargish',
     ]),
-    GCWSymbolTableTool(symbolKey: 'gc_attributes_ids', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'gc_attributes_ids', symbolSearchStrings: const [
       'symbol_gc_attributes',
     ]),
-    GCWSymbolTableTool(symbolKey: 'gc_attributes_meaning', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'gc_attributes_meaning', symbolSearchStrings: const [
       'symbol_gc_attributes',
     ]),
-    GCWSymbolTableTool(symbolKey: 'gernreich', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'gernreich', symbolSearchStrings: const [
       'symbol_gernreich',
     ]),
-    GCWSymbolTableTool(symbolKey: 'gerudo', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'gerudo', symbolSearchStrings: const [
       'zelda',
       'symbol_gerudo',
     ]),
-    GCWSymbolTableTool(symbolKey: 'glagolitic', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'glagolitic', symbolSearchStrings: const [
       'symbol_gnommish',
     ]),
-    GCWSymbolTableTool(symbolKey: 'gnommish', symbolSearchStrings: []),
-    GCWSymbolTableTool(symbolKey: 'greek_numerals', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'gnommish', symbolSearchStrings: const []),
+    GCWSymbolTableTool(symbolKey: 'greek_numerals', symbolSearchStrings: const [
       'symbol_greek_numerals',
     ]),
-    GCWSymbolTableTool(symbolKey: 'hanja', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'hanja', symbolSearchStrings: const [
       'symbol_hanja',
       'symbol_sino_korean',
     ]),
-    GCWSymbolTableTool(symbolKey: 'hangul_korean', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'hangul_korean', symbolSearchStrings: const [
       'symbol_hangul',
     ]),
-    GCWSymbolTableTool(symbolKey: 'hangul_sino_korean', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'hangul_sino_korean', symbolSearchStrings: const [
       'symbol_hangul',
       'symbol_sino_korean',
     ]),
-    GCWSymbolTableTool(symbolKey: 'hazard', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'hazard', symbolSearchStrings: const [
       'symbol_hazard',
     ]),
-    GCWSymbolTableTool(symbolKey: 'hebrew', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'hebrew', symbolSearchStrings: const [
       'symbol_hebrew',
     ]),
-    GCWSymbolTableTool(symbolKey: 'hebrew_v2', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'hebrew_v2', symbolSearchStrings: const [
       'symbol_hebrew_v2',
     ]),
-    GCWSymbolTableTool(symbolKey: 'hexahue', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'hexahue', symbolSearchStrings: const [
       'color',
       'symbol_hexahue',
     ]),
-    GCWSymbolTableTool(symbolKey: 'hieratic_numerals', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'hieratic_numerals', symbolSearchStrings: const [
       'symbol_hieratic_numerals',
     ]),
-    GCWSymbolTableTool(symbolKey: 'hieroglyphs', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'hieroglyphs', symbolSearchStrings: const [
       'symbol_hieroglyphs',
     ]),
-    GCWSymbolTableTool(symbolKey: 'hieroglyphs_v2', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'hieroglyphs_v2', symbolSearchStrings: const [
       'symbol_hieroglyphs',
     ]),
-    GCWSymbolTableTool(symbolKey: 'hobbit_runes', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'hobbit_runes', symbolSearchStrings: const [
       'symbol_lordoftherings',
       'symbol_runes',
       'symbol_hobbit_runes',
     ]),
-    GCWSymbolTableTool(symbolKey: 'hvd', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'hvd', symbolSearchStrings: const [
       'symbol_hvd',
     ]),
-    GCWSymbolTableTool(symbolKey: 'hylian_64', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'hylian_64', symbolSearchStrings: const [
       'zelda',
       'symbol_hylian_64',
     ]),
-    GCWSymbolTableTool(symbolKey: 'hylian_albw_botw', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'hylian_albw_botw', symbolSearchStrings: const [
       'zelda',
       'symbol_hylian_albw_botw',
     ]),
-    GCWSymbolTableTool(symbolKey: 'hylian_skyward_sword', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'hylian_skyward_sword', symbolSearchStrings: const [
       'zelda',
       'symbol_hylian_skywardsword',
     ]),
-    GCWSymbolTableTool(symbolKey: 'hylian_symbols', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'hylian_symbols', symbolSearchStrings: const [
       'zelda',
       'symbol_hylian_symbols',
     ]),
-    GCWSymbolTableTool(symbolKey: 'hylian_twilight_princess_gcn', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'hylian_twilight_princess_gcn', symbolSearchStrings: const [
       'zelda',
       'symbol_hylian_twilightprincess_gcn',
     ]),
-    GCWSymbolTableTool(symbolKey: 'hylian_twilight_princess_wii', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'hylian_twilight_princess_wii', symbolSearchStrings: const [
       'zelda',
       'symbol_hylian_twilightprincess_wii',
     ]),
-    GCWSymbolTableTool(symbolKey: 'hylian_wind_waker', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'hylian_wind_waker', symbolSearchStrings: const [
       'zelda',
       'symbol_hylian_windwaker',
     ]),
-    GCWSymbolTableTool(symbolKey: 'hymmnos', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'hymmnos', symbolSearchStrings: const [
       'symbol_hymmnos',
     ]),
-    GCWSymbolTableTool(symbolKey: 'icecodes', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'icecodes', symbolSearchStrings: const [
       'icecodes',
     ]),
-    GCWSymbolTableTool(symbolKey: 'iching', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'iching', symbolSearchStrings: const [
       'symbol_iching',
     ]),
-    GCWSymbolTableTool(symbolKey: 'illuminati_v1', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'illuminati_v1', symbolSearchStrings: const [
       'symbol_illuminati',
       'symbol_illuminati_v1',
     ]),
-    GCWSymbolTableTool(symbolKey: 'illuminati_v2', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'illuminati_v2', symbolSearchStrings: const [
       'symbol_illuminati',
       'symbol_illuminati_v2',
     ]),
-    GCWSymbolTableTool(symbolKey: 'intergalactic', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'intergalactic', symbolSearchStrings: const [
       'symbol_intergalactic',
     ]),
-    GCWSymbolTableTool(symbolKey: 'iokharic', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'iokharic', symbolSearchStrings: const [
       'symbol_iokharic',
     ]),
-    GCWSymbolTableTool(symbolKey: 'ita1_1926', symbolSearchStrings: ['ccitt', 'symbol_baudot', 'teletypewriter']),
-    GCWSymbolTableTool(symbolKey: 'ita1_1929', symbolSearchStrings: ['ccitt', 'symbol_baudot', 'teletypewriter']),
-    GCWSymbolTableTool(symbolKey: 'ita2_1929', symbolSearchStrings: ['ccitt', 'symbol_murray', 'teletypewriter']),
-    GCWSymbolTableTool(symbolKey: 'ita2_1931', symbolSearchStrings: ['ccitt', 'symbol_murray', 'teletypewriter']),
-    GCWSymbolTableTool(symbolKey: 'japanese_numerals', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'ita1_1926', symbolSearchStrings: const ['ccitt', 'symbol_baudot', 'teletypewriter']),
+    GCWSymbolTableTool(symbolKey: 'ita1_1929', symbolSearchStrings: const ['ccitt', 'symbol_baudot', 'teletypewriter']),
+    GCWSymbolTableTool(symbolKey: 'ita2_1929', symbolSearchStrings: const ['ccitt', 'symbol_murray', 'teletypewriter']),
+    GCWSymbolTableTool(symbolKey: 'ita2_1931', symbolSearchStrings: const ['ccitt', 'symbol_murray', 'teletypewriter']),
+    GCWSymbolTableTool(symbolKey: 'japanese_numerals', symbolSearchStrings: const [
       'japanese_numerals',
     ]),
-    GCWSymbolTableTool(symbolKey: 'kabouter_abc', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'kabouter_abc', symbolSearchStrings: const [
       'symbol_kabouter_abc',
     ]),
-    GCWSymbolTableTool(symbolKey: 'kabouter_abc_1947', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'kabouter_abc_1947', symbolSearchStrings: const [
       'symbol_kabouter_abc_1947',
     ]),
-    GCWSymbolTableTool(symbolKey: 'kartrak', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'kartrak', symbolSearchStrings: const [
       'color',
       'barcodes',
       'symbol_kartrak',
     ]),
-    GCWSymbolTableTool(symbolKey: 'kharoshthi', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'kharoshthi', symbolSearchStrings: const [
       'symbol_kharoshthi',
     ]),
-    GCWSymbolTableTool(symbolKey: 'klingon', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'klingon', symbolSearchStrings: const [
       'symbol_klingon',
     ]),
-    GCWSymbolTableTool(symbolKey: 'klingon_klinzhai', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'klingon_klinzhai', symbolSearchStrings: const [
       'symbol_klingon',
       'symbol_klingon_klinzhai',
     ]),
-    GCWSymbolTableTool(symbolKey: 'krempel', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'krempel', symbolSearchStrings: const [
       'color',
       'symbol_krempel',
     ]),
-    GCWSymbolTableTool(symbolKey: 'krypton', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'krypton', symbolSearchStrings: const [
       'symbol_krypton',
     ]),
-    GCWSymbolTableTool(symbolKey: 'la_buse', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'la_buse', symbolSearchStrings: const [
       'symbol_freemason',
       'symbol_la_buse',
     ]),
-    GCWSymbolTableTool(symbolKey: 'lorm', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'lorm', symbolSearchStrings: const [
       'symbol_signlanguage',
       'symbol_lorm',
     ]),
-    GCWSymbolTableTool(symbolKey: 'magicode', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'magicode', symbolSearchStrings: const [
       'symbol_magicode',
     ]),
-    GCWSymbolTableTool(symbolKey: 'mandalorian', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'mandalorian', symbolSearchStrings: const [
       'symbol_mandalorian',
     ]),
-    GCWSymbolTableTool(symbolKey: 'marain', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'marain', symbolSearchStrings: const [
       'symbol_marain',
     ]),
-    GCWSymbolTableTool(symbolKey: 'marain_v2', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'marain_v2', symbolSearchStrings: const [
       'symbol_marain_v2',
     ]),
-    GCWSymbolTableTool(symbolKey: 'matoran', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'matoran', symbolSearchStrings: const [
       'symbol_matoran',
     ]),
-    GCWSymbolTableTool(symbolKey: 'maya_calendar_longcount', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'maya_calendar_longcount', symbolSearchStrings: const [
       'calendar',
       'symbol_maya_calendar_longcount',
     ]),
-    GCWSymbolTableTool(symbolKey: 'maya_calendar_haab_codices', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'maya_calendar_haab_codices', symbolSearchStrings: const [
       'calendar',
       'symbol_maya_calendar_haab',
     ]),
-    GCWSymbolTableTool(symbolKey: 'maya_calendar_haab_inscripts', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'maya_calendar_haab_inscripts', symbolSearchStrings: const [
       'calendar',
       'symbol_maya_calendar_haab',
     ]),
-    GCWSymbolTableTool(symbolKey: 'maya_calendar_tzolkin_codices', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'maya_calendar_tzolkin_codices', symbolSearchStrings: const [
       'calendar',
       'symbol_maya_calendar_tzolkin',
     ]),
-    GCWSymbolTableTool(symbolKey: 'maya_calendar_tzolkin_inscripts', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'maya_calendar_tzolkin_inscripts', symbolSearchStrings: const [
       'calendar',
       'symbol_maya_calendar_tzolkin',
     ]),
-    GCWSymbolTableTool(symbolKey: 'maya_numerals', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'maya_numerals', symbolSearchStrings: const [
       'mayanumbers',
     ]),
-    GCWSymbolTableTool(symbolKey: 'maze', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'maze', symbolSearchStrings: const [
       'symbol_maze',
     ]),
-    GCWSymbolTableTool(symbolKey: 'minimoys', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'minimoys', symbolSearchStrings: const [
       'symbol_minimoys',
     ]),
-    GCWSymbolTableTool(symbolKey: 'moon', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'moon', symbolSearchStrings: const [
       'symbol_moon',
     ]),
-    GCWSymbolTableTool(symbolKey: 'moon_phases', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'moon_phases', symbolSearchStrings: const [
       'symbol_moon_phases',
     ]),
-    GCWSymbolTableTool(symbolKey: 'morse', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'morse', symbolSearchStrings: const [
       'morse',
     ]),
-    GCWSymbolTableTool(symbolKey: 'murray', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'murray', symbolSearchStrings: const [
       'symbol_murray',
     ]),
     GCWSymbolTableTool(
-        symbolKey: 'murraybaudot', symbolSearchStrings: ['ccitt', 'symbol_murraybaudot', 'teletypewriter']),
-    GCWSymbolTableTool(symbolKey: 'musica', symbolSearchStrings: [
+        symbolKey: 'murraybaudot', symbolSearchStrings: const ['ccitt', 'symbol_murraybaudot', 'teletypewriter']),
+    GCWSymbolTableTool(symbolKey: 'musica', symbolSearchStrings: const [
       'music_notes',
       'symbol_musica',
     ]),
-    GCWSymbolTableTool(symbolKey: 'nazcaan', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'nazcaan', symbolSearchStrings: const [
       'symbol_nazcaan',
     ]),
-    GCWSymbolTableTool(symbolKey: 'new_zealand_sign_language', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'new_zealand_sign_language', symbolSearchStrings: const [
       'symbol_signlanguage',
       'symbol_new_zealand_sign_language',
     ]),
-    GCWSymbolTableTool(symbolKey: 'niessen', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'niessen', symbolSearchStrings: const [
       'symbol_signlanguage',
       'symbol_niessen',
     ]),
-    GCWSymbolTableTool(symbolKey: 'ninjargon', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'ninjargon', symbolSearchStrings: const [
       'symbol_ninjargon',
     ]),
-    GCWSymbolTableTool(symbolKey: 'notes_doremi', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'notes_doremi', symbolSearchStrings: const [
       'music',
       'music_notes',
       'symbol_notes_doremi',
     ]),
-    GCWSymbolTableTool(symbolKey: 'notes_names_altoclef', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'notes_names_altoclef', symbolSearchStrings: const [
       'music',
       'music_notes',
       'symbol_notes_names_altoclef',
     ]),
-    GCWSymbolTableTool(symbolKey: 'notes_names_bassclef', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'notes_names_bassclef', symbolSearchStrings: const [
       'music',
       'music_notes',
       'symbol_notes_names_bassclef',
     ]),
-    GCWSymbolTableTool(symbolKey: 'notes_names_trebleclef', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'notes_names_trebleclef', symbolSearchStrings: const [
       'music',
       'music_notes',
       'symbol_notes_names_trebleclef',
     ]),
-    GCWSymbolTableTool(symbolKey: 'notes_notevalues', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'notes_notevalues', symbolSearchStrings: const [
       'music',
       'music_notes',
       'symbol_notes_notevalues',
     ]),
-    GCWSymbolTableTool(symbolKey: 'notes_restvalues', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'notes_restvalues', symbolSearchStrings: const [
       'music',
       'music_notes',
       'symbol_notes_restvalues',
     ]),
-    GCWSymbolTableTool(symbolKey: 'nyctography', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'nyctography', symbolSearchStrings: const [
       'symbol_nyctography',
     ]),
-    GCWSymbolTableTool(symbolKey: 'ogham', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'ogham', symbolSearchStrings: const [
       'symbol_ogham',
     ]),
-    GCWSymbolTableTool(symbolKey: 'optical_fiber_fotag', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'optical_fiber_fotag', symbolSearchStrings: const [
       'color',
       'symbol_opticalfiber',
       'symbol_optical_fiber_fotag',
     ]),
-    GCWSymbolTableTool(symbolKey: 'optical_fiber_iec60304', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'optical_fiber_iec60304', symbolSearchStrings: const [
       'color',
       'symbol_opticalfiber',
       'symbol_optical_fiber_iec60304',
     ]),
-    GCWSymbolTableTool(symbolKey: 'optical_fiber_swisscom', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'optical_fiber_swisscom', symbolSearchStrings: const [
       'color',
       'symbol_opticalfiber',
       'optical_fiber_swisscom',
     ]),
-    GCWSymbolTableTool(symbolKey: 'phoenician', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'phoenician', symbolSearchStrings: const [
       'symbol_phoenician',
     ]),
-    GCWSymbolTableTool(symbolKey: 'pipeline', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'pipeline', symbolSearchStrings: const [
       'symbol_pipeline',
     ]),
-    GCWSymbolTableTool(symbolKey: 'pipeline_din2403', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'pipeline_din2403', symbolSearchStrings: const [
       'color',
       'symbol_pipeline_din2403',
     ]),
-    GCWSymbolTableTool(symbolKey: 'pixel', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'pixel', symbolSearchStrings: const [
       'symbol_pixel',
     ]),
-    GCWSymbolTableTool(symbolKey: 'planet', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'planet', symbolSearchStrings: const [
       'barcodes',
       'symbol_planet',
     ]),
-    GCWSymbolTableTool(symbolKey: 'planets', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'planets', symbolSearchStrings: const [
       'symbol_planets',
     ]),
-    GCWSymbolTableTool(symbolKey: 'pokemon_unown', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'pokemon_unown', symbolSearchStrings: const [
       'pokemon',
       'symbol_pokemon_unown',
     ]),
-    GCWSymbolTableTool(symbolKey: 'postcode_01247', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'postcode_01247', symbolSearchStrings: const [
       'barcodes',
       'symbol_postcode01247',
     ]),
-    GCWSymbolTableTool(symbolKey: 'postcode_8421', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'postcode_8421', symbolSearchStrings: const [
       'barcodes',
       'symbol_postcode8421',
     ]),
-    GCWSymbolTableTool(symbolKey: 'postnet', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'postnet', symbolSearchStrings: const [
       'barcodes',
       'symbol_postnet',
     ]),
-    GCWSymbolTableTool(symbolKey: 'predator', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'predator', symbolSearchStrings: const [
       'predator',
     ]),
-    GCWSymbolTableTool(symbolKey: 'prosyl', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'prosyl', symbolSearchStrings: const [
       'symbol_prosyl',
     ]),
-    GCWSymbolTableTool(symbolKey: 'puzzle', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'puzzle', symbolSearchStrings: const [
       'symbol_puzzle',
     ]),
-    GCWSymbolTableTool(symbolKey: 'puzzle_2', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'puzzle_2', symbolSearchStrings: const [
       'symbol_puzzle',
     ]),
-    GCWSymbolTableTool(symbolKey: 'prussian_colors_artillery', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'prussian_colors_artillery', symbolSearchStrings: const [
       'symbol_prussian_colors_artillery',
     ]),
-    GCWSymbolTableTool(symbolKey: 'prussian_colors_infantery', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'prussian_colors_infantery', symbolSearchStrings: const [
       'symbol_prussian_colors_infantery',
     ]),
-    GCWSymbolTableTool(symbolKey: 'quadoo', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'quadoo', symbolSearchStrings: const [
       'symbol_quadoo',
     ]),
-    GCWSymbolTableTool(symbolKey: 'reality', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'reality', symbolSearchStrings: const [
       'symbol_reality',
     ]),
-    GCWSymbolTableTool(symbolKey: 'red_herring', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'red_herring', symbolSearchStrings: const [
       'symbol_red_herring',
     ]),
-    GCWSymbolTableTool(symbolKey: 'resistor', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'resistor', symbolSearchStrings: const [
       'color',
       'resistor_colorcode',
     ]),
-    GCWSymbolTableTool(symbolKey: 'rhesus_a', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'rhesus_a', symbolSearchStrings: const [
       'symbol_rhesus',
     ]),
-    GCWSymbolTableTool(symbolKey: 'rhesus_b', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'rhesus_b', symbolSearchStrings: const [
       'symbol_rhesus',
     ]),
-    GCWSymbolTableTool(symbolKey: 'rhesus_c1', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'rhesus_c1', symbolSearchStrings: const [
       'symbol_rhesus',
     ]),
-    GCWSymbolTableTool(symbolKey: 'rhesus_c2', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'rhesus_c2', symbolSearchStrings: const [
       'symbol_rhesus',
     ]),
-    GCWSymbolTableTool(symbolKey: 'rm4scc', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'rm4scc', symbolSearchStrings: const [
       'barcodes',
       'symbol_rm4scc',
     ]),
-    GCWSymbolTableTool(symbolKey: 'robots', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'robots', symbolSearchStrings: const [
       'symbol_robots',
     ]),
-    GCWSymbolTableTool(symbolKey: 'romulan', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'romulan', symbolSearchStrings: const [
       'symbol_romulan',
     ]),
-    GCWSymbolTableTool(symbolKey: 'runes', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'runes', symbolSearchStrings: const [
       'symbol_futhark',
       'symbol_runes',
     ]),
-    GCWSymbolTableTool(symbolKey: 'sanluca', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'sanluca', symbolSearchStrings: const [
       'symbol_sanluca',
     ]),
-    GCWSymbolTableTool(symbolKey: 'sarati', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'sarati', symbolSearchStrings: const [
       'symbol_sarati',
     ]),
-    GCWSymbolTableTool(symbolKey: 'semaphore', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'semaphore', symbolSearchStrings: const [
       'symbol_semaphore',
     ]),
-    GCWSymbolTableTool(symbolKey: 'shadoks', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'shadoks', symbolSearchStrings: const [
       'shadoksnumbers',
     ]),
-    GCWSymbolTableTool(symbolKey: 'sheikah', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'sheikah', symbolSearchStrings: const [
       'zelda',
       'symbol_sheikah',
     ]),
-    GCWSymbolTableTool(symbolKey: 'shoes', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'shoes', symbolSearchStrings: const [
       'symbol_shoes',
     ]),
-    GCWSymbolTableTool(symbolKey: 'siemens', symbolSearchStrings: ['symbol_siemens', 'teletypewriter']),
-    GCWSymbolTableTool(symbolKey: 'sign', symbolSearchStrings: ['symbol_signlanguage']),
-    GCWSymbolTableTool(symbolKey: 'skullz', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'siemens', symbolSearchStrings: const ['symbol_siemens', 'teletypewriter']),
+    GCWSymbolTableTool(symbolKey: 'sign', symbolSearchStrings: const ['symbol_signlanguage']),
+    GCWSymbolTableTool(symbolKey: 'skullz', symbolSearchStrings: const [
       'symbol_skullz',
     ]),
-    GCWSymbolTableTool(symbolKey: 'slash_and_pipe', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'slash_and_pipe', symbolSearchStrings: const [
       'symbol_slash_and_pipe',
     ]),
-    GCWSymbolTableTool(symbolKey: 'solmisation', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'solmisation', symbolSearchStrings: const [
       'symbol_solmisation',
     ]),
-    GCWSymbolTableTool(symbolKey: 'space_invaders', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'space_invaders', symbolSearchStrings: const [
       'symbol_space_invaders',
     ]),
-    GCWSymbolTableTool(symbolKey: 'spintype', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'spintype', symbolSearchStrings: const [
       'symbol_spintype',
     ]),
-    GCWSymbolTableTool(symbolKey: 'stippelcode', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'stippelcode', symbolSearchStrings: const [
       'symbol_stippelcode',
     ]),
-    GCWSymbolTableTool(symbolKey: 'suetterlin', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'suetterlin', symbolSearchStrings: const [
       'symbol_suetterlin',
     ]),
-    GCWSymbolTableTool(symbolKey: 'sunuz', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'sunuz', symbolSearchStrings: const [
       'symbol_sunuz',
     ]),
-    GCWSymbolTableTool(symbolKey: 'surf', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'surf', symbolSearchStrings: const [
       'symbol_surf',
     ]),
-    GCWSymbolTableTool(symbolKey: 'tae', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'tae', symbolSearchStrings: const [
       'symbol_tae',
     ]),
-    GCWSymbolTableTool(symbolKey: 'tamil_numerals', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'tamil_numerals', symbolSearchStrings: const [
       'symbol_tamil_numerals',
     ]),
-    GCWSymbolTableTool(symbolKey: 'telegraph_pasley', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'telegraph_pasley', symbolSearchStrings: const [
       'telegraph',
       'symbol_pasley_telegraph',
     ]),
-    GCWSymbolTableTool(symbolKey: 'telegraph_popham', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'telegraph_popham', symbolSearchStrings: const [
       'telegraph',
       'symbol_popham_telegraph',
     ]),
-    GCWSymbolTableTool(symbolKey: 'telegraph_prussia', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'telegraph_prussia', symbolSearchStrings: const [
       'telegraph',
       'telegraph_prussia',
     ]),
-    GCWSymbolTableTool(symbolKey: 'templers', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'templers', symbolSearchStrings: const [
       'symbol_templers',
     ]),
-    GCWSymbolTableTool(symbolKey: 'tenctonese_cursive', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'tenctonese_cursive', symbolSearchStrings: const [
       'symbol_tenctonese',
     ]),
-    GCWSymbolTableTool(symbolKey: 'tenctonese_printed', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'tenctonese_printed', symbolSearchStrings: const [
       'symbol_tenctonese',
     ]),
-    GCWSymbolTableTool(symbolKey: 'tengwar_beleriand', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'tengwar_beleriand', symbolSearchStrings: const [
       'symbol_lordoftherings',
       'symbol_tengwar_beleriand',
     ]),
-    GCWSymbolTableTool(symbolKey: 'tengwar_classic', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'tengwar_classic', symbolSearchStrings: const [
       'symbol_lordoftherings',
       'symbol_tengwar_classic',
     ]),
-    GCWSymbolTableTool(symbolKey: 'tengwar_general', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'tengwar_general', symbolSearchStrings: const [
       'symbol_lordoftherings',
       'symbol_tengwar_general',
     ]),
-    GCWSymbolTableTool(symbolKey: 'terzi', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'terzi', symbolSearchStrings: const [
       'symbol_terzi',
     ]),
-    GCWSymbolTableTool(symbolKey: 'thai_numerals', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'thai_numerals', symbolSearchStrings: const [
       'symbol_thai_numerals',
     ]),
-    GCWSymbolTableTool(symbolKey: 'theban', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'theban', symbolSearchStrings: const [
       'symbol_theban',
     ]),
-    GCWSymbolTableTool(symbolKey: 'three_squares', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'three_squares', symbolSearchStrings: const [
       'symbol_three_squares',
     ]),
-    GCWSymbolTableTool(symbolKey: 'tines', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'tines', symbolSearchStrings: const [
       'symbol_tines',
     ]),
-    GCWSymbolTableTool(symbolKey: 'tomtom', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'tomtom', symbolSearchStrings: const [
       'tomtom',
     ]),
-    GCWSymbolTableTool(symbolKey: 'trafficsigns_germany', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'trafficsigns_germany', symbolSearchStrings: const [
       'symbol_trafficsigns_germany',
     ]),
-    GCWSymbolTableTool(symbolKey: 'ulog', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'ulog', symbolSearchStrings: const [
       'symbol_ulog',
     ]),
-    GCWSymbolTableTool(symbolKey: 'unitology', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'unitology', symbolSearchStrings: const [
       'symbol_unitology',
     ]),
-    GCWSymbolTableTool(symbolKey: 'utopian', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'utopian', symbolSearchStrings: const [
       'symbol_utopian',
     ]),
-    GCWSymbolTableTool(symbolKey: 'visitor_1984', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'visitor_1984', symbolSearchStrings: const [
       'symbol_visitor_1984',
     ]),
-    GCWSymbolTableTool(symbolKey: 'visitor_2009', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'visitor_2009', symbolSearchStrings: const [
       'symbol_visitor_2009',
     ]),
-    GCWSymbolTableTool(symbolKey: 'vulcanian', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'vulcanian', symbolSearchStrings: const [
       'symbol_vulcanian',
     ]),
-    GCWSymbolTableTool(symbolKey: 'wakandan', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'wakandan', symbolSearchStrings: const [
       'symbol_wakandan',
     ]),
-    GCWSymbolTableTool(symbolKey: 'weather_a', symbolSearchStrings: ['weather', 'weather_a']),
-    GCWSymbolTableTool(symbolKey: 'weather_c', symbolSearchStrings: ['weather', 'weather_c', 'weather_clouds']),
-    GCWSymbolTableTool(symbolKey: 'weather_cl', symbolSearchStrings: ['weather', 'weather_cl', 'weather_clouds']),
-    GCWSymbolTableTool(symbolKey: 'weather_cm', symbolSearchStrings: ['weather', 'weather_cm', 'weather_clouds']),
-    GCWSymbolTableTool(symbolKey: 'weather_ch', symbolSearchStrings: ['weather', 'weather_ch', 'weather_clouds']),
-    GCWSymbolTableTool(symbolKey: 'weather_n', symbolSearchStrings: ['weather', 'weather_n', 'weather_clouds']),
-    GCWSymbolTableTool(symbolKey: 'weather_w', symbolSearchStrings: ['weather', 'weather_w']),
-    GCWSymbolTableTool(symbolKey: 'weather_ww', symbolSearchStrings: ['weather', 'weather_ww']),
-    GCWSymbolTableTool(symbolKey: 'webdings', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'weather_a', symbolSearchStrings: const ['weather', 'weather_a']),
+    GCWSymbolTableTool(symbolKey: 'weather_c', symbolSearchStrings: const ['weather', 'weather_c', 'weather_clouds']),
+    GCWSymbolTableTool(symbolKey: 'weather_cl', symbolSearchStrings: const ['weather', 'weather_cl', 'weather_clouds']),
+    GCWSymbolTableTool(symbolKey: 'weather_cm', symbolSearchStrings: const ['weather', 'weather_cm', 'weather_clouds']),
+    GCWSymbolTableTool(symbolKey: 'weather_ch', symbolSearchStrings: const ['weather', 'weather_ch', 'weather_clouds']),
+    GCWSymbolTableTool(symbolKey: 'weather_n', symbolSearchStrings: const ['weather', 'weather_n', 'weather_clouds']),
+    GCWSymbolTableTool(symbolKey: 'weather_w', symbolSearchStrings: const ['weather', 'weather_w']),
+    GCWSymbolTableTool(symbolKey: 'weather_ww', symbolSearchStrings: const ['weather', 'weather_ww']),
+    GCWSymbolTableTool(symbolKey: 'webdings', symbolSearchStrings: const [
       'symbol_webdings',
     ]),
-    GCWSymbolTableTool(symbolKey: 'westernunion', symbolSearchStrings: ['symbol_westernunion', 'teletypewriter']),
-    GCWSymbolTableTool(symbolKey: 'windforce_beaufort', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'westernunion', symbolSearchStrings: const ['symbol_westernunion', 'teletypewriter']),
+    GCWSymbolTableTool(symbolKey: 'windforce_beaufort', symbolSearchStrings: const [
       'beaufort',
       'symbol_windforce_beaufort',
     ]),
-    GCWSymbolTableTool(symbolKey: 'windforce_knots', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'windforce_knots', symbolSearchStrings: const [
       'beaufort',
       'symbol_windforce_knots',
     ]),
-    GCWSymbolTableTool(symbolKey: 'window', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'window', symbolSearchStrings: const [
       'window',
     ]),
-    GCWSymbolTableTool(symbolKey: 'wingdings', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'wingdings', symbolSearchStrings: const [
       'symbol_wingdings',
     ]),
-    GCWSymbolTableTool(symbolKey: 'wingdings2', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'wingdings2', symbolSearchStrings: const [
       'symbol_wingdings2',
     ]),
-    GCWSymbolTableTool(symbolKey: 'wingdings3', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'wingdings3', symbolSearchStrings: const [
       'symbol_wingdings3',
     ]),
-    GCWSymbolTableTool(symbolKey: 'yan_koryani', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'yan_koryani', symbolSearchStrings: const [
       'symbol_yan_koryani',
     ]),
-    GCWSymbolTableTool(symbolKey: 'yinyang', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'yinyang', symbolSearchStrings: const [
       'symbol_yinyang',
     ]),
-    GCWSymbolTableTool(symbolKey: 'zamonian', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'zamonian', symbolSearchStrings: const [
       'symbol_zamonian',
     ]),
-    GCWSymbolTableTool(symbolKey: 'zentradi', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'zentradi', symbolSearchStrings: const [
       'symbol_zentradi',
     ]),
-    GCWSymbolTableTool(symbolKey: 'zodiac_signs', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'zodiac_signs', symbolSearchStrings: const [
       'symbol_zodiacsigns',
     ]),
-    GCWSymbolTableTool(symbolKey: 'zodiac_signs_latin', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'zodiac_signs_latin', symbolSearchStrings: const [
       'symbol_zodiacsigns',
       'symbol_zodiacsigns_latin',
     ]),
-    GCWSymbolTableTool(symbolKey: 'zodiac_z340', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'zodiac_z340', symbolSearchStrings: const [
       'symbol_zodiac_z340',
     ]),
-    GCWSymbolTableTool(symbolKey: 'zodiac_z408', symbolSearchStrings: [
+    GCWSymbolTableTool(symbolKey: 'zodiac_z408', symbolSearchStrings: const [
       'symbol_zodiac_z408',
     ]),
 
     // TelegraphSelection *********************************************************************************************
-    GCWTool(tool: ChappeTelegraph(), i18nPrefix: 'telegraph_chappe', searchKeys: [
+    GCWTool(tool: const ChappeTelegraph(), id: 'telegraph_chappe', searchKeys: const [
       'telegraph',
       'telegraph_chappe',
     ]),
-    GCWTool(tool: EdelcrantzTelegraph(), i18nPrefix: 'telegraph_edelcrantz', searchKeys: [
+    GCWTool(tool: const EdelcrantzTelegraph(), id: 'telegraph_edelcrantz', searchKeys: const [
       'telegraph',
       'telegraph_edelcrantz',
     ]),
-    GCWTool(tool: MurrayTelegraph(), i18nPrefix: 'telegraph_murray', searchKeys: [
+    GCWTool(tool: const MurrayTelegraph(), id: 'telegraph_murray', searchKeys: const [
       'telegraph',
       'telegraph_murray',
     ]),
-    GCWTool(tool: OhlsenTelegraph(), i18nPrefix: 'telegraph_ohlsen', searchKeys: [
+    GCWTool(tool: const OhlsenTelegraph(), id: 'telegraph_ohlsen', searchKeys: const [
       'telegraph',
       'telegraph_ohlsen',
     ]),
-    GCWTool(tool: PasleyTelegraph(), i18nPrefix: 'telegraph_pasley', searchKeys: [
+    GCWTool(tool: const PasleyTelegraph(), id: 'telegraph_pasley', searchKeys: const [
       'telegraph',
       'telegraph_pasley',
     ]),
-    GCWTool(tool: PophamTelegraph(), i18nPrefix: 'telegraph_popham', searchKeys: [
+    GCWTool(tool: const PophamTelegraph(), id: 'telegraph_popham', searchKeys: const [
       'telegraph',
       'telegraph_popham',
     ]),
-    GCWTool(tool: PrussiaTelegraph(), i18nPrefix: 'telegraph_prussia', searchKeys: [
+    GCWTool(tool: const PrussiaTelegraph(), id: 'telegraph_prussia', searchKeys: const [
       'telegraph',
       'telegraph_prussia',
     ]),
-    GCWTool(tool: SemaphoreTelegraph(), i18nPrefix: 'symboltables_semaphore', searchKeys: [
+    GCWTool(tool: const SemaphoreTelegraph(), id: 'symboltables_semaphore', searchKeys: const [
       'telegraph',
       'telegraph_semaphore',
     ]),
-    GCWTool(tool: WigWagSemaphoreTelegraph(), i18nPrefix: 'telegraph_wigwag', searchKeys: [
+    GCWTool(tool: const WigWagSemaphoreTelegraph(), id: 'telegraph_wigwag', searchKeys: const [
       'telegraph',
       'telegraph_wigwag',
     ]),
-    GCWTool(tool: GaussWeberTelegraph(), i18nPrefix: 'telegraph_gausswebertelegraph', searchKeys: [
+    GCWTool(tool: const GaussWeberTelegraph(), id: 'telegraph_gausswebertelegraph', searchKeys: const [
       'telegraph',
       'telegraph_gaussweber',
     ]),
-    GCWTool(tool: SchillingCanstattTelegraph(), i18nPrefix: 'telegraph_schillingcanstatt', searchKeys: [
+    GCWTool(tool: const SchillingCanstattTelegraph(), id: 'telegraph_schillingcanstatt', searchKeys: const [
       'telegraph',
       'telegraph_schillingcanstatt',
     ]),
-    GCWTool(tool: WheatstoneCookeNeedleTelegraph(), i18nPrefix: 'telegraph_wheatstonecooke_needle', searchKeys: [
+    GCWTool(tool: const WheatstoneCookeNeedleTelegraph(), id: 'telegraph_wheatstonecooke_needle', searchKeys: const [
       'telegraph',
       'telegraph_wheatstonecooke_needle',
     ]),
 
     //Teletypewriter Selection **********************************************************************************************
-    GCWTool(tool: AncientTeletypewriter(), i18nPrefix: 'ccitt_ancient', searchKeys: [
+    GCWTool(tool: const AncientTeletypewriter(), id: 'ccitt_ancient', searchKeys: const [
       'ccitt',
       'ccitt_ancient',
       'teletypewriter',
@@ -4030,7 +4024,7 @@ initializeRegistry(BuildContext context) {
       'symbol_murraybaudot',
       'symbol_baudot'
     ]),
-    GCWTool(tool: CCITTTeletypewriter(), i18nPrefix: 'ccitt', searchKeys: [
+    GCWTool(tool: const CCITTTeletypewriter(), id: 'ccitt', searchKeys: const [
       'ccitt',
       'ccitt_1',
       'ccitt_2',
@@ -4043,84 +4037,84 @@ initializeRegistry(BuildContext context) {
           'symbol_murraybaudot',
     ]),
     GCWTool(
-        tool: OtherTeletypewriter(),
-        i18nPrefix: 'ccitt_other',
-        searchKeys: ['teletypewriter', 'z22', 'zc1', 'illiac', 'algol', 'tts']),
+        tool: const OtherTeletypewriter(),
+        id: 'ccitt_other',
+        searchKeys: const ['teletypewriter', 'z22', 'zc1', 'illiac', 'algol', 'tts']),
 
     // TomTomSelection *********************************************************************************************
-    GCWTool(tool: TomTom(), i18nPrefix: 'tomtom', searchKeys: [
+    GCWTool(tool: const TomTom(), id: 'tomtom', searchKeys: const [
       'tomtom',
     ]),
 
     //VanitySelection **********************************************************************************************
-    GCWTool(tool: VanitySingletap(), i18nPrefix: 'vanity_singletap', searchKeys: [
+    GCWTool(tool: const VanitySingletap(), id: 'vanity_singletap', searchKeys: const [
       'vanity',
       'vanitysingletap',
     ]),
-    GCWTool(tool: VanityMultitap(), i18nPrefix: 'vanity_multitap', searchKeys: [
+    GCWTool(tool: const VanityMultitap(), id: 'vanity_multitap', searchKeys: const [
       'vanity',
       'vanitymultitap',
     ]),
-    GCWTool(tool: VanityWordsList(), i18nPrefix: 'vanity_words_list', searchKeys: [
+    GCWTool(tool: const VanityWordsList(), id: 'vanity_words_list', searchKeys: const [
       'vanity',
       'vanitywordslist',
     ]),
-    GCWTool(tool: VanityWordsTextSearch(), i18nPrefix: 'vanity_words_search', searchKeys: [
+    GCWTool(tool: const VanityWordsTextSearch(), id: 'vanity_words_search', searchKeys: const [
       'vanity',
       'vanitytextsearch',
     ]),
 
     //VigenereSelection *******************************************************************************************
-    GCWTool(tool: VigenereBreaker(), i18nPrefix: 'vigenerebreaker', categories: [
+    GCWTool(tool: const VigenereBreaker(), id: 'vigenerebreaker', categories: const [
       ToolCategory.GENERAL_CODEBREAKERS
-    ], searchKeys: [
+    ], searchKeys: const [
       'codebreaker',
       'vigenerebreaker',
       'vigenere',
       'rotation',
     ]),
-    GCWTool(tool: Vigenere(), i18nPrefix: 'vigenere', searchKeys: [
+    GCWTool(tool: const Vigenere(), id: 'vigenere', searchKeys: const [
       'vigenere',
       'rotation',
     ]),
-    GCWTool(tool: Gronsfeld(), i18nPrefix: 'gronsfeld', searchKeys: [
+    GCWTool(tool: const Gronsfeld(), id: 'gronsfeld', searchKeys: const [
       'vigenere',
       'rotation',
       'gronsfeld',
     ]),
-    GCWTool(tool: Trithemius(), i18nPrefix: 'trithemius', searchKeys: [
+    GCWTool(tool: const Trithemius(), id: 'trithemius', searchKeys: const [
       'vigenere',
       'rotation',
       'trithemius',
     ]),
 
     //WherigoUrwigoSelection **************************************************************************************
-    GCWTool(tool: WherigoAnalyze(), i18nPrefix: 'wherigo', isBeta: true, categories: [
+    GCWTool(tool: const WherigoAnalyze(), id: 'wherigo', isBeta: true, categories: const [
       ToolCategory.IMAGES_AND_FILES,
       ToolCategory.GENERAL_CODEBREAKERS
-    ], searchKeys: [
+    ], searchKeys: const [
       'wherigo',
       'wherigourwigo',
     ]),
     //UrwigoHashBreaker already inserted in section "Hashes"
     GCWTool(
-        tool: UrwigoTextDeobfuscation(),
-        i18nPrefix: 'urwigo_textdeobfuscation',
-        searchKeys: ['wherigo', 'urwigo', 'urwigo_textdeobfuscation']),
+        tool: const UrwigoTextDeobfuscation(),
+        id: 'urwigo_textdeobfuscation',
+        searchKeys: const ['wherigo', 'urwigo', 'urwigo_textdeobfuscation']),
     GCWTool(
-        tool: EarwigoTextDeobfuscation(),
-        i18nPrefix: 'earwigo_textdeobfuscation',
-        searchKeys: ['wherigo', 'earwigo', 'urwigo_textdeobfuscation']),
+        tool: const EarwigoTextDeobfuscation(),
+        id: 'earwigo_textdeobfuscation',
+        searchKeys: const ['wherigo', 'earwigo', 'urwigo_textdeobfuscation']),
   ].map((toolWidget) {
-    toolWidget.toolName = i18n(context, toolWidget.i18nPrefix + '_title');
-    toolWidget.defaultLanguageToolName = i18n(context, toolWidget.i18nPrefix + '_title', useDefaultLanguage: true);
+    toolWidget.toolName = i18n(context, toolWidget.id + '_title');
+    toolWidget.defaultLanguageToolName = i18n(context, toolWidget.id + '_title', useDefaultLanguage: true);
 
     try {
-      toolWidget.description = i18n(context, toolWidget.i18nPrefix + '_description');
+      toolWidget.description = i18n(context, toolWidget.id + '_description');
     } catch (e) {}
 
     try {
-      toolWidget.example = i18n(context, toolWidget.i18nPrefix + '_example');
+      toolWidget.example = i18n(context, toolWidget.id + '_example');
     } catch (e) {}
 
     return toolWidget;
@@ -4129,6 +4123,6 @@ initializeRegistry(BuildContext context) {
   createIndexedSearchStrings();
 }
 
-refreshRegistry() {
-  registeredTools = null;
+void refreshRegistry() {
+  registeredTools = [];
 }

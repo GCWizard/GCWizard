@@ -13,14 +13,16 @@ import 'package:gc_wizard/tools/crypto_and_encodings/_common/logic/crypt_alphabe
 import 'package:gc_wizard/tools/crypto_and_encodings/polybios/logic/polybios.dart';
 
 class Polybios extends StatefulWidget {
+  const Polybios({Key? key}) : super(key: key);
+
   @override
   PolybiosState createState() => PolybiosState();
 }
 
 class PolybiosState extends State<Polybios> {
-  var _inputController;
-  var _keyController;
-  var _alphabetController;
+  late TextEditingController _inputController;
+  late TextEditingController _keyController;
+  late TextEditingController _alphabetController;
 
   String _currentInput = '';
   String _currentKey = '12345';
@@ -86,7 +88,7 @@ class PolybiosState extends State<Polybios> {
           },
         ),
         GCWTextDivider(text: i18n(context, 'common_alphabet')),
-        GCWAlphabetDropDown(
+        GCWAlphabetDropDown<PolybiosMode>(
           value: _currentPolybiosMode,
           items: polybiosModeItems,
           customModeKey: PolybiosMode.CUSTOM,
@@ -102,7 +104,7 @@ class PolybiosState extends State<Polybios> {
             });
           },
         ),
-        _currentKey != null && _currentKey.length < 6
+        _currentKey.length < 6
             ? GCWAlphabetModificationDropDown(
                 value: _currentModificationMode,
                 onChanged: (value) {
@@ -118,14 +120,12 @@ class PolybiosState extends State<Polybios> {
   }
 
   Widget _buildOutput(BuildContext context) {
-    if (_currentInput == null ||
-        _currentInput.length == 0 ||
-        _currentKey == null ||
+    if (_currentInput.isEmpty ||
         ![5, 6].contains(_currentKey.length)) {
-      return GCWDefaultOutput(); // TODO: Exception
+      return const GCWDefaultOutput(); // TODO: Exception
     }
 
-    var _currentOutput;
+    PolybiosOutput? _currentOutput;
     if (_currentMode == GCWSwitchPosition.left) {
       _currentOutput = encryptPolybios(_currentInput, _currentKey,
           mode: _currentPolybiosMode, modificationMode: _currentModificationMode, fillAlphabet: _currentAlphabet);
@@ -134,8 +134,8 @@ class PolybiosState extends State<Polybios> {
           mode: _currentPolybiosMode, modificationMode: _currentModificationMode, fillAlphabet: _currentAlphabet);
     }
 
-    if (_currentOutput == null || _currentOutput.output.length == 0) {
-      return GCWDefaultOutput(); // TODO: Exception
+    if (_currentOutput == null || _currentOutput.output.isEmpty) {
+      return const GCWDefaultOutput(); // TODO: Exception
     }
 
     return GCWMultipleOutput(

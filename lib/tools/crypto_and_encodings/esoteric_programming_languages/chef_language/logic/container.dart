@@ -1,14 +1,14 @@
 part of 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/chef_language/logic/chef_language.dart';
 
 class _Container {
-  List<_Component> _contents;
+  late List<_Component> _contents;
 
-  _Container(_Container container) {
-    _contents = new List<_Component>();
+  _Container(_Container? container) {
+    _contents = <_Component>[];
     if (container != null) _contents.addAll(container._contents);
   }
 
-  void push(_Component c) {
+  void push(_Component? c) {
     if (c != null) _contents.add(c);
   }
 
@@ -17,33 +17,34 @@ class _Container {
     return c;
   }
 
-  _Component pop() {
-    if (_contents.length != 0) {
+  _Component? pop() {
+    if (_contents.isNotEmpty) {
       var c = _contents.removeAt(_contents.length - 1);
       return c;
     }
+    return null;
   }
 
   int size() {
     return _contents.length;
   }
 
-  void combine(_Container c) {
-    if (c != null) if (c._contents != null) _contents.addAll(c._contents);
+  void combine(_Container? c) {
+    if (c != null) _contents.addAll(c._contents);
   }
 
   void liquefy() {
-    _contents.forEach((c) {
+    for (var c in _contents) {
       c.liquefy();
-    });
+    }
   }
 
   void clean() {
-    _contents = new List<_Component>();
+    _contents = [];
   }
 
   String serve() {
-    String result = "";
+    String result = '';
     for (int i = _contents.length; i > 0; i--) {
       if (_contents[i - 1].getState() == _State.Dry) {
         result = result + _contents[i - 1].getValue().toString() + '';
@@ -63,6 +64,13 @@ class _Container {
     return out;
   }
 
+  List<String> getContentAsList() {
+    List<String> out = <String>[];
+    for (int i = 0; i < _contents.length;i++) {
+      out.add(_contents[i].getValue().toString());
+    }
+    return out;
+  }
   void shuffle() {
     _contents.shuffle();
   }

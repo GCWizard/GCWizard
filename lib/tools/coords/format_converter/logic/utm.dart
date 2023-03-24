@@ -4,9 +4,9 @@ import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:latlong2/latlong.dart';
 
-final double _k0 = 0.9996;
-final double _drad = pi / 180.0;
-final String latZones = 'CDEFGHJKLMNPQRSTUVWX';
+const double _k0 = 0.9996;
+const double _drad = pi / 180.0;
+const String latZones = 'CDEFGHJKLMNPQRSTUVWX';
 
 UTMREF latLonToUTM(LatLng coord, Ellipsoid ells) {
   double a = ells.a;
@@ -24,7 +24,7 @@ UTMREF latLonToUTM(LatLng coord, Ellipsoid ells) {
   double e0sq = e * e / (1 - e * e);
   double N = a / sqrt(1 - pow(e * sin(phi), 2));
   double C = e0sq * pow(cos(phi), 2);
-  double T = pow(tan(phi), 2);
+  double T = pow(tan(phi), 2).toDouble();
   double A = (lon - zcm) * _drad * cos(phi);
   double M = phi * (1 - esq * (1 / 4.0 + esq * (3 / 64.0 + 5 * esq / 256.0)));
   M = M - sin(2 * phi) * (esq * (3 / 8.0 + esq * (3 / 32.0 + 45 * esq / 1024.0)));
@@ -83,7 +83,7 @@ LatLng UTMREFtoLatLon(UTMREF coord, Ellipsoid ells) {
   phi1 = phi1 + e1 * e1 * e1 * (sin(6.0 * mu) * 151.0 / 96.0 + e1 * sin(8 * mu) * 1097 / 512.0);
 
   double C1 = e0sq * pow(cos(phi1), 2.0);
-  double T1 = pow(tan(phi1), 2.0);
+  double T1 = pow(tan(phi1), 2.0).toDouble();
   double N1 = a / sqrt(1.0 - pow(e * sin(phi1), 2.0));
   double R1 = N1 * (1.0 - e * e) / (1 - pow(e * sin(phi1), 2.0));
   double D = (coord.easting - 500000.0) / (N1 * _k0);
@@ -110,7 +110,7 @@ UTMZone _getZone(LatLng coord) {
   var lat = coord.latitude;
   var lon = coord.longitude;
 
-  var latZone;
+  String latZone;
   var lonZoneRegular = 1 + ((lon + 180) / 6.0).floor();
   var lonZone = lonZoneRegular;
 
@@ -119,14 +119,14 @@ UTMZone _getZone(LatLng coord) {
   if (lat < -80) {
     latZone = lonZone <= 0 ? 'A' : 'B';
   } else if (lat >= -80 && lat < 72) {
-    latZone = ((lat + 80) / 8.0).floor();
+    var latZoneIdx = ((lat + 80) / 8.0).floor();
 
     //Special zone, norway
     if (lat >= 56 && lat < 64) {
       if (lon >= 3 && lon < 12) lonZone = 32;
     }
 
-    latZone = latZones[latZone];
+    latZone = latZones[latZoneIdx];
   } else if (lat >= 72 && lat <= 84) {
     latZone = 'X';
 
@@ -147,25 +147,25 @@ UTMZone _getZone(LatLng coord) {
   return UTMZone(lonZoneRegular, lonZone, latZone);
 }
 
-UTMREF parseUTM(String input) {
-  RegExp regExp = RegExp(r'^\s*(\d+)\s?([' + latZones + r'])\s?([0-9\.]+)\s+([0-9\.]+)\s*$');
+UTMREF? parseUTM(String input) {
+  RegExp regExp = RegExp(r'^\s*(\d+)\s?([' + latZones + r'])\s?([\d\.]+)\s+([\d\.]+)\s*$');
   var matches = regExp.allMatches(input);
-  var _lonZoneString = '';
-  var _latZone = '';
-  var _eastingString = '';
-  var _northingString = '';
+  String? _lonZoneString = '';
+  String? _latZone = '';
+  String? _eastingString = '';
+  String? _northingString = '';
 
-  if (matches.length > 0) {
+  if (matches.isNotEmpty) {
     var match = matches.elementAt(0);
     _lonZoneString = match.group(1);
     _latZone = match.group(2);
     _eastingString = match.group(3);
     _northingString = match.group(4);
   }
-  if (matches.length == 0) {
-    regExp = RegExp(r'^\s*(\d+)\s?([' + latZones + r'])\s*m?\s*([E|W])\s*([0-9\.]+)\s*m?\s*([N|S])\s?([0-9\.]+)\s*$');
+  if (matches.isEmpty) {
+    regExp = RegExp(r'^\s*(\d+)\s?([' + latZones + r'])\s*m?\s*([E|W])\s*([\d\.]+)\s*m?\s*([N|S])\s?([\d\.]+)\s*$');
     matches = regExp.allMatches(input);
-    if (matches.length > 0) {
+    if (matches.isNotEmpty) {
       var match = matches.elementAt(0);
       _lonZoneString = match.group(1);
       _latZone = match.group(2);
@@ -173,10 +173,10 @@ UTMREF parseUTM(String input) {
       _northingString = match.group(6);
     }
   }
-  if (matches.length == 0) {
-    regExp = RegExp(r'^\s*(\d+)\s?([' + latZones + r'])\s*([0-9\.]+)\s*m?\s*([E|W])\s*([0-9\.]+)\s*m?\s*([N|S])\s*$');
+  if (matches.isEmpty) {
+    regExp = RegExp(r'^\s*(\d+)\s?([' + latZones + r'])\s*([\d\.]+)\s*m?\s*([E|W])\s*([\d\.]+)\s*m?\s*([N|S])\s*$');
     matches = regExp.allMatches(input);
-    if (matches.length > 0) {
+    if (matches.isNotEmpty) {
       var match = matches.elementAt(0);
       _lonZoneString = match.group(1);
       _latZone = match.group(2);
@@ -184,30 +184,38 @@ UTMREF parseUTM(String input) {
       _northingString = match.group(5);
     }
   }
-  if (matches.length == 0) {
-    regExp = RegExp(r'^\s*(\d+)\s?([' + latZones + r'])\s?([0-9]{13})\s*$');
+  if (matches.isEmpty) {
+    regExp = RegExp(r'^\s*(\d+)\s?([' + latZones + r'])\s?(\d{13})\s*$');
     matches = regExp.allMatches(input);
-    if (matches.length > 0) {
+    if (matches.isNotEmpty) {
       var match = matches.elementAt(0);
       _lonZoneString = match.group(1);
       _latZone = match.group(2);
-      _eastingString = match.group(3).substring(0, 6);
-      _northingString = match.group(3).substring(6);
+      _eastingString = match.group(3)?.substring(0, 6);
+      _northingString = match.group(3)?.substring(6);
     }
   }
-  if (matches.length == 0) {
-    regExp = RegExp(r'^\s*(\d+)\s?([' + latZones + r'])\s?([0-9]{10})\s*$');
+  if (matches.isEmpty) {
+    regExp = RegExp(r'^\s*(\d+)\s?([' + latZones + r'])\s?(\d{10})\s*$');
     matches = regExp.allMatches(input);
-    if (matches.length > 0) {
+    if (matches.isNotEmpty) {
       var match = matches.elementAt(0);
       _lonZoneString = match.group(1);
       _latZone = match.group(2);
-      _eastingString = match.group(3).substring(0, 5);
-      _northingString = match.group(3).substring(5);
+      _eastingString = match.group(3)?.substring(0, 5);
+      _northingString = match.group(3)?.substring(5);
     }
   }
 
-  if (matches.length == 0) return null;
+  if (matches.isEmpty) return null;
+
+  if (_latZone == null
+    || _lonZoneString == null
+    || _eastingString == null
+    || _northingString == null
+  ) {
+    return null;
+  }
 
   var _lonZone = int.tryParse(_lonZoneString);
   if (_lonZone == null) return null;

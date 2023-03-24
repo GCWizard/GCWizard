@@ -14,12 +14,14 @@ import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
 class NumeralWordsConverter extends StatefulWidget {
+  const NumeralWordsConverter({Key? key}) : super(key: key);
+
   @override
   NumeralWordsConverterState createState() => NumeralWordsConverterState();
 }
 
 class NumeralWordsConverterState extends State<NumeralWordsConverter> {
-  TextEditingController _decodeController;
+  late TextEditingController _decodeController;
 
   var _currentDecodeInput = '';
 
@@ -27,7 +29,7 @@ class NumeralWordsConverterState extends State<NumeralWordsConverter> {
 
   int _currentNumber = 0;
 
-  SplayTreeMap<String, NumeralWordsLanguage> _LANGUAGES;
+  SplayTreeMap<String, NumeralWordsLanguage>? _LANGUAGES;
 
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
 
@@ -45,21 +47,19 @@ class NumeralWordsConverterState extends State<NumeralWordsConverter> {
 
   @override
   Widget build(BuildContext context) {
-    if (_LANGUAGES == null) {
-      _LANGUAGES = SplayTreeMap.from(
+    _LANGUAGES ??= SplayTreeMap.from(
           switchMapKeyValue(NUMERALWORDS_LANGUAGES_CONVERTER).map((key, value) => MapEntry(i18n(context, key), value)));
-    }
 
     return Column(
       children: <Widget>[
-        GCWDropDown(
+        GCWDropDown<NumeralWordsLanguage>(
           value: _currentLanguage,
           onChanged: (value) {
             setState(() {
               _currentLanguage = value;
             });
           },
-          items: _LANGUAGES.entries.map((mode) {
+          items: _LANGUAGES!.entries.map((mode) {
             return GCWDropDownMenuItem(
               value: mode.value,
               child: mode.key,
@@ -85,8 +85,8 @@ class NumeralWordsConverterState extends State<NumeralWordsConverter> {
           )
         else // encode
           GCWIntegerSpinner(
-            min: MIN_MAX_NUMBER[_currentLanguage][0],
-            max: MIN_MAX_NUMBER[_currentLanguage][1],
+            min: MIN_MAX_NUMBER[_currentLanguage]?[0],
+            max: MIN_MAX_NUMBER[_currentLanguage]?[1],
             value: _currentNumber,
             onChanged: (value) {
               setState(() {
@@ -100,14 +100,16 @@ class NumeralWordsConverterState extends State<NumeralWordsConverter> {
   }
 
   Widget _buildOutput(BuildContext context) {
-    var output;
+    OutputConvertBase output;
+
     if (_currentMode == GCWSwitchPosition.right) {
       // decode
       output = decodeNumeralWordToNumber(_currentLanguage, removeAccents(_currentDecodeInput).toLowerCase());
-      if (output.error != '')
+      if (output.error.isNotEmpty) {
         return GCWDefaultOutput(
           child: i18n(context, output.error),
         );
+      }
     } else {
       // encode
       output = encodeNumberToNumeralWord(_currentLanguage, _currentNumber);
@@ -115,7 +117,7 @@ class NumeralWordsConverterState extends State<NumeralWordsConverter> {
 
     return GCWDefaultOutput(
         child: Column(children: <Widget>[
-      if (output.title != '')
+      if (output.title.isNotEmpty)
         Column(
           children: <Widget>[
             GCWTextDivider(text: i18n(context, output.title)),
@@ -126,11 +128,11 @@ class NumeralWordsConverterState extends State<NumeralWordsConverter> {
         ),
       if (_currentMode == GCWSwitchPosition.right) // decode
         GCWOutputText(
-          text: _currentDecodeInput.length == 0 ? '' : output.number.toString(),
+          text: _currentDecodeInput.isEmpty ? '' : (output as OutputConvertToNumber).number.toString(),
         )
       else
         GCWOutputText(
-          text: output.numeralWord,
+          text: (output as OutputConvertToNumeralWord).numeralWord,
         ),
     ]));
   }

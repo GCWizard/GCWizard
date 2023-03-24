@@ -38,6 +38,8 @@ final CHANGELOG = {
 };
 
 class Changelog extends StatefulWidget {
+  const Changelog({Key? key}) : super(key: key);
+
   @override
   ChangelogState createState() => ChangelogState();
 }

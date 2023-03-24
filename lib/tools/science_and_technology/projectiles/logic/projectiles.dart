@@ -7,17 +7,19 @@ double calculateEnergy(double mass, double velocity) {
 }
 
 double calculateMass(double energy, double velocity) {
-  if (velocity == 0)
+  if (velocity == 0) {
     return 0;
-  else
+  } else {
     return 2 * energy / velocity / velocity * 1000;
+  }
 }
 
 double calculateVelocity(double energy, double mass) {
   var massInKG = mass / 1000;
 
-  if (massInKG == 0)
+  if (massInKG == 0) {
     return 0;
-  else
+  } else {
     return sqrt(2 * energy / massInKG);
+  }
 }

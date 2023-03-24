@@ -8,18 +8,18 @@ import 'package:gc_wizard/utils/math_utils.dart';
 import 'package:latlong2/latlong.dart';
 
 class SunPosition {
-  double distanceToEarthCenter;
-  double distanceToObserver;
-  double eclipticLongitude;
-  double rightAscension;
-  double declination;
-  double azimuth;
-  double altitude;
-  double diameter;
-  AstrologicalSign astrologicalSign;
+  late double distanceToEarthCenter;
+  late double distanceToObserver;
+  late double eclipticLongitude;
+  late double rightAscension;
+  late double declination;
+  late double azimuth;
+  late double altitude;
+  late double diameter;
+  late AstrologicalSign astrologicalSign;
 
-  double greenwichSiderealTime;
-  double localSiderealTime;
+  late double greenwichSiderealTime;
+  late double localSiderealTime;
 
   SunPosition(LatLng coords, JulianDate julianDate, Ellipsoid ellipsoid) {
     greenwichSiderealTime = GMST(julianDate.julianDate);

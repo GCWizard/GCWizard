@@ -10,17 +10,19 @@ import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/numeral_words
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumeralWordsSelection extends GCWSelection {
+  const NumeralWordsSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(NumeralWordsTextSearch()),
-        className(NumeralWordsLists()),
-        className(NumeralWordsIdentifyLanguages()),
-        className(NumeralWordsConverter()),
+        className(const NumeralWordsTextSearch()),
+        className(const NumeralWordsLists()),
+        className(const NumeralWordsIdentifyLanguages()),
+        className(const NumeralWordsConverter()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

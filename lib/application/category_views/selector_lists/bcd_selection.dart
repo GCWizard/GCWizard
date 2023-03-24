@@ -22,29 +22,31 @@ import 'package:gc_wizard/tools/crypto_and_encodings/bcd/bcdtompkins/widget/bcdt
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class BCDSelection extends GCWSelection {
+  const BCDSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(BCDOriginal()),
-        className(BCDAiken()),
-        className(BCDGlixon()),
-        className(BCDGray()),
-        className(BCDGrayExcess()),
-        className(BCDPetherick()),
-        className(BCDOBrien()),
-        className(BCDStibitz()),
-        className(BCDTompkins()),
-        className(BCDLibawCraig()),
-        className(BCD2of5()),
-        className(BCD2of5Postnet()),
-        className(BCD2of5Planet()),
-        className(BCDHamming()),
-        className(BCDBiquinary()),
-        className(BCD1of10()),
+        className(const BCDOriginal()),
+        className(const BCDAiken()),
+        className(const BCDGlixon()),
+        className(const BCDGray()),
+        className(const BCDGrayExcess()),
+        className(const BCDPetherick()),
+        className(const BCDOBrien()),
+        className(const BCDStibitz()),
+        className(const BCDTompkins()),
+        className(const BCDLibawCraig()),
+        className(const BCD2of5()),
+        className(const BCD2of5Postnet()),
+        className(const BCD2of5Planet()),
+        className(const BCDHamming()),
+        className(const BCDBiquinary()),
+        className(const BCD1of10()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

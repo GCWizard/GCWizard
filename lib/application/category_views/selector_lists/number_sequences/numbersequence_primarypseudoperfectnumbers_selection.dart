@@ -7,18 +7,20 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/primaryp
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequencePrimaryPseudoPerfectNumbersSelection extends GCWSelection {
+  const NumberSequencePrimaryPseudoPerfectNumbersSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(NumberSequencePrimaryPseudoPerfectNumbersNthNumber()),
-        className(NumberSequencePrimaryPseudoPerfectNumbersRange()),
-        className(NumberSequencePrimaryPseudoPerfectNumbersDigits()),
-        className(NumberSequencePrimaryPseudoPerfectNumbersCheckNumber()),
-        className(NumberSequencePrimaryPseudoPerfectNumbersContainsDigits()),
+        className(const NumberSequencePrimaryPseudoPerfectNumbersNthNumber()),
+        className(const NumberSequencePrimaryPseudoPerfectNumbersRange()),
+        className(const NumberSequencePrimaryPseudoPerfectNumbersDigits()),
+        className(const NumberSequencePrimaryPseudoPerfectNumbersCheckNumber()),
+        className(const NumberSequencePrimaryPseudoPerfectNumbersContainsDigits()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

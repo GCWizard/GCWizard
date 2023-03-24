@@ -17,20 +17,16 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-const ASCII_SHIFT = 33;
+const _ASCII_SHIFT = 33;
 
-const BASE85_POW = [1, 85, 85 * 85, 85 * 85 * 85, 85 * 85 * 85 * 85];
+const _BASE85_POW = [1, 85, 85 * 85, 85 * 85 * 85, 85 * 85 * 85 * 85];
 
 /*
  * A very simple method that helps encode for Ascii85 / base85
  * The version that is likely most similar that is implemented here would be the Adobe version.
  * @see <a href="https://en.wikipedia.org/wiki/Ascii85">Ascii85</a>
  */
-String encodeASCII85(Uint8List payload) {
-  if (payload == null) {
-    return null;
-  }
-
+String? encodeASCII85(Uint8List payload) {
   var out = '';
   //We break the payload into int (4 bytes)
   Uint8List chunk = Uint8List(4);
@@ -70,8 +66,8 @@ String _encodeChunk(int value) {
   var encodedChunk = '';
 
   for (int i = 0; i <= 4; i++) {
-    encodedChunk += String.fromCharCode((longValue / BASE85_POW[4 - i]).floor() + ASCII_SHIFT);
-    longValue = longValue % BASE85_POW[4 - i];
+    encodedChunk += String.fromCharCode((longValue / _BASE85_POW[4 - i]).floor() + _ASCII_SHIFT);
+    longValue = longValue % _BASE85_POW[4 - i];
   }
 
   return encodedChunk;
@@ -84,10 +80,7 @@ String _encodeChunk(int value) {
  * @param chars The input characters that are base85 encoded.
  * @return The binary data decoded from the input
  */
-Uint8List decodeASCII85(String chars) {
-  if (chars == null) {
-    return null;
-  }
+Uint8List? decodeASCII85(String chars) {
 
   Uint8List bytebuff = Uint8List(chars.length);
   int bufferIndex = 0;
@@ -118,7 +111,9 @@ Uint8List decodeASCII85(String chars) {
       var decodedChunk = _decodeChunk(chunk);
       if (decodedChunk == null) return null;
 
-      for (int j = 0; j < decodedChunk.length; j++) bytebuff[bufferIndex++] = decodedChunk[j];
+      for (int j = 0; j < decodedChunk.length; j++) {
+        bytebuff[bufferIndex++] = decodedChunk[j];
+      }
 
       chunk = Uint8List(5);
       chunkIndex = 0;
@@ -128,9 +123,12 @@ Uint8List decodeASCII85(String chars) {
   //If we didn't end on 0, then we need some padding
   if (chunkIndex > 0) {
     int numPadded = chunk.length - chunkIndex;
-    for (int j = chunkIndex; j < chunk.length; j++) chunk[j] = 'u'.codeUnitAt(0);
+    for (int j = chunkIndex; j < chunk.length; j++) {
+      chunk[j] = 'u'.codeUnitAt(0);
+    }
 
-    Uint8List paddedDecode = _decodeChunk(chunk);
+    var paddedDecode = _decodeChunk(chunk);
+    if (paddedDecode == null) return null;
     for (int i = 0; i < paddedDecode.length - numPadded; i++) {
       bytebuff[bufferIndex++] = paddedDecode[i];
     }
@@ -139,17 +137,15 @@ Uint8List decodeASCII85(String chars) {
   return bytebuff.sublist(0, bufferIndex);
 }
 
-Uint8List _decodeChunk(Uint8List chunk) {
-  if (chunk.length != 5) {
-    return null;
-  }
+Uint8List? _decodeChunk(Uint8List chunk) {
+  if (chunk.length != 5) return null;
 
   int value = 0;
-  value += (chunk[0] - ASCII_SHIFT) * BASE85_POW[4];
-  value += (chunk[1] - ASCII_SHIFT) * BASE85_POW[3];
-  value += (chunk[2] - ASCII_SHIFT) * BASE85_POW[2];
-  value += (chunk[3] - ASCII_SHIFT) * BASE85_POW[1];
-  value += (chunk[4] - ASCII_SHIFT) * BASE85_POW[0];
+  value += (chunk[0] - _ASCII_SHIFT) * _BASE85_POW[4];
+  value += (chunk[1] - _ASCII_SHIFT) * _BASE85_POW[3];
+  value += (chunk[2] - _ASCII_SHIFT) * _BASE85_POW[2];
+  value += (chunk[3] - _ASCII_SHIFT) * _BASE85_POW[1];
+  value += (chunk[4] - _ASCII_SHIFT) * _BASE85_POW[0];
 
   return _intToByte(value);
 }

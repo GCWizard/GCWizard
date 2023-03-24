@@ -9,12 +9,10 @@ Future<Uint8List> input2Image(DrawableImageData imageData)  async {
   var width = 0.0;
   var height = 0.0;
 
-  if (imageData == null || imageData.lines == null || imageData.colors == null) return null;
-
-  imageData.lines.forEach((line) {
+  for (var line in imageData.lines) {
     width = max(width, line.length.toDouble());
     height++;
-  });
+  }
   width = width * imageData.pointSize + 2 * imageData.bounds;
   height = height * imageData.pointSize + 2 * imageData.bounds;
 
@@ -29,18 +27,23 @@ Future<Uint8List> input2Image(DrawableImageData imageData)  async {
   for (int row = 0; row < imageData.lines.length; row++) {
     for (int column = 0; column < imageData.lines[row].length; column++) {
       paint.color = Color(imageData.colors.values.first); // Colors.white
-      if (imageData.colors.containsKey(imageData.lines[row][column]))
-        paint.color = Color(imageData.colors[imageData.lines[row][column]]);
+      if (imageData.colors.containsKey(imageData.lines[row][column])) {
+        paint.color = Color(imageData.colors[imageData.lines[row][column]]!);
+      }
 
-      if (imageData.lines[row][column] != '0')
+      if (imageData.lines[row][column] != '0') {
         canvas.drawRect(
             Rect.fromLTWH(column * imageData.pointSize + imageData.bounds, row * imageData.pointSize + imageData.bounds,
                 imageData.pointSize, imageData.pointSize), paint);
+      }
     }
   }
 
   final img = await canvasRecorder.endRecording().toImage(width.floor(), height.floor());
   final data = await img.toByteData(format: ImageByteFormat.png);
+  if (data == null) {
+    throw Exception('Image data not created.');
+  }
 
   return trimNullBytes(data.buffer.asUint8List());
 }

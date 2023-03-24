@@ -14,31 +14,31 @@ import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart' as local;
 
 class Stegano extends StatefulWidget {
-  final local.GCWFile file;
+  final local.GCWFile? file;
 
-  Stegano({Key key, this.file}) : super(key: key);
+  const Stegano({Key? key, this.file}) : super(key: key);
 
   @override
   _SteganoState createState() => _SteganoState();
 }
 
 class _SteganoState extends State<Stegano> {
-  local.GCWFile _file;
-  Uint8List _bytesSource;
+  local.GCWFile? _file;
+  Uint8List? _bytesSource;
   String _currentInput = '';
   String _currentKey = '';
-  String _filenameTarget = 'output.png'; //TODO choose output filename (sample.jpg, output.png, ..)
-  String _extensionTarget = '.png'; //TODO  output extension (jpg, png..)
+  String? _filenameTarget = 'output.png'; //TODO choose output filename (sample.jpg, output.png, ..)
+  final String _extensionTarget = '.png'; //TODO  output extension (jpg, png..)
 
-  String _decodedText;
-  String _decodingErrorText;
-  String _encodingErrorText;
-  String _error2Text;
-  GCWImageViewData _encodedPictureData;
+  String? _decodedText;
+  String? _decodingErrorText;
+  String? _encodingErrorText;
+  String? _error2Text;
+  GCWImageViewData? _encodedPictureData;
   bool _encoding = false;
 
-  TextEditingController _inputController;
-  TextEditingController _keyController;
+  late TextEditingController _inputController;
+  late TextEditingController _keyController;
 
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
 
@@ -119,7 +119,7 @@ class _SteganoState extends State<Stegano> {
     );
   }
 
-  _calculateOutput() async {
+  void _calculateOutput() async {
     setState(() {
       // clear previous encoded picture
       _encodedPictureData = null;
@@ -141,15 +141,15 @@ class _SteganoState extends State<Stegano> {
   ///
   /// Decoding section
   ///
-  _calculateOutputDecoding() async {
-    String _text;
-    String _error;
-    String _error2;
+  void _calculateOutputDecoding() async {
+    String? _text;
+    String? _error;
+    String? _error2;
     if (_file == null) {
       _error = i18n(context, 'stegano_decode_image_required');
     } else {
       try {
-        _text = await decodeStegano(_file, _currentKey);
+        _text = await decodeStegano(_file!, _currentKey);
       } catch (e) {
         _error = i18n(context, 'stegano_decoding_error');
         _error2 = e.toString();
@@ -166,10 +166,10 @@ class _SteganoState extends State<Stegano> {
   ///
   /// Encoding section
   ///
-  _calculateOutputEncoding() async {
-    Uint8List bytes;
-    String _error;
-    String _error2;
+  void _calculateOutputEncoding() async {
+    Uint8List? bytes;
+    String? _error;
+    String? _error2;
 
     if (_file == null) {
       _error = i18n(context, 'stegano_encode_image_required');
@@ -177,7 +177,7 @@ class _SteganoState extends State<Stegano> {
       _error = i18n(context, 'stegano_encode_message_required');
     } else {
       try {
-        bytes = await encodeStegano(_file, _currentInput, _currentKey, _file.name);
+        bytes = await encodeStegano(_file!, _currentInput, _currentKey, _file?.name);
       } catch (e) {
         _error = i18n(context, 'stegano_encoding_error');
         _error2 = e.toString();
@@ -189,7 +189,7 @@ class _SteganoState extends State<Stegano> {
       _encodedPictureData = (bytes != null) ? GCWImageViewData(local.GCWFile(bytes: bytes)) : null;
       _encodingErrorText = _error;
       _error2Text = _error2;
-      _filenameTarget = (_file != null) ? changeExtension(_file.name, _extensionTarget) : null;
+      _filenameTarget = (_file?.name != null) ? changeExtension(_file!.name!, _extensionTarget) : null;
     });
   }
 
@@ -201,9 +201,9 @@ class _SteganoState extends State<Stegano> {
 
   List<Widget> _buildOutputEncode() {
     if (_encodingErrorText != null) {
-      var texts = [Text(_encodingErrorText)];
+      var texts = [Text(_encodingErrorText!)];
       if (_error2Text != null) {
-        texts.add(Text(_error2Text));
+        texts.add(Text(_error2Text!));
       }
       return texts;
     }
@@ -223,9 +223,9 @@ class _SteganoState extends State<Stegano> {
 
   List<Widget> _buildOutputDecode() {
     if (_decodingErrorText != null) {
-      var texts = [Text(_decodingErrorText)];
+      var texts = [Text(_decodingErrorText!)];
       if (_error2Text != null) {
-        texts.add(Text(_error2Text));
+        texts.add(Text(_error2Text!));
       }
       return texts;
     }
@@ -252,13 +252,13 @@ class _SteganoState extends State<Stegano> {
     return [
       GCWTextDivider(text: i18n(context, 'stegano_source_image')),
       //GCWImageView(imageData: GCWImageViewData(_bytesSource))
-      Image.memory(_bytesSource)
+      Image.memory(_bytesSource!)
     ];
   }
 
   List<Widget> loading() {
     return [
-      Center(
+      const Center(
         //child: CircularProgressIndicator(),
         child: CircularProgressIndicator(
           backgroundColor: Colors.white,

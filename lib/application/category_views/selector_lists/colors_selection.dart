@@ -10,16 +10,18 @@ import 'package:gc_wizard/tools/symbol_tables/_common/widget/symbol_table.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class ColorsSelection extends GCWSelection {
+  const ColorsSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
-      if (className(element.tool) == className(SymbolTable()) &&
+      if (className(element.tool) == className(const SymbolTable()) &&
           (element.tool as SymbolTable).symbolKey.startsWith('color_code')) return true;
 
-      return [className(ColorTool()), className(PantoneColorCodes()), className(RALColorCodes())]
+      return [className(const ColorTool()), className(const PantoneColorCodes()), className(const RALColorCodes())]
           .contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

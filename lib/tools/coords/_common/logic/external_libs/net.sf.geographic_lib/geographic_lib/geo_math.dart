@@ -23,7 +23,7 @@ class _GeoMath {
    * The number of binary digits in the fraction of a double precision
    * number (equivalent to C++'s {@code numeric_limits<double>::digits}).
    **********************************************************************/
-  static final int digits = 53;
+  static const int digits = 53;
 
   /*
    * Square a number.
@@ -49,7 +49,7 @@ class _GeoMath {
     return x < 0 ? -y : y;
   }
 
-  static pi() {
+  static double pi() {
     return atan2(0.0, -1.0);
   }
 
@@ -175,7 +175,9 @@ class _GeoMath {
    **********************************************************************/
   static double polyval(int N, List<double> p, int s, double x) {
     double y = N < 0 ? 0 : p[s++];
-    while (--N >= 0) y = y * x + p[s++];
+    while (--N >= 0) {
+      y = y * x + p[s++];
+    }
     return y;
   }
 
@@ -194,7 +196,7 @@ class _GeoMath {
    * negative numbers get converted to &minus;0.
    **********************************************************************/
   static double AngRound(double x) {
-    final double z = 1 / 16.0;
+    const double z = 1 / 16.0;
     if (x == 0) return 0;
     double y = x.abs();
     // The compiler mustn't "simplify" z - (z - y) to y
@@ -237,7 +239,7 @@ class _GeoMath {
    *   return NaN.
    **********************************************************************/
   static double LatFix(double x) {
-    return x.abs() > 90 ? null : x;
+    return x.abs() > 90 ? double.nan : x;
   }
 
   /*

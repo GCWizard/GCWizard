@@ -7,18 +7,20 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersenne
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceMersenneExponentsSelection extends GCWSelection {
+  const NumberSequenceMersenneExponentsSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(NumberSequenceMersenneExponentsNthNumber()),
-        className(NumberSequenceMersenneExponentsRange()),
-        className(NumberSequenceMersenneExponentsDigits()),
-        className(NumberSequenceMersenneExponentsCheckNumber()),
-        className(NumberSequenceMersenneExponentsContainsDigits()),
+        className(const NumberSequenceMersenneExponentsNthNumber()),
+        className(const NumberSequenceMersenneExponentsRange()),
+        className(const NumberSequenceMersenneExponentsDigits()),
+        className(const NumberSequenceMersenneExponentsCheckNumber()),
+        className(const NumberSequenceMersenneExponentsContainsDigits()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

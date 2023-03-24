@@ -1,21 +1,21 @@
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit.dart';
 
 class Mass extends Unit {
-  Function toGram;
-  Function fromGram;
+  late double Function (double) toGram;
+  late double Function (double) fromGram;
 
   Mass({
-    String name,
-    String symbol,
-    bool isReference: false,
-    double inGram: 1.0,
+    required String name,
+    required String symbol,
+    bool isReference = false,
+    required double inGram,
   }) : super(name, symbol, isReference, (e) => e * inGram, (e) => e / inGram) {
-    toGram = this.toReference;
-    fromGram = this.fromReference;
+    toGram = toReference;
+    fromGram = fromReference;
   }
 }
 
-final MASS_GRAM = Mass(name: 'common_unit_mass_g_name', symbol: 'g', isReference: true);
+final MASS_GRAM = Mass(name: 'common_unit_mass_g_name', symbol: 'g', inGram: 1.0, isReference: true);
 
 final MASS_TON = Mass(name: 'common_unit_mass_t_name', symbol: 't', inGram: 1000.0 * 1000.0);
 
@@ -58,7 +58,7 @@ final MASS_FARBLINTZ = Mass(name: 'common_unit_mass_farb_name', symbol: 'fb', in
 
 final MASS_FURBLINTZ = Mass(name: 'common_unit_mass_furb_name', symbol: 'Fb', inGram: 1000 * 1000 * 36.42538631);
 
-final List<Unit> baseMasses = [
+final List<Mass> baseMasses = [
   MASS_GRAM,
   MASS_TON,
   MASS_GRAIN,
@@ -84,8 +84,8 @@ final List<Unit> baseMasses = [
 
 final MASS_KILOGRAM = Mass(name: 'common_unit_mass_kg_name', symbol: 'kg', inGram: 1000.0);
 
-List<Unit> allMasses() {
-  var masses = List<Unit>.from(baseMasses);
+List<Mass> allMasses() {
+  var masses = List<Mass>.from(baseMasses);
   var indexKG = baseMasses.indexOf(MASS_GRAM);
   masses.insert(indexKG + 1, MASS_KILOGRAM);
 

@@ -12,19 +12,21 @@ import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/_common/logic
 import 'package:gc_wizard/utils/collection_utils.dart';
 
 class NumeralWordsLists extends StatefulWidget {
+  const NumeralWordsLists({Key? key}) : super(key: key);
+
   @override
   NumeralWordsListsState createState() => NumeralWordsListsState();
 }
 
 class NumeralWordsListsState extends State<NumeralWordsLists> {
-  TextEditingController _decodeController;
+  late TextEditingController _decodeController;
 
-  var _currentDecodeInput = '';
+  final _currentDecodeInput = '';
   var _currentLanguage = NumeralWordsLanguage.DEU;
   int _valueFontsizeOffset = 0;
   bool _setDefaultLanguage = false;
 
-  SplayTreeMap<String, NumeralWordsLanguage> _LANGUAGES;
+  SplayTreeMap<String, NumeralWordsLanguage>? _LANGUAGES;
 
   @override
   void initState() {
@@ -44,14 +46,12 @@ class NumeralWordsListsState extends State<NumeralWordsLists> {
       _currentLanguage = _defaultLanguage(context);
       _setDefaultLanguage = true;
     }
-    if (_LANGUAGES == null) {
-      _LANGUAGES = SplayTreeMap.from(
+    _LANGUAGES ??= SplayTreeMap.from(
           switchMapKeyValue(NUMERALWORDS_LANGUAGES).map((key, value) => MapEntry(i18n(context, key), value)));
-    }
 
     return Column(
       children: <Widget>[
-        GCWDropDown(
+        GCWDropDown<NumeralWordsLanguage>(
           value: _currentLanguage,
           onChanged: (value) {
             setState(() {
@@ -59,7 +59,7 @@ class NumeralWordsListsState extends State<NumeralWordsLists> {
               _valueFontsizeOffset = 0;
             });
           },
-          items: _LANGUAGES.entries.map((mode) {
+          items: _LANGUAGES!.entries.map((mode) {
             return GCWDropDownMenuItem(
               value: mode.value,
               child: mode.key,
@@ -72,19 +72,12 @@ class NumeralWordsListsState extends State<NumeralWordsLists> {
   }
 
   Widget _buildOutput(BuildContext context) {
-    Map<String, String> numeralWordsOverview = new Map<String, String>();
-    numeralWordsOverview = NUMERAL_WORDS[_currentLanguage];
-
+    var numeralWordsOverview = <String, String>{};
+    numeralWordsOverview = NUMERAL_WORDS[_currentLanguage] ?? {};
+    var wordList = numeralWordsOverview.entries.map((entry) {
+      return (int.tryParse(entry.value) != null) ? [entry.value, entry.key] : <String>[];
+    });
     return GCWDefaultOutput(
-      child: GCWColumnedMultilineOutput(
-          data: numeralWordsOverview.entries.map((entry) {
-              if (int.tryParse(entry.value) != null) {
-                return [entry.value, entry.key];
-              }
-            }).toList(),
-            flexValues: [1, 3],
-            fontSize: defaultFontSize() + _valueFontsizeOffset
-      ),
       trailing: ZOOMABLE_LANGUAGE.contains(_currentLanguage)
           ? Row(
               children: <Widget>[
@@ -109,15 +102,20 @@ class NumeralWordsListsState extends State<NumeralWordsLists> {
               ],
             )
           : null,
+      child: GCWColumnedMultilineOutput(
+          data: wordList.where((element) => element.isNotEmpty).toList(),
+          flexValues: const [1, 3],
+          fontSize: defaultFontSize() + _valueFontsizeOffset
+      ),
     );
   }
 
   NumeralWordsLanguage _defaultLanguage(BuildContext context) {
     final Locale appLocale = Localizations.localeOf(context);
     if (isLocaleSupported(appLocale)) {
-      return SUPPORTED_LANGUAGES_LOCALES[appLocale];
+      return SUPPORTED_LANGUAGES_LOCALES[appLocale]!;
     } else {
-      return SUPPORTED_LANGUAGES_LOCALES[DEFAULT_LOCALE];
+      return SUPPORTED_LANGUAGES_LOCALES[DEFAULT_LOCALE]!;
     }
   }
 }

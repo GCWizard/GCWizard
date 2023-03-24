@@ -10,12 +10,14 @@ import 'package:gc_wizard/tools/science_and_technology/periodic_table/_common/lo
 import 'package:gc_wizard/utils/constants.dart';
 
 class AtomicNumbersToText extends StatefulWidget {
+  const AtomicNumbersToText({Key? key}) : super(key: key);
+
   @override
   AtomicNumbersToTextState createState() => AtomicNumbersToTextState();
 }
 
 class AtomicNumbersToTextState extends State<AtomicNumbersToText> {
-  var _encryptController;
+  late TextEditingController _encryptController;
 
   String _currentEncryptInput = '';
   List<int> _currentDecryptInput = [];
@@ -55,7 +57,7 @@ class AtomicNumbersToTextState extends State<AtomicNumbersToText> {
             : GCWIntegerListTextField(
                 onChanged: (result) {
                   setState(() {
-                    _currentDecryptInput = result['values'];
+                    _currentDecryptInput = result.value;
                   });
                 },
               ),
@@ -74,7 +76,7 @@ class AtomicNumbersToTextState extends State<AtomicNumbersToText> {
     );
   }
 
-  _buildOutput() {
+  String _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
       return textToAtomicNumbers(_currentEncryptInput).map((number) => number ?? UNKNOWN_ELEMENT).join(' ');
     } else {

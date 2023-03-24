@@ -1,5 +1,3 @@
-reverse(String input) {
-  if (input == null) return '';
-
+String reverse(String input) {
   return input.split('').reversed.join();
 }

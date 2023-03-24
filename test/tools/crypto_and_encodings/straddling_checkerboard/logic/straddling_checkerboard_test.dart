@@ -5,11 +5,10 @@ import 'package:gc_wizard/tools/crypto_and_encodings/straddling_checkerboard/log
 void main() {
 
   group("encrypt", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       // empty Input
-      {'input' : null, 'key': null, 'alphabetWord' : '', 'columnOrder' : '', 'matrix4x10' : false, 'mode': PolybiosMode.AZ09, 'alphabet': 'ABCDEFGHIKLMNOPQRSTUVWXYZ', 'expectedOutput' : ''},
       {'input' : '', 'key': '', 'alphabetWord' : '', 'columnOrder' : '', 'matrix4x10' : false, 'mode': PolybiosMode.AZ09, 'alphabet': 'ABCDEFGHIKLMNOPQRSTUVWXYZ', 'expectedOutput' : ''},
-      {'input' : 'cache bei n 52 345 678 o 13 09 451', 'key': null, 'alphabetWord' : '', 'columnOrder' : '', 'matrix4x10' : false, 'mode': PolybiosMode.AZ09, 'alphabet': 'ABCDEFGHIKLMNOPQRSTUVWXYZ', 'expectedOutput' : ''},
+      {'input' : 'cache bei n 52 345 678 o 13 09 451', 'key': '', 'alphabetWord' : '', 'columnOrder' : '', 'matrix4x10' : false, 'mode': PolybiosMode.AZ09, 'alphabet': 'ABCDEFGHIKLMNOPQRSTUVWXYZ', 'expectedOutput' : ''},
 
       {'input' : 'cache bei n 52 345 678 o 13 09 451', 'key': 'gc wizard ', 'alphabetWord' : '', 'columnOrder' : '0246813579', 'matrix4x10' : false, 'mode': PolybiosMode.AZ09, 'alphabet': '', 'expectedOutput' : '2324642974042897479799599297993994995979969979989749979919939799099997994995991'},
       {'input' : 'cache bei n 52 345 678 o 13 09 451', 'key': 'g c wizad ', 'alphabetWord' : '', 'columnOrder' : '0246813579', 'matrix4x10' : true, 'mode': PolybiosMode.AZ09, 'alphabet': '', 'expectedOutput' : '4542622992022199279998929994969899919395992999909499699799969890'},
@@ -36,16 +35,16 @@ void main() {
       //{'input' : '', 'key': '', 'alphabetWord' : '', 'columnOrder' : '0123456789', 'matrix4x10' : false, 'mode': PolybiosMode.AZ09, 'alphabet': '', 'expectedOutput' : ''},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, key: ${elem['key']}, alphabetWord: ${elem['alphabetWord']}, columnOrder: ${elem['columnOrder']}, matrix4x10: ${elem['matrix4x10']}, mode: ${elem['mode']}, alphabet: ${elem['alphabet']}', () {
-        StraddlingCheckerboardOutput _actual = encryptStraddlingCheckerboard(elem['input'], elem['key'], elem['alphabetWord'], elem['columnOrder'], elem['matrix4x10'], mode: elem['mode'], alphabet: elem['alphabet']);
+        StraddlingCheckerboardOutput _actual = encryptStraddlingCheckerboard(elem['input'] as String, elem['key'] as String, elem['alphabetWord'] as String, elem['columnOrder'] as String, elem['matrix4x10'] as bool, mode: elem['mode'] as PolybiosMode, alphabet: elem['alphabet'] as String);
         expect(_actual.output, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("decrypt", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'expectedOutput' : 'CACHE BEI N 52 345 678 O 13 09 451', 'key': 'gc wizard ', 'alphabetWord' : '', 'columnOrder' : '0246813579', 'matrix4x10' : false, 'mode': PolybiosMode.AZ09, 'alphabet': '', 'input' : '2324642974042897479799599297993994995979969979989749979919939799099997994995991'},
       {'expectedOutput' : 'CACHE BEI N 52 345 678 O 13 09 451', 'key': 'g c wizad ', 'alphabetWord' : '', 'columnOrder' : '0246813579', 'matrix4x10' : true, 'mode': PolybiosMode.AZ09, 'alphabet': '', 'input' : '4542622992022199279998929994969899919395992999909499699799969890'},
 
@@ -70,11 +69,11 @@ void main() {
 
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, key: ${elem['key']}, alphabetWord: ${elem['alphabetWord']}, columnOrder: ${elem['columnOrder']}, matrix4x10: ${elem['matrix4x10']}, mode: ${elem['mode']}, alphabet: ${elem['alphabet']}', () {
-        StraddlingCheckerboardOutput _actual = decryptStraddlingCheckerboard(elem['input'], elem['key'], elem['alphabetWord'], elem['columnOrder'], elem['matrix4x10'], mode: elem['mode'], alphabet: elem['alphabet']);
+        StraddlingCheckerboardOutput _actual = decryptStraddlingCheckerboard(elem['input'] as String, elem['key'] as String, elem['alphabetWord'] as String, elem['columnOrder'] as String, elem['matrix4x10'] as bool, mode: elem['mode'] as PolybiosMode, alphabet: elem['alphabet'] as String);
         expect(_actual.output, elem['expectedOutput']);
       });
-    });
+    }
   });
 }

@@ -8,6 +8,8 @@ import 'package:gc_wizard/tools/science_and_technology/physical_constants/logic/
 import 'package:gc_wizard/utils/ui_dependent_utils/text_widget_utils.dart';
 
 class PhysicalConstants extends StatefulWidget {
+  const PhysicalConstants({Key? key}) : super(key: key);
+
   @override
   PhysicalConstantsState createState() => PhysicalConstantsState();
 }
@@ -15,13 +17,11 @@ class PhysicalConstants extends StatefulWidget {
 class PhysicalConstantsState extends State<PhysicalConstants> {
   var _currentConstant = PHYSICAL_CONSTANTS.entries.first.key;
 
-  List<String> _constants;
+  final List<String> _constants = [];
 
   @override
   Widget build(BuildContext context) {
-    if (_constants == null) {
-      _constants = [];
-
+    if (_constants.isEmpty) {
       List<String> _temp = PHYSICAL_CONSTANTS.keys.map((constant) => i18n(context, constant)).toList();
       _temp.sort();
 
@@ -34,7 +34,7 @@ class PhysicalConstantsState extends State<PhysicalConstants> {
 
     return Column(
       children: <Widget>[
-        GCWDropDown(
+        GCWDropDown<String>(
           value: _currentConstant,
           onChanged: (value) {
             setState(() {
@@ -51,43 +51,41 @@ class PhysicalConstantsState extends State<PhysicalConstants> {
   }
 
   Widget _buildOutput() {
-    Map<String, dynamic> constantData = PHYSICAL_CONSTANTS[_currentConstant];
+    PhysicalConstant? constantData = PHYSICAL_CONSTANTS[_currentConstant];
+    if (constantData== null) return Container();
 
     var data = [
-      constantData['symbol'] != null
-          ? [
-              i18n(context, 'physical_constants_symbol'),
-              buildSubOrSuperscriptedRichTextIfNecessary(constantData['symbol'])
-            ]
-          : null,
-      constantData['value'] != null
-          ? [i18n(context, 'physical_constants_value'), constantData['value'], _buildExponent(constantData['exponent'])]
-          : null,
-      constantData['standard_uncertainty'] != null
+      [
+        i18n(context, 'physical_constants_symbol'),
+        buildSubOrSuperscriptedRichTextIfNecessary(constantData.symbol)
+      ],
+      [i18n(context, 'physical_constants_value'), constantData.value, _buildExponent(constantData.exponent)],
+
+      constantData.standard_uncertainty != null
           ? [
               i18n(context, 'physical_constants_standard_uncertainty'),
-              constantData['standard_uncertainty'],
-              _buildExponent(constantData['exponent'])
+              constantData.standard_uncertainty,
+              _buildExponent(constantData.exponent)
             ]
           : null,
-      constantData['unit'] != null
-          ? [i18n(context, 'physical_constants_unit'), buildSubOrSuperscriptedRichTextIfNecessary(constantData['unit'])]
+      constantData.unit != null
+          ? [i18n(context, 'physical_constants_unit'), buildSubOrSuperscriptedRichTextIfNecessary(constantData.unit!)]
           : null
     ];
 
     return GCWColumnedMultilineOutput(
-      data: data,
-      flexValues: [2, 3, 2],
+      data: data.whereType<List<Object?>>().toList(),
+      flexValues: const [2, 3, 2],
       copyColumn: 1,
     );
   }
 
-  Widget _buildExponent(exponent) {
-    if (exponent == null) return null;
+  Widget _buildExponent(int? exponent) {
+    if (exponent == null) return Container();
 
     return RichText(
         text: TextSpan(
             style: gcwTextStyle(),
-            children: [TextSpan(text: ' × 10'), superscriptedTextForRichText(exponent.toString())]));
+            children: [const TextSpan(text: ' × 10'), superscriptedTextForRichText(exponent.toString())]));
   }
 }

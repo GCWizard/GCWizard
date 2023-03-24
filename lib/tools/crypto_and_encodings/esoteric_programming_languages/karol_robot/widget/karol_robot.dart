@@ -18,29 +18,30 @@ import 'package:gc_wizard/tools/images_and_files/binary2image/logic/binary2image
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/image_utils/image_utils.dart';
-import 'package:intl/intl.dart';
 
 class KarolRobot extends StatefulWidget {
+  const KarolRobot({Key? key}) : super(key: key);
+
   @override
   KarolRobotState createState() => KarolRobotState();
 }
 
 class KarolRobotState extends State<KarolRobot> {
-  var _decodeController;
-  var _encodeController;
+  late TextEditingController _decodeController;
+  late TextEditingController _encodeController;
 
   var _currentDecode = '';
   var _currentEncode = '';
 
-  Uint8List _outEncodeData;
-  Uint8List _outDecodeData;
+  Uint8List? _outEncodeData;
+  Uint8List? _outDecodeData;
 
   String _output = '';
 
-  var _MASKINPUTFORMATTER_ENCODE =
+  final _MASKINPUTFORMATTER_ENCODE =
       WrapperForMaskTextInputFormatter(mask: '@' * 100, filter: {"@": RegExp(r'[A-ZÄÖÜäöüa-z0-9 .°,\n\r]')});
 
-  var _MASKINPUTFORMATTER_DECODE =
+  final _MASKINPUTFORMATTER_DECODE =
       WrapperForMaskTextInputFormatter(mask: "@" * 50000, filter: {"@": RegExp(r'[A-ZÄÖÜäöüa-z0-9() \n\r]')});
 
   GCWSwitchPosition _currentMode = GCWSwitchPosition.left;
@@ -87,7 +88,7 @@ class KarolRobotState extends State<KarolRobot> {
                 },
               )
             : Column(children: <Widget>[
-                GCWDropDown(
+                GCWDropDown<KAREL_LANGUAGES>(
                   value: _currentLanguage,
                   onChanged: (value) {
                     setState(() {
@@ -129,15 +130,15 @@ class KarolRobotState extends State<KarolRobot> {
     return Column(children: <Widget>[
       _currentMode == GCWSwitchPosition.left //decode
           ? GCWDefaultOutput(
-              child: _buildGraphicDecodeOutput(),
               trailing: GCWIconButton(
                 icon: Icons.save,
                 size: IconButtonSize.SMALL,
                 iconColor: _outDecodeData == null ? themeColors().inActive() : null,
                 onPressed: () {
-                  _outDecodeData == null ? null : _exportFile(context, _outDecodeData);
+                  _outDecodeData == null ? null : _exportFile(context, _outDecodeData!);
                 },
-              ))
+              ),
+              child: _buildGraphicDecodeOutput())
           : Column(children: <Widget>[
               GCWTextDivider(
                 text: i18n(context, 'karol_robot_graphicaloutput'),
@@ -158,9 +159,11 @@ class KarolRobotState extends State<KarolRobot> {
     ]);
   }
 
-  _createDecodeOutput(String output) {
+  void _createDecodeOutput(String output) {
     _outDecodeData = null;
-    input2Image(binary2Image(output)).then((value) {
+    var image = binary2Image(output);
+    if (image == null) return;
+    input2Image(image).then((value) {
       setState(() {
         _outDecodeData = value;
       });
@@ -168,16 +171,18 @@ class KarolRobotState extends State<KarolRobot> {
   }
 
   Widget _buildGraphicDecodeOutput() {
-    if (_outDecodeData == null) return null;
+    if (_outDecodeData == null) return Container();
 
     return Column(children: <Widget>[
-      Image.memory(_outDecodeData),
+      Image.memory(_outDecodeData!),
     ]);
   }
 
-  _createEncodeOutput(String output) {
+  void _createEncodeOutput(String output) {
     _outEncodeData = null;
-    input2Image(binary2Image(output)).then((value) {
+    var image = binary2Image(output);
+    if (image == null) return;
+    input2Image(image).then((value) {
       setState(() {
         _outEncodeData = value;
       });
@@ -188,14 +193,13 @@ class KarolRobotState extends State<KarolRobot> {
     if (_outEncodeData == null) return Container();
 
     return Column(children: <Widget>[
-      Image.memory(_outEncodeData),
+      Image.memory(_outEncodeData!),
     ]);
   }
 
-  _exportFile(BuildContext context, Uint8List data) async {
-    var value =
-        await saveByteDataToFile(context, data, 'img_' + DateFormat('yyyyMMdd_HHmmss').format(DateTime.now()) + '.png');
-
-    if (value != null) showExportedFileDialog(context, fileType: FileType.PNG);
+  Future<void> _exportFile(BuildContext context, Uint8List data) async {
+    await saveByteDataToFile(context, data, buildFileNameWithDate('img_', FileType.PNG)).then((value) {
+      if (value) showExportedFileDialog(context, contentWidget: imageContent(context, data));
+    });
   }
 }

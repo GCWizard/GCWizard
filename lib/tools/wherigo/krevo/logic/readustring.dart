@@ -39,10 +39,12 @@ String luaStringToString(String pString) {
         tOrd =
             int.parse(pString[tOffset - 2]) * 100 + int.parse(pString[tOffset - 1]) * 10 + int.parse(pString[tOffset]);
         tNewString += String.fromCharCode(tOrd);
-      } else if (tOffset < tStrLen && tEscapeMapping[pString[tOffset]] != null)
-        tNewString += String.fromCharCode(tEscapeMapping[pString[tOffset]]);
-    } else
+      } else if (tOffset < tStrLen && tEscapeMapping[pString[tOffset]] != null) {
+        tNewString += String.fromCharCode(tEscapeMapping[pString[tOffset]]!);
+      }
+    } else {
       tNewString += pString[tOffset];
+    }
 
     tOffset += 1;
   }

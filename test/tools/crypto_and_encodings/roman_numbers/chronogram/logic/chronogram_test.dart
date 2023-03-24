@@ -3,8 +3,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/roman_numbers/chronogram/lo
 
 void main() {
   group("Chronogram.withoutJU:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : null},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : null},
 
       {'input' : 'ALICIMAAMADMIDIAILACMIICLIIIDIMCAMMIDIIDIACADDIDADIILDMICALMLII', 'expectedOutput' : 14921},
@@ -15,17 +14,16 @@ void main() {
       {'input' : 'SVRGE O IEHOVA ATQVE DISPERGE INIMICOS TVOS', 'expectedOutput' : 1625},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeChronogram(elem['input']);
+        var _actual = decodeChronogram(elem['input'] as String);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Chronogram.JUToIV:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : null},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : null},
 
       {'input' : 'ALICIMAAMADMIDIAILACMIICLIIIDIMCAMMIDIIDIACADDIDADIILDMICALMLII', 'expectedOutput' : 14921},
@@ -36,11 +34,11 @@ void main() {
       {'input' : 'SVRGE O IEHOVA ATQVE DISPERGE INIMICOS TVOS', 'expectedOutput' : 1625},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeChronogram(elem['input'], JUToIV: true);
+        var _actual = decodeChronogram(elem['input'] as String, JUToIV: true);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 }

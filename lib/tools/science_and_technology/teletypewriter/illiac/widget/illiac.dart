@@ -3,5 +3,5 @@ import 'package:gc_wizard/tools/science_and_technology/teletypewriter/_common/lo
 import 'package:gc_wizard/tools/science_and_technology/teletypewriter/teletypewriter/widget/teletypewriter.dart';
 
 class ILLIAC extends Teletypewriter {
-  ILLIAC({Key key}) : super(key: key, defaultCodebook: TeletypewriterCodebook.ILLIAC, codebook: null);
+  const ILLIAC({Key? key}) : super(key: key, defaultCodebook: TeletypewriterCodebook.ILLIAC, codebook: null);
 }

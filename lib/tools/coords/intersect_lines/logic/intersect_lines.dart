@@ -1,8 +1,8 @@
 import 'dart:math';
 
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/tools/coords/centerpoint/logic/centerpoint.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coord_format_getter.dart' as utils;
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:gc_wizard/utils/constants.dart';
@@ -17,21 +17,24 @@ class IntersectBearingJobData {
   final bool crossbearing;
 
   IntersectBearingJobData(
-      {this.coord1,
+      {required this.coord1,
       this.az13 = 0.0,
-      this.coord2,
+      required this.coord2,
       this.az23 = 0.0,
-      this.ells,
+      required this.ells,
       this.crossbearing = false});
 }
 
-Future<LatLng> intersectBearingsAsync(dynamic jobData) async {
-  if (jobData == null) return null;
+Future<LatLng?> intersectBearingsAsync(GCWAsyncExecuterParameters? jobData) async {
+  if (jobData?.parameters is! IntersectBearingJobData) {
+    throw Exception('Unexpected Intersect data');
+  }
 
-  var output = intersectBearings(jobData.parameters.coord1, jobData.parameters.az13, jobData.parameters.coord2,
-      jobData.parameters.az23, jobData.parameters.ells, jobData.parameters.crossbearing);
+  var data = jobData!.parameters as IntersectBearingJobData;
+  var output = intersectBearings(data.coord1, data.az13, data.coord2,
+      data.az23, data.ells, data.crossbearing);
 
-  if (jobData.sendAsyncPort != null) jobData.sendAsyncPort.send(output);
+  jobData.sendAsyncPort?.send(output);
 
   return output;
 }
@@ -41,18 +44,18 @@ Future<LatLng> intersectBearingsAsync(dynamic jobData) async {
 // Because of its random factor it is not necessarily given that an intersection point is found
 // although there is always such a point between to geodetics (e.g. at the back side of the sphere)
 
-LatLng intersectBearings(LatLng coord1, double az13, LatLng coord2, double az23, Ellipsoid ells, bool crossbearing) {
-  az13 = utils.normalizeBearing(az13);
-  az23 = utils.normalizeBearing(az23);
+LatLng? intersectBearings(LatLng coord1, double az13, LatLng coord2, double az23, Ellipsoid ells, bool crossbearing) {
+  az13 = normalizeBearing(az13);
+  az23 = normalizeBearing(az23);
 
   var _centerCalc = centerPointTwoPoints(coord1, coord2, ells);
-  LatLng calculatedPoint = _centerCalc['centerPoint'];
-  double dist = _centerCalc['distance'];
+  LatLng calculatedPoint = _centerCalc.centerPoint;
+  double dist = _centerCalc.distance;
 
   var distBear1 = distanceBearing(coord1, calculatedPoint, ells);
   var distBear2 = distanceBearing(coord2, calculatedPoint, ells);
 
-  var bear1, bear2;
+  double bear1, bear2;
 
   if (!crossbearing) {
     bear1 = distBear1.bearingAToB;
@@ -88,7 +91,7 @@ LatLng intersectBearings(LatLng coord1, double az13, LatLng coord2, double az23,
     var distBear1 = distanceBearing(coord1, projectedPoint, ells);
     var distBear2 = distanceBearing(coord2, projectedPoint, ells);
 
-    var bear1, bear2;
+    double bear1, bear2;
 
     if (!crossbearing) {
       bear1 = distBear1.bearingAToB;
@@ -105,7 +108,9 @@ LatLng intersectBearings(LatLng coord1, double az13, LatLng coord2, double az23,
 
       dist *= 1.5; //adjusted these values empirical
       d = newD;
-    } else if (newD > d) dist /= 1.2;
+    } else if (newD > d) {
+      dist /= 1.2;
+    }
   }
 
   if (broke) return null;
@@ -121,21 +126,24 @@ class IntersectFourPointsJobData {
   final Ellipsoid ells;
 
   IntersectFourPointsJobData(
-      {this.coord11, this.coord12, this.coord21, this.coord22, this.ells});
+      {required this.coord11, required this.coord12, required this.coord21, required this.coord22, required this.ells});
 }
 
-Future<LatLng> intersectFourPointsAsync(dynamic jobData) async {
-  if (jobData == null) return null;
+Future<LatLng?> intersectFourPointsAsync(GCWAsyncExecuterParameters? jobData) async {
+  if (jobData?.parameters is! IntersectFourPointsJobData) {
+    throw Exception('Unexpected Intersect data');
+  }
 
-  var output = intersectFourPoints(jobData.parameters.coord11, jobData.parameters.coord12, jobData.parameters.coord21,
-      jobData.parameters.coord22, jobData.parameters.ells);
+  var data = jobData!.parameters as IntersectFourPointsJobData;
+  var output = intersectFourPoints(data.coord11, data.coord12, data.coord21,
+      data.coord22, data.ells);
 
-  if (jobData.sendAsyncPort != null) jobData.sendAsyncPort.send(output);
+  jobData.sendAsyncPort?.send(output);
 
   return output;
 }
 
-LatLng intersectFourPoints(LatLng coord11, LatLng coord12, LatLng coord21, LatLng coord22, Ellipsoid ells) {
+LatLng? intersectFourPoints(LatLng coord11, LatLng coord12, LatLng coord21, LatLng coord22, Ellipsoid ells) {
   var bearing1 = distanceBearing(coord11, coord12, ells).bearingAToB;
   var bearing2 = distanceBearing(coord21, coord22, ells).bearingAToB;
 

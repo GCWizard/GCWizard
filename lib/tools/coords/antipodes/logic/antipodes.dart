@@ -4,10 +4,11 @@ LatLng antipodes(LatLng coord) {
   LatLng antipodes = LatLng(coord.latitude, coord.longitude);
 
   antipodes.latitude *= -1;
-  if (antipodes.longitude > 0)
+  if (antipodes.longitude > 0) {
     antipodes.longitude += -180;
-  else
+  } else {
     antipodes.longitude += 180;
+  }
 
   return antipodes;
 }

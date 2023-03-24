@@ -11,18 +11,20 @@ import 'package:gc_wizard/tools/science_and_technology/cross_sums/iterated_cross
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class CrossSumSelection extends GCWSelection {
+  const CrossSumSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(CrossSum()),
-        className(CrossSumRange()),
-        className(IteratedCrossSumRange()),
-        className(CrossSumRangeFrequency()),
-        className(IteratedCrossSumRangeFrequency()),
+        className(const CrossSum()),
+        className(const CrossSumRange()),
+        className(const IteratedCrossSumRange()),
+        className(const CrossSumRangeFrequency()),
+        className(const IteratedCrossSumRangeFrequency()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

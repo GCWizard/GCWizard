@@ -7,22 +7,23 @@ import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/cross_sums/widget/crosstotal_output.dart';
 import 'package:gc_wizard/tools/science_and_technology/numeral_bases/logic/numeral_bases.dart';
+import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
 class GeneralCharsetValues extends StatefulWidget {
-  final Function encode;
-  final Function decode;
+  final List<int> Function(String) encode;
+  final String Function(List<int>) decode;
   final String charsetName;
 
-  GeneralCharsetValues({Key key, this.encode, this.decode, this.charsetName}) : super(key: key);
+  const GeneralCharsetValues({Key? key, required this.encode, required this.decode, required this.charsetName}) : super(key: key);
 
   @override
   GeneralCharsetValuesState createState() => GeneralCharsetValuesState();
 }
 
 class GeneralCharsetValuesState extends State<GeneralCharsetValues> {
-  var _encodeController;
-  var _decodeController;
+  late TextEditingController _encodeController;
+  late TextEditingController _decodeController;
 
   var _currentEncodeInput = '';
   var _currentDecodeInput = '';
@@ -32,7 +33,7 @@ class GeneralCharsetValuesState extends State<GeneralCharsetValues> {
   int _currentRadix = 10;
   GCWSwitchPosition _currentBlockSizeMode = GCWSwitchPosition.left;
   int _currentBlockSize = 8;
-  Map<String, dynamic> _currentDecoded;
+  IntegerListText? _currentDecoded;
 
   @override
   void initState() {
@@ -75,8 +76,8 @@ class GeneralCharsetValuesState extends State<GeneralCharsetValues> {
               ),
         GCWTwoOptionsSwitch(
           value: _currentMode,
-          leftValue: 'A-Z → ' + (i18n(context, widget.charsetName) ?? '123'),
-          rightValue: (i18n(context, widget.charsetName) ?? '123') + ' → A-Z',
+          leftValue: 'A-Z → ' + (i18n(context, widget.charsetName, ifTranslationNotExists: '123')),
+          rightValue: (i18n(context, widget.charsetName, ifTranslationNotExists: '123')) + ' → A-Z',
           onChanged: (value) {
             setState(() {
               _currentMode = value;
@@ -100,9 +101,9 @@ class GeneralCharsetValuesState extends State<GeneralCharsetValues> {
     );
   }
 
-  _buildAdvancedWidgets() {
+  Widget _buildAdvancedWidgets() {
     return Column(children: [
-      GCWDropDown(
+      GCWDropDown<int>(
         title: i18n(context, 'charsets_coding'),
         value: _currentRadix,
         items: <int, String>{
@@ -146,16 +147,16 @@ class GeneralCharsetValuesState extends State<GeneralCharsetValues> {
     ]);
   }
 
-  _buildCrossTotals() {
+  Widget _buildCrossTotals() {
     if (_currentMode == GCWSwitchPosition.left) {
       return CrosstotalOutput(text: _currentEncodeInput, values: widget.encode(_currentEncodeInput));
     } else {
       var _decoded = _calculateDecoded();
-      return CrosstotalOutput(text: _decoded['text'], values: _decoded['values']);
+      return CrosstotalOutput(text: _decoded.text, values: _decoded.value);
     }
   }
 
-  _getRadix() {
+  int _getRadix() {
     if (_currentSimpleMode == GCWSwitchPosition.left) {
       return 10;
     } else {
@@ -163,7 +164,7 @@ class GeneralCharsetValuesState extends State<GeneralCharsetValues> {
     }
   }
 
-  _getBlockSize() {
+  int? _getBlockSize() {
     if (_currentSimpleMode == GCWSwitchPosition.right) {
       if (_currentBlockSizeMode == GCWSwitchPosition.right) {
         return _currentBlockSize;
@@ -172,11 +173,11 @@ class GeneralCharsetValuesState extends State<GeneralCharsetValues> {
     return null;
   }
 
-  _calculateDecoded() {
-    if (_currentDecoded != null) return _currentDecoded;
+  IntegerListText _calculateDecoded() {
+    if (_currentDecoded != null) return _currentDecoded!;
 
     int radix = _getRadix();
-    int blockSize = _getBlockSize();
+    int? blockSize = _getBlockSize();
 
     var decodeInput = _currentDecodeInput;
     switch (radix) {
@@ -184,50 +185,44 @@ class GeneralCharsetValuesState extends State<GeneralCharsetValues> {
         decodeInput = decodeInput.replaceAll(RegExp(r'[^01]+'), ' ');
         break;
       case 10:
-        decodeInput = decodeInput.replaceAll(RegExp(r'[^0-9]+'), ' ');
+        decodeInput = decodeInput.replaceAll(RegExp(r'\D+'), ' ');
         break;
       case 16:
         decodeInput = decodeInput.toUpperCase().replaceAll(RegExp(r'[^0-9A-F]+'), ' ');
         break;
       default:
-        return {'text': '', 'values': []};
+        return IntegerListText('', []);
     }
 
     if (blockSize != null) {
       decodeInput = insertSpaceEveryNthCharacter(decodeInput.replaceAll(RegExp(r'[\s]+'), ''), blockSize);
     }
-    List<int> decodeInputList = decodeInput.split(' ').map((block) {
-      var blockValue = block;
-      try {
-        if (radix != 10) {
-          blockValue = convertBase(blockValue, radix, 10);
+    var decodeInputList = <int>[];
+    decodeInput.split(' ').map((block) {
+      String? blockValue = block;
+        if (radix != 10) blockValue = convertBase(blockValue, radix, 10);
+        var value = int.tryParse(blockValue);
+        if (value != null) {
+          decodeInputList.add(value);
         }
-        return int.tryParse(blockValue);
-      } catch (e) {
-        return null;
-      }
-    }).toList();
+    });
 
-    _currentDecoded = {'text': widget.decode(decodeInputList), 'values': decodeInputList};
-    return _currentDecoded;
+    _currentDecoded = IntegerListText(widget.decode(decodeInputList), decodeInputList);
+    return _currentDecoded!;
   }
 
-  _calculateOutput() {
+  String _calculateOutput() {
     int radix = _getRadix();
-    int blockSize = _getBlockSize();
+    int? blockSize = _getBlockSize();
 
     String output;
 
     if (_currentMode == GCWSwitchPosition.left) {
       List<int> encodeOutput = widget.encode(_currentEncodeInput);
       output = encodeOutput.map((value) {
-        var valueStr = value.toString();
+        String? valueStr = value.toString();
         if (radix != 10) {
-          try {
-            valueStr = convertBase(valueStr, 10, radix);
-          } catch (e) {
-            return '';
-          }
+          valueStr = convertBase(valueStr, 10, radix);
         }
         if (blockSize != null) {
           valueStr = valueStr.padLeft(blockSize, '0');
@@ -235,7 +230,7 @@ class GeneralCharsetValuesState extends State<GeneralCharsetValues> {
         return valueStr;
       }).join(' ');
     } else {
-      output = _calculateDecoded()['text'];
+      output = _calculateDecoded().text;
     }
 
     return output;

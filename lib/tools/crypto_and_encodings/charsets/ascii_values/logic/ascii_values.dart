@@ -1,16 +1,16 @@
-final int _MAX_UTF16 = 1112064;
+const int _MAX_UTF16 = 1112064;
 
 List<int> asciiEncode(String input) {
-  if (input == null || input.isEmpty) return <int>[];
+  if (input.isEmpty) return <int>[];
 
   return input.codeUnits;
 }
 
-String asciiDecode(List<int> input) {
-  if (input == null || input.isEmpty) return '';
+String asciiDecode(List<int?> input) {
+  if (input.isEmpty) return '';
 
-  List<int> list = List<int>.from(input);
-  list = list.where((value) => value != null && value < _MAX_UTF16).toList();
+  var list = List<int>.from(input.where((value) => value != null));
+  list = list.where((value) => value < _MAX_UTF16).toList();
 
   if (list.isEmpty) return '';
 

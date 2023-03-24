@@ -5,7 +5,7 @@
 // https://www.cs.mtsu.edu/~untch/karel/
 // https://en.wikipedia.org/wiki/Karel_(programming_language)
 
-final KAREL_ENCODING = {
+const KAREL_ENCODING = {
   ' ': 'linksdrehen schritt(7) rechtsdrehen',
   'A':
       'schritt(3) markesetzen schritt markesetzen schritt markesetzen schritt markesetzen schritt markesetzen rechtsdrehen rechtsdrehen schritt(3) rechtsdrehen schritt markesetzen linksdrehen schritt schritt markesetzen rechtsdrehen schritt linksdrehen schritt markesetzen rechtsdrehen schritt rechtsdrehen schritt markesetzen schritt schritt markesetzen rechtsdrehen schritt markesetzen linksdrehen schritt(3) linksdrehen schritt(2) linksdrehen markesetzen schritt markesetzen schritt markesetzen schritt markesetzen schritt markesetzen schritt(3) rechtsdrehen schritt(3) rechtsdrehen',
@@ -88,7 +88,7 @@ final KAREL_ENCODING = {
 
 enum KAREL_LANGUAGES { DEU, ENG, FRA }
 
-final Map<KAREL_LANGUAGES, String> KAREL_LANGUAGES_LIST = {
+const Map<KAREL_LANGUAGES, String> KAREL_LANGUAGES_LIST = {
   KAREL_LANGUAGES.DEU: 'common_language_german',
   KAREL_LANGUAGES.ENG: 'common_language_english',
   KAREL_LANGUAGES.FRA: 'common_language_french',
@@ -128,18 +128,18 @@ const _FINIR = 'finir';
 const _SON = 'son';
 const _ATTENDRE = 'attendre';
 
-Set _SET_TURNLEFT = {_LINKSDREHEN, _TURNLEFT, _TOURNERGAUCHE};
-Set _SET_TURNRIGHT = {_RECHTSDREHEN, _TURNRIGHT, _TOURNERDROIT};
-Set _SET_MOVE = {_SCHRITT, _MOVE, _ETAPE};
-Set _SET_PICKBRICK = {_AUFHEBEN, _PICKBRICK, _RAMASSER};
-Set _SET_PUTBRICK = {_HINLEGEN, _PUTBRICK, _ALLONGER};
-Set _SET_PICKBEEPER = {_MARKELOESCHEN, _PICKBEEPER, _MARQUESUPPRESION};
-Set _SET_PUTBEEPER = {_MARKESETZEN, _PUTBEEPER, _MARQUEETABLIE};
-Set _SET_HALT = {_BEENDEN, _TURNOFF, _FINIR};
-Set _SET_WAIT = {_WARTEN, _ATTENDRE};
-Set _SET_SOUND = {_TON, _SON};
+const Set<String> _SET_TURNLEFT = {_LINKSDREHEN, _TURNLEFT, _TOURNERGAUCHE};
+const Set<String> _SET_TURNRIGHT = {_RECHTSDREHEN, _TURNRIGHT, _TOURNERDROIT};
+const Set<String> _SET_MOVE = {_SCHRITT, _MOVE, _ETAPE};
+const Set<String> _SET_PICKBRICK = {_AUFHEBEN, _PICKBRICK, _RAMASSER};
+const Set<String> _SET_PUTBRICK = {_HINLEGEN, _PUTBRICK, _ALLONGER};
+const Set<String> _SET_PICKBEEPER = {_MARKELOESCHEN, _PICKBEEPER, _MARQUESUPPRESION};
+const Set<String> _SET_PUTBEEPER = {_MARKESETZEN, _PUTBEEPER, _MARQUEETABLIE};
+const Set<String> _SET_HALT = {_BEENDEN, _TURNOFF, _FINIR};
+const Set<String> _SET_WAIT = {_WARTEN, _ATTENDRE};
+const Set<String> _SET_SOUND = {_TON, _SON};
 
-final _KAROL_COLORS = {
+const _KAROL_COLORS = {
   'weiß': '0',
   'weiss': '0',
   'schwarz': '1',
@@ -181,16 +181,16 @@ final _KAROL_COLORS = {
   'red': '8',
   'yellow': '9',
   'green': 'A',
-  'cyan': 'B',
+  //'cyan': 'B',
   'blue': 'C',
-  'magenta': 'D',
+  //'magenta': 'D',
   'darkred': 'E',
   'darkyellow': 'F',
   'darkgren': 'G',
   'darkcyan': 'H',
   'darkblue': 'I',
   'darkmagenta': 'J',
-  'orange': 'K',
+  //'orange': 'K',
   'darkorange': 'L',
   'lightorange': 'M',
   'brown': 'N',
@@ -207,20 +207,20 @@ final _KAROL_COLORS = {
   'rouge': '8',
   'jaune': '9',
   'vert': 'A',
-  'cyan': 'B',
+  //'cyan': 'B',
   'bleu': 'C',
-  'magenta': 'D',
+  //'magenta': 'D',
   'rougefonce': 'E',
   'jaunefonce': 'F',
   'vertfonce': 'G',
   'cyanfonce': 'H',
   'bleufonce': 'I',
   'magentafonce': 'J',
-  'orange': 'K',
+  //'orange': 'K',
   'orangeclair': 'L',
   'orangefonce': 'M',
   'brun': 'N',
-  'brun fonce': 'O',
+  'brunfonce': 'O',
 };
 
 enum _KAROL_DIRECTION { SOUTH, NORTH, EAST, WEST }
@@ -228,17 +228,18 @@ enum _KAROL_DIRECTION { SOUTH, NORTH, EAST, WEST }
 String KarolRobotOutputEncode(String output, KAREL_LANGUAGES language) {
   String program = '';
   int lineLength = 0;
-  if (output == '' || output == null) return '';
+  if (output.isEmpty) return '';
 
   output.trim().toUpperCase().split('\n').forEach((line) {
     line.split('').forEach((char) {
-      program = program + KAREL_ENCODING[char] + ' ';
-      if (char == '.')
+      program = program + (KAREL_ENCODING[char] ?? '') + ' ';
+      if (char == '.') {
         lineLength = lineLength + 3;
-      else if (char == 'I' || char == '1' || char == '°')
+      } else if (char == 'I' || char == '1' || char == '°') {
         lineLength = lineLength + 5;
-      else
+      } else {
         lineLength = lineLength + 7;
+      }
     });
 
     program = program +
@@ -259,7 +260,7 @@ String KarolRobotOutputEncode(String output, KAREL_LANGUAGES language) {
   switch (language) {
     case KAREL_LANGUAGES.DEU:
       return program;
-      break;
+
     case KAREL_LANGUAGES.ENG:
       program = program
           .replaceAll(_SCHRITT, _MOVE)
@@ -270,11 +271,13 @@ String KarolRobotOutputEncode(String output, KAREL_LANGUAGES language) {
       RegExp expSchritt = RegExp(r'(move)(\(\d+\))?');
       if (expSchritt.hasMatch(program)) {
         program = program.replaceAllMapped(expSchritt, (Match m) {
-          List<String> MOVE_LIST = new List();
-          if (int.tryParse(m.group(0).replaceAll(_MOVE, '').replaceAll('(', '').replaceAll(')', '')) != null) {
+          var MOVE_LIST = <String>[];
+          if (int.tryParse(m.group(0)!.replaceAll(_MOVE, '').replaceAll('(', '').replaceAll(')', '')) != null) {
             for (int i = 0;
-                i < int.parse(m.group(0).replaceAll(_MOVE, '').replaceAll('(', '').replaceAll(')', ''));
-                i++) MOVE_LIST.add('move');
+                i < int.parse(m.group(0)!.replaceAll(_MOVE, '').replaceAll('(', '').replaceAll(')', ''));
+                i++) {
+              MOVE_LIST.add('move');
+            }
             return MOVE_LIST.join(' ');
           } else {
             return 'move';
@@ -282,7 +285,7 @@ String KarolRobotOutputEncode(String output, KAREL_LANGUAGES language) {
         });
       }
       return program;
-      break;
+
     case KAREL_LANGUAGES.FRA:
       program = program
           .replaceAll(_SCHRITT, _ETAPE)
@@ -290,22 +293,21 @@ String KarolRobotOutputEncode(String output, KAREL_LANGUAGES language) {
           .replaceAll(_RECHTSDREHEN, _TOURNERDROIT)
           .replaceAll(_MARKESETZEN, _MARQUEETABLIE);
       return program;
-      break;
   }
 }
 
 String KarolRobotOutputDecode(String program) {
-  if (program == '' || program == null) return '';
+  if (program.isEmpty) return '';
 
   int x = 1;
   int y = 1;
   var direction = _KAROL_DIRECTION.SOUTH;
   int maxX = 1;
   int maxY = 1;
-  Map<String, String> world = new Map();
+  Map<String, String> world = {};
   bool halt = false;
 
-  String color = '#';
+  String? color = '#';
   int count = 0;
   RegExp expSchritt = RegExp(r'(schritt|move|etape)(\(\d+\))?');
   RegExp expHinlegen = RegExp(r'(hinlegen|putbrick|allonger)(\(\d+\))?');
@@ -318,156 +320,164 @@ String KarolRobotOutputDecode(String program) {
       .replaceAll('\n', '')
       .split(' ')
       .forEach((element) {
-    if (!halt) if (expSchritt.hasMatch(element)) {
-      if (int.tryParse(expSchritt
-              .firstMatch(element)
-              .group(0)
+    if (!halt) {
+      if (expSchritt.hasMatch(element)) {
+        if (int.tryParse(expSchritt
+                .firstMatch(element)!
+                .group(0)!
+                .replaceAll(_SCHRITT, '')
+                .replaceAll(_MOVE, '')
+                .replaceAll(_ETAPE, '')
+                .replaceAll('(', '')
+                .replaceAll(')', '')) ==
+            null) {
+          count = 1;
+        } else {
+          count = int.parse(expSchritt
+              .firstMatch(element)!
+              .group(0)!
               .replaceAll(_SCHRITT, '')
               .replaceAll(_MOVE, '')
               .replaceAll(_ETAPE, '')
               .replaceAll('(', '')
-              .replaceAll(')', '')) ==
-          null)
-        count = 1;
-      else
-        count = int.parse(expSchritt
-            .firstMatch(element)
-            .group(0)
-            .replaceAll(_SCHRITT, '')
-            .replaceAll(_MOVE, '')
-            .replaceAll(_ETAPE, '')
-            .replaceAll('(', '')
-            .replaceAll(')', ''));
-      switch (direction) {
-        case _KAROL_DIRECTION.NORTH:
-          y = y - count;
-          break;
-        case _KAROL_DIRECTION.SOUTH:
-          y = y + count;
-          break;
-        case _KAROL_DIRECTION.WEST:
-          x = x - count;
-          break;
-        case _KAROL_DIRECTION.EAST:
-          x = x + count;
-          break;
-      }
-      if (x > maxX) maxX = x;
-      if (y > maxY) maxY = y;
-    } else if (expHinlegen.hasMatch(element)) {
-      color = _KAROL_COLORS[element
-          .replaceAll(_HINLEGEN, '')
-          .replaceAll(_PUTBRICK, '')
-          .replaceAll(_ALLONGER, '')
-          .replaceAll('(', '')
-          .replaceAll(')', '')];
-      if (color == null) color = '8';
-      switch (direction) {
-        case _KAROL_DIRECTION.NORTH:
-          world[x.toString() + '|' + (y - 1).toString()] = color;
-          break;
-        case _KAROL_DIRECTION.SOUTH:
-          world[x.toString() + '|' + (y + 1).toString()] = color;
-          break;
-        case _KAROL_DIRECTION.EAST:
-          world[(x + 1).toString() + '|' + (y).toString()] = color;
-          break;
-        case _KAROL_DIRECTION.WEST:
-          world[(x - 1).toString() + '|' + (y).toString()] = color;
-          break;
-      }
-    } else {
-      if (_SET_MOVE.contains(element)) {
+              .replaceAll(')', ''));
+        }
         switch (direction) {
           case _KAROL_DIRECTION.NORTH:
-            y = y - 1;
+            y = y - count;
             break;
           case _KAROL_DIRECTION.SOUTH:
-            y = y + 1;
+            y = y + count;
             break;
           case _KAROL_DIRECTION.WEST:
-            x = x - 1;
+            x = x - count;
             break;
           case _KAROL_DIRECTION.EAST:
-            x = x + 1;
+            x = x + count;
             break;
         }
         if (x > maxX) maxX = x;
         if (y > maxY) maxY = y;
-      } else if (_SET_TURNLEFT.contains(element)) {
-        switch (direction) {
-          case _KAROL_DIRECTION.NORTH:
-            direction = _KAROL_DIRECTION.WEST;
-            break;
-          case _KAROL_DIRECTION.SOUTH:
-            direction = _KAROL_DIRECTION.EAST;
-            break;
-          case _KAROL_DIRECTION.WEST:
-            direction = _KAROL_DIRECTION.SOUTH;
-            break;
-          case _KAROL_DIRECTION.EAST:
-            direction = _KAROL_DIRECTION.NORTH;
-            break;
+      } else {
+        if (expHinlegen.hasMatch(element)) {
+          color = _KAROL_COLORS[element
+              .replaceAll(_HINLEGEN, '')
+              .replaceAll(_PUTBRICK, '')
+              .replaceAll(_ALLONGER, '')
+              .replaceAll('(', '')
+              .replaceAll(')', '')];
+          color ??= '8';
+          switch (direction) {
+            case _KAROL_DIRECTION.NORTH:
+              world[x.toString() + '|' + (y - 1).toString()] = color!;
+              break;
+            case _KAROL_DIRECTION.SOUTH:
+              world[x.toString() + '|' + (y + 1).toString()] = color!;
+              break;
+            case _KAROL_DIRECTION.EAST:
+              world[(x + 1).toString() + '|' + (y).toString()] = color!;
+              break;
+            case _KAROL_DIRECTION.WEST:
+              world[(x - 1).toString() + '|' + (y).toString()] = color!;
+              break;
+          }
+        } else {
+          if (_SET_MOVE.contains(element)) {
+            switch (direction) {
+              case _KAROL_DIRECTION.NORTH:
+                y = y - 1;
+                break;
+              case _KAROL_DIRECTION.SOUTH:
+                y = y + 1;
+                break;
+              case _KAROL_DIRECTION.WEST:
+                x = x - 1;
+                break;
+              case _KAROL_DIRECTION.EAST:
+                x = x + 1;
+                break;
+            }
+            if (x > maxX) maxX = x;
+            if (y > maxY) maxY = y;
+          } else if (_SET_TURNLEFT.contains(element)) {
+            switch (direction) {
+              case _KAROL_DIRECTION.NORTH:
+                direction = _KAROL_DIRECTION.WEST;
+                break;
+              case _KAROL_DIRECTION.SOUTH:
+                direction = _KAROL_DIRECTION.EAST;
+                break;
+              case _KAROL_DIRECTION.WEST:
+                direction = _KAROL_DIRECTION.SOUTH;
+                break;
+              case _KAROL_DIRECTION.EAST:
+                direction = _KAROL_DIRECTION.NORTH;
+                break;
+            }
+          } else if (_SET_TURNRIGHT.contains(element)) {
+            switch (direction) {
+              case _KAROL_DIRECTION.NORTH:
+                direction = _KAROL_DIRECTION.EAST;
+                break;
+              case _KAROL_DIRECTION.SOUTH:
+                direction = _KAROL_DIRECTION.WEST;
+                break;
+              case _KAROL_DIRECTION.WEST:
+                direction = _KAROL_DIRECTION.NORTH;
+                break;
+              case _KAROL_DIRECTION.EAST:
+                direction = _KAROL_DIRECTION.SOUTH;
+                break;
+            }
+          } else if (_SET_PICKBRICK.contains(element)) {
+            switch (direction) {
+              case _KAROL_DIRECTION.NORTH:
+                world[x.toString() + '|' + (y - 1).toString()] = '#';
+                break;
+              case _KAROL_DIRECTION.SOUTH:
+                world[x.toString() + '|' + (y + 1).toString()] = '#';
+                break;
+              case _KAROL_DIRECTION.EAST:
+                world[(x + 1).toString() + '|' + (y).toString()] = '#';
+                break;
+              case _KAROL_DIRECTION.WEST:
+                world[(x - 1).toString() + '|' + (y).toString()] = '#';
+                break;
+            }
+          } else if (_SET_PUTBRICK.contains(element)) {
+            switch (direction) {
+              case _KAROL_DIRECTION.NORTH:
+                world[x.toString() + '|' + (y - 1).toString()] = '8';
+                break;
+              case _KAROL_DIRECTION.SOUTH:
+                world[x.toString() + '|' + (y + 1).toString()] = '8';
+                break;
+              case _KAROL_DIRECTION.EAST:
+                world[(x + 1).toString() + '|' + (y).toString()] = '8';
+                break;
+              case _KAROL_DIRECTION.WEST:
+                world[(x - 1).toString() + '|' + (y).toString()] = '8';
+                break;
+            }
+          } else if (_SET_PICKBEEPER.contains(element)) {
+            world[x.toString() + '|' + (y).toString()] = '#';
+          } else if (_SET_PUTBEEPER.contains(element)) {
+            world[x.toString() + '|' + (y).toString()] = '9';
+          } else if (_SET_HALT.contains(element)) {
+            halt = true;
+          } else if (_SET_WAIT.contains(element)) {
+          } else if (_SET_SOUND.contains(element)) {}
+          else {
+            world[x.toString() + '|' + (y).toString()] = '#';
+          }
         }
-      } else if (_SET_TURNRIGHT.contains(element)) {
-        switch (direction) {
-          case _KAROL_DIRECTION.NORTH:
-            direction = _KAROL_DIRECTION.EAST;
-            break;
-          case _KAROL_DIRECTION.SOUTH:
-            direction = _KAROL_DIRECTION.WEST;
-            break;
-          case _KAROL_DIRECTION.WEST:
-            direction = _KAROL_DIRECTION.NORTH;
-            break;
-          case _KAROL_DIRECTION.EAST:
-            direction = _KAROL_DIRECTION.SOUTH;
-            break;
-        }
-      } else if (_SET_PICKBRICK.contains(element)) {
-        switch (direction) {
-          case _KAROL_DIRECTION.NORTH:
-            world[x.toString() + '|' + (y - 1).toString()] = '#';
-            break;
-          case _KAROL_DIRECTION.SOUTH:
-            world[x.toString() + '|' + (y + 1).toString()] = '#';
-            break;
-          case _KAROL_DIRECTION.EAST:
-            world[(x + 1).toString() + '|' + (y).toString()] = '#';
-            break;
-          case _KAROL_DIRECTION.WEST:
-            world[(x - 1).toString() + '|' + (y).toString()] = '#';
-            break;
-        }
-      } else if (_SET_PUTBRICK.contains(element)) {
-        switch (direction) {
-          case _KAROL_DIRECTION.NORTH:
-            world[x.toString() + '|' + (y - 1).toString()] = '8';
-            break;
-          case _KAROL_DIRECTION.SOUTH:
-            world[x.toString() + '|' + (y + 1).toString()] = '8';
-            break;
-          case _KAROL_DIRECTION.EAST:
-            world[(x + 1).toString() + '|' + (y).toString()] = '8';
-            break;
-          case _KAROL_DIRECTION.WEST:
-            world[(x - 1).toString() + '|' + (y).toString()] = '8';
-            break;
-        }
-      } else if (_SET_PICKBEEPER.contains(element)) {
-        world[x.toString() + '|' + (y).toString()] = '#';
-      } else if (_SET_PUTBEEPER.contains(element)) {
-        world[x.toString() + '|' + (y).toString()] = '9';
-      } else if (_SET_HALT.contains(element)) {
-        halt = true;
-      } else if (_SET_WAIT.contains(element)) {
-      } else if (_SET_SOUND.contains(element)) {}
+      }
     }
   }); //forEach command
 
   maxX = maxX + 2;
   maxY = maxY + 2;
-  var binaryWorld = List.generate(maxX, (y) => List(maxY), growable: false);
+  var binaryWorld = List<List<String>>.generate(maxX, (y) => List<String>.filled(maxY, '#'), growable: false);
   world.forEach((key, value) {
     x = int.parse(key.split('|')[0]) - 1;
     y = int.parse(key.split('|')[1]) - 1;
@@ -475,16 +485,14 @@ String KarolRobotOutputDecode(String program) {
   });
 
   String outputLine = '##';
-  List<String> output = new List();
-  output.add(outputLine.padRight(maxX + 1, '#'));
+  var output = <String>[];
+  output.add(outputLine.padRight(maxX + 2, '#'));
   for (y = 0; y < maxY; y++) {
     outputLine = '##';
     for (x = 0; x < maxX; x++) {
-      if (binaryWorld[x][y] == null)
-        outputLine = outputLine + '#';
-      else
-        outputLine = outputLine + binaryWorld[x][y];
+      outputLine = outputLine + binaryWorld[x][y];
     }
+
     output.add(outputLine);
   }
   return output.join('\n');

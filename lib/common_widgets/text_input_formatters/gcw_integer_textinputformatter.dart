@@ -1,13 +1,13 @@
 import 'package:flutter/services.dart';
 
 class GCWIntegerTextInputFormatter extends TextInputFormatter {
-  RegExp _exp;
+  late RegExp _exp;
 
-  final int min;
-  final int max;
+  final int? min;
+  final int? max;
 
-  GCWIntegerTextInputFormatter({this.min, this.max}) {
-    _exp = new RegExp(_buildRegex());
+  GCWIntegerTextInputFormatter({required this.min, this.max}) {
+    _exp = RegExp(_buildRegex());
   }
 
   @override
@@ -23,26 +23,26 @@ class GCWIntegerTextInputFormatter extends TextInputFormatter {
     var regex = '';
 
     if (min == null) {
-      if (max == null)
-        regex = '^\-?[0-9]*\$';
-      else if (max < 0) {
-        regex = '^(\-[0-9]{0,${max.abs().toString().length}})?\$';
-      } else if (max >= 0) {
-        regex = '^((-[0-9]*)|([0-9]{0,${max.toString().length}}))\$';
+      if (max == null) {
+        regex = '^-?\\d*\$';
+      } else if (max! < 0) {
+        regex = '^(-\\d{0,${max!.abs().toString().length}})?\$';
+      } else if (max! >= 0) {
+        regex = '^((-\\d*)|(\\d{0,${max.toString().length}}))\$';
       }
-    } else if (min < 0) {
-      if (max == null)
-        regex = '^((\-[0-9]{0,${min.abs().toString().length}})|([0-9]*))\$';
-      else if (max < 0) {
-        regex = '^(\-[0-9]{0,${min.abs().toString().length}})?\$';
-      } else if (max >= 0) {
-        regex = '^((\-[0-9]{0,${min.abs().toString().length}})|([0-9]{0,${max.toString().length}}))\$';
+    } else if (min! < 0) {
+      if (max == null) {
+        regex = '^((-\\d{0,${min!.abs().toString().length}})|(\\d*))\$';
+      } else if (max! < 0) {
+        regex = '^(-\\d{0,${min!.abs().toString().length}})?\$';
+      } else if (max! >= 0) {
+        regex = '^((-\\d{0,${min!.abs().toString().length}})|(\\d{0,${max.toString().length}}))\$';
       }
-    } else if (min >= 0) {
-      if (max == null)
-        regex = '^[0-9]*\$';
-      else if (max >= 0) {
-        regex = '^[0-9]{0,${max.toString().length}}\$';
+    } else if (min! >= 0) {
+      if (max == null) {
+        regex = '^\\d*\$';
+      } else if (max! >= 0) {
+        regex = '^\\d{0,${max.toString().length}}\$';
       }
     }
 
@@ -53,7 +53,7 @@ class GCWIntegerTextInputFormatter extends TextInputFormatter {
     if (value.startsWith('-')) {
       if (min == null) return true;
 
-      if (min.abs().toString().length > value.substring(1).length) return true;
+      if (min!.abs().toString().length > value.substring(1).length) return true;
     } else {
       if (max == null) return true;
 
@@ -63,9 +63,9 @@ class GCWIntegerTextInputFormatter extends TextInputFormatter {
     var _newInt = int.tryParse(value);
     if (_newInt == null) return false;
 
-    if (min != null && _newInt < min) return false;
+    if (min != null && _newInt < min!) return false;
 
-    if (max != null && _newInt > max) return false;
+    if (max != null && _newInt > max!) return false;
 
     return true;
   }

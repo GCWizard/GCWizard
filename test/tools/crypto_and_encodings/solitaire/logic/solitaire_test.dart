@@ -3,13 +3,10 @@ import 'package:gc_wizard/tools/crypto_and_encodings/solitaire/logic/solitaire.d
 
 void main() {
   group("Solitaire.encryptSolitaire:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'key': null, 'expectedOutput' : null, 'keyStream': null},
-      {'input' : '', 'key': null, 'expectedOutput' : null, 'keyStream': null},
-      {'input' : null, 'key': 'FOO', 'expectedOutput' : null, 'keyStream': null},
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '', 'key': '', 'expectedOutput' : null, 'keyStream': null},
       {'input' : '', 'key': 'FOO', 'expectedOutput' : null, 'keyStream': null},
 
-      {'input' : 'DONOTUSEPC', 'key': null, 'expectedOutput' : 'HLXMB TKKTJ', 'keyStream': 'DWJXHYRFDG'},
       {'input' : 'DONOTUSEPC', 'key': '', 'expectedOutput' : 'HLXMB TKKTJ', 'keyStream': 'DWJXHYRFDG'},
       {'input' : 'AAAAAAAAAA', 'key': '', 'expectedOutput' : 'EXKYI ZSGEH', 'keyStream': 'DWJXHYRFDG'},
       {'input' : 'AAAAAAAAAAAAAAA', 'key': 'FOO', 'expectedOutput' : 'ITHZU JIWGR FARMW', 'keyStream': 'HSGYTIHVFQEZQLV'},
@@ -24,9 +21,9 @@ void main() {
       {'input' : 'ABC*%&/', 'key': '', 'expectedOutput' : 'EYMVF', 'keyStream': 'DWJXH'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, key: ${elem['key']}', () {
-        var _actual = encryptSolitaire(elem['input'], elem['key']);
+        var _actual = encryptSolitaire(elem['input'] as String, elem['key'] as String);
 
         if (_actual == null) {
           expect(null, elem['expectedOutput']);
@@ -37,17 +34,14 @@ void main() {
         expect(_actual.output, elem['expectedOutput']);
         expect(_actual.keyStream, elem['keyStream']);
       });
-    });
+    }
   });
 
   group("Solitaire.decryptSolitaire:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'key': null, 'expectedOutput' : null, 'keyStream': null},
-      {'input' : '', 'key': null, 'expectedOutput' : null, 'keyStream': null},
-      {'input' : null, 'key': 'FOO', 'expectedOutput' : null, 'keyStream': null},
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '', 'key': '', 'expectedOutput' : null, 'keyStream': null},
       {'input' : '', 'key': 'FOO', 'expectedOutput' : null, 'keyStream': null},
 
-      {'input' : 'HLXMB TKKTJ', 'key': null, 'expectedOutput' : 'DONOTUSEPC', 'keyStream': 'DWJXHYRFDG'},
       {'input' : 'HLXMB TKKTJ', 'key': '', 'expectedOutput' : 'DONOTUSEPC', 'keyStream': 'DWJXHYRFDG'},
       {'input' : 'EXKYI ZSGEH', 'key': '', 'expectedOutput' : 'AAAAAAAAAA', 'keyStream': 'DWJXHYRFDG'},
       {'input' : 'ITHZU JIWGR FARMW', 'key': 'FOO', 'expectedOutput' : 'AAAAAAAAAAAAAAA', 'keyStream': 'HSGYTIHVFQEZQLV'},
@@ -60,9 +54,9 @@ void main() {
       {'input' : 'EYMVF', 'key': '', 'expectedOutput' : 'ABCXX', 'keyStream': 'DWJXH'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, key: ${elem['key']}', () {
-        var _actual = decryptSolitaire(elem['input'], elem['key']);
+        var _actual = decryptSolitaire(elem['input'] as String, elem['key'] as String);
 
         if (_actual == null) {
           expect(null, elem['expectedOutput']);
@@ -73,6 +67,6 @@ void main() {
         expect(_actual.output, elem['expectedOutput']);
         expect(_actual.keyStream, elem['keyStream']);
       });
-    });
+    }
   });
 }

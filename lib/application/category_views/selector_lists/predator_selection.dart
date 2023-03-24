@@ -8,17 +8,20 @@ import 'package:gc_wizard/tools/symbol_tables/_common/widget/symbol_table.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class PredatorSelection extends GCWSelection {
+  const PredatorSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
-      if (className(element.tool) == className(SymbolTable()) && (element.tool as SymbolTable).symbolKey == 'predator')
+      if (className(element.tool) == className(const SymbolTable()) && (element.tool as SymbolTable).symbolKey == 'predator') {
         return true;
+      }
 
       return [
-        className(Predator()),
+        className(const Predator()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

@@ -7,7 +7,7 @@ part 'package:gc_wizard/application/theme/themes/theme_colors_light.dart';
 
 enum ThemeType { DARK, LIGHT }
 
-ThemeColors _themeColors;
+ThemeColors? _themeColors;
 
 abstract class ThemeColors {
   ThemeData base();
@@ -16,7 +16,7 @@ abstract class ThemeColors {
 
   Color primaryBackground();
   Color inputBackground();
-  Color accent();
+  Color secondary();
   Color focused();
   Color inActive();
 
@@ -57,15 +57,15 @@ abstract class ThemeColors {
   Color formulaError();
 }
 
-setThemeColorsByName(String themeColor) {
-  if (themeColor == ThemeType.DARK.toString())
+void setThemeColorsByName(String themeColor) {
+  if (themeColor == ThemeType.DARK.toString()) {
     setThemeColors(ThemeType.DARK);
-  else if (themeColor == ThemeType.LIGHT.toString()) {
+  } else if (themeColor == ThemeType.LIGHT.toString()) {
     setThemeColors(ThemeType.LIGHT);
   }
 }
 
-setThemeColors(ThemeType type) {
+void setThemeColors(ThemeType type) {
   switch (type) {
     case ThemeType.DARK:
       _themeColors = _ThemeColorsDark();
@@ -74,17 +74,17 @@ setThemeColors(ThemeType type) {
       _themeColors = _ThemeColorsLight();
       break;
     default:
-      return null;
+      return;
   }
 }
 
 ThemeColors themeColors() {
-  if (_themeColors != null) return _themeColors;
+  if (_themeColors != null) return _themeColors!;
 
   var themeSetting = Prefs.getString(PREFERENCE_THEME_COLOR);
   var type = ThemeType.values.firstWhere((e) => e.toString() == themeSetting);
 
   setThemeColors(type);
 
-  return _themeColors;
+  return _themeColors!;
 }

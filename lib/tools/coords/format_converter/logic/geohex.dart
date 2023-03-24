@@ -5,7 +5,7 @@ import 'package:latlong2/latlong.dart';
 
 part 'package:gc_wizard/tools/coords/format_converter/logic/external_libs/chsh.geohex4j/geohex.dart';
 
-LatLng geoHexToLatLon(GeoHex geoHex) {
+LatLng? geoHexToLatLon(GeoHex geoHex) {
   try {
     _Zone zone = _getZoneByCode(geoHex.text);
     return LatLng(zone.lat, zone.lon);
@@ -14,8 +14,7 @@ LatLng geoHexToLatLon(GeoHex geoHex) {
   return null;
 }
 
-GeoHex parseGeoHex(String input) {
-  if (input == null) return null;
+GeoHex? parseGeoHex(String input) {
   input = input.trim();
   if (input == '') return null;
 

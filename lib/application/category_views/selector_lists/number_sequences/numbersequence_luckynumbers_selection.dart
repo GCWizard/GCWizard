@@ -7,18 +7,20 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucky_nu
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceLuckyNumbersSelection extends GCWSelection {
+  const NumberSequenceLuckyNumbersSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(NumberSequenceLuckyNumbersNthNumber()),
-        className(NumberSequenceLuckyNumbersRange()),
-        className(NumberSequenceLuckyNumbersDigits()),
-        className(NumberSequenceLuckyNumbersCheckNumber()),
-        className(NumberSequenceLuckyNumbersContainsDigits()),
+        className(const NumberSequenceLuckyNumbersNthNumber()),
+        className(const NumberSequenceLuckyNumbersRange()),
+        className(const NumberSequenceLuckyNumbersDigits()),
+        className(const NumberSequenceLuckyNumbersCheckNumber()),
+        className(const NumberSequenceLuckyNumbersContainsDigits()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

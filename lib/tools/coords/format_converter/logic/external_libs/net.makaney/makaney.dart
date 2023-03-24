@@ -37,10 +37,14 @@ double _base33ToDecimal(String str) {
   if (str[0] == '-') {
     sign = -1;
     str = str.substring(1);
-  } else if (str[0] == '+') str = str.substring(1);
+  } else if (str[0] == '+') {
+    str = str.substring(1);
+  }
   str = str.toLowerCase();
   var sum = 0.0;
-  for (var i = 0; i < str.length; i++) sum += _zbase33.indexOf(str[(str.length - 1) - i]) * pow(_mbase, i);
+  for (var i = 0; i < str.length; i++) {
+    sum += _zbase33.indexOf(str[(str.length - 1) - i]) * pow(_mbase, i);
+  }
   return sign * sum;
 }
 
@@ -60,10 +64,10 @@ String _decimalToBase33(int n) {
 List<double> _makaneyToLatLon(String str) {
   var pos = str.indexOf('+');
 
-  var lon;
-  if (pos != -1)
+  double lon;
+  if (pos != -1) {
     lon = _base33ToDecimal(str.substring(pos)) / 10000;
-  else {
+  } else {
     pos = str.lastIndexOf('-');
     lon = _base33ToDecimal(str.substring(pos)) / 10000;
   }
@@ -77,8 +81,9 @@ String _latLonToMakaney(double lat, double lon) {
   var _lat = _decimalToBase33((lat * 10000).floor());
   var _lon = _decimalToBase33((lon * 10000).floor());
 
-  if (_lon.startsWith('-'))
+  if (_lon.startsWith('-')) {
     return _lat + _lon;
-  else
+  } else {
     return _lat + '+' + _lon;
+  }
 }

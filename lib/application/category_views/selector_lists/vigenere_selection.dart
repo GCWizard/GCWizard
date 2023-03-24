@@ -10,17 +10,19 @@ import 'package:gc_wizard/tools/crypto_and_encodings/vigenere/widget/vigenere.da
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class VigenereSelection extends GCWSelection {
+  const VigenereSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(Vigenere()),
-        className(VigenereBreaker()),
-        className(Trithemius()),
-        className(Gronsfeld()),
+        className(const Vigenere()),
+        className(const VigenereBreaker()),
+        className(const Trithemius()),
+        className(const Gronsfeld()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

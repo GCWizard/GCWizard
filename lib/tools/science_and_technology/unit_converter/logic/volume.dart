@@ -1,21 +1,21 @@
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit.dart';
 
 class Volume extends Unit {
-  Function toCubicMeter;
-  Function fromCubicMeter;
+  late double Function (double) toCubicMeter;
+  late double Function (double) fromCubicMeter;
 
   Volume({
-    String name,
-    String symbol,
-    bool isReference: false,
-    double inCubicMeters: 1.0,
+    required String name,
+    required String symbol,
+    bool isReference = false,
+    required double inCubicMeters,
   }) : super(name, symbol, isReference, (e) => e * inCubicMeters, (e) => e / inCubicMeters) {
-    toCubicMeter = this.toReference;
-    fromCubicMeter = this.fromReference;
+    toCubicMeter = toReference;
+    fromCubicMeter = fromReference;
   }
 }
 
-final VOLUME_CUBICMETER = Volume(name: 'common_unit_volume_m3_name', symbol: 'm\u00B3', isReference: true);
+final VOLUME_CUBICMETER = Volume(name: 'common_unit_volume_m3_name', symbol: 'm\u00B3', inCubicMeters: 1.0, isReference: true);
 
 final VOLUME_CUBICCENTIMETER =
     Volume(name: 'common_unit_volume_cm3_name', symbol: 'cm\u00B3', inCubicMeters: 0.01 * 0.01 * 0.01);
@@ -131,7 +131,7 @@ final VOLUME_USPECK =
 final VOLUME_USBUSHEL =
     Volume(name: 'common_unit_volume_usbu_name', symbol: 'US.bu', inCubicMeters: 0.001 * 4.40488377086 * 8.0);
 
-final VOLUME_BATHTUB = Volume(name: 'common_unit_volume_bathtub_name', symbol: null, inCubicMeters: 0.001 * 150.0);
+final VOLUME_BATHTUB = Volume(name: 'common_unit_volume_bathtub_name', symbol: '', inCubicMeters: 0.001 * 150.0);
 
 final VOLUME_USSALTSPOON =
     Volume(name: 'common_unit_volume_tsp_name', symbol: 'ssp', inCubicMeters: 0.001 * 0.001 * 4.928922 / 4.0);
@@ -174,7 +174,7 @@ final VOLUME_WASHINGMACHINE =
 final VOLUME_NGOGN =
     Volume(name: 'common_unit_volume_ngogn_name', symbol: 'n', inCubicMeters: 0.022633 * 0.022633 * 0.022633);
 
-final List<Unit> volumes = [
+final List<Volume> volumes = [
   VOLUME_CUBICMILLIMETER,
   VOLUME_CUBICCENTIMETER,
   VOLUME_CUBICDECIMETER,

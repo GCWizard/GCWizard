@@ -9,7 +9,6 @@ import 'package:gc_wizard/common_widgets/gcw_popup_menu.dart';
 import 'package:gc_wizard/common_widgets/gcw_soundplayer.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/gcw_textviewer.dart';
-import 'package:gc_wizard/common_widgets/gcw_toast.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/tools/images_and_files/hex_viewer/widget/hex_viewer.dart';
 import 'package:gc_wizard/tools/images_and_files/hidden_data/logic/hidden_data.dart';
@@ -20,9 +19,9 @@ import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
 class GCWFilesOutput extends StatefulWidget {
   final List<GCWFile> files;
   final bool suppressHiddenDataMessage;
-  final Set<GCWImageViewButtons> suppressedButtons;
+  final Set<GCWImageViewButtons>? suppressedButtons;
 
-  const GCWFilesOutput({Key key, @required this.files, this.suppressHiddenDataMessage = false, this.suppressedButtons})
+  const GCWFilesOutput({Key? key, required this.files, this.suppressHiddenDataMessage = false, this.suppressedButtons})
       : super(key: key);
 
   @override
@@ -35,24 +34,24 @@ class _GCWFilesOutputState extends State<GCWFilesOutput> {
     return Column(children: <Widget>[_buildFileTree(widget.files, [])]);
   }
 
-  Widget _buildFileTree(List<GCWFile> files, List<String> parents, {level: 0}) {
+  Widget _buildFileTree(List<GCWFile> files, List<String> parents, {int level = 0}) {
     var isFirst = true;
     var children = files.map((GCWFile file) {
-      var hasChildren = file.children != null && file.children.isNotEmpty;
+      var hasChildren = file.children != null && file.children!.isNotEmpty;
 
       var actionButton = _buildActionButton(file);
 
-      var text;
+      String text = '';
       if (file.fileClass == FileClass.TEXT) {
-        text = String.fromCharCodes(file.bytes ?? []);
-        if (text != null && text.length > 100) text = text.substring(0, 100) + '...';
+        text = String.fromCharCodes(file.bytes);
+        if (text.length > 100) text = text.substring(0, 100) + '...';
       }
 
       var fileName = file.name;
       if (fileName != null) {
         if (fileName.startsWith(HIDDEN_FILE_IDENTIFIER)) {
           var index = fileName.split('_').last;
-          var prefix;
+          String prefix;
           if (index == '0') {
             prefix = i18n(context, 'hiddendata_source');
           } else {
@@ -61,8 +60,9 @@ class _GCWFilesOutputState extends State<GCWFilesOutput> {
 
           fileName = '$prefix: ' + file.fileType.toString().split('.').last;
         }
-      } else
+      } else {
         fileName = '';
+      }
 
       var parentsString = parents.join(' → ');
       var newParents = List<String>.from(parents);
@@ -73,11 +73,13 @@ class _GCWFilesOutputState extends State<GCWFilesOutput> {
           Row(
             children: [
               Container(
-                  child: actionButton == null ? Container() : actionButton,
                   width: 42,
-                  padding: EdgeInsets.only(right: 10)),
+                  padding: const EdgeInsets.only(right: 10),
+                  child: actionButton),
               Expanded(
                 child: Container(
+                    color: themeColors().secondary(),
+                    padding: const EdgeInsets.all(DOUBLE_DEFAULT_MARGIN),
                     child: Column(
                       children: [
                         if (parents.isNotEmpty)
@@ -94,34 +96,32 @@ class _GCWFilesOutputState extends State<GCWFilesOutput> {
                                       .copyWith(fontWeight: FontWeight.bold, color: themeColors().dialogText())),
                             ),
                             GCWText(
-                                text: file.bytes == null ? '??? Bytes' : '${file.bytes.length} Bytes',
+                                text: '${file.bytes.length} Bytes',
                                 style: gcwTextStyle()
                                     .copyWith(color: themeColors().dialogText(), fontSize: defaultFontSize() - 2))
                           ],
                         )
                       ],
-                    ),
-                    color: themeColors().accent(),
-                    padding: EdgeInsets.all(DOUBLE_DEFAULT_MARGIN)),
+                    )),
               ),
             ],
           ),
           if (file.fileClass == FileClass.IMAGE)
             Container(
+                margin: const EdgeInsets.only(left: 42),
                 child: GCWImageView(
                   imageData: GCWImageViewData(file),
                   suppressedButtons: widget.suppressedButtons,
-                ),
-                margin: EdgeInsets.only(left: 42)),
+                )),
           if (file.fileClass == FileClass.TEXT)
-            Container(child: GCWText(style: gcwMonotypeTextStyle(), text: text), margin: EdgeInsets.only(left: 42)),
+            Container(margin: const EdgeInsets.only(left: 42), child: GCWText(style: gcwMonotypeTextStyle(), text: text)),
           if (file.fileClass == FileClass.SOUND)
-            Container(child: GCWSoundPlayer(file: file), margin: EdgeInsets.only(left: 42)),
+            Container(margin: const EdgeInsets.only(left: 42), child: GCWSoundPlayer(file: file)),
           if (hasChildren)
             Container(
-              child: _buildFileTree(file.children, newParents, level: level + 1),
+              child: _buildFileTree(file.children ?? [], newParents, level: level + 1),
             ),
-          if (level == 0 && isFirst) GCWDivider(),
+          if (level == 0 && isFirst) const GCWDivider(),
           if (!widget.suppressHiddenDataMessage)
             if (files.length <= 1 && level == 0 && !hasChildren)
               GCWText(text: i18n(context, 'hiddendata_nohiddendatafound'))
@@ -138,7 +138,7 @@ class _GCWFilesOutputState extends State<GCWFilesOutput> {
     );
   }
 
-  _buildActionButton(GCWFile file) {
+  GCWPopupMenu _buildActionButton(GCWFile file) {
     var actions = <GCWPopupMenuItem>[
       GCWPopupMenuItem(
         child: iconedGCWPopupMenuItem(context, Icons.save, 'hiddendata_savefile'),
@@ -149,10 +149,6 @@ class _GCWFilesOutputState extends State<GCWFilesOutput> {
       GCWPopupMenuItem(
         child: iconedGCWPopupMenuItem(context, Icons.text_snippet_outlined, 'hexviewer_openinhexviewer'),
         action: (index) => setState(() {
-          if (file.bytes == null) {
-            showToast(i18n(context, 'hiddendata_datanotreadable'));
-            return;
-          }
           openInHexViewer(context, file);
         }),
       ),
@@ -160,10 +156,6 @@ class _GCWFilesOutputState extends State<GCWFilesOutput> {
         GCWPopupMenuItem(
           child: iconedGCWPopupMenuItem(context, Icons.text_snippet_outlined, 'textviewer_openintextviewer'),
           action: (index) => setState(() {
-            if (file.bytes == null) {
-              showToast(i18n(context, 'hiddendata_datanotreadable'));
-              return;
-            }
             openInTextViewer(context, String.fromCharCodes(file.bytes));
           }),
         ),
@@ -176,18 +168,16 @@ class _GCWFilesOutputState extends State<GCWFilesOutput> {
     );
   }
 
-  _exportFile(BuildContext context, GCWFile file) async {
-    if (file.bytes == null) {
-      showToast(i18n(context, 'hiddendata_datanotreadable'));
-      return;
-    }
-
-    var fileName = file.name.replaceFirst(HIDDEN_FILE_IDENTIFIER, 'hidden_file');
-    var ext = file.name.split('.');
+  Future<void> _exportFile(BuildContext context, GCWFile file) async {
+    var fileName = file.name == null ? '' : file.name!.replaceFirst(HIDDEN_FILE_IDENTIFIER, 'hidden_file');
+    var ext = fileName.split('.');
 
     if (ext.length <= 1 || ext.last.length >= 5) fileName = fileName + '.' + fileExtension(file.fileType);
 
-    var value = await saveByteDataToFile(context, file.bytes, fileName);
-    if (value != null) showExportedFileDialog(context, fileType: file.fileType);
+    await saveByteDataToFile(context, file.bytes, fileName).then((value) {
+      var content = fileClass(file.fileType) == FileClass.IMAGE ? imageContent(context, file.bytes) : null;
+      if (value) showExportedFileDialog(context, contentWidget: content);
+    });
+
   }
 }

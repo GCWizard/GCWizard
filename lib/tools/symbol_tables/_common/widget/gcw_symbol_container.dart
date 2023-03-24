@@ -3,20 +3,20 @@ import 'package:gc_wizard/application/theme/theme_colors.dart';
 
 class GCWSymbolContainer extends StatefulWidget {
   final Image symbol;
-  final Color backgroundColor;
-  final Color borderColor;
-  final double borderWidth;
+  final Color? backgroundColor;
+  final Color? borderColor;
+  final double? borderWidth;
   final bool showBackground;
   final bool showBorder;
 
   const GCWSymbolContainer(
-      {Key key,
-      @required this.symbol,
+      {Key? key,
+      required this.symbol,
       this.backgroundColor,
       this.borderColor,
       this.borderWidth,
-      this.showBackground: true,
-      this.showBorder: true})
+      this.showBackground = true,
+      this.showBorder = true})
       : super(key: key);
 
   @override
@@ -26,8 +26,8 @@ class GCWSymbolContainer extends StatefulWidget {
 class _GCWSymbolContainerState extends State<GCWSymbolContainer> {
   @override
   Widget build(BuildContext context) {
-    var backgroundColor;
-    var borderColor;
+    Color? backgroundColor;
+    Color? borderColor;
     if (widget.showBackground) {
       backgroundColor = widget.backgroundColor ?? themeColors().iconImageBackground();
     }
@@ -36,10 +36,10 @@ class _GCWSymbolContainerState extends State<GCWSymbolContainer> {
     }
 
     return Container(
-      child: widget.symbol,
       decoration: BoxDecoration(
-          color: backgroundColor, border: Border.all(color: borderColor, width: widget.borderWidth ?? 1.0)),
-      padding: EdgeInsets.all(2),
+          color: backgroundColor, border: Border.all(color: borderColor!, width: widget.borderWidth ?? 1.0)),
+      padding: const EdgeInsets.all(2),
+      child: widget.symbol,
     );
   }
 }

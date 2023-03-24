@@ -3,26 +3,27 @@ import 'package:gc_wizard/tools/science_and_technology/primes/_common/logic/prim
 import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:gc_wizard/utils/constants.dart';
 
-String decryptPrimeAlphabet(List<int> input, {int firstRecognizedPrime: 2}) {
-  if (input == null || input.isEmpty) return '';
+String decryptPrimeAlphabet(List<int?> input, {int firstRecognizedPrime = 2}) {
+  if (input.isEmpty) return '';
 
-  if (!isPrime(BigInt.from(firstRecognizedPrime))) {
-    firstRecognizedPrime = getNextPrime(firstRecognizedPrime);
+  int? _firstRecognizedPrime = firstRecognizedPrime;
+  if (!isPrime(BigInt.from(_firstRecognizedPrime))) {
+    _firstRecognizedPrime = getNextPrime(_firstRecognizedPrime);
   }
 
-  var firstIndex = getPrimeIndex(firstRecognizedPrime);
+  if (_firstRecognizedPrime == null) return '';
+  var firstIndex = getPrimeIndex(_firstRecognizedPrime);
 
   return input.map((number) {
-    if (number == null || number < firstRecognizedPrime || !isPrime(BigInt.from(number))) return UNKNOWN_ELEMENT;
+    if (_firstRecognizedPrime == null || number == null ||
+        number < _firstRecognizedPrime || !isPrime(BigInt.from(number))) return UNKNOWN_ELEMENT;
 
     var index = (getPrimeIndex(number) - firstIndex) % 26;
     return alphabet_AZIndexes[index + 1];
   }).join();
 }
 
-List<int> encryptPrimeAlphabet(String input, {int firstRecognizedPrime: 2, int lastRecognizedPrime: 101}) {
-  if (input == null) return [];
-
+List<int?> encryptPrimeAlphabet(String input, {int firstRecognizedPrime = 2, int lastRecognizedPrime = 101}) {
   input = input.toUpperCase().replaceAll(RegExp(r'[^A-Z]'), '');
   if (input.isEmpty) return [];
 
@@ -43,16 +44,16 @@ List<int> encryptPrimeAlphabet(String input, {int firstRecognizedPrime: 2, int l
 
   var alphabetIndex = 1;
   for (int i = startIndex; i <= endIndex; i++) {
-    homophoneMap[alphabet_AZIndexes[alphabetIndex]].add(getNthPrime(i));
+    homophoneMap[alphabet_AZIndexes[alphabetIndex]]?.add(getNthPrime(i));
     alphabetIndex++;
     if (alphabetIndex > 26) alphabetIndex = 1;
   }
 
   var result = encryptHomophoneWithKeyMap(input, homophoneMap).output;
-  return result.split(' ').map((value) {
+  var outList = result.split(' ').map((value) {
     var x = int.tryParse(value);
-    if (x == null || x < 0) return null;
-
-    return x;
+    return (x != null && x >= 0) ? x : null;
   }).toList();
+
+  return outList;
 }

@@ -1,19 +1,20 @@
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit.dart';
 
 class Energy extends Unit {
-  Function toJoule;
-  Function fromJoule;
+  late double Function (double) toJoule;
+  late double Function (double) fromJoule;
 
-  Energy({String name, String symbol, bool isReference: false, double inJoule})
+  Energy({required String name, required String symbol, bool isReference = false, required double inJoule})
       : super(name, symbol, isReference, (e) => e * inJoule, (e) => e / inJoule) {
-    toJoule = this.toReference;
-    fromJoule = this.fromReference;
+    toJoule = toReference;
+    fromJoule = fromReference;
   }
 }
 
 final ENERGY_JOULE = Energy(
   name: 'common_unit_energy_j_name',
   symbol: 'J',
+  inJoule: 1.0,
   isReference: true,
 );
 
@@ -28,7 +29,7 @@ final ENERGY_FTLB = Energy(name: 'common_unit_energy_ftlb_name', symbol: 'ft-lb'
 // https://webmadness.net/blog/?post=knuth
 final ENERGY_VREEBLE = Energy(name: 'common_unit_energy_vreeble_name', symbol: 'v', inJoule: 34.33 * 4.1868);
 
-final List<Unit> energies = [
+final List<Energy> energies = [
   ENERGY_JOULE,
   ENERGY_CALORIE,
   ENERGY_BRITISHTHERMALUNIT,

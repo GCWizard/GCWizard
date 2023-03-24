@@ -7,6 +7,8 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/roman_numbers/chronogram/logic/chronogram.dart';
 
 class Chronogram extends StatefulWidget {
+  const Chronogram({Key? key}) : super(key: key);
+
   @override
   ChronogramState createState() => ChronogramState();
 }

@@ -17,15 +17,17 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/murray/logic/m
 part 'package:gc_wizard/tools/science_and_technology/telegraphs/murray/widget/murray_segment_display.dart';
 
 class MurrayTelegraph extends StatefulWidget {
+  const MurrayTelegraph({Key? key}) : super(key: key);
+
   @override
   MurrayTelegraphState createState() => MurrayTelegraphState();
 }
 
 class MurrayTelegraphState extends State<MurrayTelegraph> {
   String _currentEncodeInput = '';
-  TextEditingController _encodeController;
+  late TextEditingController _encodeController;
 
-  List<List<String>> _currentDisplays = [];
+  var _currentDisplays = Segments.Empty();
   var _currentMode = GCWSwitchPosition.right;
 
   var _currentLanguage = MurrayCodebook.ROYALNAVY;
@@ -46,7 +48,7 @@ class MurrayTelegraphState extends State<MurrayTelegraph> {
   @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
-      GCWDropDown(
+      GCWDropDown<MurrayCodebook>(
         value: _currentLanguage,
         onChanged: (value) {
           setState(() {
@@ -56,8 +58,8 @@ class MurrayTelegraphState extends State<MurrayTelegraph> {
         items: MURRAY_CODEBOOK.entries.map((mode) {
           return GCWDropDownMenuItem(
               value: mode.key,
-              child: i18n(context, mode.value['title']),
-              subtitle: mode.value['subtitle'] != null ? i18n(context, mode.value['subtitle']) : null);
+              child: i18n(context, mode.value.title),
+              subtitle: i18n(context, mode.value.subtitle));
         }).toList(),
       ),
       GCWTwoOptionsSwitch(
@@ -86,16 +88,10 @@ class MurrayTelegraphState extends State<MurrayTelegraph> {
     ]);
   }
 
-  _buildVisualDecryption() {
-    Map<String, bool> currentDisplay;
+  Widget _buildVisualDecryption() {
+    var currentDisplay = buildSegmentMap(_currentDisplays);
 
-    var displays = _currentDisplays;
-    if (displays != null && displays.length > 0)
-      currentDisplay = Map<String, bool>.fromIterable(displays.last ?? [], key: (e) => e, value: (e) => true);
-    else
-      currentDisplay = {};
-
-    var onChanged = (Map<String, bool> d) {
+    onChanged(Map<String, bool> d) {
       setState(() {
         var newSegments = <String>[];
         d.forEach((key, value) {
@@ -103,20 +99,16 @@ class MurrayTelegraphState extends State<MurrayTelegraph> {
           newSegments.add(key);
         });
 
-        newSegments.sort();
-
-        if (_currentDisplays.length == 0) _currentDisplays.add([]);
-
-        _currentDisplays[_currentDisplays.length - 1] = newSegments;
+        _currentDisplays.replaceLastSegment(newSegments);
       });
-    };
+    }
 
     return Column(
       children: <Widget>[
         Container(
           width: 180,
           height: 220,
-          padding: EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
+          padding: const EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
           child: Row(
             children: <Widget>[
               Expanded(
@@ -133,7 +125,7 @@ class MurrayTelegraphState extends State<MurrayTelegraph> {
             icon: Icons.space_bar,
             onPressed: () {
               setState(() {
-                _currentDisplays.add([]);
+                _currentDisplays.addEmptySegment();
               });
             },
           ),
@@ -141,7 +133,7 @@ class MurrayTelegraphState extends State<MurrayTelegraph> {
             icon: Icons.backspace,
             onPressed: () {
               setState(() {
-                if (_currentDisplays.length > 0) _currentDisplays.removeLast();
+                _currentDisplays.removeLastSegment();
               });
             },
           ),
@@ -149,7 +141,7 @@ class MurrayTelegraphState extends State<MurrayTelegraph> {
             icon: Icons.clear,
             onPressed: () {
               setState(() {
-                _currentDisplays = [];
+                _currentDisplays = Segments.Empty();
               });
             },
           )
@@ -158,7 +150,7 @@ class MurrayTelegraphState extends State<MurrayTelegraph> {
     );
   }
 
-  Widget _buildDigitalOutput(List<List<String>> segments) {
+  Widget _buildDigitalOutput(Segments segments) {
     return SegmentDisplayOutput(
         segmentFunction: (displayedSegments, readOnly) {
           return _MurraySegmentDisplay(segments: displayedSegments, readOnly: readOnly);
@@ -170,7 +162,7 @@ class MurrayTelegraphState extends State<MurrayTelegraph> {
   Widget _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
       //encode
-      List<List<String>> segments = encodeMurray(_currentEncodeInput, _currentLanguage);
+      var segments = encodeMurray(_currentEncodeInput, _currentLanguage);
       return Column(
         children: <Widget>[
           _buildDigitalOutput(segments),
@@ -178,14 +170,12 @@ class MurrayTelegraphState extends State<MurrayTelegraph> {
       );
     } else {
       //decode
-      var output = _currentDisplays.map((character) {
-        if (character != null) return character.join();
-      }).toList();
+      var output = _currentDisplays.buildOutput();
       var segments = decodeMurray(output, _currentLanguage);
       return Column(
         children: <Widget>[
-          _buildDigitalOutput(segments['displays']),
-          GCWDefaultOutput(child: segments['chars'].join()),
+          _buildDigitalOutput(segments),
+          GCWDefaultOutput(child: segments.chars.join()),
         ],
       );
     }

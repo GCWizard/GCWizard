@@ -5,7 +5,7 @@ import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
-import 'package:gc_wizard/common_widgets/gcw_async_executer.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/gcw_toast.dart';
 import 'package:gc_wizard/common_widgets/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -20,8 +20,11 @@ import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/substi
 import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/widget/quadgram_loader.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/widget/substitution_breaker_items.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/substitution/widget/substitution.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 
 class SubstitutionBreaker extends StatefulWidget {
+  const SubstitutionBreaker({Key? key}) : super(key: key);
+
   @override
   SubstitutionBreakerState createState() => SubstitutionBreakerState();
 }
@@ -29,10 +32,10 @@ class SubstitutionBreaker extends StatefulWidget {
 class SubstitutionBreakerState extends State<SubstitutionBreaker> {
   String _currentInput = '';
   SubstitutionBreakerAlphabet _currentAlphabet = SubstitutionBreakerAlphabet.GERMAN;
-  SubstitutionBreakerResult _currentOutput;
+  SubstitutionBreakerResult? _currentOutput;
 
-  var _quadgrams = Map<SubstitutionBreakerAlphabet, Quadgrams>();
-  var _isLoading = <bool>[false];
+  final _quadgrams = <SubstitutionBreakerAlphabet, Quadgrams>{};
+  final _isLoading = <bool>[false];
 
   @override
   void initState() {
@@ -53,7 +56,7 @@ class SubstitutionBreakerState extends State<SubstitutionBreaker> {
           },
         ),
         GCWTextDivider(text: i18n(context, 'common_alphabet')),
-        GCWDropDown(
+        GCWDropDown<SubstitutionBreakerAlphabet>(
           value: _currentAlphabet,
           onChanged: (value) {
             setState(() {
@@ -75,20 +78,20 @@ class SubstitutionBreakerState extends State<SubstitutionBreaker> {
 
   Widget _buildSubmitButton() {
     return GCWSubmitButton(onPressed: () async {
-      await showDialog(
+      await showDialog<bool>(
         context: context,
         barrierDismissible: false,
         builder: (context) {
           return Center(
-            child: Container(
-              child: GCWAsyncExecuter(
+            child: SizedBox(
+              height: 220,
+              width: 150,
+              child: GCWAsyncExecuter<SubstitutionBreakerResult?>(
                 isolatedFunction: break_cipherAsync,
-                parameter: _buildJobData(),
+                parameter: _buildJobData,
                 onReady: (data) => _showOutput(data),
                 isOverlay: true,
               ),
-              height: 220,
-              width: 150,
             ),
           );
         },
@@ -97,24 +100,24 @@ class SubstitutionBreakerState extends State<SubstitutionBreaker> {
   }
 
   Widget _buildOutput(BuildContext context) {
-    if (_currentInput == null || _currentInput.length == 0) return GCWDefaultOutput();
+    if (_currentInput.isEmpty) return const GCWDefaultOutput();
 
-    if (_currentOutput == null) return GCWDefaultOutput();
+    if (_currentOutput == null) return const GCWDefaultOutput();
 
-    if (_currentOutput.errorCode != SubstitutionBreakerErrorCode.OK) {
-      showToast(i18n(context, 'substitutionbreaker_error', parameters: [_currentOutput.errorCode]));
-      return GCWDefaultOutput();
+    if (_currentOutput!.errorCode != SubstitutionBreakerErrorCode.OK) {
+      showToast(i18n(context, 'substitutionbreaker_error', parameters: [_currentOutput!.errorCode]));
+      return const GCWDefaultOutput();
     }
 
     return GCWMultipleOutput(
       children: [
-        _currentOutput.plaintext,
+        _currentOutput!.plaintext,
         Column(
           children: [
             GCWOutput(
               title: i18n(context, 'common_key'),
               child: GCWOutputText(
-                text: _currentOutput.alphabet.toUpperCase() + '\n' + _currentOutput.key.toUpperCase(),
+                text: _currentOutput!.alphabet.toUpperCase() + '\n' + _currentOutput!.key.toUpperCase(),
                 isMonotype: true,
               ),
             ),
@@ -122,16 +125,17 @@ class SubstitutionBreakerState extends State<SubstitutionBreaker> {
               text: i18n(context, 'substitutionbreaker_exporttosubstition'),
               onPressed: () {
                 Map<String, String> substitutions = {};
-                for (int i = 0; i < _currentOutput.alphabet.length; i++)
+                for (int i = 0; i < _currentOutput!.alphabet.length; i++) {
                   substitutions.putIfAbsent(
-                      _currentOutput.key[i].toUpperCase(), () => _currentOutput.alphabet[i].toUpperCase());
+                      _currentOutput!.key[i].toUpperCase(), () => _currentOutput!.alphabet[i].toUpperCase());
+                }
 
                 Navigator.push(
                     context,
-                    NoAnimationMaterialPageRoute(
+                    NoAnimationMaterialPageRoute<GCWTool>(
                         builder: (context) => GCWTool(
-                            tool: Substitution(input: _currentOutput.ciphertext, substitutions: substitutions),
-                            i18nPrefix: 'substitution')));
+                            tool: Substitution(input: _currentOutput!.ciphertext, substitutions: substitutions),
+                            id: 'substitution')));
               },
             )
           ],
@@ -140,19 +144,19 @@ class SubstitutionBreakerState extends State<SubstitutionBreaker> {
     );
   }
 
-  Future<GCWAsyncExecuterParameters> _buildJobData() async {
+  Future<GCWAsyncExecuterParameters?> _buildJobData() async {
     _currentOutput = null;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {});
     });
-    if (_currentInput == null || _currentInput.length == 0) return null;
+    if (_currentInput.isEmpty) return null;
 
     var quadgram = await loadQuadgramsAssets(_currentAlphabet, context, _quadgrams, _isLoading);
 
     return GCWAsyncExecuterParameters(SubstitutionBreakerJobData(input: _currentInput, quadgrams: quadgram));
   }
 
-  _showOutput(SubstitutionBreakerResult output) {
+  void _showOutput(SubstitutionBreakerResult? output) {
     if (output == null) {
       _currentOutput = null;
       WidgetsBinding.instance.addPostFrameCallback((_) {

@@ -5,7 +5,7 @@ import 'package:gc_wizard/application/i18n/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
-import 'package:gc_wizard/common_widgets/gcw_async_executer.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/gcw_toast.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_multiple_output.dart';
@@ -15,8 +15,11 @@ import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/vigenere_breaker/logic/vigenere_breaker.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 
 class VigenereBreaker extends StatefulWidget {
+  const VigenereBreaker({Key? key}) : super(key: key);
+
   @override
   VigenereBreakerState createState() => VigenereBreakerState();
 }
@@ -24,11 +27,11 @@ class VigenereBreaker extends StatefulWidget {
 class VigenereBreakerState extends State<VigenereBreaker> {
   String _currentInput = '';
   VigenereBreakerAlphabet _currentAlphabet = VigenereBreakerAlphabet.GERMAN;
-  VigenereBreakerResult _currentOutput;
+  VigenereBreakerResult? _currentOutput;
   bool _currentAutokey = false;
   bool _currentNonLetters = false;
-  var _minKeyLengthController;
-  var _maxKeyLengthController;
+  late TextEditingController _minKeyLengthController;
+  late TextEditingController _maxKeyLengthController;
   int _minKeyLength = 3;
   int _maxKeyLength = 30;
 
@@ -87,7 +90,7 @@ class VigenereBreakerState extends State<VigenereBreaker> {
               )
             : Container(),
         GCWTextDivider(text: i18n(context, 'common_alphabet')),
-        GCWDropDown(
+        GCWDropDown<VigenereBreakerAlphabet>(
           value: _currentAlphabet,
           onChanged: (value) {
             setState(() {
@@ -138,20 +141,20 @@ class VigenereBreakerState extends State<VigenereBreaker> {
 
   Widget _buildSubmitButton() {
     return GCWSubmitButton(onPressed: () async {
-      await showDialog(
+      await showDialog<bool>(
         context: context,
         barrierDismissible: false,
         builder: (context) {
           return Center(
-            child: Container(
-              child: GCWAsyncExecuter(
+            child: SizedBox(
+              height: 220,
+              width: 150,
+              child: GCWAsyncExecuter<VigenereBreakerResult>(
                 isolatedFunction: break_cipherAsync,
-                parameter: _buildJobData(),
+                parameter: _buildJobData,
                 onReady: (data) => _showOutput(data),
                 isOverlay: true,
               ),
-              height: 220,
-              width: 150,
             ),
           );
         },
@@ -160,23 +163,23 @@ class VigenereBreakerState extends State<VigenereBreaker> {
   }
 
   Widget _buildOutput(BuildContext context) {
-    if (_currentInput == null || _currentInput.length == 0) return GCWDefaultOutput();
+    if (_currentInput.isEmpty) return const GCWDefaultOutput();
 
-    if (_currentOutput == null) return GCWDefaultOutput();
+    if (_currentOutput == null) return const GCWDefaultOutput();
 
-    if (_currentOutput.errorCode != VigenereBreakerErrorCode.OK) {
-      showToast(i18n(context, 'vigenerebreaker_error', parameters: [_currentOutput.errorCode]));
-      return GCWDefaultOutput();
+    if (_currentOutput!.errorCode != VigenereBreakerErrorCode.OK) {
+      showToast(i18n(context, 'vigenerebreaker_error', parameters: [_currentOutput!.errorCode]));
+      return const GCWDefaultOutput();
     }
 
     return GCWMultipleOutput(
       children: [
-        _currentOutput.plaintext,
+        _currentOutput!.plaintext,
         Column(
           children: [
             GCWOutput(
               title: i18n(context, 'common_key'),
-              child: GCWOutputText(text: _currentOutput.key),
+              child: GCWOutputText(text: _currentOutput!.key),
             ),
           ],
         )
@@ -184,13 +187,13 @@ class VigenereBreakerState extends State<VigenereBreaker> {
     );
   }
 
-  Future<GCWAsyncExecuterParameters> _buildJobData() async {
+  Future<GCWAsyncExecuterParameters?> _buildJobData() async {
     _currentOutput = null;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {});
     });
 
-    if (_currentInput == null || _currentInput.length == 0) return null;
+    if (_currentInput.isEmpty) return null;
 
     return GCWAsyncExecuterParameters(VigenereBreakerJobData(
         input: _currentInput,
@@ -201,7 +204,7 @@ class VigenereBreakerState extends State<VigenereBreaker> {
         keyLengthMax: _maxKeyLength));
   }
 
-  _showOutput(VigenereBreakerResult output) {
+  void _showOutput(VigenereBreakerResult? output) {
     if (output == null) {
       _currentOutput = null;
       WidgetsBinding.instance.addPostFrameCallback((_) {

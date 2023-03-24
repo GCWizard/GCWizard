@@ -1,4 +1,4 @@
-List<String> perfect_numbers = [
+const List<String> perfect_numbers = [
   '6',
   '28',
   '496',

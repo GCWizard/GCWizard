@@ -4,8 +4,7 @@ import 'package:gc_wizard/tools/games/scrabble/scrabble/logic/scrabble.dart';
 
 void main() {
   group("Scrabble.textToLetterValues:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'scrabbleVersion': scrabbleID_KLINGON, 'expectedOutput' : []},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'scrabbleVersion': scrabbleID_KLINGON, 'expectedOutput' : []},
       {'input' : ' ', 'scrabbleVersion': scrabbleID_KLINGON, 'expectedOutput' : [0]},
 
@@ -42,11 +41,11 @@ void main() {
 
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, scrabbleVersion: ${elem['scrabbleVersion']}', () {
-        var _actual = scrabbleTextToLetterValues(elem['input'], elem['scrabbleVersion']);
+        var _actual = scrabbleTextToLetterValues(elem['input'] as String, elem['scrabbleVersion'] as String);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 }

@@ -3,5 +3,5 @@ import 'package:gc_wizard/tools/crypto_and_encodings/rotation/logic/rotator.dart
 import 'package:gc_wizard/tools/crypto_and_encodings/rotation/widget/base_rot.dart';
 
 class Rot5 extends AbstractRotation {
-  Rot5({Key key}) : super(key: key, rotate: Rotator().rot5);
+  Rot5({Key? key}) : super(key: key, rotate: Rotator().rot5);
 }

@@ -32,7 +32,7 @@ enum IceCodeSystem {
   SIGRID,
 }
 
-Map<IceCodeSystem, String> ICECODE_SYSTEM = {
+const Map<IceCodeSystem, String> ICECODE_SYSTEM = {
   IceCodeSystem.EU: 'icecodes_system_eu',
   IceCodeSystem.BALTIC: 'icecodes_system_baltic',
   IceCodeSystem.WMO: 'icecodes_system_wmo',
@@ -55,20 +55,20 @@ enum IceCodeSubSystem {
   SIGRID
 }
 
-Map<IceCodeSubSystem, String> ICECODE_SUBSYSTEM_EU = {
+const Map<IceCodeSubSystem, String> ICECODE_SUBSYSTEM_EU = {
   IceCodeSubSystem.CONDITION: 'icecodes_system_eu_condition',
   IceCodeSubSystem.ACCESSIBILITY: 'icecodes_system_eu_accessibility',
   IceCodeSubSystem.CLASSIFICATION: 'icecodes_system_eu_classification',
 };
 
-Map<IceCodeSubSystem, String> ICECODE_SUBSYSTEM_BALTIC = {
+const Map<IceCodeSubSystem, String> ICECODE_SUBSYSTEM_BALTIC = {
   IceCodeSubSystem.A: 'icecodes_system_baltic_a',
   IceCodeSubSystem.S: 'icecodes_system_baltic_s',
   IceCodeSubSystem.T: 'icecodes_system_baltic_t',
   IceCodeSubSystem.K: 'icecodes_system_baltic_k',
 };
 
-Map<IceCodeSubSystem, String> ICECODE_SUBSYSTEM_WMO = {
+const Map<IceCodeSubSystem, String> ICECODE_SUBSYSTEM_WMO = {
   IceCodeSubSystem.CONCENTRATION: 'icecodes_system_wmo_concentration',
   IceCodeSubSystem.DEVELOPMENT: 'icecodes_system_wmo_development',
   IceCodeSubSystem.FORM: 'icecodes_system_wmo_form',
@@ -76,7 +76,7 @@ Map<IceCodeSubSystem, String> ICECODE_SUBSYSTEM_WMO = {
   IceCodeSubSystem.SNOW: 'icecodes_system_wmo_snow',
 };
 
-final Map<IceCodeSystem, Map<IceCodeSubSystem, Map<String, String>>> ICECODES = {
+const Map<IceCodeSystem, Map<IceCodeSubSystem, Map<String, String>>> ICECODES = {
   IceCodeSystem.EU: {
     IceCodeSubSystem.CONDITION: {
       'A': 'icecodes_system_eu_condition_a',

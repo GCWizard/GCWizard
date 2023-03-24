@@ -1,12 +1,12 @@
-final int PERMUTATION_MAX_LENGTH = 7;
+const int PERMUTATION_MAX_LENGTH = 7;
 
-_swap(characters, a, b) {
+void _swap(List<String> characters, int a, int b) {
   var help = characters[a];
   characters[a] = characters[b];
   characters[b] = help;
 }
 
-_permutation(List<String> characters, endIndex, List<String> out) {
+void _permutation(List<String> characters, int endIndex, List<String> out) {
   if (endIndex == 0) {
     out.add(characters.join());
     return;
@@ -20,8 +20,8 @@ _permutation(List<String> characters, endIndex, List<String> out) {
   }
 }
 
-List<String> generatePermutations(String input, {bool avoidDuplicates}) {
-  if (input == null || input == '') return [];
+List<String> generatePermutations(String input, {bool avoidDuplicates = false}) {
+  if (input.isEmpty) return [];
 
   var characters = input.split('');
   var out = <String>[];

@@ -18,18 +18,14 @@ const _BRAILLE_RELATIVE_DISPLAY_WIDTH = 50;
 const _BRAILLE_RELATIVE_DISPLAY_HEIGHT = 100;
 const _BRAILLE_RADIUS = 10.0;
 
-class BrailleSegmentDisplay extends NSegmentDisplay {
-  final Map<String, bool> segments;
-  final bool readOnly;
-  final Function onChanged;
-  final bool tapeStyle;
 
-  BrailleSegmentDisplay(
-      {Key key,
-      this.segments,
-      this.readOnly: false,
-      this.onChanged,
-      this.tapeStyle: false})
+class BrailleSegmentDisplay extends NSegmentDisplay {
+
+  BrailleSegmentDisplay({
+      Key? key,
+      required Map<String, bool> segments,
+      bool readOnly = false,
+      void Function(Map<String, bool>)? onChanged})
       : super(
             key: key,
             initialSegments: _INITIAL_SEGMENTS,
@@ -57,7 +53,7 @@ class BrailleSegmentDisplay extends NSegmentDisplay {
               };
 
               circles.forEach((key, value) {
-                paint.color = currentSegments[key]
+                paint.color = segmentActive(currentSegments, key)
                     ? SEGMENTS_COLOR_ON
                     : SEGMENTS_COLOR_OFF;
 
@@ -73,7 +69,7 @@ class BrailleSegmentDisplay extends NSegmentDisplay {
                             value[1]),
                     pointSize,
                     paint, onTapDown: (tapDetail) {
-                  setSegmentState(key, !currentSegments[key]);
+                  setSegmentState(key, !segmentActive(currentSegments, key));
                 });
 
                 if (size.height < 50) return;

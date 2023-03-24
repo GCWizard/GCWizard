@@ -4,13 +4,13 @@ part of 'package:gc_wizard/tools/coords/_common/logic/external_libs/net.sf.geogr
  * Constant by which to multiply an angular value in degrees to obtain an
  * angular value in radians.
  */
-final double _DEGREES_TO_RADIANS = 0.017453292519943295;
+const double _DEGREES_TO_RADIANS = 0.017453292519943295;
 
 /*
  * Constant by which to multiply an angular value in radians to obtain an
  * angular value in degrees.
  */
-final double _RADIANS_TO_DEGREES = 57.29577951308232;
+const double _RADIANS_TO_DEGREES = 57.29577951308232;
 
 /*
  * Converts an angle measured in degrees to an approximately

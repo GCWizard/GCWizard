@@ -8,6 +8,8 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/combinatorics/combination/logic/combination.dart';
 
 class Combination extends StatefulWidget {
+  const Combination({Key? key}) : super(key: key);
+
   @override
   CombinationState createState() => CombinationState();
 }
@@ -42,12 +44,12 @@ class CombinationState extends State<Combination> {
     );
   }
 
-  _buildOutput(BuildContext context) {
-    if (_currentInput == null || _currentInput.length == 0) {
-      return GCWDefaultOutput();
+  Widget _buildOutput(BuildContext context) {
+    if (_currentInput.isEmpty) {
+      return const GCWDefaultOutput();
     }
 
-    List out = generateCombinations(_currentInput, avoidDuplicates: !_currentShowDuplicates);
+    var out = generateCombinations(_currentInput, avoidDuplicates: !_currentShowDuplicates);
 
     return GCWMultipleOutput(
       children: [

@@ -4,7 +4,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitu
 import 'package:gc_wizard/utils/string_utils.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/image_utils/drawable_image_data.dart';
 
-Map<String, int> colorMap = {
+const Map<String, int> colorMap = {
   '0': 0xFFFFFFFF, //Colors.white
   '1': 0xFF000000, //Colors.black
   '2': 0xFFFF5252, //Colors.redAccent //light red
@@ -33,17 +33,18 @@ Map<String, int> colorMap = {
   '#': 0xFFE0E0E0, //Colors.grey.shade300
 };
 
-DrawableImageData binary2image(String input, bool squareFormat, bool invers) {
+DrawableImageData? binary2image(String input, bool squareFormat, bool invers) {
   var filter = _buildFilter(input);
   if (filter.length < 2) return null;
 
   if (!squareFormat) filter += "\n";
   input = _filterInput(input, filter);
 
-  if (invers)
+  if (invers) {
     input = substitution(input, {filter[0]: '1', filter[1]: '0'});
-  else
+  } else {
     input = substitution(input, {filter[0]: '0', filter[1]: '1'});
+  }
 
   if (squareFormat) {
     var size = sqrt(input.length).ceil();
@@ -68,7 +69,7 @@ String _buildFilter(String input) {
   if (alphabet.length == 3 && alphabet.contains(' ')) return alphabet.replaceAll(' ', '');
 
   var filter = '';
-  var map = Map<String, int>();
+  var map = <String, int>{};
 
   alphabet.split('').forEach((char) {
     map.addAll({char: char.allMatches(input).length});
@@ -86,10 +87,11 @@ String _buildFilter(String input) {
   filter = filter.split('').reversed.join();
 
   filter = filter.substring(0, 3);
-  if (filter.contains(' '))
+  if (filter.contains(' ')) {
     return filter.replaceAll(' ', '');
-  else
+  } else {
     return filter.substring(0, 2);
+  }
 }
 
 String _filterInput(String input, String filter) {
@@ -101,13 +103,14 @@ String _filterInput(String input, String filter) {
   return input.replaceAll(RegExp('[^$filter]'), '');
 }
 
-DrawableImageData binary2Image(String input) {
-  if (input == '' || input == null) return null;
+DrawableImageData? binary2Image(String input) {
+  if (input.isEmpty) return null;
 
   var lines = input.split('\n');
 
-  if (lines.length == 1)
+  if (lines.length == 1) {
     lines.addAll(List<String>.filled(9, lines[0]));
+  }
   return DrawableImageData(lines, colorMap);
 }
 

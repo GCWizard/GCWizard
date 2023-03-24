@@ -65,7 +65,7 @@ LatLng vincentyDirect(LatLng coord, double bearing, double dist, Ellipsoid ells)
 }
 
 double _modLon(double x) {
-  x = modulo360(x);
+  x = modulo360(x).toDouble();
 
   if (x > 180) x -= 360;
 

@@ -7,14 +7,16 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/wherigo/logic/urwigo_tools.dart';
 
 class UrwigoTextDeobfuscation extends StatefulWidget {
+  const UrwigoTextDeobfuscation({Key? key}) : super(key: key);
+
   @override
   UrwigoTextDeobfuscationState createState() => UrwigoTextDeobfuscationState();
 }
 
 class UrwigoTextDeobfuscationState extends State<UrwigoTextDeobfuscation> {
-  var _inputController;
-  var _inputObfuscateController;
-  var _dtableController;
+  late TextEditingController _inputController;
+  late TextEditingController _inputObfuscateController;
+  late TextEditingController _dtableController;
 
   var _currentInput = '';
   var _currentDTable = '';
@@ -55,10 +57,11 @@ class UrwigoTextDeobfuscationState extends State<UrwigoTextDeobfuscation> {
         Row(
           children: [
             Expanded(
-              child: GCWText(text: i18n(context, 'urwigo_textdeobfuscation_dtable')),
               flex: 1,
+              child: GCWText(text: i18n(context, 'urwigo_textdeobfuscation_dtable')),
             ),
             Expanded(
+                flex: 3,
                 child: GCWTextField(
                   controller: _dtableController,
                   onChanged: (text) {
@@ -66,18 +69,18 @@ class UrwigoTextDeobfuscationState extends State<UrwigoTextDeobfuscation> {
                       _currentDTable = text;
                     });
                   },
-                ),
-                flex: 3)
+                ))
           ],
         ),
         _currentMode == GCWSwitchPosition.right
             ? Row(
                 children: [
                   Expanded(
-                    child: GCWText(text: i18n(context, 'urwigo_textdeobfuscation_text')),
                     flex: 1,
+                    child: GCWText(text: i18n(context, 'urwigo_textdeobfuscation_text')),
                   ),
                   Expanded(
+                      flex: 3,
                       child: GCWTextField(
                         controller: _inputController,
                         onChanged: (text) {
@@ -85,17 +88,17 @@ class UrwigoTextDeobfuscationState extends State<UrwigoTextDeobfuscation> {
                             _currentInput = text;
                           });
                         },
-                      ),
-                      flex: 3)
+                      ))
                 ],
               )
             : Row(
                 children: [
                   Expanded(
-                    child: GCWText(text: i18n(context, 'urwigo_textdeobfuscation_obfuscate_text')),
                     flex: 1,
+                    child: GCWText(text: i18n(context, 'urwigo_textdeobfuscation_obfuscate_text')),
                   ),
                   Expanded(
+                      flex: 3,
                       child: GCWTextField(
                         controller: _inputObfuscateController,
                         onChanged: (text) {
@@ -103,8 +106,7 @@ class UrwigoTextDeobfuscationState extends State<UrwigoTextDeobfuscation> {
                             _currentObfuscateInput = text;
                           });
                         },
-                      ),
-                      flex: 3)
+                      ))
                 ],
               ),
         _buildOutput(context)

@@ -18,19 +18,19 @@ class GCWSymbolTableEncryption extends StatefulWidget {
   final MediaQueryData mediaQueryData;
   final SymbolTableData data;
   final String symbolKey;
-  final Function onChanged;
-  final Function onBeforeEncrypt;
+  final void Function() onChanged;
+  final String Function(String)? onBeforeEncrypt;
   final bool alwaysIgnoreUnknown;
 
   const GCWSymbolTableEncryption(
-      {Key key,
-      this.data,
-      this.countColumns,
-      this.mediaQueryData,
-      this.symbolKey,
-      this.onChanged,
-      this.onBeforeEncrypt,
-      this.alwaysIgnoreUnknown})
+      {Key? key,
+      required this.data,
+      required this.countColumns,
+      required this.mediaQueryData,
+      required this.symbolKey,
+      required this.onChanged,
+      required this.onBeforeEncrypt,
+      this.alwaysIgnoreUnknown = false})
       : super(key: key);
 
   @override
@@ -38,25 +38,25 @@ class GCWSymbolTableEncryption extends StatefulWidget {
 }
 
 class GCWSymbolTableEncryptionState extends State<GCWSymbolTableEncryption> {
-  var _currentEncryptionInput = '';
-  var _encryptionInputController;
+  String _currentEncryptionInput = '';
+  late TextEditingController _encryptionInputController;
 
-  var _alphabetMap = <String, int>{};
+  final _alphabetMap = <String, int>{};
 
   var _currentIgnoreUnknown = false;
   var _currentSpecialEncryption = GCWSwitchPosition.left;
   var _currentBorderWidth = 0.1;
 
-  SymbolTableData _data;
+  late SymbolTableData _data;
 
   @override
   void initState() {
     super.initState();
 
     _data = widget.data;
-    _data.images.forEach((element) {
+    for (var element in _data.images) {
       _alphabetMap.putIfAbsent(element.keys.first, () => _data.images.indexOf(element));
-    });
+    }
 
     _encryptionInputController = TextEditingController(text: _currentEncryptionInput);
   }
@@ -68,7 +68,7 @@ class GCWSymbolTableEncryptionState extends State<GCWSymbolTableEncryption> {
     super.dispose();
   }
 
-  _hasSpecialEncryption() {
+  bool _hasSpecialEncryption() {
     switch (_data.symbolKey) {
       case 'color_honey':
       case 'color_tokki':
@@ -92,7 +92,7 @@ class GCWSymbolTableEncryptionState extends State<GCWSymbolTableEncryption> {
               _currentEncryptionInput = text;
 
               if (widget.onBeforeEncrypt != null) {
-                _currentEncryptionInput = widget.onBeforeEncrypt(_currentEncryptionInput);
+                _currentEncryptionInput = widget.onBeforeEncrypt!(_currentEncryptionInput);
               }
             });
           },
@@ -117,7 +117,7 @@ class GCWSymbolTableEncryptionState extends State<GCWSymbolTableEncryption> {
               )
             ],
           ),
-        if ((widget.alwaysIgnoreUnknown == null || widget.alwaysIgnoreUnknown == false) &&
+        if ((widget.alwaysIgnoreUnknown == false) &&
             (!_hasSpecialEncryption() || _currentSpecialEncryption == GCWSwitchPosition.right))
           Row(
             children: <Widget>[

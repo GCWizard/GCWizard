@@ -11,6 +11,8 @@ import 'package:gc_wizard/tools/science_and_technology/countries/country_flags/w
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class CountriesSelection extends GCWSelection {
+  const CountriesSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
@@ -19,12 +21,12 @@ class CountriesSelection extends GCWSelection {
         className(CountriesIOCCodes()),
         className(CountriesISOCodes()),
         className(CountriesVehicleCodes()),
-        className(CountriesFlags()),
+        className(const CountriesFlags()),
       ].contains(className(element.tool));
     }).toList();
 
     _toolList.sort((a, b) => sortToolList(a, b));
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

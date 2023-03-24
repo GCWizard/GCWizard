@@ -4,9 +4,9 @@ import 'package:gc_wizard/utils/constants.dart';
 
 enum SegmentDisplayType { SEVEN, FOURTEEN, SIXTEEN, CUSTOM }
 
-final _baseSegments7Segment = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'dp'];
-final _baseSegments14Segment = ['a', 'b', 'c', 'd', 'e', 'f', 'g1', 'g2', 'h', 'i', 'j', 'k', 'l', 'm', 'dp'];
-final _baseSegments16Segment = [
+const _baseSegments7Segment = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'dp'];
+const _baseSegments14Segment = ['a', 'b', 'c', 'd', 'e', 'f', 'g1', 'g2', 'h', 'i', 'j', 'k', 'l', 'm', 'dp'];
+const _baseSegments16Segment = [
   'a1',
   'a2',
   'b',
@@ -26,7 +26,7 @@ final _baseSegments16Segment = [
   'dp'
 ];
 
-final Map<String, List<String>> _AZTo16Segment = {
+const Map<String, List<String>> _AZTo16Segment = {
   '1': ['b', 'c', 'j'],
   '2': ['a1', 'a2', 'b', 'd1', 'd2', 'e', 'g1', 'g2'],
   '3': ['a1', 'a2', 'b', 'c', 'd1', 'd2', 'g1', 'g2'],
@@ -88,7 +88,7 @@ final Map<String, List<String>> _AZTo16Segment = {
   '&': ['a1', 'a2', 'c', 'd1', 'd2', 'e', 'g1', 'h', 'j', 'm']
 };
 
-final Map<String, List<String>> _AZTo14Segment = {
+const Map<String, List<String>> _AZTo14Segment = {
   '1': ['b', 'c', 'j'],
   '2': ['a', 'b', 'd', 'e', 'g1', 'g2'],
   '3': ['a', 'b', 'c', 'd', 'g1', 'g2'],
@@ -149,7 +149,7 @@ final Map<String, List<String>> _AZTo14Segment = {
   '&': ['a', 'c', 'd', 'e', 'g1', 'h', 'j', 'm']
 };
 
-final Map<String, List<String>> _AZTo7Segment = {
+const Map<String, List<String>> _AZTo7Segment = {
   // https://www.wikizero.com/en/Seven-segment_display
   '1': ['b', 'c'], //'1' : ['a','e'],
   '2': ['a', 'b', 'd', 'e', 'g'],
@@ -195,7 +195,7 @@ final Map<String, List<String>> _AZTo7Segment = {
   ' ': []
 };
 
-final Map<List<String>, String> _Segment7ToAZ = {
+const Map<List<String>, String> _Segment7ToAZ = {
   ['b', 'c']: '1',
   ['a', 'b', 'd', 'e', 'g']: '2',
   ['a', 'b', 'c', 'd', 'g']: '3',
@@ -250,7 +250,7 @@ final Map<List<String>, String> _Segment7ToAZ = {
   []: ' '
 };
 
-final Map<List<String>, String> _Segment14ToAZ = {
+const Map<List<String>, String> _Segment14ToAZ = {
   ['b', 'c', 'j']: '1',
   ['b', 'c']: '1',
   ['a', 'b', 'd', 'e', 'g1', 'g2']: '2',
@@ -372,7 +372,7 @@ final Map<List<String>, String> _Segment14ToAZ = {
   ['m']: '.', //acc. to Kenwood Car Hifi Display
 };
 
-final Map<List<String>, String> _Segment16ToAZ = {
+const Map<List<String>, String> _Segment16ToAZ = {
   ['a1', 'i', 'l']: '1',
   ['a1', 'd1', 'd2', 'i', 'l']: '1',
   ['b', 'c', 'j']: '1',
@@ -458,7 +458,6 @@ final Map<List<String>, String> _Segment16ToAZ = {
   ['a1', 'a2', 'i', 'l']: 'T',
   ['d1', 'd2', 'e', 'f', 'g1', 'g2']: 'T',
   ['d2', 'g1', 'g2', 'i', 'l']: 'T',
-  ['d2', 'g1', 'g2', 'i', 'l']: 'T',
   ['d1', 'e', 'f', 'g1']: 'T',
   ['b', 'c', 'd1', 'd2', 'e', 'f']: 'U',
   ['c', 'd1', 'd2', 'e']: 'U',
@@ -525,10 +524,89 @@ final Map<List<String>, String> _Segment16ToAZ = {
   ['m']: '.', //acc. to Kenwood Car Hifi Display
 };
 
-List<List<String>> encodeSegment(String input, SegmentDisplayType segmentType) {
-  if (input == null || input == '') return <List<String>>[];
+class Segments {
+  final List<List<String>> displays;
 
-  var AZToSegment;
+  Segments({required this.displays});
+
+  void addEmptySegment() {
+    displays.add([]);
+  }
+
+  void addSegment(List<String>? segment) {
+    if (segment != null) displays.add(segment);
+  }
+
+  void addSegments(List<List<String>>? segments) {
+    if (segments != null) displays.addAll(segments);
+  }
+
+  void removeLastSegment() {
+    if (displays.isNotEmpty) displays.removeLast();
+  }
+
+  void replaceLastSegment(List<String> newSegments, {String? trailingDisplay}) {
+    newSegments.sort();
+    if (trailingDisplay != null) newSegments.add(trailingDisplay);
+
+    if (displays.isEmpty) displays.add([]);
+    displays[displays.length - 1] = newSegments;
+  }
+
+  List<String> buildOutput() {
+    return displays.map((character) {
+      return character.join();
+    }).toList();
+  }
+
+  static Segments Empty() {
+    return Segments(displays: []);
+  }
+}
+
+class SegmentsText extends Segments {
+  final String text;
+
+  SegmentsText({required List<List<String>> displays, required this.text})
+    : super(displays: displays);
+}
+
+class SegmentsCodpoints extends SegmentsText {
+  final String codepoints;
+
+  SegmentsCodpoints({required List<List<String>> displays, required String text, required this.codepoints})
+      : super(displays: displays, text: text);
+}
+
+class SegmentsChars extends Segments {
+  final List<String> chars;
+
+  SegmentsChars({required List<List<String>> displays, required this.chars})
+      : super(displays: displays);
+}
+
+class SegmentsVigesimal extends Segments {
+  final List<int> numbers;
+  final BigInt vigesimal;
+
+  SegmentsVigesimal({required List<List<String>> displays, required this.numbers, required this.vigesimal})
+      : super(displays: displays);
+}
+
+class SegmentsSexagesimal extends Segments {
+  final List<int> numbers;
+  final BigInt sexagesimal;
+
+  SegmentsSexagesimal({required List<List<String>> displays, required this.numbers, required this.sexagesimal})
+      : super(displays: displays);
+}
+
+
+
+Segments encodeSegment(String input, SegmentDisplayType segmentType) {
+  if (input.isEmpty) return Segments.Empty();
+
+  Map<String, List<String>> AZToSegment = {};
   switch (segmentType) {
     case SegmentDisplayType.SEVEN:
       AZToSegment = _AZTo7Segment;
@@ -539,14 +617,15 @@ List<List<String>> encodeSegment(String input, SegmentDisplayType segmentType) {
     case SegmentDisplayType.SIXTEEN:
       AZToSegment = _AZTo16Segment;
       break;
+    default:
   }
 
   var inputCharacters = input.toUpperCase().split('').toList();
-  var output = <List<String>>[];
+  List<List<String>> output = [];
 
   for (String character in inputCharacters) {
     if (['.', ','].contains(character)) {
-      if (output.length == 0 || output.last.contains('dp')) {
+      if (output.isEmpty || output.last.contains('dp')) {
         output.add(['dp']);
       } else {
         var prevCharacter = List<String>.from(output.removeLast());
@@ -554,18 +633,17 @@ List<List<String>> encodeSegment(String input, SegmentDisplayType segmentType) {
         output.add(prevCharacter);
       }
     } else {
-      var display;
-      display = AZToSegment[character];
-      if (display != null) output.add(AZToSegment[character]);
+      var display = AZToSegment[character];
+      if (display != null) output.add(display);
     }
   }
 
-  return output;
+  return Segments(displays: output);
 }
 
-Map<String, dynamic> decodeSegment(String input, SegmentDisplayType segmentType) {
-  if (input == null || input == '') return {'displays': <List<String>>[], 'text': ''};
-  var baseSegments;
+SegmentsText decodeSegment(String input, SegmentDisplayType segmentType) {
+  if (input.isEmpty) return SegmentsText(displays: [], text: '');
+  List<String> baseSegments = [];
 
   switch (segmentType) {
     case SegmentDisplayType.SEVEN:
@@ -577,11 +655,12 @@ Map<String, dynamic> decodeSegment(String input, SegmentDisplayType segmentType)
     case SegmentDisplayType.SIXTEEN:
       baseSegments = _baseSegments16Segment;
       break;
+    default:
   }
 
   input = input.toLowerCase();
   var displays = <List<String>>[];
-  List<String> currentDisplay;
+  List<String>? currentDisplay;
 
   for (int i = 0; i < input.length; i++) {
     var segment = input[i];
@@ -600,7 +679,7 @@ Map<String, dynamic> decodeSegment(String input, SegmentDisplayType segmentType)
       continue;
     }
 
-    if (currentDisplay == null) currentDisplay = [];
+    currentDisplay ??= [];
 
     currentDisplay.add(segment);
   }
@@ -627,10 +706,10 @@ Map<String, dynamic> decodeSegment(String input, SegmentDisplayType segmentType)
     return character + (containsDot ? '.' : '');
   }).join();
 
-  return {'displays': displays, 'text': out};
+  return SegmentsText(displays: displays, text: out);
 }
 
-_characterFromSegmentList(SegmentDisplayType type, List<String> segments) {
+String? _characterFromSegmentList(SegmentDisplayType type, List<String> segments) {
   Map<List<String>, String> segmentToAZ;
 
   switch (type) {
@@ -643,6 +722,12 @@ _characterFromSegmentList(SegmentDisplayType type, List<String> segments) {
     case SegmentDisplayType.SIXTEEN:
       segmentToAZ = _Segment16ToAZ;
       break;
+    default:
+      return null;
   }
   return segmentToAZ.map((key, value) => MapEntry(key.join(), value.toString()))[segments.join()];
+}
+
+bool segmentActive(Map<String, bool> segments, String segment) {
+  return segments[segment] ?? false;
 }

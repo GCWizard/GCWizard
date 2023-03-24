@@ -6,8 +6,7 @@ void main() {
   // Original ---------------------------------------------------------------------
 
   group("BCD.encodeOriginal", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : '19 68', 'expectedOutput' : '0001 1001 0110 1000'},
@@ -15,17 +14,16 @@ void main() {
       {'input' : 'Haus', 'expectedOutput' : ''},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBCD(elem['input'], BCDType.ORIGINAL);
+        var _actual = encodeBCD(elem['input'] as String, BCDType.ORIGINAL);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("BCD.decodeOriginal:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : '1968', 'input' : '0001 1001 0110 1000'},
@@ -33,20 +31,19 @@ void main() {
       {'expectedOutput' : '', 'input' : 'Haus'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBCD(elem['input'], BCDType.ORIGINAL);
+        var _actual = decodeBCD(elem['input'] as String, BCDType.ORIGINAL);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   }); // group
 
 
   // Aiken ---------------------------------------------------------------------
 
   group("BCD.encodeAiken", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : '19 68', 'expectedOutput' : '0001 1111 1100 1110'},
@@ -54,17 +51,16 @@ void main() {
       {'input' : 'Haus', 'expectedOutput' : ''},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBCD(elem['input'], BCDType.AIKEN);
+        var _actual = encodeBCD(elem['input'] as String, BCDType.AIKEN);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("BCD.decodeAiken:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : '1968', 'input' : '0001 1111 1100 1110'},
@@ -72,20 +68,19 @@ void main() {
       {'expectedOutput' : '', 'input' : 'Haus'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBCD(elem['input'], BCDType.AIKEN);
+        var _actual = decodeBCD(elem['input'] as String, BCDType.AIKEN);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   }); // group
 
 
   // Libaw-Craig ---------------------------------------------------------------
 
   group("BCD.encodeLibawCraig", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : '19 68', 'expectedOutput' : '00001 10000 11110 11000'},
@@ -93,17 +88,16 @@ void main() {
       {'input' : 'Haus', 'expectedOutput' : ''},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBCD(elem['input'], BCDType.LIBAWCRAIG);
+        var _actual = encodeBCD(elem['input'] as String, BCDType.LIBAWCRAIG);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("BCD.decodeLibawCraig:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : '1968', 'input' : '00001 10000 11110 11000'},
@@ -111,20 +105,19 @@ void main() {
       {'expectedOutput' : '', 'input' : 'Haus'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBCD(elem['input'], BCDType.LIBAWCRAIG);
+        var _actual = decodeBCD(elem['input'] as String, BCDType.LIBAWCRAIG);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   }); // group
 
 
   // Stibitz -------------------------------------------------------------------
 
   group("BCD.encodeStibitz", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : '19 68', 'expectedOutput' : '0100 1100 1001 1011'},
@@ -132,17 +125,16 @@ void main() {
       {'input' : 'Haus', 'expectedOutput' : ''},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBCD(elem['input'], BCDType.STIBITZ);
+        var _actual = encodeBCD(elem['input'] as String, BCDType.STIBITZ);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("BCD.decodeStibitz:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : '1968', 'input' : '0100 1100 1001 1011'},
@@ -150,20 +142,19 @@ void main() {
       {'expectedOutput' : '', 'input' : 'Haus'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBCD(elem['input'], BCDType.STIBITZ);
+        var _actual = decodeBCD(elem['input'] as String, BCDType.STIBITZ);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   }); // group
 
 
   // Gray -------------------------------------------------------------------
 
   group("BCD.encodeGray", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : '19 68', 'expectedOutput' : '0001 1101 0101 1100'},
@@ -171,17 +162,16 @@ void main() {
       {'input' : 'Haus', 'expectedOutput' : ''},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBCD(elem['input'], BCDType.GRAY);
+        var _actual = encodeBCD(elem['input'] as String, BCDType.GRAY);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("BCD.decodeGray:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : '1968', 'input' : '0001 1101 0101 1100'},
@@ -189,20 +179,19 @@ void main() {
       {'expectedOutput' : '', 'input' : 'Haus'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBCD(elem['input'], BCDType.GRAY);
+        var _actual = decodeBCD(elem['input'] as String, BCDType.GRAY);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   }); // group
 
 
   // Glixon -------------------------------------------------------------------
 
   group("BCD.encodeGlixon", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : '19 68', 'expectedOutput' : '0001 1000 0101 1100'},
@@ -210,17 +199,16 @@ void main() {
       {'input' : 'Haus', 'expectedOutput' : ''},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBCD(elem['input'], BCDType.GLIXON);
+        var _actual = encodeBCD(elem['input'] as String, BCDType.GLIXON);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("BCD.decodeGlixon:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : '1968', 'input' : '0001 1000 0101 1100'},
@@ -228,20 +216,19 @@ void main() {
       {'expectedOutput' : '', 'input' : 'Haus'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBCD(elem['input'], BCDType.GLIXON);
+        var _actual = decodeBCD(elem['input'] as String, BCDType.GLIXON);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   }); // group
 
 
   // O'Brien -------------------------------------------------------------------
 
   group("BCD.encodeOBrien", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : '19 68', 'expectedOutput' : '0011 1001 1110 1011'},
@@ -249,17 +236,16 @@ void main() {
       {'input' : 'Haus', 'expectedOutput' : ''},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBCD(elem['input'], BCDType.OBRIEN);
+        var _actual = encodeBCD(elem['input'] as String, BCDType.OBRIEN);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("BCD.decodeOBrien:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : '1968', 'input' : '0011 1001 1110 1011'},
@@ -267,20 +253,19 @@ void main() {
       {'expectedOutput' : '', 'input' : 'Haus'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBCD(elem['input'], BCDType.OBRIEN);
+        var _actual = decodeBCD(elem['input'] as String, BCDType.OBRIEN);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   }); // group
 
 
   // Petherick -------------------------------------------------------------------
 
   group("BCD.encodePetherick", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : '19 68', 'expectedOutput' : '0001 1101 1010 1001'},
@@ -288,17 +273,16 @@ void main() {
       {'input' : 'Haus', 'expectedOutput' : ''},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBCD(elem['input'], BCDType.PETHERICK);
+        var _actual = encodeBCD(elem['input'] as String, BCDType.PETHERICK);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("BCD.decodePetherick:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : '1968', 'input' : '0001 1101 1010 1001'},
@@ -306,20 +290,19 @@ void main() {
       {'expectedOutput' : '', 'input' : 'Haus'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBCD(elem['input'], BCDType.PETHERICK);
+        var _actual = decodeBCD(elem['input'] as String, BCDType.PETHERICK);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   }); // group
 
 
   // Tompkins -------------------------------------------------------------------
 
   group("BCD.encodeTompkins", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : '19 68', 'expectedOutput' : '0011 1010 1101 1011'},
@@ -327,17 +310,16 @@ void main() {
       {'input' : 'Haus', 'expectedOutput' : ''},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBCD(elem['input'], BCDType.TOMPKINS);
+        var _actual = encodeBCD(elem['input'] as String, BCDType.TOMPKINS);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("BCD.decodeTompkins:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : '1968', 'input' : '0011 1010 1101 1011'},
@@ -345,20 +327,19 @@ void main() {
       {'expectedOutput' : '', 'input' : 'Haus'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBCD(elem['input'], BCDType.TOMPKINS);
+        var _actual = decodeBCD(elem['input'] as String, BCDType.TOMPKINS);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   }); // group
 
 
   // Hamming -------------------------------------------------------------------
 
   group("BCD.encodeHamming", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : '19 68', 'expectedOutput' : '0000111 1001100 0110011 1001011'},
@@ -366,17 +347,16 @@ void main() {
       {'input' : 'Haus', 'expectedOutput' : ''},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBCD(elem['input'], BCDType.HAMMING);
+        var _actual = encodeBCD(elem['input'] as String, BCDType.HAMMING);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("BCD.decodeHamming:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : '1968', 'input' : '0000111 1001100 0110011 1001011'},
@@ -384,20 +364,19 @@ void main() {
       {'expectedOutput' : '', 'input' : 'Haus'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBCD(elem['input'], BCDType.HAMMING);
+        var _actual = decodeBCD(elem['input'] as String, BCDType.HAMMING);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   }); // group
 
 
   // Biquinaer -------------------------------------------------------------------
 
   group("BCD.encodeBiquinaer", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : '19 68', 'expectedOutput' : '1000010 0110000 0100010 0101000'},
@@ -405,17 +384,16 @@ void main() {
       {'input' : 'Haus', 'expectedOutput' : ''},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBCD(elem['input'], BCDType.BIQUINARY);
+        var _actual = encodeBCD(elem['input'] as String, BCDType.BIQUINARY);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("BCD.decodeBiquinaer:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : '1968', 'input' : '1000010 0110000 0100010 0101000'},
@@ -423,20 +401,19 @@ void main() {
       {'expectedOutput' : '', 'input' : 'Haus'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBCD(elem['input'], BCDType.BIQUINARY);
+        var _actual = decodeBCD(elem['input'] as String, BCDType.BIQUINARY);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   }); // group
 
 
   // 1of10 -------------------------------------------------------------------
 
   group("BCD.encode1of10", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : '19 68', 'expectedOutput' : '0000000010 1000000000 0001000000 0100000000'},
@@ -444,17 +421,16 @@ void main() {
       {'input' : 'Haus', 'expectedOutput' : ''},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBCD(elem['input'], BCDType.ONEOFTEN);
+        var _actual = encodeBCD(elem['input'] as String, BCDType.ONEOFTEN);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("BCD.decode1of10:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : '1968', 'input' : '0000000010 1000000000 0001000000 0100000000'},
@@ -462,20 +438,19 @@ void main() {
       {'expectedOutput' : '', 'input' : 'Haus'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBCD(elem['input'], BCDType.ONEOFTEN);
+        var _actual = decodeBCD(elem['input'] as String, BCDType.ONEOFTEN);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   }); // group
 
 
   // 2of5 -------------------------------------------------------------------
 
   group("BCD.encode2of5", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : '19 68', 'expectedOutput' : '00101 11000 10001 10100'},
@@ -483,17 +458,16 @@ void main() {
       {'input' : 'Haus', 'expectedOutput' : ''},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBCD(elem['input'], BCDType.TWOOFFIVE);
+        var _actual = encodeBCD(elem['input'] as String, BCDType.TWOOFFIVE);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("BCD.decode2of5:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : '1968', 'input' : '00101 11000 10001 10100'},
@@ -501,20 +475,19 @@ void main() {
       {'expectedOutput' : '', 'input' : 'Haus'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBCD(elem['input'], BCDType.TWOOFFIVE);
+        var _actual = decodeBCD(elem['input'] as String, BCDType.TWOOFFIVE);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   }); // group
 
 
   // 2of5Planet -------------------------------------------------------------------
 
   group("BCD.encodePostnet", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : '19 68', 'expectedOutput' : '00011 10100 01100 10010'},
@@ -522,17 +495,16 @@ void main() {
       {'input' : 'Haus', 'expectedOutput' : ''},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBCD(elem['input'], BCDType.POSTNET);
+        var _actual = encodeBCD(elem['input'] as String, BCDType.POSTNET);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("BCD.decodePostnet:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : '1968', 'input' : '00011 10100 01100 10010'},
@@ -540,19 +512,18 @@ void main() {
       {'expectedOutput' : '', 'input' : 'Haus'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBCD(elem['input'], BCDType.POSTNET);
+        var _actual = decodeBCD(elem['input'] as String, BCDType.POSTNET);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   }); // group
 
   // 2of5Postnet -------------------------------------------------------------------
 
   group("BCD.encodePlanet", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : '19 68', 'expectedOutput' : '11100 01011 10011 01101'},
@@ -560,17 +531,16 @@ void main() {
       {'input' : 'Haus', 'expectedOutput' : ''},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBCD(elem['input'], BCDType.PLANET);
+        var _actual = encodeBCD(elem['input'] as String, BCDType.PLANET);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("BCD.decodePlanet:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : '1968', 'input' : '11100 01011 10011 01101'},
@@ -578,12 +548,12 @@ void main() {
       {'expectedOutput' : '', 'input' : 'Haus'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBCD(elem['input'], BCDType.PLANET);
+        var _actual = decodeBCD(elem['input'] as String, BCDType.PLANET);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   }); // group
 
 }

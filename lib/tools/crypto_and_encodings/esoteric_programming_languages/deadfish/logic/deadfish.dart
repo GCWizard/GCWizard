@@ -1,11 +1,11 @@
 import 'dart:math';
 
-String encodeDeadfish(text) {
-  if (text == null || text == '') return '';
+String encodeDeadfish(String text) {
+  if (text.isEmpty) return '';
 
   var out = '';
   var memory = 0;
-  text.codeUnits.forEach((ascii) {
+  for (var ascii in text.codeUnits) {
     if (ascii > memory) {
       while (memory != ascii) {
         if (memory <= 1) {
@@ -30,13 +30,13 @@ String encodeDeadfish(text) {
       }
     }
     out += 'o';
-  });
+  }
 
   return out;
 }
 
-String decodeDeadfish(text) {
-  if (text == null || text == '') return '';
+String decodeDeadfish(String text) {
+  if (text.isEmpty) return '';
 
   var memory = 0;
   List<int> ascii = [];

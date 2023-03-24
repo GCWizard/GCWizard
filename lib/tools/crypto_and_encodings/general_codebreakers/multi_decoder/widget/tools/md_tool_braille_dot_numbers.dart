@@ -5,7 +5,11 @@ import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/multi_
 const MDT_INTERNALNAMES_BRAILLE_DOT_NUMBERS = 'multidecoder_tool_braille_dot_numbers_title';
 
 class MultiDecoderToolBrailleDotNumbers extends AbstractMultiDecoderTool {
-  MultiDecoderToolBrailleDotNumbers({Key key, int id, String name, Map<String, dynamic> options})
+  MultiDecoderToolBrailleDotNumbers({
+    Key? key,
+    required int id,
+    required String name,
+    required Map<String, Object?> options})
       : super(
             key: key,
             id: id,
@@ -13,12 +17,10 @@ class MultiDecoderToolBrailleDotNumbers extends AbstractMultiDecoderTool {
             internalToolName: MDT_INTERNALNAMES_BRAILLE_DOT_NUMBERS,
             onDecode: (String input, String key) {
               var segments = decodeBraille(input.split(RegExp(r'\s+')).toList(), BrailleLanguage.SIMPLE, true);
-              var out = segments['chars'].join();
-              if (out is String) {
-                var out1 = out.replaceAll('<?>', '');
-                out1 = out.replaceAll(' ', '');
-                if (out1 == null || out1.length == 0) return null;
-              }
+              var out = segments.chars.join();
+              var out1 = out.replaceAll('<?>', '');
+              out1 = out.replaceAll(' ', '');
+              if (out1.isEmpty) return null;
               return out;
             },
             options: options);

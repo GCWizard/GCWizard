@@ -12,13 +12,15 @@ import 'package:gc_wizard/tools/science_and_technology/dtmf/logic/dtmf.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/text_widget_utils.dart';
 
 class DTMF extends StatefulWidget {
+  const DTMF({Key? key}) : super(key: key);
+
   @override
   DTMFState createState() => DTMFState();
 }
 
 class DTMFState extends State<DTMF> {
-  TextEditingController _encodeController;
-  TextEditingController _decodeController;
+  late TextEditingController _encodeController;
+  late TextEditingController _decodeController;
 
   var _currentEncodeInput = '';
   var _currentDecodeInput = '';
@@ -28,7 +30,7 @@ class DTMFState extends State<DTMF> {
 
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
 
-  var _maskInputFormatter =
+  final _maskInputFormatter =
       WrapperForMaskTextInputFormatter(mask: '#' * 10000, filter: {"#": RegExp(r'[0-9\*\#a-dA-D]')});
 
   @override
@@ -73,7 +75,8 @@ class DTMFState extends State<DTMF> {
                 children: [
                   Expanded(
                       child: Container(
-                    child: GCWDropDown(
+                    padding: const EdgeInsets.only(right: DEFAULT_MARGIN),
+                    child: GCWDropDown<int>(
                       value: _currentDecryptLowFrequency,
                       items: DTMF_FREQUENCIES_LOW.map((frequency) {
                         return GCWDropDownMenuItem(
@@ -87,11 +90,11 @@ class DTMFState extends State<DTMF> {
                         });
                       },
                     ),
-                    padding: EdgeInsets.only(right: DEFAULT_MARGIN),
                   )),
                   Expanded(
                       child: Container(
-                    child: GCWDropDown(
+                    padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
+                    child: GCWDropDown<int>(
                       value: _currentDecryptHighFrequency,
                       items: DTMF_FREQUENCIES_HIGH.map((frequency) {
                         return GCWDropDownMenuItem(
@@ -105,7 +108,6 @@ class DTMFState extends State<DTMF> {
                         });
                       },
                     ),
-                    padding: EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
                   )),
                   GCWIconButton(
                     icon: Icons.add,
@@ -140,8 +142,9 @@ class DTMFState extends State<DTMF> {
 
     if (_currentMode == GCWSwitchPosition.left) {
       output = encodeDTMF(_currentEncodeInput);
-    } else
+    } else {
       output = decodeDTMF(_currentDecodeInput);
+    }
 
     return GCWOutputText(
       text: output,

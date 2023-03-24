@@ -78,15 +78,15 @@ part of 'package:gc_wizard/tools/coords/_common/logic/external_libs/net.sf.geogr
  **********************************************************************/
 
 class LambertConformalConic {
-  double _a, _f, _r, _fm, _e2, _e, _e2m;
-  double _sign, _n, _nc, _t0nm1, _scale, _lat0, _k0;
-  double _scbet0, _tchi0, _scchi0, _psi0, _nrho0;
+  late double _a, _f, /*_r,*/ _fm, _e2, _e, _e2m;
+  late double _sign, _n, _nc, _t0nm1, _scale, /*_lat0,*/ _k0;
+  late double _scbet0, _tchi0, _scchi0, _psi0, _nrho0;
   static double eps_ = Geodesic._tol0_;
   static double epsx_ = _GeoMath.sq(eps_);
   static double tol_ = 0.1 * sqrt(eps_);
   // static double ahypover_ = real(numeric_limits<real>::digits) * log(real(numeric_limits<real>::radix)) + 2;
   static double ahypover_ = 53.0 * log(2.0) + 2.0;
-  static final int numit_ = 5;
+  static const int numit_ = 5;
 
   static double hyp(double x) {
     return _hypot(1.0, x);
@@ -188,7 +188,7 @@ class LambertConformalConic {
   LambertConformalConic(double a, double f, double stdlat1, double stdlat2, double k1) {
     _a = a;
     _f = f <= 1 ? f : 1 / f;
-    _r = 1 / f;
+    // _r = 1 / f;
     _fm = 1 - _f;
     _e2 = _f * (2 - _f);
     _e = sqrt(_e2.abs());
@@ -275,9 +275,9 @@ class LambertConformalConic {
       double den = Dasinh(tphi2, tphi1, scphi2, scphi1) - Deatanhe(sphi2, sphi1) * Dsn(tphi2, tphi1, sphi2, sphi1);
       _n = num / den;
 
-      if (_n < 0.25)
+      if (_n < 0.25) {
         _nc = sqrt((1 - _n) * (1 + _n));
-      else {
+      } else {
         // Compute nc = cos(phi0) = sqrt((1 - n) * (1 + n)), evaluating 1 - n
         // carefully.  First write
         //
@@ -398,7 +398,7 @@ class LambertConformalConic {
     _scchi0 = hyp(_tchi0);
     _psi0 = _GeoMath.asinh(_tchi0);
 
-    _lat0 = atan(_sign * tphi0) / _GeoMath.degree();
+    // _lat0 = atan(_sign * tphi0) / _GeoMath.degree();
     _t0nm1 = _GeoMath.expm1(-_n * _psi0); // Snyder's t0^n - 1
     // a * k1 * m1/t1^n = a * k1 * m2/t2^n = a * k1 * n * (Snyder's F)
     // = a * k1 / (scbet1 * exp(-n * psi1))
@@ -441,12 +441,13 @@ class LambertConformalConic {
    **********************************************************************/
 
   GeographicLibLambert forward(double lon0, double lat, double lon) {
-    if (lon - lon0 >= 180)
+    if (lon - lon0 >= 180) {
       lon -= lon0 + 360;
-    else if (lon - lon0 < -180)
+    } else if (lon - lon0 < -180) {
       lon -= lon0 - 360;
-    else
+    } else {
       lon -= lon0;
+    }
 
     lat *= _sign;
     // From Snyder, we have
@@ -574,12 +575,13 @@ class LambertConformalConic {
     var lon = lam / _GeoMath.degree();
 
     // Avoid losing a bit of accuracy in lon (assuming lon0 is an integer)
-    if (lon + lon0 >= 180)
+    if (lon + lon0 >= 180) {
       lon += lon0 - 360;
-    else if (lon + lon0 < -180)
+    } else if (lon + lon0 < -180) {
       lon += lon0 + 360;
-    else
+    } else {
       lon += lon0;
+    }
 
     var k = _k0 *
         (scbet / _scbet0) /

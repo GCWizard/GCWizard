@@ -13,17 +13,19 @@ import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/volume.dart';
 import 'package:intl/intl.dart';
 
-final _ALCOHOL_MASS = 'alcoholmass_alcoholmass';
-final _VOLUME = 'alcoholmass_volume';
-final _ALCOHOL_MASS_BY_VOLUME = 'alcoholmass_alcoholbyvolume';
+const _ALCOHOL_MASS = 'alcoholmass_alcoholmass';
+const _VOLUME = 'alcoholmass_volume';
+const _ALCOHOL_MASS_BY_VOLUME = 'alcoholmass_alcoholbyvolume';
 
 class AlcoholMass extends StatefulWidget {
+  const AlcoholMass({Key? key}) : super(key: key);
+
   @override
   AlcoholMassState createState() => AlcoholMassState();
 }
 
 class AlcoholMassState extends State<AlcoholMass> {
-  final _MODES = [_ALCOHOL_MASS, _VOLUME, _ALCOHOL_MASS_BY_VOLUME];
+  static const _MODES = [_ALCOHOL_MASS, _VOLUME, _ALCOHOL_MASS_BY_VOLUME];
   var _currentMode = _ALCOHOL_MASS;
   var _currentVolume = 0.0;
   var _currentPercent = 0.0;
@@ -36,19 +38,21 @@ class AlcoholMassState extends State<AlcoholMass> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        GCWDropDown(
+        GCWDropDown<String>(
           value: _currentMode,
           items: _MODES.map((mode) {
-            return GCWDropDownMenuItem(value: mode, child: i18n(context, mode));
+            return GCWDropDownMenuItem<String>(value: mode, child: i18n(context, mode));
           }).toList(),
           onChanged: (value) {
             setState(() {
-              _currentMode = value;
+
+                _currentMode = value;
+
             });
           },
         ),
         _currentMode != _VOLUME
-            ? GCWUnitInput(
+            ? GCWUnitInput<Volume>(
                 value: _currentVolume,
                 title: i18n(context, _VOLUME),
                 min: 0.0,
@@ -62,7 +66,7 @@ class AlcoholMassState extends State<AlcoholMass> {
               )
             : Container(), // Container Construct instead of simple "if" avoids some NULL Pointer issues, however... (when opening -> switching to VOLUME -> Crash because no Volume DropDown...)
         _currentMode != _ALCOHOL_MASS
-            ? GCWUnitInput(
+            ? GCWUnitInput<Mass>(
                 value: _currentAlcoholMass,
                 title: i18n(context, _ALCOHOL_MASS),
                 min: 0.0,
@@ -78,11 +82,12 @@ class AlcoholMassState extends State<AlcoholMass> {
           Row(
             children: [
               Expanded(
+                  flex: 3,
                   child: GCWText(
                     text: i18n(context, _ALCOHOL_MASS_BY_VOLUME),
-                  ),
-                  flex: 3),
+                  )),
               Expanded(
+                  flex: 13,
                   child: GCWDoubleSpinner(
                     value: _currentPercent,
                     onChanged: (value) {
@@ -90,31 +95,34 @@ class AlcoholMassState extends State<AlcoholMass> {
                         _currentPercent = value;
                       });
                     },
-                  ),
-                  flex: 13)
+                  ))
             ],
           ),
         if (_currentMode != _ALCOHOL_MASS_BY_VOLUME) GCWTextDivider(text: i18n(context, 'common_outputunit')),
         _currentMode == _ALCOHOL_MASS
-            ? GCWUnitDropDown(
+            ? GCWUnitDropDown<Mass>(
                 value: _currentOutputMass,
                 unitList: allMasses(),
                 onlyShowSymbols: false,
                 onChanged: (value) {
                   setState(() {
-                    _currentOutputMass = value;
+
+                      _currentOutputMass = value;
+
                   });
                 },
               )
             : Container(),
         _currentMode == _VOLUME
-            ? GCWUnitDropDown(
+            ? GCWUnitDropDown<Volume>(
                 value: _currentOutputVolume,
                 unitCategory: UNITCATEGORY_VOLUME,
                 onlyShowSymbols: false,
                 onChanged: (value) {
                   setState(() {
-                    _currentOutputVolume = value;
+
+                      _currentOutputVolume = value;
+
                   });
                 },
               )
@@ -124,31 +132,30 @@ class AlcoholMassState extends State<AlcoholMass> {
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     if (_currentMode == _ALCOHOL_MASS) {
       var mass = alcoholMassInG(VOLUME_MILLILITER.fromCubicMeter(_currentVolume), _currentPercent);
       var outputMass = _currentOutputMass.fromGram(mass);
       return GCWDefaultOutput(
         child: NumberFormat('0.000').format(outputMass) + ' ' + _currentOutputMass.symbol,
-        copyText: outputMass,
+        copyText: outputMass.toString(),
       );
-    }
 
-    if (_currentMode == _VOLUME) {
+    } else if (_currentMode == _VOLUME) {
       var volume = alcoholVolumeInML(_currentAlcoholMass, _currentPercent);
       var outputVolume = _currentOutputVolume.fromCubicMeter(VOLUME_MILLILITER.toCubicMeter(volume));
       return GCWDefaultOutput(
         child: NumberFormat('0.000').format(outputVolume) + ' ' + _currentOutputVolume.symbol,
-        copyText: outputVolume,
+        copyText: outputVolume.toString(),
       );
-    }
 
-    if (_currentMode == _ALCOHOL_MASS_BY_VOLUME) {
+    } else if (_currentMode == _ALCOHOL_MASS_BY_VOLUME) {
       var percent = alcoholByMassInPercent(_currentAlcoholMass, VOLUME_MILLILITER.fromCubicMeter(_currentVolume));
       return GCWDefaultOutput(
         child: NumberFormat('0.000').format(percent) + ' %',
-        copyText: percent,
+        copyText: percent.toString(),
       );
     }
+    return Container();
   }
 }

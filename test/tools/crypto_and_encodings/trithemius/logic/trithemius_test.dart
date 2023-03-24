@@ -3,10 +3,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/trithemius/logic/trithemius
 
 void main() {
   group("Trithemius.encrypt:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'aValue': null, 'expectedOutput' : ''},
-      {'input' : null, 'aValue': 0, 'expectedOutput' : ''},
-      {'input' : '', 'aValue': null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'aValue': 0, 'expectedOutput' : ''},
   
       {'input' : 'ABC', 'aValue': 0, 'expectedOutput' : 'ACE'},
@@ -34,18 +31,21 @@ void main() {
       {'input' : 'AbCDeF', 'aValue': -52, 'expectedOutput' : 'AcEGiK'}
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, key: ${elem['key']}, aValue: ${elem['aValue']}, autoKey: ${elem['autoKey']}', () {
-        var _actual = encryptTrithemius(elem['input'], aValue: elem['aValue']);
-        expect(_actual, elem['expectedOutput']);
+        if (elem['aValue'] == null) {
+          var _actual = encryptTrithemius(elem['input'] as String);
+          expect(_actual, elem['expectedOutput']);
+        } else {
+          var _actual = encryptTrithemius(elem['input'] as String, aValue: elem['aValue'] as int);
+          expect(_actual, elem['expectedOutput']);
+        }
       });
-    });
+    }
   });
 
   group("Trithemius.decrypt:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'aValue': null, 'expectedOutput' : ''},
-      {'input' : null, 'aValue': 0, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'aValue': null, 'expectedOutput' : ''},
       {'input' : '', 'aValue': 0, 'expectedOutput' : ''},
   
@@ -74,11 +74,16 @@ void main() {
       {'input' : 'AbCDeF', 'aValue': -52, 'expectedOutput' : 'AaAAaA'}
     ];
 
-    _inputsToExpected.forEach((elem) {
-      test('input: ${elem['input']}, key: ${elem['key']}, aValue: ${elem['aValue']}, autoKey: ${elem['autoKey']}', () {
-        var _actual = decryptTrithemius(elem['input'], aValue: elem['aValue']);
-        expect(_actual, elem['expectedOutput']);
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}, key: ${elem['key']}, aValue: ${elem['aValue']}', () {
+        if (elem['aValue'] == null) {
+          var _actual = decryptTrithemius(elem['input'] as String);
+          expect(_actual, elem['expectedOutput']);
+        } else {
+          var _actual = decryptTrithemius(elem['input'] as String, aValue: elem['aValue'] as int);
+          expect(_actual, elem['expectedOutput']);
+        }
       });
-    });
+    }
   });
 }

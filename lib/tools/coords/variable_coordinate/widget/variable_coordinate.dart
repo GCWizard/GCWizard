@@ -17,44 +17,46 @@ import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/text_input_formatters/variablestring_textinputformatter.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/common_widgets/units/gcw_unit_dropdown.dart';
-import 'package:gc_wizard/tools/coords/coordinate_format_parser/logic/variable_latlon.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coord_format_getter.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
+import 'package:gc_wizard/tools/coords/variable_coordinate/logic/variable_latlon.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/variable_coordinate/persistence/json_provider.dart';
 import 'package:gc_wizard/tools/coords/variable_coordinate/persistence/model.dart';
 import 'package:gc_wizard/tools/formula_solver/persistence/model.dart' as formula_base;
+import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/default_units_getter.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/length.dart';
-import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit_category.dart';
+import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/utils/variable_string_expander.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 
-final _WARNING_COUNT = 500;
-final _TOOMANY_COUNT = 5000;
+const _WARNING_COUNT = 500;
+const _TOOMANY_COUNT = 5000;
 
 class VariableCoordinate extends StatefulWidget {
   final Formula formula;
 
-  const VariableCoordinate({Key key, this.formula}) : super(key: key);
+  const VariableCoordinate({Key? key, required this.formula}) : super(key: key);
 
   @override
   VariableCoordinateState createState() => VariableCoordinateState();
 }
 
 class VariableCoordinateState extends State<VariableCoordinate> {
-  Widget _output = GCWCoordsOutput(outputs: []);
+  Widget _output = GCWCoordsOutput(outputs: const []);
   GCWSwitchPosition _currentCoordMode = GCWSwitchPosition.left;
 
-  Length _currentLengthUnit = UNITCATEGORY_LENGTH.defaultUnit;
+  Length _currentLengthUnit = defaultLengthUnit;
   bool _currentProjectionMode = false;
-  var _currentOutputFormat = defaultCoordFormat();
+  var _currentOutputFormat = defaultCoordinateFormat;
 
-  var _inputController;
-  var _bearingController;
-  var _distanceController;
+  late TextEditingController _inputController;
+  late TextEditingController _bearingController;
+  late TextEditingController _distanceController;
 
   var _currentInput = '';
   var _currentBearingInput = '';
@@ -63,24 +65,24 @@ class VariableCoordinateState extends State<VariableCoordinate> {
   var _currentFromInput = '';
   var _currentToInput = '';
 
-  List<dynamic> _currentOutput = [];
+  List<Object> _currentOutput = [];
   List<GCWMapPoint> _currentMapPoints = [];
 
   bool _isOnLocationAccess = false;
-  var _location = Location();
+  final _location = Location();
 
   @override
   void initState() {
     super.initState();
 
-    _currentInput = widget.formula.formula ?? '';
-    _currentProjectionMode = widget.formula.projection != null && widget.formula.projection.distanceUnit != null;
+    _currentInput = widget.formula.formula;
+    _currentProjectionMode = widget.formula.projection != null;
 
     if (_currentProjectionMode) {
-      _currentDistanceInput = widget.formula.projection.distance ?? '';
-      _currentLengthUnit = baseLengths.firstWhere((unit) => unit.name == widget.formula.projection.distanceUnit);
-      _currentBearingInput = widget.formula.projection.bearing ?? '';
-      _currentReverseBearing = widget.formula.projection.reverse;
+      _currentDistanceInput = widget.formula.projection!.distance;
+      _currentLengthUnit = baseLengths.firstWhere((unit) => unit.name == widget.formula.projection!.distanceUnit.name);
+      _currentBearingInput = widget.formula.projection!.bearing;
+      _currentReverseBearing = widget.formula.projection!.reverse;
     }
 
     _inputController = TextEditingController(text: _currentInput);
@@ -97,24 +99,24 @@ class VariableCoordinateState extends State<VariableCoordinate> {
     super.dispose();
   }
 
-  _updateValue(formula_base.FormulaValue value) {
+  void _updateValue(formula_base.FormulaValue value) {
     updateFormulaValue(value, widget.formula);
   }
 
-  _addEntry(String currentFromInput, String currentToInput, formula_base.FormulaValueType type, BuildContext context) {
-    if (currentFromInput.length > 0) {
+  void _addEntry(String currentFromInput, String currentToInput, formula_base.FormulaValueType type, BuildContext context) {
+    if (currentFromInput.isNotEmpty) {
       insertFormulaValue(
           formula_base.FormulaValue(currentFromInput, currentToInput, type: formula_base.FormulaValueType.INTERPOLATED),
           widget.formula);
     }
   }
 
-  _updateNewEntry(String currentFromInput, String currentToInput, BuildContext context) {
+  void _updateNewEntry(String currentFromInput, String currentToInput, BuildContext context) {
     _currentFromInput = currentFromInput;
     _currentToInput = currentToInput;
   }
 
-  _updateEntry(dynamic id, String key, String value, formula_base.FormulaValueType type) {
+  void _updateEntry(dynamic id, String key, String value, formula_base.FormulaValueType type) {
     var entry = widget.formula.values.firstWhere((element) => element.id == id);
     entry.key = key;
     entry.value = value;
@@ -122,15 +124,12 @@ class VariableCoordinateState extends State<VariableCoordinate> {
     _updateValue(entry);
   }
 
-  _removeEntry(dynamic id, BuildContext context) {
+  void _removeEntry(int id, BuildContext context) {
     deleteFormulaValue(id, widget.formula);
   }
 
-  _disposeEntry(String currentFromInput, String currentToInput, BuildContext context) {
-    if (currentFromInput != null &&
-        currentFromInput.length > 0 &&
-        currentToInput != null &&
-        currentToInput.length > 0) {
+  void _disposeEntry(String currentFromInput, String currentToInput, BuildContext context) {
+    if (currentFromInput.isNotEmpty && currentToInput.isNotEmpty) {
       _addEntry(currentFromInput, currentToInput, formula_base.FormulaValueType.INTERPOLATED, context);
     }
   }
@@ -143,6 +142,7 @@ class VariableCoordinateState extends State<VariableCoordinate> {
           children: [
             Expanded(
               child: Container(
+                padding: const EdgeInsets.only(right: DEFAULT_MARGIN),
                 child: GCWTextField(
                   controller: _inputController,
                   onChanged: (value) {
@@ -151,7 +151,6 @@ class VariableCoordinateState extends State<VariableCoordinate> {
                     updateFormula(widget.formula);
                   },
                 ),
-                padding: EdgeInsets.only(right: DEFAULT_MARGIN),
               ),
             ),
             GCWIconButton(
@@ -170,8 +169,8 @@ class VariableCoordinateState extends State<VariableCoordinate> {
               _currentProjectionMode = value;
 
               if (_currentProjectionMode) {
-                var projection = ProjectionFormula(
-                    _currentDistanceInput, _currentLengthUnit.name, _currentBearingInput, _currentReverseBearing);
+                var projection = ProjectionData(
+                    _currentDistanceInput, _currentLengthUnit, _currentBearingInput, _currentReverseBearing);
 
                 widget.formula.projection = projection;
               } else {
@@ -219,7 +218,7 @@ class VariableCoordinateState extends State<VariableCoordinate> {
             }
           },
         ),
-        _output ?? Container(),
+        _output,
       ],
     );
   }
@@ -236,7 +235,11 @@ class VariableCoordinateState extends State<VariableCoordinate> {
       formulaValueList: widget.formula.values,
       varcoords: true,
       onUpdateEntry: _updateEntry,
-      onRemoveEntry: _removeEntry,
+      onRemoveEntry: (Object id, BuildContext context) {
+        if (id is int) {
+          _removeEntry(id, context);
+        }
+      },
     );
   }
 
@@ -249,28 +252,32 @@ class VariableCoordinateState extends State<VariableCoordinate> {
                   Expanded(
                       flex: 3,
                       child: Container(
+                        padding: const EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN),
                         child: GCWTextField(
                           hintText: i18n(context, 'common_distance_hint'),
                           controller: _distanceController,
                           onChanged: (text) {
                             _currentDistanceInput = text;
 
-                            widget.formula.projection.distance = _currentDistanceInput;
+                            if (_currentProjectionMode) {
+                              widget.formula.projection!.distance = _currentDistanceInput;
+                            }
                             updateFormula(widget.formula);
                           },
                         ),
-                        padding: EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN),
                       )),
                   Expanded(
                       flex: 1,
-                      child: GCWUnitDropDown(
+                      child: GCWUnitDropDown<Length>(
                           unitList: allLengths(),
                           value: _currentLengthUnit,
                           onChanged: (Length value) {
                             setState(() {
                               _currentLengthUnit = value;
 
-                              widget.formula.projection.distanceUnit = _currentLengthUnit.name;
+                              if (_currentProjectionMode) {
+                                widget.formula.projection!.distanceUnit = _currentLengthUnit;
+                              }
                               updateFormula(widget.formula);
                             });
                           }))
@@ -285,12 +292,14 @@ class VariableCoordinateState extends State<VariableCoordinate> {
                     onChanged: (text) {
                       _currentBearingInput = text;
 
-                      widget.formula.projection.bearing = _currentBearingInput;
+                      if (_currentProjectionMode) {
+                        widget.formula.projection!.bearing = _currentBearingInput;
+                      }
                       updateFormula(widget.formula);
                     },
                   ),
                 ),
-                Expanded(
+                const Expanded(
                   flex: 1,
                   child: GCWText(text: '°'),
                 ),
@@ -309,7 +318,9 @@ class VariableCoordinateState extends State<VariableCoordinate> {
                         setState(() {
                           _currentReverseBearing = value;
 
-                          widget.formula.projection.reverse = _currentReverseBearing;
+                          if (_currentProjectionMode) {
+                            widget.formula.projection!.reverse = _currentReverseBearing;
+                          }
                           updateFormula(widget.formula);
                         });
                       },
@@ -322,34 +333,31 @@ class VariableCoordinateState extends State<VariableCoordinate> {
 
   Map<String, String> _getSubstitutions() {
     Map<String, String> _substitutions = {};
-    if (widget.formula.values == null || widget.formula.values.isEmpty) return _substitutions;
+    if (widget.formula.values.isEmpty) return _substitutions;
 
-    widget.formula.values.forEach((value) {
+    for (var value in widget.formula.values) {
       _substitutions.putIfAbsent(value.key, () => value.value);
-    });
+    }
 
-    if (_currentFromInput != null &&
-        _currentFromInput.length > 0 &&
-        _currentToInput != null &&
-        _currentToInput.length > 0) {
+    if (_currentFromInput.isNotEmpty &&
+        _currentToInput.isNotEmpty) {
       _substitutions.putIfAbsent(_currentFromInput, () => _currentToInput);
     }
 
     return _substitutions;
   }
 
-  _calculateOutput(BuildContext context) {
+  void _calculateOutput(BuildContext context) {
     Map<String, String> _substitutions = _getSubstitutions();
 
-    Map<String, dynamic> projectionData;
+    ProjectionData? projectionData;
     if (_currentProjectionMode) {
-      projectionData = {
-        'bearing': _currentProjectionMode == false || _currentBearingInput.length == 0 ? '0' : _currentBearingInput,
-        'distance': _currentProjectionMode == false || _currentDistanceInput.length == 0 ? '0' : _currentDistanceInput,
-        'reverseBearing': _currentReverseBearing,
-        'lengthUnit': _currentLengthUnit,
-        'ellipsoid': defaultEllipsoid()
-      };
+      projectionData = ProjectionData(
+        _currentProjectionMode == false || _currentDistanceInput.isEmpty ? '0' : _currentDistanceInput,
+        _currentLengthUnit,
+        _currentProjectionMode == false || _currentBearingInput.isEmpty ? '0' : _currentBearingInput,
+        _currentReverseBearing,
+      );
     }
 
     var coords = parseVariableLatLon(_currentInput, _substitutions, projectionData: projectionData);
@@ -359,7 +367,7 @@ class VariableCoordinateState extends State<VariableCoordinate> {
     });
   }
 
-  _formatVariables(variables) {
+  String _formatVariables(Map<String, String>? variables) {
     if (variables == null || variables.isEmpty) return '';
 
     return variables.entries
@@ -367,37 +375,40 @@ class VariableCoordinateState extends State<VariableCoordinate> {
         .join(', ');
   }
 
-  _buildOutput(Map<String, dynamic> coords) {
-    var normalCoords = coords['coordinates'];
-    var leftPaddedCoords = coords['leftPadCoordinates'];
+  void _buildOutput(VariableCoordinateResults coords) {
+    var normalCoords = coords.coordinates;
+    var leftPaddedCoords = coords.leftPadCoordinates;
 
-    var hasLeftPaddedCoords = leftPaddedCoords.length > 0;
+    var hasLeftPaddedCoords = leftPaddedCoords.isNotEmpty;
 
     _currentOutput =
-        List.from((_currentCoordMode == GCWSwitchPosition.left ? normalCoords : leftPaddedCoords).map((coord) {
-      var formattedCoordinate = formatCoordOutput(coord['coordinate'], _currentOutputFormat, defaultEllipsoid());
-      return Column(
-        children: [
-          GCWOutputText(text: formattedCoordinate),
-          GCWText(text: _formatVariables(coord['variables']), style: gcwTextStyle().copyWith(fontSize: fontSizeSmall()))
-        ],
-      );
-    }));
+        (_currentCoordMode == GCWSwitchPosition.left ? normalCoords : leftPaddedCoords)
+          .map((VariableCoordinateSingleResult varCoordResult) {
+            var formattedCoordinate = formatCoordOutput(varCoordResult.coordinate, _currentOutputFormat, defaultEllipsoid);
+            return Column(
+              children: [
+                GCWOutputText(text: formattedCoordinate),
+                GCWText(text: _formatVariables(varCoordResult.variables), style: gcwTextStyle().copyWith(fontSize: fontSizeSmall()))
+              ],
+            );
+          })
+          .toList();
 
-    _currentMapPoints = List<GCWMapPoint>.from(
-        (_currentCoordMode == GCWSwitchPosition.left ? normalCoords : leftPaddedCoords).map((coord) {
-      return GCWMapPoint(
-          point: coord['coordinate'],
-          markerText: _formatVariables(coord['variables']),
-          coordinateFormat: _currentOutputFormat);
-    }));
+    _currentMapPoints = (_currentCoordMode == GCWSwitchPosition.left ? normalCoords : leftPaddedCoords)
+      .map((VariableCoordinateSingleResult varCoordResult) {
+        return GCWMapPoint(
+            point: varCoordResult.coordinate,
+            markerText: _formatVariables(varCoordResult.variables),
+            coordinateFormat: _currentOutputFormat);
+      })
+      .toList();
 
-    if (_currentOutput.length == 0) {
+    if (_currentOutput.isEmpty) {
       _currentOutput = [i18n(context, 'coords_variablecoordinate_nooutputs')];
     }
 
     _output = Column(children: [
-      _currentOutputFormat['format'] == keyCoordsDMM && hasLeftPaddedCoords
+      _currentOutputFormat.type == CoordinateFormatKey.DMM && hasLeftPaddedCoords
           ? GCWTwoOptionsSwitch(
               title: i18n(context, 'coords_variablecoordinate_decleftpad'),
               leftValue: i18n(context, 'coords_variablecoordinate_decleftpad_left'),
@@ -419,7 +430,7 @@ class VariableCoordinateState extends State<VariableCoordinate> {
     ]);
   }
 
-  _setUserLocationCoords() {
+  void _setUserLocationCoords() {
     if (_isOnLocationAccess) return;
 
     setState(() {
@@ -427,7 +438,7 @@ class VariableCoordinateState extends State<VariableCoordinate> {
     });
 
     checkLocationPermission(_location).then((value) {
-      if (value == null || value == false) {
+      if (value == false) {
         setState(() {
           _isOnLocationAccess = false;
         });
@@ -437,17 +448,25 @@ class VariableCoordinateState extends State<VariableCoordinate> {
       }
 
       _location.getLocation().then((locationData) {
-        if (locationData.accuracy > 20)
+        if (locationData.accuracy == null || locationData.accuracy! > LOW_LOCATION_ACCURACY) {
           showToast(i18n(context, 'coords_common_location_lowaccuracy',
               parameters: [NumberFormat('0.0').format(locationData.accuracy)]));
+        }
 
-        var coords = LatLng(locationData.latitude, locationData.longitude);
-        var insertedCoord;
-        if (defaultCoordFormat()['format'] == keyCoordsDMM) {
-          //Insert Geocaching Format with exact 3 digits
-          insertedCoord = formatCoordOutput(coords, defaultCoordFormat(), defaultEllipsoid(), 3);
+        LatLng _coords;
+        if (locationData.latitude == null || locationData.longitude == null) {
+          _coords = defaultCoordinate;
         } else {
-          insertedCoord = formatCoordOutput(coords, defaultCoordFormat(), defaultEllipsoid());
+          _coords = LatLng(locationData.latitude!, locationData.longitude!);
+        }
+
+        var coords = buildDefaultCoordinatesByFormat(_coords);
+        String insertedCoord;
+        if (defaultCoordinateFormat.type == CoordinateFormatKey.DMM) {
+          //Insert Geocaching Format with exact 3 digits
+          insertedCoord = DMM.fromLatLon(coords.toLatLng()!).toString(3);
+        } else {
+          insertedCoord = formatCoordOutput(coords.toLatLng()!, defaultCoordinateFormat, defaultEllipsoid);
         }
 
         _currentInput = insertedCoord.replaceAll('\n', ' ');

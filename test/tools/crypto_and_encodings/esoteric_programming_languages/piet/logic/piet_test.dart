@@ -15,7 +15,7 @@ Uint8List _getFileData(String name) {
 
 void main() {
   group("piet.interpretPiet:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
 
       {'input' : 'piet_nhello.gif', 'inputText' : '', 'expectedOutput' : 'hello world!\n'},
       {'input' : 'piet_hello_world.png', 'inputText' : null, 'expectedOutput' : 'Hello world!'},
@@ -43,12 +43,12 @@ void main() {
 
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () async {
-        var _actual = await interpretPiet(PietImageReader().readImage(_getFileData(elem['input'])), elem['inputText']);
+        var _actual = await interpretPiet(PietImageReader().readImage(_getFileData(elem['input'] as String))!, elem['inputText'] as String?);
         expect(_actual.output, elem['expectedOutput']);
       });
-    });
+    }
   });
 
 }

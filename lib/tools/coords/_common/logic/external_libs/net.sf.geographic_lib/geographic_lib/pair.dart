@@ -22,9 +22,9 @@ class _Pair {
   /*
    * The first member of the pair.
    **********************************************************************/
-  double first;
+  late double first;
   /*
    * The second member of the pair.
    **********************************************************************/
-  double second;
+  late double second;
 }

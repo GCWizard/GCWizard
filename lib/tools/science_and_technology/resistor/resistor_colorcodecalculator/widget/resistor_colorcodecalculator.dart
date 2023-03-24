@@ -11,6 +11,8 @@ import 'package:gc_wizard/tools/science_and_technology/resistor/resistor_formatt
 part 'package:gc_wizard/tools/science_and_technology/resistor/resistor_colorcodecalculator/widget/resistor_band_dropdown.dart';
 
 class ResistorColorCodeCalculator extends StatefulWidget {
+  const ResistorColorCodeCalculator({Key? key}) : super(key: key);
+
   @override
   ResistorColorCodeCalculatorState createState() => ResistorColorCodeCalculatorState();
 }
@@ -30,16 +32,16 @@ class ResistorColorCodeCalculatorState extends State<ResistorColorCodeCalculator
   var _currentNumberBands = 3;
   var _changed = false;
 
-  var _resistorBandDropDown_fourBands_first;
-  var _resistorBandDropDown_fourBands_second;
-  var _resistorBandDropDown_fourBands_multiplier;
-  var _resistorBandDropDown_fourBands_tolerance;
-  var _resistorBandDropDown_sixBands_first;
-  var _resistorBandDropDown_sixBands_second;
-  var _resistorBandDropDown_sixBands_third;
-  var _resistorBandDropDown_sixBands_multiplier;
-  var _resistorBandDropDown_sixBands_tolerance;
-  var _resistorBandDropDown_sixBands_temperatureCoefficient;
+  late _ResistorBandDropDown _resistorBandDropDown_fourBands_first;
+  late _ResistorBandDropDown _resistorBandDropDown_fourBands_second;
+  late _ResistorBandDropDown _resistorBandDropDown_fourBands_multiplier;
+  late _ResistorBandDropDown _resistorBandDropDown_fourBands_tolerance;
+  late _ResistorBandDropDown _resistorBandDropDown_sixBands_first;
+  late _ResistorBandDropDown _resistorBandDropDown_sixBands_second;
+  late _ResistorBandDropDown _resistorBandDropDown_sixBands_third;
+  late _ResistorBandDropDown _resistorBandDropDown_sixBands_multiplier;
+  late _ResistorBandDropDown _resistorBandDropDown_sixBands_tolerance;
+  late _ResistorBandDropDown _resistorBandDropDown_sixBands_temperatureCoefficient;
 
   ResistorBandColor _currentResistorColor_fourBands_first = defaultResistorBandColor;
   ResistorBandColor _currentResistorColor_fourBands_second = defaultResistorBandColor;
@@ -64,6 +66,7 @@ class ResistorColorCodeCalculatorState extends State<ResistorColorCodeCalculator
     return Column(
       children: <Widget>[
         Container(
+          padding: const EdgeInsets.only(bottom: 10.0),
           child: GCWIntegerSpinner(
             title: i18n(context, 'resistor_colorcodecalculator_numberbands'),
             min: 3,
@@ -77,7 +80,6 @@ class ResistorColorCodeCalculatorState extends State<ResistorColorCodeCalculator
               });
             },
           ),
-          padding: EdgeInsets.only(bottom: 10.0),
         ),
         [3, 4].contains(_currentNumberBands) ? _resistorBandDropDown_fourBands_first : Container(),
         [3, 4].contains(_currentNumberBands) ? _resistorBandDropDown_fourBands_second : Container(),
@@ -94,7 +96,7 @@ class ResistorColorCodeCalculatorState extends State<ResistorColorCodeCalculator
     );
   }
 
-  _buildResistors() {
+  void _buildResistors() {
     _resistorBandDropDown_fourBands_first = _ResistorBandDropDown(
       color: _currentResistorColor_fourBands_first,
       type: ResistorBandType.FIRST,
@@ -207,11 +209,11 @@ class ResistorColorCodeCalculatorState extends State<ResistorColorCodeCalculator
   }
 
   Widget _buildOutput() {
-    var outputs = [[]];
+    var outputs = [<Object?>[]];
 
     ResistorValue resistorValue;
 
-    List<ResistorBandColor> colors;
+    List<ResistorBandColor> colors = [];
     switch (_currentNumberBands) {
       case 3:
         colors = [
@@ -250,29 +252,29 @@ class ResistorColorCodeCalculatorState extends State<ResistorColorCodeCalculator
     }
 
     resistorValue = getResistorValue(colors);
-    if (resistorValue.value != null) {
+    if (resistorValue.value != null && resistorValue.tolerance != null) {
       outputs = [
         [
           i18n(context, 'resistor_value'),
-          formatResistorValue(resistorValue.value) + ' ' + formatResistorTolerance(resistorValue.tolerance)
+          formatResistorValue(resistorValue.value!) + ' ' + formatResistorTolerance(resistorValue.tolerance!)
         ],
         [
           i18n(context, 'resistor_value_range'),
           formatResistorTolerancedValueInterval(resistorValue.tolerancedValueInterval)
         ],
-        resistorValue.temperatureCoefficient != null
-            ? [
-                i18n(context, 'resistor_temperaturecoefficient'),
-                formatResistorTemperatureCoefficient(resistorValue.temperatureCoefficient, gcwTextStyle())
-              ]
-            : null
       ];
+      if (resistorValue.temperatureCoefficient != null) {
+        outputs.add([
+          i18n(context, 'resistor_temperaturecoefficient'),
+          formatResistorTemperatureCoefficient(resistorValue.temperatureCoefficient!, gcwTextStyle())
+        ]);
+      }
     }
 
     return GCWColumnedMultilineOutput(
         firstRows: [GCWTextDivider(text: i18n(context, 'common_output'))],
         data: outputs,
-        flexValues: [2, 3]
+        flexValues: const [2, 3]
     );
   }
 }

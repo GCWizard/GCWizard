@@ -9,6 +9,8 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/book_cipher/logic/book_cipher.dart';
 
 class BookCipher extends StatefulWidget {
+  const BookCipher({Key? key}) : super(key: key);
+
   @override
   BookCipherState createState() => BookCipherState();
 }
@@ -33,10 +35,10 @@ class BookCipherState extends State<BookCipher> {
   var _currentSearchFormat = searchFormat.SectionRowWord;
   var _currentDecodeOutFormat = decodeOutFormat.SectionRowWord;
   var _currentEncodeOutFormat = encodeOutFormat.RowWordCharacter;
-  TextEditingController _textController;
-  TextEditingController _wordController;
-  TextEditingController _positionsController;
-  TextEditingController _ignoreSymbolsController;
+  late TextEditingController _textController;
+  late TextEditingController _wordController;
+  late TextEditingController _positionsController;
+  late TextEditingController _ignoreSymbolsController;
 
   @override
   void initState() {
@@ -203,7 +205,7 @@ class BookCipherState extends State<BookCipher> {
   Widget _buildDecodeFormatControl(BuildContext context, Map<decodeOutFormat, String> _bookChiffredDecodeOutFormatItems,
       Map<searchFormat, String> _bookChiffreSearchFormatItems) {
     return _currentMode == GCWSwitchPosition.left
-        ? GCWDropDown(
+        ? GCWDropDown<searchFormat>(
             value: _currentSearchFormat,
             onChanged: (value) {
               setState(() {
@@ -217,7 +219,7 @@ class BookCipherState extends State<BookCipher> {
               );
             }).toList(),
           )
-        : GCWDropDown(
+        : GCWDropDown<decodeOutFormat>(
             value: _currentDecodeOutFormat,
             onChanged: (value) {
               setState(() {
@@ -311,7 +313,7 @@ class BookCipherState extends State<BookCipher> {
 
   Widget _buildEncodeFormatControl(
       BuildContext context, Map<encodeOutFormat, String> _bookChiffredEncodeOutFormatItems) {
-    return GCWDropDown(
+    return GCWDropDown<encodeOutFormat>(
       value: _currentEncodeOutFormat,
       onChanged: (value) {
         setState(() {
@@ -327,12 +329,12 @@ class BookCipherState extends State<BookCipher> {
     );
   }
 
-  _buildOutput() {
+  String _buildOutput() {
     if (_currentSearchMode == GCWSwitchPosition.left) {
       return encodeText(_currentInput, _currentText, _currentEncodeOutFormat,
           spacesOn: _spacesOn,
           emptyLinesOn: _emptyLinesOn,
-          ignoreSymbols: _ignoreSymbolsOn ? _ignoreSymbols : null,
+          ignoreSymbols: _ignoreSymbolsOn ? _ignoreSymbols : '',
           diacriticsOn: _diacriticsOn,
           azOn: _azOn,
           numbersOn: _numbersOn,
@@ -342,7 +344,7 @@ class BookCipherState extends State<BookCipher> {
         return decodeFindWord(_currentInput, _currentPositions, _currentSearchFormat,
             spacesOn: _spacesOn,
             emptyLinesOn: _emptyLinesOn,
-            ignoreSymbols: _ignoreSymbolsOn ? _ignoreSymbols : null,
+            ignoreSymbols: _ignoreSymbolsOn ? _ignoreSymbols : '',
             diacriticsOn: _diacriticsOn,
             azOn: _azOn,
             numbersOn: _numbersOn,
@@ -352,7 +354,7 @@ class BookCipherState extends State<BookCipher> {
             i18n(context, 'book_cipher_section'), i18n(context, 'book_cipher_row'), i18n(context, 'book_cipher_word'),
             spacesOn: _spacesOn,
             emptyLinesOn: _emptyLinesOn,
-            ignoreSymbols: _ignoreSymbolsOn ? _ignoreSymbols : null,
+            ignoreSymbols: _ignoreSymbolsOn ? _ignoreSymbols : '',
             diacriticsOn: _diacriticsOn,
             azOn: _azOn,
             numbersOn: _numbersOn,

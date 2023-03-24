@@ -1,7 +1,7 @@
 import 'package:gc_wizard/tools/science_and_technology/irrational_numbers/_common/logic/irrational_numbers.dart';
 //https://apod.nasa.gov/htmltest/gifcity/sqrt2.1mil
 
-final SQRT_2 = IrrationalNumber(
+const SQRT_2 = IrrationalNumber(
   symbol: '√2',
   integerPart: '1',
   decimalPart:

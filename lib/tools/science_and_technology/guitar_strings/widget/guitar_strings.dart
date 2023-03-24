@@ -15,6 +15,8 @@ import 'package:gc_wizard/tools/science_and_technology/guitar_strings/logic/guit
 import 'package:tuple/tuple.dart';
 
 class GuitarStrings extends StatefulWidget {
+  const GuitarStrings({Key? key}) : super(key: key);
+
   @override
   GuitarStringsState createState() => GuitarStringsState();
 }
@@ -23,7 +25,7 @@ class GuitarStringsState extends State<GuitarStrings> {
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
 
   var _currentEncryptionText = '';
-  var _encryptionController;
+  late TextEditingController _encryptionController;
 
   int _currentString = 0;
   int _currentFret = 0;
@@ -59,7 +61,7 @@ class GuitarStringsState extends State<GuitarStrings> {
     );
   }
 
-  _buildEncryption() {
+  Widget _buildEncryption() {
     return Column(children: [
       GCWTextField(
         controller: _encryptionController,
@@ -73,9 +75,9 @@ class GuitarStringsState extends State<GuitarStrings> {
     ]);
   }
 
-  _buildEncryptionOutput() {
+  Widget _buildEncryptionOutput() {
     var _tabs = textToGuitarTabs(_currentEncryptionText);
-    if (_tabs == null || _tabs.isEmpty) return Container();
+    if (_tabs.isEmpty) return Container();
 
     return _buildASCIITabs(_tabs, i18n(context, 'common_output'));
   }
@@ -84,7 +86,7 @@ class GuitarStringsState extends State<GuitarStrings> {
     return i18n(context, 'symboltables_notes_names_trebleclef_14');
   }
 
-  _buildDecryption() {
+  Widget _buildDecryption() {
     var tabs = List<Tuple2<GuitarStringName, int>>.from(_currentTones);
     tabs.add(Tuple2(_stringNameFromIndex(_currentString), _currentFret));
 
@@ -107,6 +109,8 @@ class GuitarStringsState extends State<GuitarStrings> {
                 return '5: A (A2)';
               case 5:
                 return '6: E (E2)';
+              default:
+                return '';
             }
           }).toList(),
           onChanged: (value) {
@@ -140,7 +144,7 @@ class GuitarStringsState extends State<GuitarStrings> {
             icon: Icons.backspace,
             onPressed: () {
               setState(() {
-                if (_currentTones.length > 0) _currentTones.removeLast();
+                if (_currentTones.isNotEmpty) _currentTones.removeLast();
               });
             },
           ),
@@ -164,20 +168,20 @@ class GuitarStringsState extends State<GuitarStrings> {
     );
   }
 
-  _stringNameFromIndex(int index) {
+  GuitarStringName _stringNameFromIndex(int index) {
     return GuitarStringName.values[_currentString];
   }
 
-  _buildDecryptionOutput() {
+  String _buildDecryptionOutput() {
     var outputTones = List<Tuple2<GuitarStringName, int>>.from(_currentTones);
     outputTones.add(Tuple2(_stringNameFromIndex(_currentString), _currentFret));
 
     return outputTones.map((tone) {
-      return i18n(context, GUITAR_STRING_NOTES[tone]);
+      return i18n(context, GUITAR_STRING_NOTES[tone]!);
     }).join(' ');
   }
 
-  _buildASCIITabs(List<Tuple2<GuitarStringName, int>> tabs, String title) {
+  Widget _buildASCIITabs(List<Tuple2<GuitarStringName, int>?> tabs, String title) {
     var out = {
       GuitarStringName.E4: 'E |-',
       GuitarStringName.H3: '${_bOrH().toUpperCase()} |-',
@@ -187,12 +191,12 @@ class GuitarStringsState extends State<GuitarStrings> {
       GuitarStringName.E2: 'E |-',
     };
 
-    tabs.forEach((tone) {
+    tabs.where((tone) => tone != null).forEach((tone) {
       for (var outItem in out.keys) {
-        if (outItem == tone.item1) {
-          out[outItem] += tone.item2.toString().padRight(2, '-') + '-';
+        if (outItem == tone!.item1) {
+          out[outItem] = out[outItem]! + tone.item2.toString().padRight(2, '-') + '-';
         } else {
-          out[outItem] += '---';
+          out[outItem] = out[outItem]! + '---';
         }
       }
     });
@@ -210,7 +214,7 @@ class GuitarStringsState extends State<GuitarStrings> {
               style: gcwMonotypeTextStyle(),
               maxLines: 6,
             )),
-            outputText != null && outputText.length > 0
+            outputText.isNotEmpty
                 ? GCWIconButton(
                     size: IconButtonSize.SMALL,
                     icon: Icons.content_copy,

@@ -10,7 +10,7 @@ import 'package:gc_wizard/common_widgets/gcw_tool.dart';
 class GCWTextViewer extends StatefulWidget {
   final String text;
 
-  const GCWTextViewer({Key key, @required this.text}) : super(key: key);
+  const GCWTextViewer({Key? key, required this.text}) : super(key: key);
 
   @override
   GCWTextViewerState createState() => GCWTextViewerState();
@@ -19,20 +19,20 @@ class GCWTextViewer extends StatefulWidget {
 class GCWTextViewerState extends State<GCWTextViewer> {
   @override
   Widget build(BuildContext context) {
-    var text = widget.text ?? '';
+    var text = widget.text;
 
     return Column(
       children: [
         GCWButton(
           text: i18n(context, 'common_copy'),
           onPressed: () {
-            if (widget.text == null || widget.text.isEmpty) return;
+            if (widget.text.isEmpty) return;
 
             insertIntoGCWClipboard(context, widget.text);
           },
         ),
         Container(
-          padding: EdgeInsets.only(top: 20),
+          padding: const EdgeInsets.only(top: 20),
           child: GCWText(
             text: text,
             style: gcwMonotypeTextStyle(),
@@ -43,14 +43,14 @@ class GCWTextViewerState extends State<GCWTextViewer> {
   }
 }
 
-openInTextViewer(BuildContext context, String text) {
+void openInTextViewer(BuildContext context, String text) {
   Navigator.push(
       context,
-      NoAnimationMaterialPageRoute(
+      NoAnimationMaterialPageRoute<GCWTool>(
           builder: (context) => GCWTool(
-                tool: GCWTextViewer(text: text ?? ''),
+                tool: GCWTextViewer(text: text),
                 toolName: i18n(context, 'textviewer_title'),
-                i18nPrefix: '',
+                id: '',
                 suppressHelpButton: true,
               )));
 }

@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/images_and_files/hidden_data/logic/hidden_data.dart';
-import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:path/path.dart' as path;
 
@@ -17,34 +16,34 @@ Uint8List _getFileData(String name) {
 String _fileDescription(GCWFile file) {
   var output = '';
 
-  if (file == null) return '';
-  output += (file.name != null ? file.name : '') + ', ';
-  var fileType = getFileType(file.bytes);
-  output += (fileType != null ? fileType.name : '') + ', ';
-  output += (file.bytes != null ? file.bytes.length.toString() : '0') + ' bytes, ';
+  output += (file.name ?? '') + ', ';
+  var fileType = file.fileType;
+  output += fileType.name + ', ';
+  output += file.bytes.length.toString() + ' bytes, ';
 
   return output;
 }
 
-String _fileStructureToString(List<GCWFile> structure, {int offset = 0}) {
+String? _fileStructureToString(List<GCWFile>? structure, {int offset = 0}) {
   var output = '';
 
   if (structure == null) return null;
 
-  structure.forEach((file) {
+  for (var file in structure) {
     var description  = _fileDescription(file);
-    if (description != null)
-      output += ''.padRight(offset, ' ') + description;
-    if (file.children != null)
-      output += '\n' + _fileStructureToString(file.children, offset: offset + 4);
-  });
+
+    output += ''.padRight(offset, ' ') + description;
+    if (file.children != null) {
+      output += '\n' + (_fileStructureToString(file.children, offset: offset + 4) ?? '');
+    }
+  }
 
   return output;
 }
 
 void main() {
   group("hidden_data.hiddenData:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
 
       {'input' : 'hidden1.zip', 'expectedOutput' :
           'hidden1.zip, ZIP, 164 bytes, \n'
@@ -66,7 +65,7 @@ void main() {
           '            <<!!!HIDDEN_FILE!!!>>_2, JPEG, 14942 bytes, \n'
           '            <<!!!HIDDEN_FILE!!!>>_3, JPEG, 2551 bytes, \n'
           '            <<!!!HIDDEN_FILE!!!>>_4, JPEG, 2551 bytes, \n'
-          '            <<!!!HIDDEN_FILE!!!>>_5, ZIP, 16893 bytes, \n'
+          '            <<!!!HIDDEN_FILE!!!>>_5, ZIP, 175 bytes, \n'
           '                lon.txt, TXT, 63 bytes, \n'
           '    <<!!!HIDDEN_FILE!!!>>_6, JPEG, 1670 bytes, \n'
           '    <<!!!HIDDEN_FILE!!!>>_7, JPEG, 1670 bytes, \n'
@@ -78,8 +77,9 @@ void main() {
           ''},
       {'input' : 'hidden6.jpg', 'expectedOutput' :
           'hidden6.jpg, JPEG, 237081 bytes, \n'
-          '    <<!!!HIDDEN_FILE!!!>>_1, ZIP, 178 bytes, \n'
+          '    <<!!!HIDDEN_FILE!!!>>_1, ZIP, 164 bytes, \n'
           '        secret.txt, TXT, 10 bytes, \n'
+          '    <<!!!HIDDEN_FILE!!!>>_2, TXT, 14 bytes, \n'
           ''},
       {'input' : 'hidden7.jpg', 'expectedOutput' :
           'hidden7.jpg, JPEG, 239449 bytes, \n'
@@ -109,6 +109,8 @@ void main() {
           '        Temp.zip, ZIP, 45060 bytes, \n'
           '            donald.jpg, JPEG, 17708 bytes, \n'
           '            garfield.jpg, JPEG, 27696 bytes, \n'
+          '            <<!!!HIDDEN_FILE!!!>>_1, TXT, 45030 bytes, \n'
+          '                <<!!!HIDDEN_FILE!!!>>_2, ZIP, 27623 bytes, \n'
           ''},
       {'input' : 'hidden12.jpg', 'expectedOutput' :
           'hidden12.jpg, JPEG, 243577 bytes, \n'
@@ -123,11 +125,11 @@ void main() {
           ''},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () async {
-        var _actual = await hiddenData(GCWFile(name: elem['input'], bytes: _getFileData(elem['input'])));
+        var _actual = await hiddenData(GCWFile(name: elem['input'] as String, bytes: _getFileData(elem['input'] as String)));
         expect(_fileStructureToString(_actual), elem['expectedOutput']);
       });
-    });
+    }
   });
 }

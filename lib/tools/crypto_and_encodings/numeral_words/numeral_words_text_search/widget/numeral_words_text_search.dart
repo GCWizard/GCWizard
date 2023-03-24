@@ -17,20 +17,22 @@ import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
 class NumeralWordsTextSearch extends StatefulWidget {
+  const NumeralWordsTextSearch({Key? key}) : super(key: key);
+
   @override
   NumeralWordsTextSearchState createState() => NumeralWordsTextSearchState();
 }
 
 class NumeralWordsTextSearchState extends State<NumeralWordsTextSearch> {
-  TextEditingController _decodeController;
-  TextEditingController _codeControllerHighlighted;
+  late TextEditingController _decodeController;
+  late TextEditingController _codeControllerHighlighted;
 
   var _currentDecodeInput = '';
   GCWSwitchPosition _currentDecodeMode = GCWSwitchPosition.left;
-  var _currentLanguage;
+  late NumeralWordsLanguage _currentLanguage;
   bool _setDefaultLanguage = false;
 
-  Map<String, NumeralWordsLanguage> _languageList;
+  Map<String, NumeralWordsLanguage>? _languageList;
 
   @override
   void initState() {
@@ -57,12 +59,12 @@ class NumeralWordsTextSearchState extends State<NumeralWordsTextSearch> {
           switchMapKeyValue(NUMERALWORDS_LANGUAGES).map((key, value) => MapEntry(i18n(context, key), value)));
 
       _languageList = {};
-      _languageList.addAll(sorted);
+      _languageList!.addAll(sorted);
     }
 
     return Column(
       children: <Widget>[
-        GCWDropDown(
+        GCWDropDown<NumeralWordsLanguage>(
           value: _currentLanguage,
           onChanged: (value) {
             setState(() {
@@ -71,7 +73,7 @@ class NumeralWordsTextSearchState extends State<NumeralWordsTextSearch> {
               AppBuilder.of(context).rebuild();
             });
           },
-          items: _languageList.entries.map((mode) {
+          items: _languageList!.entries.map((mode) {
             return GCWDropDownMenuItem(
               value: mode.value,
               child: mode.key,
@@ -111,29 +113,33 @@ class NumeralWordsTextSearchState extends State<NumeralWordsTextSearch> {
         language: _currentLanguage,
         decodeModeWholeWords: (_currentDecodeMode == GCWSwitchPosition.left));
     for (int i = 0; i < detailedOutput.length; i++) {
-      if (detailedOutput[i].number != '') if (detailedOutput[i].number.startsWith('numeralwords_'))
-        output.add(i18n(context, detailedOutput[i].number));
-      else
-        output.add(detailedOutput[i].number);
+      if (detailedOutput[i].number.isNotEmpty) {
+        if (detailedOutput[i].number.startsWith('numeralwords_')) {
+          output.add(i18n(context, detailedOutput[i].number));
+        } else {
+          output.add(detailedOutput[i].number);
+        }
+      }
     }
 
     List<List<String>> columnData = [];
-    var flexData;
+
     String columnDataRowNumber;
     String columnDataRowNumWord;
 
     for (int i = 0; i < detailedOutput.length; i++) {
-      if (detailedOutput[i].number.startsWith('numeralwords_'))
+      if (detailedOutput[i].number.startsWith('numeralwords_')) {
         columnDataRowNumber = i18n(context, detailedOutput[i].number);
-      else
+      } else {
         columnDataRowNumber = detailedOutput[i].number;
-      if (detailedOutput[i].numWord.startsWith('numeralwords_'))
+      }
+      if (detailedOutput[i].numWord.startsWith('numeralwords_')) {
         columnDataRowNumWord = i18n(context, detailedOutput[i].numWord);
-      else
+      } else {
         columnDataRowNumWord = detailedOutput[i].numWord;
+      }
       columnData.add([columnDataRowNumber, columnDataRowNumWord]);
     }
-    flexData = [1, 2];
 
     if (_currentDecodeMode == GCWSwitchPosition.left) {
       _codeControllerHighlighted.text = _currentDecodeInput.toLowerCase();
@@ -147,7 +153,7 @@ class NumeralWordsTextSearchState extends State<NumeralWordsTextSearch> {
         GCWOutputText(
           text: output.join(' '),
         ),
-        output.length == 0
+        output.isEmpty
             ? Container()
             : GCWExpandableTextDivider(
                 text: i18n(context, 'numeralwords_syntax_highlight'),
@@ -157,7 +163,7 @@ class NumeralWordsTextSearchState extends State<NumeralWordsTextSearch> {
                   controller: _codeControllerHighlighted,
                   patternMap: _numeralWordsHiglightMap(),
                 )),
-        output.length == 0
+        output.isEmpty
             ? Container()
             : GCWExpandableTextDivider(
                 text: i18n(context, 'common_outputdetail'),
@@ -165,7 +171,7 @@ class NumeralWordsTextSearchState extends State<NumeralWordsTextSearch> {
                 expanded: true,
                 child: GCWColumnedMultilineOutput(
                     data: columnData,
-                    flexValues: flexData,
+                    flexValues: const [1, 2],
                     copyColumn: 1
                 )
               ),
@@ -176,26 +182,29 @@ class NumeralWordsTextSearchState extends State<NumeralWordsTextSearch> {
   Map<String, TextStyle> _numeralWordsHiglightMap() {
     Map<String, TextStyle> result = {};
     if (NUMERAL_WORDS_ACCENTS[_currentLanguage] != null) {
-      NUMERAL_WORDS_ACCENTS[_currentLanguage].forEach((element) {
-        if (int.tryParse(NUMERAL_WORDS[_currentLanguage][removeAccents(element)]) < 10) {
-          result[r'' + element + ''] = TextStyle(color: Colors.red);
-          result[r'' + removeAccents(element) + ''] = TextStyle(color: Colors.red);
+      for (var element in NUMERAL_WORDS_ACCENTS[_currentLanguage]!) {
+        if ((int.tryParse(NUMERAL_WORDS[_currentLanguage]![removeAccents(element)] ?? '') ?? 0) < 10) {
+          result[r'' + element + ''] = const TextStyle(color: Colors.red);
+          result[r'' + removeAccents(element) + ''] = const TextStyle(color: Colors.red);
         } else {
-          result[r'' + element + ''] = TextStyle(color: Colors.orange);
-          result[r'' + removeAccents(element) + ''] = TextStyle(color: Colors.orange);
+          result[r'' + element + ''] = const TextStyle(color: Colors.orange);
+          result[r'' + removeAccents(element) + ''] = const TextStyle(color: Colors.orange);
         }
-      });
+      }
     }
 
-    NUMERAL_WORDS[_currentLanguage].forEach((key, value) {
-      if (int.tryParse(value) == null) if (value.startsWith('numeral'))
-        result[r'' + key + ''] = TextStyle(color: Colors.blue);
-      else
-        result[r'' + key + ''] = TextStyle(color: Colors.green);
-      else if (int.parse(value) < 10)
-        result[r'' + key + ''] = TextStyle(color: Colors.red);
-      else
-        result[r'' + key + ''] = TextStyle(color: Colors.orange);
+    NUMERAL_WORDS[_currentLanguage]!.forEach((key, value) {
+      if (int.tryParse(value) == null) {
+        if (value.startsWith('numeral')) {
+          result[r'' + key + ''] = const TextStyle(color: Colors.blue);
+        } else {
+          result[r'' + key + ''] = const TextStyle(color: Colors.green);
+        }
+      } else if (int.parse(value) < 10) {
+        result[r'' + key + ''] = const TextStyle(color: Colors.red);
+      } else {
+        result[r'' + key + ''] = const TextStyle(color: Colors.orange);
+      }
     });
     return result;
   }
@@ -203,9 +212,9 @@ class NumeralWordsTextSearchState extends State<NumeralWordsTextSearch> {
   NumeralWordsLanguage _defaultLanguage(BuildContext context) {
     final Locale appLocale = Localizations.localeOf(context);
     if (isLocaleSupported(appLocale)) {
-      return SUPPORTED_LANGUAGES_LOCALES[appLocale];
+      return SUPPORTED_LANGUAGES_LOCALES[appLocale]!;
     } else {
-      return SUPPORTED_LANGUAGES_LOCALES[DEFAULT_LOCALE];
+      return SUPPORTED_LANGUAGES_LOCALES[DEFAULT_LOCALE]!;
     }
   }
 }

@@ -9,13 +9,15 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/wigwag/logic/w
 import 'package:gc_wizard/utils/constants.dart';
 
 class WigWagSemaphoreTelegraph extends StatefulWidget {
+  const WigWagSemaphoreTelegraph({Key? key}) : super(key: key);
+
   @override
   WigWagSemaphoreTelegraphState createState() => WigWagSemaphoreTelegraphState();
 }
 
 class WigWagSemaphoreTelegraphState extends State<WigWagSemaphoreTelegraph> {
-  var _encodeController;
-  var _decodeController;
+  late TextEditingController _encodeController;
+  late TextEditingController _decodeController;
 
   var _currentEncodeInput = '';
   var _currentDecodeInput = defaultIntegerListText;
@@ -29,7 +31,7 @@ class WigWagSemaphoreTelegraphState extends State<WigWagSemaphoreTelegraph> {
     super.initState();
 
     _encodeController = TextEditingController(text: _currentEncodeInput);
-    _decodeController = TextEditingController(text: _currentDecodeInput['text']);
+    _decodeController = TextEditingController(text: _currentDecodeInput.text);
   }
 
   @override
@@ -44,7 +46,7 @@ class WigWagSemaphoreTelegraphState extends State<WigWagSemaphoreTelegraph> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        GCWDropDown(
+        GCWDropDown<WigWagCodebook>(
           value: _currentLanguage,
           onChanged: (value) {
             setState(() {
@@ -54,8 +56,8 @@ class WigWagSemaphoreTelegraphState extends State<WigWagSemaphoreTelegraph> {
           items: CCITT_CODEBOOK.entries.map((mode) {
             return GCWDropDownMenuItem(
                 value: mode.key,
-                child: i18n(context, mode.value['title']),
-                subtitle: mode.value['subtitle'] != null ? i18n(context, mode.value['subtitle']) : null);
+                child: i18n(context, mode.value.title),
+                subtitle: i18n(context, mode.value.subtitle));
           }).toList(),
         ),
         _currentMode == GCWSwitchPosition.left
@@ -88,11 +90,11 @@ class WigWagSemaphoreTelegraphState extends State<WigWagSemaphoreTelegraph> {
     );
   }
 
-  _calculateOutput() {
+  String _calculateOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
       return encodeWigWag(_currentEncodeInput.toUpperCase(), _currentLanguage);
     } else {
-      return decodeWigWag(List<int>.from(_currentDecodeInput['values']), _currentLanguage);
+      return decodeWigWag(_currentDecodeInput.value, _currentLanguage);
     }
   }
 }

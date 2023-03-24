@@ -3,8 +3,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/bacon/logic/bacon.dart';
 
 void main() {
   group("Bacon.encodeBacon:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : 'AZ', 'expectedOutput' : 'AAAAABABBB'},
@@ -14,17 +13,16 @@ void main() {
       {'input' : ' A_12Z%', 'expectedOutput' : 'AAAAABABBB'}
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBacon(elem['input'], false, false);
+        var _actual = encodeBacon(elem['input'] as String, false, false);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Bacon.encodeBaconBinary:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : 'AZ', 'expectedOutput' : '0000010111'},
@@ -34,17 +32,16 @@ void main() {
       {'input' : ' A_12Z%', 'expectedOutput' : '0000010111'}
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBacon(elem['input'], false, true);
+        var _actual = encodeBacon(elem['input'] as String, false, true);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Bacon.encodeBaconInverse:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : 'AZ', 'expectedOutput' : 'BBBBBABAAA'},
@@ -54,17 +51,16 @@ void main() {
       {'input' : ' A_12Z%', 'expectedOutput' : 'BBBBBABAAA'}
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBacon(elem['input'], true, false);
+        var _actual = encodeBacon(elem['input'] as String, true, false);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Bacon.encodeBaconInverseBinary:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : 'AZ', 'expectedOutput' : '1111101000'},
@@ -74,17 +70,16 @@ void main() {
       {'input' : ' A_12Z%', 'expectedOutput' : '1111101000'}
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBacon(elem['input'], true, true);
+        var _actual = encodeBacon(elem['input'] as String, true, true);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Bacon.decodeBacon:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : 'AZ', 'input' : 'AAAAABABBB'},
@@ -102,17 +97,16 @@ void main() {
       {'expectedOutput' : '', 'input' : 'BBBBB bbbbb BBBA'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBacon(elem['input'], false, false);
+        var _actual = decodeBacon(elem['input'] as String, false, false);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Bacon.decodeBaconBinary:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : 'AZ', 'input' : '0000010111ABABA'},
@@ -130,17 +124,16 @@ void main() {
       {'expectedOutput' : '', 'input' : '11111 11111 1110'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBacon(elem['input'], false, true);
+        var _actual = decodeBacon(elem['input'] as String, false, true);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Bacon.decodeBaconInverse:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : 'AZ', 'input' : 'BBBBBABAAA'},
@@ -158,17 +151,16 @@ void main() {
       {'expectedOutput' : '', 'input' : 'AAAAA AAAAA AAAB'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBacon(elem['input'], true, false);
+        var _actual = decodeBacon(elem['input'] as String, true, false);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Bacon.decodeBaconInverseBinary:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : 'AZ', 'input' : '1111101000ABABA'},
@@ -186,12 +178,12 @@ void main() {
       {'expectedOutput' : '', 'input' : '00000 00000 0001'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBacon(elem['input'], true, true);
+        var _actual = decodeBacon(elem['input'] as String, true, true);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
 

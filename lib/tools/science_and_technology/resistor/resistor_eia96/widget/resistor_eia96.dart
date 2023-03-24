@@ -8,6 +8,8 @@ import 'package:gc_wizard/tools/science_and_technology/resistor/resistor_formatt
 import 'package:gc_wizard/utils/ui_dependent_utils/text_widget_utils.dart';
 
 class ResistorEIA96 extends StatefulWidget {
+  const ResistorEIA96({Key? key}) : super(key: key);
+
   @override
   ResistorEIA96State createState() => ResistorEIA96State();
 }
@@ -44,7 +46,7 @@ class ResistorEIA96State extends State<ResistorEIA96> {
               },
             )),
             Expanded(
-                child: GCWDropDown(
+                child: GCWDropDown<String>(
               value: _currentMultiplicator,
               items: {
                 'Y': _buildSuperscriptedRichText('Y = 10', '-2', ' = 0.01'),
@@ -74,14 +76,14 @@ class ResistorEIA96State extends State<ResistorEIA96> {
     );
   }
 
-  _buildSuperscriptedRichText(String before, String superscript, String after) {
+  Widget _buildSuperscriptedRichText(String before, String superscript, String after) {
     return RichText(
         text: TextSpan(
             style: gcwTextStyle(),
             children: [TextSpan(text: before), superscriptedTextForRichText(superscript), TextSpan(text: after)]));
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     var output = formatResistorValue(eia96(_currentCode, multiplicator: _currentMultiplicator));
 
     return GCWDefaultOutput(child: output, copyText: output.split(' ')[0]);

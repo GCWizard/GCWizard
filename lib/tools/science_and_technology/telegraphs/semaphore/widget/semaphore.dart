@@ -16,15 +16,17 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/semaphore/logi
 part 'package:gc_wizard/tools/science_and_technology/telegraphs/semaphore/widget/semaphore_segment_display.dart';
 
 class SemaphoreTelegraph extends StatefulWidget {
+  const SemaphoreTelegraph({Key? key}) : super(key: key);
+
   @override
   SemaphoreTelegraphState createState() => SemaphoreTelegraphState();
 }
 
 class SemaphoreTelegraphState extends State<SemaphoreTelegraph> {
   String _currentEncodeInput = '';
-  TextEditingController _encodeController;
+  late TextEditingController _encodeController;
 
-  List<List<String>> _currentDisplays = [];
+  var _currentDisplays = Segments.Empty();
   var _currentMode = GCWSwitchPosition.right;
 
   @override
@@ -69,16 +71,10 @@ class SemaphoreTelegraphState extends State<SemaphoreTelegraph> {
     ]);
   }
 
-  _buildVisualDecryption() {
-    Map<String, bool> currentDisplay;
+  Widget _buildVisualDecryption() {
+    var currentDisplay = buildSegmentMap(_currentDisplays);
 
-    var displays = _currentDisplays;
-    if (displays != null && displays.length > 0)
-      currentDisplay = Map<String, bool>.fromIterable(displays.last ?? [], key: (e) => e, value: (e) => true);
-    else
-      currentDisplay = {};
-
-    var onChanged = (Map<String, bool> d) {
+    onChanged(Map<String, bool> d) {
       setState(() {
         var newSegments = <String>[];
         d.forEach((key, value) {
@@ -86,20 +82,16 @@ class SemaphoreTelegraphState extends State<SemaphoreTelegraph> {
           newSegments.add(key);
         });
 
-        newSegments.sort();
-
-        if (_currentDisplays.length == 0) _currentDisplays.add([]);
-
-        _currentDisplays[_currentDisplays.length - 1] = newSegments;
+        _currentDisplays.replaceLastSegment(newSegments);
       });
-    };
+    }
 
     return Column(
       children: <Widget>[
         Container(
           width: 180,
           height: 200,
-          padding: EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
+          padding: const EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
           child: Row(
             children: <Widget>[
               Expanded(
@@ -116,7 +108,7 @@ class SemaphoreTelegraphState extends State<SemaphoreTelegraph> {
             icon: Icons.space_bar,
             onPressed: () {
               setState(() {
-                _currentDisplays.add([]);
+                _currentDisplays.addEmptySegment();
               });
             },
           ),
@@ -124,7 +116,7 @@ class SemaphoreTelegraphState extends State<SemaphoreTelegraph> {
             icon: Icons.backspace,
             onPressed: () {
               setState(() {
-                if (_currentDisplays.length > 0) _currentDisplays.removeLast();
+                _currentDisplays.removeLastSegment();
               });
             },
           ),
@@ -132,7 +124,7 @@ class SemaphoreTelegraphState extends State<SemaphoreTelegraph> {
             icon: Icons.clear,
             onPressed: () {
               setState(() {
-                _currentDisplays = [];
+                _currentDisplays = Segments.Empty();
               });
             },
           )
@@ -141,7 +133,7 @@ class SemaphoreTelegraphState extends State<SemaphoreTelegraph> {
     );
   }
 
-  Widget _buildDigitalOutput(List<List<String>> segments) {
+  Widget _buildDigitalOutput(Segments segments) {
     return SegmentDisplayOutput(
         segmentFunction: (displayedSegments, readOnly) {
           return _SemaphoreSegmentDisplay(segments: displayedSegments, readOnly: readOnly);
@@ -153,7 +145,7 @@ class SemaphoreTelegraphState extends State<SemaphoreTelegraph> {
   Widget _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
       //encode
-      List<List<String>> segments = encodeSemaphore(_currentEncodeInput);
+      var segments = encodeSemaphore(_currentEncodeInput);
       return Column(
         children: <Widget>[
           _buildDigitalOutput(segments),
@@ -161,14 +153,12 @@ class SemaphoreTelegraphState extends State<SemaphoreTelegraph> {
       );
     } else {
       //decode
-      var output = _currentDisplays.map((character) {
-        if (character != null) return character.join();
-      }).toList();
+      var output = _currentDisplays.buildOutput();
       var segments = decodeSemaphore(output);
       return Column(
         children: <Widget>[
-          _buildDigitalOutput(segments['displays']),
-          GCWDefaultOutput(child: _normalize(segments['chars'].join(''))),
+          _buildDigitalOutput(segments),
+          GCWDefaultOutput(child: _normalize(segments.chars.join(''))),
         ],
       );
     }

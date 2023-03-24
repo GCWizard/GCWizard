@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:file_picker_writable/file_picker_writable.dart';
@@ -10,8 +9,7 @@ import 'package:gc_wizard/common_widgets/gcw_toast.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:universal_html/html.dart' as html;
 
-Future<Uint8List> saveByteDataToFile(BuildContext context, Uint8List data, String fileName,
-    {String subDirectory}) async {
+Future<bool> saveByteDataToFile(BuildContext context, Uint8List data, String fileName) async {
   if (kIsWeb) {
     var blob = html.Blob([data], 'image/png');
     html.AnchorElement(
@@ -20,12 +18,12 @@ Future<Uint8List> saveByteDataToFile(BuildContext context, Uint8List data, Strin
       ..setAttribute("download", fileName)
       ..click();
 
-    return Future.value(data);
+    return Future.value(true);
   } else {
     var storagePermission = await checkStoragePermission();
     if (!storagePermission) {
       showToast(i18n(context, 'common_exportfile_nowritepermission'));
-      return null;
+      return false;
     }
 
     fileName = _limitFileNameLength(fileName);
@@ -37,16 +35,14 @@ Future<Uint8List> saveByteDataToFile(BuildContext context, Uint8List data, Strin
     );
     if (fileInfo == null) {
       showToast(i18n(context, 'common_exportfile_couldntwrite'));
-      return null;
+      return false;
     }
   }
 
-  return data;
+  return true;
 }
 
-Future<File> saveStringToFile(BuildContext context, String data, String fileName, {String subDirectory}) async {
-  File fileX;
-
+Future<bool> saveStringToFile(BuildContext context, String data, String fileName) async {
   if (kIsWeb) {
     var blob = html.Blob([data], 'text/plain', 'native');
     html.AnchorElement(
@@ -55,12 +51,12 @@ Future<File> saveStringToFile(BuildContext context, String data, String fileName
       ..setAttribute("download", fileName)
       ..click();
 
-    fileX = File(data);
+    return true;
   } else {
     var storagePermission = await checkStoragePermission();
     if (!storagePermission) {
       showToast(i18n(context, 'common_exportfile_nowritepermission'));
-      return null;
+      return false;
     }
 
     fileName = _limitFileNameLength(fileName);
@@ -68,12 +64,12 @@ Future<File> saveStringToFile(BuildContext context, String data, String fileName
       fileName: fileName,
       writer: (file) async {
         await file.writeAsString(data);
-        fileX = file;
       },
     );
-    if (fileInfo == null) return null;
+    if (fileInfo == null) return false;
   }
-  return fileX;
+
+  return true;
 }
 
 String _limitFileNameLength(String fileName) {

@@ -3,11 +3,11 @@ import 'package:gc_wizard/application/i18n/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 
 class GCWSignDropDown extends StatefulWidget {
-  final Function onChanged;
-  final int value;
-  final List<dynamic> itemList;
+  final void Function(int) onChanged;
+  final int? value;
+  final List<String> itemList;
 
-  const GCWSignDropDown({Key key, this.itemList, this.onChanged, this.value: 1}) : super(key: key);
+  const GCWSignDropDown({Key? key, required this.itemList, required this.onChanged, this.value = 1}) : super(key: key);
 
   @override
   _GCWSignDropDownState createState() => _GCWSignDropDownState();
@@ -22,8 +22,8 @@ class _GCWSignDropDownState extends State<GCWSignDropDown> {
       value: widget.value ?? _dropdownValue,
       onChanged: (newValue) {
         setState(() {
-          _dropdownValue = newValue;
-          widget.onChanged(newValue);
+          _dropdownValue = newValue is int ? newValue : _dropdownValue;
+          widget.onChanged(_dropdownValue);
         });
       },
       items: widget.itemList.map((char) {

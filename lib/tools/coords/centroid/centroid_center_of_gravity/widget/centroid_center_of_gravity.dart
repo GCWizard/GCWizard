@@ -7,26 +7,26 @@ import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coord
 import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
-import 'package:gc_wizard/tools/coords/centroid/logic/centroid.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coord_format_getter.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/tools/coords/centroid/centroid_center_of_gravity/logic/centroid_center_of_gravity.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 
 class CentroidCenterOfGravity extends StatefulWidget {
+  const CentroidCenterOfGravity({Key? key}) : super(key: key);
+
   @override
   CentroidCenterOfGravityState createState() => CentroidCenterOfGravityState();
 }
 
 class CentroidCenterOfGravityState extends State<CentroidCenterOfGravity> {
   var _currentCountCoords = 1;
-  var _currentCoords = [defaultCoordinate];
+  final _currentCoords = [defaultBaseCoordinate];
 
   var _currentValues = [defaultCoordinate];
   var _currentMapPoints = <GCWMapPoint>[];
-  var _currentCoordsFormats = [defaultCoordFormat()];
 
-  var _currentOutputFormat = defaultCoordFormat();
+  var _currentOutputFormat = defaultCoordinateFormat;
   List<String> _currentOutput = <String>[];
 
   @override
@@ -35,11 +35,10 @@ class CentroidCenterOfGravityState extends State<CentroidCenterOfGravity> {
         _currentCountCoords,
         (index) => GCWCoords(
               title: i18n(context, 'coords_common_coordinate') + ' ' + (index + 1).toString(),
-              coordsFormat: _currentCoordsFormats[index],
+              coordsFormat: _currentCoords[index].format,
               onChanged: (ret) {
                 setState(() {
-                  _currentCoordsFormats[index] = ret['coordsFormat'];
-                  _currentCoords[index] = ret['value'];
+                  _currentCoords[index] = ret;
                 });
               },
             ));
@@ -57,13 +56,11 @@ class CentroidCenterOfGravityState extends State<CentroidCenterOfGravity> {
             setState(() {
               while (value < _currentCountCoords) {
                 _currentCoords.removeLast();
-                _currentCoordsFormats.removeLast();
                 _currentCountCoords--;
               }
 
               while (value > _currentCountCoords) {
-                _currentCoords.add(defaultCoordinate);
-                _currentCoordsFormats.add(defaultCoordFormat());
+                _currentCoords.add(defaultBaseCoordinate);
                 _currentCountCoords++;
               }
             });
@@ -95,8 +92,12 @@ class CentroidCenterOfGravityState extends State<CentroidCenterOfGravity> {
     );
   }
 
-  _calculateOutput() {
-    _currentValues = [centroidCenterOfGravity(_currentCoords)];
+  void _calculateOutput() {
+    if (_currentCoords.isEmpty) {
+      return;
+    }
+
+    _currentValues = [centroidCenterOfGravity(_currentCoords.map((e) => e.toLatLng()!).toList())!];
 
     _currentMapPoints = _currentCoords
         .asMap()
@@ -104,9 +105,9 @@ class CentroidCenterOfGravityState extends State<CentroidCenterOfGravity> {
           return MapEntry(
               index,
               GCWMapPoint(
-                  point: _currentCoords[index],
+                  point: _currentCoords[index].toLatLng()!,
                   markerText: i18n(context, 'coords_common_coordinate') + ' ' + (index + 1).toString(),
-                  coordinateFormat: _currentCoordsFormats[index]));
+                  coordinateFormat: _currentCoords[index].format));
         })
         .values
         .toList();
@@ -120,7 +121,7 @@ class CentroidCenterOfGravityState extends State<CentroidCenterOfGravity> {
     );
 
     _currentOutput = _currentValues.map((coord) {
-      return formatCoordOutput(coord, _currentOutputFormat, defaultEllipsoid());
+      return formatCoordOutput(coord, _currentOutputFormat, defaultEllipsoid);
     }).toList();
   }
 }

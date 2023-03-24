@@ -1,4 +1,4 @@
-List<String> lychrel_numbers = [
+const List<String> lychrel_numbers = [
   '196',
   '295',
   '394',

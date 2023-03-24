@@ -7,6 +7,8 @@ import 'package:gc_wizard/tools/science_and_technology/maya_calendar/logic/maya_
 import 'package:prefs/prefs.dart';
 
 class ToolSettings extends StatefulWidget {
+  const ToolSettings({Key? key}) : super(key: key);
+
   @override
   ToolSettingsState createState() => ToolSettingsState();
 }
@@ -19,9 +21,9 @@ class ToolSettingsState extends State<ToolSettings> {
         GCWTextDivider(
           text: i18n(context, 'settings_mayacalendar_title'),
         ),
-        GCWDropDown(
-          value: Prefs.get(PREFERENCE_MAYACALENDAR_CORRELATION),
-          onChanged: (value) {
+        GCWDropDown<String>(
+          value: Prefs.getString(PREFERENCE_MAYACALENDAR_CORRELATION),
+          onChanged: (String value) {
             setState(() {
               Prefs.setString(PREFERENCE_MAYACALENDAR_CORRELATION, value);
             });

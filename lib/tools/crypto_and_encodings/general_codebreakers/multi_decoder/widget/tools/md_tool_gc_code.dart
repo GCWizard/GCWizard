@@ -11,22 +11,28 @@ const MDT_GCCODE_OPTION_MODE_IDTOGCCODE = 'multidecoder_tool_gccode_option_mode_
 const MDT_GCCODE_OPTION_MODE_GCCODETOID = 'multidecoder_tool_gccode_option_mode_gccode.to.id';
 
 class MultiDecoderToolGCCode extends AbstractMultiDecoderTool {
-  MultiDecoderToolGCCode({Key key, int id, String name, Map<String, dynamic> options, BuildContext context})
+  MultiDecoderToolGCCode({
+    Key? key,
+    required int id,
+    required String name,
+    required Map<String, Object?> options,
+    required BuildContext context})
       : super(
             key: key,
             id: id,
             name: name,
             internalToolName: MDT_INTERNALNAMES_GCCODE,
             onDecode: (String input, String key) {
-              if (options[MDT_GCCODE_OPTION_MODE] == MDT_GCCODE_OPTION_MODE_IDTOGCCODE)
-                return idToGCCode(int.tryParse(input));
-              else
+              if (options[MDT_GCCODE_OPTION_MODE] == MDT_GCCODE_OPTION_MODE_IDTOGCCODE) {
+                return idToGCCode(int.tryParse(input) ?? -1);
+              } else {
                 return gcCodeToID(input);
+              }
             },
             options: options,
             configurationWidget: MultiDecoderToolConfiguration(widgets: {
-              MDT_GCCODE_OPTION_MODE: GCWStatefulDropDown(
-                value: options[MDT_GCCODE_OPTION_MODE],
+              MDT_GCCODE_OPTION_MODE: GCWStatefulDropDown<String>(
+                value: checkStringFormatOrDefaultOption(MDT_INTERNALNAMES_GCCODE, options, MDT_GCCODE_OPTION_MODE),
                 onChanged: (newValue) {
                   options[MDT_GCCODE_OPTION_MODE] = newValue;
                 },

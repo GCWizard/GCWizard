@@ -1,9 +1,9 @@
 part of 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/chef_language/logic/chef_language.dart';
 
 class _Component {
-  _State _state;
-  int _value;
-  String _name;
+  late _State _state;
+  late int _value;
+  late String _name;
 
   _Component(int n, _State s, String name) {
     _value = n;
@@ -12,9 +12,9 @@ class _Component {
   }
 
   _Component.Contructor1(_Ingredient ingredient) {
-    _value = ingredient.getAmount();
-    _state = ingredient.getState();
-    _name = ingredient.getName();
+    _value = ingredient.getAmount()!;
+    _state = ingredient.getState()!;
+    _name = ingredient.getName()!;
   }
 
   int getValue() {

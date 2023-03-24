@@ -3,7 +3,7 @@ import 'package:gc_wizard/utils/collection_utils.dart';
 const alphabet_09 = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9};
 final alphabet_09Indexes = switchMapKeyValue(alphabet_09);
 
-const alphabet_AZ = {
+const Map<String, int> alphabet_AZ = {
   'A': 1,
   'B': 2,
   'C': 3,
@@ -31,8 +31,8 @@ const alphabet_AZ = {
   'Y': 25,
   'Z': 26,
 };
-final alphabet_AZIndexes = switchMapKeyValue(alphabet_AZ);
-final alphabet_AZString = alphabet_AZ.keys.join();
+final Map<int, String> alphabet_AZIndexes = switchMapKeyValue(alphabet_AZ);
+final String alphabet_AZString = alphabet_AZ.keys.join();
 
 const SUPERSCRIPT_CHARACTERS = {
   '0': '\u2070',
@@ -108,11 +108,11 @@ enum AlphabetType { STANDARD, CUSTOM }
 
 class Alphabet {
   final String key;
-  final String name;
+  final String? name;
   final AlphabetType type;
   final Map<String, String> alphabet;
 
-  const Alphabet({this.key, this.alphabet, this.name, this.type: AlphabetType.CUSTOM});
+  const Alphabet({required this.key, required this.alphabet, this.name, this.type = AlphabetType.CUSTOM});
 }
 
 final Alphabet alphabetAZ = Alphabet(
@@ -120,158 +120,158 @@ final Alphabet alphabetAZ = Alphabet(
     type: AlphabetType.STANDARD,
     alphabet: alphabet_AZ.map((key, value) => MapEntry(key, value.toString())));
 
-final Alphabet alphabetGerman1 = Alphabet(key: 'alphabet_name_german1', type: AlphabetType.STANDARD, alphabet: {
+const Alphabet alphabetGerman1 = Alphabet(key: 'alphabet_name_german1', type: AlphabetType.STANDARD, alphabet: {
   'A': '1', 'B': '2', 'C': '3', 'D': '4', 'E': '5', 'F': '6', 'G': '7', 'H': '8', 'I': '9', 'J': '10', 'K': '11',
   'L': '12', 'M': '13',
   'N': '14', 'O': '15', 'P': '16', 'Q': '17', 'R': '18', 'S': '19', 'T': '20', 'U': '21', 'V': '22', 'W': '23',
   'X': '24', 'Y': '25', 'Z': '26',
-  String.fromCharCode(196): '27', // Ä
-  String.fromCharCode(214): '28', // Ö
-  String.fromCharCode(220): '29', // Ü
-  String.fromCharCode(223): '30', // ß
+  '\u00C4': '27', // Ä
+  '\u00D6': '28', // Ö
+  '\u00DC': '29', // Ü
+  '\u00DF': '30', // ß
 });
 
-final Alphabet alphabetGerman2 = Alphabet(key: 'alphabet_name_german2', type: AlphabetType.STANDARD, alphabet: {
+const Alphabet alphabetGerman2 = Alphabet(key: 'alphabet_name_german2', type: AlphabetType.STANDARD, alphabet: {
   'A': '1', 'B': '2', 'C': '3', 'D': '4', 'E': '5', 'F': '6', 'G': '7', 'H': '8', 'I': '9', 'J': '10', 'K': '11',
   'L': '12', 'M': '13',
   'N': '14', 'O': '15', 'P': '16', 'Q': '17', 'R': '18', 'S': '19', 'T': '20', 'U': '21', 'V': '22', 'W': '23',
   'X': '24', 'Y': '25', 'Z': '26',
-  String.fromCharCode(196): '1,5', // Ä
-  String.fromCharCode(214): '15,5', // Ö
-  String.fromCharCode(220): '21,5', // Ü
-  String.fromCharCode(223): '19,19', // ß
+  '\u00C4': '1,5', // Ä
+  '\u00D6': '15,5', // Ö
+  '\u00DC': '21,5', // Ü
+  '\u00DF': '19,19', // ß
 });
 
-final Alphabet alphabetGerman3 = Alphabet(key: 'alphabet_name_german3', type: AlphabetType.STANDARD, alphabet: {
+const Alphabet alphabetGerman3 = Alphabet(key: 'alphabet_name_german3', type: AlphabetType.STANDARD, alphabet: {
   'A': '1', 'B': '2', 'C': '3', 'D': '4', 'E': '5', 'F': '6', 'G': '7', 'H': '8', 'I': '9', 'J': '10', 'K': '11',
   'L': '12', 'M': '13',
   'N': '14', 'O': '15', 'P': '16', 'Q': '17', 'R': '18', 'S': '19', 'T': '20', 'U': '21', 'V': '22', 'W': '23',
   'X': '24', 'Y': '25', 'Z': '26',
-  String.fromCharCode(196): '6', // Ä
-  String.fromCharCode(214): '20', // Ö
-  String.fromCharCode(220): '26', // Ü
-  String.fromCharCode(223): '38', // ß
+  '\u00C4': '6', // Ä
+  '\u00D6': '20', // Ö
+  '\u00DC': '26', // Ü
+  '\u00DF': '38', // ß
 });
 
-final Alphabet alphabetEnglish = Alphabet(key: 'alphabet_name_english', type: AlphabetType.STANDARD, alphabet: {
+const Alphabet alphabetEnglish = Alphabet(key: 'alphabet_name_english', type: AlphabetType.STANDARD, alphabet: {
   'A': '1', 'B': '2', 'C': '3', 'D': '4', 'E': '5', 'F': '6', 'G': '7', 'H': '8', 'I': '9', 'J': '10', 'K': '11',
   'L': '12', 'M': '13',
   'N': '14', 'O': '15', 'P': '16', 'Q': '17', 'R': '18', 'S': '19', 'T': '20', 'U': '21', 'V': '22', 'W': '23',
   'X': '24', 'Y': '25', 'Z': '26',
-  String.fromCharCode(207): '9', // Ï
+  '\u00CF': '9', // Ï
 });
 
-final Alphabet alphabetFrench1 = Alphabet(key: 'alphabet_name_french1', type: AlphabetType.STANDARD, alphabet: {
+const Alphabet alphabetFrench1 = Alphabet(key: 'alphabet_name_french1', type: AlphabetType.STANDARD, alphabet: {
   'A': '1', 'B': '2', 'C': '3', 'D': '4', 'E': '5', 'F': '6', 'G': '7', 'H': '8', 'I': '9', 'J': '10', 'K': '11',
   'L': '12', 'M': '13',
   'N': '14', 'O': '15', 'P': '16', 'Q': '17', 'R': '18', 'S': '19', 'T': '20', 'U': '21', 'V': '22', 'W': '23',
   'X': '24', 'Y': '25', 'Z': '26',
-  String.fromCharCode(192): '1', // À
-  String.fromCharCode(194): '1', // Â
-  String.fromCharCode(201): '5', // É
-  String.fromCharCode(200): '5', // È
-  String.fromCharCode(202): '5', // Ê
-  String.fromCharCode(203): '5', // Ë
-  String.fromCharCode(206): '9', // Î
-  String.fromCharCode(207): '9', // Ï
-  String.fromCharCode(212): '15', // Ô
-  String.fromCharCode(217): '21', // Ù
-  String.fromCharCode(219): '21', // Û
-  String.fromCharCode(220): '21', // Ü
-  String.fromCharCode(376): '25', // Ÿ
-  String.fromCharCode(198): '1,5', // Æ
-  String.fromCharCode(338): '15,5', // Œ
-  String.fromCharCode(199): '3', // Ç
+  '\u00C0': '1', // À
+  '\u00C2': '1', // Â
+  '\u00C9': '5', // É
+  '\u00C8': '5', // È
+  '\u00CA': '5', // Ê
+  '\u00CB': '5', // Ë
+  '\u00CE': '9', // Î
+  '\u00CF': '9', // Ï
+  '\u00D4': '15', // Ô
+  '\u00D9': '21', // Ù
+  '\u00DB': '21', // Û
+  '\u00DC': '21', // Ü
+  '\u0178': '25', // Ÿ
+  '\u00C6': '1,5', // Æ
+  '\u0152': '15,5', // Œ
+  '\u00C7': '3', // Ç
 });
 
-final Alphabet alphabetFrench2 = Alphabet(key: 'alphabet_name_french2', type: AlphabetType.STANDARD, alphabet: {
+const Alphabet alphabetFrench2 = Alphabet(key: 'alphabet_name_french2', type: AlphabetType.STANDARD, alphabet: {
   'A': '1', 'B': '2', 'C': '3', 'D': '4', 'E': '5', 'F': '6', 'G': '7', 'H': '8', 'I': '9', 'J': '10', 'K': '11',
   'L': '12', 'M': '13',
   'N': '14', 'O': '15', 'P': '16', 'Q': '17', 'R': '18', 'S': '19', 'T': '20', 'U': '21', 'V': '22', 'W': '23',
   'X': '24', 'Y': '25', 'Z': '26',
-  String.fromCharCode(192): '1', // À
-  String.fromCharCode(194): '1', // Â
-  String.fromCharCode(201): '5', // É
-  String.fromCharCode(200): '5', // È
-  String.fromCharCode(202): '5', // Ê
-  String.fromCharCode(203): '5', // Ë
-  String.fromCharCode(206): '9', // Î
-  String.fromCharCode(207): '9', // Ï
-  String.fromCharCode(212): '15', // Ô
-  String.fromCharCode(217): '21', // Ù
-  String.fromCharCode(219): '21', // Û
-  String.fromCharCode(220): '21', // Ü
-  String.fromCharCode(376): '25', // Ÿ
-  String.fromCharCode(198): '6', // Æ
-  String.fromCharCode(338): '20', // Œ
-  String.fromCharCode(199): '3', // Ç
+  '\u00C0': '1', // À
+  '\u00C2': '1', // Â
+  '\u00C9': '5', // É
+  '\u00C8': '5', // È
+  '\u00CA': '5', // Ê
+  '\u00CB': '5', // Ë
+  '\u00CE': '9', // Î
+  '\u00CF': '9', // Ï
+  '\u00D4': '15', // Ô
+  '\u00D9': '21', // Ù
+  '\u00DB': '21', // Û
+  '\u00DC': '21', // Ü
+  '\u0178': '25', // Ÿ
+  '\u00C6': '6', // Æ
+  '\u0152': '20', // Œ
+  '\u00C7': '3', // Ç
 });
 
-final Alphabet alphabetSpanish1 = Alphabet(key: 'alphabet_name_spanish1', type: AlphabetType.STANDARD, alphabet: {
+const Alphabet alphabetSpanish1 = Alphabet(key: 'alphabet_name_spanish1', type: AlphabetType.STANDARD, alphabet: {
   'A': '1', 'B': '2', 'C': '3', 'CH': '4', 'D': '5', 'E': '6', 'F': '7', 'G': '8', 'H': '9', 'I': '10', 'J': '11',
   'K': '12', 'L': '13',
   'LL': '14', 'M': '15', 'N': '16',
-  String.fromCharCode(209): '17', // Ñ,
+  '\u00D1': '17', // Ñ,
   'O': '18', 'P': '19', 'Q': '20', 'R': '21', 'S': '22', 'T': '23', 'U': '24', 'V': '25', 'W': '26', 'X': '27',
   'Y': '28', 'Z': '29'
 });
 
-final Alphabet alphabetSpanish2 = Alphabet(key: 'alphabet_name_spanish2', type: AlphabetType.STANDARD, alphabet: {
+const Alphabet alphabetSpanish2 = Alphabet(key: 'alphabet_name_spanish2', type: AlphabetType.STANDARD, alphabet: {
   'A': '1', 'B': '2', 'C': '3', 'D': '4', 'E': '5', 'F': '6', 'G': '7', 'H': '8', 'I': '9', 'J': '10', 'K': '11',
   'L': '12', 'M': '13', 'N': '14',
-  String.fromCharCode(209): '15', // Ñ,
+  '\u00D1': '15', // Ñ,
   'O': '16', 'P': '17', 'Q': '18', 'R': '19', 'S': '20', 'T': '21', 'U': '22', 'V': '23', 'W': '24', 'X': '25',
   'Y': '26', 'Z': '27'
 });
 
-final Alphabet alphabetPolish1 = Alphabet(key: 'common_language_polish', type: AlphabetType.STANDARD, alphabet: {
+const Alphabet alphabetPolish1 = Alphabet(key: 'common_language_polish', type: AlphabetType.STANDARD, alphabet: {
   'A': '1',
-  String.fromCharCode(260): '2', // Ą
+  '\u0104': '2', // Ą
   'B': '3', 'C': '4',
-  String.fromCharCode(262): '5', // Ć
+  '\u0106': '5', // Ć
   'D': '6', 'E': '7',
-  String.fromCharCode(280): '8', // Ę
+  '\u0118': '8', // Ę
   'F': '9', 'G': '10', 'H': '11', 'I': '12', 'J': '13', 'K': '14', 'L': '15',
-  String.fromCharCode(321): '16', // Ł
+  '\u0141': '16', // Ł
   'M': '17', 'N': '18',
-  String.fromCharCode(323): '19', // Ń
+  '\u0143': '19', // Ń
   'O': '20',
-  String.fromCharCode(211): '21', // Ó
+  '\u00D3': '21', // Ó
   'P': '22', 'R': '23', 'S': '24',
-  String.fromCharCode(346): '25', // Ś
+  '\u015A': '25', // Ś
   'T': '26', 'U': '27', 'W': '28', 'Y': '29', 'Z': '30',
-  String.fromCharCode(377): '31', // Ź
-  String.fromCharCode(379): '32', // Ż
+  '\u0179': '31', // Ź
+  '\u017B': '32', // Ż
 });
 
-final Alphabet alphabetGreek1 = Alphabet(key: 'alphabet_name_greek1', type: AlphabetType.STANDARD, alphabet: {
-  String.fromCharCode(913): '1', // Α
-  String.fromCharCode(914): '2', // Β
-  String.fromCharCode(915): '3', // Γ
-  String.fromCharCode(916): '4', // Δ
-  String.fromCharCode(917): '5', // Ε
-  String.fromCharCode(918): '6', // Ζ
-  String.fromCharCode(919): '7', // Η
-  String.fromCharCode(920): '8', // Θ
-  String.fromCharCode(921): '9', // Ι
-  String.fromCharCode(922): '10', // Κ
-  String.fromCharCode(923): '11', // Λ
-  String.fromCharCode(924): '12', // Μ
-  String.fromCharCode(925): '13', // Ν
-  String.fromCharCode(926): '14', // Ξ
-  String.fromCharCode(927): '15', // Ο
-  String.fromCharCode(928): '16', // Π
-  String.fromCharCode(929): '17', // Ρ
-  String.fromCharCode(931): '18', // Σ
-  String.fromCharCode(932): '19', // Τ
-  String.fromCharCode(933): '20', // Υ
-  String.fromCharCode(934): '21', // Φ
-  String.fromCharCode(935): '22', // Χ
-  String.fromCharCode(936): '23', // Ψ
-  String.fromCharCode(937): '24', // Ω
+const Alphabet alphabetGreek1 = Alphabet(key: 'alphabet_name_greek1', type: AlphabetType.STANDARD, alphabet: {
+  '\u0391': '1', // Α
+  '\u0392': '2', // Β
+  '\u0393': '3', // Γ
+  '\u0394': '4', // Δ
+  '\u0395': '5', // Ε
+  '\u0396': '6', // Ζ
+  '\u0397': '7', // Η
+  '\u0398': '8', // Θ
+  '\u0399': '9', // Ι
+  '\u039A': '10', // Κ
+  '\u039B': '11', // Λ
+  '\u039C': '12', // Μ
+  '\u039D': '13', // Ν
+  '\u039E': '14', // Ξ
+  '\u039F': '15', // Ο
+  '\u03A0': '16', // Π
+  '\u03A1': '17', // Ρ
+  '\u03A2': '18', // Σ
+  '\u03A3': '19', // Τ
+  '\u03A4': '20', // Υ
+  '\u03A5': '21', // Φ
+  '\u03A6': '22', // Χ
+  '\u03A7': '23', // Ψ
+  '\u03A8': '24', // Ω
 });
 
-final Alphabet alphabetGreek2 = Alphabet(key: 'alphabet_name_greek2', type: AlphabetType.STANDARD, alphabet: {
+const Alphabet alphabetGreek2 = Alphabet(key: 'alphabet_name_greek2', type: AlphabetType.STANDARD, alphabet: {
   'Α': '1',
   'Ά': '2',
   'Β': '3',
@@ -305,40 +305,40 @@ final Alphabet alphabetGreek2 = Alphabet(key: 'alphabet_name_greek2', type: Alph
   'Ώ': '32'
 });
 
-final Alphabet alphabetRussian1 = Alphabet(key: 'common_language_russian', type: AlphabetType.STANDARD, alphabet: {
-  String.fromCharCode(1040): '1', // А
-  String.fromCharCode(1041): '2', // Б
-  String.fromCharCode(1042): '3', // В
-  String.fromCharCode(1043): '4', // Г
-  String.fromCharCode(1044): '5', // Д
-  String.fromCharCode(1045): '6', // Е
-  String.fromCharCode(1025): '7', // Ё
-  String.fromCharCode(1046): '8', // Ж
-  String.fromCharCode(1047): '9', // З
-  String.fromCharCode(1048): '10', // И
-  String.fromCharCode(1049): '11', // Й
-  String.fromCharCode(1050): '12', // К
-  String.fromCharCode(1051): '13', // Л
-  String.fromCharCode(1052): '14', // М
-  String.fromCharCode(1053): '15', // Н
-  String.fromCharCode(1054): '16', // О
-  String.fromCharCode(1055): '17', // П
-  String.fromCharCode(1056): '18', // Р
-  String.fromCharCode(1057): '19', // С
-  String.fromCharCode(1058): '20', // Т
-  String.fromCharCode(1059): '21', // У
-  String.fromCharCode(1060): '22', // Ф
-  String.fromCharCode(1061): '23', // Х
-  String.fromCharCode(1062): '24', // Ц
-  String.fromCharCode(1063): '25', // Ч
-  String.fromCharCode(1064): '26', // Ш
-  String.fromCharCode(1065): '27', // Щ
-  String.fromCharCode(1066): '28', // Ъ
-  String.fromCharCode(1067): '29', // Ы
-  String.fromCharCode(1068): '30', // Ь
-  String.fromCharCode(1069): '31', // Э
-  String.fromCharCode(1070): '32', // Ю
-  String.fromCharCode(1071): '33', // Я
+const Alphabet alphabetRussian1 = Alphabet(key: 'common_language_russian', type: AlphabetType.STANDARD, alphabet: {
+  '\u0410': '1', // А
+  '\u0411': '2', // Б
+  '\u0412': '3', // В
+  '\u0413': '4', // Г
+  '\u0414': '5', // Д
+  '\u0415': '6', // Е
+  '\u0401': '7', // Ё
+  '\u0416': '8', // Ж
+  '\u0417': '9', // З
+  '\u0418': '10', // И
+  '\u0419': '11', // Й
+  '\u041A': '12', // К
+  '\u041B': '13', // Л
+  '\u041C': '14', // М
+  '\u041D': '15', // Н
+  '\u041E': '16', // О
+  '\u041F': '17', // П
+  '\u0420': '18', // Р
+  '\u0421': '19', // С
+  '\u0422': '20', // Т
+  '\u0423': '21', // У
+  '\u0424': '22', // Ф
+  '\u0425': '23', // Х
+  '\u0426': '24', // Ц
+  '\u0427': '25', // Ч
+  '\u0428': '26', // Ш
+  '\u0429': '27', // Щ
+  '\u042A': '28', // Ъ
+  '\u042B': '29', // Ы
+  '\u042C': '30', // Ь
+  '\u042D': '31', // Э
+  '\u042E': '32', // Ю
+  '\u042F': '33', // Я
 });
 
 final List<Alphabet> ALL_ALPHABETS = [
@@ -357,7 +357,7 @@ final List<Alphabet> ALL_ALPHABETS = [
   alphabetRussian1,
 ];
 
-final letterFrequencyAlphabetGerman1 = {
+const letterFrequencyAlphabetGerman1 = {
   'A': 6,
   'B': 2,
   'C': 2,
@@ -385,7 +385,7 @@ final letterFrequencyAlphabetGerman1 = {
   'Y': 1,
   'Z': 1
 };
-final letterFrequencyAlphabetEnglish1 = {
+const letterFrequencyAlphabetEnglish1 = {
   'A': 8,
   'B': 2,
   'C': 3,
@@ -413,7 +413,7 @@ final letterFrequencyAlphabetEnglish1 = {
   'Y': 2,
   'Z': 1
 };
-final letterFrequencyAlphabetSpanish2 = {
+const letterFrequencyAlphabetSpanish2 = {
   'A': 12,
   'B': 1,
   'C': 4,
@@ -442,7 +442,7 @@ final letterFrequencyAlphabetSpanish2 = {
   'Y': 1,
   'Z': 1
 };
-final letterFrequencyAlphabetRussian1 = {
+const letterFrequencyAlphabetRussian1 = {
   'А': 7,
   'Б': 2,
   'В': 4,
@@ -477,7 +477,7 @@ final letterFrequencyAlphabetRussian1 = {
   'Ю': 1,
   'Я': 2
 };
-final letterFrequencyAlphabetPolish1 = {
+const letterFrequencyAlphabetPolish1 = {
   'A': 8,
   'Ą': 1,
   'B': 2,
@@ -511,7 +511,7 @@ final letterFrequencyAlphabetPolish1 = {
   'Ź': 1,
   'Ż': 1
 };
-final letterFrequencyAlphabetGreek1 = {
+const letterFrequencyAlphabetGreek1 = {
   'Α': 13,
   'Β': 1,
   'Γ': 2,
@@ -537,7 +537,7 @@ final letterFrequencyAlphabetGreek1 = {
   'Ψ': 1,
   'Ω': 2
 };
-final letterFrequencyAlphabetGreek2 = {
+const letterFrequencyAlphabetGreek2 = {
   'Α': 11,
   'Ά': 2,
   'Β': 1,
@@ -580,5 +580,5 @@ Map<String, int> getLetterFrequenciesFromAlphabet(Alphabet alphabet) {
   if (alphabet == alphabetGreek2) return letterFrequencyAlphabetGreek2;
   if (alphabet == alphabetRussian1) return letterFrequencyAlphabetRussian1;
 
-  return null;
+  throw Exception('No letter frequency found');
 }

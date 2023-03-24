@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 class NumberSequenceNthNumber extends StatefulWidget {
   final NumberSequencesMode mode;
   final int maxIndex;
-  const NumberSequenceNthNumber({Key key, this.mode, this.maxIndex}) : super(key: key);
+  const NumberSequenceNthNumber({Key? key, required this.mode, required this.maxIndex}) : super(key: key);
 
   @override
   NumberSequenceNthNumberState createState() => NumberSequenceNthNumberState();
@@ -46,7 +46,7 @@ class NumberSequenceNthNumberState extends State<NumberSequenceNthNumber> {
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     return GCWDefaultOutput(child: getNumberAt(widget.mode, _currentInputN).toString());
   }
 }

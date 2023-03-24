@@ -1,7 +1,7 @@
 import 'package:gc_wizard/tools/crypto_and_encodings/roman_numbers/roman_numbers/logic/roman_numbers.dart';
 
-String recognizableChronogramInput(String input, {bool JUToIV: false, YToII: false, WToVV: false}) {
-  if (input == null || input.length == 0) return null;
+String? recognizableChronogramInput(String input, {bool JUToIV = false, bool YToII = false, bool WToVV = false}) {
+  if (input.isEmpty) return null;
 
   var pattern = 'MDCLXVI';
 
@@ -20,8 +20,8 @@ String recognizableChronogramInput(String input, {bool JUToIV: false, YToII: fal
   return input.toUpperCase().replaceAll(RegExp(pattern), '');
 }
 
-int decodeChronogram(String input, {bool JUToIV: false, YToII: false, WToVV: false}) {
-  if (input == null || input.length == 0) return null;
+int? decodeChronogram(String input, {bool JUToIV = false, bool YToII = false, bool WToVV = false}) {
+  if (input.isEmpty) return null;
 
   input = input.toUpperCase();
   if (JUToIV) {

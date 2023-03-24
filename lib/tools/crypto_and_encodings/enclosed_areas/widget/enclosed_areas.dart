@@ -7,6 +7,8 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/enclosed_areas/logic/enclosed_areas.dart';
 
 class EnclosedAreas extends StatefulWidget {
+  const EnclosedAreas({Key? key}) : super(key: key);
+
   @override
   EnclosedAreasState createState() => EnclosedAreasState();
 }
@@ -55,8 +57,9 @@ class EnclosedAreasState extends State<EnclosedAreas> {
             });
           }),
       Row(children: [
-        Expanded(child: Container(), flex: 1),
+        Expanded(flex: 1, child: Container()),
         Expanded(
+            flex: 3,
             child: GCWTwoOptionsSwitch(
               notitle: true,
               leftValue: i18n(context, 'enclosedareas_with4'),
@@ -67,8 +70,7 @@ class EnclosedAreasState extends State<EnclosedAreas> {
                   _with4On = value;
                 });
               },
-            ),
-            flex: 3)
+            ))
       ]),
     ]);
   }

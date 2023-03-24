@@ -1,3 +1,4 @@
+import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/constants.dart';
 
@@ -53,8 +54,8 @@ const notePosition = [
   '-5hs'
 ];
 
-final Map<String, List<String>> CODEBOOK_MUSIC_NOTES_ALT = {
-  '1': [notePosition[21]],
+final Map<String, List<String>> _CODEBOOK_MUSIC_NOTES_ALT = {
+  '1':  [notePosition[21]],
   '1_b': [notePosition[21], bLabel],
   '1_k': [notePosition[21], hashLabel],
   '2': [notePosition[20]],
@@ -122,7 +123,7 @@ final Map<String, List<String>> CODEBOOK_MUSIC_NOTES_ALT = {
   '22_k': [notePosition[0], hashLabel],
 };
 
-final Map<String, List<String>> CODEBOOK_MUSIC_NOTES_BASS = {
+final Map<String, List<String>> _CODEBOOK_MUSIC_NOTES_BASS = {
   '1': [notePosition[22]],
   '1_b': [notePosition[22], bLabel],
   '1_k': [notePosition[22], hashLabel],
@@ -191,7 +192,7 @@ final Map<String, List<String>> CODEBOOK_MUSIC_NOTES_BASS = {
   '22_k': [notePosition[1], hashLabel],
 };
 
-final Map<String, List<String>> CODEBOOK_MUSIC_NOTES_TREBLE = {
+final Map<String, List<String>> _CODEBOOK_MUSIC_NOTES_TREBLE = {
   '1': [notePosition[27]],
   '1_b': [notePosition[27], bLabel],
   '1_k': [notePosition[27], hashLabel],
@@ -266,8 +267,8 @@ final Map<String, List<String>> CODEBOOK_MUSIC_NOTES_TREBLE = {
   '24_k': [notePosition[4], hashLabel],
 };
 
-List<List<String>> encodeNotes(String input, NotesCodebook notes, Map<String, String> translationMap) {
-  if (input == null) return [];
+Segments encodeNotes(String input, NotesCodebook notes, Map<String, String> translationMap) {
+
   var mainEntrysStart = 0;
   var mainEntrysEnd = 99;
   List<List<String>> result = [];
@@ -275,19 +276,19 @@ List<List<String>> encodeNotes(String input, NotesCodebook notes, Map<String, St
   Map<String, List<String>> CODEBOOK;
   switch (notes) {
     case NotesCodebook.ALT:
-      CODEBOOK = CODEBOOK_MUSIC_NOTES_ALT;
+      CODEBOOK = _CODEBOOK_MUSIC_NOTES_ALT;
       result.add([altClef]);
       mainEntrysStart = 8;
       mainEntrysEnd = 14;
       break;
     case NotesCodebook.BASS:
-      CODEBOOK = CODEBOOK_MUSIC_NOTES_BASS;
+      CODEBOOK = _CODEBOOK_MUSIC_NOTES_BASS;
       result.add([bassClef]);
       mainEntrysStart = 8;
       mainEntrysEnd = 14;
       break;
     case NotesCodebook.TREBLE:
-      CODEBOOK = CODEBOOK_MUSIC_NOTES_TREBLE;
+      CODEBOOK = _CODEBOOK_MUSIC_NOTES_TREBLE;
       result.add([trebleClef]);
       mainEntrysStart = 5;
       mainEntrysEnd = 14;
@@ -297,18 +298,20 @@ List<List<String>> encodeNotes(String input, NotesCodebook notes, Map<String, St
   // sorted by length (longest first)
   var entries = translationMap.entries.toList();
   entries.sort((MapEntry<String, String> a, MapEntry<String, String> b) {
-    if (b.value.length != a.value.length)
+    if (b.value.length != a.value.length) {
       return b.value.length.compareTo(a.value.length);
-    else {
+    } else {
       var aKey = int.parse(a.key.split('_')[0]);
       var bKey = int.parse(b.key.split('_')[0]);
       var aMainEntry = (aKey >= mainEntrysStart) && (aKey <= mainEntrysEnd);
       var bMainEntry = (bKey >= mainEntrysStart) && (bKey <= mainEntrysEnd);
-      if (aMainEntry && bMainEntry)
+      if (aMainEntry && bMainEntry) {
         return bKey.compareTo(aKey);
-      else if (aMainEntry)
+      } else if (aMainEntry) {
         return -1;
-      else if (bMainEntry) return 1;
+      } else if (bMainEntry) {
+        return 1;
+      }
       return 0;
     }
   });
@@ -321,37 +324,38 @@ List<List<String>> encodeNotes(String input, NotesCodebook notes, Map<String, St
 
   List<String> inputs = input.split(RegExp(r'\s'));
 
-  for (int i = 0; i < inputs.length; i++) result.add(CODEBOOK[inputs[i]]);
+  for (int i = 0; i < inputs.length; i++) {
+    var value = CODEBOOK[inputs[i]];
+    if (value != null) {
+      result.add(value);
+    }
+  }
 
-  return result;
+  return Segments(displays: result);
 }
 
-Map<String, dynamic> decodeNotes(List<String> inputs, NotesCodebook notes) {
-  if (inputs == null || inputs.length == 0)
-    return {
-      'displays': <List<String>>[],
-      'chars': ['']
-    };
+SegmentsChars decodeNotes(List<String>? inputs, NotesCodebook notes) {
+  if (inputs == null || inputs.isEmpty) return SegmentsChars(displays: [], chars: []);
 
   var displays = <List<String>>[];
 
   Map<List<String>, String> CODEBOOK;
   switch (notes) {
     case NotesCodebook.ALT:
-      CODEBOOK = switchMapKeyValue(CODEBOOK_MUSIC_NOTES_ALT);
+      CODEBOOK = switchMapKeyValue(_CODEBOOK_MUSIC_NOTES_ALT);
       displays.add([altClef]);
       break;
     case NotesCodebook.BASS:
-      CODEBOOK = switchMapKeyValue(CODEBOOK_MUSIC_NOTES_BASS);
+      CODEBOOK = switchMapKeyValue(_CODEBOOK_MUSIC_NOTES_BASS);
       displays.add([bassClef]);
       break;
     case NotesCodebook.TREBLE:
-      CODEBOOK = switchMapKeyValue(CODEBOOK_MUSIC_NOTES_TREBLE);
+      CODEBOOK = switchMapKeyValue(_CODEBOOK_MUSIC_NOTES_TREBLE);
       displays.add([trebleClef]);
       break;
   }
 
-  List<String> text = inputs.where((input) => input != null).map((input) {
+  List<String> text = inputs.map((input) {
     var char = '';
     var charH = '';
     var display = <String>[];
@@ -368,13 +372,14 @@ Map<String, dynamic> decodeNotes(List<String> inputs, NotesCodebook notes) {
     } else if (input.contains(bLabel)) {
       display.add(input.replaceAll(bLabel, ''));
       display.add(bLabel);
-    } else
+    } else {
       display.add(input);
+    }
 
-    if (CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] == null)
+    if (CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] == null) {
       char = char + UNKNOWN_ELEMENT;
-    else {
-      charH = CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()];
+    } else {
+      charH = CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ?? '';
       char = char + charH;
     }
 
@@ -383,7 +388,7 @@ Map<String, dynamic> decodeNotes(List<String> inputs, NotesCodebook notes) {
     return char;
   }).toList();
 
-  return {'displays': displays, 'chars': text};
+  return SegmentsChars(displays: displays, chars: text);
 }
 
 Map<String, bool> filterVisibleHelpLines(Map<String, bool> displayedSegments) {
@@ -395,8 +400,9 @@ Map<String, bool> filterVisibleHelpLines(Map<String, bool> displayedSegments) {
         displayedSegments[helpLine3] = false;
         if (!_containsNote([notePosition[5], notePosition[6]], displayedSegments)) {
           displayedSegments[helpLine2] = false;
-          if (!_containsNote([notePosition[7], notePosition[8]], displayedSegments))
+          if (!_containsNote([notePosition[7], notePosition[8]], displayedSegments)) {
             displayedSegments[helpLine1] = false;
+          }
         }
       }
     }
@@ -408,8 +414,9 @@ Map<String, bool> filterVisibleHelpLines(Map<String, bool> displayedSegments) {
       displayedSegments[helpLineN3] = false;
       if (!_containsNote([notePosition[23], notePosition[22]], displayedSegments)) {
         displayedSegments[helpLineN2] = false;
-        if (!_containsNote([notePosition[21], notePosition[20]], displayedSegments))
+        if (!_containsNote([notePosition[21], notePosition[20]], displayedSegments)) {
           displayedSegments[helpLineN1] = false;
+        }
       }
     }
   }
@@ -417,7 +424,9 @@ Map<String, bool> filterVisibleHelpLines(Map<String, bool> displayedSegments) {
 }
 
 bool _containsNote(List<String> notes, Map<String, bool> displayedSegments) {
-  for (var note in notes) if (displayedSegments[note] != null) return true;
+  for (var note in notes) {
+    if (displayedSegments[note] != null) return true;
+  }
   return false;
 }
 

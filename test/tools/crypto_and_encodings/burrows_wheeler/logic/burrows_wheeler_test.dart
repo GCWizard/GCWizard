@@ -7,40 +7,40 @@ import 'package:gc_wizard/tools/crypto_and_encodings/burrows_wheeler/logic/burro
 void main() {
 
   group("bioinfo-lectures.encrypt", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : 'banana#', 'index': '0', 'expectedOutput' : BWTOutput('annb#aa','5')},
       {'input' : 'appellee#', 'index': '0', 'expectedOutput' : BWTOutput('e#elplepa','2')},
       {'input' : 'dogwood#', 'index': '0', 'expectedOutput' : BWTOutput('do#oodwg','3')},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
         test('input: ${elem['input']}, index: ${elem['index']}', () {
-          BWTOutput _actual = encryptBurrowsWheeler(elem['input'], elem['index']);
-          expect(_actual.text, elem['expectedOutput'].text);
-          expect(_actual.index, elem['expectedOutput'].index);
+          BWTOutput _actual = encryptBurrowsWheeler(elem['input'] as String, elem['index'] as String);
+          expect(_actual.text, (elem['expectedOutput'] as BWTOutput).text);
+          expect(_actual.index, (elem['expectedOutput'] as BWTOutput).index);
         });
-    });
+    }
   });
 
   group("wikipedia.encrypt", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '^ANANAS^', 'index': '0', 'expectedOutput' : BWTOutput('^NNAAA^S','7')},
       {'input' : '^ANANAS^', 'index': '#', 'expectedOutput' : BWTOutput('^NNAAA#^S','#')},
       {'input' : 'Wikipedia!', 'index': '0', 'expectedOutput' : BWTOutput('a!iepdWkii','2')},
       {'input' : 'Wikipedia!', 'index': '#', 'expectedOutput' : BWTOutput('a#!iepdWkii','#')},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, index: ${elem['index']}', () {
-        BWTOutput _actual = encryptBurrowsWheeler(elem['input'], elem['index']);
-        expect(_actual.text, elem['expectedOutput'].text);
-        expect(_actual.index, elem['expectedOutput'].index);
+        BWTOutput _actual = encryptBurrowsWheeler(elem['input'] as String, elem['index'] as String);
+        expect(_actual.text, (elem['expectedOutput'] as BWTOutput).text);
+        expect(_actual.index, (elem['expectedOutput'] as BWTOutput).index);
       });
-    });
+    }
   });
 
   group("BurrowsWheeler.encrypt", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'index': '0', 'expectedOutput' : BWTOutput('','')},
 
       {'input' : 'helene', 'index': '0',    'expectedOutput' : BWTOutput('nhleee','4')},
@@ -60,56 +60,57 @@ void main() {
       {'input' : 'wenn-fliegen-hinter-fliegen-fliegen-fliegen-fliegen-fliegen-nach', 'index': '#',        'expectedOutput' : BWTOutput('rnnnnnnnnaiiiiiiggggggwt------eeeeee-cllllllhffffffeeeneee-eien#h','#')},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       BWTOutput _actual;
-      if (elem['index'] == '' || elem['index'] == null)
+      if ((elem['index'] as String).isEmpty || elem['index'] == null) {
         _actual = BWTOutput('burrowswheeler_error_no_index', '');
-      else if (elem['input'].contains(elem['index']))
+      } else if ((elem['input'] as String).contains(elem['index'] as String)) {
         _actual = BWTOutput('burrowswheeler_error_char_index', '');
-      else
+      } else {
         test('input: ${elem['input']}, index: ${elem['index']}', () {
-        BWTOutput _actual = encryptBurrowsWheeler(elem['input'], elem['index']);
-          expect(_actual.text, elem['expectedOutput'].text);
-          expect(_actual.index, elem['expectedOutput'].index);
+        _actual = encryptBurrowsWheeler(elem['input'] as String, elem['index'] as String);
+          expect(_actual.text, (elem['expectedOutput'] as BWTOutput).text);
+          expect(_actual.index, (elem['expectedOutput'] as BWTOutput).index);
       });
-    });
+      }
+    }
   });
 
   group("bioinfo-lectures.decrypt", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : 'annb#aa', 'index': '5',  'expectedOutput' : BWTOutput('banana#','5')},
       {'input' : 'e#elplepa', 'index': '2','expectedOutput' : BWTOutput('appellee#','2')},
       {'input' : 'do#oodwg', 'index': '3', 'expectedOutput' : BWTOutput('dogwood#','3')},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, index: ${elem['index']}', () {
-        BWTOutput _actual = decryptBurrowsWheeler(elem['input'], elem['index']);
-        expect(_actual.text, elem['expectedOutput'].text);
-        expect(_actual.index, elem['expectedOutput'].index);
+        BWTOutput _actual = decryptBurrowsWheeler(elem['input'] as String, elem['index'] as String);
+        expect(_actual.text, (elem['expectedOutput'] as BWTOutput).text);
+        expect(_actual.index, (elem['expectedOutput'] as BWTOutput).index);
       });
-    });
+    }
   });
 
   group("wikipedia.decrypt", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '^NNAAA^S', 'index': '7', 'expectedOutput' : BWTOutput('^ANANAS^','7')},
       {'input' : '^NNAAA#^S', 'index': '#', 'expectedOutput' : BWTOutput('^ANANAS^','#')},
       {'input' : 'a!iepdWkii', 'index': '2', 'expectedOutput' : BWTOutput('Wikipedia!','2')},
       {'input' : 'a#!iepdWkii', 'index': '#', 'expectedOutput' : BWTOutput('Wikipedia!','#')},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, index: ${elem['index']}', () {
-        BWTOutput _actual = decryptBurrowsWheeler(elem['input'], elem['index']);
-        expect(_actual.text, elem['expectedOutput'].text);
-        expect(_actual.index, elem['expectedOutput'].index);
+        BWTOutput _actual = decryptBurrowsWheeler(elem['input'] as String, elem['index'] as String);
+        expect(_actual.text, (elem['expectedOutput'] as BWTOutput).text);
+        expect(_actual.index, (elem['expectedOutput'] as BWTOutput).index);
       });
-    });
+    }
   });
 
   group("BurrowsWheeler.decrypt", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'index': '0',  'compress': false, 'deu': true,
         'expectedOutput' : BWTOutput('','')},
 
@@ -125,17 +126,18 @@ void main() {
       {'input' : 'rnnnnnnnnaiiiiiiggggggwt------eeeeee-cllllllhffffffeeeneee-eien#h', 'index': '#',        'expectedOutput' : BWTOutput('wenn-fliegen-hinter-fliegen-fliegen-fliegen-fliegen-fliegen-nach','#')},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       BWTOutput _actual;
-      if (elem['index'] == '' || elem['index'] == null)
+      if (elem['index'] == '' || elem['index'] == null) {
         _actual = BWTOutput('burrowswheeler_error_no_index', '');
-      else
+      } else {
         test('input: ${elem['input']}, index: ${elem['index']}', () {
-          _actual = decryptBurrowsWheeler(elem['input'], elem['index']);
-          expect(_actual.text, elem['expectedOutput'].text);
-          expect(_actual.index, elem['expectedOutput'].index);
+          _actual = decryptBurrowsWheeler(elem['input'] as String, elem['index'] as String);
+          expect(_actual.text, (elem['expectedOutput'] as BWTOutput).text);
+          expect(_actual.index, (elem['expectedOutput'] as BWTOutput).index);
         });
-    });
+      }
+    }
   });
 
 }

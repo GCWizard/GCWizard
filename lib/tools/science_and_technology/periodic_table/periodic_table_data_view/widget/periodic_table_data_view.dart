@@ -17,7 +17,7 @@ import 'package:intl/intl.dart';
 class PeriodicTableDataView extends StatefulWidget {
   final int atomicNumber;
 
-  const PeriodicTableDataView({Key key, this.atomicNumber}) : super(key: key);
+  const PeriodicTableDataView({Key? key, required this.atomicNumber}) : super(key: key);
 
   @override
   PeriodicTableDataViewState createState() => PeriodicTableDataViewState();
@@ -26,24 +26,24 @@ class PeriodicTableDataView extends StatefulWidget {
 class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
   var _newCategory = true;
   var _currentCategory = PeriodicTableCategory.ELEMENT_NAME;
-  var _currentValueCategoryValue;
-  var _currentValueCategoryListItems = [];
+  late Object _currentValueCategoryValue;
+  List<GCWDropDownMenuItem<Object>> _currentValueCategoryListItems = [];
   var _currentSortingOrder = GCWSwitchPosition.left;
 
   var _categories = <PeriodicTableCategory, String>{};
-  var _elementNames = {};
-  var _chemicalSymbols = {};
-  var _atomicNumbers = {};
-  List<int> _iupacGroups;
-  List<int> _mainGroups;
-  List<int> _subGroups;
-  List<int> _periods;
-  List<String> _iupacGroupNames;
-  List<String> _statesOfMatter;
+  final Map<int, String> _elementNames = {};
+  final Map<int, String> _chemicalSymbols = {};
+  final Map<int, int> _atomicNumbers = {};
+  late List<int> _iupacGroups;
+  late List<int> _mainGroups;
+  late List<int> _subGroups;
+  late List<int> _periods;
+  late List<String> _iupacGroupNames;
+  late List<String> _statesOfMatter;
 
   var _setSpecificValue = false;
 
-  final _valueCategories = [
+  static const _valueCategories = [
     PeriodicTableCategory.MASS,
     PeriodicTableCategory.MELTING_POINT,
     PeriodicTableCategory.BOILING_POINT,
@@ -53,7 +53,7 @@ class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
     PeriodicTableCategory.MOST_COMMON_ISOTOP,
   ];
 
-  final _sortableCategories = [
+  static const _sortableCategories = [
     PeriodicTableCategory.IUPAC_GROUP,
     PeriodicTableCategory.IUPAC_GROUP_NAME,
     PeriodicTableCategory.MAIN_GROUP,
@@ -96,11 +96,11 @@ class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
       PeriodicTableCategory.IS_SYNTHETIC: 'periodictable_attribute_issynthetic',
     };
 
-    allPeriodicTableElements.forEach((element) {
+    for (var element in allPeriodicTableElements) {
       _elementNames.putIfAbsent(element.atomicNumber, () => element.name);
       _chemicalSymbols.putIfAbsent(element.atomicNumber, () => element.chemicalSymbol);
       _atomicNumbers.putIfAbsent(element.atomicNumber, () => element.atomicNumber);
-    });
+    }
 
     _iupacGroups = allPeriodicTableElements.map((element) => element.iupacGroup).toSet().toList();
     _iupacGroups.sort();
@@ -109,14 +109,14 @@ class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
         .where((element) => element.mainGroup != null)
         .map((element) => element.mainGroup)
         .toSet()
-        .toList();
+        .toList().cast();
     _mainGroups.sort();
 
     _subGroups = allPeriodicTableElements
         .where((element) => element.subGroup != null)
         .map((element) => element.subGroup)
         .toSet()
-        .toList();
+        .toList().cast();
     _subGroups.sort();
 
     _periods = allPeriodicTableElements.map((element) => element.period).toSet().toList();
@@ -124,19 +124,17 @@ class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
 
     _iupacGroupNames = allPeriodicTableElements
         .where((element) => element.iupacGroupName != null)
-        .map((element) => iupacGroupNameToString[element.iupacGroupName])
+        .map((element) => iupacGroupNameToString[element.iupacGroupName]!)
         .toSet()
         .toList();
     _iupacGroupNames.sort();
 
     _statesOfMatter =
-        allPeriodicTableElements.map((element) => stateOfMatterToString[element.stateOfMatter]).toSet().toList();
+        allPeriodicTableElements.map((element) => stateOfMatterToString[element.stateOfMatter]!).toSet().toList();
     _statesOfMatter.sort();
 
-    if (widget.atomicNumber != null) {
-      _setSpecificValue = true;
-      _currentValueCategoryValue = widget.atomicNumber;
-    }
+    _setSpecificValue = true;
+    _currentValueCategoryValue = widget.atomicNumber;
   }
 
   @override
@@ -150,7 +148,7 @@ class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
     return Column(
       children: <Widget>[
         GCWTextDivider(text: i18n(context, 'periodictable_attribute')),
-        GCWDropDown(
+        GCWDropDown<PeriodicTableCategory>(
           value: _currentCategory,
           items: _categories.entries.map((category) {
             return GCWDropDownMenuItem(
@@ -167,7 +165,7 @@ class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
         ),
         _valueCategories.contains(_currentCategory)
             ? Container()
-            : GCWDropDown(
+            : GCWDropDown<Object>(
                 value: _currentValueCategoryValue,
                 items: _currentValueCategoryListItems,
                 onChanged: (value) {
@@ -194,38 +192,56 @@ class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
     );
   }
 
-  _buildNonValueCategoryItems(PeriodicTableCategory category) {
-    var listItems = SplayTreeMap<dynamic, dynamic>();
+  List<GCWDropDownMenuItem<Object>> _buildNonValueCategoryItems(PeriodicTableCategory category) {
+    var listItems = SplayTreeMap<Object, Object>();
 
     switch (category) {
       case PeriodicTableCategory.ELEMENT_NAME:
-        _elementNames.entries.forEach((entry) => listItems.putIfAbsent(i18n(context, entry.value), () => entry.key));
+        for (var entry in _elementNames.entries) {
+          listItems.putIfAbsent(i18n(context, entry.value), () => entry.key);
+        }
         break;
       case PeriodicTableCategory.CHEMICAL_SYMBOL:
-        _chemicalSymbols.entries.forEach((entry) => listItems.putIfAbsent(entry.value, () => entry.key));
+        for (var entry in _chemicalSymbols.entries) {
+          listItems.putIfAbsent(entry.value, () => entry.key);
+        }
         break;
       case PeriodicTableCategory.ATOMIC_NUMBER:
-        _atomicNumbers.entries.forEach((entry) => listItems.putIfAbsent(entry.value, () => entry.key));
+        for (var entry in _atomicNumbers.entries) {
+          listItems.putIfAbsent(entry.value, () => entry.key);
+        }
         break;
       case PeriodicTableCategory.IUPAC_GROUP:
-        _iupacGroups.forEach((entry) => listItems.putIfAbsent(entry, () => entry));
+        for (var entry in _iupacGroups) {
+          listItems.putIfAbsent(entry, () => entry);
+        }
         break;
       case PeriodicTableCategory.IUPAC_GROUP_NAME:
-        _iupacGroupNames.forEach((entry) => listItems.putIfAbsent(
-            i18n(context, entry), () => iupacGroupNameToString.map((k, v) => MapEntry(v, k))[entry]));
+        for (var entry in _iupacGroupNames) {
+          listItems.putIfAbsent(
+            i18n(context, entry), () => iupacGroupNameToString.map((k, v) => MapEntry(v, k))[entry]!);
+        }
         break;
       case PeriodicTableCategory.MAIN_GROUP:
-        _mainGroups.forEach((entry) => listItems.putIfAbsent(encodeRomanNumbers(entry), () => entry));
+        for (var entry in _mainGroups) {
+          listItems.putIfAbsent(encodeRomanNumbers(entry), () => entry);
+        }
         break;
       case PeriodicTableCategory.SUB_GROUP:
-        _subGroups.forEach((entry) => listItems.putIfAbsent(encodeRomanNumbers(entry), () => entry));
+        for (var entry in _subGroups) {
+          listItems.putIfAbsent(encodeRomanNumbers(entry), () => entry);
+        }
         break;
       case PeriodicTableCategory.PERIOD:
-        _periods.forEach((entry) => listItems.putIfAbsent(entry, () => entry));
+        for (var entry in _periods) {
+          listItems.putIfAbsent(entry, () => entry);
+        }
         break;
       case PeriodicTableCategory.STATE_OF_MATTER:
-        _statesOfMatter.forEach((entry) => listItems.putIfAbsent(
-            i18n(context, entry), () => stateOfMatterToString.map((k, v) => MapEntry(v, k))[entry]));
+        for (var entry in _statesOfMatter) {
+          listItems.putIfAbsent(
+            i18n(context, entry), () => stateOfMatterToString.map((k, v) => MapEntry(v, k))[entry]!);
+        }
         break;
       case PeriodicTableCategory.IS_RADIOACTIVE:
         listItems.putIfAbsent(i18n(context, 'periodictable_attribute_isradioactive_true'), () => true);
@@ -239,7 +255,7 @@ class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
         break;
     }
 
-    if (!_setSpecificValue) _currentValueCategoryValue = listItems[listItems.firstKey()];
+    if (!_setSpecificValue) _currentValueCategoryValue = listItems[listItems.firstKey()]!;
 
     return listItems.entries.map((entry) {
       return GCWDropDownMenuItem(
@@ -249,8 +265,8 @@ class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
     }).toList();
   }
 
-  _buildGroupOutputs() {
-    List<PeriodicTableElement> filteredList;
+  List<List<Object>> _buildGroupOutputs() {
+    List<PeriodicTableElement> filteredList = [];
 
     switch (_currentCategory) {
       case PeriodicTableCategory.IUPAC_GROUP:
@@ -308,7 +324,7 @@ class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
         .toList();
   }
 
-  _buildValueOutputs() {
+  List<List<Object>> _buildValueOutputs() {
     var sortableList = List<PeriodicTableElement>.from(allPeriodicTableElements);
 
     var sortOrder = _currentSortingOrder == GCWSwitchPosition.left ? 1 : -1;
@@ -350,7 +366,7 @@ class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
     return sortableList
         .asMap()
         .map((index, element) {
-          var relevantValue;
+          Object relevantValue;
 
           switch (_currentCategory) {
             case PeriodicTableCategory.MASS:
@@ -375,6 +391,7 @@ class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
               relevantValue = element.mostCommonIsotop;
               break;
             default:
+              relevantValue = '';
               break;
           }
 
@@ -390,7 +407,7 @@ class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
         .toList();
   }
 
-  _temperatures(double tempInCelsius) {
+  String _temperatures(double tempInCelsius) {
     var format = NumberFormat('0.0');
 
     var kelvin = TEMPERATURE_CELSIUS.toKelvin(tempInCelsius);
@@ -408,7 +425,7 @@ class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
         TEMPERATURE_FAHRENHEIT.symbol;
   }
 
-  _buildElementOutputs() {
+  Map<String, List<List<Object>>> _buildElementOutputs() {
     PeriodicTableElement pte =
         allPeriodicTableElements.firstWhere((element) => element.atomicNumber == _currentValueCategoryValue);
 
@@ -420,15 +437,15 @@ class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
         [i18n(context, 'periodictable_attribute_iupacgroup'), pte.iupacGroup],
         [
           i18n(context, 'periodictable_attribute_iupacgroupname'),
-          pte.iupacGroupName == null ? '' : i18n(context, iupacGroupNameToString[pte.iupacGroupName])
+          pte.iupacGroupName == null ? '' : i18n(context, iupacGroupNameToString[pte.iupacGroupName]!)
         ],
         pte.mainGroup == null
-            ? [i18n(context, 'periodictable_attribute_subgroup'), encodeRomanNumbers(pte.subGroup)]
-            : [i18n(context, 'periodictable_attribute_maingroup'), encodeRomanNumbers(pte.mainGroup)],
+            ? [i18n(context, 'periodictable_attribute_subgroup'), encodeRomanNumbers(pte.subGroup!)]
+            : [i18n(context, 'periodictable_attribute_maingroup'), encodeRomanNumbers(pte.mainGroup!)],
         [i18n(context, 'periodictable_attribute_period'), pte.period],
         [
           i18n(context, 'periodictable_attribute_stateofmatter'),
-          i18n(context, stateOfMatterToString[pte.stateOfMatter])
+          i18n(context, stateOfMatterToString[pte.stateOfMatter]!)
         ],
         [
           i18n(context, 'periodictable_attribute_meltingpoint'),
@@ -471,24 +488,24 @@ class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
         ],
         [i18n(context, 'periodictable_attribute_mostcommonisotop'), pte.mostCommonIsotop],
       ],
-      'comments': pte.comments ?? []
+      'comments': [pte.comments]
     };
   }
 
   Widget _buildOutput() {
-    var outputData = [[]];
+    List<List<Object>>? outputData;
     var flexValues = <int>[];
-    var comments;
-    var tappables;
+    String? comments;
+    List<void Function()>? tappables;
 
     switch (_currentCategory) {
       case PeriodicTableCategory.ELEMENT_NAME:
       case PeriodicTableCategory.ATOMIC_NUMBER:
       case PeriodicTableCategory.CHEMICAL_SYMBOL:
         var data = _buildElementOutputs();
-        outputData = data['data'];
-        comments = data['comments'].map((comment) {
-          return '- ' + i18n(context, comment);
+        outputData = data['data']!;
+        comments = data['comments']!.first.map((comment) {
+          return '- ' + i18n(context, comment as String? ?? '');
         }).join('\n');
         break;
       case PeriodicTableCategory.IUPAC_GROUP:
@@ -502,7 +519,7 @@ class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
         outputData = _buildGroupOutputs();
         flexValues = [1, 1, 3, 1];
         tappables = outputData.map((data) {
-          return () => _showElement(data[1]);
+          return () => _showElement(data[1] as int);
         }).toList();
         break;
       case PeriodicTableCategory.MASS:
@@ -515,7 +532,7 @@ class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
         outputData = _buildValueOutputs();
         flexValues = [1, 2, 3, 1, 1];
         tappables = outputData.map((data) {
-          return () => _showElement(data[4]);
+          return () => _showElement(data[4] as int);
         }).toList();
         break;
     }
@@ -528,7 +545,7 @@ class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
         tappables: tappables
     )];
 
-    if (comments != null && comments.length > 0) {
+    if (comments != null && comments.isNotEmpty) {
       rows.addAll(
           [GCWTextDivider(text: i18n(context, 'periodictable_attribute_comments')), GCWOutputText(text: comments)]);
     }
@@ -536,9 +553,9 @@ class PeriodicTableDataViewState extends State<PeriodicTableDataView> {
     return Column(children: rows);
   }
 
-  _showElement(int atomicNumber) {
-    Navigator.of(context).push(NoAnimationMaterialPageRoute(
+  void _showElement(int atomicNumber) {
+    Navigator.of(context).push(NoAnimationMaterialPageRoute<GCWTool>(
         builder: (context) =>
-            GCWTool(tool: PeriodicTableDataView(atomicNumber: atomicNumber), i18nPrefix: 'periodictable_dataview')));
+            GCWTool(tool: PeriodicTableDataView(atomicNumber: atomicNumber), id: 'periodictable_dataview')));
   }
 }

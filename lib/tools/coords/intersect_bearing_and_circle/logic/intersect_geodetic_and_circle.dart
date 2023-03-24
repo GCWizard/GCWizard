@@ -1,5 +1,4 @@
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coord_format_getter.dart' as utils;
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/geoarc_intercept.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
@@ -13,27 +12,31 @@ class IntersectGeodeticAndCircleJobData {
   final Ellipsoid ells;
 
   IntersectGeodeticAndCircleJobData(
-      {this.startGeodetic,
+      {required this.startGeodetic,
       this.bearingGeodetic = 0.0,
-      this.centerPoint,
+      required this.centerPoint,
       this.radiusCircle = 0.0,
-      this.ells});
+      required this.ells});
 }
 
 Future<List<LatLng>> intersectGeodeticAndCircleAsync(dynamic jobData) async {
-  if (jobData == null) return null;
+  if (jobData?.parameters is! IntersectGeodeticAndCircleJobData) {
+    throw Exception('Unexpected data for Intersectopm Geodetic and Circle');
+  }
 
-  var output = intersectGeodeticAndCircle(jobData.parameters.startGeodetic, jobData.parameters.bearingGeodetic,
-      jobData.parameters.centerPoint, jobData.parameters.radiusCircle, jobData.parameters.ells);
+  var data = jobData!.parameters as IntersectGeodeticAndCircleJobData;
 
-  if (jobData.sendAsyncPort != null) jobData.sendAsyncPort.send(output);
+  var output = intersectGeodeticAndCircle(data.startGeodetic, data.bearingGeodetic,
+      data.centerPoint, data.radiusCircle, data.ells);
+
+  jobData.sendAsyncPort?.send(output);
 
   return output;
 }
 
 List<LatLng> intersectGeodeticAndCircle(
     LatLng startGeodetic, double bearingGeodetic, LatLng centerPoint, double radiusCircle, Ellipsoid ells) {
-  bearingGeodetic = utils.normalizeBearing(bearingGeodetic);
+  bearingGeodetic = normalizeBearing(bearingGeodetic);
 
   var help = distanceBearing(startGeodetic, centerPoint, ells);
 

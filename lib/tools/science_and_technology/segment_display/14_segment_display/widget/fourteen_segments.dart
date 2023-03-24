@@ -4,7 +4,7 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/w
 
 
 class FourteenSegments extends SegmentDisplay {
-  FourteenSegments({Key key})
+  const FourteenSegments({Key? key})
       : super(
           key: key,
           type: SegmentDisplayType.FOURTEEN,

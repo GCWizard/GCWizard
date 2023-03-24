@@ -8,7 +8,7 @@
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar/logic/calendar_constants.dart';
 import 'package:gc_wizard/utils/datetime_utils.dart';
 
-final Map<CalendarSystem, Map<int, String>> MONTH_NAMES = {
+const Map<CalendarSystem, Map<int, String>> MONTH_NAMES = {
   CalendarSystem.ISLAMICCALENDAR: MONTH_ISLAMIC,
   CalendarSystem.PERSIANYAZDEGARDCALENDAR: MONTH_PERSIAN,
   CalendarSystem.HEBREWCALENDAR: MONTH_HEBREW,
@@ -17,10 +17,11 @@ final Map<CalendarSystem, Map<int, String>> MONTH_NAMES = {
 };
 
 int intPart(double floatNum) {
-  if (floatNum < -0.0000001)
+  if (floatNum < -0.0000001) {
     return (floatNum - 0.0000001).ceil();
-  else
+  } else {
     return (floatNum + 0.0000001).floor();
+  }
 }
 
 double JulianDateToModifedJulianDate(double jd) {
@@ -40,7 +41,7 @@ int Weekday(double JD) {
 }
 
 int JulianDay(DateTime date) {
-  return 1 + (GregorianCalendarToJulianDate(date) - GregorianCalendarToJulianDate(DateTime(date.year, 1, 1))).toInt();
+  return 1 + (gregorianCalendarToJulianDate(date) - gregorianCalendarToJulianDate(DateTime(date.year, 1, 1))).toInt();
 }
 
 DateTime JulianDateToIslamicCalendar(double jd) {
@@ -91,13 +92,13 @@ double PersianYazdegardCalendarToJulianDate(DateTime date) {
   return (yaz_ep + d - 1 + m * 30 + y * 365).toDouble();
 }
 
-final List<int> _jregyeardef = [30, 29, 29, 29, 30, 29, 30, 29, 30, 29, 30, 29];
-final List<int> _jregyearreg = [30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29];
-final List<int> _jregyearcom = [30, 30, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29];
+const List<int> _jregyeardef = [30, 29, 29, 29, 30, 29, 30, 29, 30, 29, 30, 29];
+const List<int> _jregyearreg = [30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29];
+const List<int> _jregyearcom = [30, 30, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29];
 
-final List<int> _jembyeardef = [30, 29, 29, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29];
-final List<int> _jembyearreg = [30, 29, 30, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29];
-final List<int> _jembyearcom = [30, 30, 30, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29];
+const List<int> _jembyeardef = [30, 29, 29, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29];
+const List<int> _jembyearreg = [30, 29, 30, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29];
+const List<int> _jembyearcom = [30, 30, 30, 29, 30, 30, 29, 30, 29, 30, 29, 30, 29];
 
 String typeOfJewYear(int yearlength) {
   if (yearlength == 353) {
@@ -112,11 +113,12 @@ String typeOfJewYear(int yearlength) {
     return "embolistic, regular";
   } else if (yearlength == 385) {
     return "embolistic, complete";
-  } else
+  } else {
     return ("common");
+  }
 }
 
-List<int> jewDayAndMonthInYear(int days, yearlength) {
+List<int> jewDayAndMonthInYear(int days, int yearlength) {
   List<int> mschema = _jregyeardef;
   if (yearlength == 353) {
     mschema = _jregyeardef;
@@ -148,7 +150,7 @@ List<int> jewDayAndMonthInYear(int days, yearlength) {
   return resArr;
 }
 
-int daysInJewYear(int d, m, yearlength) {
+int daysInJewYear(int d, int m, int yearlength) {
   List<int> mschema = _jregyeardef;
   if (yearlength == 353) {
     mschema = _jregyeardef;
@@ -178,23 +180,24 @@ int cyear2pesach(int xx) {
   if (xx < 1583) {
     ss = 0;
   }
-  int aa = xx + 3760;
   int a = (12 * xx + 12) % 19;
   int b = xx % 4;
   double qq = -1.904412361576 + 1.554241796621 * a + 0.25 * b - 0.003177794022 * xx + ss;
   int j = ((qq).floor() + 3 * xx + 5 * b + 2 - ss) % 7;
   double r = qq - (qq).floor();
   int dd = (qq).floor() + 22;
-  if (j == 2 || j == 4 || j == 6)
+  if (j == 2 || j == 4 || j == 6) {
     dd = (qq).floor() + 23;
-  else if (j == 1 && a > 6 && r >= 0.632870370)
+  } else if (j == 1 && a > 6 && r >= 0.632870370) {
     dd = (qq).floor() + 24;
-  else if (j == 0 && a > 11 && r >= 0.897723765) dd = (qq).floor() + 23;
+  } else if (j == 0 && a > 11 && r >= 0.897723765) {
+    dd = (qq).floor() + 23;
+  }
   return dd;
 }
 
 int JewishYearLength(double jd) {
-  DateTime GregorianDate = JulianDateToGregorianCalendar(jd);
+  DateTime GregorianDate = julianDateToGregorianCalendar(jd);
   int jyearlength = 0;
   int cy = GregorianDate.year;
   int pd = cyear2pesach(cy);
@@ -203,7 +206,7 @@ int JewishYearLength(double jd) {
     pd = pd - 31;
     pm = 4;
   }
-  int pjd = (GregorianCalendarToJulianDate(DateTime(cy, pm, pd)) + 0.5).floor();
+  int pjd = (gregorianCalendarToJulianDate(DateTime(cy, pm, pd)) + 0.5).floor();
   int jnyjd = pjd + 163;
   int jy = cy + 3761;
   if (jd < jnyjd) {
@@ -214,7 +217,7 @@ int JewishYearLength(double jd) {
       pdprev = pdprev - 31;
       pmprev = 4;
     }
-    int pjdprev = (GregorianCalendarToJulianDate(DateTime(cy - 1, pmprev, pdprev)) + 0.5).floor();
+    int pjdprev = (gregorianCalendarToJulianDate(DateTime(cy - 1, pmprev, pdprev)) + 0.5).floor();
 
     jyearlength = pjd - pjdprev;
   } else {
@@ -224,7 +227,7 @@ int JewishYearLength(double jd) {
       pdnext = pdnext - 31;
       pmnext = 4;
     }
-    int pjnext = (GregorianCalendarToJulianDate(DateTime(cy + 1, pmnext, pdnext)) + 0.5).floor();
+    int pjnext = (gregorianCalendarToJulianDate(DateTime(cy + 1, pmnext, pdnext)) + 0.5).floor();
 
     jyearlength = pjnext - pjd;
   }
@@ -235,7 +238,7 @@ int JewishYearLength(double jd) {
 DateTime JulianDateToHebrewCalendar(double jd) {
   int jday = 1;
   int jmonth = 1;
-  DateTime GregorianDate = JulianDateToGregorianCalendar(jd);
+  DateTime GregorianDate = julianDateToGregorianCalendar(jd);
   int cy = GregorianDate.year;
   int pd = cyear2pesach(cy);
   int pm = 3;
@@ -243,7 +246,7 @@ DateTime JulianDateToHebrewCalendar(double jd) {
     pd = pd - 31;
     pm = 4;
   }
-  int pjd = (GregorianCalendarToJulianDate(DateTime(cy, pm, pd)) + 0.5).floor();
+  int pjd = (gregorianCalendarToJulianDate(DateTime(cy, pm, pd)) + 0.5).floor();
   int jnyjd = pjd + 163;
 
   int jy = cy + 3761;
@@ -256,7 +259,7 @@ DateTime JulianDateToHebrewCalendar(double jd) {
       pdprev = pdprev - 31;
       pmprev = 4;
     }
-    int pjdprev = (GregorianCalendarToJulianDate(DateTime(cy - 1, pmprev, pdprev)) + 0.5).floor();
+    int pjdprev = (gregorianCalendarToJulianDate(DateTime(cy - 1, pmprev, pdprev)) + 0.5).floor();
 
     int jyearlength = pjd - pjdprev;
     int days = (jd + 0.5).floor() - pjdprev - 163;
@@ -270,7 +273,7 @@ DateTime JulianDateToHebrewCalendar(double jd) {
       pdnext = pdnext - 31;
       pmnext = 4;
     }
-    int pjnext = (GregorianCalendarToJulianDate(DateTime(cy + 1, pmnext, pdnext)) + 0.5).floor();
+    int pjnext = (gregorianCalendarToJulianDate(DateTime(cy + 1, pmnext, pdnext)) + 0.5).floor();
 
     int jyearlength = pjnext - pjd;
     int days = (jd + 0.5).floor() - pjd - 163;
@@ -293,7 +296,7 @@ double HebrewCalendarToJulianDate(DateTime date) {
     pd = pd - 31;
     pm = 4;
   }
-  int pjd = (GregorianCalendarToJulianDate(DateTime(cy, pm, pd)) + 0.5).floor();
+  int pjd = (gregorianCalendarToJulianDate(DateTime(cy, pm, pd)) + 0.5).floor();
   int jnyjd = pjd + 163;
   int pdnext = cyear2pesach(cy + 1);
   int pmnext = 3;
@@ -301,7 +304,7 @@ double HebrewCalendarToJulianDate(DateTime date) {
     pdnext = pdnext - 31;
     pmnext = 4;
   }
-  int pjnext = (GregorianCalendarToJulianDate(DateTime(cy + 1, pmnext, pdnext)) + 0.5).floor();
+  int pjnext = (gregorianCalendarToJulianDate(DateTime(cy + 1, pmnext, pdnext)) + 0.5).floor();
   int jyearlength = pjnext - pjd;
 
   int days = daysInJewYear(d, m, jyearlength);
@@ -346,7 +349,7 @@ class PotrzebieCalendarOutput{
 PotrzebieCalendarOutput JulianDateToPotrzebieCalendar(double jd) {
 // Day 0 in the Potrzebie-System is 01.10.1952
 // Before MAD - B.M.   -   zero   -   Cowzofski Madi C.M
-  double jd_p_zero = GregorianCalendarToJulianDate(DateTime(1952, 10, 1));
+  double jd_p_zero = gregorianCalendarToJulianDate(DateTime(1952, 10, 1));
   int diff = (jd - jd_p_zero).round();
   bool bm = (diff < 0);
   if (diff < 0) diff = diff * -1;
@@ -365,7 +368,7 @@ double PotrzebieCalendarToJulianDate(DateTime date) {
 
   int days = p_y * 100 + p_m * 10 + p_d;
 
-  double jd_p_zero = GregorianCalendarToJulianDate(DateTime(1952, 10, 1)).floorToDouble() - 1;
+  double jd_p_zero = gregorianCalendarToJulianDate(DateTime(1952, 10, 1)).floorToDouble() - 1;
 
   return jd_p_zero + days;
 }

@@ -8,15 +8,17 @@ import 'package:gc_wizard/tools/crypto_and_encodings/roman_numbers/roman_numbers
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class RomanNumbersSelection extends GCWSelection {
+  const RomanNumbersSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(RomanNumbers()),
-        className(Chronogram()),
+        className(const RomanNumbers()),
+        className(const Chronogram()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

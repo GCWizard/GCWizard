@@ -9,8 +9,18 @@ adapted by Juergen Giesen
 
 part of 'package:gc_wizard/tools/science_and_technology/astronomy/seasons/logic/seasons.dart';
 
-Map<String, DateTime> _computeSeasons(int year) {
-  return {'spring': _spring(year), 'summer': _summer(year), 'autumn': _autumn(year), 'winter': _winter(year)};
+class _computeSeasons {
+  late DateTime spring;
+  late DateTime summer;
+  late DateTime autumn;
+  late DateTime winter;
+
+  _computeSeasons(int year) {
+    spring = _spring(year);
+    summer = _summer(year);
+    autumn = _autumn(year);
+    winter = _winter(year);
+  }
 }
 
 double _s(double T) {

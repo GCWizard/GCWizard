@@ -5,6 +5,8 @@ import 'dart:isolate';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
+import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/tools/images_and_files/_common/logic/rgb_pixel.dart';
 import 'package:gc_wizard/utils/math_utils.dart';
@@ -15,86 +17,88 @@ enum TextureType { GREYDOTS, COLORDOTS, BITMAP }
 
 enum MagicEyeErrorCode { OK, IMAGE_TOO_SMALL }
 
-const int MIN_DISPLACEMENT_ALLOWED = 10;
-const MAX_TESTED_LINES_COUNT = 50;
+const int _MIN_DISPLACEMENT_ALLOWED = 10;
+const _MAX_TESTED_LINES_COUNT = 50;
 const int _channelCount = 4;
-double _fieldDepth;
-int _separation;
-int _lineWidth;
-int _rows;
-int _depthWidth;
-int _depthScale;
-int _midpoint;
-int _textureWidth;
-int _textureHeight;
-Uint32List _pixels;
-Uint8List _texturePixels;
-Uint8List _depthBytes;
+late double _fieldDepth;
+late int _separation;
+late int _lineWidth;
+late int _rows;
+late int _depthWidth;
+late int _depthScale;
+late int _midpoint;
+late int _textureWidth;
+late int _textureHeight;
+late Uint32List _pixels;
+late Uint8List _texturePixels;
+late Uint8List _depthBytes;
 
-Future<Tuple3<Image.Image, Uint8List, int>> decodeImageAsync(dynamic jobData) async {
-  if (jobData == null) return null;
+Future<Tuple3<Image.Image, Uint8List, int>?> decodeImageAsync(GCWAsyncExecuterParameters? jobData) async {
+  if (jobData?.parameters is! Tuple3<Uint8List, Image.Image?, int?>) return null;
 
-  Uint8List image = jobData.parameters.item1;
-  Image.Image imageData = jobData.parameters.item2;
-  int displacement = jobData.parameters.item3;
+  var data = jobData!.parameters as Tuple3<Uint8List, Image.Image?, int?>;
+  Uint8List image = data.item1;
+  Image.Image? imageData = data.item2;
+  int? displacement = data.item3;
   
   return decodeImage(image, imageData, displacement, sendAsyncPort: jobData.sendAsyncPort);
 }
 
-Future<Tuple3<Image.Image, Uint8List, int>> decodeImage(Uint8List image, Image.Image imageData, int displacement,
-   {SendPort sendAsyncPort}) async {
+Future<Tuple3<Image.Image, Uint8List, int>?> decodeImage(
+    Uint8List image,
+    Image.Image? imageData,
+    int? displacement,
+   {SendPort? sendAsyncPort}) async {
 
-  if (image == null) return null;
-  if (imageData == null) imageData = Image.decodeImage(image);
-  if (displacement == null) displacement = magicEyeSolver(imageData);
+  imageData ??= Image.decodeImage(image);
+  if (imageData == null) return null;
+  displacement ??= _magicEyeSolver(imageData);
 
-  var outputImage = createResultImage(imageData, displacement);
+  var outputImage = _createResultImage(imageData, displacement);
   var result = Tuple3<Image.Image, Uint8List, int>(imageData, outputImage, displacement);
 
-  if (sendAsyncPort != null) sendAsyncPort.send(result);
+  sendAsyncPort?.send(result);
 
   return Future.value(result);
 }
 
 /// calculate the displacement
-int magicEyeSolver(Image.Image image) {
-  if (image == null) return null;
-
+int _magicEyeSolver(Image.Image image) {
   var testedLines = _computeTestedLines(image);
   int maxDisplacementAllowed = image.width ~/ 3;
 
   var differences = <double>[]; // displacement=0 is considered as unavailable so set a high value for it
 
-  for (int displacement = MIN_DISPLACEMENT_ALLOWED; displacement <= maxDisplacementAllowed; displacement++) {
+  for (int displacement = _MIN_DISPLACEMENT_ALLOWED; displacement <= maxDisplacementAllowed; displacement++) {
     var totalDifference = 0.0;
-    testedLines.forEach((y) {
+    for (var y in testedLines) {
       for (int x = displacement; x < image.width; x++) {
         var _pixel1 = image.getPixel(x, y);
         var _pixel2 = image.getPixel(x - displacement, y);
 
-        var red = Image.getRed(_pixel1) - Image.getRed(_pixel2);
-        var green = Image.getGreen(_pixel1) - Image.getGreen(_pixel2);
-        var blue = Image.getBlue(_pixel1) - Image.getBlue(_pixel2);
+        var red = _pixel1.r - _pixel2.r;
+        var green = _pixel1.g - _pixel2.g;
+        var blue = _pixel1.b - _pixel2.b;
 
         var difference = (red.abs() + green.abs() + blue.abs()) / 3.0;
         totalDifference += difference;
       }
-    });
+    }
 
     var nbPixels = (testedLines.length * (image.width - displacement));
     var averageDifference = totalDifference / nbPixels;
     differences.add(averageDifference);
   }
-  return _computeBestDisplacement(differences) + MIN_DISPLACEMENT_ALLOWED;
+  return _computeBestDisplacement(differences) + _MIN_DISPLACEMENT_ALLOWED;
 }
 
 List<int> _computeTestedLines(Image.Image image) {
-  if (image == null) return null;
-
   var lines = <int>[];
-  var delta = (image.height < MAX_TESTED_LINES_COUNT) ? 1 : (image.height / MAX_TESTED_LINES_COUNT);
+  var delta = (image.height < _MAX_TESTED_LINES_COUNT) ? 1 : (image.height / _MAX_TESTED_LINES_COUNT);
 
-  for (double i = 0; i < image.height; i += delta) lines.add(i.floor());
+  for (double i = 0; i < image.height; i += delta) {
+    lines.add(i.floor());
+  }
 
   return lines;
 }
@@ -115,76 +119,80 @@ int _computeBestDisplacement(List<double> differences) {
   // The gradient helps determine the end of the lowest plateau.
   // Once found, check what was just before because maybe it was better
   for (var i = 0; i < 3; i++) {
-    if (highestGradientIndex > 0 && differences[highestGradientIndex - 1] < differences[highestGradientIndex])
+    if (highestGradientIndex > 0 && differences[highestGradientIndex - 1] < differences[highestGradientIndex]) {
       highestGradientIndex--;
+    }
   }
   return highestGradientIndex;
 }
 
-Uint8List createResultImage(Image.Image image, int displacement) {
-  if (image == null || displacement == null) return null;
+Uint8List _createResultImage(Image.Image image, int displacement) {
+  var bitmap = Image.Image(width: image.width, height: image.height);
 
-  var bitmap = Image.Image(image.width, image.height);
-
-  for (int y = 0; y < bitmap.height; y++)
-    for (int x = 0; x < displacement; x++) bitmap.setPixel(x, y, image.getPixel(x, y));
+  for (int y = 0; y < bitmap.height; y++) {
+    for (int x = 0; x < displacement; x++) {
+      bitmap.setPixel(x, y, image.getPixel(x, y));
+    }
+  }
 
   for (int y = 0; y < bitmap.height; y++) {
     for (int x = displacement; x < bitmap.width; x++) {
       var _pixel1 = image.getPixel(x, y);
       var _pixel2 = image.getPixel(x - displacement, y);
 
-      var color = Image.Color.fromRgb(
-          (Image.getRed(_pixel1) - Image.getRed(_pixel2)).abs(),
-          (Image.getGreen(_pixel1) - Image.getGreen(_pixel2)).abs(),
-          (Image.getBlue(_pixel1) - Image.getBlue(_pixel2)).abs());
-      bitmap.setPixel(x, y, color);
+      bitmap.setPixelRgb(x, y,
+          (_pixel1.r - _pixel2.r).abs(), (_pixel1.g - _pixel2.g).abs(), (_pixel1.b - _pixel2.b).abs());
     }
   }
   return encodeTrimmedPng(bitmap);
 }
 
-Future<Tuple2<Uint8List, MagicEyeErrorCode>> generateImageAsync(dynamic jobData) async {
-  if (jobData == null) return null;
+Future<Tuple2<Uint8List?, MagicEyeErrorCode>?> generateImageAsync(GCWAsyncExecuterParameters? jobData) async {
+  if (jobData?.parameters is! Tuple3<Uint8List?, Uint8List?, TextureType?>) return null;
 
-  Uint8List hiddenImage = jobData.parameters.item1;
-  Uint8List textureImage = jobData.parameters.item2;
-  TextureType textureType = jobData.parameters.item3;
+  var data = jobData!.parameters as Tuple3<Uint8List?, Uint8List?, TextureType?>;
+  Uint8List? hiddenImage = data.item1;
+  Uint8List? textureImage = data.item2;
+  TextureType? textureType = data.item3;
 
-  var outputData = generateImage(hiddenImage, textureImage, textureType);
+  if (hiddenImage == null) return null;
+  var outputData = _generateImage(hiddenImage, textureImage, textureType);
 
-  if (jobData.sendAsyncPort != null) jobData.sendAsyncPort.send(outputData);
+  jobData.sendAsyncPort?.send(outputData);
 
   return Future.value(outputData);
 }
 
-Tuple2<Uint8List, MagicEyeErrorCode> generateImage(
-    Uint8List hiddenDataImage, Uint8List textureImage, TextureType textureType,
-    {SendPort sendAsyncPort}) {
+Tuple2<Uint8List?, MagicEyeErrorCode>? _generateImage(
+    Uint8List hiddenDataImage, Uint8List? textureImage, TextureType? textureType,
+    {SendPort? sendAsyncPort}) {
   var bInterpolateDepthmap = true;
   var oversample = 2;
-  Image.Image texture;
+  Image.Image? texture;
 
   _fieldDepth = 0.33333;
   _separation = 128;
 
-  if ((hiddenDataImage == null) | ((textureType == TextureType.BITMAP) && (textureImage == null))) return null;
+  if (((textureType == TextureType.BITMAP) && (textureImage == null))) return null;
 
   var depthmap = Image.decodeImage(hiddenDataImage);
+  if (depthmap == null) return null;
   var resolutionX = depthmap.width;
   var resolutionY = depthmap.height;
 
-  if (resolutionX < 3 * _separation)
-    return Tuple2<Uint8List, MagicEyeErrorCode>(null, MagicEyeErrorCode.IMAGE_TOO_SMALL);
+  if (resolutionX < 3 * _separation) {
+    return const Tuple2<Uint8List?, MagicEyeErrorCode>(null, MagicEyeErrorCode.IMAGE_TOO_SMALL);
+  }
 
-  if ((textureType == TextureType.BITMAP) || ((textureType == null) && (textureImage != null)))
+  if (((textureType == TextureType.BITMAP) || (textureType == null)) && (textureImage != null)) {
     texture = Image.decodeImage(textureImage);
-  else if (textureType == TextureType.GREYDOTS)
+  } else if (textureType == TextureType.GREYDOTS) {
     texture = _generateGrayDotsTexture(_separation, resolutionY);
-  else
+  } else {
     texture = _generateColoredDotsTexture(_separation, resolutionY);
+  }
 
-  if (hiddenDataImage == null || texture == null) return null;
+  if (texture == null) return null;
 
   _textureWidth = _separation;
   _textureHeight = (_separation * texture.height) ~/ texture.width;
@@ -220,30 +228,32 @@ Tuple2<Uint8List, MagicEyeErrorCode> generateImage(
   _pixels = Uint32List(_lineWidth * _rows);
 
   // Copy the texture data into a buffer
-  _texturePixels = bmTexture.getBytes(format: Image.Format.rgba);
+  _texturePixels = bmTexture.getBytes(order: Image.ChannelOrder.rgba);
 
   // grayscale and invert
   bmDepthMap = Image.grayscale(bmDepthMap);
   bmDepthMap = Image.invert(bmDepthMap);
   // Copy the depthmap data into a buffer
-  _depthBytes = bmDepthMap.getBytes(format: Image.Format.rgba);
+  _depthBytes = bmDepthMap.getBytes(order: Image.ChannelOrder.rgba);
 
   // progress indicator
   var generatedLines = 0;
   var _progressStep = max(_rows ~/ 100, 1); // 100 steps
 
-  if (sendAsyncPort != null) sendAsyncPort.send({'progress': 0.0});
+  sendAsyncPort?.send(DoubleText('progress', 0.0));
 
-  initHoroptic();
+  _initHoroptic();
 
   for (int y = 0; y < _rows; y++) {
     _doLineHoroptic(y);
 
-    if (sendAsyncPort != null && (generatedLines % _progressStep == 0)) sendAsyncPort.send({'progress': y / _rows});
+    if (sendAsyncPort != null && (generatedLines % _progressStep == 0)) {
+      sendAsyncPort.send(DoubleText('progress', y / _rows));
+    }
   }
 
-  var bmStereogram = Image.Image.fromBytes(_lineWidth, _rows, _pixels.buffer.asUint8List(),
-      format: Image.Format.rgba, channels: Image.Channels.rgba);
+  var bmStereogram = Image.Image.fromBytes(width: _lineWidth, height: _rows, bytes: _pixels.buffer,
+      order: Image.ChannelOrder.rgba);
 
   // High quality images need to be scaled back down...
   if (oversample > 1) {
@@ -253,14 +263,14 @@ Tuple2<Uint8List, MagicEyeErrorCode> generateImage(
   return Tuple2<Uint8List, MagicEyeErrorCode>(encodeTrimmedPng(bmStereogram), MagicEyeErrorCode.OK);
 }
 
-List<int> centreOut;
+late List<int> centreOut;
 
-void initHoroptic() {
+void _initHoroptic() {
   // Create an array of offsets which alternate pixels from the center out to the edges
   centreOut = List<int>.filled(_lineWidth, 0);
   int offset = _midpoint;
   int flip = -1;
-  for (int i = 0; i < _lineWidth; i++) {
+  for (int i = 0; i < centreOut.length; i++) {
     centreOut[i] = offset;
     offset += ((i + 1) * flip);
     flip = -flip;
@@ -309,7 +319,9 @@ void _doLineHoroptic(int y) {
 
       // Find an unconstrained pixel and constrain ourselves to it
       // Uh-oh, what happens if they become constrained to each other?  Constrainee is flagged as unconstrained, I suppose
-      while (constraints[constrainer] != constrainer) constrainer = constraints[constrainer];
+      while (constraints[constrainer] != constrainer) {
+        constrainer = constraints[constrainer];
+      }
 
       constraints[constrainee] = constrainer;
 
@@ -323,7 +335,9 @@ void _doLineHoroptic(int y) {
     int pix = i;
 
     // Find an unconstrained pixel
-    while (constraints[pix] != pix) pix = constraints[pix];
+    while (constraints[pix] != pix) {
+      pix = constraints[pix];
+    }
 
     // And get the RGBs from the tiled texture at that point
     _setStereoPixel(i, y, _getTexturePixel(pix, y));
@@ -360,7 +374,7 @@ RGBPixel _getTexturePixel(int x, int y) {
   return RGBPixel.getPixel(_texturePixels, tp * _channelCount); // (RGBA)
 }
 
-_setStereoPixel(int x, int y, RGBPixel pixel) {
+void _setStereoPixel(int x, int y, RGBPixel pixel) {
   int sp = ((y * _lineWidth) + x);
   _pixels[sp] = _rgbPixelColor(pixel);
 }
@@ -369,9 +383,11 @@ Image.Image _generateColoredDotsTexture(int resX, int resY) {
   Random random = Random();
   var pixels = Uint8List(resX * resY * _channelCount); // (RGBA)
 
-  for (int i = 0; i < pixels.length; i++) pixels[i] = random.nextInt(256);
+  for (int i = 0; i < pixels.length; i++) {
+    pixels[i] = random.nextInt(256);
+  }
 
-  return Image.Image.fromBytes(resX, resY, pixels, format: Image.Format.rgba, channels: Image.Channels.rgba);
+  return Image.Image.fromBytes(width: resX, height: resY, bytes: pixels.buffer, order: Image.ChannelOrder.rgba);
 }
 
 Image.Image _generateGrayDotsTexture(int resX, int resY) {

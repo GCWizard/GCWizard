@@ -5,7 +5,11 @@ import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/multi_
 const MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_COW = 'cow_title';
 
 class MultiDecoderToolEsotericLanguageCow extends AbstractMultiDecoderTool {
-  MultiDecoderToolEsotericLanguageCow({Key key, int id, String name, Map<String, dynamic> options})
+  MultiDecoderToolEsotericLanguageCow({
+    Key? key,
+    required int id,
+    required String name,
+    required Map<String, Object?> options})
       : super(
             key: key,
             id: id,
@@ -15,7 +19,7 @@ class MultiDecoderToolEsotericLanguageCow extends AbstractMultiDecoderTool {
             onDecode: (String input, String key) {
               try {
                 CowOutput output = interpretCow(input, STDIN: key);
-                if (output.error == '') return output.output?.isEmpty ? null : output.output;
+                if (output.error.isEmpty) return output.output.isEmpty ? null : output.output;
               } catch (e) {}
               return null;
             },

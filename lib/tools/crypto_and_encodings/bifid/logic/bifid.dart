@@ -4,30 +4,26 @@ import 'package:gc_wizard/tools/crypto_and_encodings/polybios/logic/polybios.dar
 class BifidOutput {
   final String state;
   final String output;
-  final String grid;
+  final String? grid;
 
   BifidOutput(this.state, this.output, this.grid);
 }
 
 BifidOutput encryptBifid(String input, String key,
-    {PolybiosMode mode: PolybiosMode.AZ09,
-    String alphabet,
-    AlphabetModificationMode alphabetMode: AlphabetModificationMode.J_TO_I}) {
-  if (input == null || key == null)
-    //return null; //TODO Exception
-    return BifidOutput('ERROR', 'bifid_error_no_encrypt_input', null);
+    {PolybiosMode mode = PolybiosMode.AZ09,
+    String? alphabet,
+    AlphabetModificationMode alphabetMode = AlphabetModificationMode.J_TO_I}) {
 
   int dim = key.length;
-  if (dim != 5 && dim != 6)
-    //return null; //TODO Exception
+  if (dim != 5 && dim != 6) {
     return BifidOutput('ERROR', 'bifid_error_wrong_griddimension', null);
+  }
 
-  PolybiosOutput polybiosOutput =
-      encryptPolybios(input, key, mode: mode, fillAlphabet: alphabet, modificationMode: alphabetMode);
+  var polybiosOutput = encryptPolybios(input, key, mode: mode, fillAlphabet: alphabet, modificationMode: alphabetMode);
 
-  if (polybiosOutput == null)
-    //return null;
+  if (polybiosOutput == null) {
     return BifidOutput('ERROR', 'bifid_error_no_output', null);
+  }
 
   var polybiosEncoded = polybiosOutput.output.replaceAll(' ', '');
 
@@ -44,29 +40,28 @@ BifidOutput encryptBifid(String input, String key,
   helpInput = row1 + row2;
 
   polybiosOutput = decryptPolybios(helpInput, key, mode: mode, fillAlphabet: alphabet, modificationMode: alphabetMode);
-
-  return BifidOutput('OK', polybiosOutput.output, polybiosOutput.grid);
+  if (polybiosOutput != null) {
+    return BifidOutput('OK', polybiosOutput.output, polybiosOutput.grid);
+  } else {
+    return BifidOutput('ERROR', 'bifid_error_no_output', null);
+  }
 }
 
 BifidOutput decryptBifid(String input, String key,
-    {PolybiosMode mode: PolybiosMode.AZ09,
-    String alphabet,
-    AlphabetModificationMode alphabetMode: AlphabetModificationMode.J_TO_I}) {
-  if (input == null || key == null)
-    //return null; //TODO Exception
-    return BifidOutput('ERROR', 'bifid_error_no_decrypt_input', null);
+    {PolybiosMode mode = PolybiosMode.AZ09,
+    String? alphabet,
+    AlphabetModificationMode alphabetMode = AlphabetModificationMode.J_TO_I}) {
 
   int dim = key.length;
-  if (dim != 5 && dim != 6)
-    //return null; //TODO Exception
+  if (dim != 5 && dim != 6) {
     return BifidOutput('ERROR', 'bifid_error_wrong_griddimension', null);
+  }
 
-  PolybiosOutput polybiosOutput =
-      encryptPolybios(input, key, mode: mode, fillAlphabet: alphabet, modificationMode: alphabetMode);
+  var polybiosOutput = encryptPolybios(input, key, mode: mode, fillAlphabet: alphabet, modificationMode: alphabetMode);
 
-  if (polybiosOutput == null)
-    //return null;
+  if (polybiosOutput == null) {
     return BifidOutput('ERROR', 'bifid_error_no_output', null);
+  }
 
   var polybiosEncoded = polybiosOutput.output.replaceAll(' ', '');
 
@@ -85,5 +80,9 @@ BifidOutput decryptBifid(String input, String key,
 
   polybiosOutput = decryptPolybios(helpInput, key, mode: mode, fillAlphabet: alphabet, modificationMode: alphabetMode);
 
-  return BifidOutput('OK', polybiosOutput.output, polybiosOutput.grid);
+  if (polybiosOutput != null) {
+    return BifidOutput('OK', polybiosOutput.output, polybiosOutput.grid);
+  } else {
+    return BifidOutput('ERROR', 'bifid_error_no_output', null);
+  }
 }

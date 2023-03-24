@@ -8,13 +8,15 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/tapir/logic/tapir.dart';
 
 class Tapir extends StatefulWidget {
+  const Tapir({Key? key}) : super(key: key);
+
   @override
   TapirState createState() => TapirState();
 }
 
 class TapirState extends State<Tapir> {
-  var _inputController;
-  var _otpController;
+  late TextEditingController _inputController;
+  late TextEditingController _otpController;
 
   var _currentInput = '';
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
@@ -22,8 +24,8 @@ class TapirState extends State<Tapir> {
 
   var _currentOneTimePad = '';
 
-  var _maskFormatter =
-      WrapperForMaskTextInputFormatter(mask: '##### ' * 100000 + '#####', filter: {"#": RegExp(r'[0-9]')});
+  final _maskFormatter =
+      WrapperForMaskTextInputFormatter(mask: '##### ' * 100000 + '#####', filter: {"#": RegExp(r'\d')});
 
   @override
   void initState() {
@@ -86,7 +88,7 @@ class TapirState extends State<Tapir> {
     );
   }
 
-  _buildOutput() {
+  String _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
       return encryptTapir(_currentInput, _currentOneTimePad);
     } else {

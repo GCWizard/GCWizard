@@ -7,18 +7,20 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/permutab
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequencePermutablePrimesSelection extends GCWSelection {
+  const NumberSequencePermutablePrimesSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(NumberSequencePermutablePrimesNthNumber()),
-        className(NumberSequencePermutablePrimesRange()),
-        className(NumberSequencePermutablePrimesDigits()),
-        className(NumberSequencePermutablePrimesCheckNumber()),
-        className(NumberSequencePermutablePrimesContainsDigits()),
+        className(const NumberSequencePermutablePrimesNthNumber()),
+        className(const NumberSequencePermutablePrimesRange()),
+        className(const NumberSequencePermutablePrimesDigits()),
+        className(const NumberSequencePermutablePrimesCheckNumber()),
+        className(const NumberSequencePermutablePrimesContainsDigits()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

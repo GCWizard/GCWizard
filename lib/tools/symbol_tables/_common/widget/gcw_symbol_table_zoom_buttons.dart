@@ -8,9 +8,14 @@ import 'package:prefs/prefs.dart';
 class GCWSymbolTableZoomButtons extends StatefulWidget {
   final int countColumns;
   final MediaQueryData mediaQueryData;
-  final Function onChanged;
+  final void Function() onChanged;
 
-  const GCWSymbolTableZoomButtons({Key key, this.countColumns, this.mediaQueryData, this.onChanged}) : super(key: key);
+  const GCWSymbolTableZoomButtons({
+    Key? key,
+    required this.countColumns,
+    required this.mediaQueryData,
+    required this.onChanged})
+      : super(key: key);
 
   @override
   GCWSymbolTableZoomButtonsState createState() => GCWSymbolTableZoomButtonsState();

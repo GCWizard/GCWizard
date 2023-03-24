@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:encrypt/encrypt.dart' as crypto;
 import 'package:flutter/foundation.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
@@ -15,7 +13,7 @@ part 'package:gc_wizard/tools/images_and_files/stegano/logic/stegano_pad_key.dar
 
 const int MAX_LENGTH = 5000;
 
-Future<Uint8List> encodeStegano(local.GCWFile file, String message, String key, String filename) async {
+Future<Uint8List> encodeStegano(local.GCWFile file, String message, String key, String? filename) async {
   Uint8List data = file.bytes;
   // the key is use to encrypt your message with AES256 algorithm
   _SteganoEncodeRequest request = _SteganoEncodeRequest(data, message, key: key, filename: filename);
@@ -28,7 +26,7 @@ Future<String> decodeStegano(local.GCWFile file, String key) async {
   // the key is use to decrypt your encrypted message with AES256 algorithm
   _SteganoDecodeRequest request = _SteganoDecodeRequest(data, key: key);
   String response = await _decodeSteganoMessageFromImageAsync(request);
-  if (response != null && response.length > MAX_LENGTH) {
+  if (response.length > MAX_LENGTH) {
     throw Exception('abnormal_length_nothing_to_decode');
   }
   return response;

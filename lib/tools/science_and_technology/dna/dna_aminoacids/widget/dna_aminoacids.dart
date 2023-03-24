@@ -8,6 +8,8 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/dna/logic/dna.dart';
 
 class DNAAminoAcids extends StatefulWidget {
+  const DNAAminoAcids({Key? key}) : super(key: key);
+
   @override
   DNAAminoAcidsState createState() => DNAAminoAcidsState();
 }
@@ -40,12 +42,12 @@ class DNAAminoAcidsState extends State<DNAAminoAcids> {
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
       return GCWDefaultOutput(child: encodeRNASymbolLong(_currentInput));
     } else {
       var output = decodeRNASymbolLong(_currentInput);
-      var includesM = output.indexOf('M') > -1;
+      var includesM = output.contains('M');
 
       return Column(
         children: <Widget>[

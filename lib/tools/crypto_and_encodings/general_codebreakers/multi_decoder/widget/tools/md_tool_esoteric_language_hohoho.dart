@@ -5,7 +5,11 @@ import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/multi_
 const MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_HOHOHO = 'hohoho_title';
 
 class MultiDecoderToolEsotericLanguageHohoho extends AbstractMultiDecoderTool {
-  MultiDecoderToolEsotericLanguageHohoho({Key key, int id, String name, Map<String, dynamic> options})
+  MultiDecoderToolEsotericLanguageHohoho({
+    Key? key,
+    required int id,
+    required String name,
+    required Map<String, Object?> options})
       : super(
             key: key,
             id: id,
@@ -15,9 +19,7 @@ class MultiDecoderToolEsotericLanguageHohoho extends AbstractMultiDecoderTool {
             onDecode: (String input, String key) {
               try {
                 var output = interpretHohoho(input, STDIN: key);
-                if (output != null) {
-                  return output.output;
-                }
+                return output.output;
               } catch (e) {}
               return null;
             },

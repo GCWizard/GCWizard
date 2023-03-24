@@ -27,7 +27,7 @@ String encodeBeghilos(String input) {
 }
 
 String _translateBeghilos(String input, Map<String, String> alphabetMap) {
-  if (input == null || input == '') return '';
+  if (input.isEmpty) return '';
 
   var output = input.split('').map((letter) {
     return alphabetMap.containsKey(letter) ? alphabetMap[letter] : '';

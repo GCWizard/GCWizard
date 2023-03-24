@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 
 // source: https://hillel.dev/2018/08/15/flutter-how-to-rebuild-the-entire-app-to-change-the-theme-or-locale/
 class AppBuilder extends StatefulWidget {
-  final Function(BuildContext) builder;
+  final MaterialApp Function(BuildContext) builder;
 
-  const AppBuilder({Key key, this.builder}) : super(key: key);
+  const AppBuilder({Key? key, required this.builder}) : super(key: key);
 
   @override
-  AppBuilderState createState() => new AppBuilderState();
+  AppBuilderState createState() => AppBuilderState();
 
   static AppBuilderState of(BuildContext context) {
-    return context.findAncestorStateOfType<AppBuilderState>();
+    var newState = context.findAncestorStateOfType<AppBuilderState>();
+    if (newState == null) {
+      throw Exception('No AppBuilderState created');
+    }
+
+    return newState;
   }
 }
 

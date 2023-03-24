@@ -3,8 +3,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/skytale/logic/skytale.dart'
 
 void main() {
   group("Skytale.encryptSkytale:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'countRows' : 1, 'countLettersPerCell': 1, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'countRows' : 1, 'countLettersPerCell': 1, 'expectedOutput' : ''},
       {'input' : 'ABC', 'countRows' : 0, 'countLettersPerCell': 1, 'expectedOutput' : 'ABC'},
       {'input' : 'ABC', 'countRows' : 1, 'countLettersPerCell': 0, 'expectedOutput' : 'ABC'},
@@ -61,17 +60,16 @@ void main() {
       {'input' : 'ABC', 'countRows' : 0, 'countColumns': 2, 'countLettersPerCell': 1, 'expectedOutput' : 'ACB'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, countRows: ${elem['countRows']}, countColumns: ${elem['countColumns']}, countLettersPerCell: ${elem['countLettersPerCell']}', () {
-        var _actual = encryptSkytale(elem['input'], countRows: elem['countRows'], countColumns: elem['countColumns'], countLettersPerCell: elem['countLettersPerCell']);
+        var _actual = encryptSkytale(elem['input'] as String, countRows: elem['countRows'] as int?, countColumns: elem['countColumns'] as int?, countLettersPerCell: elem['countLettersPerCell'] as int);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Skytale.decryptSkytale:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'countRows' : 1, 'countLettersPerCell': 1, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'countRows' : 1, 'countLettersPerCell': 1, 'expectedOutput' : ''},
       {'input' : 'ABC', 'countRows' : 0, 'countLettersPerCell': 1, 'expectedOutput' : 'ABC'},
       {'input' : 'ABC', 'countRows' : 1, 'countLettersPerCell': 0, 'expectedOutput' : 'ABC'},
@@ -127,11 +125,11 @@ void main() {
       {'expectedOutput' : 'ABC', 'countRows' : 0, 'countColumns': 2, 'countLettersPerCell': 1, 'input' : 'ACB'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, countRows: ${elem['countRows']}, countColumns: ${elem['countColumns']}, countLettersPerCell: ${elem['countLettersPerCell']}', () {
-        var _actual = decryptSkytale(elem['input'], countRows: elem['countRows'], countColumns: elem['countColumns'], countLettersPerCell: elem['countLettersPerCell']);
+        var _actual = decryptSkytale(elem['input'] as String, countRows: elem['countRows'] as int?, countColumns: elem['countColumns'] as int?, countLettersPerCell: elem['countLettersPerCell'] as int);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 }

@@ -3,12 +3,9 @@ import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitu
 
 void main() {
   group("Substitution.substitution:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'substitution': null, 'caseSensitive': true, 'expectedOutput' : ''},
-      {'input' : '', 'substitution': null, 'caseSensitive': true, 'expectedOutput' : ''},
-      {'input' : null, 'substitution': Map<String, String>(), 'caseSensitive': true, 'expectedOutput' : ''},
-      {'input' : 'ABC', 'substitution': Map<String, String>(), 'caseSensitive': true, 'expectedOutput' : 'ABC'},
-      {'input' : 'Abc123', 'substitution': Map<String, String>(), 'caseSensitive': true, 'expectedOutput' : 'Abc123'},
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : 'ABC', 'substitution': <String, String>{}, 'caseSensitive': true, 'expectedOutput' : 'ABC'},
+      {'input' : 'Abc123', 'substitution': <String, String>{}, 'caseSensitive': true, 'expectedOutput' : 'Abc123'},
       {'input' : 'ABC', 'substitution': {'': '1'}, 'caseSensitive': true, 'expectedOutput' : 'ABC'},
 
       {'input' : 'ABCDEF', 'substitution': {'A': '1', 'B':'2', 'F': '6'}, 'caseSensitive': true, 'expectedOutput' : '12CDE6'},
@@ -26,13 +23,13 @@ void main() {
       {'input' : 'CADBEFAGB', 'substitution': {'A': 'B', 'B': 'C', 'C': 'A'}, 'caseSensitive': true, 'expectedOutput' : 'ABDCEFBGC'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, substitution: ${elem['substitution']}, caseSensitive: ${elem['caseSensitive']}', () {
 
 
-        var _actual = substitution(elem['input'], elem['substitution'], caseSensitive: elem['caseSensitive']);
+        var _actual = substitution(elem['input'] as String, elem['substitution'] as Map<String, String>, caseSensitive: elem['caseSensitive'] as bool);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 }

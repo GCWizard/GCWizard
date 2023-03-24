@@ -6,38 +6,38 @@ import 'package:prefs/prefs.dart';
 enum FavoriteChangeStatus { ADD, REMOVE }
 
 class Favorites {
-  static List<String> favoritedToolList;
+  static List<String> _favoritedToolList = [];
 
-  static update(String toolId, FavoriteChangeStatus change) {
+  static void update(String toolId, FavoriteChangeStatus change) {
     var changed = false;
     switch (change) {
       case FavoriteChangeStatus.ADD:
-        if (!favoritedToolList.contains(toolId)) {
-          favoritedToolList.add(toolId);
+        if (!_favoritedToolList.contains(toolId)) {
+          _favoritedToolList.add(toolId);
           changed = true;
         }
         break;
       case FavoriteChangeStatus.REMOVE:
-        while (favoritedToolList.contains(toolId)) {
-          favoritedToolList.remove(toolId);
+        while (_favoritedToolList.contains(toolId)) {
+          _favoritedToolList.remove(toolId);
           changed = true;
         }
         break;
     }
 
-    if (changed) Prefs.setStringList(PREFERENCE_FAVORITES, favoritedToolList);
+    if (changed) Prefs.setStringList(PREFERENCE_FAVORITES, _favoritedToolList);
   }
 
-  static initialize() {
-    favoritedToolList = Prefs.getStringList(PREFERENCE_FAVORITES);
+  static void initialize() {
+    _favoritedToolList = Prefs.getStringList(PREFERENCE_FAVORITES);
   }
 
   static bool isFavorite(String toolId) {
-    return favoritedToolList.contains(toolId);
+    return _favoritedToolList.contains(toolId);
   }
 
   static List<GCWTool> favoritedGCWTools() {
-    var gcwTools = registeredTools.where((tool) => favoritedToolList.contains(tool.id)).toList();
+    var gcwTools = registeredTools.where((tool) => _favoritedToolList.contains(tool.longId)).toList();
     gcwTools.sort((a, b) => sortToolList(a, b));
 
     return gcwTools;

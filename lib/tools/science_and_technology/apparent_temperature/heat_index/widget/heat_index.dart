@@ -9,6 +9,8 @@ import 'package:gc_wizard/tools/science_and_technology/apparent_temperature/heat
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/temperature.dart';
 
 class HeatIndex extends StatefulWidget {
+  const HeatIndex({Key? key}) : super(key: key);
+
   @override
   HeatIndexState createState() => HeatIndexState();
 }
@@ -25,8 +27,9 @@ class HeatIndexState extends State<HeatIndex> {
       children: <Widget>[
         Row(
           children: [
-            Expanded(child: GCWText(text: i18n(context, 'common_measure_temperature')), flex: 1),
+            Expanded(flex: 1, child: GCWText(text: i18n(context, 'common_measure_temperature'))),
             Expanded(
+                flex: 3,
                 child: Column(
                   children: [
                     GCWTwoOptionsSwitch(
@@ -48,8 +51,7 @@ class HeatIndexState extends State<HeatIndex> {
                           });
                         }),
                   ],
-                ),
-                flex: 3)
+                ))
           ],
         ),
         GCWDoubleSpinner(
@@ -79,24 +81,26 @@ class HeatIndexState extends State<HeatIndex> {
       unit = TEMPERATURE_FAHRENHEIT.symbol;
     }
 
-    String hintT;
+    String? hintT;
     if ((_isMetric && _currentTemperature < 27) || (!_isMetric && _currentTemperature < 80)) {
       hintT = i18n(context, 'heatindex_hint_temperature', parameters: ['${_isMetric ? 27 : 80} $unit']);
     }
 
-    String hintH;
+    String? hintH;
     if (_currentHumidity < 40) hintH = i18n(context, 'heatindex_hint_humidity');
 
-    var hint = [hintT, hintH].where((element) => element != null && element.length > 0).join('\n');
+    var hint = [hintT, hintH].where((element) => element != null && element.isNotEmpty).join('\n');
 
-    String hintM;
-    if (output > 54)
+    String? hintM;
+    if (output > 54) {
       hintM = 'heatindex_index_54';
-    else if (output > 40)
+    } else if (output > 40) {
       hintM = 'heatindex_index_40';
-    else if (output > 32)
+    } else if (output > 32) {
       hintM = 'heatindex_index_32';
-    else if (output > 27) hintM = 'heatindex_index_27';
+    } else if (output > 27) {
+      hintM = 'heatindex_index_27';
+    }
 
     var outputs = [
       GCWOutput(
@@ -105,10 +109,11 @@ class HeatIndexState extends State<HeatIndex> {
       )
     ];
 
-    if (hint != null && hint.length > 0) outputs.add(GCWOutput(title: i18n(context, 'heatindex_hint'), child: hint));
+    if (hint.isNotEmpty) outputs.add(GCWOutput(title: i18n(context, 'heatindex_hint'), child: hint));
 
-    if (hintM != null && hintM.length > 0)
+    if (hintM != null && hintM.isNotEmpty) {
       outputs.add(GCWOutput(title: i18n(context, 'heatindex_meaning'), child: i18n(context, hintM)));
+    }
 
     return GCWMultipleOutput(
       children: outputs,

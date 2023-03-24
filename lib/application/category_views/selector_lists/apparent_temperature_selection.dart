@@ -11,18 +11,20 @@ import 'package:gc_wizard/tools/science_and_technology/apparent_temperature/wind
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class ApparentTemperatureSelection extends GCWSelection {
+  const ApparentTemperatureSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(HeatIndex()),
-        className(Humidex()),
-        className(SummerSimmerIndex()),
-        className(Windchill()),
-        className(WetBulbTemperature())
+        className(const HeatIndex()),
+        className(const Humidex()),
+        className(const SummerSimmerIndex()),
+        className(const Windchill()),
+        className(const WetBulbTemperature())
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

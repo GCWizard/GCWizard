@@ -23,16 +23,20 @@ class MultiDecoderToolVanityMultitap extends AbstractMultiDecoderTool {
     }
   }
 
-  MultiDecoderToolVanityMultitap({Key key, int id, String name, Map<String, dynamic> options, BuildContext context})
+  MultiDecoderToolVanityMultitap({
+    Key? key,
+    required int id,
+    required String name,
+    required Map<String, Object?> options,
+    required BuildContext context})
       : super(
             key: key,
             id: id,
             name: name,
             internalToolName: MDT_INTERNALNAMES_VANITYMULTITAP,
             onDecode: (String input, String key) {
-              var model;
-
-              var modelName = _ensureBackwardsCompatibility(options[MDT_VANITYMULTITAP_OPTION_PHONEMODEL]);
+              PhoneModel model;
+              var modelName = _ensureBackwardsCompatibility(checkStringFormatOrDefaultOption(MDT_INTERNALNAMES_VANITYMULTITAP, options, MDT_VANITYMULTITAP_OPTION_PHONEMODEL));
 
               switch (modelName) {
                 case NAME_PHONEMODEL_SIMPLE_SPACE_0:
@@ -47,14 +51,17 @@ class MultiDecoderToolVanityMultitap extends AbstractMultiDecoderTool {
                 case NAME_PHONEMODEL_SIMPLE_SPACE_ASTERISK:
                   model = PHONEMODEL_SIMPLE_SPACE_ASTERISK;
                   break;
+                default:
+                  model = PHONEMODEL_SIMPLE_SPACE_0;
+                  break;
               }
 
-              return decodeVanityMultitap(input, model, PhoneInputLanguage.UNSPECIFIED)['output'];
+              return decodeVanityMultitap(input, model, PhoneInputLanguage.UNSPECIFIED)?.item2;
             },
             options: options,
             configurationWidget: MultiDecoderToolConfiguration(widgets: {
-              MDT_VANITYMULTITAP_OPTION_PHONEMODEL: GCWStatefulDropDown(
-                  value: _ensureBackwardsCompatibility(options[MDT_VANITYMULTITAP_OPTION_PHONEMODEL]),
+              MDT_VANITYMULTITAP_OPTION_PHONEMODEL: GCWStatefulDropDown<String>(
+                  value: _ensureBackwardsCompatibility(checkStringFormatOrDefaultOption(MDT_INTERNALNAMES_VANITYMULTITAP, options, MDT_VANITYMULTITAP_OPTION_PHONEMODEL)),
                   onChanged: (newValue) {
                     options[MDT_VANITYMULTITAP_OPTION_PHONEMODEL] = newValue;
                   },

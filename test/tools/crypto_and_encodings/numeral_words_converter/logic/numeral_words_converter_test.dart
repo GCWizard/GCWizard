@@ -5,7 +5,7 @@ import 'package:gc_wizard/utils/string_utils.dart';
 void main(){
 
   group("decode Navi:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       // empty input
       { 'input': null, 'language': NumeralWordsLanguage.NAVI,        'expectedOutput': OutputConvertToNumber(0, '', '', 'numeralwords_converter_error_navi')},
       { 'input': '', 'language': NumeralWordsLanguage.NAVI,        'expectedOutput': OutputConvertToNumber(0, '', '', '')},
@@ -31,22 +31,22 @@ void main(){
       { 'input': 'mrrzazampxevozampuzamvol', 'language': NumeralWordsLanguage.NAVI,        'expectedOutput': OutputConvertToNumber(22408, '', '', '')},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test(
           'input: ${elem['input']}, language: ${elem['language']}, ', () {
-        var _actual = decodeNumeralWordToNumber(elem['language'], removeAccents(elem['input'].toString().toLowerCase()));
-        if (_actual.error == 'numeralwords_converter_error_navi')
-          expect(_actual.error, elem['expectedOutput'].error);
-        else
-          expect(_actual.number, elem['expectedOutput'].number);
+        var _actual = decodeNumeralWordToNumber(elem['language'] as NumeralWordsLanguage, removeAccents(elem['input'].toString().toLowerCase()));
+        if (_actual.error == 'numeralwords_converter_error_navi') {
+          expect(_actual.error, (elem['expectedOutput'] as OutputConvertToNumber).error);
+        } else {
+          expect(_actual.number, (elem['expectedOutput'] as OutputConvertToNumber).number);
+        }
       });
-    });
+    }
   });
 
   group("encode Navi:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       // zero input
-      { 'input': null, 'language': NumeralWordsLanguage.NAVI,        'expectedOutput': OutputConvertToNumeralWord('', '', '', 'numeralwords_converter_error_navi')},
       { 'input': 0, 'language': NumeralWordsLanguage.NAVI,        'expectedOutput': OutputConvertToNumeralWord('kew', '', '', '')},
       // https://forum.learnnavi.org/navi-lernen/das-navi-zahlensystem/#:~:text=Das%20Na%27vi%20hat%20zwei%20Lehnw%C3%B6rter%20aus%20dem%20Englischen.,Ziffern%2C%20wie%20z.%20B.%20Telefonnummern%2C%20Autokennzeichen%2C%20IDs%20etc.
       { 'input': 9, 'language': NumeralWordsLanguage.NAVI,        'expectedOutput': OutputConvertToNumeralWord('volaw', '', '', '')},
@@ -68,16 +68,17 @@ void main(){
       { 'input': 22408, 'language': NumeralWordsLanguage.NAVI,        'expectedOutput': OutputConvertToNumeralWord('mrrzazapxevozapuzavol', '', '', '')},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test(
           'input: ${elem['input']}, language: ${elem['language']}, ', () {
-        var _actual = encodeNumberToNumeralWord(elem['language'], elem['input']);
-        if (_actual.error == 'numeralwords_converter_error_navi')
-          expect(_actual.error, elem['expectedOutput'].error);
-        else
-          expect(_actual.numeralWord, elem['expectedOutput'].numeralWord);
+        var _actual = encodeNumberToNumeralWord(elem['language'] as NumeralWordsLanguage, elem['input'] as int);
+        if (_actual.error == 'numeralwords_converter_error_navi') {
+          expect(_actual.error, (elem['expectedOutput'] as OutputConvertToNumeralWord).error);
+        } else {
+          expect(_actual.numeralWord, (elem['expectedOutput'] as OutputConvertToNumeralWord).numeralWord);
+        }
       });
-    });
+    }
   });
 
 }

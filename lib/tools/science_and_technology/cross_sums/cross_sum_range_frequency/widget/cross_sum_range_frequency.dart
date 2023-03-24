@@ -9,12 +9,12 @@ import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/tools/science_and_technology/cross_sums/logic/crosstotals_range.dart';
 
-final _ALERT_MAX_RANGE = 25000;
+const _ALERT_MAX_RANGE = 25000;
 
 class CrossSumRangeFrequency extends StatefulWidget {
   final CrossSumType type;
 
-  CrossSumRangeFrequency({Key key, this.type: CrossSumType.NORMAL}) : super(key: key);
+  const CrossSumRangeFrequency({Key? key, this.type = CrossSumType.NORMAL}) : super(key: key);
 
   @override
   CrossSumRangeFrequencyState createState() => CrossSumRangeFrequencyState();
@@ -86,7 +86,7 @@ class CrossSumRangeFrequencyState extends State<CrossSumRangeFrequency> {
     );
   }
 
-  _calculateFrequencies() {
+  void _calculateFrequencies() {
     setState(() {
       switch (widget.type) {
         case CrossSumType.NORMAL:

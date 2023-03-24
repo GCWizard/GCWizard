@@ -16,10 +16,9 @@ import 'package:gc_wizard/tools/images_and_files/hexstring2file/logic/hexstring2
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
-import 'package:intl/intl.dart';
 
 class HexString2File extends StatefulWidget {
-  const HexString2File({Key key}) : super(key: key);
+  const HexString2File({Key? key}) : super(key: key);
 
   @override
   HexString2FileState createState() => HexString2FileState();
@@ -27,7 +26,7 @@ class HexString2File extends StatefulWidget {
 
 class HexString2FileState extends State<HexString2File> {
   var _currentInput = '';
-  Uint8List _outData;
+  Uint8List? _outData;
 
   @override
   Widget build(BuildContext context) {
@@ -41,44 +40,42 @@ class HexString2FileState extends State<HexString2File> {
           },
         ),
         GCWDefaultOutput(
-            child: _buildOutput(),
             trailing: GCWIconButton(
               icon: Icons.save,
               size: IconButtonSize.SMALL,
               iconColor: _outData == null ? themeColors().inActive() : null,
               onPressed: () {
-                _outData == null ? null : _exportFile(context, _outData);
+                _outData == null ? null : _exportFile(context, _outData!);
               },
-            ))
+            ),
+            child: _buildOutput())
       ],
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     _outData = hexstring2file(_currentInput);
 
-    if (_outData == null) return null;
+    if (_outData == null) return Container();
 
-    return hexDataOutput(context, <Uint8List>[_outData]);
+    return hexDataOutput(context, <Uint8List>[_outData!]);
   }
 
-  _exportFile(BuildContext context, Uint8List data) async {
+  Future<void> _exportFile(BuildContext context, Uint8List data) async {
     var fileType = getFileType(data);
-    var value = await saveByteDataToFile(
-        context, data, "hex_" + DateFormat('yyyyMMdd_HHmmss').format(DateTime.now()) + '.' + fileExtension(fileType));
-
-    if (value != null) showExportedFileDialog(context, fileType: fileType);
+    await saveByteDataToFile(context, data, buildFileNameWithDate('hex_', fileType)).then((value) {
+      var content = fileClass(fileType) == FileClass.IMAGE ? imageContent(context, data) : null;
+      if (value) showExportedFileDialog(context, contentWidget: content);
+    });
   }
 }
 
 Widget hexDataOutput(BuildContext context, List<Uint8List> outData) {
-  if (outData == null) return Container();
 
   var children = outData.map((Uint8List _outData) {
-    var _class = fileClass(getFileType(_outData));
     var file = GCWFile(bytes: _outData);
 
-    switch (_class) {
+    switch (file.fileClass) {
       case FileClass.IMAGE:
         try {
           return GCWImageView(imageData: GCWImageViewData(file));
@@ -92,15 +89,15 @@ Widget hexDataOutput(BuildContext context, List<Uint8List> outData) {
         return GCWSoundPlayer(file: file);
 
       case FileClass.ARCHIVE:
-        FileType fileType = getFileType(_outData);
+        var fileType = file.fileType;
         if (fileType == FileType.ZIP) {
           try {
-            InputStream input = new InputStream(_outData.buffer.asByteData());
+            InputStream input = InputStream(_outData.buffer.asByteData());
             return (_archiveWidget(context, ZipDecoder().decodeBuffer(input), fileType));
           } catch (e) {}
         } else if (fileType == FileType.TAR) {
           try {
-            InputStream input = new InputStream(_outData.buffer.asByteData());
+            InputStream input = InputStream(_outData.buffer.asByteData());
             return (_archiveWidget(context, TarDecoder().decodeBuffer(input), fileType));
           } catch (e) {}
         } else {

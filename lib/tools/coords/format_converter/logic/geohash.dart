@@ -1,5 +1,6 @@
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:collection/collection.dart';
 
 List<Map<String, String>> _alphabet = [
   {'character': '0', 'binary': '00000'},
@@ -38,13 +39,21 @@ List<Map<String, String>> _alphabet = [
 
 const _binaryLength = 5;
 
-String _getCharacterByBinary(String binary) {
-  var characterSet = _alphabet.firstWhere((entry) => entry['binary'] == binary);
+String? _getCharacterByBinary(String binary) {
+  var characterSet = _alphabet.firstWhereOrNull((entry) => entry['binary'] == binary);
+  if (characterSet == null) {
+    return null;
+  }
+
   return characterSet['character'];
 }
 
-String _getBinaryByCharacter(String character) {
-  var characterSet = _alphabet.firstWhere((entry) => entry['character'] == character);
+String? _getBinaryByCharacter(String character) {
+  var characterSet = _alphabet.firstWhereOrNull((entry) => entry['character'] == character);
+  if (characterSet == null) {
+    return null;
+  }
+
   return characterSet['binary'];
 }
 
@@ -89,13 +98,13 @@ Geohash latLonToGeohash(LatLng coords, int geohashLength) {
     i++;
   }
 
-  return Geohash(_splitIntoBinaryChunks(binary).map((chunk) => _getCharacterByBinary(chunk)).join());
+  return Geohash(_splitIntoBinaryChunks(binary).map((chunk) => _getCharacterByBinary(chunk)).where((element) => element != null).join());
 }
 
-LatLng geohashToLatLon(Geohash geohash) {
+LatLng? geohashToLatLon(Geohash geohash) {
   try {
     var _geohash = geohash.text.toLowerCase();
-    var binary = _geohash.split('').map((character) => _getBinaryByCharacter(character)).join();
+    var binary = _geohash.split('').map((character) => _getBinaryByCharacter(character)).where((element) => element != null).join();
 
     var latBinary = '';
     var lonBinary = '';
@@ -118,8 +127,7 @@ LatLng geohashToLatLon(Geohash geohash) {
   return null;
 }
 
-Geohash parseGeohash(String input) {
-  if (input == null) return null;
+Geohash? parseGeohash(String input) {
   input = input.trim();
   if (input == '') return null;
 

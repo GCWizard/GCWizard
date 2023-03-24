@@ -4,23 +4,24 @@ import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart'
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_datetime_picker.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/science_and_technology/astronomy/_common/logic/julian_date.dart';
 import 'package:gc_wizard/tools/science_and_technology/astronomy/sun_position/logic/sun_position.dart' as logic;
 import 'package:gc_wizard/tools/science_and_technology/astronomy/_common/widget/astronomy_i18n.dart';
+import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/datetime_utils.dart';
 import 'package:intl/intl.dart';
 
 class SunPosition extends StatefulWidget {
+  const SunPosition({Key? key}) : super(key: key);
+
   @override
   SunPositionState createState() => SunPositionState();
 }
 
 class SunPositionState extends State<SunPosition> {
-  var _currentDateTime = {'datetime': DateTime.now(), 'timezone': DateTime.now().timeZoneOffset};
-  var _currentCoords = defaultCoordinate;
-  var _currentCoordsFormat = defaultCoordFormat();
+  var _currentDateTime = DateTimeTimezone(datetime: DateTime.now(), timezone: DateTime.now().timeZoneOffset);
+  var _currentCoords = defaultBaseCoordinate;
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +29,10 @@ class SunPositionState extends State<SunPosition> {
       children: <Widget>[
         GCWCoords(
           title: i18n(context, 'common_location'),
-          coordsFormat: _currentCoordsFormat,
+          coordsFormat: _currentCoords.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoordsFormat = ret['coordsFormat'];
-              _currentCoords = ret['value'];
+              _currentCoords = ret;
             });
           },
         ),
@@ -40,7 +40,7 @@ class SunPositionState extends State<SunPosition> {
           text: i18n(context, 'astronomy_postion_datetime'),
         ),
         GCWDateTimePicker(
-          config: {DateTimePickerConfig.DATE, DateTimePickerConfig.TIME, DateTimePickerConfig.TIMEZONES},
+          config: const {DateTimePickerConfig.DATE, DateTimePickerConfig.TIME, DateTimePickerConfig.TIMEZONES},
           onChanged: (datetime) {
             setState(() {
               _currentDateTime = datetime;
@@ -55,9 +55,9 @@ class SunPositionState extends State<SunPosition> {
   Widget _buildOutput() {
     var format = NumberFormat('0.000');
 
-    var julianDate = JulianDate(_currentDateTime['datetime'], _currentDateTime['timezone']);
+    var julianDate = JulianDate(_currentDateTime);
 
-    var sunPosition = logic.SunPosition(_currentCoords, julianDate, defaultEllipsoid());
+    var sunPosition = logic.SunPosition(_currentCoords.toLatLng() ?? defaultCoordinate, julianDate, defaultEllipsoid);
 
     var outputsSun = [
       [i18n(context, 'astronomy_position_eclipticlongitude'), format.format(sunPosition.eclipticLongitude) + '°'],
@@ -73,7 +73,7 @@ class SunPositionState extends State<SunPosition> {
       [i18n(context, 'astronomy_position_distancetoobserver'), format.format(sunPosition.distanceToObserver) + ' km'],
       [
         i18n(context, 'astronomy_position_astrologicalsign'),
-        i18n(context, getAstrologicalSign(sunPosition.astrologicalSign))
+        i18n(context, getAstrologicalSign(sunPosition.astrologicalSign) ?? '')
       ],
     ];
 

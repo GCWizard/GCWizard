@@ -4,14 +4,13 @@ import 'package:gc_wizard/common_widgets/dividers/gcw_divider.dart';
 
 class GCWTextDivider extends StatefulWidget {
   final String text;
-  final Widget trailing;
-  final bottom;
-  final TextStyle style;
-  final bool suppressTopSpace;
-  final bool suppressBottomSpace;
+  final Widget? trailing;
+  final TextStyle? style;
+  final bool? suppressTopSpace;
+  final bool? suppressBottomSpace;
 
   const GCWTextDivider(
-      {Key key, this.text: '', this.trailing, this.bottom, this.style, this.suppressTopSpace, this.suppressBottomSpace})
+      {Key? key, required this.text, this.trailing, this.style, this.suppressTopSpace, this.suppressBottomSpace})
       : super(key: key);
 
   @override
@@ -22,7 +21,7 @@ class _GCWTextDividerState extends State<GCWTextDivider> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final minDividerWidth = 100.0;
+    const minDividerWidth = 100.0;
 
     return Container(
         margin: EdgeInsets.only(
@@ -31,7 +30,7 @@ class _GCWTextDividerState extends State<GCWTextDivider> {
         child: Row(children: <Widget>[
           ConstrainedBox(
             constraints: BoxConstraints(maxWidth: screenWidth - minDividerWidth),
-            child: Text(widget.text != '' ? '${widget.text}:' : '', style: widget.style ?? gcwTextStyle()),
+            child: Text(widget.text.isNotEmpty ? '${widget.text}:' : '', style: widget.style ?? gcwTextStyle()),
           ),
           Expanded(child: GCWDivider(color: widget.style?.color ?? gcwTextStyle().color)),
           widget.trailing ?? Container()

@@ -1,4 +1,4 @@
-List<String> primary_pseudo_perfect_numbers = [
+const List<String> primary_pseudo_perfect_numbers = [
   '2',
   '6',
   '42',

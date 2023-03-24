@@ -1,7 +1,7 @@
 import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitution.dart';
 
 String encryptRobberLanguage(String input) {
-  if (input == null || input.length == 0) return '';
+  if (input.isEmpty) return '';
 
   return substitution(
           input,
@@ -13,7 +13,7 @@ String encryptRobberLanguage(String input) {
 }
 
 String decryptRobberLanguage(String input) {
-  if (input == null || input.length == 0) return '';
+  if (input.isEmpty) return '';
 
   var regex = RegExp(r'([bcdfghjklmnpqrstvwxyz])o\1');
 

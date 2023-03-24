@@ -3,8 +3,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/gc_code/logic/gc_code.dart'
 
 void main() {
   group("GCCode.gcCodeToID:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : null},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : null},
 
       {'input' : 'GC0', 'expectedOutput' : 0},
@@ -26,16 +25,16 @@ void main() {
       {'input' : '  GC85P95  ', 'expectedOutput' : 7147429},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = gcCodeToID(elem['input']);
+        var _actual = gcCodeToID(elem['input'] as String);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("GCCode.gcCodeToID.noValidGCCode:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : 'GCG'},
       {'input' : 'GCFFFG'},
       {'input' : 'GCILOSU'},
@@ -44,21 +43,20 @@ void main() {
       {'input' : 'GC85P  95'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
         try {
-          gcCodeToID(elem['input']);
+          gcCodeToID(elem['input'] as String);
           expect(false, true);
         } catch(e) {
           expect(true, true);
         }
       });
-    });
+    }
   });
 
   group("GCCode.idToGCCode:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : -1, 'expectedOutput' : ''},
 
       {'expectedOutput' : 'GC0', 'input' : 0},
@@ -79,11 +77,11 @@ void main() {
       {'expectedOutput' : 'GCGCGCGC', 'input' : 469226244},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = idToGCCode(elem['input']);
+        var _actual = idToGCCode(elem['input'] as int);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 }

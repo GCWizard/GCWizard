@@ -5,6 +5,8 @@ import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 
 class Licenses extends StatefulWidget {
+  const Licenses({Key? key}) : super(key: key);
+
   @override
   LicensesState createState() => LicensesState();
 }
@@ -14,7 +16,7 @@ class LicensesState extends State<Licenses> {
   Widget build(BuildContext context) {
     var content = Column(children: [
       GCWTextDivider(text: i18n(context, 'licenses_usedflutterlibraries')),
-      GCWColumnedMultilineOutput(data: [
+      const GCWColumnedMultilineOutput(data: [
           ['archive', 'Apache 2.0 License'],
           ['audioplayers', 'MIT License'],
           ['auto_size_text', 'MIT License'],
@@ -58,11 +60,11 @@ class LicensesState extends State<Licenses> {
           ['xmp', 'MIT License'], // it used not in pubspec but directly embedded because of conflicts of internal dependencies
       ]),
       GCWTextDivider(text: i18n(context, 'licenses_fonts')),
-      GCWColumnedMultilineOutput(
+      const GCWColumnedMultilineOutput(
         data: [['Roboto', 'Google Fonts', 'Apache License, Version 2.0']]
       ),
       GCWTextDivider(text: i18n(context, 'licenses_additionalcode')),
-      GCWColumnedMultilineOutput(
+      const GCWColumnedMultilineOutput(
         data: [
           ['Astronomy Functions', 'astronomie.info, jgiesen.de', 'Personal Permission'],
           ['Base58', 'Dark Launch', null],
@@ -99,8 +101,8 @@ class LicensesState extends State<Licenses> {
       GCWTextDivider(text: i18n(context, 'licenses_symboltablesources')),
       GCWColumnedMultilineOutput(
         data: [
-          ['several', 'myGeoTools'],
-          ['several', 'Wikipedia'],
+          const ['several', 'myGeoTools'],
+          const ['several', 'Wikipedia'],
           [i18n(context, 'symboltables_alien_mushrooms_title'), '(Personal Use)'],
           [i18n(context, 'symboltables_cirth_erebor_title'), '(Personal Use)'],
           [i18n(context, 'symboltables_christmas_title'), 'StudioMIES (Personal Use)'],
@@ -130,7 +132,7 @@ class LicensesState extends State<Licenses> {
           [i18n(context, 'symboltables_solmisation_title'), 'www.breitkopf.de (Personal Use)'],
           [i18n(context, 'symboltables_vulcanian_title'), '(Personal Use)'],
         ],
-        flexValues: [1, 2]
+        flexValues: const [1, 2]
       ),
       GCWTextDivider(text: i18n(context, 'licenses_telegraphs')),
       GCWColumnedMultilineOutput(

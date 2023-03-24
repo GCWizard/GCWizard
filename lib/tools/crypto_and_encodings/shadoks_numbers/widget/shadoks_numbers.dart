@@ -16,12 +16,14 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/w
 part 'package:gc_wizard/tools/crypto_and_encodings/shadoks_numbers/widget/shadoks_numbers_segment_display.dart';
 
 class ShadoksNumbers extends StatefulWidget {
+  const ShadoksNumbers({Key? key}) : super(key: key);
+
   @override
   ShadoksNumbersState createState() => ShadoksNumbersState();
 }
 
 class ShadoksNumbersState extends State<ShadoksNumbers> {
-  final Map<String, String> _segmentToWord = {
+  static const Map<String, String> _segmentToWord = {
     'a': 'GA',
     'b': 'BU',
     'bc': 'ZO',
@@ -30,7 +32,7 @@ class ShadoksNumbersState extends State<ShadoksNumbers> {
 
   var _currentEncodeInput = 0;
 
-  List<List<String>> _currentDisplays = [];
+  var _currentDisplays = Segments.Empty();
   var _currentMode = GCWSwitchPosition.right;
 
   Map<String, bool> _currentDisplay = {};
@@ -64,8 +66,8 @@ class ShadoksNumbersState extends State<ShadoksNumbers> {
     ]);
   }
 
-  _buildVisualDecryption() {
-    var onChanged = (Map<String, bool> d) {
+  Widget _buildVisualDecryption() {
+    onChanged(Map<String, bool> d) {
       setState(() {
         _currentDisplay = d;
 
@@ -74,21 +76,16 @@ class ShadoksNumbersState extends State<ShadoksNumbers> {
           if (!value) return;
           newSegments.add(key);
         });
-
-        newSegments.sort();
-        if (newSegments.length > 1) newSegments.remove('a');
-
-        if (_currentDisplays.length == 0) _currentDisplays.add([]);
-
-        _currentDisplays[_currentDisplays.length - 1] = newSegments;
+        newSegments.remove('a');
+        _currentDisplays.replaceLastSegment(newSegments);
       });
-    };
+    }
 
     return Column(
       children: <Widget>[
         Container(
           width: 180,
-          padding: EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
+          padding: const EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
           child: Row(
             children: <Widget>[
               Expanded(
@@ -105,7 +102,7 @@ class ShadoksNumbersState extends State<ShadoksNumbers> {
             icon: Icons.space_bar,
             onPressed: () {
               setState(() {
-                _currentDisplays.add(['a']);
+                _currentDisplays.displays.add(['a']);
                 _currentDisplay = {'a': true};
               });
             },
@@ -114,18 +111,16 @@ class ShadoksNumbersState extends State<ShadoksNumbers> {
             icon: Icons.backspace,
             onPressed: () {
               setState(() {
-                if (_currentDisplays.length > 0) {
-                  _currentDisplays.removeLast();
-                }
+                _currentDisplays.removeLastSegment();
 
-                if (_currentDisplays.length > 0) {
+                if (_currentDisplays.displays.isNotEmpty) {
                   _currentDisplay = {};
-                  _currentDisplays.last.forEach((element) => _currentDisplay.putIfAbsent(element, () => true));
+                  for (var element in _currentDisplays.displays.last) {
+                    _currentDisplay.putIfAbsent(element, () => true);
+                  }
                   _currentDisplay.putIfAbsent('a', () => false);
                 } else {
-                  _currentDisplays = [
-                    ['a']
-                  ];
+                  _currentDisplays = Segments(displays: [['a']]);
                   _currentDisplay = {'a': true};
                 }
               });
@@ -135,9 +130,7 @@ class ShadoksNumbersState extends State<ShadoksNumbers> {
             icon: Icons.clear,
             onPressed: () {
               setState(() {
-                _currentDisplays = [
-                  ['a']
-                ];
+                _currentDisplays = Segments(displays: [['a']]);
                 _currentDisplay = {'a': true};
               });
             },
@@ -147,15 +140,15 @@ class ShadoksNumbersState extends State<ShadoksNumbers> {
     );
   }
 
-  String _segmentsToShadoks(List<List<String>> segments) {
+  String _segmentsToShadoks(Segments segments) {
     String result = '';
-    segments.forEach((element) {
-      result = result + _segmentToWord[element.join('')];
-    });
+    for (var element in segments.displays) {
+      result = result + (_segmentToWord[element.join('')] ?? '');
+    }
     return result;
   }
 
-  Widget _SanatizedShadoksNumbersSegmentDisplay({Map<String, bool> segments, bool readOnly}) {
+  NSegmentDisplay _SanatizedShadoksNumbersSegmentDisplay({required Map<String, bool> segments, required bool readOnly}) {
     segments.putIfAbsent('a', () => false);
     return _ShadoksNumbersSegmentDisplay(segments: segments, readOnly: true);
   }
@@ -185,9 +178,7 @@ class ShadoksNumbersState extends State<ShadoksNumbers> {
       );
     } else {
       //decode
-      var output = _currentDisplays.map((character) {
-        if (character != null) return character.join();
-      }).toList();
+      var output = _currentDisplays.buildOutput();
 
       var segments = decodeShadoksNumbers(output);
 
@@ -197,11 +188,11 @@ class ShadoksNumbersState extends State<ShadoksNumbers> {
               segmentFunction: (displayedSegments, readOnly) {
                 return _SanatizedShadoksNumbersSegmentDisplay(segments: displayedSegments, readOnly: readOnly);
               },
-              segments: segments['displays'],
+              segments: segments,
               readOnly: true),
-          GCWOutput(title: i18n(context, 'shadoksnumbers_single_numbers'), child: segments['numbers'].join(' ')),
-          GCWOutput(title: i18n(context, 'shadoksnumbers_quaternary'), child: segments['quaternary']),
-          GCWOutput(title: i18n(context, 'shadoksnumbers_shadoks'), child: segments['shadoks'])
+          GCWOutput(title: i18n(context, 'shadoksnumbers_single_numbers'), child: segments.numbers.join(' ')),
+          GCWOutput(title: i18n(context, 'shadoksnumbers_quaternary'), child: segments.quaternary),
+          GCWOutput(title: i18n(context, 'shadoksnumbers_shadoks'), child: segments.shadoks)
         ],
       );
     }

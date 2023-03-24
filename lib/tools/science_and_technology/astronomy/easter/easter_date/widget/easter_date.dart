@@ -7,6 +7,8 @@ import 'package:gc_wizard/tools/science_and_technology/astronomy/easter/logic/ea
 import 'package:intl/intl.dart';
 
 class EasterDate extends StatefulWidget {
+  const EasterDate({Key? key}) : super(key: key);
+
   @override
   EasterDateState createState() => EasterDateState();
 }

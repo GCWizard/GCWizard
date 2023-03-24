@@ -3,5 +3,5 @@ import 'package:gc_wizard/tools/science_and_technology/cross_sums/cross_sum_rang
 import 'package:gc_wizard/tools/science_and_technology/cross_sums/logic/crosstotals_range.dart';
 
 class IteratedCrossSumRangeFrequency extends CrossSumRangeFrequency {
-  IteratedCrossSumRangeFrequency({Key key}) : super(key: key, type: CrossSumType.ITERATED);
+  const IteratedCrossSumRangeFrequency({Key? key}) : super(key: key, type: CrossSumType.ITERATED);
 }

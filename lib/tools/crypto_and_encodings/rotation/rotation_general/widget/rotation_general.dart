@@ -8,12 +8,14 @@ import 'package:gc_wizard/tools/crypto_and_encodings/rotation/logic/rotator.dart
 import 'package:gc_wizard/utils/math_utils.dart';
 
 class RotationGeneral extends StatefulWidget {
+  const RotationGeneral({Key? key}) : super(key: key);
+
   @override
   RotationGeneralState createState() => RotationGeneralState();
 }
 
 class RotationGeneralState extends State<RotationGeneral> {
-  var _controller;
+  late TextEditingController _controller;
 
   String _currentInput = '';
   int _currentKey = 0;
@@ -44,6 +46,7 @@ class RotationGeneralState extends State<RotationGeneral> {
         ),
         GCWIntegerSpinner(
           title: i18n(context, 'common_key'),
+          value: _currentKey,
           onChanged: (value) {
             setState(() {
               _currentKey = value;
@@ -55,10 +58,10 @@ class RotationGeneralState extends State<RotationGeneral> {
     );
   }
 
-  _buildOutput() {
-    if (_currentInput == null || _currentInput.isEmpty) return GCWDefaultOutput();
+  Widget _buildOutput() {
+    if (_currentInput.isEmpty) return const GCWDefaultOutput();
 
-    var reverseKey = modulo(26 - _currentKey, 26);
+    var reverseKey = modulo(26 - _currentKey, 26).toInt();
 
     return Column(
       children: [

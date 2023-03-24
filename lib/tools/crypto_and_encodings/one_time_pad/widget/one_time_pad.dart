@@ -8,13 +8,15 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/one_time_pad/logic/one_time_pad.dart';
 
 class OneTimePad extends StatefulWidget {
+  const OneTimePad({Key? key}) : super(key: key);
+
   @override
   OneTimePadState createState() => OneTimePadState();
 }
 
 class OneTimePadState extends State<OneTimePad> {
-  TextEditingController _inputController;
-  TextEditingController _keyController;
+  late TextEditingController _inputController;
+  late TextEditingController _keyController;
 
   String _currentInput = '';
   String _currentKey = '';
@@ -25,10 +27,10 @@ class OneTimePadState extends State<OneTimePad> {
 
   // two same maskTextInputFormatters are necessary because using the same formatter creates conflicts
   // (entered value in one input will be used for the other one)
-  var _mask = '#' * 10000;
-  var _filter = {"#": RegExp(r'[A-Za-z]')};
-  var _inputMaskInputFormatter;
-  var _keyMaskInputFormatter;
+  final _mask = '#' * 10000;
+  final _filter = {"#": RegExp(r'[A-Za-z]')};
+  late WrapperForMaskTextInputFormatter _inputMaskInputFormatter;
+  late WrapperForMaskTextInputFormatter _keyMaskInputFormatter;
 
   @override
   void initState() {
@@ -94,7 +96,7 @@ class OneTimePadState extends State<OneTimePad> {
     );
   }
 
-  _calculateOutput() {
+  String _calculateOutput() {
     return _currentMode == GCWSwitchPosition.left
         ? encryptOneTimePad(_currentInput, _currentKey, keyOffset: _currentOffset)
         : decryptOneTimePad(_currentInput, _currentKey, keyOffset: _currentOffset);

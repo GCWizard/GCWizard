@@ -7,7 +7,7 @@ import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_divider.dart';
-import 'package:gc_wizard/common_widgets/gcw_async_executer.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_toast.dart';
 import 'package:gc_wizard/common_widgets/gcw_tool.dart';
@@ -18,51 +18,48 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
 import 'package:gc_wizard/tools/images_and_files/animated_image/logic/animated_image.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
-import 'package:gc_wizard/utils/file_utils/gcw_file.dart' as local;
+import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
-import 'package:intl/intl.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 
 class AnimatedImage extends StatefulWidget {
-  final local.GCWFile platformFile;
+  final GCWFile? file;
 
-  const AnimatedImage({Key key, this.platformFile}) : super(key: key);
+  const AnimatedImage({Key? key, this.file}) : super(key: key);
 
   @override
   AnimatedImageState createState() => AnimatedImageState();
 }
 
 class AnimatedImageState extends State<AnimatedImage> {
-  Map<String, dynamic> _outData;
-  local.GCWFile _platformFile;
+  AnimatedImageOutput? _outData;
+  GCWFile? _file;
   bool _play = false;
   static var allowedExtensions = [FileType.GIF, FileType.PNG, FileType.WEBP];
 
   @override
   Widget build(BuildContext context) {
-    if (widget.platformFile != null) {
-      _platformFile = widget.platformFile;
+    if (widget.file != null) {
+      _file = widget.file;
       _analysePlatformFileAsync();
     }
 
     return Column(children: <Widget>[
       GCWOpenFile(
         supportedFileTypes: AnimatedImageState.allowedExtensions,
-        onLoaded: (_file) {
-          if (_file == null) {
+        onLoaded: (GCWFile? value) {
+          if (value == null) {
             showToast(i18n(context, 'common_loadfile_exception_notloaded'));
             return;
           }
 
-          if (_file != null) {
-            setState(() {
-              _platformFile = _file;
-              _analysePlatformFileAsync();
-            });
-          }
+          setState(() {
+            _file = value;
+            _analysePlatformFileAsync();
+          });
         },
       ),
       GCWDefaultOutput(
-          child: _buildOutput(),
           trailing: Row(children: <Widget>[
             GCWIconButton(
               icon: Icons.play_arrow,
@@ -89,47 +86,46 @@ class AnimatedImageState extends State<AnimatedImage> {
               size: IconButtonSize.SMALL,
               iconColor: _outData == null ? themeColors().inActive() : null,
               onPressed: () {
-                _outData == null ? null : _exportFiles(context, _platformFile.name, _outData["images"]);
+                if (_outData != null && _file?.name != null) _exportFiles(context, _file!.name!, _outData!.images);
               },
             )
-          ]))
+          ]),
+          child: _buildOutput())
     ]);
   }
 
-  _buildOutput() {
-    if (_outData == null) return null;
+  Widget _buildOutput() {
+    if (_outData == null) return Container();
 
-    var durations = <List<dynamic>>[];
-    if (_outData["durations"] != null && _outData["durations"]?.length > 1) {
+    var durations = <List<Object>>[];
+    if (_outData!.durations.length > 1) {
       var counter = 0;
       durations.addAll([
         [i18n(context, 'animated_image_table_index'), i18n(context, 'animated_image_table_duration')]
       ]);
-      _outData["durations"].forEach((value) {
+      for (var value in _outData!.durations) {
         counter++;
         durations.addAll([
           [counter, value]
         ]);
-      });
+      }
     }
 
     return Column(children: <Widget>[
       _play
-          ? Image.memory(_platformFile.bytes)
-          : GCWGallery(imageData: _convertImageData(_outData["images"], _outData["durations"])),
+          ? (_file?.bytes == null) ? Container() : Image.memory(_file!.bytes)
+          : GCWGallery(imageData: _convertImageData(_outData!.images, _outData!.durations)),
       _buildDurationOutput(durations)
     ]);
   }
 
-  Widget _buildDurationOutput(List<List<dynamic>> durations) {
-    if (durations == null) return Container();
-
+  Widget _buildDurationOutput(List<List<Object>> durations) {
     return Column(children: <Widget>[
-      GCWDivider(),
+      const GCWDivider(),
       GCWOutput(
         child: GCWColumnedMultilineOutput(
             data: durations,
-            flexValues: [1, 2],
+            flexValues: const [1, 2],
             hasHeader: true,
             copyAll: true
         )
@@ -140,53 +136,51 @@ class AnimatedImageState extends State<AnimatedImage> {
   List<GCWImageViewData> _convertImageData(List<Uint8List> images, List<int> durations) {
     var list = <GCWImageViewData>[];
 
-    if (images != null) {
-      var imageCount = images.length;
-      for (var i = 0; i < images.length; i++) {
-        String description = (i + 1).toString() + '/$imageCount';
-        if ((durations != null) && (i < durations.length)) {
-          description += ': ' + durations[i].toString() + ' ms';
-        }
-        list.add(GCWImageViewData(local.GCWFile(bytes: images[i]), description: description));
+    var imageCount = images.length;
+    for (var i = 0; i < images.length; i++) {
+      String description = (i + 1).toString() + '/$imageCount';
+      if (i < durations.length) {
+        description += ': ' + durations[i].toString() + ' ms';
       }
+      list.add(GCWImageViewData(GCWFile(bytes: images[i]), description: description));
     }
     return list;
   }
 
-  _analysePlatformFileAsync() async {
-    await showDialog(
+  void _analysePlatformFileAsync() async {
+    await showDialog<bool>(
       context: context,
       barrierDismissible: false,
       builder: (context) {
         return Center(
-          child: Container(
-            child: GCWAsyncExecuter(
+          child: SizedBox(
+            height: 220,
+            width: 150,
+            child: GCWAsyncExecuter<AnimatedImageOutput?>(
               isolatedFunction: analyseImageAsync,
-              parameter: _buildJobData(),
+              parameter: _buildJobData,
               onReady: (data) => _showOutput(data),
               isOverlay: true,
             ),
-            height: 220,
-            width: 150,
           ),
         );
       },
     );
   }
 
-  Future<GCWAsyncExecuterParameters> _buildJobData() async {
-    return GCWAsyncExecuterParameters(_platformFile.bytes);
+  Future<GCWAsyncExecuterParameters?> _buildJobData() async {
+    if (_file == null) return null;
+    return GCWAsyncExecuterParameters(_file!.bytes);
   }
 
-  _showOutput(Map<String, dynamic> output) {
+  void _showOutput(AnimatedImageOutput? output) {
     _outData = output;
 
     // restore image references (problem with sendPort, lose references)
     if (_outData != null) {
-      List<Uint8List> images = _outData["images"];
-      List<int> linkList = _outData["linkList"];
-      for (int i = 0; i < images.length; i++) {
-        images[i] = images[linkList[i]];
+      var linkList = _outData!.linkList;
+      for (int i = 0; i < _outData!.images.length; i++) {
+        _outData!.images[i] = _outData!.images[linkList[i]];
       }
     } else {
       showToast(i18n(context, 'common_loadfile_exception_notloaded'));
@@ -198,23 +192,21 @@ class AnimatedImageState extends State<AnimatedImage> {
     });
   }
 
-  _exportFiles(BuildContext context, String fileName, List<Uint8List> data) async {
+  Future<void> _exportFiles(BuildContext context, String fileName, List<Uint8List> data) async {
     createZipFile(fileName, '.' + fileExtension(FileType.PNG), data).then((bytes) async {
-      var fileType = FileType.ZIP;
-      var value = await saveByteDataToFile(context, bytes,
-          'anim_' + DateFormat('yyyyMMdd_HHmmss').format(DateTime.now()) + '.' + fileExtension(fileType));
-
-      if (value != null) showExportedFileDialog(context, fileType: fileType);
+      await saveByteDataToFile(context, bytes, buildFileNameWithDate('anim_', FileType.ZIP)).then((value) {
+        if (value) showExportedFileDialog(context);
+      });
     });
   }
 }
 
-openInAnimatedImage(BuildContext context, local.GCWFile file) {
+void openInAnimatedImage(BuildContext context, GCWFile file) {
   Navigator.push(
       context,
-      NoAnimationMaterialPageRoute(
+      NoAnimationMaterialPageRoute<GCWTool>(
           builder: (context) => GCWTool(
-              tool: AnimatedImage(platformFile: file),
+              tool: AnimatedImage(file: file),
               toolName: i18n(context, 'animated_image_title'),
-              i18nPrefix: '')));
+              id: 'animated_image')));
 }

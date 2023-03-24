@@ -6,13 +6,15 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/pokemon/logic/pokemon.dart';
 
 class Pokemon extends StatefulWidget {
+  const Pokemon({Key? key}) : super(key: key);
+
   @override
   PokemonState createState() => PokemonState();
 }
 
 class PokemonState extends State<Pokemon> {
-  var _encodeController;
-  var _decodeController;
+  late TextEditingController _encodeController;
+  late TextEditingController _decodeController;
 
   String _currentEncode = '';
   String _currentDecode = '';
@@ -75,7 +77,7 @@ class PokemonState extends State<Pokemon> {
     );
   }
 
-  _buildOutput() {
+  String _buildOutput() {
     return _currentMode == GCWSwitchPosition.left ? encodePokemon(_currentEncode) : decodePokemon(_currentDecode);
   }
 }

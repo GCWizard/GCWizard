@@ -4,21 +4,22 @@ import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart'
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_datetime_picker.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/science_and_technology/astronomy/_common/logic/julian_date.dart';
 import 'package:gc_wizard/tools/science_and_technology/astronomy/moon_rise_set/logic/moon_rise_set.dart' as logic;
+import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/datetime_utils.dart';
 
 class MoonRiseSet extends StatefulWidget {
+  const MoonRiseSet({Key? key}) : super(key: key);
+
   @override
   MoonRiseSetState createState() => MoonRiseSetState();
 }
 
 class MoonRiseSetState extends State<MoonRiseSet> {
-  var _currentDateTime = {'datetime': DateTime.now(), 'timezone': DateTime.now().timeZoneOffset};
-  var _currentCoords = defaultCoordinate;
-  var _currentCoordsFormat = defaultCoordFormat();
+  var _currentDateTime = DateTimeTimezone(datetime: DateTime.now(), timezone: DateTime.now().timeZoneOffset);
+  var _currentCoords = defaultBaseCoordinate;
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +27,10 @@ class MoonRiseSetState extends State<MoonRiseSet> {
       children: <Widget>[
         GCWCoords(
           title: i18n(context, 'common_location'),
-          coordsFormat: _currentCoordsFormat,
+          coordsFormat: _currentCoords.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoordsFormat = ret['coordsFormat'];
-              _currentCoords = ret['value'];
+              _currentCoords = ret;
             });
           },
         ),
@@ -38,7 +38,7 @@ class MoonRiseSetState extends State<MoonRiseSet> {
           text: i18n(context, 'astronomy_riseset_date'),
         ),
         GCWDateTimePicker(
-          config: {DateTimePickerConfig.DATE, DateTimePickerConfig.TIMEZONES},
+          config: const {DateTimePickerConfig.DATE, DateTimePickerConfig.TIMEZONES},
           onChanged: (datetime) {
             setState(() {
               _currentDateTime = datetime;
@@ -52,10 +52,10 @@ class MoonRiseSetState extends State<MoonRiseSet> {
 
   Widget _buildOutput() {
     var moonRise = logic.MoonRiseSet(
-        _currentCoords,
-        JulianDate(_currentDateTime['datetime'], _currentDateTime['timezone']),
-        _currentDateTime['timezone'],
-        defaultEllipsoid());
+        _currentCoords.toLatLng() ?? defaultCoordinate,
+        JulianDate(_currentDateTime),
+        _currentDateTime.timezone,
+        defaultEllipsoid);
 
     var outputs = [
       [

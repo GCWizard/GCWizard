@@ -1,10 +1,10 @@
 part of 'package:gc_wizard/common_widgets/color_pickers/gcw_colors.dart';
 
 class _GCWColorYUV extends StatefulWidget {
-  final Function onChanged;
-  final YUV color;
+  final void Function(YUV) onChanged;
+  final YUV? color;
 
-  const _GCWColorYUV({Key key, this.onChanged, this.color}) : super(key: key);
+  const _GCWColorYUV({Key? key, required this.onChanged, this.color}) : super(key: key);
 
   @override
   _GCWColorYUVState createState() => _GCWColorYUVState();
@@ -18,9 +18,9 @@ class _GCWColorYUVState extends State<_GCWColorYUV> {
   @override
   Widget build(BuildContext context) {
     if (widget.color != null) {
-      _currentY = widget.color.y * 100.0;
-      _currentU = widget.color.u * 100.0;
-      _currentV = widget.color.v * 100.0;
+      _currentY = widget.color!.y * 100.0;
+      _currentU = widget.color!.u * 100.0;
+      _currentV = widget.color!.v * 100.0;
     }
 
     return Column(
@@ -62,7 +62,7 @@ class _GCWColorYUVState extends State<_GCWColorYUV> {
     );
   }
 
-  _emitOnChange() {
+  void _emitOnChange() {
     widget.onChanged(YUV(_currentY / 100.0, _currentU / 100.0, _currentV / 100.0));
   }
 }

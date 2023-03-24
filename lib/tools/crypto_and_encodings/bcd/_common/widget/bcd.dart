@@ -8,32 +8,32 @@ import 'package:gc_wizard/tools/crypto_and_encodings/bcd/_common/logic/bcd.dart'
 abstract class AbstractBCD extends StatefulWidget {
   final BCDType type;
 
-  AbstractBCD({Key key, this.type}) : super(key: key);
+  const AbstractBCD({Key? key, required this.type}) : super(key: key);
 
   @override
   AbstractBCDState createState() => AbstractBCDState();
 }
 
 class AbstractBCDState extends State<AbstractBCD> {
-  var _encodeController;
-  var _decodeController;
+  late TextEditingController _encodeController;
+  late TextEditingController _decodeController;
 
-  var _encodeMaskFormatter = WrapperForMaskTextInputFormatter(mask: '#' * 10000, // allow 10000 characters input
-      filter: {"#": RegExp(r'[0-9]')});
+  final _encodeMaskFormatter = WrapperForMaskTextInputFormatter(mask: '#' * 10000, // allow 10000 characters input
+      filter: {"#": RegExp(r'\d')});
 
-  var _decode4DigitsMaskFormatter = WrapperForMaskTextInputFormatter(
+  final _decode4DigitsMaskFormatter = WrapperForMaskTextInputFormatter(
       mask: '#### ' * 5000, // allow 5000 4-digit binary blocks, spaces will be set automatically after each block
       filter: {"#": RegExp(r'[01]')});
 
-  var _decode5DigitsMaskFormatter = WrapperForMaskTextInputFormatter(
+  final _decode5DigitsMaskFormatter = WrapperForMaskTextInputFormatter(
       mask: '##### ' * 5000, // allow 5000 5-digit binary blocks, spaces will be set automatically after each block
       filter: {"#": RegExp(r'[01]')});
 
-  var _decode7DigitsMaskFormatter = WrapperForMaskTextInputFormatter(
+  final _decode7DigitsMaskFormatter = WrapperForMaskTextInputFormatter(
       mask: '####### ' * 5000, // allow 5000 5-digit binary blocks, spaces will be set automatically after each block
       filter: {"#": RegExp(r'[01]')});
 
-  var _decode10DigitsMaskFormatter = WrapperForMaskTextInputFormatter(
+  final _decode10DigitsMaskFormatter = WrapperForMaskTextInputFormatter(
       mask: '########## ' * 5000, // allow 5000 5-digit binary blocks, spaces will be set automatically after each block
       filter: {"#": RegExp(r'[01]')});
 
@@ -92,7 +92,6 @@ class AbstractBCDState extends State<AbstractBCD> {
                 _currentInput = text;
               });
             });
-        break;
       case BCDType.HAMMING:
       case BCDType.BIQUINARY:
         return GCWTextField(
@@ -103,7 +102,6 @@ class AbstractBCDState extends State<AbstractBCD> {
                 _currentInput = text;
               });
             });
-        break;
       case BCDType.LIBAWCRAIG:
       case BCDType.TWOOFFIVE:
       case BCDType.PLANET:
@@ -116,7 +114,6 @@ class AbstractBCDState extends State<AbstractBCD> {
                 _currentInput = text;
               });
             });
-        break;
       default:
         return GCWTextField(
             controller: _decodeController,

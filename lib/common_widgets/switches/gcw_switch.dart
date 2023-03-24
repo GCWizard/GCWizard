@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 class GCWSwitch extends StatefulWidget {
-  final Function onChanged;
-  final value;
-  final inactiveTrackColor;
-  final inactiveThumbColor;
-  final activeThumbColor;
-  final activeTrackColor;
+  final void Function(bool) onChanged;
+  final bool value;
+  final Color? inactiveTrackColor;
+  final Color? inactiveThumbColor;
+  final Color? activeThumbColor;
+  final Color? activeTrackColor;
 
   const GCWSwitch(
-      {Key key,
-      this.value: false,
-      this.onChanged,
+      {Key? key,
+      this.value = false,
+      required this.onChanged,
       this.inactiveThumbColor,
       this.inactiveTrackColor,
       this.activeThumbColor,
@@ -23,16 +23,13 @@ class GCWSwitch extends StatefulWidget {
 }
 
 class _GCWSwitchState extends State<GCWSwitch> {
-  var _currentValue;
-
   @override
   Widget build(BuildContext context) {
     return Switch(
-        value: widget.value ?? _currentValue,
-        onChanged: (value) {
+        value: widget.value,
+        onChanged: (bool value) {
           setState(() {
-            _currentValue = value;
-            widget.onChanged(_currentValue);
+            widget.onChanged(value);
           });
         },
         activeColor: widget.activeThumbColor,

@@ -1,17 +1,17 @@
 part of 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
 
 class _GCWCoordsMakaney extends StatefulWidget {
-  final Function onChanged;
-  final BaseCoordinates coordinates;
+  final void Function(Makaney?) onChanged;
+  final Makaney coordinates;
 
-  const _GCWCoordsMakaney({Key key, this.onChanged, this.coordinates}) : super(key: key);
+  const _GCWCoordsMakaney({Key? key, required this.onChanged, required this.coordinates}) : super(key: key);
 
   @override
   _GCWCoordsMakaneyState createState() => _GCWCoordsMakaneyState();
 }
 
 class _GCWCoordsMakaneyState extends State<_GCWCoordsMakaney> {
-  TextEditingController _controller;
+  late TextEditingController _controller;
   var _currentCoord = '';
 
   @override
@@ -28,14 +28,10 @@ class _GCWCoordsMakaneyState extends State<_GCWCoordsMakaney> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.coordinates != null) {
-      var makaney = widget.coordinates is Makaney
-          ? widget.coordinates as Makaney
-          : Makaney.fromLatLon(widget.coordinates.toLatLng());
-      _currentCoord = makaney.toString();
+    var makaney = widget.coordinates;
+    _currentCoord = makaney.toString();
 
-      _controller.text = _currentCoord;
-    }
+    _controller.text = _currentCoord;
 
     return Column(children: <Widget>[
       GCWTextField(
@@ -51,7 +47,7 @@ class _GCWCoordsMakaneyState extends State<_GCWCoordsMakaney> {
     ]);
   }
 
-  _setCurrentValueAndEmitOnChange() {
+  void _setCurrentValueAndEmitOnChange() {
     try {
       widget.onChanged(Makaney.parse(_currentCoord));
     } catch (e) {}

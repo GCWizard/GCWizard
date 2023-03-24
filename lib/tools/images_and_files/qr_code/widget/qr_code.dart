@@ -16,12 +16,11 @@ import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/image_utils/image_utils.dart';
-import 'package:intl/intl.dart';
 
 class QrCode extends StatefulWidget {
-  final GCWFile platformFile;
+  final GCWFile? file;
 
-  const QrCode({Key key, this.platformFile}) : super(key: key);
+  const QrCode({Key? key, this.file}) : super(key: key);
 
   @override
   QrCodeState createState() => QrCodeState();
@@ -30,10 +29,10 @@ class QrCode extends StatefulWidget {
 class QrCodeState extends State<QrCode> {
   var _currentInput = '';
   var _currentModulSize = 5;
-  Uint8List _outData;
-  Uint8List _outDataEncrypt;
-  String _outDataDecrypt;
-  TextEditingController _inputController;
+  Uint8List? _outData;
+  Uint8List? _outDataEncrypt;
+  String? _outDataDecrypt;
+  late TextEditingController _inputController;
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
   static int maxLength = 2952;
   var lastCurrentInputLength = 0;
@@ -42,9 +41,9 @@ class QrCodeState extends State<QrCode> {
   void initState() {
     super.initState();
     _inputController = TextEditingController(text: _currentInput);
-    if (widget.platformFile != null) {
+    if (widget.file != null) {
       _currentMode = GCWSwitchPosition.right;
-      _outData = widget.platformFile.bytes;
+      _outData = widget.file?.bytes;
       _updateOutput();
     }
   }
@@ -62,18 +61,16 @@ class QrCodeState extends State<QrCode> {
         _currentMode == GCWSwitchPosition.right
             ? GCWOpenFile(
                 supportedFileTypes: SUPPORTED_IMAGE_TYPES,
-                onLoaded: (_file) {
-                  if (_file == null) {
+                onLoaded: (GCWFile? value) {
+                  if (value == null) {
                     showToast(i18n(context, 'common_loadfile_exception_notloaded'));
                     return;
                   }
 
-                  if (_file != null) {
-                    setState(() {
-                      _outData = _file.bytes;
-                      _updateOutput();
-                    });
-                  }
+                  setState(() {
+                    _outData = value.bytes;
+                    _updateOutput();
+                  });
                 },
               )
             : GCWTextField(
@@ -87,8 +84,8 @@ class QrCodeState extends State<QrCode> {
               ),
         ((_currentMode == GCWSwitchPosition.right) && (_outData != null))
             ? Container(
-                child: Image.memory(_outData),
-                padding: EdgeInsets.symmetric(vertical: 20),
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Image.memory(_outData!),
               )
             : Container(),
         _currentMode == GCWSwitchPosition.right
@@ -120,32 +117,36 @@ class QrCodeState extends State<QrCode> {
                     size: IconButtonSize.SMALL,
                     iconColor: _outDataEncrypt == null ? themeColors().inActive() : null,
                     onPressed: () {
-                      _outDataEncrypt == null ? null : _exportFile(context, _outDataEncrypt);
+                      _outDataEncrypt == null ? null : _exportFile(context, _outDataEncrypt!);
                     },
                   ))
       ],
     );
   }
 
-  _buildOutput() {
+  Object? _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
       if (_outDataEncrypt == null) return null;
-      return Image.memory(_outDataEncrypt);
-    } else
-      return _outDataDecrypt;
+      return Image.memory(_outDataEncrypt!);
+    } else {
+      return _outDataDecrypt!;
+    }
   }
 
-  _updateOutput() {
+  void _updateOutput() {
     try {
       if (_currentMode == GCWSwitchPosition.left) {
         var currentInput = _currentInput;
-        if ((currentInput != null) && (currentInput.length > maxLength) && (lastCurrentInputLength <= maxLength)) {
+        if ((currentInput.length > maxLength) && (lastCurrentInputLength <= maxLength)) {
           currentInput = currentInput.substring(0, maxLength);
           showToast(i18n(context, 'qr_code_length_limited', parameters: [maxLength.toString()]));
         }
-        lastCurrentInputLength = _currentInput == null ? 0 : _currentInput.length;
+        lastCurrentInputLength = _currentInput.length;
 
-        input2Image(generateBarCode(currentInput, moduleSize: _currentModulSize, border: 2 * _currentModulSize))
+        _outDataEncrypt = null;
+        var qrCode = generateBarCode(currentInput, moduleSize: _currentModulSize, border: 2 * _currentModulSize);
+        if (qrCode == null) return;
+        input2Image(qrCode)
             .then((qr_code) {
                 setState(() {
                   _outDataEncrypt = qr_code;
@@ -156,9 +157,9 @@ class QrCodeState extends State<QrCode> {
 
         scanBytes(_outData).then((text) {
           setState(() {
-            if (text == null || text.isEmpty) text = i18n(context, 'qr_code_nothingfound');
+            if (text == null || text!.isEmpty) text = i18n(context, 'qr_code_nothingfound');
 
-            _outDataDecrypt = text;
+            _outDataDecrypt = text!;
           });
         });
       }
@@ -167,11 +168,11 @@ class QrCodeState extends State<QrCode> {
     }
   }
 
-  _exportFile(BuildContext context, Uint8List data) async {
+  Future<void> _exportFile(BuildContext context, Uint8List data) async {
     var fileType = getFileType(data);
-    var value = await saveByteDataToFile(
-        context, data, "img_" + DateFormat('yyyyMMdd_HHmmss').format(DateTime.now()) + '.' + fileExtension(fileType));
-
-    if (value != null) showExportedFileDialog(context, fileType: fileType);
+    await saveByteDataToFile(context, data, buildFileNameWithDate('img_', fileType)).then((value) {
+      var content = fileClass(fileType) == FileClass.IMAGE ? imageContent(context, data) : null;
+      if (value) showExportedFileDialog(context, contentWidget: content);
+    });
   }
 }

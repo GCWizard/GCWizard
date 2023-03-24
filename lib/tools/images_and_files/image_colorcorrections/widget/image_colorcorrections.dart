@@ -8,7 +8,7 @@ import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
-import 'package:gc_wizard/common_widgets/gcw_async_executer.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_popup_menu.dart';
 import 'package:gc_wizard/common_widgets/gcw_slider.dart';
@@ -20,24 +20,25 @@ import 'package:gc_wizard/tools/images_and_files/image_colorcorrections/logic/im
 import 'package:gc_wizard/tools/images_and_files/_common/logic/rgb_pixel.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
-import 'package:image/image.dart' as img;
+import 'package:image/image.dart' as Image;
 import 'package:prefs/prefs.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 
 class ImageColorCorrections extends StatefulWidget {
-  final GCWFile file;
+  final GCWFile? file;
 
-  const ImageColorCorrections({this.file});
+  const ImageColorCorrections({Key? key, this.file}) : super(key: key);
 
   @override
   ImageColorCorrectionsState createState() => ImageColorCorrectionsState();
 }
 
 class ImageColorCorrectionsState extends State<ImageColorCorrections> {
-  GCWFile _originalData;
-  Uint8List _convertedOutputImage;
+  GCWFile? _originalData;
+  Uint8List? _convertedOutputImage;
 
-  img.Image _currentPreview;
-  img.Image _originalPreview;
+  Image.Image? _currentPreview;
+  Image.Image? _originalPreview;
 
   var _currentSaturation = 0.0;
   var _currentContrast = 0.0;
@@ -76,13 +77,15 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
     },
   };
 
-  _currentDataInit({int previewSize}) {
+  Image.Image? _currentDataInit({int? previewSize}) {
     var previewHeight = previewSize ?? Prefs.getInt(PREFERENCE_IMAGECOLORCORRECTIONS_MAXPREVIEWHEIGHT);
 
-    img.Image image = img.decodeImage(_originalData.bytes);
+    if(_originalData?.bytes == null) return null;
+    Image.Image? image = Image.decodeImage(_originalData!.bytes);
 
+    if(image == null) return null;
     if (image.height > previewHeight) {
-      img.Image resized = img.copyResize(image, height: previewHeight);
+      Image.Image resized = Image.copyResize(image, height: previewHeight);
       return resized;
     } else {
       return image;
@@ -93,15 +96,15 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
   void initState() {
     super.initState();
 
-    if (widget.file != null && widget.file.bytes != null) {
+    if (widget.file != null && widget.file?.bytes != null) {
       _originalData = widget.file;
 
       _originalPreview = _currentDataInit();
-      _currentPreview = img.Image.from(_originalPreview);
+      if (_originalPreview != null) _currentPreview = Image.Image.from(_originalPreview!);
     }
   }
 
-  _resetInputs() {
+  void _resetInputs() {
     setState(() {
       _currentSaturation = 0.0;
       _currentContrast = 0.0;
@@ -129,7 +132,7 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
       children: <Widget>[
         GCWOpenFile(
           supportedFileTypes: SUPPORTED_IMAGE_TYPES,
-          onLoaded: (GCWFile value) {
+          onLoaded: (GCWFile? value) {
             if (value == null || !_validateData(value.bytes)) {
               showToast(i18n(context, 'common_loadfile_exception_notloaded'));
               return;
@@ -139,7 +142,7 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
               _originalData = value;
 
               _originalPreview = _currentDataInit();
-              _currentPreview = img.Image.from(_originalPreview);
+              if (_originalPreview != null) _currentPreview = Image.Image.from(_originalPreview!);
 
               _resetInputs();
             });
@@ -150,7 +153,7 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
           GCWTextDivider(
               suppressTopSpace: true,
               text: i18n(context, 'image_colorcorrections_previewsize_title', parameters: [
-                i18n(context, PREVIEW_VALUES[Prefs.get(PREFERENCE_IMAGECOLORCORRECTIONS_MAXPREVIEWHEIGHT)]['title'])
+                i18n(context, PREVIEW_VALUES[Prefs.get(PREFERENCE_IMAGECOLORCORRECTIONS_MAXPREVIEWHEIGHT)]?['title'] ?? '')
               ]),
               trailing: GCWPopupMenu(
                   iconData: Icons.settings,
@@ -163,15 +166,15 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(i18n(context, value['title']), style: gcwDialogTextStyle()),
+                                    Text(i18n(context, value['title'] ?? ''), style: gcwDialogTextStyle()),
                                     Container(
+                                        padding: const EdgeInsets.only(left: DEFAULT_DESCRIPTION_MARGIN),
                                         child: Text(
-                                          i18n(context, value['description']),
+                                          i18n(context, value['description'] ?? ''),
                                           style: gcwDescriptionTextStyle().copyWith(color: themeColors().dialogText()),
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
-                                        ),
-                                        padding: EdgeInsets.only(left: DEFAULT_DESCRIPTION_MARGIN)),
+                                        )),
                                   ],
                                 ),
                                 action: (index) {
@@ -179,7 +182,7 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
                                     Prefs.setInt(PREFERENCE_IMAGECOLORCORRECTIONS_MAXPREVIEWHEIGHT, key);
 
                                     _originalPreview = _currentDataInit(previewSize: key);
-                                    _currentPreview = img.Image.from(_originalPreview);
+                                    if (_originalPreview != null) _currentPreview = Image.Image.from(_originalPreview!);
                                   });
                                 }));
                       })
@@ -187,9 +190,9 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
                       .toList())),
         if (_currentPreview != null)
           GCWImageView(
-            imageData: _originalData == null ? null : GCWImageViewData(GCWFile(bytes: _imageBytes())),
+            imageData: _originalPreview == null ? null : GCWImageViewData(GCWFile(bytes: _imageBytes() ?? Uint8List(0))),
             onBeforeLoadBigImage: _adjustToFullPicture,
-            suppressOpenInTool: {GCWImageViewOpenInTools.COLORCORRECTIONS},
+            suppressOpenInTool: const {GCWImageViewOpenInTools.COLORCORRECTIONS},
           ),
         if (_currentPreview != null)
           GCWTextDivider(
@@ -206,7 +209,7 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
         if (_currentPreview != null)
           Expanded(
               child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
+                physics: const AlwaysScrollableScrollPhysics(),
                 primary: true,
                 child: Column(
                   children: [
@@ -333,32 +336,36 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
     );
   }
 
-  _adjustToFullPicture() async {
-    await showDialog(
+  Future<GCWFile?> _adjustToFullPicture() async {
+    await showDialog<bool>(
       context: context,
       barrierDismissible: false,
       builder: (context) {
         return Center(
-          child: Container(
-            child: GCWAsyncExecuter(
+          child: SizedBox(
+            height: 220,
+            width: 150,
+            child: GCWAsyncExecuter<Image.Image?>(
               isolatedFunction: _adjustColorAsync,
-              parameter: _buildJobDataAdjustColor(),
+              parameter: _buildJobDataAdjustColor,
               onReady: (data) => _saveOutputAdjustColor(data),
               isOverlay: true,
             ),
-            height: 220,
-            width: 150,
           ),
         );
       },
     );
 
-    return GCWFile(bytes: _convertedOutputImage);
+    if (_convertedOutputImage == null) return null;
+    return GCWFile(bytes: _convertedOutputImage!);
   }
 
-  Future<GCWAsyncExecuterParameters> _buildJobDataAdjustColor() async {
+  Future<GCWAsyncExecuterParameters?> _buildJobDataAdjustColor() async {
+    if (_originalData?.bytes == null) return null;
+    var image = Image.decodeImage(_originalData!.bytes);
+    if (image == null) return null;
     return GCWAsyncExecuterParameters(_AdjustColorInput(
-        image: img.decodeImage(_originalData.bytes),
+        image: image,
         invert: _currentInvert,
         grayscale: _currentGrayscale,
         edgeDetection: _currentEdgeDetection,
@@ -373,13 +380,13 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
         brightness: _currentBrightness));
   }
 
-  _saveOutputAdjustColor(img.Image output) {
+  void _saveOutputAdjustColor(Image.Image? output) {
     if (output != null) _convertedOutputImage = encodeTrimmedPng(output);
   }
 
-  img.Image _adjustColor(img.Image image) {
+  Image.Image _adjustColor(Image.Image image) {
     return _doAdjustColor(_AdjustColorInput(
-        image: _originalPreview,
+        image: image,
         invert: _currentInvert,
         grayscale: _currentGrayscale,
         edgeDetection: _currentEdgeDetection,
@@ -394,24 +401,25 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
         brightness: _currentBrightness));
   }
 
-  Uint8List _imageBytes() {
-    _currentPreview = _adjustColor(_originalPreview);
-    return encodeTrimmedPng(_currentPreview);
+  Uint8List? _imageBytes() {
+    if (_originalPreview == null) return null;
+    _currentPreview = _adjustColor(_originalPreview!);
+    return encodeTrimmedPng(_currentPreview!);
   }
 }
 
-Future<img.Image> _adjustColorAsync(dynamic jobData) async {
-  if (jobData == null) return null;
+Future<Image.Image?> _adjustColorAsync(GCWAsyncExecuterParameters? jobData) async {
+  if (jobData?.parameters is! _AdjustColorInput) return null;
 
-  var output = _doAdjustColor(jobData.parameters);
+  var output = _doAdjustColor(jobData!.parameters as _AdjustColorInput);
 
-  if (jobData.sendAsyncPort != null) jobData.sendAsyncPort.send(output);
+  jobData.sendAsyncPort?.send(output);
 
   return Future.value(output);
 }
 
 class _AdjustColorInput {
-  final img.Image image;
+  final Image.Image image;
   final bool invert;
   final bool grayscale;
   final double edgeDetection;
@@ -426,37 +434,39 @@ class _AdjustColorInput {
   final double brightness;
 
   _AdjustColorInput(
-      {this.image,
-      this.invert: false,
-      this.grayscale: false,
-      this.edgeDetection: 0.0,
-      this.red: 0.0,
-      this.green: 0.0,
-      this.blue: 0.0,
-      this.saturation: 0.0,
-      this.contrast: 0.0,
-      this.gamma: 1.0,
-      this.exposure: 1.0,
-      this.hue: 0.0,
-      this.brightness: 0.0});
+      {required this.image,
+      this.invert = false,
+      this.grayscale = false,
+      this.edgeDetection = 0.0,
+      this.red = 0.0,
+      this.green = 0.0,
+      this.blue = 0.0,
+      this.saturation = 0.0,
+      this.contrast = 0.0,
+      this.gamma = 1.0,
+      this.exposure = 1.0,
+      this.hue = 0.0,
+      this.brightness = 0.0});
 }
 
-img.Image _doAdjustColor(_AdjustColorInput input) {
-  img.Image image = img.Image.from(input.image);
+Image.Image _doAdjustColor(_AdjustColorInput input) {
+  Image.Image image = Image.Image.from(input.image);
 
-  if (input.edgeDetection > 0.0) image = img.sobel(image, amount: input.edgeDetection);
+  if (input.edgeDetection > 0.0) image = Image.sobel(image, amount: input.edgeDetection);
 
   final pixels = image.getBytes();
   for (var i = 0, len = pixels.length; i < len; i += 4) {
     var pixel = RGBPixel.getPixel(pixels, i);
 
-    if (input.red != 0.0 || input.green != 0.0 || input.blue != 0.0)
+    if (input.red != 0.0 || input.green != 0.0 || input.blue != 0.0) {
       pixel = colorOffset(pixel, input.red, input.green, input.blue);
+    }
 
     if (input.brightness != 0.0) pixel = brightness(pixel, input.brightness);
 
-    if (input.exposure != 1.0)
+    if (input.exposure != 1.0) {
       pixel = exposure(pixel, input.exposure > 1.0 ? 3 * (input.exposure - 1) + 1 : input.exposure);
+    }
 
     if (input.saturation != 0.0 || input.hue != 0.0) pixel = saturation(pixel, input.saturation, input.hue);
 
@@ -474,13 +484,13 @@ img.Image _doAdjustColor(_AdjustColorInput input) {
   return image;
 }
 
-openInColorCorrections(BuildContext context, GCWFile file) {
+void openInColorCorrections(BuildContext context, GCWFile file) {
   Navigator.push(
       context,
-      NoAnimationMaterialPageRoute(
-          builder: (context) => GCWTool(
+      NoAnimationMaterialPageRoute<GCWTool>(
+          builder: (BuildContext context) => GCWTool(
               tool: ImageColorCorrections(file: file),
               toolName: i18n(context, 'image_colorcorrections_title'),
-              i18nPrefix: '',
+              id: 'image_colorcorrections',
               autoScroll: false)));
 }

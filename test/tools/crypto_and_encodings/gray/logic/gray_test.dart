@@ -4,8 +4,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/gray/logic/gray.dart';
 void main() {
 
   group("Gray.encodeGray", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'mode': GrayMode.DECIMAL,'expectedOutput' : GrayOutput([], [])},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'mode': GrayMode.DECIMAL,'expectedOutput' : GrayOutput([], [])},
 
       {'input' : '99', 'mode': GrayMode.DECIMAL,'expectedOutput' : GrayOutput(['82'], ['1010010'])},
@@ -31,18 +30,17 @@ void main() {
       {'input' : 'a/12310&/((AbBa91AN 17812 /!"89 8. -7', 'mode': GrayMode.BINARY,'expectedOutput' : GrayOutput(['1', '3', '1', '1', '1'], ['1', '11', '1', '1', '1'])},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, mode: ${elem['mode']}', () {
-        var _actual = encodeGray(elem['input'], mode: elem['mode']);
-        expect(_actual.decimalOutput, elem['expectedOutput'].decimalOutput);
-        expect(_actual.binaryOutput, elem['expectedOutput'].binaryOutput);
+        var _actual = encodeGray(elem['input'] as String, mode: elem['mode'] as GrayMode);
+        expect(_actual.decimalOutput, (elem['expectedOutput'] as GrayOutput).decimalOutput);
+        expect(_actual.binaryOutput, (elem['expectedOutput'] as GrayOutput).binaryOutput);
       });
-    });
+    }
   });
 
   group("Gray.decodeGray:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'mode': GrayMode.DECIMAL,'expectedOutput' : GrayOutput([], [])},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'mode': GrayMode.DECIMAL,'expectedOutput' : GrayOutput([], [])},
 
       {'input' : '82', 'mode': GrayMode.DECIMAL,'expectedOutput' : GrayOutput(['99'], ['1100011'])},
@@ -64,12 +62,12 @@ void main() {
       {'input' : ['110','1111','1110','11010111001100000','110110001100','110111001010001000000'].join(' '), 'mode': GrayMode.BINARY,'expectedOutput' : GrayOutput('4 10 11 78912 2312 1238912'.split(' '), ['100','1010','1011','10011010001000000','100100001000','100101110011110000000'])},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, mode: ${elem['mode']}', () {
-        var _actual = decodeGray(elem['input'], mode: elem['mode']);
-        expect(_actual.decimalOutput, elem['expectedOutput'].decimalOutput);
-        expect(_actual.binaryOutput, elem['expectedOutput'].binaryOutput);
+        var _actual = decodeGray(elem['input'] as String, mode: elem['mode'] as GrayMode);
+        expect(_actual.decimalOutput, (elem['expectedOutput'] as GrayOutput).decimalOutput);
+        expect(_actual.binaryOutput, (elem['expectedOutput'] as GrayOutput).binaryOutput);
       });
-    });
+    }
   }); // group
 }

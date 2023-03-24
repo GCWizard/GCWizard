@@ -1,12 +1,17 @@
 part of 'package:gc_wizard/tools/science_and_technology/resistor/resistor_colorcodecalculator/widget/resistor_colorcodecalculator.dart';
 
 class _ResistorBandDropDown extends StatefulWidget {
-  final Function onChanged;
+  final void Function(ResistorBandColor) onChanged;
   final ResistorBandType type;
   final int numberBands;
   final ResistorBandColor color;
 
-  const _ResistorBandDropDown({Key key, this.color, this.type, this.numberBands, this.onChanged})
+  const _ResistorBandDropDown({
+    Key? key,
+    required this.color,
+    required this.type,
+    required this.numberBands,
+    required this.onChanged})
       : super(key: key);
 
   @override
@@ -14,7 +19,7 @@ class _ResistorBandDropDown extends StatefulWidget {
 }
 
 class _ResistorBandDropDownState extends State<_ResistorBandDropDown> {
-  final _colorAttributes = {
+  static const _colorAttributes = {
     ResistorBandColor.PINK: _ResistorColorAttributes('common_color_pink', Color(0xffffb6c1), Colors.black),
     ResistorBandColor.SILVER: _ResistorColorAttributes('common_color_silver', Color(0xffd3d3d3), Colors.black),
     ResistorBandColor.GOLD: _ResistorColorAttributes('common_color_gold', Color(0xffdaa520), Colors.black),
@@ -30,8 +35,8 @@ class _ResistorBandDropDownState extends State<_ResistorBandDropDown> {
     ResistorBandColor.WHITE: _ResistorColorAttributes('common_color_white', Color(0xffffffff), Colors.black),
   };
 
-  var _colors;
-  Map<ResistorBandColor, double> _colorValues;
+  List<ResistorBandColor> _colors = [];
+  Map<ResistorBandColor, double> _colorValues = {};
 
   var _currentValue = ResistorBandColor.BROWN;
 
@@ -39,7 +44,7 @@ class _ResistorBandDropDownState extends State<_ResistorBandDropDown> {
   void initState() {
     super.initState();
 
-    if (widget.color != null) _currentValue = widget.color;
+    _currentValue = widget.color;
   }
 
   @override
@@ -47,24 +52,24 @@ class _ResistorBandDropDownState extends State<_ResistorBandDropDown> {
     _colors = getResistorColorsByBandType(widget.type);
     _colorValues = getResistorBandValues(widget.numberBands, widget.type, _colors);
 
-    return GCWDropDown(
+    return GCWDropDown<ResistorBandColor>(
       value: _currentValue,
       items: _colorValues.entries.map((colorValue) {
-        var textStyle = gcwTextStyle().copyWith(color: _colorAttributes[colorValue.key].textColor);
+        var textStyle = gcwTextStyle().copyWith(color: _colorAttributes[colorValue.key]!.textColor);
 
         return GCWDropDownMenuItem(
           value: colorValue.key,
           child: Row(children: <Widget>[
             Expanded(
                 child: Container(
-                    padding: EdgeInsets.all(5.0),
-                    color: _colorAttributes[colorValue.key].backgroundColor,
+                    padding: const EdgeInsets.all(5.0),
+                    color: _colorAttributes[colorValue.key]!.backgroundColor,
                     child: Row(
                       children: [
                         Expanded(
-                            child: Text(i18n(context, _colorAttributes[colorValue.key].name) + ':', style: textStyle),
-                            flex: 1),
-                        Expanded(child: _formatValue(colorValue.value, textStyle), flex: 2)
+                            flex: 1,
+                            child: Text(i18n(context, _colorAttributes[colorValue.key]!.name) + ':', style: textStyle)),
+                        Expanded(flex: 2, child: _formatValue(colorValue.value, textStyle))
                       ],
                     )))
           ]),
@@ -79,12 +84,12 @@ class _ResistorBandDropDownState extends State<_ResistorBandDropDown> {
     );
   }
 
-  _setCurrentValueAndEmitOnChange() {
+  void _setCurrentValueAndEmitOnChange() {
     widget.onChanged(_currentValue);
   }
 
-  Widget _formatValue(value, TextStyle textStyle) {
-    dynamic formatted;
+  Widget _formatValue(double value, TextStyle textStyle) {
+    Object formatted;
 
     switch (widget.type) {
       case ResistorBandType.FIRST:
@@ -107,14 +112,16 @@ class _ResistorBandDropDownState extends State<_ResistorBandDropDown> {
       return Text(formatted, style: textStyle);
     } else if (formatted is RichText) {
       return formatted;
+    } else {
+      return Container();
     }
   }
 }
 
 class _ResistorColorAttributes {
-  String name;
-  Color backgroundColor;
-  Color textColor;
+  final String name;
+  final Color backgroundColor;
+  final Color textColor;
 
-  _ResistorColorAttributes(this.name, this.backgroundColor, this.textColor);
+  const _ResistorColorAttributes(this.name, this.backgroundColor, this.textColor);
 }

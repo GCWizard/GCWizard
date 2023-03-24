@@ -14,21 +14,23 @@ import 'package:gc_wizard/tools/science_and_technology/astronomy/sun_rise_set/wi
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class AstronomySelection extends GCWSelection {
+  const AstronomySelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(SunRiseSet()),
-        className(SunPosition()),
-        className(MoonRiseSet()),
-        className(MoonPosition()),
-        className(EasterSelection()),
-        className(Seasons()),
-        className(ShadowLength()),
-        className(RightAscensionToDegree())
+        className(const SunRiseSet()),
+        className(const SunPosition()),
+        className(const MoonRiseSet()),
+        className(const MoonPosition()),
+        className(const EasterSelection()),
+        className(const Seasons()),
+        className(const ShadowLength()),
+        className(const RightAscensionToDegree())
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

@@ -8,15 +8,17 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/kenny/logic/kenny.dart';
 
 class Kenny extends StatefulWidget {
+  const Kenny({Key? key}) : super(key: key);
+
   @override
   KennyState createState() => KennyState();
 }
 
 class KennyState extends State<Kenny> {
-  var _inputController;
-  var _mController;
-  var _pController;
-  var _fController;
+  late TextEditingController _inputController;
+  late TextEditingController _mController;
+  late TextEditingController _pController;
+  late TextEditingController _fController;
 
   var _currentInput = '';
   var _currentCaseSensitive = true;
@@ -63,6 +65,7 @@ class KennyState extends State<Kenny> {
           children: <Widget>[
             Expanded(
               child: Container(
+                  padding: const EdgeInsets.only(left: 6, right: 6),
                   child: GCWTextField(
                     controller: _mController,
                     onChanged: (text) {
@@ -70,11 +73,11 @@ class KennyState extends State<Kenny> {
                         _currentM = text;
                       });
                     },
-                  ),
-                  padding: EdgeInsets.only(left: 6, right: 6)),
+                  )),
             ),
             Expanded(
               child: Container(
+                  padding: const EdgeInsets.only(left: 6, right: 6),
                   child: GCWTextField(
                     controller: _pController,
                     onChanged: (text) {
@@ -82,11 +85,11 @@ class KennyState extends State<Kenny> {
                         _currentP = text;
                       });
                     },
-                  ),
-                  padding: EdgeInsets.only(left: 6, right: 6)),
+                  )),
             ),
             Expanded(
               child: Container(
+                  padding: const EdgeInsets.only(left: 6, right: 6),
                   child: GCWTextField(
                     controller: _fController,
                     onChanged: (text) {
@@ -94,8 +97,7 @@ class KennyState extends State<Kenny> {
                         _currentF = text;
                       });
                     },
-                  ),
-                  padding: EdgeInsets.only(left: 6, right: 6)),
+                  )),
             ),
           ],
         ),
@@ -121,8 +123,8 @@ class KennyState extends State<Kenny> {
     );
   }
 
-  _buildOutput() {
-    if (_currentInput.length == 0 || _currentM.length == 0 || _currentP.length == 0 || _currentF.length == 0) return '';
+  String _buildOutput() {
+    if (_currentInput.isEmpty || _currentM.isEmpty || _currentP.isEmpty || _currentF.isEmpty) return '';
 
     var key = [_currentM, _currentP, _currentF];
     return _currentMode == GCWSwitchPosition.left

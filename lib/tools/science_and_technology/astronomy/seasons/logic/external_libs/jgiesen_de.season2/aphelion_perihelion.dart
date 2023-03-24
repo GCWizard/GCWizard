@@ -47,7 +47,9 @@ double _r0(double t) {
   ];
 
   double r0 = 0;
-  for (int i = 0; i < LArray.length; ++i) r0 = r0 + LArray[i][0] * cos(LArray[i][1] + LArray[i][2] * t);
+  for (int i = 0; i < LArray.length; ++i) {
+    r0 = r0 + LArray[i][0] * cos(LArray[i][1] + LArray[i][2] * t);
+  }
 
   return r0;
 }
@@ -67,7 +69,9 @@ double _r1(double t) {
   ];
 
   double r1 = 0;
-  for (int i = 0; i < LArray.length; ++i) r1 = r1 + LArray[i][0] * cos(LArray[i][1] + LArray[i][2] * t);
+  for (int i = 0; i < LArray.length; ++i) {
+    r1 = r1 + LArray[i][0] * cos(LArray[i][1] + LArray[i][2] * t);
+  }
 
   return r1;
 }
@@ -83,7 +87,9 @@ double _r2(double t) {
   ];
 
   double r2 = 0;
-  for (int i = 0; i < LArray.length; ++i) r2 = r2 + LArray[i][0] * cos(LArray[i][1] + LArray[i][2] * t);
+  for (int i = 0; i < LArray.length; ++i) {
+    r2 = r2 + LArray[i][0] * cos(LArray[i][1] + LArray[i][2] * t);
+  }
 
   return r2;
 }
@@ -95,7 +101,9 @@ double _r3(double t) {
   ];
 
   double r3 = 0;
-  for (int i = 0; i < LArray.length; ++i) r3 = r3 + LArray[i][0] * cos(LArray[i][1] + LArray[i][2] * t);
+  for (int i = 0; i < LArray.length; ++i) {
+    r3 = r3 + LArray[i][0] * cos(LArray[i][1] + LArray[i][2] * t);
+  }
 
   return r3;
 }
@@ -116,10 +124,10 @@ double _quad(double y0, double yM, double yP, double dX) {
   return -b / (2 * a);
 }
 
-double _JD(int date, month, year, STD) {
-  var A;
-  var B;
-  var MJD;
+double _JD(int date, int month, int year, double STD) {
+  double A;
+  int B;
+  double MJD;
   A = 10000.0 * year + 100.0 * month + date;
 
   if (month <= 2) {
@@ -127,28 +135,29 @@ double _JD(int date, month, year, STD) {
     year = year - 1;
   }
 
-  if (A <= 15821004.1)
+  if (A <= 15821004.1) {
     B = -2 + ((year + 4716) / 4).floor() - 1179;
-  else
+  } else {
     B = (year / 400).floor() - (year / 100).floor() + (year / 4).floor();
+  }
 
   A = 365.0 * year - 679004.0;
   MJD = A + B + (30.6001 * (month + 1)).floor() + date + STD / 24.0;
   return MJD + 2400000.5;
 }
 
-double _earthR(int date, month, year, UT) {
+double _earthR(int date, int month, int year, double UT) {
   double JDE = _JD(date, month, year, UT);
   double T = (JDE - 2451545.0) / 365250.0;
   return (_r0(T) + _r1(T) * T + _r2(T) * T * T + _r3(T) * T * T * T + _r4(T) * T * T * T * T) / (1.0E8);
 }
 
-Map<String, dynamic> _perihelion(int year) {
+DateTimeDouble _perihelion(int year) {
   double minR = 10;
   var d = 0;
   var h = 100.0;
 
-  var R;
+  double R;
   for (int i = 1; i < 6; ++i) {
     R = _earthR(i, 1, year, 12);
     if (R < minR) {
@@ -160,7 +169,7 @@ Map<String, dynamic> _perihelion(int year) {
   minR = 10;
   d = d - 1;
   for (int i = 0; i < 49; ++i) {
-    R = _earthR(d, 1, year, i);
+    R = _earthR(d, 1, year, i.toDouble());
     if (R < minR) {
       minR = R;
       h = i.toDouble();
@@ -200,14 +209,14 @@ Map<String, dynamic> _perihelion(int year) {
 
   var time = hoursToHHmmss(h);
 
-  return {'datetime': DateTime(year, 1, d, time.hour, time.minute, time.second, time.millisecond), 'distance': rp};
+  return DateTimeDouble(datetime: DateTime(year, 1, d, time.hour, time.minute, time.second, time.millisecond), value: rp);
 }
 
-Map<String, dynamic> _aphelion(int year) {
+DateTimeDouble _aphelion(int year) {
   var minR = 0.0;
   var d = 0;
   var h = 100.0;
-  var R;
+  double R;
 
   for (int i = 3; i < 7; ++i) {
     R = _earthR(i, 7, year, 12);
@@ -220,7 +229,7 @@ Map<String, dynamic> _aphelion(int year) {
   minR = 0;
   --d;
   for (int i = 0; i < 49; ++i) {
-    R = _earthR(d, 7, year, i);
+    R = _earthR(d, 7, year, i.toDouble());
     if (R > minR) {
       minR = R;
       h = i.toDouble();
@@ -261,5 +270,5 @@ Map<String, dynamic> _aphelion(int year) {
 
   var time = hoursToHHmmss(h);
 
-  return {'datetime': DateTime(year, 7, d, time.hour, time.minute, time.second, time.millisecond), 'distance': ra};
+  return DateTimeDouble(datetime: DateTime(year, 7, d, time.hour, time.minute, time.second, time.millisecond), value: ra);
 }

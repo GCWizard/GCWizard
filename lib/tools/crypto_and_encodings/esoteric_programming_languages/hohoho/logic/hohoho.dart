@@ -11,7 +11,7 @@ import 'package:gc_wizard/utils/collection_utils.dart';
 
 const HOHOHO_ERROR_INVALID_PROGRAM = 'hohoho_error_syntax_invalidprogram';
 
-final _HOHOHO_SUBSTITUTIONS = {
+const _HOHOHO_SUBSTITUTIONS = {
   '>': 'HoHoho',
   '<': 'hoHoHo',
   '+': 'HoHoHo',
@@ -29,15 +29,15 @@ class HohohoOutput {
   HohohoOutput(this.output, this.error);
 }
 
-HohohoOutput interpretHohoho(String plainText, {String STDIN}) {
-  if (plainText == '' || plainText == null) return HohohoOutput('', '');
+HohohoOutput interpretHohoho(String plainText, {String? STDIN}) {
+  if (plainText.isEmpty) return HohohoOutput('', '');
 
   plainText = plainText.trim();
   String result = plainText.replaceAll('!', '').replaceAll(' ', '');
   String test = plainText.replaceAll('Ho', '').replaceAll('ho', '').replaceAll('!', '').replaceAll(' ', '');
   String error = '';
   // test if correct syntax
-  if (test != '' || result.length % 6 != 0) error = HOHOHO_ERROR_INVALID_PROGRAM;
+  if (test.isNotEmpty || result.length % 6 != 0) error = HOHOHO_ERROR_INVALID_PROGRAM;
 
   // convert to hohoho
   test = '';
@@ -47,10 +47,10 @@ HohohoOutput interpretHohoho(String plainText, {String STDIN}) {
   }
 
   // convert to Brainfck
-  Map BRAINF_CK = switchMapKeyValue(_HOHOHO_SUBSTITUTIONS);
+  var BRAINF_CK = switchMapKeyValue(_HOHOHO_SUBSTITUTIONS);
   result = '';
   test.split(' ').forEach((element) {
-    if (BRAINF_CK[element] != null) result = result + BRAINF_CK[element];
+    if (BRAINF_CK[element] != null) result += (BRAINF_CK[element] ?? '');
   });
 
   // interpret
@@ -61,7 +61,7 @@ HohohoOutput interpretHohoho(String plainText, {String STDIN}) {
 }
 
 String generateHohoho(String OutputText) {
-  if (OutputText == '' || OutputText == null) return '';
+  if (OutputText.isEmpty) return '';
 
   // generate Brainfck
   String code = generateBrainfk(OutputText);
@@ -69,7 +69,7 @@ String generateHohoho(String OutputText) {
 
   // transfer to hohoho
   code.split('').forEach((element) {
-    result = result + _HOHOHO_SUBSTITUTIONS[element];
+    result += (_HOHOHO_SUBSTITUTIONS[element] ?? '');
   });
 
   // normalize

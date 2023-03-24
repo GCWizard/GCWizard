@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/app_localizations.dart';
-import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_multiple_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
@@ -9,12 +8,14 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/roman_numbers/roman_numbers/logic/roman_numbers.dart';
 
 class RomanNumbers extends StatefulWidget {
+  const RomanNumbers({Key? key}) : super(key: key);
+
   @override
   RomanNumbersState createState() => RomanNumbersState();
 }
 
 class RomanNumbersState extends State<RomanNumbers> {
-  var _decodeController;
+  late TextEditingController _decodeController;
 
   var _currentEncodeInput = 1;
   var _currentDecodeInput = '';
@@ -72,19 +73,15 @@ class RomanNumbersState extends State<RomanNumbers> {
     );
   }
 
-  _buildOutput() {
-    List<dynamic> output;
+  Widget _buildOutput() {
+    List<String> output;
 
     if (_currentMode == GCWSwitchPosition.left) {
-      if (_currentEncodeInput == null) return GCWDefaultOutput();
-
       output = [
-        encodeRomanNumbers(_currentEncodeInput, type: RomanNumberType.USE_SUBTRACTION_RULE) ?? '',
-        encodeRomanNumbers(_currentEncodeInput, type: RomanNumberType.ONLY_ADDITION) ?? ''
+        encodeRomanNumbers(_currentEncodeInput, type: RomanNumberType.USE_SUBTRACTION_RULE),
+        encodeRomanNumbers(_currentEncodeInput, type: RomanNumberType.ONLY_ADDITION)
       ];
     } else {
-      if (_currentDecodeInput == null || _currentDecodeInput.isEmpty) return GCWDefaultOutput();
-
       output = [
         _currentDecodeInput
             .split(RegExp(r'\s+'))

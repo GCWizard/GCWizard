@@ -11,24 +11,26 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/w
 import 'package:gc_wizard/utils/constants.dart';
 
 class Beghilos extends StatefulWidget {
+  const Beghilos({Key? key}) : super(key: key);
+
   @override
   BeghilosState createState() => BeghilosState();
 }
 
 class BeghilosState extends State<Beghilos> {
-  var _inputControllerDecode;
-  var _inputControllerEncode;
+  late TextEditingController _inputControllerDecode;
+  late TextEditingController _inputControllerEncode;
 
   var _currentInputEncode = defaultIntegerListText;
   var _currentInputDecode = '';
   var _currentMode = GCWSwitchPosition.right;
-  var _currentDisplays = <List<String>>[];
+  var _currentDisplays = Segments.Empty();
 
   @override
   void initState() {
     super.initState();
     _inputControllerDecode = TextEditingController(text: _currentInputDecode);
-    _inputControllerEncode = TextEditingController(text: _currentInputEncode['text']);
+    _inputControllerEncode = TextEditingController(text: _currentInputEncode.text);
   }
 
   @override
@@ -76,12 +78,12 @@ class BeghilosState extends State<Beghilos> {
     var rows = <Widget>[];
     var textOutput = _currentMode == GCWSwitchPosition.left
         ? decodeBeghilos(_currentInputDecode)
-        : encodeBeghilos(_currentInputEncode['text']);
+        : encodeBeghilos(_currentInputEncode.text);
 
-    if (textOutput == null || textOutput.isEmpty) return GCWDefaultOutput();
+    if (textOutput.isEmpty) return const GCWDefaultOutput();
 
     _currentDisplays = encodeSegment(
-        _currentMode == GCWSwitchPosition.left ? textOutput : _currentInputEncode['text'], SegmentDisplayType.SEVEN);
+        _currentMode == GCWSwitchPosition.left ? textOutput : _currentInputEncode.text, SegmentDisplayType.SEVEN);
 
     rows.add(SegmentDisplayOutput(
         upsideDownButton: true,

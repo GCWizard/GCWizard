@@ -3,7 +3,7 @@ class BowlingFrame {
   final int two;
   final int three;
 
-  BowlingFrame({this.one: 0, this.two: 0, this.three: 0});
+  BowlingFrame({this.one = 0, this.two = 0, this.three = 0});
 }
 
 List<int> bowlingCalcFrameTotals(List<BowlingFrame> bowlingScore) {
@@ -17,13 +17,15 @@ List<int> bowlingCalcFrameTotals(List<BowlingFrame> bowlingScore) {
         if (i + 1 == 10) {
           frame = frame + bowlingScore[i + 1].two;
         } else {
-          if (i + 2 == 10)
+          if (i + 2 == 10) {
             frame = frame + bowlingScore[i + 1].two;
-          else
+          } else {
             frame = frame + bowlingScore[i + 2].one;
+          }
         }
-      } else
+      } else {
         frame = frame + bowlingScore[i + 1].two;
+      }
       total[i] = frame;
     } else if (bowlingScore[i].one + bowlingScore[i].two == 10) {
       total[i] = bowlingScore[i].one + bowlingScore[i].two + bowlingScore[i + 1].one;
@@ -40,7 +42,9 @@ List<int> bowlingCalcFrameTotals(List<BowlingFrame> bowlingScore) {
 
 int bowlingTotalAfterFrames(int frame, List<int> total) {
   int result = 0;
-  for (int i = 0; i <= frame; i++) result = result + total[i];
+  for (int i = 0; i <= frame; i++) {
+    result = result + total[i];
+  }
   return result;
 }
 
@@ -51,14 +55,17 @@ String bowlingBuildDataRow1(int frame, int count, List<BowlingFrame> bowlingScor
       result = bowlingScore[frame].one == 10 ? 'X' : bowlingScore[frame].one.toString();
       break;
     case 2:
-      if (bowlingScore[frame].one == 10) if (frame != 9)
-        result = ' ';
-      else
-        result = bowlingScore[frame].two == 10 ? 'X' : bowlingScore[frame].two.toString();
-      else if (bowlingScore[frame].one + bowlingScore[frame].two == 10)
+      if (bowlingScore[frame].one == 10) {
+        if (frame != 9) {
+          result = ' ';
+        } else {
+          result = bowlingScore[frame].two == 10 ? 'X' : bowlingScore[frame].two.toString();
+        }
+      } else if (bowlingScore[frame].one + bowlingScore[frame].two == 10) {
         result = '/';
-      else
+      } else {
         result = bowlingScore[frame].two.toString();
+      }
       break;
     case 3:
       result = bowlingScore[frame].three == 10 ? 'X' : bowlingScore[frame].three.toString();

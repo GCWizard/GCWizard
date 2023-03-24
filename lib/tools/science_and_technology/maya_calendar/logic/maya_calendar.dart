@@ -9,31 +9,32 @@
 
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/tools/science_and_technology/numeral_bases/logic/numeral_bases.dart';
+import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
 import 'package:gc_wizard/utils/datetime_utils.dart';
 import 'package:prefs/prefs.dart';
 
 enum CORRELATION { THOMPSON, SMILEY, WEITZEL }
 
-final THOMPSON_CORRELATION = 584283;
-final SMILEY_CORRELATION = 482699;
-final WEITZEL_CORRELATION = 774078;
-final THOMPSON = 'Thompson';
-final SMILEY = 'Smiley';
-final WEITZEL = 'Weitzel';
+const THOMPSON_CORRELATION = 584283;
+const SMILEY_CORRELATION = 482699;
+const WEITZEL_CORRELATION = 774078;
+const THOMPSON = 'Thompson';
+const SMILEY = 'Smiley';
+const WEITZEL = 'Weitzel';
 
-final Map _CORRELATION_NUMBER = {
+const Map<String, int> _CORRELATION_NUMBER = {
   THOMPSON: THOMPSON_CORRELATION,
   SMILEY: SMILEY_CORRELATION,
   WEITZEL: WEITZEL_CORRELATION,
 };
 
-Map<String, String> CORRELATION_SYSTEMS = {
+const Map<String, String> CORRELATION_SYSTEMS = {
   THOMPSON: 'Thompson (584283)',
   SMILEY: 'Smiley (482699)',
   WEITZEL: 'Weitzel (774078)',
 };
 
-final _maya_tzolkin = {
+const _maya_tzolkin = {
   1: 'Imix',
   2: 'Ik',
   3: 'Akbal',
@@ -56,7 +57,7 @@ final _maya_tzolkin = {
   20: 'Ahau',
 };
 
-final _maya_haab = {
+const _maya_haab = {
   1: 'Pop',
   2: 'Uo',
   3: 'Zip',
@@ -78,7 +79,7 @@ final _maya_haab = {
   19: 'Uayeb'
 };
 
-final Map<int, List<String>> _numbersToSegments = {
+const Map<int, List<String>> _numbersToSegments = {
   0: [],
   1: ['d'],
   2: ['d', 'e'],
@@ -105,23 +106,18 @@ const _alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy
 
 List<int> mayaCalendarSystem = [1, 20, 360, 7200, 144000, 2880000, 57600000, 1152000000, 23040000000];
 
-Map<String, dynamic> encodeMayaCalendar(int input) {
-  if (input == null)
-    return {
-      'displays': <List<String>>[],
-      'numbers': [0],
-      'vigesimal': 0
-    };
+SegmentsVigesimal encodeMayaCalendar(int? input) {
+  if (input == null) return SegmentsVigesimal(displays: [], numbers: [0], vigesimal: BigInt.zero);
 
-  var vigesimal = '';
-  vigesimal = convertDecToMayaCalendar(input.toString());
-  return {
-    'displays': vigesimal.split('').map((digit) {
-      return _numbersToSegments[int.tryParse(convertBase(digit, 20, 10))];
-    }).toList(),
-    'numbers': _longCountToList(input),
-    'vigesimal': vigesimal
-  };
+  var vigesimal = convertDecToMayaCalendar(input.toString());
+
+  var displays = <List<String>>[];
+  vigesimal.split('').forEach((digit) {
+    var list = _numbersToSegments[int.tryParse(convertBase(digit, 20, 10)) ?? ''];
+    if (list != null) displays.add(list);
+  });
+
+  return SegmentsVigesimal(displays: displays, numbers: _longCountToList(input), vigesimal: BigInt.tryParse(vigesimal) ?? BigInt.zero);
 }
 
 List<int> _longCountToList(int numberDec) {
@@ -130,7 +126,9 @@ List<int> _longCountToList(int numberDec) {
   List<int> result = <int>[];
 
   int start = 0;
-  while (numberDec < mayaCalendarSystem[mayaCalendarSystem.length - 1 - start]) start++;
+  while (numberDec < mayaCalendarSystem[mayaCalendarSystem.length - 1 - start]) {
+    start++;
+  }
   for (int position = mayaCalendarSystem.length - start; position > 0; position--) {
     int value = 0;
     while (numberDec >= mayaCalendarSystem[position - 1]) {
@@ -142,13 +140,8 @@ List<int> _longCountToList(int numberDec) {
   return result;
 }
 
-Map<String, dynamic> decodeMayaCalendar(List<String> inputs) {
-  if (inputs == null || inputs.length == 0)
-    return {
-      'displays': <List<String>>[],
-      'numbers': [0],
-      'vigesimal': 0
-    };
+SegmentsVigesimal decodeMayaCalendar(List<String?>? inputs) {
+  if (inputs == null || inputs.isEmpty) return SegmentsVigesimal(displays: [], numbers: [0], vigesimal: BigInt.zero);
 
   var oneCharacters = ['d', 'e', 'f', 'g'];
   var fiveCharacters = ['a', 'b', 'c'];
@@ -158,7 +151,7 @@ Map<String, dynamic> decodeMayaCalendar(List<String> inputs) {
   List<int> numbers = inputs.where((input) => input != null).map((input) {
     var number = 0;
     var display = <String>[];
-    input.toLowerCase().split('').forEach((segment) {
+    input!.toLowerCase().split('').forEach((segment) {
       if (oneCharacters.contains(segment)) {
         number += 1;
         display.add(segment);
@@ -178,25 +171,28 @@ Map<String, dynamic> decodeMayaCalendar(List<String> inputs) {
   total = '0';
   bool invalid = false;
   for (int i = 0; i < numbers.length; i++) {
-    if ((i == numbers.length - 2) && (mayaCalendarSystem[numbers.length - i - 1] == 20) && (numbers[i] > 17))
+    if ((i == numbers.length - 2) && (mayaCalendarSystem[numbers.length - i - 1] == 20) && (numbers[i] > 17)) {
       invalid = true;
-    else
+    } else {
       total = (int.parse(total) + numbers[i] * mayaCalendarSystem[numbers.length - i - 1]).toString();
+    }
   }
-  if (invalid) total = "-1";
+  if (invalid) total = '-1';
 
-  return {'displays': displays, 'numbers': numbers, 'vigesimal': int.tryParse(total)};
+  return SegmentsVigesimal(displays: displays, numbers: numbers, vigesimal: BigInt.tryParse(total) ?? BigInt.zero);
 }
 
 String convertDecToMayaCalendar(String input) {
-  if (input == null || input == '') return '';
+  if (input.isEmpty) return '';
 
   int numberDec = int.parse(input);
   if (numberDec == 0) return '0';
 
   String result = '';
   int start = 0;
-  while (numberDec < (mayaCalendarSystem[mayaCalendarSystem.length - 1 - start])) start++;
+  while (numberDec < (mayaCalendarSystem[mayaCalendarSystem.length - 1 - start])) {
+    start++;
+  }
   for (int position = mayaCalendarSystem.length - start; position > 0; position--) {
     int value = 0;
     while (numberDec >= (mayaCalendarSystem[position - 1])) {
@@ -214,7 +210,7 @@ String MayaLongCountToTzolkin(List<int> longCount) {
 
   dayCount = dayCount + 159;
   dayCount = 1 + dayCount % 260;
-  return (1 + (dayCount - 1) % 13).toString() + ' ' + _maya_tzolkin[1 + (dayCount - 1) % 20];
+  return (1 + (dayCount - 1) % 13).toString() + ' ' + (_maya_tzolkin[1 + (dayCount - 1) % 20] ?? '');
 }
 
 String MayaLongCountToHaab(List<int> longCount) {
@@ -223,15 +219,19 @@ String MayaLongCountToHaab(List<int> longCount) {
 
   dayCount = dayCount + 347;
   dayCount = 1 + dayCount % 365;
-  return (1 + (dayCount - 1) % 20).toString() + ' ' + _maya_haab[1 + (dayCount - 1) ~/ 20];
+  return (1 + (dayCount - 1) % 20).toString() + ' ' + (_maya_haab[1 + (dayCount - 1) ~/ 20] ?? '');
 }
 
 String MayaLongCount(List<int> longCount) {
   if (MayaLongCountToMayaDayCount(longCount) == 0) return [0, 0, 0, 0, 13, 0, 0, 0, 0].join('.');
 
   List<int> result = <int>[];
-  for (int i = longCount.length; i < 9; i++) result.add(0);
-  for (int i = 0; i < longCount.length; i++) result.add(longCount[i]);
+  for (int i = longCount.length; i < 9; i++) {
+    result.add(0);
+  }
+  for (int i = 0; i < longCount.length; i++) {
+    result.add(longCount[i]);
+  }
   if (result[4] == 0 && result[3] != 0) result[4] = 13;
   return result.join('.');
 }
@@ -239,32 +239,36 @@ String MayaLongCount(List<int> longCount) {
 int MayaLongCountToMayaDayCount(List<int> longCount) {
   int dayCount = 0;
   longCount = longCount.reversed.toList();
-  for (int i = 0; i < longCount.length; i++) dayCount = dayCount + longCount[i] * mayaCalendarSystem[i];
+  for (int i = 0; i < longCount.length; i++) {
+    dayCount = dayCount + longCount[i] * mayaCalendarSystem[i];
+  }
   return dayCount;
 }
 
 DateTime MayaDayCountToJulianCalendar(int mayaDayCount) {
-  return JulianDateToJulianCalendar(MayaDayCountToJulianDate(mayaDayCount) * 1.0);
+  return julianDateToJulianCalendar(MayaDayCountToJulianDate(mayaDayCount) * 1.0);
 }
 
 DateTime MayaDayCountToGregorianCalendar(int mayaDayCount) {
-  return JulianDateToGregorianCalendar(MayaDayCountToJulianDate(mayaDayCount) * 1.0);
+  return julianDateToGregorianCalendar(MayaDayCountToJulianDate(mayaDayCount) * 1.0);
 }
 
 int MayaDayCountToJulianDate(int mayaDayCount) {
-  if (Prefs.getString(PREFERENCE_MAYACALENDAR_CORRELATION) == null ||
-      Prefs.getString(PREFERENCE_MAYACALENDAR_CORRELATION) == '')
-    return (mayaDayCount + _CORRELATION_NUMBER[THOMPSON]);
-  else
-    return (mayaDayCount + _CORRELATION_NUMBER[Prefs.getString(PREFERENCE_MAYACALENDAR_CORRELATION)]);
+  var correlation = Prefs.getString(PREFERENCE_MAYACALENDAR_CORRELATION);
+  if (correlation.isEmpty) {
+    return (mayaDayCount + _CORRELATION_NUMBER[THOMPSON]!);
+  } else {
+    return (mayaDayCount + (_CORRELATION_NUMBER[correlation] ?? 0));
+  }
 }
 
 int JulianDateToMayaDayCount(double jd) {
-  if (Prefs.getString(PREFERENCE_MAYACALENDAR_CORRELATION) == null ||
-      Prefs.getString(PREFERENCE_MAYACALENDAR_CORRELATION) == '')
-    jd = jd - _CORRELATION_NUMBER[THOMPSON];
-  else
-    jd = jd - _CORRELATION_NUMBER[Prefs.getString(PREFERENCE_MAYACALENDAR_CORRELATION)];
+  var correlation = Prefs.getString(PREFERENCE_MAYACALENDAR_CORRELATION);
+  if (correlation.isEmpty) {
+    jd = (jd - _CORRELATION_NUMBER[THOMPSON]!);
+  } else {
+    jd = (jd - (_CORRELATION_NUMBER[correlation] ?? 0));
+  }
   return jd.round();
 }
 
@@ -281,17 +285,21 @@ List<int> JulianDateToMayaLongCount(double jd) {
   return MayaLongCount;
 }
 
-List<int> MayaDayCountToMayaLongCount(int MayaDayCount) {
+List<int?> MayaDayCountToMayaLongCount(int MayaDayCount) {
   String longCount = convertDecToMayaCalendar(MayaDayCount.toString());
-  List<int> result = [];
-  for (int i = longCount.length; i > 0; i--) result.add(_toNumber(longCount[i - 1]));
-  for (int i = longCount.length; i < 9; i++) result.add(0);
+  List<int?> result = [];
+  for (int i = longCount.length; i > 0; i--) {
+    result.add(_toNumber(longCount[i - 1]));
+  }
+  for (int i = longCount.length; i < 9; i++) {
+    result.add(0);
+  }
 
   return result.reversed.toList();
 }
 
-int _toNumber(String digit) {
-  Map<String, int> NUMBER = {
+int? _toNumber(String digit) {
+  const Map<String, int> NUMBER = {
     '0': 0,
     '1': 1,
     '2': 2,

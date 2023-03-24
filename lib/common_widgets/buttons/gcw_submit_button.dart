@@ -3,9 +3,9 @@ import 'package:gc_wizard/application/i18n/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 
 class GCWSubmitButton extends StatefulWidget {
-  final Function onPressed;
+  final void Function() onPressed;
 
-  const GCWSubmitButton({Key key, this.onPressed}) : super(key: key);
+  const GCWSubmitButton({Key? key, required this.onPressed}) : super(key: key);
 
   @override
   _GCWSubmitButtonState createState() => _GCWSubmitButtonState();

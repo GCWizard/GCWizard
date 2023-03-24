@@ -11,11 +11,16 @@ class GCWSymbolTableDecryption extends StatefulWidget {
   final int countColumns;
   final MediaQueryData mediaQueryData;
   final SymbolTableData data;
-  final Function onChanged;
-  final Function onAfterDecrypt;
+  final void Function() onChanged;
+  final String? Function(String)? onAfterDecrypt;
 
-  const GCWSymbolTableDecryption(
-      {Key key, this.data, this.countColumns, this.mediaQueryData, this.onChanged, this.onAfterDecrypt})
+  const GCWSymbolTableDecryption({
+    Key? key,
+    required this.data,
+    required this.countColumns,
+    required this.mediaQueryData,
+    required this.onChanged,
+    required this.onAfterDecrypt})
       : super(key: key);
 
   @override
@@ -25,13 +30,15 @@ class GCWSymbolTableDecryption extends StatefulWidget {
 class GCWSymbolTableDecryptionState extends State<GCWSymbolTableDecryption> {
   String _decryptionOutput = '';
 
-  SymbolTableData _data;
+  late SymbolTableData _data;
 
-  ScrollController _scrollController;
+  late ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
+
+
     _scrollController = ScrollController();
   }
 
@@ -41,7 +48,7 @@ class GCWSymbolTableDecryptionState extends State<GCWSymbolTableDecryption> {
     super.dispose();
   }
 
-  _scrollToBottom() {
+  void _scrollToBottom() {
     _scrollController.position.jumpTo(_scrollController.position.maxScrollExtent);
   }
 
@@ -51,23 +58,22 @@ class GCWSymbolTableDecryptionState extends State<GCWSymbolTableDecryption> {
 
     return Column(
       children: <Widget>[
-        (widget.data == null)
-            ? Container()
-            : Expanded(
-                child: GCWSymbolTableSymbolMatrix(
-                imageData: _data.images,
-                symbolKey: _data.symbolKey,
-                countColumns: widget.countColumns,
-                mediaQueryData: widget.mediaQueryData,
-                onChanged: widget.onChanged,
-                onSymbolTapped: (String tappedText, SymbolData imageData) {
-                  setState(() {
-                    _decryptionOutput += tappedText;
-                    _scrollToBottom();
-                  });
-                },
-              )),
+            Expanded(
+              child: GCWSymbolTableSymbolMatrix(
+              imageData: _data.images,
+              symbolKey: _data.symbolKey,
+              countColumns: widget.countColumns,
+              mediaQueryData: widget.mediaQueryData,
+              onChanged: widget.onChanged,
+              onSymbolTapped: (String tappedText, SymbolData imageData) {
+                setState(() {
+                  _decryptionOutput += tappedText;
+                  _scrollToBottom();
+                });
+              },
+            )),
         ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: widget.mediaQueryData.orientation == Orientation.portrait ? 350 : 150),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -85,8 +91,9 @@ class GCWSymbolTableDecryptionState extends State<GCWSymbolTableDecryption> {
                   icon: Icons.backspace,
                   onPressed: () {
                     setState(() {
-                      if (_decryptionOutput.length > 0)
+                      if (_decryptionOutput.isNotEmpty) {
                         _decryptionOutput = _decryptionOutput.substring(0, _decryptionOutput.length - 1);
+                      }
                       _scrollToBottom();
                     });
                   },
@@ -103,20 +110,19 @@ class GCWSymbolTableDecryptionState extends State<GCWSymbolTableDecryption> {
               ]),
               Flexible(
                   child: SingleChildScrollView(
-                      physics: AlwaysScrollableScrollPhysics(),
+                      physics: const AlwaysScrollableScrollPhysics(),
                       controller: _scrollController,
                       child: widget.onAfterDecrypt != null
-                    ? Column(
-                        children: [
-                          GCWOutput(title: i18n(context, 'common_input'), child: _decryptionOutput),
-                          GCWDefaultOutput(child: widget.onAfterDecrypt(_decryptionOutput))
-                        ],
-                      )
-                    : GCWDefaultOutput(child: _decryptionOutput),
+                        ? Column(
+                            children: [
+                              GCWOutput(title: i18n(context, 'common_input'), child: _decryptionOutput),
+                              GCWDefaultOutput(child: widget.onAfterDecrypt!(_decryptionOutput))
+                            ],
+                          )
+                        : GCWDefaultOutput(child: _decryptionOutput),
               ))
             ],
           ),
-          constraints: BoxConstraints(maxHeight: widget.mediaQueryData.orientation == Orientation.portrait ? 350 : 150),
         ),
       ],
     );

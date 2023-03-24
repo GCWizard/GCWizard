@@ -8,20 +8,22 @@ import 'package:gc_wizard/tools/symbol_tables/_common/widget/symbol_table.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class BeaufortSelection extends GCWSelection {
+  const BeaufortSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
-      if (className(element.tool) == className(SymbolTable()) &&
+      if (className(element.tool) == className(const SymbolTable()) &&
           (element.tool as SymbolTable).symbolKey == 'windforce_beaufort') return true;
 
-      if (className(element.tool) == className(SymbolTable()) &&
+      if (className(element.tool) == className(const SymbolTable()) &&
           (element.tool as SymbolTable).symbolKey == 'windforce_knots') return true;
 
       return [
-        className(Beaufort()),
+        className(const Beaufort()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

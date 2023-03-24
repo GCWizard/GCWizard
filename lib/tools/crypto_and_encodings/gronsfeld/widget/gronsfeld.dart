@@ -9,13 +9,15 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/gronsfeld/logic/gronsfeld.dart';
 
 class Gronsfeld extends StatefulWidget {
+  const Gronsfeld({Key? key}) : super(key: key);
+
   @override
   GronsfeldState createState() => GronsfeldState();
 }
 
 class GronsfeldState extends State<Gronsfeld> {
-  var _inputController;
-  var _keyController;
+  late TextEditingController _inputController;
+  late TextEditingController _keyController;
 
   String _currentInput = '';
   String _currentKey = '';
@@ -54,12 +56,13 @@ class GronsfeldState extends State<Gronsfeld> {
           controller: _keyController,
           onChanged: (value) {
             setState(() {
-              _currentKey = value['text'];
+              _currentKey = value.text;
             });
           },
         ),
         GCWIntegerSpinner(
           title: 'A',
+          value: _currentAValue,
           onChanged: (value) {
             setState(() {
               _currentAValue = value;

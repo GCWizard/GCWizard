@@ -3,7 +3,7 @@ class GameOfLifeRules {
   final Set<int> births;
   final bool isInverse;
 
-  const GameOfLifeRules({this.survivals, this.births, this.isInverse: false});
+  const GameOfLifeRules({this.survivals = const {}, this.births = const {}, this.isInverse = false});
 
   GameOfLifeRules inverseRules() {
     var inverseSurvivals = <int>{};
@@ -30,7 +30,7 @@ class GameOfLifeRules {
   }
 }
 
-final Map<String, GameOfLifeRules> DEFAULT_GAME_OF_LIFE_RULES = {
+const Map<String, GameOfLifeRules> DEFAULT_GAME_OF_LIFE_RULES = {
   'gameoflife_conway': GameOfLifeRules(survivals: {2, 3}, births: {3}),
   'gameoflife_copy': GameOfLifeRules(survivals: {1, 3, 5, 7}, births: {1, 3, 5, 7}),
   'gameoflife_3_3': GameOfLifeRules(survivals: {3}, births: {3}),
@@ -45,7 +45,7 @@ final Map<String, GameOfLifeRules> DEFAULT_GAME_OF_LIFE_RULES = {
   'gameoflife_inversecopy': GameOfLifeRules(survivals: {1, 3, 5, 7}, births: {1, 3, 5, 7}, isInverse: true),
 };
 
-int _countNeighbors(List<List<bool>> _currentBoard, int i, int j, {isOpenWorld}) {
+int _countNeighbors(List<List<bool>> _currentBoard, int i, int j, {bool isOpenWorld = false}) {
   var counter = 0;
   var size = _currentBoard.length;
 
@@ -66,7 +66,7 @@ int _countNeighbors(List<List<bool>> _currentBoard, int i, int j, {isOpenWorld})
   return counter;
 }
 
-List<List<bool>> calculateGameOfLifeStep(List<List<bool>> _currentBoard, GameOfLifeRules rules, {isWrapWorld: false}) {
+List<List<bool>> calculateGameOfLifeStep(List<List<bool>> _currentBoard, GameOfLifeRules rules, {bool isWrapWorld = false}) {
   var size = _currentBoard.length;
   var _newStepBoard = List<List<bool>>.generate(size, (index) => List<bool>.generate(size, (index) => false));
 

@@ -4,8 +4,8 @@ import 'package:gc_wizard/tools/crypto_and_encodings/_common/logic/crypt_alphabe
 
 void main() {
   group("Polybios.createPolybiosAlphabet:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'gridDimension' : null, 'firstLetters': null, 'mode': null, 'fillAlphabet': null, 'expectedOutput' : null},
+    List<Map<String, Object?>> _inputsToExpected = [
+      // {'gridDimension' : null, 'firstLetters': null, 'mode': null, 'fillAlphabet': null, 'expectedOutput' : null},
       {'gridDimension' : 5, 'firstLetters': null, 'mode': PolybiosMode.AZ09, 'fillAlphabet': 'ABCDEFGHIKLMNOPQRSTUVWXYZ', 'expectedOutput' : 'ABCDEFGHIKLMNOPQRSTUVWXYZ'},
       {'gridDimension' : 5, 'firstLetters': '', 'mode': PolybiosMode.AZ09, 'fillAlphabet': 'ABCDEFGHIKLMNOPQRSTUVWXYZ', 'expectedOutput' : 'ABCDEFGHIKLMNOPQRSTUVWXYZ'},
 
@@ -17,23 +17,22 @@ void main() {
       {'gridDimension' : 6, 'firstLetters': 'XYZ', 'mode': PolybiosMode.AZ09, 'fillAlphabet': null, 'expectedOutput' : 'XYZABCDEFGHIJKLMNOPQRSTUVW0123456789'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test(
           'gridDimension: ${elem['gridDimension']}, firstLetters: ${elem['firstLetters']}, mode: ${elem['mode']}, fillAlphabet: ${elem['fillAlphabet']}', () {
-        String _actual = createPolybiosAlphabet(
-            elem['gridDimension'],
-            firstLetters: elem['firstLetters'],
-            mode: elem['mode'],
-            fillAlphabet: elem['fillAlphabet']
+        var _actual = createPolybiosAlphabet(
+            elem['gridDimension'] as int,
+            firstLetters: elem['firstLetters'] as String?,
+            mode: elem['mode'] as PolybiosMode,
+            fillAlphabet: elem['fillAlphabet'] as String?
         );
-        expect(_actual == null ? null : _actual, elem['expectedOutput']);
+        expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Polybios.encryptPolybios:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'key': null, 'mode': PolybiosMode.AZ09, 'fillAlphabet': 'ABCDEFGHIKLMNOPQRSTUVWXYZ', 'expectedOutput' : null},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'key': '', 'mode': PolybiosMode.AZ09, 'fillAlphabet': 'ABCDEFGHIKLMNOPQRSTUVWXYZ', 'expectedOutput' : null},
       {'input' : 'ABC', 'key': '12345', 'mode': PolybiosMode.CUSTOM, 'fillAlphabet': null, 'expectedOutput' : '11 12 13'},
       {'input' : 'ABC', 'key': '12345', 'mode': PolybiosMode.CUSTOM, 'fillAlphabet': '', 'expectedOutput' : '11 12 13'},
@@ -85,22 +84,22 @@ void main() {
       {'input' : 'ABJICKWVQ', 'key': '123456', 'mode': PolybiosMode.AZ09, 'fillAlphabet': null, 'modificationMode': AlphabetModificationMode.REMOVE_Q, 'expectedOutput' : '11 12 24 23 13 25 45 44 35'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, key: ${elem['key']}, mode: ${elem['mode']}, modMode: ${elem['modificationMode']}, fillAlphabet: ${elem['fillAlphabet']}', () {
-        PolybiosOutput _actual;
-        if (elem['modificationMode'] != null)
-          _actual = encryptPolybios(elem['input'], elem['key'], mode: elem['mode'], fillAlphabet: elem['fillAlphabet'], modificationMode: elem['modificationMode']);
-        else
-          _actual = encryptPolybios(elem['input'], elem['key'], mode: elem['mode'], fillAlphabet: elem['fillAlphabet']);
+        PolybiosOutput? _actual;
+        if (elem['modificationMode'] != null) {
+          _actual = encryptPolybios(elem['input'] as String, elem['key'] as String, mode: elem['mode'] as PolybiosMode, fillAlphabet: elem['fillAlphabet'] as String?, modificationMode: elem['modificationMode'] as AlphabetModificationMode);
+        } else {
+          _actual = encryptPolybios(elem['input'] as String, elem['key'] as String, mode: elem['mode'] as PolybiosMode, fillAlphabet: elem['fillAlphabet'] as String?);
+        }
 
-        expect(_actual == null ? null : _actual.output, elem['expectedOutput']);
+        expect(_actual?.output, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Polybios.decryptPolybios:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'key': null, 'mode': PolybiosMode.AZ09, 'fillAlphabet': 'ABCDEFGHIKLMNOPQRSTUVWXYZ', 'expectedOutput' : null},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'key': '', 'mode': PolybiosMode.AZ09, 'fillAlphabet': 'ABCDEFGHIKLMNOPQRSTUVWXYZ', 'expectedOutput' : null},
       {'input' : 'AB CD', 'key': '12345', 'mode': PolybiosMode.AZ09, 'fillAlphabet': 'ABCDEFGHIKLMNOPQRSTUVWXYZ', 'expectedOutput' : null},
       {'input' : '12 34', 'key': '12345', 'mode': PolybiosMode.CUSTOM, 'fillAlphabet': null, 'expectedOutput' : 'BO'},
@@ -153,15 +152,16 @@ void main() {
       {'expectedOutput' : 'ABJICKWVQ', 'key': '123456', 'mode': PolybiosMode.AZ09, 'fillAlphabet': null, 'modificationMode': AlphabetModificationMode.REMOVE_Q, 'input' : '11 12 24 23 13 25 45 44 35'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, key: ${elem['key']}, mode: ${elem['mode']}, modMode: ${elem['modificationMode']}, alphabet: ${elem['fillAlphabet']}', () {
-        PolybiosOutput _actual;
-        if (elem['modificationMode'] != null)
-          _actual = decryptPolybios(elem['input'], elem['key'], mode: elem['mode'], fillAlphabet: elem['fillAlphabet'], modificationMode: elem['modificationMode']);
-        else
-          _actual = decryptPolybios(elem['input'], elem['key'], mode: elem['mode'], fillAlphabet: elem['fillAlphabet']);
-        expect(_actual == null ? null : _actual.output, elem['expectedOutput']);
+        PolybiosOutput? _actual;
+        if (elem['modificationMode'] != null) {
+          _actual = decryptPolybios(elem['input'] as String, elem['key'] as String, mode: elem['mode'] as PolybiosMode, fillAlphabet: elem['fillAlphabet'] as String?, modificationMode: elem['modificationMode'] as AlphabetModificationMode);
+        } else {
+          _actual = decryptPolybios(elem['input'] as String, elem['key'] as String, mode: elem['mode'] as PolybiosMode, fillAlphabet: elem['fillAlphabet'] as String?);
+        }
+        expect(_actual?.output, elem['expectedOutput']);
       });
-    });
+    }
   });
 }

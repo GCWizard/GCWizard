@@ -7,20 +7,21 @@ import 'package:gc_wizard/application/registry.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
+import 'package:gc_wizard/common_widgets/gcw_tool.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-final ABOUT_MAINTAINER = 'Mark \'S-Man42\' Lorenz';
+const _ABOUT_MAINTAINER = 'Mark \'S-Man42\' Lorenz';
 
 class About extends StatefulWidget {
+  const About({Key? key}) : super(key: key);
+
   @override
   AboutState createState() => AboutState();
 }
 
 class AboutState extends State<About> {
-  var packageInfo = PackageInfo();
-
-  var boldTextStyle = gcwTextStyle().copyWith(fontWeight: FontWeight.bold);
+  late PackageInfo _packageInfo;
 
   @override
   void initState() {
@@ -31,15 +32,17 @@ class AboutState extends State<About> {
   Future<void> _initPackageInfo() async {
     final PackageInfo info = await PackageInfo.fromPlatform();
     setState(() {
-      packageInfo = info;
+      _packageInfo = info;
     });
   }
 
-  _buildUrl(String key) {
+  Container _buildUrl(String key) {
     return Container(
+        padding: const EdgeInsets.only(top: 15, bottom: 10),
         child: Row(children: <Widget>[
-          Expanded(child: GCWText(text: i18n(context, 'about_$key')), flex: 2),
+          Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_$key'))),
           Expanded(
+              flex: 3,
               child: InkWell(
                 child: Text(
                   i18n(context, 'about_${key}_url_text'),
@@ -48,10 +51,8 @@ class AboutState extends State<About> {
                 onTap: () {
                   launchUrl(Uri.parse(i18n(context, 'about_${key}_url')));
                 },
-              ),
-              flex: 3)
-        ]),
-        padding: EdgeInsets.only(top: 15, bottom: 10));
+              ))
+        ]));
   }
 
   @override
@@ -59,20 +60,20 @@ class AboutState extends State<About> {
     var content = Column(
       children: <Widget>[
         Text('GC Wizard - Geocache Wizard', style: gcwTextStyle().copyWith(fontWeight: FontWeight.bold)),
-        GCWDivider(),
+        const GCWDivider(),
         Container(
+            padding: const EdgeInsets.only(top: 15),
             child: Row(children: <Widget>[
-              Expanded(child: GCWText(text: i18n(context, 'about_version')), flex: 2),
-              Expanded(child: GCWText(text: '${packageInfo.version} (Build: ${packageInfo.buildNumber})'), flex: 3)
-            ]),
-            padding: EdgeInsets.only(top: 15)),
+              Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_version'))),
+              Expanded(flex: 3, child: GCWText(text: '${_packageInfo.version} (Build: ${_packageInfo.buildNumber})'))
+            ])),
         Container(
+            padding: const EdgeInsets.only(top: 15, bottom: 10),
             child: Row(children: <Widget>[
-              Expanded(child: GCWText(text: i18n(context, 'about_maintainer')), flex: 2),
-              Expanded(child: GCWText(text: ABOUT_MAINTAINER), flex: 3)
-            ]),
-            padding: EdgeInsets.only(top: 15, bottom: 10)),
-        GCWDivider(),
+              Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_maintainer'))),
+              const Expanded(flex: 3, child: GCWText(text: _ABOUT_MAINTAINER))
+            ])),
+        const GCWDivider(),
         _buildUrl('contact_email'),
         _buildUrl('manual'),
         _buildUrl('faq'),
@@ -81,39 +82,40 @@ class AboutState extends State<About> {
         _buildUrl('mastodon'),
         _buildUrl('facebook'),
         _buildUrl('webversion'),
-        GCWDivider(),
+        const GCWDivider(),
         _buildUrl('license'),
         _buildUrl('github'),
         _buildUrl('crowdin'),
-        GCWDivider(),
+        const GCWDivider(),
         _buildUrl('privacypolicy'),
-        GCWDivider(),
+        const GCWDivider(),
         InkWell(
           child: Container(
+            padding: const EdgeInsets.only(top: 15, bottom: 10),
             child: Align(
+              alignment: Alignment.center,
               child: Text(
                 i18n(context, 'about_thirdparty'),
                 style: gcwHyperlinkTextStyle(),
                 textAlign: TextAlign.center,
               ),
-              alignment: Alignment.center,
             ),
-            padding: EdgeInsets.only(top: 15, bottom: 10),
           ),
           onTap: () {
-            Navigator.of(context).push(NoAnimationMaterialPageRoute(
+            Navigator.of(context).push(NoAnimationMaterialPageRoute<GCWTool>(
                 builder: (context) =>
-                    registeredTools.firstWhere((tool) => className(tool.tool) == className(Licenses()))));
+                    registeredTools.firstWhere((tool) => className(tool.tool) == className(const Licenses()))));
           },
         ),
-        GCWDivider(),
+        const GCWDivider(),
         Container(
+          padding: const EdgeInsets.only(top: 15, bottom: 10),
           child: Column(
             children: <Widget>[
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(children: [
-                  TextSpan(text: i18n(context, 'about_team') + '\n', style: boldTextStyle),
+                  TextSpan(text: i18n(context, 'about_team') + '\n', style: gcwBoldTextStyle()),
                   TextSpan(
                       text: [
                             'Andy \'Puma66\' (Special Support)',
@@ -127,14 +129,14 @@ class AboutState extends State<About> {
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(children: [
-                  TextSpan(text: i18n(context, 'about_specialthanks') + '\n', style: boldTextStyle),
-                  TextSpan(text: 'Daniel \'Eisbehr\' K. (Maintainer GCC)' + '\n')
+                  TextSpan(text: i18n(context, 'about_specialthanks') + '\n', style: gcwBoldTextStyle()),
+                  const TextSpan(text: 'Daniel \'Eisbehr\' K. (Maintainer GCC)' '\n')
                 ], style: gcwTextStyle()),
               ),
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(children: [
-                  TextSpan(text: i18n(context, 'about_contributors') + '\n', style: boldTextStyle),
+                  TextSpan(text: i18n(context, 'about_contributors') + '\n', style: gcwBoldTextStyle()),
                   TextSpan(
                       text: [
                             '\'\xc4ggsb\xe4rde\' (Symbol Tables)',
@@ -159,7 +161,7 @@ class AboutState extends State<About> {
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(children: [
-                  TextSpan(text: i18n(context, 'about_translators') + '\n', style: boldTextStyle),
+                  TextSpan(text: i18n(context, 'about_translators') + '\n', style: gcwBoldTextStyle()),
                   TextSpan(
                       text: [
                             '\'alantheandroid\' (IT)',
@@ -199,7 +201,7 @@ class AboutState extends State<About> {
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(children: [
-                  TextSpan(text: i18n(context, 'about_testers') + '\n', style: boldTextStyle),
+                  TextSpan(text: i18n(context, 'about_testers') + '\n', style: gcwBoldTextStyle()),
                   TextSpan(
                       text: [
                     '\'4-Everus\'',
@@ -256,13 +258,12 @@ class AboutState extends State<About> {
               ),
             ],
           ),
-          padding: EdgeInsets.only(top: 15, bottom: 10),
         ),
-        GCWDivider(),
+        const GCWDivider(),
         Container(
+          padding: const EdgeInsets.only(top: 15, bottom: 10),
           child:
               GCWText(align: Alignment.center, textAlign: TextAlign.center, text: i18n(context, 'about_notfornazis')),
-          padding: EdgeInsets.only(top: 15, bottom: 10),
         )
       ],
     );

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_check.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_containsdigits.dart';
@@ -6,22 +7,22 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequenceSuperPerfectNumbersCheckNumber extends NumberSequenceCheckNumber {
-  NumberSequenceSuperPerfectNumbersCheckNumber() : super(mode: NumberSequencesMode.SUPERPERFECT_NUMBERS, maxIndex: 8);
+  const NumberSequenceSuperPerfectNumbersCheckNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.SUPERPERFECT_NUMBERS, maxIndex: 8);
 }
 
 class NumberSequenceSuperPerfectNumbersDigits extends NumberSequenceDigits {
-  NumberSequenceSuperPerfectNumbersDigits() : super(mode: NumberSequencesMode.SUPERPERFECT_NUMBERS, maxDigits: 8);
+  const NumberSequenceSuperPerfectNumbersDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.SUPERPERFECT_NUMBERS, maxDigits: 8);
 }
 
 class NumberSequenceSuperPerfectNumbersRange extends NumberSequenceRange {
-  NumberSequenceSuperPerfectNumbersRange() : super(mode: NumberSequencesMode.SUPERPERFECT_NUMBERS, maxIndex: 8);
+  const NumberSequenceSuperPerfectNumbersRange({Key? key}) : super(key: key, mode: NumberSequencesMode.SUPERPERFECT_NUMBERS, maxIndex: 8);
 }
 
 class NumberSequenceSuperPerfectNumbersNthNumber extends NumberSequenceNthNumber {
-  NumberSequenceSuperPerfectNumbersNthNumber() : super(mode: NumberSequencesMode.SUPERPERFECT_NUMBERS, maxIndex: 8);
+  const NumberSequenceSuperPerfectNumbersNthNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.SUPERPERFECT_NUMBERS, maxIndex: 8);
 }
 
 class NumberSequenceSuperPerfectNumbersContainsDigits extends NumberSequenceContainsDigits {
-  NumberSequenceSuperPerfectNumbersContainsDigits()
-      : super(mode: NumberSequencesMode.SUPERPERFECT_NUMBERS, maxIndex: 8);
+  const NumberSequenceSuperPerfectNumbersContainsDigits({Key? key})
+      : super(key: key, mode: NumberSequencesMode.SUPERPERFECT_NUMBERS, maxIndex: 8);
 }

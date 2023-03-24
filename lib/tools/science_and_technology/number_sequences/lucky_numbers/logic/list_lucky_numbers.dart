@@ -1,4 +1,4 @@
-List<String> lucky_numbers = [
+const List<String> lucky_numbers = [
   '1',
   '3',
   '7',

@@ -16,12 +16,14 @@ import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/volu
 import 'package:intl/intl.dart';
 
 class BloodAlcoholContent extends StatefulWidget {
+  const BloodAlcoholContent({Key? key}) : super(key: key);
+
   @override
   BloodAlcoholContentState createState() => BloodAlcoholContentState();
 }
 
 class BloodAlcoholContentState extends State<BloodAlcoholContent> {
-  var _GENDERS = {
+  static const _GENDERS = {
     BloodAlcoholGender.MEN: 'bloodalcoholcontent_person_male',
     BloodAlcoholGender.WOMEN: 'bloodalcoholcontent_person_female',
     BloodAlcoholGender.CHILDREN: 'bloodalcoholcontent_person_child',
@@ -56,11 +58,12 @@ class BloodAlcoholContentState extends State<BloodAlcoholContent> {
         Row(
           children: [
             Expanded(
+                flex: 3,
                 child: GCWText(
                   text: i18n(context, 'bloodalcoholcontent_abv'),
-                ),
-                flex: 3),
+                )),
             Expanded(
+                flex: 13,
                 child: GCWDoubleSpinner(
                   value: _currentPercent,
                   onChanged: (value) {
@@ -68,16 +71,15 @@ class BloodAlcoholContentState extends State<BloodAlcoholContent> {
                       _currentPercent = value;
                     });
                   },
-                ),
-                flex: 13)
+                ))
           ],
         ),
         GCWTextDivider(text: i18n(context, 'bloodalcoholcontent_person')),
-        GCWDropDown(
+        GCWDropDown<BloodAlcoholGender>(
           title: i18n(context, 'bloodalcoholcontent_person_gender'),
           value: _currentGender,
           items: BloodAlcoholGender.values.map((mode) {
-            return GCWDropDownMenuItem(value: mode, child: i18n(context, _GENDERS[mode]));
+            return GCWDropDownMenuItem(value: mode, child: i18n(context, _GENDERS[mode] ?? ''));
           }).toList(),
           onChanged: (value) {
             setState(() {

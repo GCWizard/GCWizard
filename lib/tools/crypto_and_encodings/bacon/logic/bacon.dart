@@ -1,7 +1,7 @@
 import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitution.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
 
-const AZToBacon = {
+const _AZToBacon = {
   'A': 'AAAAA',
   'B': 'AAAAB',
   'C': 'AAABA',
@@ -32,19 +32,19 @@ const AZToBacon = {
 
 // I has same code as J, so I replaces J in mapping; J will not occur in this map
 // U has same code as V, so U replaces V in mapping; V will not occur in this map
-final BaconToAZ = switchMapKeyValue(AZToBacon);
+final _BaconToAZ = switchMapKeyValue(_AZToBacon);
 
 String encodeBacon(String input, bool inverse, bool binary) {
-  if (input == null || input == '') return '';
+  if (input.isEmpty) return '';
 
   var out = input.toUpperCase().split('').map((character) {
-    var bacon = AZToBacon[character];
-    return bacon != null ? bacon : '';
+    var bacon = _AZToBacon[character];
+    return bacon ?? '';
   }).join();
 
   if (inverse) out = _inverseString(out);
 
-  if (binary & (out != null)) {
+  if (binary) {
     out = substitution(out, {'A': '0', 'B': '1'});
   }
 
@@ -52,7 +52,7 @@ String encodeBacon(String input, bool inverse, bool binary) {
 }
 
 String decodeBacon(String input, bool invers, bool binary) {
-  if (input == null || input == '') return '';
+  if (input.isEmpty) return '';
 
   if (binary) {
     input = input.toUpperCase().replaceAll(RegExp('[A-B]'), '');
@@ -67,7 +67,7 @@ String decodeBacon(String input, bool invers, bool binary) {
   var out = '';
   int i = 0;
   while (i < input.length) {
-    out += BaconToAZ[input.substring(i, i + 5)] ?? '';
+    out += _BaconToAZ[input.substring(i, i + 5)] ?? '';
     i += 5;
   }
 

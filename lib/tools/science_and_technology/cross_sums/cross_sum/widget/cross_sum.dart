@@ -3,6 +3,8 @@ import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/tools/science_and_technology/cross_sums/widget/crosstotal_output.dart';
 
 class CrossSum extends StatefulWidget {
+  const CrossSum({Key? key}) : super(key: key);
+
   @override
   CrossSumState createState() => CrossSumState();
 }

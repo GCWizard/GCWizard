@@ -1,80 +1,74 @@
+import 'package:gc_wizard/common_widgets/color_pickers/gcw_colors.dart';
 import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors_cmyk.dart';
 import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors_hue.dart';
 import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors_rgb.dart';
 import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors_yuv.dart';
 
-const keyColorSpaceRGB = 'colors_rgb';
-const keyColorSpaceHex = 'colors_hex';
-const keyColorSpaceHSV = 'colors_hsv';
-const keyColorSpaceHSL = 'colors_hsl';
-const keyColorSpaceHSI = 'colors_hsi';
-const keyColorSpaceCMYK = 'colors_cmyk';
-const keyColorSpaceCMY = 'colors_cmy';
-const keyColorSpaceYUV = 'colors_yuv';
-const keyColorSpaceYPbPr = 'colors_ypbpr';
-const keyColorSpaceYCbCr = 'colors_ycbcr';
-const keyColorSpaceYIQ = 'colors_yiq';
+enum ColorSpaceKey {RGB, HEXCODE, HSV, HSL, HSI, CMYK, CMY, YUV, YPBPR, YCBCR, YIQ}
 
 class ColorSpace {
-  final key;
-  String name;
+  final ColorSpaceKey key;
+  final String persistanceKey;
+  final String name;
 
-  ColorSpace(this.key, this.name);
+  const ColorSpace(this.key, this.persistanceKey, this.name);
 }
 
-final String defaultColorSpace = keyColorSpaceRGB;
-final RGB defaultColor = RGB(255.0, 155.0, 0.0);
-final int COLOR_DOUBLE_PRECISION = 5;
+abstract class GCWBaseColor {
+  RGB toRGB();
+}
 
-final List<ColorSpace> allColorSpaces = [
-  ColorSpace(keyColorSpaceRGB, 'colors_colorspace_rgb_title'),
-  ColorSpace(keyColorSpaceHex, 'colors_colorspace_hex_title'),
-  ColorSpace(keyColorSpaceHSV, 'colors_colorspace_hsv_title'),
-  ColorSpace(keyColorSpaceHSL, 'colors_colorspace_hsl_title'),
-  ColorSpace(keyColorSpaceHSI, 'colors_colorspace_hsi_title'),
-  ColorSpace(keyColorSpaceCMYK, 'colors_colorspace_cmyk_title'),
-  ColorSpace(keyColorSpaceCMY, 'colors_colorspace_cmy_title'),
-  ColorSpace(keyColorSpaceYUV, 'colors_colorspace_yuv_title'),
-  ColorSpace(keyColorSpaceYPbPr, 'colors_colorspace_ypbpr_title'),
-  ColorSpace(keyColorSpaceYCbCr, 'colors_colorspace_ycbcr_title'),
-  ColorSpace(keyColorSpaceYIQ, 'colors_colorspace_yiq_title'),
+const ColorSpaceKey defaultColorSpace = ColorSpaceKey.RGB;
+final RGB defaultColor = RGB(255.0, 155.0, 0.0);
+const int COLOR_DOUBLE_PRECISION = 5;
+
+const List<ColorSpace> allColorSpaces = [
+  ColorSpace(ColorSpaceKey.RGB, 'colors_rgb', 'colors_colorspace_rgb_title'),
+  ColorSpace(ColorSpaceKey.HEXCODE, 'colors_hex', 'colors_colorspace_hex_title'),
+  ColorSpace(ColorSpaceKey.HSV, 'colors_hsv', 'colors_colorspace_hsv_title'),
+  ColorSpace(ColorSpaceKey.HSL, 'colors_hsl', 'colors_colorspace_hsl_title'),
+  ColorSpace(ColorSpaceKey.HSI, 'colors_hsi', 'colors_colorspace_hsi_title'),
+  ColorSpace(ColorSpaceKey.CMYK, 'colors_cmyk', 'colors_colorspace_cmyk_title'),
+  ColorSpace(ColorSpaceKey.CMY, 'colors_cmy', 'colors_colorspace_cmy_title'),
+  ColorSpace(ColorSpaceKey.YUV, 'colors_yuv', 'colors_colorspace_yuv_title'),
+  ColorSpace(ColorSpaceKey.YPBPR, 'colors_ypbpr', 'colors_colorspace_ypbpr_title'),
+  ColorSpace(ColorSpaceKey.YCBCR, 'colors_ycbcr', 'colors_colorspace_ycbcr_title'),
+  ColorSpace(ColorSpaceKey.YIQ, 'colors_yiq', 'colors_colorspace_yiq_title'),
 ];
 
-ColorSpace getColorSpaceByKey(String key) {
+ColorSpace getColorSpaceByKey(ColorSpaceKey key) {
   return allColorSpaces.firstWhere((colorSpace) => colorSpace.key == key);
 }
 
-convertColorSpace(dynamic color, String oldColorSpace, String newColorSpace) {
-  if (newColorSpace == oldColorSpace) {
-    return color;
+GCWBaseColor convertColorSpace(GCWColorValue color, ColorSpaceKey newColorSpace) {
+  if (newColorSpace == color.colorSpace) {
+    return color.color;
   }
 
-  if (oldColorSpace != keyColorSpaceRGB) {
-    color = color.toRGB();
-  }
+  var rgb = color.color.toRGB();
 
   switch (newColorSpace) {
-    case keyColorSpaceRGB:
-      return color;
-    case keyColorSpaceHex:
-      return HexCode.fromRGB(color);
-    case keyColorSpaceHSV:
-      return HSV.fromRGB(color);
-    case keyColorSpaceHSL:
-      return HSL.fromRGB(color);
-    case keyColorSpaceHSI:
-      return HSI.fromRGB(color);
-    case keyColorSpaceCMYK:
-      return CMYK.fromRGB(color);
-    case keyColorSpaceCMY:
-      return CMY.fromRGB(color);
-    case keyColorSpaceYUV:
-      return YUV.fromRGB(color);
-    case keyColorSpaceYPbPr:
-      return YPbPr.fromRGB(color);
-    case keyColorSpaceYCbCr:
-      return YCbCr.fromRGB(color);
-    case keyColorSpaceYIQ:
-      return YIQ.fromRGB(color);
+    case ColorSpaceKey.RGB:
+      return rgb;
+    case ColorSpaceKey.HEXCODE:
+      return HexCode.fromRGB(rgb);
+    case ColorSpaceKey.HSV:
+      return HSV.fromRGB(rgb);
+    case ColorSpaceKey.HSL:
+      return HSL.fromRGB(rgb);
+    case ColorSpaceKey.HSI:
+      return HSI.fromRGB(rgb);
+    case ColorSpaceKey.CMYK:
+      return CMYK.fromRGB(rgb);
+    case ColorSpaceKey.CMY:
+      return CMY.fromRGB(rgb);
+    case ColorSpaceKey.YUV:
+      return YUV.fromRGB(rgb);
+    case ColorSpaceKey.YPBPR:
+      return YPbPr.fromRGB(rgb);
+    case ColorSpaceKey.YCBCR:
+      return YCbCr.fromRGB(rgb);
+    case ColorSpaceKey.YIQ:
+      return YIQ.fromRGB(rgb);
   }
 }

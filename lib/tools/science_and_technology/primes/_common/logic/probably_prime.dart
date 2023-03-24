@@ -197,7 +197,8 @@ bool _millerRabin(BigInt b, int t) {
 /// test primality with certainty >= 1-.5^t
 bool isProbablePrime(BigInt b, int t) {
   // Implementation borrowed from bignum.BigIntegerDartvm.
-  var i, x = b.abs();
+  int i;
+  var x = b.abs();
   if (b <= lowprimes.last) {
     for (i = 0; i < lowprimes.length; ++i) {
       if (b == lowprimes[i]) {

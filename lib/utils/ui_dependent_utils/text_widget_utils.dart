@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 
-WidgetSpan superscriptedTextForRichText(String text, {TextStyle textStyle}) {
+WidgetSpan superscriptedTextForRichText(String text, {TextStyle? textStyle}) {
   var style = textStyle ?? gcwTextStyle();
 
   return WidgetSpan(
@@ -12,7 +12,7 @@ WidgetSpan superscriptedTextForRichText(String text, {TextStyle textStyle}) {
           child: Text(text, style: style.copyWith(fontSize: defaultFontSize() / 1.4))));
 }
 
-WidgetSpan subscriptedTextForRichText(String text, {TextStyle textStyle}) {
+WidgetSpan subscriptedTextForRichText(String text, {TextStyle? textStyle}) {
   var style = textStyle ?? gcwTextStyle();
 
   return WidgetSpan(
@@ -25,7 +25,7 @@ WidgetSpan subscriptedTextForRichText(String text, {TextStyle textStyle}) {
    sub- or superscripted TextSpans will be created,
    otherwise the input will be returned as String
 */
-buildSubOrSuperscriptedRichTextIfNecessary(String input) {
+Object buildSubOrSuperscriptedRichTextIfNecessary(String input) {
   var supSubRegExp = RegExp(r'(\^(.+?)\^|_(.+?)_)');
 
   if (supSubRegExp.hasMatch(input)) {
@@ -35,11 +35,11 @@ buildSubOrSuperscriptedRichTextIfNecessary(String input) {
     supSubRegExp.allMatches(input).forEach((element) {
       textSpans.add(TextSpan(text: input.substring(lastEnd, element.start)));
 
-      var widgetSpan;
-      if (element.group(1).startsWith('_')) {
-        widgetSpan = subscriptedTextForRichText(element.group(1).replaceAll('_', ''));
+      WidgetSpan widgetSpan;
+      if (element.group(1)!.startsWith('_')) {
+        widgetSpan = subscriptedTextForRichText(element.group(1)!.replaceAll('_', ''));
       } else {
-        widgetSpan = superscriptedTextForRichText(element.group(1).replaceAll('^', ''));
+        widgetSpan = superscriptedTextForRichText(element.group(1)!.replaceAll('^', ''));
       }
 
       textSpans.add(widgetSpan);

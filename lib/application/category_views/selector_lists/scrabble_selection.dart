@@ -8,12 +8,14 @@ import 'package:gc_wizard/tools/games/scrabble/scrabble_overview/widget/scrabble
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class ScrabbleSelection extends GCWSelection {
+  const ScrabbleSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
-      return [className(Scrabble()), className(ScrabbleOverview())].contains(className(element.tool));
+      return [className(const Scrabble()), className(const ScrabbleOverview())].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

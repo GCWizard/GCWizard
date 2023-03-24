@@ -3,9 +3,7 @@ import 'package:gc_wizard/tools/science_and_technology/date_and_time/day_calcula
 
 void main() {
   group("DayCalculator.calculateDayDifference:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'start' : null, 'end': null, 'countStart': true, 'countEnd': true, 'expectedOutput' : null},
-
+    List<Map<String, Object?>> _inputsToExpected = [
       {'start' : DateTime(2020, 10, 16), 'end': DateTime(2020, 10, 16), 'countStart': true, 'countEnd': true, 'expectedOutput' : DayCalculatorOutput(1, 24, 1440, 86400)},
       {'start' : DateTime(2020, 10, 16), 'end': DateTime(2020, 10, 16), 'countStart': false, 'countEnd': true, 'expectedOutput' : DayCalculatorOutput(1, 24, 1440, 86400)},
       {'start' : DateTime(2020, 10, 16), 'end': DateTime(2020, 10, 16), 'countStart': true, 'countEnd': false, 'expectedOutput' : DayCalculatorOutput(1, 24, 1440, 86400)},
@@ -53,18 +51,15 @@ void main() {
       {'start' : DateTime(2019, 10, 26), 'end': DateTime(2019, 10, 29), 'countStart': false, 'countEnd': false, 'expectedOutput' : DayCalculatorOutput(2, 49, 2940, 176400)},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('start: ${elem['start']}, end: ${elem['end']}, countStart: ${elem['countStart']}, countEnd: ${elem['countEnd']}', () {
-        DayCalculatorOutput _actual = calculateDayDifferences(elem['start'], elem['end'], countStart: elem['countStart'], countEnd: elem['countEnd']);
-        if (_actual == null)
-          expect(_actual, elem['expectedOutput']);
-        else {
-          expect(_actual.days, elem['expectedOutput'].days);
-          expect(_actual.hours, elem['expectedOutput'].hours);
-          expect(_actual.minutes, elem['expectedOutput'].minutes);
-          expect(_actual.seconds, elem['expectedOutput'].seconds);
-        }
+        var _actual = calculateDayDifferences(elem['start'] as DateTime, elem['end'] as DateTime, countStart: elem['countStart'] as bool, countEnd: elem['countEnd'] as bool);
+
+        expect(_actual.days, (elem['expectedOutput'] as DayCalculatorOutput).days);
+        expect(_actual.hours, (elem['expectedOutput'] as DayCalculatorOutput).hours);
+        expect(_actual.minutes, (elem['expectedOutput'] as DayCalculatorOutput).minutes);
+        expect(_actual.seconds, (elem['expectedOutput'] as DayCalculatorOutput).seconds);
       });
-    });
+    }
   });
 }

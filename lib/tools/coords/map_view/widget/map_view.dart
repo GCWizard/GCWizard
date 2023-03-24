@@ -3,6 +3,8 @@ import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/gcw_mapview.dart';
 
 class MapView extends StatefulWidget {
+  const MapView({Key? key}) : super(key: key);
+
   @override
   MapViewState createState() => MapViewState();
 }

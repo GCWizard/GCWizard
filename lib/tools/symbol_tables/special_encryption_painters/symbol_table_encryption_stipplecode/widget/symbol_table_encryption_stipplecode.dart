@@ -51,43 +51,43 @@ class StippleSymbolTableEncryption extends SymbolTableEncryption {
         var imageIndex = i * countColumns + j;
 
         if (imageIndex < imageIndexes.length) {
-          if (imageIndexes[imageIndex] != null) {
-            var image = data.images[imageIndexes[imageIndex]].values.first.standardImage;
+          var image = data.images[imageIndexes[imageIndex]].values.first.standardImage;
 
-            var reverse = i % 2 == 1;
+          var reverse = i % 2 == 1;
 
-            var x;
-            if (reverse) {
-              x = _sizes.canvasWidth - (j + 1) * _sizes.symbolWidth;
-              x += j * _sizes.symbolWidth * _OFFSET_HORIZONTAL;
-            } else {
-              x = j * _sizes.symbolWidth;
-              if (j > 0) x -= _sizes.symbolWidth * _OFFSET_HORIZONTAL * j;
-            }
+          double x = 0;
+          if (reverse) {
+            x = _sizes.canvasWidth - (j + 1) * _sizes.symbolWidth;
+            x += j * _sizes.symbolWidth * _OFFSET_HORIZONTAL;
+          } else {
+            x = j * _sizes.symbolWidth;
+            if (j > 0) x -= (_sizes.symbolWidth * _OFFSET_HORIZONTAL * j).toInt();
+          }
 
-            var y = i * _sizes.symbolHeight;
-            if (i > 0) y -= _sizes.symbolHeight * _OFFSET_VERTICAL * i;
+          var y = i * _sizes.symbolHeight;
+          if (i > 0) y -= _sizes.symbolHeight * _OFFSET_VERTICAL * i;
 
-            if (i % 2 == 1) {
-              canvas.save();
-              canvas.translate(x, y);
+          if (i % 2 == 1) {
+            canvas.save();
+            canvas.translate(x, y);
 
-              canvas.save();
-              canvas.translate(_sizes.symbolWidth / 2, _sizes.symbolHeight / 2);
-              canvas.scale(-1, 1);
-              canvas.translate(-_sizes.symbolWidth / 2, -_sizes.symbolHeight / 2);
-            }
+            canvas.save();
+            canvas.translate(_sizes.symbolWidth / 2, _sizes.symbolHeight / 2);
+            canvas.scale(-1, 1);
+            canvas.translate(-_sizes.symbolWidth / 2, -_sizes.symbolHeight / 2);
+          }
 
+          if (image != null) {
             paintImage(
                 canvas: canvas,
                 fit: BoxFit.contain,
                 rect: Rect.fromLTWH(reverse ? 0 : x, reverse ? 0 : y, _sizes.symbolWidth, _sizes.symbolHeight),
                 image: image);
+          }
 
-            if (reverse) {
-              canvas.restore();
-              canvas.restore();
-            }
+          if (reverse) {
+            canvas.restore();
+            canvas.restore();
           }
         }
       }

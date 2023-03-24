@@ -15,20 +15,22 @@ import 'package:gc_wizard/common_widgets/spinners/spinner_constants.dart';
 import 'package:gc_wizard/tools/games/bowling/logic/bowling.dart';
 
 class Bowling extends StatefulWidget {
+  const Bowling({Key? key}) : super(key: key);
+
   @override
   BowlingState createState() => BowlingState();
 }
 
 class BowlingState extends State<Bowling> {
-  List<BowlingFrame> _currentBowlingScore;
+  late List<BowlingFrame> _currentBowlingScore;
   List<int> _currentFrameTotals = [10];
   int _currentFrame = 0;
   int _currentThrow1 = 0;
   int _currentThrow2 = 0;
   int _currentThrow3 = 0;
 
-  var _cellWidth;
-  BorderSide _border = BorderSide(width: 1.0, color: Colors.black87);
+  double _cellWidth = 0;
+  final BorderSide _border = const BorderSide(width: 1.0, color: Colors.black87);
 
   @override
   void initState() {
@@ -83,6 +85,7 @@ class BowlingState extends State<Bowling> {
           Expanded(
             flex: 1,
             child: Container(
+              margin: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
               child: GCWIntegerSpinner(
                 layout: SpinnerLayout.VERTICAL,
                 value: _currentThrow1,
@@ -102,12 +105,12 @@ class BowlingState extends State<Bowling> {
                   });
                 },
               ),
-              margin: EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
             ),
           ),
           Expanded(
             flex: 1,
             child: Container(
+              margin: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
               child: (_currentFrame < 9 && _currentThrow1 == 10)
                   ? Container()
                   : GCWIntegerSpinner(
@@ -126,7 +129,6 @@ class BowlingState extends State<Bowling> {
                         });
                       },
                     ),
-              margin: EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
             ),
           ),
           (_currentFrame == 9 &&
@@ -134,6 +136,7 @@ class BowlingState extends State<Bowling> {
               ? Expanded(
                   flex: 1,
                   child: Container(
+                    margin: const EdgeInsets.only(left: DEFAULT_MARGIN),
                     child: GCWIntegerSpinner(
                       layout: SpinnerLayout.VERTICAL,
                       value: _currentThrow3,
@@ -147,7 +150,6 @@ class BowlingState extends State<Bowling> {
                         });
                       },
                     ),
-                    margin: EdgeInsets.only(left: DEFAULT_MARGIN),
                   ))
               : Container()
         ]),
@@ -164,7 +166,7 @@ class BowlingState extends State<Bowling> {
             data: _buildBowlingScoreTable(),
             hasHeader: true,
             copyColumn: 4,
-            flexValues: [2, 1, 1, 1, 2, 3]
+            flexValues: const [2, 1, 1, 1, 2, 3]
           ),
         ),
         GCWTextDivider(
@@ -183,19 +185,19 @@ class BowlingState extends State<Bowling> {
     _currentFrameTotals = List<int>.generate(10, (i) => 0);
   }
 
-  _setThrowPointsForCurrentFrame() {
+  void _setThrowPointsForCurrentFrame() {
     _currentThrow1 = _currentBowlingScore[_currentFrame].one;
     _currentThrow2 = _currentBowlingScore[_currentFrame].two;
     _currentThrow3 = _currentBowlingScore[_currentFrame].three;
   }
 
-  _calculateAndSetScore() {
+  void _calculateAndSetScore() {
     _currentBowlingScore[_currentFrame] = BowlingFrame(one: _currentThrow1, two: _currentThrow2, three: _currentThrow3);
     _currentFrameTotals = bowlingCalcFrameTotals(_currentBowlingScore);
   }
 
-  List<List<dynamic>> _buildBowlingScoreTable() {
-    List<List<dynamic>> result = [];
+  List<List<Object?>> _buildBowlingScoreTable() {
+    List<List<Object?>> result = [];
     result.add([
       i18n(context, 'bowling_frame'),
       '1',
@@ -204,7 +206,7 @@ class BowlingState extends State<Bowling> {
       i18n(context, 'bowling_total'),
       i18n(context, 'bowling_wholetotal')
     ]);
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 10; i++) {
       result.add([
         i + 1,
         _currentBowlingScore[i].one,
@@ -215,11 +217,12 @@ class BowlingState extends State<Bowling> {
         _currentFrameTotals[i],
         bowlingTotalAfterFrames(i, _currentFrameTotals)
       ]);
+    }
     return result;
   }
 
   List<Widget> _buildBowlingScoreBoard() {
-    https: //www.sportcalculators.com/bowling-score-calculator
+    // https: //www.sportcalculators.com/bowling-score-calculator
     var score = <Widget>[];
     var scoreRow1 = <Widget>[];
     var scoreRow2 = <Widget>[];
@@ -250,6 +253,7 @@ class BowlingState extends State<Bowling> {
         color: Colors.white,
         border: Border(top: _border, left: _border, right: _border, bottom: count != 1 ? _border : BorderSide.none),
       ),
+      width: _cellWidth,
       child: Column(
         children: [
           Expanded(
@@ -261,7 +265,6 @@ class BowlingState extends State<Bowling> {
           )),
         ],
       ),
-      width: _cellWidth,
     );
   }
 
@@ -272,6 +275,7 @@ class BowlingState extends State<Bowling> {
         color: Colors.white,
         border: Border(top: BorderSide.none, left: _border, right: _border, bottom: _border),
       ),
+      width: _cellWidth * 2,
       child: Column(
         children: [
           Expanded(
@@ -283,7 +287,6 @@ class BowlingState extends State<Bowling> {
           )),
         ],
       ),
-      width: _cellWidth * 2,
     );
   }
 
@@ -294,6 +297,7 @@ class BowlingState extends State<Bowling> {
         color: Colors.white,
         border: Border(top: BorderSide.none, left: _border, right: _border, bottom: _border),
       ),
+      width: _cellWidth * 3,
       child: Column(
         children: [
           Expanded(
@@ -305,7 +309,6 @@ class BowlingState extends State<Bowling> {
           )),
         ],
       ),
-      width: _cellWidth * 3,
     );
   }
 }

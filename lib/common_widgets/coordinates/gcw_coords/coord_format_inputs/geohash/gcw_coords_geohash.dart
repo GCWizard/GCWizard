@@ -1,17 +1,17 @@
 part of 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
 
 class _GCWCoordsGeohash extends StatefulWidget {
-  final Function onChanged;
-  final BaseCoordinates coordinates;
+  final void Function(Geohash?) onChanged;
+  final Geohash coordinates;
 
-  const _GCWCoordsGeohash({Key key, this.onChanged, this.coordinates}) : super(key: key);
+  const _GCWCoordsGeohash({Key? key, required this.onChanged, required this.coordinates}) : super(key: key);
 
   @override
   _GCWCoordsGeohashState createState() => _GCWCoordsGeohashState();
 }
 
 class _GCWCoordsGeohashState extends State<_GCWCoordsGeohash> {
-  TextEditingController _controller;
+  late TextEditingController _controller;
   var _currentCoord = '';
 
   @override
@@ -28,14 +28,10 @@ class _GCWCoordsGeohashState extends State<_GCWCoordsGeohash> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.coordinates != null) {
-      var geohash = widget.coordinates is Geohash
-          ? widget.coordinates as Geohash
-          : Geohash.fromLatLon(widget.coordinates.toLatLng(), 14);
-      _currentCoord = geohash.text;
+    var geohash = widget.coordinates;
+    _currentCoord = geohash.text;
 
-      _controller.text = _currentCoord;
-    }
+    _controller.text = _currentCoord;
 
     return Column(children: <Widget>[
       GCWTextField(
@@ -51,7 +47,7 @@ class _GCWCoordsGeohashState extends State<_GCWCoordsGeohash> {
     ]);
   }
 
-  _setCurrentValueAndEmitOnChange() {
+  void _setCurrentValueAndEmitOnChange() {
     widget.onChanged(Geohash.parse(_currentCoord));
   }
 }

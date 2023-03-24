@@ -26,34 +26,33 @@ final List<List<String>> _unitlist = _cols.split('').map((c) => _cross(_rows, c)
   ..addAll(['ABC', 'DEF', 'GHI'].expand((rs) => ['123', '456', '789'].map((cs) => _cross(rs, cs))));
 
 final Map<String, List<List<String>>> _units = _squares
-    .map((s) => [s, _unitlist.where((u) => u.contains(s)).toList()])
-    .fold({}, (map, kv) => map..putIfAbsent(kv[0], () => kv[1]));
+    .map((s) => MapEntry<String, List<List<String>>>(s, _unitlist.where((u) => u.contains(s)).toList()))
+    .fold(<String, List<List<String>>>{}, (map, kv) => map..putIfAbsent(kv.key, () => kv.value));
 
-final Map _peers = _squares
-    .map((s) => [
-          s,
-          _units[s].expand((u) => u).toSet()..removeAll([s])
-        ])
-    .fold({}, (map, kv) => map..putIfAbsent(kv[0], () => kv[1]));
+final Map<String, Set<String>> _peers = _squares
+    .map((s) => MapEntry<String, Set<String>>(s, _units[s]!.expand((u) => u).toSet()..removeAll([s])))
+    .fold(<String, Set<String>>{}, (map, kv) => map..putIfAbsent(kv.key, () => kv.value));
 
 /// Parse a Grid
-Map _parse_grid(List<List<int>> grid) {
-  var values = _squares.map((s) => [s, _digits]).fold({}, (map, kv) => map..putIfAbsent(kv[0], () => kv[1]));
+Map<String, String>? _parse_grid(List<List<int>> grid) {
+  Map<String, String> values = _squares
+      .map((String s) => <String>[s, _digits])
+      .fold(<String, String>{}, (map, kv) => map..putIfAbsent(kv[0], () => kv[1]));
   var gridValues = _grid_values(grid);
 
   for (var s in gridValues.keys) {
-    var d = gridValues[s];
+    var d = gridValues[s]!;
     if (_digits.contains(d) && _assign(values, s, d) == null) return null;
   }
 
   return values;
 }
 
-Map _grid_values(List<List<int>> grid) {
+Map<String, String> _grid_values(List<List<int>> grid) {
   Map<String, String> gridMap = {};
   for (int i = 0; i < 9; i++) {
     for (int j = 0; j < 9; j++) {
-      gridMap.putIfAbsent(_rows[i] + _cols[j], () => grid[i][j] != null ? grid[i][j].toString() : '0');
+      gridMap.putIfAbsent(_rows[i] + _cols[j], () => grid[i][j].toString());
     }
   }
 
@@ -61,34 +60,38 @@ Map _grid_values(List<List<int>> grid) {
 }
 
 /// Constraint Propagation
-Map _assign(Map values, String s, String d) {
-  var other_values = values[s].replaceAll(d, '');
+Map<String, String>? _assign(Map<String, String> values, String s, String d) {
+  var other_values = values[s]!.replaceAll(d, '');
 
   if (_all(other_values.split('').map((d2) => _eliminate(values, s, d2)))) return values;
   return null;
 }
 
-Map _eliminate(Map values, String s, String d) {
-  if (!values[s].contains(d)) return values;
-  values[s] = values[s].replaceAll(d, '');
-  if (values[s].length == 0)
+Map<String, String>? _eliminate(Map<String, String> values, String s, String d) {
+  if (!values[s]!.contains(d)) return values;
+  values[s] = values[s]!.replaceAll(d, '');
+  if (values[s]!.isEmpty) {
     return null;
-  else if (values[s].length == 1) {
-    var d2 = values[s];
-    if (!_all(_peers[s].map((s2) => _eliminate(values, s2, d2)))) return null;
+  } else if (values[s]!.length == 1) {
+    var d2 = values[s]!;
+    if (!_all(_peers[s]!.map((s2) => _eliminate(values, s2, d2)))) return null;
   }
 
-  for (List<String> u in _units[s]) {
-    var dplaces = u.where((s) => values[s].contains(d));
-    if (dplaces.length == 0)
+  for (List<String> u in _units[s]!) {
+    var dplaces = u.where((s) => values[s]!.contains(d));
+    if (dplaces.isEmpty) {
       return null;
-    else if (dplaces.length == 1) if (_assign(values, dplaces.elementAt(0), d) == null) return null;
+    } else if (dplaces.length == 1) {
+      if (_assign(values, dplaces.elementAt(0), d) == null) {
+        return null;
+      }
+    }
   }
   return values;
 }
 
 /// Search
-List<List<List<int>>> solve(List<List<int>> grid, {int maxSolutions}) {
+List<List<List<int>>>? solve(List<List<int>> grid, {int? maxSolutions}) {
   if (maxSolutions != null && maxSolutions > 0) _MAX_SOLUTIONS = maxSolutions;
 
   _FOUND_SOLUTIONS = 0;
@@ -98,12 +101,12 @@ List<List<List<int>>> solve(List<List<int>> grid, {int maxSolutions}) {
 
   List<List<List<int>>> outputs = [];
 
-  for (Map result in results) {
+  for (Map<String, String> result in results) {
     List<List<int>> output = [];
     for (int i = 0; i < 9; i++) {
       var column = <int>[];
       for (int j = 0; j < 9; j++) {
-        column.add(int.tryParse(result[_rows[i] + _cols[j]]));
+        column.add(int.parse(result[_rows[i] + _cols[j]]!));
       }
       output.add(column);
     }
@@ -113,41 +116,33 @@ List<List<List<int>>> solve(List<List<int>> grid, {int maxSolutions}) {
   return outputs;
 }
 
-List<Map> _searchAll(Map values) {
+List<Map<String, String>>? _searchAll(Map<String, String>? values) {
   if (values == null || _FOUND_SOLUTIONS >= _MAX_SOLUTIONS) return null;
 
-  if (_squares.every((s) => values[s].length == 1)) {
+  if (_squares.every((String s) => values[s]!.length == 1)) {
     _FOUND_SOLUTIONS++;
-    return <Map>[values];
+    return <Map<String, String>>[values];
   }
 
-  var s2 = _order(_squares.where((s) => values[s].length > 1).toList(), on: (s) => values[s].length).first;
+  var s2 = _order(_squares.where((String s) => values[s]!.length > 1).toList(), on: (String s) => values[s]!.length).first;
 
-  var output = <Map>[];
+  var output = <Map<String, String>>[];
 
-  values[s2].split('').forEach((d) {
-    var result = _searchAll(_assign(Map.from(values), s2, d));
+  values[s2]!.split('').forEach((d) {
+    var result = _searchAll(_assign(Map<String, String>.from(values), s2, d));
     if (result == null) return;
 
-    output.addAll(result.where((element) => element != null));
+    output.addAll(result);
   });
 
   return output;
 }
 
-_wrap(value, fn(x)) => fn(value);
-
-_order(List seq, {Comparator by, List<Comparator> byAll, on(x), List<Function> onAll}) => by != null
+List<String> _order(List<String> seq, {Comparator<String>? by, List<Comparator<String>>? byAll, required int Function(String x) on}) => by != null
     ? (seq..sort(by))
     : byAll != null
         ? (seq..sort((a, b) => byAll.firstWhere((compare) => compare(a, b) != 0, orElse: () => (x, y) => 0)(a, b)))
-        : on != null
-            ? (seq..sort((a, b) => on(a).compareTo(on(b))))
-            : onAll != null
-                ? (seq
-                  ..sort((a, b) => _wrap(
-                      onAll.firstWhere((_on) => _on(a).compareTo(_on(b)) != 0, orElse: () => (x) => 0),
-                      (_on) => _on(a).compareTo(_on(b)))))
-                : (seq..sort());
+        : (seq..sort((a, b) => on(a).compareTo(on(b))));
 
-bool _all(Iterable seq) => seq.every((e) => e != null);
+bool _all(Iterable<Map<String, String>?> seq) => seq.every((e) => e != null);
+

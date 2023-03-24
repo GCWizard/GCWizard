@@ -4,21 +4,13 @@ class Rotator {
   static const defaultAlphabetAlpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   static const defaultAlphabetDigits = '0123456789';
 
-  String alphabet;
+  late String alphabet;
 
-  Rotator({String alphabet = defaultAlphabetAlpha}) {
-    this.alphabet = alphabet == null ? '' : alphabet;
+  Rotator({String? alphabet = defaultAlphabetAlpha}) {
+    this.alphabet = alphabet ?? '';
   }
 
-  String rotate(String input, int key, {bool removeUnknownCharacters = false, ignoreCase = true}) {
-    if (input == null) input = '';
-
-    if (key == null) key = 0;
-
-    if (removeUnknownCharacters == null) removeUnknownCharacters = false;
-
-    if (ignoreCase == null) ignoreCase = false;
-
+  String rotate(String input, int key, {bool removeUnknownCharacters = false, bool ignoreCase = true}) {
     if (ignoreCase) {
       return _rotateIgnoreCase(input, key, removeUnknownCharacters);
     }
@@ -54,12 +46,12 @@ class Rotator {
   }
 
   String rot13(String input) {
-    this.alphabet = defaultAlphabetAlpha;
+    alphabet = defaultAlphabetAlpha;
     return rotate(input, 13);
   }
 
   String rot5(String input) {
-    this.alphabet = defaultAlphabetDigits;
+    alphabet = defaultAlphabetDigits;
     return rotate(input, 5);
   }
 
@@ -69,13 +61,14 @@ class Rotator {
         return rot13(char);
       } else if (defaultAlphabetDigits.contains(char)) {
         return rot5(char);
-      } else
+      } else {
         return char;
+      }
     }).join();
   }
 
   String rot47(String input) {
-    this.alphabet = '!"#\$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~';
+    alphabet = '!"#\$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~';
     return rotate(input, 47, removeUnknownCharacters: false, ignoreCase: false);
   }
 }

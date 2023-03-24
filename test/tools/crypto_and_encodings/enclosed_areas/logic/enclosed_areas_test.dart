@@ -3,11 +3,9 @@ import 'package:gc_wizard/tools/crypto_and_encodings/enclosed_areas/logic/enclos
 
 void main() {
   group("EnclosedAreas.with4:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '._*&%><', 'expectedOutput' : '4'},
 
-
-      {'input' : null, 'expectedOutput' : ''},
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß', 'expectedOutput' : '10'},
@@ -18,17 +16,16 @@ void main() {
       {'input' : '1082158111 2355712317° 2111355772 2309215781.1603217532 0229798165 7273291356', 'expectedOutput' : '5 1 0 6 6 2'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeEnclosedAreas(elem['input'], with4: true);
+        var _actual = decodeEnclosedAreas(elem['input'] as String, with4: true);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("EnclosedAreas.without4:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß', 'expectedOutput' : '10'},
@@ -38,17 +35,16 @@ void main() {
       {'input' : '._*&%><', 'expectedOutput' : '4'},
    ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeEnclosedAreas(elem['input'], with4: false);
+        var _actual = decodeEnclosedAreas(elem['input'] as String, with4: false);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("EnclosedAreas.onlyNumbers:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß', 'expectedOutput' : ''},
@@ -59,11 +55,11 @@ void main() {
       {'input' : '1082158111 2355712317° 2111355772 2309215781.1603217532 0229798165 7273291356', 'expectedOutput' : '5 0 0 4 2 6 2'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeEnclosedAreas(elem['input'], with4: true, onlyNumbers: true);
+        var _actual = decodeEnclosedAreas(elem['input'] as String, with4: true, onlyNumbers: true);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 }

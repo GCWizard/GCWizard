@@ -7,13 +7,15 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/wherigo/logic/earwigo_tools.dart';
 
 class EarwigoTextDeobfuscation extends StatefulWidget {
+  const EarwigoTextDeobfuscation({Key? key}) : super(key: key);
+
   @override
   EarwigoTextDeobfuscationState createState() => EarwigoTextDeobfuscationState();
 }
 
 class EarwigoTextDeobfuscationState extends State<EarwigoTextDeobfuscation> {
-  var _inputController;
-  var _inputObfuscateController;
+  late TextEditingController _inputController;
+  late TextEditingController _inputObfuscateController;
 
   var _currentInput = '';
   var _currentObfuscateInput = '';
@@ -53,10 +55,11 @@ class EarwigoTextDeobfuscationState extends State<EarwigoTextDeobfuscation> {
                 // de-obfuscate
                 children: [
                   Expanded(
-                    child: GCWText(text: i18n(context, 'earwigo_textdeobfuscation_text')),
                     flex: 1,
+                    child: GCWText(text: i18n(context, 'earwigo_textdeobfuscation_text')),
                   ),
                   Expanded(
+                      flex: 3,
                       child: GCWTextField(
                         controller: _inputController,
                         onChanged: (text) {
@@ -64,18 +67,18 @@ class EarwigoTextDeobfuscationState extends State<EarwigoTextDeobfuscation> {
                             _currentInput = text;
                           });
                         },
-                      ),
-                      flex: 3)
+                      ))
                 ],
               )
             : Row(
                 // obfuscate
                 children: [
                   Expanded(
-                    child: GCWText(text: i18n(context, 'urwigo_textdeobfuscation_obfuscate_text')),
                     flex: 1,
+                    child: GCWText(text: i18n(context, 'urwigo_textdeobfuscation_obfuscate_text')),
                   ),
                   Expanded(
+                      flex: 3,
                       child: GCWTextField(
                         controller: _inputObfuscateController,
                         onChanged: (text) {
@@ -83,8 +86,7 @@ class EarwigoTextDeobfuscationState extends State<EarwigoTextDeobfuscation> {
                             _currentObfuscateInput = text;
                           });
                         },
-                      ),
-                      flex: 3)
+                      ))
                 ],
               ),
         _buildOutput(context)
@@ -93,7 +95,7 @@ class EarwigoTextDeobfuscationState extends State<EarwigoTextDeobfuscation> {
   }
 
   Widget _buildOutput(BuildContext context) {
-    if (_currentMode == GCWSwitchPosition.right)
+    if (_currentMode == GCWSwitchPosition.right) {
       return Column(children: <Widget>[
         GCWOutput(
             title: i18n(context, 'earwigo_textdeobfuscation_tool_gsub'),
@@ -102,7 +104,7 @@ class EarwigoTextDeobfuscationState extends State<EarwigoTextDeobfuscation> {
             title: i18n(context, 'earwigo_textdeobfuscation_tool_wwb'),
             child: deobfuscateEarwigoText(_currentInput, EARWIGO_DEOBFUSCATION.WWB_DEOBF)),
       ]);
-    else
+    } else {
       return Column(children: <Widget>[
         GCWOutput(
             title: i18n(context, 'earwigo_textdeobfuscation_tool_gsub'),
@@ -111,5 +113,6 @@ class EarwigoTextDeobfuscationState extends State<EarwigoTextDeobfuscation> {
             title: i18n(context, 'earwigo_textdeobfuscation_tool_wwb'),
             child: obfuscateEarwigoText(_currentObfuscateInput, EARWIGO_DEOBFUSCATION.WWB_DEOBF)),
       ]);
+    }
   }
 }

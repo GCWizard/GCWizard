@@ -5,7 +5,11 @@ import 'package:gc_wizard/tools/crypto_and_encodings/kenny/logic/kenny.dart';
 const MDT_INTERNALNAMES_KENNY = 'multidecoder_tool_kenny_title';
 
 class MultiDecoderToolKenny extends AbstractMultiDecoderTool {
-  MultiDecoderToolKenny({Key key, int id, String name, Map<String, dynamic> options})
+  MultiDecoderToolKenny({
+    Key? key,
+    required int id,
+    required String name,
+    required Map<String, Object?> options})
       : super(
             key: key,
             id: id,

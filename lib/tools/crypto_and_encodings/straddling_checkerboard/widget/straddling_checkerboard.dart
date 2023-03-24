@@ -13,17 +13,19 @@ import 'package:gc_wizard/tools/crypto_and_encodings/polybios/logic/polybios.dar
 import 'package:gc_wizard/tools/crypto_and_encodings/straddling_checkerboard/logic/straddling_checkerboard.dart';
 
 class StraddlingCheckerboard extends StatefulWidget {
+  const StraddlingCheckerboard({Key? key}) : super(key: key);
+
   @override
   StraddlingCheckerboardState createState() => StraddlingCheckerboardState();
 }
 
 class StraddlingCheckerboardState extends State<StraddlingCheckerboard> {
-  var _plainTextController;
-  var _chiffreTextController;
-  var _KeyController;
-  var _AlphabetWordController;
-  var _AlphabetController;
-  var _ColumnOrderController;
+  late TextEditingController _plainTextController;
+  late TextEditingController _chiffreTextController;
+  late TextEditingController _KeyController;
+  late TextEditingController _AlphabetWordController;
+  late TextEditingController _AlphabetController;
+  late TextEditingController _ColumnOrderController;
 
   PolybiosMode _currentAlphabetMode = PolybiosMode.AZ09;
   var _currentMode = GCWSwitchPosition.right;
@@ -69,10 +71,11 @@ class StraddlingCheckerboardState extends State<StraddlingCheckerboard> {
       PolybiosMode.CUSTOM: i18n(context, 'bifid_mode_custom'),
     };
 
-    if (_currentDigitMode == GCWSwitchPosition.right)
+    if (_currentDigitMode == GCWSwitchPosition.right) {
       _currentKeyHint = i18n(context, 'straddlingcheckerboard_hint_key');
-    else
+    } else {
       _currentKeyHint = i18n(context, 'straddlingcheckerboard_hint_key_4x10');
+    }
 
     return Column(
       children: <Widget>[
@@ -93,7 +96,7 @@ class StraddlingCheckerboardState extends State<StraddlingCheckerboard> {
                 controller: _chiffreTextController,
                 hintText: i18n(context, 'straddlingcheckerboard_hint_chiffretext'),
                 inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                  FilteringTextInputFormatter.allow(RegExp(r'\d')),
                 ],
                 onChanged: (text) {
                   setState(() {
@@ -115,10 +118,11 @@ class StraddlingCheckerboardState extends State<StraddlingCheckerboard> {
           leftValue: i18n(context, 'straddlingcheckerboard_digitmode_4x10'),
           rightValue: i18n(context, 'straddlingcheckerboard_digitmode_escape'),
           onChanged: (value) {
-            if (value == GCWSwitchPosition.right)
+            if (value == GCWSwitchPosition.right) {
               _currentKeyHint = i18n(context, 'straddlingcheckerboard_hint_key');
-            else
+            } else {
               _currentKeyHint = i18n(context, 'straddlingcheckerboard_hint_key_4x10');
+            }
             setState(() {
               _currentDigitMode = value;
             });
@@ -146,7 +150,7 @@ class StraddlingCheckerboardState extends State<StraddlingCheckerboard> {
             Expanded(
               flex: 1,
               child: Container(
-                padding: EdgeInsets.only(right: DEFAULT_MARGIN),
+                padding: const EdgeInsets.only(right: DEFAULT_MARGIN),
                 child: Column(children: [
                   GCWTextField(
                     controller: _AlphabetWordController,
@@ -166,10 +170,10 @@ class StraddlingCheckerboardState extends State<StraddlingCheckerboard> {
             Expanded(
               flex: 2,
               child: Container(
-                  padding: EdgeInsets.only(right: DEFAULT_MARGIN),
+                  padding: const EdgeInsets.only(right: DEFAULT_MARGIN),
                   child: Column(
                     children: [
-                      GCWDropDown(
+                      GCWDropDown<PolybiosMode>(
                         value: _currentAlphabetMode,
                         onChanged: (value) {
                           setState(() {
@@ -207,7 +211,7 @@ class StraddlingCheckerboardState extends State<StraddlingCheckerboard> {
             Expanded(
               flex: 1,
               child: Container(
-                padding: EdgeInsets.only(right: DEFAULT_MARGIN),
+                padding: const EdgeInsets.only(right: DEFAULT_MARGIN),
                 child: Column(children: [
                   GCWOutputText(
                     text: i18n(context, 'straddlingcheckerboard_hint_column'),
@@ -219,7 +223,7 @@ class StraddlingCheckerboardState extends State<StraddlingCheckerboard> {
             Expanded(
               flex: 2,
               child: Container(
-                padding: EdgeInsets.only(right: DEFAULT_MARGIN),
+                padding: const EdgeInsets.only(right: DEFAULT_MARGIN),
                 child: Column(
                   children: [
                     GCWTextField(
@@ -227,7 +231,7 @@ class StraddlingCheckerboardState extends State<StraddlingCheckerboard> {
                       hintText: i18n(context, 'straddlingcheckerboard_hint_column'),
                       inputFormatters: [
                         LengthLimitingTextInputFormatter(10),
-                        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                        FilteringTextInputFormatter.allow(RegExp(r'\d')),
                       ],
                       onChanged: (text) {
                         setState(() {
@@ -246,7 +250,7 @@ class StraddlingCheckerboardState extends State<StraddlingCheckerboard> {
     );
   }
 
-  _buildOutput() {
+  Widget _buildOutput() {
     StraddlingCheckerboardOutput _currentOutput = StraddlingCheckerboardOutput('', '');
 
     if (_currentMode == GCWSwitchPosition.left) {
@@ -272,12 +276,14 @@ class StraddlingCheckerboardState extends State<StraddlingCheckerboard> {
     }
 
     if (_currentOutput.output.contains('error')) {
-      if (_currentOutput.output.contains('runtime'))
+      if (_currentOutput.output.contains('runtime')) {
         _output = i18n(context, _currentOutput.output.split('#')[0]) + '\n' + _currentOutput.output.split('#')[1];
-      else
+      } else {
         _output = i18n(context, _currentOutput.output);
-    } else
+      }
+    } else {
       _output = _currentOutput.output;
+    }
 
     return GCWMultipleOutput(
       children: [

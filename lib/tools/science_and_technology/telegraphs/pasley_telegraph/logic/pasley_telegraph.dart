@@ -1,8 +1,9 @@
 //Fred B. Wrixon, Geheimsprachen, Könemann-Verlag, ISBN 978-3-8331-2562-1, S. 450
 
+import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
 import 'package:gc_wizard/utils/constants.dart';
 
-final Map<String, List<String>> PASLEY = {
+const Map<String, List<String>> _PASLEY = {
   ' ': [],
   '1': ['7'],
   '2': ['1'],
@@ -42,26 +43,12 @@ final Map<String, List<String>> PASLEY = {
   'Z': ['5', '6'],
 };
 
-final Map<String, List<String>> PASLEY_MODIFIER = {
+const Map<String, List<String>> _PASLEY_MODIFIER = {
   'LETTERFOLLOWS': ['3', '4'],
   'NUMBERFOLLOWS': ['2', '6'],
 };
 
-final Map<String, String> DigitToLetter = {
-  '1': 'A',
-  '2': 'B',
-  '3': 'C',
-  '4': 'D',
-  '5': 'E',
-  '6': 'F',
-  '7': 'G',
-  '8': 'H',
-  '9': 'I',
-  '0': 'J',
-  ' ': ' '
-};
-
-final Map<String, String> LetterToDigit = {
+const Map<String, String> _LetterToDigit = {
   'A': '1',
   'B': '2',
   'C': '3',
@@ -75,7 +62,7 @@ final Map<String, String> LetterToDigit = {
   ' ': ' '
 };
 
-final List<String> LETTER = [
+const List<String> _LETTER = [
   ' ',
   'A',
   'B',
@@ -104,22 +91,9 @@ final List<String> LETTER = [
   'Y',
   'Z',
 ];
-final List<String> DIGIT = [
-  ' ',
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-  '0',
-];
 
-List<List<String>> encodePasley(String input) {
-  if (input == null || input == '') return [];
+Segments encodePasley(String input) {
+  if (input.isEmpty) return Segments.Empty();
 
   bool letter = true;
 
@@ -127,74 +101,79 @@ List<List<String>> encodePasley(String input) {
   List<List<String>> result = [];
 
   for (int i = 0; i < inputs.length; i++) {
-    if (letter) if (LETTER.contains(inputs[i])) {
-      result.add(PASLEY[inputs[i].toUpperCase()]);
-    } else {
-      result.add(PASLEY_MODIFIER['NUMBERFOLLOWS']);
-      result.add(PASLEY[inputs[i]]);
-      letter = false;
-    }
-    else if (LETTER.contains(inputs[i])) {
-      result.add(PASLEY_MODIFIER['LETTERFOLLOWS']);
-      result.add(PASLEY[inputs[i].toUpperCase()]);
+    if (letter) {
+      if (_LETTER.contains(inputs[i])) {
+        result.add(_PASLEY[inputs[i].toUpperCase()]!);
+      } else {
+        result.add(_PASLEY_MODIFIER['NUMBERFOLLOWS']!);
+        result.add(_PASLEY[inputs[i]]!);
+        letter = false;
+      }
+    } else if (_LETTER.contains(inputs[i])) {
+      result.add(_PASLEY_MODIFIER['LETTERFOLLOWS']!);
+      result.add(_PASLEY[inputs[i].toUpperCase()]!);
       letter = true;
     } else {
-      result.add(PASLEY[inputs[i]]);
+      result.add(_PASLEY[inputs[i]]!);
     }
   }
-  return result;
+  return Segments(displays: result);
 }
 
-Map<String, dynamic> decodeVisualPasley(List<String> inputs) {
-  if (inputs == null || inputs.length == 0) return {'displays': <List<String>>[], 'chars': ''};
+SegmentsText decodeVisualPasley(List<String> inputs) {
+  if (inputs.isEmpty) return SegmentsText(displays: [], text: '');
 
   var displays = <List<String>>[];
   var segment = <String>[];
-  inputs.forEach((element) {
+  for (var element in inputs) {
     segment = _stringToSegment(element);
     displays.add(segment);
-  });
+  }
 
   bool letter = true;
 
   Map<String, String> CODEBOOK = {};
-  PASLEY.forEach((key, value) {
+  _PASLEY.forEach((key, value) {
     CODEBOOK[value.join('')] = key;
   });
   CODEBOOK['26'] = 'NUMBERFOLLOWS';
   CODEBOOK['34'] = 'LETTERFOLLOWS';
   CODEBOOK[''] = ' ';
 
-  List<String> text = inputs.where((input) => input != null).map((input) {
+  List<String> text = inputs.map((input) {
     var char = '';
     var charH = '';
     if (CODEBOOK[input] == null) {
       char = char + UNKNOWN_ELEMENT;
     } else {
-      charH = CODEBOOK[input];
-      if (charH == 'LETTERFOLLOWS')
+      charH = CODEBOOK[input]!;
+      if (charH == 'LETTERFOLLOWS') {
         letter = true;
-      else if (charH == 'NUMBERFOLLOWS')
+      } else if (charH == 'NUMBERFOLLOWS') {
         letter = false;
-      else
-        char = char + _decode(charH, letter);
+      } else {
+        char = char + (_decode(charH, letter) ?? '');
+      }
     }
 
     return char;
   }).toList();
-  return {'displays': displays, 'chars': text.join('')};
+  return SegmentsText(displays: displays, text: text.join(''));
 }
 
 List<String> _stringToSegment(String input) {
   List<String> result = [];
-  for (int i = 0; i < input.length; i++) result.add(input[i]);
+  for (int i = 0; i < input.length; i++) {
+    result.add(input[i]);
+  }
 
   return result;
 }
 
-String _decode(String code, bool letter) {
-  if (letter)
+String? _decode(String code, bool letter) {
+  if (letter) {
     return code;
-  else
-    return LetterToDigit[code];
+  } else {
+    return _LetterToDigit[code];
+  }
 }

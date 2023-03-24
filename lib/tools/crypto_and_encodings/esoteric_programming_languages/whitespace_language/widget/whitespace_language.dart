@@ -11,16 +11,18 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/whitespace_language/logic/whitespace_language.dart';
 
 class WhitespaceLanguage extends StatefulWidget {
+  const WhitespaceLanguage({Key? key}) : super(key: key);
+
   @override
   WhitespaceLanguageState createState() => WhitespaceLanguageState();
 }
 
 class WhitespaceLanguageState extends State<WhitespaceLanguage> {
-  WhitespaceResult _currentOutput;
+  WhitespaceResult? _currentOutput;
 
   String _currentCode = '';
   String _currentInput = '';
-  WhitespaceState _continueState;
+  WhitespaceState? _continueState;
   var _isStarted = false;
 
   var _currentMode = GCWSwitchPosition.left;
@@ -60,28 +62,28 @@ class WhitespaceLanguageState extends State<WhitespaceLanguage> {
   }
 
   Widget _buildOutput(BuildContext context) {
-    if ((_currentCode == null || _currentCode.length == 0) && (_currentOutput == null)) return GCWDefaultOutput();
+    if (_currentCode.isEmpty && (_currentOutput == null)) return const GCWDefaultOutput();
 
-    if (_currentOutput == null) return GCWDefaultOutput();
+    if (_currentOutput == null) return const GCWDefaultOutput();
 
     return GCWMultipleOutput(
       children: [
-        _currentOutput.output +
-            (_currentOutput.error && (_currentOutput.errorText != null)
-                ? '\n' + (i18n(context, _currentOutput.errorText) ?? _currentOutput.errorText)
+        _currentOutput!.output +
+            (_currentOutput!.error
+                ? '\n' + (i18n(context, _currentOutput!.errorText, ifTranslationNotExists: _currentOutput!.errorText))
                 : ''),
         GCWOutput(
           title: i18n(context, 'whitespace_language_readable_code'),
           child: GCWOutputText(
-            text: _currentOutput.code,
+            text: _currentOutput!.code,
           ),
         ),
       ],
     );
   }
 
-  _calcOutput(BuildContext context) async {
-    if (_currentCode == null || _currentCode.length == 0 || _isStarted) return;
+  void _calcOutput(BuildContext context) async {
+    if (_currentCode.isEmpty || _isStarted) return;
 
     _isStarted = true;
     _currentOutput = null;
@@ -94,10 +96,10 @@ class WhitespaceLanguageState extends State<WhitespaceLanguage> {
         if (output.finished) {
           _currentOutput = output;
           _isStarted = false;
-          this.setState(() {});
+          setState(() {});
         } else {
           _continueState = output.state;
-          _currentInput = "";
+          _currentInput = '';
           _showDialogBox(context, output.output);
         }
       });
@@ -106,16 +108,16 @@ class WhitespaceLanguageState extends State<WhitespaceLanguage> {
       currentOutputFuture.then((output) {
         _currentOutput = output;
         _isStarted = false;
-        this.setState(() {});
+        setState(() {});
       });
     }
   }
 
-  _showDialogBox(BuildContext context, String text) {
+  void _showDialogBox(BuildContext context, String text) {
     showGCWDialog(
         context,
         text,
-        Container(
+        SizedBox(
           width: 300,
           height: 100,
           child: Column(
@@ -136,7 +138,7 @@ class WhitespaceLanguageState extends State<WhitespaceLanguage> {
             text: i18n(context, 'common_ok'),
             onPressed: () {
               _isStarted = false;
-              if (_continueState != null) _continueState.inp = _currentInput + '\n';
+              if (_continueState != null) _continueState!.inp = _currentInput + '\n';
               _calcOutput(context);
             },
           )

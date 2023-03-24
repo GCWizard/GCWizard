@@ -1,20 +1,20 @@
 import 'package:diacritic/diacritic.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
-final String _WORD_SEPARATORS = r'[^A-Za-z0-9\-ß\u1e9e]';
+const String _WORD_SEPARATORS = r'[^A-Za-z0-9\-ß\u1e9e]';
 
 class ControlCharacter {
   final int asciiValue;
   final String unicode;
   final String name;
   final String abbreviation;
-  final String escapeCode;
+  final String? escapeCode;
   final List<String> symbols;
 
-  ControlCharacter(this.asciiValue, this.unicode, this.name, this.abbreviation, this.escapeCode, this.symbols);
+  const ControlCharacter(this.asciiValue, this.unicode, this.name, this.abbreviation, this.escapeCode, this.symbols);
 }
 
-final Map<String, ControlCharacter> WHITESPACE_CHARACTERS = {
+const Map<String, ControlCharacter> WHITESPACE_CHARACTERS = {
   '\u0009': ControlCharacter(
       9, 'U+0009', 'textanalysis_whitespace_charactertabulation', 'TAB/HT', '\\t', ['\u21e5', '\u21b9', '\u2409']),
   '\u000A': ControlCharacter(10, 'U+000A', 'textanalysis_whitespace_linefeed', 'LF', '\\n',
@@ -28,7 +28,7 @@ final Map<String, ControlCharacter> WHITESPACE_CHARACTERS = {
       ControlCharacter(133, 'U+0085', 'textanalysis_whitespace_nextline', 'NEL', null, ['\u21B5', '\u23CE', '\u2424']),
 };
 
-final Map<String, ControlCharacter> CONTROL_CHARACTERS = {
+const Map<String, ControlCharacter> CONTROL_CHARACTERS = {
   '\u0000': ControlCharacter(0, 'U+0000', 'textanalysis_control_null', 'NUL', '\\0', ['\u2400']),
   '\u0001': ControlCharacter(1, 'U+0001', 'textanalysis_control_startofheading', 'SOH', null, ['\u2401']),
   '\u0002': ControlCharacter(2, 'U+0002', 'textanalysis_control_startoftext', 'STX', null, ['\u2402']),
@@ -66,26 +66,30 @@ class TextAnalysisCharacterCounts {
   Map<String, int> whiteSpaces;
   Map<String, int> controlChars;
 
-  TextAnalysisCharacterCounts([this.letters, this.numbers, this.specialChars, this.whiteSpaces, this.controlChars]);
+  TextAnalysisCharacterCounts({
+    required this.letters,
+    required this.numbers,
+    required this.specialChars,
+    required this.whiteSpaces,
+    required this.controlChars});
 }
 
 int countWords(String text) {
-  if (text == null || text.isEmpty) return 0;
+  if (text.isEmpty) return 0;
 
   return removeDiacritics(text)
       .split(RegExp(_WORD_SEPARATORS))
-      .where((word) => word != null && word.isNotEmpty)
+      .where((word) => word.isNotEmpty)
       .toList()
       .length;
 }
 
 Map<String, int> _addOrIncreaseCount(Map<String, int> map, String character) {
   if (map.containsKey(character)) {
-    map[character]++;
+    map.update(character, (int i) => map[character]! + 1);
   } else {
-    map.putIfAbsent(character, () => 1);
+    map[character] = 1;
   }
-
   return map;
 }
 
@@ -94,7 +98,7 @@ Map<String, int> _analyzeLetters(String text, bool caseSensitive) {
     text = text.toUpperCase().replaceAll('ß', '\u1e9e');
   }
 
-  var letters = Map<String, int>();
+  var letters = <String, int>{};
   text.split('').forEach((character) {
     if (!isOnlyLetters(character)) return;
 
@@ -105,9 +109,9 @@ Map<String, int> _analyzeLetters(String text, bool caseSensitive) {
 }
 
 Map<String, int> _analyzeNumbers(String text) {
-  text = text.replaceAll(RegExp(r'[^0-9]'), '');
+  text = text.replaceAll(RegExp(r'\D'), '');
 
-  var numbers = Map<String, int>();
+  var numbers = <String, int>{};
   text.split('').forEach((character) {
     _addOrIncreaseCount(numbers, character);
   });
@@ -116,7 +120,7 @@ Map<String, int> _analyzeNumbers(String text) {
 }
 
 Map<String, int> _analyzeWhitespaces(String text) {
-  var whiteSpaces = Map<String, int>();
+  var whiteSpaces = <String, int>{};
   text.split('').forEach((character) {
     if (WHITESPACE_CHARACTERS.containsKey(character)) _addOrIncreaseCount(whiteSpaces, character);
   });
@@ -124,10 +128,10 @@ Map<String, int> _analyzeWhitespaces(String text) {
   return whiteSpaces;
 }
 
-Map<String, int> _analyzeControlChars(String text, {bool includingWhitespaceCharacter: true}) {
-  var controls = Map<String, int>();
+Map<String, int> _analyzeControlChars(String text, {bool includingWhitespaceCharacter = true}) {
+  var controls = <String, int>{};
 
-  var characters = Map.from(CONTROL_CHARACTERS);
+  var characters = Map<String,ControlCharacter>.from(CONTROL_CHARACTERS);
   if (includingWhitespaceCharacter) {
     characters.addAll(WHITESPACE_CHARACTERS);
   }
@@ -145,7 +149,7 @@ Map<String, int> _analyzeSpecialChars(String text) {
   var controlsAndWhiteSpaces = WHITESPACE_CHARACTERS.keys.toList();
   controlsAndWhiteSpaces.addAll(CONTROL_CHARACTERS.keys.toList());
 
-  var specialChars = Map<String, int>();
+  var specialChars = <String, int>{};
   text.split('').forEach((character) {
     if (controlsAndWhiteSpaces.contains(character)) return;
 
@@ -155,16 +159,13 @@ Map<String, int> _analyzeSpecialChars(String text) {
   return specialChars;
 }
 
-TextAnalysisCharacterCounts analyzeText(String text, {bool caseSensitive: true}) {
-  if (text == null) return null;
+TextAnalysisCharacterCounts analyzeText(String text, {bool caseSensitive = true}) {
 
-  var out = TextAnalysisCharacterCounts();
-
-  out.letters = _analyzeLetters(text, caseSensitive);
-  out.numbers = _analyzeNumbers(text);
-  out.specialChars = _analyzeSpecialChars(text);
-  out.whiteSpaces = _analyzeWhitespaces(text);
-  out.controlChars = _analyzeControlChars(text, includingWhitespaceCharacter: false);
-
-  return out;
+  return TextAnalysisCharacterCounts(
+    letters: _analyzeLetters(text, caseSensitive),
+    numbers: _analyzeNumbers(text),
+    specialChars: _analyzeSpecialChars(text),
+    whiteSpaces: _analyzeWhitespaces(text),
+    controlChars: _analyzeControlChars(text, includingWhitespaceCharacter: false)
+  );
 }

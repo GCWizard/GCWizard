@@ -1,8 +1,9 @@
 import 'dart:math';
 
+import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
 import 'package:gc_wizard/utils/constants.dart';
 
-final _baseSegmentsCistercianSegment = [
+const _baseSegmentsCistercianSegment = [
   'a',
   'b',
   'c',
@@ -26,7 +27,7 @@ final _baseSegmentsCistercianSegment = [
   'u'
 ];
 
-final Map<String, List<String>> _AZToSegmentCistercian = {
+const Map<String, List<String>> _AZToSegmentCistercian = {
   '0': ['k'],
   '1': ['b', 'k'],
   '2': ['j', 'k'],
@@ -66,29 +67,28 @@ final Map<String, List<String>> _AZToSegmentCistercian = {
   '9000': ['k', 'l', 'n', 't'],
 };
 
-List<List<String>> encodeCistercian(String input) {
-  if (input == null || input == '') return [];
+Segments encodeCistercian(String input) {
+  if (input.isEmpty) Segments.Empty();
 
   List<String> inputCharacters = input.split(RegExp(r'[^1234567890]')).toList();
   var output = <List<String>>[];
   var digit = 0;
-  var segmentList;
 
   for (String character in inputCharacters) {
     if (character == '0') {
-      output.add(_AZToSegmentCistercian['0']);
+      output.add(_AZToSegmentCistercian['0'] ?? []);
       continue;
     }
 
-    int encodeNumber = int.tryParse(character);
-    var encodeString = encodeNumber.toString();
+    int? encodeNumber = int.tryParse(character);
+    var encodeString = (encodeNumber ?? '').toString();
     if (encodeNumber != null && encodeNumber < 10000) {
-      var display = Set<String>();
+      var display = <String>{};
       for (int i = 0; i < encodeString.length; i++) {
-        digit = int.parse(encodeString[i]) * pow(10, encodeString.length - i - 1);
+        digit = ((int.parse(encodeString[i])) * pow(10, encodeString.length - i - 1)).toInt();
         if (digit != 0) {
-          segmentList = _AZToSegmentCistercian[digit.toString()];
-          display.addAll(segmentList);
+          var segmentList = _AZToSegmentCistercian[digit.toString()];
+          if (segmentList != null) display.addAll(segmentList);
         }
       }
       var displayList = display.toList();
@@ -96,17 +96,17 @@ List<List<String>> encodeCistercian(String input) {
       output.add(displayList);
     }
   }
-  return output;
+  return Segments(displays: output);
 }
 
-Map<String, dynamic> decodeCistercian(String input) {
-  if (input == null || input == '') return {'displays': <List<String>>[], 'text': ''};
+SegmentsText decodeCistercian(String input) {
+  if (input.isEmpty) return SegmentsText(displays: [], text: '');
 
   var baseSegments = _baseSegmentsCistercianSegment;
 
   input = input.toLowerCase();
   var displays = <List<String>>[];
-  List<String> currentDisplay;
+  List<String>? currentDisplay;
 
   for (int i = 0; i < input.length; i++) {
     var segment = input[i];
@@ -121,7 +121,7 @@ Map<String, dynamic> decodeCistercian(String input) {
       continue;
     }
 
-    if (currentDisplay == null) currentDisplay = [];
+    currentDisplay ??= [];
 
     currentDisplay.add(segment);
   }
@@ -324,14 +324,15 @@ Map<String, dynamic> decodeCistercian(String input) {
         tokens[i] = tokens[i].replaceAll('a', '');
       }
 
-      if (tokens[i] == '') unknownToken = false;
+      if (tokens[i].isEmpty) unknownToken = false;
     }
 
-    if (unknownToken)
+    if (unknownToken) {
       out = out + ' ' + UNKNOWN_ELEMENT;
-    else
+    } else {
       out = out + ' ' + digit.toString();
+    }
   }
 
-  return {'displays': displays, 'text': out};
+  return SegmentsText(displays: displays, text: out);
 }

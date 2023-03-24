@@ -27,35 +27,35 @@ int compoundFrequency(COMPOUND_FREQUENCY freq) {
   }
 }
 
-double principalSumCompound(double p_, r, t, int n) {
+double principalSumCompound(double p_, double r, double t, int n) {
   return p_ * pow(1 + (r / n / 100.0), n * t);
 }
 
-double principalSum(double p_, r, t) {
+double principalSum(double p_, double r, double t) {
   var i = p_ * (r / 100.0);
   return p_ + t * i;
 }
 
-double originalPrincipalSumCompound(double p, r, t, int n) {
+double originalPrincipalSumCompound(double p, double r, double t, int n) {
   return p / pow(1 + (r / n / 100.0), n * t);
 }
 
-double originalPrincipalSum(double p, r, t) {
+double originalPrincipalSum(double p, double r, double t) {
   return p / (1 + t * (r / 100.0));
 }
 
-double annualInterestRateCompound(double p_, p, t, int n) {
+double annualInterestRateCompound(double p_, double p, double t, int n) {
   return n * 100.0 * (pow(p / p_, 1 / (t * n)) - 1);
 }
 
-double annualInterestRate(double p_, p, t) {
+double annualInterestRate(double p_, double p, double t) {
   return 100.0 * ((p - p_) / (t * p_));
 }
 
-double totalYearsCompound(double p_, p, r, int n) {
+double totalYearsCompound(double p_, double p, double r, int n) {
   return log(p / p_) / log(pow(r / n / 100.0 + 1, n));
 }
 
-double totalYears(double p_, p, r) {
+double totalYears(double p_, double p, double r) {
   return (p - p_) / (p_ * (r / 100.0));
 }

@@ -14,26 +14,32 @@ const MDT_CCITT2_OPTION_MODE_DENARY = 'common_numeralbase_denary';
 const MDT_CCITT2_OPTION_MODE_BINARY = 'common_numeralbase_binary';
 
 class MultiDecoderToolCcitt2 extends AbstractMultiDecoderTool {
-  MultiDecoderToolCcitt2({Key key, int id, String name, Map<String, dynamic> options, BuildContext context})
+  MultiDecoderToolCcitt2({
+    Key? key,
+    required int id,
+    required String name,
+    required Map<String, Object?> options,
+    required BuildContext context})
       : super(
             key: key,
             id: id,
             name: name,
             internalToolName: MDT_INTERNALNAMES_CCITT2,
             onDecode: (String input, String key) {
-              if (options[MDT_CCITT2_OPTION_MODE] == MDT_CCITT2_OPTION_MODE_BINARY) {
-                return decodeTeletypewriter(
-                    textToBinaryList(input).map((value) {
-                      return int.tryParse(convertBase(value, 2, 10));
-                    }).toList(),
+              if (checkStringFormatOrDefaultOption(MDT_INTERNALNAMES_CCITT2, options, MDT_CCITT2_OPTION_MODE) == MDT_CCITT2_OPTION_MODE_BINARY) {
+                var intValues = textToBinaryList(input).map((value) {
+                    return int.tryParse(convertBase(value, 2, 10));
+                  }).toList();
+                return decodeTeletypewriter(intValues.whereType<int>().toList(),
                     TeletypewriterCodebook.CCITT_ITA2_1931);
-              } else
+              } else {
                 return decodeTeletypewriter(textToIntList(input), TeletypewriterCodebook.CCITT_ITA2_1931);
+              }
             },
             options: options,
             configurationWidget: MultiDecoderToolConfiguration(widgets: {
-              MDT_CCITT2_OPTION_MODE: GCWStatefulDropDown(
-                value: options[MDT_CCITT2_OPTION_MODE],
+              MDT_CCITT2_OPTION_MODE: GCWStatefulDropDown<String>(
+                value: checkStringFormatOrDefaultOption(MDT_INTERNALNAMES_CCITT2, options, MDT_CCITT2_OPTION_MODE),
                 onChanged: (newValue) {
                   options[MDT_CCITT2_OPTION_MODE] = newValue;
                 },

@@ -7,6 +7,8 @@ import 'package:gc_wizard/tools/crypto_and_encodings/kamasutra/logic/kamasutra.d
 import 'package:gc_wizard/utils/alphabets.dart';
 
 class Kamasutra extends StatefulWidget {
+  const Kamasutra({Key? key}) : super(key: key);
+
   @override
   KamasutraState createState() => KamasutraState();
 }
@@ -50,7 +52,7 @@ class KamasutraState extends State<Kamasutra> {
     );
   }
 
-  _calculateOutput() {
+  String _calculateOutput() {
     var alphabet = _currentAlphabetMode == GCWSwitchPosition.left ? alphabet_AZString : _currentAlphabet;
     return encryptKamasutra(_currentInput, alphabet);
   }

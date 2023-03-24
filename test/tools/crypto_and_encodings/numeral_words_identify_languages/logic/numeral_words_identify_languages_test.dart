@@ -8,7 +8,7 @@ void main(){
   // bool decodeModeEntireParts = true => decodeMode = false
 
     group("NumeralWords.decodeNumeralwordsEntireWordsDEU:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
 
       {'input' : 'huit dwa seize six one two eins',
         'language' : NumeralWordsLanguage.ALL,
@@ -57,7 +57,8 @@ void main(){
           NumeralWordsDecodeOutput('', 'zero', 'numeralwords_language_meg'),
           NumeralWordsDecodeOutput('', 'zero', 'common_language_polish'),
           NumeralWordsDecodeOutput('', 'zero', 'common_language_portuguese'),
-          NumeralWordsDecodeOutput('2', 'er', 'common_language_chinese'),
+          NumeralWordsDecodeOutput('', 'zero', 'common_language_romanian'),
+          NumeralWordsDecodeOutput('2', 'er', 'numeralwords_language_chi'),
           NumeralWordsDecodeOutput('5', 'o', 'common_language_sino_korean'),
 
         ]
@@ -86,21 +87,21 @@ void main(){
       },
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, language: ${elem['language']}, decodeMode: ${elem['decodeMode']}', () {
-        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'], decodeModeWholeWords: elem['decodeMode']);
-        var length = elem['expectedOutput'].length;
+        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
+        var length = (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i].number, elem['expectedOutput'][i].number);
-          expect(_actual[i].numWord, elem['expectedOutput'][i].numWord);
-          expect(_actual[i].language, elem['expectedOutput'][i].language);
+          expect(_actual[i].number, (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>)[i].number);
+          expect(_actual[i].numWord, (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>)[i].numWord);
+          expect(_actual[i].language, (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>)[i].language);
         }
       });
-    });
+    }
   });
 
   group("NumeralWords.decodeNumeralwordsEntireWordsAsParts:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
        {'input' : 'huit cinq seize sis one two eins', 'language' : NumeralWordsLanguage.ALL, 'decodeMode' : false,
          'expectedOutput' : [
            NumeralWordsDecodeOutput('8', 'huit', 'common_language_french'),
@@ -146,33 +147,106 @@ void main(){
       },
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, language: ${elem['language']}, decodeMode: ${elem['decodeMode']}', () {
-        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'], decodeModeWholeWords: elem['decodeMode']);
-        var length = elem['expectedOutput'].length;
+        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
+        var length = (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i].number, elem['expectedOutput'][i].number);
-          expect(_actual[i].numWord, elem['expectedOutput'][i].numWord);
-          expect(_actual[i].language, elem['expectedOutput'][i].language);
+          expect(_actual[i].number, (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>)[i].number);
+          expect(_actual[i].numWord, (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>)[i].numWord);
+          expect(_actual[i].language, (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>)[i].language);
         }
       });
-    });
+    }
   });
 
   group("NumeralWords.decodeNumeralwordsWordParts:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : 'Susi wacht einsam während Vater und Mutter zweifelnd Sand sieben. Null Bock, denkt sich Jörg. Ich lasse fünfe grade sein und kegel lieber alle Neune!',
         'language' : NumeralWordsLanguage.ALL,
         'decodeMode' : false,
         'expectedOutput' : [
+          NumeralWordsDecodeOutput('4', 'si', 'numeralwords_language_chi'),
+          NumeralWordsDecodeOutput('', 'si', 'common_language_thai_rtgs'),
+          NumeralWordsDecodeOutput('2', 'i', 'common_language_sino_korean'),
+          NumeralWordsDecodeOutput('1', 'wa', 'numeralwords_language_kli'),
           NumeralWordsDecodeOutput('8', 'acht', 'common_language_german'),
+          NumeralWordsDecodeOutput('', 'acht', 'common_language_dutch'),
           NumeralWordsDecodeOutput('1', 'eins', 'common_language_german'),
+          NumeralWordsDecodeOutput('2', 'i', 'common_language_sino_korean'),
+          NumeralWordsDecodeOutput('3', 'sam', 'common_language_sino_korean'),
+          NumeralWordsDecodeOutput('4', 'sa', 'common_language_sino_korean'),
+          NumeralWordsDecodeOutput('', 'sam', 'common_language_thai_rtgs'),
+          NumeralWordsDecodeOutput('1', 'wa', 'numeralwords_language_kli'),
+          NumeralWordsDecodeOutput('1', 'ae', 'numeralwords_language_sco'),
+          NumeralWordsDecodeOutput('2', 're', 'numeralwords_language_loj'),
+          NumeralWordsDecodeOutput('1', 'en', 'common_language_danish'),
+          NumeralWordsDecodeOutput('', 'en', 'common_language_norwegian'),
+          NumeralWordsDecodeOutput('', 'en', 'common_language_swedish'),
+          NumeralWordsDecodeOutput('2', 'dva', 'common_language_czech'),
+          NumeralWordsDecodeOutput('', 'dva', 'common_language_slovak'),
+          NumeralWordsDecodeOutput('1', 'at', 'numeralwords_language_dot'),
+          NumeralWordsDecodeOutput('2', 'er', 'numeralwords_language_chi'),
+          NumeralWordsDecodeOutput('1', 'un', 'common_language_french'),
+          NumeralWordsDecodeOutput('5', 'mu', 'numeralwords_language_loj'),
+          NumeralWordsDecodeOutput('2', 'er', 'numeralwords_language_chi'),
           NumeralWordsDecodeOutput('2', 'zwei', 'common_language_german'),
+          NumeralWordsDecodeOutput('2', 'i', 'common_language_sino_korean'),
+          NumeralWordsDecodeOutput('3', 'san', 'numeralwords_language_chi'),
+          NumeralWordsDecodeOutput('', 'san', 'numeralwords_language_jap'),
+          NumeralWordsDecodeOutput('4', 'sa', 'common_language_sino_korean'),
+          NumeralWordsDecodeOutput('4', 'si', 'numeralwords_language_chi'),
           NumeralWordsDecodeOutput('7', 'sieben', 'common_language_german'),
+          NumeralWordsDecodeOutput('', 'si', 'common_language_thai_rtgs'),
+          NumeralWordsDecodeOutput('2', 'i', 'common_language_sino_korean'),
+          NumeralWordsDecodeOutput('1', 'en', 'common_language_danish'),
+          NumeralWordsDecodeOutput('', 'en', 'common_language_norwegian'),
+          NumeralWordsDecodeOutput('', 'en', 'common_language_swedish'),
           NumeralWordsDecodeOutput('0', 'null', 'common_language_german'),
+          NumeralWordsDecodeOutput('', 'nul', 'common_language_danish'),
+          NumeralWordsDecodeOutput('', 'nul', 'common_language_dutch'),
+          NumeralWordsDecodeOutput('', 'nul', 'common_language_norwegian'),
+          NumeralWordsDecodeOutput('', 'nul', 'common_language_russian'),
+          NumeralWordsDecodeOutput('5', 'o', 'common_language_sino_korean'),
+          NumeralWordsDecodeOutput('1', 'en', 'common_language_danish'),
+          NumeralWordsDecodeOutput('', 'en', 'common_language_norwegian'),
+          NumeralWordsDecodeOutput('', 'en', 'common_language_swedish'),
+          NumeralWordsDecodeOutput('4', 'si', 'numeralwords_language_chi'),
+          NumeralWordsDecodeOutput('', 'si', 'common_language_thai_rtgs'),
+          NumeralWordsDecodeOutput('2', 'i', 'common_language_sino_korean'),
+          NumeralWordsDecodeOutput('5', 'o', 'common_language_sino_korean'),
+          NumeralWordsDecodeOutput('2', 'er', 'numeralwords_language_chi'),
+          NumeralWordsDecodeOutput('2', 'i', 'common_language_sino_korean'),
+          NumeralWordsDecodeOutput('3', 'se', 'common_language_korean'),
+          NumeralWordsDecodeOutput('', 'se', 'numeralwords_language_per'),
           NumeralWordsDecodeOutput('5', 'fuenf', 'common_language_german'),
+          NumeralWordsDecodeOutput('1', 'en', 'common_language_danish'),
+          NumeralWordsDecodeOutput('', 'en', 'common_language_norwegian'),
+          NumeralWordsDecodeOutput('', 'en', 'common_language_swedish'),
           NumeralWordsDecodeOutput('°', 'grad', 'common_language_german'),
-          NumeralWordsDecodeOutput('9', 'neun', 'common_language_german')]},
+          NumeralWordsDecodeOutput('', 'grad', 'common_language_danish'),
+          NumeralWordsDecodeOutput('', 'grad', 'common_language_norwegian'),
+          NumeralWordsDecodeOutput('', 'grad', 'common_language_romanian'),
+          NumeralWordsDecodeOutput('', 'grad', 'common_language_russian'),
+          NumeralWordsDecodeOutput('', 'grad', 'common_language_swedish'),
+          NumeralWordsDecodeOutput('grad', 'grad', 'common_language_volapuek'),
+          NumeralWordsDecodeOutput('6', 'sei', 'numeralwords_language_bas'),
+          NumeralWordsDecodeOutput('', 'sei', 'common_language_italian'),
+          NumeralWordsDecodeOutput('3', 'se', 'common_language_korean'),
+          NumeralWordsDecodeOutput('3', 'se', 'numeralwords_language_per'),
+          NumeralWordsDecodeOutput('2', 'i', 'common_language_sino_korean'),
+          NumeralWordsDecodeOutput('1', 'un', 'common_language_french'),
+          NumeralWordsDecodeOutput('2', 'i', 'common_language_sino_korean'),
+          NumeralWordsDecodeOutput('2', 'er', 'numeralwords_language_chi'),
+          NumeralWordsDecodeOutput('1', 'en', 'common_language_danish'),
+          NumeralWordsDecodeOutput('', 'en', 'common_language_norwegian'),
+          NumeralWordsDecodeOutput('', 'en', 'common_language_swedish'),
+          NumeralWordsDecodeOutput('9', 'neun', 'common_language_german'),
+          NumeralWordsDecodeOutput('4', 'ne', 'common_language_korean'),
+          NumeralWordsDecodeOutput('1', 'un', 'common_language_french'),
+          NumeralWordsDecodeOutput('', 'une', 'common_language_french'),
+          NumeralWordsDecodeOutput('4', 'ne', 'common_language_korean'),
+        ]},
 
        {'input' : 'Hui trällert Balthasar. Null Bock auf nichts sondern den Sessel hüten um nicht die gute Laune zu verlieren. Und wahrlich, das ist ok.', 'language' : NumeralWordsLanguage.ALL, 'decodeMode' : false,
          'expectedOutput' : [
@@ -181,19 +255,19 @@ void main(){
            NumeralWordsDecodeOutput('1', 'ae', 'numeralwords_language_sco'),
            NumeralWordsDecodeOutput('2', 'er', 'numeralwords_language_chi'),
            NumeralWordsDecodeOutput('8', 'ba', 'numeralwords_language_chi'),
-           NumeralWordsDecodeOutput('1', 'bal', 'common_language_volapuek'),
            NumeralWordsDecodeOutput('3', 'ba', 'numeralwords_language_vie'),
+           NumeralWordsDecodeOutput('1', 'bal', 'common_language_volapuek'),
            NumeralWordsDecodeOutput('5', 'ha', 'common_language_thai_rtgs'),
            NumeralWordsDecodeOutput('4', 'sa', 'common_language_sino_korean'),
            NumeralWordsDecodeOutput('0', 'null', 'common_language_german'),
-           NumeralWordsDecodeOutput('', 'nul', 'common_language_dutch'),
            NumeralWordsDecodeOutput('', 'nul', 'common_language_danish'),
+           NumeralWordsDecodeOutput('', 'nul', 'common_language_dutch'),
            NumeralWordsDecodeOutput('', 'nul', 'common_language_norwegian'),
            NumeralWordsDecodeOutput('', 'nul', 'common_language_russian'),
            NumeralWordsDecodeOutput('5', 'o', 'common_language_sino_korean'),
            NumeralWordsDecodeOutput('9', 'ni', 'common_language_danish'),
-           NumeralWordsDecodeOutput('', 'ni', 'common_language_norwegian'),
            NumeralWordsDecodeOutput('2', 'ni', 'numeralwords_language_jap'),
+           NumeralWordsDecodeOutput('', 'ni', 'common_language_norwegian'),
            NumeralWordsDecodeOutput('2', 'i', 'common_language_sino_korean'),
            NumeralWordsDecodeOutput('9', 'so', 'numeralwords_language_loj'),
            NumeralWordsDecodeOutput('100', 'on', 'common_language_korean'),
@@ -203,9 +277,9 @@ void main(){
            NumeralWordsDecodeOutput('1', 'en', 'common_language_danish'),
            NumeralWordsDecodeOutput('', 'en', 'common_language_norwegian'),
            NumeralWordsDecodeOutput('', 'en', 'common_language_swedish'),
-           NumeralWordsDecodeOutput('3', 'se', 'common_language_korean'),
            NumeralWordsDecodeOutput('6', 'ses', 'common_language_esperanto'),
-           NumeralWordsDecodeOutput('', 'se', 'numeralwords_language_per'),
+           NumeralWordsDecodeOutput('3', 'se', 'common_language_korean'),
+           NumeralWordsDecodeOutput('3', 'se', 'numeralwords_language_per'),
            NumeralWordsDecodeOutput('3', 'se', 'common_language_korean'),
            NumeralWordsDecodeOutput('', 'se', 'numeralwords_language_per'),
            NumeralWordsDecodeOutput('10', 'ten', 'common_language_english'),
@@ -214,8 +288,8 @@ void main(){
            NumeralWordsDecodeOutput('', 'en', 'common_language_swedish'),
            NumeralWordsDecodeOutput('1', 'um', 'common_language_portuguese'),
            NumeralWordsDecodeOutput('9', 'ni', 'common_language_danish'),
-           NumeralWordsDecodeOutput('', 'ni', 'common_language_norwegian'),
            NumeralWordsDecodeOutput('2', 'ni', 'numeralwords_language_jap'),
+           NumeralWordsDecodeOutput('', 'ni', 'common_language_norwegian'),
            NumeralWordsDecodeOutput('2', 'i', 'common_language_sino_korean'),
            NumeralWordsDecodeOutput('2', 'i', 'common_language_sino_korean'),
            NumeralWordsDecodeOutput('9', 'gu', 'common_language_sino_korean'),
@@ -232,39 +306,42 @@ void main(){
            NumeralWordsDecodeOutput('', 'en', 'common_language_norwegian'),
            NumeralWordsDecodeOutput('', 'en', 'common_language_swedish'),
            NumeralWordsDecodeOutput('1', 'un', 'common_language_french'),
-           NumeralWordsDecodeOutput('2', 'dwa', 'common_language_polish'),
+           NumeralWordsDecodeOutput('2', 'dwa', 'common_language_bulgarian'),
+           NumeralWordsDecodeOutput('', 'dwa', 'common_language_polish'),
            NumeralWordsDecodeOutput('', 'dwa', 'common_language_russian'),
-           NumeralWordsDecodeOutput('', 'dwa', 'common_language_bulgarian'),
+           NumeralWordsDecodeOutput('1', 'wa', 'numeralwords_language_kli'),
            NumeralWordsDecodeOutput('2', 'i', 'common_language_sino_korean'),
            NumeralWordsDecodeOutput('4', 'si', 'numeralwords_language_chi'),
            NumeralWordsDecodeOutput('', 'si', 'common_language_thai_rtgs'),
            NumeralWordsDecodeOutput('2', 'i', 'common_language_sino_korean'),
-           NumeralWordsDecodeOutput('100', 'sto', 'common_language_polish'),
+           NumeralWordsDecodeOutput('100', 'sto', 'common_language_bulgarian'),
+           NumeralWordsDecodeOutput('', 'sto', 'common_language_czech'),
+           NumeralWordsDecodeOutput('', 'sto', 'common_language_polish'),
            NumeralWordsDecodeOutput('', 'sto', 'common_language_russian'),
-           NumeralWordsDecodeOutput('', 'sto', 'common_language_bulgarian'),
+           NumeralWordsDecodeOutput('', 'sto', 'common_language_slovak'),
            NumeralWordsDecodeOutput('2', 'to', 'common_language_danish'),
            NumeralWordsDecodeOutput('', 'to', 'common_language_norwegian'),
-           NumeralWordsDecodeOutput('5', 'o', 'common_language_sino_korean'),
            NumeralWordsDecodeOutput('8', 'ok', 'common_language_esperanto'),
+           NumeralWordsDecodeOutput('5', 'o', 'common_language_sino_korean'),
          ]
        },
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, language: ${elem['language']}, decodeMode: ${elem['decodeMode']}', () {
-        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'], decodeModeWholeWords: elem['decodeMode']);
-        var length = elem['expectedOutput'].length;
+        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
+        var length = (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i].number, elem['expectedOutput'][i].number);
-          expect(_actual[i].numWord, elem['expectedOutput'][i].numWord);
-          expect(_actual[i].language, elem['expectedOutput'][i].language);
+          expect(_actual[i].number, (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>)[i].number);
+          expect(_actual[i].numWord, (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>)[i].numWord);
+          expect(_actual[i].language, (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>)[i].language);
         }
       });
-    });
+    }
   });
 
   group("NumeralWords.GC97P76:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {
         'input': 'hat nocht arat hai bir dau mann satu hamar',
         'language': NumeralWordsLanguage.ALL,
@@ -283,22 +360,22 @@ void main(){
       },
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test(
           'input: ${elem['input']}, language: ${elem['language']}, decodeMode: ${elem['decodeMode']}', () {
-        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'], decodeModeWholeWords: elem['decodeMode']);
-        var length = elem['expectedOutput'].length;
+        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
+        var length = (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i].number, elem['expectedOutput'][i].number);
-          expect(_actual[i].numWord, elem['expectedOutput'][i].numWord);
-          expect(_actual[i].language, elem['expectedOutput'][i].language);
+          expect(_actual[i].number, (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>)[i].number);
+          expect(_actual[i].numWord, (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>)[i].numWord);
+          expect(_actual[i].language, (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>)[i].language);
         }
       });
-    });
+    }
   });
 
   group("NumeralWords.Klingon:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {// GC8J08H
         'input': "north         cha'maH-jav         cha' wa'vatlh 'ej loSmaH-Hut       chan         nineteen        pagh-wej-chorgh",
         'language': NumeralWordsLanguage.ALL,
@@ -400,22 +477,22 @@ void main(){
       },
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test(
           'input: ${elem['input']}, language: ${elem['language']}, decodeMode: ${elem['decodeMode']}', () {
-        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'], decodeModeWholeWords: elem['decodeMode']);
-        var length = elem['expectedOutput'].length;
+        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
+        var length = (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i].number, elem['expectedOutput'][i].number);
-          expect(_actual[i].numWord, elem['expectedOutput'][i].numWord);
-          expect(_actual[i].language, elem['expectedOutput'][i].language);
+          expect(_actual[i].number, (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>)[i].number);
+          expect(_actual[i].numWord, (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>)[i].numWord);
+          expect(_actual[i].language, (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>)[i].language);
         }
       });
-    });
+    }
   });
 
   group("NumeralWords.unicode languages:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {
         'input': 'шестнадцать 十八 じゅうしち 이십 열다섯 百 единайсет สามสิบ',
         'language': NumeralWordsLanguage.ALL,
@@ -453,18 +530,18 @@ void main(){
       },
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test(
           'input: ${elem['input']}, language: ${elem['language']}, decodeMode: ${elem['decodeMode']}', () {
-        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'], decodeModeWholeWords: elem['decodeMode']);
-        var length = elem['expectedOutput'].length;
+        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
+        var length = (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i].number, elem['expectedOutput'][i].number);
-          expect(_actual[i].numWord, elem['expectedOutput'][i].numWord);
-          expect(_actual[i].language, elem['expectedOutput'][i].language);
+          expect(_actual[i].number, (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>)[i].number);
+          expect(_actual[i].numWord, (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>)[i].numWord);
+          expect(_actual[i].language, (elem['expectedOutput'] as List<NumeralWordsDecodeOutput>)[i].language);
         }
       });
-    });
+    }
   });
   
 }

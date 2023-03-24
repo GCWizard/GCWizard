@@ -5,19 +5,20 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitution.dart';
+import 'package:gc_wizard/tools/formula_solver/persistence/model.dart';
 
 class Substitution extends StatefulWidget {
-  final String input;
-  final Map<String, String> substitutions;
+  final String? input;
+  final Map<String, String>? substitutions;
 
-  const Substitution({Key key, this.input, this.substitutions}) : super(key: key);
+  const Substitution({Key? key, this.input, this.substitutions}) : super(key: key);
 
   @override
   SubstitutionState createState() => SubstitutionState();
 }
 
 class SubstitutionState extends State<Substitution> {
-  var _inputController;
+  late TextEditingController _inputController;
 
   var _currentInput = '';
   var _currentFromInput = '';
@@ -25,7 +26,7 @@ class SubstitutionState extends State<Substitution> {
   var _currentCaseSensitive = false;
 
   var _currentIdCount = 0;
-  var _currentSubstitutions = <int, Map<String, String>>{};
+  final _currentSubstitutions = <int, Map<String, String>>{};
 
   String _output = '';
 
@@ -34,13 +35,13 @@ class SubstitutionState extends State<Substitution> {
     super.initState();
 
     if (widget.substitutions != null) {
-      widget.substitutions.entries.forEach((element) {
+      for (var element in widget.substitutions!.entries) {
         _currentSubstitutions.putIfAbsent(++_currentIdCount, () => {element.key: element.value});
-      });
+      }
     }
 
     if (widget.input != null) {
-      _currentInput = widget.input;
+      _currentInput = widget.input!;
       _calculateOutput();
     }
 
@@ -54,24 +55,26 @@ class SubstitutionState extends State<Substitution> {
     super.dispose();
   }
 
-  _addEntry(String currentFromInput, String currentToInput, BuildContext context) {
-    if (currentFromInput.length > 0)
+  void _addEntry(String currentFromInput, String currentToInput, FormulaValueType type, BuildContext context) {
+    if (currentFromInput.isNotEmpty) {
       _currentSubstitutions.putIfAbsent(++_currentIdCount, () => {currentFromInput: currentToInput});
+    }
     _calculateOutput();
   }
 
-  _updateNewEntry(String currentFromInput, String currentToInput, BuildContext context) {
+  void _updateNewEntry(String currentFromInput, String currentToInput, BuildContext context) {
     _currentFromInput = currentFromInput;
     _currentToInput = currentToInput;
     _calculateOutput();
   }
 
-  _updateEntry(dynamic id, String key, String value) {
+  void _updateEntry(Object id, String key, String value, FormulaValueType type) {
+    if (id is! int) return;
     _currentSubstitutions[id] = {key: value};
     _calculateOutput();
   }
 
-  _removeEntry(dynamic id, BuildContext context) {
+  void _removeEntry(Object id, BuildContext context) {
     _currentSubstitutions.remove(id);
     _calculateOutput();
   }
@@ -115,13 +118,13 @@ class SubstitutionState extends State<Substitution> {
         onRemoveEntry: _removeEntry);
   }
 
-  _calculateOutput() {
+  void _calculateOutput() {
     var _substitutions = <String, String>{};
-    _currentSubstitutions.entries.forEach((entry) {
+    for (var entry in _currentSubstitutions.entries) {
       _substitutions.putIfAbsent(entry.value.keys.first, () => entry.value.values.first);
-    });
+    }
 
-    if (_currentFromInput != null && _currentFromInput.length > 0 && _currentToInput != null) {
+    if (_currentFromInput.isNotEmpty) {
       _substitutions.putIfAbsent(_currentFromInput, () => _currentToInput);
     }
 

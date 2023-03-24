@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_check.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_containsdigits.dart';
@@ -6,21 +7,21 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequenceFermatCheckNumber extends NumberSequenceCheckNumber {
-  NumberSequenceFermatCheckNumber() : super(mode: NumberSequencesMode.FERMAT, maxIndex: 18);
+  const NumberSequenceFermatCheckNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.FERMAT, maxIndex: 18);
 }
 
 class NumberSequenceFermatDigits extends NumberSequenceDigits {
-  NumberSequenceFermatDigits() : super(mode: NumberSequencesMode.FERMAT, maxDigits: 1111);
+  const NumberSequenceFermatDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.FERMAT, maxDigits: 1111);
 }
 
 class NumberSequenceFermatRange extends NumberSequenceRange {
-  NumberSequenceFermatRange() : super(mode: NumberSequencesMode.FERMAT, maxIndex: 18);
+  const NumberSequenceFermatRange({Key? key}) : super(key: key, mode: NumberSequencesMode.FERMAT, maxIndex: 18);
 }
 
 class NumberSequenceFermatNthNumber extends NumberSequenceNthNumber {
-  NumberSequenceFermatNthNumber() : super(mode: NumberSequencesMode.FERMAT, maxIndex: 18);
+  const NumberSequenceFermatNthNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.FERMAT, maxIndex: 18);
 }
 
 class NumberSequenceFermatContainsDigits extends NumberSequenceContainsDigits {
-  NumberSequenceFermatContainsDigits() : super(mode: NumberSequencesMode.FERMAT, maxIndex: 10);
+  const NumberSequenceFermatContainsDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.FERMAT, maxIndex: 10);
 }

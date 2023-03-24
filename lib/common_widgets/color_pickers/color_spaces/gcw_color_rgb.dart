@@ -1,10 +1,10 @@
 part of 'package:gc_wizard/common_widgets/color_pickers/gcw_colors.dart';
 
 class _GCWColorRGB extends StatefulWidget {
-  final Function onChanged;
-  final RGB color;
+  final void Function(RGB) onChanged;
+  final RGB? color;
 
-  const _GCWColorRGB({Key key, this.onChanged, this.color}) : super(key: key);
+  const _GCWColorRGB({Key? key, required this.onChanged, this.color}) : super(key: key);
 
   @override
   _GCWColorRGBState createState() => _GCWColorRGBState();
@@ -18,9 +18,9 @@ class _GCWColorRGBState extends State<_GCWColorRGB> {
   @override
   Widget build(BuildContext context) {
     if (widget.color != null) {
-      _currentRed = widget.color.red;
-      _currentGreen = widget.color.green;
-      _currentBlue = widget.color.blue;
+      _currentRed = widget.color!.red;
+      _currentGreen = widget.color!.green;
+      _currentBlue = widget.color!.blue;
     }
 
     return Column(
@@ -62,7 +62,7 @@ class _GCWColorRGBState extends State<_GCWColorRGB> {
     );
   }
 
-  _emitOnChange() {
+  void _emitOnChange() {
     widget.onChanged(RGB(_currentRed, _currentGreen, _currentBlue));
   }
 }

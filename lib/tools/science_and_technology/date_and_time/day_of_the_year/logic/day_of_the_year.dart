@@ -13,15 +13,12 @@ class DayOfTheYearOutput {
 }
 
 DayOfTheYearOutput calculateDayInfos(int year, int day) {
-  if (year == null || day == null) return null;
   var date = DateTime(year, 1, day);
 
   return calculateDateInfos(date);
 }
 
 DayOfTheYearOutput calculateDateInfos(DateTime date) {
-  if (date == null) return null;
-
   return DayOfTheYearOutput(date, dayNumber(date), date.weekday, _weekdayAlternate(date.weekday), isoWeekOfYear(date),
       alternateWeekOfYear(date));
 }
@@ -32,13 +29,10 @@ int _weekdayAlternate(int weekday) {
 }
 
 int isoWeekOfYear(DateTime date) {
-  if (date == null) return null;
   return date.weekOfYear;
 }
 
 int alternateWeekOfYear(DateTime date) {
-  if (date == null) return null;
-
   // Get the monday of week 1
   final DateTime mondayWeek1 = _alternateWeek1Monday(date);
 
@@ -72,26 +66,20 @@ int alternateWeekOfYear(DateTime date) {
   return week;
 }
 
-/**
- * Calculates the ordinal date
- * The ordinal date is the number of days since December 31st the previous year.
- * January 1st has the ordinal date 1
- * December 31st has the ordinal date 365, or 366 in leap years
- */
+/// Calculates the ordinal date
+/// The ordinal date is the number of days since December 31st the previous year.
+/// January 1st has the ordinal date 1
+/// December 31st has the ordinal date 365, or 366 in leap years
 int _ordinalDate(DateTime date) {
   return date.ordinalDate;
 }
 
-/**
- * Check if this date is on a leap year
- */
+/// Check if this date is on a leap year
 bool _isLeapYear(DateTime date) {
   return date.isLeapYear;
 }
 
-/**
- * Gets the date of the monday of Alternate week 1 this year
- */
+/// Gets the date of the monday of Alternate week 1 this year
 DateTime _alternateWeek1Monday(DateTime date) {
   final jan1 = DateTime(date.year, 1, 1); // Jan 1 is always in week 1
 

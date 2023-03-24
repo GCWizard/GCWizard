@@ -9,16 +9,18 @@ import 'package:gc_wizard/tools/science_and_technology/combinatorics/permutation
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class CombinatoricsSelection extends GCWSelection {
+  const CombinatoricsSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(Combination()),
-        className(Permutation()),
-        className(CombinationPermutation()),
+        className(const Combination()),
+        className(const Permutation()),
+        className(const CombinationPermutation()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

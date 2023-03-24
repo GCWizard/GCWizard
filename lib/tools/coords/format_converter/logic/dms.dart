@@ -1,7 +1,7 @@
-import 'package:gc_wizard/tools/coords/coordinate_format_parser/logic/latlon.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_parser.dart';
 import 'package:gc_wizard/tools/coords/format_converter/logic/dec.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coord_format_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
+import 'package:gc_wizard/utils/data_type_utils/double_type_utils.dart';
 import 'package:latlong2/latlong.dart';
 
 LatLng dmsToLatLon(DMS dms) {
@@ -33,7 +33,7 @@ DMS _DECToDMS(DEC coord) {
 }
 
 DMSPart doubleToDMSPart(double value) {
-  var _sign = coordinateSign(value);
+  var _sign = sign(value);
 
   int _degrees = value.abs().floor();
   double _minutesD = (value.abs() - _degrees) * 60.0;
@@ -48,37 +48,67 @@ DMS normalize(DMS coord) {
   return _DECToDMS(_DMSToDEC(coord));
 }
 
-DMS parseDMS(String input, {wholeString = false}) {
-  input = prepareInput(input, wholeString: wholeString);
-  if (input == null) return null;
+DMS? parseDMS(String input, {bool wholeString = false}) {
+  var _input = prepareInput(input, wholeString: wholeString);
+  if (_input == null) return null;
 
-  var parsedTrailingSigns = _parseDMSTrailingSigns(input);
+  var parsedTrailingSigns = _parseDMSTrailingSigns(_input);
   if (parsedTrailingSigns != null) return parsedTrailingSigns;
 
   RegExp regex = RegExp(PATTERN_DMS + regexEnd, caseSensitive: false);
-  if (regex.hasMatch(input)) {
-    var matches = regex.firstMatch(input);
+  if (regex.hasMatch(_input)) {
+    RegExpMatch matches = regex.firstMatch(_input)!;
 
-    var latSign = sign(matches.group(1));
-    var latDegrees = int.tryParse(matches.group(2));
-    var latMinutes = int.tryParse(matches.group(3));
-    var latSeconds = 0.0;
-    if (matches.group(5) != null) {
-      latSeconds = double.parse('${matches.group(4)}.${matches.group(5)}');
-    } else {
-      latSeconds = double.parse('${matches.group(4)}.0');
+    if (matches.group(2) == null
+        || matches.group(3) == null
+        || matches.group(4) == null
+    ) {
+      return null;
     }
+
+    var latSign = latLngPartSign(matches.group(1));
+    var latDegrees = int.tryParse(matches.group(2)!);
+    var latMinutes = int.tryParse(matches.group(3)!);
+    if (latDegrees == null || latMinutes == null) {
+      return null;
+    }
+
+    double? latSeconds = 0.0;
+    if (matches.group(5) != null) {
+      latSeconds = double.tryParse('${matches.group(4)}.${matches.group(5)}');
+    } else {
+      latSeconds = double.tryParse('${matches.group(4)}.0');
+    }
+    if (latSeconds == null) {
+      return null;
+    }
+
     var lat = DMSLatitude(latSign, latDegrees, latMinutes, latSeconds);
 
-    var lonSign = sign(matches.group(6));
-    var lonDegrees = int.tryParse(matches.group(7));
-    var lonMinutes = int.tryParse(matches.group(8));
-    var lonSeconds = 0.0;
-    if (matches.group(10) != null) {
-      lonSeconds = double.parse('${matches.group(9)}.${matches.group(10)}');
-    } else {
-      lonSeconds = double.parse('${matches.group(9)}.0');
+    if (matches.group(7) == null
+        || matches.group(8) == null
+        || matches.group(9) == null
+    ) {
+      return null;
     }
+
+    var lonSign = latLngPartSign(matches.group(6));
+    var lonDegrees = int.tryParse(matches.group(7)!);
+    var lonMinutes = int.tryParse(matches.group(8)!);
+    if (lonDegrees == null || lonMinutes == null) {
+      return null;
+    }
+
+    double? lonSeconds = 0.0;
+    if (matches.group(10) != null) {
+      lonSeconds = double.tryParse('${matches.group(9)}.${matches.group(10)}');
+    } else {
+      lonSeconds = double.tryParse('${matches.group(9)}.0');
+    }
+    if (lonSeconds == null) {
+      return null;
+    }
+
     var lon = DMSLongitude(lonSign, lonDegrees, lonMinutes, lonSeconds);
 
     return DMS(lat, lon);
@@ -87,31 +117,61 @@ DMS parseDMS(String input, {wholeString = false}) {
   return null;
 }
 
-DMS _parseDMSTrailingSigns(String text) {
+DMS? _parseDMSTrailingSigns(String text) {
   RegExp regex = RegExp(PATTERN_DMS_TRAILINGSIGN + regexEnd, caseSensitive: false);
   if (regex.hasMatch(text)) {
-    var matches = regex.firstMatch(text);
+    RegExpMatch matches = regex.firstMatch(text)!;
 
-    var latSign = sign(matches.group(5));
-    var latDegrees = int.tryParse(matches.group(1));
-    var latMinutes = int.tryParse(matches.group(2));
-    var latSeconds = 0.0;
-    if (matches.group(4) != null) {
-      latSeconds = double.parse('${matches.group(3)}.${matches.group(4)}');
-    } else {
-      latSeconds = double.parse('${matches.group(3)}.0');
+    if (matches.group(2) == null
+        || matches.group(3) == null
+        || matches.group(5) == null
+    ) {
+      return null;
     }
+
+    var latSign = latLngPartSign(matches.group(5));
+    var latDegrees = int.tryParse(matches.group(1)!);
+    var latMinutes = int.tryParse(matches.group(2)!);
+    if (latDegrees == null || latMinutes == null) {
+      return null;
+    }
+
+    double? latSeconds = 0.0;
+    if (matches.group(4) != null) {
+      latSeconds = double.tryParse('${matches.group(3)}.${matches.group(4)}');
+    } else {
+      latSeconds = double.tryParse('${matches.group(3)}.0');
+    }
+    if (latSeconds == null) {
+      return null;
+    }
+
     var lat = DMSLatitude(latSign, latDegrees, latMinutes, latSeconds);
 
-    var lonSign = sign(matches.group(10));
-    var lonDegrees = int.tryParse(matches.group(6));
-    var lonMinutes = int.tryParse(matches.group(7));
-    var lonSeconds = 0.0;
-    if (matches.group(9) != null) {
-      lonSeconds = double.parse('${matches.group(8)}.${matches.group(9)}');
-    } else {
-      lonSeconds = double.parse('${matches.group(8)}.0');
+    if (matches.group(7) == null
+        || matches.group(8) == null
+        || matches.group(10) == null
+    ) {
+      return null;
     }
+
+    var lonSign = latLngPartSign(matches.group(10));
+    var lonDegrees = int.tryParse(matches.group(6)!);
+    var lonMinutes = int.tryParse(matches.group(7)!);
+    if (lonDegrees == null || lonMinutes == null) {
+      return null;
+    }
+
+    double? lonSeconds = 0.0;
+    if (matches.group(9) != null) {
+      lonSeconds = double.tryParse('${matches.group(8)}.${matches.group(9)}');
+    } else {
+      lonSeconds = double.tryParse('${matches.group(8)}.0');
+    }
+    if (lonSeconds == null) {
+      return null;
+    }
+
     var lon = DMSLongitude(lonSign, lonDegrees, lonMinutes, lonSeconds);
 
     return DMS(lat, lon);
@@ -120,7 +180,7 @@ DMS _parseDMSTrailingSigns(String text) {
   return null;
 }
 
-final PATTERN_DMS_TRAILINGSIGN = '^\\s*?'
+const PATTERN_DMS_TRAILINGSIGN = '^\\s*?'
     '(\\d{1,3})\\s*?[\\s°]\\s*?' //lat degrees + symbol
     '([0-5]?\\d)\\s*?[\\s\'´′`‘’]\\s*?' //lat minutes + symbol
     '([0-5]?\\d)\\s*?' //lat seconds
@@ -138,7 +198,7 @@ final PATTERN_DMS_TRAILINGSIGN = '^\\s*?'
     '([EWO]$LETTER*?|[\\+\\-])' //lon sign;
     '\\s*?';
 
-final PATTERN_DMS = '^\\s*?'
+const PATTERN_DMS = '^\\s*?'
     '([NS]$LETTER*?|[\\+\\-])?\\s*?' //lat sign
     '(\\d{1,3})\\s*?[\\s°]\\s*?' //lat degrees + symbol
     '([0-5]?\\d)\\s*?[\\s\'´′`’‘]\\s*?' //lat minutes + symbol

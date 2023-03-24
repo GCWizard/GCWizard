@@ -1,4 +1,4 @@
-List<String> weird_numbers = [
+const List<String> weird_numbers = [
   '70',
   '836',
   '4030',

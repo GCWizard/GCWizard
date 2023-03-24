@@ -1,20 +1,21 @@
 import 'dart:math';
 
+import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/datetime_utils.dart';
 
 class JulianDate {
-  double julianDateUTCNoon;
-  double julianDate;
-  double deltaT;
-  double terrestrialDynamicalTime;
+  late double julianDateUTCNoon;
+  late double julianDate;
+  late double deltaT;
+  late double terrestrialDynamicalTime;
 
-  JulianDate(DateTime datetime, Duration timezone) {
-    julianDateUTCNoon = GregorianCalendarToJulianDate(datetime);
+  JulianDate(DateTimeTimezone datetime) {
+    julianDateUTCNoon = gregorianCalendarToJulianDate(datetime.datetime);
 
     julianDate = julianDateUTCNoon +
-        (datetime.hour - timezone.inMinutes / 60.0 + datetime.minute / 60.0 + datetime.second / 3600.0) / 24.0;
+        (datetime.datetime.hour - datetime.timezone.inMinutes / 60.0 + datetime.datetime.minute / 60.0 + datetime.datetime.second / 3600.0) / 24.0;
 
-    deltaT = _deltaT(datetime.year, datetime.month);
+    deltaT = _deltaT(datetime.datetime.year, datetime.datetime.month);
     terrestrialDynamicalTime = julianDate + deltaT / 24.0 / 3600.0;
   }
 

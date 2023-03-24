@@ -1,7 +1,7 @@
 part of 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/segmentdisplay_output.dart';
 
 Future<ui.Image> buildSegmentDisplayImage(int countColumns, List<NSegmentDisplay> displays, bool upsideDown,
-    {double verticalPadding, double horizontalPadding}) async {
+    {double? verticalPadding, double? horizontalPadding}) async {
   const double bounds = 3.0;
   var _verticalPadding = verticalPadding ?? 5.0;
   var _horizontalPadding = horizontalPadding ?? 5.0;
@@ -12,15 +12,15 @@ Future<ui.Image> buildSegmentDisplayImage(int countColumns, List<NSegmentDisplay
   var rowWidth = 0.0;
   var rowHeight = 0.0;
   var images = <ui.Image>[];
-  var offset = ui.Offset(0, bounds);
-
-  if (displays == null) return null;
+  var offset = const ui.Offset(0, bounds);
 
   // create images
-  for (var i = 0; i < displays.length; i++) images.add(await displays[i].renderedImage);
+  for (var i = 0; i < displays.length; i++) {
+    images.add(await displays[i].renderedImage);
+  }
 
   // calc image size
-  images.forEach((image) {
+  for (var image in images) {
     rowWidth += image.width + 2 * _horizontalPadding;
     width = max(width, rowWidth);
     rowHeight = max(rowHeight, image.height.toDouble() + 2 * _verticalPadding);
@@ -32,7 +32,7 @@ Future<ui.Image> buildSegmentDisplayImage(int countColumns, List<NSegmentDisplay
       rowHeight = 0;
       columnCounter = 0;
     }
-  });
+  }
 
   width = width + 2 * bounds;
   height = height + rowHeight + 2 * bounds;
@@ -79,15 +79,15 @@ Future<ui.Image> buildSegmentDisplayImage(int countColumns, List<NSegmentDisplay
   return canvasRecorder.endRecording().toImage(width.toInt(), height.toInt());
 }
 
-_exportFile(BuildContext context, Uint8List data) async {
-  var value =
-  await saveByteDataToFile(context, data, 'img_' + DateFormat('yyyyMMdd_HHmmss').format(DateTime.now()) + '.png');
-
-  if (value != null) showExportedFileDialog(context, fileType: FileType.PNG, contentWidget: Image.memory(data));
+Future<void> _exportFile(BuildContext context, Uint8List? data) async {
+  if (data == null) return;
+  await saveByteDataToFile(context, data, buildFileNameWithDate('img_', FileType.PNG)).then((value) {
+    if (value) showExportedFileDialog(context, contentWidget: imageContent(context, data));
+  });
 }
 
-Widget _buildSegmentDisplayOutput(int countColumns, List<dynamic> displays,
-    {double verticalPadding: 5, double horizontalPadding: 5}) {
+Widget _buildSegmentDisplayOutput(int countColumns, List<Widget> displays,
+    {double? verticalPadding, double? horizontalPadding}) {
   var _verticalPadding = verticalPadding ?? 5.0;
   var _horizontalPadding = horizontalPadding ?? 5.0;
 
@@ -98,15 +98,15 @@ Widget _buildSegmentDisplayOutput(int countColumns, List<dynamic> displays,
     var columns = <Widget>[];
 
     for (var j = 0; j < countColumns; j++) {
-      var widget;
+      Widget widget;
       var displayIndex = i * countColumns + j;
 
       if (displayIndex < displays.length) {
         var display = displays[displayIndex];
 
         widget = Container(
-          child: display,
           padding: EdgeInsets.symmetric(horizontal: _horizontalPadding),
+          child: display,
         );
       } else {
         widget = Container();
@@ -114,8 +114,8 @@ Widget _buildSegmentDisplayOutput(int countColumns, List<dynamic> displays,
 
       columns.add(Expanded(
           child: Container(
-            child: widget,
             padding: EdgeInsets.symmetric(vertical: _verticalPadding),
+            child: widget,
           )));
     }
 

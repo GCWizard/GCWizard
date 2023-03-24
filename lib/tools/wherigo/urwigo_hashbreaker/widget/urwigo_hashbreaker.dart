@@ -10,16 +10,18 @@ import 'package:gc_wizard/tools/wherigo/krevo/logic/ucommons.dart';
 import 'package:gc_wizard/tools/wherigo/logic/urwigo_tools.dart';
 
 class UrwigoHashBreaker extends StatefulWidget {
+  const UrwigoHashBreaker({Key? key}) : super(key: key);
+
   @override
   UrwigoHashBreakerState createState() => UrwigoHashBreakerState();
 }
 
 class UrwigoHashBreakerState extends State<UrwigoHashBreaker> {
   var _currentInput = 0;
-  var _currentOutputNumeric = '29735'; // Value for initial Hash == 0;
-  var _currentOutputAlphabetical = 'bgqv'; // Value for initial Hash == 0;
+  String _currentOutputNumeric = '29735'; // Value for initial Hash == 0;
+  String _currentOutputAlphabetical = 'bgqv'; // Value for initial Hash == 0;
 
-  var _inputController;
+  late TextEditingController _inputController;
 
   String _currentTextInput = '';
 
@@ -69,8 +71,8 @@ class UrwigoHashBreakerState extends State<UrwigoHashBreaker> {
                     text: i18n(context, 'common_submit_button_text'),
                     onPressed: () {
                       setState(() {
-                        _currentOutputAlphabetical = breakUrwigoHash(_currentInput, HASH.ALPHABETICAL);
-                        _currentOutputNumeric = breakUrwigoHash(_currentInput, HASH.NUMERIC);
+                        _currentOutputAlphabetical = breakUrwigoHash(_currentInput, HASH.ALPHABETICAL) ?? '';
+                        _currentOutputNumeric = breakUrwigoHash(_currentInput, HASH.NUMERIC) ?? '';
                       });
                     },
                   ),

@@ -3,7 +3,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/vigene
 class EnglishBigrams extends Bigrams {
   EnglishBigrams() {
     alphabet = 'abcdefghijklmnopqrstuvwxyz';
-    replacementList = null;
+    replacementList = {};
     bigrams = [
       //       A       B       C       D       E       F       G       H       I       J       K       L       M       N       O       P       Q       R       S       T       U       V       W       X       Y       Z
       [

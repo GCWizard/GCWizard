@@ -7,6 +7,8 @@ import 'package:gc_wizard/tools/science_and_technology/cross_sums/widget/crossto
 import 'package:gc_wizard/tools/science_and_technology/divisor/logic/divisor.dart';
 
 class Divisor extends StatefulWidget {
+  const Divisor({Key? key}) : super(key: key);
+
   @override
   DivisorState createState() => DivisorState();
 }

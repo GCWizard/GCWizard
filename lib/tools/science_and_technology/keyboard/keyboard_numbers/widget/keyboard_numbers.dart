@@ -8,13 +8,15 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/keyboard/_common/logic/keyboard.dart';
 
 class KeyboardNumbers extends StatefulWidget {
+  const KeyboardNumbers({Key? key}) : super(key: key);
+
   @override
   KeyboardNumbersState createState() => KeyboardNumbersState();
 }
 
 class KeyboardNumbersState extends State<KeyboardNumbers> {
-  TextEditingController _encodeController;
-  TextEditingController _decodeController;
+  late TextEditingController _encodeController;
+  late TextEditingController _decodeController;
 
   var _currentEncodeInput = '';
   var _currentDecodeInput = '';
@@ -65,20 +67,21 @@ class KeyboardNumbersState extends State<KeyboardNumbers> {
                   });
                 },
               ),
-        GCWDefaultOutput(),
+        const GCWDefaultOutput(),
         _buildOutput(context)
       ],
     );
   }
 
   Widget _buildOutput(BuildContext context) {
-    var outputData;
+    List<List<String>> outputData;
     List<List<String>> output = <List<String>>[];
 
     if (_currentMode == GCWSwitchPosition.left) {
       outputData = encodeKeyboardNumbers(_currentEncodeInput);
-    } else
+    } else {
       outputData = decodeKeyboardNumbers(_currentDecodeInput);
+    }
 
     for (int i = 0; i < outputData.length; i++) {
       output.add([i18n(context, outputData[i][0]), outputData[i][1]]);

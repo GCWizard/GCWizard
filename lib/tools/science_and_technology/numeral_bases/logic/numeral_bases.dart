@@ -1,8 +1,9 @@
 import 'dart:math';
 
-const _alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+import 'package:collection/collection.dart';
 
-//TODO: Refactoring - Still bad style because of bad original Java Code
+const _alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+const _numbers = '0123456789';
 
 String _sanitizeInput(String input, int startBase, String alphabet) {
   input = input.replaceAll(',', '.');
@@ -11,15 +12,15 @@ String _sanitizeInput(String input, int startBase, String alphabet) {
 
   if (input.endsWith('.')) input += '0';
 
-  if (startBase.abs() < alphabet.indexOf('a')) {
+  if (startBase.abs() <= alphabet.indexOf('a')) {
     input = input.toUpperCase();
   }
 
   return input;
 }
 
-String convertBase(String input, int startBase, int destinationBase, {String alphabet}) {
-  if (input == null || input == '') return '';
+String convertBase(String input, int startBase, int destinationBase, {String? alphabet}) {
+  if (input == '') return '';
 
   var usedAlphabet = alphabet ?? _alphabet;
 
@@ -27,11 +28,10 @@ String convertBase(String input, int startBase, int destinationBase, {String alp
     return ''; //TODO: Exception
   }
 
-  if (startBase.abs() <= 36) input = input.toUpperCase();
+  input = _sanitizeInput(input, startBase, usedAlphabet);
 
-  var illegalCharacter = input.split('').firstWhere(
-      (character) => character != '.' && usedAlphabet.indexOf(character) >= startBase.abs(),
-      orElse: () => null);
+  var illegalCharacter = input.split('').firstWhereOrNull(
+          (character) => character != '.' && usedAlphabet.indexOf(character) >= startBase.abs());
 
   if (illegalCharacter != null) return ''; //TODO: Exception
 
@@ -44,10 +44,8 @@ String convertBase(String input, int startBase, int destinationBase, {String alp
   }
 
   if (startBase < 0 && input.startsWith('-')) {
-    throw FormatException('Negative Values on negative bases are not defined');
+    throw const FormatException('Negative Values on negative bases are not defined');
   }
-
-  input = _sanitizeInput(input, startBase, usedAlphabet);
 
   var number = input.split('.');
 
@@ -74,8 +72,8 @@ String convertBase(String input, int startBase, int destinationBase, {String alp
 }
 
 double _negaDoubleToDec(String intPart, String floatPart, int base, String alphabet) {
-  if (base == 10) {
-    return double.tryParse(intPart + "." + floatPart);
+  if (base == 10 && alphabet.startsWith(_numbers)) {
+    return double.parse(intPart + '.' + floatPart);
   }
 
   int sign = 1;
@@ -112,14 +110,14 @@ String _decToNegaDouble(double num, int base, String alphabet) {
   BigInt bigB = BigInt.from(base);
   int count = 0;
 
-  BigInt floatA = BigInt.tryParse(number[0] + number[1]);
+  BigInt floatA = BigInt.parse(number[0] + number[1]);
   String helpFloatB = '1';
 
   for (int i = 0; i < number[1].length; i++) {
     helpFloatB += '0';
   }
 
-  BigInt floatB = BigInt.tryParse(helpFloatB);
+  BigInt floatB = BigInt.parse(helpFloatB);
   BigInt ggT = floatA.gcd(floatB);
   BigInt p = floatA ~/ ggT;
   BigInt q = floatB ~/ ggT;
@@ -159,14 +157,14 @@ String _decToNegaDouble(double num, int base, String alphabet) {
   }
 
   number = output.split('.');
-  output = _intDecToBase(BigInt.tryParse(number[0]), base, alphabet) + '.' + number[1];
+  output = _intDecToBase(BigInt.parse(number[0]), base, alphabet) + '.' + number[1];
 
   return output;
 }
 
 BigInt _intBaseToDec(String num, int base, String alphabet) {
   if (base == 10) {
-    return BigInt.tryParse(num);
+    return BigInt.parse(num);
   }
 
   int sign = 1;
@@ -179,7 +177,7 @@ BigInt _intBaseToDec(String num, int base, String alphabet) {
   BigInt i = BigInt.zero;
   int j = 0;
 
-  while (num.length > 0) {
+  while (num.isNotEmpty) {
     i += BigInt.from(alphabet.indexOf(num[num.length - 1])) * BigInt.from(base).pow(j);
     j++;
     num = num.substring(0, num.length - 1);
@@ -236,14 +234,14 @@ String _intDecToBase(BigInt num, int base, String alphabet) {
 }
 
 double _doubleBaseToDec(String num, int base, String alphabet) {
-  if (base == 10) {
-    return double.tryParse('0.' + num);
+  if (base == 10 && alphabet.startsWith(_numbers)) {
+    return double.parse('0.' + num);
   }
 
   double i = 0;
   int j = -1;
 
-  while (num.length > 0) {
+  while (num.isNotEmpty) {
     i += alphabet.indexOf(num[0]) * pow(base, j);
     j--;
 

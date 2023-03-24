@@ -1,4 +1,4 @@
-List<String> mersenne_primes = [
+const List<String> mersenne_primes = [
   '3',
   '7',
   '31',

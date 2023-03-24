@@ -28,25 +28,26 @@ var _heatParameterFahrenheit = {
 };
 
 double calculateHeatIndex(double temperature, double humidity, Temperature temperatureUnit) {
-  var c;
+  Map<int, double> c;
   double heatIndex = 0;
 
-  if (temperatureUnit == TEMPERATURE_CELSIUS)
+  if (temperatureUnit == TEMPERATURE_CELSIUS) {
     c = _heatParameterCelsius;
-  else if (temperatureUnit == TEMPERATURE_FAHRENHEIT)
+  } else if (temperatureUnit == TEMPERATURE_FAHRENHEIT) {
     c = _heatParameterFahrenheit;
-  else
+  } else {
     return double.nan;
+  }
 
-  heatIndex = c[1] +
-      c[2] * temperature +
-      c[3] * humidity +
-      c[4] * temperature * humidity +
-      c[5] * temperature * temperature +
-      c[6] * humidity * humidity +
-      c[7] * temperature * temperature * humidity +
-      c[8] * temperature * humidity * humidity +
-      c[9] * temperature * temperature * humidity * humidity;
+  heatIndex = c[1]! +
+      c[2]! * temperature +
+      c[3]! * humidity +
+      c[4]! * temperature * humidity +
+      c[5]! * temperature * temperature +
+      c[6]! * humidity * humidity +
+      c[7]! * temperature * temperature * humidity +
+      c[8]! * temperature * humidity * humidity +
+      c[9]! * temperature * temperature * humidity * humidity;
 
   return heatIndex;
 }

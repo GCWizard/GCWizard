@@ -3,7 +3,7 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/l
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/segment_display.dart';
 
 class SixteenSegments extends SegmentDisplay {
-  SixteenSegments({Key key})
+  const SixteenSegments({Key? key})
       : super(
           key: key,
           type: SegmentDisplayType.SIXTEEN,

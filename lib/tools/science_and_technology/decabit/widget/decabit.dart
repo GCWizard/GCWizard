@@ -12,14 +12,16 @@ import 'package:gc_wizard/tools/science_and_technology/decabit/logic/decabit.dar
 import 'package:gc_wizard/utils/ui_dependent_utils/text_widget_utils.dart';
 
 class Decabit extends StatefulWidget {
+  const Decabit({Key? key}) : super(key: key);
+
   @override
   DecabitState createState() => DecabitState();
 }
 
 class DecabitState extends State<Decabit> {
-  var _inputController;
-  var _aController;
-  var _bController;
+  late TextEditingController _inputController;
+  late TextEditingController _aController;
+  late TextEditingController _bController;
 
   var _currentInput = '';
   var _currentA = '+';
@@ -64,6 +66,7 @@ class DecabitState extends State<Decabit> {
           children: <Widget>[
             Expanded(
               child: Container(
+                  padding: const EdgeInsets.only(left: 6, right: 6),
                   child: GCWTextField(
                     controller: _aController,
                     onChanged: (text) {
@@ -71,11 +74,11 @@ class DecabitState extends State<Decabit> {
                         _currentA = text;
                       });
                     },
-                  ),
-                  padding: EdgeInsets.only(left: 6, right: 6)),
+                  )),
             ),
             Expanded(
               child: Container(
+                  padding: const EdgeInsets.only(left: 6, right: 6),
                   child: GCWTextField(
                     controller: _bController,
                     onChanged: (text) {
@@ -83,8 +86,7 @@ class DecabitState extends State<Decabit> {
                         _currentB = text;
                       });
                     },
-                  ),
-                  padding: EdgeInsets.only(left: 6, right: 6)),
+                  )),
             ),
           ],
         ),
@@ -141,12 +143,12 @@ class DecabitState extends State<Decabit> {
     ]);
   }
 
-  _addCharacter(String input) {
+  void _addCharacter(String input) {
     _currentInput = textControllerInsertText(input, _currentInput, _inputController);
   }
 
-  _buildOutput() {
-    if (_currentInput.length == 0 || _currentA.length == 0 || _currentB.length == 0) return '';
+  String _buildOutput() {
+    if (_currentInput.isEmpty || _currentA.isEmpty || _currentB.isEmpty) return '';
 
     var key = {'+': _currentA, '-': _currentB};
     return _currentMode == GCWSwitchPosition.left

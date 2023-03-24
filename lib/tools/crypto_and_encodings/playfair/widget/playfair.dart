@@ -8,13 +8,15 @@ import 'package:gc_wizard/tools/crypto_and_encodings/_common/logic/crypt_alphabe
 import 'package:gc_wizard/tools/crypto_and_encodings/playfair/logic/playfair.dart';
 
 class Playfair extends StatefulWidget {
+  const Playfair({Key? key}) : super(key: key);
+
   @override
   PlayfairState createState() => PlayfairState();
 }
 
 class PlayfairState extends State<Playfair> {
-  var _inputController;
-  var _keyController;
+  late TextEditingController _inputController;
+  late TextEditingController _keyController;
 
   String _currentInput = '';
   String _currentKey = '';
@@ -59,7 +61,7 @@ class PlayfairState extends State<Playfair> {
         ),
         GCWAlphabetModificationDropDown(
           value: _currentModificationMode,
-          allowedModifications: [
+          allowedModifications: const [
             AlphabetModificationMode.J_TO_I,
             AlphabetModificationMode.W_TO_VV,
             AlphabetModificationMode.C_TO_K

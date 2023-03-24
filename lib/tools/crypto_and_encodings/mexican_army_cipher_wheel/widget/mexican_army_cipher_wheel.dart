@@ -10,15 +10,15 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/mexican_army_cipher_wheel/logic/mexican_army_cipher_wheel.dart';
 
 class MexicanArmyCipherWheel extends StatefulWidget {
-  const MexicanArmyCipherWheel();
+  const MexicanArmyCipherWheel({Key? key}) : super(key: key);
 
   @override
   MexicanArmyCipherWheelState createState() => MexicanArmyCipherWheelState();
 }
 
 class MexicanArmyCipherWheelState extends State<MexicanArmyCipherWheel> {
-  var _controller;
-  var _key4Controller;
+  late TextEditingController _controller;
+  late TextEditingController _key4Controller;
 
   String _currentInput = '';
   int _currentKey1 = 1;
@@ -26,7 +26,7 @@ class MexicanArmyCipherWheelState extends State<MexicanArmyCipherWheel> {
   int _currentKey3 = 53;
   int _currentKey4 = 79;
   int _currentLetterValue4 = 1;
-  String _currentKey4Text = '79';
+  final String _currentKey4Text = '79';
   String _output = '';
 
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
@@ -100,11 +100,11 @@ class MexicanArmyCipherWheelState extends State<MexicanArmyCipherWheel> {
               },
             )),
             Container(
-              child: GCWText(
+              padding: const EdgeInsets.only(left: 2 * DEFAULT_MARGIN, right: 2 * DEFAULT_MARGIN),
+              child: const GCWText(
                 text: '=',
                 textAlign: TextAlign.center,
               ),
-              padding: EdgeInsets.only(left: 2 * DEFAULT_MARGIN, right: 2 * DEFAULT_MARGIN),
             ),
             Expanded(
               child: GCWIntegerSpinner(
@@ -144,7 +144,7 @@ class MexicanArmyCipherWheelState extends State<MexicanArmyCipherWheel> {
     );
   }
 
-  _calculateOutput() {
+  void _calculateOutput() {
     var keys = [_currentKey1, _currentKey2, _currentKey3, _currentKey4 - _currentLetterValue4 + 1];
 
     if (_currentMode == GCWSwitchPosition.right) {

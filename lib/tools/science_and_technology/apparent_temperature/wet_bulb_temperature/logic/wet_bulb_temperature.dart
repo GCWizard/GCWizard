@@ -14,7 +14,7 @@ import 'dart:math';
 
 enum WBT_HEATSTRESS_CONDITION { BLACK, PURPLE, BLUE, LIGHT_BLUE, GREEN, ORANGE, RED, DARK_RED }
 
-final Map<WBT_HEATSTRESS_CONDITION, double> WBT_HEAT_STRESS = {
+const Map<WBT_HEATSTRESS_CONDITION, double> WBT_HEAT_STRESS = {
   // https://sustainabilitymath.org/2020/06/01/what-is-our-wet-bulb-temperature-limit/
   // https://www.science.org/doi/10.1126/sciadv.aaw1838
   WBT_HEATSTRESS_CONDITION.PURPLE: 23.0,

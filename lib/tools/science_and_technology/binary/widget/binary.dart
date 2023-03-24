@@ -7,6 +7,8 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/numeral_bases/logic/numeral_bases.dart';
 
 class Binary extends StatefulWidget {
+  const Binary({Key? key}) : super(key: key);
+
   @override
   BinaryState createState() => BinaryState();
 }
@@ -14,8 +16,8 @@ class Binary extends StatefulWidget {
 class BinaryState extends State<Binary> {
   var _currentDecimalValue = '';
   var _currentBinaryValue = '';
-  var _binaryController;
-  var _decimalController;
+  late TextEditingController _binaryController;
+  late TextEditingController _decimalController;
 
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
 
@@ -69,7 +71,7 @@ class BinaryState extends State<Binary> {
     );
   }
 
-  _buildOutput() {
+  String _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
       return _currentDecimalValue.split(' ').map((value) => convertBase(value, 10, 2)).join(' ');
     } else {

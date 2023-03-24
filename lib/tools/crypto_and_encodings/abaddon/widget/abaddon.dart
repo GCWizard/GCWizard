@@ -11,15 +11,17 @@ import 'package:gc_wizard/tools/crypto_and_encodings/abaddon/logic/abaddon.dart'
 import 'package:gc_wizard/utils/ui_dependent_utils/text_widget_utils.dart';
 
 class Abaddon extends StatefulWidget {
+  const Abaddon({Key? key}) : super(key: key);
+
   @override
   AbaddonState createState() => AbaddonState();
 }
 
 class AbaddonState extends State<Abaddon> {
-  var _inputController;
-  var _aController;
-  var _bController;
-  var _cController;
+  late TextEditingController _inputController;
+  late TextEditingController _aController;
+  late TextEditingController _bController;
+  late TextEditingController _cController;
 
   var _currentInput = '';
   var _currentA = '¥';
@@ -66,6 +68,7 @@ class AbaddonState extends State<Abaddon> {
           children: <Widget>[
             Expanded(
               child: Container(
+                  padding: const EdgeInsets.only(left: 6, right: 6),
                   child: GCWTextField(
                     controller: _aController,
                     onChanged: (text) {
@@ -73,11 +76,11 @@ class AbaddonState extends State<Abaddon> {
                         _currentA = text;
                       });
                     },
-                  ),
-                  padding: EdgeInsets.only(left: 6, right: 6)),
+                  )),
             ),
             Expanded(
               child: Container(
+                  padding: const EdgeInsets.only(left: 6, right: 6),
                   child: GCWTextField(
                     controller: _bController,
                     onChanged: (text) {
@@ -85,11 +88,11 @@ class AbaddonState extends State<Abaddon> {
                         _currentB = text;
                       });
                     },
-                  ),
-                  padding: EdgeInsets.only(left: 6, right: 6)),
+                  )),
             ),
             Expanded(
               child: Container(
+                  padding: const EdgeInsets.only(left: 6, right: 6),
                   child: GCWTextField(
                     controller: _cController,
                     onChanged: (text) {
@@ -97,8 +100,7 @@ class AbaddonState extends State<Abaddon> {
                         _currentC = text;
                       });
                     },
-                  ),
-                  padding: EdgeInsets.only(left: 6, right: 6)),
+                  )),
             ),
           ],
         ),
@@ -154,12 +156,12 @@ class AbaddonState extends State<Abaddon> {
     ]);
   }
 
-  _addCharacter(String input) {
+  void _addCharacter(String input) {
     _currentInput = textControllerInsertText(input, _currentInput, _inputController);
   }
 
-  _buildOutput() {
-    if (_currentInput.length == 0 || _currentA.length == 0 || _currentB.length == 0 || _currentC.length == 0) return '';
+  String _buildOutput() {
+    if (_currentInput.isEmpty || _currentA.isEmpty || _currentB.isEmpty || _currentC.isEmpty) return '';
 
     var key = {YEN: _currentA, MY: _currentB, THORN: _currentC};
     return _currentMode == GCWSwitchPosition.left

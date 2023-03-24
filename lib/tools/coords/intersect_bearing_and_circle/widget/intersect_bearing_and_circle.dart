@@ -3,39 +3,40 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/app_localizations.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
 import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_bearing.dart';
 import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_outputformat.dart';
-import 'package:gc_wizard/common_widgets/gcw_async_executer.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/gcw_distance.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/coords/intersect_bearing_and_circle/logic/intersect_geodetic_and_circle.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coord_format_getter.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
+import 'package:gc_wizard/utils/constants.dart';
 import 'package:latlong2/latlong.dart';
 
 class IntersectGeodeticAndCircle extends StatefulWidget {
+  const IntersectGeodeticAndCircle({Key? key}) : super(key: key);
+
   @override
   IntersectBearingAndCircleState createState() => IntersectBearingAndCircleState();
 }
 
 class IntersectBearingAndCircleState extends State<IntersectGeodeticAndCircle> {
-  var _currentIntersections = [];
+  var _currentIntersections = <LatLng>[];
 
-  var _currentCoordsFormatStart = defaultCoordFormat();
-  var _currentCoordsStart = defaultCoordinate;
-  var _currentBearingStart = {'text': '', 'value': 0.0};
+  var _currentCoordsStart = defaultBaseCoordinate;
+  var _currentBearingStart = defaultDoubleText;
 
-  var _currentCoordsFormatCircle = defaultCoordFormat();
-  var _currentCoordsCircle = defaultCoordinate;
+  var _currentCoordsCircle = defaultBaseCoordinate;
   var _currentRadiusCircle = 0.0;
 
-  var _currentOutputFormat = defaultCoordFormat();
+  var _currentOutputFormat = defaultCoordinateFormat;
   List<String> _currentOutput = [];
 
   var _currentMapPoints = <GCWMapPoint>[];
@@ -47,11 +48,10 @@ class IntersectBearingAndCircleState extends State<IntersectGeodeticAndCircle> {
       children: <Widget>[
         GCWCoords(
           title: i18n(context, "coords_intersectbearingcircle_geodetic"),
-          coordsFormat: _currentCoordsFormatStart,
+          coordsFormat: _currentCoordsStart.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoordsFormatStart = ret['coordsFormat'];
-              _currentCoordsStart = ret['value'];
+              _currentCoordsStart = ret;
             });
           },
         ),
@@ -64,16 +64,15 @@ class IntersectBearingAndCircleState extends State<IntersectGeodeticAndCircle> {
         ),
         GCWCoords(
           title: i18n(context, "coords_intersectbearingcircle_circle"),
-          coordsFormat: _currentCoordsFormatCircle,
+          coordsFormat: _currentCoordsCircle.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoordsFormatCircle = ret['coordsFormat'];
-              _currentCoordsCircle = ret['value'];
+              _currentCoordsCircle = ret;
             });
           },
         ),
         GCWDistance(
-          hintText: i18n(context, "common_radius"),
+          hintText: i18n(context, 'common_radius'),
           onChanged: (value) {
             setState(() {
               _currentRadiusCircle = value;
@@ -94,15 +93,15 @@ class IntersectBearingAndCircleState extends State<IntersectGeodeticAndCircle> {
     );
   }
 
-  _getEndPoint() {
+  GCWMapPoint _getEndPoint() {
     var mapPoint = GCWMapPoint(
         point: projection(
-            _currentCoordsStart,
-            _currentBearingStart['value'],
-            max<double>(distanceBearing(_currentCoordsStart, _currentCoordsCircle, defaultEllipsoid()).distance,
+            _currentCoordsStart.toLatLng()!,
+            _currentBearingStart.value,
+            max<double>(distanceBearing(_currentCoordsStart.toLatLng()!, _currentCoordsCircle.toLatLng()!, defaultEllipsoid).distance,
                     _currentRadiusCircle) *
                 2.5,
-            defaultEllipsoid()),
+            defaultEllipsoid),
         isVisible: false);
 
     _currentMapPoints.add(mapPoint);
@@ -112,20 +111,20 @@ class IntersectBearingAndCircleState extends State<IntersectGeodeticAndCircle> {
 
   Widget _buildSubmitButton() {
     return GCWSubmitButton(onPressed: () async {
-      await showDialog(
+      await showDialog<bool>(
         context: context,
         barrierDismissible: false,
         builder: (context) {
           return Center(
-            child: Container(
-              child: GCWAsyncExecuter(
+            child: SizedBox(
+              height: 220,
+              width: 150,
+              child: GCWAsyncExecuter<List<LatLng>>(
                 isolatedFunction: intersectGeodeticAndCircleAsync,
-                parameter: _buildJobData(),
+                parameter: _buildJobData,
                 onReady: (data) => _showOutput(data),
                 isOverlay: true,
               ),
-              height: 220,
-              width: 150,
             ),
           );
         },
@@ -135,40 +134,31 @@ class IntersectBearingAndCircleState extends State<IntersectGeodeticAndCircle> {
 
   Future<GCWAsyncExecuterParameters> _buildJobData() async {
     return GCWAsyncExecuterParameters(IntersectGeodeticAndCircleJobData(
-        startGeodetic: _currentCoordsStart,
-        bearingGeodetic: _currentBearingStart['value'],
-        centerPoint: _currentCoordsCircle,
+        startGeodetic: _currentCoordsStart.toLatLng()!,
+        bearingGeodetic: _currentBearingStart.value,
+        centerPoint: _currentCoordsCircle.toLatLng()!,
         radiusCircle: _currentRadiusCircle,
-        ells: defaultEllipsoid()));
+        ells: defaultEllipsoid));
   }
 
-  _showOutput(List<LatLng> output) {
-    if (output == null) {
-      _currentIntersections = [];
-
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {});
-      });
-      return;
-    }
-
+  void _showOutput(List<LatLng> output) {
     _currentIntersections = output;
 
     _currentMapPoints = [
       GCWMapPoint(
-          point: _currentCoordsStart,
+          point: _currentCoordsStart.toLatLng()!,
           markerText: i18n(context, 'coords_intersectbearingcircle_geodetic'),
-          coordinateFormat: _currentCoordsFormatStart),
+          coordinateFormat: _currentCoordsStart.format),
       GCWMapPoint(
-        point: _currentCoordsCircle,
+        point: _currentCoordsCircle.toLatLng()!,
         markerText: i18n(context, 'coords_intersectbearingcircle_circle'),
-        coordinateFormat: _currentCoordsFormatCircle,
+        coordinateFormat: _currentCoordsCircle.format,
         circleColorSameAsPointColor: false,
-        circle: GCWMapCircle(radius: _currentRadiusCircle),
+        circle: GCWMapCircle(radius: _currentRadiusCircle, centerPoint: _currentCoordsCircle.toLatLng()!),
       )
     ];
 
-    if (_currentIntersections == null || _currentIntersections.isEmpty) {
+    if (_currentIntersections.isEmpty) {
       _currentOutput = [i18n(context, "coords_intersect_nointersection")];
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {});
@@ -185,7 +175,7 @@ class IntersectBearingAndCircleState extends State<IntersectGeodeticAndCircle> {
         .toList());
 
     _currentOutput = _currentIntersections
-        .map((intersection) => formatCoordOutput(intersection, _currentOutputFormat, defaultEllipsoid()))
+        .map((intersection) => formatCoordOutput(intersection, _currentOutputFormat, defaultEllipsoid))
         .toList();
 
     _currentMapPolylines = [

@@ -13,20 +13,22 @@ import 'package:gc_wizard/tools/crypto_and_encodings/rsa/rsa_primes_calculator/w
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class RSASelection extends GCWSelection {
+  const RSASelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(RSA()),
-        className(RSAEChecker()),
-        className(RSADChecker()),
-        className(RSADCalculator()),
-        className(RSANCalculator()),
-        className(RSAPhiCalculator()),
-        className(RSAPrimesCalculator()),
+        className(const RSA()),
+        className(const RSAEChecker()),
+        className(const RSADChecker()),
+        className(const RSADCalculator()),
+        className(const RSANCalculator()),
+        className(const RSAPhiCalculator()),
+        className(const RSAPrimesCalculator()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

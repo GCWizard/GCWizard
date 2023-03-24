@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +11,8 @@ import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
 import 'package:gc_wizard/common_widgets/gcw_selection.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitution.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_container.dart';
+import 'package:gc_wizard/utils/data_type_utils/object_type_utils.dart';
+import 'package:gc_wizard/utils/json_utils.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 import 'package:prefs/prefs.dart';
 
@@ -82,60 +83,61 @@ class GCWToolActionButtonsEntry {
   final String title; // - title-string to be shown in the dialog
   final String text; // - message-text to be shown in the dialog
   final IconData icon; // - icon tto be shown in the appbar
-  final Function onPressed;
+  final void Function()? onPressed;
 
-  GCWToolActionButtonsEntry({this.showDialog, this.url, this.title, this.text, this.icon, this.onPressed});
+  GCWToolActionButtonsEntry({required this.showDialog, required this.url, required this.title,
+    required this.text, required this.icon, this.onPressed});
 }
 
 class GCWTool extends StatefulWidget {
   final Widget tool;
-  final String i18nPrefix;
+  final String id;
   final List<ToolCategory> categories;
-  final autoScroll;
-  final suppressToolMargin;
-  final iconPath;
+  final bool autoScroll;
+  final bool suppressToolMargin;
+  final String? iconPath;
   final List<String> searchKeys;
-  String indexedSearchStrings;
   final List<GCWToolActionButtonsEntry> buttonList;
   final bool suppressHelpButton;
   final String helpSearchString;
-  final isBeta;
+  final bool isBeta;
 
-  var icon;
-  var id = '';
+  GCWSymbolContainer? icon;
+  var longId = '';
 
-  var toolName;
-  var defaultLanguageToolName;
-  var description;
-  var example;
+  String? toolName;
+  String? defaultLanguageToolName;
+  String? description;
+  String? example;
+  String indexedSearchStrings = '';
 
   GCWTool(
-      {Key key,
-      this.tool,
-      this.toolName,
-      this.defaultLanguageToolName,
-      this.i18nPrefix,
-      this.categories,
-      this.autoScroll: true,
-      this.suppressToolMargin: false,
-      this.iconPath,
-      this.searchKeys,
-      this.buttonList,
-      this.helpSearchString,
-      this.isBeta: false,
-      this.suppressHelpButton: false})
+      {Key? key,
+        required this.tool,
+        this.toolName,
+        this.defaultLanguageToolName,
+        required this.id,
+        this.categories = const [],
+        this.autoScroll = true,
+        this.suppressToolMargin = false,
+        this.iconPath,
+        this.searchKeys = const [],
+        this.buttonList = const [],
+        this.helpSearchString = '',
+        this.isBeta = false,
+        this.suppressHelpButton = false})
       : super(key: key) {
-    this.id = className(tool) + '_' + (i18nPrefix ?? '');
+    longId = className(tool) + '_' + (id);
 
     if (iconPath != null) {
-      this.icon = GCWSymbolContainer(
-        symbol: Image.asset(iconPath, width: DEFAULT_LISTITEM_SIZE),
+      icon = GCWSymbolContainer(
+        symbol: Image.asset(iconPath!, width: DEFAULT_LISTITEM_SIZE),
       );
     }
   }
 
   bool get isFavorite {
-    return Favorites.isFavorite(id);
+    return Favorites.isFavorite(longId);
   }
 
   @override
@@ -143,24 +145,23 @@ class GCWTool extends StatefulWidget {
 }
 
 class _GCWToolState extends State<GCWTool> {
-  var _toolName;
-  var _defaultLanguageToolName;
+  late String _toolName;
+  late String _defaultLanguageToolName;
 
   @override
   void initState() {
-    _setToolCount(widget.id);
+    _setToolCount(widget.longId);
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // this is the case when Tool is not called by Registry but as subpage of another tool
-    if (_toolName == null) _toolName = widget.toolName ?? i18n(context, widget.i18nPrefix + '_title');
+    // this is the case when tool is not called by Registry but as subpage of another tool
+    _toolName = widget.toolName ?? i18n(context, widget.id + '_title');
 
-    if (_defaultLanguageToolName == null)
-      _defaultLanguageToolName =
-          widget.defaultLanguageToolName ?? i18n(context, widget.i18nPrefix + '_title', useDefaultLanguage: true);
+    _defaultLanguageToolName =
+        widget.defaultLanguageToolName ?? i18n(context, widget.id + '_title', useDefaultLanguage: true);
 
     return Scaffold(
         resizeToAvoidBottomInset: widget.autoScroll,
@@ -172,8 +173,6 @@ class _GCWToolState extends State<GCWTool> {
   }
 
   String _normalizeSearchString(String text) {
-    if (text == null) return '';
-
     text = text.trim().toLowerCase();
     text = text
         .replaceAll(RegExp(r"['`´]"), ' ')
@@ -192,11 +191,10 @@ class _GCWToolState extends State<GCWTool> {
   }
 
   bool _needsDefaultHelp(Locale appLocale) {
-    return !isLocaleSupported(appLocale) ||
-        (SUPPORTED_HELPLOCALES == null || !SUPPORTED_HELPLOCALES.contains(appLocale.languageCode));
+    return !isLocaleSupported(appLocale) || (!SUPPORTED_HELPLOCALES.contains(appLocale.languageCode));
   }
 
-  Widget _buildHelpButton() {
+  Widget? _buildHelpButton() {
     if (widget.suppressHelpButton) return null;
 
     // add button with url for searching knowledge base with toolName
@@ -204,7 +202,7 @@ class _GCWToolState extends State<GCWTool> {
 
     String searchString = '';
 
-    if (widget.helpSearchString == null || widget.helpSearchString.isEmpty) {
+    if (widget.helpSearchString.isEmpty) {
       if (_needsDefaultHelp(appLocale)) {
         // fallback to en if unsupported locale
         searchString = _defaultLanguageToolName;
@@ -212,8 +210,7 @@ class _GCWToolState extends State<GCWTool> {
         searchString = _toolName;
       }
     } else {
-      searchString = i18n(context, widget.helpSearchString, useDefaultLanguage: _needsDefaultHelp(appLocale)) ??
-          widget.helpSearchString;
+      searchString = i18n(context, widget.helpSearchString, useDefaultLanguage: _needsDefaultHelp(appLocale), ifTranslationNotExists: widget.helpSearchString);
     }
 
     searchString = _normalizeSearchString(searchString);
@@ -225,7 +222,7 @@ class _GCWToolState extends State<GCWTool> {
     url = Uri.encodeFull(url);
 
     return IconButton(
-      icon: Icon(Icons.help),
+      icon: const Icon(Icons.help),
       onPressed: () {
         launchUrl(Uri.parse(url));
       },
@@ -236,39 +233,40 @@ class _GCWToolState extends State<GCWTool> {
     List<Widget> buttonList = <Widget>[];
 
     // add further buttons as defined in registry
-    if (widget.buttonList != null) {
-      widget.buttonList.forEach((button) {
-        String url = '';
-        if (button.url == '') // 404-Page asking for help
-          url = i18n(context, 'common_error_url'); // https://blog.gcwizard.net/manual/uncategorized/404/
-        else
-          url = button.url;
-        if (button.url != null && button.url.length != 0)
-          buttonList.add(IconButton(
-            icon: Icon(button.icon),
-            onPressed: () {
-              if (button.onPressed != null) {
-                button.onPressed();
-                return;
-              }
+    for (var button in widget.buttonList) {
+      String url = '';
+      if (button.url.isEmpty) {
+        url = i18n(context, 'common_error_url'); // https://blog.gcwizard.net/manual/uncategorized/404/
+      } else {
+        url = button.url;
+      }
+      if (button.url.isNotEmpty) {
+        buttonList.add(IconButton(
+          icon: Icon(button.icon),
+          onPressed: () {
+            if (button.onPressed != null) {
+              button.onPressed!();
+              return;
+            }
 
-              if (button.showDialog) {
-                showGCWAlertDialog(
-                  context,
-                  i18n(context, button.title),
-                  i18n(context, button.text),
-                  () {
-                    launchUrl(Uri.parse(i18n(context, url) ?? url));
-                  },
-                );
-              } else
-                launchUrl(Uri.parse(i18n(context, url)));
-            },
-          ));
-      });
+            if (button.showDialog) {
+              showGCWAlertDialog(
+                context,
+                i18n(context, button.title),
+                i18n(context, button.text),
+                    () {
+                  launchUrl(Uri.parse(i18n(context, url, ifTranslationNotExists: url)));
+                },
+              );
+            } else {
+              launchUrl(Uri.parse(i18n(context, url)));
+            }
+          },
+        ));
+      }
     }
 
-    Widget helpButton = _buildHelpButton();
+    Widget? helpButton = _buildHelpButton();
     if (helpButton != null) buttonList.add(helpButton);
 
     return buttonList;
@@ -280,8 +278,8 @@ class _GCWToolState extends State<GCWTool> {
     var tool = widget.tool;
     if (!widget.suppressToolMargin) {
       tool = Padding(
+        padding: const EdgeInsets.only(top: 5, left: 10, right: 10, bottom: 2),
         child: tool,
-        padding: EdgeInsets.only(top: 5, left: 10, right: 10, bottom: 2),
       );
     }
 
@@ -290,41 +288,56 @@ class _GCWToolState extends State<GCWTool> {
     }
 
     return SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        primary: true,
-        child: tool,
+      physics: const AlwaysScrollableScrollPhysics(),
+      primary: true,
+      child: tool,
     );
   }
 }
 
-_setToolCount(String i18nPrefix) {
+void _setToolCount(String id) {
   var toolCountsRaw = Prefs.get(PREFERENCE_TOOL_COUNT);
-  if (toolCountsRaw == null) toolCountsRaw = '{}';
+  toolCountsRaw ??= '{}';
 
-  Map<String, int> toolCounts = Map<String, int>.from(jsonDecode(toolCountsRaw));
-  var currentToolCount = toolCounts[i18nPrefix];
+  var toolCounts = _toolCounts();
+  var currentToolCount = toolCounts[id];
 
-  if (currentToolCount == null) currentToolCount = 0;
+  currentToolCount ??= 0;
 
   currentToolCount++;
-  toolCounts[i18nPrefix] = currentToolCount;
+  toolCounts[id] = currentToolCount;
 
   Prefs.setString(PREFERENCE_TOOL_COUNT, jsonEncode(toolCounts));
 }
 
 int _sortToolListAlphabetically(GCWTool a, GCWTool b) {
-  return removeDiacritics(a.toolName).toLowerCase().compareTo(removeDiacritics(b.toolName).toLowerCase());
+  var aName = a.toolName;
+  var bName = b.toolName;
+
+  if (aName == null && bName == null) {
+    return 0;
+  }
+
+  if (aName == null && bName != null) {
+    return 1;
+  }
+
+  if (bName == null && aName != null) {
+    return -1;
+  }
+
+  return removeDiacritics(aName!).toLowerCase().compareTo(removeDiacritics(bName!).toLowerCase());
 }
 
 int sortToolList(GCWTool a, GCWTool b) {
-  if (Prefs.getBool(PREFERENCE_TOOL_COUNT_SORT) != null && !Prefs.getBool(PREFERENCE_TOOL_COUNT_SORT)) {
+  if (!Prefs.getBool(PREFERENCE_TOOL_COUNT_SORT)) {
     return _sortToolListAlphabetically(a, b);
   }
 
-  Map<String, int> toolCounts = Map<String, int>.from(jsonDecode(Prefs.get(PREFERENCE_TOOL_COUNT)));
+  var toolCounts = _toolCounts();
 
-  var toolCountA = toolCounts[a.id];
-  var toolCountB = toolCounts[b.id];
+  var toolCountA = toolCounts[a.longId];
+  var toolCountB = toolCounts[b.longId];
 
   if (toolCountA == null && toolCountB == null) {
     return _sortToolListAlphabetically(a, b);
@@ -346,5 +359,11 @@ int sortToolList(GCWTool a, GCWTool b) {
     }
   }
 
-  return null;
+  return 0;
+}
+
+Map<String, int> _toolCounts() {
+  var jsonString = Prefs.getString(PREFERENCE_TOOL_COUNT);
+  var decoded = asJsonMap(jsonDecode(jsonString));
+  return decoded.map((key, value) => MapEntry<String, int>(key, toIntOrNull(value) ?? 0));
 }

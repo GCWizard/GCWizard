@@ -13,6 +13,8 @@ import 'package:gc_wizard/utils/datetime_utils.dart';
 import 'package:intl/intl.dart';
 
 class Calendar extends StatefulWidget {
+  const Calendar({Key? key}) : super(key: key);
+
   @override
   CalendarState createState() => CalendarState();
 }
@@ -20,13 +22,13 @@ class Calendar extends StatefulWidget {
 class CalendarState extends State<Calendar> {
   CalendarSystem _currentCalendarSystem = CalendarSystem.JULIANDATE;
   double _currentJulianDate = 0.0;
-  DateTime _currentDate;
+  late DateTime _currentDate;
 
   @override
   void initState() {
     DateTime now = DateTime.now();
     _currentDate = DateTime(now.year, now.month, now.day);
-    _currentJulianDate = GregorianCalendarToJulianDate(_currentDate);
+    _currentJulianDate = gregorianCalendarToJulianDate(_currentDate);
     super.initState();
   }
 
@@ -39,7 +41,7 @@ class CalendarState extends State<Calendar> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        GCWDropDown(
+        GCWDropDown<CalendarSystem>(
           value: _currentCalendarSystem,
           onChanged: (value) {
             setState(() {
@@ -86,23 +88,23 @@ class CalendarState extends State<Calendar> {
 
   Widget _buildOutput() {
     double jd = 0.0;
-    Map output = new Map();
+    var output = <String, Object?>{};
     switch (_currentCalendarSystem) {
       case CalendarSystem.MODIFIEDJULIANDATE:
         jd = ModifedJulianDateToJulianDate(_currentJulianDate);
-        output['dates_weekday_title'] = i18n(context, WEEKDAY[Weekday(jd)]);
+        output['dates_weekday_title'] = i18n(context, WEEKDAY[Weekday(jd)]!);
         break;
       case CalendarSystem.JULIANDATE:
         jd = _currentJulianDate;
-        output['dates_weekday_title'] = i18n(context, WEEKDAY[Weekday(jd)]);
+        output['dates_weekday_title'] = i18n(context, WEEKDAY[Weekday(jd)]!);
         break;
       case CalendarSystem.GREGORIANCALENDAR:
-        jd = GregorianCalendarToJulianDate(_currentDate);
-        output['dates_weekday_title'] = i18n(context, WEEKDAY[Weekday(jd)]);
+        jd = gregorianCalendarToJulianDate(_currentDate);
+        output['dates_weekday_title'] = i18n(context, WEEKDAY[Weekday(jd)]!);
         break;
       case CalendarSystem.JULIANCALENDAR:
-        jd = JulianCalendarToJulianDate(_currentDate);
-        output['dates_weekday_title'] = i18n(context, WEEKDAY[Weekday(jd)]);
+        jd = julianCalendarToJulianDate(_currentDate);
+        output['dates_weekday_title'] = i18n(context, WEEKDAY[Weekday(jd)]!);
         break;
       case CalendarSystem.ISLAMICCALENDAR:
         jd = IslamicCalendarToJulianDate(_currentDate);
@@ -118,23 +120,25 @@ class CalendarState extends State<Calendar> {
         break;
       case CalendarSystem.COPTICCALENDAR:
         jd = CopticCalendarToJulianDate(_currentDate);
-        output['dates_weekday_title'] = i18n(context, WEEKDAY[Weekday(jd)]);
+        output['dates_weekday_title'] = i18n(context, WEEKDAY[Weekday(jd)]!);
         break;
       case CalendarSystem.POTRZEBIECALENDAR:
         jd = PotrzebieCalendarToJulianDate(_currentDate);
-        output['dates_weekday_title'] = i18n(context, WEEKDAY[Weekday(jd)]);
+        output['dates_weekday_title'] = i18n(context, WEEKDAY[Weekday(jd)]!);
         break;
+      default:
+        return Container();
     }
 
     output['dates_calendar_system_juliandate'] = (jd + 0.5).floor();
 
     output['dates_calendar_system_juliancalendar'] =
-        _DateOutputToString(context, JulianDateToJulianCalendar(jd), CalendarSystem.JULIANCALENDAR);
+        _DateOutputToString(context, julianDateToJulianCalendar(jd), CalendarSystem.JULIANCALENDAR);
 
     output['dates_calendar_system_modifiedjuliandate'] = JulianDateToModifedJulianDate(jd);
 
     output['dates_calendar_system_gregoriancalendar'] =
-        _DateOutputToString(context, JulianDateToGregorianCalendar(jd), CalendarSystem.GREGORIANCALENDAR);
+        _DateOutputToString(context, julianDateToGregorianCalendar(jd), CalendarSystem.GREGORIANCALENDAR);
 
     output['dates_calendar_system_islamiccalendar'] =
         _DateOutputToString(context, JulianDateToIslamicCalendar(jd), CalendarSystem.ISLAMICCALENDAR);
@@ -168,7 +172,7 @@ class CalendarState extends State<Calendar> {
             data: output.entries.map((entry) {
                     return [i18n(context, entry.key), entry.value];
                   }).toList(),
-            flexValues: [1, 1]
+            flexValues: const [1, 1]
           ),
     );
   }
@@ -177,7 +181,7 @@ class CalendarState extends State<Calendar> {
     PotrzebieCalendarOutput p = JulianDateToPotrzebieCalendar(jd);
 
     var locale = Localizations.localeOf(context).toString();
-    var monthName = MONTH_NAMES[CalendarSystem.POTRZEBIECALENDAR][p.date.month].toString();
+    var monthName = MONTH_NAMES[CalendarSystem.POTRZEBIECALENDAR]![p.date.month].toString();
     var dateStr = replaceMonthNameWithCustomString(p.date, 'yMMMMd', locale, monthName);
 
     return dateStr.replaceFirst(p.date.year.toString(), '${p.date.year} ${p.suffix}');
@@ -186,11 +190,11 @@ class CalendarState extends State<Calendar> {
   String _HebrewDateToString(DateTime hebrewDate, double jd) {
     if (hebrewDate.year < 0) return i18n(context, 'dates_calendar_error');
 
-    var hebrewMonth =  MONTH_NAMES[CalendarSystem.HEBREWCALENDAR][hebrewDate.month];
+    var hebrewMonth =  MONTH_NAMES[CalendarSystem.HEBREWCALENDAR]![hebrewDate.month];
 
     if (! typeOfJewYear(JewishYearLength(jd)).contains('embolistic')) {
       if (hebrewDate.month > 6) {
-        hebrewMonth =  MONTH_NAMES[CalendarSystem.HEBREWCALENDAR][hebrewDate.month + 1];
+        hebrewMonth =  MONTH_NAMES[CalendarSystem.HEBREWCALENDAR]![hebrewDate.month + 1];
       }
     }
 
@@ -198,7 +202,7 @@ class CalendarState extends State<Calendar> {
     return replaceMonthNameWithCustomString(hebrewDate, 'yMMMMd', locale, hebrewMonth);
   }
 
-  String _DateOutputToString(context, DateTime date, CalendarSystem calendar) {
+  String? _DateOutputToString(BuildContext context, DateTime date, CalendarSystem calendar) {
     var locale = Localizations.localeOf(context).toString();
 
     switch (calendar) {
@@ -206,7 +210,7 @@ class CalendarState extends State<Calendar> {
       case CalendarSystem.PERSIANYAZDEGARDCALENDAR:
       case CalendarSystem.COPTICCALENDAR:
         if (date.year < 0) return i18n(context, 'dates_calendar_error');
-        var monthName = MONTH_NAMES[calendar][date.month];
+        var monthName = MONTH_NAMES[calendar]![date.month];
         return replaceMonthNameWithCustomString(date, 'yMMMMd', locale, monthName);
       case CalendarSystem.GREGORIANCALENDAR:
       case CalendarSystem.JULIANCALENDAR:

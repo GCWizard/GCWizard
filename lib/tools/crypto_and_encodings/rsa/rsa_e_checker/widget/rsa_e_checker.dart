@@ -7,6 +7,8 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rsa/logic/rsa.dart';
 
 class RSAEChecker extends StatefulWidget {
+  const RSAEChecker({Key? key}) : super(key: key);
+
   @override
   RSAECheckerState createState() => RSAECheckerState();
 }
@@ -16,8 +18,8 @@ class RSAECheckerState extends State<RSAEChecker> {
   String _currentP = '';
   String _currentQ = '';
 
-  var _integerInputFormatter = GCWIntegerTextInputFormatter(min: 0);
-  Widget _output;
+  final _integerInputFormatter = GCWIntegerTextInputFormatter(min: 0);
+  Widget? _output;
 
   @override
   Widget build(BuildContext context) {
@@ -51,18 +53,15 @@ class RSAECheckerState extends State<RSAEChecker> {
             });
           },
         ),
-        _output ?? GCWDefaultOutput(),
+        _output ?? const GCWDefaultOutput(),
       ],
     );
   }
 
-  _calculateOutput() {
-    if (_currentE == null ||
-        _currentE.length == 0 ||
-        _currentP == null ||
-        _currentP.length == 0 ||
-        _currentQ == null ||
-        _currentQ.length == 0) {
+  void _calculateOutput() {
+    if (_currentE.isEmpty ||
+        _currentP.isEmpty ||
+        _currentQ.isEmpty) {
       _output = null;
     }
 
@@ -71,11 +70,11 @@ class RSAECheckerState extends State<RSAEChecker> {
       var p = BigInt.tryParse(_currentP);
       var q = BigInt.tryParse(_currentQ);
 
-      var validE = validateE(e, p, q);
+      var validE = validateE(e as BigInt, p as BigInt, q as BigInt);
       _output = GCWDefaultOutput(
           child: validE ? i18n(context, 'rsa_e.checker_valid') : i18n(context, 'rsa_e.checker_notvalid'));
     } catch (exception) {
-      _output = GCWDefaultOutput(child: i18n(context, exception.message));
+      _output = GCWDefaultOutput(child: i18n(context, exception.toString()));
     }
   }
 }

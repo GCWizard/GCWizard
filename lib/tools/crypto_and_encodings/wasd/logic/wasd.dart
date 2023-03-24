@@ -31,9 +31,9 @@ enum WASD_TYPE { CURSORS, WASD, IJMK, ESDF, ULDR, OLUR, VLZR, WQSE, ARROWS, NWSE
 
 enum WASD_DIRECTION { UP, DOWN, LEFT, RIGHT, START }
 
-final _SEGMENT_LENGTH = 5;
+const _SEGMENT_LENGTH = 5;
 
-Map<WASD_TYPE, String> KEYBOARD_CONTROLS = {
+const Map<WASD_TYPE, String> KEYBOARD_CONTROLS = {
   WASD_TYPE.CURSORS: '↑←↓→',
   WASD_TYPE.NWSE: 'NWSE',
   WASD_TYPE.NWSO: 'NWSO',
@@ -48,7 +48,7 @@ Map<WASD_TYPE, String> KEYBOARD_CONTROLS = {
   WASD_TYPE.CUSTOM: 'wasd_keyboard_custom',
 };
 
-final Map<String, List<String>> WASD_ENCODE = {
+const Map<String, List<String>> _WASD_ENCODE = {
   '0': [
     '←↓↓→↑↑',
     '↓↓→↑↑←',
@@ -112,10 +112,10 @@ final Map<String, List<String>> WASD_ENCODE = {
   '.': ['.']
 };
 
-final Map<List<String>, String> WASD_DECODE = switchMapKeyValue(WASD_ENCODE);
+final Map<List<String>, String> _WASD_DECODE = switchMapKeyValue(_WASD_ENCODE);
 
 String encodeWASD(String input, List<String> controlSet) {
-  if (input == '' || input == null) return '';
+  if (input.isEmpty) return '';
 
   controlSet = _normalizeControlSet(controlSet);
 
@@ -123,10 +123,11 @@ String encodeWASD(String input, List<String> controlSet) {
   Random rnd = Random();
   List<String> result = [];
   input.split('').forEach((element) {
-    if (WASD_ENCODE[element] == null)
+    if (_WASD_ENCODE[element] == null) {
       result.add('');
-    else
-      result.add(WASD_ENCODE[element][rnd.nextInt(WASD_ENCODE[element].length)].toString());
+    } else {
+      result.add(_WASD_ENCODE[element]![rnd.nextInt(_WASD_ENCODE[element]!.length)].toString());
+    }
   });
 
   return substitution(result.join(' '), {
@@ -151,17 +152,17 @@ String _normalizeDecodingInput(String input, List<String> controlSet) {
 }
 
 String decodeWASD(String input, List<String> controlSet) {
-  if (input == '' || input == null) return '';
+  if (input.isEmpty) return '';
 
   controlSet = _normalizeControlSet(controlSet);
 
   List<String> resultDecode = [];
   bool found = false;
-  String result;
+  String result = '';
 
   _normalizeDecodingInput(input, controlSet).split(' ').forEach((element) {
-    if (element != '') {
-      WASD_DECODE.forEach((key, value) {
+    if (element.isNotEmpty) {
+      _WASD_DECODE.forEach((key, value) {
         if (key.contains(element)) {
           found = true;
           result = value;
@@ -170,29 +171,30 @@ String decodeWASD(String input, List<String> controlSet) {
       if (found) {
         resultDecode.add(result);
         found = false;
-      } else
+      } else {
         resultDecode.add(UNKNOWN_ELEMENT);
+      }
     }
   });
   return resultDecode.join('');
 }
 
-_normalizeControlSet(List<String> controlSet) {
-  var normalized = List<String>.from(controlSet);
+List<String> _normalizeControlSet(List<String> controlSet) {
+  var normalized = List<String?>.from(controlSet);
   while (normalized.length < 4) {
     normalized.add(null);
   }
 
-  if (normalized[0] == null || normalized[0].isEmpty) normalized[0] = '↑';
-  if (normalized[1] == null || normalized[1].isEmpty) normalized[1] = '←';
-  if (normalized[2] == null || normalized[2].isEmpty) normalized[2] = '↓';
-  if (normalized[3] == null || normalized[3].isEmpty) normalized[3] = '→';
+  if (normalized[0] == null || normalized[0]!.isEmpty) normalized[0] = '↑';
+  if (normalized[1] == null || normalized[1]!.isEmpty) normalized[1] = '←';
+  if (normalized[2] == null || normalized[2]!.isEmpty) normalized[2] = '↓';
+  if (normalized[3] == null || normalized[3]!.isEmpty) normalized[3] = '→';
 
-  return normalized.map((e) => e.toUpperCase()).toList();
+  return normalized.map((e) => (e ?? '').toUpperCase()).toList();
 }
 
 String decodeWASDGraphic(String input, List<String> controlSet) {
-  if (input == '' || input == null) return '';
+  if (input.isEmpty) return '';
 
   controlSet = _normalizeControlSet(controlSet);
 
@@ -209,7 +211,7 @@ String decodeWASDGraphic(String input, List<String> controlSet) {
   int minSentenceX = 0;
   int minSentenceY = 0;
 
-  Map<String, String> sentence = Map();
+  Map<String, String> sentence = {};
 
   var direction = WASD_DIRECTION.START;
 
@@ -227,7 +229,7 @@ String decodeWASDGraphic(String input, List<String> controlSet) {
 
     direction = WASD_DIRECTION.START;
 
-    Map<String, String> letter = Map();
+    Map<String, String> letter = {};
 
     word.split('').forEach((element) {
       switch (element) {
@@ -245,6 +247,7 @@ String decodeWASDGraphic(String input, List<String> controlSet) {
             case WASD_DIRECTION.RIGHT:
               x++;
               break;
+            default: {}
           }
           for (int i = 0; i < _SEGMENT_LENGTH; i++) {
             y++;
@@ -271,6 +274,7 @@ String decodeWASDGraphic(String input, List<String> controlSet) {
             case WASD_DIRECTION.RIGHT:
               x++;
               break;
+            default: {}
           }
           for (int i = 0; i < _SEGMENT_LENGTH; i++) {
             y--;
@@ -297,6 +301,7 @@ String decodeWASDGraphic(String input, List<String> controlSet) {
             case WASD_DIRECTION.RIGHT:
               x++;
               break;
+            default: {}
           }
           for (int i = 0; i < _SEGMENT_LENGTH; i++) {
             x--;
@@ -323,6 +328,7 @@ String decodeWASDGraphic(String input, List<String> controlSet) {
             case WASD_DIRECTION.RIGHT:
               x++;
               break;
+            default: {}
           }
           for (int i = 0; i < _SEGMENT_LENGTH; i++) {
             x++;
@@ -348,7 +354,7 @@ String decodeWASDGraphic(String input, List<String> controlSet) {
 
     if (minLetterX < 0) xOffset = -1 * minLetterX;
 
-    Map<String, String> transformedLetter = Map();
+    Map<String, String> transformedLetter = {};
     letter.forEach((key, value) {
       transformedLetter[(int.parse(key.split('|')[0]) + xOffset).toString() +
           '|' +
@@ -366,7 +372,7 @@ String decodeWASDGraphic(String input, List<String> controlSet) {
   }); // forEach word
 
   // build bitmap
-  var binaryWorld =
+  List<List<String?>> binaryWorld =
       List.generate(maxSentenceX + 3, (y) => []..length = maxSentenceY - minSentenceY + 3, growable: false);
   sentence.forEach((key, value) {
     x = int.parse(key.split('|')[0]);
@@ -381,10 +387,11 @@ String decodeWASDGraphic(String input, List<String> controlSet) {
   for (y = 0; y < maxSentenceY - minSentenceY + 1; y++) {
     outputLine = '##';
     for (x = 0; x < maxSentenceX - minSentenceX + 1; x++) {
-      if (binaryWorld[x][y] == null)
+      if (binaryWorld[x][y] == null) {
         outputLine = outputLine + '#';
-      else
-        outputLine = outputLine + binaryWorld[x][y];
+      } else {
+        outputLine = outputLine + binaryWorld[x][y]!;
+      }
     }
     output.add(outputLine);
   }

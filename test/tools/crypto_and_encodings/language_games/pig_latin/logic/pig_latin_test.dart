@@ -3,8 +3,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/language_games/pig_latin/lo
 
 void main() {
   group("PigLatin.encrypt:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : 'I have a secret now!', 'expectedOutput' : 'I-ay ave-hay a-ay ecret-say ow-nay!'},
@@ -21,17 +20,16 @@ void main() {
       {'input' : 'America', 'expectedOutput' : 'America-ay'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encryptPigLatin(elem['input']);
+        var _actual = encryptPigLatin(elem['input'] as String);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("PigLatin.decrypt:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : 'I have a secret now!', 'input' : 'I-ay ave-hay a-ay ecret-say ow-nay!'},
@@ -48,11 +46,11 @@ void main() {
       {'expectedOutput' : 'America', 'input' : 'America-ay'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decryptPigLatin(elem['input']);
+        var _actual = decryptPigLatin(elem['input'] as String);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 }

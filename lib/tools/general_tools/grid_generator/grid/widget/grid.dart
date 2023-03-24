@@ -19,12 +19,12 @@ class _GridConfiguration {
   _GridType type;
   int width;
   int height;
-  String enumeration;
-  String columnEnumeration;
-  String rowEnumeration;
-  _GridEnumerationStart enumerationStart;
-  _GridBoxEnumerationStartDirection enumerationStartDirection;
-  _GridBoxEnumerationBehaviour enumerationBehaviour;
+  String? enumeration;
+  String? columnEnumeration;
+  String? rowEnumeration;
+  _GridEnumerationStart? enumerationStart;
+  _GridBoxEnumerationStartDirection? enumerationStartDirection;
+  _GridBoxEnumerationBehaviour? enumerationBehaviour;
 
   _GridConfiguration(this.type, this.width, this.height,
       {this.enumeration,
@@ -32,7 +32,7 @@ class _GridConfiguration {
       this.rowEnumeration});
 }
 
-final _GRID_CUSTOM_KEY = 'grid_custom';
+const _GRID_CUSTOM_KEY = 'grid_custom';
 
 final _GRID_CONFIGURATIONS = {
   _GRID_CUSTOM_KEY: _GridConfiguration(
@@ -106,6 +106,8 @@ final _GRID_CONFIGURATIONS = {
 };
 
 class Grid extends StatefulWidget {
+  const Grid({Key? key}) : super(key: key);
+
   @override
   GridState createState() => GridState();
 }
@@ -115,31 +117,31 @@ class GridState extends State<Grid> {
   var _currentGridConfiguration = 'grid_boxes_10x10';
 
   var _isConfiguration = false;
-  var _currentConfigType;
-  var _currentConfigColumns;
-  var _currentConfigRows;
-  var _currentConfigBoxEnumeration = '';
-  var _currentConfigColumnEnumeration = '';
-  var _currentConfigRowEnumeration = '';
-  var _currentConfigBoxEnumerationStart;
-  var _currentConfigBoxEnumerationStartDirection;
-  var _currentConfigBoxEnumerationBehaviour;
+  late _GridType _currentConfigType;
+  late int _currentConfigColumns;
+  late int _currentConfigRows;
+  String? _currentConfigBoxEnumeration;
+  String? _currentConfigColumnEnumeration;
+  String? _currentConfigRowEnumeration;
+  late _GridEnumerationStart _currentConfigBoxEnumerationStart;
+  late _GridBoxEnumerationStartDirection _currentConfigBoxEnumerationStartDirection;
+  late _GridBoxEnumerationBehaviour _currentConfigBoxEnumerationBehaviour;
 
-  var _currentConfigBoxEnumerationStartDirections;
+  late List<_GridBoxEnumerationStartDirection> _currentConfigBoxEnumerationStartDirections;
 
-  var _boxEnumerationController;
-  var _columnEnumerationController;
-  var _rowEnumerationController;
+  late TextEditingController _boxEnumerationController;
+  late TextEditingController _columnEnumerationController;
+  late TextEditingController _rowEnumerationController;
 
   @override
   void initState() {
     super.initState();
 
+    _initializeDefaultGrid();
+
     _boxEnumerationController = TextEditingController(text: _currentConfigBoxEnumeration);
     _columnEnumerationController = TextEditingController(text: _currentConfigColumnEnumeration);
     _rowEnumerationController = TextEditingController(text: _currentConfigRowEnumeration);
-
-    _initializeDefaultGrid();
   }
 
   @override
@@ -151,29 +153,25 @@ class GridState extends State<Grid> {
     super.dispose();
   }
 
-  _initializeDefaultGrid() {
-    _currentConfigType = _GRID_CONFIGURATIONS[_currentGridConfiguration].type ?? _GridType.BOXES;
-    _currentConfigColumns = _GRID_CONFIGURATIONS[_currentGridConfiguration].width ?? 10;
-    _currentConfigRows = _GRID_CONFIGURATIONS[_currentGridConfiguration].height ?? 10;
-    _currentConfigBoxEnumeration = _GRID_CONFIGURATIONS[_currentGridConfiguration].enumeration ?? '';
-    _currentConfigColumnEnumeration = _GRID_CONFIGURATIONS[_currentGridConfiguration].columnEnumeration ?? '';
-    _currentConfigRowEnumeration = _GRID_CONFIGURATIONS[_currentGridConfiguration].rowEnumeration ?? '';
+  void _initializeDefaultGrid() {
+    _currentConfigType = _GRID_CONFIGURATIONS[_currentGridConfiguration]?.type ?? _GridType.BOXES;
+    _currentConfigColumns = _GRID_CONFIGURATIONS[_currentGridConfiguration]?.width ?? 10;
+    _currentConfigRows = _GRID_CONFIGURATIONS[_currentGridConfiguration]?.height ?? 10;
+    _currentConfigBoxEnumeration = _GRID_CONFIGURATIONS[_currentGridConfiguration]?.enumeration ?? '';
+    _currentConfigColumnEnumeration = _GRID_CONFIGURATIONS[_currentGridConfiguration]?.columnEnumeration ?? '';
+    _currentConfigRowEnumeration = _GRID_CONFIGURATIONS[_currentGridConfiguration]?.rowEnumeration ?? '';
     _currentConfigBoxEnumerationStart =
-        _GRID_CONFIGURATIONS[_currentGridConfiguration].enumerationStart ?? _GridEnumerationStart.TOP_LEFT;
+        _GRID_CONFIGURATIONS[_currentGridConfiguration]?.enumerationStart ?? _GridEnumerationStart.TOP_LEFT;
     _currentConfigBoxEnumerationStartDirection =
-        _GRID_CONFIGURATIONS[_currentGridConfiguration].enumerationStartDirection ??
+        _GRID_CONFIGURATIONS[_currentGridConfiguration]?.enumerationStartDirection ??
             _GridBoxEnumerationStartDirection.RIGHT;
     _currentConfigBoxEnumerationBehaviour =
-        _GRID_CONFIGURATIONS[_currentGridConfiguration].enumerationBehaviour ?? _GridBoxEnumerationBehaviour.ALIGNED;
-
-    _boxEnumerationController.text = _currentConfigBoxEnumeration;
-    _columnEnumerationController.text = _currentConfigColumnEnumeration;
-    _rowEnumerationController.text = _currentConfigRowEnumeration;
+        _GRID_CONFIGURATIONS[_currentGridConfiguration]?.enumerationBehaviour ?? _GridBoxEnumerationBehaviour.ALIGNED;
 
     _currentConfigBoxEnumerationStartDirections = _possibleStartDirections();
   }
 
-  _possibleStartDirections() {
+  List<_GridBoxEnumerationStartDirection> _possibleStartDirections() {
     switch (_currentConfigBoxEnumerationStart) {
       case _GridEnumerationStart.TOP_LEFT:
         return [_GridBoxEnumerationStartDirection.RIGHT, _GridBoxEnumerationStartDirection.DOWN];
@@ -183,6 +181,8 @@ class GridState extends State<Grid> {
         return [_GridBoxEnumerationStartDirection.RIGHT, _GridBoxEnumerationStartDirection.UP];
       case _GridEnumerationStart.BOTTOM_RIGHT:
         return [_GridBoxEnumerationStartDirection.LEFT, _GridBoxEnumerationStartDirection.UP];
+      default:
+        return [_GridBoxEnumerationStartDirection.RIGHT, _GridBoxEnumerationStartDirection.DOWN];
     }
   }
 
@@ -193,7 +193,7 @@ class GridState extends State<Grid> {
         Row(
           children: [
             Expanded(
-              child: GCWDropDown(
+              child: GCWDropDown<String>(
                 value: _currentGridConfiguration,
                 items: _GRID_CONFIGURATIONS
                     .map((key, value) {
@@ -205,21 +205,21 @@ class GridState extends State<Grid> {
                   setState(() {
                     _currentGridConfiguration = value;
 
-                    _currentConfigType = _GRID_CONFIGURATIONS[_currentGridConfiguration].type;
-                    _currentConfigColumns = _GRID_CONFIGURATIONS[_currentGridConfiguration].width;
-                    _currentConfigRows = _GRID_CONFIGURATIONS[_currentGridConfiguration].height;
-                    _currentConfigBoxEnumeration = _GRID_CONFIGURATIONS[_currentGridConfiguration].enumeration;
+                    _currentConfigType = _GRID_CONFIGURATIONS[_currentGridConfiguration]?.type ?? _GridType.BOXES;
+                    _currentConfigColumns = _GRID_CONFIGURATIONS[_currentGridConfiguration]?.width ?? 10;
+                    _currentConfigRows = _GRID_CONFIGURATIONS[_currentGridConfiguration]?.height ?? 10;
+                    _currentConfigBoxEnumeration = _GRID_CONFIGURATIONS[_currentGridConfiguration]?.enumeration ?? '';
                     _boxEnumerationController.text = _currentConfigBoxEnumeration ?? '';
-                    _currentConfigColumnEnumeration = _GRID_CONFIGURATIONS[_currentGridConfiguration].columnEnumeration;
+                    _currentConfigColumnEnumeration = _GRID_CONFIGURATIONS[_currentGridConfiguration]?.columnEnumeration ?? '';
                     _columnEnumerationController.text = _currentConfigColumnEnumeration ?? '';
-                    _currentConfigRowEnumeration = _GRID_CONFIGURATIONS[_currentGridConfiguration].rowEnumeration;
+                    _currentConfigRowEnumeration = _GRID_CONFIGURATIONS[_currentGridConfiguration]?.rowEnumeration ?? '';
                     _rowEnumerationController.text = _currentConfigRowEnumeration ?? '';
                     _currentConfigBoxEnumerationStart =
-                        _GRID_CONFIGURATIONS[_currentGridConfiguration].enumerationStart;
+                        _GRID_CONFIGURATIONS[_currentGridConfiguration]?.enumerationStart ?? _GridEnumerationStart.TOP_LEFT;
                     _currentConfigBoxEnumerationStartDirection =
-                        _GRID_CONFIGURATIONS[_currentGridConfiguration].enumerationStartDirection;
+                        _GRID_CONFIGURATIONS[_currentGridConfiguration]?.enumerationStartDirection ?? _GridBoxEnumerationStartDirection.RIGHT;
                     _currentConfigBoxEnumerationBehaviour =
-                        _GRID_CONFIGURATIONS[_currentGridConfiguration].enumerationBehaviour;
+                        _GRID_CONFIGURATIONS[_currentGridConfiguration]?.enumerationBehaviour ?? _GridBoxEnumerationBehaviour.ALIGNED;
 
                     if (_currentGridConfiguration == _GRID_CUSTOM_KEY) _isConfiguration = true;
                   });
@@ -245,13 +245,13 @@ class GridState extends State<Grid> {
     );
   }
 
-  _buildConfiguration() {
+  Widget _buildConfiguration() {
     return Column(
       children: [
         GCWTextDivider(
           text: i18n(context, 'grid_configuration'),
         ),
-        GCWDropDown(
+        GCWDropDown<_GridType>(
           title: i18n(context, 'grid_type_title'),
           value: _currentConfigType,
           items: {
@@ -295,8 +295,9 @@ class GridState extends State<Grid> {
         _currentConfigType == _GridType.BOXES
             ? Row(
                 children: [
-                  Expanded(child: GCWText(text: i18n(context, 'grid_boxenumeration') + ':'), flex: 1),
+                  Expanded(flex: 1, child: GCWText(text: i18n(context, 'grid_boxenumeration') + ':')),
                   Expanded(
+                      flex: 3,
                       child: GCWTextField(
                         controller: _boxEnumerationController,
                         onChanged: (text) {
@@ -304,19 +305,19 @@ class GridState extends State<Grid> {
                             _currentConfigBoxEnumeration = text;
                           });
                         },
-                      ),
-                      flex: 3)
+                      ))
                 ],
               )
             : Container(),
         Row(
           children: [
             Expanded(
+                flex: 1,
                 child: GCWText(
                   text: i18n(context, 'grid_columnenumeration') + ':',
-                ),
-                flex: 1),
+                )),
             Expanded(
+                flex: 3,
                 child: GCWTextField(
                   controller: _columnEnumerationController,
                   onChanged: (text) {
@@ -324,18 +325,18 @@ class GridState extends State<Grid> {
                       _currentConfigColumnEnumeration = text;
                     });
                   },
-                ),
-                flex: 3)
+                ))
           ],
         ),
         Row(
           children: [
             Expanded(
+                flex: 1,
                 child: GCWText(
                   text: i18n(context, 'grid_rowenumeration') + ':',
-                ),
-                flex: 1),
+                )),
             Expanded(
+                flex: 3,
                 child: GCWTextField(
                   controller: _rowEnumerationController,
                   onChanged: (text) {
@@ -343,8 +344,7 @@ class GridState extends State<Grid> {
                       _currentConfigRowEnumeration = text;
                     });
                   },
-                ),
-                flex: 3)
+                ))
           ],
         ),
         _currentConfigType == _GridType.BOXES ? _buildBoxEnumerationOptions() : Container()
@@ -352,10 +352,10 @@ class GridState extends State<Grid> {
     );
   }
 
-  _buildBoxEnumerationOptions() {
+  Widget _buildBoxEnumerationOptions() {
     return Column(
       children: [
-        GCWDropDown(
+        GCWDropDown<_GridEnumerationStart>(
           title: i18n(context, 'grid_boxes_start_title'),
           value: _currentConfigBoxEnumerationStart,
           items: {
@@ -382,11 +382,11 @@ class GridState extends State<Grid> {
             });
           },
         ),
-        GCWDropDown(
+        GCWDropDown<_GridBoxEnumerationStartDirection>(
           title: i18n(context, 'grid_boxes_startdirection_title'),
           value: _currentConfigBoxEnumerationStartDirection,
-          items: _currentConfigBoxEnumerationStartDirections.map<GCWDropDownMenuItem>((direction) {
-            var name;
+          items: _currentConfigBoxEnumerationStartDirections.map<GCWDropDownMenuItem<_GridBoxEnumerationStartDirection>>((direction) {
+            String name;
             switch (direction) {
               case _GridBoxEnumerationStartDirection.RIGHT:
                 name = 'grid_boxes_startdirection_right';
@@ -400,6 +400,8 @@ class GridState extends State<Grid> {
               case _GridBoxEnumerationStartDirection.DOWN:
                 name = 'grid_boxes_startdirection_down';
                 break;
+              default:
+                name = '';
             }
 
             return GCWDropDownMenuItem(value: direction, child: i18n(context, name));
@@ -410,7 +412,7 @@ class GridState extends State<Grid> {
             });
           },
         ),
-        GCWDropDown(
+        GCWDropDown<_GridBoxEnumerationBehaviour>(
           title: i18n(context, 'grid_boxes_behaviour_title'),
           value: _currentConfigBoxEnumerationBehaviour,
           items: {
@@ -432,8 +434,8 @@ class GridState extends State<Grid> {
                     behaviour,
                     GCWDropDownMenuItem(
                         value: behaviour,
-                        child: i18n(context, name['title']),
-                        subtitle: i18n(context, name['description'])));
+                        child: i18n(context, name['title'] ?? ''),
+                        subtitle: i18n(context, name['description'] ?? '')));
               })
               .values
               .toList(),
@@ -447,24 +449,24 @@ class GridState extends State<Grid> {
     );
   }
 
-  _buildGrid() {
+  Widget _buildGrid() {
     return Column(
       children: [
         Container(
           constraints: BoxConstraints(maxWidth: min(500, MediaQuery.of(context).size.height * 0.8)),
+          margin: const EdgeInsets.symmetric(vertical: 20.0),
           child: _GridPainter(
             tapColor: _currentColor,
             type: _currentConfigType,
             countColumns: _currentConfigColumns,
             countRows: _currentConfigRows,
-            boxEnumeration: _getEnumeration(_currentConfigBoxEnumeration),
-            columnEnumeration: _getEnumeration(_currentConfigColumnEnumeration),
-            rowEnumeration: _getEnumeration(_currentConfigRowEnumeration),
+            boxEnumeration: _getEnumeration(_currentConfigBoxEnumeration ?? ''),
+            columnEnumeration: _getEnumeration(_currentConfigColumnEnumeration ?? ''),
+            rowEnumeration: _getEnumeration(_currentConfigRowEnumeration ?? ''),
             boxEnumerationStart: _currentConfigBoxEnumerationStart,
             boxEnumerationStartDirection: _currentConfigBoxEnumerationStartDirection,
             boxEnumerationBehaviour: _currentConfigBoxEnumerationBehaviour,
           ),
-          margin: EdgeInsets.symmetric(vertical: 20.0),
         ),
         Row(children: _GridPaintColor.values.map((color) => _buildColorField(color)).toList())
       ],
@@ -472,16 +474,24 @@ class GridState extends State<Grid> {
   }
 
   List<String> _getEnumeration(String enumeration) {
-    if (enumeration == null || enumeration.isEmpty) return <String>[];
+    if (enumeration.isEmpty) return <String>[];
 
-    if (enumeration.contains(RegExp(r'[\,\-]')) && VARIABLESTRING.hasMatch(enumeration)) {
+    if (enumeration.contains(RegExp(r'[,\-]')) && VARIABLESTRING.hasMatch(enumeration)) {
       var expanded = VariableStringExpander('x', {'x': enumeration}, orderAndUnique: false)
           .run()
-          .map((e) => e['text'].toString())
+          .map((e) => e.text)
+          .whereType<String>()
           .toList();
 
-      expanded.sort((a, b) => int.tryParse(a).compareTo(int.tryParse(b)));
-      return expanded;
+      expanded.sort((a, b) {
+        var intA = int.tryParse(a);
+        var intB = int.tryParse(b);
+
+        if (intA == null || intB == null) return 0;
+        return intA.compareTo(intB);
+      });
+
+      return expanded.whereType<String>().toList();
     }
 
     if (enumeration.contains(RegExp(r'\s+'))) {
@@ -512,8 +522,8 @@ class GridState extends State<Grid> {
 
   BoxDecoration _getColorDecoration(_GridPaintColor color) {
     return _currentColor == color
-        ? BoxDecoration(color: _GRID_COLORS[color]['color'], border: Border.all(color: themeColors().accent(), width: 5))
+        ? BoxDecoration(color: (_GRID_COLORS[color]?['color'] ?? Colors.black), border: Border.all(color: themeColors().secondary(), width: 5))
         : BoxDecoration(
-            color: _GRID_COLORS[color]['color'], border: Border.all(color: themeColors().mainFont(), width: 1.0));
+            color: (_GRID_COLORS[color]?['color'] ?? Colors.black), border: Border.all(color: themeColors().mainFont(), width: 1.0));
   }
 }

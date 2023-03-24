@@ -7,19 +7,20 @@ import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/prime_alphabet/logic/prime_alphabet.dart';
 import 'package:gc_wizard/tools/science_and_technology/primes/_common/logic/primes_list.dart';
-import 'package:gc_wizard/utils/constants.dart';
 
 class PrimeAlphabet extends StatefulWidget {
+  const PrimeAlphabet({Key? key}) : super(key: key);
+
   @override
   PrimeAlphabetState createState() => PrimeAlphabetState();
 }
 
-final _MAX_PRIME_INDEX = 26 * 10;
+const _MAX_PRIME_INDEX = 26 * 10;
 final _PRIMES_LIST = primes.sublist(0, _MAX_PRIME_INDEX);
 
 class PrimeAlphabetState extends State<PrimeAlphabet> {
-  TextEditingController _encryptInputController;
-  TextEditingController _decryptInputController;
+  late TextEditingController _encryptInputController;
+  late TextEditingController _decryptInputController;
   var _currentEncryptInput = '';
   var _currentDecryptInput = '';
 
@@ -79,8 +80,9 @@ class PrimeAlphabetState extends State<PrimeAlphabet> {
             onChanged: (value) {
               setState(() {
                 _currentStartIndex = value;
-                if (_currentEndIndex > _MAX_PRIME_INDEX - _currentStartIndex - 1)
+                if (_currentEndIndex > _MAX_PRIME_INDEX - _currentStartIndex - 1) {
                   _currentEndIndex = _MAX_PRIME_INDEX - _currentStartIndex - 1;
+                }
               });
             },
             items: _getItemEntries(0)),
@@ -106,17 +108,17 @@ class PrimeAlphabetState extends State<PrimeAlphabet> {
     }).toList();
   }
 
-  _buildOutput() {
+  String _buildOutput() {
     if (_currentMode == GCWSwitchPosition.right) {
       return decryptPrimeAlphabet(
-          RegExp(r'[0-9]+').allMatches(_currentDecryptInput).map((number) => int.tryParse(number.group(0))).toList(),
+          RegExp(r'\d+').allMatches(_currentDecryptInput).map((number) => int.tryParse(number.group(0)!) ?? 0).toList(),
           firstRecognizedPrime: _PRIMES_LIST[_currentStartIndex]);
     } else {
       return encryptPrimeAlphabet(
         _currentEncryptInput,
         firstRecognizedPrime: _PRIMES_LIST[_currentStartIndex],
         lastRecognizedPrime: _PRIMES_LIST[_currentStartIndex + _currentEndIndex],
-      ).map((element) => element ?? UNKNOWN_ELEMENT).join(' ');
+      ).map((element) => element).join(' ');
     }
   }
 }

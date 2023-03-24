@@ -1,13 +1,14 @@
 import 'dart:math';
 
+import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors.dart';
 import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors_rgb.dart';
 import 'package:gc_wizard/utils/math_utils.dart';
 
 enum _HueType { HSV, HSL, HSI }
 
 //source: https://www.vocal.com/video/rgb-and-hsvhsihsl-color-space-conversion/
-
-_fromRGB(RGB rgb, _HueType type) {
+//ToDo NullSafety remove Map result
+Map<String, double> _fromRGB(RGB rgb, _HueType type) {
   var red = rgb.redPercentage;
   var green = rgb.greenPercentage;
   var blue = rgb.bluePercentage;
@@ -54,7 +55,7 @@ _fromRGB(RGB rgb, _HueType type) {
 }
 
 // for HSV and HSL
-_toRGB(double hue, double saturation, double thirdComponent, _HueType type) {
+RGB _toRGB(double hue, double saturation, double thirdComponent, _HueType type) {
   double c = 0.0;
 
   switch (type) {
@@ -70,9 +71,9 @@ _toRGB(double hue, double saturation, double thirdComponent, _HueType type) {
 
   double x = c * (1.0 - ((hue / 60.0) % 2.0 - 1.0).abs());
 
-  double red;
-  double green;
-  double blue;
+  double red = 0;
+  double green = 0;
+  double blue = 0;
 
   if (hue < 60.0) {
     red = c;
@@ -119,10 +120,10 @@ _toRGB(double hue, double saturation, double thirdComponent, _HueType type) {
   return RGB(red, green, blue);
 }
 
-class HSV {
-  double hue;
-  double saturation;
-  double value;
+class HSV extends GCWBaseColor {
+  late double hue;
+  late double saturation;
+  late double value;
 
   HSV(double hue, double saturation, double value) {
     this.hue = min(360.0, max(0.0, hue));
@@ -138,13 +139,14 @@ class HSV {
     return value * 100.0;
   }
 
+  @override
   RGB toRGB() {
     return _toRGB(hue, saturation, value, _HueType.HSV);
   }
 
   static HSV fromRGB(RGB rgb) {
     var values = _fromRGB(rgb, _HueType.HSV);
-    return HSV(values['hue'], values['saturation'], values['value']);
+    return HSV(values['hue']!, values['saturation']!, values['value']!);
   }
 
   @override
@@ -153,10 +155,10 @@ class HSV {
   }
 }
 
-class HSL {
-  double hue;
-  double saturation;
-  double lightness;
+class HSL extends GCWBaseColor {
+  late double hue;
+  late double saturation;
+  late double lightness;
 
   HSL(double hue, double saturation, double lightness) {
     this.hue = min(360.0, max(0.0, hue));
@@ -164,13 +166,14 @@ class HSL {
     this.lightness = min(1.0, max(0.0, lightness));
   }
 
+  @override
   RGB toRGB() {
     return _toRGB(hue, saturation, lightness, _HueType.HSL);
   }
 
   static HSL fromRGB(RGB rgb) {
     var values = _fromRGB(rgb, _HueType.HSL);
-    return HSL(values['hue'], values['saturation'], values['lightness']);
+    return HSL(values['hue']!, values['saturation']!, values['lightness']!);
   }
 
   @override
@@ -179,10 +182,10 @@ class HSL {
   }
 }
 
-class HSI {
-  double hue;
-  double saturation;
-  double intensity;
+class HSI extends GCWBaseColor {
+  late double hue;
+  late double saturation;
+  late double intensity;
 
   HSI(double hue, double saturation, double intensity) {
     this.hue = min(360.0, max(0.0, hue));
@@ -192,6 +195,7 @@ class HSI {
 
   //TODO: Although every source I found has the same formulas, the precision lacks a little bit; finding a better approach!
   //source: https://www.vocal.com/video/rgb-and-hsvhsihsl-color-space-conversion/
+  @override
   RGB toRGB() {
     var red = 0.0;
     var green = 0.0;
@@ -216,7 +220,7 @@ class HSI {
 
   static HSI fromRGB(RGB rgb) {
     var values = _fromRGB(rgb, _HueType.HSI);
-    return HSI(values['hue'], values['saturation'], values['intensity']);
+    return HSI(values['hue']!, values['saturation']!, values['intensity']!);
   }
 
   @override

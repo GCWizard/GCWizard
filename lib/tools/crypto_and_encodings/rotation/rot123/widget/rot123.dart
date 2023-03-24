@@ -7,12 +7,14 @@ import 'package:gc_wizard/tools/crypto_and_encodings/vigenere/logic/vigenere.dar
 import 'package:gc_wizard/utils/alphabets.dart';
 
 class Rot123 extends StatefulWidget {
+  const Rot123({Key? key}) : super(key: key);
+
   @override
   Rot123State createState() => Rot123State();
 }
 
 class Rot123State extends State<Rot123> {
-  var _controller;
+  late TextEditingController _controller;
 
   String _currentInput = '';
 
@@ -45,8 +47,8 @@ class Rot123State extends State<Rot123> {
     );
   }
 
-  _buildOutput() {
-    if (_currentInput == null || _currentInput.isEmpty) return GCWDefaultOutput();
+  Widget _buildOutput() {
+    if (_currentInput.isEmpty) return const GCWDefaultOutput();
 
     return Column(
       children: [

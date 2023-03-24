@@ -7,13 +7,15 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/navajo/logic/navajo.dart';
 
 class Navajo extends StatefulWidget {
+  const Navajo({Key? key}) : super(key: key);
+
   @override
   NavajoState createState() => NavajoState();
 }
 
 class NavajoState extends State<Navajo> {
-  var _decodeController;
-  var _encodeController;
+  late TextEditingController _decodeController;
+  late TextEditingController _encodeController;
 
   String _currentEncodeInput = '';
   String _currentDecodeInput = '';
@@ -44,7 +46,7 @@ class NavajoState extends State<Navajo> {
             ? GCWTextField(
                 controller: _encodeController,
                 inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[a-zA-Z- \.]')),
+                  FilteringTextInputFormatter.allow(RegExp('[a-zA-Z- .]')),
                 ],
                 onChanged: (text) {
                   setState(() {
@@ -56,7 +58,7 @@ class NavajoState extends State<Navajo> {
             : GCWTextField(
                 controller: _decodeController,
                 inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[a-zA-Z- \.]')),
+                  FilteringTextInputFormatter.allow(RegExp('[a-zA-Z- .]')),
                 ],
                 onChanged: (text) {
                   setState(() {
@@ -91,10 +93,11 @@ class NavajoState extends State<Navajo> {
     );
   }
 
-  _calculateOutput() {
-    if (_currentMode == GCWSwitchPosition.left)
+  void _calculateOutput() {
+    if (_currentMode == GCWSwitchPosition.left) {
       _output = encodeNavajo(_currentEncodeInput, (_currentSource == GCWSwitchPosition.right));
-    else
+    } else {
       _output = decodeNavajo(_currentDecodeInput, (_currentSource == GCWSwitchPosition.right));
+    }
   }
 }

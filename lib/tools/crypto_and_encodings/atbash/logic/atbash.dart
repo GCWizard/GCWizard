@@ -2,7 +2,7 @@ import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
 String atbash(String input) {
-  if (input == null || input.length == 0) return '';
+  if (input.isEmpty) return '';
 
   input = removeAccents(input).toUpperCase();
 

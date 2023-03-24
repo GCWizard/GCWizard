@@ -44,7 +44,7 @@ String urwigoConvBase(int numberInput, String fromBaseInput, String toBaseInput)
 /*
   This function will yield collisions for the desired hash
 */
-String findHash(int hashToFind, int len) {
+String? findHash(int hashToFind, int len) {
   var max = pow(26, len);
   for (var i = 0; i < max; i++) {
     var s = urwigoConvBase(i, '0123456789', 'abcdefghijklmnopqrstuvwxyz').padLeft(len, 'a');

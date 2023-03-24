@@ -20,17 +20,15 @@
  *
  */
 
-/**
- *
- * Astronomical Calculations and and helper Classes
- *
- * java Source code based on the javascript by Arnold Barmettler, www.astronomie.info / www.CalSky.com
- * based on algorithms by Peter Duffett-Smith's great and easy book 'Practical Astronomy with your Calculator'.
- *
- * @author Helmut Lehmeyer
- * @date 15.05.2012
- * @version 0.1
- */
+///
+/// Astronomical Calculations and and helper Classes
+///
+/// java Source code based on the javascript by Arnold Barmettler, www.astronomie.info / www.CalSky.com
+/// based on algorithms by Peter Duffett-Smith's great and easy book 'Practical Astronomy with your Calculator'.
+///
+/// @author Helmut Lehmeyer
+/// @date 15.05.2012
+/// @version 0.1
 import 'dart:math';
 
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
@@ -43,8 +41,9 @@ const double _RAD = 180.0 / pi;
 int _Int(double x) {
   if (x < 0) {
     return x.ceil();
-  } else
+  } else {
     return x.floor();
+  }
 }
 
 double _sqr(double x) {
@@ -321,8 +320,8 @@ Coor sunPosition(double TDT, double earthRadius, [double geolat = 0, double lmst
  * @param useObs
  * @return data and coordinates for the Moon
  */
-Coor moonPosition(Coor sunCoor, double TDT, [Coor observer, double lmst = 0, bool useObs = false]) {
-  if (observer == null) observer = Coor();
+Coor moonPosition(Coor sunCoor, double TDT, [Coor? observer, double lmst = 0, bool useObs = false]) {
+  observer ??= Coor();
 
   double D = TDT - 2447891.5;
 
@@ -382,10 +381,11 @@ Coor moonPosition(Coor sunCoor, double TDT, [Coor observer, double lmst = 0, boo
   double mainPhase = 1.0 / 29.53 * 360 * _DEG; // show 'Newmoon, 'Quarter' for +/-1 day arond the actual event
   double p = _mod(moonCoor.moonAge, 90.0 * _DEG);
 
-  if (p < mainPhase || p > 90 * _DEG - mainPhase)
+  if (p < mainPhase || p > 90 * _DEG - mainPhase) {
     p = 2 * (moonCoor.moonAge / (90.0 * _DEG)).roundToDouble();
-  else
+  } else {
     p = 2 * (moonCoor.moonAge / (90.0 * _DEG)).roundToDouble() + 1;
+  }
 
   moonCoor.moonPhase = MoonPhase.values[p.floor() % 7];
   moonCoor.sign = _sign(moonCoor.lon);
@@ -641,26 +641,29 @@ RiseSet moonRise(double JD, double deltaT, double lon, double lat, double zone, 
 
       if (rise.transit >= 24.0 - zone || rise.transit < -zone) {
         // transit time is tomorrow local time
-        if (riseprev.transit < 24.0 - zone)
+        if (riseprev.transit < 24.0 - zone) {
           rise.transit = 0.000000000; // there is no moontransit today
-        else
+        } else {
           rise.transit = riseprev.transit;
+        }
       }
 
       if (rise.rise >= 24.0 - zone || rise.rise < -zone) {
         // transit time is tomorrow local time
-        if (riseprev.rise < 24.0 - zone)
+        if (riseprev.rise < 24.0 - zone) {
           rise.rise = 0.000000000; // there is no moontransit today
-        else
+        } else {
           rise.rise = riseprev.rise;
+        }
       }
 
       if (rise.set >= 24.0 - zone || rise.set < -zone) {
         // transit time is tomorrow local time
-        if (riseprev.set < 24.0 - zone)
+        if (riseprev.set < 24.0 - zone) {
           rise.set = 0.000000000; // there is no moontransit today
-        else
+        } else {
           rise.set = riseprev.set;
+        }
       }
     } else if (zone < 0) {
       // rise/set time was tomorrow local time -> calculate rise time for former UTC day
@@ -668,42 +671,48 @@ RiseSet moonRise(double JD, double deltaT, double lon, double lat, double zone, 
         risetemp = moonRise(JD + 1.0, deltaT, lon, lat, zone, true, ells);
 
         if (rise.rise < -zone) {
-          if (risetemp.rise > -zone)
+          if (risetemp.rise > -zone) {
             rise.rise = 0.0; // there is no moonrise today
-          else
+          } else {
             rise.rise = risetemp.rise;
+          }
         }
 
         if (rise.transit < -zone) {
-          if (risetemp.transit > -zone)
+          if (risetemp.transit > -zone) {
             rise.transit = 0.0; // there is no moonset today
-          else
+          } else {
             rise.transit = risetemp.transit;
+          }
         }
 
         if (rise.set < -zone) {
-          if (risetemp.set > -zone)
+          if (risetemp.set > -zone) {
             rise.set = 0.0; // there is no moonset today
-          else
+          } else {
             rise.set = risetemp.set;
+          }
         }
       }
     }
 
-    if (rise.rise != 0.0)
+    if (rise.rise != 0.0) {
       rise.rise = _mod(rise.rise + zone, 24.0); // correct for time zone, if time is valid
-    else
+    } else {
       rise.rise = double.nan;
+    }
 
-    if (rise.transit != 0.0)
+    if (rise.transit != 0.0) {
       rise.transit = _mod(rise.transit + zone, 24.0); // correct for time zone, if time is valid
-    else
+    } else {
       rise.transit = double.nan;
+    }
 
-    if (rise.set != 0.0)
+    if (rise.set != 0.0) {
       rise.set = _mod(rise.set + zone, 24.0); // correct for time zone, if time is valid
-    else
+    } else {
       rise.set = double.nan;
+    }
   }
 
   return rise;
@@ -713,37 +722,37 @@ RiseSet moonRise(double JD, double deltaT, double lon, double lat, double zone, 
  * set of variables for sun calculations
  */
 class Coor {
-  double lon;
-  double lat;
+  late double lon;
+  late double lat;
 
-  double ra;
-  double dec;
-  double raGeocentric;
-  double decGeocentric;
+  late double ra;
+  late double dec;
+  late double raGeocentric;
+  late double decGeocentric;
 
-  double az;
-  double alt;
+  late double az;
+  late double alt;
 
-  double x;
-  double y;
-  double z;
+  late double x;
+  late double y;
+  late double z;
 
-  double radius;
-  double diameter;
-  double distance;
-  double distanceTopocentric;
-  double decTopocentric;
-  double raTopocentric;
+  late double radius;
+  late double diameter;
+  late double distance;
+  late double distanceTopocentric;
+  late double decTopocentric;
+  late double raTopocentric;
 
-  double anomalyMean;
-  double parallax;
-  double orbitLon;
+  late double anomalyMean;
+  late double parallax;
+  late double orbitLon;
 
-  double moonAge;
-  double phase;
+  late double moonAge;
+  late double phase;
 
-  MoonPhase moonPhase;
-  AstrologicalSign sign;
+  late MoonPhase moonPhase;
+  late AstrologicalSign sign;
 
   Coor();
 }
@@ -752,18 +761,18 @@ class Coor {
  * set of variables for sunrise calculations
  */
 class RiseSet {
-  double transit;
-  double rise;
-  double set;
+  late double transit;
+  late double rise;
+  late double set;
 
-  double civilTwilightMorning;
-  double civilTwilightEvening;
+  late double civilTwilightMorning;
+  late double civilTwilightEvening;
 
-  double nauticalTwilightMorning;
-  double nauticalTwilightEvening;
+  late double nauticalTwilightMorning;
+  late double nauticalTwilightEvening;
 
-  double astronomicalTwilightMorning;
-  double astronomicalTwilightEvening;
+  late double astronomicalTwilightMorning;
+  late double astronomicalTwilightEvening;
 
   RiseSet();
 }
@@ -772,14 +781,14 @@ class RiseSet {
  * time calculations
  */
 class Time {
-  int hh;
-  int mm;
-  int ss;
+  late int hh;
+  late int mm;
+  late int ss;
 
-  String hhmmString;
-  String hhmmStringdec;
-  String hhmmssString;
-  String hhmmssStringdec;
+  late String hhmmString;
+  late String hhmmStringdec;
+  late String hhmmssString;
+  late String hhmmssStringdec;
 
   Time(double hhi) {
     double mD = _frac(hhi) * 60;

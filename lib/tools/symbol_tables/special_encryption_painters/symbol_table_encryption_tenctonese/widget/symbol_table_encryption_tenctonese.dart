@@ -43,16 +43,16 @@ class TenctoneseSymbolTableEncryption extends SymbolTableEncryption {
         var imageIndex = i * countColumns + j;
 
         if (imageIndex < imageIndexes.length) {
-          if (imageIndexes[imageIndex] != null) {
-            var image = data.images[imageIndexes[imageIndex]].values.first.specialEncryptionImage;
+          var image = data.images[imageIndexes[imageIndex]].values.first.specialEncryptionImage;
+          if (image != null) {
             var width = image.width / image.height * _sizes.symbolHeight * _SCALE;
 
             paintImage(
-                canvas: canvas,
-                fit: BoxFit.contain,
-                rect: Rect.fromLTWH(rowPosition, (i * _sizes.tileHeight + _sizes.absoluteBorderWidth / 2) * _SCALE,
-                    width, _sizes.symbolHeight * _SCALE),
-                image: image);
+            canvas: canvas,
+            fit: BoxFit.contain,
+            rect: Rect.fromLTWH(rowPosition, (i * _sizes.tileHeight + _sizes.absoluteBorderWidth / 2) * _SCALE,
+            width, _sizes.symbolHeight * _SCALE),
+            image: image);
 
             rowPosition += width;
           }

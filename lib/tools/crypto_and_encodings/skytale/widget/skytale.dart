@@ -9,13 +9,15 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/skytale/logic/skytale.dart';
 
 class Skytale extends StatefulWidget {
+  const Skytale({Key? key}) : super(key: key);
+
   @override
   SkytaleState createState() => SkytaleState();
 }
 
 class SkytaleState extends State<Skytale> {
-  var _inputController;
-  TextEditingController _columnController;
+  late TextEditingController _inputController;
+  late TextEditingController _columnController;
 
   String _currentInput = '';
   int _currentPerimeter = 2;
@@ -110,12 +112,13 @@ class SkytaleState extends State<Skytale> {
     _fromColumnSpinner = false;
     _columnController.text = _currentCountColumns.toString();
 
-    if (_currentMode == GCWSwitchPosition.left)
+    if (_currentMode == GCWSwitchPosition.left) {
       _output = encryptSkytale(_currentInput,
           countRows: _currentPerimeter, countColumns: _currentCountColumns, countLettersPerCell: _currentStripWidth);
-    else
+    } else {
       _output = decryptSkytale(_currentInput,
           countRows: _currentPerimeter, countColumns: _currentCountColumns, countLettersPerCell: _currentStripWidth);
+    }
 
     return GCWDefaultOutput(child: _output);
   }

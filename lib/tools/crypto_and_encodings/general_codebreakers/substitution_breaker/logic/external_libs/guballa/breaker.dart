@@ -6,6 +6,7 @@ enum BreakerErrorCode {
   CONSOLIDATE_PARAMETER,
   TEXT_TOO_SHORT,
   ALPHABET_TOO_LONG,
+  ALPHABET_TOO_SHORT,
   WRONG_GENERATE_TEXT
 }
 
@@ -45,14 +46,14 @@ class BreakerResult {
 }
 
 const DEFAULT_ALPHABET = "abcdefghijklmnopqrstuvwxyz";
-String _alphabet;
+String? _alphabet;
 int _alphabet_len = 0;
-List<int> _quadgrams;
+List<int>? _quadgrams;
 
 /// Init the instance
-_initBreaker(Quadgrams languageQuadgrams) {
+void _initBreaker(Quadgrams languageQuadgrams) {
   _alphabet = languageQuadgrams.alphabet;
-  _alphabet_len = _alphabet.length;
+  _alphabet_len = _alphabet?.length ?? 0;
   _quadgrams = languageQuadgrams.quadgrams();
 }
 
@@ -60,16 +61,18 @@ _initBreaker(Quadgrams languageQuadgrams) {
 /// :param str txt: the text string to process
 /// :param str alphabet: the alphabet to apply with this text string
 /// :return: an iterator which iterates over all characters of the text string which are present in the alphabet.
-Iterable<int> iterateText(String text, String alphabet, {ignoreNonLetters: true}) sync* {
+Iterable<int> iterateText(String text, String alphabet, {bool ignoreNonLetters = true}) sync* {
   var trans = alphabet.toLowerCase();
   int index = -1;
 
   text = text.toLowerCase();
   for (int i = 0; i < text.length; i++) {
     index = trans.indexOf(text[i]);
-    if (index >= 0)
+    if (index >= 0) {
       yield index;
-    else if (!ignoreNonLetters) yield -1;
+    } else if (!ignoreNonLetters) {
+      yield -1;
+    }
   }
 }
 
@@ -87,7 +90,9 @@ Iterable<int> iterateText(String text, String alphabet, {ignoreNonLetters: true}
 /// :return: tuple of the max_fitness and the number of keys evaluated
 Tuple2<int, int> _hill_climbing(List<int> key, List<int> cipher_bin, List<List<int>> char_positions) {
   var plaintext = <int>[];
-  cipher_bin.forEach((idx) => plaintext.add(key.indexOf(idx)));
+  for (var idx in cipher_bin) {
+    plaintext.add(key.indexOf(idx));
+  }
   var key_len = _alphabet_len;
   var nbr_keys = 0;
   var max_fitness = 0;
@@ -99,19 +104,19 @@ Tuple2<int, int> _hill_climbing(List<int> key, List<int> cipher_bin, List<List<i
       for (var idx2 = idx1 + 1; idx2 < key_len; idx2++) {
         var ch1 = key[idx1];
         var ch2 = key[idx2];
-        char_positions[ch1].forEach((idx) {
+        for (var idx in char_positions[ch1]) {
           plaintext[idx] = idx2;
-        });
-        char_positions[ch2].forEach((idx) {
+        }
+        for (var idx in char_positions[ch2]) {
           plaintext[idx] = idx1;
-        });
+        }
         nbr_keys += 1;
         var tmp_fitness = 0;
         var quad_idx = (plaintext[0] << 10) + (plaintext[1] << 5) + plaintext[2];
 
         for (var char = 3; char < plaintext.length; char++) {
           quad_idx = ((quad_idx & 0x7FFF) << 5) + plaintext[char];
-          tmp_fitness += _quadgrams[quad_idx];
+          tmp_fitness += _quadgrams![quad_idx];
         }
         if (tmp_fitness > max_fitness) {
           max_fitness = tmp_fitness;
@@ -119,12 +124,12 @@ Tuple2<int, int> _hill_climbing(List<int> key, List<int> cipher_bin, List<List<i
           key[idx1] = ch2;
           key[idx2] = ch1;
         } else {
-          char_positions[ch1].forEach((idx) {
+          for (var idx in char_positions[ch1]) {
             plaintext[idx] = idx1;
-          });
-          char_positions[ch2].forEach((idx) {
+          }
+          for (var idx in char_positions[ch2]) {
             plaintext[idx] = idx2;
-          });
+          }
         }
       }
     }
@@ -140,32 +145,35 @@ Tuple2<int, int> _hill_climbing(List<int> key, List<int> cipher_bin, List<List<i
 BreakerResult break_cipher(Quadgrams quadgrams, String ciphertext, {int maxRounds = 10000, int consolidate = 3}) {
   _initBreaker(quadgrams);
 
-  if ((maxRounds < 1) || (maxRounds > 10000))
-    // maximum number of rounds not in the valid range 1..10000"
+  if ((maxRounds < 1) || (maxRounds > 10000)) {
     return BreakerResult(errorCode: BreakerErrorCode.MAX_ROUNDS_PARAMETER);
-  if ((consolidate < 1) || (consolidate > 30))
-    // consolidate parameter out of valid range 1..30"
+  }
+  if ((consolidate < 1) || (consolidate > 30)) {
     return BreakerResult(errorCode: BreakerErrorCode.CONSOLIDATE_PARAMETER);
+  }
+  if ((_alphabet == null) || (_alphabet!.isEmpty)) {
+    return BreakerResult(errorCode: BreakerErrorCode.ALPHABET_TOO_SHORT);
+  }
 
   var start_time = DateTime.now();
   var nbr_keys = 0;
   var cipher_bin = <int>[];
-  iterateText(ciphertext, _alphabet).forEach((char) {
+  iterateText(ciphertext, _alphabet!).forEach((char) {
     cipher_bin.add(char);
   });
 
-  if (cipher_bin.length < 4)
-    // ciphertext is too short
+  if (cipher_bin.length < 4) {
     return BreakerResult(errorCode: BreakerErrorCode.TEXT_TOO_SHORT);
+  }
 
   var char_positions = <List<int>>[];
-  for (int idx = 0; idx < _alphabet.length; idx++) {
+  for (int idx = 0; idx < _alphabet!.length; idx++) {
     var posList = <int>[];
     var i = 0;
-    cipher_bin.forEach((x) {
+    for (var x in cipher_bin) {
       if (x == idx) posList.add(i);
       i += 1;
-    });
+    }
     char_positions.add(posList);
   }
 
@@ -175,7 +183,7 @@ BreakerResult break_cipher(Quadgrams quadgrams, String ciphertext, {int maxRound
   var key = <int>[];
   var best_key = <int>[];
 
-  for (int idx = 0; idx < _alphabet.length; idx++) {
+  for (int idx = 0; idx < _alphabet!.length; idx++) {
     key.add(idx);
     best_key.add(idx);
   }
@@ -196,15 +204,15 @@ BreakerResult break_cipher(Quadgrams quadgrams, String ciphertext, {int maxRound
       if (local_maximum_hit == consolidate) break;
     }
   }
-  var key_str = best_key.map((x) => _alphabet[x]).join();
-  var _key = BreakerKey(key_str, alphabet: _alphabet);
+  var key_str = best_key.map((x) => _alphabet![x]).join();
+  var _key = BreakerKey(key_str, alphabet: _alphabet!);
   var seconds = (DateTime.now().difference(start_time)).inMilliseconds / 1000;
 
   return BreakerResult(
       ciphertext: ciphertext,
-      plaintext: _key.decode(ciphertext),
+      plaintext: _key.decode(ciphertext) ?? '',
       key: key_str,
-      alphabet: _alphabet,
+      alphabet: _alphabet!,
       fitness: local_maximum / ((cipher_bin.length) - 3) / 10,
       nbr_keys: nbr_keys,
       nbr_rounds: round_cntr,

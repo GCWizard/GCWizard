@@ -11,20 +11,22 @@ import 'package:gc_wizard/tools/crypto_and_encodings/language_games/spoon_langua
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class LanguageGamesSelection extends GCWSelection {
+  const LanguageGamesSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(ChickenLanguage()),
-        className(DuckSpeak()),
-        className(PigLatin()),
-        className(RobberLanguage()),
-        className(SpoonLanguage()),
+        className(const ChickenLanguage()),
+        className(const DuckSpeak()),
+        className(const PigLatin()),
+        className(const RobberLanguage()),
+        className(const SpoonLanguage()),
       ].contains(className(element.tool));
     }).toList();
 
     _toolList.sort((a, b) => sortToolList(a, b));
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

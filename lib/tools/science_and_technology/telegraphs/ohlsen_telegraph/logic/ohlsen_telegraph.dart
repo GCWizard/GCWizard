@@ -3,10 +3,11 @@ Anne Solberg
 Norsk Teknisk Museum, Oslo
  */
 
+import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/constants.dart';
 
-final CODEBOOK_OHLSEN = {
+const _CODEBOOK_OHLSEN = {
   '000': 'seilere sees, som kommme vestlig fra.',
   '001': 'seilere sees, som kommer nord fra.',
   '002': 'seilere sees, som kommer sydlig fra.',
@@ -269,65 +270,52 @@ final CODEBOOK_OHLSEN = {
   '259': '',
 };
 
-List<List<String>> encodeOhlsenTelegraph(String input) {
-  if (input == null || input == '') return <List<String>>[];
+Segments encodeOhlsenTelegraph(String input) {
+  if (input.isEmpty) return Segments.Empty();
 
   List<List<String>> encodedText = [];
-  var CODEBOOK = switchMapKeyValue(CODEBOOK_OHLSEN);
+  var CODEBOOK = switchMapKeyValue(_CODEBOOK_OHLSEN);
 
-  if (CODEBOOK[input] != null) encodedText.add(_buildShutters(CODEBOOK[input]));
+  if (CODEBOOK[input] != null) encodedText.add(_buildShutters(CODEBOOK[input]!));
 
   input.split('').forEach((element) {
-    if (CODEBOOK[element] != null) encodedText.add(CODEBOOK[element].split(''));
+    if (CODEBOOK[element] != null) encodedText.add(CODEBOOK[element]!.split(''));
   });
-  return encodedText;
+  return Segments(displays: encodedText);
 }
 
-Map<String, dynamic> decodeVisualOhlsenTelegraph(List<String> inputs) {
-  if (inputs == null || inputs.length == 0)
-    return {
-      'displays': <List<String>>[],
-      'text': '',
-      'codepoints': '',
-    };
+SegmentsCodpoints decodeVisualOhlsenTelegraph(List<String>? inputs) {
+  if (inputs == null || inputs.isEmpty) {
+    return SegmentsCodpoints(displays: <List<String>>[], text: '', codepoints: '');
+  }
 
   var displays = <List<String>>[];
   List<String> codepoints = [];
   var segment = <String>[];
   String text = '';
 
-  inputs.forEach((element) {
+  for (var element in inputs) {
     segment = _stringToSegment(element);
     displays.add(segment);
     codepoints.add(segmentToCode(segment));
-    if (CODEBOOK_OHLSEN[segmentToCode(segment)] != null)
-      text = text + CODEBOOK_OHLSEN[segmentToCode(segment)];
-    else
-      text = text + UNKNOWN_ELEMENT;
-  });
+    text = text + (_CODEBOOK_OHLSEN[segmentToCode(segment)] ?? UNKNOWN_ELEMENT);
+  }
 
-  return {'displays': displays, 'text': text, 'codepoints': codepoints.join(' ')};
+  return SegmentsCodpoints(displays: displays, text: text, codepoints: codepoints.join(' '));
 }
 
-Map<String, dynamic> decodeTextOhlsenTelegraph(String inputs) {
-  if (inputs == null || inputs.length == 0)
-    return {
-      'displays': <List<String>>[],
-      'text': '',
-    };
+SegmentsCodpoints decodeTextOhlsenTelegraph(String inputs) {
+  if (inputs.isEmpty) SegmentsCodpoints(displays: <List<String>>[], text: '', codepoints: '');
 
   var displays = <List<String>>[];
   String text = '';
 
   inputs.split(' ').forEach((element) {
-    if (CODEBOOK_OHLSEN[element] != null) {
-      text = text + CODEBOOK_OHLSEN[element];
-    } else {
-      text = text + UNKNOWN_ELEMENT;
-    }
+    text = text + (_CODEBOOK_OHLSEN[element] ?? UNKNOWN_ELEMENT);
+
     displays.add(_buildShutters(element));
   });
-  return {'displays': displays, 'text': text};
+  return SegmentsCodpoints(displays: displays, text: text, codepoints: '');
 }
 
 List<String> _stringToSegment(String input) {

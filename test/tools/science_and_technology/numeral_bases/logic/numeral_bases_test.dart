@@ -3,9 +3,7 @@ import 'package:gc_wizard/tools/science_and_technology/numeral_bases/logic/numer
 
 void main() {
   group("NumeralBases.convert:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'startBase' : null, 'destinationBase' : null, 'expectedOutput' : ''},
-
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '16', 'startBase' : 10, 'destinationBase' : 2, 'expectedOutput' : '10000'},
       {'input' : '10000', 'startBase' : 2, 'destinationBase' : 10, 'expectedOutput' : '16'},
       {'input' : '10600', 'startBase' : 2, 'destinationBase' : 10, 'expectedOutput' : ''},
@@ -285,16 +283,16 @@ void main() {
       {'expectedOutput' : '-42.42', 'destinationBase' : 10, 'startBase' : -62, 'input' : '1K.RyUF8ZIeKA53XmtSjNhrwyUF8ZIeKA53XmtSjNhrwyUF8ZIeKA'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, startBase: ${elem['startBase']}, destinationBase: ${elem['destinationBase']}', () {
-        var _actual = convertBase(elem['input'], elem['startBase'], elem['destinationBase']);
+        var _actual = convertBase(elem['input'] as String, elem['startBase'] as int, elem['destinationBase'] as int);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("NumeralBases.convertNegativeValuesOnNegativeBases:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '-42', 'destinationBase' : 10, 'startBase' : -2, 'expectedOutput' : null},
       {'input' : '-42', 'destinationBase' : 10, 'startBase' : -3, 'expectedOutput' : null},
       {'input' : '-42', 'destinationBase' : 10, 'startBase' : -4, 'expectedOutput' : null},
@@ -328,15 +326,15 @@ void main() {
       {'input' : '-42.42', 'destinationBase' : 10, 'startBase' : -62, 'expectedOutput' : null},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, startBase: ${elem['startBase']}, destinationBase: ${elem['destinationBase']}', () {
         try {
-          convertBase(elem['input'], elem['startBase'], elem['destinationBase']);
+          convertBase(elem['input'] as String, elem['startBase'] as int, elem['destinationBase'] as int);
           expect(false, true);
         } catch(e) {
           expect(true, true);
         }
       });
-    });
+    }
   });
 }

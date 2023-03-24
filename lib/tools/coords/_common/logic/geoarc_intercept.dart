@@ -33,7 +33,15 @@ double _findLinearRoot(List<double> x, List<double> errArray) {
   return root;
 }
 
-Map<String, dynamic> _perpintercept(LatLng pt1, double dCrs13, LatLng pt2, Ellipsoid ells) {
+class _PerpInterceptValue {
+  final LatLng coordinate;
+  final double distance;
+  final double bearing;
+
+  _PerpInterceptValue(this.coordinate, {this.distance = 0.0, this.bearing = 0.0});
+}
+
+_PerpInterceptValue _perpintercept(LatLng pt1, double dCrs13, LatLng pt2, Ellipsoid ells) {
   var distBear = distanceBearing(pt1, pt2, ells);
 
   double dist12 = distBear.distance;
@@ -42,7 +50,7 @@ Map<String, dynamic> _perpintercept(LatLng pt1, double dCrs13, LatLng pt2, Ellip
 
   double dAngle = _signAzimuthDifference(crs13, crs12).abs();
 
-  Map<String, dynamic> output = {'coordinate': pt1, 'distance': 0.0, 'bearing': 0.0};
+  _PerpInterceptValue output = _PerpInterceptValue(pt1, distance: 0.0, bearing: 0.0);
 
   if (dist12 <= doubleTolerance) {
     return output;
@@ -51,7 +59,7 @@ Map<String, dynamic> _perpintercept(LatLng pt1, double dCrs13, LatLng pt2, Ellip
   double dA = dist12 / ells.sphereRad;
   double dist13 = ells.sphereRad * atan(tan(dA) * (cos(dAngle))).abs();
 
-  var _threshold = 275000.0; //This mysterious number has been found in the original source... whatever it does...
+  var _threshold = 275000.0; //This mysterious number was found in the original source... whatever it does...
   if (dAngle > pi * 2) {
     LatLng newPoint = projectionRadian(pt1, crs13 + pi, dist13 + _threshold, ells);
     dist13 = _threshold;
@@ -116,7 +124,7 @@ Map<String, dynamic> _perpintercept(LatLng pt1, double dCrs13, LatLng pt2, Ellip
     k++;
   }
 
-  output = {'coordinate': pt3, 'distance': dist23, 'bearing': crs32};
+  output = _PerpInterceptValue(pt3, distance: dist23, bearing: crs32);
   return output;
 }
 
@@ -126,9 +134,9 @@ List<LatLng> geodesicArcIntercept(
   LatLng ptC = centerPoint;
   var crs1 = bearingGeodetic;
 
-  Map<String, dynamic> perp = _perpintercept(pt1, crs1, ptC, ells);
+  _PerpInterceptValue perp = _perpintercept(pt1, crs1, ptC, ells);
 
-  LatLng perpPt = perp['coordinate'];
+  LatLng perpPt = perp.coordinate;
   var distBear = distanceBearing(perpPt, ptC, ells);
   double perpDist = distBear.distance;
 
@@ -173,17 +181,19 @@ List<LatLng> geodesicArcIntercept(
     double A = acos(sin(B) * cos(dErr.abs() / ells.sphereRad));
     double c;
 
-    if (sin(A).abs() < doubleTolerance)
+    if (sin(A).abs() < doubleTolerance) {
       c = dErr;
-    else if (A.abs() < doubleTolerance)
+    } else if (A.abs() < doubleTolerance) {
       c = dErr / cos(B);
-    else
+    } else {
       c = ells.sphereRad * asin(sin(dErr / ells.sphereRad) / sin(A));
+    }
 
-    if (dErr > 0)
+    if (dErr > 0) {
       dist = dist + c;
-    else
+    } else {
       dist = dist - c;
+    }
 
     pt = projectionRadian(perpPt, crs, dist, ells);
     distBear = distanceBearing(ptC, pt, ells);

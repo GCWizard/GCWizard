@@ -1,14 +1,21 @@
 import 'dart:math';
 
-class RGB {
-  double red;
-  double green;
-  double blue;
+import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors.dart';
+
+class RGB extends GCWBaseColor {
+  late double red;
+  late double green;
+  late double blue;
 
   RGB(double red, double green, double blue) {
     this.red = min(255.0, max(0.0, red));
     this.green = min(255.0, max(0.0, green));
     this.blue = min(255.0, max(0.0, blue));
+  }
+
+  @override
+  RGB toRGB() {
+    return this;
   }
 
   double _percentage(double value) {
@@ -41,20 +48,20 @@ class RGB {
   }
 }
 
-class HexCode {
-  String hexCode;
+class HexCode extends GCWBaseColor {
+  late String hexCode;
 
   bool get isShortHex {
     return hexCode[0] == hexCode[1] && hexCode[2] == hexCode[3] && hexCode[4] == hexCode[5];
   }
 
-  String get shortHexCode {
+  String? get shortHexCode {
     if (isShortHex) return '#' + hexCode[0] + hexCode[2] + hexCode[4];
 
     return null;
   }
 
-  HexCode(String hexCode) {
+  HexCode(this.hexCode) {
     hexCode = hexCode.toUpperCase().replaceAll(RegExp(r'[^0-9A-F]'), '');
 
     if (hexCode.length == 3) {
@@ -64,10 +71,9 @@ class HexCode {
 
     if (hexCode.length < 6) hexCode = hexCode.padRight(6, '0');
     if (hexCode.length > 6) hexCode = hexCode.substring(0, 6);
-
-    this.hexCode = hexCode;
   }
 
+  @override
   RGB toRGB() {
     var r = int.parse(hexCode.substring(0, 2), radix: 16).toDouble();
     var g = int.parse(hexCode.substring(2, 4), radix: 16).toDouble();
@@ -92,18 +98,19 @@ double _rgbDistance(RGB a, RGB b) {
   return sqrt(pow(a.red - b.red, 2) + pow(a.green - b.green, 2) + pow(a.blue - b.blue, 2));
 }
 
-List<RGB> findNearestRGBs(RGB fromRGB, List<RGB> toRGBs, {int distance: 32}) {
+List<RGB> findNearestRGBs(GCWBaseColor fromRGB, List<RGB> toRGBs, {int distance = 32}) {
   var out = <RGB>[];
+  var _fromRGB = fromRGB.toRGB();
 
-  toRGBs.forEach((toRGB) {
-    var actualDistance = _rgbDistance(fromRGB, toRGB);
+  for (var toRGB in toRGBs) {
+    var actualDistance = _rgbDistance(_fromRGB, toRGB);
 
     if (actualDistance <= distance) out.add(toRGB);
-  });
+  }
 
   out.sort((a, b) {
-    var aDistance = _rgbDistance(a, fromRGB);
-    var bDistance = _rgbDistance(b, fromRGB);
+    var aDistance = _rgbDistance(a, _fromRGB);
+    var bDistance = _rgbDistance(b, _fromRGB);
 
     return aDistance.compareTo(bDistance);
   });

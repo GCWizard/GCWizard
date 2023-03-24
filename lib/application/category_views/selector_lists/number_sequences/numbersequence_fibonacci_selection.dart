@@ -7,18 +7,20 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/fibonacc
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceFibonacciSelection extends GCWSelection {
+  const NumberSequenceFibonacciSelection({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(NumberSequenceFibonacciNthNumber()),
-        className(NumberSequenceFibonacciRange()),
-        className(NumberSequenceFibonacciDigits()),
-        className(NumberSequenceFibonacciCheckNumber()),
-        className(NumberSequenceFibonacciContainsDigits()),
+        className(const NumberSequenceFibonacciNthNumber()),
+        className(const NumberSequenceFibonacciRange()),
+        className(const NumberSequenceFibonacciDigits()),
+        className(const NumberSequenceFibonacciCheckNumber()),
+        className(const NumberSequenceFibonacciContainsDigits()),
       ].contains(className(element.tool));
     }).toList();
 
-    return Container(child: GCWToolList(toolList: _toolList));
+    return GCWToolList(toolList: _toolList);
   }
 }

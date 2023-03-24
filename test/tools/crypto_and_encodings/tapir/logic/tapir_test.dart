@@ -3,8 +3,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/tapir/logic/tapir.dart';
 
 void main() {
   group("Tapir.encryptTapir:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : 'ABE', 'expectedOutput' : '05183'},
@@ -19,17 +18,16 @@ void main() {
       {'input' : 'UEBSNVWOSTOK944UEBUNGSSPRUCH12DASWETTERUMSOROKA9442', 'keyOneTimePad': '12345678912414824238453248432106612313868486320138584567489134894895618974894961564189748970016879521234567891241482423845324843210661231386848632013858456748913489489561897489496156418974897001687952', 'expectedOutput' : '84495 26165 90784 11292 06143 78765 87333 81011 50722 87500 01277 86072 88853 55631 50110 57557 90054 07208 64450 09780'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, keyOneTimePad: ${elem['keyOneTimePad']}', () {
-        var _actual = encryptTapir(elem['input'], elem['keyOneTimePad']);
+        var _actual = encryptTapir(elem['input'] as String, elem['keyOneTimePad'] as String?);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Tapir.decryptTapir:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : '05183', 'expectedOutput' : 'ABE'},
@@ -52,11 +50,11 @@ void main() {
       {'input': '38244 33832 25589 11665 58081 18200 22448 33377 89999 966', 'expectedOutput': 'N43 25.165\nE024 37.996'}
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, keyOneTimePad: ${elem['keyOneTimePad']}', () {
-        var _actual = decryptTapir(elem['input'], elem['keyOneTimePad']);
+        var _actual = decryptTapir(elem['input'] as String, elem['keyOneTimePad'] as String?);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 }

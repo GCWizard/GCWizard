@@ -27,9 +27,8 @@ void main() {
   String oD4 = 'BA-GOSHI TSE-NILL MOASI LIN AH-JAH WOL-LA-CHEE A-WOH NESH-CHEE TLO-CHIN AH-LOSZ THAN-ZIE LIN TSA-E-DONIN-EE YEH-HES A-KEH-DI-GLINI DZEH DIBEH NO-DA-IH AL-NA-AS-DZOH AH-JAH A-CHI JEHA LIN A-WOH AH-JAH BE-LA-SANA KLESH A-WOH BESH-DO-TLIZ AH-NAH GAH A-KHA A-KHA TSAH AH-JAH A-CHIN TKIN A-CHIN DZEH';
 
   group("Navajo.decrypt:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
-      {'input' : '', 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '', 'alphabet' : true, 'expectedOutput' : ''},
 
       {'expectedOutput' : o1k, 'alphabet' : true, 'input' : oK11},
       {'expectedOutput' : o1d, 'alphabet' : true, 'input' : oD1},
@@ -41,18 +40,17 @@ void main() {
       {'expectedOutput' : o4d, 'alphabet' : true, 'input' : oD4},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeNavajo(elem['input'], elem['alphabet']);
+        var _actual = decodeNavajo(elem['input'] as String, elem['alphabet'] as bool);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Navajo.encrypt:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : ''},
-      {'input' : '', 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '', 'alphabet' : true, 'expectedOutput' : ''},
 
       {'input' : in1, 'alphabet' : true, 'expectedOutput' : oK12},
       {'input' : in2, 'alphabet' : true, 'expectedOutput' : oK2},
@@ -60,11 +58,11 @@ void main() {
       {'input' : in4, 'alphabet' : true, 'expectedOutput' : oK4},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeNavajo(elem['input'], elem['alphabet']);
+        var _actual = encodeNavajo(elem['input'] as String, elem['alphabet'] as bool);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 }

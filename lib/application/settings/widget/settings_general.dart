@@ -21,12 +21,14 @@ import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/units/gcw_unit_dropdown.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/length.dart';
-import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 import 'package:prefs/prefs.dart';
 import 'package:provider/provider.dart';
+import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/default_units_getter.dart';
 
 class GeneralSettings extends StatefulWidget {
+  const GeneralSettings({Key? key}) : super(key: key);
+
   @override
   GeneralSettingsState createState() => GeneralSettingsState();
 }
@@ -48,18 +50,18 @@ class GeneralSettingsState extends State<GeneralSettings> {
                     builder: (BuildContext context, AsyncSnapshot<Locale> snapshot) {
                       if (!snapshot.hasData) {
                         // while data is loading:
-                        return Center(
+                        return const Center(
                           child: CircularProgressIndicator(),
                         );
                       } else {
                         // data loaded:
-                        final currentLocale = snapshot.data;
+                        final Locale? currentLocale = snapshot.data;
 
-                        return GCWStatefulDropDown(
+                        return GCWStatefulDropDown<String>(
                             items: SUPPORTED_LOCALES.entries.map((locale) {
-                              String languageName = locale.value['name_native'];
+                              String languageName = locale.value['name_native'] as String;
 
-                              var subtitle;
+                              String? subtitle;
                               if (locale.value['percent_translated'] as int < 90) {
                                 subtitle = i18n(context, 'settings_general_i18n_language_partlytranslated',
                                     parameters: [locale.value['percent_translated']]);
@@ -68,7 +70,7 @@ class GeneralSettingsState extends State<GeneralSettings> {
                               return GCWDropDownMenuItem(
                                   value: locale.key.languageCode, child: languageName, subtitle: subtitle);
                             }).toList(),
-                            value: isLocaleSupported(currentLocale)
+                            value: currentLocale != null && isLocaleSupported(currentLocale)
                                 ? currentLocale.languageCode
                                 : DEFAULT_LOCALE.languageCode,
                             onChanged: (newValue) {
@@ -79,6 +81,7 @@ class GeneralSettingsState extends State<GeneralSettings> {
           ],
         ),
         Container(
+          padding: const EdgeInsets.only(bottom: 10 * DEFAULT_MARGIN, top: 5 * DEFAULT_MARGIN),
           child: InkWell(
             child: Text(
               i18n(context, 'settings_general_i18n_language_contributetranslation'),
@@ -88,14 +91,13 @@ class GeneralSettingsState extends State<GeneralSettings> {
               launchUrl(Uri.parse(i18n(context, 'about_crowdin_url')));
             },
           ),
-          padding: EdgeInsets.only(bottom: 10 * DEFAULT_MARGIN, top: 5 * DEFAULT_MARGIN),
         ),
         Row(children: [
           Expanded(child: GCWText(text: i18n(context, 'settings_general_i18n_defaultlengthunit'))),
           Expanded(
-            child: GCWUnitDropDown(
+            child: GCWUnitDropDown<Length>(
                 unitList: allLengths(),
-                value: getUnitBySymbol(allLengths(), Prefs.get(PREFERENCE_DEFAULT_LENGTH_UNIT)),
+                value: defaultLengthUnit,
                 onChanged: (Length value) {
                   setState(() {
                     Prefs.setString(PREFERENCE_DEFAULT_LENGTH_UNIT, value.symbol);
@@ -186,40 +188,35 @@ class GeneralSettingsState extends State<GeneralSettings> {
           },
         ),
         Prefs.getBool(PREFERENCE_TABS_USE_DEFAULT_TAB)
-            ? GCWDropDown(
-                value: Prefs.get(PREFERENCE_TABS_DEFAULT_TAB),
-                items: [
+            ? GCWDropDown<int>(
+                value: Prefs.getInt(PREFERENCE_TABS_DEFAULT_TAB),
+                items:
                   {
-                    'index': 0,
-                    'text': Row(children: [
+                    0: Row(children: [
                       Icon(Icons.category, color: themeColors().mainFont()),
                       Container(width: 10),
                       Text(i18n(context, 'common_tabs_categories'))
-                    ])
-                  },
-                  {
-                    'index': 1,
-                    'text': Row(children: [
+                    ]),
+
+                    1: Row(children: [
                       Icon(Icons.list, color: themeColors().mainFont()),
                       Container(width: 10),
                       Text(i18n(context, 'common_tabs_all'))
-                    ])
-                  },
-                  {
-                    'index': 2,
-                    'text': Row(children: [
+                    ]),
+
+                    2: Row(children: [
                       Icon(Icons.star, color: themeColors().mainFont()),
                       Container(width: 10),
                       Text(i18n(context, 'common_tabs_favorites'))
                     ])
                   }
-                ].map((item) {
+                .entries.map((MapEntry<int, Row> item) {
                   return GCWDropDownMenuItem(
-                    value: item['index'],
-                    child: item['text'],
+                    value: item.key,
+                    child: item.value,
                   );
                 }).toList(),
-                onChanged: (value) {
+                onChanged: (int value) {
                   setState(() {
                     Prefs.setInt(PREFERENCE_TABS_DEFAULT_TAB, value);
                   });
@@ -251,9 +248,9 @@ class GeneralSettingsState extends State<GeneralSettings> {
         ),
 
         // always on bottom
-        Container(margin: EdgeInsets.only(top: 25.0), child: GCWDivider()),
+        Container(margin: const EdgeInsets.only(top: 25.0), child: const GCWDivider()),
         InkWell(
-          child: Icon(Icons.more_horiz, size: 20.0),
+          child: const Icon(Icons.more_horiz, size: 20.0),
           onTap: () {
             showGCWAlertDialog(
               context,
@@ -261,8 +258,8 @@ class GeneralSettingsState extends State<GeneralSettings> {
               i18n(context, 'settings_preferences_warning_text'),
               () {
                 Navigator.of(context)
-                    .push(NoAnimationMaterialPageRoute(
-                        builder: (context) => GCWTool(tool: SettingsPreferences(), i18nPrefix: 'settings_preferences')))
+                    .push(NoAnimationMaterialPageRoute<GCWTool>(
+                        builder: (context) => GCWTool(tool: const SettingsPreferences(), id: 'settings_preferences')))
                     .whenComplete(() {
                   setState(() {
                     AppBuilder.of(context).rebuild();

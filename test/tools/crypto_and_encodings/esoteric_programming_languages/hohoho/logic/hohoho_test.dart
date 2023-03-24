@@ -3,8 +3,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_langua
 
 void main() {
   group("Hohoho.interpretHohoho:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'code' : null, 'expectedOutput' : ''},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'code' : '', 'expectedOutput' : ''},
       {'code' : 'ABC123;', 'expectedOutput' : ''},
       {'code' : '++', 'expectedOutput' : ''},
@@ -23,16 +22,16 @@ void main() {
 
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('code: ${elem['code']}, input: ${elem['input']}', () {
-        var _actual = interpretHohoho(elem['code'], STDIN: elem['input']).output;
+        var _actual = interpretHohoho(elem['code'] as String, STDIN: elem['input'] as String?).output;
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 
   group("Hohoho.generateHohoho:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
 
       {'expectedOutput' : 'Ho! Hoho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Hohohoho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Hohohohohohoho! Hoho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Hoho! Hohohohohohohohoho! Hoho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Hoho! Hohohohohohohohohohohohohohohohohohohohoho! Hohohohohoho! Hohohohohoho! Hoho! Ho! Ho! Hoho! Hoho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Hoho! Hoho! Ho! Ho! Hoho! Hohohohohoho! Hoho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Ho! Hoho! Hoho!',
         'OutputText' : '42710/05659'},
@@ -42,11 +41,11 @@ void main() {
 
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('OutputText: ${elem['OutputText']}}', () {
-        var _actual = generateHohoho(elem['OutputText']);
+        var _actual = generateHohoho(elem['OutputText'] as String);
         expect(_actual, elem['expectedOutput']);
       });
-    });
+    }
   });
 }

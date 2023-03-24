@@ -2,7 +2,7 @@ part of 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/multi
 
 class MultiDecoderToolConfiguration extends StatefulWidget {
   final Map<String, Widget> widgets;
-  const MultiDecoderToolConfiguration({Key key, this.widgets}) : super(key: key);
+  const MultiDecoderToolConfiguration({Key? key, required this.widgets}) : super(key: key);
 
   @override
   MultiDecoderToolConfigurationState createState() => MultiDecoderToolConfigurationState();
@@ -25,8 +25,8 @@ class MultiDecoderToolConfigurationState extends State<MultiDecoderToolConfigura
         children: widget.widgets.entries.map((entry) {
       return Row(
         children: [
-          Expanded(child: GCWText(text: i18n(context, entry.key)), flex: 1),
-          Expanded(child: entry.value, flex: 3),
+          Expanded(flex: 1, child: GCWText(text: i18n(context, entry.key))),
+          Expanded(flex: 3, child: entry.value),
         ],
       );
     }).toList());

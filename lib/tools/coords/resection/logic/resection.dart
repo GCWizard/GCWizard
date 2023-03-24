@@ -1,7 +1,8 @@
-import 'package:gc_wizard/tools/coords/intervals/logic/coordinate_cell.dart';
-import 'package:gc_wizard/tools/coords/intervals/logic/interval_calculator.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coord_format_getter.dart' as utils;
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/intervals/coordinate_cell.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/intervals/interval_calculator.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 import 'package:latlong2/latlong.dart';
 
 class ResectionJobData {
@@ -13,21 +14,21 @@ class ResectionJobData {
   final Ellipsoid ells;
 
   ResectionJobData(
-      {this.coord1,
+      {required this.coord1,
       this.angle12 = 0.0,
-      this.coord2,
+      required this.coord2,
       this.angle23 = 0.0,
-      this.coord3,
-      this.ells});
+      required this.coord3,
+      required this.ells});
 }
 
 class _ResectionCalculator extends IntervalCalculator {
-  _ResectionCalculator(Map<String, dynamic> parameters, Ellipsoid ells) : super(parameters, ells);
+  _ResectionCalculator(ResectionParameters parameters, Ellipsoid ells) : super(parameters, ells);
 
   // If there is one interval [350, 400] and one [10, 50], they need to be
   // adjusted against each other to be comparable. So either the first is going to
   // be [-10, 40] or the other one [370, 410].
-  Interval _adjustInterval(Interval reference, toAdjust) {
+  Interval _adjustInterval(Interval reference, Interval toAdjust) {
     Interval adjusted = Interval(a: toAdjust.a, b: toAdjust.b);
 
     while (reference.a < adjusted.b) {
@@ -42,7 +43,7 @@ class _ResectionCalculator extends IntervalCalculator {
   }
 
   // Checks, if two intervals overlap
-  bool _overlap(Interval a, b) {
+  bool _overlap(Interval a, Interval b) {
     Interval i = _adjustInterval(a, b);
 
     if (a.a >= i.a && a.b <= i.b) return true;
@@ -57,10 +58,12 @@ class _ResectionCalculator extends IntervalCalculator {
   }
 
   @override
-  bool checkCell(CoordinateCell cell, Map<String, dynamic> parameters) {
-    Interval bearingFrom1 = cell.bearingTo(parameters['coord1']);
-    Interval bearingFrom2 = cell.bearingTo(parameters['coord2']);
-    Interval bearingFrom3 = cell.bearingTo(parameters['coord3']);
+  bool checkCell(CoordinateCell cell, IntervalCalculatorParameters parameters) {
+    var params = parameters as ResectionParameters;
+
+    Interval bearingFrom1 = cell.bearingTo(params.coordinate1);
+    Interval bearingFrom2 = cell.bearingTo(params.coordinate2);
+    Interval bearingFrom3 = cell.bearingTo(params.coordinate3);
 
     // If at least two out of three points are in the current cell, then it is possible to find a bearing
     // to the third point in any case.
@@ -69,8 +72,8 @@ class _ResectionCalculator extends IntervalCalculator {
         (i360.equals(bearingFrom2) && i360.equals(bearingFrom3)) ||
         (i360.equals(bearingFrom1) && i360.equals(bearingFrom3))) return true;
 
-    var angle12 = parameters['angle12'];
-    var angle23 = parameters['angle23'];
+    var angle12 = params.angle12;
+    var angle23 = params.angle23;
 
     //Shift bearing interval according to the angle between -> check if overlaps ...
     var extended12 = _adjustInterval(bearingFrom2, Interval(a: bearingFrom1.a + angle12, b: bearingFrom1.b + angle12));
@@ -98,13 +101,16 @@ class _ResectionCalculator extends IntervalCalculator {
   }
 }
 
-Future<List<LatLng>> resectionAsync(dynamic jobData) async {
-  if (jobData == null) return null;
+Future<List<LatLng>> resectionAsync(GCWAsyncExecuterParameters? jobData) async {
+  if (jobData?.parameters is! ResectionJobData) {
+    throw Exception('Unexpected data for Equilateral Triangle');
+  }
 
-  var output = resection(jobData.parameters.coord1, jobData.parameters.angle12, jobData.parameters.coord2,
-      jobData.parameters.angle23, jobData.parameters.coord3, jobData.parameters.ells);
+  var data = jobData!.parameters as ResectionJobData;
+  var output = resection(data.coord1, data.angle12, data.coord2,
+      data.angle23, data.coord3, data.ells);
 
-  if (jobData.sendAsyncPort != null) jobData.sendAsyncPort.send(output);
+  jobData.sendAsyncPort?.send(output);
 
   return output;
 }
@@ -115,11 +121,23 @@ List<LatLng> resection(LatLng coord1, double angle12, LatLng coord2, double angl
   angle12 = utils.normalizeBearing(angle12);
   angle23 = utils.normalizeBearing(angle23);
 
-  if (utils.coordEquals(coord1, coord2, tolerance: minDistance) ||
-      utils.coordEquals(coord1, coord3, tolerance: minDistance) ||
-      utils.coordEquals(coord2, coord3, tolerance: minDistance)) return [];
+  if (utils.equalsLatLng(coord1, coord2, tolerance: minDistance) ||
+      utils.equalsLatLng(coord1, coord3, tolerance: minDistance) ||
+      utils.equalsLatLng(coord2, coord3, tolerance: minDistance)) return [];
 
   return _ResectionCalculator(
-          {'coord1': coord1, 'angle12': angle12, 'coord2': coord2, 'angle23': angle23, 'coord3': coord3}, ells)
+      ResectionParameters(
+        coord1, angle12, coord2, angle23, coord3
+      ), ells)
       .check();
+}
+
+class ResectionParameters extends IntervalCalculatorParameters {
+  LatLng coordinate1;
+  double angle12;
+  LatLng coordinate2;
+  double angle23;
+  LatLng coordinate3;
+
+  ResectionParameters(this.coordinate1, this.angle12, this.coordinate2, this.angle23, this.coordinate3);
 }

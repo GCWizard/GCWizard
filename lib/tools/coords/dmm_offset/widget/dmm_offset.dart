@@ -6,25 +6,25 @@ import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coord
 import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/dmm_offset/logic/dmm_offset.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coord_format_getter.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 
 class DMMOffset extends StatefulWidget {
+  const DMMOffset({Key? key}) : super(key: key);
+
   @override
   DMMOffsetState createState() => DMMOffsetState();
 }
 
 class DMMOffsetState extends State<DMMOffset> {
-  var _currentCoords = defaultCoordinate;
+  var _currentCoords = defaultBaseCoordinate;
 
   var _currentValues = [defaultCoordinate];
   var _currentMapPoints = <GCWMapPoint>[];
-  var _currentCoordsFormat = defaultCoordFormat();
 
-  var _currentOutputFormat = defaultCoordFormat();
+  var _currentOutputFormat = defaultCoordinateFormat;
   List<String> _currentOutput = <String>[];
 
   var _currentAddLatitude = 0;
@@ -36,11 +36,10 @@ class DMMOffsetState extends State<DMMOffset> {
       children: <Widget>[
         GCWCoords(
           title: i18n(context, 'coords_dmmoffset_start'),
-          coordsFormat: _currentCoordsFormat,
+          coordsFormat: _currentCoords.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoordsFormat = ret['coordsFormat'];
-              _currentCoords = ret['value'];
+              _currentCoords = ret;
 
               _calculateOutput();
             });
@@ -86,25 +85,25 @@ class DMMOffsetState extends State<DMMOffset> {
     );
   }
 
-  _calculateOutput() {
+  void _calculateOutput() {
     _currentValues = [
-      addIntegersToDMM(_currentCoords, {'latitude': _currentAddLatitude, 'longitude': _currentAddLongitude})
+      addIntegersToDMM(_currentCoords.toLatLng()!, {'latitude': _currentAddLatitude, 'longitude': _currentAddLongitude})
     ];
 
     _currentMapPoints = [
       GCWMapPoint(
-          point: _currentCoords,
+          point: _currentCoords.toLatLng()!,
           markerText: i18n(context, 'coords_dmmaddintegers_start'),
-          coordinateFormat: _currentCoordsFormat),
+          coordinateFormat: _currentCoords.format),
       GCWMapPoint(
           point: _currentValues[0],
           color: COLOR_MAP_CALCULATEDPOINT,
           markerText: i18n(context, 'coords_dmmaddintegers_end'),
-          coordinateFormat: _currentCoordsFormat),
+          coordinateFormat: _currentCoords.format),
     ];
 
     _currentOutput = _currentValues.map((projection) {
-      return formatCoordOutput(projection, _currentOutputFormat, defaultEllipsoid());
+      return formatCoordOutput(projection, _currentOutputFormat, defaultEllipsoid);
     }).toList();
   }
 }

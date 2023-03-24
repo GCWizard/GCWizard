@@ -2,7 +2,7 @@
 // http://www.gesetze-im-internet.de/verpackg/anlage_5.html
 // https://de.wikipedia.org/wiki/Recycling-Code
 
-var RECYCLING_CODES = {
+const Map<String, Map<String, String>> RECYCLING_CODES = {
   "1": {
     "short": "PET / PETE",
     "name": "recycling_code_1",

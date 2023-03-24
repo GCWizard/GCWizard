@@ -5,17 +5,13 @@ class _ThemeColorsDark extends ThemeColors {
   static const _gray = Color(0x40D8D8D8);
   static const _darkGray = Color(0xFF26282F);
 
-  ThemeData _base;
-
   @override
   ThemeData base() {
-    if (_base == null) _base = ThemeData.dark();
-
-    return _base;
+    return ThemeData.dark();
   }
 
   @override
-  Color accent() {
+  Color secondary() {
     return Colors.orangeAccent;
   }
 
@@ -56,7 +52,7 @@ class _ThemeColorsDark extends ThemeColors {
 
   @override
   Color primaryBackground() {
-    return Color(0xFF33333D);
+    return const Color(0xFF33333D);
   }
 
   @override
@@ -66,7 +62,7 @@ class _ThemeColorsDark extends ThemeColors {
 
   @override
   Color textFieldHintText() {
-    return Color.fromRGBO(150, 150, 150, 1.0);
+    return const Color.fromRGBO(150, 150, 150, 1.0);
   }
 
   @override
@@ -86,12 +82,12 @@ class _ThemeColorsDark extends ThemeColors {
 
   @override
   Color switchThumb2() {
-    return accent();
+    return secondary();
   }
 
   @override
   Color switchTrack2() {
-    return accent().withOpacity(0.5);
+    return secondary().withOpacity(0.5);
   }
 
   @override
@@ -109,25 +105,25 @@ class _ThemeColorsDark extends ThemeColors {
 
   @override
   Color checkBoxCheckColor() {
-    return accent();
+    return secondary();
   }
 
   @override
   Color checkBoxFocusColor() {
-    return accent().withOpacity(0.5);
+    return secondary().withOpacity(0.5);
   }
 
   @override
   Color checkBoxHoverColor() {
-    return accent();
+    return secondary();
   }
 
   @override
   Color checkBoxOverlayColor(Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled)) {
-      return accent().withOpacity(0.5);
+      return secondary().withOpacity(0.5);
     }
-    return accent().withOpacity(0.5);
+    return secondary().withOpacity(0.5);
   }
 
   @override
@@ -137,12 +133,12 @@ class _ThemeColorsDark extends ThemeColors {
 
   @override
   Color gridBackground() {
-    return Color.fromARGB(255, 85, 85, 85);
+    return const Color.fromARGB(255, 85, 85, 85);
   }
 
   @override
   Color hyperLinkText() {
-    return accent();
+    return secondary();
   }
 
   @override

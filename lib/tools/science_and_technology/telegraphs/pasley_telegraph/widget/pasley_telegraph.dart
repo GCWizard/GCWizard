@@ -17,18 +17,17 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/pasley_telegra
 part 'package:gc_wizard/tools/science_and_technology/telegraphs/pasley_telegraph/widget/pasley_segment_display.dart';
 
 class PasleyTelegraph extends StatefulWidget {
+  const PasleyTelegraph({Key? key}) : super(key: key);
+
   @override
   PasleyTelegraphState createState() => PasleyTelegraphState();
 }
 
 class PasleyTelegraphState extends State<PasleyTelegraph> {
   String _currentEncodeInput = '';
-  TextEditingController _encodeController;
+  late TextEditingController _encodeController;
 
-  TextEditingController _decodeInputController;
-  String _currentDecodeInput = '';
-
-  List<List<String>> _currentDisplays = [];
+  var _currentDisplays = Segments.Empty();
   var _currentMode = GCWSwitchPosition.right;
 
   @override
@@ -76,16 +75,10 @@ class PasleyTelegraphState extends State<PasleyTelegraph> {
     ]);
   }
 
-  _buildVisualDecryption() {
-    Map<String, bool> currentDisplay;
+  Widget _buildVisualDecryption() {
+    var currentDisplay = buildSegmentMap(_currentDisplays);
 
-    var displays = _currentDisplays;
-    if (displays != null && displays.length > 0)
-      currentDisplay = Map<String, bool>.fromIterable(displays.last ?? [], key: (e) => e, value: (e) => true);
-    else
-      currentDisplay = {};
-
-    var onChanged = (Map<String, bool> d) {
+    onChanged(Map<String, bool> d) {
       setState(() {
         var newSegments = <String>[];
         d.forEach((key, value) {
@@ -93,20 +86,16 @@ class PasleyTelegraphState extends State<PasleyTelegraph> {
           newSegments.add(key);
         });
 
-        newSegments.sort();
-
-        if (_currentDisplays.length == 0) _currentDisplays.add([]);
-
-        _currentDisplays[_currentDisplays.length - 1] = newSegments;
+        _currentDisplays.replaceLastSegment(newSegments);
       });
-    };
+    }
 
     return Column(
       children: <Widget>[
         Container(
           width: 300,
           //height: 200,
-          padding: EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
+          padding: const EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 4),
           child: Row(
             children: <Widget>[
               Expanded(
@@ -123,7 +112,7 @@ class PasleyTelegraphState extends State<PasleyTelegraph> {
             icon: Icons.space_bar,
             onPressed: () {
               setState(() {
-                _currentDisplays.add([]);
+                _currentDisplays.addEmptySegment();
               });
             },
           ),
@@ -131,7 +120,7 @@ class PasleyTelegraphState extends State<PasleyTelegraph> {
             icon: Icons.backspace,
             onPressed: () {
               setState(() {
-                if (_currentDisplays.length > 0) _currentDisplays.removeLast();
+                _currentDisplays.removeLastSegment();
               });
             },
           ),
@@ -139,7 +128,7 @@ class PasleyTelegraphState extends State<PasleyTelegraph> {
             icon: Icons.clear,
             onPressed: () {
               setState(() {
-                _currentDisplays = [];
+                _currentDisplays = Segments.Empty();
               });
             },
           )
@@ -148,7 +137,7 @@ class PasleyTelegraphState extends State<PasleyTelegraph> {
     );
   }
 
-  Widget _buildDigitalOutput(List<List<String>> segments) {
+  Widget _buildDigitalOutput(Segments segments) {
     return SegmentDisplayOutput(
         segmentFunction: (displayedSegments, readOnly) {
           return _PasleyTelegraphSegmentDisplay(segments: displayedSegments, readOnly: readOnly);
@@ -160,7 +149,7 @@ class PasleyTelegraphState extends State<PasleyTelegraph> {
   Widget _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
       //encode
-      List<List<String>> segments = encodePasley(_currentEncodeInput);
+      Segments segments = encodePasley(_currentEncodeInput);
       return Column(
         children: <Widget>[
           _buildDigitalOutput(segments),
@@ -168,17 +157,15 @@ class PasleyTelegraphState extends State<PasleyTelegraph> {
       );
     } else {
       //decode
-      var segments;
+      SegmentsText segments;
       // decode visual mode
-      var output = _currentDisplays.map((character) {
-        if (character != null) return character.join();
-      }).toList();
+      var output = _currentDisplays.buildOutput();
       segments = decodeVisualPasley(output);
 
       return Column(
         children: <Widget>[
-          GCWOutput(title: i18n(context, 'telegraph_text'), child: segments['chars']),
-          _buildDigitalOutput(segments['displays']),
+          GCWOutput(title: i18n(context, 'telegraph_text'), child: segments.text),
+          _buildDigitalOutput(segments),
         ],
       );
     }

@@ -4,8 +4,7 @@ import 'package:gc_wizard/tools/science_and_technology/astronomy/right_ascension
 void main() {
 
   group("right_ascension_to_degree.raDegree2RightAscension:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : null.toString()},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : 66.918277, 'expectedOutput' : '04:27:40.386'},
       {'input' : -66.918277, 'expectedOutput' : '-04:27:40.386'},
       {'input' : 9.618291666666666, 'expectedOutput' : '00:38:28.390'},
@@ -24,18 +23,17 @@ void main() {
       {'input' : -47.000, 'expectedOutput' : '-03:08:00.000'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = raDegree2RightAscension(RaDeg(elem['input']));
+        var _actual = raDegree2RightAscension(RaDeg(elem['input'] as double));
         expect(_actual.toString(), elem['expectedOutput']);
       });
-    });
+    }
   });
 
 
   group("right_ascension_to_degree.raRightAscension2Degree:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : null},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '4:27:40.386', 'expectedOutput' : '66.918275'},
       {'input' : '-4:27:40.386', 'expectedOutput' : '-66.918275'},
       {'input' : '0:38:28.39', 'expectedOutput' : '9.6182916667'},
@@ -45,20 +43,20 @@ void main() {
       {'input' : '-3:8:0', 'expectedOutput' : '-47.000'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = raRightAscension2Degree(RightAscension.parse(elem['input']));
-        if (_actual == null)
+        var _actual = raRightAscension2Degree(RightAscension.parse(elem['input'] as String)!);
+        if (_actual == null) {
           expect(_actual, elem['expectedOutput']);
-        else
+        } else {
           expect(_actual.toString(), elem['expectedOutput']);
+        }
       });
-    });
+    }
   });
 
   group("raDeg.parse:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : null},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '66.918277', 'expectedOutput' : '66.918277'},
       {'input' : '-66.918277', 'expectedOutput' : '-66.918277'},
       {'input' : '9.618291666666666', 'expectedOutput' : '9.6182916667'},
@@ -76,20 +74,20 @@ void main() {
       {'input' : '720', 'expectedOutput' : '720.000'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = RaDeg.parse(elem['input']);
-        if (_actual == null)
+        var _actual = RaDeg.parse(elem['input'] as String);
+        if (_actual == null) {
           expect(_actual, elem['expectedOutput']);
-        else
+        } else {
           expect(_actual.toString(), elem['expectedOutput']);
+        }
       });
-    });
+    }
   });
 
   group("RightAscension.parse:", () {
-    List<Map<String, dynamic>> _inputsToExpected = [
-      {'input' : null, 'expectedOutput' : null},
+    List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '4:27:40.386', 'expectedOutput' : '04:27:40.386'},
       {'input' : '-4:27:40.386', 'expectedOutput' : '-04:27:40.386'},
       {'input' : '0:38:28.39', 'expectedOutput' : '00:38:28.390'},
@@ -104,14 +102,15 @@ void main() {
       {'input' : '-48:01:28.999999', 'expectedOutput' : '-48:01:29.000'},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = RightAscension.parse(elem['input']);
-        if (_actual == null)
+        var _actual = RightAscension.parse(elem['input'] as String);
+        if (_actual == null) {
           expect(_actual, elem['expectedOutput']);
-        else
+        } else {
           expect(_actual.toString(), elem['expectedOutput']);
+        }
       });
-    });
+    }
   });
 }

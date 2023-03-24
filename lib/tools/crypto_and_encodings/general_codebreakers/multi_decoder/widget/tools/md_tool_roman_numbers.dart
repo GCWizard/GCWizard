@@ -11,7 +11,12 @@ const MDT_ROMANNUMBERS_OPTION_MODE_SUBTRACTION = 'multidecoder_tool_romannumbers
 const MDT_ROMANNUMBERS_OPTION_MODE_ADDITION = 'multidecoder_tool_romannumbers_option_mode_onlyaddition';
 
 class MultiDecoderToolRomanNumbers extends AbstractMultiDecoderTool {
-  MultiDecoderToolRomanNumbers({Key key, int id, String name, Map<String, dynamic> options, BuildContext context})
+  MultiDecoderToolRomanNumbers({
+    Key? key,
+    required int id,
+    required String name,
+    required Map<String, Object?> options,
+    required BuildContext context})
       : super(
             key: key,
             id: id,
@@ -26,13 +31,13 @@ class MultiDecoderToolRomanNumbers extends AbstractMultiDecoderTool {
             },
             options: options,
             configurationWidget: MultiDecoderToolConfiguration(widgets: {
-              MDT_ROMANNUMBERS_OPTION_MODE: GCWStatefulDropDown(
-                value: options[MDT_ROMANNUMBERS_OPTION_MODE],
+              MDT_ROMANNUMBERS_OPTION_MODE: GCWStatefulDropDown<String>(
+                value: checkStringFormatOrDefaultOption(MDT_INTERNALNAMES_ROMANNUMBERS, options, MDT_ROMANNUMBERS_OPTION_MODE),
                 onChanged: (newValue) {
                   options[MDT_ROMANNUMBERS_OPTION_MODE] = newValue;
                 },
                 items: RomanNumberType.values.map((type) {
-                  var key;
+                  String key;
                   switch (type) {
                     case RomanNumberType.USE_SUBTRACTION_RULE:
                       key = MDT_ROMANNUMBERS_OPTION_MODE_SUBTRACTION;
@@ -40,6 +45,8 @@ class MultiDecoderToolRomanNumbers extends AbstractMultiDecoderTool {
                     case RomanNumberType.ONLY_ADDITION:
                       key = MDT_ROMANNUMBERS_OPTION_MODE_ADDITION;
                       break;
+                    default:
+                      key = MDT_ROMANNUMBERS_OPTION_MODE_ADDITION;
                   }
 
                   return GCWDropDownMenuItem(

@@ -12,15 +12,17 @@ import 'package:gc_wizard/tools/crypto_and_encodings/tomtom/logic/tomtom.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/text_widget_utils.dart';
 
 class TomTom extends StatefulWidget {
+  const TomTom({Key? key}) : super(key: key);
+
   @override
   TomTomState createState() => TomTomState();
 }
 
 class TomTomState extends State<TomTom> {
-  var _inputEncryptController;
-  var _inputDecryptController;
-  var _aController;
-  var _bController;
+  late TextEditingController _inputEncryptController;
+  late TextEditingController _inputDecryptController;
+  late TextEditingController _aController;
+  late TextEditingController _bController;
 
   var _currentInputEncrypt = '';
   var _currentInputDecrypt = '';
@@ -66,6 +68,7 @@ class TomTomState extends State<TomTom> {
           children: <Widget>[
             Expanded(
               child: Container(
+                  padding: const EdgeInsets.only(right: DEFAULT_MARGIN),
                   child: GCWTextField(
                     controller: _aController,
                     onChanged: (text) {
@@ -73,11 +76,13 @@ class TomTomState extends State<TomTom> {
                         _currentA = text;
                       });
                     },
-                  ),
-                  padding: EdgeInsets.only(right: DEFAULT_MARGIN)),
+                  )),
             ),
             Expanded(
               child: Container(
+                  padding: const EdgeInsets.only(
+                    left: DEFAULT_MARGIN,
+                  ),
                   child: GCWTextField(
                     controller: _bController,
                     onChanged: (text) {
@@ -85,9 +90,6 @@ class TomTomState extends State<TomTom> {
                         _currentB = text;
                       });
                     },
-                  ),
-                  padding: EdgeInsets.only(
-                    left: DEFAULT_MARGIN,
                   )),
             ),
           ],
@@ -116,7 +118,7 @@ class TomTomState extends State<TomTom> {
     );
   }
 
-  _buildButtonBar() {
+  Widget _buildButtonBar() {
     return GCWToolBar(children: [
       GCWButton(
         text: _currentA,
@@ -169,12 +171,12 @@ class TomTomState extends State<TomTom> {
     ]);
   }
 
-  _addCharacter(String input) {
+  void _addCharacter(String input) {
     _currentInputDecrypt = textControllerInsertText(input, _currentInputDecrypt, _inputDecryptController);
   }
 
-  _buildOutput() {
-    if (_currentA.length == 0 || _currentB.length == 0) return '';
+  String _buildOutput() {
+    if (_currentA.isEmpty || _currentB.isEmpty) return '';
 
     var key = {'/': _currentA, '\\': _currentB};
 

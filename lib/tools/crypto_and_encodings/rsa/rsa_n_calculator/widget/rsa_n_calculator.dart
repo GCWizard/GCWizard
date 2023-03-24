@@ -8,6 +8,8 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rsa/logic/rsa.dart';
 
 class RSANCalculator extends StatefulWidget {
+  const RSANCalculator({Key? key}) : super(key: key);
+
   @override
   RSANCalculatorState createState() => RSANCalculatorState();
 }
@@ -16,8 +18,8 @@ class RSANCalculatorState extends State<RSANCalculator> {
   String _currentP = '';
   String _currentQ = '';
 
-  var _integerInputFormatter = GCWIntegerTextInputFormatter(min: 0);
-  Widget _output;
+  final _integerInputFormatter = GCWIntegerTextInputFormatter(min: 0);
+  Widget? _output;
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +46,13 @@ class RSANCalculatorState extends State<RSANCalculator> {
             });
           },
         ),
-        _output ?? GCWDefaultOutput(),
+        _output ?? const GCWDefaultOutput(),
       ],
     );
   }
 
-  _calculateOutput() {
-    if (_currentP == null || _currentP.length == 0 || _currentQ == null || _currentQ.length == 0) {
+  void _calculateOutput() {
+    if (_currentP.isEmpty || _currentQ.isEmpty) {
       _output = null;
     }
 
@@ -58,9 +60,9 @@ class RSANCalculatorState extends State<RSANCalculator> {
       var p = BigInt.tryParse(_currentP);
       var q = BigInt.tryParse(_currentQ);
 
-      _output = GCWDefaultOutput(child: N(p, q).toString());
+      _output = GCWDefaultOutput(child: N(p as BigInt, q as BigInt).toString());
     } catch (exception) {
-      showToast(i18n(context, exception.message));
+      showToast(i18n(context, exception.toString()));
       _output = null;
     }
   }

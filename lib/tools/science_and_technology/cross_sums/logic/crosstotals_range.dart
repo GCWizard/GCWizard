@@ -2,9 +2,7 @@ import 'package:gc_wizard/tools/science_and_technology/cross_sums/logic/crosstot
 
 enum CrossSumType { NORMAL, ITERATED }
 
-List<int> crossSumRange(int rangeStart, int rangeEnd, int crossSumToFind, {CrossSumType type: CrossSumType.NORMAL}) {
-  if (rangeStart == null || rangeEnd == null || crossSumToFind == null) return [];
-
+List<int> crossSumRange(int rangeStart, int rangeEnd, int crossSumToFind, {CrossSumType type = CrossSumType.NORMAL}) {
   if (rangeStart > rangeEnd) {
     var help = rangeEnd;
     rangeEnd = rangeStart;
@@ -13,7 +11,7 @@ List<int> crossSumRange(int rangeStart, int rangeEnd, int crossSumToFind, {Cross
 
   var out = <int>[];
   for (int i = rangeStart; i <= rangeEnd; i++) {
-    var crossSumResult;
+    BigInt crossSumResult;
     switch (type) {
       case CrossSumType.NORMAL:
         crossSumResult = crossSum([i]);
@@ -29,9 +27,7 @@ List<int> crossSumRange(int rangeStart, int rangeEnd, int crossSumToFind, {Cross
   return out;
 }
 
-Map<int, int> crossSumRangeFrequencies(int rangeStart, int rangeEnd, {CrossSumType type: CrossSumType.NORMAL}) {
-  if (rangeStart == null || rangeEnd == null) return {};
-
+Map<int, int> crossSumRangeFrequencies(int rangeStart, int rangeEnd, {CrossSumType type = CrossSumType.NORMAL}) {
   if (rangeStart > rangeEnd) {
     var help = rangeEnd;
     rangeEnd = rangeStart;

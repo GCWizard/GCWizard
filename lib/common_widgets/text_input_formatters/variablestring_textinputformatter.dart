@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:gc_wizard/utils/variable_string_expander.dart';
 
 class VariableStringTextInputFormatter extends TextInputFormatter {
-  RegExp _exp;
+  late RegExp _exp;
 
   VariableStringTextInputFormatter() {
     _exp = VARIABLESTRING;

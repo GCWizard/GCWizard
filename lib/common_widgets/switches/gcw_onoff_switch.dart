@@ -5,15 +5,16 @@ import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_switch.dart';
 
 class GCWOnOffSwitch extends StatefulWidget {
-  final Function onChanged;
-  final String title;
-  final value;
+  final void Function(bool) onChanged;
+  final String? title;
+  final bool? value;
   final bool notitle;
   final List<int> flexValues;
   static const _flexValues = [1, 1, 1];
 
   const GCWOnOffSwitch(
-      {Key key, @required this.value, this.onChanged, this.title, this.notitle: false, this.flexValues: _flexValues})
+      {Key? key, required this.value, required this.onChanged, this.title,
+        this.notitle = false, this.flexValues = _flexValues})
       : super(key: key);
 
   @override
@@ -21,7 +22,7 @@ class GCWOnOffSwitch extends StatefulWidget {
 }
 
 class GCWOnOffSwitchState extends State<GCWOnOffSwitch> {
-  var _currentValue = false;
+  final _currentValue = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,25 +30,24 @@ class GCWOnOffSwitchState extends State<GCWOnOffSwitch> {
       children: <Widget>[
         if (!widget.notitle)
           Expanded(
-              child: GCWText(text: (widget.title ?? i18n(context, 'common_mode')) + ':'), flex: widget.flexValues[0]),
+              flex: widget.flexValues[0],
+              child: GCWText(text: (widget.title ?? i18n(context, 'common_mode')) + ':')),
         Expanded(
-            child: Container(
-              child: Row(
-                children: <Widget>[
-                  Expanded(child: Container(), flex: widget.flexValues[1]),
-                  GCWSwitch(
-                    value: widget.value ?? _currentValue,
-                    onChanged: widget.onChanged,
-                    activeThumbColor: themeColors().switchThumb2(),
-                    activeTrackColor: themeColors().switchTrack2(),
-                    inactiveThumbColor: themeColors().switchThumb1(),
-                    inactiveTrackColor: themeColors().switchTrack1(),
-                  ),
-                  Expanded(child: Container(), flex: widget.flexValues[2]),
-                ],
-              ),
-            ),
-            flex: widget.flexValues[0] + widget.flexValues[1] + widget.flexValues[2])
+            flex: widget.flexValues[0] + widget.flexValues[1] + widget.flexValues[2],
+            child: Row(
+              children: <Widget>[
+                Expanded(flex: widget.flexValues[1], child: Container()),
+                GCWSwitch(
+                  value: widget.value ?? _currentValue,
+                  onChanged: widget.onChanged,
+                  activeThumbColor: themeColors().switchThumb2(),
+                  activeTrackColor: themeColors().switchTrack2(),
+                  inactiveThumbColor: themeColors().switchThumb1(),
+                  inactiveTrackColor: themeColors().switchTrack1(),
+                ),
+                Expanded(flex: widget.flexValues[2], child: Container()),
+              ],
+            ))
       ],
     );
   }

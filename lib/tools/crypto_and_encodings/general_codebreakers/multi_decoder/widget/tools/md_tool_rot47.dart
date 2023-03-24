@@ -5,7 +5,11 @@ import 'package:gc_wizard/tools/crypto_and_encodings/rotation/logic/rotator.dart
 const MDT_INTERNALNAMES_ROT47 = 'multidecoder_tool_rot47_title';
 
 class MultiDecoderToolROT47 extends AbstractMultiDecoderTool {
-  MultiDecoderToolROT47({Key key, int id, String name, Map<String, dynamic> options})
+  MultiDecoderToolROT47({
+    Key? key,
+    required int id,
+    required String name,
+    required Map<String, Object?> options})
       : super(
             key: key,
             id: id,

@@ -11,14 +11,15 @@ import 'package:gc_wizard/application/app_builder.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_delete_alertdialog.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/gcw_tool.dart';
+import 'package:gc_wizard/utils/constants.dart';
 import 'package:prefs/prefs.dart';
 
 class GCWToolList extends StatefulWidget {
-  final toolList;
-  final Function onChangedFavorite;
+  final List<GCWTool> toolList;
 
-  const GCWToolList({Key key, this.toolList, this.onChangedFavorite}) : super(key: key);
+  const GCWToolList({Key? key, required this.toolList}) : super(key: key);
 
+  @override
   _GCWToolListState createState() => _GCWToolListState();
 }
 
@@ -39,9 +40,9 @@ class _GCWToolListState extends State<GCWToolList> {
 
   Widget _buildItems() {
     return ListView.separated(
-      physics: AlwaysScrollableScrollPhysics(),
+      physics: const AlwaysScrollableScrollPhysics(),
       itemCount: widget.toolList.length,
-      separatorBuilder: (BuildContext context, int index) => Divider(),
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
       itemBuilder: (BuildContext context, int i) {
         return _buildRow(context, widget.toolList[i]);
       },
@@ -49,8 +50,8 @@ class _GCWToolListState extends State<GCWToolList> {
   }
 
   Widget _buildRow(BuildContext context, GCWTool tool) {
-    Future _navigateToSubPage(context) async {
-      Navigator.push(context, NoAnimationMaterialPageRoute(builder: (context) => tool));
+    Future<void> _navigateToSubPage(BuildContext context) async {
+      Navigator.push(context, NoAnimationMaterialPageRoute<GCWTool>(builder: (context) => tool));
     }
 
     return ListTile(
@@ -58,17 +59,17 @@ class _GCWToolListState extends State<GCWToolList> {
         children: [
           if (tool.isBeta)
             Container(
+              padding: const EdgeInsets.symmetric(horizontal: DEFAULT_MARGIN),
+              margin: const EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN),
+              color: themeColors().secondary(),
               child: Text(
                 'BETA',
                 style: gcwBetaStyle(),
               ),
-              padding: EdgeInsets.symmetric(horizontal: DEFAULT_MARGIN),
-              margin: EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN),
-              color: themeColors().accent(),
             ),
           Expanded(
             child: Text(
-              tool.toolName,
+              tool.toolName ?? UNKNOWN_ELEMENT,
               style: gcwTextStyle(),
             ),
           )
@@ -84,12 +85,12 @@ class _GCWToolListState extends State<GCWToolList> {
       },
       leading: tool.icon,
       trailing: IconButton(
-        icon: tool.isFavorite ?? false ? Icon(Icons.star) : Icon(Icons.star_border),
+        icon: tool.isFavorite ? const Icon(Icons.star) : const Icon(Icons.star_border),
         color: themeColors().mainFont(),
         onPressed: () {
           if (tool.isFavorite) {
-            showDeleteAlertDialog(context, tool.toolName, () {
-              Favorites.update(tool.id, FavoriteChangeStatus.REMOVE);
+            showDeleteAlertDialog(context, tool.toolName ?? UNKNOWN_ELEMENT, () {
+              Favorites.update(tool.longId, FavoriteChangeStatus.REMOVE);
 
               setState(() {
                 AppBuilder.of(context).rebuild();
@@ -97,7 +98,7 @@ class _GCWToolListState extends State<GCWToolList> {
             });
           } else {
             setState(() {
-              Favorites.update(tool.id, FavoriteChangeStatus.ADD);
+              Favorites.update(tool.longId, FavoriteChangeStatus.ADD);
 
               AppBuilder.of(context).rebuild();
             });
@@ -107,29 +108,29 @@ class _GCWToolListState extends State<GCWToolList> {
     );
   }
 
-  _buildSubtitle(BuildContext context, GCWTool tool) {
-    var descriptionText;
+  Widget _buildSubtitle(BuildContext context, GCWTool tool) {
+    IgnorePointer? descriptionText;
     if (Prefs.getBool(PREFERENCE_TOOLLIST_SHOW_DESCRIPTIONS) &&
         tool.description != null &&
-        tool.description.length > 0) {
+        tool.description!.isNotEmpty) {
       descriptionText = IgnorePointer(
           child: GCWText(
-        text: tool.description,
+        text: tool.description!,
         style: gcwDescriptionTextStyle(),
       ));
     }
 
-    var exampleText;
-    if (Prefs.getBool(PREFERENCE_TOOLLIST_SHOW_EXAMPLES) && tool.example != null && tool.example.length > 0) {
-      exampleText = IgnorePointer(child: GCWText(text: tool.example, style: gcwDescriptionTextStyle()));
+    IgnorePointer? exampleText;
+    if (Prefs.getBool(PREFERENCE_TOOLLIST_SHOW_EXAMPLES) && tool.example != null && tool.example!.isNotEmpty) {
+      exampleText = IgnorePointer(child: GCWText(text: tool.example!, style: gcwDescriptionTextStyle()));
     }
 
-    var content;
+    Widget content = Container();
     if (exampleText != null && descriptionText != null) {
       content = Column(
         children: [
           descriptionText,
-          Container(child: exampleText, padding: EdgeInsets.only(top: DEFAULT_DESCRIPTION_MARGIN))
+          Container(padding: const EdgeInsets.only(top: DEFAULT_DESCRIPTION_MARGIN), child: exampleText)
         ],
       );
     } else if (exampleText != null) {
@@ -140,9 +141,9 @@ class _GCWToolListState extends State<GCWToolList> {
 
     return (exampleText ?? descriptionText) != null
         ? Container(
+            padding: const EdgeInsets.only(left: 10.0),
             child: content,
-            padding: EdgeInsets.only(left: 10.0),
           )
-        : null;
+        : Container();
   }
 }

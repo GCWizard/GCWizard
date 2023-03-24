@@ -6,27 +6,25 @@ import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
+import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_delete_alertdialog.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
-import 'package:gc_wizard/tools/formula_solver/persistence/model.dart';
 import 'package:prefs/prefs.dart';
 
 class GCWClipboardEditor extends StatefulWidget {
-  final FormulaGroup group;
-
-  const GCWClipboardEditor({Key key, this.group}) : super(key: key);
+  const GCWClipboardEditor({Key? key}) : super(key: key);
 
   @override
   GCWClipboardEditorState createState() => GCWClipboardEditorState();
 }
 
 class GCWClipboardEditorState extends State<GCWClipboardEditor> {
-  TextEditingController _editController;
-  int _currentEditId;
+  late TextEditingController _editController;
+  int? _currentEditId;
   String _currentEditText = '';
 
   @override
@@ -85,11 +83,11 @@ class GCWClipboardEditorState extends State<GCWClipboardEditor> {
 
     children.addAll(entries
         .asMap()
-        .map((index, entry) {
-          var item = jsonDecode(entry);
+        .map<int, Widget?>((int index, String entry) {
+          var item = ClipboardItem.fromJson(entry);
+          if (item == null) return MapEntry(index, null);
 
-          var child;
-
+          Widget child;
           if (_currentEditId != null && _currentEditId == index) {
             child = Row(children: [
               Expanded(
@@ -107,8 +105,8 @@ class GCWClipboardEditorState extends State<GCWClipboardEditor> {
                 icon: Icons.check,
                 onPressed: () {
                   setState(() {
-                    if (_currentEditText != null && _currentEditText.isNotEmpty) {
-                      item['text'] = _currentEditText;
+                    if (_currentEditText.isNotEmpty) {
+                      item.text = _currentEditText;
 
                       var newEntries = List<String>.from(entries);
                       newEntries[index] = jsonEncode(item);
@@ -123,22 +121,22 @@ class GCWClipboardEditorState extends State<GCWClipboardEditor> {
             ]);
           } else {
             child = Row(children: [
-              Expanded(child: GCWText(text: item['text'])),
+              Expanded(child: GCWText(text: item.text)),
               Container(width: 10),
               GCWIconButton(
                 icon: Icons.edit,
                 onPressed: () {
                   setState(() {
                     _currentEditId = index;
-                    _editController.text = item['text'];
+                    _editController.text = item.text;
                   });
                 },
               ),
               GCWIconButton(
                 icon: Icons.remove,
                 onPressed: () {
-                  var text = item['text'];
-                  if (text.length > 50) text = item['text'].substring(0, 47) + '...';
+                  var text = item.text;
+                  if (text.length > 50) text = item.text.substring(0, 47) + '...';
 
                   showDeleteAlertDialog(context, text, () {
                     setState(() {
@@ -158,9 +156,11 @@ class GCWClipboardEditorState extends State<GCWClipboardEditor> {
             child = Container(child: child);
           }
 
-          return MapEntry(index, child as Widget);
+          return MapEntry(index, child);
         })
         .values
+        .where((Widget? widget) => widget != null)
+        .map((Widget? widget) => widget as Widget)
         .toList());
 
     return Column(children: children);

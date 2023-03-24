@@ -1,16 +1,18 @@
 part of 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/multi_decoder/widget/multi_decoder.dart';
 
 class MultiDecoder extends StatefulWidget {
+  const MultiDecoder({Key? key}) : super(key: key);
+
   @override
   MultiDecoderState createState() => MultiDecoderState();
 }
 
 class MultiDecoderState extends State<MultiDecoder> {
-  var _controller;
-  List<AbstractMultiDecoderTool> mdtTools;
+  late TextEditingController _controller;
+  List<AbstractMultiDecoderTool> mdtTools = [];
 
   String _currentInput = '';
-  Widget _currentOutput;
+  Widget _currentOutput = Container();
 
   var _firstBuild = true;
   var _currentExpanded = false;
@@ -30,23 +32,20 @@ class MultiDecoderState extends State<MultiDecoder> {
     super.dispose();
   }
 
-  _refreshMDTTools() {
-    mdtTools = model.multiDecoderTools.map((mdtTool) {
+  void _refreshMDTTools() {
+    mdtTools = multiDecoderTools.map((mdtTool) {
       return _multiDecoderToolToGCWMultiDecoderTool(context, mdtTool);
     }).toList();
-    mdtTools.removeWhere((mdtTool) => mdtTool == null);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_firstBuild && model.multiDecoderTools.length == 0) {
+    if (_firstBuild && multiDecoderTools.isEmpty) {
       _initializeMultiToolDecoder(context);
       _firstBuild = false;
     }
 
     _refreshMDTTools();
-
-    if (_currentOutput == null) _initOutput();
 
     return Column(
       children: <Widget>[
@@ -54,29 +53,29 @@ class MultiDecoderState extends State<MultiDecoder> {
           children: [
             Expanded(
                 child: Container(
+                    padding: const EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN),
                     child: GCWTextField(
                       controller: _controller,
                       onChanged: (text) {
                         _currentInput = text;
-                        if (_currentInput == null || _currentInput.length == 0) {
+                        if (_currentInput.isEmpty) {
                           setState(() {
-                            _currentOutput = null;
+                            _currentOutput = Container();
                           });
                         }
                       },
-                    ),
-                    padding: EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN))),
+                    ))),
             GCWIconButton(
               icon: Icons.settings,
               onPressed: () {
                 Navigator.push(
                         context,
-                        NoAnimationMaterialPageRoute(
+                        NoAnimationMaterialPageRoute<GCWTool>(
                             builder: (context) =>
-                                GCWTool(tool: _MultiDecoderConfiguration(), i18nPrefix: 'multidecoder_configuration')))
+                                GCWTool(tool: _MultiDecoderConfiguration(), id: 'multidecoder_configuration')))
                     .whenComplete(() {
                   setState(() {
-                    _currentOutput = null;
+                    _currentOutput = Container();
                   });
                 });
               },
@@ -109,16 +108,16 @@ class MultiDecoderState extends State<MultiDecoder> {
           },
           child: Row(
             children: [
-              Expanded(child: GCWText(text: i18n(context, 'multidecoder_key')), flex: 1),
+              Expanded(flex: 1, child: GCWText(text: i18n(context, 'multidecoder_key'))),
               Expanded(
+                  flex: 3,
                   child: GCWTextField(
                     onChanged: (text) {
                       setState(() {
                         _currentKey = text;
                       });
                     },
-                  ),
-                  flex: 3)
+                  ))
             ],
           ),
         ),
@@ -126,41 +125,35 @@ class MultiDecoderState extends State<MultiDecoder> {
     );
   }
 
-  _toolTitle(AbstractMultiDecoderTool tool) {
-    var optionValues = tool.options.values.map((value) {
-      var result = value;
+  String _toolTitle(AbstractMultiDecoderTool tool) {
+    var optionValues = tool.options.values.map((Object? value) {
+      String result = value.toString();
 
       if (tool.internalToolName == MDT_INTERNALNAMES_COORDINATEFORMATS) {
-        result = getCoordinateFormatByKey(value).name;
+        if (CoordinateFormatKey.values.contains(value)) {
+          result = coordinateFormatMetadataByKey(value as CoordinateFormatKey).name;
+        }
       }
       if ([MDT_INTERNALNAMES_BASE, MDT_INTERNALNAMES_BCD].contains(tool.internalToolName)) {
         result += '_title';
       }
 
-      return i18n(context, result.toString()) ?? result;
+      return i18n(context, result, ifTranslationNotExists: result);
     }).join(', ');
 
     var result = tool.name;
-    if (optionValues != null && optionValues.length > 0) result += ' ($optionValues)';
+    if (optionValues.isNotEmpty) result += ' ($optionValues)';
 
     return result;
   }
 
-  _initOutput() {
-    _currentOutput = Column(
-        children: mdtTools.map((tool) {
-      return GCWTextDivider(text: _toolTitle(tool));
-    }).toList());
-  }
-
-  _calculateOutput() {
+  void _calculateOutput() {
     var results = mdtTools.map((tool) {
-      var result;
+      Object? result;
 
       try {
         if (!tool.optionalKey &&
-            ((tool.requiresKey && (_currentKey ?? '').isEmpty) ||
-                !tool.requiresKey && (_currentKey != null && _currentKey.isNotEmpty))) {
+            ((tool.requiresKey && _currentKey.isEmpty) || !tool.requiresKey && (_currentKey.isNotEmpty))) {
           result = null;
         } else {
           result = tool.onDecode(_currentInput, _currentKey);
@@ -168,34 +161,62 @@ class MultiDecoderState extends State<MultiDecoder> {
       } catch (e) {}
 
       if (result is Future<String>) {
-        return FutureBuilder(
+        return FutureBuilder<String>(
             future: result,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData && snapshot.data is String && ((snapshot.data as String).length != 0)) {
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              if (snapshot.hasData && (snapshot.data is String) && (snapshot.data!.isNotEmpty)) {
                 return GCWOutput(title: _toolTitle(tool), child: snapshot.data);
-              } else
+              } else {
                 return Container();
+              }
+            });
+      } else if (result is Future<String?>) {
+        return FutureBuilder<String?>(
+            future: result,
+            builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+              if (snapshot.hasData && snapshot.data != null &&
+                  snapshot.data!.isNotEmpty) {
+                return GCWOutput(title: _toolTitle(tool), child: snapshot.data);
+              } else {
+                return Container();
+              }
             });
       } else if (result is Future<Uint8List>) {
-        return FutureBuilder(
+        return FutureBuilder<Uint8List>(
             future: result,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData && snapshot.data is Uint8List && ((snapshot.data as Uint8List).length > 0)) {
+            builder: (BuildContext context, AsyncSnapshot<Uint8List> snapshot) {
+              if (snapshot.hasData && snapshot.data is Uint8List && ((snapshot.data as Uint8List).isNotEmpty)) {
                 return GCWOutput(
                     title: _toolTitle(tool),
                     child: GCWImageView(
                         imageData:
                             GCWImageViewData(GCWFile(bytes: (snapshot.data as Uint8List), name: _toolTitle(tool)))));
-              } else
+              } else {
                 return Container();
+              }
+            });
+      } else if (result is Future<Uint8List?>) {
+        return FutureBuilder<Uint8List?>(
+            future: result,
+            builder: (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
+              if (snapshot.hasData && snapshot.data is Uint8List && ((snapshot.data as Uint8List).isNotEmpty)) {
+                return GCWOutput(
+                    title: _toolTitle(tool),
+                    child: GCWImageView(
+                        imageData:
+                        GCWImageViewData(GCWFile(bytes: (snapshot.data as Uint8List), name: _toolTitle(tool)))));
+              } else {
+                return Container();
+              }
             });
       } else if (result != null && result.toString().isNotEmpty) {
         return GCWOutput(
           title: _toolTitle(tool),
           child: result.toString(),
         );
-      } else
+      } else {
         return Container();
+      }
     }).toList();
 
     _currentOutput = Column(children: results);

@@ -1,7 +1,9 @@
 import 'package:gc_wizard/tools/wherigo/krevo/logic/readustring.dart';
 
 int find(String palette, String char) {
-  for (int i = 0; i < palette.length; i++) if (palette[i] == char) return (i + 1);
+  for (int i = 0; i < palette.length; i++) {
+    if (palette[i] == char) return (i + 1);
+  }
   return -1;
 }
 
@@ -14,7 +16,7 @@ String gsub_wig(String str) {
     ["\x02"]: "R",
     ["\x03"]: ""
   };
-  String x;
+  String? x;
 
   str = str.replaceAll('\\001', '\x01').replaceAll('\\002', '\x02').replaceAll('\\003', '\x03');
   str = str.replaceAll('nbsp;', ' ').replaceAll('&lt;', '\x04').replaceAll('&gt;', '\x05').replaceAll('&amp;', '\x06');
@@ -48,7 +50,7 @@ String wwb_deobf(String str) {
     ["\\002"]: "R",
     ["\\003"]: ""
   };
-  String x = '';
+  String? x = '';
   int d = 0;
   int jump = 0;
 

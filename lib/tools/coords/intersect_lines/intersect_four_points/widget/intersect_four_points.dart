@@ -1,52 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/app_localizations.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
 import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_outputformat.dart';
-import 'package:gc_wizard/common_widgets/gcw_async_executer.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/intersect_lines/logic/intersect_lines.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coord_format_getter.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:latlong2/latlong.dart';
 
 class IntersectFourPoints extends StatefulWidget {
+  const IntersectFourPoints({Key? key}) : super(key: key);
+
   @override
   IntersectFourPointsState createState() => IntersectFourPointsState();
 }
 
 class IntersectFourPointsState extends State<IntersectFourPoints> {
-  LatLng _currentIntersection;
+  LatLng? _currentIntersection;
 
-  var _currentCoords11 = defaultCoordinate;
-  var _currentCoords12 = defaultCoordinate;
-  var _currentCoords21 = defaultCoordinate;
-  var _currentCoords22 = defaultCoordinate;
-
-  var _currentCoordsFormat11 = defaultCoordFormat();
-  var _currentCoordsFormat12 = defaultCoordFormat();
-  var _currentCoordsFormat21 = defaultCoordFormat();
-  var _currentCoordsFormat22 = defaultCoordFormat();
+  var _currentCoords11 = defaultBaseCoordinate;
+  var _currentCoords12 = defaultBaseCoordinate;
+  var _currentCoords21 = defaultBaseCoordinate;
+  var _currentCoords22 = defaultBaseCoordinate;
 
   var _currentMapPoints = <GCWMapPoint>[];
   var _currentMapPolylines = <GCWMapPolyline>[];
-  var _currentOutputFormat = defaultCoordFormat();
+  var _currentOutputFormat = defaultCoordinateFormat;
   List<String> _currentOutput = [];
-
-  @override
-  void initState() {
-    super.initState();
-
-    _currentMapPoints = [
-      GCWMapPoint(point: _currentCoords11),
-      GCWMapPoint(point: _currentCoords12),
-      GCWMapPoint(point: _currentCoords21),
-      GCWMapPoint(point: _currentCoords22),
-    ];
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,41 +39,37 @@ class IntersectFourPointsState extends State<IntersectFourPoints> {
       children: <Widget>[
         GCWCoords(
           title: i18n(context, 'coords_intersectfourpoints_coord11'),
-          coordsFormat: _currentCoordsFormat11,
+          coordsFormat: _currentCoords11.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoordsFormat11 = ret['coordsFormat'];
-              _currentCoords11 = ret['value'];
+              _currentCoords11 = ret;
             });
           },
         ),
         GCWCoords(
           title: i18n(context, 'coords_intersectfourpoints_coord12'),
-          coordsFormat: _currentCoordsFormat12,
+          coordsFormat: _currentCoords12.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoordsFormat12 = ret['coordsFormat'];
-              _currentCoords12 = ret['value'];
+              _currentCoords12 = ret;
             });
           },
         ),
         GCWCoords(
           title: i18n(context, 'coords_intersectfourpoints_coord21'),
-          coordsFormat: _currentCoordsFormat21,
+          coordsFormat: _currentCoords21.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoordsFormat21 = ret['coordsFormat'];
-              _currentCoords21 = ret['value'];
+              _currentCoords21 = ret;
             });
           },
         ),
         GCWCoords(
           title: i18n(context, 'coords_intersectfourpoints_coord22'),
-          coordsFormat: _currentCoordsFormat22,
+          coordsFormat: _currentCoords22.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoordsFormat22 = ret['coordsFormat'];
-              _currentCoords22 = ret['value'];
+              _currentCoords22 = ret;
             });
           },
         ),
@@ -108,20 +89,20 @@ class IntersectFourPointsState extends State<IntersectFourPoints> {
 
   Widget _buildSubmitButton() {
     return GCWSubmitButton(onPressed: () async {
-      await showDialog(
+      await showDialog<bool>(
         context: context,
         barrierDismissible: false,
         builder: (context) {
           return Center(
-            child: Container(
-              child: GCWAsyncExecuter(
+            child: SizedBox(
+              height: 220,
+              width: 150,
+              child: GCWAsyncExecuter<LatLng?>(
                 isolatedFunction: intersectFourPointsAsync,
-                parameter: _buildJobData(),
+                parameter: _buildJobData,
                 onReady: (data) => _showOutput(data),
                 isOverlay: true,
               ),
-              height: 220,
-              width: 150,
             ),
           );
         },
@@ -131,33 +112,33 @@ class IntersectFourPointsState extends State<IntersectFourPoints> {
 
   Future<GCWAsyncExecuterParameters> _buildJobData() async {
     return GCWAsyncExecuterParameters(IntersectFourPointsJobData(
-        coord11: _currentCoords11,
-        coord12: _currentCoords12,
-        coord21: _currentCoords21,
-        coord22: _currentCoords22,
-        ells: defaultEllipsoid()));
+        coord11: _currentCoords11.toLatLng()!,
+        coord12: _currentCoords12.toLatLng()!,
+        coord21: _currentCoords21.toLatLng()!,
+        coord22: _currentCoords22.toLatLng()!,
+        ells: defaultEllipsoid));
   }
 
-  _showOutput(LatLng output) {
+  void _showOutput(LatLng? output) {
     _currentIntersection = output;
 
     _currentMapPoints = [
       GCWMapPoint(
-          point: _currentCoords11,
+          point: _currentCoords11.toLatLng()!,
           markerText: i18n(context, 'coords_intersectfourpoints_coord11'),
-          coordinateFormat: _currentCoordsFormat11),
+          coordinateFormat: _currentCoords11.format),
       GCWMapPoint(
-          point: _currentCoords12,
+          point: _currentCoords12.toLatLng()!,
           markerText: i18n(context, 'coords_intersectfourpoints_coord12'),
-          coordinateFormat: _currentCoordsFormat12),
+          coordinateFormat: _currentCoords12.format),
       GCWMapPoint(
-          point: _currentCoords21,
+          point: _currentCoords21.toLatLng()!,
           markerText: i18n(context, 'coords_intersectfourpoints_coord21'),
-          coordinateFormat: _currentCoordsFormat21),
+          coordinateFormat: _currentCoords21.format),
       GCWMapPoint(
-          point: _currentCoords22,
+          point: _currentCoords22.toLatLng()!,
           markerText: i18n(context, 'coords_intersectfourpoints_coord22'),
-          coordinateFormat: _currentCoordsFormat22)
+          coordinateFormat: _currentCoords22.format)
     ];
 
     _currentMapPolylines = [
@@ -178,12 +159,12 @@ class IntersectFourPointsState extends State<IntersectFourPoints> {
     }
 
     _currentMapPoints.add(GCWMapPoint(
-        point: _currentIntersection,
+        point: _currentIntersection!,
         color: COLOR_MAP_CALCULATEDPOINT,
         markerText: i18n(context, 'coords_common_intersection'),
         coordinateFormat: _currentOutputFormat));
 
-    _currentOutput = [formatCoordOutput(_currentIntersection, _currentOutputFormat, defaultEllipsoid())];
+    _currentOutput = [formatCoordOutput(_currentIntersection!, _currentOutputFormat, defaultEllipsoid)];
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {});
