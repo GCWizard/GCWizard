@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_paste_button.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
@@ -17,18 +19,21 @@ import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/text_input_formatters/variablestring_textinputformatter.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
+import 'package:gc_wizard/tools/formula_solver/persistence/model.dart';
 import 'package:gc_wizard/tools/games/alphametics/logic/alphametics.dart';
 import 'package:gc_wizard/tools/games/catan/logic/catan.dart';
 
 
 class Alphametics extends StatefulWidget {
+  const Alphametics({Key? key}) : super(key: key);
+
   @override
   AlphameticsState createState() => AlphameticsState();
 }
 
 class AlphameticsState extends State<Alphametics> {
-  var _inputController;
-  var _maskController;
+  late TextEditingController _inputController;
+  late TextEditingController _maskController;
 
   var _currentInput = '';
   var _currentOutput = '';
@@ -42,7 +47,7 @@ class AlphameticsState extends State<Alphametics> {
   int _rowCount = 2;
   int _columnCount = 2;
   SymbolMatrix _currentMatrix = SymbolMatrix(2, 2);
-  List<List<TextEditingController>> _textEditingControllerArray;
+  List<List<TextEditingController?>> _textEditingControllerArray = [];
   bool _currentExpanded = true;
   bool _currentValuesExpanded = true;
   GCWSwitchPosition _currentMode = GCWSwitchPosition.left;
@@ -62,31 +67,34 @@ class AlphameticsState extends State<Alphametics> {
     _inputController.dispose();
     _maskController.dispose();
 
-    if (_textEditingControllerArray != null) {
-      for(var y = 0; y < _textEditingControllerArray.length; y++)
-        for(var x = 0; x < _textEditingControllerArray[y].length; x++)
-          if (_textEditingControllerArray[y][x] != null)
-            _textEditingControllerArray[y][x].dispose();
+    for(var y = 0; y < _textEditingControllerArray.length; y++) {
+      for (var x = 0; x < _textEditingControllerArray[y].length; x++) {
+        if (_textEditingControllerArray[y][x] != null) {
+          _textEditingControllerArray[y][x]?.dispose();
+        }
+      }
     }
 
     super.dispose();
   }
 
-  _addEntry(String currentFromInput, String currentToInput, BuildContext context) {
-    if (currentFromInput.length > 0)
+  void _addEntry(String currentFromInput, String currentToInput, FormulaValueType type, BuildContext context) {
+    if (currentFromInput.isNotEmpty) {
       _currentSubstitutions.putIfAbsent(++_currentIdCount, () => {currentFromInput: currentToInput});
+    }
   }
 
-  _updateEntry(dynamic id, String key, String value) {
+  void _updateEntry(Object id, String key, String value, FormulaValueType type) {
+    if (id is! int) return;
     _currentSubstitutions[id] = {key: value};
   }
 
-  _updateNewEntry(String currentFromInput, String currentToInput, BuildContext context) {
+  void _updateNewEntry(String currentFromInput, String currentToInput, BuildContext context) {
     _currentFromInput = currentFromInput;
     _currentToInput = currentToInput;
   }
 
-  _removeEntry(dynamic id, BuildContext context) {
+  void _removeEntry(Object id, BuildContext context) {
     _currentSubstitutions.remove(id);
   }
 
@@ -132,6 +140,7 @@ class AlphameticsState extends State<Alphametics> {
         ),
 
         GCWTextDivider(
+          text : '',
            trailing: Row(children: <Widget>[
               GCWPasteButton(
                   iconSize: IconButtonSize.SMALL,
@@ -165,7 +174,7 @@ class AlphameticsState extends State<Alphametics> {
             print(valid.toString());
             if (valid) {
               for(var y = 0; y < _currentMatrix.getRowsCount()-2; y+=2){
-                print(_currentMatrix.buildRowFromula(y));
+                print(_currentMatrix.buildRowFormula(y));
               }
               for(var x = 0; x < _currentMatrix.getColumnsCount()-2; x+=2){
                 print(_currentMatrix.buildColumnFormula(x));
@@ -206,8 +215,8 @@ class AlphameticsState extends State<Alphametics> {
     ]);
   }
 
-  _onDoCalculation() async {
-    await showDialog(
+  void _onDoCalculation() async {
+    await showDialog<bool>(
       context: context,
       barrierDismissible: false,
       builder: (context) {
@@ -215,7 +224,7 @@ class AlphameticsState extends State<Alphametics> {
           child: Container(
             child: GCWAsyncExecuter(
               isolatedFunction: solveAlphameticsAsync,
-              parameter: _buildJobData(),
+              parameter: _buildJobData,
               onReady: (data) => _showOutput(data),
               isOverlay: true,
             ),
@@ -235,7 +244,7 @@ class AlphameticsState extends State<Alphametics> {
     );
   }
 
-  _parseClipboard(text) {
+  void _parseClipboard(String text) {
     setState(() {
       var matrix = SymbolMatrix.fromJson(text);
       if (matrix == null) {
@@ -253,8 +262,9 @@ class AlphameticsState extends State<Alphametics> {
 
   Widget _buildTable(int rowCount, int columnCount) {
     var rows = <TableRow>[];
-    for (var i=0; i < _currentMatrix.getRowsCount(); i++)
+    for (var i=0; i < _currentMatrix.getRowsCount(); i++) {
       rows.add(_buildTableRow(rowCount, columnCount, i));
+    }
 
     return Table(
         border: TableBorder.all(),
@@ -310,12 +320,13 @@ class AlphameticsState extends State<Alphametics> {
   }
 
   Map<int, TableColumnWidth> _columnWidthConfiguration(int columnCount) {
-    var config = Map<int, TableColumnWidth>();
+    var config = <int, TableColumnWidth>{};
     for(var columnIndex = 0; columnIndex < _currentMatrix.getColumnsCount(); columnIndex++) {
-      if (columnIndex % 2 == 0)
-        config.addAll({columnIndex: FixedColumnWidth(100)}); //IntrinsicColumnWidth FlexColumnWidth()
-      else
+      if (columnIndex % 2 == 0) {
+        config.addAll({columnIndex: const FixedColumnWidth(100)}); //IntrinsicColumnWidth FlexColumnWidth()
+      } else {
         config.addAll({columnIndex: FixedColumnWidth((columnIndex == _currentMatrix.getColumnsCount() - 2) ? 30 : 60)});
+      }
     }
     return config;
   }
@@ -357,31 +368,31 @@ class AlphameticsState extends State<Alphametics> {
 
   Map<String, String> _getSubstitutions() {
     var _substitutions = <String, String>{};
-    _currentSubstitutions.entries.forEach((entry) {
+    for (var entry in _currentSubstitutions.entries) {
       _substitutions.putIfAbsent(entry.value.keys.first, () => entry.value.values.first);
-    });
+    }
 
-    if (_currentFromInput != null &&
-        _currentFromInput.length > 0 &&
-        _currentToInput != null &&
-        _currentToInput.length > 0) {
+    if (_currentFromInput.isNotEmpty &&
+        _currentToInput.isNotEmpty) {
       _substitutions.putIfAbsent(_currentFromInput, () => _currentToInput);
     }
 
     return _substitutions;
   }
 
-  List<String> _getFormulas() {
+  List<String>? _getFormulas() {
     if (!_currentMatrix.isValidMatrix()) return null;
     var formulas = <String>[];
-    for(var y = 0; y < _currentMatrix.getRowsCount()-2; y+=2)
-      formulas.add(_currentMatrix.buildRowFromula(y));
+    for(var y = 0; y < _currentMatrix.getRowsCount()-2; y+=2) {
+      formulas.add(_currentMatrix.buildRowFormula(y));
+    }
 
-    for(var x = 0; x < _currentMatrix.getColumnsCount()-2; x+=2)
+    for(var x = 0; x < _currentMatrix.getColumnsCount()-2; x+=2) {
       formulas.add(_currentMatrix.buildColumnFormula(x));
+    }
   }
 
-  Future<GCWAsyncExecuterParameters> _buildJobData() async {
+  Future<GCWAsyncExecuterParameters?> _buildJobData() async {
     _currentOutput = '';
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {});
@@ -389,17 +400,19 @@ class AlphameticsState extends State<Alphametics> {
 
     var _substitutions = _getSubstitutions();
     var _formulas = _getFormulas();
+    if (_formulas == null) return null;
 
     return GCWAsyncExecuterParameters(SymbolArithmeticJobData(
         formulas: _formulas,
         substitutions: _substitutions));
   }
 
-  _showOutput(Map<String, dynamic> output) {
+  void _showOutput(Map<String, dynamic> output) {
     if (output == null || output['state'] == null || output['state'] == 'not_found') {
       _currentOutput = i18n(context, 'hashes_hashbreaker_solutionnotfound');
-    } else
+    } else {
       _currentOutput = output['text'];
+    }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {});
@@ -408,29 +421,34 @@ class AlphameticsState extends State<Alphametics> {
 
 
   void _buildtextEditingControllerArray(int rowCount, int columnCount) {
-    var matrix =<List<TextEditingController>>[];
-    for(var y = 0; y < _currentMatrix.getRowsCount(); y++)
+    var matrix =<List<TextEditingController?>>[];
+    for(var y = 0; y < _currentMatrix.getRowsCount(); y++) {
       matrix.add(List<TextEditingController>.filled(_currentMatrix.getColumnsCount(), null));
+    }
 
-    if (_textEditingControllerArray != null) {
-      for(var y = 0; y < min(matrix.length, _textEditingControllerArray.length); y++)
-        for(var x = 0; x < min(matrix[y].length, _textEditingControllerArray[y].length); x++)
-          matrix[y][x] = _textEditingControllerArray[y][x];
+    for(var y = 0; y < min(matrix.length, _textEditingControllerArray.length); y++) {
+      for (var x = 0; x < min(matrix[y].length, _textEditingControllerArray[y].length); x++) {
+        matrix[y][x] = _textEditingControllerArray[y][x];
+      }
 
-      for(var y = matrix.length; y < _textEditingControllerArray.length; y++)
-        for(var x = matrix[0].length; x < _textEditingControllerArray[y].length; x++)
-          if (_textEditingControllerArray[y][x] != null)
-            _textEditingControllerArray[y][x].dispose();
+      for(var y = matrix.length; y < _textEditingControllerArray.length; y++) {
+        for (var x = matrix[0].length; x < _textEditingControllerArray[y].length; x++) {
+          if (_textEditingControllerArray[y][x] != null) {
+            _textEditingControllerArray[y][x]?.dispose();
+          }
+        }
+      }
     }
 
     _textEditingControllerArray = matrix;
   }
 
-  TextEditingController _getTextEditingController(int rowIndex, int columnIndex, String text) {
-    if (_textEditingControllerArray[rowIndex][columnIndex] == null)
+  TextEditingController? _getTextEditingController(int rowIndex, int columnIndex, String text) {
+    if (_textEditingControllerArray[rowIndex][columnIndex] == null) {
       _textEditingControllerArray[rowIndex][columnIndex] = TextEditingController();
+    }
 
-    _textEditingControllerArray[rowIndex][columnIndex].text = text;
+    _textEditingControllerArray[rowIndex][columnIndex]!.text = text;
 
     return _textEditingControllerArray[rowIndex][columnIndex];
   }

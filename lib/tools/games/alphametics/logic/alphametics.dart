@@ -4,30 +4,33 @@ import 'dart:isolate';
 import 'dart:math';
 import 'dart:collection';
 import "package:collection/collection.dart";
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitution.dart';
 import 'package:gc_wizard/tools/formula_solver/logic/formula_parser.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
+import 'package:gc_wizard/utils/data_type_utils/object_type_utils.dart';
+import 'package:gc_wizard/utils/json_utils.dart';
 import 'package:gc_wizard/utils/variable_string_expander.dart';
 import 'package:math_expressions/math_expressions.dart';
 
 class SymbolMatrix {
-  List<List<String>> matrix;
-  Map<String, String> substitutions;
-  var columnCount;
-  var rowCount;
+  List<List<String>> matrix =[];
+  Map<String, String> substitutions = {};
+  late int columnCount;
+  late int rowCount;
 
-  SymbolMatrix (int rowCount, int columnCount, {SymbolMatrix oldMatrix}) {
-    this.columnCount = columnCount;
-    this.rowCount = rowCount;
-
-    matrix =<List<String>>[];
-    for(var y = 0; y < getRowsCount(); y++)
-      matrix.add(List<String>.filled(getColumnsCount(), null));
+  SymbolMatrix (this.rowCount, this.columnCount, {SymbolMatrix? oldMatrix}) {
+    matrix = <List<String>>[];
+    for(var y = 0; y < getRowsCount(); y++) {
+      matrix.add(List<String>.filled(getColumnsCount(), ''));
+    }
 
     if (oldMatrix != null) {
-      for(var y = 0; y < min(matrix.length, oldMatrix.matrix.length); y++)
-        for(var x = 0; x < min(matrix[y].length, oldMatrix.matrix[y].length); x++)
-          matrix[y][x] = oldMatrix.matrix[y][x];
+      for(var y = 0; y < min(matrix!.length, oldMatrix.matrix.length); y++) {
+        for (var x = 0; x < min(matrix![y].length, oldMatrix.matrix[y].length); x++) {
+          matrix[y][x] = oldMatrix.matrix![y][x];
+        }
+      }
     }
   }
 
@@ -38,9 +41,10 @@ class SymbolMatrix {
     return rowCount * 2 + 1;
   }
 
-  String getOperator(int y, int x) {
-    if  (!_validPosition(y, x))
+  String? getOperator(int y, int x) {
+    if  (!_validPosition(y, x)) {
       return null;
+    }
     var value = matrix[y][x];
     if (!operatorList.containsKey(value)) {
       value = operatorList.keys.first;
@@ -49,19 +53,22 @@ class SymbolMatrix {
     return value;
   }
 
-  String getValue(int y, int x) {
-    if (!_validPosition(y, x))
+  String? getValue(int y, int x) {
+    if (!_validPosition(y, x)) {
       return null;
+    }
     return matrix[y][x];
   }
+
   void setValue(int y, int x, String text) {
-    if (!_validPosition(y, x))
+    if (!_validPosition(y, x)) {
       return;
+    }
     matrix[y][x] = text;
   }
 
   bool _validPosition(int y, int x) {
-    return !(matrix == null || y >= matrix.length || matrix[y] == null || x >= matrix[y].length);
+    return !(y >= matrix.length || matrix[y].isEmpty || x >= matrix[y].length);
   }
 
   bool isValidMatrix() {
@@ -69,17 +76,19 @@ class SymbolMatrix {
       for (var x = 0; x < matrix[y].length; x++) {
         if (y % 2 == 0) {
           if (x % 2 == 0) {
-            if (matrix[y][x] == null || matrix[y][x].length == 0)
+            if (matrix[y][x].isEmpty) {
               return false;
+            }
           } else if (x < getColumnsCount() - 2 && y < getRowsCount() - 2) {
-            if (!operatorList.keys.contains(matrix[y][x]))
+            if (!operatorList.keys.contains(matrix[y][x])) {
               return false;
+            }
           }
         } else {
           if (x % 2 == 0 && x < getColumnsCount() - 1) {
-            if (y < getRowsCount() - 2)
-              if (!operatorList.keys.contains(matrix[y][x]))
-                return false;
+            if ((y < getRowsCount() - 2) && (!operatorList.keys.contains(matrix[y][x]))) {
+              return false;
+            }
           }
         }
       }
@@ -87,15 +96,16 @@ class SymbolMatrix {
     return true;
   }
 
-  String buildRowFromula(int y) {
+  String buildRowFormula(int y) {
     var formula = '';
     for (var x = 0; x < matrix[y].length; x++) {
-      if (x % 2 == 0)
+      if (x % 2 == 0) {
         formula += matrix[y][x];
-      else if (x < getColumnsCount() - 2)
-        formula += operatorList[matrix[y][x]];
-      else
+      } else if (x < getColumnsCount() - 2) {
+        formula += operatorList[matrix[y][x]]!;
+      } else {
         formula += '-('; //=
+      }
     }
     return formula + ')';
   }
@@ -103,12 +113,13 @@ class SymbolMatrix {
   String buildColumnFormula(int x) {
     var formula = '';
     for (var y = 0; y < matrix.length; y++) {
-      if (y % 2 == 0)
+      if (y % 2 == 0) {
         formula += matrix[y][x];
-      else if (y < getRowsCount() - 2)
-        formula += operatorList[matrix[y][x]];
-      else
+      } else if (y < getRowsCount() - 2) {
+        formula += operatorList[matrix[y][x]]!;
+      }else {
         formula += '-('; //=
+      }
     }
     return formula + ')';
   }
@@ -117,7 +128,7 @@ class SymbolMatrix {
     var list = <String>[];
     for(var y = 0; y < matrix.length; y++) {
       for (var x = 0; x < matrix[y].length; x++) {
-        if (matrix[y][x] != null && matrix[y][x].isNotEmpty) {
+        if (matrix[y][x].isNotEmpty) {
           list.add(({'x': x, 'y': y, 'v': matrix[y][x]}).toString());
         }
       }
@@ -127,7 +138,7 @@ class SymbolMatrix {
       'values': list.toString(), 'substitutions': _toJsonSubstitutions(substitutions)}).toString());
   }
 
-  static _toJsonSubstitutions(Map<String, String> substitutions) {
+  static String? _toJsonSubstitutions(Map<String, String>? substitutions) {
     if (substitutions == null) return null;
     var list = <String>[];
     substitutions.forEach((key, value) {
@@ -140,26 +151,26 @@ class SymbolMatrix {
   }
 
 
-  static SymbolMatrix fromJson(String text) {
-    if (text == null) return null;
-    var json = jsonDecode(text);
-    if (json == null) return null;
+  static SymbolMatrix? fromJson(String text) {
+    if (text.isEmpty) return null;
+    var json = asJsonMap(jsonDecode(text));
 
     SymbolMatrix matrix;
-    var rowCount = jsonDecode(json)['rows'];
-    var columnCount = jsonDecode(json)['columns'];
-    var values = jsonDecode(json)['values'];
+    var rowCount = toIntOrNull(json['rows']);
+    var columnCount = toIntOrNull(json['columns']);
+    var values = asJsonMap(json['values']);
     if (rowCount == null || columnCount == null) return null;
 
     matrix = SymbolMatrix(rowCount, columnCount);
-    if (values != null) {
-      for (var jsonElement in values) {
+    if (values.isNotEmpty) {
+      values.forEach((jsonElement) {
         var element = jsonDecode(jsonElement);
         var x = element['x'];
         var y = element['y'];
         var value = element['v'];
-        if (x != null && y != null && value != null)
+        if (x != null && y != null && value != null) {
           matrix.setValue(y, x, value);
+        }
       }
     }
     matrix.substitutions = _fromJsonSubstitutions(jsonDecode(json)['substitutions']);
@@ -167,15 +178,14 @@ class SymbolMatrix {
   }
 
   static Map<String, String> _fromJsonSubstitutions(List<dynamic> json) {
-    var substitutions = Map<String, String>();
-    if (json == null) return null;
-    String key;
-    String value;
+    var substitutions = <String, String>{};
+    String? key;
+    String? value;
 
     json.forEach((jsonEntry) {
       var json = jsonDecode(jsonEntry);
-      key = json['key'];
-      value = json['value'];
+      key = toStringOrNull(json['key']);
+      value = toStringOrNull(json['value']);
       if (key != null && value != null) substitutions.addAll({key: value});
     });
 
@@ -183,7 +193,7 @@ class SymbolMatrix {
   }
 }
 
-final Map<String, String> operatorList = {
+const Map<String, String> operatorList = {
   '+':'+',
   '-':'-',
   '*':'*',
@@ -196,28 +206,28 @@ class SymbolArithmeticJobData {
   final Map<String, String> substitutions;
 
   SymbolArithmeticJobData({
-    this.formulas,
-    this.substitutions,
+    required this.formulas,
+    required this.substitutions,
   });
 }
 
-Future<Map<String, dynamic>> solveAlphameticsAsync(dynamic jobData) async {
-  if (jobData == null) return null;
+Future<Map<String, Object>?> solveAlphameticsAsync(GCWAsyncExecuterParameters?  jobData) async {
+  if (jobData?.parameters is! SymbolArithmeticJobData) return null;
 
-  var output = solveSymbolArithmetic(jobData.parameters.formulas, jobData.parameters.substitutions,
+  var data = jobData!.parameters as SymbolArithmeticJobData;
+
+  var output = solveSymbolArithmetic(data.formulas, data.substitutions,
       sendAsyncPort: jobData.sendAsyncPort);
 
-  if (jobData.sendAsyncPort != null) jobData.sendAsyncPort.send(output);
+  if (jobData.sendAsyncPort != null) jobData.sendAsyncPort!.send(output);
 
   return output;
 }
 
-Map<String, dynamic> solveSymbolArithmetic(
+Map<String, Object>? solveSymbolArithmetic(
     List<String> formulas, Map<String, String> substitutions,
-    {SendPort sendAsyncPort}) {
-  if (formulas == null ||
-      formulas.length == 0 ||
-      substitutions == null) return null;
+    {SendPort? sendAsyncPort}) {
+  if (formulas.isEmpty || substitutions.isEmpty) return null;
 
   ContextModel _context = ContextModel();
   Parser parser = Parser();
@@ -246,8 +256,9 @@ print(solutions);
    if (solutions == null) return {'state': 'not_found'};
 
   var results = <Map<String, dynamic>>[];
-  for (var solution in solutions)
+  for (var solution in solutions) {
     results.add({'variables': solution});
+  }
 
   return {'state': 'ok', 'results': results};
 }
@@ -256,11 +267,11 @@ List<Map<String, String>> _solver(List<String> formulas, Map<String, String> sub
     Parser parser, ContextModel _context) {
 
   List<Map<String, dynamic>> solutions;
-  List<Map<String, String>> newSubstitutions;
+  List<Map<String, String>> newSubstitutions = [];
 
   for (int i = 0; i < formulas.length; i++) {
     solutions = _solveFormula(formulas[i], _getCurrentSubstitutions(formulas[i], substitutions), parser, _context);
-    if (solutions != null && solutions.length > 0) {
+    if (solutions.isNotEmpty) {
       // formula solved ?
       if (solutions.length == 1) {
         formulas.removeAt(i);
@@ -268,23 +279,25 @@ List<Map<String, String>> _solver(List<String> formulas, Map<String, String> sub
       }
       newSubstitutions = mergeSolutions(substitutions, solutions);
       // all formulas solved ?
-      if (formulas.length == 0)
+      if (formulas.isEmpty) {
         return newSubstitutions;
+      }
 
-      newSubstitutions.forEach((_newSubstitutions) {
+      for (var _newSubstitutions in newSubstitutions) {
         // check other substitution in solution tree
         newSubstitutions = _solver(formulas, _newSubstitutions, parser, _context);
         // all formulas solved ?
-        if (formulas.length == 0)
-          return newSubstitutions;
-      });
+        if (formulas.isEmpty) {
+          continue;
+        }
+      }
     }
   }
 
   return newSubstitutions;
 }
 
-List<Map<String, dynamic>> _solveFormula(String formula, Map<String, String> substitutions,
+List<VariableStringExpanderValue> _solveFormula(String formula, Map<String, String> substitutions,
     Parser parser, ContextModel _context) {
   var expander = VariableStringExpander(formula, substitutions, onAfterExpandedText: (expandedText) {
     Expression expression = parser.parse(expandedText);
@@ -297,13 +310,14 @@ List<Map<String, dynamic>> _solveFormula(String formula, Map<String, String> sub
 List<Map<String, String>> mergeSolutions(Map<String, String> substitutions, List<Map<String, dynamic>> solutions) {
   var newSubstitutions = <Map<String, String>>[];
   solutions.forEach((solution) {
-    var _substitutions= Map<String, String>();
+    var _substitutions= <String, String>{};
 
     substitutions.forEach((key, value) {
-      if (solution['variables'].containsKey(key))
+      if (solution['variables'].containsKey(key)) {
         _substitutions.addAll({key: solution['variables'][key]});
-      else
+      } else {
         _substitutions.addAll({key: value});
+      }
     });
     newSubstitutions.add(_substitutions);
   });
@@ -364,10 +378,10 @@ List<String> _sortByCurrentSubstitutionsCount(List<String> formulas, List<int> k
 }
 
 Map<String, int> Solve(String equation) {
-  if (equation == null) return null;
+  if (equation.isEmpty) return {};
 
   var chars = Helper._unknowns(equation);
-  if (chars.isEmpty) return Map<String, int>();
+  if (chars.isEmpty) return {};
   var k = chars.length;
   var tokens = Helper._tokenise(Helper._mapCharsToTokens(chars), equation);
   var columns = Helper._parse(tokens);
@@ -381,7 +395,7 @@ Map<String, int> Solve(String equation) {
   var res = Helper._kPerms(_range, k).where((l) => _canBeZero(l)).where((p) => _colSum(columns, p)).first;
   return res != null
     ? Map<String, int>.fromIterables(chars, res)// res.Zip(chars, (i, c) => (c, i)).ToDictionary((kvp) => kvp.c, kvp => kvp.i)
-    : null; // throw new ArgumentException();
+    : {}; // throw new ArgumentException();
 }
 
 final List<int> _range = Iterable<int>.generate(10).toList();
@@ -389,15 +403,16 @@ final List<int> _range = Iterable<int>.generate(10).toList();
 bool _colSum(List<MapEntry<int, List<MapEntry<int, int>>>> cols, Iterable<int> perm){
   var carry = 0;
 
-  cols.forEach((e) {
+  for (var e in cols) {
     var y = e.key;
     var xs =  e.value;
     var sum = xs.map((k) => k.value * perm.elementAt(k.key)).sum + carry;
-    if (perm.elementAt(y) == sum % 10)
+    if (perm.elementAt(y) == sum % 10) {
       carry = sum ~/ 10;
-    else
-      return false;
-  });
+    } else {
+      continue;
+    }
+  }
   return carry == 0;
 }
 
@@ -419,10 +434,11 @@ class Helper {
 
     while (i < n) {
       if (c[i] < i) {
-        if ((i & 1) == 0)
+        if ((i & 1) == 0) {
           _swap(A, 0, i);
-        else
+        } else {
           _swap(A, c[i], i);
+        }
 
         yield A;
 
@@ -438,8 +454,7 @@ class Helper {
   static Iterable<Iterable<int>> _combinations(Iterable<int> values, int k) {
     return (k == 0)
       ? {<int>[]}
-      : _selectMany(_mapIndexed(values, (e, i) => _combinations(values.skip(i + 1), k - 1).map((c) =>
-    (e== null || c.isEmpty)
+      : _selectMany(_mapIndexed(values, (e, i) => _combinations(values.skip(i + 1), k - 1).map((c) => (e== null || c.isEmpty)
         ? {}
         : e.followedBy(c))));
   }
@@ -499,8 +514,9 @@ class Helper {
     var index = 0;
 
     for (final item in items) {
-      if (item == null )
+      if (item == null ) {
         continue;
+      }
       yield f(item, index);
       index += 1;
     }
@@ -513,8 +529,9 @@ class Helper {
   ///List<T> flatten<T>(Iterable<Iterable<T>> list) =>
   //     [for (var sublist in list) ...sublist];
   static Iterable<TResult> _selectMany<TResult>(Iterable<Iterable<TResult>> items) { //Iterable<TResult>
-    if (items == null || items.isEmpty)
+    if (items.isEmpty) {
       return {};
+    }
     var result = items.elementAt(0);
     items.skip(1).forEach((element) {
       result = result.followedBy(element);
@@ -565,11 +582,11 @@ String getOutput(String equation, Map<String, int> result) {
 
 Iterable<Iterable<int>> Permutations1(Iterable<Iterable<int>> sequences) {
   Iterable<Iterable<int>> emptyList = [<int>[]];
-return sequences.Aggregate( emptyList,
-(accumulator, sequence) =>
-from accseq in accumulator
-from item in sequence.Where(value => !accseq.Contains(value))
-select accseq.Concat(new[] { item }));
+  return sequences.Aggregate( emptyList,
+      (accumulator, sequence) =>
+      from accseq in accumulator
+      from item in sequence.Where(value => !accseq.Contains(value))
+      select accseq.Concat(new[] { item }));
 }
 
 

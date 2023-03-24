@@ -243,6 +243,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/vigenere/widget/vigenere.da
 import 'package:gc_wizard/tools/crypto_and_encodings/wasd/widget/wasd.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/zamonian_numbers/widget/zamonian_numbers.dart';
 import 'package:gc_wizard/tools/formula_solver/widget/formula_solver_formulagroups.dart';
+import 'package:gc_wizard/tools/games/alphametics/widget/alphametics.dart';
 import 'package:gc_wizard/tools/games/bowling/widget/bowling.dart';
 import 'package:gc_wizard/tools/games/catan/widget/catan.dart';
 import 'package:gc_wizard/tools/games/game_of_life/widget/game_of_life.dart';
@@ -447,6 +448,11 @@ void initializeRegistry(BuildContext context) {
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
       'alphabetvalues',
+    ]),
+    GCWTool(tool: const Alphametics(), id: 'symbol_arithmetic', categories: const [
+      ToolCategory.GAMES
+    ], searchKeys: [
+      'symbol_arithmetic',
     ]),
     GCWTool(tool: const Amsco(), id: 'amsco', categories: const [
       ToolCategory.CRYPTOGRAPHY
