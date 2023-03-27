@@ -211,7 +211,19 @@ class SymbolArithmeticJobData {
   });
 }
 
-Future<Map<String, Object>?> solveAlphameticsAsync(GCWAsyncExecuterParameters?  jobData) async {
+class SymbolArithmeticOutput {
+  final List<String> formulas;
+  final List<Map<String, String>> solutions;
+  final bool error;
+
+  SymbolArithmeticOutput({
+    required this.formulas,
+    required this.solutions,
+    required this.error,
+  });
+}
+
+Future<SymbolArithmeticOutput> solveAlphameticsAsync(GCWAsyncExecuterParameters?  jobData) async {
   if (jobData?.parameters is! SymbolArithmeticJobData) return null;
 
   var data = jobData!.parameters as SymbolArithmeticJobData;
@@ -224,43 +236,36 @@ Future<Map<String, Object>?> solveAlphameticsAsync(GCWAsyncExecuterParameters?  
   return output;
 }
 
-Map<String, Object>? solveSymbolArithmetic(
+SymbolArithmeticOutput solveSymbolArithmetic(
     List<String> formulas, Map<String, String> substitutions,
     {SendPort? sendAsyncPort}) {
-  if (formulas.isEmpty || substitutions.isEmpty) return null;
+  if (formulas.isEmpty || substitutions.isEmpty) {
+    SymbolArithmeticOutput(formulas: formulas, solutions: [],error: true);
+  }
 
   ContextModel _context = ContextModel();
   Parser parser = Parser();
-  List<Map<String, dynamic>> solutions;
+  List<Map<String, String>> solutions;
   var orderdSubstitutions = _sortSubstitutionsByLength(substitutions);
 
   try {
     solutions = _solver(formulas, orderdSubstitutions, parser, _context);
   } catch (e) {
-    return {'state': FormulaState.STATE_SINGLE_ERROR, 'result': formulas};
+    return SymbolArithmeticOutput(formulas: formulas, solutions: [], error: true);
   }
 
 print(solutions);
 
-  // var expander = VariableStringExpander(formulas.first, substitutions, onAfterExpandedText: (expandedText) {
-  //   var withoutBrackets = expandedText.replaceAll(RegExp(r'[\[\]]'), '');
-  //
-  //   if (hashValue == input)
-  //     return withoutBrackets;
-  //   else
-  //     return null;
-  // }, sendAsyncPort: sendAsyncPort);
-  //
-  // var results = expander.run();
-  //
-   if (solutions == null) return {'state': 'not_found'};
+   if (solutions.isEmpty) {
+     return SymbolArithmeticOutput(formulas: formulas, solutions: [], error: true);
+   }
 
   var results = <Map<String, dynamic>>[];
   for (var solution in solutions) {
     results.add({'variables': solution});
   }
 
-  return {'state': 'ok', 'results': results};
+  return SymbolArithmeticOutput(formulas: formulas, solutions: solutions, error: false);
 }
 
 List<Map<String, String>> _solver(List<String> formulas, Map<String, String> substitutions,
