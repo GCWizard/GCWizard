@@ -588,19 +588,17 @@ String getOutput(String equation, Map<String, int> result) {
 Iterable<Iterable<int>> Permutations1(Iterable<Iterable<int>> sequences) {
   Iterable<Iterable<int>> emptyList = [<int>[]];
 
-  return sequences.fold( emptyList,
-          (accumulator, sequence) =>
+  return sequences.fold( emptyList, (accumulator, sequence) =>
           accumulator.map((Iterable<int> accseq) {
             sequence.where((value) => !accseq.contains(value)).forEach((item) {
               accseq.followedBy(<int>[item]);
             });
-          } ?? []
-          )
-
-          });
-  );
+          }
+        )
+      });
+    );
   }
-
+}
 // return sequences.fold( emptyList,
 // (accumulator, sequence) =>
 // accumulator.map((accseq) =>
@@ -619,6 +617,6 @@ Iterable<Iterable<int>> Permutations1(Iterable<Iterable<int>> sequences) {
   //     from accseq in accumulator
   //     from item in sequence.Where(value => !accseq.Contains(value))
   //     select accseq.Concat(new[] { item }));
-}
+// }
 
 
