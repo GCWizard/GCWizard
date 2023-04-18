@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/formula_solver/logic/formula_parser.dart';
 import 'package:gc_wizard/tools/games/alphametics/logic/alphametics.dart';
@@ -33,7 +31,7 @@ void main() {
 
   group("Alphametics.solve:", () {
 
-    List<Map<String, dynamic>> _inputsToExpected = [
+    List<Map<String, Object?>> _inputsToExpected = [
       // {'input' : null, 'expectedOutput' : null},
       // {'input' : '', 'expectedOutput' : ''},
       // {'input' : ' ', 'expectedOutput' : {'state': 'error', 'output': [{'result': '', 'state': 'error'}]}},
@@ -51,7 +49,7 @@ void main() {
 
     _inputsToExpected.forEach((elem) {
       test('formulas: ${elem['input']}', () {
-        var _actual = getOutput(elem['input'], Solve(elem['input']));
+        var _actual = getOutput(elem['input'] as String, Solve(elem['input'] as String));
         expect(_actual, elem['expectedOutput']);
       });
     });
@@ -115,14 +113,13 @@ void main() {
         'variables': '{{schnee: 21}{mann: 68}{schleife: 40}}'}},
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('formulas: ${elem['formula']}, values: ${elem['values']}', () {
-        var _actual = solveSymbolArithmetic(elem['formulas'], elem['values']);
+        var _actual = solveSymbolArithmetic(elem['formulas'] as List<String>, elem['values'] as Map<String, String>);
         expect(_actual, elem['expectedOutput']);
 
-
       });
-    });
+    }
   });
 
 }

@@ -12,7 +12,7 @@ import 'package:gc_wizard/utils/variable_string_expander.dart';
 import 'package:math_expressions/math_expressions.dart';
 
 class SymbolMatrix {
-  List<List<String>> matrix =[];
+  List<List<String>> matrix = [];
   Map<String, String> substitutions = {};
   late int columnCount;
   late int rowCount;
@@ -24,9 +24,9 @@ class SymbolMatrix {
     }
 
     if (oldMatrix != null) {
-      for(var y = 0; y < min(matrix!.length, oldMatrix.matrix.length); y++) {
-        for (var x = 0; x < min(matrix![y].length, oldMatrix.matrix[y].length); x++) {
-          matrix[y][x] = oldMatrix.matrix![y][x];
+      for(var y = 0; y < min(matrix.length, oldMatrix.matrix.length); y++) {
+        for (var x = 0; x < min(matrix[y].length, oldMatrix.matrix[y].length); x++) {
+          matrix[y][x] = oldMatrix.matrix[y][x];
         }
       }
     }
