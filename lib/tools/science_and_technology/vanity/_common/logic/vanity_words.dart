@@ -8,6 +8,7 @@
 // ignore_for_file: equal_keys_in_map
 
 import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/_common/logic/numeral_words.dart';
+import 'package:gc_wizard/utils/string_utils.dart';
 
 class VanityWordsDecodeOutput {
   final String number;
@@ -302,7 +303,7 @@ const VanityToLAT = {
   '66836': 'NOVEM',
 };
 
-final Map<NumeralWordsLanguage, Map<String, String>> VanWords = {
+final Map<NumeralWordsLanguage, Map<String, String>> VANITY_WORDS = {
   NumeralWordsLanguage.DEU: VanityToDEU,
   NumeralWordsLanguage.ENG: VanityToENG,
   NumeralWordsLanguage.FRA: VanityToFRA,
@@ -347,9 +348,10 @@ List<VanityWordsDecodeOutput> decodeVanityWords(String? text, NumeralWordsLangua
     return output;
   }
 
+  //text = text.replaceAll('0', ' ');
   // build map to identify numeral words
   var decodingTable = <String, String>{};
-  VanWords[language]!.forEach((key, value) {
+  VANITY_WORDS[language]!.forEach((key, value) {
     //decodingTable[key] = removeAccents(value);
     decodingTable[key] = (value);
   });
@@ -364,39 +366,58 @@ List<VanityWordsDecodeOutput> decodeVanityWords(String? text, NumeralWordsLangua
   text = text.replaceAll('\n', ' ');
   //text = text.replaceAll('\n', '').replaceAll('0', '').replaceAll('1', '').replaceAll(' ', '');
   while (text!.isNotEmpty) {
-    found = false;
-    ambigous = false;
-    hDigits = '';
-    hWord = '';
-    decodingTable.forEach((digits, word) {
-      if (text!.startsWith(digits)) {
-        if (!found) {
-          hDigits = digits;
-          hWord = word;
-          found = true;
-        } else {
-          // already found
-          ambigous = true;
-          output.add(
-              VanityWordsDecodeOutput(hDigits, hWord, NUMERAL_WORDS[language]![hWord.toLowerCase()]!, true));
-          output
-              .add(VanityWordsDecodeOutput(digits, word, NUMERAL_WORDS[language]![word.toLowerCase()]!, true));
+    if (text.startsWith('0') || text.startsWith('1') || text.startsWith(' ')) {
+      if (text.startsWith('0') || text.startsWith('1')) {
+        output.add(VanityWordsDecodeOutput(text[0], ' ', ' ', false));
+      }
+      text = text.substring(1);
+    } else {
+      found = false;
+      ambigous = false;
+      hDigits = '';
+      hWord = '';
+      decodingTable.forEach((digits, word) {
+        if (text!.startsWith(digits)) {
+          if (!found) {
+            hDigits = digits;
+            hWord = word;
+            found = true;
+          } else {
+            // already found
+            ambigous = true;
+            if (NUMERAL_WORDS[language]![hWord.toLowerCase()] != null) {
+              output.add(VanityWordsDecodeOutput(
+                  hDigits, hWord, NUMERAL_WORDS[language]![hWord.toLowerCase()] ?? '', true));
+            } else {
+              output.add(VanityWordsDecodeOutput(
+                  hDigits, hWord, NUMERAL_WORDS[language]![removeAccents(hWord.toLowerCase())] ?? '', true));
+            }
+            if (NUMERAL_WORDS[language]![word.toLowerCase()] != null) {
+              output.add(VanityWordsDecodeOutput(
+                  digits, word, NUMERAL_WORDS[language]![word.toLowerCase()] ?? '', true));
+            }
+            else {
+              output.add(VanityWordsDecodeOutput(
+                  digits, word, NUMERAL_WORDS[language]![removeAccents(word.toLowerCase())] ?? '', true));
+            }
+          }
+        }
+      }); // end decodingTable.forEach
+      if (found && !ambigous) {
+        if (NUMERAL_WORDS[language]![removeAccents(hWord.toLowerCase())] != null) {
+          output.add(VanityWordsDecodeOutput(
+              hDigits, hWord, NUMERAL_WORDS[language]![removeAccents(hWord.toLowerCase())] ?? '', false));
+        }
+        if (hDigits.isNotEmpty) {
+          text = text.substring(hDigits.length);
         }
       }
-    }); // end decodingTable.forEach
-
-    if (found && !ambigous) {
-      output
-          .add(VanityWordsDecodeOutput(hDigits, hWord, NUMERAL_WORDS[language]![hWord.toLowerCase()]!, false));
-      if (hDigits.isNotEmpty) {
-        text = text.substring(hDigits.length);
+      if (!found) {
+        output.add(VanityWordsDecodeOutput('?', '', '', false));
+        if (text.isNotEmpty) text = text.substring(1);
       }
+      if (ambigous) text = '';
     }
-    if (!found) {
-      output.add(VanityWordsDecodeOutput('?', '', '', false));
-      if (text.isNotEmpty) text = text.substring(1);
-    }
-    if (ambigous) text = '';
   } // end while text.isNotEmpty
   return output;
 }

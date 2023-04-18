@@ -3,8 +3,9 @@ part of 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart
 class _GCWCoordsDMS extends StatefulWidget {
   final void Function(DMS) onChanged;
   final DMS coordinates;
+  final bool isDefault;
 
-  const _GCWCoordsDMS({Key? key, required this.onChanged, required this.coordinates}) : super(key: key);
+  const _GCWCoordsDMS({Key? key, required this.onChanged, required this.coordinates, this.isDefault = true}) : super(key: key);
 
   @override
   _GCWCoordsDMSState createState() => _GCWCoordsDMSState();
@@ -38,6 +39,8 @@ class _GCWCoordsDMSState extends State<_GCWCoordsDMS> {
   String _currentLonMinutes = '';
   String _currentLonSeconds = '';
   String _currentLonMilliSeconds = '';
+
+  bool _initialized = false;
 
   @override
   void initState() {
@@ -76,31 +79,35 @@ class _GCWCoordsDMSState extends State<_GCWCoordsDMS> {
 
   @override
   Widget build(BuildContext context) {
-    var dms = widget.coordinates;
-    var lat = dms.latitude.formatParts(10);
-    var lon = dms.longitude.formatParts(10);
+    if (!widget.isDefault && !_initialized) {
+      var dms = widget.coordinates;
+      var lat = dms.latitude.formatParts(10);
+      var lon = dms.longitude.formatParts(10);
 
-    _currentLatDegrees = lat.degrees;
-    _currentLatMinutes = lat.minutes;
-    _currentLatSeconds = lat.seconds.split('.')[0];
-    _currentLatMilliSeconds = lat.seconds.split('.')[1];
-    _currentLatSign = lat.sign.value;
+      _currentLatDegrees = lat.degrees;
+      _currentLatMinutes = lat.minutes;
+      _currentLatSeconds = lat.seconds.split('.')[0];
+      _currentLatMilliSeconds = lat.seconds.split('.')[1];
+      _currentLatSign = lat.sign.value;
 
-    _currentLonDegrees = lon.degrees;
-    _currentLonMinutes = lon.minutes;
-    _currentLonSeconds = lon.seconds.split('.')[0];
-    _currentLonMilliSeconds = lon.seconds.split('.')[1];
-    _currentLonSign = lon.sign.value;
+      _currentLonDegrees = lon.degrees;
+      _currentLonMinutes = lon.minutes;
+      _currentLonSeconds = lon.seconds.split('.')[0];
+      _currentLonMilliSeconds = lon.seconds.split('.')[1];
+      _currentLonSign = lon.sign.value;
 
-    _LatDegreesController.text = _currentLatDegrees;
-    _LatMinutesController.text = _currentLatMinutes;
-    _LatSecondsController.text = _currentLatSeconds;
-    _LatMilliSecondsController.text = _currentLatMilliSeconds;
+      _LatDegreesController.text = _currentLatDegrees;
+      _LatMinutesController.text = _currentLatMinutes;
+      _LatSecondsController.text = _currentLatSeconds;
+      _LatMilliSecondsController.text = _currentLatMilliSeconds;
 
-    _LonDegreesController.text = _currentLonDegrees;
-    _LonMinutesController.text = _currentLonMinutes;
-    _LonSecondsController.text = _currentLonSeconds;
-    _LonMilliSecondsController.text = _currentLonMilliSeconds;
+      _LonDegreesController.text = _currentLonDegrees;
+      _LonMinutesController.text = _currentLonMinutes;
+      _LonSecondsController.text = _currentLonSeconds;
+      _LonMilliSecondsController.text = _currentLonMilliSeconds;
+
+      _initialized = true;
+    }
 
     return Column(children: <Widget>[
       Row(

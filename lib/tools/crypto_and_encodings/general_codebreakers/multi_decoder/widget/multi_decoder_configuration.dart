@@ -22,17 +22,6 @@ class _MultiDecoderConfigurationState extends State<_MultiDecoderConfiguration> 
     _editingToolNameController = TextEditingController(text: _editingToolName);
 
     refreshMultiDecoderTools();
-
-    _refreshMDTTools();
-
-    if (_sortedToolRegistry.isEmpty) {
-      _sortedToolRegistry = List.from(_mdtToolsRegistry);
-      _sortedToolRegistry.sort((a, b) {
-        return i18n(context, a).compareTo(i18n(context, b));
-      });
-
-      _currentChosenTool = _sortedToolRegistry.indexOf(MDT_INTERNALNAMES_ROTATION);
-    }
   }
 
   @override
@@ -126,6 +115,18 @@ class _MultiDecoderConfigurationState extends State<_MultiDecoderConfiguration> 
 
   @override
   Widget build(BuildContext context) {
+    if (mdtTools.isEmpty) {
+      _refreshMDTTools();
+
+      if (_sortedToolRegistry.isEmpty) {
+        _sortedToolRegistry = List.from(_mdtToolsRegistry);
+        _sortedToolRegistry.sort((a, b) {
+          return i18n(context, a).compareTo(i18n(context, b));
+        });
+
+        _currentChosenTool = _sortedToolRegistry.indexOf(MDT_INTERNALNAMES_ROTATION);
+      }
+    }
 
     return Column(
       children: <Widget>[
@@ -173,7 +174,7 @@ class _MultiDecoderConfigurationState extends State<_MultiDecoderConfiguration> 
             icon: Icons.add,
             iconColor: _currentEditId == null ? null : themeColors().inActive(),
             onPressed: () {
-                if (_currentEditId != null) {
+                if (_currentEditId == null) {
                   setState(() {
                     _addNewTool();
                   });

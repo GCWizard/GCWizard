@@ -1,7 +1,14 @@
 part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/logic/wherigo_analyze.dart';
 
 bool _insideSectionTimer(String currentLine) {
-  if (RegExp(r'( Wherigo.ZTimer\()').hasMatch(currentLine) || RegExp(r'( Wherigo.ZInput\()').hasMatch(currentLine)) {
+  if (RegExp(r'( Wherigo.ZTimer\()').hasMatch(currentLine)) {
+    return false;
+  }
+  return _notDoneWithTimers(currentLine);
+}
+
+bool _notDoneWithTimers(String currentLine) {
+  if (RegExp(r'( Wherigo.ZInput\()').hasMatch(currentLine)) {
     return false;
   }
   return true;
@@ -20,6 +27,10 @@ WherigoTimerData _analyzeAndExtractTimerSectionData(List<String> lines) {
 
   for (int i = 0; i < lines.length; i++) {
     lines[i] = lines[i].trim();
+
+    if (RegExp(r'( Wherigo.ZTimer\()').hasMatch(lines[i])) {
+      LUAname = getLUAName(lines[i]);
+    }
 
     if (lines[i].trim().startsWith(LUAname + '.Id')) {
       id = getLineData(lines[i], LUAname, 'Id', _obfuscatorFunction, _obfuscatorTable);
@@ -56,12 +67,12 @@ WherigoTimerData _analyzeAndExtractTimerSectionData(List<String> lines) {
     }
   }
   return WherigoTimerData(
-    LUAname,
-    id,
-    name,
-    description,
-    visible,
-    duration,
-    type,
+    TimerLUAName: LUAname,
+    TimerID: id,
+    TimerName: name,
+    TimerDescription: description,
+    TimerVisible: visible,
+    TimerDuration: duration,
+    TimerType: type,
   );
 }

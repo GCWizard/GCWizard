@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:latlong2/latlong.dart';
 
 const double _k0 = 0.9996;
@@ -103,7 +104,7 @@ LatLng UTMREFtoLatLon(UTMREF coord, Ellipsoid ells) {
 
   lng = zcm + lng / _drad;
 
-  return LatLng(lat, lng);
+  return normalizeLatLon(lat, lng);
 }
 
 UTMZone _getZone(LatLng coord) {

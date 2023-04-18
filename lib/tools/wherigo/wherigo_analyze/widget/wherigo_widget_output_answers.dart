@@ -27,6 +27,16 @@ List<List<String>> _buildOutputListAnswers(BuildContext context, WherigoInputDat
           ? [i18n(context, 'wherigo_output_hash'), hash, '']
           : [i18n(context, 'wherigo_output_answer'), hash],
       if (answerAlphabetical != null)
+          [i18n(context, 'wherigo_output_answerdecrypted'), answerAlphabetical, i18n(context, 'common_letters')],
+      if (answerNumeric != null)
+          [i18n(context, 'wherigo_output_answerdecrypted'), answerNumeric, i18n(context, 'common_numbers')],
+    ];
+
+    result = [
+      answers.length > 1
+          ? [i18n(context, 'wherigo_output_hash'), hash, '']
+          : [i18n(context, 'wherigo_output_answer'), hash],
+      if (answerAlphabetical != null)
         [i18n(context, 'wherigo_output_answerdecrypted'), i18n(context, 'common_letters'), answerAlphabetical],
       if (answerNumeric != null)
         [i18n(context, 'wherigo_output_answerdecrypted'), i18n(context, 'common_numbers'), answerNumeric],

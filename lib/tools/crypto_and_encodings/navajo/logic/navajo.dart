@@ -781,6 +781,7 @@ String decodeNavajo(String cipherText, bool useOnlyAlphabet) {
   if (cipherText.isEmpty) return '';
   cipherText = cipherText.toUpperCase().replaceAll(RegExp(r'\s{3,}'), '  ');
   cipherText.split('  ').forEach((element) {
+
     element.split(' ').forEach((element) {
       if (_NAVAJO_DECODE_ALPHABET[element] == null) {
         if (useOnlyAlphabet) {
@@ -790,10 +791,12 @@ String decodeNavajo(String cipherText, bool useOnlyAlphabet) {
             result.add(UNKNOWN_ELEMENT);
           } else {
             result.add(enfoldText(_NAVAJO_DECODE_DICTIONARY[element]!));
+            result.add(' ');
           }
         }
-      } else {
-        result.add(_NAVAJO_DECODE_ALPHABET[element]!); // ToDo Thomas double else ??
+      }
+      else {
+        result.add(_NAVAJO_DECODE_ALPHABET[element]!);
       }
     });
     result.add(' ');

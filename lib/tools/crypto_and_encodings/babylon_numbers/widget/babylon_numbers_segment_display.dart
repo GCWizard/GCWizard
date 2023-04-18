@@ -67,7 +67,7 @@ class _BabylonNumbersSegmentDisplay extends NSegmentDisplay {
         };
 
         elements.forEach((key, value) {
-          paint.color = segmentActive(currentSegments, 'segment')
+          paint.color = segmentActive(currentSegments, key)
               ? SEGMENTS_COLOR_ON
               : SEGMENTS_COLOR_OFF; // 10
           var path = Path();
@@ -76,12 +76,10 @@ class _BabylonNumbersSegmentDisplay extends NSegmentDisplay {
           double startY = value[1];
 
           path.moveTo(_relativeX(size, startX), _relativeY(size, startY));
-          path.relativeLineTo(
-              _relativeX(size, -20), _relativeY(size, 20));
+          path.relativeLineTo(_relativeX(size, -20), _relativeY(size, 20));
           path.relativeLineTo(_relativeX(size, 20), _relativeY(size, 20));
 
-          path.moveTo(
-              _relativeX(size, startX - 5), _relativeY(size, startY + 5));
+          path.moveTo(_relativeX(size, startX - 5), _relativeY(size, startY + 5));
           path.relativeLineTo(_relativeX(size, 0), _relativeY(size, 30));
           canvas.touchCanvas.drawPath(path, paint);
 
@@ -94,7 +92,7 @@ class _BabylonNumbersSegmentDisplay extends NSegmentDisplay {
 
           canvas.touchCanvas.drawPath(path, paint,
               onTapDown: (tapDetail) {
-                setSegmentState('segment', !segmentActive(currentSegments, 'segment'));
+                setSegmentState(key, !segmentActive(currentSegments, key));
               });
         });
 
@@ -111,7 +109,7 @@ class _BabylonNumbersSegmentDisplay extends NSegmentDisplay {
         };
 
         elements.forEach((key, value) {
-          paint.color = segmentActive(currentSegments, 'segment')
+          paint.color = segmentActive(currentSegments, key)
               ? SEGMENTS_COLOR_ON
               : SEGMENTS_COLOR_OFF; // 10
           var path = Path();
@@ -121,21 +119,17 @@ class _BabylonNumbersSegmentDisplay extends NSegmentDisplay {
 
           path.moveTo(_relativeX(size, startX), _relativeY(size, startY));
           path.relativeLineTo(_relativeX(size, 10), _relativeY(size, 10));
-          path.moveTo(_relativeX(size, startX + 10),
-              _relativeY(size, startY + 10));
-          path.relativeLineTo(
-              _relativeX(size, 10), _relativeY(size, -10));
+          path.moveTo(_relativeX(size, startX + 10), _relativeY(size, startY + 10));
+          path.relativeLineTo(_relativeX(size, 10), _relativeY(size, -10));
           path.moveTo(_relativeX(size, startX), _relativeY(size, startY));
           path.relativeLineTo(_relativeX(size, 20), _relativeY(size, 0));
 
-          path.moveTo(_relativeX(size, startX + 10),
-              _relativeY(size, startY + 10));
+          path.moveTo(_relativeX(size, startX + 10), _relativeY(size, startY + 10));
           path.relativeLineTo(_relativeX(size, 0), _relativeY(size, 10));
           canvas.touchCanvas.drawPath(path, paint);
 
           paint.color = _TRANSPARENT_COLOR;
-          path.moveTo(
-              _relativeX(size, startX - 5), _relativeY(size, startY - 5));
+          path.moveTo(_relativeX(size, startX - 5), _relativeY(size, startY - 5));
           path.relativeLineTo(_relativeX(size, 30), _relativeY(size, 0));
           path.relativeLineTo(_relativeX(size, 0), _relativeY(size, 30));
           path.relativeLineTo(_relativeX(size, -30), _relativeY(size, 0));
@@ -143,7 +137,7 @@ class _BabylonNumbersSegmentDisplay extends NSegmentDisplay {
 
           canvas.touchCanvas.drawPath(path, paint,
               onTapDown: (tapDetail) {
-                setSegmentState('segment', !segmentActive(currentSegments, 'segment'));
+                setSegmentState(key, !segmentActive(currentSegments, key));
               });
         });
       });

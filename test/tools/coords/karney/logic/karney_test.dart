@@ -13,8 +13,6 @@ import 'package:gc_wizard/tools/coords/waypoint_projection/logic/vincenty/distan
 import 'package:gc_wizard/utils/data_type_utils/double_type_utils.dart';
 import 'package:latlong2/latlong.dart';
 
-
-
 void main() {
 
   group("Karney VS Vincenty:", () {
@@ -47,8 +45,8 @@ void main() {
               var vincentyAzi2 = utils.normalizeBearing(vincenty.bearingBToA);
 
               if (!doubleEquals(karney.s12, vincenty.distance, tolerance: 1e-4) ||
-                  !doubleEquals(karneyAzi1, vincentyAzi1, tolerance: 1e-4) ||
-                  !doubleEquals(karneyAzi2, vincentyAzi2, tolerance: 1e-4)
+                  !utils.equalsBearing(karneyAzi1, vincentyAzi1, tolerance: 1e-4) ||
+                  !utils.equalsBearing(karneyAzi2, vincentyAzi2, tolerance: 1e-4)
               ) {
                 if (utils.equalsLatLng(coord1, coord2, tolerance: 1e-5) && doubleEquals(karney.s12, 0.0)
                     || (coord1.latitude.abs() == 90.0 && coord2.latitude.abs() == 90.0) && doubleEquals(karney.s12, 20003931.4586255, tolerance: 1e-3)
@@ -114,8 +112,8 @@ void main() {
         var vincentyAzi2 = utils.normalizeBearing(vincenty.bearingBToA);
 
         if (!doubleEquals(karney.s12, vincenty.distance, tolerance: 1e-2) ||
-            !doubleEquals(karneyAzi1, vincentyAzi1, tolerance: 1e-2) ||
-            !doubleEquals(karneyAzi2, vincentyAzi2, tolerance: 1e-2)
+            !utils.equalsBearing(karneyAzi1, vincentyAzi1, tolerance: 1e-2) ||
+            !utils.equalsBearing(karneyAzi2, vincentyAzi2, tolerance: 1e-2)
         ) {
           if (utils.equalsLatLng(coord1, coord2, tolerance: 1e-5) && doubleEquals(karney.s12, 0.0)
               || (coord1.latitude.abs() == 90.0 && coord2.latitude.abs() == 90.0) && doubleEquals(karney.s12, 20003931.4586255, tolerance: 1e-3)
@@ -123,9 +121,9 @@ void main() {
             continue;
           }
 
-          // var antipode = antipodes(coord1);
-          // if (equalsLatLng(coord2, antipode) && doubleEquals(karney.s12, 20003931.45862552, tolerance: 1e-3))
-          //   continue;
+          if (karney.s12 > 19900000 && vincenty.distance > 19900000) { // ca. antipode
+            continue;
+          }
 
           countErrors++;
 

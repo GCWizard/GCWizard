@@ -3,8 +3,9 @@ part of 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart
 class _GCWCoordsMercator extends StatefulWidget {
   final void Function(Mercator) onChanged;
   final Mercator coordinates;
+  final bool isDefault;
 
-  const _GCWCoordsMercator({Key? key, required this.onChanged, required this.coordinates}) : super(key: key);
+  const _GCWCoordsMercator({Key? key, required this.onChanged, required this.coordinates, this.isDefault = true}) : super(key: key);
 
   @override
   _GCWCoordsMercatorState createState() => _GCWCoordsMercatorState();
@@ -16,6 +17,8 @@ class _GCWCoordsMercatorState extends State<_GCWCoordsMercator> {
 
   var _currentEasting = defaultDoubleText;
   var _currentNorthing = defaultDoubleText;
+
+  bool _initialized = false;
 
   @override
   void initState() {
@@ -33,12 +36,16 @@ class _GCWCoordsMercatorState extends State<_GCWCoordsMercator> {
 
   @override
   Widget build(BuildContext context) {
-    var mercator = widget.coordinates;
-    _currentEasting.value = mercator.easting;
-    _currentNorthing.value = mercator.northing;
+    if (!widget.isDefault && !_initialized) {
+      var mercator = widget.coordinates;
+      _currentEasting.value = mercator.easting;
+      _currentNorthing.value = mercator.northing;
 
-    _EastingController.text = _currentEasting.value.toString();
-    _NorthingController.text = _currentNorthing.value.toString();
+      _EastingController.text = _currentEasting.value.toString();
+      _NorthingController.text = _currentNorthing.value.toString();
+
+      _initialized = true;
+    }
 
     return Column(children: <Widget>[
       GCWDoubleTextField(

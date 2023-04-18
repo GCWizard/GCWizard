@@ -35,6 +35,7 @@ import 'package:gc_wizard/tools/coords/map_view/persistence/mapview_persistence_
 import 'package:gc_wizard/tools/coords/map_view/widget/mappoint_editor.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/mappolyline_editor.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/length.dart';
+import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/default_units_getter.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
@@ -86,7 +87,7 @@ class GCWMapViewState extends State<GCWMapView> {
 
   MapViewPersistenceAdapter? _persistanceAdapter;
 
-  late Length defaultLengthUnit;
+  late Length defaultLengthUnitGCWMapView;
 
   LatLngBounds _getBounds() {
     if (widget.points.isEmpty) return _DEFAULT_BOUNDS;
@@ -110,7 +111,8 @@ class GCWMapViewState extends State<GCWMapView> {
 
     if (widget.isEditable) _persistanceAdapter = MapViewPersistenceAdapter(widget);
 
-    defaultLengthUnit = defaultLengthUnit;
+    defaultLengthUnitGCWMapView = defaultLengthUnit;
+
   }
 
   @override
@@ -165,7 +167,7 @@ class GCWMapViewState extends State<GCWMapView> {
   }
 
   String _formatLengthOutput(double length) {
-    return NumberFormat('0.00').format(defaultLengthUnit.fromMeter(length)) + ' ' + defaultLengthUnit.symbol;
+    return NumberFormat('0.00').format(defaultLengthUnitGCWMapView.fromMeter(length)) + ' ' + defaultLengthUnitGCWMapView.symbol;
   }
 
   String _formatBearingOutput(double bearing) {
@@ -342,7 +344,7 @@ class GCWMapViewState extends State<GCWMapView> {
       }
 
       List<Widget> children = data
-          .map((elem) => GCWOutputText(
+          .map<Widget>((elem) => GCWOutputText(
               text: elem.text,
               copyText: elem.value.toString(),
               style: gcwDialogTextStyle(),
@@ -404,7 +406,7 @@ class GCWMapViewState extends State<GCWMapView> {
                     context,
                     NoAnimationMaterialPageRoute<GCWTool>(
                         builder: (context) => GCWTool(
-                            tool: MapPointEditor(mapPoint: mapPoint, lengthUnit: defaultLengthUnit),
+                            tool: MapPointEditor(mapPoint: mapPoint, lengthUnit: defaultLengthUnitGCWMapView),
                             id: 'coords_openmap_lineeditor'))).whenComplete(() {
                   setState(() {
                     if (_persistanceAdapter != null) {
@@ -839,7 +841,7 @@ class GCWMapViewState extends State<GCWMapView> {
                         context,
                         NoAnimationMaterialPageRoute<GCWTool>(
                             builder: (context) => GCWTool(
-                                tool: MapPointEditor(mapPoint: gcwMarker.mapPoint, lengthUnit: defaultLengthUnit),
+                                tool: MapPointEditor(mapPoint: gcwMarker.mapPoint, lengthUnit: defaultLengthUnitGCWMapView),
                                 id: 'coords_openmap_pointeditor'))).whenComplete(() {
                       setState(() {
                         if (_persistanceAdapter != null) {

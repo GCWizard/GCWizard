@@ -193,18 +193,17 @@ class GeneralCharsetValuesState extends State<GeneralCharsetValues> {
       default:
         return IntegerListText('', []);
     }
-
     if (blockSize != null) {
       decodeInput = insertSpaceEveryNthCharacter(decodeInput.replaceAll(RegExp(r'[\s]+'), ''), blockSize);
     }
     var decodeInputList = <int>[];
-    decodeInput.split(' ').map((block) {
+    decodeInput.split(' ').forEach((block) {
       String? blockValue = block;
-        if (radix != 10) blockValue = convertBase(blockValue, radix, 10);
-        var value = int.tryParse(blockValue);
-        if (value != null) {
-          decodeInputList.add(value);
-        }
+      if (radix != 10) blockValue = convertBase(blockValue, radix, 10);
+      var value = int.tryParse(blockValue);
+      if (value != null) {
+        decodeInputList.add(value);
+      }
     });
 
     _currentDecoded = IntegerListText(widget.decode(decodeInputList), decodeInputList);

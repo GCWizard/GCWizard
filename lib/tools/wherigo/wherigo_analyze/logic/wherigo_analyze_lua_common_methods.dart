@@ -27,119 +27,10 @@ WherigoZonePoint _getPoint(String line) {
       .replaceAll(')', '')
       .replaceAll(' ', '')
       .split(',');
-  return WherigoZonePoint(double.parse(data[0]), double.parse(data[1]), double.parse(data[2]));
-}
-
-List<String> _getAnswers(int i, String line, String lineBefore, List<WherigoVariableData> variables) {
-  if (line.trim().startsWith('if input == ') ||
-      line.trim().startsWith('if input >= ') ||
-      line.trim().startsWith('if input <= ') ||
-      line.trim().startsWith('elseif input == ') ||
-      line.trim().startsWith('elseif input >= ') ||
-      line.trim().startsWith('elseif input <= ') ||
-      line.trim().startsWith('if ' + _answerVariable + ' == ') ||
-      line.trim().startsWith('elseif ' + _answerVariable + ' == ')) {
-    if (line.contains('<=') && line.contains('>=')) {
-      return [
-        line
-            .trimLeft()
-            .replaceAll('if', '')
-            .replaceAll('else', '')
-            .replaceAll('==', '')
-            .replaceAll('then', '')
-            .replaceAll(' ', '')
-            .replaceAll('and', ' and ')
-            .replaceAll('or', ' or ')
-      ];
-    }
-    return line
-        .trimLeft()
-        .replaceAll('if', '')
-        .replaceAll('else', '')
-        .replaceAll('input', '')
-        .replaceAll('==', '')
-        .replaceAll('then', '')
-        .replaceAll(_answerVariable, '')
-        .replaceAll(' ', '')
-        .replaceAll('and', ' and ')
-        .split(RegExp(r'(or)'));
-  } else if (RegExp(r'(_Urwigo.Hash)').hasMatch(line)) {
-    List<String> results = [];
-    int hashvalue = 0;
-    line = line.split('and')[0];
-    line = line
-        .trim()
-        .replaceAll('if ', '')
-        .replaceAll('elseif ', '')
-        .replaceAll('_Urwigo.Hash', '')
-        .replaceAll('input', '')
-        .replaceAll('=', '')
-        .replaceAll('string.lower', '')
-        .replaceAll('string.upper', '')
-        .replaceAll('(', '')
-        .replaceAll(')', '')
-        .replaceAll('then', '')
-        .replaceAll('else', '')
-        .replaceAll('true', '')
-        .replaceAll('and', '')
-        .replaceAll('Contains', '')
-        .replaceAll('Player', '')
-        .replaceAll(':', '')
-        .replaceAll(' ', '')
-        .replaceAll(RegExp(r'[^or0-9]'), '+')
-        .replaceAll('o+', '+')
-        .replaceAll('+r', '+')
-        .replaceAll('+', '');
-    line.split('or').forEach((element) {
-      hashvalue = int.parse(element.replaceAll('D+', ''));
-      results.add(hashvalue.toString() +
-          '\x01' +
-          breakUrwigoHash(hashvalue, HASH.ALPHABETICAL).toString() +
-          '\x01' +
-          breakUrwigoHash(hashvalue, HASH.NUMERIC).toString());
-    });
-    return results;
-  } else if (line.trim().startsWith('if Wherigo.NoCaseEquals(') ||
-      line.trim().startsWith('elseif Wherigo.NoCaseEquals(')) {
-    if (_answerVariable.isEmpty) _answerVariable = _getVariable(lineBefore);
-    line = line
-        .trim()
-        .replaceAll('if ', '')
-        .replaceAll('elseif ', '')
-        .replaceAll('Wherigo.NoCaseEquals', '')
-        .replaceAll(_answerVariable, '')
-        .replaceAll('(', '')
-        .replaceAll(')', '')
-        .replaceAll('"', '')
-        .replaceAll(',', '')
-        .replaceAll('then', '')
-        .replaceAll('tostring', '')
-        .replaceAll('else', '')
-        .replaceAll('input', '')
-        .replaceAll('Answer,', '')
-        .trim();
-    //if (RegExp(r'(' + obfuscator + ')').hasMatch(line)) {
-    //  line = deobfuscateUrwigoText(line.replaceAll(obfuscator, '').replaceAll('("', '').replaceAll('")', ''), dtable);
-    //}
-    line = line.split(' or ').map((element) {
-      return element.trim();
-    }).join('\n');
-    line = removeWWB(line);
-    // check if variable then provide information
-    for (int i = 0; i < variables.length; i++) {
-      if (line == variables[i].VariableLUAName) {
-        line = variables[i].VariableName + '\x01' + line;
-        i = variables.length;
-      }
-    }
-    if (line.isEmpty) {
-      return ['NIL'];
-    }
-    return [line];
-  }
-
-  throw Exception(
-      'No Answers found'); // TODO Thomas: Please check if empty list instead is logically meaningful; I chose Exception because I believe this line should never be reached.
+  return WherigoZonePoint(
+      Latitude: double.parse(data[0]),
+      Longitude: double.parse(data[1]),
+      Altitude: double.parse(data[2]));
 }
 
 bool _isMessageActionElement(String line) {
@@ -157,22 +48,32 @@ bool _isMessageActionElement(String line) {
 WherigoActionMessageElementData _handleAnswerLine(String line) {
   line = line.trim();
   if (line.startsWith('Wherigo.PlayAudio')) {
-    return WherigoActionMessageElementData(WHERIGO_ACTIONMESSAGETYPE.COMMAND, line.trim());
+    return WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: line.trim());
   } else if (line.startsWith('Wherigo.GetInput')) {
-    return WherigoActionMessageElementData(WHERIGO_ACTIONMESSAGETYPE.COMMAND, line.trim());
+    return WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: line.trim());
   } else if (line.startsWith('Text = ')) {
-    return WherigoActionMessageElementData(WHERIGO_ACTIONMESSAGETYPE.TEXT, getTextData(line));
+    return WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+        ActionMessageContent: getTextData(line));
   } else if (line.startsWith('Media = ')) {
     return WherigoActionMessageElementData(
-        WHERIGO_ACTIONMESSAGETYPE.IMAGE, line.trim().replaceAll('Media = ', '').replaceAll(',', ''));
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
+        ActionMessageContent: line.trim().replaceAll('Media = ', '').replaceAll(',', ''));
   } else if (line.startsWith('Buttons = ')) {
     if (line.endsWith('}') || line.endsWith('},')) {
       // single line
-      return WherigoActionMessageElementData(WHERIGO_ACTIONMESSAGETYPE.BUTTON,
-          getTextData(line.trim().replaceAll('Buttons = {', '').replaceAll('},', '').replaceAll('}', '')));
+      return WherigoActionMessageElementData(
+          ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON,
+          ActionMessageContent: getTextData(line.trim().replaceAll('Buttons = {', '').replaceAll('},', '').replaceAll('}', '')));
     }
   } else if (line.startsWith('if ') || line.startsWith('elseif ') || line.startsWith('else')) {
-    return WherigoActionMessageElementData(WHERIGO_ACTIONMESSAGETYPE.CASE, line.trim());
+    return WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.CASE,
+        ActionMessageContent: line.trim());
   } else {
     String actionLine = '';
     // if (RegExp(r'(' + obfuscator + ')').hasMatch(line)) {
@@ -197,9 +98,13 @@ WherigoActionMessageElementData _handleAnswerLine(String line) {
     // } else
     actionLine = line.trimLeft();
     actionLine = actionLine.replaceAll('<BR>', '\n').replaceAll(']],', '');
-    return WherigoActionMessageElementData(WHERIGO_ACTIONMESSAGETYPE.COMMAND, actionLine);
+    return WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: actionLine);
   }
-  return WherigoActionMessageElementData(WHERIGO_ACTIONMESSAGETYPE.NONE, '');
+  return WherigoActionMessageElementData(
+      ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.NONE,
+      ActionMessageContent: '');
 }
 
 String _getVariable(String line) {
@@ -232,9 +137,27 @@ bool isInvalidLUASourcecode(String header) {
   return (!header.replaceAll('(', ' ').replaceAll(')', '').startsWith('require "Wherigo"'));
 }
 
-WherigoCartridgeLUA _faultyWherigoCartridgeLUA(String _LUAFile, WHERIGO_ANALYSE_RESULT_STATUS resultStatus,
-    List<String> _http_code_http, int _httpCode, String _httpMessage) {
+WherigoCartridgeLUA _faultyWherigoCartridgeLUA(
+    String _LUAFile,
+    WHERIGO_ANALYSE_RESULT_STATUS resultStatus,
+    List<String> _http_code_http,
+    int _httpCode,
+    String _httpMessage) {
   return WherigoCartridgeLUA(
+      CartridgeLUAName: '',
+      CartridgeGUID: '',
+      ObfuscatorTable: '',
+      ObfuscatorFunction: '',
+      Builder: WHERIGO_BUILDER.NONE,
+      BuilderVersion: '',
+      TargetDeviceVersion: '',
+      StateID: '',
+      UseLogging: '',
+      CountryID: '',
+      CreateDate: '',
+      PublishDate: '',
+      UpdateDate: '',
+      LastPlayedDate: '',
       LUAFile: _LUAFile,
       Characters: [],
       Items: [],
@@ -244,7 +167,6 @@ WherigoCartridgeLUA _faultyWherigoCartridgeLUA(String _LUAFile, WHERIGO_ANALYSE_
       Timers: [],
       Media: [],
       Messages: [],
-      Answers: [],
       Variables: [],
       NameToObject: {},
       ResultStatus: resultStatus,

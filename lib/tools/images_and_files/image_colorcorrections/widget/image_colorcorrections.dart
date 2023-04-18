@@ -20,6 +20,7 @@ import 'package:gc_wizard/tools/images_and_files/image_colorcorrections/logic/im
 import 'package:gc_wizard/tools/images_and_files/_common/logic/rgb_pixel.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
+import 'package:gc_wizard/utils/image_utils.dart';
 import 'package:image/image.dart' as Image;
 import 'package:prefs/prefs.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
@@ -37,6 +38,7 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
   GCWFile? _originalData;
   Uint8List? _convertedOutputImage;
 
+  Image.Image? _originalImage;
   Image.Image? _currentPreview;
   Image.Image? _originalPreview;
 
@@ -80,15 +82,14 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
   Image.Image? _currentDataInit({int? previewSize}) {
     var previewHeight = previewSize ?? Prefs.getInt(PREFERENCE_IMAGECOLORCORRECTIONS_MAXPREVIEWHEIGHT);
 
-    if(_originalData?.bytes == null) return null;
-    Image.Image? image = Image.decodeImage(_originalData!.bytes);
+    _originalImage = _originalData?.bytes == null ? null: decodeImage4ChannelFormat(_originalData!.bytes);
+    if(_originalImage == null) return null;
 
-    if(image == null) return null;
-    if (image.height > previewHeight) {
-      Image.Image resized = Image.copyResize(image, height: previewHeight);
+    if (_originalImage!.height > previewHeight) {
+      Image.Image resized = Image.copyResize(_originalImage!, height: previewHeight);
       return resized;
     } else {
-      return image;
+      return _originalImage!.clone();
     }
   }
 
@@ -360,12 +361,11 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
     return GCWFile(bytes: _convertedOutputImage!);
   }
 
+
   Future<GCWAsyncExecuterParameters?> _buildJobDataAdjustColor() async {
-    if (_originalData?.bytes == null) return null;
-    var image = Image.decodeImage(_originalData!.bytes);
-    if (image == null) return null;
+    if (_originalImage == null) return null;
     return GCWAsyncExecuterParameters(_AdjustColorInput(
-        image: image,
+        image: _originalImage!,
         invert: _currentInvert,
         grayscale: _currentGrayscale,
         edgeDetection: _currentEdgeDetection,

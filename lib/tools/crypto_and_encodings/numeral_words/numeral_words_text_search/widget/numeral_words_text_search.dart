@@ -162,6 +162,7 @@ class NumeralWordsTextSearchState extends State<NumeralWordsTextSearch> {
                   wrap: true,
                   controller: _codeControllerHighlighted,
                   patternMap: _numeralWordsHiglightMap(),
+                  lineNumbers: false,
                 )),
         output.isEmpty
             ? Container()

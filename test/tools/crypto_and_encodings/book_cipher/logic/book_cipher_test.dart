@@ -113,6 +113,28 @@ Stasi-Offziere in ihrer Arbeit unterstützen sollten. Von
 die Potsdamer Bezirksverwaltung. Ihm folgte bis 1990
 Helmut Schickart (1931–1993). ''';
 
+    var testText2 =
+    '''da kommt die corona-grippe auf uns zu gerollt.
+die hat wahrhaftig niemand gewollt.
+in china und korea brach sie aus.
+und weltweit breitet sie sich weiter aus.
+
+das hat bisher noch niemand gekannt.
+die welt ist plötzlich im ausnahme-zustand.
+ganze länder werden dichtgemacht.
+ausgangssperren werden stark überwacht.
+
+ob italien, spanien oder uestereich
+polen, dänemark, überall ist es gleich
+man kann nicht mehr in alle länder reisen
+wenn wird man uns sofort zurück weisen
+
+auch deutschland hat es schwer erwischt
+wie es noch nie dagewesen ist.
+seitdem auch bei uns ist das coronavirus
+ist es mit allem einmal schluß.
+''';
+
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'positions' : '', 'searchFormat' : searchFormat.RowWord, 'expectedOutput' : '', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
       {'input' : '', 'positions' : 'und', 'searchFormat' : searchFormat.RowWord, 'expectedOutput' : '', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
@@ -162,6 +184,7 @@ Helmut Schickart (1931–1993). ''';
       {'input' : 'TEILEN IST EINE SIEBEN TESTWEISE', 'positions' : '1.1 1.3´1.4 1.5', 'searchFormat' : searchFormat.RowWord, 'expectedOutput' : 'TEST', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\_', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : true},
 
       {'input' : testText1, 'positions' : '4,12; 1,3; 14,3; 1,7; 14,3; 12,1; 2,4; 3,14; 2,2; 4,4; 9,37; 8,4; 14,13; 15,4; 6,8; 7,11; 3,5; 14,4; 14,5; 16,21; 15,4; 14,3; 6,8; 6,6; 1,5', 'searchFormat' : searchFormat.RowCharacter, 'expectedOutput' : 'F 7 79 2E 4 5 2F 1 3 72 E', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
+      {'input' : testText2, 'positions' : '2.1.4.3 und 4.3.2.1', 'searchFormat' : searchFormat.SectionRowWordCharacter, 'expectedOutput' : 'CA', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
 
       {'input' : 'Helmut Schickart (1931–1993).', 'positions' : ' 1,21; ', 'searchFormat' : searchFormat.SectionCharacter, 'expectedOutput' : '3', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
 

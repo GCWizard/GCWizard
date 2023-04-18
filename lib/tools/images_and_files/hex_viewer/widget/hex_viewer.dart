@@ -130,7 +130,10 @@ class HexViewerState extends State<HexViewer> {
 
         var charCode = int.tryParse(hexValue, radix: 16);
         if (charCode == null) return '';
-        if (charCode < 32) return '.';
+        if (charCode < 32 || charCode == 127) return '.';
+        // Bug in Text Widget which does not convert this manually for some reasons since a few Flutter versions.
+        // Instead it adds a linebreak to the end... weird
+        if (charCode == 133) return '…';
 
         return String.fromCharCode(charCode);
       }).join();
@@ -138,49 +141,10 @@ class HexViewerState extends State<HexViewer> {
 
     return Column(
       children: [
-        if (_hexData!.length > _MAX_LINES)
-          Container(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Row(
-              children: [
-                GCWIconButton(
-                  icon: Icons.arrow_back_ios,
-                  onPressed: () {
-                    setState(() {
-                      _currentLines -= _MAX_LINES;
-                      if (_currentLines < 0) {
-                        _currentLines = (_hexDataLines!.floor() ~/ _MAX_LINES) * _MAX_LINES;
-                      }
 
-                      _resetScrollViews();
-                    });
-                  },
-                ),
-                Expanded(
-                  child: GCWText(
-                    text:
-                        '${i18n(context, 'hexviewer_lines')}: '
-                            '${_currentLines + 1} - ${min(_currentLines + _MAX_LINES, _hexDataLines!.ceil())} / ${_hexDataLines!.ceil()}',
-                    align: Alignment.center,
-                  ),
-                ),
-                GCWIconButton(
-                  icon: Icons.arrow_forward_ios,
-                  onPressed: () {
-                    setState(() {
-                      _currentLines += _MAX_LINES;
-                      if (_hexDataLines != null && _currentLines > _hexDataLines!) {
-                        _currentLines = 0;
-                      }
-
-                      _resetScrollViews();
-                    });
-                  },
-                )
-              ],
-            ),
-          ),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
               flex: 15,

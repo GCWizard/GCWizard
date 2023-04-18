@@ -1,14 +1,20 @@
 part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/logic/wherigo_analyze.dart';
 
 bool _insideSectionZone(String currentLine) {
-  if (RegExp(r'( Wherigo.ZCharacter\()').hasMatch(currentLine) ||
-      RegExp(r'( Wherigo.ZItem\()').hasMatch(currentLine) ||
-      RegExp(r'( Wherigo.ZTask\()').hasMatch(currentLine) ||
+  if (RegExp(r'( Wherigo.Zone\()').hasMatch(currentLine)) {
+    return false;
+  }
+  return _notDoneWithZones(currentLine);
+}
+
+bool _notDoneWithZones(String currentLine) {
+  if (RegExp(r'(Wherigo.ZCharacter\()').hasMatch(currentLine) ||
+      RegExp(r'(Wherigo.ZItem\()').hasMatch(currentLine) ||
+      RegExp(r'(Wherigo.ZTask\()').hasMatch(currentLine) ||
       RegExp(r'(.ZVariables =)').hasMatch(currentLine) ||
-      RegExp(r'( Wherigo.ZTimer\()').hasMatch(currentLine) ||
-      RegExp(r'( Wherigo.ZInput\()').hasMatch(currentLine) ||
-      RegExp(r'(function)').hasMatch(currentLine) ||
-      RegExp(r'( Wherigo.Zone\()').hasMatch(currentLine)) {
+      RegExp(r'(Wherigo.ZTimer\()').hasMatch(currentLine) ||
+      RegExp(r'(Wherigo.ZInput\()').hasMatch(currentLine) ||
+      RegExp(r'(function)').hasMatch(currentLine)) {
     return false;
   }
   return true;
@@ -26,7 +32,7 @@ WherigoZoneData _analyzeAndExtractZoneSectionData(List<String> lines) {
   String distanceRange = '';
   String showObjects = '';
   String proximityRange = '';
-  WherigoZonePoint originalPoint = WherigoZonePoint(0.0, 0.0, 0.0);
+  WherigoZonePoint originalPoint = WHERIGO_NULLPOINT;
   String distanceRangeUOM = '';
   String proximityRangeUOM = '';
   String outOfRange = '';
@@ -37,6 +43,9 @@ WherigoZoneData _analyzeAndExtractZoneSectionData(List<String> lines) {
 
   for (int i = 0; i < lines.length; i++) {
     lines[i] = lines[i].trim();
+    if (RegExp(r'( Wherigo.Zone\()').hasMatch(lines[i])) {
+      LUAname = getLUAName(lines[i]);
+    }
     if (lines[i].startsWith(LUAname + '.Id')) {
       id = getLineData(lines[i], LUAname, 'Id', _obfuscatorFunction, _obfuscatorTable);
     }
@@ -101,7 +110,10 @@ WherigoZoneData _analyzeAndExtractZoneSectionData(List<String> lines) {
       List<String> pointdata =
       point.replaceAll('ZonePoint(', '').replaceAll(')', '').replaceAll(' ', '').split(',');
       originalPoint =
-          WherigoZonePoint(double.parse(pointdata[0]), double.parse(pointdata[1]), double.parse(pointdata[2]));
+          WherigoZonePoint(
+              Latitude: double.parse(pointdata[0]),
+              Longitude: double.parse(pointdata[1]),
+              Altitude: double.parse(pointdata[2]));
     }
 
     if (lines[i].startsWith(LUAname + '.OutOfRangeName')) {
@@ -125,22 +137,22 @@ WherigoZoneData _analyzeAndExtractZoneSectionData(List<String> lines) {
     }
   }
   return WherigoZoneData(
-    LUAname,
-    id,
-    name,
-    description,
-    visible,
-    media,
-    icon,
-    active,
-    distanceRange,
-    showObjects,
-    proximityRange,
-    originalPoint,
-    distanceRangeUOM,
-    proximityRangeUOM,
-    outOfRange,
-    inRange,
-    points,
+    ZoneLUAName: LUAname,
+    ZoneID: id,
+    ZoneName: name,
+    ZoneDescription: description,
+    ZoneVisible: visible,
+    ZoneMediaName: media,
+    ZoneIconName: icon,
+    ZoneActive: active,
+    ZoneDistanceRange: distanceRange,
+    ZoneShowObjects: showObjects,
+    ZoneProximityRange: proximityRange,
+    ZoneOriginalPoint: originalPoint,
+    ZoneDistanceRangeUOM: distanceRangeUOM,
+    ZoneProximityRangeUOM: proximityRangeUOM,
+    ZoneOutOfRange: outOfRange,
+    ZoneInRange: inRange,
+    ZonePoints: points,
   );
 }

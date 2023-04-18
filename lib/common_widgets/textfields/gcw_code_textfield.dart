@@ -20,6 +20,7 @@ class GCWCodeTextField extends StatefulWidget {
   final bool readOnly;
   final bool? wrap;
   final CodeHighlightingLanguage? language;
+  final bool? lineNumbers;
   final GCWCodeTextFieldLineNumberStyle? lineNumberStyle;
 
   const GCWCodeTextField(
@@ -32,6 +33,7 @@ class GCWCodeTextField extends StatefulWidget {
       this.readOnly = true,
       this.wrap,
       this.language,
+      this.lineNumbers = false,
       this.lineNumberStyle})
       : super(key: key);
 
@@ -72,11 +74,12 @@ class _GCWCodeTextFieldState extends State<GCWCodeTextField> {
           selectionControls: GCWTextSelectionControls(),
           wrap: widget.wrap ?? false,
           textStyle: widget.textStyle ?? const TextStyle(fontFamily: 'SourceCode'),
+          lineNumbers: widget.lineNumbers!,
           lineNumberStyle: widget.lineNumberStyle != null
               ? LineNumberStyle(
                   width: widget.lineNumberStyle!.width,
                 )
-              : const LineNumberStyle(width: 0.0, margin: 0.0, textStyle: TextStyle(fontSize: 0.1, color: Colors.black87)),
+              : const LineNumberStyle(width: 0.0, margin: 0.0, textStyle: TextStyle(fontSize: 0.1, color: Colors.black54)),
         )
     );
   }

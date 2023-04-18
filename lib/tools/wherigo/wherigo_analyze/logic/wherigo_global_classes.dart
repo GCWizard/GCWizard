@@ -44,7 +44,7 @@ class WherigoZonePoint {
   final double Longitude;
   final double Altitude;
 
-  WherigoZonePoint(this.Latitude, this.Longitude, this.Altitude);
+  WherigoZonePoint({this.Latitude = 0.0, this.Longitude = 0.0, this.Altitude = 0.0});
 }
 
 class WherigoZoneData {
@@ -67,23 +67,23 @@ class WherigoZoneData {
   final List<WherigoZonePoint> ZonePoints;
 
   WherigoZoneData(
-      this.ZoneLUAName,
-      this.ZoneID,
-      this.ZoneName,
-      this.ZoneDescription,
-      this.ZoneVisible,
-      this.ZoneMediaName,
-      this.ZoneIconName,
-      this.ZoneActive,
-      this.ZoneDistanceRange,
-      this.ZoneShowObjects,
-      this.ZoneProximityRange,
-      this.ZoneOriginalPoint,
-      this.ZoneDistanceRangeUOM,
-      this.ZoneProximityRangeUOM,
-      this.ZoneOutOfRange,
-      this.ZoneInRange,
-      this.ZonePoints);
+      {required this.ZoneLUAName,
+      required this.ZoneID,
+      required this.ZoneName,
+      required this.ZoneDescription,
+      required this.ZoneVisible,
+      required this.ZoneMediaName,
+      required this.ZoneIconName,
+      required this.ZoneActive,
+      required this.ZoneDistanceRange,
+      required this.ZoneShowObjects,
+      required this.ZoneProximityRange,
+      required this.ZoneOriginalPoint,
+      required this.ZoneDistanceRangeUOM,
+      required this.ZoneProximityRangeUOM,
+      required this.ZoneOutOfRange,
+      required this.ZoneInRange,
+      required this.ZonePoints});
 }
 
 class WherigoCharacterData {
@@ -101,18 +101,18 @@ class WherigoCharacterData {
   final String CharacterType;
 
   WherigoCharacterData(
-      this.CharacterLUAName,
-      this.CharacterID,
-      this.CharacterName,
-      this.CharacterDescription,
-      this.CharacterVisible,
-      this.CharacterMediaName,
-      this.CharacterIconName,
-      this.CharacterLocation,
-      this.CharacterZonepoint,
-      this.CharacterContainer,
-      this.CharacterGender,
-      this.CharacterType);
+      {required this.CharacterLUAName,
+        required this.CharacterID,
+        required this.CharacterName,
+        required this.CharacterDescription,
+        required this.CharacterVisible,
+        required this.CharacterMediaName,
+        required this.CharacterIconName,
+        required this.CharacterLocation,
+        required this.CharacterZonepoint,
+        required this.CharacterContainer,
+        required this.CharacterGender,
+        required this.CharacterType,});
 }
 
 class WherigoInputData {
@@ -130,28 +130,28 @@ class WherigoInputData {
   final List<WherigoAnswerData> InputAnswers;
 
   WherigoInputData(
-      this.InputLUAName,
-      this.InputID,
-      this.InputVariableID,
-      this.InputName,
-      this.InputDescription,
-      this.InputVisible,
-      this.InputMedia,
-      this.InputIcon,
-      this.InputType,
-      this.InputText,
-      this.InputChoices,
-      this.InputAnswers);
+      {required this.InputLUAName,
+        required this.InputID,
+        required this.InputVariableID,
+        required this.InputName,
+        required this.InputDescription,
+        required this.InputVisible,
+        required this.InputMedia,
+        required this.InputIcon,
+        required this.InputType,
+        required this.InputText,
+        required this.InputChoices,
+        required this.InputAnswers,});
 }
 
 class WherigoAnswer {
   final String InputFunction;
   final List<WherigoAnswerData> InputAnswers;
 
-  WherigoAnswer(
-    this.InputFunction,
-    this.InputAnswers,
-  );
+  WherigoAnswer({
+    required this.InputFunction,
+    required this.InputAnswers,
+  });
 }
 
 class WherigoAnswerData {
@@ -159,29 +159,21 @@ class WherigoAnswerData {
   final String AnswerHash;
   final List<WherigoActionMessageElementData> AnswerActions;
 
-  WherigoAnswerData(
-    this.AnswerAnswer,
-    this.AnswerHash,
-    this.AnswerActions,
-  );
-}
-
-class WherigoMessageData {
-  final List<List<WherigoActionMessageElementData>> MessageElement;
-
-  WherigoMessageData(
-    this.MessageElement,
-  );
+  WherigoAnswerData({
+    required this.AnswerAnswer,
+    required this.AnswerHash,
+    required this.AnswerActions,
+  });
 }
 
 class WherigoActionMessageElementData {
   final WHERIGO_ACTIONMESSAGETYPE ActionMessageType;
   final String ActionMessageContent;
 
-  WherigoActionMessageElementData(
-    this.ActionMessageType,
-    this.ActionMessageContent,
-  );
+  WherigoActionMessageElementData({
+    required this.ActionMessageType,
+    required this.ActionMessageContent,
+  });
 }
 
 class WherigoTaskData {
@@ -196,8 +188,17 @@ class WherigoTaskData {
   final String TaskComplete;
   final String TaskCorrectstate;
 
-  WherigoTaskData(this.TaskLUAName, this.TaskID, this.TaskName, this.TaskDescription, this.TaskVisible, this.TaskMedia,
-      this.TaskIcon, this.TaskActive, this.TaskComplete, this.TaskCorrectstate);
+  WherigoTaskData(
+      {required this.TaskLUAName,
+        required this.TaskID,
+        required this.TaskName,
+        required this.TaskDescription,
+        required this.TaskVisible,
+        required this.TaskMedia,
+        required this.TaskIcon,
+        required this.TaskActive,
+        required this.TaskComplete,
+        required this.TaskCorrectstate,});
 }
 
 class WherigoMediaData {
@@ -209,15 +210,21 @@ class WherigoMediaData {
   final String MediaType;
   final String MediaFilename;
 
-  WherigoMediaData(this.MediaLUAName, this.MediaID, this.MediaName, this.MediaDescription, this.MediaAltText,
-      this.MediaType, this.MediaFilename);
+  WherigoMediaData(
+      {required this.MediaLUAName,
+        required this.MediaID,
+        required this.MediaName,
+        required this.MediaDescription,
+        required this.MediaAltText,
+        required this.MediaType,
+        required this.MediaFilename,});
 }
 
 class WherigoVariableData {
   final String VariableLUAName;
   final String VariableName;
 
-  WherigoVariableData(this.VariableLUAName, this.VariableName);
+  WherigoVariableData({required this.VariableLUAName, required this.VariableName});
 }
 
 class WherigoItemData {
@@ -234,8 +241,19 @@ class WherigoItemData {
   final String ItemLocked;
   final String ItemOpened;
 
-  WherigoItemData(this.ItemLUAName, this.ItemID, this.ItemName, this.ItemDescription, this.ItemVisible, this.ItemMedia,
-      this.ItemIcon, this.ItemLocation, this.ItemZonepoint, this.ItemContainer, this.ItemLocked, this.ItemOpened);
+  WherigoItemData(
+      {required this.ItemLUAName,
+        required this.ItemID,
+        required this.ItemName,
+        required this.ItemDescription,
+        required this.ItemVisible,
+        required this.ItemMedia,
+        required this.ItemIcon,
+        required this.ItemLocation,
+      required this.ItemZonepoint,
+        required this.ItemContainer,
+        required this.ItemLocked,
+        required this.ItemOpened,});
 }
 
 class WherigoTimerData {
@@ -247,8 +265,14 @@ class WherigoTimerData {
   final String TimerDuration;
   final String TimerType;
 
-  WherigoTimerData(this.TimerLUAName, this.TimerID, this.TimerName, this.TimerDescription, this.TimerVisible,
-      this.TimerDuration, this.TimerType);
+  WherigoTimerData(
+      {required this.TimerLUAName,
+        required this.TimerID,
+        required this.TimerName,
+        required this.TimerDescription,
+        required this.TimerVisible,
+        required this.TimerDuration,
+        required this.TimerType,});
 }
 
 class WherigoCartridgeGWC {
@@ -280,32 +304,32 @@ class WherigoCartridgeGWC {
   final List<String> ResultsGWC;
 
   const WherigoCartridgeGWC({
-    this.Signature = '',
-    this.NumberOfObjects = 0,
-    this.MediaFilesHeaders = const [],
-    this.MediaFilesContents = const [],
-    this.HeaderLength = 0,
-    this.Splashscreen = 0,
-    this.SplashscreenIcon = 0,
-    this.Latitude = 0.0,
-    this.Longitude = 0.0,
-    this.Altitude = 0.0,
-    this.DateOfCreation = 0,
-    this.TypeOfCartridge = '',
-    this.Player = '',
-    this.PlayerID = 0,
-    this.CartridgeLUAName = '',
-    this.CartridgeGUID = '',
-    this.CartridgeDescription = '',
-    this.StartingLocationDescription = '',
-    this.Version = '',
-    this.Author = '',
-    this.Company = '',
-    this.RecommendedDevice = '',
-    this.LengthOfCompletionCode = 0,
-    this.CompletionCode = '',
-    this.ResultStatus = WHERIGO_ANALYSE_RESULT_STATUS.NONE,
-    this.ResultsGWC = const [],
+    required this.Signature,
+    required this.NumberOfObjects,
+    required this.MediaFilesHeaders,
+    required this.MediaFilesContents,
+    required this.HeaderLength,
+    required this.Splashscreen,
+    required this.SplashscreenIcon,
+    required this.Latitude,
+    required this.Longitude,
+    required this.Altitude,
+    required this.DateOfCreation,
+    required this.TypeOfCartridge,
+    required this.Player,
+    required this.PlayerID,
+    required this.CartridgeLUAName,
+    required this.CartridgeGUID,
+    required this.CartridgeDescription,
+    required this.StartingLocationDescription,
+    required this.Version,
+    required this.Author,
+    required this.Company,
+    required this.RecommendedDevice,
+    required this.LengthOfCompletionCode,
+    required this.CompletionCode,
+    required this.ResultStatus,
+    required this.ResultsGWC,
   });
 }
 
@@ -323,7 +347,6 @@ class WherigoCartridgeLUA {
   final List<WherigoTimerData> Timers;
   final List<WherigoMediaData> Media;
   final List<List<WherigoActionMessageElementData>> Messages;
-  final List<WherigoAnswerData> Answers;
   final List<WherigoVariableData> Variables;
   final Map<String, WherigoObjectData> NameToObject;
   final WHERIGO_ANALYSE_RESULT_STATUS ResultStatus;
@@ -342,38 +365,35 @@ class WherigoCartridgeLUA {
   final String httpMessage;
 
   const WherigoCartridgeLUA(
-      {this.LUAFile = '',
-      this.CartridgeLUAName = '',
-      this.CartridgeGUID = '',
-      this.ObfuscatorTable = '',
-      this.ObfuscatorFunction = '',
-      this.Characters = const [],
-      this.Items =
-          const [], // TODO Thomas: Gave the lists init values to keep it null-safe. Please check if it makes sense from logic point of view
-      // from a logic point of view initial values do not make any sense
-      this.Tasks = const [],
-      this.Inputs = const [],
-      this.Zones = const [],
-      this.Timers = const [],
-      this.Media = const [],
-      this.Messages = const [],
-      this.Answers = const [],
-      this.Variables = const [],
-      this.NameToObject = const {},
-      this.ResultStatus = WHERIGO_ANALYSE_RESULT_STATUS.NONE,
-      this.ResultsLUA = const [],
-      this.Builder = WHERIGO_BUILDER.UNKNOWN,
-      this.BuilderVersion = '',
-      this.TargetDeviceVersion = '',
-      this.CountryID = '',
-      this.StateID = '',
-      this.UseLogging = '',
-      this.CreateDate = WHERIGO_NULLDATE,
-      this.PublishDate = WHERIGO_NULLDATE,
-      this.UpdateDate = WHERIGO_NULLDATE,
-      this.LastPlayedDate = WHERIGO_NULLDATE,
-      this.httpCode = 0,
-      this.httpMessage = ''});
+      {required this.LUAFile,
+        required this.CartridgeLUAName,
+        required this.CartridgeGUID,
+        required this.ObfuscatorTable,
+        required this.ObfuscatorFunction,
+        required this.Characters,
+        required this.Items,
+        required this.Tasks,
+        required this.Inputs,
+        required this.Zones,
+        required this.Timers,
+        required this.Media,
+        required this.Messages,
+        required this.Variables,
+        required this.NameToObject,
+        required this.ResultStatus,
+        required this.ResultsLUA,
+        required this.Builder,
+        required this.BuilderVersion,
+        required this.TargetDeviceVersion,
+        required this.CountryID,
+        required this.StateID,
+        required this.UseLogging,
+        required this.CreateDate,
+        required this.PublishDate,
+        required this.UpdateDate,
+        required this.LastPlayedDate,
+        required this.httpCode,
+        required this.httpMessage,});
 }
 
 class WherigoCartridge {

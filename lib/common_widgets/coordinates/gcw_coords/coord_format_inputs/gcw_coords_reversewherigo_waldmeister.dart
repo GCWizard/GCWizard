@@ -3,8 +3,9 @@ part of 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart
 class _GCWCoordsReverseWherigoWaldmeister extends StatefulWidget {
   final void Function(ReverseWherigoWaldmeister?) onChanged;
   final ReverseWherigoWaldmeister coordinates;
+  final bool isDefault;
 
-  const _GCWCoordsReverseWherigoWaldmeister({Key? key, required this.onChanged, required this.coordinates}) : super(key: key);
+  const _GCWCoordsReverseWherigoWaldmeister({Key? key, required this.onChanged, required this.coordinates, this.isDefault = true}) : super(key: key);
 
   @override
   _GCWCoordsReverseWherigoWaldmeisterState createState() => _GCWCoordsReverseWherigoWaldmeisterState();
@@ -24,6 +25,8 @@ class _GCWCoordsReverseWherigoWaldmeisterState extends State<_GCWCoordsReverseWh
   var _currentC = 0;
 
   final _integerInputFormatter = GCWIntegerTextInputFormatter(min: 0, max: 999999);
+
+  bool _initialized = false;
 
   @override
   void initState() {
@@ -47,14 +50,18 @@ class _GCWCoordsReverseWherigoWaldmeisterState extends State<_GCWCoordsReverseWh
 
   @override
   Widget build(BuildContext context) {
-    var waldmeister = widget.coordinates;
-    _currentA = waldmeister.a;
-    _currentB = waldmeister.b;
-    _currentC = waldmeister.c;
+    if (!widget.isDefault && !_initialized) {
+      var waldmeister = widget.coordinates;
+      _currentA = waldmeister.a;
+      _currentB = waldmeister.b;
+      _currentC = waldmeister.c;
 
-    _ControllerA.text = waldmeister.a.toString().padLeft(6, '0');
-    _ControllerB.text = waldmeister.b.toString().padLeft(6, '0');
-    _ControllerC.text = waldmeister.c.toString().padLeft(6, '0');
+      _ControllerA.text = waldmeister.a.toString().padLeft(6, '0');
+      _ControllerB.text = waldmeister.b.toString().padLeft(6, '0');
+      _ControllerC.text = waldmeister.c.toString().padLeft(6, '0');
+
+      _initialized = true;
+    }
 
     return Column(children: <Widget>[
       GCWTextField(

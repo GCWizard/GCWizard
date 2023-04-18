@@ -36,11 +36,14 @@ class VanityMultitapState extends State<VanityMultitap> {
   void initState() {
     super.initState();
     _encodeController = TextEditingController(text: _currentEncodeInput);
+    _decodeController = TextEditingController(text: _currentDecodeInput);
   }
+
 
   @override
   void dispose() {
     _encodeController.dispose();
+    _decodeController.dispose();
     super.dispose();
   }
 

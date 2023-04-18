@@ -8,7 +8,7 @@ MultiDecoderToolEntity findMultiDecoderToolById(int id) {
 }
 
 class MultiDecoderToolEntity {
-  late int id;
+  int id = -1;
   late String name;
   late String internalToolName;
   late List<MultiDecoderToolOption> options;

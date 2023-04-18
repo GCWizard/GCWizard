@@ -123,7 +123,7 @@
   "crossumrange": "range",
   "cryptographyselection": "cryptography encoding decoding encode decode encryption encrypt decrypt decryption",
   "dates": "dates",
-  "dates_daycalculator": "daycalculator countdays",
+  "dates_daycalculator": "daycalculator countdays period time",
   "dates_day_of_the_year": "daynumber year weekday weeknumber dayoftheyear",
   "dates_timecalculator": "times timecalculator clockcalculator minutes hours seconds",
   "dates_weekday": "weekdays",

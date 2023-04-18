@@ -25,12 +25,12 @@ class _SudokuBoardState extends State<_SudokuBoard> {
                         painter: SudokuBoardPainter(context, widget.board, (x, y, value) {
                           setState(() {
                             if (value == null) {
-                              widget.board.setValue(x, y, null);
+                              widget.board.setValue(x, y, null, SudokuFillType.CALCULATED);
                               widget.onChanged(widget.board);
                               return;
                             }
 
-                            widget.board.setValue(x, y, value);
+                            widget.board.setValue(x, y, value, SudokuFillType.USER_FILLED);
                             widget.onChanged(widget.board);
                           });
                         }));
@@ -85,7 +85,7 @@ class SudokuBoardPainter extends CustomPainter {
 
             _touchCanvas.drawRect(Rect.fromLTWH(xInner, yInner, widthInner, heightInner), paint,
                 onTapDown: (tapDetail) {
-                  _removeCalculated(board);
+                  board.removeCalculated();
                   _showInputDialog(boardX, boardY);
                 });
 
@@ -121,14 +121,6 @@ class SudokuBoardPainter extends CustomPainter {
 
     _touchCanvas.drawLine(Offset(size.height, 0.0), Offset(size.height, size.width), paint);
     _touchCanvas.drawLine(Offset(0.0, size.width), Offset(size.height, size.width), paint);
-  }
-
-  void _removeCalculated(SudokuBoard board) {
-    for (int i = 0; i < 9; i++) {
-      for (int j = 0; j < 9; j++) {
-        if (board.getFillType(i, j) == SudokuFillType.CALCULATED) board.setValue(i, j, null);
-      }
-    }
   }
 
   void _showInputDialog(int x, int y) {

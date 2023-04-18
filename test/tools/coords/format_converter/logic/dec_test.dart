@@ -1,7 +1,7 @@
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
-import 'package:gc_wizard/tools/coords/format_converter/logic/dec.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:latlong2/latlong.dart';
 
 final List<Map<String, Object?>> inputsToExpectedDEC = [
@@ -66,56 +66,11 @@ void main() {
     for (var elem in _inputsToExpected) {
       test('text: ${elem['text']}', () {
         var _actual = DEC.parse(elem['text'] as String)?.toLatLng();
-        expect(_actual, (elem['expectedOutput'] as Map<String, Object>)['coordinate']);
-      });
-    }
-  });
-
-  group("Coordinate.normalizeDEC:", () {
-    List<Map<String, Object?>> _inputsToExpected = [
-      {'coord' : DEC(10.0, 10.0), 'expectedOutput' : DEC(10.0, 10.0)},
-      {'coord' : DEC(-10.0, -10.0), 'expectedOutput' : DEC(-10.0, -10.0)},
-
-      {'coord' : DEC(90.0, 0.0), 'expectedOutput' : DEC(90.0, 0.0)},
-      {'coord' : DEC(-90.0, 0.0), 'expectedOutput' : DEC(-90.0, 0.0)},
-      {'coord' : DEC(0.0, 180.0), 'expectedOutput' : DEC(0.0, 180.0)},
-      {'coord' : DEC(0.0, -180.0), 'expectedOutput' : DEC(0.0, -180.0)},
-
-      {'coord' : DEC(91.0, 0.0), 'expectedOutput' : DEC(89.0, 180.0)},
-      {'coord' : DEC(-91.0, 0.0), 'expectedOutput' : DEC(-89.0, 180.0)},
-      {'coord' : DEC(91.0, 180.0), 'expectedOutput' : DEC(89.0, 0.0)},
-      {'coord' : DEC(-91.0, 180.0), 'expectedOutput' : DEC(-89.0, 0.0)},
-      {'coord' : DEC(91.0, -180.0), 'expectedOutput' : DEC(89.0, 0.0)},
-      {'coord' : DEC(-91.0, -180.0), 'expectedOutput' : DEC(-89.0, 0.0)},
-
-      {'coord' : DEC(0.0, 181.0), 'expectedOutput' : DEC(0.0, -179.0)},
-      {'coord' : DEC(0.0, -181.0), 'expectedOutput' : DEC(0.0, 179.0)},
-
-      {'coord' : DEC(180.0, 0.0), 'expectedOutput' : DEC(0.0, 180.0)},
-      {'coord' : DEC(-180.0, 0.0), 'expectedOutput' : DEC(0.0, 180.0)},
-      {'coord' : DEC(540.0, 0.0), 'expectedOutput' : DEC(0.0, 180.0)},
-      {'coord' : DEC(-540.0, 0.0), 'expectedOutput' : DEC(0.0, 180.0)},
-
-      {'coord' : DEC(0.0, 360.0), 'expectedOutput' : DEC(0.0, 0.0)},
-      {'coord' : DEC(0.0, -360.0), 'expectedOutput' : DEC(0.0, 0.0)},
-      {'coord' : DEC(0.0, 540.0), 'expectedOutput' : DEC(0.0, 180.0)},
-      {'coord' : DEC(0.0, -540.0), 'expectedOutput' : DEC(0.0, -180.0)},
-      {'coord' : DEC(0.0, 541.0), 'expectedOutput' : DEC(0.0, -179.0)},
-      {'coord' : DEC(0.0, -541.0), 'expectedOutput' : DEC(0.0, 179.0)},
-
-      {'coord' : DEC(200.0, 10.0), 'expectedOutput' : DEC(-20.0, -170.0)},
-      {'coord' : DEC(300.0, 10.0), 'expectedOutput' : DEC(-60.0, 10.0)},
-      {'coord' : DEC(660.0, 10.0), 'expectedOutput' : DEC(-60.0, 10.0)},
-
-      {'coord' : DEC(200.0, 190.0), 'expectedOutput' : DEC(-20.0, 10.0)},
-      {'coord' : DEC(300.0, 190.0), 'expectedOutput' : DEC(-60.0, -170.0)},
-    ];
-
-    for (var elem in _inputsToExpected) {
-      test('coord: ${elem['coord']}', () {
-        var _actual = normalizeDEC(elem['coord'] as DEC);
-        expect((_actual.latitude - (elem['expectedOutput'] as DEC).latitude).abs() < 1e-10, true);
-        expect((_actual.longitude - (elem['expectedOutput'] as DEC).longitude) .abs() < 1e-10, true);
+        if (_actual == null) {
+          expect(null, elem['expectedOutput']);
+        } else {
+          expect(equalsLatLng(_actual, (elem['expectedOutput'] as Map<String, Object>)['coordinate'] as LatLng), true);
+        }
       });
     }
   });

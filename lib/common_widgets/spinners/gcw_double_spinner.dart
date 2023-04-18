@@ -7,27 +7,28 @@ import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/spinners/spinner_constants.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_double_textfield.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
+import 'package:gc_wizard/utils/constants.dart';
 import 'package:intl/intl.dart';
 
 class GCWDoubleSpinner extends StatefulWidget {
   final void Function(double) onChanged;
   final String? title;
   final double value;
-  final double? min;
-  final double? max;
+  double min;
+  double max;
   final TextEditingController? controller;
   final int numberDecimalDigits;
   final SpinnerLayout layout;
   final FocusNode? focusNode;
   final bool suppressOverflow;
 
-  const GCWDoubleSpinner(
+  GCWDoubleSpinner(
       {Key? key,
         required this.onChanged,
         this.title,
         required this.value,
-        this.min,
-        this.max,
+        this.min = MIN_DOUBLE,
+        this.max = MAX_DOUBLE,
         this.numberDecimalDigits = 2,
         this.controller,
         this.layout = SpinnerLayout.HORIZONTAL,
@@ -84,7 +85,7 @@ class GCWDoubleSpinnerState extends State<GCWDoubleSpinner> {
 
   void _decreaseValue() {
     setState(() {
-      if (widget.min == null || _currentValue > widget.min!) {
+      if (_currentValue > widget.min) {
         var newValue = _currentValue;
         if ((newValue.floor() - newValue).abs() <= 10e-10) {
           newValue--;
@@ -92,9 +93,9 @@ class GCWDoubleSpinnerState extends State<GCWDoubleSpinner> {
           newValue = newValue.floor().toDouble();
         }
 
-        _currentValue = widget.min == null ? newValue : max(widget.min!, newValue);
-      } else if (!widget.suppressOverflow && _currentValue == widget.min && widget.max != null) {
-        _currentValue = widget.max!;
+        _currentValue = max(widget.min, newValue);
+      } else if (!widget.suppressOverflow && _currentValue == widget.min) {
+        _currentValue = widget.max;
       }
 
       _setCurrentValueAndEmitOnChange(setTextFieldText: true);
@@ -103,7 +104,7 @@ class GCWDoubleSpinnerState extends State<GCWDoubleSpinner> {
 
   void _increaseValue() {
     setState(() {
-      if (widget.max == null || _currentValue < widget.max!) {
+      if (_currentValue < widget.max) {
         var newValue = _currentValue;
         if ((newValue.ceil() - newValue).abs() <= 10e-10) {
           newValue++;
@@ -111,9 +112,9 @@ class GCWDoubleSpinnerState extends State<GCWDoubleSpinner> {
           newValue = newValue.ceil().toDouble();
         }
 
-        _currentValue = widget.max == null ? newValue : min(widget.max!, newValue);
-      } else if (!widget.suppressOverflow && _currentValue == widget.max && widget.min != null) {
-        _currentValue = widget.min!;
+        _currentValue = min(widget.max, newValue);
+      } else if (!widget.suppressOverflow && _currentValue == widget.max) {
+        _currentValue = widget.min;
       }
 
       _setCurrentValueAndEmitOnChange(setTextFieldText: true);

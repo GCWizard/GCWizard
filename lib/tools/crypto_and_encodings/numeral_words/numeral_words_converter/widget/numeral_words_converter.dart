@@ -48,7 +48,7 @@ class NumeralWordsConverterState extends State<NumeralWordsConverter> {
   @override
   Widget build(BuildContext context) {
     _LANGUAGES ??= SplayTreeMap.from(
-          switchMapKeyValue(NUMERALWORDS_LANGUAGES_CONVERTER).map((key, value) => MapEntry(i18n(context, key), value)));
+        switchMapKeyValue(NUMERALWORDS_LANGUAGES_CONVERTER).map((key, value) => MapEntry(i18n(context, key), value)));
 
     return Column(
       children: <Widget>[
@@ -57,6 +57,16 @@ class NumeralWordsConverterState extends State<NumeralWordsConverter> {
           onChanged: (value) {
             setState(() {
               _currentLanguage = value;
+
+              if (_currentMode == GCWSwitchPosition.left) {
+                var min = MIN_MAX_NUMBER[_currentLanguage]![0];
+                var max = MIN_MAX_NUMBER[_currentLanguage]![1];
+                if (_currentNumber < min) {
+                  _currentNumber = min;
+                } else if (_currentNumber > max) {
+                  _currentNumber = max;
+                }
+              }
             });
           },
           items: _LANGUAGES!.entries.map((mode) {
@@ -85,8 +95,8 @@ class NumeralWordsConverterState extends State<NumeralWordsConverter> {
           )
         else // encode
           GCWIntegerSpinner(
-            min: MIN_MAX_NUMBER[_currentLanguage]?[0],
-            max: MIN_MAX_NUMBER[_currentLanguage]?[1],
+            min: MIN_MAX_NUMBER[_currentLanguage]![0],
+            max: MIN_MAX_NUMBER[_currentLanguage]![1],
             value: _currentNumber,
             onChanged: (value) {
               setState(() {
@@ -99,41 +109,62 @@ class NumeralWordsConverterState extends State<NumeralWordsConverter> {
     );
   }
 
-  Widget _buildOutput(BuildContext context) {
-    OutputConvertBase output;
+  Widget _buildOutputEncode(BuildContext context) {
+    OutputConvertToNumeralWord output = encodeNumberToNumeralWord(_currentLanguage, _currentNumber);
 
-    if (_currentMode == GCWSwitchPosition.right) {
-      // decode
-      output = decodeNumeralWordToNumber(_currentLanguage, removeAccents(_currentDecodeInput).toLowerCase());
-      if (output.error.isNotEmpty) {
-        return GCWDefaultOutput(
-          child: i18n(context, output.error),
-        );
-      }
-    } else {
-      // encode
-      output = encodeNumberToNumeralWord(_currentLanguage, _currentNumber);
+    return GCWDefaultOutput(
+        child: Column(children: <Widget>[
+            Column(
+              children: <Widget>[
+                GCWOutputText(
+                  text: output.numeralWord,
+                ),
+                if (output.nameOfNumberSystem.isNotEmpty)
+                  Column(
+                    children: <Widget>[
+                      GCWTextDivider(text: i18n(context, output.nameOfNumberSystem)),
+                      GCWOutputText(
+                        text: output.numbersystem,
+                      ),
+                    ]
+                  )
+              ],
+            ),
+        ]));
+  }
+
+  Widget _buildOutputDecode(BuildContext context) {
+    OutputConvertToNumber output = decodeNumeralWordToNumber(_currentLanguage, removeAccents(_currentDecodeInput).toLowerCase());
+
+    if (output.error.isNotEmpty) {
+      return GCWDefaultOutput(
+        child: i18n(context, output.error),
+      );
     }
 
     return GCWDefaultOutput(
         child: Column(children: <Widget>[
-      if (output.title.isNotEmpty)
-        Column(
-          children: <Widget>[
-            GCWTextDivider(text: i18n(context, output.title)),
-            GCWOutputText(
-              text: output.numbersystem,
-            )
-          ],
-        ),
-      if (_currentMode == GCWSwitchPosition.right) // decode
-        GCWOutputText(
-          text: _currentDecodeInput.isEmpty ? '' : (output as OutputConvertToNumber).number.toString(),
-        )
-      else
-        GCWOutputText(
-          text: (output as OutputConvertToNumeralWord).numeralWord,
-        ),
-    ]));
+          GCWOutputText(
+            text: _currentDecodeInput.isEmpty ? '' : output.number.toString(),
+          ),
+          if (output.nameOfNumberSystem.isNotEmpty)
+            Column(
+              children: <Widget>[
+                GCWTextDivider(text: i18n(context, output.nameOfNumberSystem)),
+                GCWOutputText(
+                  text: output.numbersystem,
+                ),
+              ],
+            ),
+        ]));
   }
+
+  Widget _buildOutput(BuildContext context) {
+    if (_currentMode == GCWSwitchPosition.right) {
+      return _buildOutputDecode(context);
+    } else {
+      return _buildOutputEncode(context);
+    }
+  }
+
 }

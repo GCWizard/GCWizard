@@ -4,10 +4,11 @@ import 'package:gc_wizard/common_widgets/spinners/gcw_double_spinner.dart';
 import 'package:gc_wizard/common_widgets/units/gcw_unit_dropdown.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit_category.dart';
+import 'package:gc_wizard/utils/constants.dart';
 
 class GCWUnitInput<T extends Unit> extends StatefulWidget {
-  final double? min;
-  final double? max;
+  final double min;
+  final double max;
   final int? numberDecimalDigits;
   final double value;
   final List<T>? unitList;
@@ -21,8 +22,8 @@ class GCWUnitInput<T extends Unit> extends StatefulWidget {
   const GCWUnitInput(
       {Key? key,
       this.title,
-      this.min,
-      this.max,
+      this.min = MIN_DOUBLE,
+      this.max = MAX_DOUBLE,
       this.numberDecimalDigits = 5,
       this.value = 0.0,
       this.unitCategory,

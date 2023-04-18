@@ -114,7 +114,7 @@ void main() {
           ''},
       {'input' : 'hidden12.jpg', 'expectedOutput' :
           'hidden12.jpg, JPEG, 243577 bytes, \n'
-          '    <<!!!HIDDEN_FILE!!!>>_1, _7z, 104345 bytes, \n'
+          '    <<!!!HIDDEN_FILE!!!>>_1, _7Z, 104345 bytes, \n'
           ''},
 
       {'input' : 'hidden13.jpg', 'expectedOutput' :

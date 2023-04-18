@@ -1,7 +1,14 @@
 part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/logic/wherigo_analyze.dart';
 
 bool _insideSectionTask(String currentLine) {
-  if (RegExp(r'( Wherigo.ZTask)').hasMatch(currentLine) || RegExp(r'(.ZVariables =)').hasMatch(currentLine)) {
+  if (RegExp(r'( Wherigo.ZTask)').hasMatch(currentLine)) {
+    return false;
+  }
+  return _notDoneWithTasks(currentLine);
+}
+
+bool _notDoneWithTasks(String currentLine) {
+  if (RegExp(r'( Wherigo.ZInput)').hasMatch(currentLine) || RegExp(r'( Wherigo.ZTimer)').hasMatch(currentLine) || RegExp(r'(.ZVariables =)').hasMatch(currentLine)) {
     return false;
   }
   return true;
@@ -23,6 +30,10 @@ WherigoTaskData _analyzeAndExtractTaskSectionData(List<String> lines) {
 
   for (int i = 0; i < lines.length; i++) {
     lines[i] = lines[i].trim();
+
+    if (RegExp(r'( Wherigo.ZTask\()').hasMatch(lines[i])) {
+      LUAname = getLUAName(lines[i]);
+    }
 
     if (lines[i].startsWith(LUAname + '.Id')) {
       id = getLineData(lines[i], LUAname, 'Id', _obfuscatorFunction, _obfuscatorTable);
@@ -72,5 +83,15 @@ WherigoTaskData _analyzeAndExtractTaskSectionData(List<String> lines) {
       complete = getLineData(lines[i], LUAname, 'Complete', _obfuscatorFunction, _obfuscatorTable);
     }
   }
-  return WherigoTaskData(LUAname, id, name, description, visible, media, icon, active, complete, correctstate);
+  return WherigoTaskData(
+      TaskLUAName: LUAname,
+      TaskID: id,
+      TaskName: name,
+      TaskDescription: description,
+      TaskVisible: visible,
+      TaskMedia: media,
+      TaskIcon: icon,
+      TaskActive: active,
+      TaskComplete: complete,
+      TaskCorrectstate: correctstate);
 }

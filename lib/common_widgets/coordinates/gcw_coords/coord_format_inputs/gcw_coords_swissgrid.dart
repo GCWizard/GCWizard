@@ -3,8 +3,9 @@ part of 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart
 class _GCWCoordsSwissGrid extends StatefulWidget {
   final void Function(SwissGrid) onChanged;
   final BaseCoordinate coordinates;
+  final bool isDefault;
 
-  const _GCWCoordsSwissGrid({Key? key, required this.onChanged, required this.coordinates}) : super(key: key);
+  const _GCWCoordsSwissGrid({Key? key, required this.onChanged, required this.coordinates, this.isDefault = true}) : super(key: key);
 
   @override
   _GCWCoordsSwissGridState createState() => _GCWCoordsSwissGridState();
@@ -16,6 +17,8 @@ class _GCWCoordsSwissGridState extends State<_GCWCoordsSwissGrid> {
 
   var _currentEasting = defaultDoubleText;
   var _currentNorthing = defaultDoubleText;
+
+  bool _initialized = false;
 
   @override
   void initState() {
@@ -33,14 +36,18 @@ class _GCWCoordsSwissGridState extends State<_GCWCoordsSwissGrid> {
 
   @override
   Widget build(BuildContext context) {
-    var swissGrid = widget.coordinates is SwissGrid
-        ? widget.coordinates as SwissGrid
-        : SwissGrid.fromLatLon(widget.coordinates.toLatLng() ?? defaultCoordinate, defaultEllipsoid);
-    _currentEasting.value = swissGrid.easting;
-    _currentNorthing.value = swissGrid.northing;
+    if (!widget.isDefault && !_initialized) {
+      var swissGrid = widget.coordinates is SwissGrid
+          ? widget.coordinates as SwissGrid
+          : SwissGrid.fromLatLon(widget.coordinates.toLatLng() ?? defaultCoordinate, defaultEllipsoid);
+      _currentEasting.value = swissGrid.easting;
+      _currentNorthing.value = swissGrid.northing;
 
-    _EastingController.text = _currentEasting.value.toString();
-    _NorthingController.text = _currentNorthing.value.toString();
+      _EastingController.text = _currentEasting.value.toString();
+      _NorthingController.text = _currentNorthing.value.toString();
+
+      _initialized = true;
+    }
 
     return Column(children: <Widget>[
       GCWDoubleTextField(

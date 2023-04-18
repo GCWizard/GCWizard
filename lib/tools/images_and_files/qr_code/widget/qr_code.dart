@@ -129,6 +129,7 @@ class QrCodeState extends State<QrCode> {
       if (_outDataEncrypt == null) return null;
       return Image.memory(_outDataEncrypt!);
     } else {
+      if (_outDataDecrypt == null) return null;
       return _outDataDecrypt!;
     }
   }

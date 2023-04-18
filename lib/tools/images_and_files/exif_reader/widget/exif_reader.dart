@@ -161,7 +161,7 @@ class _ExifReaderState extends State<ExifReader> {
 
     var _currentCoordsFormat = defaultCoordinateFormat;
     List<BaseCoordinate> _currentOutput = [
-      buildCoordinatesByFormat(defaultCoordinateFormat, point!, defaultEllipsoid),
+      buildCoordinate(defaultCoordinateFormat, point!, defaultEllipsoid),
     ];
 
     widgets.add(

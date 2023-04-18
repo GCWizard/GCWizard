@@ -32,40 +32,19 @@ String _answerVariable = '';
 
 List<WherigoInputData> _cartridgeInputs = [];
 List<List<WherigoActionMessageElementData>> _cartridgeMessages = [];
-List<WherigoAnswerData> _cartridgeAnswers = [];
 List<WherigoVariableData> _cartridgeVariables = [];
 Map<String, WherigoObjectData> _cartridgeNameToObject = {};
 
 List<String> _LUAAnalyzeResults = [];
 WHERIGO_ANALYSE_RESULT_STATUS _LUAAnalyzeStatus = WHERIGO_ANALYSE_RESULT_STATUS.OK;
 
-String _LUAname = '';
-String _container = '';
-
 List<String> _declaration = [];
 
 List<WherigoActionMessageElementData> _singleMessageDialog = [];
 
-String _inputObject = '';
 List<WherigoInputData> _resultInputs = [];
 
-List<WherigoActionMessageElementData> _answerActions = [];
-List<String> _answerList = [];
-String _answerHash = '';
-// TODO Thomas As all of such constructions, please use explicit class types for values which make it better to check for Nullability
-// this is not feasibla at this point. Because if there is no input then there will be no answer.
-// This construction eases the access to answers. Otherwise the list of answers will be repeatedly searched for the correct answers corresponding with the input
-Map<String, List<WherigoAnswerData>> _Answers = {};
-// class WherigoAnswer {
-//   final String InputFunction;
-//   final List<WherigoAnswerData> InputAnswers;
-//
-//   WherigoAnswer(
-//     this.InputFunction,
-//     this.InputAnswers,
-//   );
-// }
-// List<WherigoAnswer> _Answers = [];
+List<WherigoAnswer> _Answers = [];
 
 Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonline, {SendPort? sendAsyncPort}) async {
   WHERIGO_FILE_LOAD_STATE _LUAchecksToDo = WHERIGO_FILE_LOAD_STATE.NULL;
@@ -152,28 +131,30 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
     }
 
     _checkAndGetCartridgeName(lines[i]);
-    _checkAndGetCartridgeMetaData(lines[i]);
 
     // ----------------------------------------------------------------------------------------------------------------
     // search and get Media Object
     //
+    late WherigoMediaData cartridgeMediaData;
     try {
       if (RegExp(r'(Wherigo.ZMedia\()').hasMatch(lines[i])) {
         currentObjectSection = WHERIGO_OBJECT_TYPE.MEDIA;
-        analyzeLines = [];
-       _LUAname = getLUAName(lines[i]);
         do {
-          i++;
-          analyzeLines.add(lines[i]);
-          if (sendAsyncPort != null && (i % progressStep == 0)) {
-            sendAsyncPort.send(DoubleText('progress', i / lines.length / 2));
-          }
-        } while (_insideSectionMedia(lines[i + 1]) && (i < lines.length - 1));
+          analyzeLines = [];
 
-        WherigoMediaData cartridgeMediaData = _analyzeAndExtractMediaSectionData(analyzeLines);
-        _cartridgeMedia.add(cartridgeMediaData);
-        _cartridgeNameToObject[_LUAname] = WherigoObjectData(cartridgeMediaData.MediaID, index,
-            cartridgeMediaData.MediaName, cartridgeMediaData.MediaName, WHERIGO_OBJECT_TYPE.MEDIA);
+          do {
+            analyzeLines.add(lines[i].trim());
+            if (sendAsyncPort != null && (i % progressStep == 0)) {
+              sendAsyncPort.send(DoubleText('progress', i / lines.length / 2));
+            }
+            i++;
+          } while (_insideSectionMedia(lines[i]) && (i + 1 < lines.length - 1));
+
+          cartridgeMediaData = _analyzeAndExtractMediaSectionData(analyzeLines);
+          _cartridgeMedia.add(cartridgeMediaData);
+          _cartridgeNameToObject[cartridgeMediaData.MediaLUAName] = WherigoObjectData(cartridgeMediaData.MediaID, index,
+              cartridgeMediaData.MediaName, cartridgeMediaData.MediaName, WHERIGO_OBJECT_TYPE.MEDIA);
+        } while (_notDoneWithMedias(lines[i]) && (i + 1 < lines.length - 1));
       } // end if line hasmatch zmedia
     } catch (exception) {
       _LUAAnalyzeStatus = WHERIGO_ANALYSE_RESULT_STATUS.ERROR_LUA;
@@ -181,26 +162,43 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
     }
 
     // ----------------------------------------------------------------------------------------------------------------
+    // search and get Cartridge Meta Data
+    //
+    try {
+      if (_CartridgeLUAName != '') {
+        if (lines[i].startsWith(_CartridgeLUAName)) {
+          _checkAndGetCartridgeMetaData(lines[i]);
+        }
+      }
+    } catch (exception) {
+      _LUAAnalyzeStatus = WHERIGO_ANALYSE_RESULT_STATUS.ERROR_LUA;
+      _LUAAnalyzeResults.addAll(addExceptionErrorMessage(i, 'wherigo_error_lua_cartridge_meta_data', exception));
+    }
+
+
+    // ----------------------------------------------------------------------------------------------------------------
     // search and get Zone Object
     //
+    late WherigoZoneData cartridgeZoneData;
     try {
       if (RegExp(r'( Wherigo.Zone\()').hasMatch(lines[i])) {
         currentObjectSection = WHERIGO_OBJECT_TYPE.ZONE;
-        analyzeLines = [];
-        _LUAname = getLUAName(lines[i]);
         do {
-          i++;
-          analyzeLines.add(lines[i]);
-          if (sendAsyncPort != null && (i % progressStep == 0)) {
-            sendAsyncPort.send(DoubleText('progress', i / lines.length / 2));
-          }
-        } while (_insideSectionZone(lines[i + 1]) && (i < lines.length - 1));
+          analyzeLines = [];
+          do {
+            analyzeLines.add(lines[i].trim());
+            if (sendAsyncPort != null && (i % progressStep == 0)) {
+              sendAsyncPort.send(DoubleText('progress', i / lines.length / 2));
+            }
+            i++;
+          } while (_insideSectionZone(lines[i]) && (i + 1 < lines.length - 1));
 
-        WherigoZoneData cartridgeZoneData = _analyzeAndExtractZoneSectionData(analyzeLines);
+          cartridgeZoneData = _analyzeAndExtractZoneSectionData(analyzeLines);
 
-        _cartridgeZones.add(cartridgeZoneData);
-        _cartridgeNameToObject[_LUAname] = WherigoObjectData(cartridgeZoneData.ZoneID, 0, cartridgeZoneData.ZoneName,
-            cartridgeZoneData.ZoneMediaName, WHERIGO_OBJECT_TYPE.ZONE);
+          _cartridgeZones.add(cartridgeZoneData);
+          _cartridgeNameToObject[cartridgeZoneData.ZoneLUAName] = WherigoObjectData(cartridgeZoneData.ZoneID, 0,
+              cartridgeZoneData.ZoneName, cartridgeZoneData.ZoneMediaName, WHERIGO_OBJECT_TYPE.ZONE);
+        } while (_notDoneWithZones(lines[i]) && (i + 1 < lines.length - 1));
       }
     } catch (exception) {
       _LUAAnalyzeStatus = WHERIGO_ANALYSE_RESULT_STATUS.ERROR_LUA;
@@ -210,29 +208,30 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
     // ----------------------------------------------------------------------------------------------------------------
     // search and get Character Object
     //
+    late WherigoCharacterData cartridgeCharacterData;
     try {
       if (RegExp(r'( Wherigo.ZCharacter\()').hasMatch(lines[i])) {
         currentObjectSection = WHERIGO_OBJECT_TYPE.CHARACTER;
-        _LUAname = getLUAName(lines[i]);
-        _container = getContainer(lines[i]);
-        analyzeLines = [];
         do {
-          i++;
-          analyzeLines.add(lines[i]);
-          if (sendAsyncPort != null && (i % progressStep == 0)) {
-            sendAsyncPort.send(DoubleText('progress', i / lines.length / 2));
-          }
-        } while (_insideSectionCharacter(lines[i + 1]) && (i < lines.length - 1));
+          analyzeLines = [];
+          do {
+            analyzeLines.add(lines[i].trim());
+            if (sendAsyncPort != null && (i % progressStep == 0)) {
+              sendAsyncPort.send(DoubleText('progress', i / lines.length / 2));
+            }
+            i++;
+          } while (_insideSectionCharacter(lines[i]) && (i + 1 < lines.length - 1));
 
-        WherigoCharacterData cartridgeCharacterData = _analyzeAndExtractCharacterSectionData(analyzeLines, _container);
+          cartridgeCharacterData = _analyzeAndExtractCharacterSectionData(analyzeLines);
 
-        _cartridgeCharacters.add(cartridgeCharacterData);
-        _cartridgeNameToObject[_LUAname] = WherigoObjectData(
-            cartridgeCharacterData.CharacterID,
-            0,
-            cartridgeCharacterData.CharacterName,
-            cartridgeCharacterData.CharacterMediaName,
-            WHERIGO_OBJECT_TYPE.CHARACTER);
+          _cartridgeCharacters.add(cartridgeCharacterData);
+          _cartridgeNameToObject[cartridgeCharacterData.CharacterLUAName] = WherigoObjectData(
+              cartridgeCharacterData.CharacterID,
+              0,
+              cartridgeCharacterData.CharacterName,
+              cartridgeCharacterData.CharacterMediaName,
+              WHERIGO_OBJECT_TYPE.CHARACTER);
+        } while (_notDoneWithCharacters(lines[i]) && (i + 1 < lines.length - 1));
       } // end if
     } catch (exception) {
       _LUAAnalyzeStatus = WHERIGO_ANALYSE_RESULT_STATUS.ERROR_LUA;
@@ -242,25 +241,24 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
     // ----------------------------------------------------------------------------------------------------------------
     // search and get Item Object
     //
+    late WherigoItemData cartridgeItemData;
     try {
       if (RegExp(r'( Wherigo.ZItem\()').hasMatch(lines[i])) {
         currentObjectSection = WHERIGO_OBJECT_TYPE.ITEM;
-        _LUAname = getLUAName(lines[i]);
-        _container = getContainer(lines[i]);
-        analyzeLines = [];
         do {
-          i++;
-          analyzeLines.add(lines[i]);
-          if (sendAsyncPort != null && (i % progressStep == 0)) {
-            sendAsyncPort.send(DoubleText('progress', i / lines.length / 2));
-          }
-        } while (_insideSectionItem(lines[i + 1]) && (i < lines.length - 1));
-
-        WherigoItemData cartridgeItemData = _analyzeAndExtractItemSectionData(analyzeLines, _container);
-
-        _cartridgeItems.add(cartridgeItemData);
-        _cartridgeNameToObject[_LUAname] = WherigoObjectData(cartridgeItemData.ItemID, 0, cartridgeItemData.ItemName,
-            cartridgeItemData.ItemMedia, WHERIGO_OBJECT_TYPE.ITEM);
+          analyzeLines = [];
+          do {
+            analyzeLines.add(lines[i].trim());
+            if (sendAsyncPort != null && (i % progressStep == 0)) {
+              sendAsyncPort.send(DoubleText('progress', i / lines.length / 2));
+            }
+            i++;
+          } while (_insideSectionItem(lines[i]) && (i + 1 < lines.length - 1));
+          cartridgeItemData = _analyzeAndExtractItemSectionData(analyzeLines);
+          _cartridgeItems.add(cartridgeItemData);
+          _cartridgeNameToObject[cartridgeItemData.ItemLUAName] = WherigoObjectData(cartridgeItemData.ItemID, 0,
+              cartridgeItemData.ItemName, cartridgeItemData.ItemMedia, WHERIGO_OBJECT_TYPE.ITEM);
+        } while (_notDoneWithItems(lines[i]) && (i + 1 < lines.length - 1));
       } // end if
     } catch (exception) {
       _LUAAnalyzeStatus = WHERIGO_ANALYSE_RESULT_STATUS.ERROR_LUA;
@@ -270,24 +268,27 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
     // ----------------------------------------------------------------------------------------------------------------
     // search and get Task Object
     //
+    late WherigoTaskData cartridgeTaskData;
     try {
       if (RegExp(r'( Wherigo.ZTask\()').hasMatch(lines[i])) {
         currentObjectSection = WHERIGO_OBJECT_TYPE.TASK;
-        _LUAname = getLUAName(lines[i]);
-        analyzeLines = [];
+
         do {
-          i++;
-          analyzeLines.add(lines[i]);
-          if (sendAsyncPort != null && (i % progressStep == 0)) {
-            sendAsyncPort.send(DoubleText('progress', i / lines.length / 2));
-          }
-        } while (_insideSectionTask(lines[i + 1]) && (i < lines.length - 1));
+          analyzeLines = [];
+          do {
+            analyzeLines.add(lines[i].trim());
+            if (sendAsyncPort != null && (i % progressStep == 0)) {
+              sendAsyncPort.send(DoubleText('progress', i / lines.length / 2));
+            }
+            i++;
+          } while (_insideSectionTask(lines[i]) && (i + 1 < lines.length - 1));
 
-        WherigoTaskData cartridgeTaskData = _analyzeAndExtractTaskSectionData(analyzeLines);
+          cartridgeTaskData = _analyzeAndExtractTaskSectionData(analyzeLines);
 
-        _cartridgeTasks.add(cartridgeTaskData);
-        _cartridgeNameToObject[_LUAname] = WherigoObjectData(cartridgeTaskData.TaskID, 0, cartridgeTaskData.TaskName,
-            cartridgeTaskData.TaskMedia, WHERIGO_OBJECT_TYPE.TASK);
+          _cartridgeTasks.add(cartridgeTaskData);
+          _cartridgeNameToObject[cartridgeTaskData.TaskLUAName] = WherigoObjectData(cartridgeTaskData.TaskID, 0,
+              cartridgeTaskData.TaskName, cartridgeTaskData.TaskMedia, WHERIGO_OBJECT_TYPE.TASK);
+        } while (_notDoneWithTasks(lines[i]) && (i + 1 < lines.length - 1));
       } // end if task
     } catch (exception) {
       _LUAAnalyzeStatus = WHERIGO_ANALYSE_RESULT_STATUS.ERROR_LUA;
@@ -310,13 +311,14 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
           if (_declaration[1].startsWith(_obfuscatorFunction)) {
             // content is obfuscated
             _cartridgeVariables.add(WherigoVariableData(
-                _declaration[1].trim(),
-                deobfuscateUrwigoText(
+                VariableLUAName: _declaration[1].trim(),
+                VariableName: deobfuscateUrwigoText(
                     _declaration[2].replaceAll(_obfuscatorFunction, '').replaceAll('("', '').replaceAll('")', ''),
                     _obfuscatorTable)));
           } else {
             _cartridgeVariables.add(// content not obfuscated
-                WherigoVariableData(_declaration[1].trim(), _declaration[2].replaceAll('"', '')));
+                WherigoVariableData(
+                    VariableLUAName: _declaration[1].trim(), VariableName: _declaration[2].replaceAll('"', '')));
           }
         }
         i++;
@@ -327,16 +329,17 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
             if (_declaration[1].startsWith(_obfuscatorFunction)) {
               // content is obfuscated
               _cartridgeVariables.add(WherigoVariableData(
-                  _declaration[0].trim(),
-                  deobfuscateUrwigoText(
+                  VariableLUAName: _declaration[0].trim(),
+                  VariableName: deobfuscateUrwigoText(
                       _declaration[1].replaceAll(_obfuscatorFunction, '').replaceAll('("', '').replaceAll('")', ''),
                       _obfuscatorTable)));
             } else {
               _cartridgeVariables.add(// content not obfuscated
-                  WherigoVariableData(_declaration[0].trim(), _declaration[1].replaceAll('"', '')));
+                  WherigoVariableData(
+                      VariableLUAName: _declaration[0].trim(), VariableName: _declaration[1].replaceAll('"', '')));
             }
           } else {
-            _cartridgeVariables.add(WherigoVariableData(_declaration[0].trim(), ''));
+            _cartridgeVariables.add(WherigoVariableData(VariableLUAName: _declaration[0].trim(), VariableName: ''));
           }
 
           i++;
@@ -352,24 +355,27 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
     // ----------------------------------------------------------------------------------------------------------------
     // search and get Timer Object
     //
+    late WherigoTimerData cartridgeTimerData;
     try {
       if (RegExp(r'( Wherigo.ZTimer\()').hasMatch(lines[i])) {
         currentObjectSection = WHERIGO_OBJECT_TYPE.TIMER;
-        _LUAname = getLUAName(lines[i]);
-        analyzeLines = [];
+
         do {
-          i++;
-          analyzeLines.add(lines[i]);
-          if (sendAsyncPort != null && (i % progressStep == 0)) {
-            sendAsyncPort.send(DoubleText('progress', i / lines.length / 2));
-          }
-        } while (_insideSectionTimer(lines[i + 1]) && (i < lines.length - 1));
+          analyzeLines = [];
+          do {
+            analyzeLines.add(lines[i].trim());
+            if (sendAsyncPort != null && (i % progressStep == 0)) {
+              sendAsyncPort.send(DoubleText('progress', i / lines.length / 2));
+            }
+            i++;
+          } while (_insideSectionTimer(lines[i]) && (i + 1 < lines.length - 1));
 
-        WherigoTimerData cartridgeTimerData = _analyzeAndExtractTimerSectionData(analyzeLines);
+          cartridgeTimerData = _analyzeAndExtractTimerSectionData(analyzeLines);
 
-        _cartridgeTimers.add(cartridgeTimerData);
-        _cartridgeNameToObject[_LUAname] = WherigoObjectData(
-            cartridgeTimerData.TimerID, 0, cartridgeTimerData.TimerName, '', WHERIGO_OBJECT_TYPE.TIMER);
+          _cartridgeTimers.add(cartridgeTimerData);
+          _cartridgeNameToObject[cartridgeTimerData.TimerLUAName] = WherigoObjectData(
+              cartridgeTimerData.TimerID, 0, cartridgeTimerData.TimerName, '', WHERIGO_OBJECT_TYPE.TIMER);
+        } while (_notDoneWithTimers(lines[i]) && (i + 1 < lines.length - 1));
       }
     } catch (exception) {
       _LUAAnalyzeStatus = WHERIGO_ANALYSE_RESULT_STATUS.ERROR_LUA;
@@ -379,24 +385,27 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
     // ----------------------------------------------------------------------------------------------------------------
     // search and get Input Object
     //
+    late WherigoInputData cartridgeInputData;
     try {
       if (RegExp(r'( Wherigo.ZInput\()').hasMatch(lines[i])) {
         currentObjectSection = WHERIGO_OBJECT_TYPE.INPUT;
-        _LUAname = getLUAName(lines[i]);
-        analyzeLines = [];
+
         do {
-          i++;
-          analyzeLines.add(lines[i]);
-          if (sendAsyncPort != null && (i % progressStep == 0)) {
-            sendAsyncPort.send(DoubleText('progress', i / lines.length / 2));
-          }
-        } while (_insideSectionInput(lines[i + 1]) && (i < lines.length - 1));
+          analyzeLines = [];
+          do {
+            analyzeLines.add(lines[i].trim());
+            if (sendAsyncPort != null && (i % progressStep == 0)) {
+              sendAsyncPort.send(DoubleText('progress', i / lines.length / 2));
+            }
+            i++;
+          } while (_insideSectionInput(lines[i]) && (i + 1 < lines.length - 1));
 
-        WherigoInputData cartridgeInputData = _analyzeAndExtractInputSectionData(analyzeLines);
+          cartridgeInputData = _analyzeAndExtractInputSectionData(analyzeLines);
 
-        _cartridgeInputs.add(cartridgeInputData);
-        _cartridgeNameToObject[_LUAname] = WherigoObjectData(cartridgeInputData.InputID, 0,
-            cartridgeInputData.InputName, cartridgeInputData.InputMedia, WHERIGO_OBJECT_TYPE.INPUT);
+          _cartridgeInputs.add(cartridgeInputData);
+          _cartridgeNameToObject[cartridgeInputData.InputLUAName] = WherigoObjectData(cartridgeInputData.InputID, 0,
+              cartridgeInputData.InputName, cartridgeInputData.InputMedia, WHERIGO_OBJECT_TYPE.INPUT);
+        } while (_notDoneWithInputs(lines[i]) && (i + 1 < lines.length - 1));
       } // end if lines[i] hasMatch Wherigo.ZInput - Input-Object
     } catch (exception) {
       _LUAAnalyzeStatus = WHERIGO_ANALYSE_RESULT_STATUS.ERROR_LUA;
@@ -407,27 +416,19 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
     // search and get all Answers - these are part of the function <InputObject>:OnGetInput(input)
     //
     try {
-      if (lines[i].trimRight().endsWith(':OnGetInput(input)')) {
-        // function for getting all inputs for an input object found
+      if (lines[i].endsWith(':OnGetInput(input)')) {
+        for (int j = 0; j < _cartridgeInputs.length; j++) {
+          analyzeLines = [];
+          do {
+            analyzeLines.add(lines[i].trim());
+            i++;
 
-        _inputObject = '';
-        _answerActions = [];
-        _answerVariable = '';
-
-        // getting name of input function
-        _inputObject = lines[i].replaceAll('function ', '').replaceAll(':OnGetInput(input)', '').trim();
-        _Answers[_inputObject] = [];
-
-        analyzeLines = [];
-        do {
-          i++;
-          analyzeLines.add(lines[i].trim());
-
-          if (sendAsyncPort != null && (i % progressStep == 0)) {
-            sendAsyncPort.send(DoubleText('progress', i / lines.length / 2));
-          }
-        } while (_insideSectionOnGetInput(lines[i], lines[i + 1]) && (i < lines.length - 1));
-        _analyzeAndExtractOnGetInputSectionData(analyzeLines);
+            if (sendAsyncPort != null && (i % progressStep == 0)) {
+              sendAsyncPort.send(DoubleText('progress', i / lines.length / 2));
+            }
+          } while (_insideSectionOnGetInput(lines[i]) && (i < lines.length - 1));
+          _Answers.add(_analyzeAndExtractOnGetInputSectionData(analyzeLines));
+        }
       } // end if identify input function
     } catch (exception) {
       _LUAAnalyzeStatus = WHERIGO_ANALYSE_RESULT_STATUS.ERROR_LUA;
@@ -438,40 +439,21 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
   // ------------------------------------------------------------------------------------------------------------------
   // Save Answers to Input Objects
   //
-  for (var inputObject in _cartridgeInputs) {
-    // _Answers.forEach((answer) {
-    //   if (answer.InputLUAName == inputObject.InputLUAName) {
-    //     _resultInputs.add(WherigoInputData(
-    //         inputObject.InputLUAName,
-    //         inputObject.InputID,
-    //         inputObject.InputVariableID,
-    //         inputObject.InputName,
-    //         inputObject.InputDescription,
-    //         inputObject.InputVisible,
-    //         inputObject.InputMedia,
-    //         inputObject.InputIcon,
-    //         inputObject.InputType,
-    //         inputObject.InputText,
-    //         inputObject.InputChoices,
-    //         answer.InputAnswers));
-    //   }
-    //   }
-    // });
+  //for (var inputObject in _cartridgeInputs) {
+  for (int i = 0; i < _cartridgeInputs.length; i++) {
     _resultInputs.add(WherigoInputData(
-        inputObject.InputLUAName,
-        inputObject.InputID,
-        inputObject.InputVariableID,
-        inputObject.InputName,
-        inputObject.InputDescription,
-        inputObject.InputVisible,
-        inputObject.InputMedia,
-        inputObject.InputIcon,
-        inputObject.InputType,
-        inputObject.InputText,
-        inputObject.InputChoices,
-        // TODO Thomas I can not check if logically correct to send empty list as exception. However this can be removed when using explicit values
-        // it is logically correct. If there is no input then there will be no answer
-        _Answers[inputObject.InputLUAName] ?? []));
+        InputLUAName: _cartridgeInputs[i].InputLUAName,
+        InputID: _cartridgeInputs[i].InputID,
+        InputVariableID: _cartridgeInputs[i].InputVariableID,
+        InputName: _cartridgeInputs[i].InputName,
+        InputDescription: _cartridgeInputs[i].InputDescription,
+        InputVisible: _cartridgeInputs[i].InputVisible,
+        InputMedia: _cartridgeInputs[i].InputMedia,
+        InputIcon: _cartridgeInputs[i].InputIcon,
+        InputType: _cartridgeInputs[i].InputType,
+        InputText: _cartridgeInputs[i].InputText,
+        InputChoices: _cartridgeInputs[i].InputChoices,
+        InputAnswers: _Answers[i].InputAnswers));
   }
   _cartridgeInputs = _resultInputs;
 
@@ -495,7 +477,6 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
         Timers: _cartridgeTimers,
         Media: _cartridgeMedia,
         Messages: _cartridgeMessages,
-        Answers: _cartridgeAnswers,
         Variables: _cartridgeVariables,
         NameToObject: _cartridgeNameToObject,
         ResultStatus: _LUAAnalyzeStatus,
@@ -584,8 +565,8 @@ Future<void> _getDecompiledLUAFileFromServer(Uint8List byteListLUA) async {
   String address = 'http://sdklmfoqdd5qrtha.myfritz.net:7323/GCW_Unluac/';
   var uri = Uri.parse(address);
   var request = http.MultipartRequest('POST', uri)
-    ..files.add(
-        http.MultipartFile.fromBytes('file', byteListLUA, contentType: MediaType('application', 'octet-stream')));
+    ..files
+        .add(http.MultipartFile.fromBytes('file', byteListLUA, contentType: MediaType('application', 'octet-stream')));
   var response = await request.send();
 
   httpCode = response.statusCode;

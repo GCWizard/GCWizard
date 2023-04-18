@@ -33,13 +33,13 @@ class VisualCryptography extends StatefulWidget {
 class VisualCryptographyState extends State<VisualCryptography> {
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
 
-  late GCWFile _decodeImage1;
-  late GCWFile _decodeImage2;
-  late Uint8List? _outData;
-  late GCWFile _encodeImage;
-  late GCWFile _encodeKeyImage;
+  GCWFile? _decodeImage1;
+  GCWFile? _decodeImage2;
+  Uint8List? _outData;
+  GCWFile? _encodeImage;
+  GCWFile? _encodeKeyImage;
   int _encodeScale = 100;
-  late String? _encodeImageSize;
+  String? _encodeImageSize;
   var _decodeOffsetsX = 0;
   var _decodeOffsetsY = 0;
   var _encodeOffsetsX = 0;
@@ -146,7 +146,9 @@ class VisualCryptographyState extends State<VisualCryptography> {
         text: i18n(context, 'visual_cryptography_clear'),
         onPressed: () {
           setState(() {
-            _outData = cleanImage(_decodeImage1.bytes, _decodeImage2.bytes, _decodeOffsetsX, _decodeOffsetsY);
+            if (_decodeImage1 != null && _decodeImage2 != null) {
+              _outData = cleanImage(_decodeImage1!.bytes, _decodeImage2!.bytes, _decodeOffsetsX, _decodeOffsetsY);
+            }
           });
         },
       ),
@@ -174,7 +176,8 @@ class VisualCryptographyState extends State<VisualCryptography> {
       Container(
           padding: const EdgeInsets.symmetric(vertical: 25),
           child:
-              GCWImageView(imageData: GCWImageViewData(_encodeImage), suppressedButtons: const {GCWImageViewButtons.ALL}),
+              GCWImageView(imageData: _encodeImage == null ? null :GCWImageViewData(_encodeImage!),
+                  suppressedButtons: const {GCWImageViewButtons.ALL}),
         ),
 
       GCWOnOffSwitch(
@@ -290,7 +293,8 @@ class VisualCryptographyState extends State<VisualCryptography> {
 
   void __encodeImageSize() {
 
-    var _image = img.decodeImage(_encodeImage.bytes);
+    if (_encodeImage == null) return;
+    var _image = img.decodeImage(_encodeImage!.bytes);
     if (_image == null) return;
 
     _currentImageWidth = _image.width;
@@ -363,7 +367,7 @@ class VisualCryptographyState extends State<VisualCryptography> {
 
   Future<GCWAsyncExecuterParameters> _buildJobDataDecode() async {
     return GCWAsyncExecuterParameters(Tuple4<Uint8List, Uint8List, int, int>(
-        _decodeImage1.bytes, _decodeImage2.bytes, _decodeOffsetsX, _decodeOffsetsY));
+        _decodeImage1?.bytes ?? Uint8List(0), _decodeImage2?.bytes ?? Uint8List(0), _decodeOffsetsX, _decodeOffsetsY));
   }
 
   void _saveOutputDecode(Uint8List? output) {
@@ -464,8 +468,9 @@ class VisualCryptographyState extends State<VisualCryptography> {
   }
 
   Future<GCWAsyncExecuterParameters> _buildJobDataEncode() async {
-    return GCWAsyncExecuterParameters(Tuple5<Uint8List, Uint8List?, int, int, int>(_encodeImage.bytes,
-        _currentEncryptionWithKeyMode ? _encodeKeyImage.bytes : null, _encodeOffsetsX, _encodeOffsetsY, _encodeScale));
+    return GCWAsyncExecuterParameters(Tuple5<Uint8List, Uint8List?, int, int, int>(_encodeImage?.bytes ?? Uint8List(0),
+        _currentEncryptionWithKeyMode ? _encodeKeyImage?.bytes ?? Uint8List(0) : null,
+        _encodeOffsetsX, _encodeOffsetsY, _encodeScale));
   }
 
   void _saveOutputEncode(Tuple2<Uint8List, Uint8List?>? output) {

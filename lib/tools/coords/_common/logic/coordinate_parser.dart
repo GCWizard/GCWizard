@@ -1,17 +1,7 @@
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:latlong2/latlong.dart';
 
-const PATTERN_NO_NUMBERS = r'\s+?';
-const PATTERN_NOTHING_OR_NO_NUMBERS = r'\s*?';
-const PATTERN_LAT_SIGN = r'([NS][A-Za-zÄÖÜäöü]*?|[\+\-])';
-const PATTERN_LON_SIGN = r'([EWO][A-Za-zÄÖÜäöü]*?|[\+\-])';
-const PATTERN_LON_SIGN_WITH_SPACE = '(?:\\s+?$PATTERN_LON_SIGN)?';
-const PATTERN_LAT_DEGREE_INT = r'(\d{1,2})[\s°]+?';
-const PATTERN_LON_DEGREE_INT = r'(\d{1,3})[\s°]+?';
-const PATTERN_SECONDS_MINUTES = '([0-5]?\\d)[\\s\']+?';
-const PATTERN_DECIMAL = r'(?:\s*?[\.,]\s*?(\d+))?' '[\\s\'°"]+?';
 const LETTER = '[A-ZÄÖÜ]';
-
 var regexEnd = '';
 
 //wholeString == false: The first match at the text begin is taken - for copy

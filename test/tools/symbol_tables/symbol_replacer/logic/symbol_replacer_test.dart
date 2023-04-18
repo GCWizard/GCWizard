@@ -21,12 +21,12 @@ void main() {
     ];
 
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () async {
         var _actual = await replaceSymbols(_getFileData(elem['input'] as String), 50, 80);
         expect(_actual?.symbols.length, elem['expectedOutput']);
       });
-    });
+    }
   });
 
 }

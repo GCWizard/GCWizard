@@ -1,6 +1,9 @@
 part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/widget/wherigo_analyze.dart';
 
 // TODO Thomas: Does not return anything in some cases. For example if filedata == null but Contents.length > 1 (else case of "if" in line 17)
+// Although media objects are defined for both devices - garmin and pc - the content of a GWC Cartridge is defined at download time.
+// Hence the GWC contains either sound files for Garmin or pc.
+// Hence there could be a conflict in number of media files and media objects
 GCWFile? _getFileFrom(BuildContext context, String resourceName) {
   Uint8List? filedata;
   String? filename;

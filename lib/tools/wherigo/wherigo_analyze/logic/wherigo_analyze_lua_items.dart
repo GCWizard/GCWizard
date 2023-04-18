@@ -1,8 +1,15 @@
 part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/logic/wherigo_analyze.dart';
 
 bool _insideSectionItem(String currentLine) {
-  if (RegExp(r'( Wherigo.ZItem\()').hasMatch(currentLine) ||
-      RegExp(r'( Wherigo.ZTask\()').hasMatch(currentLine) ||
+  if (RegExp(r'( Wherigo.ZItem\()').hasMatch(currentLine)) {
+    return false;
+  }
+
+  return _notDoneWithItems(currentLine);
+}
+
+bool _notDoneWithItems(String currentLine) {
+  if (RegExp(r'( Wherigo.ZTask\()').hasMatch(currentLine) ||
       RegExp(r'(.ZVariables =)').hasMatch(currentLine) ||
       RegExp(r'( Wherigo.ZTimer\()').hasMatch(currentLine) ||
       RegExp(r'( Wherigo.ZInput\()').hasMatch(currentLine) ||
@@ -12,8 +19,9 @@ bool _insideSectionItem(String currentLine) {
   return true;
 }
 
-WherigoItemData _analyzeAndExtractItemSectionData(List<String> lines, String container) {
+WherigoItemData _analyzeAndExtractItemSectionData(List<String> lines) {
   String LUAname = '';
+  String container = '';
   String id = '';
   String name = '';
   String description = '';
@@ -21,7 +29,7 @@ WherigoItemData _analyzeAndExtractItemSectionData(List<String> lines, String con
   String media = '';
   String icon = '';
   String location = '';
-  WherigoZonePoint zonePoint = WherigoZonePoint(0.0, 0.0, 0.0);
+  WherigoZonePoint zonePoint = WHERIGO_NULLPOINT ;
   String locked = '';
   String opened = '';
 
@@ -29,19 +37,23 @@ WherigoItemData _analyzeAndExtractItemSectionData(List<String> lines, String con
 
   for (int i = 0; i < lines.length; i++) {
     lines[i] = lines[i].trim();
-    if (lines[i].trim().startsWith(LUAname + 'Container =')) {
+    if (RegExp(r'( Wherigo.ZItem\()').hasMatch(lines[i])) {
+      LUAname = getLUAName(lines[i]);
+      container = getContainer(lines[i]);
+    }
+    if (lines[i].startsWith(LUAname + 'Container =')) {
       container = getContainer(lines[i]);
     }
 
-    if (lines[i].trim().startsWith(LUAname + '.Id')) {
+    if (lines[i].startsWith(LUAname + '.Id')) {
       id = getLineData(lines[i], LUAname, 'Id', _obfuscatorFunction, _obfuscatorTable);
     }
 
-    if (lines[i].trim().startsWith(LUAname + '.Name')) {
+    if (lines[i].startsWith(LUAname + '.Name')) {
       name = getLineData(lines[i], LUAname, 'Name', _obfuscatorFunction, _obfuscatorTable);
     }
 
-    if (lines[i].trim().startsWith(LUAname + '.Description')) {
+    if (lines[i].startsWith(LUAname + '.Description')) {
       description = '';
       _sectionDescription = true;
       do {
@@ -56,35 +68,37 @@ WherigoItemData _analyzeAndExtractItemSectionData(List<String> lines, String con
       description = getLineData(description, LUAname, 'Description', _obfuscatorFunction, _obfuscatorTable).trim();
     }
 
-    if (lines[i].trim().startsWith(LUAname + '.Visible')) {
+    if (lines[i].startsWith(LUAname + '.Visible')) {
       visible = getLineData(lines[i], LUAname, 'Visible', _obfuscatorFunction, _obfuscatorTable);
     }
 
-    if (lines[i].trim().startsWith(LUAname + '.Media')) {
+    if (lines[i].startsWith(LUAname + '.Media')) {
       media = getLineData(lines[i], LUAname, 'Media', _obfuscatorFunction, _obfuscatorTable).trim();
     }
 
-    if (lines[i].trim().startsWith(LUAname + '.Icon')) {
+    if (lines[i].startsWith(LUAname + '.Icon')) {
       icon = getLineData(lines[i], LUAname, 'Icon', _obfuscatorFunction, _obfuscatorTable);
     }
 
-    if (lines[i].trim().startsWith(LUAname + '.Locked')) {
+    if (lines[i].startsWith(LUAname + '.Locked')) {
       locked = getLineData(lines[i], LUAname, 'Locked', _obfuscatorFunction, _obfuscatorTable);
     }
 
-    if (lines[i].trim().startsWith(LUAname + '.Opened')) {
+    if (lines[i].startsWith(LUAname + '.Opened')) {
       opened = getLineData(lines[i], LUAname, 'Opened', _obfuscatorFunction, _obfuscatorTable);
     }
 
-    if (lines[i].trim().startsWith(LUAname + '.ObjectLocation')) {
+    if (lines[i].startsWith(LUAname + '.ObjectLocation')) {
       location =
           lines[i].trim().replaceAll(LUAname + '.ObjectLocation', '').replaceAll(' ', '').replaceAll('=', '');
       if (location.endsWith('INVALID_ZONEPOINT')) {
         location = '';
       } else if (location.startsWith('ZonePoint')) {
         location = location.replaceAll('ZonePoint(', '').replaceAll(')', '').replaceAll(' ', '');
-        zonePoint = WherigoZonePoint(double.parse(location.split(',')[0]), double.parse(location.split(',')[1]),
-            double.parse(location.split(',')[2]));
+        zonePoint = WherigoZonePoint(
+            Latitude: double.parse(location.split(',')[0]),
+            Longitude: double.parse(location.split(',')[1]),
+            Altitude: double.parse(location.split(',')[2]));
         location = 'ZonePoint';
       } else {
         location = getLineData(lines[i], LUAname, 'ObjectLocation', _obfuscatorFunction, _obfuscatorTable);
@@ -92,5 +106,16 @@ WherigoItemData _analyzeAndExtractItemSectionData(List<String> lines, String con
     }
   }
   return WherigoItemData(
-      LUAname, id, name, description, visible, media, icon, location, zonePoint, container, locked, opened);
+      ItemLUAName: LUAname,
+      ItemID: id,
+      ItemName: name,
+      ItemDescription: description,
+      ItemVisible: visible,
+      ItemMedia: media,
+      ItemIcon: icon,
+      ItemLocation: location,
+      ItemZonepoint: zonePoint,
+      ItemContainer: container,
+      ItemLocked: locked,
+      ItemOpened: opened);
 }

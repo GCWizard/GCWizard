@@ -41,62 +41,6 @@ const Map<String, String> _QWERTZ_T1NumberToSymbol = {
   ' ': ' ',
   '.': '.'
 };
-const Map<String, String> _DvorakDeuIINumberToSymbol = {
-  '1': '!',
-  '2': '"',
-  '3': '§',
-  '4': '\$',
-  '5': '%',
-  '6': '&',
-  '7': '/',
-  '8': '(',
-  '9': ')',
-  '0': '=',
-  ' ': ' ',
-  '.': '.'
-};
-const Map<String, String> _DvorakDeuI1NumberToSymbol = {
-  '1': '!',
-  '2': '"',
-  '3': '§',
-  '4': '\$',
-  '5': '%',
-  '6': '&',
-  '7': '/',
-  '8': '(',
-  '9': ')',
-  '0': '=',
-  ' ': ' ',
-  '.': '.'
-};
-const Map<String, String> _DvorakDeuI2NumberToSymbol = {
-  '1': '!',
-  '2': '"',
-  '3': '§',
-  '4': '\$',
-  '5': '%',
-  '6': '&',
-  '7': '/',
-  '8': '(',
-  '9': ')',
-  '0': '=',
-  ' ': ' ',
-  '.': '.'
-};
-const Map<String, String> _DvorakDeuI3NumberToSymbol = {
-  '1': '!',
-  '2': '"',
-  '3': '§',
-  '4': '\$',
-  '5': '%',
-  '6': '&',
-  '7': '/',
-  '8': '(',
-  '9': ')',
-  '0': '=',
-  ' ': ' ',
-  '.': '.'
-};
 const Map<String, String> _AZERTYNumberToSymbol = {
   '1': '&',
   '2': 'é',
@@ -122,20 +66,6 @@ const Map<String, String> _BEPONumberToSymbol = {
   '8': '-',
   '9': '/',
   '0': '*',
-  ' ': ' ',
-  '.': '.'
-};
-const Map<String, String> _RistomeNumberToSymbol = {
-  '1': '!',
-  '2': '"',
-  '3': '§',
-  '4': '\$',
-  '5': '%',
-  '6': '&',
-  '7': '/',
-  '8': '(',
-  '9': ')',
-  '0': '=',
   ' ': ' ',
   '.': '.'
 };
@@ -209,9 +139,6 @@ const Map<String, String> _QWERTY_USNumberToSymbol = {
   ' ': ' ',
   '.': '.'
 };
-const Map<String, String> _DvorakNumberToSymbol = _QWERTY_USNumberToSymbol;
-const Map<String, String> _ColemakNumberToSymbol = _QWERTY_USNumberToSymbol;
-
 const Map<String, String> _SymbolToQWERTZ_T1Number = {
   '!': '1',
   '"': '2',
@@ -232,64 +159,7 @@ const Map<String, String> _SymbolToQWERTZ_T1Number = {
   ' ': ' ',
   '.': '.'
 };
-const Map<String, String> _SymbolToDvorakDeuIINumber = {
-  '!': '1',
-  '"': '2',
-  '§': '3',
-  '\$': '4',
-  '%': '5',
-  '&': '6',
-  '/': '7',
-  '(': '8',
-  ')': '9',
-  '=': '0',
-  '²': '2',
-  '³': '3',
-  '|': '5',
-  '¦': '6',
-  '{': '7',
-  '[': '8',
-  ']': '9',
-  '}': '0',
-  ' ': ' ',
-  '.': '.'
-};
-const Map<String, String> _SymbolToDvorakDeuI1Number = {
-  '!': '1',
-  '"': '2',
-  '§': '3',
-  '\$': '4',
-  '%': '5',
-  '&': '6',
-  '/': '7',
-  '(': '8',
-  ')': '9',
-  '=': '0',
-};
-const Map<String, String> _SymbolToDvorakDeuI2Number = {
-  '!': '1',
-  '"': '2',
-  '§': '3',
-  '\$': '4',
-  '%': '5',
-  '&': '6',
-  '/': '7',
-  '(': '8',
-  ')': '9',
-  '=': '0',
-};
-const Map<String, String> _SymbolToDvorakDeuI3Number = {
-  '!': '1',
-  '"': '2',
-  '§': '3',
-  '\$': '4',
-  '%': '5',
-  '&': '6',
-  '/': '7',
-  '(': '8',
-  ')': '9',
-  '=': '0',
-};
+
 const Map<String, String> _SymbolToAZERTYNumber = {
   '&': '1',
   'é': '2',
@@ -336,18 +206,7 @@ const Map<String, String> _SymbolToBEPONumber = {
   ' ': ' ',
   '.': '.'
 };
-const Map<String, String> _SymbolToRistomeNumber = {
-  '!': '1',
-  '"': '2',
-  '§': '3',
-  '\$': '4',
-  '%': '5',
-  '&': '6',
-  '/': '7',
-  '(': '8',
-  ')': '9',
-  '=': '0',
-};
+
 const Map<String, String> _SymbolToNeoNumber = {
   '°': '1',
   '§': '2',
@@ -406,7 +265,6 @@ const Map<String, String> _SymbolToNeo6Number = {
 };
 final Map<String, String> _SymbolToQWERTY_USNumber = switchMapKeyValue(_QWERTY_USNumberToSymbol);
 final Map<String, String> _SymbolToDvorakNumber = _SymbolToQWERTY_USNumber;
-final Map<String, String> _SymbolToColemakNumber = _SymbolToQWERTY_USNumber;
 
 const Map<String, String> _QWERTZ_T1toNormal = {
   '°': '100o',

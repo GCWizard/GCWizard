@@ -1,6 +1,7 @@
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:latlong2/latlong.dart';
 
 final List<Map<String, Object?>> inputsToExpectedDMM = [
@@ -77,7 +78,7 @@ void main() {
         if (_actual == null) {
           expect(null, elem['expectedOutput']);
         } else {
-          expect(_actual, (elem['expectedOutput'] as Map<String, Object>)['coordinate']);
+          expect(equalsLatLng(_actual, (elem['expectedOutput'] as Map<String, Object>)['coordinate'] as LatLng), true);
         }
       });
     }

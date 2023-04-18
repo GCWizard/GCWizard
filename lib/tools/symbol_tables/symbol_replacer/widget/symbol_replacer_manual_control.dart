@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
@@ -127,6 +128,7 @@ class SymbolReplacerManualControlState extends State<SymbolReplacerManualControl
     }
 
     if (selected) {
+      // deselect all symbols
       for (var image in _symbolMap.values) {
         image.values.first.primarySelected = false;
       }

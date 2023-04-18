@@ -200,7 +200,9 @@ malbolgeOutput interpretMalbolge(String program, String STDIN, bool strict) {
     }
     opcode = _xlat1[(_memory[c] - 33 + c) % 94];
     assembler.add(_format(c) + '   ' + opcode);
-    mnemonic.add(_opCodeList[opcode]!);
+    if (_opCodeList[opcode] != null) {
+      mnemonic.add(_opCodeList[opcode]!);
+    }
 
     switch (opcode) {
       case 'j': //    40     mov d, [d]

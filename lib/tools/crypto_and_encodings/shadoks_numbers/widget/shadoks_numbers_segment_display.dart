@@ -46,18 +46,19 @@ class _ShadoksNumbersSegmentDisplay extends NSegmentDisplay {
               paint.style = PaintingStyle.stroke;
               paint.strokeWidth = size.height > 100 ? 7.0 : 3.5;
 
-              var map =  {
+              var elements =  {
                 'b': [80.0, 20.0, 0.0, 60.0],
                 'c': [80.0, 80.0, -60.0, 0.0],
                 'd': [20.0, 80.0, 60.0, -60.0]
               };
-              map.forEach((key, element) {
+
+              elements.forEach((key, value) {
                 var path = Path();
 
                 paint.color = segmentActive(currentSegments, key) ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
 
-                path.moveTo(_relativeX(size, element[0]), _relativeY(size, element[1]));
-                path.relativeLineTo(_relativeX(size, element[2]), _relativeY(size, element[3]));
+                path.moveTo(_relativeX(size, value[0]), _relativeY(size, value[1]));
+                path.relativeLineTo(_relativeX(size, value[2]), _relativeY(size, value[3]));
                 canvas.touchCanvas.drawPath(path, paint);
               });
 
@@ -82,17 +83,18 @@ class _ShadoksNumbersSegmentDisplay extends NSegmentDisplay {
                 setSegmentState('d', false);
               });
 
-             map =  {
+             elements =  {
               'b': [75.0, 15.0, 0.0, 70.0, 10.0, 0.0, 0.0, -70.0],
               'c': [85.0, 85.0, -70.0, 0.0, 0.0, -10.0, 70.0, 0.0],
               'd': [79.0, 11.0, 9.0, 9.0, -69.0, 69.0, -9.0, -9.0]
               };
-              map .forEach((key, element) {
+
+              elements .forEach((key, value) {
                 var path = Path();
-                path.moveTo(_relativeX(size, element[0]), _relativeY(size, element[1]));
-                path.relativeLineTo(_relativeX(size, element[2]), _relativeY(size, element[3]));
-                path.relativeLineTo(_relativeX(size, element[4]), _relativeY(size, element[5]));
-                path.relativeLineTo(_relativeX(size, element[6]), _relativeY(size, element[7]));
+                path.moveTo(_relativeX(size, value[0]), _relativeY(size, value[1]));
+                path.relativeLineTo(_relativeX(size, value[2]), _relativeY(size, value[3]));
+                path.relativeLineTo(_relativeX(size, value[4]), _relativeY(size, value[5]));
+                path.relativeLineTo(_relativeX(size, value[6]), _relativeY(size, value[7]));
                 path.close();
                 canvas.touchCanvas.drawPath(path, paint, onTapDown: (tapDetail) {
                   setSegmentState(key, !segmentActive(currentSegments, key));

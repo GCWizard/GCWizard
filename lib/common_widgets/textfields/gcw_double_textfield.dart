@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/common_widgets/text_input_formatters/gcw_double_textinputformatter.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
+import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/utils/data_type_utils/double_type_utils.dart';
 
 class GCWDoubleTextField extends StatefulWidget {
@@ -48,6 +49,11 @@ class _GCWDoubleTextFieldState extends State<GCWDoubleTextField> {
       hintText: widget.hintText,
       onChanged: (text) {
         setState(() {
+          if (text.isEmpty) {
+            widget.onChanged(defaultDoubleText);
+            return;
+          }
+
           if (!isDouble(text)) {
             return;
           }

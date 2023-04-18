@@ -254,6 +254,7 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
 
             // show dropdown if files are loaded
             if (_fileLoadedState != WHERIGO_FILE_LOAD_STATE.NULL) _widgetShowDropDown(context),
+
             _buildOutput(context)
           ],
         ));
@@ -461,7 +462,7 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
     }
   }
 
-  Widget _buildWidgetToDisplayAnalyzeResultsData(List<dynamic> _errorMsg) {
+  Widget _buildWidgetToDisplayAnalyzeResultsData(List<String> _errorMsg) {
     _errorMsg.addAll(errorMsg_MediaFiles);
     return GCWDefaultOutput(
       child: GCWOutputText(
@@ -510,8 +511,10 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
               _openInMap(
                   _currentZonePoints(
                       WherigoCartridgeGWCData.CartridgeLUAName,
-                      WherigoZonePoint(WherigoCartridgeGWCData.Latitude, WherigoCartridgeGWCData.Longitude,
-                          WherigoCartridgeGWCData.Altitude)),
+                      WherigoZonePoint(
+                          Latitude: WherigoCartridgeGWCData.Latitude,
+                          Longitude: WherigoCartridgeGWCData.Longitude,
+                          Altitude: WherigoCartridgeGWCData.Altitude)),
                   []);
             },
           ),
@@ -840,9 +843,12 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
                     _currentZonePoints(
                         WherigoCartridgeLUAData.Characters[_characterIndex - 1].CharacterName,
                         WherigoZonePoint(
-                            WherigoCartridgeLUAData.Characters[_characterIndex - 1].CharacterZonepoint.Latitude,
-                            WherigoCartridgeLUAData.Characters[_characterIndex - 1].CharacterZonepoint.Longitude,
-                            WherigoCartridgeLUAData.Characters[_characterIndex - 1].CharacterZonepoint.Altitude)),
+                            Latitude:
+                                WherigoCartridgeLUAData.Characters[_characterIndex - 1].CharacterZonepoint.Latitude,
+                            Longitude:
+                                WherigoCartridgeLUAData.Characters[_characterIndex - 1].CharacterZonepoint.Longitude,
+                            Altitude:
+                                WherigoCartridgeLUAData.Characters[_characterIndex - 1].CharacterZonepoint.Altitude)),
                     []);
               },
             ),
@@ -1004,7 +1010,7 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
           WherigoCartridgeLUAData.Inputs[_inputIndex - 1].InputMedia),
       GCWColumnedMultilineOutput(
           data: _buildOutputListOfInputData(context, WherigoCartridgeLUAData.Inputs[_inputIndex - 1]),
-          flexValues: const[1, 3]),
+          flexValues: const [1, 3]),
       Row(
         children: <Widget>[
           GCWIconButton(
@@ -1044,17 +1050,26 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
       Column(
         children: <Widget>[
           GCWColumnedMultilineOutput(
-              data: _buildOutputListAnswers(context, WherigoCartridgeLUAData.Inputs[_inputIndex - 1],
-                  WherigoCartridgeLUAData.Inputs[_inputIndex - 1].InputAnswers[_answerIndex - 1]),
+              data: _buildOutputListAnswers(
+                context,
+                WherigoCartridgeLUAData.Inputs[_inputIndex - 1],
+                (WherigoCartridgeLUAData.Inputs[_inputIndex - 1].InputAnswers.isNotEmpty)
+                    ? WherigoCartridgeLUAData.Inputs[_inputIndex - 1].InputAnswers[_answerIndex - 1]
+                    : WherigoAnswerData(AnswerAnswer: '', AnswerHash: '', AnswerActions: []),
+              ),
               copyColumn: 1,
-              flexValues: const[2, 3, 3]),
+              flexValues: const [2, 3, 3]),
           GCWExpandableTextDivider(
             expanded: false,
             text: i18n(context, 'wherigo_output_answeractions'),
             suppressTopSpace: false,
             child: Column(
                 children: _outputAnswerActionsWidgets(
-                    context, WherigoCartridgeLUAData.Inputs[_inputIndex - 1].InputAnswers[_answerIndex - 1])),
+              context,
+              (WherigoCartridgeLUAData.Inputs[_inputIndex - 1].InputAnswers.isNotEmpty)
+                  ? WherigoCartridgeLUAData.Inputs[_inputIndex - 1].InputAnswers[_answerIndex - 1]
+                  : WherigoAnswerData(AnswerAnswer: '', AnswerHash: '', AnswerActions: []),
+            )),
           ),
         ],
       ),
@@ -1225,9 +1240,9 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
                     _currentZonePoints(
                         WherigoCartridgeLUAData.Items[_itemIndex - 1].ItemName,
                         WherigoZonePoint(
-                            WherigoCartridgeLUAData.Items[_itemIndex - 1].ItemZonepoint.Latitude,
-                            WherigoCartridgeLUAData.Items[_itemIndex - 1].ItemZonepoint.Longitude,
-                            WherigoCartridgeLUAData.Items[_itemIndex - 1].ItemZonepoint.Altitude)),
+                            Latitude: WherigoCartridgeLUAData.Items[_itemIndex - 1].ItemZonepoint.Latitude,
+                            Longitude: WherigoCartridgeLUAData.Items[_itemIndex - 1].ItemZonepoint.Longitude,
+                            Altitude: WherigoCartridgeLUAData.Items[_itemIndex - 1].ItemZonepoint.Altitude)),
                     []);
               },
             ),
@@ -1382,7 +1397,7 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
         _analyseGWCCartridgeFileAsync();
         break;
       case WHERIGO_CARTRIDGE_DATA_TYPE.LUA:
-        _analyseLuaCartridgeFileAsync();
+        _analyseLUACartridgeFileAsync();
         break;
       default:
         {}
@@ -1410,7 +1425,7 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
     );
   }
 
-  void _analyseLuaCartridgeFileAsync() async {
+  void _analyseLUACartridgeFileAsync() async {
     await showDialog<bool>(
       context: context,
       barrierDismissible: false,
@@ -1456,7 +1471,7 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
 
     switch (WherigoCartridgeLUAData.ResultStatus) {
       case WHERIGO_ANALYSE_RESULT_STATUS.OK:
-        toastMessage = i18n(context, 'wherigo_data_loaded') + ': ' + WHERIGO_CARTRIDGE_DATA_TYPE.GWC.toString();
+        toastMessage = i18n(context, 'wherigo_data_loaded') + ': LUA';
         toastDuration = 5;
         _nohttpError = false;
 
@@ -1476,6 +1491,9 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
         } else {
           _fileLoadedState = WHERIGO_FILE_LOAD_STATE.FULL;
           _displayedCartridgeData = WHERIGO_OBJECT.HEADER;
+          showToast(toastMessage, duration: toastDuration);
+
+          _updateOutput();
         }
         break;
 
@@ -1521,7 +1539,6 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
           Timers: [],
           Media: [],
           Messages: [],
-          Answers: [],
           Variables: [],
           NameToObject: {},
           Builder: WHERIGO_BUILDER.UNKNOWN,
@@ -1555,10 +1572,6 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
         break;
       default:
         {}
-
-        showToast(toastMessage, duration: toastDuration);
-
-        _updateOutput();
     } // outData != null
   }
 
@@ -1571,7 +1584,7 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
 
     switch (WherigoCartridgeGWCData.ResultStatus) {
       case WHERIGO_ANALYSE_RESULT_STATUS.OK:
-        toastMessage = i18n(context, 'wherigo_data_loaded') + ': ' + WHERIGO_CARTRIDGE_DATA_TYPE.LUA.toString();
+        toastMessage = i18n(context, 'wherigo_data_loaded') + ': GWC';
         break;
 
       case WHERIGO_ANALYSE_RESULT_STATUS.ERROR_GWC:
@@ -1609,9 +1622,9 @@ class WherigoAnalyzeState extends State<WherigoAnalyze> {
     });
   }
 
-  bool _GCWandLUAareFromDifferentCartridges(){
+  bool _GCWandLUAareFromDifferentCartridges() {
     return ((WherigoCartridgeGWCData.CartridgeGUID != WherigoCartridgeLUAData.CartridgeGUID &&
-        WherigoCartridgeLUAData.CartridgeGUID != '') &&
+            WherigoCartridgeLUAData.CartridgeGUID != '') &&
         (WherigoCartridgeGWCData.CartridgeLUAName != WherigoCartridgeLUAData.CartridgeLUAName &&
             WherigoCartridgeLUAData.CartridgeLUAName != ''));
   }

@@ -29,15 +29,21 @@ class GCWCoordsFormatSelectorState extends State<GCWCoordsFormatSelector> {
     var _currentFormat = defaultCoordinateFormat.type;
     var _currentSubtype = defaultCoordinateFormat.subtype;
 
+    @override
+    void initState() {
+      super.initState();
+
+      _currentFormat = widget.format.type;
+      _currentSubtype = widget.format.subtype;
+    }
+
   @override
   Widget build(BuildContext context) {
-    _currentFormat = widget.format.type;
-    _currentSubtype = widget.format.subtype;
 
     return Column(
       children: <Widget>[
         GCWDropDown<CoordinateFormatKey>(
-          value: widget.format.type,
+          value: _currentFormat,
           onChanged: (CoordinateFormatKey newValue) {
             setState(() {
               _currentFormat = newValue;
@@ -67,7 +73,7 @@ class GCWCoordsFormatSelectorState extends State<GCWCoordsFormatSelector> {
   }
 
   Widget _buildSubtype() {
-    var format = widget.format.type;
+    var format = _currentFormat;
 
     if (_currentSubtype == null) {
       _currentSubtype = defaultCoordinateFormatSubtypeForFormat(format);

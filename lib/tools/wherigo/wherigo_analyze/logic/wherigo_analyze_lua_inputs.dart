@@ -1,34 +1,14 @@
 part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/logic/wherigo_analyze.dart';
 
-bool _OnGetInputSectionEnd(String line) {
-  if (line.trim().startsWith('if input == ') ||
-      line.trim().startsWith('if input >= ') ||
-      line.trim().startsWith('if input <= ') ||
-      line.trim().startsWith('elseif input == ') ||
-      line.trim().startsWith('elseif input >= ') ||
-      line.trim().startsWith('elseif input <= ') ||
-      line.trim().startsWith('if _Urwigo.Hash(') ||
-      line.trim().startsWith('if (_Urwigo.Hash(') ||
-      line.trim().startsWith('elseif _Urwigo.Hash(') ||
-      line.trim().startsWith('elseif (_Urwigo.Hash(') ||
-      line.trim().startsWith('if Wherigo.NoCaseEquals(') ||
-      line.trim().startsWith('elseif Wherigo.NoCaseEquals(') ||
-      line.trim().startsWith('if ' + _answerVariable + ' == ') ||
-      line.trim().startsWith('elseif ' + _answerVariable + ' == ')) {
-    return true;
-  } else {
+bool _insideSectionInput(String currentLine) {
+  if (RegExp(r'( Wherigo.ZInput\()').hasMatch(currentLine)) {
     return false;
   }
+  return _notDoneWithInputs(currentLine);
 }
 
-bool _OnGetInputFunctionEnd(String line1, String line2) {
-  return (line1.trimLeft().startsWith('end') &&
-      (line2.trimLeft().startsWith('function') || line2.trimLeft().startsWith('return')));
-}
-
-bool _insideSectionInput(String currentLine) {
-  if (RegExp(r'( Wherigo.ZInput\()').hasMatch(currentLine) ||
-      RegExp(r'(function)').hasMatch(currentLine) ||
+bool _notDoneWithInputs(String currentLine) {
+  if (RegExp(r'(function)').hasMatch(currentLine) ||
       RegExp(r'(:OnProximity)').hasMatch(currentLine) ||
       RegExp(r'(:OnStart)').hasMatch(currentLine)) {
     return false;
@@ -37,6 +17,7 @@ bool _insideSectionInput(String currentLine) {
 }
 
 WherigoInputData _analyzeAndExtractInputSectionData(List<String> lines) {
+
   String LUAname = '';
   String id = '';
   String name = '';
@@ -50,11 +31,14 @@ WherigoInputData _analyzeAndExtractInputSectionData(List<String> lines) {
   List<String> listChoices = [];
 
   bool _sectionDescription = true;
-  bool _sectionText = true;
   bool _sectionChoices = false;
 
   for (int i = 0; i < lines.length; i++) {
     lines[i] = lines[i].trim();
+
+    if (RegExp(r'( Wherigo.ZInput\()').hasMatch(lines[i])) {
+      LUAname = getLUAName(lines[i]);
+    }
 
     if (lines[i].startsWith(LUAname + '.Id')) {
       id = getLineData(lines[i], LUAname, 'Id', _obfuscatorFunction, _obfuscatorTable);
@@ -67,13 +51,14 @@ WherigoInputData _analyzeAndExtractInputSectionData(List<String> lines) {
     if (lines[i].startsWith(LUAname + '.Description')) {
       description = '';
       _sectionDescription = true;
-      //i++; lines[i] = lines[i].trim();
+
       do {
         description = description + lines[i];
         i++;
         lines[i] = lines[i].trim();
         if (i > lines.length - 1 || lines[i].startsWith(LUAname + '.Visible')) _sectionDescription = false;
       } while (_sectionDescription);
+      i--;
       description = getLineData(description, LUAname, 'Description', _obfuscatorFunction, _obfuscatorTable);
     }
 
@@ -90,7 +75,7 @@ WherigoInputData _analyzeAndExtractInputSectionData(List<String> lines) {
     }
 
     if (lines[i].startsWith(LUAname + '.InputType')) {
-      inputType = getLineData(lines[i], LUAname, 'InputType', _obfuscatorFunction, _obfuscatorTable);
+     inputType = getLineData(lines[i], LUAname, 'InputType', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.InputVariableId')) {
@@ -98,28 +83,15 @@ WherigoInputData _analyzeAndExtractInputSectionData(List<String> lines) {
     }
 
     if (lines[i].startsWith(LUAname + '.Text')) {
-      if (RegExp(r'( Wherigo.ZInput)').hasMatch(lines[i + 1].trim()) ||
-          lines[i + 1].trim().startsWith(LUAname + '.Media') ||
-          RegExp(r'(.Commands)').hasMatch(lines[i + 1].trim()) ||
-          lines[i + 1].trim().startsWith(LUAname + '.Visible') ||
-          lines[i + 1].trim().startsWith('function') ||
-          RegExp(r'(:OnProximity)').hasMatch(lines[i + 1].trim())) {
-        // single Line
+      if (lines[i].endsWith('"')) {
         text = getLineData(lines[i], LUAname, 'Text', _obfuscatorFunction, _obfuscatorTable);
       } else {
         // multi Lines of Text
         text = '';
-        _sectionText = true;
         do {
           i++;
-          lines[i] = lines[i].trim();
           text = text + lines[i];
-          if (RegExp(r'( Wherigo.ZInput\()').hasMatch(lines[i + 1].trim()) ||
-              RegExp(r'(:OnProximity)').hasMatch(lines[i + 1].trim()) ||
-              lines[i + 1].trim().startsWith(LUAname + '.Media') ||
-              lines[i + 1].trim().startsWith('function') ||
-              lines[i + 1].trim().startsWith(LUAname + '.Visible')) _sectionText = false;
-        } while (_sectionText);
+        } while (_notEndOfInputText(lines[i + 1], LUAname));
         text = normalizeWIGText(text.replaceAll(']]', '').replaceAll('<BR>', '\n'));
       }
     }
@@ -131,13 +103,11 @@ WherigoInputData _analyzeAndExtractInputSectionData(List<String> lines) {
         listChoices.addAll(getChoicesSingleLine(lines[i], LUAname, _obfuscatorFunction, _obfuscatorTable));
       } else {
         i++;
-        lines[i] = lines[i].trim();
         _sectionChoices = true;
         do {
           if (lines[i].startsWith('"')) {
-            listChoices.add(lines[i].trimLeft().replaceAll('",', '').replaceAll('"', ''));
+            listChoices.add(lines[i].replaceAll('",', '').replaceAll('"', ''));
             i++;
-            lines[i] = lines[i].trim();
           } else {
             _sectionChoices = false;
           }
@@ -146,17 +116,25 @@ WherigoInputData _analyzeAndExtractInputSectionData(List<String> lines) {
     }
   }
   return WherigoInputData(
-    LUAname.trim(),
-    id.trim(),
-    variableID.trim(),
-    name.trim(),
-    description,
-    visible,
-    media,
-    icon,
-    inputType,
-    text,
-    listChoices,
-    [],
+    InputLUAName: LUAname,
+    InputID: id,
+    InputVariableID: variableID,
+    InputName: name,
+    InputDescription: description,
+    InputVisible: visible,
+    InputMedia: media,
+    InputIcon: icon,
+    InputType: inputType,
+    InputText: text,
+    InputChoices: listChoices,
+    InputAnswers: [],
   );
+}
+
+bool _notEndOfInputText(String nextLine, String LUAname){
+ if (RegExp(r'( Wherigo.ZInput)').hasMatch(nextLine) ||
+      nextLine.startsWith('function')) {
+    return false;
+  }
+  return true;
 }

@@ -3,7 +3,7 @@ import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_metadata.
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 
 class CoordinateFormat{
-  CoordinateFormatKey type;
+  final CoordinateFormatKey type;
   CoordinateFormatKey? subtype;
 
   CoordinateFormat(this.type, [this.subtype]){
@@ -22,6 +22,15 @@ class CoordinateFormat{
       return CoordinateFormat(coordFormat.type);
     }
   }
+
+  @override
+  String toString() {
+    return 'type: $type; subtype: $subtype';
+  }
+}
+
+bool equalsCoordinateFormats(CoordinateFormat a, CoordinateFormat b) {
+  return a.type == b.type && a.subtype == b.subtype;
 }
 
 bool isCoordinateFormatWithSubtype(CoordinateFormatKey format) {

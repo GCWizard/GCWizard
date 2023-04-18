@@ -23,14 +23,14 @@ class SudokuBoard {
       for (int i = 0; i < min(board.length, this.board.length); i++ ) {
         for (int j = 0; j < min(board[i].length, this.board[i].length); j++ ) {
           if (board[i][j] > 0 && board[i][j] <= 9) {
-            setValue(i, j, board[i][j]);
+            setValue(i, j, board[i][j], SudokuFillType.USER_FILLED);
           }
         }
       }
     }
   }
 
-  void setValue (int i, int j, int? value, {SudokuFillType type = SudokuFillType.USER_FILLED}) {
+  void setValue (int i, int j, int? value, SudokuFillType type) {
     board[i][j] = SudokuBoardValue(value, type);
   }
 
@@ -59,6 +59,25 @@ class SudokuBoard {
           : 0)
           .toList();
     }).toList();
+  }
+
+  void removeCalculated() {
+    for (int i = 0; i < 9; i++) {
+      for (int j = 0; j < 9; j++) {
+        if (getFillType(i, j) == SudokuFillType.CALCULATED) setValue(i, j, null, SudokuFillType.CALCULATED);
+      }
+    }
+    solutions = null;
+  }
+
+  void mergeSolution(int solutionIndex) {
+    if (solutions == null || solutionIndex < 0 || solutionIndex >= solutions!.length) return;
+    for (int i = 0; i < 9; i++) {
+      for (int j = 0; j < 9; j++) {
+        if (getFillType(i, j) == SudokuFillType.USER_FILLED) continue;
+        setValue(i, j, solutions![solutionIndex].getValue(i, j), SudokuFillType.CALCULATED);
+      }
+    }
   }
 }
 

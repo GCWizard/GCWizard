@@ -90,7 +90,11 @@ class FormatConverterState extends State<FormatConverter> {
     if (_currentOutputFormat.type == CoordinateFormatKey.ALL) {
       _currentAllOutput = _calculateAllOutput(context);
     } else {
-      _currentOutputs = _currentCoords.toLatLng() != null ? [_currentCoords] : [];
+      if (_currentCoords.toLatLng() != null) {
+        _currentOutputs = [buildCoordinate(_currentOutputFormat, _currentCoords.toLatLng()!)];
+      } else {
+        _currentOutputs = [];
+      }
     }
   }
 

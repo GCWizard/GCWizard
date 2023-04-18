@@ -208,6 +208,14 @@ class BookCipherState extends State<BookCipher> {
         ? GCWDropDown<searchFormat>(
             value: _currentSearchFormat,
             onChanged: (value) {
+              const emptyLinesOffNeeded = [
+                searchFormat.SectionRowWordCharacter,
+                searchFormat.SectionRowWord,
+                searchFormat.SectionCharacter];
+
+              if (!_emptyLinesOn && emptyLinesOffNeeded.contains(value)) {
+                _emptyLinesOn = true;
+              }
               setState(() {
                 _currentSearchFormat = value;
               });

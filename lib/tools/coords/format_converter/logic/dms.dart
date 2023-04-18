@@ -1,6 +1,7 @@
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_parser.dart';
 import 'package:gc_wizard/tools/coords/format_converter/logic/dec.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:gc_wizard/utils/data_type_utils/double_type_utils.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -12,7 +13,7 @@ DEC _DMSToDEC(DMS coord) {
   var lat = _DMSPartToDouble(coord.latitude);
   var lon = _DMSPartToDouble(coord.longitude);
 
-  return normalizeDEC(DEC(lat, lon));
+  return DEC.fromLatLon(normalizeLatLon(lat, lon));
 }
 
 double _DMSPartToDouble(DMSPart dmsPart) {
@@ -24,7 +25,7 @@ DMS latLonToDMS(LatLng coord) {
 }
 
 DMS _DECToDMS(DEC coord) {
-  var normalizedCoord = normalizeDEC(coord);
+  var normalizedCoord = normalizeLatLon(coord.latitude, coord.longitude);
 
   var lat = DMSLatitude.from(doubleToDMSPart(normalizedCoord.latitude));
   var lon = DMSLongitude.from(doubleToDMSPart(normalizedCoord.longitude));

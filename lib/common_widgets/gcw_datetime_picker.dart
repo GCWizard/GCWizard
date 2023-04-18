@@ -8,6 +8,7 @@ import 'package:gc_wizard/common_widgets/spinners/gcw_dropdown_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/spinner_constants.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
+import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/utils/data_type_utils/double_type_utils.dart';
 
 enum DateTimePickerConfig {
@@ -295,7 +296,7 @@ class GCWDateTimePickerState extends State<GCWDateTimePicker> {
           controller: widget.dayController,
           value: _currentDay,
           min: widget.minDays,
-          max: widget.maxDays,
+          max: widget.maxDays ?? MAX_INT,
           onChanged: (value) {
             setState(() {
               _currentDay = value;
@@ -327,7 +328,7 @@ class GCWDateTimePickerState extends State<GCWDateTimePicker> {
           controller: widget.hoursController,
           value: _currentHour,
           min: 0,
-          max: widget.maxHours,
+          max: widget.maxHours ?? MAX_INT,
           onChanged: (value) {
             setState(() {
               _currentHour = value;

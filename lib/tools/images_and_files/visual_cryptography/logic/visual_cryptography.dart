@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
+import 'package:gc_wizard/utils/image_utils.dart';
 import 'package:image/image.dart' as Image;
 import 'package:tuple/tuple.dart';
 
@@ -25,9 +26,14 @@ Future<Uint8List?> decodeImagesAsync(GCWAsyncExecuterParameters? jobData) async 
 }
 
 Future<Uint8List?> _decodeImages(Uint8List image1, Uint8List image2, int offsetX, int offsetY) {
-  var _image1 = Image.decodeImage(image1);
-  var _image2 = Image.decodeImage(image2);
+  if (image1.isEmpty || image2.isEmpty) return Future.value(null);
 
+  var decoder1 = Image.findDecoderForData(image1);
+  var decoder2 = Image.findDecoderForData(image2);
+  if (decoder1 == null || decoder2 == null) return Future.value(null);
+
+  var _image1 = decoder1.decode(image1);
+  var _image2 = decoder2.decode(image2);
   if (_image1 == null || _image2 == null) return Future.value(null);
 
   var image = Image.Image(width: max(_image1.width, _image2.width) + offsetX.abs(),
@@ -74,8 +80,8 @@ Future<Tuple2<int, int>?> offsetAutoCalcAsync(GCWAsyncExecuterParameters? jobDat
 Future<Tuple2<int, int>?> _offsetAutoCalc(Uint8List image1, Uint8List image2, int? offsetX, int? offsetY,
     {SendPort? sendAsyncPort}) {
 
-  var _image1 = Image.decodeImage(image1);
-  var _image2 = Image.decodeImage(image2);
+  var _image1 = decodeImage4ChannelFormat(image1);
+  var _image2 = decodeImage4ChannelFormat(image2);
 
   if (_image1 == null || _image2 == null) return Future.value(null);
 
@@ -126,8 +132,8 @@ Tuple2<int, int> _highPassFilter(double alpha, List<int> keyList) {
 
 Uint8List? cleanImage(Uint8List image1, Uint8List image2, int offsetX, int offsetY) {
 
-  var _image1 = Image.decodeImage(image1);
-  var _image2 = Image.decodeImage(image2);
+  var _image1 = decodeImage4ChannelFormat(image1);
+  var _image2 = decodeImage4ChannelFormat(image2);
 
   if (_image1 == null || _image2 == null) return null;
 
@@ -162,13 +168,13 @@ Future<Tuple2<Uint8List, Uint8List?>?> encodeImagesAsync(GCWAsyncExecuterParamet
 Future<Tuple2<Uint8List, Uint8List?>?> _encodeImage(
     Uint8List image, Uint8List? keyImage, int offsetX, int offsetY, int scale) {
 
-  var _image = Image.decodeImage(image);
+  var _image = decodeImage4ChannelFormat(image);
   if (_image == null) return Future.value(null);
 
   var hasKeyImage = keyImage != null;
   Image.Image? _keyImage;
   if (hasKeyImage) {
-    _keyImage = Image.decodeImage(keyImage!);
+    _keyImage = decodeImage4ChannelFormat(keyImage!);
     if (_keyImage == null) return Future.value(null);
 
     scale = (min<double>(_keyImage.width / 2 / _image.width, _keyImage.height / 2 / _image.height) * 100).toInt();

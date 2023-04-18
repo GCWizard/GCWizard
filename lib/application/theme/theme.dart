@@ -90,11 +90,17 @@ ThemeData buildTheme() {
         contentPadding: const EdgeInsets.all(10.0),
       ),
       unselectedWidgetColor: colors.secondary(),
+      indicatorColor: themeColors().secondary(),
+      tabBarTheme: TabBarTheme(
+        indicatorColor: themeColors().secondary(),
+        labelColor: colors.mainFont()),
+      appBarTheme: AppBarTheme(
+        backgroundColor: colors.primaryBackground(),
+        foregroundColor: colors.mainFont()),
       cardColor: colors.messageBackground(), 
       colorScheme: ColorScheme.fromSwatch(
-        primarySwatch: _generateMaterialColor(colors.primaryBackground())).copyWith(secondary: colors.secondary(),
-        brightness: base.brightness,
-      )
+        primarySwatch: _generateMaterialColor(colors.primaryBackground()))
+          .copyWith(secondary: colors.secondary(), brightness: base.brightness)
   );
 }
 

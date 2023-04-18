@@ -125,12 +125,12 @@ class GCWPasteButtonState extends State<GCWPasteButton> {
                 ),
               ),
               action: (int index) {
-                if (index <= 2) {
+                if (index < 2) {
                   return;
                 }
 
                 var list = Prefs.getStringList(PREFERENCE_CLIPBOARD_ITEMS);
-                if (list.length < 2) {
+                if (list.isEmpty) {
                   return;
                 }
 

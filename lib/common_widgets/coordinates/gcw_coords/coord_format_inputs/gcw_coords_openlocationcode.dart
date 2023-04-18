@@ -3,8 +3,9 @@ part of 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart
 class _GCWCoordsOpenLocationCode extends StatefulWidget {
   final void Function(OpenLocationCode?) onChanged;
   final OpenLocationCode coordinates;
+  final bool isDefault;
 
-  const _GCWCoordsOpenLocationCode({Key? key, required this.onChanged, required this.coordinates}) : super(key: key);
+  const _GCWCoordsOpenLocationCode({Key? key, required this.onChanged, required this.coordinates, this.isDefault = true}) : super(key: key);
 
   @override
   _GCWCoordsOpenLocationCodeState createState() => _GCWCoordsOpenLocationCodeState();
@@ -17,6 +18,8 @@ class _GCWCoordsOpenLocationCodeState extends State<_GCWCoordsOpenLocationCode> 
   final _maskInputFormatter = WrapperForMaskTextInputFormatter(
       mask: '**#################',
       filter: {"*": RegExp(r'[23456789CFGHJMPQRVcfghjmpqrv]'), "#": RegExp(r'[23456789CFGHJMPQRVWXcfghjmpqrvwx+]')});
+
+  bool _initialized = false;
 
   @override
   void initState() {
@@ -32,10 +35,14 @@ class _GCWCoordsOpenLocationCodeState extends State<_GCWCoordsOpenLocationCode> 
 
   @override
   Widget build(BuildContext context) {
-    var openLocationCode = widget.coordinates;
-    _currentCoord = openLocationCode.text;
+    if (!widget.isDefault && !_initialized) {
+      var openLocationCode = widget.coordinates;
+      _currentCoord = openLocationCode.text;
 
-    _controller.text = _currentCoord;
+      _controller.text = _currentCoord;
+
+      _initialized = true;
+    }
 
     return Column(children: <Widget>[
       GCWTextField(

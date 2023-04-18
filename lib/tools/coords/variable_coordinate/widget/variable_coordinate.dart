@@ -460,7 +460,7 @@ class VariableCoordinateState extends State<VariableCoordinate> {
           _coords = LatLng(locationData.latitude!, locationData.longitude!);
         }
 
-        var coords = buildDefaultCoordinatesByFormat(_coords);
+        var coords = buildDefaultCoordinateByCoordinates(_coords);
         String insertedCoord;
         if (defaultCoordinateFormat.type == CoordinateFormatKey.DMM) {
           //Insert Geocaching Format with exact 3 digits

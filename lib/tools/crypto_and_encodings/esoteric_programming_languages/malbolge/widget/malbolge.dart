@@ -145,7 +145,7 @@ class MalbolgeState extends State<Malbolge> {
             : Column(
                 children: <Widget>[
                   GCWOnOffSwitch(
-                    title: i18n(context, 'common_programming_code_debug'),
+                    title: i18n(context, 'common_programming_debug'),
                     value: _currentDebug,
                     onChanged: (value) {
                       setState(() {

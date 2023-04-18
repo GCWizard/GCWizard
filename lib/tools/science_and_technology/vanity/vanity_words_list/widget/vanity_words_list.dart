@@ -55,7 +55,7 @@ class VanityWordsListState extends State<VanityWordsList> {
   }
 
   Widget _buildOutput(BuildContext context) {
-    var vanityWordsOverview = VanWords[_currentLanguage];
+    var vanityWordsOverview = VANITY_WORDS[_currentLanguage];
     if (vanityWordsOverview == null) return Container();
 
     if (_currentLanguage == NumeralWordsLanguage.DEU) NUMERAL_WORDS[_currentLanguage]?['fünf'] = '5';

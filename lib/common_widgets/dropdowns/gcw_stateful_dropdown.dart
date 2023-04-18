@@ -23,7 +23,7 @@ class _GCWStatefulDropDownState<T> extends State<GCWStatefulDropDown<T>> {
     _currentValue = widget.value;
 
     return GCWDropDown<T>(
-      value: _currentValue!,
+      value: _currentValue as T,
       items: widget.items,
       onChanged: (value) {
         setState(() {

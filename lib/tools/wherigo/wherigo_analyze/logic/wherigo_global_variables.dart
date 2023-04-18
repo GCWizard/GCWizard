@@ -4,23 +4,9 @@ List<String> errorMsg_MediaFiles = [];
 
 List<List<String>> outputHeader = [];
 
-WherigoCartridgeGWC WherigoCartridgeGWCData = const WherigoCartridgeGWC(
-    MediaFilesHeaders: [],
-    MediaFilesContents: [], ResultsGWC: []);
+WherigoCartridgeGWC WherigoCartridgeGWCData = _WHERIGO_EMPTYCARTRIDGE_GWC;
 
-WherigoCartridgeLUA WherigoCartridgeLUAData = const WherigoCartridgeLUA(
-    Characters: [],
-    Items: [],
-    Tasks: [],
-    Inputs: [],
-    Zones: [],
-    Timers: [],
-    Media: [],
-    Messages: [],
-    Answers: [],
-    Variables: [],
-    NameToObject: {},
-    ResultsLUA: []);
+WherigoCartridgeLUA WherigoCartridgeLUAData = WHERIGO_EMPTYCARTRIDGE_LUA;
 
 bool wherigoExpertMode = false;
 

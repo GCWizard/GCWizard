@@ -5,6 +5,7 @@ import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:latlong2/latlong.dart';
 
 // Source: https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
@@ -16,7 +17,7 @@ LatLng slippyMapToLatLon(SlippyMap slippyMap) {
   var n = pi - 2.0 * pi * slippyMap.y / pow(2.0, subtype);
   var lat = 180.0 / pi * atan(0.5 * (exp(n) - exp(-n)));
 
-  return LatLng(lat, lon);
+  return normalizeLatLon(lat, lon);
 }
 
 SlippyMap latLonToSlippyMap(LatLng coords, CoordinateFormatKey subtype) {

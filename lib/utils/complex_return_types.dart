@@ -3,6 +3,11 @@ class DoubleText {
   double value;
 
   DoubleText(this.text, this.value);
+
+  @override
+  String toString() {
+    return 'Text: $text, Value: $value';
+  }
 }
 
 class IntegerText {
