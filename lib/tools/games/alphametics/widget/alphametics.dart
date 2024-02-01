@@ -1,7 +1,8 @@
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
@@ -13,15 +14,16 @@ import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
-import 'package:gc_wizard/common_widgets/gcw_key_value_editor.dart';
+import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
+import 'package:gc_wizard/common_widgets/key_value_editor/gcw_key_value_editor.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/text_input_formatters/variablestring_textinputformatter.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
-import 'package:gc_wizard/tools/formula_solver/persistence/model.dart';
 import 'package:gc_wizard/tools/games/alphametics/logic/alphametics.dart';
 import 'package:gc_wizard/tools/games/catan/logic/catan.dart';
+import 'package:gc_wizard/utils/complex_return_types.dart';
 
 
 class Alphametics extends StatefulWidget {
@@ -42,7 +44,7 @@ class AlphameticsState extends State<Alphametics> {
   var _currentToInput = '';
 
   var _currentIdCount = 0;
-  var _currentSubstitutions = <int, Map<String, String>>{};
+  final List<KeyValueBase> _currentSubstitutions = [];
 
   int _rowCount = 2;
   int _columnCount = 2;
@@ -78,25 +80,26 @@ class AlphameticsState extends State<Alphametics> {
     super.dispose();
   }
 
-  void _addEntry(String currentFromInput, String currentToInput, FormulaValueType type, BuildContext context) {
-    if (currentFromInput.isNotEmpty) {
-      _currentSubstitutions.putIfAbsent(++_currentIdCount, () => {currentFromInput: currentToInput});
+  void _addEntry(KeyValueBase entry) {
+    if (entry.key.isEmpty) return;
+    _currentIdCount++;
+    if (_currentSubstitutions.firstWhereOrNull((_entry) => _entry.id == _currentIdCount) == null) {
+      entry.id = _currentIdCount;
+      return _currentSubstitutions.add(entry);
     }
+    //_calculateOutput();
   }
 
-  void _updateEntry(Object id, String key, String value, FormulaValueType type) {
-    if (id is! int) return;
-    _currentSubstitutions[id] = {key: value};
+
+  void _updateEntry(KeyValueBase entry) {
+    //_calculateOutput();
   }
 
-  void _updateNewEntry(String currentFromInput, String currentToInput, BuildContext context) {
-    _currentFromInput = currentFromInput;
-    _currentToInput = currentToInput;
+  void _updateNewEntry(KeyValueBase entry) {
+    _currentFromInput = entry.key;
+    _currentToInput = entry.value;
   }
 
-  void _removeEntry(Object id, BuildContext context) {
-    _currentSubstitutions.remove(id);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -159,12 +162,8 @@ class AlphameticsState extends State<Alphametics> {
           ])
         ),
 
-        SingleChildScrollView(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            physics: AlwaysScrollableScrollPhysics(),
-            child: _buildTable(_rowCount, _columnCount),
-          ),
+        GCWPainterContainer(
+          child: _buildTable(_rowCount, _columnCount),
         ),
         _buildVariablesEditor(),
         _buildSubmitButton(),
@@ -204,13 +203,13 @@ class AlphameticsState extends State<Alphametics> {
           child: GCWKeyValueEditor(
               keyHintText: i18n(context, 'coords_variablecoordinate_variable'),
               valueHintText: i18n(context, 'coords_variablecoordinate_possiblevalues'),
-              valueInputFormatters: [VariableStringTextInputFormatter()],
+              addValueInputFormatters: [VariableStringTextInputFormatter()],
               valueFlex: 4,
-              onNewEntryChanged: _updateNewEntry,
-              onAddEntry: _addEntry,
-              keyKeyValueMap: _currentSubstitutions,
-              onUpdateEntry: _updateEntry,
-              onRemoveEntry: _removeEntry)
+              onNewEntryChanged: (entry) => _updateNewEntry(entry),
+              onAddEntry: (entry) => _addEntry(entry),
+              entries: _currentSubstitutions,
+              onUpdateEntry: (entry) => _updateEntry(entry),
+          )
         )
     ]);
   }
@@ -367,8 +366,8 @@ class AlphameticsState extends State<Alphametics> {
 
   Map<String, String> _getSubstitutions() {
     var _substitutions = <String, String>{};
-    for (var entry in _currentSubstitutions.entries) {
-      _substitutions.putIfAbsent(entry.value.keys.first, () => entry.value.values.first);
+    for (var entry in _currentSubstitutions) {
+      _substitutions.putIfAbsent(entry.key, () => entry.value);
     }
 
     if (_currentFromInput.isNotEmpty &&
@@ -389,6 +388,7 @@ class AlphameticsState extends State<Alphametics> {
     for(var x = 0; x < _currentMatrix.getColumnsCount()-2; x+=2) {
       formulas.add(_currentMatrix.buildColumnFormula(x));
     }
+    return formulas;
   }
 
   Future<GCWAsyncExecuterParameters?> _buildJobData() async {
