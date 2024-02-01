@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_bearing.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_output.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_outputformat.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_bearing.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/coords/intersect_lines/logic/intersect_lines.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:gc_wizard/utils/constants.dart';
@@ -21,10 +21,10 @@ class IntersectBearings extends StatefulWidget {
   const IntersectBearings({Key? key}) : super(key: key);
 
   @override
-  IntersectBearingsState createState() => IntersectBearingsState();
+  _IntersectBearingsState createState() => _IntersectBearingsState();
 }
 
-class IntersectBearingsState extends State<IntersectBearings> {
+class _IntersectBearingsState extends State<IntersectBearings> {
   LatLng? _currentIntersection;
 
   var _currentCoords1 = defaultBaseCoordinate;
@@ -48,7 +48,9 @@ class IntersectBearingsState extends State<IntersectBearings> {
           coordsFormat: _currentCoords1.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoords1 = ret;
+              if (ret != null) {
+                _currentCoords1 = ret;
+              }
             });
           },
         ),
@@ -64,7 +66,9 @@ class IntersectBearingsState extends State<IntersectBearings> {
           coordsFormat: _currentCoords2.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoords2 = ret;
+              if (ret != null) {
+                _currentCoords2 = ret;
+              }
             });
           },
         ),
@@ -100,7 +104,8 @@ class IntersectBearingsState extends State<IntersectBearings> {
     if (_currentIntersection == null) {
       var distance1To2 = distanceBearing(_currentCoords1.toLatLng()!, _currentCoords2.toLatLng()!, _ells).distance;
       mapPoint = GCWMapPoint(
-          point: projection(_currentCoords1.toLatLng()!, _currentBearing1.value, distance1To2 * 3, _ells), isVisible: false);
+          point: projection(_currentCoords1.toLatLng()!, _currentBearing1.value, distance1To2 * 3, _ells),
+          isVisible: false);
     } else {
       var distance1ToIntersect = distanceBearing(_currentCoords1.toLatLng()!, _currentIntersection!, _ells).distance;
       mapPoint = GCWMapPoint(
@@ -119,7 +124,8 @@ class IntersectBearingsState extends State<IntersectBearings> {
     if (_currentIntersection == null) {
       var distance2To1 = distanceBearing(_currentCoords2.toLatLng()!, _currentCoords1.toLatLng()!, _ells).distance;
       mapPoint = GCWMapPoint(
-          point: projection(_currentCoords2.toLatLng()!, _currentBearing2.value, distance2To1 * 3, _ells), isVisible: false);
+          point: projection(_currentCoords2.toLatLng()!, _currentBearing2.value, distance2To1 * 3, _ells),
+          isVisible: false);
     } else {
       var distance2ToIntersect = distanceBearing(_currentCoords2.toLatLng()!, _currentIntersection!, _ells).distance;
       mapPoint = GCWMapPoint(
@@ -139,8 +145,8 @@ class IntersectBearingsState extends State<IntersectBearings> {
         builder: (context) {
           return Center(
             child: SizedBox(
-              height: 220,
-              width: 150,
+              height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
+              width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
               child: GCWAsyncExecuter<LatLng?>(
                 isolatedFunction: intersectBearingsAsync,
                 parameter: _buildJobData,

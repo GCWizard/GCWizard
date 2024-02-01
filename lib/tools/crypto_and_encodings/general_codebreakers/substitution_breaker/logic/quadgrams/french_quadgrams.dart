@@ -7,6 +7,6 @@ class FrenchQuadgrams extends Quadgrams {
     most_frequent_quadgram = 'tion';
     max_fitness = 1357;
     average_fitness = 199.21726523931235;
-    assetLocation = "assets/quadgrams/fr.json";
+    assetLocation = "lib/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/assets/quadgrams/fr.json";
   }
 }

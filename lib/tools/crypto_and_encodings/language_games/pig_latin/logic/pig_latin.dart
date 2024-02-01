@@ -29,7 +29,7 @@ String decryptPigLatin(String input) {
   if (input.isEmpty) return '';
 
   return input.replaceAllMapped(RegExp(r'\b(\w+)-(\w*)ay', caseSensitive: false), (match) {
-    var output = (match[2] ?? '') + (match[1]?? '');
+    var output = (match[2] ?? '') + (match[1] ?? '');
     if (isUpperCase(match[1]![0])) output = output[0].toUpperCase() + output.substring(1).toLowerCase();
 
     return output;

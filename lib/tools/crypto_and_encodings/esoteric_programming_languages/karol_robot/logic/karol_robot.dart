@@ -466,8 +466,8 @@ String KarolRobotOutputDecode(String program) {
           } else if (_SET_HALT.contains(element)) {
             halt = true;
           } else if (_SET_WAIT.contains(element)) {
-          } else if (_SET_SOUND.contains(element)) {}
-          else {
+          } else if (_SET_SOUND.contains(element)) {
+          } else {
             world[x.toString() + '|' + (y).toString()] = '#';
           }
         }

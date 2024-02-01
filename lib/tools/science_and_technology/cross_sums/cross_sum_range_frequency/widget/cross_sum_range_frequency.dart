@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
@@ -17,10 +17,10 @@ class CrossSumRangeFrequency extends StatefulWidget {
   const CrossSumRangeFrequency({Key? key, this.type = CrossSumType.NORMAL}) : super(key: key);
 
   @override
-  CrossSumRangeFrequencyState createState() => CrossSumRangeFrequencyState();
+  _CrossSumRangeFrequencyState createState() => _CrossSumRangeFrequencyState();
 }
 
-class CrossSumRangeFrequencyState extends State<CrossSumRangeFrequency> {
+class _CrossSumRangeFrequencyState extends State<CrossSumRangeFrequency> {
   var _currentRangeStart = 0;
   var _currentRangeEnd = 100;
 

@@ -6,7 +6,7 @@ import 'test_util.dart';
 Future<void> main() async {
   for (var file in readSamples()) {
     test(file.path, () async {
-      await runSamplesTest(file);
+      await runSamplesTest(file, file.path.contains('test4.jpg'));
     });
   }
 }

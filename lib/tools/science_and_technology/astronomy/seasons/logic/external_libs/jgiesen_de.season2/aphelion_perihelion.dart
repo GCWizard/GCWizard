@@ -209,7 +209,8 @@ DateTimeDouble _perihelion(int year) {
 
   var time = hoursToHHmmss(h);
 
-  return DateTimeDouble(datetime: DateTime(year, 1, d, time.hour, time.minute, time.second, time.millisecond), value: rp);
+  return DateTimeDouble(
+      datetime: DateTime(year, 1, d, time.hour, time.minute, time.second, time.millisecond), value: rp);
 }
 
 DateTimeDouble _aphelion(int year) {
@@ -270,5 +271,6 @@ DateTimeDouble _aphelion(int year) {
 
   var time = hoursToHHmmss(h);
 
-  return DateTimeDouble(datetime: DateTime(year, 7, d, time.hour, time.minute, time.second, time.millisecond), value: ra);
+  return DateTimeDouble(
+      datetime: DateTime(year, 7, d, time.hour, time.minute, time.second, time.millisecond), value: ra);
 }

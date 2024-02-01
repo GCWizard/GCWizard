@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
@@ -11,10 +11,10 @@ class NumberSequenceDigits extends StatefulWidget {
   const NumberSequenceDigits({Key? key, required this.mode, required this.maxDigits}) : super(key: key);
 
   @override
-  NumberSequenceDigitsState createState() => NumberSequenceDigitsState();
+  _NumberSequenceDigitsState createState() => _NumberSequenceDigitsState();
 }
 
-class NumberSequenceDigitsState extends State<NumberSequenceDigits> {
+class _NumberSequenceDigitsState extends State<NumberSequenceDigits> {
   int _currentInputN = 1;
 
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_datetime_picker.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
@@ -14,10 +14,10 @@ class MoonRiseSet extends StatefulWidget {
   const MoonRiseSet({Key? key}) : super(key: key);
 
   @override
-  MoonRiseSetState createState() => MoonRiseSetState();
+  _MoonRiseSetState createState() => _MoonRiseSetState();
 }
 
-class MoonRiseSetState extends State<MoonRiseSet> {
+class _MoonRiseSetState extends State<MoonRiseSet> {
   var _currentDateTime = DateTimeTimezone(datetime: DateTime.now(), timezone: DateTime.now().timeZoneOffset);
   var _currentCoords = defaultBaseCoordinate;
 
@@ -30,7 +30,9 @@ class MoonRiseSetState extends State<MoonRiseSet> {
           coordsFormat: _currentCoords.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoords = ret;
+              if (ret != null) {
+                _currentCoords = ret;
+              }
             });
           },
         ),
@@ -51,11 +53,8 @@ class MoonRiseSetState extends State<MoonRiseSet> {
   }
 
   Widget _buildOutput() {
-    var moonRise = logic.MoonRiseSet(
-        _currentCoords.toLatLng() ?? defaultCoordinate,
-        JulianDate(_currentDateTime),
-        _currentDateTime.timezone,
-        defaultEllipsoid);
+    var moonRise = logic.MoonRiseSet(_currentCoords.toLatLng() ?? defaultCoordinate, JulianDate(_currentDateTime),
+        _currentDateTime.timezone, defaultEllipsoid);
 
     var outputs = [
       [
@@ -72,9 +71,6 @@ class MoonRiseSetState extends State<MoonRiseSet> {
       ],
     ];
 
-    return GCWColumnedMultilineOutput(
-        firstRows: [GCWTextDivider(text: i18n(context, 'common_output'))],
-        data: outputs
-    );
+    return GCWColumnedMultilineOutput(firstRows: [GCWTextDivider(text: i18n(context, 'common_output'))], data: outputs);
   }
 }

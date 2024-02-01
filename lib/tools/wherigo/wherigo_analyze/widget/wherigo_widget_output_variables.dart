@@ -10,7 +10,7 @@ List<List<String>> _buildOutputListOfVariables(BuildContext context, WherigoVari
 List<List<String>> _buildOutputListOfVariablesDetails(BuildContext context, WherigoVariableData data) {
   List<List<String>> result = [];
 
-  if (NameToObject[data.VariableName] == null) {
+  if (WHERIGONameToObject[data.VariableName] == null) {
     result = [
       [i18n(context, 'wherigo_output_identifier_no_detail'), '']
     ];
@@ -18,11 +18,11 @@ List<List<String>> _buildOutputListOfVariablesDetails(BuildContext context, Wher
     result = [
       [
         i18n(context, 'wherigo_output_identifier_detail_title'),
-        NameToObject[data.VariableName]!.ObjectType.toString().split('.')[1]
+        WHERIGONameToObject[data.VariableName]!.ObjectType.toString().split('.')[1]
       ]
     ];
 
-    switch (NameToObject[data.VariableName]!.ObjectType) {
+    switch (WHERIGONameToObject[data.VariableName]!.ObjectType) {
       case WHERIGO_OBJECT_TYPE.CHARACTER:
         result.addAll(_addDetailsCharacter(context, data));
         break;
@@ -51,25 +51,22 @@ List<List<String>> _buildOutputListOfVariablesDetails(BuildContext context, Wher
   return result;
 }
 
-List<List<String>> _addDetailsCharacter(BuildContext context, WherigoVariableData data){
+List<List<String>> _addDetailsCharacter(BuildContext context, WherigoVariableData data) {
   List<List<String>> result = [];
 
   for (int i = 0; i < WherigoCartridgeLUAData.Characters.length; i++) {
     if (WherigoCartridgeLUAData.Characters[i].CharacterLUAName == data.VariableName) {
       result.add([i18n(context, 'wherigo_output_id'), WherigoCartridgeLUAData.Characters[i].CharacterID]);
       result.add([i18n(context, 'wherigo_output_name'), WherigoCartridgeLUAData.Characters[i].CharacterName]);
-      result.add([
-        i18n(context, 'wherigo_output_description'),
-        WherigoCartridgeLUAData.Characters[i].CharacterDescription
-      ]);
       result.add(
-          [i18n(context, 'wherigo_output_medianame'), WherigoCartridgeLUAData.Characters[i].CharacterMediaName]);
+          [i18n(context, 'wherigo_output_description'), WherigoCartridgeLUAData.Characters[i].CharacterDescription]);
+      result.add([i18n(context, 'wherigo_output_medianame'), WherigoCartridgeLUAData.Characters[i].CharacterMediaName]);
     }
   }
   return result;
 }
 
-List<List<String>> _addDetailsTask(BuildContext context, WherigoVariableData data){
+List<List<String>> _addDetailsTask(BuildContext context, WherigoVariableData data) {
   List<List<String>> result = [];
 
   for (int i = 0; i < WherigoCartridgeLUAData.Tasks.length; i++) {
@@ -83,7 +80,7 @@ List<List<String>> _addDetailsTask(BuildContext context, WherigoVariableData dat
   return result;
 }
 
-List<List<String>> _addDetailsMedia(BuildContext context, WherigoVariableData data){
+List<List<String>> _addDetailsMedia(BuildContext context, WherigoVariableData data) {
   List<List<String>> result = [];
 
   for (int i = 0; i < WherigoCartridgeLUAData.Media.length; i++) {
@@ -97,7 +94,7 @@ List<List<String>> _addDetailsMedia(BuildContext context, WherigoVariableData da
   return result;
 }
 
-List<List<String>> _addDetailsItem(BuildContext context, WherigoVariableData data){
+List<List<String>> _addDetailsItem(BuildContext context, WherigoVariableData data) {
   List<List<String>> result = [];
 
   for (int i = 0; i < WherigoCartridgeLUAData.Items.length; i++) {
@@ -111,15 +108,14 @@ List<List<String>> _addDetailsItem(BuildContext context, WherigoVariableData dat
   return result;
 }
 
-List<List<String>> _addDetailsInput(BuildContext context, WherigoVariableData data){
+List<List<String>> _addDetailsInput(BuildContext context, WherigoVariableData data) {
   List<List<String>> result = [];
 
   for (int i = 0; i < WherigoCartridgeLUAData.Inputs.length; i++) {
     if (WherigoCartridgeLUAData.Inputs[i].InputLUAName == data.VariableName) {
       result.add([i18n(context, 'wherigo_output_id'), WherigoCartridgeLUAData.Inputs[i].InputID]);
       result.add([i18n(context, 'wherigo_output_name'), WherigoCartridgeLUAData.Inputs[i].InputName]);
-      result
-          .add([i18n(context, 'wherigo_output_description'), WherigoCartridgeLUAData.Inputs[i].InputDescription]);
+      result.add([i18n(context, 'wherigo_output_description'), WherigoCartridgeLUAData.Inputs[i].InputDescription]);
       result.add([i18n(context, 'wherigo_output_medianame'), WherigoCartridgeLUAData.Inputs[i].InputMedia]);
       result.add([i18n(context, 'wherigo_output_question'), WherigoCartridgeLUAData.Inputs[i].InputText]);
     }
@@ -127,15 +123,14 @@ List<List<String>> _addDetailsInput(BuildContext context, WherigoVariableData da
   return result;
 }
 
-List<List<String>> _addDetailsTimer(BuildContext context, WherigoVariableData data){
+List<List<String>> _addDetailsTimer(BuildContext context, WherigoVariableData data) {
   List<List<String>> result = [];
 
   for (int i = 0; i < WherigoCartridgeLUAData.Timers.length; i++) {
     if (WherigoCartridgeLUAData.Timers[i].TimerLUAName == data.VariableName) {
       result.add([i18n(context, 'wherigo_output_id'), WherigoCartridgeLUAData.Timers[i].TimerID]);
       result.add([i18n(context, 'wherigo_output_name'), WherigoCartridgeLUAData.Timers[i].TimerName]);
-      result
-          .add([i18n(context, 'wherigo_output_description'), WherigoCartridgeLUAData.Timers[i].TimerDescription]);
+      result.add([i18n(context, 'wherigo_output_description'), WherigoCartridgeLUAData.Timers[i].TimerDescription]);
       result.add([i18n(context, 'wherigo_output_duration'), WherigoCartridgeLUAData.Timers[i].TimerDuration]);
       result.add([i18n(context, 'wherigo_output_type'), WherigoCartridgeLUAData.Timers[i].TimerType]);
       result.add([i18n(context, 'wherigo_output_visible'), WherigoCartridgeLUAData.Timers[i].TimerVisible]);
@@ -144,7 +139,7 @@ List<List<String>> _addDetailsTimer(BuildContext context, WherigoVariableData da
   return result;
 }
 
-List<List<String>> _addDetailsZone(BuildContext context, WherigoVariableData data){
+List<List<String>> _addDetailsZone(BuildContext context, WherigoVariableData data) {
   List<List<String>> result = [];
   for (int i = 0; i < WherigoCartridgeLUAData.Zones.length; i++) {
     if (WherigoCartridgeLUAData.Zones[i].ZoneLUAName == data.VariableName) {

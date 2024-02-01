@@ -25,11 +25,9 @@ const _OHLSEN_RELATIVE_DISPLAY_WIDTH = 150;
 const _OHLSEN_RELATIVE_DISPLAY_HEIGHT = 160;
 const _OHLSEN_RADIUS = 10.0;
 
-
 class _OhlsenSegmentDisplay extends NSegmentDisplay {
-
-  _OhlsenSegmentDisplay({
-      Key? key,
+  _OhlsenSegmentDisplay(
+      {Key? key,
       required Map<String, bool> segments,
       bool readOnly = false,
       void Function(Map<String, bool>)? onChanged})
@@ -102,7 +100,8 @@ class _OhlsenSegmentDisplay extends NSegmentDisplay {
               });
 
               shutters.forEach((key, value) {
-                paint.color = segmentActive(currentSegments, shutterSegments[key]!) ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
+                paint.color =
+                    segmentActive(currentSegments, shutterSegments[key]!) ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
                 canvas.touchCanvas.drawRect(
                     Offset(size.width / _OHLSEN_RELATIVE_DISPLAY_WIDTH * value[0],
                             size.height / _OHLSEN_RELATIVE_DISPLAY_HEIGHT * value[1]) &

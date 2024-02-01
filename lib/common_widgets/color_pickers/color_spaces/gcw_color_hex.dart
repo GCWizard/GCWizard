@@ -15,7 +15,7 @@ class _GCWColorHexCodeState extends State<_GCWColorHexCode> {
 
   late TextEditingController _controller;
 
-  final _maskInputFormatter = WrapperForMaskTextInputFormatter(mask: '#......', filter: {".": RegExp(r'[A-Fa-f0-9]')});
+  final _maskInputFormatter = GCWMaskTextInputFormatter(mask: '#......', filter: {".": RegExp(r'[A-Fa-f0-9]')});
 
   @override
   void initState() {

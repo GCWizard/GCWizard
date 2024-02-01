@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
@@ -14,10 +14,10 @@ class Abaddon extends StatefulWidget {
   const Abaddon({Key? key}) : super(key: key);
 
   @override
-  AbaddonState createState() => AbaddonState();
+  _AbaddonState createState() => _AbaddonState();
 }
 
-class AbaddonState extends State<Abaddon> {
+class _AbaddonState extends State<Abaddon> {
   late TextEditingController _inputController;
   late TextEditingController _aController;
   late TextEditingController _bController;

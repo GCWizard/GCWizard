@@ -7,22 +7,22 @@ import 'package:file_picker/file_picker.dart' as filePicker;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
+import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:gc_wizard/common_widgets/gcw_toast.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:http/http.dart' as http;
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 
 // Not supported by file picker plugin
 const _UNSUPPORTED_FILEPICKERPLUGIN_TYPES = [FileType.GPX, FileType.GCW];
@@ -38,12 +38,12 @@ class GCWOpenFile extends StatefulWidget {
 
   const GCWOpenFile(
       {Key? key,
-        required this.onLoaded,
-        this.supportedFileTypes,
-        this.title,
-        this.isDialog = false,
-        this.file,
-        this.suppressHeader = false})
+      required this.onLoaded,
+      this.supportedFileTypes,
+      this.title,
+      this.isDialog = false,
+      this.file,
+      this.suppressHeader = false})
       : super(key: key);
 
   @override
@@ -79,7 +79,7 @@ class _GCWOpenFileState extends State<GCWOpenFile> {
       text: i18n(context, 'common_loadfile_open'),
       onPressed: () {
         _currentExpanded = true;
-        _openFileExplorer(allowedFileTypes: widget.supportedFileTypes).then((GCWFile? file) {
+        openFileExplorer(allowedFileTypes: widget.supportedFileTypes).then((GCWFile? file) {
           if (file != null) {
             setState(() {
               _loadedFile = file;
@@ -87,7 +87,7 @@ class _GCWOpenFileState extends State<GCWOpenFile> {
             });
             widget.onLoaded(file);
           } else {
-            showToast(i18n(context, 'common_loadfile_exception_nofile'));
+            showSnackBar(i18n(context, 'common_loadfile_exception_nofile'), context);
           }
         });
       },
@@ -104,9 +104,9 @@ class _GCWOpenFileState extends State<GCWOpenFile> {
             builder: (context) {
               return Center(
                 child: SizedBox(
-                  height: 220,
-                  width: 150,
-                  child: GCWAsyncExecuter<Object?>(
+                  height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
+                  width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
+                  child: GCWAsyncExecuter<Uint8ListText?>(
                     isolatedFunction: _downloadFileAsync,
                     parameter: _buildJobDataDownload,
                     onReady: (data) => _saveDownload(data),
@@ -124,13 +124,13 @@ class _GCWOpenFileState extends State<GCWOpenFile> {
     _currentUri = null;
 
     if (_currentUrl == null) {
-      showToast(i18n(context, 'common_loadfile_exception_url'));
+      showSnackBar(i18n(context, 'common_loadfile_exception_url'), context);
       return null;
     }
 
     await _getAndValidateUri(_currentUrl!.trim()).then((uri) {
       if (uri == null) {
-        showToast(i18n(context, 'common_loadfile_exception_url'));
+        showSnackBar(i18n(context, 'common_loadfile_exception_url'), context);
         return null;
       }
       _currentUri = uri;
@@ -178,18 +178,20 @@ class _GCWOpenFileState extends State<GCWOpenFile> {
     }
   }
 
-  void _saveDownload(Object? data) {
+  void _saveDownload(Uint8ListText? data) {
     _loadedFile = null;
-    if (data is Uint8List && _currentUrl != null) {
-      _loadedFile =
-          GCWFile(name: Uri.decodeFull(_currentUrl!).split('/').last.split('?').first, path: _currentUrl, bytes: data);
-    } else if (data is String) {
-      showToast(i18n(context, data));
+    if (data != null && data.value.isNotEmpty && _currentUrl != null) {
+      _loadedFile = GCWFile(
+          name: Uri.decodeFull(_currentUrl!).split('/').last.split('?').first, path: _currentUrl, bytes: data.value);
+    } else if (data != null && data.text.isNotEmpty) {
+      showSnackBar(i18n(context, data.text), context);
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.onLoaded(_loadedFile);
-    });
+    if (_loadedFile != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        widget.onLoaded(_loadedFile!);
+      });
+    }
   }
 
   @override
@@ -220,15 +222,15 @@ class _GCWOpenFileState extends State<GCWOpenFile> {
         widget.isDialog || widget.suppressHeader
             ? content
             : GCWExpandableTextDivider(
-            text:
-            i18n(context, 'common_loadfile_showopen') + (widget.title != null ? ' (' + widget.title! + ')' : ''),
-            expanded: _currentExpanded,
-            onChanged: (value) {
-              setState(() {
-                _currentExpanded = value;
-              });
-            },
-            child: content),
+                text: i18n(context, 'common_loadfile_showopen') +
+                    (widget.title != null ? ' (' + widget.title! + ')' : ''),
+                expanded: _currentExpanded,
+                onChanged: (value) {
+                  setState(() {
+                    _currentExpanded = value;
+                  });
+                },
+                child: content),
         if (_currentExpanded && _loadedFile != null)
           GCWText(
             text: i18n(context, 'common_loadfile_currentlyloaded') + ': ' + (_loadedFile?.name ?? ''),
@@ -243,6 +245,7 @@ class _GCWOpenFileState extends State<GCWOpenFile> {
   }
 
   bool _validateContentType(String contentType) {
+    if (widget.supportedFileTypes == null || widget.supportedFileTypes!.isEmpty) return true;
     for (FileType fileType in widget.supportedFileTypes ?? []) {
       var mimeTypeList = mimeTypes(fileType);
       if (mimeTypeList != null && mimeTypeList.contains(contentType)) return true;
@@ -279,7 +282,7 @@ class _GCWOpenFileState extends State<GCWOpenFile> {
           if ((contentType != null) && _validateContentType(contentType)) {
             return uri;
           } else {
-            showToast(i18n(context, 'common_loadfile_exception_supportedfiletype'));
+            showSnackBar(i18n(context, 'common_loadfile_exception_supportedfiletype'), context);
           }
         }
       } catch (e) {}
@@ -289,7 +292,7 @@ class _GCWOpenFileState extends State<GCWOpenFile> {
   }
 }
 
-void showOpenFileDialog(BuildContext context, List<FileType> supportedFileTypes, Function onLoaded) {
+void showOpenFileDialog(BuildContext context, List<FileType> supportedFileTypes, void Function(GCWFile?) onLoaded) {
   showGCWDialog(
       context,
       i18n(context, 'common_loadfile_showopen'),
@@ -298,7 +301,7 @@ void showOpenFileDialog(BuildContext context, List<FileType> supportedFileTypes,
           GCWOpenFile(
             supportedFileTypes: supportedFileTypes,
             isDialog: true,
-            onLoaded: (_file) {
+            onLoaded: (GCWFile? _file) {
               onLoaded(_file);
 
               Navigator.of(context).pop();
@@ -309,56 +312,63 @@ void showOpenFileDialog(BuildContext context, List<FileType> supportedFileTypes,
       []);
 }
 
-Future<Object?> _downloadFileAsync(GCWAsyncExecuterParameters? jobData) async {
+Future<Uint8ListText?> _downloadFileAsync(GCWAsyncExecuterParameters? jobData) async {
+  if (jobData?.parameters is! Uri) return null;
   int _total = 0;
   int _received = 0;
   List<int> _bytes = [];
-  Future<Uint8List>? result;
   SendPort? sendAsyncPort = jobData?.sendAsyncPort;
-  Uri? uri = jobData?.parameters is Uri ? jobData!.parameters as Uri : null;
-  String? outString;
+  Uri? uri = jobData!.parameters as Uri;
+  var result = Uint8ListText('', Uint8List.fromList(_bytes));
 
-  if (uri == null) return null;
   var request = http.Request("GET", uri);
   var client = http.Client();
-  await client.send(request).timeout(const Duration(seconds: 10), onTimeout: () {
-    //sendAsyncPort?.send(null);
-    return http.StreamedResponse(Stream.fromIterable([]), 500); //http.Response('Error', 500);
-  }).then((http.StreamedResponse response) async {
-    if (response.statusCode != 200) {
-      sendAsyncPort?.send('common_loadfile_exception_responsestatus');
-      return 'common_loadfile_exception_responsestatus';
-    }
-    _total = response.contentLength ?? 0;
-    int progressStep = max(_total ~/ 100, 1);
 
-    response.stream.listen((value) {
-      _bytes.addAll(value);
+  try {
+    await client
+        .send(request)
+        .timeout(const Duration(seconds: 10))
+        .then<http.StreamedResponse?>((http.StreamedResponse response) async {
+      if (response.statusCode != 200) {
+        result = Uint8ListText('common_loadfile_exception_responsestatus', Uint8List(0));
+      } else {
+        _total = response.contentLength ?? 0;
+        int progressStep = max(_total ~/ 100, 1);
 
-      if (_total != 0 &&
-          sendAsyncPort != null &&
-          (_received % progressStep > (_received + value.length) % progressStep)) {
-        sendAsyncPort.send(DoubleText('progress', (_received + value.length) / _total));
+        response.stream.listen(
+          (value) async {
+            _bytes.addAll(value);
+
+            if (_total != 0 &&
+                sendAsyncPort != null &&
+                (_received % progressStep > (_received + value.length) % progressStep)) {
+              sendAsyncPort.send(DoubleText(PROGRESS, (_received + value.length) / _total));
+            }
+            _received += value.length;
+          },
+          onDone: () {
+            if (_bytes.isEmpty) {
+              result = Uint8ListText('common_loadfile_exception_nofile', Uint8List(0));
+            } else {
+              sendAsyncPort?.send(Uint8ListText('', Uint8List.fromList(_bytes)));
+              result = Uint8ListText('', Uint8List.fromList(_bytes));
+            }
+          },
+        );
       }
-      _received += value.length;
-    },
-        onDone: () {
-          if (_bytes.isEmpty) {
-            outString = 'common_loadfile_exception_nofile';
-            sendAsyncPort?.send(outString);
-          } else {
-            var uint8List = Uint8List.fromList(_bytes);
-            sendAsyncPort?.send(uint8List);
-            result = Future.value(uint8List);
-          }
-        }
-    );
-  });
+      return response;
+    });
+  } on TimeoutException catch (_) {
+    result = Uint8ListText('common_loadfile_exception_responsestatus', Uint8List(0));
+  } on SocketException catch (_) {
+    result = Uint8ListText('common_loadfile_exception_nofile', Uint8List(0));
+  }
 
-  if (outString != null) return outString!;
-
-  await result;
-  return result;
+// ToDo only working with AsyncPort (await not working)
+  if (result.text.isNotEmpty) {
+    sendAsyncPort?.send(result);
+  }
+  return Future.value(result);
 }
 
 /// Open File Picker dialog
@@ -366,15 +376,16 @@ Future<Object?> _downloadFileAsync(GCWAsyncExecuterParameters? jobData) async {
 /// Returns null if nothing was selected.
 ///
 /// * [allowedFileTypes] specifies a list of file extensions that will be displayed for selection, if empty - files with any extension are displayed. Example: `['jpg', 'jpeg']`
-Future<GCWFile?> _openFileExplorer({List<FileType>? allowedFileTypes}) async {
+Future<GCWFile?> openFileExplorer({List<FileType>? allowedFileTypes}) async {
   try {
     if (allowedFileTypes == null || _hasUnsupportedTypes(allowedFileTypes)) allowedFileTypes = [];
 
     var files = (await filePicker.FilePicker.platform.pickFiles(
-        type: allowedFileTypes.isEmpty ? filePicker.FileType.any : filePicker.FileType.custom,
-        allowMultiple: false,
-        allowedExtensions:
-            allowedFileTypes.isEmpty ? null : allowedFileTypes.map((type) => fileExtension(type)).toList()))?.files;
+            type: allowedFileTypes.isEmpty ? filePicker.FileType.any : filePicker.FileType.custom,
+            allowMultiple: false,
+            allowedExtensions:
+                allowedFileTypes.isEmpty ? null : allowedFileTypes.map((type) => fileExtension(type)).toList()))
+        ?.files;
 
     if (allowedFileTypes.isNotEmpty && files != null) files = _filterFiles(files, allowedFileTypes);
 
@@ -390,13 +401,17 @@ Future<GCWFile?> _openFileExplorer({List<FileType>? allowedFileTypes}) async {
 }
 
 Future<Uint8List?> _getFileData(filePicker.PlatformFile file) async {
-  return kIsWeb ? Future.value(file.bytes) : (file.path == null) ? null : readByteDataFromFile(file.path!);
+  return kIsWeb
+      ? Future.value(file.bytes)
+      : (file.path == null)
+          ? null
+          : readByteDataFromFile(file.path!);
 }
 
 List<filePicker.PlatformFile> _filterFiles(List<filePicker.PlatformFile> files, List<FileType> allowedFileTypes) {
   var allowedExtensions = fileExtensions(allowedFileTypes);
 
-  return files.where((element) => allowedExtensions.contains(element.extension)).toList();
+  return files.where((element) => allowedExtensions.contains(element.extension.toString().toLowerCase())).toList();
 }
 
 bool _hasUnsupportedTypes(List<FileType>? allowedExtensions) {

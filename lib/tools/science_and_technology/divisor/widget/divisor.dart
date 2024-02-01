@@ -10,10 +10,10 @@ class Divisor extends StatefulWidget {
   const Divisor({Key? key}) : super(key: key);
 
   @override
-  DivisorState createState() => DivisorState();
+  _DivisorState createState() => _DivisorState();
 }
 
-class DivisorState extends State<Divisor> {
+class _DivisorState extends State<Divisor> {
   int _currentInputN = 0;
 
   bool _currentCrosstotalMode = true;
@@ -59,9 +59,8 @@ class DivisorState extends State<Divisor> {
     return Column(
       children: [
         GCWDefaultOutput(
-          child: _currentCrosstotalMode
-              ? divs.join(' ')
-              : GCWColumnedMultilineOutput(data: divs.map((e) => [e]).toList()),
+          child:
+              _currentCrosstotalMode ? divs.join(' ') : GCWColumnedMultilineOutput(data: divs.map((e) => [e]).toList()),
         ),
         if (_currentCrosstotalMode)
           CrosstotalOutput(

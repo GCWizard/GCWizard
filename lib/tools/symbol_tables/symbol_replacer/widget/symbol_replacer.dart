@@ -2,21 +2,22 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/application/registry.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_slider.dart';
+import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:gc_wizard/common_widgets/gcw_toast.dart';
 import 'package:gc_wizard/common_widgets/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -28,14 +29,13 @@ import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/substi
 import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/widget/quadgram_loader.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/widget/substitution_breaker_items.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_container.dart';
+import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_table_tool.dart';
+import 'package:gc_wizard/tools/symbol_tables/_common/widget/symbol_table.dart';
 import 'package:gc_wizard/tools/symbol_tables/symbol_replacer/logic/symbol_replacer.dart';
 import 'package:gc_wizard/tools/symbol_tables/symbol_replacer/widget/symbol_replacer_manual_control.dart';
 import 'package:gc_wizard/tools/symbol_tables/symbol_replacer/widget/symbol_replacer_symboldata.dart';
-import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_table_tool.dart';
-import 'package:gc_wizard/tools/symbol_tables/_common/widget/symbol_table.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:tuple/tuple.dart';
 
 class SymbolReplacer extends StatefulWidget {
@@ -45,12 +45,13 @@ class SymbolReplacer extends StatefulWidget {
   const SymbolReplacer({Key? key, this.platformFile, this.symbolKey}) : super(key: key);
 
   @override
-  SymbolReplacerState createState() => SymbolReplacerState();
+  _SymbolReplacerState createState() => _SymbolReplacerState();
 }
 
-class SymbolReplacerState extends State<SymbolReplacer> {
+class _SymbolReplacerState extends State<SymbolReplacer> {
   static String no_symbol_table_key = 'no_symbol_table';
-  final no_symbol_table = SymbolReplacerSymbolTableViewData(symbolKey: no_symbol_table_key, toolName: null, icon :null, description: null);
+  final no_symbol_table =
+      SymbolReplacerSymbolTableViewData(symbolKey: no_symbol_table_key, toolName: null, icon: null, description: null);
   SymbolReplacerImage? _symbolImage;
   GCWFile? _platformFile;
   double _blackLevel = 50.0;
@@ -92,7 +93,7 @@ class SymbolReplacerState extends State<SymbolReplacer> {
         supportedFileTypes: SUPPORTED_IMAGE_TYPES,
         onLoaded: (_file) {
           if (_file == null) {
-            showToast(i18n(context, 'common_loadfile_exception_notloaded'));
+            showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
             return;
           }
 
@@ -151,8 +152,8 @@ class SymbolReplacerState extends State<SymbolReplacer> {
         builder: (context) {
           return Center(
             child: SizedBox(
-              height: 220,
-              width: 150,
+              height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
+              width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
               child: GCWAsyncExecuter<SymbolReplacerImage?>(
                 isolatedFunction: replaceSymbolsAsync,
                 parameter: _buildJobDataReplacer,
@@ -277,9 +278,9 @@ class SymbolReplacerState extends State<SymbolReplacer> {
               });
               if (_symbolImage != null) {
                 if (_currentSymbolTableViewData.data == null && _currentSymbolTableViewData != no_symbol_table) {
-                      _currentSymbolTableViewData.initialize(context).then((_) {
-                        _symbolImage!.compareSymbols = _currentSymbolTableViewData.data?.images;
-                      });
+                  _currentSymbolTableViewData.initialize(context).then((_) {
+                    _symbolImage!.compareSymbols = _currentSymbolTableViewData.data?.images;
+                  });
                 } else {
                   _symbolImage!.compareSymbols = _currentSymbolTableViewData.data?.images;
                 }
@@ -380,8 +381,8 @@ class SymbolReplacerState extends State<SymbolReplacer> {
       builder: (context) {
         return Center(
           child: SizedBox(
-            height: 220,
-            width: 150,
+            height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
+            width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
             child: GCWAsyncExecuter<SubstitutionBreakerResult?>(
               isolatedFunction: break_cipherAsync,
               parameter: _buildSubstitutionBreakerJobData,
@@ -401,8 +402,8 @@ class SymbolReplacerState extends State<SymbolReplacer> {
       builder: (context) {
         return Center(
           child: SizedBox(
-            height: 220,
-            width: 150,
+            height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
+            width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
             child: GCWAsyncExecuter<List<Map<String, SymbolReplacerSymbolData>>?>(
               isolatedFunction: searchSymbolTableAsync,
               parameter: _buildJobDataSearchSymbolTable,
@@ -445,7 +446,6 @@ class SymbolReplacerState extends State<SymbolReplacer> {
     if ((symbolKey != null)) {
       for (var item in _compareSymbolItems) {
         if (item.value.symbolKey == symbolKey) {
-
           _currentSymbolTableViewData = item.value;
           break;
         }
@@ -464,21 +464,20 @@ class SymbolReplacerState extends State<SymbolReplacer> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(toolName ?? '', style: _gcwTextStyle),
-                (description != null) ? Text(description, style: _descriptionTextStyle) : Container(),
-              ]))
+            Text(toolName ?? '', style: _gcwTextStyle),
+            (description != null) ? Text(description, style: _descriptionTextStyle) : Container(),
+          ]))
     ]);
   }
 
   Future<GCWAsyncExecuterParameters?> _buildSubstitutionBreakerJobData() async {
     if (_symbolImage == null) return null;
 
-    var quadgrams =
-        await loadQuadgramsAssets(_currentAlphabet, context, _quadgrams, _isLoading);
+    var quadgrams = await loadQuadgramsAssets(_currentAlphabet, context, _quadgrams, _isLoading);
     if (quadgrams == null) return null;
 
     if (_symbolImage!.symbolGroups.length > quadgrams.alphabet.length) {
-      showToast(i18n(context, 'symbol_replacer_automatic_groups'));
+      showSnackBar(i18n(context, 'symbol_replacer_automatic_groups'), context);
       return null;
     }
 

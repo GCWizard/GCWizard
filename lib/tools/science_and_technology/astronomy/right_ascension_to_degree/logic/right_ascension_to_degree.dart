@@ -2,8 +2,7 @@
 
 import 'dart:math';
 
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_parser.dart';
-import 'package:gc_wizard/tools/coords/format_converter/logic/dec.dart' as dec;
+import 'package:gc_wizard/tools/coords/_common/formats/dec/logic/dec.dart' as dec;
 import 'package:gc_wizard/utils/datetime_utils.dart';
 import 'package:intl/intl.dart';
 
@@ -64,8 +63,7 @@ class RightAscension {
   }
 
   Duration toDuration() {
-    var duration = Duration(
-        hours: hours, minutes: minutes, seconds: seconds.truncate(), milliseconds: milliseconds);
+    var duration = Duration(hours: hours, minutes: minutes, seconds: seconds.truncate(), milliseconds: milliseconds);
 
     if (sign < 0) duration = -duration;
 
@@ -77,7 +75,7 @@ class RightAscension {
     var matches = regex.allMatches(input);
 
     if (matches.isNotEmpty) {
-      var match =matches.first;
+      var match = matches.first;
       return RightAscension(
           (matches.first.group(1) == "-") ? -1 : 1,
           int.parse(match.group(2) ?? ''),
@@ -128,7 +126,7 @@ class RaDeg {
     var _input = dec.prepareInput(input, wholeString: wholeString);
     if (_input == null) return null;
 
-    RegExp regex = RegExp(_PATTERN_RADEG + regexEnd, caseSensitive: false);
+    RegExp regex = RegExp(_PATTERN_RADEG + dec.regexEnd, caseSensitive: false);
 
     if (regex.hasMatch(_input)) {
       var matches = regex.firstMatch(_input);

@@ -2,7 +2,6 @@ part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/widget/wherigo_analyze.
 
 List<List<String>> _buildOutputListAnswers(BuildContext context, WherigoInputData input, WherigoAnswerData data) {
   List<List<String>> result;
-
   List<String> answers = data.AnswerAnswer.split('\x01');
   var hash = answers[0].trim();
   var answerAlphabetical = answers.length >= 2 ? answers[1].trim() : null;
@@ -27,9 +26,9 @@ List<List<String>> _buildOutputListAnswers(BuildContext context, WherigoInputDat
           ? [i18n(context, 'wherigo_output_hash'), hash, '']
           : [i18n(context, 'wherigo_output_answer'), hash],
       if (answerAlphabetical != null)
-          [i18n(context, 'wherigo_output_answerdecrypted'), answerAlphabetical, i18n(context, 'common_letters')],
+        [i18n(context, 'wherigo_output_answerdecrypted'), answerAlphabetical, i18n(context, 'common_letters')],
       if (answerNumeric != null)
-          [i18n(context, 'wherigo_output_answerdecrypted'), answerNumeric, i18n(context, 'common_numbers')],
+        [i18n(context, 'wherigo_output_answerdecrypted'), answerNumeric, i18n(context, 'common_numbers')],
     ];
 
     result = [
@@ -78,18 +77,19 @@ List<Widget> _outputAnswerActionsWidgets(BuildContext context, WherigoAnswerData
           break;
 
         case WHERIGO_ACTIONMESSAGETYPE.CASE:
-          wherigoExpertMode
+          WHERIGOExpertMode
               ? resultWidget.add(Text(
-                '\n' + (element.ActionMessageContent.toUpperCase()) + '\n',
-                textAlign: TextAlign.center,
-              ))
+                  '\n' + (element.ActionMessageContent.toUpperCase()) + '\n',
+                  textAlign: TextAlign.center,
+                ))
               : null;
           break;
 
         case WHERIGO_ACTIONMESSAGETYPE.COMMAND:
           if (element.ActionMessageContent.startsWith('Wherigo.PlayAudio')) {
             String LUAName = element.ActionMessageContent.replaceAll('Wherigo.PlayAudio(', '').replaceAll(')', '');
-            if (NameToObject[LUAName] == null || NameToObject[LUAName]!.ObjectIndex >= WherigoCartridgeGWCData.MediaFilesContents.length) {
+            if (WHERIGONameToObject[LUAName] == null ||
+                WHERIGONameToObject[LUAName]!.ObjectIndex >= WherigoCartridgeGWCData.MediaFilesContents.length) {
               break;
             }
 
@@ -99,23 +99,24 @@ List<Widget> _outputAnswerActionsWidgets(BuildContext context, WherigoAnswerData
                 suppressedButtons: const {GCWImageViewButtons.SAVE},
                 files: [
                   GCWFile(
-                    //bytes: _WherigoCartridge.MediaFilesContents[_mediaFileIndex].MediaFileBytes,
-                      bytes:
-                      WherigoCartridgeGWCData.MediaFilesContents[NameToObject[LUAName]!.ObjectIndex].MediaFileBytes,
-                      name: NameToObject[LUAName]!.ObjectMedia),
+                      //bytes: _WherigoCartridge.MediaFilesContents[_mediaFileIndex].MediaFileBytes,
+                      bytes: WherigoCartridgeGWCData
+                          .MediaFilesContents[WHERIGONameToObject[LUAName]!.ObjectIndex].MediaFileBytes,
+                      name: WHERIGONameToObject[LUAName]!.ObjectMedia),
                 ],
               ));
             }
           } else {
-            wherigoExpertMode
+            WHERIGOExpertMode
                 ? resultWidget.add(GCWOutput(
-              child: '\n' + _resolveLUAName(element.ActionMessageContent) + '\n',
-              suppressCopyButton: true,
-            ))
+                    child: '\n' + _resolveLUAName(element.ActionMessageContent) + '\n',
+                    suppressCopyButton: true,
+                  ))
                 : null;
           }
           break;
-        default: {}
+        default:
+          {}
       }
     }
   }

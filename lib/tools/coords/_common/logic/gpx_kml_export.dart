@@ -117,7 +117,6 @@ class _GpxWriter {
   }
 
   void _writeLines(XmlBuilder builder, String cacheName, String tagName, List<LatLng> shapes) {
-
     builder.element('trk', nest: () {
       _writeElement(builder, 'name', tagName);
 
@@ -130,7 +129,6 @@ class _GpxWriter {
         }
       });
     });
-
   }
 
   void _writeElement(XmlBuilder builder, String tagName, Object value) {
@@ -205,7 +203,6 @@ class _KmlWriter {
           }
         }
 
-
         var circles = points.where((point) => point.hasCircle()).map((point) => point.circle!).toList();
 
         for (i = 0; i < circles.length; i++) {
@@ -278,7 +275,6 @@ class _KmlWriter {
           }
         }
 
-
         builder.element('Folder', nest: () {
           _writeElement(builder, 'name', 'Waypoints');
 
@@ -289,13 +285,10 @@ class _KmlWriter {
             }
 
             if (i == 0) {
-              _writePoint(
-                  builder, false, name, 'S' + i.toString(), points[i], '#' + waypointStyle);
+              _writePoint(builder, false, name, 'S' + i.toString(), points[i], '#' + waypointStyle);
             }
-            _writePoint(
-                builder, true, name, 'S' + i.toString(), points[i], '#' + waypointStyle);
+            _writePoint(builder, true, name, 'S' + i.toString(), points[i], '#' + waypointStyle);
           }
-
         });
 
         for (i = 0; i < circles.length; i++) {
@@ -314,8 +307,7 @@ class _KmlWriter {
               continue;
             }
 
-            _writeLines(builder, polylines[i].points.map((mapPoint) => mapPoint.point).toList(),
-                '#' + polylineStyle);
+            _writeLines(builder, polylines[i].points.map((mapPoint) => mapPoint.point).toList(), '#' + polylineStyle);
           }
         }
       });
@@ -333,7 +325,6 @@ class _KmlWriter {
 
   void _writePoint(
       XmlBuilder builder, bool waypoint, String cacheName, String stageName, GCWMapPoint wpt, String styleId) {
-
     builder.element('Placemark', nest: () {
       if (!waypoint) {
         _writeElement(builder, 'name', _checkName(cacheName));
@@ -346,7 +337,6 @@ class _KmlWriter {
         _writeElement(builder, 'coordinates', [wpt.point.longitude, wpt.point.latitude].join(','));
       });
     });
-
   }
 
   void _writeLines(XmlBuilder builder, List<LatLng> shapes, String styleId) {

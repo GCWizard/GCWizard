@@ -60,9 +60,7 @@ Future<bool> generate_bigram() async {
     var fileIn = File(normalizePath(filePath + (elem['input'] as String)));
     var fileOut = File(normalizePath(filePath + (elem['fileOut'] as String)));
 
-    var _actual = await generateBigrams(fileIn, fileOut,
-        (elem['className'] as String),
-        (elem['alphabet'] as String),
+    var _actual = await generateBigrams(fileIn, fileOut, (elem['className'] as String), (elem['alphabet'] as String),
         (elem['replacementList'] as Map<String, String>));
 
     result = result && (_actual.errorCode == VigenereBreakerErrorCode.OK);
@@ -203,7 +201,7 @@ Map<String, int> _replaceBigramEntrys(
           if (lastKey != key) bigramsSource[key] = bigramsSource[key]! + bigramsSource.values.elementAt(i);
           lastKey = key;
         } else {
-          print("Error generate bigram: " + entry + " ->" + key + ' (missing key)');
+          // print("Error generate bigram: " + entry + " ->" + key + ' (missing key)');
         }
       }
       bigramsSource.remove(bigramsSource.keys.elementAt(i));
@@ -225,7 +223,7 @@ List<List<int>> _fillBigramArray(Map<String, int> bigramsSource, String alphabet
     if ((row >= 0) && (column >= 0)) {
       bigrams[row][column] += value;
     } else {
-      print("Error generate bigram: " + key + ' (bigram not valid)');
+      // print("Error generate bigram: " + key + ' (bigram not valid)');
     }
   });
   return bigrams;

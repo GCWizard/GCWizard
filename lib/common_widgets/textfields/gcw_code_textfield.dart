@@ -3,39 +3,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter_highlight/themes/atom-one-dark.dart';
 import 'package:flutter_highlight/themes/atom-one-light.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
+import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/gcw_textselectioncontrols.dart';
 import 'package:highlight/highlight_core.dart';
+import 'package:highlight/languages/basic.dart';
 import 'package:highlight/languages/lua.dart';
 import 'package:prefs/prefs.dart';
 
-enum CodeHighlightingLanguage { LUA }
+enum CodeHighlightingLanguage { LUA, BASIC }
 
 class GCWCodeTextField extends StatefulWidget {
   final TextEditingController controller;
+  final void Function(String)? onChanged;
   final Map<String, TextStyle>? patternMap; // Regexes
   final Map<String, TextStyle>? stringMap; // complete strings
   final Map<String, TextStyle>? theme;
-  final TextStyle? textStyle;
+  TextStyle? textStyle;
   final bool readOnly;
   final bool? wrap;
   final CodeHighlightingLanguage? language;
   final bool? lineNumbers;
   final GCWCodeTextFieldLineNumberStyle? lineNumberStyle;
 
-  const GCWCodeTextField(
+  GCWCodeTextField(
       {Key? key,
+      this.onChanged,
       required this.controller,
       this.stringMap,
       this.patternMap,
       this.theme,
-      this.textStyle,
       this.readOnly = true,
       this.wrap,
       this.language,
       this.lineNumbers = false,
       this.lineNumberStyle})
-      : super(key: key);
+      : super(key: key) {
+    textStyle ??= gcwMonotypeTextStyle();
+  }
 
   @override
   _GCWCodeTextFieldState createState() => _GCWCodeTextFieldState();
@@ -52,6 +57,9 @@ class _GCWCodeTextFieldState extends State<GCWCodeTextField> {
       switch (widget.language!) {
         case CodeHighlightingLanguage.LUA:
           _language = lua;
+          break;
+        case CodeHighlightingLanguage.BASIC:
+          _language = basic;
       }
     }
   }
@@ -59,17 +67,20 @@ class _GCWCodeTextFieldState extends State<GCWCodeTextField> {
   @override
   Widget build(BuildContext context) {
     return CodeTheme(
-      data: CodeThemeData(styles:
-          widget.theme ?? (Prefs.getString(PREFERENCE_THEME_COLOR) == ThemeType.DARK.toString()
-              ? atomOneDarkTheme
-              : atomOneLightTheme)
-          ),
-      child: CodeField(
-          controller: CodeController(
-            text: widget.controller.text,
-            language: _language,
-            patternMap: widget.patternMap,
-          ),
+        data: CodeThemeData(
+            styles: widget.theme ??
+                (Prefs.getString(PREFERENCE_THEME_COLOR) == ThemeType.DARK.toString()
+                    ? atomOneDarkTheme
+                    : atomOneLightTheme)),
+        child: CodeField(
+          controller: (widget.controller is CodeController)
+              ? (widget.controller as CodeController)
+              : CodeController(
+                  text: widget.controller.text,
+                  language: _language,
+                  stringMap: widget.stringMap,
+                  patternMap: widget.patternMap,
+                ),
           readOnly: widget.readOnly,
           selectionControls: GCWTextSelectionControls(),
           wrap: widget.wrap ?? false,
@@ -79,9 +90,10 @@ class _GCWCodeTextFieldState extends State<GCWCodeTextField> {
               ? LineNumberStyle(
                   width: widget.lineNumberStyle!.width,
                 )
-              : const LineNumberStyle(width: 0.0, margin: 0.0, textStyle: TextStyle(fontSize: 0.1, color: Colors.black54)),
-        )
-    );
+              : const LineNumberStyle(
+                  width: 0.0, margin: 0.0, textStyle: TextStyle(fontSize: 0.1, color: Colors.black54)),
+          onChanged: widget.onChanged,
+        ));
   }
 }
 
@@ -92,4 +104,16 @@ class GCWCodeTextFieldLineNumberStyle {
   const GCWCodeTextFieldLineNumberStyle({
     this.width = 42.0,
   });
+}
+
+Mode? getLanguage(CodeHighlightingLanguage? language) {
+  if (language != null) {
+    switch (language) {
+      case CodeHighlightingLanguage.LUA:
+        return lua;
+      case CodeHighlightingLanguage.BASIC:
+        return basic;
+    }
+  }
+  return null;
 }

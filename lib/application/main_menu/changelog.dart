@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/main_menu/mainmenuentry_stub.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:intl/intl.dart';
 
 final CHANGELOG = {
+  '3.0.3': DateTime(2023, 12, 8),
+  '3.0.2': DateTime(2023, 10, 29),
+  '3.0.1': DateTime(2023, 10, 27),
+  '3.0.0': DateTime(2023, 10, 25),
   '2.3.1': DateTime(2022, 12, 25),
   '2.3.0': DateTime(2022, 11, 30),
   '2.2.1': DateTime(2022, 04, 15),
@@ -41,10 +45,10 @@ class Changelog extends StatefulWidget {
   const Changelog({Key? key}) : super(key: key);
 
   @override
-  ChangelogState createState() => ChangelogState();
+  _ChangelogState createState() => _ChangelogState();
 }
 
-class ChangelogState extends State<Changelog> {
+class _ChangelogState extends State<Changelog> {
   @override
   Widget build(BuildContext context) {
     var dateFormat = DateFormat('yMd', Localizations.localeOf(context).toString());

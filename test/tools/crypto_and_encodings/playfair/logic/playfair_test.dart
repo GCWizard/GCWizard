@@ -1,6 +1,6 @@
 import "package:flutter_test/flutter_test.dart";
-import 'package:gc_wizard/tools/crypto_and_encodings/playfair/logic/playfair.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/_common/logic/crypt_alphabet_modification.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/playfair/logic/playfair.dart';
 
 void main() {
   group("Playfair.encodePlayfair:", () {

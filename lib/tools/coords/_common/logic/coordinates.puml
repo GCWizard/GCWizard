@@ -1,0 +1,47 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+class "coordinate_format.CoordinateFormat" {
+  +CoordinateFormatKey type
+  +CoordinateFormatKey? subtype
+  {static} +CoordinateFormat fromPersistenceKey()
+  +String toString()
+}
+
+class "coordinate_format.CoordinateFormatDefinition" {
+  +CoordinateFormatKey type
+  +String persistenceKey
+  +String apiKey
+  +BaseCoordinate defaultCoordinate
+  +BaseCoordinate? parseCoordinate(String);
+  +BaseCoordinate? parseCoordinateWholeString(String);
+}
+
+class "coordinate_format.CoordinateFormatWithSubtypesDefinition" {
+  +List<CoordinateFormatDefinition> subtypes
+}
+"coordinate_format.CoordinateFormatDefinition" <|.. "coordinate_format.CoordinateFormatWithSubtypesDefinition"
+
+
+abstract class "coordinates.BaseCoordinate" {
+  +double latitude
+  +double longitude
+  +CoordinateFormat format
+  +LatLng? toLatLng()
+  +String toString()
+}
+
+abstract class "coordinates.BaseCoordinateWithSubtypes" {
+  +CoordinateFormatKey? defaultSubtype
+}
+"coordinates.BaseCoordinate" <|.. "coordinates.BaseCoordinateWithSubtypes"
+
+"coordinate_format_constants.CoordinateFormatKey" <-- "coordinate_format.CoordinateFormat"
+"coordinate_format_constants.CoordinateFormatKey" <-- "coordinate_format.CoordinateFormatDefinition"
+"coordinate_format_constants.CoordinateFormatKey" <-- "coordinates.BaseCoordinateWithSubtypes"
+
+"coordinate_format_constants.List<allCoordinateFormatDefinitions>" --> "coordinate_format.CoordinateFormatDefinition"
+
+
+
+@enduml

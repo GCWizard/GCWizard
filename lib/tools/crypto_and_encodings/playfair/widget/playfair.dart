@@ -1,20 +1,69 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_alphabetmodification_dropdown.dart';
+import 'package:gc_wizard/common_widgets/gcw_web_statefulwidget.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/_common/logic/crypt_alphabet_modification.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/playfair/logic/playfair.dart';
 
-class Playfair extends StatefulWidget {
-  const Playfair({Key? key}) : super(key: key);
+const String _apiSpecification = '''
+{
+  "/playfair" : {
+    "get": {
+      "summary": "Playfair Tool",
+      "responses": {
+        "204": {
+          "description": "Tool loaded. No response data."
+        }
+      },
+      "parameters" : [
+        {
+          "in": "query",
+          "name": "input",
+          "required": true,
+          "description": "Input data",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "key",
+          "required": true,
+          "description": "Playfair key",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "mode",
+          "description": "Defines encoding or decoding mode",
+          "schema": {
+            "type": "string",
+            "enum": [
+              "encode",
+              "decode"
+            ],
+            "default": "decode"
+          }
+        }
+      ]
+    }
+  }
+}
+''';
+
+class Playfair extends GCWWebStatefulWidget {
+  Playfair({Key? key}) : super(key: key, apiSpecification: _apiSpecification);
 
   @override
-  PlayfairState createState() => PlayfairState();
+  _PlayfairState createState() => _PlayfairState();
 }
 
-class PlayfairState extends State<Playfair> {
+class _PlayfairState extends State<Playfair> {
   late TextEditingController _inputController;
   late TextEditingController _keyController;
 
@@ -27,6 +76,17 @@ class PlayfairState extends State<Playfair> {
   @override
   void initState() {
     super.initState();
+
+    if (widget.hasWebParameter()) {
+      if (widget.getWebParameter('mode') == 'encode') {
+        _currentMode = GCWSwitchPosition.left;
+      }
+
+      _currentInput = widget.getWebParameter('input') ?? _currentInput;
+      _currentKey = widget.getWebParameter('key') ?? _currentKey;
+      widget.webParameter = null;
+    }
+
     _inputController = TextEditingController(text: _currentInput);
     _keyController = TextEditingController(text: _currentKey);
   }

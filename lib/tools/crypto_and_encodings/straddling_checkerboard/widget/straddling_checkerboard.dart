@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
@@ -16,10 +16,10 @@ class StraddlingCheckerboard extends StatefulWidget {
   const StraddlingCheckerboard({Key? key}) : super(key: key);
 
   @override
-  StraddlingCheckerboardState createState() => StraddlingCheckerboardState();
+  _StraddlingCheckerboardState createState() => _StraddlingCheckerboardState();
 }
 
-class StraddlingCheckerboardState extends State<StraddlingCheckerboard> {
+class _StraddlingCheckerboardState extends State<StraddlingCheckerboard> {
   late TextEditingController _plainTextController;
   late TextEditingController _chiffreTextController;
   late TextEditingController _KeyController;

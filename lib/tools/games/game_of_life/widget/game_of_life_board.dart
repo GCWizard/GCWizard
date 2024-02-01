@@ -10,10 +10,10 @@ class GameOfLifeBoard extends StatefulWidget {
   const GameOfLifeBoard({Key? key, required this.size, required this.onChanged, required this.state}) : super(key: key);
 
   @override
-  GameOfLifeBoardState createState() => GameOfLifeBoardState();
+  _GameOfLifeBoardState createState() => _GameOfLifeBoardState();
 }
 
-class GameOfLifeBoardState extends State<GameOfLifeBoard> {
+class _GameOfLifeBoardState extends State<GameOfLifeBoard> {
   @override
   Widget build(BuildContext context) {
     return Row(

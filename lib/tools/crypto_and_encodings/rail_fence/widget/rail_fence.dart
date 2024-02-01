@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
@@ -12,10 +12,10 @@ class RailFence extends StatefulWidget {
   const RailFence({Key? key}) : super(key: key);
 
   @override
-  RailFenceState createState() => RailFenceState();
+  _RailFenceState createState() => _RailFenceState();
 }
 
-class RailFenceState extends State<RailFence> {
+class _RailFenceState extends State<RailFence> {
   String _currentInput = '';
   var _currentKey = 2;
   String _currentPassword = '';
@@ -23,7 +23,7 @@ class RailFenceState extends State<RailFence> {
 
   var _currentMode = GCWSwitchPosition.right;
 
-  final _maskInputFormatter = WrapperForMaskTextInputFormatter(mask: '#' * 10000, filter: {"#": RegExp(r'[A-Za-z]')});
+  final _maskInputFormatter = GCWMaskTextInputFormatter(mask: '#' * 10000, filter: {"#": RegExp(r'[A-Za-z]')});
 
   @override
   Widget build(BuildContext context) {

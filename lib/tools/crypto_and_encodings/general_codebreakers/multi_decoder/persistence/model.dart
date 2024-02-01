@@ -24,8 +24,9 @@ class MultiDecoderToolEntity {
 
   MultiDecoderToolEntity.fromJson(Map<String, Object?> json) {
     id = toIntOrNull(json['id']) ?? -1;
-    name = toStringOrNull(json['name']) ?? '';  // TODO Proper default types if key is not in map
-    internalToolName = toStringOrNull(json['decoderFunctionName']) ?? '';  // TODO Proper default types if key is not in map
+    name = toStringOrNull(json['name']) ?? ''; // TODO Proper default types if key is not in map
+    internalToolName =
+        toStringOrNull(json['decoderFunctionName']) ?? ''; // TODO Proper default types if key is not in map
 
     var optionsRaw = toObjectWithNullableContentListOrNull(json['options']);
     options = <MultiDecoderToolOption>[];
@@ -54,7 +55,7 @@ class MultiDecoderToolOption {
   Map<String, Object?> toMap() => {'name': name, 'value': value};
 
   MultiDecoderToolOption.fromJson(Map<String, Object?> json)
-      : name = toStringOrNull(json['name']) ?? '',  // TODO Proper default types if key is not in map
+      : name = toStringOrNull(json['name']) ?? '', // TODO Proper default types if key is not in map
         value = json['value'];
 
   @override

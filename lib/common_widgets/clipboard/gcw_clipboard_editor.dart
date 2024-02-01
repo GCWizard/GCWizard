@@ -1,7 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
@@ -19,10 +17,10 @@ class GCWClipboardEditor extends StatefulWidget {
   const GCWClipboardEditor({Key? key}) : super(key: key);
 
   @override
-  GCWClipboardEditorState createState() => GCWClipboardEditorState();
+  _GCWClipboardEditorState createState() => _GCWClipboardEditorState();
 }
 
-class GCWClipboardEditorState extends State<GCWClipboardEditor> {
+class _GCWClipboardEditorState extends State<GCWClipboardEditor> {
   late TextEditingController _editController;
   int? _currentEditId;
   String _currentEditText = '';
@@ -85,7 +83,7 @@ class GCWClipboardEditorState extends State<GCWClipboardEditor> {
         .asMap()
         .map<int, Widget?>((int index, String entry) {
           var item = ClipboardItem.fromJson(entry);
-          if (item == null) return MapEntry(index, null);
+          if (item == null) return MapEntry<int, Widget?>(index, null);
 
           Widget child;
           if (_currentEditId != null && _currentEditId == index) {
@@ -109,7 +107,7 @@ class GCWClipboardEditorState extends State<GCWClipboardEditor> {
                       item.text = _currentEditText;
 
                       var newEntries = List<String>.from(entries);
-                      newEntries[index] = jsonEncode(item);
+                      newEntries[index] = item.toJson();
                       Prefs.setStringList(PREFERENCE_CLIPBOARD_ITEMS, newEntries);
                     }
 

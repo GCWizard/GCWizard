@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_datetime_picker.dart';
 import 'package:gc_wizard/common_widgets/gcw_toolbar.dart';
@@ -17,10 +17,10 @@ class DayOfTheYear extends StatefulWidget {
   const DayOfTheYear({Key? key}) : super(key: key);
 
   @override
-  DayOfTheYearState createState() => DayOfTheYearState();
+  _DayOfTheYearState createState() => _DayOfTheYearState();
 }
 
-class DayOfTheYearState extends State<DayOfTheYear> {
+class _DayOfTheYearState extends State<DayOfTheYear> {
   var _currentMode = GCWSwitchPosition.right;
   late DateTime _currentEncodeDate;
   late DateTime _currentDecodeDate;
@@ -154,23 +154,19 @@ class DayOfTheYearState extends State<DayOfTheYear> {
 
     children.add(GCWOutput(
       title: 'ISO 8601',
-      child: GCWColumnedMultilineOutput(
-          data: [
-                  [i18n(context, 'dates_weekday_number'), outputData.weekday],
-                  [i18n(context, 'dates_week_number'), outputData.weekNumberIso],
-                ]
-          ),
+      child: GCWColumnedMultilineOutput(data: [
+        [i18n(context, 'dates_weekday_number'), outputData.weekday],
+        [i18n(context, 'dates_week_number'), outputData.weekNumberIso],
+      ]),
     ));
 
     children.add(GCWOutput(
-        title: i18n(context, 'dates_day_of_the_year_alternative'),
-        child: GCWColumnedMultilineOutput(
-            data: [
-                    [i18n(context, 'dates_weekday_number'), outputData.weekdayAlternate],
-                    [i18n(context, 'dates_week_number'), outputData.weekNumberAlternate],
-                  ]
-          ),
-        ));
+      title: i18n(context, 'dates_day_of_the_year_alternative'),
+      child: GCWColumnedMultilineOutput(data: [
+        [i18n(context, 'dates_weekday_number'), outputData.weekdayAlternate],
+        [i18n(context, 'dates_week_number'), outputData.weekNumberAlternate],
+      ]),
+    ));
 
     return Column(children: children);
   }

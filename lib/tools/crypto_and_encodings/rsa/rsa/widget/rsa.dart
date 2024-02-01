@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
-import 'package:gc_wizard/common_widgets/gcw_toast.dart';
+import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
@@ -15,10 +15,10 @@ class RSA extends StatefulWidget {
   const RSA({Key? key}) : super(key: key);
 
   @override
-  RSAState createState() => RSAState();
+  _RSAState createState() => _RSAState();
 }
 
-class RSAState extends State<RSA> {
+class _RSAState extends State<RSA> {
   String _currentInput = '';
   String _currentED = '';
   String _currentP = '';
@@ -93,14 +93,9 @@ class RSAState extends State<RSA> {
             return BigInt.from(char.codeUnits.first);
           }).toList();
 
-          if (_currentInput
-              .replaceAll(RegExp(r'\s+'), '')
-              .replaceAll(RegExp(r'\d'), '')
-              .isEmpty) {
-            var inputAsInt = _currentInput
-                .split(RegExp(r'\s+'))
-                .map((chunk) => BigInt.tryParse(chunk) ?? BigInt.zero)
-                .toList();
+          if (_currentInput.replaceAll(RegExp(r'\s+'), '').replaceAll(RegExp(r'\d'), '').isEmpty) {
+            var inputAsInt =
+                _currentInput.split(RegExp(r'\s+')).map((chunk) => BigInt.tryParse(chunk) ?? BigInt.zero).toList();
 
             outputChildren.add(GCWOutput(
               child: (encryptRSA(inputAsInt, ed, p, q) ?? []).join(' '),
@@ -113,13 +108,10 @@ class RSAState extends State<RSA> {
             title: i18n(context, 'common_output') + ' (${i18n(context, 'rsa_encryption_output_textasascii')})',
           ));
         } else {
-          var inputNumbers = _currentInput
-              .split(RegExp(r'\s+'))
-              .map((number) {
+          var inputNumbers = _currentInput.split(RegExp(r'\s+')).map((number) {
             var n = number.replaceAll(RegExp(r'\D'), '');
             return BigInt.tryParse(n) ?? BigInt.zero;
-          })
-              .toList();
+          }).toList();
 
           var outputNumbers = decryptRSA(inputNumbers, ed, p, q);
           outputChildren.add(GCWOutput(
@@ -145,23 +137,20 @@ class RSAState extends State<RSA> {
 
       List<List<Object?>> calculatedParameters = [];
       if (d != null) calculatedParameters.add([i18n(context, 'rsa_d'), d]);
-      calculatedParameters.addAll(
-          [[i18n(context, 'rsa_n'), N(p!, q!)],
-           [i18n(context, 'rsa_phi'), phi(p, q)]]
-      );
+      calculatedParameters.addAll([
+        [i18n(context, 'rsa_n'), N(p!, q!)],
+        [i18n(context, 'rsa_phi'), phi(p, q)]
+      ]);
 
       outputChildren.add(
         GCWTextDivider(text: i18n(context, 'rsa_rsa_calculatedparameters')),
       );
 
-      _output = GCWColumnedMultilineOutput(
-          firstRows: outputChildren,
-          data: calculatedParameters,
-          flexValues: const [1, 2]
-      );
+      _output =
+          GCWColumnedMultilineOutput(firstRows: outputChildren, data: calculatedParameters, flexValues: const [1, 2]);
     } catch (exception) {
       _output = null;
-      showToast(i18n(context, exception.toString()));
+      showSnackBar(i18n(context, exception.toString()), context);
     }
   }
 }

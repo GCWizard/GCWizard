@@ -14,14 +14,12 @@ const _INITIAL_SEGMENTS = <String, bool>{
   'g': false
 };
 
-
 class MayaNumbersSegmentDisplay extends NSegmentDisplay {
-
-  MayaNumbersSegmentDisplay({
-    Key? key,
-    required Map<String, bool> segments,
-    bool readOnly = false,
-    void Function(Map<String, bool>)? onChanged})
+  MayaNumbersSegmentDisplay(
+      {Key? key,
+      required Map<String, bool> segments,
+      bool readOnly = false,
+      void Function(Map<String, bool>)? onChanged})
       : super(
             key: key,
             initialSegments: _INITIAL_SEGMENTS,

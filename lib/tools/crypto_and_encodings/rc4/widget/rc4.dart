@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
+import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:gc_wizard/common_widgets/gcw_toast.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rc4/logic/rc4.dart';
@@ -12,10 +12,10 @@ class RC4 extends StatefulWidget {
   const RC4({Key? key}) : super(key: key);
 
   @override
-  RC4State createState() => RC4State();
+  _RC4State createState() => _RC4State();
 }
 
-class RC4State extends State<RC4> {
+class _RC4State extends State<RC4> {
   String _currentInput = '';
   String _currentKey = '';
 
@@ -133,11 +133,11 @@ class RC4State extends State<RC4> {
       switch (_currentOutput.errorCode) {
         case ErrorCode.MISSING_KEY:
           return GCWDefaultOutput(child: i18n(context, 'rc4_error_missing_key'));
-         case ErrorCode.KEY_FORMAT:
-          showToast(i18n(context, 'rc4_error_key_format'));
+        case ErrorCode.KEY_FORMAT:
+          showSnackBar(i18n(context, 'rc4_error_key_format'), context);
           break;
         case ErrorCode.INPUT_FORMAT:
-          showToast(i18n(context, 'rc4_error_input_format'));
+          showSnackBar(i18n(context, 'rc4_error_input_format'), context);
           break;
         default:
       }

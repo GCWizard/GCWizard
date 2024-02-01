@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/gcw_toolbar.dart';
@@ -16,10 +16,10 @@ class MayaNumbers extends StatefulWidget {
   const MayaNumbers({Key? key}) : super(key: key);
 
   @override
-  MayaNumbersState createState() => MayaNumbersState();
+  _MayaNumbersState createState() => _MayaNumbersState();
 }
 
-class MayaNumbersState extends State<MayaNumbers> {
+class _MayaNumbersState extends State<MayaNumbers> {
   var _currentEncodeInput = 0;
 
   var _currentDisplays = Segments.Empty();

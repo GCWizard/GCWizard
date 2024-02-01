@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
@@ -12,10 +12,10 @@ class Skytale extends StatefulWidget {
   const Skytale({Key? key}) : super(key: key);
 
   @override
-  SkytaleState createState() => SkytaleState();
+  _SkytaleState createState() => _SkytaleState();
 }
 
-class SkytaleState extends State<Skytale> {
+class _SkytaleState extends State<Skytale> {
   late TextEditingController _inputController;
   late TextEditingController _columnController;
 

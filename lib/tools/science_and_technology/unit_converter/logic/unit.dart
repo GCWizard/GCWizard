@@ -1,11 +1,11 @@
 import 'package:collection/collection.dart';
 
 abstract class Unit {
-  final  String name;
+  final String name;
   final String symbol;
   final bool isReferenceUnit;
-  late double Function (double) toReference;
-  late double Function (double) fromReference;
+  late double Function(double) toReference;
+  late double Function(double) fromReference;
 
   Unit(this.name, this.symbol, this.isReferenceUnit, this.toReference, this.fromReference) {
     if (isReferenceUnit) {

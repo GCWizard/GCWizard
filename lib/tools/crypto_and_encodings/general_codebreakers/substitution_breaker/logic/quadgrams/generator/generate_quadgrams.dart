@@ -38,14 +38,11 @@ Future<bool> generate_quadgram() async {
         current + "/lib/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/logic/quadgrams/";
     var fileIn = File(normalizePath(filePath + (elem['input'] as String)));
     var fileOut = File(normalizePath(filePath + (elem['fileOut'] as String)));
-    filePath = current + "/assets/quadgrams/";
+    filePath = current + "lib/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/assets/quadgrams";
     var fileAsset = File(normalizePath(filePath + (elem['assetName'] as String)));
 
-    var _actual =
-        await generateQuadgrams(fileIn, fileOut, fileAsset,
-            elem['className'] as String,
-            elem['assetName'] as String,
-            elem['alphabet'] as String);
+    var _actual = await generateQuadgrams(fileIn, fileOut, fileAsset, elem['className'] as String,
+        elem['assetName'] as String, elem['alphabet'] as String);
 
     result = result && (_actual.errorCode == BreakerErrorCode.OK);
   }
@@ -74,7 +71,10 @@ BreakerResult generateFiles(File quadgram_fh, File asset_fh, String className, S
   sb.write("    most_frequent_quadgram = '" + max_chars + "';\n");
   sb.write("    max_fitness = " + max_val.round().toString() + ";\n");
   sb.write("    average_fitness = " + (quadgrams_sum.toDouble() / pow(alphabet.length, 4)).toString() + ";\n");
-  sb.write("    assetLocation = " '"assets/quadgrams/' + assetName + '";\n');
+  sb.write("    assetLocation = "
+          '"lib/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/assets/quadgrams' +
+      assetName +
+      '";\n');
   sb.write("  }\n");
   sb.write("}\n");
 

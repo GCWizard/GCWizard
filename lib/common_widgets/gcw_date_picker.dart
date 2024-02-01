@@ -3,22 +3,32 @@ import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_dropdown_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/spinner_constants.dart';
-import 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar/logic/calendar.dart';
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar/logic/calendar_constants.dart';
 
 class GCWDatePicker extends StatefulWidget {
-  final void Function (DateTime) onChanged;
+  final void Function(DateTime) onChanged;
   final DateTime date;
   final CalendarSystem type;
 
-  const GCWDatePicker({Key? key, required this.onChanged, required this.date, this.type = CalendarSystem.GREGORIANCALENDAR})
-      : super(key: key);
+  final TextEditingController? yearController;
+  final TextEditingController? monthController;
+  final TextEditingController? dayController;
+
+  const GCWDatePicker({
+    Key? key,
+    required this.onChanged,
+    required this.date,
+    this.type = CalendarSystem.GREGORIANCALENDAR,
+    this.yearController,
+    this.monthController,
+    this.dayController,
+  }) : super(key: key);
 
   @override
-  GCWDatePickerState createState() => GCWDatePickerState();
+  _GCWDatePickerState createState() => _GCWDatePickerState();
 }
 
-class GCWDatePickerState extends State<GCWDatePicker> {
+class _GCWDatePickerState extends State<GCWDatePicker> {
   late int _currentYear;
   late int _currentMonth;
   late int _currentDay;
@@ -30,6 +40,16 @@ class GCWDatePickerState extends State<GCWDatePicker> {
   void initState() {
     super.initState();
 
+    initValues();
+  }
+
+  @override
+  void didUpdateWidget(GCWDatePicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    initValues();
+  }
+
+  void initValues() {
     DateTime date = widget.date;
     _currentYear = date.year;
     _currentMonth = date.month;
@@ -54,6 +74,7 @@ class GCWDatePickerState extends State<GCWDatePicker> {
               padding: const EdgeInsets.only(right: 2),
               child: GCWIntegerSpinner(
                 layout: SpinnerLayout.VERTICAL,
+                controller: widget.yearController,
                 value: _currentYear,
                 min: -5000,
                 max: 5000,
@@ -69,7 +90,8 @@ class GCWDatePickerState extends State<GCWDatePicker> {
                 },
               )),
         ),
-        Expanded(child: Padding(padding: const EdgeInsets.only(left: 2, right: 2), child: _buildMonthSpinner(widget.type))),
+        Expanded(
+            child: Padding(padding: const EdgeInsets.only(left: 2, right: 2), child: _buildMonthSpinner(widget.type))),
         Expanded(
             child: Padding(
           padding: const EdgeInsets.only(left: 2),
@@ -86,6 +108,7 @@ class GCWDatePickerState extends State<GCWDatePicker> {
     return GCWIntegerSpinner(
       focusNode: _dayFocusNode,
       layout: SpinnerLayout.VERTICAL,
+      controller: widget.dayController,
       value: _currentDay,
       min: 1,
       max: maxDays,
@@ -124,6 +147,7 @@ class GCWDatePickerState extends State<GCWDatePicker> {
       return GCWIntegerSpinner(
         focusNode: _monthFocusNode,
         layout: SpinnerLayout.VERTICAL,
+        controller: widget.monthController,
         value: _currentMonth,
         min: 1,
         max: 12,

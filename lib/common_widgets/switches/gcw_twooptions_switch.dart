@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
@@ -18,20 +18,20 @@ class GCWTwoOptionsSwitch extends StatefulWidget {
 
   const GCWTwoOptionsSwitch(
       {Key? key,
-      required this.onChanged,
       this.title,
       this.leftValue,
       this.rightValue,
       required this.value,
+      required this.onChanged,
       this.alternativeColor = false,
       this.notitle = false})
       : super(key: key);
 
   @override
-  GCWTwoOptionsSwitchState createState() => GCWTwoOptionsSwitchState();
+  _GCWTwoOptionsSwitchState createState() => _GCWTwoOptionsSwitchState();
 }
 
-class GCWTwoOptionsSwitchState extends State<GCWTwoOptionsSwitch> {
+class _GCWTwoOptionsSwitchState extends State<GCWTwoOptionsSwitch> {
   @override
   Widget build(BuildContext context) {
     var _currentValue = widget.value ?? GCWSwitchPosition.left;

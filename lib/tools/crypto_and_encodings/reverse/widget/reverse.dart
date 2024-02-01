@@ -7,10 +7,10 @@ class Reverse extends StatefulWidget {
   const Reverse({Key? key}) : super(key: key);
 
   @override
-  ReverseState createState() => ReverseState();
+  _ReverseState createState() => _ReverseState();
 }
 
-class ReverseState extends State<Reverse> {
+class _ReverseState extends State<Reverse> {
   String _output = '';
 
   @override

@@ -1,13 +1,13 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/category_views/favorites.dart';
+import 'package:gc_wizard/application/app_builder.dart';
 import 'package:gc_wizard/application/category_views/all_tools_view.dart';
+import 'package:gc_wizard/application/category_views/favorites.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
-import 'package:gc_wizard/application/app_builder.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_delete_alertdialog.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/gcw_tool.dart';
@@ -26,13 +26,9 @@ class GCWToolList extends StatefulWidget {
 class _GCWToolListState extends State<GCWToolList> {
   @override
   Widget build(BuildContext context) {
-
     return ScrollConfiguration(
       behavior: ScrollConfiguration.of(context).copyWith(
-        dragDevices: {
-          PointerDeviceKind.touch,
-          PointerDeviceKind.mouse
-        },
+        dragDevices: {PointerDeviceKind.touch, PointerDeviceKind.mouse},
       ),
       child: _buildItems(),
     );
@@ -41,15 +37,22 @@ class _GCWToolListState extends State<GCWToolList> {
   Widget _buildItems() {
     return ListView.separated(
       physics: const AlwaysScrollableScrollPhysics(),
-      itemCount: widget.toolList.length,
+      itemCount: widget.toolList.length + 1,
       separatorBuilder: (BuildContext context, int index) => const Divider(),
       itemBuilder: (BuildContext context, int i) {
-        return _buildRow(context, widget.toolList[i]);
+        return _buildRow(context, i);
       },
     );
   }
 
-  Widget _buildRow(BuildContext context, GCWTool tool) {
+  Widget _buildRow(BuildContext context, int index) {
+    // Vertical space after the list items
+    if (index == widget.toolList.length) {
+      return const ListTile();
+    }
+
+    var tool = widget.toolList[index];
+
     Future<void> _navigateToSubPage(BuildContext context) async {
       Navigator.push(context, NoAnimationMaterialPageRoute<GCWTool>(builder: (context) => tool));
     }

@@ -17,14 +17,12 @@ const _INITIAL_SEGMENTS = <String, bool>{
 const _PREDATOR_RELATIVE_DISPLAY_WIDTH = 170; //110;
 const _PREDATOR_RELATIVE_DISPLAY_HEIGHT = 300; //100;
 
-
 class _PredatorSegmentDisplay extends NSegmentDisplay {
-
-  _PredatorSegmentDisplay({
-    Key? key,
-    required Map<String, bool> segments,
-    bool readOnly = false,
-    void Function(Map<String, bool>)? onChanged})
+  _PredatorSegmentDisplay(
+      {Key? key,
+      required Map<String, bool> segments,
+      bool readOnly = false,
+      void Function(Map<String, bool>)? onChanged})
       : super(
             key: key,
             initialSegments: _INITIAL_SEGMENTS,
@@ -73,7 +71,6 @@ class _PredatorSegmentDisplay extends NSegmentDisplay {
                   setSegmentState('b', !segmentActive(currentSegments, 'b'));
                 });
               }
-
 
               paint.color = segmentActive(currentSegments, 'c') ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
               var pathC = Path();
@@ -177,7 +174,7 @@ class _PredatorSegmentDisplay extends NSegmentDisplay {
                   size.width / _PREDATOR_RELATIVE_DISPLAY_HEIGHT * 230);
               pathH.close();
 
-              if (!readOnly || segmentActive(currentSegments, 'h') ) {
+              if (!readOnly || segmentActive(currentSegments, 'h')) {
                 canvas.touchCanvas.drawPath(pathH, paint, onTapDown: (tapDetail) {
                   setSegmentState('h', !segmentActive(currentSegments, 'h'));
                 });

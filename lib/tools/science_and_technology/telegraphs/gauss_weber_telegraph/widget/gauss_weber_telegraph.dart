@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
@@ -13,10 +13,10 @@ class GaussWeberTelegraph extends StatefulWidget {
   const GaussWeberTelegraph({Key? key, this.mode = GaussWeberTelegraphMode.GAUSS_WEBER_ORIGINAL}) : super(key: key);
 
   @override
-  GaussWeberTelegraphState createState() => GaussWeberTelegraphState();
+  _GaussWeberTelegraphState createState() => _GaussWeberTelegraphState();
 }
 
-class GaussWeberTelegraphState extends State<GaussWeberTelegraph> {
+class _GaussWeberTelegraphState extends State<GaussWeberTelegraph> {
   late TextEditingController _decodeController;
   late TextEditingController _encodeController;
 

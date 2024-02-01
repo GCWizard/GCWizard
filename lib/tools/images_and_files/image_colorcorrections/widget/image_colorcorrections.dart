@@ -1,29 +1,29 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_popup_menu.dart';
 import 'package:gc_wizard/common_widgets/gcw_slider.dart';
-import 'package:gc_wizard/common_widgets/gcw_toast.dart';
+import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
-import 'package:gc_wizard/tools/images_and_files/image_colorcorrections/logic/image_processing.dart';
 import 'package:gc_wizard/tools/images_and_files/_common/logic/rgb_pixel.dart';
+import 'package:gc_wizard/tools/images_and_files/image_colorcorrections/logic/image_processing.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:gc_wizard/utils/image_utils.dart';
 import 'package:image/image.dart' as Image;
 import 'package:prefs/prefs.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 
 class ImageColorCorrections extends StatefulWidget {
   final GCWFile? file;
@@ -31,10 +31,10 @@ class ImageColorCorrections extends StatefulWidget {
   const ImageColorCorrections({Key? key, this.file}) : super(key: key);
 
   @override
-  ImageColorCorrectionsState createState() => ImageColorCorrectionsState();
+  _ImageColorCorrectionsState createState() => _ImageColorCorrectionsState();
 }
 
-class ImageColorCorrectionsState extends State<ImageColorCorrections> {
+class _ImageColorCorrectionsState extends State<ImageColorCorrections> {
   GCWFile? _originalData;
   Uint8List? _convertedOutputImage;
 
@@ -82,8 +82,8 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
   Image.Image? _currentDataInit({int? previewSize}) {
     var previewHeight = previewSize ?? Prefs.getInt(PREFERENCE_IMAGECOLORCORRECTIONS_MAXPREVIEWHEIGHT);
 
-    _originalImage = _originalData?.bytes == null ? null: decodeImage4ChannelFormat(_originalData!.bytes);
-    if(_originalImage == null) return null;
+    _originalImage = _originalData?.bytes == null ? null : decodeImage4ChannelFormat(_originalData!.bytes);
+    if (_originalImage == null) return null;
 
     if (_originalImage!.height > previewHeight) {
       Image.Image resized = Image.copyResize(_originalImage!, height: previewHeight);
@@ -135,7 +135,7 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
           supportedFileTypes: SUPPORTED_IMAGE_TYPES,
           onLoaded: (GCWFile? value) {
             if (value == null || !_validateData(value.bytes)) {
-              showToast(i18n(context, 'common_loadfile_exception_notloaded'));
+              showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
               return;
             }
 
@@ -154,7 +154,8 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
           GCWTextDivider(
               suppressTopSpace: true,
               text: i18n(context, 'image_colorcorrections_previewsize_title', parameters: [
-                i18n(context, PREVIEW_VALUES[Prefs.get(PREFERENCE_IMAGECOLORCORRECTIONS_MAXPREVIEWHEIGHT)]?['title'] ?? '')
+                i18n(context,
+                    PREVIEW_VALUES[Prefs.get(PREFERENCE_IMAGECOLORCORRECTIONS_MAXPREVIEWHEIGHT)]?['title'] ?? '')
               ]),
               trailing: GCWPopupMenu(
                   iconData: Icons.settings,
@@ -191,7 +192,8 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
                       .toList())),
         if (_currentPreview != null)
           GCWImageView(
-            imageData: _originalPreview == null ? null : GCWImageViewData(GCWFile(bytes: _imageBytes() ?? Uint8List(0))),
+            imageData:
+                _originalPreview == null ? null : GCWImageViewData(GCWFile(bytes: _imageBytes() ?? Uint8List(0))),
             onBeforeLoadBigImage: _adjustToFullPicture,
             suppressOpenInTool: const {GCWImageViewOpenInTools.COLORCORRECTIONS},
           ),
@@ -210,127 +212,127 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
         if (_currentPreview != null)
           Expanded(
               child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                primary: true,
-                child: Column(
-                  children: [
-                  GCWOnOffSwitch(
-                      title: i18n(context, 'image_colorcorrections_invert'),
-                      value: _currentInvert,
-                      onChanged: (value) {
-                        setState(() {
-                          _currentInvert = value;
-                        });
-                      }),
-                  GCWOnOffSwitch(
-                      title: i18n(context, 'image_colorcorrections_grayscale'),
-                      value: _currentGrayscale,
-                      onChanged: (value) {
-                        setState(() {
-                          _currentGrayscale = value;
-                        });
-                      }),
-                  GCWSlider(
-                      title: i18n(context, 'image_colorcorrections_brightness'),
-                      value: _currentBrightness,
-                      min: -255,
-                      max: 255,
-                      onChanged: (value) {
-                        setState(() {
-                          _currentBrightness = value;
-                        });
-                      }),
-                  GCWSlider(
-                      title: i18n(context, 'image_colorcorrections_exposure'),
-                      value: _currentExposure,
-                      min: 0.0,
-                      max: 2.0,
-                      onChanged: (value) {
-                        setState(() {
-                          _currentExposure = value;
-                        });
-                      }),
-                  GCWSlider(
-                      title: i18n(context, 'image_colorcorrections_saturation'),
-                      value: _currentSaturation,
-                      min: -1.0,
-                      max: 1.0,
-                      onChanged: (value) {
-                        setState(() {
-                          _currentSaturation = value;
-                        });
-                      }),
-                  GCWSlider(
-                      title: i18n(context, 'image_colorcorrections_contrast'),
-                      value: _currentContrast,
-                      min: -255,
-                      max: 255,
-                      onChanged: (value) {
-                        setState(() {
-                          _currentContrast = value;
-                        });
-                      }),
-                  GCWSlider(
-                      title: i18n(context, 'image_colorcorrections_gamma'),
-                      value: _currentGamma,
-                      min: 0.01,
-                      max: 6.99,
-                      onChanged: (value) {
-                        setState(() {
-                          _currentGamma = value;
-                        });
-                      }),
-                  GCWSlider(
-                      title: i18n(context, 'image_colorcorrections_hue'),
-                      value: _currentHue,
-                      min: -180.0,
-                      max: 180.0,
-                      onChanged: (value) {
-                        setState(() {
-                          _currentHue = value;
-                        });
-                      }),
-                  GCWSlider(
-                      title: i18n(context, 'image_colorcorrections_red'),
-                      value: _currentRed,
-                      min: -255.0,
-                      max: 255.0,
-                      onChanged: (value) {
-                        setState(() {
-                          _currentRed = value;
-                        });
-                      }),
-                  GCWSlider(
-                      title: i18n(context, 'image_colorcorrections_green'),
-                      value: _currentGreen,
-                      min: -255.0,
-                      max: 255.0,
-                      onChanged: (value) {
-                        setState(() {
-                          _currentGreen = value;
-                        });
-                      }),
-                  GCWSlider(
-                      title: i18n(context, 'image_colorcorrections_blue'),
-                      value: _currentBlue,
-                      min: -255.0,
-                      max: 255.0,
-                      onChanged: (value) {
-                        setState(() {
-                          _currentBlue = value;
-                        });
-                      }),
-                  GCWSlider(
-                      title: i18n(context, 'image_colorcorrections_edges'),
-                      value: _currentEdgeDetection,
-                      min: 0.0,
-                      max: 1.0,
-                      onChanged: (value) {
-                        setState(() {
-                          _currentEdgeDetection = value;
-                        });
-                      })
-                ],
+            physics: const AlwaysScrollableScrollPhysics(),
+            primary: true,
+            child: Column(
+              children: [
+                GCWOnOffSwitch(
+                    title: i18n(context, 'image_colorcorrections_invert'),
+                    value: _currentInvert,
+                    onChanged: (value) {
+                      setState(() {
+                        _currentInvert = value;
+                      });
+                    }),
+                GCWOnOffSwitch(
+                    title: i18n(context, 'image_colorcorrections_grayscale'),
+                    value: _currentGrayscale,
+                    onChanged: (value) {
+                      setState(() {
+                        _currentGrayscale = value;
+                      });
+                    }),
+                GCWSlider(
+                    title: i18n(context, 'image_colorcorrections_brightness'),
+                    value: _currentBrightness,
+                    min: -255,
+                    max: 255,
+                    onChanged: (value) {
+                      setState(() {
+                        _currentBrightness = value;
+                      });
+                    }),
+                GCWSlider(
+                    title: i18n(context, 'image_colorcorrections_exposure'),
+                    value: _currentExposure,
+                    min: 0.0,
+                    max: 2.0,
+                    onChanged: (value) {
+                      setState(() {
+                        _currentExposure = value;
+                      });
+                    }),
+                GCWSlider(
+                    title: i18n(context, 'image_colorcorrections_saturation'),
+                    value: _currentSaturation,
+                    min: -1.0,
+                    max: 1.0,
+                    onChanged: (value) {
+                      setState(() {
+                        _currentSaturation = value;
+                      });
+                    }),
+                GCWSlider(
+                    title: i18n(context, 'image_colorcorrections_contrast'),
+                    value: _currentContrast,
+                    min: -255,
+                    max: 255,
+                    onChanged: (value) {
+                      setState(() {
+                        _currentContrast = value;
+                      });
+                    }),
+                GCWSlider(
+                    title: i18n(context, 'image_colorcorrections_gamma'),
+                    value: _currentGamma,
+                    min: 0.01,
+                    max: 6.99,
+                    onChanged: (value) {
+                      setState(() {
+                        _currentGamma = value;
+                      });
+                    }),
+                GCWSlider(
+                    title: i18n(context, 'image_colorcorrections_hue'),
+                    value: _currentHue,
+                    min: -180.0,
+                    max: 180.0,
+                    onChanged: (value) {
+                      setState(() {
+                        _currentHue = value;
+                      });
+                    }),
+                GCWSlider(
+                    title: i18n(context, 'image_colorcorrections_red'),
+                    value: _currentRed,
+                    min: -255.0,
+                    max: 255.0,
+                    onChanged: (value) {
+                      setState(() {
+                        _currentRed = value;
+                      });
+                    }),
+                GCWSlider(
+                    title: i18n(context, 'image_colorcorrections_green'),
+                    value: _currentGreen,
+                    min: -255.0,
+                    max: 255.0,
+                    onChanged: (value) {
+                      setState(() {
+                        _currentGreen = value;
+                      });
+                    }),
+                GCWSlider(
+                    title: i18n(context, 'image_colorcorrections_blue'),
+                    value: _currentBlue,
+                    min: -255.0,
+                    max: 255.0,
+                    onChanged: (value) {
+                      setState(() {
+                        _currentBlue = value;
+                      });
+                    }),
+                GCWSlider(
+                    title: i18n(context, 'image_colorcorrections_edges'),
+                    value: _currentEdgeDetection,
+                    min: 0.0,
+                    max: 1.0,
+                    onChanged: (value) {
+                      setState(() {
+                        _currentEdgeDetection = value;
+                      });
+                    })
+              ],
             ),
           ))
       ],
@@ -344,8 +346,8 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
       builder: (context) {
         return Center(
           child: SizedBox(
-            height: 220,
-            width: 150,
+            height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
+            width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
             child: GCWAsyncExecuter<Image.Image?>(
               isolatedFunction: _adjustColorAsync,
               parameter: _buildJobDataAdjustColor,
@@ -360,7 +362,6 @@ class ImageColorCorrectionsState extends State<ImageColorCorrections> {
     if (_convertedOutputImage == null) return null;
     return GCWFile(bytes: _convertedOutputImage!);
   }
-
 
   Future<GCWAsyncExecuterParameters?> _buildJobDataAdjustColor() async {
     if (_originalImage == null) return null;

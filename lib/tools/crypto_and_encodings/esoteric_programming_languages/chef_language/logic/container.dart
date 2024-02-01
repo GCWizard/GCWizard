@@ -66,11 +66,12 @@ class _Container {
 
   List<String> getContentAsList() {
     List<String> out = <String>[];
-    for (int i = 0; i < _contents.length;i++) {
+    for (int i = 0; i < _contents.length; i++) {
       out.add(_contents[i].getValue().toString());
     }
     return out;
   }
+
   void shuffle() {
     _contents.shuffle();
   }

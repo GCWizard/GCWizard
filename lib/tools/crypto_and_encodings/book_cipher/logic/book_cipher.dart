@@ -385,7 +385,6 @@ String _findWord(List<_wordClass> wordList, List<_wordClass> rowList, List<_word
     case searchFormat.Character:
       return _filterCharacter(character, sectionList);
   }
-
 }
 
 List<_wordClass> _filterSection(int index, List<_wordClass> wordList) {

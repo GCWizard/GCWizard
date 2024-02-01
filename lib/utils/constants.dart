@@ -23,3 +23,5 @@ const UNKNOWN_ELEMENT = '<?>';
 final RegExp REGEXP_SPLIT_STRINGLIST = RegExp(r'[\s,]+');
 
 const double LOW_LOCATION_ACCURACY = 20.0;
+
+const String BASE_URL = 'https://gcwizard.net';

@@ -1,10 +1,10 @@
 part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/widget/wherigo_analyze.dart';
 
 void buildHeader(BuildContext context) {
-  if (wherigoExpertMode) {
-    outputHeader = _buildHeaderExpertMode(context);
+  if (WHERIGOExpertMode) {
+    WHERIGOoutputHeader = _buildHeaderExpertMode(context);
   } else {
-    outputHeader = _buildHeaderUserMode(context);
+    WHERIGOoutputHeader = _buildHeaderUserMode(context);
   }
 }
 
@@ -77,7 +77,15 @@ List<List<String>> _buildHeaderExpertMode(BuildContext context) {
           : WherigoCartridgeGWCData.CartridgeGUID
     ],
     [i18n(context, 'wherigo_header_cartridgedescription'), WherigoCartridgeGWCData.CartridgeDescription],
-    [i18n(context, 'wherigo_header_startinglocation'), WherigoCartridgeGWCData.StartingLocationDescription],
+    [
+      i18n(context, 'wherigo_header_startinglocation'),
+      WherigoCartridgeGWCData.StartingLocationDescription +
+          '\n' +
+          formatCoordOutput(
+              LatLng(WherigoCartridgeLUAData.StartLocation.Latitude, WherigoCartridgeLUAData.StartLocation.Longitude),
+              defaultCoordinateFormat,
+              defaultEllipsoid)
+    ],
     [i18n(context, 'wherigo_header_state'), WherigoCartridgeLUAData.StateID],
     [i18n(context, 'wherigo_header_country'), WherigoCartridgeLUAData.CountryID],
     [i18n(context, 'wherigo_header_version'), WherigoCartridgeGWCData.Version],
@@ -91,30 +99,33 @@ List<List<String>> _buildHeaderExpertMode(BuildContext context) {
     [i18n(context, 'wherigo_header_lastplayed'), _formatDate(context, WherigoCartridgeLUAData.LastPlayedDate)],
     [i18n(context, 'wherigo_header_author'), WherigoCartridgeGWCData.Author],
     [i18n(context, 'wherigo_header_company'), WherigoCartridgeGWCData.Company],
-    [i18n(context, 'wherigo_header_device'), WherigoCartridgeGWCData.RecommendedDevice],
+    [
+      i18n(context, 'wherigo_header_device'),
+      WherigoCartridgeGWCData.RecommendedDevice + '\n' + WherigoCartridgeLUAData.TargetDevice
+    ],
     [i18n(context, 'wherigo_header_deviceversion'), WherigoCartridgeLUAData.TargetDeviceVersion],
     [i18n(context, 'wherigo_header_logging'), i18n(context, 'common_' + WherigoCartridgeLUAData.UseLogging)]
   ];
+  switch (WherigoCartridgeLUAData.Builder) {
+    case WHERIGO_BUILDER.EARWIGO:
+      header.add([i18n(context, 'wherigo_header_builder'), 'Earwigo Webbuilder']);
+      break;
+    case WHERIGO_BUILDER.URWIGO:
+      header.add([i18n(context, 'wherigo_header_builder'), 'Urwigo']);
+      break;
+    case WHERIGO_BUILDER.UNKNOWN:
+      header.add([i18n(context, 'wherigo_header_builder'), i18n(context, 'wherigo_header_builder_unknown')]);
+      break;
+    case WHERIGO_BUILDER.WHERIGOKIT:
+      header.add([i18n(context, 'wherigo_header_builder'), 'Wherigo Kit']);
+      break;
+    case WHERIGO_BUILDER.GROUNDSPEAK:
+      header.add([i18n(context, 'wherigo_header_builder'), 'Groundspeak']);
+      break;
 
-    switch (WherigoCartridgeLUAData.Builder) {
-      case WHERIGO_BUILDER.EARWIGO:
-        header.add([i18n(context, 'wherigo_header_builder'), 'Earwigo Webbuilder']);
-        break;
-      case WHERIGO_BUILDER.URWIGO:
-        header.add([i18n(context, 'wherigo_header_builder'), 'Urwigo']);
-        break;
-      case WHERIGO_BUILDER.UNKNOWN:
-        header.add([i18n(context, 'wherigo_header_builder'), i18n(context, 'wherigo_header_builder_unknown')]);
-        break;
-      case WHERIGO_BUILDER.WHERIGOKIT:
-        header.add([i18n(context, 'wherigo_header_builder'), 'Wherigo Kit']);
-        break;
-      case WHERIGO_BUILDER.GROUNDSPEAK:
-        header.add([i18n(context, 'wherigo_header_builder'), 'Groundspeak']);
-        break;
-
-      default: {}
-    }
-     header.add([i18n(context, 'wherigo_header_version'), WherigoCartridgeLUAData.BuilderVersion]);
+    default:
+      {}
+  }
+  header.add([i18n(context, 'wherigo_header_version'), WherigoCartridgeLUAData.BuilderVersion]);
   return header;
 }

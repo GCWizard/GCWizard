@@ -1,5 +1,4 @@
 import 'package:collection/collection.dart';
-
 import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/utils/datetime_utils.dart';
 import 'package:tuple/tuple.dart';
@@ -568,8 +567,7 @@ String atomicNumbersToText(List<int> atomicNumbers) {
   if (atomicNumbers.isEmpty) return '';
 
   return atomicNumbers.map((atomicNumber) {
-    var element =
-        allPeriodicTableElements.firstWhereOrNull((element) => element.atomicNumber == atomicNumber);
+    var element = allPeriodicTableElements.firstWhereOrNull((element) => element.atomicNumber == atomicNumber);
     return element != null ? element.chemicalSymbol : UNKNOWN_ELEMENT;
   }).join();
 }

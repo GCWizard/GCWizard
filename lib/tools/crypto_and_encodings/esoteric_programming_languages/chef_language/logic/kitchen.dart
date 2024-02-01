@@ -27,18 +27,18 @@ class _Kitchen {
         if (m.mixingbowl != null && m.mixingbowl! > maxbowl) maxbowl = m.mixingbowl!;
       }
 
-      mixingbowls =
-          List<_Container>.generate(mbowls == null ? maxbowl + 1 : max(maxbowl + 1, mbowls.length), (i) {return _Container(null);});
+      mixingbowls = List<_Container>.generate(mbowls == null ? maxbowl + 1 : max(maxbowl + 1, mbowls.length), (i) {
+        return _Container(null);
+      });
       if (mbowls != null) {
         for (int i = 0; i < mbowls.length; i++) {
           mixingbowls[i] = _Container(mbowls[i]);
         }
       }
 
-      bakingdishes =
-          List<_Container>.generate(bdishes == null ? maxdish + 1 : max(maxdish + 1, bdishes.length), (i) {return
-            _Container(null);
-          });
+      bakingdishes = List<_Container>.generate(bdishes == null ? maxdish + 1 : max(maxdish + 1, bdishes.length), (i) {
+        return _Container(null);
+      });
       if (bdishes != null) {
         for (int i = 0; i < bdishes.length; i++) {
           bakingdishes[i] = _Container(bdishes[i]);

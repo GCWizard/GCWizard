@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_multiple_output.dart';
@@ -13,10 +13,10 @@ class Solitaire extends StatefulWidget {
   const Solitaire({Key? key}) : super(key: key);
 
   @override
-  SolitaireState createState() => SolitaireState();
+  _SolitaireState createState() => _SolitaireState();
 }
 
-class SolitaireState extends State<Solitaire> {
+class _SolitaireState extends State<Solitaire> {
   String _currentInput = '';
   String _currentKey = '';
 

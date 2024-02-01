@@ -35,18 +35,18 @@ class GCWIntegerSpinner extends StatefulWidget {
       this.max = MAX_INT,
       this.leftPadZeros,
       this.controller,
-      this.layout= SpinnerLayout.HORIZONTAL,
+      this.layout = SpinnerLayout.HORIZONTAL,
       this.focusNode,
-      this.overflow=
+      this.overflow =
           SpinnerOverflowType.ALLOW_OVERFLOW // TODO: Automatically true if this.min == null || this.max == null
       })
       : super(key: key);
 
   @override
-  GCWIntegerSpinnerState createState() => GCWIntegerSpinnerState();
+  _GCWIntegerSpinnerState createState() => _GCWIntegerSpinnerState();
 }
 
-class GCWIntegerSpinnerState extends State<GCWIntegerSpinner> {
+class _GCWIntegerSpinnerState extends State<GCWIntegerSpinner> {
   late TextEditingController _controller;
   var _currentValue = 0;
 
@@ -95,16 +95,16 @@ class GCWIntegerSpinnerState extends State<GCWIntegerSpinner> {
   }
 
   void _increaseValue() {
-    setState(() {
-      if (_currentValue < widget.max || widget.overflow == SpinnerOverflowType.OVERFLOW_MIN) {
-        _currentValue++;
-      } else if ([SpinnerOverflowType.ALLOW_OVERFLOW, SpinnerOverflowType.OVERFLOW_MAX].contains(widget.overflow) &&
-          _currentValue == widget.max) {
-        _currentValue = widget.min;
-      }
+    // setState(() {
+    if (_currentValue < widget.max || widget.overflow == SpinnerOverflowType.OVERFLOW_MIN) {
+      _currentValue++;
+    } else if ([SpinnerOverflowType.ALLOW_OVERFLOW, SpinnerOverflowType.OVERFLOW_MAX].contains(widget.overflow) &&
+        _currentValue == widget.max) {
+      _currentValue = widget.min;
+    }
 
-      _setCurrentValueAndEmitOnChange(setTextFieldText: true);
-    });
+    _setCurrentValueAndEmitOnChange(setTextFieldText: true);
+    // });
   }
 
   Widget _buildTitle() {
@@ -168,7 +168,7 @@ class GCWIntegerSpinnerState extends State<GCWIntegerSpinner> {
     }
   }
 
-  void _setCurrentValueAndEmitOnChange({bool setTextFieldText= false}) {
+  void _setCurrentValueAndEmitOnChange({bool setTextFieldText = false}) {
     if (setTextFieldText) {
       var text = _currentValue.toString();
 
@@ -178,6 +178,8 @@ class GCWIntegerSpinnerState extends State<GCWIntegerSpinner> {
 
       _controller.text = text;
     }
+
+    // print(_currentValue);
 
     widget.onChanged(_currentValue);
   }

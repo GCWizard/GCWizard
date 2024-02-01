@@ -19,8 +19,8 @@ class SymbolTableEncryptionSizes {
   late double tileWidth;
   late double tileHeight;
 
-  SymbolTableEncryptionSizes({
-      required this.countImages,
+  SymbolTableEncryptionSizes(
+      {required this.countImages,
       required this.countColumns,
       required this.symbolWidth,
       required this.symbolHeight,

@@ -45,7 +45,7 @@ android {
     defaultConfig {
         applicationId "de.sman42.gc_wizard"
         minSdkVersion 21
-        targetSdkVersion 31
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

@@ -66,7 +66,8 @@ int _countNeighbors(List<List<bool>> _currentBoard, int i, int j, {bool isOpenWo
   return counter;
 }
 
-List<List<bool>> calculateGameOfLifeStep(List<List<bool>> _currentBoard, GameOfLifeRules rules, {bool isWrapWorld = false}) {
+List<List<bool>> calculateGameOfLifeStep(List<List<bool>> _currentBoard, GameOfLifeRules rules,
+    {bool isWrapWorld = false}) {
   var size = _currentBoard.length;
   var _newStepBoard = List<List<bool>>.generate(size, (index) => List<bool>.generate(size, (index) => false));
 

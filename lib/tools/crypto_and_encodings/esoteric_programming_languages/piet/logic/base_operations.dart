@@ -28,8 +28,8 @@ class _BaseOperations {
   late void Function(int) _toggleCodelChooser;
   late _PietSession _session;
 
-  _BaseOperations(_PietStack stack, _PietSession session, _PietBlock Function() getExitedBlock, void Function(int) toggleDirectionPointer,
-      void Function(int) toggleCodelChooser) {
+  _BaseOperations(_PietStack stack, _PietSession session, _PietBlock Function() getExitedBlock,
+      void Function(int) toggleDirectionPointer, void Function(int) toggleCodelChooser) {
     _stack = stack;
     _session = session;
     _getExitedBlock = getExitedBlock;

@@ -19,13 +19,13 @@ class BaseSelection extends GCWSelection {
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(const Base16()),
-        className(const Base32()),
-        className(const Base58()),
-        className(const Base64()),
-        className(const Base85()),
-        className(const Base91()),
-        className(const Base122()),
+        className(Base16()),
+        className(Base32()),
+        className(Base58()),
+        className(Base64()),
+        className(Base85()),
+        className(Base91()),
+        className(Base122()),
       ].contains(className(element.tool));
     }).toList();
 

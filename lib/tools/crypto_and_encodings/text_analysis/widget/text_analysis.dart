@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
@@ -18,10 +18,10 @@ class TextAnalysis extends StatefulWidget {
   const TextAnalysis({Key? key}) : super(key: key);
 
   @override
-  TextAnalysisState createState() => TextAnalysisState();
+  _TextAnalysisState createState() => _TextAnalysisState();
 }
 
-class TextAnalysisState extends State<TextAnalysis> {
+class _TextAnalysisState extends State<TextAnalysis> {
   late TextEditingController _inputController;
   String _currentInput = '';
 
@@ -246,22 +246,14 @@ class TextAnalysisState extends State<TextAnalysis> {
         _currentSort != _SORT_TYPES.COUNT_OVERALL
             ? Column(
                 children: [
-                    GCWColumnedMultilineOutput(
-                        data: group.common,
-                            copyColumn: 1
-                    ),
+                  GCWColumnedMultilineOutput(data: group.common, copyColumn: 1),
                   Container(
                     height: 8 * DOUBLE_DEFAULT_MARGIN,
                   )
                 ],
               )
             : Container(),
-            GCWColumnedMultilineOutput(
-                data: group.detailed,
-                hasHeader: true,
-                flexValues: flexValues,
-                copyColumn: 1
-            )
+        GCWColumnedMultilineOutput(data: group.detailed, hasHeader: true, flexValues: flexValues, copyColumn: 1)
       ],
     );
 
@@ -272,7 +264,8 @@ class TextAnalysisState extends State<TextAnalysis> {
         ),
         _currentSort == _SORT_TYPES.COUNT_OVERALL
             ? child
-            : GCWExpandableTextDivider(text: i18n(context, 'common_group') + ': ' + i18n(context, title ?? ''), child: child)
+            : GCWExpandableTextDivider(
+                text: i18n(context, 'common_group') + ': ' + i18n(context, title ?? ''), child: child)
       ],
     );
   }
@@ -342,15 +335,11 @@ class TextAnalysisState extends State<TextAnalysis> {
 
     var commonOutput = GCWExpandableTextDivider(
         text: i18n(context, 'textanalysis_common_count'),
-        child: GCWColumnedMultilineOutput(
-            data: [
-                    [i18n(context, 'textanalysis_common_wordcount'), wordCount],
-                    [i18n(context, 'textanalysis_common_charactercount'), totalCharacterCount],
-                    [i18n(context, 'textanalysis_distinctcharacters'), totalDistinctCharacterCount],
-                  ],
-              copyColumn: 1
-        )
-    );
+        child: GCWColumnedMultilineOutput(data: [
+          [i18n(context, 'textanalysis_common_wordcount'), wordCount],
+          [i18n(context, 'textanalysis_common_charactercount'), totalCharacterCount],
+          [i18n(context, 'textanalysis_distinctcharacters'), totalDistinctCharacterCount],
+        ], copyColumn: 1));
 
     if (_currentSort == _SORT_TYPES.COUNT_OVERALL) {
       return _buildOverallGroupOutput(analysis, commonOutput, totalCharacterCount);

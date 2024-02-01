@@ -1,10 +1,9 @@
 import 'dart:math';
-import 'package:collection/collection.dart';
 
+import 'package:collection/collection.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/constants.dart';
-
 
 class AlphabetValues {
   late Map<String, String> _alphabet;
@@ -23,7 +22,8 @@ class AlphabetValues {
    */
   String _toUpperCase(String text) {
     return text.split('').map((character) {
-      if (character != '\u00DF') { //ß
+      if (character != '\u00DF') {
+        //ß
         return character.toUpperCase();
       } else {
         return character;

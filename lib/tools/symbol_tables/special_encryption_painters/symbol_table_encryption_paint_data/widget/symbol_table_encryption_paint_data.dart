@@ -9,10 +9,7 @@ class SymbolTablePaintData {
   SymbolTableEncryptionSizes sizes;
   List<int> imageIndexes;
 
-  SymbolTablePaintData({
-    required this.sizes,
-    required this.data,
-    required this.imageIndexes});
+  SymbolTablePaintData({required this.sizes, required this.data, required this.imageIndexes});
 }
 
 class SymbolTableEncryptionPainter extends CustomPainter {

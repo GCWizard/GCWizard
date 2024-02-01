@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -9,10 +9,10 @@ class IceCodes extends StatefulWidget {
   const IceCodes({Key? key}) : super(key: key);
 
   @override
-  IceCodesState createState() => IceCodesState();
+  _IceCodesState createState() => _IceCodesState();
 }
 
-class IceCodesState extends State<IceCodes> {
+class _IceCodesState extends State<IceCodes> {
   IceCodeSystem _currentIceCodeSystem = IceCodeSystem.BALTIC;
   IceCodeSubSystem _currentIceCodeSubSystemBaltic = IceCodeSubSystem.A;
   IceCodeSubSystem _currentIceCodeSubSystemEU = IceCodeSubSystem.CONDITION;
@@ -120,12 +120,10 @@ class IceCodesState extends State<IceCodes> {
     if (iceCodeSubSystem == null) return const GCWDefaultOutput();
 
     return GCWDefaultOutput(
-      child: GCWColumnedMultilineOutput(
-        data: iceCodeSubSystem.entries.map((entry) {
-                return [entry.key, i18n(context, entry.value)];
-              }).toList(),
-        flexValues: const [1, 5]
-      )
-    );
+        child: GCWColumnedMultilineOutput(
+            data: iceCodeSubSystem.entries.map((entry) {
+              return [entry.key, i18n(context, entry.value)];
+            }).toList(),
+            flexValues: const [1, 5]));
   }
 }

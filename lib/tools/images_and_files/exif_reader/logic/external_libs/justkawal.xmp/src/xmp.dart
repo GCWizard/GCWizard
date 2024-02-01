@@ -9,7 +9,6 @@
 part of 'package:gc_wizard/tools/images_and_files/exif_reader/logic/external_libs/justkawal.xmp/xmp.dart';
 
 class XMP {
-
   ///
   ///Extracts `XMP Data` from the image
   ///
@@ -58,9 +57,9 @@ class XMP {
               if (tags.isNotEmpty) {
                 for (var element in tags) {
                   var textList =
-                      element.descendants.where((node) => node is XmlText && node.text.trim().isNotEmpty).toList();
+                      element.descendants.where((node) => node is XmlText && node.innerText.trim().isNotEmpty).toList();
                   for (var text in textList) {
-                    _addAttributeList(raw ? tag : camelToNormal(tag), text.text, result);
+                    _addAttributeList(raw ? tag : camelToNormal(tag), text.innerText, result);
                   }
                 }
               }
@@ -104,8 +103,7 @@ class XMP {
       if (!attr.contains('xmlns:') && !attr.contains('xml:')) {
         var endName = attribute.name.toString();
         var value = attribute.value.toString();
-        result[(raw ? endName : '${camelToNormal(headerName)} ${camelToNormal(endName)}').toString().trim()] =
-            value;
+        result[(raw ? endName : '${camelToNormal(headerName)} ${camelToNormal(endName)}').toString().trim()] = value;
       }
     }
 

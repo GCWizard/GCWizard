@@ -6,10 +6,10 @@ class CrossSum extends StatefulWidget {
   const CrossSum({Key? key}) : super(key: key);
 
   @override
-  CrossSumState createState() => CrossSumState();
+  _CrossSumState createState() => _CrossSumState();
 }
 
-class CrossSumState extends State<CrossSum> {
+class _CrossSumState extends State<CrossSum> {
   var _currentValue = 1;
 
   @override

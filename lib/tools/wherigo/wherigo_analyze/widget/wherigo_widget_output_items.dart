@@ -2,7 +2,7 @@ part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/widget/wherigo_analyze.
 
 List<List<String>> _buildOutputListOfItemData(BuildContext context, WherigoItemData data) {
   List<List<String>> result = [];
-  if (wherigoExpertMode) {
+  if (WHERIGOExpertMode) {
     result = _buildOutputListOfItemDataExpertMode(context, data);
   } else {
     result = _buildOutputListOfItemDataUserMode(context, data);
@@ -22,7 +22,9 @@ List<List<String>> _buildOutputListOfItemData(BuildContext context, WherigoItemD
     i18n(context, 'wherigo_output_container'),
     data.ItemContainer +
         (data.ItemContainer != ''
-            ? (NameToObject[data.ItemContainer] != null ? ' ⬌ ' + NameToObject[data.ItemContainer]!.ObjectName : '')
+            ? (WHERIGONameToObject[data.ItemContainer] != null
+                ? ' ⬌ ' + WHERIGONameToObject[data.ItemContainer]!.ObjectName
+                : '')
             : '')
   ]);
   return result;
@@ -46,19 +48,21 @@ List<List<String>> _buildOutputListOfItemDataExpertMode(BuildContext context, Wh
       i18n(context, 'wherigo_output_medianame'),
       data.ItemMedia +
           (data.ItemMedia != ''
-              ? (NameToObject[data.ItemMedia] != null ? ' ⬌ ' + NameToObject[data.ItemMedia]!.ObjectName : '')
+              ? (WHERIGONameToObject[data.ItemMedia] != null
+                  ? ' ⬌ ' + WHERIGONameToObject[data.ItemMedia]!.ObjectName
+                  : '')
               : '')
     ],
     [
       i18n(context, 'wherigo_output_iconname'),
       data.ItemIcon +
           (data.ItemIcon != ''
-              ? (NameToObject[data.ItemIcon] != null ? ' ⬌ ' + NameToObject[data.ItemIcon]!.ObjectName : '')
+              ? (WHERIGONameToObject[data.ItemIcon] != null
+                  ? ' ⬌ ' + WHERIGONameToObject[data.ItemIcon]!.ObjectName
+                  : '')
               : '')
     ],
     [i18n(context, 'wherigo_output_locked'), data.ItemLocked],
     [i18n(context, 'wherigo_output_opened'), data.ItemOpened],
   ];
 }
-
-

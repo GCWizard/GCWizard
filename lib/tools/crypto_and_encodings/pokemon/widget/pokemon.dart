@@ -9,10 +9,10 @@ class Pokemon extends StatefulWidget {
   const Pokemon({Key? key}) : super(key: key);
 
   @override
-  PokemonState createState() => PokemonState();
+  _PokemonState createState() => _PokemonState();
 }
 
-class PokemonState extends State<Pokemon> {
+class _PokemonState extends State<Pokemon> {
   late TextEditingController _encodeController;
   late TextEditingController _decodeController;
 

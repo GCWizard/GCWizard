@@ -1,13 +1,13 @@
 part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/logic/wherigo_analyze.dart';
 
 bool _insideSectionOnGetInput(String currentLine) {
-  if (currentLine.endsWith(':OnGetInput(input)')) {
+  if (currentLine.endsWith(':OnGetInput(input)') || currentLine.startsWith('function')) {
     return false;
   }
   return true;
 }
 
-WherigoAnswer _analyzeAndExtractOnGetInputSectionData(List<String> lines) {
+WherigoAnswer _analyzeAndExtractOnGetInputSectionData(List<String> onGetInputLines) {
   String resultInputFunction = '';
   List<WherigoAnswerData> resultAnswerData = [];
 
@@ -15,71 +15,72 @@ WherigoAnswer _analyzeAndExtractOnGetInputSectionData(List<String> lines) {
   String _answerHash = '';
   List<WherigoActionMessageElementData> _answerActions = [];
 
-
-  for (int i = 0; i < lines.length; i++) {
-    if (lines[i].endsWith(':OnGetInput(input)')) {
-      resultInputFunction = lines[i].replaceAll('function ', '').replaceAll(':OnGetInput(input)', '').trim();
+  for (int i = 0; i < onGetInputLines.length; i++) {
+    if (onGetInputLines[i].endsWith(':OnGetInput(input)')) {
+      resultInputFunction = onGetInputLines[i].replaceAll('function ', '').replaceAll(':OnGetInput(input)', '').trim();
     }
 
-    if (lines[i].trim().endsWith('= tonumber(input)')) {
-      _answerVariable = lines[i].trim().replaceAll(' = tonumber(input)', '');
-    } else if (lines[i].trim().endsWith(' = input')) {
-      _answerVariable = lines[i].trim().replaceAll(' = input', '');
-    } else if (lines[i].trimLeft() == 'if input == nil then') {
+    if (onGetInputLines[i].trim().endsWith('= tonumber(input)')) {
+      _answerVariable = onGetInputLines[i].trim().replaceAll(' = tonumber(input)', '');
+    } else if (onGetInputLines[i].trim().endsWith(' = input')) {
+      _answerVariable = onGetInputLines[i].trim().replaceAll(' = input', '');
+    } else if (onGetInputLines[i].trimLeft() == 'if input == nil then') {
       // suppress this
       //answer = 'NIL';
       i++;
-      lines[i] = lines[i].trim();
+      onGetInputLines[i] = onGetInputLines[i].trim();
       _answerVariable = 'input';
       _sectionAnalysed = false;
       do {
         i++;
-        lines[i] = lines[i].trim();
-        if (lines[i].trim() == 'end') _sectionAnalysed = true;
+        onGetInputLines[i] = onGetInputLines[i].trim();
+        if (onGetInputLines[i].trim() == 'end') _sectionAnalysed = true;
       } while (!_sectionAnalysed); // end of section
     } // end of NIL
 
-    else if (_OnGetInputSectionEnd(lines[i])) { // found Answer
+    else if (_OnGetInputSectionEnd(onGetInputLines[i])) {
+      // found Answer
       _answerActions = [];
-      _answerAnswerList = _getAnswers(i, lines[i], lines[i - 1], _cartridgeVariables);
-        for (var answer in _answerAnswerList) {
-          if (answer != 'NIL') {
-
-            resultAnswerData.add(WherigoAnswerData(
-              AnswerAnswer: answer,
-              AnswerHash: _answerHash,
-              AnswerActions: _answerActions,
-            ));
-          }
+      _answerAnswerList = _getAnswers(i, onGetInputLines[i], onGetInputLines[i - 1], _cartridgeVariables);
+      for (var answer in _answerAnswerList) {
+        if (answer != 'NIL') {
+          resultAnswerData.add(WherigoAnswerData(
+            AnswerAnswer: answer,
+            AnswerHash: _answerHash,
+            AnswerActions: _answerActions,
+          ));
         }
-    } else if (lines[i].trimLeft().startsWith('Buttons')) {
+      }
+    } else if (onGetInputLines[i].trimLeft().startsWith('Buttons')) {
       do {
         i++;
-        lines[i] = lines[i].trim();
-        if (!(lines[i].trim() == '}' || lines[i].trim() == '},')) {
-          if (lines[i].trimLeft().startsWith(_obfuscatorFunction)) {
+        onGetInputLines[i] = onGetInputLines[i].trim();
+        if (!(onGetInputLines[i].trim() == '}' || onGetInputLines[i].trim() == '},')) {
+          if (onGetInputLines[i].trimLeft().startsWith(_obfuscatorFunction)) {
             _answerActions.add(WherigoActionMessageElementData(
                 ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON,
-                ActionMessageContent: deobfuscateUrwigoText(lines[i].trim().replaceAll(_obfuscatorFunction + '("', '').replaceAll('")', ''),
+                ActionMessageContent: deobfuscateUrwigoText(
+                    onGetInputLines[i].trim().replaceAll(_obfuscatorFunction + '("', '').replaceAll('")', ''),
                     _obfuscatorTable)));
           } else {
             _answerActions.add(WherigoActionMessageElementData(
                 ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON,
-                ActionMessageContent: lines[i].trim().replaceAll(_obfuscatorFunction + '("', '').replaceAll('")', '')));
+                ActionMessageContent:
+                    onGetInputLines[i].trim().replaceAll(_obfuscatorFunction + '("', '').replaceAll('")', '')));
           }
         }
-      } while (!lines[i].trim().startsWith('}'));
+      } while (!onGetInputLines[i].trim().startsWith('}'));
     } // end buttons
 
     else {
-      if (_isMessageActionElement(lines[i].trimLeft())) {
-        _answerActions.add(_handleAnswerLine(lines[i].trimLeft()));
+      if (_isMessageActionElement(onGetInputLines[i].trimLeft())) {
+        _answerActions.add(_handleAnswerLine(onGetInputLines[i].trimLeft()));
       }
     } // end if other line content
   }
   return WherigoAnswer(
-      InputFunction: resultInputFunction,
-      InputAnswers: resultAnswerData,
+    InputFunction: resultInputFunction,
+    InputAnswers: resultAnswerData,
   );
 }
 
@@ -190,9 +191,7 @@ List<String> _getAnswers(int i, String line, String lineBefore, List<WherigoVari
     }
     return [line];
   }
-
-  throw Exception(
-      'No Answers found'); // TODO Thomas: Please check if empty list instead is logically meaningful; I chose Exception because I believe this line should never be reached.
+  return [];
 }
 
 bool _OnGetInputSectionEnd(String line) {

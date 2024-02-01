@@ -1,10 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
+import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
@@ -17,12 +18,12 @@ class GameOfLife extends StatefulWidget {
   const GameOfLife({Key? key}) : super(key: key);
 
   @override
-  GameOfLifeState createState() => GameOfLifeState();
+  _GameOfLifeState createState() => _GameOfLifeState();
 }
 
 const _KEY_CUSTOM_RULES = 'gameoflife_custom';
 
-class GameOfLifeState extends State<GameOfLife> {
+class _GameOfLifeState extends State<GameOfLife> {
   late List<List<List<bool>>> _boards;
   List<List<bool>> _currentBoard = [];
   var _currentStep = 0;
@@ -37,7 +38,7 @@ class GameOfLifeState extends State<GameOfLife> {
   late TextEditingController _currentCustomBirthController;
   var _currentCustomInverse = false;
 
-  final _maskInputFormatter = WrapperForMaskTextInputFormatter(mask: '*********', filter: {"*": RegExp(r'[012345678]')});
+  final _maskInputFormatter = GCWMaskTextInputFormatter(mask: '*********', filter: {"*": RegExp(r'[012345678]')});
 
   @override
   void initState() {
@@ -177,9 +178,7 @@ class GameOfLifeState extends State<GameOfLife> {
             });
           },
         ),
-        Container(
-          constraints: BoxConstraints(maxWidth: min(500, MediaQuery.of(context).size.height * 0.8)),
-          margin: const EdgeInsets.symmetric(vertical: 20.0),
+        GCWPainterContainer(
           child: GameOfLifeBoard(
             state: _currentBoard,
             size: _currentSize,

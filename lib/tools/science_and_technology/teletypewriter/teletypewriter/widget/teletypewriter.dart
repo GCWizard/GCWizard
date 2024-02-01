@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
@@ -17,10 +17,10 @@ class Teletypewriter extends StatefulWidget {
   const Teletypewriter({Key? key, required this.defaultCodebook, required this.codebook}) : super(key: key);
 
   @override
-  TeletypewriterState createState() => TeletypewriterState();
+  _TeletypewriterState createState() => _TeletypewriterState();
 }
 
-class TeletypewriterState extends State<Teletypewriter> {
+class _TeletypewriterState extends State<Teletypewriter> {
   late TextEditingController _encodeController;
   late TextEditingController _decodeController;
 
@@ -67,7 +67,7 @@ class TeletypewriterState extends State<Teletypewriter> {
               return GCWDropDownMenuItem(
                   value: mode.key,
                   child: i18n(context, mode.value.title),
-                  subtitle:i18n(context, mode.value.subtitle));
+                  subtitle: i18n(context, mode.value.subtitle));
             }).toList(),
           ),
         _currentMode == GCWSwitchPosition.left
@@ -96,7 +96,7 @@ class TeletypewriterState extends State<Teletypewriter> {
           },
         ),
         GCWTwoOptionsSwitch(
-          title: i18n(context, 'ccitt2_numeralbase'),
+          title: i18n(context, 'common_numeralbase'),
           leftValue: i18n(context, 'common_numeralbase_denary'),
           rightValue: i18n(context, 'common_numeralbase_binary'),
           value: _currentRadix,
@@ -113,14 +113,6 @@ class TeletypewriterState extends State<Teletypewriter> {
 
   String _buildOutput() {
     var output = '';
-    // these ancient codes are build from a picture showing the code in Bitorder 12345
-    // all other codes are usually shown in Bitorder 54321
-    // hence the binary representation should be mirrored
-    bool mirrorBinary = false;
-    if (_currentCode == TeletypewriterCodebook.BAUDOT_12345 ||
-        _currentCode == TeletypewriterCodebook.MURRAY ||
-        _currentCode == TeletypewriterCodebook.SIEMENS ||
-        _currentCode == TeletypewriterCodebook.WESTERNUNION) mirrorBinary = true;
 
     if (_currentMode == GCWSwitchPosition.left) {
       // encrypt
@@ -128,9 +120,7 @@ class TeletypewriterState extends State<Teletypewriter> {
       if (_currentRadix == GCWSwitchPosition.right) {
         // binary
         output = output.split(' ').map((value) {
-          var out = convertBase(value, 10, 2).padLeft(BINARY_LENGTH[_currentCode]!, '0');
-          if (mirrorBinary) out = out.split('').reversed.join('');
-          return out;
+          return convertBase(value, 10, 2).padLeft(BINARY_LENGTH[_currentCode]!, '0');
         }).join(' ');
       }
       return output; // decimal

@@ -1,7 +1,7 @@
 import "package:flutter_test/flutter_test.dart";
+import 'package:gc_wizard/tools/crypto_and_encodings/_common/logic/crypt_alphabet_modification.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/bifid/logic/bifid.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/polybios/logic/polybios.dart';
-import 'package:gc_wizard/tools/crypto_and_encodings/_common/logic/crypt_alphabet_modification.dart';
 
 void main() {
   // https://gc.de/gc/bifid/

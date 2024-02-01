@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/color_pickers/gcw_colors.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
@@ -17,10 +17,10 @@ class ColorTool extends StatefulWidget {
   const ColorTool({Key? key, this.color}) : super(key: key);
 
   @override
-  ColorToolState createState() => ColorToolState();
+  _ColorToolState createState() => _ColorToolState();
 }
 
-class ColorToolState extends State<ColorTool> {
+class _ColorToolState extends State<ColorTool> {
   late GCWColorValue _currentColor;
   var _currentOutputColorSpace = ColorSpaceKey.HEXCODE;
 
@@ -157,8 +157,6 @@ class ColorToolState extends State<ColorTool> {
     }
 
     return GCWColumnedMultilineOutput(
-        firstRows: [GCWTextDivider(text: i18n(context, 'common_output'))],
-        data: colorSpaceOutputs
-    );
+        firstRows: [GCWTextDivider(text: i18n(context, 'common_output'))], data: colorSpaceOutputs);
   }
 }

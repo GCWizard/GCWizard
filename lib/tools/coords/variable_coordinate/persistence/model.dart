@@ -1,12 +1,12 @@
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/tools/formula_solver/persistence/model.dart';
+import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/default_units_getter.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/length.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit.dart';
 import 'package:gc_wizard/utils/data_type_utils/object_type_utils.dart';
-import 'package:gc_wizard/tools/formula_solver/persistence/model.dart';
 import 'package:gc_wizard/utils/json_utils.dart';
-import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/default_units_getter.dart';
 
-List<Formula> formulas = [];
+List<VariableCoordinateFormula> formulas = [];
 
 class ProjectionData {
   String distance;
@@ -26,7 +26,8 @@ class ProjectionData {
 
   ProjectionData.fromJson(Map<String, Object?> json)
       : distance = toStringOrNull(json['distance']) ?? '',
-        distanceUnit = getUnitByName<Length>(allLengths(), toStringOrNull(json['distanceUnit']) ?? '') ?? defaultLengthUnit,
+        distanceUnit =
+            getUnitByName<Length>(allLengths(), toStringOrNull(json['distanceUnit']) ?? '') ?? defaultLengthUnit,
         bearing = toStringOrNull(json['bearing']) ?? '',
         reverse = toBoolOrNull(json['reverse']) ?? false;
 
@@ -36,15 +37,14 @@ class ProjectionData {
   }
 }
 
-class Formula {
-  int? id;
-  late String name;
+class VariableCoordinateFormula extends FormulaBase {
   String formula = '';
   ProjectionData? projection;
   List<FormulaValue> values = [];
 
-  Formula(this.name);
+  VariableCoordinateFormula(String name) : super(name);
 
+  @override
   Map<String, Object?> toMap() => {
         'id': id,
         'name': name,
@@ -53,22 +53,24 @@ class Formula {
         'values': values.map((value) => value.toMap()).toList(),
       };
 
-  Formula.fromJson(Map<String, Object?> json) {
-    name = toStringOrNull(json['name']) ?? ''; // TODO Proper default types if key is not in map
-    id = toIntOrNull(json['id']);
-    formula = toStringOrNull(json['formula']) ?? '';
-    projection = ProjectionData.fromJson(asJsonMapOrNull(json['projection']) ?? <String, Object?>{});
+  static VariableCoordinateFormula fromJson(Map<String, Object?> json) {
+    var newFormula =
+        VariableCoordinateFormula(toStringOrNull(json['name']) ?? ''); // TODO Proper default types if key is not in map
+    newFormula.id = toIntOrNull(json['id']);
+    newFormula.formula = toStringOrNull(json['formula']) ?? '';
+    newFormula.projection = ProjectionData.fromJson(asJsonMapOrNull(json['projection']) ?? <String, Object?>{});
 
     var valuesRaw = toObjectWithNullableContentListOrNull(json['values']);
-    values = <FormulaValue>[];
+    newFormula.values = <FormulaValue>[];
     if (valuesRaw != null) {
       for (var element in valuesRaw) {
         var value = asJsonMapOrNull(element);
         if (value == null) continue;
 
-        values.add(FormulaValue.fromJson(value));
+        newFormula.values.add(FormulaValue.fromJson(value));
       }
     }
+    return newFormula;
   }
 
   @override

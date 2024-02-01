@@ -7,10 +7,10 @@ class AppBuilder extends StatefulWidget {
   const AppBuilder({Key? key, required this.builder}) : super(key: key);
 
   @override
-  AppBuilderState createState() => AppBuilderState();
+  _AppBuilderState createState() => _AppBuilderState();
 
-  static AppBuilderState of(BuildContext context) {
-    var newState = context.findAncestorStateOfType<AppBuilderState>();
+  static _AppBuilderState of(BuildContext context) {
+    var newState = context.findAncestorStateOfType<_AppBuilderState>();
     if (newState == null) {
       throw Exception('No AppBuilderState created');
     }
@@ -19,7 +19,7 @@ class AppBuilder extends StatefulWidget {
   }
 }
 
-class AppBuilderState extends State<AppBuilder> {
+class _AppBuilderState extends State<AppBuilder> {
   @override
   Widget build(BuildContext context) {
     return widget.builder(context);

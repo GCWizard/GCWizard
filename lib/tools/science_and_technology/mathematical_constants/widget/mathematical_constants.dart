@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
-import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/e_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/phi_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/pi_selection.dart';
@@ -8,6 +6,8 @@ import 'package:gc_wizard/application/category_views/selector_lists/silverratio_
 import 'package:gc_wizard/application/category_views/selector_lists/sqrt2_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/sqrt3_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/sqrt5_selection.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_tool.dart';
@@ -20,10 +20,10 @@ class MathematicalConstants extends StatefulWidget {
   const MathematicalConstants({Key? key}) : super(key: key);
 
   @override
-  MathematicalConstantsState createState() => MathematicalConstantsState();
+  _MathematicalConstantsState createState() => _MathematicalConstantsState();
 }
 
-class MathematicalConstantsState extends State<MathematicalConstants> {
+class _MathematicalConstantsState extends State<MathematicalConstants> {
   String _currentConstant = '';
   late Map<String, MathematicalConstant> _constants;
 
@@ -37,7 +37,6 @@ class MathematicalConstantsState extends State<MathematicalConstants> {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       children: <Widget>[
         GCWDropDown<String>(
@@ -102,22 +101,18 @@ class MathematicalConstantsState extends State<MathematicalConstants> {
     }
 
     List<List<Object?>> data = [];
-      if (constantData.symbol != null) {
-        data.add([
-                  i18n(context, 'physical_constants_symbol'),
-                  buildSubOrSuperscriptedRichTextIfNecessary(constantData.symbol!)
-                ]);
-      }
-      data.add([i18n(context, 'physical_constants_value'), constantData.value]);
-      if (names != null) {
-        data.add([i18n(context, 'mathematical_constants_additionalnames'), names.join('\n')]);
-      }
+    if (constantData.symbol != null) {
+      data.add([
+        i18n(context, 'physical_constants_symbol'),
+        buildSubOrSuperscriptedRichTextIfNecessary(constantData.symbol!)
+      ]);
+    }
+    data.add([i18n(context, 'physical_constants_value'), constantData.value]);
+    if (names != null) {
+      data.add([i18n(context, 'mathematical_constants_additionalnames'), names.join('\n')]);
+    }
 
-
-    var dataView = GCWColumnedMultilineOutput(
-        data: data,
-        flexValues: const [1, 2]
-    );
+    var dataView = GCWColumnedMultilineOutput(data: data, flexValues: const [1, 2]);
 
     var toolLink = _buildToolLink(constantData.tool);
 

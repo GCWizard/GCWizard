@@ -7,21 +7,26 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequencePerfectNumbersCheckNumber extends NumberSequenceCheckNumber {
-  const NumberSequencePerfectNumbersCheckNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.PERFECT_NUMBERS, maxIndex: 11);
+  const NumberSequencePerfectNumbersCheckNumber({Key? key})
+      : super(key: key, mode: NumberSequencesMode.PERFECT_NUMBERS, maxIndex: 11);
 }
 
 class NumberSequencePerfectNumbersDigits extends NumberSequenceDigits {
-  const NumberSequencePerfectNumbersDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.PERFECT_NUMBERS, maxDigits: 80);
+  const NumberSequencePerfectNumbersDigits({Key? key})
+      : super(key: key, mode: NumberSequencesMode.PERFECT_NUMBERS, maxDigits: 80);
 }
 
 class NumberSequencePerfectNumbersRange extends NumberSequenceRange {
-  const NumberSequencePerfectNumbersRange({Key? key}) : super(key: key, mode: NumberSequencesMode.PERFECT_NUMBERS, maxIndex: 11);
+  const NumberSequencePerfectNumbersRange({Key? key})
+      : super(key: key, mode: NumberSequencesMode.PERFECT_NUMBERS, maxIndex: 11);
 }
 
 class NumberSequencePerfectNumbersNthNumber extends NumberSequenceNthNumber {
-  const NumberSequencePerfectNumbersNthNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.PERFECT_NUMBERS, maxIndex: 11);
+  const NumberSequencePerfectNumbersNthNumber({Key? key})
+      : super(key: key, mode: NumberSequencesMode.PERFECT_NUMBERS, maxIndex: 11);
 }
 
 class NumberSequencePerfectNumbersContainsDigits extends NumberSequenceContainsDigits {
-  const NumberSequencePerfectNumbersContainsDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.PERFECT_NUMBERS, maxIndex: 11);
+  const NumberSequencePerfectNumbersContainsDigits({Key? key})
+      : super(key: key, mode: NumberSequencesMode.PERFECT_NUMBERS, maxIndex: 11);
 }

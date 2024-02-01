@@ -89,8 +89,7 @@ WherigoZoneData _analyzeAndExtractZoneSectionData(List<String> lines) {
     }
 
     if (lines[i].startsWith(LUAname + '.ProximityRangeUOM =')) {
-      proximityRangeUOM =
-          getLineData(lines[i], LUAname, 'ProximityRangeUOM', _obfuscatorFunction, _obfuscatorTable);
+      proximityRangeUOM = getLineData(lines[i], LUAname, 'ProximityRangeUOM', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.DistanceRange =')) {
@@ -107,13 +106,11 @@ WherigoZoneData _analyzeAndExtractZoneSectionData(List<String> lines) {
 
     if (lines[i].startsWith(LUAname + '.OriginalPoint')) {
       String point = getLineData(lines[i], LUAname, 'OriginalPoint', _obfuscatorFunction, _obfuscatorTable);
-      List<String> pointdata =
-      point.replaceAll('ZonePoint(', '').replaceAll(')', '').replaceAll(' ', '').split(',');
-      originalPoint =
-          WherigoZonePoint(
-              Latitude: double.parse(pointdata[0]),
-              Longitude: double.parse(pointdata[1]),
-              Altitude: double.parse(pointdata[2]));
+      List<String> pointdata = point.replaceAll('ZonePoint(', '').replaceAll(')', '').replaceAll(' ', '').split(',');
+      originalPoint = WherigoZonePoint(
+          Latitude: double.parse(pointdata[0]),
+          Longitude: double.parse(pointdata[1]),
+          Altitude: double.parse(pointdata[2]));
     }
 
     if (lines[i].startsWith(LUAname + '.OutOfRangeName')) {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -14,10 +14,10 @@ class Malbolge extends StatefulWidget {
   const Malbolge({Key? key}) : super(key: key);
 
   @override
-  MalbolgeState createState() => MalbolgeState();
+  _MalbolgeState createState() => _MalbolgeState();
 }
 
-class MalbolgeState extends State<Malbolge> {
+class _MalbolgeState extends State<Malbolge> {
   late TextEditingController _programmController;
   late TextEditingController _inputController;
   late TextEditingController _outputController;

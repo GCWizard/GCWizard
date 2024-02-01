@@ -137,4 +137,3 @@ Iterable<int> iterateText(String text, String alphabet, {bool ignoreNonLetters =
     }
   }
 }
-

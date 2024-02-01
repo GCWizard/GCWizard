@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
@@ -10,10 +10,10 @@ class EarwigoTextDeobfuscation extends StatefulWidget {
   const EarwigoTextDeobfuscation({Key? key}) : super(key: key);
 
   @override
-  EarwigoTextDeobfuscationState createState() => EarwigoTextDeobfuscationState();
+  _EarwigoTextDeobfuscationState createState() => _EarwigoTextDeobfuscationState();
 }
 
-class EarwigoTextDeobfuscationState extends State<EarwigoTextDeobfuscation> {
+class _EarwigoTextDeobfuscationState extends State<EarwigoTextDeobfuscation> {
   late TextEditingController _inputController;
   late TextEditingController _inputObfuscateController;
 

@@ -62,7 +62,7 @@ Future<AnimatedImageOutput?> analyseImage(Uint8List bytes,
               imageList.add(encodeTrimmedPng(animation[i]));
               break;
             default:
-              imageList.add(Uint8List.fromList(Image.encodeGif(animation[i])));
+              imageList.add(Uint8List.fromList(Image.encodeGif(animation[i], singleFrame: true)));
               break;
           }
           linkList.add(i);
@@ -73,7 +73,7 @@ Future<AnimatedImageOutput?> analyseImage(Uint8List bytes,
 
         progress++;
         if (sendAsyncPort != null && (progress % progressStep == 0)) {
-          sendAsyncPort.send(DoubleText('progress', progress / animation.length));
+          sendAsyncPort.send(DoubleText(PROGRESS, progress / animation.length));
         }
       }
     }

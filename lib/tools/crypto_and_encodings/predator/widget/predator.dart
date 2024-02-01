@@ -18,10 +18,10 @@ class Predator extends StatefulWidget {
   const Predator({Key? key}) : super(key: key);
 
   @override
-  PredatorState createState() => PredatorState();
+  _PredatorState createState() => _PredatorState();
 }
 
-class PredatorState extends State<Predator> {
+class _PredatorState extends State<Predator> {
   String _currentEncodeInput = '';
   late TextEditingController _encodeController;
 
@@ -53,18 +53,18 @@ class PredatorState extends State<Predator> {
         },
       ),
       (_currentMode == GCWSwitchPosition.left) // encrypt: input number => output segment
-        ? GCWTextField(
-            controller: _encodeController,
-            onChanged: (text) {
-              setState(() {
-                _currentEncodeInput = text;
-              });
-            },
-          )
-        : Column(
-          // decrpyt: input segment => output number
-          children: <Widget>[_buildVisualDecryption()],
-        ),
+          ? GCWTextField(
+              controller: _encodeController,
+              onChanged: (text) {
+                setState(() {
+                  _currentEncodeInput = text;
+                });
+              },
+            )
+          : Column(
+              // decrpyt: input segment => output number
+              children: <Widget>[_buildVisualDecryption()],
+            ),
       _buildOutput()
     ]);
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_multiple_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
@@ -11,10 +11,10 @@ class Permutation extends StatefulWidget {
   const Permutation({Key? key}) : super(key: key);
 
   @override
-  PermutationState createState() => PermutationState();
+  _PermutationState createState() => _PermutationState();
 }
 
-class PermutationState extends State<Permutation> {
+class _PermutationState extends State<Permutation> {
   var _currentInput = '';
   bool _currentShowDuplicates = false;
 

@@ -7,6 +7,6 @@ class GreekQuadgrams extends Quadgrams {
     most_frequent_quadgram = 'εναι';
     max_fitness = 1335;
     average_fitness = 275.8675944010417;
-    assetLocation = "assets/quadgrams/gr.json";
+    assetLocation = "lib/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/assets/quadgrams/gr.json";
   }
 }

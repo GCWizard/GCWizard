@@ -9,14 +9,9 @@ class _SliderPicker extends StatefulWidget {
   final ValueChanged<double> onChanged;
   final List<Color>? colors;
 
-  const _SliderPicker({
-    Key? key,
-    this.min = 0.0,
-    this.max = 1.0,
-    required this.value,
-    required this.onChanged,
-    this.colors
-  })  : assert(value >= min && value <= max),
+  const _SliderPicker(
+      {Key? key, this.min = 0.0, this.max = 1.0, required this.value, required this.onChanged, this.colors})
+      : assert(value >= min && value <= max),
         super(key: key);
 
   @override
@@ -52,8 +47,7 @@ class _SliderPickerState extends State<_SliderPicker> {
 
                   //child
                   DecoratedBox(
-                      decoration: BoxDecoration(
-                          borderRadius: radius, border: Border.all(color: Colors.grey, width: 1)),
+                      decoration: BoxDecoration(borderRadius: radius, border: Border.all(color: Colors.grey, width: 1)),
                       child: ClipRRect(borderRadius: radius))
                   :
 
@@ -84,8 +78,7 @@ class _SliderPickerState extends State<_SliderPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        height: 40.0, child: LayoutBuilder(builder: (context, box) => buildSlider(box.maxWidth)));
+    return SizedBox(height: 40.0, child: LayoutBuilder(builder: (context, box) => buildSlider(box.maxWidth)));
   }
 }
 
@@ -144,8 +137,7 @@ class _HSVPicker extends StatefulWidget {
   final HSVColor color;
   final ValueChanged<HSVColor> onChanged;
 
-  const _HSVPicker({Key? key, required this.color, required this.onChanged})
-      : super(key: key);
+  const _HSVPicker({Key? key, required this.color, required this.onChanged}) : super(key: key);
 
   @override
   _HSVPickerState createState() => _HSVPickerState();
@@ -168,8 +160,7 @@ class _HSVPickerState extends State<_HSVPicker> {
 
   //Saturation
   void saturationOnChange(double value) => super.widget.onChanged(color.withSaturation(value));
-  List<Color> get saturationColors =>
-      [color.withSaturation(0.0).toColor(), color.withSaturation(1.0).toColor()];
+  List<Color> get saturationColors => [color.withSaturation(0.0).toColor(), color.withSaturation(1.0).toColor()];
 
   //Value
   void valueOnChange(double value) => super.widget.onChanged(color.withValue(value));
@@ -199,20 +190,14 @@ class _HSVPickerState extends State<_HSVPicker> {
   Widget build(BuildContext context) {
     return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
       //Hue
-      _SliderPicker(
-          value: color.hue, min: 0.0, max: 360.0, onChanged: hueOnChange, colors: hueColors),
+      _SliderPicker(value: color.hue, min: 0.0, max: 360.0, onChanged: hueOnChange, colors: hueColors),
 
       //Saturation
       _SliderPicker(
-          value: color.saturation,
-          min: 0.0,
-          max: 1.0,
-          onChanged: saturationOnChange,
-          colors: saturationColors),
+          value: color.saturation, min: 0.0, max: 1.0, onChanged: saturationOnChange, colors: saturationColors),
 
       //Value
-      _SliderPicker(
-          value: color.value, min: 0.0, max: 1.0, onChanged: valueOnChange, colors: valueColors)
+      _SliderPicker(value: color.value, min: 0.0, max: 1.0, onChanged: valueOnChange, colors: valueColors)
     ]);
   }
 }

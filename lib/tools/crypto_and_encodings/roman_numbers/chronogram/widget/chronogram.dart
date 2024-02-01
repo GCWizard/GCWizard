@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
@@ -10,10 +10,10 @@ class Chronogram extends StatefulWidget {
   const Chronogram({Key? key}) : super(key: key);
 
   @override
-  ChronogramState createState() => ChronogramState();
+  _ChronogramState createState() => _ChronogramState();
 }
 
-class ChronogramState extends State<Chronogram> {
+class _ChronogramState extends State<Chronogram> {
   var _currentInput = '';
   var _currentJUToIV = false;
   var _currentYToII = false;

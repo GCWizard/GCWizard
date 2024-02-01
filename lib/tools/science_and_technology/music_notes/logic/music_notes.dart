@@ -55,7 +55,7 @@ const notePosition = [
 ];
 
 final Map<String, List<String>> _CODEBOOK_MUSIC_NOTES_ALT = {
-  '1':  [notePosition[21]],
+  '1': [notePosition[21]],
   '1_b': [notePosition[21], bLabel],
   '1_k': [notePosition[21], hashLabel],
   '2': [notePosition[20]],
@@ -268,7 +268,6 @@ final Map<String, List<String>> _CODEBOOK_MUSIC_NOTES_TREBLE = {
 };
 
 Segments encodeNotes(String input, NotesCodebook notes, Map<String, String> translationMap) {
-
   var mainEntrysStart = 0;
   var mainEntrysEnd = 99;
   List<List<String>> result = [];

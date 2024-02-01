@@ -9,7 +9,8 @@ class TrifidOutput {
   TrifidOutput(this.output, this.grid);
 }
 
-TrifidOutput encryptTrifid(String input, int blockSize, {PolybiosMode mode = PolybiosMode.AZ09, required String alphabet}) {
+TrifidOutput encryptTrifid(String input, int blockSize,
+    {PolybiosMode mode = PolybiosMode.AZ09, required String alphabet}) {
   if (input.isEmpty) return TrifidOutput('', '');
 
   Map<String, String> EncodeMatrix = <String, String>{};
@@ -63,7 +64,8 @@ TrifidOutput encryptTrifid(String input, int blockSize, {PolybiosMode mode = Pol
   return TrifidOutput(result.join(''), _MatrixToString(alphabet));
 }
 
-TrifidOutput decryptTrifid(String input, int blockSize, {PolybiosMode mode = PolybiosMode.AZ09, required String alphabet}) {
+TrifidOutput decryptTrifid(String input, int blockSize,
+    {PolybiosMode mode = PolybiosMode.AZ09, required String alphabet}) {
   if (input.isEmpty) return TrifidOutput('', '');
 
   input = input.toUpperCase();

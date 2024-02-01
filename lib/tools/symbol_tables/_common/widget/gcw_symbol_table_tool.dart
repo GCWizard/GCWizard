@@ -3,7 +3,6 @@ import 'package:gc_wizard/common_widgets/gcw_tool.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/logic/symbol_table_data.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/widget/symbol_table.dart';
 
-
 class GCWSymbolTableTool extends GCWTool {
   final String symbolKey;
   final List<String> symbolSearchStrings;

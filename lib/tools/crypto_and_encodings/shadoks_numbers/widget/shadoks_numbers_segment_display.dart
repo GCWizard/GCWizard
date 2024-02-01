@@ -20,14 +20,12 @@ double _relativeY(Size size, double y) {
   return size.height / _SHADOKS_RELATIVE_DISPLAY_HEIGHT * y;
 }
 
-
 class _ShadoksNumbersSegmentDisplay extends NSegmentDisplay {
-
-  _ShadoksNumbersSegmentDisplay({
-    Key? key,
-    required Map<String, bool> segments,
-    bool readOnly = false,
-    void Function(Map<String, bool>)? onChanged})
+  _ShadoksNumbersSegmentDisplay(
+      {Key? key,
+      required Map<String, bool> segments,
+      bool readOnly = false,
+      void Function(Map<String, bool>)? onChanged})
       : super(
             key: key,
             initialSegments: _INITIAL_SEGMENTS,
@@ -46,7 +44,7 @@ class _ShadoksNumbersSegmentDisplay extends NSegmentDisplay {
               paint.style = PaintingStyle.stroke;
               paint.strokeWidth = size.height > 100 ? 7.0 : 3.5;
 
-              var elements =  {
+              var elements = {
                 'b': [80.0, 20.0, 0.0, 60.0],
                 'c': [80.0, 80.0, -60.0, 0.0],
                 'd': [20.0, 80.0, 60.0, -60.0]
@@ -83,13 +81,13 @@ class _ShadoksNumbersSegmentDisplay extends NSegmentDisplay {
                 setSegmentState('d', false);
               });
 
-             elements =  {
-              'b': [75.0, 15.0, 0.0, 70.0, 10.0, 0.0, 0.0, -70.0],
-              'c': [85.0, 85.0, -70.0, 0.0, 0.0, -10.0, 70.0, 0.0],
-              'd': [79.0, 11.0, 9.0, 9.0, -69.0, 69.0, -9.0, -9.0]
+              elements = {
+                'b': [75.0, 15.0, 0.0, 70.0, 10.0, 0.0, 0.0, -70.0],
+                'c': [85.0, 85.0, -70.0, 0.0, 0.0, -10.0, 70.0, 0.0],
+                'd': [79.0, 11.0, 9.0, 9.0, -69.0, 69.0, -9.0, -9.0]
               };
 
-              elements .forEach((key, value) {
+              elements.forEach((key, value) {
                 var path = Path();
                 path.moveTo(_relativeX(size, value[0]), _relativeY(size, value[1]));
                 path.relativeLineTo(_relativeX(size, value[2]), _relativeY(size, value[3]));
@@ -98,7 +96,8 @@ class _ShadoksNumbersSegmentDisplay extends NSegmentDisplay {
                 path.close();
                 canvas.touchCanvas.drawPath(path, paint, onTapDown: (tapDetail) {
                   setSegmentState(key, !segmentActive(currentSegments, key));
-                  setSegmentState('a', ['b', 'c', 'd'].where((elem) => segmentActive(currentSegments, elem)).toList().isEmpty);
+                  setSegmentState(
+                      'a', ['b', 'c', 'd'].where((elem) => segmentActive(currentSegments, elem)).toList().isEmpty);
                 });
               });
             });

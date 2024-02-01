@@ -6,9 +6,9 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
+import 'package:gc_wizard/tools/images_and_files/_common/logic/rgb_pixel.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
-import 'package:gc_wizard/tools/images_and_files/_common/logic/rgb_pixel.dart';
 import 'package:gc_wizard/utils/math_utils.dart';
 import 'package:image/image.dart' as Image;
 import 'package:tuple/tuple.dart';
@@ -40,16 +40,12 @@ Future<Tuple3<Image.Image, Uint8List, int>?> decodeImageAsync(GCWAsyncExecuterPa
   Uint8List image = data.item1;
   Image.Image? imageData = data.item2;
   int? displacement = data.item3;
-  
+
   return decodeImage(image, imageData, displacement, sendAsyncPort: jobData.sendAsyncPort);
 }
 
-Future<Tuple3<Image.Image, Uint8List, int>?> decodeImage(
-    Uint8List image,
-    Image.Image? imageData,
-    int? displacement,
-   {SendPort? sendAsyncPort}) async {
-
+Future<Tuple3<Image.Image, Uint8List, int>?> decodeImage(Uint8List image, Image.Image? imageData, int? displacement,
+    {SendPort? sendAsyncPort}) async {
   imageData ??= Image.decodeImage(image);
   if (imageData == null) return null;
   displacement ??= _magicEyeSolver(imageData);
@@ -140,8 +136,8 @@ Uint8List _createResultImage(Image.Image image, int displacement) {
       var _pixel1 = image.getPixel(x, y);
       var _pixel2 = image.getPixel(x - displacement, y);
 
-      bitmap.setPixelRgb(x, y,
-          (_pixel1.r - _pixel2.r).abs(), (_pixel1.g - _pixel2.g).abs(), (_pixel1.b - _pixel2.b).abs());
+      bitmap.setPixelRgb(
+          x, y, (_pixel1.r - _pixel2.r).abs(), (_pixel1.g - _pixel2.g).abs(), (_pixel1.b - _pixel2.b).abs());
     }
   }
   return encodeTrimmedPng(bitmap);
@@ -240,7 +236,7 @@ Tuple2<Uint8List?, MagicEyeErrorCode>? _generateImage(
   var generatedLines = 0;
   var _progressStep = max(_rows ~/ 100, 1); // 100 steps
 
-  sendAsyncPort?.send(DoubleText('progress', 0.0));
+  sendAsyncPort?.send(DoubleText(PROGRESS, 0.0));
 
   _initHoroptic();
 
@@ -248,12 +244,12 @@ Tuple2<Uint8List?, MagicEyeErrorCode>? _generateImage(
     _doLineHoroptic(y);
 
     if (sendAsyncPort != null && (generatedLines % _progressStep == 0)) {
-      sendAsyncPort.send(DoubleText('progress', y / _rows));
+      sendAsyncPort.send(DoubleText(PROGRESS, y / _rows));
     }
   }
 
-  var bmStereogram = Image.Image.fromBytes(width: _lineWidth, height: _rows, bytes: _pixels.buffer,
-      order: Image.ChannelOrder.rgba);
+  var bmStereogram =
+      Image.Image.fromBytes(width: _lineWidth, height: _rows, bytes: _pixels.buffer, order: Image.ChannelOrder.rgba);
 
   // High quality images need to be scaled back down...
   if (oversample > 1) {

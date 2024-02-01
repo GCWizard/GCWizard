@@ -11,10 +11,10 @@ class ResistorEIA96 extends StatefulWidget {
   const ResistorEIA96({Key? key}) : super(key: key);
 
   @override
-  ResistorEIA96State createState() => ResistorEIA96State();
+  _ResistorEIA96State createState() => _ResistorEIA96State();
 }
 
-class ResistorEIA96State extends State<ResistorEIA96> {
+class _ResistorEIA96State extends State<ResistorEIA96> {
   var _currentCode = 1;
   var _currentMultiplicator = 'A';
 

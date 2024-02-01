@@ -137,27 +137,27 @@ class _GCWSoundPlayerState extends State<GCWSoundPlayer> {
         ),
         Expanded(
             child: Slider(
-              value: _currentSliderPosition,
-              min: 0.0,
-              max: 1.0,
-              onChangeStart: (value) {
-                setState(() {
-                  _audioPlayerPause();
-                });
-              },
-              onChanged: (value) {
-                setState(() {
-                  _currentSliderPosition = value;
-                });
-              },
-              onChangeEnd: (value) {
-                setState(() {
-                  _audioPlayerPlay(seek: true);
-                });
-              },
-              activeColor: themeColors().switchThumb2(),
-              inactiveColor: themeColors().switchTrack2(),
-            )),
+          value: _currentSliderPosition,
+          min: 0.0,
+          max: 1.0,
+          onChangeStart: (value) {
+            setState(() {
+              _audioPlayerPause();
+            });
+          },
+          onChanged: (value) {
+            setState(() {
+              _currentSliderPosition = value;
+            });
+          },
+          onChangeEnd: (value) {
+            setState(() {
+              _audioPlayerPlay(seek: true);
+            });
+          },
+          activeColor: themeColors().switchThumb2(),
+          inactiveColor: themeColors().switchTrack2(),
+        )),
         GCWText(text: _durationText())
       ],
     );

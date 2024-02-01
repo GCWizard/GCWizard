@@ -13,7 +13,8 @@ class TomTomSelection extends GCWSelection {
   @override
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
-      if (className(element.tool) == className(const SymbolTable()) && (element.tool as SymbolTable).symbolKey == 'tomtom') {
+      if (className(element.tool) == className(const SymbolTable()) &&
+          (element.tool as SymbolTable).symbolKey == 'tomtom') {
         return true;
       }
 

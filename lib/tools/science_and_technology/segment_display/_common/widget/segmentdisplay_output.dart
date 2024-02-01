@@ -1,10 +1,9 @@
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
-import 'package:prefs/prefs.dart';
 
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
@@ -14,6 +13,7 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/l
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/n_segment_display.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
+import 'package:prefs/prefs.dart';
 
 part 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/segment_display_utils.dart';
 
@@ -68,14 +68,14 @@ class _SegmentDisplayOutputState extends State<SegmentDisplayOutput> {
           children: <Widget>[
             widget.upsideDownButton
                 ? GCWIconButton(
-                  icon: Icons.rotate_left,
-                  size: IconButtonSize.SMALL,
-                  onPressed: () {
-                    setState(() {
-                      _currentUpsideDown = !_currentUpsideDown;
-                    });
-                  },
-                )
+                    icon: Icons.rotate_left,
+                    size: IconButtonSize.SMALL,
+                    onPressed: () {
+                      setState(() {
+                        _currentUpsideDown = !_currentUpsideDown;
+                      });
+                    },
+                  )
                 : Container(),
             Container(
               padding: const EdgeInsets.only(right: 10.0),
@@ -88,7 +88,6 @@ class _SegmentDisplayOutputState extends State<SegmentDisplayOutput> {
                           horizontalPadding: widget.horizontalSymbolPadding,
                           verticalPadding: widget.verticalSymbolPadding)
                       .then((image) {
-
                     image.toByteData(format: ui.ImageByteFormat.png).then((data) {
                       _exportFile(context, data?.buffer.asUint8List());
                     });
@@ -133,7 +132,7 @@ class _SegmentDisplayOutputState extends State<SegmentDisplayOutput> {
     var segmentsList = _currentUpsideDown ? Segments(displays: segments.displays.reversed.toList()) : segments;
 
     _displays = segmentsList.displays.map((character) {
-      var displayedSegments = { for (var e in character) e.toString() : true };
+      var displayedSegments = {for (var e in character) e.toString(): true};
       return widget.segmentFunction(displayedSegments, widget.readOnly);
     }).toList();
 

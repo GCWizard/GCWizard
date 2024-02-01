@@ -287,9 +287,9 @@ class _GCWImageViewState extends State<GCWImageView> {
   }
 
   Future<void> _exportFile(BuildContext context, Uint8List data) async {
-    await saveByteDataToFile(context, data, buildFileNameWithDate('img_', FileType.PNG)).then((value) {
+    var fileType = getFileType(data);
+    await saveByteDataToFile(context, data, buildFileNameWithDate('img_', fileType)).then((value) {
       if (value) showExportedFileDialog(context, contentWidget: imageContent(context, data));
     });
-
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
@@ -12,16 +12,16 @@ class KeyboardLayout extends StatefulWidget {
   const KeyboardLayout({Key? key}) : super(key: key);
 
   @override
-  KeyboardLayoutState createState() => KeyboardLayoutState();
+  _KeyboardLayoutState createState() => _KeyboardLayoutState();
 }
 
-class KeyboardLayoutState extends State<KeyboardLayout> {
+class _KeyboardLayoutState extends State<KeyboardLayout> {
   late TextEditingController _inputController;
 
   String _currentInput = '';
 
-  var _currentKeyboardFrom = KeyboardType.QWERTZ_T1;
-  var _currentKeyboardTo = KeyboardType.QWERTY_US_INT;
+  var _currentKeyboardFrom = KEYBOARD_TYPE.QWERTZ_T1;
+  var _currentKeyboardTo = KEYBOARD_TYPE.QWERTY_US_INT;
 
   @override
   void initState() {
@@ -55,7 +55,7 @@ class KeyboardLayoutState extends State<KeyboardLayout> {
                 child: Column(
                   children: <Widget>[
                     GCWTextDivider(text: i18n(context, 'keyboard_from')),
-                    GCWDropDown<KeyboardType>(
+                    GCWDropDown<KEYBOARD_TYPE>(
                       value: _currentKeyboardFrom,
                       onChanged: (value) {
                         setState(() {
@@ -77,7 +77,7 @@ class KeyboardLayoutState extends State<KeyboardLayout> {
                 child: Column(
                   children: <Widget>[
                     GCWTextDivider(text: i18n(context, 'keyboard_to')),
-                    GCWDropDown<KeyboardType>(
+                    GCWDropDown<KEYBOARD_TYPE>(
                       value: _currentKeyboardTo,
                       onChanged: (value) {
                         setState(() {

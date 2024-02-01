@@ -10,7 +10,8 @@ String deobfuscateEarwigoText(String text, EARWIGO_DEOBFUSCATION tool) {
       return gsub_wig(text);
     case EARWIGO_DEOBFUSCATION.WWB_DEOBF:
       return wwb_deobf(text);
-    default: return '';
+    default:
+      return '';
   }
 }
 
@@ -20,7 +21,8 @@ String obfuscateEarwigoText(String text, EARWIGO_DEOBFUSCATION tool) {
       return _gsub_wig_obfuscation(text);
     case EARWIGO_DEOBFUSCATION.WWB_DEOBF:
       return _wwb_deobf_obfuscation(text);
-    default: return '';
+    default:
+      return '';
   }
 }
 

@@ -1,4 +1,4 @@
-import 'package:gc_wizard/tools/crypto_and_encodings/rotation/logic/rotator.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/rotation/logic/rotation.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
 
 class _KeyOutput {

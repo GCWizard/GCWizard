@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_datetime_picker.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -9,10 +9,10 @@ class Weekday extends StatefulWidget {
   const Weekday({Key? key}) : super(key: key);
 
   @override
-  WeekdayState createState() => WeekdayState();
+  _WeekdayState createState() => _WeekdayState();
 }
 
-class WeekdayState extends State<Weekday> {
+class _WeekdayState extends State<Weekday> {
   late DateTime _currentDate;
 
   @override

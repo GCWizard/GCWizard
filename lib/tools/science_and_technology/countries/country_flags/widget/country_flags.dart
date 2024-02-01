@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/logic/symbol_table_data.dart';
 import 'package:gc_wizard/utils/data_type_utils/object_type_utils.dart';
@@ -11,11 +11,11 @@ class CountriesFlags extends StatefulWidget {
   const CountriesFlags({Key? key}) : super(key: key);
 
   @override
-  CountriesFlagsState createState() => CountriesFlagsState();
+  _CountriesFlagsState createState() => _CountriesFlagsState();
 }
 
-class CountriesFlagsState extends State<CountriesFlags> {
-  final _ASSET_PATH = 'assets/symbol_tables/country_flags/country_flags.zip';
+class _CountriesFlagsState extends State<CountriesFlags> {
+  final _ASSET_PATH = 'lib/tools/symbol_tables/_common/assets/country_flags/country_flags.zip';
   final _KEY_PREFIX = 'common_country_';
 
   List<Map<String, SymbolData>> _images = [];
@@ -52,7 +52,6 @@ class CountriesFlagsState extends State<CountriesFlags> {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       children: [
         GCWDropDown<String>(

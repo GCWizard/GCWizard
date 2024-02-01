@@ -7,7 +7,8 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequenceMersenneCheckNumber extends NumberSequenceCheckNumber {
-  const NumberSequenceMersenneCheckNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.MERSENNE, maxIndex: 111111);
+  const NumberSequenceMersenneCheckNumber({Key? key})
+      : super(key: key, mode: NumberSequencesMode.MERSENNE, maxIndex: 111111);
 }
 
 class NumberSequenceMersenneDigits extends NumberSequenceDigits {
@@ -19,9 +20,11 @@ class NumberSequenceMersenneRange extends NumberSequenceRange {
 }
 
 class NumberSequenceMersenneNthNumber extends NumberSequenceNthNumber {
-  const NumberSequenceMersenneNthNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.MERSENNE, maxIndex: 111111);
+  const NumberSequenceMersenneNthNumber({Key? key})
+      : super(key: key, mode: NumberSequencesMode.MERSENNE, maxIndex: 111111);
 }
 
 class NumberSequenceMersenneContainsDigits extends NumberSequenceContainsDigits {
-  const NumberSequenceMersenneContainsDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.MERSENNE, maxIndex: 11111);
+  const NumberSequenceMersenneContainsDigits({Key? key})
+      : super(key: key, mode: NumberSequencesMode.MERSENNE, maxIndex: 11111);
 }

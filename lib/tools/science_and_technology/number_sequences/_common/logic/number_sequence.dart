@@ -334,7 +334,8 @@ List<BigInt> getNumbersInRange(NumberSequencesMode sequence, int? start, int? st
       case NumberSequencesMode.HAPPY_NUMBERS:
         sequenceList.addAll(happy_numbers);
         break;
-      default: {}
+      default:
+        {}
     }
     for (int i = start; i <= stop; i++) {
       numberList.add(BigInt.parse(sequenceList[i]));
@@ -586,7 +587,8 @@ PositionOfSequenceOutput getFirstPositionOfSequence(NumberSequencesMode sequence
       case NumberSequencesMode.HAPPY_NUMBERS:
         sequenceList.addAll(happy_numbers);
         break;
-      default: {}
+      default:
+        {}
     }
     for (int i = 0; i < sequenceList.length; i++) {
       if (expr.hasMatch(sequenceList[i])) {

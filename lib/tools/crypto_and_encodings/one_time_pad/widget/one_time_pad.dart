@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/common_widgets/gcw_web_statefulwidget.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
@@ -7,14 +8,73 @@ import 'package:gc_wizard/common_widgets/text_input_formatters/wrapper_for_maskt
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/one_time_pad/logic/one_time_pad.dart';
 
-class OneTimePad extends StatefulWidget {
-  const OneTimePad({Key? key}) : super(key: key);
+const String _apiSpecification = '''
+{
+  "/onetimepad" : {
+    "alternative_paths": ["otp", "one_time_pad"],
+    "get": {
+      "summary": "OneTimePad Tool",
+      "responses": {
+        "204": {
+          "description": "Tool loaded. No response data."
+        }
+      },
+      "parameters" : [
+        {
+          "in": "query",
+          "name": "input",
+          "required": true,
+          "description": "Input data for OneTimePad text",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "key",
+          "required": true,
+          "description": "OTP key",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "a",
+          "required": true,
+          "description": "Value for letter A",
+          "schema": {
+            "type": "integer"
+          },
+          "default": 0
+        },
+        {
+          "in": "query",
+          "name": "mode",
+          "description": "Defines encoding or decoding mode",
+          "schema": {
+            "type": "string",
+            "enum": [
+              "encode",
+              "decode"
+            ],
+            "default": "decode"
+          }
+        }
+      ]
+    }
+  }
+}
+''';
+
+class OneTimePad extends GCWWebStatefulWidget {
+  OneTimePad({Key? key}) : super(key: key, apiSpecification: _apiSpecification);
 
   @override
-  OneTimePadState createState() => OneTimePadState();
+  _OneTimePadState createState() => _OneTimePadState();
 }
 
-class OneTimePadState extends State<OneTimePad> {
+class _OneTimePadState extends State<OneTimePad> {
   late TextEditingController _inputController;
   late TextEditingController _keyController;
 
@@ -29,15 +89,32 @@ class OneTimePadState extends State<OneTimePad> {
   // (entered value in one input will be used for the other one)
   final _mask = '#' * 10000;
   final _filter = {"#": RegExp(r'[A-Za-z]')};
-  late WrapperForMaskTextInputFormatter _inputMaskInputFormatter;
-  late WrapperForMaskTextInputFormatter _keyMaskInputFormatter;
+  late GCWMaskTextInputFormatter _inputMaskInputFormatter;
+  late GCWMaskTextInputFormatter _keyMaskInputFormatter;
 
   @override
   void initState() {
     super.initState();
 
-    _inputMaskInputFormatter = WrapperForMaskTextInputFormatter(mask: _mask, filter: _filter);
-    _keyMaskInputFormatter = WrapperForMaskTextInputFormatter(mask: _mask, filter: _filter);
+    if (widget.hasWebParameter()) {
+      if (widget.getWebParameter('mode') == 'encode') {
+        _currentMode = GCWSwitchPosition.left;
+      }
+
+      _currentKey = widget.getWebParameter('key') ?? _currentKey;
+
+      var a = widget.getWebParameter('a');
+      if (a != null) {
+        var aInt = int.tryParse(a);
+        if (aInt != null) _currentOffset = aInt - 1;
+      }
+
+      _currentInput = widget.getWebParameter('input') ?? _currentInput;
+      widget.webParameter = null;
+    }
+
+    _inputMaskInputFormatter = GCWMaskTextInputFormatter(mask: _mask, filter: _filter);
+    _keyMaskInputFormatter = GCWMaskTextInputFormatter(mask: _mask, filter: _filter);
 
     _inputController = TextEditingController(text: _currentInput);
     _keyController = TextEditingController(text: _currentKey);

@@ -5,6 +5,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_langua
 class Ook extends Brainfk {
   Ook({Key? key})
       : super(
-            key: key, interpret: BRAINFKDERIVATIVE_SHORTOOK.interpretBrainfkDerivatives,
+            key: key,
+            interpret: BRAINFKDERIVATIVE_SHORTOOK.interpretBrainfkDerivatives,
             generate: BRAINFKDERIVATIVE_OOK.generateBrainfkDerivative);
 }

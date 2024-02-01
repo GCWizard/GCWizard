@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
@@ -7,6 +7,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_dropdown_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/tools/uncategorized/zodiac/logic/zodiac.dart';
+import 'package:gc_wizard/utils/string_utils.dart';
 import 'package:intl/intl.dart';
 
 enum _ZODIACSIGNS_ATTRIBUTES {
@@ -22,10 +23,10 @@ class Zodiac extends StatefulWidget {
   const Zodiac({Key? key}) : super(key: key);
 
   @override
-  ZodiacState createState() => ZodiacState();
+  _ZodiacState createState() => _ZodiacState();
 }
 
-class ZodiacState extends State<Zodiac> {
+class _ZodiacState extends State<Zodiac> {
   var _currentMode = GCWSwitchPosition.left;
   var _currentZodiacSign = 0;
   var _currentAttribute = _ZODIACSIGNS_ATTRIBUTES.values.first;
@@ -65,7 +66,7 @@ class ZodiacState extends State<Zodiac> {
           GCWDropDown<_ZODIACSIGNS_ATTRIBUTES>(
             value: _currentAttribute,
             items: _ZODIACSIGNS_ATTRIBUTES.values.map((attribute) {
-              return GCWDropDownMenuItem(value: attribute, child: i18n(context, attribute.name));
+              return GCWDropDownMenuItem(value: attribute, child: i18n(context, _attributeName(attribute)));
             }).toList(),
             onChanged: (value) {
               setState(() {
@@ -105,48 +106,52 @@ class ZodiacState extends State<Zodiac> {
       var zodiacSign = ZODIACSIGNS[zodiacSignKey];
       if (zodiacSign == null) return Container();
 
-      return GCWColumnedMultilineOutput(
-          data: [
-                  [i18n(context, _ZODIACSIGNS_ATTRIBUTES.date.name), _createDateOutput(zodiacSign.date)],
-                  [i18n(context, _ZODIACSIGNS_ATTRIBUTES.planet.name), _createPlanetOutput(zodiacSign.planet)],
-                  [i18n(context, _ZODIACSIGNS_ATTRIBUTES.element.name), i18n(context, zodiacSign.element)],
-                  [i18n(context, _ZODIACSIGNS_ATTRIBUTES.house.name), zodiacSign.house],
-                  [i18n(context, _ZODIACSIGNS_ATTRIBUTES.quality.name), i18n(context, zodiacSign.quality)],
-                  [i18n(context, _ZODIACSIGNS_ATTRIBUTES.polarity.name), i18n(context, zodiacSign.polarity)],
-                ],
-          flexValues: const [1, 2]
-      );
+      return GCWColumnedMultilineOutput(data: [
+        [i18n(context, _attributeName(_ZODIACSIGNS_ATTRIBUTES.date)), _createDateOutput(zodiacSign.date)],
+        [i18n(context, _attributeName(_ZODIACSIGNS_ATTRIBUTES.planet)), _createPlanetOutput(zodiacSign.planet)],
+        [i18n(context, _attributeName(_ZODIACSIGNS_ATTRIBUTES.element)), i18n(context, zodiacSign.element)],
+        [i18n(context, _attributeName(_ZODIACSIGNS_ATTRIBUTES.house)), zodiacSign.house],
+        [i18n(context, _attributeName(_ZODIACSIGNS_ATTRIBUTES.quality)), i18n(context, zodiacSign.quality)],
+        [i18n(context, _attributeName(_ZODIACSIGNS_ATTRIBUTES.polarity)), i18n(context, zodiacSign.polarity)],
+      ], flexValues: const [
+        1,
+        2
+      ]);
     } else {
       return GCWColumnedMultilineOutput(
-          data: ZODIACSIGNS
-                  .map((key, value) {
-                    String output = '';
-                    switch (_currentAttribute) {
-                      case _ZODIACSIGNS_ATTRIBUTES.date:
-                        output = _createDateOutput(value.date);
-                        break;
-                      case _ZODIACSIGNS_ATTRIBUTES.planet:
-                        output = _createPlanetOutput(value.planet);
-                        break;
-                      case _ZODIACSIGNS_ATTRIBUTES.house:
-                        output = value.house.toString();
-                        break;
-                      case _ZODIACSIGNS_ATTRIBUTES.element:
-                        output = i18n(context, value.element);
-                        break;
-                      case _ZODIACSIGNS_ATTRIBUTES.quality:
-                        output = i18n(context, value.quality);
-                        break;
-                      case _ZODIACSIGNS_ATTRIBUTES.polarity:
-                        output = i18n(context, value.polarity);
-                        break;
-                    }
+        data: ZODIACSIGNS
+            .map((key, value) {
+              String output = '';
+              switch (_currentAttribute) {
+                case _ZODIACSIGNS_ATTRIBUTES.date:
+                  output = _createDateOutput(value.date);
+                  break;
+                case _ZODIACSIGNS_ATTRIBUTES.planet:
+                  output = _createPlanetOutput(value.planet);
+                  break;
+                case _ZODIACSIGNS_ATTRIBUTES.house:
+                  output = value.house.toString();
+                  break;
+                case _ZODIACSIGNS_ATTRIBUTES.element:
+                  output = i18n(context, value.element);
+                  break;
+                case _ZODIACSIGNS_ATTRIBUTES.quality:
+                  output = i18n(context, value.quality);
+                  break;
+                case _ZODIACSIGNS_ATTRIBUTES.polarity:
+                  output = i18n(context, value.polarity);
+                  break;
+              }
 
-                    return MapEntry(key, [i18n(context, key), output]);
-                  })
-                  .values
-                  .toList(),
+              return MapEntry(key, [i18n(context, key), output]);
+            })
+            .values
+            .toList(),
       );
     }
+  }
+
+  String _attributeName(_ZODIACSIGNS_ATTRIBUTES attribute) {
+    return 'zodiac_attribute_' + enumName(attribute.toString());
   }
 }

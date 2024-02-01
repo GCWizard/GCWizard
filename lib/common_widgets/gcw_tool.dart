@@ -1,19 +1,22 @@
 import 'dart:convert';
 
 import 'package:diacritic/diacritic.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
-import 'package:gc_wizard/application/i18n/supported_locales.dart';
+import 'package:gc_wizard/application/category_views/favorites.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/supported_locales.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
-import 'package:gc_wizard/application/category_views/favorites.dart';
-import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
+import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
+import 'package:gc_wizard/common_widgets/gcw_popup_menu.dart';
 import 'package:gc_wizard/common_widgets/gcw_selection.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitution.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_container.dart';
 import 'package:gc_wizard/utils/data_type_utils/object_type_utils.dart';
 import 'package:gc_wizard/utils/json_utils.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
+import 'package:gc_wizard/utils/ui_dependent_utils/deeplink_utils.dart';
 import 'package:prefs/prefs.dart';
 
 enum ToolCategory {
@@ -24,7 +27,8 @@ enum ToolCategory {
   GENERAL_CODEBREAKERS,
   IMAGES_AND_FILES,
   SCIENCE_AND_TECHNOLOGY,
-  SYMBOL_TABLES
+  SYMBOL_TABLES,
+  MISCELLANEOUS,
 }
 
 final _SEARCH_BLACKLIST = {
@@ -76,31 +80,20 @@ final _SEARCH_WHITELIST = {'d ni': "d'ni", 'd or': "d'or", 'mando a': "mando'a",
 
 const HELP_BASE_URL = 'https://blog.gcwizard.net/manual/';
 
-class GCWToolActionButtonsEntry {
-  // to be used in registry to define a buttonlist which will be displayed in the app bar
-  final bool showDialog; // - true, if the button should provide a dialog
-  final String url; // - url for a download or website
-  final String title; // - title-string to be shown in the dialog
-  final String text; // - message-text to be shown in the dialog
-  final IconData icon; // - icon tto be shown in the appbar
-  final void Function()? onPressed;
-
-  GCWToolActionButtonsEntry({required this.showDialog, required this.url, required this.title,
-    required this.text, required this.icon, this.onPressed});
-}
-
 class GCWTool extends StatefulWidget {
   final Widget tool;
   final String id;
+  final String? id_prefix;
   final List<ToolCategory> categories;
   final bool autoScroll;
   final bool suppressToolMargin;
   final String? iconPath;
   final List<String> searchKeys;
-  final List<GCWToolActionButtonsEntry> buttonList;
+  final List<GCWPopupMenuItem> toolBarItemList;
   final bool suppressHelpButton;
   final String helpSearchString;
   final bool isBeta;
+  final List<String>? deeplinkAlias;
 
   GCWSymbolContainer? icon;
   var longId = '';
@@ -113,19 +106,21 @@ class GCWTool extends StatefulWidget {
 
   GCWTool(
       {Key? key,
-        required this.tool,
-        this.toolName,
-        this.defaultLanguageToolName,
-        required this.id,
-        this.categories = const [],
-        this.autoScroll = true,
-        this.suppressToolMargin = false,
-        this.iconPath,
-        this.searchKeys = const [],
-        this.buttonList = const [],
-        this.helpSearchString = '',
-        this.isBeta = false,
-        this.suppressHelpButton = false})
+      required this.tool,
+      this.toolName,
+      this.defaultLanguageToolName,
+      required this.id,
+      this.id_prefix,
+      this.categories = const [],
+      this.autoScroll = true,
+      this.suppressToolMargin = false,
+      this.iconPath,
+      this.searchKeys = const [],
+      this.helpSearchString = '',
+      this.isBeta = false,
+      this.suppressHelpButton = false,
+      this.deeplinkAlias,
+      this.toolBarItemList = const []})
       : super(key: key) {
     longId = className(tool) + '_' + (id);
 
@@ -144,6 +139,10 @@ class GCWTool extends StatefulWidget {
   _GCWToolState createState() => _GCWToolState();
 }
 
+String toolName(BuildContext context, GCWTool tool) {
+  return tool.toolName ?? i18n(context, tool.id + '_title');
+}
+
 class _GCWToolState extends State<GCWTool> {
   late String _toolName;
   late String _defaultLanguageToolName;
@@ -158,17 +157,20 @@ class _GCWToolState extends State<GCWTool> {
   @override
   Widget build(BuildContext context) {
     // this is the case when tool is not called by Registry but as subpage of another tool
-    _toolName = widget.toolName ?? i18n(context, widget.id + '_title');
+    _toolName = toolName(context, widget);
 
     _defaultLanguageToolName =
         widget.defaultLanguageToolName ?? i18n(context, widget.id + '_title', useDefaultLanguage: true);
 
     return Scaffold(
         resizeToAvoidBottomInset: widget.autoScroll,
-        appBar: AppBar(
-          title: Text(_toolName),
-          actions: _buildButtons(),
-        ),
+        appBar: AppBar(title: Text(_toolName), actions: [
+          GCWPopupMenu(
+            iconData: Icons.more_vert,
+            buttonNoBorder: true,
+            menuItemBuilder: (context) => _buildToolBarItems(),
+          )
+        ]),
         body: _buildBody());
   }
 
@@ -194,7 +196,7 @@ class _GCWToolState extends State<GCWTool> {
     return !isLocaleSupported(appLocale) || (!SUPPORTED_HELPLOCALES.contains(appLocale.languageCode));
   }
 
-  Widget? _buildHelpButton() {
+  GCWPopupMenuItem? _buildHelpMenuItem() {
     if (widget.suppressHelpButton) return null;
 
     // add button with url for searching knowledge base with toolName
@@ -210,7 +212,8 @@ class _GCWToolState extends State<GCWTool> {
         searchString = _toolName;
       }
     } else {
-      searchString = i18n(context, widget.helpSearchString, useDefaultLanguage: _needsDefaultHelp(appLocale), ifTranslationNotExists: widget.helpSearchString);
+      searchString = i18n(context, widget.helpSearchString,
+          useDefaultLanguage: _needsDefaultHelp(appLocale), ifTranslationNotExists: widget.helpSearchString);
     }
 
     searchString = _normalizeSearchString(searchString);
@@ -221,55 +224,33 @@ class _GCWToolState extends State<GCWTool> {
     var url = HELP_BASE_URL + locale + '/search/' + searchString;
     url = Uri.encodeFull(url);
 
-    return IconButton(
-      icon: const Icon(Icons.help),
-      onPressed: () {
-        launchUrl(Uri.parse(url));
-      },
-    );
+    return GCWPopupMenuItem(
+        child: iconedGCWPopupMenuItem(context, Icons.help, 'gcwtool_help'),
+        action: (index) => setState(() {
+              launchUrl(Uri.parse(url));
+            }));
   }
 
-  List<Widget> _buildButtons() {
-    List<Widget> buttonList = <Widget>[];
+  List<GCWPopupMenuItem> _buildToolBarItems() {
+    var menuItems = <GCWPopupMenuItem>[];
 
-    // add further buttons as defined in registry
-    for (var button in widget.buttonList) {
-      String url = '';
-      if (button.url.isEmpty) {
-        url = i18n(context, 'common_error_url'); // https://blog.gcwizard.net/manual/uncategorized/404/
-      } else {
-        url = button.url;
-      }
-      if (button.url.isNotEmpty) {
-        buttonList.add(IconButton(
-          icon: Icon(button.icon),
-          onPressed: () {
-            if (button.onPressed != null) {
-              button.onPressed!();
-              return;
-            }
+    menuItems.addAll(widget.toolBarItemList);
 
-            if (button.showDialog) {
-              showGCWAlertDialog(
-                context,
-                i18n(context, button.title),
-                i18n(context, button.text),
-                    () {
-                  launchUrl(Uri.parse(i18n(context, url, ifTranslationNotExists: url)));
-                },
-              );
-            } else {
-              launchUrl(Uri.parse(i18n(context, url)));
-            }
-          },
-        ));
-      }
-    }
+    menuItems.add(GCWPopupMenuItem(
+        child: iconedGCWPopupMenuItem(context, Icons.link, kIsWeb ? 'gcwtool_weblink' : 'gcwtool_copyweblink'),
+        action: (index) => setState(() {
+              var url = deepLinkURL(widget);
+              if (kIsWeb) {
+                launchUrl(Uri.parse(url));
+              } else {
+                insertIntoGCWClipboard(context, url);
+              }
+            })));
 
-    Widget? helpButton = _buildHelpButton();
-    if (helpButton != null) buttonList.add(helpButton);
+    var helpItem = _buildHelpMenuItem();
+    if (helpItem != null) menuItems.add(helpItem);
 
-    return buttonList;
+    return menuItems;
   }
 
   Widget _buildBody() {
@@ -278,7 +259,7 @@ class _GCWToolState extends State<GCWTool> {
     var tool = widget.tool;
     if (!widget.suppressToolMargin) {
       tool = Padding(
-        padding: const EdgeInsets.only(top: 5, left: 10, right: 10, bottom: 2),
+        padding: const EdgeInsets.only(top: 5, left: 10, right: 10, bottom: 50),
         child: tool,
       );
     }

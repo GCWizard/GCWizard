@@ -10,12 +10,13 @@ void main() {
       {'input' : 'Munitionierung beschleunigen Punkt Soweit nicht eingesehen auch bei Tag', 'substitutionKey' : '', 'transpositionKey': 'Beobachtungsliste', 'polybiosMode' : PolybiosMode.ZA90, 'expectedOutput' : 'FGFAG DXXFD XAADX DADFF AGFXF DXDDF XGGXF FGXAD GFXDD FGGGF AGAGG AXADF DGDXD DFXGF GGDXF XDGAG FXFDA GFXAF DDXFD DDFFA GFGAX DFAFD GAFDG FFGAD FDFFG X'},
       {'input' : 'Munitionierung beschleunigen Punkt Soweit nicht eingesehen auch bei Tag', 'substitutionKey' : 'Wikipedia', 'transpositionKey': '', 'polybiosMode' : PolybiosMode.ZA90, 'expectedOutput' : 'GGFDG FADFF ADGDG FADAX FXFDG FXDXX AXFGX GXAGX AXFDG FADXD AXGFA GFDGF AFFFF GGDAA AXADF FGFAD XGXAF FAXAD GFXDA XFGAX XAAXG FDDFD XGXAX XAXAD FFDDX D'},
       {'input' : 'Munitionierung beschleunigen Punkt Soweit nicht eingesehen auch bei Tag', 'substitutionKey' : 'Wikipedia', 'transpositionKey': 'Beobachtungsliste', 'polybiosMode' : PolybiosMode.ZA90, 'expectedOutput' : 'GXGGA DDDGD XXAFA DDFAA XAFDF FXFDG DXGAG GAAXF AGADF AAADG FAXXA DADFF FDDAD FGAXG XAFXG XFXDA FAGFX XFAXG FDXFF DFAGX XGXXA DGXGF XDFFD GAXXF FFFGD X'},
+      {'input' : 'SECHSUNDZWANZIGXKOMMA', 'substitutionKey' : 'geocaching', 'transpositionKey': 'travelbug', 'polybiosMode' : PolybiosMode.ZA90, 'expectedOutput' : 'AGAAG DGDDA FDAAG GDFGX FXXAF DAXGA FDGAD GADDX FX'},
     ];
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, substitutionKey: ${elem['substitutionKey']}, transpositionKey: ${elem['transpositionKey']}, polybiosMode: ${elem['polybiosMode']}, alphabet: ${elem['alphabet']}', () {
         var _actual = encryptADFGX(elem['input'] as String, elem['substitutionKey'] as String, elem['transpositionKey'] as String, polybiosMode: elem['polybiosMode'] as PolybiosMode, alphabet: elem['alphabet'] as String?);
-        expect(_actual, elem['expectedOutput']);
+        expect(_actual?.output, elem['expectedOutput']);
       });
     }
   });
@@ -23,12 +24,13 @@ void main() {
   group("ADFGVX.encryptADFGVX:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : 'attack at 1200am', 'substitutionKey' : 'nachtbommenwerper', 'transpositionKey': 'PRIVACY', 'polybiosMode' : PolybiosMode.ZA90, 'expectedOutput' : 'AFXDV AGDAF XXADA XDAVX VGVAA DXD'},
+      {'input' : 'Munitionierung beschleunigen Punkt Soweit nicht eingesehen auch bei Tag', 'substitutionKey' : '', 'transpositionKey': 'FPGEQBNJOIMAULDHSCKTR'/*'LFRODACPJHSNKGIBEUQTM'*/, 'polybiosMode' : PolybiosMode.CUSTOM, 'alphabet': 'C08XF4MK3AZ9NW1OJD5SIYHUPLVB6REQ7T2G', 'expectedOutput' : 'FGAXA XAXFF FAFVA AVDFA GAXFX FAFAG DXGGX AGXFD XGAGX GAXGX AGXVF VXXAG XDDAX GGAAF DGGAF FXGGX XDFAX GXAXV AGXGG DFAGG GXVAX VFXGV FFGGA XDGAX FDVGG A'},
     ];
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, substitutionKey: ${elem['substitutionKey']}, transpositionKey: ${elem['transpositionKey']}, polybiosMode: ${elem['polybiosMode']}, alphabet: ${elem['alphabet']}', () {
         var _actual = encryptADFGVX(elem['input'] as String, elem['substitutionKey'] as String, elem['transpositionKey'] as String, polybiosMode: elem['polybiosMode'] as PolybiosMode, alphabet: elem['alphabet'] as String?);
-        expect(_actual, elem['expectedOutput']);
+        expect(_actual?.output, elem['expectedOutput']);
       });
     }
   });
@@ -40,12 +42,13 @@ void main() {
       {'expectedOutput' : 'MUNITIONIERUNGBESCHLEUNIGENPUNKTSOWEITNICHTEINGESEHENAUCHBEITAG', 'substitutionKey' : '', 'transpositionKey': 'Beobachtungsliste', 'polybiosMode' : PolybiosMode.ZA90, 'input' : 'FGFAG DXXFD XAADX DADFF AGFXF DXDDF XGGXF FGXAD GFXDD FGGGF AGAGG AXADF DGDXD DFXGF GGDXF XDGAG FXFDA GFXAF DDXFD DDFFA GFGAX DFAFD GAFDG FFGAD FDFFG X'},
       {'expectedOutput' : 'MUNITIONIERUNGBESCHLEUNIGENPUNKTSOWEITNICHTEINGESEHENAUCHBEITAG', 'substitutionKey' : 'Wikipedia', 'transpositionKey': '', 'polybiosMode' : PolybiosMode.ZA90, 'input' : 'GGFDG FADFF ADGDG FADAX FXFDG FXDXX AXFGX GXAGX AXFDG FADXD AXGFA GFDGF AFFFF GGDAA AXADF FGFAD XGXAF FAXAD GFXDA XFGAX XAAXG FDDFD XGXAX XAXAD FFDDX D'},
       {'expectedOutput' : 'MUNITIONIERUNGBESCHLEUNIGENPUNKTSOWEITNICHTEINGESEHENAUCHBEITAG', 'substitutionKey' : 'Wikipedia', 'transpositionKey': 'Beobachtungsliste', 'polybiosMode' : PolybiosMode.ZA90, 'input' : 'GXGGA DDDGD XXAFA DDFAA XAFDF FXFDG DXGAG GAAXF AGADF AAADG FAXXA DADFF FDDAD FGAXG XAFXG XFXDA FAGFX XFAXG FDXFF DFAGX XGXXA DGXGF XDFFD GAXXF FFFGD X'},
+      {'expectedOutput' : 'SECHSUNDZWANZIGXKOMMA', 'substitutionKey' : 'geocaching', 'transpositionKey': 'travelbug', 'polybiosMode' : PolybiosMode.ZA90, 'input' : 'AGAAG DGDDA FDAAG GDFGX FXXAF DAXGA FDGAD GADDX FX'},
     ];
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, substitutionKey: ${elem['substitutionKey']}, transpositionKey: ${elem['transpositionKey']}, polybiosMode: ${elem['polybiosMode']}, alphabet: ${elem['alphabet']}', () {
         var _actual = decryptADFGX(elem['input'] as String, elem['substitutionKey'] as String, elem['transpositionKey'] as String, polybiosMode: elem['polybiosMode'] as PolybiosMode, alphabet: elem['alphabet'] as String?);
-        expect(_actual, elem['expectedOutput']);
+        expect(_actual?.output, elem['expectedOutput']);
       });
     }
   });
@@ -53,12 +56,13 @@ void main() {
   group("ADFGVX.decryptADFGVX:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'expectedOutput' : 'ATTACKAT1200AM', 'substitutionKey' : 'nachtbommenwerper', 'transpositionKey': 'PRIVACY', 'polybiosMode' : PolybiosMode.ZA90, 'input' : 'AFXDV AGDAF XXADA XDAVX VGVAA DXD'},
+      {'expectedOutput' : 'MUNITIONIERUNGBESCHLEUNIGENPUNKTSOWEITNICHTEINGESEHENAUCHBEITAG', 'substitutionKey' : '', 'transpositionKey': 'FPGEQBNJOIMAULDHSCKTR'/*'LFRODACPJHSNKGIBEUQTM'*/, 'polybiosMode' : PolybiosMode.CUSTOM, 'alphabet': 'C08XF4MK3AZ9NW1OJD5SIYHUPLVB6REQ7T2G', 'input' : 'FGAXA XAXFF FAFVA AVDFA GAXFX FAFAG DXGGX AGXFD XGAGX GAXGX AGXVF VXXAG XDDAX GGAAF DGGAF FXGGX XDFAX GXAXV AGXGG DFAGG GXVAX VFXGV FFGGA XDGAX FDVGG A'},
     ];
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, substitutionKey: ${elem['substitutionKey']}, transpositionKey: ${elem['transpositionKey']}, polybiosMode: ${elem['polybiosMode']}, alphabet: ${elem['alphabet']}', () {
         var _actual = decryptADFGVX(elem['input'] as String, elem['substitutionKey'] as String, elem['transpositionKey'] as String, polybiosMode: elem['polybiosMode'] as PolybiosMode, alphabet: elem['alphabet'] as String?);
-        expect(_actual, elem['expectedOutput']);
+        expect(_actual?.output, elem['expectedOutput']);
       });
     }
   });

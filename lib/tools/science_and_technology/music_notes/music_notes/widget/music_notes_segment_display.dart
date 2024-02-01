@@ -49,11 +49,9 @@ const _NOTES_RELATIVE_DISPLAY_WIDTH = 380;
 const _NOTES_RELATIVE_DISPLAY_WIDTH_OUTPUT = 160;
 const _NOTES_RELATIVE_DISPLAY_HEIGHT = 445;
 
-
 class _NotesSegmentDisplay extends NSegmentDisplay {
-
-  _NotesSegmentDisplay({
-      Key? key,
+  _NotesSegmentDisplay(
+      {Key? key,
       required Map<String, bool> segments,
       bool readOnly = false,
       void Function(Map<String, bool>)? onChanged})
@@ -98,8 +96,8 @@ class _NotesSegmentDisplay extends NSegmentDisplay {
               for (var key in lines) {
                 if (key.isEmpty || segmentActive(currentSegments, key)) {
                   pathL.addPath(
-                      _createLine(
-                          key.isNotEmpty, size, Offset(0, counter * LINE_DISTANCE + LINE_OFFSET_Y), LINE_OFFSET_X, readOnly),
+                      _createLine(key.isNotEmpty, size, Offset(0, counter * LINE_DISTANCE + LINE_OFFSET_Y),
+                          LINE_OFFSET_X, readOnly),
                       const Offset(0, 0));
                 }
                 counter++;
@@ -109,11 +107,11 @@ class _NotesSegmentDisplay extends NSegmentDisplay {
                 pathL.addPath(_createTrebleClef(size, Offset(xOffset, 7 * LINE_DISTANCE + LINE_OFFSET_Y), readOnly),
                     const Offset(0, 0));
               } else if (segmentActive(currentSegments, altClef)) {
-                pathL.addPath(
-                    _createAltClef(size, Offset(xOffset, 7 * LINE_DISTANCE + LINE_OFFSET_Y), readOnly), const Offset(0, 0));
+                pathL.addPath(_createAltClef(size, Offset(xOffset, 7 * LINE_DISTANCE + LINE_OFFSET_Y), readOnly),
+                    const Offset(0, 0));
               } else if (segmentActive(currentSegments, bassClef)) {
-                pathL.addPath(
-                    _createBassClef(size, Offset(xOffset, 7 * LINE_DISTANCE + LINE_OFFSET_Y), readOnly), const Offset(0, 0));
+                pathL.addPath(_createBassClef(size, Offset(xOffset, 7 * LINE_DISTANCE + LINE_OFFSET_Y), readOnly),
+                    const Offset(0, 0));
               }
 
               canvas.touchCanvas.drawPath(pathL, paint);

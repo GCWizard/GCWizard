@@ -44,7 +44,7 @@ class IrrationalNumberCalculator {
 
     if (!input.contains(RegExp(r'[\d]'))) throw Exception('irrationalnumbers_error_nonumbers');
 
-    var _input = input.replaceAll(RegExp(r'\D'), '.');
+    var _input = input.toUpperCase().replaceAll(RegExp(r'[A-Z*+]'), '');
 
     var out = <IrrationalNumberDecimalOccurence>[];
     RegExp(_input).allMatches(irrationalNumber.decimalPart).map((RegExpMatch match) {

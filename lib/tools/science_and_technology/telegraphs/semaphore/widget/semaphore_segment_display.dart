@@ -16,11 +16,9 @@ const _INITIAL_SEGMENTS = <String, bool>{
 const _SEMAPHORE_RELATIVE_DISPLAY_WIDTH = 360; //110;
 const _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT = 260; //100;
 
-
 class _SemaphoreSegmentDisplay extends NSegmentDisplay {
-
-  _SemaphoreSegmentDisplay({
-      Key? key,
+  _SemaphoreSegmentDisplay(
+      {Key? key,
       required Map<String, bool> segments,
       bool readOnly = false,
       void Function(Map<String, bool>)? onChanged})

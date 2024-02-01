@@ -1,13 +1,12 @@
 import 'package:gc_wizard/tools/science_and_technology/numeral_bases/logic/numeral_bases.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
 
-class ShadocksOutput extends Segments{
+class ShadocksOutput extends Segments {
   List<int> numbers;
   BigInt quaternary;
   String shadoks;
 
-  ShadocksOutput(List<List<String>> displays, this.numbers, this.quaternary, this.shadoks)
-    : super(displays : displays);
+  ShadocksOutput(List<List<String>> displays, this.numbers, this.quaternary, this.shadoks) : super(displays: displays);
 }
 
 const Map<int, List<String>> _numbersToSegments = {
@@ -36,7 +35,11 @@ Segments encodeShadoksNumbers(int? input) {
 
 ShadocksOutput decodeShadoksNumbers(List<String>? inputs) {
   if (inputs == null || inputs.isEmpty) {
-    return ShadocksOutput([['a']], [0], BigInt.zero, _numberToWord['0']!);
+    return ShadocksOutput([
+      ['a']
+    ], [
+      0
+    ], BigInt.zero, _numberToWord['0']!);
   }
 
   var displays = <List<String>>[];

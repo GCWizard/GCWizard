@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -13,10 +13,10 @@ class AtomicNumbersToText extends StatefulWidget {
   const AtomicNumbersToText({Key? key}) : super(key: key);
 
   @override
-  AtomicNumbersToTextState createState() => AtomicNumbersToTextState();
+  _AtomicNumbersToTextState createState() => _AtomicNumbersToTextState();
 }
 
-class AtomicNumbersToTextState extends State<AtomicNumbersToText> {
+class _AtomicNumbersToTextState extends State<AtomicNumbersToText> {
   late TextEditingController _encryptController;
 
   String _currentEncryptInput = '';

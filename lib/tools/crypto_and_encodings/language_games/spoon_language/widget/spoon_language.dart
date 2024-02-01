@@ -8,10 +8,10 @@ class SpoonLanguage extends StatefulWidget {
   const SpoonLanguage({Key? key}) : super(key: key);
 
   @override
-  SpoonLanguageState createState() => SpoonLanguageState();
+  _SpoonLanguageState createState() => _SpoonLanguageState();
 }
 
-class SpoonLanguageState extends State<SpoonLanguage> {
+class _SpoonLanguageState extends State<SpoonLanguage> {
   var _currentInput = '';
   var _currentMode = GCWSwitchPosition.right;
 

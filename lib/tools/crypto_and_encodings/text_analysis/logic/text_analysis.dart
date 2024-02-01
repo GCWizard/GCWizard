@@ -66,22 +66,18 @@ class TextAnalysisCharacterCounts {
   Map<String, int> whiteSpaces;
   Map<String, int> controlChars;
 
-  TextAnalysisCharacterCounts({
-    required this.letters,
-    required this.numbers,
-    required this.specialChars,
-    required this.whiteSpaces,
-    required this.controlChars});
+  TextAnalysisCharacterCounts(
+      {required this.letters,
+      required this.numbers,
+      required this.specialChars,
+      required this.whiteSpaces,
+      required this.controlChars});
 }
 
 int countWords(String text) {
   if (text.isEmpty) return 0;
 
-  return removeDiacritics(text)
-      .split(RegExp(_WORD_SEPARATORS))
-      .where((word) => word.isNotEmpty)
-      .toList()
-      .length;
+  return removeDiacritics(text).split(RegExp(_WORD_SEPARATORS)).where((word) => word.isNotEmpty).toList().length;
 }
 
 Map<String, int> _addOrIncreaseCount(Map<String, int> map, String character) {
@@ -131,7 +127,7 @@ Map<String, int> _analyzeWhitespaces(String text) {
 Map<String, int> _analyzeControlChars(String text, {bool includingWhitespaceCharacter = true}) {
   var controls = <String, int>{};
 
-  var characters = Map<String,ControlCharacter>.from(CONTROL_CHARACTERS);
+  var characters = Map<String, ControlCharacter>.from(CONTROL_CHARACTERS);
   if (includingWhitespaceCharacter) {
     characters.addAll(WHITESPACE_CHARACTERS);
   }
@@ -160,12 +156,10 @@ Map<String, int> _analyzeSpecialChars(String text) {
 }
 
 TextAnalysisCharacterCounts analyzeText(String text, {bool caseSensitive = true}) {
-
   return TextAnalysisCharacterCounts(
-    letters: _analyzeLetters(text, caseSensitive),
-    numbers: _analyzeNumbers(text),
-    specialChars: _analyzeSpecialChars(text),
-    whiteSpaces: _analyzeWhitespaces(text),
-    controlChars: _analyzeControlChars(text, includingWhitespaceCharacter: false)
-  );
+      letters: _analyzeLetters(text, caseSensitive),
+      numbers: _analyzeNumbers(text),
+      specialChars: _analyzeSpecialChars(text),
+      whiteSpaces: _analyzeWhitespaces(text),
+      controlChars: _analyzeControlChars(text, includingWhitespaceCharacter: false));
 }

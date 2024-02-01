@@ -5,7 +5,7 @@ import 'dart:ui';
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/image_utils/drawable_image_data.dart';
 
-Future<Uint8List> input2Image(DrawableImageData imageData)  async {
+Future<Uint8List> input2Image(DrawableImageData imageData) async {
   var width = 0.0;
   var height = 0.0;
 
@@ -34,7 +34,8 @@ Future<Uint8List> input2Image(DrawableImageData imageData)  async {
       if (imageData.lines[row][column] != '0') {
         canvas.drawRect(
             Rect.fromLTWH(column * imageData.pointSize + imageData.bounds, row * imageData.pointSize + imageData.bounds,
-                imageData.pointSize, imageData.pointSize), paint);
+                imageData.pointSize, imageData.pointSize),
+            paint);
       }
     }
   }

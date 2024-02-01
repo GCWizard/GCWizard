@@ -25,7 +25,7 @@ const Map<int, String> MONTH = {
   12: 'common_month_december',
 };
 
-enum _CalendarType{JULIAN, GREGORIAN}
+enum _CalendarType { JULIAN, GREGORIAN }
 
 DateTime julianDateToGregorianCalendar(double jd) {
   return _JDToCal(jd, _CalendarType.GREGORIAN);

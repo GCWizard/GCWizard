@@ -20,15 +20,15 @@ class GCWColumnedMultilineOutput extends StatefulWidget {
 
   const GCWColumnedMultilineOutput(
       {Key? key,
-        required this.data,
-        this.flexValues = const [],
-        this.copyColumn,
-        this.suppressCopyButtons = false,
-        this.hasHeader = false,
-        this.copyAll = false,
-        this.tappables,
-        this.fontSize = 0.0,
-        this.firstRows})
+      required this.data,
+      this.flexValues = const [],
+      this.copyColumn,
+      this.suppressCopyButtons = false,
+      this.hasHeader = false,
+      this.copyAll = false,
+      this.tappables,
+      this.fontSize = 0.0,
+      this.firstRows})
       : super(key: key);
 
   @override
@@ -38,15 +38,11 @@ class GCWColumnedMultilineOutput extends StatefulWidget {
 class _GCWColumnedMultilineOutputState extends State<GCWColumnedMultilineOutput> {
   @override
   Widget build(BuildContext context) {
-
     var rows = _columnedMultiLineOutputRows();
     if (widget.firstRows != null) rows.insertAll(0, widget.firstRows!);
 
-    return Column(
-      children: rows
-    );
+    return Column(children: rows);
   }
-
 
   List<Widget> _columnedMultiLineOutputRows() {
     var odd = true;
@@ -75,7 +71,8 @@ class _GCWColumnedMultilineOutputState extends State<GCWColumnedMultilineOutput>
               }
             }
 
-            return MapEntry(index, Expanded(flex: index < widget.flexValues.length ? widget.flexValues[index] : 1, child: child));
+            return MapEntry(
+                index, Expanded(flex: index < widget.flexValues.length ? widget.flexValues[index] : 1, child: child));
           })
           .values
           .toList();
@@ -111,8 +108,8 @@ class _GCWColumnedMultilineOutputState extends State<GCWColumnedMultilineOutput>
                             onPressed: () {
                               insertIntoGCWClipboard(context, copyText!);
                             },
-                  )     ,
-            )
+                          ),
+                  )
           ],
         ),
       );

@@ -5,7 +5,6 @@ import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
 Map<String, List<int>> _createKeyGrid(String key, AlphabetModificationMode mode) {
-
   key = key.toUpperCase().replaceAll(RegExp(r'[^A-Z]'), '');
   var characters = key.split('').toList();
   characters.addAll(alphabet_AZ.keys);

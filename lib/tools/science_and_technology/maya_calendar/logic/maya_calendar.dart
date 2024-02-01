@@ -117,7 +117,8 @@ SegmentsVigesimal encodeMayaCalendar(int? input) {
     if (list != null) displays.add(list);
   });
 
-  return SegmentsVigesimal(displays: displays, numbers: _longCountToList(input), vigesimal: BigInt.tryParse(vigesimal) ?? BigInt.zero);
+  return SegmentsVigesimal(
+      displays: displays, numbers: _longCountToList(input), vigesimal: BigInt.tryParse(vigesimal) ?? BigInt.zero);
 }
 
 List<int> _longCountToList(int numberDec) {
@@ -143,8 +144,8 @@ List<int> _longCountToList(int numberDec) {
 SegmentsVigesimal decodeMayaCalendar(List<String?>? inputs) {
   if (inputs == null || inputs.isEmpty) return SegmentsVigesimal(displays: [], numbers: [0], vigesimal: BigInt.zero);
 
-  var oneCharacters = ['d', 'e', 'f', 'g'];
-  var fiveCharacters = ['a', 'b', 'c'];
+  const oneCharacters = ['d', 'e', 'f', 'g'];
+  const fiveCharacters = ['a', 'b', 'c'];
 
   var displays = <List<String>>[];
 

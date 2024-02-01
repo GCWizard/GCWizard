@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/centerpoint/logic/centerpoint.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:gc_wizard/utils/constants.dart';
 import 'package:latlong2/latlong.dart';
@@ -31,8 +31,7 @@ Future<LatLng?> intersectBearingsAsync(GCWAsyncExecuterParameters? jobData) asyn
   }
 
   var data = jobData!.parameters as IntersectBearingJobData;
-  var output = intersectBearings(data.coord1, data.az13, data.coord2,
-      data.az23, data.ells, data.crossbearing);
+  var output = intersectBearings(data.coord1, data.az13, data.coord2, data.az23, data.ells, data.crossbearing);
 
   jobData.sendAsyncPort?.send(output);
 
@@ -135,8 +134,7 @@ Future<LatLng?> intersectFourPointsAsync(GCWAsyncExecuterParameters? jobData) as
   }
 
   var data = jobData!.parameters as IntersectFourPointsJobData;
-  var output = intersectFourPoints(data.coord11, data.coord12, data.coord21,
-      data.coord22, data.ells);
+  var output = intersectFourPoints(data.coord11, data.coord12, data.coord21, data.coord22, data.ells);
 
   jobData.sendAsyncPort?.send(output);
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_dropdown_spinner.dart';
@@ -12,13 +12,13 @@ class PrimeAlphabet extends StatefulWidget {
   const PrimeAlphabet({Key? key}) : super(key: key);
 
   @override
-  PrimeAlphabetState createState() => PrimeAlphabetState();
+  _PrimeAlphabetState createState() => _PrimeAlphabetState();
 }
 
 const _MAX_PRIME_INDEX = 26 * 10;
 final _PRIMES_LIST = primes.sublist(0, _MAX_PRIME_INDEX);
 
-class PrimeAlphabetState extends State<PrimeAlphabet> {
+class _PrimeAlphabetState extends State<PrimeAlphabet> {
   late TextEditingController _encryptInputController;
   late TextEditingController _decryptInputController;
   var _currentEncryptInput = '';

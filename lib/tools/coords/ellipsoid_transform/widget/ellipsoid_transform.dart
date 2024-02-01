@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_output.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_outputformat.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
-import 'package:gc_wizard/tools/coords/ellipsoid_transform/logic/ellipsoid_transform.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/tools/coords/ellipsoid_transform/logic/ellipsoid_transform.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 
 class EllipsoidTransform extends StatefulWidget {
   const EllipsoidTransform({Key? key}) : super(key: key);
 
   @override
-  EllipsoidTransformState createState() => EllipsoidTransformState();
+  _EllipsoidTransformState createState() => _EllipsoidTransformState();
 }
 
-class EllipsoidTransformState extends State<EllipsoidTransform> {
+class _EllipsoidTransformState extends State<EllipsoidTransform> {
   var _currentCoords = defaultBaseCoordinate;
 
   var _currentOutputFormat = defaultCoordinateFormat;
@@ -41,7 +41,9 @@ class EllipsoidTransformState extends State<EllipsoidTransform> {
           coordsFormat: _currentCoords.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoords = ret;
+              if (ret != null) {
+                _currentCoords = ret;
+              }
             });
           },
         ),

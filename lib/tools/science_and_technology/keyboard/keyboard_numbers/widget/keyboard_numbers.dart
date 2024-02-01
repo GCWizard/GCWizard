@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
@@ -11,10 +11,10 @@ class KeyboardNumbers extends StatefulWidget {
   const KeyboardNumbers({Key? key}) : super(key: key);
 
   @override
-  KeyboardNumbersState createState() => KeyboardNumbersState();
+  _KeyboardNumbersState createState() => _KeyboardNumbersState();
 }
 
-class KeyboardNumbersState extends State<KeyboardNumbers> {
+class _KeyboardNumbersState extends State<KeyboardNumbers> {
   late TextEditingController _encodeController;
   late TextEditingController _decodeController;
 

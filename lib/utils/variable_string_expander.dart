@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:isolate';
 import 'dart:math';
 
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 
 final RegExp VARIABLESTRING =
@@ -180,6 +181,10 @@ class VariableStringExpander {
     var progress = 0;
     int progressStep = max(_countCombinations ~/ 100, 1); // 100 steps
 
+    if (sendAsyncPort != null && (progress % progressStep == 0)) {
+      sendAsyncPort!.send(DoubleText(PROGRESS, progress / _countCombinations));
+    }
+
     do {
       _substitute();
 
@@ -188,16 +193,16 @@ class VariableStringExpander {
         _result = onAfterExpandedText!(_result!);
       }
 
+      progress++;
+      if (sendAsyncPort != null && (progress % progressStep == 0)) {
+        sendAsyncPort!.send(DoubleText(PROGRESS, progress / _countCombinations));
+      }
+
       if (_result == null || _uniqueResults.contains(_result)) continue;
 
       _results.add(VariableStringExpanderValue(text: _result, variables: _getCurrentVariables()));
 
       if (breakCondition == VariableStringExpanderBreakCondition.BREAK_ON_FIRST_FOUND) break;
-
-      progress++;
-      if (sendAsyncPort != null && (progress % progressStep == 0)) {
-        sendAsyncPort!.send(DoubleText('progress', progress / _countCombinations));
-      }
     } while (_setIndexes() == false);
   }
 
@@ -222,17 +227,13 @@ class VariableStringExpander {
     if (_input.isEmpty) return [];
 
     if (_substitutions == null || _substitutions!.isEmpty) {
-      return [
-        VariableStringExpanderValue(text: _input)
-      ];
+      return [VariableStringExpanderValue(text: _input)];
     }
 
     // expand all groups, initialize lists
     for (MapEntry<String, String> substitution in _substitutions!.entries) {
       if (!VARIABLESTRING.hasMatch(substitution.value)) {
-        return [
-          VariableStringExpanderValue(text: _input)
-        ];
+        return [VariableStringExpanderValue(text: _input)];
       }
 
       _substitutionKeys.add(substitution.key.toUpperCase());
@@ -250,9 +251,7 @@ class VariableStringExpander {
     // check number of combinations
     _countCombinations = _countVariableValues.fold(1, (previousValue, element) => previousValue * element);
     if (onlyPrecheck) {
-      return [
-        VariableStringExpanderValue(count: _countCombinations)
-      ];
+      return [VariableStringExpanderValue(count: _countCombinations)];
     }
 
     // Find matching formula groups

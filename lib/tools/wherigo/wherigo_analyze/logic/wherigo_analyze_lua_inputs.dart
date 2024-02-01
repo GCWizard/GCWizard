@@ -17,7 +17,6 @@ bool _notDoneWithInputs(String currentLine) {
 }
 
 WherigoInputData _analyzeAndExtractInputSectionData(List<String> lines) {
-
   String LUAname = '';
   String id = '';
   String name = '';
@@ -75,7 +74,7 @@ WherigoInputData _analyzeAndExtractInputSectionData(List<String> lines) {
     }
 
     if (lines[i].startsWith(LUAname + '.InputType')) {
-     inputType = getLineData(lines[i], LUAname, 'InputType', _obfuscatorFunction, _obfuscatorTable);
+      inputType = getLineData(lines[i], LUAname, 'InputType', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.InputVariableId')) {
@@ -85,6 +84,12 @@ WherigoInputData _analyzeAndExtractInputSectionData(List<String> lines) {
     if (lines[i].startsWith(LUAname + '.Text')) {
       if (lines[i].endsWith('"')) {
         text = getLineData(lines[i], LUAname, 'Text', _obfuscatorFunction, _obfuscatorTable);
+      } else if (lines[i].contains('[[') && lines[i].endsWith(']]')) {
+        text = getLineData(lines[i].replaceAll('[[', '"').replaceAll(']]', '"'), LUAname, 'Text', _obfuscatorFunction,
+            _obfuscatorTable);
+      } else if (lines[i].contains('WWB_multi') && lines[i].endsWith(')')) {
+        text = getLineData(lines[i].replaceAll('WWB_multiplatform_string("', '"').replaceAll('")', '"'), LUAname,
+            'Text', _obfuscatorFunction, _obfuscatorTable);
       } else {
         // multi Lines of Text
         text = '';
@@ -98,8 +103,7 @@ WherigoInputData _analyzeAndExtractInputSectionData(List<String> lines) {
 
     if (lines[i].startsWith(LUAname + '.Choices')) {
       listChoices = [];
-      if (lines[i + 1].trim().startsWith(LUAname + '.InputType') ||
-          lines[i + 1].trim().startsWith(LUAname + '.Text')) {
+      if (lines[i + 1].trim().startsWith(LUAname + '.InputType') || lines[i + 1].trim().startsWith(LUAname + '.Text')) {
         listChoices.addAll(getChoicesSingleLine(lines[i], LUAname, _obfuscatorFunction, _obfuscatorTable));
       } else {
         i++;
@@ -131,9 +135,8 @@ WherigoInputData _analyzeAndExtractInputSectionData(List<String> lines) {
   );
 }
 
-bool _notEndOfInputText(String nextLine, String LUAname){
- if (RegExp(r'( Wherigo.ZInput)').hasMatch(nextLine) ||
-      nextLine.startsWith('function')) {
+bool _notEndOfInputText(String nextLine, String LUAname) {
+  if (RegExp(r'( Wherigo.ZInput)').hasMatch(nextLine) || nextLine.startsWith('function')) {
     return false;
   }
   return true;

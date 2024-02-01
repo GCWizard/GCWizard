@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
@@ -10,10 +10,10 @@ class ToolSettings extends StatefulWidget {
   const ToolSettings({Key? key}) : super(key: key);
 
   @override
-  ToolSettingsState createState() => ToolSettingsState();
+  _ToolSettingsState createState() => _ToolSettingsState();
 }
 
-class ToolSettingsState extends State<ToolSettings> {
+class _ToolSettingsState extends State<ToolSettings> {
   @override
   Widget build(BuildContext context) {
     return Column(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/color_pickers/gcw_colorpicker.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_double_spinner.dart';
@@ -31,10 +31,10 @@ class GCWColors extends StatefulWidget {
   const GCWColors({Key? key, required this.onChanged, required this.colorsValue}) : super(key: key);
 
   @override
-  GCWColorsState createState() => GCWColorsState();
+  _GCWColorsState createState() => _GCWColorsState();
 }
 
-class GCWColorsState extends State<GCWColors> {
+class _GCWColorsState extends State<GCWColors> {
   late HSVColor _currentColorPickerColor;
   late GCWColorValue _currentColorsValue;
 

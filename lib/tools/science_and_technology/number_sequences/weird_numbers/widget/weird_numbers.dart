@@ -7,21 +7,26 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequenceWeirdNumbersCheckNumber extends NumberSequenceCheckNumber {
-  const NumberSequenceWeirdNumbersCheckNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 34);
+  const NumberSequenceWeirdNumbersCheckNumber({Key? key})
+      : super(key: key, mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 34);
 }
 
 class NumberSequenceWeirdNumbersDigits extends NumberSequenceDigits {
-  const NumberSequenceWeirdNumbersDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.WEIRD_NUMBERS, maxDigits: 5);
+  const NumberSequenceWeirdNumbersDigits({Key? key})
+      : super(key: key, mode: NumberSequencesMode.WEIRD_NUMBERS, maxDigits: 5);
 }
 
 class NumberSequenceWeirdNumbersRange extends NumberSequenceRange {
-  const NumberSequenceWeirdNumbersRange({Key? key}) : super(key: key, mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 34);
+  const NumberSequenceWeirdNumbersRange({Key? key})
+      : super(key: key, mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 34);
 }
 
 class NumberSequenceWeirdNumbersNthNumber extends NumberSequenceNthNumber {
-  const NumberSequenceWeirdNumbersNthNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 34);
+  const NumberSequenceWeirdNumbersNthNumber({Key? key})
+      : super(key: key, mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 34);
 }
 
 class NumberSequenceWeirdNumbersContainsDigits extends NumberSequenceContainsDigits {
-  const NumberSequenceWeirdNumbersContainsDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 34);
+  const NumberSequenceWeirdNumbersContainsDigits({Key? key})
+      : super(key: key, mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 34);
 }

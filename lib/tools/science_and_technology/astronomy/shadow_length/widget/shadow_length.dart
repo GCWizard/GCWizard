@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_output.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_outputformat_distance.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat_distance.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_datetime_picker.dart';
 import 'package:gc_wizard/common_widgets/gcw_distance.dart';
@@ -22,10 +22,10 @@ class ShadowLength extends StatefulWidget {
   const ShadowLength({Key? key}) : super(key: key);
 
   @override
-  ShadowLengthState createState() => ShadowLengthState();
+  _ShadowLengthState createState() => _ShadowLengthState();
 }
 
-class ShadowLengthState extends State<ShadowLength> {
+class _ShadowLengthState extends State<ShadowLength> {
   var _currentDateTime = DateTimeTimezone(datetime: DateTime.now(), timezone: DateTime.now().timeZoneOffset);
   var _currentInputCoords = defaultBaseCoordinate;
   var _currentHeight = 0.0;
@@ -42,7 +42,9 @@ class ShadowLengthState extends State<ShadowLength> {
           coordsFormat: _currentInputCoords.format,
           onChanged: (ret) {
             setState(() {
-              _currentInputCoords = ret;
+              if (ret != null) {
+                _currentInputCoords = ret;
+              }
             });
           },
         ),
@@ -85,8 +87,7 @@ class ShadowLengthState extends State<ShadowLength> {
   Widget _buildOutput() {
     var _startCoords = _currentInputCoords.toLatLng() ?? defaultCoordinate;
 
-    var shadowLen = shadowLength(
-        _currentHeight, _startCoords, defaultEllipsoid, _currentDateTime);
+    var shadowLen = shadowLength(_currentHeight, _startCoords, defaultEllipsoid, _currentDateTime);
 
     String lengthOutput = '';
     double _currentLength = shadowLen.length;
@@ -120,9 +121,7 @@ class ShadowLengthState extends State<ShadowLength> {
 
     Widget outputLocation = GCWCoordsOutput(
       title: i18n(context, 'shadowlength_location'),
-      outputs: [
-        buildCoordinate(_currentOutputFormat.format, shadowLen.shadowEndPosition, defaultEllipsoid).toString()
-      ],
+      outputs: [buildCoordinate(_currentOutputFormat.format, shadowLen.shadowEndPosition, defaultEllipsoid).toString()],
       points: _currentMapPoints,
       polylines: [
         GCWMapPolyline(points: [_currentMapPoints[0], _currentMapPoints[1]])

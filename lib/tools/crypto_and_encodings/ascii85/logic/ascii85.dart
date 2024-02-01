@@ -81,7 +81,6 @@ String _encodeChunk(int value) {
  * @return The binary data decoded from the input
  */
 Uint8List? decodeASCII85(String chars) {
-
   Uint8List bytebuff = Uint8List(chars.length);
   int bufferIndex = 0;
   //1. Whitespace characters may occur anywhere to accommodate line length limitations. So lets strip it.

@@ -28,12 +28,14 @@ class _Method {
         }
         ingredient = matchers[1].firstMatch(line)!.group(3)!;
         mixingbowl =
-            (matchers[1].firstMatch(line)!.group(6) == null ? 1 : int.parse(matchers[1].firstMatch(line)!.group(6)!)) - 1;
+            (matchers[1].firstMatch(line)!.group(6) == null ? 1 : int.parse(matchers[1].firstMatch(line)!.group(6)!)) -
+                1;
       } else if (matchers[2].hasMatch(line)) {
         // add dry ingredients
         type = _CHEF_Method.AddDry;
         mixingbowl =
-            (matchers[2].firstMatch(line)!.group(5) == null ? 1 : int.parse(matchers[2].firstMatch(line)!.group(5)!)) - 1;
+            (matchers[2].firstMatch(line)!.group(5) == null ? 1 : int.parse(matchers[2].firstMatch(line)!.group(5)!)) -
+                1;
       } else if (matchers[3].hasMatch(line)) {
         // add | remove | combine | divide
         switch (matchers[3].firstMatch(line)!.group(1)) {
@@ -52,12 +54,14 @@ class _Method {
         }
         ingredient = matchers[3].firstMatch(line)!.group(3)!;
         mixingbowl =
-            (matchers[3].firstMatch(line)!.group(8) == null ? 1 : int.parse(matchers[3].firstMatch(line)!.group(8)!)) - 1;
+            (matchers[3].firstMatch(line)!.group(8) == null ? 1 : int.parse(matchers[3].firstMatch(line)!.group(8)!)) -
+                1;
       } else if (matchers[4].hasMatch(line)) {
         //liquefy contents
         type = _CHEF_Method.LiquefyBowl;
         mixingbowl =
-            (matchers[4].firstMatch(line)!.group(3) == null ? 1 : int.parse(matchers[4].firstMatch(line)!.group(3)!)) - 1;
+            (matchers[4].firstMatch(line)!.group(3) == null ? 1 : int.parse(matchers[4].firstMatch(line)!.group(3)!)) -
+                1;
       } else if (matchers[5].hasMatch(line)) {
         //liquefy
         type = _CHEF_Method.Liquefy;
@@ -66,40 +70,47 @@ class _Method {
         // stir the
         type = _CHEF_Method.Stir;
         mixingbowl =
-            (matchers[6].firstMatch(line)!.group(4) == null ? 1 : int.parse(matchers[6].firstMatch(line)!.group(4)!)) - 1;
+            (matchers[6].firstMatch(line)!.group(4) == null ? 1 : int.parse(matchers[6].firstMatch(line)!.group(4)!)) -
+                1;
         time = int.parse(matchers[6].firstMatch(line)!.group(6)!);
       } else if (matchers[7].hasMatch(line)) {
         // stir into
         type = _CHEF_Method.StirInto;
         ingredient = matchers[7].firstMatch(line)!.group(2)!;
         mixingbowl =
-            (matchers[7].firstMatch(line)!.group(5) == null ? 1 : int.parse(matchers[7].firstMatch(line)!.group(5)!)) - 1;
+            (matchers[7].firstMatch(line)!.group(5) == null ? 1 : int.parse(matchers[7].firstMatch(line)!.group(5)!)) -
+                1;
       } else if (matchers[8].hasMatch(line)) {
         // mix
         type = _CHEF_Method.Mix;
         mixingbowl =
-            (matchers[8].firstMatch(line)!.group(4) == null ? 1 : int.parse(matchers[8].firstMatch(line)!.group(4)!)) - 1;
+            (matchers[8].firstMatch(line)!.group(4) == null ? 1 : int.parse(matchers[8].firstMatch(line)!.group(4)!)) -
+                1;
       } else if (matchers[9].hasMatch(line)) {
         // clean
         type = _CHEF_Method.Clean;
         mixingbowl =
-            (matchers[9].firstMatch(line)!.group(3) == null ? 1 : int.parse(matchers[9].firstMatch(line)!.group(3)!)) - 1;
+            (matchers[9].firstMatch(line)!.group(3) == null ? 1 : int.parse(matchers[9].firstMatch(line)!.group(3)!)) -
+                1;
       } else if (matchers[10].hasMatch(line)) {
         // pour
         type = _CHEF_Method.Pour;
-        mixingbowl =
-            (matchers[10].firstMatch(line)!.group(4) == null ? 1 : int.parse(matchers[10].firstMatch(line)!.group(4)!)) -
-                1;
-        bakingdish =
-            (matchers[10].firstMatch(line)!.group(8) == null ? 1 : int.parse(matchers[10].firstMatch(line)!.group(8)!)) -
-                1;
+        mixingbowl = (matchers[10].firstMatch(line)!.group(4) == null
+                ? 1
+                : int.parse(matchers[10].firstMatch(line)!.group(4)!)) -
+            1;
+        bakingdish = (matchers[10].firstMatch(line)!.group(8) == null
+                ? 1
+                : int.parse(matchers[10].firstMatch(line)!.group(8)!)) -
+            1;
       } else if (matchers[11].hasMatch(line)) {
         // set aside
         type = _CHEF_Method.SetAside;
       } else if (matchers[12].hasMatch(line)) {
         // refridgerate
         type = _CHEF_Method.Refrigerate;
-        time = matchers[12].firstMatch(line)!.group(2) == null ? 0 : int.parse(matchers[12].firstMatch(line)!.group(2)!);
+        time =
+            matchers[12].firstMatch(line)!.group(2) == null ? 0 : int.parse(matchers[12].firstMatch(line)!.group(2)!);
       } else if (matchers[13].hasMatch(line)) {
         // serve with
         type = _CHEF_Method.Serve;
@@ -135,18 +146,21 @@ class _Method {
         type = _CHEF_Method.Geben;
         ingredient = matchers[1].firstMatch(line)!.group(2)!;
         mixingbowl =
-            (matchers[1].firstMatch(line)!.group(4) == null ? 1 : int.parse(matchers[1].firstMatch(line)!.group(4)!)) - 1;
+            (matchers[1].firstMatch(line)!.group(4) == null ? 1 : int.parse(matchers[1].firstMatch(line)!.group(4)!)) -
+                1;
       } else if (matchers[2].hasMatch(line)) {
         // zutat in die schüssel unterheben
         type = _CHEF_Method.Unterheben;
         ingredient = matchers[2].firstMatch(line)!.group(2)!;
         mixingbowl =
-            (matchers[2].firstMatch(line)!.group(4) == null ? 1 : int.parse(matchers[2].firstMatch(line)!.group(4)!)) - 1;
+            (matchers[2].firstMatch(line)!.group(4) == null ? 1 : int.parse(matchers[2].firstMatch(line)!.group(4)!)) -
+                1;
       } else if (matchers[3].hasMatch(line)) {
         // feste zutaten hinzufügen
         type = _CHEF_Method.FestesHinzugeben;
         mixingbowl =
-            (matchers[3].firstMatch(line)!.group(8) == null ? 1 : int.parse(matchers[3].firstMatch(line)!.group(8)!)) - 1;
+            (matchers[3].firstMatch(line)!.group(8) == null ? 1 : int.parse(matchers[3].firstMatch(line)!.group(8)!)) -
+                1;
       } else if (matchers[4].hasMatch(line)) {
         // füge hinzu |entferne | kombiniere | teile
         switch (matchers[4].firstMatch(line)!.group(12)) {
@@ -167,13 +181,15 @@ class _Method {
         }
         ingredient = matchers[4].firstMatch(line)!.group(2)!;
         mixingbowl =
-            (matchers[4].firstMatch(line)!.group(7) == null ? 1 : int.parse(matchers[4].firstMatch(line)!.group(7)!)) - 1;
+            (matchers[4].firstMatch(line)!.group(7) == null ? 1 : int.parse(matchers[4].firstMatch(line)!.group(7)!)) -
+                1;
       } else if (matchers[5].hasMatch(line)) {
         //RegExp(r'^inhalt(e)? der ((\d+)(ten) )?(rühr)?schüssel( auf dem stövchen)?( erhitzen| zerlassen| schmelzen| verflüssigen)$'),
         //inhalt der schüssel verflüssigen
         type = _CHEF_Method.SchuesselErhitzen;
         mixingbowl =
-            (matchers[5].firstMatch(line)!.group(3) == null ? 1 : int.parse(matchers[5].firstMatch(line)!.group(3)!)) - 1;
+            (matchers[5].firstMatch(line)!.group(3) == null ? 1 : int.parse(matchers[5].firstMatch(line)!.group(3)!)) -
+                1;
       } else if (matchers[6].hasMatch(line)) {
         //zutat verflüssigen
         type = _CHEF_Method.Schmelzen;
@@ -182,41 +198,48 @@ class _Method {
         // schüssel rühren
         type = _CHEF_Method.SchuessselRuehren;
         mixingbowl =
-            (matchers[7].firstMatch(line)!.group(4) == null ? 1 : int.parse(matchers[7].firstMatch(line)!.group(4)!)) - 1;
+            (matchers[7].firstMatch(line)!.group(4) == null ? 1 : int.parse(matchers[7].firstMatch(line)!.group(4)!)) -
+                1;
         time = int.parse(matchers[7].firstMatch(line)!.group(7)!);
       } else if (matchers[8].hasMatch(line)) {
         // zutat unterrühren
         type = _CHEF_Method.ZutatRuehren;
         ingredient = matchers[8].firstMatch(line)!.group(2)!;
         mixingbowl =
-            (matchers[8].firstMatch(line)!.group(6) == null ? 1 : int.parse(matchers[8].firstMatch(line)!.group(6)!)) - 1;
+            (matchers[8].firstMatch(line)!.group(6) == null ? 1 : int.parse(matchers[8].firstMatch(line)!.group(6)!)) -
+                1;
       } else if (matchers[9].hasMatch(line)) {
         // mischen
         type = _CHEF_Method.Mischen;
         mixingbowl =
-            (matchers[9].firstMatch(line)!.group(2) == null ? 1 : int.parse(matchers[9].firstMatch(line)!.group(2)!)) - 1;
+            (matchers[9].firstMatch(line)!.group(2) == null ? 1 : int.parse(matchers[9].firstMatch(line)!.group(2)!)) -
+                1;
       } else if (matchers[10].hasMatch(line)) {
         // säubern || waschen
         type = _CHEF_Method.Saeubern;
-        mixingbowl =
-            (matchers[10].firstMatch(line)!.group(2) == null ? 1 : int.parse(matchers[10].firstMatch(line)!.group(2)!)) -
-                1;
+        mixingbowl = (matchers[10].firstMatch(line)!.group(2) == null
+                ? 1
+                : int.parse(matchers[10].firstMatch(line)!.group(2)!)) -
+            1;
       } else if (matchers[11].hasMatch(line)) {
         // stürzen || gießen
         type = _CHEF_Method.Ausgiessen;
-        mixingbowl =
-            (matchers[11].firstMatch(line)!.group(4) == null ? 1 : int.parse(matchers[11].firstMatch(line)!.group(4)!)) -
-                1;
-        bakingdish =
-            (matchers[11].firstMatch(line)!.group(12) == null ? 1 : int.parse(matchers[11].firstMatch(line)!.group(12)!)) -
-                1;
+        mixingbowl = (matchers[11].firstMatch(line)!.group(4) == null
+                ? 1
+                : int.parse(matchers[11].firstMatch(line)!.group(4)!)) -
+            1;
+        bakingdish = (matchers[11].firstMatch(line)!.group(12) == null
+                ? 1
+                : int.parse(matchers[11].firstMatch(line)!.group(12)!)) -
+            1;
       } else if (matchers[12].hasMatch(line)) {
         // zur seite stellen
         type = _CHEF_Method.BeiseiteStellen;
       } else if (matchers[13].hasMatch(line)) {
         // einfrieren
         type = _CHEF_Method.Gefrieren;
-        time = matchers[13].firstMatch(line)!.group(3) == null ? 0 : int.parse(matchers[13].firstMatch(line)!.group(3)!);
+        time =
+            matchers[13].firstMatch(line)!.group(3) == null ? 0 : int.parse(matchers[13].firstMatch(line)!.group(3)!);
       } else if (matchers[14].hasMatch(line)) {
         // serve with
         type = _CHEF_Method.Servieren;

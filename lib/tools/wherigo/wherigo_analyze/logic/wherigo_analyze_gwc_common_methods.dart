@@ -68,7 +68,6 @@ int readByte(Uint8List byteList, int offset) {
 }
 
 bool isInvalidCartridge(Uint8List byteList) {
-
   if (byteList.isEmpty) return true;
 
   // @0000:                      ; Signature

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_multiple_output.dart';
@@ -15,13 +15,12 @@ class BurrowsWheeler extends StatefulWidget {
   const BurrowsWheeler({Key? key}) : super(key: key);
 
   @override
-  BurrowsWheelerState createState() => BurrowsWheelerState();
+  _BurrowsWheelerState createState() => _BurrowsWheelerState();
 }
 
-class BurrowsWheelerState extends State<BurrowsWheeler> {
+class _BurrowsWheelerState extends State<BurrowsWheeler> {
   late TextEditingController plainController;
   late TextEditingController cipherController;
-  late TextEditingController indexNumberController;
   late TextEditingController indexCharacterController;
 
   var currentMode = GCWSwitchPosition.right;
@@ -33,7 +32,7 @@ class BurrowsWheelerState extends State<BurrowsWheeler> {
   int currentIndexPosition = 1;
   int currentInputLen = 0;
 
-  final _maskInputFormatter = WrapperForMaskTextInputFormatter(mask: '#', filter: {"#": RegExp(r'.')});
+  final _maskInputFormatter = GCWMaskTextInputFormatter(mask: '#', filter: {"#": RegExp(r'.')});
 
   @override
   void initState() {
@@ -120,7 +119,6 @@ class BurrowsWheelerState extends State<BurrowsWheeler> {
               })
           : currentMode == GCWSwitchPosition.right
               ? GCWIntegerSpinner(
-                  controller: indexNumberController,
                   min: 1,
                   max: currentInputLen,
                   value: currentIndexPosition,

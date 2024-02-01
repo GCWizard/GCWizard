@@ -17,8 +17,9 @@ String encryptTapCode(String input, {AlphabetModificationMode mode = AlphabetMod
   input = applyAlphabetModification(input, mode);
 
   return encryptPolybios(input, TAPCODE_KEY,
-          mode: PolybiosMode.CUSTOM, fillAlphabet: _generateAlphabet(mode), modificationMode: mode)
-      ?.output ?? '';
+              mode: PolybiosMode.CUSTOM, fillAlphabet: _generateAlphabet(mode), modificationMode: mode)
+          ?.output ??
+      '';
 }
 
 String decryptTapCode(String input, {AlphabetModificationMode mode = AlphabetModificationMode.J_TO_I}) {

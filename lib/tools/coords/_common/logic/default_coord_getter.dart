@@ -1,28 +1,22 @@
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_metadata.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_definition.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
-import 'package:prefs/prefs.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
-
-const defaultLambertType = CoordinateFormatKey.LAMBERT93;
-const defaultGaussKruegerType = CoordinateFormatKey.GAUSS_KRUEGER_GK1;
-const defaultSlippyMapType = CoordinateFormatKey.SLIPPYMAP_10;
+import 'package:prefs/prefs.dart';
 
 final defaultCoordinate = LatLng(0.0, 0.0);
 
-CoordinateFormatKey? _getDefaultSubtypeForFormat(CoordinateFormatKey format) {
-  switch (format) {
-    case CoordinateFormatKey.GAUSS_KRUEGER:
-      return defaultGaussKruegerType;
-    case CoordinateFormatKey.LAMBERT:
-      return defaultLambertType;
-    case CoordinateFormatKey.SLIPPY_MAP:
-      return defaultSlippyMapType;
-    default: return null;
+CoordinateFormatKey? getDefaultSubtypeForFormat(CoordinateFormatKey format) {
+  if (isCoordinateFormatWithSubtype(format)) {
+    var emptyCoords = buildUninitializedCoordinateByFormat(CoordinateFormat(format));
+    if (emptyCoords is BaseCoordinateWithSubtypes) {
+      return emptyCoords.defaultSubtype;
+    }
   }
+  return null;
 }
 
 BaseCoordinate get defaultBaseCoordinate {
@@ -35,18 +29,18 @@ CoordinateFormat get defaultCoordinateFormat {
   var formatStr = Prefs.getString(PREFERENCE_COORD_DEFAULT_FORMAT);
 
   CoordinateFormatKey format;
-  if(formatStr.isEmpty) {
+  if (formatStr.isEmpty) {
     format = _fallbackDefaultCoordFormatKey;
   } else {
-    var _format = coordinateFormatMetadataByPersistenceKey(formatStr);
+    var _format = coordinateFormatDefinitionByPersistenceKey(formatStr);
     format = (_format == null) ? _fallbackDefaultCoordFormatKey : _format.type;
   }
 
   return CoordinateFormat(format, defaultCoordinateFormatSubtypeForFormat(format));
 }
 
-CoordinateFormatMetadata get _defaultCoordinateFormat {
-  return coordinateFormatMetadataByKey(_fallbackDefaultCoordFormatKey);
+CoordinateFormatDefinition get _defaultCoordinateFormat {
+  return coordinateFormatDefinitionByKey(_fallbackDefaultCoordFormatKey);
 }
 
 String get defaultCoordinateFormatPersistenceKey {
@@ -58,12 +52,12 @@ String? get defaultCoordinateFormatSubtypePersistenceKey {
   if (defaultSubtype == null) {
     return null;
   }
-  
-  return coordinateFormatMetadataByKey(defaultSubtype).persistenceKey;
+
+  return coordinateFormatDefinitionByKey(defaultSubtype).persistenceKey;
 }
 
 CoordinateFormatKey? defaultCoordinateFormatSubtypeForFormat(CoordinateFormatKey format) {
-  if (!(isCoordinateFormatWithSubtype(format))) {
+  if (!isCoordinateFormatWithSubtype(format)) {
     return null;
   }
 
@@ -71,16 +65,15 @@ CoordinateFormatKey? defaultCoordinateFormatSubtypeForFormat(CoordinateFormatKey
 
   var subtypeStr = Prefs.getString(PREFERENCE_COORD_DEFAULT_FORMAT_SUBTYPE);
   if (subtypeStr.isEmpty) {
-    subtype = _getDefaultSubtypeForFormat(format)!;
+    subtype = getDefaultSubtypeForFormat(format)!;
   } else {
-
-    var _subtype = coordinateFormatMetadataSubtypeByPersistenceKey(subtypeStr);
+    var _subtype = coordinateFormatDefinitionSubtypeByPersistenceKey(subtypeStr);
     subtype = (_subtype == null || !isSubtypeOfCoordinateFormat(format, _subtype.type))
-      ? _getDefaultSubtypeForFormat(format)!
-      : _subtype.type;
+        ? getDefaultSubtypeForFormat(format)!
+        : _subtype.type;
   }
 
-  var persistenceKeyForSubtype = coordinateFormatMetadataByKey(subtype).persistenceKey;
+  var persistenceKeyForSubtype = coordinateFormatDefinitionByKey(subtype).persistenceKey;
   Prefs.setString(PREFERENCE_COORD_DEFAULT_FORMAT_SUBTYPE, persistenceKeyForSubtype);
 
   return subtype;
@@ -109,9 +102,7 @@ Ellipsoid get defaultEllipsoid {
     }
 
     return ells;
-  }
-
-  else if (type == EllipsoidType.USER_DEFINED.toString()) {
+  } else if (type == EllipsoidType.USER_DEFINED.toString()) {
     double a = Prefs.getDouble(PREFERENCE_COORD_DEFAULT_ELLIPSOID_A);
     if (a == 0) {
       a = _WGS84Ells.a;

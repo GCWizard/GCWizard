@@ -15,7 +15,6 @@ part 'package:gc_wizard/tools/images_and_files/hidden_data/logic/file_size.dart'
 const HIDDEN_FILE_IDENTIFIER = '<<!!!HIDDEN_FILE!!!>>';
 
 Future<List<GCWFile>> hiddenData(GCWFile data) async {
-
   data.children = null;
   return Future.value((await _hiddenData(data, 0)).item1);
 }
@@ -147,7 +146,7 @@ Future<Tuple2<List<GCWFile>, int>> _searchMagicBytes(
             if (bytesOffset >= 0) {
               // extract data and check for completeness (only first block)
               var result =
-              await _splitFile(GCWFile(bytes: data.bytes.sublist(bytesOffset)), fileIndexCounter, onlyParent: true);
+                  await _splitFile(GCWFile(bytes: data.bytes.sublist(bytesOffset)), fileIndexCounter, onlyParent: true);
               if (bytesOffset == 14964) bytesOffset = bytesOffset;
               // append file as result, if it is a valid file
               _addFiles(resultList, result.item1);

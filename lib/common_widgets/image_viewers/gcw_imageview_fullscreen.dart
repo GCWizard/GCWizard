@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/common_widgets/gcw_tool.dart';
 import 'package:photo_view/photo_view.dart';
@@ -12,10 +12,10 @@ class GCWImageViewFullScreen extends StatefulWidget {
   const GCWImageViewFullScreen({Key? key, required this.imageData}) : super(key: key);
 
   @override
-  GCWImageViewFullScreenState createState() => GCWImageViewFullScreenState();
+  _GCWImageViewFullScreenState createState() => _GCWImageViewFullScreenState();
 }
 
-class GCWImageViewFullScreenState extends State<GCWImageViewFullScreen> {
+class _GCWImageViewFullScreenState extends State<GCWImageViewFullScreen> {
   late ImageProvider image;
 
   @override

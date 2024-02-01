@@ -56,7 +56,7 @@ class _EllipsoidPickerState extends State<_EllipsoidPicker> {
   @override
   Widget build(BuildContext context) {
     final _secondCustomValues = {
-       _keyMinorAxis: i18n(context, 'coords_ellipsoid_minoraxis'),
+      _keyMinorAxis: i18n(context, 'coords_ellipsoid_minoraxis'),
       _keyInverseFlattening: i18n(context, 'coords_ellipsoid_inverseflattening'),
       _keyFlattening: i18n(context, 'coords_ellipsoid_flattening'),
     };

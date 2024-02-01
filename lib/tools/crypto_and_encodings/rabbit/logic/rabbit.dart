@@ -53,8 +53,8 @@ RabbitOutput cryptRabbit(String input, InputFormat inputFormat, String? key, Inp
 
   var output = rabbit.cryptData(inputData);
   var outputString = output != null ? rc4.formatOutput(output, _convertOutputFormatEnum(outputFormat)) : '';
-  return RabbitOutput(outputString,
-      rc4.formatOutput(keyData, rc4.OutputFormat.HEX), rc4.formatOutput(ivData, rc4.OutputFormat.HEX), ErrorCode.OK);
+  return RabbitOutput(outputString, rc4.formatOutput(keyData, rc4.OutputFormat.HEX),
+      rc4.formatOutput(ivData, rc4.OutputFormat.HEX), ErrorCode.OK);
 }
 
 Uint8List? _generateData(List<int>? data, int length) {

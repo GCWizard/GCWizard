@@ -1,8 +1,8 @@
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
-import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
-import 'package:gc_wizard/tools/coords/intersect_lines/logic/intersect_lines.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/distance_bearing.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
+import 'package:gc_wizard/tools/coords/intersect_lines/logic/intersect_lines.dart';
 import 'package:latlong2/latlong.dart';
 
 class IntersectionJobData {
@@ -12,7 +12,8 @@ class IntersectionJobData {
   final double beta;
   final Ellipsoid ells;
 
-  IntersectionJobData({required this.coord1, this.alpha = 0.0, required this.coord2, this.beta = 0.0, required this.ells});
+  IntersectionJobData(
+      {required this.coord1, this.alpha = 0.0, required this.coord2, this.beta = 0.0, required this.ells});
 }
 
 Future<List<LatLng?>> intersectionAsync(GCWAsyncExecuterParameters? jobData) async {
@@ -21,8 +22,7 @@ Future<List<LatLng?>> intersectionAsync(GCWAsyncExecuterParameters? jobData) asy
   }
 
   var data = jobData!.parameters as IntersectionJobData;
-  var output = intersection(data.coord1, data.alpha, data.coord2,
-      data.beta, data.ells);
+  var output = intersection(data.coord1, data.alpha, data.coord2, data.beta, data.ells);
 
   jobData.sendAsyncPort?.send(output);
 

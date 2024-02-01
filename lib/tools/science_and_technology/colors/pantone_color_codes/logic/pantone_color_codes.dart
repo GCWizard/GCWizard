@@ -21,7 +21,7 @@ class PantoneColorExt extends PantoneColor {
     required String name,
     this.suffix,
     this.prefix,
-  }) :super(colorcode: colorcode, name: name);
+  }) : super(colorcode: colorcode, name: name);
 }
 
 const Map<String, PantoneColorExt> PANTONE_COLOR_CODES_WITH_NAMES = {
@@ -38,80 +38,39 @@ const Map<String, PantoneColorExt> PANTONE_COLOR_CODES_WITH_NAMES = {
   "Bright Green": PantoneColorExt(colorcode: "#00B08B", name: "common_color_light_grey"),
   "Bright Orange": PantoneColorExt(colorcode: "#FF5E00", name: "common_color_light_orange"),
   "Bright Red": PantoneColorExt(colorcode: "#F93822", name: "common_color_light_red"),
-  "Cool Gray 1": PantoneColorExt(
-    colorcode: "#D9D9D6",
-    name: "common_color_grey",
-    suffix: "1",
-    prefix: "pantonecolorcodes_cool"
-  ),
-  "Cool Gray 2": PantoneColorExt(
-    colorcode: "#D0D0CE",
-    name: "common_color_grey",
-    suffix: "2",
-    prefix: "pantonecolorcodes_cool"
-  ),
-  "Cool Gray 3": PantoneColorExt(
-    colorcode: "#C8C9C7",
-    name: "common_color_grey",
-    suffix: "3",
-    prefix: "pantonecolorcodes_cool"
-  ),
-  "Cool Gray 4": PantoneColorExt(
-    colorcode: "#BBBCBC",
-    name: "common_color_grey",
-    suffix: "4",
-    prefix: "pantonecolorcodes_cool"
-  ),
-  "Cool Gray 5": PantoneColorExt(
-    colorcode: "#B1B3B3",
-    name: "common_color_grey",
-    suffix: "5",
-    prefix: "pantonecolorcodes_cool"
-  ),
-  "Cool Gray 6": PantoneColorExt(
-    colorcode: "#A7A8AA",
-    name: "common_color_grey",
-    suffix: "6",
-    prefix: "pantonecolorcodes_cool"
-  ),
-  "Cool Gray 7": PantoneColorExt(
-    colorcode: "#97999B",
-    name: "common_color_grey",
-    suffix: "7",
-    prefix: "pantonecolorcodes_cool"
-  ),
-  "Cool Gray 8": PantoneColorExt(
-    colorcode: "#888B8D",
-    name: "common_color_grey",
-    suffix: "8",
-    prefix: "pantonecolorcodes_cool"
-  ),
-  "Cool Gray 9": PantoneColorExt(
-    colorcode: "#75787B",
-    name: "common_color_grey",
-    suffix: "9",
-    prefix: "pantonecolorcodes_cool"
-  ),
-  "Cool Gray 10": PantoneColorExt(
-    colorcode: "#63666A",
-    name: "common_color_grey",
-    suffix: "10",
-    prefix: "pantonecolorcodes_cool"
-  ),
-  "Cool Gray 11": PantoneColorExt(
-    colorcode: "#53565A",
-    name: "common_color_grey",
-    suffix: "11",
-    prefix: "pantonecolorcodes_cool"
-  ),
+  "Cool Gray 1":
+      PantoneColorExt(colorcode: "#D9D9D6", name: "common_color_grey", suffix: "1", prefix: "pantonecolorcodes_cool"),
+  "Cool Gray 2":
+      PantoneColorExt(colorcode: "#D0D0CE", name: "common_color_grey", suffix: "2", prefix: "pantonecolorcodes_cool"),
+  "Cool Gray 3":
+      PantoneColorExt(colorcode: "#C8C9C7", name: "common_color_grey", suffix: "3", prefix: "pantonecolorcodes_cool"),
+  "Cool Gray 4":
+      PantoneColorExt(colorcode: "#BBBCBC", name: "common_color_grey", suffix: "4", prefix: "pantonecolorcodes_cool"),
+  "Cool Gray 5":
+      PantoneColorExt(colorcode: "#B1B3B3", name: "common_color_grey", suffix: "5", prefix: "pantonecolorcodes_cool"),
+  "Cool Gray 6":
+      PantoneColorExt(colorcode: "#A7A8AA", name: "common_color_grey", suffix: "6", prefix: "pantonecolorcodes_cool"),
+  "Cool Gray 7":
+      PantoneColorExt(colorcode: "#97999B", name: "common_color_grey", suffix: "7", prefix: "pantonecolorcodes_cool"),
+  "Cool Gray 8":
+      PantoneColorExt(colorcode: "#888B8D", name: "common_color_grey", suffix: "8", prefix: "pantonecolorcodes_cool"),
+  "Cool Gray 9":
+      PantoneColorExt(colorcode: "#75787B", name: "common_color_grey", suffix: "9", prefix: "pantonecolorcodes_cool"),
+  "Cool Gray 10":
+      PantoneColorExt(colorcode: "#63666A", name: "common_color_grey", suffix: "10", prefix: "pantonecolorcodes_cool"),
+  "Cool Gray 11":
+      PantoneColorExt(colorcode: "#53565A", name: "common_color_grey", suffix: "11", prefix: "pantonecolorcodes_cool"),
   "Dark Blue": PantoneColorExt(colorcode: "#00239C", name: "common_color_dark_blue"),
   "Green": PantoneColorExt(colorcode: "#00AB84", name: "common_color_green"),
   "Green 0921": PantoneColorExt(colorcode: "#9DE7D7", name: "common_color_green", suffix: "0921"),
   "Magenta 0521": PantoneColorExt(colorcode: "#F1B2DC", name: "common_color_magenta", suffix: "0521"),
   "Medium Blue": PantoneColorExt(colorcode: "#0084CA", name: "common_color_blue", prefix: "pantonecolorcodes_medium"),
-  "Medium Purple": PantoneColorExt(colorcode: "#4E008E", name: "common_color_purple", prefix: "pantonecolorcodes_medium"),
-  "Medium Yellow ": PantoneColorExt(colorcode: "#FFD900", name: "common_color_yellow", prefix: "pantonecolorcodes_medium"),
-  "Neutral Black": PantoneColorExt(colorcode: "#222223", name: "common_color_black", prefix: "pantonecolorcodes_neutral"),
+  "Medium Purple":
+      PantoneColorExt(colorcode: "#4E008E", name: "common_color_purple", prefix: "pantonecolorcodes_medium"),
+  "Medium Yellow ":
+      PantoneColorExt(colorcode: "#FFD900", name: "common_color_yellow", prefix: "pantonecolorcodes_medium"),
+  "Neutral Black":
+      PantoneColorExt(colorcode: "#222223", name: "common_color_black", prefix: "pantonecolorcodes_neutral"),
   "Orange 021": PantoneColorExt(colorcode: "#FE5000", name: "common_color_orange", suffix: "021"),
   "Pink": PantoneColorExt(colorcode: "#D62598", name: "common_color_pink"),
   "Process Blue": PantoneColorExt(colorcode: "#0085CA", name: "pantonecolorcodes_color_processblue"),
@@ -124,72 +83,28 @@ const Map<String, PantoneColorExt> PANTONE_COLOR_CODES_WITH_NAMES = {
   "Strong Red": PantoneColorExt(colorcode: "#CE0056", name: "pantonecolorcodes_color_strongred"),
   "Violet": PantoneColorExt(colorcode: "#440099", name: "common_color_violet"),
   "Violet 0631": PantoneColorExt(colorcode: "#BF9BDE", name: "common_color_violet", suffix: "0631"),
-  "Warm Gray 1": PantoneColorExt(
-    colorcode: "#D7D2CB",
-    name: "common_color_grey",
-    suffix: "1",
-    prefix: "pantonecolorcodes_warm"
-  ),
-  "Warm Gray 2": PantoneColorExt(
-    colorcode: "#CBC4BC",
-    name: "common_color_grey",
-    suffix: "2",
-    prefix: "pantonecolorcodes_warm"
-  ),
-  "Warm Gray 3": PantoneColorExt(
-    colorcode: "#BFB8AF",
-    name: "common_color_grey",
-    suffix: "3",
-    prefix: "pantonecolorcodes_warm"
-  ),
-  "Warm Gray 4": PantoneColorExt(
-    colorcode: "#B6ADA5",
-    name: "common_color_grey",
-    suffix: "4",
-    prefix: "pantonecolorcodes_warm"
-  ),
-  "Warm Gray 5": PantoneColorExt(
-    colorcode: "#ACA39A",
-    name: "common_color_grey",
-    suffix: "5",
-    prefix: "pantonecolorcodes_warm"
-  ),
-  "Warm Gray 6": PantoneColorExt(
-    colorcode: "#A59C94",
-    name: "common_color_grey",
-    suffix: "6",
-    prefix: "pantonecolorcodes_warm"
-  ),
-  "Warm Gray 7": PantoneColorExt(
-    colorcode: "#968C83",
-    name: "common_color_grey",
-    suffix: "7",
-    prefix: "pantonecolorcodes_warm"
-  ),
-  "Warm Gray 8": PantoneColorExt(
-    colorcode: "#8C8279",
-    name: "common_color_grey",
-    suffix: "8",
-    prefix: "pantonecolorcodes_warm"
-  ),
-  "Warm Gray 9": PantoneColorExt(
-    colorcode: "#83786F",
-    name: "common_color_grey",
-    suffix: "9",
-    prefix: "pantonecolorcodes_warm"
-  ),
-  "Warm Gray 10": PantoneColorExt(
-    colorcode: "#796E65",
-    name: "common_color_grey",
-    suffix: "10",
-    prefix: "pantonecolorcodes_warm"
-  ),
-  "Warm Gray 11": PantoneColorExt(
-    colorcode: "#6E6259",
-    name: "common_color_grey",
-    suffix: "11",
-    prefix: "pantonecolorcodes_warm"
-  ),
+  "Warm Gray 1":
+      PantoneColorExt(colorcode: "#D7D2CB", name: "common_color_grey", suffix: "1", prefix: "pantonecolorcodes_warm"),
+  "Warm Gray 2":
+      PantoneColorExt(colorcode: "#CBC4BC", name: "common_color_grey", suffix: "2", prefix: "pantonecolorcodes_warm"),
+  "Warm Gray 3":
+      PantoneColorExt(colorcode: "#BFB8AF", name: "common_color_grey", suffix: "3", prefix: "pantonecolorcodes_warm"),
+  "Warm Gray 4":
+      PantoneColorExt(colorcode: "#B6ADA5", name: "common_color_grey", suffix: "4", prefix: "pantonecolorcodes_warm"),
+  "Warm Gray 5":
+      PantoneColorExt(colorcode: "#ACA39A", name: "common_color_grey", suffix: "5", prefix: "pantonecolorcodes_warm"),
+  "Warm Gray 6":
+      PantoneColorExt(colorcode: "#A59C94", name: "common_color_grey", suffix: "6", prefix: "pantonecolorcodes_warm"),
+  "Warm Gray 7":
+      PantoneColorExt(colorcode: "#968C83", name: "common_color_grey", suffix: "7", prefix: "pantonecolorcodes_warm"),
+  "Warm Gray 8":
+      PantoneColorExt(colorcode: "#8C8279", name: "common_color_grey", suffix: "8", prefix: "pantonecolorcodes_warm"),
+  "Warm Gray 9":
+      PantoneColorExt(colorcode: "#83786F", name: "common_color_grey", suffix: "9", prefix: "pantonecolorcodes_warm"),
+  "Warm Gray 10":
+      PantoneColorExt(colorcode: "#796E65", name: "common_color_grey", suffix: "10", prefix: "pantonecolorcodes_warm"),
+  "Warm Gray 11":
+      PantoneColorExt(colorcode: "#6E6259", name: "common_color_grey", suffix: "11", prefix: "pantonecolorcodes_warm"),
   "Warm Red": PantoneColorExt(colorcode: "#F9423A", name: "common_color_red", prefix: "pantonecolorcodes_warm"),
   "Yellow": PantoneColorExt(colorcode: "#FEDD00", name: "common_color_yellow", prefix: "pantonecolorcodes_warm"),
   "Yellow 012": PantoneColorExt(colorcode: "#FFD700", name: "common_color_yellow", suffix: "012"),
@@ -1425,7 +1340,8 @@ const Map<String, PantoneColor> PANTONE_COLOR_CODES_ONLY_NUMBERS = {
 
 PantoneColor? _pantoneByRGB(GCWBaseColor rgb, List<PantoneColor> pantoneValues) {
   var hexCode = HexCode.fromRGB(rgb.toRGB());
-  return pantoneValues.firstWhereOrNull((element) => element.colorcode.toLowerCase() == hexCode.toString().toLowerCase());
+  return pantoneValues
+      .firstWhereOrNull((element) => element.colorcode.toLowerCase() == hexCode.toString().toLowerCase());
 }
 
 List<PantoneColor> findSimilarPantoneColors(GCWBaseColor rgb, List<PantoneColor> pantoneValues) {

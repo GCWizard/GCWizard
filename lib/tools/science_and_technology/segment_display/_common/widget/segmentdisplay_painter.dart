@@ -64,6 +64,7 @@ class SegmentDisplayPainter extends CustomPainter {
           customPaint!(_touchCanvas, size, segments, setSegmentState, segment_color_on, segment_color_off);
         }
         break;
+      default:
     }
   }
 
@@ -293,6 +294,25 @@ class SegmentDisplayPainter extends CustomPainter {
         Offset(_relativeX(size, 72), _relativeY(size, 94)), _relativeY(size, 4.5), paint, onTapDown: (tapDetail) {
       setSegmentState('dp', !segmentActive(segments, 'dp'));
     });
+
+    //only for create the dropdown images
+    // _paintText('a1', (30-5)/2.0+5, (8-0)/2.0+0, size);
+    // _paintText('a2', (53-36)/2.0+36, (8-0)/2.0+0, size);
+    // _paintText('b', 58, (43-10)/2.0+10, size);
+    // _paintText('c', 58, (88-55)/2.0+55, size);
+    // _paintText('d1', (30-5)/2.0+5, 94, size);
+    // _paintText('d2', (53-36)/2.0+36, 94, size);
+    // _paintText('e', (8-0)/2.0+0, (88-55)/2.0+55, size);
+    // _paintText('f', (8-0)/2.0+0, (43-10)/2.0+10, size);
+    // _paintText('g1', (30-5)/2.0+5, (53-45)/2.0+45, size);
+    // _paintText('g2', (53-36)/2.0+36, (53-45)/2.0+45, size);
+    // _paintText('h', (25-10)/2.0+10, (43-10)/2.0+10, size);
+    // _paintText('i', (35-27)/2+27, (47-6)/2.0+6, size);
+    // _paintText('j', (52-37)/2.0+37, (43-10)/2.0+10, size);
+    // _paintText('k', (25-10)/2.0+10, (88-55)/2.0+55, size);
+    // _paintText('l', (35-27)/2.0+27, (92-51)/2.0+51, size);
+    // _paintText('m', (52-37)/2.0+37, (88-55)/2.0+55, size);
+    // _paintText('dp', 72, 94-10, size);
   }
 
   void _paintFourteenSegmentDisplay(Size size) {
@@ -491,6 +511,23 @@ class SegmentDisplayPainter extends CustomPainter {
         Offset(_relativeX(size, 72), _relativeY(size, 94)), _relativeY(size, 4.5), paint, onTapDown: (tapDetail) {
       setSegmentState('dp', !segmentActive(segments, 'dp'));
     });
+
+    //only for create the dropdown images
+    // _paintText('a', (61-1)/2.0+1, (8-0)/2.0+0, size);
+    // _paintText('b', 58, (43-10)/2.0+10, size);
+    // _paintText('c', 58, (88-55)/2.0+55, size);
+    // _paintText('d', (61-1)/2.0+1, 94, size);
+    // _paintText('e', (8-0)/2.0+0, (88-55)/2.0+55, size);
+    // _paintText('f', (8-0)/2.0+0, (43-10)/2.0+10, size);
+    // _paintText('g1', (30-5)/2.0+5, (53-45)/2.0+45, size);
+    // _paintText('g2', (53-36)/2.0+36, (53-45)/2.0+45, size);
+    // _paintText('h', (25-10)/2.0+10, (43-10)/2.0+10, size);
+    // _paintText('i', (35-27)/2+27, (47-6)/2.0+6, size);
+    // _paintText('j', (52-37)/2.0+37, (43-10)/2.0+10, size);
+    // _paintText('k', (25-10)/2.0+10, (88-55)/2.0+55, size);
+    // _paintText('l', (35-27)/2.0+27, (92-51)/2.0+51, size);
+    // _paintText('m',  (52-37)/2.0+37, (88-55)/2.0+55, size);
+    // _paintText('dp', 72, 94-10, size);
   }
 
   void _paintSevenSegmentDisplay(Size size) {
@@ -593,10 +630,58 @@ class SegmentDisplayPainter extends CustomPainter {
         Offset(_relativeX(size, 72), _relativeY(size, 94)), _relativeY(size, 4.5), paint, onTapDown: (tapDetail) {
       setSegmentState('dp', !segmentActive(segments, 'dp'));
     });
+
+    //only for create the dropdown images
+    // _paintText('a', (61-1)/2.0+1, (8-0)/2.0+0, size);
+    // _paintText('b', 58, (43-10)/2.0+10, size);
+    // _paintText('c', 58, (88-55)/2.0+55, size);
+    // _paintText('d', (61-1)/2.0+1, 94, size);
+    // _paintText('e', (8-0)/2.0+0, (88-55)/2.0+55, size);
+    // _paintText('f', (8-0)/2.0+0, (43-10)/2.0+10, size);
+    // _paintText('g', (61-1)/2.0+1, (53-45)/2.0+45, size);
+    // _paintText('dp', 72, 94-10, size);
   }
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     return true;
   }
+
+  //only for create the dropdown images
+  // Paint defaultSegmentPaint() {
+  //   var paint = Paint();
+  //   paint.strokeWidth = 2;
+  //   paint.style = PaintingStyle.stroke;
+  //
+  //   return paint;
+  // }
+
+  // void _paintText(String text, double x, double y, Size size) {
+  //   const _7SegmentTo12345678 = {'1': 'a', '2': 'b', '3': 'c', '4': 'd', '5': 'e', '6': 'f', '7': 'g', '8': 'dp' };
+  //
+  //   const _14SegmentTo_hij_g1g2_mlk = {'a': 'a', 'b': 'b', 'c': 'c', 'd': 'd', 'e': 'e', 'f': 'f', 'g1': 'g1', 'g2': 'g2', 'h': 'h', 'i': 'i', 'j': 'j', 'k': 'm', 'l': 'l', 'm': 'k', 'dp': 'dp' };
+  //   const _14SegmentTo_pgh_nj_mlk   = {'a': 'a', 'b': 'b', 'c': 'c', 'd': 'd', 'e': 'e', 'f': 'f', 'n': 'g1', 'j': 'g2', 'p': 'h', 'g': 'i', 'h': 'j', 'm': 'k', 'l': 'l', 'k': 'm', 'dp1': 'dp' };
+  //   const _14SegmentTo_kmn_g1g2_rst = {'a': 'a', 'b': 'b', 'c': 'c', 'd': 'd', 'e': 'e', 'f': 'f', 'g1': 'g1', 'g2': 'g2', 'k': 'h', 'm': 'i', 'n': 'j', 't': 'm', 's': 'l', 'r': 'k', 'dp': 'dp' };
+  //   const _14SegmentTo_ghj_pk_nmi   = {'a': 'a', 'b': 'b', 'c': 'c', 'd': 'd', 'e': 'e', 'f': 'f', 'p': 'g1', 'k': 'g2', 'g': 'h', 'h': 'i', 'j': 'j', 'i': 'm', 'm': 'l', 'n': 'k', 'dp': 'dp' };
+  //   const _14SegmentTo_hjk_g1g2_nml = {'a': 'a', 'b': 'b', 'c': 'c', 'd': 'd', 'e': 'e', 'f': 'f', 'g1': 'g1', 'g2': 'g2', 'h': 'h', 'j': 'i', 'k': 'j', 'l': 'm', 'm': 'l', 'n': 'k', 'dp': 'dp' };
+  //
+  //   var labels = switchMapKeyValue(_14SegmentTo_ghj_pk_nmi);
+  //   text = labels[text]!;
+  //
+  //   var fontSize = _relativeX(size, 7.0);
+  //   TextPainter textPainter = _buildTextPainter(text, Colors.black, fontSize);
+  //   textPainter.layout();
+  //   textPainter.paint(_touchCanvas.canvas, Offset(_relativeX(size, x) - textPainter.width / 2
+  //       , _relativeY(size, y) - textPainter.height / 2));
+  // }
+  //
+  // TextPainter _buildTextPainter(String text, Color color, double fontsize) {
+  //   TextSpan span = TextSpan(
+  //       style: gcwTextStyle().copyWith(color: color, fontSize: fontsize),
+  //       text: text);
+  //   TextPainter textPainter = TextPainter(text: span, textDirection: TextDirection.ltr, textAlign: TextAlign.center);
+  //   textPainter.layout();
+  //
+  //   return textPainter;
+  // }
 }

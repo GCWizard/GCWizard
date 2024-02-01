@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:gc_wizard/utils/constants.dart';
 import 'package:collection/collection.dart';
+import 'package:gc_wizard/utils/constants.dart';
 
 const ELLIPSOID_NAME_WGS84 = 'WGS84';
 const ELLIPSOID_NAME_AIRY1830 = 'Airy 1830';

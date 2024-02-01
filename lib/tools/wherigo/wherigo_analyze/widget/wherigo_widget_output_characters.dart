@@ -2,7 +2,7 @@ part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/widget/wherigo_analyze.
 
 List<List<String>> _buildOutputListOfCharacterData(BuildContext context, WherigoCharacterData data) {
   List<List<String>> result = [];
-  if (wherigoExpertMode) {
+  if (WHERIGOExpertMode) {
     result = _buildOutputListCharacterDataExpertMode(context, data);
   } else {
     result = _buildOutputListCharacterDataUserMode(context, data);
@@ -31,8 +31,8 @@ List<List<String>> _buildOutputListCharacterDataExpertMode(BuildContext context,
       i18n(context, 'wherigo_output_medianame'),
       data.CharacterMediaName +
           (data.CharacterMediaName != ''
-              ? (NameToObject[data.CharacterMediaName] != null
-                  ? ' ⬌ ' + NameToObject[data.CharacterMediaName]!.ObjectName
+              ? (WHERIGONameToObject[data.CharacterMediaName] != null
+                  ? ' ⬌ ' + WHERIGONameToObject[data.CharacterMediaName]!.ObjectName
                   : '')
               : '')
     ],
@@ -40,16 +40,16 @@ List<List<String>> _buildOutputListCharacterDataExpertMode(BuildContext context,
       i18n(context, 'wherigo_output_iconname'),
       data.CharacterIconName +
           (data.CharacterIconName != ''
-              ? (NameToObject[data.CharacterIconName] != null
-                  ? ' ⬌ ' + NameToObject[data.CharacterIconName]!.ObjectName
+              ? (WHERIGONameToObject[data.CharacterIconName] != null
+                  ? ' ⬌ ' + WHERIGONameToObject[data.CharacterIconName]!.ObjectName
                   : '')
               : '')
     ],
     [
       i18n(context, 'wherigo_output_container'),
       data.CharacterContainer +
-          (NameToObject[data.CharacterContainer] != null
-              ? ' ⬌ ' + NameToObject[data.CharacterContainer]!.ObjectName
+          (WHERIGONameToObject[data.CharacterContainer] != null
+              ? ' ⬌ ' + WHERIGONameToObject[data.CharacterContainer]!.ObjectName
               : '')
     ],
     [i18n(context, 'wherigo_output_gender'), i18n(context, 'wherigo_output_gender_' + data.CharacterGender)],

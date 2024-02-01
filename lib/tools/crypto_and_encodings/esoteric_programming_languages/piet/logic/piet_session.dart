@@ -37,7 +37,7 @@ Future<PietResult> interpretPiet(List<List<int>> data, String? input,
 
     return PietResult(
         output: pietSession._output, input_expected: _input_required, input_number_expected: _input_required_number);
-  } on FormatException catch(err) {
+  } on FormatException catch (err) {
     if (err.message == _inputRequired) {
       return PietResult(
           output: pietSession._output,

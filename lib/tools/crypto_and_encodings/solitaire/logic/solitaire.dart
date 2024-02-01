@@ -35,7 +35,6 @@ SolitaireOutput? _solitaireBase(String input, String key, bool encrypt) {
 
   key = key.toUpperCase().split('').map((character) => alphabet.containsKey(character) ? character : '').join();
 
-
   if (encrypt) {
     // Groups of 5 letters
     int streamLength = (input.length / 5.0).ceil() * 5;

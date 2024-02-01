@@ -8,7 +8,7 @@ bool _insideSectionTimer(String currentLine) {
 }
 
 bool _notDoneWithTimers(String currentLine) {
-  if (RegExp(r'( Wherigo.ZInput\()').hasMatch(currentLine)) {
+  if (RegExp(r'( Wherigo.ZInput\()').hasMatch(currentLine) || RegExp(r'(function)').hasMatch(currentLine)) {
     return false;
   }
   return true;
@@ -62,8 +62,7 @@ WherigoTimerData _analyzeAndExtractTimerSectionData(List<String> lines) {
     }
 
     if (lines[i].trim().startsWith(LUAname + '.Visible')) {
-      visible =
-          getLineData(lines[i], LUAname, 'Visible', _obfuscatorFunction, _obfuscatorTable).trim().toLowerCase();
+      visible = getLineData(lines[i], LUAname, 'Visible', _obfuscatorFunction, _obfuscatorTable).trim().toLowerCase();
     }
   }
   return WherigoTimerData(

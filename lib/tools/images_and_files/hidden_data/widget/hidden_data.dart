@@ -1,14 +1,14 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_divider.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
-import 'package:gc_wizard/common_widgets/gcw_toast.dart';
+import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_files_output.dart';
@@ -19,7 +19,6 @@ import 'package:gc_wizard/tools/images_and_files/hidden_data/logic/hidden_data.d
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
-import 'package:intl/intl.dart';
 
 class HiddenData extends StatefulWidget {
   final GCWFile? file;
@@ -27,10 +26,10 @@ class HiddenData extends StatefulWidget {
   const HiddenData({Key? key, this.file}) : super(key: key);
 
   @override
-  HiddenDataState createState() => HiddenDataState();
+  _HiddenDataState createState() => _HiddenDataState();
 }
 
-class HiddenDataState extends State<HiddenData> {
+class _HiddenDataState extends State<HiddenData> {
   late TextEditingController _hideController;
 
   GCWFile? _unHideFile;
@@ -88,7 +87,7 @@ class HiddenDataState extends State<HiddenData> {
           file: _publicFile,
           onLoaded: (_openedFile) {
             if (_openedFile == null) {
-              showToast(i18n(context, 'common_loadfile_exception_notloaded'));
+              showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
               return;
             }
 
@@ -121,7 +120,7 @@ class HiddenDataState extends State<HiddenData> {
             file: _secretFile,
             onLoaded: (_openedFile) {
               if (_openedFile == null) {
-                showToast(i18n(context, 'common_loadfile_exception_notloaded'));
+                showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
                 return;
               }
 
@@ -146,8 +145,7 @@ class HiddenDataState extends State<HiddenData> {
               }
             }
             _exportFile(
-                context,
-                data == null ? null : GCWFile(name: 'hidden_' + DateFormat('yyyyMMdd_HHmmss').format(DateTime.now()), bytes: data));
+                context, data == null ? null : GCWFile(name: buildFileNameWithDate('hidden_', null), bytes: data));
           },
         )
       ],
@@ -162,7 +160,7 @@ class HiddenDataState extends State<HiddenData> {
           file: _unHideFile,
           onLoaded: (_openedFile) {
             if (_openedFile == null) {
-              showToast(i18n(context, 'common_loadfile_exception_notloaded'));
+              showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
               return;
             }
 
@@ -204,7 +202,7 @@ class HiddenDataState extends State<HiddenData> {
 
   Future<void> _exportFile(BuildContext context, GCWFile? file) async {
     if (file?.bytes == null) {
-      showToast(i18n(context, 'hiddendata_datanotreadable'));
+      showSnackBar(i18n(context, 'hiddendata_datanotreadable'), context);
       return;
     }
 
@@ -215,7 +213,7 @@ class HiddenDataState extends State<HiddenData> {
 
     await saveByteDataToFile(context, file.bytes, fileName).then((value) {
       var content = fileClass(file.fileType) == FileClass.IMAGE ? imageContent(context, file.bytes) : null;
-      if (value) showExportedFileDialog(context, contentWidget: content) ;
+      if (value) showExportedFileDialog(context, contentWidget: content);
     });
   }
 }
@@ -224,6 +222,6 @@ void openInHiddenData(BuildContext context, GCWFile file) {
   Navigator.push(
       context,
       NoAnimationMaterialPageRoute<GCWTool>(
-          builder: (context) => GCWTool(
-              tool: HiddenData(file: file), toolName: i18n(context, 'hiddendata_title'), id: 'hiddendata')));
+          builder: (context) =>
+              GCWTool(tool: HiddenData(file: file), toolName: i18n(context, 'hiddendata_title'), id: 'hiddendata')));
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_output.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_outputformat.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
@@ -16,10 +16,10 @@ class CentroidCenterOfGravity extends StatefulWidget {
   const CentroidCenterOfGravity({Key? key}) : super(key: key);
 
   @override
-  CentroidCenterOfGravityState createState() => CentroidCenterOfGravityState();
+  _CentroidCenterOfGravityState createState() => _CentroidCenterOfGravityState();
 }
 
-class CentroidCenterOfGravityState extends State<CentroidCenterOfGravity> {
+class _CentroidCenterOfGravityState extends State<CentroidCenterOfGravity> {
   var _currentCountCoords = 1;
   final _currentCoords = [defaultBaseCoordinate];
 
@@ -38,7 +38,9 @@ class CentroidCenterOfGravityState extends State<CentroidCenterOfGravity> {
               coordsFormat: _currentCoords[index].format,
               onChanged: (ret) {
                 setState(() {
-                  _currentCoords[index] = ret;
+                  if (ret != null) {
+                    _currentCoords[index] = ret;
+                  }
                 });
               },
             ));

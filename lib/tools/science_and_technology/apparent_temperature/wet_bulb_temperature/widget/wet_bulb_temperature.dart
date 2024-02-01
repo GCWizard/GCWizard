@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
@@ -12,26 +12,26 @@ import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/humi
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/temperature.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit_category.dart';
+import 'package:intl/intl.dart';
 
 class WetBulbTemperature extends StatefulWidget {
   const WetBulbTemperature({Key? key}) : super(key: key);
 
   @override
-  WetBulbTemperatureState createState() => WetBulbTemperatureState();
+  _WetBulbTemperatureState createState() => _WetBulbTemperatureState();
 }
 
-class WetBulbTemperatureState extends State<WetBulbTemperature> {
+class _WetBulbTemperatureState extends State<WetBulbTemperature> {
   double _currentTemperature = 1.0;
   double _currentHumidity = 0.0;
 
-  //Map<String, dynamic> _currentOutputUnit = {'unit': TEMPERATURE_CELSIUS, 'prefix': UNITPREFIX_NONE};
   Unit _currentOutputUnit = TEMPERATURE_CELSIUS;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        GCWUnitInput(
+        GCWUnitInput<Temperature>(
           value: _currentTemperature,
           title: i18n(context, 'common_measure_temperature'),
           initialUnit: TEMPERATURE_CELSIUS,
@@ -43,7 +43,7 @@ class WetBulbTemperatureState extends State<WetBulbTemperature> {
             });
           },
         ),
-        GCWUnitInput(
+        GCWUnitInput<Humidity>(
           value: _currentHumidity,
           title: i18n(context, 'common_measure_humidity'),
           initialUnit: HUMIDITY,
@@ -56,25 +56,12 @@ class WetBulbTemperatureState extends State<WetBulbTemperature> {
             });
           },
         ),
-        GCWTextDivider(text: i18n(context, 'common_outputunit')),
-        GCWUnitDropDown<Unit>(
-          value: _currentOutputUnit,
-          onlyShowSymbols: false,
-          unitList: temperatures,
-          unitCategory: UNITCATEGORY_TEMPERATURE,
-          onChanged: (value) {
-            setState(() {
-              _currentOutputUnit = value;
-            });
-          },
-        ),
         _buildOutput(context)
       ],
     );
   }
 
   Widget _buildOutput(BuildContext context) {
-    String unit = '';
     String hintWBT = '';
     double WBT_C = 0.0;
     double WBT = 0.0;
@@ -85,28 +72,48 @@ class WetBulbTemperatureState extends State<WetBulbTemperature> {
     WBT = TEMPERATURE_CELSIUS.toKelvin(WBT_C);
     WBT = _currentOutputUnit.fromReference(WBT);
 
-    unit = _currentOutputUnit.symbol;
-
     return Column(
       children: [
-        GCWDefaultOutput(child: WBT.toStringAsFixed(2) + ' ' + unit, copyText: WBT.toString()),
-        Row(
-          children: [
-            Container(
-                width: 50,
-                padding: const EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN),
-                child: GCWIconButton(
-                    icon: Icons.wb_sunny, iconColor: _colorWBT(WBT_C), backgroundColor: const Color(0xFF4d4d4d),
-                    onPressed: () {  },
-                ),
+        GCWDefaultOutput(
+            child: Row(children: <Widget>[
+          Container(
+            width: 50,
+            padding: const EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN),
+            child: GCWIconButton(
+              icon: Icons.wb_sunny,
+              iconColor: _colorWBT(WBT_C),
+              backgroundColor: const Color(0xFF4d4d4d),
+              onPressed: () {},
             ),
-            Expanded(
-              child: GCWOutput(
-                child: i18n(context, hintWBT),
-              ),
-            )
-          ],
-        )
+          ),
+          Expanded(
+            flex: 2,
+            //child: Text(_currentOutputUnit.symbol),
+            child: Container(
+                margin: const EdgeInsets.only(left: DEFAULT_MARGIN, right: 2 * DEFAULT_MARGIN),
+                child: GCWUnitDropDown(
+                  value: _currentOutputUnit,
+                  onlyShowSymbols: false,
+                  unitList: temperatures,
+                  unitCategory: UNITCATEGORY_TEMPERATURE,
+                  onChanged: (value) {
+                    setState(() {
+                      _currentOutputUnit = value;
+                    });
+                  },
+                )),
+          ),
+          Expanded(
+            flex: 2,
+            child: Container(
+                margin: const EdgeInsets.only(left: 2 * DEFAULT_MARGIN),
+                child: GCWOutput(child: NumberFormat('#.###').format(WBT))),
+          ),
+        ])),
+        GCWTextDivider(text: i18n(context, 'heatindex_hint')),
+        GCWOutput(
+          child: i18n(context, hintWBT),
+        ),
       ],
     );
   }

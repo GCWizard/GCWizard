@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_output.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_outputformat.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
-import 'package:gc_wizard/tools/coords/intersect_lines/logic/intersect_lines.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/tools/coords/intersect_lines/logic/intersect_lines.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -17,10 +17,10 @@ class IntersectFourPoints extends StatefulWidget {
   const IntersectFourPoints({Key? key}) : super(key: key);
 
   @override
-  IntersectFourPointsState createState() => IntersectFourPointsState();
+  _IntersectFourPointsState createState() => _IntersectFourPointsState();
 }
 
-class IntersectFourPointsState extends State<IntersectFourPoints> {
+class _IntersectFourPointsState extends State<IntersectFourPoints> {
   LatLng? _currentIntersection;
 
   var _currentCoords11 = defaultBaseCoordinate;
@@ -42,7 +42,9 @@ class IntersectFourPointsState extends State<IntersectFourPoints> {
           coordsFormat: _currentCoords11.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoords11 = ret;
+              if (ret != null) {
+                _currentCoords11 = ret;
+              }
             });
           },
         ),
@@ -51,7 +53,9 @@ class IntersectFourPointsState extends State<IntersectFourPoints> {
           coordsFormat: _currentCoords12.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoords12 = ret;
+              if (ret != null) {
+                _currentCoords12 = ret;
+              }
             });
           },
         ),
@@ -60,7 +64,9 @@ class IntersectFourPointsState extends State<IntersectFourPoints> {
           coordsFormat: _currentCoords21.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoords21 = ret;
+              if (ret != null) {
+                _currentCoords21 = ret;
+              }
             });
           },
         ),
@@ -69,7 +75,9 @@ class IntersectFourPointsState extends State<IntersectFourPoints> {
           coordsFormat: _currentCoords22.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoords22 = ret;
+              if (ret != null) {
+                _currentCoords22 = ret;
+              }
             });
           },
         ),
@@ -95,8 +103,8 @@ class IntersectFourPointsState extends State<IntersectFourPoints> {
         builder: (context) {
           return Center(
             child: SizedBox(
-              height: 220,
-              width: 150,
+              height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
+              width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
               child: GCWAsyncExecuter<LatLng?>(
                 isolatedFunction: intersectFourPointsAsync,
                 parameter: _buildJobData,

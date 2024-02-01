@@ -8,7 +8,8 @@ class GCWText extends StatefulWidget {
   final TextAlign? textAlign;
   final TextStyle? style;
 
-  const GCWText({Key? key, this.text = '', this.align = Alignment.centerLeft, this.textAlign, this.style}) : super(key: key);
+  const GCWText({Key? key, this.text = '', this.align = Alignment.centerLeft, this.textAlign, this.style})
+      : super(key: key);
 
   @override
   _GCWTextState createState() => _GCWTextState();

@@ -181,7 +181,7 @@ void main(){
       {'input' : '', 'language' : NumeralWordsLanguage.DEU, 'decodeMode' : false,
         'expectedOutput' : [NumeralWordsDecodeOutput('', '', 'numeralwords_language_empty')]},
       {'input' : 'fünfundzwanzig', 'language' : NumeralWordsLanguage.DEU, 'decodeMode' : false,
-        'expectedOutput' : [NumeralWordsDecodeOutput('5', 'fuenf', 'common_language_german'),
+        'expectedOutput' : [NumeralWordsDecodeOutput('5', 'fünf', 'common_language_german'),
                             NumeralWordsDecodeOutput('20', 'zwanzig', 'common_language_german')]},
       {'input' : 'hundert', 'language' : NumeralWordsLanguage.DEU, 'decodeMode' : false,
         'expectedOutput' : [NumeralWordsDecodeOutput('100', 'hundert', 'common_language_german')]},
@@ -201,16 +201,16 @@ void main(){
                             NumeralWordsDecodeOutput('1', 'eins', 'common_language_german')]},
       {'input' : 'hundertfünfundzwanzig', 'language' : NumeralWordsLanguage.DEU, 'decodeMode' : false,
         'expectedOutput' : [NumeralWordsDecodeOutput('100', 'hundert', 'common_language_german'),
-                            NumeralWordsDecodeOutput('5', 'fuenf', 'common_language_german'),
+                            NumeralWordsDecodeOutput('5', 'fünf', 'common_language_german'),
                             NumeralWordsDecodeOutput('20', 'zwanzig', 'common_language_german')]},
       {'input' : 'abc einhundertfünfundzwanzig abc', 'language' : NumeralWordsLanguage.DEU, 'decodeMode' : false,
         'expectedOutput' : [NumeralWordsDecodeOutput('100', 'hundert', 'common_language_german'),
-                            NumeralWordsDecodeOutput('5', 'fuenf', 'common_language_german'),
+                            NumeralWordsDecodeOutput('5', 'fünf', 'common_language_german'),
                             NumeralWordsDecodeOutput('20', 'zwanzig', 'common_language_german')]},
       {'input' : 'zweihundertfünfundzwanzig', 'language' : NumeralWordsLanguage.DEU, 'decodeMode' : false,
         'expectedOutput' : [NumeralWordsDecodeOutput('2', 'zwei', 'common_language_german'),
                             NumeralWordsDecodeOutput('100', 'hundert', 'common_language_german'),
-                            NumeralWordsDecodeOutput('5', 'fuenf', 'common_language_german'),
+                            NumeralWordsDecodeOutput('5', 'fünf', 'common_language_german'),
                             NumeralWordsDecodeOutput('20', 'zwanzig', 'common_language_german')]},
       {'input' : 'tausend', 'language' : NumeralWordsLanguage.DEU, 'decodeMode' : false,
         'expectedOutput' : [NumeralWordsDecodeOutput('1000', 'tausend', 'common_language_german')]},
@@ -271,7 +271,7 @@ void main(){
                             NumeralWordsDecodeOutput('100', 'hundert', 'common_language_german'),
                             NumeralWordsDecodeOutput('1000', 'tausend', 'common_language_german')]},
       {'input' : 'fünfundzwanzigtausendsiebenhundertzweiundvierzig', 'language' : NumeralWordsLanguage.DEU, 'decodeMode' : false,
-        'expectedOutput' : [NumeralWordsDecodeOutput('5', 'fuenf', 'common_language_german'),
+        'expectedOutput' : [NumeralWordsDecodeOutput('5', 'fünf', 'common_language_german'),
                             NumeralWordsDecodeOutput('20', 'zwanzig', 'common_language_german'),
                             NumeralWordsDecodeOutput('1000', 'tausend', 'common_language_german'),
                             NumeralWordsDecodeOutput('7', 'sieben', 'common_language_german'),
@@ -389,7 +389,7 @@ void main(){
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, language: ${elem['language']}, decodeMode: ${elem['decodeMode']}', () {
-        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
+        var _actual = decodeNumeralwords(input: elem['input'] as String, language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
         var expected = elem['expectedOutput'] as List<NumeralWordsDecodeOutput>;
         var length = expected.length;
         for (int i = 0; i < length; i++) {
@@ -410,20 +410,22 @@ void main(){
           NumeralWordsDecodeOutput('2', 'zwei', 'common_language_german'),
           NumeralWordsDecodeOutput('7', 'sieben', 'common_language_german'),
           NumeralWordsDecodeOutput('0', 'null', 'common_language_german'),
-          NumeralWordsDecodeOutput('5', 'fuenf', 'common_language_german'),
+          NumeralWordsDecodeOutput('5', 'fünf', 'common_language_german'),
           NumeralWordsDecodeOutput('°', 'grad', 'common_language_german'),
           NumeralWordsDecodeOutput('9', 'neun', 'common_language_german')]},
 
-      {'input' : 'Gen Norden wand er sich. Zweiundfünfzig Tage lang wanderte er an der Elbe entlang. Als die Gegend immer flacher wurde, kam er ins Grübeln. Da er sich nicht auskannte, fragte er mal diesen und mal jenen Einheimischen, wo es in diesen Landen Berge geben konnte. Erst der fünfundzwanzigste verriet ihm, dass es weiter östlich ein paar Berge neben einem großen See gab. Erleichtert gab Rübezahl dem Mann als Dank vierhundertunddreißig Taler. Rübezahl wand sich also nach Osten und wanderte weiter durch dieses Land. Im Morgengrauen des dreizehnten Tages kam er an einer großen Siedlung vorbei, die an einer Wasserkreuzung mit drei Flussarmen lag und sieben Brücken hatte. Hinter der Siedlung, zwischen zwei der drei Flussarme, entdeckte er einen großen See. Dies musste der See sein, von dem ihm erzählt wurde. Als sich der Morgennebel lichtete, erblickte er hinter dem See eine Bergkette, bestehend aus 2 Gipfeln. Der eine war dreihundertfünfundneunzig und der andere gar vierhundertundfünfundsechzig Meter hoch. Für diese Gegend also zusammen gewaltige … Meter. Schnellen Schrittes erreichte er den Fuß der Bergkette. Er suchte eine Weile nach einem passenden Versteck für sein Goldenes Drachenei. An einer flachen, offenen Stelle wurde er eines Wegelagerers gewahr. Er belegte ihn mit einem tausendjährigen TAPIR-Fluch und verbannte ihn in ein enges Grab, bewacht von 7 schwarz-weißen. Unbemerkt konnte er nun ein geeignetes Objekt finden, um sein Goldenes Drachenei darin zu verstecken. Zur Absicherung baute er noch ein paar Hürden ein, und sicherte das Ganze noch mit einem Schloss.', 'language' : NumeralWordsLanguage.DEU, 'decodeMode' : true,
+      {'input' : 'Gen Norden wand er sich. Zweiundfünfzig Tage lang wanderte er an der Elbe entlang. Als die Gegend immer flacher wurde, kam er ins Grübeln. Da er sich nicht auskannte, fragte er mal diesen und mal jenen Einheimischen, wo es in diesen Landen Berge geben konnte. Erst der fünfundzwanzigste verriet ihm, dass es weiter östlich ein paar Berge neben einem großen See gab. Erleichtert gab Rübezahl dem Mann als Dank vierhundertunddreißig Taler. Rübezahl wand sich also nach Osten und wanderte weiter durch dieses Land. Im Morgengrauen des dreizehnten Tages kam er an einer großen Siedlung vorbei, die an einer Wasserkreuzung mit drei Flussarmen lag und sieben Brücken hatte. Hinter der Siedlung, zwischen zwei der drei Flussarme, entdeckte er einen großen See. Dies musste der See sein, von dem ihm erzählt wurde. Als sich der Morgennebel lichtete, erblickte er hinter dem See eine Bergkette, bestehend aus 2 Gipfeln. Der eine war dreihundertfünfundneunzig und der andere gar vierhundertundfünfundsechzig Meter hoch. Für diese Gegend also zusammen gewaltige … Meter. Schnellen Schrittes erreichte er den Fuß der Bergkette. Er suchte eine Weile nach einem passenden Versteck für sein Goldenes Drachenei. An einer flachen, offenen Stelle wurde er eines Wegelagerers gewahr. Er belegte ihn mit einem tausendjährigen TAPIR-Fluch und verbannte ihn in ein enges Grab, bewacht von 7 schwarz-weißen. Unbemerkt konnte er nun ein geeignetes Objekt finden, um sein Goldenes Drachenei darin zu verstecken. Zur Absicherung baute er noch ein paar Hürden ein, und sicherte das Ganze noch mit einem Schloss.',
+        'language' : NumeralWordsLanguage.DEU,
+        'decodeMode' : true,
         'expectedOutput' : [
           NumeralWordsDecodeOutput('.', '.', ''),
-          NumeralWordsDecodeOutput('52', 'zweiundfuenfzig', 'common_language_german'),
+          NumeralWordsDecodeOutput('52', 'zweiundfünfzig', 'common_language_german'),
           NumeralWordsDecodeOutput('.', '.', ''),
           NumeralWordsDecodeOutput('.', '.', ''),
           NumeralWordsDecodeOutput('.', '.', ''),
-          NumeralWordsDecodeOutput('25', 'fuenfundzwanzig', 'common_language_german'),
+          NumeralWordsDecodeOutput('25', 'fünfundzwanzig', 'common_language_german'),
           NumeralWordsDecodeOutput('.', '.', ''),
-          NumeralWordsDecodeOutput('430', 'vierhundertdreissig', 'common_language_german'),
+          NumeralWordsDecodeOutput('430', 'vierhundertdreißig', 'common_language_german'),
           NumeralWordsDecodeOutput('.', '.', ''),
           NumeralWordsDecodeOutput('.', '.', ''),
           NumeralWordsDecodeOutput('13', 'dreizehn', 'common_language_german'),
@@ -436,8 +438,8 @@ void main(){
           NumeralWordsDecodeOutput('.', '.', ''),
           NumeralWordsDecodeOutput('2', '2', 'numeralwords_language_num'),
           NumeralWordsDecodeOutput('.', '.', ''),
-          NumeralWordsDecodeOutput('395', 'dreihundertfuenfundneunzig', 'common_language_german'),
-          NumeralWordsDecodeOutput('465', 'vierhundertfuenfundsechzig', 'common_language_german'),
+          NumeralWordsDecodeOutput('395', 'dreihundertfünfundneunzig', 'common_language_german'),
+          NumeralWordsDecodeOutput('465', 'vierhundertfünfundsechzig', 'common_language_german'),
           NumeralWordsDecodeOutput('.', '.', ''),
           NumeralWordsDecodeOutput('.', '.', ''),
           NumeralWordsDecodeOutput('.', '.', ''),
@@ -490,7 +492,7 @@ void main(){
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, language: ${elem['language']}, decodeMode: ${elem['decodeMode']}', () {
-        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
+        var _actual = decodeNumeralwords(input: elem['input'] as String, language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
         var expected = elem['expectedOutput'] as List<NumeralWordsDecodeOutput>;
         var length = expected.length;
         for (int i = 0; i < length; i++) {
@@ -535,7 +537,7 @@ void main(){
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, language: ${elem['language']}, decodeMode: ${elem['decodeMode']}', () {
-        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
+        var _actual = decodeNumeralwords(input: elem['input'] as String, language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
         var expected = elem['expectedOutput'] as List<NumeralWordsDecodeOutput>;
         var length = expected.length;
         for (int i = 0; i < length; i++) {
@@ -574,7 +576,7 @@ void main(){
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, language: ${elem['language']}, decodeMode: ${elem['decodeMode']}', () {
-        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
+        var _actual = decodeNumeralwords(input: elem['input'] as String, language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
         var expected = elem['expectedOutput'] as List<NumeralWordsDecodeOutput>;
         var length = expected.length;
         for (int i = 0; i < length; i++) {
@@ -620,7 +622,7 @@ void main(){
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, language: ${elem['language']}, decodeMode: ${elem['decodeMode']}', () {
-        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
+        var _actual = decodeNumeralwords(input: elem['input'] as String, language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
         var expected = elem['expectedOutput'] as List<NumeralWordsDecodeOutput>;
         var length = expected.length;
         for (int i = 0; i < length; i++) {
@@ -665,7 +667,7 @@ void main(){
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, language: ${elem['language']}, decodeMode: ${elem['decodeMode']}', () {
-        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
+        var _actual = decodeNumeralwords(input: elem['input'] as String, language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
         var expected = elem['expectedOutput'] as List<NumeralWordsDecodeOutput>;
         var length = expected.length;
         for (int i = 0; i < length; i++) {
@@ -676,7 +678,6 @@ void main(){
       });
     }
   });
-
 
   group("NumeralWords.Minions:", () {
       List<Map<String, Object?>> _inputsToExpected = [
@@ -701,7 +702,7 @@ void main(){
       for (var elem in _inputsToExpected) {
         test(
             'input: ${elem['input']}, language: ${elem['language']}, decodeMode: ${elem['decodeMode']}', () {
-          var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
+          var _actual = decodeNumeralwords(input: elem['input'] as String, language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
           var expected = elem['expectedOutput'] as List<NumeralWordsDecodeOutput>;
           var length = expected.length;
           for (int i = 0; i < length; i++) {
@@ -736,7 +737,7 @@ void main(){
         for (var elem in _inputsToExpected) {
           test(
               'input: ${elem['input']}, language: ${elem['language']}, decodeMode: ${elem['decodeMode']}', () {
-            var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
+            var _actual = decodeNumeralwords(input: elem['input'] as String, language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
             var expected = elem['expectedOutput'] as List<NumeralWordsDecodeOutput>;
             var length = expected.length;
             for (int i = 0; i < length; i++) {
@@ -792,7 +793,7 @@ void main(){
     for (var elem in _inputsToExpected) {
       test(
           'input: ${elem['input']}, language: ${elem['language']}, decodeMode: ${elem['decodeMode']}', () {
-        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
+        var _actual = decodeNumeralwords(input: elem['input'] as String, language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
         var expected = elem['expectedOutput'] as List<NumeralWordsDecodeOutput>;
         var length = expected.length;
         for (int i = 0; i < length; i++) {
@@ -873,7 +874,7 @@ void main(){
     for (var elem in _inputsToExpected) {
       test(
           'input: ${elem['input']}, language: ${elem['language']}, decodeMode: ${elem['decodeMode']}', () {
-        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
+        var _actual = decodeNumeralwords(input: elem['input'] as String, language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
         var expected = elem['expectedOutput'] as List<NumeralWordsDecodeOutput>;
         var length = expected.length;
         for (int i = 0; i < length; i++) {
@@ -897,7 +898,7 @@ void main(){
           NumeralWordsDecodeOutput('2', 'zwei', 'common_language_german'),
           NumeralWordsDecodeOutput('3', 'drei', 'common_language_german'),
           NumeralWordsDecodeOutput('4', 'vier', 'common_language_german'),
-          NumeralWordsDecodeOutput('5', 'fuenf', 'common_language_german'),
+          NumeralWordsDecodeOutput('5', 'fünf', 'common_language_german'),
           NumeralWordsDecodeOutput('6', 'sechs', 'common_language_german'),
           NumeralWordsDecodeOutput('7', 'sieben', 'common_language_german'),
           NumeralWordsDecodeOutput('8', 'acht', 'common_language_german'),
@@ -921,10 +922,8 @@ void main(){
         'language': NumeralWordsLanguage.DEU,
         'decodeMode': false,
         'expectedOutput': [
-          NumeralWordsDecodeOutput('5', 'fuenf', 'common_language_german'),
-          NumeralWordsDecodeOutput('2', 'zwo', 'common_language_german'),
-          NumeralWordsDecodeOutput('12', 'zwoelf', 'common_language_german'),
-          NumeralWordsDecodeOutput('11', 'elf', 'common_language_german'),
+          NumeralWordsDecodeOutput('5', 'fünf', 'common_language_german'),
+          NumeralWordsDecodeOutput('12', 'zwölf', 'common_language_german'),
           NumeralWordsDecodeOutput('3', 'drei', 'common_language_german'),
         ]
       },
@@ -933,7 +932,7 @@ void main(){
     for (var elem in _inputsToExpected) {
       test(
           'input: ${elem['input']}, language: ${elem['language']}, decodeMode: ${elem['decodeMode']}', () {
-        var _actual = decodeNumeralwords(input: removeAccents(elem['input'].toString().toLowerCase()), language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
+        var _actual = decodeNumeralwords(input: elem['input'] as String, language: elem['language'] as NumeralWordsLanguage, decodeModeWholeWords: elem['decodeMode'] as bool);
         var expected = elem['expectedOutput'] as List<NumeralWordsDecodeOutput>;
         var length = expected.length;
         for (int i = 0; i < length; i++) {

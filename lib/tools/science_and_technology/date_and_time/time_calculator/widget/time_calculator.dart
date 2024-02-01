@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_datetime_picker.dart';
@@ -12,10 +12,10 @@ class TimeCalculator extends StatefulWidget {
   const TimeCalculator({Key? key}) : super(key: key);
 
   @override
-  TimeCalculatorState createState() => TimeCalculatorState();
+  _TimeCalculatorState createState() => _TimeCalculatorState();
 }
 
-class TimeCalculatorState extends State<TimeCalculator> {
+class _TimeCalculatorState extends State<TimeCalculator> {
   var _currentMode = GCWSwitchPosition.left;
   late Duration _currentStartTime;
   late Duration _currentEndTime;

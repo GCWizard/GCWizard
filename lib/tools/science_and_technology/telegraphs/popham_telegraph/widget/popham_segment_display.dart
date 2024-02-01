@@ -18,11 +18,9 @@ const _INITIAL_SEGMENTS = <String, bool>{
 const _POPHAM_RELATIVE_DISPLAY_WIDTH = 110;
 const _POPHAM_RELATIVE_DISPLAY_HEIGHT = 130;
 
-
 class _PophamTelegraphSegmentDisplay extends NSegmentDisplay {
-
-  _PophamTelegraphSegmentDisplay({
-      Key? key,
+  _PophamTelegraphSegmentDisplay(
+      {Key? key,
       required Map<String, bool> segments,
       bool readOnly = false,
       void Function(Map<String, bool>)? onChanged})
@@ -250,7 +248,6 @@ class _PophamTelegraphSegmentDisplay extends NSegmentDisplay {
                 });
               }
 
-
               paint.color = segmentActive(currentSegments, 'd') ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
               var pathd0 = Path();
               pathd0.moveTo(
@@ -299,7 +296,7 @@ class _PophamTelegraphSegmentDisplay extends NSegmentDisplay {
                   size.width / _POPHAM_RELATIVE_DISPLAY_WIDTH * 80, size.width / _POPHAM_RELATIVE_DISPLAY_HEIGHT * 140);
               pathf0.close();
 
-               if (!readOnly || segmentActive(currentSegments, 'f')) {
+              if (!readOnly || segmentActive(currentSegments, 'f')) {
                 canvas.touchCanvas.drawPath(pathf0, paint, onTapDown: (tapDetail) {
                   setSegmentState('f', !segmentActive(currentSegments, 'f'));
                 });

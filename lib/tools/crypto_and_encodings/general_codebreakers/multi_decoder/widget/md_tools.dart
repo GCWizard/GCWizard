@@ -48,72 +48,42 @@ const List<String> _mdtToolsRegistry = [
 
 /// all multiDecoder default options
 final _initialOptions = <String, Map<String, Object>>{
-  MDT_INTERNALNAMES_ALPHABETVALUES: {
-    MDT_ALPHABETVALUES_OPTION_ALPHABET: 'alphabet_name_az'
-  },
+  MDT_INTERNALNAMES_ALPHABETVALUES: {MDT_ALPHABETVALUES_OPTION_ALPHABET: 'alphabet_name_az'},
   MDT_INTERNALNAMES_BACON: {MDT_BACON_OPTION_MODE: MDT_BACON_OPTION_MODE_AB},
   MDT_INTERNALNAMES_BASE: {MDT_BASE_OPTION_BASEFUNCTION: 'base_base64'},
   MDT_INTERNALNAMES_BCD: {MDT_BCD_OPTION_BCDFUNCTION: 'bcd_original'},
-  MDT_INTERNALNAMES_CCITT1: {
-    MDT_CCITT1_OPTION_MODE: MDT_CCITT1_OPTION_MODE_BINARY
-  },
-  MDT_INTERNALNAMES_CCITT2: {
-    MDT_CCITT2_OPTION_MODE: MDT_CCITT2_OPTION_MODE_BINARY
-  },
+  MDT_INTERNALNAMES_CCITT1: {MDT_CCITT1_OPTION_MODE: MDT_CCITT1_OPTION_MODE_BINARY},
+  MDT_INTERNALNAMES_CCITT2: {MDT_CCITT2_OPTION_MODE: MDT_CCITT2_OPTION_MODE_BINARY},
   MDT_INTERNALNAMES_COORDINATEFORMATS: {
-    MDT_COORDINATEFORMATS_OPTION_FORMAT: CoordinateFormatKey.UTM
+    MDT_COORDINATEFORMATS_OPTION_FORMAT: coordinateFormatDefinitionByKey(CoordinateFormatKey.UTM).persistenceKey
   },
-  MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_BEATNIK: {
-    MDT_ESOTERIC_LANGUAGE_BEATNIK_OPTION_MODE: scrabbleID_EN
-  },
+  MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_BEATNIK: {MDT_ESOTERIC_LANGUAGE_BEATNIK_OPTION_MODE: scrabbleID_EN},
   MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_BRAINFK_DERIVATIVE: {
-    MDT_ESOTERIC_LANGUAGE_BRAINFK_DERIVATIVE_OPTION_MODE:
-        MDT_ESOTERIC_LANGUAGE_BRAINFK_DERIVATIVE_OPTION_BRAINFK
+    MDT_ESOTERIC_LANGUAGE_BRAINFK_DERIVATIVE_OPTION_MODE: MDT_ESOTERIC_LANGUAGE_BRAINFK_DERIVATIVE_OPTION_BRAINFK
   },
   MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_CHEF: {
-    MDT_ESOTERIC_LANGUAGE_CHEF_OPTION_MODE:
-        MDT_ESOTERIC_LANGUAGES_CHEF_OPTION_ENGLISH
+    MDT_ESOTERIC_LANGUAGE_CHEF_OPTION_MODE: MDT_ESOTERIC_LANGUAGES_CHEF_OPTION_ENGLISH
   },
   MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_DEADFISH: {
-    MDT_ESOTERIC_LANGUAGE_DEADFISH_OPTION_MODE:
-        MDT_ESOTERIC_LANGUAGES_DEADFISH_OPTION_IDSO
+    MDT_ESOTERIC_LANGUAGE_DEADFISH_OPTION_MODE: MDT_ESOTERIC_LANGUAGES_DEADFISH_OPTION_IDSO
   },
-  MDT_INTERNALNAMES_GCCODE: {
-    MDT_GCCODE_OPTION_MODE: MDT_GCCODE_OPTION_MODE_IDTOGCCODE
-  },
-  MDT_INTERNALNAMES_ENCLOSEDAREAS: {
-    MDT_ENCLOSEDAREAS_OPTION_MODE: 'enclosedareas_with4'
-  },
+  MDT_INTERNALNAMES_GCCODE: {MDT_GCCODE_OPTION_MODE: MDT_GCCODE_OPTION_MODE_IDTOGCCODE},
+  MDT_INTERNALNAMES_ENCLOSEDAREAS: {MDT_ENCLOSEDAREAS_OPTION_MODE: 'enclosedareas_with4'},
   MDT_INTERNALNAMES_KEYBOARDLAYOUT: {
-    MDT_KEYBOARDLAYOUT_OPTION_FROM:
-        getKeyboardByType(KeyboardType.QWERTY_US_INT)?.name ?? '',
-    MDT_KEYBOARDLAYOUT_OPTION_TO: getKeyboardByType(KeyboardType.QWERTZ_T1)?.name ?? ''
+    MDT_KEYBOARDLAYOUT_OPTION_FROM: getKeyboardByType(KEYBOARD_TYPE.QWERTY_US_INT)?.name ?? '',
+    MDT_KEYBOARDLAYOUT_OPTION_TO: getKeyboardByType(KEYBOARD_TYPE.QWERTZ_T1)?.name ?? ''
   },
-  MDT_INTERNALNAMES_KEYBOARDNUMBERS: {
-    MDT_KEYBOARDNUMBERS_OPTION_TYPE: 'keyboard_mode_qwertz_ristome_dvorak'
-  },
+  MDT_INTERNALNAMES_KEYBOARDNUMBERS: {MDT_KEYBOARDNUMBERS_OPTION_TYPE: 'keyboard_mode_qwertz_ristome_dvorak'},
   MDT_INTERNALNAMES_NUMERALBASES: {MDT_NUMERALBASES_OPTION_FROM: 16},
   MDT_INTERNALNAMES_ONETIMEPAD: {MDT_ONETIMEPAD_OPTION_KEY: 1},
-  MDT_INTERNALNAMES_PLAYFAIR: {
-    MDT_PLAYFAIR_OPTION_MODE: alphabetModeName(AlphabetModificationMode.J_TO_I)
-  },
-  MDT_INTERNALNAMES_POLYBIOS: {
-    MDT_POLYBIOS_OPTION_MODE: alphabetModeName(AlphabetModificationMode.J_TO_I)
-  },
-  MDT_INTERNALNAMES_ROMANNUMBERS: {
-    MDT_ROMANNUMBERS_OPTION_MODE: MDT_ROMANNUMBERS_OPTION_MODE_SUBTRACTION
-  },
+  MDT_INTERNALNAMES_PLAYFAIR: {MDT_PLAYFAIR_OPTION_MODE: alphabetModeName(AlphabetModificationMode.J_TO_I)},
+  MDT_INTERNALNAMES_POLYBIOS: {MDT_POLYBIOS_OPTION_MODE: alphabetModeName(AlphabetModificationMode.J_TO_I)},
+  MDT_INTERNALNAMES_ROMANNUMBERS: {MDT_ROMANNUMBERS_OPTION_MODE: MDT_ROMANNUMBERS_OPTION_MODE_SUBTRACTION},
   MDT_INTERNALNAMES_ROTATION: {MDT_ROTATION_OPTION_KEY: 13},
-  MDT_INTERNALNAMES_SEGMENTDISPLAY: {
-    MDT_SEGMENTDISPLAY_OPTION_NUMBERSEGMENTS: 7
-  },
-  MDT_INTERNALNAMES_VANITYMULTITAP: {
-    MDT_VANITYMULTITAP_OPTION_PHONEMODEL: NAME_PHONEMODEL_SIMPLE_SPACE_0
-  },
+  MDT_INTERNALNAMES_SEGMENTDISPLAY: {MDT_SEGMENTDISPLAY_OPTION_NUMBERSEGMENTS: 7},
+  MDT_INTERNALNAMES_VANITYMULTITAP: {MDT_VANITYMULTITAP_OPTION_PHONEMODEL: NAME_PHONEMODEL_SIMPLE_SPACE_0},
   MDT_INTERNALNAMES_VIGENERE: {MDT_VIGENERE_OPTION_KEY: 1},
-  MDT_INTERNALNAMES_WASD: {
-    MDT_WASD_OPTION_SET: KEYBOARD_CONTROLS[WASD_TYPE.NWSE]!
-  },
+  MDT_INTERNALNAMES_WASD: {MDT_WASD_OPTION_SET: KEYBOARD_CONTROLS[WASD_TYPE.NWSE]!},
 };
 
 Object? getDefaultValue(String internalToolName, String option) {
@@ -138,8 +108,7 @@ int checkIntFormatOrDefaultOption(String internalToolName, Map<String, Object?> 
   throw Exception('invalid tool option');
 }
 
-Map<String, Object?> _multiDecoderToolOptionToGCWMultiDecoderToolOptions(
-    List<MultiDecoderToolOption> mdtOptions) {
+Map<String, Object?> _multiDecoderToolOptionToGCWMultiDecoderToolOptions(List<MultiDecoderToolOption> mdtOptions) {
   var gcwOptions = <String, Object?>{};
 
   for (var option in mdtOptions) {
@@ -158,227 +127,138 @@ AbstractMultiDecoderTool _multiDecoderToolToGCWMultiDecoderTool(BuildContext con
 
   switch (mdtTool.internalToolName) {
     case MDT_INTERNALNAMES_ALPHABETVALUES:
-      gcwTool = MultiDecoderToolAlphabetValues(
-          id: mdtTool.id,
-          name: mdtTool.name,
-          options: options,
-          context: context);
+      gcwTool = MultiDecoderToolAlphabetValues(id: mdtTool.id, name: mdtTool.name, options: options, context: context);
       break;
     case MDT_INTERNALNAMES_ASCII:
-      gcwTool = MultiDecoderToolASCII(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolASCII(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_ATBASH:
-      gcwTool = MultiDecoderToolAtbash(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolAtbash(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_BACON:
-      gcwTool = MultiDecoderToolBacon(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolBacon(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_BASE:
-      gcwTool = MultiDecoderToolBase(
-          id: mdtTool.id,
-          name: mdtTool.name,
-          options: options,
-          context: context);
+      gcwTool = MultiDecoderToolBase(id: mdtTool.id, name: mdtTool.name, options: options, context: context);
       break;
     case MDT_INTERNALNAMES_BCD:
-      gcwTool = MultiDecoderToolBCD(
-          id: mdtTool.id,
-          name: mdtTool.name,
-          options: options,
-          context: context);
+      gcwTool = MultiDecoderToolBCD(id: mdtTool.id, name: mdtTool.name, options: options, context: context);
       break;
     case MDT_INTERNALNAMES_BEGHILOS:
-      gcwTool = MultiDecoderToolBeghilos(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolBeghilos(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_BINARY2IMAGE:
-      gcwTool = MultiDecoderBinary2Image(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderBinary2Image(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_BRAILLE_DOT_NUMBERS:
-      gcwTool = MultiDecoderToolBrailleDotNumbers(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolBrailleDotNumbers(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_CCITT1:
-      gcwTool = MultiDecoderToolCcitt1(
-          id: mdtTool.id,
-          name: mdtTool.name,
-          options: options,
-          context: context);
+      gcwTool = MultiDecoderToolCcitt1(id: mdtTool.id, name: mdtTool.name, options: options, context: context);
       break;
     case MDT_INTERNALNAMES_CCITT2:
-      gcwTool = MultiDecoderToolCcitt2(
-          id: mdtTool.id,
-          name: mdtTool.name,
-          options: options,
-          context: context);
+      gcwTool = MultiDecoderToolCcitt2(id: mdtTool.id, name: mdtTool.name, options: options, context: context);
       break;
     case MDT_INTERNALNAMES_CHRONOGRAM:
-      gcwTool = MultiDecoderToolChronogram(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolChronogram(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_COORDINATEFORMATS:
-      gcwTool = MultiDecoderToolCoordinateFormats(
-          id: mdtTool.id,
-          name: mdtTool.name,
-          options: options,
-          context: context);
+      gcwTool =
+          MultiDecoderToolCoordinateFormats(id: mdtTool.id, name: mdtTool.name, options: options, context: context);
       break;
     case MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_BEATNIK:
       gcwTool = MultiDecoderToolEsotericLanguageBeatnik(
-          id: mdtTool.id,
-          name: mdtTool.name,
-          options: options,
-          context: context);
+          id: mdtTool.id, name: mdtTool.name, options: options, context: context);
       break;
     case MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_BRAINFK_DERIVATIVE:
-      gcwTool = MultiDecoderToolEsotericLanguageBrainfkDerivate(
-          id: mdtTool.id,
-          name: mdtTool.name,
-          options: options,
-          context: context);
+      gcwTool = MultiDecoderToolEsotericLanguageBrainfkDerivative(
+          id: mdtTool.id, name: mdtTool.name, options: options, context: context);
       break;
     case MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_CHEF:
-      gcwTool = MultiDecoderToolEsotericLanguageChef(
-          id: mdtTool.id,
-          name: mdtTool.name,
-          options: options,
-          context: context);
+      gcwTool =
+          MultiDecoderToolEsotericLanguageChef(id: mdtTool.id, name: mdtTool.name, options: options, context: context);
       break;
     case MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_COW:
-      gcwTool = MultiDecoderToolEsotericLanguageCow(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolEsotericLanguageCow(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_DEADFISH:
       gcwTool = MultiDecoderToolEsotericLanguageDeadfish(
-          id: mdtTool.id,
-          name: mdtTool.name,
-          options: options,
-          context: context);
+          id: mdtTool.id, name: mdtTool.name, options: options, context: context);
       break;
     case MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_HOHOHO:
-      gcwTool = MultiDecoderToolEsotericLanguageHohoho(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolEsotericLanguageHohoho(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_KAROL_ROBOT:
-      gcwTool = MultiDecoderToolEsotericLanguageKarolRobot(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolEsotericLanguageKarolRobot(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_MALBOLGE:
-      gcwTool = MultiDecoderToolEsotericLanguageMalbolge(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolEsotericLanguageMalbolge(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_WHITESPACE:
-      gcwTool = MultiDecoderToolEsotericLanguageWhitespace(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolEsotericLanguageWhitespace(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_ENCLOSEDAREAS:
-      gcwTool = MultiDecoderToolEnclosedAreas(
-          id: mdtTool.id,
-          name: mdtTool.name,
-          options: options,
-          context: context);
+      gcwTool = MultiDecoderToolEnclosedAreas(id: mdtTool.id, name: mdtTool.name, options: options, context: context);
       break;
     case MDT_INTERNALNAMES_GCCODE:
-      gcwTool = MultiDecoderToolGCCode(
-          id: mdtTool.id,
-          name: mdtTool.name,
-          options: options,
-          context: context);
+      gcwTool = MultiDecoderToolGCCode(id: mdtTool.id, name: mdtTool.name, options: options, context: context);
       break;
     case MDT_INTERNALNAMES_KENNY:
-      gcwTool = MultiDecoderToolKenny(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolKenny(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_KEYBOARDLAYOUT:
-      gcwTool = MultiDecoderToolKeyboardLayout(
-          id: mdtTool.id,
-          name: mdtTool.name,
-          options: options,
-          context: context);
+      gcwTool = MultiDecoderToolKeyboardLayout(id: mdtTool.id, name: mdtTool.name, options: options, context: context);
       break;
     case MDT_INTERNALNAMES_KEYBOARDNUMBERS:
-      gcwTool = MultiDecoderToolKeyboardNumbers(
-          id: mdtTool.id,
-          name: mdtTool.name,
-          options: options,
-          context: context);
+      gcwTool = MultiDecoderToolKeyboardNumbers(id: mdtTool.id, name: mdtTool.name, options: options, context: context);
       break;
     case MDT_INTERNALNAMES_NUMERALBASES:
-      gcwTool = MultiDecoderToolNumeralBases(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolNumeralBases(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_ONETIMEPAD:
-      gcwTool = MultiDecoderToolOneTimePad(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolOneTimePad(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_PLAYFAIR:
-      gcwTool = MultiDecoderToolPlayfair(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolPlayfair(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_POLYBIOS:
-      gcwTool = MultiDecoderToolPolybios(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolPolybios(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_POKEMON:
-      gcwTool = MultiDecoderToolPokemon(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolPokemon(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_REVERSE:
-      gcwTool = MultiDecoderToolReverse(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolReverse(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_ROMANNUMBERS:
-      gcwTool = MultiDecoderToolRomanNumbers(
-          id: mdtTool.id,
-          name: mdtTool.name,
-          options: options,
-          context: context);
+      gcwTool = MultiDecoderToolRomanNumbers(id: mdtTool.id, name: mdtTool.name, options: options, context: context);
       break;
     case MDT_INTERNALNAMES_ROT18:
-      gcwTool = MultiDecoderToolROT18(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolROT18(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_ROT47:
-      gcwTool = MultiDecoderToolROT47(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolROT47(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_ROT5:
-      gcwTool = MultiDecoderToolROT5(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolROT5(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_ROTATION:
-      gcwTool = MultiDecoderToolRotation(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolRotation(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_SEGMENTDISPLAY:
-      gcwTool = MultiDecoderToolSegmentDisplay(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolSegmentDisplay(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_TAPIR:
-      gcwTool = MultiDecoderToolTapir(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolTapir(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_VANITYMULTITAP:
-      gcwTool = MultiDecoderToolVanityMultitap(
-          id: mdtTool.id,
-          name: mdtTool.name,
-          options: options,
-          context: context);
+      gcwTool = MultiDecoderToolVanityMultitap(id: mdtTool.id, name: mdtTool.name, options: options, context: context);
       break;
     case MDT_INTERNALNAMES_VIGENERE:
-      gcwTool = MultiDecoderToolVigenere(
-          id: mdtTool.id, name: mdtTool.name, options: options);
+      gcwTool = MultiDecoderToolVigenere(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_WASD:
-      gcwTool = MultiDecoderToolWasd(
-          id: mdtTool.id,
-          name: mdtTool.name,
-          options: options,
-          context: context);
+      gcwTool = MultiDecoderToolWasd(id: mdtTool.id, name: mdtTool.name, options: options, context: context);
       break;
     default:
       gcwTool = MultiDecoderToolDummy();
@@ -391,234 +271,156 @@ AbstractMultiDecoderTool _multiDecoderToolToGCWMultiDecoderTool(BuildContext con
 /// default configuration
 void _initializeMultiToolDecoder(BuildContext context) {
   var newTools = [
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_ROT5), MDT_INTERNALNAMES_ROT5),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_ROT18), MDT_INTERNALNAMES_ROT18),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_ROT47), MDT_INTERNALNAMES_ROT47),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_REVERSE), MDT_INTERNALNAMES_REVERSE),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_ATBASH), MDT_INTERNALNAMES_ATBASH),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ALPHABETVALUES),
-        MDT_INTERNALNAMES_ALPHABETVALUES),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_ASCII), MDT_INTERNALNAMES_ASCII),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ROMANNUMBERS),
-        MDT_INTERNALNAMES_ROMANNUMBERS,
-        options: [
-          MultiDecoderToolOption(MDT_ROMANNUMBERS_OPTION_MODE,
-              MDT_ROMANNUMBERS_OPTION_MODE_SUBTRACTION)
-        ]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ROMANNUMBERS),
-        MDT_INTERNALNAMES_ROMANNUMBERS,
-        options: [
-          MultiDecoderToolOption(MDT_ROMANNUMBERS_OPTION_MODE,
-              MDT_ROMANNUMBERS_OPTION_MODE_ADDITION)
-        ]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_CHRONOGRAM),
-        MDT_INTERNALNAMES_CHRONOGRAM),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_VANITYMULTITAP),
-        MDT_INTERNALNAMES_VANITYMULTITAP,
-        options: [
-          MultiDecoderToolOption(MDT_VANITYMULTITAP_OPTION_PHONEMODEL,
-              NAME_PHONEMODEL_SIMPLE_SPACE_0)
-        ]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_NUMERALBASES),
-        MDT_INTERNALNAMES_NUMERALBASES,
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ROT5), MDT_INTERNALNAMES_ROT5),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ROT18), MDT_INTERNALNAMES_ROT18),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ROT47), MDT_INTERNALNAMES_ROT47),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_REVERSE), MDT_INTERNALNAMES_REVERSE),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ATBASH), MDT_INTERNALNAMES_ATBASH),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ALPHABETVALUES), MDT_INTERNALNAMES_ALPHABETVALUES),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ASCII), MDT_INTERNALNAMES_ASCII),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ROMANNUMBERS), MDT_INTERNALNAMES_ROMANNUMBERS,
+        options: [MultiDecoderToolOption(MDT_ROMANNUMBERS_OPTION_MODE, MDT_ROMANNUMBERS_OPTION_MODE_SUBTRACTION)]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ROMANNUMBERS), MDT_INTERNALNAMES_ROMANNUMBERS,
+        options: [MultiDecoderToolOption(MDT_ROMANNUMBERS_OPTION_MODE, MDT_ROMANNUMBERS_OPTION_MODE_ADDITION)]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_CHRONOGRAM), MDT_INTERNALNAMES_CHRONOGRAM),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_VANITYMULTITAP), MDT_INTERNALNAMES_VANITYMULTITAP,
+        options: [MultiDecoderToolOption(MDT_VANITYMULTITAP_OPTION_PHONEMODEL, NAME_PHONEMODEL_SIMPLE_SPACE_0)]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_NUMERALBASES), MDT_INTERNALNAMES_NUMERALBASES,
         options: [MultiDecoderToolOption(MDT_NUMERALBASES_OPTION_FROM, 2)]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_NUMERALBASES),
-        MDT_INTERNALNAMES_NUMERALBASES,
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_NUMERALBASES), MDT_INTERNALNAMES_NUMERALBASES,
         options: [MultiDecoderToolOption(MDT_NUMERALBASES_OPTION_FROM, 3)]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_NUMERALBASES),
-        MDT_INTERNALNAMES_NUMERALBASES,
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_NUMERALBASES), MDT_INTERNALNAMES_NUMERALBASES,
         options: [MultiDecoderToolOption(MDT_NUMERALBASES_OPTION_FROM, 8)]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_NUMERALBASES),
-        MDT_INTERNALNAMES_NUMERALBASES,
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_NUMERALBASES), MDT_INTERNALNAMES_NUMERALBASES,
         options: [MultiDecoderToolOption(MDT_NUMERALBASES_OPTION_FROM, 16)]),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_BASE), MDT_INTERNALNAMES_BASE,
-        options: [
-          MultiDecoderToolOption(MDT_BASE_OPTION_BASEFUNCTION, 'base_base16')
-        ]),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_BASE), MDT_INTERNALNAMES_BASE,
-        options: [
-          MultiDecoderToolOption(MDT_BASE_OPTION_BASEFUNCTION, 'base_base32')
-        ]),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_BASE), MDT_INTERNALNAMES_BASE,
-        options: [
-          MultiDecoderToolOption(MDT_BASE_OPTION_BASEFUNCTION, 'base_base64')
-        ]),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_BASE), MDT_INTERNALNAMES_BASE,
-        options: [
-          MultiDecoderToolOption(MDT_BASE_OPTION_BASEFUNCTION, 'base_base85')
-        ]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
-        MDT_INTERNALNAMES_COORDINATEFORMATS, options: [
-      MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.UTM.name)
-    ]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
-        MDT_INTERNALNAMES_COORDINATEFORMATS, options: [
-      MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.MGRS.name)
-    ]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
-        MDT_INTERNALNAMES_COORDINATEFORMATS, options: [
-      MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.XYZ.name)
-    ]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
-        MDT_INTERNALNAMES_COORDINATEFORMATS, options: [
-      MultiDecoderToolOption(
-          MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.MAIDENHEAD.name)
-    ]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
-        MDT_INTERNALNAMES_COORDINATEFORMATS,
-        options: [
-          MultiDecoderToolOption(
-              MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.NATURAL_AREA_CODE.name)
-        ]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
-        MDT_INTERNALNAMES_COORDINATEFORMATS, options: [
-      MultiDecoderToolOption(
-          MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.GEOHASH.name)
-    ]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
-        MDT_INTERNALNAMES_COORDINATEFORMATS, options: [
-      MultiDecoderToolOption(
-          MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.GEOHEX.name)
-    ]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
-        MDT_INTERNALNAMES_COORDINATEFORMATS, options: [
-      MultiDecoderToolOption(
-          MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.GEO3X3.name)
-    ]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
-        MDT_INTERNALNAMES_COORDINATEFORMATS, options: [
-      MultiDecoderToolOption(
-          MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.MAKANEY.name)
-    ]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
-        MDT_INTERNALNAMES_COORDINATEFORMATS,
-        options: [
-          MultiDecoderToolOption(
-              MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.OPEN_LOCATION_CODE.name)
-        ]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
-        MDT_INTERNALNAMES_COORDINATEFORMATS, options: [
-      MultiDecoderToolOption(
-          MDT_COORDINATEFORMATS_OPTION_FORMAT, CoordinateFormatKey.QUADTREE.name)
-    ]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
-        MDT_INTERNALNAMES_COORDINATEFORMATS,
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_BASE), MDT_INTERNALNAMES_BASE,
+        options: [MultiDecoderToolOption(MDT_BASE_OPTION_BASEFUNCTION, 'base_base16')]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_BASE), MDT_INTERNALNAMES_BASE,
+        options: [MultiDecoderToolOption(MDT_BASE_OPTION_BASEFUNCTION, 'base_base32')]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_BASE), MDT_INTERNALNAMES_BASE,
+        options: [MultiDecoderToolOption(MDT_BASE_OPTION_BASEFUNCTION, 'base_base64')]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_BASE), MDT_INTERNALNAMES_BASE,
+        options: [MultiDecoderToolOption(MDT_BASE_OPTION_BASEFUNCTION, 'base_base85')]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS), MDT_INTERNALNAMES_COORDINATEFORMATS,
         options: [
           MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT,
-              CoordinateFormatKey.REVERSE_WIG_WALDMEISTER.name)
+              coordinateFormatDefinitionByKey(CoordinateFormatKey.UTM).persistenceKey)
         ]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS),
-        MDT_INTERNALNAMES_COORDINATEFORMATS,
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS), MDT_INTERNALNAMES_COORDINATEFORMATS,
         options: [
           MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT,
-              CoordinateFormatKey.REVERSE_WIG_DAY1976.name)
+              coordinateFormatDefinitionByKey(CoordinateFormatKey.MGRS).persistenceKey)
         ]),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_VIGENERE), MDT_INTERNALNAMES_VIGENERE),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_PLAYFAIR), MDT_INTERNALNAMES_PLAYFAIR),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_POLYBIOS), MDT_INTERNALNAMES_POLYBIOS),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_POKEMON), MDT_INTERNALNAMES_POKEMON),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_KEYBOARDNUMBERS),
-        MDT_INTERNALNAMES_KEYBOARDNUMBERS),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ENCLOSEDAREAS),
-        MDT_INTERNALNAMES_ENCLOSEDAREAS),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_GCCODE), MDT_INTERNALNAMES_GCCODE,
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS), MDT_INTERNALNAMES_COORDINATEFORMATS,
         options: [
-          MultiDecoderToolOption(
-              MDT_GCCODE_OPTION_MODE, MDT_GCCODE_OPTION_MODE_IDTOGCCODE)
+          MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT,
+              coordinateFormatDefinitionByKey(CoordinateFormatKey.XYZ).persistenceKey)
         ]),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_GCCODE), MDT_INTERNALNAMES_GCCODE,
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS), MDT_INTERNALNAMES_COORDINATEFORMATS,
         options: [
-          MultiDecoderToolOption(
-              MDT_GCCODE_OPTION_MODE, MDT_GCCODE_OPTION_MODE_GCCODETOID)
+          MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT,
+              coordinateFormatDefinitionByKey(CoordinateFormatKey.MAIDENHEAD).persistenceKey)
         ]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_SEGMENTDISPLAY),
-        MDT_INTERNALNAMES_SEGMENTDISPLAY, options: [
-      MultiDecoderToolOption(MDT_SEGMENTDISPLAY_OPTION_NUMBERSEGMENTS, 7)
-    ]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_SEGMENTDISPLAY),
-        MDT_INTERNALNAMES_SEGMENTDISPLAY, options: [
-      MultiDecoderToolOption(MDT_SEGMENTDISPLAY_OPTION_NUMBERSEGMENTS, 14)
-    ]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_SEGMENTDISPLAY),
-        MDT_INTERNALNAMES_SEGMENTDISPLAY, options: [
-      MultiDecoderToolOption(MDT_SEGMENTDISPLAY_OPTION_NUMBERSEGMENTS, 16)
-    ]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS), MDT_INTERNALNAMES_COORDINATEFORMATS,
+        options: [
+          MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT,
+              coordinateFormatDefinitionByKey(CoordinateFormatKey.NATURAL_AREA_CODE).persistenceKey)
+        ]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS), MDT_INTERNALNAMES_COORDINATEFORMATS,
+        options: [
+          MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT,
+              coordinateFormatDefinitionByKey(CoordinateFormatKey.GEOHASH).persistenceKey)
+        ]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS), MDT_INTERNALNAMES_COORDINATEFORMATS,
+        options: [
+          MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT,
+              coordinateFormatDefinitionByKey(CoordinateFormatKey.GEOHEX).persistenceKey)
+        ]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS), MDT_INTERNALNAMES_COORDINATEFORMATS,
+        options: [
+          MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT,
+              coordinateFormatDefinitionByKey(CoordinateFormatKey.GEO3X3).persistenceKey)
+        ]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS), MDT_INTERNALNAMES_COORDINATEFORMATS,
+        options: [
+          MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT,
+              coordinateFormatDefinitionByKey(CoordinateFormatKey.MAKANEY).persistenceKey)
+        ]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS), MDT_INTERNALNAMES_COORDINATEFORMATS,
+        options: [
+          MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT,
+              coordinateFormatDefinitionByKey(CoordinateFormatKey.OPEN_LOCATION_CODE).persistenceKey)
+        ]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS), MDT_INTERNALNAMES_COORDINATEFORMATS,
+        options: [
+          MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT,
+              coordinateFormatDefinitionByKey(CoordinateFormatKey.QUADTREE).persistenceKey)
+        ]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS), MDT_INTERNALNAMES_COORDINATEFORMATS,
+        options: [
+          MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT,
+              coordinateFormatDefinitionByKey(CoordinateFormatKey.REVERSE_WIG_WALDMEISTER).persistenceKey)
+        ]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS), MDT_INTERNALNAMES_COORDINATEFORMATS,
+        options: [
+          MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT,
+              coordinateFormatDefinitionByKey(CoordinateFormatKey.REVERSE_WIG_DAY1976).persistenceKey)
+        ]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_VIGENERE), MDT_INTERNALNAMES_VIGENERE),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_PLAYFAIR), MDT_INTERNALNAMES_PLAYFAIR),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_POLYBIOS), MDT_INTERNALNAMES_POLYBIOS),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_POKEMON), MDT_INTERNALNAMES_POKEMON),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_KEYBOARDNUMBERS), MDT_INTERNALNAMES_KEYBOARDNUMBERS),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ENCLOSEDAREAS), MDT_INTERNALNAMES_ENCLOSEDAREAS),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_GCCODE), MDT_INTERNALNAMES_GCCODE,
+        options: [MultiDecoderToolOption(MDT_GCCODE_OPTION_MODE, MDT_GCCODE_OPTION_MODE_IDTOGCCODE)]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_GCCODE), MDT_INTERNALNAMES_GCCODE,
+        options: [MultiDecoderToolOption(MDT_GCCODE_OPTION_MODE, MDT_GCCODE_OPTION_MODE_GCCODETOID)]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_SEGMENTDISPLAY), MDT_INTERNALNAMES_SEGMENTDISPLAY,
+        options: [MultiDecoderToolOption(MDT_SEGMENTDISPLAY_OPTION_NUMBERSEGMENTS, 7)]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_SEGMENTDISPLAY), MDT_INTERNALNAMES_SEGMENTDISPLAY,
+        options: [MultiDecoderToolOption(MDT_SEGMENTDISPLAY_OPTION_NUMBERSEGMENTS, 14)]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_SEGMENTDISPLAY), MDT_INTERNALNAMES_SEGMENTDISPLAY,
+        options: [MultiDecoderToolOption(MDT_SEGMENTDISPLAY_OPTION_NUMBERSEGMENTS, 16)]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_WASD), MDT_INTERNALNAMES_WASD),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_BEGHILOS), MDT_INTERNALNAMES_BEGHILOS),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ONETIMEPAD), MDT_INTERNALNAMES_ONETIMEPAD),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_KENNY), MDT_INTERNALNAMES_KENNY),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_BINARY2IMAGE), MDT_INTERNALNAMES_BINARY2IMAGE),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_BRAILLE_DOT_NUMBERS), MDT_INTERNALNAMES_BRAILLE_DOT_NUMBERS),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_BACON), MDT_INTERNALNAMES_BACON,
+        options: [MultiDecoderToolOption(MDT_BACON_OPTION_MODE, MDT_BACON_OPTION_MODE_AB)]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_BACON), MDT_INTERNALNAMES_BACON,
+        options: [MultiDecoderToolOption(MDT_BACON_OPTION_MODE, MDT_BACON_OPTION_MODE_01)]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_BCD), MDT_INTERNALNAMES_BCD,
+        options: [MultiDecoderToolOption(MDT_BCD_OPTION_BCDFUNCTION, 'bcd_original')]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_CCITT1), MDT_INTERNALNAMES_CCITT1),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_CCITT2), MDT_INTERNALNAMES_CCITT2),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_KEYBOARDLAYOUT), MDT_INTERNALNAMES_KEYBOARDLAYOUT),
     MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_WASD), MDT_INTERNALNAMES_WASD),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_BEGHILOS), MDT_INTERNALNAMES_BEGHILOS),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ONETIMEPAD),
-        MDT_INTERNALNAMES_ONETIMEPAD),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_KENNY), MDT_INTERNALNAMES_KENNY),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_BINARY2IMAGE),
-        MDT_INTERNALNAMES_BINARY2IMAGE),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_BRAILLE_DOT_NUMBERS),
-        MDT_INTERNALNAMES_BRAILLE_DOT_NUMBERS),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_BACON),
-        MDT_INTERNALNAMES_BACON, options: [
-      MultiDecoderToolOption(MDT_BACON_OPTION_MODE, MDT_BACON_OPTION_MODE_AB)
-    ]),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_BACON),
-        MDT_INTERNALNAMES_BACON, options: [
-      MultiDecoderToolOption(MDT_BACON_OPTION_MODE, MDT_BACON_OPTION_MODE_01)
-    ]),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_BCD), MDT_INTERNALNAMES_BCD, options: [
-      MultiDecoderToolOption(MDT_BCD_OPTION_BCDFUNCTION, 'bcd_original')
-    ]),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_CCITT1), MDT_INTERNALNAMES_CCITT1),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_CCITT2), MDT_INTERNALNAMES_CCITT2),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_KEYBOARDLAYOUT),
-        MDT_INTERNALNAMES_KEYBOARDLAYOUT),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_BEATNIK),
-        MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_BEATNIK),
-    MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_BRAINFK_DERIVATIVE),
+        i18n(context, MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_BEATNIK), MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_BEATNIK),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_BRAINFK_DERIVATIVE),
         MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_BRAINFK_DERIVATIVE),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_CHEF),
-        MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_CHEF),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_COW),
-        MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_COW),
     MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_DEADFISH),
-        MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_DEADFISH),
-    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_HOHOHO),
-        MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_HOHOHO),
+        i18n(context, MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_CHEF), MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_CHEF),
     MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_KAROL_ROBOT),
+        i18n(context, MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_COW), MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_COW),
+    MultiDecoderToolEntity(
+        i18n(context, MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_DEADFISH), MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_DEADFISH),
+    MultiDecoderToolEntity(
+        i18n(context, MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_HOHOHO), MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_HOHOHO),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_KAROL_ROBOT),
         MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_KAROL_ROBOT),
     MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_MALBOLGE),
-        MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_MALBOLGE),
+        i18n(context, MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_MALBOLGE), MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_MALBOLGE),
     MultiDecoderToolEntity(
-        i18n(context, MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_WHITESPACE),
-        MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_WHITESPACE),
+        i18n(context, MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_WHITESPACE), MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_WHITESPACE),
   ];
 
   for (int i = 25; i >= 1; i--) {
     newTools.insert(
         0,
-        MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ROTATION),
-            MDT_INTERNALNAMES_ROTATION,
+        MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ROTATION), MDT_INTERNALNAMES_ROTATION,
             options: [MultiDecoderToolOption(MDT_ROTATION_OPTION_KEY, i)]));
   }
 

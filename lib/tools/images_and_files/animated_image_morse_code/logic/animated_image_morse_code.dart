@@ -13,7 +13,7 @@ class AnimatedImageMorseOutput extends AnimatedImageOutput {
   List<List<int>> imagesFiltered;
 
   AnimatedImageMorseOutput(AnimatedImageOutput animatedImageOutput, this.imagesFiltered)
-  : super (animatedImageOutput.images, animatedImageOutput.durations, animatedImageOutput.linkList);
+      : super(animatedImageOutput.images, animatedImageOutput.durations, animatedImageOutput.linkList);
 }
 
 class MorseCodeOutput {
@@ -37,7 +37,7 @@ Future<AnimatedImageMorseOutput?> analyseImageMorseCodeAsync(GCWAsyncExecuterPar
 Future<AnimatedImageMorseOutput?> analyseImageMorseCode(Uint8List bytes, {SendPort? sendAsyncPort}) async {
   try {
     var out = await animated_image.analyseImage(bytes, sendAsyncPort: sendAsyncPort, withFramesOutput: true);
-      if (out == null || out.frames == null) return null;
+    if (out == null || out.frames == null) return null;
 
     List<Uint8List> imageList = out.images;
     var filteredList = <List<int>>[];
@@ -71,8 +71,8 @@ Future<Uint8List?> _createImage(Uint8List highImage, Uint8List lowImage, String 
   if (input.isEmpty) return null;
   if (ditDuration <= 0) return null;
 
-  input = encodeMorse(input);
-  
+  input = encodeMorse(input, MORSE_CODE.MORSE_ITU);
+
   try {
     var _highImage = Image.decodeImage(highImage);
     var _lowImage = Image.decodeImage(lowImage);
@@ -173,8 +173,8 @@ MorseCodeOutput? decodeMorseCode(List<int> durations, List<bool> onSignal) {
       out += " ";
     }
   }
-  
-  return MorseCodeOutput(out, decodeMorse(out));
+
+  return MorseCodeOutput(out, decodeMorse(out, MORSE_CODE.MORSE_ITU));
 }
 
 List<Tuple2<bool, int>> _buildTimeList(List<int> durations, List<bool> onSignal) {
@@ -277,10 +277,9 @@ Tuple2<Image.Image, Image.Image> _maskedImages(Image.Image image1, Image.Image i
 
 /// Returns a single number representing the difference between two RGB pixels
 num _diffBetweenPixels(Image.Pixel firstPixel, bool ignoreAlpha, Image.Pixel secondPixel) {
-
   num diff = (firstPixel.r - secondPixel.r).abs() +
-            (firstPixel.g - secondPixel.g).abs() +
-            (firstPixel.b - secondPixel.b).abs();
+      (firstPixel.g - secondPixel.g).abs() +
+      (firstPixel.b - secondPixel.b).abs();
 
   if (ignoreAlpha) {
     diff = (diff / 255.0) / 3.0;

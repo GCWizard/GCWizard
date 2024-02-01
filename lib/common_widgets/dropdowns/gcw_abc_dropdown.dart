@@ -13,19 +13,19 @@ class GCWABCDropDown extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  GCWABCDropDownState createState() => GCWABCDropDownState();
+  _GCWABCDropDownState createState() => _GCWABCDropDownState();
 }
 
-class GCWABCDropDownState extends State<GCWABCDropDown> {
+class _GCWABCDropDownState extends State<GCWABCDropDown> {
   int? _currentValue;
 
   @override
   Widget build(BuildContext context) {
-    return GCWDropDown(
+    return GCWDropDown<int>(
       value: _currentValue ?? widget.value ?? 1,
       onChanged: (newValue) {
         setState(() {
-          _currentValue = newValue is int ? newValue : _currentValue;
+          _currentValue = newValue;
           widget.onChanged(_currentValue!);
         });
       },

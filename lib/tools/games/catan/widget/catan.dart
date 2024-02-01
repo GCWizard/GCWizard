@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
@@ -9,10 +9,10 @@ class Catan extends StatefulWidget {
   const Catan({Key? key}) : super(key: key);
 
   @override
-  CatanState createState() => CatanState();
+  _CatanState createState() => _CatanState();
 }
 
-class CatanState extends State<Catan> {
+class _CatanState extends State<Catan> {
   String _currentInput = '';
   GCWSwitchPosition _currentMode = GCWSwitchPosition.left;
 

@@ -29,7 +29,9 @@ String getStructData(String analyseLine, String type) {
   return analyseLine.trimLeft().replaceAll(type + ' = ', '').replaceAll('"', '').replaceAll(',', '');
 }
 
-String getTextData(String analyseLine, ) {
+String getTextData(
+  String analyseLine,
+) {
   String result = analyseLine
       .trimLeft()
       .replaceAll('Text = ', '')
@@ -47,8 +49,8 @@ String getTextData(String analyseLine, ) {
       var group = element.group(0);
       if (group == null) return;
 
-      result = result.replaceAll(
-          group, deobfuscateUrwigoText(group.replaceAll('gsub_wig("', '').replaceAll('")', ''), ''));
+      result =
+          result.replaceAll(group, deobfuscateUrwigoText(group.replaceAll('gsub_wig("', '').replaceAll('")', ''), ''));
     });
     result = result.replaceAll('..', '').replaceAll('<BR>\\n', '').replaceAll('"', '');
     RegExp(r'ucode_wig\([\d]+\)').allMatches(result).forEach((element) {
@@ -162,4 +164,3 @@ List<String> addExceptionErrorMessage(int lineNumber, String section, Object exc
     '',
   ];
 }
-

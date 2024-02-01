@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:archive/archive.dart';
 import 'package:archive/archive_io.dart';
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
@@ -21,10 +21,10 @@ class HexString2File extends StatefulWidget {
   const HexString2File({Key? key}) : super(key: key);
 
   @override
-  HexString2FileState createState() => HexString2FileState();
+  _HexString2FileState createState() => _HexString2FileState();
 }
 
-class HexString2FileState extends State<HexString2File> {
+class _HexString2FileState extends State<HexString2File> {
   var _currentInput = '';
   Uint8List? _outData;
 
@@ -71,7 +71,6 @@ class HexString2FileState extends State<HexString2File> {
 }
 
 Widget hexDataOutput(BuildContext context, List<Uint8List> outData) {
-
   var children = outData.map((Uint8List _outData) {
     var file = GCWFile(bytes: _outData);
 

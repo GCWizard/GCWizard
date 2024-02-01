@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_bearing.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_output.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_outputformat.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_bearing.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/common_widgets/gcw_distance.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
@@ -20,10 +19,10 @@ class WaypointProjection extends StatefulWidget {
   const WaypointProjection({Key? key}) : super(key: key);
 
   @override
-  WaypointProjectionState createState() => WaypointProjectionState();
+  _WaypointProjectionState createState() => _WaypointProjectionState();
 }
 
-class WaypointProjectionState extends State<WaypointProjection> {
+class _WaypointProjectionState extends State<WaypointProjection> {
   var _currentCoords = defaultBaseCoordinate;
   var _currentDistance = 0.0;
   var _currentBearing = defaultDoubleText;
@@ -43,9 +42,11 @@ class WaypointProjectionState extends State<WaypointProjection> {
         GCWCoords(
           title: i18n(context, 'coords_waypointprojection_start'),
           coordsFormat: _currentCoords.format,
-          onChanged: (BaseCoordinate ret) {
+          onChanged: (ret) {
             setState(() {
-              _currentCoords = ret;
+              if (ret != null) {
+                _currentCoords = ret;
+              }
             });
           },
         ),
@@ -102,7 +103,8 @@ class WaypointProjectionState extends State<WaypointProjection> {
         return;
       }
 
-      _currentValues = reverseProjection(_currentCoords.toLatLng()!, _currentBearing.value, _currentDistance, defaultEllipsoid);
+      _currentValues =
+          reverseProjection(_currentCoords.toLatLng()!, _currentBearing.value, _currentDistance, defaultEllipsoid);
       if (_currentValues.isEmpty) {
         _currentOutput = [i18n(context, 'coords_waypointprojection_reverse_nocoordinatefound')];
         return;
@@ -129,7 +131,9 @@ class WaypointProjectionState extends State<WaypointProjection> {
         _currentMapPolylines.add(GCWMapPolyline(points: [projectionMapPoint, _currentMapPoints[0]]));
       }
     } else {
-      _currentValues = [projection(_currentCoords.toLatLng()!, _currentBearing.value, _currentDistance, defaultEllipsoid)];
+      _currentValues = [
+        projection(_currentCoords.toLatLng()!, _currentBearing.value, _currentDistance, defaultEllipsoid)
+      ];
 
       _currentMapPoints = [
         GCWMapPoint(

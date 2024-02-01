@@ -16,10 +16,10 @@ class SymbolTable extends StatefulWidget {
       : super(key: key);
 
   @override
-  SymbolTableState createState() => SymbolTableState();
+  _SymbolTableState createState() => _SymbolTableState();
 }
 
-class SymbolTableState extends State<SymbolTable> {
+class _SymbolTableState extends State<SymbolTable> {
   var _currentMode = GCWSwitchPosition.right;
   late SymbolTableData _data;
 

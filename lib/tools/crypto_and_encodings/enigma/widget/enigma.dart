@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_abc_dropdown.dart';
@@ -22,10 +22,10 @@ class Enigma extends StatefulWidget {
   const Enigma({Key? key}) : super(key: key);
 
   @override
-  EnigmaState createState() => EnigmaState();
+  _EnigmaState createState() => _EnigmaState();
 }
 
-class EnigmaState extends State<Enigma> {
+class _EnigmaState extends State<Enigma> {
   late TextEditingController _inputController;
   late TextEditingController _plugboardController;
 
@@ -34,10 +34,8 @@ class EnigmaState extends State<Enigma> {
 
   var _currentEntryRotorMode = true;
   var _currentReflectorMode = true;
-  var _currentEntryRotor =
-      EnigmaRotorConfiguration(getEnigmaRotorByName(defaultRotorEntryRotor));
-  var _currentReflector =
-      EnigmaRotorConfiguration(getEnigmaRotorByName(defaultRotorReflector));
+  var _currentEntryRotor = EnigmaRotorConfiguration(getEnigmaRotorByName(defaultRotorEntryRotor));
+  var _currentReflector = EnigmaRotorConfiguration(getEnigmaRotorByName(defaultRotorReflector));
 
   var _isTextChange = false;
 
@@ -47,8 +45,8 @@ class EnigmaState extends State<Enigma> {
 
   var _currentRotorInformation = 0;
 
-  final _plugboardMaskFormatter = WrapperForMaskTextInputFormatter(
-      mask: '## ' * 25 + '##', filter: {"#": RegExp(r'[A-Za-z]')});
+  final _plugboardMaskFormatter =
+      GCWMaskTextInputFormatter(mask: '## ' * 25 + '##', filter: {"#": RegExp(r'[A-Za-z]')});
 
   @override
   void initState() {
@@ -204,9 +202,7 @@ class EnigmaState extends State<Enigma> {
         GCWTextDivider(text: i18n(context, 'enigma_rotorinfo')),
         GCWDropDownSpinner(
           index: _currentRotorInformation,
-          items: _allRotors
-              .map((EnigmaRotorConfiguration e) => e.rotor.name)
-              .toList(),
+          items: _allRotors.map((EnigmaRotorConfiguration e) => e.rotor.name).toList(),
           onChanged: (value) {
             setState(() {
               _currentRotorInformation = value;
@@ -222,9 +218,7 @@ class EnigmaState extends State<Enigma> {
           [i18n(context, 'common_type'), _rotorType(currentRotor.type)],
           [
             i18n(context, 'enigma_turnovers'),
-            currentRotor.turnovers.isEmpty
-                ? i18n(context, 'common_none')
-                : currentRotor.turnovers
+            currentRotor.turnovers.isEmpty ? i18n(context, 'common_none') : currentRotor.turnovers
           ]
         ]),
       ],
@@ -241,10 +235,8 @@ class EnigmaState extends State<Enigma> {
           });
         },
       ));
-      _currentRotorsConfigurations.add(EnigmaRotorConfiguration(
-          getEnigmaRotorByName(defaultRotorStandard),
-          offset: 1,
-          setting: 1));
+      _currentRotorsConfigurations
+          .add(EnigmaRotorConfiguration(getEnigmaRotorByName(defaultRotorStandard), offset: 1, setting: 1));
     }
 
     while (_currentRotors.length > _currentNumberRotors) {
@@ -270,17 +262,16 @@ class EnigmaState extends State<Enigma> {
     List<EnigmaRotorConfiguration> rotorConfigurations = [];
     if (_currentEntryRotorMode) rotorConfigurations.add(_currentEntryRotor);
 
-    rotorConfigurations
-        .addAll((_currentRotorsConfigurations.reversed).map((configuration) {
+    rotorConfigurations.addAll((_currentRotorsConfigurations.reversed).map((configuration) {
       return configuration.clone();
     }).toList());
 
     if (_currentReflectorMode) rotorConfigurations.add(_currentReflector);
 
-    var key = EnigmaKey(rotorConfigurations,
-        plugboard: { for (var digraph in _currentPlugboard
-                .split(' ')
-                .where((String digraph) => digraph.length == 2)) digraph[0] : digraph[1] });
+    var key = EnigmaKey(rotorConfigurations, plugboard: {
+      for (var digraph in _currentPlugboard.split(' ').where((String digraph) => digraph.length == 2))
+        digraph[0]: digraph[1]
+    });
 
     var results = calculateEnigmaWithMessageKey(_currentInput, key);
 
@@ -300,16 +291,13 @@ class EnigmaState extends State<Enigma> {
           .map((setting) => alphabet_AZIndexes[setting + 1]);
 
       output.add(GCWOutputText(
-        text: i18n(context, 'enigma_output_rotorsettingafter') +
-            ': ' +
-            rotorSetting.join(' - '),
+        text: i18n(context, 'enigma_output_rotorsettingafter') + ': ' + rotorSetting.join(' - '),
         copyText: rotorSetting.join(),
       ));
     }
 
     if (results.length == 2) {
-      output.insert(
-          2, GCWTextDivider(text: i18n(context, 'enigma_usedmessagekey')));
+      output.insert(2, GCWTextDivider(text: i18n(context, 'enigma_usedmessagekey')));
     }
 
     return GCWMultipleOutput(children: output);

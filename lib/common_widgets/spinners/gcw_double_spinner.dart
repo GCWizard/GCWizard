@@ -24,23 +24,23 @@ class GCWDoubleSpinner extends StatefulWidget {
 
   GCWDoubleSpinner(
       {Key? key,
-        required this.onChanged,
-        this.title,
-        required this.value,
-        this.min = MIN_DOUBLE,
-        this.max = MAX_DOUBLE,
-        this.numberDecimalDigits = 2,
-        this.controller,
-        this.layout = SpinnerLayout.HORIZONTAL,
-        this.focusNode,
-        this.suppressOverflow = false})
+      required this.onChanged,
+      this.title,
+      required this.value,
+      this.min = MIN_DOUBLE,
+      this.max = MAX_DOUBLE,
+      this.numberDecimalDigits = 2,
+      this.controller,
+      this.layout = SpinnerLayout.HORIZONTAL,
+      this.focusNode,
+      this.suppressOverflow = false})
       : super(key: key);
 
   @override
-  GCWDoubleSpinnerState createState() => GCWDoubleSpinnerState();
+  _GCWDoubleSpinnerState createState() => _GCWDoubleSpinnerState();
 }
 
-class GCWDoubleSpinnerState extends State<GCWDoubleSpinner> {
+class _GCWDoubleSpinnerState extends State<GCWDoubleSpinner> {
   late TextEditingController _controller;
 
   bool _externalChange = true;

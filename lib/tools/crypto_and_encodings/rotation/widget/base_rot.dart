@@ -1,22 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:gc_wizard/common_widgets/gcw_web_statefulwidget.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 
-abstract class AbstractRotation extends StatefulWidget {
+abstract class AbstractRotation extends GCWWebStatefulWidget {
   final String Function(String) rotate;
 
-  const AbstractRotation({Key? key, required this.rotate}) : super(key: key);
+  AbstractRotation({Key? key, required this.rotate, required super.apiSpecification})
+      : super(key: key);
 
   @override
-  AbstractRotationState createState() => AbstractRotationState();
+  _AbstractRotationState createState() => _AbstractRotationState();
 }
 
-class AbstractRotationState extends State<AbstractRotation> {
-  String _output = '';
+class _AbstractRotationState extends State<AbstractRotation> {
+  late TextEditingController _controller;
+
+  String _currentInput = '';
 
   @override
   void initState() {
     super.initState();
+
+    if (widget.hasWebParameter()) {
+      _currentInput = widget.getWebParameter('input') ?? _currentInput;
+      widget.webParameter = null;
+    }
+    _controller = TextEditingController(text: _currentInput);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -24,13 +40,14 @@ class AbstractRotationState extends State<AbstractRotation> {
     return Column(
       children: <Widget>[
         GCWTextField(
+          controller: _controller,
           onChanged: (text) {
             setState(() {
-              _output = widget.rotate(text);
+              _currentInput = text;
             });
           },
         ),
-        GCWDefaultOutput(child: _output)
+        GCWDefaultOutput(child: widget.rotate(_currentInput))
       ],
     );
   }

@@ -11,29 +11,30 @@ abstract class AbstractBCD extends StatefulWidget {
   const AbstractBCD({Key? key, required this.type}) : super(key: key);
 
   @override
-  AbstractBCDState createState() => AbstractBCDState();
+  _AbstractBCDState createState() => _AbstractBCDState();
 }
 
-class AbstractBCDState extends State<AbstractBCD> {
+class _AbstractBCDState extends State<AbstractBCD> {
   late TextEditingController _encodeController;
   late TextEditingController _decodeController;
 
-  final _encodeMaskFormatter = WrapperForMaskTextInputFormatter(mask: '#' * 10000, // allow 10000 characters input
+  final _encodeMaskFormatter = GCWMaskTextInputFormatter(
+      mask: '#' * 10000, // allow 10000 characters input
       filter: {"#": RegExp(r'\d')});
 
-  final _decode4DigitsMaskFormatter = WrapperForMaskTextInputFormatter(
+  final _decode4DigitsMaskFormatter = GCWMaskTextInputFormatter(
       mask: '#### ' * 5000, // allow 5000 4-digit binary blocks, spaces will be set automatically after each block
       filter: {"#": RegExp(r'[01]')});
 
-  final _decode5DigitsMaskFormatter = WrapperForMaskTextInputFormatter(
+  final _decode5DigitsMaskFormatter = GCWMaskTextInputFormatter(
       mask: '##### ' * 5000, // allow 5000 5-digit binary blocks, spaces will be set automatically after each block
       filter: {"#": RegExp(r'[01]')});
 
-  final _decode7DigitsMaskFormatter = WrapperForMaskTextInputFormatter(
+  final _decode7DigitsMaskFormatter = GCWMaskTextInputFormatter(
       mask: '####### ' * 5000, // allow 5000 5-digit binary blocks, spaces will be set automatically after each block
       filter: {"#": RegExp(r'[01]')});
 
-  final _decode10DigitsMaskFormatter = WrapperForMaskTextInputFormatter(
+  final _decode10DigitsMaskFormatter = GCWMaskTextInputFormatter(
       mask: '########## ' * 5000, // allow 5000 5-digit binary blocks, spaces will be set automatically after each block
       filter: {"#": RegExp(r'[01]')});
 

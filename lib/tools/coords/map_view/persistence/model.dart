@@ -66,9 +66,10 @@ class MapPointDAO {
   double? radius;
   bool circleColorSameAsColor;
   String? circleColor;
+  bool? isEditable;
 
   MapPointDAO(this.uuid, this.name, this.latitude, this.longitude, this.coordinateFormat, this.isVisible, this.color,
-      this.radius, this.circleColorSameAsColor, this.circleColor);
+      this.radius, this.circleColorSameAsColor, this.circleColor, this.isEditable);
 
   Map<String, Object?> toMap() => {
         'uuid': uuid,
@@ -81,6 +82,7 @@ class MapPointDAO {
         'radius': radius,
         'circleColorSameAsColor': circleColorSameAsColor,
         'circleColor': circleColor,
+        'isEditable': isEditable
       };
 
   MapPointDAO.fromJson(Map<String, Object?> json)
@@ -93,7 +95,8 @@ class MapPointDAO {
         color = toStringOrNull(json['color']) ?? colorToHexString(COLOR_MAP_POINT),
         radius = toDoubleOrNull(json['radius']),
         circleColorSameAsColor = toBoolOrNull(json['circleColorSameAsColor']) ?? true,
-        circleColor = toStringOrNull(json['circleColor']) ?? colorToHexString(COLOR_MAP_POINT);
+        circleColor = toStringOrNull(json['circleColor']) ?? colorToHexString(COLOR_MAP_POINT),
+        isEditable = toBoolOrNull(json['isEditable']) ?? false;
 
   @override
   String toString() {

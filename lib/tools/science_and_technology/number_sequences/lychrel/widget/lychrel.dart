@@ -7,7 +7,8 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequenceLychrelCheckNumber extends NumberSequenceCheckNumber {
-  const NumberSequenceLychrelCheckNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.LYCHREL, maxIndex: 246);
+  const NumberSequenceLychrelCheckNumber({Key? key})
+      : super(key: key, mode: NumberSequencesMode.LYCHREL, maxIndex: 246);
 }
 
 class NumberSequenceLychrelDigits extends NumberSequenceDigits {
@@ -23,5 +24,6 @@ class NumberSequenceLychrelNthNumber extends NumberSequenceNthNumber {
 }
 
 class NumberSequenceLychrelContainsDigits extends NumberSequenceContainsDigits {
-  const NumberSequenceLychrelContainsDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.LYCHREL, maxIndex: 246);
+  const NumberSequenceLychrelContainsDigits({Key? key})
+      : super(key: key, mode: NumberSequencesMode.LYCHREL, maxIndex: 246);
 }

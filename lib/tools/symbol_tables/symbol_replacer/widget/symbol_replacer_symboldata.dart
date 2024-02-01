@@ -11,12 +11,8 @@ class SymbolReplacerSymbolTableViewData {
   final String? description;
   SymbolReplacerSymbolTableData? data;
 
-  SymbolReplacerSymbolTableViewData({
-    required this.symbolKey,
-    required this.icon,
-    required this.toolName,
-    required this.description,
-    this.data});
+  SymbolReplacerSymbolTableViewData(
+      {required this.symbolKey, required this.icon, required this.toolName, required this.description, this.data});
 
   Future<SymbolReplacerSymbolTableData?> initialize(BuildContext context) async {
     var originalData = SymbolTableData(context, symbolKey);

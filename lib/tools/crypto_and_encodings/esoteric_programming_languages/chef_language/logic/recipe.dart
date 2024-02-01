@@ -127,7 +127,7 @@ class _Recipe {
   }
 
   void setIngredientValue(String s, int n) {
-    var value =  ingredients[s];
+    var value = ingredients[s];
     if (value == null) throw const FormatException('setIngredientValue');
     value.setAmount(n);
   }

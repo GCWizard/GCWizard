@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -11,10 +11,10 @@ class IATAICAOSearch extends StatefulWidget {
   const IATAICAOSearch({Key? key}) : super(key: key);
 
   @override
-  IATAICAOSearchState createState() => IATAICAOSearchState();
+  _IATAICAOSearchState createState() => _IATAICAOSearchState();
 }
 
-class IATAICAOSearchState extends State<IATAICAOSearch> {
+class _IATAICAOSearchState extends State<IATAICAOSearch> {
   late TextEditingController _inputControllerCode;
   late TextEditingController _inputControllerName;
 
@@ -116,11 +116,10 @@ class IATAICAOSearchState extends State<IATAICAOSearch> {
       List<List<String>> data = [];
       List<int> flexValues = List<int>.generate(4, (index) => 1);
 
-      data = IATA_ICAO_CODES.values
-          .where((e) =>  e.name.toLowerCase().contains(_currentInputName.toLowerCase()))
-          .map((e) {
-            return [e.name, e.iata, e.icoa, e.location_served];
-          }).toList();
+      data =
+          IATA_ICAO_CODES.values.where((e) => e.name.toLowerCase().contains(_currentInputName.toLowerCase())).map((e) {
+        return [e.name, e.iata, e.icoa, e.location_served];
+      }).toList();
 
       flexValues = [2, 1, 1, 2];
       data.sort((a, b) => a[0].compareTo(b[0]));
@@ -131,12 +130,7 @@ class IATAICAOSearchState extends State<IATAICAOSearch> {
         i18n(context, 'common_place')
       ]);
 
-      return GCWColumnedMultilineOutput(
-          data: data,
-          flexValues: flexValues,
-          copyColumn: 1,
-          hasHeader: true
-      );
+      return GCWColumnedMultilineOutput(data: data, flexValues: flexValues, copyColumn: 1, hasHeader: true);
     } else {
       // search for code
       if (_currentInputCode.isEmpty) return Container();
@@ -145,11 +139,9 @@ class IATAICAOSearchState extends State<IATAICAOSearch> {
 
       if (_currentCode == GCWSwitchPosition.left) {
         // search for IATA
-        var data = IATA_ICAO_CODES.values
-            .where((e) => (e.iata.startsWith(_currentInputCode.toUpperCase())))
-            .map((e) {
-              return [e.iata, e.icoa, e.name, e.location_served];
-            }).toList();
+        var data = IATA_ICAO_CODES.values.where((e) => (e.iata.startsWith(_currentInputCode.toUpperCase()))).map((e) {
+          return [e.iata, e.icoa, e.name, e.location_served];
+        }).toList();
         flexValues = [1, 1, 2, 2];
 
         data.sort((a, b) {
@@ -166,17 +158,10 @@ class IATAICAOSearchState extends State<IATAICAOSearch> {
           i18n(context, 'common_place')
         ]);
 
-        return GCWColumnedMultilineOutput(
-            data: data,
-            flexValues: flexValues,
-            copyColumn: 2,
-            hasHeader: true
-        );
+        return GCWColumnedMultilineOutput(data: data, flexValues: flexValues, copyColumn: 2, hasHeader: true);
       } else {
-        var data = IATA_ICAO_CODES.values
-            .where((e) => (e.icoa.startsWith(_currentInputCode.toUpperCase())))
-            .map((e) {
-          return [e.icoa, e.iata, e.name,  e.location_served];
+        var data = IATA_ICAO_CODES.values.where((e) => (e.icoa.startsWith(_currentInputCode.toUpperCase()))).map((e) {
+          return [e.icoa, e.iata, e.name, e.location_served];
         }).toList();
         flexValues = [1, 1, 2, 2];
 
@@ -194,12 +179,7 @@ class IATAICAOSearchState extends State<IATAICAOSearch> {
           i18n(context, 'common_place')
         ]);
 
-        return GCWColumnedMultilineOutput(
-            data: data,
-            flexValues: flexValues,
-            copyColumn: 2,
-            hasHeader: true
-        );
+        return GCWColumnedMultilineOutput(data: data, flexValues: flexValues, copyColumn: 2, hasHeader: true);
       }
     }
   }

@@ -10,10 +10,10 @@ class IrrationalNumbersNthDecimal extends StatefulWidget {
   const IrrationalNumbersNthDecimal({Key? key, required this.irrationalNumber}) : super(key: key);
 
   @override
-  IrrationalNumbersNthDecimalState createState() => IrrationalNumbersNthDecimalState();
+  _IrrationalNumbersNthDecimalState createState() => _IrrationalNumbersNthDecimalState();
 }
 
-class IrrationalNumbersNthDecimalState extends State<IrrationalNumbersNthDecimal> {
+class _IrrationalNumbersNthDecimalState extends State<IrrationalNumbersNthDecimal> {
   int _currentValue = 1;
   late IrrationalNumberCalculator _calculator;
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -14,10 +14,10 @@ class NumeralBases extends StatefulWidget {
   const NumeralBases({Key? key}) : super(key: key);
 
   @override
-  NumeralBasesState createState() => NumeralBasesState();
+  _NumeralBasesState createState() => _NumeralBasesState();
 }
 
-class NumeralBasesState extends State<NumeralBases> {
+class _NumeralBasesState extends State<NumeralBases> {
   late TextEditingController _controller;
 
   String _currentInput = '';
@@ -118,8 +118,7 @@ class NumeralBasesState extends State<NumeralBases> {
       return GCWColumnedMultilineOutput(
           firstRows: [GCWTextDivider(text: i18n(context, 'common_output'))],
           data: outputValues,
-          flexValues: const [1, 3]
-      );
+          flexValues: const [1, 3]);
     }
   }
 }

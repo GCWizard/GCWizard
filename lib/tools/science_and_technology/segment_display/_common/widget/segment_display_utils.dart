@@ -114,9 +114,9 @@ Widget _buildSegmentDisplayOutput(int countColumns, List<Widget> displays,
 
       columns.add(Expanded(
           child: Container(
-            padding: EdgeInsets.symmetric(vertical: _verticalPadding),
-            child: widget,
-          )));
+        padding: EdgeInsets.symmetric(vertical: _verticalPadding),
+        child: widget,
+      )));
     }
 
     rows.add(Row(
@@ -128,4 +128,3 @@ Widget _buildSegmentDisplayOutput(int countColumns, List<Widget> displays,
     children: rows,
   );
 }
-

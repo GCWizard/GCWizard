@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_alphabetdropdown.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -13,10 +13,10 @@ class Chao extends StatefulWidget {
   const Chao({Key? key}) : super(key: key);
 
   @override
-  ChaoState createState() => ChaoState();
+  _ChaoState createState() => _ChaoState();
 }
 
-class ChaoState extends State<Chao> {
+class _ChaoState extends State<Chao> {
   late TextEditingController _inputController;
   late TextEditingController _alphabetControllerPlain;
   late TextEditingController _alphabetControllerChiffre;

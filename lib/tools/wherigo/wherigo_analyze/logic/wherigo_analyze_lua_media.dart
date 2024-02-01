@@ -29,7 +29,7 @@ WherigoMediaData _analyzeAndExtractMediaSectionData(List<String> lines) {
   String description = '';
   String alttext = '';
   String type = '';
-  String medianame = '';
+  String filename = '';
 
   bool _sectionInner = true;
 
@@ -66,7 +66,7 @@ WherigoMediaData _analyzeAndExtractMediaSectionData(List<String> lines) {
       _sectionInner = true;
       do {
         if (lines[i].startsWith('Filename = ')) {
-          medianame = getStructData(lines[i], 'Filename');
+          filename = getStructData(lines[i], 'Filename');
         } else if (lines[i].startsWith('Type = ')) {
           type = getStructData(lines[i], 'Type');
         } else if (lines[i].startsWith('Directives = ')) {
@@ -84,6 +84,6 @@ WherigoMediaData _analyzeAndExtractMediaSectionData(List<String> lines) {
     MediaDescription: description,
     MediaAltText: alttext,
     MediaType: type,
-    MediaFilename: medianame,
+    MediaFilename: filename,
   );
 }

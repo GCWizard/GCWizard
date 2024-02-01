@@ -13,19 +13,18 @@ const _INITIAL_SEGMENTS = <String, bool>{
   'dp': false
 };
 
-
 class SevenSegmentDisplay extends NSegmentDisplay {
-
-  SevenSegmentDisplay({
-    Key? key,
-    required Map<String, bool> segments,
-    bool readOnly = false,
-    void Function(Map<String, bool>)? onChanged})
+  SevenSegmentDisplay(
+      {Key? key,
+      required Map<String, bool> segments,
+      SegmentDisplayType? type,
+      bool readOnly = false,
+      void Function(Map<String, bool>)? onChanged})
       : super(
             key: key,
             initialSegments: _INITIAL_SEGMENTS,
             segments: segments,
             readOnly: readOnly,
             onChanged: onChanged,
-            type: SegmentDisplayType.SEVEN);
+            type: (Variants7Segment.contains(type) ? type : null) ?? SegmentDisplayType.SEVEN);
 }

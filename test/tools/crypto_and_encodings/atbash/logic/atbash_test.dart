@@ -20,4 +20,20 @@ void main() {
       });
     }
   });
+
+  group("Atbash.atbash.historic:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '', 'expectedOutput' : ''},
+
+      {'input' : 'BTTRGTTK', 'expectedOutput' : 'S(A|N)(A|N)GR(A|N)(A|N)L'},
+      {'input' : 'SANGRAAL', 'expectedOutput' : 'BTTRGTTK'},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}', () {
+        var _actual = atbash(elem['input'] as String);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
 }

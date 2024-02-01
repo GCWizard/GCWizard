@@ -1,12 +1,14 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
+import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
+import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
@@ -27,10 +29,10 @@ class _GridConfiguration {
   _GridBoxEnumerationBehaviour? enumerationBehaviour;
 
   _GridConfiguration(this.type, this.width, this.height,
-      {this.enumeration,
-      this.columnEnumeration,
-      this.rowEnumeration});
+      {this.enumeration, this.columnEnumeration, this.rowEnumeration});
 }
+
+Map<int, Map<int, _GridPaintColor>>? _gridState;
 
 const _GRID_CUSTOM_KEY = 'grid_custom';
 
@@ -109,14 +111,15 @@ class Grid extends StatefulWidget {
   const Grid({Key? key}) : super(key: key);
 
   @override
-  GridState createState() => GridState();
+  _GridState createState() => _GridState();
 }
 
-class GridState extends State<Grid> {
+class _GridState extends State<Grid> {
   var _currentColor = _GridPaintColor.RED;
   var _currentGridConfiguration = 'grid_boxes_10x10';
 
   var _isConfiguration = false;
+  double _scale = 1;
   late _GridType _currentConfigType;
   late int _currentConfigColumns;
   late int _currentConfigRows;
@@ -154,6 +157,8 @@ class GridState extends State<Grid> {
   }
 
   void _initializeDefaultGrid() {
+    _clearGrid();
+
     _currentConfigType = _GRID_CONFIGURATIONS[_currentGridConfiguration]?.type ?? _GridType.BOXES;
     _currentConfigColumns = _GRID_CONFIGURATIONS[_currentGridConfiguration]?.width ?? 10;
     _currentConfigRows = _GRID_CONFIGURATIONS[_currentGridConfiguration]?.height ?? 10;
@@ -203,6 +208,8 @@ class GridState extends State<Grid> {
                     .toList(),
                 onChanged: (value) {
                   setState(() {
+                    _clearGrid();
+
                     _currentGridConfiguration = value;
 
                     _currentConfigType = _GRID_CONFIGURATIONS[_currentGridConfiguration]?.type ?? _GridType.BOXES;
@@ -210,16 +217,21 @@ class GridState extends State<Grid> {
                     _currentConfigRows = _GRID_CONFIGURATIONS[_currentGridConfiguration]?.height ?? 10;
                     _currentConfigBoxEnumeration = _GRID_CONFIGURATIONS[_currentGridConfiguration]?.enumeration ?? '';
                     _boxEnumerationController.text = _currentConfigBoxEnumeration ?? '';
-                    _currentConfigColumnEnumeration = _GRID_CONFIGURATIONS[_currentGridConfiguration]?.columnEnumeration ?? '';
+                    _currentConfigColumnEnumeration =
+                        _GRID_CONFIGURATIONS[_currentGridConfiguration]?.columnEnumeration ?? '';
                     _columnEnumerationController.text = _currentConfigColumnEnumeration ?? '';
-                    _currentConfigRowEnumeration = _GRID_CONFIGURATIONS[_currentGridConfiguration]?.rowEnumeration ?? '';
+                    _currentConfigRowEnumeration =
+                        _GRID_CONFIGURATIONS[_currentGridConfiguration]?.rowEnumeration ?? '';
                     _rowEnumerationController.text = _currentConfigRowEnumeration ?? '';
                     _currentConfigBoxEnumerationStart =
-                        _GRID_CONFIGURATIONS[_currentGridConfiguration]?.enumerationStart ?? _GridEnumerationStart.TOP_LEFT;
+                        _GRID_CONFIGURATIONS[_currentGridConfiguration]?.enumerationStart ??
+                            _GridEnumerationStart.TOP_LEFT;
                     _currentConfigBoxEnumerationStartDirection =
-                        _GRID_CONFIGURATIONS[_currentGridConfiguration]?.enumerationStartDirection ?? _GridBoxEnumerationStartDirection.RIGHT;
+                        _GRID_CONFIGURATIONS[_currentGridConfiguration]?.enumerationStartDirection ??
+                            _GridBoxEnumerationStartDirection.RIGHT;
                     _currentConfigBoxEnumerationBehaviour =
-                        _GRID_CONFIGURATIONS[_currentGridConfiguration]?.enumerationBehaviour ?? _GridBoxEnumerationBehaviour.ALIGNED;
+                        _GRID_CONFIGURATIONS[_currentGridConfiguration]?.enumerationBehaviour ??
+                            _GridBoxEnumerationBehaviour.ALIGNED;
 
                     if (_currentGridConfiguration == _GRID_CUSTOM_KEY) _isConfiguration = true;
                   });
@@ -230,6 +242,8 @@ class GridState extends State<Grid> {
               icon: _isConfiguration ? Icons.check : Icons.edit,
               onPressed: () {
                 setState(() {
+                  _clearGrid();
+
                   if (_isConfiguration) {
                     _currentGridConfiguration = _GRID_CUSTOM_KEY;
                   }
@@ -385,7 +399,8 @@ class GridState extends State<Grid> {
         GCWDropDown<_GridBoxEnumerationStartDirection>(
           title: i18n(context, 'grid_boxes_startdirection_title'),
           value: _currentConfigBoxEnumerationStartDirection,
-          items: _currentConfigBoxEnumerationStartDirections.map<GCWDropDownMenuItem<_GridBoxEnumerationStartDirection>>((direction) {
+          items: _currentConfigBoxEnumerationStartDirections
+              .map<GCWDropDownMenuItem<_GridBoxEnumerationStartDirection>>((direction) {
             String name;
             switch (direction) {
               case _GridBoxEnumerationStartDirection.RIGHT:
@@ -452,9 +467,11 @@ class GridState extends State<Grid> {
   Widget _buildGrid() {
     return Column(
       children: [
-        Container(
-          constraints: BoxConstraints(maxWidth: min(500, MediaQuery.of(context).size.height * 0.8)),
-          margin: const EdgeInsets.symmetric(vertical: 20.0),
+        GCWPainterContainer(
+          scale: _scale,
+          onChanged: (value) {
+            _scale = value;
+          },
           child: _GridPainter(
             tapColor: _currentColor,
             type: _currentConfigType,
@@ -468,9 +485,20 @@ class GridState extends State<Grid> {
             boxEnumerationBehaviour: _currentConfigBoxEnumerationBehaviour,
           ),
         ),
-        Row(children: _GridPaintColor.values.map((color) => _buildColorField(color)).toList())
+        Row(children: _GridPaintColor.values.map((color) => _buildColorField(color)).toList()),
+        GCWButton(
+            text: i18n(context, 'grid_cleargrid'),
+            onPressed: () {
+              setState(() {
+                _clearGrid();
+              });
+            })
       ],
     );
+  }
+
+  void _clearGrid() {
+    _gridState = <int, Map<int, _GridPaintColor>>{};
   }
 
   List<String> _getEnumeration(String enumeration) {
@@ -522,8 +550,11 @@ class GridState extends State<Grid> {
 
   BoxDecoration _getColorDecoration(_GridPaintColor color) {
     return _currentColor == color
-        ? BoxDecoration(color: (_GRID_COLORS[color]?['color'] ?? Colors.black), border: Border.all(color: themeColors().secondary(), width: 5))
+        ? BoxDecoration(
+            color: (_GRID_COLORS[color]?['color'] ?? Colors.black),
+            border: Border.all(color: themeColors().secondary(), width: 5))
         : BoxDecoration(
-            color: (_GRID_COLORS[color]?['color'] ?? Colors.black), border: Border.all(color: themeColors().mainFont(), width: 1.0));
+            color: (_GRID_COLORS[color]?['color'] ?? Colors.black),
+            border: Border.all(color: themeColors().mainFont(), width: 1.0));
   }
 }

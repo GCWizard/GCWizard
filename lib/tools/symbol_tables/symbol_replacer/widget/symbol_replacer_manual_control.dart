@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
@@ -14,9 +14,9 @@ import 'package:gc_wizard/common_widgets/gcw_toolbar.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/logic/symbol_table_data.dart';
-import 'package:gc_wizard/tools/symbol_tables/symbol_replacer/logic/symbol_replacer.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_container.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_table_symbol_matrix.dart';
+import 'package:gc_wizard/tools/symbol_tables/symbol_replacer/logic/symbol_replacer.dart';
 import 'package:gc_wizard/tools/symbol_tables/symbol_replacer/widget/symbol_replacer_symboldata.dart';
 import 'package:prefs/prefs.dart';
 
@@ -28,10 +28,10 @@ class SymbolReplacerManualControl extends StatefulWidget {
   const SymbolReplacerManualControl({Key? key, required this.symbolImage}) : super(key: key);
 
   @override
-  SymbolReplacerManualControlState createState() => SymbolReplacerManualControlState();
+  _SymbolReplacerManualControlState createState() => _SymbolReplacerManualControlState();
 }
 
-class SymbolReplacerManualControlState extends State<SymbolReplacerManualControl> {
+class _SymbolReplacerManualControlState extends State<SymbolReplacerManualControl> {
   final _symbolMap = <Symbol, Map<String, SymbolData>>{};
   SymbolData? _selectedSymbolData;
   var _removeActiv = false;
@@ -73,8 +73,7 @@ class SymbolReplacerManualControlState extends State<SymbolReplacerManualControl
         if (_symbolData?.values.first.displayName != _displayText) {
           _symbolMap[symbol] = _cloneSymbolData(_symbolData!, _displayText);
         }
-      }
-      else {
+      } else {
         _symbolMap.addAll({
           symbol: {'': SymbolData(bytes: symbol.getImage(), displayName: symbol.symbolGroup?.text ?? '', path: '')}
         });
@@ -90,6 +89,7 @@ class SymbolReplacerManualControlState extends State<SymbolReplacerManualControl
       onChanged: () => setState(() {}),
       selectable: true,
       overlayOn: true,
+      scale: widget.symbolImage.symbolScale,
       onSymbolTapped: (String tappedText, SymbolData imageData) {
         setState(() {
           _selectGroupSymbols(imageData, (imageData.primarySelected || imageData.secondarySelected));
@@ -99,7 +99,7 @@ class SymbolReplacerManualControlState extends State<SymbolReplacerManualControl
   }
 
   void _selectGroupSymbols(SymbolData imageData, bool selected) {
-    var _symbol = _getSymbol(_symbolMap,imageData);
+    var _symbol = _getSymbol(_symbolMap, imageData);
 
     if (!(_addActiv || _removeActiv)) {
       _selectedSymbolData = selected ? imageData : null;
@@ -108,7 +108,7 @@ class SymbolReplacerManualControlState extends State<SymbolReplacerManualControl
     }
 
     if (_addActiv && !selected && _symbol != null) {
-      widget.symbolImage.addToGroup(_symbol, _getSymbol(_symbolMap,_selectedSymbolData)?.symbolGroup);
+      widget.symbolImage.addToGroup(_symbol, _getSymbol(_symbolMap, _selectedSymbolData)?.symbolGroup);
       imageData.primarySelected = true;
       _symbol = _getSymbol(_symbolMap, _selectedSymbolData);
       selected = true;
@@ -119,12 +119,13 @@ class SymbolReplacerManualControlState extends State<SymbolReplacerManualControl
         var symbolGroup = _getSymbol(_symbolMap, _selectedSymbolData)?.symbolGroup;
         widget.symbolImage.removeFromGroup(_symbol);
         if (symbolGroup != null) {
-          _selectedSymbolData = symbolGroup.symbols.isEmpty ? null : _symbolMap[symbolGroup.symbols.first]?.values.first;
+          _selectedSymbolData =
+              symbolGroup.symbols.isEmpty ? null : _symbolMap[symbolGroup.symbols.first]?.values.first;
         }
       } else {
         widget.symbolImage.removeFromGroup(_symbol);
       }
-      _symbol = _getSymbol(_symbolMap,_selectedSymbolData);
+      _symbol = _getSymbol(_symbolMap, _selectedSymbolData);
     }
 
     if (selected) {
@@ -146,7 +147,7 @@ class SymbolReplacerManualControlState extends State<SymbolReplacerManualControl
   }
 
   SymbolReplacerSymbolData? _getGroupSymbol(SymbolData imageData) {
-    var _symbol = _getSymbol(_symbolMap,imageData);
+    var _symbol = _getSymbol(_symbolMap, imageData);
     if (_symbol?.symbolGroup != null) return _symbol!.symbolGroup?.compareSymbol;
     return null;
   }

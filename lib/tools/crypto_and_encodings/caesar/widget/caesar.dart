@@ -1,19 +1,68 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/common_widgets/gcw_web_statefulwidget.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_abc_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
-import 'package:gc_wizard/tools/crypto_and_encodings/rotation/logic/rotator.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/rotation/logic/rotation.dart';
 
-class Caesar extends StatefulWidget {
-  const Caesar({Key? key}) : super(key: key);
+const String _apiSpecification = '''
+{
+  "/caesar" : {
+    "get": {
+      "summary": "Caesar Tool",
+      "responses": {
+        "204": {
+          "description": "Tool loaded. No response data."
+        }
+      },
+      "parameters" : [
+        {
+          "in": "query",
+          "name": "input",
+          "required": true,
+          "description": "Input data",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "key",
+          "description": "Shifts the input for n alphabet places",
+          "schema": {
+            "type": "integer",
+            "default": 13
+          }
+        },
+        {
+          "in": "query",
+          "name": "mode",
+          "description": "Defines encoding or decoding mode",
+          "schema": {
+            "type": "string",
+            "enum": [
+              "encode",
+              "decode"
+            ],
+            "default": "decode"
+          }
+        }
+      ]
+    }
+  }
+}
+''';
+
+class Caesar extends GCWWebStatefulWidget {
+  Caesar({Key? key}) : super(key: key, apiSpecification: _apiSpecification);
 
   @override
-  CaesarState createState() => CaesarState();
+  _CaesarState createState() => _CaesarState();
 }
 
-class CaesarState extends State<Caesar> {
+class _CaesarState extends State<Caesar> {
   late TextEditingController _controller;
 
   String _currentInput = '';
@@ -24,6 +73,18 @@ class CaesarState extends State<Caesar> {
   @override
   void initState() {
     super.initState();
+
+    if (widget.hasWebParameter()) {
+      if (widget.getWebParameter('mode') == 'encode') {
+        _currentMode = GCWSwitchPosition.left;
+      }
+
+      _currentInput = widget.getWebParameter('input') ?? _currentInput;
+      var key = widget.getWebParameter('key');
+      if (key != null) _currentKey = int.tryParse(key) ?? 13;
+      widget.webParameter = null;
+    }
+
     _controller = TextEditingController(text: _currentInput);
   }
 

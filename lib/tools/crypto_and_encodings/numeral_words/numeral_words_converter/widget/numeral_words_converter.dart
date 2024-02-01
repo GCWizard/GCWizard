@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -17,10 +17,10 @@ class NumeralWordsConverter extends StatefulWidget {
   const NumeralWordsConverter({Key? key}) : super(key: key);
 
   @override
-  NumeralWordsConverterState createState() => NumeralWordsConverterState();
+  _NumeralWordsConverterState createState() => _NumeralWordsConverterState();
 }
 
-class NumeralWordsConverterState extends State<NumeralWordsConverter> {
+class _NumeralWordsConverterState extends State<NumeralWordsConverter> {
   late TextEditingController _decodeController;
 
   var _currentDecodeInput = '';
@@ -114,27 +114,26 @@ class NumeralWordsConverterState extends State<NumeralWordsConverter> {
 
     return GCWDefaultOutput(
         child: Column(children: <Widget>[
-            Column(
-              children: <Widget>[
-                GCWOutputText(
-                  text: output.numeralWord,
-                ),
-                if (output.nameOfNumberSystem.isNotEmpty)
-                  Column(
-                    children: <Widget>[
-                      GCWTextDivider(text: i18n(context, output.nameOfNumberSystem)),
-                      GCWOutputText(
-                        text: output.numbersystem,
-                      ),
-                    ]
-                  )
-              ],
-            ),
-        ]));
+      Column(
+        children: <Widget>[
+          GCWOutputText(
+            text: output.numeralWord,
+          ),
+          if (output.nameOfNumberSystem.isNotEmpty)
+            Column(children: <Widget>[
+              GCWTextDivider(text: i18n(context, output.nameOfNumberSystem)),
+              GCWOutputText(
+                text: output.numbersystem,
+              ),
+            ])
+        ],
+      ),
+    ]));
   }
 
   Widget _buildOutputDecode(BuildContext context) {
-    OutputConvertToNumber output = decodeNumeralWordToNumber(_currentLanguage, removeAccents(_currentDecodeInput).toLowerCase());
+    OutputConvertToNumber output =
+        decodeNumeralWordToNumber(_currentLanguage, removeAccents(_currentDecodeInput).toLowerCase());
 
     if (output.error.isNotEmpty) {
       return GCWDefaultOutput(
@@ -144,19 +143,19 @@ class NumeralWordsConverterState extends State<NumeralWordsConverter> {
 
     return GCWDefaultOutput(
         child: Column(children: <Widget>[
-          GCWOutputText(
-            text: _currentDecodeInput.isEmpty ? '' : output.number.toString(),
-          ),
-          if (output.nameOfNumberSystem.isNotEmpty)
-            Column(
-              children: <Widget>[
-                GCWTextDivider(text: i18n(context, output.nameOfNumberSystem)),
-                GCWOutputText(
-                  text: output.numbersystem,
-                ),
-              ],
+      GCWOutputText(
+        text: _currentDecodeInput.isEmpty ? '' : output.number.toString(),
+      ),
+      if (output.nameOfNumberSystem.isNotEmpty)
+        Column(
+          children: <Widget>[
+            GCWTextDivider(text: i18n(context, output.nameOfNumberSystem)),
+            GCWOutputText(
+              text: output.numbersystem,
             ),
-        ]));
+          ],
+        ),
+    ]));
   }
 
   Widget _buildOutput(BuildContext context) {
@@ -166,5 +165,4 @@ class NumeralWordsConverterState extends State<NumeralWordsConverter> {
       return _buildOutputEncode(context);
     }
   }
-
 }

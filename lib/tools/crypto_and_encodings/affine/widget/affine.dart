@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
@@ -13,10 +13,10 @@ class Affine extends StatefulWidget {
   const Affine({Key? key}) : super(key: key);
 
   @override
-  AffineState createState() => AffineState();
+  _AffineState createState() => _AffineState();
 }
 
-class AffineState extends State<Affine> {
+class _AffineState extends State<Affine> {
   late TextEditingController _encodeController;
   late TextEditingController _decodeController;
 

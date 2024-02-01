@@ -1,16 +1,17 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_divider.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
+import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:gc_wizard/common_widgets/gcw_toast.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
@@ -21,16 +22,15 @@ import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:image/image.dart' as img;
 import 'package:tuple/tuple.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 
 class VisualCryptography extends StatefulWidget {
   const VisualCryptography({Key? key}) : super(key: key);
 
   @override
-  VisualCryptographyState createState() => VisualCryptographyState();
+  _VisualCryptographyState createState() => _VisualCryptographyState();
 }
 
-class VisualCryptographyState extends State<VisualCryptography> {
+class _VisualCryptographyState extends State<VisualCryptography> {
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
 
   GCWFile? _decodeImage1;
@@ -77,7 +77,7 @@ class VisualCryptographyState extends State<VisualCryptography> {
         file: _decodeImage1,
         onLoaded: (_file) {
           if (_file == null) {
-            showToast(i18n(context, 'common_loadfile_exception_notloaded'));
+            showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
             return;
           }
 
@@ -93,7 +93,7 @@ class VisualCryptographyState extends State<VisualCryptography> {
         file: _decodeImage2,
         onLoaded: (_file) {
           if (_file == null) {
-            showToast(i18n(context, 'common_loadfile_exception_notloaded'));
+            showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
             return;
           }
 
@@ -162,7 +162,7 @@ class VisualCryptographyState extends State<VisualCryptography> {
         file: _encodeImage,
         onLoaded: (_file) {
           if (_file == null) {
-            showToast(i18n(context, 'common_loadfile_exception_notloaded'));
+            showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
             return;
           }
 
@@ -174,12 +174,11 @@ class VisualCryptographyState extends State<VisualCryptography> {
         },
       ),
       Container(
-          padding: const EdgeInsets.symmetric(vertical: 25),
-          child:
-              GCWImageView(imageData: _encodeImage == null ? null :GCWImageViewData(_encodeImage!),
-                  suppressedButtons: const {GCWImageViewButtons.ALL}),
-        ),
-
+        padding: const EdgeInsets.symmetric(vertical: 25),
+        child: GCWImageView(
+            imageData: _encodeImage == null ? null : GCWImageViewData(_encodeImage!),
+            suppressedButtons: const {GCWImageViewButtons.ALL}),
+      ),
       GCWOnOffSwitch(
         value: _currentEncryptionWithKeyMode,
         title: i18n(context, 'visual_cryptography_keyimage'),
@@ -198,7 +197,7 @@ class VisualCryptographyState extends State<VisualCryptography> {
                   file: _encodeKeyImage,
                   onLoaded: (_file) {
                     if (_file == null) {
-                      showToast(i18n(context, 'common_loadfile_exception_notloaded'));
+                      showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
                       return;
                     }
 
@@ -292,7 +291,6 @@ class VisualCryptographyState extends State<VisualCryptography> {
   }
 
   void __encodeImageSize() {
-
     if (_encodeImage == null) return;
     var _image = img.decodeImage(_encodeImage!.bytes);
     if (_image == null) return;
@@ -350,8 +348,8 @@ class VisualCryptographyState extends State<VisualCryptography> {
         builder: (context) {
           return Center(
             child: SizedBox(
-              height: 220,
-              width: 150,
+              height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
+              width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
               child: GCWAsyncExecuter<Uint8List?>(
                 isolatedFunction: decodeImagesAsync,
                 parameter: _buildJobDataDecode,
@@ -394,8 +392,8 @@ class VisualCryptographyState extends State<VisualCryptography> {
   //                 onReady: (data) => _saveOutputOffsetAutoCalc(data),
   //                 isOverlay: true,
   //               ),
-  //               height: 220,
-  //               width: 150,
+  //               height: executerHeight,
+  //               width: executerWidth,
   //             ),
   //           );
   //         },
@@ -419,8 +417,8 @@ class VisualCryptographyState extends State<VisualCryptography> {
   //                   onReady: (data) => _saveOutputOffsetAutoCalc(data),
   //                   isOverlay: true,
   //                 ),
-  //                 height: 220,
-  //                 width: 150,
+  //                 height: executerHeight,
+  //                 width: executerWidth,
   //               ),
   //             );
   //           },
@@ -452,8 +450,8 @@ class VisualCryptographyState extends State<VisualCryptography> {
         builder: (context) {
           return Center(
             child: SizedBox(
-              height: 220,
-              width: 150,
+              height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
+              width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
               child: GCWAsyncExecuter<Tuple2<Uint8List, Uint8List?>?>(
                 isolatedFunction: encodeImagesAsync,
                 parameter: _buildJobDataEncode,
@@ -468,9 +466,12 @@ class VisualCryptographyState extends State<VisualCryptography> {
   }
 
   Future<GCWAsyncExecuterParameters> _buildJobDataEncode() async {
-    return GCWAsyncExecuterParameters(Tuple5<Uint8List, Uint8List?, int, int, int>(_encodeImage?.bytes ?? Uint8List(0),
+    return GCWAsyncExecuterParameters(Tuple5<Uint8List, Uint8List?, int, int, int>(
+        _encodeImage?.bytes ?? Uint8List(0),
         _currentEncryptionWithKeyMode ? _encodeKeyImage?.bytes ?? Uint8List(0) : null,
-        _encodeOffsetsX, _encodeOffsetsY, _encodeScale));
+        _encodeOffsetsX,
+        _encodeOffsetsY,
+        _encodeScale));
   }
 
   void _saveOutputEncode(Tuple2<Uint8List, Uint8List?>? output) {

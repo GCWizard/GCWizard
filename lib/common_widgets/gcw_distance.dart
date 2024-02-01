@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_double_textfield.dart';
 import 'package:gc_wizard/common_widgets/units/gcw_unit_dropdown.dart';
@@ -18,9 +18,14 @@ class GCWDistance extends StatefulWidget {
   final TextEditingController? controller;
 
   const GCWDistance(
-      {Key? key, required this.onChanged, this.hintText, this.value, this.unit,
-        this.allowNegativeValues = false, this.controller})
-        : super(key: key);
+      {Key? key,
+      required this.onChanged,
+      this.hintText,
+      this.value,
+      this.unit,
+      this.allowNegativeValues = false,
+      this.controller})
+      : super(key: key);
 
   @override
   _GCWDistanceState createState() => _GCWDistanceState();

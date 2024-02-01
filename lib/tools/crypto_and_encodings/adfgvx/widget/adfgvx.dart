@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_alphabetdropdown.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/adfgvx/logic/adfgvx.dart';
@@ -12,10 +14,10 @@ class ADFGVX extends StatefulWidget {
   const ADFGVX({Key? key}) : super(key: key);
 
   @override
-  ADFGVXState createState() => ADFGVXState();
+  _ADFGVXState createState() => _ADFGVXState();
 }
 
-class ADFGVXState extends State<ADFGVX> {
+class _ADFGVXState extends State<ADFGVX> {
   late TextEditingController _inputController;
   late TextEditingController _substitutionKeyController;
   late TextEditingController _transpositionKeyController;
@@ -54,6 +56,8 @@ class ADFGVXState extends State<ADFGVX> {
     var polybiosModeItems = {
       PolybiosMode.AZ09: i18n(context, 'polybios_mode_az09'),
       PolybiosMode.ZA90: i18n(context, 'polybios_mode_za90'),
+      PolybiosMode.x09AZ: i18n(context, 'polybios_mode_09az'),
+      PolybiosMode.x90ZA: i18n(context, 'polybios_mode_90za'),
       PolybiosMode.CUSTOM: i18n(context, 'common_custom'),
     };
 
@@ -121,14 +125,13 @@ class ADFGVXState extends State<ADFGVX> {
             });
           },
         ),
-        GCWDefaultOutput(child: _calculateOutput() //_currentOutput == null ? '' : _currentOutput
-            )
+        _calculateOutput()
       ],
     );
   }
 
-  String _calculateOutput() {
-    String? output;
+  Widget _calculateOutput() {
+    ADFGVXReturnType? output;
 
     if (_currentMode == GCWSwitchPosition.left) {
       if (_currentADFGVXMode == GCWSwitchPosition.left) {
@@ -148,6 +151,28 @@ class ADFGVXState extends State<ADFGVX> {
       }
     }
 
-    return output ?? '';
+    if (output == null || output.output == null || output.output!.isEmpty) {
+      return const GCWDefaultOutput();
+    }
+
+    var out = output.output;
+    var grid = output.polybiosGrid;
+
+    return Column(
+      children: [
+        GCWDefaultOutput(
+          child: out,
+        ),
+        grid == null
+            ? Container()
+            : GCWOutput(
+                title: i18n(context, 'polybios_usedgrid'),
+                child: GCWOutputText(
+                  text: grid,
+                  isMonotype: true,
+                ),
+              )
+      ],
+    );
   }
 }

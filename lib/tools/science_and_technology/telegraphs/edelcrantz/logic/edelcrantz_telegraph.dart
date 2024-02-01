@@ -12,18 +12,12 @@ import 'package:gc_wizard/utils/constants.dart';
 enum EdelcrantzCodebook { YEAR_1795, YEAR_1808, MUSEUM }
 
 const Map<EdelcrantzCodebook, CodebookConfig> MURRAY_CODEBOOK = {
-  EdelcrantzCodebook.YEAR_1795: CodebookConfig(
-    title: 'telegraph_edelcrantz_1795_title',
-    subtitle: 'telegraph_edelcrantz_1795_description'
-  ),
-  EdelcrantzCodebook.YEAR_1808: CodebookConfig(
-    title: 'telegraph_edelcrantz_1808_title',
-    subtitle: 'telegraph_edelcrantz_1808_description'
-  ),
-  EdelcrantzCodebook.MUSEUM: CodebookConfig(
-    title: 'telegraph_edelcrantz_museum_title',
-    subtitle: 'telegraph_edelcrantz_museum_description'
-  ),
+  EdelcrantzCodebook.YEAR_1795:
+      CodebookConfig(title: 'telegraph_edelcrantz_1795_title', subtitle: 'telegraph_edelcrantz_1795_description'),
+  EdelcrantzCodebook.YEAR_1808:
+      CodebookConfig(title: 'telegraph_edelcrantz_1808_title', subtitle: 'telegraph_edelcrantz_1808_description'),
+  EdelcrantzCodebook.MUSEUM:
+      CodebookConfig(title: 'telegraph_edelcrantz_museum_title', subtitle: 'telegraph_edelcrantz_museum_description'),
 };
 
 const _CODEBOOK_EDELCRANTZ_1795 = {

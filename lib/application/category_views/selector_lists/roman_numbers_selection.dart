@@ -14,7 +14,7 @@ class RomanNumbersSelection extends GCWSelection {
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(const RomanNumbers()),
+        className(RomanNumbers()),
         className(const Chronogram()),
       ].contains(className(element.tool));
     }).toList();

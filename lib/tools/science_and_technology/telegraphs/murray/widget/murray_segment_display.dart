@@ -6,11 +6,9 @@ const _MURRAY_RELATIVE_DISPLAY_WIDTH = 50;
 const _MURRAY_RELATIVE_DISPLAY_HEIGHT = 110;
 const _MURRAY_RADIUS = 10.0;
 
-
 class _MurraySegmentDisplay extends NSegmentDisplay {
-
-  _MurraySegmentDisplay({
-      Key? key,
+  _MurraySegmentDisplay(
+      {Key? key,
       required Map<String, bool> segments,
       bool readOnly = false,
       void Function(Map<String, bool>)? onChanged})

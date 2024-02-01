@@ -68,7 +68,6 @@ const Map<String, List<String>> _CODEBOOK_PREDATOR = {
 };
 
 Segments encodePredator(String input) {
-
   List<String> inputs = input.split('');
   List<List<String>> result = [];
   for (int i = 0; i < inputs.length; i++) {

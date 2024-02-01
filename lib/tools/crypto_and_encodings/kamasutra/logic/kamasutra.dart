@@ -1,4 +1,4 @@
-import 'package:gc_wizard/tools/crypto_and_encodings/rotation/logic/rotator.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/rotation/logic/rotation.dart';
 
 String encryptKamasutra(String input, String alphabet, {bool ignoreCase = true}) {
   if (input.isEmpty) return '';

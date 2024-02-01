@@ -71,23 +71,38 @@ void main() {
     }
   });
 
-  group("IrrationalNumberCalculator.decimalOccurence:", () { // ToDo Mark test not working
+  group("IrrationalNumberCalculator.decimalOccurence:", () {
     var irCalculator = IrrationalNumberCalculator(irrationalNumber: PI);
 
     List<Map<String, Object?>> _inputsToExpected = [
-      {'input' : '', 'expectedOutput' : []},
+      {'input' : '', 'expectedOutputCount' : 0},
 
-      {'input' : '1', 'expectedOutput' : 1},
-      {'input' : '141', 'expectedOutput' : 1},
-      {'input' : '41', 'expectedOutput' : 2},
-      {'input' : '939937510', 'expectedOutput' : 42},
-      {'input' : '19851026', 'expectedOutput' : []},
+      {'input' : '1', 'expectedOutputCount' : 110808, 'expectedOutputFirst' : 1, 'expectedValueFirst': '1'},
+      {'input' : '141', 'expectedOutputCount' : 1097, 'expectedOutputFirst' : 1, 'expectedValueFirst': '141'},
+      {'input' : '41', 'expectedOutputCount' : 11074, 'expectedOutputFirst' : 2, 'expectedValueFirst': '41'},
+      {'input' : '939937510', 'expectedOutputCount' : 1, 'expectedOutputFirst' : 42, 'expectedValueFirst': '939937510'},
+      {'input' : '19851026', 'expectedOutputCount' : 0},
+
+      {'input' : '3.14', 'expectedOutputCount' : 1059, 'expectedOutputFirst': 668, 'expectedValueFirst': '3014'},
+      {'input' : '3.*14', 'expectedOutputCount' : 1059, 'expectedOutputFirst': 668, 'expectedValueFirst': '3014'}, // * and + not allowed due to massive result sizes
+      {'input' : '3214', 'expectedOutputCount' : 116, 'expectedOutputFirst': 2842, 'expectedValueFirst': '3214'},
+      {'input' : '32+14', 'expectedOutputCount' : 116, 'expectedOutputFirst': 2842, 'expectedValueFirst': '3214'}, // * and + not allowed due to massive result sizes
+      {'input' : '32{2}14', 'expectedOutputCount' : 19, 'expectedOutputFirst': 58267, 'expectedValueFirst': '32214'},
+      {'input' : '32{2,3}14', 'expectedOutputCount' : 20, 'expectedOutputFirst': 58267, 'expectedValueFirst': '32214'},
+      {'input' : '32{2,3}1?4', 'expectedOutputCount' : 153, 'expectedOutputFirst': 16402, 'expectedValueFirst': '3224'},
+      {'input' : '32{2}1.', 'expectedOutputCount' : 127, 'expectedOutputFirst': 12811, 'expectedValueFirst': '32211'},
+
+      {'input' : '32ABC14', 'expectedOutputCount' : 116, 'expectedOutputFirst': 2842, 'expectedValueFirst': '3214'},
     ];
 
     for (var elem in _inputsToExpected) {
       test('index: ${elem['input']}', () {
         var _actual = irCalculator.decimalOccurences(elem['input'] as String);
-        expect(_actual.length, elem['expectedOutput']);
+        expect(_actual.length, elem['expectedOutputCount']);
+        if (elem['expectedOutputCount'] != 0) {
+          expect(_actual.first.start, elem['expectedOutputFirst']);
+          expect(_actual.first.value, elem['expectedValueFirst']);
+        }
       });
     }
   });

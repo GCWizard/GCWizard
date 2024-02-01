@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
@@ -9,10 +9,10 @@ class Deadfish extends StatefulWidget {
   const Deadfish({Key? key}) : super(key: key);
 
   @override
-  DeadfishState createState() => DeadfishState();
+  _DeadfishState createState() => _DeadfishState();
 }
 
-class DeadfishState extends State<Deadfish> {
+class _DeadfishState extends State<Deadfish> {
   var _currentInput = '';
   var _currentMode = GCWSwitchPosition.left;
   var _currentDeadfishMode = GCWSwitchPosition.left;

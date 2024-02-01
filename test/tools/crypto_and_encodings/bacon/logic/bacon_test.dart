@@ -1,4 +1,4 @@
-import "package:flutter_test/flutter_test.dart";
+import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/bacon/logic/bacon.dart';
 
 void main() {
@@ -15,7 +15,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBacon(elem['input'] as String, false, false);
+        var _actual = encodeBacon(elem['input'] as String);
         expect(_actual, elem['expectedOutput']);
       });
     }
@@ -34,7 +34,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBacon(elem['input'] as String, false, true);
+        var _actual = encodeBacon(elem['input'] as String, binary: true);
         expect(_actual, elem['expectedOutput']);
       });
     }
@@ -53,7 +53,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBacon(elem['input'] as String, true, false);
+        var _actual = encodeBacon(elem['input'] as String, inverse: true);
         expect(_actual, elem['expectedOutput']);
       });
     }
@@ -72,7 +72,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeBacon(elem['input'] as String, true, true);
+        var _actual = encodeBacon(elem['input'] as String, inverse: true, binary: true);
         expect(_actual, elem['expectedOutput']);
       });
     }
@@ -99,7 +99,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBacon(elem['input'] as String, false, false);
+        var _actual = decodeBacon(elem['input'] as String);
         expect(_actual, elem['expectedOutput']);
       });
     }
@@ -126,7 +126,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBacon(elem['input'] as String, false, true);
+        var _actual = decodeBacon(elem['input'] as String, binary: true);
         expect(_actual, elem['expectedOutput']);
       });
     }
@@ -153,7 +153,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBacon(elem['input'] as String, true, false);
+        var _actual = decodeBacon(elem['input'] as String, inverse: true);
         expect(_actual, elem['expectedOutput']);
       });
     }
@@ -180,11 +180,87 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeBacon(elem['input'] as String, true, true);
+        var _actual = decodeBacon(elem['input'] as String, inverse: true, binary: true);
         expect(_actual, elem['expectedOutput']);
       });
     }
   });
 
+  group("Bacon.encodeBaconFull:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : 'AZ', 'expectedOutput' : 'AAAAABBAAB', 'type': BaconType.FULL},
+      {'input' : 'AZ', 'expectedOutput' : 'AAAAABABBB', 'type': BaconType.ORIGINAL},
+      {'input' : 'UVIJ', 'expectedOutput' : 'BABAABABABABAAAABAAB', 'type': BaconType.FULL},
+      {'input' : 'UVIJ', 'expectedOutput' : 'BAABBBAABBABAAAABAAA', 'type': BaconType.ORIGINAL},
+    ];
 
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}, type: ${elem['type']}', () {
+        var _actual = encodeBacon(elem['input'] as String, type: elem['type'] as BaconType);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
+
+  group("Bacon.decodeBaconFull:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'expectedOutput' : 'AZ', 'input' : 'AAAAABBAAB', 'type': BaconType.FULL},
+      {'expectedOutput' : 'AZ', 'input' : 'AAAAABABBB', 'type': BaconType.ORIGINAL},
+      {'expectedOutput' : 'UVIJ', 'input' : 'BABAABABABABAAAABAAB', 'type': BaconType.FULL},
+      {'expectedOutput' : 'WXIK', 'input' : 'BABAABABABABAAAABAAB', 'type': BaconType.ORIGINAL},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}, type: ${elem['type']}', () {
+        var _actual = decodeBacon(elem['input'] as String, type: elem['type'] as BaconType);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
+
+  group("Bacon.encodeBaconFullInverseBinary:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '', 'expectedOutput' : ''},
+
+      {'input' : 'AZ', 'expectedOutput' : '1111100110'},
+      {'input' : 'Az', 'expectedOutput' : '1111100110'},
+      {'input' : 'UV', 'expectedOutput' : '0101101010'},
+      {'input' : 'IJ', 'expectedOutput' : '1011110110'},
+      {'input' : ' A_12Z%', 'expectedOutput' : '1111100110'}
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}', () {
+        var _actual = encodeBacon(elem['input'] as String, inverse: true, binary: true, type: BaconType.FULL);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
+
+  group("Bacon.decodeBaconFullInverseBinary:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '', 'expectedOutput' : ''},
+
+      {'expectedOutput' : 'AX', 'input' : '1111101000ABABA'},
+      {'expectedOutput' : 'AX', 'input' : '11111010001ABABA'},
+      {'expectedOutput' : 'AX', 'input' : '111110100011'},
+      {'expectedOutput' : 'AX', 'input' : '1111101000111'},
+      {'expectedOutput' : 'AX', 'input' : '11111010001111'},
+      {'expectedOutput' : 'AXA', 'input' : '111110100011111'},
+      {'expectedOutput' : 'AX', 'input' : 'z11111 010002'},
+      {'expectedOutput' : 'UV', 'input' : '0101101010'},
+      {'expectedOutput' : 'IJ', 'input' : '1011110110'},
+      {'expectedOutput' : '', 'input' : '00000'},
+      {'expectedOutput' : '', 'input' : '0001'},
+      {'expectedOutput' : '', 'input' : '00000000000001'},
+      {'expectedOutput' : '', 'input' : '00000 00000 0001'},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}', () {
+        var _actual = decodeBacon(elem['input'] as String, inverse: true, binary: true, type: BaconType.FULL);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
 }

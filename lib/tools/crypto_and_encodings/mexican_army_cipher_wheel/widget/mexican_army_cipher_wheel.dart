@@ -13,10 +13,10 @@ class MexicanArmyCipherWheel extends StatefulWidget {
   const MexicanArmyCipherWheel({Key? key}) : super(key: key);
 
   @override
-  MexicanArmyCipherWheelState createState() => MexicanArmyCipherWheelState();
+  _MexicanArmyCipherWheelState createState() => _MexicanArmyCipherWheelState();
 }
 
-class MexicanArmyCipherWheelState extends State<MexicanArmyCipherWheel> {
+class _MexicanArmyCipherWheelState extends State<MexicanArmyCipherWheel> {
   late TextEditingController _controller;
   late TextEditingController _key4Controller;
 

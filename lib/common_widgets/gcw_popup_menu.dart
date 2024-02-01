@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
@@ -16,6 +16,7 @@ class GCWPopupMenu extends StatefulWidget {
   final bool isTextSelectionToolBarButton;
   final EdgeInsets? textSelectionToolBarButtonPadding;
   final String? textSelectionToolBarButtonLabel;
+  final bool? buttonNoBorder;
 
   final Function? onBeforePressed;
 
@@ -32,13 +33,14 @@ class GCWPopupMenu extends StatefulWidget {
     this.isTextSelectionToolBarButton = false,
     this.textSelectionToolBarButtonPadding,
     this.textSelectionToolBarButtonLabel,
+    this.buttonNoBorder,
   }) : super(key: key);
 
   @override
-  GCWPopupMenuState createState() => GCWPopupMenuState();
+  _GCWPopupMenuState createState() => _GCWPopupMenuState();
 }
 
-class GCWPopupMenuState extends State<GCWPopupMenu> {
+class _GCWPopupMenuState extends State<GCWPopupMenu> {
   List<PopupMenuEntry<int>>? _menuItems;
   List<void Function(int)>? _menuAction;
 
@@ -74,6 +76,7 @@ class GCWPopupMenuState extends State<GCWPopupMenu> {
         size: widget.size,
         iconColor: widget.iconColor,
         backgroundColor: widget.backgroundColor,
+        noBorder: widget.buttonNoBorder,
         onPressed: _onPressed);
   }
 
@@ -84,7 +87,8 @@ class GCWPopupMenuState extends State<GCWPopupMenu> {
       return MapEntry<PopupMenuEntry<int>, void Function(int)>(
           item.isDivider
               ? const PopupMenuDivider() as PopupMenuEntry<int>
-              : PopupMenuItem(value: index, child: item.child), item.action);
+              : PopupMenuItem(value: index, child: item.child),
+          item.action);
     });
 
     _afterLayout();

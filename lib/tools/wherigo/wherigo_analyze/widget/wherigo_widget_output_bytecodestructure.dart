@@ -1,12 +1,11 @@
 part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/widget/wherigo_analyze.dart';
 
 List<Widget> _buildOutputListByteCodeStructure(BuildContext context, Uint8List bytes) {
-
   int numberOfObjects = readShort(bytes, 7);
   int offset = 0;
   List<Widget> result = [];
 
-  Widget _buildSectionSignature(int numberOfObjects){
+  Widget _buildSectionSignature(int numberOfObjects) {
     List<List<String>> content = [];
     content = [
       [
@@ -33,14 +32,11 @@ List<Widget> _buildOutputListByteCodeStructure(BuildContext context, Uint8List b
       text: i18n(context, 'wherigo_header_signature'),
       expanded: false,
       child: GCWColumnedMultilineOutput(
-          data: content,
-          suppressCopyButtons: true,
-          flexValues: const [1, 3, 2],
-          hasHeader: true
-      ),
+          data: content, suppressCopyButtons: true, flexValues: const [1, 3, 2], hasHeader: true),
     );
   }
-  Widget _buildSectionMediaFiles(int numberOfObjects){
+
+  Widget _buildSectionMediaFiles(int numberOfObjects) {
     // id and offset of media files
     // 2 Bytes ID
     // 4 Bytes offset
@@ -66,14 +62,11 @@ List<Widget> _buildOutputListByteCodeStructure(BuildContext context, Uint8List b
       text: i18n(context, 'wherigo_data_mediafiles'),
       expanded: false,
       child: GCWColumnedMultilineOutput(
-          data: content,
-          suppressCopyButtons: true,
-          flexValues: const [1, 3, 2],
-          hasHeader: true
-      ),
+          data: content, suppressCopyButtons: true, flexValues: const [1, 3, 2], hasHeader: true),
     );
   }
-  Widget _buildSectionHeader(){
+
+  Widget _buildSectionHeader() {
     List<List<String>> content = [];
     content.add(['', i18n(context, 'wherigo_header_headerlength'), 'Bytes']);
     content.add([
@@ -107,14 +100,11 @@ List<Widget> _buildOutputListByteCodeStructure(BuildContext context, Uint8List b
       text: i18n(context, 'wherigo_data_header'),
       expanded: false,
       child: GCWColumnedMultilineOutput(
-          data: content,
-          suppressCopyButtons: true,
-          flexValues: const [1, 3, 2],
-          hasHeader: true
-      ),
+          data: content, suppressCopyButtons: true, flexValues: const [1, 3, 2], hasHeader: true),
     );
   }
-  Widget _buildSectionLUAByteCode(){
+
+  Widget _buildSectionLUAByteCode() {
     // LUA Bytecode
     // 4 Bytes Size
     // ? bytes LUA Bytecode
@@ -129,14 +119,11 @@ List<Widget> _buildOutputListByteCodeStructure(BuildContext context, Uint8List b
       text: i18n(context, 'wherigo_data_luabytecode'),
       expanded: false,
       child: GCWColumnedMultilineOutput(
-          data: content,
-          suppressCopyButtons: true,
-          flexValues: const [1, 3, 2],
-          hasHeader: true
-      ),
+          data: content, suppressCopyButtons: true, flexValues: const [1, 3, 2], hasHeader: true),
     );
   }
-  Widget _buildSectionMediaFilesDetails(){
+
+  Widget _buildSectionMediaFilesDetails() {
     // Media files
     // 1 Byte Valid Object (0 = nothing, else Object
     // 4 Byte Object Type
@@ -196,11 +183,7 @@ List<Widget> _buildOutputListByteCodeStructure(BuildContext context, Uint8List b
       text: i18n(context, 'wherigo_data_mediafiles'),
       expanded: false,
       child: GCWColumnedMultilineOutput(
-          data: content,
-          suppressCopyButtons: true,
-          flexValues: const [1, 3, 2],
-          hasHeader: true
-      ),
+          data: content, suppressCopyButtons: true, flexValues: const [1, 3, 2], hasHeader: true),
     );
   }
 

@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -14,10 +14,10 @@ class ComplexNumbers extends StatefulWidget {
   const ComplexNumbers({Key? key}) : super(key: key);
 
   @override
-  ComplexNumbersState createState() => ComplexNumbersState();
+  _ComplexNumbersState createState() => _ComplexNumbersState();
 }
 
-class ComplexNumbersState extends State<ComplexNumbers> {
+class _ComplexNumbersState extends State<ComplexNumbers> {
   var _currentA = '';
   var _currentB = '';
   var _currentRadius = '';
@@ -131,12 +131,11 @@ class ComplexNumbersState extends State<ComplexNumbers> {
     }
 
     return GCWDefaultOutput(
-        child: GCWColumnedMultilineOutput(
-            data: coordinates.entries.where((entry) => entry.key.isNotEmpty).map((entry) {
-                    return [i18n(context, entry.key), entry.value];
-                  }).toList(),
-            flexValues: const [1, 1]
-            ),
+      child: GCWColumnedMultilineOutput(
+          data: coordinates.entries.where((entry) => entry.key.isNotEmpty).map((entry) {
+            return [i18n(context, entry.key), entry.value];
+          }).toList(),
+          flexValues: const [1, 1]),
     );
   }
 }

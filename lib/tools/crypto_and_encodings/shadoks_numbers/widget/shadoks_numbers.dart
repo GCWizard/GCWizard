@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/gcw_toolbar.dart';
@@ -19,10 +19,10 @@ class ShadoksNumbers extends StatefulWidget {
   const ShadoksNumbers({Key? key}) : super(key: key);
 
   @override
-  ShadoksNumbersState createState() => ShadoksNumbersState();
+  _ShadoksNumbersState createState() => _ShadoksNumbersState();
 }
 
-class ShadoksNumbersState extends State<ShadoksNumbers> {
+class _ShadoksNumbersState extends State<ShadoksNumbers> {
   static const Map<String, String> _segmentToWord = {
     'a': 'GA',
     'b': 'BU',
@@ -120,7 +120,9 @@ class ShadoksNumbersState extends State<ShadoksNumbers> {
                   }
                   _currentDisplay.putIfAbsent('a', () => false);
                 } else {
-                  _currentDisplays = Segments(displays: [['a']]);
+                  _currentDisplays = Segments(displays: [
+                    ['a']
+                  ]);
                   _currentDisplay = {'a': true};
                 }
               });
@@ -130,7 +132,9 @@ class ShadoksNumbersState extends State<ShadoksNumbers> {
             icon: Icons.clear,
             onPressed: () {
               setState(() {
-                _currentDisplays = Segments(displays: [['a']]);
+                _currentDisplays = Segments(displays: [
+                  ['a']
+                ]);
                 _currentDisplay = {'a': true};
               });
             },
@@ -148,7 +152,8 @@ class ShadoksNumbersState extends State<ShadoksNumbers> {
     return result;
   }
 
-  NSegmentDisplay _SanatizedShadoksNumbersSegmentDisplay({required Map<String, bool> segments, required bool readOnly}) {
+  NSegmentDisplay _SanatizedShadoksNumbersSegmentDisplay(
+      {required Map<String, bool> segments, required bool readOnly}) {
     segments.putIfAbsent('a', () => false);
     return _ShadoksNumbersSegmentDisplay(segments: segments, readOnly: true);
   }

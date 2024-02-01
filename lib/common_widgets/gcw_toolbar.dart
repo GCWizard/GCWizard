@@ -4,7 +4,7 @@ class GCWToolBar extends StatefulWidget {
   final List<Widget> children;
   final List<int> flexValues;
 
-  const GCWToolBar({Key? key, required this.children, this.flexValues= const []}) : super(key: key);
+  const GCWToolBar({Key? key, required this.children, this.flexValues = const []}) : super(key: key);
 
   @override
   _GCWToolBarState createState() => _GCWToolBarState();

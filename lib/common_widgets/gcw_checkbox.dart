@@ -33,10 +33,10 @@ class GCWCheckBox extends StatefulWidget {
       : super(key: key);
 
   @override
-  GCWCheckBoxState createState() => GCWCheckBoxState();
+  _GCWCheckBoxState createState() => _GCWCheckBoxState();
 }
 
-class GCWCheckBoxState extends State<GCWCheckBox> {
+class _GCWCheckBoxState extends State<GCWCheckBox> {
   @override
   Widget build(BuildContext context) {
     return Row(

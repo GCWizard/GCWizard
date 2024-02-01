@@ -29,6 +29,7 @@ Meta:
 	- Write Changelog: Check closed PRs and commit history for new features, big fixes or changes
 		- Write changelog string as late as possible because the translations shouldn't get outdated if something will be added
 		- Wait for translators for translating the changelog; you gonna need them for the app stores
+		- Hide old changelog strings in Crowdin, it's not necessary to translate them furtherly
 	- In changelogs.dart add new version and probable release date
 	- In Crowdin check percentages for languages and put them into supported_locales.dart
 	- Update Flutter last time before final internal testing on both, your Android and your iOS machine
@@ -59,8 +60,9 @@ Meta:
 			- Changelogs can only be added on real release, e.g. internal or beta test
 	- Check legal websites:
 		- cookie_policy.html contains a list of cookies. Every "Pref" used in the code will be stored as a cookie. So if you added some in the new version, you need to add them in the websites
-		- privacy_police.html contains the permissions the app needs, like localisation or file access. Check if the list is still up-to-date
+		- privacy_police.html contains the permissions the app needs, like localisation or file access. It also lists the destinations of third party web links like OpenStreetMap or the Dow Jones API Check if the list is still up-to-date
 		- impressum.html: Your contact data is still up-to-date?
+		- Don't forget to update the "Last updated" section of the files
 		- Remember: For privacy reasons, the legal websites are not part of the public GitHub repository. So ensure to make the changes also in your back-up
 	- Prepare blog post for new version in EN and DE
 	- Hopefully everything works fine. But prepare yourself for nasty issues like unsupported XCode or POD versions, new App/PlayStore restrictions, review denies, ...
@@ -97,7 +99,7 @@ Actual Release:
 		- Promote internal test version to Closed and Open Testing (Alpha / Beta)
 		- Insert new changelogs for all supported languages
 			- If already done on a previous release you can select "Copy from previous release"
-		- Save -> Start roll-out
+		- Save -> Send for review -> Start roll-out
 	- iOS:
 		- Simply add "GCWizard Testers" as users to test version
 		- Insert new changelogs for EN and DE
@@ -108,7 +110,8 @@ Actual Release:
 	Release public:
 	- Android:
 		- Promote open test version to public
-		- Save -> Start roll-out
+		- Save -> Send for review -> Start roll-out
+		- Update Rollout Settings from 20 to 100%
 		- Reviewing may take a few days
 	- iOS:
 		- Go to normal AppStore
@@ -212,6 +215,15 @@ iOS build: GeneratedPluginRegistrant.m Module not found.
 Xcode 10: unable to attach DB error
 
 -> Delete /users/.../Library/Developer/Xcode/DerivedData directory
+--------------
+Could not find a file named"pubspec.yaml"in
+-> dart pub get
+--------------
+Xcode 14 beta error: Stored properties cannot be marked potentially unavailable with '@available'
+-> Navigate to ios folder and run following commands:
+-> pod install
+-> pod update
+
 
 ========
 Crowdin Script, install jq using Scoop.sh:

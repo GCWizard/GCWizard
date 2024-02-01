@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
@@ -21,10 +21,10 @@ class PantoneColorCodes extends StatefulWidget {
   const PantoneColorCodes({Key? key}) : super(key: key);
 
   @override
-  PantoneColorCodesState createState() => PantoneColorCodesState();
+  _PantoneColorCodesState createState() => _PantoneColorCodesState();
 }
 
-class PantoneColorCodesState extends State<PantoneColorCodes> {
+class _PantoneColorCodesState extends State<PantoneColorCodes> {
   late PantoneColor _currentValue;
   List<PantoneColor> _colors = [];
 
@@ -52,7 +52,6 @@ class PantoneColorCodesState extends State<PantoneColorCodes> {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       children: <Widget>[
         GCWTwoOptionsSwitch(
@@ -128,15 +127,14 @@ class PantoneColorCodesState extends State<PantoneColorCodes> {
     }
 
     return GCWOutput(
-        title: similarPantones.length == 1
-            ? i18n(context, 'common_output')
-            : i18n(context, 'pantonecolorcodes_mode_colorstoral_similarcolorsfound'),
-        child: GCWColumnedMultilineOutput(
-                  data:  similarPantones.map((e) => _buildPantoneColorOutput(e)).toList(),
-                  flexValues: const [1, 1, 2],
-                  copyColumn: 2
-              ),
-        );
+      title: similarPantones.length == 1
+          ? i18n(context, 'common_output')
+          : i18n(context, 'pantonecolorcodes_mode_colorstoral_similarcolorsfound'),
+      child: GCWColumnedMultilineOutput(
+          data: similarPantones.map((e) => _buildPantoneColorOutput(e)).toList(),
+          flexValues: const [1, 1, 2],
+          copyColumn: 2),
+    );
   }
 
   Widget _buildPantoneToColorOutput() {
@@ -145,14 +143,14 @@ class PantoneColorCodesState extends State<PantoneColorCodes> {
     var name = _currentValue.name;
     if (name.isEmpty) name = 'common_unknown';
 
-    List<Widget> children = [GCWColumnedMultilineOutput(
-                              data : [
-                                      ['Name', i18n(context, name)],
-                                      ['Hex Color Code', _currentValue.colorcode],
-                                      ['RGB', rgbColor.toRBGString()],
-                                      ['CMYK', CMYK.fromRGB(rgbColor).toCMYKString()],
-                                    ]
-                              )];
+    List<Widget> children = [
+      GCWColumnedMultilineOutput(data: [
+        ['Name', i18n(context, name)],
+        ['Hex Color Code', _currentValue.colorcode],
+        ['RGB', rgbColor.toRBGString()],
+        ['CMYK', CMYK.fromRGB(rgbColor).toCMYKString()],
+      ])
+    ];
 
     children.add(Container(
       margin: const EdgeInsets.only(top: 10 * DEFAULT_MARGIN),

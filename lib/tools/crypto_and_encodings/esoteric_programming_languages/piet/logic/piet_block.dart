@@ -24,21 +24,19 @@ class _PietBlock {
   }
 
   Point<int> get northLeft => _pixels.reduce(
-          (current, next) => ((current.y < next.y) || ((current.y == next.y) && current.x < next.x)) ? current : next);
+      (current, next) => ((current.y < next.y) || ((current.y == next.y) && current.x < next.x)) ? current : next);
   Point<int> get northRight => _pixels.reduce(
-          (current, next) => ((current.y < next.y) || ((current.y == next.y) && current.x > next.x)) ? current : next);
+      (current, next) => ((current.y < next.y) || ((current.y == next.y) && current.x > next.x)) ? current : next);
   Point<int> get eastLeft => _pixels.reduce(
-          (current, next) => ((current.x > next.x) || ((current.x == next.x) && current.y < next.y)) ? current : next);
+      (current, next) => ((current.x > next.x) || ((current.x == next.x) && current.y < next.y)) ? current : next);
   Point<int> get eastRight => _pixels.reduce(
-          (current, next) => ((current.x > next.x) || ((current.x == next.x) && current.y > next.y)) ? current : next);
+      (current, next) => ((current.x > next.x) || ((current.x == next.x) && current.y > next.y)) ? current : next);
   Point<int> get southLeft => _pixels.reduce(
-          (current, next) => ((current.y > next.y) || ((current.y == next.y) && current.x > next.x)) ? current : next);
+      (current, next) => ((current.y > next.y) || ((current.y == next.y) && current.x > next.x)) ? current : next);
   Point<int> get southRight => _pixels.reduce(
-          (current, next) => ((current.y > next.y) || ((current.y == next.y) && current.x < next.x)) ? current : next);
+      (current, next) => ((current.y > next.y) || ((current.y == next.y) && current.x < next.x)) ? current : next);
   Point<int> get westLeft => _pixels.reduce(
-          (current, next) => ((current.x < next.x) || ((current.x == next.x) && current.y > next.y)) ? current : next);
+      (current, next) => ((current.x < next.x) || ((current.x == next.x) && current.y > next.y)) ? current : next);
   Point<int> get westRight => _pixels.reduce(
-          (current, next) => ((current.x < next.x) || ((current.x == next.x) && current.y < next.y)) ? current : next);
+      (current, next) => ((current.x < next.x) || ((current.x == next.x) && current.y < next.y)) ? current : next);
 }
-
-

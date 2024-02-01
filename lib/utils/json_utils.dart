@@ -1,4 +1,4 @@
-enum JsonType {MAP, ARRAY, SIMPLE_TYPE}
+enum JsonType { MAP, ARRAY, SIMPLE_TYPE }
 
 JsonType? getJsonType(Object? decodedJson) {
   if (decodedJson == null) {
@@ -9,7 +9,7 @@ JsonType? getJsonType(Object? decodedJson) {
     return JsonType.MAP;
   }
 
-  if (isJsonArray(decodedJson)){
+  if (isJsonArray(decodedJson)) {
     return JsonType.ARRAY;
   }
 
@@ -42,4 +42,20 @@ bool isJsonArray(Object? decodedJson) {
   if (decodedJson == null) return false;
 
   return decodedJson is List<Object?>;
+}
+
+List<Object?>? asJsonArrayOrNull(Object? decoded) {
+  if (decoded == null || !(isJsonArray(decoded))) {
+    return null;
+  }
+
+  return decoded as List<Object?>;
+}
+
+List<Object?> asJsonArray(Object? decoded) {
+  if (decoded == null || !(isJsonArray(decoded))) {
+    return <Object?>[];
+  }
+
+  return decoded as List<Object?>;
 }

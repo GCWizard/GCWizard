@@ -15,8 +15,10 @@ String decryptPrimeAlphabet(List<int?> input, {int firstRecognizedPrime = 2}) {
   var firstIndex = getPrimeIndex(_firstRecognizedPrime);
 
   return input.map((number) {
-    if (_firstRecognizedPrime == null || number == null ||
-        number < _firstRecognizedPrime || !isPrime(BigInt.from(number))) return UNKNOWN_ELEMENT;
+    if (_firstRecognizedPrime == null ||
+        number == null ||
+        number < _firstRecognizedPrime ||
+        !isPrime(BigInt.from(number))) return UNKNOWN_ELEMENT;
 
     var index = (getPrimeIndex(number) - firstIndex) % 26;
     return alphabet_AZIndexes[index + 1];

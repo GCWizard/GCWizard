@@ -98,7 +98,7 @@ Future<WhitespaceResult> interpreterWhitespace(String code, String inp,
     interpreter.run();
 
     return WhitespaceResult(output: _output, input_expected: _input_required, code: _clean(_code));
-  } on FormatException catch(e) {
+  } on FormatException catch (e) {
     if (e.message == _inputRequired) {
       var state = WhitespaceState();
       state.storeState(-4); //2 commands back ('\t\n': 'IO' and '\t ': 'input_char' or '\t\t': 'input_num')
@@ -106,11 +106,7 @@ Future<WhitespaceResult> interpreterWhitespace(String code, String inp,
           output: _output, code: _clean(_code), input_expected: _input_required, finished: false, state: state);
     } else {
       return WhitespaceResult(
-          output: _output,
-          code: _clean(_code),
-          input_expected: _input_required,
-          error: true,
-          errorText: e.toString());
+          output: _output, code: _clean(_code), input_expected: _input_required, error: true, errorText: e.message);
     }
   }
 }
@@ -274,7 +270,7 @@ class _Interpreter {
       }
     }
     if (_loading) {
-      if (_dbg) print('Finished marking labels. Starting program sequence...');
+      // if (_dbg) print('Finished marking labels. Starting program sequence...');
       _pos = 0;
       _loading = false;
       run();
@@ -530,7 +526,7 @@ class _FlowControl {
         _dbgOutput(_command, _clean(label) + ' index:' + index.toString());
         _mark_label(label);
       } else {
-        if (_dbg) print('Ignoring label marker');
+        // if (_dbg) print('Ignoring label marker');
       }
       _pos = index;
     } else if (_command == 'jump') {
@@ -595,7 +591,7 @@ class _FlowControl {
   }
 
   void _exit() {
-    if (_dbg) print('Program terminated.');
+    // if (_dbg) print('Program terminated.');
     _pos = 9999999;
   }
 
@@ -835,6 +831,9 @@ Tuple2<int, int> _num_parameter() {
   if (index == _pos) {
     if (!_loading) const FormatException('common_programming_error_invalid_opcode');
   }
+  if (index < 0) {
+    throw const FormatException('common_programming_error_invalid_opcode');
+  }
 
   var item = _whitespaceToInt(_code.substring(_pos, index));
   return Tuple2<int, int>(index, item);
@@ -843,7 +842,7 @@ Tuple2<int, int> _num_parameter() {
 /// Converts the Whitespace representation of a number to an integer.
 int _whitespaceToInt(String code) {
   var num = 0;
-  if (code.length == 1) {
+  if (code.length <= 1) {
     num = 0;
     return num;
   }
@@ -876,6 +875,9 @@ Tuple2<int, String> _label_parameter() {
   *Must be unique.
   */
   var index = _code.indexOf('\n', _pos) + 1;
+  if (index < _pos) {
+    throw const FormatException('common_programming_error_invalid_opcode');
+  }
   // Empty string is a valid label
   var name = _code.substring(_pos, index);
   return Tuple2<int, String>(index, name);
@@ -884,7 +886,7 @@ Tuple2<int, String> _label_parameter() {
 void _dbgOutput(String command, String? label) {
   if (_dbg) {
     label = label != null ? ' (' + label + ')' : '';
-    print('[' + _dbgCounter.toString() + '] ' + 'Command: ' + command + label);
+    // print('[' + _dbgCounter.toString() + '] ' + 'Command: ' + command + label);
     _dbgCounter += 1;
   }
 }

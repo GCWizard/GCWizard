@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
@@ -22,10 +22,10 @@ class OhlsenTelegraph extends StatefulWidget {
   const OhlsenTelegraph({Key? key}) : super(key: key);
 
   @override
-  OhlsenTelegraphState createState() => OhlsenTelegraphState();
+  _OhlsenTelegraphState createState() => _OhlsenTelegraphState();
 }
 
-class OhlsenTelegraphState extends State<OhlsenTelegraph> {
+class _OhlsenTelegraphState extends State<OhlsenTelegraph> {
   var _currentEncodeInput = '';
   late TextEditingController _dncodeInputController;
 

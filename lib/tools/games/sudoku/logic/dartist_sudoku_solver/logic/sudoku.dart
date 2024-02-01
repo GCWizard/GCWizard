@@ -124,7 +124,8 @@ List<Map<String, String>>? _searchAll(Map<String, String>? values) {
     return <Map<String, String>>[values];
   }
 
-  var s2 = _order(_squares.where((String s) => values[s]!.length > 1).toList(), on: (String s) => values[s]!.length).first;
+  var s2 =
+      _order(_squares.where((String s) => values[s]!.length > 1).toList(), on: (String s) => values[s]!.length).first;
 
   var output = <Map<String, String>>[];
 
@@ -138,11 +139,12 @@ List<Map<String, String>>? _searchAll(Map<String, String>? values) {
   return output;
 }
 
-List<String> _order(List<String> seq, {Comparator<String>? by, List<Comparator<String>>? byAll, required int Function(String x) on}) => by != null
-    ? (seq..sort(by))
-    : byAll != null
-        ? (seq..sort((a, b) => byAll.firstWhere((compare) => compare(a, b) != 0, orElse: () => (x, y) => 0)(a, b)))
-        : (seq..sort((a, b) => on(a).compareTo(on(b))));
+List<String> _order(List<String> seq,
+        {Comparator<String>? by, List<Comparator<String>>? byAll, required int Function(String x) on}) =>
+    by != null
+        ? (seq..sort(by))
+        : byAll != null
+            ? (seq..sort((a, b) => byAll.firstWhere((compare) => compare(a, b) != 0, orElse: () => (x, y) => 0)(a, b)))
+            : (seq..sort((a, b) => on(a).compareTo(on(b))));
 
 bool _all(Iterable<Map<String, String>?> seq) => seq.every((e) => e != null);
-

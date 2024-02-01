@@ -2,7 +2,7 @@ part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/widget/wherigo_analyze.
 
 List<List<String>> _buildOutputListOfZoneData(BuildContext context, WherigoZoneData data) {
   List<List<String>> result = [];
-  if (wherigoExpertMode) {
+  if (WHERIGOExpertMode) {
     result = _buildOutputListOfZoneDataExpertMode(context, data);
   } else {
     result = _buildOutputListOfZoneDataUserMode(context, data);
@@ -21,8 +21,8 @@ List<List<String>> _buildOutputListOfZoneDataUserMode(BuildContext context, Wher
     [i18n(context, 'wherigo_output_description'), data.ZoneDescription],
     [
       i18n(context, 'wherigo_output_originalpoint'),
-      formatCoordOutput(LatLng(data.ZoneOriginalPoint.Latitude, data.ZoneOriginalPoint.Longitude), defaultCoordinateFormat,
-          defaultEllipsoid)
+      formatCoordOutput(LatLng(data.ZoneOriginalPoint.Latitude, data.ZoneOriginalPoint.Longitude),
+          defaultCoordinateFormat, defaultEllipsoid)
     ],
     [i18n(context, 'wherigo_output_zonepoints'), ''],
   ];
@@ -39,14 +39,18 @@ List<List<String>> _buildOutputListOfZoneDataExpertMode(BuildContext context, Wh
       i18n(context, 'wherigo_output_medianame'),
       data.ZoneMediaName +
           (data.ZoneMediaName != ''
-              ? (NameToObject[data.ZoneMediaName] != null ? ' ⬌ ' + NameToObject[data.ZoneMediaName]!.ObjectName : '')
+              ? (WHERIGONameToObject[data.ZoneMediaName] != null
+                  ? ' ⬌ ' + WHERIGONameToObject[data.ZoneMediaName]!.ObjectName
+                  : '')
               : '')
     ],
     [
       i18n(context, 'wherigo_output_iconname'),
       data.ZoneIconName +
           (data.ZoneIconName != ''
-              ? (NameToObject[data.ZoneIconName] != null ? ' ⬌ ' + NameToObject[data.ZoneIconName]!.ObjectName : '')
+              ? (WHERIGONameToObject[data.ZoneIconName] != null
+                  ? ' ⬌ ' + WHERIGONameToObject[data.ZoneIconName]!.ObjectName
+                  : '')
               : '')
     ],
     [i18n(context, 'wherigo_output_active'), i18n(context, 'common_' + data.ZoneActive)],
@@ -59,8 +63,8 @@ List<List<String>> _buildOutputListOfZoneDataExpertMode(BuildContext context, Wh
     [i18n(context, 'wherigo_output_inrange'), data.ZoneInRange],
     [
       i18n(context, 'wherigo_output_originalpoint'),
-      formatCoordOutput(LatLng(data.ZoneOriginalPoint.Latitude, data.ZoneOriginalPoint.Longitude), defaultCoordinateFormat,
-          defaultEllipsoid)
+      formatCoordOutput(LatLng(data.ZoneOriginalPoint.Latitude, data.ZoneOriginalPoint.Longitude),
+          defaultCoordinateFormat, defaultEllipsoid)
     ],
     [i18n(context, 'wherigo_output_zonepoints'), ''],
   ];

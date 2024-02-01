@@ -8,10 +8,10 @@ class Fox extends StatefulWidget {
   const Fox({Key? key}) : super(key: key);
 
   @override
-  FoxState createState() => FoxState();
+  _FoxState createState() => _FoxState();
 }
 
-class FoxState extends State<Fox> {
+class _FoxState extends State<Fox> {
   String _currentInput = '';
 
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;

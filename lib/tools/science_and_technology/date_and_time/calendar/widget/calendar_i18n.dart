@@ -10,4 +10,6 @@ const Map<CalendarSystem, String> CALENDAR_SYSTEM = {
   CalendarSystem.HEBREWCALENDAR: 'dates_calendar_system_hebrewcalendar',
   CalendarSystem.COPTICCALENDAR: 'dates_calendar_system_copticcalendar',
   CalendarSystem.POTRZEBIECALENDAR: 'dates_calendar_system_potrzebiecalendar',
+  CalendarSystem.UNIXTIMESTAMP: 'dates_calendar_system_unixtimestamp',
+  CalendarSystem.EXCELTIMESTAMP: 'dates_calendar_system_exceltimestamp',
 };

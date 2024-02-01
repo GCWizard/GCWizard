@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_alphabetdropdown.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_alphabetmodification_dropdown.dart';
@@ -16,10 +16,10 @@ class Polybios extends StatefulWidget {
   const Polybios({Key? key}) : super(key: key);
 
   @override
-  PolybiosState createState() => PolybiosState();
+  _PolybiosState createState() => _PolybiosState();
 }
 
-class PolybiosState extends State<Polybios> {
+class _PolybiosState extends State<Polybios> {
   late TextEditingController _inputController;
   late TextEditingController _keyController;
   late TextEditingController _alphabetController;
@@ -55,6 +55,8 @@ class PolybiosState extends State<Polybios> {
     var polybiosModeItems = {
       PolybiosMode.AZ09: i18n(context, 'polybios_mode_az09'),
       PolybiosMode.ZA90: i18n(context, 'polybios_mode_za90'),
+      PolybiosMode.x09AZ: i18n(context, 'polybios_mode_09az'),
+      PolybiosMode.x90ZA: i18n(context, 'polybios_mode_90za'),
       PolybiosMode.CUSTOM: i18n(context, 'common_custom'),
     };
 
@@ -120,8 +122,7 @@ class PolybiosState extends State<Polybios> {
   }
 
   Widget _buildOutput(BuildContext context) {
-    if (_currentInput.isEmpty ||
-        ![5, 6].contains(_currentKey.length)) {
+    if (_currentInput.isEmpty || ![5, 6].contains(_currentKey.length)) {
       return const GCWDefaultOutput(); // TODO: Exception
     }
 

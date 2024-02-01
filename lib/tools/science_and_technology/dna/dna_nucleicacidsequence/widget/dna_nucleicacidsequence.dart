@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -11,10 +11,10 @@ class DNANucleicAcidSequence extends StatefulWidget {
   const DNANucleicAcidSequence({Key? key}) : super(key: key);
 
   @override
-  DNANucleicAcidSequenceState createState() => DNANucleicAcidSequenceState();
+  _DNANucleicAcidSequenceState createState() => _DNANucleicAcidSequenceState();
 }
 
-class DNANucleicAcidSequenceState extends State<DNANucleicAcidSequence> {
+class _DNANucleicAcidSequenceState extends State<DNANucleicAcidSequence> {
   var _currentMode = GCWSwitchPosition.right;
   var _currentInput = '';
   var _currentDNAMode = GCWSwitchPosition.left;

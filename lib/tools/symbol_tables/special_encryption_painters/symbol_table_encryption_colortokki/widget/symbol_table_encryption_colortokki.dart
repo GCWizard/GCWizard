@@ -92,8 +92,8 @@ class ColorTokkiSymbolTableEncryption extends SymbolTableEncryption {
         paintImage(
             canvas: canvas,
             fit: BoxFit.contain,
-            rect: Rect.fromCenter(
-                center: Offset(symbolSize / 2, symbolSize / 2), width: symbolSize, height: symbolSize),
+            rect:
+                Rect.fromCenter(center: Offset(symbolSize / 2, symbolSize / 2), width: symbolSize, height: symbolSize),
             image: image);
       }
       canvas.restore();

@@ -22,8 +22,7 @@ Future<BoolText?> breakHashAsync(GCWAsyncExecuterParameters? jobData) async {
   if (jobData?.parameters is! HashBreakerJobData) return null;
 
   var data = jobData!.parameters as HashBreakerJobData;
-  var output = breakHash(data.input, data.searchMask, data.substitutions,
-      data.hashFunction,
+  var output = breakHash(data.input, data.searchMask, data.substitutions, data.hashFunction,
       sendAsyncPort: jobData.sendAsyncPort);
 
   jobData.sendAsyncPort?.send(output);
@@ -31,14 +30,11 @@ Future<BoolText?> breakHashAsync(GCWAsyncExecuterParameters? jobData) async {
   return output;
 }
 
-BoolText? breakHash(
-    String input, String? searchMask, Map<String, String>? substitutions, Function? hashFunction,
+BoolText? breakHash(String input, String? searchMask, Map<String, String>? substitutions, Function? hashFunction,
     {SendPort? sendAsyncPort}) {
-  if (input.isEmpty ||
-      searchMask == null ||
-      searchMask.isEmpty ||
-      substitutions == null ||
-      hashFunction == null) return null;
+  if (input.isEmpty || searchMask == null || searchMask.isEmpty || substitutions == null || hashFunction == null) {
+    return null;
+  }
 
   input = input.toLowerCase();
   var expander = VariableStringExpander(searchMask, substitutions, onAfterExpandedText: (expandedText) {

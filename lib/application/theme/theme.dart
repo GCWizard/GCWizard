@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:gc_wizard/application/_common/gcw_package_info.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:prefs/prefs.dart';
@@ -34,7 +35,7 @@ TextStyle gcwBetaStyle() {
 }
 
 TextStyle gcwMonotypeTextStyle() {
-  return TextStyle(fontSize: defaultFontSize(), fontFamily: 'Courier', fontWeight: FontWeight.bold);
+  return TextStyle(fontSize: defaultFontSize(), fontFamily: 'Courier');
 }
 
 TextStyle gcwHyperlinkTextStyle() {
@@ -63,6 +64,7 @@ ThemeData buildTheme() {
   final ThemeColors colors = themeColors();
   final ThemeData base = colors.base();
   return ThemeData(
+      useMaterial3: false,
       fontFamily: 'Roboto',
       scaffoldBackgroundColor: colors.primaryBackground(),
       textTheme: base.textTheme,
@@ -91,16 +93,18 @@ ThemeData buildTheme() {
       ),
       unselectedWidgetColor: colors.secondary(),
       indicatorColor: themeColors().secondary(),
-      tabBarTheme: TabBarTheme(
-        indicatorColor: themeColors().secondary(),
-        labelColor: colors.mainFont()),
-      appBarTheme: AppBarTheme(
-        backgroundColor: colors.primaryBackground(),
-        foregroundColor: colors.mainFont()),
-      cardColor: colors.messageBackground(), 
-      colorScheme: ColorScheme.fromSwatch(
-        primarySwatch: _generateMaterialColor(colors.primaryBackground()))
-          .copyWith(secondary: colors.secondary(), brightness: base.brightness)
+      tabBarTheme: TabBarTheme(indicatorColor: themeColors().secondary(),
+          labelColor: colors.mainFont(),
+          unselectedLabelColor: colors.mainFont().withOpacity(0.7),
+          dividerHeight: 0,
+          indicatorSize: TabBarIndicatorSize.tab),
+      appBarTheme: AppBarTheme(backgroundColor: colors.primaryBackground(), foregroundColor: colors.mainFont()),
+      cardColor: colors.messageBackground(),
+      colorScheme: ColorScheme.fromSwatch(primarySwatch: _generateMaterialColor(colors.primaryBackground()))
+          .copyWith(secondary: colors.secondary(), brightness: base.brightness,
+                    surfaceVariant: colors.gridBackground(), onSurface: colors.mainFont()),
+      dividerTheme: const DividerThemeData().copyWith(thickness: 0, color: colors.gridBackground()),
+      drawerTheme: const DrawerThemeData().copyWith(backgroundColor: base.scaffoldBackgroundColor)
   );
 }
 
@@ -149,4 +153,22 @@ double defaultFontSize() {
 
 double maxScreenHeight(BuildContext context) {
   return MediaQuery.of(context).size.height - 100;
+}
+
+double maxScreenWidth(BuildContext context) {
+  return MediaQuery.of(context).size.width;
+}
+
+String applogoFilename() {
+  const resolution = 128;
+  var logoId = '';
+
+  var pkgInfo = GCWPackageInfo.getInstance();
+  switch (pkgInfo.packageName.split('.')[2]) {
+    case 'gc_wizard_alpha': logoId += '_nightly'; break;
+    case 'gc_wizard_gold': logoId += '_gold'; break;
+    default: break;
+  }
+
+  return 'assets/logo/circle_border_$resolution$logoId.png';
 }

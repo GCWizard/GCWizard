@@ -13,7 +13,6 @@ import 'package:tuple/tuple.dart';
 var _whiteColor = Image.ColorRgb8(Colors.white.red, Colors.white.green, Colors.white.blue);
 var _blackColor = Image.ColorRgb8(Colors.black.red, Colors.black.green, Colors.black.blue);
 
-
 Future<Uint8List?> decodeImagesAsync(GCWAsyncExecuterParameters? jobData) async {
   if (jobData?.parameters is! Tuple4<Uint8List, Uint8List, int, int>) return null;
 
@@ -36,7 +35,8 @@ Future<Uint8List?> _decodeImages(Uint8List image1, Uint8List image2, int offsetX
   var _image2 = decoder2.decode(image2);
   if (_image1 == null || _image2 == null) return Future.value(null);
 
-  var image = Image.Image(width: max(_image1.width, _image2.width) + offsetX.abs(),
+  var image = Image.Image(
+      width: max(_image1.width, _image2.width) + offsetX.abs(),
       height: max(_image1.height, _image2.height) + offsetY.abs());
 
   image = _pasteImage(image, _image1, min(offsetX, 0).abs(), min(offsetY, 0).abs(), false);
@@ -68,9 +68,8 @@ Future<Tuple2<int, int>?> offsetAutoCalcAsync(GCWAsyncExecuterParameters? jobDat
   if (jobData?.parameters is! Tuple4<Uint8List, Uint8List, int, int>) return null;
 
   var data = jobData!.parameters as Tuple4<Uint8List, Uint8List, int, int>;
-  var output = await _offsetAutoCalc(
-      data.item1, data.item2, data.item3, data.item4,
-      sendAsyncPort: jobData.sendAsyncPort);
+  var output =
+      await _offsetAutoCalc(data.item1, data.item2, data.item3, data.item4, sendAsyncPort: jobData.sendAsyncPort);
 
   jobData.sendAsyncPort?.send(output);
 
@@ -79,7 +78,6 @@ Future<Tuple2<int, int>?> offsetAutoCalcAsync(GCWAsyncExecuterParameters? jobDat
 
 Future<Tuple2<int, int>?> _offsetAutoCalc(Uint8List image1, Uint8List image2, int? offsetX, int? offsetY,
     {SendPort? sendAsyncPort}) {
-
   var _image1 = decodeImage4ChannelFormat(image1);
   var _image2 = decodeImage4ChannelFormat(image2);
 
@@ -95,7 +93,7 @@ Future<Tuple2<int, int>?> _offsetAutoCalc(Uint8List image1, Uint8List image2, in
   int _countCombinations = max(((maxX - minX + 1) * (maxY - minY + 1)).toInt(), 1);
   int _progressStep = max(_countCombinations ~/ 100, 1); // 100 steps
 
-  sendAsyncPort?.send(DoubleText('progress', 0.0));
+  sendAsyncPort?.send(DoubleText(PROGRESS, 0.0));
 
   for (var y = minY; y <= maxY; y++) {
     var solutionsRow = <int>[];
@@ -104,7 +102,7 @@ Future<Tuple2<int, int>?> _offsetAutoCalc(Uint8List image1, Uint8List image2, in
 
       progress++;
       if (sendAsyncPort != null && (progress % _progressStep == 0)) {
-        sendAsyncPort.send(DoubleText('progress', progress / _countCombinations));
+        sendAsyncPort.send(DoubleText(PROGRESS, progress / _countCombinations));
       }
     }
     solutionsAll.add(_highPassFilter(0.2, solutionsRow));
@@ -131,14 +129,14 @@ Tuple2<int, int> _highPassFilter(double alpha, List<int> keyList) {
 }
 
 Uint8List? cleanImage(Uint8List image1, Uint8List image2, int offsetX, int offsetY) {
-
   var _image1 = decodeImage4ChannelFormat(image1);
   var _image2 = decodeImage4ChannelFormat(image2);
 
   if (_image1 == null || _image2 == null) return null;
 
   var coreImageSize = _coreImageSize(_image1, _image2, offsetX, offsetY);
-  var image = Image.Image(width: coreImageSize.item2 - coreImageSize.item1, height: coreImageSize.item4 - coreImageSize.item3);
+  var image =
+      Image.Image(width: coreImageSize.item2 - coreImageSize.item1, height: coreImageSize.item4 - coreImageSize.item3);
 
   for (var x = coreImageSize.item1; x < coreImageSize.item2 - 1; x += 2) {
     for (var y = coreImageSize.item3; y < coreImageSize.item4 - 1; y += 2) {
@@ -167,14 +165,13 @@ Future<Tuple2<Uint8List, Uint8List?>?> encodeImagesAsync(GCWAsyncExecuterParamet
 
 Future<Tuple2<Uint8List, Uint8List?>?> _encodeImage(
     Uint8List image, Uint8List? keyImage, int offsetX, int offsetY, int scale) {
-
   var _image = decodeImage4ChannelFormat(image);
   if (_image == null) return Future.value(null);
 
   var hasKeyImage = keyImage != null;
   Image.Image? _keyImage;
   if (hasKeyImage) {
-    _keyImage = decodeImage4ChannelFormat(keyImage!);
+    _keyImage = decodeImage4ChannelFormat(keyImage);
     if (_keyImage == null) return Future.value(null);
 
     scale = (min<double>(_keyImage.width / 2 / _image.width, _keyImage.height / 2 / _image.height) * 100).toInt();
@@ -250,8 +247,9 @@ Future<Tuple2<Uint8List, Uint8List>> _encodeWithoutKeyImage(int offsetX, int off
   var image1OffsetY = max(offsetY, 0).abs();
   var image2OffsetX = min(offsetX, 0).abs();
   var image2OffsetY = min(offsetY, 0).abs();
-  var image1 =
-      Image.Image(width: _image.width * 2 + image1OffsetX + image2OffsetX, height: _image.height * 2 + image1OffsetY + image2OffsetY);
+  var image1 = Image.Image(
+      width: _image.width * 2 + image1OffsetX + image2OffsetX,
+      height: _image.height * 2 + image1OffsetY + image2OffsetY);
   var image2 = Image.Image(width: image1.width, height: image1.height);
 
   for (var x = -(image1OffsetX + image2OffsetX); x < image1OffsetX + image2OffsetX + _image.width; x++) {

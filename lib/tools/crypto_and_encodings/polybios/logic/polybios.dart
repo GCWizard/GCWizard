@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:gc_wizard/tools/crypto_and_encodings/_common/logic/crypt_alphabet_modification.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
 
-enum PolybiosMode { AZ09, ZA90, CUSTOM }
+enum PolybiosMode { AZ09, ZA90, x90ZA, x09AZ, CUSTOM }
 
 class PolybiosOutput {
   final String output;
@@ -42,9 +42,11 @@ String? createPolybiosAlphabet(int gridDimension,
           fillAlphabet = fillAlphabet.toUpperCase() + alphabet_AZ.keys.join();
           break;
         case PolybiosMode.AZ09:
+        case PolybiosMode.x09AZ:
           fillAlphabet = alphabet_AZ.keys.join();
           break;
         case PolybiosMode.ZA90:
+        case PolybiosMode.x90ZA:
           fillAlphabet = alphabet_AZ.keys.toList().reversed.join();
           break;
         default:
@@ -71,11 +73,11 @@ String? createPolybiosAlphabet(int gridDimension,
       var alphabetAZ = alphabet_AZ.keys.toList();
 
       switch (mode) {
-        // ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
         case PolybiosMode.CUSTOM:
           alphabetAZ.addAll(alphabet_09.keys);
           fillAlphabet += alphabetAZ.join();
           break;
+        // ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
         case PolybiosMode.AZ09:
           alphabetAZ.addAll(alphabet_09.keys);
           fillAlphabet = alphabetAZ.join();
@@ -85,6 +87,18 @@ String? createPolybiosAlphabet(int gridDimension,
           alphabetAZ = alphabetAZ.reversed.toList();
           alphabetAZ.addAll(alphabet_09.keys.toList().reversed);
           fillAlphabet = alphabetAZ.join();
+          break;
+        // 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+        case PolybiosMode.x09AZ:
+          var alphabet = alphabet_09.keys.toList();
+          alphabet.addAll(alphabetAZ);
+          fillAlphabet = alphabet.join();
+          break;
+        // 9876543210ZYXWVUTSRQPONMLKJIHGFEDCBA
+        case PolybiosMode.x90ZA:
+          var alphabet = alphabet_09.keys.toList().reversed.toList();
+          alphabet.addAll(alphabetAZ.reversed.toList());
+          fillAlphabet = alphabet.join();
           break;
         default:
           break;
@@ -131,7 +145,6 @@ PolybiosOutput? encryptPolybios(String input, String key,
     String? fillAlphabet,
     String? firstLetters,
     AlphabetModificationMode? modificationMode = AlphabetModificationMode.J_TO_I}) {
-
   modificationMode ??= AlphabetModificationMode.J_TO_I;
 
   int dim = key.length;
@@ -165,7 +178,6 @@ PolybiosOutput? decryptPolybios(String input, String key,
     String? fillAlphabet,
     String? firstLetters,
     AlphabetModificationMode? modificationMode = AlphabetModificationMode.J_TO_I}) {
-
   modificationMode ??= AlphabetModificationMode.J_TO_I;
 
   int dim = key.length;

@@ -1,6 +1,6 @@
 import "package:flutter_test/flutter_test.dart";
-import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/enigma/logic/enigma.dart';
+import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 
 void main() {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
@@ -15,10 +15,10 @@ class Decabit extends StatefulWidget {
   const Decabit({Key? key}) : super(key: key);
 
   @override
-  DecabitState createState() => DecabitState();
+  _DecabitState createState() => _DecabitState();
 }
 
-class DecabitState extends State<Decabit> {
+class _DecabitState extends State<Decabit> {
   late TextEditingController _inputController;
   late TextEditingController _aController;
   late TextEditingController _bController;

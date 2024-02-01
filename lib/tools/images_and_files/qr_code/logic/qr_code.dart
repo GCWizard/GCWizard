@@ -35,17 +35,16 @@ DrawableImageData? generateBarCode(String code, {int moduleSize = 5, int border 
 }
 
 List<String>? _createQrCode(qr.QrCode qrCode) {
-    var qrImage = qr.QrImage(qrCode);
-    var lines = <String>[];
+  var qrImage = qr.QrImage(qrCode);
+  var lines = <String>[];
 
-    for (int y = 0; y < qrCode.moduleCount; y++) {
-      var line = '';
-      for (int x = 0; x < qrCode.moduleCount; x++) {
-        line += (qrImage.isDark(y, x)) ? '1' : '0';
-      }
-      lines.add(line);
+  for (int y = 0; y < qrCode.moduleCount; y++) {
+    var line = '';
+    for (int x = 0; x < qrCode.moduleCount; x++) {
+      line += (qrImage.isDark(y, x)) ? '1' : '0';
     }
+    lines.add(line);
+  }
 
-    return lines;
+  return lines;
 }
-

@@ -72,7 +72,7 @@ void main() {
       {'expectedOutput' : 'THEWRLDISNTFAIR', 'input' : 'ACTCATGAATGGCGATTAGATATTTCTAATACTTTCGCTATTCGA'},
       {'expectedOutput' : 'THEWRLDISNTFAI', 'input' : 'ACTCATGAATGGCGATTAGATATTTCTAATACTTTCGCTATTC'},
 
-      {'expectedOutput' : 'THEWRLDISNTFAI', 'input' : 'THIS IS MY WORLD'},// ToDo Mark test not working
+      {'expectedOutput' : '', 'input' : 'THIS IS MY WORLD'},
     ];
 
     for (var elem in _inputsToExpected) {

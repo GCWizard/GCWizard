@@ -1,39 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_language.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
-import 'package:gc_wizard/application/i18n/supported_locales.dart';
+import 'package:gc_wizard/application/app_builder.dart';
 import 'package:gc_wizard/application/category_views/all_tools_view.dart';
-import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
+import 'package:gc_wizard/application/i18n/logic/app_language.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/supported_locales.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
-import 'package:gc_wizard/application/settings/widget/settings_preferences.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
-import 'package:gc_wizard/application/app_builder.dart';
-import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
-import 'package:gc_wizard/common_widgets/dividers/gcw_divider.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
-import 'package:gc_wizard/common_widgets/dropdowns/gcw_stateful_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:gc_wizard/common_widgets/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/units/gcw_unit_dropdown.dart';
+import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/default_units_getter.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/length.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 import 'package:prefs/prefs.dart';
 import 'package:provider/provider.dart';
-import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/default_units_getter.dart';
 
 class GeneralSettings extends StatefulWidget {
   const GeneralSettings({Key? key}) : super(key: key);
 
   @override
-  GeneralSettingsState createState() => GeneralSettingsState();
+  _GeneralSettingsState createState() => _GeneralSettingsState();
 }
 
-class GeneralSettingsState extends State<GeneralSettings> {
+class _GeneralSettingsState extends State<GeneralSettings> {
   @override
   Widget build(BuildContext context) {
     var appLanguage = Provider.of<AppLanguage>(context);
@@ -57,7 +51,7 @@ class GeneralSettingsState extends State<GeneralSettings> {
                         // data loaded:
                         final Locale? currentLocale = snapshot.data;
 
-                        return GCWStatefulDropDown<String>(
+                        return GCWDropDown<String>(
                             items: SUPPORTED_LOCALES.entries.map((locale) {
                               String languageName = locale.value['name_native'] as String;
 
@@ -74,7 +68,9 @@ class GeneralSettingsState extends State<GeneralSettings> {
                                 ? currentLocale.languageCode
                                 : DEFAULT_LOCALE.languageCode,
                             onChanged: (newValue) {
-                              appLanguage.changeLanguage(newValue);
+                              setState(() {
+                                appLanguage.changeLanguage(newValue);
+                              });
                             });
                       }
                     })),
@@ -190,27 +186,23 @@ class GeneralSettingsState extends State<GeneralSettings> {
         Prefs.getBool(PREFERENCE_TABS_USE_DEFAULT_TAB)
             ? GCWDropDown<int>(
                 value: Prefs.getInt(PREFERENCE_TABS_DEFAULT_TAB),
-                items:
-                  {
-                    0: Row(children: [
-                      Icon(Icons.category, color: themeColors().mainFont()),
-                      Container(width: 10),
-                      Text(i18n(context, 'common_tabs_categories'))
-                    ]),
-
-                    1: Row(children: [
-                      Icon(Icons.list, color: themeColors().mainFont()),
-                      Container(width: 10),
-                      Text(i18n(context, 'common_tabs_all'))
-                    ]),
-
-                    2: Row(children: [
-                      Icon(Icons.star, color: themeColors().mainFont()),
-                      Container(width: 10),
-                      Text(i18n(context, 'common_tabs_favorites'))
-                    ])
-                  }
-                .entries.map((MapEntry<int, Row> item) {
+                items: {
+                  0: Row(children: [
+                    Icon(Icons.category, color: themeColors().mainFont()),
+                    Container(width: 10),
+                    Text(i18n(context, 'common_tabs_categories'))
+                  ]),
+                  1: Row(children: [
+                    Icon(Icons.list, color: themeColors().mainFont()),
+                    Container(width: 10),
+                    Text(i18n(context, 'common_tabs_all'))
+                  ]),
+                  2: Row(children: [
+                    Icon(Icons.star, color: themeColors().mainFont()),
+                    Container(width: 10),
+                    Text(i18n(context, 'common_tabs_favorites'))
+                  ])
+                }.entries.map((MapEntry<int, Row> item) {
                   return GCWDropDownMenuItem(
                     value: item.key,
                     child: item.value,
@@ -244,33 +236,6 @@ class GeneralSettingsState extends State<GeneralSettings> {
             setState(() {
               Prefs.setInt(PREFERENCE_CLIPBOARD_KEEP_ENTRIES_IN_DAYS, value);
             });
-          },
-        ),
-
-        // always on bottom
-        Container(margin: const EdgeInsets.only(top: 25.0), child: const GCWDivider()),
-        InkWell(
-          child: const Icon(Icons.more_horiz, size: 20.0),
-          onTap: () {
-            showGCWAlertDialog(
-              context,
-              i18n(context, 'settings_preferences_warning_title'),
-              i18n(context, 'settings_preferences_warning_text'),
-              () {
-                Navigator.of(context)
-                    .push(NoAnimationMaterialPageRoute<GCWTool>(
-                        builder: (context) => GCWTool(tool: const SettingsPreferences(), id: 'settings_preferences')))
-                    .whenComplete(() {
-                  setState(() {
-                    AppBuilder.of(context).rebuild();
-                  });
-
-                  showGCWAlertDialog(context, i18n(context, 'settings_preferences_aftermath_title'),
-                      i18n(context, 'settings_preferences_aftermath_text'), () {},
-                      cancelButton: false);
-                });
-              },
-            );
           },
         )
       ],

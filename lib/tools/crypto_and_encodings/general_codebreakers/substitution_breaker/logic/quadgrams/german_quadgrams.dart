@@ -7,6 +7,6 @@ class GermanQuadgrams extends Quadgrams {
     most_frequent_quadgram = 'eine';
     max_fitness = 1348;
     average_fitness = 204.77802991842023;
-    assetLocation = "assets/quadgrams/de.json";
+    assetLocation = "lib/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/assets/quadgrams/de.json";
   }
 }

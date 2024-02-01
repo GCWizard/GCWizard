@@ -7,7 +7,7 @@ class GCWExpandableTextDivider extends StatefulWidget {
   final TextStyle? style;
   final bool expanded;
   final Widget? child;
-  final void Function(bool)? onChanged ;
+  final void Function(bool)? onChanged;
   final bool? suppressBottomSpace;
   final bool? suppressTopSpace;
 

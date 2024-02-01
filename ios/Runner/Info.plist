@@ -27,9 +27,13 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Not used but required by internal dependency 'r_scan'</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Used by coordinate functions as location input and by MapView for showing current position</string>
+	<string>Used by coordinate functions as location input and by coordinate tools for showing current position</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Used for loading images into image editor</string>
+	<string>Used for loading images into image tools</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Used for loading media files into file tools</string>
+	<key>kTCCServiceMediaLibrary</key>
+	<string>Used for loading media files into file tools</string>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

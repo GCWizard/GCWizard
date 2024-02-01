@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_output.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_outputformat.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
-import 'package:gc_wizard/tools/coords/dmm_offset/logic/dmm_offset.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/tools/coords/dmm_offset/logic/dmm_offset.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 
 class DMMOffset extends StatefulWidget {
   const DMMOffset({Key? key}) : super(key: key);
 
   @override
-  DMMOffsetState createState() => DMMOffsetState();
+  _DMMOffsetState createState() => _DMMOffsetState();
 }
 
-class DMMOffsetState extends State<DMMOffset> {
+class _DMMOffsetState extends State<DMMOffset> {
   var _currentCoords = defaultBaseCoordinate;
 
   var _currentValues = [defaultCoordinate];
@@ -39,7 +39,9 @@ class DMMOffsetState extends State<DMMOffset> {
           coordsFormat: _currentCoords.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoords = ret;
+              if (ret != null) {
+                _currentCoords = ret;
+              }
 
               _calculateOutput();
             });
@@ -86,9 +88,13 @@ class DMMOffsetState extends State<DMMOffset> {
   }
 
   void _calculateOutput() {
-    _currentValues = [
-      addIntegersToDMM(_currentCoords.toLatLng()!, {'latitude': _currentAddLatitude, 'longitude': _currentAddLongitude})
-    ];
+    var result = addIntegersToDMM(_currentCoords.toLatLng()!, {'latitude': _currentAddLatitude, 'longitude': _currentAddLongitude});
+    if (result == null) {
+      _currentValues = [];
+      _currentOutput = [];
+      return;
+    }
+    _currentValues = [result];
 
     _currentMapPoints = [
       GCWMapPoint(

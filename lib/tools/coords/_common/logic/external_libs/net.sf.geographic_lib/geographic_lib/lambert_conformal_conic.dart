@@ -296,9 +296,10 @@ class LambertConformalConic {
         //     - (tbet2 + tbet1)/(scbet2 + scbet1)
         double t;
         // s1 = (scbet1 - scchi1) * (scbet1 + scchi1)
-        double s1 =
-                (tphi1 * (2 * shxi1 * chxi1 * scphi1 - _e2 * tphi1) - _GeoMath.sq(shxi1) * (1 + 2 * _GeoMath.sq(tphi1))),
-            s2 = (tphi2 * (2 * shxi2 * chxi2 * scphi2 - _e2 * tphi2) - _GeoMath.sq(shxi2) * (1 + 2 * _GeoMath.sq(tphi2))),
+        double s1 = (tphi1 * (2 * shxi1 * chxi1 * scphi1 - _e2 * tphi1) -
+                _GeoMath.sq(shxi1) * (1 + 2 * _GeoMath.sq(tphi1))),
+            s2 = (tphi2 * (2 * shxi2 * chxi2 * scphi2 - _e2 * tphi2) -
+                _GeoMath.sq(shxi2) * (1 + 2 * _GeoMath.sq(tphi2))),
             // t1 = scbet1 - tchi1
             t1 = tchi1 < 0 ? scbet1 - tchi1 : (s1 + 1) / (scbet1 + tchi1),
             t2 = tchi2 < 0 ? scbet2 - tchi2 : (s2 + 1) / (scbet2 + tchi2),
@@ -484,7 +485,8 @@ class LambertConformalConic {
                 : Dexp(-_n * psi, -_n * _psi0) * dpsi);
 
     var x = (_nrho0 + _n * drho) * (_n != 0 ? stheta / _n : lam);
-    var y = _nrho0 * (_n != 0 ? (ctheta < 0 ? 1 - ctheta : _GeoMath.sq(stheta) / (1 + ctheta)) / _n : 0) - drho * ctheta;
+    var y =
+        _nrho0 * (_n != 0 ? (ctheta < 0 ? 1 - ctheta : _GeoMath.sq(stheta) / (1 + ctheta)) / _n : 0) - drho * ctheta;
     var k = _k0 *
         (scbet / _scbet0) /
         (exp(-(_GeoMath.sq(_nc) / (1 + _n)) * dpsi) *

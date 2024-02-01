@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
@@ -16,10 +16,10 @@ class BundeswehrTalkingBoardObfuscation extends StatefulWidget {
   const BundeswehrTalkingBoardObfuscation({Key? key}) : super(key: key);
 
   @override
-  BundeswehrTalkingBoardObfuscationState createState() => BundeswehrTalkingBoardObfuscationState();
+  _BundeswehrTalkingBoardObfuscationState createState() => _BundeswehrTalkingBoardObfuscationState();
 }
 
-class BundeswehrTalkingBoardObfuscationState extends State<BundeswehrTalkingBoardObfuscation> {
+class _BundeswehrTalkingBoardObfuscationState extends State<BundeswehrTalkingBoardObfuscation> {
   late TextEditingController _encodeController;
   late TextEditingController _decodeController;
   late TextEditingController _numeralCodeCustomXaxis;
@@ -38,13 +38,13 @@ class BundeswehrTalkingBoardObfuscationState extends State<BundeswehrTalkingBoar
   var _currentTableMode = GCWSwitchPosition.left;
 
   final _cryptedTextMaskFormatter =
-      WrapperForMaskTextInputFormatter(mask: '## ' * 1000 + '##', filter: {"#": RegExp(r'[a-zA-Z]')});
+      GCWMaskTextInputFormatter(mask: '## ' * 1000 + '##', filter: {"#": RegExp(r'[a-zA-Z]')});
 
   final _numeralCodeyXAxisCodeMaskFormatter =
-      WrapperForMaskTextInputFormatter(mask: '#' * 13, filter: {"#": RegExp(r'[a-zA-Z]')});
+      GCWMaskTextInputFormatter(mask: '#' * 13, filter: {"#": RegExp(r'[a-zA-Z]')});
 
   final _numeralCodeYAxisCodeMaskFormatter =
-      WrapperForMaskTextInputFormatter(mask: '#' * 13, filter: {"#": RegExp(r'[a-zA-Z]')});
+      GCWMaskTextInputFormatter(mask: '#' * 13, filter: {"#": RegExp(r'[a-zA-Z]')});
 
   @override
   void initState() {
@@ -192,7 +192,7 @@ class BundeswehrTalkingBoardObfuscationState extends State<BundeswehrTalkingBoar
     List<String> _rowTitle;
     List<String> _numeralCode = [];
     Map<String, List<String>> _tableEncoding = {};
-    if (custom ==  true) {
+    if (custom == true) {
       if (xAxis == null || xAxis.isEmpty || yAxis == null || yAxis.isEmpty) {
         _numeralCodeString = BUNDESWEHR_TALKINGBOARD_AUTH_RESPONSE_EMPTY_CUSTOM_NUMERAL_TABLE;
         return;

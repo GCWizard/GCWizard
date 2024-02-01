@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
@@ -19,10 +19,10 @@ class Binary2Image extends StatefulWidget {
   const Binary2Image({Key? key}) : super(key: key);
 
   @override
-  Binary2ImageState createState() => Binary2ImageState();
+  _Binary2ImageState createState() => _Binary2ImageState();
 }
 
-class Binary2ImageState extends State<Binary2Image> {
+class _Binary2ImageState extends State<Binary2Image> {
   var _currentInput = '';
   Uint8List? _outData;
   String? _codeData;

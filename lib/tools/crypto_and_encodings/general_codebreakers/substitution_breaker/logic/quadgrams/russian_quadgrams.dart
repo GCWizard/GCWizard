@@ -7,6 +7,6 @@ class RussianQuadgrams extends Quadgrams {
     most_frequent_quadgram = 'ного';
     max_fitness = 1337;
     average_fitness = 238.69789496858542;
-    assetLocation = "assets/quadgrams/ru.json";
+    assetLocation = "lib/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/assets/quadgrams/ru.json";
   }
 }

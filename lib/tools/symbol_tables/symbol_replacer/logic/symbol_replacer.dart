@@ -21,8 +21,8 @@ class ReplaceSymbolsInput {
   final double similarityCompareLevel;
   final double? mergeDistance;
 
-  ReplaceSymbolsInput({
-      required this.image,
+  ReplaceSymbolsInput(
+      {required this.image,
       this.blackLevel = 50,
       this.similarityLevel = 90.0,
       this.gap = 1,
@@ -36,8 +36,7 @@ Future<SymbolReplacerImage?> replaceSymbolsAsync(GCWAsyncExecuterParameters? job
   if (jobData?.parameters is! ReplaceSymbolsInput) return null;
 
   var data = jobData!.parameters as ReplaceSymbolsInput;
-  var output = await replaceSymbols(
-      data.image, data.blackLevel, data.similarityLevel,
+  var output = await replaceSymbols(data.image, data.blackLevel, data.similarityLevel,
       gap: data.gap,
       symbolImage: data.symbolImage,
       compareSymbols: data.compareSymbols,
@@ -108,6 +107,7 @@ class SymbolReplacerImage {
   int? _blackLevel;
   double? _similarityLevel;
   int? _gap;
+  double symbolScale = 1.0;
 
   SymbolReplacerImage(Uint8List image) {
     _image = image;
@@ -168,8 +168,6 @@ class SymbolReplacerImage {
       double? similarityCompareLevel = 80,
       bool groupSymbols = true,
       double? mergeDistance}) {
-
-
     _bmp ??= decodeImage4ChannelFormat(_image);
     if (_bmp == null) return;
 
@@ -238,6 +236,8 @@ class SymbolReplacerImage {
 
     // rebuild image
     _outputImageBytes = null;
+
+    symbolScale = calcSymbolScale();
   }
 
   /// <summary>
@@ -301,7 +301,7 @@ class SymbolReplacerImage {
   void mergeSymbolGroups() {
     if (symbolGroups.isEmpty) return;
 
-    for (var i= 0; i< symbolGroups.length; i++) {
+    for (var i = 0; i < symbolGroups.length; i++) {
       var compareSymbol = symbolGroups[i].compareSymbol;
       if (compareSymbol != null) {
         var groups = symbolGroups.where((group) => group.compareSymbol == compareSymbol).toList();
@@ -424,9 +424,9 @@ class SymbolReplacerImage {
         symbol.bmp.height,
       );
 
-      var color = Image.ColorRgb8(Colors.blue.red, Colors.blue.green, Colors.blue.blue);
+      var color = Image.ColorRgb8(Colors.orangeAccent.red, Colors.orangeAccent.green, Colors.orangeAccent.blue);
       Image.drawRect(bmp, x1: rect.left, y1: rect.top, x2: rect.right, y2: rect.bottom, color: color);
-      Image.drawRect(bmp, x1: rect.left - 1, y1: rect.top - 1, x2: rect.right + 1,y2:  rect.bottom + 1, color: color);
+      Image.drawRect(bmp, x1: rect.left - 1, y1: rect.top - 1, x2: rect.right + 1, y2: rect.bottom + 1, color: color);
     }
 
     return bmp;
@@ -473,7 +473,9 @@ class SymbolReplacerImage {
 
     if (rect.height > 0) {
       _sourceLines.add(_SymbolRow(
-          rect, Image.copyCrop(_bmp!, x: rect.left.toInt(), y: rect.top.toInt(), width: rect.width.toInt(), height: rect.height.toInt())));
+          rect,
+          Image.copyCrop(_bmp!,
+              x: rect.left.toInt(), y: rect.top.toInt(), width: rect.width.toInt(), height: rect.height.toInt())));
     }
   }
 
@@ -612,9 +614,8 @@ class SymbolReplacerImage {
     _mergeDistance = referenceWidth * mergeDistance / 100.0;
     // and line distance
     if (minLineDistance != null && minLineDistance > 0) {
-      _mergeDistance = (_mergeDistance == 0.0)
-          ? referenceWidth.toDouble()
-          : min(_mergeDistance, (minLineDistance - 1) / 2);
+      _mergeDistance =
+          (_mergeDistance == 0.0) ? referenceWidth.toDouble() : min(_mergeDistance, (minLineDistance - 1) / 2);
     }
 
     if (_mergeDistance > 0) return prevMergeDistance(_mergeDistance);
@@ -704,13 +705,14 @@ class SymbolReplacerImage {
 
     if (_bmp == null) return;
     symbol1.refPoint = Offset(box.left, box.top);
-    symbol1.bmp = Image.copyCrop(_bmp!, x: box.left.toInt(), y: box.top.toInt(), width: box.width.toInt(), height: box.height.toInt());
+    symbol1.bmp = Image.copyCrop(_bmp!,
+        x: box.left.toInt(), y: box.top.toInt(), width: box.width.toInt(), height: box.height.toInt());
 
     var group = _searchSymbolGroup(symbol2);
     if (group != null) group.symbols.remove(symbol2);
 
     symbols.remove(symbol2);
-    if (line!= null) line.symbols.remove(symbol2);
+    if (line != null) line.symbols.remove(symbol2);
   }
 
   void _cloneSourceLines() {
@@ -721,6 +723,17 @@ class SymbolReplacerImage {
       lines.add(lineClone);
       symbols.addAll(lineClone.symbols);
     }
+  }
+
+  double calcSymbolScale() {
+    if (symbols.isEmpty) return 1.0;
+    var maxSize = 0;
+
+    for (var symbol in symbols) {
+      maxSize = max(maxSize, symbol.bmp.width);
+      maxSize = max(maxSize, symbol.bmp.height);
+    }
+    return (maxSize > 0) ? max(maxSize / 150, 0.05) : 1.0;
   }
 }
 
@@ -821,8 +834,11 @@ class _SymbolRow {
       var box = _boundingBox(bmp, rect, blackLevel);
       var refPoint = Offset(box.left, box.top);
       refPoint = refPoint.translate(size.left, size.top);
-      symbols.add(Symbol(refPoint,
-          Image.copyCrop(bmp, x: box.left.toInt(), y: box.top.toInt(), width: box.width.toInt(), height: box.height.toInt()), this));
+      symbols.add(Symbol(
+          refPoint,
+          Image.copyCrop(bmp,
+              x: box.left.toInt(), y: box.top.toInt(), width: box.width.toInt(), height: box.height.toInt()),
+          this));
     }
     return rect;
   }
@@ -883,8 +899,8 @@ class Symbol {
   /// </summary>
   Rectangle<double> _borderRectangleWithOffset(double sizeOffset) {
     var rect = _borderRectangle();
-    return Rectangle<double>(rect.left - sizeOffset, rect.top - sizeOffset,
-        rect.right + sizeOffset, rect.bottom + sizeOffset); //.inflate(sizeOffset);
+    return Rectangle<double>(rect.left - sizeOffset, rect.top - sizeOffset, rect.right + sizeOffset,
+        rect.bottom + sizeOffset); //.inflate(sizeOffset);
   }
 
   /// <summary>
@@ -926,7 +942,9 @@ class SymbolGroup {
 }
 
 Future<List<Map<String, SymbolReplacerSymbolData>>?> searchSymbolTableAsync(GCWAsyncExecuterParameters? jobData) async {
-  if (jobData?.parameters is! Tuple2<SymbolReplacerImage, List<List<Map<String, SymbolReplacerSymbolData>>>>) return null;
+  if (jobData?.parameters is! Tuple2<SymbolReplacerImage, List<List<Map<String, SymbolReplacerSymbolData>>>>) {
+    return null;
+  }
 
   var data = jobData!.parameters as Tuple2<SymbolReplacerImage, List<List<Map<String, SymbolReplacerSymbolData>>>>;
   var output = await searchSymbolTable(data.item1, data.item2, sendAsyncPort: jobData.sendAsyncPort);
@@ -953,7 +971,7 @@ Future<List<Map<String, SymbolReplacerSymbolData>>?> searchSymbolTable(
   imageTmp._similarityLevel = 0;
   imageTmp._gap = image._gap;
 
-  sendAsyncPort?.send(DoubleText('progress', 0.0));
+  sendAsyncPort?.send(DoubleText(PROGRESS, 0.0));
 
   for (var symbolTable in compareSymbols) {
     imageTmp.resetGroupText();
@@ -966,7 +984,7 @@ Future<List<Map<String, SymbolReplacerSymbolData>>?> searchSymbolTable(
       }
     }
     progress++;
-    sendAsyncPort?.send(DoubleText('progress', progress / compareSymbols.length));
+    sendAsyncPort?.send(DoubleText(PROGRESS, progress / compareSymbols.length));
   }
   return Future.value(maxPercentSymbolTable);
 }
@@ -986,19 +1004,262 @@ class ImageHashing {
   /// http://folk.uio.no/davidjo/computing.php
   /// </summary>
   static final _bitCounts = Uint8List.fromList([
-    0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, 1, 2, 2, 3,
-    2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 1, 2, 2, 3, 2, 3, 3, 4,
-    2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5,
-    4, 5, 5, 6, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
-    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 2, 3, 3, 4,
-    3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6,
-    4, 5, 5, 6, 5, 6, 6, 7, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4,
-    3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
-    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5,
-    4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 2, 3, 3, 4, 3, 4, 4, 5,
-    3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6,
-    5, 6, 6, 7, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
-    4, 5, 5, 6, 5, 6, 6, 7, 5, 6, 6, 7, 6, 7, 7, 8
+    0,
+    1,
+    1,
+    2,
+    1,
+    2,
+    2,
+    3,
+    1,
+    2,
+    2,
+    3,
+    2,
+    3,
+    3,
+    4,
+    1,
+    2,
+    2,
+    3,
+    2,
+    3,
+    3,
+    4,
+    2,
+    3,
+    3,
+    4,
+    3,
+    4,
+    4,
+    5,
+    1,
+    2,
+    2,
+    3,
+    2,
+    3,
+    3,
+    4,
+    2,
+    3,
+    3,
+    4,
+    3,
+    4,
+    4,
+    5,
+    2,
+    3,
+    3,
+    4,
+    3,
+    4,
+    4,
+    5,
+    3,
+    4,
+    4,
+    5,
+    4,
+    5,
+    5,
+    6,
+    1,
+    2,
+    2,
+    3,
+    2,
+    3,
+    3,
+    4,
+    2,
+    3,
+    3,
+    4,
+    3,
+    4,
+    4,
+    5,
+    2,
+    3,
+    3,
+    4,
+    3,
+    4,
+    4,
+    5,
+    3,
+    4,
+    4,
+    5,
+    4,
+    5,
+    5,
+    6,
+    2,
+    3,
+    3,
+    4,
+    3,
+    4,
+    4,
+    5,
+    3,
+    4,
+    4,
+    5,
+    4,
+    5,
+    5,
+    6,
+    3,
+    4,
+    4,
+    5,
+    4,
+    5,
+    5,
+    6,
+    4,
+    5,
+    5,
+    6,
+    5,
+    6,
+    6,
+    7,
+    1,
+    2,
+    2,
+    3,
+    2,
+    3,
+    3,
+    4,
+    2,
+    3,
+    3,
+    4,
+    3,
+    4,
+    4,
+    5,
+    2,
+    3,
+    3,
+    4,
+    3,
+    4,
+    4,
+    5,
+    3,
+    4,
+    4,
+    5,
+    4,
+    5,
+    5,
+    6,
+    2,
+    3,
+    3,
+    4,
+    3,
+    4,
+    4,
+    5,
+    3,
+    4,
+    4,
+    5,
+    4,
+    5,
+    5,
+    6,
+    3,
+    4,
+    4,
+    5,
+    4,
+    5,
+    5,
+    6,
+    4,
+    5,
+    5,
+    6,
+    5,
+    6,
+    6,
+    7,
+    2,
+    3,
+    3,
+    4,
+    3,
+    4,
+    4,
+    5,
+    3,
+    4,
+    4,
+    5,
+    4,
+    5,
+    5,
+    6,
+    3,
+    4,
+    4,
+    5,
+    4,
+    5,
+    5,
+    6,
+    4,
+    5,
+    5,
+    6,
+    5,
+    6,
+    6,
+    7,
+    3,
+    4,
+    4,
+    5,
+    4,
+    5,
+    5,
+    6,
+    4,
+    5,
+    5,
+    6,
+    5,
+    6,
+    6,
+    7,
+    4,
+    5,
+    5,
+    6,
+    5,
+    6,
+    6,
+    7,
+    5,
+    6,
+    6,
+    7,
+    6,
+    7,
+    7,
+    8
   ]);
 
   /// <summary>
@@ -1033,7 +1294,7 @@ class ImageHashing {
     for (int y = 0; y < 8; y++) {
       for (int x = 0; x < 8; x++) {
         var pixel = squeezed.getPixel(x, y); //..ToArgb();
-        int gray = (pixel.r + pixel.g +pixel.r + pixel.b).toInt();
+        int gray = (pixel.r + pixel.g + pixel.b).toInt();
         gray = gray ~/ 12;
 
         grayscale[x + (y * 8)] = gray;

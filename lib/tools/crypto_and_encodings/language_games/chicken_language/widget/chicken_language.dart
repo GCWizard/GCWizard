@@ -8,10 +8,10 @@ class ChickenLanguage extends StatefulWidget {
   const ChickenLanguage({Key? key}) : super(key: key);
 
   @override
-  ChickenLanguageState createState() => ChickenLanguageState();
+  _ChickenLanguageState createState() => _ChickenLanguageState();
 }
 
-class ChickenLanguageState extends State<ChickenLanguage> {
+class _ChickenLanguageState extends State<ChickenLanguage> {
   var _currentInput = '';
   var _currentMode = GCWSwitchPosition.right;
 

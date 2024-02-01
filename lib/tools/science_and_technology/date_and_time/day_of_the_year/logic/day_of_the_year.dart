@@ -89,6 +89,7 @@ DateTime _alternateWeek1Monday(DateTime date) {
     jan1.day - jan1.weekday + 1,
   );
 }
+
 /// calc day in the year
 int dayNumber(DateTime date) {
   return date.difference(DateTime(date.year)).inDays + 1;

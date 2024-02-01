@@ -23,5 +23,6 @@ class NumberSequenceLucasNthNumber extends NumberSequenceNthNumber {
 }
 
 class NumberSequenceLucasContainsDigits extends NumberSequenceContainsDigits {
-  const NumberSequenceLucasContainsDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.LUCAS, maxIndex: 11111);
+  const NumberSequenceLucasContainsDigits({Key? key})
+      : super(key: key, mode: NumberSequencesMode.LUCAS, maxIndex: 11111);
 }

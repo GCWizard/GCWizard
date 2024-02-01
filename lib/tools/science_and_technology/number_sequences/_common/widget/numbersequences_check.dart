@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
@@ -11,10 +11,10 @@ class NumberSequenceCheckNumber extends StatefulWidget {
   const NumberSequenceCheckNumber({Key? key, required this.mode, required this.maxIndex}) : super(key: key);
 
   @override
-  NumberSequenceCheckNumberState createState() => NumberSequenceCheckNumberState();
+  _NumberSequenceCheckNumberState createState() => _NumberSequenceCheckNumberState();
 }
 
-class NumberSequenceCheckNumberState extends State<NumberSequenceCheckNumber> {
+class _NumberSequenceCheckNumberState extends State<NumberSequenceCheckNumber> {
   String _currentInputN = '0';
   late TextEditingController currentInputController;
 

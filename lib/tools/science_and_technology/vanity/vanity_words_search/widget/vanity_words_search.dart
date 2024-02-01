@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
@@ -14,16 +14,16 @@ class VanityWordsTextSearch extends StatefulWidget {
   const VanityWordsTextSearch({Key? key}) : super(key: key);
 
   @override
-  VanityWordsTextSearchState createState() => VanityWordsTextSearchState();
+  _VanityWordsTextSearchState createState() => _VanityWordsTextSearchState();
 }
 
-class VanityWordsTextSearchState extends State<VanityWordsTextSearch> {
+class _VanityWordsTextSearchState extends State<VanityWordsTextSearch> {
   late TextEditingController _decodeController;
 
   var _currentDecodeInput = '';
   var _currentLanguage = NumeralWordsLanguage.DEU;
 
-  final Map<NumeralWordsLanguage, String> _languageList= {};
+  final Map<NumeralWordsLanguage, String> _languageList = {};
 
   @override
   void initState() {
@@ -142,10 +142,7 @@ class VanityWordsTextSearchState extends State<VanityWordsTextSearch> {
             ? Container()
             : GCWOutput(
                 title: i18n(context, 'common_outputdetail'),
-                child: GCWColumnedMultilineOutput(
-                    data: columnData,
-                    flexValues: const [2, 2, 1],
-                    copyColumn: 1),
+                child: GCWColumnedMultilineOutput(data: columnData, flexValues: const [2, 2, 1], copyColumn: 1),
               ),
       ],
     );

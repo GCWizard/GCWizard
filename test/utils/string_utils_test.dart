@@ -4,8 +4,7 @@ import 'package:gc_wizard/utils/string_utils.dart';
 void main() {
   group("StringUtils.insertCharacter:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      // {'input' : null, 'index': 0, 'character' : 'A', 'expectedOutput' : null},
-      // {'input' : 'ABC', 'index': 0, 'character' : null, 'expectedOutput' : 'ABC'},
+      {'input' : 'ABC', 'index': 0, 'character' : '', 'expectedOutput' : 'ABC'},
 
       {'input' : 'ABC', 'index': -1, 'character' : 'D', 'expectedOutput' : 'DABC'},
       {'input' : 'ABC', 'index': 0, 'character' : 'D', 'expectedOutput' : 'DABC'},
@@ -26,7 +25,6 @@ void main() {
   group("StringUtils.insertSpaceEveryNthCharacter:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'n': 0, 'expectedOutput' : ''},
-      // {'input' : 'ABC', 'n': null, 'expectedOutput' : 'ABC'},
       {'input' : 'ABC', 'n': 0, 'expectedOutput' : 'ABC'},
       {'input' : 'ABC', 'n': 1, 'expectedOutput' : 'A B C'},
       {'input' : 'ABCDEF', 'n': 2, 'expectedOutput' : 'AB CD EF'},
@@ -59,7 +57,6 @@ void main() {
 
   group("StringUtils.isUpperCase:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      // {'letter' : null, 'expectedOutput' : false},
       {'letter' : '', 'expectedOutput' : false},
 
       {'letter' : 'A', 'expectedOutput' : true},
@@ -82,7 +79,6 @@ void main() {
 
   group("StringUtils.removeDuplicateCharacters:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      // {'input' : null, 'expectedOutput' : null},
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : 'AA', 'expectedOutput' : 'A'},
@@ -103,7 +99,6 @@ void main() {
 
   group("StringUtils.hasDuplicateCharacters:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      // {'input' : null, 'expectedOutput' : false},
       {'input' : '', 'expectedOutput' : false},
 
       {'input' : 'A1', 'expectedOutput' : false},
@@ -127,7 +122,7 @@ void main() {
 
   group("StringUtils.countCharacters:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      // {'input' : null, 'characters': null, 'expectedOutput' : 0},
+      {'input' : '', 'characters': '', 'expectedOutput' : 0},
       {'input' : '', 'characters': 'a', 'expectedOutput' : 0},
 
       {'input' : 'ABC', 'characters': 'A', 'expectedOutput' : 1},
@@ -151,7 +146,6 @@ void main() {
 
   group("StringUtils.allSameCharacters:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      // {'input' : null, 'expectedOutput' : null},
       {'input' : '', 'expectedOutput' : false},
 
       {'input' : 'a', 'expectedOutput' : true},
@@ -174,7 +168,6 @@ void main() {
 
   group("StringUtils.isOnlyLetters:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      // {'input' : null, 'expectedOutput' : false},
       {'input' : '', 'expectedOutput' : false},
 
       {'input' : 'a', 'expectedOutput' : true},
@@ -198,7 +191,6 @@ void main() {
 
   group("StringUtils.isOnlyNumerals:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      // {'input' : null, 'expectedOutput' : false},
       {'input' : '', 'expectedOutput' : false},
 
       {'input' : '0', 'expectedOutput' : true},
@@ -220,7 +212,6 @@ void main() {
 
   group("StringUtils.extractIntegerFromText:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      // {'input' : null, 'expectedOutput' : null},
       {'input' : '', 'expectedOutput' : 0},
 
       {'input' : 'a', 'expectedOutput' : 0},
@@ -243,7 +234,6 @@ void main() {
 
   group("StringUtils.normalizeCharacters", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      // {'input' : null, 'expectedOutput' : null},
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : '\u0009\u000B\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2007\u2008\u2009\u200A\u202F\u205F\u3000', 'expectedOutput' : '                 '},
@@ -264,7 +254,6 @@ void main() {
 
   group("StringUtils.removeControlCharacters", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      // {'input' : null, 'expectedOutput' : null},
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : '\u0000\u0001\u001f', 'expectedOutput' : ''},
@@ -274,6 +263,117 @@ void main() {
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
         var _actual = removeControlCharacters(elem['input'] as String);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
+
+  group("StringUtils.enumName", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '', 'expectedOutput' : ''},
+
+      {'input' : 'FileType.ZIP', 'expectedOutput' : 'ZIP'},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}', () {
+        var _actual = enumName(elem['input'] as String);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
+
+  group("StringUtils.formatStringForDecimals_withEmpty", () {
+    test('', () {
+      var _actual = formatStringForDecimals();
+      expect(_actual, '00.000###');
+    });
+  });
+
+  group("StringUtils.formatStringForDecimals", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'integerPrecision' : -1, 'decimalPrecision' : -1, 'minDecimalPrecision' : -1, 'expectedOutput' : '0.0'},
+      {'integerPrecision' : -1, 'decimalPrecision' : -1, 'minDecimalPrecision' : 1, 'expectedOutput' : '0.0'},
+      {'integerPrecision' : -1, 'decimalPrecision' : 1, 'minDecimalPrecision' : -1, 'expectedOutput' : '0.0'},
+      {'integerPrecision' : 0, 'decimalPrecision' : 0, 'minDecimalPrecision' : 0, 'expectedOutput' : '0.0'},
+      {'integerPrecision' : 1, 'decimalPrecision' : 0, 'minDecimalPrecision' : 1, 'expectedOutput' : '0.0'},
+      {'integerPrecision' : 2, 'decimalPrecision' : 0, 'minDecimalPrecision' : 0, 'expectedOutput' : '00.0'},
+      {'integerPrecision' : 1, 'decimalPrecision' : 0, 'minDecimalPrecision' : 2, 'expectedOutput' : '0.0'},
+      {'integerPrecision' : 1, 'decimalPrecision' : 1, 'minDecimalPrecision' : 2, 'expectedOutput' : '0.0'},
+      {'integerPrecision' : 1, 'decimalPrecision' : 2, 'minDecimalPrecision' : 2, 'expectedOutput' : '0.00'},
+      {'integerPrecision' : 1, 'decimalPrecision' : 3, 'minDecimalPrecision' : 2, 'expectedOutput' : '0.00#'},
+      {'integerPrecision' : 1, 'decimalPrecision' : 3, 'minDecimalPrecision' : 3, 'expectedOutput' : '0.000'},
+      {'integerPrecision' : 1, 'decimalPrecision' : 6, 'minDecimalPrecision' : 3, 'expectedOutput' : '0.000###'},
+      {'integerPrecision' : 3, 'decimalPrecision' : 6, 'minDecimalPrecision' : 3, 'expectedOutput' : '000.000###'},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('integerPrecision: ${elem['integerPrecision']}, decimalPrecision: ${elem['decimalPrecision']}, minDecimalPrecision: ${elem['minDecimalPrecision']}', () {
+        var _actual = formatStringForDecimals(
+          integerPrecision: elem['integerPrecision'] as int,
+          decimalPrecision: elem['decimalPrecision'] as int,
+          minDecimalPrecision: elem['minDecimalPrecision'] as int,
+        );
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
+
+  group("StringUtils.trimCharacterLeft", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '', 'character': '', 'expectedOutput' : ''},
+      {'input' : '', 'character': '0', 'expectedOutput' : ''},
+
+      {'input' : '000123000', 'character': '0', 'expectedOutput' : '123000'},
+      {'input' : '000123', 'character': '1', 'expectedOutput' : '000123'},
+      {'input' : '0123', 'character': '0', 'expectedOutput' : '123'},
+      {'input' : '  ABC', 'character': ' ', 'expectedOutput' : 'ABC'},
+      {'input' : '  ABC', 'character': '', 'expectedOutput' : '  ABC'},
+      {'input' : '0ABC', 'character': '0', 'expectedOutput' : 'ABC'},
+      {'input' : 'AAA', 'character': 'A', 'expectedOutput' : ''},
+
+      {'input' : 'ABCABCDEF', 'character': 'ABC', 'expectedOutput' : 'DEF'},
+      {'input' : 'ABCABC', 'character': 'ABC', 'expectedOutput' : ''},
+      {'input' : 'ABCAB', 'character': 'ABC', 'expectedOutput' : 'AB'},
+      {'input' : 'AB', 'character': 'ABC', 'expectedOutput' : 'AB'},
+      {'input' : 'ABD', 'character': 'ABC', 'expectedOutput' : 'ABD'},
+      {'input' : 'XYZ123', 'character': 'ABC', 'expectedOutput' : 'XYZ123'},
+      {'input' : 'XYZABC123', 'character': 'ABC', 'expectedOutput' : 'XYZABC123'},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}, character: ${elem['character']}, ', () {
+        var _actual = trimCharactersLeft(elem['input'] as String, elem['character'] as String);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
+
+  group("StringUtils.trimCharacterRight", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '', 'character': '', 'expectedOutput' : ''},
+      {'input' : '', 'character': '0', 'expectedOutput' : ''},
+
+      {'input' : '000123000', 'character': '0', 'expectedOutput' : '000123'},
+      {'input' : '123000', 'character': '1', 'expectedOutput' : '123000'},
+      {'input' : '1230', 'character': '0', 'expectedOutput' : '123'},
+      {'input' : 'ABC  ', 'character': ' ', 'expectedOutput' : 'ABC'},
+      {'input' : 'ABC  ', 'character': '', 'expectedOutput' : 'ABC  '},
+      {'input' : 'ABC0', 'character': '0', 'expectedOutput' : 'ABC'},
+      {'input' : 'AAA', 'character': 'A', 'expectedOutput' : ''},
+
+      {'input' : 'DEFABCABC', 'character': 'ABC', 'expectedOutput' : 'DEF'},
+      {'input' : 'ABCABC', 'character': 'ABC', 'expectedOutput' : ''},
+      {'input' : 'ABABC', 'character': 'ABC', 'expectedOutput' : 'AB'},
+      {'input' : 'AB', 'character': 'ABC', 'expectedOutput' : 'AB'},
+      {'input' : 'ABD', 'character': 'ABC', 'expectedOutput' : 'ABD'},
+      {'input' : 'XYZ123', 'character': 'ABC', 'expectedOutput' : 'XYZ123'},
+      {'input' : 'XYZABC123', 'character': 'ABC', 'expectedOutput' : 'XYZABC123'},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}, character: ${elem['character']}, ', () {
+        var _actual = trimCharactersRight(elem['input'] as String, elem['character'] as String);
         expect(_actual, elem['expectedOutput']);
       });
     }

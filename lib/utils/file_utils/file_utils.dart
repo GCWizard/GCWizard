@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 import 'dart:math';
@@ -38,6 +39,7 @@ enum FileType {
   EXE,
   BMP,
   TXT,
+  JSON,
   GPX,
   KML,
   KMZ,
@@ -56,16 +58,15 @@ class FileTypeInfo {
   final List<String>? mime_types;
   final FileClass file_class;
   final String? uniform_type_identifier;
-  
-  const FileTypeInfo({
-    required this.extensions,
-    this.magic_bytes,
-    this.magic_bytes_detail,
-    this.magic_bytes_offset,
-    this.mime_types,
-    required this.file_class,
-    this.uniform_type_identifier
-  });
+
+  const FileTypeInfo(
+      {required this.extensions,
+      this.magic_bytes,
+      this.magic_bytes_detail,
+      this.magic_bytes_offset,
+      this.mime_types,
+      required this.file_class,
+      this.uniform_type_identifier});
 }
 
 const Map<FileType, FileTypeInfo> _FILE_TYPES = {
@@ -77,255 +78,258 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
 
   // https://en.wikipedia.org/wiki/List_of_file_signatures
   // https://wiki.selfhtml.org/wiki/MIME-Type/%C3%9Cbersicht   oder   https://www.iana.org/assignments/media-types/media-types.xhtml
-  FileType.JPEG: FileTypeInfo(
-    extensions: ['jpg', 'jpeg'],
-    magic_bytes: <List<int>>[
-      [0xFF, 0xD8, 0xFF, 0xE0],
-      [0xFF, 0xD8, 0xFF, 0xE1],
-      [0xFF, 0xD8, 0xFF, 0xFE]
-    ],
-    mime_types: ['image/jpeg'],
-    file_class: FileClass.IMAGE
-  ),
-  FileType.GIF: FileTypeInfo(
-    extensions: ['gif'],
-    magic_bytes: <List<int>>[
-      [0x47, 0x49, 0x46, 0x38, 0x39, 0x61],
-      [0x47, 0x49, 0x46, 0x38, 0x37, 0x61]
-    ],
-    mime_types: ['image/gif'],
-    file_class: FileClass.IMAGE
-  ),
-  FileType.PNG: FileTypeInfo(
-    extensions: ['png'],
-    magic_bytes: <List<int>>[
-      [0x89, 0x50, 0x4E, 0x47]
-    ],
-    mime_types: ['image/png'],
-    file_class: FileClass.IMAGE
-  ),
-  FileType.BMP: FileTypeInfo(
-    extensions: ['bmp'],
-    magic_bytes: <List<int>>[
-      [0x42, 0x4D]
-    ],
-    mime_types: ['image/bmp', 'image/x-bmp', 'image/x-ms-bmp'],
-    file_class: FileClass.IMAGE
-  ),
-  FileType.TIFF: FileTypeInfo(
-    extensions: ['tiff', 'tif'],
-    magic_bytes: <List<int>>[
-      [0x49, 0x49, 0x2A, 0x00],
-      [0x4D, 0x4D, 0x00, 0x2A]
-    ],
-    mime_types: ['image/tiff'],
-    file_class: FileClass.IMAGE
-  ),
-  FileType.WEBP: FileTypeInfo(
-    extensions: ['webp'],
-    magic_bytes: <List<int>>[
-      [0x52, 0x49, 0x46, 0x46] // identically to WAV - check details
-    ],
-    magic_bytes_detail: <int>[0x57, 0x45, 0x42, 0x50],
-    mime_types: ['image/webp'],
-    file_class: FileClass.IMAGE
-  ),
-  FileType.ZIP: FileTypeInfo(
-    extensions: ['zip'],
-    magic_bytes: <List<int>>[
-      [0x50, 0x4B, 0x03, 0x04]
-    ],
-    mime_types: ['application/zip', 'application/octet-stream', 'application/x-zip-compressed'],
-    file_class: FileClass.ARCHIVE
-  ),
-  FileType._7Z: FileTypeInfo(
-    extensions: ['7z', '7zip'],
-    magic_bytes: <List<int>>[
-      [0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C],
-      [0x30, 0x26, 0xB2, 0x75]
-    ],
-    mime_types: ['application/x-7z-compressed', 'application/octet-stream'],
-    file_class: FileClass.ARCHIVE
-  ),
+  FileType.JPEG: FileTypeInfo(extensions: [
+    'jpg',
+    'jpeg'
+  ], magic_bytes: <List<int>>[
+    [0xFF, 0xD8, 0xFF, 0xE0],
+    [0xFF, 0xD8, 0xFF, 0xE1],
+    [0xFF, 0xD8, 0xFF, 0xEE],
+    [0xFF, 0xD8, 0xFF, 0xFE],
+  ], mime_types: [
+    'image/jpeg'
+  ], file_class: FileClass.IMAGE),
+  FileType.GIF: FileTypeInfo(extensions: [
+    'gif'
+  ], magic_bytes: <List<int>>[
+    [0x47, 0x49, 0x46, 0x38, 0x39, 0x61],
+    [0x47, 0x49, 0x46, 0x38, 0x37, 0x61]
+  ], mime_types: [
+    'image/gif'
+  ], file_class: FileClass.IMAGE),
+  FileType.PNG: FileTypeInfo(extensions: [
+    'png'
+  ], magic_bytes: <List<int>>[
+    [0x89, 0x50, 0x4E, 0x47]
+  ], mime_types: [
+    'image/png'
+  ], file_class: FileClass.IMAGE),
+  FileType.BMP: FileTypeInfo(extensions: [
+    'bmp'
+  ], magic_bytes: <List<int>>[
+    [0x42, 0x4D]
+  ], mime_types: [
+    'image/bmp',
+    'image/x-bmp',
+    'image/x-ms-bmp'
+  ], file_class: FileClass.IMAGE),
+  FileType.TIFF: FileTypeInfo(extensions: [
+    'tiff',
+    'tif'
+  ], magic_bytes: <List<int>>[
+    [0x49, 0x49, 0x2A, 0x00],
+    [0x4D, 0x4D, 0x00, 0x2A]
+  ], mime_types: [
+    'image/tiff'
+  ], file_class: FileClass.IMAGE),
+  FileType.WEBP: FileTypeInfo(extensions: [
+    'webp'
+  ], magic_bytes: <List<int>>[
+    [0x52, 0x49, 0x46, 0x46] // identically to WAV - check details
+  ], magic_bytes_detail: <int>[
+    0x57,
+    0x45,
+    0x42,
+    0x50
+  ], mime_types: [
+    'image/webp'
+  ], file_class: FileClass.IMAGE),
+  FileType.ZIP: FileTypeInfo(extensions: [
+    'zip'
+  ], magic_bytes: <List<int>>[
+    [0x50, 0x4B, 0x03, 0x04]
+  ], mime_types: [
+    'application/zip',
+    'application/octet-stream',
+    'application/x-zip-compressed'
+  ], file_class: FileClass.ARCHIVE),
+  FileType._7Z: FileTypeInfo(extensions: [
+    '7z',
+    '7zip'
+  ], magic_bytes: <List<int>>[
+    [0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C],
+    [0x30, 0x26, 0xB2, 0x75]
+  ], mime_types: [
+    'application/x-7z-compressed',
+    'application/octet-stream'
+  ], file_class: FileClass.ARCHIVE),
   FileType.TAR: FileTypeInfo(
-    extensions: ['tar'],
-    magic_bytes: <List<int>>[
-      [0x75, 0x73, 0x74, 0x61, 0x72]
-    ],
-    magic_bytes_offset: 257,
-    mime_types: ['application/x-tar', 'application/octet-stream', 'application/tar'],
-    file_class: FileClass.ARCHIVE
-  ),
-  FileType.RAR: FileTypeInfo(
-    extensions: ['rar'],
-    magic_bytes: <List<int>>[
-      [0x1F, 0x8B, 0x08, 0x00],
-      [0x52, 0x61, 0x72, 0x21, 0x1A, 0x07, 0x00],
-      [0x52, 0x61, 0x72, 0x21, 0x1A, 0x07, 0x01, 0x00]
-    ],
-    mime_types: ['application/x-rar-compressed', 'application/octet-stream'],
-    file_class: FileClass.ARCHIVE
-  ),
-  FileType.GZIP: FileTypeInfo(
-    extensions: ['gz'],
-    magic_bytes: <List<int>>[
-      [0x1F, 0x8B]
-    ],
-    mime_types: ['application/gzip'],
-    file_class: FileClass.ARCHIVE
-  ),
-  FileType.BZIP2: FileTypeInfo(
-    extensions: ['bz2'],
-    magic_bytes: <List<int>>[
-      [0x42, 0x5A, 0x68]
-    ],
-    mime_types: ['application/x-bzip'],
-    file_class: FileClass.ARCHIVE
-  ),
-  FileType.WMV: FileTypeInfo(
-    extensions: ['wmv'],
-    mime_types: ['audio/x-ms-wmv', 'audio/wmv'],
-    magic_bytes: <List<int>>[
-      [0x30, 0x26, 0xB2, 0x75],
-    ],
-    magic_bytes_detail: <int>[0x57, 0x41, 0x56, 0x45],
-    file_class: FileClass.SOUND
-  ),
-  FileType.WAV: FileTypeInfo(
-    extensions: ['wav'],
-    magic_bytes: <List<int>>[
-      [0x52, 0x49, 0x46, 0x46],
-      [0x57, 0x41, 0x56, 0x45]
-    ],
-    magic_bytes_detail: <int>[0x57, 0x41, 0x56, 0x45],
-    mime_types: ['audio/wav', 'audio/x-wav'],
-    file_class: FileClass.SOUND
-  ),
-  FileType.MIDI: FileTypeInfo(
-    extensions: ['mid', 'midi'],
-    magic_bytes: <List<int>>[
-      [0x4D, 0x54, 0x68, 0x64]
-    ],
-    mime_types: ['audio/midi', 'audio/x-midi'],
-    file_class: FileClass.SOUND
-  ),
-  FileType.MP3: FileTypeInfo(
-    extensions: ['mp3'],
-    magic_bytes: <List<int>>[
-      [0x49, 0x44, 0x33],
-      [0xFF, 0xFA],
-      [0xFF, 0xFB],
-      [0xFF, 0xF3],
-      [0xFF, 0xF2]
-    ],
-    mime_types: ['audio/mpeg', 'audio/mp3', 'audio/mpeg3', 'audio/x-mpeg-3'],
-    file_class: FileClass.SOUND
-  ),
-  FileType.OGG: FileTypeInfo(
-    extensions: ['ogg', 'oga'],
-    magic_bytes: <List<int>>[
-      [0x4F, 0x67, 0x67, 0x53]
-    ],
-    mime_types: ['audio/ogg', 'application/ogg'],
-    file_class: FileClass.SOUND
-  ),
-  FileType.SND: FileTypeInfo(
-    extensions: ['snd'],
-    magic_bytes: <List<int>>[
-      [0x46, 0x4F, 0x52, 0x4D],
-      [0x38, 0x53, 0x56, 0x58]
-    ],
-    mime_types: ['audio/snd'],
-    file_class: FileClass.SOUND
-  ),
-  FileType.FDL: FileTypeInfo(
-    extensions: ['fdl'],
-    magic_bytes: <List<int>>[
-      [0x00, 0x00]
-    ],
-    mime_types: ['application/octet-stream'],
-    file_class: FileClass.SOUND
-  ),
+      extensions: ['tar'],
+      magic_bytes: <List<int>>[
+        [0x75, 0x73, 0x74, 0x61, 0x72]
+      ],
+      magic_bytes_offset: 257,
+      mime_types: ['application/x-tar', 'application/octet-stream', 'application/tar'],
+      file_class: FileClass.ARCHIVE),
+  FileType.RAR: FileTypeInfo(extensions: [
+    'rar'
+  ], magic_bytes: <List<int>>[
+    [0x1F, 0x8B, 0x08, 0x00],
+    [0x52, 0x61, 0x72, 0x21, 0x1A, 0x07, 0x00],
+    [0x52, 0x61, 0x72, 0x21, 0x1A, 0x07, 0x01, 0x00]
+  ], mime_types: [
+    'application/x-rar-compressed',
+    'application/octet-stream'
+  ], file_class: FileClass.ARCHIVE),
+  FileType.GZIP: FileTypeInfo(extensions: [
+    'gz'
+  ], magic_bytes: <List<int>>[
+    [0x1F, 0x8B]
+  ], mime_types: [
+    'application/gzip'
+  ], file_class: FileClass.ARCHIVE),
+  FileType.BZIP2: FileTypeInfo(extensions: [
+    'bz2'
+  ], magic_bytes: <List<int>>[
+    [0x42, 0x5A, 0x68]
+  ], mime_types: [
+    'application/x-bzip'
+  ], file_class: FileClass.ARCHIVE),
+  FileType.WMV: FileTypeInfo(extensions: [
+    'wmv'
+  ], mime_types: [
+    'audio/x-ms-wmv',
+    'audio/wmv'
+  ], magic_bytes: <List<int>>[
+    [0x30, 0x26, 0xB2, 0x75],
+  ], magic_bytes_detail: <int>[
+    0x57,
+    0x41,
+    0x56,
+    0x45
+  ], file_class: FileClass.SOUND),
+  FileType.WAV: FileTypeInfo(extensions: [
+    'wav'
+  ], magic_bytes: <List<int>>[
+    [0x52, 0x49, 0x46, 0x46],
+    [0x57, 0x41, 0x56, 0x45]
+  ], magic_bytes_detail: <int>[
+    0x57,
+    0x41,
+    0x56,
+    0x45
+  ], mime_types: [
+    'audio/wav',
+    'audio/x-wav'
+  ], file_class: FileClass.SOUND),
+  FileType.MIDI: FileTypeInfo(extensions: [
+    'mid',
+    'midi'
+  ], magic_bytes: <List<int>>[
+    [0x4D, 0x54, 0x68, 0x64]
+  ], mime_types: [
+    'audio/midi',
+    'audio/x-midi'
+  ], file_class: FileClass.SOUND),
+  FileType.MP3: FileTypeInfo(extensions: [
+    'mp3'
+  ], magic_bytes: <List<int>>[
+    [0x49, 0x44, 0x33],
+    [0xFF, 0xFA],
+    [0xFF, 0xFB],
+    [0xFF, 0xF3],
+    [0xFF, 0xF2]
+  ], mime_types: [
+    'audio/mpeg',
+    'audio/mp3',
+    'audio/mpeg3',
+    'audio/x-mpeg-3'
+  ], file_class: FileClass.SOUND),
+  FileType.OGG: FileTypeInfo(extensions: [
+    'ogg',
+    'oga'
+  ], magic_bytes: <List<int>>[
+    [0x4F, 0x67, 0x67, 0x53]
+  ], mime_types: [
+    'audio/ogg',
+    'application/ogg'
+  ], file_class: FileClass.SOUND),
+  FileType.SND: FileTypeInfo(extensions: [
+    'snd'
+  ], magic_bytes: <List<int>>[
+    [0x46, 0x4F, 0x52, 0x4D],
+    [0x38, 0x53, 0x56, 0x58]
+  ], mime_types: [
+    'audio/snd'
+  ], file_class: FileClass.SOUND),
+  FileType.FDL: FileTypeInfo(extensions: [
+    'fdl'
+  ], magic_bytes: <List<int>>[
+    [0x00, 0x00]
+  ], mime_types: [
+    'application/octet-stream'
+  ], file_class: FileClass.SOUND),
   FileType.TXT: FileTypeInfo(
-    extensions: ['txt'],
-    magic_bytes: <List<int>>[],
-    mime_types: ['text/plain'],
-    file_class: FileClass.TEXT
-  ),
-  FileType.PDF: FileTypeInfo(
-    extensions: ['pdf'],
-    magic_bytes: <List<int>>[
-      [0x25, 0x50, 0x44, 0x46]
-    ],
-    mime_types: ['application/pdf', 'application/octet-stream'],
-    file_class: FileClass.DATA
-  ),
-  FileType.EXE: FileTypeInfo(
-    extensions: ['exe'],
-    magic_bytes: <List<int>>[
-      [0x4D, 0x5A, 0x50, 0x00],
-      [0x4D, 0x5A, 0x90, 0x00]
-    ],
-    mime_types: ['application/octet-stream'],
-    file_class: FileClass.DATA
-  ),
+      extensions: ['txt'], magic_bytes: <List<int>>[], mime_types: ['text/plain'], file_class: FileClass.TEXT),
+  FileType.JSON: FileTypeInfo(
+      extensions: ['json'], magic_bytes: <List<int>>[], mime_types: ['text/plain'], file_class: FileClass.TEXT),
+  FileType.PDF: FileTypeInfo(extensions: [
+    'pdf'
+  ], magic_bytes: <List<int>>[
+    [0x25, 0x50, 0x44, 0x46]
+  ], mime_types: [
+    'application/pdf',
+    'application/octet-stream'
+  ], file_class: FileClass.DATA),
+  FileType.EXE: FileTypeInfo(extensions: [
+    'exe'
+  ], magic_bytes: <List<int>>[
+    [0x4D, 0x5A, 0x50, 0x00],
+    [0x4D, 0x5A, 0x90, 0x00]
+  ], mime_types: [
+    'application/octet-stream'
+  ], file_class: FileClass.DATA),
   FileType.GPX: FileTypeInfo(
-    extensions: ['gpx'],
-    magic_bytes: <List<int>>[],
-    file_class: FileClass.DATA,
-    mime_types: ['application/gpx', 'application/gpx+xml'],
-    uniform_type_identifier: 'com.topografix.gpx'
-  ),
+      extensions: ['gpx'],
+      magic_bytes: <List<int>>[],
+      file_class: FileClass.DATA,
+      mime_types: ['application/gpx', 'application/gpx+xml'],
+      uniform_type_identifier: 'com.topografix.gpx'),
   FileType.KML: FileTypeInfo(
-    extensions: ['kml'],
-    magic_bytes: <List<int>>[],
-    file_class: FileClass.DATA,
-    mime_types: [
-      'application/kml',
-      'application/kml+xml',
-      'application/xml',
-      'application/vnd.google-earth.kml+xml',
-      'application/vnd.google-earth.kml'
-    ],
-    uniform_type_identifier: 'com.google.earth.kml'
-  ),
+      extensions: ['kml'],
+      magic_bytes: <List<int>>[],
+      file_class: FileClass.DATA,
+      mime_types: [
+        'application/kml',
+        'application/kml+xml',
+        'application/xml',
+        'application/vnd.google-earth.kml+xml',
+        'application/vnd.google-earth.kml'
+      ],
+      uniform_type_identifier: 'com.google.earth.kml'),
   FileType.KMZ: FileTypeInfo(
-    extensions: ['kmz'],
-    magic_bytes: <List<int>>[],
-    file_class: FileClass.DATA,
-    mime_types: [
-      'application/kmz',
-      'application/kmz+xml',
-      'application/xml',
-      'application/vnd.google-earth.kmz+xml',
-      'application/vnd.google-earth.kmz'
-    ]
-  ),
-  FileType.LUAC: FileTypeInfo(
-    extensions: ['luac'],
-    magic_bytes: <List<int>>[
-      [0x1B, 0x4C, 0x75, 0x61, 0x51, 0x00, 0x01, 0x04]
-    ],
-    mime_types: ['application/octet-stream'],
-    file_class: FileClass.BINARY
-  ),
-  FileType.GWC: FileTypeInfo(
-    extensions: ['gwc'],
-    magic_bytes: <List<int>>[
-      [0x02, 0x0A, 0x43, 0x41, 0x52, 0x54, 0x00],
-      [0x02, 0x0B, 0x43, 0x41, 0x52, 0x54, 0x00]
-    ],
-    mime_types: ['application/octet-stream'],
-    file_class: FileClass.BINARY
-  ),
-  FileType.LUA: FileTypeInfo(
-    extensions: ['lua'],
-    magic_bytes: <List<int>>[
-      [0x72, 0x65, 0x71, 0x75, 0x69, 0x72, 0x65]
-    ],
-    mime_types: ['text/plain'],
-    file_class: FileClass.TEXT
-  ),
+      extensions: ['kmz'],
+      magic_bytes: <List<int>>[],
+      file_class: FileClass.DATA,
+      mime_types: [
+        'application/kmz',
+        'application/kmz+xml',
+        'application/xml',
+        'application/vnd.google-earth.kmz+xml',
+        'application/vnd.google-earth.kmz'
+      ]),
+  FileType.LUAC: FileTypeInfo(extensions: [
+    'luac'
+  ], magic_bytes: <List<int>>[
+    [0x1B, 0x4C, 0x75, 0x61, 0x51, 0x00, 0x01, 0x04]
+  ], mime_types: [
+    'application/octet-stream'
+  ], file_class: FileClass.BINARY),
+  FileType.GWC: FileTypeInfo(extensions: [
+    'gwc'
+  ], magic_bytes: <List<int>>[
+    [0x02, 0x0A, 0x43, 0x41, 0x52, 0x54, 0x00],
+    [0x02, 0x0B, 0x43, 0x41, 0x52, 0x54, 0x00]
+  ], mime_types: [
+    'application/octet-stream'
+  ], file_class: FileClass.BINARY),
+  FileType.LUA: FileTypeInfo(extensions: [
+    'lua'
+  ], magic_bytes: <List<int>>[
+    [0x72, 0x65, 0x71, 0x75, 0x69, 0x72, 0x65]
+  ], mime_types: [
+    'text/plain'
+  ], file_class: FileClass.TEXT),
 };
 
 FileType? fileTypeByFilename(String fileName) {
@@ -355,14 +359,17 @@ String fileExtension(FileType type) {
 }
 
 List<String> fileExtensions(List<FileType> types) {
-  return types.map((type) {
-    _checkFileType(type);
-    if (_FILE_TYPES[type]!.extensions.contains(null)) {
-      throw Exception('No file type extension');
-    }
+  return types
+      .map((type) {
+        _checkFileType(type);
+        if (_FILE_TYPES[type]!.extensions.contains(null)) {
+          throw Exception('No file type extension');
+        }
 
-    return _FILE_TYPES[type]!.extensions;
-  }).expand((List<String> extensions) => extensions).toList();
+        return _FILE_TYPES[type]!.extensions;
+      })
+      .expand((List<String> extensions) => extensions)
+      .toList();
 }
 
 List<String> fileExtensionsByFileClass(FileClass _fileClass) {
@@ -390,7 +397,7 @@ List<int>? magicBytesDetail(FileType type) {
 
 int? magicBytesOffset(FileType type) {
   _checkFileType(type);
-   return _FILE_TYPES[type]!.magic_bytes_offset;
+  return _FILE_TYPES[type]!.magic_bytes_offset;
 }
 
 List<String>? mimeTypes(FileType type) {
@@ -582,7 +589,9 @@ Future<List<GCWFile>> extractArchive(GCWFile file) async {
       case FileType.GZIP:
         var output = OutputStream();
         GZipDecoder().decodeStream(input, output);
-        return {GCWFile(name: changeExtension(file.name ?? 'xxx', '.gzip'), bytes: Uint8List.fromList(output.getBytes()))}.toList();
+        return {
+          GCWFile(name: changeExtension(file.name ?? 'xxx', '.gzip'), bytes: Uint8List.fromList(output.getBytes()))
+        }.toList();
       case FileType.RAR:
         return await _extractRarArchive(file);
       default:
@@ -617,4 +626,12 @@ Future<List<GCWFile>> _extractRarArchive(GCWFile file, {String? password}) async
 Uint8List encodeTrimmedPng(Image.Image image) {
   var out = Image.encodePng(image);
   return trimNullBytes(Uint8List.fromList(out));
+}
+
+Uint8List convertStringToBytes(String text) {
+  return Uint8List.fromList(utf8.encode(text));
+}
+
+String convertBytesToString(Uint8List data) {
+  return utf8.decode(data);
 }

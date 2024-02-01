@@ -6,7 +6,7 @@ class GCWIntegerTextInputFormatter extends TextInputFormatter {
   final int? min;
   final int? max;
 
-  GCWIntegerTextInputFormatter({required this.min, this.max}) {
+  GCWIntegerTextInputFormatter({this.min, this.max}) {
     _exp = RegExp(_buildRegex());
   }
 

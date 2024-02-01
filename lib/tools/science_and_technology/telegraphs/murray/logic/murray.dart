@@ -23,38 +23,25 @@ enum MurrayCodebook {
 }
 
 const Map<MurrayCodebook, CodebookConfig> MURRAY_CODEBOOK = {
-  MurrayCodebook.ROYALNAVY: CodebookConfig(
-    title: 'telegraph_murray_royalnavy_title',
-    subtitle: 'telegraph_murray_royalnavy_description'
-  ),
-  MurrayCodebook.GEOCACHING: CodebookConfig(
-    title: 'telegraph_murray_geocaching_title',
-    subtitle: 'telegraph_murray_geocaching_description'
-  ),
-  MurrayCodebook.FISCHER: CodebookConfig(
-    title: 'telegraph_murray_fischer_title',
-    subtitle: 'telegraph_murray_fischer_description'
-  ),
-  MurrayCodebook.ROUCOUX: CodebookConfig(
-    title: 'telegraph_murray_roucoux_title',
-    subtitle: 'telegraph_murray_roucoux_description'
-  ),
+  MurrayCodebook.ROYALNAVY:
+      CodebookConfig(title: 'telegraph_murray_royalnavy_title', subtitle: 'telegraph_murray_royalnavy_description'),
+  MurrayCodebook.GEOCACHING:
+      CodebookConfig(title: 'telegraph_murray_geocaching_title', subtitle: 'telegraph_murray_geocaching_description'),
+  MurrayCodebook.FISCHER:
+      CodebookConfig(title: 'telegraph_murray_fischer_title', subtitle: 'telegraph_murray_fischer_description'),
+  MurrayCodebook.ROUCOUX:
+      CodebookConfig(title: 'telegraph_murray_roucoux_title', subtitle: 'telegraph_murray_roucoux_description'),
   MurrayCodebook.GEOCACHINGTOOLBOX_1: CodebookConfig(
-    title: 'telegraph_murray_geocachingtoolbox_1_title',
-    subtitle: 'telegraph_murray_geocachingtoolbox_1_description'
-  ),
+      title: 'telegraph_murray_geocachingtoolbox_1_title',
+      subtitle: 'telegraph_murray_geocachingtoolbox_1_description'),
   MurrayCodebook.GEOCACHINGTOOLBOX_2: CodebookConfig(
-    title: 'telegraph_murray_geocachingtoolbox_2_title',
-    subtitle: 'telegraph_murray_geocachingtoolbox_2_description'
-  ),
+      title: 'telegraph_murray_geocachingtoolbox_2_title',
+      subtitle: 'telegraph_murray_geocachingtoolbox_2_description'),
   MurrayCodebook.GEOCACHINGTOOLBOX_3: CodebookConfig(
-    title: 'telegraph_murray_geocachingtoolbox_3_title',
-    subtitle: 'telegraph_murray_geocachingtoolbox_3_description'
-  ),
-  MurrayCodebook.MYGEOTOOLS: CodebookConfig(
-    title: 'telegraph_murray_mygeotools_title',
-    subtitle: 'telegraph_murray_mygeotools_description'
-  ),
+      title: 'telegraph_murray_geocachingtoolbox_3_title',
+      subtitle: 'telegraph_murray_geocachingtoolbox_3_description'),
+  MurrayCodebook.MYGEOTOOLS:
+      CodebookConfig(title: 'telegraph_murray_mygeotools_title', subtitle: 'telegraph_murray_mygeotools_description'),
 };
 
 const Map<String, List<String>> _CODEBOOK_ROYALNAVY = {
@@ -287,7 +274,6 @@ const Map<String, List<String>> _CODEBOOK_GEOCACHINGTOOLBOX_3 = {
 };
 
 Segments encodeMurray(String input, MurrayCodebook language) {
-
   Map<String, List<String>> CODEBOOK = <String, List<String>>{};
   switch (language) {
     case MurrayCodebook.GEOCACHING:
@@ -326,7 +312,7 @@ Segments encodeMurray(String input, MurrayCodebook language) {
 }
 
 SegmentsChars decodeMurray(List<String> inputs, MurrayCodebook language) {
-  if (inputs.isEmpty) return  SegmentsChars(displays: <List<String>>[], chars: []);
+  if (inputs.isEmpty) return SegmentsChars(displays: <List<String>>[], chars: []);
 
   var displays = <List<String>>[];
 

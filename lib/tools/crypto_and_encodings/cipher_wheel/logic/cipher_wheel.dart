@@ -1,7 +1,6 @@
 import 'package:gc_wizard/utils/alphabets.dart';
 
 List<int> encryptCipherWheel(String input, int key) {
-
   input = input.toUpperCase().replaceAll(RegExp(r'[^A-Z]'), '');
 
   if (input.isEmpty) return <int>[];

@@ -66,7 +66,7 @@ const Map<int, List<String>> _numbersToSegments = {
 
 Segments encodeBabylonNumbers(int input) {
   var sexagesimal = convertBase(input.toString(), 10, 60);
-  var result =  sexagesimal.split('').map((digit) {
+  var result = sexagesimal.split('').map((digit) {
     return _numbersToSegments[int.tryParse(convertBase(digit, 60, 10))] ?? [];
   }).toList();
 

@@ -13,11 +13,9 @@ const _INITIAL_SEGMENTS = <String, bool>{
 const _PASLEY_RELATIVE_DISPLAY_WIDTH = 180;
 const _PASLEY_RELATIVE_DISPLAY_HEIGHT = 200;
 
-
 class _PasleyTelegraphSegmentDisplay extends NSegmentDisplay {
-
-  _PasleyTelegraphSegmentDisplay({
-      Key? key,
+  _PasleyTelegraphSegmentDisplay(
+      {Key? key,
       required Map<String, bool> segments,
       bool readOnly = false,
       void Function(Map<String, bool>)? onChanged})

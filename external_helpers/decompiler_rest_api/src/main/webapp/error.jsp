@@ -13,8 +13,8 @@
     <title>Something went wrong!</title>
   </head>
   <body>
-    <div align="center">
-      <img src="gcw_logo.png" width="150px">
+    <div>
+      <img src="gcw_logo.png" alt="GCWizard Logo" width="150px">
     </div>
     <article>
       <h1>Hmmm! That doesn't look good!</h1>

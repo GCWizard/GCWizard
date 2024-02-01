@@ -1,7 +1,7 @@
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
-import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:latlong2/latlong.dart';
 
 
@@ -16,7 +16,6 @@ void main() {
       {'coord' : LatLng(19.793545607027113, -52.008335207337154), 'expectedOutput': LatLng(16.86823975391602, -21.715970998711896), 'bearing': 280.50657372921285, 'distance': 3214178.0255869143},
       {'coord' : LatLng(-78.35656674071589, -70.35858934072675), 'expectedOutput': LatLng(6.13284033603278, -123.91294932358062), 'bearing': 170.61935386006067, 'distance': 9902447.165614301},
       {'coord' : LatLng(-78.35656674071589, -70.35858934072675), 'expectedOutput': LatLng(6.13284033603278, -123.91294932358062), 'bearing': 170.61935386006067, 'distance': 9902447.165614301},
-
       {'coord' : LatLng(50.9824, 011.0930833333), 'expectedOutput': LatLng(37.459265, -78.848104), 'bearing': 45.631928848, 'distance': 6885736.0},
     ];
 

@@ -8,7 +8,6 @@ import 'package:prefs/prefs.dart';
 
 void refreshMultiDecoderTools() {
   var tools = Prefs.getStringList(PREFERENCE_MULTIDECODER_TOOLS);
-  if (tools.isEmpty) return;
 
   multiDecoderTools = tools.where((tool) => tool.isNotEmpty).map((tool) {
     return MultiDecoderToolEntity.fromJson(asJsonMap(jsonDecode(tool)));

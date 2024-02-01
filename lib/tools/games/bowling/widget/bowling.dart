@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
@@ -18,16 +18,17 @@ class Bowling extends StatefulWidget {
   const Bowling({Key? key}) : super(key: key);
 
   @override
-  BowlingState createState() => BowlingState();
+  _BowlingState createState() => _BowlingState();
 }
 
-class BowlingState extends State<Bowling> {
+class _BowlingState extends State<Bowling> {
   late List<BowlingFrame> _currentBowlingScore;
   List<int> _currentFrameTotals = [10];
   int _currentFrame = 0;
   int _currentThrow1 = 0;
   int _currentThrow2 = 0;
   int _currentThrow3 = 0;
+  int _currentHDCP = 0;
 
   double _cellWidth = 0;
   final BorderSide _border = const BorderSide(width: 1.0, color: Colors.black87);
@@ -45,10 +46,28 @@ class BowlingState extends State<Bowling> {
 
   @override
   Widget build(BuildContext context) {
-    _cellWidth = (MediaQuery.of(context).size.width - 20) / 21;
+    _cellWidth = (maxScreenWidth(context) - 20) / 21;
 
     return Column(
       children: <Widget>[
+        GCWIntegerSpinner(
+          title: i18n(context, 'bowling_hdcp'),
+          layout: SpinnerLayout.HORIZONTAL,
+          value: _currentHDCP,
+          min: 0,
+          max: 100,
+          onChanged: (value) {
+            setState(() {
+              _currentHDCP = value;
+
+              _calculateAndSetScore();
+            });
+          },
+        ),
+        const GCWTextDivider(text: '',
+        suppressTopSpace: true,
+        suppressBottomSpace: true,
+        ),
         Row(
           children: <Widget>[
             GCWIconButton(
@@ -141,7 +160,7 @@ class BowlingState extends State<Bowling> {
                       layout: SpinnerLayout.VERTICAL,
                       value: _currentThrow3,
                       min: 0,
-                      max: _currentThrow1 == 10 ? 10 - _currentThrow2 : 10,
+                      max: 10,
                       onChanged: (value) {
                         setState(() {
                           _currentThrow3 = value;
@@ -163,11 +182,7 @@ class BowlingState extends State<Bowling> {
       children: <Widget>[
         GCWDefaultOutput(
           child: GCWColumnedMultilineOutput(
-            data: _buildBowlingScoreTable(),
-            hasHeader: true,
-            copyColumn: 4,
-            flexValues: const [2, 1, 1, 1, 2, 3]
-          ),
+              data: _buildBowlingScoreTable(), hasHeader: true, copyColumn: 4, flexValues: const [2, 1, 1, 1, 2, 3]),
         ),
         GCWTextDivider(
           text: i18n(context, 'bowling_scoreboard'),
@@ -215,7 +230,7 @@ class BowlingState extends State<Bowling> {
             ? _currentBowlingScore[i].three
             : null,
         _currentFrameTotals[i],
-        bowlingTotalAfterFrames(i, _currentFrameTotals)
+        bowlingTotalAfterFrames(i, _currentFrameTotals, HDCP: _currentHDCP),
       ]);
     }
     return result;
@@ -224,8 +239,16 @@ class BowlingState extends State<Bowling> {
   List<Widget> _buildBowlingScoreBoard() {
     // https: //www.sportcalculators.com/bowling-score-calculator
     var score = <Widget>[];
+    var scoreRow0 = <Widget>[];
     var scoreRow1 = <Widget>[];
     var scoreRow2 = <Widget>[];
+    var scoreRow3 = <Widget>[];
+
+    scoreRow0.add(_buildCellRow0(1));
+    scoreRow0.add(_buildCellRow0(2));
+    score.add(Row(
+      children: scoreRow0,
+    ));
 
     for (int i = 0; i < 10; i++) {
       scoreRow1.add(_buildCellRow1(i, 1));
@@ -243,7 +266,39 @@ class BowlingState extends State<Bowling> {
       children: scoreRow2,
     ));
 
+    scoreRow3.add(_buildCellRow3(1));
+    scoreRow3.add(_buildCellRow3(2));
+    score.add(Row(
+      children: scoreRow3,
+    ));
+
     return score;
+  }
+
+  Widget _buildCellRow0(int count){
+    return Container(
+      height: defaultFontSize() * 1.5,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(top: _border, left: count == 1 ? _border : BorderSide.none, right: count == 1 ? BorderSide.none : _border, bottom: BorderSide.none),
+      ),
+      width: count == 1 ? _cellWidth * 18 : _cellWidth * 3,
+      child: Column(
+        children: [
+          Expanded(
+              child: Align(
+                alignment: count == 1 ? Alignment.centerRight : Alignment.center,
+                child: AutoSizeText(
+                  count == 1 ? i18n(context, 'bowling_hdcp') : _currentHDCP.toString(),
+                  style: gcwTextStyle().copyWith(color: Colors.black),
+                  minFontSize: AUTO_FONT_SIZE_MIN,
+                  maxLines: 1,
+                )
+              )
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildCellRow1(int frame, int count) {
@@ -280,7 +335,7 @@ class BowlingState extends State<Bowling> {
         children: [
           Expanded(
               child: AutoSizeText(
-            bowlingTotalAfterFrames(frame, _currentFrameTotals).toString(),
+            bowlingTotalAfterFrames(frame, _currentFrameTotals,).toString(),
             style: gcwTextStyle().copyWith(color: Colors.black),
             minFontSize: AUTO_FONT_SIZE_MIN,
             maxLines: 1,
@@ -307,6 +362,32 @@ class BowlingState extends State<Bowling> {
             minFontSize: AUTO_FONT_SIZE_MIN,
             maxLines: 1,
           )),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCellRow3(int count){
+    return Container(
+      height: defaultFontSize() * 1.5,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(top: _border, left: count == 1 ? _border : BorderSide.none, right: count == 1 ? BorderSide.none : _border, bottom: BorderSide.none),
+      ),
+      width: count == 1 ? _cellWidth * 18 : _cellWidth * 3,
+      child: Column(
+        children: [
+          Expanded(
+              child: Align(
+                  alignment: count == 1 ? Alignment.centerRight : Alignment.center,
+                  child: AutoSizeText(
+                    count == 1 ? i18n(context, 'bowling_totalscore') : bowlingTotalAfterFrames(9, _currentFrameTotals, HDCP: _currentHDCP).toString(),
+                    style: gcwTextStyle().copyWith(color: Colors.black),
+                    minFontSize: AUTO_FONT_SIZE_MIN,
+                    maxLines: 1,
+                  )
+              )
+          ),
         ],
       ),
     );

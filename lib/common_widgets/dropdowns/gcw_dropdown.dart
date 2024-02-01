@@ -47,51 +47,52 @@ class _GCWDropDownState<T> extends State<GCWDropDown<T>> {
               )),
         Expanded(
             flex: 3,
-            child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
-                height: 39,
-                margin: const EdgeInsets.symmetric(vertical: DEFAULT_MARGIN),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(ROUNDED_BORDER_RADIUS),
-                  border: Border.all(
-                      color: widget.alternativeColor ? colors.dialogText() : colors.secondary(),
-                      style: BorderStyle.solid,
-                      width: 1.0),
-                ),
-                child: DropdownButtonHideUnderline(
-                    child: DropdownButton<T?>(
-                  isExpanded: true,
-                  icon: Icon(
-                    Icons.arrow_drop_down,
-                    size: 30,
-                    color: widget.alternativeColor ? colors.dialogText() : colors.secondary(),
-                  ),
-                  value: _currentValue,// ?? widget.items[0].value,
-                  items: widget.items.map((item) {
-                    return DropdownMenuItem<T>(
-                        value: item._internalValue, child: item.child is Widget ? item.child as Widget : _buildMenuItemChild<T>(item));
-                  }).toList(),
-                  onChanged: (value) {
-                    if (value != null) {
-                      widget.onChanged(value);
-                    }
-                  },
-                  style: textStyle,
-                  selectedItemBuilder: widget.selectedItemBuilder ??
-                      (context) {
-                        return widget.items.map((item) {
-                          return Align(
-                            alignment: Alignment.centerLeft,
-                            child: item.child is Widget
-                                ? item.child as Widget
-                                : Text(
-                                    item.child.toString(),
-                                    style: textStyle,
-                                  ),
-                          );
-                        }).toList();
+            child: ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: 39),
+                child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
+                    margin: const EdgeInsets.symmetric(vertical: DEFAULT_MARGIN),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(ROUNDED_BORDER_RADIUS),
+                      border: Border.all(
+                          color: widget.alternativeColor ? colors.dialogText() : colors.secondary(),
+                          style: BorderStyle.solid,
+                          width: 1.0),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                        child: DropdownButton<T?>(
+                      itemHeight: null,
+                      isExpanded: true,
+                      icon: Icon(
+                        Icons.arrow_drop_down,
+                        size: 30,
+                        color: widget.alternativeColor ? colors.dialogText() : colors.secondary(),
+                      ),
+                      value: _currentValue, // ?? widget.items[0].value,
+                      items: widget.items.map((item) {
+                        return DropdownMenuItem<T>(value: item._internalValue, child: _buildMenuItemChild<T>(item));
+                      }).toList(),
+                      onChanged: (value) {
+                        if (value != null) {
+                          widget.onChanged(value);
+                        }
                       },
-                ))))
+                      style: textStyle,
+                      selectedItemBuilder: widget.selectedItemBuilder ??
+                          (context) {
+                            return widget.items.map((item) {
+                              return Align(
+                                alignment: Alignment.centerLeft,
+                                child: item.child is Widget
+                                    ? item.child as Widget
+                                    : Text(
+                                        item.child.toString(),
+                                        style: textStyle,
+                                      ),
+                              );
+                            }).toList();
+                          },
+                    )))))
       ],
     );
   }

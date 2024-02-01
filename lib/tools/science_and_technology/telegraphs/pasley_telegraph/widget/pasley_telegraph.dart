@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/gcw_toolbar.dart';
@@ -20,10 +20,10 @@ class PasleyTelegraph extends StatefulWidget {
   const PasleyTelegraph({Key? key}) : super(key: key);
 
   @override
-  PasleyTelegraphState createState() => PasleyTelegraphState();
+  _PasleyTelegraphState createState() => _PasleyTelegraphState();
 }
 
-class PasleyTelegraphState extends State<PasleyTelegraph> {
+class _PasleyTelegraphState extends State<PasleyTelegraph> {
   String _currentEncodeInput = '';
   late TextEditingController _encodeController;
 

@@ -23,17 +23,17 @@ class _SudokuBoardState extends State<_SudokuBoard> {
                   builder: (context) {
                     return CustomPaint(
                         painter: SudokuBoardPainter(context, widget.board, (x, y, value) {
-                          setState(() {
-                            if (value == null) {
-                              widget.board.setValue(x, y, null, SudokuFillType.CALCULATED);
-                              widget.onChanged(widget.board);
-                              return;
-                            }
+                      setState(() {
+                        if (value == null) {
+                          widget.board.setValue(x, y, null, SudokuFillType.CALCULATED);
+                          widget.onChanged(widget.board);
+                          return;
+                        }
 
-                            widget.board.setValue(x, y, value, SudokuFillType.USER_FILLED);
-                            widget.onChanged(widget.board);
-                          });
-                        }));
+                        widget.board.setValue(x, y, value, SudokuFillType.USER_FILLED);
+                        widget.onChanged(widget.board);
+                      });
+                    }));
                   },
                 )))
       ],
@@ -85,9 +85,9 @@ class SudokuBoardPainter extends CustomPainter {
 
             _touchCanvas.drawRect(Rect.fromLTWH(xInner, yInner, widthInner, heightInner), paint,
                 onTapDown: (tapDetail) {
-                  board.removeCalculated();
-                  _showInputDialog(boardX, boardY);
-                });
+              board.removeCalculated();
+              _showInputDialog(boardX, boardY);
+            });
 
             paint.color = colors.secondary();
 
@@ -95,8 +95,9 @@ class SudokuBoardPainter extends CustomPainter {
             _touchCanvas.drawLine(Offset(0.0, yInner), Offset(size.height, yInner), paint);
 
             if (board.getValue(boardX, boardY) != null) {
-              var textColor =
-              board.getFillType(boardX, boardY) == SudokuFillType.USER_FILLED ? colors.secondary() : colors.mainFont();
+              var textColor = board.getFillType(boardX, boardY) == SudokuFillType.USER_FILLED
+                  ? colors.secondary()
+                  : colors.mainFont();
 
               TextSpan span = TextSpan(
                   style: gcwTextStyle().copyWith(color: textColor, fontSize: heightInner * 0.8),

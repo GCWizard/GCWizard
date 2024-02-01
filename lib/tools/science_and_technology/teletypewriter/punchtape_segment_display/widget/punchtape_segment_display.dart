@@ -16,12 +16,11 @@ const _INITIAL_SEGMENTS = <String, bool>{
   '8': false
 };
 
-
 class PUNCHTAPESegmentDisplay extends NSegmentDisplay {
   final TeletypewriterCodebook codeBook;
 
-  PUNCHTAPESegmentDisplay(this.codeBook, {
-      Key? key,
+  PUNCHTAPESegmentDisplay(this.codeBook,
+      {Key? key,
       required Map<String, bool> segments,
       bool readOnly = false,
       void Function(Map<String, bool>)? onChanged})

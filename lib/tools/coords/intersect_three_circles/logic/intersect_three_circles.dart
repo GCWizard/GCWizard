@@ -1,7 +1,7 @@
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/coords/intersect_two_circles/logic/intersect_two_circles.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:latlong2/latlong.dart';
 
 //TODO: REFACTORING
@@ -63,14 +63,7 @@ Future<List<Intersect>> intersectThreeCirclesAsync(GCWAsyncExecuterParameters? j
   var data = jobData!.parameters as IntersectThreeCirclesJobData;
 
   var output = intersectThreeCircles(
-      data.coord1,
-      data.dist14,
-      data.coord2,
-      data.dist24,
-      data.coord3,
-      data.dist34,
-      data.accuracy,
-      data.ells);
+      data.coord1, data.dist14, data.coord2, data.dist24, data.coord3, data.dist34, data.accuracy, data.ells);
 
   jobData.sendAsyncPort?.send(output);
 

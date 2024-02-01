@@ -1,3 +1,4 @@
+import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:prefs/prefs.dart';
 
 enum PrefType { STRING, STRINGLIST, INT, DOUBLE, BOOL }
@@ -12,12 +13,6 @@ PrefType getPrefType(String key) {
     Prefs.getStringList(key);
     return PrefType.STRINGLIST;
   } catch (e) {}
-
-  //TODO: Necessary? Where does this come from?
-  // try {
-  //   List<Object> x = Prefs.get(key);
-  //   return PrefType.STRINGLIST;
-  // } catch (e) {}
 
   try {
     Prefs.getInt(key);
@@ -52,20 +47,70 @@ void setUntypedPref(String key, Object value) {
       if (value is bool) Prefs.setBool(key, value);
       break;
     case PrefType.STRINGLIST:
-
-      if (value is List<String> || value is List<Object>) {
+      if (value is List<String> || value is List<Object> || value is List<dynamic>) {
         var saveList = <String>[];
-        if (value is List<String>) {
-          saveList = value;
-          saveList.removeWhere((element) => element.isEmpty);
-        } else {
-          for (var element in (value as List<Object>)) {
-            saveList.add(element.toString());
-          }
+
+        switch (value.runtimeType) {
+          case List<String>:
+            saveList = value as List<String>;
+            break;
+          case List<Object>:
+            for (var element in (value as List<Object>)) {
+              saveList.add(element.toString());
+            }
+            break;
+          case List<dynamic>: // JSON Objects
+            for (var element in (value as List<dynamic>)) {
+              saveList.add(element.toString());
+            }
+            break;
+          default:
+            throw Exception('No valid Preference STRINGLIST type');
         }
 
+        saveList.removeWhere((element) => element.isEmpty);
         Prefs.setStringList(key, saveList);
       }
       break;
+    default:
+      throw Exception('No valid preference type');
+  }
+}
+
+bool isValidPreference(String key) {
+  return ALL_PREFERENCES.contains(key.toLowerCase());
+}
+
+bool isCorrectType(String key, Object? value) {
+  if (value == null) return false;
+
+  switch (getPrefType(key.toLowerCase())) {
+    case PrefType.STRING:
+      return value is String;
+    case PrefType.INT:
+      return value is int;
+    case PrefType.DOUBLE:
+      return value is double;
+    case PrefType.BOOL:
+      return value is bool;
+    case PrefType.STRINGLIST:
+      if (value is List<String>) return true;
+      if (value is List<Object>) {
+        var allStrings = true;
+        for (var element in value) {
+          allStrings &= element is String;
+        }
+
+        return allStrings;
+      }
+      if (value is List<dynamic>) {
+        var allStrings = true;
+        for (var element in value) {
+          allStrings &= element is String;
+        }
+
+        return allStrings;
+      }
+      return false;
   }
 }

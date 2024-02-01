@@ -8,7 +8,8 @@ class GCWButton extends StatefulWidget {
   final TextStyle? textStyle;
   final EdgeInsetsGeometry? margin;
 
-  const GCWButton({Key? key, required this.text, required this.onPressed, this.textStyle, this.margin}) : super(key: key);
+  const GCWButton({Key? key, required this.text, required this.onPressed, this.textStyle, this.margin})
+      : super(key: key);
 
   @override
   _GCWButtonState createState() => _GCWButtonState();

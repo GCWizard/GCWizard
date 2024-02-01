@@ -8,10 +8,10 @@ class PigLatin extends StatefulWidget {
   const PigLatin({Key? key}) : super(key: key);
 
   @override
-  PigLatinState createState() => PigLatinState();
+  _PigLatinState createState() => _PigLatinState();
 }
 
-class PigLatinState extends State<PigLatin> {
+class _PigLatinState extends State<PigLatin> {
   var _currentInput = '';
   var _currentMode = GCWSwitchPosition.right;
 

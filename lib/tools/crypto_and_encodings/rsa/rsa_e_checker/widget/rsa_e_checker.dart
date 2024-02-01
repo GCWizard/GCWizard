@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/text_input_formatters/gcw_integer_textinputformatter.dart';
@@ -10,10 +10,10 @@ class RSAEChecker extends StatefulWidget {
   const RSAEChecker({Key? key}) : super(key: key);
 
   @override
-  RSAECheckerState createState() => RSAECheckerState();
+  _RSAECheckerState createState() => _RSAECheckerState();
 }
 
-class RSAECheckerState extends State<RSAEChecker> {
+class _RSAECheckerState extends State<RSAEChecker> {
   String _currentE = '';
   String _currentP = '';
   String _currentQ = '';
@@ -59,9 +59,7 @@ class RSAECheckerState extends State<RSAEChecker> {
   }
 
   void _calculateOutput() {
-    if (_currentE.isEmpty ||
-        _currentP.isEmpty ||
-        _currentQ.isEmpty) {
+    if (_currentE.isEmpty || _currentP.isEmpty || _currentQ.isEmpty) {
       _output = null;
     }
 

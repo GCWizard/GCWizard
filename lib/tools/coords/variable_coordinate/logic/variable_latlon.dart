@@ -1,3 +1,4 @@
+import 'package:gc_wizard/tools/coords/_common/formats/dmm/logic/dmm.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_parser.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
@@ -11,7 +12,7 @@ import 'package:latlong2/latlong.dart';
 
 class _ParsedCoordinates {
   BaseCoordinate coordinate;
-  DMM? leftPadCoordinate;
+  DMMCoordinate? leftPadCoordinate;
 
   _ParsedCoordinates(this.coordinate);
 }
@@ -23,7 +24,7 @@ _ParsedCoordinates? _parseCoordText(String text) {
   var out = _ParsedCoordinates(parsedCoord.first);
 
   if (parsedCoord.first.format.type == CoordinateFormatKey.DMM) {
-    out.leftPadCoordinate = DMM.parse(text, leftPadMilliMinutes: true);
+    out.leftPadCoordinate = DMMCoordinate.parse(text, leftPadMilliMinutes: true);
   }
 
   return out;
@@ -52,10 +53,15 @@ class VariableCoordinateSingleResult {
   Map<String, String>? variables;
 
   VariableCoordinateSingleResult(this.coordinate, [this.variables]);
+
+  @override
+  String toString() {
+    return coordinate.toString() + '\n' + variables.toString();
+  }
 }
 
-VariableCoordinateResults parseVariableLatLon(String coordinate, Map<String, String> substitutions, {ProjectionData? projectionData}) {
-
+VariableCoordinateResults parseVariableLatLon(String coordinate, Map<String, String> substitutions,
+    {ProjectionData? projectionData}) {
   String textToExpand = coordinate;
 
   var withProjection = false;
@@ -96,12 +102,8 @@ VariableCoordinateResults parseVariableLatLon(String coordinate, Map<String, Str
 
       List<VariableCoordinateSingleResult> _projectCoordinates(BaseCoordinate coordinate) {
         if (projectionData!.reverse) {
-          List<LatLng> revProjected = reverseProjection(
-              coordinate.toLatLng()!,
-              parsedBearing,
-              projectionData.distanceUnit.toMeter(parsedDistance),
-              projectionData.ellipsoid ?? defaultEllipsoid
-          );
+          List<LatLng> revProjected = reverseProjection(coordinate.toLatLng()!, parsedBearing,
+              projectionData.distanceUnit.toMeter(parsedDistance), projectionData.ellipsoid ?? defaultEllipsoid);
           if (revProjected.isEmpty) return [];
 
           var projected = revProjected.map((LatLng projection) {
@@ -109,17 +111,11 @@ VariableCoordinateResults parseVariableLatLon(String coordinate, Map<String, Str
           }).toList();
 
           return projected;
-
         } else {
           var projected = VariableCoordinateSingleResult(
-            projection(
-              coordinate.toLatLng()!,
-              parsedBearing,
-              projectionData.distanceUnit.toMeter(parsedDistance),
-              projectionData.ellipsoid ?? defaultEllipsoid
-            ),
-            expandedText.variables
-          );
+              projection(coordinate.toLatLng()!, parsedBearing, projectionData.distanceUnit.toMeter(parsedDistance),
+                  projectionData.ellipsoid ?? defaultEllipsoid),
+              expandedText.variables);
 
           return [projected];
         }
@@ -138,14 +134,18 @@ VariableCoordinateResults parseVariableLatLon(String coordinate, Map<String, Str
       if (parsedCoord.leftPadCoordinate != null) {
         leftPadCoords.addAll(_projectCoordinates(parsedCoord.leftPadCoordinate!));
       }
-
     } else {
       var parsedCoord = _parseCoordText(_removeBrackets(expandedText.result));
-      if (parsedCoord == null || parsedCoord.coordinate.toLatLng() == null) continue;
+      if (parsedCoord == null ||
+          ![CoordinateFormatKey.DEC, CoordinateFormatKey.DMM, CoordinateFormatKey.DMS]
+              .contains(parsedCoord.coordinate.format.type) ||
+          parsedCoord.coordinate.toLatLng() == null) continue;
 
       coords.add(VariableCoordinateSingleResult(parsedCoord.coordinate.toLatLng()!, expandedText.variables));
-      if (parsedCoord.leftPadCoordinate != null) {
-        leftPadCoords.add(VariableCoordinateSingleResult(parsedCoord.leftPadCoordinate!.toLatLng(), expandedText.variables));
+      var latLng = parsedCoord.leftPadCoordinate?.toLatLng();
+      if (latLng != null) {
+        leftPadCoords
+            .add(VariableCoordinateSingleResult(latLng, expandedText.variables));
       }
     }
   }

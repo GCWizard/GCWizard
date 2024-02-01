@@ -11,7 +11,8 @@ class Quadgrams extends _Quadgrams {
 
     if (quadgramsCompressed == null) return null;
 
-    _quadgrams = decompressQuadgrams(quadgramsCompressed!, (pow(Quadgrams.maxAlphabetLength, 3) * alphabet.length).toInt());
+    _quadgrams =
+        decompressQuadgrams(quadgramsCompressed!, (pow(Quadgrams.maxAlphabetLength, 3) * alphabet.length).toInt());
     quadgramsCompressed = null;
     return _quadgrams;
   }
@@ -27,11 +28,11 @@ class Quadgrams extends _Quadgrams {
       if (blockStart >= 0) {
         // if five 0 => new list
         if (((i + zeroCount < quadgrams.length) &&
-            (quadgrams[i + 1] == 0) &&
-            (quadgrams[i + 2] == 0) &&
-            (quadgrams[i + 3] == 0) &&
-            (quadgrams[i + 4] == 0) &&
-            (quadgrams[i + 5] == 0)) ||
+                (quadgrams[i + 1] == 0) &&
+                (quadgrams[i + 2] == 0) &&
+                (quadgrams[i + 3] == 0) &&
+                (quadgrams[i + 4] == 0) &&
+                (quadgrams[i + 5] == 0)) ||
             (i + zeroCount >= quadgrams.length)) {
           var quadgramList = <int>[];
           quadgramList.addAll(quadgrams.getRange(

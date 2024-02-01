@@ -7,21 +7,26 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequenceLuckyNumbersCheckNumber extends NumberSequenceCheckNumber {
-  const NumberSequenceLuckyNumbersCheckNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71917);
+  const NumberSequenceLuckyNumbersCheckNumber({Key? key})
+      : super(key: key, mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71917);
 }
 
 class NumberSequenceLuckyNumbersDigits extends NumberSequenceDigits {
-  const NumberSequenceLuckyNumbersDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.LUCKY_NUMBERS, maxDigits: 6);
+  const NumberSequenceLuckyNumbersDigits({Key? key})
+      : super(key: key, mode: NumberSequencesMode.LUCKY_NUMBERS, maxDigits: 6);
 }
 
 class NumberSequenceLuckyNumbersRange extends NumberSequenceRange {
-  const NumberSequenceLuckyNumbersRange({Key? key}) : super(key: key, mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71917);
+  const NumberSequenceLuckyNumbersRange({Key? key})
+      : super(key: key, mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71917);
 }
 
 class NumberSequenceLuckyNumbersNthNumber extends NumberSequenceNthNumber {
-  const NumberSequenceLuckyNumbersNthNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71917);
+  const NumberSequenceLuckyNumbersNthNumber({Key? key})
+      : super(key: key, mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71917);
 }
 
 class NumberSequenceLuckyNumbersContainsDigits extends NumberSequenceContainsDigits {
-  const NumberSequenceLuckyNumbersContainsDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71917);
+  const NumberSequenceLuckyNumbersContainsDigits({Key? key})
+      : super(key: key, mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71917);
 }

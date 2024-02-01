@@ -20,7 +20,7 @@ class GCWTextDivider extends StatefulWidget {
 class _GCWTextDividerState extends State<GCWTextDivider> {
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    final screenWidth = maxScreenWidth(context);
     const minDividerWidth = 100.0;
 
     return Container(

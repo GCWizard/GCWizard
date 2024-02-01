@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_datetime_picker.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
@@ -10,10 +10,10 @@ class DayCalculator extends StatefulWidget {
   const DayCalculator({Key? key}) : super(key: key);
 
   @override
-  DayCalculatorState createState() => DayCalculatorState();
+  _DayCalculatorState createState() => _DayCalculatorState();
 }
 
-class DayCalculatorState extends State<DayCalculator> {
+class _DayCalculatorState extends State<DayCalculator> {
   late DateTime _currentStartDate;
   late DateTime _currentEndDate;
 
@@ -86,9 +86,6 @@ class DayCalculatorState extends State<DayCalculator> {
       [i18n(context, 'dates_daycalculator_seconds'), outputData.seconds]
     ];
 
-    return GCWColumnedMultilineOutput(
-        firstRows: [GCWTextDivider(text: i18n(context, 'common_output'))],
-        data: rows
-    );
+    return GCWColumnedMultilineOutput(firstRows: [GCWTextDivider(text: i18n(context, 'common_output'))], data: rows);
   }
 }

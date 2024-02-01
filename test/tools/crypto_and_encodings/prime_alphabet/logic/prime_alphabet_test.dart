@@ -1,5 +1,6 @@
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/crypto_and_encodings/prime_alphabet/logic/prime_alphabet.dart';
+import 'package:gc_wizard/utils/constants.dart';
 
 void main() {
   group("PrimeAlphabet.decryptPrimeAlphabetWithoutOffset:", () {
@@ -24,8 +25,8 @@ void main() {
   group("PrimeAlphabet.decryptPrimeAlphabetWithOffset:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : [3,5,89,97,101], 'firstRecognizedPrime': 3, 'expectedOutput' : 'ABWXY'},
-      {'input' : [3,5,89,97,101], 'firstRecognizedPrime': 4, 'expectedOutput' : '<?>AVWX'},
-      {'input' : [3,5,89,97,101], 'firstRecognizedPrime': 5, 'expectedOutput' : '<?>AVWX'},
+      {'input' : [3,5,89,97,101], 'firstRecognizedPrime': 4, 'expectedOutput' : UNKNOWN_ELEMENT + 'AVWX'},
+      {'input' : [3,5,89,97,101], 'firstRecognizedPrime': 5, 'expectedOutput' : UNKNOWN_ELEMENT + 'AVWX'},
       {'input' : [-1,0,1,2,3,4,5,42,89,97,100,101], 'firstRecognizedPrime': 3, 'expectedOutput' : '<?><?><?><?>A<?>B<?>WX<?>Y'},
 
       {'input' : [-1,0,1,2,3,4,5,42,89,97,100,101], 'firstRecognizedPrime': 3, 'expectedOutput' : '<?><?><?><?>A<?>B<?>WX<?>Y'},

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_output.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_outputformat.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
-import 'package:gc_wizard/tools/coords/equilateral_triangle/logic/equilateral_triangle.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/tools/coords/equilateral_triangle/logic/equilateral_triangle.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -17,10 +17,10 @@ class EquilateralTriangle extends StatefulWidget {
   const EquilateralTriangle({Key? key}) : super(key: key);
 
   @override
-  EquilateralTriangleState createState() => EquilateralTriangleState();
+  _EquilateralTriangleState createState() => _EquilateralTriangleState();
 }
 
-class EquilateralTriangleState extends State<EquilateralTriangle> {
+class _EquilateralTriangleState extends State<EquilateralTriangle> {
   var _currentIntersections = <LatLng>[];
 
   var _currentCoords1 = defaultBaseCoordinate;
@@ -41,7 +41,9 @@ class EquilateralTriangleState extends State<EquilateralTriangle> {
           coordsFormat: _currentCoords1.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoords1 = ret;
+              if (ret != null) {
+                _currentCoords1 = ret;
+              }
             });
           },
         ),
@@ -50,7 +52,9 @@ class EquilateralTriangleState extends State<EquilateralTriangle> {
           coordsFormat: _currentCoords2.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoords2 = ret;
+              if (ret != null) {
+                _currentCoords2 = ret;
+              }
             });
           },
         ),
@@ -80,8 +84,8 @@ class EquilateralTriangleState extends State<EquilateralTriangle> {
         builder: (context) {
           return Center(
             child: SizedBox(
-              height: 220,
-              width: 150,
+              height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
+              width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
               child: GCWAsyncExecuter<List<LatLng>>(
                 isolatedFunction: equilateralTriangleAsync,
                 parameter: _buildJobData,
@@ -96,8 +100,8 @@ class EquilateralTriangleState extends State<EquilateralTriangle> {
   }
 
   Future<GCWAsyncExecuterParameters> _buildJobData() async {
-    return GCWAsyncExecuterParameters(
-        EquilateralTriangleJobData(coord1: _currentCoords1.toLatLng()!, coord2: _currentCoords2.toLatLng()!, ells: defaultEllipsoid));
+    return GCWAsyncExecuterParameters(EquilateralTriangleJobData(
+        coord1: _currentCoords1.toLatLng()!, coord2: _currentCoords2.toLatLng()!, ells: defaultEllipsoid));
   }
 
   void _showOutput(List<LatLng> output) {

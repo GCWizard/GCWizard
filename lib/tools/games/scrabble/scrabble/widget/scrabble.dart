@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
@@ -14,10 +14,10 @@ class Scrabble extends StatefulWidget {
   const Scrabble({Key? key}) : super(key: key);
 
   @override
-  ScrabbleState createState() => ScrabbleState();
+  _ScrabbleState createState() => _ScrabbleState();
 }
 
-class ScrabbleState extends State<Scrabble> {
+class _ScrabbleState extends State<Scrabble> {
   late TextEditingController _controller;
 
   var _currentInput = '';

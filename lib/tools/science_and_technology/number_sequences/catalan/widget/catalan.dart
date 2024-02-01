@@ -7,7 +7,8 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequenceCatalanCheckNumber extends NumberSequenceCheckNumber {
-  const NumberSequenceCatalanCheckNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.CATALAN, maxIndex: 11111);
+  const NumberSequenceCatalanCheckNumber({Key? key})
+      : super(key: key, mode: NumberSequencesMode.CATALAN, maxIndex: 11111);
 }
 
 class NumberSequenceCatalanDigits extends NumberSequenceDigits {
@@ -19,9 +20,11 @@ class NumberSequenceCatalanRange extends NumberSequenceRange {
 }
 
 class NumberSequenceCatalanNthNumber extends NumberSequenceNthNumber {
-  const NumberSequenceCatalanNthNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.CATALAN, maxIndex: 11111);
+  const NumberSequenceCatalanNthNumber({Key? key})
+      : super(key: key, mode: NumberSequencesMode.CATALAN, maxIndex: 11111);
 }
 
 class NumberSequenceCatalanContainsDigits extends NumberSequenceContainsDigits {
-  const NumberSequenceCatalanContainsDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.CATALAN, maxIndex: 1111);
+  const NumberSequenceCatalanContainsDigits({Key? key})
+      : super(key: key, mode: NumberSequencesMode.CATALAN, maxIndex: 1111);
 }

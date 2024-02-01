@@ -24,9 +24,9 @@ Widget _buildPunchtapeSegmentDisplayOutput(List<Widget> displays) {
 
     columns.add(Expanded(
         child: Container(
-          padding: const EdgeInsets.all(3),
-          child: widget,
-        )));
+      padding: const EdgeInsets.all(3),
+      child: widget,
+    )));
 
     rows.add(Row(
       children: columns,

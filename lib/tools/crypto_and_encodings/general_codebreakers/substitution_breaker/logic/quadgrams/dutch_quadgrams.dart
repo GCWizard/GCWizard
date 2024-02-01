@@ -7,6 +7,6 @@ class DutchQuadgrams extends Quadgrams {
     most_frequent_quadgram = 'ande';
     max_fitness = 1337;
     average_fitness = 181.36317005707082;
-    assetLocation = "assets/quadgrams/nl.json";
+    assetLocation = "lib/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/assets/quadgrams/nl.json";
   }
 }

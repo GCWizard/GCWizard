@@ -2,12 +2,15 @@ import 'dart:isolate';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 
 Isolate? _isolate;
+
+const double GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT = 230;
+const double GCW_ASYNC_EXECUTER_INDICATOR_WIDTH = 150;
 
 class GCWAsyncExecuter<T> extends StatefulWidget {
   final Future<T> Function(GCWAsyncExecuterParameters) isolatedFunction;
@@ -25,10 +28,10 @@ class GCWAsyncExecuter<T> extends StatefulWidget {
 
   @override
   _GCWAsyncExecuterState<T> createState() => _GCWAsyncExecuterState<T>();
-
 }
 
-Future<ReceivePort> _makeIsolate(void Function(GCWAsyncExecuterParameters) isolatedFunction, GCWAsyncExecuterParameters parameters) async {
+Future<ReceivePort> _makeIsolate(
+    void Function(GCWAsyncExecuterParameters) isolatedFunction, GCWAsyncExecuterParameters parameters) async {
   ReceivePort receivePort = ReceivePort();
   parameters.sendAsyncPort = receivePort.sendPort;
 
@@ -65,7 +68,7 @@ class _GCWAsyncExecuterState<T> extends State<GCWAsyncExecuter<T>> {
         if (_cancel) _cancelProcess();
 
         await for (var event in _receivePort!) {
-          if (event is DoubleText && event.text == 'progress') {
+          if (event is DoubleText && event.text == PROGRESS) {
             yield event.value;
           } else if (event is T) {
             _result = event;
@@ -88,11 +91,11 @@ class _GCWAsyncExecuterState<T> extends State<GCWAsyncExecuter<T>> {
             }
           }
           return Column(children: <Widget>[
-            (snapshot.hasData)
+            (snapshot.hasData && snapshot.data is double)
                 ? Expanded(
                     child: Stack(fit: StackFit.expand, children: [
                     CircularProgressIndicator(
-                      value: snapshot.data as double?,
+                      value: snapshot.data as double,
                       backgroundColor: Colors.white,
                       valueColor: const AlwaysStoppedAnimation<Color>(Colors.amber),
                       strokeWidth: 20,
@@ -107,8 +110,8 @@ class _GCWAsyncExecuterState<T> extends State<GCWAsyncExecuter<T>> {
                       ),
                     ),
                   ]))
-                : Expanded(
-                    child: Stack(fit: StackFit.expand, children: const [
+                : const Expanded(
+                    child: Stack(fit: StackFit.expand, children: [
                     CircularProgressIndicator(
                       backgroundColor: Colors.white,
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),

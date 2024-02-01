@@ -4,18 +4,12 @@ import 'package:gc_wizard/utils/collection_utils.dart';
 enum WigWagCodebook { ORIGINAL, GENERALSERVICECODE1860, GENERALSERVICECODE1872 }
 
 const Map<WigWagCodebook, CodebookConfig> CCITT_CODEBOOK = {
-  WigWagCodebook.ORIGINAL: CodebookConfig(
-    title: 'telegraph_wigwag_original_title',
-    subtitle: 'telegraph_wigwag_original_description'
-  ),
-  WigWagCodebook.GENERALSERVICECODE1860: CodebookConfig(
-    title: 'telegraph_wigwag_general_title',
-    subtitle: 'telegraph_wigwag_general_description'
-  ),
+  WigWagCodebook.ORIGINAL:
+      CodebookConfig(title: 'telegraph_wigwag_original_title', subtitle: 'telegraph_wigwag_original_description'),
+  WigWagCodebook.GENERALSERVICECODE1860:
+      CodebookConfig(title: 'telegraph_wigwag_general_title', subtitle: 'telegraph_wigwag_general_description'),
   WigWagCodebook.GENERALSERVICECODE1872: CodebookConfig(
-    title: 'telegraph_wigwag_general_1872_title',
-    subtitle: 'telegraph_wigwag_general_1872_description'
-  ),
+      title: 'telegraph_wigwag_general_1872_title', subtitle: 'telegraph_wigwag_general_1872_description'),
 };
 
 const Map<String, int> _originalCode = {

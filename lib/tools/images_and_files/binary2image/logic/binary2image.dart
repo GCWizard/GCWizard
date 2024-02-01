@@ -113,4 +113,3 @@ DrawableImageData? binary2Image(String input) {
   }
   return DrawableImageData(lines, colorMap);
 }
-

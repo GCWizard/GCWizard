@@ -38,9 +38,11 @@ import 'package:gc_wizard/utils/constants.dart';
 enum BrailleLanguage { BASIC, SIMPLE, STD, DEU, ENG, FRA, EUR }
 
 const Map<BrailleLanguage, CodebookConfig> BRAILLE_LANGUAGES = {
-  BrailleLanguage.SIMPLE: CodebookConfig(title: 'braille_language_simple', subtitle: 'braille_language_simple_description'),
+  BrailleLanguage.SIMPLE:
+      CodebookConfig(title: 'braille_language_simple', subtitle: 'braille_language_simple_description'),
   BrailleLanguage.DEU: CodebookConfig(title: 'common_language_german', subtitle: 'braille_language_german_description'),
-  BrailleLanguage.ENG: CodebookConfig(title: 'common_language_english', subtitle: 'braille_language_english_description'),
+  BrailleLanguage.ENG:
+      CodebookConfig(title: 'common_language_english', subtitle: 'braille_language_english_description'),
   BrailleLanguage.FRA: CodebookConfig(title: 'common_language_french', subtitle: 'braille_language_french_description'),
   BrailleLanguage.EUR: CodebookConfig(title: 'braille_language_euro', subtitle: ''),
 };
@@ -242,81 +244,304 @@ final Map<BrailleLanguage, Map<String, List<String>>> _CharsToSegmentsModifier =
 };
 const Map<BrailleLanguage, Map<String, List<List<String>>>> _CharsToSegmentsSymbolsComposed = {
   BrailleLanguage.DEU: {
-    '[': [_MODIFIER_6, ['2', '3', '5', '6']], 
-    ']': [_MODIFIER_6, ['2', '3', '5', '6']],
-    '@': [_MODIFIER_4, ['3', '4', '5']], 
-    '°': [_MODIFIER_4, ['3', '5', '6']],
-    '_': [_MODIFIER_4, ['4', '5', '6']], 
-    '"': [_MODIFIER_4, ['3', '5'], ['3', '5']],
-    '&': [_MODIFIER_5, ['1', '3', '6']],
-    '/': [_MODIFIER_5, ['2']],
-    '|': [_MODIFIER_456, ['1', '2', '3']],
-    '\\': [_MODIFIER_4, ['3', '4']],
-    '%': [_MODIFIER_3456, ['2', '4', '5'], ['3', '5', '6']],
-    '+': [_MODIFIER_4, ['2', '3', '5']],
-    '=': [_MODIFIER_4, ['2', '3', '5', '6']],
-    '<': [_MODIFIER_4, ['2', '4', '6'], ['3']],
-    '>': [_MODIFIER_4, ['1', '3', '5'], ['2']],
-    '^': [_MODIFIER_4, ['3', '4', '6']],
-    '*': [_MODIFIER_4, ['3', '4', '6']],
-    '÷': [_MODIFIER_4, ['3', '5']],
-    '×': [_MODIFIER_4, ['2', '5'], ['2', '5']],
-    '‰': [_MODIFIER_3456, ['2', '4', '5'], ['3', '5', '6'], ['3', '5', '6']],
+    '[': [
+      _MODIFIER_6,
+      ['2', '3', '5', '6']
+    ],
+    ']': [
+      _MODIFIER_6,
+      ['2', '3', '5', '6']
+    ],
+    '@': [
+      _MODIFIER_4,
+      ['3', '4', '5']
+    ],
+    '°': [
+      _MODIFIER_4,
+      ['3', '5', '6']
+    ],
+    '_': [
+      _MODIFIER_4,
+      ['4', '5', '6']
+    ],
+    '"': [
+      _MODIFIER_4,
+      ['3', '5'],
+      ['3', '5']
+    ],
+    '&': [
+      _MODIFIER_5,
+      ['1', '3', '6']
+    ],
+    '/': [
+      _MODIFIER_5,
+      ['2']
+    ],
+    '|': [
+      _MODIFIER_456,
+      ['1', '2', '3']
+    ],
+    '\\': [
+      _MODIFIER_4,
+      ['3', '4']
+    ],
+    '%': [
+      _MODIFIER_3456,
+      ['2', '4', '5'],
+      ['3', '5', '6']
+    ],
+    '+': [
+      _MODIFIER_4,
+      ['2', '3', '5']
+    ],
+    '=': [
+      _MODIFIER_4,
+      ['2', '3', '5', '6']
+    ],
+    '<': [
+      _MODIFIER_4,
+      ['2', '4', '6'],
+      ['3']
+    ],
+    '>': [
+      _MODIFIER_4,
+      ['1', '3', '5'],
+      ['2']
+    ],
+    '^': [
+      _MODIFIER_4,
+      ['3', '4', '6']
+    ],
+    '*': [
+      _MODIFIER_4,
+      ['3', '4', '6']
+    ],
+    '÷': [
+      _MODIFIER_4,
+      ['3', '5']
+    ],
+    '×': [
+      _MODIFIER_4,
+      ['2', '5'],
+      ['2', '5']
+    ],
+    '‰': [
+      _MODIFIER_3456,
+      ['2', '4', '5'],
+      ['3', '5', '6'],
+      ['3', '5', '6']
+    ],
   },
   BrailleLanguage.ENG: {
-    '§': [_MODIFIER_45, ['2', '3', '4']],
-    '@': [_MODIFIER_4, ['1']],
-    '°': [_MODIFIER_45, ['2', '4', '5']],
-    '&': [_MODIFIER_4, ['1', '2', '3', '4', '6']],
-    '/': [_MODIFIER_456, ['3', '4']],
-    '|': [_MODIFIER_456, ['1', '2', '5', '6']],
-    '"': [_MODIFIER_6, ['2', '3', '5', '6']],
-    '%': [_MODIFIER_46, ['3', '5', '6']],
-    '_': [_MODIFIER_46, ['3', '6']],
-    '\\': [_MODIFIER_345, ['1', '6']],
-    '#': [_MODIFIER_456, ['1', '4', '5', '6']],
-    '~': [_MODIFIER_4, ['3', '5']],
-    '[': [_MODIFIER_46, ['1', '2', '6']],
-    ']': [_MODIFIER_46, ['3', '4', '5']],
-    '{': [_MODIFIER_46, ['1', '2', '6']],
-    '}': [_MODIFIER_456, ['3', '4', '5']],
-    '(': [_MODIFIER_5, ['1', '2', '6']],
-    ')': [_MODIFIER_5, ['3', '4', '5']],
-    '„': [_MODIFIER_45, ['2', '3', '6']],
-    '“': [_MODIFIER_45, ['3', '5', '6']],
-    '«': [_MODIFIER_456, ['3', '5', '6']],
-    '»': [_MODIFIER_456, ['2', '3', '6']],
-    '‘': [_MODIFIER_6, ['2', '3', '6']],
-    '’': [_MODIFIER_6, ['3', '5', '6']],
-    '+': [_MODIFIER_5, ['2', '3', '5']],
-    '=': [_MODIFIER_5, ['2', '3', '5', '6']],
-    '<': [_MODIFIER_4, ['1', '2', '6']],
-    '>': [_MODIFIER_4, ['3', '4', '5']],
-    '^': [_MODIFIER_4, ['2', '6']],
-    '*': [_MODIFIER_5, ['3', '5']],
-    '÷': [_MODIFIER_5, ['3', '4']],
-    '×': [_MODIFIER_5, ['2', '3', '6']],
+    '§': [
+      _MODIFIER_45,
+      ['2', '3', '4']
+    ],
+    '@': [
+      _MODIFIER_4,
+      ['1']
+    ],
+    '°': [
+      _MODIFIER_45,
+      ['2', '4', '5']
+    ],
+    '&': [
+      _MODIFIER_4,
+      ['1', '2', '3', '4', '6']
+    ],
+    '/': [
+      _MODIFIER_456,
+      ['3', '4']
+    ],
+    '|': [
+      _MODIFIER_456,
+      ['1', '2', '5', '6']
+    ],
+    '"': [
+      _MODIFIER_6,
+      ['2', '3', '5', '6']
+    ],
+    '%': [
+      _MODIFIER_46,
+      ['3', '5', '6']
+    ],
+    '_': [
+      _MODIFIER_46,
+      ['3', '6']
+    ],
+    '\\': [
+      _MODIFIER_345,
+      ['1', '6']
+    ],
+    '#': [
+      _MODIFIER_456,
+      ['1', '4', '5', '6']
+    ],
+    '~': [
+      _MODIFIER_4,
+      ['3', '5']
+    ],
+    '[': [
+      _MODIFIER_46,
+      ['1', '2', '6']
+    ],
+    ']': [
+      _MODIFIER_46,
+      ['3', '4', '5']
+    ],
+    '{': [
+      _MODIFIER_46,
+      ['1', '2', '6']
+    ],
+    '}': [
+      _MODIFIER_456,
+      ['3', '4', '5']
+    ],
+    '(': [
+      _MODIFIER_5,
+      ['1', '2', '6']
+    ],
+    ')': [
+      _MODIFIER_5,
+      ['3', '4', '5']
+    ],
+    '„': [
+      _MODIFIER_45,
+      ['2', '3', '6']
+    ],
+    '“': [
+      _MODIFIER_45,
+      ['3', '5', '6']
+    ],
+    '«': [
+      _MODIFIER_456,
+      ['3', '5', '6']
+    ],
+    '»': [
+      _MODIFIER_456,
+      ['2', '3', '6']
+    ],
+    '‘': [
+      _MODIFIER_6,
+      ['2', '3', '6']
+    ],
+    '’': [
+      _MODIFIER_6,
+      ['3', '5', '6']
+    ],
+    '+': [
+      _MODIFIER_5,
+      ['2', '3', '5']
+    ],
+    '=': [
+      _MODIFIER_5,
+      ['2', '3', '5', '6']
+    ],
+    '<': [
+      _MODIFIER_4,
+      ['1', '2', '6']
+    ],
+    '>': [
+      _MODIFIER_4,
+      ['3', '4', '5']
+    ],
+    '^': [
+      _MODIFIER_4,
+      ['2', '6']
+    ],
+    '*': [
+      _MODIFIER_5,
+      ['3', '5']
+    ],
+    '÷': [
+      _MODIFIER_5,
+      ['3', '4']
+    ],
+    '×': [
+      _MODIFIER_5,
+      ['2', '3', '6']
+    ],
   },
   BrailleLanguage.FRA: {
-    '[': [_MODIFIER_45, ['2', '3', '6']],
-    ']': [_MODIFIER_356, ['1', '2']],
-    '{': [_MODIFIER_6, ['6'], ['2', '3', '6']],
-    '}': [_MODIFIER_356, ['3'], ['3']],
-    '§': [_MODIFIER_5, ['1', '2', '3', '4', '5', '6']],
-    '°': [_MODIFIER_5, ['1', '3', '5']],
-    '%': [_MODIFIER_5, ['3', '4', '6']],
-    '_': [_MODIFIER_5, ['3', '6']],
-    '\\': [_MODIFIER_5, ['3', '4']],
-    '#': [_MODIFIER_5, ['3', '4', '5', '6']],
-    '~': [_MODIFIER_5, ['2', '6']],
-    '+': [_MODIFIER_6, ['2', '3', '5']],
-    '=': [_MODIFIER_6, ['2', '3', '5', '6']],
-    '<': [_MODIFIER_5, ['1', '2', '6']],
-    '>': [_MODIFIER_5, ['3', '4', '5']],
-    '*': [_MODIFIER_5, ['3', '5']],
-    '÷': [_MODIFIER_6, ['2', '5']],
-    '×': [_MODIFIER_6, ['3', '5']],
-    '‰': [_MODIFIER_5, ['3', '4', '6'], ['3', '4', '6']],
+    '[': [
+      _MODIFIER_45,
+      ['2', '3', '6']
+    ],
+    ']': [
+      _MODIFIER_356,
+      ['1', '2']
+    ],
+    '{': [
+      _MODIFIER_6,
+      ['6'],
+      ['2', '3', '6']
+    ],
+    '}': [
+      _MODIFIER_356,
+      ['3'],
+      ['3']
+    ],
+    '§': [
+      _MODIFIER_5,
+      ['1', '2', '3', '4', '5', '6']
+    ],
+    '°': [
+      _MODIFIER_5,
+      ['1', '3', '5']
+    ],
+    '%': [
+      _MODIFIER_5,
+      ['3', '4', '6']
+    ],
+    '_': [
+      _MODIFIER_5,
+      ['3', '6']
+    ],
+    '\\': [
+      _MODIFIER_5,
+      ['3', '4']
+    ],
+    '#': [
+      _MODIFIER_5,
+      ['3', '4', '5', '6']
+    ],
+    '~': [
+      _MODIFIER_5,
+      ['2', '6']
+    ],
+    '+': [
+      _MODIFIER_6,
+      ['2', '3', '5']
+    ],
+    '=': [
+      _MODIFIER_6,
+      ['2', '3', '5', '6']
+    ],
+    '<': [
+      _MODIFIER_5,
+      ['1', '2', '6']
+    ],
+    '>': [
+      _MODIFIER_5,
+      ['3', '4', '5']
+    ],
+    '*': [
+      _MODIFIER_5,
+      ['3', '5']
+    ],
+    '÷': [
+      _MODIFIER_6,
+      ['2', '5']
+    ],
+    '×': [
+      _MODIFIER_6,
+      ['3', '5']
+    ],
+    '‰': [
+      _MODIFIER_5,
+      ['3', '4', '6'],
+      ['3', '4', '6']
+    ],
   },
 };
 
@@ -477,7 +702,7 @@ const Map<String, List<String>> _charsToSegmentsEUR = {
   'GS': ['2', '3', '4', '5', '6', '7', '8'],
   'RS': ['2', '3', '4', '6', '7', '8'],
   'US': ['4', '5', '6', '7', '8'],
-  ' ': [],
+  ' ': ['0'],
   '!': ['5'],
   '"': ['4'],
   '#': ['3', '4', '5', '6'],
@@ -515,27 +740,27 @@ const Map<String, List<String>> _charsToSegmentsEUR = {
   'C': ['1', '4', '7'],
   'D': ['1', '4', '5', '7'],
   'E': ['1', '5', '7'],
-  'F': ['1', '4', '2', '7'],
-  'G': ['1', '4', '2', '5', '7'],
+  'F': ['1', '2', '4', '7'],
+  'G': ['1', '2', '4', '5', '7'],
   'H': ['1', '2', '5', '7'],
-  'I': ['4', '2', '7'],
-  'J': ['4', '2', '5', '7'],
+  'I': ['2', '4', '7'],
+  'J': ['2', '4', '5', '7'],
   'K': ['1', '3', '7'],
   'L': ['1', '2', '3', '7'],
-  'M': ['1', '4', '3', '7'],
-  'N': ['1', '4', '5', '3', '7'],
-  'O': ['1', '5', '3', '7'],
-  'P': ['1', '4', '2', '3', '7'],
-  'Q': ['1', '4', '2', '5', '3', '7'],
-  'R': ['1', '2', '5', '3', '7'],
-  'S': ['4', '2', '3', '7'],
-  'T': ['4', '2', '5', '3', '7'],
+  'M': ['1', '3', '4', '7'],
+  'N': ['1', '3', '4', '5', '7'],
+  'O': ['1', '3', '5', '7'],
+  'P': ['1', '2', '3', '4', '7'],
+  'Q': ['1', '2', '3', '4', '5', '7'],
+  'R': ['1', '2', '3', '5', '7'],
+  'S': ['2', '3', '4', '7'],
+  'T': ['2', '3', '4', '5', '7'],
   'U': ['1', '3', '6', '7'],
-  'V': ['1', '2', '3', '3', '7'],
-  'W': ['4', '2', '5', '6', '7'],
-  'X': ['1', '4', '3', '6', '7'],
-  'Y': ['1', '4', '5', '3', '6', '7'],
-  'Z': ['1', '5', '3', '6', '7'],
+  'V': ['1', '2', '3', '6', '7'],
+  'W': ['2', '4', '5', '6', '7'],
+  'X': ['1', '3', '4', '6', '7'],
+  'Y': ['1', '3', '4', '5', '6', '7'],
+  'Z': ['1', '3', '5', '6', '7'],
   '[': ['1', '2', '3', '5', '6', '7'],
   '\\': ['3', '4', '7'],
   ']': ['2', '3', '4', '5', '6', '7'],
@@ -1110,7 +1335,6 @@ Segments _encodeBrailleEUR(String input) {
 }
 
 Segments encodeBraille(String input, BrailleLanguage language) {
-
   switch (language) {
     case BrailleLanguage.SIMPLE:
       return _encodeBrailleSIMPLE(input);
@@ -1150,7 +1374,8 @@ SegmentsChars _decodeBrailleBASIC(List<String> inputs, bool letters) {
       char = char + UNKNOWN_ELEMENT;
     } else {
       charH = _segmentsToCharsBASICBraille
-          .map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ?? '';
+              .map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ??
+          '';
       if (letters) {
         char = char + charH;
       } else // digits
@@ -1201,11 +1426,13 @@ SegmentsChars _decodeBrailleSIMPLE(List<String> inputs) {
     });
 
     if (_segmentsToCharsSIMPLEBrailleFrench
-            .map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] == null) {
+            .map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ==
+        null) {
       char = char + UNKNOWN_ELEMENT;
     } else {
       charH = _segmentsToCharsSIMPLEBrailleFrench
-          .map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ?? '';
+              .map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ??
+          '';
       if (charH == 'NUMBERFOLLOWS') {
         char = char + '<NUMBER FOLLOWS>';
         _numberFollows = true;
@@ -1312,7 +1539,6 @@ SegmentsChars _decodeBrailleDEU(List<String> inputs) {
               });
               displays.add(display);
               i = i + 2;
-
             } else if (i + 1 < maxLength) {
               switch (inputs[i + 1]) {
                 case '235':
@@ -2004,6 +2230,7 @@ SegmentsChars _decodeBrailleEUR(List<String> inputs) {
   var displays = <List<String>>[];
 
   List<String> text = inputs.map((input) {
+    if (input == '') input = '0';
     var display = <String>[];
     var char = '';
 
@@ -2018,7 +2245,8 @@ SegmentsChars _decodeBrailleEUR(List<String> inputs) {
     } else {
       char = char +
           (switchMapKeyValue(_charsToSegmentsEUR)
-              .map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ?? '');
+                  .map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ??
+              '');
     }
     displays.add(display);
 

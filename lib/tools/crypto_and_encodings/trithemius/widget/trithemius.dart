@@ -9,10 +9,10 @@ class Trithemius extends StatefulWidget {
   const Trithemius({Key? key}) : super(key: key);
 
   @override
-  TrithemiusState createState() => TrithemiusState();
+  _TrithemiusState createState() => _TrithemiusState();
 }
 
-class TrithemiusState extends State<Trithemius> {
+class _TrithemiusState extends State<Trithemius> {
   late TextEditingController _inputController;
 
   String _currentInput = '';

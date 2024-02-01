@@ -9,8 +9,8 @@ class SubstitutionBreakerResult {
 
   SubstitutionBreakerResult(
       {this.ciphertext = '',
-        this.plaintext = '',
-        this.key = '',
-        this.alphabet = '',
-        this.errorCode = SubstitutionBreakerErrorCode.OK});
+      this.plaintext = '',
+      this.key = '',
+      this.alphabet = '',
+      this.errorCode = SubstitutionBreakerErrorCode.OK});
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
@@ -10,10 +10,10 @@ class GCCode extends StatefulWidget {
   const GCCode({Key? key}) : super(key: key);
 
   @override
-  GCCodeState createState() => GCCodeState();
+  _GCCodeState createState() => _GCCodeState();
 }
 
-class GCCodeState extends State<GCCode> {
+class _GCCodeState extends State<GCCode> {
   late TextEditingController _gcCodeInputController;
 
   String _currentGCCodeInput = 'GC';

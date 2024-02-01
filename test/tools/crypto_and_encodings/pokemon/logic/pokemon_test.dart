@@ -1,5 +1,6 @@
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/crypto_and_encodings/pokemon/logic/pokemon.dart';
+import 'package:gc_wizard/utils/constants.dart';
 
 void main() {
   group("Pokemon.encodePokemon:", () {
@@ -23,10 +24,10 @@ void main() {
       {'input' : '', 'expectedOutput' : ''},
 
       {'input' : 'se', 'expectedOutput' : 'S'},
-      {'input' : 'sew', 'expectedOutput' : '<?>'},
-      {'input' : 'x', 'expectedOutput' : '<?>'},
-      {'input' : 'x sa', 'expectedOutput' : '<?> E'},
-      {'input' : 'x sa y', 'expectedOutput' : '<?> E <?>'},
+      {'input' : 'sew', 'expectedOutput' : UNKNOWN_ELEMENT},
+      {'input' : 'x', 'expectedOutput' : UNKNOWN_ELEMENT},
+      {'input' : 'x sa', 'expectedOutput' : UNKNOWN_ELEMENT + ' E'},
+      {'input' : 'x sa y', 'expectedOutput' : UNKNOWN_ELEMENT + ' E ' + UNKNOWN_ELEMENT},
 
       {'input' : 'Piluffme luflorsasesa Florlusasa manpison sonsaflortu SesamkatuMansamsonsonpi lupi sakla arsaklatusa Regsammansasonsamtu seregflorsakarda lufftulu saflortusa Assaklamonflortululufftuar zuluffson Arsasamflapiflakasatu mosamkarkardasaReglufftumanda', 'expectedOutput' : 'AUF DIESE IDEE KAM MEIN SOHNKOMMA DA ER GERNE POKEMON SPIELT UND EINE VERBINDUNG ZUM GEOCACHEN WOLLTEPUNKT'},
     ];

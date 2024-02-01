@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:math';
 
 import 'package:gc_wizard/tools/crypto_and_encodings/alphabet_values/logic/alphabet_values.dart';
@@ -24,10 +25,17 @@ const _MAX_EXPANDED = 100;
 
 const RECURSIVE_FORMULA_REPLACEMENT_START = '{\u0000';
 const RECURSIVE_FORMULA_REPLACEMENT_END = '\u0000}';
-const SAFED_FUNCTION_MARKER = '\x01';
-const SAFED_RECURSIVE_FORMULA_MARKER = '\x02';
+const _SAFED_FUNCTION_MARKER = '\x01';
+const _SAFED_RECURSIVE_FORMULA_MARKER = '\x02';
+const _SAFED_TEXTS_MARKER = '\x03';
+const _STRING_MARKER_APOSTROPHE = "'";
+const _STRING_MARKER_QUOTE = '"';
 
 const _PHI = 1.6180339887498948482045868343656381177;
+const _SQRT3 = 1.73205080756887729352744634150587236;
+const _SQRT5 = 2.23606797749978969640917366873127623;
+
+var _SUPPORTED_OPERATION_CHARACTERS = RegExp(r'[+\-*!^%/]');
 
 class FormulaParser {
   final ContextModel _context = ContextModel();
@@ -36,12 +44,13 @@ class FormulaParser {
   bool unlimitedExpanded = false;
   Map<String, String> safedFormulasMap = {};
   Map<String, String> safedFormulaReplacementMap = {};
+  Map<String, String> safedTextsMap = {};
 
   static const Map<String, double> CONSTANTS = {
     'ln10': ln10,
     'ln2': ln2,
-    'log2e': log2e,
-    'log10e': log10e,
+    // 'log2e': log2e,    // not supported due to a problem by the math expression lib: https://github.com/fkleon/math-expressions/issues/35
+    // 'log10e': log10e,  // not supported due to a problem by the math expression lib: https://github.com/fkleon/math-expressions/issues/35
     'pi': pi,
     '\u03A0': pi,
     '\u03C0': pi,
@@ -52,8 +61,10 @@ class FormulaParser {
     '\u03C6': _PHI,
     '\u03d5': _PHI,
     '\u0278': _PHI,
-    'sqrt1_2': sqrt1_2,
+    // 'sqrt1_2': sqrt1_2, // not supported due to a problem by the math expression lib: https://github.com/fkleon/math-expressions/issues/35
     'sqrt2': sqrt2,
+    'sqrt3': _SQRT3,
+    'sqrt5': _SQRT5,
   };
 
   static const List<String> _BUILTIN_FUNCTIONS = [
@@ -115,16 +126,56 @@ class FormulaParser {
     },
   };
 
+  static RegExp _contentStringRegExp(String value) {
+    var RegExpApostrophe =
+        RegExp(r'^\s*\(?\s*\' + _STRING_MARKER_APOSTROPHE + r'(.*?)\' + _STRING_MARKER_APOSTROPHE + r'\)?\s*\s*');
+    var RegExpQuote = RegExp(r'^\s*\(?\s*\' + _STRING_MARKER_QUOTE + r'(.*?)\' + _STRING_MARKER_QUOTE + r'\)?\s*\s*');
+
+    var regexes = SplayTreeMap<int, RegExp>();
+
+    if (RegExpApostrophe.hasMatch(value)) {
+      regexes.addEntries({MapEntry(RegExpApostrophe.firstMatch(value)!.start, RegExpApostrophe)});
+    }
+
+    if (RegExpQuote.hasMatch(value)) {
+      regexes.addEntries({MapEntry(RegExpQuote.firstMatch(value)!.start, RegExpQuote)});
+    }
+
+    try {
+      return regexes.entries.first.value;
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  static String _contentFromString(String value) {
+    var _value = value;
+    var str = '';
+
+    do {
+      var regExp = _contentStringRegExp(_value);
+      str += regExp.firstMatch(_value)!.group(1)!;
+      _value = _value.replaceFirstMapped(regExp, (match) => '');
+    } while (_value.isNotEmpty);
+
+    return str;
+  }
+
+  static int _bww(String value) {
+    return sum(AlphabetValues().textToValues(_contentFromString(value), keepNumbers: true).whereType<int>().toList())
+        .toInt();
+  }
+
   static final Map<String, int Function(String)> _CUSTOM_TEXT_FUNCTIONS = {
-    'bww': (String arg) => sum(AlphabetValues().textToValues(arg, keepNumbers: true).whereType<int>().toList()).toInt(),
-    'av': (String arg) => sum(AlphabetValues().textToValues(arg, keepNumbers: true).whereType<int>().toList()).toInt(),
-    'len': (String arg) => arg.length,
+    'bww': (String arg) => _bww(arg),
+    'av': (String arg) => _bww(arg),
+    'len': (String arg) => _contentFromString(arg).length,
   };
 
   // different minus/hyphens/dashes
   static const Map<String, String> alternateOperators = {
     //'-': '—–˗−‒', // not required here, because normalized in common_utils.normalizeCharacters()
-    '/': ':÷',
+    '/': ':÷⁄',
     '*': '×•',
   };
 
@@ -150,11 +201,49 @@ class FormulaParser {
     return result;
   }
 
+  String _safeTexts(String formula) {
+    var safedTextsFormula = '';
+
+    String? stringChar;
+    String currentString = '';
+    for (int i = 0; i < formula.length; i++) {
+      var char = formula[i];
+      if ([_STRING_MARKER_APOSTROPHE, _STRING_MARKER_QUOTE].contains(char)) {
+        if (stringChar == null) {
+          stringChar = char;
+          currentString = '';
+        } else {
+          if (stringChar == char) {
+            var marker = '$_SAFED_TEXTS_MARKER${safedTextsMap.length}$_SAFED_TEXTS_MARKER';
+            safedTextsMap.putIfAbsent(marker, () => stringChar! + currentString + stringChar);
+            safedTextsFormula += marker;
+
+            currentString = '';
+            stringChar = null;
+            continue;
+          } else {
+            currentString += char;
+          }
+        }
+      } else {
+        if (stringChar != null) {
+          currentString += char;
+        } else {
+          safedTextsFormula += char;
+        }
+      }
+    }
+    safedTextsFormula += (stringChar ?? '') + currentString;
+
+    return safedTextsFormula;
+  }
+
   // If, for example, the sin() function is used, but there's a variable i, you have to avoid
-  // replace the i from sin with the variable value
+  // replacing the i from sin with the variable value
   String _safeFunctionsAndConstants(String formula) {
     var list = CONSTANTS.keys
-        .where((constant) => constant != 'e') //special case: If you remove e, you could never use this as variable name
+        .where(
+            (constant) => constant != 'e') //special case: If you removed e, you could never use this as variable name
         .toList();
 
     list.addAll(availableParserFunctions().map((functionName) => functionName + '\\s*\\(').toList());
@@ -164,7 +253,7 @@ class FormulaParser {
         var group = m.group(0);
         if (group == null) continue;
         safedFormulasMap.putIfAbsent(
-            group, () => '$SAFED_FUNCTION_MARKER${safedFormulasMap.length}$SAFED_FUNCTION_MARKER');
+            group, () => '$_SAFED_FUNCTION_MARKER${safedFormulasMap.length}$_SAFED_FUNCTION_MARKER');
       }
       formula = substitution(formula, safedFormulasMap);
     }
@@ -184,7 +273,7 @@ class FormulaParser {
       var group = m.group(0);
       if (group == null) continue;
       safedFormulaReplacementMap.putIfAbsent(group,
-          () => '$SAFED_RECURSIVE_FORMULA_MARKER${safedFormulaReplacementMap.length}$SAFED_RECURSIVE_FORMULA_MARKER');
+          () => '$_SAFED_RECURSIVE_FORMULA_MARKER${safedFormulaReplacementMap.length}$_SAFED_RECURSIVE_FORMULA_MARKER');
       formula = substitution(formula, safedFormulaReplacementMap);
     }
 
@@ -214,7 +303,6 @@ class FormulaParser {
     List<FormulaValue> preparedValues = _prepareValues(values);
 
     var fixedValues = <String, String>{};
-    var textValues = <String, String>{};
     var interpolatedValues = <String, String>{};
     for (var value in preparedValues) {
       if (expandValues == false || value.type == null) {
@@ -229,15 +317,15 @@ class FormulaParser {
         case FormulaValueType.INTERPOLATED:
           interpolatedValues.putIfAbsent(value.key, () => value.value);
           break;
-        case FormulaValueType.TEXT:
-          textValues.putIfAbsent(value.key, () => value.value);
-          break;
-        default: continue;
+        default:
+          continue;
       }
     }
 
+    var safedTexts = _safeTexts(formula);
+
     //replace formula replacements
-    var safedFormulaReplacements = _safeFormulaReplacements(formula);
+    var safedFormulaReplacements = _safeFormulaReplacements(safedTexts);
 
     //replace constants and formula names
     var safedFormulaNames = _safeFunctionsAndConstants(safedFormulaReplacements);
@@ -249,13 +337,9 @@ class FormulaParser {
     while (i > 0 && !fullySubstituted) {
       var tempSubstitutedFormula = substitution(substitutedFormula, fixedValues, caseSensitive: false);
       fullySubstituted = _isFullySubstituted(tempSubstitutedFormula, substitutedFormula);
-
       substitutedFormula = tempSubstitutedFormula;
       i--;
     }
-    // replace text values non-recursively afterwards
-    // because C = FLOWER, the letters F,L,O,W,E,R should not be treated as new variables
-    substitutedFormula = substitution(substitutedFormula, textValues, caseSensitive: false);
 
     //expand formulas with interpolation values if exist
     // --> evaluate each interpolated result
@@ -280,48 +364,66 @@ class FormulaParser {
       for (var expandedFormula in expandedFormulas) {
         if (expandedFormula.text == null) continue;
 
-        substitutedFormula = _reSubstituteFormula(expandedFormula.text!);
+        substitutedFormula = _reSubstituteSavings(expandedFormula.text!);
 
         try {
           var result = _evaluateFormula(substitutedFormula);
           results.add(
               FormulaSolverSingleResult(FormulaState.STATE_SINGLE_OK, result, variables: expandedFormula.variables));
         } catch (e) {
-          results.add(FormulaSolverSingleResult(
-            FormulaState.STATE_SINGLE_ERROR,
-            substitutedFormula,
-            variables: expandedFormula.variables
-          ));
+          results.add(FormulaSolverSingleResult(FormulaState.STATE_SINGLE_ERROR, substitutedFormula,
+              variables: expandedFormula.variables));
           hasError = true;
         }
       }
 
       return FormulaSolverMultiResult(
-        hasError ? FormulaState.STATE_EXPANDED_ERROR : FormulaState.STATE_EXPANDED_OK,
-        results
-      );
+          hasError ? FormulaState.STATE_EXPANDED_ERROR : FormulaState.STATE_EXPANDED_OK, results);
     } else {
-      substitutedFormula = _reSubstituteFormula(substitutedFormula);
+      substitutedFormula = _reSubstituteSavings(substitutedFormula);
 
       try {
-        var result = _evaluateFormula(substitutedFormula);
-        return FormulaSolverSingleResult(FormulaState.STATE_SINGLE_OK, result);
+        String result;
+        try {
+          return FormulaSolverSingleResult(FormulaState.STATE_SINGLE_OK, _contentFromString(substitutedFormula));
+        } catch (e) {
+          result = _evaluateFormula(substitutedFormula);
+          return FormulaSolverSingleResult(FormulaState.STATE_SINGLE_OK, result);
+        }
       } catch (e) {
         return FormulaSolverSingleResult(FormulaState.STATE_SINGLE_ERROR, substitutedFormula);
       }
     }
   }
 
-  String _reSubstituteFormula(String formula) {
+  bool _isString(String formula) {
+    var _formula = formula.trim();
+    if (_formula.startsWith('(') && _formula.endsWith(')')) {
+      _formula = _formula.substring(1, _formula.length - 1).trim();
+    }
+
+    try {
+      _contentFromString(_formula);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  String _reSubstituteSavings(String formula) {
     var substitutedFormula = substitution(formula, switchMapKeyValue(safedFormulasMap));
     substitutedFormula = substitution(substitutedFormula, switchMapKeyValue(safedFormulaReplacementMap));
-    return substitutedFormula
+    substitutedFormula = substitutedFormula
         .replaceAll(RECURSIVE_FORMULA_REPLACEMENT_START, '')
         .replaceAll(RECURSIVE_FORMULA_REPLACEMENT_END, '');
+    substitutedFormula = substitution(substitutedFormula, safedTextsMap);
+
+    return substitutedFormula;
   }
 
   bool _isFullySubstituted(String tempSubstitutedFormula, String substitutedFormula) {
     return double.tryParse(tempSubstitutedFormula.replaceAll(RegExp(r'[()]'), '')) != null ||
+        substitutedFormula == tempSubstitutedFormula ||
         substitutedFormula == tempSubstitutedFormula.replaceAll(RegExp(r'[()]'), '');
   }
 
@@ -348,13 +450,24 @@ class FormulaParser {
     return out;
   }
 
+  String tryGetOnlyStrings(String formula) {
+    try {
+      return _contentFromString(formula);
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
   String _evaluateFormula(String formula) {
     // Remove Brackets; the formula evaluation only needs the internal content
     var hasBrackets = formula.startsWith('[') && formula.endsWith(']');
     formula = hasBrackets ? formula.substring(1, formula.length - 1) : formula;
 
-    formula = _evaluateTextFunctions(formula);
+    try {
+      return tryGetOnlyStrings(formula);
+    } catch (e) {}
 
+    formula = _evaluateTextFunctions(formula);
     Expression expression = parser.parse(formula.toLowerCase());
     var result = expression.evaluate(EvaluationType.REAL, _context);
     if (result == null) throw Exception();
@@ -369,22 +482,25 @@ class FormulaParser {
       var value = element.value;
 
       if (value.isEmpty) {
-        if (element.type == FormulaValueType.TEXT) {
-          value = '';
-        } else {
-          value = key;
+        value = key;
+      } else if (element.type == null || element.type == FormulaValueType.FIXED) {
+        value = value.trim();
+        if (value.contains(_SUPPORTED_OPERATION_CHARACTERS) && !_isString(value)) {
+          value = '($value)';
         }
-      } else if (element.type == FormulaValueType.FIXED && double.tryParse(value) == null) {
-        value = '($value)';
       }
 
+      String safedTexts;
       String safedFormulas;
-      if (element.type == FormulaValueType.FIXED) {
+      if (element.type == null || element.type == FormulaValueType.FIXED) {
+        safedTexts = _safeTexts(value);
+        value = safedTexts;
+
         safedFormulas = _safeFunctionsAndConstants(value);
         value = safedFormulas;
       }
 
-      val.add(FormulaValue(key, value, type: element.type));
+      val.add(FormulaValue(key, value, type: element.type ?? FormulaValueType.FIXED));
     }
     return val;
   }
@@ -475,7 +591,7 @@ class FormulaParser {
 
               var out = FormulaSolverSingleResult(result.state, formatted, variables: result.variables);
 
-              var variables = result.variables.toString();  // TODO: Does this make sense here? variables is a map, why casting to String?
+              var variables = result.variables.toString();
               if (matchedVariables.containsKey(variables)) {
                 matchedVariables[variables]!.putIfAbsent(matchString, () => out);
               } else {
@@ -513,7 +629,7 @@ class FormulaParser {
       matchedResults.forEach((String matchedString, FormulaSolverSingleResult result) {
         variables ??= result.variables;
         if (result.state == FormulaState.STATE_SINGLE_ERROR) state = FormulaState.STATE_SINGLE_ERROR;
-        substitutions.putIfAbsent(matchedString, () => result .result);
+        substitutions.putIfAbsent(matchedString, () => result.result);
       });
 
       var backSubstituted = substitution(formula, substitutions);
@@ -559,7 +675,8 @@ abstract class _FormulaSolverResult {
 class FormulaSolverSingleResult extends _FormulaSolverResult {
   final String result;
 
-  FormulaSolverSingleResult(FormulaState state, this.result, {Map<String, String>? variables}): super(state, variables: variables);
+  FormulaSolverSingleResult(FormulaState state, this.result, {Map<String, String>? variables})
+      : super(state, variables: variables);
 
   @override
   String toString() {
@@ -570,7 +687,8 @@ class FormulaSolverSingleResult extends _FormulaSolverResult {
 class FormulaSolverMultiResult extends _FormulaSolverResult {
   final List<FormulaSolverSingleResult> results;
 
-  FormulaSolverMultiResult(FormulaState state, this.results, {Map<String, String>? variables}): super(state, variables: variables);
+  FormulaSolverMultiResult(FormulaState state, this.results, {Map<String, String>? variables})
+      : super(state, variables: variables);
 
   @override
   String toString() {

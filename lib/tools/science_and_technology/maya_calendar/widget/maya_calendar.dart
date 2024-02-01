@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/gcw_toolbar.dart';
@@ -17,10 +17,10 @@ class MayaCalendar extends StatefulWidget {
   const MayaCalendar({Key? key}) : super(key: key);
 
   @override
-  MayaCalendarState createState() => MayaCalendarState();
+  _MayaCalendarState createState() => _MayaCalendarState();
 }
 
-class MayaCalendarState extends State<MayaCalendar> {
+class _MayaCalendarState extends State<MayaCalendar> {
   int _currentEncodeInput = 0;
   final String _currentLongCount = '';
   late TextEditingController _longCountController;
@@ -155,7 +155,8 @@ class MayaCalendarState extends State<MayaCalendar> {
           MayaLongCountToTzolkin(segments.numbers) +
           '   ' +
           MayaLongCountToHaab(segments.numbers);
-      outputDates[i18n(context, 'mayacalendar_juliandate')] = MayaDayCountToJulianDate(MayaLongCountToMayaDayCount(segments.numbers));
+      outputDates[i18n(context, 'mayacalendar_juliandate')] =
+          MayaDayCountToJulianDate(MayaLongCountToMayaDayCount(segments.numbers));
       outputDates[i18n(context, 'mayacalendar_gregoriancalendar')] = dateFormat.format(gregorian);
       outputDates[i18n(context, 'mayacalendar_juliancalendar')] = dateFormat.format(julian);
 
@@ -163,11 +164,10 @@ class MayaCalendarState extends State<MayaCalendar> {
         children: <Widget>[
           _buildDigitalOutput(segments),
           GCWColumnedMultilineOutput(
-            data: outputDates.entries.map((entry) {
-                    return [entry.key, entry.value];
-                  }).toList(),
-            flexValues: const [1, 1]
-          ),
+              data: outputDates.entries.map((entry) {
+                return [entry.key, entry.value];
+              }).toList(),
+              flexValues: const [1, 1]),
         ],
       );
     } else {
@@ -190,11 +190,10 @@ class MayaCalendarState extends State<MayaCalendar> {
         children: <Widget>[
           _buildDigitalOutput(segments),
           GCWColumnedMultilineOutput(
-            data: outputDates.entries.map((entry) {
-                    return [entry.key, entry.value];
-                  }).toList(),
-            flexValues: const [1, 1]
-          ),
+              data: outputDates.entries.map((entry) {
+                return [entry.key, entry.value];
+              }).toList(),
+              flexValues: const [1, 1]),
         ],
       );
     }

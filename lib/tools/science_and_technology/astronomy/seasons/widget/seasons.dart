@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
@@ -10,10 +10,10 @@ class Seasons extends StatefulWidget {
   const Seasons({Key? key}) : super(key: key);
 
   @override
-  SeasonsState createState() => SeasonsState();
+  _SeasonsState createState() => _SeasonsState();
 }
 
-class SeasonsState extends State<Seasons> {
+class _SeasonsState extends State<Seasons> {
   int _currentYear = DateTime.now().year;
 
   @override
@@ -88,9 +88,6 @@ class SeasonsState extends State<Seasons> {
     ];
 
     return GCWColumnedMultilineOutput(
-        firstRows: [GCWTextDivider(text: i18n(context, 'common_output'))],
-        data: outputs,
-        flexValues: const [1, 2]
-    );
+        firstRows: [GCWTextDivider(text: i18n(context, 'common_output'))], data: outputs, flexValues: const [1, 2]);
   }
 }

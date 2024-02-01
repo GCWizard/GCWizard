@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/gcw_toolbar.dart';
@@ -19,10 +19,10 @@ class SemaphoreTelegraph extends StatefulWidget {
   const SemaphoreTelegraph({Key? key}) : super(key: key);
 
   @override
-  SemaphoreTelegraphState createState() => SemaphoreTelegraphState();
+  _SemaphoreTelegraphState createState() => _SemaphoreTelegraphState();
 }
 
-class SemaphoreTelegraphState extends State<SemaphoreTelegraph> {
+class _SemaphoreTelegraphState extends State<SemaphoreTelegraph> {
   String _currentEncodeInput = '';
   late TextEditingController _encodeController;
 

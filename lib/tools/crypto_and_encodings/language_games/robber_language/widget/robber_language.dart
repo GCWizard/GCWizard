@@ -8,10 +8,10 @@ class RobberLanguage extends StatefulWidget {
   const RobberLanguage({Key? key}) : super(key: key);
 
   @override
-  RobberLanguageState createState() => RobberLanguageState();
+  _RobberLanguageState createState() => _RobberLanguageState();
 }
 
-class RobberLanguageState extends State<RobberLanguage> {
+class _RobberLanguageState extends State<RobberLanguage> {
   var _currentInput = '';
   var _currentMode = GCWSwitchPosition.right;
 

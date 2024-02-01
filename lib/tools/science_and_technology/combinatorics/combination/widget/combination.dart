@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_multiple_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
@@ -11,10 +11,10 @@ class Combination extends StatefulWidget {
   const Combination({Key? key}) : super(key: key);
 
   @override
-  CombinationState createState() => CombinationState();
+  _CombinationState createState() => _CombinationState();
 }
 
-class CombinationState extends State<Combination> {
+class _CombinationState extends State<Combination> {
   var _currentInput = '';
   bool _currentShowDuplicates = false;
 

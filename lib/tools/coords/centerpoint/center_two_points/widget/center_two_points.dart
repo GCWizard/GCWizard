@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_output.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_outputformat_distance.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat_distance.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
-import 'package:gc_wizard/tools/coords/centerpoint/logic/centerpoint.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/tools/coords/centerpoint/logic/centerpoint.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/default_units_getter.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/length.dart';
@@ -18,10 +18,10 @@ class CenterTwoPoints extends StatefulWidget {
   const CenterTwoPoints({Key? key}) : super(key: key);
 
   @override
-  CenterTwoPointsState createState() => CenterTwoPointsState();
+  _CenterTwoPointsState createState() => _CenterTwoPointsState();
 }
 
-class CenterTwoPointsState extends State<CenterTwoPoints> {
+class _CenterTwoPointsState extends State<CenterTwoPoints> {
   LatLng _currentCenter = defaultCoordinate;
   double _currentDistance = 0.0;
 
@@ -44,7 +44,9 @@ class CenterTwoPointsState extends State<CenterTwoPoints> {
           coordsFormat: _currentCoords1.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoords1 = ret;
+              if (ret != null) {
+                _currentCoords1 = ret;
+              }
             });
           },
         ),
@@ -53,7 +55,9 @@ class CenterTwoPointsState extends State<CenterTwoPoints> {
           coordsFormat: _currentCoords2.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoords2 = ret;
+              if (ret != null) {
+                _currentCoords2 = ret;
+              }
             });
           },
         ),

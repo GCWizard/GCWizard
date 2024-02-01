@@ -1,14 +1,14 @@
 import 'package:latlong2/latlong.dart';
 
 LatLng antipodes(LatLng coord) {
-  LatLng antipodes = LatLng(coord.latitude, coord.longitude);
-
-  antipodes.latitude *= -1;
-  if (antipodes.longitude > 0) {
-    antipodes.longitude += -180;
+  var lat = coord.latitude;
+  var lon = coord.longitude;
+  lat *= -1;
+  if (lon > 0) {
+    lon += -180;
   } else {
-    antipodes.longitude += 180;
+    lon += 180;
   }
 
-  return antipodes;
+  return LatLng(lat, lon);
 }

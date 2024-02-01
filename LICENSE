@@ -1,61 +1,103 @@
  Entire project is under GPLv3 license (see below), except following:
 
  - Fonts
+   - Courier Prime (Google Fonts)
+      - https://github.com/S-Man42/GCWizard/tree/master/lib/application/_common/assets/fonts/Courier_Prime/*
+      - SIL OPEN FONT LICENSE Version 1.1
    - Roboto (Google Fonts)
-     - https://github.com/S-Man42/GCWizard/tree/master/assets/fonts/Roboto/*
+     - https://github.com/S-Man42/GCWizard/tree/master/lib/application/_common/assets/fonts/Roboto/*
      - Apache License, Version 2.0
+
+ - GC Wizard Script
+   - GC Wizard Script is based on Simple BASIC, which Herbert Schildt used as an example for his books
+     "The art of JAVA", "The art of C" and "The art of C++". The rights belong to McGrawHill.
+     The use of the algorithms with the aim of further development was kindly permitted.
+
+ - Sounds
+   - for licenses see /assets/videos/LICENSE
 
  - Symbol Tables
   - Alien Mushrooms
-    - https://github.com/S-Man42/GCWizard/tree/master/assets/symbol_tables/alien_mushrooms
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/alien_mushrooms
     - Personal Use, Non-Commercial
   - Cirth Erebor Runes
-    - https://github.com/S-Man42/GCWizard/tree/master/assets/symbol_tables/cirth_erebor
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/cirth_erebor
+    - Personal Use, Non-Commercial
+  - BiBi-Binary
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/bibibinary
+    - https://en.wikipedia.org/wiki/File:Tifinagh_alphabet.png
+    - CC BY-NC-SA 4.0
+  - Dinotopia
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/dinotopia
     - Personal Use, Non-Commercial
   - Dragon Language
-    - https://github.com/S-Man42/GCWizard/tree/master/assets/symbol_tables/dragon_language
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/dragon_language
     - Personal Use, Non-Commercial
   - Eurythmy
-    - https://github.com/S-Man42/GCWizard/tree/master/assets/symbol_tables/eurythmy
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/eurythmy
     - Non-Commerical Use
   - Face It
-    - https://github.com/S-Man42/GCWizard/tree/master/assets/symbol_tables/face_it
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/face_it
     - Personal Use, Non-Commercial
   - Futurama 2 by Leandor Pardini (Online Web Fonts)
-    - https://github.com/S-Man42/GCWizard/tree/master/assets/symbol_tables/futurama_2
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/futurama_2
     - CC BY-SA 3.0
   - (Some of) Geocaching Attributes by game-icons.net
-    - https://github.com/S-Man42/GCWizard/tree/master/assets/symbol_tables/gc_attributes_ids
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/gc_attributes_ids
     - CC BY-SA 3.0
   - Iokharic
-    - https://github.com/S-Man42/GCWizard/tree/master/assets/symbol_tables/iokharic
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/iokharic
     - Personal Use, Non-Commercial
   - Kabouter ABC by Pascalvanboxel (scoutpedia.nl)
-    - https://github.com/S-Man42/GCWizard/tree/master/assets/symbol_tables/kabouter_abc
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/kabouter_abc
     - CC BY-NC-SA 4.0
   - Kabouter ABC (1947) by Egel (scoutpedia.nl)
-    - https://github.com/S-Man42/GCWizard/tree/master/assets/symbol_tables/kabouter_abc_1947
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/kabouter_abc_1947
     - CC BY-NC-SA 4.0
+  - Kurrent
+    - https://commons.wikimedia.org/wiki/File:Deutsche_Kurrentschrift.jpg
+    - Public Domain
+  - Malchim
+    - https://en.wikipedia.org/wiki/Malachim
+    - Public Domain  
   - Matoran (Matoran is part of Bionicle™ world. Bionicle™ is a trademark of the LEGO Group of companies which does not sponsor, authorize or endorse this tool.)
-    - https://github.com/S-Man42/GCWizard/tree/master/assets/symbol_tables/matoran
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/matoran
     - Personal Use, Non-Commercial
+  - Mayan Numbers as Glyphs
+    - www.unitycorps.org
   - Ninjargon (Ninjago™ is a trademark of the LEGO Group of companies which does not sponsor, authorize or endorse this tool.)
-    - https://github.com/S-Man42/GCWizard/tree/master/assets/symbol_tables/ninjargon
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/ninjargon
     - Personal Use, Non-Commercial
+  - Oak Island Money Pit by oakislandmystery.com
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/oak_island_money_pit_extended
+    - Personal Use
   - Puzzle Code 2 by Roci (fontspace.com)
-    - https://github.com/S-Man42/GCWizard/tree/master/assets/symbol_tables/puzzle_2
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/puzzle_2
     - Personal Use, Non-Commercial
   - Prussian Optical Telegraph by Bilddatenbank der Museumsstiftung Post und Telekommunikation
-    - https://github.com/S-Man42/GCWizard/tree/master/assets/symbol_tables/telegraph_prussia
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/telegraph_prussia
     - CC BY-SA
   - San Luca by Leadermassimo (wikimafia.it)
-    - https://github.com/S-Man42/GCWizard/tree/master/assets/symbol_tables/sanluca
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/sanluca
     - CC BY-SA 4.0
+  - Sith
+    - https://fonts.do/sith-a-free_font-download
+    - Released in 2020 by AurekFonts and licensed for personal and commercial-use
   - Solmisation
-    - https://github.com/S-Man42/GCWizard/tree/master/assets/symbol_tables/solmisation
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/solmisation
     - Personal Use, Non-Commercial
+  - Voynich
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/voynich
+    - https://commons.wikimedia.org/wiki/File:Voynich_EVA.svg?uselang=de
+    - VonHaarberg, WikiCommons, CC BY-SA 4.0
+  - Telegraph, Schmidt, Cuxhaven-Hamburg
+    - https://cuxpedia.de/index.php?title=Datei:Telegraphentabelle.jpg, CC BY-NC-SA
+  - Tifinagh
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/tifingah
+    - https://en.wikipedia.org/wiki/Tifinagh#/media/File:Tifinagh_alphabet.png
+    - CC BY 2.0 Spain
   - Vulcan
-    - https://github.com/S-Man42/GCWizard/tree/master/assets/symbol_tables/vulcan
+    - https://github.com/S-Man42/GCWizard/tree/master/lib/tools/symbol_tables/_common/assets/vulcan
     - Personal Use, Non-Commercial
 
 /**************************************************************************************************/

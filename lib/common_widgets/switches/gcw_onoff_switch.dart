@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_switch.dart';
@@ -13,15 +13,19 @@ class GCWOnOffSwitch extends StatefulWidget {
   static const _flexValues = [1, 1, 1];
 
   const GCWOnOffSwitch(
-      {Key? key, required this.value, required this.onChanged, this.title,
-        this.notitle = false, this.flexValues = _flexValues})
+      {Key? key,
+      required this.value,
+      required this.onChanged,
+      this.title,
+      this.notitle = false,
+      this.flexValues = _flexValues})
       : super(key: key);
 
   @override
-  GCWOnOffSwitchState createState() => GCWOnOffSwitchState();
+  _GCWOnOffSwitchState createState() => _GCWOnOffSwitchState();
 }
 
-class GCWOnOffSwitchState extends State<GCWOnOffSwitch> {
+class _GCWOnOffSwitchState extends State<GCWOnOffSwitch> {
   final _currentValue = false;
 
   @override
@@ -30,8 +34,7 @@ class GCWOnOffSwitchState extends State<GCWOnOffSwitch> {
       children: <Widget>[
         if (!widget.notitle)
           Expanded(
-              flex: widget.flexValues[0],
-              child: GCWText(text: (widget.title ?? i18n(context, 'common_mode')) + ':')),
+              flex: widget.flexValues[0], child: GCWText(text: (widget.title ?? i18n(context, 'common_mode')) + ':')),
         Expanded(
             flex: widget.flexValues[0] + widget.flexValues[1] + widget.flexValues[2],
             child: Row(

@@ -100,7 +100,7 @@ BeatnikOutput generateBeatnik(var ScrabbleVersion, String output) {
 }
 
 class _BeatnikStack {
-  final _stack =<int>[];
+  final _stack = <int>[];
 
   _BeatnikStack();
 

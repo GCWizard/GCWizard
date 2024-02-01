@@ -1,6 +1,6 @@
 import "package:flutter_test/flutter_test.dart";
-import 'package:gc_wizard/tools/coords/_common/logic/intervals/coordinate_cell.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/intervals/coordinate_cell.dart';
 import 'package:latlong2/latlong.dart';
 
 void main() {

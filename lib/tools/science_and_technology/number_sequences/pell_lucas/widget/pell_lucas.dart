@@ -7,21 +7,26 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequencePellLucasCheckNumber extends NumberSequenceCheckNumber {
-  const NumberSequencePellLucasCheckNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.PELL_LUCAS, maxIndex: 55555);
+  const NumberSequencePellLucasCheckNumber({Key? key})
+      : super(key: key, mode: NumberSequencesMode.PELL_LUCAS, maxIndex: 55555);
 }
 
 class NumberSequencePellLucasDigits extends NumberSequenceDigits {
-  const NumberSequencePellLucasDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.PELL_LUCAS, maxDigits: 1111);
+  const NumberSequencePellLucasDigits({Key? key})
+      : super(key: key, mode: NumberSequencesMode.PELL_LUCAS, maxDigits: 1111);
 }
 
 class NumberSequencePellLucasRange extends NumberSequenceRange {
-  const NumberSequencePellLucasRange({Key? key}) : super(key: key, mode: NumberSequencesMode.PELL_LUCAS, maxIndex: 55555);
+  const NumberSequencePellLucasRange({Key? key})
+      : super(key: key, mode: NumberSequencesMode.PELL_LUCAS, maxIndex: 55555);
 }
 
 class NumberSequencePellLucasNthNumber extends NumberSequenceNthNumber {
-  const NumberSequencePellLucasNthNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.PELL_LUCAS, maxIndex: 55555);
+  const NumberSequencePellLucasNthNumber({Key? key})
+      : super(key: key, mode: NumberSequencesMode.PELL_LUCAS, maxIndex: 55555);
 }
 
 class NumberSequencePellLucasContainsDigits extends NumberSequenceContainsDigits {
-  const NumberSequencePellLucasContainsDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.PELL_LUCAS, maxIndex: 5555);
+  const NumberSequencePellLucasContainsDigits({Key? key})
+      : super(key: key, mode: NumberSequencesMode.PELL_LUCAS, maxIndex: 5555);
 }

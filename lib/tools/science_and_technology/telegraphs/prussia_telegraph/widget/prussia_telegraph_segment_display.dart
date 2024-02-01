@@ -24,11 +24,9 @@ const _INITIAL_SEGMENTS = <String, bool>{
 const _PRUSSIA_RELATIVE_DISPLAY_WIDTH = 120;
 const _PRUSSIA_RELATIVE_DISPLAY_HEIGHT = 220;
 
-
 class PrussiaTelegraphSegmentDisplay extends NSegmentDisplay {
-
-  PrussiaTelegraphSegmentDisplay({
-      Key? key,
+  PrussiaTelegraphSegmentDisplay(
+      {Key? key,
       required Map<String, bool> segments,
       bool readOnly = false,
       void Function(Map<String, bool>)? onChanged})

@@ -1,15 +1,14 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_delete_alertdialog.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
+import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
+import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:gc_wizard/common_widgets/gcw_toast.dart';
 import 'package:gc_wizard/tools/games/sudoku/logic/sudoku_solver.dart';
 import 'package:touchable/touchable.dart';
 
@@ -19,10 +18,10 @@ class SudokuSolver extends StatefulWidget {
   const SudokuSolver({Key? key}) : super(key: key);
 
   @override
-  SudokuSolverState createState() => SudokuSolverState();
+  _SudokuSolverState createState() => _SudokuSolverState();
 }
 
-class SudokuSolverState extends State<SudokuSolver> {
+class _SudokuSolverState extends State<SudokuSolver> {
   late SudokuBoard _currentBoard;
   int _currentSolution = 0;
 
@@ -39,8 +38,7 @@ class SudokuSolverState extends State<SudokuSolver> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Container(
-          constraints: BoxConstraints(maxWidth: min(500, MediaQuery.of(context).size.height * 0.8)),
+        GCWPainterContainer(
           child: _SudokuBoard(
             board: _currentBoard,
             onChanged: (newBoard) {
@@ -50,9 +48,7 @@ class SudokuSolverState extends State<SudokuSolver> {
             },
           ),
         ),
-        Container(
-            height: 8 * DOUBLE_DEFAULT_MARGIN
-        ),
+        Container(height: 8 * DOUBLE_DEFAULT_MARGIN),
         if (_currentBoard.solutions != null && _currentBoard.solutions!.length > 1)
           Row(
             children: [
@@ -60,7 +56,8 @@ class SudokuSolverState extends State<SudokuSolver> {
                 icon: Icons.arrow_back_ios,
                 onPressed: () {
                   setState(() {
-                    _currentSolution = (_currentSolution - 1 + _currentBoard.solutions!.length) % _currentBoard.solutions!.length;
+                    _currentSolution =
+                        (_currentSolution - 1 + _currentBoard.solutions!.length) % _currentBoard.solutions!.length;
                     _showSolution();
                   });
                 },
@@ -99,7 +96,7 @@ class SudokuSolverState extends State<SudokuSolver> {
                     setState(() {
                       _currentBoard.solveSudoku(_MAX_SOLUTIONS);
                       if (_currentBoard.solutions == null) {
-                        showToast(i18n(context, 'sudokusolver_error'));
+                        showSnackBar(i18n(context, 'sudokusolver_error'), context);
                       } else {
                         _currentSolution = 0;
                         _showSolution();
@@ -111,34 +108,34 @@ class SudokuSolverState extends State<SudokuSolver> {
             ),
             Expanded(
                 child: Container(
-                  padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
-                  child: GCWButton(
-                    text: i18n(context, 'sudokusolver_clearcalculated'),
-                    onPressed: () {
-                      setState(() {
-                        _currentBoard.removeCalculated();
-                      });
-                    },
-                  ),
-                )),
+              padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
+              child: GCWButton(
+                text: i18n(context, 'sudokusolver_clearcalculated'),
+                onPressed: () {
+                  setState(() {
+                    _currentBoard.removeCalculated();
+                  });
+                },
+              ),
+            )),
             Expanded(
                 child: Container(
-                  padding: const EdgeInsets.only(left: DEFAULT_MARGIN),
-                  child: GCWButton(
-                    text: i18n(context, 'sudokusolver_clearall'),
-                    onPressed: () {
-                      showDeleteAlertDialog(
-                        context,
-                        i18n(context, 'sudokusolver_clearall_board'),
-                            () {
-                          setState(() {
-                            _currentBoard = SudokuBoard();
-                          });
-                        },
-                      );
+              padding: const EdgeInsets.only(left: DEFAULT_MARGIN),
+              child: GCWButton(
+                text: i18n(context, 'sudokusolver_clearall'),
+                onPressed: () {
+                  showDeleteAlertDialog(
+                    context,
+                    i18n(context, 'sudokusolver_clearall_board'),
+                    () {
+                      setState(() {
+                        _currentBoard = SudokuBoard();
+                      });
                     },
-                  ),
-                ))
+                  );
+                },
+              ),
+            ))
           ],
         )
       ],

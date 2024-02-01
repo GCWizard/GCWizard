@@ -1,7 +1,7 @@
 part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/widget/wherigo_analyze.dart';
 
 List<List<String>> _buildOutputListOfTaskData(BuildContext context, WherigoTaskData data) {
-  if (wherigoExpertMode) {
+  if (WHERIGOExpertMode) {
     return _buildOutputListTaskDataExpertMode(context, data);
   } else {
     return _buildOutputListTaskDataUserMode(context, data);
@@ -19,14 +19,18 @@ List<List<String>> _buildOutputListTaskDataExpertMode(BuildContext context, Wher
       i18n(context, 'wherigo_output_medianame'),
       data.TaskMedia +
           (data.TaskMedia != ''
-              ? (NameToObject[data.TaskMedia] != null ? ' ⬌ ' + NameToObject[data.TaskMedia]!.ObjectName : '')
+              ? (WHERIGONameToObject[data.TaskMedia] != null
+                  ? ' ⬌ ' + WHERIGONameToObject[data.TaskMedia]!.ObjectName
+                  : '')
               : '')
     ],
     [
       i18n(context, 'wherigo_output_iconname'),
       data.TaskIcon +
           (data.TaskIcon != ''
-              ? (NameToObject[data.TaskIcon] != null ? ' ⬌ ' + NameToObject[data.TaskIcon]!.ObjectName : '')
+              ? (WHERIGONameToObject[data.TaskIcon] != null
+                  ? ' ⬌ ' + WHERIGONameToObject[data.TaskIcon]!.ObjectName
+                  : '')
               : '')
     ],
     [i18n(context, 'wherigo_output_active'), i18n(context, 'common_' + data.TaskActive)],

@@ -10,12 +10,7 @@ final int _white = _knownColors.elementAt(18);
 final int _black = _knownColors.elementAt(19);
 late _colorStack _currentColor;
 
-enum Alignment {
-  topLeft,
-  topRight,
-  bottomLeft,
-  bottomRight
-}
+enum Alignment { topLeft, topRight, bottomLeft, bottomRight }
 
 DrawableImageData generatePiet(String input) {
   var result = <MapEntry<int, List<int>>>[];

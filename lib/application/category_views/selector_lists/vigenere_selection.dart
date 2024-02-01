@@ -16,7 +16,7 @@ class VigenereSelection extends GCWSelection {
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(const Vigenere()),
+        className(Vigenere()),
         className(const VigenereBreaker()),
         className(const Trithemius()),
         className(const Gronsfeld()),

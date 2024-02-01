@@ -23,5 +23,6 @@ class NumberSequenceFermatNthNumber extends NumberSequenceNthNumber {
 }
 
 class NumberSequenceFermatContainsDigits extends NumberSequenceContainsDigits {
-  const NumberSequenceFermatContainsDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.FERMAT, maxIndex: 10);
+  const NumberSequenceFermatContainsDigits({Key? key})
+      : super(key: key, mode: NumberSequencesMode.FERMAT, maxIndex: 10);
 }

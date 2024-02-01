@@ -745,7 +745,10 @@ const Map<String, ScrabbleSet> scrabbleSets = {
     'Q': _LetterAttribute(0, 0), //There's no real letter but the rules allow them as blanko
     'W': _LetterAttribute(0, 0), //There's no real letter but the rules allow them as blanko
   }),
-  scrabbleID_KLINGON: ScrabbleSet(scrabbleID_KLINGON, 'common_language_klingon', {
+  scrabbleID_KLINGON: ScrabbleSet(
+      scrabbleID_KLINGON,
+      'common_language_klingon',
+      {
         ' ': _LetterAttribute(0, 2),
         'a': _LetterAttribute(1, 10),
         'e': _LetterAttribute(1, 8),
@@ -773,7 +776,8 @@ const Map<String, ScrabbleSet> scrabbleSets = {
         'ng': _LetterAttribute(10, 1),
         '\'': _LetterAttribute(1, 10),
         '\u026A': _LetterAttribute(1, 8), //ɪ --> Same as I, so both variants are included here
-        'I': _LetterAttribute(1, 8) //It's not really in the game, but simulates the 618 character... for less frustrations on input ;)
+        'I': _LetterAttribute(
+            1, 8) //It's not really in the game, but simulates the 618 character... for less frustrations on input ;)
       },
       caseSensitive: true),
 };

@@ -4,12 +4,12 @@
 import 'dart:math';
 
 import "package:flutter_test/flutter_test.dart";
-import 'package:gc_wizard/tools/coords/antipodes/logic/antipodes.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/distance_bearing.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/external_libs/net.sf.geographic_lib/geographic_lib.dart';
-import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
+import 'package:gc_wizard/tools/coords/antipodes/logic/antipodes.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/vincenty/distance_bearing_vincenty.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 import 'package:gc_wizard/utils/data_type_utils/double_type_utils.dart';
 import 'package:latlong2/latlong.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -16,10 +16,10 @@ class Projectiles extends StatefulWidget {
   const Projectiles({Key? key}) : super(key: key);
 
   @override
-  ProjectilesState createState() => ProjectilesState();
+  _ProjectilesState createState() => _ProjectilesState();
 }
 
-class ProjectilesState extends State<Projectiles> {
+class _ProjectilesState extends State<Projectiles> {
   UnitCategory _currentMode = UNITCATEGORY_ENERGY;
 
   GCWUnitsValue<Unit> _currentOutputUnit = GCWUnitsValue<Unit>(UNITCATEGORY_ENERGY.defaultUnit, UNITPREFIX_NONE);

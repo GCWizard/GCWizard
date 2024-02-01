@@ -8,7 +8,10 @@ import 'package:prefs/prefs.dart';
 
 void refreshFormulas() {
   var formulas = Prefs.getStringList(PREFERENCE_FORMULASOLVER_FORMULAS);
-  if (formulas.isEmpty) return;
+  if (formulas.isEmpty) {
+    formulaGroups = [];
+    return;
+  }
 
   formulaGroups = formulas.where((group) => group.isNotEmpty).map((group) {
     return FormulaGroup.fromJson(asJsonMap(jsonDecode(group)));
@@ -36,31 +39,12 @@ void updateFormulaGroups() {
   _saveData();
 }
 
-void deleteGroup(int? groupId) {
-  if (groupId == null) {
-    throw Exception('Formula group id not found');
-  }
-
-  formulaGroups.removeWhere((group) => group.id == groupId);
-
-  _saveData();
-}
-
-void _updateFormulaGroup(FormulaGroup group) {
-  formulaGroups = formulaGroups.map((formulaGroup) {
-    if (formulaGroup.id == group.id) return group;
-
-    return formulaGroup;
-  }).toList();
-}
-
 int insertFormula(Formula formula, FormulaGroup group) {
   var id = newID(group.formulas.map((formula) => formula.id).toList());
   formula.id = id;
   group.formulas.add(formula);
 
-  _updateFormulaGroup(group);
-  _saveData();
+  updateAndSave(group);
 
   return id;
 }
@@ -76,18 +60,14 @@ void updateFormula(Formula formula, FormulaGroup group) {
     return groupFormula;
   }).toList();
 
-  _updateFormulaGroup(group);
-  _saveData();
+  updateAndSave(group);
 }
 
 int insertFormulaValue(FormulaValue formulaValue, FormulaGroup group) {
-  var id = newID(group.values.map((value) => value.id).toList());
+  var id = newID(group.values.map((value) => (value.id as int?)).toList());
   formulaValue.id = id;
   group.values.add(formulaValue);
-
-  _updateFormulaGroup(group);
-  _saveData();
-
+  updateAndSave(group);
   return id;
 }
 
@@ -102,8 +82,7 @@ void updateFormulaValue(FormulaValue formulaValue, FormulaGroup group) {
     return value;
   }).toList();
 
-  _updateFormulaGroup(group);
-  _saveData();
+  updateAndSave(group);
 }
 
 void deleteFormula(int? formulaId, FormulaGroup group) {
@@ -117,13 +96,9 @@ void deleteFormula(int? formulaId, FormulaGroup group) {
 
   group.formulas.removeWhere((formula) => formula.id == formulaId);
 
-  _updateFormulaGroup(group);
-  _saveData();
+  updateAndSave(group);
 }
 
-void deleteFormulaValue(int formulaValueId, FormulaGroup group) {
-  group.values.removeWhere((value) => value.id == formulaValueId);
-
-  _updateFormulaGroup(group);
+void updateAndSave(FormulaGroup group) {
   _saveData();
 }

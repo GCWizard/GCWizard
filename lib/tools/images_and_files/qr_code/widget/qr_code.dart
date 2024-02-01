@@ -1,12 +1,12 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
-import 'package:gc_wizard/common_widgets/gcw_toast.dart';
+import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
@@ -23,10 +23,10 @@ class QrCode extends StatefulWidget {
   const QrCode({Key? key, this.file}) : super(key: key);
 
   @override
-  QrCodeState createState() => QrCodeState();
+  _QrCodeState createState() => _QrCodeState();
 }
 
-class QrCodeState extends State<QrCode> {
+class _QrCodeState extends State<QrCode> {
   var _currentInput = '';
   var _currentModulSize = 5;
   Uint8List? _outData;
@@ -63,7 +63,7 @@ class QrCodeState extends State<QrCode> {
                 supportedFileTypes: SUPPORTED_IMAGE_TYPES,
                 onLoaded: (GCWFile? value) {
                   if (value == null) {
-                    showToast(i18n(context, 'common_loadfile_exception_notloaded'));
+                    showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
                     return;
                   }
 
@@ -140,19 +140,18 @@ class QrCodeState extends State<QrCode> {
         var currentInput = _currentInput;
         if ((currentInput.length > maxLength) && (lastCurrentInputLength <= maxLength)) {
           currentInput = currentInput.substring(0, maxLength);
-          showToast(i18n(context, 'qr_code_length_limited', parameters: [maxLength.toString()]));
+          showSnackBar(i18n(context, 'qr_code_length_limited', parameters: [maxLength.toString()]), context);
         }
         lastCurrentInputLength = _currentInput.length;
 
         _outDataEncrypt = null;
         var qrCode = generateBarCode(currentInput, moduleSize: _currentModulSize, border: 2 * _currentModulSize);
         if (qrCode == null) return;
-        input2Image(qrCode)
-            .then((qr_code) {
-                setState(() {
-                  _outDataEncrypt = qr_code;
-                });
-              });
+        input2Image(qrCode).then((qr_code) {
+          setState(() {
+            _outDataEncrypt = qr_code;
+          });
+        });
       } else {
         if (_outData == null) return;
 

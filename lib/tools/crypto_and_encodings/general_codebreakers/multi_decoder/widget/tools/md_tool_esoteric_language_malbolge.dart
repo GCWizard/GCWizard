@@ -5,11 +5,8 @@ import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/multi_
 const MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_MALBOLGE = 'malbolge_title';
 
 class MultiDecoderToolEsotericLanguageMalbolge extends AbstractMultiDecoderTool {
-  MultiDecoderToolEsotericLanguageMalbolge({
-    Key? key,
-    required int id,
-    required String name,
-    required Map<String, Object?> options})
+  MultiDecoderToolEsotericLanguageMalbolge(
+      {Key? key, required int id, required String name, required Map<String, Object?> options})
       : super(
             key: key,
             id: id,
@@ -34,4 +31,13 @@ class MultiDecoderToolEsotericLanguageMalbolge extends AbstractMultiDecoderTool 
               return null;
             },
             options: options);
+  @override
+  State<StatefulWidget> createState() => _MultiDecoderToolEsotericLanguageMalbolgeState();
+}
+
+class _MultiDecoderToolEsotericLanguageMalbolgeState extends State<MultiDecoderToolEsotericLanguageMalbolge> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
 }

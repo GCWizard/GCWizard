@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
@@ -10,10 +10,10 @@ class EnclosedAreas extends StatefulWidget {
   const EnclosedAreas({Key? key}) : super(key: key);
 
   @override
-  EnclosedAreasState createState() => EnclosedAreasState();
+  _EnclosedAreasState createState() => _EnclosedAreasState();
 }
 
-class EnclosedAreasState extends State<EnclosedAreas> {
+class _EnclosedAreasState extends State<EnclosedAreas> {
   var _currentInput = '';
   var _with4On = GCWSwitchPosition.left;
   var _currentSimpleMode = GCWSwitchPosition.left;

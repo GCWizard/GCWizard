@@ -29,7 +29,7 @@ WherigoItemData _analyzeAndExtractItemSectionData(List<String> lines) {
   String media = '';
   String icon = '';
   String location = '';
-  WherigoZonePoint zonePoint = WHERIGO_NULLPOINT ;
+  WherigoZonePoint zonePoint = WHERIGO_NULLPOINT;
   String locked = '';
   String opened = '';
 
@@ -89,8 +89,7 @@ WherigoItemData _analyzeAndExtractItemSectionData(List<String> lines) {
     }
 
     if (lines[i].startsWith(LUAname + '.ObjectLocation')) {
-      location =
-          lines[i].trim().replaceAll(LUAname + '.ObjectLocation', '').replaceAll(' ', '').replaceAll('=', '');
+      location = lines[i].trim().replaceAll(LUAname + '.ObjectLocation', '').replaceAll(' ', '').replaceAll('=', '');
       if (location.endsWith('INVALID_ZONEPOINT')) {
         location = '';
       } else if (location.startsWith('ZonePoint')) {

@@ -4,7 +4,8 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/logic/symbol_table_data.dart';
@@ -44,10 +45,10 @@ class GCWSymbolTableTextToSymbols extends StatefulWidget {
       : super(key: key);
 
   @override
-  GCWSymbolTableTextToSymbolsState createState() => GCWSymbolTableTextToSymbolsState();
+  _GCWSymbolTableTextToSymbolsState createState() => _GCWSymbolTableTextToSymbolsState();
 }
 
-class GCWSymbolTableTextToSymbolsState extends State<GCWSymbolTableTextToSymbols> {
+class _GCWSymbolTableTextToSymbolsState extends State<GCWSymbolTableTextToSymbols> {
   final _alphabetMap = <String, int>{};
 
   var _encryptionHasImages = false;
@@ -70,11 +71,11 @@ class GCWSymbolTableTextToSymbolsState extends State<GCWSymbolTableTextToSymbols
       children: <Widget>[
         widget.fixed
             ? _buildEncryptionOutput(widget.countColumns)
-            : Expanded(child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                primary: true,
-                child: _buildEncryptionOutput(widget.countColumns)
-              )),
+            : Expanded(
+                child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    primary: true,
+                    child: _buildEncryptionOutput(widget.countColumns))),
         widget.showExportButton && _encryptionHasImages
             ? GCWButton(
                 text: i18n(context, 'common_exportfile_saveoutput'),
@@ -104,12 +105,10 @@ class GCWSymbolTableTextToSymbolsState extends State<GCWSymbolTableTextToSymbols
       for (i = min(_data.maxSymbolTextLength, _text.length); i > 0; i--) {
         chunk = _text.substring(0, i);
 
-        if (isCaseSensitive) {
-          if (_alphabetMap.containsKey(chunk)) {
-            imageIndex = _alphabetMap[chunk];
-            break;
-          }
-        } else {
+        if (_alphabetMap.containsKey(chunk)) {
+          imageIndex = _alphabetMap[chunk];
+          break;
+        } else if (!isCaseSensitive) {
           if (_alphabetMap.containsKey(chunk.toUpperCase())) {
             imageIndex = _alphabetMap[chunk.toUpperCase()];
             break;
@@ -143,7 +142,7 @@ class GCWSymbolTableTextToSymbolsState extends State<GCWSymbolTableTextToSymbols
       symbolWidth: _data.imageSize()?.width ?? 0,
       symbolHeight: _data.imageSize()?.height ?? 0,
       relativeBorderWidth: widget.borderWidth,
-      canvasWidth: MediaQuery.of(context).size.width * 0.95,
+      canvasWidth: maxScreenWidth(context) * 0.95,
     ));
 
     return SizedBox(
@@ -208,7 +207,7 @@ class GCWSymbolTableTextToSymbolsState extends State<GCWSymbolTableTextToSymbols
     var bytes = data?.buffer.asUint8List();
     if (bytes == null) return const Tuple2<bool, Uint8List?>(false, null);
     bytes = trimNullBytes(bytes);
-    return Tuple2<bool, Uint8List?>(await saveByteDataToFile(context, bytes,
-        buildFileNameWithDate('img_', FileType.PNG)), bytes);
+    return Tuple2<bool, Uint8List?>(
+        await saveByteDataToFile(context, bytes, buildFileNameWithDate('img_', FileType.PNG)), bytes);
   }
 }

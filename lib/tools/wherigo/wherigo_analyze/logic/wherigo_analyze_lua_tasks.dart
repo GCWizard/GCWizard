@@ -8,7 +8,9 @@ bool _insideSectionTask(String currentLine) {
 }
 
 bool _notDoneWithTasks(String currentLine) {
-  if (RegExp(r'( Wherigo.ZInput)').hasMatch(currentLine) || RegExp(r'( Wherigo.ZTimer)').hasMatch(currentLine) || RegExp(r'(.ZVariables =)').hasMatch(currentLine)) {
+  if (RegExp(r'( Wherigo.ZInput)').hasMatch(currentLine) ||
+      RegExp(r'( Wherigo.ZTimer)').hasMatch(currentLine) ||
+      RegExp(r'(.ZVariables =)').hasMatch(currentLine)) {
     return false;
   }
   return true;

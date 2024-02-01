@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/gcw_toolbar.dart';
@@ -19,10 +19,10 @@ class BabylonNumbers extends StatefulWidget {
   const BabylonNumbers({Key? key}) : super(key: key);
 
   @override
-  BabylonNumbersState createState() => BabylonNumbersState();
+  _BabylonNumbersState createState() => _BabylonNumbersState();
 }
 
-class BabylonNumbersState extends State<BabylonNumbers> {
+class _BabylonNumbersState extends State<BabylonNumbers> {
   var _currentEncodeInput = 0;
 
   var _currentDisplays = Segments.Empty();
@@ -39,8 +39,7 @@ class BabylonNumbersState extends State<BabylonNumbers> {
           });
         },
       ),
-      _currentMode ==
-              GCWSwitchPosition.left // encrypt: input number => output segment
+      _currentMode == GCWSwitchPosition.left // encrypt: input number => output segment
           ? GCWIntegerSpinner(
               min: 0,
               overflow: SpinnerOverflowType.SUPPRESS_OVERFLOW,
@@ -78,8 +77,7 @@ class BabylonNumbersState extends State<BabylonNumbers> {
       children: <Widget>[
         Container(
           width: 200,
-          padding: const EdgeInsets.only(
-              top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 10),
+          padding: const EdgeInsets.only(top: DEFAULT_MARGIN * 2, bottom: DEFAULT_MARGIN * 10),
           child: Row(
             children: <Widget>[
               Expanded(
@@ -124,8 +122,7 @@ class BabylonNumbersState extends State<BabylonNumbers> {
   Widget _buildDigitalOutput(Segments segments) {
     return SegmentDisplayOutput(
         segmentFunction: (displayedSegments, readOnly) {
-          return _BabylonNumbersSegmentDisplay(
-              segments: displayedSegments, readOnly: readOnly);
+          return _BabylonNumbersSegmentDisplay(segments: displayedSegments, readOnly: readOnly);
         },
         segments: segments,
         readOnly: true);
@@ -147,12 +144,8 @@ class BabylonNumbersState extends State<BabylonNumbers> {
       return Column(
         children: <Widget>[
           _buildDigitalOutput(segments),
-          GCWOutput(
-              title: i18n(context, 'babylonnumbers_single_numbers'),
-              child: segments.numbers.join(' ')),
-          GCWOutput(
-              title: i18n(context, 'babylonnumbers_sexagesimal'),
-              child: segments.sexagesimal)
+          GCWOutput(title: i18n(context, 'babylonnumbers_single_numbers'), child: segments.numbers.join(' ')),
+          GCWOutput(title: i18n(context, 'babylonnumbers_sexagesimal'), child: segments.sexagesimal)
         ],
       );
     }

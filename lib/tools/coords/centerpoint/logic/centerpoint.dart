@@ -1,12 +1,12 @@
 import 'dart:math';
 
-import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/coords/segment_line/logic/segment_line.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:gc_wizard/utils/constants.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 
 class CenterPointJobData {
   final LatLng coord1;
@@ -30,9 +30,8 @@ CenterPointDistance centerPointTwoPoints(LatLng coord1, LatLng coord2, Ellipsoid
   return CenterPointDistance(segments.points.first, segments.segmentLength);
 }
 
-// TODO Mike Please check Map and dynamic for Async calculation
 Future<List<CenterPointDistance>?> centerPointThreePointsAsync(GCWAsyncExecuterParameters? jobData) async {
-  if (jobData is! CenterPointJobData) return null;
+  if (jobData?.parameters is! CenterPointJobData) return null;
 
   var data = jobData!.parameters as CenterPointJobData;
   var output = centerPointThreePoints(data.coord1, data.coord2, data.coord3, data.ellipsoid);

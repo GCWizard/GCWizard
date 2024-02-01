@@ -191,7 +191,7 @@ void _getHeaderFromGWC(Uint8List byteListGWC) {
     START_HEADER = START_OBJCETADRESS + _GWCNumberOfObjects * 6;
     _getHeaderDetailsFromGWC(byteListGWC);
 
-    // sendAsyncPort?.send(DoubleText('progress', 5));
+    // sendAsyncPort?.send(DoubleText(PROGRESS, 5));
   } catch (exception) {
     _GWCStatus = WHERIGO_ANALYSE_RESULT_STATUS.ERROR_GWC;
     _GWCResultsGWC.add('wherigo_error_runtime');
@@ -349,7 +349,7 @@ void _getLUAByteCodeFromGWC(Uint8List byteListGWC) {
         0, 0, Uint8List.sublistView(byteListGWC, _GWCoffset, _GWCoffset + _GWCMediaFileLength), _GWCMediaFileLength));
     _GWCoffset = _GWCoffset + _GWCMediaFileLength;
 
-    //sendAsyncPort?.send(DoubleText('progress', 7));
+    //sendAsyncPort?.send(DoubleText(PROGRESS, 7));
   } catch (exception) {
     _GWCStatus = WHERIGO_ANALYSE_RESULT_STATUS.ERROR_GWC;
     _GWCResultsGWC.add('wherigo_error_runtime');

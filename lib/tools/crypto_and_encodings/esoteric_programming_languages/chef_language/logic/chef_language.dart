@@ -4,6 +4,7 @@ import 'package:gc_wizard/tools/science_and_technology/primes/_common/logic/prim
 import 'package:gc_wizard/utils/string_utils.dart';
 import 'package:intl/intl.dart';
 
+part 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/chef_language/logic/chef.dart';
 part 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/chef_language/logic/chef_international.dart';
 part 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/chef_language/logic/component.dart';
 part 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/chef_language/logic/container.dart';
@@ -11,9 +12,9 @@ part 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_language
 part 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/chef_language/logic/kitchen.dart';
 part 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/chef_language/logic/method.dart';
 part 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/chef_language/logic/recipe.dart';
-part 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/chef_language/logic/chef.dart';
 
-List<String> _getAuxiliaryRecipe(String name, int value, List<String> ingredientOne, List<String> ingredientTwo, String language) {
+List<String> _getAuxiliaryRecipe(
+    String name, int value, List<String> ingredientOne, List<String> ingredientTwo, String language) {
   List<String> output = <String>[];
   bool combine = true;
   List<BigInt> nList = <BigInt>[];
@@ -58,8 +59,8 @@ List<String> _getAuxiliaryRecipe(String name, int value, List<String> ingredient
   return output;
 }
 
-String generateChef(
-    String language,String title, String remark, String time, String temperature, String outputToGenerate, bool auxiliary) {
+String generateChef(String language, String title, String remark, String time, String temperature,
+    String outputToGenerate, bool auxiliary) {
   int value = 0;
   int i = 0;
   var output = StringBuffer();
@@ -379,5 +380,3 @@ bool _isMethod(String testString) {
   }
   return result;
 }
-
-

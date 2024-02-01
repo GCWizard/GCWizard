@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -7,16 +7,15 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/_common/logic/numeral_words.dart';
-import 'package:gc_wizard/utils/string_utils.dart';
 
 class NumeralWordsIdentifyLanguages extends StatefulWidget {
   const NumeralWordsIdentifyLanguages({Key? key}) : super(key: key);
 
   @override
-  NumeralWordsIdentifyLanguagesState createState() => NumeralWordsIdentifyLanguagesState();
+  _NumeralWordsIdentifyLanguagesState createState() => _NumeralWordsIdentifyLanguagesState();
 }
 
-class NumeralWordsIdentifyLanguagesState extends State<NumeralWordsIdentifyLanguages> {
+class _NumeralWordsIdentifyLanguagesState extends State<NumeralWordsIdentifyLanguages> {
   late TextEditingController _decodeController;
 
   var _currentDecodeInput = '';
@@ -67,7 +66,7 @@ class NumeralWordsIdentifyLanguagesState extends State<NumeralWordsIdentifyLangu
     List<NumeralWordsDecodeOutput> detailedOutput;
     String output = '';
     detailedOutput = decodeNumeralwords(
-      input: removeAccents(_currentDecodeInput.toLowerCase()),
+      input: _currentDecodeInput,
       language: NumeralWordsLanguage.ALL,
       decodeModeWholeWords: _currentDecodeMode == GCWSwitchPosition.left,
     );
@@ -120,12 +119,7 @@ class NumeralWordsIdentifyLanguagesState extends State<NumeralWordsIdentifyLangu
                 text: i18n(context, 'common_outputdetail'),
                 suppressTopSpace: false,
                 expanded: false,
-                child: GCWColumnedMultilineOutput(
-                    data: columnData,
-                    flexValues: const [1, 3, 1],
-                    copyColumn: 1
-                )
-            ),
+                child: GCWColumnedMultilineOutput(data: columnData, flexValues: const [1, 3, 1], copyColumn: 1)),
       ],
     );
   }

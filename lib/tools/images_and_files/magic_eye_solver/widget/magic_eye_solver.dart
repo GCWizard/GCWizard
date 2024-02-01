@@ -1,12 +1,13 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
-import 'package:gc_wizard/common_widgets/gcw_toast.dart';
+import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
@@ -16,16 +17,15 @@ import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:image/image.dart' as Image;
 import 'package:tuple/tuple.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 
 class MagicEyeSolver extends StatefulWidget {
   const MagicEyeSolver({Key? key}) : super(key: key);
 
   @override
-  MagicEyeSolverState createState() => MagicEyeSolverState();
+  _MagicEyeSolverState createState() => _MagicEyeSolverState();
 }
 
-class MagicEyeSolverState extends State<MagicEyeSolver> {
+class _MagicEyeSolverState extends State<MagicEyeSolver> {
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
 
   GCWFile? _decodeImage;
@@ -59,7 +59,7 @@ class MagicEyeSolverState extends State<MagicEyeSolver> {
         file: _decodeImage,
         onLoaded: (_file) {
           if (_file == null) {
-            showToast(i18n(context, 'common_loadfile_exception_notloaded'));
+            showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
             return;
           }
 
@@ -130,7 +130,7 @@ class MagicEyeSolverState extends State<MagicEyeSolver> {
         file: _encodeHiddenDataImage,
         onLoaded: (_file) {
           if (_file == null) {
-            showToast(i18n(context, 'common_loadfile_exception_notloaded'));
+            showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
             return;
           }
           _encodeHiddenDataImage = _file;
@@ -175,7 +175,7 @@ class MagicEyeSolverState extends State<MagicEyeSolver> {
               file: _encodeTextureImage,
               onLoaded: (_file) {
                 if (_file == null) {
-                  showToast(i18n(context, 'common_loadfile_exception_notloaded'));
+                  showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
                   return;
                 }
                 _encodeTextureImage = _file;
@@ -210,7 +210,9 @@ class MagicEyeSolverState extends State<MagicEyeSolver> {
     }
 
     _encodeOutData = output.item1;
-    if (output.item2 == MagicEyeErrorCode.IMAGE_TOO_SMALL) showToast(i18n(context, 'magic_eye_image_too_small'));
+    if (output.item2 == MagicEyeErrorCode.IMAGE_TOO_SMALL) {
+      showSnackBar(i18n(context, 'magic_eye_image_too_small'), context);
+    }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {});
@@ -227,8 +229,8 @@ class MagicEyeSolverState extends State<MagicEyeSolver> {
       builder: (context) {
         return Center(
           child: SizedBox(
-            height: 220,
-            width: 150,
+            height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
+            width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
             child: GCWAsyncExecuter<Tuple2<Uint8List?, MagicEyeErrorCode>?>(
               isolatedFunction: generateImageAsync,
               parameter: _buildJobDataEncode,

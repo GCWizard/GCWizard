@@ -32,7 +32,7 @@ class _Chef {
     }
 
     // remove blank lines at end
-    while (recipe[recipe.length - 1].isEmpty){
+    while (recipe[recipe.length - 1].isEmpty) {
       recipe.removeAt(recipe.length - 1);
     }
 
@@ -127,7 +127,7 @@ class _Chef {
       s0 = recipe[i];
     }
     readRecipe = recipe.join('\n');
-    readRecipe= readRecipe.replaceAll(RegExp(r'\n(\n)+'), '\n\n');
+    readRecipe = readRecipe.replaceAll(RegExp(r'\n(\n)+'), '\n\n');
     recipe = readRecipe.split("\n\n");
     for (int i = 0; i < recipe.length; i++) {
       line = recipe[i];

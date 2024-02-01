@@ -2,7 +2,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/registry.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
@@ -26,10 +26,10 @@ class MusicNotes extends StatefulWidget {
   const MusicNotes({Key? key}) : super(key: key);
 
   @override
-  MusicNotesState createState() => MusicNotesState();
+  _MusicNotesState createState() => _MusicNotesState();
 }
 
-class MusicNotesState extends State<MusicNotes> {
+class _MusicNotesState extends State<MusicNotes> {
   String _currentEncodeInput = '';
   late TextEditingController _encodeController;
   final _gcwTextStyle = gcwTextStyle();

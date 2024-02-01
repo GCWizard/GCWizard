@@ -15,9 +15,15 @@ void main() {
       {'input' : 'abCDEF', 'substitution': {'A': '1', 'b':'2', 'f': '6'}, 'caseSensitive': false, 'expectedOutput' : '12CDE6'},
 
       {'input' : 'ABBBA', 'substitution': {'BB': '1'}, 'caseSensitive': true, 'expectedOutput' : 'A1BA'},
+      {'input' : 'ABBBA', 'substitution': {'bb': '1'}, 'caseSensitive': true, 'expectedOutput' : 'ABBBA'},
       {'input' : 'ABCD', 'substitution': {'A': '1', 'BC': '2', 'BCD': '3'}, 'caseSensitive': true, 'expectedOutput' : '13'},
+      {'input' : 'ABBC', 'substitution': {'B': 'D', 'BC':'E'}, 'caseSensitive': false, 'expectedOutput' : 'ADE'},
       {'input' : 'ABAB', 'substitution': {'A': 'B', 'B': 'A'}, 'caseSensitive': true, 'expectedOutput' : 'BABA'},
       {'input' : 'ABAB', 'substitution': {'A': 'B', 'B': 'C', 'C': 'A'}, 'caseSensitive': true, 'expectedOutput' : 'BCBC'},
+      {'input' : 'ab-C.!}DE-F', 'substitution': {'.': '!', '!':'.', '}': '{', '-': '+', '-F': '?f'}, 'caseSensitive': false, 'expectedOutput' : 'AB+C!.{DE?F'},
+      {'input' : 'ab-C.!}DE-F', 'substitution': {'.': '!', '!':'.', '}': '{', '-': '+', '-F': '?f'}, 'caseSensitive': true, 'expectedOutput' : 'ab+C!.{DE?f'},
+      {'input' : 'ab-C.!}DE-F', 'substitution': {'.': '!', '!':'.', '}': '{', '-': '+', '-f': '?f'}, 'caseSensitive': true, 'expectedOutput' : 'ab+C!.{DE+F'},
+      {'input' : 'ab-C.!}DE-F', 'substitution': {'.': '!', '!':'.', '}': '{', '-': '+', '-f': '?f'}, 'caseSensitive': false, 'expectedOutput' : 'AB+C!.{DE?F'},
 
       {'input' : 'CADBEFAGB', 'substitution': {'A': 'B', 'B': 'A'}, 'caseSensitive': true, 'expectedOutput' : 'CBDAEFBGA'},
       {'input' : 'CADBEFAGB', 'substitution': {'A': 'B', 'B': 'C', 'C': 'A'}, 'caseSensitive': true, 'expectedOutput' : 'ABDCEFBGC'},

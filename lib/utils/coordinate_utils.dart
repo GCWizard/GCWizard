@@ -3,7 +3,9 @@ import 'package:gc_wizard/utils/math_utils.dart';
 import 'package:latlong2/latlong.dart';
 
 bool equalsLatLng(LatLng a, LatLng b, {double tolerance = 1e-10}) {
-  if (doubleEquals(a.latitude.abs(), 90.0) && doubleEquals(b.latitude.abs(), 90.0) && a.latitude.sign == b.latitude.sign) {
+  if (doubleEquals(a.latitude.abs(), 90.0) &&
+      doubleEquals(b.latitude.abs(), 90.0) &&
+      a.latitude.sign == b.latitude.sign) {
     return true;
   }
 

@@ -6,11 +6,7 @@ import 'package:gc_wizard/utils/ui_dependent_utils/image_utils/image_utils.dart'
 const MDT_INTERNALNAMES_BINARY2IMAGE = 'multidecoder_tool_binary2image_title';
 
 class MultiDecoderBinary2Image extends AbstractMultiDecoderTool {
-  MultiDecoderBinary2Image({
-    Key? key,
-    required int id,
-    required String name,
-    required Map<String, Object?> options})
+  MultiDecoderBinary2Image({Key? key, required int id, required String name, required Map<String, Object?> options})
       : super(
             key: key,
             id: id,
@@ -22,4 +18,13 @@ class MultiDecoderBinary2Image extends AbstractMultiDecoderTool {
               return input2Image(output);
             },
             options: options);
+  @override
+  State<StatefulWidget> createState() => _MultiDecoderBinary2ImageState();
+}
+
+class _MultiDecoderBinary2ImageState extends State<MultiDecoderBinary2Image> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
 }

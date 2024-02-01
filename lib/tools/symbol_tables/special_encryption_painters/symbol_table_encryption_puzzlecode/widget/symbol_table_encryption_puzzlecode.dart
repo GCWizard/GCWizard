@@ -51,8 +51,7 @@ class PuzzleSymbolTableEncryption extends SymbolTableEncryption {
             paintImage(
                 canvas: canvas,
                 fit: BoxFit.contain,
-                rect: Rect.fromLTWH(
-                    j * symbolSize + TILE_OFFSET, i * symbolSize + TILE_OFFSET, symbolSize, symbolSize),
+                rect: Rect.fromLTWH(j * symbolSize + TILE_OFFSET, i * symbolSize + TILE_OFFSET, symbolSize, symbolSize),
                 image: image);
           }
         }

@@ -6,19 +6,14 @@ import 'package:gc_wizard/utils/constants.dart';
 enum ChappeCodebook { ALPHABET, CODEPOINTS, DIGITS, KULIBIN }
 
 const Map<ChappeCodebook, CodebookConfig> CHAPPE_CODEBOOK = {
-  ChappeCodebook.DIGITS: CodebookConfig(title: 'telegraph_chappe_digits_title', subtitle: 'telegraph_chappe_digits_description'),
-  ChappeCodebook.CODEPOINTS: CodebookConfig(
-    title: 'telegraph_chappe_codepoints_title',
-    subtitle: 'telegraph_chappe_codepoints_description'
-  ),
-  ChappeCodebook.ALPHABET: CodebookConfig(
-    title: 'telegraph_chappe_alphabet_title',
-    subtitle: 'telegraph_chappe_alphabet_description'
-  ),
-  ChappeCodebook.KULIBIN: CodebookConfig(
-    title: 'telegraph_chappe_kulibin_title',
-    subtitle: 'telegraph_chappe_kulibin_description'
-  ),
+  ChappeCodebook.DIGITS:
+      CodebookConfig(title: 'telegraph_chappe_digits_title', subtitle: 'telegraph_chappe_digits_description'),
+  ChappeCodebook.CODEPOINTS:
+      CodebookConfig(title: 'telegraph_chappe_codepoints_title', subtitle: 'telegraph_chappe_codepoints_description'),
+  ChappeCodebook.ALPHABET:
+      CodebookConfig(title: 'telegraph_chappe_alphabet_title', subtitle: 'telegraph_chappe_alphabet_description'),
+  ChappeCodebook.KULIBIN:
+      CodebookConfig(title: 'telegraph_chappe_kulibin_title', subtitle: 'telegraph_chappe_kulibin_description'),
 };
 
 const Map<String, List<String>> _CODEBOOK_CHAPPE_DIGITS = {

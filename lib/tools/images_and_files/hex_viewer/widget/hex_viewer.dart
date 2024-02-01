@@ -2,15 +2,15 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
+import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/gcw_textviewer.dart';
-import 'package:gc_wizard/common_widgets/gcw_toast.dart';
 import 'package:gc_wizard/common_widgets/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/tools/images_and_files/hexstring2file/logic/hexstring2file.dart';
@@ -23,10 +23,10 @@ class HexViewer extends StatefulWidget {
   const HexViewer({Key? key, this.file}) : super(key: key);
 
   @override
-  HexViewerState createState() => HexViewerState();
+  _HexViewerState createState() => _HexViewerState();
 }
 
-class HexViewerState extends State<HexViewer> {
+class _HexViewerState extends State<HexViewer> {
   late ScrollController _scrollControllerHex;
   late ScrollController _scrollControllerASCII;
 
@@ -76,7 +76,7 @@ class HexViewerState extends State<HexViewer> {
           onLoaded: (GCWFile? value) {
             _currentLines = 0;
             if (value == null) {
-              showToast(i18n(context, 'common_loadfile_exception_notloaded'));
+              showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
               return;
             }
 
@@ -141,22 +141,60 @@ class HexViewerState extends State<HexViewer> {
 
     return Column(
       children: [
+        if (_hexData!.length > _MAX_LINES)
+          Container(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Row(
+              children: [
+                GCWIconButton(
+                  icon: Icons.arrow_back_ios,
+                  onPressed: () {
+                    setState(() {
+                      _currentLines -= _MAX_LINES;
+                      if (_currentLines < 0) {
+                        _currentLines = (_hexDataLines!.floor() ~/ _MAX_LINES) * _MAX_LINES;
+                      }
 
+                      _resetScrollViews();
+                    });
+                  },
+                ),
+                Expanded(
+                  child: GCWText(
+                    text:
+                        '${i18n(context, 'hexviewer_lines')}: ${_currentLines + 1} - ${min(_currentLines + _MAX_LINES, _hexDataLines?.ceil() as int)} / ${_hexDataLines?.ceil()}',
+                    align: Alignment.center,
+                  ),
+                ),
+                GCWIconButton(
+                  icon: Icons.arrow_forward_ios,
+                  onPressed: () {
+                    setState(() {
+                      _currentLines += _MAX_LINES;
+                      if (_currentLines > _hexDataLines!) {
+                        _currentLines = 0;
+                      }
+
+                      _resetScrollViews();
+                    });
+                  },
+                )
+              ],
+            ),
+          ),
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
               flex: 15,
               child: NotificationListener<ScrollNotification>(
-                  child: SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      controller: _scrollControllerHex,
-                      scrollDirection: Axis.horizontal,
-                      child: GCWText(
-                        text: hexText,
-                        style: gcwMonotypeTextStyle(),
-                      ),
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  controller: _scrollControllerHex,
+                  scrollDirection: Axis.horizontal,
+                  child: GCWText(
+                    text: hexText,
+                    style: gcwMonotypeTextStyle(),
+                  ),
                 ),
                 onNotification: (ScrollNotification scrollNotification) {
                   if (_isASCIIScrolling) return false;
@@ -215,6 +253,6 @@ void openInHexViewer(BuildContext context, GCWFile file) {
   Navigator.push(
       context,
       NoAnimationMaterialPageRoute<GCWTool>(
-          builder: (context) => GCWTool(
-              tool: HexViewer(file: file), toolName: i18n(context, 'hexviewer_title'), id: 'hexviewer')));
+          builder: (context) =>
+              GCWTool(tool: HexViewer(file: file), toolName: i18n(context, 'hexviewer_title'), id: 'hexviewer')));
 }

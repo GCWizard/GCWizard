@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -17,10 +17,10 @@ class Trifid extends StatefulWidget {
   const Trifid({Key? key}) : super(key: key);
 
   @override
-  TrifidState createState() => TrifidState();
+  _TrifidState createState() => _TrifidState();
 }
 
-class TrifidState extends State<Trifid> {
+class _TrifidState extends State<Trifid> {
   late TextEditingController _inputController;
   late TextEditingController _alphabetController;
 

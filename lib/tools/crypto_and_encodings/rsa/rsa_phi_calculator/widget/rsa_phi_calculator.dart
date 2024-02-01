@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
-import 'package:gc_wizard/common_widgets/gcw_toast.dart';
+import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/text_input_formatters/gcw_integer_textinputformatter.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
@@ -11,10 +11,10 @@ class RSAPhiCalculator extends StatefulWidget {
   const RSAPhiCalculator({Key? key}) : super(key: key);
 
   @override
-  RSAPhiCalculatorState createState() => RSAPhiCalculatorState();
+  _RSAPhiCalculatorState createState() => _RSAPhiCalculatorState();
 }
 
-class RSAPhiCalculatorState extends State<RSAPhiCalculator> {
+class _RSAPhiCalculatorState extends State<RSAPhiCalculator> {
   String _currentP = '';
   String _currentQ = '';
 
@@ -62,7 +62,7 @@ class RSAPhiCalculatorState extends State<RSAPhiCalculator> {
 
       _output = GCWDefaultOutput(child: phi(p as BigInt, q as BigInt).toString());
     } catch (exception) {
-      showToast(i18n(context, exception.toString()));
+      showSnackBar(i18n(context, exception.toString()), context);
       _output = null;
     }
   }

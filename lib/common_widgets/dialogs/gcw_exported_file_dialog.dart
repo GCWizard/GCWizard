@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
 
@@ -24,8 +24,7 @@ void showExportedFileDialog(BuildContext context, {Widget? contentWidget}) {
 
 Widget imageContent(BuildContext context, Uint8List data) {
   return Container(
-    margin: const EdgeInsets.only(top: 25),
-    decoration: BoxDecoration(border: Border.all(color: themeColors().dialogText())),
-    child: Image.memory(data)
-    );
+      margin: const EdgeInsets.only(top: 25),
+      decoration: BoxDecoration(border: Border.all(color: themeColors().dialogText())),
+      child: Image.memory(data));
 }

@@ -1,5 +1,6 @@
+import 'package:code_text_field/code_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
@@ -16,27 +17,30 @@ class Befunge extends StatefulWidget {
   const Befunge({Key? key}) : super(key: key);
 
   @override
-  BefungeState createState() => BefungeState();
+  _BefungeState createState() => _BefungeState();
 }
 
-class BefungeState extends State<Befunge> {
+class _BefungeState extends State<Befunge> {
   late TextEditingController _befungeGenerateController;
-  late TextEditingController _befungeInterpretController;
+  late CodeController _befungeInterpretCodeController;
   late TextEditingController _inputController;
+  late TextEditingController _codeGenerateController;
 
-  var _currentGenerate = '';
-  var _currentInterpret = '';
-  var _currentInput = '';
+  String _currentGenerate = '';
+  String _currentInterpret = '';
+  String _currentInput = '';
+  final _sourceCodeGenerated = '';
 
   GCWSwitchPosition _currentMode = GCWSwitchPosition.left;
-  late TextEditingController _codeGenerateController;
-  final _sourceCodeGenerated = '';
 
   @override
   void initState() {
     super.initState();
     _befungeGenerateController = TextEditingController(text: _currentGenerate);
-    _befungeInterpretController = TextEditingController(text: _currentInterpret);
+    _befungeInterpretCodeController = CodeController(
+      text: _currentInterpret,
+      //stringMap: BEFUNGE_SYNTAX,
+    );
     _inputController = TextEditingController(text: _currentInput);
     _codeGenerateController = TextEditingController(text: _sourceCodeGenerated);
   }
@@ -44,7 +48,7 @@ class BefungeState extends State<Befunge> {
   @override
   void dispose() {
     _befungeGenerateController.dispose();
-    _befungeInterpretController.dispose();
+    _befungeInterpretCodeController.dispose();
     _inputController.dispose();
     _codeGenerateController.dispose();
     super.dispose();
@@ -52,7 +56,9 @@ class BefungeState extends State<Befunge> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeColors colors = themeColors();
     _codeGenerateController.text = generateBefunge(_currentGenerate);
+
     return Column(children: <Widget>[
       GCWTwoOptionsSwitch(
         leftValue: i18n(context, 'common_programming_mode_interpret'),
@@ -65,12 +71,12 @@ class BefungeState extends State<Befunge> {
         },
       ),
       _currentMode == GCWSwitchPosition.left
-          ? GCWTextField(
-              controller: _befungeInterpretController,
-              style: gcwMonotypeTextStyle(),
-              hintText: i18n(context, 'common_programming_hint_sourcecode'),
-              maxLines: 5,
-              maxLength: MAX_LENGTH_PROGRAM,
+          ? CodeField(
+              controller: _befungeInterpretCodeController,
+              textStyle: gcwMonotypeTextStyle(),
+              background: colors.primaryBackground(),
+              lineNumbers: true,
+              readOnly: false,
               onChanged: (text) {
                 setState(() {
                   _currentInterpret = text;
@@ -108,7 +114,21 @@ class BefungeState extends State<Befunge> {
       if (output.Error.isEmpty) {
         outputText = output.Output;
       } else {
-        outputText = output.Output + '\n' + i18n(context, output.Error);
+        outputText = output.Output +
+            '\n' +
+            i18n(context, output.Error) +
+            '\n' +
+            i18n(context, 'common_programming_iteration') +
+            ': ' +
+            output.Iteration +
+            '\n' +
+            i18n(context, 'common_programming_cursorposition') +
+            ': (' +
+            output.curPosX +
+            '|' +
+            output.curPosY +
+            ')' +
+            '\n';
       }
 
       List<List<String>> columnData = <List<String>>[];
@@ -128,15 +148,14 @@ class BefungeState extends State<Befunge> {
             child: outputText,
           ),
           GCWExpandableTextDivider(
-            expanded: false,
-            text: i18n(context, 'common_programming_debug'),
-            child: GCWColumnedMultilineOutput(
+              expanded: false,
+              text: i18n(context, 'common_programming_debug'),
+              child: GCWColumnedMultilineOutput(
                 data: columnData,
                 flexValues: const [2, 2, 3, 5],
                 suppressCopyButtons: true,
                 hasHeader: true,
-            )
-          )
+              ))
         ],
       );
     } else {
@@ -156,7 +175,6 @@ class BefungeState extends State<Befunge> {
         ),
         child: GCWCodeTextField(
           controller: _codeGenerateController,
-          textStyle: gcwMonotypeTextStyle(),
         ),
       );
     }

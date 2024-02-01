@@ -39,9 +39,9 @@ void main() {
     for (var elem in _inputsToExpected) {
       test('jd: ${elem['jd']}', () {
         var _actual = JulianDateToPersianYazdegardCalendar(elem['jd'] as double);
-        expect(_actual.day, (elem['expectedOutput'] as DateTime).day);
-        expect(_actual.month, (elem['expectedOutput'] as DateTime).month);
-        expect(_actual.year, (elem['expectedOutput'] as DateTime).year);
+        expect(_actual?.day, (elem['expectedOutput'] as DateTime).day);
+        expect(_actual?.month, (elem['expectedOutput'] as DateTime).month);
+        expect(_actual?.year, (elem['expectedOutput'] as DateTime).year);
       });
     }
   });
@@ -54,9 +54,9 @@ void main() {
     for (var elem in _inputsToExpected) {
       test('jd: ${elem['jd']}', () {
         var _actual = JulianDateToHebrewCalendar(elem['jd'] as double);
-        expect(_actual.day, (elem['expectedOutput'] as DateTime).day);
-        expect(_actual.month, (elem['expectedOutput'] as DateTime).month);
-        expect(_actual.year, (elem['expectedOutput'] as DateTime).year);
+        expect(_actual?.day, (elem['expectedOutput'] as DateTime).day);
+        expect(_actual?.month, (elem['expectedOutput'] as DateTime).month);
+        expect(_actual?.year, (elem['expectedOutput'] as DateTime).year);
       });
     }
   });
@@ -69,9 +69,9 @@ void main() {
     for (var elem in _inputsToExpected) {
       test('jd: ${elem['jd']}', () {
         var _actual = JulianDateToIslamicCalendar(elem['jd'] as double);
-        expect(_actual.day, (elem['expectedOutput'] as DateTime).day);
-        expect(_actual.month, (elem['expectedOutput'] as DateTime).month);
-        expect(_actual.year, (elem['expectedOutput'] as DateTime).year);
+        expect(_actual?.day, (elem['expectedOutput'] as DateTime).day);
+        expect(_actual?.month, (elem['expectedOutput'] as DateTime).month);
+        expect(_actual?.year, (elem['expectedOutput'] as DateTime).year);
       });
     }
   });
@@ -84,9 +84,9 @@ void main() {
     for (var elem in _inputsToExpected) {
       test('jd: ${elem['jd']}', () {
         var _actual = JulianDateToCopticCalendar(elem['jd'] as double);
-        expect(_actual.day, (elem['expectedOutput'] as DateTime).day);
-        expect(_actual.month, (elem['expectedOutput'] as DateTime).month);
-        expect(_actual.year, (elem['expectedOutput'] as DateTime).year);
+        expect(_actual?.day, (elem['expectedOutput'] as DateTime).day);
+        expect(_actual?.month, (elem['expectedOutput'] as DateTime).month);
+        expect(_actual?.year, (elem['expectedOutput'] as DateTime).year);
       });
     }
   });

@@ -63,18 +63,15 @@ var _progressStep = 1;
 SendPort? _sendAsyncPort;
 
 Future<VigenereBreakerResult> break_cipherAsync(GCWAsyncExecuterParameters? jobData) async {
-  if (jobData?.parameters is! VigenereBreakerJobData) return VigenereBreakerResult(errorCode: VigenereBreakerErrorCode.OK);
+  if (jobData?.parameters is! VigenereBreakerJobData) {
+    return VigenereBreakerResult(errorCode: VigenereBreakerErrorCode.OK);
+  }
 
   _sendAsyncPort = jobData?.sendAsyncPort;
 
   var data = jobData!.parameters as VigenereBreakerJobData;
   var output = break_cipher(
-      data.input,
-      data.vigenereBreakerType,
-      data.alphabet,
-      data.keyLengthMin,
-      data.keyLengthMax,
-      data.ignoreNonLetters,
+      data.input, data.vigenereBreakerType, data.alphabet, data.keyLengthMin, data.keyLengthMax, data.ignoreNonLetters,
       counterFunction: progressCounter);
 
   jobData.sendAsyncPort?.send(output);
@@ -85,7 +82,7 @@ Future<VigenereBreakerResult> break_cipherAsync(GCWAsyncExecuterParameters? jobD
 void progressCounter() {
   _progress++;
   if (_sendAsyncPort != null && (_progress % _progressStep == 0)) {
-    _sendAsyncPort!.send(DoubleText('progress', _progress / _countCombinations));
+    _sendAsyncPort!.send(DoubleText(PROGRESS, _progress / _countCombinations));
   }
 }
 

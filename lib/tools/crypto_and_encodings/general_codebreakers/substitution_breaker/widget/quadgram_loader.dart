@@ -21,7 +21,8 @@ Future<Quadgrams?> loadQuadgramsAssets(SubstitutionBreakerAlphabet alphabet, Bui
   Map<String, dynamic> jsonData = asJsonMap(jsonDecode(data));
   quadgrams.quadgramsCompressed = <int, List<int>>{};
   for (var entry in jsonData.entries) {
-    quadgrams.quadgramsCompressed!.putIfAbsent(int.tryParse(entry.key) ?? 0, () => List<int>.from(entry.value as Iterable<dynamic>));
+    quadgrams.quadgramsCompressed!
+        .putIfAbsent(int.tryParse(entry.key) ?? 0, () => List<int>.from(entry.value as Iterable<dynamic>));
   }
 
   quadgramsMap.putIfAbsent(alphabet, () => quadgrams);

@@ -1,20 +1,21 @@
 part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/logic/wherigo_analyze.dart';
 
-
-void _getAllMessagesAndDialogsFromLUA(int progress, List<String> lines, SendPort? sendAsyncPort, int progressStep) {
+List<List<WherigoActionMessageElementData>> _getAllMessagesAndDialogsFromLUA(
+    int progress, List<String> lines, SendPort? sendAsyncPort, int progressStep) {
   progress = lines.length;
+  List<List<WherigoActionMessageElementData>> resultCartridgeMessages = [];
   for (int i = 0; i < lines.length; i++) {
     progress++;
     if (sendAsyncPort != null && (progress % progressStep == 0)) {
-      sendAsyncPort.send(DoubleText('progress', progress / lines.length / 2));
+      sendAsyncPort.send(DoubleText(PROGRESS, progress / lines.length / 2));
     }
 
     lines[i] = lines[i].trim();
     try {
       if (RegExp(r'(Wherigo.ZCartridge\()').hasMatch(lines[i])) {
-        currentObjectSection = WHERIGO_OBJECT_TYPE.MESSAGES;
+        WHERIGOcurrentObjectSection = WHERIGO_OBJECT_TYPE.MESSAGES;
       }
-      if (currentObjectSection == WHERIGO_OBJECT_TYPE.MESSAGES) {
+      if (WHERIGOcurrentObjectSection == WHERIGO_OBJECT_TYPE.MESSAGES) {
         if (lines[i].trimLeft().startsWith('_Urwigo.MessageBox(') ||
             lines[i].trimLeft().startsWith('Wherigo.MessageBox(')) {
           _singleMessageDialog = [];
@@ -35,8 +36,7 @@ void _getAllMessagesAndDialogsFromLUA(int progress, List<String> lines, SendPort
               }
               if (line.isNotEmpty) {
                 _singleMessageDialog.add(WherigoActionMessageElementData(
-                    ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-                    ActionMessageContent: line));
+                    ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: line));
               }
             }
             line = lines[i];
@@ -51,8 +51,7 @@ void _getAllMessagesAndDialogsFromLUA(int progress, List<String> lines, SendPort
                   .replaceAll(')', '')
                   .replaceAll('}', '');
               _singleMessageDialog.add(WherigoActionMessageElementData(
-                  ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
-                  ActionMessageContent: line));
+                  ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE, ActionMessageContent: line));
             }
           } else {
             i++;
@@ -61,12 +60,12 @@ void _getAllMessagesAndDialogsFromLUA(int progress, List<String> lines, SendPort
             do {
               if (lines[i].trimLeft().startsWith('Text')) {
                 _singleMessageDialog.add(WherigoActionMessageElementData(
-                    ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-                    ActionMessageContent: getTextData(lines[i])));
+                    ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: getTextData(lines[i])));
               } else if (lines[i].trimLeft().startsWith('Media')) {
                 _singleMessageDialog.add(WherigoActionMessageElementData(
                     ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
-                    ActionMessageContent: lines[i].trimLeft().replaceAll('Media = ', '').replaceAll('"', '').replaceAll(',', '')));
+                    ActionMessageContent:
+                        lines[i].trimLeft().replaceAll('Media = ', '').replaceAll('"', '').replaceAll(',', '')));
               } else if (lines[i].trimLeft().startsWith('Buttons')) {
                 if (lines[i].trimLeft().endsWith('}') || lines[i].trimLeft().endsWith('},')) {
                   // single line
@@ -80,13 +79,11 @@ void _getAllMessagesAndDialogsFromLUA(int progress, List<String> lines, SendPort
                   lines[i] = lines[i].trim();
                   List<String> buttonText = [];
                   do {
-                    buttonText
-                        .add(getTextData(lines[i].replaceAll('),', ')').trim()));
+                    buttonText.add(getTextData(lines[i].replaceAll('),', ')').trim()));
                     i++;
                     lines[i] = lines[i].trim();
                   } while (!lines[i].trimLeft().startsWith('}'));
-                  _singleMessageDialog
-                      .add(WherigoActionMessageElementData(
+                  _singleMessageDialog.add(WherigoActionMessageElementData(
                       ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON,
                       ActionMessageContent: buttonText.join(' » « ')));
                 } // end else multiline
@@ -95,12 +92,14 @@ void _getAllMessagesAndDialogsFromLUA(int progress, List<String> lines, SendPort
               i++;
               lines[i] = lines[i].trim();
 
-              if (i > lines.length - 2 || lines[i].trimLeft().startsWith('})') || lines[i].trimLeft().startsWith('end')) {
+              if (i > lines.length - 2 ||
+                  lines[i].trimLeft().startsWith('})') ||
+                  lines[i].trimLeft().startsWith('end')) {
                 _sectionMessages = false;
               }
             } while (_sectionMessages);
           }
-          _cartridgeMessages.add(_singleMessageDialog);
+          resultCartridgeMessages.add(_singleMessageDialog);
         } else if (lines[i].trimLeft().startsWith('_Urwigo.Dialog(') ||
             lines[i].trimLeft().startsWith('Wherigo.Dialog(')) {
           _sectionMessages = true;
@@ -124,8 +123,7 @@ void _getAllMessagesAndDialogsFromLUA(int progress, List<String> lines, SendPort
                 }
                 if (line.isNotEmpty) {
                   _singleMessageDialog.add(WherigoActionMessageElementData(
-                      ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-                      ActionMessageContent: line));
+                      ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: line));
                 }
               }
               line = lines[i];
@@ -140,15 +138,13 @@ void _getAllMessagesAndDialogsFromLUA(int progress, List<String> lines, SendPort
                     .replaceAll(')', '')
                     .replaceAll('}', '');
                 _singleMessageDialog.add(WherigoActionMessageElementData(
-                    ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
-                    ActionMessageContent: line));
+                    ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE, ActionMessageContent: line));
               }
             } else if (lines[i].trimLeft().startsWith('Text = ') ||
                 lines[i].trimLeft().startsWith('Text = ' + _obfuscatorFunction + '(') ||
                 lines[i].trimLeft().startsWith('Text = (' + _obfuscatorFunction + '(')) {
               _singleMessageDialog.add(WherigoActionMessageElementData(
-                  ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-                  ActionMessageContent: getTextData(lines[i])));
+                  ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: getTextData(lines[i])));
             } else if (lines[i].trimLeft().startsWith('Media')) {
               _singleMessageDialog.add(WherigoActionMessageElementData(
                   ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
@@ -173,7 +169,7 @@ void _getAllMessagesAndDialogsFromLUA(int progress, List<String> lines, SendPort
             i++;
             lines[i] = lines[i].trim();
           } while (_sectionMessages && (i < lines.length));
-          _cartridgeMessages.add(_singleMessageDialog);
+          resultCartridgeMessages.add(_singleMessageDialog);
         } else if (lines[i].trimLeft().startsWith('_Urwigo.OldDialog(')) {
           i++;
           lines[i] = lines[i].trim();
@@ -197,8 +193,7 @@ void _getAllMessagesAndDialogsFromLUA(int progress, List<String> lines, SendPort
                 }
                 if (line.isNotEmpty) {
                   _singleMessageDialog.add(WherigoActionMessageElementData(
-                      ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-                      ActionMessageContent: line));
+                      ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: line));
                 }
               }
               line = lines[i];
@@ -213,15 +208,13 @@ void _getAllMessagesAndDialogsFromLUA(int progress, List<String> lines, SendPort
                     .replaceAll(')', '')
                     .replaceAll('}', '');
                 _singleMessageDialog.add(WherigoActionMessageElementData(
-                    ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
-                    ActionMessageContent: line));
+                    ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE, ActionMessageContent: line));
               }
             } else if (lines[i].trimLeft().startsWith('})')) {
               _sectionMessages = false;
             } else if (lines[i].trimLeft().startsWith('Text = ')) {
               _singleMessageDialog.add(WherigoActionMessageElementData(
-                  ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-                  ActionMessageContent: getTextData(lines[i])));
+                  ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: getTextData(lines[i])));
             } else if (lines[i].trimLeft().startsWith('Media')) {
               _singleMessageDialog.add(WherigoActionMessageElementData(
                   ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
@@ -245,7 +238,7 @@ void _getAllMessagesAndDialogsFromLUA(int progress, List<String> lines, SendPort
             i++;
             lines[i] = lines[i].trim();
           } while (_sectionMessages);
-          _cartridgeMessages.add(_singleMessageDialog);
+          resultCartridgeMessages.add(_singleMessageDialog);
         }
       }
     } catch (exception) {
@@ -253,4 +246,5 @@ void _getAllMessagesAndDialogsFromLUA(int progress, List<String> lines, SendPort
       _LUAAnalyzeResults.addAll(addExceptionErrorMessage(i, 'wherigo_error_lua_messages', exception));
     }
   } // end of second parse for i = 0 to lines.length - getting Messages/Dialogs
+  return resultCartridgeMessages;
 }

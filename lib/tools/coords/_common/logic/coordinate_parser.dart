@@ -1,8 +1,10 @@
+import 'package:gc_wizard/tools/coords/_common/formats/dec/logic/dec.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/dmm/logic/dmm.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/dms/logic/dms.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:latlong2/latlong.dart';
 
-const LETTER = '[A-ZÄÖÜ]';
-var regexEnd = '';
 
 //wholeString == false: The first match at the text begin is taken - for copy
 //wholeString == true: The whole text must be a valid coord - for var coords
@@ -10,79 +12,11 @@ List<BaseCoordinate> parseCoordinates(String text, {bool wholeString = false}) {
   var coords = <BaseCoordinate>[];
 
   try {
-    BaseCoordinate? coord = DMS.parse(text, wholeString: wholeString);
-    if (coord != null) coords.add(coord);
-
-    coord = DMM.parse(text, wholeString: wholeString);
-    if (coord != null) coords.add(coord);
-
-    coord = DEC.parse(text, wholeString: wholeString);
-    if (coord != null) coords.add(coord);
-
-    coord = UTMREF.parse(text);
-    if (coord != null) coords.add(coord);
-
-    coord = MGRS.parse(text);
-    if (coord != null) coords.add(coord);
-
-    coord = ReverseWherigoWaldmeister.parse(text);
-    if (coord != null) coords.add(coord);
-
-    coord = ReverseWherigoDay1976.parse(text);
-    if (coord != null) coords.add(coord);
-
-    coord = XYZ.parse(text);
-    if (coord != null) coords.add(coord);
-
-    coord = SwissGrid.parse(text);
-    var swissGripPlus = SwissGridPlus.parse(text);
-    if (swissGripPlus != null &&
-        (swissGripPlus.easting.toInt().toString().length == 7 ||
-            swissGripPlus.northing.toInt().toString().length == 7)) {
-      if (coord != null) coords.add(swissGripPlus);
-      if (coord != null) coords.add(coord);
-    } else {
+    BaseCoordinate? coord;
+    for (var format in allCoordinateFormatDefinitions) {
+      coord = (wholeString ? format.parseCoordinateWholeString(text) : format.parseCoordinate(text));
       if (coord != null) coords.add(coord);
     }
-
-    coord = GaussKrueger.parse(text);
-    if (coord != null) coords.add(coord);
-
-    coord = Lambert.parse(text);
-    if (coord != null) coords.add(coord);
-
-    coord = DutchGrid.parse(text);
-    if (coord != null) coords.add(coord);
-
-    coord = Maidenhead.parse(text);
-    if (coord != null) coords.add(coord);
-
-    coord = Mercator.parse(text);
-    if (coord != null) coords.add(coord);
-
-    coord = NaturalAreaCode.parse(text);
-    if (coord != null) coords.add(coord);
-
-    coord = Geohash.parse(text);
-    if (coord != null) coords.add(coord);
-
-    coord = GeoHex.parse(text);
-    if (coord != null) coords.add(coord);
-
-    coord = Geo3x3.parse(text);
-    if (coord != null) coords.add(coord);
-
-    coord = OpenLocationCode.parse(text);
-    if (coord != null) coords.add(coord);
-
-    coord = Makaney.parse(text);
-    if (coord != null) coords.add(coord);
-
-    coord = Quadtree.parse(text);
-    if (coord != null) coords.add(coord);
-
-    coord = SlippyMap.parse(text);
-    if (coord != null) coords.add(coord);
   } catch (e) {}
 
   return coords;
@@ -91,14 +25,15 @@ List<BaseCoordinate> parseCoordinates(String text, {bool wholeString = false}) {
 //wholeString == false: The first match at the text begin is taken - for copy
 //wholeString == true: The whole text must be a valid coord - for var coords
 BaseCoordinate? parseStandardFormats(String text, {bool wholeString = false}) {
-  LatLng? coord = DMS.parse(text, wholeString: wholeString)?.toLatLng();
-  if (coord != null) return DMS.fromLatLon(coord);
+  LatLng? coord;
+  coord = (wholeString ? DMSCoordinate.parseWholeString(text) : DMSCoordinate.parse(text))?.toLatLng();
+  if (coord != null) return DMSCoordinate.fromLatLon(coord);
 
-  coord = DMM.parse(text, wholeString: wholeString)?.toLatLng();
-  if (coord != null) return DMM.fromLatLon(coord);
+  coord = (wholeString ? DMMCoordinate.parseWholeString(text) : DMMCoordinate.parse(text))?.toLatLng();
+  if (coord != null) return DMMCoordinate.fromLatLon(coord);
 
-  coord = DEC.parse(text, wholeString: wholeString)?.toLatLng();
-  if (coord != null) return DEC.fromLatLon(coord);
+  coord = (wholeString ? DECCoordinate.parseWholeString(text) : DECCoordinate.parse(text))?.toLatLng();
+  if (coord != null) return DECCoordinate.fromLatLon(coord);
 
   return null;
 }

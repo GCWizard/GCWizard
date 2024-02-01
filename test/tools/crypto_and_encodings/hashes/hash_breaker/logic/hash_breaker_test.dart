@@ -1,8 +1,8 @@
 import "package:flutter_test/flutter_test.dart";
-import 'package:gc_wizard/utils/complex_return_types.dart';
-import 'package:gc_wizard/utils/variable_string_expander.dart';
 import "package:gc_wizard/tools/crypto_and_encodings/hashes/hash_breaker/logic/hash_breaker.dart";
 import 'package:gc_wizard/tools/crypto_and_encodings/hashes/logic/hashes.dart';
+import 'package:gc_wizard/utils/complex_return_types.dart';
+import 'package:gc_wizard/utils/variable_string_expander.dart';
 
 void main() {
   group("HashBreaker.breakHash:", () {

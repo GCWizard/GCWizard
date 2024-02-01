@@ -1,33 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_angle.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_output.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_outputformat.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_angle.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/distance_bearing.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/coords/intersection/logic/intersection.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/distance_bearing.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:gc_wizard/utils/constants.dart';
 import 'package:latlong2/latlong.dart';
 
-import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
-
 class Intersection extends StatefulWidget {
   const Intersection({Key? key}) : super(key: key);
 
   @override
-  IntersectionState createState() => IntersectionState();
+  _IntersectionState createState() => _IntersectionState();
 }
 
-class IntersectionState extends State<Intersection> {
+class _IntersectionState extends State<Intersection> {
   var _currentIntersections = <LatLng?>[];
 
   var _currentCoords1 = defaultBaseCoordinate;
@@ -51,7 +50,9 @@ class IntersectionState extends State<Intersection> {
           coordsFormat: _currentCoords1.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoords1 = ret;
+              if (ret != null) {
+                _currentCoords1 = ret;
+              }
             });
           },
         ),
@@ -68,7 +69,9 @@ class IntersectionState extends State<Intersection> {
           coordsFormat: _currentCoords2.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoords2 = ret;
+              if (ret != null) {
+                _currentCoords2 = ret;
+              }
             });
           },
         ),
@@ -102,8 +105,8 @@ class IntersectionState extends State<Intersection> {
         builder: (context) {
           return Center(
             child: SizedBox(
-              height: 220,
-              width: 150,
+              height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
+              width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
               child: GCWAsyncExecuter<List<LatLng?>>(
                 isolatedFunction: intersectionAsync,
                 parameter: _buildJobData,

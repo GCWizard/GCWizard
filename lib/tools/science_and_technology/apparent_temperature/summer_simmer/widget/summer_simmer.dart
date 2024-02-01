@@ -1,131 +1,180 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
-import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:gc_wizard/common_widgets/outputs/gcw_multiple_output.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/application/theme/theme.dart';
+import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
+import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
-import 'package:gc_wizard/common_widgets/spinners/gcw_double_spinner.dart';
-import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
+import 'package:gc_wizard/common_widgets/units/gcw_unit_dropdown.dart';
+import 'package:gc_wizard/common_widgets/units/gcw_unit_input.dart';
 import 'package:gc_wizard/tools/science_and_technology/apparent_temperature/summer_simmer/logic/summer_simmer.dart';
+import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/humidity.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/temperature.dart';
+import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit.dart';
+import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit_category.dart';
+import 'package:intl/intl.dart';
 
 class SummerSimmerIndex extends StatefulWidget {
   const SummerSimmerIndex({Key? key}) : super(key: key);
 
   @override
-  SummerSimmerIndexState createState() => SummerSimmerIndexState();
+  _SummerSimmerIndexState createState() => _SummerSimmerIndexState();
 }
 
-class SummerSimmerIndexState extends State<SummerSimmerIndex> {
+class _SummerSimmerIndexState extends State<SummerSimmerIndex> {
   double _currentTemperature = 0.0;
   double _currentHumidity = 0.0;
 
-  var _isMetric = true;
+  Unit _currentOutputUnit = TEMPERATURE_CELSIUS;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: GCWText(text: i18n(context, 'common_measure_temperature')),
-            ),
-            Expanded(
-                flex: 3,
-                child: Column(
-                  children: [
-                    GCWTwoOptionsSwitch(
-                      notitle: true,
-                      leftValue: i18n(context, 'common_unit_temperature_degc_name'),
-                      rightValue: i18n(context, 'common_unit_temperature_degf_name'),
-                      value: _isMetric ? GCWSwitchPosition.left : GCWSwitchPosition.right,
-                      onChanged: (value) {
-                        setState(() {
-                          _isMetric = value == GCWSwitchPosition.left;
-                        });
-                      },
-                    ),
-                    GCWDoubleSpinner(
-                        value: _currentTemperature,
-                        onChanged: (value) {
-                          setState(() {
-                            _currentTemperature = value;
-                          });
-                        }),
-                  ],
-                ))
-          ],
+        GCWUnitInput<Temperature>(
+          value: _currentTemperature,
+          title: i18n(context, 'common_measure_temperature'),
+          initialUnit: TEMPERATURE_CELSIUS,
+          min: 0.0,
+          unitList: temperatures,
+          onChanged: (value) {
+            setState(() {
+              _currentTemperature = TEMPERATURE_CELSIUS.fromKelvin(value);
+            });
+          },
         ),
-        GCWDoubleSpinner(
-            title: i18n(context, 'common_measure_humidity'),
-            value: _currentHumidity,
-            min: 0.0,
-            max: 100.0,
-            onChanged: (value) {
-              setState(() {
-                _currentHumidity = value;
-              });
-            }),
+        GCWUnitInput<Humidity>(
+          value: _currentHumidity,
+          title: i18n(context, 'common_measure_humidity'),
+          initialUnit: HUMIDITY,
+          min: 0.1,
+          max: 100.0,
+          unitList: humidity,
+          onChanged: (value) {
+            setState(() {
+              _currentHumidity = value;
+            });
+          },
+        ),
         _buildOutput(context)
       ],
     );
   }
 
   Widget _buildOutput(BuildContext context) {
-    String unit = '';
+    double summersimmer = calculateSummerSimmerIndex(_currentTemperature, _currentHumidity);
 
-    double output;
-    if (_isMetric) {
-      output = calculateSummerSimmerIndex(_currentTemperature, _currentHumidity, TEMPERATURE_CELSIUS);
-      unit = TEMPERATURE_CELSIUS.symbol;
-    } else {
-      output = calculateSummerSimmerIndex(_currentTemperature, _currentHumidity, TEMPERATURE_FAHRENHEIT);
-      unit = TEMPERATURE_FAHRENHEIT.symbol;
+    String hintT = '';
+    if (_currentTemperature < 18) {
+      hintT = i18n(context, 'summersimmer_hint_temperature');
     }
 
-    String? hintT;
-    if ((_isMetric && _currentTemperature < 18) || (!_isMetric && _currentTemperature < 64)) {
-      hintT = i18n(context, 'heatindex_hint_temperature', parameters: ['${_isMetric ? 18 : 64} $unit']);
-    }
+    String hintH = '';
+    if (_currentHumidity < 40) hintH = i18n(context, 'summersimmer_hint_humidity');
 
-    String? hintH;
-    if (_currentHumidity < 40) hintH = i18n(context, 'heatindex_hint_humidity');
+    var hint = [hintT, hintH].where((element) => element.isNotEmpty).join('\n');
 
-    var hint = [hintT, hintH].where((element) => element != null && element.isNotEmpty).join('\n');
+    String hintSummerSimmer = _calculateHintSummerSimmer(summersimmer);
 
-    String? hintM;
-    if (output > 51.7) {
-      hintM = 'summersimmerindex_index_51.7';
-    } else if (output > 44.4) {
-      hintM = 'summersimmerindex_index_44.4';
-    } else if (output > 37.8) {
-      hintM = 'summersimmerindex_index_37.8';
-    } else if (output > 32.8) {
-      hintM = 'summersimmerindex_index_32.8';
-    } else if (output > 28.3) {
-      hintM = 'summersimmerindex_index_28.3';
-    } else if (output > 25.0) {
-      hintM = 'summersimmerindex_index_25.0';
-    } else if (output > 21.3) {
-      hintM = 'summersimmerindex_index_21.3';
-    }
-
-    var outputs = [
-      GCWOutput(
-        title: i18n(context, 'heatindex_output'),
-        child: output.toStringAsFixed(3) + ' ' + unit,
-      )
-    ];
-
-    if (hint.isNotEmpty) outputs.add(GCWOutput(title: i18n(context, 'heatindex_hint'), child: hint));
-
-    if (hintM != null && hintM.isNotEmpty) {
-      outputs.add(GCWOutput(title: i18n(context, 'heatindex_meaning'), child: i18n(context, hintM)));
-    }
-
-    return GCWMultipleOutput(
-      children: outputs,
+    return Column(
+      children: [
+        GCWDefaultOutput(
+            child: Row(children: <Widget>[
+          Container(
+            width: 50,
+            padding: const EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN),
+            child: GCWIconButton(
+              icon: Icons.wb_sunny,
+              iconColor: _colorSummerSimmer(summersimmer),
+              backgroundColor: const Color(0xFF4d4d4d),
+              onPressed: () {},
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            //child: Text(_currentOutputUnit.symbol),
+            child: Container(
+                margin: const EdgeInsets.only(left: DEFAULT_MARGIN, right: 2 * DEFAULT_MARGIN),
+                child: GCWUnitDropDown(
+                  value: _currentOutputUnit,
+                  onlyShowSymbols: false,
+                  unitList: temperatures,
+                  unitCategory: UNITCATEGORY_TEMPERATURE,
+                  onChanged: (value) {
+                    setState(() {
+                      _currentOutputUnit = value;
+                    });
+                  },
+                )),
+          ),
+          Expanded(
+            flex: 2,
+            child: Container(
+                margin: const EdgeInsets.only(left: 2 * DEFAULT_MARGIN),
+                child: GCWOutput(child: NumberFormat('#.###').format(summersimmer))),
+          ),
+        ])),
+        GCWTextDivider(text: i18n(context, 'heatindex_hint')),
+        GCWOutput(
+          child: hint != '' ? hint : i18n(context, hintSummerSimmer),
+        ),
+      ],
     );
+  }
+
+  String _calculateHintSummerSimmer(double summersimmer) {
+    if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.LIGHT_BLUE]!) {
+      if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.WHITE]!) {
+        if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.LIGHT_YELLOW]!) {
+          if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.YELLOW]!) {
+            if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.ORANGE]!) {
+              if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.RED]!) {
+                return 'summersimmerindex_index_red';
+              } else {
+                return 'summersimmerindex_index_orange';
+              }
+            } else {
+              return 'summersimmerindex_index_yellow';
+            }
+          } else {
+            return 'summersimmerindex_index_light_yellow';
+          }
+        } else {
+          return 'summersimmerindex_index_white';
+        }
+      } else {
+        return 'summersimmerindex_index_light_blue';
+      }
+    } else {
+      return 'summersimmerindex_index_blue';
+    }
+  }
+
+  Color _colorSummerSimmer(double summersimmer) {
+    if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.LIGHT_BLUE]!) {
+      if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.WHITE]!) {
+        if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.LIGHT_YELLOW]!) {
+          if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.YELLOW]!) {
+            if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.ORANGE]!) {
+              if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.RED]!) {
+                return Colors.red;
+              } else {
+                return Colors.orange;
+              }
+            } else {
+              return Colors.yellow;
+            }
+          } else {
+            return Colors.yellowAccent;
+          }
+        } else {
+          return Colors.white;
+        }
+      } else {
+        return Colors.lightBlueAccent;
+      }
+    } else {
+      return Colors.blue;
+    }
   }
 }

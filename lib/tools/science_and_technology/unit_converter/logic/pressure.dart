@@ -1,8 +1,8 @@
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit.dart';
 
 class Pressure extends Unit {
-  late double Function (double) toPascal;
-  late double Function (double) fromPascal;
+  late double Function(double) toPascal;
+  late double Function(double) fromPascal;
 
   Pressure({required String key, required String symbol, bool isReference = false, required double inPascal})
       : super(key, symbol, isReference, (e) => e * inPascal, (e) => e / inPascal) {
@@ -20,27 +20,27 @@ final PRESSURE_PASCAL = Pressure(
 
 final PRESSURE_BAR = Pressure(key: 'common_unit_pressure_bar_name', symbol: 'bar', inPascal: 100000.0);
 
-final PRESSURE_POUNDSPERSQUAREINCH =
+final _PRESSURE_POUNDSPERSQUAREINCH =
     Pressure(key: 'common_unit_pressure_psi_name', symbol: 'psi, lbf/in\u00B2', inPascal: 6894.75729);
 
-final PRESSURE_ATMOSPHERE = Pressure(key: 'common_unit_pressure_atm_name', symbol: 'atm', inPascal: 101325.0);
+final _PRESSURE_ATMOSPHERE = Pressure(key: 'common_unit_pressure_atm_name', symbol: 'atm', inPascal: 101325.0);
 
-final PRESSURE_TECHNICALATMOSPHERE = Pressure(key: 'common_unit_pressure_at_name', symbol: 'at', inPascal: 98066.5);
+final _PRESSURE_TECHNICALATMOSPHERE = Pressure(key: 'common_unit_pressure_at_name', symbol: 'at', inPascal: 98066.5);
 
-final PRESSURE_MILLIMETEROFMERCURY =
+final _PRESSURE_MILLIMETEROFMERCURY =
     Pressure(key: 'common_unit_pressure_mmhg_name', symbol: 'mmHg', inPascal: 133.322387415);
 
-final PRESSURE_INCHOFMERCURY = Pressure(key: 'common_unit_pressure_inhg_name', symbol: 'inHg', inPascal: 3386.39);
+final _PRESSURE_INCHOFMERCURY = Pressure(key: 'common_unit_pressure_inhg_name', symbol: 'inHg', inPascal: 3386.39);
 
-final PRESSURE_TORR = Pressure(key: 'common_unit_pressure_torr_name', symbol: 'Torr', inPascal: 101325.0 / 760.0);
+final _PRESSURE_TORR = Pressure(key: 'common_unit_pressure_torr_name', symbol: 'Torr', inPascal: 101325.0 / 760.0);
 
 final List<Pressure> pressures = [
   PRESSURE_PASCAL,
   PRESSURE_BAR,
-  PRESSURE_POUNDSPERSQUAREINCH,
-  PRESSURE_ATMOSPHERE,
-  PRESSURE_TECHNICALATMOSPHERE,
-  PRESSURE_MILLIMETEROFMERCURY,
-  PRESSURE_INCHOFMERCURY,
-  PRESSURE_TORR
+  _PRESSURE_POUNDSPERSQUAREINCH,
+  _PRESSURE_ATMOSPHERE,
+  _PRESSURE_TECHNICALATMOSPHERE,
+  _PRESSURE_MILLIMETEROFMERCURY,
+  _PRESSURE_INCHOFMERCURY,
+  _PRESSURE_TORR
 ];

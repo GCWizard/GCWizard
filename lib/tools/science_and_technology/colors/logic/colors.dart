@@ -4,7 +4,7 @@ import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors_hue.d
 import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors_rgb.dart';
 import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors_yuv.dart';
 
-enum ColorSpaceKey {RGB, HEXCODE, HSV, HSL, HSI, CMYK, CMY, YUV, YPBPR, YCBCR, YIQ}
+enum ColorSpaceKey { RGB, HEXCODE, HSV, HSL, HSI, CMYK, CMY, YUV, YPBPR, YCBCR, YIQ }
 
 class ColorSpace {
   final ColorSpaceKey key;

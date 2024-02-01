@@ -9,10 +9,10 @@ class CipherWheel extends StatefulWidget {
   const CipherWheel({Key? key}) : super(key: key);
 
   @override
-  CipherWheelState createState() => CipherWheelState();
+  _CipherWheelState createState() => _CipherWheelState();
 }
 
-class CipherWheelState extends State<CipherWheel> {
+class _CipherWheelState extends State<CipherWheel> {
   late TextEditingController _controller;
 
   String _currentInput = '';

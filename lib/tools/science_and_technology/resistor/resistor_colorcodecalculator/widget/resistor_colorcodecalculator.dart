@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
+import 'package:gc_wizard/common_widgets/units/gcw_unit_prefix_dropdown.dart';
 import 'package:gc_wizard/tools/science_and_technology/resistor/_common/logic/resistor.dart';
 import 'package:gc_wizard/tools/science_and_technology/resistor/resistor_formatter/widget/resistor_formatter.dart';
+import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit_prefix.dart';
 
 part 'package:gc_wizard/tools/science_and_technology/resistor/resistor_colorcodecalculator/widget/resistor_band_dropdown.dart';
 
@@ -14,7 +16,7 @@ class ResistorColorCodeCalculator extends StatefulWidget {
   const ResistorColorCodeCalculator({Key? key}) : super(key: key);
 
   @override
-  ResistorColorCodeCalculatorState createState() => ResistorColorCodeCalculatorState();
+  _ResistorColorCodeCalculatorState createState() => _ResistorColorCodeCalculatorState();
 }
 
 // TODO:
@@ -28,7 +30,7 @@ class ResistorColorCodeCalculator extends StatefulWidget {
 // hasn't rebuild all dropdownbuttons but only added/removed one from the end of the list.
 // So it was not possible to completely remove all dropdowns and their internal states and add all new
 // which kept an old state somewhere internally - no matter what I tried.
-class ResistorColorCodeCalculatorState extends State<ResistorColorCodeCalculator> {
+class _ResistorColorCodeCalculatorState extends State<ResistorColorCodeCalculator> {
   var _currentNumberBands = 3;
   var _changed = false;
 
@@ -53,6 +55,8 @@ class ResistorColorCodeCalculatorState extends State<ResistorColorCodeCalculator
   ResistorBandColor _currentResistorColor_sixBands_multiplier = defaultResistorBandColor;
   ResistorBandColor _currentResistorColor_sixBands_tolerance = defaultResistorBandColor;
   ResistorBandColor _currentResistorColor_sixBands_temperatureCoefficient = defaultResistorBandColor;
+
+  UnitPrefix _currentPrefix = UNITPREFIX_NONE;
 
   @override
   void initState() {
@@ -91,6 +95,15 @@ class ResistorColorCodeCalculatorState extends State<ResistorColorCodeCalculator
         [5, 6].contains(_currentNumberBands) ? _resistorBandDropDown_sixBands_multiplier : Container(),
         [5, 6].contains(_currentNumberBands) ? _resistorBandDropDown_sixBands_tolerance : Container(),
         [6].contains(_currentNumberBands) ? _resistorBandDropDown_sixBands_temperatureCoefficient : Container(),
+        GCWTextDivider(text: i18n(context, 'common_outputformat')),
+        GCWUnitPrefixDropDown(
+            onChanged: (value) {
+              setState(() {
+                _currentPrefix = value;
+              });
+            },
+            value: _currentPrefix,
+            onlyShowSymbols: false),
         _buildOutput()
       ],
     );
@@ -253,14 +266,21 @@ class ResistorColorCodeCalculatorState extends State<ResistorColorCodeCalculator
 
     resistorValue = getResistorValue(colors);
     if (resistorValue.value != null && resistorValue.tolerance != null) {
+      var prefixValue = _currentPrefix.value;
+      var value = resistorValue.value! / prefixValue;
+      var tolerances = [
+        resistorValue.tolerancedValueInterval[0] / prefixValue,
+        resistorValue.tolerancedValueInterval[1] / prefixValue,
+      ];
+
       outputs = [
         [
           i18n(context, 'resistor_value'),
-          formatResistorValue(resistorValue.value!) + ' ' + formatResistorTolerance(resistorValue.tolerance!)
+          formatResistorValue(value, _currentPrefix.symbol) + ' ' + formatResistorTolerance(resistorValue.tolerance!)
         ],
         [
           i18n(context, 'resistor_value_range'),
-          formatResistorTolerancedValueInterval(resistorValue.tolerancedValueInterval)
+          formatResistorTolerancedValueInterval(tolerances, _currentPrefix.symbol)
         ],
       ];
       if (resistorValue.temperatureCoefficient != null) {
@@ -272,9 +292,6 @@ class ResistorColorCodeCalculatorState extends State<ResistorColorCodeCalculator
     }
 
     return GCWColumnedMultilineOutput(
-        firstRows: [GCWTextDivider(text: i18n(context, 'common_output'))],
-        data: outputs,
-        flexValues: const [2, 3]
-    );
+        firstRows: [GCWTextDivider(text: i18n(context, 'common_output'))], data: outputs, flexValues: const [2, 3]);
   }
 }

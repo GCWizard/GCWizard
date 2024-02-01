@@ -60,7 +60,8 @@ class _GCWTextFieldState extends State<GCWTextField> {
     if (widget.focusNode != null && widget.controller != null) {
       widget.focusNode?.addListener(() {
         if (widget.focusNode?.hasFocus == true) {
-          widget.controller?.selection = TextSelection(baseOffset: 0, extentOffset: widget.controller?.text.length ?? 0);
+          widget.controller?.selection =
+              TextSelection(baseOffset: 0, extentOffset: widget.controller?.text.length ?? 0);
         }
       });
     }
@@ -106,7 +107,7 @@ class _GCWTextFieldState extends State<GCWTextField> {
 
                           if (widget.inputFormatters != null) {
                             widget.inputFormatters?.forEach((formatter) {
-                              if (formatter is WrapperForMaskTextInputFormatter) {
+                              if (formatter is GCWMaskTextInputFormatter) {
                                 formatter.clear();
                               }
                             });
@@ -123,7 +124,8 @@ class _GCWTextFieldState extends State<GCWTextField> {
             maxLines: widget.maxLines,
             focusNode: widget.focusNode,
             autofocus: widget.autofocus ?? false,
-            style: widget.style ?? TextStyle(
+            style: widget.style ??
+                TextStyle(
                     fontSize: widget.fontSize ?? defaultFontSize(),
                     color: widget.filled == true ? colors.textFieldFillText() : colors.mainFont()),
             maxLengthEnforcement: MaxLengthEnforcement.enforced,

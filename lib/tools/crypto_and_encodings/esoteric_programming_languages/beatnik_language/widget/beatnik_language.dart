@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
@@ -17,10 +17,10 @@ class Beatnik extends StatefulWidget {
   const Beatnik({Key? key}) : super(key: key);
 
   @override
-  BeatnikState createState() => BeatnikState();
+  _BeatnikState createState() => _BeatnikState();
 }
 
-class BeatnikState extends State<Beatnik> {
+class _BeatnikState extends State<Beatnik> {
   late TextEditingController _programmController;
   late TextEditingController _inputController;
   late TextEditingController _outputController;
@@ -142,7 +142,7 @@ class BeatnikState extends State<Beatnik> {
       }
     }
 
-    _outputData = buildOutputText(_output.output);
+    _outputData = beatnikBuildOutputText(context, _output.output);
 
     return Column(
       children: <Widget>[
@@ -228,10 +228,7 @@ class BeatnikState extends State<Beatnik> {
                           ]),
                           GCWOutput(
                             title: i18n(context, 'common_programming_debug'),
-                            child: GCWColumnedMultilineOutput(
-                                data: _columnData,
-                                flexValues: const [1, 2, 3, 3]
-                            ),
+                            child: GCWColumnedMultilineOutput(data: _columnData, flexValues: const [1, 2, 3, 3]),
                           ),
                         ])
                       : Container(),
@@ -285,16 +282,16 @@ class BeatnikState extends State<Beatnik> {
       ],
     );
   }
+}
 
-  String buildOutputText(List<String> outputList) {
-    String output = '';
-    for (var element in outputList) {
-      if (element.startsWith('beatnik_') || element.startsWith('common_programming_')) {
-        output = output + i18n(context, element) + '\n';
-      } else {
-        output = output + element + '\n';
-      }
+String beatnikBuildOutputText(BuildContext context, List<String> outputList) {
+  String output = '';
+  for (var element in outputList) {
+    if (element.startsWith('beatnik_') || element.startsWith('common_programming_')) {
+      output = output + i18n(context, element) + '\n';
+    } else {
+      output = output + element + '\n';
     }
-    return output.trim();
   }
+  return output.trim();
 }

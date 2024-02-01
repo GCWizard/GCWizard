@@ -1,7 +1,7 @@
-import 'package:gc_wizard/tools/coords/_common/logic/intervals/coordinate_cell.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/intervals/interval_calculator.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/external_libs/net.sf.geographic_lib/geographic_lib.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/intervals/coordinate_cell.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/intervals/interval_calculator.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/vincenty/projection_vincenty.dart';
 import 'package:latlong2/latlong.dart';
 

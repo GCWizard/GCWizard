@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
-import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
-import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/units/gcw_unit_dropdown.dart';
+import 'package:gc_wizard/common_widgets/units/gcw_unit_prefix_dropdown.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit_category.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit_prefix.dart';
-
-part 'package:gc_wizard/common_widgets/units/gcw_unit_prefix_dropdown.dart';
 
 class GCWUnitsValue<T extends Unit> {
   final T value;
@@ -60,7 +56,7 @@ class _GCWUnitsState<T extends Unit> extends State<GCWUnits> {
                     flex: 1,
                     child: Container(
                       padding: const EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN),
-                      child: _GCWUnitPrefixDropDown(
+                      child: GCWUnitPrefixDropDown(
                         onlyShowSymbols: widget.onlyShowPrefixSymbols,
                         value: _currentPrefix,
                         onChanged: (value) {

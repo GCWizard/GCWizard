@@ -112,7 +112,8 @@ final List<RegExp> _CHEF_matchersDEU = [
 final RegExp _CHEF_MeasureType = RegExp(r'^heaped$|^level$|^gestrichen$|^gehaeuft$');
 final RegExp _CHEF_MeasureDry = RegExp(r'^g(r)?$|^kg$|^pinch(es)?$|^prise(n)$');
 final RegExp _CHEF_MeasureLiquid = RegExp(r'^ml$|^l$|^dash(es)?$|^drop(s)?$|^spritzer$|^tropfen$');
-final RegExp _CHEF_MeasureElse = RegExp(r'^cup(s)?$|^tasse(n)?$|^teaspoon(s)?$|^tablespoon(s)?$|^teeloeffel$|^essloeffel$');
+final RegExp _CHEF_MeasureElse =
+    RegExp(r'^cup(s)?$|^tasse(n)?$|^teaspoon(s)?$|^tablespoon(s)?$|^teeloeffel$|^essloeffel$');
 
 const Map<String, Map<String, String>> _CHEF_Messages = {
   'DEU': {

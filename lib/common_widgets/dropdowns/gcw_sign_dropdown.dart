@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 
 class GCWSignDropDown extends StatefulWidget {
   final void Function(int) onChanged;
   final int? value;
   final List<String> itemList;
+  final String? title;
 
-  const GCWSignDropDown({Key? key, required this.itemList, required this.onChanged, this.value = 1}) : super(key: key);
+  const GCWSignDropDown({Key? key, required this.itemList, required this.onChanged, this.value = 1, this.title})
+      : super(key: key);
 
   @override
   _GCWSignDropDownState createState() => _GCWSignDropDownState();
@@ -18,11 +20,12 @@ class _GCWSignDropDownState extends State<GCWSignDropDown> {
 
   @override
   Widget build(BuildContext context) {
-    return GCWDropDown(
+    return GCWDropDown<int>(
+      title: widget.title,
       value: widget.value ?? _dropdownValue,
       onChanged: (newValue) {
         setState(() {
-          _dropdownValue = newValue is int ? newValue : _dropdownValue;
+          _dropdownValue = newValue;
           widget.onChanged(_dropdownValue);
         });
       },

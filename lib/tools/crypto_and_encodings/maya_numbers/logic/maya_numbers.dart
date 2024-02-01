@@ -29,7 +29,7 @@ Segments encodeMayaNumbers(int input) {
   var result = vigesimal.split('').map((digit) {
     return _numbersToSegments[int.tryParse(convertBase(digit, 20, 10))] ?? [];
   }).toList();
-  return Segments(displays:result);
+  return Segments(displays: result);
 }
 
 SegmentsVigesimal decodeMayaNumbers(List<String> inputs) {

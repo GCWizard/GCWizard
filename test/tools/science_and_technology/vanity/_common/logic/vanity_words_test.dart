@@ -27,7 +27,7 @@ void main(){
           VanityWordsDecodeOutput('?', '', '', false),
         ]},
       // languages
-      {'input' : '6855 3467 9934 996 3734 8437 38363 73247 743236 2248 6386', 'language' : NumeralWordsLanguage.DEU,
+      {'input' : '6855 3467 9934 996 3734 8437 38363 3863 73247 743236 2248 6386', 'language' : NumeralWordsLanguage.DEU,
         'expectedOutput' : [
           VanityWordsDecodeOutput('6855', 'NULL', '0', false),
           VanityWordsDecodeOutput('3467', 'EINS', '1', false),
@@ -36,6 +36,7 @@ void main(){
           VanityWordsDecodeOutput('3734', 'DREI', '3', false),
           VanityWordsDecodeOutput('8437', 'VIER', '4', false),
           VanityWordsDecodeOutput('38363', 'FUENF', '5', false),
+          VanityWordsDecodeOutput('3863', 'FÜNF', '5', false),
           VanityWordsDecodeOutput('73247', 'SECHS', '6', false),
           VanityWordsDecodeOutput('743236', 'SIEBEN', '7', false),
           VanityWordsDecodeOutput('2248', 'ACHT', '8', false),
