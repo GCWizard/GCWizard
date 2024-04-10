@@ -213,8 +213,8 @@ class _VariableCoordinateState extends State<VariableCoordinate> {
       valueHintText: i18n(context, 'coords_variablecoordinate_possiblevalues'),
       addValueInputFormatters: [VariableStringTextInputFormatter()],
       valueFlex: 4,
-      entries: widget.formula.values,
       onNewEntryChanged: (entry) => _updateNewEntry(entry),
+      entries: widget.formula.values,
       onAddEntry: (entry) => _addEntry(entry),
       onUpdateEntry: (entry) => _updateEntry(entry),
       addOnDispose: true,
@@ -315,8 +315,6 @@ class _VariableCoordinateState extends State<VariableCoordinate> {
 
   Map<String, String> _getSubstitutions() {
     Map<String, String> _substitutions = {};
-    if (widget.formula.values.isEmpty) return _substitutions;
-
     for (var value in widget.formula.values) {
       _substitutions.putIfAbsent(value.key, () => value.value);
     }

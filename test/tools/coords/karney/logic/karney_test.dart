@@ -19,7 +19,7 @@ void main() {
     var lats = [-90.0, -67.5, -45.0, -22.5, 0.0, 22.5, 45.0, 67.5, 90.0];
     var lons = [-180.0, -135.0, -90.0, -45.0, 0.0, 45.0, 90.0, 135.0, 180.0];
 
-    var ellipsoid = getEllipsoidByName(ELLIPSOID_NAME_WGS84)!;
+    var ellipsoid = Ellipsoid.WGS84;
 
     var countErrors = 0;
 
@@ -89,7 +89,7 @@ void main() {
   });
 
   group("Karney VS Vincenty RANDOM:", () {
-    var ellipsoid = getEllipsoidByName(ELLIPSOID_NAME_WGS84)!;
+    var ellipsoid = Ellipsoid.WGS84;
 
     var countErrors = 0;
 
@@ -156,7 +156,7 @@ void main() {
 
     int countErrors = 0;
 
-    var ellipsoid = getEllipsoidByName(ELLIPSOID_NAME_WGS84)!;
+    var ellipsoid = Ellipsoid.WGS84;
 
     for (var lat1 in lats) {
       for (var lon1 in lons) {
@@ -235,7 +235,7 @@ void main() {
   });
 
   group("Karney Direct VS Inverse - RANDOM:", () {
-    var ellipsoid = getEllipsoidByName(ELLIPSOID_NAME_WGS84)!;
+    var ellipsoid = Ellipsoid.WGS84;
 
     int countErrors = 0;
 

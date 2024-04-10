@@ -147,7 +147,7 @@ _GCWList _convertTo(Object target) {
       break;
 
     case _COORD_UTM: //= 3;
-      UTMREFCoordinate result = UTMREFCoordinate.fromLatLon(coord, getEllipsoidByName(ELLIPSOID_NAME_WGS84)!);
+      UTMREFCoordinate result = UTMREFCoordinate.fromLatLon(coord, Ellipsoid.WGS84);
       _listAdd(
           targetData,
           result.zone.lonZoneRegular.toString() +
@@ -163,7 +163,7 @@ _GCWList _convertTo(Object target) {
       break;
 
     case _COORD_MGRS: //= 4;
-      MGRSCoordinate result = MGRSCoordinate.fromLatLon(coord, getEllipsoidByName(ELLIPSOID_NAME_WGS84)!);
+      MGRSCoordinate result = MGRSCoordinate.fromLatLon(coord, Ellipsoid.WGS84);
       _listAdd(
           targetData,
           result.utmZone.lonZoneRegular.toString() +
@@ -182,7 +182,7 @@ _GCWList _convertTo(Object target) {
       break;
 
     case _COORD_XYZ: //= 5;
-      XYZCoordinate result = XYZCoordinate.fromLatLon(coord, getEllipsoidByName(ELLIPSOID_NAME_WGS84)!);
+      XYZCoordinate result = XYZCoordinate.fromLatLon(coord, Ellipsoid.WGS84);
       _listAdd(targetData, 'X: ' + result.x.toString() + '\nY: ' + result.y.toString() + '\nZ: ' + result.z.toString());
       _listAdd(targetData, result.x);
       _listAdd(targetData, result.y);
@@ -191,7 +191,7 @@ _GCWList _convertTo(Object target) {
 
     case _COORD_SWISS_GRID: //= 6;
     case _COORD_SWISS_GRID_PLUS: //= 7;
-      SwissGridCoordinate result = SwissGridCoordinate.fromLatLon(coord, getEllipsoidByName(ELLIPSOID_NAME_WGS84)!);
+      SwissGridCoordinate result = SwissGridCoordinate.fromLatLon(coord, Ellipsoid.WGS84);
       _listAdd(targetData, result.easting.toString() + ' ' + result.northing.toString());
       _listAdd(targetData, result.easting);
       _listAdd(targetData, result.northing);
@@ -210,7 +210,7 @@ _GCWList _convertTo(Object target) {
     case _COORD_GAUSS_KRUEGER_GK4: //= 904;
     case _COORD_GAUSS_KRUEGER_GK5: //= 905;
       GaussKruegerCoordinate result = GaussKruegerCoordinate.fromLatLon(
-          coord, _GCW_SCRIPT_COORD_CONVERTER[target]!, getEllipsoidByName(ELLIPSOID_NAME_WGS84)!);
+          coord, _GCW_SCRIPT_COORD_CONVERTER[target]!, Ellipsoid.WGS84);
       _listAdd(targetData, result.easting.toString() + ' ' + result.northing.toString());
       _listAdd(targetData, result.easting);
       _listAdd(targetData, result.northing);
@@ -230,7 +230,7 @@ _GCWList _convertTo(Object target) {
     case _COORD_LAMBERT93_CC49: //= 1049;
     case _COORD_LAMBERT93_CC50: //= 1050;
       LambertCoordinate result =
-          LambertCoordinate.fromLatLon(coord, _GCW_SCRIPT_COORD_CONVERTER[target]!, getEllipsoidByName(ELLIPSOID_NAME_WGS84)!);
+          LambertCoordinate.fromLatLon(coord, _GCW_SCRIPT_COORD_CONVERTER[target]!, Ellipsoid.WGS84);
       _listAdd(targetData, result.easting.toString() + ' ' + result.northing.toString());
       _listAdd(targetData, result.easting);
       _listAdd(targetData, result.northing);
@@ -242,7 +242,7 @@ _GCWList _convertTo(Object target) {
       break;
 
     case _COORD_MERCATOR: //= 12;
-      MercatorCoordinate result = MercatorCoordinate.fromLatLon(coord, getEllipsoidByName(ELLIPSOID_NAME_WGS84)!);
+      MercatorCoordinate result = MercatorCoordinate.fromLatLon(coord, Ellipsoid.WGS84);
       _listAdd(targetData, result.easting.toString() + result.northing.toString());
       _listAdd(targetData, result.easting);
       _listAdd(targetData, result.northing);
@@ -435,7 +435,7 @@ void _convertFrom(Object source, _GCWList parameter) {
       if (_isNotANumber(parameter_4)) _handleError(_INVALIDTYPECAST);
       UTMREFCoordinate result = UTMREFCoordinate(UTMZone(parameter_1 as int, parameter_1, parameter_2.toString()), parameter_3 as double,
           parameter_4 as double);
-      coord = result.toLatLng(ells: getEllipsoidByName(ELLIPSOID_NAME_WGS84)!);
+      coord = result.toLatLng(ells: Ellipsoid.WGS84);
       break;
 
     case _COORD_MGRS: //= 4;
@@ -452,7 +452,7 @@ void _convertFrom(Object source, _GCWList parameter) {
       if (_isNotANumber(parameter_5)) _handleError(_INVALIDTYPECAST);
       MGRSCoordinate result = MGRSCoordinate(UTMZone(parameter_1 as int, parameter_1, parameter_2 as String), parameter_3 as String,
           parameter_4 as double, parameter_5 as double);
-      coord = result.toLatLng(ells: getEllipsoidByName(ELLIPSOID_NAME_WGS84)!);
+      coord = result.toLatLng(ells: Ellipsoid.WGS84);
       break;
 
     case _COORD_XYZ: //= 5;
@@ -468,7 +468,7 @@ void _convertFrom(Object source, _GCWList parameter) {
         parameter_2 as double,
         parameter_3 as double,
       );
-      coord = result.toLatLng(ells: getEllipsoidByName(ELLIPSOID_NAME_WGS84)!);
+      coord = result.toLatLng(ells: Ellipsoid.WGS84);
       break;
 
     case _COORD_SWISS_GRID: //= 6;
@@ -482,7 +482,7 @@ void _convertFrom(Object source, _GCWList parameter) {
         parameter_1 as double,
         parameter_2 as double,
       );
-      coord = result.toLatLng(ells: getEllipsoidByName(ELLIPSOID_NAME_WGS84)!);
+      coord = result.toLatLng(ells: Ellipsoid.WGS84);
       break;
 
     case _COORD_DUTCH_GRID: //= 8;
@@ -513,7 +513,7 @@ void _convertFrom(Object source, _GCWList parameter) {
         parameter_2 as double,
         _GCW_SCRIPT_COORD_CONVERTER[source]!
       );
-      coord = result.toLatLng(ells: getEllipsoidByName(ELLIPSOID_NAME_WGS84)!);
+      coord = result.toLatLng(ells: Ellipsoid.WGS84);
       break;
 
     case _COORD_LAMBERT93: //= 1093;
@@ -539,7 +539,7 @@ void _convertFrom(Object source, _GCWList parameter) {
         parameter_2 as double,
         _GCW_SCRIPT_COORD_CONVERTER[source]!
       );
-      coord = result.toLatLng(ells: getEllipsoidByName(ELLIPSOID_NAME_WGS84)!);
+      coord = result.toLatLng(ells: Ellipsoid.WGS84);
       break;
 
     case _COORD_MAIDENHEAD: //= 11;
@@ -560,7 +560,7 @@ void _convertFrom(Object source, _GCWList parameter) {
         parameter_1 as double,
         parameter_2 as double,
       );
-      coord = result.toLatLng(ells: getEllipsoidByName(ELLIPSOID_NAME_WGS84)!);
+      coord = result.toLatLng(ells: Ellipsoid.WGS84);
       break;
 
     case _COORD_NATURAL_AREA_CODE: //= 13;
@@ -710,7 +710,7 @@ double _bearing(Object lat1, Object lon1, Object lat2, Object lon2) {
     _handleError(_INVALIDTYPECAST);
   }
   return distanceBearing(LatLng(lat1 as double, lon1 as double), LatLng(lat2 as double, lon2 as double),
-          getEllipsoidByName(ELLIPSOID_NAME_WGS84)!)
+          Ellipsoid.WGS84)
       .bearingAToB;
 }
 
@@ -724,8 +724,8 @@ void _projection(Object lat, Object lon, Object distance, Object bearing) {
     bearing = bearing as double;
     if (_isAInt(distance)) distance = (distance as int).toDouble();
     distance = distance as double;
-    distanceBearing(LatLng(lat, lon), LatLng(lat, lon), getEllipsoidByName(ELLIPSOID_NAME_WGS84)!);
-    LatLng _currentValues = projection(LatLng(lat, lon), bearing, distance, getEllipsoidByName(ELLIPSOID_NAME_WGS84)!);
+    distanceBearing(LatLng(lat, lon), LatLng(lat, lon), Ellipsoid.WGS84);
+    LatLng _currentValues = projection(LatLng(lat, lon), bearing, distance, Ellipsoid.WGS84);
     _state.GCWizardScript_LAT = _currentValues.latitude;
     _state.GCWizardScript_LON = _currentValues.longitude;
   }
@@ -761,7 +761,7 @@ void _centerTwoPoints(Object lat1, Object lon1, Object lat2, Object lon2) {
     return;
   }
   CenterPointDistance coord = centerPointTwoPoints(LatLng(lat1 as double, lon1 as double),
-      LatLng(lat2 as double, lon2 as double), getEllipsoidByName(ELLIPSOID_NAME_WGS84)!);
+      LatLng(lat2 as double, lon2 as double), Ellipsoid.WGS84);
   _state.GCWizardScript_LAT = coord.centerPoint.latitude;
   _state.GCWizardScript_LON = coord.centerPoint.longitude;
 }

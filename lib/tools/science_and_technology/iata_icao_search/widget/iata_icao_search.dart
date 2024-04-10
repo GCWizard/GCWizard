@@ -48,7 +48,6 @@ class _IATAICAOSearchState extends State<IATAICAOSearch> {
         GCWTwoOptionsSwitch(
           value: _currentMode,
           notitle: true,
-          title: i18n(context, 'iataicao_search'),
           leftValue: i18n(context, 'iataicao_search_name'),
           rightValue: i18n(context, 'iataicao_search_code'),
           onChanged: (value) {
@@ -61,7 +60,7 @@ class _IATAICAOSearchState extends State<IATAICAOSearch> {
         _currentMode == GCWSwitchPosition.left
             ? GCWTextField(
                 controller: _inputControllerName,
-                hintText: i18n(context, 'iataicao_search_contains'),
+                hintText: i18n(context, 'common_name_contains'),
                 onChanged: (text) {
                   setState(() {
                     _currentInputName = text;
@@ -85,7 +84,7 @@ class _IATAICAOSearchState extends State<IATAICAOSearch> {
                   ),
                   GCWTextField(
                     controller: _inputControllerCode,
-                    hintText: i18n(context, 'iataicao_search_startswith'),
+                    hintText: i18n(context, 'common_code_startswith'),
                     onChanged: (text) {
                       setState(() {
                         _currentInputCode = text;

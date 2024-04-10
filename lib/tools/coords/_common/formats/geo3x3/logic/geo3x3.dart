@@ -38,6 +38,7 @@ class Geo3x3Coordinate extends BaseCoordinate {
 }
 
 LatLng? _geo3x3ToLatLon(Geo3x3Coordinate geo3x3) {
+  if (geo3x3.text.isEmpty) return null;
   var latLon = _Geo3x3.decode(geo3x3.text.toUpperCase());
   return latLon == null ? null : LatLng(latLon[0], latLon[1]);
 }

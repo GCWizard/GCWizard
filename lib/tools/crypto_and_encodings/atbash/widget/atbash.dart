@@ -42,7 +42,7 @@ class Atbash extends GCWWebStatefulWidget {
 
 class _AtbashState extends State<Atbash> {
   late TextEditingController _controller;
-  GCWSwitchPosition _currentMode = GCWSwitchPosition.left;
+  GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
 
   String _currentInput = '';
 

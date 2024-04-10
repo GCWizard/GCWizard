@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
@@ -31,6 +32,10 @@ class _NumberSequenceDigitsState extends State<NumberSequenceDigits> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        GCWTextDivider(
+          text: i18n(context, NUMBERSEQUENCE_TITLE[widget.mode]!),
+          style: const TextStyle(fontSize: 20),
+        ),
         GCWIntegerSpinner(
           title: i18n(context, 'numbersequence_inputd'),
           value: _currentInputN,
@@ -49,7 +54,7 @@ class _NumberSequenceDigitsState extends State<NumberSequenceDigits> {
 
   Widget _buildOutput() {
     List<List<String>> columnData = [];
-    getNumbersWithNDigits(widget.mode, _currentInputN).forEach((element) {
+    numberSequencesGetNumbersWithNDigits(widget.mode, _currentInputN).forEach((element) {
       columnData.add([element.toString()]);
     });
 

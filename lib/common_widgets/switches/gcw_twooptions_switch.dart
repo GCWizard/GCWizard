@@ -10,8 +10,8 @@ enum GCWSwitchPosition { left, right }
 class GCWTwoOptionsSwitch extends StatefulWidget {
   final void Function(GCWSwitchPosition) onChanged;
   final String? title;
-  final String? leftValue;
-  final String? rightValue;
+  final Object? leftValue;
+  final Object? rightValue;
   final GCWSwitchPosition? value;
   final bool alternativeColor;
   final bool notitle;
@@ -56,11 +56,12 @@ class _GCWTwoOptionsSwitchState extends State<GCWTwoOptionsSwitch> {
               children: <Widget>[
                 Expanded(
                     flex: 1,
-                    child: GCWText(
-                      text: widget.leftValue ?? i18n(context, 'common_encrypt'),
+                    child: (widget.leftValue == null || widget.leftValue is String) ? GCWText(
+                      text: widget.leftValue == null ? i18n(context, 'common_encrypt') : (widget.leftValue as String),
                       align: Alignment.center,
                       style: textStyle,
-                    )),
+                    ) : widget.leftValue as Widget
+                ),
                 GCWSwitch(
                   value: _currentValue == GCWSwitchPosition.right,
                   onChanged: (value) {
@@ -76,11 +77,12 @@ class _GCWTwoOptionsSwitchState extends State<GCWTwoOptionsSwitch> {
                 ),
                 Expanded(
                     flex: 1,
-                    child: GCWText(
-                      text: widget.rightValue ?? i18n(context, 'common_decrypt'),
+                    child: (widget.rightValue == null || widget.rightValue is String) ? GCWText(
+                      text: widget.rightValue == null ? i18n(context, 'common_decrypt') : (widget.rightValue as String),
                       align: Alignment.center,
                       style: textStyle,
-                    ))
+                    ) : widget.rightValue as Widget
+                ),
               ],
             ))
       ],

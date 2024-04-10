@@ -76,6 +76,31 @@ final _LENGTH_FURP = Length(
     symbol: 'Fp',
     inMeters: 0.002263348517438173216473 * 1000 * 1000); // 1000 Kp = 1 furshlugginer potrzebie
 
+// https://de.wikipedia.org/wiki/Alte_Ma%C3%9Fe_und_Gewichte_(r%C3%B6mische_Antike)
+// https://en.wikipedia.org/wiki/Ancient_Roman_units_of_measurement
+final _LENGTH_ROMAN_PES = Length(
+ name: 'common_unit_length_roman_pes_name', symbol: 'pes', inMeters: 0.296, );
+final _LENGTH_ROMAN_DIGITUS = Length(
+  name: 'common_unit_length_roman_digitus_name', symbol: 'digitus', inMeters: 0.296 / 16, );
+final _LENGTH_ROMAN_PALMUS = Length(
+  name: 'common_unit_length_roman_palmus_name', symbol: 'palmus', inMeters: 0.296 / 4, );
+final _LENGTH_ROMAN_CUBITUS = Length(
+  name: 'common_unit_length_roman_cubitus_name', symbol: 'cubitus', inMeters: 0.296 * 1.5, );
+final _LENGTH_ROMAN_GRADUS = Length(
+  name: 'common_unit_length_roman_gradus_name', symbol: 'gradus', inMeters: 0.296 * 2.5, );
+final _LENGTH_ROMAN_PASSUS = Length(
+  name: 'common_unit_length_roman_passsus_name', symbol: 'passus', inMeters: 0.296 * 5, );
+final _LENGTH_ROMAN_PERTICA = Length(
+  name: 'common_unit_length_roman_pertica_name', symbol: 'pertica', inMeters: 0.296 * 10, );
+final _LENGTH_ROMAN_ACTUS = Length(
+  name: 'common_unit_length_roman_actus_name', symbol: 'actus', inMeters: 0.296 * 120, );
+final _LENGTH_ROMAN_STADIUM = Length(
+  name: 'common_unit_length_roman_stadium_name', symbol: 'stadium', inMeters: 0.296 * 625, );
+final _LENGTH_ROMAN_MILLEPASSUS = Length(
+  name: 'common_unit_length_roman_millepassus_name', symbol: 'mille passus', inMeters: 0.296 * 5000, );
+final _LENGTH_ROMAN_LEUGA = Length(
+  name: 'common_unit_length_roman_leuga_name', symbol: 'leuga', inMeters: 0.296 * 7500, );
+
 // https://en.wikipedia.org/wiki/Smoot
 final _LENGTH_SMOOT = Length(
     name: 'common_unit_length_smoot_name', symbol: 'smoot', inMeters: 5 * 0.3048 + 7 * 0.3048 / 12.0); // 5 ft 7 in
@@ -105,7 +130,18 @@ final List<Length> baseLengths = [
   _LENGTH_POTRZEBIE,
   _LENGTH_FARP,
   _LENGTH_FURP,
-  _LENGTH_SMOOT
+  _LENGTH_SMOOT,
+  _LENGTH_ROMAN_PES,
+  _LENGTH_ROMAN_DIGITUS,
+  _LENGTH_ROMAN_PALMUS,
+  _LENGTH_ROMAN_CUBITUS,
+  _LENGTH_ROMAN_GRADUS,
+  _LENGTH_ROMAN_PASSUS,
+  _LENGTH_ROMAN_PERTICA,
+  _LENGTH_ROMAN_ACTUS,
+  _LENGTH_ROMAN_STADIUM,
+  _LENGTH_ROMAN_MILLEPASSUS,
+  _LENGTH_ROMAN_LEUGA,
 ];
 
 final LENGTH_KM = Length(name: 'common_unit_length_km_name', symbol: 'km', inMeters: 1000.0);

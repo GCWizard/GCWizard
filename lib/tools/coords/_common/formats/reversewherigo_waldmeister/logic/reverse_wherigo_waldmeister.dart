@@ -8,8 +8,8 @@ import 'package:latlong2/latlong.dart';
 const reverseWhereigoWaldmeisterKey = 'coords_reversewhereigo_waldmeister'; /* typo known. DO NOT change!*/
 
 final ReverseWherigoWaldmeisterFormatDefinition = CoordinateFormatDefinition(
-  CoordinateFormatKey.REVERSE_WIG_WALDMEISTER, reverseWhereigoWaldmeisterKey, reverseWhereigoWaldmeisterKey,
-  ReverseWherigoWaldmeisterCoordinate.parse, ReverseWherigoWaldmeisterCoordinate(0, 0, 0));
+    CoordinateFormatKey.REVERSE_WIG_WALDMEISTER, reverseWhereigoWaldmeisterKey, reverseWhereigoWaldmeisterKey,
+    ReverseWherigoWaldmeisterCoordinate.parse, ReverseWherigoWaldmeisterCoordinate(0, 0, 0));
 
 
 class ReverseWherigoWaldmeisterCoordinate extends BaseCoordinate {
@@ -75,43 +75,43 @@ LatLng? _reverseWIGWaldmeisterToLatLon(ReverseWherigoWaldmeisterCoordinate waldm
   if (__variante1(c)) {
     // a3 b5 . b2 c4 a1 c5 a6
     _lat = (_latSign * (
-          _numberAtBackPosition(a, _wLength - 3) * 10 +
-          _numberAtBackPosition(b, _wLength - 5) * 1 +
-          _numberAtBackPosition(b, _wLength - 2) * 0.1 +
-          _numberAtBackPosition(c, _wLength - 4) * 0.01 +
-          _numberAtBackPosition(a, _wLength - 1) * 0.001 +
-          _numberAtBackPosition(c, _wLength - 5) * 1.0E-4 +
-          _numberAtBackPosition(a, _wLength - 6) * 1.0E-5));
+        _numberAtBackPosition(a, _wLength - 3) * 10 +
+            _numberAtBackPosition(b, _wLength - 5) * 1 +
+            _numberAtBackPosition(b, _wLength - 2) * 0.1 +
+            _numberAtBackPosition(c, _wLength - 4) * 0.01 +
+            _numberAtBackPosition(a, _wLength - 1) * 0.001 +
+            _numberAtBackPosition(c, _wLength - 5) * 1.0E-4 +
+            _numberAtBackPosition(a, _wLength - 6) * 1.0E-5));
     // a2 c1 c6 . b4 b1 a5 c2 b6
     _lon = (_lonSign * (
-          _numberAtBackPosition(a, _wLength - 2) * 100 +
-          _numberAtBackPosition(c, _wLength - 1) * 10 +
-          _numberAtBackPosition(c, _wLength - 6) * 1 +
-          _numberAtBackPosition(b, _wLength - 4) * 0.1 +
-          _numberAtBackPosition(b, _wLength - 1) * 0.01 +
-          _numberAtBackPosition(a, _wLength - 5) * 0.001 +
-          _numberAtBackPosition(c, _wLength - 2) * 1.0E-4 +
-          _numberAtBackPosition(b, _wLength - 6) * 1.0E-5));
+        _numberAtBackPosition(a, _wLength - 2) * 100 +
+            _numberAtBackPosition(c, _wLength - 1) * 10 +
+            _numberAtBackPosition(c, _wLength - 6) * 1 +
+            _numberAtBackPosition(b, _wLength - 4) * 0.1 +
+            _numberAtBackPosition(b, _wLength - 1) * 0.01 +
+            _numberAtBackPosition(a, _wLength - 5) * 0.001 +
+            _numberAtBackPosition(c, _wLength - 2) * 1.0E-4 +
+            _numberAtBackPosition(b, _wLength - 6) * 1.0E-5));
   } else {
     // b1 a6 . a3 c1 c4 c5 a1
     _lat = (_latSign * (
-          _numberAtBackPosition(b, _wLength - 1) * 10 +
-          _numberAtBackPosition(a, _wLength - 6) * 1 +
-          _numberAtBackPosition(a, _wLength - 3) * 0.1 +
-          _numberAtBackPosition(c, _wLength - 1) * 0.01 +
-          _numberAtBackPosition(c, _wLength - 4) * 0.001 +
-          _numberAtBackPosition(c, _wLength - 5) * 1.0E-4 +
-          _numberAtBackPosition(a, _wLength - 1) * 1.0E-5));
+        _numberAtBackPosition(b, _wLength - 1) * 10 +
+            _numberAtBackPosition(a, _wLength - 6) * 1 +
+            _numberAtBackPosition(a, _wLength - 3) * 0.1 +
+            _numberAtBackPosition(c, _wLength - 1) * 0.01 +
+            _numberAtBackPosition(c, _wLength - 4) * 0.001 +
+            _numberAtBackPosition(c, _wLength - 5) * 1.0E-4 +
+            _numberAtBackPosition(a, _wLength - 1) * 1.0E-5));
     // b5 c6 a5 . a2 b4 b6 c2 b2
     _lon = (_lonSign * (
-          _numberAtBackPosition(b, _wLength - 5) * 100 +
-          _numberAtBackPosition(c, _wLength - 6) * 10 +
-          _numberAtBackPosition(a, _wLength - 5) * 1 +
-          _numberAtBackPosition(a, _wLength - 2) * 0.1 +
-          _numberAtBackPosition(b, _wLength - 4) * 0.01 +
-          _numberAtBackPosition(b, _wLength - 6) * 0.001 +
-          _numberAtBackPosition(c, _wLength - 2) * 1.0E-4 +
-          _numberAtBackPosition(b, _wLength - 2) * 1.0E-5));
+        _numberAtBackPosition(b, _wLength - 5) * 100 +
+            _numberAtBackPosition(c, _wLength - 6) * 10 +
+            _numberAtBackPosition(a, _wLength - 5) * 1 +
+            _numberAtBackPosition(a, _wLength - 2) * 0.1 +
+            _numberAtBackPosition(b, _wLength - 4) * 0.01 +
+            _numberAtBackPosition(b, _wLength - 6) * 0.001 +
+            _numberAtBackPosition(c, _wLength - 2) * 1.0E-4 +
+            _numberAtBackPosition(b, _wLength - 2) * 1.0E-5));
   }
 
   return decToLatLon(DECCoordinate(_lat, _lon));

@@ -5,8 +5,11 @@ import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
+import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
+import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
+import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
@@ -31,11 +34,15 @@ class _QrCodeState extends State<QrCode> {
   var _currentModulSize = 5;
   Uint8List? _outData;
   Uint8List? _outDataEncrypt;
+  String? _outDataEncryptText;
   String? _outDataDecrypt;
   late TextEditingController _inputController;
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
   static int maxLength = 2952;
   var lastCurrentInputLength = 0;
+  var _currentExpanded = false;
+  var _currentSize = 0;
+  var _currentErrorCorrectLevel = defaultErrorCorrectLevel;
 
   @override
   void initState() {
@@ -82,6 +89,9 @@ class _QrCodeState extends State<QrCode> {
                   });
                 },
               ),
+        _currentMode == GCWSwitchPosition.right
+            ? Container()
+            : _buildAdvancedWidget(),
         ((_currentMode == GCWSwitchPosition.right) && (_outData != null))
             ? Container(
                 padding: const EdgeInsets.symmetric(vertical: 20),
@@ -90,16 +100,19 @@ class _QrCodeState extends State<QrCode> {
             : Container(),
         _currentMode == GCWSwitchPosition.right
             ? Container()
-            : GCWIntegerSpinner(
-                title: i18n(context, 'qr_code_modulsize'),
-                value: _currentModulSize,
-                min: 1,
-                max: 100,
-                onChanged: (value) {
-                  _currentModulSize = value;
-                  _updateOutput();
-                },
-              ),
+            : Column(children: [
+                GCWIntegerSpinner(
+                  title: i18n(context, 'qr_code_modulsize'),
+                  flexValues: const [1, 1],
+                  value: _currentModulSize,
+                  min: 1,
+                  max: 100,
+                  onChanged: (value) {
+                    _currentModulSize = value;
+                    _updateOutput();
+                  },
+                ),
+              ]),
         GCWTwoOptionsSwitch(
           value: _currentMode,
           onChanged: (value) {
@@ -124,9 +137,80 @@ class _QrCodeState extends State<QrCode> {
     );
   }
 
+  Widget _buildAdvancedWidget() {
+    return Column(
+      children: [
+        GCWExpandableTextDivider(
+          text: i18n(context, 'common_mode_advanced'),
+          expanded: _currentExpanded,
+          onChanged: (value) {
+            setState(() {
+              _currentExpanded = value;
+            });
+          },
+          child: Column (
+            children: [
+              Row(children: <Widget>[
+                Expanded(child: GCWText(text: i18n(context, 'qr_code_size_version'))),
+                Expanded(
+                  child: GCWDropDown<int>(
+                      value: _currentSize,
+                      onChanged: (int value) {
+                        setState(() {
+                          _currentSize = value;
+                          _updateOutput();
+                        });
+                      },
+                      items: buildSizeList(),
+                      ),
+                  ),
+              ]),
+              Row(children: <Widget>[
+                Expanded(child: GCWText(text: i18n(context, 'qr_code_error_correct_level'))),
+                Expanded(
+                  child: GCWDropDown<int>(
+                      value: _currentErrorCorrectLevel,
+                      onChanged: (int value) {
+                        setState(() {
+                          _currentErrorCorrectLevel = value;
+                          _updateOutput();
+                        });
+                      },
+                      items: errorCorrectLevel().entries.map((set) {
+                          return GCWDropDownMenuItem(
+                            value: set.key,
+                            child: set.value,
+                          );
+                        }).toList(),
+                      ),
+                )
+            ])
+          ])
+        ),
+      ],
+    );
+  }
+
+  List<GCWDropDownMenuItem<int>> buildSizeList() {
+    List<GCWDropDownMenuItem<int>> list = [];
+    list.add(GCWDropDownMenuItem(
+      value: 0,
+      child: i18n(context, 'common_automatic'),
+    ));
+    for (int i = 1; i <= 40; i++) {
+      var size = (17 + i * 4).toString();
+      list.add(GCWDropDownMenuItem(
+        value: i,
+        child: size + ' x ' + size + ' (v' + i.toString() + ')',
+      ));
+    }
+    return list;
+  }
+
   Object? _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
-      if (_outDataEncrypt == null) return null;
+      if (_outDataEncrypt == null && _outDataEncryptText == null) return null;
+      if (_outDataEncryptText != null) return  _outDataEncryptText;
       return Image.memory(_outDataEncrypt!);
     } else {
       if (_outDataDecrypt == null) return null;
@@ -145,8 +229,16 @@ class _QrCodeState extends State<QrCode> {
         lastCurrentInputLength = _currentInput.length;
 
         _outDataEncrypt = null;
-        var qrCode = generateBarCode(currentInput, moduleSize: _currentModulSize, border: 2 * _currentModulSize);
+        _outDataEncryptText = null;
+        var qrCode = generateBarCode(currentInput,
+            moduleSize: _currentModulSize, border: 2 * _currentModulSize,
+            errorCorrectLevel: _currentErrorCorrectLevel,
+            version: _currentSize);
         if (qrCode == null) return;
+        if (qrCode.lines.length == 2 && qrCode.lines.first == inputTooLongException) {
+          _outDataEncryptText = i18n(context, 'qr_code_size_error') + ' (' + qrCode.lines[1] + ')';
+          return;
+        }
         input2Image(qrCode).then((qr_code) {
           setState(() {
             _outDataEncrypt = qr_code;

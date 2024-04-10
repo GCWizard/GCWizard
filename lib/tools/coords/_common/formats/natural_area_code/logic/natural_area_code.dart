@@ -53,7 +53,7 @@ class NaturalAreaCodeCoordinate extends BaseCoordinate {
   NaturalAreaCodeCoordinate(this.x, this.y);
 
   @override
-  LatLng toLatLng() {
+  LatLng? toLatLng() {
     return _naturalAreaCodeToLatLon(this);
   }
 
@@ -111,7 +111,8 @@ double _nacComponentToLatLonComponent(String component) {
   return a;
 }
 
-LatLng _naturalAreaCodeToLatLon(NaturalAreaCodeCoordinate nac) {
+LatLng? _naturalAreaCodeToLatLon(NaturalAreaCodeCoordinate nac) {
+  if (nac.y.isEmpty || nac.x.isEmpty) return null;
   return LatLng(
     _nacComponentToLatLonComponent(nac.y) * 180.0 - 90.0,
     _nacComponentToLatLonComponent(nac.x) * 360.0 - 180.0,

@@ -7,15 +7,15 @@ void main() {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
-      {'input' : 'SOS', 'expectedOutput' : '... --- ...'},
-      {'input' : 'ABc deF', 'expectedOutput' : '.- -... -.-. | -.. . ..-.'},
+      {'input' : 'SOS', 'expectedOutput' : '... --- ...'},
+      {'input' : 'ABc deF', 'expectedOutput' : '.- -... -.-. | -.. . ..-.'},
       {'input' : [String.fromCharCode(197).toLowerCase(), String.fromCharCode(192), String.fromCharCode(196), String.fromCharCode(223), '.', '-', '_', '@'].join()
-        , 'expectedOutput' : '.--.- .--.- .-.- ...--.. .-.-.- -....- ..--.- .--.-.'},
+        , 'expectedOutput' : '.--.- .--.- .-.- ...--.. .-.-.- -....- ..--.- .--.-.'},
     ];
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeMorse(elem['input'] as String, MORSE_CODE.MORSE_ITU);
+        var _actual = encodeMorse(elem['input'] as String, type: MorseType.MORSE_ITU);
         expect(_actual, elem['expectedOutput']);
       });
     }
@@ -25,14 +25,14 @@ void main() {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
-      {'input' : 'SOS', 'expectedOutput' : '... .-... ...'},
-      {'input' : 'ABc deF', 'expectedOutput' : '.- -... -.-. | -.. . ..-.'},
-      {'input' : 'Ä Ö Ü CH', 'expectedOutput' : '.-.- | ---. | ..-- | -.-. ....'},
+      {'input' : 'SOS', 'expectedOutput' : '... .-... ...'},
+      {'input' : 'ABc deF', 'expectedOutput' : '.- -... -.-. | -.. . ..-.'},
+      {'input' : 'Ä Ö Ü CH', 'expectedOutput' : '.-.- | ---. | ..-- | -.-. ....'},
     ];
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeMorse(elem['input'] as String, MORSE_CODE.GERKE);
+        var _actual = encodeMorse(elem['input'] as String, type: MorseType.GERKE);
         expect(_actual, elem['expectedOutput']);
       });
     }
@@ -42,13 +42,13 @@ void main() {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
-      {'input' : 'SOS', 'expectedOutput' : '... . . ...'},
-      {'input' : 'ABc deF', 'expectedOutput' : '.- -... .. . | -.. . .-.'},
+      {'input' : 'SOS', 'expectedOutput' : '... . . ...'},
+      {'input' : 'ABc deF', 'expectedOutput' : '.- -... .. . | -.. . .-.'},
     ];
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeMorse(elem['input'] as String, MORSE_CODE.MORSE1844);
+        var _actual = encodeMorse(elem['input'] as String, type: MorseType.MORSE1844);
         expect(_actual, elem['expectedOutput']);
       });
     }
@@ -58,13 +58,13 @@ void main() {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
-      {'input' : 'SOS', 'expectedOutput' : '..-- ... ..--'},
-      {'input' : 'ABc deF', 'expectedOutput' : '.-. .--. ..- | -. . .--'},
+      {'input' : 'SOS', 'expectedOutput' : '..-- ... ..--'},
+      {'input' : 'ABc deF', 'expectedOutput' : '.-. .--. ..- | -. . .--'},
     ];
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = encodeMorse(elem['input'] as String, MORSE_CODE.STEINHEIL);
+        var _actual = encodeMorse(elem['input'] as String, type: MorseType.STEINHEIL);
         expect(_actual, elem['expectedOutput']);
       });
     }
@@ -75,6 +75,7 @@ void main() {
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : 'SOS', 'input' : '... --- ...'},
+      {'expectedOutput' : 'SOS', 'input' : ['...', '---', '...'].join(String.fromCharCode(8195))},
       {'expectedOutput' : 'ABC DEF', 'input' : '.- -... -.-. | -.. . ..-.'},
       {'expectedOutput' : 'ABC DEF', 'input' : '.- -... -.-. / -.. . ..-.'},
       {'expectedOutput' : 'ABC DEF', 'input' : '.-AB58-...    -.-. |bbbb-..@. ..-.'},
@@ -84,7 +85,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeMorse(elem['input'] as String, MORSE_CODE.MORSE_ITU);
+        var _actual = decodeMorse(elem['input'] as String, type: MorseType.MORSE_ITU);
         expect(_actual, elem['expectedOutput']);
       });
     }
@@ -103,7 +104,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeMorse(elem['input'] as String, MORSE_CODE.GERKE);
+        var _actual = decodeMorse(elem['input'] as String, type: MorseType.GERKE);
         expect(_actual, elem['expectedOutput']);
       });
     }
@@ -120,7 +121,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeMorse(elem['input'] as String, MORSE_CODE.MORSE1844);
+        var _actual = decodeMorse(elem['input'] as String, type: MorseType.MORSE1844);
         expect(_actual, elem['expectedOutput']);
       });
     }
@@ -138,7 +139,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeMorse(elem['input'] as String, MORSE_CODE.STEINHEIL);
+        var _actual = decodeMorse(elem['input'] as String, type: MorseType.STEINHEIL);
         expect(_actual, elem['expectedOutput']);
       });
     }

@@ -1,7 +1,8 @@
 // imports
 import 'dart:math';
 
-import 'package:gc_wizard/utils/math_utils.dart';
+import 'package:gc_wizard/utils/constants.dart';
+import 'package:gc_wizard/utils/data_type_utils/double_type_utils.dart';
 
 // parts
 part 'package:gc_wizard/tools/coords/_common/logic//external_libs/net.sf.geographic_lib/geographic_lib/geo_math.dart';
@@ -12,3 +13,10 @@ part 'package:gc_wizard/tools/coords/_common/logic//external_libs/net.sf.geograp
 part 'package:gc_wizard/tools/coords/_common/logic//external_libs/net.sf.geographic_lib/geographic_lib/lambert_conformal_conic.dart';
 part 'package:gc_wizard/tools/coords/_common/logic//external_libs/net.sf.geographic_lib/geographic_lib/math.dart';
 part 'package:gc_wizard/tools/coords/_common/logic//external_libs/net.sf.geographic_lib/geographic_lib/pair.dart';
+part 'package:gc_wizard/tools/coords/_common/logic//external_libs/net.sf.geographic_lib/geographic_lib/rhumb.dart';
+part 'package:gc_wizard/tools/coords/_common/logic//external_libs/net.sf.geographic_lib/geographic_lib/ellipsoid.dart';
+part 'package:gc_wizard/tools/coords/_common/logic//external_libs/net.sf.geographic_lib/geographic_lib/elliptic_function.dart';
+part 'package:gc_wizard/tools/coords/_common/logic//external_libs/net.sf.geographic_lib/geographic_lib/transverse_mercator.dart';
+part 'package:gc_wizard/tools/coords/_common/logic//external_libs/net.sf.geographic_lib/geographic_lib/aux_angle.dart';
+part 'package:gc_wizard/tools/coords/_common/logic//external_libs/net.sf.geographic_lib/geographic_lib/aux_latitude.dart';
+part 'package:gc_wizard/tools/coords/_common/logic//external_libs/net.sf.geographic_lib/geographic_lib/d_aux_latitude.dart';

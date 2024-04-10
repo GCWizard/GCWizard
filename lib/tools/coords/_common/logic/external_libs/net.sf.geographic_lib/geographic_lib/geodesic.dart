@@ -418,9 +418,9 @@ class Geodesic {
     lat1 = _GeoMath.AngRound(lat1);
     lat2 = _GeoMath.AngRound(lat2);
     double lon12, lon12s;
-    _GeoMath.AngDiff(p, lon1, lon2);
-    lon12 = p.first;
-    lon12s = p.second;
+    var _h = _GeoMath.AngDiffError(lon1, lon2);
+    lon12 = _h.first;
+    lon12s = _h.second;
     if ((outmask & _GeodesicMask.LONG_UNROLL) != 0) {
       r.lon1 = lon1;
       r.lon2 = (lon1 + lon12) + lon12s;
@@ -641,7 +641,7 @@ class Geodesic {
           if (numit < _maxit1_ && dV > 0) {
             double dalp1 = -V / dV;
             double sdalp1 = sin(dalp1), cdalp1 = cos(dalp1), n_salp1 = _salp1 * cdalp1 + _calp1 * sdalp1;
-            if (n_salp1 > 0 && dalp1.abs() < pi) {
+            if (n_salp1 > 0 && dalp1.abs() < _GeoMath.pi()) {
               _calp1 = _calp1 * cdalp1 - _salp1 * sdalp1;
               _salp1 = n_salp1;
               _GeoMath.norm(p, _salp1, _calp1);
@@ -1048,7 +1048,7 @@ class Geodesic {
       w._sig12 = atan2(ssig12, csig12);
     } else if (_n.abs() > 0.1 || // Skip astroid calc if too eccentric
         csig12 >= 0 ||
-        ssig12 >= 6 * _n.abs() * pi * _GeoMath.sq(cbet1)) {
+        ssig12 >= 6 * _n.abs() * _GeoMath.pi() * _GeoMath.sq(cbet1)) {
       // Nothing to do, zeroth order spherical approximation is OK
     } else {
       // Scale lam12 and bet2 to x, y coordinate system where antipodal point
@@ -1064,7 +1064,7 @@ class Geodesic {
         // x = dlong, y = dlat
         {
           double k2 = _GeoMath.sq(sbet1) * ep2, eps = k2 / (2 * (1 + sqrt(1 + k2)) + k2);
-          lamscale = f * cbet1 * A3f(eps) * pi;
+          lamscale = f * cbet1 * A3f(eps) * _GeoMath.pi();
         }
         betscale = lamscale * cbet1;
 
@@ -1077,13 +1077,13 @@ class Geodesic {
         double m12b, m0;
         // In the case of lon12 = 180, this repeats a calculation made in
         // Inverse.
-        _Lengths(v, _n, pi + bet12a, sbet1, -cbet1, dn1, sbet2, cbet2, dn2, cbet1, cbet2, _GeodesicMask.REDUCEDLENGTH,
+        _Lengths(v, _n, _GeoMath.pi() + bet12a, sbet1, -cbet1, dn1, sbet2, cbet2, dn2, cbet1, cbet2, _GeodesicMask.REDUCEDLENGTH,
             C1a, C2a);
         m12b = v._m12b;
         m0 = v._m0;
 
-        x = -1 + m12b / (cbet1 * cbet2 * m0 * pi);
-        betscale = x < -0.01 ? sbet12a / x : -f * _GeoMath.sq(cbet1) * pi;
+        x = -1 + m12b / (cbet1 * cbet2 * m0 * _GeoMath.pi());
+        betscale = x < -0.01 ? sbet12a / x : -f * _GeoMath.sq(cbet1) * _GeoMath.pi();
         lamscale = betscale / cbet1;
         y = lam12x / lamscale;
       }

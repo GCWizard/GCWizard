@@ -78,7 +78,7 @@ class _GCWToolListState extends State<GCWToolList> {
           )
         ],
       ),
-      subtitle: _buildSubtitle(context, tool),
+      subtitle: _buildDescription(context, tool),
       onTap: () {
         setState(() {
           _navigateToSubPage(context);
@@ -111,7 +111,7 @@ class _GCWToolListState extends State<GCWToolList> {
     );
   }
 
-  Widget _buildSubtitle(BuildContext context, GCWTool tool) {
+  Widget _buildDescription(BuildContext context, GCWTool tool) {
     IgnorePointer? descriptionText;
     if (Prefs.getBool(PREFERENCE_TOOLLIST_SHOW_DESCRIPTIONS) &&
         tool.description != null &&
@@ -144,7 +144,7 @@ class _GCWToolListState extends State<GCWToolList> {
 
     return (exampleText ?? descriptionText) != null
         ? Container(
-            padding: const EdgeInsets.only(left: 10.0),
+            padding: const EdgeInsets.only(left: DEFAULT_DESCRIPTION_MARGIN),
             child: content,
           )
         : Container();

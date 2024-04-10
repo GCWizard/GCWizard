@@ -90,10 +90,12 @@ Future<AnimatedImageOutput?> analyseImage(Uint8List bytes,
 
 List<Image.Image> _linkSameImages(List<Image.Image> images) {
   for (int i = 1; i < images.length; i++) {
+    Uint8List? iBytes;
     for (int x = 0; x < i; x++) {
       if (_checkSameHash(images, x) >= 0) continue;
 
-      if (compareImages(images[i].getBytes(), images[x].getBytes())) {
+      iBytes ??= images[i].getBytes();
+      if (compareImages(iBytes, images[x].getBytes())) {
         images[i] = images[x];
         break;
       }

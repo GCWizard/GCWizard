@@ -1,3 +1,5 @@
+import 'package:gc_wizard/utils/string_utils.dart' as strUtils;
+
 String reverse(String input) {
-  return input.split('').reversed.join();
+  return strUtils.reverse(input);
 }

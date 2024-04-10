@@ -88,7 +88,7 @@ class TransformableDate {
 }
 
 final List<TransformableDate> transformableDates = [
-  TransformableDate(ELLIPSOID_NAME_WGS84, null, getEllipsoidByName(ELLIPSOID_NAME_WGS84)!),
+  TransformableDate(ELLIPSOID_NAME_WGS84, null, Ellipsoid.WGS84),
   TransformableDate(
       '$ELLIPSOID_NAME_BESSEL1841: DHDN(Potsdam) 2001', 0, getEllipsoidByName(ELLIPSOID_NAME_BESSEL1841)!),
   TransformableDate(

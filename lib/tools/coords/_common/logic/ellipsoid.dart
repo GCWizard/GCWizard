@@ -41,6 +41,10 @@ class Ellipsoid {
     return e * e;
   }
 
+  static Ellipsoid get WGS84 {
+    return getEllipsoidByName(ELLIPSOID_NAME_WGS84)!;
+  }
+
   @override
   String toString() {
     return 'name: $name, a: $a, invf: $invf, type: $type';

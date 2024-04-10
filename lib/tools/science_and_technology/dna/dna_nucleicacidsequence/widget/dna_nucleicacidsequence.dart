@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/dna/logic/dna.dart';
@@ -94,12 +96,19 @@ class _DNANucleicAcidSequenceState extends State<DNANucleicAcidSequence> {
       return Column(
         children: <Widget>[
           GCWDefaultOutput(child: outputText),
-          includesM ? GCWTextDivider(text: i18n(context, 'common_note')) : Container(),
-          includesM
-              ? GCWText(
-                  text: i18n(context, 'dna_nucleicacidsequence_notem',
-                      parameters: [_currentDNAMode == GCWSwitchPosition.left ? 'ATG' : 'AUG']))
-              : Container()
+          includesM ?
+              Column(
+                children: [
+                  GCWTextDivider(text: i18n(context, 'common_note')),
+                  GCWText(
+                      text: i18n(context, 'dna_nucleicacidsequence_notem',
+                          parameters: [_currentDNAMode == GCWSwitchPosition.left ? 'ATG' : 'AUG'])),
+                  Container(height: 5 * DOUBLE_DEFAULT_MARGIN),
+                  GCWOutputText(
+                    text: outputText.replaceAll('M', i18n(context, 'dna_start')),
+                  )
+                ],
+              ) : Container()
         ],
       );
     }

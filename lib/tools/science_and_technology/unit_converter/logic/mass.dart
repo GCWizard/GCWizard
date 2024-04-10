@@ -59,6 +59,20 @@ final _MASS_FARBLINTZ = Mass(name: 'common_unit_mass_farb_name', symbol: 'fb', i
 
 final _MASS_FURBLINTZ = Mass(name: 'common_unit_mass_furb_name', symbol: 'Fb', inGram: 1000 * 1000 * 36.42538631);
 
+// https://de.wikipedia.org/wiki/Alte_Ma%C3%9Fe_und_Gewichte_(r%C3%B6mische_Antike)
+// https://en.wikipedia.org/wiki/Ancient_Roman_units_of_measurement
+double _granum = 0.04704;
+final _MASS_ROMAN_GRANUM = Mass(name: 'common_unit_mass_roman_granum_name', symbol: 'granum', inGram: _granum);
+final _MASS_ROMAN_CHALCUS = Mass(name: 'common_unit_mass_roman_chalcus_name', symbol: 'chalcus', inGram: _granum * 1.5);
+final _MASS_ROMAN_SILIQUA = Mass(name: 'common_unit_mass_roman_siliqua_name', symbol: 'siliqua', inGram: _granum * 4);
+final _MASS_ROMAN_OBULUS = Mass(name: 'common_unit_mass_roman_obulus_name', symbol: 'obulus', inGram: _granum * 12);
+final _MASS_ROMAN_SCRUPULUM = Mass(name: 'common_unit_mass_roman_scrupulum_name', symbol: 'scrupulum', inGram: _granum * 24);
+final _MASS_ROMAN_DRACHMA = Mass(name: 'common_unit_mass_roman_drachma_name', symbol: 'drachma', inGram: _granum * 72);
+final _MASS_ROMAN_SICILIUS = Mass(name: 'common_unit_mass_roman_sicilius_name', symbol: 'sicilius', inGram: _granum * 144);
+final _MASS_ROMAN_UNCIA = Mass(name: 'common_unit_mass_roman_uncia_name', symbol: 'uncia', inGram: _granum * 576);
+final _MASS_ROMAN_LIBRA = Mass(name: 'common_unit_mass_roman_libra_name', symbol: 'libra', inGram: _granum * 6912);
+final _MASS_ROMAN_MINA = Mass(name: 'common_unit_mass_roman_mina_name', symbol: 'mina', inGram: _granum * 9216);
+
 final List<Mass> baseMasses = [
   MASS_GRAM,
   _MASS_TON,
@@ -80,7 +94,17 @@ final List<Mass> baseMasses = [
   _MASS_ELEPHANT,
   _MASS_BLINTZ,
   _MASS_FARBLINTZ,
-  _MASS_FURBLINTZ
+  _MASS_FURBLINTZ,
+  _MASS_ROMAN_GRANUM,
+  _MASS_ROMAN_CHALCUS,
+  _MASS_ROMAN_SILIQUA,
+  _MASS_ROMAN_OBULUS,
+  _MASS_ROMAN_SCRUPULUM,
+  _MASS_ROMAN_DRACHMA,
+  _MASS_ROMAN_SICILIUS,
+  _MASS_ROMAN_UNCIA,
+  _MASS_ROMAN_LIBRA,
+  _MASS_ROMAN_MINA,
 ];
 
 final MASS_KILOGRAM = Mass(name: 'common_unit_mass_kg_name', symbol: 'kg', inGram: 1000.0);

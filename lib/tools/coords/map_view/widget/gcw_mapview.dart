@@ -85,6 +85,7 @@ class _GCWMapViewState extends State<GCWMapView> {
   bool _manuallyToggledPosition = false;
 
   var _isPolylineDrawing = false;
+  var _isPolylineDrawingFirstPoint = true;
   var _isPointsHidden = false;
 
   MapViewPersistenceAdapter? _persistanceAdapter;
@@ -168,9 +169,18 @@ class _GCWMapViewState extends State<GCWMapView> {
   }
 
   String _formatLengthOutput(double length) {
-    return NumberFormat('0.00').format(defaultLengthUnitGCWMapView.fromMeter(length)) +
+    var lengthUnit = defaultLengthUnitGCWMapView;
+    var format = '0.00';
+    if (lengthUnit.symbol == 'm' && length >= 10000) {
+      lengthUnit = LENGTH_KM;
+      if (length < 100000) {
+        format = '0.000';
+      }
+    }
+
+    return NumberFormat(format).format(lengthUnit.fromMeter(length)) +
         ' ' +
-        defaultLengthUnitGCWMapView.symbol;
+        lengthUnit.symbol;
   }
 
   String _formatBearingOutput(double bearing) {
@@ -225,6 +235,7 @@ class _GCWMapViewState extends State<GCWMapView> {
                                 if (widget.polylines.isEmpty) _persistanceAdapter!.createMapPolyline();
 
                                 _persistanceAdapter!.addMapPointIntoPolyline(newPoint, widget.polylines.last);
+                                _isPolylineDrawingFirstPoint = false;
                               }
                             }
                           });
@@ -322,8 +333,6 @@ class _GCWMapViewState extends State<GCWMapView> {
     var child = polyline.child;
     if (child is GCWMapLine) {
       var data = <DoubleText>[
-        DoubleText(
-            i18n(context, 'unitconverter_category_length') + ': ${_formatLengthOutput(child.length)}', child.length),
         DoubleText(
             i18n(context, 'unitconverter_category_length') + ': ${_formatLengthOutput(child.length)}', child.length),
         DoubleText(
@@ -440,6 +449,7 @@ class _GCWMapViewState extends State<GCWMapView> {
                               if (_persistanceAdapter != null) {
                                 _persistanceAdapter!.removeMapPolyline(child.parent);
                               }
+                              _isPolylineDrawing = false;
                             });
                           }),
                       GCWDialogButton(
@@ -449,6 +459,7 @@ class _GCWMapViewState extends State<GCWMapView> {
                               if (_persistanceAdapter != null) {
                                 _persistanceAdapter!.removeMapPolyline(child.parent, removePoints: true);
                               }
+                              _isPolylineDrawing = false;
                             });
                           }),
                     ]);
@@ -459,6 +470,7 @@ class _GCWMapViewState extends State<GCWMapView> {
                   if (_persistanceAdapter != null) {
                     _persistanceAdapter!.updateMapPoint(mapPoint);
                   }
+                  _isPolylineDrawing = false;
                 });
               }
             }),
@@ -621,6 +633,7 @@ class _GCWMapViewState extends State<GCWMapView> {
                 _persistanceAdapter!.createMapPolyline();
               }
             }
+            _isPolylineDrawingFirstPoint = true;
           });
         },
       ),
@@ -656,6 +669,7 @@ class _GCWMapViewState extends State<GCWMapView> {
                         if (_persistanceAdapter != null) {
                           _persistanceAdapter!.clearMapView();
                         }
+                        _isPolylineDrawing = false;
                       });
                     }),
               ]);
@@ -761,7 +775,7 @@ class _GCWMapViewState extends State<GCWMapView> {
     var coordinateFormat = defaultCoordinateFormat;
     if (point.coordinateFormat != null) coordinateFormat = point.coordinateFormat!;
 
-    return formatCoordOutput(point.point, coordinateFormat, getEllipsoidByName(ELLIPSOID_NAME_WGS84)!);
+    return formatCoordOutput(point.point, coordinateFormat, Ellipsoid.WGS84);
   }
 
   String? _buildPopupCoordinateDescription(GCWMapPoint point) {
@@ -889,7 +903,7 @@ class _GCWMapViewState extends State<GCWMapView> {
                 : Container(),
             _isOwnPosition(gcwMarker.mapPoint) || !widget.isEditable
                 ? Container()
-                : _isPolylineDrawing
+                : _isPolylineDrawing && widget.polylines.isNotEmpty && !_isPolylineDrawingFirstPoint
                     ? GCWDialogButton(
                         text: i18n(context, 'coords_openmap_linetohere'),
                         suppressClose: true,
@@ -909,6 +923,7 @@ class _GCWMapViewState extends State<GCWMapView> {
                         onPressed: () {
                           setState(() {
                             _isPolylineDrawing = true;
+                            _isPolylineDrawingFirstPoint = false;
 
                             if (_persistanceAdapter != null) {
                               var newPolyline = _persistanceAdapter!.createMapPolyline();

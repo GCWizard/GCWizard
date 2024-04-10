@@ -53,6 +53,20 @@ final _AREA_SECTION = Area(name: 'common_unit_area_section_name', symbol: '', in
 
 final _AREA_SOCCERFIELD = Area(name: 'common_unit_area_sofi_name', symbol: '', inSquareMeters: 68.0 * 105.0);
 
+// https://de.wikipedia.org/wiki/Alte_Ma%C3%9Fe_und_Gewichte_(r%C3%B6mische_Antike)
+// https://en.wikipedia.org/wiki/Ancient_Roman_units_of_measurement
+double _area_actusquadratus = 0.296 * 0.296 * 14400;
+final _AREA_ROMAN_PESQUADRATUS = Area(name: 'common_unit_area_roman_pesquadratus_name', symbol: 'pes quadratus', inSquareMeters: _area_actusquadratus / 14400);
+final _AREA_ROMAN_SCRIPULUM = Area(name: 'common_unit_area_roman_scripulum_name', symbol: 'scripulum', inSquareMeters: _area_actusquadratus / 144);
+final _AREA_ROMAN_ACNUA = Area(name: 'common_unit_area_roman_acnua_name', symbol: 'acnua', inSquareMeters: _area_actusquadratus / 120);
+final _AREA_ROMAN_ACTUSMINIMUS = Area(name: 'common_unit_area_roman_actusminimus_name', symbol: 'actus minimus', inSquareMeters: _area_actusquadratus / 30);
+final _AREA_ROMAN_CLIMA = Area(name: 'common_unit_area_roman_clima_name', symbol: 'clima', inSquareMeters: _area_actusquadratus / 4);
+final _AREA_ROMAN_ACTUSQUADRATUS = Area(name: 'common_unit_area_roman_actusquadratus_name', symbol: 'actus quadratus', inSquareMeters: _area_actusquadratus);
+final _AREA_ROMAN_IUGERUM = Area(name: 'common_unit_area_roman_iugerum_name', symbol: 'iugerum', inSquareMeters: _area_actusquadratus * 2);
+final _AREA_ROMAN_HEREDIUM = Area(name: 'common_unit_area_roman_heredium_name', symbol: 'heredium', inSquareMeters: _area_actusquadratus * 4);
+final _AREA_ROMAN_CENTURIA = Area(name: 'common_unit_area_roman_centuria_name', symbol: 'centuria', inSquareMeters: _area_actusquadratus * 400);
+final _AREA_ROMAN_SALTUS = Area(name: 'common_unit_area_roman_saltus_name', symbol: 'saltus', inSquareMeters: _area_actusquadratus * 1600);
+
 final List<Area> areas = [
   AREA_SQUAREMILLIMETER,
   _AREA_SQUARECENTIMETER,
@@ -70,5 +84,15 @@ final List<Area> areas = [
   _AREA_CENTIARE,
   _AREA_ACRE,
   _AREA_SECTION,
-  _AREA_SOCCERFIELD
+  _AREA_SOCCERFIELD,
+  _AREA_ROMAN_PESQUADRATUS,
+  _AREA_ROMAN_SCRIPULUM,
+  _AREA_ROMAN_ACNUA,
+  _AREA_ROMAN_ACTUSMINIMUS,
+  _AREA_ROMAN_CLIMA,
+  _AREA_ROMAN_ACTUSQUADRATUS,
+  _AREA_ROMAN_IUGERUM,
+  _AREA_ROMAN_HEREDIUM,
+  _AREA_ROMAN_CENTURIA,
+  _AREA_ROMAN_SALTUS,
 ];

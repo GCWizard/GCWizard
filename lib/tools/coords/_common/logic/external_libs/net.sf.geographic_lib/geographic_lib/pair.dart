@@ -22,9 +22,11 @@ class _Pair {
   /*
    * The first member of the pair.
    **********************************************************************/
-  late double first;
+  double first;
   /*
    * The second member of the pair.
    **********************************************************************/
-  late double second;
+  double second;
+
+  _Pair([this.first = double.nan, this.second = double.nan]);
 }

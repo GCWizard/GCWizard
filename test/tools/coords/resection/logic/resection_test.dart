@@ -47,7 +47,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('coord1: ${elem['coord1']}, angle12: ${elem['angle12']}, coord2: ${elem['coord2']}, angle23: ${elem['angle23']}, coord3: ${elem['coord3']}', () {
-        var actual = resection(elem['coord1'] as LatLng, elem['angle12'] as double, elem['coord2'] as LatLng, elem['angle23'] as double, elem['coord3'] as LatLng, getEllipsoidByName(ELLIPSOID_NAME_WGS84)!);
+        var actual = resection(elem['coord1'] as LatLng, elem['angle12'] as double, elem['coord2'] as LatLng, elem['angle23'] as double, elem['coord3'] as LatLng, Ellipsoid.WGS84);
         List<LatLng> expected = elem['expectedOutput'] as List<LatLng>;
         expect(actual.length, expected.length);
         for (int i = 0; i < actual.length; i++) {

@@ -1,52 +1,72 @@
 import 'package:gc_wizard/utils/collection_utils.dart';
+import 'package:gc_wizard/utils/string_utils.dart';
 
 part 'package:gc_wizard/tools/crypto_and_encodings/morse/logic/morse_data.dart';
 
-enum MORSE_CODE {MORSE_ITU, MORSE1838, MORSE1844, STEINHEIL, GERKE}
+enum MorseType {MORSE_ITU, MORSE1838, MORSE1844, STEINHEIL, GERKE}
 
-final Map<MORSE_CODE, String> MORSE_CODES = {
-  MORSE_CODE.MORSE_ITU: 'symboltables_morse',
-  MORSE_CODE.MORSE1838: 'symboltables_morse_1838_patent',
-  MORSE_CODE.MORSE1844: 'symboltables_morse_1844_vail',
-  MORSE_CODE.GERKE: 'symboltables_morse_gerke',
-  MORSE_CODE.STEINHEIL: 'symboltables_morse_steinheil',
+const String _MORSE_CHARACTER_DOTS = '.\u2022\u00B7\u16EB\u2981\u25CF\u2218\u25E6';
+//  \u2022  BULLET
+//  \u00B7  MIDDLE DOT
+//  \u16EB  RUNIC SINGLE PUNCTUATION
+//  \u2981  Z NOTATION SPOT
+//  \u25CF  BLACK CIRCLE
+//  \u2218  RING OPERATOR
+//  \u25E6  WHITE BULLET
+
+// normalizes dot, dash and space chars
+String normalizeMorseCharacters(String morse) {
+  // normalizeCharacters normalizes already ' ' and '-',
+  // but cannot normalize '.' because normally it is a common sentence char or digits delimiter
+
+  return normalizeCharacters(morse).split('').map((e) {
+    if (_MORSE_CHARACTER_DOTS.contains(e)) {
+      return '.';
+    }
+    return e;
+  }).join();
+}
+
+const Map<MorseType, String> MORSE_CODES = {
+  MorseType.MORSE_ITU: 'symboltables_morse',
+  MorseType.MORSE1838: 'symboltables_morse_1838_patent',
+  MorseType.MORSE1844: 'symboltables_morse_1844_vail',
+  MorseType.GERKE: 'symboltables_morse_gerke',
+  MorseType.STEINHEIL: 'symboltables_morse_steinheil',
 };
 
-final Map<MORSE_CODE, Map<String, String>> _AZTO_MORSE_CODE = {
-  MORSE_CODE.MORSE_ITU: _AZToMorse,
-  MORSE_CODE.MORSE1838: _AZToMorse1838,
-  MORSE_CODE.MORSE1844: _AZToMorse1844,
-  MORSE_CODE.GERKE: _AZToGerke,
-  MORSE_CODE.STEINHEIL: _AZToSteinheil,
+const Map<MorseType, Map<String, String>> _AZTO_MORSE_CODE = {
+  MorseType.MORSE_ITU: _AZToMorse,
+  MorseType.MORSE1838: _AZToMorse1838,
+  MorseType.MORSE1844: _AZToMorse1844,
+  MorseType.GERKE: _AZToGerke,
+  MorseType.STEINHEIL: _AZToSteinheil,
 };
 
-final Map<MORSE_CODE, Map<String, String>> _MORSE_CODETOAZ = {
-  MORSE_CODE.MORSE_ITU: _MorseToAZ,
-  MORSE_CODE.MORSE1838: _Morse1838ToAZ,
-  MORSE_CODE.MORSE1844: _Morse1844ToAZ,
-  MORSE_CODE.GERKE: _GerkeToAZ,
-  MORSE_CODE.STEINHEIL: _SteinheilToAZ,
+final Map<MorseType, Map<String, String>> _MORSE_CODETOAZ = {
+  MorseType.MORSE_ITU: _MorseToAZ,
+  MorseType.MORSE1838: _Morse1838ToAZ,
+  MorseType.MORSE1844: _Morse1844ToAZ,
+  MorseType.GERKE: _GerkeToAZ,
+  MorseType.STEINHEIL: _SteinheilToAZ,
 };
 
-
-
-String encodeMorse(String input, MORSE_CODE code) {
+String encodeMorse(String input, {MorseType type = MorseType.MORSE_ITU, String? spaceCharacter}) {
   if (input.isEmpty) return '';
 
   return input.toUpperCase().split('').map((character) {
     if (character == ' ') return '|';
 
-    var morse = _AZTO_MORSE_CODE[code]?[character];
+    var morse = _AZTO_MORSE_CODE[type]?[character];
     return morse ?? '';
-  }).join(String.fromCharCode(8195)); // using wide space
+  }).join(spaceCharacter ?? ' '); // using wide space
 }
 
-String decodeMorse(String input, MORSE_CODE code) {
+String decodeMorse(String input, {MorseType type = MorseType.MORSE_ITU}) {
   if (input.isEmpty) return '';
-
-  return input.split(RegExp(r'[^\.\-–·―\u202F/\|]')).map((morse) {
+  return normalizeMorseCharacters(input).split(RegExp(r'[^.\-·/|]')).map((morse) {
     if (morse == '|' || morse == '/') return ' ';
-    var character = _MORSE_CODETOAZ[code]?[morse];
+    var character = _MORSE_CODETOAZ[type]?[morse];
     return character ?? '';
   }).join();
 }

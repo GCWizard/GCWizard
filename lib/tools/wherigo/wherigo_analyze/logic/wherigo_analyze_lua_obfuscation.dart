@@ -2,23 +2,11 @@ part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/logic/wherigo_analyze.d
 
 void _deObfuscateAllTexts() {
   _LUAFile = _LUAFile.replaceAll('([[', '(').replaceAll(']])', ')');
+
   RegExp(r'' + _obfuscatorFunction + '\\(".*?"\\)').allMatches(_LUAFile).forEach((obfuscatedText) {
     var group = obfuscatedText.group(0);
     if (group == null) return;
-
     _LUAFile = _LUAFile.replaceAll(group, '"' + deObfuscateText(group, _obfuscatorFunction, _obfuscatorTable) + '"');
-  });
-
-  RegExp(r'' + _obfuscatorFunction + '\\((.|\\s)*?\\)').allMatches(_LUAFile).forEach((obfuscatedText) {
-    var group = obfuscatedText.group(0);
-    if (group == null) return;
-
-    _LUAFile = _LUAFile.replaceAll(
-        group,
-        '"' +
-            deObfuscateText(group.replaceAll(_obfuscatorFunction + '(', '').replaceAll(')', ''), _obfuscatorFunction,
-                _obfuscatorTable) +
-            '"');
   });
 }
 

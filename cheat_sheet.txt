@@ -224,6 +224,17 @@ Xcode 14 beta error: Stored properties cannot be marked potentially unavailable 
 -> pod install
 -> pod update
 
+Xcode: Command PhaseScriptExecution failed with a nonzero exit code
+->
+flutter clean
+flutter pub get
+flutter pub upgrade
+cd iOS
+pod install
+pod update
+
+XCode No access to accounts:
+Restart XCode or restart entire macOS
 
 ========
 Crowdin Script, install jq using Scoop.sh:

@@ -133,7 +133,7 @@ class SlippyMapCoordinate extends BaseCoordinateWithSubtypes {
   }
 
   @override
-  LatLng toLatLng() {
+  LatLng? toLatLng() {
     return _slippyMapToLatLon(this);
   }
 

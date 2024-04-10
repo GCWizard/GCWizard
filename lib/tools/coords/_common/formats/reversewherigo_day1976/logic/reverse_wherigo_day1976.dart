@@ -18,7 +18,7 @@ class ReverseWherigoDay1976Coordinate extends BaseCoordinate {
   ReverseWherigoDay1976Coordinate(this.s, this.t);
 
   @override
-  LatLng toLatLng() {
+  LatLng? toLatLng() {
     return _reverseWIGDay1976ToLatLon(this);
   }
 

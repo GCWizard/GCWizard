@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/permissions/user_location.dart';
+import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/mapcode/logic/external_libs/ctrynams_short.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/mapcode/logic/external_libs/mapcode.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_definition.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/coord_format_inputs/degrees_lat_textinputformatter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/coord_format_inputs/degrees_lon_textinputformatter.dart';
@@ -35,6 +38,7 @@ import 'package:gc_wizard/tools/coords/_common/formats/geohex/logic/geohex.dart'
 import 'package:gc_wizard/tools/coords/_common/formats/lambert/logic/lambert.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/maidenhead/logic/maidenhead.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/makaney/logic/makaney.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/mapcode/logic/mapcode.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/mercator/logic/mercator.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/natural_area_code/logic/natural_area_code.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/openlocationcode/logic/open_location_code.dart';
@@ -60,6 +64,7 @@ import 'package:gc_wizard/utils/string_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
+import 'package:prefs/prefs.dart';
 
 part 'package:gc_wizard/tools/coords/_common/formats/dec/widget/gcw_coords_dec.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/dmm/widget/gcw_coords_dmm.dart';
@@ -68,6 +73,7 @@ part 'package:gc_wizard/tools/coords/_common/formats/dutchgrid/widget/gcw_coords
 part 'package:gc_wizard/tools/coords/_common/formats/gausskrueger/widget/gcw_coords_gausskrueger.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/lambert/widget/gcw_coords_lambert.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/mercator/widget/gcw_coords_mercator.dart';
+part 'package:gc_wizard/tools/coords/_common/formats/mapcode/widget/gcw_coords_mapcode.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/openlocationcode/widget/gcw_coords_openlocationcode.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/quadtree/widget/gcw_coords_quadtree.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_day1976/widget/gcw_coords_reversewherigo_day1976.dart';
@@ -133,6 +139,7 @@ class _GCWCoordsState extends State<GCWCoords> {
     }
 
     _currentCoords = buildCoordinate(widget.coordsFormat, widget.coordinates ?? defaultCoordinate);
+    _currentCoordinateFormat = widget.coordsFormat;
   }
 
   BaseCoordinate _buildCoord(CoordinateFormat format) {
@@ -423,4 +430,5 @@ var allCoordinateWidgetInfos = [
   _GCWCoordWidgetInfoMakaney(),
   _GCWCoordWidgetInfoGeoHex(),
   _GCWCoordWidgetInfoGeo3x3(),
+  _GCWCoordWidgetInfoMapCode(),
 ];

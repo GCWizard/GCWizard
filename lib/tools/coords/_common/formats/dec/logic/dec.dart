@@ -34,7 +34,7 @@ class DECCoordinate extends BaseCoordinate {
   }
 
   @override
-  LatLng toLatLng() {
+  LatLng? toLatLng() {
     return decToLatLon(this);
   }
 

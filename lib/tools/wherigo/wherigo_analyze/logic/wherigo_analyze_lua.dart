@@ -321,10 +321,11 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
               .replaceAll('{', '')
               .replaceAll('}', '')
               .split(' = ');
-
-          _cartridgeVariables.add(WherigoVariableData(
-              VariableLUAName: _declaration[1].trim(), VariableName: _declaration[2].replaceAll('"', '')));
-          i++;
+          if (_declaration.length == 3) {
+            _cartridgeVariables.add(WherigoVariableData(
+                VariableLUAName: _declaration[1].trim(), VariableName: _declaration[2].replaceAll('"', '')));
+            i++;
+          }
         } else {
           i++;
           do {
@@ -456,8 +457,6 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
   // Save Answers to Input Objects
   //
   //for (var inputObject in _cartridgeInputs) {
-  print(_cartridgeInputs.length);
-  print(_Answers);
   for (int i = 0; i < _cartridgeInputs.length; i++) {
     _resultInputs.add(WherigoInputData(
         InputLUAName: _cartridgeInputs[i].InputLUAName,

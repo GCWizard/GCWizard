@@ -68,12 +68,12 @@ String _morse(Object text, Object mode, Object code) {
     return '';
   }
 
-  final Map<int, MORSE_CODE> CODETABLE = {
-    0: MORSE_CODE.MORSE_ITU,
-    10: MORSE_CODE.MORSE1838,
-    11: MORSE_CODE.MORSE1844,
-    2: MORSE_CODE.GERKE,
-    3: MORSE_CODE.STEINHEIL,
+  final Map<int, MorseType> CODETABLE = {
+    0: MorseType.MORSE_ITU,
+    10: MorseType.MORSE1838,
+    11: MorseType.MORSE1844,
+    2: MorseType.GERKE,
+    3: MorseType.STEINHEIL,
   };
 
   String output = '';
@@ -84,10 +84,10 @@ String _morse(Object text, Object mode, Object code) {
 
   switch (mode) {
     case _DECODE:
-      output = decodeMorse(text as String, CODETABLE[code]!);
+      output = decodeMorse(text as String, type: CODETABLE[code]!);
       break;
     case _ENCODE:
-      output = encodeMorse(text as String, CODETABLE[code]!);
+      output = encodeMorse(text as String, type: CODETABLE[code]!);
       break;
     default: return '';
   }

@@ -22,7 +22,7 @@ class DutchGridCoordinate extends BaseCoordinate {
   DutchGridCoordinate(this.x, this.y);
 
   @override
-  LatLng toLatLng() {
+  LatLng? toLatLng() {
     return _dutchGridToLatLon(this);
   }
 

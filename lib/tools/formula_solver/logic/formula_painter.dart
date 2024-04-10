@@ -1,3 +1,4 @@
+import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitution.dart';
 import 'package:gc_wizard/tools/formula_solver/logic/formula_parser.dart';
 import 'package:gc_wizard/tools/formula_solver/persistence/model.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
@@ -22,6 +23,7 @@ class FormulaPainter {
   var _variables = <FormulaValue>[];
   var _functions = <String>[];
   var _constants = <String>[];
+  var _formulaNames = <String>[];
   late int _formulaId;
   late bool _operatorBevor;
   var _stringBevor = false;
@@ -32,6 +34,7 @@ class FormulaPainter {
   late String _functionsRegEx;
   late String _constantsRegEx;
   late String _variablesRegEx;
+  late String _formulaNamesRegEx;
 
   FormulaPainter() {
     _functions = _toUpperCaseAndSort(FormulaParser.availableParserFunctions());
@@ -42,7 +45,7 @@ class FormulaPainter {
     _constantsRegEx = _constants.map((constant) => constant).join('|');
   }
 
-  String paintFormula(String formula, List<FormulaValue> values, int formulaIndex, bool coloredFormulas) {
+  String paintFormula(String formula, List<FormulaValue> values, int formulaIndex, List<String> formulaNames, bool coloredFormulas) {
     var result = _buildResultString(_Text, formula.length);
     if (!coloredFormulas) return result;
 
@@ -52,7 +55,12 @@ class FormulaPainter {
     _variables = values.map((value) => FormulaValue(value.key.toUpperCase(), value.value, type: value.type)).toList();
 
     _variables = _variablesSort(_variables);
-    _variablesRegEx = _variables.map((variable) => variable.key).join('|');
+    _variablesRegEx = _variables.map((variable) => _buildRegExString(variable.key)).join('|');
+
+    _formulaNames = formulaNames.map((name) => name.toUpperCase()).toList();
+    formulaNames.removeWhere((name) => name.isEmpty);
+    formulaNames.sort(); // not sort or remove _formulaNames
+    _formulaNamesRegEx = formulaNames.map((name) => _buildRegExString(name.toUpperCase())).join('|');
 
     formula = normalizeCharacters(formula);
     formula = FormulaParser.normalizeMathematicalSymbols(formula);
@@ -122,9 +130,12 @@ class FormulaPainter {
 
     // reference
     if (offset == 0) {
-      _parserResult = _isFormulaReference(formula);
+      _parserResult = _isInvalidFormulaReference(formula);
+      var hasError = _parserResult != null;
+      _parserResult ??= _isFormulaReference(formula);
+
       if (_parserResult != null) {
-        result = _coloredFormulaReference(result, _parserResult);
+        result = _coloredFormulaReference(result, _parserResult, hasError);
         offset = _calcOffset(_parserResult);
       } else if (onlyFormulaReference) {
         offset = 1;
@@ -297,6 +308,19 @@ class FormulaPainter {
     return result;
   }
 
+  String _buildRegExString(String value) {
+    const replaceMap = {
+      r"(": r"\(",
+      r")": r"\)",
+      r".": r"\.",
+      r"+": r"\+",
+      r"-": r"\-",
+      r"|": r"\|",
+      r"\": r"\\",
+    };
+    return substitution(value, replaceMap);
+  }
+
   List<String>? _isSpaces(String formula) {
     RegExp regex = RegExp(r'^(\s*)');
     var match = regex.firstMatch(formula);
@@ -316,18 +340,52 @@ class FormulaPainter {
   }
 
   List<String>? _isFormulaReference(String formula) {
-    RegExp regex = RegExp(r'^({)([1-9]\d*)(})');
+    RegExp regex = RegExp(r'^({\s*)(.*?)(\s*})');
     var match = regex.firstMatch(formula);
 
-    return (match == null) ? null : [match.group(1)!, match.group(2)!, match.group(3)!];
+    if (match != null) {
+      RegExp regex = RegExp(r'^({\s*)([1-9]\d*?)(\s*})');
+      var match1 = regex.firstMatch(formula);
+
+      if (match1 == null) {
+        regex = RegExp(r'^({\s*)(' + _formulaNamesRegEx + r')(\s*})');
+        match1 = regex.firstMatch(formula);
+      }
+
+      return (match1 == null) ? null : [match.group(1)!, match.group(2)!, match.group(3)!];
+    }
+    return null;
   }
 
-  String _coloredFormulaReference(String result, List<String> parts) {
+  List<String>? _isInvalidFormulaReference(String formula) {
+    RegExp regex = RegExp(r'^({\s*)(.*?)(\s*})');
+    var match = regex.firstMatch(formula);
+
+    if (match != null) {
+      return (_isFormulaReference(match.group(0)!) != null) ? null : [match.group(1)!, match.group(2)!, match.group(3)!];
+    }
+    return null;
+  }
+
+  String _coloredFormulaReference(String result, List<String> parts, bool hasError) {
     result = _replaceRange(result, 0, parts[0].length, OFRB);
-    if ((int.tryParse(parts[1]) ?? 9999999) < _formulaId) {
-      result = _replaceRange(result, _calcOffset(parts, count: 1), parts[1].length, OFRB);
-    } else {
+
+    if (hasError) {
       result = _replaceRange(result, _calcOffset(parts, count: 1), parts[1].length, OFRBError);
+    } else {
+      var index = int.tryParse(parts[1]);
+      if (index != null && index < _formulaId) {
+        result = _replaceRange(result, _calcOffset(parts, count: 1), parts[1].length, OFRB);
+      } else if (index != null) {
+        result = _replaceRange(result, _calcOffset(parts, count: 1), parts[1].length, OFRBError);
+      } else {
+        index = _formulaNames.indexOf(parts[1]);
+        if (index >= 0 && index < _formulaId) {
+          result = _replaceRange(result, _calcOffset(parts, count: 1), parts[1].length, OFRB);
+        } else {
+          result = _replaceRange(result, _calcOffset(parts, count: 1), parts[1].length, OFRBError);
+        }
+      }
     }
     result = _replaceRange(result, _calcOffset(parts, count: 2), parts[2].length, OFRB);
 

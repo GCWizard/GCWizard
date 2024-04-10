@@ -103,6 +103,7 @@ const Map<String, String> _COMMON_SYMBOLS = {
   "E_grave": "È",
   "E_eth": "Ð", // here for backwards compatibility; new: Eth1
   "E_trema": "Ë",
+  "G_dot": "Ġ",
   "H_dot_below": "Ḥ",
   "I_acute": "Í",
   "I_grave": "Ì",
@@ -112,6 +113,7 @@ const Map<String, String> _COMMON_SYMBOLS = {
   "N_acute": "Ń",
   "N_tilde": "Ñ",
   "O_acute": "Ó",
+  "O_cedille": "O̧",
   "O_grave": "Ò",
   "O_circumflex": "Ô",
   "O_slash": "Ø",
@@ -155,6 +157,7 @@ const Map<String, String> _COMMON_SYMBOLS = {
   "e_grave": "è",
   "e_eth": "ð", // here for backwards compatibility; new: eth1
   "e_trema": "ë",
+  "g_dot": "ġ",
   "h_dot_below": "ḥ",
   "i_acute": "í",
   "i_circumflex": "î",
@@ -163,6 +166,7 @@ const Map<String, String> _COMMON_SYMBOLS = {
   "l_slash": "ł",
   "n_tilde": "ñ",
   "o_acute": "ó",
+  "o_cedille": "o̧",
   "o_circumflex": "o",
   "o_grave": "ò",
   "o_slash": "ø",
@@ -192,4 +196,12 @@ const Map<String, String> _COMMON_SYMBOLS = {
   "gamma": "γ",
   "delta": "δ",
   "epsilon": "ε",
+  "Yogh": "Ȝ",
+  "yogh": "ȝ",
+  "k_bar_above": "k̄",
+  "K_bar_above": "K̄",
+  "Yr": "Ʀ",
+  "yr": "ʀ",
+  "Eng": "Ŋ",
+  "eng": "ŋ"
 };

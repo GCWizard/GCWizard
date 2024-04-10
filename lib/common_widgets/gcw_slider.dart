@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
@@ -11,6 +12,8 @@ class GCWSlider extends StatefulWidget {
   final double min;
   final double max;
   final bool suppressReset;
+  final Object? leftValue;
+  final Object? rightValue;
 
   const GCWSlider(
       {Key? key,
@@ -20,7 +23,9 @@ class GCWSlider extends StatefulWidget {
       this.onChangeEnd,
       required this.min,
       required this.max,
-      this.suppressReset = false})
+      this.suppressReset = false,
+      this.leftValue,
+      this.rightValue})
       : super(key: key);
 
   @override
@@ -44,8 +49,16 @@ class _GCWSliderState extends State<GCWSlider> {
     return Row(
       children: [
         if (widget.title.isNotEmpty) Expanded(child: GCWText(text: widget.title + ':')),
+        if (widget.leftValue != null) Expanded(
+          flex: 1,
+          child: (widget.leftValue is String) ? GCWText(
+            text: widget.leftValue as String,
+            align: Alignment.center,
+            style: gcwTextStyle(),
+          ) : widget.leftValue as Widget
+        ),
         Expanded(
-          flex: 3,
+          flex: 6,
           child: Slider(
             value: widget.value,
             min: widget.min,
@@ -64,6 +77,14 @@ class _GCWSliderState extends State<GCWSlider> {
             activeColor: themeColors().switchThumb2(),
             inactiveColor: themeColors().switchTrack2(),
           ),
+        ),
+        if (widget.rightValue != null) Expanded(
+            flex: 1,
+            child: (widget.rightValue is String) ? GCWText(
+              text: widget.rightValue as String,
+              align: Alignment.center,
+              style: gcwTextStyle(),
+            ) : widget.rightValue as Widget
         ),
         if (!widget.suppressReset)
           GCWIconButton(

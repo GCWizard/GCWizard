@@ -139,12 +139,13 @@ GeohashCoordinate _latLonToGeohash(LatLng coords, int geohashLength) {
 
 LatLng? _geohashToLatLon(GeohashCoordinate geohash) {
   try {
-    var _geohash = geohash.text.toLowerCase();
-    var binary = _geohash
-        .split('')
-        .map((character) => _getBinaryByCharacter(character))
-        .where((element) => element != null)
-        .join();
+    var _geohash = geohash.text.trim().toLowerCase();
+    String binary = '';
+    for (String character in _geohash.split('')) {
+      var char = _getBinaryByCharacter(character);
+      if (char == null) return null;
+      binary = binary + char;
+    }
 
     var latBinary = '';
     var lonBinary = '';

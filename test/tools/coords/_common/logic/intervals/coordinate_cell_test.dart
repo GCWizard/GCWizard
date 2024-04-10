@@ -8,7 +8,7 @@ void main() {
     CoordinateCell cell = CoordinateCell(
         latInterval: Interval(a: degToRadian(-10.0), b: degToRadian(10.0)),
         lonInterval: Interval(a: degToRadian(-10.0), b: degToRadian(10.0)),
-        ellipsoid: getEllipsoidByName(ELLIPSOID_NAME_WGS84)!
+        ellipsoid: Ellipsoid.WGS84
     );
 
     List<Map<String, Object?>> _inputsToExpected = [

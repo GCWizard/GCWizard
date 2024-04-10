@@ -2,7 +2,7 @@ import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/games/number_pyramid/logic/number_pyramid_solver.dart';
 
 void main() {
-  group("Sudoku.solve:", () {
+  group("number_pyramid.solve:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : [[null], [null, null], [3, null, 4], [null, 2, 2, null]],
         'expectedOutput' : [[15], [7, 8], [3, 4, 4], [1, 2, 2, 2]],

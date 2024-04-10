@@ -301,6 +301,10 @@ void main() {
         'expectedOutput': emptyListVariable,
       },
       {
+        'input': testInputVARIABLEGC3897N,
+        'expectedOutput': emptyListVariable,
+      },
+      {
         'input': testInputVARIABLE_BUILDERVAR,
         'expectedOutput': testOutputVARIABLE_BUILDERVAR,
       },
@@ -408,6 +412,27 @@ void main() {
         'input': testInputANSWERGC,
         'expectedOutput': testOutputANSWERGC,
       },
+      {
+        'input': testInputANSWERGCWandernMitWalter01,
+        'expectedOutput': testOutputANSWERGCWandernMitWalter01,
+      },
+      {
+        'input': testInputANSWERGCWandernMitWalter02,
+        'expectedOutput': testOutputANSWERGCWandernMitWalter02,
+      },
+      {
+        'input': testInputANSWERGCMighla01,
+        'expectedOutput': testOutputANSWERGCMighla01,
+      },
+      {
+        'input': testInputANSWEREdersee_48h5,
+        'expectedOutput': testOutputANSWEREdersee_48h5,
+      },
+      {
+        'input': testInputANSWEREdersee_VKB,
+        'expectedOutput': testOutputANSWEREdersee_VKB,
+      },
+
     ];
 
     for (var elem in _inputsToExpected) {

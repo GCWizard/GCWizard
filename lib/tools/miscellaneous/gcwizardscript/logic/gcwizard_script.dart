@@ -53,6 +53,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitu
 import 'package:gc_wizard/tools/science_and_technology/complex_numbers/logic/complex_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/cross_sums/logic/crosstotals.dart';
 import 'package:gc_wizard/tools/science_and_technology/divisor/logic/divisor.dart';
+import 'package:gc_wizard/tools/science_and_technology/ieee754/logic/ieee754.dart';
 import 'package:gc_wizard/tools/science_and_technology/mathematical_constants/logic/mathematical_constants.dart';
 import 'package:gc_wizard/tools/science_and_technology/numeral_bases/logic/numeral_bases.dart';
 import 'package:gc_wizard/tools/science_and_technology/physical_constants/logic/physical_constants.dart';

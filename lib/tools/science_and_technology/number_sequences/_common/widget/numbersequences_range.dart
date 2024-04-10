@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
+import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
@@ -41,6 +42,10 @@ class _NumberSequenceRangeState extends State<NumberSequenceRange> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        GCWTextDivider(
+          text: i18n(context, NUMBERSEQUENCE_TITLE[widget.mode]!),
+          style: const TextStyle(fontSize: 20),
+        ),
         GCWIntegerSpinner(
           title: i18n(context, 'numbersequence_inputstart'),
           value: _currentInputStart,
@@ -78,7 +83,7 @@ class _NumberSequenceRangeState extends State<NumberSequenceRange> {
 
   void _buildOutput() {
     List<List<String>> columnData = [];
-    getNumbersInRange(widget.mode, _currentInputStart, _currentInputStop).forEach((element) {
+    numberSequencesGetNumbersInRange(widget.mode, _currentInputStart, _currentInputStop).forEach((element) {
       columnData.add([element.toString()]);
     });
 

@@ -7,22 +7,12 @@ class GCD extends StatefulWidget {
   const GCD({Key? key}) : super(key: key);
 
   @override
-  GCDState createState() => GCDState();
+  _GCDState createState() => _GCDState();
 }
 
-class GCDState extends State<GCD> {
+class _GCDState extends State<GCD> {
   int _currentInputA = 0;
   int _currentInputB = 0;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {

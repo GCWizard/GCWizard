@@ -181,6 +181,12 @@ void _initDefaultSettings(PreferencesInitMode mode, {String reinitSinglePreferen
     Prefs.setString(PREFERENCE_DEFAULT_LENGTH_UNIT, 'm');
   }
 
+  if (reinitSinglePreference == PREFERENCE_EAN_DEFAULT_OPENGTIN_APIKEY ||
+      _reinitAll ||
+      Prefs.get(PREFERENCE_EAN_DEFAULT_OPENGTIN_APIKEY) == null) {
+    Prefs.setString(PREFERENCE_EAN_DEFAULT_OPENGTIN_APIKEY, '');
+  }
+
   var _favorites = Prefs.getStringList(PREFERENCE_FAVORITES);
   if (reinitSinglePreference == PREFERENCE_FAVORITES ||
       _reinitAll ||

@@ -125,7 +125,7 @@ class DMSCoordinate extends BaseCoordinate {
   DMSCoordinate(this.dmsLatitude, this.dmsLongitude);
 
   @override
-  LatLng toLatLng() {
+  LatLng? toLatLng() {
     return _dmsToLatLon(this);
   }
 

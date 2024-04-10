@@ -378,4 +378,27 @@ void main() {
       });
     }
   });
+
+  group("StringUtils.splitGroupsOfSameCharacters", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '', 'expectedOutput' : <String>[]},
+      {'input' : 'a', 'expectedOutput' : ['a']},
+      {'input' : 'aa', 'expectedOutput' : ['aa']},
+      {'input' : 'aab', 'expectedOutput' : ['aa', 'b']},
+      {'input' : 'aba', 'expectedOutput' : ['a', 'b', 'a']},
+      {'input' : 'aabcc', 'expectedOutput' : ['aa', 'b', 'cc']},
+      {'input' : 'abbbcc', 'expectedOutput' : ['a', 'bbb', 'cc']},
+      {'input' : 'ab1bb###cc22 aa', 'expectedOutput' : ['a', 'b', '1', 'bb', '###', 'cc', '22', ' ', 'aa']},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}', () {
+        var _actual = splitGroupsOfSameCharacters(elem['input'] as String);
+        expect(_actual.length, (elem['expectedOutput'] as List<String>).length);
+        for (int i = 0; i < _actual.length; i++) {
+          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
+        }
+      });
+    }
+  });
 }

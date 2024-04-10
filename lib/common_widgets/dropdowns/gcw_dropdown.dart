@@ -10,6 +10,8 @@ class GCWDropDown<T> extends StatefulWidget {
   final DropdownButtonBuilder? selectedItemBuilder;
   final String? title;
   final bool alternativeColor;
+  final List<int> flexValues;
+  static const _flexValues = [1, 3];
 
   const GCWDropDown(
       {Key? key,
@@ -18,7 +20,8 @@ class GCWDropDown<T> extends StatefulWidget {
       required this.onChanged,
       this.selectedItemBuilder,
       this.title,
-      this.alternativeColor = false})
+      this.alternativeColor = false,
+      this.flexValues = _flexValues})
       : super(key: key);
 
   @override
@@ -41,12 +44,12 @@ class _GCWDropDownState<T> extends State<GCWDropDown<T>> {
       children: [
         if (widget.title != null && widget.title!.isNotEmpty)
           Expanded(
-              flex: 1,
+              flex: widget.flexValues[0],
               child: GCWText(
                 text: widget.title! + ':',
               )),
         Expanded(
-            flex: 3,
+            flex: widget.flexValues[1],
             child: ConstrainedBox(
                 constraints: const BoxConstraints(minHeight: 39),
                 child: Container(

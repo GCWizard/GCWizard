@@ -134,7 +134,7 @@ class _ImageFlipRotateState extends State<ImageFlipRotate> {
           ),
         if (_currentImage != null)
           GCWButton(
-            text: i18n(context, 'image_fliprotate_reset'),
+            text: i18n(context, 'common_reset'),
             onPressed: () {
               _resetInputs();
             },

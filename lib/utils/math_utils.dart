@@ -1,10 +1,5 @@
 import 'dart:math';
 
-/// Hyperbolic Sine.
-double sinh(double angle) {
-  return (exp(angle) - exp(-angle)) / 2;
-}
-
 double degreesToRadian(double degrees) {
   return degrees * pi / 180.0;
 }

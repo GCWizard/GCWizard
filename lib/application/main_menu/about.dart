@@ -205,6 +205,7 @@ class _AboutState extends State<About> {
                       text: [
                     '4-Everus',
                     '83_Seth',
+                    'Amelie2401',
                     'Andreas E.',
                     'baer2006',
                     'Bleg1966',
@@ -226,6 +227,7 @@ class _AboutState extends State<About> {
                     'Jonas M.',
                     'kinderarzt',
                     'Klumpenkukuk',
+                    'Lue',
                     'LupiMus',
                     'Lutz \'DL3BZZ\'',
                     'mahoplus',
@@ -254,6 +256,7 @@ class _AboutState extends State<About> {
                     'tebarius',
                     'tomcat06',
                     'trekkiefreak76',
+                    'Vlad_Tepes',
                     'Vyrembi',
                     'waldstadt',
                     'WeinWalker',

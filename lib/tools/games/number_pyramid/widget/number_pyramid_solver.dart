@@ -134,30 +134,30 @@ class NumberPyramidSolverState extends State<NumberPyramidSolver> {
             ),
             Expanded(
                 child: Container(
-              padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
-              child: GCWButton(
-                text: i18n(context, 'sudokusolver_clearcalculated'),
-                onPressed: () {
-                  setState(() {
-                    _hideInputTextBox();
-                    _currentBoard.removeCalculated();
-                  });
-                },
-              ),
-            )),
+                  padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
+                  child: GCWButton(
+                    text: i18n(context, 'sudokusolver_clearcalculated'),
+                    onPressed: () {
+                      setState(() {
+                        _hideInputTextBox();
+                        _currentBoard.removeCalculated();
+                      });
+                    },
+                  ),
+                )),
             Expanded(
                 child: Container(
-              padding: const EdgeInsets.only(left: DEFAULT_MARGIN),
-              child: GCWButton(
-                text: i18n(context, 'sudokusolver_clearall'),
-                onPressed: () {
-                  setState(() {
-                    _hideInputTextBox();
-                    _currentBoard = NumberPyramid(_rowCount);
-                  });
-                },
-              ),
-            ))
+                  padding: const EdgeInsets.only(left: DEFAULT_MARGIN),
+                  child: GCWButton(
+                    text: i18n(context, 'sudokusolver_clearall'),
+                    onPressed: () {
+                      setState(() {
+                        _hideInputTextBox();
+                        _currentBoard = NumberPyramid(_rowCount);
+                      });
+                    },
+                  ),
+                ))
           ],
         )
       ],

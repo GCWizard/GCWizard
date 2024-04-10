@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
@@ -34,6 +35,10 @@ class _NumberSequenceCheckNumberState extends State<NumberSequenceCheckNumber> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        GCWTextDivider(
+          text: i18n(context, NUMBERSEQUENCE_TITLE[widget.mode]!),
+          style: const TextStyle(fontSize: 20),
+        ),
         GCWTextField(
           controller: currentInputController,
           inputFormatters: [
@@ -55,7 +60,7 @@ class _NumberSequenceCheckNumberState extends State<NumberSequenceCheckNumber> {
   }
 
   Widget _buildOutput() {
-    var checked = checkNumber(widget.mode, BigInt.parse(_currentInputN), widget.maxIndex);
+    var checked = numberSequencesCheckNumber(widget.mode, BigInt.parse(_currentInputN), widget.maxIndex);
 
     String output;
     if (checked >= 0) {

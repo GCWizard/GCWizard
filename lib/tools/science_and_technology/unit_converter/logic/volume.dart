@@ -175,6 +175,30 @@ final _VOLUME_WASHINGMACHINE =
 final _VOLUME_NGOGN =
     Volume(name: 'common_unit_volume_ngogn_name', symbol: 'n', inCubicMeters: 0.022633 * 0.022633 * 0.022633);
 
+// https://de.wikipedia.org/wiki/Alte_Ma%C3%9Fe_und_Gewichte_(r%C3%B6mische_Antike)
+// https://en.wikipedia.org/wiki/Ancient_Roman_units_of_measurement
+double _sester = 0.296 * 0.296 * 0.296 / 48;
+
+final _VOLUME_ROMAN_LIGULA = Volume(name: 'common_unit_volume_roman_ligulum_name', symbol: 'ligula', inCubicMeters: _sester / 48);
+final _VOLUME_ROMAN_CYATHUS = Volume(name: 'common_unit_volume_roman_cyathus_name', symbol: 'cyathus', inCubicMeters: _sester / 12);
+final _VOLUME_ROMAN_ACETABULUM = Volume(name: 'common_unit_volume_roman_acetabulum_name', symbol: 'acetabulum', inCubicMeters: _sester / 8);
+final _VOLUME_ROMAN_SEXTANS = Volume(name: 'common_unit_volume_roman_sextans_name', symbol: 'sextans', inCubicMeters: _sester / 6);
+final _VOLUME_ROMAN_TRIENS = Volume(name: 'common_unit_volume_roman_triens_name', symbol: 'triens', inCubicMeters: _sester / 3);
+final _VOLUME_ROMAN_HEMINA = Volume(name: 'common_unit_volume_roman_hemina_name', symbol: 'hemina', inCubicMeters: _sester / 2);
+final _VOLUME_ROMAN_CHEONIX = Volume(name: 'common_unit_volume_roman_cheonix_name', symbol: 'cheonix', inCubicMeters: _sester * 2 / 3);
+final _VOLUME_ROMAN_SEXTARIUS = Volume(name: 'common_unit_volume_roman_sextarius_name', symbol: 'sextarius', inCubicMeters: _sester);
+final _VOLUME_ROMAN_CONGIUS = Volume(name: 'common_unit_volume_roman_congius_name', symbol: 'congius', inCubicMeters: _sester * 6);
+final _VOLUME_ROMAN_URNA = Volume(name: 'common_unit_volume_roman_urna_name', symbol: 'urna', inCubicMeters: _sester * 24);
+final _VOLUME_ROMAN_AMPHORA = Volume(name: 'common_unit_volume_roman_amphora_name', symbol: 'amphora', inCubicMeters: _sester * 48);
+final _VOLUME_ROMAN_CULLEUS = Volume(name: 'common_unit_volume_roman_culleus_name', symbol: 'culleus', inCubicMeters: _sester * 960);
+
+//Römische Getreidemaße
+double _modius = 0.296 * 0.296 * 0.296;
+final _VOLUME_ROMAN_QUARTARIUS = Volume(name: 'common_unit_volume_roman_quartarius_name', symbol: 'quartarius', inCubicMeters: _modius / 64);
+final _VOLUME_ROMAN_SEMODIUS = Volume(name: 'common_unit_volume_roman_semodius_name', symbol: 'semodius', inCubicMeters: _modius / 2);
+final _VOLUME_ROMAN_MODIUS = Volume(name: 'common_unit_volume_roman_modius_name', symbol: 'modius', inCubicMeters: _modius);
+final _VOLUME_ROMAN_QUADRANTAL = Volume(name: 'common_unit_volume_roman_quadrantal_name', symbol: 'quadrantal', inCubicMeters: _modius * 3);
+
 final List<Volume> volumes = [
   _VOLUME_CUBICMILLIMETER,
   _VOLUME_CUBICCENTIMETER,
@@ -231,4 +255,20 @@ final List<Volume> volumes = [
   _VOLUME_WOODKLAFTER,
   _VOLUME_WASHINGMACHINE,
   _VOLUME_NGOGN,
+  _VOLUME_ROMAN_LIGULA,
+  _VOLUME_ROMAN_CYATHUS,
+  _VOLUME_ROMAN_ACETABULUM,
+  _VOLUME_ROMAN_SEXTANS,
+  _VOLUME_ROMAN_TRIENS,
+  _VOLUME_ROMAN_HEMINA,
+  _VOLUME_ROMAN_CHEONIX,
+  _VOLUME_ROMAN_SEXTARIUS,
+  _VOLUME_ROMAN_CONGIUS,
+  _VOLUME_ROMAN_URNA,
+  _VOLUME_ROMAN_AMPHORA,
+  _VOLUME_ROMAN_CULLEUS,
+  _VOLUME_ROMAN_QUARTARIUS,
+  _VOLUME_ROMAN_SEMODIUS,
+  _VOLUME_ROMAN_MODIUS,
+  _VOLUME_ROMAN_QUADRANTAL,
 ];

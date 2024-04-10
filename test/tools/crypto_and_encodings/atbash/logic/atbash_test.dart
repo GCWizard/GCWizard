@@ -31,7 +31,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = atbash(elem['input'] as String);
+        var _actual = atbash(elem['input'] as String, historicHebrew: true);
         expect(_actual, elem['expectedOutput']);
       });
     }

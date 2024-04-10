@@ -37,6 +37,9 @@ TrifidOutput encryptTrifid(String input, int blockSize,
       } else if (incompleteCustomAlphabet(alphabet)) {
         return TrifidOutput('trifid_invalid_alphabet', '');
       }
+      break;
+    default:
+      break;
   }
   EncodeMatrix = _buildEncodeMatrix(alphabet);
   DecodeMatrix = switchMapKeyValue(EncodeMatrix);
@@ -93,6 +96,9 @@ TrifidOutput decryptTrifid(String input, int blockSize,
       } else if (incompleteCustomAlphabet(alphabet)) {
         return TrifidOutput('trifid_invalid_alphabet', '');
       }
+      break;
+    default:
+      break;
   }
   EncodeMatrix = _buildEncodeMatrix(alphabet);
   DecodeMatrix = switchMapKeyValue(EncodeMatrix);

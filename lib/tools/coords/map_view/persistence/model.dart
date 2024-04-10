@@ -1,7 +1,9 @@
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/utils/data_type_utils/object_type_utils.dart';
 import 'package:gc_wizard/utils/json_utils.dart';
+import 'package:gc_wizard/utils/string_utils.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/color_utils.dart';
 import 'package:uuid/uuid.dart';
 
@@ -43,7 +45,7 @@ class MapViewDAO {
       for (var element in polylinesRaw) {
         var polyline = asJsonMapOrNull(element);
         if (polyline == null) continue;
-
+        
         polylines.add(MapPolylineDAO.fromJson(polyline));
       }
     }
@@ -104,19 +106,25 @@ class MapPointDAO {
   }
 }
 
+String gcwMapLineTypeFromEnumValue(GCWMapLineType type) {
+  return enumName(type.toString()).toLowerCase();
+}
+
 class MapPolylineDAO {
   String uuid;
   List<String> pointUUIDs;
   String color;
+  String type;
 
-  MapPolylineDAO(this.uuid, this.pointUUIDs, this.color);
+  MapPolylineDAO(this.uuid, this.pointUUIDs, this.color, this.type);
 
-  Map<String, Object?> toMap() => {'uuid': uuid, 'pointUUIDs': pointUUIDs, 'color': color};
+  Map<String, Object?> toMap() => {'uuid': uuid, 'pointUUIDs': pointUUIDs, 'color': color, 'type': type};
 
   MapPolylineDAO.fromJson(Map<String, Object?> json)
       : uuid = toStringOrNull(json['uuid']) ?? const Uuid().v4(),
         pointUUIDs = List<String>.from(toStringListOrNull(json['pointUUIDs']) ?? []),
-        color = toStringOrNull(json['color']) ?? colorToHexString(COLOR_MAP_POLYLINE);
+        color = toStringOrNull(json['color']) ?? colorToHexString(COLOR_MAP_POLYLINE),
+        type = toStringOrNull(json['type']) ?? gcwMapLineTypeFromEnumValue(GCWMapLineType.GEODETIC);
 
   @override
   String toString() {

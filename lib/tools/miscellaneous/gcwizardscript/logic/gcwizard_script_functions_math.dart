@@ -415,3 +415,32 @@ double _sum(
     return result;
   }
 }
+
+String _float2binary(Object number, Object? bitLength){
+  String result = '';
+  if (_isNotANumber(number) || _isNotAInt(bitLength)){
+    _handleError(_INVALIDTYPECAST);
+  } else {
+    if (bitLength as int == 32) {
+      result = encodeIEEE754(number.toString(), true);
+    } else if (bitLength == 64) {
+      result = encodeIEEE754(number.toString(), false);
+    } else {
+      result = '';
+    }
+  }
+  return result;
+}
+
+double _binary2float(Object? binary){
+  double result = 0.0;
+  if (_isNotAString(binary)) {
+    _handleError(_INVALIDTYPECAST);
+  } else {
+    String help = decodeIEEE754(binary as String);
+    if (help != '') {
+      result = double.parse(help);
+    }
+  }
+  return result;
+}

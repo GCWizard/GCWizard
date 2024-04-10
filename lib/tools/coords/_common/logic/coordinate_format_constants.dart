@@ -9,6 +9,7 @@ import 'package:gc_wizard/tools/coords/_common/formats/geohex/logic/geohex.dart'
 import 'package:gc_wizard/tools/coords/_common/formats/lambert/logic/lambert.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/maidenhead/logic/maidenhead.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/makaney/logic/makaney.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/mapcode/logic/mapcode.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/mercator/logic/mercator.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/mgrs_utm/logic/mgrs.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/natural_area_code/logic/natural_area_code.dart';
@@ -44,6 +45,7 @@ enum CoordinateFormatKey {
   GEOHEX,
   OPEN_LOCATION_CODE,
   MAKANEY,
+  MAPCODE,
   QUADTREE,
   REVERSE_WIG_WALDMEISTER,
   REVERSE_WIG_DAY1976,
@@ -98,7 +100,10 @@ enum CoordinateFormatKey {
   SLIPPYMAP_27,
   SLIPPYMAP_28,
   SLIPPYMAP_29,
-  SLIPPYMAP_30
+  SLIPPYMAP_30,
+  //MapCode Subtypes
+  MAPCODE_LOCAL,
+  MAPCODE_INTERNATIONAL
 }
 
 /// sorted by priority (parse coordinates)
@@ -126,6 +131,13 @@ final allCoordinateFormatDefinitions = [
   MakaneyFormatDefinition,
   QuadtreeFormatDefinition,
   SlippyMapFormatDefinition,
+  MapCodeFormatDefinition
+];
+
+final standardCoordinateFormatDefinitions = [
+  DMSFormatDefinition,
+  DMMFormatDefinition,
+  DECFormatDefinition
 ];
 
 

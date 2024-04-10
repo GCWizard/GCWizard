@@ -164,10 +164,13 @@ String applogoFilename() {
   var logoId = '';
 
   var pkgInfo = GCWPackageInfo.getInstance();
-  switch (pkgInfo.packageName.split('.')[2]) {
-    case 'gc_wizard_alpha': logoId += '_nightly'; break;
-    case 'gc_wizard_gold': logoId += '_gold'; break;
-    default: break;
+  var packageNameParts = pkgInfo.packageName.split('.');
+  if (packageNameParts.length >= 2) {
+    switch (packageNameParts[2]) {
+      case 'gc_wizard_alpha': logoId += '_nightly'; break;
+      case 'gc_wizard_gold': logoId += '_gold'; break;
+      default: break;
+    }
   }
 
   return 'assets/logo/circle_border_$resolution$logoId.png';
