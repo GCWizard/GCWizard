@@ -86,7 +86,7 @@ class VariableStringExpander {
 
   int _countCombinations = -1;
 
-  /// Expands a "compressed" variable group like "5-10" to "5,6,7,8,9,10"
+  // Expands a "compressed" variable group like "5-10" to "5,6,7,8,9,10"
   List<String> _expandVariableGroup(String group) {
     dynamic output; // Explicit dynamic type is intended here!
 
@@ -206,7 +206,7 @@ class VariableStringExpander {
     } while (_setIndexes() == false);
   }
 
-  /// do the substitution of the variables set with their specific values given by their counted indexes
+  // do the substitution of the variables set with their specific values given by their counted indexes
   void _substitute() {
     _result = _input;
     for (_variableGroupIndex = 0; _variableGroupIndex < _countVariableGroups; _variableGroupIndex++) {
