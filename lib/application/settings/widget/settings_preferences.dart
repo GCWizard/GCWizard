@@ -390,7 +390,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
                     ],
                   ));
             })
-            .matrix
+            .values
             .toList());
 
         return Column(
