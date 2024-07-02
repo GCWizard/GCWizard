@@ -46,6 +46,7 @@ class _ChefState extends State<Chef> {
   GCWSwitchPosition _currentMode = GCWSwitchPosition.left; // interpret
   GCWSwitchPosition _currentLanguage = GCWSwitchPosition.right; // english
   bool _auxilaryRecipes = false;
+  var init = true;
 
   @override
   void initState() {
@@ -73,7 +74,10 @@ class _ChefState extends State<Chef> {
 
   @override
   Widget build(BuildContext context) {
-    _currentLanguage = _defaultLanguage(context);
+    if (init) {
+      _currentLanguage = _defaultLanguage(context);
+      init = false;
+    }
     return Column(
       children: <Widget>[
         GCWTwoOptionsSwitch(

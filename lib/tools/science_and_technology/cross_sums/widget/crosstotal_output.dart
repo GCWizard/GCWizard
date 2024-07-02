@@ -52,11 +52,11 @@ class _CrosstotalOutputState extends State<CrosstotalOutput> {
     var crosstotalValuesOthers = <List<Object?>>[];
     if (widget.inputType == CROSSTOTAL_INPUT_TYPE.NUMBERS && !widget.suppressSums) {
       crosstotalValuesOthers = [
-        [i18n(context, 'crosstotal_count_numbers'), countCharacters(values)]
+        [i18n(context, 'crosstotal_count_numbers'), countElements(values)]
       ];
     } else if (!widget.suppressSums) {
       crosstotalValuesOthers.addAll([
-        [i18n(context, 'crosstotal_count_characters'), countCharacters(values)],
+        [i18n(context, 'crosstotal_count_characters'), countElements(values)],
         [i18n(context, 'crosstotal_count_distinct_characters'), countDistinctCharacters(values)],
         [i18n(context, 'crosstotal_count_letters'), countLetters(text)],
         [i18n(context, 'crosstotal_count_digits'), countDigits(text)]

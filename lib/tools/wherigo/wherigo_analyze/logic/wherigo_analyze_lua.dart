@@ -471,7 +471,7 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
         InputText: _cartridgeInputs[i].InputText,
         InputChoices: _cartridgeInputs[i].InputChoices,
         InputAnswers: _Answers.isEmpty ? [] : _Answers[i].InputAnswers));
-   }
+  }
   _cartridgeInputs = _resultInputs;
 
   // ----------------------------------------------------------------------------------------------------------------
@@ -548,11 +548,13 @@ void _checkAndGetCartridgeMetaData(String currentLine) {
 
   if (currentLine.startsWith('.StartingLocation =')) {
     currentLine = currentLine.replaceAll('.StartingLocation = ZonePoint(', '').replaceAll(')', '').replaceAll(' ', '');
-    if (double.tryParse(currentLine.split(',')[0]) != null && double.tryParse(currentLine.split(',')[1]) == null && double.tryParse(currentLine.split(',')[2]) == null) {
+    if (double.tryParse(currentLine.split(',')[0]) != null &&
+        double.tryParse(currentLine.split(',')[1]) == null &&
+        double.tryParse(currentLine.split(',')[2]) == null) {
       _StartLocation = WherigoZonePoint(
-        Latitude: double.parse(currentLine.split(',')[0]),
-        Longitude: double.parse(currentLine.split(',')[1]),
-        Altitude: double.parse(currentLine.split(',')[2]));
+          Latitude: double.parse(currentLine.split(',')[0]),
+          Longitude: double.parse(currentLine.split(',')[1]),
+          Altitude: double.parse(currentLine.split(',')[2]));
     }
   }
   if (currentLine.startsWith('.CountryId')) {

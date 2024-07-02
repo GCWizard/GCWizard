@@ -6,7 +6,7 @@ import 'package:latlong2/latlong.dart';
 void main() {
   group("Centroid.centroid:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      {'coords' : [LatLng(-21.1333, -175.2), LatLng(-8.53333, 179.2167)], 'expectedOutput': LatLng(-14.833315, -177.99165)}
+      {'coords' : [const LatLng(-21.1333, -175.2), const LatLng(-8.53333, 179.2167)], 'expectedOutput': const LatLng(-14.833315, -177.99165)}
     ];
 
     for (var elem in _inputsToExpected) {

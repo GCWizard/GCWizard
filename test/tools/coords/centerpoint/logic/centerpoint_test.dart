@@ -7,7 +7,7 @@ import 'package:latlong2/latlong.dart';
 void main() {
   group("Centroid.centroid:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      {'coord1': LatLng(50.269379, 8.383377), 'coord2': LatLng(50.263548, 8.389584), 'coord3': LatLng(50.262632, 8.372956), 'expectedOutput': LatLng(50.26413560415198, 8.381129007542059)}
+      {'coord1': const LatLng(50.269379, 8.383377), 'coord2': const LatLng(50.263548, 8.389584), 'coord3': const LatLng(50.262632, 8.372956), 'expectedOutput': const LatLng(50.26413560415198, 8.381129007542059)}
     ];
 
     var ells = getEllipsoidByName('coords_ellipsoid_earthsphere');

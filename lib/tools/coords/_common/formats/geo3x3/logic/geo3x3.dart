@@ -8,8 +8,7 @@ part 'package:gc_wizard/tools/coords/_common/formats/geo3x3/logic/external_libs/
 const geo3x3Key = 'coords_geo3x3';
 
 final Geo3x3FormatDefinition = CoordinateFormatDefinition(
-  CoordinateFormatKey.GEO3X3, geo3x3Key, geo3x3Key,
-  Geo3x3Coordinate.parse, Geo3x3Coordinate(''));
+    CoordinateFormatKey.GEO3X3, geo3x3Key, geo3x3Key, Geo3x3Coordinate.parse, Geo3x3Coordinate(''));
 
 class Geo3x3Coordinate extends BaseCoordinate {
   @override

@@ -105,7 +105,8 @@ Future<OpenGTINDBOutput> OpenGTINDBrunTaskAsync(GCWAsyncExecuterParameters? jobD
   }
   var OpenGTINDBJob = jobData!.parameters as OpenGTINDBgetJobData;
 
-  OpenGTINDBOutput output = await _OpenGTINDBgetTextAsync(OpenGTINDBJob.ean, OpenGTINDBJob.apikey, sendAsyncPort: jobData.sendAsyncPort);
+  OpenGTINDBOutput output =
+      await _OpenGTINDBgetTextAsync(OpenGTINDBJob.ean, OpenGTINDBJob.apikey, sendAsyncPort: jobData.sendAsyncPort);
 
   jobData.sendAsyncPort?.send(output);
 
@@ -167,7 +168,9 @@ CheckDigitOutput _CheckEANNumber(String number) {
     if (_checkNumber(number, _checkEAN)) {
       return CheckDigitOutput(true, '', ['']);
     } else {
-      return CheckDigitOutput(false, _CalculateCheckDigitAndNumber(number.substring(0, number.length - 1), _CalculateEANNumber),
+      return CheckDigitOutput(
+          false,
+          _CalculateCheckDigitAndNumber(number.substring(0, number.length - 1), _CalculateEANNumber),
           _CalculateGlitch(number, _checkEAN));
     }
   }
@@ -191,10 +194,7 @@ List<String> _CalculateEANDigits(String number) {
     return ['checkdigits_invalid_length'];
   }
 
-  if (number.length == 8 ||
-      number.length == 13 ||
-      number.length == 14 ||
-      number.length == 18) {
+  if (number.length == 8 || number.length == 13 || number.length == 14 || number.length == 18) {
     return _CalculateDigits(number, _checkEAN);
   } else {
     return ['checkdigits_invalid_length'];

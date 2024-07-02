@@ -11,8 +11,8 @@ const decKey = 'coords_dec';
 var regexEnd = '';
 
 class CoordinateFormatDefinitionDEC extends CoordinateFormatDefinition {
-  CoordinateFormatDefinitionDEC(super.type, super.persistenceKey, super.apiKey,
-    super.parseCoordinate, super.defaultCoordinate);
+  CoordinateFormatDefinitionDEC(
+      super.type, super.persistenceKey, super.apiKey, super.parseCoordinate, super.defaultCoordinate);
 
   @override
   BaseCoordinate? parseCoordinateWholeString(String input) {
@@ -21,8 +21,7 @@ class CoordinateFormatDefinitionDEC extends CoordinateFormatDefinition {
 }
 
 final DECFormatDefinition = CoordinateFormatDefinitionDEC(
-  CoordinateFormatKey.DEC, decKey, decKey, DECCoordinate.parse,
-  DECCoordinate(0.0, 0.0));
+    CoordinateFormatKey.DEC, decKey, decKey, DECCoordinate.parse, DECCoordinate(0.0, 0.0));
 
 class DECCoordinate extends BaseCoordinate {
   @override
@@ -45,6 +44,7 @@ class DECCoordinate extends BaseCoordinate {
   static DECCoordinate? parse(String input) {
     return _parseDEC(input, wholeString: false);
   }
+
   static DECCoordinate? parseWholeString(String input) {
     return _parseDEC(input, wholeString: true);
   }

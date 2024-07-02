@@ -21,7 +21,6 @@ class About extends StatefulWidget {
 }
 
 class _AboutState extends State<About> {
-
   late GCWPackageInfo _packageInfo;
 
   @override
@@ -77,7 +76,6 @@ class _AboutState extends State<About> {
         _buildUrl('faq'),
         _buildUrl('blog'),
         _buildUrl('mastodon'),
-        _buildUrl('facebook'),
         _buildUrl('webversion'),
         const GCWDivider(),
         _buildUrl('license'),
@@ -210,6 +208,7 @@ class _AboutState extends State<About> {
                     'baer2006',
                     'Bleg1966',
                     'Cycle73',
+                    'Dawn T.',
                     'Don Rodolphos',
                     'Headbanger-Berlin',
                     'Felix Z.',
@@ -223,10 +222,12 @@ class _AboutState extends State<About> {
                     'GrafZahl75',
                     'hwi',
                     'Isidore S.',
+                    'JanRei',
                     'Johannes C.',
                     'Jonas M.',
                     'kinderarzt',
                     'Klumpenkukuk',
+                    'Linsty',
                     'Lue',
                     'LupiMus',
                     'Lutz \'DL3BZZ\'',
@@ -235,6 +236,7 @@ class _AboutState extends State<About> {
                     'Martin Sch.',
                     'Martina F.',
                     'mgo',
+                    'MicDie',
                     'Michael St.',
                     'Mondlinger',
                     'MrDosinger & MsDosinger',

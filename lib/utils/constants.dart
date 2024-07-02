@@ -14,6 +14,7 @@ const double MIN_DOUBLE = -9007199254740991.0;
 /// to represent the actual number, where in a number as:
 /// 0.134556 * 10^5 the digits are 0.134556 and the exponent is 5.
 const int _doubleWidth = 53;
+
 /// from dart_numerics: According to the definition of Prof. Demmel and used in LAPACK and Scilab.
 final double _doublePrecision = pow(2, -_doubleWidth) as double;
 double practical_epsilon = 2 * _doublePrecision;

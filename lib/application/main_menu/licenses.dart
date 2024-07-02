@@ -23,7 +23,11 @@ class _LicensesState extends State<Licenses> {
             ['Base91', 'Joachim Henke', 'BSD-3-Clause License'],
             ['Base122', 'Kevin Alberston\nPatrick Favre-Bulle', 'MIT License\nApache License, Version 2.0'],
             ['Beatnik Interpreter', 'Hendrik Van Belleghem', 'Gnu Public License, Artistic License'],
-            ['Calendar conversions', 'Johannes Thomann, University of Zurich Asia-Orient-Institute', 'Personal Permission'],
+            [
+              'Calendar conversions',
+              'Johannes Thomann, University of Zurich Asia-Orient-Institute',
+              'Personal Permission'
+            ],
             ['Centroid Code', 'Andy Eschbacher (carto.com)', 'Personal Permission'],
             [
               'Chef Interpreter',
@@ -49,15 +53,13 @@ class _LicensesState extends State<Licenses> {
             ['Vigenère Breaker', 'Jens Guballa (guballa.de)', 'Personal Permission'],
             ['Whitespace Interpreter', 'Adam Papenhausen', 'MIT License'],
             ['Wherigo Analyzer', 'WFoundation\ngithub.com/WFoundation', ''],
-          ])
-      ),
+          ])),
       GCWExpandableTextDivider(
           text: i18n(context, 'licenses_used_apis'),
           suppressTopSpace: false,
           child: const GCWColumnedMultilineOutput(data: [
             ['Geohashing', 'http://geo.crox.net/djia/{yyyy-MM-dd}'],
-          ])
-      ),
+          ])),
       GCWExpandableTextDivider(
           text: i18n(context, 'licenses_telegraphs'),
           suppressTopSpace: false,
@@ -84,8 +86,7 @@ class _LicensesState extends State<Licenses> {
               'Bilddatenbank der Museumsstiftung Post und Telekommunikation (CC BY-SA)'
             ],
             [i18n(context, 'telegraph_schillingcanstatt_title'), 'Volker Aschoff'],
-          ])
-      ),
+          ])),
       GCWExpandableTextDivider(
           text: i18n(context, 'licenses_images'),
           suppressTopSpace: false,
@@ -93,8 +94,7 @@ class _LicensesState extends State<Licenses> {
             data: [
               [i18n(context, 'iau_constellation_title'), 'Torsten Bronger', 'GNU FDL, Version 1.2/CC BY-SA 3.0']
             ],
-          )
-      ),
+          )),
       GCWExpandableTextDivider(
           text: i18n(context, 'licenses_usedflutterlibraries'),
           expanded: false,
@@ -147,9 +147,11 @@ class _LicensesState extends State<Licenses> {
             ['utility', 'MIT License'],
             ['week_of_year', 'BSD-3-Clause License'],
             ['xml', 'MIT License'],
-            ['xmp', 'MIT License'], // it used not in pubspec but directly embedded because of conflicts of internal dependencies
-          ])
-      ),
+            [
+              'xmp',
+              'MIT License'
+            ], // it used not in pubspec but directly embedded because of conflicts of internal dependencies
+          ])),
       GCWExpandableTextDivider(
           text: i18n(context, 'licenses_fonts'),
           expanded: false,
@@ -157,8 +159,7 @@ class _LicensesState extends State<Licenses> {
           child: const GCWColumnedMultilineOutput(data: [
             ['Courier Prime', 'Google Fonts', 'SIL OPEN FONT LICENSE Version 1.1'],
             ['Roboto', 'Google Fonts', 'Apache License, Version 2.0']
-          ])
-      ),
+          ])),
       GCWExpandableTextDivider(
           text: i18n(context, 'licenses_symboltablesources'),
           expanded: false,
@@ -167,10 +168,16 @@ class _LicensesState extends State<Licenses> {
             const ['several', 'myGeoTools'],
             const ['several', 'Wikipedia'],
             [i18n(context, 'symboltables_alien_mushrooms_title'), '(Personal Use)'],
-            [i18n(context, 'symboltables_base16_title'), 'https://web.archive.org/web/20221224135846/https://patentimages.storage.googleapis.com/88/54/da/d88ca78fe93623/US3974444.pdf'],
+            [
+              i18n(context, 'symboltables_base16_title'),
+              'https://web.archive.org/web/20221224135846/https://patentimages.storage.googleapis.com/88/54/da/d88ca78fe93623/US3974444.pdf'
+            ],
             [i18n(context, 'symboltables_base16_02_title'), 'https://dl.acm.org/doi/pdf/10.1145/364096.364107'],
             [i18n(context, 'symboltables_berber_title'), 'https://en.wikipedia.org/wiki/Tifinagh (Wiki Commons)'],
-            [i18n(context, 'symboltables_bibibinary_title'), 'https://en.wikipedia.org/wiki/Bibi-binary#/media/File:Table_de_correspondance_entre_le_Bibinaire_et_les_autres_notations.svg (CC BY-SA 4.0)'],
+            [
+              i18n(context, 'symboltables_bibibinary_title'),
+              'https://en.wikipedia.org/wiki/Bibi-binary#/media/File:Table_de_correspondance_entre_le_Bibinaire_et_les_autres_notations.svg (CC BY-SA 4.0)'
+            ],
             [
               i18n(context, 'symboltables_blue_monday_title'),
               'adopted from https://geocachen.be/geocaching/geocache-puzzels-oplossen/blue-monday-kleurencode/; (Personal Use)'
@@ -180,19 +187,30 @@ class _LicensesState extends State<Licenses> {
             [i18n(context, 'symboltables_dragon_language_title'), '(Personal Use)'],
             [i18n(context, 'symboltables_eurythmy_title'), 'www.steinerverlag.de (Non-Commercial Use)'],
             [i18n(context, 'symboltables_face_it_title'), '(Personal Use)'],
+            [i18n(context, 'symboltables_fantastic_title'),
+              'https://nederlandse-fantasia.fandom.com/wiki/Fantastisch (CC BY-SA 3.0)'],
             [i18n(context, 'symboltables_futurama_2_title'), 'Leandor Pardini (onlinewebfonts.com) (CC BY-SA 3.0)'],
             [
               i18n(context, 'symboltables_gc_attributes_ids_title'),
               'game-icons.net (CC BY 3.0)\npixabay.com\nclker.com (CC-0)'
             ],
             [i18n(context, 'symboltables_iokharic_title'), '(Personal Use)'],
-            [i18n(context, 'symboltables_kabouter_abc_title'), 'Pascalvanboxel, Egel (scoutpedia.nl) (CC BY-NC-SA 4.0)'],
-            [i18n(context, 'symboltables_kurrent_title'), 'https://commons.wikimedia.org/wiki/File:Deutsche_Kurrentschrift.jpg (Public Domain)'],
+            [
+              i18n(context, 'symboltables_kabouter_abc_title'),
+              'Pascalvanboxel, Egel (scoutpedia.nl) (CC BY-NC-SA 4.0)'
+            ],
+            [
+              i18n(context, 'symboltables_kurrent_title'),
+              'https://commons.wikimedia.org/wiki/File:Deutsche_Kurrentschrift.jpg (Public Domain)'
+            ],
             [
               i18n(context, 'symboltables_matoran_title'),
               'Matoran is part of the Bionicle™ world. Bionicle™ is a trademark of the LEGO Group of companies which does not sponsor, authorize or endorse this tool. (Personal Use)'
             ],
-            [i18n(context, 'symboltables_maya_numbers_glyphs_title'), 'https://www.mayan-calendar.org/images/reference/mayan-numbers_mayan-number-system_720x570.gif (Reporductions of this educational item are allowed. www.unitycorps.org)'],
+            [
+              i18n(context, 'symboltables_maya_numbers_glyphs_title'),
+              'https://www.mayan-calendar.org/images/reference/mayan-numbers_mayan-number-system_720x570.gif (Reporductions of this educational item are allowed. www.unitycorps.org)'
+            ],
             [i18n(context, 'symboltables_murray_title'), 'Japiejo (geocachingtoolbox.com)'],
             [
               i18n(context, 'symboltables_ninjargon_title'),
@@ -215,8 +233,7 @@ class _LicensesState extends State<Licenses> {
           ], flexValues: const [
             1,
             2
-          ])
-      ),
+          ])),
     ]);
 
     return MainMenuEntryStub(content: content);

@@ -72,8 +72,8 @@ class MapViewPersistenceAdapter {
             .map((uuid) => mapWidget.points.firstWhere((GCWMapPoint point) => point.uuid == uuid))
             .toList(),
         color: hexStringToColor(mapPolylineDAO.color),
-        type: GCWMapLineType.values.firstWhere((element) => gcwMapLineTypeFromEnumValue(element) == mapPolylineDAO.type, orElse: () => GCWMapLineType.GEODETIC)
-    );
+        type: GCWMapLineType.values.firstWhere((element) => gcwMapLineTypeFromEnumValue(element) == mapPolylineDAO.type,
+            orElse: () => GCWMapLineType.GEODETIC));
   }
 
   void _initializeMapView() {

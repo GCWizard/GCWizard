@@ -56,12 +56,15 @@ class _GCWTwoOptionsSwitchState extends State<GCWTwoOptionsSwitch> {
               children: <Widget>[
                 Expanded(
                     flex: 1,
-                    child: (widget.leftValue == null || widget.leftValue is String) ? GCWText(
-                      text: widget.leftValue == null ? i18n(context, 'common_encrypt') : (widget.leftValue as String),
-                      align: Alignment.center,
-                      style: textStyle,
-                    ) : widget.leftValue as Widget
-                ),
+                    child: (widget.leftValue == null || widget.leftValue is String)
+                        ? GCWText(
+                            text: widget.leftValue == null
+                                ? i18n(context, 'common_encrypt')
+                                : (widget.leftValue as String),
+                            align: Alignment.center,
+                            style: textStyle,
+                          )
+                        : widget.leftValue as Widget),
                 GCWSwitch(
                   value: _currentValue == GCWSwitchPosition.right,
                   onChanged: (value) {
@@ -77,12 +80,15 @@ class _GCWTwoOptionsSwitchState extends State<GCWTwoOptionsSwitch> {
                 ),
                 Expanded(
                     flex: 1,
-                    child: (widget.rightValue == null || widget.rightValue is String) ? GCWText(
-                      text: widget.rightValue == null ? i18n(context, 'common_decrypt') : (widget.rightValue as String),
-                      align: Alignment.center,
-                      style: textStyle,
-                    ) : widget.rightValue as Widget
-                ),
+                    child: (widget.rightValue == null || widget.rightValue is String)
+                        ? GCWText(
+                            text: widget.rightValue == null
+                                ? i18n(context, 'common_decrypt')
+                                : (widget.rightValue as String),
+                            align: Alignment.center,
+                            style: textStyle,
+                          )
+                        : widget.rightValue as Widget),
               ],
             ))
       ],

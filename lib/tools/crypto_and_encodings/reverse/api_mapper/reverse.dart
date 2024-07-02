@@ -44,7 +44,7 @@ class ReverseAPIMapper extends APIMapper {
     if (input == null) {
       return '';
     }
-    return reverse(input);
+    return reverseAll(input);
   }
 
   /// convert doLogic output to map

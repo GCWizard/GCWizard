@@ -40,7 +40,8 @@ class _GCWCoordsPasteButtonState extends State<GCWCoordsPasteButton> {
         if (coordFormat is! GCWCoordWidgetWithSubtypeInfo) {
           text += coordFormat.name;
         } else {
-          text += i18n(context, coordFormat.name);
+          var sybtype = i18n(context, coordFormat.name);
+          text += sybtype.isNotEmpty ? sybtype : coordFormat.name;
         }
         return text;
       }).join();

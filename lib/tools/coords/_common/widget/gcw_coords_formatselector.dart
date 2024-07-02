@@ -11,7 +11,8 @@ class GCWCoordsFormatSelector extends StatefulWidget {
   final CoordinateFormat format;
   final bool input;
 
-  const GCWCoordsFormatSelector({Key? key,
+  const GCWCoordsFormatSelector({
+    Key? key,
     required this.onChanged,
     required this.format,
     required this.input,
@@ -72,23 +73,23 @@ class _GCWCoordsFormatSelectorState extends State<GCWCoordsFormatSelector> {
     if (widgetInfo is GCWCoordWidgetWithSubtypeInfo) {
       return widget.input
           ? widgetInfo.inputWidget(
-            context: context,
-            value: _currentSubtype!,
-            onChanged: (value) {
-              setState(() {
-                _currentSubtype = value;
-                _emitOnChange();
-              });
-            })
+              context: context,
+              value: _currentSubtype!,
+              onChanged: (value) {
+                setState(() {
+                  _currentSubtype = value;
+                  _emitOnChange();
+                });
+              })
           : widgetInfo.outputWidget(
-            context: context,
-            value: _currentSubtype!,
-            onChanged: (value) {
-              setState(() {
-                _currentSubtype = value;
-                _emitOnChange();
+              context: context,
+              value: _currentSubtype!,
+              onChanged: (value) {
+                setState(() {
+                  _currentSubtype = value;
+                  _emitOnChange();
+                });
               });
-          });
     } else {
       return Container();
     }

@@ -138,8 +138,8 @@ void openInBinary2Image(BuildContext context, String text) {
       context,
       NoAnimationMaterialPageRoute<GCWTool>(
           builder: (context) => GCWTool(
-            tool: Binary2Image(barcodeBinary: text),
-            toolName: i18n(context, 'binary2image_title'),
-            id: '',
-          )));
+                tool: Binary2Image(barcodeBinary: text),
+                toolName: i18n(context, 'binary2image_title'),
+                id: '',
+              )));
 }

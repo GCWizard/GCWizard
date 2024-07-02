@@ -9,8 +9,6 @@ import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart'
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
-import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
-import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_export_dialog.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
@@ -26,6 +24,8 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_code_textfield.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_export_dialog.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/gcw_mapview.dart';
 import 'package:gc_wizard/tools/miscellaneous/gcwizardscript/logic/gcwizard_script.dart';

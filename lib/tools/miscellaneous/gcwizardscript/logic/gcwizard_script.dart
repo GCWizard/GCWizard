@@ -740,16 +740,18 @@ class _GCWizardSCriptInterpreter {
       } else if (state.token == ";") {
         state.STDOUT += " ";
         len++;
+      } else if (state.token == "+") {
+        executeCommandPRINT();
       } else if (state.keywordToken != EOL && state.token != EOP) {
         _handleError(_SYNTAXERROR);
       }
-    } while (lastDelimiter == ";" || lastDelimiter == ",");
+    } while (lastDelimiter == ";" || lastDelimiter == "," );
 
     //state.continueLoop = true;
     //}
 
     if (state.keywordToken == EOL || state.token == EOP) {
-      if (lastDelimiter != ";" && lastDelimiter != ",") state.STDOUT += LF;
+      if (lastDelimiter != ";" && lastDelimiter != "," && lastDelimiter != "+") state.STDOUT += LF;
     } else {
       _handleError(_SYNTAXERROR);
     }

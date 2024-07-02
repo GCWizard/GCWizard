@@ -11,20 +11,21 @@ class _GCWCoordWidgetInfoMaidenhead extends GCWCoordWidgetInfo {
   String get example => 'CN85TG09JU';
 
   @override
-  _GCWCoordWidget mainWidget({
-    Key? key,
-    required void Function(BaseCoordinate?) onChanged,
-    required BaseCoordinate? coordinates,
-    bool? initialize
-  }) {
-    return _GCWCoordsMaidenhead(key: key, onChanged: onChanged, coordinates: coordinates, initialize: initialize ?? false);
+  _GCWCoordWidget mainWidget(
+      {Key? key,
+      required void Function(BaseCoordinate?) onChanged,
+      required BaseCoordinate? coordinates,
+      bool? initialize}) {
+    return _GCWCoordsMaidenhead(
+        key: key, onChanged: onChanged, coordinates: coordinates, initialize: initialize ?? false);
   }
 }
 
 class _GCWCoordsMaidenhead extends _GCWCoordWidget {
-
-  _GCWCoordsMaidenhead({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize}) :
-        super(coordinates: coordinates is MaidenheadCoordinate ? coordinates : MaidenheadFormatDefinition.defaultCoordinate);
+  _GCWCoordsMaidenhead({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize})
+      : super(
+            coordinates:
+                coordinates is MaidenheadCoordinate ? coordinates : MaidenheadFormatDefinition.defaultCoordinate);
 
   @override
   _GCWCoordsMaidenheadState createState() => _GCWCoordsMaidenheadState();

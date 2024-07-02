@@ -7,38 +7,30 @@ class NonogramBoard extends StatefulWidget {
   final Puzzle board;
   final void Function(int, int)? onTapped;
 
-  const NonogramBoard({Key? key, required this.onChanged,
-    required this.board, this.onTapped})
-      : super(key: key);
+  const NonogramBoard({Key? key, required this.onChanged, required this.board, this.onTapped}) : super(key: key);
 
   @override
   NonogramBoardState createState() => NonogramBoardState();
 }
 
 class NonogramBoardState extends State<NonogramBoard> {
-
   @override
   Widget build(BuildContext context) {
-    return Row(
-        children: <Widget>[
-          Expanded(
-              child:
-              Stack(children: <Widget>[
-                AspectRatio(
-                    aspectRatio: max(_maxRowHintsCount(widget.board) + widget.board.width, 1) /
-                                max(_maxColumnHintsCount(widget.board) + widget.board.height, 1),
-                    child: CanvasTouchDetector(
-                      gesturesToOverride: const [GestureType.onTapDown],
-                      builder: (context) {
-                        return CustomPaint(
-                            painter: NonogramBoardPainter(context, widget.board, _setState, onTapped: widget.onTapped)
-                        );
-                      },
-                    )
-                ),
-              ])
-          )
-        ]);
+    return Row(children: <Widget>[
+      Expanded(
+          child: Stack(children: <Widget>[
+        AspectRatio(
+            aspectRatio: max(_maxRowHintsCount(widget.board) + widget.board.width, 1) /
+                max(_maxColumnHintsCount(widget.board) + widget.board.height, 1),
+            child: CanvasTouchDetector(
+              gesturesToOverride: const [GestureType.onTapDown],
+              builder: (context) {
+                return CustomPaint(
+                    painter: NonogramBoardPainter(context, widget.board, _setState, onTapped: widget.onTapped));
+              },
+            )),
+      ]))
+    ]);
   }
 
   void _setState() {
@@ -60,8 +52,12 @@ class NonogramBoardPainter extends CustomPainter {
   final void Function(int, int)? onTapped;
 
   NonogramBoardPainter(this.context, this.board, this.setState,
-    {Color? line_color, Color?  hint_line_color, Color? full_color, Color? background_color, Color? font_color,
-    this.onTapped}) {
+      {Color? line_color,
+      Color? hint_line_color,
+      Color? full_color,
+      Color? background_color,
+      Color? font_color,
+      this.onTapped}) {
     this.line_color = line_color ?? this.line_color;
     this.hint_line_color = hint_line_color ?? this.hint_line_color;
     this.full_color = full_color ?? this.full_color;
@@ -129,22 +125,17 @@ class NonogramBoardPainter extends CustomPainter {
           // double line
           var xOffset = board.rowHints[y].length * widthInner;
           _touchCanvas.drawLine(
-              Offset(xInnerStart - xOffset, yInner-1),
-              Offset(xInnerStart, yInner-1), paintHintLine);
+              Offset(xInnerStart - xOffset, yInner - 1), Offset(xInnerStart, yInner - 1), paintHintLine);
         }
       }
 
       // horizontal lines
-      _touchCanvas.drawLine(
-          Offset(xInnerStart, yInner),
-          Offset(xInnerEnd, yInner), paintLine);
+      _touchCanvas.drawLine(Offset(xInnerStart, yInner), Offset(xInnerEnd, yInner), paintLine);
 
       if ((y % _boldLineIntvervall) == 0) {
         // double line
         yInner -= 1;
-        _touchCanvas.drawLine(
-            Offset(xInnerStart, yInner),
-            Offset(xInnerEnd, yInner), paintLine);
+        _touchCanvas.drawLine(Offset(xInnerStart, yInner), Offset(xInnerEnd, yInner), paintLine);
       }
     }
 
@@ -163,22 +154,17 @@ class NonogramBoardPainter extends CustomPainter {
           // double line
           var yOffset = board.columnHints[x].length * heightInner;
           _touchCanvas.drawLine(
-              Offset(xInner-1, yInnerStart - yOffset),
-              Offset(xInner-1, yInnerStart), paintHintLine);
+              Offset(xInner - 1, yInnerStart - yOffset), Offset(xInner - 1, yInnerStart), paintHintLine);
         }
       }
 
       // vertical lines
-      _touchCanvas.drawLine(
-          Offset(xInner, yInnerStart),
-          Offset(xInner, yInnerEnd), paintLine);
+      _touchCanvas.drawLine(Offset(xInner, yInnerStart), Offset(xInner, yInnerEnd), paintLine);
 
       if ((x % _boldLineIntvervall) == 0) {
         // double line
         xInner -= 1;
-        _touchCanvas.drawLine(
-            Offset(xInner, yInnerStart),
-            Offset(xInner, yInnerEnd), paintLine);
+        _touchCanvas.drawLine(Offset(xInner, yInnerStart), Offset(xInner, yInnerEnd), paintLine);
       }
 
       // fields
@@ -189,13 +175,15 @@ class NonogramBoardPainter extends CustomPainter {
           var value = board.rows[y][x];
           if (value == 1) {
             var rectI = Rect.fromLTWH(rect.left + fieldBorderOn, rect.top + fieldBorderOn,
-                                      rect.width - 2 * fieldBorderOn, rect.height - 2 * fieldBorderOn);
+                rect.width - 2 * fieldBorderOn, rect.height - 2 * fieldBorderOn);
             _touchCanvas.drawRect(rectI, paintFull);
           } else if (value == 0 && (board.state == PuzzleState.Finished || board.state == PuzzleState.Solved)) {
             _paintText(canvas, rect, '?', fontSize * 1.2, paintFull.color);
           }
           if (onTapped != null) {
-            _touchCanvas.drawRect(rect, paintTransparent, onTapDown: (tapDetail) {onTapped!(y, x);});
+            _touchCanvas.drawRect(rect, paintTransparent, onTapDown: (tapDetail) {
+              onTapped!(y, x);
+            });
           }
         }
       }
@@ -208,14 +196,12 @@ class NonogramBoardPainter extends CustomPainter {
 
   void _paintText(Canvas canvas, Rect rect, String text, double fontSize, Color color) {
     var textPainter = _buildTextPainter(text, color, fontSize);
-    textPainter.paint(canvas, Offset(rect.topCenter.dx - textPainter.width * 0.5,
-                                     rect.centerLeft.dy - textPainter.height * 0.5));
-}
+    textPainter.paint(
+        canvas, Offset(rect.topCenter.dx - textPainter.width * 0.5, rect.centerLeft.dy - textPainter.height * 0.5));
+  }
 
   TextPainter _buildTextPainter(String text, Color color, double fontsize) {
-    TextSpan span = TextSpan(
-        style: gcwTextStyle().copyWith(color: color, fontSize: fontsize),
-        text: text);
+    TextSpan span = TextSpan(style: gcwTextStyle().copyWith(color: color, fontSize: fontsize), text: text);
     TextPainter textPainter = TextPainter(text: span, textDirection: TextDirection.ltr);
     textPainter.layout();
 

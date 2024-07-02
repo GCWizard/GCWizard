@@ -93,19 +93,21 @@ ThemeData buildTheme() {
       ),
       unselectedWidgetColor: colors.secondary(),
       indicatorColor: themeColors().secondary(),
-      tabBarTheme: TabBarTheme(indicatorColor: themeColors().secondary(),
+      tabBarTheme: TabBarTheme(
+          indicatorColor: themeColors().secondary(),
           labelColor: colors.mainFont(),
           unselectedLabelColor: colors.mainFont().withOpacity(0.7),
           dividerHeight: 0,
           indicatorSize: TabBarIndicatorSize.tab),
       appBarTheme: AppBarTheme(backgroundColor: colors.primaryBackground(), foregroundColor: colors.mainFont()),
       cardColor: colors.messageBackground(),
-      colorScheme: ColorScheme.fromSwatch(primarySwatch: _generateMaterialColor(colors.primaryBackground()))
-          .copyWith(secondary: colors.secondary(), brightness: base.brightness,
-                    surfaceVariant: colors.gridBackground(), onSurface: colors.mainFont()),
+      colorScheme: ColorScheme.fromSwatch(primarySwatch: _generateMaterialColor(colors.primaryBackground())).copyWith(
+          secondary: colors.secondary(),
+          brightness: base.brightness,
+          surfaceContainerHighest: colors.gridBackground(),
+          onSurface: colors.mainFont()),
       dividerTheme: const DividerThemeData().copyWith(thickness: 0, color: colors.gridBackground()),
-      drawerTheme: const DrawerThemeData().copyWith(backgroundColor: base.scaffoldBackgroundColor)
-  );
+      drawerTheme: const DrawerThemeData().copyWith(backgroundColor: base.scaffoldBackgroundColor));
 }
 
 // https://medium.com/@morgenroth/using-flutters-primary-swatch-with-a-custom-materialcolor-c5e0f18b95b0
@@ -167,9 +169,14 @@ String applogoFilename() {
   var packageNameParts = pkgInfo.packageName.split('.');
   if (packageNameParts.length >= 2) {
     switch (packageNameParts[2]) {
-      case 'gc_wizard_alpha': logoId += '_nightly'; break;
-      case 'gc_wizard_gold': logoId += '_gold'; break;
-      default: break;
+      case 'gc_wizard_alpha':
+        logoId += '_nightly';
+        break;
+      case 'gc_wizard_gold':
+        logoId += '_gold';
+        break;
+      default:
+        break;
     }
   }
 

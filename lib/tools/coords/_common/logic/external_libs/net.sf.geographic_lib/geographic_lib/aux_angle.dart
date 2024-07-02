@@ -63,7 +63,7 @@ class _AuxAngle {
     return _AuxAngle(p._y, p._x);
   }
 
-  _AuxAngle operator + (_AuxAngle p) {
+  _AuxAngle operator +(_AuxAngle p) {
     // Do nothing if p.tan() == 0 to preserve signs of y() and x()
     if (p.tan() != 0) {
       double x = _x * p._x - _y * p._y;
@@ -85,13 +85,12 @@ class _AuxAngle {
   }
 
   _AuxAngle normalized() {
-    if ((tan().isNaN) || (_y.abs() > double.maxFinite/2 && _x.abs() > double.maxFinite/2) ) {
+    if ((tan().isNaN) || (_y.abs() > double.maxFinite / 2 && _x.abs() > double.maxFinite / 2)) {
       // deal with
       // (0,0), (inf,inf), (nan,nan), (nan,x), (y,nan), (toobig,toobig)
       return NaN();
     }
-    double r = _GeoMath.hypot(_y, _x),
-    y = _y/r, x = _x/r;
+    double r = _GeoMath.hypot(_y, _x), y = _y / r, x = _x / r;
     // deal with r = inf, then one of y,x becomes 1
     if (y.isNaN) y = _copySign(1.0, _y);
     if (x.isNaN) x = _copySign(1.0, _x);

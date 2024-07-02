@@ -14,37 +14,35 @@ class _GCWCoordWidgetInfoLambert extends GCWCoordWidgetWithSubtypeInfo {
 
   @override
   List<_GCWCoordWidgetSubtypeInfo> get subtypes => [
-    const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93, 'coords_formatconverter_lambert_93'),
-    const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT2008, 'coords_formatconverter_lambert_2008'),
-    const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.ETRS89LCC, 'coords_formatconverter_lambert_etrs89lcc'),
-    const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT72, 'coords_formatconverter_lambert_72'),
-    const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC42, 'coords_formatconverter_lambert_l93cc42'),
-    const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC43, 'coords_formatconverter_lambert_l93cc43'),
-    const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC44, 'coords_formatconverter_lambert_l93cc44'),
-    const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC45, 'coords_formatconverter_lambert_l93cc45'),
-    const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC46, 'coords_formatconverter_lambert_l93cc46'),
-    const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC47, 'coords_formatconverter_lambert_l93cc47'),
-    const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC48, 'coords_formatconverter_lambert_l93cc48'),
-    const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC49, 'coords_formatconverter_lambert_l93cc49'),
-    const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC50, 'coords_formatconverter_lambert_l93cc50')
-  ];
+        const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93, 'coords_formatconverter_lambert_93'),
+        const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT2008, 'coords_formatconverter_lambert_2008'),
+        const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.ETRS89LCC, 'coords_formatconverter_lambert_etrs89lcc'),
+        const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT72, 'coords_formatconverter_lambert_72'),
+        const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC42, 'coords_formatconverter_lambert_l93cc42'),
+        const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC43, 'coords_formatconverter_lambert_l93cc43'),
+        const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC44, 'coords_formatconverter_lambert_l93cc44'),
+        const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC45, 'coords_formatconverter_lambert_l93cc45'),
+        const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC46, 'coords_formatconverter_lambert_l93cc46'),
+        const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC47, 'coords_formatconverter_lambert_l93cc47'),
+        const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC48, 'coords_formatconverter_lambert_l93cc48'),
+        const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC49, 'coords_formatconverter_lambert_l93cc49'),
+        const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC50, 'coords_formatconverter_lambert_l93cc50')
+      ];
 
   @override
-  _GCWCoordWidget mainWidget({
-    Key? key,
-    required void Function(BaseCoordinate?) onChanged,
-    required BaseCoordinate? coordinates,
-    bool? initialize
-  }) {
+  _GCWCoordWidget mainWidget(
+      {Key? key,
+      required void Function(BaseCoordinate?) onChanged,
+      required BaseCoordinate? coordinates,
+      bool? initialize}) {
     return _GCWCoordsLambert(key: key, onChanged: onChanged, coordinates: coordinates, initialize: initialize ?? false);
   }
 
   @override
-  Widget _buildSubtypeWidget({
-    required BuildContext context,
-    required CoordinateFormatKey value,
-    required void Function(CoordinateFormatKey) onChanged}) {
-
+  Widget _buildSubtypeWidget(
+      {required BuildContext context,
+      required CoordinateFormatKey value,
+      required void Function(CoordinateFormatKey) onChanged}) {
     var _onChanged = onChanged;
     return GCWDropDown<CoordinateFormatKey>(
       value: value,
@@ -53,16 +51,15 @@ class _GCWCoordWidgetInfoLambert extends GCWCoordWidgetWithSubtypeInfo {
           value: subtype.type,
           child: i18n(context, subtype.name),
         );
-        }).toList(),
-       onChanged: (value) => _onChanged(value),
+      }).toList(),
+      onChanged: (value) => _onChanged(value),
     );
   }
 }
 
 class _GCWCoordsLambert extends _GCWCoordWidget {
-
-  _GCWCoordsLambert({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize}) :
-        super(coordinates: coordinates is LambertCoordinate ? coordinates : LambertFormatDefinition.defaultCoordinate);
+  _GCWCoordsLambert({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize})
+      : super(coordinates: coordinates is LambertCoordinate ? coordinates : LambertFormatDefinition.defaultCoordinate);
 
   @override
   _GCWCoordsLambertState createState() => _GCWCoordsLambertState();

@@ -14,29 +14,33 @@ class _GCWCoordWidgetInfoGaussKrueger extends GCWCoordWidgetWithSubtypeInfo {
 
   @override
   List<_GCWCoordWidgetSubtypeInfo> get subtypes => [
-    const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.GAUSS_KRUEGER_GK1, 'coords_formatconverter_gausskrueger_gk1'),
-    const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.GAUSS_KRUEGER_GK2, 'coords_formatconverter_gausskrueger_gk2'),
-    const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.GAUSS_KRUEGER_GK3, 'coords_formatconverter_gausskrueger_gk3'),
-    const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.GAUSS_KRUEGER_GK4, 'coords_formatconverter_gausskrueger_gk4'),
-    const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.GAUSS_KRUEGER_GK5, 'coords_formatconverter_gausskrueger_gk5'),
-  ];
+        const _GCWCoordWidgetSubtypeInfo(
+            CoordinateFormatKey.GAUSS_KRUEGER_GK1, 'coords_formatconverter_gausskrueger_gk1'),
+        const _GCWCoordWidgetSubtypeInfo(
+            CoordinateFormatKey.GAUSS_KRUEGER_GK2, 'coords_formatconverter_gausskrueger_gk2'),
+        const _GCWCoordWidgetSubtypeInfo(
+            CoordinateFormatKey.GAUSS_KRUEGER_GK3, 'coords_formatconverter_gausskrueger_gk3'),
+        const _GCWCoordWidgetSubtypeInfo(
+            CoordinateFormatKey.GAUSS_KRUEGER_GK4, 'coords_formatconverter_gausskrueger_gk4'),
+        const _GCWCoordWidgetSubtypeInfo(
+            CoordinateFormatKey.GAUSS_KRUEGER_GK5, 'coords_formatconverter_gausskrueger_gk5'),
+      ];
 
   @override
-  _GCWCoordWidget mainWidget({
-    Key? key,
-    required void Function(BaseCoordinate?) onChanged,
-    required BaseCoordinate? coordinates,
-    bool? initialize
-  }) {
-    return _GCWCoordsGaussKrueger(key: key, onChanged: onChanged, coordinates: coordinates, initialize: initialize ?? false);
+  _GCWCoordWidget mainWidget(
+      {Key? key,
+      required void Function(BaseCoordinate?) onChanged,
+      required BaseCoordinate? coordinates,
+      bool? initialize}) {
+    return _GCWCoordsGaussKrueger(
+        key: key, onChanged: onChanged, coordinates: coordinates, initialize: initialize ?? false);
   }
 
   @override
-  Widget _buildSubtypeWidget({
-    required BuildContext context,
-    required CoordinateFormatKey value,
-    required void Function(CoordinateFormatKey) onChanged}) {
-
+  Widget _buildSubtypeWidget(
+      {required BuildContext context,
+      required CoordinateFormatKey value,
+      required void Function(CoordinateFormatKey) onChanged}) {
     var _onChanged = onChanged;
     return GCWDropDown<CoordinateFormatKey>(
       value: value,
@@ -52,9 +56,10 @@ class _GCWCoordWidgetInfoGaussKrueger extends GCWCoordWidgetWithSubtypeInfo {
 }
 
 class _GCWCoordsGaussKrueger extends _GCWCoordWidget {
-
-  _GCWCoordsGaussKrueger({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize}) :
-        super(coordinates: coordinates is GaussKruegerCoordinate ? coordinates : GaussKruegerFormatDefinition.defaultCoordinate);
+  _GCWCoordsGaussKrueger({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize})
+      : super(
+            coordinates:
+                coordinates is GaussKruegerCoordinate ? coordinates : GaussKruegerFormatDefinition.defaultCoordinate);
 
   @override
   _GCWCoordsGaussKruegerState createState() => _GCWCoordsGaussKruegerState();

@@ -71,7 +71,9 @@ CheckDigitOutput _CheckEURONumber(String number) {
     if (_checkNumber(number, _checkEURO)) {
       return CheckDigitOutput(true, '', ['']);
     } else {
-      return CheckDigitOutput(false, _CalculateCheckDigitAndNumber(number.substring(0, number.length - 1), _CalculateEURONumber),
+      return CheckDigitOutput(
+          false,
+          _CalculateCheckDigitAndNumber(number.substring(0, number.length - 1), _CalculateEURONumber),
           _CalculateGlitch(number, _checkEURO));
     }
   }
@@ -105,7 +107,7 @@ List<String> _CalculateEURODigits(String number) {
 bool _checkEURO(String number) {
   if (EUROBANKNOTEDATA[checkEuroSeries(number)]![number[0]] == null) {
     return false;
-  } else{
+  } else {
     return (number[number.length - 1] == _calculateEUROCheckDigit(number.substring(0, number.length - 1)));
   }
 }

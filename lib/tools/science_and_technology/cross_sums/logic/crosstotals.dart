@@ -212,7 +212,7 @@ BigInt crossProduct(List<int> list) {
   }).reduce((a, b) => a * b);
 }
 
-int countCharacters(List<int> list) {
+int countElements(List<int> list) {
   return list.length;
 }
 

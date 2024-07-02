@@ -1,8 +1,8 @@
+import 'package:gc_wizard/tools/coords/_common/formats/dec/logic/dec.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dmm/logic/dmm.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
-import 'package:gc_wizard/tools/coords/_common/formats/dec/logic/dec.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:gc_wizard/utils/data_type_utils/double_type_utils.dart';
@@ -13,8 +13,8 @@ import 'package:latlong2/latlong.dart';
 const dmsKey = 'coords_dms';
 
 class CoordinateFormatDefinitionDMS extends CoordinateFormatDefinition {
-  CoordinateFormatDefinitionDMS(super.type, super.persistenceKey, super.apiKey,
-      super.parseCoordinate, super.defaultCoordinate);
+  CoordinateFormatDefinitionDMS(
+      super.type, super.persistenceKey, super.apiKey, super.parseCoordinate, super.defaultCoordinate);
 
   @override
   BaseCoordinate? parseCoordinateWholeString(String input) {
@@ -22,9 +22,8 @@ class CoordinateFormatDefinitionDMS extends CoordinateFormatDefinition {
   }
 }
 
-final DMSFormatDefinition = CoordinateFormatDefinitionDMS(
-  CoordinateFormatKey.DMS, dmsKey, dmsKey, DMSCoordinate.parse,
-  DMSCoordinate(DMSLatitude(0, 0, 0, 0), DMSLongitude(0, 0, 0, 0)));
+final DMSFormatDefinition = CoordinateFormatDefinitionDMS(CoordinateFormatKey.DMS, dmsKey, dmsKey, DMSCoordinate.parse,
+    DMSCoordinate(DMSLatitude(0, 0, 0, 0), DMSLongitude(0, 0, 0, 0)));
 
 class _FormattedDMSPart {
   IntegerText sign;
@@ -49,7 +48,7 @@ class _DMSPart {
   _FormattedDMSPart _formatParts(bool isLatitude, [int precision = 10]) {
     var _sign = getCoordinateSignString(sign, isLatitude);
     var _secondsStr =
-    NumberFormat(formatStringForDecimals(decimalPrecision: precision, minDecimalPrecision: 2)).format(seconds);
+        NumberFormat(formatStringForDecimals(decimalPrecision: precision, minDecimalPrecision: 2)).format(seconds);
     var _minutes = minutes;
 
     //Values like 59.999999999 may be rounded to 60.0. So in that case,
@@ -136,6 +135,7 @@ class DMSCoordinate extends BaseCoordinate {
   static DMSCoordinate? parse(String input) {
     return parseDMS(input);
   }
+
   static DMSCoordinate? parseWholeString(String input) {
     return parseDMS(input, wholeString: true);
   }

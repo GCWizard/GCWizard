@@ -59,13 +59,19 @@ class _UPCADecoder extends _UniversalProductCodeDecoder {
     var input = strUtils.trimCharacters(_input, '0');
 
     if (_isBinary()) {
-      if (input.length == 95 && input.startsWith(_UPC_A_START_BIN) && input.endsWith(_UPC_A_END_BIN) && input.contains(_UPC_A_MIDDLE_BIN)) {
+      if (input.length == 95 &&
+          input.startsWith(_UPC_A_START_BIN) &&
+          input.endsWith(_UPC_A_END_BIN) &&
+          input.contains(_UPC_A_MIDDLE_BIN)) {
         return _UPCDecodeMode.BINARY_CORRECT_ENCODING;
       } else {
         return _UPCDecodeMode.PURE_NUMBERS;
       }
     } else {
-      if (input.length == 61 && input.startsWith(_UPC_A_QUIET + _UPC_A_START) && input.endsWith(_UPC_A_END + _UPC_A_QUIET) && input.contains(_UPC_A_MIDDLE)) {
+      if (input.length == 61 &&
+          input.startsWith(_UPC_A_QUIET + _UPC_A_START) &&
+          input.endsWith(_UPC_A_END + _UPC_A_QUIET) &&
+          input.contains(_UPC_A_MIDDLE)) {
         return _UPCDecodeMode.CORRECT_ENCODING;
       } else {
         return _UPCDecodeMode.PURE_NUMBERS;
@@ -109,6 +115,3 @@ class _UPCADecoder extends _UniversalProductCodeDecoder {
     return _decodeNumbers(input);
   }
 }
-
-
-

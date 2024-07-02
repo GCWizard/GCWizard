@@ -38,11 +38,7 @@ Map<String, String> _keyMap(String key) {
     throw const FormatException('pollux_key_exception_no_spaces');
   }
 
-  return {
-    '.': dots,
-    '-': dashes,
-    ' ': spaces
-  };
+  return {'.': dots, '-': dashes, ' ': spaces};
 }
 
 String polluxEncrypt(String input, String key) {

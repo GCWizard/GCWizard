@@ -11,20 +11,21 @@ class _GCWCoordWidgetInfoSwissGrid extends GCWCoordWidgetInfo {
   String get example => 'Y: 720660.2, X: 167765.3';
 
   @override
-  _GCWCoordWidget mainWidget({
-    Key? key,
-    required void Function(BaseCoordinate?) onChanged,
-    required BaseCoordinate? coordinates,
-    bool? initialize
-  }) {
-    return _GCWCoordsSwissGrid(key: key, onChanged: onChanged, coordinates: coordinates, initialize: initialize ?? false);
+  _GCWCoordWidget mainWidget(
+      {Key? key,
+      required void Function(BaseCoordinate?) onChanged,
+      required BaseCoordinate? coordinates,
+      bool? initialize}) {
+    return _GCWCoordsSwissGrid(
+        key: key, onChanged: onChanged, coordinates: coordinates, initialize: initialize ?? false);
   }
 }
 
 class _GCWCoordsSwissGrid extends _GCWCoordWidget {
-
-  _GCWCoordsSwissGrid({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize}) :
-        super(coordinates: coordinates is SwissGridCoordinate ? coordinates : SwissGridFormatDefinition.defaultCoordinate);
+  _GCWCoordsSwissGrid({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize})
+      : super(
+            coordinates:
+                coordinates is SwissGridCoordinate ? coordinates : SwissGridFormatDefinition.defaultCoordinate);
 
   @override
   _GCWCoordsSwissGridState createState() => _GCWCoordsSwissGridState();

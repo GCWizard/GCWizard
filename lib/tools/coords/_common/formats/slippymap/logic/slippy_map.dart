@@ -48,72 +48,75 @@ const slippyMapKey = 'coords_slippymap';
 final _defaultCoordinate = SlippyMapCoordinate(0, 0, defaultSlippyMapType);
 
 final SlippyMapFormatDefinition = CoordinateFormatWithSubtypesDefinition(
-  CoordinateFormatKey.SLIPPY_MAP, slippyMapKey, slippyMapKey,
-  [
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_0, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_1, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_2, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_3, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_4, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_5, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_6, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_7, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_8, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_9, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_10, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_11, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_12, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_13, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_14, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_15, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_16, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_17, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_18, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_19, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_20, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_21, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_22, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_23, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_24, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_25, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_26, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_27, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_28, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_29, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-    CoordinateFormatDefinition(CoordinateFormatKey.SLIPPYMAP_30, '', '',
-        SlippyMapCoordinate.parse, _defaultCoordinate),
-  ],
-    SlippyMapCoordinate.parse, _defaultCoordinate);
+    CoordinateFormatKey.SLIPPY_MAP,
+    slippyMapKey,
+    slippyMapKey,
+    [
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_0, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_1, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_2, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_3, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_4, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_5, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_6, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_7, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_8, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_9, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_10, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_11, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_12, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_13, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_14, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_15, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_16, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_17, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_18, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_19, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_20, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_21, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_22, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_23, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_24, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_25, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_26, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_27, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_28, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_29, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(
+          CoordinateFormatKey.SLIPPYMAP_30, '', '', SlippyMapCoordinate.parse, _defaultCoordinate),
+    ],
+    SlippyMapCoordinate.parse,
+    _defaultCoordinate);
 
 class SlippyMapCoordinate extends BaseCoordinateWithSubtypes {
   late CoordinateFormat _format;
@@ -125,7 +128,8 @@ class SlippyMapCoordinate extends BaseCoordinateWithSubtypes {
   static const String _ERROR_INVALID_SUBTYPE = 'No valid SlippyMap subtype given.';
 
   SlippyMapCoordinate(this.x, this.y, CoordinateFormatKey subtypeKey) {
-    if (subtypeKey != defaultSlippyMapType && !isSubtypeOfCoordinateFormat(CoordinateFormatKey.SLIPPY_MAP, subtypeKey)) {
+    if (subtypeKey != defaultSlippyMapType &&
+        !isSubtypeOfCoordinateFormat(CoordinateFormatKey.SLIPPY_MAP, subtypeKey)) {
       throw Exception(_ERROR_INVALID_SUBTYPE);
     }
 

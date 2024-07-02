@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
-import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_formatselector.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/units/gcw_unit_dropdown.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_formatselector.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/default_units_getter.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/length.dart';
 

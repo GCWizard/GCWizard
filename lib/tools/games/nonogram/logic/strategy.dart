@@ -37,9 +37,8 @@ class Strategy {
       var solvers = [pushSolver(), bruteForce()];
       // keep tracks of visited lines
       _visited = _VisitedG(
-        rows: List<Uint8List>.generate(puzzle.height, (index) => Uint8List(solvers.length)),
-        columns: List<Uint8List>.generate(puzzle.width, (index) => Uint8List(solvers.length))
-      );
+          rows: List<Uint8List>.generate(puzzle.height, (index) => Uint8List(solvers.length)),
+          columns: List<Uint8List>.generate(puzzle.width, (index) => Uint8List(solvers.length)));
 
       // repeatedly run all solvers on puzzle
       bool progress = false;
@@ -56,8 +55,7 @@ class Strategy {
           _solveOnce(puzzle, solver, i);
           progress = !listEquals(snapshot, puzzle.snapshot);
         });
-
-      } while(progress);
+      } while (progress);
 
       // no solution found… trial and error now
       if (withTrialAndError && !puzzle.isFinished) {
@@ -96,13 +94,15 @@ class Strategy {
   }
 
   // the actual execution
-  bool _run(List<List<int>> lines, List<List<int>> hints, bool onRow, Solver solver, int solverIndex, bool skip, bool skipEarly) {
-    var visited = onRow ?
-      _VisitedL(current: _visited.rows, other: _visited.columns) :
-      _VisitedL(current: _visited.columns, other: _visited.rows);
+  bool _run(List<List<int>> lines, List<List<int>> hints, bool onRow, Solver solver, int solverIndex, bool skip,
+      bool skipEarly) {
+    var visited = onRow
+        ? _VisitedL(current: _visited.rows, other: _visited.columns)
+        : _VisitedL(current: _visited.columns, other: _visited.rows);
     var rearrangedLines = _optimizeOrder(lines, hints, skipEarly);
 
-    for (var line in rearrangedLines) { //estimate
+    for (var line in rearrangedLines) {
+      //estimate
       if (skip || visited.current[line.index][solverIndex] != 0) {
         continue;
       }
@@ -116,7 +116,8 @@ class Strategy {
 
       // now, restore the trimmed line and analyze the result
       var hasChanged = false;
-      if (newLine != null) { // the solver may return null to indicate no progress
+      if (newLine != null) {
+        // the solver may return null to indicate no progress
         newLine = restoreLine(newLine, trimresult.trimInfo!);
         line.line.forEachIndexed((i, el) {
           // What has changed?
@@ -137,7 +138,7 @@ class Strategy {
   List<LineMetaData> _optimizeOrder(List<List<int>> lines, List<List<int>> hints, bool skipEarly) {
     // remove already solved lines
     var unsolvedLines = lines.mapIndexed((index, line) {
-      var zeros = line.fold(0, (count, x)  => count + (x == 0 ? 1 : 0));
+      var zeros = line.fold(0, (count, x) => count + (x == 0 ? 1 : 0));
       if (zeros == 0) {
         return null;
       }
@@ -148,7 +149,8 @@ class Strategy {
     if (skipEarly) {
       unsolvedLines = unsolvedLines.map((lineMeta) {
         var _hintSum = hintSum(hints[lineMeta.index]);
-        var estimate = (lineMeta.zeros < _hintSum) ? 0 : pow(lineMeta.zeros - _hintSum, hints[lineMeta.index].length).toInt();
+        var estimate =
+            (lineMeta.zeros < _hintSum) ? 0 : pow(lineMeta.zeros - _hintSum, hints[lineMeta.index].length).toInt();
         lineMeta.estimate = estimate;
         return lineMeta;
       });
@@ -157,7 +159,6 @@ class Strategy {
     return unsolvedLines.toList();
   }
 }
-
 
 class _VisitedG {
   List<Uint8List> rows = [];
@@ -172,4 +173,3 @@ class _VisitedL {
 
   _VisitedL({required this.current, required this.other});
 }
-

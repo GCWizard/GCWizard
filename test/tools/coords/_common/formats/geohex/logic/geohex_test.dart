@@ -8,7 +8,7 @@ void main() {
     List<Map<String, Object?>> _inputsToExpected = [
       {'text': '', 'expectedOutput': null},
       {'text': 'ÖD31365480657013431886', 'expectedOutput': null},
-      {'text': 'QD31365480657013431886', 'expectedOutput': {'format': CoordinateFormatKey.GEOHEX, 'coordinate': LatLng(46.211024251, 025.5985061856)}},
+      {'text': 'QD31365480657013431886', 'expectedOutput': {'format': CoordinateFormatKey.GEOHEX, 'coordinate': const LatLng(46.211024251, 025.5985061856)}},
     ];
 
     for (var elem in _inputsToExpected) {

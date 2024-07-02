@@ -1,5 +1,6 @@
 part of 'gcwizard_scipt_test.dart';
 
+// ignore: unused_element
 List<Map<String, Object?>> _inputsGeocachingToExpected = [
   {'code' : 'print BWW("ÄÖÜ", 0, 0)', 'expectedOutput' : '0'},
   {'code' : 'print BWW("ÄÖÜ", 1, 0)', 'expectedOutput' : '84'},

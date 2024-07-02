@@ -97,8 +97,8 @@ class _ThemeColorsLight extends ThemeColors {
   }
 
   @override
-  Color checkBoxFillColor(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
+  Color checkBoxFillColor(Set<WidgetState> states) {
+    if (states.contains(WidgetState.disabled)) {
       return _lightGray.withOpacity(0.5);
     }
     return _lightGray.withOpacity(0.5);
@@ -120,8 +120,8 @@ class _ThemeColorsLight extends ThemeColors {
   }
 
   @override
-  Color checkBoxOverlayColor(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
+  Color checkBoxOverlayColor(Set<WidgetState> states) {
+    if (states.contains(WidgetState.disabled)) {
       return secondary().withOpacity(0.5);
     }
     return secondary().withOpacity(0.5);

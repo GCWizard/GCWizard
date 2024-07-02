@@ -183,7 +183,7 @@ class _GCWFormulaListEditor extends State<GCWFormulaListEditor> {
                     })
                 : Container(),
             GCWPopupMenu(
-                iconData: Icons.settings,
+                icon: Icons.settings,
                 menuItemBuilder: (context) => [
                       GCWPopupMenuItem(
                           child: iconedGCWPopupMenuItem(

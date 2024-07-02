@@ -1,5 +1,6 @@
 part of 'gcwizard_scipt_test.dart';
 
+// ignore: unused_element
 List<Map<String, Object?>> _inputsCodesToExpected = [
   {'code' : code1c, 'expectedOutput' : '1       2       9       6'},
   {'code' : codeGC6GE197, 'expectedOutput' : 'Punkte im radius        197      sind   56151'},

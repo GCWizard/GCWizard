@@ -10,8 +10,7 @@ CheckDigitOutput _CheckUICNumber(String number) {
       return CheckDigitOutput(
           false,
           _CalculateCheckDigitAndNumber(number.substring(0, number.length - 1), _CalculateUICNumber),
-          _CalculateGlitch(number, (String x) => UICWagonCode.fromNumber(x).hasValidCheckDigit)
-      );
+          _CalculateGlitch(number, (String x) => UICWagonCode.fromNumber(x).hasValidCheckDigit));
     }
   }
   return CheckDigitOutput(false, 'checkdigits_invalid_length', ['']);

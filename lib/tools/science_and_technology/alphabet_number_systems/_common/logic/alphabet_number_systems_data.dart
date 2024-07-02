@@ -31,7 +31,7 @@ part of 'package:gc_wizard/tools/science_and_technology/alphabet_number_systems/
 // Pe   	ף	 800	  Omega	  ω
 // Tzade 	ץ	 900	  Sampi	  ϡ
 
-enum ALPHABET_NUMBER_SYSTEMS {HEBREW, MILESIAN}
+enum ALPHABET_NUMBER_SYSTEMS { HEBREW, MILESIAN }
 
 const Map<String, int> _MILESIANNUMBERS_H = {
   'ρ': 100,
@@ -43,7 +43,7 @@ const Map<String, int> _MILESIANNUMBERS_H = {
   'ψ': 700,
   'ω': 800,
   '\u03E1': 900, // ϡ
-  '' : 0,
+  '': 0,
 };
 const Map<String, int> _MILESIANNUMBERS_T = {
   'ι': 10,
@@ -55,7 +55,7 @@ const Map<String, int> _MILESIANNUMBERS_T = {
   'ο': 70,
   'π': 80,
   '\u03DF': 90, // ϟ
-  '' : 0,
+  '': 0,
 };
 const Map<String, int> _MILESIANNUMBERS_O = {
   'α': 1,
@@ -67,7 +67,7 @@ const Map<String, int> _MILESIANNUMBERS_O = {
   'ζ': 7,
   'η': 8,
   'θ': 9,
-  '' : 0,
+  '': 0,
 };
 
 const Map<String, int> _HEBREWNUMBERS_H = {
@@ -80,7 +80,7 @@ const Map<String, int> _HEBREWNUMBERS_H = {
   'ן': 700,
   'ף': 800,
   'ץ': 900,
-  '' : 0,
+  '': 0,
 };
 const Map<String, int> _HEBREWNUMBERS_T = {
   'י': 10,
@@ -92,7 +92,7 @@ const Map<String, int> _HEBREWNUMBERS_T = {
   'ע': 70,
   'פ': 80,
   'צ': 90,
-  '' : 0,
+  '': 0,
 };
 const Map<String, int> _HEBREWNUMBERS_O = {
   'א': 1,
@@ -104,23 +104,24 @@ const Map<String, int> _HEBREWNUMBERS_O = {
   'ז': 7,
   'ח': 8,
   'ט': 9,
-  '' : 0,
+  '': 0,
 };
 
 const ALPHABETNUMBERSYSTEMS = {
-  ALPHABET_NUMBER_SYSTEMS.HEBREW : {
-    1 : _HEBREWNUMBERS_O,
-    10 : _HEBREWNUMBERS_T,
-    100 : _HEBREWNUMBERS_H,
+  ALPHABET_NUMBER_SYSTEMS.HEBREW: {
+    1: _HEBREWNUMBERS_O,
+    10: _HEBREWNUMBERS_T,
+    100: _HEBREWNUMBERS_H,
   },
-  ALPHABET_NUMBER_SYSTEMS.MILESIAN : {
-    1 : _MILESIANNUMBERS_O,
-    10 : _MILESIANNUMBERS_T,
-    100 : _MILESIANNUMBERS_H,
+  ALPHABET_NUMBER_SYSTEMS.MILESIAN: {
+    1: _MILESIANNUMBERS_O,
+    10: _MILESIANNUMBERS_T,
+    100: _MILESIANNUMBERS_H,
   },
 };
 
-List<GCWDropDownMenuItem<int>> AlphabetNumberSystemsDropwdownList(ALPHABET_NUMBER_SYSTEMS alphabetNumberSystem, int system){
+List<GCWDropDownMenuItem<int>> AlphabetNumberSystemsDropwdownList(
+    ALPHABET_NUMBER_SYSTEMS alphabetNumberSystem, int system) {
   return ALPHABETNUMBERSYSTEMS[alphabetNumberSystem]![system]!.entries.map((mode) {
     return GCWDropDownMenuItem(
       value: mode.value,

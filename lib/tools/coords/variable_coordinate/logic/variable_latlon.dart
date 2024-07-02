@@ -144,8 +144,7 @@ VariableCoordinateResults parseVariableLatLon(String coordinate, Map<String, Str
       coords.add(VariableCoordinateSingleResult(parsedCoord.coordinate.toLatLng()!, expandedText.variables));
       var latLng = parsedCoord.leftPadCoordinate?.toLatLng();
       if (latLng != null) {
-        leftPadCoords
-            .add(VariableCoordinateSingleResult(latLng, expandedText.variables));
+        leftPadCoords.add(VariableCoordinateSingleResult(latLng, expandedText.variables));
       }
     }
   }

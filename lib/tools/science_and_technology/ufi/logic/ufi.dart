@@ -402,7 +402,7 @@ String encodeUFI(UFI ufi) {
 
   ////// Step 2 ///////////////////////////////////////////////////////////////
 
-  var base31 = convertBase(ufiPayload, 10, 31, alphabet: _UFI_BASE31);
+  var base31 = convertIntToBase(ufiPayload, 31, outputAlphabet: _UFI_BASE31);
   base31 = base31.padLeft(15, '0');
 
   ////// Step 3 ///////////////////////////////////////////////////////////////
@@ -490,7 +490,7 @@ UFI decodeUFI(String ufiCode) {
   ////// Step 2 ///////////////////////////////////////////////////////////////
 
   var ufiPayload = trimCharactersLeft(base31, '0');
-  ufiPayload = convertBase(ufiPayload, 31, 10, alphabet: _UFI_BASE31);
+  ufiPayload = convertBaseToInt(ufiPayload, 31, inputAlphabet: _UFI_BASE31);
 
   ////// Step 1 ///////////////////////////////////////////////////////////////
 

@@ -9,6 +9,7 @@ part of 'package:gc_wizard/tools/science_and_technology/uic_wagoncode/logic/uic_
 enum _UICWagonCodePassengerInternationalUsage {ONLY_DOMESTIC, INTERNATIONAL_WITH_SPECIALPERMISSION, TEN_AND_PPW, ONLY_PPW, ONLY_TEN, INVALID}
 enum UICWagonCodePassengerGaugeType {FIXED, VARIABLE, VARIABLE_1435_1520, VARIABLE_1435_1668, INVALID, UNDEFINED}
 enum UICWagonCodePassengerGaugeChangeMode {UNDEFINED, BOGIE_CHANGE, AXLE_ADJUSTMENT, INVALID}
+// ignore: unused_field
 enum _UICWagonCodePassengerWagonTypes {NORMAL, MAINTENANCE, CAR_TRANSPORT, NORMAL_OR_CAR_TRANSPORT, HISTORIC, MISC, INVALID}
 enum UICWagonCodePassengerAirConditioned {UNDEFINED, YES, NO}
 enum _UICWagonCodePassengerCategoryType {SEATS, COUCHETTE, SLEEPING, SPECIAL, INVALID}

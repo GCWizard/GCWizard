@@ -397,7 +397,7 @@ String _vDecodeIE(String value) {
 }
 
 String _vDecodeIS(String value) {
-  return convertBase(value, 10, 36, alphabet: _ALPHANUM);
+  return convertIntToBase(value, 36, outputAlphabet: _ALPHANUM);
 }
 
 String _vDecodeCompany(String value) {

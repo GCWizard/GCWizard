@@ -45,7 +45,8 @@ class FormulaPainter {
     _constantsRegEx = _constants.map((constant) => constant).join('|');
   }
 
-  String paintFormula(String formula, List<FormulaValue> values, int formulaIndex, List<String> formulaNames, bool coloredFormulas) {
+  String paintFormula(
+      String formula, List<FormulaValue> values, int formulaIndex, List<String> formulaNames, bool coloredFormulas) {
     var result = _buildResultString(_Text, formula.length);
     if (!coloredFormulas) return result;
 
@@ -362,7 +363,9 @@ class FormulaPainter {
     var match = regex.firstMatch(formula);
 
     if (match != null) {
-      return (_isFormulaReference(match.group(0)!) != null) ? null : [match.group(1)!, match.group(2)!, match.group(3)!];
+      return (_isFormulaReference(match.group(0)!) != null)
+          ? null
+          : [match.group(1)!, match.group(2)!, match.group(3)!];
     }
     return null;
   }

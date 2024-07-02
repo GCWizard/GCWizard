@@ -68,21 +68,17 @@ class _Rhumb {
   // N.B., x and y are in degrees
   static double _Dtan(double x, double y) {
     double d = x - y, tx = _GeoMath.tand(x), ty = _GeoMath.tand(y), txy = tx * ty;
-    return d != 0 ?
-      (2 * txy > -1 ? (1 + txy) * _GeoMath.tand(d) : tx - ty) / (d *_GeoMath.degree()) :
-      1 + txy;
+    return d != 0 ? (2 * txy > -1 ? (1 + txy) * _GeoMath.tand(d) : tx - ty) / (d * _GeoMath.degree()) : 1 + txy;
   }
 
   static double _Datan(double x, double y) {
     double d = x - y, xy = x * y;
-    return d != 0 ?
-      (2 * xy > -1 ? atan( d / (1 + xy) ) : atan(x) - atan(y)) / d :
-      1 / (1 + xy);
+    return d != 0 ? (2 * xy > -1 ? atan(d / (1 + xy)) : atan(x) - atan(y)) / d : 1 / (1 + xy);
   }
 
   static double _Dsin(double x, double y) {
     double d = (x - y) / 2;
-    return cos((x + y)/2) * (d != 0 ? sin(d) / d : 1);
+    return cos((x + y) / 2) * (d != 0 ? sin(d) / d : 1);
   }
 
   static double _Dsinh(double x, double y) {
@@ -91,11 +87,8 @@ class _Rhumb {
   }
 
   static double _Dasinh(double x, double y) {
-    double d = x - y,
-    hx = _GeoMath.hypot(1.0, x), hy = _GeoMath.hypot(1.0, y);
-    return d != 0 ?
-      _GeoMath.asinh(x*y > 0 ? d * (x + y) / (x*hy + y*hx) : x*hy - y*hx) / d :
-      1 / hx;
+    double d = x - y, hx = _GeoMath.hypot(1.0, x), hy = _GeoMath.hypot(1.0, y);
+    return d != 0 ? _GeoMath.asinh(x * y > 0 ? d * (x + y) / (x * hy + y * hx) : x * hy - y * hx) / d : 1 / hx;
   }
 
   static double Dgd(double x, double y) {
@@ -165,32 +158,32 @@ class _Rhumb {
    * Calculate latitude \e lat2.
    * @hideinitializer
    **********************************************************************/
-  static const int _MASK_LATITUDE = 1<<7;
+  static const int _MASK_LATITUDE = 1 << 7;
   /**
    * Calculate longitude \e lon2.
    * @hideinitializer
    **********************************************************************/
-  static const int _MASK_LONGITUDE = 1<<8;
+  static const int _MASK_LONGITUDE = 1 << 8;
   /**
    * Calculate azimuth \e azi12.
    * @hideinitializer
    **********************************************************************/
-  static const int _MASK_AZIMUTH = 1<<9;
+  static const int _MASK_AZIMUTH = 1 << 9;
   /**
    * Calculate distance \e s12.
    * @hideinitializer
    **********************************************************************/
-  static const int _MASK_DISTANCE = 1<<10;
+  static const int _MASK_DISTANCE = 1 << 10;
   /**
    * Calculate area \e S12.
    * @hideinitializer
    **********************************************************************/
-  static const int _MASK_AREA = 1<<14;
+  static const int _MASK_AREA = 1 << 14;
   /**
    * Unroll \e lon2 in the direct calculation.
    * @hideinitializer
    **********************************************************************/
-  static const int _MASK_LONG_UNROLL = 1<<15;
+  static const int _MASK_LONG_UNROLL = 1 << 15;
   /**
    * Calculate everything.  (LONG_UNROLL is not included in this mask.)
    * @hideinitializer
@@ -217,7 +210,7 @@ class _Rhumb {
    * is indeterminate (a NaN is returned for \e lon2 and \e S12).
    **********************************************************************/
   RhumbDirectReturn _Direct(double lat1, double lon1, double azi12, double s12) {
-    return _GenDirect(lat1, lon1, azi12, s12, _MASK_LATITUDE | _MASK_LONGITUDE/* | _MASK_AREA*/);
+    return _GenDirect(lat1, lon1, azi12, s12, _MASK_LATITUDE | _MASK_LONGITUDE /* | _MASK_AREA*/);
   }
 
   RhumbDirectReturn _GenDirect(double lat1, double lon1, double azi12, double s12, int outmask) {
@@ -255,29 +248,29 @@ class _Rhumb {
   }
 
   RhumbInverseReturn _GenInverse(double lat1, double lon1, double lat2, double lon2, int outmask) {
-    _AuxAngle phi1 = _AuxAngle.degrees(lat1), phi2 = _AuxAngle.degrees(lat2),
-    chi1 = _aux.Convert(_AuxLatitude._PHI,_AuxLatitude._CHI, phi1, _exact),
-    chi2 = _aux.Convert(_AuxLatitude._PHI, _AuxLatitude._CHI, phi2, _exact);
-    double
-    lon12 = _GeoMath.AngDiff(lon1, lon2),
-    lam12 = lon12 * _GeoMath.degree();
-    double psi1 = chi1.lam(),
-    psi2 = chi2.lam(),
-    psi12 = psi2 - psi1;
+    _AuxAngle phi1 = _AuxAngle.degrees(lat1),
+        phi2 = _AuxAngle.degrees(lat2),
+        chi1 = _aux.Convert(_AuxLatitude._PHI, _AuxLatitude._CHI, phi1, _exact),
+        chi2 = _aux.Convert(_AuxLatitude._PHI, _AuxLatitude._CHI, phi2, _exact);
+    double lon12 = _GeoMath.AngDiff(lon1, lon2), lam12 = lon12 * _GeoMath.degree();
+    double psi1 = chi1.lam(), psi2 = chi2.lam(), psi12 = psi2 - psi1;
     double azi12 = double.nan, S12 = double.nan, s12 = double.nan;
     if (outmask & _MASK_AZIMUTH != 0) {
       azi12 = _GeoMath.atan2d(lam12, psi12);
     }
     if (outmask & _MASK_DISTANCE != 0) {
       if (psi1.isInfinite || psi2.isInfinite) {
-        s12 = (_aux.Convert(_AuxLatitude._PHI, _AuxLatitude._MU, phi2, _exact).radians0() - _aux.Convert(_AuxLatitude._PHI, _AuxLatitude._MU, phi1, _exact).radians0()).abs() * _rm;
+        s12 = (_aux.Convert(_AuxLatitude._PHI, _AuxLatitude._MU, phi2, _exact).radians0() -
+                    _aux.Convert(_AuxLatitude._PHI, _AuxLatitude._MU, phi1, _exact).radians0())
+                .abs() *
+            _rm;
       } else {
         double h = _GeoMath.hypot(lam12, psi12);
         // dmu/dpsi = dmu/dchi / dpsi/dchi
-        double dmudpsi = _exact ?
-        _aux.DRectifying(phi1, phi2) / _aux.DIsometric(phi1, phi2) :
-        _aux.DConvert(_AuxLatitude._CHI, _AuxLatitude._MU, chi1, chi2)
-        / _DAuxLatitude.Dlam(chi1.tan(), chi2.tan());
+        double dmudpsi = _exact
+            ? _aux.DRectifying(phi1, phi2) / _aux.DIsometric(phi1, phi2)
+            : _aux.DConvert(_AuxLatitude._CHI, _AuxLatitude._MU, chi1, chi2) /
+                _DAuxLatitude.Dlam(chi1.tan(), chi2.tan());
         s12 = h * dmudpsi * _rm;
       }
     }
@@ -287,9 +280,7 @@ class _Rhumb {
 
   double _DIsometricToRectifying(double psix, double psiy) {
     if (_exact) {
-      double
-      latx = _ell.InverseIsometricLatitude(psix),
-      laty = _ell.InverseIsometricLatitude(psiy);
+      double latx = _ell.InverseIsometricLatitude(psix), laty = _ell.InverseIsometricLatitude(psiy);
       return _DRectifying(latx, laty) / _DIsometric(latx, laty);
     } else {
       psix *= _GeoMath.degree();
@@ -299,8 +290,7 @@ class _Rhumb {
   }
 
   double _DConformalToRectifying(double chix, double chiy) {
-    return 1 + _SinCosSeries(true, chix, chiy,
-    _ell.ConformalToRectifyingCoeffs(), _tm_maxord);
+    return 1 + _SinCosSeries(true, chix, chiy, _ell.ConformalToRectifyingCoeffs(), _tm_maxord);
   }
 
   double _DE(double x, double y) {
@@ -325,44 +315,44 @@ class _Rhumb {
     //          (sin(x)*cos(y)*Delta(y) + sin(y)*cos(x)*Delta(x))
     // cos(z) = sqrt((1-sin(z))*(1+sin(z)))
     double sx = sin(x), sy = sin(y), cx = cos(x), cy = cos(y);
-    double Dt = _Dsin(x, y) * (sx + sy) /
-    ((cx + cy) * (sx * ei.Delta(sy, cy) + sy * ei.Delta(sx, cx))),
-    t = d * Dt, Dsz = 2 * Dt / (1 + t*t),
-    sz = d * Dsz, cz = (1 - t) * (1 + t) / (1 + t*t);
-    return ((sz != 0 ? ei.E3(sz, cz, ei.Delta(sz, cz)) / sz : 1)
-      - ei.k2() * sx * sy) * Dsz;
+    double Dt = _Dsin(x, y) * (sx + sy) / ((cx + cy) * (sx * ei.Delta(sy, cy) + sy * ei.Delta(sx, cx))),
+        t = d * Dt,
+        Dsz = 2 * Dt / (1 + t * t),
+        sz = d * Dsz,
+        cz = (1 - t) * (1 + t) / (1 + t * t);
+    return ((sz != 0 ? ei.E3(sz, cz, ei.Delta(sz, cz)) / sz : 1) - ei.k2() * sx * sy) * Dsz;
   }
 
   double _DRectifyingToIsometric(double mux, double muy) {
-    double
-    latx = _ell.InverseRectifyingLatitude(mux/_GeoMath.degree()),
-    laty = _ell.InverseRectifyingLatitude(muy/_GeoMath.degree());
-    return _exact ?
-      _DIsometric(latx, laty) / _DRectifying(latx, laty) :
-      _Dgdinv(_GeoMath.taupf(_GeoMath.tand(latx), _ell.es),
-      _GeoMath.taupf(_GeoMath.tand(laty), _ell.es)) *
-      _DRectifyingToConformal(mux, muy);
+    double latx = _ell.InverseRectifyingLatitude(mux / _GeoMath.degree()),
+        laty = _ell.InverseRectifyingLatitude(muy / _GeoMath.degree());
+    return _exact
+        ? _DIsometric(latx, laty) / _DRectifying(latx, laty)
+        : _Dgdinv(_GeoMath.taupf(_GeoMath.tand(latx), _ell.es), _GeoMath.taupf(_GeoMath.tand(laty), _ell.es)) *
+            _DRectifyingToConformal(mux, muy);
   }
 
   double _DRectifyingToConformal(double mux, double muy) {
-    return 1 - _SinCosSeries(true, mux, muy,
-      _ell.RectifyingToConformalCoeffs(), _tm_maxord);
+    return 1 - _SinCosSeries(true, mux, muy, _ell.RectifyingToConformalCoeffs(), _tm_maxord);
   }
 
   double _DRectifying(double latx, double laty) {
-    double
-    tbetx = _ell.f1 *_GeoMath.tand(latx),
-    tbety = _ell.f1 * _GeoMath.tand(laty);
-    return (_GeoMath.pi()/2) * _ell.b * _ell.f1 * _DE(atan(tbetx), atan(tbety))
-    * _Dtan(latx, laty) * _Datan(tbetx, tbety) / _ell.QuarterMeridian();
+    double tbetx = _ell.f1 * _GeoMath.tand(latx), tbety = _ell.f1 * _GeoMath.tand(laty);
+    return (_GeoMath.pi() / 2) *
+        _ell.b *
+        _ell.f1 *
+        _DE(atan(tbetx), atan(tbety)) *
+        _Dtan(latx, laty) *
+        _Datan(tbetx, tbety) /
+        _ell.QuarterMeridian();
   }
 
   double _DIsometric(double latx, double laty) {
-    double
-    phix = latx * _GeoMath.degree(), tx = _GeoMath.tand(latx),
-    phiy = laty * _GeoMath.degree(), ty = _GeoMath.tand(laty);
-    return _Dasinh(tx, ty) * _Dtan(latx, laty)
-    - _Deatanhe(sin(phix), sin(phiy)) * _Dsin(phix, phiy);
+    double phix = latx * _GeoMath.degree(),
+        tx = _GeoMath.tand(latx),
+        phiy = laty * _GeoMath.degree(),
+        ty = _GeoMath.tand(laty);
+    return _Dasinh(tx, ty) * _Dtan(latx, laty) - _Deatanhe(sin(phix), sin(phiy)) * _Dsin(phix, phiy);
   }
 
   double _SinCosSeries(bool sinp, double x, double y, List<double> c, int n) {
@@ -399,10 +389,14 @@ class _Rhumb {
     //     b[j] = A * b[j+1] - b[j+2] + c[j] * I for j = n..1
     //    t =  (c[0] * I  - b[2]) * f[0](x,y) + b[1] * f[1](x,y)
     // c[0] is not accessed for s = t[2]
-    double p = x + y, d = x - y,
-    cp = cos(p), cd =          cos(d),
-    sp = sin(p), sd = d != 0 ? sin(d)/d : 1,
-    m = 2 * cp * cd, s = sp * sd;
+    double p = x + y,
+        d = x - y,
+        cp = cos(p),
+        cd = cos(d),
+        sp = sin(p),
+        sd = d != 0 ? sin(d) / d : 1,
+        m = 2 * cp * cd,
+        s = sp * sd;
     // 2x2 matrices stored in row-major order
     List<double> a = [m, -s * d * d, -4 * s, m];
     List<double> ba = [0, 0, 0, 0];
@@ -410,7 +404,8 @@ class _Rhumb {
     List<double> b1 = List<double>.from(ba);
     List<double> b2 = List<double>.from(bb);
     if (n > 0) b1[0] = b1[3] = c[n];
-    for (int j = n - 1; j > 0; --j) { // j = n-1 .. 1
+    for (int j = n - 1; j > 0; --j) {
+      // j = n-1 .. 1
       var _temp = b1;
       b1 = b2;
       b2 = _temp;
@@ -430,9 +425,9 @@ class _Rhumb {
       s = b1[2] * f11 + b1[3] * f12;
     } else {
       // double f01 = 1, f02 = 0;
-      double f11 = cd * cp, f12 = - 2 * sd * sp;
+      double f11 = cd * cp, f12 = -2 * sd * sp;
       // m = c[0] - b2[0] + b1[0] * f11 + b1[1] * f12;
-      s = - b2[2] + b1[2] * f11 + b1[3] * f12;
+      s = -b2[2] + b1[2] * f11 + b1[3] * f12;
     }
     return s;
   }
@@ -533,10 +528,9 @@ class _RhumbLine {
    * \e S12).
    **********************************************************************/
   RhumbDirectReturn _GenPosition(double s12, int outmask) {
-    double
-    r12 = s12 / (_rh._rm * _GeoMath.degree()), // scaled distance in degrees
-    mu12 = r12 * _calp,
-    mu2 = _mu1 + mu12;
+    double r12 = s12 / (_rh._rm * _GeoMath.degree()), // scaled distance in degrees
+        mu12 = r12 * _calp,
+        mu2 = _mu1 + mu12;
     double lat2x, lon2x;
     double S12 = double.nan;
 
@@ -545,11 +539,14 @@ class _RhumbLine {
       _AuxAngle phi2 = _rh._aux.Convert(_AuxLatitude._MU, _AuxLatitude._PHI, mu2a, _rh._exact);
       _AuxAngle chi2 = _rh._aux.Convert(_AuxLatitude._PHI, _AuxLatitude._CHI, phi2, _rh._exact);
       lat2x = phi2.degrees0();
-      double dmudpsi = _rh._exact ?
-        _rh._aux.DRectifying(_phi1, phi2) / _rh._aux.DIsometric(_phi1, phi2) :
-        _rh._aux.DConvert(_AuxLatitude._CHI, _AuxLatitude._MU, _chi1, chi2) / _DAuxLatitude.Dlam(_chi1.tan(), chi2.tan());
+      double dmudpsi = _rh._exact
+          ? _rh._aux.DRectifying(_phi1, phi2) / _rh._aux.DIsometric(_phi1, phi2)
+          : _rh._aux.DConvert(_AuxLatitude._CHI, _AuxLatitude._MU, _chi1, chi2) /
+              _DAuxLatitude.Dlam(_chi1.tan(), chi2.tan());
       lon2x = r12 * _salp / dmudpsi;
-      lon2x = outmask & _Rhumb._MASK_LONG_UNROLL != 0 ? _lon1 + lon2x : _GeoMath.AngNormalize(_GeoMath.AngNormalize(_lon1) + lon2x);
+      lon2x = outmask & _Rhumb._MASK_LONG_UNROLL != 0
+          ? _lon1 + lon2x
+          : _GeoMath.AngNormalize(_GeoMath.AngNormalize(_lon1) + lon2x);
     } else {
       // Reduce to the interval [-180, 180)
       mu2 = _GeoMath.AngNormalize(mu2);

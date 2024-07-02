@@ -11,20 +11,18 @@ class _GCWCoordWidgetInfoGeohash extends GCWCoordWidgetInfo {
   String get example => 'c20cwkvr4';
 
   @override
-  _GCWCoordWidget mainWidget({
-    Key? key,
-    required void Function(BaseCoordinate?) onChanged,
-    required BaseCoordinate? coordinates,
-    bool? initialize
-  }) {
+  _GCWCoordWidget mainWidget(
+      {Key? key,
+      required void Function(BaseCoordinate?) onChanged,
+      required BaseCoordinate? coordinates,
+      bool? initialize}) {
     return _GCWCoordsGeohash(key: key, onChanged: onChanged, coordinates: coordinates, initialize: initialize ?? false);
   }
 }
 
 class _GCWCoordsGeohash extends _GCWCoordWidget {
-
-  _GCWCoordsGeohash({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize}) :
-        super(coordinates: coordinates is GeohashCoordinate ? coordinates : GeohashFormatDefinition.defaultCoordinate);
+  _GCWCoordsGeohash({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize})
+      : super(coordinates: coordinates is GeohashCoordinate ? coordinates : GeohashFormatDefinition.defaultCoordinate);
 
   @override
   _GCWCoordsGeohashState createState() => _GCWCoordsGeohashState();

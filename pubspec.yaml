@@ -1,48 +1,48 @@
 name: gc_wizard
 description: GC Wizard
-version: 3.1.0+256
+version: 3.1.0+263
 publish_to: none
 
 environment:
   sdk: ">=2.19.0 <3.0.0"
 
 dependencies:
-  archive: ^3.4.2
-  audioplayers: ^5.0.0
+  archive: ^3.5.1
+  audioplayers: ^6.0.0
   auto_size_text: ^3.0.0
   base32: ^2.1.3
   cached_network_image: ^3.3.0
   code_text_field: ^1.1.0
   collection: ^1.17.1
   #dart_numerics: DO NOT USE! CURRENT VERSION 0.0.6 NOT WEB COMPATIBLE (02/2024)
-  device_info_plus: ^9.1.0
+  device_info_plus: ^10.1.0
   diacritic: ^0.1.1
   encrypt: ^5.0.3
   exif: ^3.1.4
-  file_picker: ^5.5.0
+  file_picker: ^8.0.3
   file_picker_writable: ^2.0.3
   flutter:
     sdk: flutter
   flutter_highlight: ^0.7.0
   flutter_localizations:
     sdk: flutter
-  flutter_map: ^3.1.0
-  flutter_map_marker_popup: ^4.0.3
-  flutter_map_tappable_polyline: ^4.0.0+1
+  flutter_map: ^6.2.1
+  flutter_map_marker_popup: ^6.1.2
+  flutter_map_tappable_polyline: ^6.0.0
   highlight: ^0.7.0
-  http: ^0.13.5
+  http: ^1.2.1
   http_parser: ^4.0.2
   image: 4.1.3
-  intl: ^0.18.0
-  latlong2: ^0.8.2
-  location: ^5.0.1
+  intl: ^0.19.0
+  latlong2: ^0.9.0
+  location: ^6.0.2
   mask_text_input_formatter: ^2.5.0
   math_expressions: ^2.4.0
-  package_info_plus: ^4.0.2
+  package_info_plus: ^8.0.0
   path: ^1.8.3
   path_provider: ^2.1.1
-  permission_handler: ^10.4.5
-  photo_view: ^0.14.0
+  permission_handler: ^11.3.1
+  photo_view: ^0.15.0
   pointycastle: ^3.7.3
   prefs: ^4.1.0+3
   provider: ^6.0.4
@@ -56,8 +56,10 @@ dependencies:
   touchable: ^1.0.2
   tuple: ^2.0.1
   universal_html: ^2.2.4
-  unrar_file: ^1.1.0
-  uuid: ^3.0.7
+  unrar_file:
+    git:
+      url: https://github.com/fyxtc/unrar_file
+  uuid: ^4.4.0
   url_launcher: ^6.1.14
   utility: ^1.0.3
   week_of_year: ^2.0.0
@@ -181,6 +183,7 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/eurythmy/
     - lib/tools/symbol_tables/_common/assets/face_it/
     - lib/tools/symbol_tables/_common/assets/fakoo/
+    - lib/tools/symbol_tables/_common/assets/fantastic/
     - lib/tools/symbol_tables/_common/assets/fez/
     - lib/tools/symbol_tables/_common/assets/finger/
     - lib/tools/symbol_tables/_common/assets/finger_numbers/
@@ -203,6 +206,7 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/gargish/
     - lib/tools/symbol_tables/_common/assets/gc_attributes_ids/
     - lib/tools/symbol_tables/_common/assets/gc_attributes_meaning/
+    - lib/tools/symbol_tables/_common/assets/geovlog/
     - lib/tools/symbol_tables/_common/assets/gernreich/
     - lib/tools/symbol_tables/_common/assets/gerudo/
     - lib/tools/symbol_tables/_common/assets/glagolitic/
@@ -311,6 +315,7 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/pixel/
     - lib/tools/symbol_tables/_common/assets/planet/
     - lib/tools/symbol_tables/_common/assets/planets/
+    - lib/tools/symbol_tables/_common/assets/pleiadian/
     - lib/tools/symbol_tables/_common/assets/pokemon_unown/
     - lib/tools/symbol_tables/_common/assets/postcode_01247/
     - lib/tools/symbol_tables/_common/assets/postcode_8421/
@@ -373,6 +378,7 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/three_squares/
     - lib/tools/symbol_tables/_common/assets/tifinagh/
     - lib/tools/symbol_tables/_common/assets/tines/
+    - lib/tools/symbol_tables/_common/assets/tll/
     - lib/tools/symbol_tables/_common/assets/tomtom/
     - lib/tools/symbol_tables/_common/assets/trafficsigns_germany/
     - lib/tools/symbol_tables/_common/assets/ulog/

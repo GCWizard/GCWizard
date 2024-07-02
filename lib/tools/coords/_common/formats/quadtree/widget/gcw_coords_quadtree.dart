@@ -11,20 +11,20 @@ class _GCWCoordWidgetInfoQuadtree extends GCWCoordWidgetInfo {
   String get example => '021230223311203323';
 
   @override
-  _GCWCoordWidget mainWidget({
-    Key? key,
-    required void Function(BaseCoordinate?) onChanged,
-    required BaseCoordinate? coordinates,
-    bool? initialize
-  }) {
-    return _GCWCoordsQuadtree(key: key, onChanged: onChanged, coordinates: coordinates, initialize: initialize ?? false);
+  _GCWCoordWidget mainWidget(
+      {Key? key,
+      required void Function(BaseCoordinate?) onChanged,
+      required BaseCoordinate? coordinates,
+      bool? initialize}) {
+    return _GCWCoordsQuadtree(
+        key: key, onChanged: onChanged, coordinates: coordinates, initialize: initialize ?? false);
   }
 }
 
 class _GCWCoordsQuadtree extends _GCWCoordWidget {
-
-  _GCWCoordsQuadtree({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize}) :
-        super(coordinates: coordinates is QuadtreeCoordinate ? coordinates : QuadtreeFormatDefinition.defaultCoordinate);
+  _GCWCoordsQuadtree({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize})
+      : super(
+            coordinates: coordinates is QuadtreeCoordinate ? coordinates : QuadtreeFormatDefinition.defaultCoordinate);
 
   @override
   _GCWCoordsQuadtreeState createState() => _GCWCoordsQuadtreeState();

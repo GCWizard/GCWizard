@@ -40,9 +40,8 @@ const _BASE30 = [
 const int _DEFAULT_PRECISION = 8;
 const naturalAreaCodeKey = 'coords_naturalareacode';
 
-final NaturalAreaCodeFormatDefinition = CoordinateFormatDefinition(
-  CoordinateFormatKey.NATURAL_AREA_CODE, naturalAreaCodeKey, naturalAreaCodeKey,
-  NaturalAreaCodeCoordinate.parse, NaturalAreaCodeCoordinate('', ''));
+final NaturalAreaCodeFormatDefinition = CoordinateFormatDefinition(CoordinateFormatKey.NATURAL_AREA_CODE,
+    naturalAreaCodeKey, naturalAreaCodeKey, NaturalAreaCodeCoordinate.parse, NaturalAreaCodeCoordinate('', ''));
 
 class NaturalAreaCodeCoordinate extends BaseCoordinate {
   @override

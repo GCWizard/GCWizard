@@ -48,7 +48,7 @@ class _GCWPasteButtonState extends State<GCWPasteButton> {
         child: GCWPopupMenu(
       size: widget.iconSize,
       customIcon: widget.customIcon,
-      iconData: Icons.content_paste,
+      icon: Icons.content_paste,
       backgroundColor: widget.backgroundColor,
       menuItemBuilder: (context) => _buildMenuItems(context),
       onBeforePressed: widget.onBeforePressed,

@@ -40,7 +40,8 @@ double _wptsLat(Object i) {
     _handleError(_INVALIDTYPECAST);
     return 0.0;
   }
-  if ((i as num).toInt() >= _state.waypoints.length || i.toInt() < 1) {
+
+  if ((i as num).toInt() > _state.waypoints.length || i.toInt() < 1) {
     _handleError(_RANGEERROR);
     return 0.0;
   }
@@ -52,7 +53,7 @@ double _wptsLon(Object i) {
     _handleError(_INVALIDTYPECAST);
     return 0.0;
   }
-  if ((i as num).toInt() >= _state.waypoints.length || i < 1) {
+  if ((i as num).toInt() > _state.waypoints.length || i < 1) {
     _handleError(_RANGEERROR);
     return 0.0;
   }

@@ -1,5 +1,6 @@
 part of 'gcwizard_scipt_test.dart';
 
+// ignore: unused_element
 List<Map<String, Object?>> _inputsConstToExpected = [
 
   {'code' : 'print PI', 'expectedOutput' : '3.141592653589793'},

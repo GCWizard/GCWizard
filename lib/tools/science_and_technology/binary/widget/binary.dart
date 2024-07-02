@@ -45,23 +45,23 @@ class _BinaryState extends State<Binary> {
       children: <Widget>[
         _currentMode == GCWSwitchPosition.left
             ? GCWTextField(
-          inputFormatters: [GCWOnlyDigitsAndSpaceInputFormatter()],
-          controller: _decimalController,
-          onChanged: (value) {
-            setState(() {
-              _currentDecimalValue = value;
-            });
-          },
-        )
+                inputFormatters: [GCWOnlyDigitsAndSpaceInputFormatter()],
+                controller: _decimalController,
+                onChanged: (value) {
+                  setState(() {
+                    _currentDecimalValue = value;
+                  });
+                },
+              )
             : GCWTextField(
-          inputFormatters: [GCWOnly01AndSpaceInputFormatter()],
-          controller: _binaryController,
-          onChanged: (value) {
-            setState(() {
-              _currentBinaryValue = value;
-            });
-          },
-        ),
+                inputFormatters: [GCWOnly01AndSpaceInputFormatter()],
+                controller: _binaryController,
+                onChanged: (value) {
+                  setState(() {
+                    _currentBinaryValue = value;
+                  });
+                },
+              ),
         GCWTwoOptionsSwitch(
           value: _currentMode,
           onChanged: (value) {
@@ -72,13 +72,13 @@ class _BinaryState extends State<Binary> {
         ),
         _currentMode == GCWSwitchPosition.left
             ? GCWIntegerSpinner(
-            title: i18n(context, 'binary_length'),
-            onChanged: (int value) {
-              setState(() {
-                _lengthBinary = value;
-              });
-            },
-            value: _lengthBinary)
+                title: i18n(context, 'binary_length'),
+                onChanged: (int value) {
+                  setState(() {
+                    _lengthBinary = value;
+                  });
+                },
+                value: _lengthBinary)
             : Container(),
         GCWDefaultOutput(child: _buildOutput())
       ],
@@ -87,14 +87,16 @@ class _BinaryState extends State<Binary> {
 
   String _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
-      return _currentDecimalValue.split(' ').map((value) => _padLeftZero(_lengthBinary, convertBase(value, 10, 2))).join(' ');
+      return _currentDecimalValue
+          .split(' ')
+          .map((value) => _padLeftZero(_lengthBinary, convertBase(value, 10, 2)))
+          .join(' ');
     } else {
       return _currentBinaryValue.split(' ').map((value) => convertBase(value, 2, 10)).join(' ');
     }
   }
 
-  String _padLeftZero(int length, String text){
+  String _padLeftZero(int length, String text) {
     return text.padLeft(length, '0');
   }
-
 }

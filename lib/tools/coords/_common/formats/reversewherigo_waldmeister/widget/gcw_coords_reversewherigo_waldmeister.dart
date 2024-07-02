@@ -11,21 +11,23 @@ class _GCWCoordWidgetInfoReverseWherigoWaldmeister extends GCWCoordWidgetInfo {
   String get example => '042325, 436113, 935102';
 
   @override
-  _GCWCoordWidget mainWidget({
-    Key? key,
-    required void Function(BaseCoordinate?) onChanged,
-    required BaseCoordinate? coordinates,
-    bool? initialize
-  }) {
-    return _GCWCoordsReverseWherigoWaldmeister(key: key, onChanged: onChanged, coordinates: coordinates, initialize: initialize ?? false);
+  _GCWCoordWidget mainWidget(
+      {Key? key,
+      required void Function(BaseCoordinate?) onChanged,
+      required BaseCoordinate? coordinates,
+      bool? initialize}) {
+    return _GCWCoordsReverseWherigoWaldmeister(
+        key: key, onChanged: onChanged, coordinates: coordinates, initialize: initialize ?? false);
   }
 }
 
 class _GCWCoordsReverseWherigoWaldmeister extends _GCWCoordWidget {
-
-  _GCWCoordsReverseWherigoWaldmeister({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize}) :
-        super(coordinates: coordinates is ReverseWherigoWaldmeisterCoordinate ?
-      coordinates : ReverseWherigoWaldmeisterFormatDefinition.defaultCoordinate);
+  _GCWCoordsReverseWherigoWaldmeister(
+      {super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize})
+      : super(
+            coordinates: coordinates is ReverseWherigoWaldmeisterCoordinate
+                ? coordinates
+                : ReverseWherigoWaldmeisterFormatDefinition.defaultCoordinate);
 
   @override
   _GCWCoordsReverseWherigoWaldmeisterState createState() => _GCWCoordsReverseWherigoWaldmeisterState();

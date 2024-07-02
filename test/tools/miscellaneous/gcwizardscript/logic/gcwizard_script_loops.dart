@@ -1,5 +1,6 @@
 part of 'gcwizard_scipt_test.dart';
 
+// ignore: unused_element
 List<Map<String, Object?>> _inputsLoopsToExpected = [
   {'code' : code1l, 'expectedOutput' : '1\n2\n3'},
   {'code' : code2l, 'expectedOutput' : '1\n2\n3'},

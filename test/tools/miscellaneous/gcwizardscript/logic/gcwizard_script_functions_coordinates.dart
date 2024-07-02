@@ -1,6 +1,6 @@
 part of 'gcwizard_scipt_test.dart';
 
-  String _convertTo_3 = '''SETLAT(52.345678)
+String _convertTo_3 = '''SETLAT(52.345678)
 SETLON(13.456789)
 PRINT CONVERTTO(3)''';
 
@@ -23,6 +23,7 @@ CONVERTFROM(11, C)
 PRINT GETLAT()
 PRINT GETLON()''';
 
+// ignore: unused_element
 List<Map<String, Object?>> _inputsCoordinatesToExpected = [
 
   {'code' : 'print BEARING(x, 13.678, 52.123, 11.534)', 'expectedOutput' : '358.3236011961208'},

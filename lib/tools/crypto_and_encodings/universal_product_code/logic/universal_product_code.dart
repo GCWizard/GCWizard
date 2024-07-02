@@ -43,17 +43,13 @@ abstract class _UniversalProductCodeEncoder {
     var correct = '';
     try {
       correct = _encodeCorrectEncoding();
-    } catch(e) {}
+    } catch (e) {}
 
-    return UniversalProductCode(
-      pure,
-      correct,
-      _toBarcodeBinary(correct)
-    );
+    return UniversalProductCode(pure, correct, _toBarcodeBinary(correct));
   }
 }
 
-enum _UPCDecodeMode {PURE_NUMBERS, CORRECT_ENCODING, BINARY_CORRECT_ENCODING}
+enum _UPCDecodeMode { PURE_NUMBERS, CORRECT_ENCODING, BINARY_CORRECT_ENCODING }
 
 abstract class _UniversalProductCodeDecoder {
   late final String _input;
@@ -94,10 +90,14 @@ abstract class _UniversalProductCodeDecoder {
     var mode = _checkMode();
 
     switch (mode) {
-      case _UPCDecodeMode.PURE_NUMBERS: return _decodePureNumbers();
-      case _UPCDecodeMode.CORRECT_ENCODING: return _decodeCorrectEncoding();
-      case _UPCDecodeMode.BINARY_CORRECT_ENCODING: return _decodeCorrectEncoding(_fromBarcodeBinary());
-      default: throw Exception('INVALID CODE');
+      case _UPCDecodeMode.PURE_NUMBERS:
+        return _decodePureNumbers();
+      case _UPCDecodeMode.CORRECT_ENCODING:
+        return _decodeCorrectEncoding();
+      case _UPCDecodeMode.BINARY_CORRECT_ENCODING:
+        return _decodeCorrectEncoding(_fromBarcodeBinary());
+      default:
+        throw Exception('INVALID CODE');
     }
   }
 }

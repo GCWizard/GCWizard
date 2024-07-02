@@ -1,16 +1,17 @@
 part of 'gcwizard_scipt_test.dart';
 
+// ignore: unused_element
 List<Map<String, Object?>> _inputsCryptoToExpected = [
   {'code' : 'a="HALLO"\nprint ABADDON(a, 1)', 'expectedOutput' : 'þµ¥¥¥µµ¥¥µ¥¥þþþ'},
   {'code' : 'a="þµ¥¥¥µµ¥¥µ¥¥þþþ"\nprint ABADDON(a, 0)', 'expectedOutput' : 'HALLO'},
 
-  {'code' : 'a="HALLO"\nprint ATBASH(a, 0)', 'expectedOutput' : '(Z|O)TKKH)'},
-  {'code' : 'a="ZTKKH"\nprint ATBASH(a, 0)', 'expectedOutput' : 'Z(A|N)HALL(Z|O)'},
+  {'code' : 'a="HALLO"\nprint ATBASH(a, 0)', 'expectedOutput' : '(Z|O)TKKH'},
+  {'code' : 'a="ZTKKH"\nprint ATBASH(a, 0)', 'expectedOutput' : 'Z(A|N)LL(Z|O)'},
   {'code' : 'a="OTKKH"\nprint ATBASH(a, 0)', 'expectedOutput' : 'H(A|N)LL(Z|O)'},
   {'code' : 'a="HALLO"\nprint ATBASH(a, 1)', 'expectedOutput' : 'SZOOL'},
   {'code' : 'a="SZOOL"\nprint ATBASH(a, 1)', 'expectedOutput' : 'HALLO'},
 
-  // It does not mak sense to test a function which is based on a random function
+  // It does not make sense to test a function which is based on a random function
   // {'code' : 'a="HALLO"\nprint AVEMARIA(a, 1)', 'expectedOutput' : 'arbiter clemens immortalis immortalis gloriosus'},
   {'code' : 'a="arbiter clemens immortalis immortalis gloriosus"\nprint AVEMARIA(a, 0)', 'expectedOutput' : 'HALLO'},
 
@@ -32,18 +33,17 @@ List<Map<String, Object?>> _inputsCryptoToExpected = [
   {'code' : 'print gccode("9284317", 1)', 'expectedOutput' : 'GCAFDX1'},
   {'code' : 'print gccode(9284317, 1)', 'expectedOutput' : 'GCAFDX1'},
 
-  {'code' : 'print morse("hallo", 1, 0)', 'expectedOutput' : '.... .- .-.. .-.. ---'},
-  {'code' : 'print morse("1234", 1, 0)\nmorse("1234", 1, 1)\nmorse("1234", 1, 2)\nmorse("1234", 1, 3)', 'expecteOutput' : ''},
-  {'code' : 'print morse(".... .- .-.. .-.. ---", 0)', 'expectedOutput' : 'HALLO'},
+  {'code' : 'print morse("hallo", 1, 0)', 'expectedOutput' : '.... .- .-.. .-.. ---'},
+  {'code' : 'print morse(".... .- .-.. .-.. ---", 0, 0)', 'expectedOutput' : 'HALLO'},
   {'code' : 'PRINT MORSE("HALLO", 1, 0)\n'+
             'PRINT MORSE("HALLO", 1, 10)\n'+
             'PRINT MORSE("HALLO", 1, 11)\n'+
             'PRINT MORSE("HALLO", 1, 2)\n'+
-            'PRINT MORSE("HALLO", 1, 3)', 'expectedOutput' : '.... .- .-.. .-.. ---\n'+
-                                                            '.... ... – – ..\n'+
-                                                            '.... .- – – . .\n'+
-                                                            '.... .- .-.. .-.. .-...\n'+
-                                                            '···· .·. ·.. ·.. ...'},
+            'PRINT MORSE("HALLO", 1, 3)', 'expectedOutput' : '.... .- .-.. .-.. ---\n'+
+                                                            '.... ... – – ..\n'+
+                                                            '.... .- – – . .\n'+
+                                                            '.... .- .-.. .-.. .-...\n'+
+                                                            '---- .-. -.. -.. ...'},
 
   {'code' : 'print enclosedareas("HALLO 9876543210 MEINS", 0, 0)', 'expectedOutput' : '2 5 0'},
   {'code' : 'print enclosedareas("HALLO 9876543210 MEINS", 0, 1)', 'expectedOutput' : '2 6 0'},

@@ -7,10 +7,10 @@ void main() {
   group("Converter.quadtree.parseLatLon:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'text': '', 'expectedOutput': null},
-      {'text': '1203203022132122220122000301310333201333', 'expectedOutput': {'format': CoordinateFormatKey.QUADTREE, 'coordinate': LatLng(46.2110174566, 025.598495717)}},
+      {'text': '1203203022132122220122000301310333201333', 'expectedOutput': {'format': CoordinateFormatKey.QUADTREE, 'coordinate': const LatLng(46.2110174566, 025.598495717)}},
       {'text': '41203203022132122220122000301310333201333', 'expectedOutput': null},
       {'text': 'A1203203022132122220122000301310333201333', 'expectedOutput': null},
-      {'text': '1202210112112003133223132030211230100013', 'expectedOutput': {'format': CoordinateFormatKey.QUADTREE, 'coordinate': LatLng(48.65653333340585, 8.008499999814376)}},
+      {'text': '1202210112112003133223132030211230100013', 'expectedOutput': {'format': CoordinateFormatKey.QUADTREE, 'coordinate': const LatLng(48.65653333340585, 8.008499999814376)}},
     ];
 
     for (var elem in _inputsToExpected) {

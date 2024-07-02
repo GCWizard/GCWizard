@@ -108,4 +108,68 @@ void main() {
       });
     }
   });
+
+  group("Nonogram.checkConsistency:",() {
+    List<Map<String,Object?>> _inputsToExpected = [
+      { 'columns': [[3, 2],<int>[],<int>[],<int>[],<int>[], <int>[]],
+        'rows': [[1],[1],[1], <int>[],[1],[1]],
+        'expectedOutputCode': null, 'expectedOutputData': null
+      },
+      { 'columns': [[3, 0, 2], <int>[],<int>[],<int>[],<int>[],<int>[]],
+        'rows': [[1],[1],[1],<int>[],[1],[1]],
+        'expectedOutputCode': null, 'expectedOutputData': null
+      },
+      { 'columns': [[3, 3],<int>[],<int>[],<int>[],<int>[],<int>[]],
+        'rows': [[1],[1],[1],[1],[1],[1]],
+        'expectedOutputCode': 'invalid_column', 'expectedOutputData': '1'
+      },
+      { 'columns': [[7],<int>[],<int>[],<int>[],<int>[],<int>[]],
+        'rows': [[1],[1],[1],[1],[1],[1]],
+        'expectedOutputCode': 'invalid_column', 'expectedOutputData': '1'
+      },
+      { 'columns': [[1],[1],[1],<int>[],[1],[1]],
+        'rows': [[3, 2],<int>[],<int>[],<int>[],<int>[], <int>[]],
+        'expectedOutputCode': null, 'expectedOutputData': null
+      },
+      { 'columns': [[1],[1],[1],<int>[],[1],[1]],
+        'rows': [[3, 0, 2], <int>[],<int>[],<int>[],<int>[],<int>[]],
+        'expectedOutputCode': null, 'expectedOutputData': null
+      },
+      { 'columns': [[1],[1],[1],[1],[1],[1]],
+        'rows': [[3, 3],<int>[],<int>[],<int>[],<int>[],<int>[]],
+        'expectedOutputCode': 'invalid_row', 'expectedOutputData': '1'
+      },
+      { 'columns': [[1],[1],[1],[1],[1],[1]],
+        'rows': [[7],<int>[],<int>[],<int>[],<int>[],<int>[]],
+        'expectedOutputCode': 'invalid_row', 'expectedOutputData': '1'
+      },
+      { 'columns': [[1],[1],[1],[1],[1],[1]],
+        'rows': [[3, 0, 2], <int>[],<int>[],<int>[],<int>[],<int>[]],
+        'expectedOutputCode': 'more_column_points_than_row_points', 'expectedOutputData': null
+      },
+      { 'columns': [[3, 0, 2], <int>[],<int>[],<int>[],<int>[],<int>[]],
+        'rows': [[1],[1],[1],[1],[1],[1]],
+        'expectedOutputCode': 'more_row_points_than_column_points', 'expectedOutputData': null
+      },
+      { 'columns': [[3, 0, 2], <int>[],<int>[],<int>[],<int>[],<int>[]],
+        'rows': [[1],[1],[1],<int>[],[-1],[1]],
+        'expectedOutputCode': 'invalid_row', 'expectedOutputData': '5'
+      },
+      { 'columns': [[1],[1],[1],<int>[],[-1],[1]],
+        'rows': [[3, 0, 2], <int>[],<int>[],<int>[],<int>[],<int>[]],
+        'expectedOutputCode': 'invalid_column', 'expectedOutputData': '5'
+      },
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('rows: ${elem['rows']},columns: ${elem['columns']}',() {
+        var puzzle = Puzzle(elem['rows'] as List<List<int>>,elem['columns'] as List<List<int>>);
+        Puzzle.checkConsistency(puzzle);
+        var _actual = puzzle;
+
+        expect(_actual.invalidHintDataInfoCode ,elem['expectedOutputCode']);
+        expect(_actual.invalidHintDataInfoData ,elem['expectedOutputData']);
+      });
+    }
+  });
 }

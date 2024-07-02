@@ -71,7 +71,9 @@ BigInt Function(int)? _getNumberSequenceFunction(NumberSequencesMode mode) {
   }
 }
 
-PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(NumberSequencesMode sequence, String? check, int maxIndex, {bool checkMode = false}) {
+PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
+    NumberSequencesMode sequence, String? check, int maxIndex,
+    {bool checkMode = false}) {
   if (check == null || check.isEmpty) {
     return PositionOfSequenceOutput('-1', 0, 0);
   }
@@ -324,5 +326,3 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(NumberSequenc
 
   return PositionOfSequenceOutput('-1', 0, 0);
 }
-
-

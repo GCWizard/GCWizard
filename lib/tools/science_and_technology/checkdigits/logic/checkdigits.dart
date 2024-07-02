@@ -2,22 +2,22 @@ import 'dart:convert';
 import 'dart:isolate';
 
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
+import 'package:gc_wizard/tools/science_and_technology/cross_sums/logic/crosstotals.dart';
 import 'package:gc_wizard/tools/science_and_technology/uic_wagoncode/logic/uic_wagoncode.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:gc_wizard/tools/science_and_technology/cross_sums/logic/crosstotals.dart';
 import 'package:http/http.dart' as http;
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 part 'package:gc_wizard/tools/science_and_technology/checkdigits/logic/checkdigits__datatypes.dart';
-part 'package:gc_wizard/tools/science_and_technology/checkdigits/logic/checkdigits_iban_de.dart';
-part 'package:gc_wizard/tools/science_and_technology/checkdigits/logic/checkdigits_iban_de_banknumber_data.dart';
-part 'package:gc_wizard/tools/science_and_technology/checkdigits/logic/checkdigits_ean.dart';
 part 'package:gc_wizard/tools/science_and_technology/checkdigits/logic/checkdigits_creditcard.dart';
 part 'package:gc_wizard/tools/science_and_technology/checkdigits/logic/checkdigits_de_taxid.dart';
+part 'package:gc_wizard/tools/science_and_technology/checkdigits/logic/checkdigits_ean.dart';
+part 'package:gc_wizard/tools/science_and_technology/checkdigits/logic/checkdigits_euro.dart';
 part 'package:gc_wizard/tools/science_and_technology/checkdigits/logic/checkdigits_iban.dart';
+part 'package:gc_wizard/tools/science_and_technology/checkdigits/logic/checkdigits_iban_de.dart';
+part 'package:gc_wizard/tools/science_and_technology/checkdigits/logic/checkdigits_iban_de_banknumber_data.dart';
 part 'package:gc_wizard/tools/science_and_technology/checkdigits/logic/checkdigits_imei.dart';
 part 'package:gc_wizard/tools/science_and_technology/checkdigits/logic/checkdigits_isbn.dart';
-part 'package:gc_wizard/tools/science_and_technology/checkdigits/logic/checkdigits_euro.dart';
 part 'package:gc_wizard/tools/science_and_technology/checkdigits/logic/checkdigits_uic.dart';
 
 final _ITERATE_ALPHA = [
@@ -163,7 +163,7 @@ String checkDigitsCalculateCheckDigitAndNumber(CheckDigitsMode mode, String numb
   }
 }
 
-bool _toManyNumbersToSearch(String number){
+bool _toManyNumbersToSearch(String number) {
   return ('?'.allMatches(number).length > 2);
 }
 

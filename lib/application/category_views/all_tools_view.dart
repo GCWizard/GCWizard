@@ -260,6 +260,7 @@ import 'package:gc_wizard/tools/science_and_technology/recycling/widget/recyclin
 import 'package:gc_wizard/tools/science_and_technology/segment_display/14_segment_display/widget/fourteen_segments.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/16_segment_display/widget/sixteen_segments.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/7_segment_display/widget/seven_segments.dart';
+import 'package:gc_wizard/tools/science_and_technology/sort/widget/sort.dart';
 import 'package:gc_wizard/tools/science_and_technology/spelling_alphabets/spelling_alphabets_crypt/widget/spelling_alphabets_crypt.dart';
 import 'package:gc_wizard/tools/science_and_technology/spelling_alphabets/spelling_alphabets_list/widget/spelling_alphabets_list.dart';
 import 'package:gc_wizard/tools/science_and_technology/telegraphs/chappe/widget/chappe.dart';
@@ -291,14 +292,11 @@ import 'package:gc_wizard/tools/wherigo/urwigo_text_deobfuscation/widget/urwigo_
 import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
-
 import 'package:prefs/prefs.dart';
-
 
 class MainView extends GCWWebStatefulWidget {
   MainView({Key? key, Map<String, String>? webParameter})
       : super(key: key, webParameter: webParameter, apiSpecification: null);
-
 
   @override
   _MainViewState createState() => _MainViewState();
@@ -728,6 +726,7 @@ void _initStaticToolList() {
       className(const SixteenSegments()),
       className(const Skytale()),
       className(const Solitaire()),
+      className(const Sort()),
       className(const SpellingAlphabetsCrypt()),
       className(const SpellingAlphabetsList()),
       className(const SpoonLanguage()),

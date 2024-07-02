@@ -64,7 +64,8 @@ class _SubstitutionState extends State<Substitution> {
     _currentIdCount++;
     if (_currentSubstitutions.firstWhereOrNull((_entry) => _entry.id == _currentIdCount) == null) {
       entry.id = _currentIdCount;
-      return _currentSubstitutions.add(entry);
+      _currentSubstitutions.add(entry);
+      _calculateOutput();
     }
   }
 

@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
-import 'package:gc_wizard/tools/games/nonogram/logic/strategy.dart';
 import 'package:gc_wizard/tools/games/nonogram/logic/puzzle.dart';
+import 'package:gc_wizard/tools/games/nonogram/logic/strategy.dart';
 import 'package:utility/utility.dart';
 
 int _getNextIndex(List<int> zeroIndexes, bool randomize) {
@@ -14,8 +14,8 @@ int _getNextIndex(List<int> zeroIndexes, bool randomize) {
   return zeroIndexes.removeFirst()!;
 }
 
-Puzzle? _recurse(Strategy strategy, int currentRecursionLevel, int maxRecursionLevel, List<int> snapshot,
-    int index, Puzzle trial) {
+Puzzle? _recurse(
+    Strategy strategy, int currentRecursionLevel, int maxRecursionLevel, List<int> snapshot, int index, Puzzle trial) {
   if (currentRecursionLevel >= maxRecursionLevel) {
     // reset and just try the next index
     snapshot[index] = 0;
@@ -23,7 +23,8 @@ Puzzle? _recurse(Strategy strategy, int currentRecursionLevel, int maxRecursionL
   }
   // try recursion
   var anotherTry = Puzzle(trial.rowHints, trial.columnHints, content: snapshot);
-  var result = guessAndConquer(strategy, anotherTry, maxRecursionLevel, currentRecursionLevel: currentRecursionLevel + 1);
+  var result =
+      guessAndConquer(strategy, anotherTry, maxRecursionLevel, currentRecursionLevel: currentRecursionLevel + 1);
 
   return result;
 }
@@ -53,15 +54,11 @@ Puzzle? guessAndConquer(Strategy strategy, Puzzle puzzle, int maxRecursionLevel,
     throw const FormatException('Contradiction in trial and error');
   }
 
-  for (var i = 0;  i < min(maxGuessCount, zeroIndexes.length); i++) {
+  for (var i = 0; i < min(maxGuessCount, zeroIndexes.length); i++) {
     var index = _getNextIndex(zeroIndexes, strategy.randomize);
     // try and set the 'index'th cell to 1, and create a new Puzzle from that
     snapshot[index] = 1;
-    var trial = Puzzle(
-      puzzle.rowHints.sublist(0),
-      puzzle.columnHints.sublist(0),
-      content: snapshot
-    );
+    var trial = Puzzle(puzzle.rowHints.sublist(0), puzzle.columnHints.sublist(0), content: snapshot);
 
     // solve the trial puzzle
     try {

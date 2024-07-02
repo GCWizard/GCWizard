@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/settings/logic/default_settings.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
-import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_formatselector.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_sign_dropdown.dart';
@@ -19,6 +18,7 @@ import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_definitio
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_formatselector.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/constants.dart';
 import 'package:prefs/prefs.dart';

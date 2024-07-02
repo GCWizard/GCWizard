@@ -105,14 +105,14 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_OMAM = BrainfkDerivatives(
     pointerShiftLeftInstruction: 'sleep until the sun goes down',
     increaseValueInstruction: 'through the woods we ran',
     decreaseValueInstruction: 'deep into the mountain sound',
-    outputInstruction: 'don' "'" 't listen to a word i say',
+    outputInstruction: "don't listen to a word i say",
     inputInstruction: 'the screams all sound the same',
     startLoopInstruction: 'though the truth may vary',
     endLoopInstruction: 'this ship will carry',
     outputCommandDelimiter: '\n');
 
 final BrainfkDerivatives BRAINFKDERIVATIVE_REVOLUTION9 = BrainfkDerivatives(
-    pointerShiftRightInstruction: 'It' "'" 's alright',
+    pointerShiftRightInstruction: "It's alright",
     pointerShiftLeftInstruction: 'turn me on, dead man',
     increaseValueInstruction: 'Number 9',
     decreaseValueInstruction: 'if you become naked',
@@ -127,15 +127,11 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_DETAILEDFK = BrainfkDerivatives(
     pointerShiftLeftInstruction: 'MOVE THE MEMORY POINTER ONE CELL TO THE LEFT',
     increaseValueInstruction: 'INCREMENT THE CELL UNDER THE MEMORY POINTER BY ONE',
     decreaseValueInstruction: 'DECREMENT THE CELL UNDER THE MEMORY POINTER BY ONE',
-    outputInstruction: 'PRINT THE CELL UNDER THE MEMORY POINTER' "'" 'S VALUE AS AN ASCII CHARACTER',
+    outputInstruction: "PRINT THE CELL UNDER THE MEMORY POINTER' ' 'S VALUE AS AN ASCII CHARACTER",
     inputInstruction:
-        'REPLACE THE CELL UNDER THE MEMORY POINTER' "'" 'S VALUE WITH THE ASCII CHARACTER CODE OF USER INPUT',
-    startLoopInstruction: 'IF THE CELL UNDER THE MEMORY POINTER'
-        "'"
-        'S VALUE IS ZERO INSTEAD OF READING THE NEXT COMMAND IN THE PROGRAM JUMP TO THE CORRESPONDING COMMAND EQUIVALENT TO THE ] COMMAND IN BRAINFUCK',
-    endLoopInstruction: 'IF THE CELL UNDER THE MEMORY POINTER'
-        "'"
-        'S VALUE IS NOT ZERO INSTEAD OF READING THE NEXT COMMAND IN THE PROGRAM JUMP TO THE CORRESPONDING COMMAND EQUIVALENT TO THE [ COMMAND IN BRAINFUCK',
+        "REPLACE THE CELL UNDER THE MEMORY POINTER' ' 'S VALUE WITH THE ASCII CHARACTER CODE OF USER INPUT",
+    startLoopInstruction: "IF THE CELL UNDER THE MEMORY POINTER'S VALUE IS ZERO INSTEAD OF READING THE NEXT COMMAND IN THE PROGRAM JUMP TO THE CORRESPONDING COMMAND EQUIVALENT TO THE ] COMMAND IN BRAINFUCK",
+    endLoopInstruction: "IF THE CELL UNDER THE MEMORY POINTER'S VALUE IS NOT ZERO INSTEAD OF READING THE NEXT COMMAND IN THE PROGRAM JUMP TO THE CORRESPONDING COMMAND EQUIVALENT TO THE [ COMMAND IN BRAINFUCK",
     outputCommandDelimiter: '\n');
 
 final BrainfkDerivatives BRAINFKDERIVATIVE_GERMAN = BrainfkDerivatives(
@@ -452,7 +448,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_HTPF = BrainfkDerivatives(
     pointerShiftLeftInstruction: '<',
     increaseValueInstruction: '=',
     decreaseValueInstruction: '/',
-    outputInstruction: '"',
+    outputInstruction: '',
     inputInstruction: '#',
     startLoopInstruction: '&',
     endLoopInstruction: ';',
@@ -539,4 +535,53 @@ final Map<BrainfkDerivatives, String> BRAINFK_DERIVATIVES = {
   BRAINFKDERIVATIVE_UWU: 'UwU',
   BRAINFKDERIVATIVE_ZZZ: 'ZZZ',
   BRAINFKDERIVATIVE_CUSTOM: 'Custom',
+};
+
+class BrainfckDerivateDropdown {
+  final String title;
+  final String description;
+
+  const BrainfckDerivateDropdown({
+    required this.title,
+    required this.description,
+  });
+}
+
+Map<BrainfkDerivatives, BrainfckDerivateDropdown> BRAINFK_DERIVATIVES_DETAILED = {
+  BRAINFKDERIVATIVE___FK: const BrainfckDerivateDropdown(title: '!!F**k', description: '!!!!!#, !!!!!!#, !!!!!!!#, !!!!!!!!#, !!!!!!!!!!#, !!!!!!!!!#, !!!!!!!!!!!#, !!!!!!!!!!!!#'),
+  BRAINFKDERIVATIVE_AAA: const BrainfckDerivateDropdown(title: 'AAA', description: 'aAaA, AAaa, AAAA, AaAa, aaaa, aAaa, aaAA, aaaA'),
+  BRAINFKDERIVATIVE_ALPHK: const BrainfckDerivateDropdown(title: 'Alph**k', description: 'a, c, e, i, j, o, p, s'),
+  BRAINFKDERIVATIVE_BINARYFK: const BrainfckDerivateDropdown(title: 'BinaryFuck', description: '010, 011, 000, 001, 100, 101, 110, 111'),
+  BRAINFKDERIVATIVE_BLUB: const BrainfckDerivateDropdown(title: 'Blub', description: 'Blub. Blub?, Blub? Blub., Blub. Blub., Blub! Blub!, Blub! Blub., Blub. Blub!, Blub! Blub?, Blub? Blub!'),
+  BRAINFKDERIVATIVE_BTJZXGQUARTFRQIFJLV: const BrainfckDerivateDropdown(title: 'Btjzxgquartfrqifjlv', description: 'f, rqi, qua, rtf, lv, j, btj, zxg'),
+  BRAINFKDERIVATIVE_COLONOSCOPY: const BrainfckDerivateDropdown(title: 'Colonoscopy', description: ';};, ;{;, ;;};, ;;{;, ;;;};, ;;;{;, {{;, }};'),
+  BRAINFKDERIVATIVE_DETAILEDFK: const BrainfckDerivateDropdown(title: 'DetailedF**k', description: "MOVE THE MEMORY POINTER ONE CELL TO THE RIGHT, MOVE THE MEMORY POINTER ONE CELL TO THE LEFT, INCREMENT THE CELL UNDER THE MEMORY POINTER BY ONE, DECREMENT THE CELL UNDER THE MEMORY POINTER BY ONE, REPLACE THE CELL UNDER THE MEMORY POINTER'S VALUE WITH THE ASCII CHARACTER CODE OF USER INPUT, PRINT THE CELL UNDER THE MEMORY POINTER'S VALUE AS AN ASCII CHARACTER, IF THE CELL UNDER THE MEMORY POINTER'S VALUE IS ZERO INSTEAD OF READING THE NEXT COMMAND IN THE PROGRAM JUMP TO THE CORRESPONDING COMMAND EQUIVALENT TO THE ] COMMAND IN BRAINFUCK, IF THE CELL UNDER THE MEMORY POINTER'S VALUE IS NOT ZERO INSTEAD OF READING THE NEXT COMMAND IN THE PROGRAM JUMP TO THE CORRESPONDING COMMAND EQUIVALENT TO THE [ COMMAND IN BRAINFUCK"),
+  BRAINFKDERIVATIVE_FLUFFLEPUFF: const BrainfckDerivateDropdown(title: 'Fluffle Puff', description: 'b, t, bf, pl, !, ?, *gasp*, *pomf*'),
+  BRAINFKDERIVATIVE_FKBEES: const BrainfckDerivateDropdown(title: 'f**kbeEs', description: 'f, u, c, k, b, e, E, s'),
+  BRAINFKDERIVATIVE_GERMAN: const BrainfckDerivateDropdown(title: 'GERMAN', description: 'LINKS, RECHTS, ADDITION, SUBTRAKTION, EINGABE, AUSGABE, SCHLEIFENANFANG, SCHLEIFENENDE'),
+  BRAINFKDERIVATIVE_GIBMEROL: const BrainfckDerivateDropdown(title: 'GibMeRol', description: 'G, i, b, M, e, R, o, l'),
+  BRAINFKDERIVATIVE_HTPF: const BrainfckDerivateDropdown(title: 'HTPF', description: '>, <, =, /, , #, &, ;'),
+  BRAINFKDERIVATIVE_KENNYSPEAK: const BrainfckDerivateDropdown(title: 'Kenny Speak', description: 'mmp, mmm, mpp, pmm, fmm, fpm, mmf, mpf'),
+  BRAINFKDERIVATIVE_KONFK: const BrainfckDerivateDropdown(title: 'K-on F**k', description: 'うんうんうん, うんうんたん, うんたんうん, うんたんたん, たんうんうん, たんうんたん, たんたんうん, たんたんたん'),
+  BRAINFKDERIVATIVE_MIERDA: const BrainfckDerivateDropdown(title: 'Mierda', description: 'Derecha, Izquierda, Mas, Menos, Decir, Leer, Iniciar Bucle, Terminar Bucle'),
+  BRAINFKDERIVATIVE_MORSEFK: const BrainfckDerivateDropdown(title: 'MorseF**k', description: '.--, --., ..-, -.., -.-, .-., ---, ...'),
+  BRAINFKDERIVATIVE_NAGAWOOSKI: const BrainfckDerivateDropdown(title: 'Nagawooski', description: 'na, ga, woo, ski, an, ag, oow, iks'),
+  BRAINFKDERIVATIVE_NAK: const BrainfckDerivateDropdown(title: 'Nak', description: 'Nak. Nak?, Nak? Nak., Nak. Nak., Nak! Nak!, Nak! Nak., Nak. Nak!, Nak! Nak?, Nak? Nak!'),
+  BRAINFKDERIVATIVE_OMAM: const BrainfckDerivateDropdown(title: 'Omam', description: "old your horses now, sleep until the sun goes down, through the woods we ran, deep into the mountain sound, don't listen to a word i say, the screams all sound the same, though the truth may vary, this ship will carry"),
+  BRAINFKDERIVATIVE_OOK: const BrainfckDerivateDropdown(title: 'Ook', description: 'Ook. Ook?, Ook? Ook., Ook. Ook., Ook! Ook!, Ook! Ook., Ook. Ook!, Ook! Ook?, Ook? Ook!'),
+  BRAINFKDERIVATIVE_PSSCRIPT: const BrainfckDerivateDropdown(title: 'P***sScript', description: '8=D, 8==D, 8===D, 8====D, 8=====D, 8======D, 8=======D, 8========D'),
+  BRAINFKDERIVATIVE_PEWLANG: const BrainfckDerivateDropdown(title: 'PewLang', description: 'pew, Pew, pEw, peW, PEw, pEW, PeW, PEW'),
+  BRAINFKDERIVATIVE_PIKALANG: const BrainfckDerivateDropdown(title: 'PikaLang', description: 'pipi, pichu, pi, ka, pikachu, pikapi, pika, chu'),
+  BRAINFKDERIVATIVE_REVERSEFK: const BrainfckDerivateDropdown(title: 'ReverseF**k', description: '<, >, -, +, ,, ., ], ['),
+  BRAINFKDERIVATIVE_REVOLUTION9: const BrainfckDerivateDropdown(title: 'Revolution 9', description: "It's alright, turn me on, dead man, Number 9, if you become naked, The Beatles, Paul is dead, Revolution 1, Revolution 9"),
+  BRAINFKDERIVATIVE_ROADRUNNER: const BrainfckDerivateDropdown(title: 'Roadrunner', description: 'meeP, Meep, mEEp, MeeP, MEEP, meep, mEEP, MEEp'),
+  BRAINFKDERIVATIVE_SCREAMCODE: const BrainfckDerivateDropdown(title: 'ScreamCode', description: 'AAAH, AAAAGH, FUCK, SHIT, !!!!!!, WHAT?!, OW, OWIE'),
+  BRAINFKDERIVATIVE_SHORTOOK: const BrainfckDerivateDropdown(title: 'Short Ook', description: '.?, ?., .., !!, !., .!, !?, ?!'),
+  BRAINFKDERIVATIVE_TERNARY: const BrainfckDerivateDropdown(title: 'Ternary', description: '01, 00, 11, 10, 21, 20, 02, 12'),
+  BRAINFKDERIVATIVE_TRIPLET: const BrainfckDerivateDropdown(title: 'Triplet', description: '001, 100, 111, 000, 010, 101, 110, 011'),
+  BRAINFKDERIVATIVE_WEPMLRIO: const BrainfckDerivateDropdown(title: 'wepmlrIo', description: 'r, l, p, m, o, I, w, e'),
+  BRAINFKDERIVATIVE_UWU: const BrainfckDerivateDropdown(title: 'UwU', description: 'OwO, °w°, UwU, QwQ, @w@, >w<, ~w~, ¯w¯'),
+  BRAINFKDERIVATIVE_ZZZ: const BrainfckDerivateDropdown(title: 'ZZZ', description: 'zz, -zz, z, -z, zzz, -zzz, z+z, z-z'),
+  BRAINFKDERIVATIVE_CUSTOM: const BrainfckDerivateDropdown(title: 'Custom', description: ''),
+
 };

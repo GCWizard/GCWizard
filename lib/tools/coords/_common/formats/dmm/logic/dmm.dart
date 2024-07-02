@@ -1,8 +1,8 @@
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/dec/logic/dec.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
-import 'package:gc_wizard/tools/coords/_common/formats/dec/logic/dec.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:gc_wizard/utils/data_type_utils/double_type_utils.dart';
@@ -14,8 +14,8 @@ import 'package:prefs/prefs.dart';
 const dmmKey = 'coords_dmm';
 
 class CoordinateFormatDefinitionDMM extends CoordinateFormatDefinition {
-  CoordinateFormatDefinitionDMM(super.type, super.persistenceKey, super.apiKey,
-      super.parseCoordinate, super.defaultCoordinate);
+  CoordinateFormatDefinitionDMM(
+      super.type, super.persistenceKey, super.apiKey, super.parseCoordinate, super.defaultCoordinate);
 
   @override
   BaseCoordinate? parseCoordinateWholeString(String input) {
@@ -23,8 +23,7 @@ class CoordinateFormatDefinitionDMM extends CoordinateFormatDefinition {
   }
 }
 
-final DMMFormatDefinition = CoordinateFormatDefinitionDMM(
-    CoordinateFormatKey.DMM, dmmKey, dmmKey, DMMCoordinate.parse,
+final DMMFormatDefinition = CoordinateFormatDefinitionDMM(CoordinateFormatKey.DMM, dmmKey, dmmKey, DMMCoordinate.parse,
     DMMCoordinate(DMMLatitude(0, 0, 0), DMMLongitude(0, 0, 0)));
 
 class _FormattedDMMPart {
@@ -127,6 +126,7 @@ class DMMCoordinate extends BaseCoordinate {
   static DMMCoordinate? parse(String text, {bool leftPadMilliMinutes = false, bool wholeString = false}) {
     return _parseDMM(text, leftPadMilliMinutes: leftPadMilliMinutes, wholeString: wholeString);
   }
+
   static DMMCoordinate? parseWholeString(String input) {
     return _parseDMM(input, wholeString: true);
   }

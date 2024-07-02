@@ -493,8 +493,7 @@ class _AlphabetValuesState extends State<AlphabetValues> {
     var alphabet = _getFinalAlphabet();
 
     if (_currentMode == GCWSwitchPosition.left) {
-      var alphabetValues =
-          logic.AlphabetValues(alphabet: alphabet).textToValues(_currentInput, keepNumbers: true);
+      var alphabetValues = logic.AlphabetValues(alphabet: alphabet).textToValues(_currentInput, keepNumbers: true);
 
       return CrosstotalOutput(
           text: _currentInput, values: List<int>.from(alphabetValues.where((value) => value != null)));
@@ -510,8 +509,7 @@ class _AlphabetValuesState extends State<AlphabetValues> {
     var alphabet = _getFinalAlphabet();
 
     if (_currentMode == GCWSwitchPosition.left) {
-      return intListToString(
-          logic.AlphabetValues(alphabet: alphabet).textToValues(_currentInput, keepNumbers: true),
+      return intListToString(logic.AlphabetValues(alphabet: alphabet).textToValues(_currentInput, keepNumbers: true),
           delimiter: ' ');
     } else {
       var _currentDecodeInput = textToIntList(_currentInput);

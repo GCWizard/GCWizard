@@ -1,5 +1,6 @@
 part of 'gcwizard_scipt_test.dart';
 
+// ignore: unused_element
 List<Map<String, Object?>> _inputsGraphicToExpected = [
   {'code' : 'print STROKE(10)', 'expectedOutput' : '10'},
   {'code' : 'print STROKE(10.0)', 'expectedOutput' : '10'},

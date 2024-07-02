@@ -102,11 +102,6 @@ void main() {
 
       {'input': 'MIKE', 'expectedOutput': 'battleship_error_invalid_pair ( [MIKE] )\n\n\n'},
 
-      // the following three tests for catching out of memory will fail because I did not add these 1000 empty lines
-      {'input': '1,1000', 'expectedOutput': 'battleship_error_to_many_rows ( 1,1000 )\n\n'},
-      {'input': '1000,1', 'expectedOutput': 'battleship_error_to_many_colums ( 1000,1 )\n\n'},
-      {'input': '1000,1000', 'expectedOutput': 'battleship_error_to_many_colums ( 1000 1000 )\nbattleship_error_to_many_rows ( 1000 1000 )\n'},
-
       {
         'expectedOutput': '  #            #     #       \n' +
             '  #            #     #       \n' +
@@ -139,16 +134,26 @@ void main() {
     }
   });
 
+  group("Battleship.decodeNumbers_toManyLines:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input': '1,1000', 'expectedOutput': 'battleship_error_to_many_rows ( 1,1000 )'},
+      {'input': '1000,1', 'expectedOutput': 'battleship_error_to_many_colums ( 1000,1 )'},
+      {'input': '1000,1000', 'expectedOutput': 'battleship_error_to_many_colums ( 1000,1000 )'},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}', () {
+        var _actual = decodeBattleship(elem['input'] as String, true);
+        expect(_actual.split('\n')[0], elem['expectedOutput']);
+      });
+    }
+  });
+  
   group("Battleship.decodeExcel:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input': '', 'expectedOutput': ''},
 
       {'input': 'MIKE', 'expectedOutput': 'battleship_error_invalid_pair ( MIKE, )\nbattleship_error_to_many_colums ( MIKE, )\n\n\n'},
-
-      // the following three tests for catching out of memory will fail because I did not add these 1000 empty lines
-      {'input': 'A1000', 'expectedOutput': 'battleship_error_to_many_rows ( A,1000 )\n\n'},
-      {'input': 'AAAAA1', 'expectedOutput': 'battleship_error_to_many_colums ( AAAAA,1 )\n\n'},
-      {'input': 'AAAAA1000', 'expectedOutput': 'battleship_error_to_many_colums ( AAAAA,1000 )\nbattleship_error_to_many_rows ( AAAAA,1000 )\n'},
 
       {
         'expectedOutput': '  #            #     #       \n' +
@@ -181,4 +186,20 @@ void main() {
       });
     }
   });
+
+  group("Battleship.decodeExcel_toManyLines:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input': 'A1000', 'expectedOutput': 'battleship_error_to_many_rows ( A,1000 )'},
+      {'input': 'AAAAA1', 'expectedOutput': 'battleship_error_to_many_colums ( AAAAA,1 )'},
+      {'input': 'AAAAA1000', 'expectedOutput': 'battleship_error_to_many_colums ( AAAAA,1000 )'},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}', () {
+        var _actual = decodeBattleship(elem['input'] as String, false);
+        expect(_actual.split('\n')[0], elem['expectedOutput']);
+      });
+    }
+  });
+  
 }

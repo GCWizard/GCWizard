@@ -32,9 +32,21 @@ void _dot(Object x, Object y) {
 }
 
 void _arc(Object x, Object y, Object r, Object a1, Object a2) {
-  if (_isNotAInt(x) || _isNotAInt(y) || _isNotAInt(r) || _isNotAInt(a1) || _isNotAInt(a2)) {
+  if (_isNotAInt(x) || _isNotAInt(y) || _isNotAInt(r) || _isNotANumber(a1) || _isNotANumber(a2)) {
     _handleError(_INVALIDTYPECAST);
     return;
+  }
+  num A1;
+  num A2;
+  if (a1.runtimeType.toString() == 'int') {
+    A1 = (a1 as int) * 1.0;
+  } else {
+    A1 = (a1 as double);
+  }
+  if (a2.runtimeType.toString() == 'int') {
+    A2 = (a2 as int) * 1.0;
+  } else {
+    A2 = (a2 as double);
   }
   _state.graphics.add('ARC ' +
       (x as int).toString() +
@@ -43,9 +55,9 @@ void _arc(Object x, Object y, Object r, Object a1, Object a2) {
       ' ' +
       (r as int).toString() +
       ' ' +
-      (a1 as double).toString() +
+      A1.toString() +
       ' ' +
-      (a2 as double).toString());
+      A2.toString());
 }
 
 void _color(Object r, Object g, Object b) {

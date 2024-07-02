@@ -32,4 +32,3 @@ abstract class APIMapper {
     return '{/key_label}'.replaceAll('/key_label', Key);
   }
 }
-

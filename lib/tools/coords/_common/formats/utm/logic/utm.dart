@@ -15,8 +15,7 @@ const String latZones = 'CDEFGHJKLMNPQRSTUVWX';
 const utmKey = 'coords_utm';
 
 final UTMREFFormatDefinition = CoordinateFormatDefinition(
-  CoordinateFormatKey.UTM, utmKey, utmKey,
-  UTMREFCoordinate.parse, UTMREFCoordinate(UTMZone(0, 0, 'U'), 0, 0));
+    CoordinateFormatKey.UTM, utmKey, utmKey, UTMREFCoordinate.parse, UTMREFCoordinate(UTMZone(0, 0, 'U'), 0, 0));
 
 // UTM with latitude Zones; Normal UTM is only separated into Hemispheres N and S
 class UTMREFCoordinate extends BaseCoordinate {

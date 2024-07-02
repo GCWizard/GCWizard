@@ -62,7 +62,7 @@ class _PolluxState extends State<Pollux> {
       } else {
         out = polluxDecrypt(_currentInput, _currentKey);
       }
-    } on FormatException catch(e) {
+    } on FormatException catch (e) {
       out = i18n(context, e.message);
     }
 

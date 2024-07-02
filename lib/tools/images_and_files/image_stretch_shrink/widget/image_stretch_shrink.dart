@@ -86,29 +86,30 @@ class _ImageStretchShrinkState extends State<ImageStretchShrink> {
             children: [
               Container(height: 30),
               GCWTwoOptionsSwitch(
-                notitle: true,
-                leftValue: i18n(context, 'image_stretchshrink_shrink'),
-                rightValue: i18n(context, 'image_stretchshrink_stretch'),
-                value: _currentStretch,
-                onChanged: (value) {
-                  setState(() {
-                    _currentStretch = value;
-                    _resetInputs();
-                  });
-                }
-              ),
+                  notitle: true,
+                  leftValue: i18n(context, 'image_stretchshrink_shrink'),
+                  rightValue: i18n(context, 'image_stretchshrink_stretch'),
+                  value: _currentStretch,
+                  onChanged: (value) {
+                    setState(() {
+                      _currentStretch = value;
+                      _resetInputs();
+                    });
+                  }),
               Row(
                 children: [
                   Expanded(
                     child: GCWSlider(
                       leftValue: Transform.rotate(
-                        angle: degreesToRadian(45),
-                        child: _currentStretch == GCWSwitchPosition.left ? const Icon(Icons.close_fullscreen) : const Icon(Icons.open_in_full)
-                      ),
+                          angle: degreesToRadian(45),
+                          child: _currentStretch == GCWSwitchPosition.left
+                              ? const Icon(Icons.close_fullscreen)
+                              : const Icon(Icons.open_in_full)),
                       rightValue: Transform.rotate(
-                        angle: degreesToRadian(-45),
-                        child: _currentStretch == GCWSwitchPosition.left ? const Icon(Icons.close_fullscreen) : const Icon(Icons.open_in_full)
-                      ),
+                          angle: degreesToRadian(-45),
+                          child: _currentStretch == GCWSwitchPosition.left
+                              ? const Icon(Icons.close_fullscreen)
+                              : const Icon(Icons.open_in_full)),
                       title: '',
                       value: _currentStretchValue,
                       onChanged: (value) {
@@ -123,12 +124,10 @@ class _ImageStretchShrinkState extends State<ImageStretchShrink> {
                 ],
               ),
               Container(height: 2 * DOUBLE_DEFAULT_MARGIN),
-              GCWColumnedMultilineOutput(
-                data: [
-                  [i18n(context, 'common_width'), _currentWidth == null ? '-' : _currentWidth.toString() + ' px'],
-                  [i18n(context, 'common_height'), _currentHeight == null ? '-' : _currentHeight.toString() + ' px'],
-                ]
-              )
+              GCWColumnedMultilineOutput(data: [
+                [i18n(context, 'common_width'), _currentWidth == null ? '-' : _currentWidth.toString() + ' px'],
+                [i18n(context, 'common_height'), _currentHeight == null ? '-' : _currentHeight.toString() + ' px'],
+              ])
             ],
           )
       ],

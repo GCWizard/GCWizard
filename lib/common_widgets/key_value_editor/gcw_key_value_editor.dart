@@ -141,12 +141,10 @@ class _GCWKeyValueEditor extends State<GCWKeyValueEditor> {
       )
     ]);
 
-    if (rows.isNotEmpty) {
-      rows.insert(
-        0,
-        GCWTextDivider(text: widget.dividerText ?? '', trailing: Row(children: _trailingChildren)),
-      );
-    }
+    rows.insert(
+      0,
+      GCWTextDivider(text: widget.dividerText ?? '', trailing: Row(children: _trailingChildren)),
+    );
 
     return rows.isEmpty ? Container() : Column(children: rows);
   }
@@ -160,8 +158,7 @@ class _GCWKeyValueEditor extends State<GCWKeyValueEditor> {
           keyValueEntry: entry,
           odd: odd,
           validateEditedValue: widget.validateEditedValue,
-          invalidEditedValueMessage: widget.invalidEditedValueMessage
-      );
+          invalidEditedValueMessage: widget.invalidEditedValueMessage);
     }
 
     item.keyValueEditorControl = _keyValueEditorControl;

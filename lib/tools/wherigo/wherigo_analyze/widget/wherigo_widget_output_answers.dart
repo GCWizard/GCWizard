@@ -1,7 +1,7 @@
 part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/widget/wherigo_analyze.dart';
 
-String _answerIsVariable(String answer){
-  for (var element in WherigoCartridgeLUAData.Variables ) {
+String _answerIsVariable(String answer) {
+  for (var element in WherigoCartridgeLUAData.Variables) {
     if (element.VariableLUAName == answer) {
       return element.VariableName;
     } else if (element.VariableName == answer) {
@@ -22,7 +22,11 @@ List<List<String>> _buildOutputListAnswers(BuildContext context, WherigoInputDat
     result = [
       answers.length > 1
           ? [i18n(context, 'wherigo_output_hash'), hash == '-<ELSE>-' ? i18n(context, 'wherigo_answer_else') : hash, '']
-          : [i18n(context, 'wherigo_output_answer'), hash == '-<ELSE>-' ? i18n(context, 'wherigo_answer_else') : hash],
+          : [
+              i18n(context, 'wherigo_output_answer'),
+              hash == '-<ELSE>-' ? i18n(context, 'wherigo_answer_else') : hash,
+              ''
+            ],
     ];
     if (hash != '0') {
       for (int i = 0; i < input.InputChoices.length; i++) {
@@ -34,12 +38,22 @@ List<List<String>> _buildOutputListAnswers(BuildContext context, WherigoInputDat
   } else {
     String _variable = _answerIsVariable(answers[0]);
     if (_variable.isNotEmpty) {
-      result = [[i18n(context, 'wherigo_output_answer'), _variable]];
+      result = [
+        [i18n(context, 'wherigo_output_answer'), _variable]
+      ];
     } else {
       result = [
         answers.length > 1
-            ? [i18n(context, 'wherigo_output_hash'), hash == '-<ELSE>-' ? i18n(context, 'wherigo_answer_else') : hash, '']
-            : [i18n(context, 'wherigo_output_answer'), hash == '-<ELSE>-' ? i18n(context, 'wherigo_answer_else') : hash],
+            ? [
+                i18n(context, 'wherigo_output_hash'),
+                hash == '-<ELSE>-' ? i18n(context, 'wherigo_answer_else') : hash,
+                ''
+              ]
+            : [
+                i18n(context, 'wherigo_output_answer'),
+                hash == '-<ELSE>-' ? i18n(context, 'wherigo_answer_else') : hash,
+                ''
+              ],
         if (answerAlphabetical != null)
           [i18n(context, 'wherigo_output_answerdecrypted'), i18n(context, 'common_letters'), answerAlphabetical],
         if (answerNumeric != null)

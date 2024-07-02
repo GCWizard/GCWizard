@@ -7,6 +7,3 @@ BigInt numberSequencesGetNumberAt(NumberSequencesMode sequence, int? n) {
     return numberSequencesGetNumbersInRange(sequence, n, n)[0];
   }
 }
-
-
-

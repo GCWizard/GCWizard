@@ -11,20 +11,20 @@ class _GCWCoordWidgetInfoMercator extends GCWCoordWidgetInfo {
   String get example => 'Y: 5667450.4, X: -13626989.9';
 
   @override
-  _GCWCoordWidget mainWidget({
-    Key? key,
-    required void Function(BaseCoordinate?) onChanged,
-    required BaseCoordinate? coordinates,
-    bool? initialize
-  }) {
-    return _GCWCoordsMercator(key: key, onChanged: onChanged, coordinates: coordinates, initialize: initialize ?? false);
+  _GCWCoordWidget mainWidget(
+      {Key? key,
+      required void Function(BaseCoordinate?) onChanged,
+      required BaseCoordinate? coordinates,
+      bool? initialize}) {
+    return _GCWCoordsMercator(
+        key: key, onChanged: onChanged, coordinates: coordinates, initialize: initialize ?? false);
   }
 }
 
 class _GCWCoordsMercator extends _GCWCoordWidget {
-
-  _GCWCoordsMercator({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize}) :
-        super(coordinates: coordinates is MercatorCoordinate ? coordinates : MercatorFormatDefinition.defaultCoordinate);
+  _GCWCoordsMercator({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize})
+      : super(
+            coordinates: coordinates is MercatorCoordinate ? coordinates : MercatorFormatDefinition.defaultCoordinate);
 
   @override
   _GCWCoordsMercatorState createState() => _GCWCoordsMercatorState();

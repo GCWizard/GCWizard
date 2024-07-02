@@ -87,8 +87,7 @@ Based on **Flutter/Dart**.
 
 ### Social Media
 * [Blog](https://blog.gcwizard.net/) 🇬🇧 🇩🇪
-* [Twitter](https://twitter.com/gc_wizard) 🇬🇧
-* [Facebook](https://www.facebook.com/geocache.wizard) 🇬🇧 🇩🇪
+* [Mastodon](https://fosstodon.org/@gcwizard) 🇬🇧
 
 ### App Stores
 * There are **two versions** available: Normal and *Gold*. *Gold* version **is absolutely the same** (only another logo 😉), no additional features. It is just for supporting the developers.

@@ -89,7 +89,8 @@ String _morse(Object text, Object mode, Object code) {
     case _ENCODE:
       output = encodeMorse(text as String, type: CODETABLE[code]!);
       break;
-    default: return '';
+    default:
+      return '';
   }
   return output;
 }

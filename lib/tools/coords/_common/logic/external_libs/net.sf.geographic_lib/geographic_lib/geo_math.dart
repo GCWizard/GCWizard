@@ -183,8 +183,7 @@ class _GeoMath {
   static double hypot(double x, double y) {
     x = x.abs();
     y = y.abs();
-    double a = max(x, y),
-        b = min(x, y) / (a != 0.0 ? a : 1);
+    double a = max(x, y), b = min(x, y) / (a != 0.0 ? a : 1);
     return a * sqrt(1 + b * b);
   }
 
@@ -197,8 +196,7 @@ class _GeoMath {
    * @return exp(\e x) - 1.
    **********************************************************************/
   static double expm1(double x) {
-    double y = exp(x),
-        z = y - 1;
+    double y = exp(x), z = y - 1;
     // The reasoning here is similar to that for log1p.  The expression
     // mathematically reduces to exp(x) - 1, and the factor z/log(y) = (y -
     // 1)/log(y) is a slowly varying quantity near y = 1 and is accurately
@@ -206,8 +204,8 @@ class _GeoMath {
     return x.abs() > 1
         ? z
         : z == 0
-        ? x
-        : x * z / log(y);
+            ? x
+            : x * z / log(y);
   }
 
   /*
@@ -314,7 +312,7 @@ class _GeoMath {
   static _Pair AngDiffError(double x, double y) {
     // Use remainder instead of AngNormalize, since we treat boundary cases
     // later taking account of the error
-    var _d = sum(remainder(-x, td.toDouble()), remainder( y, td.toDouble()), double.nan);
+    var _d = sum(remainder(-x, td.toDouble()), remainder(y, td.toDouble()), double.nan);
     double d = _d.first;
     double e = _d.second;
     // This second sum can only change d if abs(d) < 128, so don't need to
@@ -368,8 +366,7 @@ class _GeoMath {
     // now abs(r) <= 45
     r = _toRadians(r);
     // Possibly could call the gnu extension sincos
-    double s = sin(r),
-        c = cos(r);
+    double s = sin(r), c = cos(r);
     double sinx, cosx;
     switch (q & 3) {
       case 0:
@@ -439,12 +436,12 @@ class _GeoMath {
     // here x >= 0 and x >= abs(y), so angle is in [-pi/4, pi/4]
     double ang = atan2(y, x) / degree();
     switch (q) {
-    // Note that atan2d(-0.0, 1.0) will return -0.  However, we expect that
-    // atan2d will not be called with y = -0.  If need be, include
-    //
-    //   case 0: ang = 0 + ang; break;
-    //
-    // and handle mpfr as in AngRound.
+      // Note that atan2d(-0.0, 1.0) will return -0.  However, we expect that
+      // atan2d will not be called with y = -0.  If need be, include
+      //
+      //   case 0: ang = 0 + ang; break;
+      //
+      // and handle mpfr as in AngRound.
       case 1:
         ang = _copySign(hd.toDouble(), y) - ang;
         break;
@@ -507,8 +504,7 @@ class _GeoMath {
   static double taupf(double tau, double es) {
     // Need this test, otherwise tau = +/-inf gives taup = nan.
     if (isfinite(tau)) {
-      double tau1 = hypot(1.0, tau),
-          sig = _sinh(eatanhe(tau / tau1, es));
+      double tau1 = hypot(1.0, tau), sig = _sinh(eatanhe(tau / tau1, es));
       return hypot(1.0, sig) * tau - sig * tau1;
     } else {
       return tau;
@@ -538,24 +534,23 @@ class _GeoMath {
     double tol = sqrt(practical_epsilon) / 10;
     double taumax = 2 / sqrt(practical_epsilon);
     double e2m = 1 - sq(es),
-    // To lowest order in e^2, taup = (1 - e^2) * tau = _e2m * tau; so use
-    // tau = taup/e2m as a starting guess. Only 1 iteration is needed for
-    // |lat| < 3.35 deg, otherwise 2 iterations are needed.  If, instead, tau
-    // = taup is used the mean number of iterations increases to 1.999 (2
-    // iterations are needed except near tau = 0).
-    //
-    // For large tau, taup = exp(-es*atanh(es)) * tau.  Use this as for the
-    // initial guess for |taup| > 70 (approx |phi| > 89deg).  Then for
-    // sufficiently large tau (such that sqrt(1+tau^2) = |tau|), we can exit
-    // with the intial guess and avoid overflow problems.  This also reduces
-    // the mean number of iterations slightly from 1.963 to 1.954.
-    tau = taup.abs() > 70 ? taup * exp(eatanhe(1.0, es)) : taup/e2m,
-    stol = tol * max<double>(1.0, taup.abs());
+        // To lowest order in e^2, taup = (1 - e^2) * tau = _e2m * tau; so use
+        // tau = taup/e2m as a starting guess. Only 1 iteration is needed for
+        // |lat| < 3.35 deg, otherwise 2 iterations are needed.  If, instead, tau
+        // = taup is used the mean number of iterations increases to 1.999 (2
+        // iterations are needed except near tau = 0).
+        //
+        // For large tau, taup = exp(-es*atanh(es)) * tau.  Use this as for the
+        // initial guess for |taup| > 70 (approx |phi| > 89deg).  Then for
+        // sufficiently large tau (such that sqrt(1+tau^2) = |tau|), we can exit
+        // with the intial guess and avoid overflow problems.  This also reduces
+        // the mean number of iterations slightly from 1.963 to 1.954.
+        tau = taup.abs() > 70 ? taup * exp(eatanhe(1.0, es)) : taup / e2m,
+        stol = tol * max<double>(1.0, taup.abs());
     if (!(tau.abs() < taumax)) return tau; // handles +/-inf and nan
     for (int i = 0; i < numit || _GEOGRAPHICLIB_PANIC; ++i) {
       double taupa = taupf(tau, es),
-      dtau = (taup - taupa) * (1 + e2m * sq(tau)) /
-      ( e2m * hypot(1.0, tau) * hypot(1.0, taupa) );
+          dtau = (taup - taupa) * (1 + e2m * sq(tau)) / (e2m * hypot(1.0, tau) * hypot(1.0, taupa));
       tau += dtau;
       if (!(dtau.abs() >= stol)) {
         break;

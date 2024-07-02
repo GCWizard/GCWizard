@@ -158,7 +158,7 @@ class _ImageColorCorrectionsState extends State<ImageColorCorrections> {
                     PREVIEW_VALUES[Prefs.get(PREFERENCE_IMAGECOLORCORRECTIONS_MAXPREVIEWHEIGHT)]?['title'] ?? '')
               ]),
               trailing: GCWPopupMenu(
-                  iconData: Icons.settings,
+                  icon: Icons.settings,
                   size: IconButtonSize.SMALL,
                   menuItemBuilder: (context) => PREVIEW_VALUES
                       .map((key, value) {

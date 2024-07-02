@@ -19,7 +19,9 @@ _GapInfo? _allWithOneGap(List<int> line, List<List<int>> gaps, List<int> hints) 
   var left = gaps[0][0];
   var right = gaps[0][1];
   if (pushSolver.pushLeft(line.sublist(left, right), hints) != null) {
-    return _GapInfo(gaps, [[hints]]);
+    return _GapInfo(gaps, [
+      [hints]
+    ]);
   }
   return null;
 }

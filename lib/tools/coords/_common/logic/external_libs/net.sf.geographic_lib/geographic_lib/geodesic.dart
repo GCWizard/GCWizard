@@ -1077,8 +1077,8 @@ class Geodesic {
         double m12b, m0;
         // In the case of lon12 = 180, this repeats a calculation made in
         // Inverse.
-        _Lengths(v, _n, _GeoMath.pi() + bet12a, sbet1, -cbet1, dn1, sbet2, cbet2, dn2, cbet1, cbet2, _GeodesicMask.REDUCEDLENGTH,
-            C1a, C2a);
+        _Lengths(v, _n, _GeoMath.pi() + bet12a, sbet1, -cbet1, dn1, sbet2, cbet2, dn2, cbet1, cbet2,
+            _GeodesicMask.REDUCEDLENGTH, C1a, C2a);
         m12b = v._m12b;
         m0 = v._m0;
 

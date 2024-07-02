@@ -139,9 +139,11 @@ class BattleshipState extends State<Battleship> {
   void _calcOutput() {
     if (_currentEncryptDecryptMode == GCWSwitchPosition.left) {
       if (_currentTextGraphicMode == GCWSwitchPosition.left) {
-        _encodeOutput = encodeBattleship(_currentTextEncode, _TEXTMODE, (_currentNumberExcelMode == GCWSwitchPosition.left));
+        _encodeOutput =
+            encodeBattleship(_currentTextEncode, _TEXTMODE, (_currentNumberExcelMode == GCWSwitchPosition.left));
       } else {
-        _encodeOutput = encodeBattleship(_encodeGraphicController.text, _GRAPHICMODE, (_currentNumberExcelMode == GCWSwitchPosition.left));
+        _encodeOutput = encodeBattleship(
+            _encodeGraphicController.text, _GRAPHICMODE, (_currentNumberExcelMode == GCWSwitchPosition.left));
       }
     } else {
       _decodeOutput = decodeBattleship(_currentDecode, (_currentNumberExcelMode == GCWSwitchPosition.left));
@@ -149,14 +151,14 @@ class BattleshipState extends State<Battleship> {
     setState(() {});
   }
 
-  String _anaylzeDecodeError(String text){
+  String _anaylzeDecodeError(String text) {
     List<String> result = [];
     text.split('\n').forEach((line) {
-      if (line.startsWith(BATTLESHIP_ERROR_INVALID_PAIR)){
+      if (line.startsWith(BATTLESHIP_ERROR_INVALID_PAIR)) {
         line = line.replaceAll(BATTLESHIP_ERROR_INVALID_PAIR, i18n(context, BATTLESHIP_ERROR_INVALID_PAIR));
-      } else if (line.startsWith(BATTLESHIP_ERROR_TO_MANY_COLUMS)){
+      } else if (line.startsWith(BATTLESHIP_ERROR_TO_MANY_COLUMS)) {
         line = line.replaceAll(BATTLESHIP_ERROR_TO_MANY_COLUMS, i18n(context, BATTLESHIP_ERROR_TO_MANY_COLUMS));
-      } else if (line.startsWith(BATTLESHIP_ERROR_TO_MANY_ROWS)){
+      } else if (line.startsWith(BATTLESHIP_ERROR_TO_MANY_ROWS)) {
         line = line.replaceAll(BATTLESHIP_ERROR_TO_MANY_ROWS, i18n(context, BATTLESHIP_ERROR_TO_MANY_ROWS));
       }
       result.add(line);

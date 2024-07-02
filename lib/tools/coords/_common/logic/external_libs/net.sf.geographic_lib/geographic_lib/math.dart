@@ -80,8 +80,7 @@ double _asinh(double value) {
     return value.sign * (log(value.abs()) + log(2.0));
   }
 
-  return value.sign *
-      log(value.abs() + sqrt((value * value) + 1));
+  return value.sign * log(value.abs() + sqrt((value * value) + 1));
 }
 
 /// from dart_numerics: Hyperbolic Sine.
@@ -93,4 +92,3 @@ double _sinh(double angle) {
 double _cosh(double angle) {
   return (exp(angle) + exp(-angle)) / 2;
 }
-

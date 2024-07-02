@@ -58,7 +58,7 @@ class _GCWKeyValueTypeItemState extends GCWKeyValueItemState {
                 ? Container(
                     padding: const EdgeInsets.only(left: DEFAULT_MARGIN),
                     child: GCWPopupMenu(
-                      iconData: formulaValueTypeIcon(_currentType),
+                      icon: formulaValueTypeIcon(_currentType),
                       rotateDegrees: 90.0,
                       menuItemBuilder: (context) => [
                         GCWPopupMenuItem(

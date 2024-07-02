@@ -32,8 +32,7 @@ class CoordinateFormatDefinition {
   final BaseCoordinate? Function(String) parseCoordinate;
   final BaseCoordinate defaultCoordinate;
 
-  CoordinateFormatDefinition(this.type, this.persistenceKey, this.apiKey,
-      this.parseCoordinate, this.defaultCoordinate);
+  CoordinateFormatDefinition(this.type, this.persistenceKey, this.apiKey, this.parseCoordinate, this.defaultCoordinate);
 
   BaseCoordinate? parseCoordinateWholeString(String input) {
     return parseCoordinate(input);
@@ -43,8 +42,8 @@ class CoordinateFormatDefinition {
 class CoordinateFormatWithSubtypesDefinition extends CoordinateFormatDefinition {
   final List<CoordinateFormatDefinition> subtypes;
 
-  CoordinateFormatWithSubtypesDefinition(super.type, super.persistenceKey, super.apiKey, this.subtypes,
-      super.parseCoordinate, super.defaultCoordinate);
+  CoordinateFormatWithSubtypesDefinition(
+      super.type, super.persistenceKey, super.apiKey, this.subtypes, super.parseCoordinate, super.defaultCoordinate);
 }
 
 bool equalsCoordinateFormats(CoordinateFormat a, CoordinateFormat b) {

@@ -7,7 +7,7 @@ import 'package:gc_wizard/utils/math_utils.dart';
 
 class GCWPopupMenu extends StatefulWidget {
   final List<GCWPopupMenuItem> Function(BuildContext context) menuItemBuilder;
-  final IconData iconData;
+  final IconData icon;
   final Widget? customIcon;
   final double? rotateDegrees;
   final IconButtonSize? size;
@@ -23,7 +23,7 @@ class GCWPopupMenu extends StatefulWidget {
   const GCWPopupMenu({
     Key? key,
     required this.menuItemBuilder,
-    required this.iconData,
+    required this.icon,
     this.customIcon,
     this.rotateDegrees,
     this.size = IconButtonSize.NORMAL,
@@ -70,7 +70,7 @@ class _GCWPopupMenuState extends State<GCWPopupMenu> {
     }
 
     return GCWIconButton(
-        icon: widget.iconData,
+        icon: widget.icon,
         customIcon: widget.customIcon,
         rotateDegrees: widget.rotateDegrees,
         size: widget.size,
@@ -123,8 +123,8 @@ class GCWPopupMenuItem {
 }
 
 Row iconedGCWPopupMenuItem(BuildContext context, IconData icon, String title,
-    {double rotateDegrees = 0.0, Function? onLongPress}) {
-  var color = themeColors().dialogText();
+    {double rotateDegrees = 0.0, Function? onLongPress, Color? color}) {
+  var _color = color ?? themeColors().dialogText();
 
   return Row(
     children: [
@@ -133,12 +133,12 @@ Row iconedGCWPopupMenuItem(BuildContext context, IconData icon, String title,
           padding: const EdgeInsets.only(right: 10),
           child: Transform.rotate(
             angle: degreesToRadian(rotateDegrees),
-            child: Icon(icon, color: color),
+            child: Icon(icon, color: _color),
           ),
         ),
         onLongPress: () => onLongPress,
       ),
-      Text(i18n(context, title, ifTranslationNotExists: title), style: TextStyle(color: color))
+      Text(i18n(context, title, ifTranslationNotExists: title), style: TextStyle(color: themeColors().dialogText()))
     ],
   );
 }

@@ -110,10 +110,11 @@ class _BrainfkState extends State<Brainfk> {
                       _currentDerivate = value;
                     });
                   },
-                  items: BRAINFK_DERIVATIVES.entries.map((mode) {
+                  items: BRAINFK_DERIVATIVES_DETAILED.entries.map((mode) {
                     return GCWDropDownMenuItem(
                       value: mode.key,
-                      child: mode.value,
+                      child: mode.value.title,
+                      subtitle: mode.value.description,
                     );
                   }).toList(),
                 ),

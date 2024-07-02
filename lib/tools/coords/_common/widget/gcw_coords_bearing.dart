@@ -31,13 +31,15 @@ final List<_CompassDirection> _COMPASS_ROSE = [
   _CompassDirection(symbol: 'common_compassrose_n_symbol', name: 'common_compassrose_n_name', value: 0.0, level: 0),
   _CompassDirection(
       symbol: 'common_compassrose_nbe_symbol', name: 'common_compassrose_nbe_name', value: 11.25, level: 3),
-  _CompassDirection(symbol: 'common_compassrose_nne_symbol', name: 'common_compassrose_nne_name', value: 22.5, level: 2),
+  _CompassDirection(
+      symbol: 'common_compassrose_nne_symbol', name: 'common_compassrose_nne_name', value: 22.5, level: 2),
   _CompassDirection(
       symbol: 'common_compassrose_nebn_symbol', name: 'common_compassrose_nebn_name', value: 33.75, level: 3),
   _CompassDirection(symbol: 'common_compassrose_ne_symbol', name: 'common_compassrose_ne_name', value: 45.0, level: 1),
   _CompassDirection(
       symbol: 'common_compassrose_nebe_symbol', name: 'common_compassrose_nebe_name', value: 56.25, level: 3),
-  _CompassDirection(symbol: 'common_compassrose_ene_symbol', name: 'common_compassrose_ene_name', value: 67.5, level: 2),
+  _CompassDirection(
+      symbol: 'common_compassrose_ene_symbol', name: 'common_compassrose_ene_name', value: 67.5, level: 2),
   _CompassDirection(
       symbol: 'common_compassrose_ebn_symbol', name: 'common_compassrose_ebn_name', value: 78.75, level: 3),
   _CompassDirection(symbol: 'common_compassrose_e_symbol', name: 'common_compassrose_e_name', value: 90.0, level: 0),

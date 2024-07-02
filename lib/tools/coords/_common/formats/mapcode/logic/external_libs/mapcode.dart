@@ -23,90 +23,539 @@ import 'package:utility/utility.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/mapcode/logic/external_libs/ndata.dart';
 
 const iso3166alpha = [
-  'VAT', 'MCO', 'GIB', 'TKL', 'CCK', 'BLM', 'NRU', 'TUV', 'MAC', 'SXM',
-  'MAF', 'NFK', 'PCN', 'BVT', 'BMU', 'IOT', 'SMR', 'GGY', 'AIA', 'MSR',
-  'JEY', 'CXR', 'WLF', 'VGB', 'LIE', 'ABW', 'MHL', 'ASM', 'COK', 'SPM',
-  'NIU', 'KNA', 'CYM', 'BES', 'MDV', 'SHN', 'MLT', 'GRD', 'VIR', 'MYT',
-  'SJM', 'VCT', 'HMD', 'BRB', 'ATG', 'CUW', 'SYC', 'PLW', 'MNP', 'AND',
-  'GUM', 'IMN', 'LCA', 'FSM', 'SGP', 'TON', 'DMA', 'BHR', 'KIR', 'TCA',
-  'STP', 'HKG', 'MTQ', 'FRO', 'GLP', 'COM', 'MUS', 'REU', 'LUX', 'WSM',
-  'SGS', 'PYF', 'CPV', 'TTO', 'BRN', 'ATF', 'PRI', 'CYP', 'LBN', 'JAM',
-  'GMB', 'QAT', 'FLK', 'VUT', 'MNE', 'BHS', 'TLS', 'SWZ', 'KWT', 'FJI',
-  'NCL', 'SVN', 'ISR', 'PSE', 'SLV', 'BLZ', 'DJI', 'MKD', 'RWA', 'HTI',
-  'BDI', 'GNQ', 'ALB', 'SLB', 'ARM', 'LSO', 'BEL', 'MDA', 'GNB', 'TWN',
-  'BTN', 'CHE', 'NLD', 'DNK', 'EST', 'DOM', 'SVK', 'CRI', 'BIH', 'HRV',
-  'TGO', 'LVA', 'LTU', 'LKA', 'GEO', 'IRL', 'SLE', 'PAN', 'CZE', 'GUF',
-  'ARE', 'AUT', 'AZE', 'SRB', 'JOR', 'PRT', 'HUN', 'KOR', 'ISL', 'GTM',
-  'CUB', 'BGR', 'LBR', 'HND', 'BEN', 'ERI', 'MWI', 'PRK', 'NIC', 'GRC',
-  'TJK', 'BGD', 'NPL', 'TUN', 'SUR', 'URY', 'KHM', 'SYR', 'SEN', 'KGZ',
-  'BLR', 'GUY', 'LAO', 'ROU', 'GHA', 'UGA', 'GBR', 'GIN', 'ECU', 'ESH',
-  'GAB', 'NZL', 'BFA', 'PHL', 'ITA', 'OMN', 'POL', 'CIV', 'NOR', 'MYS',
-  'VNM', 'FIN', 'COG', 'DEU', 'JPN', 'ZWE', 'PRY', 'IRQ', 'MAR', 'UZB',
-  'SWE', 'PNG', 'CMR', 'TKM', 'ESP', 'THA', 'YEM', 'FRA', 'ALA', 'KEN',
-  'BWA', 'MDG', 'UKR', 'SSD', 'CAF', 'SOM', 'AFG', 'MMR', 'ZMB', 'CHL',
-  'TUR', 'PAK', 'MOZ', 'NAM', 'VEN', 'NGA', 'TZA', 'EGY', 'MRT', 'BOL',
-  'ETH', 'COL', 'ZAF', 'MLI', 'AGO', 'NER', 'TCD', 'PER', 'MNG', 'IRN',
-  'LBY', 'SDN', 'IDN', 'MX-DIF', 'MX-TLA',
-  'MX-MOR', 'MX-AGU', 'MX-CL', 'MX-QUE', 'MX-HID',
-  'MX-MX', 'MX-TAB', 'MX-NAY', 'MX-GUA', 'MX-PUE',
-  'MX-YUC', 'MX-ROO', 'MX-SIN', 'MX-CAM', 'MX-MIC',
-  'MX-SLP', 'MX-GRO', 'MX-NLE', 'MX-BCN', 'MX-VER',
-  'MX-CHP', 'MX-BCS', 'MX-ZAC', 'MX-JAL', 'MX-TAM',
-  'MX-OAX', 'MX-DUR', 'MX-COA', 'MX-SON', 'MX-CHH',
-  'GRL', 'SAU', 'COD', 'DZA', 'KAZ',
-  'ARG', 'IN-DD', 'IN-DN', 'IN-CH', 'IN-AN',
-  'IN-LD', 'IN-DL', 'IN-ML', 'IN-NL', 'IN-MN',
-  'IN-TR', 'IN-MZ', 'IN-SK', 'IN-PB', 'IN-HR',
-  'IN-AR', 'IN-AS', 'IN-BR', 'IN-UT', 'IN-GA',
-  'IN-KL', 'IN-TN', 'IN-HP', 'IN-JK', 'IN-CT',
-  'IN-JH', 'IN-KA', 'IN-RJ', 'IN-OR', 'IN-GJ',
-  'IN-WB', 'IN-MP', 'IN-TG', 'IN-AP', 'IN-MH',
-  'IN-UP', 'IN-PY', 'AU-NSW', 'AU-ACT', 'AU-JBT',
-  'AU-NT', 'AU-SA', 'AU-TAS', 'AU-VIC', 'AU-WA',
-  'AU-QLD', 'BR-DF', 'BR-SE', 'BR-AL', 'BR-RJ',
-  'BR-ES', 'BR-RN', 'BR-PB', 'BR-SC', 'BR-PE',
-  'BR-AP', 'BR-CE', 'BR-AC', 'BR-PR', 'BR-RR',
-  'BR-RO', 'BR-SP', 'BR-PI', 'BR-TO', 'BR-RS',
-  'BR-MA', 'BR-GO', 'BR-MS', 'BR-BA', 'BR-MG',
-  'BR-MT', 'BR-PA', 'BR-AM', 'US-DC', 'US-RI',
-  'US-DE', 'US-CT', 'US-NJ', 'US-NH', 'US-VT',
-  'US-MA', 'US-HI', 'US-MD', 'US-WV', 'US-SC',
-  'US-ME', 'US-IN', 'US-KY', 'US-TN', 'US-VA',
-  'US-OH', 'US-PA', 'US-MS', 'US-LA', 'US-AL',
-  'US-AR', 'US-NC', 'US-NY', 'US-IA', 'US-IL',
-  'US-GA', 'US-WI', 'US-FL', 'US-MO', 'US-OK',
-  'US-ND', 'US-WA', 'US-SD', 'US-NE', 'US-KS',
-  'US-ID', 'US-UT', 'US-MN', 'US-MI', 'US-WY',
-  'US-OR', 'US-CO', 'US-NV', 'US-AZ', 'US-NM',
-  'US-MT', 'US-CA', 'US-TX', 'US-AK', 'CA-BC',
-  'CA-AB', 'CA-ON', 'CA-QC', 'CA-SK', 'CA-MB',
-  'CA-NL', 'CA-NB', 'CA-NS', 'CA-PE', 'CA-YT',
-  'CA-NT', 'CA-NU', 'IND', 'AUS', 'BRA',
-  'USA', 'MEX', 'RU-MOW', 'RU-SPE', 'RU-KGD',
-  'RU-IN', 'RU-AD', 'RU-SE', 'RU-KB', 'RU-KC',
-  'RU-CE', 'RU-CU', 'RU-IVA', 'RU-LIP', 'RU-ORL',
-  'RU-TUL', 'RU-BE', 'RU-VLA', 'RU-KRS', 'RU-KLU',
-  'RU-TT', 'RU-BRY', 'RU-YAR', 'RU-RYA', 'RU-AST',
-  'RU-MOS', 'RU-SMO', 'RU-DA', 'RU-VOR', 'RU-NGR',
-  'RU-PSK', 'RU-KOS', 'RU-STA', 'RU-KDA', 'RU-KL',
-  'RU-TVE', 'RU-LEN', 'RU-ROS', 'RU-VGG', 'RU-VLG',
-  'RU-MUR', 'RU-KR', 'RU-NEN', 'RU-KO', 'RU-ARK',
-  'RU-MO', 'RU-NIZ', 'RU-PNZ', 'RU-KI', 'RU-ME',
-  'RU-ORE', 'RU-ULY', 'RU-PM', 'RU-BA', 'RU-UD',
-  'RU-TA', 'RU-SAM', 'RU-SAR', 'RU-YAN', 'RU-KM',
-  'RU-SVE', 'RU-TYU', 'RU-KGN', 'RU-CH', 'RU-BU',
-  'RU-ZAB', 'RU-IRK', 'RU-NVS', 'RU-TOM', 'RU-OMS',
-  'RU-KK', 'RU-KEM', 'RU-AL', 'RU-ALT', 'RU-TY',
-  'RU-KYA', 'RU-MAG', 'RU-CHU', 'RU-KAM', 'RU-SAK',
-  'RU-PO', 'RU-YEV', 'RU-KHA', 'RU-AMU', 'RU-SA',
-  'CAN', 'RUS', 'CN-SH', 'CN-TJ', 'CN-BJ',
-  'CN-HI', 'CN-NX', 'CN-CQ', 'CN-ZJ', 'CN-JS',
-  'CN-FJ', 'CN-AH', 'CN-LN', 'CN-SD', 'CN-SX',
-  'CN-JX', 'CN-HA', 'CN-GZ', 'CN-GD', 'CN-HB',
-  'CN-JL', 'CN-HE', 'CN-SN', 'CN-NM', 'CN-HL',
-  'CN-HN', 'CN-GX', 'CN-SC', 'CN-YN', 'CN-XZ',
-  'CN-GS', 'CN-QH', 'CN-XJ', 'CHN', 'UMI',
-  'CPT', 'ATA', 'AAA'
+  'VAT',
+  'MCO',
+  'GIB',
+  'TKL',
+  'CCK',
+  'BLM',
+  'NRU',
+  'TUV',
+  'MAC',
+  'SXM',
+  'MAF',
+  'NFK',
+  'PCN',
+  'BVT',
+  'BMU',
+  'IOT',
+  'SMR',
+  'GGY',
+  'AIA',
+  'MSR',
+  'JEY',
+  'CXR',
+  'WLF',
+  'VGB',
+  'LIE',
+  'ABW',
+  'MHL',
+  'ASM',
+  'COK',
+  'SPM',
+  'NIU',
+  'KNA',
+  'CYM',
+  'BES',
+  'MDV',
+  'SHN',
+  'MLT',
+  'GRD',
+  'VIR',
+  'MYT',
+  'SJM',
+  'VCT',
+  'HMD',
+  'BRB',
+  'ATG',
+  'CUW',
+  'SYC',
+  'PLW',
+  'MNP',
+  'AND',
+  'GUM',
+  'IMN',
+  'LCA',
+  'FSM',
+  'SGP',
+  'TON',
+  'DMA',
+  'BHR',
+  'KIR',
+  'TCA',
+  'STP',
+  'HKG',
+  'MTQ',
+  'FRO',
+  'GLP',
+  'COM',
+  'MUS',
+  'REU',
+  'LUX',
+  'WSM',
+  'SGS',
+  'PYF',
+  'CPV',
+  'TTO',
+  'BRN',
+  'ATF',
+  'PRI',
+  'CYP',
+  'LBN',
+  'JAM',
+  'GMB',
+  'QAT',
+  'FLK',
+  'VUT',
+  'MNE',
+  'BHS',
+  'TLS',
+  'SWZ',
+  'KWT',
+  'FJI',
+  'NCL',
+  'SVN',
+  'ISR',
+  'PSE',
+  'SLV',
+  'BLZ',
+  'DJI',
+  'MKD',
+  'RWA',
+  'HTI',
+  'BDI',
+  'GNQ',
+  'ALB',
+  'SLB',
+  'ARM',
+  'LSO',
+  'BEL',
+  'MDA',
+  'GNB',
+  'TWN',
+  'BTN',
+  'CHE',
+  'NLD',
+  'DNK',
+  'EST',
+  'DOM',
+  'SVK',
+  'CRI',
+  'BIH',
+  'HRV',
+  'TGO',
+  'LVA',
+  'LTU',
+  'LKA',
+  'GEO',
+  'IRL',
+  'SLE',
+  'PAN',
+  'CZE',
+  'GUF',
+  'ARE',
+  'AUT',
+  'AZE',
+  'SRB',
+  'JOR',
+  'PRT',
+  'HUN',
+  'KOR',
+  'ISL',
+  'GTM',
+  'CUB',
+  'BGR',
+  'LBR',
+  'HND',
+  'BEN',
+  'ERI',
+  'MWI',
+  'PRK',
+  'NIC',
+  'GRC',
+  'TJK',
+  'BGD',
+  'NPL',
+  'TUN',
+  'SUR',
+  'URY',
+  'KHM',
+  'SYR',
+  'SEN',
+  'KGZ',
+  'BLR',
+  'GUY',
+  'LAO',
+  'ROU',
+  'GHA',
+  'UGA',
+  'GBR',
+  'GIN',
+  'ECU',
+  'ESH',
+  'GAB',
+  'NZL',
+  'BFA',
+  'PHL',
+  'ITA',
+  'OMN',
+  'POL',
+  'CIV',
+  'NOR',
+  'MYS',
+  'VNM',
+  'FIN',
+  'COG',
+  'DEU',
+  'JPN',
+  'ZWE',
+  'PRY',
+  'IRQ',
+  'MAR',
+  'UZB',
+  'SWE',
+  'PNG',
+  'CMR',
+  'TKM',
+  'ESP',
+  'THA',
+  'YEM',
+  'FRA',
+  'ALA',
+  'KEN',
+  'BWA',
+  'MDG',
+  'UKR',
+  'SSD',
+  'CAF',
+  'SOM',
+  'AFG',
+  'MMR',
+  'ZMB',
+  'CHL',
+  'TUR',
+  'PAK',
+  'MOZ',
+  'NAM',
+  'VEN',
+  'NGA',
+  'TZA',
+  'EGY',
+  'MRT',
+  'BOL',
+  'ETH',
+  'COL',
+  'ZAF',
+  'MLI',
+  'AGO',
+  'NER',
+  'TCD',
+  'PER',
+  'MNG',
+  'IRN',
+  'LBY',
+  'SDN',
+  'IDN',
+  'MX-DIF',
+  'MX-TLA',
+  'MX-MOR',
+  'MX-AGU',
+  'MX-CL',
+  'MX-QUE',
+  'MX-HID',
+  'MX-MX',
+  'MX-TAB',
+  'MX-NAY',
+  'MX-GUA',
+  'MX-PUE',
+  'MX-YUC',
+  'MX-ROO',
+  'MX-SIN',
+  'MX-CAM',
+  'MX-MIC',
+  'MX-SLP',
+  'MX-GRO',
+  'MX-NLE',
+  'MX-BCN',
+  'MX-VER',
+  'MX-CHP',
+  'MX-BCS',
+  'MX-ZAC',
+  'MX-JAL',
+  'MX-TAM',
+  'MX-OAX',
+  'MX-DUR',
+  'MX-COA',
+  'MX-SON',
+  'MX-CHH',
+  'GRL',
+  'SAU',
+  'COD',
+  'DZA',
+  'KAZ',
+  'ARG',
+  'IN-DD',
+  'IN-DN',
+  'IN-CH',
+  'IN-AN',
+  'IN-LD',
+  'IN-DL',
+  'IN-ML',
+  'IN-NL',
+  'IN-MN',
+  'IN-TR',
+  'IN-MZ',
+  'IN-SK',
+  'IN-PB',
+  'IN-HR',
+  'IN-AR',
+  'IN-AS',
+  'IN-BR',
+  'IN-UT',
+  'IN-GA',
+  'IN-KL',
+  'IN-TN',
+  'IN-HP',
+  'IN-JK',
+  'IN-CT',
+  'IN-JH',
+  'IN-KA',
+  'IN-RJ',
+  'IN-OR',
+  'IN-GJ',
+  'IN-WB',
+  'IN-MP',
+  'IN-TG',
+  'IN-AP',
+  'IN-MH',
+  'IN-UP',
+  'IN-PY',
+  'AU-NSW',
+  'AU-ACT',
+  'AU-JBT',
+  'AU-NT',
+  'AU-SA',
+  'AU-TAS',
+  'AU-VIC',
+  'AU-WA',
+  'AU-QLD',
+  'BR-DF',
+  'BR-SE',
+  'BR-AL',
+  'BR-RJ',
+  'BR-ES',
+  'BR-RN',
+  'BR-PB',
+  'BR-SC',
+  'BR-PE',
+  'BR-AP',
+  'BR-CE',
+  'BR-AC',
+  'BR-PR',
+  'BR-RR',
+  'BR-RO',
+  'BR-SP',
+  'BR-PI',
+  'BR-TO',
+  'BR-RS',
+  'BR-MA',
+  'BR-GO',
+  'BR-MS',
+  'BR-BA',
+  'BR-MG',
+  'BR-MT',
+  'BR-PA',
+  'BR-AM',
+  'US-DC',
+  'US-RI',
+  'US-DE',
+  'US-CT',
+  'US-NJ',
+  'US-NH',
+  'US-VT',
+  'US-MA',
+  'US-HI',
+  'US-MD',
+  'US-WV',
+  'US-SC',
+  'US-ME',
+  'US-IN',
+  'US-KY',
+  'US-TN',
+  'US-VA',
+  'US-OH',
+  'US-PA',
+  'US-MS',
+  'US-LA',
+  'US-AL',
+  'US-AR',
+  'US-NC',
+  'US-NY',
+  'US-IA',
+  'US-IL',
+  'US-GA',
+  'US-WI',
+  'US-FL',
+  'US-MO',
+  'US-OK',
+  'US-ND',
+  'US-WA',
+  'US-SD',
+  'US-NE',
+  'US-KS',
+  'US-ID',
+  'US-UT',
+  'US-MN',
+  'US-MI',
+  'US-WY',
+  'US-OR',
+  'US-CO',
+  'US-NV',
+  'US-AZ',
+  'US-NM',
+  'US-MT',
+  'US-CA',
+  'US-TX',
+  'US-AK',
+  'CA-BC',
+  'CA-AB',
+  'CA-ON',
+  'CA-QC',
+  'CA-SK',
+  'CA-MB',
+  'CA-NL',
+  'CA-NB',
+  'CA-NS',
+  'CA-PE',
+  'CA-YT',
+  'CA-NT',
+  'CA-NU',
+  'IND',
+  'AUS',
+  'BRA',
+  'USA',
+  'MEX',
+  'RU-MOW',
+  'RU-SPE',
+  'RU-KGD',
+  'RU-IN',
+  'RU-AD',
+  'RU-SE',
+  'RU-KB',
+  'RU-KC',
+  'RU-CE',
+  'RU-CU',
+  'RU-IVA',
+  'RU-LIP',
+  'RU-ORL',
+  'RU-TUL',
+  'RU-BE',
+  'RU-VLA',
+  'RU-KRS',
+  'RU-KLU',
+  'RU-TT',
+  'RU-BRY',
+  'RU-YAR',
+  'RU-RYA',
+  'RU-AST',
+  'RU-MOS',
+  'RU-SMO',
+  'RU-DA',
+  'RU-VOR',
+  'RU-NGR',
+  'RU-PSK',
+  'RU-KOS',
+  'RU-STA',
+  'RU-KDA',
+  'RU-KL',
+  'RU-TVE',
+  'RU-LEN',
+  'RU-ROS',
+  'RU-VGG',
+  'RU-VLG',
+  'RU-MUR',
+  'RU-KR',
+  'RU-NEN',
+  'RU-KO',
+  'RU-ARK',
+  'RU-MO',
+  'RU-NIZ',
+  'RU-PNZ',
+  'RU-KI',
+  'RU-ME',
+  'RU-ORE',
+  'RU-ULY',
+  'RU-PM',
+  'RU-BA',
+  'RU-UD',
+  'RU-TA',
+  'RU-SAM',
+  'RU-SAR',
+  'RU-YAN',
+  'RU-KM',
+  'RU-SVE',
+  'RU-TYU',
+  'RU-KGN',
+  'RU-CH',
+  'RU-BU',
+  'RU-ZAB',
+  'RU-IRK',
+  'RU-NVS',
+  'RU-TOM',
+  'RU-OMS',
+  'RU-KK',
+  'RU-KEM',
+  'RU-AL',
+  'RU-ALT',
+  'RU-TY',
+  'RU-KYA',
+  'RU-MAG',
+  'RU-CHU',
+  'RU-KAM',
+  'RU-SAK',
+  'RU-PO',
+  'RU-YEV',
+  'RU-KHA',
+  'RU-AMU',
+  'RU-SA',
+  'CAN',
+  'RUS',
+  'CN-SH',
+  'CN-TJ',
+  'CN-BJ',
+  'CN-HI',
+  'CN-NX',
+  'CN-CQ',
+  'CN-ZJ',
+  'CN-JS',
+  'CN-FJ',
+  'CN-AH',
+  'CN-LN',
+  'CN-SD',
+  'CN-SX',
+  'CN-JX',
+  'CN-HA',
+  'CN-GZ',
+  'CN-GD',
+  'CN-HB',
+  'CN-JL',
+  'CN-HE',
+  'CN-SN',
+  'CN-NM',
+  'CN-HL',
+  'CN-HN',
+  'CN-GX',
+  'CN-SC',
+  'CN-YN',
+  'CN-XZ',
+  'CN-GS',
+  'CN-QH',
+  'CN-XJ',
+  'CHN',
+  'UMI',
+  'CPT',
+  'ATA',
+  'AAA'
 ];
 
 const _aliases = "2UK=2UT,2CG=2CT,1GU=GUM,1UM=UMI,1VI=VIR,1AS=ASM,1MP=MNP,4CX=CXR,4CC=CCK,4NF=NFK,4HM=HMD," +
@@ -234,7 +683,8 @@ int? _iso2ccode(String territoryAlphaCode) {
   var i = 0;
   String isoa;
   var sep = territoryAlphaCode.lastIndexOf('-');
-  if (sep >= 0) { // territory!
+  if (sep >= 0) {
+    // territory!
     var prefix = territoryAlphaCode.substring(0, sep);
     var properMapcode = territoryAlphaCode.substring(sep + 1);
     if (_set_disambiguate(prefix) != 0 || properMapcode.length < 2) {
@@ -309,7 +759,8 @@ int? _iso2ccode(String territoryAlphaCode) {
   // all else failed, try non-disambiguated alphacode
   isoa = _alias2iso(territoryAlphaCode); // or try ANY alias
   if (isoa.isNotEmpty) {
-    if (isoa.codeUnitAt(0) <= 57) { // starts with digit
+    if (isoa.codeUnitAt(0) <= 57) {
+      // starts with digit
       territoryAlphaCode = _parentname2(isoa.codeUnitAt(0) - 48) + '-' + isoa.substring(1);
     } else {
       territoryAlphaCode = isoa;
@@ -364,7 +815,6 @@ int getParentOf(String territory) {
 bool _isSubdivision(String territory) {
   return getParentOf(territory) >= 0;
 }
-
 
 /// PRIVATE returns true iff x in range (all values in millionths)
 bool _isInRangeX(int x, int minx, int maxx) {
@@ -456,62 +906,330 @@ _mmSet _minmaxSetup(int i) {
     var shortmaxy = [0, 122309, 27539, 27449, 149759, 2681190, 60119, 62099, 491040, 86489];
     d = shortmaxy[d];
   }
-  return _mmSet(
-    minx: _data_minx[i],
-    miny: _data_miny[i],
-    maxx: _data_minx[i] + _data_maxx[i],
-    maxy: _data_miny[i] + d
-  );
+  return _mmSet(minx: _data_minx[i], miny: _data_miny[i], maxx: _data_minx[i] + _data_maxx[i], maxy: _data_miny[i] + d);
 }
 
 /// low-level tables for mapcode encoding and decoding
 const _xdivider19 = [
-  360, 360, 360, 360, 360, 360, 361, 361, 361, 361,    //  5.2429 degrees
-  362, 362, 362, 363, 363, 363, 364, 364, 365, 366,    // 10.4858 degrees
-  366, 367, 367, 368, 369, 370, 370, 371, 372, 373,    // 15.7286 degrees
-  374, 375, 376, 377, 378, 379, 380, 382, 383, 384,    // 20.9715 degrees
-  386, 387, 388, 390, 391, 393, 394, 396, 398, 399,    // 26.2144 degrees
-  401, 403, 405, 407, 409, 411, 413, 415, 417, 420,    // 31.4573 degrees
-  422, 424, 427, 429, 432, 435, 437, 440, 443, 446,    // 36.7002 degrees
-  449, 452, 455, 459, 462, 465, 469, 473, 476, 480,    // 41.9430 degrees
-  484, 488, 492, 496, 501, 505, 510, 515, 520, 525,    // 47.1859 degrees
-  530, 535, 540, 546, 552, 558, 564, 570, 577, 583,    // 52.4288 degrees
-  590, 598, 605, 612, 620, 628, 637, 645, 654, 664,    // 57.6717 degrees
-  673, 683, 693, 704, 715, 726, 738, 751, 763, 777,    // 62.9146 degrees
-  791, 805, 820, 836, 852, 869, 887, 906, 925, 946,    // 68.1574 degrees
-  968, 990, 1014, 1039, 1066, 1094, 1123, 1154, 1187, 1223,    // 73.4003 degrees
-  1260, 1300, 1343, 1389, 1438, 1490, 1547, 1609, 1676, 1749,    // 78.6432 degrees
-  1828, 1916, 2012, 2118, 2237, 2370, 2521, 2691, 2887, 3114,    // 83.8861 degrees
-  3380, 3696, 4077, 4547, 5139, 5910, 6952, 8443, 10747, 14784,    // 89.1290 degrees
-  23681, 59485];
+  360, 360, 360, 360, 360, 360, 361, 361, 361, 361, //  5.2429 degrees
+  362, 362, 362, 363, 363, 363, 364, 364, 365, 366, // 10.4858 degrees
+  366, 367, 367, 368, 369, 370, 370, 371, 372, 373, // 15.7286 degrees
+  374, 375, 376, 377, 378, 379, 380, 382, 383, 384, // 20.9715 degrees
+  386, 387, 388, 390, 391, 393, 394, 396, 398, 399, // 26.2144 degrees
+  401, 403, 405, 407, 409, 411, 413, 415, 417, 420, // 31.4573 degrees
+  422, 424, 427, 429, 432, 435, 437, 440, 443, 446, // 36.7002 degrees
+  449, 452, 455, 459, 462, 465, 469, 473, 476, 480, // 41.9430 degrees
+  484, 488, 492, 496, 501, 505, 510, 515, 520, 525, // 47.1859 degrees
+  530, 535, 540, 546, 552, 558, 564, 570, 577, 583, // 52.4288 degrees
+  590, 598, 605, 612, 620, 628, 637, 645, 654, 664, // 57.6717 degrees
+  673, 683, 693, 704, 715, 726, 738, 751, 763, 777, // 62.9146 degrees
+  791, 805, 820, 836, 852, 869, 887, 906, 925, 946, // 68.1574 degrees
+  968, 990, 1014, 1039, 1066, 1094, 1123, 1154, 1187, 1223, // 73.4003 degrees
+  1260, 1300, 1343, 1389, 1438, 1490, 1547, 1609, 1676, 1749, // 78.6432 degrees
+  1828, 1916, 2012, 2118, 2237, 2370, 2521, 2691, 2887, 3114, // 83.8861 degrees
+  3380, 3696, 4077, 4547, 5139, 5910, 6952, 8443, 10747, 14784, // 89.1290 degrees
+  23681, 59485
+];
 
 const _nc = [1, 31, 961, 29791, 923521, 28629151, 887503681];
 const _xside = [0, 5, 31, 168, 961, 168 * 31, 29791, 165869, 923521, 5141947, 28629151];
 const _yside = [0, 6, 31, 176, 961, 176 * 31, 29791, 165869, 923521, 5141947, 28629151];
 
 const _decodeChar = [
-  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1, -1, -1, -1, -1, -1,
-  -1, -2, 10, 11, 12, -3, 13, 14, 15, 1, 16, 17, 18, 19, 20, 0,
-  21, 22, 23, 24, 25, -4, 26, 27, 28, 29, 30, -1, -1, -1, -1, -1,
-  -1, -2, 10, 11, 12, -3, 13, 14, 15, 1, 16, 17, 18, 19, 20, 0,
-  21, 22, 23, 24, 25, -4, 26, 27, 28, 29, 30, -1, -1, -1, -1, -1,
-  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1];
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -2,
+  10,
+  11,
+  12,
+  -3,
+  13,
+  14,
+  15,
+  1,
+  16,
+  17,
+  18,
+  19,
+  20,
+  0,
+  21,
+  22,
+  23,
+  24,
+  25,
+  -4,
+  26,
+  27,
+  28,
+  29,
+  30,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -2,
+  10,
+  11,
+  12,
+  -3,
+  13,
+  14,
+  15,
+  1,
+  16,
+  17,
+  18,
+  19,
+  20,
+  0,
+  21,
+  22,
+  23,
+  24,
+  25,
+  -4,
+  26,
+  27,
+  28,
+  29,
+  30,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1,
+  -1
+];
 
 const _encodeChar = [
-  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-  'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M',
-  'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z',
-  'A', 'E', 'U'];
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  'B',
+  'C',
+  'D',
+  'F',
+  'G',
+  'H',
+  'J',
+  'K',
+  'L',
+  'M',
+  'N',
+  'P',
+  'Q',
+  'R',
+  'S',
+  'T',
+  'V',
+  'W',
+  'X',
+  'Y',
+  'Z',
+  'A',
+  'E',
+  'U'
+];
 
 /// PRIVATE given a minimum and maximum latitude, returns a relative stretch factor (in 360th) for the longitude
 int _xDivider4(int miny, int maxy) {
@@ -530,7 +1248,8 @@ int? _decodeBase31(String str) {
   var value = 0;
   for (int i = 0; i < str.length; i++) {
     var c = str.codeUnitAt(i);
-    if (c == 46) { // dot!
+    if (c == 46) {
+      // dot!
       return value;
     }
     if (_decodeChar[c] < 0) {
@@ -583,13 +1302,13 @@ int _encodeSixWide(int x, int y, int width, int height) {
   return (height * 6 * col) + (height - 1 - y) * D + (x - col * 6);
 }
 
-
 /// high-precision extension routines
 int _maxMapcodePrecision() {
   return 8;
 }
 
-String _encodeExtension(String result, _enc enc, int extrax4, int extray, int dividerx4, int dividery, int extraDigits, int ydirection) {
+String _encodeExtension(
+    String result, _enc enc, int extrax4, int extray, int dividerx4, int dividery, int extraDigits, int ydirection) {
   if (extraDigits == 0) {
     return result;
   }
@@ -616,7 +1335,7 @@ String _encodeExtension(String result, _enc enc, int extrax4, int extray, int di
   }
 
   result += '-';
-  for (; ;) {
+  for (;;) {
     factorx /= 30;
     var gx = (valx / factorx).floor();
 
@@ -643,7 +1362,6 @@ String _encodeExtension(String result, _enc enc, int extrax4, int extray, int di
   return result;
 }
 
-
 // ***** MapcodeZone *****
 
 // cconstruct and return empty MapcodeZone
@@ -653,12 +1371,7 @@ _mzSet _mzEmpty() {
 
 // construct and return copy of MapcodeZone
 _mzSet _mzCopy(_mzSet zone) {
-  return _mzSet(
-    fminx: zone.fminx,
-    fmaxx: zone.fmaxx,
-    fminy: zone.fminy,
-    fmaxy: zone.fmaxy
-  );
+  return _mzSet(fminx: zone.fminx, fmaxx: zone.fmaxx, fminy: zone.fminy, fmaxy: zone.fmaxy);
 }
 
 // return true iff MapcodeZone is empty
@@ -670,33 +1383,22 @@ bool _mzIsEmpty(_mzSet zone) {
 _mzSet _mzSetFromFractions(int y, int x, int yDelta, int xDelta) {
   if (yDelta < 0) {
     return _mzSet(
-      fminx: x,
-      fmaxx: x + xDelta,
-      fminy: y + 1 + yDelta, // y+yDelta can NOT be represented
-      fmaxy: y + 1           // y CAN be represented
-    );
+        fminx: x,
+        fmaxx: x + xDelta,
+        fminy: y + 1 + yDelta, // y+yDelta can NOT be represented
+        fmaxy: y + 1 // y CAN be represented
+        );
   } else {
-    return _mzSet(
-      fminx: x,
-      fmaxx: x + xDelta,
-      fminy: y,
-      fmaxy: y + yDelta
-    );
+    return _mzSet(fminx: x, fmaxx: x + xDelta, fminy: y, fmaxy: y + yDelta);
   }
 }
 
 _coord _mzMidPointFractions(_mzSet zone) {
-  return _coord(
-      y: ((zone.fminy + zone.fmaxy) / 2).floor(),
-      x: ((zone.fminx + zone.fmaxx) / 2).floor()
-  );
+  return _coord(y: ((zone.fminy + zone.fmaxy) / 2).floor(), x: ((zone.fminx + zone.fmaxx) / 2).floor());
 }
 
 _coord _convertFractionsToCoord32(_coord p) {
-  return _coord(
-      y: (p.y / 810000).floor(),
-      x: (p.x / 3240000).floor()
-  );
+  return _coord(y: (p.y / 810000).floor(), x: (p.x / 3240000).floor());
 }
 
 _coord _wrap(_coord p) {
@@ -710,10 +1412,7 @@ _coord _wrap(_coord p) {
 }
 
 LatLng _convertFractionsToDegrees(_coord p) {
-  return LatLng(
-      min(p.y / (810000 * 1000000), 90.0),
-      p.x / (3240000 * 1000000)
-  );
+  return LatLng(min(p.y / (810000 * 1000000), 90.0), p.x / (3240000 * 1000000));
 }
 
 _mzSet _mzRestrictZoneTo(_mzSet zone, _mmSet mm) {
@@ -747,7 +1446,8 @@ _mzSet _mzRestrictZoneTo(_mzSet zone, _mmSet mm) {
 }
 
 // returns (possibly empty) MapcodeZone
-_mzSet _decodeExtension(String extensionchars, _coord coord32, int dividerx4, int dividery, int lon_offset4, int extremeLatMicroDeg, int maxLonMicroDeg) {
+_mzSet _decodeExtension(String extensionchars, _coord coord32, int dividerx4, int dividery, int lon_offset4,
+    int extremeLatMicroDeg, int maxLonMicroDeg) {
   var processor = 1;
   var lon32 = 0;
   var lat32 = 0;
@@ -771,7 +1471,8 @@ _mzSet _decodeExtension(String extensionchars, _coord coord32, int dividerx4, in
       }
       row2 = (c2 / 6).floor();
       column2 = (c2 % 6);
-    } else { //
+    } else {
+      //
       row2 = 0;
       odd = 1;
       column2 = 0;
@@ -792,9 +1493,11 @@ _mzSet _decodeExtension(String extensionchars, _coord coord32, int dividerx4, in
 
   // determine the range of coordinates that are encode to this mapcode
   _mzSet mapcodeZone;
-  if (odd != 0) { // odd
+  if (odd != 0) {
+    // odd
     mapcodeZone = _mzSetFromFractions(lat1, lon4, 5 * dividery, 6 * dividerx4);
-  } else { // not odd
+  } else {
+    // not odd
     mapcodeZone = _mzSetFromFractions(lat1, lon4, dividery, dividerx4);
   } // not odd
 
@@ -841,7 +1544,8 @@ _mzSet _decodeGrid(String input, String extensionchars, int m) {
   var v = _decodeBase31(input);
 
   if (v != null) {
-    if (divx != divy && prefixlength > 2) { // D==6
+    if (divx != divy && prefixlength > 2) {
+      // D==6
       var rel = _decodeSixWide(v, divx, divy);
       relx = rel.x;
       rely = rel.y;
@@ -886,10 +1590,10 @@ _mzSet _decodeGrid(String input, String extensionchars, int m) {
 
   dify = yp - 1 - dify;
 
-  var corner = _coord( // in microdegrees
+  var corner = _coord(
+      // in microdegrees
       x: relx + (difx * dividerx),
-      y: rely + (dify * dividery)
-    );
+      y: rely + (dify * dividery));
 
   if (!_fitsInside(corner, mm)) {
     return _mzEmpty();
@@ -897,8 +1601,7 @@ _mzSet _decodeGrid(String input, String extensionchars, int m) {
 
   var decodeMaxx = ((relx + xgridsize) < mm.maxx) ? (relx + xgridsize) : mm.maxx;
   var decodeMaxy = ((rely + ygridsize) < mm.maxy) ? (rely + ygridsize) : mm.maxy;
-  return _decodeExtension(extensionchars, corner, dividerx << 2, dividery,
-      0, decodeMaxy, decodeMaxx); // grid
+  return _decodeExtension(extensionchars, corner, dividerx << 2, dividery, 0, decodeMaxy, decodeMaxx); // grid
 }
 
 String _encodeBase31(int value, int nrchars) {
@@ -945,7 +1648,6 @@ String _encodeGrid(_enc enc, int m, _mmSet mm, String headerletter, int extraDig
   if (divy == 1) {
     divx = _xside[prefixlength];
     divy = _yside[prefixlength];
-
   } else {
     divx = (_nc[prefixlength] / divy).floor();
   }
@@ -973,7 +1675,8 @@ String _encodeGrid(_enc enc, int m, _mmSet mm, String headerletter, int extraDig
   }
 
   int v;
-  if (divx != divy && prefixlength > 2) { // D==6
+  if (divx != divy && prefixlength > 2) {
+    // D==6
     v = _encodeSixWide(relx, rely, divx, divy);
   } else {
     v = relx * divy + (divy - 1 - rely);
@@ -1025,36 +1728,1071 @@ String _encodeGrid(_enc enc, int m, _mmSet mm, String headerletter, int extraDig
 const MAXLANS = 28;
 const _asc2lan = [
   //  A       B       C       D       E       F       G       H       I       J       K       L       M       N       O       P       Q       R       S       T       U       V       W       X       Y       Z       0       1       2       3       4       5       6       7       8       9
-  [0x0041, 0x0042, 0x0043, 0x0044, 0x0045, 0x0046, 0x0047, 0x0048, 0x0049, 0x004a, 0x004b, 0x004c, 0x004d, 0x004e, 0x004f, 0x0050, 0x0051, 0x0052, 0x0053, 0x0054, 0x0055, 0x0056, 0x0057, 0x0058, 0x0059, 0x005a, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039], // roman
-  [0x0391, 0x0392, 0x039e, 0x0394, 0x0388, 0x0395, 0x0393, 0x0397, 0x0399, 0x03a0, 0x039a, 0x039b, 0x039c, 0x039d, 0x039f, 0x03a1, 0x0398, 0x03a8, 0x03a3, 0x03a4, 0x0389, 0x03a6, 0x03a9, 0x03a7, 0x03a5, 0x0396, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039], // greek
-  [0x0410, 0x0412, 0x0421, 0x0414, 0x0415, 0x0416, 0x0413, 0x041d, 0x0049, 0x041f, 0x041a, 0x041b, 0x041c, 0x0417, 0x041e, 0x0420, 0x0424, 0x042f, 0x0426, 0x0422, 0x042d, 0x0427, 0x0428, 0x0425, 0x0423, 0x0411, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039], // cyrillic
-  [0x05d0, 0x05d1, 0x05d2, 0x05d3, 0x05e3, 0x05d4, 0x05d6, 0x05d7, 0x05d5, 0x05d8, 0x05d9, 0x05da, 0x05db, 0x05dc, 0x05e1, 0x05dd, 0x05de, 0x05e0, 0x05e2, 0x05e4, 0x05e5, 0x05e6, 0x05e7, 0x05e8, 0x05e9, 0x05ea, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039], // hebrew
-  [0x0905, 0x0915, 0x0917, 0x0918, 0x090f, 0x091a, 0x091c, 0x091f, 0x0049, 0x0920, 0x0923, 0x0924, 0x0926, 0x0927, 0x004f, 0x0928, 0x092a, 0x092d, 0x092e, 0x0930, 0x092b, 0x0932, 0x0935, 0x0938, 0x0939, 0x092c, 0x0966, 0x0967, 0x0968, 0x0969, 0x096a, 0x096b, 0x096c, 0x096d, 0x096e, 0x096f], // Devanagari
-  [0x0d12, 0x0d15, 0x0d16, 0x0d17, 0x0d0b, 0x0d1a, 0x0d1c, 0x0d1f, 0x0049, 0x0d21, 0x0d24, 0x0d25, 0x0d26, 0x0d27, 0x0d20, 0x0d28, 0x0d2e, 0x0d30, 0x0d31, 0x0d32, 0x0d09, 0x0d34, 0x0d35, 0x0d36, 0x0d38, 0x0d39, 0x0d66, 0x0d67, 0x0d68, 0x0d69, 0x0d6a, 0x0d6b, 0x0d6c, 0x0d6d, 0x0d6e, 0x0d6f], // Malayalam
-  [0x10a0, 0x10a1, 0x10a3, 0x10a6, 0x10a4, 0x10a9, 0x10ab, 0x10ac, 0x0049, 0x10ae, 0x10b0, 0x10b1, 0x10b2, 0x10b4, 0x10ad, 0x10b5, 0x10b6, 0x10b7, 0x10b8, 0x10b9, 0x10a8, 0x10ba, 0x10bb, 0x10bd, 0x10be, 0x10bf, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039], // Georgian
-  [0x30a2, 0x30ab, 0x30ad, 0x30af, 0x30aa, 0x30b1, 0x30b3, 0x30b5, 0x0049, 0x30b9, 0x30c1, 0x30c8, 0x30ca, 0x30cc, 0x004f, 0x30d2, 0x30d5, 0x30d8, 0x30db, 0x30e1, 0x30a8, 0x30e2, 0x30e8, 0x30e9, 0x30ed, 0x30f2, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039], // Katakana
-  [0x0e30, 0x0e01, 0x0e02, 0x0e04, 0x0e32, 0x0e07, 0x0e08, 0x0e09, 0x0049, 0x0e0a, 0x0e11, 0x0e14, 0x0e16, 0x0e17, 0x004f, 0x0e18, 0x0e1a, 0x0e1c, 0x0e21, 0x0e23, 0x0e2c, 0x0e25, 0x0e27, 0x0e2d, 0x0e2e, 0x0e2f, 0x0e50, 0x0e51, 0x0e52, 0x0e53, 0x0e54, 0x0e55, 0x0e56, 0x0e57, 0x0e58, 0x0e59], // Thai
-  [0x0eb0, 0x0e81, 0x0e82, 0x0e84, 0x0ec3, 0x0e87, 0x0e88, 0x0e8a, 0x0ec4, 0x0e8d, 0x0e94, 0x0e97, 0x0e99, 0x0e9a, 0x004f, 0x0e9c, 0x0e9e, 0x0ea1, 0x0ea2, 0x0ea3, 0x0ebd, 0x0ea7, 0x0eaa, 0x0eab, 0x0ead, 0x0eaf, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039], // Laos
-  [0x0556, 0x0532, 0x0533, 0x0534, 0x0535, 0x0538, 0x0539, 0x053a, 0x053b, 0x053d, 0x053f, 0x0540, 0x0541, 0x0543, 0x0555, 0x0547, 0x0548, 0x054a, 0x054d, 0x054e, 0x0545, 0x054f, 0x0550, 0x0551, 0x0552, 0x0553, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039], // armenian
-  [0x099c, 0x0998, 0x0995, 0x0996, 0x09ae, 0x0997, 0x0999, 0x099a, 0x0049, 0x099d, 0x09a0, 0x09a1, 0x09a2, 0x09a3, 0x004f, 0x09a4, 0x09a5, 0x09a6, 0x09a8, 0x09aa, 0x099f, 0x09ac, 0x09ad, 0x09af, 0x09b2, 0x09b9, 0x09e6, 0x09e7, 0x09e8, 0x09e9, 0x09ea, 0x09eb, 0x09ec, 0x09ed, 0x09ee, 0x09ef], // Bengali/Assamese
-  [0x0a05, 0x0a15, 0x0a17, 0x0a18, 0x0a0f, 0x0a1a, 0x0a1c, 0x0a1f, 0x0049, 0x0a20, 0x0a23, 0x0a24, 0x0a26, 0x0a27, 0x004f, 0x0a28, 0x0a2a, 0x0a2d, 0x0a2e, 0x0a30, 0x0a2b, 0x0a32, 0x0a35, 0x0a38, 0x0a39, 0x0a21, 0x0a66, 0x0a67, 0x0a68, 0x0a69, 0x0a6a, 0x0a6b, 0x0a6c, 0x0a6d, 0x0a6e, 0x0a6f], // Gurmukhi
-  [0x0f58, 0x0f40, 0x0f41, 0x0f42, 0x0f64, 0x0f44, 0x0f45, 0x0f46, 0x0049, 0x0f47, 0x0f49, 0x0f55, 0x0f50, 0x0f4f, 0x004f, 0x0f51, 0x0f53, 0x0f54, 0x0f56, 0x0f5e, 0x0f60, 0x0f5f, 0x0f61, 0x0f62, 0x0f63, 0x0f66, 0x0f20, 0x0f21, 0x0f22, 0x0f23, 0x0f24, 0x0f25, 0x0f26, 0x0f27, 0x0f28, 0x0f29], // Tibetan
-  [0x0628, 0x062a, 0x062d, 0x062e, 0x062B, 0x062f, 0x0630, 0x0631, 0x0627, 0x0632, 0x0633, 0x0634, 0x0635, 0x0636, 0x0647, 0x0637, 0x0638, 0x0639, 0x063a, 0x0641, 0x0642, 0x062C, 0x0644, 0x0645, 0x0646, 0x0648, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039], // Arabic
-  [0x1112, 0x1100, 0x1102, 0x1103, 0x1166, 0x1105, 0x1107, 0x1109, 0x1175, 0x1110, 0x1111, 0x1161, 0x1162, 0x1163, 0x110b, 0x1164, 0x1165, 0x1167, 0x1169, 0x1172, 0x1174, 0x110c, 0x110e, 0x110f, 0x116d, 0x116e, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039], // Korean // 0xc601, 0xc77c, 0xc774, 0xc0bc, 0xc0ac, 0xc624, 0xc721, 0xce60, 0xd314, 0xad6c (vocal digits)
-  [0x1005, 0x1000, 0x1001, 0x1002, 0x1013, 0x1003, 0x1004, 0x101a, 0x0049, 0x1007, 0x100c, 0x100d, 0x100e, 0x1010, 0x101d, 0x1011, 0x1012, 0x101e, 0x1014, 0x1015, 0x1016, 0x101f, 0x1017, 0x1018, 0x100f, 0x101c, 0x1040, 0x1041, 0x1042, 0x1043, 0x1044, 0x1045, 0x1046, 0x1047, 0x1048, 0x1049], // Burmese
-  [0x1789, 0x1780, 0x1781, 0x1782, 0x1785, 0x1783, 0x1784, 0x1787, 0x179a, 0x1788, 0x178a, 0x178c, 0x178d, 0x178e, 0x004f, 0x1791, 0x1792, 0x1793, 0x1794, 0x1795, 0x179f, 0x1796, 0x1798, 0x179b, 0x17a0, 0x17a2, 0x17e0, 0x17e1, 0x17e2, 0x17e3, 0x17e4, 0x17e5, 0x17e6, 0x17e7, 0x17e8, 0x17e9], // Khmer
-  [0x0d85, 0x0d9a, 0x0d9c, 0x0d9f, 0x0d89, 0x0da2, 0x0da7, 0x0da9, 0x0049, 0x0dac, 0x0dad, 0x0daf, 0x0db1, 0x0db3, 0x004f, 0x0db4, 0x0db6, 0x0db8, 0x0db9, 0x0dba, 0x0d8b, 0x0dbb, 0x0dbd, 0x0dc0, 0x0dc3, 0x0dc4, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039], // Sinhalese
-  [0x0794, 0x0780, 0x0781, 0x0782, 0x0797, 0x0783, 0x0784, 0x0785, 0x0049, 0x0786, 0x0787, 0x0788, 0x0789, 0x078a, 0x004f, 0x078b, 0x078c, 0x078d, 0x078e, 0x078f, 0x079c, 0x0790, 0x0791, 0x0792, 0x0793, 0x07b1, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039], // Thaana
-  [0x3123, 0x3105, 0x3108, 0x3106, 0x3114, 0x3107, 0x3109, 0x310a, 0x0049, 0x310b, 0x310c, 0x310d, 0x310e, 0x310f, 0x004f, 0x3115, 0x3116, 0x3110, 0x3111, 0x3112, 0x3113, 0x3129, 0x3117, 0x3128, 0x3118, 0x3119, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039], // Chinese
-  [0x2D49, 0x2D31, 0x2D33, 0x2D37, 0x2D53, 0x2D3C, 0x2D3D, 0x2D40, 0x2D4F, 0x2D43, 0x2D44, 0x2D45, 0x2D47, 0x2D4D, 0x2D54, 0x2D4E, 0x2D55, 0x2D56, 0x2D59, 0x2D5A, 0x2D62, 0x2D5B, 0x2D5C, 0x2D5F, 0x2D61, 0x2D63, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039], // Tifinagh (BERBER)
-  [0x0b99, 0x0b95, 0x0b9a, 0x0b9f, 0x0b86, 0x0ba4, 0x0ba8, 0x0baa, 0x0049, 0x0bae, 0x0baf, 0x0bb0, 0x0bb2, 0x0bb5, 0x004f, 0x0bb4, 0x0bb3, 0x0bb1, 0x0b85, 0x0b88, 0x0b93, 0x0b89, 0x0b8e, 0x0b8f, 0x0b90, 0x0b92, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039], // Tamil (digits 0xBE6-0xBEF)
-  [0x121B, 0x1260, 0x1264, 0x12F0, 0x121E, 0x134A, 0x1308, 0x1200, 0x0049, 0x12E8, 0x12AC, 0x1208, 0x1293, 0x1350, 0x12D0, 0x1354, 0x1240, 0x1244, 0x122C, 0x1220, 0x12C8, 0x1226, 0x1270, 0x1276, 0x1338, 0x12DC, 0x1372, 0x1369, 0x136a, 0x136b, 0x136c, 0x136d, 0x136e, 0x136f, 0x1370, 0x1371], // Amharic (digits 1372|1369-1371)
-  [0x0C1E, 0x0C15, 0x0C17, 0x0C19, 0x0C2B, 0x0C1A, 0x0C1C, 0x0C1F, 0x0049, 0x0C20, 0x0C21, 0x0C23, 0x0C24, 0x0C25, 0x004f, 0x0C26, 0x0C27, 0x0C28, 0x0C2A, 0x0C2C, 0x0C2D, 0x0C2E, 0x0C30, 0x0C32, 0x0C33, 0x0C35, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039], // Telugu
-  [0x0B1D, 0x0B15, 0x0B16, 0x0B17, 0x0B23, 0x0B18, 0x0B1A, 0x0B1C, 0x0049, 0x0B1F, 0x0B21, 0x0B22, 0x0B24, 0x0B25, 0x0B20, 0x0B26, 0x0B27, 0x0B28, 0x0B2A, 0x0B2C, 0x0B39, 0x0B2E, 0x0B2F, 0x0B30, 0x0B33, 0x0B38, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039], // Odia
-  [0x0C92, 0x0C95, 0x0C96, 0x0C97, 0x0C8E, 0x0C99, 0x0C9A, 0x0C9B, 0x0049, 0x0C9C, 0x0CA0, 0x0CA1, 0x0CA3, 0x0CA4, 0x004f, 0x0CA6, 0x0CA7, 0x0CA8, 0x0CAA, 0x0CAB, 0x0C87, 0x0CAC, 0x0CAD, 0x0CB0, 0x0CB2, 0x0CB5, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039], // Kannada
-  [0x0AB3, 0x0A97, 0x0A9C, 0x0AA1, 0x0A87, 0x0AA6, 0x0AAC, 0x0A95, 0x0049, 0x0A9A, 0x0A9F, 0x0AA4, 0x0AAA, 0x0AA0, 0x004f, 0x0AB0, 0x0AB5, 0x0A9E, 0x0AAE, 0x0AAB, 0x0A89, 0x0AB7, 0x0AA8, 0x0A9D, 0x0AA2, 0x0AAD, 0x0030, 0x0031, 0x0032, 0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039], // Gujarati
+  [
+    0x0041,
+    0x0042,
+    0x0043,
+    0x0044,
+    0x0045,
+    0x0046,
+    0x0047,
+    0x0048,
+    0x0049,
+    0x004a,
+    0x004b,
+    0x004c,
+    0x004d,
+    0x004e,
+    0x004f,
+    0x0050,
+    0x0051,
+    0x0052,
+    0x0053,
+    0x0054,
+    0x0055,
+    0x0056,
+    0x0057,
+    0x0058,
+    0x0059,
+    0x005a,
+    0x0030,
+    0x0031,
+    0x0032,
+    0x0033,
+    0x0034,
+    0x0035,
+    0x0036,
+    0x0037,
+    0x0038,
+    0x0039
+  ], // roman
+  [
+    0x0391,
+    0x0392,
+    0x039e,
+    0x0394,
+    0x0388,
+    0x0395,
+    0x0393,
+    0x0397,
+    0x0399,
+    0x03a0,
+    0x039a,
+    0x039b,
+    0x039c,
+    0x039d,
+    0x039f,
+    0x03a1,
+    0x0398,
+    0x03a8,
+    0x03a3,
+    0x03a4,
+    0x0389,
+    0x03a6,
+    0x03a9,
+    0x03a7,
+    0x03a5,
+    0x0396,
+    0x0030,
+    0x0031,
+    0x0032,
+    0x0033,
+    0x0034,
+    0x0035,
+    0x0036,
+    0x0037,
+    0x0038,
+    0x0039
+  ], // greek
+  [
+    0x0410,
+    0x0412,
+    0x0421,
+    0x0414,
+    0x0415,
+    0x0416,
+    0x0413,
+    0x041d,
+    0x0049,
+    0x041f,
+    0x041a,
+    0x041b,
+    0x041c,
+    0x0417,
+    0x041e,
+    0x0420,
+    0x0424,
+    0x042f,
+    0x0426,
+    0x0422,
+    0x042d,
+    0x0427,
+    0x0428,
+    0x0425,
+    0x0423,
+    0x0411,
+    0x0030,
+    0x0031,
+    0x0032,
+    0x0033,
+    0x0034,
+    0x0035,
+    0x0036,
+    0x0037,
+    0x0038,
+    0x0039
+  ], // cyrillic
+  [
+    0x05d0,
+    0x05d1,
+    0x05d2,
+    0x05d3,
+    0x05e3,
+    0x05d4,
+    0x05d6,
+    0x05d7,
+    0x05d5,
+    0x05d8,
+    0x05d9,
+    0x05da,
+    0x05db,
+    0x05dc,
+    0x05e1,
+    0x05dd,
+    0x05de,
+    0x05e0,
+    0x05e2,
+    0x05e4,
+    0x05e5,
+    0x05e6,
+    0x05e7,
+    0x05e8,
+    0x05e9,
+    0x05ea,
+    0x0030,
+    0x0031,
+    0x0032,
+    0x0033,
+    0x0034,
+    0x0035,
+    0x0036,
+    0x0037,
+    0x0038,
+    0x0039
+  ], // hebrew
+  [
+    0x0905,
+    0x0915,
+    0x0917,
+    0x0918,
+    0x090f,
+    0x091a,
+    0x091c,
+    0x091f,
+    0x0049,
+    0x0920,
+    0x0923,
+    0x0924,
+    0x0926,
+    0x0927,
+    0x004f,
+    0x0928,
+    0x092a,
+    0x092d,
+    0x092e,
+    0x0930,
+    0x092b,
+    0x0932,
+    0x0935,
+    0x0938,
+    0x0939,
+    0x092c,
+    0x0966,
+    0x0967,
+    0x0968,
+    0x0969,
+    0x096a,
+    0x096b,
+    0x096c,
+    0x096d,
+    0x096e,
+    0x096f
+  ], // Devanagari
+  [
+    0x0d12,
+    0x0d15,
+    0x0d16,
+    0x0d17,
+    0x0d0b,
+    0x0d1a,
+    0x0d1c,
+    0x0d1f,
+    0x0049,
+    0x0d21,
+    0x0d24,
+    0x0d25,
+    0x0d26,
+    0x0d27,
+    0x0d20,
+    0x0d28,
+    0x0d2e,
+    0x0d30,
+    0x0d31,
+    0x0d32,
+    0x0d09,
+    0x0d34,
+    0x0d35,
+    0x0d36,
+    0x0d38,
+    0x0d39,
+    0x0d66,
+    0x0d67,
+    0x0d68,
+    0x0d69,
+    0x0d6a,
+    0x0d6b,
+    0x0d6c,
+    0x0d6d,
+    0x0d6e,
+    0x0d6f
+  ], // Malayalam
+  [
+    0x10a0,
+    0x10a1,
+    0x10a3,
+    0x10a6,
+    0x10a4,
+    0x10a9,
+    0x10ab,
+    0x10ac,
+    0x0049,
+    0x10ae,
+    0x10b0,
+    0x10b1,
+    0x10b2,
+    0x10b4,
+    0x10ad,
+    0x10b5,
+    0x10b6,
+    0x10b7,
+    0x10b8,
+    0x10b9,
+    0x10a8,
+    0x10ba,
+    0x10bb,
+    0x10bd,
+    0x10be,
+    0x10bf,
+    0x0030,
+    0x0031,
+    0x0032,
+    0x0033,
+    0x0034,
+    0x0035,
+    0x0036,
+    0x0037,
+    0x0038,
+    0x0039
+  ], // Georgian
+  [
+    0x30a2,
+    0x30ab,
+    0x30ad,
+    0x30af,
+    0x30aa,
+    0x30b1,
+    0x30b3,
+    0x30b5,
+    0x0049,
+    0x30b9,
+    0x30c1,
+    0x30c8,
+    0x30ca,
+    0x30cc,
+    0x004f,
+    0x30d2,
+    0x30d5,
+    0x30d8,
+    0x30db,
+    0x30e1,
+    0x30a8,
+    0x30e2,
+    0x30e8,
+    0x30e9,
+    0x30ed,
+    0x30f2,
+    0x0030,
+    0x0031,
+    0x0032,
+    0x0033,
+    0x0034,
+    0x0035,
+    0x0036,
+    0x0037,
+    0x0038,
+    0x0039
+  ], // Katakana
+  [
+    0x0e30,
+    0x0e01,
+    0x0e02,
+    0x0e04,
+    0x0e32,
+    0x0e07,
+    0x0e08,
+    0x0e09,
+    0x0049,
+    0x0e0a,
+    0x0e11,
+    0x0e14,
+    0x0e16,
+    0x0e17,
+    0x004f,
+    0x0e18,
+    0x0e1a,
+    0x0e1c,
+    0x0e21,
+    0x0e23,
+    0x0e2c,
+    0x0e25,
+    0x0e27,
+    0x0e2d,
+    0x0e2e,
+    0x0e2f,
+    0x0e50,
+    0x0e51,
+    0x0e52,
+    0x0e53,
+    0x0e54,
+    0x0e55,
+    0x0e56,
+    0x0e57,
+    0x0e58,
+    0x0e59
+  ], // Thai
+  [
+    0x0eb0,
+    0x0e81,
+    0x0e82,
+    0x0e84,
+    0x0ec3,
+    0x0e87,
+    0x0e88,
+    0x0e8a,
+    0x0ec4,
+    0x0e8d,
+    0x0e94,
+    0x0e97,
+    0x0e99,
+    0x0e9a,
+    0x004f,
+    0x0e9c,
+    0x0e9e,
+    0x0ea1,
+    0x0ea2,
+    0x0ea3,
+    0x0ebd,
+    0x0ea7,
+    0x0eaa,
+    0x0eab,
+    0x0ead,
+    0x0eaf,
+    0x0030,
+    0x0031,
+    0x0032,
+    0x0033,
+    0x0034,
+    0x0035,
+    0x0036,
+    0x0037,
+    0x0038,
+    0x0039
+  ], // Laos
+  [
+    0x0556,
+    0x0532,
+    0x0533,
+    0x0534,
+    0x0535,
+    0x0538,
+    0x0539,
+    0x053a,
+    0x053b,
+    0x053d,
+    0x053f,
+    0x0540,
+    0x0541,
+    0x0543,
+    0x0555,
+    0x0547,
+    0x0548,
+    0x054a,
+    0x054d,
+    0x054e,
+    0x0545,
+    0x054f,
+    0x0550,
+    0x0551,
+    0x0552,
+    0x0553,
+    0x0030,
+    0x0031,
+    0x0032,
+    0x0033,
+    0x0034,
+    0x0035,
+    0x0036,
+    0x0037,
+    0x0038,
+    0x0039
+  ], // armenian
+  [
+    0x099c,
+    0x0998,
+    0x0995,
+    0x0996,
+    0x09ae,
+    0x0997,
+    0x0999,
+    0x099a,
+    0x0049,
+    0x099d,
+    0x09a0,
+    0x09a1,
+    0x09a2,
+    0x09a3,
+    0x004f,
+    0x09a4,
+    0x09a5,
+    0x09a6,
+    0x09a8,
+    0x09aa,
+    0x099f,
+    0x09ac,
+    0x09ad,
+    0x09af,
+    0x09b2,
+    0x09b9,
+    0x09e6,
+    0x09e7,
+    0x09e8,
+    0x09e9,
+    0x09ea,
+    0x09eb,
+    0x09ec,
+    0x09ed,
+    0x09ee,
+    0x09ef
+  ], // Bengali/Assamese
+  [
+    0x0a05,
+    0x0a15,
+    0x0a17,
+    0x0a18,
+    0x0a0f,
+    0x0a1a,
+    0x0a1c,
+    0x0a1f,
+    0x0049,
+    0x0a20,
+    0x0a23,
+    0x0a24,
+    0x0a26,
+    0x0a27,
+    0x004f,
+    0x0a28,
+    0x0a2a,
+    0x0a2d,
+    0x0a2e,
+    0x0a30,
+    0x0a2b,
+    0x0a32,
+    0x0a35,
+    0x0a38,
+    0x0a39,
+    0x0a21,
+    0x0a66,
+    0x0a67,
+    0x0a68,
+    0x0a69,
+    0x0a6a,
+    0x0a6b,
+    0x0a6c,
+    0x0a6d,
+    0x0a6e,
+    0x0a6f
+  ], // Gurmukhi
+  [
+    0x0f58,
+    0x0f40,
+    0x0f41,
+    0x0f42,
+    0x0f64,
+    0x0f44,
+    0x0f45,
+    0x0f46,
+    0x0049,
+    0x0f47,
+    0x0f49,
+    0x0f55,
+    0x0f50,
+    0x0f4f,
+    0x004f,
+    0x0f51,
+    0x0f53,
+    0x0f54,
+    0x0f56,
+    0x0f5e,
+    0x0f60,
+    0x0f5f,
+    0x0f61,
+    0x0f62,
+    0x0f63,
+    0x0f66,
+    0x0f20,
+    0x0f21,
+    0x0f22,
+    0x0f23,
+    0x0f24,
+    0x0f25,
+    0x0f26,
+    0x0f27,
+    0x0f28,
+    0x0f29
+  ], // Tibetan
+  [
+    0x0628,
+    0x062a,
+    0x062d,
+    0x062e,
+    0x062B,
+    0x062f,
+    0x0630,
+    0x0631,
+    0x0627,
+    0x0632,
+    0x0633,
+    0x0634,
+    0x0635,
+    0x0636,
+    0x0647,
+    0x0637,
+    0x0638,
+    0x0639,
+    0x063a,
+    0x0641,
+    0x0642,
+    0x062C,
+    0x0644,
+    0x0645,
+    0x0646,
+    0x0648,
+    0x0030,
+    0x0031,
+    0x0032,
+    0x0033,
+    0x0034,
+    0x0035,
+    0x0036,
+    0x0037,
+    0x0038,
+    0x0039
+  ], // Arabic
+  [
+    0x1112,
+    0x1100,
+    0x1102,
+    0x1103,
+    0x1166,
+    0x1105,
+    0x1107,
+    0x1109,
+    0x1175,
+    0x1110,
+    0x1111,
+    0x1161,
+    0x1162,
+    0x1163,
+    0x110b,
+    0x1164,
+    0x1165,
+    0x1167,
+    0x1169,
+    0x1172,
+    0x1174,
+    0x110c,
+    0x110e,
+    0x110f,
+    0x116d,
+    0x116e,
+    0x0030,
+    0x0031,
+    0x0032,
+    0x0033,
+    0x0034,
+    0x0035,
+    0x0036,
+    0x0037,
+    0x0038,
+    0x0039
+  ], // Korean // 0xc601, 0xc77c, 0xc774, 0xc0bc, 0xc0ac, 0xc624, 0xc721, 0xce60, 0xd314, 0xad6c (vocal digits)
+  [
+    0x1005,
+    0x1000,
+    0x1001,
+    0x1002,
+    0x1013,
+    0x1003,
+    0x1004,
+    0x101a,
+    0x0049,
+    0x1007,
+    0x100c,
+    0x100d,
+    0x100e,
+    0x1010,
+    0x101d,
+    0x1011,
+    0x1012,
+    0x101e,
+    0x1014,
+    0x1015,
+    0x1016,
+    0x101f,
+    0x1017,
+    0x1018,
+    0x100f,
+    0x101c,
+    0x1040,
+    0x1041,
+    0x1042,
+    0x1043,
+    0x1044,
+    0x1045,
+    0x1046,
+    0x1047,
+    0x1048,
+    0x1049
+  ], // Burmese
+  [
+    0x1789,
+    0x1780,
+    0x1781,
+    0x1782,
+    0x1785,
+    0x1783,
+    0x1784,
+    0x1787,
+    0x179a,
+    0x1788,
+    0x178a,
+    0x178c,
+    0x178d,
+    0x178e,
+    0x004f,
+    0x1791,
+    0x1792,
+    0x1793,
+    0x1794,
+    0x1795,
+    0x179f,
+    0x1796,
+    0x1798,
+    0x179b,
+    0x17a0,
+    0x17a2,
+    0x17e0,
+    0x17e1,
+    0x17e2,
+    0x17e3,
+    0x17e4,
+    0x17e5,
+    0x17e6,
+    0x17e7,
+    0x17e8,
+    0x17e9
+  ], // Khmer
+  [
+    0x0d85,
+    0x0d9a,
+    0x0d9c,
+    0x0d9f,
+    0x0d89,
+    0x0da2,
+    0x0da7,
+    0x0da9,
+    0x0049,
+    0x0dac,
+    0x0dad,
+    0x0daf,
+    0x0db1,
+    0x0db3,
+    0x004f,
+    0x0db4,
+    0x0db6,
+    0x0db8,
+    0x0db9,
+    0x0dba,
+    0x0d8b,
+    0x0dbb,
+    0x0dbd,
+    0x0dc0,
+    0x0dc3,
+    0x0dc4,
+    0x0030,
+    0x0031,
+    0x0032,
+    0x0033,
+    0x0034,
+    0x0035,
+    0x0036,
+    0x0037,
+    0x0038,
+    0x0039
+  ], // Sinhalese
+  [
+    0x0794,
+    0x0780,
+    0x0781,
+    0x0782,
+    0x0797,
+    0x0783,
+    0x0784,
+    0x0785,
+    0x0049,
+    0x0786,
+    0x0787,
+    0x0788,
+    0x0789,
+    0x078a,
+    0x004f,
+    0x078b,
+    0x078c,
+    0x078d,
+    0x078e,
+    0x078f,
+    0x079c,
+    0x0790,
+    0x0791,
+    0x0792,
+    0x0793,
+    0x07b1,
+    0x0030,
+    0x0031,
+    0x0032,
+    0x0033,
+    0x0034,
+    0x0035,
+    0x0036,
+    0x0037,
+    0x0038,
+    0x0039
+  ], // Thaana
+  [
+    0x3123,
+    0x3105,
+    0x3108,
+    0x3106,
+    0x3114,
+    0x3107,
+    0x3109,
+    0x310a,
+    0x0049,
+    0x310b,
+    0x310c,
+    0x310d,
+    0x310e,
+    0x310f,
+    0x004f,
+    0x3115,
+    0x3116,
+    0x3110,
+    0x3111,
+    0x3112,
+    0x3113,
+    0x3129,
+    0x3117,
+    0x3128,
+    0x3118,
+    0x3119,
+    0x0030,
+    0x0031,
+    0x0032,
+    0x0033,
+    0x0034,
+    0x0035,
+    0x0036,
+    0x0037,
+    0x0038,
+    0x0039
+  ], // Chinese
+  [
+    0x2D49,
+    0x2D31,
+    0x2D33,
+    0x2D37,
+    0x2D53,
+    0x2D3C,
+    0x2D3D,
+    0x2D40,
+    0x2D4F,
+    0x2D43,
+    0x2D44,
+    0x2D45,
+    0x2D47,
+    0x2D4D,
+    0x2D54,
+    0x2D4E,
+    0x2D55,
+    0x2D56,
+    0x2D59,
+    0x2D5A,
+    0x2D62,
+    0x2D5B,
+    0x2D5C,
+    0x2D5F,
+    0x2D61,
+    0x2D63,
+    0x0030,
+    0x0031,
+    0x0032,
+    0x0033,
+    0x0034,
+    0x0035,
+    0x0036,
+    0x0037,
+    0x0038,
+    0x0039
+  ], // Tifinagh (BERBER)
+  [
+    0x0b99,
+    0x0b95,
+    0x0b9a,
+    0x0b9f,
+    0x0b86,
+    0x0ba4,
+    0x0ba8,
+    0x0baa,
+    0x0049,
+    0x0bae,
+    0x0baf,
+    0x0bb0,
+    0x0bb2,
+    0x0bb5,
+    0x004f,
+    0x0bb4,
+    0x0bb3,
+    0x0bb1,
+    0x0b85,
+    0x0b88,
+    0x0b93,
+    0x0b89,
+    0x0b8e,
+    0x0b8f,
+    0x0b90,
+    0x0b92,
+    0x0030,
+    0x0031,
+    0x0032,
+    0x0033,
+    0x0034,
+    0x0035,
+    0x0036,
+    0x0037,
+    0x0038,
+    0x0039
+  ], // Tamil (digits 0xBE6-0xBEF)
+  [
+    0x121B,
+    0x1260,
+    0x1264,
+    0x12F0,
+    0x121E,
+    0x134A,
+    0x1308,
+    0x1200,
+    0x0049,
+    0x12E8,
+    0x12AC,
+    0x1208,
+    0x1293,
+    0x1350,
+    0x12D0,
+    0x1354,
+    0x1240,
+    0x1244,
+    0x122C,
+    0x1220,
+    0x12C8,
+    0x1226,
+    0x1270,
+    0x1276,
+    0x1338,
+    0x12DC,
+    0x1372,
+    0x1369,
+    0x136a,
+    0x136b,
+    0x136c,
+    0x136d,
+    0x136e,
+    0x136f,
+    0x1370,
+    0x1371
+  ], // Amharic (digits 1372|1369-1371)
+  [
+    0x0C1E,
+    0x0C15,
+    0x0C17,
+    0x0C19,
+    0x0C2B,
+    0x0C1A,
+    0x0C1C,
+    0x0C1F,
+    0x0049,
+    0x0C20,
+    0x0C21,
+    0x0C23,
+    0x0C24,
+    0x0C25,
+    0x004f,
+    0x0C26,
+    0x0C27,
+    0x0C28,
+    0x0C2A,
+    0x0C2C,
+    0x0C2D,
+    0x0C2E,
+    0x0C30,
+    0x0C32,
+    0x0C33,
+    0x0C35,
+    0x0030,
+    0x0031,
+    0x0032,
+    0x0033,
+    0x0034,
+    0x0035,
+    0x0036,
+    0x0037,
+    0x0038,
+    0x0039
+  ], // Telugu
+  [
+    0x0B1D,
+    0x0B15,
+    0x0B16,
+    0x0B17,
+    0x0B23,
+    0x0B18,
+    0x0B1A,
+    0x0B1C,
+    0x0049,
+    0x0B1F,
+    0x0B21,
+    0x0B22,
+    0x0B24,
+    0x0B25,
+    0x0B20,
+    0x0B26,
+    0x0B27,
+    0x0B28,
+    0x0B2A,
+    0x0B2C,
+    0x0B39,
+    0x0B2E,
+    0x0B2F,
+    0x0B30,
+    0x0B33,
+    0x0B38,
+    0x0030,
+    0x0031,
+    0x0032,
+    0x0033,
+    0x0034,
+    0x0035,
+    0x0036,
+    0x0037,
+    0x0038,
+    0x0039
+  ], // Odia
+  [
+    0x0C92,
+    0x0C95,
+    0x0C96,
+    0x0C97,
+    0x0C8E,
+    0x0C99,
+    0x0C9A,
+    0x0C9B,
+    0x0049,
+    0x0C9C,
+    0x0CA0,
+    0x0CA1,
+    0x0CA3,
+    0x0CA4,
+    0x004f,
+    0x0CA6,
+    0x0CA7,
+    0x0CA8,
+    0x0CAA,
+    0x0CAB,
+    0x0C87,
+    0x0CAC,
+    0x0CAD,
+    0x0CB0,
+    0x0CB2,
+    0x0CB5,
+    0x0030,
+    0x0031,
+    0x0032,
+    0x0033,
+    0x0034,
+    0x0035,
+    0x0036,
+    0x0037,
+    0x0038,
+    0x0039
+  ], // Kannada
+  [
+    0x0AB3,
+    0x0A97,
+    0x0A9C,
+    0x0AA1,
+    0x0A87,
+    0x0AA6,
+    0x0AAC,
+    0x0A95,
+    0x0049,
+    0x0A9A,
+    0x0A9F,
+    0x0AA4,
+    0x0AAA,
+    0x0AA0,
+    0x004f,
+    0x0AB0,
+    0x0AB5,
+    0x0A9E,
+    0x0AAE,
+    0x0AAB,
+    0x0A89,
+    0x0AB7,
+    0x0AA8,
+    0x0A9D,
+    0x0AA2,
+    0x0AAD,
+    0x0030,
+    0x0031,
+    0x0032,
+    0x0033,
+    0x0034,
+    0x0035,
+    0x0036,
+    0x0037,
+    0x0038,
+    0x0039
+  ], // Gujarati
 ];
-
 
 /// PRIVATE substitute characters in str with characters form the specified language (pass asHTML=1 to explicitly HTML-encode characters)
 String _showinlan(String str, int lan, bool asHTML) {
@@ -1072,12 +2810,14 @@ String _showinlan(String str, int lan, bool asHTML) {
     str = str.substring(sp);
   }
 
-  if (lan == 1 || lan == 3 || lan == 14 || lan == 15) { // greek hebrew arabic korean
+  if (lan == 1 || lan == 3 || lan == 14 || lan == 15) {
+    // greek hebrew arabic korean
     str = _convertToAbjad(str);
   }
 
   // unpack for languages that do not support E and U
-  if (lan == 1) { // greek
+  if (lan == 1) {
+    // greek
     var rest = '';
     var h = str.indexOf('-');
     if (h >= 0) {
@@ -1342,7 +3082,8 @@ _mzSet _decodeNameless(String input, String extensionchars, int m, int firstinde
     } else {
       X += (X - (62 - A));
     }
-  } else { // codex==21 || A>=62
+  } else {
+    // codex==21 || A>=62
     var BASEPOWER = (codex == 21) ? 961 * 961 : 961 * 961 * 31;
     var BASEPOWERA = (BASEPOWER / A).floor();
     if (A == 62) {
@@ -1383,7 +3124,8 @@ _mzSet _decodeNameless(String input, String extensionchars, int m, int firstinde
     }
   }
 
-  if (X > A) {  // past end!
+  if (X > A) {
+    // past end!
     return _mzEmpty();
   }
 
@@ -1405,24 +3147,25 @@ _mzSet _decodeNameless(String input, String extensionchars, int m, int firstinde
       dx = d.x;
       dy = SIDE - 1 - d.y;
     }
-  } else if (v != null){
+  } else if (v != null) {
     dy = (v % SIDE);
     dx = (v / SIDE).floor();
   }
 
-  if (dx >= xSIDE) { // else out-of-range!
+  if (dx >= xSIDE) {
+    // else out-of-range!
     return _mzEmpty();
   }
 
   var dividerx4 = _xDivider4(mm.miny, mm.maxy); // 4 times too large!
   var dividery = 90;
 
-  var corner = _coord( // in microdegrees
-    y: mm.maxy - (dy * dividery),
-    x: mm.minx + ((dx * dividerx4) / 4).floor()
-  );
-  return _decodeExtension(extensionchars, corner, dividerx4, -dividery,
-      ((dx * dividerx4) % 4), mm.miny, mm.maxx); // nameless
+  var corner = _coord(
+      // in microdegrees
+      y: mm.maxy - (dy * dividery),
+      x: mm.minx + ((dx * dividerx4) / 4).floor());
+  return _decodeExtension(
+      extensionchars, corner, dividerx4, -dividery, ((dx * dividerx4) % 4), mm.miny, mm.maxx); // nameless
 }
 
 String _encodeAutoHeader(_enc enc, int m, int extraDigits) {
@@ -1435,7 +3178,7 @@ String _encodeAutoHeader(_enc enc, int m, int extraDigits) {
   while (_isAutoHeader(firstindex - 1) && _coDex(firstindex - 1) == codex) {
     firstindex--;
   }
-  
+
   for (int i = firstindex; _coDex(i) == codex; i++) {
     var mm = _minmaxSetup(i);
     var H = ((mm.maxy - mm.miny + 89) / 90).floor();
@@ -1447,9 +3190,11 @@ String _encodeAutoHeader(_enc enc, int m, int extraDigits) {
 
     var product = (W / 168).floor() * (H / 176).floor() * 961 * 31;
 
-    if (_recType(i) == 2) { // *+
+    if (_recType(i) == 2) {
+      // *+
       var GOODROUNDER = codex >= 23 ? (961 * 961 * 31) : (961 * 961);
-      product = (((STORAGE_START + product + GOODROUNDER - 1) / GOODROUNDER).floor()  * GOODROUNDER - STORAGE_START).toInt();
+      product =
+          (((STORAGE_START + product + GOODROUNDER - 1) / GOODROUNDER).floor() * GOODROUNDER - STORAGE_START).toInt();
     }
 
     if (i == m && _fitsInside(enc.coord32, mm)) {
@@ -1474,7 +3219,8 @@ String _encodeAutoHeader(_enc enc, int m, int extraDigits) {
       vy = (vy / 176).floor();
       value += vy;
 
-      var mapc = _encodeBase31((STORAGE_START / (961 * 31)).floor() + value, codexlen - 2) + '.' +
+      var mapc = _encodeBase31((STORAGE_START / (961 * 31)).floor() + value, codexlen - 2) +
+          '.' +
           _encodeTriple(spx, spy, dividerx, dividery);
 
       return _encodeExtension(mapc, enc, extrax << 2, extray, dividerx << 2, dividery, extraDigits, -1);
@@ -1482,7 +3228,7 @@ String _encodeAutoHeader(_enc enc, int m, int extraDigits) {
     STORAGE_START += product;
   }
   return '';
-}  // autoheader
+} // autoheader
 
 _mzSet _decodeAutoHeader(String input, String extensionchars, int m) {
   var STORAGE_START = 0;
@@ -1512,7 +3258,8 @@ _mzSet _decodeAutoHeader(String input, String extensionchars, int m) {
       product = ((STORAGE_START + product + GOODROUNDER - 1) / GOODROUNDER).floor() * GOODROUNDER - STORAGE_START;
     }
 
-    if (value != null && value >= STORAGE_START && value < STORAGE_START + product) { // code belongs here?
+    if (value != null && value >= STORAGE_START && value < STORAGE_START + product) {
+      // code belongs here?
       var dividerx = ((mm.maxx - mm.minx + W - 1) / W).floor();
       var dividery = ((mm.maxy - mm.miny + H - 1) / H).floor();
 
@@ -1522,10 +3269,10 @@ _mzSet _decodeAutoHeader(String input, String extensionchars, int m) {
       var vx = triple.x + 168 * (value / (H / 176).floor()).floor();
       var vy = triple.y + 176 * (value % (H / 176).floor());
 
-      var corner = _coord(  // in microdegrees
-        y: mm.maxy - (vy * dividery),
-        x: mm.minx + (vx * dividerx)
-      );
+      var corner = _coord(
+          // in microdegrees
+          y: mm.maxy - (vy * dividery),
+          x: mm.minx + (vx * dividerx));
       if ((corner.y != mm.maxy) && (!_fitsInside(corner, mm))) {
         return _mzEmpty();
       }
@@ -1543,7 +3290,8 @@ String _aeu_pack(String r, {bool short = false}) /* v1.50 */ {
   var rlen = r.length;
   var rest = '';
   for (int d = 0; d < rlen; d++) {
-    if (!r[d].isNumber) { // not digit?
+    if (!r[d].isNumber) {
+      // not digit?
       if (r[d] == '.' && dotpos < 0) {
         dotpos = d; // first dot?
       } else if (r[d] == '-') {
@@ -1557,11 +3305,14 @@ String _aeu_pack(String r, {bool short = false}) /* v1.50 */ {
   }
 
   var v = 0;
-  if (dotpos >= 2 && rlen - 2 > dotpos) { // does r have a dot, AND at least 2 chars after the dot?
-    if (short) { /* v1.50 new way: use only A */
+  if (dotpos >= 2 && rlen - 2 > dotpos) {
+    // does r have a dot, AND at least 2 chars after the dot?
+    if (short) {
+      /* v1.50 new way: use only A */
       v = (r.codeUnitAt(0) - 48) * 100 + (r.codeUnitAt(rlen - 2) - 48) * 10 + (r.codeUnitAt(rlen - 1) - 48);
       r = 'A' + r.substring(1, rlen - 2) + _encodeChar[(v / 32).floor()] + _encodeChar[v % 32]; // 1.50
-    } else { /* old way: use A, E and U */
+    } else {
+      /* old way: use A, E and U */
       v = (r.codeUnitAt(rlen - 2) - 48) * 10 + (r.codeUnitAt(rlen - 1) - 48);
       r = r.substring(0, rlen - 2) + _encodeChar[(v / 34).floor() + 31] + _encodeChar[v % 34]; // v1.50
     }
@@ -1570,7 +3321,6 @@ String _aeu_pack(String r, {bool short = false}) /* v1.50 */ {
 }
 
 _enc _getEncodeRec(double lat, double lon) {
-
   if (lat < -90) {
     lat = -90;
   } else if (lat > 90) {
@@ -1617,19 +3367,20 @@ List<McInfo> _mapcoderEngine(_enc enc, int? tn, bool getshortest, int state_over
     var from = _dataFirstRecord(territoryNumber);
     if (_data_flags[from] == 0) {
       continue;
-    }   // 1.27 survive partially filled data_ array
+    } // 1.27 survive partially filled data_ array
     var upto = _dataLastRecord(territoryNumber);
 
     // make sure it fits the country
     if (territoryNumber != _ccode_earth) {
-      if (!(_fitsInside(enc.coord32, _minmaxSetup(upto)))) { // does not fit encompassing rect?
+      if (!(_fitsInside(enc.coord32, _minmaxSetup(upto)))) {
+        // does not fit encompassing rect?
         continue;
       }
     }
 
     for (var i = from; i <= upto; i++) {
-
-      if (_coDex(i) < 54) { // exlude 54 and 55
+      if (_coDex(i) < 54) {
+        // exlude 54 and 55
         var mm = _minmaxSetup(i);
         if (_fitsInside(enc.coord32, mm)) {
           String r;
@@ -1638,7 +3389,8 @@ List<McInfo> _mapcoderEngine(_enc enc, int? tn, bool getshortest, int state_over
           } else if (_recType(i) > 1) {
             r = _encodeAutoHeader(enc, i, extraDigits);
           } else if ((i == upto) && (getParentOf(territoryNumber.toString()) >= 0)) {
-            var moreresults = _mapcoderEngine(enc, getParentOf(territoryNumber.toString()), getshortest, territoryNumber, extraDigits);
+            var moreresults = _mapcoderEngine(
+                enc, getParentOf(territoryNumber.toString()), getshortest, territoryNumber, extraDigits);
             if (moreresults.isNotEmpty) {
               results.addAll(moreresults);
             }
@@ -1701,7 +3453,8 @@ String _aeu_unpack(String str) {
     var s = (1000 + v1 + 32 * v2).toString();
     str = s[1] + str.substring(1, lastpos - 1) + s[2] + s[3];
     voweled = 1;
-  } else if (str[0] == 'U') { /* V1.50 */
+  } else if (str[0] == 'U') {
+    /* V1.50 */
     voweled = 1;
     str = str.substring(1);
     dotpos--;
@@ -1749,7 +3502,8 @@ String _aeu_unpack(String str) {
     if (v != dotpos) {
       if (_decodeChar[str.codeUnitAt(v)] < 0) {
         return '';
-      } else if (_decodeChar[str.codeUnitAt(v)] > 9) { // bad char!
+      } else if (_decodeChar[str.codeUnitAt(v)] > 9) {
+        // bad char!
         hasletters++;
       }
     }
@@ -1764,7 +3518,8 @@ String _aeu_unpack(String str) {
 }
 
 /// PRIVATE decode a PROPER mapcode within a KNOWN territory number to an x,y coordinate (or false)
-LatLng? _master_decode(String mapcode, int territoryNumber) { // returns object with y and x fields, or false
+LatLng? _master_decode(String mapcode, int territoryNumber) {
+  // returns object with y and x fields, or false
   mapcode = _to_ascii(mapcode);
   var extensionchars = '';
   var minpos = mapcode.indexOf('-');
@@ -1814,7 +3569,8 @@ LatLng? _master_decode(String mapcode, int territoryNumber) { // returns object 
         var nrZoneOverlaps = 0;
         // get midpoint in microdegrees
         var coord32 = _convertFractionsToCoord32(_mzMidPointFractions(zone));
-        for (int j = m - 1; j >= from; j--) { // look in previous rects
+        for (int j = m - 1; j >= from; j--) {
+          // look in previous rects
           if (!isRestricted(j)) {
             if (_fitsInside(coord32, _minmaxSetup(j))) {
               nrZoneOverlaps++;
@@ -1826,7 +3582,8 @@ LatLng? _master_decode(String mapcode, int territoryNumber) { // returns object 
         if (nrZoneOverlaps == 0) {
           // see if mapcode zone OVERLAPS any sub-area...
           var zfound = _mzEmpty();
-          for (var j = from; j < m; j++) { // try all smaller rectangles j
+          for (var j = from; j < m; j++) {
+            // try all smaller rectangles j
             if (!isRestricted(j)) {
               var z = _mzRestrictZoneTo(zone, _minmaxSetup(j));
               if (!_mzIsEmpty(z)) {
@@ -1834,14 +3591,16 @@ LatLng? _master_decode(String mapcode, int territoryNumber) { // returns object 
                 if (nrZoneOverlaps == 1) {
                   // first fit! remember...
                   zfound = _mzCopy(z);
-                } else { // nrZoneOverlaps > 1
+                } else {
+                  // nrZoneOverlaps > 1
                   // more than one hit
                   break; // give up!
                 }
               }
             }
           }
-          if (nrZoneOverlaps == 1) { // intersected exactly ONE sub-area?
+          if (nrZoneOverlaps == 1) {
+            // intersected exactly ONE sub-area?
             zone = _mzCopy(zfound); // use the intersection found...
           }
         }
@@ -1854,8 +3613,8 @@ LatLng? _master_decode(String mapcode, int territoryNumber) { // returns object 
     } else if (_recType(m) == 1 && codex + 10 == incodex && _headerLetter(m) == mapcode[0]) {
       zone = _decodeGrid(mapcode.substring(1), extensionchars, m);
       break;
-    } else if (_isNameless(m) && ((codex == 21 && incodex == 22) || (codex == 22 && incodex == 32) ||
-        (codex == 13 && incodex == 23))) {
+    } else if (_isNameless(m) &&
+        ((codex == 21 && incodex == 22) || (codex == 22 && incodex == 32) || (codex == 13 && incodex == 23))) {
       zone = _decodeNameless(mapcode, extensionchars, m, from);
       break;
     } else if (_recType(m) > 1 && postfixlength == 3 && _codexLen(m) == prefixlength + 2) {
@@ -1874,17 +3633,7 @@ LatLng? _master_decode(String mapcode, int territoryNumber) { // returns object 
 
 // ******************** legacy interface *****************
 
-const _maxErrorInMetersForDigits = [
-  7.49,
-  1.39,
-  0.251,
-  0.0462,
-  0.00837,
-  0.00154,
-  0.00028,
-  0.000052,
-  0.0000093
-];
+const _maxErrorInMetersForDigits = [7.49, 1.39, 0.251, 0.0462, 0.00837, 0.00154, 0.00028, 0.000052, 0.0000093];
 
 // ******************** public interface *****************
 
@@ -1940,7 +3689,8 @@ LatLng? decode(String mapcodeString, String territory) {
 /// the WithPrecision variants produce mapcodes extended with high-precision letters (the parameter specifies how many letters: 0, 1, or 2).
 
 List<McInfo> encodeWithPrecision(double latitudeDegrees, double longitudeDegrees, int precision, String territory) {
-  return _mapcoderEngine(_getEncodeRec(latitudeDegrees, longitudeDegrees), _getTerritoryNumber(territory), false/*getshortest*/, -1/*override*/, precision);
+  return _mapcoderEngine(_getEncodeRec(latitudeDegrees, longitudeDegrees), _getTerritoryNumber(territory),
+      false /*getshortest*/, -1 /*override*/, precision);
 }
 
 List<McInfo> encodeInternationalWithPrecision(double latitudeDegrees, double longitudeDegrees, int precision) {
@@ -1950,7 +3700,7 @@ List<McInfo> encodeInternationalWithPrecision(double latitudeDegrees, double lon
 // returns true iff coordinate is near more than one territory border
 bool multipleBordersNearby(double latitudeDegrees, double longitudeDegrees, String territory) {
   var territoryNumber = _getTerritoryNumber(territory);
-  if (territoryNumber!= null && (territoryNumber >= 0) && (territoryNumber < _ccode_earth)) {
+  if (territoryNumber != null && (territoryNumber >= 0) && (territoryNumber < _ccode_earth)) {
     var parentTerritory = getParentOf(territoryNumber.toString());
     if (parentTerritory >= 0) {
       // there is a parent! check its borders as well...
@@ -2068,7 +3818,17 @@ String _convertToAbjad(String mapcode) {
     } else if (form == 44) {
       str = str[0] + str[1] + c1.toString() + str[3] + '.' + c2.toString() + str[5] + str[6] + c3.toString() + str[7];
     } else if (form == 54) {
-      str = str[0] + str[1] + c1.toString() + str[3] + str[4] + '.' + c2.toString() + str[6] + str[7] + c3.toString() + str[8];
+      str = str[0] +
+          str[1] +
+          c1.toString() +
+          str[3] +
+          str[4] +
+          '.' +
+          c2.toString() +
+          str[6] +
+          str[7] +
+          c3.toString() +
+          str[8];
     } else {
       return mapcode;
     }

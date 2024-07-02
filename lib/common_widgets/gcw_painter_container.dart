@@ -13,12 +13,7 @@ class GCWPainterContainer extends StatefulWidget {
   final bool? suppressBottomSpace;
 
   const GCWPainterContainer(
-      {Key? key,
-        required this.child,
-        this.scale = 1,
-        this.suppressTopSpace,
-        this.suppressBottomSpace,
-        this.onChanged})
+      {Key? key, required this.child, this.scale = 1, this.suppressTopSpace, this.suppressBottomSpace, this.onChanged})
       : super(key: key);
 
   @override

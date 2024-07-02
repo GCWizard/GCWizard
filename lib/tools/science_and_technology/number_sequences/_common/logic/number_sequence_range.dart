@@ -181,5 +181,3 @@ List<BigInt> numberSequencesGetNumbersInRange(NumberSequencesMode sequence, int?
 
   return numberList;
 }
-
-

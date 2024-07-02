@@ -3,7 +3,7 @@ import 'package:gc_wizard/utils/string_utils.dart';
 
 part 'package:gc_wizard/tools/crypto_and_encodings/morse/logic/morse_data.dart';
 
-enum MorseType {MORSE_ITU, MORSE1838, MORSE1844, STEINHEIL, GERKE}
+enum MorseType { MORSE_ITU, MORSE1838, MORSE1844, STEINHEIL, GERKE }
 
 const String _MORSE_CHARACTER_DOTS = '.\u2022\u00B7\u16EB\u2981\u25CF\u2218\u25E6';
 //  \u2022  BULLET
@@ -18,7 +18,6 @@ const String _MORSE_CHARACTER_DOTS = '.\u2022\u00B7\u16EB\u2981\u25CF\u2218\u25E
 String normalizeMorseCharacters(String morse) {
   // normalizeCharacters normalizes already ' ' and '-',
   // but cannot normalize '.' because normally it is a common sentence char or digits delimiter
-
   return normalizeCharacters(morse).split('').map((e) {
     if (_MORSE_CHARACTER_DOTS.contains(e)) {
       return '.';
@@ -63,8 +62,16 @@ String encodeMorse(String input, {MorseType type = MorseType.MORSE_ITU, String? 
 }
 
 String decodeMorse(String input, {MorseType type = MorseType.MORSE_ITU}) {
+  _Morse1838ToAZ['-'] = '5';
+  _Morse1838ToAZ['-.'] = '6';
+  _Morse1838ToAZ['-..'] = '7';
+  _Morse1838ToAZ['-...'] = '8';
+  _Morse1838ToAZ['-....'] = '9';
+  _Morse1838ToAZ['--'] = '0';
   if (input.isEmpty) return '';
-  return normalizeMorseCharacters(input).split(RegExp(r'[^.\-·/|]')).map((morse) {
+  input = input.replaceAll('\u202F', '~');
+  return normalizeMorseCharacters(input).split(RegExp(r'[^.―~\-·/|]')).map((morse) {
+    morse = morse.replaceAll('~', '\u202F');
     if (morse == '|' || morse == '/') return ' ';
     var character = _MORSE_CODETOAZ[type]?[morse];
     return character ?? '';

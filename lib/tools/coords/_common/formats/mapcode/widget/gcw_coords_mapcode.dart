@@ -1,10 +1,9 @@
 part of 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 
 var _currentTerritory = '';
-void Function()? _onChangedIntern ;
+void Function()? _onChangedIntern;
 
 class _GCWCoordWidgetInfoMapCode extends GCWCoordWidgetWithSubtypeInfo {
-
   @override
   CoordinateFormatKey get type => CoordinateFormatKey.MAPCODE;
   @override
@@ -18,62 +17,58 @@ class _GCWCoordWidgetInfoMapCode extends GCWCoordWidgetWithSubtypeInfo {
 
   @override
   List<_GCWCoordWidgetSubtypeInfo> get subtypes => [
-    const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.MAPCODE_LOCAL, 'coords_formatconverter_mapcode_local'),
-    const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.MAPCODE_INTERNATIONAL, 'coords_formatconverter_mapcode_international'),
-  ];
+        const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.MAPCODE_LOCAL, 'coords_formatconverter_mapcode_local'),
+        const _GCWCoordWidgetSubtypeInfo(
+            CoordinateFormatKey.MAPCODE_INTERNATIONAL, 'coords_formatconverter_mapcode_international'),
+      ];
 
   @override
-  _GCWCoordWidget mainWidget({
-    Key? key,
-    required void Function(BaseCoordinate?) onChanged,
-    required BaseCoordinate? coordinates,
-    bool? initialize
-  }) {
+  _GCWCoordWidget mainWidget(
+      {Key? key,
+      required void Function(BaseCoordinate?) onChanged,
+      required BaseCoordinate? coordinates,
+      bool? initialize}) {
     return _GCWCoordsMapCode(key: key, onChanged: onChanged, coordinates: coordinates, initialize: initialize ?? false);
   }
 
   /// TerritorysDropDown
   @override
-  Widget inputWidget({
-    required BuildContext context,
-    required CoordinateFormatKey value,
-    required void Function(CoordinateFormatKey) onChanged}) {
-
+  Widget inputWidget(
+      {required BuildContext context,
+      required CoordinateFormatKey value,
+      required void Function(CoordinateFormatKey) onChanged}) {
     return GCWDropDown<String>(
-      value: _currentTerritory,
-      items: _buildTerritorysList().map((entry) {
-        return GCWDropDownMenuItem(
-          value: entry.key,
-          child: entry.value,
-        );
-      }).toList(),
-      onChanged: (value) {
-        _currentTerritory = value;
-        if (_onChangedIntern != null) {
-          _onChangedIntern!();
-        }
-      }
-    );
+        value: _currentTerritory,
+        items: _buildTerritorysList().map((entry) {
+          return GCWDropDownMenuItem(
+            value: entry.key,
+            child: entry.value,
+          );
+        }).toList(),
+        onChanged: (value) {
+          _currentTerritory = value;
+          if (_onChangedIntern != null) {
+            _onChangedIntern!();
+          }
+        });
   }
 
-
   List<MapEntry<String, String>> _buildTerritorysList() {
-    var list = iso3166alpha.mapIndexed((index, entry) =>
-        MapEntry(entry, entry + ' (' + isofullname[index].replaceAll(RegExp(r"\(.*\)"), '').trim() + ')'))
+    var list = iso3166alpha
+        .mapIndexed((index, entry) =>
+            MapEntry(entry, entry + ' (' + isofullname[index].replaceAll(RegExp(r"\(.*\)"), '').trim() + ')'))
         .toList();
     list.sort((e1, e2) => e1.key.compareTo(e2.key));
-    list.insert(0, const MapEntry<String, String>('',''));
+    list.insert(0, const MapEntry<String, String>('', ''));
 
     return list;
   }
 
-
   @override
-  Widget _buildSubtypeWidget({
-    required BuildContext context,
-    required CoordinateFormatKey value,
-    required void Function(CoordinateFormatKey) onChanged}) {
-
+  Widget _buildSubtypeWidget(
+      {required BuildContext context,
+      required CoordinateFormatKey value,
+      required void Function(CoordinateFormatKey) onChanged}) {
     var _onChanged = onChanged;
     return GCWDropDown<CoordinateFormatKey>(
       value: value,
@@ -89,9 +84,8 @@ class _GCWCoordWidgetInfoMapCode extends GCWCoordWidgetWithSubtypeInfo {
 }
 
 class _GCWCoordsMapCode extends _GCWCoordWidget {
-
-  _GCWCoordsMapCode({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize}) :
-        super(coordinates: coordinates is MapCode ? coordinates : MapCodeFormatDefinition.defaultCoordinate);
+  _GCWCoordsMapCode({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize})
+      : super(coordinates: coordinates is MapCode ? coordinates : MapCodeFormatDefinition.defaultCoordinate);
 
   @override
   _GCWCoordsMapCodeState createState() => _GCWCoordsMapCodeState();
@@ -152,5 +146,3 @@ class _GCWCoordsMapCodeState extends State<_GCWCoordsMapCode> {
     } catch (e) {}
   }
 }
-
-

@@ -22,8 +22,8 @@ Future<String?> scanBytes(Uint8List? bytes) async {
 }
 
 Map<int, String> errorCorrectLevel() {
-  return Map.fromEntries(qr.QrErrorCorrectLevel.levels.map((level) =>
-      MapEntry(level, qr.QrErrorCorrectLevel.getName(level))));
+  return Map.fromEntries(
+      qr.QrErrorCorrectLevel.levels.map((level) => MapEntry(level, qr.QrErrorCorrectLevel.getName(level))));
 }
 
 /// Generating Bar Code

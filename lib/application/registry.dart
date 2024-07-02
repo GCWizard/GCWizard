@@ -7,16 +7,16 @@ import 'package:gc_wizard/application/category_views/selector_lists/bcd_selectio
 import 'package:gc_wizard/application/category_views/selector_lists/beaufort_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/braille_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/bundeswehr_talkingboard.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/ccitt_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/checkdigits/checkdigits_creditcard_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/checkdigits/checkdigits_de_taxid_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/checkdigits/checkdigits_ean_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/checkdigits/checkdigits_euro_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/checkdigits/checkdigits_iban_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/checkdigits/checkdigits_imei_selection.dart';
-import 'package:gc_wizard/application/category_views/selector_lists/checkdigits/checkdigits_creditcard_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/checkdigits/checkdigits_isbn_selection.dart';
-import 'package:gc_wizard/application/category_views/selector_lists/checkdigits/checkdigits_uic_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/checkdigits/checkdigits_selection.dart';
-import 'package:gc_wizard/application/category_views/selector_lists/ccitt_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/checkdigits/checkdigits_uic_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/cistercian_numbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/colors_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/combinatorics_selection.dart';
@@ -419,6 +419,7 @@ import 'package:gc_wizard/tools/science_and_technology/resistor/resistor_eia96/w
 import 'package:gc_wizard/tools/science_and_technology/segment_display/14_segment_display/widget/fourteen_segments.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/16_segment_display/widget/sixteen_segments.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/7_segment_display/widget/seven_segments.dart';
+import 'package:gc_wizard/tools/science_and_technology/sort/widget/sort.dart';
 import 'package:gc_wizard/tools/science_and_technology/spelling_alphabets/spelling_alphabets_crypt/widget/spelling_alphabets_crypt.dart';
 import 'package:gc_wizard/tools/science_and_technology/spelling_alphabets/spelling_alphabets_list/widget/spelling_alphabets_list.dart';
 import 'package:gc_wizard/tools/science_and_technology/telegraphs/chappe/widget/chappe.dart';
@@ -844,7 +845,8 @@ void initializeRegistry(BuildContext context) {
         categories: const [ToolCategory.CRYPTOGRAPHY],
         searchKeys: const []),
     GCWTool(tool: const HebrewNumberSystem(), id: 'hebrew_numbers', categories: const [
-      ToolCategory.SCIENCE_AND_TECHNOLOGY], searchKeys: const [
+      ToolCategory.SCIENCE_AND_TECHNOLOGY
+    ], searchKeys: const [
       'hebrew_numbers',
     ]),
     GCWTool(tool: const Hexadecimal(), id: 'hexadecimal', categories: const [
@@ -896,6 +898,7 @@ void initializeRegistry(BuildContext context) {
     GCWTool(tool: const IEEE754(), id: 'ieee754', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
     ], searchKeys: const [
+      'binary',
       'ieee754',
     ]),
     GCWTool(tool: const ILLIAC(), id: 'illiac', categories: const [
@@ -996,15 +999,15 @@ void initializeRegistry(BuildContext context) {
       'mexicanarmycipherwheel',
     ]),
     GCWTool(tool: const MilesianNumberSystem(), id: 'milesian_numbers', categories: const [
-    ToolCategory.SCIENCE_AND_TECHNOLOGY], searchKeys: const [
+      ToolCategory.SCIENCE_AND_TECHNOLOGY
+    ], searchKeys: const [
       'milesian_numbers',
     ]),
-    GCWTool(tool: const Morbit(), id: 'morbit', categories: const [
-      ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: const [
-      'morbit',
-      'numbers'
-    ]),
+    GCWTool(
+        tool: const Morbit(),
+        id: 'morbit',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const ['morbit', 'numbers']),
     GCWTool(
         tool: const MorseSelection(),
         id: 'morse_selection',
@@ -1029,14 +1032,11 @@ void initializeRegistry(BuildContext context) {
     ], searchKeys: const [
       'navajo',
     ]),
-    GCWTool(tool: const NonogramSolver(), id: 'nonogramsolver', categories: const [
-      ToolCategory.GAMES
-    ], searchKeys: const [
-      'games',
-      'nonogramsolver',
-      'grid',
-      'images'
-    ]),
+    GCWTool(
+        tool: const NonogramSolver(),
+        id: 'nonogramsolver',
+        categories: const [ToolCategory.GAMES],
+        searchKeys: const ['games', 'nonogramsolver', 'grid', 'images']),
     GCWTool(tool: const NumberPyramidSolver(), id: 'numberpyramidsolver', categories: const [
       ToolCategory.GAMES,
       ToolCategory.CRYPTOGRAPHY
@@ -1060,15 +1060,12 @@ void initializeRegistry(BuildContext context) {
         id: 'numeralwords_selection',
         categories: const [ToolCategory.CRYPTOGRAPHY],
         searchKeys: const []),
-    GCWTool(tool: OneTimePad(), id: 'onetimepad', categories: const [
-      ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: const [
-      'onetimepad',
-      'numbers'
-    ], deeplinkAlias: const [
-      'otp',
-      'one_time_pad'
-    ]),
+    GCWTool(
+        tool: OneTimePad(),
+        id: 'onetimepad',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const ['onetimepad', 'numbers'],
+        deeplinkAlias: const ['otp', 'one_time_pad']),
     GCWTool(tool: const PeriodicTableSelection(), id: 'periodictable_selection', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
     ], searchKeys: const [
@@ -1108,12 +1105,11 @@ void initializeRegistry(BuildContext context) {
     ], searchKeys: const [
       'pokemon',
     ]),
-    GCWTool(tool: const Pollux(), id: 'pollux', categories: const [
-      ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: const [
-      'pollux',
-      'numbers'
-    ]),
+    GCWTool(
+        tool: const Pollux(),
+        id: 'pollux',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const ['pollux', 'numbers']),
     GCWTool(tool: const Polybios(), id: 'polybios', categories: const [
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
@@ -1231,6 +1227,11 @@ void initializeRegistry(BuildContext context) {
       'solitaire',
     ]),
     GCWTool(
+        tool: const Sort(),
+        id: 'sort',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+        searchKeys: const ['sort']),
+    GCWTool(
         tool: const SpellingAlphabetsSelection(),
         id: 'spelling_alphabets_selection',
         categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
@@ -1295,12 +1296,11 @@ void initializeRegistry(BuildContext context) {
     ], searchKeys: const [
       'tapcode',
     ]),
-    GCWTool(tool: Tapir(), id: 'tapir', categories: const [
-      ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: const [
-      'tapir',
-      'numbers'
-    ]),
+    GCWTool(
+        tool: Tapir(),
+        id: 'tapir',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const ['tapir', 'numbers']),
     GCWTool(
         tool: const TelegraphSelection(),
         id: 'telegraph_selection',
@@ -1353,9 +1353,10 @@ void initializeRegistry(BuildContext context) {
     ], searchKeys: const [
       'ufi',
     ]),
-    GCWTool(tool: const UICWagonCodeSelection(), id: 'uic_wagoncode_selection', categories: const [
-      ToolCategory.SCIENCE_AND_TECHNOLOGY
-    ]),
+    GCWTool(
+        tool: const UICWagonCodeSelection(),
+        id: 'uic_wagoncode_selection',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY]),
     GCWTool(tool: const UnitConverter(), id: 'unitconverter', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
     ], searchKeys: const [
@@ -1408,12 +1409,11 @@ void initializeRegistry(BuildContext context) {
     ], searchKeys: const [
       'z22',
     ]),
-    GCWTool(tool: const WordSearch(), id: 'word_search', categories: const [
-      ToolCategory.GAMES
-    ], searchKeys: const [
-      'word_search',
-      'grid'
-    ]),
+    GCWTool(
+        tool: const WordSearch(),
+        id: 'word_search',
+        categories: const [ToolCategory.GAMES],
+        searchKeys: const ['word_search', 'grid']),
     GCWTool(tool: ZamonianNumbers(), autoScroll: false, id: 'zamoniannumbers', categories: const [
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
@@ -1424,9 +1424,7 @@ void initializeRegistry(BuildContext context) {
     ], searchKeys: const [
       'zc1',
     ]),
-    GCWTool(tool: const ZodiacSelection(), id: 'zodiac_selection', categories: const [
-      ToolCategory.MISCELLANEOUS
-    ]),
+    GCWTool(tool: const ZodiacSelection(), id: 'zodiac_selection', categories: const [ToolCategory.MISCELLANEOUS]),
 
     //ApparentTemperatureSelection  ********************************************************************************************
     GCWTool(tool: const HeatIndex(), id: 'heatindex', searchKeys: const [
@@ -1681,14 +1679,38 @@ void initializeRegistry(BuildContext context) {
     ]),
 
     //CheckDigitsSelection  ********************************************************************************************
-    GCWTool(tool: const CheckDigitsCreditCardSelection(), id: 'checkdigits_creditcard_selection', searchKeys: const ['checkdigits', '']),
-    GCWTool(tool: const CheckDigitsDETaxIDSelection(), id: 'checkdigits_de_taxid_selection', searchKeys: const ['checkdigits',  'checkdigits_de_taxid']),
-    GCWTool(tool: const CheckDigitsEANSelection(), id: 'checkdigits_ean_selection', searchKeys: const ['checkdigits',  'checkdigits_ean']),
-    GCWTool(tool: const CheckDigitsIBANSelection(), id: 'checkdigits_iban_selection', searchKeys: const ['checkdigits',  'checkdigits_iban']),
-    GCWTool(tool: const CheckDigitsIMEISelection(), id: 'checkdigits_imei_selection', searchKeys: const ['checkdigits',  'checkdigits_imei']),
-    GCWTool(tool: const CheckDigitsISBNSelection(), id: 'checkdigits_isbn_selection', searchKeys: const ['checkdigits',  'checkdigits_isbn']),
-    GCWTool(tool: const CheckDigitsEUROSelection(), id: 'checkdigits_euro_selection', searchKeys: const ['checkdigits',  'checkdigits_euro']),
-    GCWTool(tool: const CheckDigitsUICSelection(), id: 'checkdigits_uic_selection', searchKeys: const ['checkdigits',  'checkdigits_uic']),
+    GCWTool(
+        tool: const CheckDigitsCreditCardSelection(),
+        id: 'checkdigits_creditcard_selection',
+        searchKeys: const ['checkdigits', '']),
+    GCWTool(
+        tool: const CheckDigitsDETaxIDSelection(),
+        id: 'checkdigits_de_taxid_selection',
+        searchKeys: const ['checkdigits', 'checkdigits_de_taxid']),
+    GCWTool(
+        tool: const CheckDigitsEANSelection(),
+        id: 'checkdigits_ean_selection',
+        searchKeys: const ['checkdigits', 'checkdigits_ean']),
+    GCWTool(
+        tool: const CheckDigitsIBANSelection(),
+        id: 'checkdigits_iban_selection',
+        searchKeys: const ['checkdigits', 'checkdigits_iban']),
+    GCWTool(
+        tool: const CheckDigitsIMEISelection(),
+        id: 'checkdigits_imei_selection',
+        searchKeys: const ['checkdigits', 'checkdigits_imei']),
+    GCWTool(
+        tool: const CheckDigitsISBNSelection(),
+        id: 'checkdigits_isbn_selection',
+        searchKeys: const ['checkdigits', 'checkdigits_isbn']),
+    GCWTool(
+        tool: const CheckDigitsEUROSelection(),
+        id: 'checkdigits_euro_selection',
+        searchKeys: const ['checkdigits', 'checkdigits_euro']),
+    GCWTool(
+        tool: const CheckDigitsUICSelection(),
+        id: 'checkdigits_uic_selection',
+        searchKeys: const ['checkdigits', 'checkdigits_uic']),
 
     //CheckDigitsCreditCardSelection  ********************************************************************************************
     GCWTool(
@@ -2667,13 +2689,10 @@ void initializeRegistry(BuildContext context) {
           'primes',
           'numbersequence_mersenneprimesselection',
         ]),
-    GCWTool(
-        tool: const NumberSequencePrimesSelection(),
-        id: 'numbersequence_primes',
-        searchKeys: const [
-          'numbersequence',
-          'primes',
-        ]),
+    GCWTool(tool: const NumberSequencePrimesSelection(), id: 'numbersequence_primes', searchKeys: const [
+      'numbersequence',
+      'primes',
+    ]),
     GCWTool(
         tool: const NumberSequenceMersenneExponentsSelection(),
         id: 'numbersequence_mersenneexponents',
@@ -2792,103 +2811,87 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceFactorialNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'factorial_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceFactorialRange(),
         id: 'numbersequence_range',
         id_prefix: 'factorial_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceFactorialCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'factorial_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceFactorialDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'factorial_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceFactorialContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'factorial_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     //NumberSequenceSelection Mersenne-Fermat ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceMersenneFermatNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'mersenne-fermat_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceMersenneFermatRange(),
         id: 'numbersequence_range',
         id_prefix: 'mersenne-fermat_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceMersenneFermatCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'mersenne-fermat_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceMersenneFermatDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'mersenne-fermat_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceMersenneFermatContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'mersenne-fermat_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Fermat ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceFermatNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'fermat_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceFermatRange(),
         id: 'numbersequence_range',
         id_prefix: 'fermat_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceFermatCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'fermat_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceFermatDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'fermat_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceFermatContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'fermat_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Lucas ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceLucasNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'lucas_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(tool: const NumberSequenceLucasRange(), id: 'numbersequence_range', id_prefix: 'lucas_', searchKeys: const [
       'numbersequence_lucasselection',
     ]),
@@ -2896,72 +2899,61 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceLucasCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'lucas_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceLucasDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'lucas_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceLucasContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'lucas_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Fibonacci ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceFibonacciNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'fibonacci_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceFibonacciRange(),
         id: 'numbersequence_range',
         id_prefix: 'fibonacci_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceFibonacciCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'fibonacci_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceFibonacciDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'fibonacci_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceFibonacciContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'fibonacci_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Mersenne ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceMersenneNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'mersenne_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceMersenneRange(),
         id: 'numbersequence_range',
         id_prefix: 'mersenne_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceMersenneCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'mersenne_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceMersenneDigits(),
         id: 'numbersequence_digits',
@@ -2973,625 +2965,530 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceMersenneContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'mersenne_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Bell ****************************************************************************************
-    GCWTool(tool: const NumberSequenceBellNthNumber(), id: 'numbersequence_nth', id_prefix: 'bell_', searchKeys: const [
-    ]),
-    GCWTool(tool: const NumberSequenceBellRange(), id: 'numbersequence_range', id_prefix: 'bell_', searchKeys: const [
-    ]),
+    GCWTool(
+        tool: const NumberSequenceBellNthNumber(), id: 'numbersequence_nth', id_prefix: 'bell_', searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceBellRange(), id: 'numbersequence_range', id_prefix: 'bell_', searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceBellCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'bell_',
-        searchKeys: const [
-        ]),
-    GCWTool(tool: const NumberSequenceBellDigits(), id: 'numbersequence_digits', id_prefix: 'bell_', searchKeys: const [
-    ]),
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceBellDigits(), id: 'numbersequence_digits', id_prefix: 'bell_', searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceBellContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'bell_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Pell ****************************************************************************************
-    GCWTool(tool: const NumberSequencePellNthNumber(), id: 'numbersequence_nth', id_prefix: 'pell_', searchKeys: const [
-    ]),
-    GCWTool(tool: const NumberSequencePellRange(), id: 'numbersequence_range', id_prefix: 'pell_', searchKeys: const [
-    ]),
+    GCWTool(
+        tool: const NumberSequencePellNthNumber(), id: 'numbersequence_nth', id_prefix: 'pell_', searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequencePellRange(), id: 'numbersequence_range', id_prefix: 'pell_', searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePellCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'pell_',
-        searchKeys: const [
-        ]),
-    GCWTool(tool: const NumberSequencePellDigits(), id: 'numbersequence_digits', id_prefix: 'pell_', searchKeys: const [
-    ]),
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequencePellDigits(), id: 'numbersequence_digits', id_prefix: 'pell_', searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePellContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'pell_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Pell-Lucas ****************************************************************************************
     GCWTool(
         tool: const NumberSequencePellLucasNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'pell_lucas_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePellLucasRange(),
         id: 'numbersequence_range',
         id_prefix: 'pell_lucas_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePellLucasCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'pell_lucas_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePellLucasDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'pell_lucas_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePellLucasContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'pell_lucas_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Jacobsthal ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceJacobsthalNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'jacobsthal_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceJacobsthalRange(),
         id: 'numbersequence_range',
         id_prefix: 'jacobsthal_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceJacobsthalCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'jacobsthal_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceJacobsthalDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'jacobsthal_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceJacobsthalContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'jacobsthal_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Jacobsthal-Lucas ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceJacobsthalLucasNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'jacobsthal_lucas_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceJacobsthalLucasRange(),
         id: 'numbersequence_range',
         id_prefix: 'jacobsthal_lucas_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceJacobsthalLucasCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'jacobsthal_lucas_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceJacobsthalLucasDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'jacobsthal_lucas_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceJacobsthalLucasContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'jacobsthal_lucas_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Jacobsthal Oblong ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceJacobsthalOblongNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'jacobsthal_oblong_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceJacobsthalOblongRange(),
         id: 'numbersequence_range',
         id_prefix: 'jacobsthal_oblong_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceJacobsthalOblongCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'jacobsthal_oblong_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceJacobsthalOblongDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'jacobsthal_oblong_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceJacobsthalOblongContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'jacobsthal_oblong_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Catalan ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceCatalanNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'catalan_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceCatalanRange(),
         id: 'numbersequence_range',
         id_prefix: 'catalan_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceCatalanCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'catalan_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceCatalanDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'catalan_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceCatalanContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'catalan_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Recaman ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceRecamanNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'recaman_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceRecamanRange(),
         id: 'numbersequence_range',
         id_prefix: 'recaman_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceRecamanCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'recaman_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceRecamanDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'recaman_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceRecamanContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'recaman_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Mersenne Primes ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceMersennePrimesNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'mersenne_primes_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceMersennePrimesRange(),
         id: 'numbersequence_range',
         id_prefix: 'mersenne_primes_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceMersennePrimesCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'mersenne_primes_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceMersennePrimesDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'mersenne_primes_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceMersennePrimesContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'mersenne_primes_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Mersenne Exponents ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceMersenneExponentsNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'mersenne_exponents_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceMersenneExponentsRange(),
         id: 'numbersequence_range',
         id_prefix: 'mersenne_exponents_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceMersenneExponentsCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'mersenne_exponents_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceMersenneExponentsDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'mersenne_exponents_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceMersenneExponentsContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'mersenne_exponents_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Perfect numbers ****************************************************************************************
     GCWTool(
         tool: const NumberSequencePerfectNumbersNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'perfect_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePerfectNumbersRange(),
         id: 'numbersequence_range',
         id_prefix: 'perfect_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePerfectNumbersCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'perfect_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePerfectNumbersDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'perfect_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePerfectNumbersContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'perfect_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection SuperPerfect numbers ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceSuperPerfectNumbersNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'superperfect_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceSuperPerfectNumbersRange(),
         id: 'numbersequence_range',
         id_prefix: 'superperfect_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceSuperPerfectNumbersCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'superperfect_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceSuperPerfectNumbersDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'superperfect_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceSuperPerfectNumbersContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'superperfect_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Weird numbers ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceWeirdNumbersNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'weird_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceWeirdNumbersRange(),
         id: 'numbersequence_range',
         id_prefix: 'weird_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceWeirdNumbersCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'weird_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceWeirdNumbersDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'weird_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceWeirdNumbersContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'weird_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Sublime numbers ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceSublimeNumbersNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'sublime_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceSublimeNumbersRange(),
         id: 'numbersequence_range',
         id_prefix: 'sublime_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceSublimeNumbersCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'sublime_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceSublimeNumbersDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'sublime_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceSublimeNumbersContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'sublime_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Lucky numbers ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceLuckyNumbersNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'lucky_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceLuckyNumbersRange(),
         id: 'numbersequence_range',
         id_prefix: 'lucky_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceLuckyNumbersCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'lucky_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceLuckyNumbersDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'lucky_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceLuckyNumbersContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'lucky_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Happy numbers ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceHappyNumbersNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'happy_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceHappyNumbersRange(),
         id: 'numbersequence_range',
         id_prefix: 'happy_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceHappyNumbersCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'happy_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceHappyNumbersDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'happy_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     GCWTool(
         tool: const NumberSequenceHappyNumbersContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'happy_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection PseudoPerfect numbers ****************************************************************************************
     GCWTool(
         tool: const NumberSequencePrimaryPseudoPerfectNumbersNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'pseudoperfect_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePrimaryPseudoPerfectNumbersRange(),
         id: 'numbersequence_range',
         id_prefix: 'pseudoperfect_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePrimaryPseudoPerfectNumbersCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'pseudoperfect_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePrimaryPseudoPerfectNumbersDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'pseudoperfect_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePrimaryPseudoPerfectNumbersContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'pseudoperfect_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Lychrel numbers ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceLychrelNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'lychrel_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceLychrelRange(),
         id: 'numbersequence_range',
         id_prefix: 'lychrel_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceLychrelCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'lychrel_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceLychrelDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'lychrel_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequenceLychrelContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'lychrel_numbers_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection Mersenne Primes ****************************************************************************************
     GCWTool(
         tool: const NumberSequencePermutablePrimesNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'mersenne_primes_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePermutablePrimesRange(),
         id: 'numbersequence_range',
         id_prefix: 'mersenne_primes_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePermutablePrimesCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'mersenne_primes_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePermutablePrimesDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'mersenne_primes_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePermutablePrimesContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'mersenne_primes_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //NumberSequenceSelection  Primes ****************************************************************************************
     GCWTool(
         tool: const NumberSequencePrimesNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'primes_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePrimesRange(),
         id: 'numbersequence_range',
         id_prefix: 'primes_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePrimesCheckNumber(),
         id: 'numbersequence_check',
         id_prefix: 'primes_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePrimesDigits(),
         id: 'numbersequence_digits',
         id_prefix: 'primes_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePrimesContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'primes_',
-        searchKeys: const [
-        ]),
+        searchKeys: const []),
 
     //PeriodicTableSelection ***************************************************************************************
     GCWTool(tool: const PeriodicTable(), id: 'periodictable', searchKeys: const []),
@@ -4155,6 +4052,9 @@ void initializeRegistry(BuildContext context) {
     GCWSymbolTableTool(symbolKey: 'fakoo', symbolSearchStrings: const [
       'symbol_fakoo',
     ]),
+    GCWSymbolTableTool(symbolKey: 'fantastic', symbolSearchStrings: const [
+      'symbol_fantastic',
+    ]),
     GCWSymbolTableTool(symbolKey: 'fez', symbolSearchStrings: const [
       'symbol_fez',
     ]),
@@ -4199,19 +4099,10 @@ void initializeRegistry(BuildContext context) {
       'symbol_freemason',
     ]),
     GCWSymbolTableTool(symbolKey: 'freemason_v2', symbolSearchStrings: const ['symbol_freemason']),
-    GCWSymbolTableTool(symbolKey: 'futhark_elder', symbolSearchStrings: const [
-      'symbol_runes',
-      'symbol_futhark'
-    ]),
-    GCWSymbolTableTool(symbolKey: 'futhark_younger', symbolSearchStrings: const [
-      'symbol_runes',
-      'symbol_futhark'
-    ]),
-    GCWSymbolTableTool(symbolKey: 'futhorc', symbolSearchStrings: const [
-      'symbol_runes',
-      'symbol_futhark',
-      'symbol_futhorc'
-    ]),
+    GCWSymbolTableTool(symbolKey: 'futhark_elder', symbolSearchStrings: const ['symbol_runes', 'symbol_futhark']),
+    GCWSymbolTableTool(symbolKey: 'futhark_younger', symbolSearchStrings: const ['symbol_runes', 'symbol_futhark']),
+    GCWSymbolTableTool(
+        symbolKey: 'futhorc', symbolSearchStrings: const ['symbol_runes', 'symbol_futhark', 'symbol_futhorc']),
     GCWSymbolTableTool(symbolKey: 'futurama', symbolSearchStrings: const [
       'symbol_futurama',
     ]),
@@ -4229,6 +4120,9 @@ void initializeRegistry(BuildContext context) {
     ]),
     GCWSymbolTableTool(symbolKey: 'gc_attributes_meaning', symbolSearchStrings: const [
       'symbol_gc_attributes',
+    ]),
+    GCWSymbolTableTool(symbolKey: 'geovlog', symbolSearchStrings: const [
+      'symbol_geovlog',
     ]),
     GCWSymbolTableTool(symbolKey: 'gernreich', symbolSearchStrings: const [
       'symbol_gernreich',
@@ -4339,26 +4233,12 @@ void initializeRegistry(BuildContext context) {
     GCWSymbolTableTool(symbolKey: 'iokharic', symbolSearchStrings: const [
       'symbol_iokharic',
     ]),
-    GCWSymbolTableTool(symbolKey: 'iso7010_firesafety', symbolSearchStrings: const [
-      'iso7010',
-      'iso7010_firesafety'
-    ]),
-    GCWSymbolTableTool(symbolKey: 'iso7010_mandatory', symbolSearchStrings: const [
-      'iso7010',
-      'iso7010_mandatory'
-    ]),
-    GCWSymbolTableTool(symbolKey: 'iso7010_prohibition', symbolSearchStrings: const [
-      'iso7010',
-      'iso7010_prohibition'
-    ]),
-    GCWSymbolTableTool(symbolKey: 'iso7010_safecondition', symbolSearchStrings: const [
-      'iso7010',
-      'iso7010_safecondition'
-    ]),
-    GCWSymbolTableTool(symbolKey: 'iso7010_warning', symbolSearchStrings: const [
-      'iso7010',
-      'iso7010_warning'
-    ]),
+    GCWSymbolTableTool(symbolKey: 'iso7010_firesafety', symbolSearchStrings: const ['iso7010', 'iso7010_firesafety']),
+    GCWSymbolTableTool(symbolKey: 'iso7010_mandatory', symbolSearchStrings: const ['iso7010', 'iso7010_mandatory']),
+    GCWSymbolTableTool(symbolKey: 'iso7010_prohibition', symbolSearchStrings: const ['iso7010', 'iso7010_prohibition']),
+    GCWSymbolTableTool(
+        symbolKey: 'iso7010_safecondition', symbolSearchStrings: const ['iso7010', 'iso7010_safecondition']),
+    GCWSymbolTableTool(symbolKey: 'iso7010_warning', symbolSearchStrings: const ['iso7010', 'iso7010_warning']),
     GCWSymbolTableTool(symbolKey: 'ita1_1926', symbolSearchStrings: const ['ccitt', 'symbol_baudot', 'teletypewriter']),
     GCWSymbolTableTool(symbolKey: 'ita1_1929', symbolSearchStrings: const ['ccitt', 'symbol_baudot', 'teletypewriter']),
     GCWSymbolTableTool(symbolKey: 'ita2_1929', symbolSearchStrings: const ['ccitt', 'symbol_murray', 'teletypewriter']),
@@ -4458,10 +4338,7 @@ void initializeRegistry(BuildContext context) {
     GCWSymbolTableTool(symbolKey: 'maze', symbolSearchStrings: const [
       'symbol_maze',
     ]),
-    GCWSymbolTableTool(symbolKey: 'medieval_runes', symbolSearchStrings: const [
-      'symbol_runes',
-      'symbol_futhark'
-    ]),
+    GCWSymbolTableTool(symbolKey: 'medieval_runes', symbolSearchStrings: const ['symbol_runes', 'symbol_futhark']),
     GCWSymbolTableTool(symbolKey: 'minimoys', symbolSearchStrings: const [
       'symbol_minimoys',
     ]),
@@ -4585,6 +4462,9 @@ void initializeRegistry(BuildContext context) {
     ]),
     GCWSymbolTableTool(symbolKey: 'planets', symbolSearchStrings: const [
       'symbol_planets',
+    ]),
+    GCWSymbolTableTool(symbolKey: 'pleiadian', symbolSearchStrings: const [
+      'symbol_pleiadian',
     ]),
     GCWSymbolTableTool(symbolKey: 'pokemon_unown', symbolSearchStrings: const [
       'pokemon',
@@ -4781,6 +4661,9 @@ void initializeRegistry(BuildContext context) {
     GCWSymbolTableTool(symbolKey: 'tines', symbolSearchStrings: const [
       'symbol_tines',
     ]),
+    GCWSymbolTableTool(symbolKey: 'tll', symbolSearchStrings: const [
+      'symbol_tll',
+    ]),
     GCWSymbolTableTool(symbolKey: 'tomtom', symbolSearchStrings: const [
       'tomtom',
     ]),
@@ -4953,27 +4836,38 @@ void initializeRegistry(BuildContext context) {
 
     // UICWagonCodeSelection ***************************************************************************************
     GCWTool(tool: const UICWagonCode(), id: 'uic_wagoncode', searchKeys: const [
-      'railways', 'uic',
+      'railways',
+      'uic',
       'uic_wagoncode',
     ]),
     GCWTool(tool: const UICWagonCodeVKM(), id: 'uic_wagoncode_vkm', searchKeys: const [
-      'railways', 'uic',
+      'railways',
+      'uic',
       'uic_wagoncode',
       'uic_wagoncode_vkm',
     ]),
     GCWTool(tool: const UICWagonCodeCountryCodes(), id: 'uic_wagoncode_countrycodes', searchKeys: const [
-      'railways', 'uic',
+      'railways',
+      'uic',
       'uic_wagoncode',
       'countries',
     ]),
-    GCWTool(tool: const UICWagonCodeFreightClassifications(), id: 'uic_wagoncode_freight_classification', searchKeys: const [
-      'railways', 'uic',
-      'uic_wagoncode',
-    ]),
-    GCWTool(tool: const UICWagonCodePassengerLettercodes(), id: 'uic_wagoncode_passenger_lettercodes', searchKeys: const [
-      'railways', 'uic',
-      'uic_wagoncode',
-    ]),
+    GCWTool(
+        tool: const UICWagonCodeFreightClassifications(),
+        id: 'uic_wagoncode_freight_classification',
+        searchKeys: const [
+          'railways',
+          'uic',
+          'uic_wagoncode',
+        ]),
+    GCWTool(
+        tool: const UICWagonCodePassengerLettercodes(),
+        id: 'uic_wagoncode_passenger_lettercodes',
+        searchKeys: const [
+          'railways',
+          'uic',
+          'uic_wagoncode',
+        ]),
 
     //VanitySelection **********************************************************************************************
     GCWTool(tool: const VanitySingletap(), id: 'vanity_singletap', searchKeys: const [
@@ -5042,7 +4936,6 @@ void initializeRegistry(BuildContext context) {
       'symbol_zodiacsigns',
       'symbol_zodiacsigns_latin',
     ]),
-
   ].map((toolWidget) {
     toolWidget.toolName = i18n(context, toolWidget.id + '_title');
     toolWidget.defaultLanguageToolName = i18n(context, toolWidget.id + '_title', useDefaultLanguage: true);

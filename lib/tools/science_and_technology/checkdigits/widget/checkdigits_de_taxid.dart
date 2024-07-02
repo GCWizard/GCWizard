@@ -4,7 +4,6 @@ import 'package:gc_wizard/tools/science_and_technology/checkdigits/widget/base/c
 import 'package:gc_wizard/tools/science_and_technology/checkdigits/widget/base/checkdigits_calculate_missingdigit.dart';
 import 'package:gc_wizard/tools/science_and_technology/checkdigits/widget/base/checkdigits_check_number.dart';
 
-
 class CheckDigitsDETaxIDCheckNumber extends CheckDigitsCheckNumber {
   const CheckDigitsDETaxIDCheckNumber({Key? key}) : super(key: key, mode: CheckDigitsMode.DETAXID);
 }

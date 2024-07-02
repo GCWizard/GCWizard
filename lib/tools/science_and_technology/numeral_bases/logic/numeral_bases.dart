@@ -19,28 +19,37 @@ String _sanitizeInput(String input, int startBase, String alphabet) {
   return input;
 }
 
-String convertBase(String input, int startBase, int destinationBase, {String? alphabet}) {
+String convertIntToBase(String input, int destinationBase, {String? outputAlphabet}) {
+  return convertBase(input, 10, destinationBase, outputAlphabet: outputAlphabet);
+}
+
+String convertBaseToInt(String input, int startBase, {String? inputAlphabet}) {
+  return convertBase(input, startBase, 10, inputAlphabet: inputAlphabet);
+}
+
+String convertBase(String input, int startBase, int destinationBase, {String? inputAlphabet, String? outputAlphabet}) {
   if (input == '') return '';
 
-  var usedAlphabet = alphabet ?? _alphabet;
+  var usedInputAlphabet = inputAlphabet ?? _alphabet;
+  var usedOutputAlphabet = outputAlphabet ?? _alphabet;
 
-  if (startBase.abs() > usedAlphabet.length || destinationBase.abs() > usedAlphabet.length) {
+  if (startBase.abs() > usedInputAlphabet.length || destinationBase.abs() > usedOutputAlphabet.length) {
     return ''; //TODO: Exception
   }
 
-  input = _sanitizeInput(input, startBase, usedAlphabet);
+  input = _sanitizeInput(input, startBase, usedInputAlphabet);
 
   var illegalCharacter = input
       .split('')
-      .firstWhereOrNull((character) => character != '.' && usedAlphabet.indexOf(character) >= startBase.abs());
+      .firstWhereOrNull((character) => character != '.' && usedInputAlphabet.indexOf(character) >= startBase.abs());
 
   if (illegalCharacter != null) return ''; //TODO: Exception
 
   if (startBase == destinationBase) return input;
 
-  if (!RegExp('-?[$usedAlphabet]+([.,][$usedAlphabet]*)?').hasMatch(input)) return ''; //TODO: Exception
+  if (!RegExp('-?[$usedInputAlphabet]+([.,][$usedInputAlphabet]*)?').hasMatch(input)) return ''; //TODO: Exception
 
-  if (startBase.abs() < 2 || startBase.abs() > 62 || destinationBase.abs() < 2 || destinationBase.abs() > 62) {
+  if (startBase.abs() < 2 || destinationBase.abs() < 2) {
     return ''; //TODO: Exception
   }
 
@@ -51,12 +60,12 @@ String convertBase(String input, int startBase, int destinationBase, {String? al
   var number = input.split('.');
 
   if (number.length == 2 && (destinationBase < 0 || startBase < 0)) {
-    var d = _negaDoubleToDec(number[0], number[1], startBase, usedAlphabet);
-    var output = _decToNegaDouble(d, destinationBase, usedAlphabet);
+    var d = _negaDoubleToDec(number[0], number[1], startBase, usedInputAlphabet);
+    var output = _decToNegaDouble(d, destinationBase, usedOutputAlphabet);
 
     return output;
   } else {
-    var intPart = _intDecToBase(_intBaseToDec(number[0], startBase, usedAlphabet), destinationBase, usedAlphabet);
+    var intPart = _intDecToBase(_intBaseToDec(number[0], startBase, usedInputAlphabet), destinationBase, usedOutputAlphabet);
     var realPart = '';
 
     if (number.length == 2) {
@@ -65,7 +74,7 @@ String convertBase(String input, int startBase, int destinationBase, {String? al
       }
 
       realPart =
-          '.' + _doubleDecToBase(_doubleBaseToDec(number[1], startBase, usedAlphabet), destinationBase, usedAlphabet);
+          '.' + _doubleDecToBase(_doubleBaseToDec(number[1], startBase, usedInputAlphabet), destinationBase, usedOutputAlphabet);
     }
 
     return intPart + realPart;
@@ -103,7 +112,7 @@ double _negaDoubleToDec(String intPart, String floatPart, int base, String alpha
 String _decToNegaDouble(double num, int base, String alphabet) {
   String numString = num.toString();
 
-  if (base == 10) {
+  if (base == 10 && alphabet.startsWith(_numbers)) {
     return numString;
   }
 
@@ -164,7 +173,7 @@ String _decToNegaDouble(double num, int base, String alphabet) {
 }
 
 BigInt _intBaseToDec(String num, int base, String alphabet) {
-  if (base == 10) {
+  if (base == 10 && alphabet.startsWith(_numbers)) {
     return BigInt.parse(num);
   }
 
@@ -205,7 +214,7 @@ String _intDecToBase(BigInt num, int base, String alphabet) {
     return alphabet[0];
   }
 
-  if ((base == 10) && (num > BigInt.zero)) {
+  if ((base == 10) && (alphabet.startsWith(_numbers)) && (num > BigInt.zero)) {
     return num.toString();
   }
 
@@ -257,7 +266,7 @@ double _doubleBaseToDec(String num, int base, String alphabet) {
 }
 
 String _doubleDecToBase(double num, int base, String alphabet) {
-  if ((base == 10) || (num == 0)) {
+  if ((base == 10 && alphabet.startsWith(_numbers)) || (num == 0 && alphabet.startsWith('0'))) {
     return num.toString().substring(2);
   }
 

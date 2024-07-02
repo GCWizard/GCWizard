@@ -166,7 +166,7 @@ class _GCWToolState extends State<GCWTool> {
         resizeToAvoidBottomInset: widget.autoScroll,
         appBar: AppBar(title: Text(_toolName), actions: [
           GCWPopupMenu(
-            iconData: Icons.more_vert,
+            icon: Icons.more_vert,
             buttonNoBorder: true,
             menuItemBuilder: (context) => _buildToolBarItems(),
           )

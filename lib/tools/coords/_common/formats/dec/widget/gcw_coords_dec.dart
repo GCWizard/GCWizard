@@ -11,20 +11,18 @@ class _GCWCoordWidgetInfoDEC extends GCWCoordWidgetInfo {
   String get example => '45.29100, -122.41333';
 
   @override
-  _GCWCoordWidget mainWidget({
-    Key? key,
-    required void Function(BaseCoordinate?) onChanged,
-    required BaseCoordinate? coordinates,
-    bool? initialize
-  }) {
+  _GCWCoordWidget mainWidget(
+      {Key? key,
+      required void Function(BaseCoordinate?) onChanged,
+      required BaseCoordinate? coordinates,
+      bool? initialize}) {
     return _GCWCoordsDEC(key: key, onChanged: onChanged, coordinates: coordinates, initialize: initialize ?? false);
   }
 }
 
 class _GCWCoordsDEC extends _GCWCoordWidget {
-
-  _GCWCoordsDEC({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize}) :
-        super(coordinates: coordinates is DECCoordinate ? coordinates : DECFormatDefinition.defaultCoordinate);
+  _GCWCoordsDEC({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize})
+      : super(coordinates: coordinates is DECCoordinate ? coordinates : DECFormatDefinition.defaultCoordinate);
 
   @override
   _GCWCoordsDECState createState() => _GCWCoordsDECState();

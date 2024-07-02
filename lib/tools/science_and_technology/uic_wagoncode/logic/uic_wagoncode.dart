@@ -8,9 +8,9 @@ part 'package:gc_wizard/tools/science_and_technology/uic_wagoncode/logic/uic_wag
 part 'package:gc_wizard/tools/science_and_technology/uic_wagoncode/logic/uic_wagoncode_freight_classification_descriptions.dart';
 part 'package:gc_wizard/tools/science_and_technology/uic_wagoncode/logic/uic_wagoncode_passenger.dart';
 part 'package:gc_wizard/tools/science_and_technology/uic_wagoncode/logic/uic_wagoncode_passenger_heatingsystem_values.dart';
-part 'package:gc_wizard/tools/science_and_technology/uic_wagoncode/logic/uic_wagoncode_wagon.dart';
-part 'package:gc_wizard/tools/science_and_technology/uic_wagoncode/logic/uic_wagoncode_tractiveunit.dart';
 part 'package:gc_wizard/tools/science_and_technology/uic_wagoncode/logic/uic_wagoncode_specialvehicles.dart';
+part 'package:gc_wizard/tools/science_and_technology/uic_wagoncode/logic/uic_wagoncode_tractiveunit.dart';
+part 'package:gc_wizard/tools/science_and_technology/uic_wagoncode/logic/uic_wagoncode_wagon.dart';
 
 enum UICWagonTypes {INVALID, OUT_OF_ORDER, TRACTIVE, FREIGHT_WAGON, PASSENGER_WAGON, SPECIAL}
 
@@ -58,14 +58,14 @@ class UICWagonCode {
       throw const FormatException('uic_wagoncode_invalid_number');
     }
 
-    var mainType = _getWagonType(number);
+    var mainType = _getWagonType(_number);
     switch(mainType.name) {
-      case UICWagonTypes.OUT_OF_ORDER: return UICWagonCode(number);
-      case UICWagonTypes.TRACTIVE:  return UICWagonCodeTractiveUnit(number);
-      case UICWagonTypes.PASSENGER_WAGON: return UICWagonCodePassengerWagon(number);
-      case UICWagonTypes.FREIGHT_WAGON: return UICWagonCodeFreightWagon(number);
-      case UICWagonTypes.SPECIAL: return UICWagonCodeSpecialVehicle(number);
-      default: return UICWagonCode(number);
+      case UICWagonTypes.OUT_OF_ORDER: return UICWagonCode(_number);
+      case UICWagonTypes.TRACTIVE:  return UICWagonCodeTractiveUnit(_number);
+      case UICWagonTypes.PASSENGER_WAGON: return UICWagonCodePassengerWagon(_number);
+      case UICWagonTypes.FREIGHT_WAGON: return UICWagonCodeFreightWagon(_number);
+      case UICWagonTypes.SPECIAL: return UICWagonCodeSpecialVehicle(_number);
+      default: return UICWagonCode(_number);
     }
   }
 

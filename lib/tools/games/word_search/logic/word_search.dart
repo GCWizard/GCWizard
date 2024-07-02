@@ -8,7 +8,7 @@ import 'package:gc_wizard/utils/string_utils.dart' as strUtils;
 const _emptyChar = '\t';
 final _nonBreakingSpace = String.fromCharCode(0160);
 
-enum FillGapMode {OFF, DOWN, TOP, LEFT, RIGHT}
+enum FillGapMode { OFF, DOWN, TOP, LEFT, RIGHT }
 
 enum SearchDirectionFlags {
   HORIZONTAL,
@@ -23,13 +23,14 @@ enum SearchDirectionFlags {
   static int setFlag(int value, SearchDirectionFlags flag) {
     return value | (1 << flag.index);
   }
+
   static int resetFlag(int value, SearchDirectionFlags flag) {
     return value & ~(1 << flag.index);
   }
 }
 
-String _normalizeInput(String text, bool noSpaces){
-  text = text.replaceAll(RegExp(r'['+ r'\f\t' + (noSpaces ? ' ]' : ']')), '');
+String _normalizeInput(String text, bool noSpaces) {
+  text = text.replaceAll(RegExp(r'[' + r'\f\t' + (noSpaces ? ' ]' : ']')), '');
   var lines = _splitLines(text);
   lines.removeWhere((line) => line.trim().isEmpty);
   return lines.join('\r\n');
@@ -42,7 +43,7 @@ List<String> normalizeAndSplitInputForView(String text, {bool noSpaces = true}) 
   return lines;
 }
 
-List<String> _splitLines(String text){
+List<String> _splitLines(String text) {
   return const LineSplitter().convert(text);
 }
 
@@ -57,20 +58,20 @@ List<Uint8List> searchWordList(String text, String wordList, int searchDirection
   var result = _buildResultMatrix(text);
   if ((SearchDirectionFlags.hasFlag(searchDirection, SearchDirectionFlags.HORIZONTAL))) {
     result = _combineResultMatrix(result, _searchHorizontal(text, wordLines));
-    if ((SearchDirectionFlags.hasFlag(searchDirection,SearchDirectionFlags.REVERSE))) {
+    if ((SearchDirectionFlags.hasFlag(searchDirection, SearchDirectionFlags.REVERSE))) {
       result = _combineResultMatrix(result, _searchHorizontalReverse(text, wordLines));
     }
   }
-  if ((SearchDirectionFlags.hasFlag(searchDirection,SearchDirectionFlags.VERTICAL))) {
+  if ((SearchDirectionFlags.hasFlag(searchDirection, SearchDirectionFlags.VERTICAL))) {
     result = _combineResultMatrix(result, _searchVertical(text, wordLines));
-    if ((SearchDirectionFlags.hasFlag(searchDirection,SearchDirectionFlags.REVERSE))) {
+    if ((SearchDirectionFlags.hasFlag(searchDirection, SearchDirectionFlags.REVERSE))) {
       result = _combineResultMatrix(result, _searchVerticalReverse(text, wordLines));
     }
   }
-  if ((SearchDirectionFlags.hasFlag(searchDirection,SearchDirectionFlags.DIAGONAL))) {
+  if ((SearchDirectionFlags.hasFlag(searchDirection, SearchDirectionFlags.DIAGONAL))) {
     result = _combineResultMatrix(result, _searchDiagonalLR(text, wordLines));
     result = _combineResultMatrix(result, _searchDiagonalRL(text, wordLines));
-    if ((SearchDirectionFlags.hasFlag(searchDirection,SearchDirectionFlags.REVERSE))) {
+    if ((SearchDirectionFlags.hasFlag(searchDirection, SearchDirectionFlags.REVERSE))) {
       result = _combineResultMatrix(result, _searchDiagonalReverseLR(text, wordLines));
       result = _combineResultMatrix(result, _searchDiagonalReverseRL(text, wordLines));
     }
@@ -85,7 +86,7 @@ List<Uint8List> _searchWords(String text, List<String> wordList, int id) {
   _splitLines(text).forEachIndexed((index, line) {
     var matches = regex.allMatches(line);
     for (var match in matches) {
-      matrix[index] = _setResults(matrix[index], match.start, match.end , id);
+      matrix[index] = _setResults(matrix[index], match.start, match.end, id);
     }
   });
   return matrix;
@@ -111,8 +112,8 @@ List<Uint8List> _searchVertical(String text, List<String> wordList) {
     });
   }
 
-  var result = _searchWords(verticalText.join('\n'), wordList,
-      SearchDirectionFlags.setFlag(0, SearchDirectionFlags.VERTICAL));
+  var result =
+      _searchWords(verticalText.join('\n'), wordList, SearchDirectionFlags.setFlag(0, SearchDirectionFlags.VERTICAL));
   var matrix = _buildResultMatrix(text);
 
   lines.forEachIndexed((rowIndex, line) {
@@ -143,8 +144,8 @@ List<Uint8List> _searchDiagonalLR(String text, List<String> wordList) {
     });
   });
 
-  var result = _searchWords(diagonalText.join('\n'), wordList,
-      SearchDirectionFlags.setFlag(0, SearchDirectionFlags.DIAGONAL));
+  var result =
+      _searchWords(diagonalText.join('\n'), wordList, SearchDirectionFlags.setFlag(0, SearchDirectionFlags.DIAGONAL));
 
   return _buildDiagonalResultMatrix(text, result, diagonalTextMap);
 }
@@ -156,7 +157,8 @@ List<Uint8List> _searchDiagonalReverseLR(String text, List<String> wordList) {
 List<Uint8List> _searchDiagonalRL(String text, List<String> wordList) {
   var lines = _splitLines(text);
   int maxRowLength = _maxRowLength(lines);
-  var diagonalText = List<String>.generate(_getDiagonalRowIndexRL(lines.length - 1, maxRowLength, maxRowLength), (index) => '');
+  var diagonalText =
+      List<String>.generate(_getDiagonalRowIndexRL(lines.length - 1, maxRowLength, maxRowLength), (index) => '');
   var diagonalTextMap = List<List<Point<int>>>.generate(diagonalText.length, (index) => <Point<int>>[]);
 
   lines.forEachIndexed((rowIndex, line) {
@@ -168,8 +170,8 @@ List<Uint8List> _searchDiagonalRL(String text, List<String> wordList) {
     });
   });
 
-  var result = _searchWords(diagonalText.join('\n'), wordList,
-      SearchDirectionFlags.setFlag(0, SearchDirectionFlags.DIAGONAL));
+  var result =
+      _searchWords(diagonalText.join('\n'), wordList, SearchDirectionFlags.setFlag(0, SearchDirectionFlags.DIAGONAL));
 
   return _buildDiagonalResultMatrix(text, result, diagonalTextMap);
 }
@@ -178,7 +180,8 @@ List<Uint8List> _searchDiagonalReverseRL(String text, List<String> wordList) {
   return _searchDiagonalRL(text, _reversedWordList(wordList));
 }
 
-List<Uint8List> _buildDiagonalResultMatrix(String text, List<Uint8List> result, List<List<Point<int>>> diagonalTextMap) {
+List<Uint8List> _buildDiagonalResultMatrix(
+    String text, List<Uint8List> result, List<List<Point<int>>> diagonalTextMap) {
   var matrix = _buildResultMatrix(text);
 
   result.forEachIndexed((rowIndex, line) {
@@ -221,15 +224,14 @@ List<String> _reversedWordList(List<String> wordList) {
   return wordList.map((word) => strUtils.reverse(word)).toList();
 }
 
-Uint8List _setResults(Uint8List line, int start, int end, int value ) {
-  line.setRange(start, end, List<int>.generate(end-start, (index) => value));
+Uint8List _setResults(Uint8List line, int start, int end, int value) {
+  line.setRange(start, end, List<int>.generate(end - start, (index) => value));
   return line;
 }
 
 List<Uint8List> _combineResultMatrix(List<Uint8List> baseMatrix, List<Uint8List> newMatrix) {
-
-  for (var row = 0; row< min(baseMatrix.length, newMatrix.length); row++) {
-    for (var column = 0; column< min(baseMatrix[row].length, newMatrix[row].length); column++) {
+  for (var row = 0; row < min(baseMatrix.length, newMatrix.length); row++) {
+    for (var column = 0; column < min(baseMatrix[row].length, newMatrix[row].length); column++) {
       baseMatrix[row][column] = baseMatrix[row][column] | newMatrix[row][column];
     }
   }
@@ -340,6 +342,6 @@ List<String> _fillGap(List<String> lines, int row, int column, int row2, int col
   return lines;
 }
 
-bool _isValidPosition (List<String> lines, int row, int column) {
-  return (row >= 0 && row < lines.length && column >= 0 && column < lines[row].length );
+bool _isValidPosition(List<String> lines, int row, int column) {
+  return (row >= 0 && row < lines.length && column >= 0 && column < lines[row].length);
 }

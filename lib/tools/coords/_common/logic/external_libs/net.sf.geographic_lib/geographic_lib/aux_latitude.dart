@@ -29,14 +29,15 @@ part of 'package:gc_wizard/tools/coords/_common/logic/external_libs/net.sf.geogr
  * to enable truncation errors to be measured easily.
  **********************************************************************/
 
-const int _GEOGRAPHICLIB_AUXLATITUDE_ORDER = (_GEOGRAPHICLIB_PRECISION == 2 || _GEOGRAPHICLIB_PRECISION == 5 ? 6 : (_GEOGRAPHICLIB_PRECISION == 1 ? 4 : 8));
+const int _GEOGRAPHICLIB_AUXLATITUDE_ORDER =
+    (_GEOGRAPHICLIB_PRECISION == 2 || _GEOGRAPHICLIB_PRECISION == 5 ? 6 : (_GEOGRAPHICLIB_PRECISION == 1 ? 4 : 8));
 
 // ignore_for_file: unused_field
 // ignore_for_file: unused_element
 class _AuxLatitude {
   // Maximum number of iterations for Newton's method
   static const int numit_ = 1000;
-  late final double tol_, bmin_, bmax_;       // Static consts for Newton's method
+  late final double tol_, bmin_, bmax_; // Static consts for Newton's method
   late final double _a, _b, _f, _fm1, _e2, _e2m1, _e12, _e12p1, _n, _e, _e1, _n2, _q;
 
   late final List<double> _c;
@@ -73,17 +74,17 @@ class _AuxLatitude {
    * Conformal latitude, \e chi, &chi;
    * @hideinitializer
    **********************************************************************/
-  static const _CONFORMAL  = 4;
+  static const _CONFORMAL = 4;
   /**
    * Authalic latitude, \e xi, &xi;
    * @hideinitializer
    **********************************************************************/
-  static const _AUTHALIC   = 5;
+  static const _AUTHALIC = 5;
   /**
    * The total number of auxiliary latitudes
    * @hideinitializer
    **********************************************************************/
-  static const _AUXNUMBER  = 6;
+  static const _AUXNUMBER = 6;
   /**
   * An alias for GEOGRAPHIC
   * @hideinitializer
@@ -115,7 +116,7 @@ class _AuxLatitude {
    **********************************************************************/
   static const _XI = _AUTHALIC;
 
-  _AuxLatitude( double a, double f) {
+  _AuxLatitude(double a, double f) {
     tol_ = sqrt(practical_epsilon);
     bmin_ = _log2(double.minPositive);
     bmax_ = _log2(double.maxFinite);
@@ -126,9 +127,9 @@ class _AuxLatitude {
     _fm1 = 1 - _f;
     _e2 = _f * (2 - _f);
     _e2m1 = _fm1 * _fm1;
-    _e12 = _e2/(1 - _e2);
+    _e12 = _e2 / (1 - _e2);
     _e12p1 = 1 / _e2m1;
-    _n = _f/(2 - _f);
+    _n = _f / (2 - _f);
     _e = sqrt(_e2.abs());
     _e1 = sqrt(_e12.abs());
     _n2 = _n * _n;
@@ -140,7 +141,9 @@ class _AuxLatitude {
   /**
    * @return \e f, the flattening of the ellipsoid.
    **********************************************************************/
-  double Flattening() { return _f; }
+  double Flattening() {
+    return _f;
+  }
 
   _AuxAngle Convert(int auxin, int auxout, _AuxAngle zeta, bool exact) {
     int k = ind(auxout, auxin);
@@ -150,8 +153,7 @@ class _AuxLatitude {
       if (auxin < 3 && auxout < 3) {
         // Need extra double because, since C++11, pow(float, int) returns double
         return _AuxAngle(zeta.y() * pow(_fm1, auxout - auxin), zeta.x());
-      }
-      else {
+      } else {
         return ToAuxiliary(auxout, FromAuxiliary(auxin, zeta).auxAngle).auxAngle;
       }
     } else {
@@ -186,11 +188,13 @@ class _AuxLatitude {
     // y = sum(c[k] * cos( (2*k+2) * zeta), i, 0, K-1) if !sinp
     // Approx operation count = (K + 5) mult and (2 * K + 2) add
     int k = K;
-    double u0 = 0, u1 = 0,        // accumulators for sum
-    x = 2 * (czeta - szeta) * (czeta + szeta); // 2 * cos(2*zeta)
+    double u0 = 0,
+        u1 = 0, // accumulators for sum
+        x = 2 * (czeta - szeta) * (czeta + szeta); // 2 * cos(2*zeta)
     for (; k > 0;) {
       double t = x * u0 - u1 + c[--k];
-      u1 = u0; u0 = t;
+      u1 = u0;
+      u0 = t;
     }
     // u0*f0(zeta) - u1*fm1(zeta)
     // f0 = sinp ? sin(2*zeta) : cos(2*zeta)
@@ -200,9 +204,7 @@ class _AuxLatitude {
   }
 
   static int ind(int auxout, int auxin) {
-    return (auxout >= 0 && auxout < _AUXNUMBER && auxin  >= 0 && auxin  < _AUXNUMBER)
-        ? _AUXNUMBER * auxout + auxin
-        : -1;
+    return (auxout >= 0 && auxout < _AUXNUMBER && auxin >= 0 && auxin < _AUXNUMBER) ? _AUXNUMBER * auxout + auxin : -1;
   }
 
   _AuxAngleDiff Parametric(_AuxAngle phi, [double? diff]) {
@@ -218,8 +220,7 @@ class _AuxLatitude {
   _AuxAngleDiff Rectifying(_AuxAngle phi, [double? diff]) {
     _AuxAngle beta = Parametric(phi).auxAngle.normalized();
     double sbeta = beta.y().abs(), cbeta = beta.x().abs();
-    double a = 1, b = _fm1, ka = _e2, kb = -_e12, ka1 = _e2m1, kb1 = _e12p1,
-    smu, cmu, mr;
+    double a = 1, b = _fm1, ka = _e2, kb = -_e12, ka1 = _e2m1, kb1 = _e12p1, smu, cmu, mr;
     if (_f < 0) {
       var _h = a;
       a = b;
@@ -241,18 +242,18 @@ class _AuxLatitude {
     // NB kb <= 0; 0 <= ka <= 1
     // sa = b*E(beta,sqrt(kb)), sb = a*E(beta',sqrt(ka))
     //    1 - ka * (1 - sb2) = 1 -ka + ka*sb2
-    double
-    sb2 = sbeta * sbeta,
-    cb2 = cbeta * cbeta,
-    db2 = 1 - kb * sb2,
-    da2 = ka1 + ka * sb2,
-    // DLMF Eq. 19.25.9
-    sa = b * sbeta * ( _EllipticFunction.RF3(cb2, db2, 1) -
-    kb * sb2 * _EllipticFunction.RD(cb2, db2, 1)/3 ),
-    // DLMF Eq. 19.25.10 with complementary angles
-    sb = a * cbeta * ( ka1 * _EllipticFunction.RF3(sb2, da2, 1)
-    + ka * ka1 * cb2 * _EllipticFunction.RD(sb2, 1, da2)/3
-    + ka * sbeta / sqrt(da2) );
+    double sb2 = sbeta * sbeta,
+        cb2 = cbeta * cbeta,
+        db2 = 1 - kb * sb2,
+        da2 = ka1 + ka * sb2,
+        // DLMF Eq. 19.25.9
+        sa = b * sbeta * (_EllipticFunction.RF3(cb2, db2, 1) - kb * sb2 * _EllipticFunction.RD(cb2, db2, 1) / 3),
+        // DLMF Eq. 19.25.10 with complementary angles
+        sb = a *
+            cbeta *
+            (ka1 * _EllipticFunction.RF3(sb2, da2, 1) +
+                ka * ka1 * cb2 * _EllipticFunction.RD(sb2, 1, da2) / 3 +
+                ka * sbeta / sqrt(da2));
     // sa + sb  = 2*EllipticFunction::RG(a*a, b*b) = a*E(e) = b*E(i*e')
     // mr = a*E(e)*(2/pi) = b*E(i*e')*(2/pi)
     mr = (2 * (sa + sb)) / _GeoMath.pi();
@@ -272,38 +273,39 @@ class _AuxLatitude {
     if (diff != null) {
       double cphi = phi.normalized().x(), tphi = phi.tan();
       if (!tphi.isInfinite) {
-        cmu = mu.x(); cbeta = beta.x();
-        diff = _fm1 * b/mr * _GeoMath.sq(cbeta / cmu) * (cbeta / cphi);
+        cmu = mu.x();
+        cbeta = beta.x();
+        diff = _fm1 * b / mr * _GeoMath.sq(cbeta / cmu) * (cbeta / cphi);
       } else {
-        diff = _fm1 * mr/a;
+        diff = _fm1 * mr / a;
       }
     }
     return _AuxAngleDiff(mu, diff);
   }
 
- double RectifyingRadius(bool exact) {
-   if (exact) {
-     return _EllipticFunction.RG(_GeoMath.sq(_a), _GeoMath.sq(_b)) * 4 / _GeoMath.pi();
-   } else {
-     // Maxima code for these coefficients:
-     // df[i]:=if i<0 then df[i+2]/(i+2) else i!!$
-     // R(Lmax):=sum((df[2*j-3]/df[2*j])^2*n^(2*j),j,0,floor(Lmax/2))$
-     // cf(Lmax):=block([t:R(Lmax)],
-     //  t:makelist(coeff(t,n,2*(floor(Lmax/2)-j)),j,0,floor(Lmax/2)),
-     //  map(lambda([x],num(x)/
-     //         (if denom(x) = 1 then 1 else denom(x.0))),t))$
-     List<double> coeff = [];
-     if (_GEOGRAPHICLIB_AUXLATITUDE_ORDER == 4) {
-       coeff = [1 / 64.0, 1 / 4.0, 1];
-     } else if (_GEOGRAPHICLIB_AUXLATITUDE_ORDER == 6) {
-       coeff = [1 / 256.0, 1 / 64.0, 1 / 4.0, 1];
-     } else if (_GEOGRAPHICLIB_AUXLATITUDE_ORDER == 8) {
-       coeff = [25/16384.0, 1/256.0, 1/64.0, 1/4.0, 1];
-     }
-     int m = Lmax ~/ 2;
-     return (_a + _b) / 2 * _GeoMath.polyval(m, coeff, 0, _n2);
-   }
- }
+  double RectifyingRadius(bool exact) {
+    if (exact) {
+      return _EllipticFunction.RG(_GeoMath.sq(_a), _GeoMath.sq(_b)) * 4 / _GeoMath.pi();
+    } else {
+      // Maxima code for these coefficients:
+      // df[i]:=if i<0 then df[i+2]/(i+2) else i!!$
+      // R(Lmax):=sum((df[2*j-3]/df[2*j])^2*n^(2*j),j,0,floor(Lmax/2))$
+      // cf(Lmax):=block([t:R(Lmax)],
+      //  t:makelist(coeff(t,n,2*(floor(Lmax/2)-j)),j,0,floor(Lmax/2)),
+      //  map(lambda([x],num(x)/
+      //         (if denom(x) = 1 then 1 else denom(x.0))),t))$
+      List<double> coeff = [];
+      if (_GEOGRAPHICLIB_AUXLATITUDE_ORDER == 4) {
+        coeff = [1 / 64.0, 1 / 4.0, 1];
+      } else if (_GEOGRAPHICLIB_AUXLATITUDE_ORDER == 6) {
+        coeff = [1 / 256.0, 1 / 64.0, 1 / 4.0, 1];
+      } else if (_GEOGRAPHICLIB_AUXLATITUDE_ORDER == 8) {
+        coeff = [25 / 16384.0, 1 / 256.0, 1 / 64.0, 1 / 4.0, 1];
+      }
+      int m = Lmax ~/ 2;
+      return (_a + _b) / 2 * _GeoMath.polyval(m, coeff, 0, _n2);
+    }
+  }
 
   // the function sqrt(1 + tphi^2), convert tan to sec
   static double sc(double tphi) {
@@ -317,17 +319,17 @@ class _AuxLatitude {
 
   double atanhee(double tphi) {
     double s = _f <= 0 ? sn(tphi) : sn(_fm1 * tphi);
-    return _f == 0 ? s :
-    // atanh(e * sphi) = asinh(e' * sbeta)
-    (_f < 0 ? atan( _e * s ) : _asinh( _e1 * s )) / _e;
+    return _f == 0
+        ? s
+        :
+        // atanh(e * sphi) = asinh(e' * sbeta)
+        (_f < 0 ? atan(_e * s) : _asinh(_e1 * s)) / _e;
   }
 
   _AuxAngleDiff Conformal(_AuxAngle phi, double? diff) {
     double tphi = phi.tan().abs(), tchi = tphi;
-    if ( !( !tphi.isFinite || tphi == 0 || _f == 0 ) ) {
-      double scphi = sc(tphi),
-      sig = _sinh(_e2 * atanhee(tphi) ),
-      scsig = sc(sig);
+    if (!(!tphi.isFinite || tphi == 0 || _f == 0)) {
+      double scphi = sc(tphi), sig = _sinh(_e2 * atanhee(tphi)), scsig = sc(sig);
       if (_f <= 0) {
         tchi = tphi * scsig - sig * scphi;
       } else {
@@ -340,8 +342,7 @@ class _AuxLatitude {
         double sigtphi = sig / tphi, tphimsig;
         if (sig < tphi / 2) {
           tphimsig = tphi - sig;
-        }
-        else {
+        } else {
           // Still have possibly dangerous cancellation in tphi - sig.
           //
           // Write tphi - sig = (1 - e) * Dg(1, e)
@@ -351,16 +352,15 @@ class _AuxLatitude {
           // Turn the crank on divided differences, substitute
           //   sphi = tphi/sc(tphi)
           //   atanh(x) = asinh(x/sqrt(1-x^2))
-          double em1 = _e2m1 / (1 + _e),              // 1 - e
-          atanhs = _asinh(tphi),                // atanh(sphi)
-          scbeta = sc(_fm1 * tphi),            // sec(beta)
-          scphibeta = sc(tphi) / scbeta,       // sec(phi)/sec(beta)
-          atanhes = _asinh(_e * tphi / scbeta), // atanh(e * sphi)
-          t1 = (atanhs - _e * atanhes)/2,
-          t2 = _asinh(em1 * (tphi * scphibeta)) / em1,
-          Dg = _cosh((atanhs + _e * atanhes)/2) * (_sinh(t1) / t1)
-          * ((atanhs + atanhes)/2 + (1 + _e)/2 * t2);
-          tphimsig = em1 * Dg;  // tphi - sig
+          double em1 = _e2m1 / (1 + _e), // 1 - e
+              atanhs = _asinh(tphi), // atanh(sphi)
+              scbeta = sc(_fm1 * tphi), // sec(beta)
+              scphibeta = sc(tphi) / scbeta, // sec(phi)/sec(beta)
+              atanhes = _asinh(_e * tphi / scbeta), // atanh(e * sphi)
+              t1 = (atanhs - _e * atanhes) / 2,
+              t2 = _asinh(em1 * (tphi * scphibeta)) / em1,
+              Dg = _cosh((atanhs + _e * atanhes) / 2) * (_sinh(t1) / t1) * ((atanhs + atanhes) / 2 + (1 + _e) / 2 * t2);
+          tphimsig = em1 * Dg; // tphi - sig
         }
         tchi = tphimsig * (1 + sigtphi) / (scsig + sigtphi * scphi);
       }
@@ -369,12 +369,12 @@ class _AuxLatitude {
     if (diff != null) {
       if (!tphi.isInfinite) {
         double cchi = chi.normalized().x(),
-        cphi = phi.normalized().x(),
-        cbeta = Parametric(phi).auxAngle.normalized().x();
+            cphi = phi.normalized().x(),
+            cbeta = Parametric(phi).auxAngle.normalized().x();
         diff = _e2m1 * (cbeta / cchi) * (cbeta / cphi);
       } else {
         double ss = _f > 0 ? _sinh(_e * _asinh(_e1)) : _sinh(-_e * atan(_e));
-        diff = _f > 0 ? 1/( sc(ss) + ss ) : sc(ss) - ss;
+        diff = _f > 0 ? 1 / (sc(ss) + ss) : sc(ss) - ss;
       }
     }
     return _AuxAngleDiff(chi, diff);
@@ -386,9 +386,10 @@ class _AuxLatitude {
   }
 
   double Dq(double tphi) {
-    double scphi = sc(tphi), sphi = sn(tphi),
-    // d = (1 - sphi) can underflow to zero for large tphi
-    d = tphi > 0 ? 1 / (scphi * scphi * (1 + sphi)) : 1 - sphi;
+    double scphi = sc(tphi),
+        sphi = sn(tphi),
+        // d = (1 - sphi) can underflow to zero for large tphi
+        d = tphi > 0 ? 1 / (scphi * scphi * (1 + sphi)) : 1 - sphi;
     if (tphi <= 0) {
       // This branch is not reached; this case is open-coded in Authalic.
       return (_q - q(tphi)) / d;
@@ -403,12 +404,12 @@ class _AuxLatitude {
         // = atanh( e * d * scphi/(scphi - e2 * tphi))
         // =
         double scbeta = sc(_fm1 * tphi);
-        return (_f == 0 ? 1 :
-          (_f > 0 ? _asinh(_e1 * d * scphi / scbeta) :
-          atan(_e * d / (1 - _e2 * sphi))) / (_e * d)) +
-              (_f > 0 ?
-              ((scphi + _e2 * tphi) / (_e2m1 * scbeta)) * (scphi / scbeta) :
-              (1 + _e2 * sphi) / ((1 - _e2 * sphi * sphi) * _e2m1));
+        return (_f == 0
+                ? 1
+                : (_f > 0 ? _asinh(_e1 * d * scphi / scbeta) : atan(_e * d / (1 - _e2 * sphi))) / (_e * d)) +
+            (_f > 0
+                ? ((scphi + _e2 * tphi) / (_e2m1 * scbeta)) * (scphi / scbeta)
+                : (1 + _e2 * sphi) / ((1 - _e2 * sphi * sphi) * _e2m1));
       }
     }
   }
@@ -416,19 +417,16 @@ class _AuxLatitude {
   _AuxAngleDiff Authalic(_AuxAngle phi, double? diff) {
     double tphi = phi.tan().abs();
     _AuxAngle xi = _AuxAngle.copy(phi), phin = _AuxAngle.copy(phi.normalized());
-    if ( !( !tphi.isInfinite || tphi == 0 || _f == 0 ) ) {
-    double qv = q(tphi),
-    Dqp = Dq(tphi),
-    Dqm = (_q + qv) / (1 + phin.y().abs()); // Dq(-tphi)
-    xi = _AuxAngle(_copySign(qv, phi.y()), phin.x() * sqrt(Dqp * Dqm) );
+    if (!(!tphi.isInfinite || tphi == 0 || _f == 0)) {
+      double qv = q(tphi), Dqp = Dq(tphi), Dqm = (_q + qv) / (1 + phin.y().abs()); // Dq(-tphi)
+      xi = _AuxAngle(_copySign(qv, phi.y()), phin.x() * sqrt(Dqp * Dqm));
     }
-      if (diff != null) {
+    if (diff != null) {
       if (!tphi.isNaN) {
-        double cbeta = Parametric(phi).auxAngle.normalized().x(),
-        cxi = xi.normalized().x();
-        diff = (2/_q) * _GeoMath.sq(cbeta / cxi) * (cbeta / cxi) * (cbeta / phin.x());
+        double cbeta = Parametric(phi).auxAngle.normalized().x(), cxi = xi.normalized().x();
+        diff = (2 / _q) * _GeoMath.sq(cbeta / cxi) * (cbeta / cxi) * (cbeta / phin.x());
       } else {
-        diff = _e2m1 * sqrt(_q/2);
+        diff = _e2m1 * sqrt(_q / 2);
       }
     }
     return _AuxAngleDiff(xi, diff);
@@ -441,16 +439,21 @@ class _AuxLatitude {
           diff = 1;
         }
         return _AuxAngleDiff(phi, diff);
-      case _PARAMETRIC: return Parametric(phi, diff);
-      case _GEOCENTRIC: return Geocentric(phi, diff);
-      case _RECTIFYING: return Rectifying(phi, diff);
-      case _CONFORMAL : return Conformal (phi, diff);
-      case _AUTHALIC  : return Authalic  (phi, diff);
+      case _PARAMETRIC:
+        return Parametric(phi, diff);
+      case _GEOCENTRIC:
+        return Geocentric(phi, diff);
+      case _RECTIFYING:
+        return Rectifying(phi, diff);
+      case _CONFORMAL:
+        return Conformal(phi, diff);
+      case _AUTHALIC:
+        return Authalic(phi, diff);
       default:
         if (diff != null) {
           diff = double.nan;
         }
-      return _AuxAngleDiff(_AuxAngle.NaN(), diff);
+        return _AuxAngleDiff(_AuxAngle.NaN(), diff);
     }
   }
 
@@ -461,23 +464,32 @@ class _AuxLatitude {
     }
     double tphi = _fm1;
     switch (auxin) {
-      case _GEOGRAPHIC: return _AuxAngleNiter(zeta, niter);
-      case _PARAMETRIC: return _AuxAngleNiter(_AuxAngle(zeta.y() / _fm1, zeta.x()), niter);
-      case _GEOCENTRIC: return _AuxAngleNiter(_AuxAngle(zeta.y() / _e2m1, zeta.x()), niter);
-      case _RECTIFYING: tphi *= sqrt(_fm1); break;
-      case _CONFORMAL : tphi *= _fm1  ; break;
-      case _AUTHALIC  : tphi *= _cbrt(_fm1); break;
-      default: return _AuxAngleNiter(_AuxAngle.NaN(), niter);
+      case _GEOGRAPHIC:
+        return _AuxAngleNiter(zeta, niter);
+      case _PARAMETRIC:
+        return _AuxAngleNiter(_AuxAngle(zeta.y() / _fm1, zeta.x()), niter);
+      case _GEOCENTRIC:
+        return _AuxAngleNiter(_AuxAngle(zeta.y() / _e2m1, zeta.x()), niter);
+      case _RECTIFYING:
+        tphi *= sqrt(_fm1);
+        break;
+      case _CONFORMAL:
+        tphi *= _fm1;
+        break;
+      case _AUTHALIC:
+        tphi *= _cbrt(_fm1);
+        break;
+      default:
+        return _AuxAngleNiter(_AuxAngle.NaN(), niter);
     }
-  
+
     // Drop through to solution by Newton's method
     double tzeta = zeta.tan().abs(), ltzeta = _log2(tzeta);
     if (!ltzeta.isFinite) {
       return _AuxAngleNiter(zeta, niter);
     }
     tphi = tzeta / tphi;
-    double ltphi = _log2(tphi),
-    bmin = min<double>(ltphi, bmin_), bmax = max<double>(ltphi, bmax_);
+    double ltphi = _log2(tphi), bmin = min<double>(ltphi, bmin_), bmax = max<double>(ltphi, bmax_);
     for (int sign = 0, osign = 0, ntrip = 0; n < numit_;) {
       ++n;
       double diff = double.nan;
@@ -514,7 +526,8 @@ class _AuxLatitude {
         break;
       }
       if ((sign * osign < 0 && n - ntrip > 2) || ltphi >= bmax || ltphi <= bmin) {
-        sign = 0; ntrip = n;
+        sign = 0;
+        ntrip = n;
         ltphi = (bmin + bmax) / 2;
         tphi = _exp2(ltphi);
       }
@@ -528,7 +541,7 @@ class _AuxLatitude {
   void fillcoeff(int auxin, int auxout, int k) {
     List<double> coeffs = [];
     List<int> ptrs = [];
-  
+
     if (_GEOGRAPHICLIB_AUXLATITUDE_ORDER == 4) {
       coeffs = [
         // C[phi,phi] skipped
@@ -689,9 +702,43 @@ class _AuxLatitude {
         // C[xi,xi] skipped
       ];
       ptrs = [
-        0, 0, 6, 12, 18, 28, 38, 44, 44, 50, 56, 66, 76, 82, 88, 88, 94, 104,
-        114, 120, 126, 132, 132, 142, 152, 162, 172, 182, 192, 192, 202, 212,
-        222, 232, 242, 252, 252,
+        0,
+        0,
+        6,
+        12,
+        18,
+        28,
+        38,
+        44,
+        44,
+        50,
+        56,
+        66,
+        76,
+        82,
+        88,
+        88,
+        94,
+        104,
+        114,
+        120,
+        126,
+        132,
+        132,
+        142,
+        152,
+        162,
+        172,
+        182,
+        192,
+        192,
+        202,
+        212,
+        222,
+        232,
+        242,
+        252,
+        252,
       ];
     }
     if (_GEOGRAPHICLIB_AUXLATITUDE_ORDER == 6) {
@@ -950,9 +997,43 @@ class _AuxLatitude {
         // C[xi,xi] skipped
       ];
       ptrs = [
-        0, 0, 12, 24, 36, 57, 78, 90, 90, 102, 114, 135, 156, 168, 180, 180, 192,
-        213, 234, 246, 258, 270, 270, 291, 312, 333, 354, 375, 396, 396, 417,
-        438, 459, 480, 501, 522, 522,
+        0,
+        0,
+        12,
+        24,
+        36,
+        57,
+        78,
+        90,
+        90,
+        102,
+        114,
+        135,
+        156,
+        168,
+        180,
+        180,
+        192,
+        213,
+        234,
+        246,
+        258,
+        270,
+        270,
+        291,
+        312,
+        333,
+        354,
+        375,
+        396,
+        396,
+        417,
+        438,
+        459,
+        480,
+        501,
+        522,
+        522,
       ];
     }
     if (_GEOGRAPHICLIB_AUXLATITUDE_ORDER == 8) {
@@ -1372,13 +1453,49 @@ class _AuxLatitude {
         // C[xi,xi] skipped
       ];
       ptrs = [
-        0, 0, 20, 40, 60, 96, 132, 152, 152, 172, 192, 228, 264, 284, 304, 304,
-        324, 360, 396, 416, 436, 456, 456, 492, 528, 564, 600, 636, 672, 672,
-        708, 744, 780, 816, 852, 888, 888,
+        0,
+        0,
+        20,
+        40,
+        60,
+        96,
+        132,
+        152,
+        152,
+        172,
+        192,
+        228,
+        264,
+        284,
+        304,
+        304,
+        324,
+        360,
+        396,
+        416,
+        436,
+        456,
+        456,
+        492,
+        528,
+        564,
+        600,
+        636,
+        672,
+        672,
+        708,
+        744,
+        780,
+        816,
+        852,
+        888,
+        888,
       ];
     }
 
-    if (k < 0) {return;}         // auxout or auxin out of range
+    if (k < 0) {
+      return;
+    } // auxout or auxin out of range
     if (auxout == auxin) {
       for (int i = Lmax * k; i < Lmax * (k + 1); i++) {
         _c[i] = 0;
@@ -1412,7 +1529,7 @@ class _AuxAngleDiff {
   _AuxAngleDiff(this.auxAngle, [this.diff]);
 }
 
-class _AuxAngleNiter{
+class _AuxAngleNiter {
   final _AuxAngle auxAngle;
   final int? niter;
 

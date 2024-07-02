@@ -27,22 +27,21 @@ class GCWIntegerSpinner extends StatefulWidget {
   final SpinnerOverflowType overflow;
   final List<int> flexValues;
 
-  GCWIntegerSpinner(
-      {Key? key,
-      required this.onChanged,
-      this.title,
-      required this.value,
-      this.min = MIN_INT,
-      this.max = MAX_INT,
-      this.leftPadZeros,
-      this.controller,
-      this.layout = SpinnerLayout.HORIZONTAL,
-      this.focusNode,
-      this.overflow =
-          SpinnerOverflowType.ALLOW_OVERFLOW, // TODO: Automatically true if this.min == null || this.max == null
-      this.flexValues = const [],
-      })
-      : super(key: key);
+  GCWIntegerSpinner({
+    Key? key,
+    required this.onChanged,
+    this.title,
+    required this.value,
+    this.min = MIN_INT,
+    this.max = MAX_INT,
+    this.leftPadZeros,
+    this.controller,
+    this.layout = SpinnerLayout.HORIZONTAL,
+    this.focusNode,
+    this.overflow =
+        SpinnerOverflowType.ALLOW_OVERFLOW, // TODO: Automatically true if this.min == null || this.max == null
+    this.flexValues = const [],
+  }) : super(key: key);
 
   @override
   _GCWIntegerSpinnerState createState() => _GCWIntegerSpinnerState();
@@ -112,10 +111,8 @@ class _GCWIntegerSpinnerState extends State<GCWIntegerSpinner> {
   Widget _buildTitle() {
     return (widget.title == null)
         ? Container()
-        : Expanded(flex: widget.flexValues.isNotEmpty
-            ? widget.flexValues[0]
-            : 1,
-          child: GCWText(text: widget.title! + ':'));
+        : Expanded(
+            flex: widget.flexValues.isNotEmpty ? widget.flexValues[0] : 1, child: GCWText(text: widget.title! + ':'));
   }
 
   Widget _buildTextField() {

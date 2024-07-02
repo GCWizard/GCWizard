@@ -11,20 +11,18 @@ class _GCWCoordWidgetInfoDMS extends GCWCoordWidgetInfo {
   String get example => 'N 45° 17\' 27.60" W 122° 24\' 48.00"';
 
   @override
-  _GCWCoordWidget mainWidget({
-    Key? key,
-    required void Function(BaseCoordinate?) onChanged,
-    required BaseCoordinate? coordinates,
-    bool? initialize
-  }) {
+  _GCWCoordWidget mainWidget(
+      {Key? key,
+      required void Function(BaseCoordinate?) onChanged,
+      required BaseCoordinate? coordinates,
+      bool? initialize}) {
     return _GCWCoordsDMS(key: key, onChanged: onChanged, coordinates: coordinates, initialize: initialize ?? false);
   }
 }
 
 class _GCWCoordsDMS extends _GCWCoordWidget {
-
-  _GCWCoordsDMS({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize}) :
-        super(coordinates: coordinates is DMSCoordinate ? coordinates : DMSFormatDefinition.defaultCoordinate);
+  _GCWCoordsDMS({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize})
+      : super(coordinates: coordinates is DMSCoordinate ? coordinates : DMSFormatDefinition.defaultCoordinate);
 
   @override
   _GCWCoordsDMSState createState() => _GCWCoordsDMSState();

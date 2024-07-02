@@ -13,7 +13,6 @@ import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_param
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
-import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_export_dialog.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
@@ -32,6 +31,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_code_textfield.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_export_dialog.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/gcw_mapview.dart';
 import 'package:gc_wizard/tools/images_and_files/hex_viewer/widget/hex_viewer.dart';
@@ -682,7 +682,10 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
               size: IconButtonSize.SMALL,
               iconColor: themeColors().mainFont(),
               onPressed: () {
-                _exportMediaFilesToZIP(context, '',);
+                _exportMediaFilesToZIP(
+                  context,
+                  '',
+                );
               },
             )
           ]),
@@ -1097,7 +1100,7 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
                         ? WherigoCartridgeLUAData.Inputs[_inputIndex - 1].InputAnswers[_answerIndex - 1]
                         : WherigoAnswerData(AnswerAnswer: '', AnswerHash: '', AnswerActions: []),
                   ),
-                  copyColumn: 1,
+                  copyColumn: 2,
                   flexValues: const [3, 2, 2]),
               GCWExpandableTextDivider(
                 expanded: false,
@@ -1921,7 +1924,10 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
     }).toList();
   }
 
-  Future<void> _exportMediaFilesToZIP(BuildContext context, String fileName, ) async {
+  Future<void> _exportMediaFilesToZIP(
+    BuildContext context,
+    String fileName,
+  ) async {
     createZipFile(fileName, '', _buildUint8ListFromMedia(), names: _buildNamesFromMedia()).then((bytes) async {
       await saveByteDataToFile(context, bytes, buildFileNameWithDate('media_', FileType.ZIP)).then((value) {
         if (value) showExportedFileDialog(context);
@@ -1929,7 +1935,7 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
     });
   }
 
-  List<String> _buildNamesFromMedia(){
+  List<String> _buildNamesFromMedia() {
     List<String> names = [];
     for (WherigoMediaData mediaFileContent in WherigoCartridgeLUAData.Media) {
       names.add(mediaFileContent.MediaFilename);
@@ -1937,7 +1943,7 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
     return names;
   }
 
-  List<Uint8List> _buildUint8ListFromMedia(){
+  List<Uint8List> _buildUint8ListFromMedia() {
     List<Uint8List> data = [];
 
     for (WherigoMediaFileContent mediaFileContent in WherigoCartridgeGWCData.MediaFilesContents) {
@@ -1951,15 +1957,13 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
   Future<void> _exportMessagesToFile(BuildContext context) async {
     List<String> messages = [];
     for (var message in WherigoCartridgeLUAData.Messages) {
-      for (var messageElement in message){
+      for (var messageElement in message) {
         if (messageElement.ActionMessageType == WHERIGO_ACTIONMESSAGETYPE.TEXT) {
           messages.add(messageElement.ActionMessageContent);
         }
       }
       messages.add('');
     }
-    _exportFile(context, Uint8List.fromList(messages.join('\n').codeUnits), 'Messages',
-        FileType.TXT);
+    _exportFile(context, Uint8List.fromList(messages.join('\n').codeUnits), 'Messages', FileType.TXT);
   }
-
 }

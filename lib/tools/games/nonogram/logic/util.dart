@@ -7,7 +7,6 @@ int hintSum(List<int> hints) {
 }
 
 ShiftResult trimLine(List<int> line, List<int> hints) {
-
   var minIndex = line.indexOf(0);
   if (minIndex == -1) {
     throw const FormatException('Cannot trim solved line');
@@ -22,7 +21,8 @@ ShiftResult trimLine(List<int> line, List<int> hints) {
       while (i < minIndex && line[i] == 1) {
         i++;
       }
-      if (i == minIndex) { // on the rim
+      if (i == minIndex) {
+        // on the rim
         clonedHints[0] -= i - start;
         if (clonedHints[0] == 0) {
           clonedHints[0] = 1;
@@ -44,7 +44,8 @@ ShiftResult trimLine(List<int> line, List<int> hints) {
       while (i > maxIndex && line[i] == 1) {
         i--;
       }
-      if (i == maxIndex) { // on the rim
+      if (i == maxIndex) {
+        // on the rim
         clonedHints[clonedHints.length - 1] -= start - i;
         if (clonedHints[clonedHints.length - 1] == 0) {
           clonedHints[clonedHints.length - 1] = 1;
@@ -61,7 +62,7 @@ ShiftResult trimLine(List<int> line, List<int> hints) {
   }
 
   return ShiftResult(line.sublist(minIndex, maxIndex + 1), clonedHints,
-      TrimInfo( line.sublist(0, minIndex), line.sublist(maxIndex + 1)));
+      TrimInfo(line.sublist(0, minIndex), line.sublist(maxIndex + 1)));
 }
 
 List<int> restoreLine(List<int> line, TrimInfo trimInfo) {

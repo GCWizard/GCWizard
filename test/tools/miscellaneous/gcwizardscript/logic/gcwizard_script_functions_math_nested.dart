@@ -1,5 +1,6 @@
 part of 'gcwizard_scipt_test.dart';
 
+// ignore: unused_element
 List<Map<String, Object?>> _inputsMathNestedFunctionsToExpected = [
   {'code' : 'print SQRT(SQR(10))', 'expectedOutput' : '10.0'},
   {'code' : 'print FAC(TRUNC(SQRT(SQR(10))))', 'expectedOutput' : '3628800'},

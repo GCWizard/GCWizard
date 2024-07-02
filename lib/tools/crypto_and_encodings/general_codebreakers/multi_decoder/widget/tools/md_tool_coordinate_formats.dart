@@ -31,7 +31,7 @@ class MultiDecoderToolCoordinateFormats extends AbstractMultiDecoderTool {
               BaseCoordinate? coords;
               try {
                 var coordinateFormatKey = _getCoordinateFormatDefinition(options, MDT_COORDINATEFORMATS_OPTION_FORMAT);
-                coords =  coordinateFormatKey.parseCoordinateWholeString(input);
+                coords = coordinateFormatKey.parseCoordinateWholeString(input);
 
                 var latlng = coords?.toLatLng();
                 if (latlng == null) return null;
@@ -57,8 +57,9 @@ class _MultiDecoderToolCoordinateFormatsState extends State<MultiDecoderToolCoor
                 coordinateFormatDefinitionByKey(newValue).persistenceKey;
           });
         },
-        items:
-          allCoordinateWidgetInfos.where((widgetInfo) => widgetInfo.type != CoordinateFormatKey.SLIPPY_MAP).map((format) {
+        items: allCoordinateWidgetInfos
+            .where((widgetInfo) => widgetInfo.type != CoordinateFormatKey.SLIPPY_MAP)
+            .map((format) {
           return GCWDropDownMenuItem<CoordinateFormatKey>(
             value: format.type,
             child: i18n(context, format.name, ifTranslationNotExists: format.name),
@@ -76,5 +77,6 @@ CoordinateFormatDefinition _getCoordinateFormatDefinition(Map<String, Object?> o
   if (formatKeyDefinition != null) return formatKeyDefinition;
 
   key = toStringOrNull(getDefaultValue(MDT_INTERNALNAMES_COORDINATEFORMATS, MDT_COORDINATEFORMATS_OPTION_FORMAT)) ?? '';
-  return coordinateFormatDefinitionByPersistenceKey(key) ?? coordinateFormatDefinitionByKey(defaultCoordinateFormat.type);
+  return coordinateFormatDefinitionByPersistenceKey(key) ??
+      coordinateFormatDefinitionByKey(defaultCoordinateFormat.type);
 }

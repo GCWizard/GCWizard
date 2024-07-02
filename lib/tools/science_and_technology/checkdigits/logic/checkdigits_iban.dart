@@ -20,9 +20,9 @@ const Map<String, String> IBAN_DATA_MEANING = {
   'p': 'checkdigits_iban_data_p_account_prefix',
 };
 
-enum IBAN_IDENTIFIER_TYPES {ALPHA, ALPHANUMERIC, NUMERIC}
+enum IBAN_IDENTIFIER_TYPES { ALPHA, ALPHANUMERIC, NUMERIC }
 
-const Map<String, List<Map<String, Object>>>IBAN_DATA = {
+const Map<String, List<Map<String, Object>>> IBAN_DATA = {
   // https://en.wikipedia.org/wiki/International_Bank_Account_Number
   // https://de.wikipedia.org/w/index.php?title=Internationale_Bankkontonummer&stable=0
   // https://www.swift.com/standards/data-standards/iban
@@ -362,7 +362,8 @@ const Map<String, List<Map<String, Object>>>IBAN_DATA = {
     {'type': IBAN_IDENTIFIER_TYPES.NUMERIC},
     {'type': IBAN_IDENTIFIER_TYPES.NUMERIC},
     {'type': IBAN_IDENTIFIER_TYPES.NUMERIC},
-    {'type': IBAN_IDENTIFIER_TYPES.NUMERIC},  ],
+    {'type': IBAN_IDENTIFIER_TYPES.NUMERIC},
+  ],
   'FI': [
     {'country': 'common_country_Finland'},
     {'length': 18},
@@ -371,7 +372,8 @@ const Map<String, List<Map<String, Object>>>IBAN_DATA = {
     {'K': 1},
     {'type': IBAN_IDENTIFIER_TYPES.NUMERIC},
     {'type': IBAN_IDENTIFIER_TYPES.NUMERIC},
-    {'type': IBAN_IDENTIFIER_TYPES.NUMERIC},  ],
+    {'type': IBAN_IDENTIFIER_TYPES.NUMERIC},
+  ],
   'FK': [
     {'country': 'common_country_FalklandIslands'},
     {'length': 18},
@@ -1043,7 +1045,63 @@ const Map<String, List<Map<String, Object>>>IBAN_DATA = {
 };
 
 const List<String> IBAN_NUMERIC = [
-  'AD', 'AE', 'AL', 'AT', 'AO', 'BA', 'BE', 'BJ', 'BF', 'BI', 'CI', 'CF', 'CG', 'CM', 'CR', 'CV', 'CZ', 'DE', 'DJ', 'DK', 'DZ', 'EE', 'EG', 'ES', 'FI', 'FO', 'GA', 'GL', 'HR', 'HU', 'IL', 'IR', 'IS', 'LT', 'LY', 'ME', 'MG', 'ML', 'MN', 'MR', 'MZ', 'NO', 'PL', 'PT', 'RS', 'RU', 'SD', 'SE', 'SI', 'SK', 'SN', 'SO', 'ST', 'TL', 'TN', 'VA', 'XK',
+  'AD',
+  'AE',
+  'AL',
+  'AT',
+  'AO',
+  'BA',
+  'BE',
+  'BJ',
+  'BF',
+  'BI',
+  'CI',
+  'CF',
+  'CG',
+  'CM',
+  'CR',
+  'CV',
+  'CZ',
+  'DE',
+  'DJ',
+  'DK',
+  'DZ',
+  'EE',
+  'EG',
+  'ES',
+  'FI',
+  'FO',
+  'GA',
+  'GL',
+  'HR',
+  'HU',
+  'IL',
+  'IR',
+  'IS',
+  'LT',
+  'LY',
+  'ME',
+  'MG',
+  'ML',
+  'MN',
+  'MR',
+  'MZ',
+  'NO',
+  'PL',
+  'PT',
+  'RS',
+  'RU',
+  'SD',
+  'SE',
+  'SI',
+  'SK',
+  'SN',
+  'SO',
+  'ST',
+  'TL',
+  'TN',
+  'VA',
+  'XK',
 ];
 
 const IBAN_LENGTH_UNKNOWN_COUNTRY = 4;
@@ -1054,8 +1112,8 @@ CheckDigitOutput _CheckIBANNumber(String number) {
   if (number == '' || number.length < 2) {
     return CheckDigitOutput(false, 'checkdigits_invalid_length', ['']);
   } else {
-    if (IBAN_DATA[number.substring(0,2)] != null) {
-      length = IBAN_DATA[number.substring(0,2)]![1]['length'] as int;
+    if (IBAN_DATA[number.substring(0, 2)] != null) {
+      length = IBAN_DATA[number.substring(0, 2)]![1]['length'] as int;
     }
     if (number.length < length) {
       return CheckDigitOutput(false, 'checkdigits_invalid_length', ['']);
@@ -1075,8 +1133,8 @@ String _CalculateIBANNumber(String number) {
   if (number.length < 2) {
     return ('checkdigits_invalid_length');
   } else {
-    if (IBAN_DATA[number.substring(0,2)] != null) {
-      length = (IBAN_DATA[number.substring(0,2)]![1]['length'] as int) - 2;
+    if (IBAN_DATA[number.substring(0, 2)] != null) {
+      length = (IBAN_DATA[number.substring(0, 2)]![1]['length'] as int) - 2;
     }
     if (number.length < length) {
       return ('checkdigits_invalid_length');
@@ -1099,7 +1157,8 @@ bool _checkIBAN(String number) {
   number = number.toUpperCase().split('').map((character) {
     if (ID_LETTERCODE[character] == null) {
       return character;
-    } else {return ID_LETTERCODE[character].toString();
+    } else {
+      return ID_LETTERCODE[character].toString();
     }
   }).join('');
   return (BigInt.parse(number) % BigInt.from(97) == BigInt.one);
@@ -1110,7 +1169,8 @@ String _calculateIBANCheckDigit(String number) {
   number = number.toUpperCase().split('').map((character) {
     if (ID_LETTERCODE[character] == null) {
       return character;
-    } else {return ID_LETTERCODE[character].toString();
+    } else {
+      return ID_LETTERCODE[character].toString();
     }
   }).join('');
   BigInt checkDigit = BigInt.from(98) - BigInt.parse(number) % BigInt.from(97);

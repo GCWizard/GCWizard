@@ -9,14 +9,14 @@ void main() {
     List<Map<String, Object?>> _inputsToExpected = [
       {'text': '', 'expectedOutput': null},
       {'text': '9392110.611090261', 'expectedOutput': null},
-      {'text': '9392110.611090261\n5120027.146589669', 'expectedOutput': {'format': CoordinateFormatKey.GAUSS_KRUEGER, 'coordinate': LatLng(46.211024251, 025.5985061856)}},
-      {'text': '9392110.611090261, 5120027.146589669', 'expectedOutput': {'format': CoordinateFormatKey.GAUSS_KRUEGER, 'coordinate': LatLng(46.211024251, 025.5985061856)}},
-      {'text': '9392110.611090261 5120027.146589669', 'expectedOutput': {'format': CoordinateFormatKey.GAUSS_KRUEGER, 'coordinate': LatLng(46.211024251, 025.5985061856)}},
-      {'text': 'R: 9392110.611090261\nH: 5120027.146589669', 'expectedOutput': {'format': CoordinateFormatKey.GAUSS_KRUEGER, 'coordinate': LatLng(46.211024251, 025.5985061856)}},
-      {'text': 'r: 9392110.611090261\nh: 5120027.146589669', 'expectedOutput': {'format': CoordinateFormatKey.GAUSS_KRUEGER, 'coordinate': LatLng(46.211024251, 025.5985061856)}},
-      {'text': 'R:9392110.611090261\nH:5120027.146589669', 'expectedOutput': {'format': CoordinateFormatKey.GAUSS_KRUEGER, 'coordinate': LatLng(46.211024251, 025.5985061856)}},
-      {'text': 'R 9392110.611090261\nH 5120027.146589669', 'expectedOutput': {'format': CoordinateFormatKey.GAUSS_KRUEGER, 'coordinate': LatLng(46.211024251, 025.5985061856)}},
-      {'text': 'R9392110.611090261\nH5120027.146589669', 'expectedOutput': {'format': CoordinateFormatKey.GAUSS_KRUEGER, 'coordinate': LatLng(46.211024251, 025.5985061856)}},
+      {'text': '9392110.611090261\n5120027.146589669', 'expectedOutput': {'format': CoordinateFormatKey.GAUSS_KRUEGER, 'coordinate': const LatLng(46.211024251, 025.5985061856)}},
+      {'text': '9392110.611090261, 5120027.146589669', 'expectedOutput': {'format': CoordinateFormatKey.GAUSS_KRUEGER, 'coordinate': const LatLng(46.211024251, 025.5985061856)}},
+      {'text': '9392110.611090261 5120027.146589669', 'expectedOutput': {'format': CoordinateFormatKey.GAUSS_KRUEGER, 'coordinate': const LatLng(46.211024251, 025.5985061856)}},
+      {'text': 'R: 9392110.611090261\nH: 5120027.146589669', 'expectedOutput': {'format': CoordinateFormatKey.GAUSS_KRUEGER, 'coordinate': const LatLng(46.211024251, 025.5985061856)}},
+      {'text': 'r: 9392110.611090261\nh: 5120027.146589669', 'expectedOutput': {'format': CoordinateFormatKey.GAUSS_KRUEGER, 'coordinate': const LatLng(46.211024251, 025.5985061856)}},
+      {'text': 'R:9392110.611090261\nH:5120027.146589669', 'expectedOutput': {'format': CoordinateFormatKey.GAUSS_KRUEGER, 'coordinate': const LatLng(46.211024251, 025.5985061856)}},
+      {'text': 'R 9392110.611090261\nH 5120027.146589669', 'expectedOutput': {'format': CoordinateFormatKey.GAUSS_KRUEGER, 'coordinate': const LatLng(46.211024251, 025.5985061856)}},
+      {'text': 'R9392110.611090261\nH5120027.146589669', 'expectedOutput': {'format': CoordinateFormatKey.GAUSS_KRUEGER, 'coordinate': const LatLng(46.211024251, 025.5985061856)}},
     ];
 
     var ells = getEllipsoidByName('coords_ellipsoid_earthsphere');

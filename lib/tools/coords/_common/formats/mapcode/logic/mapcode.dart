@@ -1,7 +1,7 @@
+import 'package:gc_wizard/tools/coords/_common/formats/mapcode/logic/external_libs/mapcode.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
-import 'package:gc_wizard/tools/coords/_common/formats/mapcode/logic/external_libs/mapcode.dart';
 import 'package:latlong2/latlong.dart';
 
 const Map<int, CoordinateFormatKey> MAPCODE_CODE = {
@@ -12,17 +12,20 @@ const Map<int, CoordinateFormatKey> MAPCODE_CODE = {
 const int _DEFAULT_PRECISION = 0;
 const defaultMapCodeType = CoordinateFormatKey.MAPCODE_LOCAL;
 const mapCodeKey = 'coords_mapcode';
-final _defaultCoordinate = MapCode.parse('HHHHC.X0KG')!;// MapCode.fromLatLon(LatLng(0, 0), defaultMapCodeType);
+final _defaultCoordinate = MapCode.parse('HHHHC.X0KG')!; // MapCode.fromLatLon(LatLng(0, 0), defaultMapCodeType);
 
 final MapCodeFormatDefinition = CoordinateFormatWithSubtypesDefinition(
-    CoordinateFormatKey.MAPCODE, mapCodeKey, mapCodeKey,
+    CoordinateFormatKey.MAPCODE,
+    mapCodeKey,
+    mapCodeKey,
     [
-      CoordinateFormatDefinition(CoordinateFormatKey.MAPCODE_LOCAL, 'coords_mapcode_local',
-          'coords_mapcode_local', MapCode.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(CoordinateFormatKey.MAPCODE_LOCAL, 'coords_mapcode_local', 'coords_mapcode_local',
+          MapCode.parse, _defaultCoordinate),
       CoordinateFormatDefinition(CoordinateFormatKey.MAPCODE_INTERNATIONAL, 'coords_mapcode_international',
           'coords_mapcode_international', MapCode.parse, _defaultCoordinate),
     ],
-    MapCode.parse, _defaultCoordinate);
+    MapCode.parse,
+    _defaultCoordinate);
 
 class MapCode extends BaseCoordinateWithSubtypes {
   late CoordinateFormat _format;
@@ -56,7 +59,7 @@ class MapCode extends BaseCoordinateWithSubtypes {
   }
 
   static MapCode? parse(String input, {String territory = ''}) {
-    return _parseMapCode(input, territory: territory) ?? MapCode([], defaultMapCodeType);
+    return _parseMapCode(input, territory: territory);
   }
 
   @override
@@ -67,7 +70,6 @@ class MapCode extends BaseCoordinateWithSubtypes {
     return coords.isEmpty ? '' : coords.first.fullmapcode;
   }
 }
-
 
 MapCode _latLonToMapCode(LatLng coord, {required CoordinateFormatKey subtype, int precision = _DEFAULT_PRECISION}) {
   if (subtype == CoordinateFormatKey.MAPCODE_INTERNATIONAL) {
@@ -120,4 +122,3 @@ String _regexString() {
   rx += r")\s*)?" + letter + r"{2,}\." + letter + r"{2,}(-\d{1,8})?";
   return rx;
 }
-

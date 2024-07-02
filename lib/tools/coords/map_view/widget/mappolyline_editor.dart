@@ -3,9 +3,9 @@ import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/color_pickers/gcw_colorpicker.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
+import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
-import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 
 class MapPolylineEditor extends StatefulWidget {
   final GCWMapPolyline polyline;
@@ -43,12 +43,10 @@ class _MapPolylineEditorState extends State<MapPolylineEditor> {
       _lineTypes = <GCWMapLineType, _LineAttributes>{
         GCWMapLineType.GEODETIC: _LineAttributes(
             name: i18n(context, 'coords_openmap_lineeditor_line_type_geodetic_title'),
-            explanation: i18n(context, 'coords_openmap_lineeditor_line_type_geodetic_description')
-        ),
+            explanation: i18n(context, 'coords_openmap_lineeditor_line_type_geodetic_description')),
         GCWMapLineType.RHUMB: _LineAttributes(
             name: i18n(context, 'coords_openmap_lineeditor_line_type_rhumb_title'),
-            explanation: i18n(context, 'coords_openmap_lineeditor_line_type_rhumb_description')
-        ),
+            explanation: i18n(context, 'coords_openmap_lineeditor_line_type_rhumb_description')),
       };
     }
 
@@ -83,9 +81,7 @@ class _MapPolylineEditorState extends State<MapPolylineEditor> {
             child: Column(
               children: [
                 IgnorePointer(
-                  child: GCWText(
-                    text: item.value.name
-                  ),
+                  child: GCWText(text: item.value.name),
                 ),
                 Container(
                   padding: const EdgeInsets.only(left: DEFAULT_DESCRIPTION_MARGIN),

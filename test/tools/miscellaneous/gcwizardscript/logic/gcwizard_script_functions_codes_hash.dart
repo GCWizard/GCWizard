@@ -1,5 +1,6 @@
 part of 'gcwizard_scipt_test.dart';
 
+// ignore: unused_element
 List<Map<String, Object?>> _inputsHashToExpected = [
   {'code' : 'print HASH(2, 0, 0, "testkey", "test")', 'expectedOutput' : '', 'error': 'gcwizard_script_casting_error'},
   {'code' : 'print HASH(2.0, 0, 0, "testkey", "test")', 'expectedOutput' : '', 'error': 'gcwizard_script_casting_error'},

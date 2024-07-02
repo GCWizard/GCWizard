@@ -11,20 +11,18 @@ class _GCWCoordWidgetInfoGeoHex extends GCWCoordWidgetInfo {
   String get example => 'RU568425483853568';
 
   @override
-  _GCWCoordWidget mainWidget({
-    Key? key,
-    required void Function(BaseCoordinate?) onChanged,
-    required BaseCoordinate? coordinates,
-    bool? initialize
-  }) {
+  _GCWCoordWidget mainWidget(
+      {Key? key,
+      required void Function(BaseCoordinate?) onChanged,
+      required BaseCoordinate? coordinates,
+      bool? initialize}) {
     return _GCWCoordsGeoHex(key: key, onChanged: onChanged, coordinates: coordinates, initialize: initialize ?? false);
   }
 }
 
 class _GCWCoordsGeoHex extends _GCWCoordWidget {
-
-  _GCWCoordsGeoHex({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize}) :
-        super(coordinates: coordinates is GeoHexCoordinate ? coordinates : GeoHexFormatDefinition.defaultCoordinate);
+  _GCWCoordsGeoHex({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize})
+      : super(coordinates: coordinates is GeoHexCoordinate ? coordinates : GeoHexFormatDefinition.defaultCoordinate);
 
   @override
   _GCWCoordsGeoHexState createState() => _GCWCoordsGeoHexState();

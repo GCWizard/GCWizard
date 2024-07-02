@@ -11,20 +11,18 @@ class _GCWCoordWidgetInfoMakaney extends GCWCoordWidgetInfo {
   String get example => 'M97F-BBOOI';
 
   @override
-  _GCWCoordWidget mainWidget({
-    Key? key,
-    required void Function(BaseCoordinate?) onChanged,
-    required BaseCoordinate? coordinates,
-    bool? initialize
-  }) {
+  _GCWCoordWidget mainWidget(
+      {Key? key,
+      required void Function(BaseCoordinate?) onChanged,
+      required BaseCoordinate? coordinates,
+      bool? initialize}) {
     return _GCWCoordsMakaney(key: key, onChanged: onChanged, coordinates: coordinates, initialize: initialize ?? false);
   }
 }
 
 class _GCWCoordsMakaney extends _GCWCoordWidget {
-
-  _GCWCoordsMakaney({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize}) :
-        super(coordinates: coordinates is MakaneyCoordinate ? coordinates : MakaneyFormatDefinition.defaultCoordinate);
+  _GCWCoordsMakaney({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize})
+      : super(coordinates: coordinates is MakaneyCoordinate ? coordinates : MakaneyFormatDefinition.defaultCoordinate);
 
   @override
   _GCWCoordsMakaneyState createState() => _GCWCoordsMakaneyState();

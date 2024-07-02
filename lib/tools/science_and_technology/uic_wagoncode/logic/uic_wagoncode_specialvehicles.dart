@@ -4,6 +4,7 @@ part of 'package:gc_wizard/tools/science_and_technology/uic_wagoncode/logic/uic_
 // http://www.bahndienstwagen-online.de/bahn/BDW/NVR438_4/nvr0.html
 
 enum _UICWagonCodesSpecialMaxSpeedInSelfDrive {MORE_EQUAL_100, LESS_100}
+// ignore: unused_field
 enum _UICWagonCodesSpecialPutableIntoTrains {YES, NO, YES_MORE_EQUAL_100, YES_LESS_100, NO_SPECIAL_RESTRICTIONS, YES_SPECIAL_RESTRICTIONS, SPECIAL_RESTRICTIONS}
 enum _UICWagonCodesSpecialRailRoadDrive {CAT1, CAT2, CAT3}
 

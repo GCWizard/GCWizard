@@ -64,9 +64,10 @@ class _BowlingState extends State<Bowling> {
             });
           },
         ),
-        const GCWTextDivider(text: '',
-        suppressTopSpace: true,
-        suppressBottomSpace: true,
+        const GCWTextDivider(
+          text: '',
+          suppressTopSpace: true,
+          suppressBottomSpace: true,
         ),
         Row(
           children: <Widget>[
@@ -275,27 +276,29 @@ class _BowlingState extends State<Bowling> {
     return score;
   }
 
-  Widget _buildCellRow0(int count){
+  Widget _buildCellRow0(int count) {
     return Container(
       height: defaultFontSize() * 1.5,
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border(top: _border, left: count == 1 ? _border : BorderSide.none, right: count == 1 ? BorderSide.none : _border, bottom: BorderSide.none),
+        border: Border(
+            top: _border,
+            left: count == 1 ? _border : BorderSide.none,
+            right: count == 1 ? BorderSide.none : _border,
+            bottom: BorderSide.none),
       ),
       width: count == 1 ? _cellWidth * 18 : _cellWidth * 3,
       child: Column(
         children: [
           Expanded(
               child: Align(
-                alignment: count == 1 ? Alignment.centerRight : Alignment.center,
-                child: AutoSizeText(
-                  count == 1 ? i18n(context, 'bowling_hdcp') : _currentHDCP.toString(),
-                  style: gcwTextStyle().copyWith(color: Colors.black),
-                  minFontSize: AUTO_FONT_SIZE_MIN,
-                  maxLines: 1,
-                )
-              )
-          ),
+                  alignment: count == 1 ? Alignment.centerRight : Alignment.center,
+                  child: AutoSizeText(
+                    count == 1 ? i18n(context, 'bowling_hdcp') : _currentHDCP.toString(),
+                    style: gcwTextStyle().copyWith(color: Colors.black),
+                    minFontSize: AUTO_FONT_SIZE_MIN,
+                    maxLines: 1,
+                  ))),
         ],
       ),
     );
@@ -335,7 +338,10 @@ class _BowlingState extends State<Bowling> {
         children: [
           Expanded(
               child: AutoSizeText(
-            bowlingTotalAfterFrames(frame, _currentFrameTotals,).toString(),
+            bowlingTotalAfterFrames(
+              frame,
+              _currentFrameTotals,
+            ).toString(),
             style: gcwTextStyle().copyWith(color: Colors.black),
             minFontSize: AUTO_FONT_SIZE_MIN,
             maxLines: 1,
@@ -367,12 +373,16 @@ class _BowlingState extends State<Bowling> {
     );
   }
 
-  Widget _buildCellRow3(int count){
+  Widget _buildCellRow3(int count) {
     return Container(
       height: defaultFontSize() * 1.5,
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border(top: _border, left: count == 1 ? _border : BorderSide.none, right: count == 1 ? BorderSide.none : _border, bottom: BorderSide.none),
+        border: Border(
+            top: _border,
+            left: count == 1 ? _border : BorderSide.none,
+            right: count == 1 ? BorderSide.none : _border,
+            bottom: BorderSide.none),
       ),
       width: count == 1 ? _cellWidth * 18 : _cellWidth * 3,
       child: Column(
@@ -381,13 +391,13 @@ class _BowlingState extends State<Bowling> {
               child: Align(
                   alignment: count == 1 ? Alignment.centerRight : Alignment.center,
                   child: AutoSizeText(
-                    count == 1 ? i18n(context, 'bowling_totalscore') : bowlingTotalAfterFrames(9, _currentFrameTotals, HDCP: _currentHDCP).toString(),
+                    count == 1
+                        ? i18n(context, 'bowling_totalscore')
+                        : bowlingTotalAfterFrames(9, _currentFrameTotals, HDCP: _currentHDCP).toString(),
                     style: gcwTextStyle().copyWith(color: Colors.black),
                     minFontSize: AUTO_FONT_SIZE_MIN,
                     maxLines: 1,
-                  )
-              )
-          ),
+                  ))),
         ],
       ),
     );

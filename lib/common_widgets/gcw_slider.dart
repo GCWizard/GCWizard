@@ -49,14 +49,16 @@ class _GCWSliderState extends State<GCWSlider> {
     return Row(
       children: [
         if (widget.title.isNotEmpty) Expanded(child: GCWText(text: widget.title + ':')),
-        if (widget.leftValue != null) Expanded(
-          flex: 1,
-          child: (widget.leftValue is String) ? GCWText(
-            text: widget.leftValue as String,
-            align: Alignment.center,
-            style: gcwTextStyle(),
-          ) : widget.leftValue as Widget
-        ),
+        if (widget.leftValue != null)
+          Expanded(
+              flex: 1,
+              child: (widget.leftValue is String)
+                  ? GCWText(
+                      text: widget.leftValue as String,
+                      align: Alignment.center,
+                      style: gcwTextStyle(),
+                    )
+                  : widget.leftValue as Widget),
         Expanded(
           flex: 6,
           child: Slider(
@@ -78,14 +80,16 @@ class _GCWSliderState extends State<GCWSlider> {
             inactiveColor: themeColors().switchTrack2(),
           ),
         ),
-        if (widget.rightValue != null) Expanded(
-            flex: 1,
-            child: (widget.rightValue is String) ? GCWText(
-              text: widget.rightValue as String,
-              align: Alignment.center,
-              style: gcwTextStyle(),
-            ) : widget.rightValue as Widget
-        ),
+        if (widget.rightValue != null)
+          Expanded(
+              flex: 1,
+              child: (widget.rightValue is String)
+                  ? GCWText(
+                      text: widget.rightValue as String,
+                      align: Alignment.center,
+                      style: gcwTextStyle(),
+                    )
+                  : widget.rightValue as Widget),
         if (!widget.suppressReset)
           GCWIconButton(
             icon: Icons.refresh,

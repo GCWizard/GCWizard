@@ -18,7 +18,7 @@ const int _GEOGRAPHICLIB_TRANSVERSEMERCATOR_ORDER = 8;
 class _TransverseMercator {
   final int maxpow_ = _GEOGRAPHICLIB_TRANSVERSEMERCATOR_ORDER;
   final int numit_ = 5;
-  late double _a, _f, _k0, _e2, _es, _e2m,  _c, _n;
+  late double _a, _f, _k0, _e2, _es, _e2m, _c, _n;
   late double _a1, _b1;
   // _alp[0] and _bet[0] unused
   final List<double> _alp = [0.0];
@@ -43,7 +43,7 @@ class _TransverseMercator {
     _e2m = (1 - _e2);
     // _c = sqrt( pow(1 + _e, 1 + _e) * pow(1 - _e, 1 - _e) ) )
     // See, for example, Lee (1976), p 100.
-    _c = ( sqrt(_e2m) * exp(_GeoMath.eatanhe(1.0, _es)) );
+    _c = (sqrt(_e2m) * exp(_GeoMath.eatanhe(1.0, _es)));
     _n = (_f / (2 - _f));
 
     if (_GEOGRAPHICLIB_TRANSVERSEMERCATOR_ORDER != 8) {
@@ -101,7 +101,7 @@ class _TransverseMercator {
     ];
 
     int m = maxpow_ ~/ 2;
-    _b1 = _GeoMath.polyval(m, b1coeff, 0, _GeoMath.sq(_n)) / (b1coeff[m + 1] * (1+_n));
+    _b1 = _GeoMath.polyval(m, b1coeff, 0, _GeoMath.sq(_n)) / (b1coeff[m + 1] * (1 + _n));
     // _a1 is the equivalent radius for computing the circumference of
     // ellipse.
     _a1 = _b1 * _a;

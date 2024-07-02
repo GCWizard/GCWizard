@@ -32,11 +32,11 @@ abstract class ThemeColors {
   Color switchTrack2();
 
   Color checkBoxActiveColor();
-  Color checkBoxFillColor(Set<MaterialState> states);
+  Color checkBoxFillColor(Set<WidgetState> states);
   Color checkBoxCheckColor();
   Color checkBoxFocusColor();
   Color checkBoxHoverColor();
-  Color checkBoxOverlayColor(Set<MaterialState> states);
+  Color checkBoxOverlayColor(Set<WidgetState> states);
 
   Color outputListOddRows();
 

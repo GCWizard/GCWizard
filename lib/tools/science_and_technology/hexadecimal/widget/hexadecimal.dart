@@ -45,23 +45,23 @@ class _HexadecimalState extends State<Hexadecimal> {
       children: <Widget>[
         _currentMode == GCWSwitchPosition.left
             ? GCWTextField(
-          inputFormatters: [GCWOnlyDigitsAndSpaceInputFormatter()],
-          controller: _decimalController,
-          onChanged: (value) {
-            setState(() {
-              _currentDecimalValue = value;
-            });
-          },
-        )
+                inputFormatters: [GCWOnlyDigitsAndSpaceInputFormatter()],
+                controller: _decimalController,
+                onChanged: (value) {
+                  setState(() {
+                    _currentDecimalValue = value;
+                  });
+                },
+              )
             : GCWTextField(
-          inputFormatters: [GCWOnlyHexDigitsAndSpaceInputFormatter()],
-          controller: _hexController,
-          onChanged: (value) {
-            setState(() {
-              _currentHexValue = value;
-            });
-          },
-        ),
+                inputFormatters: [GCWOnlyHexDigitsAndSpaceInputFormatter()],
+                controller: _hexController,
+                onChanged: (value) {
+                  setState(() {
+                    _currentHexValue = value;
+                  });
+                },
+              ),
         GCWTwoOptionsSwitch(
           value: _currentMode,
           onChanged: (value) {
@@ -72,13 +72,13 @@ class _HexadecimalState extends State<Hexadecimal> {
         ),
         _currentMode == GCWSwitchPosition.left
             ? GCWIntegerSpinner(
-            title: i18n(context, 'hexadecimal_length'),
-            onChanged: (int value) {
-              setState(() {
-                _lengthHexadecimal = value;
-              });
-            },
-            value: _lengthHexadecimal)
+                title: i18n(context, 'hexadecimal_length'),
+                onChanged: (int value) {
+                  setState(() {
+                    _lengthHexadecimal = value;
+                  });
+                },
+                value: _lengthHexadecimal)
             : Container(),
         GCWDefaultOutput(child: _buildOutput())
       ],
@@ -87,14 +87,16 @@ class _HexadecimalState extends State<Hexadecimal> {
 
   String _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
-      return _currentDecimalValue.split(' ').map((value) => _padLeftZero(_lengthHexadecimal, convertBase(value, 10, 16))).join(' ');
+      return _currentDecimalValue
+          .split(' ')
+          .map((value) => _padLeftZero(_lengthHexadecimal, convertBase(value, 10, 16)))
+          .join(' ');
     } else {
       return _currentHexValue.split(' ').map((value) => convertBase(value, 16, 10)).join(' ');
     }
   }
 
-  String _padLeftZero(int length, String text){
+  String _padLeftZero(int length, String text) {
     return text.padLeft(length, '0');
   }
-
 }

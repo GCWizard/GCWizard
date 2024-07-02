@@ -42,7 +42,8 @@ class bruteForce extends Solver {
       if (hintStart + hint < gap.length && gap[hintStart + hint] == 1) {
         continue;
       }
-      var rest = _solveGap(hintStart + hint + 1 < gap.length ? gap.sublist(hintStart + hint + 1) : [], hints.sublist(1));
+      var rest =
+          _solveGap(hintStart + hint + 1 < gap.length ? gap.sublist(hintStart + hint + 1) : [], hints.sublist(1));
       if (rest == null) {
         continue;
       }
@@ -53,12 +54,14 @@ class bruteForce extends Solver {
           ones[k] = 1;
         } else {
           zeros[k] = ((zeros[k] != 0) || (rest.zeros[k - (hintStart + hint + 1)]) != 0 ? 1 : 0);
-          ones[k]  = ((ones[k] != 0) || (rest.ones[k - (hintStart + hint + 1)]) != 0 ? 1 : 0);
+          ones[k] = ((ones[k] != 0) || (rest.ones[k - (hintStart + hint + 1)]) != 0 ? 1 : 0);
         }
       }
     }
     var result = _GapResult(zeros, ones);
-    _solveGapCache.addAll({[gap, hints].toString() : result});
+    _solveGapCache.addAll({
+      [gap, hints].toString(): result
+    });
     return result;
   }
 
@@ -102,7 +105,7 @@ class bruteForce extends Solver {
       for (var dist in gapResult.distributions) {
         var value = dist[i].toList();
         if (!set.containsKey(value.toString())) {
-          set.addAll({value.toString() : value});
+          set.addAll({value.toString(): value});
         }
       }
       return set.values.toList();

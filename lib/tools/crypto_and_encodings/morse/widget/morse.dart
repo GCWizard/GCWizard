@@ -163,7 +163,7 @@ class _MorseState extends State<Morse> {
       case MorseType.MORSE1838:
         morseButtons = _buildMorseButtonsMorseAmerican1838(context);
         break;
-        case MorseType.MORSE1844:
+      case MorseType.MORSE1844:
         morseButtons = _buildMorseButtonsMorseAmerican1844(context);
         break;
       case MorseType.GERKE:
@@ -477,7 +477,9 @@ class _MorseState extends State<Morse> {
       textStyle =
           TextStyle(fontSize: textStyle.fontSize! + 15, fontFamily: textStyle.fontFamily, fontWeight: FontWeight.bold);
     } else {
-      output = decodeMorse(_currentCode == MorseType.STEINHEIL ? _currentDecodeInput.replaceAll('·', '-') : _currentDecodeInput, type: _currentCode);
+      output = decodeMorse(
+          _currentCode == MorseType.STEINHEIL ? _currentDecodeInput.replaceAll('·', '-') : _currentDecodeInput,
+          type: _currentCode);
     }
 
     return GCWOutputText(text: output, style: textStyle);

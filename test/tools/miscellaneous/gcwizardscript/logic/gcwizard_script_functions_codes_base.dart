@@ -1,5 +1,6 @@
 part of 'gcwizard_scipt_test.dart';
 
+// ignore: unused_element
 List<Map<String, Object?>> _inputsBaseToExpected = [
   {'code' : 'print BASE(16.0, 0, "30")', 'expectedOutput' : '', 'error': 'gcwizard_script_syntax_error'},
   {'code' : 'print BASE(16, test, "30")', 'expectedOutput' : '0'},

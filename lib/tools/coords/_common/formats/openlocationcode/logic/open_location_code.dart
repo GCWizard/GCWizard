@@ -23,9 +23,8 @@ import 'package:latlong2/latlong.dart';
 
 const openLocationCodeKey = 'coords_openlocationcode';
 
-final OpenLocationCodeFormatDefinition = CoordinateFormatDefinition(
-  CoordinateFormatKey.OPEN_LOCATION_CODE, openLocationCodeKey, openLocationCodeKey,
-  OpenLocationCodeCoordinate.parse, OpenLocationCodeCoordinate(''));
+final OpenLocationCodeFormatDefinition = CoordinateFormatDefinition(CoordinateFormatKey.OPEN_LOCATION_CODE,
+    openLocationCodeKey, openLocationCodeKey, OpenLocationCodeCoordinate.parse, OpenLocationCodeCoordinate(''));
 
 class OpenLocationCodeCoordinate extends BaseCoordinate {
   @override
@@ -315,7 +314,8 @@ OpenLocationCodeCoordinate _latLonToOpenLocationCode(LatLng coords, {int codeLen
   }
 
   // Pad and return the code.
-  return OpenLocationCodeCoordinate(code.substring(0, codeLength) + (_padding * (_separatorPosition - codeLength)) + _separator);
+  return OpenLocationCodeCoordinate(
+      code.substring(0, codeLength) + (_padding * (_separatorPosition - codeLength)) + _separator);
 }
 
 OpenLocationCodeCoordinate? _parseOpenLocationCode(String input) {

@@ -126,7 +126,7 @@ class _ChaoState extends State<Chao> {
     var alphabetPlain = '';
 
     var alphabetAZ = alphabet_AZ.keys.join();
-    var alphabetZA = reverse(alphabetAZ);
+    var alphabetZA = reverseAll(alphabetAZ);
 
     switch (_currentAlphabetTypePlain) {
       case ChaoAlphabet.AZ:

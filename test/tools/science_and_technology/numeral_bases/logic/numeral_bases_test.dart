@@ -337,4 +337,85 @@ void main() {
       });
     }
   });
+
+  group("NumeralBases.convertWithSpecialAlphabets:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : 'EC', 'startBase' : 10, 'destinationBase' : 42, 'inputAlphabet': 'ABCDEFGHIJ', 'outputAlphabet': '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 'expectedOutput' : '10'},
+      {'input' : 'DFJ', 'startBase' : 10, 'destinationBase' : 24, 'inputAlphabet': 'ABCDEFGHIJ', 'outputAlphabet': 'ABCDEFGHJKLMNPQRSTUVWXYZ', 'expectedOutput' : 'QZ'},
+      {'input' : 'A', 'startBase' : 10, 'destinationBase' : 24, 'inputAlphabet': 'ABCDEFGHIJ', 'outputAlphabet': 'ABCDEFGHJKLMNPQRSTUVWXYZ', 'expectedOutput' : 'A'},
+      {'input' : 'AA', 'startBase' : 10, 'destinationBase' : 24, 'inputAlphabet': 'ABCDEFGHIJ', 'outputAlphabet': 'ABCDEFGHJKLMNPQRSTUVWXYZ', 'expectedOutput' : 'A'},
+
+      {'expectedOutput' : 'EC', 'destinationBase' : 10, 'startBase' : 42, 'outputAlphabet': 'ABCDEFGHIJ', 'inputAlphabet': '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 'input' : '10'},
+      {'expectedOutput' : 'DFJ', 'destinationBase' : 10, 'startBase' : 24, 'outputAlphabet': 'ABCDEFGHIJ', 'inputAlphabet': 'ABCDEFGHJKLMNPQRSTUVWXYZ', 'input' : 'QZ'},
+      {'expectedOutput' : 'A', 'destinationBase' : 10, 'startBase' : 24, 'outputAlphabet': 'ABCDEFGHIJ', 'inputAlphabet': 'ABCDEFGHJKLMNPQRSTUVWXYZ', 'input' : 'A'},
+      {'expectedOutput' : 'A', 'destinationBase' : 10, 'startBase' : 24, 'outputAlphabet': 'ABCDEFGHIJ', 'inputAlphabet': 'ABCDEFGHJKLMNPQRSTUVWXYZ', 'input' : 'AA'},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}, startBase: ${elem['startBase']}, destinationBase: ${elem['destinationBase']}, inputAlphabet: ${elem['inputAlphabet']}, outputAlphabet: ${elem['outputAlphabet']}', () {
+        var _actual = convertBase(elem['input'] as String, elem['startBase'] as int, elem['destinationBase'] as int, inputAlphabet: elem['inputAlphabet'] as String, outputAlphabet: elem['outputAlphabet'] as String);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
+
+  group("NumeralBases.convertWithSpecialOutputAlphabet:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '42', 'startBase' : 10, 'destinationBase' : 42, 'outputAlphabet': '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 'expectedOutput' : '10'},
+      {'input' : '359', 'startBase' : 10, 'destinationBase' : 24, 'outputAlphabet': 'ABCDEFGHJKLMNPQRSTUVWXYZ', 'expectedOutput' : 'QZ'},
+      {'input' : '0', 'startBase' : 10, 'destinationBase' : 24, 'outputAlphabet': 'ABCDEFGHJKLMNPQRSTUVWXYZ', 'expectedOutput' : 'A'},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}, startBase: ${elem['startBase']}, destinationBase: ${elem['destinationBase']}, outputAlphabet: ${elem['outputAlphabet']}', () {
+        var _actual = convertBase(elem['input'] as String, elem['startBase'] as int, elem['destinationBase'] as int, outputAlphabet: elem['outputAlphabet'] as String);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
+
+  group("NumeralBases.convertWithSpecialInputAlphabet:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '10', 'startBase' : 42, 'destinationBase' : 10, 'inputAlphabet': '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 'expectedOutput' : '42'},
+      {'input' : 'QZ', 'startBase' : 24, 'destinationBase' : 10, 'inputAlphabet': 'ABCDEFGHJKLMNPQRSTUVWXYZ', 'expectedOutput' : '359'},
+      {'input' : 'A', 'startBase' : 24, 'destinationBase' : 10, 'inputAlphabet': 'ABCDEFGHJKLMNPQRSTUVWXYZ', 'expectedOutput' : '0'},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}, startBase: ${elem['startBase']}, destinationBase: ${elem['destinationBase']}, inputAlphabet: ${elem['inputAlphabet']}', () {
+        var _actual = convertBase(elem['input'] as String, elem['startBase'] as int, elem['destinationBase'] as int, inputAlphabet: elem['inputAlphabet'] as String);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
+
+  group("NumeralBases.convertIntWithSpecialOutputAlphabet:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '42', 'destinationBase' : 42, 'outputAlphabet': '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 'expectedOutput' : '10'},
+      {'input' : '359', 'destinationBase' : 24, 'outputAlphabet': 'ABCDEFGHJKLMNPQRSTUVWXYZ', 'expectedOutput' : 'QZ'},
+      {'input' : '0', 'destinationBase' : 24, 'outputAlphabet': 'ABCDEFGHJKLMNPQRSTUVWXYZ', 'expectedOutput' : 'A'},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}, startBase: ${elem['startBase']}, destinationBase: ${elem['destinationBase']}, outputAlphabet: ${elem['outputAlphabet']}', () {
+        var _actual = convertIntToBase(elem['input'] as String, elem['destinationBase'] as int, outputAlphabet: elem['outputAlphabet'] as String);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
+
+  group("NumeralBases.convertBaseToIntWithSpecialInputAlphabet:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '10', 'startBase' : 42, 'destinationBase' : 10, 'inputAlphabet': '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 'expectedOutput' : '42'},
+      {'input' : 'QZ', 'startBase' : 24, 'destinationBase' : 10, 'inputAlphabet': 'ABCDEFGHJKLMNPQRSTUVWXYZ', 'expectedOutput' : '359'},
+      {'input' : 'A', 'startBase' : 24, 'destinationBase' : 10, 'inputAlphabet': 'ABCDEFGHJKLMNPQRSTUVWXYZ', 'expectedOutput' : '0'},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}, startBase: ${elem['startBase']}, destinationBase: ${elem['destinationBase']}, inputAlphabet: ${elem['inputAlphabet']}', () {
+        var _actual = convertBaseToInt(elem['input'] as String, elem['startBase'] as int, inputAlphabet: elem['inputAlphabet'] as String);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
 }

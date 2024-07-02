@@ -43,8 +43,7 @@ const _binaryLength = 5;
 const geohashKey = 'coords_geohash';
 
 final GeohashFormatDefinition = CoordinateFormatDefinition(
-  CoordinateFormatKey.GEOHASH, geohashKey, geohashKey,
-  GeohashCoordinate.parse, GeohashCoordinate(''));
+    CoordinateFormatKey.GEOHASH, geohashKey, geohashKey, GeohashCoordinate.parse, GeohashCoordinate(''));
 
 class GeohashCoordinate extends BaseCoordinate {
   @override

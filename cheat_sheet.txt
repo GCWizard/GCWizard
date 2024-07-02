@@ -128,7 +128,7 @@ Actual Release:
 		    - Replace normal icons in android/app/src/main/res with android/app/src/main/res/icons_gold
 		    - change package name to gc_wizard_gold:
 			    - in file: android/app/src/main/AndroidManifest.xml (and application/android:label to "GC Wizard Gold", too)
-			    - in file: android/app/build.gradle -> defaultConfig
+			    - in file: android/app/build.gradle -> defaultConfig and android/namespace
 		- iOS:
 		    - Replace normal icons in ios/Runner/Assets.xcassets/AppIcon.appiconset/ with ios/Runner/Assets.xcassets/AppIcon.appiconset/icons_gold
 			- change bundle identifier in XCode/Info.plist in ios/Runner to de.sman42.gcWizardGold

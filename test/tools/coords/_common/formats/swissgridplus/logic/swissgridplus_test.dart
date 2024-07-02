@@ -8,12 +8,12 @@ void main() {
   group("Parser.swissgrid_plus.parseLatLon:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'text': '', 'expectedOutput': null},
-      {'text': '3989048.741167088 1278659.9405218181', 'expectedOutput': {'format': CoordinateFormatKey.SWISS_GRID, 'coordinate': LatLng(46.2110174566, 025.598495717)}},
-      {'text': 'Y: 3989048.741167088 X: 1278659.9405218181', 'expectedOutput': {'format': CoordinateFormatKey.SWISS_GRID, 'coordinate': LatLng(46.2110174566, 025.598495717)}},
-      {'text': 'Y:3989048.741167088 X:1278659.9405218181', 'expectedOutput': {'format': CoordinateFormatKey.SWISS_GRID, 'coordinate': LatLng(46.2110174566, 025.598495717)}},
-      {'text': 'Y:3989048.741167088X:1278659.9405218181', 'expectedOutput': {'format': CoordinateFormatKey.SWISS_GRID, 'coordinate': LatLng(46.2110174566, 025.598495717)}},
-      {'text': 'Y3989048.741167088X1278659.9405218181', 'expectedOutput': {'format': CoordinateFormatKey.SWISS_GRID, 'coordinate': LatLng(46.2110174566, 025.598495717)}},
-      {'text': 'y3989048.741167088x1278659.9405218181', 'expectedOutput': {'format': CoordinateFormatKey.SWISS_GRID, 'coordinate': LatLng(46.2110174566, 025.598495717)}},
+      {'text': '3989048.741167088 1278659.9405218181', 'expectedOutput': {'format': CoordinateFormatKey.SWISS_GRID, 'coordinate': const LatLng(46.2110174566, 025.598495717)}},
+      {'text': 'Y: 3989048.741167088 X: 1278659.9405218181', 'expectedOutput': {'format': CoordinateFormatKey.SWISS_GRID, 'coordinate': const LatLng(46.2110174566, 025.598495717)}},
+      {'text': 'Y:3989048.741167088 X:1278659.9405218181', 'expectedOutput': {'format': CoordinateFormatKey.SWISS_GRID, 'coordinate': const LatLng(46.2110174566, 025.598495717)}},
+      {'text': 'Y:3989048.741167088X:1278659.9405218181', 'expectedOutput': {'format': CoordinateFormatKey.SWISS_GRID, 'coordinate': const LatLng(46.2110174566, 025.598495717)}},
+      {'text': 'Y3989048.741167088X1278659.9405218181', 'expectedOutput': {'format': CoordinateFormatKey.SWISS_GRID, 'coordinate': const LatLng(46.2110174566, 025.598495717)}},
+      {'text': 'y3989048.741167088x1278659.9405218181', 'expectedOutput': {'format': CoordinateFormatKey.SWISS_GRID, 'coordinate': const LatLng(46.2110174566, 025.598495717)}},
     ];
 
     var ells = getEllipsoidByName('coords_ellipsoid_earthsphere');

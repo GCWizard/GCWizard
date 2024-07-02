@@ -328,8 +328,8 @@ class _TeletypewriterPunchTapeState extends State<TeletypewriterPunchTape> {
       }
       return Column(
         children: <Widget>[
-          _buildDigitalOutput(segments),
           GCWDefaultOutput(child: segments.text),
+          _buildDigitalOutput(segments),
         ],
       );
     }

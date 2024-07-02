@@ -8,10 +8,10 @@ void main() {
   group("Converter.mercator.parseLatLon:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'text': '', 'expectedOutput': null},
-      {'text': 'Y: 5814230.730194772 X: 2849612.661492129', 'expectedOutput': {'format': CoordinateFormatKey.MERCATOR, 'coordinate': LatLng(46.25149839125229, 25.62718234979449)}},
-      {'text': 'Y:5814230.730194772X:2849612.661492129', 'expectedOutput': {'format': CoordinateFormatKey.MERCATOR, 'coordinate': LatLng(46.25149839125229, 25.62718234979449)}},
-      {'text': 'Y5814230.730194772X2849612.661492129', 'expectedOutput': {'format': CoordinateFormatKey.MERCATOR, 'coordinate': LatLng(46.25149839125229, 25.62718234979449)}},
-      {'text': '5814230.730194772 2849612.661492129', 'expectedOutput': {'format': CoordinateFormatKey.MERCATOR, 'coordinate': LatLng(46.25149839125229, 25.62718234979449)}},
+      {'text': 'Y: 5814230.730194772 X: 2849612.661492129', 'expectedOutput': {'format': CoordinateFormatKey.MERCATOR, 'coordinate': const LatLng(46.25149839125229, 25.62718234979449)}},
+      {'text': 'Y:5814230.730194772X:2849612.661492129', 'expectedOutput': {'format': CoordinateFormatKey.MERCATOR, 'coordinate': const LatLng(46.25149839125229, 25.62718234979449)}},
+      {'text': 'Y5814230.730194772X2849612.661492129', 'expectedOutput': {'format': CoordinateFormatKey.MERCATOR, 'coordinate': const LatLng(46.25149839125229, 25.62718234979449)}},
+      {'text': '5814230.730194772 2849612.661492129', 'expectedOutput': {'format': CoordinateFormatKey.MERCATOR, 'coordinate': const LatLng(46.25149839125229, 25.62718234979449)}},
     ];
 
     var ells = getEllipsoidByName('coords_ellipsoid_earthsphere');

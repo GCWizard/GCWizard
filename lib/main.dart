@@ -24,9 +24,7 @@ void main() async {
 
   await GCWPackageInfo.init();
 
-  runApp(App(
-    appLanguage: appLanguage
-  ));
+  runApp(App(appLanguage: appLanguage));
 }
 
 class App extends StatelessWidget {

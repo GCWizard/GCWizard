@@ -82,17 +82,19 @@ class _UniversalProductCodeState extends State<UniversalProductCode> {
         data.add([i18n(context, 'universalproductcode_correct'), out.correctEncoding]);
       }
       if (out.barcodeBinaryCorrectEncoding.isNotEmpty) {
-        data.add( [
+        data.add([
           Column(
             children: [
               GCWText(text: i18n(context, 'universalproductcode_correct_bin')),
               Row(
                 children: [
                   Container(width: 2 * DOUBLE_DEFAULT_MARGIN),
-                  Expanded(child:
-                  GCWButton(text: i18n(context, 'universalproductcode_openinbarcodetool'), onPressed: () {
-                    openInBinary2Image(context, out.barcodeBinaryCorrectEncoding);
-                  })),
+                  Expanded(
+                      child: GCWButton(
+                          text: i18n(context, 'universalproductcode_openinbarcodetool'),
+                          onPressed: () {
+                            openInBinary2Image(context, out.barcodeBinaryCorrectEncoding);
+                          })),
                   Container(width: 2 * DOUBLE_DEFAULT_MARGIN),
                 ],
               )
@@ -103,14 +105,11 @@ class _UniversalProductCodeState extends State<UniversalProductCode> {
       }
 
       return GCWDefaultOutput(
-        child: Column(
-          children: [
-            GCWColumnedMultilineOutput(data: data),
-          ],
-        )
-      );
+          child: Column(
+        children: [
+          GCWColumnedMultilineOutput(data: data),
+        ],
+      ));
     }
-
-
   }
 }

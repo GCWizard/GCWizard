@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
@@ -10,7 +9,6 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.d
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
-
 import 'package:gc_wizard/tools/science_and_technology/checkdigits/logic/checkdigits.dart';
 import 'package:gc_wizard/tools/science_and_technology/uic_wagoncode/widget/uic_wagoncode.dart';
 import 'package:prefs/prefs.dart';
@@ -120,7 +118,7 @@ class CheckDigitsCheckNumberState extends State<CheckDigitsCheckNumber> {
               ],
             ),
           if (_currentInputNumberString.toUpperCase().substring(0, 2) == 'DE' && deBankAccountDoesNotExist)
-          _detailsBankData(),
+            _detailsBankData(),
         ],
       );
     }
@@ -269,9 +267,11 @@ class CheckDigitsCheckNumberState extends State<CheckDigitsCheckNumber> {
   }
 
   Widget _detailsUICWidget() {
-    return GCWButton(text: i18n(context, 'checkdigits_uic_openinuicwagoncode'), onPressed: () {
-      openInUICWagonCode(context, _currentInputNumberString);
-    });
+    return GCWButton(
+        text: i18n(context, 'checkdigits_uic_openinuicwagoncode'),
+        onPressed: () {
+          openInUICWagonCode(context, _currentInputNumberString);
+        });
   }
 
   Widget _detailsEUROWidget() {
@@ -482,8 +482,16 @@ class CheckDigitsCheckNumberState extends State<CheckDigitsCheckNumber> {
 
     return [
       [i18n(context, 'checkdigits_euro_countrycode'), number[0] + (checkedNumber != 1 ? number[1] : '')],
-      [i18n(context, 'checkdigits_euro_country'), i18n(context, checkedNumber == 1 ? EUROBANKNOTEDATA[1]![number[0]]!['country']! : EUROBANKNOTEDATA[2]![number[0]]!['country']!)],
-      if (checkedNumber != 1) [ i18n(context, 'checkdigits_euro_institute'), EUROBANKNOTEDATA[2]![number[0]]!['institute']!]
+      [
+        i18n(context, 'checkdigits_euro_country'),
+        i18n(
+            context,
+            checkedNumber == 1
+                ? EUROBANKNOTEDATA[1]![number[0]]!['country']!
+                : EUROBANKNOTEDATA[2]![number[0]]!['country']!)
+      ],
+      if (checkedNumber != 1)
+        [i18n(context, 'checkdigits_euro_institute'), EUROBANKNOTEDATA[2]![number[0]]!['institute']!]
     ];
   }
 
@@ -520,7 +528,7 @@ class CheckDigitsCheckNumberState extends State<CheckDigitsCheckNumber> {
     result.add([i18n(context, 'checkdigits_creditcard_type_of_card_i'), number.substring(4, 5), '']);
     result.add([i18n(context, 'checkdigits_creditcard_type_of_card_ii'), number.substring(5, 6), '']);
     result.add([i18n(context, 'checkdigits_creditcard_account_number'), number.substring(6, number.length - 1), '']);
-    result.add([i18n(context, 'checkdigits_uic_check_digit'), number.substring(number.length - 1), '']);
+    result.add([i18n(context, 'checkdigits_checkdigit'), number.substring(number.length - 1), '']);
     return result;
   }
 
@@ -593,10 +601,10 @@ class CheckDigitsCheckNumberState extends State<CheckDigitsCheckNumber> {
     List<List<String>> result = [];
     if (IBAN_DATA[number.substring(0, 2)] == null) {
       result.add([
-        i18n(context, 'uic_country_code'),
+        i18n(context, 'checkdigits_country'),
         number.substring(0, 2) + ' ' + '(' + i18n(context, 'checkdigits_iban_country_code_unknown') + ')'
       ]);
-      result.add([i18n(context, 'checkdigits_uic_check_digit'), number.substring(2, 4)]);
+      result.add([i18n(context, 'checkdigits_checkdigit'), number.substring(2, 4)]);
       result.add([
         '',
         number.substring(
@@ -606,10 +614,10 @@ class CheckDigitsCheckNumberState extends State<CheckDigitsCheckNumber> {
     } else {
       List<Map<String, Object>> countryData = IBAN_DATA[number.substring(0, 2)]!;
       result.add([
-        i18n(context, 'uic_country_code'),
+        i18n(context, 'checkdigits_country'),
         number.substring(0, 2) + ' ' + '(' + i18n(context, countryData[0]['country'] as String) + ')'
       ]);
-      result.add([i18n(context, 'checkdigits_uic_check_digit'), number.substring(2, 4)]);
+      result.add([i18n(context, 'checkdigits_checkdigit'), number.substring(2, 4)]);
       int index = 4;
       int digits = 0;
       for (var country in countryData) {

@@ -11,20 +11,18 @@ class _GCWCoordWidgetInfoGeo3x3 extends GCWCoordWidgetInfo {
   String get example => 'W7392967941169';
 
   @override
-  _GCWCoordWidget mainWidget({
-    Key? key,
-    required void Function(BaseCoordinate?) onChanged,
-    required BaseCoordinate? coordinates,
-    bool? initialize
-  }) {
+  _GCWCoordWidget mainWidget(
+      {Key? key,
+      required void Function(BaseCoordinate?) onChanged,
+      required BaseCoordinate? coordinates,
+      bool? initialize}) {
     return _GCWCoordsGeo3x3(key: key, onChanged: onChanged, coordinates: coordinates, initialize: initialize ?? false);
   }
 }
 
 class _GCWCoordsGeo3x3 extends _GCWCoordWidget {
-
-  _GCWCoordsGeo3x3({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize}) :
-        super(coordinates: coordinates is Geo3x3Coordinate ? coordinates : Geo3x3FormatDefinition.defaultCoordinate);
+  _GCWCoordsGeo3x3({super.key, required super.onChanged, required BaseCoordinate? coordinates, super.initialize})
+      : super(coordinates: coordinates is Geo3x3Coordinate ? coordinates : Geo3x3FormatDefinition.defaultCoordinate);
 
   @override
   _GCWCoordsGeo3x3State createState() => _GCWCoordsGeo3x3State();

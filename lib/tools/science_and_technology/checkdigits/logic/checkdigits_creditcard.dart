@@ -284,14 +284,14 @@ CheckDigitOutput _CheckCreditCardNumber(String number) {
 }
 
 String _CalculateCreditCardNumber(String number) {
-  if (11 <= number.length && number.length <= 18 ) {
+  if (11 <= number.length && number.length <= 18) {
     return number + _calculateCreditCardCheckDigit(number);
   }
   return 'checkdigits_invalid_length';
 }
 
 List<String> _CalculateCreditCardDigits(String number) {
-  if (12 <= number.length && number.length <= 19 ) {
+  if (12 <= number.length && number.length <= 19) {
     return _CalculateDigits(number, _checkCreditCard);
   } else {
     return ['checkdigits_invalid_length'];
@@ -310,7 +310,7 @@ String _calculateCreditCardCheckDigit(String number) {
   for (int i = number.length - 1; i >= 0; i--) {
     if (two) {
       product = 2 * int.parse(number[i]);
-    }  else {
+    } else {
       product = 1 * int.parse(number[i]);
     }
     sum = sum + product ~/ 10 + product % 10;
@@ -329,4 +329,3 @@ String _calculateCreditCardCheckDigit(String number) {
 
   return sum.toString();
 }
-

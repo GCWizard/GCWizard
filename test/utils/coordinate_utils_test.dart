@@ -36,28 +36,28 @@ void main() {
 
   group('CoordinateUtils.equalsLatLng:', () {
     List<Map<String, Object>> _inputsToExpected = [
-      {'a': LatLng(42,21), 'b': LatLng(42,21), 'expectedOutput': true},
-      {'a': LatLng(41,21), 'b': LatLng(42,21), 'expectedOutput': false},
-      {'a': LatLng(42,21), 'b': LatLng(42,22), 'expectedOutput': false},
+      {'a': const LatLng(42,21), 'b': const LatLng(42,21), 'expectedOutput': true},
+      {'a': const LatLng(41,21), 'b': const LatLng(42,21), 'expectedOutput': false},
+      {'a': const LatLng(42,21), 'b': const LatLng(42,22), 'expectedOutput': false},
 
-      {'a': LatLng(41.9999999999999999,22), 'b': LatLng(42,22), 'expectedOutput': true},
-      {'a': LatLng(42,22), 'b': LatLng(42,22.0000000000001), 'expectedOutput': true},
+      {'a': const LatLng(41.9999999999999999,22), 'b': const LatLng(42,22), 'expectedOutput': true},
+      {'a': const LatLng(42,22), 'b': const LatLng(42,22.0000000000001), 'expectedOutput': true},
 
-      {'a': LatLng(90, 20), 'b': LatLng(90, 20), 'expectedOutput': true},
-      {'a': LatLng(90, 20), 'b': LatLng(90, 40), 'expectedOutput': true},
-      {'a': LatLng(-90, 20), 'b': LatLng(90, 20), 'expectedOutput': false},
-      {'a': LatLng(-90, 20), 'b': LatLng(-90, 20), 'expectedOutput': true},
-      {'a': LatLng(-90, 40), 'b': LatLng(-90, 20), 'expectedOutput': true},
-      {'a': LatLng(-89.9999999999999, 40), 'b': LatLng(-90, 20), 'expectedOutput': true},
-      {'a': LatLng(-89.9999999999999, 40), 'b': LatLng(-89.9999999999999, 20), 'expectedOutput': true},
-      {'a': LatLng(90, 40), 'b': LatLng(89.9999999999999, 20), 'expectedOutput': true},
-      {'a': LatLng(90, 40), 'b': LatLng(89.99, 20), 'expectedOutput': false},
+      {'a': const LatLng(90, 20), 'b': const LatLng(90, 20), 'expectedOutput': true},
+      {'a': const LatLng(90, 20), 'b': const LatLng(90, 40), 'expectedOutput': true},
+      {'a': const LatLng(-90, 20), 'b': const LatLng(90, 20), 'expectedOutput': false},
+      {'a': const LatLng(-90, 20), 'b': const LatLng(-90, 20), 'expectedOutput': true},
+      {'a': const LatLng(-90, 40), 'b': const LatLng(-90, 20), 'expectedOutput': true},
+      {'a': const LatLng(-89.9999999999999, 40), 'b': const LatLng(-90, 20), 'expectedOutput': true},
+      {'a': const LatLng(-89.9999999999999, 40), 'b': const LatLng(-89.9999999999999, 20), 'expectedOutput': true},
+      {'a': const LatLng(90, 40), 'b': const LatLng(89.9999999999999, 20), 'expectedOutput': true},
+      {'a': const LatLng(90, 40), 'b': const LatLng(89.99, 20), 'expectedOutput': false},
 
-      {'a': LatLng(60, 180), 'b': LatLng(60, 180), 'expectedOutput': true},
-      {'a': LatLng(60, 180), 'b': LatLng(60, -180), 'expectedOutput': true},
-      {'a': LatLng(60, 179.9999999999999), 'b': LatLng(60, -179.9999999999999), 'expectedOutput': true},
-      {'a': LatLng(60, 178.9999999999999), 'b': LatLng(60, -179.9999999999999), 'expectedOutput': false},
-      {'a': LatLng(60, 179.9999999999999), 'b': LatLng(-60, -179.9999999999999), 'expectedOutput': false},
+      {'a': const LatLng(60, 180), 'b': const LatLng(60, 180), 'expectedOutput': true},
+      {'a': const LatLng(60, 180), 'b': const LatLng(60, -180), 'expectedOutput': true},
+      {'a': const LatLng(60, 179.9999999999999), 'b': const LatLng(60, -179.9999999999999), 'expectedOutput': true},
+      {'a': const LatLng(60, 178.9999999999999), 'b': const LatLng(60, -179.9999999999999), 'expectedOutput': false},
+      {'a': const LatLng(60, 179.9999999999999), 'b': const LatLng(-60, -179.9999999999999), 'expectedOutput': false},
     ];
 
     for (var elem in _inputsToExpected) {

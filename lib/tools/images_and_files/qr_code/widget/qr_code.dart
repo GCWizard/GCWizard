@@ -89,9 +89,7 @@ class _QrCodeState extends State<QrCode> {
                   });
                 },
               ),
-        _currentMode == GCWSwitchPosition.right
-            ? Container()
-            : _buildAdvancedWidget(),
+        _currentMode == GCWSwitchPosition.right ? Container() : _buildAdvancedWidget(),
         ((_currentMode == GCWSwitchPosition.right) && (_outData != null))
             ? Container(
                 padding: const EdgeInsets.symmetric(vertical: 20),
@@ -141,52 +139,50 @@ class _QrCodeState extends State<QrCode> {
     return Column(
       children: [
         GCWExpandableTextDivider(
-          text: i18n(context, 'common_mode_advanced'),
-          expanded: _currentExpanded,
-          onChanged: (value) {
-            setState(() {
-              _currentExpanded = value;
-            });
-          },
-          child: Column (
-            children: [
+            text: i18n(context, 'common_mode_advanced'),
+            expanded: _currentExpanded,
+            onChanged: (value) {
+              setState(() {
+                _currentExpanded = value;
+              });
+            },
+            child: Column(children: [
               Row(children: <Widget>[
                 Expanded(child: GCWText(text: i18n(context, 'qr_code_size_version'))),
                 Expanded(
                   child: GCWDropDown<int>(
-                      value: _currentSize,
-                      onChanged: (int value) {
-                        setState(() {
-                          _currentSize = value;
-                          _updateOutput();
-                        });
-                      },
-                      items: buildSizeList(),
-                      ),
+                    value: _currentSize,
+                    onChanged: (int value) {
+                      setState(() {
+                        _currentSize = value;
+                        _updateOutput();
+                      });
+                    },
+                    items: buildSizeList(),
                   ),
+                ),
               ]),
               Row(children: <Widget>[
                 Expanded(child: GCWText(text: i18n(context, 'qr_code_error_correct_level'))),
                 Expanded(
                   child: GCWDropDown<int>(
-                      value: _currentErrorCorrectLevel,
-                      onChanged: (int value) {
-                        setState(() {
-                          _currentErrorCorrectLevel = value;
-                          _updateOutput();
-                        });
-                      },
-                      items: errorCorrectLevel().entries.map((set) {
-                          return GCWDropDownMenuItem(
-                            value: set.key,
-                            child: set.value,
-                          );
-                        }).toList(),
-                      ),
+                    value: _currentErrorCorrectLevel,
+                    onChanged: (int value) {
+                      setState(() {
+                        _currentErrorCorrectLevel = value;
+                        _updateOutput();
+                      });
+                    },
+                    items: errorCorrectLevel().entries.map((set) {
+                      return GCWDropDownMenuItem(
+                        value: set.key,
+                        child: set.value,
+                      );
+                    }).toList(),
+                  ),
                 )
-            ])
-          ])
-        ),
+              ])
+            ])),
       ],
     );
   }
@@ -210,7 +206,7 @@ class _QrCodeState extends State<QrCode> {
   Object? _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
       if (_outDataEncrypt == null && _outDataEncryptText == null) return null;
-      if (_outDataEncryptText != null) return  _outDataEncryptText;
+      if (_outDataEncryptText != null) return _outDataEncryptText;
       return Image.memory(_outDataEncrypt!);
     } else {
       if (_outDataDecrypt == null) return null;
@@ -231,7 +227,8 @@ class _QrCodeState extends State<QrCode> {
         _outDataEncrypt = null;
         _outDataEncryptText = null;
         var qrCode = generateBarCode(currentInput,
-            moduleSize: _currentModulSize, border: 2 * _currentModulSize,
+            moduleSize: _currentModulSize,
+            border: 2 * _currentModulSize,
             errorCorrectLevel: _currentErrorCorrectLevel,
             version: _currentSize);
         if (qrCode == null) return;

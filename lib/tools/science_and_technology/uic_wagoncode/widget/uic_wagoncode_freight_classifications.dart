@@ -138,6 +138,8 @@ class _UICWagonCodeFreightClassificationsState extends State<UICWagonCodeFreight
         uicNumbers.addAll(classifications.map((e) => cat + e));
       }
 
+      uicNumbers.sort();
+
       List<List<String>> classificationData = [];
       if (uicNumbers.isNotEmpty) {
         var uic = UICWagonCodeFreightWagon(('0' * 4) + uicNumbers.first + ('0' * 4));
