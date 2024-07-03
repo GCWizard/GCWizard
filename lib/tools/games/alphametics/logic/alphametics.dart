@@ -397,7 +397,7 @@ Map<String, int> Solve(String equation) {
     return found == -1 || zeroMask[found];
   }
 
-  var res = Helper._kPerms(_range, k).where((l) => _canBeZero(l)).where((p) => _colSum(columns, p)).first;
+  var res = Helper._kPerms(_range, k).where((l) => _canBeZero(l)).where((p) => _colSum(columns, p)).firstOrNull;
   return res != null
     ? Map<String, int>.fromIterables(chars, res)// res.Zip(chars, (i, c) => (c, i)).ToDictionary((kvp) => kvp.c, kvp => kvp.i)
     : {}; // throw new ArgumentException();
