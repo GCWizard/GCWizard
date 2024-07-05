@@ -3,7 +3,7 @@ import 'dart:core';
 import 'dart:isolate';
 import 'dart:math';
 import 'dart:collection';
-import "package:collection/collection.dart";
+import 'package:collection/collection.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitution.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
