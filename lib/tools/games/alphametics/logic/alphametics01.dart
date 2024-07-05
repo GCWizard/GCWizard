@@ -1,5 +1,6 @@
 import'dart:collection';
 import 'dart:math';
+import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitution.dart';
 import 'package:math_expressions/math_expressions.dart';
 
 class Formula {
@@ -19,7 +20,7 @@ class Alphametics01 {
     var solutions = <Map<String, int>>[];
     var members = equation.formula.split('=');
     var result = members[1];
-    var terms = members[0].split(RegExp(r'\+\-\*\/'));
+    var terms = members[0].split('+'); //RegExp(r'\+\-\*\/'));
     Parser parser = Parser();
 
     if (equation.onlyAddition) {
@@ -243,3 +244,24 @@ class PossibleValues {
   }
 }
 
+String getOutput(String equation, Map<String, int> result) {
+  Map<String,String> substitutions = Map.from(result);
+  return substitution(equation, substitutions);
+}
+
+PossibleValues defaultPossibleValues(List<String> members, bool alphametics)
+{
+  var _possibleValues = <String, List<int>>{};
+  //var offset = 0;
+  members.forEach (( member ) {
+    var _values = <int>[];
+    for (int i = 0; i < (alphametics ? 10 : 100); i++) {
+      _values.add(i);
+    }
+
+    _possibleValues.addAll({member: _values});
+    //offset += 20;
+  });
+
+  return new PossibleValues(_possibleValues);
+}
