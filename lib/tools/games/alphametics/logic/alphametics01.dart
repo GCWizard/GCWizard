@@ -20,6 +20,7 @@ class Alphametics01 {
     var members = equation.formula.split('=');
     var result = members[1];
     var terms = members[0].split(RegExp(r'\+\-\*\/'));
+    Parser parser = Parser();
 
     if (equation.onlyAddition) {
       checkEquality(terms, result);
@@ -42,7 +43,7 @@ class Alphametics01 {
         var tmpDics = possibleValues.getPossibleDictionaries(candidateChar, candidateNum, equation.usedMembers);
 
         for (var tmpDic in tmpDics) {
-          if (isCorrect(tmpDic, terms, result, equation.formula, equation.onlyAddition)) {
+          if (isCorrect(tmpDic, terms, result, equation.formula, equation.onlyAddition, parser)) {
             solutions.add(buildResult(tmpDic));
             if (!allSolutions) {
               return solutions;
@@ -64,8 +65,8 @@ class Alphametics01 {
     return Map.fromEntries(tmpDic.entries.map((e) => MapEntry(e.key, e.value)));
   }
 
-  static bool isCorrect(Map<String, int> tmpDic, List<String> terms, String result, String equation, bool onlyAddition) {
-    return onlyAddition ? isCorrectAddition(tmpDic, terms, result) : isCorrectOther(tmpDic, equation);
+  static bool isCorrect(Map<String, int> tmpDic, List<String> terms, String result, String equation, bool onlyAddition, Parser parser) {
+    return onlyAddition ? isCorrectAddition(tmpDic, terms, result) : isCorrectOther(tmpDic, equation, parser);
   }
 
   static bool isCorrectAddition(Map<String, int> tmpDic, List<String> terms, String result) {
@@ -95,16 +96,11 @@ class Alphametics01 {
     return term;
   }
 
-  static bool isCorrectOther(Map<String, int> tmpDic, String equation) {
-    var exp = Parser().parse(replaceLetters(tmpDic, equation));
-    var context = ContextModel();
-    return exp.evaluate(EvaluationType.BOOLEAN, context) as bool;
+  static bool isCorrectOther(Map<String, int> tmpDic, String equation, Parser parser) {
+    var context = ContextModel(); //??? Speed
+    var exp = parser.parse(replaceLetters(tmpDic, equation));
+    return exp.evaluate(EvaluationType.REAL, context) == 0;
   }
-  // private static bool IsCorrectOther(Dictionary<char, int> tmpDic, String equation)
-  // {
-  //   var exp = new Expression(replaceLetters(tmpDic, equation));
-  //   return (bool)exp.Eval();
-  // }
 
   static void checkEquality(List<String> terms, String result) {
     if (terms.any((t) => t.length > result.length)) {
