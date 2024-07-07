@@ -1,4 +1,4 @@
-import'dart:collection';
+import 'dart:collection';
 import 'dart:math';
 import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitution.dart';
 import 'package:math_expressions/math_expressions.dart';
@@ -166,7 +166,9 @@ class PossibleValues {
       }
     }
 
-    return result.where((dic) => dic.keys.length == usedMembers.length).toList();
+    var res = result.where((dic) => dic.keys.length == usedMembers.length).toList();
+    print(result.length.toString() + ' ' + res.length.toString());
+    return res;
   }
 
   Map<String, int> getResult() {
@@ -245,23 +247,19 @@ class PossibleValues {
 }
 
 String getOutput(String equation, Map<String, int> result) {
-  Map<String,String> substitutions = Map.from(result);
+  Map<String,String> substitutions = Map.fromEntries(result.entries.map((e) => MapEntry(e.key, e.value.toString())));
   return substitution(equation, substitutions);
 }
 
-PossibleValues defaultPossibleValues(List<String> members, bool alphametics)
-{
+PossibleValues defaultPossibleValues(List<String> members, bool alphametics) {
   var _possibleValues = <String, List<int>>{};
-  //var offset = 0;
-  members.forEach (( member ) {
+
+  for (var member in members) {
     var _values = <int>[];
     for (int i = 0; i < (alphametics ? 10 : 100); i++) {
       _values.add(i);
     }
-
     _possibleValues.addAll({member: _values});
-    //offset += 20;
-  });
-
-  return new PossibleValues(_possibleValues);
+  }
+  return PossibleValues(_possibleValues);
 }
