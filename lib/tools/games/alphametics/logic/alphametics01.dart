@@ -1,3 +1,7 @@
+// import 'dart:collection';
+// import 'dart:math';
+//import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitution.dart';
+
 import 'package:math_expressions/math_expressions.dart';
 
 import 'alphametics.dart';
@@ -10,7 +14,7 @@ class Alphametics01 {
     var solutions = <Map<String, int>>[];
     var members = equation.formula.split('=');
     var result = members[1];
-    var terms = members[0].split(RegExp(r'\+\-\*\/'));
+    var terms = members[0].split('+'); //RegExp(r'\+\-\*\/'));
     Parser parser = Parser();
 
     if (equation.onlyAddition) {
@@ -107,5 +111,3 @@ class Alphametics01 {
     return replaceLetters(result, equation);
   }
 }
-
-
