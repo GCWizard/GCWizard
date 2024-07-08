@@ -25,6 +25,8 @@ import 'package:gc_wizard/tools/games/alphametics/logic/alphametics.dart';
 import 'package:gc_wizard/tools/games/catan/logic/catan.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 
+import '../logic/alphametics_.dart';
+
 
 class Alphametics extends StatefulWidget {
   const Alphametics({Key? key}) : super(key: key);
