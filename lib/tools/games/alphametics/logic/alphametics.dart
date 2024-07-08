@@ -2,7 +2,10 @@ import 'dart:core';
 import 'dart:collection';
 import 'dart:math';
 
-final operators = { '+', '-', '*', '/' };
+import 'package:math_expressions/math_expressions.dart';
+part 'alphametics01.dart';
+
+final operators = r'\+|\-|\*|\/';
 
 
 class Formula {
@@ -24,17 +27,16 @@ List<Formula> ConvertAndCleanEquations(List<String> equations) {
   return _equations;
 }
 
-void RemoveLeadingZero(List<Formula> equations, PossibleValues possibleValues) {
-  equations.forEach ((equation) {
+void removeLeadingZero(List<Formula> equations, PossibleValues possibleValues) {
+  for (var equation in equations) {
     if (equation.onlyAddition) {
       var members = equation.formula.split('=');
       var result = members[1];
-      var terms = members[0].split(operators);
+      var terms = members[0].split(RegExp(operators));
 
       possibleValues.removeLeadingZero(terms, result);
     }
-  }
-}
+  }}
 
 class PossibleValues {
   final Map<String, List<int>> _possibleValues;

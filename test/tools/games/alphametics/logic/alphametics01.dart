@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/formula_solver/logic/formula_parser.dart';
-import 'package:gc_wizard/tools/games/alphametics/logic/alphametics01.dart';
+import 'package:gc_wizard/tools/games/alphametics/logic/alphametics.dart';
 
 void main() {
   _formulaStateToString(FormulaState state) {
@@ -52,7 +52,7 @@ void main() {
     _inputsToExpected.forEach((elem) {
       test('formulas: ${elem['input']}', () {
 
-var values = defaultPossibleValues(['B','A','S','E','L','G','M'], true);
+var values = PossibleValues().getPossibleValues_(['B','A','S','E','L','G','M'], true);
 var equation = Formula(elem['input'] as String);
 equation.usedMembers = HashSet<String>.from(['B','A','S','E','L','G','M'] );
 equation.onlyAddition = true;
