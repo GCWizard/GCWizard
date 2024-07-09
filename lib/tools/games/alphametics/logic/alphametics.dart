@@ -1,7 +1,7 @@
 import 'dart:core';
-import 'dart:collection';
 import 'dart:math';
 
+import 'package:gc_wizard/utils/string_utils.dart';
 import 'package:math_expressions/math_expressions.dart';
 part 'alphametics01.dart';
 
@@ -11,10 +11,25 @@ const operators = r'\+|\-|\*|\/';
 class Formula {
   late String formula;
   bool onlyAddition = false;
-  late HashSet<String> usedMembers;
+  late Set<String> usedMembers;
+  late String result;
+  late List<String> terms;
+
 
   Formula(String equations) {
     formula = equations;
+    _splitFormula();
+    _fillMembers();
+  }
+
+  void _splitFormula() {
+    var members = formula.replaceAll(' ', '').split('=');
+    result = members[1];
+    terms = members[0].split(RegExp(operators));
+  }
+
+  void _fillMembers() {
+    usedMembers = Set<String>.from(removeNonLetters(formula).split(''));
   }
 }
 
@@ -29,11 +44,7 @@ List<Formula> convertAndCleanEquations(List<String> equations) {
 void removeLeadingZero(List<Formula> equations, PossibleValues possibleValues) {
   for (var equation in equations) {
     if (equation.onlyAddition) {
-      var members = equation.formula.replaceAll(' ', '').split('=');
-      var result = members[1];
-      var terms = members[0].split(RegExp(operators));
-
-      possibleValues.removeLeadingZero(terms, result);
+      possibleValues.removeLeadingZero(equation.terms, equation.result);
     }
   }
 }
@@ -178,7 +189,7 @@ class PossibleValues {
   }
 
 
-  static PossibleValues initPossibleValues(List<String> members, bool alphametics) {
+  static PossibleValues initPossibleValues(Set<String> members, bool alphametics) {
     var _possibleValues = <String, List<int>>{};
     //var offset = 0;
     members.forEach (( member ) {

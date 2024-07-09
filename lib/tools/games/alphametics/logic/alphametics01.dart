@@ -10,19 +10,16 @@ class Alphametics01 {
 
   static List<Map<String, int>>? solve(Formula equation, PossibleValues possibleValues, {bool allSolutions = false}) {
     var solutions = <Map<String, int>>[];
-    var members = equation.formula.replaceAll(' ', '').split('=');
-    var result = members[1];
-    var terms = members[0].split(RegExp(operators));
     Parser parser = Parser();
 
     if (equation.onlyAddition) {
-      checkEquality(terms, result);
+      checkEquality(equation.terms, equation.result);
     }
 
-    terms.sort((a, b) => a.compareTo(b));
+    equation.terms.sort((a, b) => a.compareTo(b));
 
     if (equation.onlyAddition) {
-      possibleValues.checkFirstLetterInResult(terms, result);
+      possibleValues.checkFirstLetterInResult(equation.terms, equation.result);
     }
 
     try {
@@ -36,7 +33,7 @@ class Alphametics01 {
         var tmpDics = possibleValues.getPossibleDictionaries(candidateChar, candidateNum, equation.usedMembers);
 
         for (var tmpDic in tmpDics) {
-          if (isCorrect(tmpDic, terms, result, equation.formula, equation.onlyAddition, parser)) {
+          if (isCorrect(tmpDic, equation.terms, equation.result, equation.formula, equation.onlyAddition, parser)) {
             solutions.add(buildResult(tmpDic));
             if (!allSolutions) {
               return solutions;
