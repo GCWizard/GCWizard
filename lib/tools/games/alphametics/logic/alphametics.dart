@@ -14,12 +14,13 @@ class Formula {
   late Set<String> usedMembers;
   late String result;
   late List<String> terms;
-
+  late bool onlyAdditon;
 
   Formula(String equations) {
     formula = equations;
     _splitFormula();
     _fillMembers();
+    _onlyAdditon();
   }
 
   void _splitFormula() {
@@ -30,6 +31,17 @@ class Formula {
 
   void _fillMembers() {
     usedMembers = Set<String>.from(removeNonLetters(formula).split(''));
+  }
+
+  // only addition in the formula
+  void _onlyAdditon() {
+    for (var op in ['-','*','/']) {
+      if (formula.contains(op)) {
+        onlyAdditon = false;
+        return;
+      }
+    }
+    onlyAdditon = true;
   }
 }
 

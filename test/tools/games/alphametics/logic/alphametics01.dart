@@ -54,7 +54,7 @@ var equation = Formula(elem['input'] as String);
 var values = PossibleValues.initPossibleValues(equation.usedMembers, true);
 
 //equation.usedMembers = HashSet<String>.from(['B','A','S','E','L','G','M'] );
-equation.onlyAddition = true;
+//equation.onlyAddition = true;
 
 removeLeadingZero([equation], values);
 
