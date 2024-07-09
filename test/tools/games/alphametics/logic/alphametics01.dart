@@ -52,12 +52,14 @@ void main() {
     _inputsToExpected.forEach((elem) {
       test('formulas: ${elem['input']}', () {
 
-var values = PossibleValues().getPossibleValues_(['B','A','S','E','L','G','M'], true);
+var values = PossibleValues.initPossibleValues(['B','A','S','E','L','G','M'], true);
 var equation = Formula(elem['input'] as String);
 equation.usedMembers = HashSet<String>.from(['B','A','S','E','L','G','M'] );
 equation.onlyAddition = true;
 
-        var _actual = getOutput(elem['input'] as String, Alphametics01.solve(equation, values)!.first);
+removeLeadingZero([equation], values);
+
+        var _actual = values.getOutput(elem['input'] as String, Alphametics01.solve(equation, values)!.first);
         expect(_actual, elem['expectedOutput']);
       });
     });

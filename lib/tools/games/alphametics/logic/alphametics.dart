@@ -5,7 +5,7 @@ import 'dart:math';
 import 'package:math_expressions/math_expressions.dart';
 part 'alphametics01.dart';
 
-final operators = r'\+|\-|\*|\/';
+const operators = r'\+|\-|\*|\/';
 
 
 class Formula {
@@ -18,10 +18,9 @@ class Formula {
   }
 }
 
-List<Formula> ConvertAndCleanEquations(List<String> equations) {
+List<Formula> convertAndCleanEquations(List<String> equations) {
   List<Formula> _equations = [];
-  for (int i = 0; i < equations.length; i++)
-  {
+  for (int i = 0; i < equations.length; i++) {
     _equations.add(Formula(equations[i].replaceAll("==", "=").replaceAll(" ", "")));
   }
   return _equations;
@@ -30,13 +29,15 @@ List<Formula> ConvertAndCleanEquations(List<String> equations) {
 void removeLeadingZero(List<Formula> equations, PossibleValues possibleValues) {
   for (var equation in equations) {
     if (equation.onlyAddition) {
-      var members = equation.formula.split('=');
+      var members = equation.formula.replaceAll(' ', '').split('=');
       var result = members[1];
       var terms = members[0].split(RegExp(operators));
 
       possibleValues.removeLeadingZero(terms, result);
     }
-  }}
+  }
+}
+
 
 class PossibleValues {
   final Map<String, List<int>> _possibleValues;
@@ -127,6 +128,7 @@ class PossibleValues {
     }
   }
 
+  // The leading digit of a multi-digit number must not be zero.
   void removeLeadingZero(List<String> terms, String result) {
     if (_possibleValues.containsKey(result[0])) remove(result[0], 0);
 
@@ -161,5 +163,34 @@ class PossibleValues {
       });
     });
     return r;
+  }
+
+  String getOutput(String equation, Map<String, int> result) {
+    return replaceLetters(equation, result);
+  }
+
+  String replaceLetters(String equation, Map<String, int> result) {
+    for (var key in result.keys) {
+      equation = equation.replaceAll(key, result[key].toString());
+    }
+
+    return equation;
+  }
+
+
+  static PossibleValues initPossibleValues(List<String> members, bool alphametics) {
+    var _possibleValues = <String, List<int>>{};
+    //var offset = 0;
+    members.forEach (( member ) {
+      var _values = <int>[];
+      for (int i = 0; i < (alphametics ? 10 : 100); i++) {
+        _values.add(i);
+      }
+
+      _possibleValues.addAll({member: _values});
+      //offset += 20;
+    });
+
+    return new PossibleValues(_possibleValues);
   }
 }

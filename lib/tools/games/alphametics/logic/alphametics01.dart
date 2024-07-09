@@ -2,8 +2,6 @@
 // import 'dart:math';
 //import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitution.dart';
 
-
-
 part of 'alphametics.dart';
 
 
@@ -12,9 +10,9 @@ class Alphametics01 {
 
   static List<Map<String, int>>? solve(Formula equation, PossibleValues possibleValues, {bool allSolutions = false}) {
     var solutions = <Map<String, int>>[];
-    var members = equation.formula.split('=');
+    var members = equation.formula.replaceAll(' ', '').split('=');
     var result = members[1];
-    var terms = members[0].split(operators); //RegExp(r'\+\-\*\/'));
+    var terms = members[0].split(RegExp(operators));
     Parser parser = Parser();
 
     if (equation.onlyAddition) {
@@ -105,9 +103,5 @@ class Alphametics01 {
       // Commented out as per original code
       // throw ArgumentError(terms[0] == result ? "More than one solution" : "No solution");
     }
-  }
-
-  static String getOutput(String equation, Map<String, int> result) {
-    return replaceLetters(result, equation);
   }
 }
