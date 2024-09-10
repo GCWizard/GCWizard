@@ -84,7 +84,7 @@ class _GCWCoordsDMMState extends State<_GCWCoordsDMM> {
   @override
   Widget build(BuildContext context) {
     if (widget.initialize) {
-      var precision = Prefs.getInt(PREFERENCE_COORD_PRECISION_DMM);
+      var precision = 3;
       var dmm = widget.coordinates as DMMCoordinate;
       var lat = dmm.dmmLatitude.formatParts(precision);
       var lon = dmm.dmmLongitude.formatParts(precision);

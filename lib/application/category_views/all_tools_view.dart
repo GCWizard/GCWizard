@@ -53,8 +53,8 @@ import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/application/webapi/deeplinks/deeplinks.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
-import 'package:gc_wizard/common_widgets/gcw_tool.dart';
-import 'package:gc_wizard/common_widgets/gcw_toollist.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_toollist.dart';
 import 'package:gc_wizard/common_widgets/gcw_web_statefulwidget.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/coords/antipodes/widget/antipodes.dart';
@@ -89,6 +89,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/amsco/widget/amsco.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/atbash/widget/atbash.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/avemaria/widget/avemaria.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/bacon/widget/bacon.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/bacon/widget/bacon_analyze.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/battleship/widget/battleship.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/beghilos/widget/beghilos.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/bifid/widget/bifid.dart';
@@ -129,6 +130,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/kamasutra/widget/kamasutra.
 import 'package:gc_wizard/tools/crypto_and_encodings/kenny/widget/kenny.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/chicken_language/widget/chicken_language.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/duck_speak/widget/duck_speak.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/language_games/judoon/widget/judoon.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/pig_latin/widget/pig_latin.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/robber_language/widget/robber_language.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/spoon_language/widget/spoon_language.dart';
@@ -139,9 +141,11 @@ import 'package:gc_wizard/tools/crypto_and_encodings/one_time_pad/widget/one_tim
 import 'package:gc_wizard/tools/crypto_and_encodings/playfair/widget/playfair.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/pokemon/widget/pokemon.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/pollux/widget/pollux.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/porta/widget/porta.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/polybios/widget/polybios.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/prime_alphabet/widget/prime_alphabet.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rabbit/widget/rabbit.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/ragbaby/widget/ragbaby.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rail_fence/widget/rail_fence.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rc4/widget/rc4.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/reverse/widget/reverse.dart';
@@ -154,6 +158,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rot47/widget/rot47
 import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rot5/widget/rot5.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rotation_general/widget/rotation_general.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/skytale/widget/skytale.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/slash_and_pipe/widget/slash_and_pipe.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/solitaire/widget/solitaire.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/straddling_checkerboard/widget/straddling_checkerboard.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/substitution/widget/substitution.dart';
@@ -170,6 +175,7 @@ import 'package:gc_wizard/tools/formula_solver/widget/formula_solver_formulagrou
 import 'package:gc_wizard/tools/games/alphametics/widget/alphametics.dart';
 import 'package:gc_wizard/tools/games/bowling/widget/bowling.dart';
 import 'package:gc_wizard/tools/games/catan/widget/catan.dart';
+import 'package:gc_wizard/tools/games/logical_supporter/widget/logical_supporter.dart';
 import 'package:gc_wizard/tools/games/nonogram/widget/nonogram_solver.dart';
 import 'package:gc_wizard/tools/games/number_pyramid/widget/number_pyramid_solver.dart';
 import 'package:gc_wizard/tools/games/sudoku/sudoku_solver/widget/sudoku_solver.dart';
@@ -249,11 +255,13 @@ import 'package:gc_wizard/tools/science_and_technology/lcm/widget/lcm.dart';
 import 'package:gc_wizard/tools/science_and_technology/mathematical_constants/widget/mathematical_constants.dart';
 import 'package:gc_wizard/tools/science_and_technology/music_notes/music_notes/widget/music_notes.dart';
 import 'package:gc_wizard/tools/science_and_technology/numeral_bases/widget/numeral_bases.dart';
+import 'package:gc_wizard/tools/science_and_technology/paperformat/widget/paperformat.dart';
 import 'package:gc_wizard/tools/science_and_technology/periodic_table/atomic_numbers_to_text/widget/atomic_numbers_to_text.dart';
 import 'package:gc_wizard/tools/science_and_technology/periodic_table/periodic_table/widget/periodic_table.dart';
 import 'package:gc_wizard/tools/science_and_technology/periodic_table/periodic_table_data_view/widget/periodic_table_data_view.dart';
 import 'package:gc_wizard/tools/science_and_technology/physical_constants/widget/physical_constants.dart';
 import 'package:gc_wizard/tools/science_and_technology/piano/widget/piano.dart';
+import 'package:gc_wizard/tools/science_and_technology/postcode/widget/postcode.dart';
 import 'package:gc_wizard/tools/science_and_technology/projectiles/widget/projectiles.dart';
 import 'package:gc_wizard/tools/science_and_technology/quadratic_equation/widget/quadratic_equation.dart';
 import 'package:gc_wizard/tools/science_and_technology/recycling/widget/recycling.dart';
@@ -273,6 +281,7 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/popham_telegra
 import 'package:gc_wizard/tools/science_and_technology/telegraphs/prussia_telegraph/widget/prussia_telegraph.dart';
 import 'package:gc_wizard/tools/science_and_technology/telegraphs/schilling_canstatt_telegraph/widget/schilling_canstatt_telegraph.dart';
 import 'package:gc_wizard/tools/science_and_technology/telegraphs/semaphore/widget/semaphore.dart';
+import 'package:gc_wizard/tools/science_and_technology/telegraphs/steinheil/widget/steinheil.dart';
 import 'package:gc_wizard/tools/science_and_technology/telegraphs/wheatstone_cooke_5_needles/widget/wheatstone_cooke_5_needles.dart';
 import 'package:gc_wizard/tools/science_and_technology/telegraphs/wigwag/widget/wigwag.dart';
 import 'package:gc_wizard/tools/science_and_technology/teletypewriter/algol/widget/algol.dart';
@@ -285,6 +294,7 @@ import 'package:gc_wizard/tools/science_and_technology/ufi/widget/ufi.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/widget/unit_converter.dart';
 import 'package:gc_wizard/tools/science_and_technology/velocity_acceleration/widget/velocity_acceleration.dart';
 import 'package:gc_wizard/tools/symbol_tables/symbol_replacer/widget/symbol_replacer.dart';
+import 'package:gc_wizard/tools/uncategorized/wedding_anniversaries/widget/wedding_anniversaries.dart';
 import 'package:gc_wizard/tools/uncategorized/zodiac/widget/zodiac.dart';
 import 'package:gc_wizard/tools/wherigo/earwigo_text_deobfuscation/widget/earwigo_text_deobfuscation.dart';
 import 'package:gc_wizard/tools/wherigo/urwigo_hashbreaker/widget/urwigo_hashbreaker.dart';
@@ -479,7 +489,7 @@ class _MainViewState extends State<MainView> {
   }
 
   List<GCWTool> _getSearchedList() {
-    var _sanitizedSearchText = removeAccents(_searchText.toLowerCase()).replaceAll(ALLOWED_SEARCH_CHARACTERS, '');
+    var _sanitizedSearchText = removeAccents(_searchText.toLowerCase()).replaceAll(NOT_ALLOWED_SEARCH_CHARACTERS, '');
 
     if (_sanitizedSearchText.isEmpty) return <GCWTool>[];
 
@@ -527,6 +537,7 @@ void _initStaticToolList() {
       className(const AveMaria()),
       className(const BabylonNumbersSelection()),
       className(const Bacon()),
+      className(const BaconAnalyze()),
       className(const BaseSelection()),
       className(const Battleship()),
       className(const BCDSelection()),
@@ -644,11 +655,13 @@ void _initStaticToolList() {
       className(const IPCodes()),
       className(const IteratedCrossSumRange()),
       className(const IteratedCrossSumRangeFrequency()),
+      className(const Judoon()),
       className(const Kamasutra()),
       className(const KarolRobot()),
       className(const Kenny()),
       className(const KeyboardSelection()),
       className(const LCM()),
+      className(const LogicalSupporter()),
       className(const MagicEyeSolver()),
       className(const MathematicalConstants()),
       className(const Malbolge()),
@@ -674,6 +687,7 @@ void _initStaticToolList() {
       className(OneTimePad()),
       className(Ook()),
       className(const PantoneColorCodes()),
+      className(const PaperFormats()),
       className(const PasleyTelegraph()),
       className(const PophamTelegraph()),
       className(const PeriodicTable()),
@@ -684,6 +698,7 @@ void _initStaticToolList() {
       className(const PhiSelection()),
       className(const PhysicalConstants()),
       className(const Piano()),
+      className(const Postcode()),
       className(const Piet()),
       className(const PiSelection()),
       className(const PigLatin()),
@@ -691,6 +706,7 @@ void _initStaticToolList() {
       className(const Pokemon()),
       className(const Pollux()),
       className(const Polybios()),
+      className(const Porta()),
       className(const PredatorSelection()),
       className(const PrimeAlphabet()),
       className(const PrimesSelection()),
@@ -699,6 +715,7 @@ void _initStaticToolList() {
       className(const QrCode()),
       className(const QuadraticEquation()),
       className(const Rabbit()),
+      className(const Ragbaby()),
       className(const RailFence()),
       className(const RALColorCodes()),
       className(const RC4()),
@@ -725,6 +742,7 @@ void _initStaticToolList() {
       className(const SevenSegments()),
       className(const SixteenSegments()),
       className(const Skytale()),
+      className(const SlashAndPipe()),
       className(const Solitaire()),
       className(const Sort()),
       className(const SpellingAlphabetsCrypt()),
@@ -734,6 +752,7 @@ void _initStaticToolList() {
       className(const SQRT3Selection()),
       className(const SQRT5Selection()),
       className(const Stegano()),
+      className(const SteinheilTelegraph()),
       className(const StraddlingCheckerboard()),
       className(const Substitution()),
       className(SubstitutionBreaker()),
@@ -769,6 +788,7 @@ void _initStaticToolList() {
       className(const WASD()),
       className(const WaypointProjectionGeodetic()),
       className(const WaypointProjectionRhumbline()),
+      className(const WeddingAnniversaries()),
       className(const Weekday()),
       className(const WetBulbTemperature()),
       className(const WherigoSelection()),

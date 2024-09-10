@@ -7,7 +7,7 @@ import 'package:gc_wizard/application/navigation/no_animation_material_page_rout
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
-import 'package:gc_wizard/common_widgets/gcw_tool.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';

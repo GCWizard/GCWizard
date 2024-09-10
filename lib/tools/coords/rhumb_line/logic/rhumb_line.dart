@@ -1,6 +1,6 @@
 import 'package:gc_wizard/tools/coords/_common/logic/distance_bearing.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/external_libs/net.sf.geographic_lib/geographic_lib.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
 import 'package:latlong2/latlong.dart';
 
 bool _isNearPole(double lat) {

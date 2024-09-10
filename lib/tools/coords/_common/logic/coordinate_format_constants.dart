@@ -19,6 +19,7 @@ import 'package:gc_wizard/tools/coords/_common/formats/openlocationcode/logic/op
 import 'package:gc_wizard/tools/coords/_common/formats/quadtree/logic/quadtree.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_day1976/logic/reverse_wherigo_day1976.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_waldmeister/logic/reverse_wherigo_waldmeister.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/s2cells_hilbert/logic/s2cells_hilbert.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/slippymap/logic/slippy_map.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/swissgrid/logic/swissgrid.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/swissgridplus/logic/swissgridplus.dart';
@@ -42,6 +43,7 @@ enum CoordinateFormatKey {
   MAIDENHEAD,
   MERCATOR,
   NATURAL_AREA_CODE,
+  S2CELLS_HILBERT,
   SLIPPY_MAP,
   GARS,
   GEOHASH,
@@ -73,6 +75,10 @@ enum CoordinateFormatKey {
   LAMBERT93_CC48,
   LAMBERT93_CC49,
   LAMBERT93_CC50,
+  //S2Cells
+  S2CELLS_HILBERT_QUADRATIC,
+  S2CELLS_HILBERT_TAN,
+  S2CELLS_HILBERT_LINEAR,
   //SlippyMap Subtypes
   SLIPPYMAP_0,
   SLIPPYMAP_1,
@@ -137,6 +143,7 @@ final allCoordinateFormatDefinitions = [
   MapCodeFormatDefinition,
   BoschFormatDefinition,
   GARSFormatDefinition,
+  S2CellsHilbertFormatDefinition,
 
   GeohashFormatDefinition, // Must be last one in list!
 ];

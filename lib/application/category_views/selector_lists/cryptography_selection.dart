@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/registry.dart';
 import 'package:gc_wizard/common_widgets/gcw_selection.dart';
-import 'package:gc_wizard/common_widgets/gcw_tool.dart';
-import 'package:gc_wizard/common_widgets/gcw_toollist.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_toollist.dart';
 
 class CryptographySelection extends GCWSelection {
   const CryptographySelection({Key? key}) : super(key: key);

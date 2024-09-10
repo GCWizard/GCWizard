@@ -70,6 +70,20 @@ class PunchtapeConfig {
   });
 }
 
+const Map<int, String> CODEBOOK_BITS_54321 = {
+  5: 'punchtape_mode_bitorder_54321',
+  6: 'punchtape_mode_bitorder_654321',
+  7: 'punchtape_mode_bitorder_7654321',
+  8: 'punchtape_mode_bitorder_87654321',
+};
+
+const Map<int, String> CODEBOOK_BITS_12345 = {
+  5: 'punchtape_mode_bitorder_12345',
+  6: 'punchtape_mode_bitorder_123456',
+  7: 'punchtape_mode_bitorder_1234567',
+  8: 'punchtape_mode_bitorder_12345678',
+};
+
 const Map<TeletypewriterCodebook, CodebookConfig> ANCIENT_CODEBOOK = {
   TeletypewriterCodebook.BAUDOT_12345:
       CodebookConfig(title: 'punchtape_baudot_title', subtitle: 'punchtape_baudot_description'),
@@ -240,45 +254,47 @@ const Map<TeletypewriterCodebook, int> BINARY_LENGTH = {
   TeletypewriterCodebook.ALGOL: 5,
 };
 
-const Map<String, int> _AZToBaudot_12345 = {
+Map<String, int> _AZToBaudot_12345 = {
 // Original code from US Patent in Bit-Order 12345
-  'A': 16,
-  'B': 6,
-  'C': 22,
-  'D': 30,
-  'E': 8,
-  '\u00C9' /* É */ : 24,
+  'A': 1,
+  'B': 12,
+  'C': 13,
+  'D': 15,
+  'E': 2,
+  '\u00C9' /* É */ : 3,
   'F': 14,
   'G': 10,
-  'H': 26,
-  'I': 12,
-  'J': 18,
-  'K': 19,
+  'H': 11,
+  'I': 6,
+  'J': 9,
+  'K': 25,
   'L': 27,
-  'M': 11,
-  'N': 15,
-  'O': 18,
+  'M': 26,
+  'N': 30,
+  'O': 7,
   'P': 31,
-  'Q': 23,
-  'R': 7,
-  'S': 5,
+  'Q': 29,
+  'R': 28,
+  'S': 20,
   'T': 21,
-  'U': 20,
-  'V': 29,
-  'W': 13,
-  'X': 9,
+  'U': 5,
+  'V': 23,
+  'W': 22,
+  'X': 18,
   'Y': 4,
-  'Z': 25,
+  'Z': 19,
   'Ṯ': 17,
-  '✲': 3,
+  '✲': 24,
   ' ': 0,
+  ' ': 8,
+  ' ': 16,
 };
 final Map<int, String> _Baudot_12345ToAZ = switchMapKeyValue(_AZToBaudot_12345);
 
 // original Baudot according to US Patent has no numbers
 
 const Map<String, int> _AZToBaudot_54123 = {
-  // Baudot-Code from EN Wikipedia in Bit-Order 54321
+  // Baudot-Code from EN Wikipedia in Bit-Order 54123 calculated as 54321
   'A': 4,
   'B': 9,
   'C': 13,
@@ -312,35 +328,35 @@ const Map<String, int> _AZToBaudot_54123 = {
 final Map<int, String> _Baudot_54123ToAZ = switchMapKeyValue(_AZToBaudot_54123);
 
 const Map<String, int> _NumbersToBaudot_54123 = {
-  '1': 4,
-  '8': 9,
-  '9': 13,
-  '0': 30,
+  '3': 1,
   '2': 2,
-  '&': 6,
-  'f': 11,
-  '7': 10,
-  'h': 14,
   'o': 3,
+  '1': 4,
+  '4': 5,
+  '&': 6,
+  '5': 7,
+  '8': 9,
+  '7': 10,
+  'f': 11,
   '6': 12,
-  '(': 28,
-  '=': 30,
+  '9': 13,
+  'h': 14,
+  '0': 15,
+  ';': 17,
+  ',': 18,
+  '?': 19,
+  '.': 20,
+  '!': 21,
+  ':': 22,
+  "'": 23,
+  '✲': 24,
+  '-': 25,
   ')': 26,
   'N°': 27,
-  '5': 7,
-  '%': 31,
+  '(': 28,
   '/': 29,
-  '-': 25,
-  ';': 17,
-  '!': 21,
-  '4': 5,
-  "'": 23,
-  '?': 19,
-  ',': 18,
-  '3': 1,
-  ':': 22,
-  '.': 20,
-  '✲': 24,
+  '=': 30,
+  '%': 31,
 };
 final Map<int, String> _Baudot_54123ToNumbers = switchMapKeyValue(_NumbersToBaudot_54123);
 
@@ -674,6 +690,74 @@ const Map<String, int> _AZToCCITT_ITA2_MTK2 = {
   '\n': 8,
   'E': 1,
   'A': 3,
+  'S': 5,
+  'I': 6,
+  'U': 7,
+  'D': 9,
+  'R': 10,
+  'J': 11,
+  'N': 12,
+  'F': 13,
+  'C': 14,
+  'K': 15,
+  'T': 16,
+  'Z': 17,
+  'L': 18,
+  'W': 19,
+  'H': 20,
+  'Y': 21,
+  'P': 22,
+  'Q': 23,
+  'O': 24,
+  'B': 25,
+  'G': 26,
+  'M': 28,
+  'X': 29,
+  'V': 30
+};
+final Map<int, String> _CCITT_ITA2_MTK2ToAZ = switchMapKeyValue(_AZToCCITT_ITA2_MTK2);
+
+const Map<String, int> _NumbersToCCITT_MTK2 = {
+  //according to ENG Wikipedia, Bit-Order 54321
+  ' ': 4,
+  '\r': 2,
+  '\n': 8,
+  '3': 1,
+  '-': 3,
+  '\'': 5,
+  '8': 6,
+  '7': 7,
+  '✠': 9,
+  '4': 10,
+  'Ю': 11,
+  ',': 12,
+  'Э': 13,
+  ':': 14,
+  '(': 15,
+  '5': 16,
+  '+': 17,
+  ')': 18,
+  '2': 19,
+  'Щ': 20,
+  '6': 21,
+  '0': 22,
+  '1': 23,
+  '9': 24,
+  '?': 25,
+  'Ш': 26,
+  '.': 28,
+  '/': 29,
+  '=': 30
+};
+final Map<int, String> _CCITT_MTK2ToNumbers = switchMapKeyValue(_NumbersToCCITT_MTK2);
+
+const Map<String, int> _AZCyrillicToCCITT_ITA2_MTK2 = {
+  //according to ENG Wikipedia, Bit-Order 54321
+  ' ': 4,
+  '\r': 2,
+  '\n': 8,
+  'E': 1,
+  'A': 3,
   'С': 5,
   'И': 6,
   'У': 7,
@@ -699,41 +783,7 @@ const Map<String, int> _AZToCCITT_ITA2_MTK2 = {
   'Ь': 29,
   'Ж': 30
 };
-final Map<int, String> _CCITT_ITA2_MTK2ToAZ = switchMapKeyValue(_AZToCCITT_ITA2_MTK2);
-
-const Map<String, int> _NumbersToCCITT_MTK2 = {
-  //according to ENG Wikipedia, Bit-Order 54321
-  ' ': 4,
-  '\r': 2,
-  '\n': 8,
-  '3': 1,
-  '-': 3,
-  '\'': 5,
-  '8': 6,
-  '7': 7,
-  'Ч': 9,
-  '4': 10,
-  'Ю': 11,
-  ',': 12,
-  'Э': 13,
-  ':': 14,
-  '(': 15,
-  '5': 16,
-  '+': 17,
-  ')': 18,
-  '2': 19,
-  'Щ': 20,
-  '6': 21,
-  '0': 22,
-  '1': 23,
-  '9': 24,
-  '?': 25,
-  'Ш': 26,
-  '.': 28,
-  '/': 29,
-  '=': 30
-};
-final Map<int, String> _CCITT_MTK2ToNumbers = switchMapKeyValue(_NumbersToCCITT_MTK2);
+final Map<int, String> _CCITT_ITA2_MTK2ToCyrillicAZ = switchMapKeyValue(_AZCyrillicToCCITT_ITA2_MTK2);
 
 const Map<String, int> _AZToCCITT_USTTY = {
   //according to ENG Wikipedia, Bit-Order 54321
@@ -1828,6 +1878,7 @@ String encodeTeletypewriter(String input, TeletypewriterCodebook language) {
   if (input.isEmpty) return '';
 
   var isLetterMode = true;
+  var isCyrillicMode = false;
 
   List<int> out = [];
   switch (language) {
@@ -1900,7 +1951,6 @@ String encodeTeletypewriter(String input, TeletypewriterCodebook language) {
     // CCITT 2
     case TeletypewriterCodebook.CCITT_ITA2_1929:
     case TeletypewriterCodebook.CCITT_ITA2_1931:
-    case TeletypewriterCodebook.CCITT_ITA2_MTK2:
     case TeletypewriterCodebook.CCITT_ITA2_USTTY:
     case TeletypewriterCodebook.CCITT_ITA3:
     case TeletypewriterCodebook.CCITT_ITA4:
@@ -1934,6 +1984,31 @@ String encodeTeletypewriter(String input, TeletypewriterCodebook language) {
       });
 
       return out.join(' ');
+    case TeletypewriterCodebook.CCITT_ITA2_MTK2:
+      removeAccents(input.toUpperCase()).split('').forEach((character) {
+        if (isLetterMode || isCyrillicMode) {
+          var code = _EncodeAZ(language, character);
+          if (code != null) return out.add(code);
+
+          code = _EncodeNumber(language, character);
+          if (code != null) {
+            out.add(_NUMBERS_FOLLOW[language]!);
+            out.add(code);
+            isLetterMode = false;
+          }
+        } else {
+          var code = _EncodeNumber(language, character);
+          if (code != null) return out.add(code);
+
+          code = _EncodeAZ(language, character);
+          if (code != null) {
+            out.add(_LETTERS_FOLLOW[language]!);
+            out.add(code);
+            isLetterMode = true;
+          }
+        }
+      });
+      return out.join(' ');
     case TeletypewriterCodebook.CCITT_IA5:
       return encodeTeletypewriter_IA5(input);
     case TeletypewriterCodebook.ZC1:
@@ -1963,11 +2038,12 @@ String encodeTeletypewriter_ZC1(String input) {
   return out.join(' ');
 }
 
-String decodeTeletypewriter(List<int> values, TeletypewriterCodebook language) {
+String decodeTeletypewriter(List<int> values, TeletypewriterCodebook language, {bool numbersOnly = false}) {
   if (values.isEmpty) return '';
 
   String out = '';
   var isLetterMode = true;
+  var isCyrillicMode = false;
 
   switch (language) {
     // CCITT1
@@ -1981,22 +2057,26 @@ String decodeTeletypewriter(List<int> values, TeletypewriterCodebook language) {
     case TeletypewriterCodebook.CCITT_ITA1_EU:
     case TeletypewriterCodebook.CCITT_ITA1_UK:
       for (var value in values) {
-        if (value == _NUMBERS_FOLLOW[language]) {
-          if (out.isNotEmpty) out += ' ';
-          isLetterMode = false;
-          continue;
-        }
-
-        if (value == _LETTERS_FOLLOW[language]) {
-          out += ' ';
-          isLetterMode = true;
-          continue;
-        }
-
-        if (isLetterMode) {
-          out += _DecodeAZ(language, value) ?? '';
-        } else {
+        if (numbersOnly) {
           out += _DecodeNumber(language, value) ?? '';
+        } else {
+          if (value == _NUMBERS_FOLLOW[language]) {
+            if (out.isNotEmpty) out += ' ';
+            isLetterMode = false;
+            continue;
+          }
+
+          if (value == _LETTERS_FOLLOW[language]) {
+            out += ' ';
+            isLetterMode = true;
+            continue;
+          }
+
+          if (isLetterMode) {
+            out += _DecodeAZ(language, value) ?? '';
+          } else {
+            out += _DecodeNumber(language, value) ?? '';
+          }
         }
       }
 
@@ -2005,7 +2085,6 @@ String decodeTeletypewriter(List<int> values, TeletypewriterCodebook language) {
     // CCITT 2
     case TeletypewriterCodebook.CCITT_ITA2_1929:
     case TeletypewriterCodebook.CCITT_ITA2_1931:
-    case TeletypewriterCodebook.CCITT_ITA2_MTK2:
     case TeletypewriterCodebook.CCITT_ITA2_USTTY:
     case TeletypewriterCodebook.CCITT_ITA3:
     case TeletypewriterCodebook.CCITT_ITA4:
@@ -2015,20 +2094,58 @@ String decodeTeletypewriter(List<int> values, TeletypewriterCodebook language) {
     case TeletypewriterCodebook.TTS:
     case TeletypewriterCodebook.ALGOL:
       for (var value in values) {
-        if (value == _NUMBERS_FOLLOW[language]) {
-          isLetterMode = false;
-          continue;
-        }
-
-        if (value == _LETTERS_FOLLOW[language]) {
-          isLetterMode = true;
-          continue;
-        }
-
-        if (isLetterMode) {
-          out += _DecodeAZ(language, value) ?? '';
-        } else {
+        if (numbersOnly) {
           out += _DecodeNumber(language, value) ?? '';
+        } else {
+          if (value == _NUMBERS_FOLLOW[language]) {
+            isLetterMode = false;
+            continue;
+          }
+
+          if (value == _LETTERS_FOLLOW[language]) {
+            isLetterMode = true;
+            continue;
+          }
+
+          if (isLetterMode) {
+            out += _DecodeAZ(language, value) ?? '';
+          } else {
+            out += _DecodeNumber(language, value) ?? '';
+          }
+        }
+      }
+
+      return out;
+    case TeletypewriterCodebook.CCITT_ITA2_MTK2:
+      for (var value in values) {
+        if (numbersOnly) {
+          out += _DecodeNumber(language, value) ?? '';
+        } else {
+          if (value == 27) { // FIGURES
+            isLetterMode = false;
+            isCyrillicMode = false;
+            continue;
+          }
+
+          if (value == 31) { // LETTERS
+            isLetterMode = true;
+            isCyrillicMode = false;
+            continue;
+          }
+
+          if (value == 0) { // CYRILLIC
+            isCyrillicMode = true;
+            isLetterMode = false;
+            continue;
+          }
+
+          if (isLetterMode) {
+            out += _DecodeAZ(language, value) ?? '';
+          } if (isCyrillicMode) {
+            out += _CCITT_ITA2_MTK2ToCyrillicAZ[value] ?? '';
+          } else {
+            out += _DecodeNumber(language, value) ?? '';
+          }
         }
       }
 

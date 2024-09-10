@@ -25,7 +25,7 @@ class Ellipsoid {
     return a * (1 - 1 / (invf == 0.0 ? practical_epsilon : invf));
   }
 
-  double get sphereRad {
+  double get sphereRadius {
     return sqrt(a * b);
   }
 
@@ -53,7 +53,7 @@ class Ellipsoid {
 
 const List<Ellipsoid> allEllipsoids = [
   Ellipsoid(ELLIPSOID_NAME_WGS84, 6378137.0, 298.257223563),
-  Ellipsoid('coords_ellipsoid_earthsphere', 6371000.0, 1000000000.0),
+  Ellipsoid('coords_ellipsoid_earthsphere', 6371000.0, 100000000000.0),
   Ellipsoid('coords_ellipsoid_sun', 696342000.0, 111111.11111111111111111111),
   Ellipsoid('coords_ellipsoid_moon', 1737400.0, 833.333333333333333333333333),
   Ellipsoid('coords_ellipsoid_mercury', 2439700.0, 1000000000.0),

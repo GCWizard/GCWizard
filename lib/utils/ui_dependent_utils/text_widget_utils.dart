@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
+import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 WidgetSpan superscriptedTextForRichText(String text, {TextStyle? textStyle}) {
   var style = textStyle ?? gcwTextStyle();
@@ -75,4 +76,16 @@ String textControllerDoBackSpace(String currentText, TextEditingController textC
   textController.selection = TextSelection.collapsed(offset: cursorPosition - 1);
 
   return currentText;
+}
+
+InkWell buildUrl(String text, String link) {
+  return InkWell(
+    child: Text(
+      text,
+      style: gcwHyperlinkTextStyle(),
+    ),
+    onTap: () {
+      launchUrl(Uri.parse(link));
+    },
+  );
 }

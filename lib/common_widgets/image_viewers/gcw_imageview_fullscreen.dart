@@ -6,7 +6,7 @@ import 'package:gc_wizard/application/navigation/no_animation_material_page_rout
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/gcw_popup_menu.dart';
-import 'package:gc_wizard/common_widgets/gcw_tool.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:photo_view/photo_view.dart';
 
 class GCWImageViewFullScreen extends StatefulWidget {

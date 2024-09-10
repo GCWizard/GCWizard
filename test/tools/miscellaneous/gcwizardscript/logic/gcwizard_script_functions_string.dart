@@ -17,6 +17,8 @@ List<Map<String, Object?>> _inputsStringToExpected = [
   {'code' : 'print MID(10, 5)', 'expectedOutput' : '', 'error': 'gcwizard_script_syntax_error'},
   {'code' : 'print MID("MIDTEST", 4, 4)', 'expectedOutput' : 'TEST'},
   {'code' : 'print SUBST("MIDTEST", "E", "OA", 0)', 'expectedOutput' : 'MIDTOAST'},
-
+  {'code' : 'print PADLEFT("PADTEST-L", "-", 12)', 'expectedOutput' : '---PADTEST-L'},
+  {'code' : 'print PADRIGHT("PADTEST-R", "-", 12)', 'expectedOutput' : 'PADTEST-R---'},
+  {'code' : 'print PADCENTER("PADTEST-C", "-", 12)', 'expectedOutput' : '--PADTEST-C-'},
 
 ];

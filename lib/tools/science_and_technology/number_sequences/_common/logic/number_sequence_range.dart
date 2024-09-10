@@ -1,22 +1,45 @@
 part of 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 
-List<BigInt> numberSequencesGetNumbersInRange(NumberSequencesMode sequence, int? start, int? stop) {
-  if (start == null || stop == null) return [BigInt.from(-1)];
+class GetNumberRangeJobData{
+  final NumberSequencesMode sequence;
+  final int start;
+  final int stop;
+
+  GetNumberRangeJobData({
+    required this.sequence,
+    required this.start,
+    required this.stop,
+  });
+}
+
+Future<List<BigInt>> calculateRangeAsync(GCWAsyncExecuterParameters? jobData) async {
+  if (jobData?.parameters is! GetNumberRangeJobData) return [];
+
+  var data = jobData!.parameters as GetNumberRangeJobData;
+  var output = await calculateRange(data, sendAsyncPort: jobData.sendAsyncPort);
+
+  jobData.sendAsyncPort?.send(output);
+
+  return output;
+}
+
+Future<List<BigInt>> calculateRange(GetNumberRangeJobData data,
+    {SendPort? sendAsyncPort}) async {
 
   List<BigInt> numberList = [];
   List<String> sequenceList = <String>[];
 
-  var numberSequenceFunction = _getNumberSequenceFunction(sequence);
+  var numberSequenceFunction = _getNumberSequenceFunction(data.sequence);
   if (numberSequenceFunction != null) {
-    for (int i = start; i <= stop; i++) {
+    for (int i = data.start; i <= data.stop; i++) {
       numberList.add(numberSequenceFunction(i));
     }
-  } else if (sequence == NumberSequencesMode.FIBONACCI) {
+  } else if (data.sequence == NumberSequencesMode.FIBONACCI) {
     BigInt number;
     BigInt pn0 = Zero;
     BigInt pn1 = One;
     int index = 0;
-    while (index < stop + 1) {
+    while (index < data.stop + 1) {
       if (index == 0) {
         number = Zero;
       } else if (index == 1) {
@@ -26,15 +49,15 @@ List<BigInt> numberSequencesGetNumbersInRange(NumberSequencesMode sequence, int?
         pn0 = pn1;
         pn1 = number;
       }
-      if (index >= start) numberList.add(number);
+      if (index >= data.start) numberList.add(number);
       index = index + 1;
     }
-  } else if (sequence == NumberSequencesMode.PELL) {
+  } else if (data.sequence == NumberSequencesMode.PELL) {
     BigInt number;
     BigInt pn0 = Zero;
     BigInt pn1 = One;
     int index = 0;
-    while (index <= stop) {
+    while (index <= data.stop) {
       if (index == 0) {
         number = pn0;
       } else if (index == 1) {
@@ -44,15 +67,15 @@ List<BigInt> numberSequencesGetNumbersInRange(NumberSequencesMode sequence, int?
         pn0 = pn1;
         pn1 = number;
       }
-      if (index >= start) numberList.add(number);
+      if (index >= data.start) numberList.add(number);
       index = index + 1;
     }
-  } else if (sequence == NumberSequencesMode.PELL_LUCAS) {
+  } else if (data.sequence == NumberSequencesMode.PELL_LUCAS) {
     BigInt number;
     BigInt pn0 = Two;
     BigInt pn1 = Two;
     int index = 0;
-    while (index < stop + 1) {
+    while (index < data.stop + 1) {
       if (index == 0) {
         number = pn0;
       } else if (index == 1) {
@@ -62,15 +85,15 @@ List<BigInt> numberSequencesGetNumbersInRange(NumberSequencesMode sequence, int?
         pn0 = pn1;
         pn1 = number;
       }
-      if (index >= start) numberList.add(number);
+      if (index >= data.start) numberList.add(number);
       index = index + 1;
     }
-  } else if (sequence == NumberSequencesMode.LUCAS) {
+  } else if (data.sequence == NumberSequencesMode.LUCAS) {
     BigInt number;
     BigInt pn0 = Two;
     BigInt pn1 = One;
     int index = 0;
-    while (index <= stop) {
+    while (index <= data.stop) {
       if (index == 0) {
         number = pn0;
       } else if (index == 1) {
@@ -80,17 +103,17 @@ List<BigInt> numberSequencesGetNumbersInRange(NumberSequencesMode sequence, int?
         pn0 = pn1;
         pn1 = number;
       }
-      if (index >= start) numberList.add(number);
+      if (index >= data.start) numberList.add(number);
       index = index + 1;
     }
-  } else if (sequence == NumberSequencesMode.RECAMAN) {
+  } else if (data.sequence == NumberSequencesMode.RECAMAN) {
     List<BigInt> recamanSequence = <BigInt>[];
     BigInt number;
     BigInt pn0 = Zero;
     BigInt index = Zero;
     recamanSequence.add(Zero);
     index = Zero;
-    while (index < BigInt.from(stop) + One) {
+    while (index < BigInt.from(data.stop) + One) {
       if (index == Zero) {
         number = pn0;
       } else if ((pn0 - index) > Zero && !recamanSequence.contains(pn0 - index)) {
@@ -100,13 +123,13 @@ List<BigInt> numberSequencesGetNumbersInRange(NumberSequencesMode sequence, int?
       }
       recamanSequence.add(number);
       pn0 = number;
-      if (index >= BigInt.from(start)) numberList.add(number);
+      if (index >= BigInt.from(data.start)) numberList.add(number);
       index = index + One;
     }
-  } else if (sequence == NumberSequencesMode.FACTORIAL) {
+  } else if (data.sequence == NumberSequencesMode.FACTORIAL) {
     var number = BigInt.zero;
     int index = 0;
-    while (index < stop + 1) {
+    while (index < data.stop + 1) {
       if (index == 0) {
         number = One;
       } else if (index == 1) {
@@ -114,14 +137,14 @@ List<BigInt> numberSequencesGetNumbersInRange(NumberSequencesMode sequence, int?
       } else {
         number = number * BigInt.from(index);
       }
-      if (index >= start) numberList.add(number);
+      if (index >= data.start) numberList.add(number);
       index++;
     }
-  } else if (sequence == NumberSequencesMode.BELL) {
+  } else if (data.sequence == NumberSequencesMode.BELL) {
     List<BigInt> bellList = <BigInt>[];
     var number = BigInt.zero;
     int index = 0;
-    while (index <= stop) {
+    while (index <= data.stop) {
       if (index == 0) {
         number = One;
       } else {
@@ -130,11 +153,11 @@ List<BigInt> numberSequencesGetNumbersInRange(NumberSequencesMode sequence, int?
         }
       }
       bellList.add(number);
-      if (index >= start) numberList.add(number);
+      if (index >= data.start) numberList.add(number);
       index = index + 1;
     }
   } else {
-    switch (sequence) {
+    switch (data.sequence) {
       case NumberSequencesMode.PRIMES:
         sequenceList.addAll(prime_numbers);
         break;
@@ -171,10 +194,13 @@ List<BigInt> numberSequencesGetNumbersInRange(NumberSequencesMode sequence, int?
       case NumberSequencesMode.HAPPY_NUMBERS:
         sequenceList.addAll(happy_numbers);
         break;
+      case NumberSequencesMode.BUSY_BEAVER:
+        sequenceList.addAll(busy_beaver_numbers);
+        break;
       default:
         {}
     }
-    for (int i = start; i <= stop; i++) {
+    for (int i = data.start; i <= data.stop; i++) {
       numberList.add(BigInt.parse(sequenceList[i]));
     }
   }

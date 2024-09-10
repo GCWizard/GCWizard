@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/permissions/user_location.dart';
-import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
@@ -43,6 +42,7 @@ import 'package:gc_wizard/tools/coords/_common/formats/openlocationcode/logic/op
 import 'package:gc_wizard/tools/coords/_common/formats/quadtree/logic/quadtree.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_day1976/logic/reverse_wherigo_day1976.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_waldmeister/logic/reverse_wherigo_waldmeister.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/s2cells_hilbert/logic/s2cells_hilbert.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/slippymap/logic/slippy_map.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/swissgrid/logic/swissgrid.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/swissgridplus/logic/swissgridplus.dart';
@@ -51,7 +51,7 @@ import 'package:gc_wizard/tools/coords/_common/formats/xyz/logic/xyz.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_definition.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/coord_format_inputs/degrees_lat_textinputformatter.dart';
@@ -66,7 +66,6 @@ import 'package:gc_wizard/utils/string_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
-import 'package:prefs/prefs.dart';
 
 part 'package:gc_wizard/tools/coords/_common/formats/bosch/widget/gcw_coords_bosch.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/dec/widget/gcw_coords_dec.dart';
@@ -96,6 +95,7 @@ part 'package:gc_wizard/tools/coords/_common/formats/openlocationcode/widget/gcw
 part 'package:gc_wizard/tools/coords/_common/formats/quadtree/widget/gcw_coords_quadtree.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_day1976/widget/gcw_coords_reversewherigo_day1976.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_waldmeister/widget/gcw_coords_reversewherigo_waldmeister.dart';
+part 'package:gc_wizard/tools/coords/_common/formats/s2cells_hilbert/widget/gcw_coords_s2cells_hilbert.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/slippymap/widget/gcw_coords_slippymap.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/swissgrid/widget/gcw_coords_swissgrid.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/swissgridplus/widget/gcw_coords_swissgridplus.dart';
@@ -107,7 +107,7 @@ class GCWCoords extends StatefulWidget {
   final LatLng? coordinates;
   final CoordinateFormat coordsFormat;
   final String? title;
-  final bool? notitle;
+  final bool suppressTopSpace;
 
   const GCWCoords(
       {Key? key,
@@ -115,7 +115,8 @@ class GCWCoords extends StatefulWidget {
       required this.onChanged,
       this.coordinates,
       required this.coordsFormat,
-      this.notitle = false})
+      this.suppressTopSpace = false
+      })
       : super(key: key);
 
   @override
@@ -156,30 +157,17 @@ class _GCWCoordsState extends State<GCWCoords> {
 
   @override
   Widget build(BuildContext context) {
-    Column _widget;
-    if (widget.notitle != null && widget.notitle! ||
-        widget.title == null ||
-        widget.title != null && widget.title!.isNotEmpty) {
-      _widget = Column(
-        children: <Widget>[
-          Row(
-            children: [
-              Expanded(child: _buildInputFormatSelector()),
-              Container(
-                  padding: const EdgeInsets.only(left: 2 * DEFAULT_MARGIN),
-                  child: _buildTrailingButtons(IconButtonSize.NORMAL))
-            ],
-          )
-        ],
-      );
-    } else {
-      _widget = Column(
-        children: <Widget>[
-          GCWTextDivider(text: widget.title!, trailing: _buildTrailingButtons(IconButtonSize.SMALL)),
-          _buildInputFormatSelector()
-        ],
-      );
-    }
+    Column _widget = Column(
+      children: <Widget>[
+        GCWTextDivider(
+            text: widget.title ?? '',
+            trailing: _buildTrailingButtons(IconButtonSize.SMALL),
+            suppressBottomSpace: true,
+            suppressTopSpace: widget.suppressTopSpace
+        ),
+        _buildInputFormatSelector()
+      ],
+    );
 
     var rawWidget = allCoordinateWidgetInfos
         .firstWhereOrNull((GCWCoordWidgetInfo entry) => entry.type == _currentCoordinateFormat.type);
@@ -237,7 +225,7 @@ class _GCWCoordsState extends State<GCWCoords> {
               insertIntoGCWClipboard(
                   context,
                   _currentCoordsLatLng != null
-                      ? formatCoordOutput(_currentCoordsLatLng, _currentCoordinateFormat, defaultEllipsoid)
+                      ? formatCoordOutput(_currentCoordsLatLng, _currentCoordinateFormat, defaultEllipsoid, false)
                       : '');
             }),
         Container(width: DEFAULT_MARGIN),
@@ -421,4 +409,5 @@ var allCoordinateWidgetInfos = [
   _GCWCoordWidgetInfoGeo3x3(),
   _GCWCoordWidgetInfoMapCode(),
   _GCWCoordWidgetInfoGARS(),
+  _GCWCoordWidgetInfoS2CellsHilbert()
 ];

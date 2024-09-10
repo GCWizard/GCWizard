@@ -29,7 +29,7 @@ class GCWDoubleSpinner extends StatefulWidget {
       required this.value,
       this.min = MIN_DOUBLE,
       this.max = MAX_DOUBLE,
-      this.numberDecimalDigits = 2,
+      this.numberDecimalDigits = 5,
       this.controller,
       this.layout = SpinnerLayout.HORIZONTAL,
       this.focusNode,

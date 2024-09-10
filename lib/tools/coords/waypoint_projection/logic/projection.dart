@@ -1,8 +1,8 @@
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/external_libs/net.sf.geographic_lib/geographic_lib.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/external_libs/pkohut.geoformulas/geoformulas.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/intervals/coordinate_cell.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/intervals/interval_calculator.dart';
-import 'package:gc_wizard/tools/coords/waypoint_projection/logic/vincenty/projection_vincenty.dart';
 import 'package:latlong2/latlong.dart';
 
 LatLng projection(LatLng coord, double bearingDeg, double distance, Ellipsoid ellipsoid) {
@@ -10,8 +10,7 @@ LatLng projection(LatLng coord, double bearingDeg, double distance, Ellipsoid el
 
   bearingDeg = normalizeBearing(bearingDeg);
 
-  GeodesicData projected =
-      Geodesic(ellipsoid.a, ellipsoid.f).direct(coord.latitude, coord.longitude, bearingDeg, distance);
+  GeodesicData projected = geodeticDirect(coord, bearingDeg, distance, ellipsoid);
 
   return LatLng(projected.lat2, projected.lon2);
 }
@@ -26,7 +25,7 @@ LatLng projectionVincenty(LatLng coord, double bearing, double distance, Ellipso
 
   bearing = normalizeBearing(bearing);
 
-  return vincentyDirect(coord, degToRadian(bearing), distance, ellipsoid);
+  return vincentyDirect(coord, bearing, distance, ellipsoid);
 }
 
 class _ReverseProjectionCalculator extends IntervalCalculator {

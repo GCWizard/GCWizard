@@ -7,7 +7,7 @@ import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
-import 'package:gc_wizard/common_widgets/gcw_tool.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/roman_numbers/roman_numbers/logic/roman_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/periodic_table/_common/logic/periodic_table.dart';
 import 'package:gc_wizard/tools/science_and_technology/periodic_table/periodic_table_data_view/widget/periodic_table_data_view.dart';

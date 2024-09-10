@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_definition.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
@@ -10,6 +11,7 @@ import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/map_view/persistence/json_provider.dart';
 import 'package:gc_wizard/tools/coords/map_view/persistence/model.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/gcw_mapview.dart';
+import 'package:gc_wizard/tools/coords/rhumb_line/logic/rhumb_line.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitution.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/color_utils.dart';
@@ -87,35 +89,27 @@ class MapViewPersistenceAdapter {
   }
 
   void _restoreMapViewDAO() {
-    if (mapWidget.points.isNotEmpty) {
-      _mapViewDAO.points.addAll(mapWidget.points
-          .where((point) => !_mapViewDAO.points.map((pointDAO) => pointDAO.uuid).toList().contains(point.uuid))
-          .map((point) => gcwMapPointToMapPointDAO(point))
-          .toList());
-    }
+    _mapViewDAO.points.addAll(mapWidget.points
+        .where((point) => !_mapViewDAO.points.map((pointDAO) => pointDAO.uuid).toList().contains(point.uuid))
+        .map((point) => gcwMapPointToMapPointDAO(point))
+        .toList());
 
-    if (_mapViewDAO.points.isNotEmpty) {
-      mapWidget.points.addAll(_mapViewDAO.points
-          .where((pointDAO) => !mapWidget.points.map((point) => point.uuid).toList().contains(pointDAO.uuid))
-          .map((pointDAO) => _mapPointDAOToGCWMapPoint(pointDAO))
-          .toList());
-    }
+    mapWidget.points.addAll(_mapViewDAO.points
+        .where((pointDAO) => !mapWidget.points.map((point) => point.uuid).toList().contains(pointDAO.uuid))
+        .map((pointDAO) => _mapPointDAOToGCWMapPoint(pointDAO))
+        .toList());
 
-    if (mapWidget.polylines.isNotEmpty) {
-      _mapViewDAO.polylines.addAll(mapWidget.polylines
-          .where((polyline) =>
-              !_mapViewDAO.polylines.map((polylineDAO) => polylineDAO.uuid).toList().contains(polyline.uuid))
-          .map((polyline) => gcwMapPolylineToMapPolylineDAO(polyline))
-          .toList());
-    }
+    _mapViewDAO.polylines.addAll(mapWidget.polylines
+        .where((polyline) =>
+            !_mapViewDAO.polylines.map((polylineDAO) => polylineDAO.uuid).toList().contains(polyline.uuid))
+        .map((polyline) => gcwMapPolylineToMapPolylineDAO(polyline))
+        .toList());
 
-    if (_mapViewDAO.polylines.isNotEmpty) {
-      mapWidget.polylines.addAll(_mapViewDAO.polylines
-          .where((polylineDAO) =>
-              !mapWidget.polylines.map((polyline) => polyline.uuid).toList().contains(polylineDAO.uuid))
-          .map((polylineDAO) => _mapPolylineDAOToGCWMapPolyline(polylineDAO))
-          .toList());
-    }
+    mapWidget.polylines.addAll(_mapViewDAO.polylines
+        .where((polylineDAO) =>
+            !mapWidget.polylines.map((polyline) => polyline.uuid).toList().contains(polylineDAO.uuid))
+        .map((polylineDAO) => _mapPolylineDAOToGCWMapPolyline(polylineDAO))
+        .toList());
 
     updateMapViews();
   }
@@ -245,6 +239,117 @@ class MapViewPersistenceAdapter {
     var polylineDAO = _mapPolylineDAOByUUID(polyline.uuid!);
     polylineDAO.pointUUIDs.add(mapPoint.uuid!);
     updateMapPolylineDAO(polylineDAO, _mapViewDAO);
+  }
+
+  void cleanPolyLine(GCWMapPolyline polyline) {
+    if (polyline.points.length < 2) {
+      removeMapPolyline(polyline);
+      return;
+    }
+
+    var prevUUID = polyline.points.first.uuid;
+    var deleteableIndexes = <int>[];
+    for (int i = 1; i < polyline.points.length; i++) {
+      if (polyline.points[i].uuid == prevUUID) {
+        deleteableIndexes.add(i);
+      } else {
+        prevUUID = polyline.points[i].uuid;
+      }
+    }
+
+    var polylineDAO = _mapPolylineDAOByUUID(polyline.uuid!);
+
+    for (int i = deleteableIndexes.length - 1; i > 0; i--) {
+      var index = deleteableIndexes[i];
+      polyline.points.removeAt(index);
+      polylineDAO.pointUUIDs.removeAt(index);
+    }
+
+    polyline.update();
+    updateMapPolylineDAO(polylineDAO, _mapViewDAO);
+
+    if (polyline.points.length < 2) {
+      removeMapPolyline(polyline);
+      return;
+    }
+  }
+
+  void cleanPolylines() {
+    for (var polyline in mapWidget.polylines) {
+      cleanPolyLine(polyline);
+    }
+  }
+
+  void switchPointInPolyline(GCWMapPolyline polyline, GCWMapPoint from, GCWMapPoint to) {
+    var polylineDAO = _mapPolylineDAOByUUID(polyline.uuid!);
+
+    for (int i = 0; i < polyline.points.length; i++) {
+      if (polyline.points[i].uuid == from.uuid) {
+        polyline.points.removeAt(i);
+        polylineDAO.pointUUIDs.removeAt(i);
+
+        polyline.points.insert(i, to);
+        polylineDAO.pointUUIDs.insert(i, to.uuid!);
+      }
+    }
+
+    polyline.update();
+    updateMapPolylineDAO(polylineDAO, _mapViewDAO);
+  }
+
+  bool polylineContains(GCWMapPolyline polyline, GCWMapPoint point) {
+    for (var p in polyline.points) {
+      if (p.uuid == point.uuid) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  List<GCWMapPolyline> polylinesWithPoint(GCWMapPoint point) {
+    return mapWidget.polylines.where((polyline) => polylineContains(polyline, point)).toList();
+  }
+
+  void mergePoint(List<GCWMapPoint> samePoints) {
+    var lat = samePoints.fold(0.0, (t, point) => t + point.point.latitude) / samePoints.length;
+    var lon = samePoints.fold(0.0, (t, point) => t + point.point.longitude) / samePoints.length;
+    var isEditable = samePoints.fold(true, (t, point) => t && point.isEditable);
+    var isVisible = samePoints.fold(false, (t, point) => t || point.isVisible);
+
+    var newPoint = addMapPoint(LatLng(lat, lon));
+    newPoint.isEditable = isEditable;
+    newPoint.isVisible = isVisible;
+    newPoint.color = COLOR_MAP_POINT;
+
+    for (var point in samePoints) {
+      var includingPolylines = polylinesWithPoint(point);
+      for (var polyline in includingPolylines) {
+        switchPointInPolyline(polyline, point, newPoint);
+      }
+      removeMapPoint(point);
+    }
+  }
+
+  bool _isMergeableDistance(LatLng a, LatLng b) {
+    // below 2 meters, there's nearly no visible difference of points
+    return distanceBearing(a, b, defaultEllipsoid).distance < 1.8;
+  }
+
+  void mergePoints() {
+    var checkPoints = List<GCWMapPoint>.from(mapWidget.points);
+    while (checkPoints.isNotEmpty) {
+      var mergeablePoints = [checkPoints.last];
+      checkPoints.removeLast();
+      var samePoints = checkPoints.where((point) => _isMergeableDistance(point.point, mergeablePoints.first.point)).toList();
+      for (var samePoint in samePoints) {
+        checkPoints.removeWhere((point) => point.uuid == samePoint.uuid);
+      }
+      mergeablePoints.addAll(samePoints);
+      if (mergeablePoints.length > 1) {
+        mergePoint(mergeablePoints);
+      }
+    }
   }
 
   String getJsonMapViewData() {

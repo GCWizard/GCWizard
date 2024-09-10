@@ -636,7 +636,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                 tool: GCWMapView(
                   points: coordinates,
                 ),
-                id: 'coords_map_view',
+                id: 'coords_openmap',
                 autoScroll: false,
                 suppressToolMargin: true)));
   }

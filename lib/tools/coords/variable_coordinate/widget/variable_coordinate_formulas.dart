@@ -8,7 +8,7 @@ import 'package:gc_wizard/common_widgets/buttons/gcw_paste_button.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_formula_list_editor.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
-import 'package:gc_wizard/common_widgets/gcw_tool.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/tools/coords/variable_coordinate/persistence/json_provider.dart';
 import 'package:gc_wizard/tools/coords/variable_coordinate/persistence/model.dart';
 import 'package:gc_wizard/tools/coords/variable_coordinate/widget/variable_coordinate.dart';

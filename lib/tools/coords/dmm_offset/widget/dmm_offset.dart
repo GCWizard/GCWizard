@@ -3,7 +3,7 @@ import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
@@ -25,7 +25,7 @@ class _DMMOffsetState extends State<DMMOffset> {
   var _currentMapPoints = <GCWMapPoint>[];
 
   var _currentOutputFormat = defaultCoordinateFormat;
-  List<String> _currentOutput = <String>[];
+  var _currentOutput = <BaseCoordinate>[];
 
   var _currentAddLatitude = 0;
   var _currentAddLongitude = 0;
@@ -110,7 +110,7 @@ class _DMMOffsetState extends State<DMMOffset> {
     ];
 
     _currentOutput = _currentValues.map((projection) {
-      return formatCoordOutput(projection, _currentOutputFormat, defaultEllipsoid);
+      return buildCoordinate(_currentOutputFormat, projection);
     }).toList();
   }
 }

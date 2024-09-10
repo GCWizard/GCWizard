@@ -27,7 +27,6 @@ class _MainMenuEntryStubState extends State<MainMenuEntryStub> {
               ),
             ),
             Container(
-              width: 350,
               padding: const EdgeInsets.only(top: 50),
               child: Container(
                   decoration: BoxDecoration(

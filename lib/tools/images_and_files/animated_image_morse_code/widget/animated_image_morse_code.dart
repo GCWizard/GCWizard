@@ -406,15 +406,18 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
       for (int i = 0; i < _outData!.images.length; i++) {
         _outData!.images[i] = _outData!.images[linkList[i]];
       }
-      showSnackBar(i18n(context, 'animated_image_select_on_image'), context);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          showSnackBar(i18n(context, 'animated_image_select_on_image'), context);
+        });
+      });
     } else {
-      showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
-      return;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
+        });
+      });
     }
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {});
-    });
   }
 
   void _saveOutputEncode(Uint8List? output) {

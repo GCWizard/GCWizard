@@ -71,8 +71,8 @@ class _RSAECheckerState extends State<RSAEChecker> {
       var validE = validateE(e as BigInt, p as BigInt, q as BigInt);
       _output = GCWDefaultOutput(
           child: validE ? i18n(context, 'rsa_e.checker_valid') : i18n(context, 'rsa_e.checker_notvalid'));
-    } catch (exception) {
-      _output = GCWDefaultOutput(child: i18n(context, exception.toString()));
+    } on FormatException catch (e) {
+      _output = GCWDefaultOutput(child: i18n(context, e.message));
     }
   }
 }

@@ -155,6 +155,9 @@ List<BigInt> numberSequencesGetNumbersWithNDigits(NumberSequencesMode sequence, 
       case NumberSequencesMode.HAPPY_NUMBERS:
         sequenceList.addAll(happy_numbers);
         break;
+      case NumberSequencesMode.BUSY_BEAVER:
+        sequenceList.addAll(busy_beaver_numbers);
+        break;
       default:
         return numberList;
     }

@@ -85,6 +85,8 @@ LatLng? _MapCodeToLatLon(MapCode mapcode) {
 }
 
 MapCode? _parseMapCode(String input, {String territory = ''}) {
+  input = input.toUpperCase();
+  territory = territory.toUpperCase();
   var match = RegExp(_regexString()).firstMatch(input);
   if (match == null) return null;
 
@@ -92,6 +94,7 @@ MapCode? _parseMapCode(String input, {String territory = ''}) {
   if (territory.trim().isEmpty) {
     territory = (match.group(1) == null || match.group(1)!.isEmpty) ? '' : match.group(1).toString();
   }
+
   if (match.group(1) != null) {
     mapCode = mapCode.replaceFirst(match.group(1)!, '');
   }

@@ -94,7 +94,7 @@ class SymbolTableData {
 
     var jsonConfig = asJsonMap(json.decode(file));
 
-    _config.caseSensitive = jsonConfig[SymbolTableConstants.CONFIG_CASESENSITIVE] != null;
+    _config.caseSensitive = jsonConfig[SymbolTableConstants.CONFIG_CASESENSITIVE] == true;
     _config.translationPrefix = toStringOrNull(jsonConfig[SymbolTableConstants.CONFIG_TRANSLATION_PREFIX]) ?? '';
 
     if (jsonConfig[SymbolTableConstants.CONFIG_TRANSLATE] != null) {

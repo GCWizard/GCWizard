@@ -13,7 +13,6 @@ void main() {
       {'input' : 'cache bei n 52 345 678 o 13 09 451', 'key': 'gc wizard ', 'alphabetWord' : '', 'columnOrder' : '0246813579', 'matrix4x10' : false, 'mode': PolybiosMode.AZ09, 'alphabet': '', 'expectedOutput' : '2324642974042897479799599297993994995979969979989749979919939799099997994995991'},
       {'input' : 'cache bei n 52 345 678 o 13 09 451', 'key': 'g c wizad ', 'alphabetWord' : '', 'columnOrder' : '0246813579', 'matrix4x10' : true, 'mode': PolybiosMode.AZ09, 'alphabet': '', 'expectedOutput' : '4542622992022199279998929994969899919395992999909499699799969890'},
 
-      // https://kryptografie.de/kryptografie/chiffre/straddling-checkerboard.htm
       {'input' : 'no attack', 'key': 'SIOERATN  ', 'alphabetWord' : 'CXUDJPZBKQ', 'columnOrder' : '0123456789', 'matrix4x10' : false, 'mode': PolybiosMode.AZ09, 'alphabet': '.WFL/GMYHV', 'expectedOutput' : '729856658088'},
       {'input' : 'Beispielklartext', 'key': 'MDELVAYO  ', 'alphabetWord' : '', 'columnOrder' : '0987654321', 'matrix4x10' : false, 'mode': PolybiosMode.AZ09, 'alphabet': '', 'expectedOutput' : '20825182125872375191781417'},
       {'input' : 'Beispielklartext', 'key': 'RTWXYZ ./ ', 'alphabetWord' : 'pausomvejk', 'columnOrder' : '6087549123', 'matrix4x10' : false, 'mode': PolybiosMode.AZ09, 'alphabet': '', 'expectedOutput' : '3691399796399131933190609170'},
@@ -48,7 +47,6 @@ void main() {
       {'expectedOutput' : 'CACHE BEI N 52 345 678 O 13 09 451', 'key': 'gc wizard ', 'alphabetWord' : '', 'columnOrder' : '0246813579', 'matrix4x10' : false, 'mode': PolybiosMode.AZ09, 'alphabet': '', 'input' : '2324642974042897479799599297993994995979969979989749979919939799099997994995991'},
       {'expectedOutput' : 'CACHE BEI N 52 345 678 O 13 09 451', 'key': 'g c wizad ', 'alphabetWord' : '', 'columnOrder' : '0246813579', 'matrix4x10' : true, 'mode': PolybiosMode.AZ09, 'alphabet': '', 'input' : '4542622992022199279998929994969899919395992999909499699799969890'},
 
-      // https://kryptografie.de/kryptografie/chiffre/straddling-checkerboard.htm
       {'expectedOutput' : 'NO ATTACK', 'key': 'SIOERATN  ', 'alphabetWord' : 'CXUDJPZBKQ', 'columnOrder' : '0123456789', 'matrix4x10' : false, 'mode': PolybiosMode.AZ09, 'alphabet': '.WFL/GMYHV', 'input' : '729856658088'},
       {'expectedOutput' : 'BEISPIELKLARTEXT', 'key': 'MDELVAYO  ', 'alphabetWord' : '', 'columnOrder' : '0987654321', 'matrix4x10' : false, 'mode': PolybiosMode.AZ09, 'alphabet': '', 'input' : '20825182125872375191781417'},
       {'expectedOutput' : 'BEISPIELKLARTEXT', 'key': 'RTWXYZ ./ ', 'alphabetWord' : 'pausomvejk', 'columnOrder' : '6087549123', 'matrix4x10' : false, 'mode': PolybiosMode.AZ09, 'alphabet': '', 'input' : '3691399796399131933190609170'},

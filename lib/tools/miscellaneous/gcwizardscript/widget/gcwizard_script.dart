@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'dart:ui';
 
 import 'package:code_text_field/code_text_field.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
-import 'package:gc_wizard/common_widgets/gcw_tool.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -247,18 +248,24 @@ class GCWizardScriptState extends State<GCWizardScript> {
   Widget _builOutputGraphics() {
     if (_currentOutput.Graphic.GCWizardScriptScreenMode == GCWizardSCript_SCREENMODE.GRAPHIC ||
         _currentOutput.Graphic.GCWizardScriptScreenMode == GCWizardSCript_SCREENMODE.TEXTGRAPHIC) {
-      return GCWDefaultOutput(
-        child: (_outGraphicData.isNotEmpty)
-            ? GCWImageView(
-                imageData: GCWImageViewData(GCWFile(bytes: _outGraphicData)),
-                suppressOpenInTool: const {
-                  GCWImageViewOpenInTools.METADATA,
-                  GCWImageViewOpenInTools.HIDDENDATA,
-                  GCWImageViewOpenInTools.HEXVIEW
-                },
-              )
-            : Container(),
-      );
+      return Column(children: <Widget>[
+        GCWTextDivider(
+          suppressTopSpace: false,
+            text: i18n(context, 'gcwizard_script_help_graphics'),
+        ),
+        GCWDefaultOutput(
+          child: (_outGraphicData.isNotEmpty)
+              ? GCWImageView(
+                  imageData: GCWImageViewData(GCWFile(bytes: _outGraphicData)),
+                  suppressOpenInTool: const {
+                    GCWImageViewOpenInTools.METADATA,
+                    GCWImageViewOpenInTools.HIDDENDATA,
+                    GCWImageViewOpenInTools.HEXVIEW
+                  },
+                )
+              : Container(),
+        )
+      ]);
     } else {
       return Container();
     }
@@ -268,6 +275,7 @@ class GCWizardScriptState extends State<GCWizardScript> {
     if (_currentOutput.Points.isNotEmpty) {
       return Column(children: <Widget>[
         GCWTextDivider(
+          suppressTopSpace: false,
           trailing: Row(
             children: <Widget>[
               GCWIconButton(
@@ -327,19 +335,21 @@ class GCWizardScriptState extends State<GCWizardScript> {
     } else {
       return Column(
         children: <Widget>[
+          GCWTextDivider(
+            suppressTopSpace: false,
+            text: i18n(context, 'common_programming_error_aborted_program'),
+          ),
           GCWOutputText(
             style: gcwMonotypeTextStyle(),
-            text: _currentOutput.STDOUT +
-                '\n' +
-                i18n(context, _currentOutput.ErrorMessage) +
-                '\n' +
-                i18n(context, 'gcwizard_script_error_line') +
-                ' ' +
-                _printFaultyLine(_currentProgram, _currentOutput.ErrorPosition) +
+            text: i18n(context, _currentOutput.ErrorMessage) +
                 '\n' +
                 i18n(context, 'gcwizard_script_error_position') +
-                ' ' +
+                ': ' +
                 _currentOutput.ErrorPosition.toString() +
+                '\n' +
+                i18n(context, 'gcwizard_script_error_line') +
+                ': ' +
+                _printFaultyLine(_currentProgram, _currentOutput.ErrorPosition) +
                 '\n' +
                 '=> ' +
                 _printFaultyProgram(_currentProgram, _currentOutput.ErrorPosition),
@@ -570,7 +580,7 @@ class GCWizardScriptState extends State<GCWizardScript> {
                   isEditable: false, // false: open in Map
                   // true:  open in FreeMap
                 ),
-                id: 'coords_map_view',
+                id: 'coords_openmap',
                 autoScroll: false,
                 suppressToolMargin: true)));
   }
@@ -593,7 +603,7 @@ class GCWizardScriptState extends State<GCWizardScript> {
     final canvasRecorder = ui.PictureRecorder();
     final canvas = ui.Canvas(canvasRecorder, ui.Rect.fromLTWH(0, 0, imageWidth, imageHeight));
 
-    final paint = Paint()
+    Paint paint = Paint()
       ..color = Colors.white
       ..style = PaintingStyle.fill
       ..strokeWidth = pointsize.toDouble();
@@ -639,8 +649,12 @@ class GCWizardScriptState extends State<GCWizardScript> {
               Offset(double.parse(graphicCommand[3]), double.parse(graphicCommand[4])), paint);
           break;
         case 'POINT':
-          canvas.drawCircle(Offset(double.parse(graphicCommand[1]), double.parse(graphicCommand[2])), 2.0, paint);
-          //canvas.drawLine(Offset(double.parse(graphicCommand[1]), double.parse(graphicCommand[2])), Offset(double.parse(graphicCommand[1]), double.parse(graphicCommand[2])), paint);
+          Paint _paint = Paint()
+            ..color = paint.color
+            ..isAntiAlias = paint.isAntiAlias
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = paint.strokeWidth;
+            canvas.drawPoints(PointMode.points, [Offset(double.parse(graphicCommand[1]), double.parse(graphicCommand[2]))], _paint);
           break;
         case 'COLOR':
           paint.color = Color.fromARGB(
@@ -673,6 +687,13 @@ class GCWizardScriptState extends State<GCWizardScript> {
               double.parse(graphicCommand[5]),
               true,
               paint);
+          break;
+        case 'ANTIALIAS':
+          if (graphicCommand[1] == '0') {
+            paint.isAntiAlias = false;
+          } else {
+            paint.isAntiAlias = true;
+          }
           break;
         case 'FILL':
           if (graphicCommand[1] == '0') {

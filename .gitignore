@@ -82,7 +82,7 @@ web
 /assets/tokens/mapbox
 *.tmp
 *.docx
-*.pdf
+# *.pdf
 *.aux
 *.lof
 *.lol

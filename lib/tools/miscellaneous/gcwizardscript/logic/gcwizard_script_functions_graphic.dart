@@ -84,6 +84,14 @@ void _stroke(Object x) {
   _state.graphics.add('STROKE ' + (x as num).toString());
 }
 
+void _antialias(Object x) {
+  if (_isNotAInt(x)) {
+    _handleError(_INVALIDTYPECAST);
+    return;
+  }
+  _state.graphics.add('ANTIALIAS ' + (x as num).toString());
+}
+
 void _box(Object x1, Object y1, Object x2, Object y2) {
   if (_isNotAInt(x1) || _isNotAInt(y1) || _isNotAInt(x2) || _isNotAInt(y2)) {
     _handleError(_INVALIDTYPECAST);

@@ -337,6 +337,24 @@ _GCWList _convertTo(Object target) {
       _listAdd(targetData, result.t);
       break;
 
+    case _COORD_MAPCODE_LOCAL: // 2301
+    case _COORD_MAPCODE_INTERNATIONAL: // 2302
+      MapCode result = MapCode.fromLatLon(coord, _GCW_SCRIPT_COORD_CONVERTER[target]!);
+      _listAdd(
+          targetData,
+          result.coords[0].mapcode +
+              ' ' +
+              result.coords[0].territoryAlphaCode +
+              ' ' +
+              result.coords[0].fullmapcode +
+              ' ' +
+              result.coords[0].territoryNumber.toString());
+      _listAdd(targetData, result.coords[0].mapcode);
+      _listAdd(targetData, result.coords[0].territoryAlphaCode);
+      _listAdd(targetData, result.coords[0].fullmapcode);
+      _listAdd(targetData, result.coords[0].territoryNumber.toString());
+      break;
+
     default:
       _handleError(_INVALIDCOORDINATEFORMAT);
   }
@@ -680,6 +698,27 @@ void _convertFrom(Object source, _GCWList parameter) {
       if (_isAList(parameter_2)) _handleError(_INVALIDTYPECAST);
       ReverseWherigoDay1976Coordinate result =
           ReverseWherigoDay1976Coordinate(parameter_1 as String, parameter_2 as String);
+      coord = result.toLatLng();
+      break;
+
+    case _COORD_MAPCODE_LOCAL:
+    case _COORD_MAPCODE_INTERNATIONAL:
+      if (_listLength(parameter) != 2) _handleError(_INVALIDNUMBEROFPARAMETER);
+      parameter_1 = _listGet(parameter, 0)!;
+      parameter_2 = _listGet(parameter, 1)!;
+      parameter_3 = _listGet(parameter, 2)!;
+      parameter_4 = _listGet(parameter, 3)!;
+      if (_isAString(parameter_1)) _handleError(_INVALIDTYPECAST);
+      if (_isAString(parameter_2)) _handleError(_INVALIDTYPECAST);
+      if (_isAString(parameter_3)) _handleError(_INVALIDTYPECAST);
+      if (_isNotAInt(parameter_4)) _handleError(_INVALIDTYPECAST);
+      McInfo mcInfo = McInfo();
+      mcInfo.mapcode = parameter_1 as String;
+      mcInfo.territoryAlphaCode = parameter_2 as String;
+      mcInfo.fullmapcode = parameter_3 as String;
+      mcInfo.territoryNumber = parameter_4 as int;
+      MapCode result = MapCode([mcInfo], _GCW_SCRIPT_COORD_CONVERTER[source]!);
+
       coord = result.toLatLng();
       break;
 

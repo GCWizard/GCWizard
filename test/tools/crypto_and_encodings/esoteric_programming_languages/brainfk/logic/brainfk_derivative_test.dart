@@ -290,10 +290,6 @@ void main() {
         .replaceAll(']', 'iks ');*/
 
     for (var elem in BRAINFK_DERIVATIVES.entries) {
-      if (elem.value == 'Custom') {
-        continue;
-      }
-
       test('derivative: ${elem.value}', () {
         var derivative = elem.key;
         var generateCodeFromBf = brainfck;

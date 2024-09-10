@@ -8,7 +8,8 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dec/logic/dec.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/coordinate_text_formatter.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_formatselector.dart';
@@ -24,7 +25,7 @@ class FormatConverter extends StatefulWidget {
 
 class _FormatConverterState extends State<FormatConverter> {
   var _currentCoords = defaultBaseCoordinate;
-  String _currentOutput = '';
+  Object _currentOutput = '';
 
   var _currentMapPoint = GCWMapPoint(point: defaultCoordinate);
   var _currentOutputFormat = defaultCoordinateFormat;
@@ -97,7 +98,7 @@ class _FormatConverterState extends State<FormatConverter> {
   void _calculateOutput(BuildContext context) {
     var outputLatLng = _currentCoords.toLatLng();
     if (outputLatLng != null) {
-      _currentOutput = formatCoordOutput(outputLatLng, _currentOutputFormat);
+      _currentOutput = buildCoordinate(_currentOutputFormat, outputLatLng);
       _currentMapPoint = GCWMapPoint(point: outputLatLng);
     } else {
       _currentOutput = i18n(context, 'coords_formatconverter_invalid_coordinate');

@@ -13464,7 +13464,7 @@ const Map<String, IataIcaoCodes> IATA_ICAO_CODES = {
   "MUA": IataIcaoCodes(
       name: "Munda Airport", iata: "MUA", icoa: "AGGM", location_served: "Munda, New Georgia, Solomon Islands"),
   "MUB": IataIcaoCodes(name: "Maun Airport", iata: "MUB", icoa: "FBMN", location_served: "Maun, Botswana"),
-  "MUC": IataIcaoCodes(name: "Munich Airport", iata: "MUC", icoa: "EDDM", location_served: "Munich, Bavaria, Germany"),
+  "MUC": IataIcaoCodes(name: "Munich Airport Franz Josef Strauss", iata: "MUC", icoa: "EDDM", location_served: "Munich, Bavaria, Germany"),
   "MUD": IataIcaoCodes(name: "Mueda Airport", iata: "MUD", icoa: "FQMD", location_served: "Mueda, Mozambique"),
   "MUE": IataIcaoCodes(
       name: "Waimea-Kohala Airport", iata: "MUE", icoa: "PHMU", location_served: "Kamuela, Hawaii, United States"),

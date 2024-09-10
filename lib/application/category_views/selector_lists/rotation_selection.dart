@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/registry.dart';
 import 'package:gc_wizard/common_widgets/gcw_selection.dart';
-import 'package:gc_wizard/common_widgets/gcw_tool.dart';
-import 'package:gc_wizard/common_widgets/gcw_toollist.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_toollist.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rot13/widget/rot13.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rot18/widget/rot18.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rot47/widget/rot47.dart';

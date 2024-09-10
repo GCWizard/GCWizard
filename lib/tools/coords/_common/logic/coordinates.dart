@@ -19,6 +19,7 @@ import 'package:gc_wizard/tools/coords/_common/formats/openlocationcode/logic/op
 import 'package:gc_wizard/tools/coords/_common/formats/quadtree/logic/quadtree.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_day1976/logic/reverse_wherigo_day1976.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_waldmeister/logic/reverse_wherigo_waldmeister.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/s2cells_hilbert/logic/s2cells_hilbert.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/slippymap/logic/slippy_map.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/swissgrid/logic/swissgrid.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/swissgridplus/logic/swissgridplus.dart';
@@ -151,6 +152,8 @@ BaseCoordinate buildCoordinate(CoordinateFormat format, LatLng coords, [Ellipsoi
       return BoschCoordinate.fromLatLon(coords);
     case CoordinateFormatKey.GARS:
       return GARSCoordinate.fromLatLon(coords);
+    case CoordinateFormatKey.S2CELLS_HILBERT:
+      return S2CellsHilbertCoordinate.fromLatLon(coords, format.subtype!);
     default:
       return buildDefaultCoordinateByCoordinates(coords);
   }

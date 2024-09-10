@@ -124,8 +124,8 @@ WherigoCartridgeLUA _faultyWherigoCartridgeLUA(String _LUAFile, WHERIGO_ANALYSE_
   return WherigoCartridgeLUA(
       CartridgeLUAName: '',
       CartridgeGUID: '',
-      ObfuscatorTable: '',
-      ObfuscatorFunction: '',
+      ObfuscatorTable: [],
+      ObfuscatorFunction: [],
       Builder: WHERIGO_BUILDER.NONE,
       BuilderVersion: '',
       TargetDevice: '',

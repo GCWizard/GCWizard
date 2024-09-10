@@ -8,30 +8,6 @@
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar/logic/calendar_constants.dart';
 import 'package:gc_wizard/utils/datetime_utils.dart';
 
-bool _validDateTime(int year, int month, int day) {
-  // https://stackoverflow.com/questions/67144785/flutter-dart-datetime-max-min-value
-  const _DATETIME_MAX_YEAR = 275760;
-  const _DATETIME_MAX_MONTH = 9;
-  const _DATETIME_MAX_DAY = 13;
-  const _DATETIME_MIN_YEAR = -271821;
-  const _DATETIME_MIN_MONTH = 4;
-  const _DATETIME_MIN_DAY = 20;
-
-  if (year > _DATETIME_MAX_YEAR ||
-      (year == _DATETIME_MAX_YEAR && month > _DATETIME_MAX_MONTH) ||
-      (year == _DATETIME_MAX_YEAR && month == _DATETIME_MAX_MONTH && day > _DATETIME_MAX_DAY)) {
-    return false;
-  }
-
-  if (year < _DATETIME_MIN_YEAR ||
-      (year == _DATETIME_MIN_YEAR && month > _DATETIME_MIN_MONTH) ||
-      (year == _DATETIME_MIN_YEAR && month == _DATETIME_MIN_MONTH && day > _DATETIME_MIN_DAY)) {
-    return false;
-  }
-
-  return true;
-}
-
 double UnixTimestampToJulianDate(int timestamp) {
   DateTime date = DateTime(1970, 1, 1, 0, 0, 0).add(Duration(seconds: timestamp));
 
@@ -96,7 +72,7 @@ DateTime? JulianDateToIslamicCalendar(double jd) {
   int d = l - intPart((709 * m) / 24);
   int y = 30 * n + j - 30;
 
-  if (_validDateTime(y, m, d)) {
+  if (validDateTime(y, m, d)) {
     return DateTime(y, m, d);
   } else {
     return null;
@@ -123,7 +99,7 @@ DateTime? JulianDateToPersianYazdegardCalendar(double jd) {
   int m = intPart((y_diff - intPart(y_diff / epalim) * 5) / 30) + 1;
   int d = y_diff - (m - 1) * 30 - intPart(y_diff / (epalim + 5)) * 5 + 1;
 
-  if (_validDateTime(y, m, d)) {
+  if (validDateTime(y, m, d)) {
     return DateTime(y, m, d);
   } else {
     return null;
@@ -296,6 +272,7 @@ DateTime? JulianDateToHebrewCalendar(double jd) {
     pd = pd - 31;
     pm = 4;
   }
+  if (!validDateTime(cy, pm, pd)) return null;
   int pjd = (gregorianCalendarToJulianDate(DateTime(cy, pm, pd)) + 0.5).floor();
   int jnyjd = pjd + 163;
 
@@ -309,6 +286,7 @@ DateTime? JulianDateToHebrewCalendar(double jd) {
       pdprev = pdprev - 31;
       pmprev = 4;
     }
+    if (!validDateTime(cy - 1, pmprev, pdprev)) return null;
     int pjdprev = (gregorianCalendarToJulianDate(DateTime(cy - 1, pmprev, pdprev)) + 0.5).floor();
 
     int jyearlength = pjd - pjdprev;
@@ -323,6 +301,7 @@ DateTime? JulianDateToHebrewCalendar(double jd) {
       pdnext = pdnext - 31;
       pmnext = 4;
     }
+    if (!validDateTime(cy + 1, pmnext, pdnext)) return null;
     int pjnext = (gregorianCalendarToJulianDate(DateTime(cy + 1, pmnext, pdnext)) + 0.5).floor();
 
     int jyearlength = pjnext - pjd;
@@ -332,7 +311,7 @@ DateTime? JulianDateToHebrewCalendar(double jd) {
     jday = dateArr[0];
   }
 
-  if (_validDateTime(jy, jmonth, jday)) {
+  if (validDateTime(jy, jmonth, jday)) {
     return DateTime(jy, jmonth, jday);
   } else {
     return null;
@@ -377,7 +356,7 @@ DateTime? JulianDateToCopticCalendar(double jd) {
   int cop_m = (cop_m_bar + 1 - 1) % 13 + 1;
   int cop_y = cop_y_bar - 4996 + intPart((13 + 1 - 1 - cop_m) / 13);
 
-  if (_validDateTime(cop_y, cop_m, cop_d)) {
+  if (validDateTime(cop_y, cop_m, cop_d)) {
     return DateTime(cop_y, cop_m, cop_d);
   } else {
     return null;
@@ -417,6 +396,13 @@ PotrzebieCalendarOutput JulianDateToPotrzebieCalendar(double jd) {
   int clarke = 1 + (diff % 100) % 10;
 
   var suffix = bm ? 'B.M.' : 'C.M.';
+  if (!validDateTime(cow, mingo, clarke)) {
+    var newDate = (cow < minDateTime().year) ? minDateTime() : maxDateTime();
+    cow = newDate.year;
+    mingo = newDate.month;
+    clarke = newDate.day;
+  }
+
   return PotrzebieCalendarOutput(DateTime(cow, mingo, clarke), suffix);
 }
 

@@ -274,8 +274,8 @@ const WherigoCartridgeLUA WHERIGO_EMPTYCARTRIDGE_LUA = WherigoCartridgeLUA(
     LUAFile: '',
     CartridgeLUAName: '',
     CartridgeGUID: '',
-    ObfuscatorTable: '',
-    ObfuscatorFunction: '',
+    ObfuscatorTable: [],
+    ObfuscatorFunction: [],
     Characters: [],
     Items: [],
     Tasks: [],
@@ -430,4 +430,14 @@ const WherigoObfuscationData _WHERIGO_EMPTYTESTOBFUSCATION_LUA = WherigoObfuscat
 WherigoAnswer _WHERIGO_EMPTYTESTANSWER_LUA = WherigoAnswer(
   InputFunction: '',
   InputAnswers: [],
+);
+
+const EMPTY_WHERIGOMEDIADATA = WherigoMediaData(
+    MediaLUAName: '',
+    MediaID: '',
+    MediaName: '',
+    MediaDescription: '',
+    MediaAltText: '',
+    MediaType: '',
+    MediaFilename: ''
 );

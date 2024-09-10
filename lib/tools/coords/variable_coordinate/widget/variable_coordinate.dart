@@ -17,7 +17,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/common_widgets/units/gcw_unit_dropdown.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dmm/logic/dmm.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
@@ -363,9 +363,10 @@ class _VariableCoordinateState extends State<VariableCoordinate> {
     _currentOutput = (_currentCoordMode == GCWSwitchPosition.left ? normalCoords : leftPaddedCoords)
         .map((VariableCoordinateSingleResult varCoordResult) {
       var formattedCoordinate = formatCoordOutput(varCoordResult.coordinate, _currentOutputFormat, defaultEllipsoid);
+      var copyformattedCoordinate = formatCoordOutput(varCoordResult.coordinate, _currentOutputFormat, defaultEllipsoid, false);
       return Column(
         children: [
-          GCWOutputText(text: formattedCoordinate),
+          GCWOutputText(text: formattedCoordinate, copyText: copyformattedCoordinate),
           GCWText(
               text: _formatVariables(varCoordResult.variables),
               style: gcwTextStyle().copyWith(fontSize: fontSizeSmall()))

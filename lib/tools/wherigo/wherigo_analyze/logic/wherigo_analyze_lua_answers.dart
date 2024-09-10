@@ -58,21 +58,23 @@ WherigoAnswer _analyzeAndExtractOnGetInputSectionData(List<String> onGetInputLin
       do {
         i++;
         onGetInputLines[i] = onGetInputLines[i].trim();
-        if (!(onGetInputLines[i].trim() == '}' || onGetInputLines[i].trim() == '},')) {
-          if (onGetInputLines[i].trimLeft().startsWith(_obfuscatorFunction)) {
+        if (!(onGetInputLines[i] == '}' || onGetInputLines[i] == '},')) {
+          int obfuscation = _getObfuscatorFunction(onGetInputLines[i], _obfuscatorFunction);
+          //if (onGetInputLines[i].startsWith()) {
+          if (obfuscation > 0) {
             _answerActions.add(WherigoActionMessageElementData(
                 ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON,
                 ActionMessageContent: deobfuscateUrwigoText(
-                    onGetInputLines[i].trim().replaceAll(_obfuscatorFunction + '("', '').replaceAll('")', ''),
-                    _obfuscatorTable)));
+                    onGetInputLines[i].trim().replaceAll(_obfuscatorFunction[obfuscation] + '("', '').replaceAll('")', ''),
+                    _obfuscatorTable[obfuscation])));
           } else {
             _answerActions.add(WherigoActionMessageElementData(
                 ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON,
                 ActionMessageContent:
-                    onGetInputLines[i].trim().replaceAll(_obfuscatorFunction + '("', '').replaceAll('")', '')));
+                    onGetInputLines[i]));
           }
         }
-      } while (!onGetInputLines[i].trim().startsWith('}'));
+      } while (!onGetInputLines[i].startsWith('}'));
     } // end buttons
 
     else {
@@ -85,6 +87,17 @@ WherigoAnswer _analyzeAndExtractOnGetInputSectionData(List<String> onGetInputLin
     InputFunction: resultInputFunction,
     InputAnswers: resultAnswerData,
   );
+}
+
+int _getObfuscatorFunction(String line, List<String> obfuscatorFunction) {
+  int result = 0;
+  for (int i = 0; i < obfuscatorFunction.length; i++) {
+    if (line.contains(obfuscatorFunction[i])) {
+      result = i;
+      break;
+    }
+  }
+  return result;
 }
 
 List<String> _getAnswers(int i, String line, String lineBefore, List<WherigoVariableData> variables) {

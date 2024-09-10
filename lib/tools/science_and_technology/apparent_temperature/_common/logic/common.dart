@@ -1,6 +1,6 @@
 import 'dart:math';
 
-double calculateDewpoint(double t, double rh) {
+double calculateDewPoint(double t, double rh) {
   // https://energie-m.de/tools/taupunkt.html
   // https://myscope.net/taupunkttemperatur/
   double log10(double x) {

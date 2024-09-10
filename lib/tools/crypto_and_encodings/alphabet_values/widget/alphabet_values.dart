@@ -25,6 +25,7 @@ import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/data_type_utils/object_type_utils.dart';
 import 'package:gc_wizard/utils/json_utils.dart';
 import 'package:prefs/prefs.dart';
+import 'package:uuid/uuid.dart';
 
 part 'package:gc_wizard/tools/crypto_and_encodings/alphabet_values/widget/alphabet_values_key_value_input.dart';
 part 'package:gc_wizard/tools/crypto_and_encodings/alphabet_values/widget/alphabet_values_key_value_item.dart';
@@ -463,7 +464,7 @@ class _AlphabetValuesState extends State<AlphabetValues> {
               var orderedAlphabet = _convertFromEditingAlphabet(entries);
 
               var newAlphabet = Alphabet(
-                  key: UniqueKey().toString(), name: name, type: AlphabetType.CUSTOM, alphabet: orderedAlphabet);
+                  key: const Uuid().v4().toString(), name: name, type: AlphabetType.CUSTOM, alphabet: orderedAlphabet);
 
               _storedAlphabets.add(
                   jsonEncode({'key': newAlphabet.key, 'name': newAlphabet.name, 'alphabet': newAlphabet.alphabet}));
@@ -471,6 +472,8 @@ class _AlphabetValuesState extends State<AlphabetValues> {
 
               setState(() {
                 _alphabets.add(newAlphabet);
+                _currentAlphabetKey = newAlphabet.key;
+                _setAlphabet();
               });
             },
           )

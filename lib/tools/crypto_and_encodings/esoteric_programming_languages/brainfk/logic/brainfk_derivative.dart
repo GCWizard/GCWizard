@@ -534,7 +534,6 @@ final Map<BrainfkDerivatives, String> BRAINFK_DERIVATIVES = {
   BRAINFKDERIVATIVE_WEPMLRIO: 'wepmlrIo',
   BRAINFKDERIVATIVE_UWU: 'UwU',
   BRAINFKDERIVATIVE_ZZZ: 'ZZZ',
-  BRAINFKDERIVATIVE_CUSTOM: 'Custom',
 };
 
 class BrainfckDerivateDropdown {
@@ -583,5 +582,4 @@ Map<BrainfkDerivatives, BrainfckDerivateDropdown> BRAINFK_DERIVATIVES_DETAILED =
   BRAINFKDERIVATIVE_UWU: const BrainfckDerivateDropdown(title: 'UwU', description: 'OwO, °w°, UwU, QwQ, @w@, >w<, ~w~, ¯w¯'),
   BRAINFKDERIVATIVE_ZZZ: const BrainfckDerivateDropdown(title: 'ZZZ', description: 'zz, -zz, z, -z, zzz, -zzz, z+z, z-z'),
   BRAINFKDERIVATIVE_CUSTOM: const BrainfckDerivateDropdown(title: 'Custom', description: ''),
-
 };

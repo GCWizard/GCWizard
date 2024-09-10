@@ -28,7 +28,7 @@ DoubleText get defaultDoubleText => DoubleText('', 0.0);
 
 enum CryptMode { encrypt, decrypt }
 
-const UNKNOWN_ELEMENT = '<?>';
+const UNKNOWN_ELEMENT = '\u25a1';
 
 final RegExp REGEXP_SPLIT_STRINGLIST = RegExp(r'[\s,]+');
 

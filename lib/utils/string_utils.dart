@@ -151,7 +151,7 @@ String normalizeCharacters(String input) {
   const Map<String, String> _ALTERNATE_CHARACTERS = {
     // https://www.compart.com/de/unicode/category/Zs and Tab
     ' ': '\u0009\u000B\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2007\u2008\u2009\u200A\u202F\u205F\u3000',
-    '"': '\u201e\u201f\u201d\u201c',
+    '"': '\u201e\u201f\u201d\u201c\u00ab\u00bb',
     '\'': '\u201b\u201a\u2019\u2018',
     '-': '\u2014\u2013\u02d7\u2212\u2012'
   };

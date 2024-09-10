@@ -1,0 +1,70 @@
+part of 'gcwizard_scipt_test.dart';
+
+// ignore: unused_element
+List<Map<String, Object?>> _inputsCommandsFORCASEToExpected = [
+  {'code' : codeFORCASE_00i, 'expectedOutput' : '''
+ONE
+TWO
+THREE
+NEITHER 1 NOR 2 NOR 3
+NEITHER 1 NOR 2 NOR 3
+NEITHER 1 NOR 2 NOR 3
+NEITHER 1 NOR 2 NOR 3
+NEITHER 1 NOR 2 NOR 3
+NEITHER 1 NOR 2 NOR 3
+NEITHER 1 NOR 2 NOR 3'''},
+  {'code' : codeFORCASE_00s, 'expectedOutput' : '''
+ONE
+TWO
+THREE
+NEITHER 1 NOR 2 NOR 3
+NEITHER 1 NOR 2 NOR 3
+NEITHER 1 NOR 2 NOR 3
+NEITHER 1 NOR 2 NOR 3
+NEITHER 1 NOR 2 NOR 3
+NEITHER 1 NOR 2 NOR 3
+NEITHER 1 NOR 2 NOR 3'''},
+
+];
+
+var codeFORCASE_00i = ''' 
+FOR I = 1 TO 10
+SWITCH I
+CASE 1
+A = "ONE"
+PRINT A
+BREAK
+CASE 2
+A = "TWO"
+PRINT A
+BREAK
+CASE 3
+A = "THREE"
+PRINT A
+BREAK
+DEFAULT
+A = "NEITHER 1 NOR 2 NOR 3"
+PRINT A
+ENDSWITCH
+NEXT
+''';
+
+var codeFORCASE_00s = ''' 
+FOR I = 1 TO 10
+S = STR(I)
+SWITCH S
+CASE "1"
+A = "ONE"
+BREAK
+CASE "2"
+A = "TWO"
+BREAK
+CASE "3"
+A = "THREE"
+BREAK
+DEFAULT
+A = "NEITHER 1 NOR 2 NOR 3"
+ENDSWITCH
+PRINT A
+NEXT
+''';

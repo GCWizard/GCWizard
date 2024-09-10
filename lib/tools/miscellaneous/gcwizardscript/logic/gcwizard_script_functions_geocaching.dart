@@ -123,3 +123,21 @@ int _romanToDec(Object x) {
   }
   return decodeRomanNumbers((x as String), type: RomanNumberType.USE_SUBTRACTION_RULE)!;
 }
+
+void _textanalysis(_GCWList? list, Object? text, Object? caseSensitive){
+  if (list != null) {
+    if (_isNotAString(text) || _isNotAInt(caseSensitive)) {
+      _handleError(_INVALIDTYPECAST);
+    } else {
+      _listClear(list);
+      _listAdd(list, [(text as String).split(' ').length, text.split('').length]);
+      TextAnalysisCharacterCounts output = analyzeText(text, caseSensitive: (caseSensitive as int == 1));
+      Map.fromEntries(
+          output.letters.entries.toList()..sort((e1, e2) => e1.key.compareTo(e2.key))).forEach((key, value) {
+        _listAdd(list, [key, value]);
+      });
+    }
+  } else {
+    _handleError(_INVALIDLIST);
+  }
+}

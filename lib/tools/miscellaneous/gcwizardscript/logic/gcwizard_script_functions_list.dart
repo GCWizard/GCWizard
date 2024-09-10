@@ -120,6 +120,8 @@ class _GCWList {
 void _listClear(_GCWList? list) {
   if (list != null) {
     list.clear();
+  } else {
+    _handleError(_INVALIDLIST);
   }
 }
 
@@ -128,6 +130,8 @@ void _listAdd(_GCWList? list, Object? value) {
     if (value != null) {
       list.add(value);
     }
+  } else {
+    _handleError(_INVALIDLIST);
   }
 }
 
@@ -145,12 +149,16 @@ void _listSort(_GCWList? list, Object? mode) {
           break;
       }
     }
+  } else {
+    _handleError(_INVALIDLIST);
   }
 }
 
 void _listShuffle(_GCWList? list) {
   if (list != null) {
     list.shuffle();
+  } else {
+    _handleError(_INVALIDLIST);
   }
 }
 
@@ -165,6 +173,8 @@ String _listToString(_GCWList? list) {
 void _listAddAll(_GCWList? listto, _GCWList? listfrom) {
   if (listto != null) {
     listto.addall(listfrom);
+  } else {
+    _handleError(_INVALIDLIST);
   }
 }
 
@@ -179,6 +189,8 @@ void _listInsert(_GCWList? list, Object? index, Object? value) {
         list.insert(index, value);
       }
     }
+  } else {
+    _handleError(_INVALIDLIST);
   }
 }
 
@@ -193,6 +205,8 @@ void _listRemove(_GCWList? list, Object? index) {
         list.remove(index);
       }
     }
+  } else {
+    _handleError(_INVALIDLIST);
   }
 }
 
@@ -236,8 +250,10 @@ Object? _listGet(_GCWList? list, Object? index) {
         _handleError(_INVALIDTYPECAST);
       }
     }
+  } else {
+    _handleError(_INVALIDLIST);
+    return null;
   }
-  return null;
 }
 
 void _listFrom(Object? listName, Object? value) {

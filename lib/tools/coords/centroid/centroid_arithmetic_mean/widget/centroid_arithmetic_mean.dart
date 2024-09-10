@@ -4,7 +4,7 @@ import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
@@ -28,7 +28,7 @@ class _CentroidArithmeticMeanState extends State<CentroidArithmeticMean> {
   var _currentMapPoints = <GCWMapPoint>[];
 
   var _currentOutputFormat = defaultCoordinateFormat;
-  List<String> _currentOutput = <String>[];
+  var _currentOutput = <BaseCoordinate>[];
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +127,7 @@ class _CentroidArithmeticMeanState extends State<CentroidArithmeticMean> {
     );
 
     _currentOutput = _currentValues.map((coord) {
-      return formatCoordOutput(coord, _currentOutputFormat, defaultEllipsoid);
+      return buildCoordinate(_currentOutputFormat, coord);
     }).toList();
   }
 }

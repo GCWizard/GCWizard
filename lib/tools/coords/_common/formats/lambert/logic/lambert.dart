@@ -3,24 +3,8 @@ import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/external_libs/net.sf.geographic_lib/geographic_lib.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
 import 'package:latlong2/latlong.dart';
-
-// enum _LambertType {
-//   LAMBERT_93,
-//   LAMBERT_2008,
-//   ETRS89_LCC,
-//   LAMBERT_72,
-//   L93_CC42,
-//   L93_CC43,
-//   L93_CC44,
-//   L93_CC45,
-//   L93_CC46,
-//   L93_CC47,
-//   L93_CC48,
-//   L93_CC49,
-//   L93_CC50
-// }
 
 const defaultLambertType = CoordinateFormatKey.LAMBERT93;
 const lambertKey = 'coords_lambert';

@@ -83,7 +83,43 @@ DateTime _JDToCal(double jd, _CalendarType type) {
     year = c - 4715;
   }
 
+  if (!validDateTime(year, month, day.truncate())) {
+    return (year < minDateTime().year) ? minDateTime() :maxDateTime();
+  }
+
   return DateTime(year, month, day.truncate());
+}
+
+const _DATETIME_MAX_YEAR = 275760;
+const _DATETIME_MAX_MONTH = 9;
+const _DATETIME_MAX_DAY = 13;
+const _DATETIME_MIN_YEAR = -271821;
+const _DATETIME_MIN_MONTH = 4;
+const _DATETIME_MIN_DAY = 20;
+
+DateTime minDateTime() {
+  return DateTime.utc(_DATETIME_MIN_YEAR,_DATETIME_MIN_MONTH,_DATETIME_MIN_DAY);
+}
+
+DateTime maxDateTime() {
+  return DateTime.utc(_DATETIME_MAX_YEAR,_DATETIME_MAX_MONTH,_DATETIME_MAX_DAY);
+}
+
+bool validDateTime(int year, int month, int day) {
+  // https://stackoverflow.com/questions/67144785/flutter-dart-datetime-max-min-value
+  if (year > _DATETIME_MAX_YEAR ||
+      (year == _DATETIME_MAX_YEAR && month > _DATETIME_MAX_MONTH) ||
+      (year == _DATETIME_MAX_YEAR && month == _DATETIME_MAX_MONTH && day > _DATETIME_MAX_DAY)) {
+    return false;
+  }
+
+  if (year < _DATETIME_MIN_YEAR ||
+      (year == _DATETIME_MIN_YEAR && month > _DATETIME_MIN_MONTH) ||
+      (year == _DATETIME_MIN_YEAR && month == _DATETIME_MIN_MONTH && day > _DATETIME_MIN_DAY)) {
+    return false;
+  }
+
+  return true;
 }
 
 String replaceMonthNameWithCustomString(DateTime date, String datePattern, String locale, String? customMonth) {

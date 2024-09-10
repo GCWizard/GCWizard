@@ -1,3 +1,4 @@
+import 'package:flutter_dtmf/dtmf.dart';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
@@ -32,7 +33,9 @@ class _DTMFState extends State<DTMF> {
 
   final _maskInputFormatter = GCWMaskTextInputFormatter(mask: '#' * 10000, filter: {"#": RegExp(r'[0-9\*\#a-dA-D]')});
 
-  @override
+  String _playlist = '';
+
+   @override
   void initState() {
     super.initState();
     _encodeController = TextEditingController(text: _currentEncodeInput);
@@ -145,8 +148,27 @@ class _DTMFState extends State<DTMF> {
       output = decodeDTMF(_currentDecodeInput);
     }
 
-    return GCWOutputText(
-      text: output,
-    );
+    return Column(children: <Widget>[
+      GCWOutputText(
+        text: output,
+      ),
+      GCWIconButton(
+        icon: Icons.play_arrow,
+        onPressed: () async {
+          if (_currentMode == GCWSwitchPosition.left) {
+            _playlist = _currentEncodeInput;
+          } else {
+            _playlist = output;
+          }
+          await Dtmf.playTone(
+              digits: _playlist,
+              samplingRate: 8000,
+              durationMs: 160,
+              volume: 1.0,
+              //forceMaxVolume: true,
+          );
+        },
+      ),
+    ]);
   }
 }

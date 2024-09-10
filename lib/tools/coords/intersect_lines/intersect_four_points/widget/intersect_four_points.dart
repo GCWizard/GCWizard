@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat.dart';
-import 'package:gc_wizard/tools/coords/intersect_lines/logic/intersect_lines.dart';
+import 'package:gc_wizard/tools/coords/intersect_lines/intersect_four_points/logic/intersect_four_points.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -31,7 +29,7 @@ class _IntersectFourPointsState extends State<IntersectFourPoints> {
   var _currentMapPoints = <GCWMapPoint>[];
   var _currentMapPolylines = <GCWMapPolyline>[];
   var _currentOutputFormat = defaultCoordinateFormat;
-  List<String> _currentOutput = [];
+  List<Object> _currentOutput = [];
 
   @override
   Widget build(BuildContext context) {
@@ -89,46 +87,26 @@ class _IntersectFourPointsState extends State<IntersectFourPoints> {
             });
           },
         ),
-        _buildSubmitButton(),
+        GCWSubmitButton(
+          onPressed: () {
+            setState(() {
+              _calculateOutput();
+            });
+          },
+        ),
         GCWCoordsOutput(outputs: _currentOutput, points: _currentMapPoints, polylines: _currentMapPolylines),
       ],
     );
   }
 
-  Widget _buildSubmitButton() {
-    return GCWSubmitButton(onPressed: () async {
-      await showDialog<bool>(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) {
-          return Center(
-            child: SizedBox(
-              height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
-              width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
-              child: GCWAsyncExecuter<LatLng?>(
-                isolatedFunction: intersectFourPointsAsync,
-                parameter: _buildJobData,
-                onReady: (data) => _showOutput(data),
-                isOverlay: true,
-              ),
-            ),
-          );
-        },
-      );
-    });
-  }
-
-  Future<GCWAsyncExecuterParameters> _buildJobData() async {
-    return GCWAsyncExecuterParameters(IntersectFourPointsJobData(
-        coord11: _currentCoords11.toLatLng()!,
-        coord12: _currentCoords12.toLatLng()!,
-        coord21: _currentCoords21.toLatLng()!,
-        coord22: _currentCoords22.toLatLng()!,
-        ells: defaultEllipsoid));
-  }
-
-  void _showOutput(LatLng? output) {
-    _currentIntersection = output;
+  void _calculateOutput() {
+    _currentIntersection = intersectFourPoints(
+        _currentCoords11.toLatLng()!,
+        _currentCoords12.toLatLng()!,
+        _currentCoords21.toLatLng()!,
+        _currentCoords22.toLatLng()!,
+        defaultEllipsoid
+    );
 
     _currentMapPoints = [
       GCWMapPoint(
@@ -172,7 +150,7 @@ class _IntersectFourPointsState extends State<IntersectFourPoints> {
         markerText: i18n(context, 'coords_common_intersection'),
         coordinateFormat: _currentOutputFormat));
 
-    _currentOutput = [formatCoordOutput(_currentIntersection!, _currentOutputFormat, defaultEllipsoid)];
+    _currentOutput = [buildCoordinate(_currentOutputFormat, _currentIntersection!)];
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {});

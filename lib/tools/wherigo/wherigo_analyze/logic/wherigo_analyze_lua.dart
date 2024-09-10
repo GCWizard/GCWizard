@@ -4,8 +4,8 @@ String _LUAFile = '';
 
 String _CartridgeLUAName = '';
 
-String _obfuscatorTable = '';
-String _obfuscatorFunction = 'NO_OBFUSCATOR';
+List<String> _obfuscatorTable = [];
+List<String> _obfuscatorFunction = []; //'NO_OBFUSCATOR';
 bool _obfuscatorFound = false;
 
 String _LUACartridgeName = '';
@@ -89,7 +89,7 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
 
   List<String> lines = _LUAFile.split('\n');
 
-  if (!_obfuscatorFound) _checkAndGetObfuscatorURWIGO(lines);
+  _checkAndGetObfuscatorURWIGO(lines);
 
   if (_obfuscatorFound) {
     _deObfuscateAllTexts();
@@ -114,12 +114,12 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
   List<WherigoTaskData> _cartridgeTasks = [];
   List<WherigoZoneData> _cartridgeZones = [];
   List<WherigoTimerData> _cartridgeTimers = [];
-  List<WherigoMediaData> _cartridgeMedia = [];
+  List<WherigoMediaData> _cartridgeMedia = [];//EMPTY_WHERIGOMEDIADATA];
 
   bool _sectionVariables = true;
   bool _sectionBuilderVariables = true;
 
-  int index = 0;
+  int index = 1;
   int progress = 0;
   int progressStep = max(lines.length ~/ 200, 1); // 2 * 100 steps
   List<String> analyzeLines = [];
@@ -138,6 +138,7 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
     // search and get Media Object
     //
     late WherigoMediaData cartridgeMediaData;
+    index = 1;
     try {
       if (RegExp(r'(Wherigo.ZMedia\()').hasMatch(lines[i])) {
         WHERIGOcurrentObjectSection = WHERIGO_OBJECT_TYPE.MEDIA;

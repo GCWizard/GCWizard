@@ -80,7 +80,13 @@ class _SymbolTableExamplesState extends State<SymbolTableExamples> {
               },
             )),
         Expanded(
-          child: _createSymbols(countColumns),
+          // dismisses the keyboard on iOS devices after editing the sample text
+          child: GestureDetector(
+            // dismisses the keyboard
+              onPanDown: (_) {
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
+              child: _createSymbols(countColumns)),
         )
       ],
     );

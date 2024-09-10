@@ -13,7 +13,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.d
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_double_textfield.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_integer_textfield.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/coord_format_inputs/degrees_lat_textinputformatter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/coord_format_inputs/degrees_lon_textinputformatter.dart';
@@ -51,7 +51,7 @@ class _GeohashingState extends State<Geohashing> {
 
   var _currentOutputFormat = defaultCoordinateFormat;
   final _currentMapPoints = <GCWMapPoint>[];
-  var _currentOutput = <String>[];
+  var _currentOutput = <BaseCoordinate>[];
   geohashing.Geohashing? _geohashing;
 
   @override
@@ -253,7 +253,7 @@ class _GeohashingState extends State<Geohashing> {
         _currentMapPoints.add(point);
 
         _currentOutput = [value].map((LatLng coord) {
-          return formatCoordOutput(coord, _currentOutputFormat, defaultEllipsoid);
+          return buildCoordinate(_currentOutputFormat, coord);
         }).toList();
 
         if (_currentOnline == GCWSwitchPosition.right) {

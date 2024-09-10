@@ -6,9 +6,9 @@ void main() {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
-      {'input' : 'ABC', 'expectedOutput' : '16 6 22'},
-      {'input' : 'abC', 'expectedOutput' : '16 6 22'},
-      {'input' : 'a b C', 'expectedOutput' : '16 6 22'},
+      {'input' : 'ABC', 'expectedOutput' : '1 12 13'},
+      {'input' : 'abC', 'expectedOutput' : '1 12 13'},
+      {'input' : 'a b C', 'expectedOutput' : '1 12 13'},
 
       {'input' : '123', 'expectedOutput' : ''},
       {'input' : '1 2 3', 'expectedOutput' : ''},
@@ -26,7 +26,7 @@ void main() {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : <int>[], 'expectedOutput' : ''},
 
-      {'expectedOutput' : 'ABC', 'input' : [16, 6, 22]},
+      {'expectedOutput' : 'ABC', 'input' : [1, 12, 13]},
 
     ];
 

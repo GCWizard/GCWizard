@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:gc_wizard/application/registry.dart';
-import 'package:gc_wizard/common_widgets/gcw_tool.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/utils/json_utils.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
@@ -12,7 +12,7 @@ Map<String, String> _COMMON_SEARCHSTRINGS = {};
 Map<String, String> _EN_SEARCHSTRINGS = {};
 Map<String, String> _LOCALE_SEARCHSTRINGS = {};
 
-final ALLOWED_SEARCH_CHARACTERS = RegExp(r'[^a-z0-9α-ω¥, ]');
+final NOT_ALLOWED_SEARCH_CHARACTERS = RegExp(r'[^a-z0-9α-ω¥, ]');
 
 Future<void> loadSearchStrings(String languageCode) async {
   if (_COMMON_SEARCHSTRINGS.isEmpty) {
@@ -72,7 +72,7 @@ void createIndexedSearchStrings() {
       _toolName = removeAccents(tool.toolName!).toLowerCase().replaceAll(RegExp(r'\s+'), '');
     }
     var _indexedSearchStrings =
-        removeAccents(searchStrings.join(' ').toLowerCase()).replaceAll(ALLOWED_SEARCH_CHARACTERS, '');
+        removeAccents(searchStrings.join(' ').toLowerCase()).replaceAll(NOT_ALLOWED_SEARCH_CHARACTERS, '');
     if (_indexedSearchStrings.isEmpty) {
       if (_toolName != null) tool.indexedSearchStrings = _toolName;
       continue;

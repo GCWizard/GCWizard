@@ -101,12 +101,12 @@ class _CoordinatesSettingsState extends State<CoordinatesSettings> {
         ),
         GCWIntegerSpinner(
           title: CoordinateFormatKey.DMM.toString().split('.')[1],
-          value: Prefs.getInt(PREFERENCE_COORD_PRECISION_DMM),
+          value: Prefs.getInt(PREFERENCE_COORD_PRECISION_DMM_COPY),
           min: 1,
           max: 20,
           onChanged: (int value) {
             setState(() {
-              Prefs.setInt(PREFERENCE_COORD_PRECISION_DMM, value);
+              Prefs.setInt(PREFERENCE_COORD_PRECISION_DMM_COPY, value);
             });
           },
         ),

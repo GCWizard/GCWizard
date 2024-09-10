@@ -88,3 +88,37 @@ String _subst(Object text, Object x, Object y, Object caseSensitive) {
   substitutions[x as String] = y as String;
   return substitution(text as String, substitutions, caseSensitive: ((caseSensitive as int) == 1));
 }
+
+String _padleft(Object text, Object char, Object width,){
+  if (_isNotAString(text) || _isNotAString(char) || _isNotAInt(width)) {
+    _handleError(_INVALIDTYPECAST);
+    return '';
+  }
+  String result = (text as String).padLeft(width as int, char as String);
+  return result;
+}
+
+String _padright(Object text, Object char, Object width,){
+  if (_isNotAString(text) || _isNotAString(char) || _isNotAInt(width)) {
+    _handleError(_INVALIDTYPECAST);
+    return '';
+  }
+  return (text as String).padRight(width as int, char as String);
+}
+
+String _padcenter(Object text, Object char, Object width,){
+  if (_isNotAString(text) || _isNotAString(char) || _isNotAInt(width)) {
+    _handleError(_INVALIDTYPECAST);
+    return '';
+  }
+
+  int charToAdd = ((width as int) - (text as String).length) ~/ 2;
+  text = text.padLeft(text.length + charToAdd, char as String);
+  text = text.padRight(text.length + charToAdd, char);
+
+  if (text.length < width) {
+    return char + text;
+  } else {
+    return text;
+  }
+}

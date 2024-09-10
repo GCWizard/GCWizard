@@ -7,7 +7,7 @@ import 'package:gc_wizard/application/navigation/no_animation_material_page_rout
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
-import 'package:gc_wizard/common_widgets/gcw_tool.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/logic/symbol_table_data.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_container.dart';

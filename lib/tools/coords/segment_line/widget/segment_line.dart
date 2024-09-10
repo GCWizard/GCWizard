@@ -6,7 +6,7 @@ import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/units/gcw_unit_dropdown.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
@@ -36,7 +36,7 @@ class _SegmentLineState extends State<SegmentLine> {
   Length _currentOutputUnit = defaultLengthUnit;
   var _currentOutputFormat = defaultCoordinateFormat;
 
-  List<String> _currentOutputs = [];
+  List<BaseCoordinate> _currentOutputs = [];
   Widget _currentDistanceOutput = Container();
 
   @override
@@ -143,8 +143,8 @@ class _SegmentLineState extends State<SegmentLine> {
 
     _currentMapPolylines = [GCWMapPolyline(points: List<GCWMapPoint>.from(_currentMapPoints))];
 
-    _currentOutputs = List<String>.from(segments.points.map((point) {
-      return formatCoordOutput(point, _currentOutputFormat, defaultEllipsoid);
+    _currentOutputs = List<BaseCoordinate>.from(segments.points.map((point) {
+      return buildCoordinate(_currentOutputFormat, point);
     }).toList());
 
     var distanceOutput = doubleFormat.format(_currentOutputUnit.fromMeter(segments.segmentLength));

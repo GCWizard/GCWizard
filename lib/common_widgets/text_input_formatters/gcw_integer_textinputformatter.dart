@@ -12,11 +12,20 @@ class GCWIntegerTextInputFormatter extends TextInputFormatter {
 
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    if (!_exp.hasMatch(newValue.text)) {
+    var newSanitized = newValue.text.trim();
+    if (!_exp.hasMatch(newSanitized)) {
       return oldValue;
     }
 
-    return _checkBounds(newValue.text) ? newValue : oldValue;
+    if (_checkBounds(newSanitized)) {
+      return TextEditingValue(
+        text: newSanitized, selection: TextSelection.fromPosition(
+          TextPosition(offset: newSanitized.length),
+        ),
+      );
+    } else {
+      return oldValue;
+    }
   }
 
   String _buildRegex() {

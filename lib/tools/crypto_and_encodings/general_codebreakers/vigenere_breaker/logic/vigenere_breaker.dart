@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/vigenere_breaker/bigrams/logic/bigrams.dart';
-import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/vigenere_breaker/guballa/logic/breaker.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/vigenere_breaker/logic/external_libs/guballa/breaker.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/vigenere/logic/vigenere.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 

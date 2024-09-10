@@ -80,6 +80,7 @@ const List<String> _Functions_4 = [
 ];
 const List<String> _Functions_5 = [
   'BACON(',
+  'BIFID(',
   'BOGEN(',
   'COLOR(',
   'DATUM(',
@@ -110,6 +111,7 @@ const List<String> _Functions_6 = [
   'SETLAT(',
   'SETLON(',
   'STROKE(',
+  'TRIFID(',
 ];
 const List<String> _Functions_7 = [
   'ABADDON(',
@@ -118,6 +120,7 @@ const List<String> _Functions_7 = [
   'ISPRIME(',
   'LISTADD(',
   'LISTGET(',
+  'PADLEFT(',
   'WPTSADD(',
   'WPTSLAT(',
   'WPTSLON(',
@@ -138,12 +141,15 @@ const List<String> _Functions_8 = [
   'ISSTRING(',
   'LISTSORT(',
   'LISTFROM(',
+  'PADRIGHT(',
 ];
 const List<String> _Functions_9 = [
   'CONVERTTO(',
   'LISTCLEAR(',
+  'PADCENTER(',
   'WPTSCLEAR(',
   'WPTSCOUNT(',
+  'ANTIALIAS('
 ];
 const List<String> _Functions_10 = [
   'CARTHESIAN(',
@@ -166,6 +172,7 @@ const List<String> _Functions_11 = [
 const List<String> _Functions_12 = [
   'LISTTOSTRING(',
   'READFROMFILE(',
+  'TEXTANALYSIS(',
 ];
 const List<String> _Functions_13 = [
   'BINARYTOFLOAT(',
@@ -195,6 +202,7 @@ const Map<String, _GCWizardScriptClassFunctionDefinition> _FUNCTIONS = {
   'TEXT': _GCWizardScriptClassFunctionDefinition(_text, 4, functionReturn: false),
   'BOX': _GCWizardScriptClassFunctionDefinition(_box, 4, functionReturn: false),
   'OVAL': _GCWizardScriptClassFunctionDefinition(_oval, 4, functionReturn: false),
+  'ANTIALIAS': _GCWizardScriptClassFunctionDefinition(_antialias, 1, functionReturn: false),
 
   // waypoints
   'WPTSADD': _GCWizardScriptClassFunctionDefinition(_wptsAdd, 2, functionReturn: false),
@@ -286,6 +294,9 @@ const Map<String, _GCWizardScriptClassFunctionDefinition> _FUNCTIONS = {
   'LEFT': _GCWizardScriptClassFunctionDefinition(_left, 2),
   'RIGHT': _GCWizardScriptClassFunctionDefinition(_right, 2),
   'MID': _GCWizardScriptClassFunctionDefinition(_mid, 3),
+  'PADLEFT': _GCWizardScriptClassFunctionDefinition(_padleft, 3),
+  'PADRIGHT': _GCWizardScriptClassFunctionDefinition(_padright, 3),
+  'PADCENTER': _GCWizardScriptClassFunctionDefinition(_padcenter, 3),
 
   // geocaching
   'DECTOROMAN': _GCWizardScriptClassFunctionDefinition(
@@ -301,10 +312,14 @@ const Map<String, _GCWizardScriptClassFunctionDefinition> _FUNCTIONS = {
   'ROT13': _GCWizardScriptClassFunctionDefinition(_rot13, 1),
   'ROT18': _GCWizardScriptClassFunctionDefinition(_rot18, 1),
   'ROT47': _GCWizardScriptClassFunctionDefinition(_rot47, 1),
+  'TEXTANALYSIS': _GCWizardScriptClassFunctionDefinition(_textanalysis, 3),
+
+  // crypto
   'ABADDON': _GCWizardScriptClassFunctionDefinition(_abaddon, 2),
   'ATBASH': _GCWizardScriptClassFunctionDefinition(_atbash, 2),
   'AVEMARIA': _GCWizardScriptClassFunctionDefinition(_avemaria, 2),
   'BACON': _GCWizardScriptClassFunctionDefinition(_bacon, 2),
+  'BIFID': _GCWizardScriptClassFunctionDefinition(_bifid, 6),
   'BCD': _GCWizardScriptClassFunctionDefinition(_bcd, 3),
   'BWW': _GCWizardScriptClassFunctionDefinition(_bww, 3),
   'BASE': _GCWizardScriptClassFunctionDefinition(_base, 3),
@@ -312,6 +327,7 @@ const Map<String, _GCWizardScriptClassFunctionDefinition> _FUNCTIONS = {
   'GCCODE': _GCWizardScriptClassFunctionDefinition(_GCCode, 2),
   'HASH': _GCWizardScriptClassFunctionDefinition(_hash, 5),
   'MORSE': _GCWizardScriptClassFunctionDefinition(_morse, 3),
+  'TRIFID': _GCWizardScriptClassFunctionDefinition(_trifid, 5),
 
   // coordinates
   'GETLAT': _GCWizardScriptClassFunctionDefinition(_getLat, 0),

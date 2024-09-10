@@ -67,7 +67,7 @@ void main() {
           // test that expected solution is there
           var foundlocal = 0;
           for (var i = 0; i < r.length; i++) {
-            if (r[i].fullmapcode.indexOf(str) == 0) {
+            if (r[i].fullmapcode.indexOf(str.toUpperCase()) == 0) {
               foundlocal = 1;
             }
           }
@@ -288,6 +288,7 @@ var testdata = [
 "IN-NL WKS.H6", 26.904854, 95.138497, 5, 21,
 
 // pasted from handmade explain.html with SHOWDT=1, data version 2.2
+"vat 5d.2j", 41.9035, 12.452000000, 2, 8,      // lower characters
 
 "VAT 5D.2J", 41.9035, 12.452000000, 2, 8,
 "VAT J0PX.VN7", 41.9035, 12.452000000, 2, 8,
@@ -16114,6 +16115,7 @@ var testdata = [
 
 
 var test_territories = [
+  test_territory("aaa", 533, 0, 0, 0),
   test_territory("AAA", 533, 0, 0, 0),
   test_territory("AB", 396, 0, 0, 496),
   test_territory("ABW", 26, 0, 0, 0),

@@ -4,7 +4,7 @@ import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
@@ -27,7 +27,7 @@ class _EquilateralTriangleState extends State<EquilateralTriangle> {
   var _currentCoords2 = defaultBaseCoordinate;
 
   var _currentOutputFormat = defaultCoordinateFormat;
-  List<String> _currentOutput = [];
+  List<Object> _currentOutput = [];
 
   var _currentMapPoints = <GCWMapPoint>[];
   var _currentMapPolylines = <GCWMapPolyline>[];
@@ -156,7 +156,7 @@ class _EquilateralTriangleState extends State<EquilateralTriangle> {
     }
 
     _currentOutput = _currentIntersections
-        .map((intersection) => formatCoordOutput(intersection, _currentOutputFormat, defaultEllipsoid))
+        .map((intersection) => buildCoordinate(_currentOutputFormat, intersection))
         .toList();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {

@@ -1,0 +1,9 @@
+{
+	"case_sensitive" : true,
+        "special_mappings" : {
+		"SCH" : "SCH",
+		"_SCH" : "sch",
+		"CH" : "CH",
+		"_ch" : "ch"
+	}
+}

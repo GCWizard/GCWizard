@@ -60,7 +60,7 @@ class NumberPyramid {
     return pyramid[y][x]?.value;
   }
 
-  /// return valid position
+  /// return value changed
   bool setValue(int x, int y, int? value, NumberPyramidFillType type) {
     int? oldValue;
     bool valueChanged = false;

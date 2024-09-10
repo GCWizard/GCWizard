@@ -24,17 +24,24 @@
 // https://oeis.org/A000396   Perfect numbers
 // https://oeis.org/A019279   Superperfect numbers
 // https://oeis.org/A054377   Pseudoperfect numbers
+// https://oeis.org/A258706   Permuable primes
 // https://oeis.org/A006037   Weird numbers
+// https://oeis.org/A000959   Lucky numbers
+// https://oeis.org/A007770   Happy numbers
 // https://oeis.org/A000668   Mersenne primes
 // https://oeis.org/A000043   Mersenne exponents
 // https://oeis.org/A023108   Lychrel numbers
+// https://oeis.org/A060843   Busy Beaver
 //
 // suggestions - https://en.wikipedia.org/wiki/List_of_integer_sequences
 // https://oeis.org/A008336   RecamánII           a(n+1) = a(n)/n if n|a(n) else a(n)*n, a(1) = 1.
 // https://oeis.org/A000058   Sylvester           a(n) = 1 + a(0)*a(1)*...*a(n-1)
 
+import 'dart:isolate';
 import 'dart:math';
 
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/busybeaver/logic/list_busy_beaver_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/happy_numbers/logic/list_happy_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucky_numbers/logic/list_lucky_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lychrel/logic/list_lychrel_numbers.dart';
@@ -48,7 +55,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/sublime_
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/superperfect_numbers/logic/list_super_perfect_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/weird_numbers/logic/list_weird_numbers.dart';
 
-part 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence_check.dart';
+part 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence_checknumber.dart';
 part 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence_containsdigits.dart';
 part 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence_digits.dart';
 part 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence_nthnumber.dart';
@@ -81,6 +88,7 @@ const Map<NumberSequencesMode, String> NUMBERSEQUENCE_TITLE = {
   NumberSequencesMode.PERMUTABLE_PRIMES: 'numbersequence_permutableprimes_title',
   NumberSequencesMode.LUCKY_NUMBERS: 'numbersequence_luckynumbers_title',
   NumberSequencesMode.HAPPY_NUMBERS: 'numbersequence_happynumbers_title',
+  NumberSequencesMode.BUSY_BEAVER: 'numbersequence_busy_beaver_title',
 };
 
 class PositionOfSequenceOutput {
@@ -117,6 +125,7 @@ enum NumberSequencesMode {
   PERMUTABLE_PRIMES,
   LUCKY_NUMBERS,
   HAPPY_NUMBERS,
+  BUSY_BEAVER,
 }
 
 final Zero = BigInt.zero;

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/gcw_distance.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
@@ -24,7 +23,7 @@ class IntersectThreeCircles extends StatefulWidget {
 }
 
 class _IntersectThreeCirclesState extends State<IntersectThreeCircles> {
-  List<Intersect> _currentIntersections = [];
+  List<CircleIntersection> _currentIntersections = [];
 
   var _currentCoords1 = defaultBaseCoordinate;
   var _currentRadius1 = 0.0;
@@ -37,8 +36,7 @@ class _IntersectThreeCirclesState extends State<IntersectThreeCircles> {
 
   var _currentOutputFormat = defaultCoordinateFormat;
   Length _currentOutputUnit = defaultLengthUnit;
-  List<String> _currentOutput = [];
-  List<String> _currentCopyableOutput = [];
+  List<Object> _currentOutput = [];
   var _currentMapPoints = <GCWMapPoint>[];
 
   @override
@@ -111,49 +109,27 @@ class _IntersectThreeCirclesState extends State<IntersectThreeCircles> {
             });
           },
         ),
-        _buildSubmitButton(),
-        GCWCoordsOutput(outputs: _currentOutput, copyTexts: _currentCopyableOutput, points: _currentMapPoints),
+        GCWSubmitButton(onPressed: () {
+          setState(() {
+            calculateOutput();
+          });
+        }),
+        GCWCoordsOutput(outputs: _currentOutput, points: _currentMapPoints),
       ],
     );
   }
 
-  Widget _buildSubmitButton() {
-    return GCWSubmitButton(onPressed: () async {
-      await showDialog<bool>(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) {
-          return Center(
-            child: SizedBox(
-              height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
-              width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
-              child: GCWAsyncExecuter<List<Intersect>>(
-                isolatedFunction: intersectThreeCirclesAsync,
-                parameter: _buildJobData,
-                onReady: (data) => _showOutput(data),
-                isOverlay: true,
-              ),
-            ),
-          );
-        },
-      );
-    });
-  }
-
-  Future<GCWAsyncExecuterParameters> _buildJobData() async {
-    return GCWAsyncExecuterParameters(IntersectThreeCirclesJobData(
-        coord1: _currentCoords1.toLatLng()!,
-        dist14: _currentRadius1,
-        coord2: _currentCoords2.toLatLng()!,
-        dist24: _currentRadius2,
-        coord3: _currentCoords3.toLatLng()!,
-        dist34: _currentRadius3,
-        accuracy: 10,
-        ells: defaultEllipsoid));
-  }
-
-  void _showOutput(List<Intersect> output) {
-    _currentIntersections = output;
+  void calculateOutput() {
+    _currentIntersections = intersectThreeCircles(
+        _currentCoords1.toLatLng()!,
+        _currentRadius1,
+        _currentCoords2.toLatLng()!,
+        _currentRadius2,
+        _currentCoords3.toLatLng()!,
+        _currentRadius3,
+        10,
+        defaultEllipsoid
+    );
 
     _currentMapPoints = [
       GCWMapPoint(
@@ -191,7 +167,6 @@ class _IntersectThreeCirclesState extends State<IntersectThreeCircles> {
 
     if (_currentIntersections.isEmpty) {
       _currentOutput = [i18n(context, "coords_intersect_nointersection")];
-      _currentCopyableOutput = _currentOutput;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {});
       });
@@ -207,14 +182,17 @@ class _IntersectThreeCirclesState extends State<IntersectThreeCircles> {
         .toList());
 
     _currentOutput = _currentIntersections.map((intersection) {
-      return '${formatCoordOutput(intersection.coords, _currentOutputFormat, defaultEllipsoid)} '
+      var outputText = '${formatCoordOutput(intersection.coords, _currentOutputFormat, defaultEllipsoid)} '
           '(${i18n(context, "coords_intersectthreecircles_accuracy")}: '
           '${doubleFormat.format(_currentOutputUnit.fromMeter(intersection.accuracy))} ${_currentOutputUnit.symbol})';
+      var copyText = formatCoordOutput(intersection.coords, _currentOutputFormat, defaultEllipsoid, false);
+
+      return GCWOutputText(
+        text: outputText,
+        copyText: copyText
+      );
     }).toList();
 
-    _currentCopyableOutput = _currentIntersections.map((intersection) {
-      return formatCoordOutput(intersection.coords, _currentOutputFormat, defaultEllipsoid);
-    }).toList();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {});

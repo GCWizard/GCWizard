@@ -21,15 +21,21 @@ const MAX_QR_TEXT_LENGTH_FOR_EXPORT = 1000;
 class GCWTextExport extends StatefulWidget {
   final String text;
   final void Function(TextExportMode)? onModeChanged;
-  final PossibleExportMode possibileExportMode;
+  final PossibleExportMode possibleExportMode;
   final TextExportMode initMode;
+  final bool addSaveButton;
+  final FileType? saveFileType;
+  final String? saveFilenamePrefix;
 
   const GCWTextExport(
       {Key? key,
       required this.text,
       this.onModeChanged,
-      this.possibileExportMode = PossibleExportMode.BOTH,
-      this.initMode = TextExportMode.QR})
+      this.possibleExportMode = PossibleExportMode.BOTH,
+      this.initMode = TextExportMode.QR,
+      this.addSaveButton = false,
+      this.saveFileType,
+      this.saveFilenamePrefix})
       : super(key: key);
 
   @override
@@ -54,8 +60,8 @@ class _GCWTextExportState extends State<GCWTextExport> {
     _currentMode = widget.initMode;
     _textExportController = TextEditingController(text: _currentExportText);
 
-    _currentPossibleMode = widget.possibileExportMode;
-    if ([PossibleExportMode.QRONLY, PossibleExportMode.BOTH].contains(widget.possibileExportMode)) {
+    _currentPossibleMode = widget.possibleExportMode;
+    if ([PossibleExportMode.QRONLY, PossibleExportMode.BOTH].contains(widget.possibleExportMode)) {
       if (widget.text.length > MAX_QR_TEXT_LENGTH_FOR_EXPORT) {
         _currentPossibleMode = PossibleExportMode.TEXTONLY;
         _currentMode = TextExportMode.TEXT;
@@ -122,11 +128,28 @@ class _GCWTextExportState extends State<GCWTextExport> {
                           });
                         },
                       ),
-                      GCWButton(
-                        text: i18n(context, 'common_copy'),
-                        onPressed: () {
-                          if (_currentExportText != null) insertIntoGCWClipboard(context, _currentExportText!);
-                        },
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          GCWButton(
+                            text: i18n(context, 'common_copy'),
+                            onPressed: () {
+                              if (_currentExportText != null) insertIntoGCWClipboard(context, _currentExportText!);
+                            },
+                          ),
+                          widget.addSaveButton ? Container(width: 50) : Container(),
+                          widget.addSaveButton ? GCWButton(
+                            text: i18n(context, 'common_save'),
+                            onPressed: () {
+                              if (_currentExportText != null) {
+                                try {
+                                  var fileName = buildFileNameWithDate((widget.saveFilenamePrefix ?? 'export') + '_', widget.saveFileType ?? FileType.TXT);
+                                  saveStringToFile(context, _currentExportText!, fileName).whenComplete(() => Navigator.pop(context));
+                                } on Exception {}
+                              }
+                            },
+                          ) : Container(),
+                        ]
                       )
                     ],
                   ),

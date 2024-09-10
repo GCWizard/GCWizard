@@ -1,4 +1,4 @@
-import 'package:gc_wizard/common_widgets/gcw_tool.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/utils/constants.dart';
 
 String deeplinkToolId(GCWTool tool) {
