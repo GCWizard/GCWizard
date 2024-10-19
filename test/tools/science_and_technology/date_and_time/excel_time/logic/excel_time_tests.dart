@@ -3,7 +3,7 @@ import 'package:gc_wizard/tools/science_and_technology/date_and_time/excel_time/
 
 void main() {
 
-  group("DateToUnixTimeStamp:", () {
+  group("DateToExcelTimeStamp:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'date' : DateTime(2023, 6, 22, 17, 40, 31), 'expectedOutput' :45099.73646990741},
       {'date' : DateTime(2021, 9, 5, 7, 47, 31), 'expectedOutput' : 44444.32466435185},
@@ -23,16 +23,16 @@ void main() {
     }
   });
 
-  group("UnixTimeStampToDate:", () {
+  group("ExcelTimeStampToDate:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      {'expectedOutput' : DateTime(2023, 6, 22, 18, 40, 31), 'ExcelTimeStamp' : 45099.73646990741},
-      {'expectedOutput' : DateTime(2021, 9, 5, 8, 47, 31), 'ExcelTimeStamp' : 44444.32466435185},
-      {'expectedOutput' : DateTime(1900, 2, 27, 0, 0, 0), 'ExcelTimeStamp' : 58.0},
-      {'expectedOutput' : DateTime(1900, 2, 28, 0, 0, 0), 'ExcelTimeStamp' : 59.0},
-      {'expectedOutput' : DateTime(1900, 2, 29, 0, 0, 0), 'ExcelTimeStamp' : 60.0},
-      {'expectedOutput' : DateTime(1900, 3, 1, 0, 0, 0), 'ExcelTimeStamp' : 61.0},
-      {'expectedOutput' : DateTime(1970, 1, 16, 1, 11, 56), 'ExcelTimeStamp' : 25584.049965277776},
-      {'expectedOutput' : DateTime(1970, 1, 1, 0, 0, 0), 'ExcelTimeStamp' : 25569.041666666668},
+      {'expectedOutput' : DateTime.utc(2023, 6, 22, 17, 40, 31), 'ExcelTimeStamp' : 45099.73646990741},
+      {'expectedOutput' : DateTime.utc(2021, 9, 5, 7, 47, 30), 'ExcelTimeStamp' : 44444.32466435185},
+      {'expectedOutput' : DateTime.utc(1900, 2, 27, 0, 0, 0), 'ExcelTimeStamp' : 58.0},
+      {'expectedOutput' : DateTime.utc(1900, 2, 28, 0, 0, 0), 'ExcelTimeStamp' : 59.0},
+      {'expectedOutput' : DateTime.utc(1900, 2, 29, 0, 0, 0), 'ExcelTimeStamp' : 60.0},
+      {'expectedOutput' : DateTime.utc(1900, 3, 1, 0, 0, 0), 'ExcelTimeStamp' : 61.0},
+      {'expectedOutput' : DateTime.utc(1970, 1, 16, 1, 11, 56), 'ExcelTimeStamp' : 25584.049965277776},
+      {'expectedOutput' : DateTime.utc(1970, 1, 1, 1, 0, 0), 'ExcelTimeStamp' : 25569.041666666668},
     ];
 
     for (var elem in _inputsToExpected) {
