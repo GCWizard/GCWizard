@@ -15,7 +15,7 @@ class UnixTimeOutput {
   });
 }
 
-UnixTimeOutput DateTimeToUnixTime(DateTime currentDateTimeUTC) {
+UnixTimeOutput DateTimeUTCToUnixTime(DateTime currentDateTimeUTC) {
   if (_invalidUnixDate(gregorianCalendarToJulianDate(currentDateTimeUTC))) {
     return UnixTimeOutput(Error: 'dates_calendar_unix_error', UnixTimeStamp: 0, GregorianDateTimeUTC: currentDateTimeUTC);
   }
@@ -46,7 +46,7 @@ UnixTimeOutput DateTimeToUnixTime(DateTime currentDateTimeUTC) {
       Error: '');
 }
 
-UnixTimeOutput UnixTimeToDateTime(int unixtime) {
+UnixTimeOutput UnixTimeToDateTimeUTC(int unixtime) {
   return UnixTimeOutput(
       GregorianDateTimeUTC: DateTime.utc(1970, 1, 1, 0, 0, 0).add(Duration(seconds: unixtime)),
       UnixTimeStamp: unixtime,

@@ -14,7 +14,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('date: ${elem['date']}', () {
-        var _actual = DateTimeToUnixTime(elem['date'] as DateTime);
+        var _actual = DateTimeUTCToUnixTime(elem['date'] as DateTime);
         expect(_actual.Error == '' ? _actual.UnixTimeStamp : _actual.Error, (elem['expectedOutput']));
       });
     }
@@ -30,7 +30,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('date: ${elem['jd']}', () {
-        var _actual = UnixTimeToDateTime(elem['UnixTimeSTamp'] as int);
+        var _actual = UnixTimeToDateTimeUTC(elem['UnixTimeSTamp'] as int);
         expect(_actual.GregorianDateTimeUTC, elem['expectedOutput']);
       });
     }
