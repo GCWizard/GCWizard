@@ -67,7 +67,7 @@ class DateTimeTZ {
     return dateTimeUtc.add(timezone);
   }
 
-  String toTimezoneName(){
+  String toLocalTimezoneAllNames(){
     // https://en.wikipedia.org/wiki/List_of_time_zone_abbreviations
     // https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     switch (timezone.inMinutes) {
@@ -113,6 +113,10 @@ class DateTimeTZ {
       case 840: return 'LINT'; // UTC + 14
       default: return UNKNOWN_ELEMENT;
     }
+  }
+
+  String toLocalTimezoneName(){
+    return DateTime.now().timeZoneName;
   }
 }
 

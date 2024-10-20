@@ -1,6 +1,7 @@
 //https://de.wikipedia.org/wiki/Unixzeit
 
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar/logic/calendar_constants.dart';
+import 'package:gc_wizard/tools/science_and_technology/date_and_time/epoch_time/common/logic/epoch_time.dart';
 import 'package:gc_wizard/utils/datetime_utils.dart';
 
 class UnixTimeOutput {
@@ -15,9 +16,9 @@ class UnixTimeOutput {
   });
 }
 
-UnixTimeOutput DateTimeUTCToUnixTime(DateTime currentDateTimeUTC) {
+EpochTimeOutput DateTimeUTCToUnixTime(DateTime currentDateTimeUTC) {
   if (_invalidUnixDate(gregorianCalendarToJulianDate(currentDateTimeUTC))) {
-    return UnixTimeOutput(Error: 'dates_calendar_unix_error', UnixTimeStamp: 0, GregorianDateTimeUTC: currentDateTimeUTC);
+    return EpochTimeOutput(Error: 'dates_calendar_unix_error', TimeStamp: 0, GregorianDateTimeUTC: currentDateTimeUTC);
   }
 
   int jahr = currentDateTimeUTC.year;
@@ -40,17 +41,17 @@ UnixTimeOutput DateTimeUTCToUnixTime(DateTime currentDateTimeUTC) {
   if ((monat > 2) && (jahr % 4 == 0 && (jahr % 100 != 0 || jahr % 400 == 0))) {
     tage_seit_1970 += 1;
   } /* +Schalttag, wenn jahr Schaltjahr ist */
-  return UnixTimeOutput(
-      UnixTimeStamp: sekunde + 60 * (minute + 60 * (stunde + 24 * tage_seit_1970)),
-      GregorianDateTimeUTC: currentDateTimeUTC,
-      Error: '');
+  return EpochTimeOutput(
+      timeStamp: sekunde + 60 * (minute + 60 * (stunde + 24 * tage_seit_1970)),
+      gregorianDateTimeUTC: currentDateTimeUTC,
+      error: '');
 }
 
-UnixTimeOutput UnixTimeToDateTimeUTC(int unixtime) {
-  return UnixTimeOutput(
-      GregorianDateTimeUTC: DateTime.utc(1970, 1, 1, 0, 0, 0).add(Duration(seconds: unixtime)),
-      UnixTimeStamp: unixtime,
-      Error: '');
+EpochTimeOutput UnixTimeToDateTimeUTC(int unixtime) {
+  return EpochTimeOutput(
+      gregorianDateTimeUTC: DateTime.utc(1970, 1, 1, 0, 0, 0).add(Duration(seconds: unixtime)),
+      timeStamp: unixtime,
+      error: '');
 }
 
 bool _invalidUnixDate(double jd) {

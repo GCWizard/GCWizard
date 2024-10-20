@@ -4,7 +4,7 @@ import 'package:gc_wizard/common_widgets/gcw_datetime_picker.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_double_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
-import 'package:gc_wizard/tools/science_and_technology/date_and_time/excel_time/logic/excel_time.dart';
+import 'package:gc_wizard/tools/science_and_technology/date_and_time/epoch_time/excel_time/logic/excel_time.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:intl/intl.dart';
 

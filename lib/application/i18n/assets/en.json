@@ -2427,6 +2427,7 @@
   "enigma_rotortype_entryrotor": "Entry Rotor",
   "enigma_rotortype_reflector": "Reflector",
   "enigma_rotortype_standard": "Normal Rotor",
+  "epoch_time_timezones": "Display a variable Timezone",
   "esotericprogramminglanguages_selection_title": "Esoteric Programming Languages",
   "esotericprogramminglanguages_selection_description": "Interpreters and Generators for strange programming languages (e.g. Brainf**k, Ook, Whitespace, ...)",
   "excel_time_title": "EXCEL Time",
