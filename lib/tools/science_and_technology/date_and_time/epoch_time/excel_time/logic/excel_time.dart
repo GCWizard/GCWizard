@@ -49,7 +49,7 @@ EpochTimeOutput ExcelTimeToDateTimeUTC(Object excelTimestamp) {
   if ((excelTimestamp as double).truncate() == 60) {
     difference = Duration(seconds: (86400 * (excelTimestamp - excelTimestamp.truncate())).toInt());
     return EpochTimeOutput(
-        gregorianDateTimeUTC: DateTime(1900, 2, 29, 0, 0, 0).add(difference),
+        gregorianDateTimeUTC: DateTime.utc(1900, 2, 29, 0, 0, 0).add(difference),
         timeStamp: excelTimestamp,
         error: 'EXCEL_BUG');
   } else if (excelTimestamp.truncate() < 60) {
