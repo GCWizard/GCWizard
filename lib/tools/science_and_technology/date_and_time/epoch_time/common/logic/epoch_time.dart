@@ -1,7 +1,7 @@
 enum EPOCH_TIMES {EXCEL1900, EXCEL1904, UNIX}
 
 class EpochTimeOutput {
-  final int timeStamp;
+  final double timeStamp;
   final DateTime gregorianDateTimeUTC;
   final String error;
 

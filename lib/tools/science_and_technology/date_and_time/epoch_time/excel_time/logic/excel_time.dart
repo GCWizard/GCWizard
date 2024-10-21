@@ -3,6 +3,7 @@
 
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar/logic/calendar_constants.dart';
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/day_calculator/logic/day_calculator.dart';
+import 'package:gc_wizard/tools/science_and_technology/date_and_time/epoch_time/common/logic/epoch_time.dart';
 import 'package:gc_wizard/utils/datetime_utils.dart';
 
 class ExcelTimeOutput {
@@ -17,9 +18,9 @@ class ExcelTimeOutput {
   });
 }
 
-ExcelTimeOutput DateTimeToExcelTime(DateTime currentDateTimeUTC) {
+EpochTimeOutput DateTimeUTCToExcelTime(DateTime currentDateTimeUTC) {
   if (_invalidExcelDate(gregorianCalendarToJulianDate(currentDateTimeUTC))) {
-    return ExcelTimeOutput(Error: 'dates_calendar_excel_error', ExcelTimeStamp: 0, GregorianDateTimeUTC: currentDateTimeUTC);
+    return EpochTimeOutput(error: 'dates_calendar_excel_error', timeStamp: 0, gregorianDateTimeUTC: currentDateTimeUTC);
   }
 
   int year = currentDateTimeUTC.year;
@@ -38,19 +39,19 @@ ExcelTimeOutput DateTimeToExcelTime(DateTime currentDateTimeUTC) {
     excelTimestampInt = calculateDayDifferences(DateTime(1900, 1, 0), DateTime(year, month, day)).days.toDouble();
   }
 
-  return ExcelTimeOutput(
-      ExcelTimeStamp: excelTimestampInt + excelTimestampFrac, GregorianDateTimeUTC: currentDateTimeUTC, Error: '');
+  return EpochTimeOutput(
+      timeStamp: excelTimestampInt + excelTimestampFrac, gregorianDateTimeUTC: currentDateTimeUTC, error: '');
 }
 
-ExcelTimeOutput ExcelTimeToDateTime(double excelTimestamp) {
+EpochTimeOutput ExcelTimeToDateTimeUTC(Object excelTimestamp) {
   Duration difference;
 
-  if (excelTimestamp.truncate() == 60) {
+  if ((excelTimestamp as double).truncate() == 60) {
     difference = Duration(seconds: (86400 * (excelTimestamp - excelTimestamp.truncate())).toInt());
-    return ExcelTimeOutput(
-        GregorianDateTimeUTC: DateTime(1900, 2, 29, 0, 0, 0).add(difference),
-        ExcelTimeStamp: excelTimestamp,
-        Error: 'EXCEL_BUG');
+    return EpochTimeOutput(
+        gregorianDateTimeUTC: DateTime(1900, 2, 29, 0, 0, 0).add(difference),
+        timeStamp: excelTimestamp,
+        error: 'EXCEL_BUG');
   } else if (excelTimestamp.truncate() < 60) {
     difference = Duration(days: excelTimestamp.truncate()) +
         Duration(seconds: (86400 * (excelTimestamp - excelTimestamp.truncate())).toInt());
@@ -59,8 +60,8 @@ ExcelTimeOutput ExcelTimeToDateTime(double excelTimestamp) {
         const Duration(days: 1) +
         Duration(seconds: (86400 * (excelTimestamp - excelTimestamp.truncate())).toInt());
   }
-  return ExcelTimeOutput(
-      GregorianDateTimeUTC: DateTime.utc(1900, 1, 0, 0, 0, 0).add(difference), ExcelTimeStamp: excelTimestamp, Error: '');
+  return EpochTimeOutput(
+      gregorianDateTimeUTC: DateTime.utc(1900, 1, 0, 0, 0, 0).add(difference), timeStamp: excelTimestamp, error: '');
 }
 
 bool _invalidExcelDate(double jd) {
