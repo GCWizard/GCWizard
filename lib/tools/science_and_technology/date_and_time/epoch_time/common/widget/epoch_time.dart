@@ -4,6 +4,7 @@ import 'package:gc_wizard/common_widgets/gcw_datetime_picker.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_double_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/epoch_time/common/logic/epoch_time.dart';
@@ -33,7 +34,7 @@ class EpochTime extends StatefulWidget {
 }
 
 class _EpochTimeState extends State<EpochTime> {
-  int _currentTimeStamp = 0;
+  late Object _currentTimeStamp;
   var _currentDateTimeEncrypt = DateTimeTZ.now();
   var _currentDateTimeDecrypt = DateTimeTZ.now();
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
@@ -41,6 +42,8 @@ class _EpochTimeState extends State<EpochTime> {
   @override
   void initState() {
     super.initState();
+
+    _currentTimeStamp = widget.timestampIsInt ? 0 : 0.0;
   }
 
   @override
@@ -68,10 +71,21 @@ class _EpochTimeState extends State<EpochTime> {
         (_currentMode == GCWSwitchPosition.right)
             ? Column(
                 children: [
-                  GCWIntegerSpinner(
-                      value: _currentTimeStamp,
+                  (widget.timestampIsInt)
+                  ? GCWIntegerSpinner(
+                      value: _currentTimeStamp as int,
                       min: widget.min,
                       max: widget.max,
+                      onChanged: (value) {
+                        setState(() {
+                          _currentTimeStamp = value;
+                        });
+                      })
+                  : GCWDoubleSpinner(
+                      value: _currentTimeStamp as double,
+                      min: widget.min.toDouble(),
+                      max: widget.max.toDouble(),
+                      numberDecimalDigits: 11,
                       onChanged: (value) {
                         setState(() {
                           _currentTimeStamp = value;
