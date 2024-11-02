@@ -13,6 +13,7 @@ import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_integ
 import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_letter.dart';
 import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_lists/randomizer_lists.dart';
 import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_password.dart';
+import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_rockpaperscissors.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class RandomizerSelection extends GCWSelection {
@@ -25,6 +26,7 @@ class RandomizerSelection extends GCWSelection {
         className(const RandomizerCoin()),
         className(const RandomizerDice()),
         className(const RandomizerCards()),
+        className(const RandomizerRockPaperScissors()),
         className(const RandomizerPassword()),
         className(const RandomizerInteger()),
         className(const RandomizerDouble()),

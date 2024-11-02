@@ -481,6 +481,7 @@ class FormulaParser {
     for (var element in values) {
       var key = element.key.trim();
       var value = normalizeCharacters(element.value);
+      value = value.replaceAll(RegExp(r'\n'), ' ');
 
       if (value.isEmpty) {
         value = key;

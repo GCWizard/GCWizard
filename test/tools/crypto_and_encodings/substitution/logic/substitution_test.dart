@@ -27,6 +27,9 @@ void main() {
 
       {'input' : 'CADBEFAGB', 'substitution': {'A': 'B', 'B': 'A'}, 'caseSensitive': true, 'expectedOutput' : 'CBDAEFBGA'},
       {'input' : 'CADBEFAGB', 'substitution': {'A': 'B', 'B': 'C', 'C': 'A'}, 'caseSensitive': true, 'expectedOutput' : 'ABDCEFBGC'},
+
+      {'input' : 'CADBE\nFAGB', 'substitution': {'A': 'B', 'B': 'C', 'C': 'A'}, 'caseSensitive': true, 'expectedOutput' : 'ABDCE\nFBGC'},
+      {'input' : 'CADBEFAGB', 'substitution': {'A': 'B', 'B': 'C', 'C': 'A\nX'}, 'caseSensitive': true, 'expectedOutput' : 'A\nXBDCEFBGC'},
     ];
 
     for (var elem in _inputsToExpected) {

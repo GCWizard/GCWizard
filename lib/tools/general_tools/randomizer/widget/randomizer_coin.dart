@@ -49,7 +49,7 @@ class _RandomizerCoinState extends State<RandomizerCoin> {
   void _calculateOutput() {
     var out = <int>[];
     for (int i = 0; i < _currentCount; i++) {
-      out.add(randomInteger(0, 1));
+      out.add(randomInteger(0, 2500));
     }
 
     if (out.isEmpty) {
@@ -59,16 +59,21 @@ class _RandomizerCoinState extends State<RandomizerCoin> {
 
     var outText = out.map((int value) {
       if (value == 0) {
-        return i18n(context, 'randomizer_coin_head');
-      } else {
+        return i18n(context, 'randomizer_coin_edge');
+      }
+
+      if (value % 2 == 0) {
         return i18n(context, 'randomizer_coin_tail');
+      } else {
+        return i18n(context, 'randomizer_coin_head');
       }
     }).join('\n');
 
     var output = <Widget>[
       GCWColumnedMultilineOutput(data: [
-        [i18n(context, 'randomizer_coin_head'), out.where((int value) => value == 0).length],
-        [i18n(context, 'randomizer_coin_tail'), out.where((int value) => value == 1).length],
+        [i18n(context, 'randomizer_coin_tail'), out.where((int value) => value != 0 && value % 2 == 0).length],
+        [i18n(context, 'randomizer_coin_head'), out.where((int value) => value != 0 && value % 2 == 1).length],
+        if (out.contains(0)) [i18n(context, 'randomizer_coin_edge'), out.where((int value) => value == 0).length]
       ]),
       GCWOutput(title: i18n(context, 'common_details'), child: outText),
     ];

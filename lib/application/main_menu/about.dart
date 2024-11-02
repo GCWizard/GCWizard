@@ -51,6 +51,8 @@ class _AboutState extends State<About> {
 
   @override
   Widget build(BuildContext context) {
+    var spaceHeight = 25.0;
+
     var content = Column(
       children: <Widget>[
         Text(GCWPackageInfo.getInstance().appName, style: gcwTextStyle().copyWith(fontWeight: FontWeight.bold, fontSize: defaultFontSize() + 5)),
@@ -64,24 +66,63 @@ class _AboutState extends State<About> {
         Container(
             padding: const EdgeInsets.only(top: 15, bottom: 10),
             child: Row(children: <Widget>[
-              Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_maintainer'))),
+              Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_creator'))),
               const Expanded(flex: 3, child: GCWText(text: _ABOUT_MAINTAINER))
             ])),
+        const GCWDivider(),
+        RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(children: [
+            TextSpan(text: i18n(context, 'about_team') + '\n', style: gcwBoldTextStyle()),
+          ], style: gcwTextStyle()),
+        ),
         Container(
             padding: const EdgeInsets.only(top: 15, bottom: 10),
-            child: Row(children: <Widget>[
-              Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_team'))),
-              Expanded(flex: 3, child: GCWText(text: [
-                  'Andy \'Puma66\' (Special Support)',
-                  'Andreas \'TeamBirdy2404\'',
-                  'Mike B. (Code)',
-                  'Thomas \'TMZ\' Z. (Code & Manual)',
-                  'Maria \'Nebelsturm\' (Test)',
-                  'Henrike \'69and71\' (Translations)',
-                  'Marcia \'Linsty\' (Test)',
-                  'Olli \'Rinser\' (Code)',
-                  ].join('\n')))
-            ])),
+            child: Column(
+              children: [
+                Row(children: <Widget>[
+                  Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_projectlead'))),
+                  Expanded(flex: 3, child: GCWText(text: [
+                    'Mike \'MikeBi\' B.',
+                    'Thomas \'TMZ\' Z.',
+                  ].join('\n'))),
+                ]),
+                Container(height: spaceHeight),
+                Row(children: <Widget>[
+                  Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_development'))),
+                  Expanded(flex: 3, child: GCWText(text: [
+                    'Mike \'MikeBi\' B.',
+                    'Thomas \'TMZ\' Z.',
+                    'Mark \'S-Man42\' Lorenz',
+                    'Olli \'Rinser\''
+                  ].join('\n'))),
+                ]),
+                Container(height: spaceHeight),
+                Row(children: <Widget>[
+                  Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_tests'))),
+                  Expanded(flex: 3, child: GCWText(text: [
+                    'Andy \'Puma66\' (Special Support)',
+                    'Maria \'Nebelsturm\'',
+                  ].join('\n'))),
+                ]),
+                Container(height: spaceHeight),
+                Row(children: <Widget>[
+                  Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_manualcreators'))),
+                  Expanded(flex: 3, child: GCWText(text: [
+                    'Andreas \'TeamBirdy2404\'',
+                    'Thomas \'TMZ\' Z.',
+                    'Marcia \'Linsty\'',
+                  ].join('\n'))),
+                ]),
+                Container(height: spaceHeight),
+                Row(children: <Widget>[
+                  Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_misc'))),
+                  Expanded(flex: 3, child: GCWText(text: [
+                    'Henrike \'69and71\' (Translations)',
+                  ].join('\n'))),
+                ])
+              ],
+            )),
         const GCWDivider(),
         _buildUrl('contact_email'),
         _buildUrl('manual'),
@@ -238,6 +279,7 @@ class _AboutState extends State<About> {
                     'Michael St.',
                     'Mondlinger',
                     'MrDosinger & MsDosinger',
+                    'mister-rage',
                     'musketon',
                     'Niki R.',
                     'Palk \'geogedoens.de\'',
