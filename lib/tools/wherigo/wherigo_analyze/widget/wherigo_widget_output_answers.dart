@@ -13,6 +13,8 @@ String _answerIsVariable(String answer) {
 
 List<List<String>> _buildOutputListAnswers(BuildContext context,
     WherigoInputData input, WherigoAnswerData data, String LUASourceCode) {
+  print('########################');
+  print(LUASourceCode);
   List<List<String>> result = [];
   List<String> answers = data.AnswerAnswer.split('\x01');
   var hash = answers[0].trim();

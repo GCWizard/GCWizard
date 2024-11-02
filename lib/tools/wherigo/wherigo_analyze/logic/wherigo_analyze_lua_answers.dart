@@ -8,6 +8,7 @@ bool _insideSectionOnGetInput(String currentLine) {
 }
 
 WherigoAnswer _analyzeAndExtractOnGetInputSectionData(List<String> onGetInputLines) {
+  print('_analyzeAndExtractOnGetInputSectionData');
   String resultInputFunction = '';
   List<WherigoAnswerData> resultAnswerData = [];
 
@@ -101,6 +102,7 @@ int _getObfuscatorFunction(String line, List<String> obfuscatorFunction) {
 }
 
 List<String> _getAnswers(int i, String line, String lineBefore, List<WherigoVariableData> variables) {
+  print('getAnswers');
   line = line.trim();
   if (line == 'else') {
     return ['-<ELSE>-'];
@@ -190,6 +192,7 @@ List<String> _getAnswers(int i, String line, String lineBefore, List<WherigoVari
     return results;
   } else if (line.trim().startsWith('if Wherigo.NoCaseEquals') ||
       line.trim().startsWith('elseif Wherigo.NoCaseEquals')) {
+    print(line);
     if (_answerVariable.isEmpty) _answerVariable = _getVariable(lineBefore);
     line = line
         .trim()
@@ -210,7 +213,9 @@ List<String> _getAnswers(int i, String line, String lineBefore, List<WherigoVari
     line = line.split(' or ').map((element) {
       return element.trim();
     }).join('\n');
+    print(line);
     line = removeWWB(line);
+    print(line);
     // check if variable then provide information
     for (int i = 0; i < variables.length; i++) {
       if (line == variables[i].VariableLUAName) {
