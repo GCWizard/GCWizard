@@ -432,7 +432,10 @@ void main() {
         'input': testInputANSWEREdersee_VKB,
         'expectedOutput': testOutputANSWEREdersee_VKB,
       },
-
+      {
+        'input': testInputANSWERCityWallsTour,
+        'expectedOutput': testOutputANSWERCityWallsTour,
+      },
     ];
 
     for (var elem in _inputsToExpected) {

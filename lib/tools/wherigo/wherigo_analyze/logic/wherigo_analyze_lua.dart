@@ -416,7 +416,6 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
             }
             i++;
           } while (_insideSectionInput(lines[i]) && (i + 1 < lines.length - 1));
-
           cartridgeInputData = _analyzeAndExtractInputSectionData(analyzeLines);
 
           _cartridgeInputs.add(cartridgeInputData);
