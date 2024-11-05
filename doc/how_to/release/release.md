@@ -219,4 +219,4 @@ Since every preference results in a separate cookie in the web version:
   * Currently the next version branch is used as main branch on Github because most contributors don't check the destination branch for a PR and the reviewer misses this as well regularly ;) So, if this practise should be continued:
     * Go to GitHub settings and set relevant branch as main branch instead of master 
   * Propagate new status to developers
-  * Crowdin: Hide last "changelog" string (Past changelog don't need to be translated)
+* Crowdin: Hide last "changelog" string (Past changelog don't need to be translated)
