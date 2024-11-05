@@ -86,6 +86,10 @@ Since every preference results in a separate cookie in the web version:
   * `Changelog`
 * Link both language versions in the blog post's language setting
 
+### Symbol Table PDFs
+* Create the new PDF files for symbol tables for the supported Languages
+* Upload the files to `./misc/symbol_tables` via FTP
+
 ### Additional Files
 * Check that the valid Mapbox token file named `mapbox` is in `/assets/tokens/` directory
 
