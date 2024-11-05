@@ -86,6 +86,9 @@ Since every preference results in a separate cookie in the web version:
   * `Changelog`
 * Link both language versions in the blog post's language setting
 
+### Additional Files
+* Check that the valid Mapbox token file named `mapbox` is in `/assets/tokens/` directory
+
 ## Release
 
 ### Android
