@@ -1,6 +1,6 @@
 import 'dart:core';
 import 'dart:math';
-import 'package:stack/stack.dart';
+import 'package:gc_wizard/utils/stack.dart';
 
 const MAXDISCCOUNT = 100;
 const MAXDISCVIEWCOUNT = 9;
@@ -47,17 +47,9 @@ class _towerOfHanoi {
     for (int row = 0; row < rowCount; row++) {
       for (var tower = 0; tower < _towers.length; tower++) {
         offset = rowCount - _towers[tower].length;
-        List<int> stack = [];
-        // 2024/10 MAL: TODO Das ist ja wohl mal richtig beschissen!!! Build own Stack class which can reference elements and supports toList()!
-        var _tower = _towers[tower];
-        while (_tower.isNotEmpty) {
-          stack.add(_tower.pop());
-        }
-        stack = stack.reversed.toList();
-        for (var i = 0; i < stack.length; i++) {
-          _tower.push(stack[i]);
-        }
-        output += (row >= offset ? stack[_towers[tower].length - 1 - (row - offset)].toString() : "|").padLeft(tower == 0 ? 3 : 6);
+        output += (row >= offset
+            ? _towers[tower].toList()[_towers[tower].length - 1 - (row - offset)].toString()
+            : "|").padLeft(tower == 0 ? 3 : 6);
       }
       output += "\n";
     }
