@@ -2390,8 +2390,8 @@ void initializeRegistry(BuildContext context) {
           author: 'Jan van der Laan',
           title: 'rijksdriehoek',
           licenseType: ToolLicenseType.MIT,
-          licenseUrl: 'https://github.com/S-Man42/rijksdriehoek/blob/dfea5221b8e3f9f44b6f0102114ab92f36eca5b2/LICENSE',
-          sourceUrl: 'hhttps://github.com/S-Man42/rijksdriehoek/tree/dfea5221b8e3f9f44b6f0102114ab92f36eca5b2',
+          licenseUrl: 'https://github.com/GCWizard/rijksdriehoek/blob/dfea5221b8e3f9f44b6f0102114ab92f36eca5b2/LICENSE',
+          sourceUrl: 'hhttps://github.com/GCWizard/rijksdriehoek/tree/dfea5221b8e3f9f44b6f0102114ab92f36eca5b2',
         ),
         ToolLicenseOnlineArticle(
             context: context,
@@ -2423,8 +2423,8 @@ void initializeRegistry(BuildContext context) {
             title: 'Geo3x3',
             licenseType: ToolLicenseType.CC0_1,
             licenseUrl:
-            'https://github.com/S-Man42/Geo3x3/tree/ca45f4a2c5fcebd806d1dbf615c7a26a8cad1150?tab=License-1-ov-file',
-            sourceUrl: 'https://github.com/S-Man42/Geo3x3/tree/ca45f4a2c5fcebd806d1dbf615c7a26a8cad1150'),
+            'https://github.com/GCWizard/Geo3x3/tree/ca45f4a2c5fcebd806d1dbf615c7a26a8cad1150?tab=License-1-ov-file',
+            sourceUrl: 'https://github.com/GCWizard/Geo3x3/tree/ca45f4a2c5fcebd806d1dbf615c7a26a8cad1150'),
         ToolLicenseOnlineArticle(
             context: context,
             author: '@sa2da',
@@ -2438,8 +2438,8 @@ void initializeRegistry(BuildContext context) {
             title: 'geohex4j',
             licenseType: ToolLicenseType.MIT,
             licenseUrl:
-            'https://github.com/S-Man42/geohex4j/tree/464acda075666e0c2cb868935b334371c7f2eb97?tab=readme-ov-file#license',
-            sourceUrl: 'https://github.com/S-Man42/geohex4j/tree/464acda075666e0c2cb868935b334371c7f2eb97'),
+            'https://github.com/GCWizard/geohex4j/tree/464acda075666e0c2cb868935b334371c7f2eb97?tab=readme-ov-file#license',
+            sourceUrl: 'https://github.com/GCWizard/geohex4j/tree/464acda075666e0c2cb868935b334371c7f2eb97'),
         ToolLicenseOnlineArticle(
           context: context,
           author: 'Ziyad S. Al-Salloum (makaney.net)',
@@ -2454,16 +2454,16 @@ void initializeRegistry(BuildContext context) {
             author: 'Stichting Mapcode Foundation (mapcode.com)',
             title: 'mapcode-js',
             licenseType: ToolLicenseType.APACHE2,
-            licenseUrl: 'https://github.com/S-Man42/mapcode-js/blob/25abcc53f4a15b996810a9d0fd00ff2efd0f2eeb/LICENSE',
-            sourceUrl: 'https://github.com/S-Man42/mapcode-js/tree/25abcc53f4a15b996810a9d0fd00ff2efd0f2eeb'),
+            licenseUrl: 'https://github.com/GCWizard/mapcode-js/blob/25abcc53f4a15b996810a9d0fd00ff2efd0f2eeb/LICENSE',
+            sourceUrl: 'https://github.com/GCWizard/mapcode-js/tree/25abcc53f4a15b996810a9d0fd00ff2efd0f2eeb'),
         ToolLicensePortedCode(
             context: context,
             author: '@Google',
             title: 'Open Location Code',
             licenseType: ToolLicenseType.APACHE2,
             licenseUrl:
-            'https://github.com/S-Man42/open-location-code/blob/dfcebc905b81c3d9c987f7b3ac6e992f1e8710c6/LICENSE',
-            sourceUrl: 'https://github.com/S-Man42/open-location-code/tree/dfcebc905b81c3d9c987f7b3ac6e992f1e8710c6'),
+            'https://github.com/GCWizard/open-location-code/blob/dfcebc905b81c3d9c987f7b3ac6e992f1e8710c6/LICENSE',
+            sourceUrl: 'https://github.com/GCWizard/open-location-code/tree/dfcebc905b81c3d9c987f7b3ac6e992f1e8710c6'),
         ToolLicenseOnlineArticle(
             context: context,
             author: 'OpenStreetMap.org and contributors',
@@ -2530,7 +2530,7 @@ void initializeRegistry(BuildContext context) {
               title: 'GeoFormula and TerpsTest',
               licenseType: ToolLicenseType.APACHE2,
               licenseUrl:
-              'https://github.com/S-Man42/GeoFormulas/tree/ac40eb5589883999f830908cd1db45c73e1e1267?tab=readme-ov-file#legal-stuff',
+              'https://github.com/GCWizard/GeoFormulas/tree/ac40eb5589883999f830908cd1db45c73e1e1267?tab=readme-ov-file#legal-stuff',
               sourceUrl: 'http://web.archive.org/web/20240812021538/https://github.com/pkohut/GeoFormulas'),
           ToolLicensePortedCode(
               context: context,
@@ -2582,8 +2582,8 @@ void initializeRegistry(BuildContext context) {
               title: 'GPS Averaging',
               licenseType: ToolLicenseType.APACHE2,
               licenseUrl:
-              'https://github.com/S-Man42/GPS-Averaging/blob/260eb5464d6d1b969c3f30bce42c5cf7848aab93/LICENSE.md',
-              sourceUrl: 'https://github.com/S-Man42/GPS-Averaging/tree/260eb5464d6d1b969c3f30bce42c5cf7848aab93')
+              'https://github.com/GCWizard/GPS-Averaging/blob/260eb5464d6d1b969c3f30bce42c5cf7848aab93/LICENSE.md',
+              sourceUrl: 'https://github.com/GCWizard/GPS-Averaging/tree/260eb5464d6d1b969c3f30bce42c5cf7848aab93')
         ]),
     GCWTool(
         tool: const CenterTwoPoints(),
