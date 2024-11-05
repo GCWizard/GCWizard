@@ -82,7 +82,7 @@ Since every preference results in a separate cookie in the web version:
 * Name it `Release X.Y.Z`
 * Current structure:
   * Some introducing words
-  * `Highlights of X.Y.Z`: Introducing to most interesting new things with a section each
+  * `Highlights of version X.Y.Z`: Introducing to most interesting new things with a section each
   * `Changelog`
 * Link both language versions in the blog post's language setting
 
