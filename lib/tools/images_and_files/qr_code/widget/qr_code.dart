@@ -127,7 +127,7 @@ class _QrCodeState extends State<QrCode> {
                 : GCWIconButton(
                     icon: Icons.save,
                     size: IconButtonSize.SMALL,
-                    iconColor: _outDataEncrypt == null ? themeColors().inActive() : null,
+                    iconColor: _outDataEncrypt == null ? themeColors().inactive() : null,
                     onPressed: () {
                       _outDataEncrypt == null ? null : _exportFile(context, _outDataEncrypt!);
                     },

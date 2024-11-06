@@ -27,7 +27,7 @@ class _RandomizerListsGroupsState extends State<_RandomizerListsGroups> {
   @override
   Widget build(BuildContext context) {
     if (_currentGroupCount < 0) {
-      _currentGroupCount = min(2, widget.list.length);
+      _currentGroupCount = min(1, widget.list.length);
       _maxElementsPerGroupCount = (widget.list.length.toDouble() / _currentGroupCount).ceil();
       _currentElementsPerGroupCount = _maxElementsPerGroupCount;
     }
@@ -47,12 +47,12 @@ class _RandomizerListsGroupsState extends State<_RandomizerListsGroups> {
               setState(() {
                 _currentGroupMode = value;
                 if (_currentGroupMode == GCWSwitchPosition.left) {
-                  _currentGroupCount = min(2, widget.list.length);
+                  _currentGroupCount = min(1, widget.list.length);
                   _maxElementsPerGroupCount = (widget.list.length.toDouble() / _currentGroupCount).ceil();
                   _currentElementsPerGroupCount = _maxElementsPerGroupCount;
                 } else {
                   _currentElementsPerGroupCount = (widget.list.length.toDouble() / 2).ceil();
-                  _currentGroupCount = min(2, widget.list.length);
+                  _currentGroupCount = min(1, widget.list.length);
                   _maxGroupCount = (widget.list.length.toDouble() / _currentElementsPerGroupCount).ceil();
                 }
 

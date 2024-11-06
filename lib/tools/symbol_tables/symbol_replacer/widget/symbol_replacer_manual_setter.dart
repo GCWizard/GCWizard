@@ -174,7 +174,7 @@ class _SymbolReplacerManualSetterState extends State<SymbolReplacerManualSetter>
             icon: Icons.alt_route,
             iconColor: _symbolMap.values.any((symbol) => symbol.values.first.primarySelected)
                 ? null
-                : themeColors().inActive(),
+                : themeColors().inactive(),
             onPressed: () {
               setState(() {
                 if (_currentMode == GCWSwitchPosition.left) {

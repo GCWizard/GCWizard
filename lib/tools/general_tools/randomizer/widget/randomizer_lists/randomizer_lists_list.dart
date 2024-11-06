@@ -27,11 +27,17 @@ class _RandomizerListsListState extends State<_RandomizerListsList> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        GCWText(
+          align: Alignment.center,
+          text: i18n(context, 'randomizer_lists_list_contains', parameters: [widget.list.length]),
+          style: gcwDescriptionTextStyle(),
+        ),
         Row(
           children: [
             Expanded(
               child: GCWButton(
                 text: i18n(context, 'randomizer_lists_list_elements'),
+                enabled: widget.list.isNotEmpty,
                 onPressed: () {
                   Navigator.push(
                       context,
@@ -49,6 +55,7 @@ class _RandomizerListsListState extends State<_RandomizerListsList> {
             Expanded(
               child: GCWButton(
                 text: i18n(context, 'randomizer_lists_list_shuffle'),
+                enabled: widget.list.isNotEmpty,
                 onPressed: () {
                   Navigator.push(
                       context,
@@ -66,6 +73,7 @@ class _RandomizerListsListState extends State<_RandomizerListsList> {
             Expanded(
               child: GCWButton(
                 text: i18n(context, 'randomizer_lists_list_groups'),
+                enabled: widget.list.isNotEmpty,
                 onPressed: () {
                   Navigator.push(
                       context,

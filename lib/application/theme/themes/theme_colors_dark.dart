@@ -21,7 +21,7 @@ class _ThemeColorsDark extends ThemeColors {
   }
 
   @override
-  Color inActive() {
+  Color inactive() {
     return Colors.grey;
   }
 

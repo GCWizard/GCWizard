@@ -111,7 +111,7 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
             GCWIconButton(
               icon: _filtered ? Icons.filter_alt : Icons.filter_alt_outlined,
               size: IconButtonSize.SMALL,
-              iconColor: _outData != null ? null : themeColors().inActive(),
+              iconColor: _outData != null ? null : themeColors().inactive(),
               onPressed: () {
                 setState(() {
                   _filtered = !_filtered;
@@ -121,7 +121,7 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
             GCWIconButton(
               icon: Icons.play_arrow,
               size: IconButtonSize.SMALL,
-              iconColor: _outData != null && !_play ? null : themeColors().inActive(),
+              iconColor: _outData != null && !_play ? null : themeColors().inactive(),
               onPressed: () {
                 setState(() {
                   _play = (_outData != null);
@@ -131,7 +131,7 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
             GCWIconButton(
               icon: Icons.stop,
               size: IconButtonSize.SMALL,
-              iconColor: _play ? null : themeColors().inActive(),
+              iconColor: _play ? null : themeColors().inactive(),
               onPressed: () {
                 setState(() {
                   _play = false;
@@ -141,7 +141,7 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
             GCWIconButton(
               icon: Icons.save,
               size: IconButtonSize.SMALL,
-              iconColor: _outData == null ? themeColors().inActive() : null,
+              iconColor: _outData == null ? themeColors().inactive() : null,
               onPressed: () {
                 if (_outData != null && _file?.name != null) _exportFiles(context, _file!.name!, _outData!.images);
               },
@@ -260,7 +260,7 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
             GCWIconButton(
               icon: Icons.save,
               size: IconButtonSize.SMALL,
-              iconColor: _encodeOutputImage == null ? themeColors().inActive() : null,
+              iconColor: _encodeOutputImage == null ? themeColors().inactive() : null,
               onPressed: () {
                 if (_encodeOutputImage != null) _exportFile(context, _encodeOutputImage!);
               },
