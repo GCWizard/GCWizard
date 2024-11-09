@@ -35,7 +35,11 @@ Future<MapViewDAO?> importCoordinatesFile(GCWFile file) async {
         file.decompress();
 
         var xml = convertBytesToString(Uint8List.fromList(file.content as List<int>));
-        return parseCoordinatesFile(xml, kmlFormat: true);
+        if (file.name.endsWith('.gpx')) {
+          return parseCoordinatesFile(xml);
+        } else if (file.name.endsWith('.kml')) {
+          return parseCoordinatesFile(xml, kmlFormat: true);
+        }
       }
       break;
     default:
