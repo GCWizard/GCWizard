@@ -840,7 +840,7 @@ class _GCWMapViewState extends State<GCWMapView> {
         child: iconedGCWPopupMenuItem(context, Icons.drive_folder_upload, i18n(context, 'coords_openmap_loaddata')),
         action: (index) {
           setState(() {
-            showOpenFileDialog(context, [FileType.GPX, FileType.KML, FileType.KMZ, FileType.JSON], _loadCoordinatesFile);
+            showOpenFileDialog(context, [FileType.GPX, FileType.KML, FileType.KMZ, FileType.JSON, FileType.ZIP], _loadCoordinatesFile);
           });
         },
       ),
