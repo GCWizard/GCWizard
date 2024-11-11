@@ -46,8 +46,8 @@ List<Uint8List> _matrix_multiplication(List<Uint8List> keyMatrix, List<Uint8List
 }
 
 List<Uint8List>? inverse3x3Matrix(List<Uint8List> matrix) {
+  if (matrix.length != 3) return null;
   var determinant = determinant3x3Matrix(matrix);
-
   if (determinant == 0) return null; // matrix is not invertible
 
   double invDet = 1 / determinant;
@@ -79,6 +79,31 @@ int determinant3x3Matrix(List<Uint8List> matrix) {
       matrix[2][0] * matrix[1][1] * matrix[0][2] -
       matrix[2][1] * matrix[1][2] * matrix[0][0] -
       matrix[2][2] * matrix[1][0] * matrix[0][1];
+}
+
+List<Uint8List>? inverse2x2Matrix(List<Uint8List> matrix) {
+  if (matrix.length != 3) return null;
+  int determinant = determinant2x2Matrix(matrix);
+  int scalar = 0;
+  if (determinant == 0) return null; // matrix is not invertible
+
+  for (int i = 0; i < 26; i++) {
+    int equation = (i * determinant) % 26;
+    if (equation == 1) {
+      scalar = i;
+      break;
+    } else {
+      continue;
+    }
+  }
+  return [
+    Uint8List.fromList([(matrix[1][1] * scalar) % 26, ((-1 * matrix[0][1] % 26) * scalar) % 26]),
+    Uint8List.fromList([((-1 * matrix[1][0] % 26) * scalar) % 26, (matrix[0][0] * scalar) % 26])
+  ];
+}
+
+int determinant2x2Matrix(List<Uint8List> matrix) {
+  return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
 }
 
 // Function to implement Hill Cipher
