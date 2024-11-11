@@ -8115,9 +8115,31 @@ void initializeRegistry(BuildContext context) {
           sourceUrl: 'https://web.archive.org/web/20240808182500/https://www.rtty.com/CODECARD/codecrd1.htm',
           licenseType: ToolLicenseType.FREE_TO_USE)
     ]),
+    GCWSymbolTableTool(symbolKey: 'wind_mill_signals_v1', symbolSearchStrings: const [
+    'symbol_wind_mill_signals_v1',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Unknown',
+          title: 'Braunsmühle Webpage',
+          sourceUrl: 'https://www.braunsmuehle.de',
+          licenseType: ToolLicenseType.FREE_TO_USE,
+          customComment: 'Allowed by web admin via personal email 9.10.2024'),
+    ]),
+    GCWSymbolTableTool(symbolKey: 'wind_mill_signals_v2', symbolSearchStrings: const [
+      'symbol_wind_mill_signals_v2',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Jasper Snijders, Iris Nolten, Bob Ribberink en Jolijn Uit het Broek',
+          title: 'Dewiekenvandemolen Webpage',
+          sourceUrl: 'https://dewiekenvandemolen.jouwweb.nl/leuke-weetjes',
+          licenseType: ToolLicenseType.FREE_TO_USE,
+          customComment: 'Muss noch eingeholt werden'), // todo ask for License
+    ]),
     GCWSymbolTableTool(symbolKey: 'windforce_beaufort', symbolSearchStrings: const [
-      'beaufort',
-      'symbol_windforce_beaufort',
+        'beaufort',
+        'symbol_windforce_beaufort',
     ], licenses: [
       ToolLicenseOnlineArticle(
           context: context,
@@ -8125,16 +8147,6 @@ void initializeRegistry(BuildContext context) {
           title: 'Wind speed',
           sourceUrl: 'https://commons.wikimedia.org/w/index.php?title=Wind_speed&oldid=760157124',
           licenseType: ToolLicenseType.CCBYSA4)
-    ]),
-    GCWSymbolTableTool(symbolKey: 'wingdings', symbolSearchStrings: const [
-      'symbol_wingdings',
-    ], licenses: [
-      ToolLicenseOnlineArticle(
-          context: context,
-          author: 'commons.wikimedia.org and contributors',
-          title: 'Wingdings',
-          sourceUrl: 'https://commons.wikimedia.org/w/index.php?title=Wind_speed&oldid=760157124',
-          licenseType: ToolLicenseType.PUBLIC_DOMAIN)
     ]),
     GCWSymbolTableTool(symbolKey: 'windforce_knots', symbolSearchStrings: const [
       'beaufort',
@@ -8156,8 +8168,8 @@ void initializeRegistry(BuildContext context) {
       ToolLicenseOnlineArticle(
           context: context,
           author: 'commons.wikimedia.org and contributors',
-          title: 'Wind speed',
-          sourceUrl: 'https://commons.wikimedia.org/w/index.php?title=Wind_speed&oldid=760157124',
+          title: 'Wingdings',
+          sourceUrl: 'https://en.wikipedia.org/w/index.php?title=Wingdings&oldid=1234924688',
           licenseType: ToolLicenseType.PUBLIC_DOMAIN)
     ]),
     GCWSymbolTableTool(symbolKey: 'wingdings2', symbolSearchStrings: const [
