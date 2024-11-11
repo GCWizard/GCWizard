@@ -5,14 +5,16 @@ import 'dart:core';
 import 'dart:typed_data';
 
 import 'package:gc_wizard/tools/science_and_technology/divisor/logic/divisor.dart';
+import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
 const _fillCharacter = 'X';
+final ALPHABETS = [alphabetAZ];
 
-StringText encryptText(String message, String key, int matrixSize, String alphabet) {
+StringText encryptText(String message, String key, int matrixSize, Alphabet alphabet) {
   message = removeNonLetters(message.toUpperCase());
-  return _encryptHillCipher(message, key, matrixSize, alphabet.length);
+  return _encryptHillCipher(message, key, matrixSize, alphabet.alphabet.length);
   // int n = key.length;
   // int padding = n - plaintext.length() % n;
   // if (padding != n) {
@@ -107,7 +109,7 @@ List<Uint8List>? _matrixInvert(List<Uint8List> matrix) {
   return result;
 }
 
-StringText _decryptHillCipher(String message, String key, int matrixSize, int alphabetLength) {
+StringText _decryptHillCipher(String message, String key, int matrixSize, Alphabet alphabet) {
   // Get inverted key matrix from the key string
   var keyMatrix = _getKeyMatrix(key, matrixSize);
   var keyMatrixInverted = _matrixInvert(keyMatrix);
