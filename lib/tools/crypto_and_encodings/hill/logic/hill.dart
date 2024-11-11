@@ -122,7 +122,7 @@ StringText _decryptHillCipher(String message, String key, int matrixSize, Alphab
   }
 
   // Following function generates the encrypted vector
-  var cipherMatrix = _matrixMultiplication(keyMatrix, messageVector, alphabetLength);
+  var cipherMatrix = _matrixMultiplication(keyMatrix, messageVector, alphabet.alphabet.length);
   String cipherText = '';
 
   // Generate the encrypted text from the encrypted vector
