@@ -1,6 +1,7 @@
 //ported from https://www.geeksforgeeks.org/hill-cipher/
 
 import 'dart:core';
+import 'dart:core';
 import 'dart:typed_data';
 
 import 'package:gc_wizard/utils/string_utils.dart';
@@ -31,12 +32,13 @@ List<Uint8List> _getKeyMatrix(String key) {
 
 // Following function encrypts the message
 List<Uint8List> _matrix_multiplication(List<Uint8List> keyMatrix, List<Uint8List> messageVector) {
-  var resultMatrix = List<Uint8List>.generate(3, (index) => Uint8List(1));
+  var matrixSize = keyMatrix.length;
+  var resultMatrix = List<Uint8List>.generate(matrixSize, (index) => Uint8List(1));
 
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < matrixSize; i++) {
     for (int j = 0; j < 1; j++) {
       var tmpValue = 0;
-      for (int x = 0; x < 3; x++) {
+      for (int x = 0; x < matrixSize; x++) {
         tmpValue += keyMatrix[i][x] * messageVector[x][j];
       }
       resultMatrix[i][j] = tmpValue % 26;
@@ -45,66 +47,64 @@ List<Uint8List> _matrix_multiplication(List<Uint8List> keyMatrix, List<Uint8List
   return resultMatrix;
 }
 
-List<Uint8List>? inverse3x3Matrix(List<Uint8List> matrix) {
-  if (matrix.length != 3) return null;
-  var determinant = determinant3x3Matrix(matrix);
-  if (determinant == 0) return null; // matrix is not invertible
+List<Uint8List>? _invertMatrix(List<Uint8List> matrix) {
+  int n = matrix.length;
+  var augmented = List<List<double>>.generate(n, (index) => List<double>.filled(n * 2, 0));
 
-  double invDet = 1 / determinant;
-
-  return [
-    Uint8List.fromList([
-      (invDet * (matrix[1][1] * matrix[2][2] - matrix[1][2] * matrix[2][1])).toInt() % 26,
-      (invDet * (matrix[0][2] * matrix[2][1] - matrix[0][1] * matrix[2][2])).toInt() % 26,
-      (invDet * (matrix[0][1] * matrix[1][2] - matrix[0][2] * matrix[1][1])).toInt() % 26,
-    ]),
-    Uint8List.fromList([
-      (invDet * (matrix[1][2] * matrix[2][0] - matrix[1][0] * matrix[2][2])).toInt() % 26,
-      (invDet * (matrix[0][0] * matrix[2][2] - matrix[0][2] * matrix[2][0])).toInt() % 26,
-      (invDet * (matrix[0][2] * matrix[1][0] - matrix[0][0] * matrix[1][2])).toInt() % 26,
-    ]),
-    Uint8List.fromList([
-      (invDet * (matrix[1][0] * matrix[2][1] - matrix[1][1] * matrix[2][0])).toInt() % 26,
-      (invDet * (matrix[0][1] * matrix[2][0] - matrix[0][0] * matrix[2][1])).toInt() % 26,
-      (invDet * (matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0])).toInt() % 26,
-    ]),
-  ];
-}
-
-int determinant3x3Matrix(List<Uint8List> matrix) {
-  return
-      matrix[0][0] * matrix[1][1] * matrix[2][2] +
-      matrix[0][1] * matrix[1][2] * matrix[2][0] +
-      matrix[0][2] * matrix[1][0] * matrix[2][1] -
-      matrix[2][0] * matrix[1][1] * matrix[0][2] -
-      matrix[2][1] * matrix[1][2] * matrix[0][0] -
-      matrix[2][2] * matrix[1][0] * matrix[0][1];
-}
-
-List<Uint8List>? inverse2x2Matrix(List<Uint8List> matrix) {
-  if (matrix.length != 3) return null;
-  int determinant = determinant2x2Matrix(matrix);
-  int scalar = 0;
-  if (determinant == 0) return null; // matrix is not invertible
-
-  for (int i = 0; i < 26; i++) {
-    int equation = (i * determinant) % 26;
-    if (equation == 1) {
-      scalar = i;
-      break;
-    } else {
-      continue;
+  // Initialize augmented matrix with the input matrix and the identity matrix
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++) {
+      augmented[i][j] = matrix[i][j].toDouble();
+      augmented[i][j + n] = (i == j) ? 1 : 0;
     }
   }
-  return [
-    Uint8List.fromList([(matrix[1][1] * scalar) % 26, ((-1 * matrix[0][1] % 26) * scalar) % 26]),
-    Uint8List.fromList([((-1 * matrix[1][0] % 26) * scalar) % 26, (matrix[0][0] * scalar) % 26])
-  ];
+
+  // Apply Gaussian elimination
+  for (int i = 0; i < n; i++) {
+    int pivotRow = i;
+    for (int j = i + 1; j < n; j++) {
+      if (augmented[j][i].abs() > (augmented[pivotRow][i].abs())) {
+        pivotRow = j;
+      }
+    }
+
+    if (pivotRow != i) {
+      for (int k = 0; k < 2 * n; k++) {
+        double temp = augmented[i][k];
+        augmented[i][k] = augmented[pivotRow][k];
+        augmented[pivotRow][k] = temp;
+      }
+    }
+
+    if (augmented[i][i].abs() < 1e-10) {
+      return null;
+    }
+
+    var pivot = augmented[i][i];
+    for (int j = 0; j < 2 * n; j++) {
+      augmented[i][j] /= pivot;
+    }
+
+    for (int j = 0; j < n; j++) {
+      if (j != i) {
+        var factor = augmented[j][i];
+        for (int k = 0; k < 2 * n; k++) {
+          augmented[j][k] -= factor * augmented[i][k];
+        }
+      }
+    }
+  }
+
+  var result = List<Uint8List>.generate(n, (index) => Uint8List(n));
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++) {
+      result[i][j] = augmented[i][j + n].toInt() % 26;
+    }
+  }
+
+  return result;
 }
 
-int determinant2x2Matrix(List<Uint8List> matrix) {
-  return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
-}
 
 // Function to implement Hill Cipher
 String _hillCipher(String message, String key) {
