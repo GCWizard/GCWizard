@@ -42,6 +42,7 @@ import 'package:gc_wizard/tools/coords/_common/formats/openlocationcode/logic/op
 import 'package:gc_wizard/tools/coords/_common/formats/quadtree/logic/quadtree.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_day1976/logic/reverse_wherigo_day1976.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_waldmeister/logic/reverse_wherigo_waldmeister.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_10y_waldmeister/logic/reverse_wherigo_10y_waldmeister.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/s2cells_hilbert/logic/s2cells_hilbert.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/slippymap/logic/slippy_map.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/swissgrid/logic/swissgrid.dart';
@@ -95,6 +96,7 @@ part 'package:gc_wizard/tools/coords/_common/formats/openlocationcode/widget/gcw
 part 'package:gc_wizard/tools/coords/_common/formats/quadtree/widget/gcw_coords_quadtree.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_day1976/widget/gcw_coords_reversewherigo_day1976.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_waldmeister/widget/gcw_coords_reversewherigo_waldmeister.dart';
+part 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_10y_waldmeister/widget/gcw_coords_reversewherigo_10y_waldmeister.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/s2cells_hilbert/widget/gcw_coords_s2cells_hilbert.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/slippymap/widget/gcw_coords_slippymap.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/swissgrid/widget/gcw_coords_swissgrid.dart';
@@ -402,6 +404,7 @@ var allCoordinateWidgetInfos = [
   _GCWCoordWidgetInfoSlippyMap(),
   _GCWCoordWidgetInfoReverseWherigoWaldmeister(),
   _GCWCoordWidgetInfoReverseWherigoDay1976(),
+  _GCWCoordWidgetInfoReverseWherigo10YWaldmeister(),
   _GCWCoordWidgetInfoGeohash(),
   _GCWCoordWidgetInfoBosch(),
   _GCWCoordWidgetInfoMakaney(),

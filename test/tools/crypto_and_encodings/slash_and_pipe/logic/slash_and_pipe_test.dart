@@ -61,7 +61,7 @@ void main() {
       {'input' : '[ [][ [[[[', 'replaceCharacters': {'/': ']', '|': '['}, 'expectedOutput' : 'ANZ'},
 
       // https://www.geocaching.com/geocache/GCA5MD9
-      {'input' : '|/ \\ // ||/    |/| \\ // ||\\    \\ // / |//    |||| \\ \\/ ||/|    /| / ||/    // |/|', 'expectedOutput' : 'DPUH NPUF UIO ZPR TIH UN'},
+      {'input' : '|/ \\ // ||/    |/| \\ // ||\\    \\ // / |//    |||| \\ \\/ ||/|    /| / ||/    // |/|', 'expectedOutput' : 'DEUXNEUFEUITZEROSIXUN'},
 
     ];
 

@@ -23,36 +23,52 @@ class GCWMapViewScalebarPainter extends CustomPainter {
   late final _halfStrokeWidth = strokeWidth / 2;
 
   final Paint _linePaint = Paint();
-  final TextPainter _textPainter;
+  final List<TextPainter> _textPainters;
 
   /// Create a new [GCWMapViewScalebar], internally used in the [GCWMapViewScalebar].
   GCWMapViewScalebarPainter({
     required this.scalebarLength,
     required this.scalebarPoints,
-    required TextSpan text,
+    required List<TextSpan> texts,
     required this.strokeWidth,
     required this.lineWidth,
     required Color lineColor,
     required this.alignment,
-  }) : _textPainter = TextPainter(
+  }) : _textPainters = texts.map((text) => TextPainter(
     text: text,
     textDirection: ui.TextDirection.ltr,
     maxLines: 1,
-  ) {
+  )).toList() {
     _linePaint
       ..color = lineColor
       ..strokeCap = StrokeCap.square
       ..strokeWidth = strokeWidth;
-    _textPainter.layout();
+    for (var textPainter in _textPainters) {
+      textPainter.layout();
+    }
   }
 
   @override
   void paint(Canvas canvas, Size size) {
+    var textY = 18.0;
+
     // draw text label
-    final labelX = lineWidth;
-    _textPainter.paint(
+    const labelX = 3.0;
+    _textPainters[0].paint(
       canvas,
-      Offset(max(0, labelX), -18),
+      Offset(max(0, labelX), - textY),
+    );
+    _textPainters[1].paint(
+      canvas,
+      Offset(max(0, labelX), scalebarPoints[1].y - scalebarPoints[0].y - textY),
+    );
+    _textPainters[2].paint(
+      canvas,
+      Offset(max(0, labelX), scalebarPoints[2].y - scalebarPoints[0].y - textY),
+    );
+    _textPainters[3].paint(
+      canvas,
+      Offset(max(0, labelX), scalebarPoints[3].y - scalebarPoints[0].y - textY),
     );
 
     final length = scalebarPoints[3].y - scalebarPoints[0].y;

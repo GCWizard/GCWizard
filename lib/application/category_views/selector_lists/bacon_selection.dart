@@ -14,8 +14,8 @@ class BaconSelection extends GCWSelection {
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(Bacon()),
-        className(BaconAnalyze()),
+        className(const Bacon()),
+        className(const BaconAnalyze()),
       ].contains(className(element.tool));
     }).toList();
 

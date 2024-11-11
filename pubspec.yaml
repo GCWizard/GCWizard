@@ -1,6 +1,6 @@
 name: gc_wizard
 description: GC Wizard
-version: 3.2.0+279
+version: 3.2.2+295
 publish_to: none
 
 environment:
@@ -8,52 +8,52 @@ environment:
 
 dependencies:
   archive: ^3.5.1
-  audioplayers: ^6.0.0
+  audioplayers: ^6.1.0
   auto_size_text: ^3.0.0
   base32: ^2.1.3
-  cached_network_image: ^3.3.0
+  cached_network_image: ^3.4.1
   code_text_field: ^1.1.0
   collection: ^1.17.1
   #dart_numerics: DO NOT USE! CURRENT VERSION 0.0.6 NOT WEB COMPATIBLE (02/2024)
-  device_info_plus: ^10.1.0
-  diacritic: ^0.1.1
+  device_info_plus: ^11.1.0
+  diacritic: ^0.1.6
   encrypt: ^5.0.3
   exif: ^3.1.4
-  file_picker: ^8.0.3
+  file_picker: ^8.1.3
   file_picker_writable: ^2.0.3
-  fixnum: ^1.1.0
+  fixnum: ^1.1.1
   flutter:
     sdk: flutter
   flutter_dtmf: ^3.0.2
   flutter_highlight: ^0.7.0
   flutter_localizations:
     sdk: flutter
-  flutter_map: ^6.2.1
-  flutter_map_marker_popup: ^6.1.2
-  flutter_map_tappable_polyline: ^6.0.0
+  flutter_map: ^7.0.2
+  flutter_map_marker_popup: ^7.0.0
   highlight: ^0.7.0
-  http: ^1.2.1
+  http: ^1.2.2
   http_parser: ^4.0.2
-  image: 4.1.3
+  image: 4.1.3 # not use 4.2.0/ 4.3.0, see issue https://github.com/brendan-duncan/image/issues/683
+  image_picker: ^1.1.1
   intl: ^0.19.0
   latlong2: ^0.9.0
-  location: ^6.0.2
+  location: ^7.0.1
   mask_text_input_formatter: ^2.5.0
-  math_expressions: ^2.4.0
-  package_info_plus: ^8.0.0
-  path: ^1.8.3
+  math_expressions: ^2.6.0
+  package_info_plus: ^8.1.0
+  path: ^1.9.0
   path_provider: ^2.1.1
   permission_handler: ^11.3.1
   photo_view: ^0.15.0
   pointycastle: ^3.7.3
-  prefs: ^4.1.0+3
+  prefs: ^4.2.0
   provider: ^6.0.4
-  qr: ^3.0.1
+  qr: ^3.0.2
   r_scan:
     git:
       url: https://github.com/masewo/r_scan.git
   scrollable_positioned_list: ^0.3.7
-  shared_preferences: ^2.2.1
+  shared_preferences: ^2.3.2
   stack: ^0.2.1
   touchable: ^1.0.2
   tuple: ^2.0.1
@@ -61,8 +61,8 @@ dependencies:
   unrar_file:
     git:
       url: https://github.com/fyxtc/unrar_file
-  uuid: ^4.4.0
-  url_launcher: ^6.1.14
+  uuid: ^4.5.1
+  url_launcher: ^6.3.1
   utility: ^1.0.3
   week_of_year: ^2.0.0
   xml: ^6.3.0
@@ -153,6 +153,7 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/clocks_2_1/
     - lib/tools/symbol_tables/_common/assets/clocks_2_2/
     - lib/tools/symbol_tables/_common/assets/clocks_3/
+    - lib/tools/symbol_tables/_common/assets/codescript/
     - lib/tools/symbol_tables/_common/assets/color_add/
     - lib/tools/symbol_tables/_common/assets/color_code/
     - lib/tools/symbol_tables/_common/assets/color_honey/
@@ -160,10 +161,10 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/cookewheatstone_1/
     - lib/tools/symbol_tables/_common/assets/cookewheatstone_2/
     - lib/tools/symbol_tables/_common/assets/cookewheatstone_5/
-    - lib/tools/symbol_tables/_common/assets/cosmic/
     - lib/tools/symbol_tables/_common/assets/country_flags/
     - lib/tools/symbol_tables/_common/assets/covenant/
     - lib/tools/symbol_tables/_common/assets/crystal/
+    - lib/tools/symbol_tables/_common/assets/cybertronic/
     - lib/tools/symbol_tables/_common/assets/cyrillic/
     - lib/tools/symbol_tables/_common/assets/cyrillic_numbers/
     - lib/tools/symbol_tables/_common/assets/daedric/
@@ -267,6 +268,7 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/krypton/
     - lib/tools/symbol_tables/_common/assets/kurrent/
     - lib/tools/symbol_tables/_common/assets/la_buse/
+    - lib/tools/symbol_tables/_common/assets/leitz_orgacolor/
     - lib/tools/symbol_tables/_common/assets/linear_b/
     - lib/tools/symbol_tables/_common/assets/lorm/
     - lib/tools/symbol_tables/_common/assets/magicode/
@@ -346,6 +348,7 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/rm4scc/
     - lib/tools/symbol_tables/_common/assets/robots/
     - lib/tools/symbol_tables/_common/assets/romulan/
+    - lib/tools/symbol_tables/_common/assets/runes/
     - lib/tools/symbol_tables/_common/assets/sanluca/
     - lib/tools/symbol_tables/_common/assets/sarati/
     - lib/tools/symbol_tables/_common/assets/semaphore/

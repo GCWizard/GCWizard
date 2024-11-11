@@ -381,6 +381,11 @@ void _initializeMultiToolDecoder(BuildContext context) {
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS), MDT_INTERNALNAMES_COORDINATEFORMATS,
         options: [
           MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT,
+              coordinateFormatDefinitionByKey(CoordinateFormatKey.REVERSE_WIG_10Y_WALDMEISTER).persistenceKey)
+        ]),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS), MDT_INTERNALNAMES_COORDINATEFORMATS,
+        options: [
+          MultiDecoderToolOption(MDT_COORDINATEFORMATS_OPTION_FORMAT,
               coordinateFormatDefinitionByKey(CoordinateFormatKey.BOSCH).persistenceKey)
         ]),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_COORDINATEFORMATS), MDT_INTERNALNAMES_COORDINATEFORMATS,
@@ -396,6 +401,7 @@ void _initializeMultiToolDecoder(BuildContext context) {
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_VIGENERE), MDT_INTERNALNAMES_VIGENERE),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_PLAYFAIR), MDT_INTERNALNAMES_PLAYFAIR),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_POLYBIOS), MDT_INTERNALNAMES_POLYBIOS),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_TAPIR), MDT_INTERNALNAMES_TAPIR),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_POKEMON), MDT_INTERNALNAMES_POKEMON),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_KEYBOARDNUMBERS), MDT_INTERNALNAMES_KEYBOARDNUMBERS),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ENCLOSEDAREAS), MDT_INTERNALNAMES_ENCLOSEDAREAS),

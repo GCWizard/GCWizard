@@ -453,7 +453,7 @@ class _WASDState extends State<WASD> {
               trailing: GCWIconButton(
                 icon: Icons.save,
                 size: IconButtonSize.SMALL,
-                iconColor: _outDecodeData == null ? themeColors().inActive() : null,
+                iconColor: _outDecodeData == null ? themeColors().inactive() : null,
                 onPressed: () {
                   _outDecodeData == null ? null : _exportFile(context, _outDecodeData!);
                 },
@@ -464,7 +464,7 @@ class _WASDState extends State<WASD> {
               trailing: GCWIconButton(
                 icon: Icons.save,
                 size: IconButtonSize.SMALL,
-                iconColor: _outEncodeData == null ? themeColors().inActive() : null,
+                iconColor: _outEncodeData == null ? themeColors().inactive() : null,
                 onPressed: () {
                   _outEncodeData == null ? null : _exportFile(context, _outEncodeData!);
                 },

@@ -86,7 +86,7 @@ double _getArcExtent(_LLPoint center, double radius, double startCrs, double end
  */
 
 bool _ptIsOnArc(_LLPoint center, double radius, double startCrs, double endCrs, _ArcDirection orientation, _LLPoint testPt, double tol, Ellipsoid ellipsoid) {
-
+  // ignore: unused_local_variable
   double distToPoint, crsToPoint, crsFromPoint;
   _LLPoint startPoint, endPoint;
   double arcExtent, subExtent;

@@ -56,6 +56,13 @@ class GCWMapViewScalebar extends StatelessWidget {
     this.length = ScalebarLength.m,
   });
 
+  TextSpan _label(String label) {
+    return TextSpan(
+      text: label,
+      style: textStyle
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final camera = MapCamera.of(context);
@@ -77,17 +84,21 @@ class GCWMapViewScalebar extends StatelessWidget {
     final offsetDistance2 = camera.project(latLngOffset2);
     final offsetDistance3 = camera.project(latLngOffset3);
 
-    final label = metricDst < 1000
-        ? '$metricDst m'
-        : '${(metricDst / 1000.0).toStringAsFixed(0)} km';
+    var unit = metricDst < 1000 ? 'm' : 'km';
+    String _metricValue(int baseMetric, int metricDst) {
+      return (baseMetric < 1000 ? metricDst : (metricDst / 1000.0)).toStringAsFixed(0);
+    }
+
+    final label0 = '0 $unit';
+    final label1 = _metricValue(metricDst, metricDst);
+    final label2 = _metricValue(metricDst, metricDst * 2);
+    final label3 = _metricValue(metricDst, metricDst * 3);
+
     final scalebarPainter = GCWMapViewScalebarPainter(
       // use .abs() to avoid wrong placements on the right map border
       scalebarLength: (offsetDistance1.y - y1).abs(),
       scalebarPoints: [Point(x1, y1), offsetDistance1, offsetDistance2, offsetDistance3],
-      text: TextSpan(
-        style: textStyle,
-        text: label,
-      ),
+      texts: [_label(label0), _label(label1), _label(label2), _label(label3)],
       alignment: alignment,
       lineColor: lineColor,
       strokeWidth: strokeWidth,
@@ -97,7 +108,7 @@ class GCWMapViewScalebar extends StatelessWidget {
     return Align(
       alignment: alignment,
       child: Padding(
-        padding: EdgeInsets.only(left: 10, bottom: 30),//padding,
+        padding: const EdgeInsets.only(left: 10, bottom: 30),//padding,
         child: CustomPaint(
           // size: scalebarPainter.widgetSize,
           painter: scalebarPainter,

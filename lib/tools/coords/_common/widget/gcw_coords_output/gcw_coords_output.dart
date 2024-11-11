@@ -100,7 +100,7 @@ class _GCWCoordsOutputState extends State<GCWCoordsOutput> {
         trailing: GCWIconButton(
           icon: Icons.save,
           size: IconButtonSize.SMALL,
-          iconColor: _hasOutput ? null : themeColors().inActive(),
+          iconColor: _hasOutput ? null : themeColors().inactive(),
           onPressed: () {
             if (_hasOutput) {
               _exportCoordinates(context, widget.points, widget.polylines);

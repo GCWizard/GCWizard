@@ -21,7 +21,7 @@ ShadowLength shadowLength(
   double objectHeight,
   LatLng coords,
   Ellipsoid ells,
-  DateTimeTimezone datetime,
+  DateTimeTZ datetime,
 ) {
   var julianDate = JulianDate(datetime);
   var sunPosition = SunPosition(coords, julianDate, ells);

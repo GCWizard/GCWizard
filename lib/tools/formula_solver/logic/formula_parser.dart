@@ -94,7 +94,7 @@ class FormulaParser {
       var precision = 0;
       if (numbers.length > 1) precision = numbers[1].toInt();
 
-      return round(numbers.first, precision: precision);
+      return round(numbers.first, precision: precision).toDouble();
     },
     'sindeg': (List<double> numbers) => sin(degreesToRadian(numbers.first)),
     'cosdeg': (List<double> numbers) => cos(degreesToRadian(numbers.first)),
@@ -481,6 +481,7 @@ class FormulaParser {
     for (var element in values) {
       var key = element.key.trim();
       var value = normalizeCharacters(element.value);
+      value = value.replaceAll(RegExp(r'\n'), ' ');
 
       if (value.isEmpty) {
         value = key;

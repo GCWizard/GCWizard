@@ -82,7 +82,7 @@ class _SegmentDisplayOutputState extends State<SegmentDisplayOutput> {
               child: GCWIconButton(
                 size: IconButtonSize.SMALL,
                 icon: Icons.save,
-                iconColor: (widget.segments.displays.isEmpty) ? themeColors().inActive() : null,
+                iconColor: (widget.segments.displays.isEmpty) ? themeColors().inactive() : null,
                 onPressed: () async {
                   await buildSegmentDisplayImage(countColumns, _displays, _currentUpsideDown,
                           horizontalPadding: widget.horizontalSymbolPadding,

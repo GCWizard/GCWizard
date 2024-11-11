@@ -104,7 +104,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
         }
         return PositionOfSequenceOutput(numberString, index, (j + 1));
       }
-      index = index + 1;
+      index++;
     }
   } else if (sequence == NumberSequencesMode.FIBONACCI) {
     pn0 = Zero;
@@ -116,7 +116,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
       return PositionOfSequenceOutput('1', 1, 1);
     } else {
       index = 2;
-      while ((index <= maxIndex) && (BigInt.parse(check) > number)) {
+      while (index <= maxIndex) {
         number = pn1 + pn0;
         pn0 = pn1;
         pn1 = number;
@@ -128,7 +128,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
           }
           return PositionOfSequenceOutput(numberString, index, j + 1);
         }
-        index = index + 1;
+        index++;
       }
     }
   } else if (sequence == NumberSequencesMode.PELL) {
@@ -141,7 +141,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
       return PositionOfSequenceOutput('1', 1, 1);
     } else {
       index = 2;
-      while ((index <= maxIndex) && (BigInt.parse(check) > number)) {
+      while (index <= maxIndex) {
         number = Two * pn1 + pn0;
         pn0 = pn1;
         pn1 = number;
@@ -153,7 +153,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
           }
           return PositionOfSequenceOutput(numberString, index, j + 1);
         }
-        index = index + 1;
+        index++;
       }
     }
   } else if (sequence == NumberSequencesMode.PELL_LUCAS) {
@@ -164,7 +164,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
     pn1 = Two;
     number = pn1;
     index = 2;
-    while ((index <= maxIndex) && (BigInt.parse(check) > number)) {
+    while (index <= maxIndex) {
       number = Two * pn1 + pn0;
       pn0 = pn1;
       pn1 = number;
@@ -176,19 +176,19 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
         }
         return PositionOfSequenceOutput(numberString, index, j + 1);
       }
-      index = index + 1;
+      index++;
     }
   } else if (sequence == NumberSequencesMode.LUCAS) {
     pn0 = Two;
     pn1 = One;
     if (check == Two.toString()) {
       return PositionOfSequenceOutput('2', 0, 1);
-    } else if ((check == One.toString())) {
+    } else if (check == One.toString()) {
       return PositionOfSequenceOutput('1', 1, 1);
     } else {
       index = 1;
       number = Three;
-      while ((index <= maxIndex) && (BigInt.parse(check) > number)) {
+      while (index <= maxIndex) {
         numberString = number.toString();
         if (expr.hasMatch(numberString)) {
           int j = 0;
@@ -197,7 +197,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
           }
           return PositionOfSequenceOutput(numberString, index, j + 1);
         }
-        index = index + 1;
+        index++;
         number = pn1 + pn0;
         pn0 = pn1;
         pn1 = number;
@@ -210,7 +210,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
     int pn0 = 0;
     int number = 0;
     recamanSequence.add(0);
-    while ((index <= maxIndex) && (BigInt.parse(check) > BigInt.from(number))) {
+    while (index <= maxIndex) {
       if (index == 0) {
         number = 0;
       } else if ((pn0 - index) > 0 && !recamanSequence.contains(pn0 - index)) {
@@ -228,7 +228,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
         }
         return PositionOfSequenceOutput(numberString, index, j + 1);
       }
-      index = index + 1;
+      index++;
     }
   } else if (sequence == NumberSequencesMode.FACTORIAL) {
     number = One;
@@ -238,7 +238,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
       return PositionOfSequenceOutput('1', 1, 1);
     } else {
       index = 2;
-      while ((index <= maxIndex) && (BigInt.parse(check) > number)) {
+      while (index <= maxIndex) {
         number = number * BigInt.from(index);
         numberString = number.toString();
         if (expr.hasMatch(numberString)) {
@@ -248,7 +248,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
           }
           return PositionOfSequenceOutput(numberString, index, j + 1);
         }
-        index = index + 1;
+        index++;
       }
     }
   } else if (sequence == NumberSequencesMode.BELL) {
@@ -271,7 +271,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
           }
           return PositionOfSequenceOutput(numberString, index, j + 1);
         }
-        index = index + 1;
+        index++;
       }
     }
   } else {

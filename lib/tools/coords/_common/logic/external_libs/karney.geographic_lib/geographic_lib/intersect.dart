@@ -73,8 +73,12 @@ class _Intersect {
       _t4,                      // capture radius for spherical sol in Solve0
       _t5,                      // longest shortest geodesic
       _d1,                      // tile spacing for Closest
+// ignore: unused_field
       _d2,                      // tile spacing for Next
-      _d3;                      // tile spacing for All
+// ignore: unused_field
+      _d3;
+  // tile spacing for All
+  // ignore: unused_field
   late int _cnt0, _cnt1, _cnt2, _cnt3, _cnt4;
   late final _SetComp _comp;
 
@@ -193,6 +197,7 @@ class _Intersect {
     }
     double azi0 = 46;
     _ConjDistReturn cdr = conjdist(azi0);
+    // ignore: unused_local_variable
     double s0 = cdr.ret, ds0 = cdr.ds, sa = cdr.sp, sb = cdr.sm;
     double azi1 = 44;
     cdr = conjdist(azi1);
@@ -367,6 +372,7 @@ class _XPoint {
     return _XPoint(double.nan, double.nan, 0);
   }
 
+  // ignore: unused_element
   static _XPoint fromPoint(_Point p) {
     return _XPoint(p.first, p.second, 0);
   }

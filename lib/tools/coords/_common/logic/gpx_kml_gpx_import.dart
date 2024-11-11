@@ -10,6 +10,7 @@ import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/map_view/persistence/mapview_persistence_adapter.dart';
 import 'package:gc_wizard/tools/coords/map_view/persistence/model.dart';
 import 'package:gc_wizard/utils/constants.dart';
+import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:latlong2/latlong.dart';
@@ -125,10 +126,19 @@ class _GpxReader {
   GCWMapPoint? _readPoint(XmlElement xmlElement) {
     var lat = xmlElement.getAttribute('lat');
     var lon = xmlElement.getAttribute('lon');
+
     if (lat != null && lon != null) {
       var wpt = GCWMapPoint(point: LatLng(double.tryParse(lat) ?? 0, double.tryParse(lon) ?? 0), isEditable: true);
-      wpt.markerText = xmlElement.getElement('name')?.innerText;
-      if (wpt.markerText == null || wpt.markerText!.isEmpty) {
+      var name = xmlElement.getElement('name')?.innerText ?? '';
+
+      if (name.isNotEmpty) {
+        wpt.markerText = name;
+        if (name.startsWith("P")) { // Parking coordinate only for gc.com
+          wpt.color = COLOR_MAP_GPX_IMPORT_PARKING;
+        } else if (name.startsWith(RegExp('[0-9]')) || RegExp(r'-.{2}$').hasMatch(name)) { // waypoint gc.com or oc.com
+          wpt.color = COLOR_MAP_GPX_IMPORT_WAYPOINT;
+        }
+      } else {
         wpt.markerText = xmlElement.getElement('desc')?.innerText;
       }
       return wpt;

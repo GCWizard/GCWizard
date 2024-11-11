@@ -53,10 +53,12 @@ const List<TeletypewriterCodebook> REVERSE_CODEBOOK = [
 class CodebookConfig {
   final String title;
   final String subtitle;
+  final String? schema;
 
   const CodebookConfig({
     required this.title,
     required this.subtitle,
+    this.schema
   });
 }
 
@@ -86,122 +88,122 @@ const Map<int, String> CODEBOOK_BITS_12345 = {
 
 const Map<TeletypewriterCodebook, CodebookConfig> ANCIENT_CODEBOOK = {
   TeletypewriterCodebook.BAUDOT_12345:
-      CodebookConfig(title: 'punchtape_baudot_title', subtitle: 'punchtape_baudot_description'),
+      CodebookConfig(title: 'punchtape_baudot_title', subtitle: 'punchtape_baudot_description', schema: '[OOOOO]'),
   TeletypewriterCodebook.BAUDOT_54123:
-      CodebookConfig(title: 'punchtape_baudot_54123_title', subtitle: 'punchtape_baudot_54123_description'),
+      CodebookConfig(title: 'punchtape_baudot_54123_title', subtitle: 'punchtape_baudot_54123_description', schema: '[OO.OOO]'),
   TeletypewriterCodebook.MURRAY:
-      CodebookConfig(title: 'punchtape_murray_title', subtitle: 'punchtape_murray_description'),
+      CodebookConfig(title: 'punchtape_murray_title', subtitle: 'punchtape_murray_description', schema: '[OOOOO]'),
   TeletypewriterCodebook.SIEMENS:
-      CodebookConfig(title: 'punchtape_siemens_title', subtitle: 'punchtape_siemens_description'),
+      CodebookConfig(title: 'punchtape_siemens_title', subtitle: 'punchtape_siemens_description', schema: '[OOOOO]'),
   TeletypewriterCodebook.WESTERNUNION:
-      CodebookConfig(title: 'punchtape_westernunion_title', subtitle: 'punchtape_westernunion_description'),
+      CodebookConfig(title: 'punchtape_westernunion_title', subtitle: 'punchtape_westernunion_description', schema: '[OOOOO]'),
 };
 
 const Map<TeletypewriterCodebook, CodebookConfig> CCITT1_CODEBOOK = {
   TeletypewriterCodebook.BAUDOT_12345:
-      CodebookConfig(title: 'punchtape_baudot_title', subtitle: 'punchtape_baudot_description'),
+      CodebookConfig(title: 'punchtape_baudot_title', subtitle: 'punchtape_baudot_description', schema: '[OOOOO]'),
   TeletypewriterCodebook.BAUDOT_54123:
-      CodebookConfig(title: 'punchtape_baudot_54123_title', subtitle: 'punchtape_baudot_54123_description'),
+      CodebookConfig(title: 'punchtape_baudot_54123_title', subtitle: 'punchtape_baudot_54123_description', schema: '[OO.OOO]'),
   TeletypewriterCodebook.CCITT_ITA1_1926:
-      CodebookConfig(title: 'punchtape_ccitt_ita1_1926_title', subtitle: 'punchtape_ccitt_ita1_1926_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita1_1926_title', subtitle: 'punchtape_ccitt_ita1_1926_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA1_1929:
-      CodebookConfig(title: 'punchtape_ccitt_ita1_1929_title', subtitle: 'punchtape_ccitt_ita1_1929_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita1_1929_title', subtitle: 'punchtape_ccitt_ita1_1929_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA1_EU:
-      CodebookConfig(title: 'punchtape_ccitt_ita1_eu_title', subtitle: 'punchtape_ccitt_ita1_eu_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita1_eu_title', subtitle: 'punchtape_ccitt_ita1_eu_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA1_UK:
-      CodebookConfig(title: 'punchtape_ccitt_ita1_uk_title', subtitle: 'punchtape_ccitt_ita1_uk_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita1_uk_title', subtitle: 'punchtape_ccitt_ita1_uk_description', schema: '[OOO.OO]'),
 };
 
 const Map<TeletypewriterCodebook, CodebookConfig> CCITT2_CODEBOOK = {
   TeletypewriterCodebook.MURRAY:
-      CodebookConfig(title: 'punchtape_murray_title', subtitle: 'punchtape_murray_description'),
+      CodebookConfig(title: 'punchtape_murray_title', subtitle: 'punchtape_murray_description', schema: '[OOOOO]'),
   TeletypewriterCodebook.CCITT_ITA2_1929:
-      CodebookConfig(title: 'punchtape_ccitt_ita2_1929_title', subtitle: 'punchtape_ccitt_ita2_1929_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita2_1929_title', subtitle: 'punchtape_ccitt_ita2_1929_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA2_1931:
-      CodebookConfig(title: 'punchtape_ccitt_ita2_1931_title', subtitle: 'punchtape_ccitt_ita2_1931_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita2_1931_title', subtitle: 'punchtape_ccitt_ita2_1931_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA2_MTK2:
-      CodebookConfig(title: 'punchtape_ccitt_ita2_mtk2_title', subtitle: 'punchtape_ccitt_ita2_mtk2_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita2_mtk2_title', subtitle: 'punchtape_ccitt_ita2_mtk2_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA2_USTTY:
-      CodebookConfig(title: 'punchtape_ccitt_ita2_ustty_title', subtitle: 'punchtape_ccitt_ita2_ustty_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita2_ustty_title', subtitle: 'punchtape_ccitt_ita2_ustty_description', schema: '[OOO.OO]'),
 };
 
 const Map<TeletypewriterCodebook, CodebookConfig> CCITT_CODEBOOK = {
   TeletypewriterCodebook.CCITT_ITA1_1926:
-      CodebookConfig(title: 'punchtape_ccitt_ita1_1926_title', subtitle: 'punchtape_ccitt_ita1_1926_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita1_1926_title', subtitle: 'punchtape_ccitt_ita1_1926_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA1_1929:
-      CodebookConfig(title: 'punchtape_ccitt_ita1_1929_title', subtitle: 'punchtape_ccitt_ita1_1929_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita1_1929_title', subtitle: 'punchtape_ccitt_ita1_1929_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA1_EU:
-      CodebookConfig(title: 'punchtape_ccitt_ita1_eu_title', subtitle: 'punchtape_ccitt_ita1_eu_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita1_eu_title', subtitle: 'punchtape_ccitt_ita1_eu_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA1_UK:
-      CodebookConfig(title: 'punchtape_ccitt_ita1_uk_title', subtitle: 'punchtape_ccitt_ita1_uk_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita1_uk_title', subtitle: 'punchtape_ccitt_ita1_uk_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA2_1929:
-      CodebookConfig(title: 'punchtape_ccitt_ita2_1929_title', subtitle: 'punchtape_ccitt_ita2_1929_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita2_1929_title', subtitle: 'punchtape_ccitt_ita2_1929_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA2_1931:
-      CodebookConfig(title: 'punchtape_ccitt_ita2_1931_title', subtitle: 'punchtape_ccitt_ita2_1931_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita2_1931_title', subtitle: 'punchtape_ccitt_ita2_1931_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA2_MTK2:
-      CodebookConfig(title: 'punchtape_ccitt_ita2_mtk2_title', subtitle: 'punchtape_ccitt_ita2_mtk2_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita2_mtk2_title', subtitle: 'punchtape_ccitt_ita2_mtk2_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA2_USTTY:
-      CodebookConfig(title: 'punchtape_ccitt_ita2_ustty_title', subtitle: 'punchtape_ccitt_ita2_ustty_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita2_ustty_title', subtitle: 'punchtape_ccitt_ita2_ustty_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA3:
-      CodebookConfig(title: 'punchtape_ccitt_ita3_title', subtitle: 'punchtape_ccitt_ita3_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita3_title', subtitle: 'punchtape_ccitt_ita3_description', schema: '[OOO.OOOO]'),
   TeletypewriterCodebook.CCITT_ITA4:
-      CodebookConfig(title: 'punchtape_ccitt_ita4_title', subtitle: 'punchtape_ccitt_ita4_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita4_title', subtitle: 'punchtape_ccitt_ita4_description', schema: '[OOO.OOO]'),
   TeletypewriterCodebook.CCITT_IA5:
-      CodebookConfig(title: 'punchtape_ccitt_ia5_title', subtitle: 'punchtape_ccitt_ia5_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ia5_title', subtitle: 'punchtape_ccitt_ia5_description', schema: '[OOO.OOOO]'),
   TeletypewriterCodebook.CCIR476:
-      CodebookConfig(title: 'punchtape_ccitt_ccir476_title', subtitle: 'punchtape_ccitt_ccir476_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ccir476_title', subtitle: 'punchtape_ccitt_ccir476_description', schema: '[OOO.OOOO]'),
 };
 
 const Map<TeletypewriterCodebook, CodebookConfig> OTHER_CODEBOOK = {
-  TeletypewriterCodebook.ZC1: CodebookConfig(title: 'punchtape_zc1_title', subtitle: 'punchtape_zc1_description'),
-  TeletypewriterCodebook.Z22: CodebookConfig(title: 'punchtape_z22_title', subtitle: 'punchtape_z22_description'),
-  TeletypewriterCodebook.TTS: CodebookConfig(title: 'punchtape_tts_title', subtitle: 'punchtape_tts_description'),
+  TeletypewriterCodebook.ZC1: CodebookConfig(title: 'punchtape_zc1_title', subtitle: 'punchtape_zc1_description', schema: '[OOO.OOOOO]'),
+  TeletypewriterCodebook.Z22: CodebookConfig(title: 'punchtape_z22_title', subtitle: 'punchtape_z22_description', schema: '[OOO.OO]'),
+  TeletypewriterCodebook.TTS: CodebookConfig(title: 'punchtape_tts_title', subtitle: 'punchtape_tts_description', schema: '[OOO.OOO]'),
   TeletypewriterCodebook.ILLIAC:
-      CodebookConfig(title: 'punchtape_illiac_title', subtitle: 'punchtape_illiac_description'),
-  TeletypewriterCodebook.ALGOL: CodebookConfig(title: 'punchtape_algol_title', subtitle: 'punchtape_algol_description'),
+      CodebookConfig(title: 'punchtape_illiac_title', subtitle: 'punchtape_illiac_description', schema: '[OOO.OO]'),
+  TeletypewriterCodebook.ALGOL: CodebookConfig(title: 'punchtape_algol_title', subtitle: 'punchtape_algol_description', schema: '[OOO.OO]'),
 };
 
 const Map<TeletypewriterCodebook, CodebookConfig> ALL_CODES_CODEBOOK = {
   TeletypewriterCodebook.BAUDOT_12345:
-      CodebookConfig(title: 'punchtape_baudot_title', subtitle: 'punchtape_baudot_description'),
+      CodebookConfig(title: 'punchtape_baudot_title', subtitle: 'punchtape_baudot_description', schema: '[OOOOO]'),
   TeletypewriterCodebook.BAUDOT_54123:
-      CodebookConfig(title: 'punchtape_baudot_54123_title', subtitle: 'punchtape_baudot_54123_description'),
+      CodebookConfig(title: 'punchtape_baudot_54123_title', subtitle: 'punchtape_baudot_54123_description', schema: '[OO.OOO]'),
   TeletypewriterCodebook.MURRAY:
-      CodebookConfig(title: 'punchtape_murray_title', subtitle: 'punchtape_murray_description'),
+      CodebookConfig(title: 'punchtape_murray_title', subtitle: 'punchtape_murray_description', schema: '[OOOOO]'),
   TeletypewriterCodebook.SIEMENS:
-      CodebookConfig(title: 'punchtape_siemens_title', subtitle: 'punchtape_siemens_description'),
+      CodebookConfig(title: 'punchtape_siemens_title', subtitle: 'punchtape_siemens_description', schema: '[OOOOO]'),
   TeletypewriterCodebook.WESTERNUNION:
-      CodebookConfig(title: 'punchtape_westernunion_title', subtitle: 'punchtape_westernunion_description'),
+      CodebookConfig(title: 'punchtape_westernunion_title', subtitle: 'punchtape_westernunion_description', schema: '[OOOOO]'),
   TeletypewriterCodebook.CCITT_ITA1_1926:
-      CodebookConfig(title: 'punchtape_ccitt_ita1_1926_title', subtitle: 'punchtape_ccitt_ita1_1926_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita1_1926_title', subtitle: 'punchtape_ccitt_ita1_1926_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA1_1929:
-      CodebookConfig(title: 'punchtape_ccitt_ita1_1929_title', subtitle: 'punchtape_ccitt_ita1_1929_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita1_1929_title', subtitle: 'punchtape_ccitt_ita1_1929_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA1_EU:
-      CodebookConfig(title: 'punchtape_ccitt_ita1_eu_title', subtitle: 'punchtape_ccitt_ita1_eu_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita1_eu_title', subtitle: 'punchtape_ccitt_ita1_eu_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA1_UK:
-      CodebookConfig(title: 'punchtape_ccitt_ita1_uk_title', subtitle: 'punchtape_ccitt_ita1_uk_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita1_uk_title', subtitle: 'punchtape_ccitt_ita1_uk_description', schema: '[OOOOO]'),
   TeletypewriterCodebook.CCITT_ITA2_1929:
-      CodebookConfig(title: 'punchtape_ccitt_ita2_1929_title', subtitle: 'punchtape_ccitt_ita2_1929_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita2_1929_title', subtitle: 'punchtape_ccitt_ita2_1929_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA2_1931:
-      CodebookConfig(title: 'punchtape_ccitt_ita2_1931_title', subtitle: 'punchtape_ccitt_ita2_1931_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita2_1931_title', subtitle: 'punchtape_ccitt_ita2_1931_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA2_MTK2:
-      CodebookConfig(title: 'punchtape_ccitt_ita2_mtk2_title', subtitle: 'punchtape_ccitt_ita2_mtk2_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita2_mtk2_title', subtitle: 'punchtape_ccitt_ita2_mtk2_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA2_USTTY:
-      CodebookConfig(title: 'punchtape_ccitt_ita2_ustty_title', subtitle: 'punchtape_ccitt_ita2_ustty_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita2_ustty_title', subtitle: 'punchtape_ccitt_ita2_ustty_description', schema: '[OOO.OO]'),
   TeletypewriterCodebook.CCITT_ITA3:
-      CodebookConfig(title: 'punchtape_ccitt_ita3_title', subtitle: 'punchtape_ccitt_ita3_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita3_title', subtitle: 'punchtape_ccitt_ita3_description', schema: '[OOO.OOOO]'),
   TeletypewriterCodebook.CCITT_ITA4:
-      CodebookConfig(title: 'punchtape_ccitt_ita4_title', subtitle: 'punchtape_ccitt_ita4_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ita4_title', subtitle: 'punchtape_ccitt_ita4_description', schema: '[OOO.OOO]'),
   TeletypewriterCodebook.CCITT_IA5:
-      CodebookConfig(title: 'punchtape_ccitt_ia5_title', subtitle: 'punchtape_ccitt_ia5_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ia5_title', subtitle: 'punchtape_ccitt_ia5_description', schema: '[OOO.OOOO]'),
   TeletypewriterCodebook.CCIR476:
-      CodebookConfig(title: 'punchtape_ccitt_ccir476_title', subtitle: 'punchtape_ccitt_ccir476_description'),
-  TeletypewriterCodebook.ZC1: CodebookConfig(title: 'punchtape_zc1_title', subtitle: 'punchtape_zc1_description'),
-  TeletypewriterCodebook.Z22: CodebookConfig(title: 'punchtape_z22_title', subtitle: 'punchtape_z22_description'),
-  TeletypewriterCodebook.TTS: CodebookConfig(title: 'punchtape_tts_title', subtitle: 'punchtape_tts_description'),
+      CodebookConfig(title: 'punchtape_ccitt_ccir476_title', subtitle: 'punchtape_ccitt_ccir476_description', schema: '[OOO.OOOO]'),
+  TeletypewriterCodebook.ZC1: CodebookConfig(title: 'punchtape_zc1_title', subtitle: 'punchtape_zc1_description', schema: '[OOO.OOOOO]'),
+  TeletypewriterCodebook.Z22: CodebookConfig(title: 'punchtape_z22_title', subtitle: 'punchtape_z22_description', schema: '[OOO.OO]'),
+  TeletypewriterCodebook.TTS: CodebookConfig(title: 'punchtape_tts_title', subtitle: 'punchtape_tts_description', schema: '[OOO.OOO]'),
   TeletypewriterCodebook.ILLIAC:
-      CodebookConfig(title: 'punchtape_illiac_title', subtitle: 'punchtape_illiac_description'),
-  TeletypewriterCodebook.ALGOL: CodebookConfig(title: 'punchtape_algol_title', subtitle: 'punchtape_algol_description'),
+      CodebookConfig(title: 'punchtape_illiac_title', subtitle: 'punchtape_illiac_description', schema: '[OOO.OO]'),
+  TeletypewriterCodebook.ALGOL: CodebookConfig(title: 'punchtape_algol_title', subtitle: 'punchtape_algol_description', schema: '[OOO.OO]'),
 };
 
 const Map<TeletypewriterCodebook, PunchtapeConfig> PUNCHTAPE_DEFINITION = {
@@ -254,42 +256,42 @@ const Map<TeletypewriterCodebook, int> BINARY_LENGTH = {
   TeletypewriterCodebook.ALGOL: 5,
 };
 
-Map<String, int> _AZToBaudot_12345 = {
+const Map<int, String> _Baudot_12345ToAZ = {
 // Original code from US Patent in Bit-Order 12345
-  'A': 1,
-  'B': 12,
-  'C': 13,
-  'D': 15,
-  'E': 2,
-  '\u00C9' /* É */ : 3,
-  'F': 14,
-  'G': 10,
-  'H': 11,
-  'I': 6,
-  'J': 9,
-  'K': 25,
-  'L': 27,
-  'M': 26,
-  'N': 30,
-  'O': 7,
-  'P': 31,
-  'Q': 29,
-  'R': 28,
-  'S': 20,
-  'T': 21,
-  'U': 5,
-  'V': 23,
-  'W': 22,
-  'X': 18,
-  'Y': 4,
-  'Z': 19,
-  'Ṯ': 17,
-  '✲': 24,
-  ' ': 0,
-  ' ': 8,
-  ' ': 16,
+  1  :'A',
+  12 :'B',
+  13 :'C',
+  15 :'D',
+  2 :'E',
+  3 :'\u00C9' /* É */,
+  14: 'F',
+  10: 'G',
+  11: 'H',
+  6 : 'I',
+  9 : 'J',
+  25: 'K',
+  27: 'L',
+  26: 'M',
+  30: 'N',
+  7 : 'O',
+  31: 'P',
+  29: 'Q',
+  28: 'R',
+  20: 'S',
+  21: 'T',
+  5 : 'U',
+  23: 'V',
+  22: 'W',
+  18: 'X',
+  4 : 'Y',
+  19: 'Z',
+  17: 'Ṯ',
+  24: '✲',
+  0 : ' ',
+  8 : ' ',
+  16: ' ',
 };
-final Map<int, String> _Baudot_12345ToAZ = switchMapKeyValue(_AZToBaudot_12345);
+final Map<String, int> _AZToBaudot_12345  = switchMapKeyValue(_Baudot_12345ToAZ);
 
 // original Baudot according to US Patent has no numbers
 

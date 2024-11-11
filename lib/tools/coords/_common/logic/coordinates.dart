@@ -17,6 +17,7 @@ import 'package:gc_wizard/tools/coords/_common/formats/mgrs_utm/logic/mgrs.dart'
 import 'package:gc_wizard/tools/coords/_common/formats/natural_area_code/logic/natural_area_code.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/openlocationcode/logic/open_location_code.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/quadtree/logic/quadtree.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_10y_waldmeister/logic/reverse_wherigo_10y_waldmeister.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_day1976/logic/reverse_wherigo_day1976.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_waldmeister/logic/reverse_wherigo_waldmeister.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/s2cells_hilbert/logic/s2cells_hilbert.dart';
@@ -146,6 +147,8 @@ BaseCoordinate buildCoordinate(CoordinateFormat format, LatLng coords, [Ellipsoi
       return ReverseWherigoWaldmeisterCoordinate.fromLatLon(coords);
     case CoordinateFormatKey.REVERSE_WIG_DAY1976:
       return ReverseWherigoDay1976Coordinate.fromLatLon(coords);
+    case CoordinateFormatKey.REVERSE_WIG_10Y_WALDMEISTER:
+      return ReverseWherigo10YWaldmeisterCoordinate.fromLatLon(coords);
     case CoordinateFormatKey.MAPCODE:
       return MapCode.fromLatLon(coords, format.subtype!);
     case CoordinateFormatKey.BOSCH:

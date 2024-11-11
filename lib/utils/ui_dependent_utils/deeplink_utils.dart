@@ -12,3 +12,9 @@ String deepLinkURL(GCWTool tool, {String? fallbackPath}) {
           ? tool.deeplinkAlias!.first
           : (fallbackPath ?? deeplinkToolId(tool)));
 }
+
+Uri deepLinkUriWithParameter(GCWTool tool, Map<String, dynamic>? queryParameters, {String? fallbackPath}) {
+  var uriBase = Uri.parse(deepLinkURL(tool, fallbackPath: fallbackPath));
+  var uriQuery = Uri.https(uriBase.host, uriBase.fragment, queryParameters);
+  return Uri.parse(uriBase.toString() + '?' + uriQuery.query);
+}

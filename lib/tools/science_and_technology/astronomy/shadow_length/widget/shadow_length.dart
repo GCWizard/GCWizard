@@ -26,7 +26,7 @@ class ShadowLength extends StatefulWidget {
 }
 
 class _ShadowLengthState extends State<ShadowLength> {
-  var _currentDateTime = DateTimeTimezone(datetime: DateTime.now(), timezone: DateTime.now().timeZoneOffset);
+  var _currentDateTime = DateTimeTZ.now();
   var _currentInputCoords = defaultBaseCoordinate;
   var _currentHeight = 0.0;
 

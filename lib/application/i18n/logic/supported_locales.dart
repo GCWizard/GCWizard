@@ -22,7 +22,7 @@ final Map<Locale, Map<String, Object>> SUPPORTED_LOCALES = {
 
 const Locale DEFAULT_LOCALE = Locale('en');
 
-final SUPPORTED_HELPLOCALES = ['en', 'de'];
+final SUPPORTED_HELPLOCALES = ['en', 'de', 'nl'];
 
 ///
 ///  Control if locale is supported

@@ -19,7 +19,6 @@ WherigoAnswer _analyzeAndExtractOnGetInputSectionData(List<String> onGetInputLin
     if (onGetInputLines[i].endsWith(':OnGetInput(input)')) {
       resultInputFunction = onGetInputLines[i].replaceAll('function ', '').replaceAll(':OnGetInput(input)', '').trim();
     }
-
     if (onGetInputLines[i].trim().endsWith('= tonumber(input)')) {
       _answerVariable = onGetInputLines[i].trim().replaceAll(' = tonumber(input)', '');
     } else if (onGetInputLines[i].trim().endsWith(' = input')) {
@@ -45,6 +44,7 @@ WherigoAnswer _analyzeAndExtractOnGetInputSectionData(List<String> onGetInputLin
       // found Answer
       _answerActions = [];
       _answerAnswerList = _getAnswers(i, onGetInputLines[i], onGetInputLines[i - 1], _cartridgeVariables);
+
       for (var answer in _answerAnswerList) {
         if (answer != 'NIL') {
           resultAnswerData.add(WherigoAnswerData(
@@ -144,8 +144,8 @@ List<String> _getAnswers(int i, String line, String lineBefore, List<WherigoVari
         //.replaceAll(_answerVariable, '')
         .replaceAll(' ', '')
         .replaceAll('"', '')
-        .replaceAll('and', ' && ')
-        .replaceAll('or', ' || ');
+        .replaceAll('and', ' && ');
+        //.replaceAll('or', ' || ');
     if (answers.length > _answerVariable.length) {
       answers = answers.replaceAll(_answerVariable, '');
     }
@@ -186,6 +186,7 @@ List<String> _getAnswers(int i, String line, String lineBefore, List<WherigoVari
           '\x01' +
           breakUrwigoHash(hashvalue, HASH.NUMERIC).toString());
     });
+
     return results;
   } else if (line.trim().startsWith('if Wherigo.NoCaseEquals') ||
       line.trim().startsWith('elseif Wherigo.NoCaseEquals')) {
@@ -220,6 +221,7 @@ List<String> _getAnswers(int i, String line, String lineBefore, List<WherigoVari
     if (line.isEmpty) {
       return ['NIL'];
     }
+
     return [line];
   }
   return [];

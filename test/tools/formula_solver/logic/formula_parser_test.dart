@@ -95,6 +95,7 @@ void main() {
       {'formula' : '\u03a6 * \u03c6 + 1', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3.61803398875', 'state': 'ok'}]}},
       {'formula' : 'A + 1', 'values': {'A': '\u03a6'}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2.61803398875', 'state': 'ok'}]}},
       {'formula' : '5! + 1', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '121', 'state': 'ok'}]}},
+      {'formula' : 'nth(round(11653180/56*0.006,0),2)', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2', 'state': 'ok'}]}},
 
       //Referencing values
       {'formula' : 'F', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '1', 'state': 'ok'}]}},
@@ -303,6 +304,7 @@ void main() {
       {'formula' : 'A B', 'values': [FormulaValue('A', '"ABC"', type: FormulaValueType.FIXED), FormulaValue('B', '\'xyz\'', type: FormulaValueType.FIXED)], 'expectedOutput' : {'state': 'ok', 'output': [{'result': 'ABCxyz', 'state': 'ok'}]}},
       {'formula' : 'A "C" B', 'values': [FormulaValue('A', '"ABC"', type: FormulaValueType.FIXED), FormulaValue('B', '\'xyz\'', type: FormulaValueType.FIXED)], 'expectedOutput' : {'state': 'ok', 'output': [{'result': 'ABCCxyz', 'state': 'ok'}]}},
       {'formula' : 'A C B', 'values': [FormulaValue('A', '"ABC"', type: FormulaValueType.FIXED), FormulaValue('B', '\'xyz\'', type: FormulaValueType.FIXED)], 'expectedOutput' : {'state': 'error', 'output': [{'result': '"ABC" C \'xyz\'', 'state': 'error'}]}},
+      {'formula' : 'D', 'values': [FormulaValue('D', '"A\nB"', type: FormulaValueType.FIXED)], 'expectedOutput' : {'state': 'ok', 'output': [{'result': 'A B', 'state': 'ok'}]}},
 
       {'formula' : 'bww(\'\')', 'values': <FormulaValue>[], 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0', 'state': 'ok'}]}},
       {'formula' : 'bww("")', 'values': <FormulaValue>[], 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0', 'state': 'ok'}]}},

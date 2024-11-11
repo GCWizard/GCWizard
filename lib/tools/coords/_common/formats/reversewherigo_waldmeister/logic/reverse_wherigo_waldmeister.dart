@@ -1,16 +1,16 @@
+import 'dart:math';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
-import 'dart:math';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dec/logic/dec.dart';
 import 'package:latlong2/latlong.dart';
 
-const reverseWhereigoWaldmeisterKey = 'coords_reversewhereigo_waldmeister'; /* typo known. DO NOT change!*/
+const reverseWherigoWaldmeisterKey = 'coords_reversewhereigo_waldmeister'; /* typo known. DO NOT change!*/
 
 final ReverseWherigoWaldmeisterFormatDefinition = CoordinateFormatDefinition(
     CoordinateFormatKey.REVERSE_WIG_WALDMEISTER,
-    reverseWhereigoWaldmeisterKey,
-    reverseWhereigoWaldmeisterKey,
+    reverseWherigoWaldmeisterKey,
+    reverseWherigoWaldmeisterKey,
     ReverseWherigoWaldmeisterCoordinate.parse,
     ReverseWherigoWaldmeisterCoordinate(0, 0, 0));
 
@@ -52,7 +52,7 @@ LatLng? _reverseWIGWaldmeisterToLatLon(ReverseWherigoWaldmeisterCoordinate waldm
   var b = waldmeister.b;
   var c = waldmeister.c;
 
-  if (!_checkSumTest(waldmeister)) return null;
+  if (!checkSumTest(waldmeister)) return null;
 
   int _latSign = 1;
   int _lonSign = 1;
@@ -356,11 +356,11 @@ ReverseWherigoWaldmeisterCoordinate? _parseReverseWherigoWaldmeister(String inpu
 
   var waldmeister = ReverseWherigoWaldmeisterCoordinate(a, b, c);
 
-  if (!_checkSumTest(waldmeister)) return null;
+  if (!checkSumTest(waldmeister)) return null;
   return waldmeister;
 }
 
-bool _checkSumTest(ReverseWherigoWaldmeisterCoordinate waldmeister) {
+bool checkSumTest(ReverseWherigoWaldmeisterCoordinate waldmeister) {
   var b3Calc = __b3CheckSum(waldmeister).toInt();
   var c3Calc = __c3CheckSum(waldmeister).toInt();
 

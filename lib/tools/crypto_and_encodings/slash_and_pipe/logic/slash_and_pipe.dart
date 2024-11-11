@@ -57,7 +57,6 @@ const Map<String, String> _AZToSlashAndPipeCommon = {
   'X': '||/',
   'Y': '|||\\',
   'Z': '||||',
-  ' ': ' ',
 };
 const Map<String, String> _AZToSlashAndPipeUnderland = {
   'A': '|',
@@ -86,7 +85,6 @@ const Map<String, String> _AZToSlashAndPipeUnderland = {
   'X': '|||\\',
   'Y': '|||/',
   'Z': '||||',
-  ' ': ' ',
 };
 const Map<String, String> _AZToSlashAndPipeCodeOfClaw = {
   // The Code of Claw was the secret code the Gnawers transmitted in Gregor and the Code of Claw.
@@ -118,7 +116,6 @@ const Map<String, String> _AZToSlashAndPipeCodeOfClaw = {
   'Y': '|||\\', // X
   'Z': '|||/', // Y
   'A': '||||', // Z
-  ' ': ' ',
 };
 
 String encryptSlashAndPipe(String input, SLASHANDPIPE_TYPES codetype, Map<String, String>? replaceCharacters) {
@@ -147,5 +144,6 @@ String decryptSlashAndPipe(String input, SLASHANDPIPE_TYPES codetype, Map<String
       .split(RegExp(r'[^|/\\]'))
       .where((character) => SlashAndPipeToAZ[character] != null)
       .map((pattern) => SlashAndPipeToAZ[pattern])
-      .join();
+      .join('');
 }
+

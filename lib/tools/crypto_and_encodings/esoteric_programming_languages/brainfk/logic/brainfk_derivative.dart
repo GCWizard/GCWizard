@@ -127,9 +127,9 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_DETAILEDFK = BrainfkDerivatives(
     pointerShiftLeftInstruction: 'MOVE THE MEMORY POINTER ONE CELL TO THE LEFT',
     increaseValueInstruction: 'INCREMENT THE CELL UNDER THE MEMORY POINTER BY ONE',
     decreaseValueInstruction: 'DECREMENT THE CELL UNDER THE MEMORY POINTER BY ONE',
-    outputInstruction: "PRINT THE CELL UNDER THE MEMORY POINTER' ' 'S VALUE AS AN ASCII CHARACTER",
+    outputInstruction: "PRINT THE CELL UNDER THE MEMORY POINTER'S VALUE AS AN ASCII CHARACTER",
     inputInstruction:
-        "REPLACE THE CELL UNDER THE MEMORY POINTER' ' 'S VALUE WITH THE ASCII CHARACTER CODE OF USER INPUT",
+        "REPLACE THE CELL UNDER THE MEMORY POINTER'S VALUE WITH THE ASCII CHARACTER CODE OF USER INPUT",
     startLoopInstruction: "IF THE CELL UNDER THE MEMORY POINTER'S VALUE IS ZERO INSTEAD OF READING THE NEXT COMMAND IN THE PROGRAM JUMP TO THE CORRESPONDING COMMAND EQUIVALENT TO THE ] COMMAND IN BRAINFUCK",
     endLoopInstruction: "IF THE CELL UNDER THE MEMORY POINTER'S VALUE IS NOT ZERO INSTEAD OF READING THE NEXT COMMAND IN THE PROGRAM JUMP TO THE CORRESPONDING COMMAND EQUIVALENT TO THE [ COMMAND IN BRAINFUCK",
     outputCommandDelimiter: '\n');
@@ -448,7 +448,7 @@ final BrainfkDerivatives BRAINFKDERIVATIVE_HTPF = BrainfkDerivatives(
     pointerShiftLeftInstruction: '<',
     increaseValueInstruction: '=',
     decreaseValueInstruction: '/',
-    outputInstruction: '',
+    outputInstruction: '"',
     inputInstruction: '#',
     startLoopInstruction: '&',
     endLoopInstruction: ';',

@@ -225,6 +225,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/mexican_army_cipher_wheel/w
 import 'package:gc_wizard/tools/crypto_and_encodings/morbit/widget/morbit.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/morse/widget/morse.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/navajo/widget/navajo.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/navajo/widget/navajo_list.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/numeral_words_converter/widget/numeral_words_converter.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/numeral_words_identify_languages/widget/numeral_words_identify_languages.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/numeral_words_lists/widget/numeral_words_lists.dart';
@@ -284,8 +285,21 @@ import 'package:gc_wizard/tools/games/number_pyramid/widget/number_pyramid_solve
 import 'package:gc_wizard/tools/games/scrabble/scrabble/widget/scrabble.dart';
 import 'package:gc_wizard/tools/games/scrabble/scrabble_overview/widget/scrabble_overview.dart';
 import 'package:gc_wizard/tools/games/sudoku/sudoku_solver/widget/sudoku_solver.dart';
+import 'package:gc_wizard/tools/games/tower_of_hanoi/widget/tower_of_hanoi.dart';
 import 'package:gc_wizard/tools/games/word_search/widget/word_search.dart';
 import 'package:gc_wizard/tools/general_tools/grid_generator/grid/widget/grid.dart';
+import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_cards.dart';
+import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_coin.dart';
+import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_color.dart';
+import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_coords.dart';
+import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_dice.dart';
+import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_double.dart';
+import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_integer.dart';
+import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_letter.dart';
+import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_lists/randomizer_lists.dart';
+import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_password.dart';
+import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_rockpaperscissors.dart';
+import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_selection.dart';
 import 'package:gc_wizard/tools/images_and_files/animated_image/widget/animated_image.dart';
 import 'package:gc_wizard/tools/images_and_files/animated_image_morse_code/widget/animated_image_morse_code.dart';
 import 'package:gc_wizard/tools/images_and_files/binary2image/widget/binary2image.dart';
@@ -300,7 +314,7 @@ import 'package:gc_wizard/tools/images_and_files/magic_eye_solver/widget/magic_e
 import 'package:gc_wizard/tools/images_and_files/qr_code/widget/qr_code.dart';
 import 'package:gc_wizard/tools/images_and_files/stegano/widget/stegano.dart';
 import 'package:gc_wizard/tools/images_and_files/visual_cryptography/widget/visual_cryptography.dart';
-import 'package:gc_wizard/tools/miscellaneous/gcwizardscript/widget/gcwizard_script.dart';
+import 'package:gc_wizard/tools/general_tools/gcwizardscript/widget/gcwizard_script.dart';
 import 'package:gc_wizard/tools/science_and_technology/alcohol_mass/widget/alcohol_mass.dart';
 import 'package:gc_wizard/tools/science_and_technology/alphabet_number_systems/hebrew/widget/hebrew_number_system.dart';
 import 'package:gc_wizard/tools/science_and_technology/alphabet_number_systems/milesian/widget/milesian_number_system.dart';
@@ -354,9 +368,9 @@ import 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar/wi
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar_week/widget/calendar_week.dart';
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/day_calculator/widget/day_calculator.dart';
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/day_of_the_year/widget/day_of_the_year.dart';
-import 'package:gc_wizard/tools/science_and_technology/date_and_time/excel_time/widget/excel_time.dart';
+import 'package:gc_wizard/tools/science_and_technology/date_and_time/epoch_time/excel_time/widget/excel_time.dart';
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/time_calculator/widget/time_calculator.dart';
-import 'package:gc_wizard/tools/science_and_technology/date_and_time/unix_time/widget/unix_time.dart';
+import 'package:gc_wizard/tools/science_and_technology/date_and_time/epoch_time/unix_time/widget/unix_time.dart';
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/weekday/widget/weekday.dart';
 import 'package:gc_wizard/tools/science_and_technology/decabit/widget/decabit.dart';
 import 'package:gc_wizard/tools/science_and_technology/divisor/widget/divisor.dart';
@@ -542,7 +556,7 @@ void initializeRegistry(BuildContext context) {
     ], searchKeys: const [
       'amsco',
     ]),
-    GCWTool(tool: const AnimatedImage(), id: 'animated_image', isBeta: true, categories: const [
+    GCWTool(tool: const AnimatedImage(), id: 'animated_image', categories: const [
       ToolCategory.IMAGES_AND_FILES
     ], searchKeys: const [
       'animated_images',
@@ -1027,7 +1041,7 @@ void initializeRegistry(BuildContext context) {
     ], searchKeys: const [
       'illiac',
     ]),
-    GCWTool(tool: const ImagesAndFilesSelection(), id: 'imagesandfiles_selection', isBeta: true, searchKeys: const [
+    GCWTool(tool: const ImagesAndFilesSelection(), id: 'imagesandfiles_selection', searchKeys: const [
       'images',
       'imagesandfilesselection',
     ]),
@@ -1177,6 +1191,18 @@ void initializeRegistry(BuildContext context) {
           sourceUrl:
           'https://web.archive.org/web/20240722205845/https://www.history.navy.mil/research/library/online-reading-room/title-list-alphabetically/n/navajo-code-talker-dictionary.html')
     ]),
+    GCWTool(tool: const NavajoList(), id: 'navajolist', categories: const [
+      ToolCategory.CRYPTOGRAPHY
+    ], searchKeys: const [
+      'navajo',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Department of Defense',
+          title: 'Navajo Code Talkers\' Dictionary REVISED 15 JUNE 1945',
+          sourceUrl:
+          'https://web.archive.org/web/20240722205845/https://www.history.navy.mil/research/library/online-reading-room/title-list-alphabetically/n/navajo-code-talker-dictionary.html')
+    ]),
     GCWTool(tool: const NonogramSolver(), id: 'nonogramsolver', categories: const [
       ToolCategory.GAMES
     ], searchKeys: const [
@@ -1257,6 +1283,7 @@ void initializeRegistry(BuildContext context) {
       ToolCategory.SCIENCE_AND_TECHNOLOGY
     ], searchKeys: const [
       'postcode',
+      'barcodes',
       'symbol_postcode01247',
       'symbol_postcode8421',
       'binary'
@@ -1334,10 +1361,11 @@ void initializeRegistry(BuildContext context) {
     ], searchKeys: const [
       'projectiles',
     ], licenses: const []),
-    GCWTool(tool: const QrCode(), id: 'qr_code', isBeta: true, categories: const [
+    GCWTool(tool: const QrCode(), id: 'qr_code', categories: const [
       ToolCategory.IMAGES_AND_FILES
     ], searchKeys: const [
       'qrcode',
+      'barcodes',
     ], licenses: const []),
     GCWTool(tool: const QuadraticEquation(), id: 'quadratic_equation', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
@@ -1365,6 +1393,11 @@ void initializeRegistry(BuildContext context) {
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
       'railfence',
+    ]),
+    GCWTool(tool: const RandomizerSelection(), id: 'randomizer_selection', categories: const [
+      ToolCategory.GAMES
+    ], searchKeys: const [
+      'randomizer',
     ]),
     GCWTool(tool: const RC4(), id: 'rc4', categories: const [
       ToolCategory.CRYPTOGRAPHY
@@ -1577,6 +1610,19 @@ void initializeRegistry(BuildContext context) {
         id: 'tomtom_selection',
         categories: const [ToolCategory.CRYPTOGRAPHY],
         searchKeys: const []),
+    GCWTool(tool: const TowerOfHanoi(), id: 'tower_of_hanoi', categories: const [
+      ToolCategory.GAMES
+    ], searchKeys: const [
+      'games',
+      'tower_of_hanoi',
+    ], licenses: [
+    ToolLicenseOnlineArticle(
+      context: context,
+      author: 'Manish Bhojasia',
+      title: 'Tower of Hanoi Program in C#',
+      sourceUrl: 'https://web.archive.org/web/20170504070744/https://www.sanfoundry.com/csharp-program-tower-of-hanoi/',
+      licenseType: ToolLicenseType.FREE_TO_USE)
+    ]),
     GCWTool(tool: const TTS(), id: 'tts', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
     ], searchKeys: const [
@@ -1692,10 +1738,24 @@ void initializeRegistry(BuildContext context) {
     ], licenses: [
       ToolLicenseOnlineArticle(
         context: context,
+        author: 'John W. Pepi, Maynard, MA',
+        title: 'Summer Simmer Index - The NEW SUMMER SIMMER INDEX - A COMFORT INDEX FOR THE NEW MILLENNIUM',
+        sourceUrl:
+        'https://web.archive.org/web/20240910160710/http://summersimmer.com/home.htm',
+      ),
+      ToolLicenseOnlineArticle(
+        context: context,
         author: 'vCalc',
         title: 'Summer Simmer Index',
         sourceUrl:
         'https://web.archive.org/web/20240724192214/https://ncalculators.com/meteorology/summer-simmer-index-calculator.htm',
+      ),
+      ToolLicenseOnlineArticle(
+        context: context,
+        author: 'ncalculators.com',
+        title: 'Summer Simmer Index Calculator',
+        sourceUrl:
+        'https://web.archive.org/web/20240910160327/https://ncalculators.com/meteorology/summer-simmer-index-calculator.htm',
       )
     ]),
     GCWTool(tool: const Windchill(), id: 'windchill', searchKeys: const [
@@ -1715,9 +1775,9 @@ void initializeRegistry(BuildContext context) {
     ], licenses: [
       ToolLicenseOnlineArticle(
           context: context,
-          author: 'de.wikipedia.org and contributors',
-          title: 'Kühlgrenztemperatur',
-          sourceUrl: 'https://de.wikipedia.org/w/index.php?title=K%C3%BChlgrenztemperatur&oldid=246986523',
+          author: 'en.wikipedia.org and contributors',
+          title: 'Wet-bulb globe temperature',
+          sourceUrl: 'https://en.wikipedia.org/w/index.php?title=Wet-bulb_globe_temperature&oldid=1237580210',
           licenseType: ToolLicenseType.CCBYSA4)
     ]),
 
@@ -1837,10 +1897,10 @@ void initializeRegistry(BuildContext context) {
           ),
           ToolLicensePortedCode(
               context: context,
-              author: '@max-mapper',
+              author: '@max-mapper (Github)',
               title: 'equatorial',
               licenseType: ToolLicenseType.GITHUB_DEFAULT,
-              sourceUrl: 'https://github.com/S-Man42/equatorial/tree/f11b2a91be12721d87b108cc495953bc96565fec'),
+              sourceUrl: 'https://web.archive.org/web/20240819162607/https://github.com/max-mapper/equatorial'),
         ]),
 
     //Babylon Numbers Selection **************************************************************************************
@@ -2337,8 +2397,8 @@ void initializeRegistry(BuildContext context) {
           author: 'Jan van der Laan',
           title: 'rijksdriehoek',
           licenseType: ToolLicenseType.MIT,
-          licenseUrl: 'https://github.com/S-Man42/rijksdriehoek/blob/dfea5221b8e3f9f44b6f0102114ab92f36eca5b2/LICENSE',
-          sourceUrl: 'hhttps://github.com/S-Man42/rijksdriehoek/tree/dfea5221b8e3f9f44b6f0102114ab92f36eca5b2',
+          licenseUrl: 'https://github.com/GCWizard/rijksdriehoek/blob/dfea5221b8e3f9f44b6f0102114ab92f36eca5b2/LICENSE',
+          sourceUrl: 'hhttps://github.com/GCWizard/rijksdriehoek/tree/dfea5221b8e3f9f44b6f0102114ab92f36eca5b2',
         ),
         ToolLicenseOnlineArticle(
             context: context,
@@ -2370,8 +2430,8 @@ void initializeRegistry(BuildContext context) {
             title: 'Geo3x3',
             licenseType: ToolLicenseType.CC0_1,
             licenseUrl:
-            'https://github.com/S-Man42/Geo3x3/tree/ca45f4a2c5fcebd806d1dbf615c7a26a8cad1150?tab=License-1-ov-file',
-            sourceUrl: 'https://github.com/S-Man42/Geo3x3/tree/ca45f4a2c5fcebd806d1dbf615c7a26a8cad1150'),
+            'https://github.com/GCWizard/Geo3x3/tree/ca45f4a2c5fcebd806d1dbf615c7a26a8cad1150?tab=License-1-ov-file',
+            sourceUrl: 'https://github.com/GCWizard/Geo3x3/tree/ca45f4a2c5fcebd806d1dbf615c7a26a8cad1150'),
         ToolLicenseOnlineArticle(
             context: context,
             author: '@sa2da',
@@ -2385,8 +2445,8 @@ void initializeRegistry(BuildContext context) {
             title: 'geohex4j',
             licenseType: ToolLicenseType.MIT,
             licenseUrl:
-            'https://github.com/S-Man42/geohex4j/tree/464acda075666e0c2cb868935b334371c7f2eb97?tab=readme-ov-file#license',
-            sourceUrl: 'https://github.com/S-Man42/geohex4j/tree/464acda075666e0c2cb868935b334371c7f2eb97'),
+            'https://github.com/GCWizard/geohex4j/tree/464acda075666e0c2cb868935b334371c7f2eb97?tab=readme-ov-file#license',
+            sourceUrl: 'https://github.com/GCWizard/geohex4j/tree/464acda075666e0c2cb868935b334371c7f2eb97'),
         ToolLicenseOnlineArticle(
           context: context,
           author: 'Ziyad S. Al-Salloum (makaney.net)',
@@ -2401,16 +2461,16 @@ void initializeRegistry(BuildContext context) {
             author: 'Stichting Mapcode Foundation (mapcode.com)',
             title: 'mapcode-js',
             licenseType: ToolLicenseType.APACHE2,
-            licenseUrl: 'https://github.com/S-Man42/mapcode-js/blob/25abcc53f4a15b996810a9d0fd00ff2efd0f2eeb/LICENSE',
-            sourceUrl: 'https://github.com/S-Man42/mapcode-js/tree/25abcc53f4a15b996810a9d0fd00ff2efd0f2eeb'),
+            licenseUrl: 'https://github.com/GCWizard/mapcode-js/blob/25abcc53f4a15b996810a9d0fd00ff2efd0f2eeb/LICENSE',
+            sourceUrl: 'https://github.com/GCWizard/mapcode-js/tree/25abcc53f4a15b996810a9d0fd00ff2efd0f2eeb'),
         ToolLicensePortedCode(
             context: context,
             author: '@Google',
             title: 'Open Location Code',
             licenseType: ToolLicenseType.APACHE2,
             licenseUrl:
-            'https://github.com/S-Man42/open-location-code/blob/dfcebc905b81c3d9c987f7b3ac6e992f1e8710c6/LICENSE',
-            sourceUrl: 'https://github.com/S-Man42/open-location-code/tree/dfcebc905b81c3d9c987f7b3ac6e992f1e8710c6'),
+            'https://github.com/GCWizard/open-location-code/blob/dfcebc905b81c3d9c987f7b3ac6e992f1e8710c6/LICENSE',
+            sourceUrl: 'https://github.com/GCWizard/open-location-code/tree/dfcebc905b81c3d9c987f7b3ac6e992f1e8710c6'),
         ToolLicenseOnlineArticle(
             context: context,
             author: 'OpenStreetMap.org and contributors',
@@ -2439,6 +2499,13 @@ void initializeRegistry(BuildContext context) {
             sourceUrl:
             'https://web.archive.org/web/20121102023141/http://www.moenk.de/index.php?serendipity[subpage]=downloadmanager&level=1&thiscat=4',
             licenseType: ToolLicenseType.PRIVATE_PERMISSION),
+        ToolLicensePortedCode( //TODO: When webarchive save working again: Store links in WebArchive
+            context: context,
+            author: 'Patrick \'PattuX\' Wienhöft (GitHub)',
+            title: 'Auto Reverse Wherigo Solver',
+            sourceUrl: 'https://github.com/PattuX/auto_reverse_wig_solver',
+            licenseType: ToolLicenseType.MIT,
+            licenseUrl: 'https://github.com/PattuX/auto_reverse_wig_solver/blob/master/LICENSE.txt'),
         ToolLicensePortedCode(
             context: context,
             author: 'Google Inc.',
@@ -2450,7 +2517,7 @@ void initializeRegistry(BuildContext context) {
       ],
     ),
     GCWTool(
-        tool: const MapView(),
+        tool: MapView(),
         autoScroll: false,
         suppressToolMargin: true,
         id: 'coords_openmap',
@@ -2470,7 +2537,7 @@ void initializeRegistry(BuildContext context) {
               title: 'GeoFormula and TerpsTest',
               licenseType: ToolLicenseType.APACHE2,
               licenseUrl:
-              'https://github.com/S-Man42/GeoFormulas/tree/ac40eb5589883999f830908cd1db45c73e1e1267?tab=readme-ov-file#legal-stuff',
+              'https://github.com/GCWizard/GeoFormulas/tree/ac40eb5589883999f830908cd1db45c73e1e1267?tab=readme-ov-file#legal-stuff',
               sourceUrl: 'http://web.archive.org/web/20240812021538/https://github.com/pkohut/GeoFormulas'),
           ToolLicensePortedCode(
               context: context,
@@ -2522,8 +2589,8 @@ void initializeRegistry(BuildContext context) {
               title: 'GPS Averaging',
               licenseType: ToolLicenseType.APACHE2,
               licenseUrl:
-              'https://github.com/S-Man42/GPS-Averaging/blob/260eb5464d6d1b969c3f30bce42c5cf7848aab93/LICENSE.md',
-              sourceUrl: 'https://github.com/S-Man42/GPS-Averaging/tree/260eb5464d6d1b969c3f30bce42c5cf7848aab93')
+              'https://github.com/GCWizard/GPS-Averaging/blob/260eb5464d6d1b969c3f30bce42c5cf7848aab93/LICENSE.md',
+              sourceUrl: 'https://github.com/GCWizard/GPS-Averaging/tree/260eb5464d6d1b969c3f30bce42c5cf7848aab93')
         ]),
     GCWTool(
         tool: const CenterTwoPoints(),
@@ -2865,7 +2932,15 @@ void initializeRegistry(BuildContext context) {
     GCWTool(tool: const CalendarWeek(), id: 'dates_calendarweek', searchKeys: const [
       'dates',
       'dates_calendarweek',
-    ], licenses: const []),
+    ], licenses: [
+      ToolLicensePortedCode(context: context,
+        author: '@Samurai8 (StackOverflow)',
+        title: 'Answer: Week number in US format',
+        sourceUrl: 'https://web.archive.org/web/20241004130845/https://stackoverflow.com/questions/34369722/week-number-in-us-format/34373514#34373514',
+        licenseType: ToolLicenseType.CCBYSA3,
+        licenseUrl: 'https://web.archive.org/web/20241004043710/https://creativecommons.org/licenses/by-sa/3.0/'
+      )
+    ]),
 
     GCWTool(tool: const DayOfTheYear(), id: 'dates_day_of_the_year', searchKeys: const [
       'dates',
@@ -4553,7 +4628,7 @@ void initializeRegistry(BuildContext context) {
         searchKeys: const []),
 
     //PeriodicTableSelection ***************************************************************************************
-    GCWTool(tool: const PeriodicTable(), id: 'periodictable', searchKeys: const [], licenses: const []),
+    GCWTool(tool: const PeriodicTable(), id: 'periodictable', searchKeys: const [], licenses: [stl._toolLicensePSEWiki]),
     GCWTool(
         tool: const PeriodicTableDataView(
           atomicNumber: 1,
@@ -4561,7 +4636,7 @@ void initializeRegistry(BuildContext context) {
         id: 'periodictable_dataview',
         searchKeys: const [
           'periodictabledataview',
-        ]),
+        ], licenses: [stl._toolLicensePSEWiki]),
     GCWTool(tool: const AtomicNumbersToText(), id: 'atomicnumberstotext', searchKeys: const [
       'periodictable_atomicnumbers',
     ]),
@@ -4620,6 +4695,19 @@ void initializeRegistry(BuildContext context) {
       'primes',
       'primes_integerfactorization',
     ]),
+
+    //RandomizerSelection ********************************************************************************************
+    GCWTool(tool: const RandomizerCoin(), id: 'randomizer_coin', searchKeys: const []),
+    GCWTool(tool: const RandomizerDice(), id: 'randomizer_dice', searchKeys: const []),
+    GCWTool(tool: const RandomizerCards(), id: 'randomizer_cards', searchKeys: const []),
+    GCWTool(tool: const RandomizerRockPaperScissors(), id: 'randomizer_rockpaperscissors', searchKeys: const []),
+    GCWTool(tool: const RandomizerPassword(), id: 'randomizer_password', searchKeys: const []),
+    GCWTool(tool: const RandomizerInteger(), id: 'randomizer_integer', searchKeys: const []),
+    GCWTool(tool: const RandomizerDouble(), id: 'randomizer_double', searchKeys: const []),
+    GCWTool(tool: const RandomizerLetter(), id: 'randomizer_letter', searchKeys: const []),
+    GCWTool(tool: const RandomizerCoordinates(), id: 'randomizer_coords', searchKeys: const []),
+    GCWTool(tool: const RandomizerColor(), id: 'randomizer_color', searchKeys: const []),
+    GCWTool(tool: const RandomizerLists(), id: 'randomizer_lists', searchKeys: const []),
 
     //ResistorSelection **********************************************************************************************
     GCWTool(tool: const ResistorColorCodeCalculator(), id: 'resistor_colorcodecalculator', searchKeys: const [
@@ -5441,31 +5529,48 @@ void initializeRegistry(BuildContext context) {
     GCWSymbolTableTool(symbolKey: 'clocks_3', symbolSearchStrings: const [
       'symbol_clocks',
     ], licenses: const []),
+    GCWSymbolTableTool(symbolKey: 'codescript', symbolSearchStrings: const [
+      'symbol_codescript',
+    ], licenses: [
+      ToolLicenseImage(
+        context: context,
+        author: 'Massimo Monagheddu',
+        title: 'Code Script',
+        sourceUrl: 'https://web.archive.org/web/20241002202157/https://www.omniglot.com/conscripts/codescript.htm',
+        licenseUseType: ToolLicenseUseType.COPY,
+        licenseType: ToolLicenseType.PRIVATE_PERMISSION,
+        privatePermission: ToolLicensePrivatePermission(
+            context: context,
+            medium: 'e-mail',
+            permissionYear: 2024,
+            permissionMonth: 7,
+            permissionDay: 31,
+            permissionAuthor: 'Simon Ager (Omniglot)'
+        ),)
+    ]),
     GCWSymbolTableTool(symbolKey: 'color_add', symbolSearchStrings: const [
       'color',
       'symbol_color_add',
-    ], licenses: const []),
+    ], licenses: [ToolLicenseImage(
+        context: context,
+        author: 'ColorADD.net',
+        title: 'ColorADD - The Color Alphabet',
+        privatePermission: ToolLicensePrivatePermission(
+            medium: 'e-mail',
+            permissionYear: 2024,
+            permissionMonth: 8,
+            permissionDay: 20,
+            context: context,
+            permissionAuthor: 'Silvia Couto'
+        ),
+        sourceUrl:
+        'https://web.archive.org/web/20240629170653/https://www.coloradd.net/en/coloradd-code/',
+        licenseType: ToolLicenseType.NON_COMMERCIAL,
+        licenseUseType: ToolLicenseUseType.COPY)]),
     GCWSymbolTableTool(symbolKey: 'color_code', symbolSearchStrings: const [
       'color',
       'symbol_color_code',
-    ], licenses: [
-      ToolLicenseImage(
-          context: context,
-          author: 'ColorADD.net',
-          title: 'ColorADD - The Color Alphabet',
-          privatePermission: ToolLicensePrivatePermission(
-              medium: 'e-mail',
-              permissionYear: 2024,
-              permissionMonth: 8,
-              permissionDay: 20,
-              context: context,
-              permissionAuthor: 'Silvia Couto'
-          ),
-          sourceUrl:
-          'https://web.archive.org/web/20240629170653/https://www.coloradd.net/en/coloradd-code/',
-          licenseType: ToolLicenseType.NON_COMMERCIAL,
-          licenseUseType: ToolLicenseUseType.COPY)
-    ]),
+    ], licenses: const []),
     GCWSymbolTableTool(symbolKey: 'color_honey', symbolSearchStrings: const [
       'color',
       'symbol_color_honey',
@@ -5532,18 +5637,6 @@ void initializeRegistry(BuildContext context) {
           sourceUrl: 'https://en.wikipedia.org/w/index.php?title=Cooke_and_Wheatstone_telegraph&oldid=1232265572',
           licenseType: ToolLicenseType.CCBYSA4)
     ]),
-    GCWSymbolTableTool(symbolKey: 'cosmic', symbolSearchStrings: const [
-      'symbol_cosmic',
-    ], licenses: [
-      ToolLicenseFont(
-          context: context,
-          author: 'Pixel Sagas',
-          title: 'Modern Cybertronic',
-          sourceUrl:
-          'https://web.archive.org/web/20240403144459/https://www.pixelsagas.com/?download=modern-cybertronic',
-          licenseType: ToolLicenseType.FREE_TO_USE,
-          licenseUrl: 'https://web.archive.org/web/20240728140247/https://www.pixelsagas.com/?p=55285#comment-92401')
-    ]),
     GCWSymbolTableTool(symbolKey: 'country_flags', symbolSearchStrings: const [
       'countries',
       'symbol_flags',
@@ -5577,6 +5670,18 @@ void initializeRegistry(BuildContext context) {
           sourceUrl:
           'https://web.archive.org/web/20221213100809/https://www.deviantart.com/magnusarania/art/Crystallic-Alphabet-457870324',
           licenseType: ToolLicenseType.FREE_TO_USE)
+    ]),
+	GCWSymbolTableTool(symbolKey: 'cybertronic', symbolSearchStrings: const [
+      'symbol_cybertronic',
+    ], licenses: [
+      ToolLicenseFont(
+          context: context,
+          author: 'Pixel Sagas',
+          title: 'Modern Cybertronic',
+          sourceUrl:
+          'https://web.archive.org/web/20240403144459/https://www.pixelsagas.com/?download=modern-cybertronic',
+          licenseType: ToolLicenseType.FREE_TO_USE,
+          licenseUrl: 'https://web.archive.org/web/20240728140247/https://www.pixelsagas.com/?p=55285#comment-92401')
     ]),
     GCWSymbolTableTool(symbolKey: 'cyrillic', symbolSearchStrings: const [
       'symbol_cyrillic',
@@ -6595,6 +6700,23 @@ void initializeRegistry(BuildContext context) {
           sourceUrl: 'https://fontmeme.com/fonts/pigpen-cipher-font/',
           licenseType: ToolLicenseType.FREE_TO_USE),
     ]),
+    GCWSymbolTableTool(symbolKey: 'leitz_orgacolor', symbolSearchStrings: const [
+      'symbol_leitz_orgacolor',
+      'barcodes',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Leitz',
+          title: 'Buchstabensignale',
+          sourceUrl: 'https://www.bueromarkt-ag.de/buchstabensignale.html',
+          licenseType: ToolLicenseType.FREE_TO_USE),
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Leitz',
+          title: 'Ziffernsignale',
+          sourceUrl: 'https://www.bueromarkt-ag.de/buchstabensignale,b-ziffernsignale.html',
+          licenseType: ToolLicenseType.FREE_TO_USE),
+    ]),
     GCWSymbolTableTool(symbolKey: 'linear_b', symbolSearchStrings: const [
       'symbol_linear_b',
     ], licenses: [
@@ -6603,7 +6725,7 @@ void initializeRegistry(BuildContext context) {
           author: 'Unknown',
           title: 'Noto Sans Linear B',
           sourceUrl: 'https://fonts.google.com/noto/specimen/Noto+Sans+Linear+B',
-          licenseType: ToolLicenseType.SIL_OFL11)
+          licenseType: ToolLicenseType.OFL11)
     ]),
     GCWSymbolTableTool(symbolKey: 'lorm', symbolSearchStrings: const [
       'symbol_signlanguage',
@@ -7366,6 +7488,13 @@ void initializeRegistry(BuildContext context) {
           title: 'Romulan',
           sourceUrl: 'https://web.archive.org/web/20170401035807/https://fonts2u.com/romulan.font',
           licenseType: ToolLicenseType.NON_COMMERCIAL),
+    ]),
+    GCWSymbolTableTool(symbolKey: 'runes', symbolSearchStrings: const [
+      'symbol_runes',
+      'symbol_futhark',
+      'symbol_futhorc'
+    ], licenses: [
+      stl._toolLicenseMyGeoToolsCodeTabellen,
     ]),
     GCWSymbolTableTool(symbolKey: 'sanluca', symbolSearchStrings: const [
       'symbol_sanluca',

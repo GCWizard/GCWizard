@@ -3,15 +3,15 @@
 part of 'package:gc_wizard/tools/coords/_common/formats/s2cells_hilbert/logic/s2cells_hilbert.dart';
 
 class _S2 {
-  static const double M_PI = pi;
+  //static const double M_PI = pi;
   static const double M_1_PI = 1.0 / pi;
   static const double M_PI_2 = pi / 2.0;
   static const double M_PI_4 = pi / 4.0;
   /** Inverse of the root of 2. */
-  static final double M_SQRT1_2 = 1 / sqrt(2);
+  //static final double M_SQRT1_2 = 1 / sqrt(2);
 
-  static final double M_SQRT2 = sqrt(2);
-  static const double M_E = e;
+  //static final double M_SQRT2 = sqrt(2);
+  //static const double M_E = e;
 
   /** The smallest floating-point value {@code x} such that {@code (1 + x != 1)}. */
   // static final double DBL_EPSILON;

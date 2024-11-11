@@ -21,8 +21,8 @@ class ApparentTemperatureSelection extends GCWSelection {
         className(const Humidex()),
         className(const SummerSimmerIndex()),
         className(const Windchill()),
-        className(const WetBulbTemperature())
-      ].contains(className(element.tool));
+        className(const WetBulbTemperature()),
+       ].contains(className(element.tool));
     }).toList();
 
     return GCWToolList(toolList: _toolList);

@@ -215,6 +215,8 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
               break;
           }
 
+          firstFormulaResult = firstFormulaResult.replaceAll(RegExp(r'\n'), ' ');
+
           formulaReferences.putIfAbsent('{${index + 1}}',
               () => RECURSIVE_FORMULA_REPLACEMENT_START + firstFormulaResult + RECURSIVE_FORMULA_REPLACEMENT_END);
           if (formula.name.isNotEmpty) {

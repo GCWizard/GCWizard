@@ -4,6 +4,8 @@ import 'dart:isolate';
 import 'dart:math';
 
 import 'package:file_picker/file_picker.dart' as filePicker;
+import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
+import 'package:image_picker/image_picker.dart' as imagePicker;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,16 +19,15 @@ import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:http/http.dart' as http;
 
-// Not supported by file picker plugin
-const _UNSUPPORTED_FILEPICKERPLUGIN_TYPES = [FileType.GPX, FileType.GCW];
 final SUPPORTED_IMAGE_TYPES = fileTypesByFileClass(FileClass.IMAGE);
+
+enum OpenFileType {FILE, URL, GALLERY, CAMERA}
 
 class GCWOpenFile extends StatefulWidget {
   final void Function(GCWFile?) onLoaded;
@@ -35,6 +36,7 @@ class GCWOpenFile extends StatefulWidget {
   final String? title;
   final GCWFile? file;
   final bool suppressHeader;
+  final bool suppressGallery;
 
   const GCWOpenFile(
       {Key? key,
@@ -43,7 +45,9 @@ class GCWOpenFile extends StatefulWidget {
       this.title,
       this.isDialog = false,
       this.file,
-      this.suppressHeader = false})
+      this.suppressHeader = false,
+      this.suppressGallery = true}
+      )
       : super(key: key);
 
   @override
@@ -52,10 +56,10 @@ class GCWOpenFile extends StatefulWidget {
 
 class _GCWOpenFileState extends State<GCWOpenFile> {
   late TextEditingController _urlController;
+  OpenFileType _currentMode = OpenFileType.FILE;
   String? _currentUrl;
   Uri? _currentUri;
 
-  var _currentMode = GCWSwitchPosition.left;
   var _currentExpanded = true;
 
   GCWFile? _loadedFile;
@@ -70,28 +74,47 @@ class _GCWOpenFileState extends State<GCWOpenFile> {
   @override
   void dispose() {
     _urlController.dispose();
-
     super.dispose();
   }
 
-  GCWButton _buildOpenFromDevice() {
-    return GCWButton(
-      text: i18n(context, 'common_loadfile_open'),
-      onPressed: () {
-        _currentExpanded = true;
-        openFileExplorer(allowedFileTypes: widget.supportedFileTypes).then((GCWFile? file) {
-          if (file != null) {
-            setState(() {
-              _loadedFile = file;
-              _currentExpanded = false;
-            });
-            widget.onLoaded(file);
-          } else {
-            showSnackBar(i18n(context, 'common_loadfile_exception_nofile'), context);
-          }
+  void _buildOpenFromDevice() {
+    // todo: open only the filebrowser in android
+    openFileExplorer(allowedFileTypes: widget.supportedFileTypes)
+        .then((GCWFile? file) {
+      if (file != null) {
+        setState(() {
+          _loadedFile = file;
+          _currentExpanded = false;
         });
-      },
-    );
+        widget.onLoaded(file);
+      } else {
+        showSnackBar(
+            i18n(context, 'common_loadfile_exception_nofile'), context);
+      }
+    });
+  }
+
+  void _buildOpenFromGallery() {
+    final imagePicker.ImagePicker picker = imagePicker.ImagePicker();
+    picker
+        .pickImage(source: imagePicker.ImageSource.gallery)
+        .then((imagePicker.XFile? pickedFile) {
+      if (pickedFile != null) {
+        pickedFile.readAsBytes().then((Uint8List bytes) {
+          setState(() {
+            _loadedFile = GCWFile(
+              name: pickedFile.name,
+              path: pickedFile.path,
+              bytes: bytes,
+            );
+          });
+          widget.onLoaded(_loadedFile);
+        });
+      } else {
+        showSnackBar(
+            i18n(context, 'common_loadfile_exception_nofile'), context);
+      }
+    });
   }
 
   Widget _buildDownloadButton() {
@@ -145,7 +168,9 @@ class _GCWOpenFileState extends State<GCWOpenFile> {
         controller: _urlController,
         filled: widget.isDialog,
         hintText: i18n(context, 'common_loadfile_openfrom_url_address'),
-        hintColor: widget.isDialog ? const Color.fromRGBO(150, 150, 150, 1.0) : themeColors().textFieldHintText(),
+        hintColor: widget.isDialog
+            ? const Color.fromRGBO(150, 150, 150, 1.0)
+            : themeColors().textFieldHintText(),
         onChanged: (String value) {
           if (value.trim().isEmpty) {
             _currentUrl = null;
@@ -198,24 +223,45 @@ class _GCWOpenFileState extends State<GCWOpenFile> {
   Widget build(BuildContext context) {
     if (_loadedFile == null && widget.file != null) _loadedFile = widget.file;
 
-    var content = Column(
-      children: [
-        GCWTwoOptionsSwitch(
-          value: _currentMode,
-          alternativeColor: widget.isDialog,
-          title: i18n(context, 'common_loadfile_openfrom'),
-          leftValue: i18n(context, 'common_loadfile_openfrom_file'),
-          rightValue: i18n(context, 'common_loadfile_openfrom_url'),
-          onChanged: (value) {
+    var content = Column(children: [
+      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        (widget.suppressGallery || kIsWeb)
+            ? const SizedBox()
+            : GCWIconButton(
+                icon: Icons.photo_library,
+                iconColor: widget.isDialog ? themeColors().dialogText() : themeColors().mainFont(),
+                size: IconButtonSize.LARGE,
+                onPressed: () {
+                  setState(() {
+                    _currentMode = OpenFileType.GALLERY;
+                  });
+                  _buildOpenFromGallery();
+                }),
+        Container(width: widget.suppressGallery ? null : DOUBLE_DEFAULT_MARGIN),
+        GCWIconButton(
+            icon: Icons.folder,
+            iconColor: widget.isDialog ? themeColors().dialogText() : themeColors().mainFont(),
+            size: IconButtonSize.LARGE,
+            onPressed: () {
+              setState(() {
+                _currentMode = OpenFileType.FILE;
+              });
+              _buildOpenFromDevice();
+            }),
+        Container(width: DOUBLE_DEFAULT_MARGIN),
+        kIsWeb ? Container() : GCWIconButton(
+          icon: Icons.public,
+          iconColor: widget.isDialog ? themeColors().dialogText() : themeColors().mainFont(),
+          size: IconButtonSize.LARGE,
+          onPressed: () {
             setState(() {
-              _currentMode = value;
+              _currentMode = OpenFileType.URL;
             });
           },
         ),
-        if (_currentMode == GCWSwitchPosition.left) _buildOpenFromDevice(),
-        if (_currentMode == GCWSwitchPosition.right) _buildOpenFromURL(),
-      ],
-    );
+      ]),
+      if (_currentMode == OpenFileType.URL) _buildOpenFromURL(),
+    ]);
 
     return Column(
       children: [
@@ -233,12 +279,16 @@ class _GCWOpenFileState extends State<GCWOpenFile> {
                 child: content),
         if (_currentExpanded && _loadedFile != null)
           GCWText(
-            text: i18n(context, 'common_loadfile_currentlyloaded') + ': ' + (_loadedFile?.name ?? ''),
+            text: i18n(context, 'common_loadfile_currentlyloaded') +
+                ': ' +
+                (_loadedFile?.name ?? ''),
             style: gcwTextStyle().copyWith(fontSize: fontSizeSmall()),
           ),
         if (!_currentExpanded && _loadedFile != null)
           GCWText(
-            text: i18n(context, 'common_loadfile_loaded') + ': ' + (_loadedFile?.name ?? ''),
+            text: i18n(context, 'common_loadfile_loaded') +
+                ': ' +
+                (_loadedFile?.name ?? ''),
           )
       ],
     );
@@ -375,19 +425,14 @@ Future<Uint8ListText?> _downloadFileAsync(GCWAsyncExecuterParameters? jobData) a
 ///
 /// Returns null if nothing was selected.
 ///
-/// * [allowedFileTypes] specifies a list of file extensions that will be displayed for selection, if empty - files with any extension are displayed. Example: `['jpg', 'jpeg']`
 Future<GCWFile?> openFileExplorer({List<FileType>? allowedFileTypes}) async {
   try {
-    if (allowedFileTypes == null || _hasUnsupportedTypes(allowedFileTypes)) allowedFileTypes = [];
+     var files = (await filePicker.FilePicker.platform.pickFiles(
+            type: filePicker.FileType.any,
+            allowMultiple: false
+         ))?.files;
 
-    var files = (await filePicker.FilePicker.platform.pickFiles(
-            type: allowedFileTypes.isEmpty ? filePicker.FileType.any : filePicker.FileType.custom,
-            allowMultiple: false,
-            allowedExtensions:
-                allowedFileTypes.isEmpty ? null : allowedFileTypes.map((type) => fileExtension(type)).toList()))
-        ?.files;
-
-    if (allowedFileTypes.isNotEmpty && files != null) files = _filterFiles(files, allowedFileTypes);
+    if (allowedFileTypes != null && allowedFileTypes.isNotEmpty && files != null) files = _filterFiles(files, allowedFileTypes);
 
     if (files == null || files.isEmpty) return null;
 
@@ -412,15 +457,4 @@ List<filePicker.PlatformFile> _filterFiles(List<filePicker.PlatformFile> files, 
   var allowedExtensions = fileExtensions(allowedFileTypes);
 
   return files.where((element) => allowedExtensions.contains(element.extension.toString().toLowerCase())).toList();
-}
-
-bool _hasUnsupportedTypes(List<FileType>? allowedExtensions) {
-  if (allowedExtensions == null) return false;
-  if (kIsWeb) return false;
-
-  for (int i = 0; i < allowedExtensions.length; i++) {
-    if (_UNSUPPORTED_FILEPICKERPLUGIN_TYPES.contains(allowedExtensions[i])) return true;
-  }
-
-  return false;
 }

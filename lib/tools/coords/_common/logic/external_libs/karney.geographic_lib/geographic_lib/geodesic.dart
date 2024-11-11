@@ -1488,6 +1488,7 @@ class _InverseData {
 }
 
 class _LengthsReturn {
+  // ignore: unused_field
   late double _s12b, _m12b, _m0, _M12, _M21;
 }
 

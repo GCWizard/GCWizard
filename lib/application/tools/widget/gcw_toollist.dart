@@ -112,7 +112,7 @@ class _GCWToolListState extends State<GCWToolList> {
     );
   }
 
-  Widget _buildDescription(BuildContext context, GCWTool tool) {
+  Widget? _buildDescription(BuildContext context, GCWTool tool) {
     IgnorePointer? descriptionText;
     if (Prefs.getBool(PREFERENCE_TOOLLIST_SHOW_DESCRIPTIONS) &&
         tool.description != null &&
@@ -148,7 +148,7 @@ class _GCWToolListState extends State<GCWToolList> {
             padding: const EdgeInsets.only(left: DEFAULT_DESCRIPTION_MARGIN),
             child: content,
           )
-        : Container();
+        : null;
   }
 }
 

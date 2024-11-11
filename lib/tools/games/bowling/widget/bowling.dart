@@ -183,7 +183,7 @@ class _BowlingState extends State<Bowling> {
       children: <Widget>[
         GCWDefaultOutput(
           child: GCWColumnedMultilineOutput(
-              data: _buildBowlingScoreTable(), hasHeader: true, copyColumn: 4, flexValues: const [2, 1, 1, 1, 2, 3]),
+              data: _buildBowlingScoreTable(), hasHeader: true, flexValues: const [2, 1, 1, 1, 2, 3]),
         ),
         GCWTextDivider(
           text: i18n(context, 'bowling_scoreboard'),

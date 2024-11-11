@@ -1,5 +1,6 @@
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/crypto_and_encodings/navajo/logic/navajo.dart';
+import 'package:gc_wizard/utils/constants.dart';
 
 void main() {
 
@@ -7,7 +8,7 @@ void main() {
   String in2 =  'TWO';
   String in3 =  'BEISPIEL';
   String in4 =  'CACHE AT NORTH FIVE SUX EIGHT EAST ZERO ONE NINE';
-  String o1k =  'COMMANDING GEN . <?>MILLER ATTACK BOMBER PLANE NORTH FOUR FIVE ZERO PILL BOX TWO';
+  String o1k =  'COMMANDING GEN . ' + UNKNOWN_ELEMENT + 'MILLER ATTACK BOMBER PLANE NORTH FOUR FIVE ZERO PILL BOX TWO';
   String o1d =  'COMMANDING GEN. . MILLERATTACKBOMBER PLANENORTHFOURFIVEZEROPILL BOXTWO';
   String o2 =  'TWO';
   String o3 =  'BEISPIEL';

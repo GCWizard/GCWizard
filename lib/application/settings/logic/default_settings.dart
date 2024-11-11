@@ -254,6 +254,12 @@ void _initDefaultSettings(PreferencesInitMode mode, {String reinitSinglePreferen
     refreshMultiDecoderTools();
   }
 
+  if (reinitSinglePreference == PREFERENCE_RANDOMIZER_LISTS ||
+      _reinitAll ||
+      Prefs.get(PREFERENCE_RANDOMIZER_LISTS) == null) {
+    Prefs.setString(PREFERENCE_RANDOMIZER_LISTS, '{}');
+  }
+
   if (reinitSinglePreference == PREFERENCE_SYMBOLTABLES_COUNTCOLUMNS_PORTRAIT ||
       _reinitAll ||
       Prefs.get(PREFERENCE_SYMBOLTABLES_COUNTCOLUMNS_PORTRAIT) == null) {
@@ -281,7 +287,7 @@ void _initDefaultSettings(PreferencesInitMode mode, {String reinitSinglePreferen
   if (reinitSinglePreference == PREFERENCE_TABS_LAST_VIEWED_TAB ||
       _reinitAll ||
       Prefs.get(PREFERENCE_TABS_LAST_VIEWED_TAB) == null) {
-    Prefs.setInt(PREFERENCE_TABS_LAST_VIEWED_TAB, 2);
+    Prefs.setInt(PREFERENCE_TABS_LAST_VIEWED_TAB, _favorites.isEmpty ? 0 : 2);
   }
 
   if (reinitSinglePreference == PREFERENCE_THEME_COLOR || _reinitAll ||

@@ -67,7 +67,8 @@ class _TeletypewriterPunchTapeState extends State<TeletypewriterPunchTape> {
         },
         items: ALL_CODES_CODEBOOK.entries.map((mode) {
           return GCWDropDownMenuItem(
-              value: mode.key, child: i18n(context, mode.value.title), subtitle: i18n(context, mode.value.subtitle));
+              value: mode.key, child: i18n(context, mode.value.title),
+              subtitle: i18n(context, mode.value.subtitle) + (mode.value.schema != null ? '\n' + mode.value.schema! : ''));
         }).toList(),
       ),
       GCWTwoOptionsSwitch(

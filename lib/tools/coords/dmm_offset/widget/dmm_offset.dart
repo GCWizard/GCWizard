@@ -23,6 +23,7 @@ class _DMMOffsetState extends State<DMMOffset> {
 
   var _currentValues = [defaultCoordinate];
   var _currentMapPoints = <GCWMapPoint>[];
+  var _currentMapPolylines = <GCWMapPolyline>[];
 
   var _currentOutputFormat = defaultCoordinateFormat;
   var _currentOutput = <BaseCoordinate>[];
@@ -82,6 +83,7 @@ class _DMMOffsetState extends State<DMMOffset> {
         GCWCoordsOutput(
           outputs: _currentOutput,
           points: _currentMapPoints,
+          polylines: _currentMapPolylines,
         ),
       ],
     );
@@ -107,6 +109,10 @@ class _DMMOffsetState extends State<DMMOffset> {
           color: COLOR_MAP_CALCULATEDPOINT,
           markerText: i18n(context, 'coords_dmmaddintegers_end'),
           coordinateFormat: _currentCoords.format),
+    ];
+
+    _currentMapPolylines = [
+      GCWMapPolyline(points: [_currentMapPoints[0], _currentMapPoints[1]])
     ];
 
     _currentOutput = _currentValues.map((projection) {

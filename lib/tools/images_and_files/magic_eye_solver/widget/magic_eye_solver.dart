@@ -56,6 +56,7 @@ class _MagicEyeSolverState extends State<MagicEyeSolver> {
     return Column(children: [
       GCWOpenFile(
         supportedFileTypes: SUPPORTED_IMAGE_TYPES,
+        suppressGallery: false,
         file: _decodeImage,
         onLoaded: (_file) {
           if (_file == null) {
@@ -127,6 +128,7 @@ class _MagicEyeSolverState extends State<MagicEyeSolver> {
       GCWOpenFile(
         title: i18n(context, 'magic_eye_hidden_image'),
         supportedFileTypes: SUPPORTED_IMAGE_TYPES,
+        suppressGallery: false,
         file: _encodeHiddenDataImage,
         onLoaded: (_file) {
           if (_file == null) {
@@ -172,6 +174,7 @@ class _MagicEyeSolverState extends State<MagicEyeSolver> {
       _currentEncodeTextureType == TextureType.BITMAP
           ? GCWOpenFile(
               supportedFileTypes: SUPPORTED_IMAGE_TYPES,
+              suppressGallery: false,
               file: _encodeTextureImage,
               onLoaded: (_file) {
                 if (_file == null) {

@@ -98,7 +98,7 @@ class NonogramSolverState extends State<NonogramSolver> {
           ? GCWTextDivider(
               text: i18n(context, 'nonogramsolver_setup_generator'),
               trailing: GCWIconButton(
-                iconColor: _currentEncryptStep == _EncryptWizardStep.FILE_OR_MANUAL ? themeColors().inActive() : null,
+                iconColor: _currentEncryptStep == _EncryptWizardStep.FILE_OR_MANUAL ? themeColors().inactive() : null,
                 size: IconButtonSize.SMALL,
                 icon: Icons.undo,
                 onPressed: () {
@@ -489,7 +489,7 @@ class NonogramSolverState extends State<NonogramSolver> {
     var row = Row(
       children: <Widget>[
         GCWIconButton(
-          iconColor: _currentDecryptStep == _DecryptWizardStep.FILE_OR_MANUAL ? themeColors().inActive() : null,
+          iconColor: _currentDecryptStep == _DecryptWizardStep.FILE_OR_MANUAL ? themeColors().inactive() : null,
           size: IconButtonSize.SMALL,
           icon: Icons.undo,
           onPressed: () {

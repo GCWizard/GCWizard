@@ -13,7 +13,7 @@ class _GCWCoordWidgetInfoMapCode extends GCWCoordWidgetWithSubtypeInfo {
   @override
   String get name => 'MapCode';
   @override
-  String get example => 'VJMM4.DTYX';
+  String get example => 'T4Y9X.8MG3 / US-OR X5.CTZ';
 
   @override
   List<_GCWCoordWidgetSubtypeInfo> get subtypes => [

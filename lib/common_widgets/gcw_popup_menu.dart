@@ -142,7 +142,12 @@ Row iconedGCWPopupMenuItem(BuildContext context, IconData icon, String title,
         ),
         onLongPress: () => onLongPress,
       ),
-      Text(i18n(context, title, ifTranslationNotExists: title), style: TextStyle(color: themeColors().dialogText()))
+      Expanded(
+        child: Text(i18n(context, title, ifTranslationNotExists: title),
+          style: TextStyle(color: themeColors().dialogText()),
+          softWrap: true,
+        )
+      )
     ],
   );
 }

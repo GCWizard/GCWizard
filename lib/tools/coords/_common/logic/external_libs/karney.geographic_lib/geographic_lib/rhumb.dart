@@ -135,6 +135,7 @@ class _Rhumb {
    * No output.
    * @hideinitializer
    **********************************************************************/
+  // ignore: unused_field
   static const int _MASK_NONE = 0;
   /**
    * Calculate latitude \e lat2.
@@ -170,6 +171,7 @@ class _Rhumb {
    * Calculate everything.  (LONG_UNROLL is not included in this mask.)
    * @hideinitializer
    **********************************************************************/
+  // ignore: unused_field
   static const int _MASK_ALL = 0x7F80;
 
   /**
@@ -260,6 +262,7 @@ class _Rhumb {
     return RhumbInverseReturn(s12, azi12, S12);
   }
 
+  // ignore: unused_element
   double _DIsometricToRectifying(double psix, double psiy) {
     if (_exact) {
       double latx = _ell.InverseIsometricLatitude(psix), laty = _ell.InverseIsometricLatitude(psiy);
@@ -305,6 +308,7 @@ class _Rhumb {
     return ((sz != 0 ? ei.E3(sz, cz, ei.Delta(sz, cz)) / sz : 1) - ei.k2() * sx * sy) * Dsz;
   }
 
+  // ignore: unused_element
   double _DRectifyingToIsometric(double mux, double muy) {
     double latx = _ell.InverseRectifyingLatitude(mux / _GeoMath.degree()),
         laty = _ell.InverseRectifyingLatitude(muy / _GeoMath.degree());
@@ -458,7 +462,9 @@ class RhumbInverseReturn {
 
 class _RhumbLine {
   late final _Rhumb _rh;
+  // ignore: unused_field
   late final double _lat1, _lon1, _azi12;
+  // ignore: unused_field
   late final double _salp, _calp, _mu1, _psi1, _r1;
 
   late _AuxAngle _phi1, _chi1;

@@ -63,7 +63,7 @@ class _LLPoint {
     return LatLng(radianToDeg(latitude), radianToDeg(longitude));
   }
 
-  String toString() {
-    return latitude.toString() + ", " + longitude.toString();
-  }
+  // String toString() {
+  //   return latitude.toString() + ", " + longitude.toString();
+  // }
 }

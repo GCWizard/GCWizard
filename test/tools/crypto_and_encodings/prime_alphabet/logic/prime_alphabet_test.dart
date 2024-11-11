@@ -8,10 +8,10 @@ void main() {
       {'input' : <int>[], 'expectedOutput' : ''},
 
       {'input' : [2,3,5,89,97,101], 'expectedOutput' : 'ABCXYZ'},
-      // {'input' : [2,null,5,89,97,101], 'expectedOutput' : 'A<?>CXYZ'},
+      // {'input' : [2,null,5,89,97,101], 'expectedOutput' : 'A' + UNKNOWN_ELEMENT + 'CXYZ'},
       {'input' : [2,103,241], 'expectedOutput' : 'AAA'},
 
-      {'input' : [-1,0,1,2,3,4,5,42,89,97,100,101], 'expectedOutput' : '<?><?><?>AB<?>C<?>XY<?>Z'},
+      {'input' : [-1,0,1,2,3,4,5,42,89,97,100,101], 'expectedOutput' : UNKNOWN_ELEMENT + UNKNOWN_ELEMENT + UNKNOWN_ELEMENT + 'AB' + UNKNOWN_ELEMENT + 'C' + UNKNOWN_ELEMENT + 'XY' + UNKNOWN_ELEMENT + 'Z'},
     ];
 
     for (var elem in _inputsToExpected) {
@@ -27,21 +27,21 @@ void main() {
       {'input' : [3,5,89,97,101], 'firstRecognizedPrime': 3, 'expectedOutput' : 'ABWXY'},
       {'input' : [3,5,89,97,101], 'firstRecognizedPrime': 4, 'expectedOutput' : UNKNOWN_ELEMENT + 'AVWX'},
       {'input' : [3,5,89,97,101], 'firstRecognizedPrime': 5, 'expectedOutput' : UNKNOWN_ELEMENT + 'AVWX'},
-      {'input' : [-1,0,1,2,3,4,5,42,89,97,100,101], 'firstRecognizedPrime': 3, 'expectedOutput' : '<?><?><?><?>A<?>B<?>WX<?>Y'},
+      {'input' : [-1,0,1,2,3,4,5,42,89,97,100,101], 'firstRecognizedPrime': 3, 'expectedOutput' : UNKNOWN_ELEMENT + UNKNOWN_ELEMENT + UNKNOWN_ELEMENT + UNKNOWN_ELEMENT + 'A' + UNKNOWN_ELEMENT + 'B' + UNKNOWN_ELEMENT + 'WX' + UNKNOWN_ELEMENT + 'Y'},
 
-      {'input' : [-1,0,1,2,3,4,5,42,89,97,100,101], 'firstRecognizedPrime': 3, 'expectedOutput' : '<?><?><?><?>A<?>B<?>WX<?>Y'},
+      {'input' : [-1,0,1,2,3,4,5,42,89,97,100,101], 'firstRecognizedPrime': 3, 'expectedOutput' : UNKNOWN_ELEMENT + UNKNOWN_ELEMENT + UNKNOWN_ELEMENT + UNKNOWN_ELEMENT + 'A' + UNKNOWN_ELEMENT + 'B' + UNKNOWN_ELEMENT + 'WX' + UNKNOWN_ELEMENT + 'Y'},
 
       {'input' : [103,107,109,229,233,239], 'firstRecognizedPrime': 103, 'expectedOutput' : 'ABCXYZ'},
       {'input' : [103,107,109,229,233,239,839,677,887], 'firstRecognizedPrime': 103, 'expectedOutput' : 'ABCXYZPSX'},
-      {'input' : [3,5,89,97,101,103,107,109,229,233,239], 'firstRecognizedPrime': 103, 'expectedOutput' : '<?><?><?><?><?>ABCXYZ'},
+      {'input' : [3,5,89,97,101,103,107,109,229,233,239], 'firstRecognizedPrime': 103, 'expectedOutput' : UNKNOWN_ELEMENT + UNKNOWN_ELEMENT + UNKNOWN_ELEMENT + UNKNOWN_ELEMENT + UNKNOWN_ELEMENT + 'ABCXYZ'},
 
       {'input' : [103,107,109,229,233,239], 'firstRecognizedPrime': 89, 'expectedOutput' : 'DEFABC'},
       {'input' : [103,107,109,229,233,239,839,677,887], 'firstRecognizedPrime': 89, 'expectedOutput' : 'DEFABCSVA'},
-      {'input' : [3,5,89,97,101,103,107,109,229,233,239], 'firstRecognizedPrime': 89, 'expectedOutput' : '<?><?>ABCDEFABC'},
+      {'input' : [3,5,89,97,101,103,107,109,229,233,239], 'firstRecognizedPrime': 89, 'expectedOutput' : UNKNOWN_ELEMENT + UNKNOWN_ELEMENT + 'ABCDEFABC'},
 
       {'input' : [103,107,109,229,233,239], 'firstRecognizedPrime': 84, 'expectedOutput' : 'DEFABC'},
       {'input' : [103,107,109,229,233,239,839,677,887], 'firstRecognizedPrime': 84, 'expectedOutput' : 'DEFABCSVA'},
-      {'input' : [3,5,89,97,101,103,107,109,229,233,239], 'firstRecognizedPrime': 84, 'expectedOutput' : '<?><?>ABCDEFABC'},
+      {'input' : [3,5,89,97,101,103,107,109,229,233,239], 'firstRecognizedPrime': 84, 'expectedOutput' : UNKNOWN_ELEMENT + UNKNOWN_ELEMENT + 'ABCDEFABC'},
     ];
 
     for (var elem in _inputsToExpected) {

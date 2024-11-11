@@ -50,7 +50,7 @@ class S2CellsHilbertCoordinate extends BaseCoordinateWithSubtypes {
   }
 
   @override
-  LatLng toLatLng() {
+  LatLng? toLatLng() {
     return _s2CellsHilbertToLatLng(this);
   }
 
@@ -93,7 +93,8 @@ S2CellsHilbertCoordinate _latLonToS2CellsHilbert(LatLng coord, CoordinateFormatK
   return S2CellsHilbertCoordinate(token, subtype);
 }
 
-LatLng _s2CellsHilbertToLatLng(S2CellsHilbertCoordinate s2cells) {
+LatLng? _s2CellsHilbertToLatLng(S2CellsHilbertCoordinate s2cells) {
+  if (s2cells.token.isEmpty) return null;
   return _s2cellsToLatLng(s2cells.token, projection: _subtypeToProjection(s2cells.format.subtype!));
 }
 
