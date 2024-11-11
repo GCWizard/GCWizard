@@ -45,30 +45,40 @@ List<Uint8List> _matrix_multiplication(List<Uint8List> keyMatrix, List<Uint8List
   return resultMatrix;
 }
 
-List<List<int>> inverseMatrix(List<List<int>> keyMatrix) {
-  int determinant = determinantMatrix(keyMatrix);
-  int scalar = 0;
-  if (determinant == 0 || keyMatrix.length != 2) {
-    return [[]];
-  }
-  for (int i = 0; i < 26; i++) {
-    int equation = (i * determinant) % 26;
-    if (equation == 1) {
-      scalar = i;
-      break;
-    } else {
-      continue;
-    }
-  }
+List<Uint8List>? inverse3x3Matrix(List<Uint8List> matrix) {
+  var determinant = determinant3x3Matrix(matrix);
+
+  if (determinant == 0) return null; // matrix is not invertible
+
+  double invDet = 1 / determinant;
+
   return [
-    [(keyMatrix[1][1] * scalar) % 26, ((-1 * keyMatrix[0][1] % 26) * scalar) % 26],
-    [((-1 * keyMatrix[1][0] % 26) * scalar) % 26, (keyMatrix[0][0] * scalar) % 26]
+    Uint8List.fromList([
+      (invDet * (matrix[1][1] * matrix[2][2] - matrix[1][2] * matrix[2][1])).toInt() % 26,
+      (invDet * (matrix[0][2] * matrix[2][1] - matrix[0][1] * matrix[2][2])).toInt() % 26,
+      (invDet * (matrix[0][1] * matrix[1][2] - matrix[0][2] * matrix[1][1])).toInt() % 26,
+    ]),
+    Uint8List.fromList([
+      (invDet * (matrix[1][2] * matrix[2][0] - matrix[1][0] * matrix[2][2])).toInt() % 26,
+      (invDet * (matrix[0][0] * matrix[2][2] - matrix[0][2] * matrix[2][0])).toInt() % 26,
+      (invDet * (matrix[0][2] * matrix[1][0] - matrix[0][0] * matrix[1][2])).toInt() % 26,
+    ]),
+    Uint8List.fromList([
+      (invDet * (matrix[1][0] * matrix[2][1] - matrix[1][1] * matrix[2][0])).toInt() % 26,
+      (invDet * (matrix[0][1] * matrix[2][0] - matrix[0][0] * matrix[2][1])).toInt() % 26,
+      (invDet * (matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0])).toInt() % 26,
+    ]),
   ];
 }
 
-int determinantMatrix(List<List<int>> keyMatrix) {
-  int determinant = keyMatrix[0][0] * keyMatrix[1][1] - keyMatrix[0][1] * keyMatrix[1][0];
-  return determinant;
+int determinant3x3Matrix(List<Uint8List> matrix) {
+  return
+      matrix[0][0] * matrix[1][1] * matrix[2][2] +
+      matrix[0][1] * matrix[1][2] * matrix[2][0] +
+      matrix[0][2] * matrix[1][0] * matrix[2][1] -
+      matrix[2][0] * matrix[1][1] * matrix[0][2] -
+      matrix[2][1] * matrix[1][2] * matrix[0][0] -
+      matrix[2][2] * matrix[1][0] * matrix[0][1];
 }
 
 // Function to implement Hill Cipher
