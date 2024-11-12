@@ -32,7 +32,7 @@ Future<MapViewDAO?> importCoordinatesFile(GCWFile file) async {
       if (archive.files.isNotEmpty) {
         var file = archive.first;
         file.decompress();
-        if (getFileExtension(file.name.toLowerCase()) == 'gpx') {
+        if (getFileExtension(file.name.toLowerCase()) == '.gpx') {
           var xml = convertBytesToString(Uint8List.fromList(file.content as List<int>));
           return parseCoordinatesFile(xml);
         }
