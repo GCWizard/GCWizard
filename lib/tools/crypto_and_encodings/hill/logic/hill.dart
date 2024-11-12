@@ -1,7 +1,6 @@
 //ported from https://www.geeksforgeeks.org/hill-cipher/
 
 import 'dart:core';
-import 'dart:core';
 import 'dart:typed_data';
 
 import 'package:gc_wizard/tools/science_and_technology/divisor/logic/divisor.dart';
@@ -12,12 +11,18 @@ import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
 const _fillCharacter = 'X';
-final ALPHABETS = [alphabetAZ, alphabetAZ0];
+final ALPHABETS = [alphabetAZ, alphabetAZ0, alphabetAZ09];
 
 const Alphabet alphabetAZ0 = Alphabet(key: 'alphabet_name_az0', type: AlphabetType.STANDARD, alphabet: {
   'A': '0', 'B': '1', 'C': '2', 'D': '3', 'E': '4', 'F': '5', 'G': '6', 'H': '7', 'I': '8', 'J': '9', 'K': '10',
   'L': '11', 'M': '12', 'N': '13', 'O': '14', 'P': '15', 'Q': '16', 'R': '17', 'S': '18', 'T': '19', 'U': '20',
   'V': '21', 'W': '22', 'X': '23', 'Y': '24', 'Z': '25'});
+
+const Alphabet alphabetAZ09 = Alphabet(key: 'alphabet_name_az09', type: AlphabetType.STANDARD, alphabet: {
+  'A': '0', 'B': '1', 'C': '2', 'D': '3', 'E': '4', 'F': '5', 'G': '6', 'H': '7', 'I': '8', 'J': '9', 'K': '10',
+  'L': '11', 'M': '12', 'N': '13', 'O': '14', 'P': '15', 'Q': '16', 'R': '17', 'S': '18', 'T': '19', 'U': '20',
+  'V': '21', 'W': '22', 'X': '23', 'Y': '24', 'Z': '25',
+  '0': '26', '1': '27', '2': '28', '3': '29', '4': '30', '5': '31', '6': '32', '7': '33', '8': '34', '9': '35'});
 
 StringText encryptText(String message, String key, int matrixSize, Alphabet alphabet) {
   message = removeNonLetters(message.toUpperCase());
@@ -30,8 +35,8 @@ StringText encryptText(String message, String key, int matrixSize, Alphabet alph
 }
 
 StringText _decryptHillCipher(String message, String key, int matrixSize, Alphabet alphabet) {
-  if (key.length < matrixSize * matrixSize) {
-    return StringText('KeyToShort', '');
+  if (key.isEmpty) {
+    return StringText('KeyEmpty', '');
   }
   // Get inverted key matrix from the key string
   var keyMatrix = _getKeyMatrix(key, matrixSize, alphabet);
@@ -60,8 +65,8 @@ StringText _decryptHillCipher(String message, String key, int matrixSize, Alphab
 
 // Function to implement Hill Cipher
 StringText _encryptHillCipher(String message, String key, int matrixSize, Alphabet alphabet) {
-  if (key.length < matrixSize * matrixSize) {
-    return StringText('KeyToShort', '');
+  if (key.isEmpty) {
+    return StringText('KeyEmpty', '');
   }
   // Get key matrix from the key string
   var keyMatrix = _getKeyMatrix(key, matrixSize, alphabet);
@@ -93,6 +98,7 @@ List<Uint8List> _getKeyMatrix(String key, int matrixSize, Alphabet alphabet) {
     for (int j = 0; j < matrixSize; j++) {
       keyMatrix[i][j] = _charToValue(key[k], alphabet.alphabet);
       k++;
+      if (k >= key.length) k = 0;
     }
   }
   return keyMatrix;
@@ -109,6 +115,7 @@ String _valueToChar(int value, Map<String, String> alphabet) {
 }
 
 bool _validKeyMatrix(List<Uint8List> keyMatrix, int alphabetLength) {
+  return true;
   var determinante = _matrixDeterminante(keyMatrix).toInt() % alphabetLength;
   var _divisors = divisors(alphabetLength);
   _divisors.remove(1);
