@@ -96,9 +96,8 @@ List<Uint8List> _getKeyMatrix(String key, int matrixSize, Alphabet alphabet) {
   int k = 0;
   for (int i = 0; i < matrixSize; i++) {
     for (int j = 0; j < matrixSize; j++) {
-      keyMatrix[i][j] = _charToValue(key[k], alphabet.alphabet);
+      keyMatrix[i][j] = _charToValue(k < key.length ? key[k] : alphabet.alphabet.keys.elementAt(k), alphabet.alphabet);
       k++;
-      if (k >= key.length) k = 0;
     }
   }
   return keyMatrix;
