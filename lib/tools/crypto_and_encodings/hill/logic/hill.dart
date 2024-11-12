@@ -12,11 +12,16 @@ import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
 const _fillCharacter = 'X';
-final ALPHABETS = [alphabetAZ];
+final ALPHABETS = [alphabetAZ, alphabetAZ0];
+
+const Alphabet alphabetAZ0 = Alphabet(key: 'alphabet_name_az0', type: AlphabetType.STANDARD, alphabet: {
+  'A': '0', 'B': '1', 'C': '2', 'D': '3', 'E': '4', 'F': '5', 'G': '6', 'H': '7', 'I': '8', 'J': '9', 'K': '10',
+  'L': '11', 'M': '12', 'N': '13', 'O': '14', 'P': '15', 'Q': '16', 'R': '17', 'S': '18', 'T': '19', 'U': '20',
+  'V': '21', 'W': '22', 'X': '23', 'Y': '24', 'Z': '25'});
 
 StringText encryptText(String message, String key, int matrixSize, Alphabet alphabet) {
   message = removeNonLetters(message.toUpperCase());
-  return _encryptHillCipher(message, key, matrixSize, alphabet.alphabet.length);
+  return _encryptHillCipher(message, key, matrixSize, alphabet);
   // int n = key.length;
   // int padding = n - plaintext.length() % n;
   // if (padding != n) {
@@ -24,9 +29,10 @@ StringText encryptText(String message, String key, int matrixSize, Alphabet alph
   // }
 }
 
-
-
 StringText _decryptHillCipher(String message, String key, int matrixSize, Alphabet alphabet) {
+  if (key.length < matrixSize * matrixSize) {
+    return StringText('KeyToShort', '');
+  }
   // Get inverted key matrix from the key string
   var keyMatrix = _getKeyMatrix(key, matrixSize, alphabet);
   var keyMatrixInverted = _matrixInvert(keyMatrix);
@@ -48,7 +54,35 @@ StringText _decryptHillCipher(String message, String key, int matrixSize, Alphab
     cipherText += _valueToChar(cipherMatrix[i][0], alphabetMap);
   }
 
-  return StringText('', cipherText);
+  var text = _validKeyMatrix(keyMatrix, alphabet.alphabet.length) ? '' : 'InvalidKey';
+  return StringText(text, cipherText);
+}
+
+// Function to implement Hill Cipher
+StringText _encryptHillCipher(String message, String key, int matrixSize, Alphabet alphabet) {
+  if (key.length < matrixSize * matrixSize) {
+    return StringText('KeyToShort', '');
+  }
+  // Get key matrix from the key string
+  var keyMatrix = _getKeyMatrix(key, matrixSize, alphabet);
+  var messageVector = List<Uint8List>.generate(matrixSize, (index) => Uint8List(1));
+
+  // Generate vector for the message
+  for (int i = 0; i < matrixSize; i++) {
+    messageVector[i][0] = _charToValue(message[i], alphabet.alphabet);
+  }
+
+  // Following function generates the encrypted vector
+  var cipherMatrix = _matrixMultiplication(keyMatrix, messageVector, alphabet.alphabet.length);
+  String cipherText = '';
+  var alphabetMap = switchMapKeyValue(alphabet.alphabet);
+
+  // Generate the encrypted text from the encrypted vector
+  for (int i = 0; i < matrixSize; i++) {
+    cipherText += _valueToChar(cipherMatrix[i][0], alphabetMap);
+  }
+  var text = _validKeyMatrix(keyMatrix, alphabet.alphabet.length) ? '' : 'InvalidKey';
+  return StringText(text, cipherText);
 }
 
 // Following function generates the key matrix for the key string
@@ -74,33 +108,11 @@ String _valueToChar(int value, Map<String, String> alphabet) {
   return char ?? UNKNOWN_ELEMENT;
 }
 
-// Function to implement Hill Cipher
-StringText _encryptHillCipher(String message, String key, int matrixSize, Alphabet alphabet) {
-  // Get key matrix from the key string
-  var keyMatrix = _getKeyMatrix(key, matrixSize, alphabet);
-  var messageVector = List<Uint8List>.generate(matrixSize, (index) => Uint8List(1));
-
-  // Generate vector for the message
-  for (int i = 0; i < matrixSize; i++) {
-    messageVector[i][0] = _charToValue(message[i], alphabet.alphabet);
-  }
-
-  // Following function generates the encrypted vector
-  var cipherMatrix = _matrixMultiplication(keyMatrix, messageVector, alphabet.alphabet.length);
-  String cipherText = '';
-  var alphabetMap = switchMapKeyValue(alphabet.alphabet);
-
-  // Generate the encrypted text from the encrypted vector
-  for (int i = 0; i < matrixSize; i++) {
-    cipherText += _valueToChar(cipherMatrix[i][0], alphabetMap);
-  }
-  var text = _validKeyMatrix(keyMatrix, alphabet.alphabet.length) ? '' : 'InvalidKey';
-  return StringText(text, cipherText);
-}
-
 bool _validKeyMatrix(List<Uint8List> keyMatrix, int alphabetLength) {
   var determinante = _matrixDeterminante(keyMatrix).toInt() % alphabetLength;
   var _divisors = divisors(alphabetLength);
+  _divisors.remove(1);
+  _divisors.remove(alphabetLength);
   for (int i = 0; i < _divisors.length; i++) {
     if ((determinante % _divisors[i]) == 0) return false;
   }
