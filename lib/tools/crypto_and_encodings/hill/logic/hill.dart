@@ -96,14 +96,15 @@ List<Uint8List> _getKeyMatrix(String key, int matrixSize, Alphabet alphabet) {
   int k = 0;
   for (int i = 0; i < matrixSize; i++) {
     for (int j = 0; j < matrixSize; j++) {
-      keyMatrix[i][j] = _charToValue(k < key.length ? key[k] : alphabet.alphabet.keys.elementAt(k), alphabet.alphabet);
+      keyMatrix[i][j] = _charToValue(k < key.length ? key[k]
+          : alphabet.alphabet.keys.elementAt(k - key.length), alphabet.alphabet);
       k++;
     }
   }
   return keyMatrix;
 }
 
-int _charToValue(String char, Map<String, String> alphabet ) {
+int _charToValue(String char, Map<String, String> alphabet) {
   var value = alphabet[char];
   return value == null ? -1 : int.parse(value);
 }

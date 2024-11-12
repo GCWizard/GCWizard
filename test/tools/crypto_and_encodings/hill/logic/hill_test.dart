@@ -4,6 +4,8 @@ import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 //https://cs.widener.edu/~yanako/html/courses/Spring23/csci391/quizHillCipher.html
 //https://u-next.com/blogs/cyber-security/overview-hill-cipher-encryption-and-decryption-with-examples/
+//https://massey.limfinity.com/207/hillcipher.pdf
+//https://legacy.cryptool.org/en/cto/hill
 void main() {
   group("Hill.encrypt:", () {
     List<Map<String, Object?>> _inputsToExpected = [
