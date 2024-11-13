@@ -9,14 +9,14 @@ import 'package:gc_wizard/utils/complex_return_types.dart';
 void main() {
   group("Hill.encrypt:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      {'input' : 'short example', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'SEORT BXHMPKB')},
+      {'input' : 'short example', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'APADJTFTWLFJ')},
 
       {'input' : '', 'key' : '', 'matrixSize' : 2, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('KeyEmpty', '')},
       {'input' : 'ACT', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'POH')},
       {'input' : 'GFG', 'key' : 'HILLMAGIC', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'SWK')},
 
-      {'input' : 'short example', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'SEORT BXHMPKB')},
-      {'input' : 'short example', 'key' : 'hill', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'SEORT BXHMPKB')},
+      {'input' : 'short example', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'APADJTFTWLFJ')},
+      {'input' : 'retreat now', 'key' : 'BACK UP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'DPQRQEVKPQ')},
     ];
 
     for (var elem in _inputsToExpected) {

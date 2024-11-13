@@ -26,6 +26,7 @@ const Alphabet alphabetAZ09 = Alphabet(key: 'alphabet_name_az09', type: Alphabet
 
 StringText encryptText(String message, String key, int matrixSize, Alphabet alphabet) {
   message = removeNonLetters(message.toUpperCase());
+  key = removeNonLetters(key.toUpperCase());
   return _encryptHillCipher(message, key, matrixSize, alphabet);
   // int n = key.length;
   // int padding = n - plaintext.length() % n;
@@ -71,20 +72,30 @@ StringText _encryptHillCipher(String message, String key, int matrixSize, Alphab
   // Get key matrix from the key string
   var keyMatrix = _getKeyMatrix(key, matrixSize, alphabet);
   var messageVector = List<Uint8List>.generate(matrixSize, (index) => Uint8List(1));
+  var cipherMatrix = Uint8List(message.length);
+  var k = 0;
 
-  // Generate vector for the message
-  for (int i = 0; i < matrixSize; i++) {
-    messageVector[i][0] = _charToValue(message[i], alphabet.alphabet);
-  }
+  do {
+    // Generate vector for the message
+    for (int i = 0; i < matrixSize; i++) {
+      messageVector[i][0] = _charToValue(k + i < message.length
+          ? message[k + i]
+          : _fillCharacter, alphabet.alphabet); //alphabet.alphabet.keys.last'
+    }
 
-  // Following function generates the encrypted vector
-  var cipherMatrix = _matrixMultiplication(keyMatrix, messageVector, alphabet.alphabet.length);
+    // Following function generates the encrypted vector
+    _matrixMultiplication(keyMatrix, messageVector, alphabet.alphabet.length).forEach((value) {
+      if (k < cipherMatrix.length) cipherMatrix[k] = value[0];
+      k++;
+    });
+  } while (k < message.length);
+
   String cipherText = '';
   var alphabetMap = switchMapKeyValue(alphabet.alphabet);
 
   // Generate the encrypted text from the encrypted vector
-  for (int i = 0; i < matrixSize; i++) {
-    cipherText += _valueToChar(cipherMatrix[i][0], alphabetMap);
+  for (int i = 0; i < cipherMatrix.length; i++) {
+    cipherText += _valueToChar(cipherMatrix[i], alphabetMap);
   }
   var text = _validKeyMatrix(keyMatrix, alphabet.alphabet.length) ? '' : 'InvalidKey';
   return StringText(text, cipherText);
@@ -101,11 +112,12 @@ List<Uint8List> _getKeyMatrix(String key, int matrixSize, Alphabet alphabet) {
       k++;
     }
   }
+  print(keyMatrix);
   return keyMatrix;
 }
 
 int _charToValue(String char, Map<String, String> alphabet) {
-  var value = alphabet[char];
+  var value = alphabet[char.toUpperCase()];
   return value == null ? -1 : int.parse(value);
 }
 
