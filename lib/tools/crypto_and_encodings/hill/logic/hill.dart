@@ -8,6 +8,7 @@ import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/constants.dart';
+import 'package:gc_wizard/utils/math_utils.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
 const _fillCharacter = 'X';
@@ -35,29 +36,50 @@ StringText encryptText(String message, String key, int matrixSize, Alphabet alph
   // }
 }
 
+StringText decryptText(String message, String key, int matrixSize, Alphabet alphabet) {
+  message = removeNonLetters(message.toUpperCase());
+  key = removeNonLetters(key.toUpperCase());
+  return _decryptHillCipher(message, key, matrixSize, alphabet);
+  // int n = key.length;
+  // int padding = n - plaintext.length() % n;
+  // if (padding != n) {
+  //   plaintext += "X".repeat(padding);
+  // }
+}
+
 StringText _decryptHillCipher(String message, String key, int matrixSize, Alphabet alphabet) {
   if (key.isEmpty) {
     return StringText('KeyEmpty', '');
   }
   // Get inverted key matrix from the key string
   var keyMatrix = _getKeyMatrix(key, matrixSize, alphabet);
-  var keyMatrixInverted = _matrixInvert(keyMatrix);
+  var keyMatrixInverted = __matrixInvert(keyMatrix);
   if (keyMatrixInverted == null) return StringText('InvalidKey', '');
   var messageVector = List<Uint8List>.generate(matrixSize, (index) => Uint8List(1));
+  var cipherMatrix = Uint8List(message.length);
+  var k = 0;
 
-  // Generate vector for the message
-  for (int i = 0; i < matrixSize; i++) {
-    messageVector[i][0] = _charToValue(message[i], alphabet.alphabet);
-  }
+  do {
+    // Generate vector for the message
+    for (int i = 0; i < matrixSize; i++) {
+      messageVector[i][0] = _charToValue(k + i < message.length
+          ? message[k + i]
+          : _fillCharacter, alphabet.alphabet); //alphabet.alphabet.keys.last'
+    }
 
-  // Following function generates the encrypted vector
-  var cipherMatrix = _matrixMultiplication(keyMatrix, messageVector, alphabet.alphabet.length);
+    // Following function generates the encrypted vector
+    _matrixMultiplication(keyMatrix, messageVector, alphabet.alphabet.length).forEach((value) {
+      if (k < cipherMatrix.length) cipherMatrix[k] = value[0];
+      k++;
+    });
+  } while (k < message.length);
+
   String cipherText = '';
   var alphabetMap = switchMapKeyValue(alphabet.alphabet);
 
-  // Generate the encrypted text from the encrypted vector
-  for (int i = 0; i < matrixSize; i++) {
-    cipherText += _valueToChar(cipherMatrix[i][0], alphabetMap);
+  // Generate the decrypted text from the decrypted vector
+  for (int i = 0; i < cipherMatrix.length; i++) {
+    cipherText += _valueToChar(cipherMatrix[i], alphabetMap);
   }
 
   var text = _validKeyMatrix(keyMatrix, alphabet.alphabet.length) ? '' : 'InvalidKey';
@@ -155,91 +177,23 @@ List<Uint8List> _matrixMultiplication(List<Uint8List> keyMatrix, List<Uint8List>
   return resultMatrix;
 }
 
-List<Uint8List>? _matrixInvert(List<Uint8List> matrix) {
+List<Uint8List>? __matrixInvert(List<Uint8List> matrix) {
   int n = matrix.length;
-  var augmented = List<List<double>>.generate(n, (index) => List<double>.filled(n * 2, 0));
+  var _matrix = List<List<double>>.generate(matrix.length, (row) =>
+    List<double>.generate(matrix[row].length, (column) => matrix[row][column].toDouble()));
 
-  // Initialize augmented matrix with the input matrix and the identity matrix
-  for (int i = 0; i < n; i++) {
-    for (int j = 0; j < n; j++) {
-      augmented[i][j] = matrix[i][j].toDouble();
-      augmented[i][j + n] = (i == j) ? 1 : 0;
-    }
-  }
+  var result = matrixInvert(_matrix);
 
-  // Apply Gaussian elimination
-  for (int i = 0; i < n; i++) {
-    int pivotRow = i;
-    for (int j = i + 1; j < n; j++) {
-      if (augmented[j][i].abs() > (augmented[pivotRow][i].abs())) {
-        pivotRow = j;
-      }
-    }
+  var _result = List<Uint8List>.generate(result!.length, (row) => Uint8List.fromList());
 
-    if (pivotRow != i) {
-      for (int k = 0; k < 2 * n; k++) {
-        double temp = augmented[i][k];
-        augmented[i][k] = augmented[pivotRow][k];
-        augmented[pivotRow][k] = temp;
-      }
-    }
-
-    if (augmented[i][i].abs() < 1e-10) return null;
-
-    var pivot = augmented[i][i];
-    for (int j = 0; j < 2 * n; j++) {
-      augmented[i][j] /= pivot;
-    }
-
-    for (int j = 0; j < n; j++) {
-      if (j != i) {
-        var factor = augmented[j][i];
-        for (int k = 0; k < 2 * n; k++) {
-          augmented[j][k] -= factor * augmented[i][k];
-        }
-      }
-    }
-  }
-
-  var result = List<Uint8List>.generate(n, (index) => Uint8List(n));
-  for (int i = 0; i < n; i++) {
-    for (int j = 0; j < n; j++) {
-      result[i][j] = augmented[i][j + n].toInt() % 26;
-    }
-  }
-
-  return result;
 }
 
 double _matrixDeterminante(List<Uint8List> matrix) {
-  int n = matrix.length;
-  var matrixD = List<List<double>>.generate(n, (rowIndex) =>
-    List<double>.generate(matrix[rowIndex].length, (columnIndex) => matrix[rowIndex][columnIndex].toDouble()));
-
-  for (int i = 0; i < n; i++) {
-    if (matrixD[i][i] == 0) {
-      for (int row = i; row < n; row++) {
-        if (matrixD[i][row] != 0) { //flip row
-          for (int k = 0; k < n; k++) {
-            double tmp = matrixD[k][i];
-            matrixD[k][i] = matrixD[k][row];
-            matrixD[k][row] = tmp;
-          }
-        }
-      }
-    }
-    if (matrixD[i][i] == 0) continue;
-    for (int j = i + 1; j < n; j++) {
-      //generate 0s by addition
-      double faktor = -matrixD[j][i] / matrixD[i][i];
-      for (int k = 0; k < n; k++) {
-        matrixD[j][k] += faktor * matrixD[i][k];
-      }
-    }
-  }
-  double result = 1;
-  for (int i = 0; i < n; i++) {
-    result *= matrixD[i][i];
-  }
-  return result;
+  var matrixD = List<List<double>>.generate(matrix.length, (rowIndex) =>
+      List<double>.generate(matrix[rowIndex].length, (columnIndex) => matrix[rowIndex][columnIndex].toDouble()));
+  return matrixDeterminante(matrixD);
 }
+//https://dev.to/rk042/how-to-inverse-a-matrix-in-c-12jg
+// to invert [[6, 24, 1], [13, 16, 10], [20, 17, 15]]
+// result
+// determinante 441

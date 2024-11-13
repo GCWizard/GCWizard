@@ -53,3 +53,92 @@ int lcm(int a, int b) {
   }
   return result;
 }
+
+// ported from https://dev.to/rk042/how-to-inverse-a-matrix-in-c-12jg
+/// Invert of a square matrix
+List<List<double>>? matrixInvert(List<List<double>> matrix) {
+  int n = matrix.length;
+  var augmented = List<List<double>>.generate(n, (index) => List<double>.filled(n * 2, 0));
+
+  // Initialize augmented matrix with the input matrix and the identity matrix
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++) {
+      augmented[i][j] = matrix[i][j].toDouble();
+      augmented[i][j + n] = (i == j) ? 1 : 0;
+    }
+  }
+
+  // Apply Gaussian elimination
+  for (int i = 0; i < n; i++) {
+    int pivotRow = i;
+    for (int j = i + 1; j < n; j++) {
+      if (augmented[j][i].abs() > (augmented[pivotRow][i].abs())) {
+        pivotRow = j;
+      }
+    }
+
+    if (pivotRow != i) {
+      for (int k = 0; k < 2 * n; k++) {
+        double temp = augmented[i][k];
+        augmented[i][k] = augmented[pivotRow][k];
+        augmented[pivotRow][k] = temp;
+      }
+    }
+
+    if (augmented[i][i].abs() < 1e-10) return null;
+
+    var pivot = augmented[i][i];
+    for (int j = 0; j < 2 * n; j++) {
+      augmented[i][j] /= pivot;
+    }
+
+    for (int j = 0; j < n; j++) {
+      if (j != i) {
+        var factor = augmented[j][i];
+        for (int k = 0; k < 2 * n; k++) {
+          augmented[j][k] -= factor * augmented[i][k];
+        }
+      }
+    }
+  }
+
+  var result = List<List<double>>.generate(n, (index) => List<double>.filled(n, 0));
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++) {
+      result[i][j] = augmented[i][j + n];
+    }
+  }
+  return result;
+}
+
+/// Determinant of a square matrix
+double matrixDeterminante(List<List<double>> matrix) {
+  int n = matrix.length;
+
+  for (int i = 0; i < n; i++) {
+    if (matrix[i][i] == 0) {
+      for (int row = i; row < n; row++) {
+        if (matrix[i][row] != 0) { //flip row
+          for (int k = 0; k < n; k++) {
+            double tmp = matrix[k][i];
+            matrix[k][i] = matrix[k][row];
+            matrix[k][row] = tmp;
+          }
+        }
+      }
+    }
+    if (matrix[i][i] == 0) continue;
+    for (int j = i + 1; j < n; j++) {
+      //generate 0s by addition
+      double faktor = -matrix[j][i] / matrix[i][i];
+      for (int k = 0; k < n; k++) {
+        matrix[j][k] += faktor * matrix[i][k];
+      }
+    }
+  }
+  double result = 1;
+  for (int i = 0; i < n; i++) {
+    result *= matrix[i][i];
+  }
+  return result;
+}
