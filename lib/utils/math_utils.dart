@@ -54,6 +54,23 @@ int lcm(int a, int b) {
   return result;
 }
 
+/// Multiplication of two matrices
+List<List<double>>? matrixMultiplication(List<List<double>> matrix1, List<List<double>> matrix2) {
+  if (matrix1.isEmpty || matrix2.isEmpty || matrix1[0].length != matrix2.length) {
+    return null;
+  }
+  var resultMatrix = List<List<double>>.generate(matrix1.length, (index) => List<double>.filled(matrix2.length, 0));
+
+  for (int i = 0; i < matrix1.length; i++) {
+    for (int j = 0; j < matrix2.length; j++) {
+      for (int x = 0; x < matrix1[i].length; x++) {
+        resultMatrix[i][j] += matrix1[i][x] * matrix2[x][j];
+      }
+    }
+  }
+  return resultMatrix;
+}
+
 // ported from https://dev.to/rk042/how-to-inverse-a-matrix-in-c-12jg
 /// Invert of a square matrix
 List<List<double>>? matrixInvert(List<List<double>> matrix) {
