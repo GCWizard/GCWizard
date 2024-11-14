@@ -149,8 +149,9 @@ String _valueToChar(int value, Map<String, String> alphabet) {
 }
 
 bool _validKeyMatrix(List<List<double>> keyMatrix, int alphabetLength) {
-  return true;
   var determinante = matrixDeterminante(keyMatrix).toInt() % alphabetLength;
+  return true;
+  //var determinante = matrixDeterminante(keyMatrix).toInt() % alphabetLength;
   var _divisors = divisors(alphabetLength);
   _divisors.remove(1);
   _divisors.remove(alphabetLength);
@@ -178,8 +179,8 @@ List<List<double>>? _matrixInvert(List<List<double>> matrix) {
     List<double>.generate(matrix[row].length, (column) => matrix[row][column].toDouble()));
 
   var result = matrixInvert(_matrix);
-
-  var _result = List<Uint8List>.generate(result!.length, (row) => Uint8List.fromList());
+return result;
+  //var _result = List<Uint8List>.generate(result!.length, (row) => Uint8List.fromList());
 
 }
 
