@@ -135,30 +135,32 @@ double matrixDeterminante(List<List<double>> matrix) {
   int n = matrix.length;
   if (matrix.isEmpty || matrix[0].isEmpty) return 0.0;
 
+  var _matrix = List<List<double>>.generate(n, (index) => List<double>.from(matrix[index]));
+
   for (int i = 0; i < n; i++) {
-    if (matrix[i][i] == 0) {
+    if (_matrix[i][i] == 0) {
       for (int row = i; row < n; row++) {
-        if (matrix[i][row] != 0) { //flip row
+        if (_matrix[i][row] != 0) { //flip row
           for (int k = 0; k < n; k++) {
-            double tmp = matrix[k][i];
-            matrix[k][i] = matrix[k][row];
-            matrix[k][row] = tmp;
+            double tmp = _matrix[k][i];
+            _matrix[k][i] = _matrix[k][row];
+            _matrix[k][row] = tmp;
           }
         }
       }
     }
-    if (matrix[i][i] == 0) continue;
+    if (_matrix[i][i] == 0) continue;
     for (int j = i + 1; j < n; j++) {
       //generate 0s by addition
-      double faktor = -matrix[j][i] / matrix[i][i];
+      double faktor = -_matrix[j][i] / _matrix[i][i];
       for (int k = 0; k < n; k++) {
-        matrix[j][k] += faktor * matrix[i][k];
+        _matrix[j][k] += faktor * _matrix[i][k];
       }
     }
   }
   double result = 1;
   for (int i = 0; i < n; i++) {
-    result *= matrix[i][i];
+    result *= _matrix[i][i];
   }
   return result;
 }

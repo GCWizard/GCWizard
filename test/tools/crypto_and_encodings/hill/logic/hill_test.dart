@@ -19,7 +19,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']} key: ${elem['key']} matrixSize: ${elem['matrixSize']}', () {
-        var _actual = encryptText(elem['input'] as String, elem['key'] as String, elem['matrixSize'] as int, elem['alphabet'] as Alphabet);
+        var _actual = encryptText(elem['input'] as String, elem['key'] as String, elem['matrixSize'] as int, (elem['alphabet'] as Alphabet).alphabet);
         expect(_actual.text, (elem['expectedOutput'] as StringText).text);
         expect(_actual.value, (elem['expectedOutput'] as StringText).value);
       });
@@ -29,6 +29,9 @@ void main() {
   group("Hill.decrypt:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'key' : '', 'matrixSize' : 2, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('KeyEmpty', '')},
+
+      {'input' : 'POH', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'ACT')},
+
       {'input' : 'SYICHOLER', 'key' : 'alphabet', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'wearesafe')},
 
       {'input' : 'POH', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'ACT')},
@@ -41,7 +44,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']} key: ${elem['key']} matrixSize: ${elem['matrixSize']}', () {
-        var _actual = decryptText(elem['input'] as String, elem['key'] as String, elem['matrixSize'] as int, elem['alphabet'] as Alphabet);
+        var _actual = decryptText(elem['input'] as String, elem['key'] as String, elem['matrixSize'] as int, (elem['alphabet'] as Alphabet).alphabet);
         expect(_actual.text, (elem['expectedOutput'] as StringText).text);
         expect(_actual.value, (elem['expectedOutput'] as StringText).value);
       });

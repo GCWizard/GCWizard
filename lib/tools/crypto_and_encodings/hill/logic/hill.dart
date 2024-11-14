@@ -1,7 +1,6 @@
 //ported from https://www.geeksforgeeks.org/hill-cipher/
 
 import 'dart:core';
-import 'dart:typed_data';
 
 import 'package:gc_wizard/tools/science_and_technology/divisor/logic/divisor.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
@@ -25,7 +24,7 @@ const Alphabet alphabetAZ09 = Alphabet(key: 'alphabet_name_az09', type: Alphabet
   'V': '21', 'W': '22', 'X': '23', 'Y': '24', 'Z': '25',
   '0': '26', '1': '27', '2': '28', '3': '29', '4': '30', '5': '31', '6': '32', '7': '33', '8': '34', '9': '35'});
 
-StringText encryptText(String message, String key, int matrixSize, Alphabet alphabet) {
+StringText encryptText(String message, String key, int matrixSize, Map<String, String> alphabet) {
   message = removeNonLetters(message.toUpperCase());
   key = removeNonLetters(key.toUpperCase());
   return _encryptHillCipher(message, key, matrixSize, alphabet);
@@ -36,7 +35,7 @@ StringText encryptText(String message, String key, int matrixSize, Alphabet alph
   // }
 }
 
-StringText decryptText(String message, String key, int matrixSize, Alphabet alphabet) {
+StringText decryptText(String message, String key, int matrixSize, Map<String, String> alphabet) {
   message = removeNonLetters(message.toUpperCase());
   key = removeNonLetters(key.toUpperCase());
   return _decryptHillCipher(message, key, matrixSize, alphabet);
@@ -47,94 +46,77 @@ StringText decryptText(String message, String key, int matrixSize, Alphabet alph
   // }
 }
 
-StringText _decryptHillCipher(String message, String key, int matrixSize, Alphabet alphabet) {
+StringText _decryptHillCipher(String message, String key, int matrixSize, Map<String, String> alphabet) {
   if (key.isEmpty) {
     return StringText('KeyEmpty', '');
   }
   // Get inverted key matrix from the key string
   var keyMatrix = _getKeyMatrix(key, matrixSize, alphabet);
-  var keyMatrixInverted = _matrixInvert(keyMatrix);
+  var keyMatrixInverted = matrixInvert(keyMatrix);
   if (keyMatrixInverted == null) return StringText('InvalidKey', '');
-  var messageVector = List<List<double>>.generate(matrixSize, (index) => List<double>.filled(1, 0));
-  var cipherMatrix = List<double>.filled(message.length, 0);
-  var k = 0;
 
-  do {
-    // Generate vector for the message
-    for (int i = 0; i < matrixSize; i++) {
-      messageVector[i][0] = _charToValue(k + i < message.length
-          ? message[k + i]
-          : _fillCharacter, alphabet.alphabet).toDouble(); //alphabet.alphabet.keys.last'
+  var determinante = matrixDeterminante(keyMatrix);
+  for (int i = 0; i < matrixSize; i++) {
+    for (int j = 0; j < matrixSize; j++) {
+      keyMatrixInverted[i][j] = (keyMatrixInverted[i][j] * determinante * determinante) % alphabet.length;
     }
-
-    // Following function generates the encrypted vector
-    _matrixMultiplication(keyMatrix, messageVector, alphabet.alphabet.length).forEach((value) {
-      if (k < cipherMatrix.length) cipherMatrix[k] = value[0];
-      k++;
-    });
-  } while (k < message.length);
-
-  String cipherText = '';
-  var alphabetMap = switchMapKeyValue(alphabet.alphabet);
-
-  // Generate the decrypted text from the decrypted vector
-  for (int i = 0; i < cipherMatrix.length; i++) {
-    cipherText += _valueToChar(cipherMatrix[i].round(), alphabetMap);
   }
 
-  var text = _validKeyMatrix(keyMatrix, alphabet.alphabet.length) ? '' : 'InvalidKey';
+  String cipherText = _convertMessage(message, alphabet, keyMatrixInverted);
+
+  var text = _validKeyMatrix(keyMatrix, alphabet.length) ? '' : 'InvalidKey';
   return StringText(text, cipherText);
 }
 
-// Function to implement Hill Cipher
-StringText _encryptHillCipher(String message, String key, int matrixSize, Alphabet alphabet) {
+StringText _encryptHillCipher(String message, String key, int matrixSize, Map<String, String> alphabet) {
   if (key.isEmpty) {
     return StringText('KeyEmpty', '');
   }
   // Get key matrix from the key string
   var keyMatrix = _getKeyMatrix(key, matrixSize, alphabet);
-  var messageVector = List<List<double>>.generate(matrixSize, (index) => List<double>.filled(1, 0));
-  var cipherMatrix = List<double>.filled(message.length, 0);
+  String cipherText = _convertMessage(message, alphabet, keyMatrix);
+
+  var errorText = _validKeyMatrix(keyMatrix, alphabet.length) ? '' : 'InvalidKey';
+  return StringText(errorText, cipherText);
+}
+
+String _convertMessage(String message, Map<String, String> alphabet, List<List<double>> keyMatrix) {
+  var messageVector = List<List<double>>.generate(keyMatrix.length, (index) => List<double>.filled(1, 0));
+  var alphabetMap = switchMapKeyValue(alphabet);
+  String convertedText = '';
   var k = 0;
 
   do {
     // Generate vector for the message
-    for (int i = 0; i < matrixSize; i++) {
+    for (int i = 0; i < keyMatrix.length; i++) {
       messageVector[i][0] = _charToValue(k + i < message.length
           ? message[k + i]
-          : _fillCharacter, alphabet.alphabet).toDouble(); //alphabet.alphabet.keys.last'
+          : _fillCharacter, alphabet).toDouble(); //alphabet.alphabet.keys.last'
     }
 
-    // Following function generates the encrypted vector
-    _matrixMultiplication(keyMatrix, messageVector, alphabet.alphabet.length).forEach((value) {
-      if (k < cipherMatrix.length) cipherMatrix[k] = value[0];
+    // Following function generates the converted vector
+    _matrixMultiplication(keyMatrix, messageVector, alphabet.length)?.forEach((value) {
+      if (k < message.length) {
+        // Generate the text from the vector
+        convertedText += _valueToChar(value[0].round() % alphabet.length, alphabetMap);
+      }
       k++;
     });
   } while (k < message.length);
-
-  String cipherText = '';
-  var alphabetMap = switchMapKeyValue(alphabet.alphabet);
-
-  // Generate the encrypted text from the encrypted vector
-  for (int i = 0; i < cipherMatrix.length; i++) {
-    cipherText += _valueToChar(cipherMatrix[i].round(), alphabetMap);
-  }
-  var text = _validKeyMatrix(keyMatrix, alphabet.alphabet.length) ? '' : 'InvalidKey';
-  return StringText(text, cipherText);
+  return convertedText;
 }
 
 // Following function generates the key matrix for the key string
-List<List<double>> _getKeyMatrix(String key, int matrixSize, Alphabet alphabet) {
+List<List<double>> _getKeyMatrix(String key, int matrixSize, Map<String, String> alphabet) {
   var keyMatrix = List<List<double>>.generate(matrixSize, (index) => List<double>.filled(matrixSize, 0));
   int k = 0;
   for (int i = 0; i < matrixSize; i++) {
     for (int j = 0; j < matrixSize; j++) {
       keyMatrix[i][j] = _charToValue(k < key.length ? key[k]
-          : alphabet.alphabet.keys.elementAt(k - key.length), alphabet.alphabet).toDouble();
+          : alphabet.keys.elementAt(k - key.length), alphabet).toDouble();
       k++;
     }
   }
-  print(keyMatrix);
   return keyMatrix;
 }
 
@@ -161,35 +143,15 @@ bool _validKeyMatrix(List<List<double>> keyMatrix, int alphabetLength) {
   return true;
 }
 
-// Following function encrypts the message
-List<List<double>> _matrixMultiplication(List<List<double>> keyMatrix, List<List<double>> messageVector, int alphabetLength) {
+// Following function convert the message
+List<List<double>>? _matrixMultiplication(List<List<double>> keyMatrix, List<List<double>> messageVector, int alphabetLength) {
   var resultMatrix = matrixMultiplication(keyMatrix, messageVector);
+  if (resultMatrix == null) return null;
 
-  for (int i = 0; i < resultMatrix!.length; i++) {
+  for (int i = 0; i < resultMatrix.length; i++) {
     for (int j = 0; j < resultMatrix[i].length; j++) {
-      resultMatrix[i][j] = resultMatrix[i][j] % alphabetLength;
+      resultMatrix[i][j] %= alphabetLength;
     }
   }
   return resultMatrix;
 }
-
-List<List<double>>? _matrixInvert(List<List<double>> matrix) {
-  int n = matrix.length;
-  var _matrix = List<List<double>>.generate(matrix.length, (row) =>
-    List<double>.generate(matrix[row].length, (column) => matrix[row][column].toDouble()));
-
-  var result = matrixInvert(_matrix);
-return result;
-  //var _result = List<Uint8List>.generate(result!.length, (row) => Uint8List.fromList());
-
-}
-
-double _matrixDeterminante(List<Uint8List> matrix) {
-  var matrixD = List<List<double>>.generate(matrix.length, (rowIndex) =>
-      List<double>.generate(matrix[rowIndex].length, (columnIndex) => matrix[rowIndex][columnIndex].toDouble()));
-  return matrixDeterminante(matrixD);
-}
-//https://dev.to/rk042/how-to-inverse-a-matrix-in-c-12jg
-// to invert [[6, 24, 1], [13, 16, 10], [20, 17, 15]]
-// result
-// determinante 441
