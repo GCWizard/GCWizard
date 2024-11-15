@@ -55,13 +55,16 @@ StringText _decryptHillCipher(String message, String key, int matrixSize, Map<St
   var keyMatrixInverted = matrixInvert(keyMatrix);
   if (keyMatrixInverted == null) return StringText('InvalidKey', '');
 
-  var determinante = matrixDeterminante(keyMatrix);
+  var determinant = matrixDeterminant(keyMatrix);
+  var inversDeterminant = _multiplicativeInverseOfDeterminant(determinant.round(), alphabet.length);
+  if (inversDeterminant == 0) return StringText('InvalidKey', '');
+
   for (int i = 0; i < matrixSize; i++) {
     for (int j = 0; j < matrixSize; j++) {
-      keyMatrixInverted[i][j] = (keyMatrixInverted[i][j] * determinante * determinante) % alphabet.length;
+      keyMatrixInverted[i][j] = (keyMatrixInverted[i][j] * determinant * inversDeterminant) % alphabet.length;
     }
   }
-
+//https://crypto.interactive-maths.com/hill-cipher.html
   String cipherText = _convertMessage(message, alphabet, keyMatrixInverted);
 
   var text = _validKeyMatrix(keyMatrix, alphabet.length) ? '' : 'InvalidKey';
@@ -131,7 +134,7 @@ String _valueToChar(int value, Map<String, String> alphabet) {
 }
 
 bool _validKeyMatrix(List<List<double>> keyMatrix, int alphabetLength) {
-  var determinante = matrixDeterminante(keyMatrix).toInt() % alphabetLength;
+  var determinante = matrixDeterminant(keyMatrix).toInt() % alphabetLength;
   return true;
   //var determinante = matrixDeterminante(keyMatrix).toInt() % alphabetLength;
   var _divisors = divisors(alphabetLength);
@@ -154,4 +157,11 @@ List<List<double>>? _matrixMultiplication(List<List<double>> keyMatrix, List<Lis
     }
   }
   return resultMatrix;
+}
+
+int _multiplicativeInverseOfDeterminant(int matrixDeterminant, int modulo) {
+  for (int i = 1; i < modulo; i++) {
+    if (((matrixDeterminant * i) % modulo) == 1) return i;
+  }
+  return 0;
 }

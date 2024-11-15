@@ -28,17 +28,17 @@ void main() {
 
   group("Hill.decrypt:", () {
     List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : 'SYICHOLER', 'key' : 'alphabet', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'WEARESAFE')},
       {'input' : '', 'key' : '', 'matrixSize' : 2, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('KeyEmpty', '')},
 
       {'input' : 'POH', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'ACT')},
 
-      {'input' : 'SYICHOLER', 'key' : 'alphabet', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'wearesafe')},
 
       {'input' : 'POH', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'ACT')},
       {'input' : 'SWK', 'key' : 'HILLMAGIC', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'GFG')},
 
-      {'input' : 'APADJTFTWLFJ', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'short example')},
-      {'input' : 'DPQRQEVKPQ', 'key' : 'BACK UP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'retreat now')},
+      {'input' : 'APADJTFTWLFJ', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'SHORT EXAMPLE')},
+      {'input' : 'DPQRQEVKPQ', 'key' : 'BACK UP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'RETREAT NOW')},
 
     ];
 

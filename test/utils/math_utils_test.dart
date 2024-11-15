@@ -162,7 +162,7 @@ void main() {
     }
   });
 
-  group("MathUtils.matrixDeterminante", () {
+  group("MathUtils.matrixDeterminant", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'m' : <List<double>>[[]], 'expectedOutput' : 0.0},
 
@@ -175,7 +175,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('m: ${elem['m']}', () {
-        var _actual = matrixDeterminante(elem['m'] as List<List<double>>);
+        var _actual = matrixDeterminant(elem['m'] as List<List<double>>);
         if (elem['expectedOutput'] != null) {
           expect((_actual - (elem['expectedOutput'] as double)).abs() <= doubleTolerance, true);
         } else {

@@ -131,7 +131,7 @@ List<List<double>>? matrixInvert(List<List<double>> matrix) {
 }
 
 /// Determinant of a square matrix
-double matrixDeterminante(List<List<double>> matrix) {
+double matrixDeterminant(List<List<double>> matrix) {
   int n = matrix.length;
   if (matrix.isEmpty || matrix[0].isEmpty) return 0.0;
 
