@@ -8,7 +8,6 @@ import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/utils/math_utils.dart';
-import 'package:gc_wizard/utils/string_utils.dart';
 
 const _fillCharacter = 'X';
 final ALPHABETS = [alphabetAZ, alphabetAZ0, alphabetAZ09];
@@ -25,8 +24,7 @@ const Alphabet alphabetAZ09 = Alphabet(key: 'alphabet_name_az09', type: Alphabet
   '0': '26', '1': '27', '2': '28', '3': '29', '4': '30', '5': '31', '6': '32', '7': '33', '8': '34', '9': '35'});
 
 StringText encryptText(String message, String key, int matrixSize, Map<String, String> alphabet) {
-  message = removeNonLetters(message.toUpperCase());
-  key = removeNonLetters(key.toUpperCase());
+  key = _removeNonAlphabetCharacters(key, alphabet);
   return _encryptHillCipher(message, key, matrixSize, alphabet);
   // int n = key.length;
   // int padding = n - plaintext.length() % n;
@@ -36,8 +34,7 @@ StringText encryptText(String message, String key, int matrixSize, Map<String, S
 }
 
 StringText decryptText(String message, String key, int matrixSize, Map<String, String> alphabet) {
-  message = removeNonLetters(message.toUpperCase());
-  key = removeNonLetters(key.toUpperCase());
+  key = _removeNonAlphabetCharacters(key, alphabet);
   return _decryptHillCipher(message, key, matrixSize, alphabet);
   // int n = key.length;
   // int padding = n - plaintext.length() % n;
@@ -86,26 +83,33 @@ StringText _encryptHillCipher(String message, String key, int matrixSize, Map<St
 String _convertMessage(String message, Map<String, String> alphabet, List<List<double>> keyMatrix) {
   var messageVector = List<List<double>>.generate(keyMatrix.length, (index) => List<double>.filled(1, 0));
   var alphabetMap = switchMapKeyValue(alphabet);
+  var _message = _removeNonAlphabetCharacters(message, alphabet);
   String convertedText = '';
   var k = 0;
+  var k1 = 0;
 
   do {
     // Generate vector for the message
     for (int i = 0; i < keyMatrix.length; i++) {
-      messageVector[i][0] = _charToValue(k + i < message.length
-          ? message[k + i]
+      messageVector[i][0] = _charToValue(k + i < _message.length
+          ? _message[k + i]
           : _fillCharacter, alphabet).toDouble(); //alphabet.alphabet.keys.last'
     }
 
     // Following function generates the converted vector
     _matrixMultiplication(keyMatrix, messageVector, alphabet.length)?.forEach((value) {
-      if (k < message.length) {
+      while (k1 < message.length && !alphabet.containsKey(message[k1].toUpperCase())) {
+        convertedText += message[k1];
+        k1++;
+      }
+      if (k < _message.length) {
         // Generate the text from the vector
         convertedText += _valueToChar(value[0].round() % alphabet.length, alphabetMap);
       }
       k++;
+      k1++;
     });
-  } while (k < message.length);
+  } while (k < _message.length);
   return convertedText;
 }
 
@@ -144,6 +148,11 @@ bool _validKeyMatrix(List<List<double>> keyMatrix, int alphabetLength) {
     if ((determinante % _divisors[i]) == 0) return false;
   }
   return true;
+}
+
+String _removeNonAlphabetCharacters(String text, Map<String, String> alphabet ) {
+  var text1 = text.split('').map((char) => alphabet.containsKey(char.toUpperCase()) ? char : '').join();
+  return text1;
 }
 
 // Following function convert the message
