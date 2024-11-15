@@ -9,20 +9,33 @@ import 'package:gc_wizard/utils/complex_return_types.dart';
 void main() {
   group("Hill.encrypt:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      {'input' : 'short example', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'APADJ TFTWLFJ')},
-
-
       {'input' : '', 'key' : '', 'matrixSize' : 2, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('KeyEmpty', '')},
-      {'input' : 'ACT', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'POH')},
-      {'input' : 'GFG', 'key' : 'HILLMAGIC', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'SWK')},
+      {'input' : 'ACTX', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('InvalidFillCharacter', ''), 'fillChar' : 'xx'},
 
+      {'input' : '', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', '')},
+      {'input' : '!', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', '!')},
       {'input' : 'short example', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'APADJ TFTWLFJ')},
-      {'input' : 'retreat now', 'key' : 'BACK UP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'DPQRQEV KPQ')},
+
+      {'input' : 'ACT', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'POH')},
+      {'input' : 'ACT', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'POH'), 'fillChar' : ''},
+      {'input' : 'GFG', 'key' : 'HILLMAGIC', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('InvalidKey', 'SWK')},
+      {'input' : 'retreat now', 'key' : 'BACK UP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'DPQRQEV KPQLR')},
+
+      {'input' : 'retreat now', 'key' : 'BACK UP', 'matrixSize' : 4, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('InvalidKey', 'RBZTQPT HEJPF')},
+      {'input' : 'retreat now', 'key' : 'BACK UPB', 'matrixSize' : 4, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('InvalidKey', 'RDUOQVJ XEJLB')},
+      {'input' : 'TREFFE KONTAKTPERSON UM DREI UHR IM STADTPARK', 'key' : 'UCBVQLZUOSHMZWXE', 'matrixSize' : 4, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'DPKZWE QFOTUDRZODPXD TJ CZTS FXL DY GSCCDRHNCU')},
+
+      {'input' : 'retreat now!', 'key' : 'BACK UP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'DPQRQEV KPQ!LR')},
     ];
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']} key: ${elem['key']} matrixSize: ${elem['matrixSize']}', () {
-        var _actual = encryptText(elem['input'] as String, elem['key'] as String, elem['matrixSize'] as int, (elem['alphabet'] as Alphabet).alphabet);
+        StringText _actual;
+        if (elem['fillChar'] == null) {
+          _actual = encryptText(elem['input'] as String, elem['key'] as String, elem['matrixSize'] as int, (elem['alphabet'] as Alphabet).alphabet);
+        } else {
+          _actual = encryptText(elem['input'] as String, elem['key'] as String, elem['matrixSize'] as int, (elem['alphabet'] as Alphabet).alphabet, elem['fillChar'] as String);
+        }
         expect(_actual.text, (elem['expectedOutput'] as StringText).text);
         expect(_actual.value, (elem['expectedOutput'] as StringText).value);
       });
@@ -32,22 +45,32 @@ void main() {
   group("Hill.decrypt:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'key' : '', 'matrixSize' : 2, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('KeyEmpty', '')},
+      {'input' : 'SWK', 'key' : 'HILLMAGIC', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('InvalidKey', '')},
+      {'input' : 'POHX', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('InvalidFillCharacter', ''), 'fillChar' : 'xx'},
 
-      {'input' : 'POH', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'ACT')},
-
-
-      {'input' : 'POH', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'ACT')},
-      {'input' : 'SWK', 'key' : 'HILLMAGIC', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'GFG')},
-
-      {'input' : 'SYICHOLER', 'key' : 'alphabet', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'WEARESAFE')},
+      {'input' : '', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', '')},
+      {'input' : '!', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', '!')},
       {'input' : 'APADJ TFTWLFJ', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'SHORT EXAMPLE')},
-      {'input' : 'DPQRQEV KPQ', 'key' : 'BACK UP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'RETREAT NOW')},
 
+      {'input' : 'POH', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'ACT')},
+      {'input' : 'POH', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'ACT'), 'fillChar' : ''},
+      {'input' : 'SYICHOLER', 'key' : 'alphabet', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'WEARESAFE')},
+      {'input' : 'DPQRQEV KPQLR', 'key' : 'BACK UP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'RETREAT NOWXX')},
+
+      {'input' : 'DPKZWE QFOTUDRZODPXD TJ CZTS FXL DY GSCCDRHNCU', 'key' : 'UCBVQLZUOSHMZWXE', 'matrixSize' : 4, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'TREFFE KONTAKTPERSON UM DREI UHR IM STADTPARKX')},
+
+      {'input' : 'DPQRQEV KPQ!LR', 'key' : 'BACK UP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'RETREAT NOW!XX')},
     ];
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']} key: ${elem['key']} matrixSize: ${elem['matrixSize']}', () {
-        var _actual = decryptText(elem['input'] as String, elem['key'] as String, elem['matrixSize'] as int, (elem['alphabet'] as Alphabet).alphabet);
+        StringText _actual;
+        if (elem['fillChar'] == null) {
+          _actual = decryptText(elem['input'] as String, elem['key'] as String, elem['matrixSize'] as int, (elem['alphabet'] as Alphabet).alphabet);
+        } else {
+          _actual = decryptText(elem['input'] as String, elem['key'] as String, elem['matrixSize'] as int, (elem['alphabet'] as Alphabet).alphabet, elem['fillChar'] as String);
+        }
+
         expect(_actual.text, (elem['expectedOutput'] as StringText).text);
         expect(_actual.value, (elem['expectedOutput'] as StringText).value);
       });
