@@ -139,12 +139,13 @@ class _SpecificToolLicenses {
 
   ToolLicenseEntry get _toolLicenseOnlineBookPolygraphieTrithemius {
     return ToolLicenseOnlineBook(
-      context: context,
-      author: 'Johannes Trithemius',
-      title: 'Polygraphie et universelle escriture cabalistique',
-      sourceUrl: 'https://archive.org/details/Historiaedegent00Olau',
-      year: 1557,
-      licenseType: ToolLicenseType.PUBLIC_DOMAIN,
+        context: context,
+        author: 'Johannes Trithemius, published by Boston Public Library',
+        title: 'Polygraphie et vniuerselle escriture cabalistique',
+        year: 1561,
+        sourceUrl: 'https://archive.org/details/polygraphieetvni00trit/page/n7/mode/2up',
+        licenseUrl: 'https://web.archive.org/web/20240205061241/https://www.bpl.org/digitization/locations/',
+        licenseType: ToolLicenseType.PUBLIC_DOMAIN
     );
   }
 

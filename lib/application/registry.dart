@@ -5057,6 +5057,11 @@ void initializeRegistry(BuildContext context) {
           sourceUrl: 'https://web.archive.org/web/20230610084302/https://chank.com/font-AlienMushrooms',
           licenseType: ToolLicenseType.PRIVATE_PERMISSION)
     ]),
+    GCWSymbolTableTool(symbolKey: 'allemans_germains', symbolSearchStrings: const [
+      'symbol_allemans_germains',
+    ], licenses: [
+      stl._toolLicenseOnlineBookPolygraphieTrithemius
+    ]),
     GCWSymbolTableTool(symbolKey: 'angerthas_cirth', symbolSearchStrings: const [
       'symbol_lordoftherings',
       'symbol_runes',
@@ -5183,6 +5188,11 @@ void initializeRegistry(BuildContext context) {
           month: 1,
           day: 1,
           sourceUrl: 'https://web.archive.org/web/20240808102336/https://www.academia.edu/792102')
+    ]),
+    GCWSymbolTableTool(symbolKey: 'autre_beda', symbolSearchStrings: const [
+      'symbol_autre_beda',
+    ], licenses: [
+      stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
     GCWSymbolTableTool(symbolKey: 'babylonian_numerals', symbolSearchStrings: const [
       'babylonian_numerals',
@@ -5438,6 +5448,11 @@ void initializeRegistry(BuildContext context) {
           sourceUrl: '',
           customComment: 'Inventarnummer 4.2012.446')
     ]),
+    GCWSymbolTableTool(symbolKey: 'charactere_antique', symbolSearchStrings: const [
+      'symbol_charactere_antique',
+    ], licenses: [
+      stl._toolLicenseOnlineBookPolygraphieTrithemius
+    ]),
     GCWSymbolTableTool(symbolKey: 'foybreguet', symbolSearchStrings: const [
       'telegraph',
       'symbol_chappe',
@@ -5479,6 +5494,11 @@ void initializeRegistry(BuildContext context) {
           sourceUrl:
           'https://web.archive.org/web/20220726192456/https://www.dafont.com/de/lettertype-mies-christmas-icons.font',
           licenseType: ToolLicenseType.PERSONAL_USE)
+    ]),
+    GCWSymbolTableTool(symbolKey: 'cicero', symbolSearchStrings: const [
+      'symbol_cicero',
+    ], licenses: [
+      stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
     GCWSymbolTableTool(symbolKey: 'cirth_erebor', symbolSearchStrings: const [
       'symbol_runes',
@@ -5833,6 +5853,11 @@ void initializeRegistry(BuildContext context) {
           sourceUrl: 'https://en.wikipedia.org/w/index.php?title=Dorabella_Cipher&oldid=1227166448',
           licenseType: ToolLicenseType.CCBYSA4)
     ]),
+    GCWSymbolTableTool(symbolKey: 'doracus', symbolSearchStrings: const [
+      'symbol_doracus',
+    ], licenses: [
+      stl._toolLicenseOnlineBookPolygraphieTrithemius
+    ]),
     GCWSymbolTableTool(symbolKey: 'doremi', symbolSearchStrings: const [
       'symbol_doremi',
     ], licenses: [
@@ -5881,6 +5906,11 @@ void initializeRegistry(BuildContext context) {
     GCWSymbolTableTool(symbolKey: 'elia', symbolSearchStrings: const [
       'elia',
     ], licenses: const []),
+    GCWSymbolTableTool(symbolKey: 'enn_agrammaton', symbolSearchStrings: const [
+      'symbol_enn_agrammaton',
+    ], licenses: [
+      stl._toolLicenseOnlineBookPolygraphieTrithemius
+    ]),
     GCWSymbolTableTool(symbolKey: 'enochian', symbolSearchStrings: const [
       'symbol_enochian',
     ], licenses: [
@@ -5943,6 +5973,11 @@ void initializeRegistry(BuildContext context) {
           sourceUrl:
           'https://web.archive.org/web/20240714203824/https://nederlandse-fantasia.fandom.com/wiki/Fantastisch',
           licenseType: ToolLicenseType.CCBYSA3)
+    ]),
+    GCWSymbolTableTool(symbolKey: 'feimeiri', symbolSearchStrings: const [
+      'symbol_feimeiri',
+    ], licenses: [
+      stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
     GCWSymbolTableTool(symbolKey: 'fez', symbolSearchStrings: const [
       'symbol_fez',
@@ -6317,6 +6352,11 @@ void initializeRegistry(BuildContext context) {
       stl._toolLicenseMyGeoToolsCodeTabellen,
       stl._toolLicenseGeocachingToolbox,
     ]),
+    GCWSymbolTableTool(symbolKey: 'hichus', symbolSearchStrings: const [
+      'symbol_hichus',
+    ], licenses: [
+      stl._toolLicenseOnlineBookPolygraphieTrithemius
+    ]),
     GCWSymbolTableTool(symbolKey: 'hieratic_numerals', symbolSearchStrings: const [
       'symbol_hieratic_numerals',
     ], licenses: [
@@ -6340,6 +6380,11 @@ void initializeRegistry(BuildContext context) {
           title: 'Tolkien Dwarf Runes',
           sourceUrl: 'https://web.archive.org/web/20170615235150/http://www.fonts2u.com/tolkien-dwarf-runes.font',
           licenseType: ToolLicenseType.FREE_TO_USE)
+    ]),
+    GCWSymbolTableTool(symbolKey: 'honorius_thebanus', symbolSearchStrings: const [
+      'symbol_honorius_thebanus',
+    ], licenses: [
+      stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
     GCWSymbolTableTool(symbolKey: 'hvd', symbolSearchStrings: const [
       'symbol_hvd',
@@ -6429,6 +6474,11 @@ void initializeRegistry(BuildContext context) {
     ], licenses: [
       stl._toolLicenseMyGeoToolsCodeTabellen,
       stl._toolLicenseGeocachingToolbox,
+    ]),
+    GCWSymbolTableTool(symbolKey: 'iamiel_iadis_roy_des_artiques', symbolSearchStrings: const [
+      'symbol_iamiel_iadis_roy_des_artiques',
+    ], licenses: [
+      stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
     GCWSymbolTableTool(symbolKey: 'ice_lolly_ding', symbolSearchStrings: const [
       'symbol_icelolly',
@@ -6719,6 +6769,11 @@ void initializeRegistry(BuildContext context) {
           title: 'Noto Sans Linear B',
           sourceUrl: 'https://fonts.google.com/noto/specimen/Noto+Sans+Linear+B',
           licenseType: ToolLicenseType.OFL11)
+    ]),
+    GCWSymbolTableTool(symbolKey: 'livre_cinqiesme', symbolSearchStrings: const [
+      'symbol_livre_cinqiesme',
+    ], licenses: [
+      stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
     GCWSymbolTableTool(symbolKey: 'lorm', symbolSearchStrings: const [
       'symbol_signlanguage',
@@ -7058,6 +7113,16 @@ void initializeRegistry(BuildContext context) {
           sourceUrl: 'https://web.archive.org/web/20240729052359/https://www.cufonfonts.com/font/ninjargon',
           licenseType: ToolLicenseType.NON_COMMERCIAL)
     ]),
+    GCWSymbolTableTool(symbolKey: 'nortman', symbolSearchStrings: const [
+      'symbol_nortman',
+    ], licenses: [
+      stl._toolLicenseOnlineBookPolygraphieTrithemius
+    ]),
+    GCWSymbolTableTool(symbolKey: 'nortman_de_beda', symbolSearchStrings: const [
+      'symbol_nortman_de_beda',
+    ], licenses: [
+      stl._toolLicenseOnlineBookPolygraphieTrithemius
+    ]),
     GCWSymbolTableTool(symbolKey: 'notes_doremi', symbolSearchStrings: const [
       'music',
       'music_notes',
@@ -7200,6 +7265,11 @@ void initializeRegistry(BuildContext context) {
         sourceUrl:
         'https://web.archive.org/web/20240808130122/https://www.opternus.de/media/pdf/79/53/b6/LWL-Farbcodes.pdf',
       )
+    ]),
+    GCWSymbolTableTool(symbolKey: 'ottride', symbolSearchStrings: const [
+      'symbol_ottride',
+    ], licenses: [
+      stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
     GCWSymbolTableTool(symbolKey: 'phoenician', symbolSearchStrings: const [
       'symbol_phoenician',
@@ -7862,6 +7932,16 @@ void initializeRegistry(BuildContext context) {
     GCWSymbolTableTool(symbolKey: 'terzi', symbolSearchStrings: const [
       'symbol_terzi',
     ], licenses: const []),
+    GCWSymbolTableTool(symbolKey: 'tetragrammatique_v1', symbolSearchStrings: const [
+      'symbol_tetragrammatique_v1',
+    ], licenses: [
+      stl._toolLicenseOnlineBookPolygraphieTrithemius
+    ]),
+    GCWSymbolTableTool(symbolKey: 'tetragrammatique_v2', symbolSearchStrings: const [
+      'symbol_tetragrammatique_v2',
+    ], licenses: [
+      stl._toolLicenseOnlineBookPolygraphieTrithemius
+    ]),
     GCWSymbolTableTool(symbolKey: 'thai_numerals', symbolSearchStrings: const [
       'symbol_thai_numerals',
     ], licenses: [
@@ -8156,8 +8236,8 @@ void initializeRegistry(BuildContext context) {
       ToolLicenseOnlineArticle(
           context: context,
           author: 'commons.wikimedia.org and contributors',
-          title: 'Wind speed',
-          sourceUrl: 'https://commons.wikimedia.org/w/index.php?title=Wind_speed&oldid=760157124',
+          title: 'Wingdings',
+          sourceUrl: 'https://en.wikipedia.org/w/index.php?title=Wingdings&oldid=1234924688',
           licenseType: ToolLicenseType.PUBLIC_DOMAIN)
     ]),
     GCWSymbolTableTool(symbolKey: 'wingdings2', symbolSearchStrings: const [
