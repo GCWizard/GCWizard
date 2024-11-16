@@ -80,10 +80,14 @@ Based on **Flutter/Dart**.
 
 * [Manual](https://blog.gcwizard.net/manual/en/) 🇬🇧 🇩🇪
 * [Web View](http://gcwizard.net)
+* [FAQ](https://blog.gcwizard.net/category/faq/)
 
 ### Development
 * [Github](https://github.com/GCWizard/GCWizard): Code and assets
 * [Crowdin](https://crowdin.com/project/gc-wizard): Translations
+  
+### E-mail
+* info@gcwizard.net
 
 ### Social Media
 * [Blog](https://blog.gcwizard.net/) 🇬🇧 🇩🇪
