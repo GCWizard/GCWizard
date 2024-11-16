@@ -82,7 +82,7 @@ List<List<double>>? matrixInvert(List<List<double>> matrix) {
   // Initialize augmented matrix with the input matrix and the identity matrix
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < n; j++) {
-      augmented[i][j] = matrix[i][j].toDouble();
+      augmented[i][j] = matrix[i][j];
       augmented[i][j + n] = (i == j) ? 1 : 0;
     }
   }
