@@ -24,6 +24,7 @@ void main() {
       {'input' : 'retreat now', 'key' : 'BACK UP', 'matrixSize' : 4, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('InvalidKey', 'RBZTQPT HEJPF')},
       {'input' : 'retreat now', 'key' : 'BACK UPB', 'matrixSize' : 4, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('InvalidKey', 'RDUOQVJ XEJLB')},
       {'input' : 'TREFFE KONTAKTPERSON UM DREI UHR IM STADTPARK', 'key' : 'UCBVQLZUOSHMZWXE', 'matrixSize' : 4, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'DPKZWE QFOTUDRZODPXD TJ CZTS FXL DY GSCCDRHNCU')},
+      {'input' : 'TREFFE KONTAKTPERSON UM DREI UHR IM STADTPARK', 'key' : 'UCBVQLZUOSHMZWXE', 'matrixSize' : 4, 'alphabet' : alphabetAZ09, 'expectedOutput' : StringText('', 'THMZQG U5EF61PJM33PH VX K3RY 9FF ZK 8SQQHXX7EM')},
 
       {'input' : 'retreat now!', 'key' : 'BACK UP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'DPQRQEV KPQ!LR')},
     ];
@@ -58,6 +59,7 @@ void main() {
       {'input' : 'DPQRQEV KPQLR', 'key' : 'BACK UP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'RETREAT NOWXX')},
 
       {'input' : 'DPKZWE QFOTUDRZODPXD TJ CZTS FXL DY GSCCDRHNCU', 'key' : 'UCBVQLZUOSHMZWXE', 'matrixSize' : 4, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'TREFFE KONTAKTPERSON UM DREI UHR IM STADTPARKX')},
+      {'input' : 'THMZQG U5EF61PJM33PH VX K3RY 9FF ZK 8SQQHXX7EM', 'key' : 'UCBVQLZUOSHMZWXE', 'matrixSize' : 4, 'alphabet' : alphabetAZ09, 'expectedOutput' : StringText('', 'TREFFE KONTAKTPERSON UM DREI UHR IM STADTPARKX')},
 
       {'input' : 'DPQRQEV KPQ!LR', 'key' : 'BACK UP', 'matrixSize' : 3, 'alphabet' : alphabetAZ0, 'expectedOutput' : StringText('', 'RETREAT NOW!XX')},
     ];

@@ -187,7 +187,7 @@ String _removeNonAlphabetCharacters(String text, Map<String, String> alphabet ) 
   return text.split('').map((char) => alphabet.containsKey(char.toUpperCase()) ? char : '').join();
 }
 
-// following function convert the message
+// Following function convert the message
 List<List<double>>? _matrixMultiplication(List<List<double>> keyMatrix, List<List<double>> messageVector, int alphabetLength) {
   var resultMatrix = matrixMultiplication(keyMatrix, messageVector);
   if (resultMatrix == null) return null;
