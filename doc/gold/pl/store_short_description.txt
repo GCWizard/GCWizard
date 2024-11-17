@@ -1,1 +1,1 @@
-Wersja wspierana: taka sama jak darmowa wersja "GC Wizard", brak innych funkcji
+Wersja wspierana: taka sama jak darmowa wersja "GC Wizard", bez innych funkcji
