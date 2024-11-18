@@ -1,83 +1,86 @@
+# GC WIZARD
+
 <p align="center">
   <img src="https://github.com/GCWizard/GCWizard/blob/master/assets/logo/circle_border_128.png?raw=true" alt="GC Wizard logo"/>
 </p>
 
-The GC Wizard is an open-source tool collection for **Android** and **iOS**. There is also an alpha version of a **[Web View](http://gcwizard.net)**.
+GC Wizard to zbiór narzędzi Open-source dla **Androida** oraz **iOSa**. Jest również dostępna wersja **[WWW](http://gcwizard.net)**.
 
-It was originally created to offer Geocachers an offline tool to support them with in-field mysteries and riddles. So, the GC Wizard contains numerous tools for simple cryptography, geodetic and scientific calculations as well as hundreds of sets of various symbols.
+Pierwotnie został stworzony, aby zaoferować geocacherom narzędzie offline, które pomoże im w rozwiązywaniu zagadek i łamigłówek w terenie. GC Wizard zawiera więc liczne narzędzia do prostej kryptografii, obliczeń geodezyjnych i naukowych, a także setki zestawów różnych symboli.
 
-Meanwhile the project became very huge and might be practicable for many non-Geocaching issues.
+W międzyczasie projekt stał się bardzo duży i może być praktyczny dla wielu zagadnień niezwiązanych z geocachingiem.
 
-Translated into 🇬🇧 🇩🇪 🇫🇷 🇰🇷 🇳🇱 🇸🇰 🇸🇪 (Crowdin: [Translate into your language](https://crowdin.com/project/gc-wizard))
+Został przetłumaczony na: 🇬🇧 🇩🇪 🇫🇷 🇰🇷 🇳🇱 🇸🇰 🇸🇪 (Crowdin: [Przetłumacz na swój język](https://crowdin.com/project/gc-wizard))
 
-Based on **Flutter/Dart**.
+Został stworzony na **Flutter/Dart**.
 
-## Philosophy
-1. There are so many great Geocaches out there. We had so much fun with them. With the GC Wizard, **we want to give something back to the community**. We may not make such great Geocaches, but hopefully a great supporting tool.
-1. The **GC Wizard will always be free** for everybody.
-1. With making this project open-source we want to invite all the great GC tool providers to share their knowledge and algorithms. Nobody should need to build a ROT-13 tool or whatever from scratch anymore. **Somebody already did it**.
 
-## Highlights
 
-### General
-* **Formula Solver**: For handling variables in multi stage caches
-* **Multi Decoder**: Enter an unknown code and let several decoders and calculators interpret it in a row
-* More than **250 sets of Symbol Tables**: Direct decoding symbols to characters; save own encoding as an image
-* **[Online Manual](https://blog.gcwizard.net/manual/en/)**: Every tool has its own manual page, translated into 🇬🇧 🇩🇪
+## Filozofia
+1. Jest tak wiele wspaniałych skrytek geocache. Mieliśmy z nimi tyle zabawy. **Dzięki GC Wizard chcemy dać coś społeczności**. Być może nie stworzymy tak wspaniałych skrytek, ale mamy nadzieję, że będzie to świetne narzędzie pomocnicze.
+1. **GC WIZARD zawsze będzie darmowy** dla wszystkich.
+1. Tworząc ten projekt open-source, chcemy zaprosić wszystkich wspaniałych twórców zagadek do dzielenia się swoją wiedzą i algorytmami. Nikt nie powinien już potrzebować budować narzędzia ROT-13 lub czegokolwiek innego od zera. **Ktoś już to zrobił**.
 
-### Cryptography & Encodings
-* **Alphabet Values** (A = 1, B = 2, ...): Completely configurable alphabets with language specific special character handling
-* **Braille** graphical decoder: Type the points into a graphical interface; supports different languages
-* **Book Cipher**: Choose the correct system (e.g. Line + Letter Number or Section + Line + Word Number, ...), handle special characters and empty lines, ...
-* **Enigma**: A full working Enigma simulator incl. numerous possible settings
-* **Esoteric Languages**: Generators and interpretors for several esoteric programming languages like Brainfuck, Ook, Malbolge and Chef
-* **Morse**
-* **Numeral Words**: Lists of important numbers in different languages. For English and German there are parsers to identify even complex numeral words like "onethousandthreehundredfourty-two"
-* **Substitution** and **Vigenère Code Breakers**: Try to find the solution without knowing the keys
-* **Classic Codes**: Playfair, Polybios, Railfence, ...
-* **Historic codes**: Caesar, Vigenère, old telegraph codes, ...
-* **Military codes**: ADFGX, Cipher Wheel, Tapir, ...
-* **Technical encodings**: BCD, CCITT, Hashes (incl. brute-force hash breaker), RSA, ...
+## Najważniejsze funkcje:
+
+### Ogólne
+**Formula Solver**: Do obsługi zmiennych w wieloetapowych skrytkach =-- 
+**Multi Decoder**: Wprowadź nieznany kod i pozwól, aby kilka dekoderów i kalkulatorów zinterpretowało go pod rząd.
+* Ponad **250 zestawów tabel symboli**: Bezpośrednie dekodowanie symboli na znaki; zapisywanie własnego kodowania jako obrazu
+* **[Podręcznik Online](https://blog.gcwizard.net/manual/en/)**: Każde narzędzie ma własną stronę podręcznika, przetłumaczoną na 🇬🇧 🇩🇪
+
+### Kryptografia i kodowanie
+* **Wartości Liczbowe** (A = 1, B = 2, ...): W pełni konfigurowalne alfabety z obsługą znaków specjalnych specyficznych dla danego języka
+* Dekoder graficzny **Braille**: Wpisywanie punktów do interfejsu graficznego; obsługuje różne języki
+**Szyfr książkowy**: Wybór właściwego systemu (np. linia + numer litery lub sekcja + linia + numer słowa, ...), obsługa znaków specjalnych i pustych linii, ...
+**Enigma**: W pełni działający symulator Enigmy z wieloma możliwymi ustawieniami
+**Języki ezoteryczne**: Generatory i interpretatory dla kilku ezoterycznych języków programowania, takich jak Brainf*ck, Ook, Malbolge i Chef
+**Alfabet MORSE'A**.
+**Zdania liczbowe**: Listy ważnych liczb w różnych językach. Dla języka angielskiego i niemieckiego dostępne są parsery identyfikujące nawet złożone słowa liczbowe, takie jak „tysiąctrzystaczterdzieści-dwa”.
+**Substitution** i **Łamacz szyfrów Vigenère**: Spróbuj znaleźć rozwiązanie bez znajomości kluczy
+**Klasyczne szyfry**: Playfair, Polybios, Railfence, ...
+**Historyczne kody**: Cezar, Vigenère, stare kody telegraficzne, ...
+**Kody wojskowe**: ADFGX, Cipher Wheel, Tapir, ...
+**Kodowania techniczne**: BCD, CCITT, Hashes (w tym brute-force hash breaker), RSA, ...
 * ...
 
-### Coordinates
-* **High precision coordinate algorithms** which support even with very long distances by always considering the earth's shape (ellipsoid)
-* Support of **many different rotation ellipsoids**, even other planets
-* **Coordinate Formats**: Support of UTM, MGRS, XYZ, SwissGrid, QTH, NAC, PlusCode, Geohash, ...
-* **Waypoint Projection**: Includes precise reverse projection
-* **Open Map**: Set own points and lines between points, measure paths, export as and import from GPX/KML files; OpenStreetMap and satellite view
-* **Variable Coordinate**: Interpolate coordinate formulas if some parts of coordinate are not given. Show result on map
-* Several **high-precise calculations**: Antipode, Cross bearing, Center point of two and three coordinates, different intersections of lines and circles, ...
+### Współrzędne
+* **Algorytmy dla wysokiej precyzji współrzędnych**, które obsługują nawet bardzo duże odległości, zawsze biorąc pod uwagę kształt Ziemi (elipsoidę).
+* Obsługa **wielu różnych elipsoid obrotu**, nawet innych planet
+* **Formaty współrzędnych**: Obsługa UTM, MGRS, XYZ, SwissGrid, QTH, NAC, PlusCode, Geohash, ...
+* **Projekcja współrzędnych**: Obejmuje precyzyjną projekcję wsteczną
+* **Open Map**: Ustawianie własnych punktów i linii między punktami, mierzenie ścieżek, eksportowanie i importowanie z plików GPX/KML; OpenStreetMap i widok satelitarny.
+* **Zmienne wartości**: Interpoluj formuły współrzędnych, jeśli niektóre części współrzędnych nie są podane. Pokaż wynik na mapie
+* Kilka **dokładnych obliczeń**: Antypody, namiar krzyżowy, punkt środkowy dwóch i trzech współrzędnych, różne przecięcia linii i okręgów, ...
 
-### Science and Technology
-*  **Astronomy**: Calculate position of sun and moon at a certain place and time
-* **Color Space Converter**: Convert color values between RGB, HSL, Hex, CMYK, YPbPr, ...
-* **Countries**: ISO and IOC codes, calling and vehicle registration codes, flags, IATA and ICAO airfield codes
-* **Date and Time functions**: Weekday, time differences, ...
-* **Irrational Numbers**: *π*, *φ* and *e*: Show and search up to > 1,000,000 digits
-* **Number sequences**: Factorial, Fibonacci, Fermat, Mersenne and Co.
-* **Numeral Systems**: Converts decimal to binary, hexadecimal, ...; supports negative bases
-* **Periodic Table of the Elements**: Interactive view and lists which order the elements by any criterion
-* **Phone Keys** (Vanity): Converts classic phone keys to letters. Supports phone model specific behaviours
-* **Prime Numbers**: Search prime numbers up to 1,000,000
-* **Segment Display**: Graphical interface for decoding and encoding 7, 14 or 16 segment displays
-* **Unit Converter**: Length, Volume, Pressure, Power and many more; convert between common units incl. prefixes like *micro* and *kilo*
-* Apparent Temperature, Combinatorics, Cross Sums, DTMF, Keyboard layouts, Projectiles, Resistor codes, ...
+### Nauka i technologia
+* **Astronomia**: Obliczanie pozycji słońca i księżyca w określonym miejscu i czasie
+* **Konwerter przestrzeni kolorów**: Konwersja wartości kolorów pomiędzy RGB, HSL, Hex, CMYK, YPbPr, ...
+* **Kraje**: Kody ISO i IOC, kody połączeń i rejestracji pojazdów, flagi, kody lotnisk IATA i ICAO.
+* **Funkcje daty i godziny**: Dzień tygodnia, różnice czasowe, ...
+* **Liczby niewymierne**: *π*, *φ* i *e*: Wyświetlanie i wyszukiwanie do > 1 000 000 cyfr
+* **Sekwencje liczbowe**: Faktoryczny, Fibonacciego, Fermata, Mersenne'a i in.
+* **Systemy liczbowe**: Konwertuje system dziesiętny na binarny, szesnastkowy, ...; obsługuje bazy ujemne.
+* **Tablica okresowa pierwiastków**: Interaktywny widok i listy, które porządkują pierwiastki według dowolnego kryterium
+* **Przyciski telefonów** (Vanity): Konwertuje klasyczne klawisze telefonu na litery. Obsługuje zachowania specyficzne dla modelu telefonu
+* **Liczby pierwsze**: Wyszukiwanie liczb pierwszych do 1 000 000
+* **Wyświetlacze segmentowe**: Graficzny interfejs do dekodowania i kodowania wyświetlaczy 7, 14 lub 16 segmentowych
+* **Konwerter jednostek**: Długość, objętość, ciśnienie, moc i wiele innych; konwersja między popularnymi jednostkami, w tym przedrostkami takimi jak *micro* i *kilo*.
+* Temperatura pozorna, kombinatoryka, sumy krzyżowe, DTMF, układy klawiatury, pociski, kody rezystorów, ...
 
-### Images and Files
-* **Hex Viewer**
-* **Exif/Metadata Viewer** for images
-* **Wherigo Analyzer** to show content of WIG cartridges
-* Analyse frames of **Animated Images**
-* **Color corrections**: Adjust contrast, saturation, gamma, edge detection, ...
-* Search for **Hidden Data** or hidden archives
-* Read **QR/Barcodes** from images, create QR/Barcodes from binary input
+### Obrazy i pliki
+* **Przeglądarka Hex**
+* **Exif/Metadata Viewer** dla obrazów
+**Wherigo Analyzer** do wyświetlania zawartości kartridży WIG
+* Analiza klatek **Animowanych obrazów**
+**Korekta kolorów**: Regulacja kontrastu, nasycenia, gamma, wykrywanie krawędzi, ...
+* Wyszukiwanie **Ukrytych danych** lub Ukrytych archiwów
+* **Czyta kody QR/Barcody** ze zdjęć, tworzy kody QR z wejścia binarnego
 * ...
+## Linki
 
-## Links
-
-* [Manual](https://blog.gcwizard.net/manual/en/) 🇬🇧 🇩🇪
-* [Web View](http://gcwizard.net)
+* [Instrukcja](https://blog.gcwizard.net/manual/en/) 🇬🇧 🇩🇪
+* [WWW](http://gcwizard.net)
 * [FAQ](https://blog.gcwizard.net/category/faq/)
 
 ### Development
@@ -91,7 +94,7 @@ Based on **Flutter/Dart**.
 * [Blog](https://blog.gcwizard.net/) 🇬🇧 🇩🇪
 * [Mastodon](https://fosstodon.org/@gcwizard) 🇬🇧
 
-### App Stores
-* There are **two versions** available: Normal and *Gold*. *Gold* version **is absolutely the same** (only another logo 😉), no additional features. It is just for supporting the developers.
+### Sklepy z aplikacjami
+* Są dostępne dwie wersje: Normalna i GOLD **GOLD to absolutnie to samo co Normal** (tylko inne logo), bez dodatkowych funkcji. Jest to tylko pomoc dla programistów
 * [Google PlayStore](https://play.google.com/store/apps/details?id=de.sman42.gc_wizard) ([Gold](https://play.google.com/store/apps/details?id=de.sman42.gc_wizard_gold))
 * [Apple AppStore](https://apps.apple.com/us/app/id1506766126) ([Gold](https://apps.apple.com/us/app/id1510372318))
