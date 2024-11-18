@@ -95,6 +95,6 @@ Został stworzony na **Flutter/Dart**.
 * [Mastodon](https://fosstodon.org/@gcwizard) 🇬🇧
 
 ### Sklepy z aplikacjami
-* Są dostępne dwie wersje: Normalna i GOLD **GOLD to absolutnie to samo co Normal** (tylko inne logo), bez dodatkowych funkcji. Jest to tylko pomoc dla programistów
+* Są dostępne dwie wersje: Normalna i *GOLD*. **GOLD to absolutnie to samo co Normal** (tylko inne logo), bez dodatkowych funkcji. Jest to tylko pomoc dla programistów
 * [Google PlayStore](https://play.google.com/store/apps/details?id=de.sman42.gc_wizard) ([Gold](https://play.google.com/store/apps/details?id=de.sman42.gc_wizard_gold))
 * [Apple AppStore](https://apps.apple.com/us/app/id1506766126) ([Gold](https://apps.apple.com/us/app/id1510372318))
