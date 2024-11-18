@@ -58,19 +58,18 @@ class _SymbolTableConfig {
 }
 
 class SymbolTableData {
-  final BuildContext _context;
   final String symbolKey;
 
-  SymbolTableData(this._context, this.symbolKey);
+  SymbolTableData(this.symbolKey);
 
   final _config = _SymbolTableConfig();
   List<Map<String, SymbolData>> images = [];
   int maxSymbolTextLength = 0;
 
-  Future<void> initialize({bool importEncryption = true}) async {
-    await _loadConfig();
-    await _initializeImages(importEncryption);
-  }
+  Future<void> initialize(BuildContext context, {bool importEncryption = true}) async {
+    await _loadConfig(context);
+    await _initializeImages(context, importEncryption);
+   }
 
   Size? imageSize() {
     return images.first.values.first.imageSize();
@@ -84,10 +83,10 @@ class SymbolTableData {
     return SYMBOLTABLES_ASSETPATH + symbolKey + '/';
   }
 
-  Future<void> _loadConfig() async {
+  Future<void> _loadConfig(BuildContext context) async {
     String? file;
     try {
-      file = await DefaultAssetBundle.of(_context).loadString(_pathKey() + SymbolTableConstants.CONFIG_FILENAME);
+      file = await DefaultAssetBundle.of(context).loadString(_pathKey() + SymbolTableConstants.CONFIG_FILENAME);
     } catch (e) {}
 
     file ??= '{}';
@@ -139,7 +138,7 @@ class SymbolTableData {
     }
   }
 
-  String _createKey(String filename) {
+  String _createKey(BuildContext context, String filename) {
     var imageKey = filenameWithoutSuffix(filename);
     imageKey = imageKey.replaceAll(RegExp(r'(^_*|_*$)'), '');
 
@@ -151,9 +150,9 @@ class SymbolTableData {
       key = _COMMON_SYMBOLS[imageKey]!;
     } else if ((_config.translate.contains(imageKey))) {
       if (_config.translationPrefix.isNotEmpty) {
-        key = i18n(_context, _config.translationPrefix + imageKey);
+        key = i18n(context, _config.translationPrefix + imageKey);
       } else {
-        key = i18n(_context, 'symboltables_' + symbolKey + '_' + imageKey);
+        key = i18n(context, 'symboltables_' + symbolKey + '_' + imageKey);
       }
       setTranslateable = true;
     } else {
@@ -171,9 +170,9 @@ class SymbolTableData {
     return key;
   }
 
-  Future<void> _initializeImages(bool importEncryption) async {
+  Future<void> _initializeImages(BuildContext context, bool importEncryption) async {
     //AssetManifest.json holds the information about all asset files
-    final manifestContent = await DefaultAssetBundle.of(_context).loadString('AssetManifest.json');
+    final manifestContent = await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
     final manifestMap = asJsonMap(json.decode(manifestContent));
 
     final imageArchivePaths = manifestMap.keys
@@ -184,7 +183,7 @@ class SymbolTableData {
     if (imageArchivePaths.isEmpty) return;
 
     // Read the Zip file from disk.
-    final bytes = await DefaultAssetBundle.of(_context)
+    final bytes = await DefaultAssetBundle.of(context)
         .load(imageArchivePaths.firstWhere((path) => !path.contains('_encryption')));
     InputStream input = InputStream(bytes.buffer.asByteData());
     // Decode the Zip file
@@ -195,7 +194,7 @@ class SymbolTableData {
       ByteData encryptionBytes;
       var encryptionImageArchivePaths = imageArchivePaths.where((path) => path.contains('_encryption')).toList();
       if (encryptionImageArchivePaths.isNotEmpty) {
-        encryptionBytes = await DefaultAssetBundle.of(_context).load(encryptionImageArchivePaths.first);
+        encryptionBytes = await DefaultAssetBundle.of(context).load(encryptionImageArchivePaths.first);
         input = InputStream(encryptionBytes.buffer.asByteData());
         encryptionArchive = ZipDecoder().decodeBuffer(input);
       }
@@ -203,7 +202,7 @@ class SymbolTableData {
 
     images = [];
     for (ArchiveFile file in archive) {
-      var key = _createKey(file.name);
+      var key = _createKey(context, file.name);
 
       if (_config.ignore.contains(key)) continue;
 
@@ -279,5 +278,5 @@ String filenameWithoutSuffix(String filename) {
 }
 
 class defaultSymbolTableData extends SymbolTableData {
-  defaultSymbolTableData(BuildContext context) : super(context, '');
+  defaultSymbolTableData() : super('');
 }

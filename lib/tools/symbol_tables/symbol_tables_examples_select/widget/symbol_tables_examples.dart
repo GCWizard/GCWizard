@@ -148,8 +148,8 @@ class _SymbolTableExamplesState extends State<SymbolTableExamples> {
   }
 
   Future<SymbolTableData> _loadSymbolData(String symbolKey, int index) async {
-    var symbolTableData = SymbolTableData(context, symbolKey);
-    await Future.delayed(Duration(milliseconds: (index~/ 10) * 300) , () => symbolTableData.initialize());
+    var symbolTableData = SymbolTableData(symbolKey);
+    await Future.delayed(Duration(milliseconds: (index~/ 10) * 300) , () => symbolTableData.initialize(context));
 
     return symbolTableData;
   }
