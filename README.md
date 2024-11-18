@@ -1,12 +1,12 @@
 # GC Wizard
 
-#### _Read this in [other languages](xcv)._
+#### _Read this in [other languages](TRANSLATION-README)._
 
 
-<kbd>[<img title="Czech" alt="Czech" src="https://cdn.statically.io/gh/hjnilsson/country-flags/master/svg/cz.svg" width="22">](translations/README.cs.md)</kbd>
-<kbd>[<img title="Deutsch" alt="Deutsch" src="https://cdn.statically.io/gh/hjnilsson/country-flags/master/svg/de.svg" width="22">](translations/README.de.md)</kbd>
-<kbd>[<img title="Française" alt="Française" src="https://cdn.statically.io/gh/hjnilsson/country-flags/master/svg/fr.svg" width="22">](translations/README.fr.md)</kbd>
-<kbd>[<img title="Polski" alt="Polski" src="https://cdn.statically.io/gh/hjnilsson/country-flags/master/svg/pl.svg" width="22">](translations/README.pl.md)</kbd>
+<kbd>[<img title="Czech" alt="Czech" src="https://cdn.statically.io/gh/hjnilsson/country-flags/master/svg/cz.svg" width="22">](TRANSLATION-README/CZ-README.md)</kbd>
+<kbd>[<img title="Deutsch" alt="Deutsch" src="https://cdn.statically.io/gh/hjnilsson/country-flags/master/svg/de.svg" width="22">](TRANSLATION-README/DE-README.md)</kbd>
+<kbd>[<img title="Française" alt="Française" src="https://cdn.statically.io/gh/hjnilsson/country-flags/master/svg/fr.svg" width="22">](TRANSLATION-README/FR-README.md)</kbd>
+<kbd>[<img title="Polski" alt="Polski" src="https://cdn.statically.io/gh/hjnilsson/country-flags/master/svg/pl.svg" width="22">](TRANSLATION-README/PL-README.md)</kbd>
 
 
 
