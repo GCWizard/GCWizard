@@ -55,6 +55,12 @@ class _GCWAsyncExecuterState<T> extends State<GCWAsyncExecuter<T>> {
   }
 
   @override
+  void dispose() {
+    _cancelProcess(); // Beende alle Ressourcen
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Stream<double> progress() async* {
       var parameter = await widget.parameter();
@@ -65,15 +71,22 @@ class _GCWAsyncExecuterState<T> extends State<GCWAsyncExecuter<T>> {
         } else {
           _receivePort = await _makeIsolate(widget.isolatedFunction, parameter);
         }
-        if (_cancel) _cancelProcess();
+        if (_cancel) {
+          _cancelProcess();
+          return;
+        }
 
         await for (var event in _receivePort!) {
+          if (_cancel) {
+            _cancelProcess();
+            break;
+          }
           if (event is DoubleText && event.text == PROGRESS) {
             yield event.value;
           } else if (event is T) {
             _result = event;
             _receivePort!.close();
-            return;
+            break;
           }
         }
       }
@@ -84,7 +97,8 @@ class _GCWAsyncExecuterState<T> extends State<GCWAsyncExecuter<T>> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (widget.isOverlay) {
-              Navigator.of(context).pop(); // Pop from dialog on completion (needen on overlay)
+              Navigator.of(context).pop();
+              _cancelProcess();// Pop from dialog on completion (needen on overlay)
             }
             if (_result is T) {
               widget.onReady(_result as T);
@@ -131,7 +145,13 @@ class _GCWAsyncExecuterState<T> extends State<GCWAsyncExecuter<T>> {
   }
 
   void _cancelProcess() {
-    if (_isolate != null) _isolate!.kill(priority: Isolate.immediate);
-    if (_receivePort != null) _receivePort!.close();
+    if (_isolate != null) {
+      _isolate!.kill(priority: Isolate.immediate);
+      _isolate = null; // Entferne die Referenz
+    }
+    if (_receivePort != null) {
+      _receivePort!.close();
+      _receivePort = null; // Entferne die Referenz
+    }
   }
 }
