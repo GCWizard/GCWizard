@@ -521,15 +521,26 @@ class _SymbolReplacerState extends State<SymbolReplacer> {
     var list = <List<Map<String, SymbolReplacerSymbolData>>>[];
     if (_symbolImage == null) return null;
 
-    list = await Future.wait(_compareSymbolItems.map((_symbolTableViewData) async {
-      var symbolTableViewData = _symbolTableViewData.value;
-      if (symbolTableViewData.data == null) await symbolTableViewData.initialize(context);
+    var _allSymbols = _compareSymbolItems.asMap();
 
+    var filteredSymbols = Map.fromEntries(
+      _allSymbols.entries.where((entry) => entry.key <= 200),
+    );
+
+    list = await Future.wait(filteredSymbols.values.map((_symbolTableViewData) async {
+      var symbolTableViewData = _symbolTableViewData.value;
+      if (symbolTableViewData.data == null) {
+        await symbolTableViewData.initialize(context);
+      }
       return symbolTableViewData.data?.images ?? [];
     }));
 
     return GCWAsyncExecuterParameters(
-        Tuple2<SymbolReplacerImage, List<List<Map<String, SymbolReplacerSymbolData>>>>(_symbolImage!, list));
+      Tuple2<SymbolReplacerImage, List<List<Map<String, SymbolReplacerSymbolData>>>>(
+        _symbolImage!,
+        list,
+      ),
+    );
   }
 
   void _showJobDataSearchSymbolTableOutput(List<Map<String, SymbolReplacerSymbolData>>? output) {
