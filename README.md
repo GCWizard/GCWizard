@@ -1,10 +1,10 @@
 # GC Wizard
 
-<p align="center">
+<p style="text-align: center;">
   <img src="https://github.com/S-Man42/GCWizard/blob/master/assets/logo/circle_border_128.png?raw=true" alt="GC Wizard logo"/>
 </p>
 
-The GC Wizard is an open-source tool collection for **Android** and **iOS**. There is also an alpha version of a **[Web View](http://gcwizard.net)**.
+The GC Wizard is an open-source tool collection for **Android** and **iOS**. There is also a **[Browser Version](https://gcwizard.net)** and an alpha **[Test Version](https://test.gcwizard.net)**.
 
 It was originally created to offer Geocachers an offline tool to support them with in-field mysteries and riddles. So, the GC Wizard contains numerous tools for simple cryptography, geodetic and scientific calculations as well as hundreds of sets of various symbols.
 
@@ -24,7 +24,7 @@ Based on **Flutter/Dart**.
 ### General
 * **Formula Solver**: For handling variables in multi stage caches
 * **Multi Decoder**: Enter an unknown code and let several decoders and calculators interpret it in a row
-* More than **250 sets of Symbol Tables**: Direct decoding symbols to characters; save own encoding as an image
+* More than **320 sets of Symbol Tables**: Direct decoding symbols to characters; save own encoding as an image
 * **[Online Manual](https://blog.gcwizard.net/manual/en/)**: Every tool has its own manual page, translated into 🇬🇧 🇩🇪
 
 ### Cryptography & Encodings
@@ -52,7 +52,7 @@ Based on **Flutter/Dart**.
 * Several **high-precise calculations**: Antipode, Cross bearing, Center point of two and three coordinates, different intersections of lines and circles, ...
 
 ### Science and Technology
-*  **Astronomy**: Calculate position of sun and moon at a certain place and time
+* **Astronomy**: Calculate position of sun and moon at a certain place and time
 * **Color Space Converter**: Convert color values between RGB, HSL, Hex, CMYK, YPbPr, ...
 * **Countries**: ISO and IOC codes, calling and vehicle registration codes, flags, IATA and ICAO airfield codes
 * **Date and Time functions**: Weekday, time differences, ...
