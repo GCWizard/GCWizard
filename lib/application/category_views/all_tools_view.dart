@@ -124,6 +124,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/vigene
 import 'package:gc_wizard/tools/crypto_and_encodings/gray/widget/gray.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/gronsfeld/widget/gronsfeld.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/hashes/hash_breaker/widget/hash_breaker.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/hill/widget/hill.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/homophone/widget/homophone.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/houdini/widget/houdini.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/kamasutra/widget/kamasutra.dart';
@@ -632,6 +633,7 @@ void _initStaticToolList() {
       className(const HexString2File()),
       className(const HexViewer()),
       className(const HiddenData()),
+      className(const Hill()),
       className(const Hohoho()),
       className(const Homophone()),
       className(const Houdini()),
