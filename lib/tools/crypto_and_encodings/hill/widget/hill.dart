@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/hill/logic/hill.dart';
+import 'package:gc_wizard/utils/complex_return_types.dart';
 
 class Hill extends StatefulWidget {
   const Hill({Key? key}) : super(key: key);
@@ -58,7 +62,7 @@ class HillState extends State<Hill> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        _currentMode == GCWSwitchPosition.left
+        _currentMode == GCWSwitchPosition.right
             ? _buildDecodeInput()
             : _buildEncodeInput() ,
         GCWTwoOptionsSwitch(
@@ -168,8 +172,40 @@ class HillState extends State<Hill> {
   }
 
   Widget _buildOutput() {
-    return GCWDefaultOutput(
-      child: Container(),
+    StringText result;
+    String matrix;
+    var _alphabet = buildAlphabet(_currentAlphabet);
+
+    if (_currentMode == GCWSwitchPosition.right) {
+      result = decryptText(_currentDecodeInput, _currentDecodeKey, _currentMatrixSize, _alphabet, _currentFillCharacter);
+      matrix = getViewKeyMatrix(_currentDecodeKey, _currentMatrixSize, _alphabet);
+    } else {
+      result = encryptText(_currentEncodeInput, _currentEncodeKey, _currentMatrixSize, _alphabet, _currentFillCharacter);
+      matrix = getViewKeyMatrix(_currentEncodeKey, _currentMatrixSize, _alphabet);
+    }
+
+    var errorText = result.text;
+    if (errorText.isNotEmpty) {
+      errorText = i18n(context, 'hill_' + errorText, ifTranslationNotExists: errorText);
+    }
+
+    return Column(
+        children: <Widget>[
+          GCWDefaultOutput(child: result.value),
+          errorText.isEmpty ? Container() : GCWOutput(child: errorText),
+          GCWOutput(
+            title: 'Matrix',
+            child: GCWOutputText(
+              text: matrix,
+              isMonotype: true)
+          ),
+          GCWOutput(
+              title: i18n(context, 'common_alphabet'),
+              child: GCWOutputText(
+                  text: getViewAlphabet(_alphabet),
+                  isMonotype: true)
+          )
+        ]
     );
   }
 }

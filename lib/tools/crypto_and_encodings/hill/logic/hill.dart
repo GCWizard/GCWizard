@@ -2,6 +2,7 @@
 //https://crypto.interactive-maths.com/hill-cipher.html
 
 import 'dart:core';
+import 'dart:math';
 
 import 'package:gc_wizard/tools/science_and_technology/divisor/logic/divisor.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
@@ -31,15 +32,15 @@ StringText decryptText(String message, String key, int matrixSize, Map<String, S
 }
 
 String _checkInput(String key, int matrixSize, Map<String, String> alphabet) {
+  if (alphabet.isEmpty) return 'AlphabetEmpty';
   if (key.isEmpty) return 'KeyEmpty';
   if (matrixSize < 2 || matrixSize > 10) return 'MatrixSize';
-  if (alphabet.isEmpty) return 'Alphabet';
   return '';
 }
 
 Map<String, String> buildAlphabet(String alphabet) {
   var _alphabet  = <String, String>{};
-  alphabet = removeDuplicateCharacters(alphabet);
+  alphabet = removeDuplicateCharacters(alphabet.toUpperCase());
 
   for (int i = 0; i < alphabet.length; i++) {
     _alphabet.addAll({alphabet[i]: i.toString()});
@@ -53,7 +54,9 @@ StringText _decryptHillCipher(String message, String key, int matrixSize, Map<St
   // Get inverted key matrix from the key string
   var keyMatrix = _getKeyMatrix(key, matrixSize, alphabet);
   var keyMatrixInverted = matrixInvert(keyMatrix);
-  if ((keyMatrixInverted == null) || !_validKeyMatrix(keyMatrix, alphabet.length)) return StringText('InvalidKey', '');
+  if ((keyMatrixInverted == null) || !_validKeyMatrix(keyMatrix, alphabet.length)) {
+    return StringText('InvalidKeyMatrix', '');
+  }
 
   var determinant = matrixDeterminant(keyMatrix);
   var inversDeterminant = _multiplicativeInverseOfDeterminant(determinant.round(), alphabet.length);
@@ -77,7 +80,7 @@ StringText _encryptHillCipher(String message, String key, int matrixSize, Map<St
 
   if (errorText.isEmpty) {
     var keyMatrixInverted = matrixInvert(keyMatrix);
-    errorText = ((keyMatrixInverted == null) || !_validKeyMatrix(keyMatrix, alphabet.length)) ? 'InvalidKey' : '';
+    errorText = ((keyMatrixInverted == null) || !_validKeyMatrix(keyMatrix, alphabet.length)) ? 'InvalidKeyMatrix' : '';
   }
   return StringText(errorText, cipherText.value);
 }
@@ -122,12 +125,13 @@ StringText _convertMessage(String message, Map<String, String> alphabet, List<Li
 
 // Following function generates the key matrix for the key string
 List<List<double>> _getKeyMatrix(String key, int matrixSize, Map<String, String> alphabet) {
+  if (alphabet.isEmpty || key.isEmpty) matrixSize = 0;
   var keyMatrix = List<List<double>>.generate(matrixSize, (index) => List<double>.filled(matrixSize, 0));
   int k = 0;
   for (int i = 0; i < matrixSize; i++) {
     for (int j = 0; j < matrixSize; j++) {
       keyMatrix[i][j] = _charToValue(k < key.length ? key[k]
-          : alphabet.keys.elementAt(k - key.length), alphabet).toDouble();
+          : alphabet.keys.elementAt(min(k - key.length, alphabet.length-1)), alphabet).toDouble();
       k++;
     }
   }
@@ -135,15 +139,31 @@ List<List<double>> _getKeyMatrix(String key, int matrixSize, Map<String, String>
 }
 
 String getViewKeyMatrix(String key, int matrixSize, Map<String, String> alphabet) {
+  key = _removeNonAlphabetCharacters(key, alphabet);
   var keyMatrix = _getKeyMatrix(key, matrixSize, alphabet);
   var output = '';
-  for (int i = 0; i < matrixSize; i++) {
-    for (int j = 0; j < matrixSize; j++) {
-      output += keyMatrix[i][j].round().toString() + ' ';
+  for (int i = 0; i < keyMatrix.length; i++) {
+    for (int j = 0; j < keyMatrix[i].length; j++) {
+      output += keyMatrix[i][j].round().toString().padLeft(2, ' ') + ' ';
     }
-    output = output.trim() + '\n';
+    output = output.trimRight() + '\n';
   }
   return output;
+}
+
+String getViewAlphabet(Map<String, String> alphabet) {
+  var output = List<String>.filled(2, '', growable: true);
+  var lineOffset = 0;
+  for (var entry in alphabet.entries) {
+    if (output[lineOffset + 1].length > 35) {
+      output.addAll(['', '', '']);
+      lineOffset += 3;
+    }
+    output[lineOffset + 0] += entry.key.padLeft(3, ' ');
+    output[lineOffset + 1] += entry.value.padLeft(3, ' ');
+  }
+
+  return output.join('\n');
 }
 
 int _charToValue(String char, Map<String, String> alphabet) {

@@ -9,19 +9,24 @@ void main() {
   group("Hill.encrypt:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'key' : '', 'matrixSize' : 2, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('KeyEmpty', '')},
+      {'input' : '', 'key' : 'a', 'matrixSize' : 1, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('MatrixSize', '')},
       {'input' : 'ACTX', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('InvalidFillCharacter', ''), 'fillChar' : 'xx'},
+      {'input' : 'ACTX', 'key' : '', 'matrixSize' : 3, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('KeyEmpty', '')},
+      {'input' : 'ACTX', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : '', 'expectedOutput' : StringText('AlphabetEmpty', '')},
+      {'input' : 'ACTX', 'key' : 'c', 'matrixSize' : 3, 'alphabet' : 'a', 'expectedOutput' : StringText('KeyEmpty', '')},
 
       {'input' : '', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('', '')},
       {'input' : '!', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('', '!')},
       {'input' : 'short example', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('', 'APADJ TFTWLFJ')},
+      {'input' : 'short example', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : 'abcdefghijklmnopqrstuvwxyz', 'expectedOutput' : StringText('', 'APADJ TFTWLFJ')},
 
       {'input' : 'ACT', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('', 'POH')},
       {'input' : 'ACT', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('', 'POH'), 'fillChar' : ''},
-      {'input' : 'GFG', 'key' : 'HILLMAGIC', 'matrixSize' : 3, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('InvalidKey', 'SWK')},
+      {'input' : 'GFG', 'key' : 'HILLMAGIC', 'matrixSize' : 3, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('InvalidKeyMatrix', 'SWK')},
       {'input' : 'retreat now', 'key' : 'BACK UP', 'matrixSize' : 3, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('', 'DPQRQEV KPQLR')},
 
-      {'input' : 'retreat now', 'key' : 'BACK UP', 'matrixSize' : 4, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('InvalidKey', 'RBZTQPT HEJPF')},
-      {'input' : 'retreat now', 'key' : 'BACK UPB', 'matrixSize' : 4, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('InvalidKey', 'RDUOQVJ XEJLB')},
+      {'input' : 'retreat now', 'key' : 'BACK UP', 'matrixSize' : 4, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('InvalidKeyMatrix', 'RBZTQPT HEJPF')},
+      {'input' : 'retreat now', 'key' : 'BACK UPB', 'matrixSize' : 4, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('InvalidKeyMatrix', 'RDUOQVJ XEJLB')},
       {'input' : 'TREFFE KONTAKTPERSON UM DREI UHR IM STADTPARK', 'key' : 'UCBVQLZUOSHMZWXE', 'matrixSize' : 4, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('', 'DPKZWE QFOTUDRZODPXD TJ CZTS FXL DY GSCCDRHNCU')},
       {'input' : 'TREFFE KONTAKTPERSON UM DREI UHR IM STADTPARK', 'key' : 'UCBVQLZUOSHMZWXE', 'matrixSize' : 4, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 'expectedOutput' : StringText('', 'THMZQG U5EF61PJM33PH VX K3RY 9FF ZK 8SQQHXX7EM')},
 
@@ -46,12 +51,15 @@ void main() {
   group("Hill.decrypt:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'key' : '', 'matrixSize' : 2, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('KeyEmpty', '')},
-      {'input' : 'SWK', 'key' : 'HILLMAGIC', 'matrixSize' : 3, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('InvalidKey', '')},
+      {'input' : '', 'key' : 'A', 'matrixSize' : 1, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('MatrixSize', '')},
+      {'input' : 'SWK', 'key' : 'HILLMAGIC', 'matrixSize' : 3, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('InvalidKeyMatrix', '')},
       {'input' : 'POHX', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('InvalidFillCharacter', ''), 'fillChar' : 'xx'},
+      {'input' : 'POHX', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : '', 'expectedOutput' : StringText('AlphabetEmpty', '')},
 
       {'input' : '', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('', '')},
       {'input' : '!', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('', '!')},
       {'input' : 'APADJ TFTWLFJ', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('', 'SHORT EXAMPLE')},
+      {'input' : 'APADJ TFTWLFJ', 'key' : 'hill', 'matrixSize' : 2, 'alphabet' : 'abcdefghijklmnopqrstuvwxyz', 'expectedOutput' : StringText('', 'SHORT EXAMPLE')},
 
       {'input' : 'POH', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('', 'ACT')},
       {'input' : 'POH', 'key' : 'GYBNQKURP', 'matrixSize' : 3, 'alphabet' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : StringText('', 'ACT'), 'fillChar' : ''},
