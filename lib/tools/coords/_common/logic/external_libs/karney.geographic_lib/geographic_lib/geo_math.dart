@@ -360,13 +360,19 @@ class _GeoMath {
     // the argument to the range [-45, 45] before converting it to radians.
     double r;
     int q = 0;
-    r = x % 360.0;
-    q = (r / qd).round().toInt(); // If r is NaN this returns 0
-    r -= qd * q;
+    var d = x % 360.0;
+    q = (d / qd).round().toInt(); // If r is NaN this returns 0
+    d -= qd * q;
     // now abs(r) <= 45
-    r = _toRadians(r);
-    // Possibly could call the gnu extension sincos
+    r = _toRadians(d);
     double s = sin(r), c = cos(r);
+    if (2 * d.abs() == qd) {
+      c = sqrt(1/2.0);
+      s = _copySign(c, r);
+    } else if (3 * d.abs() == qd) {
+      c = sqrt(3.0)/2;
+      s = _copySign(1/2.0, r);
+    }
     double sinx, cosx;
     switch (q & 3) {
       case 0:
@@ -386,9 +392,11 @@ class _GeoMath {
         cosx = s;
         break; // case 3
     }
-    if (x != 0) {
-      sinx += 0.0;
-      cosx += 0.0;
+    // http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1950.pdf
+    // mpreal needs T(0) here
+    cosx += 0.0;                            // special values from F.10.1.12
+    if (sinx == 0) {
+      sinx = _copySign(sinx, x);             // special values from F.10.1.13
     }
     p.first = sinx;
     p.second = cosx;
