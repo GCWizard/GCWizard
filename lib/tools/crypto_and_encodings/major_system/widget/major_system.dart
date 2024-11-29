@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
-import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/major_system/logic/major_system.dart';
@@ -16,14 +17,15 @@ class MajorSystem extends StatefulWidget {
 
 class _MajorSystemState extends State<MajorSystem> {
   late TextEditingController _inputController;
+  late GCWSwitchPosition _nounMode;
 
   String _currentInput = '';
-  GCWSwitchPosition _nounMode = GCWSwitchPosition.left;
 
   @override
   void initState() {
     super.initState();
     _inputController = TextEditingController(text: _currentInput);
+    _nounMode = GCWSwitchPosition.left;
   }
 
   @override
@@ -45,7 +47,7 @@ class _MajorSystemState extends State<MajorSystem> {
           },
         ),
         
-        GCWTextDivider(text: i18n(context, 'major_settings_capitalized_only')),
+        GCWTextDivider(text: i18n(context, 'major_system_settings_capitalized_only')),
         
         GCWTwoOptionsSwitch(
           leftValue: i18n(context, 'common_no'),
@@ -57,8 +59,13 @@ class _MajorSystemState extends State<MajorSystem> {
             });
           },
         ),
-        GCWTextDivider(text: i18n(context, 'major_output_plaintext')),
-        GCWText(text: MajorDecrypt(_currentInput).toString()),
+
+        GCWOutput(
+            title: i18n(context, 'major_system_output_plaintext'),
+            child: GCWOutputText(
+                suppressCopyButton: true,
+                text: _buildPlainTextOutput()),
+        ),
 
         GCWDefaultOutput(child: _buildOutput())
       ],
@@ -67,7 +74,13 @@ class _MajorSystemState extends State<MajorSystem> {
 
   String _buildOutput() {
     return (_nounMode == GCWSwitchPosition.left)
-        ? MajorDecrypt(_currentInput).decodeToNumberString()
-        : MajorDecrypt(_currentInput, nounMode: true).decodeToNumberString();
+        ? decryptMajorSystem(_currentInput, nounMode: false)
+        : decryptMajorSystem(_currentInput, nounMode: true);
+  }
+
+  String _buildPlainTextOutput() {
+    return (_nounMode == GCWSwitchPosition.left)
+        ? preparedMajorText(_currentInput, nounMode: false)
+        : preparedMajorText(_currentInput, nounMode: true);
   }
 }
