@@ -1,125 +1,70 @@
 import 'package:diacritic/diacritic.dart';
+import 'package:gc_wizard/utils/string_utils.dart';
+part 'package:gc_wizard/tools/crypto_and_encodings/major_system/logic/major_system_data.dart';
 
-class MajorDecrypt {
+
+class MajorSystemLogic {
   String text;
   bool nounMode;
+  MajorSystemCountry currentCountry;
 
-  MajorDecrypt(this.text, {this.nounMode = false});
+  MajorSystemLogic({required this.text,
+    this.nounMode = false,
+    this.currentCountry = MajorSystemCountry.DE});
 
-  final _noLetterChars = RegExp(r'[ !"#$%&()*+,-./:;<=>?@[\\\]^_`{|}~\s]+');
+  Map<String, String> get _translations => _getTranslations(currentCountry);
+  Map<String, String> get _specialTranslations => _getSpecialTranslations(currentCountry);
+  RegExp get _splitPattern => _getSplitPattern(currentCountry);
 
-  Map<String, String> translation = {
-    's': '0',
-    'z': '0',
-    't': '1',
-    'd': '1',
-    'n': '2',
-    'm': '3',
-    'r': '4',
-    'l': '5',
-    'j': '6',
-    'g': '7',
-    'k': '7',
-    'c': '7',
-    'f': '8',
-    'v': '8',
-    'w': '8',
-    'ph': 'f',
-    'b': '9',
-    'p': '9'
-  };
+  final _nonLetterChars = RegExp(r'[^a-zA-Z]+');
 
-  Map<String, String> specialTranslations = {
-    'sch': 'j',
-    'ch': 'j',
-    'ck': 'k',
-    'ph': 'f'
-  };
-
-  String decodeToNumberString() {
-    String decoded = "";
-
-    for (var pattern in _groups()) {
-      decoded += _translate(pattern, '');
-    }
-    return decoded;
-  }
-
-  // recursive translation function
-  String _translate(String pattern, String collected) {
-    if (pattern.isEmpty) return collected;
-
-    var output = collected;
-    var newPattern = pattern;
-
-    // replace all direct doubles
-    newPattern = _replaceDoubleLetters(newPattern);
-
-    // replace all specialTranslations with the base character
-    for (var transition in specialTranslations.keys) {
-      if (newPattern.contains(transition)) {
-        newPattern = newPattern.replaceAll(
-            transition, specialTranslations[transition] as String);
-      }
-    }
-
-    // tranlates first or only character
-    if (newPattern.isNotEmpty) {
-      var firstChar = newPattern[0];
-      if (translation.containsKey(firstChar)) {
-        output += translation[firstChar]!;
-      }
-      newPattern = newPattern.substring(1);
-    }
-    // recursion
-    return _translate(newPattern, output);
-  }
-
-  // Remove all unnecessary chars like puctuation and diacritics and
-  // returns a single string with spaces between single words
-  String _cleanText() {
+  String decrypt() {
     if (text.isEmpty) return '';
 
-    String _textWithoutDiacritics = removeDiacritics(text);
+    final cleanedText = preparedText();
+    StringBuffer decoded = StringBuffer();
 
-    var newText = _textWithoutDiacritics.split(_noLetterChars);
-    List<String> validWords = [];
-
-    // returns only capitalized words
-    if (nounMode) {
-      for (var word in newText) {
-        if (word.isNotEmpty) {
-          int firstCharCode = word.codeUnitAt(0); // unicode of first letter
-          if (firstCharCode >= 65 && firstCharCode <= 90) {
-            // capitalized word?
-            validWords.add(word);
-          }
-        }
-      }
-      newText = validWords;
+    var wordList = cleanedText.split(' ');
+    for (var word in wordList) {
+      final consonantGroup = _splitToConsonantGroups(word);
+      decoded.write(consonantGroup.map(_translateGroup).join());
+      decoded.write(' ');
     }
-    return newText.join(' ').toLowerCase();
+    return decoded.toString().trim();
   }
 
-  // returns a list of consonant groups
-  // like [d, r, m, nd, g, ht, m, s, chs]
-  List<String> _groups() {
-    var words = _cleanText().split(" ");
-    List<String> groupList = [];
-    for (var word in words) {
-      var groups = word.split(RegExp('[aeiouqxy]+'));
-      groupList.addAll(groups);
+  String preparedText() {
+    final normalizedText = removeDiacritics(text);
+    final words =
+    normalizedText.split(_nonLetterChars).where((word) => word.isNotEmpty);
+
+    if (nounMode) {
+      return words.where((word) => isUpperCase(word[0]))
+          .join(' ')
+          .toLowerCase();
     }
-    groupList.removeWhere((entry) => entry.isEmpty); // remove empty entries
-    return groupList;
+    return words.join(' ').toLowerCase();
+  }
+
+// returns a list of consonant groups like [d, r, m, nd, g, ht, m, s, chs]
+  List<String> _splitToConsonantGroups(String text) {
+    return text
+        .split(' ')
+        .expand((word) => word.split(_splitPattern))
+        .where((group) => group.isNotEmpty)
+        .toList();
+  }
+
+  String _translateGroup(String group) {
+    group = _replaceDoubleLetters(group);
+    _specialTranslations.forEach((pattern, replacement) {
+      group = group.replaceAll(pattern, replacement);
+    });
+    return group.split('').map((char) => _translations[char] ?? '').join();
   }
 
   String _replaceDoubleLetters(String input) {
-    RegExp regExp = RegExp(r'(.)\1+');
-    return input.replaceAllMapped(regExp, (match) => match.group(1)!);
-  }
-
-  String toString() {
-    return _cleanText();
+    return input.replaceAllMapped(
+        RegExp(r'(.)\1+'), (match) => match.group(1)!);
   }
 }
