@@ -1004,6 +1004,12 @@ void initializeRegistry(BuildContext context) {
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
       'hill',
+    ], licenses: [
+        ToolLicenseOnlineArticle(
+        context: context,
+        author: 'Rajput-Ji ',
+        title: 'Hill-Chiffre',
+        sourceUrl: 'https://web.archive.org/web/20201030134340/https://www.geeksforgeeks.org/hill-cipher/')
     ]),
     GCWTool(tool: const Homophone(), id: 'homophone', categories: const [
       ToolCategory.CRYPTOGRAPHY
@@ -1021,8 +1027,7 @@ void initializeRegistry(BuildContext context) {
       categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
       searchKeys: const [
         'iataicao',
-      ],
-    ),
+      ]),
     GCWTool(
       tool: const IceCodesSelection(),
       id: 'icecodes_selection',
