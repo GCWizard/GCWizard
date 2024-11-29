@@ -5058,7 +5058,7 @@ void initializeRegistry(BuildContext context) {
           licenseType: ToolLicenseType.PRIVATE_PERMISSION)
     ]),
     GCWSymbolTableTool(symbolKey: 'allemans_germains', symbolSearchStrings: const [
-      'symbol_allemans_germains',
+      'symbol_trithemius',
     ], licenses: [
       stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
@@ -5190,7 +5190,7 @@ void initializeRegistry(BuildContext context) {
           sourceUrl: 'https://web.archive.org/web/20240808102336/https://www.academia.edu/792102')
     ]),
     GCWSymbolTableTool(symbolKey: 'autre_beda', symbolSearchStrings: const [
-      'symbol_autre_beda',
+      'symbol_trithemius',
     ], licenses: [
       stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
@@ -5449,7 +5449,7 @@ void initializeRegistry(BuildContext context) {
           customComment: 'Inventarnummer 4.2012.446')
     ]),
     GCWSymbolTableTool(symbolKey: 'charactere_antique', symbolSearchStrings: const [
-      'symbol_charactere_antique',
+      'symbol_trithemius',
     ], licenses: [
       stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
@@ -5496,7 +5496,7 @@ void initializeRegistry(BuildContext context) {
           licenseType: ToolLicenseType.PERSONAL_USE)
     ]),
     GCWSymbolTableTool(symbolKey: 'cicero', symbolSearchStrings: const [
-      'symbol_cicero',
+      'symbol_trithemius',
     ], licenses: [
       stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
@@ -5854,7 +5854,7 @@ void initializeRegistry(BuildContext context) {
           licenseType: ToolLicenseType.CCBYSA4)
     ]),
     GCWSymbolTableTool(symbolKey: 'doracus', symbolSearchStrings: const [
-      'symbol_doracus',
+      'symbol_trithemius',
     ], licenses: [
       stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
@@ -5907,7 +5907,7 @@ void initializeRegistry(BuildContext context) {
       'elia',
     ], licenses: const []),
     GCWSymbolTableTool(symbolKey: 'enn_agrammaton', symbolSearchStrings: const [
-      'symbol_enn_agrammaton',
+      'symbol_trithemius', 'symbol_enn_agrammaton'
     ], licenses: [
       stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
@@ -5975,7 +5975,7 @@ void initializeRegistry(BuildContext context) {
           licenseType: ToolLicenseType.CCBYSA3)
     ]),
     GCWSymbolTableTool(symbolKey: 'feimeiri', symbolSearchStrings: const [
-      'symbol_feimeiri',
+      'symbol_trithemius',
     ], licenses: [
       stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
@@ -6353,7 +6353,7 @@ void initializeRegistry(BuildContext context) {
       stl._toolLicenseGeocachingToolbox,
     ]),
     GCWSymbolTableTool(symbolKey: 'hichus', symbolSearchStrings: const [
-      'symbol_hichus',
+      'symbol_trithemius',
     ], licenses: [
       stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
@@ -6382,7 +6382,7 @@ void initializeRegistry(BuildContext context) {
           licenseType: ToolLicenseType.FREE_TO_USE)
     ]),
     GCWSymbolTableTool(symbolKey: 'honorius_thebanus', symbolSearchStrings: const [
-      'symbol_honorius_thebanus',
+      'symbol_trithemius',
     ], licenses: [
       stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
@@ -6476,7 +6476,7 @@ void initializeRegistry(BuildContext context) {
       stl._toolLicenseGeocachingToolbox,
     ]),
     GCWSymbolTableTool(symbolKey: 'iamiel_iadis_roy_des_artiques', symbolSearchStrings: const [
-      'symbol_iamiel_iadis_roy_des_artiques',
+      'symbol_trithemius',
     ], licenses: [
       stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
@@ -6771,7 +6771,7 @@ void initializeRegistry(BuildContext context) {
           licenseType: ToolLicenseType.OFL11)
     ]),
     GCWSymbolTableTool(symbolKey: 'livre_cinqiesme', symbolSearchStrings: const [
-      'symbol_livre_cinqiesme',
+      'symbol_trithemius',
     ], licenses: [
       stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
@@ -7114,12 +7114,12 @@ void initializeRegistry(BuildContext context) {
           licenseType: ToolLicenseType.NON_COMMERCIAL)
     ]),
     GCWSymbolTableTool(symbolKey: 'nortman', symbolSearchStrings: const [
-      'symbol_nortman',
+      'symbol_trithemius',
     ], licenses: [
       stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
     GCWSymbolTableTool(symbolKey: 'nortman_de_beda', symbolSearchStrings: const [
-      'symbol_nortman_de_beda',
+      'symbol_trithemius',
     ], licenses: [
       stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
@@ -7267,7 +7267,7 @@ void initializeRegistry(BuildContext context) {
       )
     ]),
     GCWSymbolTableTool(symbolKey: 'ottride', symbolSearchStrings: const [
-      'symbol_ottride',
+      'symbol_trithemius',
     ], licenses: [
       stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
@@ -7933,12 +7933,12 @@ void initializeRegistry(BuildContext context) {
       'symbol_terzi',
     ], licenses: const []),
     GCWSymbolTableTool(symbolKey: 'tetragrammatique_v1', symbolSearchStrings: const [
-      'symbol_tetragrammatique_v1',
+      'symbol_trithemius', 'symbol_tetragrammatique_v1'
     ], licenses: [
       stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
     GCWSymbolTableTool(symbolKey: 'tetragrammatique_v2', symbolSearchStrings: const [
-      'symbol_tetragrammatique_v2',
+      'symbol_trithemius', 'symbol_tetragrammatique_v2'
     ], licenses: [
       stl._toolLicenseOnlineBookPolygraphieTrithemius
     ]),
