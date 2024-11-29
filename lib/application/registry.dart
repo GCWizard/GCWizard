@@ -221,6 +221,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/language_games/duck_speak/w
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/pig_latin/widget/pig_latin.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/robber_language/widget/robber_language.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/spoon_language/widget/spoon_language.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/major_system/widget/major_system.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/maya_numbers/widget/maya_numbers.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/mexican_army_cipher_wheel/widget/mexican_army_cipher_wheel.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/morbit/widget/morbit.dart';
@@ -1134,6 +1135,13 @@ void initializeRegistry(BuildContext context) {
           'https://web.archive.org/web/20240722204912/https://github.com/piellardj/stereogram-solver?tab=readme-ov-file',
           licenseType: ToolLicenseType.MIT),
     ]),
+    GCWTool(
+        tool: const MajorSystem(),
+        id: 'major_system',
+        isBeta: true,
+        categories: const [ ToolCategory.CRYPTOGRAPHY ],
+        searchKeys: const [ 'major_system', ]
+    ),
     GCWTool(tool: const MathematicalConstants(), id: 'mathematical_constants', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
     ], searchKeys: const [
