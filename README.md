@@ -1,7 +1,7 @@
 # GC Wizard
 
 <p align="center">
-  <img src="https://github.com/S-Man42/GCWizard/blob/master/assets/logo/circle_border_128.png?raw=true" alt="GC Wizard logo"/>
+  <img src="https://github.com/GCWizard/GCWizard/blob/master/assets/logo/circle_border_128.png?raw=true" alt="GC Wizard logo"/>
 </p>
 
 The GC Wizard is an open-source tool collection for **Android** and **iOS**. There is also an alpha version of a **[Web View](http://gcwizard.net)**.
@@ -82,7 +82,7 @@ Based on **Flutter/Dart**.
 * [Web View](http://gcwizard.net)
 
 ### Development
-* [Github](https://github.com/S-Man42/GCWizard): Code and assets
+* [Github](https://github.com/GCWizard/GCWizard): Code and assets
 * [Crowdin](https://crowdin.com/project/gc-wizard): Translations
 
 ### Social Media

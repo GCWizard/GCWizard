@@ -28,7 +28,7 @@ class GCWPackageInfo {
 
   GCWPackageInfo._(PackageInfo info) {
     packageName = info.packageName;
-    appName = kIsWeb ? 'GC Wizard' : info.appName; // due to strange bug: https://github.com/S-Man42/GCWizard/issues/1880
+    appName = kIsWeb ? 'GC Wizard' : info.appName; // due to strange bug: https://github.com/GCWizard/GCWizard/issues/1880
     version = info.version;
     buildNumber = info.buildNumber;
     buildSignature = info.buildSignature;

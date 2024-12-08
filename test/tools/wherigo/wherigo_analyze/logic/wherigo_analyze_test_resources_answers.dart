@@ -1,26 +1,37 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/wherigo/wherigo_analyze/logic/wherigo_analyze.dart';
 
-WherigoAnswer testOutputANSWER = WherigoAnswer(InputFunction: '_Ejb_', InputAnswers: [
+WherigoAnswer testOutputANSWER =
+    WherigoAnswer(InputFunction: '_Ejb_', InputAnswers: [
   WherigoAnswerData(AnswerAnswer: '491', AnswerHash: '', AnswerActions: [
     WherigoActionMessageElementData(
         ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-        ActionMessageContent: 'Wunderbach, du scheinst sehr gute Augen zu haben.'),
-    WherigoActionMessageElementData(ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE, ActionMessageContent: '_rZ0wN'),
+        ActionMessageContent:
+            'Wunderbach, du scheinst sehr gute Augen zu haben.'),
     WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_Aie.Complete = true'),
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
+        ActionMessageContent: '_rZ0wN'),
     WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_n1j.Active = true'),
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: '_Aie.Complete = true'),
     WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_n1j.Visible = true'),
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: '_n1j.Active = true'),
     WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_kcK.Active = true'),
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: '_n1j.Visible = true'),
     WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_kcK.Visible = true'),
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: '_kcK.Active = true'),
     WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_4VcW.Active = false'),
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: '_kcK.Visible = true'),
     WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_lJLB.Active = true'),
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: '_4VcW.Active = false'),
+    WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: '_lJLB.Active = true'),
     WherigoActionMessageElementData(
         ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
         ActionMessageContent: '_L0J.Commands._PxceW.Enabled = false'),
@@ -28,237 +39,359 @@ WherigoAnswer testOutputANSWER = WherigoAnswer(InputFunction: '_Ejb_', InputAnsw
         ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
         ActionMessageContent: '_L0J.Commands._geDc.Enabled = false'),
     WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_L0J:MoveTo(_lJLB)'),
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: '_L0J:MoveTo(_lJLB)'),
     WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: 'ShowScreen MAINSCREEN'),
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: 'ShowScreen MAINSCREEN'),
   ]),
   WherigoAnswerData(AnswerAnswer: '-<ELSE>-', AnswerHash: '', AnswerActions: [
     WherigoActionMessageElementData(
         ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-        ActionMessageContent: 'Das war er wohl nicht ... versuche es doch einfach erneut!'),
-    WherigoActionMessageElementData(ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE, ActionMessageContent: '_rZ0wN'),
+        ActionMessageContent:
+            'Das war er wohl nicht ... versuche es doch einfach erneut!'),
+    WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
+        ActionMessageContent: '_rZ0wN'),
   ]),
   // final List<WherigoActionMessageElementData>
 ]);
 
-WherigoAnswer testOutputANSWERGC = WherigoAnswer(InputFunction: 'zinputFinal', InputAnswers: [
-  WherigoAnswerData(AnswerAnswer: 'Drache\ndrache', AnswerHash: '', AnswerActions: [
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: 'cartILuebeck.Complete = true'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: ' .. Player.CompletionCode .. '),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE, ActionMessageContent: 'zmedialogo'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: 'zitemUnlockCode:MoveTo(Player)'),
-  ]),
+WherigoAnswer testOutputANSWERGC =
+    WherigoAnswer(InputFunction: 'zinputFinal', InputAnswers: [
+  WherigoAnswerData(
+      AnswerAnswer: 'Drache\ndrache',
+      AnswerHash: '',
+      AnswerActions: [
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+            ActionMessageContent: 'cartILuebeck.Complete = true'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+            ActionMessageContent: ' .. Player.CompletionCode .. '),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
+            ActionMessageContent: 'zmedialogo'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+            ActionMessageContent: 'zitemUnlockCode:MoveTo(Player)'),
+      ]),
   WherigoAnswerData(AnswerAnswer: '-<ELSE>-', AnswerHash: '', AnswerActions: [
     WherigoActionMessageElementData(
         ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-        ActionMessageContent: 'Das war leider nicht korrekt. Versuch es anders.'),
+        ActionMessageContent:
+            'Das war leider nicht korrekt. Versuch es anders.'),
     WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE, ActionMessageContent: 'zmediathavorianer'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON, ActionMessageContent: '"Unlock-Code"'),
-  ]),
-]);
-
-WherigoAnswer testOutputANSWERGCWandernMitWalter01 = WherigoAnswer(InputFunction: '_U9jrC', InputAnswers: [
-  WherigoAnswerData(AnswerAnswer: '_xOfI', AnswerHash: '', AnswerActions: [
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: 'Perfekt, dann können wir ja los.'),
-    WherigoActionMessageElementData(ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE, ActionMessageContent: '_jKUq'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: 'ShowScreen MAINSCREEN'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_fRPL.Active = true'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_fRPL.Visible = true'),
-  ]),
-  WherigoAnswerData(AnswerAnswer: '-<ELSE>-', AnswerHash: '', AnswerActions: [
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: 'Versuch es nochmal.'),
-    WherigoActionMessageElementData(ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE, ActionMessageContent: '_gPf'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: 'Wherigo.GetInput(_U9jrC)'),
-  ]),
-]);
-
-WherigoAnswer testOutputANSWERGCWandernMitWalter02 = WherigoAnswer(InputFunction: '_CCLU', InputAnswers: [
-  WherigoAnswerData(AnswerAnswer: '_ZA9h', AnswerHash: '', AnswerActions: [
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: 'Absolut richtig! Weiter gehts.'),
-    WherigoActionMessageElementData(ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE, ActionMessageContent: '_jKUq'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: 'ShowScreen MAINSCREEN'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_YEA3.Active = true'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_YEA3.Visible = true'),
-  ]),
-  WherigoAnswerData(AnswerAnswer: '-<ELSE>-', AnswerHash: '', AnswerActions: [
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: 'Versuch es nochmal.'),
-    WherigoActionMessageElementData(ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE, ActionMessageContent: '_gPf'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: 'Wherigo.GetInput(_CCLU)'),
-  ]),
-]);
-
-WherigoAnswer testOutputANSWERGCMighla01 =
-    WherigoAnswer(InputFunction: 'zinputHilfeKettenschlossAuflsung', InputAnswers: [
-  WherigoAnswerData(AnswerAnswer: '310', AnswerHash: '', AnswerActions: [
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: 'Die Ersatzteile sind:'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE, ActionMessageContent: 'zmediaLsung'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON, ActionMessageContent: '"Code eingeben",'),
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
+        ActionMessageContent: 'zmediathavorianer'),
     WherigoActionMessageElementData(
         ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON,
-        ActionMessageContent: 'WWB_multiplatform_string("zurück", {PocketPC = 1})'),
+        ActionMessageContent: '"Unlock-Code"'),
+  ]),
+]);
+
+WherigoAnswer testOutputANSWERGCWandernMitWalter01 =
+    WherigoAnswer(InputFunction: '_U9jrC', InputAnswers: [
+  WherigoAnswerData(AnswerAnswer: '_xOfI', AnswerHash: '', AnswerActions: [
+    WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+        ActionMessageContent: 'Perfekt, dann können wir ja los.'),
+    WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
+        ActionMessageContent: '_jKUq'),
+    WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: 'ShowScreen MAINSCREEN'),
+    WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: '_fRPL.Active = true'),
+    WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: '_fRPL.Visible = true'),
   ]),
   WherigoAnswerData(AnswerAnswer: '-<ELSE>-', AnswerHash: '', AnswerActions: [
     WherigoActionMessageElementData(
         ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-        ActionMessageContent:
-            'Auf Seite 45 musst Du die letzten Worte jeder Zeile von oben nach unten lesen. In der App sind die Zeilen mit einem Strich - am Anfang und Ende gekennzeichnet.'),
+        ActionMessageContent: 'Versuch es nochmal.'),
     WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE, ActionMessageContent: 'zmediaLsungFrage'),
-    WherigoActionMessageElementData(ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON, ActionMessageContent: '"Ja",'),
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
+        ActionMessageContent: '_gPf'),
     WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON, ActionMessageContent: '"neuer Versuch"'),
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: 'Wherigo.GetInput(_U9jrC)'),
   ]),
 ]);
 
-WherigoAnswer testOutputANSWEREdersee_48h5 = WherigoAnswer(InputFunction: '_48h5', InputAnswers: [
-  WherigoAnswerData(AnswerAnswer: '33911\x01aiiyn\x0162', AnswerHash: '', AnswerActions: [
+WherigoAnswer testOutputANSWERGCWandernMitWalter02 =
+    WherigoAnswer(InputFunction: '_CCLU', InputAnswers: [
+  WherigoAnswerData(AnswerAnswer: '_ZA9h', AnswerHash: '', AnswerActions: [
     WherigoActionMessageElementData(
         ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-        ActionMessageContent: 'Das ist natuerlich korrekt und die aktuelle Aufgabe damit schon erledigt.'),
+        ActionMessageContent: 'Absolut richtig! Weiter gehts.'),
+    WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
+        ActionMessageContent: '_jKUq'),
+    WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: 'ShowScreen MAINSCREEN'),
+    WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: '_YEA3.Active = true'),
+    WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: '_YEA3.Visible = true'),
+  ]),
+  WherigoAnswerData(AnswerAnswer: '-<ELSE>-', AnswerHash: '', AnswerActions: [
     WherigoActionMessageElementData(
         ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-        ActionMessageContent:
-            'Und da dies gleichzeitig die letzte Aufgabe der Stufe 2 war, kannst du ab jetzt jederzeit Final Stufe 2 aktivieren.'),
+        ActionMessageContent: 'Versuch es nochmal.'),
     WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_jBF9t.Active = false'),
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
+        ActionMessageContent: '_gPf'),
     WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_WWB.Active = true'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_cJX.Active = false'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_C_G9.Active = false'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_bHJ.Active = false'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-        ActionMessageContent:
-            'Bevor du dich aber auf den Weg zum Final von Stufe 2 machst, solltest du erst noch die restlichen Edersee-Atlantis-Aufgaben erledigen.\nDann kannst du anschliessend gleich mehrere Dosen auf einmal einsammeln.'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_3_2.Active = true'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_MKBn:MoveTo(nil)'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-        ActionMessageContent:
-            'Bevor du dich aber auf den Weg zum Final von Stufe 2 machst, solltest du erst noch die restlichen Edersee-Atlantis-Aufgaben erledigen.\nDann kannst du anschliessend gleich mehrere Dosen auf einmal einsammeln.'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_5sM.Active = true'),
-  ]), // final List<WherigoActionMessageElementData>
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: 'Wherigo.GetInput(_CCLU)'),
+  ]),
+]);
+
+WherigoAnswer testOutputANSWERGCMighla01 = WherigoAnswer(
+    InputFunction: 'zinputHilfeKettenschlossAuflsung',
+    InputAnswers: [
+      WherigoAnswerData(AnswerAnswer: '310', AnswerHash: '', AnswerActions: [
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+            ActionMessageContent: 'Die Ersatzteile sind:'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
+            ActionMessageContent: 'zmediaLsung'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON,
+            ActionMessageContent: '"Code eingeben",'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON,
+            ActionMessageContent:
+                'WWB_multiplatform_string("zurück", {PocketPC = 1})'),
+      ]),
+      WherigoAnswerData(
+          AnswerAnswer: '-<ELSE>-',
+          AnswerHash: '',
+          AnswerActions: [
+            WherigoActionMessageElementData(
+                ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+                ActionMessageContent:
+                    'Auf Seite 45 musst Du die letzten Worte jeder Zeile von oben nach unten lesen. In der App sind die Zeilen mit einem Strich - am Anfang und Ende gekennzeichnet.'),
+            WherigoActionMessageElementData(
+                ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
+                ActionMessageContent: 'zmediaLsungFrage'),
+            WherigoActionMessageElementData(
+                ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON,
+                ActionMessageContent: '"Ja",'),
+            WherigoActionMessageElementData(
+                ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON,
+                ActionMessageContent: '"neuer Versuch"'),
+          ]),
+    ]);
+
+WherigoAnswer testOutputANSWEREdersee_48h5 =
+    WherigoAnswer(InputFunction: '_48h5', InputAnswers: [
+  WherigoAnswerData(
+      AnswerAnswer: '33911\x01aiiyn\x0162',
+      AnswerHash: '',
+      AnswerActions: [
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+            ActionMessageContent:
+                'Das ist natuerlich korrekt und die aktuelle Aufgabe damit schon erledigt.'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+            ActionMessageContent:
+                'Und da dies gleichzeitig die letzte Aufgabe der Stufe 2 war, kannst du ab jetzt jederzeit Final Stufe 2 aktivieren.'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+            ActionMessageContent: '_jBF9t.Active = false'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+            ActionMessageContent: '_WWB.Active = true'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+            ActionMessageContent: '_cJX.Active = false'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+            ActionMessageContent: '_C_G9.Active = false'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+            ActionMessageContent: '_bHJ.Active = false'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+            ActionMessageContent:
+                'Bevor du dich aber auf den Weg zum Final von Stufe 2 machst, solltest du erst noch die restlichen Edersee-Atlantis-Aufgaben erledigen.\nDann kannst du anschliessend gleich mehrere Dosen auf einmal einsammeln.'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+            ActionMessageContent: '_3_2.Active = true'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+            ActionMessageContent: '_MKBn:MoveTo(nil)'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+            ActionMessageContent:
+                'Bevor du dich aber auf den Weg zum Final von Stufe 2 machst, solltest du erst noch die restlichen Edersee-Atlantis-Aufgaben erledigen.\nDann kannst du anschliessend gleich mehrere Dosen auf einmal einsammeln.'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+            ActionMessageContent: '_5sM.Active = true'),
+      ]), // final List<WherigoActionMessageElementData>
   WherigoAnswerData(AnswerAnswer: '>62', AnswerHash: '', AnswerActions: [
     WherigoActionMessageElementData(
         ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-        ActionMessageContent: 'Leider verkehrt!\nDie gesuchte Grabnummer ist nicht so hoch.'),
-    WherigoActionMessageElementData(ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE, ActionMessageContent: '_RCtz'),
+        ActionMessageContent:
+            'Leider verkehrt!\nDie gesuchte Grabnummer ist nicht so hoch.'),
     WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: 'Wherigo.GetInput(_48h5)'),
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
+        ActionMessageContent: '_RCtz'),
+    WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: 'Wherigo.GetInput(_48h5)'),
   ]), // final List<WherigoActionMessageElementData>
   WherigoAnswerData(AnswerAnswer: '<62', AnswerHash: '', AnswerActions: [
     WherigoActionMessageElementData(
         ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-        ActionMessageContent: 'Leider verkehrt!\nDie gesuchte Grabnummer ist nicht so niedrig.'),
-    WherigoActionMessageElementData(ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE, ActionMessageContent: '_RCtz'),
+        ActionMessageContent:
+            'Leider verkehrt!\nDie gesuchte Grabnummer ist nicht so niedrig.'),
     WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: 'Wherigo.GetInput(_48h5)'),
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
+        ActionMessageContent: '_RCtz'),
+    WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: 'Wherigo.GetInput(_48h5)'),
   ]), // final List<WherigoActionMessageElementData>
 ]);
 
-WherigoAnswer testOutputANSWEREdersee_VKB = WherigoAnswer(InputFunction: '_VKB', InputAnswers: [
-  WherigoAnswerData(AnswerAnswer: '>=240 && <=250', AnswerHash: '', AnswerActions: [
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-        ActionMessageContent: 'Im Rahmen der Messgenauigkeit lasse ich dieses Ergebnis auf jeden Fall gelten.'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-        ActionMessageContent: 'Jetzt besuche noch kurz das Denkmal.'),
-    WherigoActionMessageElementData(ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE, ActionMessageContent: '_JU_y'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_wR46N.Active = false'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_k5m4.Active = true'),
-  ]), // final List<WherigoActionMessageElementData>
-  WherigoAnswerData(AnswerAnswer: '>215 && <240', AnswerHash: '', AnswerActions: [
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-        ActionMessageContent:
-            'So ganz richtig ist deine Antwort nicht.\nEin klein wenig laenger ist der Trog schon.\nIch glaube, du hast nur geschaetzt und nicht gemessen.\nUnd das nicht sonderlich gut hinbekommen.\n'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-        ActionMessageContent:
-            'Nur fuer den Fall, dass du eventuell einen falschen Futtertrog vermessen haben solltest, ist hier noch mal ein Spoilerbild.'),
-    WherigoActionMessageElementData(ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE, ActionMessageContent: '_akoE'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-        ActionMessageContent:
-            'Probiere es noch einmal!\n(nachdem du die Zone kurz verlassen und wieder betreten hast)'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_wR46N.Active = true'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_Rv8P.Active = false'),
-  ]), // final List<WherigoActionMessageElementData>
-  WherigoAnswerData(AnswerAnswer: '>250 && <275', AnswerHash: '', AnswerActions: [
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-        ActionMessageContent:
-            'So ganz richtig ist deine Antwort nicht.\nEin klein wenig kuerzer ist der Trog schon.\nIch glaube, du hast nur geschaetzt und nicht gemessen.\nUnd das nicht sonderlich gut hinbekommen.\n'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-        ActionMessageContent:
-            'Nur fuer den Fall, dass du eventuell einen falschen Futtertrog vermessen haben solltest, ist hier noch mal ein Spoilerbild.'),
-    WherigoActionMessageElementData(ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE, ActionMessageContent: '_akoE'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-        ActionMessageContent:
-            'Probiere es noch einmal!\n(nachdem du die Zone kurz verlassen und wieder betreten hast)'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_wR46N.Active = true'),
-    WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_Rv8P.Active = false'),
-  ]), // final List<WherigoActionMessageElementData>
+WherigoAnswer testOutputANSWEREdersee_VKB =
+    WherigoAnswer(InputFunction: '_VKB', InputAnswers: [
+  WherigoAnswerData(
+      AnswerAnswer: '>=240 && <=250',
+      AnswerHash: '',
+      AnswerActions: [
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+            ActionMessageContent:
+                'Im Rahmen der Messgenauigkeit lasse ich dieses Ergebnis auf jeden Fall gelten.'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+            ActionMessageContent: 'Jetzt besuche noch kurz das Denkmal.'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
+            ActionMessageContent: '_JU_y'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+            ActionMessageContent: '_wR46N.Active = false'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+            ActionMessageContent: '_k5m4.Active = true'),
+      ]), // final List<WherigoActionMessageElementData>
+  WherigoAnswerData(
+      AnswerAnswer: '>215 && <240',
+      AnswerHash: '',
+      AnswerActions: [
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+            ActionMessageContent:
+                'So ganz richtig ist deine Antwort nicht.\nEin klein wenig laenger ist der Trog schon.\nIch glaube, du hast nur geschaetzt und nicht gemessen.\nUnd das nicht sonderlich gut hinbekommen.\n'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+            ActionMessageContent:
+                'Nur fuer den Fall, dass du eventuell einen falschen Futtertrog vermessen haben solltest, ist hier noch mal ein Spoilerbild.'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
+            ActionMessageContent: '_akoE'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+            ActionMessageContent:
+                'Probiere es noch einmal!\n(nachdem du die Zone kurz verlassen und wieder betreten hast)'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+            ActionMessageContent: '_wR46N.Active = true'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+            ActionMessageContent: '_Rv8P.Active = false'),
+      ]), // final List<WherigoActionMessageElementData>
+  WherigoAnswerData(
+      AnswerAnswer: '>250 && <275',
+      AnswerHash: '',
+      AnswerActions: [
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+            ActionMessageContent:
+                'So ganz richtig ist deine Antwort nicht.\nEin klein wenig kuerzer ist der Trog schon.\nIch glaube, du hast nur geschaetzt und nicht gemessen.\nUnd das nicht sonderlich gut hinbekommen.\n'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+            ActionMessageContent:
+                'Nur fuer den Fall, dass du eventuell einen falschen Futtertrog vermessen haben solltest, ist hier noch mal ein Spoilerbild.'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
+            ActionMessageContent: '_akoE'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+            ActionMessageContent:
+                'Probiere es noch einmal!\n(nachdem du die Zone kurz verlassen und wieder betreten hast)'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+            ActionMessageContent: '_wR46N.Active = true'),
+        WherigoActionMessageElementData(
+            ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+            ActionMessageContent: '_Rv8P.Active = false'),
+      ]), // final List<WherigoActionMessageElementData>
   WherigoAnswerData(AnswerAnswer: '-<ELSE>-', AnswerHash: '', AnswerActions: [
     WherigoActionMessageElementData(
         ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-        ActionMessageContent: 'Also deine Antwort ist leider vollkommen (auf jeden Fall mehr als 30 cm) verkehrt.'),
+        ActionMessageContent:
+            'Also deine Antwort ist leider vollkommen (auf jeden Fall mehr als 30 cm) verkehrt.'),
     WherigoActionMessageElementData(
         ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
-        ActionMessageContent: 'Hast du vielleicht einen falschen Futtertrog vermessen?'),
+        ActionMessageContent:
+            'Hast du vielleicht einen falschen Futtertrog vermessen?'),
     WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: 'Hier noch mal ein Spoilerbild.'),
-    WherigoActionMessageElementData(ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE, ActionMessageContent: '_akoE'),
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+        ActionMessageContent: 'Hier noch mal ein Spoilerbild.'),
+    WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
+        ActionMessageContent: '_akoE'),
     WherigoActionMessageElementData(
         ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
         ActionMessageContent:
             'Oder hast du als Einheit nicht wie gefordert Zentimeter sondern etwas anderes gewaehlt?'),
     WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: 'Probiere es noch einmal!'),
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+        ActionMessageContent: 'Probiere es noch einmal!'),
     WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_wR46N.Active = true'),
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: '_wR46N.Active = true'),
     WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: '_Rv8P.Active = false'),
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: '_Rv8P.Active = false'),
   ]),
 ]);
 
-String testInputANSWER = ''' 
+WherigoAnswer testOutputANSWERCityWallsTour =
+    WherigoAnswer(InputFunction: 'zinputInput6', InputAnswers: [
+  WherigoAnswerData(AnswerAnswer: '4', AnswerHash: '', AnswerActions: [
+    WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+        ActionMessageContent: ''),
+    WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
+        ActionMessageContent: 'zmediaf9bf9872fae245c1aacbd64b67955a54'),
+  ]),
+  WherigoAnswerData(AnswerAnswer: '-<ELSE>-', AnswerHash: '', AnswerActions: [
+    WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+        ActionMessageContent: 'Eigentlich nicht. Diese Frage ist relativ leicht.'),
+    WherigoActionMessageElementData(
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
+        ActionMessageContent: 'zmedia86f0d0762a44421bbc9bc909044a6b28'),
+  ]),
+]);
+
+String testInputANSWER = '''
 function _Ejb_:OnGetInput(input)
   input = tonumber(input)
   if input == nil then
@@ -584,24 +717,47 @@ function _VKB:OnGetInput(input)
   end
 end''';
 
+String testInputANSWERCityWallsTour = '''
+function zinputInput6:OnGetInput(input)
+  Answer = input
+  if Wherigo.NoCaseEquals(Answer, "4") then
+    Wherigo.MessageBox({
+      Text = [[
+Es sind 4 Vierecke, obwohl sie nicht perfekte Quadrate sind.<BR>
+G = 1]],
+      Media = zmediaf9bf9872fae245c1aacbd64b67955a54,
+      Callback = cartCitywallstour.MsgBoxCBFuncs.MsgBoxCB16
+    })
+  else
+    Wherigo.MessageBox({
+      Text = "Eigentlich nicht. Diese Frage ist relativ leicht.",
+      Media = zmedia86f0d0762a44421bbc9bc909044a6b28,
+      Callback = cartCitywallstour.MsgBoxCBFuncs.MsgBoxCB15
+    })
+  end
+end''';
+
 void expectANSWER(
   WherigoAnswer actual,
   WherigoAnswer expected,
 ) {
   expect(actual.InputFunction, expected.InputFunction);
-
   List<WherigoAnswerData> listInputAnswers = actual.InputAnswers;
   if (expected.InputAnswers.length == listInputAnswers.length) {
     for (int i = 0; i < listInputAnswers.length; i++) {
-      expect(listInputAnswers[i].AnswerAnswer, expected.InputAnswers[i].AnswerAnswer);
-      expect(listInputAnswers[i].AnswerHash, expected.InputAnswers[i].AnswerHash);
+      expect(listInputAnswers[i].AnswerAnswer,
+          expected.InputAnswers[i].AnswerAnswer);
+      expect(
+          listInputAnswers[i].AnswerHash, expected.InputAnswers[i].AnswerHash);
 
-      List<WherigoActionMessageElementData>? listAnswerActions = listInputAnswers[i].AnswerActions;
+      List<WherigoActionMessageElementData>? listAnswerActions =
+          listInputAnswers[i].AnswerActions;
 
       for (int j = 0; j < listAnswerActions.length; j++) {
-        expect(listAnswerActions[j].ActionMessageType, expected.InputAnswers[i].AnswerActions[j].ActionMessageType);
-        expect(
-            listAnswerActions[j].ActionMessageContent, expected.InputAnswers[i].AnswerActions[j].ActionMessageContent);
+        expect(listAnswerActions[j].ActionMessageType,
+            expected.InputAnswers[i].AnswerActions[j].ActionMessageType);
+        expect(listAnswerActions[j].ActionMessageContent,
+            expected.InputAnswers[i].AnswerActions[j].ActionMessageContent);
       }
     }
   } else {

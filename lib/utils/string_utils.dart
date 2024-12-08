@@ -76,19 +76,14 @@ String insertSpaceEveryNthCharacter(String input, int n) {
 String insertEveryNthCharacter(String input, int n, String textToInsert) {
   if (n <= 0) return input;
 
-  String out = '';
-  int i = 0;
-  while (i < input.length) {
-    if (input.length - i <= n) {
-      out += input.substring(i);
-      break;
+  StringBuffer buffer = StringBuffer();
+  for (int i = 0; i < input.length; i++) {
+    if (i > 0 && i % n == 0) {
+      buffer.write(textToInsert);
     }
-
-    out += input.substring(i, min(i + n, input.length)) + textToInsert;
-    i += n;
+    buffer.write(input[i]);
   }
-
-  return out;
+  return buffer.toString();
 }
 
 bool isUpperCase(String letter) {

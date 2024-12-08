@@ -36,7 +36,7 @@ class _CallForContributionState extends State<CallForContribution> {
             text: i18n(context, 'callforcontribution_7'),
             recognizer: TapGestureRecognizer()
               ..onTap = () {
-                launchUrl(Uri.parse('https://github.com/S-Man42/GCWizard'));
+                launchUrl(Uri.parse('https://github.com/GCWizard/GCWizard'));
               },
             style: gcwHyperlinkTextStyle()),
         TextSpan(

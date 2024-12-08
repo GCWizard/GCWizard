@@ -1,5 +1,5 @@
 import "package:flutter_test/flutter_test.dart";
-import 'package:gc_wizard/tools/science_and_technology/date_and_time/unix_time/logic/unix_time.dart';
+import 'package:gc_wizard/tools/science_and_technology/date_and_time/epoch_time/unix_time/logic/unix_time.dart';
 
 void main() {
 
@@ -14,24 +14,24 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('date: ${elem['date']}', () {
-        var _actual = DateTimeToUnixTime(elem['date'] as DateTime);
-        expect(_actual.Error == '' ? _actual.UnixTimeStamp : _actual.Error, (elem['expectedOutput']));
+        var _actual = DateTimeUTCToUnixTime(elem['date'] as DateTime);
+        expect(_actual.error == '' ? _actual.timeStamp : _actual.error, (elem['expectedOutput']));
       });
     }
   });
 
   group("UnixTimeStampToDate:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      {'expectedOutput' : DateTime(2023, 6, 22, 19, 40, 31), 'UnixTimeSTamp' : 1687455631},
-      {'expectedOutput' : DateTime(1994, 2, 11, 1, 0, 0), 'UnixTimeSTamp' : 760924800},
-      {'expectedOutput' : DateTime(1970, 1, 16, 2, 11, 57), 'UnixTimeSTamp' : 1300317},
-      {'expectedOutput' : DateTime(1970, 1, 1, 0, 0, 0), 'UnixTimeSTamp' : 0},
+      {'expectedOutput' : DateTime.utc(2023, 6, 22, 17, 40, 31), 'UnixTimeSTamp' : 1687455631},
+      {'expectedOutput' : DateTime.utc(1994, 2, 11, 0, 0, 0), 'UnixTimeSTamp' : 760924800},
+      {'expectedOutput' : DateTime.utc(1970, 1, 16, 1, 11, 57), 'UnixTimeSTamp' : 1300317},
+      {'expectedOutput' : DateTime.utc(1970, 1, 1, 0, 0, 0), 'UnixTimeSTamp' : 0},
     ];
 
     for (var elem in _inputsToExpected) {
       test('date: ${elem['jd']}', () {
-        var _actual = UnixTimeToDateTime(elem['UnixTimeSTamp'] as int);
-        expect(_actual.GregorianDateTimeUTC, elem['expectedOutput']);
+        var _actual = UnixTimeToDateTimeUTC(elem['UnixTimeSTamp'] as int);
+        expect(_actual.gregorianDateTimeUTC, elem['expectedOutput']);
       });
     }
   });
