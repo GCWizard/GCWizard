@@ -172,7 +172,7 @@ class _MultiDecoderConfigurationState extends State<_MultiDecoderConfiguration> 
           ),
           GCWIconButton(
               icon: Icons.add,
-              iconColor: _currentEditId == null ? null : themeColors().inActive(),
+              iconColor: _currentEditId == null ? null : themeColors().inactive(),
               onPressed: () {
                 if (_currentEditId == null) {
                   setState(() {

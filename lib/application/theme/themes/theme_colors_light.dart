@@ -22,7 +22,7 @@ class _ThemeColorsLight extends ThemeColors {
   }
 
   @override
-  Color inActive() {
+  Color inactive() {
     return Colors.grey;
   }
 

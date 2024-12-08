@@ -43,7 +43,7 @@ class _HexString2FileState extends State<HexString2File> {
             trailing: GCWIconButton(
               icon: Icons.save,
               size: IconButtonSize.SMALL,
-              iconColor: _outData == null ? themeColors().inActive() : null,
+              iconColor: _outData == null ? themeColors().inactive() : null,
               onPressed: () {
                 _outData == null ? null : _exportFile(context, _outData!);
               },

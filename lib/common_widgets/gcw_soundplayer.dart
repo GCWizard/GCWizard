@@ -127,12 +127,12 @@ class _GCWSoundPlayerState extends State<GCWSoundPlayer> {
       children: [
         GCWIconButton(
           icon: isPlaying ? Icons.pause : Icons.play_arrow,
-          iconColor: _isLoaded ? null : themeColors().inActive(),
+          iconColor: _isLoaded ? null : themeColors().inactive(),
           onPressed: isPlaying ? () => _audioPlayerPause() : () => _audioPlayerPlay(),
         ),
         GCWIconButton(
           icon: Icons.stop,
-          iconColor: _isLoaded && !isStopped ? null : themeColors().inActive(),
+          iconColor: _isLoaded && !isStopped ? null : themeColors().inactive(),
           onPressed: isPlaying || isPaused ? () => _audioPlayerStop() : () => {},
         ),
         Expanded(

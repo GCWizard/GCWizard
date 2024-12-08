@@ -243,7 +243,7 @@ class _SymbolReplacerState extends State<SymbolReplacer> {
             )),
         GCWIconButton(
           icon: Icons.remove,
-          iconColor: _symbolImage == null ? themeColors().inActive() : null,
+          iconColor: _symbolImage == null ? themeColors().inactive() : null,
           onPressed: () {
             if (_symbolImage != null) {
               _currentMergeDistance = _symbolImage!.prevMergeDistance(_currentMergeDistance);
@@ -253,7 +253,7 @@ class _SymbolReplacerState extends State<SymbolReplacer> {
         ),
         GCWIconButton(
           icon: Icons.add,
-          iconColor: _symbolImage == null ? themeColors().inActive() : null,
+          iconColor: _symbolImage == null ? themeColors().inactive() : null,
           onPressed: () {
             if (_symbolImage != null) {
               _currentMergeDistance = _symbolImage!.nextMergeDistance(_currentMergeDistance);
@@ -303,7 +303,7 @@ class _SymbolReplacerState extends State<SymbolReplacer> {
         Container(width: 5),
         GCWIconButton(
             icon: Icons.alt_route,
-            iconColor: _symbolImage == null ? themeColors().inActive() : null,
+            iconColor: _symbolImage == null ? themeColors().inactive() : null,
             onPressed: () {
               if (_symbolImage != null) {
                 _symbolImage!.resetGroupText();
@@ -316,7 +316,7 @@ class _SymbolReplacerState extends State<SymbolReplacer> {
         Container(width: 5),
         GCWIconButton(
             icon: Icons.auto_fix_high,
-            iconColor: _symbolImage == null ? themeColors().inActive() : null,
+            iconColor: _symbolImage == null ? themeColors().inactive() : null,
             onPressed: () {
               _showAutoSearchDialog();
             }),

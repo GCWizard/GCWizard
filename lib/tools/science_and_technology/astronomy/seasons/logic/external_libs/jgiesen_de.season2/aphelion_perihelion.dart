@@ -1,5 +1,5 @@
 // ported from http://www.jgiesen.de/astro/astroJS/seasons2/seasons.js
-// with permission of the owner via email (2020-06-26, forwarded to geocache.wizard@gmail.com on 2020-06-29)
+// with permission of the owner via email (2020-06-26, forwarded to info@gcwizard.net on 2020-06-29)
 part of 'package:gc_wizard/tools/science_and_technology/astronomy/seasons/logic/seasons.dart';
 
 double _r0(double t) {

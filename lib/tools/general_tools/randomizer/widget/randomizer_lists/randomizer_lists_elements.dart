@@ -22,6 +22,11 @@ class _RandomizerListsElementsState extends State<_RandomizerListsElements> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        GCWText(
+          align: Alignment.center,
+          text: i18n(context, 'randomizer_lists_list_contains', parameters: [widget.list.length]),
+          style: gcwDescriptionTextStyle(),
+        ),
         GCWIntegerSpinner(
           title: i18n(context, 'common_count'),
           min: 1,
@@ -33,11 +38,6 @@ class _RandomizerListsElementsState extends State<_RandomizerListsElements> {
               _resetOutput();
             });
           },
-        ),
-        GCWText(
-          align: Alignment.center,
-          text: i18n(context, 'randomizer_lists_list_contains', parameters: [widget.list.length]),
-          style: gcwDescriptionTextStyle(),
         ),
         GCWSubmitButton(
           onPressed: () {

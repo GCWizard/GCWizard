@@ -1,7 +1,7 @@
 # English template
 
 To: '<...>'
-Cc: 'GC Wizard || Mark Lorenz' <geocache.wizard@gmail.com>
+Cc: 'GC Wizard || Mark Lorenz' <info@gcwizard.net>
 Subject: Request for permission of symbol tables
 
 Hello '<...>',
@@ -28,7 +28,7 @@ Kind regards
 # German template
 
 To: '<...>'
-Cc: 'GC Wizard || Mark Lorenz' <geocache.wizard@gmail.com>
+Cc: 'GC Wizard || Mark Lorenz' <info@gcwizard.net>
 Subject: Bitte um Genehmigung zur Nutzung von '<...>'
 
 Hallo '<...>',

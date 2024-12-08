@@ -237,7 +237,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
   GCWIconButton _buildUndoButton(String key) {
     return GCWIconButton(
       icon: Icons.refresh,
-      iconColor: _prefValueHasChanged(key) ? null : themeColors().inActive(),
+      iconColor: _prefValueHasChanged(key) ? null : themeColors().inactive(),
       onPressed: () {
         setState(() {
           _editedValue = null;

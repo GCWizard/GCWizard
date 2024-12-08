@@ -7,9 +7,10 @@ class GCWButton extends StatefulWidget {
   final void Function() onPressed;
   final TextStyle? textStyle;
   final EdgeInsetsGeometry? margin;
+  final bool enabled;
 
   const GCWButton({Key? key, required this.text, required this.onPressed,
-  this.textStyle, this.margin})
+  this.textStyle, this.margin, this.enabled = true})
       : super(key: key);
 
   @override
@@ -22,9 +23,8 @@ class _GCWButtonState extends State<GCWButton> {
     return Container(
       margin: widget.margin ?? const EdgeInsets.only(top: 10.0, bottom: 10.0),
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            backgroundColor: themeColors().secondary()),
-        onPressed: widget.onPressed,
+        style: ElevatedButton.styleFrom(backgroundColor: widget.enabled ? themeColors().secondary() : themeColors().inactive()),
+        onPressed: widget.enabled ? widget.onPressed : () => {},
         child: Text(
           widget.text,
           textAlign: TextAlign.center,

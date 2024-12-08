@@ -163,7 +163,18 @@ class _RandomizerListsState extends State<RandomizerLists> {
                   ),
                 )
                : IgnorePointer(
-                  child: GCWText(text: list.name),
+                  child: Column(
+                    children: [
+                      GCWText(text: list.name),
+                      Container(
+                        padding: const EdgeInsets.only(left: DEFAULT_DESCRIPTION_MARGIN),
+                        child: GCWText(
+                          text: list.list.length.toString() + ' ' + (list.list.length == 1 ? i18n(context, 'common_element') : i18n(context, 'common_elements')),
+                          style: gcwDescriptionTextStyle()
+                        )
+                      ),
+                    ],
+                  )
                 ),
             ),
             _currentEditName == list.name

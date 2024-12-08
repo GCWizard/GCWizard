@@ -18,7 +18,7 @@ abstract class ThemeColors {
   Color inputBackground();
   Color secondary();
   Color focused();
-  Color inActive();
+  Color inactive();
 
   Color textFieldHintText();
   Color textFieldFill();
