@@ -416,6 +416,7 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
             }
             i++;
           } while (_insideSectionInput(lines[i]) && (i + 1 < lines.length - 1));
+
           cartridgeInputData = _analyzeAndExtractInputSectionData(analyzeLines);
 
           _cartridgeInputs.add(cartridgeInputData);
@@ -435,18 +436,16 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
     try {
       if (lines[i].endsWith(':OnGetInput(input)')) {
         for (int j = 0; j < _cartridgeInputs.length; j++) {
-          if (lines[i].endsWith(':OnGetInput(input)')) {
-            analyzeLines = [];
-            do {
-              analyzeLines.add(lines[i].trim());
-              i++;
+          analyzeLines = [];
+          do {
+            analyzeLines.add(lines[i].trim());
+            i++;
 
-              if (sendAsyncPort != null && (i % progressStep == 0)) {
-                sendAsyncPort.send(DoubleText(PROGRESS, i / lines.length / 2));
-              }
-            } while (_insideSectionOnGetInput(lines[i]) && (i < lines.length - 3));
-            _Answers.add(_analyzeAndExtractOnGetInputSectionData(analyzeLines));
-          }
+            if (sendAsyncPort != null && (i % progressStep == 0)) {
+              sendAsyncPort.send(DoubleText(PROGRESS, i / lines.length / 2));
+            }
+          } while (_insideSectionOnGetInput(lines[i]) && (i < lines.length - 3));
+          _Answers.add(_analyzeAndExtractOnGetInputSectionData(analyzeLines));
         }
       } // end if identify input function
     } catch (exception) {

@@ -43,22 +43,11 @@ List<List<String>> _buildOutputListAnswers(BuildContext context,
         }
       }
     }
-  } else { // no multiple choice
+  } else {
     String _variable = answers.length > 1 ? _answerIsVariable(answers[1]) : '';
-    if (_variable.isNotEmpty) {
-      _variable = _variable.replaceAll('.', '\\.').replaceAll('|', '\\|');
-      if (RegExp(r'' + _variable + ' = .*').hasMatch(LUASourceCode)) {
-        result.add(
-            [i18n(context, 'wherigo_output_answervariable'), '', _variable]);
 
-        RegExp(r'' + _variable + ' = .*').allMatches(LUASourceCode).forEach((
-            variableWithValue) {
-          var group = variableWithValue.group(0);
-          if (group != null) {
-            result.add([i18n(context, 'wherigo_data_answer'), '', group]);
-          }
-        });
-      }
+    if (_variable.isNotEmpty) {
+      result.add([i18n(context, 'wherigo_output_answer'), '', _variable]);
     }
     //else {
     if (answers.length > 1) {
@@ -67,7 +56,7 @@ List<List<String>> _buildOutputListAnswers(BuildContext context,
         '',
         hash == '-<ELSE>-' ? i18n(context, 'wherigo_answer_else') : hash,
       ]);
-    } else { // answers.length = 1 or 0
+    } else {
       if (hash == '-<ELSE>-') {
         result.add([
           i18n(context, 'wherigo_output_answer'),
@@ -75,7 +64,19 @@ List<List<String>> _buildOutputListAnswers(BuildContext context,
           i18n(context, 'wherigo_answer_else'),
         ]);
       } else {
-        result.add([i18n(context, 'wherigo_output_answer'), '', hash]);
+        hash = hash.replaceAll('.', '\\.').replaceAll('|', '\\|');
+        if (RegExp(r'' + hash + ' = .*').hasMatch(LUASourceCode)) {
+          result.add([i18n(context, 'wherigo_output_answervariable'), '', hash]);
+
+          RegExp(r'' + hash + ' = .*').allMatches(LUASourceCode).forEach((variableWithValue) {
+            var group = variableWithValue.group(0);
+            if (group != null) {
+              result.add([i18n(context, 'wherigo_data_answer'), '', group]);
+            }
+          });
+        } else {
+          result.add([i18n(context, 'wherigo_output_answer'), '', hash]);
+        }
       }
     }
     if (answerAlphabetical != null) {
