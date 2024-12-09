@@ -1,7 +1,7 @@
 part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/logic/wherigo_analyze.dart';
 
 bool _insideSectionOnGetInput(String currentLine) {
-  if (currentLine.endsWith(':OnGetInput(input)') || currentLine.startsWith('function') || currentLine.contains(':OnProximity')) {
+  if (currentLine.endsWith(':OnGetInput(input)') || currentLine.startsWith('function')) {
     return false;
   }
   return true;
