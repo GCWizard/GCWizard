@@ -73,14 +73,18 @@ class _MajorSystemState extends State<MajorSystem> {
   }
 
   String _buildOutput() {
-    return (_nounMode == GCWSwitchPosition.left)
-        ? decryptMajorSystem(_currentInput, nounMode: false)
-        : decryptMajorSystem(_currentInput, nounMode: true);
+    final majorSystem = MajorSystemClass(
+      text: _currentInput,
+      nounMode: _nounMode == GCWSwitchPosition.right,
+    );
+    return majorSystem.decrypt();
   }
 
   String _buildPlainTextOutput() {
-    return (_nounMode == GCWSwitchPosition.left)
-        ? preparedMajorText(_currentInput, nounMode: false)
-        : preparedMajorText(_currentInput, nounMode: true);
+    final majorSystem = MajorSystemClass(
+      text: _currentInput,
+      nounMode: _nounMode == GCWSwitchPosition.right,
+    );
+    return majorSystem.preparedText();
   }
 }
