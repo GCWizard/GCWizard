@@ -1,20 +1,55 @@
 import 'package:diacritic/diacritic.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
+part 'package:gc_wizard/tools/crypto_and_encodings/major_system/logic/major_system_data.dart';
 
-const Map<String, String> _translation = {
-  's': '0', 'z': '0', 't': '1', 'd': '1', 'n': '2', 'm': '3',
-  'r': '4', 'l': '5', 'j': '6', 'g': '7', 'k': '7', 'c': '7',
-  'f': '8', 'v': '8', 'w': '8', 'ph': 'f', 'b': '9', 'p': '9'
-};
+enum MSCountries { DE, EN, FR, PL }
 
-const Map<String, String> _specialTranslations = {
-  'sch': 'j', 'ch': 'j', 'ck': 'k', 'ph': 'f'
-};
+String localizationName(MSCountries country) {
+  switch (country) {
+    case MSCountries.DE: return "common_language_german";
+    case MSCountries.EN: return "common_country_english";
+    case MSCountries.FR: return "common_country_french";
+    case MSCountries.PL: return "common_country_polish";
+  }
+}
+
+Map<String, String> _trans(MSCountries country) {
+  switch (country) {
+    case MSCountries.DE: return _translationDE;
+    case MSCountries.EN: return _translationEN;
+    case MSCountries.FR: return _translationFR;
+    case MSCountries.PL: return _translationPL;
+  }
+}
+
+Map<String, String> _specialTrans(MSCountries country) {
+  switch (country) {
+    case MSCountries.DE: return _specialTranslationsDE;
+    case MSCountries.EN: return _specialTranslationsEN;
+    case MSCountries.FR: return _specialTranslationsFR;
+    case MSCountries.PL: return _specialTranslationsPL;
+  }
+}
+
+RegExp _splits(MSCountries country) {
+  late String splitletters;
+  switch (country) {
+    case MSCountries.DE: splitletters = _splitLettersDE; break;
+    case MSCountries.EN: splitletters = _splitLettersEN; break;
+    case MSCountries.FR: splitletters = _splitLettersFR; break;
+    case MSCountries.PL: splitletters = _splitLettersPL; break;
+  }
+  return RegExp('[$splitletters]+');
+}
 
 final _nonLetterChars = RegExp(r'[^a-zA-Z]+');
-final _splitLetters = RegExp('[aeiouqxy]+');
 
-String decryptMajorSystem (String text, {bool nounMode = false}) {
+MSCountries currentCountry = MSCountries.DE;
+var _translations = _trans(currentCountry);
+var _specialTranslations = _specialTrans(currentCountry);
+var _splitletters = _splits(currentCountry);
+
+String decryptMajorSystem(String text, {bool nounMode = false}) {
   if (text.isEmpty) return '';
 
   final cleanedText = preparedMajorText(text, nounMode: nounMode);
@@ -31,7 +66,8 @@ String decryptMajorSystem (String text, {bool nounMode = false}) {
 
 String preparedMajorText(String text, {bool nounMode = false}) {
   final normalizedText = removeDiacritics(text);
-  final words = normalizedText.split(_nonLetterChars).where((word) => word.isNotEmpty);
+  final words =
+      normalizedText.split(_nonLetterChars).where((word) => word.isNotEmpty);
 
   if (nounMode) {
     return words.where((word) => isUpperCase(word[0])).join(' ').toLowerCase();
