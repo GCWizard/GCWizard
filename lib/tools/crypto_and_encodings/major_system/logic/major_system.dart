@@ -9,7 +9,6 @@ class MajorSystemClass {
   bool nounMode;
   MSCountry currentCountry;
 
-
   MajorSystemClass({required this.text,
     this.nounMode = false,
     this.currentCountry = MSCountry.DE});
@@ -31,51 +30,6 @@ class MajorSystemClass {
       case MSCountry.PL:
         return "common_country_polish";
     }
-  }
-
-  static Map<String, String> _getTranslations(MSCountry country) {
-    switch (country) {
-      case MSCountry.DE:
-        return _translationDE;
-      case MSCountry.EN:
-        return _translationEN;
-      case MSCountry.FR:
-        return _translationFR;
-      case MSCountry.PL:
-        return _translationPL;
-    }
-  }
-
-  Map<String, String> _getSpecialTranslations(MSCountry country) {
-    switch (country) {
-      case MSCountry.DE:
-        return _specialTranslationsDE;
-      case MSCountry.EN:
-        return _specialTranslationsEN;
-      case MSCountry.FR:
-        return _specialTranslationsFR;
-      case MSCountry.PL:
-        return _specialTranslationsPL;
-    }
-  }
-
-  RegExp _getSplitPattern(MSCountry country) {
-    late String splitletters;
-    switch (country) {
-      case MSCountry.DE:
-        splitletters = _splitLettersDE;
-        break;
-      case MSCountry.EN:
-        splitletters = _splitLettersEN;
-        break;
-      case MSCountry.FR:
-        splitletters = _splitLettersFR;
-        break;
-      case MSCountry.PL:
-        splitletters = _splitLettersPL;
-        break;
-    }
-    return RegExp('[$splitletters]+');
   }
 
   String decrypt() {
@@ -120,7 +74,6 @@ class MajorSystemClass {
     _specialTranslations.forEach((pattern, replacement) {
       group = group.replaceAll(pattern, replacement);
     });
-
     return group.split('').map((char) => _translations[char] ?? '').join();
   }
 

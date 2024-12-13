@@ -1,5 +1,34 @@
 part of 'package:gc_wizard/tools/crypto_and_encodings/major_system/logic/major_system.dart';
 
+Map<String, String> _getTranslations(MSCountry country) {
+  switch (country) {
+    case MSCountry.DE: return _translationDE;
+    case MSCountry.EN: return _translationEN;
+    case MSCountry.FR: return _translationFR;
+    case MSCountry.PL: return _translationPL;
+  }
+}
+
+Map<String, String> _getSpecialTranslations(MSCountry country) {
+  switch (country) {
+    case MSCountry.DE: return _specialTranslationsDE;
+    case MSCountry.EN: return _specialTranslationsEN;
+    case MSCountry.FR: return _specialTranslationsFR;
+    case MSCountry.PL: return _specialTranslationsPL;
+  }
+}
+
+RegExp _getSplitPattern(MSCountry country) {
+  late String splitletters;
+  switch (country) {
+    case MSCountry.DE: splitletters = _splitLettersDE; break;
+    case MSCountry.EN: splitletters = _splitLettersEN; break;
+    case MSCountry.FR: splitletters = _splitLettersFR; break;
+    case MSCountry.PL: splitletters = _splitLettersPL; break;
+  }
+  return RegExp('[$splitletters]+');
+}
+
 
 const Map<String, String> _translationDE = {
   's': '0', 'z': '0', 't': '1', 'd': '1', 'n': '2', 'm': '3',
