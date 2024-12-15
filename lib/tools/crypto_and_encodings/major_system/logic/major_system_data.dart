@@ -1,30 +1,45 @@
 part of 'package:gc_wizard/tools/crypto_and_encodings/major_system/logic/major_system.dart';
 
-Map<String, String> _getTranslations(MSCountry country) {
+enum MajorSystemCountry { DE, EN, FR, PL }
+
+String languageName(MajorSystemCountry country) {
   switch (country) {
-    case MSCountry.DE: return _translationDE;
-    case MSCountry.EN: return _translationEN;
-    case MSCountry.FR: return _translationFR;
-    case MSCountry.PL: return _translationPL;
+    case MajorSystemCountry.DE:
+      return "common_language_german";
+    case MajorSystemCountry.EN:
+      return "common_country_english";
+    case MajorSystemCountry.FR:
+      return "common_country_french";
+    case MajorSystemCountry.PL:
+      return "common_country_polish";
   }
 }
 
-Map<String, String> _getSpecialTranslations(MSCountry country) {
+Map<String, String> _getTranslations(MajorSystemCountry country) {
   switch (country) {
-    case MSCountry.DE: return _specialTranslationsDE;
-    case MSCountry.EN: return _specialTranslationsEN;
-    case MSCountry.FR: return _specialTranslationsFR;
-    case MSCountry.PL: return _specialTranslationsPL;
+    case MajorSystemCountry.DE: return _translationDE;
+    case MajorSystemCountry.EN: return _translationEN;
+    case MajorSystemCountry.FR: return _translationFR;
+    case MajorSystemCountry.PL: return _translationPL;
   }
 }
 
-RegExp _getSplitPattern(MSCountry country) {
+Map<String, String> _getSpecialTranslations(MajorSystemCountry country) {
+  switch (country) {
+    case MajorSystemCountry.DE: return _specialTranslationsDE;
+    case MajorSystemCountry.EN: return _specialTranslationsEN;
+    case MajorSystemCountry.FR: return _specialTranslationsFR;
+    case MajorSystemCountry.PL: return _specialTranslationsPL;
+  }
+}
+
+RegExp _getSplitPattern(MajorSystemCountry country) {
   late String splitletters;
   switch (country) {
-    case MSCountry.DE: splitletters = _splitLettersDE; break;
-    case MSCountry.EN: splitletters = _splitLettersEN; break;
-    case MSCountry.FR: splitletters = _splitLettersFR; break;
-    case MSCountry.PL: splitletters = _splitLettersPL; break;
+    case MajorSystemCountry.DE: splitletters = _splitLettersDE; break;
+    case MajorSystemCountry.EN: splitletters = _splitLettersEN; break;
+    case MajorSystemCountry.FR: splitletters = _splitLettersFR; break;
+    case MajorSystemCountry.PL: splitletters = _splitLettersPL; break;
   }
   return RegExp('[$splitletters]+');
 }

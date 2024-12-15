@@ -2,35 +2,21 @@ import 'package:diacritic/diacritic.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 part 'package:gc_wizard/tools/crypto_and_encodings/major_system/logic/major_system_data.dart';
 
-enum MSCountry { DE, EN, FR, PL }
 
-class MajorSystemClass {
+class MajorSystemLogic {
   String text;
   bool nounMode;
-  MSCountry currentCountry;
+  MajorSystemCountry currentCountry;
 
-  MajorSystemClass({required this.text,
+  MajorSystemLogic({required this.text,
     this.nounMode = false,
-    this.currentCountry = MSCountry.DE});
+    this.currentCountry = MajorSystemCountry.DE});
 
   Map<String, String> get _translations => _getTranslations(currentCountry);
   Map<String, String> get _specialTranslations => _getSpecialTranslations(currentCountry);
   RegExp get _splitPattern => _getSplitPattern(currentCountry);
 
   final _nonLetterChars = RegExp(r'[^a-zA-Z]+');
-
-  static String localizationName(MSCountry country) {
-    switch (country) {
-      case MSCountry.DE:
-        return "common_language_german";
-      case MSCountry.EN:
-        return "common_country_english";
-      case MSCountry.FR:
-        return "common_country_french";
-      case MSCountry.PL:
-        return "common_country_polish";
-    }
-  }
 
   String decrypt() {
     if (text.isEmpty) return '';

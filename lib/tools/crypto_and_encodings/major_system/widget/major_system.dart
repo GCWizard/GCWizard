@@ -73,7 +73,7 @@ class _MajorSystemState extends State<MajorSystem> {
   }
 
   String _buildOutput() {
-    final majorSystem = MajorSystemClass(
+    final majorSystem = MajorSystemLogic(
       text: _currentInput,
       nounMode: _nounMode == GCWSwitchPosition.right,
     );
@@ -81,7 +81,7 @@ class _MajorSystemState extends State<MajorSystem> {
   }
 
   String _buildPlainTextOutput() {
-    final majorSystem = MajorSystemClass(
+    final majorSystem = MajorSystemLogic(
       text: _currentInput,
       nounMode: _nounMode == GCWSwitchPosition.right,
     );
