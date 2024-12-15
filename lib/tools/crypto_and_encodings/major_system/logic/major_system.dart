@@ -6,15 +6,15 @@ part 'package:gc_wizard/tools/crypto_and_encodings/major_system/logic/major_syst
 class MajorSystemLogic {
   String text;
   bool nounMode;
-  MajorSystemCountry currentCountry;
+  MajorSystemLanguage currentLanguage;
 
   MajorSystemLogic({required this.text,
     this.nounMode = false,
-    this.currentCountry = MajorSystemCountry.DE});
+    this.currentLanguage = MajorSystemLanguage.DE});
 
-  Map<String, String> get _translations => _getTranslations(currentCountry);
-  Map<String, String> get _specialTranslations => _getSpecialTranslations(currentCountry);
-  RegExp get _splitPattern => _getSplitPattern(currentCountry);
+  Map<String, String> get _translations => _getTranslations(currentLanguage);
+  Map<String, String> get _specialTranslations => _getSpecialTranslations(currentLanguage);
+  RegExp get _splitPattern => _getSplitPattern(currentLanguage);
 
   final _nonLetterChars = RegExp(r'[^a-zA-Z]+');
 

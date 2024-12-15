@@ -1,45 +1,41 @@
 part of 'package:gc_wizard/tools/crypto_and_encodings/major_system/logic/major_system.dart';
 
-enum MajorSystemCountry { DE, EN, FR, PL }
+enum MajorSystemLanguage { DE, EN, FR, PL }
 
-String languageName(MajorSystemCountry country) {
+String languageName(MajorSystemLanguage country) {
   switch (country) {
-    case MajorSystemCountry.DE:
-      return "common_language_german";
-    case MajorSystemCountry.EN:
-      return "common_country_english";
-    case MajorSystemCountry.FR:
-      return "common_country_french";
-    case MajorSystemCountry.PL:
-      return "common_country_polish";
+    case MajorSystemLanguage.DE: return "common_language_german";
+    case MajorSystemLanguage.EN: return "common_language_english";
+    case MajorSystemLanguage.FR: return "common_language_french";
+    case MajorSystemLanguage.PL: return "common_language_polish";
   }
 }
 
-Map<String, String> _getTranslations(MajorSystemCountry country) {
+Map<String, String> _getTranslations(MajorSystemLanguage country) {
   switch (country) {
-    case MajorSystemCountry.DE: return _translationDE;
-    case MajorSystemCountry.EN: return _translationEN;
-    case MajorSystemCountry.FR: return _translationFR;
-    case MajorSystemCountry.PL: return _translationPL;
+    case MajorSystemLanguage.DE: return _translationDE;
+    case MajorSystemLanguage.EN: return _translationEN;
+    case MajorSystemLanguage.FR: return _translationFR;
+    case MajorSystemLanguage.PL: return _translationPL;
   }
 }
 
-Map<String, String> _getSpecialTranslations(MajorSystemCountry country) {
+Map<String, String> _getSpecialTranslations(MajorSystemLanguage country) {
   switch (country) {
-    case MajorSystemCountry.DE: return _specialTranslationsDE;
-    case MajorSystemCountry.EN: return _specialTranslationsEN;
-    case MajorSystemCountry.FR: return _specialTranslationsFR;
-    case MajorSystemCountry.PL: return _specialTranslationsPL;
+    case MajorSystemLanguage.DE: return _specialTranslationsDE;
+    case MajorSystemLanguage.EN: return _specialTranslationsEN;
+    case MajorSystemLanguage.FR: return _specialTranslationsFR;
+    case MajorSystemLanguage.PL: return _specialTranslationsPL;
   }
 }
 
-RegExp _getSplitPattern(MajorSystemCountry country) {
+RegExp _getSplitPattern(MajorSystemLanguage country) {
   late String splitletters;
   switch (country) {
-    case MajorSystemCountry.DE: splitletters = _splitLettersDE; break;
-    case MajorSystemCountry.EN: splitletters = _splitLettersEN; break;
-    case MajorSystemCountry.FR: splitletters = _splitLettersFR; break;
-    case MajorSystemCountry.PL: splitletters = _splitLettersPL; break;
+    case MajorSystemLanguage.DE: splitletters = _splitLettersDE; break;
+    case MajorSystemLanguage.EN: splitletters = _splitLettersEN; break;
+    case MajorSystemLanguage.FR: splitletters = _splitLettersFR; break;
+    case MajorSystemLanguage.PL: splitletters = _splitLettersPL; break;
   }
   return RegExp('[$splitletters]+');
 }
