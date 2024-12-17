@@ -341,8 +341,6 @@ String decodeGaussWeberTelegraph(String input, GaussWeberTelegraphMode mode) {
     case GaussWeberTelegraphMode.WHEATSTONE_COOKE_1:
       map = switchMapKeyValue(_WHEATSTONE_COOKE_1);
       break;
-    default:
-      return '';
   }
 
   if (mode == GaussWeberTelegraphMode.WHEATSTONE_COOKE_1) {
@@ -414,8 +412,6 @@ String encodeGaussWeberTelegraph(String input, GaussWeberTelegraphMode mode) {
     case GaussWeberTelegraphMode.WHEATSTONE_COOKE_1:
       map = _WHEATSTONE_COOKE_1;
       break;
-    default:
-      return '';
   }
 
   if (mode == GaussWeberTelegraphMode.WHEATSTONE_COOKE_1) {

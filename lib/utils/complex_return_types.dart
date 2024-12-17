@@ -28,6 +28,13 @@ class BoolText {
   BoolText(this.text, this.value);
 }
 
+class StringText {
+  String text;
+  String value;
+
+  StringText(this.text, this.value);
+}
+
 class IntegerListText {
   String text;
   List<int> value;

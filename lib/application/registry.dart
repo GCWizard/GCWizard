@@ -210,6 +210,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/hashes/hash_breaker/widget/
 import 'package:gc_wizard/tools/crypto_and_encodings/hashes/hashes/widget/hashes.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/hashes/hashes_identification/widget/hashes_identification.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/hashes/hashes_overview/widget/hashes_overview.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/hill/widget/hill.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/homophone/widget/homophone.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/houdini/widget/houdini.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/judoon/widget/judoon.dart';
@@ -220,6 +221,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/language_games/duck_speak/w
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/pig_latin/widget/pig_latin.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/robber_language/widget/robber_language.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/spoon_language/widget/spoon_language.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/major_system/widget/major_system.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/maya_numbers/widget/maya_numbers.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/mexican_army_cipher_wheel/widget/mexican_army_cipher_wheel.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/morbit/widget/morbit.dart';
@@ -999,6 +1001,17 @@ void initializeRegistry(BuildContext context) {
     ], searchKeys: const [
       'hiddendata',
     ], licenses: const []),
+    GCWTool(tool: const Hill(), id: 'hill', categories: const [
+      ToolCategory.CRYPTOGRAPHY
+    ], searchKeys: const [
+      'hill',
+    ], licenses: [
+        ToolLicenseOnlineArticle(
+        context: context,
+        author: 'Rajput-Ji ',
+        title: 'Hill-Chiffre',
+        sourceUrl: 'https://web.archive.org/web/20201030134340/https://www.geeksforgeeks.org/hill-cipher/')
+    ]),
     GCWTool(tool: const Homophone(), id: 'homophone', categories: const [
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
@@ -1015,8 +1028,7 @@ void initializeRegistry(BuildContext context) {
       categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
       searchKeys: const [
         'iataicao',
-      ],
-    ),
+      ]),
     GCWTool(
       tool: const IceCodesSelection(),
       id: 'icecodes_selection',
@@ -1123,6 +1135,13 @@ void initializeRegistry(BuildContext context) {
           'https://web.archive.org/web/20240722204912/https://github.com/piellardj/stereogram-solver?tab=readme-ov-file',
           licenseType: ToolLicenseType.MIT),
     ]),
+    GCWTool(
+        tool: const MajorSystem(),
+        id: 'major_system',
+        isBeta: true,
+        categories: const [ ToolCategory.CRYPTOGRAPHY ],
+        searchKeys: const [ 'major_system', ]
+    ),
     GCWTool(tool: const MathematicalConstants(), id: 'mathematical_constants', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
     ], searchKeys: const [

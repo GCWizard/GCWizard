@@ -245,8 +245,6 @@ class _MusicNotesState extends State<MusicNotes> {
         case NotesCodebook.TREBLE:
           translation = i18n(context, 'symboltables_notes_names_trebleclef_' + note);
           break;
-        default:
-          translation = '';
       }
       if (translation.isNotEmpty) translationMap.addAll({note: translation});
     }

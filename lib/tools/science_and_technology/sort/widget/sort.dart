@@ -110,7 +110,6 @@ class _SortState extends State<Sort> {
       case _SortType.WORDS: textOutput = sortList<String>(sortInput.split(RegExp(r'\s+')).toList(), sortMode).join(' '); break;
       case _SortType.LINES: textOutput = sortList<String>(sortInput.replaceAll('\r+', '').split(RegExp(r'\n+')).toList(), sortMode).join('\n'); break;
       case _SortType.CHARS_IN_WORDS: textOutput = sortTextInBlocks(sortInput, sortMode); break;
-      default: break;
     }
 
     List<String> detailData;
@@ -119,7 +118,6 @@ class _SortState extends State<Sort> {
       case _SortType.WORDS: detailData = textOutput.split(' ').toList(); break;
       case _SortType.LINES: detailData = textOutput.split('\n').toList(); break;
       case _SortType.CHARS_IN_WORDS: detailData = textOutput.split(RegExp(r'[\s]')).toList(); break;
-      default: detailData = <String>[]; break;
     }
 
     var details = GCWExpandableTextDivider(

@@ -68,7 +68,9 @@ class _Chef {
           recipe[i].startsWith("pre heat oven") ||
           recipe[i].startsWith("ofen auf") ||
           recipe[i].startsWith("method") ||
-          recipe[i].startsWith("zubereitung")) ingredientSection = false;
+          recipe[i].startsWith("zubereitung")) {
+        ingredientSection = false;
+      }
 
       if (recipe[i].startsWith("method") || recipe[i].startsWith("zubereitung")) methodSection = true;
 
@@ -123,7 +125,11 @@ class _Chef {
           recipe[i].startsWith("method") ||
           recipe[i].startsWith("zubereitung") ||
           recipe[i].startsWith("serves") ||
-          recipe[i].startsWith("portionen")) if (s0.isNotEmpty) recipe[i] = '\n' + recipe[i];
+          recipe[i].startsWith("portionen")) {
+        if (s0.isNotEmpty) {
+          recipe[i] = '\n' + recipe[i];
+        }
+      }
       s0 = recipe[i];
     }
     readRecipe = recipe.join('\n');

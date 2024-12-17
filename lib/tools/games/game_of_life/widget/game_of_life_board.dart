@@ -74,7 +74,7 @@ class GameOfLifePainter extends CustomPainter {
 
 
     _touchCanvas.drawRect(Rect.fromLTWH(0, 0, this.size.x  * boxSize, this.size.y * boxSize), paintBackground);
-
+    
     for (int i = 0; i < this.size.y; i++) {
       for (int j = 0; j < this.size.x; j++) {
         if (state[i][j]) {

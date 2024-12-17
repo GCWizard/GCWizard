@@ -68,8 +68,6 @@ void setUntypedPref(String key, Object value) {
         Prefs.setStringList(key, saveList);
       }
       break;
-    default:
-      throw Exception('No valid preference type');
   }
 }
 

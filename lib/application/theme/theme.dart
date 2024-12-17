@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/_common/gcw_package_info.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
+import 'package:gc_wizard/utils/ui_dependent_utils/color_utils.dart';
 import 'package:prefs/prefs.dart';
 
 const FONT_SIZE_MIN = 10;
@@ -70,7 +71,7 @@ ThemeData buildTheme() {
       textTheme: base.textTheme,
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: colors.secondary(),
-        selectionColor: colors.secondary().withOpacity(0.5),
+        selectionColor: colors.secondary().withAlpha((255.0 * 0.5).round()),
         selectionHandleColor: colors.secondary(),
       ),
       buttonTheme: base.buttonTheme.copyWith(
@@ -96,7 +97,7 @@ ThemeData buildTheme() {
       tabBarTheme: TabBarTheme(
           indicatorColor: themeColors().secondary(),
           labelColor: colors.mainFont(),
-          unselectedLabelColor: colors.mainFont().withOpacity(0.7),
+          unselectedLabelColor: colors.mainFont().withAlpha((255.0 * 0.7).round()),
           dividerHeight: 0,
           indicatorSize: TabBarIndicatorSize.tab),
       appBarTheme: AppBarTheme(backgroundColor: colors.primaryBackground(), foregroundColor: colors.mainFont()),
@@ -113,7 +114,7 @@ ThemeData buildTheme() {
 // https://medium.com/@morgenroth/using-flutters-primary-swatch-with-a-custom-materialcolor-c5e0f18b95b0
 
 MaterialColor _generateMaterialColor(Color color) {
-  return MaterialColor(color.value, {
+  return MaterialColor(colorValue(color), {
     50: _tintColor(color, 0.9),
     100: _tintColor(color, 0.8),
     200: _tintColor(color, 0.6),
@@ -127,15 +128,15 @@ MaterialColor _generateMaterialColor(Color color) {
   });
 }
 
-int _tintValue(int value, double factor) => max(0, min((value + ((255 - value) * factor)).round(), 255));
+int _tintValue(double value, double factor) => max(0, min((value + ((255 - value) * factor)).round(), 255));
 
 Color _tintColor(Color color, double factor) =>
-    Color.fromRGBO(_tintValue(color.red, factor), _tintValue(color.green, factor), _tintValue(color.blue, factor), 1);
+    Color.fromRGBO(_tintValue(color.r, factor), _tintValue(color.g, factor), _tintValue(color.b, factor), 1);
 
-int _shadeValue(int value, double factor) => max(0, min(value - (value * factor).round(), 255));
+int _shadeValue(double value, double factor) => max(0, min((value - (value * factor)).round(), 255));
 
 Color _shadeColor(Color color, double factor) => Color.fromRGBO(
-    _shadeValue(color.red, factor), _shadeValue(color.green, factor), _shadeValue(color.blue, factor), 1);
+    _shadeValue(color.r, factor), _shadeValue(color.g, factor), _shadeValue(color.b, factor), 1);
 
 double defaultFontSize() {
   var fontSize = Prefs.getDouble(PREFERENCE_THEME_FONT_SIZE);

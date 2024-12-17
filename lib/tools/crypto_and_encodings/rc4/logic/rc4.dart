@@ -83,8 +83,6 @@ List<int>? convertInputToIntList(String input, InputFormat format) {
       return _convertToIntList(input, 2);
     case InputFormat.ASCIIVALUES:
       return _convertToIntList(input, 10);
-    default:
-      return <int>[];
   }
 }
 
@@ -172,8 +170,6 @@ String formatOutput(List<int> outList, OutputFormat outputFormat) {
         if (out.isNotEmpty) out += ' ';
 
         out += item.toString();
-        break;
-      default:
         break;
     }
   }

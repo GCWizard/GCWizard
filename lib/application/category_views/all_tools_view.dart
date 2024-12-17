@@ -124,6 +124,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/vigene
 import 'package:gc_wizard/tools/crypto_and_encodings/gray/widget/gray.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/gronsfeld/widget/gronsfeld.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/hashes/hash_breaker/widget/hash_breaker.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/hill/widget/hill.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/homophone/widget/homophone.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/houdini/widget/houdini.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/kamasutra/widget/kamasutra.dart';
@@ -134,6 +135,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/language_games/judoon/widge
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/pig_latin/widget/pig_latin.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/robber_language/widget/robber_language.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/spoon_language/widget/spoon_language.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/major_system/widget/major_system.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/mexican_army_cipher_wheel/widget/mexican_army_cipher_wheel.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/morbit/widget/morbit.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/navajo/widget/navajo.dart';
@@ -632,6 +634,7 @@ void _initStaticToolList() {
       className(const HexString2File()),
       className(const HexViewer()),
       className(const HiddenData()),
+      className(const Hill()),
       className(const Hohoho()),
       className(const Homophone()),
       className(const Houdini()),
@@ -664,6 +667,7 @@ void _initStaticToolList() {
       className(const LCM()),
       className(const LogicalSupporter()),
       className(const MagicEyeSolver()),
+      className(const MajorSystem()),
       className(const MathematicalConstants()),
       className(const Malbolge()),
       className(MapView()),

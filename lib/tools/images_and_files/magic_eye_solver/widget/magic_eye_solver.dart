@@ -224,7 +224,9 @@ class _MagicEyeSolverState extends State<MagicEyeSolver> {
 
   void _generateEncodeImage() async {
     if (_encodeHiddenDataImage == null ||
-        (_currentEncodeTextureType == TextureType.BITMAP && _encodeTextureImage == null)) return;
+        (_currentEncodeTextureType == TextureType.BITMAP && _encodeTextureImage == null)) {
+      return;
+    }
 
     await showDialog<bool>(
       context: context,

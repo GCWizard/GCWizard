@@ -1,6 +1,3 @@
-import 'dart:typed_data';
-
-import 'package:archive/archive_io.dart';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/distance_bearing.dart';
@@ -26,28 +23,23 @@ Future<MapViewDAO?> importCoordinatesFile(GCWFile file) async {
       var xml = convertBytesToString(file.bytes);
       return parseCoordinatesFile(xml, kmlFormat: true);
     case FileType.ZIP:
-      InputStream input = InputStream(file.bytes.buffer.asByteData());
       // Decode the Zip file
-      final archive = ZipDecoder().decodeBuffer(input);
-      if (archive.files.isNotEmpty) {
+      final archive = extractZipArchive(file.bytes);
+      if (archive.isNotEmpty) {
         var file = archive.first;
-        file.decompress();
         if (getFileExtension(file.name.toLowerCase()) == '.gpx') {
-          var xml = convertBytesToString(Uint8List.fromList(file.content as List<int>));
+          var xml = convertBytesToString(file.content);
           return parseCoordinatesFile(xml);
         }
       }
       break;
 
     case FileType.KMZ:
-      InputStream input = InputStream(file.bytes.buffer.asByteData());
       // Decode the Zip file
-      final archive = ZipDecoder().decodeBuffer(input);
-      if (archive.files.isNotEmpty) {
+      final archive = extractZipArchive(file.bytes);
+      if (archive.isNotEmpty) {
         var file = archive.first;
-        file.decompress();
-        var xml =
-            convertBytesToString(Uint8List.fromList(file.content as List<int>));
+        var xml = convertBytesToString(file.content);
         return parseCoordinatesFile(xml, kmlFormat: true);
       }
       break;

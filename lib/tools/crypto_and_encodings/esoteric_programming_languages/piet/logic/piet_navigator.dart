@@ -76,8 +76,6 @@ class _PietNavigator {
             case _Direction.North:
               exitPoint = Point<int>(exitPoint.x, exitPoint.y - 1);
               break;
-            default:
-              return throw const FormatException('common_programming_error_invalid_opcode');
           }
         }
         // we've crossed the boundary, one step back to be on the edge

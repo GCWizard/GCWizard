@@ -29,9 +29,6 @@ class _UICWagonCodeCountryCodesState extends State<UICWagonCodeCountryCodes> {
       case _GCWWagonCodesCountryCodesSortBy.NAME:
         out = 'common_name';
         break;
-      default:
-        out = '';
-        break;
     }
 
     return i18n(context, out);
@@ -72,8 +69,6 @@ class _UICWagonCodeCountryCodesState extends State<UICWagonCodeCountryCodes> {
           return [country.letterCode, name, country.numberCode];
         case _GCWWagonCodesCountryCodesSortBy.NAME:
           return [name, country.numberCode, country.letterCode];
-        default:
-          return <String>[];
       }
     }).toList();
     data.sort((a, b) => a[0].compareTo(b[0]));
@@ -94,8 +89,6 @@ class _UICWagonCodeCountryCodesState extends State<UICWagonCodeCountryCodes> {
       case _GCWWagonCodesCountryCodesSortBy.NAME:
         flexValues = [2, 1, 1];
         data.insert(0, [nameHeader, numberCodeHeader, letterCodeHeader]);
-        break;
-      default:
         break;
     }
 

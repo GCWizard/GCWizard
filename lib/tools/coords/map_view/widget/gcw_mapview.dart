@@ -298,7 +298,7 @@ class _GCWMapViewState extends State<GCWMapView> {
         _currentAccuracy != null &&
         _currentPosition != null &&
         _isPointsHidden == false) {
-      var circleColor = COLOR_MAP_USERPOSITION.withOpacity(0.0);
+      var circleColor = COLOR_MAP_USERPOSITION.withAlpha(0);
 
       layers.add(CircleLayer(circles: [
         CircleMarker(
