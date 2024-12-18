@@ -16,7 +16,7 @@ Our app and its images are provided under the GNU General Public License https:/
 We would add your permission to "About"-> "Used third party code libraries and images" and, of course, would also provide the link to your homepage and name you as the source.
 
 If you would like to have a look on it before making a decision: https://gcwizard.net/ or https://blog.gcwizard.net/. 
-Since it is open source, the code and related images can be seen here: https://github.com/S-Man42/GCWizard
+Since it is open source, the code and related images can be seen here: https://github.com/GCWizard/GCWizard
 
 I hope I was able to give you a little insight into our hobby and would be pleased to receive a positive response or, if necessary, a tip that will help us if we need to ask someone else for permission 😊.
 We can also have a call, if you have any questions on our project.
@@ -43,7 +43,7 @@ Unsere App und ihre Bilder werden unter der GNU General Public License https://w
 Wir würden Ihre Erlaubnis unter "Über" -> "Verwendete Codebibliotheken und Bilder von Dritten" hinzufügen und natürlich auch den Link zu Ihrer Homepage angeben und Sie als Quelle angeben.
 
 Wenn Sie einen Blick darauf werfen möchten, bevor Sie eine Entscheidung treffen: https://gcwizard.net/ oder https://blog.gcwizard.net/.
-Da es sich um Open Source handelt, können der Code und die dazugehörigen Bilder hier eingesehen werden: https://github.com/S-Man42/GCWizard
+Da es sich um Open Source handelt, können der Code und die dazugehörigen Bilder hier eingesehen werden: https://github.com/GCWizard/GCWizard
 
 Ich hoffe, ich konnte Ihnen ein wenig unser Hobby näher bringen, und würde mich über eine positive Rückantwort freuen oder ggf. einen Hinweis, der uns hilft, wenn wir jemand anderen um Erlaubnis fragen müssen 😊.
 Wir können auch gerne telefonieren, wenn Sie Fragen zu unserem Projekt haben.

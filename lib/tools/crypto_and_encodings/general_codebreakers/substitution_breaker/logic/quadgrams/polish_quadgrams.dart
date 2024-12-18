@@ -7,7 +7,6 @@ class PolishQuadgrams extends Quadgrams {
     most_frequent_quadgram = 'prze';
     max_fitness = 1393;
     average_fitness = 250.73583514232695;
-    assetLocation =
-        "/lib/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/assets/quadgrams/pl.json";
+    assetLocation = "lib/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/assets/quadgrams/pl.json";
   }
 }

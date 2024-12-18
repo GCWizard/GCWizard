@@ -1081,7 +1081,7 @@ Therefor the servlet
 
 ## Quellcode
 
-GitHub [GCWizard/external_helpers/decompiler_rest_api at 2.3.0 · S-Man42/GCWizard (github.com)](https://github.com/S-Man42/GCWizard/tree/2.3.0/external_helpers/decompiler_rest_api)
+GitHub [GCWizard/external_helpers/decompiler_rest_api at 2.3.0 · S-Man42/GCWizard (github.com)](https://github.com/GCWizard/GCWizard/tree/2.3.0/external_helpers/decompiler_rest_api)
 
 
 

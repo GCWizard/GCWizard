@@ -27,8 +27,8 @@ class _SpecificToolLicenses {
       author: 'Charles Karney',
       title: 'GeographicLib',
       licenseType: ToolLicenseType.MIT,
-      licenseUrl: 'https://github.com/S-Man42/geographiclib/blob/23bd797bf2b1fa894ca30b69a9cf998e00f4a663/LICENSE.txt',
-      sourceUrl: 'https://github.com/S-Man42/geographiclib/tree/23bd797bf2b1fa894ca30b69a9cf998e00f4a663'
+      licenseUrl: 'https://github.com/GCWizard/geographiclib/blob/23bd797bf2b1fa894ca30b69a9cf998e00f4a663/LICENSE.txt',
+      sourceUrl: 'https://github.com/GCWizard/geographiclib/tree/23bd797bf2b1fa894ca30b69a9cf998e00f4a663'
     );
   }
 
@@ -38,8 +38,8 @@ class _SpecificToolLicenses {
       author: 'Legion of the Bouncy Castle Inc',
       title: 'Flutter Library: Pointy Castle',
       licenseType: ToolLicenseType.MIT,
-      licenseUrl: 'https://github.com/S-Man42/pc-dart/blob/c7009dbf7785f4ff865ddb4eefdaed8c18ef3baa/LICENSE',
-      sourceUrl: 'https://github.com/S-Man42/pc-dart/tree/c7009dbf7785f4ff865ddb4eefdaed8c18ef3baa'
+      licenseUrl: 'https://github.com/GCWizard/pc-dart/blob/c7009dbf7785f4ff865ddb4eefdaed8c18ef3baa/LICENSE',
+      sourceUrl: 'https://github.com/GCWizard/pc-dart/tree/c7009dbf7785f4ff865ddb4eefdaed8c18ef3baa'
     );
   }
 
@@ -59,8 +59,8 @@ class _SpecificToolLicenses {
       author: 'The MITRE Corporation',
       title: 'Geodetic Library',
       licenseType: ToolLicenseType.APACHE2,
-      licenseUrl: 'https://github.com/S-Man42/geodetic_library/blob/e2fd776eec8f7591d98022682137de0f74a4a0d7/LICENSE',
-      sourceUrl: 'https://github.com/S-Man42/geodetic_library/tree/e2fd776eec8f7591d98022682137de0f74a4a0d7'
+      licenseUrl: 'https://github.com/GCWizard/geodetic_library/blob/e2fd776eec8f7591d98022682137de0f74a4a0d7/LICENSE',
+      sourceUrl: 'https://github.com/GCWizard/geodetic_library/tree/e2fd776eec8f7591d98022682137de0f74a4a0d7'
     );
   }
 
@@ -139,12 +139,13 @@ class _SpecificToolLicenses {
 
   ToolLicenseEntry get _toolLicenseOnlineBookPolygraphieTrithemius {
     return ToolLicenseOnlineBook(
-      context: context,
-      author: 'Johannes Trithemius',
-      title: 'Polygraphie et universelle escriture cabalistique',
-      sourceUrl: 'https://archive.org/details/Historiaedegent00Olau',
-      year: 1557,
-      licenseType: ToolLicenseType.PUBLIC_DOMAIN,
+        context: context,
+        author: 'Johannes Trithemius, published by Boston Public Library',
+        title: 'Polygraphie et vniuerselle escriture cabalistique',
+        year: 1561,
+        sourceUrl: 'https://archive.org/details/polygraphieetvni00trit/page/n7/mode/2up',
+        licenseUrl: 'https://web.archive.org/web/20240205061241/https://www.bpl.org/digitization/locations/',
+        licenseType: ToolLicenseType.PUBLIC_DOMAIN
     );
   }
 

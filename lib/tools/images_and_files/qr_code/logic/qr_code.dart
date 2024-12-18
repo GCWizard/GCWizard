@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/tools/images_and_files/binary2image/logic/binary2image.dart';
+import 'package:gc_wizard/utils/ui_dependent_utils/color_utils.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/image_utils/drawable_image_data.dart';
 import 'package:qr/qr.dart' as qr;
 import 'package:r_scan/r_scan.dart' as scan;
@@ -52,7 +53,7 @@ DrawableImageData? generateBarCode(String code,
   }
 
   moduleSize = max(1, moduleSize);
-  var _colorMap = {'0': COLOR_QR_BACKGROUND.value, '1': colorMap.values.elementAt(1)};
+  var _colorMap = {'0': colorValue(COLOR_QR_BACKGROUND), '1': colorMap.values.elementAt(1)};
 
   try {
     var qrImage = _createQrCode(qrCode);

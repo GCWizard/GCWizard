@@ -68,9 +68,10 @@ import 'package:gc_wizard/tools/science_and_technology/physical_constants/logic/
 import 'package:gc_wizard/tools/science_and_technology/primes/_common/logic/primes.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
+import 'package:gc_wizard/utils/stack.dart' as datastack;
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:stack/stack.dart' as datastack;
+
 
 part 'package:gc_wizard/tools/general_tools/gcwizardscript/logic/gcwizard_script_classes.dart';
 part 'package:gc_wizard/tools/general_tools/gcwizardscript/logic/gcwizard_script_consts.dart';
@@ -676,7 +677,9 @@ class _GCWizardSCriptInterpreter {
       if (state.keywordToken == EOL ||
           state.token == EOP ||
           state.token == '\r\n' ||
-          state.token == '\n') break;
+          state.token == '\n') {
+        break;
+      }
       if (state.token != ',') {
         vname = state.token;
         //if (isNotAVariable(vname)) {
@@ -745,7 +748,9 @@ class _GCWizardSCriptInterpreter {
         if (state.keywordToken == EOL ||
             state.token == EOP ||
             state.token == '\r\n' ||
-            state.token == '\n') break;
+            state.token == '\n') {
+          break;
+        }
       } while (state.keywordToken != EOL ||
           state.token != EOP ||
           state.token != '\r\n' ||

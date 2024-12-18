@@ -124,6 +124,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/vigene
 import 'package:gc_wizard/tools/crypto_and_encodings/gray/widget/gray.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/gronsfeld/widget/gronsfeld.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/hashes/hash_breaker/widget/hash_breaker.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/hill/widget/hill.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/homophone/widget/homophone.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/houdini/widget/houdini.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/kamasutra/widget/kamasutra.dart';
@@ -134,6 +135,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/language_games/judoon/widge
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/pig_latin/widget/pig_latin.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/robber_language/widget/robber_language.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/spoon_language/widget/spoon_language.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/major_system/widget/major_system.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/mexican_army_cipher_wheel/widget/mexican_army_cipher_wheel.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/morbit/widget/morbit.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/navajo/widget/navajo.dart';
@@ -239,9 +241,9 @@ import 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar/wi
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar_week/widget/calendar_week.dart';
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/day_calculator/widget/day_calculator.dart';
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/day_of_the_year/widget/day_of_the_year.dart';
-import 'package:gc_wizard/tools/science_and_technology/date_and_time/excel_time/widget/excel_time.dart';
+import 'package:gc_wizard/tools/science_and_technology/date_and_time/epoch_time/excel_time/widget/excel_time.dart';
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/time_calculator/widget/time_calculator.dart';
-import 'package:gc_wizard/tools/science_and_technology/date_and_time/unix_time/widget/unix_time.dart';
+import 'package:gc_wizard/tools/science_and_technology/date_and_time/epoch_time/unix_time/widget/unix_time.dart';
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/weekday/widget/weekday.dart';
 import 'package:gc_wizard/tools/science_and_technology/decabit/widget/decabit.dart';
 import 'package:gc_wizard/tools/science_and_technology/divisor/widget/divisor.dart';
@@ -633,6 +635,7 @@ void _initStaticToolList() {
       className(const HexString2File()),
       className(const HexViewer()),
       className(const HiddenData()),
+      className(const Hill()),
       className(const Hohoho()),
       className(const Homophone()),
       className(const Houdini()),
@@ -665,6 +668,7 @@ void _initStaticToolList() {
       className(const LCM()),
       className(const LogicalSupporter()),
       className(const MagicEyeSolver()),
+      className(const MajorSystem()),
       className(const MathematicalConstants()),
       className(const Malbolge()),
       className(MapView()),

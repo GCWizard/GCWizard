@@ -233,7 +233,7 @@ class _GCWMapViewState extends State<GCWMapView> {
                 initialCameraFit: _getBounds(),
                 /// IMPORTANT for dragging
                 minZoom: 1.0,
-                maxZoom: 18.0,
+                maxZoom: 20.0,
                 interactionOptions: const InteractionOptions(flags: InteractiveFlag.all & ~InteractiveFlag.rotate), // suppress rotation
                 onTap: (_, __) => _popupLayerController.hidePopup(),
                 onLongPress: widget.isEditable && !_isPointsHidden // == _persistanceAdapter is set
@@ -298,7 +298,7 @@ class _GCWMapViewState extends State<GCWMapView> {
         _currentAccuracy != null &&
         _currentPosition != null &&
         _isPointsHidden == false) {
-      var circleColor = COLOR_MAP_USERPOSITION.withOpacity(0.0);
+      var circleColor = COLOR_MAP_USERPOSITION.withAlpha(0);
 
       layers.add(CircleLayer(circles: [
         CircleMarker(
@@ -840,7 +840,7 @@ class _GCWMapViewState extends State<GCWMapView> {
         child: iconedGCWPopupMenuItem(context, Icons.drive_folder_upload, i18n(context, 'coords_openmap_loaddata')),
         action: (index) {
           setState(() {
-            showOpenFileDialog(context, [FileType.GPX, FileType.KML, FileType.KMZ, FileType.JSON], _loadCoordinatesFile);
+            showOpenFileDialog(context, [FileType.GPX, FileType.KML, FileType.KMZ, FileType.JSON, FileType.ZIP], _loadCoordinatesFile);
           });
         },
       ),

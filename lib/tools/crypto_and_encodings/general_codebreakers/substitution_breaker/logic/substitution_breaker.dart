@@ -83,7 +83,5 @@ Quadgrams? getQuadgrams(SubstitutionBreakerAlphabet alphabet) {
       return FrenchQuadgrams();
     case SubstitutionBreakerAlphabet.RUSSIAN:
       return RussianQuadgrams();
-    default:
-      return null;
   }
 }

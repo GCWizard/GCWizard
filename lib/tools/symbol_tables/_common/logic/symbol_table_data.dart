@@ -188,9 +188,8 @@ class SymbolTableData {
     // Read the Zip file from disk.
     final bytes = await DefaultAssetBundle.of(context)
         .load(imageArchivePaths.firstWhere((path) => !path.contains('_encryption')));
-    InputStream input = InputStream(bytes.buffer.asByteData());
     // Decode the Zip file
-    final Archive archive = ZipDecoder().decodeBuffer(input);
+    final Archive archive = extractZipArchive(bytes.buffer.asUint8List());
 
     Archive? encryptionArchive;
     if (importEncryption) {
@@ -198,8 +197,7 @@ class SymbolTableData {
       var encryptionImageArchivePaths = imageArchivePaths.where((path) => path.contains('_encryption')).toList();
       if (encryptionImageArchivePaths.isNotEmpty) {
         encryptionBytes = await DefaultAssetBundle.of(context).load(encryptionImageArchivePaths.first);
-        input = InputStream(encryptionBytes.buffer.asByteData());
-        encryptionArchive = ZipDecoder().decodeBuffer(input);
+        encryptionArchive = extractZipArchive(encryptionBytes.buffer.asUint8List());
       }
     }
 

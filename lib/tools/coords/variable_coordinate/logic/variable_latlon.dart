@@ -139,7 +139,9 @@ VariableCoordinateResults parseVariableLatLon(String coordinate, Map<String, Str
       if (parsedCoord == null ||
           ![CoordinateFormatKey.DEC, CoordinateFormatKey.DMM, CoordinateFormatKey.DMS]
               .contains(parsedCoord.coordinate.format.type) ||
-          parsedCoord.coordinate.toLatLng() == null) continue;
+          parsedCoord.coordinate.toLatLng() == null) {
+        continue;
+      }
 
       coords.add(VariableCoordinateSingleResult(parsedCoord.coordinate.toLatLng()!, expandedText.variables));
       var latLng = parsedCoord.leftPadCoordinate?.toLatLng();

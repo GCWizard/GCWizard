@@ -205,9 +205,9 @@ class _LicensesState extends State<Licenses> {
               licenseUrl: 'https://web.archive.org/web/20240723104942/https://pub.dev/packages/file_picker_writable/license'
             ),
             ToolLicenseCodeLibrary(context: context, author: '@flutter (GitHub, Google Inc.)', title: 'Flutter',
-              sourceUrl: 'https://github.com/S-Man42/flutter/tree/ed470fd1017fd904ad34530f732dee56ab536965',
+              sourceUrl: 'https://github.com/GCWizard/flutter/tree/ed470fd1017fd904ad34530f732dee56ab536965',
               licenseType: ToolLicenseType.BSD3,
-              licenseUrl: 'https://github.com/S-Man42/flutter/blob/ed470fd1017fd904ad34530f732dee56ab536965/LICENSE'
+              licenseUrl: 'https://github.com/GCWizard/flutter/blob/ed470fd1017fd904ad34530f732dee56ab536965/LICENSE'
             ),
             ToolLicenseCodeLibrary(context: context, author: '@GitTouch (GitHub)', title: 'Flutter Library: flutter_highlight',
               sourceUrl: 'https://web.archive.org/web/20240109182902/https://pub.dev/packages/flutter_highlight',
@@ -217,7 +217,7 @@ class _LicensesState extends State<Licenses> {
             ToolLicenseCodeLibrary(context: context, author: '@flutter (GitHub, Google Inc.)', title: 'Flutter Library: flutter_localizations',
               sourceUrl: 'https://web.archive.org/web/20240418002509/https://api.flutter.dev/flutter/flutter_localizations/flutter_localizations-library.html',
               licenseType: ToolLicenseType.BSD3,
-              licenseUrl: 'https://github.com/S-Man42/flutter/blob/ed470fd1017fd904ad34530f732dee56ab536965/LICENSE'
+              licenseUrl: 'https://github.com/GCWizard/flutter/blob/ed470fd1017fd904ad34530f732dee56ab536965/LICENSE'
             ),
             ToolLicenseCodeLibrary(context: context, author: 'fleaflet.dev', title: 'Flutter Library: flutter_map',
               sourceUrl: 'https://web.archive.org/web/20240606210131/https://pub.dev/packages/flutter_map',
@@ -362,7 +362,7 @@ class _LicensesState extends State<Licenses> {
             ToolLicenseCodeLibrary(context: context, author: '@flutter (GitHub, Google Inc.)', title: 'Flutter Library: flutter_test',
               sourceUrl: 'https://web.archive.org/web/20240723054155/https://api.flutter.dev/flutter/flutter_test/flutter_test-library.html',
               licenseType: ToolLicenseType.BSD3,
-              licenseUrl: 'https://github.com/S-Man42/flutter/blob/ed470fd1017fd904ad34530f732dee56ab536965/LICENSE'
+              licenseUrl: 'https://github.com/GCWizard/flutter/blob/ed470fd1017fd904ad34530f732dee56ab536965/LICENSE'
             ),
             ToolLicenseCodeLibrary(context: context, author: 'fluttercommunity.dev', title: 'Flutter Library: flutter_launcher_icons',
               sourceUrl: 'https://web.archive.org/web/20240713040303/https://pub.dev/packages/flutter_launcher_icons',
@@ -418,7 +418,7 @@ class _LicensesState extends State<Licenses> {
             author: 'Christian Robertson (Google Fonts)',
             licenseType: ToolLicenseType.APACHE2,
             licenseUrl: 'https://fonts.google.com/specimen/Roboto',
-            sourceUrl: 'https://github.com/S-Man42/GCWizard/blob/master/lib/application/_common/assets/fonts/Roboto/LICENSE.txt'
+            sourceUrl: 'https://github.com/GCWizard/GCWizard/blob/master/lib/application/_common/assets/fonts/Roboto/LICENSE.txt'
         ),
       ]);
 

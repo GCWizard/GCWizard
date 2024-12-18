@@ -14,10 +14,14 @@ class BeaufortSelection extends GCWSelection {
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       if (className(element.tool) == className(const SymbolTable()) &&
-          (element.tool as SymbolTable).symbolKey == 'windforce_beaufort') return true;
+          (element.tool as SymbolTable).symbolKey == 'windforce_beaufort') {
+        return true;
+      }
 
       if (className(element.tool) == className(const SymbolTable()) &&
-          (element.tool as SymbolTable).symbolKey == 'windforce_knots') return true;
+          (element.tool as SymbolTable).symbolKey == 'windforce_knots') {
+        return true;
+      }
 
       return [
         className(const Beaufort()),

@@ -51,10 +51,6 @@ class _RandomizerRockPaperScissorsState extends State<RandomizerRockPaperScissor
                 title = i18n(context, 'randomizer_rockpaperscissors_bigbangtheory');
                 description = i18n(context, 'randomizer_rockpaperscissors_bigbangtheory_description');
                 break;
-              default:
-                title = i18n(context, 'randomizer_rockpaperscissors_original');
-                description = '';
-                break;
             }
 
             return GCWDropDownMenuItem<RockPaperScissorsVersion>(
@@ -88,8 +84,7 @@ class _RandomizerRockPaperScissorsState extends State<RandomizerRockPaperScissor
       case RockPaperScissorsElement.SCISSORS: return i18n(context, 'randomizer_rockpaperscissors_scissors');
       case RockPaperScissorsElement.LIZARD: return i18n(context, 'randomizer_rockpaperscissors_lizard');
       case RockPaperScissorsElement.SPOCK: return i18n(context, 'randomizer_rockpaperscissors_spock');
-      default: return '';
-    }
+          }
   }
 
   String _winnerName(RockPaperScissorsGameResult result) {
@@ -97,7 +92,6 @@ class _RandomizerRockPaperScissorsState extends State<RandomizerRockPaperScissor
       case RockPaperScissorsGameResult.LEFT: return i18n(context, 'common_left');
       case RockPaperScissorsGameResult.RIGHT: return i18n(context, 'common_right');
       case RockPaperScissorsGameResult.DRAW: return i18n(context, 'randomizer_rockpaperscissors_draw');
-      default: return '';
     }
   }
 

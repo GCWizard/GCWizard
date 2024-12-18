@@ -556,8 +556,8 @@ Future<Uint8List> createZipFile(String fileName, String extension, List<Uint8Lis
 
     encoder.close();
 
-    var bytes = File(encoder.zipPath).readAsBytesSync();
-    await File(encoder.zipPath).delete();
+    var bytes = File(zipPath).readAsBytesSync();
+    await File(zipPath).delete();
 
     return bytes;
   } catch (e) {
@@ -572,7 +572,7 @@ List<GCWFile> _archiveToPlatformFileList(Archive archive) {
 
         Uint8List content = Uint8List(0);
         try {
-          content = file.content as Uint8List;
+          content = file.content;
         } catch (e) {}
 
         return GCWFile(name: file.name, bytes: content);
@@ -585,23 +585,24 @@ Future<List<GCWFile>> extractArchive(GCWFile file) async {
   if (fileClass(file.fileType) != FileClass.ARCHIVE) return [];
 
   try {
-    InputStream input = InputStream(file.bytes.buffer.asByteData());
+    var input = InputMemoryStream(file.bytes);
     switch (file.fileType) {
       case FileType.ZIP:
-        return _archiveToPlatformFileList(ZipDecoder().decodeBuffer(input));
+        return _archiveToPlatformFileList(ZipDecoder().decodeStream(input));
       case FileType.TAR:
-        return _archiveToPlatformFileList(TarDecoder().decodeBuffer(input));
+        return _archiveToPlatformFileList(TarDecoder().decodeStream(input));
       case FileType.BZIP2:
-        var output = BZip2Decoder().decodeBuffer(input);
+        var output = OutputMemoryStream();
+        BZip2Decoder().decodeStream(input, output);
         var fileName = file.name ?? 'xxx';
         fileName = changeExtension(fileName, '');
         if (extension(fileName) != '.tar') fileName += '.tar';
-        return {GCWFile(name: fileName, bytes: Uint8List.fromList(output))}.toList();
+        return {GCWFile(name: fileName, bytes: output.getBytes())}.toList();
       case FileType.GZIP:
-        var output = OutputStream();
-        GZipDecoder().decodeStream(input, output);
+        var output = OutputMemoryStream();
+        const GZipDecoder().decodeStream(input, output);
         return {
-          GCWFile(name: changeExtension(file.name ?? 'xxx', '.gzip'), bytes: Uint8List.fromList(output.getBytes()))
+          GCWFile(name: changeExtension(file.name ?? 'xxx', '.gzip'), bytes: output.getBytes())
         }.toList();
       case FileType.RAR:
         return await _extractRarArchive(file);
@@ -611,6 +612,10 @@ Future<List<GCWFile>> extractArchive(GCWFile file) async {
   } catch (e) {
     return [];
   }
+}
+
+Archive extractZipArchive(Uint8List bytes) {
+  return ZipDecoder().decodeStream(InputMemoryStream(bytes));
 }
 
 Future<List<GCWFile>> _extractRarArchive(GCWFile file, {String? password}) async {
