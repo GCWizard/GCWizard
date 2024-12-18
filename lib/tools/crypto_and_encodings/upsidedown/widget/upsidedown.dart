@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/upsidedown/logic/upsidedown.dart';
-
-import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 
@@ -54,14 +55,18 @@ class UpsideDownState extends State<UpsideDown> {
                   setState(() {
                     _currentInputDecode = text;
                   });
-                })
+                },
+              style: TextStyle(fontFamily: 'Noto'),
+              )
             : GCWTextField(
                 controller: _inputControllerEncode,
                 onChanged: (text) {
                   setState(() {
                     _currentInputEncode = text;
                   });
-                }),
+                },
+                style: TextStyle(fontFamily: 'Noto'),
+              ),
         _buildOutput(),
       ],
     );
@@ -76,8 +81,19 @@ class UpsideDownState extends State<UpsideDown> {
       // encode
       result = encodeUpsideDownText(_currentInputEncode);
     }
-    return GCWDefaultOutput(
-      child: result,
+    for (int i = 32; i < 65; i++){
+
+    }
+    return Column(
+      children: [
+        GCWTextDivider(
+            text: i18n(context, 'common_output')),
+        GCWOutputText(
+          text: result,
+          style: TextStyle(fontFamily: 'Noto'),
+        )
+
+    ],
     );
   }
 }

@@ -1663,11 +1663,19 @@ void initializeRegistry(BuildContext context) {
       'binary',
       'universalproductcode',
     ]),
-    GCWTool(tool: const UpsideDown(), id: 'upsidedown', categories: const [
-      ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: const [
-      'upsidedown',
-    ]),
+    GCWTool(tool: const UpsideDown(),
+        id: 'upsidedown',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const ['upsidedown',],
+        licenses: [
+          ToolLicenseFont(
+              context: context,
+              author: 'Google Fonts',
+              title: 'Noto',
+              sourceUrl:
+              'https://fonts.google.com/noto',
+              licenseType: ToolLicenseType.OFL11),
+        ]),
     GCWTool(
         tool: const VelocityAcceleration(),
         id: 'velocity_acceleration',

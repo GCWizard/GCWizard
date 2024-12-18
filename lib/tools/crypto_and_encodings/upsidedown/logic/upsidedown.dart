@@ -6,11 +6,13 @@ import 'package:gc_wizard/utils/collection_utils.dart';
 const Map<String, String> ENCODE_FLIP_ROTATE = {
   '0': '0',
   '1': '⇂',
-  '2': '↊',
+  //'2': '↊',
+  '2': 'ζ', // u+03B6
   //'3': '↋',
   '3': 'Ɛ',
   '4': '߈',
   '5': 'ဌ',
+  //'5': '\u20C0',
   '6': '9',
   //'7': '𝘓',
   '7': 'L',
@@ -79,7 +81,7 @@ const Map<String, String> ENCODE_FLIP_ROTATE = {
   '#': '#',
   '~': '~',
   '?': '¿',
-  '!': 'i',
+  '!': '¡',
   '/': '\\',
   '\\': '/',
   '[': ']',
@@ -89,6 +91,10 @@ const Map<String, String> ENCODE_FLIP_ROTATE = {
   '=': '=',
   '"': '„',
   '&': '⅋',
+  '>': '<',
+  '<': '>',
+  '«': '»',
+  '»': '«',
 };
 Map<String, String> DECODE_FLIP_ROTATE = switchMapKeyValue(ENCODE_FLIP_ROTATE);
 

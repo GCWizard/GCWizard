@@ -6,7 +6,7 @@ void main() {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
-      {'input' : '0123456789', 'expectedOutput' : '68L9ဌ߈Ɛ↊⇂0'},
+      {'input' : '0123456789', 'expectedOutput' : '68L9ဌ߈Ɛζ⇂0'},
       {'input' : 'abcdefghijklmnopqrstuvwxyz', 'expectedOutput' : 'zʎxʍʌnʇsɹbdouɯlʞſ̣!ɥᵷɟǝpɔqɐ'},
       {'input' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : 'Z⅄XMɅՈꞱSꓤꝹԀONꟽ⅂ꓘꓩIH⅁ℲEꓷƆꓭⱯ'},
     ];
@@ -24,7 +24,7 @@ void main() {
       {'input' : '', 'expectedOutput' : ''},
       {'input' : 'Z⅄XMɅՈꞱSꓤꝹԀONꟽ⅂ꓘꓩIH⅁ℲEꓷƆꓭⱯ', 'expectedOutput' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'},
       {'input' : 'zʎxʍʌnʇsɹbdouɯlʞſ̣!ɥᵷɟǝpɔqɐ', 'expectedOutput' : 'abcdefghijklmnopqrstuvwxyz'},
-      {'input' : '68L9ဌ߈Ɛ↊⇂0', 'expectedOutput' : '0123456789'},
+      {'input' : '68L9ဌ߈Ɛζ⇂0', 'expectedOutput' : '0123456789'},
     ];
 
     for (var elem in _inputsToExpected) {
