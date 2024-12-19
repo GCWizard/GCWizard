@@ -6976,7 +6976,7 @@
   "unix_time_example": "1687033472 → 17.06.2023 22:24:32 UTC+2",
   "upsidedown_title" : "Upside Down Text",
   "upsidedown_description" : "Flips and rotates a text",
-  "upsidedown_example" : "GCWizard → pɹɐzᴉʍɔƃ",
+  "upsidedown_example" : "YOU SHOULD RUN → NՈꓤ ꓷ⅂ՈOHS ՈO⅄",
   "urwigo_hashbreaker_title": "Urwigo Hash Breaker",
   "urwigo_hashbreaker_description": "Fetch the Urwigo hash value from the LUA code of the Wherigo cartridge and the tool calculates a valid random text for the answer field.",
   "urwigo_hashbreaker_example": "23180 → cvyz",
