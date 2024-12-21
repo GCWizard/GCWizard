@@ -77,6 +77,7 @@ enum CoordinateFormatKey {
   LAMBERT93_CC48,
   LAMBERT93_CC49,
   LAMBERT93_CC50,
+  LAMBERT_NTF,
   //S2Cells
   S2CELLS_HILBERT_QUADRATIC,
   S2CELLS_HILBERT_TAN,
@@ -115,7 +116,8 @@ enum CoordinateFormatKey {
   SLIPPYMAP_30,
   //MapCode Subtypes
   MAPCODE_LOCAL,
-  MAPCODE_INTERNATIONAL
+  MAPCODE_INTERNATIONAL,
+  DCFIGRID
 }
 
 /// sorted by priority (parse coordinates)
