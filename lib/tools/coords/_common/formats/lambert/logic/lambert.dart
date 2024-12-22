@@ -223,14 +223,20 @@ const Map<CoordinateFormatKey, _LambertDefinition> _LambertDefinitions = {
       falseNorthing: 9200000.0),
   //EPSG 27572, NTF (Paris), Lambert zone II
   CoordinateFormatKey.LAMBERT_NTF: _LambertDefinition(
-      centralMeridian: 2.337229166667, //"2d20'14.025\"E", Paris,
-      latitudeOfOrigin: 52.0,
-      standardParallel1: 49.25,
-      standardParallel2: 50.75,
+      centralMeridian: 2.337229166667, //2.3333333, //2.337229166667, //"2d20'14.025\"E", Paris, //+lon_0=0
+      latitudeOfOrigin: 46.8,//+lat_0=46.8
+      standardParallel1: 49.833333, //46.8,//+lat_1=46.8
+      standardParallel2: 51.8333333, //50.75,
       falseEasting: 600000.0,
       falseNorthing: 2200000.0),
   //       Proj4.defs["EPSG:27572"] = "+proj=lcc +lat_1=46.8 +lat_0=46.8 +lon_0=0 +k_0=0.99987742 +x_0=600000 +y_0=2200000 +a=6378249.2 +b=6356515 +towgs84=-168,-60,320,0,0,0,0 +pm=paris +units=m +no_defs";
-
+// final double centralMeridian; // lon0 λ0
+// final double latitudeOfOrigin; // lat0 φ0
+// final double standardParallel1; // stdlat1 φ1
+// final double standardParallel2; // stdlat2 φ2
+// // final double scaleFactor; // k0
+// final double falseEasting; // x0
+// final double falseNorthing; // y1
 };
 
 // https://sourceforge.net/p/geographiclib/discussion/1026621/thread/87c3cb91af/

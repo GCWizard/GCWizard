@@ -1,10 +1,13 @@
 // ported from https://github.com/Viglino/ol-ext/blob/master/src/geom/DFCI.js
 
+import 'dart:math';
+
 import 'package:gc_wizard/tools/coords/_common/formats/lambert/logic/lambert.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart' as defaultCoord;
+// import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart' as defaultCoord;
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:proj4dart/proj4dart.dart';
 
 /** Convert coordinate to French DFCI grid
  * @param {ol/coordinate} coord
@@ -204,3 +207,58 @@ bool olCoordinateValidDFCICoord(LatLng coord) {
 Ellipsoid _dcfiGridEllipsoid() {
   return getEllipsoidByName('Clarke 1880 IGN')!;
 }
+
+class LambertToWGS84 {
+  // WGS84 Datum (für geografische Koordinaten)
+  static const double a = 6378388.0; // Halbachse des Clarke 1880 (Modifiziert) Ellipsoids
+  static const double f = 1 / 297.0; // Abplattung des Clarke 1880 Ellipsoids
+  static const double e2 = 2 * f - f * f; // Exzentrizität des Ellipsoids
+  static const double pi = 3.1415926535897932;
+
+  // Lambert 72 spezifische Parameter
+  static const double lat0 = 49.8333333; // Ursprungslatitude (49°50'N)
+  static const double lon0 = 2.3333333; // Ursprungslängengrad (2°20'E)
+  static const double x0 = 1550000.0; // Falsch-Easting
+  static const double y0 = 5400000.0; // Falsch-Northing
+
+  static const double phi1 = 49.8333333; // 1. Standardparallele (49°50'N)
+  static const double phi2 = 51.8333333; // 2. Standardparallele (51°50'N)
+  static const double lat0Rad = lat0 * pi / 180.0; // Ursprungslatitude in Bogenmaß
+  static const double lon0Rad = lon0 * pi / 180.0; // Ursprungslängengrad in Bogenmaß
+  static const double phi1Rad = phi1 * pi / 180.0; // 1. Standardparallele in Bogenmaß
+  static const double phi2Rad = phi2 * pi / 180.0; // 2. Standardparallele in Bogenmaß
+
+  static double n = (log(cos(phi1Rad) / tan(phi1Rad)) - log(cos(phi2Rad) / tan(phi2Rad))) /
+      (log(tan(pi / 4 + phi1Rad / 2) / tan(pi / 4 + lat0Rad / 2)) - log(tan(pi / 4 + phi2Rad / 2) / tan(pi / 4 + lat0Rad / 2)));
+
+  static double radiusOfCurvature(double lat) {
+    return a / sqrt(1 - e2 * sin(lat) * sin(lat));
+  }
+
+  static double calculateR(double lat) {
+    return radiusOfCurvature(lat) * tan(lat / 2 + pi / 4);
+  }
+
+  static List<double> lambertToWGS84(double x, double y) {
+    // Berechnung der Transformation
+    double deltaX = x - x0;
+    double deltaY = y - y0;
+
+    // Umrechnung von Lambert Koordinaten in Breiten- und Längengrad
+    double m = calculateR(lat0Rad); // Metrische Grundlage in ursprünglicher Breite
+    double t = tan(lat0Rad / 2 + pi / 4);
+    double phi = (lat0Rad + (deltaY / m)) * 180.0 / pi;  // Breite in WGS84
+
+    // Rückgabe der geographischen Koordinaten (Latitude, Longitude)
+    double lat = phi;
+    double lon = lon0 + deltaX / (cos(lat0Rad) * radiusOfCurvature(lat));
+
+    return [lat, lon];
+  }
+}
+
+// Beispiel für Lambert-Koordinaten (X, Y)
+double x = 1550000.0;  // Beispiel X-Koordinate in Lambert 27572
+double y = 1400000.0;  // Beispiel Y-Koordinate in Lambert 27572
+
+// Latitude: 50.8503, Longitude: 4.3517
