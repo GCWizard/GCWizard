@@ -84,6 +84,7 @@ void main() {
     {'coord': const LatLng(-89.99999, -179.99999), 'subtype': CoordinateFormatKey.LAMBERT93_CC50, 'text': 'X: 2062257939002.245\nY: 2105464732814.0725'},
     {'coord': const LatLng(50.6569, 11.35443333), 'subtype': CoordinateFormatKey.LAMBERT93_CC50, 'text': 'X: 2289536.855368441\nY: 9306026.36549408'},
 
+    {'coord': const LatLng(46.89226406700722, 17.88805856071017), 'subtype': CoordinateFormatKey.LAMBERT_NTF, 'text': 'X: 1777310.0568079422\nY: 2327103.8227227707'},
   ];
 
   group("Converter.lambert.fromLatLon:", () {

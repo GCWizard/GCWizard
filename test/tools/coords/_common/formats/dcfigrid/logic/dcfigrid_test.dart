@@ -42,15 +42,15 @@ void main() {
         // print(latLon);
         // latLon = projection.forward(Point(x:1550000.0, y:5400000.0)); //LambertToWGS84.lambertToWGS84(1550000.0, 5400000.0);
         // print(latLon);
-        var latLon = wgs.transform(projection, Point(x: 1777310.0568079422, y: 2327103.8227227707));
-
-        print(LambertCoordinate(latLon.x, latLon.y, CoordinateFormatKey.LAMBERT93).toLatLng(ells: Ellipsoid.WGS84));
-        latLon = wgs.transform(projection, Point(x: 1777310.0568079422, y: 2327103.8227227707));
+        // var latLon = wgs.transform(projection, Point(x: 1777310.0568079422, y: 2327103.8227227707));
+        //
+        // print(LambertCoordinate(latLon.x, latLon.y, CoordinateFormatKey.LAMBERT93).toLatLng(ells: Ellipsoid.WGS84));
+        var latLon = projection.transform(wgs, Point(x: 1777310.0568079422, y: 2327103.8227227707));
         print(latLon);
         latLon = wgs.transform(projection, Point(x: 17.88805856071017, y: 46.89226406700722));
         print(latLon);
-        latLon = wgs.transform(projection, Point(x: 17.88805856071017, y: 46.89226406700722));
-        print(latLon);
+        // latLon = wgs.transform(projection, Point(x: 17.88805856071017, y: 46.89226406700722));
+        // print(latLon);
 
         var _actual = parseDFCI(elem['text'] as String, null);
         if (_actual == null) {

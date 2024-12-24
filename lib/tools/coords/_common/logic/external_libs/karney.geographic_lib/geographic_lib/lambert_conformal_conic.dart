@@ -517,7 +517,7 @@ class LambertConformalConic {
    * this.
    **********************************************************************/
 
-  GeographicLibLambertLatLon Reverse(double lon0, double x, double y) {
+  GeographicLibLambertLatLon reverse(double lon0, double x, double y) {
     // From Snyder, we have
     //
     //        x = rho * sin(theta)

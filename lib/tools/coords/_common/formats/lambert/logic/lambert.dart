@@ -5,6 +5,9 @@ import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:proj4dart/proj4dart.dart';
+
+part 'package:gc_wizard/tools/coords/_common/formats/lambert/logic/lambert_proj4.dart';
 
 const defaultLambertType = CoordinateFormatKey.LAMBERT93;
 const lambertKey = 'coords_lambert';
@@ -65,7 +68,10 @@ class LambertCoordinate extends BaseCoordinateWithSubtypes {
   }
 
   @override
-  LatLng toLatLng({Ellipsoid? ells}) {
+  LatLng? toLatLng({Ellipsoid? ells}) {
+    var coords = _lambertProj4ToLatLon(this);
+    if (coords != null) return coords;
+
     ells ??= defaultEllipsoid;
     return _lambertToLatLon(this, ells);
   }
@@ -75,6 +81,8 @@ class LambertCoordinate extends BaseCoordinateWithSubtypes {
       throw Exception(_ERROR_INVALID_SUBTYPE);
     }
 
+    var lambert  = _latLonToLambertProj4(coord, subtype);
+    if (lambert != null) return lambert;
     return _latLonToLambert(coord, subtype, ells);
   }
 
@@ -272,7 +280,7 @@ LatLng _lambertToLatLon(LambertCoordinate lambert, Ellipsoid ellipsoid) {
   var x = lambert.easting + x0;
   var y = lambert.northing + y0;
 
-  GeographicLibLambertLatLon latLon = lambertCC.Reverse(specificLambert.centralMeridian, x, y);
+  GeographicLibLambertLatLon latLon = lambertCC.reverse(specificLambert.centralMeridian, x, y);
 
   return LatLng(latLon.lat, latLon.lon);
 }
