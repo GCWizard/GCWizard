@@ -63,7 +63,7 @@ final List<Map<String, Object?>> inputsToExpectedDMS = [
 
 void main() {
 
-  group("Converter.dms.parseDMS:", () {
+  group("Converter.dms.parseLatLon:", () {
     List<Map<String, Object?>> _inputsToExpected = inputsToExpectedDMS;
 
     for (var elem in _inputsToExpected) {

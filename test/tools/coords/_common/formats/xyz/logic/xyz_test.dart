@@ -5,7 +5,7 @@ import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:latlong2/latlong.dart';
 
 void main() {
-  group("Parser.xyz.parseLatLon:", () {
+  group("Converter.xyz.parseLatLon:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'text': '', 'expectedOutput': null},
       {'text': 'X: 3987428.547121 Y: 1910326.935629 Z: 4581509.856737', 'expectedOutput': {'format': CoordinateFormatKey.XYZ, 'coordinate': const LatLng(46.018738851509475, 25.598495717002137)}},

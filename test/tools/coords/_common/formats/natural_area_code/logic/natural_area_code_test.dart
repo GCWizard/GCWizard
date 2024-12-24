@@ -5,7 +5,7 @@ import 'package:latlong2/latlong.dart';
 
 void main() {
   // Mark test
-  group("Converter.naturalAreaCode.latlonToNaturalAreaCode:", () {
+  group("Converter.naturalAreaCode.fromLatLon:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'coord': const LatLng(51.907002, 9.113159), 'expectedOutput': NaturalAreaCodeCoordinate('HQRGL6Z7', 'RMJ1H830')},
 
