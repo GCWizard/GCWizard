@@ -484,11 +484,19 @@ class FormulaParser {
       value = value.replaceAll(RegExp(r'\n'), ' ');
 
       if (value.isEmpty) {
+        if (element.type == FormulaValueType.INTERPOLATED) {
+          element.type = FormulaValueType.FIXED;
+        }
         value = key;
       } else if (element.type == null || element.type == FormulaValueType.FIXED) {
         value = value.trim();
         if (value.contains(_SUPPORTED_OPERATION_CHARACTERS) && !_isString(value)) {
           value = '($value)';
+        }
+      } else if (element.type == FormulaValueType.INTERPOLATED) {
+        if (!VARIABLESTRING.hasMatch(value)) {
+          element.type = FormulaValueType.FIXED;
+          value = key;
         }
       }
 

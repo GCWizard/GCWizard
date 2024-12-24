@@ -490,6 +490,30 @@ void main() {
         FormulaValue('B', '1', type: FormulaValueType.FIXED),
       ], 'expandValues': false, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '-1', 'state': 'ok'}]}},
 
+      {'formula' : 'A+B', 'values': [
+        FormulaValue('A', '1,2', type: FormulaValueType.INTERPOLATED),
+        FormulaValue('B', '', type: FormulaValueType.FIXED),
+      ], 'expectedOutput' : {'state': 'expanded_error', 'output': [
+        {'result': '1+B', 'state': 'error', 'variables': {'A': '1'}},
+        {'result': '2+B', 'state': 'error', 'variables': {'A': '2'}}
+      ]}},
+
+      {'formula' : 'A+B', 'values': [
+        FormulaValue('A', '1,2', type: FormulaValueType.INTERPOLATED),
+        FormulaValue('B', '', type: FormulaValueType.INTERPOLATED),
+      ], 'expectedOutput' : {'state': 'expanded_error', 'output': [
+        {'result': '1+B', 'state': 'error', 'variables': {'A': '1'}},
+        {'result': '2+B', 'state': 'error', 'variables': {'A': '2'}}
+      ]}},
+
+      {'formula' : 'A+B', 'values': [
+        FormulaValue('A', '1,2', type: FormulaValueType.INTERPOLATED),
+        FormulaValue('B', 'B', type: FormulaValueType.INTERPOLATED),
+      ], 'expectedOutput' : {'state': 'expanded_error', 'output': [
+        {'result': '1+B', 'state': 'error', 'variables': {'A': '1'}},
+        {'result': '2+B', 'state': 'error', 'variables': {'A': '2'}}
+      ]}},
+
       {'formula' : 'AB', 'values': [
         FormulaValue('A', '1', type: FormulaValueType.INTERPOLATED),
         FormulaValue('B', '1', type: FormulaValueType.INTERPOLATED),
