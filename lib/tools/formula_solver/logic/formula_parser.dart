@@ -486,7 +486,13 @@ class FormulaParser {
 
       if (value.isEmpty) {
         continue;
-      } else if (element.type == null || element.type == FormulaValueType.FIXED) {
+      }
+
+      if (!hasLetters(key)) {
+        continue;
+      }
+
+      if (element.type == null || element.type == FormulaValueType.FIXED) {
         value = value.trim();
         if (value.contains(_SUPPORTED_OPERATION_CHARACTERS) && !_isString(value)) {
           value = '($value)';

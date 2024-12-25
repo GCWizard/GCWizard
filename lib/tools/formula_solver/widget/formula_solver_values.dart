@@ -44,7 +44,7 @@ class _FormulaSolverFormulaValuesState extends State<_FormulaSolverFormulaValues
 
   void _addEntry(KeyValueBase entry) {
     if (entry.key.isNotEmpty) {
-      if (int.tryParse(entry.key) != null) {
+      if (!hasLetters(entry.key)) {
         showGCWAlertDialog(context, i18n(context, 'formulasolver_values_alerts_keynumbers_title'),
             i18n(context, 'formulasolver_values_alerts_keynumbers_text'), () {});
         return;
@@ -58,6 +58,14 @@ class _FormulaSolverFormulaValuesState extends State<_FormulaSolverFormulaValues
   }
 
   void _updateEntry(KeyValueBase entry) {
+    if (entry.key.isEmpty || int.tryParse(entry.key) != null) {
+      showGCWAlertDialog(context,
+          i18n(context, 'formulasolver_values_alerts_keynumbers_title'),
+          i18n(context, 'formulasolver_values_alerts_keynumbers_text'),
+          () {});
+      return;
+    }
+
     updateAndSave(widget.group);
   }
 

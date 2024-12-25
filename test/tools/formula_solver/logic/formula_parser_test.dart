@@ -43,7 +43,7 @@ void main() {
       {'formula' : ' ', 'expectedOutput' : {'state': 'error', 'output': [{'result': '', 'state': 'error'}]}},
       {'formula' : 'A', 'values': <String, String>{}, 'expectedOutput' : {'state': 'error', 'output': [{'result': 'A', 'state': 'error'}]}},
       {'formula' : '0', 'values': <String, String>{}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0', 'state': 'ok'}]}},
-      {'formula' : '0', 'values': <String, String>{'0': '1'}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '1', 'state': 'ok'}]}},
+      {'formula' : '0', 'values': <String, String>{'0': '1'}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0', 'state': 'ok'}]}},
 
       {'formula' : 'A', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3', 'state': 'ok'}]}},
       {'formula' : 'AB', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '320', 'state': 'ok'}]}},
