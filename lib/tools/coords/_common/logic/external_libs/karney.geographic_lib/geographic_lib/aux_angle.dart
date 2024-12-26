@@ -39,7 +39,7 @@ class _AuxAngle {
 
   static _AuxAngle degrees(double d) {
     var p = _Pair();
-    _GeoMath.sincosd(p, d);
+    _GeoMath.sincosd(d, p);
     return _AuxAngle(p.first, p.second);
   }
 

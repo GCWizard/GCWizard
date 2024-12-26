@@ -4,7 +4,7 @@ import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants
 import 'package:latlong2/latlong.dart';
 
 void main() {
-  group("Parser.geohash.parseLatLon:", () {
+  group("Converter.geohash.parseLatLon:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'text': '', 'expectedOutput': null},
       {'text': '84nys2q8rm9j3', 'expectedOutput': {'format': CoordinateFormatKey.GEOHEX, 'coordinate': const LatLng(12.394024736713618, -170.31180599005893)}},

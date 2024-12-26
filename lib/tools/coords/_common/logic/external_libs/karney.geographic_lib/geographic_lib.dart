@@ -9,6 +9,7 @@ import 'package:latlong2/latlong.dart';
 // parts
 part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/aux_angle.dart';
 part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/aux_latitude.dart';
+part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/azimuthal_equidistant.dart';
 part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/d_aux_latitude.dart';
 part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/ellipsoid.dart';
 part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/elliptic_function.dart';
@@ -43,6 +44,16 @@ LatLng intersectGeodesics(LatLng coord1, double azimuth1, LatLng coord2, double 
   return LatLng((projected1.lat2 + projected2.lat2) / 2, (projected1.lon2 + projected2.lon2) / 2);
 }
 
+LatLng azimuthalEquidistantReverse(LatLng projectionCenter, Point<double> point, Ellipsoid ellipsoid) {
+  var aeReturn = _AzimuthalEquidistant.reverse(projectionCenter.latitude, projectionCenter.longitude, point.x, point.y, ellipsoid);
+  return LatLng(aeReturn.yOrLat, aeReturn.xOrLon);
+}
+
+Point<double> azimuthalEquidistantForward(LatLng projectionCenter, LatLng coord, Ellipsoid ellipsoid) {
+  var aeReturn = _AzimuthalEquidistant.forward(projectionCenter.latitude, projectionCenter.longitude, coord.latitude, coord.longitude, ellipsoid);
+  return Point(aeReturn.xOrLon, aeReturn.yOrLat);
+}
+
 // ignore_for_file: unused_field
 // ignore_for_file: unused_element
 class Rhumb {
@@ -60,3 +71,4 @@ class Rhumb {
     return rhumb._Direct(lat1, lon1, azi12, s12);
   }
 }
+

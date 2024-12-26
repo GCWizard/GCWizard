@@ -103,6 +103,7 @@ class _GeodesicLine {
   static const int _nC3_ = _Geodesic.nC3_;
   static const int _nC4_ = _Geodesic.nC4_;
 
+  late double tiny_;
   late double _lat1, _lon1, _azi1;
   late double _a,
       _f,
@@ -129,7 +130,6 @@ class _GeodesicLine {
       _B31,
       _A4,
       _B41;
-  // late double _a13, _s13;
   // index zero elements of _C1a, _C1pa, _C2a, _C3a are unused
   late List<double> _C1a, _C1pa, _C2a, _C3a, _C4a; // all the elements of _C4a are used
   late int _caps;
@@ -183,13 +183,19 @@ class _GeodesicLine {
     double salp1, calp1;
     _Pair p = _Pair();
     // Guard against underflow in salp0
-    _GeoMath.sincosd(p, _GeoMath.AngRound(azi1));
-    salp1 = p.first;
-    calp1 = p.second;
-    _LineInit(g, lat1, lon1, azi1, salp1, calp1, caps, p);
+    _GeoMath.sincosd(_GeoMath.AngRound(azi1), p);
+    salp1 = p.first; calp1 = p.second;
+    _LineInit(g, lat1, lon1, azi1, salp1, calp1, caps);
   }
 
-  void _LineInit(_Geodesic g, double lat1, double lon1, double azi1, double salp1, double calp1, int caps, _Pair p) {
+  void _LineInit(_Geodesic g, double lat1, double lon1, double azi1, double salp1, double calp1, int caps) {
+    _Pair p = _Pair();
+    tiny_ = _Geodesic.tiny_;
+    _lat1 = _GeoMath.LatFix(lat1);
+    _lon1 = lon1;
+    _azi1 = azi1;
+    _salp1 = salp1;
+    _calp1 = calp1;
     _a = g.a;
     _f = g.f;
     _b = g.b;
@@ -198,19 +204,12 @@ class _GeodesicLine {
     // Always allow latitude and azimuth and unrolling the longitude
     _caps = caps | _GeodesicMask.LATITUDE | _GeodesicMask.AZIMUTH | _GeodesicMask.LONG_UNROLL;
 
-    _lat1 = _GeoMath.LatFix(lat1);
-    _lon1 = lon1;
-    _azi1 = azi1;
-    _salp1 = salp1;
-    _calp1 = calp1;
     double cbet1, sbet1;
-    _GeoMath.sincosd(p, _GeoMath.AngRound(_lat1));
-    sbet1 = _f1 * p.first;
-    cbet1 = p.second;
+    _GeoMath.sincosd(_GeoMath.AngRound(_lat1), p);
+    sbet1 = _f1 * p.first; cbet1 = p.second;
     // Ensure cbet1 = +epsilon at poles
-    _GeoMath.norm(p, sbet1, cbet1);
-    sbet1 = p.first;
-    cbet1 = max(_Geodesic.tiny_, p.second);
+    _GeoMath.norm(sbet1, cbet1, p);
+    sbet1 = p.first; cbet1 = max(tiny_, p.second);
     _dn1 = sqrt(1 + g.ep2 * _GeoMath.sq(sbet1));
 
     // Evaluate alp0 from sin(alp1) * cos(bet1) = sin(alp0),
@@ -227,12 +226,10 @@ class _GeodesicLine {
     // With alp0 in (0, pi/2], quadrants for sig and omg coincide.
     // No atan2(0,0) ambiguity at poles since cbet1 = +epsilon.
     // With alp0 = 0, omg1 = 0 for alp1 = 0, omg1 = pi for alp1 = pi.
-    _ssig1 = sbet1;
-    _somg1 = _salp0 * sbet1;
+    _ssig1 = sbet1; _somg1 = _salp0 * sbet1;
     _csig1 = _comg1 = sbet1 != 0 || _calp1 != 0 ? cbet1 * _calp1 : 1;
-    _GeoMath.norm(p, _ssig1, _csig1);
-    _ssig1 = p.first;
-    _csig1 = p.second; // sig1 in (-pi, pi]
+    _GeoMath.norm(_ssig1, _csig1, p);
+    _ssig1 = p.first; _csig1 = p.second; // sig1 in (-pi, pi]
     // GeoMath.norm(_somg1, _comg1); -- don't need to normalize!
 
     _k2 = _GeoMath.sq(_calp0) * g.ep2;
@@ -242,7 +239,7 @@ class _GeodesicLine {
       _A1m1 = _Geodesic.A1m1f(eps);
       _C1a = List<double>.generate(_nC1_ + 1, (index) => 0.0);
       _Geodesic.C1f(eps, _C1a);
-      _B11 = _Geodesic.SinCosSeries(true, _ssig1, _csig1, _C1a);
+      _B11 = _Geodesic.SinCosSeries(true, _ssig1, _csig1, _C1a, _nC1_);
       double s = sin(_B11), c = cos(_B11);
       // tau1 = sig1 + B11
       _stau1 = _ssig1 * c + _csig1 * s;
@@ -260,14 +257,14 @@ class _GeodesicLine {
       _C2a = List<double>.generate(_nC2_ + 1, (index) => 0.0);
       _A2m1 = _Geodesic.A2m1f(eps);
       _Geodesic.C2f(eps, _C2a);
-      _B21 = _Geodesic.SinCosSeries(true, _ssig1, _csig1, _C2a);
+      _B21 = _Geodesic.SinCosSeries(true, _ssig1, _csig1, _C2a, _nC2_);
     }
 
     if ((_caps & _GeodesicMask.CAP_C3) != 0) {
       _C3a = List<double>.generate(_nC3_, (index) => 0.0);
       g.C3f(eps, _C3a);
       _A3c = -_f * _salp0 * g.A3f(eps);
-      _B31 = _Geodesic.SinCosSeries(true, _ssig1, _csig1, _C3a);
+      _B31 = _Geodesic.SinCosSeries(true, _ssig1, _csig1, _C3a, _nC3_ - 1);
     }
 
     if ((_caps & _GeodesicMask.CAP_C4) != 0) {
@@ -275,7 +272,7 @@ class _GeodesicLine {
       g.C4f(eps, _C4a);
       // Multiplier = a^2 * e^2 * cos(alpha0) * sin(alpha0)
       _A4 = _GeoMath.sq(_a) * _calp0 * _salp0 * g.e2;
-      _B41 = _Geodesic.SinCosSeries(false, _ssig1, _csig1, _C4a);
+      _B41 = _Geodesic.SinCosSeries(false, _ssig1, _csig1, _C4a, _nC4_);
     }
   }
 
@@ -324,35 +321,37 @@ class _GeodesicLine {
    * Requesting a value which the GeodesicLine object is not capable of
    * computing is not an error; Double.NaN is returned instead.
    **********************************************************************/
-  GeodesicData Position(bool arcmode, double s12_a12, int outmask) {
+  GeodesicData _genPosition(bool arcmode, double s12_a12, int outmask) {
     outmask &= _caps & _GeodesicMask.OUT_MASK;
-    GeodesicData r = GeodesicData();
+    GeodesicData out = GeodesicData();
     if (!(_Init() && (arcmode || (_caps & (_GeodesicMask.OUT_MASK & _GeodesicMask.DISTANCE_IN)) != 0))) {
-      return r;
+      return out;
     }
-    r.lat1 = _lat1;
-    r.azi1 = _azi1;
-    r.lon1 = ((outmask & _GeodesicMask.LONG_UNROLL) != 0) ? _lon1 : _GeoMath.AngNormalize(_lon1);
+    _Pair p = _Pair();
+    out.lat1 = _lat1;
+    out.azi1 = _azi1;
+    out.lon1 = ((outmask & _GeodesicMask.LONG_UNROLL) != 0) ? _lon1 : _GeoMath.AngNormalize(_lon1);
 
     // Avoid warning about uninitialized B12.
     double sig12, ssig12, csig12, B12 = 0, AB1 = 0;
     if (arcmode) {
       // Interpret s12_a12 as spherical arc length
-      r.a12 = s12_a12;
       sig12 = _toRadians(s12_a12);
-      _Pair p = _Pair();
-      _GeoMath.sincosd(p, s12_a12);
-      ssig12 = p.first;
-      csig12 = p.second;
+      _GeoMath.sincosd(s12_a12, p);
+      ssig12 = p.first; csig12 = p.second;
     } else {
       // Interpret s12_a12 as distance
-      r.s12 = s12_a12;
-      double tau12 = s12_a12 / (_b * (1 + _A1m1)), s = sin(tau12), c = cos(tau12);
+      double
+        tau12 = s12_a12 / (_b * (1 + _A1m1)),
+        s = sin(tau12),
+        c = cos(tau12);
       // tau2 = tau1 + tau12
-      B12 = -_Geodesic.SinCosSeries(true, _stau1 * c + _ctau1 * s, _ctau1 * c - _stau1 * s, _C1pa);
+      B12 = -_Geodesic.SinCosSeries(true,
+          _stau1 * c + _ctau1 * s,
+          _ctau1 * c - _stau1 * s,
+          _C1pa, _nC1p_);
       sig12 = tau12 - (B12 - _B11);
-      ssig12 = sin(sig12);
-      csig12 = cos(sig12);
+      ssig12 = sin(sig12); csig12 = cos(sig12);
       if (_f.abs() > 0.01) {
         // Reverted distance series is inaccurate for |f| > 1/100, so correct
         // sig12 with 1 Newton iteration.  The following table shows the
@@ -376,15 +375,15 @@ class _GeodesicLine {
         //      1/20   5376 146e3  10e3
         //      1/10  829e3  22e6 1.5e6
         //      1/5   157e6 3.8e9 280e6
-        double ssig2 = _ssig1 * csig12 + _csig1 * ssig12, csig2 = _csig1 * csig12 - _ssig1 * ssig12;
-        B12 = _Geodesic.SinCosSeries(true, ssig2, csig2, _C1a);
+        double
+          ssig2 = _ssig1 * csig12 + _csig1 * ssig12,
+          csig2 = _csig1 * csig12 - _ssig1 * ssig12;
+        B12 = _Geodesic.SinCosSeries(true, ssig2, csig2, _C1a, _nC1_);
         double serr = (1 + _A1m1) * (sig12 + (B12 - _B11)) - s12_a12 / _b;
         sig12 = sig12 - serr / sqrt(1 + _k2 * _GeoMath.sq(ssig2));
-        ssig12 = sin(sig12);
-        csig12 = cos(sig12);
+        ssig12 = sin(sig12); csig12 = cos(sig12);
         // Update B12 below
       }
-      r.a12 = _toDegrees(sig12);
     }
 
     double ssig2, csig2, sbet2, cbet2, salp2, calp2;
@@ -393,7 +392,9 @@ class _GeodesicLine {
     csig2 = _csig1 * csig12 - _ssig1 * ssig12;
     double dn2 = sqrt(1 + _k2 * _GeoMath.sq(ssig2));
     if ((outmask & (_GeodesicMask.DISTANCE | _GeodesicMask.REDUCEDLENGTH | _GeodesicMask.GEODESICSCALE)) != 0) {
-      if (arcmode || _f.abs() > 0.01) B12 = _Geodesic.SinCosSeries(true, ssig2, csig2, _C1a);
+      if (arcmode || _f.abs() > 0.01) {
+        B12 = _Geodesic.SinCosSeries(true, ssig2, csig2, _C1a, _nC1_);
+      }
       AB1 = (1 + _A1m1) * (B12 - _B11);
     }
     // sin(bet2) = cos(alp0) * sin(sig2)
@@ -401,58 +402,69 @@ class _GeodesicLine {
     // Alt: cbet2 = Math.hypot(csig2, salp0 * ssig2);
     cbet2 = _hypot(_salp0, _calp0 * csig2);
     if (cbet2 == 0) {
-      cbet2 = csig2 = _Geodesic.tiny_;
+      cbet2 = csig2 = tiny_;
     }
     // tan(alp0) = cos(sig2)*tan(alp2)
-    salp2 = _salp0;
-    calp2 = _calp0 * csig2; // No need to normalize
+    salp2 = _salp0; calp2 = _calp0 * csig2; // No need to normalize
 
-    if ((outmask & _GeodesicMask.DISTANCE) != 0 && arcmode) r.s12 = _b * ((1 + _A1m1) * sig12 + AB1);
+    if ((outmask & _GeodesicMask.DISTANCE) != 0) {
+      out.s12 = arcmode ? _b * ((1 + _A1m1) * sig12 + AB1) : s12_a12;
+    }
 
     if ((outmask & _GeodesicMask.LONGITUDE) != 0) {
       // tan(omg2) = sin(alp0) * tan(sig2)
-      double somg2 = _salp0 * ssig2,
-          comg2 = csig2, // No need to normalize
-          E = _copySign(1, _salp0); // east or west going?
+      double somg2 = _salp0 * ssig2, comg2 = csig2, // No need to normalize
+          E = _copySign(1.0, _salp0); // east or west going?
       // omg12 = omg2 - omg1
       double omg12 = ((outmask & _GeodesicMask.LONG_UNROLL) != 0)
-          ? E *
-              (sig12 -
-                  (atan2(ssig2, csig2) - atan2(_ssig1, _csig1)) +
-                  (atan2(E * somg2, comg2) - atan2(E * _somg1, _comg1)))
-          : atan2(somg2 * _comg1 - comg2 * _somg1, comg2 * _comg1 + somg2 * _somg1);
-      double lam12 = omg12 + _A3c * (sig12 + (_Geodesic.SinCosSeries(true, ssig2, csig2, _C3a) - _B31));
+          ? E * (sig12
+              - (atan2(    ssig2, csig2) - atan2(    _ssig1, _csig1))
+              + (atan2(E * somg2, comg2) - atan2(E * _somg1, _comg1)))
+          : atan2(somg2 * _comg1 - comg2 * _somg1,
+                  comg2 * _comg1 + somg2 * _somg1);
+      double lam12 = omg12 + _A3c *
+          (sig12 + (_Geodesic.SinCosSeries(true, ssig2, csig2, _C3a, _nC3_ - 1)
+                    - _B31));
       double lon12 = _toDegrees(lam12);
-      r.lon2 = ((outmask & _GeodesicMask.LONG_UNROLL) != 0)
-          ? _lon1 + lon12
-          : _GeoMath.AngNormalize(r.lon1 + _GeoMath.AngNormalize(lon12));
+      out.lon2 = ((outmask & _GeodesicMask.LONG_UNROLL) != 0) ? _lon1 + lon12 :
+          _GeoMath.AngNormalize(out.lon1 + _GeoMath.AngNormalize(lon12));
     }
 
-    if ((outmask & _GeodesicMask.LATITUDE) != 0) r.lat2 = _GeoMath.atan2d(sbet2, _f1 * cbet2);
+    if ((outmask & _GeodesicMask.LATITUDE) != 0) out.lat2 = _GeoMath.atan2d(sbet2, _f1 * cbet2);
 
-    if ((outmask & _GeodesicMask.AZIMUTH) != 0) r.azi2 = _GeoMath.atan2d(salp2, calp2);
+    if ((outmask & _GeodesicMask.AZIMUTH) != 0) out.azi2 = _GeoMath.atan2d(salp2, calp2);
 
     if ((outmask & (_GeodesicMask.REDUCEDLENGTH | _GeodesicMask.GEODESICSCALE)) != 0) {
-      double B22 = _Geodesic.SinCosSeries(true, ssig2, csig2, _C2a),
+      double
+          B22 = _Geodesic.SinCosSeries(true, ssig2, csig2, _C2a, _nC2_),
           AB2 = (1 + _A2m1) * (B22 - _B21),
           J12 = (_A1m1 - _A2m1) * sig12 + (AB1 - AB2);
       if ((outmask & _GeodesicMask.REDUCEDLENGTH) != 0) {
-        r.m12 = _b * ((dn2 * (_csig1 * ssig2) - _dn1 * (_ssig1 * csig2)) - _csig1 * csig2 * J12);
+        out.m12 = _b * ((dn2 * (_csig1 * ssig2) - _dn1 * (_ssig1 * csig2))
+            - _csig1 * csig2 * J12);
       }
       if ((outmask & _GeodesicMask.GEODESICSCALE) != 0) {
         double t = _k2 * (ssig2 - _ssig1) * (ssig2 + _ssig1) / (_dn1 + dn2);
-        r.M12 = csig12 + (t * ssig2 - csig2 * J12) * _ssig1 / _dn1;
-        r.M21 = csig12 - (t * _ssig1 - _csig1 * J12) * ssig2 / dn2;
+        out.M12 = csig12 + (t * ssig2 - csig2 * J12) * _ssig1 / _dn1;
+        out.M21 = csig12 - (t * _ssig1 - _csig1 * J12) * ssig2 / dn2;
       }
     }
 
     if ((outmask & _GeodesicMask.AREA) != 0) {
-      double B42 = _Geodesic.SinCosSeries(false, ssig2, csig2, _C4a);
+      double
+        B42 = _Geodesic.SinCosSeries(false, ssig2, csig2, _C4a, _nC4_);
       double salp12, calp12;
       if (_calp0 == 0 || _salp0 == 0) {
         // alp12 = alp2 - alp1, used in atan2 so no need to normalize
         salp12 = salp2 * _calp1 - calp2 * _salp1;
         calp12 = calp2 * _calp1 + salp2 * _salp1;
+        // We used to include here some patch up code that purported to deal
+        // with nearly meridional geodesics properly.  However, this turned out
+        // to be wrong once _salp1 = -0 was allowed (via
+        // Geodesic::InverseLine).  In fact, the calculation of {s,c}alp12
+        // was already correct (following the IEEE rules for handling signed
+        // zeros).  So the patch up code was unnecessary (as well as
+        // dangerous).
       } else {
         // tan(alp) = tan(alp0) * sec(sig)
         // tan(alp2-alp1) = (tan(alp2) -tan(alp1)) / (tan(alp2)*tan(alp1)+1)
@@ -462,21 +474,21 @@ class _GeodesicLine {
         // else
         //   csig1 - csig2 = csig1 * (1 - csig12) + ssig12 * ssig1
         // No need to normalize
-        salp12 = _calp0 *
-            _salp0 *
-            (csig12 <= 0
-                ? _csig1 * (1 - csig12) + ssig12 * _ssig1
-                : ssig12 * (_csig1 * ssig12 / (1 + csig12) + _ssig1));
+        salp12 = _calp0 * _salp0 *
+            (csig12 <= 0 ? _csig1 * (1 - csig12) + ssig12 * _ssig1 :
+             ssig12 * (_csig1 * ssig12 / (1 + csig12) + _ssig1));
         calp12 = _GeoMath.sq(_salp0) + _GeoMath.sq(_calp0) * _csig1 * csig2;
       }
-      r.S12 = _c2 * atan2(salp12, calp12) + _A4 * (B42 - _B41);
+      out.S12 = _c2 * atan2(salp12, calp12) + _A4 * (B42 - _B41);
     }
 
-    return r;
+    out.a12 = arcmode ? s12_a12 : _toDegrees(sig12);
+
+    return out;
   }
 
-  GeodesicData PositionOnlyDistance(double s12_a12) {
-    return Position(false, s12_a12, _GeodesicMask.LATITUDE | _GeodesicMask.LONGITUDE | _GeodesicMask.AZIMUTH |
+  GeodesicData _genPositionOnlyDistance(double s12_a12) {
+    return _genPosition(false, s12_a12, _GeodesicMask.LATITUDE | _GeodesicMask.LONGITUDE | _GeodesicMask.AZIMUTH |
     _GeodesicMask.REDUCEDLENGTH | _GeodesicMask.GEODESICSCALE | _GeodesicMask.AREA);
   }
   

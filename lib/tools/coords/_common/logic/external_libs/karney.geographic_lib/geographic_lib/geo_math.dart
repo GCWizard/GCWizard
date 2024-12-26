@@ -143,7 +143,7 @@ class _GeoMath {
    * @param sinx the sine.
    * @param cosx the cosine.
    **********************************************************************/
-  static void norm(_Pair p, double sinx, double cosx) {
+  static void norm(double sinx, double cosx, _Pair p) {
     double r = hypot(sinx, cosx);
     p.first = sinx / r;
     p.second = cosx / r;
@@ -355,7 +355,7 @@ class _GeoMath {
    * The results obey exactly the elementary properties of the trigonometric
    * functions, e.g., sin 9&deg; = cos 81&deg; = &minus; sin 123456789&deg;.
    **********************************************************************/
-  static void sincosd(_Pair p, double x) {
+  static void sincosd(double x, _Pair p) {
     // In order to minimize round-off errors, this function exactly reduces
     // the argument to the range [-45, 45] before converting it to radians.
     double r;
@@ -513,7 +513,7 @@ class _GeoMath {
   static double tand(double x) {
     double overflow = 1 / sq(practical_epsilon);
     _Pair p = _Pair();
-    sincosd(p, x);
+    sincosd(x, p);
     double s = p.first;
     double c = p.second;
     // http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1950.pdf

@@ -12,7 +12,7 @@ void main() async {
   // Enable content compression
   server.autoCompress = true;
 
-  print('Serving at http://${server.address.host}:${server.port}');
+//  print('Serving at http://${server.address.host}:${server.port}');
 }
 
 Response _echoRequest(Request _request) {

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
@@ -10,7 +8,7 @@ import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat_distance.dart';
-import 'package:gc_wizard/tools/coords/centerpoint/logic/centerpoint.dart';
+import 'package:gc_wizard/tools/coords/centerpoint/center_three_points/logic/center_three_points.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/default_units_getter.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/length.dart';
@@ -85,63 +83,34 @@ class _CenterThreePointsState extends State<CenterThreePoints> {
             });
           },
         ),
-        _buildSubmitButton(),
+        GCWSubmitButton(
+          onPressed: () {
+            setState(() {
+              _calculateOutput();
+            });
+          },
+        ),
         GCWCoordsOutput(outputs: _currentOutput, points: _currentMapPoints, polylines: _currentMapPolylines),
       ],
     );
   }
 
-  Widget _buildSubmitButton() {
-    return GCWSubmitButton(onPressed: () async {
-      await showDialog<bool>(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) {
-          return Center(
-            child: SizedBox(
-              height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
-              width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
-              child: GCWAsyncExecuter<List<CenterPointDistance>?>(
-                isolatedFunction: centerPointThreePointsAsync,
-                parameter: _buildJobData,
-                onReady: (data) => _showOutput(data),
-                isOverlay: true,
-              ),
-            ),
-          );
-        },
-      );
-    });
-  }
+  void _calculateOutput() {
+    var centerPoint = centerPointThreePoints(
+        _currentCoords1.toLatLng()!,
+        _currentCoords2.toLatLng()!,
+        _currentCoords3.toLatLng()!,
+        defaultEllipsoid
+    );
 
-  Future<GCWAsyncExecuterParameters> _buildJobData() async {
-    return GCWAsyncExecuterParameters(CenterPointJobData(
-        coord1: _currentCoords1.toLatLng()!,
-        coord2: _currentCoords2.toLatLng()!,
-        coord3: _currentCoords3.toLatLng()!,
-        ellipsoid: defaultEllipsoid));
-  }
+    _currentCenter = centerPoint.centerPoint;
+    _currentDistance = centerPoint.distance;
 
-  void _showOutput(List<CenterPointDistance>? output) {
-    if (output == null) {
-      _currentOutput = [];
-
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {});
-      });
-      return;
-    }
-
-    _currentCenter = output.first.centerPoint;
-    _currentDistance = output.first.distance;
-
-    _currentOutput = output.map((coord) {
-      return buildCoordinate(_currentOutputFormat, coord.centerPoint);
-    }).toList();
+    _currentOutput = [buildCoordinate(_currentOutputFormat, _currentCenter) as Object];
     _currentOutput.add(GCWOutputText(
         text: '${i18n(context, 'coords_center_distance')}: ${doubleFormat.format(_currentOutputUnit.fromMeter(_currentDistance))} ${_currentOutputUnit.symbol}',
         copyText: _currentOutputUnit.fromMeter(_currentDistance).toString(),
-      )
+      ) as Object
     );
 
     var mapPointCurrentCoords1 = GCWMapPoint(

@@ -28,6 +28,8 @@
 	<string>Not used but required by internal dependency 'r_scan'</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Used by coordinate functions as location input and by coordinate tools for showing current position</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Used by coordinate functions as location input and by coordinate tools for showing current position</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Used for loading images into image tools</string>
 	<key>NSAppleMusicUsageDescription</key>

@@ -284,7 +284,7 @@ class _SubstitutionState extends State<Substitution> {
               )
             : Container(),
         GCWDropDown(
-          title: i18n(context, 'common_to'),
+          title: i18n(context, 'substitution_generate_to'),
           value: _currentToLetters,
           items: _generateToList().map((value) {
             return GCWDropDownMenuItem(
@@ -315,7 +315,7 @@ class _SubstitutionState extends State<Substitution> {
 
         GCWTextDivider(text: titleNumerals),
         GCWDropDown(
-          title: i18n(context, 'common_to'),
+          title: i18n(context, 'substitution_generate_to'),
           value: _currentToNumerals,
           items: _generateToList().map((value) {
             return GCWDropDownMenuItem(
@@ -338,7 +338,7 @@ class _SubstitutionState extends State<Substitution> {
 
         GCWTextDivider(text: titleCharacters),
         GCWDropDown(
-          title: i18n(context, 'common_to'),
+          title: i18n(context, 'substitution_generate_to'),
           value: _currentToCharacters,
           items: _generateToList().map((value) {
             return GCWDropDownMenuItem(

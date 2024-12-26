@@ -89,7 +89,7 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
 
   List<String> lines = _LUAFile.split('\n');
 
-  if (!_obfuscatorFound) _checkAndGetObfuscatorURWIGO(lines);
+  _checkAndGetObfuscatorURWIGO(lines);
 
   if (_obfuscatorFound) {
     _deObfuscateAllTexts();
@@ -114,12 +114,12 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
   List<WherigoTaskData> _cartridgeTasks = [];
   List<WherigoZoneData> _cartridgeZones = [];
   List<WherigoTimerData> _cartridgeTimers = [];
-  List<WherigoMediaData> _cartridgeMedia = [];
+  List<WherigoMediaData> _cartridgeMedia = [];//EMPTY_WHERIGOMEDIADATA];
 
   bool _sectionVariables = true;
   bool _sectionBuilderVariables = true;
 
-  int index = 0;
+  int index = 1;
   int progress = 0;
   int progressStep = max(lines.length ~/ 200, 1); // 2 * 100 steps
   List<String> analyzeLines = [];
@@ -138,6 +138,7 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
     // search and get Media Object
     //
     late WherigoMediaData cartridgeMediaData;
+    index = 1;
     try {
       if (RegExp(r'(Wherigo.ZMedia\()').hasMatch(lines[i])) {
         WHERIGOcurrentObjectSection = WHERIGO_OBJECT_TYPE.MEDIA;
@@ -415,7 +416,6 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
             }
             i++;
           } while (_insideSectionInput(lines[i]) && (i + 1 < lines.length - 1));
-
           cartridgeInputData = _analyzeAndExtractInputSectionData(analyzeLines);
 
           _cartridgeInputs.add(cartridgeInputData);
@@ -435,16 +435,18 @@ Future<WherigoCartridge> getCartridgeLUA(Uint8List byteListLUA, bool getLUAonlin
     try {
       if (lines[i].endsWith(':OnGetInput(input)')) {
         for (int j = 0; j < _cartridgeInputs.length; j++) {
-          analyzeLines = [];
-          do {
-            analyzeLines.add(lines[i].trim());
-            i++;
+          if (lines[i].endsWith(':OnGetInput(input)')) {
+            analyzeLines = [];
+            do {
+              analyzeLines.add(lines[i].trim());
+              i++;
 
-            if (sendAsyncPort != null && (i % progressStep == 0)) {
-              sendAsyncPort.send(DoubleText(PROGRESS, i / lines.length / 2));
-            }
-          } while (_insideSectionOnGetInput(lines[i]) && (i < lines.length - 3));
-          _Answers.add(_analyzeAndExtractOnGetInputSectionData(analyzeLines));
+              if (sendAsyncPort != null && (i % progressStep == 0)) {
+                sendAsyncPort.send(DoubleText(PROGRESS, i / lines.length / 2));
+              }
+            } while (_insideSectionOnGetInput(lines[i]) && (i < lines.length - 3));
+            _Answers.add(_analyzeAndExtractOnGetInputSectionData(analyzeLines));
+          }
         }
       } // end if identify input function
     } catch (exception) {

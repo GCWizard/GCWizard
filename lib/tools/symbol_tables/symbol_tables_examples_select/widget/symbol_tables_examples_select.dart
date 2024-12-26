@@ -99,6 +99,7 @@ class _SymbolTableExamplesSelectState extends State<SymbolTableExamplesSelect> {
               margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
               onPressed: () {
                 setState(() {
+                  selectedSymbolTables = <String>[];
                   for (var image in images) {
                     var data = image.values.first;
                     data.primarySelected = true;
@@ -114,10 +115,10 @@ class _SymbolTableExamplesSelectState extends State<SymbolTableExamplesSelect> {
               margin: const EdgeInsets.only(top: 5.0, bottom: 5.0),
               onPressed: () {
                 setState(() {
+                  selectedSymbolTables = <String>[];
                   for (var image in images) {
                     var data = image.values.first;
                     data.primarySelected = false;
-                    selectedSymbolTables = <String>[];
                   }
                 });
               },

@@ -47,6 +47,7 @@ class NumberPyramidSolverState extends State<NumberPyramidSolver> {
           title: i18n(context, 'common_row_count'),
           value: _rowCount,
           min: 1,
+          max: 100,
           onChanged: (value) {
             setState(() {
               _rowCount = value;
@@ -118,9 +119,9 @@ class NumberPyramidSolverState extends State<NumberPyramidSolver> {
                 child: GCWButton(
                   text: i18n(context, 'sudokusolver_solve'),
                   onPressed: () {
-                    setState(() {
+                    setState(() async {
                       _hideInputTextBox();
-                      _currentBoard.solvePyramid(_MAX_SOLUTIONS);
+                      await _currentBoard.solvePyramid(_MAX_SOLUTIONS);
                       if (_currentBoard.solutions == null) {
                         showSnackBar(i18n(context, 'sudokusolver_error'), context);
                       } else {
@@ -133,30 +134,30 @@ class NumberPyramidSolverState extends State<NumberPyramidSolver> {
               ),
             ),
             Expanded(
-                child: Container(
-              padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
-              child: GCWButton(
-                text: i18n(context, 'sudokusolver_clearcalculated'),
-                onPressed: () {
-                  setState(() {
-                    _hideInputTextBox();
-                    _currentBoard.removeCalculated();
-                  });
-                },
-              ),
+              child: Container(
+                padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
+                child: GCWButton(
+                  text: i18n(context, 'sudokusolver_clearcalculated'),
+                  onPressed: () {
+                    setState(() {
+                      _hideInputTextBox();
+                      _currentBoard.removeCalculated();
+                    });
+                  },
+                ),
             )),
             Expanded(
-                child: Container(
-              padding: const EdgeInsets.only(left: DEFAULT_MARGIN),
-              child: GCWButton(
-                text: i18n(context, 'sudokusolver_clearall'),
-                onPressed: () {
-                  setState(() {
-                    _hideInputTextBox();
-                    _currentBoard = NumberPyramid(_rowCount);
-                  });
-                },
-              ),
+              child: Container(
+                padding: const EdgeInsets.only(left: DEFAULT_MARGIN),
+                child: GCWButton(
+                  text: i18n(context, 'sudokusolver_clearall'),
+                  onPressed: () {
+                    setState(() {
+                      _hideInputTextBox();
+                      _currentBoard = NumberPyramid(_rowCount);
+                    });
+                  },
+                ),
             ))
           ],
         )

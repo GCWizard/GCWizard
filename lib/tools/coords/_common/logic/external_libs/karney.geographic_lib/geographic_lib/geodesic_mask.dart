@@ -63,6 +63,7 @@ class _GeodesicMask {
   /*
    * All of the above, the "standard" output and capabilities.
    **********************************************************************/
+  // ignore: unused_field
   static const int STANDARD = LATITUDE | LONGITUDE | AZIMUTH | DISTANCE;
   /*
    * Allow distance <i>s12</i> to be used as <i>input</i> in the direct

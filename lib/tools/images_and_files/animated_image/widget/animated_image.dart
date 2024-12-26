@@ -48,6 +48,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
     return Column(children: <Widget>[
       GCWOpenFile(
         supportedFileTypes: ANIMATED_IMAGE_ALLOWED_FILETYPES,
+        suppressGallery: false,
         onLoaded: (GCWFile? value) {
           if (value == null) {
             showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
@@ -65,7 +66,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
             GCWIconButton(
               icon: Icons.play_arrow,
               size: IconButtonSize.SMALL,
-              iconColor: _outData != null && !_play ? null : themeColors().inActive(),
+              iconColor: _outData != null && !_play ? null : themeColors().inactive(),
               onPressed: () {
                 setState(() {
                   _play = (_outData != null);
@@ -75,7 +76,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
             GCWIconButton(
               icon: Icons.stop,
               size: IconButtonSize.SMALL,
-              iconColor: _play ? null : themeColors().inActive(),
+              iconColor: _play ? null : themeColors().inactive(),
               onPressed: () {
                 setState(() {
                   _play = false;
@@ -85,7 +86,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
             GCWIconButton(
               icon: Icons.save,
               size: IconButtonSize.SMALL,
-              iconColor: _outData == null ? themeColors().inActive() : null,
+              iconColor: _outData == null ? themeColors().inactive() : null,
               onPressed: () {
                 if (_outData != null && _file?.name != null) _exportFiles(context, _file!.name!, _outData!.images);
               },

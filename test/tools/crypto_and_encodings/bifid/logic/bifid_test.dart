@@ -11,7 +11,6 @@ void main() {
   // https://www.geocachingtoolbox.com/index.php?lang=en&page=bifidCipher
   // https://cryptii.com/pipes/bifid-cipher
   // http://rumkin.com/tools/cipher/bifid.php
-  // http://kryptografie.de/kryptografie/chiffre/bifid.htm
   // https://www.braingle.com/brainteasers/codes/bifid.php
   // http://practicalcryptography.com/ciphers/classical-era/bifid/
   // https://www.cryptool.org/en/jcryptool

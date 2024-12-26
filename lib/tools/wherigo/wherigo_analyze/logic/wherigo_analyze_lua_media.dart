@@ -35,6 +35,7 @@ WherigoMediaData _analyzeAndExtractMediaSectionData(List<String> lines) {
 
   for (int i = 0; i < lines.length; i++) {
     lines[i] = lines[i].trim();
+    //print(lines[i]);
     if (RegExp(r'(Wherigo.ZMedia\()').hasMatch(lines[i])) {
       LUAname = getLUAName(lines[i]);
     }
@@ -62,18 +63,23 @@ WherigoMediaData _analyzeAndExtractMediaSectionData(List<String> lines) {
     } else if (lines[i].replaceAll(LUAname + '.', '').startsWith('AltText')) {
       alttext = getLineData(lines[i], LUAname, 'AltText', _obfuscatorFunction, _obfuscatorTable);
     } else if (lines[i].replaceAll(LUAname + '.', '').startsWith('Resources')) {
-      i++;
-      _sectionInner = true;
-      do {
-        if (lines[i].startsWith('Filename = ')) {
-          filename = getStructData(lines[i], 'Filename');
-        } else if (lines[i].startsWith('Type = ')) {
-          type = getStructData(lines[i], 'Type');
-        } else if (lines[i].startsWith('Directives = ')) {
-          _sectionInner = false;
-        }
+      if (lines[i].replaceAll(LUAname + '.', '').endsWith('{}')) {
+        filename = '';
+        type = '';
+      } else {
         i++;
-      } while (_sectionInner);
+        _sectionInner = true;
+        do {
+          if (lines[i].startsWith('Filename = ')) {
+            filename = getStructData(lines[i], 'Filename');
+          } else if (lines[i].startsWith('Type = ')) {
+            type = getStructData(lines[i], 'Type');
+          } else if (lines[i].startsWith('Directives = ')) {
+            _sectionInner = false;
+          }
+          i++;
+        } while (_sectionInner);
+      }
     }
   }
 

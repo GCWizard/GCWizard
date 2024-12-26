@@ -63,9 +63,13 @@ class _HumidexState extends State<Humidex> {
   }
 
   Widget _buildOutput(BuildContext context) {
-    double humidex = calculateHumidex(_currentTemperature, _currentHumidity);
+    double humidex_c = calculateHumidex(_currentTemperature, _currentHumidity);
+    double humidex = 0.0;
 
-    double dewpoint = calculateDewpoint(_currentTemperature, _currentHumidity);
+    humidex = TEMPERATURE_CELSIUS.toKelvin(humidex_c);
+    humidex = _currentOutputUnit.fromReference(humidex);
+
+    double dewpoint = calculateDewPoint(_currentTemperature, _currentHumidity);
     dewpoint = TEMPERATURE_CELSIUS.toKelvin(dewpoint);
     dewpoint = _currentOutputUnit.fromReference(dewpoint);
 

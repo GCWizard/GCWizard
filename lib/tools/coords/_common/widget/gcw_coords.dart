@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/permissions/user_location.dart';
-import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
@@ -43,6 +42,8 @@ import 'package:gc_wizard/tools/coords/_common/formats/openlocationcode/logic/op
 import 'package:gc_wizard/tools/coords/_common/formats/quadtree/logic/quadtree.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_day1976/logic/reverse_wherigo_day1976.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_waldmeister/logic/reverse_wherigo_waldmeister.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_10y_waldmeister/logic/reverse_wherigo_10y_waldmeister.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/s2cells_hilbert/logic/s2cells_hilbert.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/slippymap/logic/slippy_map.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/swissgrid/logic/swissgrid.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/swissgridplus/logic/swissgridplus.dart';
@@ -51,7 +52,7 @@ import 'package:gc_wizard/tools/coords/_common/formats/xyz/logic/xyz.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_definition.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/coord_format_inputs/degrees_lat_textinputformatter.dart';
@@ -66,7 +67,6 @@ import 'package:gc_wizard/utils/string_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
-import 'package:prefs/prefs.dart';
 
 part 'package:gc_wizard/tools/coords/_common/formats/bosch/widget/gcw_coords_bosch.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/dec/widget/gcw_coords_dec.dart';
@@ -96,6 +96,8 @@ part 'package:gc_wizard/tools/coords/_common/formats/openlocationcode/widget/gcw
 part 'package:gc_wizard/tools/coords/_common/formats/quadtree/widget/gcw_coords_quadtree.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_day1976/widget/gcw_coords_reversewherigo_day1976.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_waldmeister/widget/gcw_coords_reversewherigo_waldmeister.dart';
+part 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_10y_waldmeister/widget/gcw_coords_reversewherigo_10y_waldmeister.dart';
+part 'package:gc_wizard/tools/coords/_common/formats/s2cells_hilbert/widget/gcw_coords_s2cells_hilbert.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/slippymap/widget/gcw_coords_slippymap.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/swissgrid/widget/gcw_coords_swissgrid.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/swissgridplus/widget/gcw_coords_swissgridplus.dart';
@@ -402,6 +404,7 @@ var allCoordinateWidgetInfos = [
   _GCWCoordWidgetInfoSlippyMap(),
   _GCWCoordWidgetInfoReverseWherigoWaldmeister(),
   _GCWCoordWidgetInfoReverseWherigoDay1976(),
+  _GCWCoordWidgetInfoReverseWherigo10YWaldmeister(),
   _GCWCoordWidgetInfoGeohash(),
   _GCWCoordWidgetInfoBosch(),
   _GCWCoordWidgetInfoMakaney(),
@@ -409,4 +412,5 @@ var allCoordinateWidgetInfos = [
   _GCWCoordWidgetInfoGeo3x3(),
   _GCWCoordWidgetInfoMapCode(),
   _GCWCoordWidgetInfoGARS(),
+  _GCWCoordWidgetInfoS2CellsHilbert()
 ];

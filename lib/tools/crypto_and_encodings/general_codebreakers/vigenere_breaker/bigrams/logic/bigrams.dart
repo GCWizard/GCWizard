@@ -25,8 +25,6 @@ Bigrams? getBigrams(VigenereBreakerAlphabet alphabet) {
       return SpanishBigrams();
     case VigenereBreakerAlphabet.FRENCH:
       return FrenchBigrams();
-    default:
-      return null;
   }
 }
 

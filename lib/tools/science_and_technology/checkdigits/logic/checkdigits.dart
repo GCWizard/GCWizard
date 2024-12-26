@@ -131,8 +131,6 @@ CheckDigitOutput checkDigitsCheckNumber(CheckDigitsMode mode, String number) {
       return _CheckUICNumber(number);
     case CheckDigitsMode.CREDITCARD:
       return _CheckCreditCardNumber(number);
-    default:
-      return CheckDigitOutput(false, '', ['']);
   }
 }
 
@@ -158,8 +156,6 @@ String checkDigitsCalculateCheckDigitAndNumber(CheckDigitsMode mode, String numb
       return _CalculateCheckDigitAndNumber(number, _CalculateUICNumber);
     case CheckDigitsMode.CREDITCARD:
       return _CalculateCheckDigitAndNumber(number, _CalculateCreditCardNumber);
-    default:
-      return '';
   }
 }
 
@@ -198,8 +194,6 @@ List<String> checkDigitsCalculateMissingDigitsAndNumber(CheckDigitsMode mode, St
       return _CalculateUICDigits(number);
     case CheckDigitsMode.CREDITCARD:
       return _CalculateCreditCardDigits(number);
-    default:
-      return [''];
   }
 }
 

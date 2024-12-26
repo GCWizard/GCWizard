@@ -6,7 +6,7 @@ import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/gcw_toolbar.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_multiple_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
@@ -100,7 +100,7 @@ class _GCWCoordsOutputState extends State<GCWCoordsOutput> {
         trailing: GCWIconButton(
           icon: Icons.save,
           size: IconButtonSize.SMALL,
-          iconColor: _hasOutput ? null : themeColors().inActive(),
+          iconColor: _hasOutput ? null : themeColors().inactive(),
           onPressed: () {
             if (_hasOutput) {
               _exportCoordinates(context, widget.points, widget.polylines);

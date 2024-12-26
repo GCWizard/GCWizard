@@ -1,5 +1,6 @@
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/science_and_technology/periodic_table/_common/logic/periodic_table.dart';
+import 'package:gc_wizard/utils/constants.dart';
 
 void main() {
   group("PeriodicTable.atomicNumbersToText:", () {
@@ -8,7 +9,7 @@ void main() {
 
       {'atomicNumbers' : [1,2,3], 'expectedOutput' : 'HHeLi'},
       {'atomicNumbers' : [4,16,73], 'expectedOutput' : 'BeSTa'},
-      {'atomicNumbers' : [4,16,-1], 'expectedOutput' : 'BeS<?>'},
+      {'atomicNumbers' : [4,16,-1], 'expectedOutput' : 'BeS'+ UNKNOWN_ELEMENT},
     ];
 
     for (var elem in _inputsToExpected) {

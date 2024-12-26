@@ -59,15 +59,19 @@ String? _decodeSteganoMessageFromImage(_SteganoDecodeRequest req) {
 
   String? token = req.key;
   if (req.canEncrypt()) {
-    crypto.Key key = crypto.Key.fromUtf8(_steganoPadKey(token!));
-    crypto.IV iv = crypto.IV.fromLength(16);
-    crypto.Encrypter encrypter = crypto.Encrypter(crypto.AES(key));
-    crypto.Encrypted encryptedMsg = crypto.Encrypted.fromBase64(msg);
-    msg = encrypter.decrypt(encryptedMsg, iv: iv);
+    try {
+      crypto.Key key = crypto.Key.fromUtf8(_steganoPadKey(token!));
+      crypto.IV iv = crypto.IV.allZerosOfLength(16);
+      crypto.Encrypter encrypter = crypto.Encrypter(crypto.AES(key));
+      crypto.Encrypted encryptedMsg = crypto.Encrypted.fromBase64(msg);
+      msg = encrypter.decrypt(encryptedMsg, iv: iv);
+    } catch (e) {
+      msg = e.toString();
+    }
   }
   return msg;
 }
 
-Future<String> _decodeSteganoMessageFromImageAsync(_SteganoDecodeRequest req) async {
-  return compute(_decodeSteganoMessageFromImage as ComputeCallback<_SteganoDecodeRequest, String>, req);
+Future<String?> _decodeSteganoMessageFromImageAsync(_SteganoDecodeRequest req) async {
+  return compute(_decodeSteganoMessageFromImage, req);
 }

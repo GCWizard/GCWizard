@@ -227,3 +227,7 @@ int countLetters(String text) {
 int countDigits(String text) {
   return text.replaceAll(RegExp(r'\D'), '').length;
 }
+
+double average(List<int> list) {
+  return sum(list).toDouble() / list.length;
+}

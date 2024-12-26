@@ -431,3 +431,13 @@ WherigoAnswer _WHERIGO_EMPTYTESTANSWER_LUA = WherigoAnswer(
   InputFunction: '',
   InputAnswers: [],
 );
+
+const EMPTY_WHERIGOMEDIADATA = WherigoMediaData(
+    MediaLUAName: '',
+    MediaID: '',
+    MediaName: '',
+    MediaDescription: '',
+    MediaAltText: '',
+    MediaType: '',
+    MediaFilename: ''
+);

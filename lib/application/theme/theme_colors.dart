@@ -18,7 +18,7 @@ abstract class ThemeColors {
   Color inputBackground();
   Color secondary();
   Color focused();
-  Color inActive();
+  Color inactive();
 
   Color textFieldHintText();
   Color textFieldFill();
@@ -73,8 +73,6 @@ void setThemeColors(ThemeType type) {
     case ThemeType.LIGHT:
       _themeColors = _ThemeColorsLight();
       break;
-    default:
-      return;
   }
 }
 

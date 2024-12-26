@@ -222,6 +222,9 @@ class _Geodesic {
   static const int nC3x_ = (nC3_ * (nC3_ - 1)) ~/ 2;
   static const int nC4_ = GEOGRAPHICLIB_GEODESIC_ORDER;
   static const int nC4x_ = (nC4_ * (nC4_ + 1)) ~/ 2;
+  // Size for temporary array
+  // nC = max(max(nC1_, nC1p_, nC2_) + 1, max(nC3_, nC4_))
+  static const int nC_ = GEOGRAPHICLIB_GEODESIC_ORDER + 1;
   static const int _maxit1_ = 20;
   static const int _maxit2_ = _maxit1_ + _GeoMath.digits + 10;
 
@@ -229,11 +232,11 @@ class _Geodesic {
   //   tiny_ * epsilon() > 0
   //   tiny_ + epsilon() == epsilon()
   static final double tiny_ = sqrt(double.minPositive);
-  static const double _tol0_ = double.minPositive;
+  static final double _tol0_ = 2 * pow(2, -53) as double; ///// from dart_numerics: According to the definition of Prof. Demmel and used in LAPACK and Scilab.
   // Increase multiplier in defn of tol1_ from 100 to 200 to fix inverse case
   // 52.784459512564 0 -52.784459512563990912 179.634407464943777557
   // which otherwise failed for Visual Studio 10 (Release and Debug)
-  static const double _tol1_ = 200 * _tol0_;
+  static final double _tol1_ = 200 * _tol0_;
   static final double _tol2_ = sqrt(_tol0_);
   // Check on bisection interval
   static final double _tolb_ = _tol0_ * _tol2_;
@@ -310,7 +313,10 @@ class _Geodesic {
    * path: the longitudinal extent must not exceed of 180&deg;.)
    **********************************************************************/
   GeodesicData direct(double lat1, double lon1, double azi1, double s12) {
-    return _direct(lat1, lon1, azi1, false, s12, _GeodesicMask.STANDARD);
+    return _direct(lat1, lon1, azi1, false, s12,
+        _GeodesicMask.LATITUDE | _GeodesicMask.LONGITUDE | _GeodesicMask.AZIMUTH |
+        _GeodesicMask.REDUCEDLENGTH | _GeodesicMask.GEODESICSCALE | _GeodesicMask.AREA
+    );
   }
 
   /*
@@ -374,7 +380,7 @@ class _Geodesic {
     if (!arcmode) outmask |= _GeodesicMask.DISTANCE_IN;
     return _GeodesicLine(this, lat1, lon1, azi1, outmask)
         . // Note the dot!
-        Position(arcmode, s12_a12, outmask);
+        _genPosition(arcmode, s12_a12, outmask);
   }
 
   /*
@@ -402,42 +408,39 @@ class _Geodesic {
    * is used to refine the solution.
    **********************************************************************/
   GeodesicData inverse(double lat1, double lon1, double lat2, double lon2) {
-    return _inverse(lat1, lon1, lat2, lon2, _GeodesicMask.STANDARD);
+    var outmask = _GeodesicMask.DISTANCE | _GeodesicMask.AZIMUTH |
+                  _GeodesicMask.REDUCEDLENGTH ;//| _GeodesicMask.GEODESICSCALE | _GeodesicMask.AREA;
+    outmask &= _GeodesicMask.OUT_MASK;
+
+    _InverseData result =  _genInverse(lat1, lon1, lat2, lon2, outmask);
+    GeodesicData r = result._g;
+    if ((outmask & _GeodesicMask.AZIMUTH) != 0) {
+      r.azi1 = _GeoMath.atan2d(result._salp1, result._calp1);
+      r.azi2 = _GeoMath.atan2d(result._salp2, result._calp2);
+    }
+    return r;
   }
 
-  _InverseData _inverseInt(double? lat1, double lon1, double? lat2, double lon2, int outmask) {
+  _InverseData _genInverse(double lat1, double lon1, double lat2, double lon2, int outmask) {
     _InverseData result = _InverseData();
     _Pair p = _Pair();
     GeodesicData r = result._g;
-    // Compute longitude difference (AngDiff does this carefully).  Result is
-    // in [-180, 180] but -180 is only for west-going geodesics.  180 is for
-    // east-going and meridional geodesics.
-    r.lat1 = lat1 = _GeoMath.LatFix(lat1!);
-    r.lat2 = lat2 = _GeoMath.LatFix(lat2!);
-    // If really close to the equator, treat as on equator.
-    lat1 = _GeoMath.AngRound(lat1);
-    lat2 = _GeoMath.AngRound(lat2);
-    double lon12, lon12s;
+    // Compute longitude difference (AngDiff does this carefully).
     var _h = _GeoMath.AngDiffError(lon1, lon2);
-    lon12 = _h.first;
-    lon12s = _h.second;
-    if ((outmask & _GeodesicMask.LONG_UNROLL) != 0) {
-      r.lon1 = lon1;
-      r.lon2 = (lon1 + lon12) + lon12s;
-    } else {
-      r.lon1 = _GeoMath.AngNormalize(lon1);
-      r.lon2 = _GeoMath.AngNormalize(lon2);
-    }
+    double lon12 = _h.first; double lon12s = _h.second;
     // Make longitude difference positive.
     int lonsign = lon12 >= 0 ? 1 : -1;
-    // If very close to being on the same half-meridian, then make it so.
-    lon12 = lonsign * _GeoMath.AngRound(lon12);
-    lon12s = _GeoMath.AngRound((180 - lon12) - lonsign * lon12s);
+    lon12 *= lonsign; lon12s *= lonsign;
     double lam12 = _toRadians(lon12), slam12, clam12;
-    _GeoMath.sincosd(p, lon12 > 90 ? lon12s : lon12);
-    slam12 = p.first;
-    clam12 = (lon12 > 90 ? -1 : 1) * p.second;
+    // Calculate sincos of lon12 + error (this applies AngRound internally).
+    _GeoMath.sincosde(lon12, lon12s, p);
+    slam12 = p.first; clam12 = p.second;
+    // the supplementary longitude difference
+    lon12s = (_GeoMath.hd - lon12) - lon12s;
 
+    // If really close to the equator, treat as on equator.
+    lat1 = _GeoMath.AngRound(_GeoMath.LatFix(lat1));
+    lat2 = _GeoMath.AngRound(_GeoMath.LatFix(lat2));
     // Swap points so that point with higher (abs) latitude is point 1
     // If one latitude is a nan, then it becomes lat1.
     int swapp = lat1.abs() < lat2.abs() ? -1 : 1;
@@ -467,23 +470,19 @@ class _Geodesic {
 
     late double sbet1, cbet1, sbet2, cbet2, s12x, m12x;
 
-    _GeoMath.sincosd(p, lat1);
-    sbet1 = f1 * p.first;
-    cbet1 = p.second;
+    _GeoMath.sincosd(lat1, p);
+    sbet1 = p.first * f1; cbet1 = p.second;
     // Ensure cbet1 = +epsilon at poles; doing the fix on beta means that sig12
     // will be <= 2*tiny for two points at the same pole.
-    _GeoMath.norm(p, sbet1, cbet1);
-    sbet1 = p.first;
-    cbet1 = p.second;
+    _GeoMath.norm(sbet1, cbet1, p);
+    sbet1 = p.first; cbet1 = p.second;
     cbet1 = max(tiny_, cbet1);
 
-    _GeoMath.sincosd(p, lat2);
-    sbet2 = f1 * p.first;
-    cbet2 = p.second;
+    _GeoMath.sincosd(lat2, p);
+    sbet2 = p.first * f1; cbet2 = p.second;
     // Ensure cbet2 = +epsilon at poles
-    _GeoMath.norm(p, sbet2, cbet2);
-    sbet2 = p.first;
-    cbet2 = p.second;
+    _GeoMath.norm(sbet2, cbet2, p);
+    sbet2 = p.first; cbet2 = p.second;
     cbet2 = max(tiny_, cbet2);
 
     // If cbet1 < -sbet1, then cbet2 - cbet1 is a sensitive measure of the
@@ -500,43 +499,38 @@ class _Geodesic {
       if (sbet2.abs() == -sbet1) cbet2 = cbet1;
     }
 
-    double dn1 = sqrt(1 + ep2 * _GeoMath.sq(sbet1)), dn2 = sqrt(1 + ep2 * _GeoMath.sq(sbet2));
+    double
+      dn1 = sqrt(1 + ep2 * _GeoMath.sq(sbet1)),
+      dn2 = sqrt(1 + ep2 * _GeoMath.sq(sbet2));
 
-    late double a12, sig12, _calp1, _salp1;
+    late double a12, sig12, calp1, salp1;
     double? calp2, salp2;
     // index zero elements of these arrays are unused
-    List<double> C1a = List<double>.generate(nC1_ + 1, (index) => 0.0);
-    List<double> C2a = List<double>.generate(nC2_ + 1, (index) => 0.0);
-    List<double> C3a = List<double>.generate(nC3_, (index) => 0.0);
+    List<double> Ca = List<double>.generate(nC_ + 1, (index) => 0.0);
 
-    bool meridian = lat1 == -90 || slam12 == 0;
-    _LengthsV v = _LengthsV();
+    bool meridian = lat1 == -_GeoMath.qd || slam12 == 0;
 
     if (meridian) {
       // Endpoints are on a single full meridian, so the geodesic might lie on
       // a meridian.
 
-      _calp1 = clam12;
-      _salp1 = slam12; // Head to the target longitude
-      calp2 = 1;
-      salp2 = 0; // At the target we're heading north
+      calp1 = clam12; salp1 = slam12; // Head to the target longitude
+      calp2 = 1; salp2 = 0; // At the target we're heading north
 
       double
-          // tan(bet) = tan(sig) * cos(alp)
-          ssig1 = sbet1,
-          csig1 = _calp1 * cbet1,
-          ssig2 = sbet2,
-          csig2 = calp2 * cbet2;
+        // tan(bet) = tan(sig) * cos(alp)
+        ssig1 = sbet1, csig1 = calp1 * cbet1,
+        ssig2 = sbet2, csig2 = calp2 * cbet2;
 
       // sig12 = sig2 - sig1
-      sig12 = atan2(max(0.0, csig1 * ssig2 - ssig1 * csig2), csig1 * csig2 + ssig1 * ssig2);
-      _Lengths(v, _n, sig12, ssig1, csig1, dn1, ssig2, csig2, dn2, cbet1, cbet2,
-          outmask | _GeodesicMask.DISTANCE | _GeodesicMask.REDUCEDLENGTH, C1a, C2a);
-      s12x = v._s12b;
-      m12x = v._m12b;
-      if ((outmask & _GeodesicMask.GEODESICSCALE) != 0) {
-        r.M12 = v._M12;
-        r.M21 = v._M21;
+      sig12 = atan2(max(0.0, csig1 * ssig2 - ssig1 * csig2) + 0.0,
+                             csig1 * csig2 + ssig1 * ssig2);
+
+      {
+        var v = _Lengths(_n, sig12, ssig1, csig1, dn1, ssig2, csig2, dn2, cbet1, cbet2,
+            outmask | _GeodesicMask.DISTANCE | _GeodesicMask.REDUCEDLENGTH,
+            Ca);
+        s12x = v._s12b; m12x = v._m12b;
       }
       // Add the check for sig12 since zero length geodesics might yield m12 <
       // 0.  Test case was
@@ -545,11 +539,18 @@ class _Geodesic {
       //
       // In fact, we will have sig12 > pi/2 for meridional geodesic which is
       // not a shortest path.
+      // TODO: investigate m12 < 0 result for aarch/ppc (with -f -p 20)
+      // 20.001000000000001 0.000000000000000 180.000000000000000
+      // 20.001000000000001 0.000000000000000 180.000000000000000
+      // 0.0000000002 0.000000000000001 -0.0000000001
+      // 0.99999999999999989 0.99999999999999989 0.000
       if (sig12 < 1 || m12x >= 0) {
         // Need at least 2, to handle 90 0 90 180
         if (sig12 < 3 * tiny_ ||
             // Prevent negative s12 or m12 for short lines
-            (sig12 < _tol0_ && (s12x < 0 || m12x < 0))) sig12 = m12x = s12x = 0;
+            (sig12 < _tol0_ && (s12x < 0 || m12x < 0))) {
+          sig12 = m12x = s12x = 0;
+        }
         m12x *= b;
         s12x *= b;
         a12 = _toDegrees(sig12);
@@ -562,26 +563,32 @@ class _Geodesic {
     if (!meridian &&
         sbet1 == 0 && // and sbet2 == 0
         // Mimic the way Lambda12 works with _calp1 = 0
-        (f <= 0 || lon12s >= f * 180)) {
+        (f <= 0 || lon12s >= f * _GeoMath.hd)) {
+
       // Geodesic runs along equator
-      _calp1 = calp2 = 0;
-      _salp1 = salp2 = 1;
+      calp1 = calp2 = 0; salp1 = salp2 = 1;
       s12x = a * lam12;
       sig12 = omg12 = lam12 / f1;
       m12x = b * sin(sig12);
-      if ((outmask & _GeodesicMask.GEODESICSCALE) != 0) r.M12 = r.M21 = cos(sig12);
+      if ((outmask & _GeodesicMask.GEODESICSCALE) != 0) {
+        r.M12 = r.M21 = cos(sig12);
+      }
       a12 = lon12 / f1;
+
     } else if (!meridian) {
+
       // Now point1 and point2 belong within a hemisphere bounded by a
       // meridian and geodesic is neither meridional or equatorial.
 
       // Figure a starting point for Newton's method
       double? dnm;
       {
-        _InverseStartV s = _InverseStart(sbet1, cbet1, dn1, sbet2, cbet2, dn2, lam12, slam12, clam12, C1a, C2a, p, v);
+        _InverseStartReturn s = _InverseStart(sbet1, cbet1, dn1, sbet2, cbet2, dn2,
+                                         lam12, slam12, clam12,
+                                         Ca);
         sig12 = s._sig12;
-        _salp1 = s._salp1;
-        _calp1 = s._calp1;
+        salp1 = s._salp1;
+        calp1 = s._calp1;
         salp2 = s._salp2;
         calp2 = s._calp2;
         dnm = s._dnm;
@@ -591,7 +598,9 @@ class _Geodesic {
         // Short lines (InverseStart sets salp2, calp2, dnm)
         s12x = sig12 * b * dnm!;
         m12x = _GeoMath.sq(dnm) * b * sin(sig12 / dnm);
-        if ((outmask & _GeodesicMask.GEODESICSCALE) != 0) r.M12 = r.M21 = cos(sig12 / dnm);
+        if ((outmask & _GeodesicMask.GEODESICSCALE) != 0) {
+          r.M12 = r.M21 = cos(sig12 / dnm);
+        }
         a12 = _toDegrees(sig12);
         omg12 = lam12 / (f1 * dnm);
       } else {
@@ -606,18 +615,18 @@ class _Geodesic {
         // value of alp1 is then further from the solution) or if the new
         // estimate of alp1 lies outside (0,pi); in this case, the new starting
         // guess is taken to be (alp1a + alp1b) / 2.
-        late double ssig1, csig1, ssig2, csig2, eps, domg12;
+        double ssig1 = 0, csig1 = 0, ssig2 = 0, csig2 = 0, eps = 0, domg12 = 0;
         int numit = 0;
         // Bracketing range
         double _salp1a = tiny_, _calp1a = 1, _salp1b = tiny_, _calp1b = -1;
-        _Lambda12V w = _Lambda12V();
-        for (bool tripn = false, tripb = false; numit < _maxit2_; ++numit) {
+        for (bool tripn = false, tripb = false;; ++numit) {
           // the WGS84 test set: mean = 1.47, sd = 1.25, max = 16
           // WGS84 and random input: mean = 2.85, sd = 0.60
-          double V, dV;
-          _Lambda12(w, sbet1, cbet1, dn1, sbet2, cbet2, dn2, _salp1, _calp1, slam12, clam12, numit < _maxit1_, C1a, C2a,
-              C3a, p, v);
-          V = w.lam12;
+          double v, dv;
+          _Lambda12Return w = _Lambda12(sbet1, cbet1, dn1, sbet2, cbet2, dn2, salp1, calp1,
+                                        slam12, clam12,
+                                        numit < _maxit1_, Ca);
+          v = w.lam12;
           salp2 = w.salp2;
           calp2 = w.calp2;
           sig12 = w.sig12;
@@ -627,31 +636,43 @@ class _Geodesic {
           csig2 = w.csig2;
           eps = w.eps;
           domg12 = w.domg12;
-          dV = w.dlam12;
+          dv = w.dlam12;
+
           // Reversed test to allow escape with NaNs
-          if (tripb || !(V.abs() >= (tripn ? 8 : 1) * _tol0_)) break;
-          // Update bracketing values
-          if (V > 0 && (numit > _maxit1_ || _calp1 / _salp1 > _calp1b / _salp1b)) {
-            _salp1b = _salp1;
-            _calp1b = _calp1;
-          } else if (V < 0 && (numit > _maxit1_ || _calp1 / _salp1 < _calp1a / _salp1a)) {
-            _salp1a = _salp1;
-            _calp1a = _calp1;
+          if (tripb ||
+              !(v.abs() >= (tripn ? 8 : 1) * _tol0_) ||
+              numit == _maxit2_) {
+            break;
           }
-          if (numit < _maxit1_ && dV > 0) {
-            double dalp1 = -V / dV;
-            double sdalp1 = sin(dalp1), cdalp1 = cos(dalp1), n_salp1 = _salp1 * cdalp1 + _calp1 * sdalp1;
-            if (n_salp1 > 0 && dalp1.abs() < _GeoMath.pi()) {
-              _calp1 = _calp1 * cdalp1 - _salp1 * sdalp1;
-              _salp1 = n_salp1;
-              _GeoMath.norm(p, _salp1, _calp1);
-              _salp1 = p.first;
-              _calp1 = p.second;
-              // In some regimes we don't get quadratic convergence because
-              // slope -> 0.  So use convergence conditions based on epsilon
-              // instead of sqrt(epsilon).
-              tripn = V.abs() <= 16 * _tol0_;
-              continue;
+          // Update bracketing values
+          if (v > 0 && (numit > _maxit1_ || calp1 / salp1 > _calp1b / _salp1b)) {
+            _salp1b = salp1;
+            _calp1b = calp1;
+          } else if (v < 0 && (numit > _maxit1_ || calp1 / salp1 < _calp1a / _salp1a)) {
+            _salp1a = salp1;
+            _calp1a = calp1;
+          }
+          if (numit < _maxit1_ && dv > 0) {
+            double dalp1 = -v / dv;
+            // |dalp1| < pi test moved earlier because GEOGRAPHICLIB_PRECISION
+            // = 5 can result in dalp1 = 10^(10^8).  Then sin(dalp1) takes ages
+            // (because of the need to do accurate range reduction).
+            if (dalp1.abs() < _GeoMath.pi()) {
+              double
+                  sdalp1 = sin(dalp1), cdalp1 = cos(dalp1),
+                  nsalp1 = salp1 * cdalp1 + calp1 * sdalp1;
+              if (nsalp1 > 0) {
+                calp1 = calp1 * cdalp1 - salp1 * sdalp1;
+                salp1 = nsalp1;
+                _GeoMath.norm(salp1, calp1, p);
+                salp1 = p.first;
+                calp1 = p.second;
+                // In some regimes we don't get quadratic convergence because
+                // slope -> 0.  So use convergence conditions based on epsilon
+                // instead of sqrt(epsilon).
+                tripn = v.abs() <= 16 * _tol0_;
+                continue;
+              }
             }
           }
           // Either dV was not positive or updated value was outside legal
@@ -662,29 +683,22 @@ class _Geodesic {
           // 90deg:
           // the WGS84 test set: mean = 5.21, sd = 3.93, max = 24
           // WGS84 and random input: mean = 4.74, sd = 0.99
-          _salp1 = (_salp1a + _salp1b) / 2;
-          _calp1 = (_calp1a + _calp1b) / 2;
-          _GeoMath.norm(p, _salp1, _calp1);
-          _salp1 = p.first;
-          _calp1 = p.second;
+          salp1 = (_salp1a + _salp1b) / 2;
+          calp1 = (_calp1a + _calp1b) / 2;
+          _GeoMath.norm(salp1, calp1, p);
+          salp1 = p.first; calp1 = p.second;
           tripn = false;
-          tripb = ((_salp1a - _salp1).abs() + (_calp1a - _calp1) < _tolb_ ||
-              (_salp1 - _salp1b).abs() + (_calp1 - _calp1b) < _tolb_);
+          tripb = ((_salp1a - salp1).abs() + (_calp1a - calp1) < _tolb_ ||
+                   (salp1 - _salp1b).abs() + (calp1 - _calp1b) < _tolb_);
         }
         {
           // Ensure that the reduced length and geodesic scale are computed in
           // a "canonical" way, with the I2 integral.
           int lengthmask = outmask |
               ((outmask & (_GeodesicMask.REDUCEDLENGTH | _GeodesicMask.GEODESICSCALE)) != 0
-                  ? _GeodesicMask.DISTANCE
-                  : _GeodesicMask.NONE);
-          _Lengths(v, eps, sig12, ssig1, csig1, dn1, ssig2, csig2, dn2, cbet1, cbet2, lengthmask, C1a, C2a);
-          s12x = v._s12b;
-          m12x = v._m12b;
-          if ((outmask & _GeodesicMask.GEODESICSCALE) != 0) {
-            r.M12 = v._M12;
-            r.M21 = v._M21;
-          }
+                  ? _GeodesicMask.DISTANCE : _GeodesicMask.NONE);
+          var v = _Lengths(eps, sig12, ssig1, csig1, dn1, ssig2, csig2, dn2, cbet1, cbet2, lengthmask, Ca);
+          s12x = v._s12b; m12x = v._m12b;
         }
         m12x *= b;
         s12x *= b;
@@ -698,44 +712,41 @@ class _Geodesic {
       }
     }
 
-    if ((outmask & _GeodesicMask.DISTANCE) != 0) r.s12 = 0 + s12x; // Convert -0 to 0
+    if ((outmask & _GeodesicMask.DISTANCE) != 0) r.s12 = 0.0 + s12x; // Convert -0 to 0
 
-    if ((outmask & _GeodesicMask.REDUCEDLENGTH) != 0) r.m12 = 0 + m12x; // Convert -0 to 0
+    if ((outmask & _GeodesicMask.REDUCEDLENGTH) != 0) r.m12 = 0.0 + m12x; // Convert -0 to 0
 
     if ((outmask & _GeodesicMask.AREA) != 0) {
       double
           // From Lambda12: sin(alp1) * cos(bet1) = sin(alp0)
-          salp0 = _salp1 * cbet1,
-          calp0 = _hypot(_calp1, _salp1 * sbet1); // calp0 > 0
+          salp0 = salp1 * cbet1,
+          calp0 = _hypot(calp1, salp1 * sbet1); // calp0 > 0
       double alp12;
       if (calp0 != 0 && salp0 != 0) {
         double
             // From Lambda12: tan(bet) = tan(sig) * cos(alp)
             ssig1 = sbet1,
-            csig1 = _calp1 * cbet1,
+            csig1 = calp1 * cbet1,
             ssig2 = sbet2,
             csig2 = calp2! * cbet2,
             k2 = _GeoMath.sq(calp0) * ep2,
             eps = k2 / (2 * (1 + sqrt(1 + k2)) + k2),
             // Multiplier = a^2 * e^2 * cos(alpha0) * sin(alpha0).
             A4 = _GeoMath.sq(a) * calp0 * salp0 * e2;
-        _GeoMath.norm(p, ssig1, csig1);
-        ssig1 = p.first;
-        csig1 = p.second;
-        _GeoMath.norm(p, ssig2, csig2);
-        ssig2 = p.first;
-        csig2 = p.second;
-        List<double> C4a = List<double>.generate(nC4_, (index) => 0.0);
-        C4f(eps, C4a);
-        double B41 = SinCosSeries(false, ssig1, csig1, C4a), B42 = SinCosSeries(false, ssig2, csig2, C4a);
+        _GeoMath.norm(ssig1, csig1, p);
+        ssig1 = p.first; csig1 = p.second;
+        _GeoMath.norm(ssig2, csig2, p);
+        ssig2 = p.first; csig2 = p.second;
+        C4f(eps, Ca);
+        double
+          B41 = SinCosSeries(false, ssig1, csig1, Ca, nC4_),
+          B42 = SinCosSeries(false, ssig2, csig2, Ca, nC4_);
         r.S12 = A4 * (B42 - B41);
       } else {
         r.S12 = 0;
       }
-
       if (!meridian && somg12 > 1) {
-        somg12 = sin(omg12);
-        comg12 = cos(omg12);
+        somg12 = sin(omg12); comg12 = cos(omg12);
       }
 
       if (!meridian &&
@@ -749,13 +760,15 @@ class _Geodesic {
         alp12 = 2 * atan2(somg12 * (sbet1 * dbet2 + sbet2 * dbet1), domg12 * (sbet1 * sbet2 + dbet1 * dbet2));
       } else {
         // alp12 = alp2 - alp1, used in atan2 so no need to normalize
-        double _salp12 = salp2! * _calp1 - calp2! * _salp1, _calp12 = calp2 * _calp1 + salp2 * _salp1;
+        double
+          _salp12 = salp2! * calp1 - calp2! * salp1,
+          _calp12 = calp2 * calp1 + salp2 * salp1;
         // The right thing appears to happen if alp1 = +/-180 and alp2 = 0, viz
         // _salp12 = -0 and alp12 = -180.  However this depends on the sign
         // being attached to 0 correctly.  The following ensures the correct
         // behavior.
         if (_salp12 == 0 && _calp12 < 0) {
-          _salp12 = tiny_ * _calp1;
+          _salp12 = tiny_ * calp1;
           _calp12 = -1;
         }
         alp12 = atan2(_salp12, _calp12);
@@ -768,107 +781,49 @@ class _Geodesic {
 
     // Convert calp, salp to azimuth accounting for lonsign, swapp, latsign.
     if (swapp < 0) {
-      {
-        double t = _salp1;
-        _salp1 = salp2!;
-        salp2 = t;
-      }
-      {
-        double t = _calp1;
-        _calp1 = calp2!;
-        calp2 = t;
-      }
+      double t = salp1;
+      salp1 = salp2!;
+      salp2 = t;
+
+      t = calp1;
+      calp1 = calp2!;
+      calp2 = t;
+
       if ((outmask & _GeodesicMask.GEODESICSCALE) != 0) {
-        double t = r.M12;
+        t = r.M12;
         r.M12 = r.M21;
         r.M21 = t;
       }
     }
 
-    _salp1 *= swapp * lonsign;
-    _calp1 *= swapp * latsign;
-    salp2 = salp2! * swapp * lonsign;
-    calp2 = calp2! * swapp * latsign;
+    salp1 *= swapp * lonsign; calp1 *= swapp * latsign;
+    salp2 = salp2! * swapp * lonsign; calp2 = calp2! * swapp * latsign;
 
     // Returned value in [0, 180]
     r.a12 = a12;
-    result._salp1 = _salp1;
-    result._calp1 = _calp1;
+    result._salp1 = salp1;
+    result._calp1 = calp1;
     result._salp2 = salp2;
     result._calp2 = calp2;
     return result;
   }
 
-  /*
-   * Solve the inverse geodesic problem with a subset of the geodesic results
-   * returned.
-   * <p>
-   * @param lat1 latitude of point 1 (degrees).
-   * @param lon1 longitude of point 1 (degrees).
-   * @param lat2 latitude of point 2 (degrees).
-   * @param lon2 longitude of point 2 (degrees).
-   * @param outmask a bitor'ed combination of {@link GeodesicMask} values
-   *   specifying which results should be returned.
-   * @return a {@link GeodesicData} object with the fields specified by
-   *   <i>outmask</i> computed.
-   * <p>
-   * The {@link GeodesicMask} values possible for <i>outmask</i> are
-   * <ul>
-   * <li>
-   *   <i>outmask</i> |= {@link GeodesicMask#DISTANCE} for the distance
-   *   <i>s12</i>;
-   * <li>
-   *   <i>outmask</i> |= {@link GeodesicMask#AZIMUTH} for the latitude
-   *   <i>azi2</i>;
-   * <li>
-   *   <i>outmask</i> |= {@link GeodesicMask#REDUCEDLENGTH} for the reduced
-   *   length <i>m12</i>;
-   * <li>
-   *   <i>outmask</i> |= {@link GeodesicMask#GEODESICSCALE} for the geodesic
-   *   scales <i>M12</i> and <i>M21</i>;
-   * <li>
-   *   <i>outmask</i> |= {@link GeodesicMask#AREA} for the area <i>S12</i>;
-   * <li>
-   *   <i>outmask</i> |= {@link GeodesicMask#ALL} for all of the above.
-   * <li>
-   *   <i>outmask</i> |= {@link GeodesicMask#LONG_UNROLL}, if set then
-   *   <i>lon1</i> is unchanged and <i>lon2</i> &minus; <i>lon1</i> indicates
-   *   whether the geodesic is east going or west going.  Otherwise <i>lon1</i>
-   *   and <i>lon2</i> are both reduced to the range [&minus;180&deg;,
-   *   180&deg;].
-   * </ul>
-   * <p>
-   * <i>lat1</i>, <i>lon1</i>, <i>lat2</i>, <i>lon2</i>, and <i>a12</i> are
-   * always included in the returned result.
-   **********************************************************************/
-  GeodesicData _inverse(double lat1, double lon1, double lat2, double lon2, int outmask) {
-    outmask &= _GeodesicMask.OUT_MASK;
-    _InverseData result = _inverseInt(lat1, lon1, lat2, lon2, outmask);
-    GeodesicData r = result._g;
-    if ((outmask & _GeodesicMask.AZIMUTH) != 0) {
-      r.azi1 = _GeoMath.atan2d(result._salp1, result._calp1);
-      r.azi2 = _GeoMath.atan2d(result._salp2, result._calp2);
-    }
-    return r;
-  }
-
-  static double SinCosSeries(bool sinp, double sinx, double cosx, List<double> c) {
+  static double SinCosSeries(bool sinp, double sinx, double cosx, List<double> c, int n) {
     // Evaluate
     // y = sinp ? sum(c[i] * sin( 2*i    * x), i, 1, n) :
     //            sum(c[i] * cos((2*i+1) * x), i, 0, n-1)
     // using Clenshaw summation.  N.B. c[0] is unused for sin series
     // Approx operation count = (n + 5) mult and (2 * n + 2) add
-    int k = c.length, // Point to one beyond last element
-        n = k - (sinp ? 1 : 0);
-    double ar = 2 * (cosx - sinx) * (cosx + sinx), // 2 * cos(2 * x)
-        y0 = (n & 1) != 0 ? c[--k] : 0,
-        y1 = 0; // accumulators for sum
+    int cIndex = n + (sinp ? 1 : 0);// Point to one beyond last element
+    double
+      ar = 2 * (cosx - sinx) * (cosx + sinx), // 2 * cos(2 * x)
+      y0 = (n & 1) != 0 ? c[--cIndex] : 0, y1 = 0; // accumulators for sum
     // Now n is even
     n ~/= 2;
     while (n-- != 0) {
       // Unroll loop x 2, so accumulators return to their original role
-      y1 = ar * y0 - y1 + c[--k];
-      y0 = ar * y1 - y0 + c[--k];
+      y1 = ar * y0 - y1 + c[--cIndex];
+      y0 = ar * y1 - y0 + c[--cIndex];
     }
     return sinp
         ? 2 * sinx * cosx * y0 // sin(2 * x) * y0
@@ -879,8 +834,7 @@ class _Geodesic {
     return _GeodesicLine(this, lat1, lon1, azi1, caps);
   }
 
-  void _Lengths(
-      _LengthsV v,
+  _LengthsReturn _Lengths(
       double eps,
       double sig12,
       double ssig1,
@@ -893,53 +847,61 @@ class _Geodesic {
       double cbet2,
       int outmask,
       // Scratch areas of the right size
-      List<double> C1a,
-      List<double> C2a) {
+      List<double> Ca) {
     // Return m12b = (reduced length)/_b; also calculate s12b = distance/_b,
     // and m0 = coefficient of secular term in expression for reduced length.
     outmask &= _GeodesicMask.OUT_MASK;
     // v to hold compute s12b, m12b, m0, M12, M21;
 
     double m0x = 0, J12 = 0, A1 = 0, A2 = 0;
+    List<double> Cb = List<double>.generate(nC2_ + 1, (index) => 0.0);
     if ((outmask & (_GeodesicMask.DISTANCE | _GeodesicMask.REDUCEDLENGTH | _GeodesicMask.GEODESICSCALE)) != 0) {
       A1 = A1m1f(eps);
-      C1f(eps, C1a);
+      C1f(eps, Ca);
       if ((outmask & (_GeodesicMask.REDUCEDLENGTH | _GeodesicMask.GEODESICSCALE)) != 0) {
         A2 = A2m1f(eps);
-        C2f(eps, C2a);
+        C2f(eps, Cb);
         m0x = A1 - A2;
         A2 = 1 + A2;
       }
       A1 = 1 + A1;
     }
+
+    var out = _LengthsReturn();
     if ((outmask & _GeodesicMask.DISTANCE) != 0) {
-      double B1 = SinCosSeries(true, ssig2, csig2, C1a) - SinCosSeries(true, ssig1, csig1, C1a);
+      double B1 = SinCosSeries(true, ssig2, csig2, Ca, nC1_) -
+          SinCosSeries(true, ssig1, csig1, Ca, nC1_);
       // Missing a factor of _b
-      v._s12b = A1 * (sig12 + B1);
+      out._s12b = A1 * (sig12 + B1);
       if ((outmask & (_GeodesicMask.REDUCEDLENGTH | _GeodesicMask.GEODESICSCALE)) != 0) {
-        double B2 = SinCosSeries(true, ssig2, csig2, C2a) - SinCosSeries(true, ssig1, csig1, C2a);
+        double B2 = SinCosSeries(true, ssig2, csig2, Cb, nC2_) -
+            SinCosSeries(true, ssig1, csig1, Cb, nC2_);
         J12 = m0x * sig12 + (A1 * B1 - A2 * B2);
       }
     } else if ((outmask & (_GeodesicMask.REDUCEDLENGTH | _GeodesicMask.GEODESICSCALE)) != 0) {
       // Assume here that nC1_ >= nC2_
       for (int l = 1; l <= nC2_; ++l) {
-        C2a[l] = A1 * C1a[l] - A2 * C2a[l];
+        Cb[l] = A1 * Ca[l] - A2 * Cb[l];
       }
-      J12 = m0x * sig12 + (SinCosSeries(true, ssig2, csig2, C2a) - SinCosSeries(true, ssig1, csig1, C2a));
+      J12 = m0x * sig12 + (SinCosSeries(true, ssig2, csig2, Cb, nC2_) -
+                           SinCosSeries(true, ssig1, csig1, Cb, nC2_));
     }
     if ((outmask & _GeodesicMask.REDUCEDLENGTH) != 0) {
-      v._m0 = m0x;
+      out._m0 = m0x;
       // Missing a factor of _b.
       // Add parens around (csig1 * ssig2) and (ssig1 * csig2) to ensure
       // accurate cancellation in the case of coincident points.
-      v._m12b = dn2 * (csig1 * ssig2) - dn1 * (ssig1 * csig2) - csig1 * csig2 * J12;
+      out._m12b = dn2 * (csig1 * ssig2) - dn1 * (ssig1 * csig2) -
+          csig1 * csig2 * J12;
     }
     if ((outmask & _GeodesicMask.GEODESICSCALE) != 0) {
       double csig12 = csig1 * csig2 + ssig1 * ssig2;
       double t = ep2 * (cbet1 - cbet2) * (cbet1 + cbet2) / (dn1 + dn2);
-      v._M12 = csig12 + (t * ssig2 - csig2 * J12) * ssig1 / dn1;
-      v._M21 = csig12 - (t * ssig1 - csig1 * J12) * ssig2 / dn2;
+      out._M12 = csig12 + (t * ssig2 - csig2 * J12) * ssig1 / dn1;
+      out._M21 = csig12 - (t * ssig1 - csig1 * J12) * ssig2 / dn2;
     }
+
+    return out;
   }
 
   static double _Astroid(double x, double y) {
@@ -991,7 +953,7 @@ class _Geodesic {
     return k;
   }
 
-  _InverseStartV _InverseStart(
+  _InverseStartReturn _InverseStart(
       double sbet1,
       double cbet1,
       double dn1,
@@ -1002,54 +964,52 @@ class _Geodesic {
       double slam12,
       double clam12,
       // Scratch areas of the right size
-      List<double> C1a,
-      List<double> C2a,
-      _Pair p,
-      _LengthsV v) {
+      List<double> Ca) {
     // Return a starting point for Newton's method in _salp1 and _calp1 (function
     // value is -1).  If Newton's method doesn't need to be used, return also
     // salp2 and calp2 and function value is sig12.
 
     // To hold sig12, _salp1, _calp1, salp2, calp2, dnm.
-    _InverseStartV w = _InverseStartV();
-    w._sig12 = -1; // Return value
+    _InverseStartReturn out = _InverseStartReturn();
+    out._sig12 = -1; // Return value
     double
         // bet12 = bet2 - bet1 in [0, pi); bet12a = bet2 + bet1 in (-pi, 0]
         sbet12 = sbet2 * cbet1 - cbet2 * sbet1,
         cbet12 = cbet2 * cbet1 + sbet2 * sbet1;
     double sbet12a = sbet2 * cbet1 + cbet2 * sbet1;
-    bool shortline = cbet12 >= 0 && sbet12 < 0.5 && cbet2 * lam12 < 0.5;
+    bool shortline = cbet12 >= 0 && sbet12 < 0.5 &&
+        cbet2 * lam12 < 0.5;
     double somg12, comg12;
     if (shortline) {
       double sbetm2 = _GeoMath.sq(sbet1 + sbet2);
       // sin((bet1+bet2)/2)^2
       // =  (sbet1 + sbet2)^2 / ((sbet1 + sbet2)^2 + (cbet1 + cbet2)^2)
       sbetm2 /= sbetm2 + _GeoMath.sq(cbet1 + cbet2);
-      w._dnm = sqrt(1 + ep2 * sbetm2);
-      double omg12 = lam12 / (f1 * w._dnm!);
-      somg12 = sin(omg12);
-      comg12 = cos(omg12);
+      out._dnm = sqrt(1 + ep2 * sbetm2);
+      double omg12 = lam12 / (f1 * out._dnm!);
+      somg12 = sin(omg12); comg12 = cos(omg12);
     } else {
-      somg12 = slam12;
-      comg12 = clam12;
+      somg12 = slam12; comg12 = clam12;
     }
 
-    w._salp1 = cbet2 * somg12;
-    w._calp1 = comg12 >= 0
+    out._salp1 = cbet2 * somg12;
+    out._calp1 = comg12 >= 0
         ? sbet12 + cbet2 * sbet1 * _GeoMath.sq(somg12) / (1 + comg12)
         : sbet12a - cbet2 * sbet1 * _GeoMath.sq(somg12) / (1 - comg12);
 
-    double ssig12 = _hypot(w._salp1, w._calp1), csig12 = sbet1 * sbet2 + cbet1 * cbet2 * comg12;
+    double ssig12 = _hypot(out._salp1, out._calp1), csig12 = sbet1 * sbet2 + cbet1 * cbet2 * comg12;
 
+    var p = _Pair();
     if (shortline && ssig12 < _etol2) {
       // really short lines
-      w._salp2 = cbet1 * somg12;
-      w._calp2 = sbet12 - cbet1 * sbet2 * (comg12 >= 0 ? _GeoMath.sq(somg12) / (1 + comg12) : 1 - comg12);
-      _GeoMath.norm(p, w._salp2!, w._calp2!);
-      w._salp2 = p.first;
-      w._calp2 = p.second;
+      out._salp2 = cbet1 * somg12;
+      out._calp2 = sbet12 - cbet1 * sbet2 *
+          (comg12 >= 0 ? _GeoMath.sq(somg12) / (1 + comg12) : 1 - comg12);
+      _GeoMath.norm(out._salp2!, out._calp2!, p);
+      out._salp2 = p.first;
+      out._calp2 = p.second;
       // Set return value
-      w._sig12 = atan2(ssig12, csig12);
+      out._sig12 = atan2(ssig12, csig12);
     } else if (_n.abs() > 0.1 || // Skip astroid calc if too eccentric
         csig12 >= 0 ||
         ssig12 >= 6 * _n.abs() * _GeoMath.pi() * _GeoMath.sq(cbet1)) {
@@ -1074,20 +1034,20 @@ class _Geodesic {
 
         x = lam12x / lamscale;
         y = sbet12a / betscale;
-      } else {
-        // _f < 0
+      } else { // _f < 0
         // x = dlat, y = dlong
         double cbet12a = cbet2 * cbet1 - sbet2 * sbet1, bet12a = atan2(sbet12a, cbet12a);
         double m12b, m0;
         // In the case of lon12 = 180, this repeats a calculation made in
         // Inverse.
-        _Lengths(v, _n, _GeoMath.pi() + bet12a, sbet1, -cbet1, dn1, sbet2, cbet2, dn2, cbet1, cbet2,
-            _GeodesicMask.REDUCEDLENGTH, C1a, C2a);
-        m12b = v._m12b;
-        m0 = v._m0;
-
+        var data = _Lengths(_n, _GeoMath.pi() + bet12a,
+            sbet1, -cbet1, dn1, sbet2, cbet2, dn2,
+            cbet1, cbet2,
+            _GeodesicMask.REDUCEDLENGTH, Ca);
+        m12b = data._m12b; m0 = data._m0;
         x = -1 + m12b / (cbet1 * cbet2 * m0 * _GeoMath.pi());
-        betscale = x < -0.01 ? sbet12a / x : -f * _GeoMath.sq(cbet1) * _GeoMath.pi();
+        betscale = x < -0.01 ? sbet12a / x :
+          -f * _GeoMath.sq(cbet1) * _GeoMath.pi();
         lamscale = betscale / cbet1;
         y = lam12x / lamscale;
       }
@@ -1095,11 +1055,11 @@ class _Geodesic {
       if (y > -_tol1_ && x > -1 - _xthresh_) {
         // strip near cut
         if (f >= 0) {
-          w._salp1 = min(1.0, -x);
-          w._calp1 = -sqrt(1 - _GeoMath.sq(w._salp1));
+          out._salp1 = min(1.0, -x);
+          out._calp1 = -sqrt(1 - _GeoMath.sq(out._salp1));
         } else {
-          w._calp1 = max(x > -_tol1_ ? 0.0 : -1.0, x);
-          w._salp1 = sqrt(1 - _GeoMath.sq(w._calp1));
+          out._calp1 = max(x > -_tol1_ ? 0.0 : -1.0, x);
+          out._salp1 = sqrt(1 - _GeoMath.sq(out._calp1));
         }
       } else {
         // Estimate alp1, by solving the astroid problem.
@@ -1137,118 +1097,114 @@ class _Geodesic {
         //
         // Because omg12 is near pi, estimate work with omg12a = pi - omg12
         double k = _Astroid(x, y);
-        double omg12a = lamscale * (f >= 0 ? -x * k / (1 + k) : -y * (1 + k) / k);
+        double
+          omg12a = lamscale * (f >= 0 ? -x * k / (1 + k) : -y * (1 + k) / k);
         somg12 = sin(omg12a);
         comg12 = -cos(omg12a);
         // Update spherical estimate of alp1 using omg12 instead of lam12
-        w._salp1 = cbet2 * somg12;
-        w._calp1 = sbet12a - cbet2 * sbet1 * _GeoMath.sq(somg12) / (1 - comg12);
+        out._salp1 = cbet2 * somg12;
+        out._calp1 = sbet12a - cbet2 * sbet1 * _GeoMath.sq(somg12) / (1 - comg12);
       }
     }
     // Sanity check on starting guess.  Backwards check allows NaN through.
-    if (!(w._salp1 <= 0)) {
-      _GeoMath.norm(p, w._salp1, w._calp1);
-      w._salp1 = p.first;
-      w._calp1 = p.second;
+    if (!(out._salp1 <= 0)) {
+      _GeoMath.norm(out._salp1, out._calp1, p);
+      out._salp1 = p.first;
+      out._calp1 = p.second;
     } else {
-      w._salp1 = 1;
-      w._calp1 = 0;
+      out._salp1 = 1;
+      out._calp1 = 0;
     }
-    return w;
+    return out;
   }
 
-  void _Lambda12(
-      _Lambda12V w,
-      double sbet1,
-      double cbet1,
-      double dn1,
-      double sbet2,
-      double cbet2,
-      double dn2,
-      double _salp1,
-      double _calp1,
-      double slam120,
-      double clam120,
-      bool diffp,
-      // Scratch areas of the right size
-      List<double> C1a,
-      List<double> C2a,
-      List<double> C3a,
-      _Pair p,
-      _LengthsV v) {
+  _Lambda12Return _Lambda12(double sbet1, double cbet1, double dn1,
+                            double sbet2, double cbet2, double dn2,
+                            double salp1, double calp1,
+                            double slam120, double clam120,
+                            bool diffp,
+                            // Scratch area of the right size
+                            List<double> Ca) {
     // Object to hold lam12, salp2, calp2, sig12, ssig1, csig1, ssig2, csig2,
     // eps, domg12, dlam12;
 
-    if (sbet1 == 0 && _calp1 == 0) {
-      _calp1 = -tiny_;
+    if (sbet1 == 0 && calp1 == 0) {
+      // Break degeneracy of equatorial line.  This case has already been
+      // handled.
+      calp1 = -tiny_;
     }
 
     double
         // sin(alp1) * cos(bet1) = sin(alp0)
-        salp0 = _salp1 * cbet1,
-        calp0 = _hypot(_calp1, _salp1 * sbet1); // calp0 > 0
+        salp0 = salp1 * cbet1,
+        calp0 = _hypot(calp1, salp1 * sbet1); // calp0 > 0
 
     double somg1, comg1, somg2, comg2, somg12, comg12;
     // tan(bet1) = tan(sig1) * cos(alp1)
     // tan(omg1) = sin(alp0) * tan(sig1) = tan(omg1)=tan(alp1)*sin(bet1)
-    w.ssig1 = sbet1;
-    somg1 = salp0 * sbet1;
-    w.csig1 = comg1 = _calp1 * cbet1;
-    _GeoMath.norm(p, w.ssig1, w.csig1);
-    w.ssig1 = p.first;
-    w.csig1 = p.second;
+    _Lambda12Return out = _Lambda12Return();
+    out.ssig1 = sbet1; somg1 = salp0 * sbet1;
+    out.csig1 = comg1 = calp1 * cbet1;
+    _Pair p = _Pair();
+    _GeoMath.norm(out.ssig1, out.csig1, p);
+    out.ssig1 = p.first; out.csig1 = p.second;
     // GeoMath.norm(somg1, comg1); -- don't need to normalize!
 
     // Enforce symmetries in the case abs(bet2) = -bet1.  Need to be careful
     // about this case, since this can yield singularities in the Newton
     // iteration.
     // sin(alp2) * cos(bet2) = sin(alp0)
-    w.salp2 = cbet2 != cbet1 ? salp0 / cbet2 : _salp1;
+    out.salp2 = cbet2 != cbet1 ? salp0 / cbet2 : salp1;
     // calp2 = sqrt(1 - sq(salp2))
     //       = sqrt(sq(calp0) - sq(sbet2)) / cbet2
     // and subst for calp0 and rearrange to give (choose positive sqrt
     // to give alp2 in [0, pi/2]).
-    w.calp2 = cbet2 != cbet1 || sbet2.abs() != -sbet1
-        ? sqrt(_GeoMath.sq(_calp1 * cbet1) +
-                (cbet1 < -sbet1 ? (cbet2 - cbet1) * (cbet1 + cbet2) : (sbet1 - sbet2) * (sbet1 + sbet2))) /
-            cbet2
-        : _calp1.abs();
+    out.calp2 = cbet2 != cbet1 || sbet2.abs() != -sbet1 ?
+        sqrt(_GeoMath.sq(calp1 * cbet1) +
+             (cbet1 < -sbet1 ?
+              (cbet2 - cbet1) * (cbet1 + cbet2) :
+              (sbet1 - sbet2) * (sbet1 + sbet2))) / cbet2 :
+        calp1.abs();
     // tan(bet2) = tan(sig2) * cos(alp2)
     // tan(omg2) = sin(alp0) * tan(sig2).
-    w.ssig2 = sbet2;
-    somg2 = salp0 * sbet2;
-    w.csig2 = comg2 = w.calp2 * cbet2;
-    _GeoMath.norm(p, w.ssig2, w.csig2);
-    w.ssig2 = p.first;
-    w.csig2 = p.second;
+    out.ssig2 = sbet2; somg2 = salp0 * sbet2;
+    out.csig2 = comg2 = out.calp2 * cbet2;
+    _GeoMath.norm(out.ssig2, out.csig2, p);
+    out.ssig2 = p.first; out.csig2 = p.second;
     // GeoMath.norm(somg2, comg2); -- don't need to normalize!
 
     // sig12 = sig2 - sig1, limit to [0, pi]
-    w.sig12 = atan2(max(0.0, w.csig1 * w.ssig2 - w.ssig1 * w.csig2), w.csig1 * w.csig2 + w.ssig1 * w.ssig2);
+    out.sig12 = atan2(max(0.0, out.csig1 * out.ssig2 - out.ssig1 * out.csig2) + 0.0,
+                               out.csig1 * out.csig2 + out.ssig1 * out.ssig2);
 
     // omg12 = omg2 - omg1, limit to [0, pi]
-    somg12 = max(0.0, comg1 * somg2 - somg1 * comg2);
-    comg12 = comg1 * comg2 + somg1 * somg2;
+    somg12 = max(0.0, comg1 * somg2 - somg1 * comg2) + 0.0;
+    comg12 =          comg1 * comg2 + somg1 * somg2;
     // eta = omg12 - lam120
-    double eta = atan2(somg12 * clam120 - comg12 * slam120, comg12 * clam120 + somg12 * slam120);
+    double eta = atan2(somg12 * clam120 - comg12 * slam120,
+                       comg12 * clam120 + somg12 * slam120);
     double B312;
     double k2 = _GeoMath.sq(calp0) * ep2;
-    w.eps = k2 / (2 * (1 + sqrt(1 + k2)) + k2);
-    C3f(w.eps, C3a);
-    B312 = (SinCosSeries(true, w.ssig2, w.csig2, C3a) - SinCosSeries(true, w.ssig1, w.csig1, C3a));
-    w.domg12 = -f * A3f(w.eps) * salp0 * (w.sig12 + B312);
-    w.lam12 = eta + w.domg12;
+    out.eps = k2 / (2 * (1 + sqrt(1 + k2)) + k2);
+    C3f(out.eps, Ca);
+    B312 = (SinCosSeries(true, out.ssig2, out.csig2, Ca, nC3_-1) -
+            SinCosSeries(true, out.ssig1, out.csig1, Ca, nC3_ - 1));
+    out.domg12 = -f * A3f(out.eps) * salp0 * (out.sig12 + B312);
+    out.lam12 = eta + out.domg12;
 
     if (diffp) {
-      if (w.calp2 == 0) {
-        w.dlam12 = -2 * f1 * dn1 / sbet1;
+      if (out.calp2 == 0) {
+        out.dlam12 = -2 * f1 * dn1 / sbet1;
       } else {
-        _Lengths(v, w.eps, w.sig12, w.ssig1, w.csig1, dn1, w.ssig2, w.csig2, dn2, cbet1, cbet2,
-            _GeodesicMask.REDUCEDLENGTH, C1a, C2a);
-        w.dlam12 = v._m12b;
-        w.dlam12 *= f1 / (w.calp2 * cbet2);
+        var v = _Lengths(out.eps, out.sig12, out.ssig1, out.csig1, dn1, out.ssig2, out.csig2, dn2,
+                         cbet1, cbet2, _GeodesicMask.REDUCEDLENGTH,
+                         Ca);
+        out.dlam12 = v._m12b;
+        out.dlam12 *= f1 / (out.calp2 * cbet2);
       }
     }
+
+    return out;
   }
 
   double A3f(double eps) {
@@ -1535,15 +1491,16 @@ class _InverseData {
   }
 }
 
-class _LengthsV {
+class _LengthsReturn {
+  // ignore: unused_field
   late double _s12b, _m12b, _m0, _M12, _M21;
 }
 
-class _Lambda12V {
+class _Lambda12Return {
   late double lam12, salp2, calp2, sig12, ssig1, csig1, ssig2, csig2, eps, domg12, dlam12;
 }
 
-class _InverseStartV {
+class _InverseStartReturn {
   late double _sig12, _salp1, _calp1;
   // Only updated if return val >= 0
   double? _salp2, _calp2;

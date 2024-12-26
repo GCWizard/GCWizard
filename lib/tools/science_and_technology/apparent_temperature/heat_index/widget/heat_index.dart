@@ -99,7 +99,6 @@ class _HeatIndexState extends State<HeatIndex> {
           ),
           Expanded(
             flex: 2,
-            //child: Text(_currentOutputUnit.symbol),
             child: Container(
                 margin: const EdgeInsets.only(left: DEFAULT_MARGIN, right: 2 * DEFAULT_MARGIN),
                 child: GCWUnitDropDown(
@@ -112,7 +111,8 @@ class _HeatIndexState extends State<HeatIndex> {
                       _currentOutputUnit = value;
                     });
                   },
-                )),
+                )
+            ),
           ),
           Expanded(
             flex: 2,

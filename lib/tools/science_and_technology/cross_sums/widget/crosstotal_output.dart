@@ -3,6 +3,7 @@ import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/tools/science_and_technology/cross_sums/logic/crosstotals.dart';
+import 'package:intl/intl.dart';
 
 enum CROSSTOTAL_INPUT_TYPE { LETTERS, NUMBERS }
 
@@ -52,7 +53,8 @@ class _CrosstotalOutputState extends State<CrosstotalOutput> {
     var crosstotalValuesOthers = <List<Object?>>[];
     if (widget.inputType == CROSSTOTAL_INPUT_TYPE.NUMBERS && !widget.suppressSums) {
       crosstotalValuesOthers = [
-        [i18n(context, 'crosstotal_count_numbers'), countElements(values)]
+        [i18n(context, 'crosstotal_count_numbers'), countElements(values)],
+        [i18n(context, 'crosstotal_average'), NumberFormat('0.######').format(average(values))],
       ];
     } else if (!widget.suppressSums) {
       crosstotalValuesOthers.addAll([
