@@ -45,6 +45,8 @@ OutputBallistics calculateBallisticsStokes(double velocity, double angle, double
   double maxHeight = 0.0;
   double y = startHeight;
 
+  //TO DO calculation
+
   return OutputBallistics(Time: time, Height: maxHeight, Distance: distance, maxSpeed: maxSpeed);
 }
 
