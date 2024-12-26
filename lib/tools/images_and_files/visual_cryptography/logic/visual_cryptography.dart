@@ -10,8 +10,8 @@ import 'package:gc_wizard/utils/image_utils.dart';
 import 'package:image/image.dart' as Image;
 import 'package:tuple/tuple.dart';
 
-var _whiteColor = Image.ColorRgb8(Colors.white.r.round(), Colors.white.g.round(), Colors.white.b.round());
-var _blackColor = Image.ColorRgb8(Colors.black.r.round(), Colors.black.g.round(), Colors.black.b.round());
+var _whiteColor = Image.ColorRgb8(Colors.white.red.round(), Colors.white.green.round(), Colors.white.blue.round());
+var _blackColor = Image.ColorRgb8(Colors.black.red.round(), Colors.black.green.round(), Colors.black.blue.round());
 
 Future<Uint8List?> decodeImagesAsync(GCWAsyncExecuterParameters? jobData) async {
   if (jobData?.parameters is! Tuple4<Uint8List, Uint8List, int, int>) return null;

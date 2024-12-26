@@ -131,12 +131,12 @@ MaterialColor _generateMaterialColor(Color color) {
 int _tintValue(double value, double factor) => max(0, min((value + ((255 - value) * factor)).round(), 255));
 
 Color _tintColor(Color color, double factor) =>
-    Color.fromRGBO(_tintValue(color.r, factor), _tintValue(color.g, factor), _tintValue(color.b, factor), 1);
+    Color.fromRGBO(_tintValue(color.red.toDouble(), factor), _tintValue(color.green.toDouble(), factor), _tintValue(color.blue.toDouble(), factor), 1);
 
 int _shadeValue(double value, double factor) => max(0, min((value - (value * factor)).round(), 255));
 
 Color _shadeColor(Color color, double factor) => Color.fromRGBO(
-    _shadeValue(color.r, factor), _shadeValue(color.g, factor), _shadeValue(color.b, factor), 1);
+    _shadeValue(color.red.toDouble(), factor), _shadeValue(color.green.toDouble(), factor), _shadeValue(color.blue.toDouble(), factor), 1);
 
 double defaultFontSize() {
   var fontSize = Prefs.getDouble(PREFERENCE_THEME_FONT_SIZE);
