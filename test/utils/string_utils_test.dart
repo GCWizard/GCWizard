@@ -434,4 +434,28 @@ void main() {
       });
     }
   });
+
+  group("StringUtils.hasLetters:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '', 'expectedOutput' : false},
+      {'input' : '123', 'expectedOutput' : false},
+      {'input' : '123a123', 'expectedOutput' : true},
+      {'input' : '123.1', 'expectedOutput' : false},
+      {'input' : '123,1', 'expectedOutput' : false},
+      {'input' : ' ', 'expectedOutput' : false},
+      {'input' : 'ABC', 'expectedOutput' : true},
+      {'input' : 'AbC', 'expectedOutput' : true},
+      {'input' : '\'', 'expectedOutput' : false},
+      {'input' : 'ä', 'expectedOutput' : true},
+      {'input' : 'á', 'expectedOutput' : true},
+      {'input' : 'ß', 'expectedOutput' : true},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}', () {
+        var _actual = hasLetters(elem['input'] as String);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
 }
