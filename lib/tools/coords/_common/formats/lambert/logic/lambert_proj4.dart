@@ -32,8 +32,8 @@ LatLng __lambertProj4ToLatLon(LambertCoordinate lambert, String formatDefinition
   final wgs = Projection.WGS84;
   var projection = Projection.parse(formatDefinition);
 
-  var coord = wgs.transform(projection, Point(x: lambert.easting, y: lambert.northing));
-  return LatLng(coord.x, coord.y);
+  var coord = projection.transform(wgs, Point(x: lambert.easting, y: lambert.northing));
+  return LatLng(coord.y, coord.x);
 }
 
 LambertCoordinate __latLonToLambertProj4(LatLng coord, String formatDefinition, CoordinateFormatKey subtype) {
