@@ -3,29 +3,69 @@
 import 'dart:math';
 
 import 'package:gc_wizard/tools/coords/_common/formats/lambert/logic/lambert.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
-// import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart' as defaultCoord;
+import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:proj4dart/proj4dart.dart';
+
+const dfciGridKey = 'coords_dfcigrid';
+
+final DfciGridFormatDefinition = CoordinateFormatDefinition(
+    CoordinateFormatKey.DUTCH_GRID, dfciGridKey, dfciGridKey, DfciGridCoordinate.parse, DfciGridCoordinate(''));
+
+class DfciGridCoordinate extends BaseCoordinate {
+  @override
+  CoordinateFormat get format => CoordinateFormat(CoordinateFormatKey.DFCI_GRID);
+  String text;
+
+  DfciGridCoordinate(this.text);
+
+  @override
+  LatLng? toLatLng() {
+    return _parseDFCI(text);
+  }
+
+  static DfciGridCoordinate fromLatLon(LatLng coord) {
+    return _latLonToDfciGrid(coord);
+  }
+
+  static DfciGridCoordinate? parse(String input) {
+    return _parseDfciGrid(input);
+  }
+
+  @override
+  String toString([int? precision]) {
+    return text;
+  }
+}
+
+DfciGridCoordinate _latLonToDfciGrid(LatLng coord) {
+  var dfciGrid = _validDFCICoord(coord) ? __latLonToDfciGrid(coord, null) : '';
+  return DfciGridCoordinate(dfciGrid);
+}
+
+DfciGridCoordinate? _parseDfciGrid(String input) {
+ var coord = _parseDFCI(input);
+ if (coord == null) {
+   return null;
+ } else {
+   var dfci = DfciGridCoordinate(input);
+   dfci.latitude = coord.latitude;
+   dfci.longitude = coord.longitude;
+   return dfci;
+ }
+
+}
 
 /** Convert coordinate to French DFCI grid
  * @param {ol/coordinate} coord
  * @param {number} level [0-3]
- * @param {ol/proj/Projection} projection of the coord, default EPSG:27572
  * @return {String} the DFCI index
  */
-String _latLonToDFCI(LatLng coord, int? level, String? projection) {
+String __latLonToDfciGrid(LatLng coord, int? level) {
   level ??= 3;
-  // if (projection != null) {
-  //   if (Proj4.get('EPSG:27572') == null) {
-  //     // Add Lambert IIe proj
-  //     if (Proj4.defs["EPSG:27572"] == null) {
-  //       Proj4.defs["EPSG:27572"] = "+proj=lcc +lat_1=46.8 +lat_0=46.8 +lon_0=0 +k_0=0.99987742 +x_0=600000 +y_0=2200000 +a=6378249.2 +b=6356515 +towgs84=-168,-60,320,0,0,0,0 +pm=paris +units=m +no_defs";
-  //     }
-  //     coord = Proj4.transform(coord, projection, 'EPSG:27572');
-  //   }
-  // }
+
   var lambert = LambertCoordinate.fromLatLon(coord, CoordinateFormatKey.LAMBERT_NTF, _dcfiGridEllipsoid());
   var x = lambert.easting; //???
   var y = lambert.northing;  //???
@@ -85,7 +125,7 @@ String _latLonToDFCI(LatLng coord, int? level, String? projection) {
  * @param {ol/proj/Projection} projection result projection, default EPSG:27572
  * @return {ol/coordinate} coord
  */
-LatLng? parseDFCI(String index, String? projection) {
+LatLng? _parseDFCI(String index) {
   List<double>? coord;
   if (!_validDFCI(index)) return null;
 
@@ -138,18 +178,6 @@ LatLng? parseDFCI(String index, String? projection) {
     }
   }
 
-  // // Convert ?
-  // if (projection != null) {
-  //   if (!Proj4.getDef('EPSG:27572')) {
-  //     // Add Lambert IIe proj
-  //     if (Proj4.defs["EPSG:27572"] == null) {
-  //       Proj4.defs["EPSG:27572"] = "+proj=lcc +lat_1=46.8 +lat_0=46.8 +lon_0=0 +k_0=0.99987742 +x_0=600000 +y_0=2200000 +a=6378249.2 +b=6356515 +towgs84=-168,-60,320,0,0,0,0 +pm=paris +units=m +no_defs";
-  //     }
-  //     Proj4.register();
-  //   }
-  //   coord = Proj4.transform(coord!, 'EPSG:27572', projection);
-  // }
-
   return LambertCoordinate(coord[0], coord[1], CoordinateFormatKey.LAMBERT_NTF).toLatLng(ells: _dcfiGridEllipsoid());
 }
 
@@ -185,7 +213,7 @@ bool _validDFCI(String index) {
  * @param {ol/proj/Projection} projection result projection, default EPSG:27572
  * @return {boolean}
  */
-bool olCoordinateValidDFCICoord(LatLng coord) {
+bool _validDFCICoord(LatLng coord) {
   // if (projection != null) {
   //   if (!Proj4.getProjection('EPSG:27572')) {
   //     // Add Lambert IIe proj
@@ -197,13 +225,14 @@ bool olCoordinateValidDFCICoord(LatLng coord) {
   //   coord = Proj4.transform(coord, projection, 'EPSG:27572');
   // }
 
-  var lambert = LambertCoordinate.fromLatLon(coord, CoordinateFormatKey.LAMBERT93, _dcfiGridEllipsoid());
+  var lambert = LambertCoordinate.fromLatLon(coord, CoordinateFormatKey.LAMBERT_NTF, _dcfiGridEllipsoid());
 
   // Test extent
   if (lambert.easting < 0 || lambert.easting > 1200000) return false;
   if (lambert.northing < 1600000 || lambert.northing > 2700000) return false;
   return true;
 }
+
 Ellipsoid _dcfiGridEllipsoid() {
   return getEllipsoidByName('Clarke 1880 IGN')!;
 }

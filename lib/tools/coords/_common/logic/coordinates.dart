@@ -1,5 +1,6 @@
 import 'package:gc_wizard/tools/coords/_common/formats/bosch/logic/bosch.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dec/logic/dec.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/dfcigrid/logic/dfcigrid.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dmm/logic/dmm.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dms/logic/dms.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dutchgrid/logic/dutchgrid.dart';
@@ -119,6 +120,8 @@ BaseCoordinate buildCoordinate(CoordinateFormat format, LatLng coords, [Ellipsoi
       return SwissGridPlusCoordinate.fromLatLon(coords, ellipsoid);
     case CoordinateFormatKey.DUTCH_GRID:
       return DutchGridCoordinate.fromLatLon(coords);
+    case CoordinateFormatKey.DFCI_GRID:
+      return DfciGridCoordinate.fromLatLon(coords);
     case CoordinateFormatKey.GAUSS_KRUEGER:
       return GaussKruegerCoordinate.fromLatLon(coords, format.subtype!, ellipsoid);
     case CoordinateFormatKey.LAMBERT:
