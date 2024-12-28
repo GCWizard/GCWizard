@@ -15,7 +15,7 @@ import 'package:proj4dart/proj4dart.dart';
  * @param {ol/proj/Projection} projection of the coord, default EPSG:27572
  * @return {String} the DFCI index
  */
-String olCoordinateToDFCI(LatLng coord, int? level, String? projection) {
+String _latLonToDFCI(LatLng coord, int? level, String? projection) {
   level ??= 3;
   // if (projection != null) {
   //   if (Proj4.get('EPSG:27572') == null) {
