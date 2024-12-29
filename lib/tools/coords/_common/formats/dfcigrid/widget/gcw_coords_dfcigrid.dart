@@ -78,7 +78,7 @@ class _GCWCoords_GCWCoordsDfciGridState extends State<_GCWCoordsDfciGrid> {
 
   void _setCurrentValueAndEmitOnChange() {
     try {
-      widget.onChanged(Geo3x3Coordinate.parse(_currentCoord));
+      widget.onChanged(DfciGridCoordinate.parse(_currentCoord));
     } catch (e) {}
   }
 }
