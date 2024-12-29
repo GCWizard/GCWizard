@@ -12,7 +12,7 @@ import 'package:latlong2/latlong.dart';
 const dfciGridKey = 'coords_dfcigrid';
 
 final DfciGridFormatDefinition = CoordinateFormatDefinition(
-    CoordinateFormatKey.DUTCH_GRID, dfciGridKey, dfciGridKey, DfciGridCoordinate.parse, DfciGridCoordinate(''));
+    CoordinateFormatKey.DFCI_GRID, dfciGridKey, dfciGridKey, DfciGridCoordinate.parse, DfciGridCoordinate(''));
 
 class DfciGridCoordinate extends BaseCoordinate {
   @override
@@ -66,7 +66,7 @@ DfciGridCoordinate? _parseDfciGrid(String input) {
 String __latLonToDfciGrid(LatLng coord, int? level) {
   level ??= 3;
 
-  var lambert = LambertCoordinate.fromLatLon(coord, CoordinateFormatKey.LAMBERT_NTF, _dcfiGridEllipsoid());
+  var lambert = LambertCoordinate.fromLatLon(coord, CoordinateFormatKey.LAMBERT_EPSG27572, _dcfiGridEllipsoid());
   var x = lambert.easting; //???
   var y = lambert.northing;  //???
   var s = '';
@@ -127,6 +127,7 @@ String __latLonToDfciGrid(LatLng coord, int? level) {
  */
 LatLng? _parseDFCI(String index) {
   List<double>? coord;
+  index = index.toUpperCase();
   if (!_validDFCI(index)) return null;
 
   // Level 0
@@ -178,7 +179,7 @@ LatLng? _parseDFCI(String index) {
     }
   }
 
-  return LambertCoordinate(coord[0], coord[1], CoordinateFormatKey.LAMBERT_NTF).toLatLng(ells: _dcfiGridEllipsoid());
+  return LambertCoordinate(coord[0], coord[1], CoordinateFormatKey.LAMBERT_EPSG27572).toLatLng(ells: _dcfiGridEllipsoid());
 }
 
 /** The string is a valid DFCI index
@@ -225,7 +226,7 @@ bool _validDFCICoord(LatLng coord) {
   //   coord = Proj4.transform(coord, projection, 'EPSG:27572');
   // }
 
-  var lambert = LambertCoordinate.fromLatLon(coord, CoordinateFormatKey.LAMBERT_NTF, _dcfiGridEllipsoid());
+  var lambert = LambertCoordinate.fromLatLon(coord, CoordinateFormatKey.LAMBERT_EPSG27572, _dcfiGridEllipsoid());
 
   // Test extent
   if (lambert.easting < 0 || lambert.easting > 1200000) return false;

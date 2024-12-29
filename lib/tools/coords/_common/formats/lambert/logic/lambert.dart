@@ -44,7 +44,7 @@ final LambertFormatDefinition = CoordinateFormatWithSubtypesDefinition(
           LambertCoordinate.parse, _defaultCoordinate),
       CoordinateFormatDefinition(CoordinateFormatKey.LAMBERT93_CC50, 'coords_lambert_93_cc50', 'coords_lambert_93_cc50',
           LambertCoordinate.parse, _defaultCoordinate),
-      CoordinateFormatDefinition(CoordinateFormatKey.LAMBERT_NTF, 'coords_lambert_ntf', 'coords_lambert_ntf',
+      CoordinateFormatDefinition(CoordinateFormatKey.LAMBERT_EPSG27572, 'coords_lambert_ntf', 'coords_lambert_ntf',
           LambertCoordinate.parse, _defaultCoordinate)
     ],
     LambertCoordinate.parse,
@@ -230,8 +230,8 @@ const Map<CoordinateFormatKey, _LambertDefinition> _LambertDefinitions = {
       falseEasting: 1700000.0,
       falseNorthing: 9200000.0),
   //EPSG 27572, NTF (Paris), Lambert zone II
-  CoordinateFormatKey.LAMBERT_NTF: _LambertDefinition(
-      centralMeridian: 2.337229166667, //2.3333333, //2.337229166667, //"2d20'14.025\"E", Paris, //+lon_0=0
+  CoordinateFormatKey.LAMBERT_EPSG27572: _LambertDefinition(
+      centralMeridian: 0, //2.3333333, //2.337229166667, //"2d20'14.025\"E", Paris, //+lon_0=0
       latitudeOfOrigin: 46.8,//+lat_0=46.8
       standardParallel1: 49.833333, //46.8,//+lat_1=46.8
       standardParallel2: 51.8333333, //50.75,
