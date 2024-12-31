@@ -26,7 +26,8 @@ class _GCWCoordWidgetInfoLambert extends GCWCoordWidgetWithSubtypeInfo {
         const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC47, 'coords_formatconverter_lambert_l93cc47'),
         const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC48, 'coords_formatconverter_lambert_l93cc48'),
         const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC49, 'coords_formatconverter_lambert_l93cc49'),
-        const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC50, 'coords_formatconverter_lambert_l93cc50')
+        const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT93_CC50, 'coords_formatconverter_lambert_l93cc50'),
+        const _GCWCoordWidgetSubtypeInfo(CoordinateFormatKey.LAMBERT_EPSG27572, 'coords_formatconverter_lambert_epsg27572')
       ];
 
   @override

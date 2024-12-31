@@ -45,7 +45,7 @@ const Map<String, String> _ENCODE_FLIP_ROTATE = {
   'B': 'ꓭ',
   'C': 'Ɔ',
   'D': 'ꓷ',
-  'E': 'E',
+  'E': 'Ǝ', //u+018E,
   'F': 'Ⅎ',
   'G': '⅁',
   'H': 'H',

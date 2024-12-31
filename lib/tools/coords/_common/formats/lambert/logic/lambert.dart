@@ -5,6 +5,9 @@ import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:proj4dart/proj4dart.dart';
+
+part 'package:gc_wizard/tools/coords/_common/formats/lambert/logic/lambert_proj4.dart';
 
 const defaultLambertType = CoordinateFormatKey.LAMBERT93;
 const lambertKey = 'coords_lambert';
@@ -40,6 +43,8 @@ final LambertFormatDefinition = CoordinateFormatWithSubtypesDefinition(
       CoordinateFormatDefinition(CoordinateFormatKey.LAMBERT93_CC49, 'coords_lambert_93_cc49', 'coords_lambert_93_cc49',
           LambertCoordinate.parse, _defaultCoordinate),
       CoordinateFormatDefinition(CoordinateFormatKey.LAMBERT93_CC50, 'coords_lambert_93_cc50', 'coords_lambert_93_cc50',
+          LambertCoordinate.parse, _defaultCoordinate),
+      CoordinateFormatDefinition(CoordinateFormatKey.LAMBERT_EPSG27572, 'coords_lambert_ntf', 'coords_lambert_ntf',
           LambertCoordinate.parse, _defaultCoordinate)
     ],
     LambertCoordinate.parse,
@@ -63,7 +68,10 @@ class LambertCoordinate extends BaseCoordinateWithSubtypes {
   }
 
   @override
-  LatLng toLatLng({Ellipsoid? ells}) {
+  LatLng? toLatLng({Ellipsoid? ells}) {
+    var coords = _lambertProj4ToLatLon(this);
+    if (coords != null) return coords;
+
     ells ??= defaultEllipsoid;
     return _lambertToLatLon(this, ells);
   }
@@ -73,6 +81,8 @@ class LambertCoordinate extends BaseCoordinateWithSubtypes {
       throw Exception(_ERROR_INVALID_SUBTYPE);
     }
 
+    var lambert  = _latLonToLambertProj4(coord, subtype);
+    if (lambert != null) return lambert;
     return _latLonToLambert(coord, subtype, ells);
   }
 
@@ -219,6 +229,14 @@ const Map<CoordinateFormatKey, _LambertDefinition> _LambertDefinitions = {
       standardParallel2: 50.75,
       falseEasting: 1700000.0,
       falseNorthing: 9200000.0),
+  //EPSG 27572, NTF (Paris), Lambert zone II
+  CoordinateFormatKey.LAMBERT_EPSG27572: _LambertDefinition(
+      centralMeridian: 0,
+      latitudeOfOrigin: 0,
+      standardParallel1: 0,
+      standardParallel2: 0,
+      falseEasting: 0,
+      falseNorthing: 0),
 };
 
 // https://sourceforge.net/p/geographiclib/discussion/1026621/thread/87c3cb91af/
@@ -254,7 +272,7 @@ LatLng _lambertToLatLon(LambertCoordinate lambert, Ellipsoid ellipsoid) {
   var x = lambert.easting + x0;
   var y = lambert.northing + y0;
 
-  GeographicLibLambertLatLon latLon = lambertCC.Reverse(specificLambert.centralMeridian, x, y);
+  GeographicLibLambertLatLon latLon = lambertCC.reverse(specificLambert.centralMeridian, x, y);
 
   return LatLng(latLon.lat, latLon.lon);
 }

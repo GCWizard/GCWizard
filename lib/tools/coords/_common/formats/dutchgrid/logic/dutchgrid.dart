@@ -26,11 +26,11 @@ class DutchGridCoordinate extends BaseCoordinate {
   }
 
   static DutchGridCoordinate fromLatLon(LatLng coord) {
-    return latLonToDutchGrid(coord);
+    return _latLonToDutchGrid(coord);
   }
 
   static DutchGridCoordinate? parse(String input) {
-    return parseDutchGrid(input);
+    return _parseDutchGrid(input);
   }
 
   @override
@@ -39,7 +39,7 @@ class DutchGridCoordinate extends BaseCoordinate {
   }
 }
 
-DutchGridCoordinate latLonToDutchGrid(LatLng coord) {
+DutchGridCoordinate _latLonToDutchGrid(LatLng coord) {
   var dutchGrid = _rijksdriehoek(coord.longitude, coord.latitude);
   return DutchGridCoordinate(dutchGrid[0], dutchGrid[1]);
 }
@@ -49,7 +49,7 @@ LatLng _dutchGridToLatLon(DutchGridCoordinate dutchGrid) {
   return LatLng(latLon[1], latLon[0]);
 }
 
-DutchGridCoordinate? parseDutchGrid(String input) {
+DutchGridCoordinate? _parseDutchGrid(String input) {
   RegExp regExp = RegExp(r'^\s*([\-\d.]+)(\s*,\s*|\s+)([\-\d.]+)\s*$');
   var matches = regExp.allMatches(input);
   String? _xString = '';

@@ -30,6 +30,7 @@ final List<Map<String, Object?>> inputsToExpectedDEC = [
   {'text': '52.12312 south 20.12312 westen', 'expectedOutput': {'format': CoordinateFormatKey.DEC, 'coordinate': const LatLng(-52.12312, -20.12312)}},
   {'text': '52 n 20 o', 'expectedOutput': {'format': CoordinateFormatKey.DEC, 'coordinate': const LatLng(52, 20)}},
   {'text': '52 s 20 w', 'expectedOutput': {'format': CoordinateFormatKey.DEC, 'coordinate': const LatLng(-52, -20)}},
+  {'text': '53.066435,8.837661', 'expectedOutput': {'format': CoordinateFormatKey.DEC, 'coordinate': const LatLng(53.066435,8.837661)}},
 
   {'text': 'N 52.12312 E 20.12312', 'expectedOutput': {'format': CoordinateFormatKey.DEC, 'coordinate': const LatLng(52.12312, 20.12312)}},
   {'text': 'N 52.12312° E 20.12312°', 'expectedOutput': {'format': CoordinateFormatKey.DEC, 'coordinate': const LatLng(52.12312, 20.12312)}},

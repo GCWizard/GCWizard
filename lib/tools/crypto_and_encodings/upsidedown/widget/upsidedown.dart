@@ -56,7 +56,7 @@ class UpsideDownState extends State<UpsideDown> {
                     _currentInputDecode = text;
                   });
                 },
-              style: TextStyle(fontFamily: 'Noto'),
+              style: const TextStyle(fontFamily: 'Noto'),
               )
             : GCWTextField(
                 controller: _inputControllerEncode,
@@ -65,7 +65,7 @@ class UpsideDownState extends State<UpsideDown> {
                     _currentInputEncode = text;
                   });
                 },
-                style: TextStyle(fontFamily: 'Noto'),
+                style: const TextStyle(fontFamily: 'Noto'),
               ),
         _buildOutput(),
       ],
@@ -90,7 +90,7 @@ class UpsideDownState extends State<UpsideDown> {
             text: i18n(context, 'common_output')),
         GCWOutputText(
           text: result,
-          style: TextStyle(fontFamily: 'Noto'),
+          style: const TextStyle(fontFamily: 'Noto'),
         )
 
     ],

@@ -10,8 +10,8 @@ import 'package:gc_wizard/utils/image_utils.dart';
 import 'package:image/image.dart' as Image;
 import 'package:tuple/tuple.dart';
 
-var _whiteColor = Image.ColorRgb8(Colors.white.red.round(), Colors.white.green.round(), Colors.white.blue.round());
-var _blackColor = Image.ColorRgb8(Colors.black.red.round(), Colors.black.green.round(), Colors.black.blue.round());
+var _whiteColor = convertColor(Colors.white);
+var _blackColor = convertColor(Colors.black);
 
 Future<Uint8List?> decodeImagesAsync(GCWAsyncExecuterParameters? jobData) async {
   if (jobData?.parameters is! Tuple4<Uint8List, Uint8List, int, int>) return null;
@@ -38,7 +38,8 @@ Future<Uint8List?> _decodeImages(Uint8List image1, Uint8List image2, int offsetX
   var pixelSize = _detectPixelSize(_image1, _image2);
   var image = Image.Image(
       width: (max(_image1.width, _image2.width)/ pixelSize).ceil() + offsetX.abs(),
-      height: (max(_image1.height, _image2.height)/ pixelSize).ceil() + offsetY.abs());
+      height: (max(_image1.height, _image2.height)/ pixelSize).ceil() + offsetY.abs(),
+      backgroundColor: _whiteColor);
 
   image = _pasteImage(image, _image1, min(offsetX, 0).abs(), min(offsetY, 0).abs(), false, pixelSize);
   image = _pasteImage(image, _image2, max(offsetX, 0).abs(), max(offsetY, 0).abs(), true, pixelSize);
@@ -365,7 +366,7 @@ List<bool> _pixelsFromKey(bool black, List<bool> keyPixel) {
   return pixels;
 }
 
-void _setPixel(Image.Image image, int offsetX, int offsetY, int pixelSize, Image.ColorRgb8 color) {
+void _setPixel(Image.Image image, int offsetX, int offsetY, int pixelSize, Image.ColorUint8 color) {
   for (var x = 0; x < pixelSize; x++ ) {
     for (var y = 0; y < pixelSize; y++ ) {
       image.setPixel(offsetX * pixelSize + x, offsetY * pixelSize + y, color);
