@@ -85,7 +85,9 @@ void main() {
     {'coord': const LatLng(50.6569, 11.35443333), 'subtype': CoordinateFormatKey.LAMBERT93_CC50, 'text': 'X: 2289536.855368441\nY: 9306026.36549408'},
 
     {'coord': const LatLng(46.89226406700879, 17.888058560281515), 'subtype': CoordinateFormatKey.LAMBERT_EPSG27572, 'text': 'X: 1777310.0568079427\nY: 2327103.8227227707'},
-  ];
+    {'coord': const LatLng(48.456995, -5.0751724), 'subtype': CoordinateFormatKey.LAMBERT_EPSG27572, 'text': 'X: 52447.77468033531\nY: 2410080.8900214895'},
+    {'coord': const LatLng(48.8483837, 2.3959272), 'subtype': CoordinateFormatKey.LAMBERT_EPSG27572, 'text': 'X: 604363.4715967015\nY: 2427783.205113632'},
+   ];
 
   group("Converter.lambert.fromLatLon:", () {
     var ells = Ellipsoid.WGS84;
