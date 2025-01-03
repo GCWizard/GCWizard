@@ -5,10 +5,14 @@ class _FormulaValueTypeKeyValueItem extends GCWKeyValueItem {
     Key? key,
     required KeyValueBase keyValueEntry,
     required bool odd,
+    required bool Function(String)? validateEditedKey,
+    required bool Function(String)? validateEditedValue
   }) : super(
           key: key,
           keyValueEntry: keyValueEntry,
           odd: odd,
+          validateEditedKey: validateEditedKey,
+          validateEditedValue: validateEditedValue
         );
 
   @override
