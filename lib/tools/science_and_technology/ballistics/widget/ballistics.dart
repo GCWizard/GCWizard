@@ -205,7 +205,7 @@ class BallisticsState extends State<Ballistics> {
               child: Container(
                 padding: const EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN, left: DOUBLE_DEFAULT_MARGIN),
                 child: GCWOutputText(
-                  text: NumberFormat('0.0' + '#').format(outputDistanceValue),
+                  text: NumberFormat('0.0' + '#####').format(outputDistanceValue),
                 ),
               ),
             ),
@@ -240,7 +240,7 @@ class BallisticsState extends State<Ballistics> {
               child: Container(
                 padding: const EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN, left: DOUBLE_DEFAULT_MARGIN),
                 child: GCWOutputText(
-                  text: NumberFormat('0.0' + '#').format(outputTimeValue),
+                  text: NumberFormat('0.0' + '#####').format(outputTimeValue),
                 ),
               ),
             ),
@@ -276,7 +276,7 @@ class BallisticsState extends State<Ballistics> {
               child: Container(
                 padding: const EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN, left: DOUBLE_DEFAULT_MARGIN),
                 child: GCWOutputText(
-                  text: NumberFormat('0.0' + '#').format(outputHeightValue),
+                  text: NumberFormat('0.0' + '#####').format(outputHeightValue),
                 ),
               ),
             ),
@@ -312,8 +312,8 @@ class BallisticsState extends State<Ballistics> {
                 padding: const EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN, left: DOUBLE_DEFAULT_MARGIN),
                 child: GCWOutputText(
                   text: (outputMaxSpeedValue > 0)
-                      ? NumberFormat('0.0' + '#').format(outputMaxSpeedValue)
-                      : NumberFormat('0.0' + '#').format(_currentInputVelocity),
+                      ? NumberFormat('0.0' + '#####').format(outputMaxSpeedValue)
+                      : NumberFormat('0.0' + '#####').format(_currentInputVelocity),
                 ),
               ),
             ),

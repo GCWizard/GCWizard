@@ -24,6 +24,7 @@ OutputBallistics calculateBallisticsNoDrag(double velocity, double angle, double
   return OutputBallistics(Time: time, Height: maxHeight, Distance: distance, maxSpeed: maxSpeed);
 }
 
+//TO DO calculation
 OutputBallistics calculateBallisticsStokes(double velocity, double angle, double acceleration, double startHeight,  double mass, double diameter, double drag, double density){
 // https://www.geogebra.org/m/tEypsSwj#material/sPGWKHD2
 
@@ -32,20 +33,20 @@ OutputBallistics calculateBallisticsStokes(double velocity, double angle, double
   angle = angle / 180 * pi;
 
   double XofT(double T){
-    return 0;
+    return mass * velocity * cos(angle) / k1 * (1 - pow(e, -k1 * T / mass));
   }
 
   double YofT(double T){
-    return 0;
+    return startHeight + mass / k1 * (velocity * sin(angle) + mass * acceleration / k1) * (1 - pow(e, -k1 * T / mass)) - mass * acceleration / k1 * T;
   }
 
   double time = 0.0;
   double distance = 0.0;
-  double maxSpeed = 0.0;
-  double maxHeight = 0.0;
   double y = startHeight;
+  double maxHeight = 0.0;
 
-  //TO DO calculation
+
+  double maxSpeed = 0.0;
 
   return OutputBallistics(Time: time, Height: maxHeight, Distance: distance, maxSpeed: maxSpeed);
 }
@@ -53,7 +54,6 @@ OutputBallistics calculateBallisticsStokes(double velocity, double angle, double
 OutputBallistics calculateBallisticsNewton(double V0, double Winkel, double g, double startHeight, double Masse, double a, double cw, double rho) {
 // Newton    https://matheplanet.com/default3.html?call=article.php%3fsid=735&ref=http://www.google.ch/search%3fhlX=de%2526qX=Schiefer+wurf+F+%253D+k+*+v%255E2%2526metaX=
 // https://www.geogebra.org/m/tEypsSwj#material/UCbRqoGb
-// https://www.geogebra.org/m/tEypsSwj#material/sPGWKHD2
 
 // Source code from Thomas KoenigDickbauch" Bornhaupt from his software "Mopsos"
 // procedure TGC_Wurf.OnButtonCalcClick(Sender: TObject);
@@ -191,6 +191,10 @@ OutputBallistics calculateBallisticsNewton(double V0, double Winkel, double g, d
 
   Vyo = V0 * sin(Winkel / 180 * pi);
   Vxo = V0 * cos(Winkel / 180 * pi);
+
+  if (a == 0 || rho == 0 || Masse == 0) {
+    return OutputBallistics(Time: 0.0, Height: 0.0, Distance: 0.0, maxSpeed: 0.0);
+  }
 
   a = a * a / 4 * pi;
   k = rho * cw * a / 2;
