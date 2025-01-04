@@ -633,7 +633,22 @@ void initializeRegistry(BuildContext context) {
       ToolCategory.SCIENCE_AND_TECHNOLOGY
     ], searchKeys: const [
       'ballistics',
-    ]),
+    ],
+        licenses: [
+          ToolLicenseCodeLibrary(
+              context: context,
+              author: 'Thomas "KoenigDickbauch" Bornhaupt',
+              title: 'Weitwurf (Mopsos)',
+              privatePermission: ToolLicensePrivatePermission(
+                context: context,
+                medium: 'e-mail',
+                permissionYear: 2022,
+                permissionMonth: 9,
+                permissionDay: 12,
+              ),
+              sourceUrl: 'https://web.archive.org/web/20240811192840/http://mopsos.net/',
+              licenseType: ToolLicenseType.PRIVATE_PERMISSION)
+        ]),
     GCWTool(
         tool: const BaseSelection(),
         id: 'base_selection',
