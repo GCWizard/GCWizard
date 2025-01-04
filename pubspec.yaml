@@ -371,6 +371,7 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/semaphore/
     - lib/tools/symbol_tables/_common/assets/shadoks/
     - lib/tools/symbol_tables/_common/assets/sheikah/
+    - lib/tools/symbol_tables/_common/assets/sheliak/
     - lib/tools/symbol_tables/_common/assets/shoes/
     - lib/tools/symbol_tables/_common/assets/siemens/
     - lib/tools/symbol_tables/_common/assets/sign/

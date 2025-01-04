@@ -5839,7 +5839,7 @@ void initializeRegistry(BuildContext context) {
           year: 1998,
           sourceUrl:
           'https://web.archive.org/web/20210923113944/https://www.oocities.org/timessquare/4965/sffont.html#dino',
-          licenseType: ToolLicenseType.FREE_TO_USE,
+          licenseType: ToolLicenseType.CHARITYWARE,
           customComment: 'License text in first section of the website')
     ]),
     GCWSymbolTableTool(symbolKey: 'dni', symbolSearchStrings: const [
@@ -7637,6 +7637,18 @@ void initializeRegistry(BuildContext context) {
           sourceUrl: 'https://web.archive.org/web/20200406201743/https://www.zeldaxtreme.com/fonts/',
           licenseType: ToolLicenseType.FREE_TO_USE)
     ]),
+    GCWSymbolTableTool(symbolKey: 'sheliak', symbolSearchStrings: const [
+      'symbol_sheliak',
+    ], licenses: [
+      ToolLicenseFont(
+          context: context,
+          author: 'Mike H. Lee',
+          title: 'Sheliak',
+          sourceUrl: 'https://web.archive.org/web/20230605163745/https://www.oocities.org/enrombell/eng_dir/Index.htm',
+          licenseType: ToolLicenseType.CHARITYWARE,
+          licenseUrl:
+          'https://web.archive.org/web/20250104075709/https://www.oocities.org/timessquare/4965/tfont.html#sheliak')
+    ]),
     GCWSymbolTableTool(symbolKey: 'shoes', symbolSearchStrings: const [
       'symbol_shoes',
     ], licenses: const []),
@@ -7932,7 +7944,7 @@ void initializeRegistry(BuildContext context) {
           author: 'Enrique Mombello',
           title: 'Las Tengwar de Fëanor',
           sourceUrl: 'https://web.archive.org/web/20230605163745/https://www.oocities.org/enrombell/eng_dir/Index.htm',
-          licenseType: ToolLicenseType.FREE_TO_USE,
+          licenseType: ToolLicenseType.CHARITYWARE,
           licenseUrl:
           'https://web.archive.org/web/20220210114601/https://freetengwar.sourceforge.net/links.html#unicode_tengwar_fonts')
     ]),
@@ -7945,7 +7957,7 @@ void initializeRegistry(BuildContext context) {
           author: 'Enrique Mombello',
           title: 'Las Tengwar de Fëanor',
           sourceUrl: 'https://web.archive.org/web/20230605163745/https://www.oocities.org/enrombell/eng_dir/Index.htm',
-          licenseType: ToolLicenseType.FREE_TO_USE,
+          licenseType: ToolLicenseType.CHARITYWARE,
           licenseUrl:
           'https://web.archive.org/web/20220210114601/https://freetengwar.sourceforge.net/links.html#unicode_tengwar_fonts')
     ]),
@@ -7958,7 +7970,7 @@ void initializeRegistry(BuildContext context) {
           author: 'Enrique Mombello',
           title: 'Las Tengwar de Fëanor',
           sourceUrl: 'https://web.archive.org/web/20230605163745/https://www.oocities.org/enrombell/eng_dir/Index.htm',
-          licenseType: ToolLicenseType.FREE_TO_USE,
+          licenseType: ToolLicenseType.CHARITYWARE,
           licenseUrl:
           'https://web.archive.org/web/20220210114601/https://freetengwar.sourceforge.net/links.html#unicode_tengwar_fonts')
     ]),
