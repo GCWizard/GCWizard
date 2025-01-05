@@ -12,7 +12,11 @@ void showExportedFileDialog(BuildContext context, {Widget? contentWidget}) {
       contentWidget == null
           ? null
           : Column(
-              children: [contentWidget],
+              children: [
+                Expanded(
+                  child: contentWidget
+                ),
+              ],
             ),
       [
         GCWDialogButton(

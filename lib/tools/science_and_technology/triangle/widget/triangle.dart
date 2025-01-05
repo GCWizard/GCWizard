@@ -10,7 +10,6 @@ import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
-import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:gc_wizard/tools/science_and_technology/triangle/logic/triangle.dart';
@@ -23,7 +22,6 @@ class Triangle extends StatefulWidget {
 }
 
 class TriangleState extends State<Triangle> {
-  GCWSwitchPosition _currentModeInputData = GCWSwitchPosition.left;
 
   late TextEditingController _AxController;
   late TextEditingController _AyController;
@@ -31,12 +29,6 @@ class TriangleState extends State<Triangle> {
   late TextEditingController _ByController;
   late TextEditingController _CxController;
   late TextEditingController _CyController;
-  late TextEditingController _aController;
-  late TextEditingController _bController;
-  late TextEditingController _cController;
-  late TextEditingController _alphaController;
-  late TextEditingController _betaController;
-  late TextEditingController _gammaController;
 
   var _currentAxInput = '';
   var _currentAyInput = '';
@@ -44,12 +36,6 @@ class TriangleState extends State<Triangle> {
   var _currentByInput = '';
   var _currentCxInput = '';
   var _currentCyInput = '';
-  var _currentAInput = '';
-  var _currentBInput = '';
-  var _currentCInput = '';
-  var _currentAlphaInput = '';
-  var _currentBetaInput = '';
-  var _currentGammaInput = '';
 
   late List<List<Object?>> _outputBasicData;
   late List<List<Object?>> _outputDataPointsSidesMidPoint;
@@ -96,12 +82,6 @@ class TriangleState extends State<Triangle> {
     _ByController = TextEditingController(text: _currentByInput);
     _CxController = TextEditingController(text: _currentCxInput);
     _CyController = TextEditingController(text: _currentCyInput);
-    _aController = TextEditingController(text: _currentAInput);
-    _bController = TextEditingController(text: _currentBInput);
-    _cController = TextEditingController(text: _currentCInput);
-    _alphaController = TextEditingController(text: _currentAlphaInput);
-    _betaController = TextEditingController(text: _currentBetaInput);
-    _gammaController = TextEditingController(text: _currentGammaInput);
   }
 
   @override
@@ -112,38 +92,18 @@ class TriangleState extends State<Triangle> {
     _ByController.dispose();
     _CxController.dispose();
     _CyController.dispose();
-    _aController.dispose();
-    _bController.dispose();
-    _cController.dispose();
-    _alphaController.dispose();
-    _betaController.dispose();
-    _gammaController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
-      GCWTwoOptionsSwitch(
-        leftValue: i18n(context, 'triangle_mode_abc'),
-        rightValue: i18n(context, 'triangle_mode_sw'),
-        value: _currentModeInputData,
-        onChanged: (value) {
-          setState(() {
-            _currentModeInputData = value;
-          });
-        },
-      ),
-      _currentModeInputData == GCWSwitchPosition.left ? _buildInputWidgetABC() : _buildInputWidgetSidesAngles(),
+      _buildInputWidgetABC(),
       GCWSubmitButton(
         onPressed: () {
           setState(() {
             if (_allBasicDataAvailable()) {
-              if (_currentModeInputData == GCWSwitchPosition.right) {
-                _calculateABC();
-              }
               _createAdditionalData();
-              _createGraphicOutput();
               _isCalculatedData = true;
               _isCalculatedImage = false;
             }
@@ -179,10 +139,6 @@ class TriangleState extends State<Triangle> {
                 onChanged: (text) {
                   setState(() {
                     _currentAxInput = text;
-                    if (_allBasicDataAvailable()) {
-                      _createAdditionalData();
-                      _createGraphicOutput();
-                    }
                   });
                 },
               ),
@@ -295,196 +251,6 @@ class TriangleState extends State<Triangle> {
     );
   }
 
-  Widget _buildInputWidgetSidesAngles() {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Expanded(
-                child: Container(
-              padding: const EdgeInsets.only(right: DEFAULT_MARGIN),
-              child: GCWText(
-                text: i18n(context, 'triangle_mode_sides'),
-              ),
-            )),
-            Expanded(
-                child: Container(
-              padding: const EdgeInsets.only(right: DEFAULT_MARGIN),
-              child: GCWText(
-                text: i18n(context, 'triangle_mode_angles'),
-              ),
-            )),
-          ],
-        ),
-        Row(
-          children: [
-            Expanded(
-                child: Container(
-              padding: const EdgeInsets.only(right: DEFAULT_MARGIN),
-              child: const GCWText(
-                text: 'a',
-              ),
-            )),
-            Expanded(
-                child: Container(
-              padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
-              child: GCWTextField(
-                controller: _BxController,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[0-9.-]')),
-                ],
-                onChanged: (text) {
-                  setState(() {
-                    _currentBxInput = text;
-                  });
-                },
-              ),
-            )),
-            Expanded(
-                child: Container(
-              padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
-              child: const GCWText(
-                text: ' ',
-              ),
-            )),
-            Expanded(
-                child: Container(
-              padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
-              child: const GCWText(
-                text: '\u03b1',
-              ),
-            )),
-            Expanded(
-                child: Container(
-              padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
-              child: GCWTextField(
-                controller: _BxController,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[0-9.-]')),
-                ],
-                onChanged: (text) {
-                  setState(() {
-                    _currentBxInput = text;
-                  });
-                },
-              ),
-            )),
-          ],
-        ),
-        Row(
-          children: [
-            Expanded(
-                child: Container(
-              padding: const EdgeInsets.only(right: DEFAULT_MARGIN),
-              child: const GCWText(
-                text: 'b',
-              ),
-            )),
-            Expanded(
-                child: Container(
-              padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
-              child: GCWTextField(
-                controller: _BxController,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[0-9.-]')),
-                ],
-                onChanged: (text) {
-                  setState(() {
-                    _currentBxInput = text;
-                  });
-                },
-              ),
-            )),
-            Expanded(
-                child: Container(
-              padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
-              child: const GCWText(
-                text: ' ',
-              ),
-            )),
-            Expanded(
-                child: Container(
-              padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
-              child: const GCWText(
-                text: '\u03b2',
-              ),
-            )),
-            Expanded(
-                child: Container(
-              padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
-              child: GCWTextField(
-                controller: _BxController,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[0-9.-]')),
-                ],
-                onChanged: (text) {
-                  setState(() {
-                    _currentBxInput = text;
-                  });
-                },
-              ),
-            )),
-          ],
-        ),
-        Row(
-          children: [
-            Expanded(
-                child: Container(
-              padding: const EdgeInsets.only(right: DEFAULT_MARGIN),
-              child: const GCWText(
-                text: 'c',
-              ),
-            )),
-            Expanded(
-                child: Container(
-              padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
-              child: GCWTextField(
-                controller: _BxController,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[0-9.-]')),
-                ],
-                onChanged: (text) {
-                  setState(() {
-                    _currentBxInput = text;
-                  });
-                },
-              ),
-            )),
-            Expanded(
-                child: Container(
-              padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
-              child: const GCWText(
-                text: ' ',
-              ),
-            )),
-            Expanded(
-                child: Container(
-              padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
-              child: const GCWText(
-                text: '\u03b3',
-              ),
-            )),
-            Expanded(
-                child: Container(
-              padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
-              child: GCWTextField(
-                controller: _BxController,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[0-9.-]')),
-                ],
-                onChanged: (text) {
-                  setState(() {
-                    _currentBxInput = text;
-                  });
-                },
-              ),
-            )),
-          ],
-        ),
-      ],
-    );
-  }
-
   Widget _buildOutput(BuildContext context) {
     if (_isCalculatedData) {
       return Column(children: <Widget>[
@@ -512,99 +278,19 @@ class TriangleState extends State<Triangle> {
         _buildGraphicOutput(),
       ]);
     } else {
-      if (_currentModeInputData == GCWSwitchPosition.right) {
-        if (_sidesAnglesData > 3) {
-          return GCWOutputText(
-            text: i18n(context, 'triangle_hint_data_overflow'),
-          );
-        } else {
-          if (_sidesAnglesData < 3) {
-            return GCWOutputText(
+      return GCWOutputText(
               text: i18n(context, 'triangle_hint_data_missing'),
             );
-          }
-        }
       }
-      return GCWOutputText(
-        text: i18n(context, 'triangle_hint_data_missing'),
-      );
-    }
   }
 
   bool _allBasicDataAvailable() {
-    _sidesAnglesData = 0;
-    if (_currentModeInputData == GCWSwitchPosition.left) {
-      return (double.tryParse(_currentAxInput) != null &&
+    return (double.tryParse(_currentAxInput) != null &&
           double.tryParse(_currentAyInput) != null &&
           double.tryParse(_currentBxInput) != null &&
           double.tryParse(_currentByInput) != null &&
           double.tryParse(_currentCxInput) != null &&
           double.tryParse(_currentCyInput) != null);
-    } else {
-      if (double.tryParse(_currentAInput) != null) _sidesAnglesData += 1;
-      if (double.tryParse(_currentBInput) != null) _sidesAnglesData += 1;
-      if (double.tryParse(_currentCInput) != null) _sidesAnglesData += 1;
-      if (double.tryParse(_currentAlphaInput) != null) _sidesAnglesData += 1;
-      if (double.tryParse(_currentBetaInput) != null) _sidesAnglesData += 1;
-      if (double.tryParse(_currentGammaInput) != null) _sidesAnglesData += 1;
-      if (_sidesAnglesData != 3) {
-        return false;
-      }
-      return true;
-    }
-  }
-
-  void _calculateABC(){
-    List<String> ssswww = ['-', '-', '-', '-', '-', '-'];
-    if (double.tryParse(_currentAInput) != null) ssswww[0] = 'x';
-    if (double.tryParse(_currentBInput) != null) ssswww[1] = 'x';
-    if (double.tryParse(_currentCInput) != null) ssswww[2] = 'x';
-    if (double.tryParse(_currentAlphaInput) != null) ssswww[3] = 'x';
-    if (double.tryParse(_currentBetaInput) != null) ssswww[4] = 'x';
-    if (double.tryParse(_currentGammaInput) != null) ssswww[5] = 'x';
-
-    switch (ssswww.join('')) {
-      case 'xxx---': // sss a b c
-        break;
-      case 'xx-x--': // ssw alpha a b
-        break;
-      case 'xx--x-': // ssw b a beta
-        break;
-      case 'xx---x': // sws b gamma a
-        break;
-      case 'x-xx--': // ssw a c alpha
-        break;
-      case 'x-x-x-': // sws a beta c
-        break;
-      case 'x-x--x': // ssw c a gamma
-        break;
-      case '-xxx--': // sws c alpha b
-        break;
-      case '-xx-x-': // ssw b c beta
-        break;
-      case '-xx--x': // ssw c b gamma
-        break;
-      case '---xxx': // www
-        break;
-      case 'x--xx-':
-        break;
-      case '-x-xx-':
-        break;
-      case '--xxx-':
-        break;
-      case 'x--x-x':
-        break;
-      case '-x-x-x':
-        break;
-      case '--xx-x':
-        break;
-      case 'x---xx':
-        break;
-      case '-x--xx':
-        break;
-      case '--x-xx':
-        break;
-    }
   }
 
   void _createAdditionalData() {
@@ -841,6 +527,7 @@ class TriangleState extends State<Triangle> {
             onPressed: () {
               setState(() {
                 if (_isCalculatedData) {
+                  _createGraphicOutput();
                   _isCalculatedImage = true;
                 }
               });
