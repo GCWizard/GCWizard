@@ -79,7 +79,6 @@ Future<Uint8List?> _createImage(Uint8List highImage, Uint8List lowImage, String 
     var animation = <Image.Image>[];
     if (_highImage == null || _lowImage == null) return null;
 
-    input = input.replaceAll(String.fromCharCode(8195), ' ');
     input = input.replaceAll('| ', '|');
     input = input.replaceAll(' |', '|');
     input = input.replaceAll('.', '.*');

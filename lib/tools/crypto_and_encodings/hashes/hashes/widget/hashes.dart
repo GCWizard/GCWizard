@@ -200,19 +200,19 @@ class SHA512_256HMac extends _DefaultHash {
 }
 
 class SHA3_224HMac extends _DefaultHash {
-  const SHA3_224HMac({Key? key}) : super(key: key, hashFunction: sha3_224Hmac);
+  const SHA3_224HMac({Key? key}) : super(key: key, hashFunction: sha3_224Hmac, keyRequired: true);
 }
 
 class SHA3_256HMac extends _DefaultHash {
-  const SHA3_256HMac({Key? key}) : super(key: key, hashFunction: sha3_256Hmac);
+  const SHA3_256HMac({Key? key}) : super(key: key, hashFunction: sha3_256Hmac, keyRequired: true);
 }
 
 class SHA3_384HMac extends _DefaultHash {
-  const SHA3_384HMac({Key? key}) : super(key: key, hashFunction: sha3_384Hmac);
+  const SHA3_384HMac({Key? key}) : super(key: key, hashFunction: sha3_384Hmac, keyRequired: true);
 }
 
 class SHA3_512HMac extends _DefaultHash {
-  const SHA3_512HMac({Key? key}) : super(key: key, hashFunction: sha3_512Hmac);
+  const SHA3_512HMac({Key? key}) : super(key: key, hashFunction: sha3_512Hmac, keyRequired: true);
 }
 
 class MD2HMac extends _DefaultHash {

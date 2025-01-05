@@ -45,17 +45,18 @@ class NumberPyramidBoardState extends State<NumberPyramidBoard> {
     return Row(children: <Widget>[
       Expanded(
           child: Stack(children: <Widget>[
-        AspectRatio(
-            aspectRatio: 1 / 0.5,
-            child: CanvasTouchDetector(
-              gesturesToOverride: const [GestureType.onTapDown],
-              builder: (context) {
-                return CustomPaint(
-                    painter:
-                        NumberPyramidBoardPainter(context, widget.type, widget.board, _showInputTextBox, _setState));
-              },
-            )),
-        _editWidget()
+              AspectRatio(
+                aspectRatio: 1 / 0.5,
+                child: CanvasTouchDetector(
+                  gesturesToOverride: const [GestureType.onTapDown],
+                  builder: (context) {
+                    return CustomPaint(
+                        painter:
+                            NumberPyramidBoardPainter(context, widget.type, widget.board, _showInputTextBox, _setState));
+                  },
+                )
+              ),
+              _editWidget()
       ]))
     ]);
   }
@@ -152,7 +153,7 @@ class NumberPyramidBoardPainter extends CustomPainter {
 
     var paint = Paint();
     var paintBack = Paint();
-    var paintBackground = Paint();
+    var paintTransparent = Paint();
     paint.strokeWidth = 1;
     paint.style = PaintingStyle.stroke;
     paint.color = colors.secondary();
@@ -160,8 +161,8 @@ class NumberPyramidBoardPainter extends CustomPainter {
     paintBack.style = PaintingStyle.fill;
     paintBack.color = colors.gridBackground();
 
-    paintBackground.color = Colors.transparent;
-    paintBackground.style = PaintingStyle.fill;
+    paintTransparent.color = Colors.transparent;
+    paintTransparent.style = PaintingStyle.fill;
 
     const border = 10;
     double widthOuter = size.width - 8 * border;
@@ -174,7 +175,7 @@ class NumberPyramidBoardPainter extends CustomPainter {
     Rect rect = Rect.zero;
 
     rect = Rect.fromLTWH(0, 0, size.width, size.height);
-    _touchCanvas.drawRect(rect, paintBackground, onTapDown: (tapDetail) {
+    _touchCanvas.drawRect(rect, paintTransparent, onTapDown: (tapDetail) {
       showInputTextBox(null, null);
     });
 

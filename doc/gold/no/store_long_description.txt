@@ -1,1 +1,1 @@
-This version is absolutely identical to the free version of the "GC Wizard", it contains no additional features. This is to support our development and help us cover our costs.
+Denne versjonen er helt identisk med gratisversjonen av "GC Wizard", den inneholder ingen tilleggsfunksjoner. This is to support our development and help us cover our costs.

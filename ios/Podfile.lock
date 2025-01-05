@@ -1,15 +1,17 @@
 PODS:
   - ATBarSDK (1.4.1)
-  - audioplayers (0.0.1):
+  - audioplayers_darwin (0.0.1):
     - Flutter
-  - DKImagePickerController/Core (4.3.2):
+  - device_info_plus (0.0.1):
+    - Flutter
+  - DKImagePickerController/Core (4.3.4):
     - DKImagePickerController/ImageDataManager
     - DKImagePickerController/Resource
-  - DKImagePickerController/ImageDataManager (4.3.2)
-  - DKImagePickerController/PhotoGallery (4.3.2):
+  - DKImagePickerController/ImageDataManager (4.3.4)
+  - DKImagePickerController/PhotoGallery (4.3.4):
     - DKImagePickerController/Core
     - DKPhotoGallery
-  - DKImagePickerController/Resource (4.3.2)
+  - DKImagePickerController/Resource (4.3.4)
   - DKPhotoGallery (0.0.17):
     - DKPhotoGallery/Core (= 0.0.17)
     - DKPhotoGallery/Model (= 0.0.17)
@@ -39,58 +41,56 @@ PODS:
   - file_picker_writable (0.0.1):
     - Flutter
   - Flutter (1.0.0)
-  - fluttertoast (0.0.2):
-    - Flutter
-    - Toast
-  - FMDB (2.7.5):
-    - FMDB/standard (= 2.7.5)
-  - FMDB/standard (2.7.5)
+  - FMDB (2.7.10):
+    - FMDB/standard (= 2.7.10)
+  - FMDB/standard (2.7.10)
   - location (0.0.1):
     - Flutter
   - package_info_plus (0.4.5):
     - Flutter
-  - path_provider_ios (0.0.1):
+  - path_provider_foundation (0.0.1):
     - Flutter
-  - "permission_handler (5.1.0+2)":
+    - FlutterMacOS
+  - permission_handler_apple (9.1.1):
     - Flutter
   - r_scan (0.0.1):
     - ATBarSDK (~> 1.4.1)
     - Flutter
     - ZXingObjC (~> 3.6.5)
-  - SDWebImage (5.11.0):
-    - SDWebImage/Core (= 5.11.0)
-  - SDWebImage/Core (5.11.0)
-  - shared_preferences_ios (0.0.1):
+  - SDWebImage (5.19.1):
+    - SDWebImage/Core (= 5.19.1)
+  - SDWebImage/Core (5.19.1)
+  - shared_preferences_foundation (0.0.1):
     - Flutter
+    - FlutterMacOS
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
-  - SwiftyGif (5.4.0)
-  - Toast (4.0.0)
+  - SwiftyGif (5.4.5)
   - unrar_file (0.0.1):
     - Flutter
     - UnrarKit
-  - UnrarKit (2.9):
-    - UnrarKit/unrar-lib (= 2.9)
-  - UnrarKit/unrar-lib (2.9)
+  - UnrarKit (2.10):
+    - UnrarKit/unrar-lib (= 2.10)
+  - UnrarKit/unrar-lib (2.10)
   - url_launcher_ios (0.0.1):
     - Flutter
-  - ZXingObjC (3.6.5):
-    - ZXingObjC/All (= 3.6.5)
-  - ZXingObjC/All (3.6.5)
+  - ZXingObjC (3.6.9):
+    - ZXingObjC/All (= 3.6.9)
+  - ZXingObjC/All (3.6.9)
 
 DEPENDENCIES:
-  - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
+  - audioplayers_darwin (from `.symlinks/plugins/audioplayers_darwin/ios`)
+  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - file_picker_writable (from `.symlinks/plugins/file_picker_writable/ios`)
   - Flutter (from `Flutter`)
-  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - location (from `.symlinks/plugins/location/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
-  - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
-  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - r_scan (from `.symlinks/plugins/r_scan/ios`)
-  - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - unrar_file (from `.symlinks/plugins/unrar_file/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
@@ -103,33 +103,32 @@ SPEC REPOS:
     - FMDB
     - SDWebImage
     - SwiftyGif
-    - Toast
     - UnrarKit
     - ZXingObjC
 
 EXTERNAL SOURCES:
-  audioplayers:
-    :path: ".symlinks/plugins/audioplayers/ios"
+  audioplayers_darwin:
+    :path: ".symlinks/plugins/audioplayers_darwin/ios"
+  device_info_plus:
+    :path: ".symlinks/plugins/device_info_plus/ios"
   file_picker:
     :path: ".symlinks/plugins/file_picker/ios"
   file_picker_writable:
     :path: ".symlinks/plugins/file_picker_writable/ios"
   Flutter:
     :path: Flutter
-  fluttertoast:
-    :path: ".symlinks/plugins/fluttertoast/ios"
   location:
     :path: ".symlinks/plugins/location/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
-  path_provider_ios:
-    :path: ".symlinks/plugins/path_provider_ios/ios"
-  permission_handler:
-    :path: ".symlinks/plugins/permission_handler/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
   r_scan:
     :path: ".symlinks/plugins/r_scan/ios"
-  shared_preferences_ios:
-    :path: ".symlinks/plugins/shared_preferences_ios/ios"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
   unrar_file:
@@ -139,29 +138,28 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   ATBarSDK: b6aa2b6a120ac7d6b1ff041bd60b9edde6bb17c4
-  audioplayers: 455322b54050b30ea4b1af7cd9e9d105f74efa8c
-  DKImagePickerController: b5eb7f7a388e4643264105d648d01f727110fc3d
+  audioplayers_darwin: 877d9a4d06331c5c374595e46e16453ac7eafa40
+  device_info_plus: c6fb39579d0f423935b0c9ce7ee2f44b71b9fce6
+  DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
-  file_picker: 3e6c3790de664ccf9b882732d9db5eaf6b8d4eb1
+  file_picker: ce3938a0df3cc1ef404671531facef740d03f920
   file_picker_writable: 67959f5c516feb5121693a14eda63fcbe6cbb6dc
-  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
-  fluttertoast: 16fbe6039d06a763f3533670197d01fc73459037
-  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
-  package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
-  path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
-  permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  FMDB: eae540775bf7d0c87a5af926ae37af69effe5a19
+  location: d5cf8598915965547c3f36761ae9cc4f4e87d22e
+  package_info_plus: fd030dabf36271f146f1f3beacd48f564b0f17f7
+  path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
+  permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
   r_scan: 5672d9b68f8cece3835895a6aaab12047acf65bd
-  SDWebImage: 7acbb57630ac7db4a495547fb73916ff3e432f6b
-  shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
+  SDWebImage: 40b0b4053e36c660a764958bff99eed16610acbb
+  shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
-  SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
-  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
+  SwiftyGif: 706c60cf65fa2bc5ee0313beece843c8eb8194d4
   unrar_file: ead248ffb2e777cb67f083bc1bb1fb45d4157dbd
-  UnrarKit: 99e3f0222a98a212188e1a6975dcf5aa798d26dd
+  UnrarKit: 62f535c7a34ec52d2514b9b148f33dcfa9a9dc39
   url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
-  ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
+  ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: f2ca4c201b8acb7bcb90bbc43e4b43eb34db7f31
+PODFILE CHECKSUM: 6b487e18e4750792afc4d6ed7ab7977ca5313a3e
 
 COCOAPODS: 1.10.1

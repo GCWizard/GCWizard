@@ -24,7 +24,7 @@ class AppLanguage extends ChangeNotifier {
   }
 
   Locale _getPlatformLocale() {
-    final String lang = ui.window.locale.languageCode.split("_")[0];
+    final String lang = ui.PlatformDispatcher.instance.locale.languageCode.split('_')[0];
     return Locale(lang);
   }
 

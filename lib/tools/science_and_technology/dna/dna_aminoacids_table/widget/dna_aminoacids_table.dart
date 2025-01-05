@@ -32,7 +32,7 @@ class _DNAAminoAcidsTableState extends State<DNAAminoAcidsTable> {
 
       if (acid.symbolShort == 'M') name += '\n${i18n(context, 'dna_start')}';
 
-      var sequences = acid.nucleobaseSequences;
+      var sequences = List<String>.from(acid.nucleobaseSequences);
       sequences.sort();
 
       return [name, acid.symbolLong ?? '-', acid.symbolShort ?? '-', sequences.join(', ')];

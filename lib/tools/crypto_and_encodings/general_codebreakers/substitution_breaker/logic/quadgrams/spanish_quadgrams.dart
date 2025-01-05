@@ -7,7 +7,6 @@ class SpanishQuadgrams extends Quadgrams {
     most_frequent_quadgram = 'dela';
     max_fitness = 1300;
     average_fitness = 165.32766491019223;
-    assetLocation =
-        "/lib/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/assets/quadgrams/es.json";
+    assetLocation = "lib/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/assets/quadgrams/es.json";
   }
 }

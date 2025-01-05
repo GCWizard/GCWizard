@@ -34,6 +34,9 @@ final _PRESSURE_INCHOFMERCURY = Pressure(key: 'common_unit_pressure_inhg_name', 
 
 final _PRESSURE_TORR = Pressure(key: 'common_unit_pressure_torr_name', symbol: 'Torr', inPascal: 101325.0 / 760.0);
 
+final PRESSURE_MBAR = Pressure(key: 'common_unit_pressure_mbar_name', symbol: 'mBar', inPascal: 100.0);
+final PRESSURE_HPASCAL = Pressure(key: 'common_unit_pressure_hpascal_name', symbol: 'hPa', inPascal: 100.0);
+
 final List<Pressure> pressures = [
   PRESSURE_PASCAL,
   PRESSURE_BAR,
@@ -44,3 +47,12 @@ final List<Pressure> pressures = [
   _PRESSURE_INCHOFMERCURY,
   _PRESSURE_TORR
 ];
+
+List<Unit> allPressures() {
+  var additionalPressures = List<Unit>.from(pressures);
+  var indexM = pressures.indexOf(_PRESSURE_TORR);
+  additionalPressures.insert(indexM + 1, PRESSURE_MBAR);
+  additionalPressures.insert(indexM + 2, PRESSURE_HPASCAL);
+
+  return additionalPressures;
+}

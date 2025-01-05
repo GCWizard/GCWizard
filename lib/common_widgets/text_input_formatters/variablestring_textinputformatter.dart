@@ -10,8 +10,14 @@ class VariableStringTextInputFormatter extends TextInputFormatter {
 
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    if (_exp.hasMatch(newValue.text.toLowerCase())) {
-      return newValue;
+    var newSanitized = newValue.text.trim();
+
+    if (_exp.hasMatch(newSanitized.toLowerCase())) {
+      return TextEditingValue(
+        text: newSanitized, selection: TextSelection.fromPosition(
+          TextPosition(offset: newSanitized.length),
+        ),
+      );
     }
 
     return oldValue;

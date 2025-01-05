@@ -365,8 +365,8 @@ class WherigoCartridgeLUA {
   final String LUAFile;
   final String CartridgeLUAName;
   final String CartridgeGUID;
-  final String ObfuscatorTable;
-  final String ObfuscatorFunction;
+  final List<String> ObfuscatorTable;
+  final List<String> ObfuscatorFunction;
   final List<WherigoCharacterData> Characters;
   final List<WherigoItemData> Items;
   final List<WherigoTaskData> Tasks;

@@ -70,7 +70,9 @@ class _ResectionCalculator extends IntervalCalculator {
     Interval i360 = Interval(a: 0.0, b: 360.0);
     if ((i360.equals(bearingFrom1) && i360.equals(bearingFrom2)) ||
         (i360.equals(bearingFrom2) && i360.equals(bearingFrom3)) ||
-        (i360.equals(bearingFrom1) && i360.equals(bearingFrom3))) return true;
+        (i360.equals(bearingFrom1) && i360.equals(bearingFrom3))) {
+      return true;
+    }
 
     var angle12 = params.angle12;
     var angle23 = params.angle23;
@@ -122,7 +124,9 @@ List<LatLng> resection(LatLng coord1, double angle12, LatLng coord2, double angl
 
   if (utils.equalsLatLng(coord1, coord2, tolerance: minDistance) ||
       utils.equalsLatLng(coord1, coord3, tolerance: minDistance) ||
-      utils.equalsLatLng(coord2, coord3, tolerance: minDistance)) return [];
+      utils.equalsLatLng(coord2, coord3, tolerance: minDistance)) {
+    return [];
+  }
 
   return _ResectionCalculator(ResectionParameters(coord1, angle12, coord2, angle23, coord3), ells).check();
 }

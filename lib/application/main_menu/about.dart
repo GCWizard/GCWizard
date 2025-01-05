@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gc_wizard/application/_common/gcw_package_info.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/main_menu/licenses.dart';
 import 'package:gc_wizard/application/main_menu/mainmenuentry_stub.dart';
@@ -7,12 +8,11 @@ import 'package:gc_wizard/application/registry.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:gc_wizard/common_widgets/gcw_tool.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+import 'package:gc_wizard/utils/ui_dependent_utils/text_widget_utils.dart';
 
 const _ABOUT_MAINTAINER = 'Mark \'S-Man42\' Lorenz';
-const _ABOUT_PACKAGE_INFO_UNKNOWN = 'unknown';
 
 class About extends StatefulWidget {
   const About({Key? key}) : super(key: key);
@@ -22,14 +22,7 @@ class About extends StatefulWidget {
 }
 
 class _AboutState extends State<About> {
-  PackageInfo _packageInfo = PackageInfo(
-    appName: _ABOUT_PACKAGE_INFO_UNKNOWN,
-    packageName: _ABOUT_PACKAGE_INFO_UNKNOWN,
-    version: _ABOUT_PACKAGE_INFO_UNKNOWN,
-    buildNumber: _ABOUT_PACKAGE_INFO_UNKNOWN,
-    buildSignature: _ABOUT_PACKAGE_INFO_UNKNOWN,
-    installerStore: _ABOUT_PACKAGE_INFO_UNKNOWN,
-  );
+  late GCWPackageInfo _packageInfo;
 
   @override
   void initState() {
@@ -37,37 +30,32 @@ class _AboutState extends State<About> {
     _initPackageInfo();
   }
 
-  Future<void> _initPackageInfo() async {
-    final PackageInfo info = await PackageInfo.fromPlatform();
-    setState(() {
-      _packageInfo = info;
-    });
+  void _initPackageInfo() {
+    _packageInfo = GCWPackageInfo.getInstance();
   }
 
   Container _buildUrl(String key) {
     return Container(
-        padding: const EdgeInsets.only(top: 15, bottom: 10),
-        child: Row(children: <Widget>[
-          Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_$key'))),
-          Expanded(
-              flex: 3,
-              child: InkWell(
-                child: Text(
-                  i18n(context, 'about_${key}_url_text'),
-                  style: gcwHyperlinkTextStyle(),
-                ),
-                onTap: () {
-                  launchUrl(Uri.parse(i18n(context, 'about_${key}_url')));
-                },
-              ))
-        ]));
+      padding: const EdgeInsets.only(top: 15, bottom: 10),
+      child: Row(children: <Widget>[
+        Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_$key'))),
+        Expanded(
+          flex: 3,
+          child: buildUrl(
+            i18n(context, 'about_${key}_url_text'),
+            i18n(context, 'about_${key}_url')
+          )
+        )
+      ]));
   }
 
   @override
   Widget build(BuildContext context) {
+    var spaceHeight = 25.0;
+
     var content = Column(
       children: <Widget>[
-        Text('GC Wizard - Geocache Wizard', style: gcwTextStyle().copyWith(fontWeight: FontWeight.bold)),
+        Text(GCWPackageInfo.getInstance().appName, style: gcwTextStyle().copyWith(fontWeight: FontWeight.bold, fontSize: defaultFontSize() + 5)),
         const GCWDivider(),
         Container(
             padding: const EdgeInsets.only(top: 15),
@@ -78,16 +66,69 @@ class _AboutState extends State<About> {
         Container(
             padding: const EdgeInsets.only(top: 15, bottom: 10),
             child: Row(children: <Widget>[
-              Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_maintainer'))),
+              Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_creator'))),
               const Expanded(flex: 3, child: GCWText(text: _ABOUT_MAINTAINER))
             ])),
+        const GCWDivider(),
+        RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(children: [
+            TextSpan(text: i18n(context, 'about_team') + '\n', style: gcwBoldTextStyle()),
+          ], style: gcwTextStyle()),
+        ),
+        Container(
+            padding: const EdgeInsets.only(top: 15, bottom: 10),
+            child: Column(
+              children: [
+                Row(children: <Widget>[
+                  Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_projectlead'))),
+                  Expanded(flex: 3, child: GCWText(text: [
+                    'Mike \'MikeBi\' B.',
+                    'Thomas \'TMZ\' Z.',
+                  ].join('\n'))),
+                ]),
+                Container(height: spaceHeight),
+                Row(children: <Widget>[
+                  Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_development'))),
+                  Expanded(flex: 3, child: GCWText(text: [
+                    'Mike \'MikeBi\' B.',
+                    'Thomas \'TMZ\' Z.',
+                    'Mark \'S-Man42\' Lorenz',
+                    'Olli \'Rinser\''
+                  ].join('\n'))),
+                ]),
+                Container(height: spaceHeight),
+                Row(children: <Widget>[
+                  Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_tests'))),
+                  Expanded(flex: 3, child: GCWText(text: [
+                    'Andy \'Puma66\' (Special Support)',
+                    'Maria \'Nebelsturm\'',
+                  ].join('\n'))),
+                ]),
+                Container(height: spaceHeight),
+                Row(children: <Widget>[
+                  Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_manualcreators'))),
+                  Expanded(flex: 3, child: GCWText(text: [
+                    'Andreas \'TeamBirdy2404\'',
+                    'Thomas \'TMZ\' Z.',
+                    'Marcia \'Linsty\'',
+                  ].join('\n'))),
+                ]),
+                Container(height: spaceHeight),
+                Row(children: <Widget>[
+                  Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_misc'))),
+                  Expanded(flex: 3, child: GCWText(text: [
+                    'Henrike \'69and71\' (Translations)',
+                  ].join('\n'))),
+                ])
+              ],
+            )),
         const GCWDivider(),
         _buildUrl('contact_email'),
         _buildUrl('manual'),
         _buildUrl('faq'),
         _buildUrl('blog'),
         _buildUrl('mastodon'),
-        _buildUrl('facebook'),
         _buildUrl('webversion'),
         const GCWDivider(),
         _buildUrl('license'),
@@ -122,20 +163,6 @@ class _AboutState extends State<About> {
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(children: [
-                  TextSpan(text: i18n(context, 'about_team') + '\n', style: gcwBoldTextStyle()),
-                  TextSpan(
-                      text: [
-                            'Andy \'Puma66\' (Special Support)',
-                            'Andreas \'TeamBirdy2404\' (Manual & Symbol Tables)',
-                            'Mike B. (Code & Symbol Tables)',
-                            'Thomas \'TMZ\' Z. (Code & Symbol Tables)',
-                          ].join('\n') +
-                          '\n')
-                ], style: gcwTextStyle()),
-              ),
-              RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(children: [
                   TextSpan(text: i18n(context, 'about_specialthanks') + '\n', style: gcwBoldTextStyle()),
                   const TextSpan(text: 'Daniel \'Eisbehr\' K. (Maintainer GCC)' '\n')
                 ], style: gcwTextStyle()),
@@ -153,7 +180,7 @@ class _AboutState extends State<About> {
                             'Frank \'Wizardland\' (podKst.de) (Hardware)',
                             'Geo-Link (Hardware & Symbol Tables)',
                             'Karl B. (Coords Algorithms)',
-                            'Ludovic Valente \'LudoO\' (Code & Translation FR)',
+                            'Ludovic \'LudoO\' Valente (Code & Translation FR)',
                             'Michael D. (Symbol Tables)',
                             'Nina \'nike1972\' G. (Nina\'s Schmierblo(g)ck) (Manual)',
                             'moenk (GK Coords)',
@@ -180,7 +207,7 @@ class _AboutState extends State<About> {
                             'drobec (SK)',
                             'emrszon (ES)',
                             'hakuchi (IT)',
-                            'Henrike71 (NL, SV)',
+                            '69and71 (NL, SV)',
                             'Igor Č. (SK)',
                             'j_janus (PL)',
                             'Joao F. (PT)',
@@ -215,13 +242,17 @@ class _AboutState extends State<About> {
                       text: [
                     '4-Everus',
                     '83_Seth',
+                    'Amelie2401',
                     'Andreas E.',
+                    'Andreas L.',
                     'baer2006',
                     'Bleg1966',
                     'Cycle73',
+                    'Dawn T.',
                     'Don Rodolphos',
                     'Headbanger-Berlin',
                     'Felix Z.',
+                    'ferrrix',
                     'Filu \'Aye, Käppn!\' 43 & Stormi \'Aaarrh\' 2061',
                     'finding tresor',
                     'Flosphor',
@@ -231,10 +262,12 @@ class _AboutState extends State<About> {
                     'GrafZahl75',
                     'hwi',
                     'Isidore S.',
+                    'JanRei',
                     'Johannes C.',
                     'Jonas M.',
                     'kinderarzt',
                     'Klumpenkukuk',
+                    'Lue',
                     'LupiMus',
                     'Lutz \'DL3BZZ\'',
                     'mahoplus',
@@ -242,10 +275,12 @@ class _AboutState extends State<About> {
                     'Martin Sch.',
                     'Martina F.',
                     'mgo',
+                    'MicDie',
                     'Michael St.',
                     'Mondlinger',
                     'MrDosinger & MsDosinger',
-                    'Nebelsturm',
+                    'mister-rage',
+                    'musketon',
                     'Niki R.',
                     'Palk \'geogedoens.de\'',
                     'Pamakaru',
@@ -257,14 +292,17 @@ class _AboutState extends State<About> {
                     'Sechsfüssler',
                     'Stefan J.',
                     'Stefan K.',
+                    'SzpiegDonPedro',
                     'Team kesteri',
                     'Thomas B.',
                     'tebarius',
                     'tomcat06',
                     'trekkiefreak76',
+                    'Vlad_Tepes',
                     'Vyrembi',
                     'waldstadt',
                     'WeinWalker',
+                    'WingsAndTales',
                     'zoRRo'
                   ].join(', '))
                 ], style: gcwTextStyle()),
@@ -276,7 +314,7 @@ class _AboutState extends State<About> {
         Container(
           padding: const EdgeInsets.only(top: 15, bottom: 10),
           child:
-              GCWText(align: Alignment.center, textAlign: TextAlign.center, text: i18n(context, 'about_notfornazis')),
+              GCWText(align: Alignment.center, textAlign: TextAlign.center, text: '🏳️‍🌈  ' + i18n(context, 'about_notfornazis') + '  🏳️‍🌈'),
         )
       ],
     );

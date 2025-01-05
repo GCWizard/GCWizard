@@ -53,7 +53,7 @@ String obfuscateUrwigoText(String text, String dtable) {
 
   if (dtable.isEmpty) return '';
 
-  var searchReplace = {
+  const searchReplace = {
     8: "\\b", // x08   backspace
     11: "\\v", // x0B   vertical tab
     7: "\\a", // x07   alarm beep

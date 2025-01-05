@@ -1,5 +1,5 @@
 # Uncomment this line to define a global platform for your project
-# platform :ios, '9.0'
+# platform :ios, '12.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -67,7 +67,7 @@ post_install do |installer|
         'PERMISSION_SPEECH_RECOGNIZER=0',
 
         ## dart: PermissionGroup.photosAddOnly
-        'PERMISSION_PHOTOS=0',
+        'PERMISSION_PHOTOS=1',
 
         ## dart: PermissionGroup.photos
         'PERMISSION_PHOTOS_ADD_ONLY=0',
@@ -79,7 +79,7 @@ post_install do |installer|
         'PERMISSION_NOTIFICATIONS=0',
 
         ## dart: PermissionGroup.mediaLibrary
-        'PERMISSION_MEDIA_LIBRARY=0',
+        'PERMISSION_MEDIA_LIBRARY=1',
 
         ## dart: PermissionGroup.sensors
         'PERMISSION_SENSORS=0',

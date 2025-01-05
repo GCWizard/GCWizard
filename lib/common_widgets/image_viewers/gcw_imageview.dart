@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
+import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
 import 'package:gc_wizard/common_widgets/gcw_popup_menu.dart';
@@ -59,6 +61,7 @@ class GCWImageView extends StatefulWidget {
 class _GCWImageViewState extends State<GCWImageView> {
   MemoryImage? _image;
   MemoryImage? _previewImage;
+  Color _bgColor = Colors.black;
 
   late PhotoViewScaleStateController _scaleStateController;
 
@@ -139,14 +142,83 @@ class _GCWImageViewState extends State<GCWImageView> {
                 : DOUBLE_DEFAULT_MARGIN,
           ),
           height: 250.0,
-          child: ClipRect(
-            child: PhotoView(
-              scaleStateController: _scaleStateController,
-              imageProvider: _previewImage,
-              minScale: PhotoViewComputedScale.contained * 0.25,
-              initialScale: PhotoViewComputedScale.contained,
-            ),
-          ),
+          child: Stack(
+            alignment: Alignment.bottomRight,
+            children: [
+              ClipRect(
+                child: PhotoView(
+                  scaleStateController: _scaleStateController,
+                  imageProvider: _previewImage,
+                  minScale: PhotoViewComputedScale.contained * 0.25,
+                  initialScale: PhotoViewComputedScale.contained,
+                  backgroundDecoration: BoxDecoration(color: _bgColor),
+                ),
+              ),
+              GCWPopupMenu(
+                icon: Icons.color_lens,
+                size: IconButtonSize.TINY,
+                backgroundColor: themeColors().dialog(),
+                iconColor: themeColors().dialogText(),
+                menuItemBuilder: (context) => [
+                  GCWPopupMenuItem(
+                    child: iconedGCWPopupMenuItem(
+                      context,
+                      Icons.square,
+                      i18n(context, 'common_color_black'),
+                      color: Colors.black
+                    ),
+                    action: (index) => setState(() {
+                      _bgColor = Colors.black;
+                    })
+                  ),
+                  GCWPopupMenuItem(
+                      child: iconedGCWPopupMenuItem(
+                          context,
+                          Icons.square,
+                          i18n(context, 'common_color_white'),
+                          color: Colors.white
+                      ),
+                      action: (index) => setState(() {
+                        _bgColor = Colors.white;
+                      })
+                  ),
+                  GCWPopupMenuItem(
+                      child: iconedGCWPopupMenuItem(
+                        context,
+                        Icons.square,
+                        i18n(context, 'common_color_pink'),
+                        color: Colors.purpleAccent
+                      ),
+                      action: (index) => setState(() {
+                        _bgColor = Colors.purpleAccent;
+                      })
+                  ),
+                  GCWPopupMenuItem(
+                      child: iconedGCWPopupMenuItem(
+                          context,
+                          Icons.square,
+                          i18n(context, 'common_color_blue'),
+                          color: Colors.indigo
+                      ),
+                      action: (index) => setState(() {
+                        _bgColor = Colors.indigo;
+                      })
+                  ),
+                  GCWPopupMenuItem(
+                      child: iconedGCWPopupMenuItem(
+                          context,
+                          Icons.square,
+                          i18n(context, 'common_color_green'),
+                          color: Colors.lightGreen
+                      ),
+                      action: (index) => setState(() {
+                        _bgColor = Colors.lightGreen;
+                      })
+                  ),
+                ]
+              )
+            ],
+          )
         ),
         if ((widget.imageData?.description ?? '').trim().isNotEmpty)
           Container(
@@ -174,10 +246,10 @@ class _GCWImageViewState extends State<GCWImageView> {
             if (widget.imageData?.file.bytes != null) {
               if (widget.onBeforeLoadBigImage != null) {
                 widget.onBeforeLoadBigImage!().then((imgData) {
-                  if (imgData != null) openInFullScreen(context, imgData.bytes);
+                  if (imgData != null) openInFullScreen(context, imgData.bytes, _bgColor);
                 });
               } else {
-                openInFullScreen(context, widget.imageData!.file.bytes);
+                openInFullScreen(context, widget.imageData!.file.bytes, _bgColor);
               }
             }
           }),
@@ -210,7 +282,7 @@ class _GCWImageViewState extends State<GCWImageView> {
             }),
       if (widget.suppressedButtons == null || !widget.suppressedButtons!.contains(GCWImageViewButtons.VIEW_IN_TOOLS))
         GCWPopupMenu(
-            iconData: Icons.open_in_new,
+            icon: Icons.open_in_new,
             size: iconSize,
             menuItemBuilder: (context) => [
                   if (widget.suppressOpenInTool == null ||

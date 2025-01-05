@@ -14,7 +14,7 @@ import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_selection.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/gcw_textselectioncontrols.dart';
-import 'package:gc_wizard/common_widgets/gcw_tool.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/gcw_web_statefulwidget.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_code_textfield.dart';
@@ -168,10 +168,7 @@ Widget _buildRow(BuildContext context, GCWTool tool) {
       future: _toolInfoTextShort(context, tool),
       builder: (BuildContext context, AsyncSnapshot<Tuple2<String, String>> snapshot) {
         return _buildRowWidget(
-            context,
-            tool,
-            snapshot.data?.item2 ?? '',
-            deepLinkURL(tool, fallbackPath: snapshot.data?.item1));
+            context, tool, snapshot.data?.item2 ?? '', deepLinkURL(tool, fallbackPath: snapshot.data?.item1));
       });
 }
 
@@ -221,7 +218,8 @@ InkWell _buildRowWidget(BuildContext context, GCWTool tool, String id, String ur
                   onPressed: () {
                     var route = _createRoute(
                         context,
-                        WebParameter(title: deeplinkToolId(tool), arguments: {_questionmark: _questionmark}, settings: null),
+                        WebParameter(
+                            title: deeplinkToolId(tool), arguments: {_questionmark: _questionmark}, settings: null),
                         const RouteSettings());
                     if (route != null) {
                       Navigator.push(context, route);

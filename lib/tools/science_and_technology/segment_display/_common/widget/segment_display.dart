@@ -321,8 +321,8 @@ class _SegmentDisplayState extends State<SegmentDisplay> {
         }
         _addDropDownEntry(directory + '7segment_default.png', i18n(context, 'segmentdisplay_default'), '2 → abdeg',
             SegmentDisplayType.SEVEN);
-        _addDropDownEntry(
-            directory + '7segment_12345678.png', '12345678', '2 → 12457', SegmentDisplayType.SEVEN12345678);
+        _addDropDownEntry(directory + '7segment_12345678.png', '12345678', '2 → 12457',
+            SegmentDisplayType.SEVEN12345678);
         break;
       case SegmentDisplayType.FOURTEEN:
         var directory = '14_segment_display/assets/';
@@ -334,16 +334,16 @@ class _SegmentDisplayState extends State<SegmentDisplay> {
             SegmentDisplayType.FOURTEEN);
         _addDropDownEntry(directory + '14segment_hij_g1g2_mlk.png', 'HIJ G1G2 MLK', '2 → abdeg1g2',
             SegmentDisplayType.FOURTEEN_HIJ_G1G2_MLK);
-        _addDropDownEntry(
-            directory + '14segment_pgh_nj_mlk.png', 'PGH NJ MLK', '2 → abdenj', SegmentDisplayType.FOURTEEN_PGH_NJ_MLK);
+        _addDropDownEntry(directory + '14segment_pgh_nj_mlk.png', 'PGH NJ MLK', '2 → abdenj',
+            SegmentDisplayType.FOURTEEN_PGH_NJ_MLK);
         _addDropDownEntry(directory + '14segment_kmn_g1g2_rst.png', 'KMN G1G2 RST', '2 → abdeg1g2',
             SegmentDisplayType.FOURTEEN_KMN_G1G2_RST);
-        _addDropDownEntry(
-            directory + '14segment_ghj_pk_nmi.png', 'GHJ PK NMI', '2 → abdepk', SegmentDisplayType.FOURTEEN_GHJ_PK_NMI);
+        _addDropDownEntry(directory + '14segment_ghj_pk_nmi.png', 'GHJ PK NMI', '2 → abdepk',
+            SegmentDisplayType.FOURTEEN_GHJ_PK_NMI);
         _addDropDownEntry(directory + '14segment_hjk_g1g2_nml.png', 'HJK G1G2 NML', '2 → abdeg1g2',
             SegmentDisplayType.FOURTEEN_HJK_G1G2_NML);
-        _addDropDownEntry(
-            directory + '14segment_hjk_gm_qpn.png', 'HJK GM QPN', '2 → abdegm', SegmentDisplayType.FOURTEEN_HJK_GM_QPN);
+        _addDropDownEntry(directory + '14segment_hjk_gm_qpn.png', 'HJK GM QPN', '2 → abdegm',
+            SegmentDisplayType.FOURTEEN_HJK_GM_QPN);
         break;
       case SegmentDisplayType.SIXTEEN:
         var directory = '16_segment_display/assets/';

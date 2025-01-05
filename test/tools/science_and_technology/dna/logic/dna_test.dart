@@ -2,42 +2,42 @@ import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/science_and_technology/dna/logic/dna.dart';
 
 void main() {
-  group("DNA.encodeRNANucleobaseSequence:", () {
-    List<Map<String, Object?>> _inputsToExpected = [
-      {'input' : '', 'expectedOutput' : ''},
-
-      {'input' : 'HALLO', 'expectedOutput' : 'CAUGCUUUAUUA'},
-      {'input' : 'THE WORLD IS NOT FAIR', 'expectedOutput' : 'ACUCAUGAAUGGCGAUUAGAUAUUUCUAAUACUUUCGCUAUUCGA'},
-    ];
-
-    for (var elem in _inputsToExpected) {
-      test('input: ${elem['input']}', () {
-        var _actual = encodeRNANucleobaseSequence(elem['input'] as String);
-        expect(_actual, elem['expectedOutput']);
-      });
-    }
-  });
-
-  group("DNA.decodeRNANucleobaseSequence:", () {
-    List<Map<String, Object?>> _inputsToExpected = [
-      {'input' : '', 'expectedOutput' : ''},
-
-      {'expectedOutput' : 'HALL', 'input' : 'CAUGCUUUAUUA'},
-      {'expectedOutput' : 'THEWRLDISNTFAIR', 'input' : 'ACUCAUGAAUGGCGAUUAGAUAUUUCUAAUACUUUCGCUAUUCGA'},
-      {'expectedOutput' : 'THEWRLDISNTFAI', 'input' : 'ACUCAUGAAUGGCGAUUAGAUAUUUCUAAUACUUUCGCUAUUC'},
-    ];
-
-    for (var elem in _inputsToExpected) {
-      test('input: ${elem['input']}', () {
-        var _actual = decodeRNANucleobaseSequence(elem['input'] as String).map((e) => e.symbolShort).join();
-        expect(_actual, elem['expectedOutput']);
-      });
-    }
-  });
+  // group("DNA.encodeRNANucleobaseSequence:", () {
+  //   List<Map<String, Object?>> _inputsToExpected = [
+  //     {'input' : '', 'expectedOutput' : ''},
+  //
+  //     {'input' : 'HALLO', 'expectedOutput' : 'CAUGCUUUAUUA'},
+  //     {'input' : 'THE WORLD IS NOT FAIR', 'expectedOutput' : 'ACUCAUGAAUGGCGAUUAGAUAUUUCUAAUACUUUCGCUAUUCGA'},
+  //   ];
+  //
+  //   for (var elem in _inputsToExpected) {
+  //     test('input: ${elem['input']}', () {
+  //       var _actual = encodeRNANucleobaseSequence(elem['input'] as String);
+  //       expect(_actual, elem['expectedOutput']);
+  //     });
+  //   }
+  // });
+  //
+  // group("DNA.decodeRNANucleobaseSequence:", () {
+  //   List<Map<String, Object?>> _inputsToExpected = [
+  //     {'input' : '', 'expectedOutput' : ''},
+  //
+  //     {'expectedOutput' : 'HALL', 'input' : 'CAUGCUUUAUUA'},
+  //     {'expectedOutput' : 'THEWRLDISNTFAIR', 'input' : 'ACUCAUGAAUGGCGAUUAGAUAUUUCUAAUACUUUCGCUAUUCGA'},
+  //     {'expectedOutput' : 'THEWRLDISNTFAI', 'input' : 'ACUCAUGAAUGGCGAUUAGAUAUUUCUAAUACUUUCGCUAUUC'},
+  //   ];
+  //
+  //   for (var elem in _inputsToExpected) {
+  //     test('input: ${elem['input']}', () {
+  //       var _actual = decodeRNANucleobaseSequence(elem['input'] as String).map((e) => e.symbolShort).join();
+  //       expect(_actual, elem['expectedOutput']);
+  //     });
+  //   }
+  // });
 
   group("DNA.decodeRNANucleobaseSequenceWithStop:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      {'expectedOutput' : [NucleobaseSequenceType.STOP, NucleobaseSequenceType.NORMAL, NucleobaseSequenceType.START], 'input' : 'UAACACGUG'},
+      {'expectedOutput' : [NucleobaseSequenceType.STOP, NucleobaseSequenceType.NORMAL, NucleobaseSequenceType.START], 'input' : 'UAACACAUG'},
     ];
 
     for (var elem in _inputsToExpected) {

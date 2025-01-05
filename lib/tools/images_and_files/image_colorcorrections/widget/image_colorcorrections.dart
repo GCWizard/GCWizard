@@ -14,7 +14,7 @@ import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_popup_menu.dart';
 import 'package:gc_wizard/common_widgets/gcw_slider.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
-import 'package:gc_wizard/common_widgets/gcw_tool.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/tools/images_and_files/_common/logic/rgb_pixel.dart';
@@ -133,6 +133,7 @@ class _ImageColorCorrectionsState extends State<ImageColorCorrections> {
       children: <Widget>[
         GCWOpenFile(
           supportedFileTypes: SUPPORTED_IMAGE_TYPES,
+          suppressGallery: false,
           onLoaded: (GCWFile? value) {
             if (value == null || !_validateData(value.bytes)) {
               showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
@@ -158,7 +159,7 @@ class _ImageColorCorrectionsState extends State<ImageColorCorrections> {
                     PREVIEW_VALUES[Prefs.get(PREFERENCE_IMAGECOLORCORRECTIONS_MAXPREVIEWHEIGHT)]?['title'] ?? '')
               ]),
               trailing: GCWPopupMenu(
-                  iconData: Icons.settings,
+                  icon: Icons.settings,
                   size: IconButtonSize.SMALL,
                   menuItemBuilder: (context) => PREVIEW_VALUES
                       .map((key, value) {

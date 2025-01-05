@@ -174,6 +174,11 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
     return formula;
   }
 
+  String _sanitizeFormulaReferences(String formula) {
+    return formula.replaceAllMapped(
+        RegExp(r'{(.*?)}'), (match) => '{' + match[1]!.toLowerCase().replaceAll(RegExp(r'\s'), '') + '}');
+  }
+
   Column _buildGroupList(BuildContext context) {
     var odd = true;
 
@@ -190,7 +195,8 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                   the logic. It needs to be moved from the frontend part
                 )
            */
-          var formulaToParse = substitution(formula.formula, formulaReferences, caseSensitive: false);
+          var formulaToParse =
+              substitution(_sanitizeFormulaReferences(formula.formula), formulaReferences, caseSensitive: false);
           FormulaSolverOutput calculated = formulaParser.parse(formulaToParse, widget.group.values);
 
           var resultType =
@@ -209,8 +215,14 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
               break;
           }
 
+          firstFormulaResult = firstFormulaResult.replaceAll(RegExp(r'\n'), ' ');
+
           formulaReferences.putIfAbsent('{${index + 1}}',
               () => RECURSIVE_FORMULA_REPLACEMENT_START + firstFormulaResult + RECURSIVE_FORMULA_REPLACEMENT_END);
+          if (formula.name.isNotEmpty) {
+            formulaReferences.putIfAbsent('{${formula.name.toLowerCase().replaceAll(RegExp(r'\s'), '')}}',
+                () => RECURSIVE_FORMULA_REPLACEMENT_START + firstFormulaResult + RECURSIVE_FORMULA_REPLACEMENT_END);
+          }
 
           Widget output;
 
@@ -291,7 +303,8 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                           children: [
                             SizedBox(width: 35, child: GCWText(text: (index + 1).toString() + '.')),
                             Flexible(
-                              child: _buildFormulaText(formula.formula, widget.group.values, index + 1),
+                              child: _buildFormulaText(
+                                  formula.formula, widget.group.values, index + 1, widget.group.formulas),
                             )
                           ],
                         ),
@@ -342,7 +355,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                 Container(
                     alignment: Alignment.topRight,
                     child: GCWPopupMenu(
-                        iconData: Icons.more_vert,
+                        icon: Icons.more_vert,
                         menuItemBuilder: (context) => [
                               GCWPopupMenuItem(
                                   child:
@@ -465,7 +478,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                   },
                 ),
                 GCWPopupMenu(
-                    iconData: Icons.more_vert,
+                    icon: Icons.more_vert,
                     size: IconButtonSize.SMALL,
                     menuItemBuilder: (context) => [
                           GCWPopupMenuItem(
@@ -570,7 +583,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                                       ],
                                     )),
                                     GCWPopupMenu(
-                                        iconData: Icons.more_vert,
+                                        icon: Icons.more_vert,
                                         size: IconButtonSize.SMALL,
                                         menuItemBuilder: (context) => [
                                               GCWPopupMenuItem(
@@ -585,7 +598,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                                                       'formulasolver_formulas_showonmap',
                                                     ),
                                                     action: (idx) {
-                                                      if (index + 1 >= coordinates.length) return;
+                                                      if (index + 1 > coordinates.length) return;
 
                                                       _showFormulaResultOnMap(
                                                           [_createMapPoint(coordinates[index + 1]!)]);
@@ -625,22 +638,28 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                 tool: GCWMapView(
                   points: coordinates,
                 ),
-                id: 'coords_map_view',
+                id: 'coords_openmap',
                 autoScroll: false,
                 suppressToolMargin: true)));
   }
 
-  Widget _buildFormulaText(String formula, List<FormulaValue> values, int formulaIndex) {
+  Widget _buildFormulaText(String formula, List<FormulaValue> values, int formulaIndex, List<Formula> formulas) {
     Map<String, String> vals = {};
+    List<String> formulaNames = [];
+
     for (var value in values) {
       vals.putIfAbsent(value.key, () => value.value);
+    }
+
+    for (var formula in formulas) {
+      formulaNames.add(formula.name);
     }
 
     return SelectableText.rich(TextSpan(
         children: _buildTextSpans(
             formula,
-            formulaPainter.paintFormula(
-                formula, values, formulaIndex, Prefs.getBool(PREFERENCE_FORMULASOLVER_COLOREDFORMULAS)))));
+            formulaPainter.paintFormula(formula, values, formulaIndex, formulaNames,
+                Prefs.getBool(PREFERENCE_FORMULASOLVER_COLOREDFORMULAS)))));
   }
 
   List<InlineSpan> _buildTextSpans(String formula, String formulaColors) {

@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:math';
 
+import 'package:archive/archive_io.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
 
@@ -74,19 +76,14 @@ String insertSpaceEveryNthCharacter(String input, int n) {
 String insertEveryNthCharacter(String input, int n, String textToInsert) {
   if (n <= 0) return input;
 
-  String out = '';
-  int i = 0;
-  while (i < input.length) {
-    if (input.length - i <= n) {
-      out += input.substring(i);
-      break;
+  StringBuffer buffer = StringBuffer();
+  for (int i = 0; i < input.length; i++) {
+    if (i > 0 && i % n == 0) {
+      buffer.write(textToInsert);
     }
-
-    out += input.substring(i, min(i + n, input.length)) + textToInsert;
-    i += n;
+    buffer.write(input[i]);
   }
-
-  return out;
+  return buffer.toString();
 }
 
 bool isUpperCase(String letter) {
@@ -137,6 +134,12 @@ String removeControlCharacters(String input) {
   return String.fromCharCodes(removedCodes);
 }
 
+String reverse(String input) {
+  if (input.length < 2) return input;
+
+  return input.split('').reversed.join();
+}
+
 String normalizeCharacters(String input) {
   if (input.isEmpty) {
     return input;
@@ -145,9 +148,9 @@ String normalizeCharacters(String input) {
   const Map<String, String> _ALTERNATE_CHARACTERS = {
     // https://www.compart.com/de/unicode/category/Zs and Tab
     ' ': '\u0009\u000B\u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2007\u2008\u2009\u200A\u202F\u205F\u3000',
-    '"': '\u201e\u201f\u201d\u201c',
+    '"': '\u201e\u201f\u201d\u201c\u00ab\u00bb',
     '\'': '\u201b\u201a\u2019\u2018',
-    '-': '\u2014\u2013\u02d7\u2212\u2012',
+    '-': '\u2014\u2013\u02d7\u2212\u2012'
   };
 
   _ALTERNATE_CHARACTERS.forEach((key, value) {
@@ -207,4 +210,38 @@ String trimCharactersRight(String text, String characters) {
   }
 
   return text;
+}
+
+String trimCharacters(String text, String characters) {
+  return trimCharactersLeft(trimCharactersRight(text, characters), characters);
+}
+
+List<String> splitGroupsOfSameCharacters(String text) {
+  var regex = RegExp(r'(.)\1*');
+  var matches = regex.allMatches(text);
+
+  List<String> out = [];
+  for (final Match m in matches) {
+    out.add(m[0]!);
+  }
+
+  return out;
+}
+
+String compressString(String text) {
+  if (text.isEmpty) return '';
+  var bytes = utf8.encode(text);
+  var compressedBytes = const ZLibEncoder().encode(bytes);
+  return base64.encode(compressedBytes);
+}
+
+String decompressString(String text) {
+  if (text.isEmpty) return '';
+  var compressedBytes = base64.decode(text);
+  var decompressedBytes = const ZLibDecoder().decodeBytes(compressedBytes);
+  return utf8.decode(decompressedBytes);
+}
+
+bool hasLetters(String text) {
+  return removeAccents(text).contains(RegExp(r'[A-Za-z]'));
 }

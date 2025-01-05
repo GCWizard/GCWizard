@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/constants.dart';
 import 'package:tuple/tuple.dart';
+import 'package:utility/utility.dart';
 
 enum SegmentDisplayType {
   SEVEN,
@@ -318,7 +319,7 @@ const Map<String, List<String>> _AZTo14Segment = {
   '>': ['h', 'k'],
   '[': ['a', 'd', 'e', 'f'],
   ']': ['a', 'b', 'c', 'd'],
-  '?': ['a2', 'b', 'f', 'g2', 'k'],
+  '?': ['a', 'b', 'f', 'g2', 'k'],
   '/': ['j', 'k'],
   '\\': ['h', 'm'],
   '+': ['g1', 'g2', 'i', 'l'],
@@ -789,28 +790,34 @@ Segments encodeSegment(String input, SegmentDisplayType segmentType) {
       AZToSegment = _AZTo7Segment;
       break;
     case SegmentDisplayType.SEVEN12345678:
-      AZToSegment = _convertCharacterMap(_AZTo7Segment, _7SegmentTo12345678);
+      AZToSegment = _convertCharacterMap(_AZTo7Segment, _7SegmentVariants[SegmentDisplayType.SEVEN12345678]!);
       break;
     case SegmentDisplayType.FOURTEEN:
       AZToSegment = _AZTo14Segment;
       break;
     case SegmentDisplayType.FOURTEEN_HIJ_G1G2_MLK:
-      AZToSegment = _convertCharacterMap(_AZTo7Segment, _14SegmentTo_hij_g1g2_mlk);
+      AZToSegment = _convertCharacterMap(_AZTo14Segment, _14SegmentVariants[SegmentDisplayType.FOURTEEN_HIJ_G1G2_MLK]!);
       break;
     case SegmentDisplayType.FOURTEEN_PGH_NJ_MLK:
-      AZToSegment = _convertCharacterMap(_AZTo7Segment, _14SegmentTo_pgh_nj_mlk);
+      AZToSegment = _convertCharacterMap(_AZTo14Segment, _14SegmentVariants[SegmentDisplayType.FOURTEEN_PGH_NJ_MLK]!);
       break;
     case SegmentDisplayType.FOURTEEN_KMN_G1G2_RST:
-      AZToSegment = _convertCharacterMap(_AZTo7Segment, _14SegmentTo_kmn_g1g2_rst);
+      AZToSegment = _convertCharacterMap(_AZTo14Segment, _14SegmentVariants[SegmentDisplayType.FOURTEEN_KMN_G1G2_RST]!);
       break;
     case SegmentDisplayType.FOURTEEN_GHJ_PK_NMI:
-      AZToSegment = _convertCharacterMap(_AZTo7Segment, _14SegmentTo_ghj_pk_nmi);
+      AZToSegment = _convertCharacterMap(_AZTo14Segment, _14SegmentVariants[SegmentDisplayType.FOURTEEN_GHJ_PK_NMI]!);
       break;
     case SegmentDisplayType.FOURTEEN_HJK_G1G2_NML:
-      AZToSegment = _convertCharacterMap(_AZTo7Segment, _14SegmentTo_hjk_g1g2_nml);
+      AZToSegment = _convertCharacterMap(_AZTo14Segment, _14SegmentVariants[SegmentDisplayType.FOURTEEN_HJK_G1G2_NML]!);
+      break;
+    case SegmentDisplayType.FOURTEEN_HJK_GM_QPN:
+      AZToSegment = _convertCharacterMap(_AZTo14Segment, _14SegmentVariants[SegmentDisplayType.FOURTEEN_HJK_GM_QPN]!);
       break;
     case SegmentDisplayType.SIXTEEN:
       AZToSegment = _AZTo16Segment;
+      break;
+    case SegmentDisplayType.SIXTEEN_KMN_UP_TSR:
+      AZToSegment = _convertCharacterMap(_AZTo16Segment, _16SegmentVariants[SegmentDisplayType.SIXTEEN_KMN_UP_TSR]!);
       break;
     default:
   }
@@ -848,7 +855,7 @@ SegmentsText decodeSegment(String input, SegmentDisplayType segmentType) {
       baseSegments = _detectVariant(input, _7SegmentVariants.values);
       break;
     case SegmentDisplayType.SEVEN12345678:
-      baseSegments = _7SegmentTo12345678;
+      baseSegments = _7SegmentVariants[SegmentDisplayType.SEVEN12345678]!;
       break;
     case SegmentDisplayType.FOURTEEN:
       baseSegments = _createBaseVariant(_baseSegments14Segment);
@@ -857,22 +864,28 @@ SegmentsText decodeSegment(String input, SegmentDisplayType segmentType) {
       baseSegments = _detectVariant(input, _14SegmentVariants.values);
       break;
     case SegmentDisplayType.FOURTEEN_HIJ_G1G2_MLK:
-      baseSegments = _14SegmentTo_hij_g1g2_mlk;
+      baseSegments = _14SegmentVariants[SegmentDisplayType.FOURTEEN_HIJ_G1G2_MLK]!;
       break;
     case SegmentDisplayType.FOURTEEN_PGH_NJ_MLK:
-      baseSegments = _14SegmentTo_pgh_nj_mlk;
+      baseSegments = _14SegmentVariants[SegmentDisplayType.FOURTEEN_PGH_NJ_MLK]!;
       break;
     case SegmentDisplayType.FOURTEEN_KMN_G1G2_RST:
-      baseSegments = _14SegmentTo_kmn_g1g2_rst;
+      baseSegments = _14SegmentVariants[SegmentDisplayType.FOURTEEN_KMN_G1G2_RST]!;
       break;
     case SegmentDisplayType.FOURTEEN_GHJ_PK_NMI:
-      baseSegments = _14SegmentTo_ghj_pk_nmi;
+      baseSegments = _14SegmentVariants[SegmentDisplayType.FOURTEEN_GHJ_PK_NMI]!;
       break;
     case SegmentDisplayType.FOURTEEN_HJK_G1G2_NML:
-      baseSegments = _14SegmentTo_hjk_g1g2_nml;
+      baseSegments = _14SegmentVariants[SegmentDisplayType.FOURTEEN_HJK_G1G2_NML]!;
+      break;
+    case SegmentDisplayType.FOURTEEN_HJK_GM_QPN:
+      baseSegments = _14SegmentVariants[SegmentDisplayType.FOURTEEN_HJK_GM_QPN]!;
       break;
     case SegmentDisplayType.SIXTEEN:
       baseSegments = _createBaseVariant(_baseSegments16Segment);
+      break;
+    case SegmentDisplayType.SIXTEEN_KMN_UP_TSR:
+      baseSegments = _16SegmentVariants[SegmentDisplayType.SIXTEEN_KMN_UP_TSR]!;
       break;
     case SegmentDisplayType.SIXTEENAUTO:
       baseSegments = _detectVariant(input, _16SegmentVariants.values);
@@ -1029,19 +1042,19 @@ Map<String, String> _detectVariant(String input, Iterable<Map<String, String>> v
 Tuple2<String, int> _splitSegment(String input, int i, Map<String, String> baseSegments) {
   var segment = input[i];
 
-  if (i + 2 < input.length && segment + input[i + 1] + input[i + 2] == 'dp1') {
-    segment += segment + input[i + 1] + input[i + 2];
+  if (i + 2 < input.length && segment + input[i + 1] + input[i + 2] == 'dp1' && baseSegments.containsKey('dp1')) {
+    segment += input[i + 1] + input[i + 2];
     i += 2;
-  } else if (i + 1 < input.length && segment + input[i + 1] == 'dp') {
+  } else if (i + 1 < input.length && segment + input[i + 1] == 'dp' && baseSegments.containsKey('dp')) {
     segment += input[i + 1];
     i++;
-  } else if (i + 1 < input.length && ['1', '2'].contains(input[i + 1])) {
+  } else if (!input[i].isNumber && segment != ' ' && i + 1 < input.length && ['1', '2'].contains(input[i + 1])) {
     segment += input[i + 1];
     i++;
   }
 
   if (baseSegments.containsKey(segment)) {
-    return Tuple2<String, int>(segment, i);
+    return Tuple2<String, int>(baseSegments[segment]!, i);
   } else {
     return Tuple2<String, int>('', i);
   }

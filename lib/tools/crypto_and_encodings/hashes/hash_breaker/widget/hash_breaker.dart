@@ -121,11 +121,15 @@ class _HashBreakerState extends State<HashBreaker> {
     return GCWKeyValueEditor(
       keyHintText: i18n(context, 'coords_variablecoordinate_variable'),
       valueHintText: i18n(context, 'coords_variablecoordinate_possiblevalues'),
-      valueInputFormatters: [VariableStringTextInputFormatter()],
+      addValueInputFormatters: [VariableStringTextInputFormatter()],
       valueFlex: 4,
       entries: _currentSubstitutions,
       onNewEntryChanged: (entry) => _updateNewEntry(entry),
       onAddEntry: (entry) => _onAddEntry(entry),
+      validateEditedValue: (String input) {
+        return VARIABLESTRING.hasMatch(input);
+      },
+      invalidEditedValueMessage: i18n(context, 'formulasolver_values_novalidinterpolated'),
     );
   }
 

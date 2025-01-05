@@ -13,9 +13,13 @@ import 'package:tuple/tuple.dart';
 part 'package:gc_wizard/tools/images_and_files/hidden_data/logic/file_size.dart';
 
 const HIDDEN_FILE_IDENTIFIER = '<<!!!HIDDEN_FILE!!!>>';
+const _MAX_SOUND_CHECKS = 10;
+var _soundCheckCounter = 0;
+
 
 Future<List<GCWFile>> hiddenData(GCWFile data) async {
   data.children = null;
+  _soundCheckCounter = 0;
   return Future.value((await _hiddenData(data, 0)).item1);
 }
 
@@ -147,7 +151,6 @@ Future<Tuple2<List<GCWFile>, int>> _searchMagicBytes(
               // extract data and check for completeness (only first block)
               var result =
                   await _splitFile(GCWFile(bytes: data.bytes.sublist(bytesOffset)), fileIndexCounter, onlyParent: true);
-              if (bytesOffset == 14964) bytesOffset = bytesOffset;
               // append file as result, if it is a valid file
               _addFiles(resultList, result.item1);
 
@@ -170,10 +173,15 @@ Future<bool> _checkFileValid(GCWFile data) async {
     if (_fileClass == FileClass.IMAGE) {
       result = Image.decodeImage(data.bytes) != null;
     } else if (_fileClass == FileClass.SOUND) {
-      var advancedPlayer = Audio.AudioPlayer();
-      await advancedPlayer.setSourceBytes(data.bytes);
-      var duration = await advancedPlayer.getDuration();
-      result = duration == null ? false : duration.inMilliseconds > 0;
+      if (_soundCheckCounter <= _MAX_SOUND_CHECKS) {
+        _soundCheckCounter++;
+        var advancedPlayer = Audio.AudioPlayer();
+        await advancedPlayer.setSourceBytes(data.bytes);
+        var duration = await advancedPlayer.getDuration();
+        result = duration == null ? false : duration.inMilliseconds > 0;
+      } else {
+        return false;
+      }
     }
   } catch (e) {
     result = false;

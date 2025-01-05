@@ -1,0 +1,51 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+class "gcw_coords_formatselector.GCWCoordsFormatSelector" {
+  +void Function(CoordinateFormat) onChanged
+  +CoordinateFormat format
+  +_bool input
+  +List<GCWDropDownMenuItem<CoordinateFormatKey>> getDropDownItems()
+}
+
+abstract class "gcw_coords.GCWCoordWidget" {
+  +bool initialize
+  +BaseCoordinate? coordinates
+  +void Function(BaseCoordinate?) onChanged
+}
+
+abstract class "gcw_coords.GCWCoordWidgetInfo" {
+  +CoordinateFormatKey type
+  +String i18nKey
+  +String name
+  +String example
+  +GCWCoordWidget mainWidget()
+}
+
+class "gcw_coords.GCWCoordWidgetSubtypeInfo" {
+  +CoordinateFormatKey type
+  +String name
+}
+
+abstract class "gcw_coords.GCWCoordWidgetWithSubtypeInfo" {
+  +CoordinateFormatKey subtype
+  +List<_GCWCoordWidgetSubtypeInfo> subtypes
+  +Widget inputWidget()
+  +Widget outputWidget()
+}
+"gcw_coords.GCWCoordWidgetInfo" <|.. "gcw_coords.GCWCoordWidgetWithSubtypeInfo"
+"gcw_coords.GCWCoordWidgetWithSubtypeInfo" <-- "gcw_coords.GCWCoordWidgetSubtypeInfo"
+
+
+class "gcw_coords.GCWCoords" {
+  +void Function(BaseCoordinate) onChanged
+  +LatLng? coordinates
+  +CoordinateFormat coordsFormat
+  +String? title
+  +bool? notitle
+}
+
+"gcw_coords.List<allCoordinateWidgetInfos>" --> "gcw_coords.GCWCoordWidgetInfo"
+"gcw_coords.List<allCoordinateWidgetInfos>" <-- "gcw_coords_formatselector.GCWCoordsFormatSelector"
+"gcw_coords.GCWCoordWidgetInfo" <-- "gcw_coords.GCWCoordWidget"
+@enduml

@@ -1,5 +1,6 @@
 import 'package:gc_wizard/application/webapi/api_mapper.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/reverse/logic/reverse.dart';
+import 'package:gc_wizard/utils/string_utils.dart' as strUtils;
 
 const String _apiSpecification = '''
 {
@@ -43,13 +44,13 @@ class ReverseAPIMapper extends APIMapper {
     if (input == null) {
       return '';
     }
-    return reverse(input);
+    return reverseAll(input);
   }
 
   /// convert doLogic output to map
   @override
   Map<String, String> toMap(Object result) {
-    return <String, String>{enumName(WEBPARAMETER.result.toString()): result.toString()};
+    return <String, String>{strUtils.enumName(WEBPARAMETER.result.toString()): result.toString()};
   }
 
   @override

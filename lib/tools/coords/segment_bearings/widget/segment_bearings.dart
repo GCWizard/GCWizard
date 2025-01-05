@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_output.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_distance.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -12,8 +9,11 @@ import 'package:gc_wizard/common_widgets/spinners/gcw_double_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/segment_bearings/logic/segment_bearings.dart';
@@ -46,7 +46,7 @@ class _SegmentBearingsState extends State<SegmentBearings> {
 
   var _currentOutputFormat = defaultCoordinateFormat;
 
-  List<String> _currentOutputs = [];
+  List<BaseCoordinate> _currentOutputs = [];
   Widget _currentBearingOutput = Container();
 
   @override
@@ -58,7 +58,9 @@ class _SegmentBearingsState extends State<SegmentBearings> {
           coordsFormat: _currentCoordsStart.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoordsStart = ret;
+              if (ret != null) {
+                _currentCoordsStart = ret;
+              }
             });
           },
         ),
@@ -85,11 +87,12 @@ class _SegmentBearingsState extends State<SegmentBearings> {
                 },
               )
             : GCWCoords(
-                notitle: true,
                 coordsFormat: _currentCoords1.format,
                 onChanged: (ret) {
                   setState(() {
-                    _currentCoords1 = ret;
+                    if (ret != null) {
+                      _currentCoords1 = ret;
+                    }
                   });
                 },
               ),
@@ -116,11 +119,12 @@ class _SegmentBearingsState extends State<SegmentBearings> {
                 },
               )
             : GCWCoords(
-                notitle: true,
                 coordsFormat: _currentCoords2.format,
                 onChanged: (ret) {
                   setState(() {
-                    _currentCoords2 = ret;
+                    if (ret != null) {
+                      _currentCoords2 = ret;
+                    }
                   });
                 },
               ),
@@ -240,8 +244,8 @@ class _SegmentBearingsState extends State<SegmentBearings> {
     _currentMapPoints.add(endMapPoint2);
     _currentMapPolylines.add(GCWMapPolyline(points: [startMapPoint, endMapPoint2]));
 
-    _currentOutputs = List<String>.from(segments.points.map((point) {
-      return formatCoordOutput(point, _currentOutputFormat, defaultEllipsoid);
+    _currentOutputs = List<BaseCoordinate>.from(segments.points.map((point) {
+      return buildCoordinate(_currentOutputFormat, point);
     }).toList());
 
     var bearingOutput = doubleFormat.format(segments.segmentAngle);

@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords_formatselector.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/dec/logic/dec.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_metadata.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_formatselector.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 
 class FormatConverter extends StatefulWidget {
@@ -25,7 +25,7 @@ class FormatConverter extends StatefulWidget {
 
 class _FormatConverterState extends State<FormatConverter> {
   var _currentCoords = defaultBaseCoordinate;
-  String _currentOutput = '';
+  Object _currentOutput = '';
 
   var _currentMapPoint = GCWMapPoint(point: defaultCoordinate);
   var _currentOutputFormat = defaultCoordinateFormat;
@@ -37,7 +37,7 @@ class _FormatConverterState extends State<FormatConverter> {
 
     if (_currentCoords.format.type == _currentOutputFormat.type) {
       if (_currentOutputFormat.type == CoordinateFormatKey.DMM) {
-        _currentCoords = DEC.fromLatLon(defaultCoordinate);
+        _currentCoords = DECCoordinate.fromLatLon(defaultCoordinate);
       } else {
         _currentOutputFormat = CoordinateFormat(CoordinateFormatKey.DMM);
       }
@@ -51,9 +51,9 @@ class _FormatConverterState extends State<FormatConverter> {
         GCWCoords(
           title: i18n(context, 'coords_formatconverter_coord'),
           coordsFormat: _currentCoords.format,
-          onChanged: (BaseCoordinate ret) {
+          onChanged: (ret) {
             setState(() {
-              if (ret.toLatLng() != null) {
+              if (ret != null) {
                 _currentCoords = ret;
               }
             });
@@ -96,12 +96,15 @@ class _FormatConverterState extends State<FormatConverter> {
   }
 
   void _calculateOutput(BuildContext context) {
-    if (_currentCoords.toLatLng() != null) {
-      _currentOutput = formatCoordOutput(_currentCoords.toLatLng()!, _currentOutputFormat);
-      _currentMapPoint = GCWMapPoint(point: _currentCoords.toLatLng()!);
+    var outputLatLng = _currentCoords.toLatLng();
+    if (outputLatLng != null) {
+      _currentOutput = buildCoordinate(_currentOutputFormat, outputLatLng);
+      _currentMapPoint = GCWMapPoint(point: outputLatLng);
     } else {
-      _currentOutput = '';
+      _currentOutput = i18n(context, 'coords_formatconverter_invalid_coordinate');
       _currentMapPoint = GCWMapPoint(point: defaultCoordinate);
+      _currentAllOutput = GCWCoordsOutput(outputs: [_currentOutput], points: [_currentMapPoint]);
+      return;
     }
 
     if (_currentOutputFormat.type == CoordinateFormatKey.ALL) {
@@ -114,12 +117,13 @@ class _FormatConverterState extends State<FormatConverter> {
 
     List<List<String>> children = _currentCoords.toLatLng() == null
         ? []
-        : allCoordinateFormatMetadata.map((CoordinateFormatMetadata coordFormat) {
+        : allCoordinateWidgetInfos.map((coordFormat) {
             var format = CoordinateFormat(coordFormat.type);
             var name = i18n(context, coordFormat.name, ifTranslationNotExists: coordFormat.name);
-            if (format.subtype != null) {
-              var subtypeMetadata = coordinateFormatMetadataByKey(format.subtype!);
-              var subtypeName = i18n(context, subtypeMetadata.name);
+            if (coordFormat is GCWCoordWidgetWithSubtypeInfo) {
+              format = CoordinateFormat(coordFormat.type, coordFormat.subtype);
+              var subtypeWidgetInfo = coordinateWidgetSubtypeInfoByType(coordFormat, coordFormat.subtype);
+              var subtypeName = i18n(context, subtypeWidgetInfo!.name);
               if (subtypeName.isNotEmpty) {
                 name += '\n' + subtypeName;
               }
@@ -135,7 +139,7 @@ class _FormatConverterState extends State<FormatConverter> {
 class _GCWCoordsFormatSelectorAll extends GCWCoordsFormatSelector {
   const _GCWCoordsFormatSelectorAll(
       {Key? key, required void Function(CoordinateFormat) onChanged, required CoordinateFormat format})
-      : super(key: key, onChanged: onChanged, format: format);
+      : super(key: key, input: false, onChanged: onChanged, format: format);
 
   @override
   List<GCWDropDownMenuItem<CoordinateFormatKey>> getDropDownItems(BuildContext context) {

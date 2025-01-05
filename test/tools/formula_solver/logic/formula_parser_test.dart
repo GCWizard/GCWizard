@@ -43,7 +43,7 @@ void main() {
       {'formula' : ' ', 'expectedOutput' : {'state': 'error', 'output': [{'result': '', 'state': 'error'}]}},
       {'formula' : 'A', 'values': <String, String>{}, 'expectedOutput' : {'state': 'error', 'output': [{'result': 'A', 'state': 'error'}]}},
       {'formula' : '0', 'values': <String, String>{}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0', 'state': 'ok'}]}},
-      {'formula' : '0', 'values': <String, String>{'0': '1'}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '1', 'state': 'ok'}]}},
+      {'formula' : '0', 'values': <String, String>{'0': '1'}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0', 'state': 'ok'}]}},
 
       {'formula' : 'A', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3', 'state': 'ok'}]}},
       {'formula' : 'AB', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '320', 'state': 'ok'}]}},
@@ -95,6 +95,7 @@ void main() {
       {'formula' : '\u03a6 * \u03c6 + 1', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3.61803398875', 'state': 'ok'}]}},
       {'formula' : 'A + 1', 'values': {'A': '\u03a6'}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2.61803398875', 'state': 'ok'}]}},
       {'formula' : '5! + 1', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '121', 'state': 'ok'}]}},
+      {'formula' : 'nth(round(11653180/56*0.006,0),2)', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2', 'state': 'ok'}]}},
 
       //Referencing values
       {'formula' : 'F', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '1', 'state': 'ok'}]}},
@@ -106,6 +107,9 @@ void main() {
       {'formula' : 'A', 'values': {'A': 'B', 'B': 'C', 'C': '12'}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '12', 'state': 'ok'}]}},
       {'formula' : 'A', 'values': {'A': 'B', 'B': 'C', 'C': 'DE', 'D': '1', 'E': 'F', 'F': '2'}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '12', 'state': 'ok'}]}},
       {'formula' : 'A', 'values': {'A': 'B', 'B': 'C', 'C': 'DE', 'D': '1', 'E': 'F'}, 'expectedOutput' : {'state': 'error', 'output': [{'result': '1F', 'state': 'error'}]}},
+      {'formula' : 'A', 'values': {'A': 'A'}, 'expectedOutput' : {'state': 'error', 'output': [{'result': 'A', 'state': 'error'}]}},
+      {'formula' : '[A][B]', 'values': {'A': 'len(a)'}, 'expectedOutput' : {'state': 'error', 'output': [{'result': '[len(A)][B]', 'state': 'error'}]}}, // expected no recursion because recursion times: values.length^2, whereas B is not set and hence no countable value
+      {'formula' : '[A][B]', 'values': {'A': 'len(a)', 'B': '1'}, 'expectedOutput' : {'state': 'error', 'output': [{'result': '[len(len(len(len(A))))]1', 'state': 'error'}]}}, // recursion 4 times because values.length^2 on two countable values
 
       // special characters
       {'formula' : 'A\u0009+\u00A0B', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '23', 'state': 'ok'}]}},
@@ -239,6 +243,10 @@ void main() {
         FormulaValue('A', 'sqrt(121)', type: FormulaValueType.FIXED),
         FormulaValue('D', 'cs(A)', type: FormulaValueType.FIXED),
       ], 'expectedOutput' : {'state': 'ok', 'output': [{'result': '1.414213562373', 'state': 'ok'}]}},
+      {'formula' : '(a*b)', 'values': [
+        FormulaValue('A', 'bww("vga")', type: FormulaValueType.FIXED),
+        FormulaValue('B', 'bww("usb")', type: FormulaValueType.FIXED),
+      ], 'expectedOutput' : {'state': 'ok', 'output': [{'result': '1260', 'state': 'ok'}]}},
     ];
 
     for (var elem in _inputsToExpected) {
@@ -296,6 +304,7 @@ void main() {
       {'formula' : 'A B', 'values': [FormulaValue('A', '"ABC"', type: FormulaValueType.FIXED), FormulaValue('B', '\'xyz\'', type: FormulaValueType.FIXED)], 'expectedOutput' : {'state': 'ok', 'output': [{'result': 'ABCxyz', 'state': 'ok'}]}},
       {'formula' : 'A "C" B', 'values': [FormulaValue('A', '"ABC"', type: FormulaValueType.FIXED), FormulaValue('B', '\'xyz\'', type: FormulaValueType.FIXED)], 'expectedOutput' : {'state': 'ok', 'output': [{'result': 'ABCCxyz', 'state': 'ok'}]}},
       {'formula' : 'A C B', 'values': [FormulaValue('A', '"ABC"', type: FormulaValueType.FIXED), FormulaValue('B', '\'xyz\'', type: FormulaValueType.FIXED)], 'expectedOutput' : {'state': 'error', 'output': [{'result': '"ABC" C \'xyz\'', 'state': 'error'}]}},
+      {'formula' : 'D', 'values': [FormulaValue('D', '"A\nB"', type: FormulaValueType.FIXED)], 'expectedOutput' : {'state': 'ok', 'output': [{'result': 'A B', 'state': 'ok'}]}},
 
       {'formula' : 'bww(\'\')', 'values': <FormulaValue>[], 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0', 'state': 'ok'}]}},
       {'formula' : 'bww("")', 'values': <FormulaValue>[], 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0', 'state': 'ok'}]}},
@@ -309,6 +318,7 @@ void main() {
       {'formula' : 'bww("ABCD\')', 'values': <FormulaValue>[], 'expectedOutput' : {'state': 'error', 'output': [{'result': 'bww("ABCD\')', 'state': 'error'}]}},
       {'formula' : '"bww("ABCD\')', 'values': <FormulaValue>[], 'expectedOutput' : {'state': 'error', 'output': [{'result': '"bww("ABCD\')', 'state': 'error'}]}},
       {'formula' : '"bww(\'\')', 'values': <FormulaValue>[], 'expectedOutput' : {'state': 'error', 'output': [{'result': '"bww(\'\')', 'state': 'error'}]}},
+      {'formula' : 'bww(\u00bbABCD\u00ab)', 'values': <FormulaValue>[], 'expectedOutput' : {'state': 'ok', 'output': [{'result': '10', 'state': 'ok'}]}},
 
       {'formula' : 'bww(AB,CD)', 'values': <FormulaValue>[], 'expectedOutput' : {'state': 'error', 'output': [{'result': 'bww(AB,CD)', 'state': 'error'}]}},
       {'formula' : 'bww("AB",\'CD\')', 'values': <FormulaValue>[], 'expectedOutput' : {'state': 'error', 'output': [{'result': 'bww("AB",\'CD\')', 'state': 'error'}]}},
@@ -333,6 +343,7 @@ void main() {
       {'formula' : 'bww(A)', 'values': [FormulaValue('A', 'ABC', type: FormulaValueType.FIXED)], 'expectedOutput' : {'state': 'error', 'output': [{'result': 'bww(ABC)', 'state': 'error'}]}},
       {'formula' : 'bww(A)', 'values': [FormulaValue('A', '"ABC"', type: FormulaValueType.FIXED)], 'expectedOutput' : {'state': 'ok', 'output': [{'result': '6', 'state': 'ok'}]}},
       {'formula' : 'bww(A)', 'values': [FormulaValue('A', '\'ABC\'', type: FormulaValueType.FIXED)], 'expectedOutput' : {'state': 'ok', 'output': [{'result': '6', 'state': 'ok'}]}},
+      {'formula' : 'bww(A)', 'values': [FormulaValue('A', '\u00bbABC\u00ab', type: FormulaValueType.FIXED)], 'expectedOutput' : {'state': 'ok', 'output': [{'result': '6', 'state': 'ok'}]}},
 
       {'formula' : 'bww(A) + bww(A)', 'values': [FormulaValue('A', 'ABC', type: FormulaValueType.FIXED)], 'expectedOutput' : {'state': 'error', 'output': [{'result': 'bww(ABC) + bww(ABC)', 'state': 'error'}]}},
       {'formula' : 'bww(A) + bww(A)', 'values': [FormulaValue('A', '"ABC"', type: FormulaValueType.FIXED)], 'expectedOutput' : {'state': 'ok', 'output': [{'result': '12', 'state': 'ok'}]}},
@@ -478,6 +489,30 @@ void main() {
         FormulaValue('A', '1-3', type: FormulaValueType.INTERPOLATED),
         FormulaValue('B', '1', type: FormulaValueType.FIXED),
       ], 'expandValues': false, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '-1', 'state': 'ok'}]}},
+
+      {'formula' : 'A+B', 'values': [
+        FormulaValue('A', '1,2', type: FormulaValueType.INTERPOLATED),
+        FormulaValue('B', '', type: FormulaValueType.FIXED),
+      ], 'expectedOutput' : {'state': 'expanded_error', 'output': [
+        {'result': '1+B', 'state': 'error', 'variables': {'A': '1'}},
+        {'result': '2+B', 'state': 'error', 'variables': {'A': '2'}}
+      ]}},
+
+      {'formula' : 'A+B', 'values': [
+        FormulaValue('A', '1,2', type: FormulaValueType.INTERPOLATED),
+        FormulaValue('B', '', type: FormulaValueType.INTERPOLATED),
+      ], 'expectedOutput' : {'state': 'expanded_error', 'output': [
+        {'result': '1+B', 'state': 'error', 'variables': {'A': '1'}},
+        {'result': '2+B', 'state': 'error', 'variables': {'A': '2'}}
+      ]}},
+
+      {'formula' : 'A+B', 'values': [
+        FormulaValue('A', '1,2', type: FormulaValueType.INTERPOLATED),
+        FormulaValue('B', 'B', type: FormulaValueType.INTERPOLATED),
+      ], 'expectedOutput' : {'state': 'expanded_error', 'output': [
+        {'result': '1+B', 'state': 'error', 'variables': {'A': '1'}},
+        {'result': '2+B', 'state': 'error', 'variables': {'A': '2'}}
+      ]}},
 
       {'formula' : 'AB', 'values': [
         FormulaValue('A', '1', type: FormulaValueType.INTERPOLATED),

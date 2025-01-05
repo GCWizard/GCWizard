@@ -1,13 +1,13 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:archive/archive.dart';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/tools/science_and_technology/astronomy/iau_constellation/logic/iau_constellation.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/logic/symbol_table_data.dart';
 import 'package:gc_wizard/utils/data_type_utils/object_type_utils.dart';
+import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 
 class IAUSingleConstellation extends StatefulWidget {
   final String ConstellationName;
@@ -38,12 +38,11 @@ class IAUSingleConstellationState extends State<IAUSingleConstellation> {
   Future<void> _initalizeImages() async {
     // Read the Zip file from disk.
     final bytes = await DefaultAssetBundle.of(context).load(_ASSET_PATH);
-    InputStream input = InputStream(bytes.buffer.asByteData());
     // Decode the Zip file
-    final archive = ZipDecoder().decodeBuffer(input);
+    final archive = extractZipArchive(bytes.buffer.asUint8List());
 
     _images = [];
-    for (ArchiveFile file in archive) {
+    for (var file in archive) {
       var key = file.name.split('.png')[0];
 
       var imagePath = (file.isFile && SymbolTableConstants.IMAGE_SUFFIXES.hasMatch(file.name)) ? file.name : null;

@@ -36,9 +36,7 @@ ADFGVXReturnType? _encrypt(String input, String substitutionKey, String transpos
   var polybiosEncoded = polybiosOutput.output.replaceAll(' ', '');
   if (transpositionKey.isEmpty) {
     return ADFGVXReturnType(
-      output: insertSpaceEveryNthCharacter(polybiosEncoded, 5),
-      polybiosGrid: polybiosOutput.grid
-    );
+        output: insertSpaceEveryNthCharacter(polybiosEncoded, 5), polybiosGrid: polybiosOutput.grid);
   }
 
   transpositionKey = transpositionKey.toUpperCase();
@@ -64,10 +62,7 @@ ADFGVXReturnType? _encrypt(String input, String substitutionKey, String transpos
     }
   }
 
-  return ADFGVXReturnType(
-    output: insertSpaceEveryNthCharacter(out, 5),
-    polybiosGrid: polybiosOutput.grid
-  );
+  return ADFGVXReturnType(output: insertSpaceEveryNthCharacter(out, 5), polybiosGrid: polybiosOutput.grid);
 }
 
 ADFGVXReturnType? decryptADFGX(String input, String substitutionKey, String transpositionKey,
@@ -141,8 +136,5 @@ ADFGVXReturnType? _decrypt(String input, String substitutionKey, String transpos
 
   if (polybiosOutput == null) return null;
 
-  return ADFGVXReturnType(
-    output: polybiosOutput.output,
-    polybiosGrid: polybiosOutput.grid
-  );
+  return ADFGVXReturnType(output: polybiosOutput.output, polybiosGrid: polybiosOutput.grid);
 }

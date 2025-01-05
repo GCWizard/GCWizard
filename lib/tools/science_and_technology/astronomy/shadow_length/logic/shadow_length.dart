@@ -10,26 +10,27 @@ import 'package:latlong2/latlong.dart';
 
 class ShadowLength {
   final double length;
+  final double bearing;
   final LatLng shadowEndPosition;
   final SunPosition sunPosition;
 
-  ShadowLength(this.length, this.shadowEndPosition, this.sunPosition);
+  ShadowLength(this.length, this.bearing, this.shadowEndPosition, this.sunPosition);
 }
 
 ShadowLength shadowLength(
   double objectHeight,
   LatLng coords,
   Ellipsoid ells,
-  DateTimeTimezone datetime,
+  DateTimeTZ datetime,
 ) {
   var julianDate = JulianDate(datetime);
   var sunPosition = SunPosition(coords, julianDate, ells);
   var shadowLen =
       objectHeight * cos(degreesToRadian(sunPosition.altitude)) / sin(degreesToRadian(sunPosition.altitude));
   // Sun is in one Direction, so shadow is the opposite direction
-  var sunAzimuth = normalizeBearing(sunPosition.azimuth + 180.0);
+  var shadowAzimuth = normalizeBearing(sunPosition.azimuth + 180.0);
 
-  var _currentPosition = projection(coords, sunAzimuth, shadowLen, ells);
+  var _currentPosition = projection(coords, shadowAzimuth, shadowLen, ells);
 
-  return ShadowLength(shadowLen, _currentPosition, sunPosition);
+  return ShadowLength(shadowLen, shadowAzimuth, _currentPosition, sunPosition);
 }

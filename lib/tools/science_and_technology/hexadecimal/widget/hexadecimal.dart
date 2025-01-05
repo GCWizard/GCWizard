@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/text_input_formatters/gcw_onlydigitsandspace_textinputformatter.dart';
 import 'package:gc_wizard/common_widgets/text_input_formatters/gcw_onlyhexdigitsandspace_textinputformatter.dart';
@@ -18,6 +20,8 @@ class _HexadecimalState extends State<Hexadecimal> {
   var _currentHexValue = '';
   late TextEditingController _hexController;
   late TextEditingController _decimalController;
+
+  int _lengthHexadecimal = 2;
 
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
 
@@ -66,6 +70,16 @@ class _HexadecimalState extends State<Hexadecimal> {
             });
           },
         ),
+        _currentMode == GCWSwitchPosition.left
+            ? GCWIntegerSpinner(
+                title: i18n(context, 'hexadecimal_length'),
+                onChanged: (int value) {
+                  setState(() {
+                    _lengthHexadecimal = value;
+                  });
+                },
+                value: _lengthHexadecimal)
+            : Container(),
         GCWDefaultOutput(child: _buildOutput())
       ],
     );
@@ -73,9 +87,16 @@ class _HexadecimalState extends State<Hexadecimal> {
 
   String _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
-      return _currentDecimalValue.split(' ').map((value) => convertBase(value, 10, 16)).join(' ');
+      return _currentDecimalValue
+          .split(' ')
+          .map((value) => _padLeftZero(_lengthHexadecimal, convertBase(value, 10, 16)))
+          .join(' ');
     } else {
       return _currentHexValue.split(' ').map((value) => convertBase(value, 16, 10)).join(' ');
     }
+  }
+
+  String _padLeftZero(int length, String text) {
+    return text.padLeft(length, '0');
   }
 }

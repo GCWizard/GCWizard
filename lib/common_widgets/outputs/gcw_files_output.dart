@@ -160,7 +160,7 @@ class _GCWFilesOutputState extends State<GCWFilesOutput> {
     ];
 
     return GCWPopupMenu(
-      iconData: Icons.open_in_new,
+      icon: Icons.open_in_new,
       size: IconButtonSize.SMALL,
       menuItemBuilder: (context) => actions,
     );

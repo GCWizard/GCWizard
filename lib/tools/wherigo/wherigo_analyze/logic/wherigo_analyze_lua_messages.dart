@@ -140,9 +140,7 @@ List<List<WherigoActionMessageElementData>> _getAllMessagesAndDialogsFromLUA(
                 _singleMessageDialog.add(WherigoActionMessageElementData(
                     ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE, ActionMessageContent: line));
               }
-            } else if (lines[i].trimLeft().startsWith('Text = ') ||
-                lines[i].trimLeft().startsWith('Text = ' + _obfuscatorFunction + '(') ||
-                lines[i].trimLeft().startsWith('Text = (' + _obfuscatorFunction + '(')) {
+            } else if (lines[i].trimLeft().startsWith('Text = ')) {
               _singleMessageDialog.add(WherigoActionMessageElementData(
                   ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: getTextData(lines[i])));
             } else if (lines[i].trimLeft().startsWith('Media')) {
@@ -158,7 +156,7 @@ List<List<WherigoActionMessageElementData>> _getAllMessagesAndDialogsFromLUA(
                     ActionMessageContent: getTextData('Text = ' + lines[i].trim())));
                 i++;
                 lines[i] = lines[i].trim();
-              } while (lines[i].trimLeft() != '}');
+              } while (lines[i] != '}');
             }
 
             if (lines[i].trimLeft().startsWith('}, function(action)') ||

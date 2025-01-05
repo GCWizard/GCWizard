@@ -54,13 +54,13 @@ class _GCWDoubleTextFieldState extends State<GCWDoubleTextField> {
             return;
           }
 
+          text = text.replaceFirst(',', '.');
+
           if (!isDouble(text)) {
             return;
           }
 
           double _value;
-
-          text = text.replaceFirst(',', '.');
 
           if (['', '-', '.'].contains(text)) {
             _value = 0.0;

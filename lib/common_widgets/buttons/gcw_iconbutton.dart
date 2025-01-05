@@ -3,7 +3,7 @@ import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/utils/math_utils.dart';
 
-enum IconButtonSize { NORMAL, SMALL, TINY }
+enum IconButtonSize { NORMAL, SMALL, TINY, LARGE }
 
 class GCWIconButton extends StatelessWidget {
   final void Function() onPressed;
@@ -25,7 +25,8 @@ class GCWIconButton extends StatelessWidget {
       this.iconSize,
       this.iconColor,
       this.backgroundColor,
-      this.rotateDegrees, this.noBorder})
+      this.rotateDegrees,
+      this.noBorder})
       : super(key: key) {
     if (icon == null && customIcon == null) {
       throw Exception('No icon defined');
@@ -58,6 +59,11 @@ class GCWIconButton extends StatelessWidget {
         _buttonHeight = 18.0;
         _iconSize = iconSize ?? 17.0;
         break;
+      case IconButtonSize.LARGE:
+        _containerWidth = 52.0;
+        _buttonHeight = 48.0;
+        _iconSize = iconSize ?? 30.0;
+        break;
       default:
         throw Exception('Icon size is NULL');
     }
@@ -70,9 +76,11 @@ class GCWIconButton extends StatelessWidget {
       child: TextButton(
         style: TextButton.styleFrom(
             padding: EdgeInsets.zero,
-            shape: noBorder == null || !noBorder! ? RoundedRectangleBorder(
-                side: BorderSide(color: themeColors().secondary(), width: 1, style: BorderStyle.solid),
-                borderRadius: BorderRadius.circular(ROUNDED_BORDER_RADIUS)) : null,
+            shape: noBorder == null || !noBorder!
+                ? RoundedRectangleBorder(
+                    side: BorderSide(color: themeColors().secondary(), width: 1, style: BorderStyle.solid),
+                    borderRadius: BorderRadius.circular(ROUNDED_BORDER_RADIUS))
+                : null,
             backgroundColor: backgroundColor),
         onPressed: onPressed,
         child: Transform.rotate(

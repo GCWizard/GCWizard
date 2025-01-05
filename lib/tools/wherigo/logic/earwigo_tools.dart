@@ -61,7 +61,7 @@ String _wwb_deobf_obfuscation(String str) {
   String rot_palette = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@.-~";
   int plen = rot_palette.length;
 
-  var magic = {
+  const magic = {
     ["\x01"]: "B",
     ["\x02"]: "R",
     ["\x03"]: ""

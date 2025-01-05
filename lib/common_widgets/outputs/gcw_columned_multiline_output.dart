@@ -15,6 +15,7 @@ class GCWColumnedMultilineOutput extends StatefulWidget {
   final bool hasHeader;
   final bool copyAll;
   final List<void Function()>? tappables;
+  final TextStyle? style;
   final double fontSize;
   final List<Widget>? firstRows;
 
@@ -27,6 +28,7 @@ class GCWColumnedMultilineOutput extends StatefulWidget {
       this.hasHeader = false,
       this.copyAll = false,
       this.tappables,
+      this.style,
       this.fontSize = 0.0,
       this.firstRows})
       : super(key: key);
@@ -52,12 +54,13 @@ class _GCWColumnedMultilineOutputState extends State<GCWColumnedMultilineOutput>
     int index = 0;
     return widget.data.map((rowData) {
       Widget output;
+      var textStyle = widget.style ?? gcwTextStyle(fontSize: widget.fontSize);
 
       var columns = rowData
           .asMap()
           .map((index, column) {
-            var textStyle = gcwTextStyle(fontSize: widget.fontSize);
-            if (isFirst && widget.hasHeader) textStyle = textStyle.copyWith(fontWeight: FontWeight.bold);
+            var _textStyle = textStyle;
+            if (isFirst && widget.hasHeader) _textStyle = _textStyle.copyWith(fontWeight: FontWeight.bold);
 
             Widget child;
 
@@ -65,9 +68,9 @@ class _GCWColumnedMultilineOutputState extends State<GCWColumnedMultilineOutput>
               child = column;
             } else {
               if (widget.tappables == null || widget.tappables!.isEmpty) {
-                child = GCWText(text: column != null ? column.toString() : '', style: textStyle);
+                child = GCWText(text: column != null ? column.toString() : '', style: _textStyle);
               } else {
-                child = Text(column != null ? column.toString() : '', style: textStyle);
+                child = Text(column != null ? column.toString() : '', style: _textStyle);
               }
             }
 
@@ -122,7 +125,6 @@ class _GCWColumnedMultilineOutputState extends State<GCWColumnedMultilineOutput>
       odd = !odd;
 
       isFirst = false;
-
       if (widget.tappables != null) {
         return InkWell(
           onTap: widget.tappables![index++],

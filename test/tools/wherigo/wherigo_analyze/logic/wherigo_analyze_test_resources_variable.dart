@@ -8,6 +8,10 @@ List<WherigoVariableData> testOutputVARIABLE_BUILDERVAR = [
   ),
 ];
 
+String testInputVARIABLEGC3897N = '''
+_8KwNK.ZVariables = {}
+''';
+
 String testInputVARIABLEGC78Z6J = '''
 cartILuebeck.ZVariables = {
   WWB_device = nil,

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:collection/collection.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/dec/logic/dec.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/hashes/logic/hashes.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -11,7 +11,7 @@ import 'package:latlong2/latlong.dart';
 const _VALID_CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const _domain = 'http://geo.crox.net/djia';
 
-enum ErrorCode{Ok, futureDate, invalidDate}
+enum ErrorCode { Ok, futureDate, invalidDate }
 
 class Geohashing {
   int latitude;
@@ -47,7 +47,7 @@ Future<LatLng?> geohashingToLatLon(Geohashing geohashing) async {
     if (_validDate(_date) != ErrorCode.Ok && _date.weekday >= 6) {
       _date = _date.add(Duration(days: (_date.weekday == 6 ? -1 : -2)));
     }
-    var dji =  await dowJonesIndex(_date);
+    var dji = await dowJonesIndex(_date);
     geohashing.dowJonesIndex = dji ?? 0;
     if (dji == null) {
       geohashing.errorCode = _validDate(_date) != ErrorCode.Ok ? ErrorCode.futureDate : ErrorCode.invalidDate;
@@ -71,11 +71,11 @@ Geohashing? parseGeohashing(String input) {
   if (regExp.hasMatch(input)) {
     var match = regExp.firstMatch(input);
     var decString = input.substring(0, match!.start);
-    var dec = DEC.parse(decString, wholeString: false); // test before date
+    var dec = DECCoordinate.parse(decString); // test before date
 
     if (dec == null) {
       decString = input.substring(match.end);
-      dec = DEC.parse(decString, wholeString: false); // test after date
+      dec = DECCoordinate.parse(decString); // test after date
     }
     if (dec != null) {
       return Geohashing(DateTime(int.parse(match.group(1)!), int.parse(match.group(2)!), int.parse(match.group(3)!)),

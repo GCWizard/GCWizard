@@ -63,11 +63,11 @@ class SpellingAlphabetsListState extends State<SpellingAlphabetsList> {
   }
 
   Widget _buildOutput(BuildContext context) {
-    Map<String, String> spellingOverview = <String, String>{};
+    var spellingOverview = <MapEntry<String, String>>[];
     spellingOverview = SPELLING_ALPHABETS[_currentLanguage]!;
     return GCWDefaultOutput(
       child: GCWColumnedMultilineOutput(
-        data: spellingOverview.entries.map((entry) {
+        data: spellingOverview.map((entry) {
           return [entry.key, entry.value];
         }).toList(),
         flexValues: const [1, 3],

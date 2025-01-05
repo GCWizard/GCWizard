@@ -1,17 +1,17 @@
 import 'package:gc_wizard/tools/science_and_technology/primes/_common/logic/primes.dart';
 
 BigInt phi(BigInt p, BigInt q) {
-  if (!isPrime(p)) throw Exception('rsa_error_p.not.prime');
+  if (!isPrime(p)) throw const FormatException('rsa_error_p.not.prime');
 
-  if (!isPrime(q)) throw Exception('rsa_error_q.not.prime');
+  if (!isPrime(q)) throw const FormatException('rsa_error_q.not.prime');
 
   return (p - BigInt.one) * (q - BigInt.one);
 }
 
 BigInt N(BigInt p, BigInt q) {
-  if (!isPrime(p)) throw Exception('rsa_error_p.not.prime');
+  if (!isPrime(p)) throw const FormatException('rsa_error_p.not.prime');
 
-  if (!isPrime(q)) throw Exception('rsa_error_q.not.prime');
+  if (!isPrime(q)) throw const FormatException('rsa_error_q.not.prime');
 
   return p * q;
 }
@@ -33,7 +33,7 @@ List<BigInt>? encryptRSA(List<BigInt> input, BigInt e, BigInt p, BigInt q) {
 
   var _N = N(p, q);
 
-  if (!validateE(e, p, q)) throw Exception('rsa_error_phi.e.not.coprime');
+  if (!validateE(e, p, q)) throw const FormatException('rsa_error_phi.e.not.coprime');
 
   return input.map((number) => _encryptInteger(number, e, _N)).toList();
 }
@@ -41,9 +41,9 @@ List<BigInt>? encryptRSA(List<BigInt> input, BigInt e, BigInt p, BigInt q) {
 BigInt? calculateD(BigInt? e, BigInt? p, BigInt? q) {
   if (e == null || p == null || q == null) return null;
 
-  if (p > BigInt.from(10000) || p > BigInt.from(10000)) throw Exception('rsa_error_primes.too.large');
+  if (p > BigInt.from(10000) || p > BigInt.from(10000)) throw const FormatException('rsa_error_primes.too.large');
 
-  if (!validateE(e, p, q)) throw Exception('rsa_error_phi.e.not.coprime');
+  if (!validateE(e, p, q)) throw const FormatException('rsa_error_phi.e.not.coprime');
 
   var phiN = phi(p, q);
   var i = BigInt.one;
@@ -51,7 +51,7 @@ BigInt? calculateD(BigInt? e, BigInt? p, BigInt? q) {
     i = i + BigInt.one;
   }
 
-  if (i >= phiN) throw Exception('rsa_error_could.not.calc.d');
+  if (i >= phiN) throw const FormatException('rsa_error_could.not.calc.d');
 
   return i;
 }
@@ -66,7 +66,7 @@ List<BigInt>? decryptRSA(List<BigInt> input, BigInt d, BigInt p, BigInt q) {
   return input.map((number) {
     var _N = N(p, q);
 
-    if (!validateD(d, p, q)) throw Exception('rsa_error_phi.d.not.coprime');
+    if (!validateD(d, p, q)) throw const FormatException('rsa_error_phi.d.not.coprime');
 
     return _decryptInteger(number, d, _N);
   }).toList();

@@ -24,6 +24,7 @@ class GCWTextField extends StatefulWidget {
   final double? fontSize;
   final String title;
   final TextStyle? style;
+  final List<int> flexValues;
 
   const GCWTextField({
     Key? key,
@@ -44,6 +45,7 @@ class GCWTextField extends StatefulWidget {
     this.title = '',
     this.fontSize,
     this.style,
+    this.flexValues = const [],
   }) : super(key: key);
 
   @override
@@ -139,11 +141,11 @@ class _GCWTextFieldState extends State<GCWTextField> {
     return Row(
       children: [
         Expanded(
-            flex: 1,
+            flex: widget.flexValues.isNotEmpty ? widget.flexValues[0] : 1,
             child: GCWText(
               text: widget.title + ':',
             )),
-        Expanded(flex: 3, child: textField)
+        Expanded(flex: widget.flexValues.length > 1 ? widget.flexValues[1] : 3, child: textField)
       ],
     );
   }

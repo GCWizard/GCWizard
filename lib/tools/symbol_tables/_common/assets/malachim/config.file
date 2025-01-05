@@ -1,0 +1,6 @@
+{
+	"case_sensitive" : false,
+	"special_mappings" : {
+		"S1" : "S"
+    }
+}

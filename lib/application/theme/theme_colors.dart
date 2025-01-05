@@ -18,7 +18,7 @@ abstract class ThemeColors {
   Color inputBackground();
   Color secondary();
   Color focused();
-  Color inActive();
+  Color inactive();
 
   Color textFieldHintText();
   Color textFieldFill();
@@ -32,11 +32,11 @@ abstract class ThemeColors {
   Color switchTrack2();
 
   Color checkBoxActiveColor();
-  Color checkBoxFillColor(Set<MaterialState> states);
+  Color checkBoxFillColor(Set<WidgetState> states);
   Color checkBoxCheckColor();
   Color checkBoxFocusColor();
   Color checkBoxHoverColor();
-  Color checkBoxOverlayColor(Set<MaterialState> states);
+  Color checkBoxOverlayColor(Set<WidgetState> states);
 
   Color outputListOddRows();
 
@@ -73,8 +73,6 @@ void setThemeColors(ThemeType type) {
     case ThemeType.LIGHT:
       _themeColors = _ThemeColorsLight();
       break;
-    default:
-      return;
   }
 }
 

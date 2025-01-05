@@ -12,7 +12,7 @@ class MultiDecoderToolReverse extends AbstractMultiDecoderTool {
             name: name,
             internalToolName: MDT_INTERNALNAMES_REVERSE,
             onDecode: (String input, String key) {
-              return reverse(input);
+              return reverseAll(input);
             },
             options: options);
   @override

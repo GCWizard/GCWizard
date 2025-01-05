@@ -10,11 +10,11 @@ class GCWCheckBox extends StatefulWidget {
   final bool tristate;
   final TextStyle? textStyle;
   final Color? activeColor;
-  final MaterialStateProperty<Color>? fillColor;
+  final WidgetStateProperty<Color>? fillColor;
   final Color? checkColor;
   final Color? focusColor;
   final Color? hoverColor;
-  final MaterialStateProperty<Color>? overlayColor;
+  final WidgetStateProperty<Color>? overlayColor;
 
   const GCWCheckBox(
       {Key? key,
@@ -51,12 +51,12 @@ class _GCWCheckBoxState extends State<GCWCheckBox> {
                   value: widget.value,
                   onChanged: widget.onChanged,
                   activeColor: widget.activeColor ?? themeColors().checkBoxActiveColor(),
-                  fillColor: widget.fillColor ?? MaterialStateColor.resolveWith(themeColors().checkBoxFillColor),
+                  fillColor: widget.fillColor ?? WidgetStateColor.resolveWith(themeColors().checkBoxFillColor),
                   checkColor: widget.checkColor ?? themeColors().checkBoxCheckColor(),
                   focusColor: widget.focusColor ?? themeColors().checkBoxFocusColor(),
                   hoverColor: widget.hoverColor ?? themeColors().checkBoxHoverColor(),
                   overlayColor:
-                      widget.overlayColor ?? MaterialStateColor.resolveWith(themeColors().checkBoxOverlayColor),
+                      widget.overlayColor ?? WidgetStateColor.resolveWith(themeColors().checkBoxOverlayColor),
                 )
               ],
             )),

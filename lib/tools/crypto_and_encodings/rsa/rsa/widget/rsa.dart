@@ -148,9 +148,9 @@ class _RSAState extends State<RSA> {
 
       _output =
           GCWColumnedMultilineOutput(firstRows: outputChildren, data: calculatedParameters, flexValues: const [1, 2]);
-    } catch (exception) {
+    } on FormatException catch (e) {
       _output = null;
-      showSnackBar(i18n(context, exception.toString()), context);
+      showSnackBar(i18n(context, e.message), context);
     }
   }
 }

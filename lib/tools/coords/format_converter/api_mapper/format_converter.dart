@@ -1,9 +1,10 @@
 import 'package:gc_wizard/application/webapi/api_mapper.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_metadata.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_definition.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_parser.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/utils/string_utils.dart';
 
 const String _apiSpecification = '''
 {
@@ -72,14 +73,14 @@ class FormatConverterAPIMapper extends APIMapper {
   String apiSpecification() {
     var info = _apiSpecification;
 
-    var formats = allCoordinateFormatMetadata.map((entry) => '            "' + entry.persistenceKey + '"').join(',\n');
+    var formats = allCoordinateFormatDefinitions.map((entry) => '            "' + entry.apiKey + '"').join(',\n');
     info = info.replaceAll('            coordinate_formats', formats);
     return info.replaceAll('/key_label', Key);
   }
 }
 
 CoordinateFormatKey _getCoordinateFormatKey(String key) {
-  var formatKey = coordinateFormatMetadataByPersistenceKey(key)?.type;
+  var formatKey = coordinateFormatDefinitionByPersistenceKey(key)?.type;
   if (formatKey != null) return formatKey;
 
   return defaultCoordinateFormat.type;

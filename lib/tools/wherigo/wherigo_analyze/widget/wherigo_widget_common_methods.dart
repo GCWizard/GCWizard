@@ -43,7 +43,8 @@ GCWFile? _getFileFrom(BuildContext context, String resourceName) {
             '\n' +
             exception.toString() +
             '\n\n' +
-            i18n(context, 'wherigo_error_hint_2'), context,
+            i18n(context, 'wherigo_error_hint_2'),
+        context,
         duration: 10);
   }
   return result;

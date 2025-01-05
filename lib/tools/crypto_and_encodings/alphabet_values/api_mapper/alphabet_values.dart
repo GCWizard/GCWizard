@@ -2,6 +2,7 @@ import 'package:gc_wizard/application/webapi/api_mapper.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/alphabet_values/logic/alphabet_values.dart' as logic;
 import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
+import 'package:gc_wizard/utils/string_utils.dart';
 
 const String _apiSpecification = '''
 {

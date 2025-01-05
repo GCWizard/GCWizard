@@ -33,14 +33,14 @@ const Map<String, int> colorMap = {
   '#': 0xFFE0E0E0, //Colors.grey.shade300
 };
 
-DrawableImageData? binary2image(String input, bool squareFormat, bool invers) {
+DrawableImageData? binary2image(String input, bool squareFormat, bool inverse) {
   var filter = _buildFilter(input);
   if (filter.length < 2) return null;
 
   if (!squareFormat) filter += "\n";
   input = _filterInput(input, filter);
 
-  if (invers) {
+  if (inverse) {
     input = substitution(input, {filter[0]: '1', filter[1]: '0'});
   } else {
     input = substitution(input, {filter[0]: '0', filter[1]: '1'});
@@ -109,7 +109,7 @@ DrawableImageData? binary2Image(String input) {
   var lines = input.split('\n');
 
   if (lines.length == 1) {
-    lines.addAll(List<String>.filled(9, lines[0]));
+    lines.addAll(List<String>.filled(50, lines[0]));
   }
   return DrawableImageData(lines, colorMap);
 }

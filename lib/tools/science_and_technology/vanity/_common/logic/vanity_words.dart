@@ -12,9 +12,9 @@ class VanityWordsDecodeOutput {
   final String number;
   final String numWord;
   final String digit;
-  final bool ambigous;
+  final bool ambiguous;
 
-  VanityWordsDecodeOutput(this.number, this.numWord, this.digit, this.ambigous);
+  VanityWordsDecodeOutput(this.number, this.numWord, this.digit, this.ambiguous);
 }
 
 const _VanityToDEU = {
@@ -357,11 +357,10 @@ List<VanityWordsDecodeOutput> decodeVanityWords(String? text, NumeralWordsLangua
 
   // start decoding text with searchlanguages
   bool found = false;
-  bool ambigous = false;
+  bool ambiguous = false;
   String hDigits = '';
   String hWord = '';
   text = text.replaceAll('\n', ' ');
-  //text = text.replaceAll('\n', '').replaceAll('0', '').replaceAll('1', '').replaceAll(' ', '');
   while (text!.isNotEmpty) {
     if (text.startsWith('0') || text.startsWith('1') || text.startsWith(' ')) {
       if (text.startsWith('0') || text.startsWith('1')) {
@@ -370,7 +369,7 @@ List<VanityWordsDecodeOutput> decodeVanityWords(String? text, NumeralWordsLangua
       text = text.substring(1);
     } else {
       found = false;
-      ambigous = false;
+      ambiguous = false;
       hDigits = '';
       hWord = '';
       decodingTable.forEach((digits, word) {
@@ -381,7 +380,7 @@ List<VanityWordsDecodeOutput> decodeVanityWords(String? text, NumeralWordsLangua
             found = true;
           } else {
             // already found
-            ambigous = true;
+            ambiguous = true;
             if (NUMERAL_WORDS[language]![hWord.toLowerCase()] != null) {
               output.add(
                   VanityWordsDecodeOutput(hDigits, hWord, NUMERAL_WORDS[language]![hWord.toLowerCase()] ?? '', true));
@@ -399,10 +398,13 @@ List<VanityWordsDecodeOutput> decodeVanityWords(String? text, NumeralWordsLangua
           }
         }
       }); // end decodingTable.forEach
-      if (found && !ambigous) {
-        if (NUMERAL_WORDS[language]![removeAccents(hWord.toLowerCase())] != null) {
+      if (found && !ambiguous) {
+        if (NUMERAL_WORDS[language]![hWord.toLowerCase()] != null) {
           output.add(VanityWordsDecodeOutput(
-              hDigits, hWord, NUMERAL_WORDS[language]![removeAccents(hWord.toLowerCase())] ?? '', false));
+              hDigits, hWord, NUMERAL_WORDS[language]![hWord.toLowerCase()]!, false));
+        } else {
+          output.add(VanityWordsDecodeOutput(
+              hDigits, hWord, '', false));
         }
         if (hDigits.isNotEmpty) {
           text = text.substring(hDigits.length);
@@ -412,7 +414,7 @@ List<VanityWordsDecodeOutput> decodeVanityWords(String? text, NumeralWordsLangua
         output.add(VanityWordsDecodeOutput('?', '', '', false));
         if (text.isNotEmpty) text = text.substring(1);
       }
-      if (ambigous) text = '';
+      if (ambiguous) text = '';
     }
   } // end while text.isNotEmpty
   return output;

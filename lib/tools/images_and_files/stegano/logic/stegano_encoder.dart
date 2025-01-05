@@ -17,7 +17,7 @@ Uint8List? _encodeSteganoMessageIntoImage(_SteganoEncodeRequest req) {
   String? token = req.key;
   if (req.canEncrypt()) {
     crypto.Key key = crypto.Key.fromUtf8(_steganoPadKey(token!));
-    crypto.IV iv = crypto.IV.fromLength(16);
+    crypto.IV iv = crypto.IV.allZerosOfLength(16);
     crypto.Encrypter encrypter = crypto.Encrypter(crypto.AES(key));
     crypto.Encrypted encrypted = encrypter.encrypt(msg, iv: iv);
     msg = encrypted.base64;
@@ -44,7 +44,7 @@ Uint8List? _encodeSteganoMessageIntoImage(_SteganoEncodeRequest req) {
     if (i < expanded.length) {
       encodedImg[i] = _encodeOnePixel(img[i], expanded[i]);
     } else {
-      int lastBitMask = 254;
+      const int lastBitMask = 254;
       encodedImg[i] = img[i] & lastBitMask;
     }
   }
@@ -53,6 +53,6 @@ Uint8List? _encodeSteganoMessageIntoImage(_SteganoEncodeRequest req) {
   return data;
 }
 
-Future<Uint8List> _encodeSteganoMessageIntoImageAsync(_SteganoEncodeRequest req) async {
-  return compute(_encodeSteganoMessageIntoImage as ComputeCallback<_SteganoEncodeRequest, Uint8List>, req);
+Future<Uint8List?> _encodeSteganoMessageIntoImageAsync(_SteganoEncodeRequest req) async {
+  return compute(_encodeSteganoMessageIntoImage, req);
 }

@@ -1,3 +1,4 @@
+import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:latlong2/latlong.dart';
 
 // http://www.geomidpoint.com/calculation.html
@@ -23,5 +24,5 @@ LatLng? centroidArithmeticMean(List<LatLng> coords, LatLng centerOfGravity) {
     y += lon;
   }
 
-  return LatLng(x / coords.length, y / coords.length);
+  return normalizeLatLon(x / coords.length, y / coords.length);
 }

@@ -163,13 +163,15 @@ class _ADFGVXState extends State<ADFGVX> {
         GCWDefaultOutput(
           child: out,
         ),
-        grid == null ? Container() : GCWOutput(
-          title: i18n(context, 'polybios_usedgrid'),
-          child: GCWOutputText(
-            text: grid,
-            isMonotype: true,
-          ),
-        )
+        grid == null
+            ? Container()
+            : GCWOutput(
+                title: i18n(context, 'polybios_usedgrid'),
+                child: GCWOutputText(
+                  text: grid,
+                  isMonotype: true,
+                ),
+              )
       ],
     );
   }

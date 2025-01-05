@@ -127,14 +127,18 @@ int _GWCMediaFileType = 0;
 Future<WherigoCartridge> getCartridgeGWC(Uint8List byteListGWC, bool offline, {SendPort? sendAsyncPort}) async {
   if (byteListGWC.isNotEmpty) _checksToDo = WHERIGO_FILE_LOAD_STATE.GWC;
 
+  _GWCResultsGWC = [];
+  _GWCMediaFilesHeaders = [];
+  _GWCMediaFilesContents = [];
+
   if (_checksToDo == WHERIGO_FILE_LOAD_STATE.NULL) {
     _GWCResultsGWC.add('wherigo_error_runtime');
     _GWCResultsGWC.add('wherigo_error_empty_gwc');
-
     return WherigoCartridge(cartridgeGWC: _WHERIGO_EMPTYCARTRIDGE_GWC, cartridgeLUA: WHERIGO_EMPTYCARTRIDGE_LUA);
   }
 
   if (_checksToDo == WHERIGO_FILE_LOAD_STATE.GWC) {
+
     if (isInvalidCartridge(byteListGWC)) {
       _GWCResultsGWC.add('wherigo_error_runtime');
       _GWCResultsGWC.add('wherigo_error_invalid_gwc');
@@ -146,7 +150,6 @@ Future<WherigoCartridge> getCartridgeGWC(Uint8List byteListGWC, bool offline, {S
       _getMediaFilesFromGWC(byteListGWC);
     }
   } // if checks to do GWC
-
   return WherigoCartridge(
       cartridgeGWC: WherigoCartridgeGWC(
         Signature: _GWCSignature,
@@ -351,6 +354,7 @@ void _getLUAByteCodeFromGWC(Uint8List byteListGWC) {
 
     //sendAsyncPort?.send(DoubleText(PROGRESS, 7));
   } catch (exception) {
+
     _GWCStatus = WHERIGO_ANALYSE_RESULT_STATUS.ERROR_GWC;
     _GWCResultsGWC.add('wherigo_error_runtime');
     _GWCResultsGWC.add('wherigo_error_runtime_exception');

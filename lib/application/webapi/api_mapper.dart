@@ -1,3 +1,5 @@
+import 'package:gc_wizard/utils/string_utils.dart';
+
 enum WEBPARAMETER { input, mode, parameter1, parameter2, fromformat, toformat, result }
 
 enum MODE { encode, decode }
@@ -29,8 +31,4 @@ abstract class APIMapper {
   String apiSpecification() {
     return '{/key_label}'.replaceAll('/key_label', Key);
   }
-}
-
-String enumName(String fullName) {
-  return fullName.split('.').last;
 }

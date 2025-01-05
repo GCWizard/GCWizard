@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/settings/logic/default_settings.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords_formatselector.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_sign_dropdown.dart';
@@ -15,10 +14,11 @@ import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_double_textfield.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_metadata.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_definition.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_formatselector.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/constants.dart';
 import 'package:prefs/prefs.dart';
@@ -54,6 +54,7 @@ class _CoordinatesSettingsState extends State<CoordinatesSettings> {
         ),
         GCWCoordsFormatSelector(
           format: _currentDefaultFormat,
+          input: false,
           onChanged: (newValue) {
             setState(() {
               _currentDefaultFormat = newValue;
@@ -100,12 +101,12 @@ class _CoordinatesSettingsState extends State<CoordinatesSettings> {
         ),
         GCWIntegerSpinner(
           title: CoordinateFormatKey.DMM.toString().split('.')[1],
-          value: Prefs.getInt(PREFERENCE_COORD_PRECISION_DMM),
+          value: Prefs.getInt(PREFERENCE_COORD_PRECISION_DMM_COPY),
           min: 1,
           max: 20,
           onChanged: (int value) {
             setState(() {
-              Prefs.setInt(PREFERENCE_COORD_PRECISION_DMM, value);
+              Prefs.setInt(PREFERENCE_COORD_PRECISION_DMM_COPY, value);
             });
           },
         ),

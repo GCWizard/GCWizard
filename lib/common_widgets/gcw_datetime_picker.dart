@@ -42,7 +42,7 @@ class TimeZone {
 }
 
 const TIMEZONES = [
-  TimeZone(720, 'IDLW'),
+  TimeZone(-720, 'IDLW'),
   TimeZone(-660, ''),
   TimeZone(-600, 'HAST'),
   TimeZone(-570, ''),
@@ -84,11 +84,10 @@ const TIMEZONES = [
 ];
 
 class GCWDateTimePicker extends StatefulWidget {
-  final void Function(DateTimeDuration) onChanged;
-  final DateTime? datetime;
+  final void Function(DateTimeTZDuration) onChanged;
+  final DateTimeTZ? datetime;
   final Duration? duration;
   final Set<DateTimePickerConfig> config;
-  final Duration timezoneOffset;
   final int minDays;
   final int? maxDays;
   final int? maxHours;
@@ -108,7 +107,6 @@ class GCWDateTimePicker extends StatefulWidget {
     this.datetime,
     this.duration,
     required this.config,
-    this.timezoneOffset = const Duration(hours: 0),
     this.minDays = 1,
     this.maxDays = 31,
     this.maxHours = 23,
@@ -149,7 +147,10 @@ class _GCWDateTimePickerState extends State<GCWDateTimePicker> {
   void initState() {
     super.initState();
 
-    DateTime date = widget.datetime ?? DateTime.now();
+    DateTime date = widget.datetime?.toLocalTime() ?? DateTime.now();
+    if (widget.datetime != null) {
+      _currentTimezoneOffset = widget.datetime!.timezone.inMinutes;
+    }
 
     if (widget.config.contains(DateTimePickerConfig.SIGN)) {
       _currentSign = _sign(date);
@@ -199,53 +200,6 @@ class _GCWDateTimePickerState extends State<GCWDateTimePicker> {
   @override
   Widget build(BuildContext context) {
     var widgets = <Widget, int>{}; // widget: flex
-
-    if (widget.config.contains(DateTimePickerConfig.TIME)) {
-      if (widget.duration != null) {
-        // update with new values (paste, ..)
-        if (_currentSign != (widget.duration!.isNegative ? -1 : 1)) {
-          _currentSign = widget.duration!.isNegative ? -1 : 1;
-        }
-        if (_currentHour != widget.duration!.inHours.abs()) {
-          _currentHour = widget.duration!.inHours.abs().remainder(24);
-        }
-        if (_currentMinute != widget.duration!.inMinutes.abs().remainder(60)) {
-          _currentMinute = widget.duration!.inMinutes.abs().remainder(60);
-        }
-        if (_currentSecond != widget.duration!.inSeconds.abs().remainder(60)) {
-          _currentSecond = widget.duration!.inSeconds.abs().remainder(60);
-        }
-        if (_currentMilliSecond != _durationMilliseconds(widget.duration!)) {
-          _currentMilliSecond = _durationMilliseconds(widget.duration!);
-        }
-      } else if (widget.datetime != null) {
-        // update with new values (paste, ..)
-        if (_currentHour != widget.datetime?.hour) _currentHour = widget.datetime!.hour;
-        if (_currentMinute == widget.datetime?.minute) _currentMinute = widget.datetime!.minute;
-        if (_currentSecond == widget.datetime?.second) _currentSecond = widget.datetime!.second;
-        if (_currentMilliSecond == widget.datetime?.millisecond) _currentMilliSecond = widget.datetime!.millisecond;
-      }
-    }
-
-    if (widget.config.contains(DateTimePickerConfig.DATE)) {
-      if (widget.datetime != null) {
-        // update with new values (paste, ..)
-        if (_currentYear != widget.datetime?.year) _currentYear = widget.datetime!.year;
-        if (_currentMonth != widget.datetime?.month) _currentMonth = widget.datetime!.month;
-        if (_currentDay != widget.datetime?.day) _currentDay = widget.datetime!.day;
-      }
-    } else {
-      if (widget.config.contains(DateTimePickerConfig.DAY)) {
-        if (widget.datetime != null) {
-          // update with new values (paste, ..)
-          if (_currentDay != widget.datetime?.day) _currentDay = widget.datetime!.day;
-        } else if (widget.duration != null) {
-          if (_currentDay != widget.duration!.inDays.abs()) {
-            _currentDay = widget.duration!.inDays.abs(); //.remainder(24);
-          }
-        }
-      }
-    }
 
     if (widget.config.contains(DateTimePickerConfig.SIGN)) {
       widgets.addAll({
@@ -519,10 +473,15 @@ class _GCWDateTimePickerState extends State<GCWDateTimePicker> {
         milliseconds: _currentMilliSecond);
     duration *= _currentSign;
 
-    var output = DateTimeDuration(
-        dateTime: DateTime(_currentYear, _currentMonth, _currentDay, _currentHour, _currentMinute, _currentSecond,
-            _currentMilliSecond),
-        timezone: Duration(minutes: _currentTimezoneOffset),
+    var timezone = Duration(minutes: _currentTimezoneOffset);
+    if (!widget.config.contains(DateTimePickerConfig.TIMEZONES)) {
+      timezone = DateTime(_currentYear, _currentMonth, _currentDay,
+          _currentHour, _currentMinute, _currentSecond, _currentMilliSecond).timeZoneOffset;
+    }
+    var output = DateTimeTZDuration(
+        dateTimeUtc: DateTimeTZ.fromLocalTime(DateTime.utc(_currentYear, _currentMonth, _currentDay,
+            _currentHour, _currentMinute, _currentSecond, _currentMilliSecond), timezone).dateTimeUtc,
+        timezone: timezone,
         duration: duration);
 
     widget.onChanged(output);

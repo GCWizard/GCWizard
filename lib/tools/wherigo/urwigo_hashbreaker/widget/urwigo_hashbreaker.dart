@@ -82,7 +82,7 @@ class _UrwigoHashBreakerState extends State<UrwigoHashBreaker> {
                 controller: _inputController,
                 onChanged: (text) {
                   setState(() {
-                    _currentTextInput = text;
+                    _currentTextInput = text.toLowerCase();
                   });
                 },
               ),

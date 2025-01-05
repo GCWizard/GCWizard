@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/color_pickers/gcw_colorpicker.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_distance.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/length.dart';
 
@@ -70,13 +69,13 @@ class _MapPointEditorState extends State<MapPointEditor> {
         title: i18n(context, 'coords_openmap_pointeditor_point_coordinate'),
         coordinates: widget.mapPoint.point,
         coordsFormat: widget.mapPoint.coordinateFormat ?? defaultCoordinateFormat,
-        onChanged: (BaseCoordinate ret) {
+        onChanged: (ret) {
           setState(() {
-            if (ret.toLatLng() == null) {
+            if (ret?.toLatLng() == null) {
               return;
             }
 
-            widget.mapPoint.coordinateFormat = ret.format;
+            widget.mapPoint.coordinateFormat = ret!.format;
             widget.mapPoint.point = ret.toLatLng()!;
           });
         },

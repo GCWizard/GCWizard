@@ -34,19 +34,22 @@ class _SemaphoreSegmentDisplay extends NSegmentDisplay {
               var paint = defaultSegmentPaint();
               var SEGMENTS_COLOR_ON = segment_color_on;
               var SEGMENTS_COLOR_OFF = segment_color_off;
+              var paintTouch = defaultSegmentPaint();
+              paintTouch.color = Colors.transparent;
+              var centerPoint = Offset(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 185, size.height * 0.5);
 
               paint.color = Colors.grey;
               canvas.touchCanvas.drawCircle(
-                  Offset(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 185,
+                  Offset(centerPoint.dx,
                       size.height / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 55),
-                  size.height / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 25.0,
-                  paint);
+                      size.height / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 25.0,
+                      paint);
 
               canvas.touchCanvas.drawCircle(
-                  Offset(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 185,
+                  Offset(centerPoint.dx,
                       size.height / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 120),
-                  size.height / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 35.0,
-                  paint);
+                      size.height / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 35.0,
+                      paint);
 
               paint.color = segmentActive(currentSegments, 'l1') ? SEGMENTS_COLOR_ON : SEGMENTS_COLOR_OFF;
               var pathL1 = Path();
@@ -63,9 +66,17 @@ class _SemaphoreSegmentDisplay extends NSegmentDisplay {
               pathL1.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 90,
                   size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 60);
               pathL1.close();
+              var pathL1t = Path();
+              pathL1t.moveTo(centerPoint.dx, size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 120);
+              pathL1t.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 130,
+                  size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 120);
+              pathL1t.lineTo(size.width * 0.03, 0);
+              pathL1t.lineTo(centerPoint.dx, 0);
+              pathL1t.close();
 
               if (!readOnly || segmentActive(currentSegments, 'l1')) {
-                canvas.touchCanvas.drawPath(pathL1, paint, onTapDown: (tapDetail) {
+                canvas.touchCanvas.drawPath(pathL1, paint);
+                canvas.touchCanvas.drawPath(pathL1t, paintTouch, onTapDown: (tapDetail) {
                   setSegmentState('l1', !segmentActive(currentSegments, 'l1'));
                   if (segmentActive(currentSegments, 'l1')) {
                     setSegmentState('l2', false);
@@ -91,9 +102,17 @@ class _SemaphoreSegmentDisplay extends NSegmentDisplay {
               pathR1.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 280,
                   size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 60);
               pathR1.close();
+              var pathR1t = Path();
+              pathR1t.moveTo(centerPoint.dx, size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 120);
+              pathR1t.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 240,
+                  size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 120);
+              pathR1t.lineTo(size.width * 1, 0);
+              pathR1t.lineTo(centerPoint.dx, 0);
+              pathR1t.close();
 
               if (!readOnly || segmentActive(currentSegments, 'r1')) {
-                canvas.touchCanvas.drawPath(pathR1, paint, onTapDown: (tapDetail) {
+                canvas.touchCanvas.drawPath(pathR1, paint);
+                canvas.touchCanvas.drawPath(pathR1t, paintTouch, onTapDown: (tapDetail) {
                   setSegmentState('r1', !segmentActive(currentSegments, 'r1'));
                   if (segmentActive(currentSegments, 'r1')) {
                     setSegmentState('r2', false);
@@ -119,14 +138,26 @@ class _SemaphoreSegmentDisplay extends NSegmentDisplay {
               pathL2.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 10,
                   size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 80);
               pathL2.close();
+              var pathL2t = Path();
+              pathL2t.moveTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 130,
+                  size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 120);
+              pathL2t.lineTo(size.width * 0.03, 0);
+              pathL2t.lineTo(0, 0);
+              pathL2t.lineTo(0, size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 130);
+              pathL2t.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 120,
+                  size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 130);
+              pathL2t.close();
 
               if (!readOnly || segmentActive(currentSegments, 'l2')) {
-                canvas.touchCanvas.drawPath(pathL2, paint, onTapDown: (tapDetail) {
+                canvas.touchCanvas.drawPath(pathL2, paint);
+                canvas.touchCanvas.drawPath(pathL2t, paintTouch, onTapDown: (tapDetail) {
                   setSegmentState('l2', !segmentActive(currentSegments, 'l2'));
                   if (segmentActive(currentSegments, 'l2')) {
                     setSegmentState('l1', false);
                     //setSegmentState('l3', false);
-                    //setSegmentState('l4', false);
+                    if (segmentActive(currentSegments, 'l3') && segmentActive(currentSegments, 'l4')) {
+                      setSegmentState('l4', false);
+                    }
                     setSegmentState('l5', false);
                   }
                 });
@@ -147,14 +178,25 @@ class _SemaphoreSegmentDisplay extends NSegmentDisplay {
               pathR2.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 250,
                   size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 130);
               pathR2.close();
+              var pathR2t = Path();
+              pathR2t.moveTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 240,
+                  size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 120);
+              pathR2t.lineTo(size.width * 1, 0);
+              pathR2t.lineTo(size.width, size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 130);
+              pathR2t.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 250,
+                  size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 130);
+              pathR2t.close();
 
               if (!readOnly || segmentActive(currentSegments, 'r2')) {
-                canvas.touchCanvas.drawPath(pathR2, paint, onTapDown: (tapDetail) {
+                canvas.touchCanvas.drawPath(pathR2, paint);
+                canvas.touchCanvas.drawPath(pathR2t, paintTouch, onTapDown: (tapDetail) {
                   setSegmentState('r2', !segmentActive(currentSegments, 'r2'));
                   if (segmentActive(currentSegments, 'r2')) {
                     setSegmentState('r1', false);
                     //setSegmentState('r3', false);
-                    //setSegmentState('r4', false);
+                    if (segmentActive(currentSegments, 'r3') && segmentActive(currentSegments, 'r4')) {
+                      setSegmentState('r4', false);
+                    }
                     setSegmentState('r5', false);
                   }
                 });
@@ -175,14 +217,25 @@ class _SemaphoreSegmentDisplay extends NSegmentDisplay {
               pathL3.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 10,
                   size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 180);
               pathL3.close();
+              var pathL3t = Path();
+              pathL3t.moveTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 120,
+                  size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 120);
+              pathL3t.lineTo(0, size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 120);
+              pathL3t.lineTo(0, size.height * 0.95);
+              pathL3t.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 120,
+                  size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 140);
+              pathL3t.close();
 
               if (!readOnly || segmentActive(currentSegments, 'l3')) {
-                canvas.touchCanvas.drawPath(pathL3, paint, onTapDown: (tapDetail) {
+                canvas.touchCanvas.drawPath(pathL3, paint);
+                canvas.touchCanvas.drawPath(pathL3t, paintTouch, onTapDown: (tapDetail) {
                   setSegmentState('l3', !segmentActive(currentSegments, 'l3'));
                   if (segmentActive(currentSegments, 'l3')) {
-                    //setSegmentState('l2', false);
                     setSegmentState('l1', false);
-                    //setSegmentState('l4', false);
+                    //setSegmentState('l2', false);
+                    if (segmentActive(currentSegments, 'l2') && segmentActive(currentSegments, 'l4')) {
+                      setSegmentState('l4', false);
+                    }
                     setSegmentState('l5', false);
                   }
                 });
@@ -203,14 +256,25 @@ class _SemaphoreSegmentDisplay extends NSegmentDisplay {
               pathR3.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 250,
                   size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 140);
               pathR3.close();
+              var pathR3t = Path();
+              pathR3t.moveTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 250,
+                  size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 120);
+              pathR3t.lineTo(size.width, size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 120);
+              pathR3t.lineTo(size.width, size.height * 0.92);
+              pathR3t.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 250,
+                  size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 140);
+              pathR3t.close();
 
               if (!readOnly || segmentActive(currentSegments, 'r3')) {
-                canvas.touchCanvas.drawPath(pathR3, paint, onTapDown: (tapDetail) {
+                canvas.touchCanvas.drawPath(pathR3, paint);
+                canvas.touchCanvas.drawPath(pathR3t, paintTouch, onTapDown: (tapDetail) {
                   setSegmentState('r3', !segmentActive(currentSegments, 'r3'));
                   if (segmentActive(currentSegments, 'r3')) {
-                    //setSegmentState('r2', false);
                     setSegmentState('r1', false);
-                    //setSegmentState('r4', false);
+                    //setSegmentState('r2', false);
+                    if (segmentActive(currentSegments, 'r2') && segmentActive(currentSegments, 'r4')) {
+                      setSegmentState('r4', false);
+                    }
                     setSegmentState('r5', false);
                   }
                 });
@@ -231,14 +295,26 @@ class _SemaphoreSegmentDisplay extends NSegmentDisplay {
               pathL4.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 80,
                   size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 260);
               pathL4.close();
+              var pathL4t = Path();
+              pathL4t.moveTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 120,
+                  size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 140);
+              pathL4t.lineTo(0, size.height * 0.95);
+              pathL4t.lineTo(0, size.height);
+              pathL4t.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 115, size.height);
+              pathL4t.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 130,
+                  size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 150);
+              pathL4t.close();
 
               if (!readOnly || segmentActive(currentSegments, 'l4')) {
-                canvas.touchCanvas.drawPath(pathL4, paint, onTapDown: (tapDetail) {
+                canvas.touchCanvas.drawPath(pathL4, paint);
+                canvas.touchCanvas.drawPath(pathL4t, paintTouch, onTapDown: (tapDetail) {
                   setSegmentState('l4', !segmentActive(currentSegments, 'l4'));
                   if (segmentActive(currentSegments, 'l4')) {
-                    //setSegmentState('l2', false);
-                    //setSegmentState('l3', false);
                     setSegmentState('l1', false);
+                    //setSegmentState('l2', false);
+                    if (segmentActive(currentSegments, 'l2') && segmentActive(currentSegments, 'l3')) {
+                      setSegmentState('l3', false);
+                    }
                     setSegmentState('l5', false);
                   }
                 });
@@ -259,14 +335,26 @@ class _SemaphoreSegmentDisplay extends NSegmentDisplay {
               pathR4.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 280,
                   size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 190);
               pathR4.close();
+              var pathR4t = Path();
+              pathR4t.moveTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 250,
+                  size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 140);
+              pathR4t.lineTo(size.width, size.height * 0.92);
+              pathR4t.lineTo(size.width, size.height);
+              pathR4t.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 255, size.height);
+              pathR4t.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 240,
+                  size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 150);
+              pathR4t.close();
 
               if (!readOnly || segmentActive(currentSegments, 'r4')) {
-                canvas.touchCanvas.drawPath(pathR4, paint, onTapDown: (tapDetail) {
+                canvas.touchCanvas.drawPath(pathR4, paint);
+                canvas.touchCanvas.drawPath(pathR4t, paintTouch, onTapDown: (tapDetail) {
                   setSegmentState('r4', !segmentActive(currentSegments, 'r4'));
                   if (segmentActive(currentSegments, 'r4')) {
-                    //setSegmentState('r2', false);
-                    //setSegmentState('r3', false);
                     setSegmentState('r1', false);
+                    //setSegmentState('r2', false);
+                    if (segmentActive(currentSegments, 'r2') && segmentActive(currentSegments, 'r3')) {
+                      setSegmentState('r3', false);
+                    }
                     setSegmentState('r5', false);
                   }
                 });
@@ -287,15 +375,23 @@ class _SemaphoreSegmentDisplay extends NSegmentDisplay {
               pathL5.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 130,
                   size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 260);
               pathL5.close();
+              var pathL5t = Path();
+              pathL5t.moveTo(centerPoint.dx, size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 150);
+              pathL5t.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 130,
+                  size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 150);
+              pathL5t.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 115, size.height);
+              pathL5t.lineTo(centerPoint.dx, size.height);
+              pathL5t.close();
 
               if (!readOnly || segmentActive(currentSegments, 'l5')) {
-                canvas.touchCanvas.drawPath(pathL5, paint, onTapDown: (tapDetail) {
+                canvas.touchCanvas.drawPath(pathL5, paint);
+                canvas.touchCanvas.drawPath(pathL5t, paintTouch, onTapDown: (tapDetail) {
                   setSegmentState('l5', !segmentActive(currentSegments, 'l5'));
                   if (segmentActive(currentSegments, 'l5')) {
+                    setSegmentState('l1', false);
                     setSegmentState('l2', false);
                     setSegmentState('l3', false);
                     setSegmentState('l4', false);
-                    setSegmentState('l1', false);
                   }
                 });
               }
@@ -315,15 +411,23 @@ class _SemaphoreSegmentDisplay extends NSegmentDisplay {
               pathR5.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 230,
                   size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 210);
               pathR5.close();
+              var pathR5t = Path();
+              pathR5t.moveTo(centerPoint.dx, size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 150);
+              pathR5t.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 240,
+                  size.width / _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT * 150);
+              pathR5t.lineTo(size.width / _SEMAPHORE_RELATIVE_DISPLAY_WIDTH * 255, size.height);
+              pathR5t.lineTo(centerPoint.dx, size.height);
+              pathR5t.close();
 
               if (!readOnly || segmentActive(currentSegments, 'r5')) {
-                canvas.touchCanvas.drawPath(pathR5, paint, onTapDown: (tapDetail) {
+                canvas.touchCanvas.drawPath(pathR5, paint);
+                canvas.touchCanvas.drawPath(pathR5t, paintTouch, onTapDown: (tapDetail) {
                   setSegmentState('r5', !segmentActive(currentSegments, 'r5'));
                   if (segmentActive(currentSegments, 'r5')) {
+                    setSegmentState('r1', false);
                     setSegmentState('r2', false);
                     setSegmentState('r3', false);
                     setSegmentState('r4', false);
-                    setSegmentState('r1', false);
                   }
                 });
               }

@@ -10,11 +10,11 @@ int _getUSweekNumber(DateTime date) {
   var y = date.year;
 
   //January 1st this year
-  var beginOfThisYear = DateTime(y, 1, 1);
+  var beginOfThisYear = DateTime.utc(y, 1, 1);
   var dayOfWeek = beginOfThisYear.weekday % 7;
 
   //January 1st next year
-  var beginOfNextYear = DateTime(y + 1, 1, 1);
+  var beginOfNextYear = DateTime.utc(y + 1, 1, 1);
   var dayOfWeekNextYear = beginOfNextYear.weekday % 7;
 
   //Provided date
@@ -45,8 +45,8 @@ int calendarWeek(DateTime date, {bool iso = true}) {
 Tuple2<DateTime, DateTime> datesForCalendarWeek(int year, int calendarWeek, {bool iso = true}) {
   DateTime? start;
   DateTime? end;
-  DateTime _dateToCheck = DateTime(year, calendarWeek < 10 ? 1 : 2, 1);
-  DateTime _lastDateToCheck = DateTime(year + 1, 1, 10);
+  DateTime _dateToCheck = DateTime.utc(year, calendarWeek < 10 ? 1 : 2, 1);
+  DateTime _lastDateToCheck = DateTime.utc(year + 1, 1, 10);
   int week = 0;
   while (end == null || week == calendarWeek) {
     if (iso) {

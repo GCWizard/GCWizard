@@ -1,10 +1,16 @@
-import 'package:gc_wizard/common_widgets/color_pickers/gcw_colors.dart';
 import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors_cmyk.dart';
 import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors_hue.dart';
 import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors_rgb.dart';
 import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors_yuv.dart';
 
 enum ColorSpaceKey { RGB, HEXCODE, HSV, HSL, HSI, CMYK, CMY, YUV, YPBPR, YCBCR, YIQ }
+
+class GCWColorValue {
+  ColorSpaceKey colorSpace;
+  GCWBaseColor color;
+
+  GCWColorValue(this.colorSpace, this.color);
+}
 
 class ColorSpace {
   final ColorSpaceKey key;

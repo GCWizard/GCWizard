@@ -6,9 +6,9 @@ import 'dart:math';
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/coords/_common/logic/distance_bearing.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/external_libs/net.sf.geographic_lib/geographic_lib.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/external_libs/pkohut.geoformulas/geoformulas.dart';
 import 'package:gc_wizard/tools/coords/antipodes/logic/antipodes.dart';
-import 'package:gc_wizard/tools/coords/waypoint_projection/logic/vincenty/distance_bearing_vincenty.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 import 'package:gc_wizard/utils/data_type_utils/double_type_utils.dart';
 import 'package:latlong2/latlong.dart';
@@ -19,7 +19,7 @@ void main() {
     var lats = [-90.0, -67.5, -45.0, -22.5, 0.0, 22.5, 45.0, 67.5, 90.0];
     var lons = [-180.0, -135.0, -90.0, -45.0, 0.0, 45.0, 90.0, 135.0, 180.0];
 
-    var ellipsoid = getEllipsoidByName(ELLIPSOID_NAME_WGS84)!;
+    var ellipsoid = Ellipsoid.WGS84;
 
     var countErrors = 0;
 
@@ -32,11 +32,10 @@ void main() {
 
             try {
               // Karney
-              GeodesicData karney = Geodesic(ellipsoid.a, ellipsoid.f).inverse(coord1.latitude, coord1.longitude, coord2.latitude, coord2.longitude);
+              GeodesicData karney = geodeticInverse(coord1, coord2, ellipsoid);
 
               // Vincenty
-              DistanceBearingData vincenty = vincentyInverse(
-                  coord1, coord2, ellipsoid);
+              DistanceBearingData vincenty = vincentyInverse(coord1, coord2, ellipsoid);
 
               var karneyAzi1 = utils.normalizeBearing(karney.azi1);
               var karneyAzi2 = utils.normalizeBearing(karney.azi2 + 180.0);
@@ -89,7 +88,7 @@ void main() {
   });
 
   group("Karney VS Vincenty RANDOM:", () {
-    var ellipsoid = getEllipsoidByName(ELLIPSOID_NAME_WGS84)!;
+    var ellipsoid = Ellipsoid.WGS84;
 
     var countErrors = 0;
 
@@ -100,7 +99,7 @@ void main() {
 
       try {
         // Karney
-        GeodesicData karney = Geodesic(ellipsoid.a, ellipsoid.f).inverse(coord1.latitude, coord1.longitude, coord2.latitude, coord2.longitude);
+        GeodesicData karney = geodeticInverse(coord1, coord2, ellipsoid);
 
         // Vincenty
         DistanceBearingData vincenty = vincentyInverse(coord1, coord2, ellipsoid);
@@ -156,7 +155,7 @@ void main() {
 
     int countErrors = 0;
 
-    var ellipsoid = getEllipsoidByName(ELLIPSOID_NAME_WGS84)!;
+    var ellipsoid = Ellipsoid.WGS84;
 
     for (var lat1 in lats) {
       for (var lon1 in lons) {
@@ -167,14 +166,14 @@ void main() {
 
             try {
               // Karney
-              GeodesicData karney = Geodesic(ellipsoid.a, ellipsoid.f).inverse(coord1.latitude, coord1.longitude, coord2.latitude, coord2.longitude);
+              GeodesicData karney = geodeticInverse(coord1, coord2, ellipsoid);
 
               var karneyAzi1 = utils.normalizeBearing(karney.azi1);
               var karneyAzi2 = utils.normalizeBearing(karney.azi2 + 180.0);
 
-              GeodesicData karneyB = Geodesic(ellipsoid.a, ellipsoid.f).direct(coord1.latitude, coord1.longitude, karneyAzi1, karney.s12);
+              GeodesicData karneyB = geodeticDirect(coord1, karneyAzi1, karney.s12, ellipsoid);
               LatLng calcB = LatLng(karneyB.lat2, karneyB.lon2);
-              GeodesicData karneyA = Geodesic(ellipsoid.a, ellipsoid.f).direct(coord2.latitude, coord2.longitude, karneyAzi2, karney.s12);
+              GeodesicData karneyA = geodeticDirect(coord2, karneyAzi2, karney.s12, ellipsoid);
               LatLng calcA = LatLng(karneyA.lat2, karneyA.lon2);
 
               if (!utils.equalsLatLng(calcB, coord2, tolerance: 1e-5))
@@ -235,7 +234,7 @@ void main() {
   });
 
   group("Karney Direct VS Inverse - RANDOM:", () {
-    var ellipsoid = getEllipsoidByName(ELLIPSOID_NAME_WGS84)!;
+    var ellipsoid = Ellipsoid.WGS84;
 
     int countErrors = 0;
 
@@ -244,22 +243,16 @@ void main() {
       var coord1 = LatLng(rand.nextDouble() * 180.0 - 90.0, rand.nextDouble() * 360.0 - 180.0);
       var coord2 = LatLng(rand.nextDouble() * 180.0 - 90.0, rand.nextDouble() * 360.0 - 180.0);
 
-      if (i % 10000 == 0) {
-        print(i);
-        print(coord1);
-        print(coord2);
-      }
-
       try {
         // Karney
-        GeodesicData karney = Geodesic(ellipsoid.a, ellipsoid.f).inverse(coord1.latitude, coord1.longitude, coord2.latitude, coord2.longitude);
+        GeodesicData karney = geodeticInverse(coord1, coord2, ellipsoid);
 
         var karneyAzi1 = utils.normalizeBearing(karney.azi1);
         var karneyAzi2 = utils.normalizeBearing(karney.azi2 + 180.0);
 
-        GeodesicData karneyB = Geodesic(ellipsoid.a, ellipsoid.f).direct(coord1.latitude, coord1.longitude, karneyAzi1, karney.s12);
+        GeodesicData karneyB = geodeticDirect(coord1, karneyAzi1, karney.s12, ellipsoid);
         LatLng calcB = LatLng(karneyB.lat2, karneyB.lon2);
-        GeodesicData karneyA = Geodesic(ellipsoid.a, ellipsoid.f).direct(coord2.latitude, coord2.longitude, karneyAzi2, karney.s12);
+        GeodesicData karneyA = geodeticDirect(coord2, karneyAzi2, karney.s12, ellipsoid);
         LatLng calcA = LatLng(karneyA.lat2, karneyA.lon2);
 
         if (!utils.equalsLatLng(calcB, coord2, tolerance: 1e-5)) {

@@ -75,7 +75,7 @@ namespace GC_Wizard_SymbolTables_Pdf
                     return;
 
                 var symbolTablesPdf = new SymbolTablesPdf();
-                if (!symbolTablesPdf.validFolder(CurrentProjectPath))
+                if (!symbolTablesPdf.ValidFolder(CurrentProjectPath))
                     return;
 
                 activeSymbolTablesPdfs.Clear();
@@ -96,7 +96,7 @@ namespace GC_Wizard_SymbolTables_Pdf
                 var defaultLanguages = new List<String>() { "en", "de", "fr", "ko", "nl", "pl", "sk", "sv" };
 
                 var symbolTablesPdf = new SymbolTablesPdf();
-                if (!symbolTablesPdf.validFolder(CurrentProjectPath))
+                if (!symbolTablesPdf.ValidFolder(CurrentProjectPath))
                     return;
 
                 activeSymbolTablesPdfs.Clear();
@@ -136,7 +136,7 @@ namespace GC_Wizard_SymbolTables_Pdf
                 symbolTablesPdf.Orientation = Landscape ? PdfSharp.PageOrientation.Landscape : PdfSharp.PageOrientation.Portrait;
                 symbolTablesPdf.NewPage = NewPage;
 
-                var document = symbolTablesPdf.createPdfDocument((string)path);
+                var document = symbolTablesPdf.CreatePdfDocument((string)path);
 
                 symbolTablesPdf.SymbolTablesCount_Changed -= SymbolTablesCount_Changed;
                 symbolTablesPdf.SymbolImagesCount_Changed -= SymbolImagesCount_Changed;
@@ -168,7 +168,7 @@ namespace GC_Wizard_SymbolTables_Pdf
 
                     if (sfd.ShowDialog() == DialogResult.OK)
                     {
-                        if (SymbolTablesPdf.savePdfDocument(sfd.FileName, document))
+                        if (SymbolTablesPdf.SavePdfDocument(sfd.FileName, document))
 
                             if (ViewPdf)
                                 // ...and start a viewer.
@@ -269,7 +269,7 @@ namespace GC_Wizard_SymbolTables_Pdf
             var _path = "";
 
             if (!String.IsNullOrEmpty(CurrentProjectPath))
-                _path = SymbolTablesPdf.languageFileDirectory(CurrentProjectPath);
+                _path = SymbolTablesPdf.LanguageFileDirectory(CurrentProjectPath);
 
             if (!String.IsNullOrEmpty(CurrentProjectPath) && System.IO.Directory.Exists(_path))
                 foreach (var file in System.IO.Directory.GetFiles(_path, "*.json"))

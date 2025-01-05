@@ -5,25 +5,24 @@ import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/multi_
 import 'package:gc_wizard/tools/science_and_technology/vanity/_common/logic/phone_models.dart';
 import 'package:gc_wizard/tools/science_and_technology/vanity/_common/logic/vanity.dart';
 
-const MDT_INTERNALNAMES_VANITYMULTITAP = 'multidecoder_tool_vanitymultitap_title';
-const MDT_VANITYMULTITAP_OPTION_PHONEMODEL = 'multidecoder_tool_vanitymultitap_option_phonemodel';
+const MDT_INTERNALNAMES_VANITY_MULTITAP = 'multidecoder_tool_vanity_multitap_title';
+const MDT_VANITYMULTITAP_OPTION_PHONEMODEL = 'multidecoder_tool_vanity_multitap_option_phonemodel';
 
 class MultiDecoderToolVanityMultitap extends AbstractMultiDecoderTool {
   MultiDecoderToolVanityMultitap(
       {Key? key,
       required int id,
       required String name,
-      required Map<String, Object?> options,
-      required BuildContext context})
+      required Map<String, Object?> options})
       : super(
             key: key,
             id: id,
             name: name,
-            internalToolName: MDT_INTERNALNAMES_VANITYMULTITAP,
+            internalToolName: MDT_INTERNALNAMES_VANITY_MULTITAP,
             onDecode: (String input, String key) {
               PhoneModel model;
               var modelName = _ensureBackwardsCompatibility(checkStringFormatOrDefaultOption(
-                  MDT_INTERNALNAMES_VANITYMULTITAP, options, MDT_VANITYMULTITAP_OPTION_PHONEMODEL));
+                  MDT_INTERNALNAMES_VANITY_MULTITAP, options, MDT_VANITYMULTITAP_OPTION_PHONEMODEL));
 
               switch (modelName) {
                 case NAME_PHONEMODEL_SIMPLE_SPACE_0:
@@ -56,7 +55,7 @@ class _MultiDecoderToolVanityMultitapState extends State<MultiDecoderToolVanityM
     return createMultiDecoderToolConfiguration(context, {
       MDT_VANITYMULTITAP_OPTION_PHONEMODEL: GCWDropDown<String>(
           value: _ensureBackwardsCompatibility(checkStringFormatOrDefaultOption(
-              MDT_INTERNALNAMES_VANITYMULTITAP, widget.options, MDT_VANITYMULTITAP_OPTION_PHONEMODEL)),
+              MDT_INTERNALNAMES_VANITY_MULTITAP, widget.options, MDT_VANITYMULTITAP_OPTION_PHONEMODEL)),
           onChanged: (newValue) {
             setState(() {
               widget.options[MDT_VANITYMULTITAP_OPTION_PHONEMODEL] = newValue;

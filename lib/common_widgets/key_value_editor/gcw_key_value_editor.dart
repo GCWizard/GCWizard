@@ -7,6 +7,7 @@ import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_paste_button.dart';
 import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
+import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
@@ -25,7 +26,8 @@ class GCWKeyValueEditor extends StatefulWidget {
   final String? keyHintText;
   final TextEditingController? keyController;
   final List<TextInputFormatter>? keyInputFormatters;
-  final List<TextInputFormatter>? valueInputFormatters;
+  final List<TextInputFormatter>? addValueInputFormatters;
+  final List<TextInputFormatter>? editValueInputFormatters;
   final String valueHintText;
   final int? valueFlex;
   final void Function(KeyValueBase)? onAddEntry;
@@ -41,6 +43,9 @@ class GCWKeyValueEditor extends StatefulWidget {
   final bool editAllowed;
   final void Function(KeyValueBase)? onUpdateEntry;
 
+  final bool Function(String)? validateEditedValue;
+  final String? invalidEditedValueMessage;
+
   const GCWKeyValueEditor(
       {Key? key,
       required this.entries,
@@ -49,7 +54,8 @@ class GCWKeyValueEditor extends StatefulWidget {
       this.keyInputFormatters,
       this.onNewEntryChanged,
       required this.valueHintText,
-      this.valueInputFormatters,
+      this.addValueInputFormatters,
+      this.editValueInputFormatters,
       this.valueFlex,
       this.onAddEntry,
       this.middleWidget,
@@ -59,7 +65,9 @@ class GCWKeyValueEditor extends StatefulWidget {
       this.onUpdateEntry,
       this.onCreateInput,
       this.onCreateNewItem,
-      this.trailing})
+      this.trailing,
+      this.validateEditedValue,
+      this.invalidEditedValueMessage})
       : super(key: key);
 
   @override
@@ -90,7 +98,7 @@ class _GCWKeyValueEditor extends State<GCWKeyValueEditor> {
     input.onUpdateEntry = widget.onUpdateEntry;
     input.valueFlex = widget.valueFlex;
     input.keyInputFormatters = widget.keyInputFormatters;
-    input.valueInputFormatters = widget.valueInputFormatters;
+    input.valueInputFormatters = widget.addValueInputFormatters;
     input.addOnDispose = widget.addOnDispose;
     input.keyHintText = widget.keyHintText;
     input.valueHintText = widget.valueHintText;
@@ -133,12 +141,10 @@ class _GCWKeyValueEditor extends State<GCWKeyValueEditor> {
       )
     ]);
 
-    if (rows.isNotEmpty) {
-      rows.insert(
-        0,
-        GCWTextDivider(text: widget.dividerText ?? '', trailing: Row(children: _trailingChildren)),
-      );
-    }
+    rows.insert(
+      0,
+      GCWTextDivider(text: widget.dividerText ?? '', trailing: Row(children: _trailingChildren)),
+    );
 
     return rows.isEmpty ? Container() : Column(children: rows);
   }
@@ -148,12 +154,16 @@ class _GCWKeyValueEditor extends State<GCWKeyValueEditor> {
     if (widget.onCreateNewItem != null) {
       item = widget.onCreateNewItem!(entry, odd);
     } else {
-      item = GCWKeyValueItem(keyValueEntry: entry, odd: odd);
+      item = GCWKeyValueItem(
+          keyValueEntry: entry,
+          odd: odd,
+          validateEditedValue: widget.validateEditedValue,
+          invalidEditedValueMessage: widget.invalidEditedValueMessage);
     }
 
     item.keyValueEditorControl = _keyValueEditorControl;
     item.keyInputFormatters = widget.keyInputFormatters;
-    item.valueInputFormatters = widget.valueInputFormatters;
+    item.valueInputFormatters = widget.editValueInputFormatters;
     item.onUpdateEntry = widget.onUpdateEntry;
     item.editAllowed = widget.editAllowed;
     item.entries = widget.entries;

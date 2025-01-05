@@ -18,7 +18,9 @@ String decryptPrimeAlphabet(List<int?> input, {int firstRecognizedPrime = 2}) {
     if (_firstRecognizedPrime == null ||
         number == null ||
         number < _firstRecognizedPrime ||
-        !isPrime(BigInt.from(number))) return UNKNOWN_ELEMENT;
+        !isPrime(BigInt.from(number))) {
+      return UNKNOWN_ELEMENT;
+    }
 
     var index = (getPrimeIndex(number) - firstIndex) % 26;
     return alphabet_AZIndexes[index + 1];

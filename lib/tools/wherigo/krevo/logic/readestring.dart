@@ -11,7 +11,7 @@ String gsub_wig(String str) {
   String result = '';
   String rot_palette = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@.-~";
   int plen = rot_palette.length;
-  var magic = {
+  const magic = {
     ["\x01"]: "B",
     ["\x02"]: "R",
     ["\x03"]: ""
@@ -45,7 +45,7 @@ String wwb_deobf(String str) {
   String result = '';
   String rot_palette = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@.-~";
   int plen = rot_palette.length;
-  var magic = {
+  const magic = {
     ["\\001"]: "B",
     ["\\002"]: "R",
     ["\\003"]: ""

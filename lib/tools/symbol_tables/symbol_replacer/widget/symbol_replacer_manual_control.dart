@@ -9,7 +9,7 @@ import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
-import 'package:gc_wizard/common_widgets/gcw_tool.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/gcw_toolbar.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
@@ -163,7 +163,7 @@ class _SymbolReplacerManualControlState extends State<SymbolReplacerManualContro
                 GCWIconButton(
                   icon: Icons.add_circle,
                   iconColor: _selectedSymbolData == null
-                      ? themeColors().inActive()
+                      ? themeColors().inactive()
                       : _addActiv
                           ? Colors.red
                           : null,
@@ -177,7 +177,7 @@ class _SymbolReplacerManualControlState extends State<SymbolReplacerManualContro
                 GCWIconButton(
                   icon: Icons.remove_circle,
                   iconColor: _selectedSymbolData == null
-                      ? themeColors().inActive()
+                      ? themeColors().inactive()
                       : _removeActiv
                           ? Colors.red
                           : null,

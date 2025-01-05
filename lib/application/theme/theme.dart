@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:gc_wizard/application/_common/gcw_package_info.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
+import 'package:gc_wizard/utils/ui_dependent_utils/color_utils.dart';
 import 'package:prefs/prefs.dart';
 
 const FONT_SIZE_MIN = 10;
@@ -63,12 +65,13 @@ ThemeData buildTheme() {
   final ThemeColors colors = themeColors();
   final ThemeData base = colors.base();
   return ThemeData(
+      useMaterial3: false,
       fontFamily: 'Roboto',
       scaffoldBackgroundColor: colors.primaryBackground(),
       textTheme: base.textTheme,
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: colors.secondary(),
-        selectionColor: colors.secondary().withOpacity(0.5),
+        selectionColor: colors.secondary().withAlpha((255.0 * 0.5).round()),
         selectionHandleColor: colors.secondary(),
       ),
       buttonTheme: base.buttonTheme.copyWith(
@@ -91,17 +94,27 @@ ThemeData buildTheme() {
       ),
       unselectedWidgetColor: colors.secondary(),
       indicatorColor: themeColors().secondary(),
-      tabBarTheme: TabBarTheme(indicatorColor: themeColors().secondary(), labelColor: colors.mainFont()),
+      tabBarTheme: TabBarTheme(
+          indicatorColor: themeColors().secondary(),
+          labelColor: colors.mainFont(),
+          unselectedLabelColor: colors.mainFont().withAlpha((255.0 * 0.7).round()),
+          dividerHeight: 0,
+          indicatorSize: TabBarIndicatorSize.tab),
       appBarTheme: AppBarTheme(backgroundColor: colors.primaryBackground(), foregroundColor: colors.mainFont()),
       cardColor: colors.messageBackground(),
-      colorScheme: ColorScheme.fromSwatch(primarySwatch: _generateMaterialColor(colors.primaryBackground()))
-          .copyWith(secondary: colors.secondary(), brightness: base.brightness));
+      colorScheme: ColorScheme.fromSwatch(primarySwatch: _generateMaterialColor(colors.primaryBackground())).copyWith(
+          secondary: colors.secondary(),
+          brightness: base.brightness,
+          surfaceContainerHighest: colors.gridBackground(),
+          onSurface: colors.mainFont()),
+      dividerTheme: const DividerThemeData().copyWith(thickness: 0, color: colors.gridBackground()),
+      drawerTheme: const DrawerThemeData().copyWith(backgroundColor: base.scaffoldBackgroundColor));
 }
 
 // https://medium.com/@morgenroth/using-flutters-primary-swatch-with-a-custom-materialcolor-c5e0f18b95b0
 
 MaterialColor _generateMaterialColor(Color color) {
-  return MaterialColor(color.value, {
+  return MaterialColor(colorValue(color), {
     50: _tintColor(color, 0.9),
     100: _tintColor(color, 0.8),
     200: _tintColor(color, 0.6),
@@ -115,15 +128,15 @@ MaterialColor _generateMaterialColor(Color color) {
   });
 }
 
-int _tintValue(int value, double factor) => max(0, min((value + ((255 - value) * factor)).round(), 255));
+int _tintValue(double value, double factor) => max(0, min((value + ((255 - value) * factor)).round(), 255));
 
 Color _tintColor(Color color, double factor) =>
-    Color.fromRGBO(_tintValue(color.red, factor), _tintValue(color.green, factor), _tintValue(color.blue, factor), 1);
+    Color.fromRGBO(_tintValue(color.r, factor), _tintValue(color.g, factor), _tintValue(color.b, factor), 1);
 
-int _shadeValue(int value, double factor) => max(0, min(value - (value * factor).round(), 255));
+int _shadeValue(double value, double factor) => max(0, min((value - (value * factor)).round(), 255));
 
 Color _shadeColor(Color color, double factor) => Color.fromRGBO(
-    _shadeValue(color.red, factor), _shadeValue(color.green, factor), _shadeValue(color.blue, factor), 1);
+    _shadeValue(color.r, factor), _shadeValue(color.g, factor), _shadeValue(color.b, factor), 1);
 
 double defaultFontSize() {
   var fontSize = Prefs.getDouble(PREFERENCE_THEME_FONT_SIZE);
@@ -147,4 +160,26 @@ double maxScreenHeight(BuildContext context) {
 
 double maxScreenWidth(BuildContext context) {
   return MediaQuery.of(context).size.width;
+}
+
+String applogoFilename() {
+  const resolution = 128;
+  var logoId = '';
+
+  var pkgInfo = GCWPackageInfo.getInstance();
+  var packageNameParts = pkgInfo.packageName.split('.');
+  if (packageNameParts.length >= 2) {
+    switch (packageNameParts[2]) {
+      case 'gc_wizard_alpha':
+        logoId += '_nightly';
+        break;
+      case 'gc_wizard_gold':
+        logoId += '_gold';
+        break;
+      default:
+        break;
+    }
+  }
+
+  return 'assets/logo/circle_border_$resolution$logoId.png';
 }

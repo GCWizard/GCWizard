@@ -21,7 +21,7 @@ class _ThemeColorsDark extends ThemeColors {
   }
 
   @override
-  Color inActive() {
+  Color inactive() {
     return Colors.grey;
   }
 
@@ -87,7 +87,7 @@ class _ThemeColorsDark extends ThemeColors {
 
   @override
   Color switchTrack2() {
-    return secondary().withOpacity(0.5);
+    return secondary().withAlpha((255.0 * 0.5).round());
   }
 
   @override
@@ -96,8 +96,8 @@ class _ThemeColorsDark extends ThemeColors {
   }
 
   @override
-  Color checkBoxFillColor(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
+  Color checkBoxFillColor(Set<WidgetState> states) {
+    if (states.contains(WidgetState.disabled)) {
       return _darkGray;
     }
     return _darkGray;
@@ -110,7 +110,7 @@ class _ThemeColorsDark extends ThemeColors {
 
   @override
   Color checkBoxFocusColor() {
-    return secondary().withOpacity(0.5);
+    return secondary().withAlpha((255.0 * 0.5).round());
   }
 
   @override
@@ -119,11 +119,11 @@ class _ThemeColorsDark extends ThemeColors {
   }
 
   @override
-  Color checkBoxOverlayColor(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      return secondary().withOpacity(0.5);
+  Color checkBoxOverlayColor(Set<WidgetState> states) {
+    if (states.contains(WidgetState.disabled)) {
+      return secondary().withAlpha((255 * 0.5).round());
     }
-    return secondary().withOpacity(0.5);
+    return secondary().withAlpha((255.0 * 0.5).round());
   }
 
   @override

@@ -64,6 +64,20 @@ void main() {
       {'formula' : 'A + B]', 'values': values, 'expectedOutput' : 'rrbbrB'},
       {'formula' : '[A + B', 'values': values, 'expectedOutput' : 'Brrbbr'},
 
+      //variables with names which are included in other variable names
+      {'formula' : 'A1 + A10', 'values': {'A1': '1', 'A10': '3'}, 'expectedOutput' : 'rrrbbrrr'},
+      {'formula' : 'A10 + A1', 'values': {'A1': '1', 'A10': '3'}, 'expectedOutput' : 'rrrrbbrr'},
+      {'formula' : 'A1 + A10', 'values': {'A10': '3'}, 'expectedOutput' : 'RGGbbrrr'},
+      {'formula' : 'A1 + A10', 'values': {'A1': '1'}, 'expectedOutput' : 'rrrbbrrG'},
+      {'formula' : 'A1 + A10', 'values': {'A10': '3', 'A1': '1'}, 'expectedOutput' : 'rrrbbrrr'},
+      {'formula' : 'BC + ABCD', 'values': {'ABCD': '3', 'BC': '1'}, 'expectedOutput' : 'rrrbbrrrr'},
+      {'formula' : 'BC + ABCD', 'values': {'BC': '1', 'ABCD': '1'}, 'expectedOutput' : 'rrrbbrrrr'},
+      {'formula' : 'Bc + ABCD', 'values': {'ABCD': '3', 'bc': '1'}, 'expectedOutput' : 'rrrbbrrrr'},
+      {'formula' : 'BC + AbcD', 'values': {'ABCD': '3', 'bc': '1'}, 'expectedOutput' : 'rrrbbrrrr'},
+      {'formula' : 'bc + ABCD', 'values': {'BC': '1', 'AbcD': '3'}, 'expectedOutput' : 'rrrbbrrrr'},
+      {'formula' : 'ABCD + bc', 'values': {'BC': '1', 'AbcD': '3'}, 'expectedOutput' : 'rrrrrbbrr'},
+      {'formula' : 'ABCD + bc', 'values': {'BD': '1', 'AbcD': '3'}, 'expectedOutput' : 'rrrrrbbRR'},
+
       //Trim empty space
       {'formula' : 'sin(0) ', 'values': <String, String>{}, 'expectedOutput' : 'bbbbgbb'},
 
@@ -165,10 +179,10 @@ void main() {
       {'formula' : 'N []', 'values': values, 'expectedOutput' : 'ttBB'},
       {'formula' : 'N [F', 'values': values, 'expectedOutput' : 'RRBR'},
       {'formula' : 'N [F]', 'values': values, 'expectedOutput' : 'ttbRb'},
-      {'formula' : 'N [A].[{B}]', 'values': values, 'expectedOutput' : 'ttbrbtbbrbb'},
-      {'formula' : 'N [A].[{H}]', 'values': values, 'expectedOutput' : 'ttbrbtbbRbb'},
-      {'formula' : 'N [A].[{04}]', 'values': values, 'expectedOutput' : 'ttbrbtbbggbb'},
-      {'formula' : 'N [A].[{(B)}]', 'values': values, 'expectedOutput' : 'ttbrbtbbbrbbb'},
+      {'formula' : 'N [A].[{B}]', 'values': values, 'expectedOutput' : 'ttbrbtbbBbb'},
+      {'formula' : 'N [A].[{H}]', 'values': values, 'expectedOutput' : 'ttbrbtbbBbb'},
+      {'formula' : 'N [A].[{04}]', 'values': values, 'expectedOutput' : 'ttbrbtbbBBbb'},
+      {'formula' : 'N [A].[{(B)}]', 'values': values, 'expectedOutput' : 'ttbrbtbbBBBbb'},
       {'formula' : 'N [A].[({B)}]', 'values': values, 'expectedOutput' : 'ttbrbtbbBrbBb'},
       {'formula' : '  N [A].[({B)}]', 'values': values, 'expectedOutput' : 'ttttbrbtbbBrbBb'},
       {'formula' : '  N [AB].[({B)}]', 'values': values, 'expectedOutput' : 'ttttbrrbtbbBrbBb'},
@@ -190,6 +204,10 @@ void main() {
       {'formula' : 'E(1', 'values': {'E':'1'}, 'expectedOutput' : 'rBG'},
       {'formula' : 'E(', 'values': <String, String>{}, 'expectedOutput' : 'RB'},
       {'formula' : 'E)', 'values': <String, String>{}, 'expectedOutput' : 'RB'},
+      //special characters
+      {'formula' : '10  B (West) - 3  A (Ost) - 4  C (west)', 'values': <String, String>{'b (west)': '63', 'c (west)': '7', 'A (Ost)': '3'}, 'expectedOutput' : 'ggggrrrrrrrrrbbgggrrrrrrrrbbgggrrrrrrrr'},
+      {'formula' : r".-\", 'values': {'.':'3', '-':'2', r'\':'2'}, 'expectedOutput' : 'rrr'},
+      {'formula' : r'",', 'values': {'"':'3', ',':'2'}, 'expectedOutput' : 'rr'},
 
       {'formula' : 'SIN(12)', 'values': <String, String>{}, 'expectedOutput' : 'bbbbggb'},
       {'formula' : 'sin(12)', 'values': <String, String>{}, 'expectedOutput' : 'bbbbggb'},
@@ -241,19 +259,26 @@ void main() {
 
       {'formula' : 'A{2}B', 'values': <String, String>{}, 'formulaId': 3, 'expectedOutput' : 'RbbbR'}, // IF: formula id >= 2
       {'formula' : 'A{2}B', 'values': <String, String>{}, 'formulaId': 1, 'expectedOutput' : 'RbBbR'}, // IF: formula id < 2
-      {'formula' : 'A{f2}B', 'values': <String, String>{}, 'formulaId': 3, 'expectedOutput' : 'RBRGBR'}, // IF: formula id > 2
-      {'formula' : 'A{F2}B', 'values': <String, String>{}, 'formulaId': 3, 'expectedOutput' : 'RBRGBR'}, // IF: formula id > 2
-      {'formula' : 'A{f2}B', 'values': <String, String>{}, 'formulaId': 2, 'expectedOutput' : 'RBRGBR'}, // IF: formula id <= 2
-      {'formula' : 'A{A2}B', 'values': <String, String>{}, 'expectedOutput' : 'RBRGBR'},
-      {'formula' : 'A{X}B', 'values': <String, String>{}, 'expectedOutput' : 'RBRBR'},
+      {'formula' : 'A{ 2 }B', 'values': <String, String>{}, 'formulaId': 3, 'expectedOutput' : 'RbbbbbR'}, // IF: formula id >= 2
+      {'formula' : 'A{f2}B', 'values': <String, String>{}, 'formulaId': 3, 'expectedOutput' : 'RbBBbR'}, // IF: formula id > 2
+      {'formula' : 'A{F2}B', 'values': <String, String>{}, 'formulaId': 3, 'expectedOutput' : 'RbBBbR'}, // IF: formula id > 2
+      {'formula' : 'A{f2}B', 'values': <String, String>{}, 'formulaId': 2, 'expectedOutput' : 'RbBBbR'}, // IF: formula id <= 2
+      {'formula' : 'A{A2}B', 'values': <String, String>{}, 'expectedOutput' : 'RbBBbR'},
+      {'formula' : 'A{X}B', 'values': <String, String>{}, 'expectedOutput' : 'RbBbR'},
       {'formula' : 'A{[1 + 1]}B', 'values': <String, String>{}, 'expectedOutput' : 'ttbggbbgbtt'},
       {'formula' : 'A{[A + 1]}B', 'values': <String, String>{}, 'expectedOutput' : 'ttbRRbbgbtt'},
       {'formula' : 'A{[A + 1]}B', 'values': {'A':'1'}, 'expectedOutput' : 'ttbrrbbgbtt'},
-      {'formula' : 'A{1 + 1}B', 'values': <String, String>{}, 'expectedOutput' : 'RBGGBBGBR'},
+      {'formula' : 'A{1 + 1}B', 'values': <String, String>{}, 'expectedOutput' : 'RbBBBBBbR'},
       {'formula' : 'A{2}B[A+B]', 'values': <String, String>{}, 'formulaId': 3, 'expectedOutput' : 'tbbbtbRbRb'},  // IF: formula id > 2
       {'formula' : 'A{2}B[A+B]', 'values': <String, String>{}, 'formulaId': 2, 'expectedOutput' : 'tbBbtbRbRb'},  // IF: formula id <= 2
       {'formula' : 'AB[A+B]{2}', 'values': <String, String>{}, 'formulaId': 2, 'expectedOutput' : 'ttbRbRbbBb'},  // IF: formula id <= 2
       {'formula' : '[AB]{2}[A+B]', 'values': <String, String>{}, 'formulaId': 2, 'expectedOutput' : 'bRRbbBbbRbRb'},  // IF: formula id <= 2
+
+      {'formula' : '{form1}+{form2}', 'values': <String, String>{'A': '1'}, 'formulaId': 2, 'formulaNames': ['form1', 'form2', '', 'form3' ], 'expectedOutput' : 'bbbbbbbbbbbbbbb'},
+      {'formula' : '{1}+{form2}', 'values': <String, String>{'A': '1'}, 'formulaId': 2, 'formulaNames': ['form1', 'form2', '', 'form3' ], 'expectedOutput' : 'bbbbbbbbbbb'},
+      {'formula' : '{1}+{ form2 }', 'values': <String, String>{'A': '1'}, 'formulaId': 2, 'formulaNames': ['form1', 'form2', '', 'form3' ], 'expectedOutput' : 'bbbbbbbbbbbbb'},
+      {'formula' : '{1}+{ form3 }', 'values': <String, String>{'A': '1'}, 'formulaId': 2, 'formulaNames': ['form1', 'form2', '', 'form3' ], 'expectedOutput' : 'bbbbbbBBBBBbb'},
+      {'formula' : '{ Alpha }', 'values': <String, String>{'A': '1'}, 'formulaId': 2, 'formulaNames': ['form1', 'form2', '', 'form3' ], 'expectedOutput' : 'bbBBBBBbb'},
 
       // empty variable value
       {'formula' : '[A]', 'values': {'A':''}, 'expectedOutput' : 'bRb'},
@@ -441,6 +466,8 @@ void main() {
     for (var elem in _inputsToExpected) {
       test('formula: ${elem['formula']}, values: ${elem['values']}', () {
         var variables = <FormulaValue>[];
+        var formulaNames = <String>[];
+
         if (elem['values'] is Map<String, String>) {
           (elem['values'] as Map<String, String>).forEach((key, value) {
             variables.add(FormulaValue(key, value));
@@ -450,7 +477,12 @@ void main() {
         }  else if (elem['values'] is Set<FormulaValue>) {
           variables = (elem['values'] as Set<FormulaValue>).toList();
         }
-        var _actual = formulaPainter.paintFormula(elem['formula'] as String, variables, (elem['formulaId'] ?? 0) as int, true);
+
+        if (elem['formulaNames'] is List<String>) {
+          formulaNames = elem['formulaNames'] as List<String>;
+        }
+
+        var _actual = formulaPainter.paintFormula(elem['formula'] as String, variables, (elem['formulaId'] ?? 0) as int, formulaNames, true);
         expect(_actual, elem['expectedOutput']);
       });
     }

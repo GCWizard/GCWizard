@@ -356,7 +356,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('list: ${elem['list']}', () {
-        var _actual = countCharacters(elem['list'] as List<int>);
+        var _actual = countElements(elem['list'] as List<int>);
         expect(_actual, elem['expectedOutput']);
       });
     }

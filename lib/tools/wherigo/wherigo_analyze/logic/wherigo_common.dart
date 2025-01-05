@@ -11,15 +11,17 @@ String getLUAName(String line) {
   return result;
 }
 
-String getLineData(String analyseLine, String LUAname, String type, String obfuscator, String dtable) {
+String getLineData(String analyseLine, String LUAname, String type, List<String> obfuscator, List<String> dtable) {
   String result = analyseLine.replaceAll(LUAname + '.' + type + ' = ', '');
-  if (result.startsWith(obfuscator)) {
-    result = result.replaceAll(obfuscator + '("', '').replaceAll('")', '');
-    result = deobfuscateUrwigoText(result, dtable);
-  } else if (result.startsWith('WWB_multi')) {
-    result = result.replaceAll('WWB_multiplatform_string("', '').replaceAll('")', '');
-  } else {
-    result = result.replaceAll('"', '');
+  for (int i = 0; i < obfuscator.length; i++) {
+    if (result.startsWith(obfuscator[i])) {
+      result = result.replaceAll(obfuscator[i] + '("', '').replaceAll('")', '');
+      result = deobfuscateUrwigoText(result, dtable[i]);
+    } else if (result.startsWith('WWB_multi')) {
+      result = result.replaceAll('WWB_multiplatform_string("', '').replaceAll('")', '');
+    } else {
+      result = result.replaceAll('"', '');
+    }
   }
 
   return normalizeWIGText(result).trim();
@@ -44,7 +46,6 @@ String getTextData(
   if (result.endsWith(',')) result = result.substring(0, result.length - 1);
 
   if (RegExp(r'(gsub_wig)').hasMatch(result)) {
-    // deobfuscate/replace all Matches gsub_wig\("[\w\s@]+"\)
     RegExp(r'gsub_wig\("[\w\s@\-.~]+"\)').allMatches(result).forEach((element) {
       var group = element.group(0);
       if (group == null) return;
@@ -62,38 +63,11 @@ String getTextData(
     });
     result = result.replaceAll('gsub_wig()', '');
   }
-  // else if (result.startsWith(RegExp(r'(\()+' + obfuscator))) {
-  //   while (result.startsWith(RegExp(r'(\()+' + obfuscator))) result = result.substring(1);
-  //   result = result.replaceAll('(' + obfuscator, obfuscator).replaceAll('),', ')').replaceAll('))', ')');
-  //   result = _getDetails(result, obfuscator, dtable);
-  // }
-  // else if (result.startsWith(obfuscator)) {
-  //   if (_compositeObfuscatedText(result, obfuscator))
-  //     result = _getDetails(result, obfuscator, dtable);
-  //   else if (_compositeText(result)) {
-  //     result = _getCompositeText(result, obfuscator, dtable);
-  //   } else {
-  //     result = result.replaceAll(obfuscator + '("', '').replaceAll('"),', '').replaceAll('")', '');
-  //     result = deobfuscateUrwigoText(result, dtable);
-  //   }
-  // }
-  // else if (result.replaceAll('Player.Name .. ', '').startsWith(obfuscator)) {
-  //   result = result.replaceAll('Player.Name .. ', '');
-  //   if (_compositeObfuscatedText(result, obfuscator))
-  //     result = _getDetails(result, obfuscator, dtable);
-  //   else if (_compositeText(result)) {
-  //     result = _getCompositeText(result, obfuscator, dtable);
-  //   } else {
-  //     result = result.replaceAll(obfuscator + '("', '').replaceAll('"),', '').replaceAll('")', '');
-  //     result = deobfuscateUrwigoText(result, dtable);
-  //   }
-  //   result = 'Player.Name .. ' + result;
-  // }
 
   return normalizeWIGText(result);
 }
 
-List<String> getChoicesSingleLine(String choicesLine, String LUAname, String obfuscator, String dtable) {
+List<String> getChoicesSingleLine(String choicesLine, String LUAname, List<String> obfuscator, List<String> dtable) {
   List<String> result = [];
   choicesLine
       .replaceAll(LUAname + '.Choices = {', '')

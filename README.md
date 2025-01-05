@@ -1,7 +1,7 @@
 # GC Wizard
 
 <p align="center">
-  <img src="https://github.com/S-Man42/GCWizard/blob/master/assets/logo/circle_border_128.png?raw=true" alt="GC Wizard logo"/>
+  <img src="https://github.com/GCWizard/GCWizard/blob/master/assets/logo/circle_border_128.png?raw=true" alt="GC Wizard logo"/>
 </p>
 
 The GC Wizard is an open-source tool collection for **Android** and **iOS**. There is also an alpha version of a **[Web View](http://gcwizard.net)**.
@@ -80,15 +80,18 @@ Based on **Flutter/Dart**.
 
 * [Manual](https://blog.gcwizard.net/manual/en/) 🇬🇧 🇩🇪
 * [Web View](http://gcwizard.net)
+* [FAQ](https://blog.gcwizard.net/category/faq/)
 
 ### Development
-* [Github](https://github.com/S-Man42/GCWizard): Code and assets
+* [Github](https://github.com/GCWizard/GCWizard): Code and assets
 * [Crowdin](https://crowdin.com/project/gc-wizard): Translations
+  
+### E-mail
+* info@gcwizard.net
 
 ### Social Media
 * [Blog](https://blog.gcwizard.net/) 🇬🇧 🇩🇪
-* [Twitter](https://twitter.com/gc_wizard) 🇬🇧
-* [Facebook](https://www.facebook.com/geocache.wizard) 🇬🇧 🇩🇪
+* [Mastodon](https://fosstodon.org/@gcwizard) 🇬🇧
 
 ### App Stores
 * There are **two versions** available: Normal and *Gold*. *Gold* version **is absolutely the same** (only another logo 😉), no additional features. It is just for supporting the developers.

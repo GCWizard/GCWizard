@@ -226,12 +226,12 @@ class VariableStringExpander {
   List<VariableStringExpanderValue> run({bool onlyPrecheck = false}) {
     if (_input.isEmpty) return [];
 
-    if (_substitutions == null || _substitutions!.isEmpty) {
+    if (_substitutions == null || _substitutions.isEmpty) {
       return [VariableStringExpanderValue(text: _input)];
     }
 
     // expand all groups, initialize lists
-    for (MapEntry<String, String> substitution in _substitutions!.entries) {
+    for (MapEntry<String, String> substitution in _substitutions.entries) {
       if (!VARIABLESTRING.hasMatch(substitution.value)) {
         return [VariableStringExpanderValue(text: _input)];
       }

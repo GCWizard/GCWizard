@@ -12,7 +12,7 @@ import 'package:gc_wizard/application/settings/widget/settings_tools.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:gc_wizard/common_widgets/gcw_tool.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 Drawer buildMainMenu(BuildContext context) {
@@ -33,7 +33,7 @@ Drawer buildMainMenu(BuildContext context) {
               shape: BoxShape.circle,
             ),
             child: Image.asset(
-              'assets/logo/circle_border_128.png',
+              applogoFilename(),
             ),
           ),
           Padding(

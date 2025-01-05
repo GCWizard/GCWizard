@@ -4,14 +4,14 @@ import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords/gcw_coords.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_bearing.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_output.dart';
-import 'package:gc_wizard/common_widgets/coordinates/gcw_coords_output/gcw_coords_outputformat.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_bearing.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
-import 'package:gc_wizard/tools/coords/intersect_lines/logic/intersect_lines.dart';
+import 'package:gc_wizard/tools/coords/cross_bearing/logic/cross_bearing.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:gc_wizard/utils/constants.dart';
@@ -34,7 +34,7 @@ class _CrossBearingState extends State<CrossBearing> {
   var _currentBearing2 = defaultDoubleText;
 
   var _currentOutputFormat = defaultCoordinateFormat;
-  List<String> _currentOutput = [];
+  List<Object> _currentOutput = [];
 
   var _currentMapPoints = <GCWMapPoint>[];
   var _currentMapPolylines = <GCWMapPolyline>[];
@@ -48,7 +48,9 @@ class _CrossBearingState extends State<CrossBearing> {
           coordsFormat: _currentCoords1.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoords1 = ret;
+              if (ret != null) {
+                _currentCoords1 = ret;
+              }
             });
           },
         ),
@@ -64,7 +66,9 @@ class _CrossBearingState extends State<CrossBearing> {
           coordsFormat: _currentCoords2.format,
           onChanged: (ret) {
             setState(() {
-              _currentCoords2 = ret;
+              if (ret != null) {
+                _currentCoords2 = ret;
+              }
             });
           },
         ),
@@ -152,7 +156,7 @@ class _CrossBearingState extends State<CrossBearing> {
               height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
               width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
               child: GCWAsyncExecuter<LatLng?>(
-                isolatedFunction: intersectBearingsAsync,
+                isolatedFunction: crossBearingsAsync,
                 parameter: _buildJobData,
                 onReady: (data) => _showOutput(data),
                 isOverlay: true,
@@ -165,13 +169,12 @@ class _CrossBearingState extends State<CrossBearing> {
   }
 
   Future<GCWAsyncExecuterParameters> _buildJobData() async {
-    return GCWAsyncExecuterParameters(IntersectBearingJobData(
+    return GCWAsyncExecuterParameters(CrossBearingJobData(
         coord1: _currentCoords1.toLatLng()!,
         az13: _currentBearing1.value,
         coord2: _currentCoords2.toLatLng()!,
         az23: _currentBearing2.value,
-        ells: defaultEllipsoid,
-        crossbearing: true));
+        ells: defaultEllipsoid));
   }
 
   void _showOutput(LatLng? output) {
@@ -202,7 +205,7 @@ class _CrossBearingState extends State<CrossBearing> {
         markerText: i18n(context, "coords_common_intersection"),
         coordinateFormat: _currentOutputFormat));
 
-    _currentOutput = [formatCoordOutput(_currentIntersection!, _currentOutputFormat, defaultEllipsoid)];
+    _currentOutput = [buildCoordinate(_currentOutputFormat, _currentIntersection!)];
 
     _currentMapPolylines = [
       GCWMapPolyline(points: [_getStartLine1(), _getEndLine1()]),

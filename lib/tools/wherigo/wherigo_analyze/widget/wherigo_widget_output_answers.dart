@@ -1,51 +1,104 @@
 part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/widget/wherigo_analyze.dart';
 
-List<List<String>> _buildOutputListAnswers(BuildContext context, WherigoInputData input, WherigoAnswerData data) {
-  List<List<String>> result;
+String _answerIsVariable(String answer) {
+  for (var element in WherigoCartridgeLUAData.Variables) {
+    if (element.VariableLUAName == answer) {
+      return element.VariableName;
+    } else if (element.VariableName == answer) {
+      return element.VariableName;
+    }
+  }
+  return '';
+}
+
+List<List<String>> _buildOutputListAnswers(BuildContext context,
+    WherigoInputData input, WherigoAnswerData data, String LUASourceCode) {
+  List<List<String>> result = [];
   List<String> answers = data.AnswerAnswer.split('\x01');
   var hash = answers[0].trim();
   var answerAlphabetical = answers.length >= 2 ? answers[1].trim() : null;
   var answerNumeric = answers.length == 3 ? answers[2].trim() : null;
-
   if (input.InputType == 'MultipleChoice') {
-    result = [
-      answers.length > 1
-          ? [i18n(context, 'wherigo_output_hash'), hash, '']
-          : [i18n(context, 'wherigo_output_answer'), hash],
-    ];
+    if (answers.length > 1) {
+      result.add([
+        i18n(context, 'wherigo_output_hash'),
+        '',
+        hash == '-<ELSE>-' ? i18n(context, 'wherigo_answer_else') : hash,
+      ]);
+    } else {
+      result.add([
+        i18n(context, 'wherigo_output_answer'),
+        '',
+        hash == '-<ELSE>-' ? i18n(context, 'wherigo_answer_else') : hash,
+      ]);
+    }
     if (hash != '0') {
       for (int i = 0; i < input.InputChoices.length; i++) {
         if (RSHash(input.InputChoices[i].toLowerCase()).toString() == hash) {
-          result.add([i18n(context, 'wherigo_output_answerdecrypted'), input.InputChoices[i], '']);
+          result.add([
+            i18n(context, 'wherigo_output_answerdecrypted'),
+            '',
+            input.InputChoices[i],
+          ]);
         }
       }
     }
-  } else {
-    result = [
-      answers.length > 1
-          ? [i18n(context, 'wherigo_output_hash'), hash, '']
-          : [i18n(context, 'wherigo_output_answer'), hash],
-      if (answerAlphabetical != null)
-        [i18n(context, 'wherigo_output_answerdecrypted'), answerAlphabetical, i18n(context, 'common_letters')],
-      if (answerNumeric != null)
-        [i18n(context, 'wherigo_output_answerdecrypted'), answerNumeric, i18n(context, 'common_numbers')],
-    ];
+  } else { // no multiple choice
+    String _variable = answers.length > 1 ? _answerIsVariable(answers[1]) : '';
+    if (_variable.isNotEmpty) {
+      _variable = _variable.replaceAll('.', '\\.').replaceAll('|', '\\|');
+      if (RegExp(r'' + _variable + ' = .*').hasMatch(LUASourceCode)) {
+        result.add(
+            [i18n(context, 'wherigo_output_answervariable'), '', _variable]);
 
-    result = [
-      answers.length > 1
-          ? [i18n(context, 'wherigo_output_hash'), hash, '']
-          : [i18n(context, 'wherigo_output_answer'), hash],
-      if (answerAlphabetical != null)
-        [i18n(context, 'wherigo_output_answerdecrypted'), i18n(context, 'common_letters'), answerAlphabetical],
-      if (answerNumeric != null)
-        [i18n(context, 'wherigo_output_answerdecrypted'), i18n(context, 'common_numbers'), answerNumeric],
-    ];
+        RegExp(r'' + _variable + ' = .*').allMatches(LUASourceCode).forEach((
+            variableWithValue) {
+          var group = variableWithValue.group(0);
+          if (group != null) {
+            result.add([i18n(context, 'wherigo_data_answer'), '', group]);
+          }
+        });
+      }
+    }
+    //else {
+    if (answers.length > 1) {
+      result.add([
+        i18n(context, 'wherigo_output_hash'),
+        '',
+        hash == '-<ELSE>-' ? i18n(context, 'wherigo_answer_else') : hash,
+      ]);
+    } else { // answers.length = 1 or 0
+      if (hash == '-<ELSE>-') {
+        result.add([
+          i18n(context, 'wherigo_output_answer'),
+          '',
+          i18n(context, 'wherigo_answer_else'),
+        ]);
+      } else {
+        result.add([i18n(context, 'wherigo_output_answer'), '', hash]);
+      }
+    }
+    if (answerAlphabetical != null) {
+      result.add([
+        i18n(context, 'wherigo_output_answerdecrypted'),
+        i18n(context, 'common_letters'),
+        answerAlphabetical
+      ]);
+    }
+    if (answerNumeric != null) {
+      result.add([
+        i18n(context, 'wherigo_output_answerdecrypted'),
+        i18n(context, 'common_numbers'),
+        answerNumeric
+      ]);
+    }
+    //}
   }
-
   return result;
 }
 
-List<Widget> _outputAnswerActionsWidgets(BuildContext context, WherigoAnswerData data) {
+List<Widget> _outputAnswerActionsWidgets(
+    BuildContext context, WherigoAnswerData data) {
   List<Widget> resultWidget = [];
 
   if (data.AnswerActions.isNotEmpty) {
@@ -53,7 +106,8 @@ List<Widget> _outputAnswerActionsWidgets(BuildContext context, WherigoAnswerData
       switch (element.ActionMessageType) {
         case WHERIGO_ACTIONMESSAGETYPE.TEXT:
           resultWidget.add(Container(
-            padding: const EdgeInsets.only(top: DOUBLE_DEFAULT_MARGIN, bottom: DOUBLE_DEFAULT_MARGIN),
+            padding: const EdgeInsets.only(
+                top: DOUBLE_DEFAULT_MARGIN, bottom: DOUBLE_DEFAULT_MARGIN),
             child: GCWOutput(
               child: element.ActionMessageContent,
               suppressCopyButton: true,
@@ -65,15 +119,20 @@ List<Widget> _outputAnswerActionsWidgets(BuildContext context, WherigoAnswerData
           var file = _getFileFrom(context, element.ActionMessageContent);
           if (file == null) break;
 
-          resultWidget.add(GCWImageView(
-            imageData: GCWImageViewData(file),
-            suppressedButtons: const {GCWImageViewButtons.ALL},
+          resultWidget.add(GCWFilesOutput(
+            suppressHiddenDataMessage: true,
+            files: [
+              GCWFile(bytes: file.bytes, name: file.name),
+            ],
           ));
+
           break;
 
         case WHERIGO_ACTIONMESSAGETYPE.BUTTON:
-          resultWidget.add(Text('\n' '« ' + element.ActionMessageContent + ' »' + '\n',
-              textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.bold)));
+          resultWidget.add(Text(
+              '\n' '« ' + element.ActionMessageContent + ' »' + '\n',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontWeight: FontWeight.bold)));
           break;
 
         case WHERIGO_ACTIONMESSAGETYPE.CASE:
@@ -86,22 +145,29 @@ List<Widget> _outputAnswerActionsWidgets(BuildContext context, WherigoAnswerData
           break;
 
         case WHERIGO_ACTIONMESSAGETYPE.COMMAND:
+          resultWidget.add(GCWText(
+            text: element.ActionMessageContent,
+          ));
           if (element.ActionMessageContent.startsWith('Wherigo.PlayAudio')) {
-            String LUAName = element.ActionMessageContent.replaceAll('Wherigo.PlayAudio(', '').replaceAll(')', '');
+            String LUAName = element.ActionMessageContent.replaceAll(
+                    'Wherigo.PlayAudio(', '')
+                .replaceAll(')', '');
             if (WHERIGONameToObject[LUAName] == null ||
-                WHERIGONameToObject[LUAName]!.ObjectIndex >= WherigoCartridgeGWCData.MediaFilesContents.length) {
+                WHERIGONameToObject[LUAName]!.ObjectIndex >=
+                    WherigoCartridgeGWCData.MediaFilesContents.length) {
               break;
             }
 
             if (WherigoCartridgeGWCData.MediaFilesContents.isNotEmpty) {
               resultWidget.add(GCWFilesOutput(
                 suppressHiddenDataMessage: true,
-                suppressedButtons: const {GCWImageViewButtons.SAVE},
                 files: [
                   GCWFile(
                       //bytes: _WherigoCartridge.MediaFilesContents[_mediaFileIndex].MediaFileBytes,
                       bytes: WherigoCartridgeGWCData
-                          .MediaFilesContents[WHERIGONameToObject[LUAName]!.ObjectIndex].MediaFileBytes,
+                          .MediaFilesContents[
+                              WHERIGONameToObject[LUAName]!.ObjectIndex]
+                          .MediaFileBytes,
                       name: WHERIGONameToObject[LUAName]!.ObjectMedia),
                 ],
               ));
@@ -109,7 +175,9 @@ List<Widget> _outputAnswerActionsWidgets(BuildContext context, WherigoAnswerData
           } else {
             WHERIGOExpertMode
                 ? resultWidget.add(GCWOutput(
-                    child: '\n' + _resolveLUAName(element.ActionMessageContent) + '\n',
+                    child: '\n' +
+                        _resolveLUAName(element.ActionMessageContent) +
+                        '\n',
                     suppressCopyButton: true,
                   ))
                 : null;

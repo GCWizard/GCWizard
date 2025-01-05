@@ -100,9 +100,12 @@ void main() {
       {'input' : 'LEUCHTTURM.gif',
           'expectedOutputMorse' : ' | -.-.- -. ..... ----- ..... --... .-.-.- .---- .---- -.... . ----- .---- .---- .---- ---.. .---- ---.. ....- | -.-. ',
           'expectedOutputText' : ' N5057.116E01118184 C'},
-      {'input' : 'bibliothek.gif', 'secondMarked' : true,
+      {'input' : 'bibliothek.gif', 'secondMarked' : '12',
         'expectedOutputMorse' : ' | -... ..- . -.-. .... . .-. .-- ..- .-. -- ',
         'expectedOutputText' : ' BUECHERWURM'},
+      {'input' : 'rudifettig.gif', 'secondMarked' : '1',
+        'expectedOutputMorse' : ' -.-. . -- ..-. ----. - | ',
+        'expectedOutputText' : 'CEMF9T '},
     ];
 
     for (var elem in _inputsToExpected) {
@@ -115,11 +118,15 @@ void main() {
         var _marked =  List.filled(images!.length, false);
 
         if (elem['secondMarked'] != null) {
-          for (var idx in imagesFiltered![1]) {
-            _marked[idx] = true;
+          if ((elem['secondMarked'] as String).contains('1')){
+            for (var idx in imagesFiltered![1]) {
+              _marked[idx] = true;
+            }
           }
-          for (var idx in imagesFiltered[2]) {
-            _marked[idx] = true;
+          if ((elem['secondMarked'] as String).contains('2')) {
+            for (var idx in imagesFiltered![2]) {
+              _marked[idx] = true;
+            }
           }
         } else {
           for (var idx in imagesFiltered![0]) {

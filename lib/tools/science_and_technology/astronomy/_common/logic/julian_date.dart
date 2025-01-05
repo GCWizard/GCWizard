@@ -9,17 +9,17 @@ class JulianDate {
   late double deltaT;
   late double terrestrialDynamicalTime;
 
-  JulianDate(DateTimeTimezone datetime) {
-    julianDateUTCNoon = gregorianCalendarToJulianDate(datetime.datetime);
+  JulianDate(DateTimeTZ datetime) {
+    julianDateUTCNoon = gregorianCalendarToJulianDate(datetime.dateTimeUtc);
 
     julianDate = julianDateUTCNoon +
-        (datetime.datetime.hour -
+        (datetime.dateTimeUtc.hour -
                 datetime.timezone.inMinutes / 60.0 +
-                datetime.datetime.minute / 60.0 +
-                datetime.datetime.second / 3600.0) /
+                datetime.dateTimeUtc.minute / 60.0 +
+                datetime.dateTimeUtc.second / 3600.0) /
             24.0;
 
-    deltaT = _deltaT(datetime.datetime.year, datetime.datetime.month);
+    deltaT = _deltaT(datetime.dateTimeUtc.year, datetime.dateTimeUtc.month);
     terrestrialDynamicalTime = julianDate + deltaT / 24.0 / 3600.0;
   }
 

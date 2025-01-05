@@ -27,7 +27,7 @@ class OhlsenTelegraph extends StatefulWidget {
 
 class _OhlsenTelegraphState extends State<OhlsenTelegraph> {
   var _currentEncodeInput = '';
-  late TextEditingController _dncodeInputController;
+  late TextEditingController _encodeInputController;
 
   late TextEditingController _decodeInputController;
   var _currentDecodeInput = '';
@@ -40,13 +40,13 @@ class _OhlsenTelegraphState extends State<OhlsenTelegraph> {
   void initState() {
     super.initState();
 
-    _dncodeInputController = TextEditingController(text: _currentEncodeInput);
+    _encodeInputController = TextEditingController(text: _currentEncodeInput);
     _decodeInputController = TextEditingController(text: _currentDecodeInput);
   }
 
   @override
   void dispose() {
-    _dncodeInputController.dispose();
+    _encodeInputController.dispose();
     _decodeInputController.dispose();
 
     super.dispose();
@@ -65,7 +65,7 @@ class _OhlsenTelegraphState extends State<OhlsenTelegraph> {
       ),
       if (_currentMode == GCWSwitchPosition.left) // encrypt
         GCWTextField(
-          controller: _dncodeInputController,
+          controller: _encodeInputController,
           onChanged: (text) {
             setState(() {
               _currentEncodeInput = text;

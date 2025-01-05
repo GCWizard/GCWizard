@@ -48,110 +48,120 @@ class _GCWPasteButtonState extends State<GCWPasteButton> {
         child: GCWPopupMenu(
       size: widget.iconSize,
       customIcon: widget.customIcon,
-      iconData: Icons.content_paste,
+      icon: Icons.content_paste,
       backgroundColor: widget.backgroundColor,
-      menuItemBuilder: (context) => _buildMenuItems(context),
+      menuItemBuilder: (context) => _buildPasteClipboardMenuItems(context, widget.onSelected),
       onBeforePressed: widget.onBeforePressed,
       isTextSelectionToolBarButton: widget.isTextSelectionToolBarButton ?? false,
       textSelectionToolBarButtonLabel: widget.textSelectionToolBarButtonLabel,
       textSelectionToolBarButtonPadding: widget.textSelectionToolBarButtonPadding,
     ));
   }
+}
 
-  List<GCWPopupMenuItem> _buildMenuItems(BuildContext context) {
-    var menuItems = [
-      GCWPopupMenuItem(
-        child: Text(i18n(context, 'common_clipboard_fromdeviceclipboard'), style: gcwDialogTextStyle()),
-        action: (index) {
-          try {
-            Clipboard.getData('text/plain').then((ClipboardData? data) {
-              if (data == null || data.text == null || data.text!.isEmpty) {
-                showSnackBar(i18n(context, 'common_clipboard_notextdatafound'), context);
-                return;
-              }
+List<GCWPopupMenuItem> _buildPasteClipboardMenuItems(BuildContext context, void Function(String) onSelected) {
+  var menuItems = [
+    GCWPopupMenuItem(
+      child: Text(i18n(context, 'common_clipboard_fromdeviceclipboard'), style: gcwDialogTextStyle()),
+      action: (index) {
+        try {
+          Clipboard.getData('text/plain').then((ClipboardData? data) {
+            if (data == null || data.text == null || data.text!.isEmpty) {
+              showSnackBar(i18n(context, 'common_clipboard_notextdatafound'), context);
+              return;
+            }
 
-              widget.onSelected(data.text!);
-              insertIntoGCWClipboard(context, data.text!, useGlobalClipboard: false);
-            });
-          } catch (e) {}
-        },
-      ),
-      GCWPopupMenuItem(
-          child: GCWTextDivider(
-            style: gcwTextStyle().copyWith(color: themeColors().dialogText()),
-            suppressTopSpace: true,
-            trailing: GCWIconButton(
-              icon: Icons.settings,
-              size: IconButtonSize.SMALL,
-              iconColor: themeColors().dialogText(),
-              onPressed: () => _openClipboardEditor(),
-            ),
-            text:
-                '', // TODO: A GCWTextDivider without any text is a simple GCWDivider, but the GCWDivider currently does not support 'suppressTopSpace' and 'trailing'; Move both attributes to GCWDivider
+            onSelected(data.text!);
+            insertIntoGCWClipboard(context, data.text!, useGlobalClipboard: false);
+          });
+        } catch (e) {}
+      },
+    ),
+    GCWPopupMenuItem(
+        child: GCWTextDivider(
+          style: gcwTextStyle().copyWith(color: themeColors().dialogText()),
+          suppressTopSpace: true,
+          trailing: GCWIconButton(
+            icon: Icons.settings,
+            size: IconButtonSize.SMALL,
+            iconColor: themeColors().dialogText(),
+            onPressed: () => _openClipboardEditor(),
           ),
-          action: (index) {
-            _openClipboardEditor();
-          })
-    ];
-
-    var gcwClipboard = Prefs.getStringList(PREFERENCE_CLIPBOARD_ITEMS)
-        .map((String clipboardItem) {
-          return ClipboardItem.fromJson(clipboardItem);
+          text:
+          '', // TODO: A GCWTextDivider without any text is a simple GCWDivider, but the GCWDivider currently does not support 'suppressTopSpace' and 'trailing'; Move both attributes to GCWDivider
+        ),
+        action: (index) {
+          _openClipboardEditor();
         })
-        .where((ClipboardItem? item) => item != null)
-        .map((ClipboardItem? item) => item as ClipboardItem)
-        .map((ClipboardItem item) {
-          var dateFormat = DateFormat('yMd', Localizations.localeOf(context).toString());
-          var timeFormat = DateFormat('Hms', Localizations.localeOf(context).toString());
+  ];
 
-          return GCWPopupMenuItem(
-              child: Container(
-                padding: const EdgeInsets.only(bottom: 15),
-                child: Column(
-                  children: [
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          dateFormat.format(item.datetime) + ' ' + timeFormat.format(item.datetime),
-                          style: gcwDialogTextStyle().copyWith(fontSize: max(fontSizeSmall(), 10)),
-                        )),
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          item.text,
-                          style: gcwDialogTextStyle(),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        )),
-                  ],
-                ),
-              ),
-              action: (int index) {
-                if (index < 2) {
-                  return;
-                }
+  var gcwClipboard = Prefs.getStringList(PREFERENCE_CLIPBOARD_ITEMS)
+      .map((String clipboardItem) {
+    return ClipboardItem.fromJson(clipboardItem);
+  })
+      .where((ClipboardItem? item) => item != null)
+      .map((ClipboardItem? item) => item as ClipboardItem)
+      .map((ClipboardItem item) {
+    var dateFormat = DateFormat('yMd', Localizations.localeOf(context).toString());
+    var timeFormat = DateFormat('Hms', Localizations.localeOf(context).toString());
 
-                var list = Prefs.getStringList(PREFERENCE_CLIPBOARD_ITEMS);
-                if (list.isEmpty) {
-                  return;
-                }
+    return GCWPopupMenuItem(
+        child: Container(
+          padding: const EdgeInsets.only(bottom: 15),
+          child: Column(
+            children: [
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    dateFormat.format(item.datetime) + ' ' + timeFormat.format(item.datetime),
+                    style: gcwDialogTextStyle().copyWith(fontSize: max(fontSizeSmall(), 10)),
+                  )),
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    item.text,
+                    style: gcwDialogTextStyle(),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  )),
+            ],
+          ),
+        ),
+        action: (int index) {
+          if (index < 2) {
+            return;
+          }
 
-                var item = ClipboardItem.fromJson(list[index - 2]);
-                if (item == null) {
-                  return;
-                }
+          var list = Prefs.getStringList(PREFERENCE_CLIPBOARD_ITEMS);
+          if (list.isEmpty) {
+            return;
+          }
 
-                widget.onSelected(item.text);
-                insertIntoGCWClipboard(context, item.text, useGlobalClipboard: false);
-              });
-        })
-        .toList();
+          var item = ClipboardItem.fromJson(list[index - 2]);
+          if (item == null) {
+            return;
+          }
 
-    menuItems.addAll(gcwClipboard);
-    return menuItems;
-  }
+          onSelected(item.text);
+          insertIntoGCWClipboard(context, item.text, useGlobalClipboard: false);
+        });
+  })
+      .toList();
 
-  void _openClipboardEditor() {
-    NavigationService.instance.navigateTo(clipboard_editor);
-  }
+  menuItems.addAll(gcwClipboard);
+  return menuItems;
+}
+
+void _openClipboardEditor() {
+  NavigationService.instance.navigateTo(clipboard_editor);
+}
+
+void onPasteMenuButtonPressed(BuildContext context, void Function(String) onSelected) {
+  onPopupMenuPressed(
+    context,
+    (context) => _buildPasteClipboardMenuItems(
+      context,
+      onSelected
+    )
+  );
 }

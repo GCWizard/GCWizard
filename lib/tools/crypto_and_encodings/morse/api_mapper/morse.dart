@@ -1,5 +1,6 @@
 import 'package:gc_wizard/application/webapi/api_mapper.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/morse/logic/morse.dart';
+import 'package:gc_wizard/utils/string_utils.dart';
 
 const String _apiSpecification = '''
 {
@@ -58,9 +59,9 @@ class MorseAPIMapper extends APIMapper {
     }
 
     if (getWebParameter(WEBPARAMETER.mode) == enumName(MODE.encode.toString())) {
-      return encodeMorse(input);
+      return encodeMorse(input, type: MorseType.MORSE_ITU, spaceCharacter: String.fromCharCode(8195));
     } else {
-      return decodeMorse(input);
+      return decodeMorse(input, type: MorseType.MORSE_ITU);
     }
   }
 

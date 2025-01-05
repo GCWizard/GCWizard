@@ -9,7 +9,7 @@ import 'package:gc_wizard/common_widgets/dividers/gcw_divider.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
-import 'package:gc_wizard/common_widgets/gcw_tool.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_files_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
@@ -85,6 +85,7 @@ class _HiddenDataState extends State<HiddenData> {
         GCWOpenFile(
           title: i18n(context, 'hiddendata_openpublicfile'),
           file: _publicFile,
+          suppressGallery: false,
           onLoaded: (_openedFile) {
             if (_openedFile == null) {
               showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
@@ -158,6 +159,7 @@ class _HiddenDataState extends State<HiddenData> {
         Container(), // fixes strange behaviour: First GCWOpenFile widget from hide/unhide affect each other
         GCWOpenFile(
           file: _unHideFile,
+          suppressGallery: false,
           onLoaded: (_openedFile) {
             if (_openedFile == null) {
               showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);

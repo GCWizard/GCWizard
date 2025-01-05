@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/gcw_web_statefulwidget.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
+import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/atbash/logic/atbash.dart';
 
@@ -40,6 +42,7 @@ class Atbash extends GCWWebStatefulWidget {
 
 class _AtbashState extends State<Atbash> {
   late TextEditingController _controller;
+  GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
 
   String _currentInput = '';
 
@@ -65,6 +68,16 @@ class _AtbashState extends State<Atbash> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        GCWTwoOptionsSwitch(
+          value: _currentMode,
+          leftValue: i18n(context, 'atbash_mode_original'),
+          rightValue: i18n(context, 'atbash_mode_modern'),
+          onChanged: (value) {
+            setState(() {
+              _currentMode = value;
+            });
+          },
+        ),
         GCWTextField(
           controller: _controller,
           onChanged: (text) {
@@ -73,7 +86,7 @@ class _AtbashState extends State<Atbash> {
             });
           },
         ),
-        GCWDefaultOutput(child: atbash(_currentInput))
+        GCWDefaultOutput(child: atbash(_currentInput, historicHebrew: (_currentMode == GCWSwitchPosition.left)))
       ],
     );
   }

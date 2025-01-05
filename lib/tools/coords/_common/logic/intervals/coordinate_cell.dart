@@ -103,7 +103,9 @@ class CoordinateCell {
     if (point.latitudeInRad > latInterval.a &&
         point.latitudeInRad < latInterval.b &&
         point.longitudeInRad > lonInterval.a &&
-        point.longitudeInRad < lonInterval.b) return Interval(a: 0.0, b: 360.0);
+        point.longitudeInRad < lonInterval.b) {
+      return Interval(a: 0.0, b: 360.0);
+    }
 
     var cornerAA = LatLng(radianToDeg(latInterval.a), radianToDeg(lonInterval.a));
     var cornerAB = LatLng(radianToDeg(latInterval.a), radianToDeg(lonInterval.b));

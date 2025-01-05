@@ -1,7 +1,7 @@
 part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/logic/wherigo_analyze.dart';
 
 bool _insideSectionOnGetInput(String currentLine) {
-  if (currentLine.endsWith(':OnGetInput(input)') || currentLine.startsWith('function')) {
+  if (currentLine.endsWith(':OnGetInput(input)') || currentLine.startsWith('function') || currentLine.contains(':OnProximity')) {
     return false;
   }
   return true;
@@ -19,11 +19,12 @@ WherigoAnswer _analyzeAndExtractOnGetInputSectionData(List<String> onGetInputLin
     if (onGetInputLines[i].endsWith(':OnGetInput(input)')) {
       resultInputFunction = onGetInputLines[i].replaceAll('function ', '').replaceAll(':OnGetInput(input)', '').trim();
     }
-
     if (onGetInputLines[i].trim().endsWith('= tonumber(input)')) {
       _answerVariable = onGetInputLines[i].trim().replaceAll(' = tonumber(input)', '');
     } else if (onGetInputLines[i].trim().endsWith(' = input')) {
       _answerVariable = onGetInputLines[i].trim().replaceAll(' = input', '');
+    } else if (onGetInputLines[i].trim().endsWith(' == input then')) {
+      _answerVariable = onGetInputLines[i].trim().replaceAll(' == input then', '').replaceAll('if ', '');
     } else if (onGetInputLines[i].trimLeft() == 'if input == nil then') {
       // suppress this
       //answer = 'NIL';
@@ -38,10 +39,12 @@ WherigoAnswer _analyzeAndExtractOnGetInputSectionData(List<String> onGetInputLin
       } while (!_sectionAnalysed); // end of section
     } // end of NIL
 
-    else if (_OnGetInputSectionEnd(onGetInputLines[i])) {
+    //else
+    if (_OnGetInputSectionEnd(onGetInputLines[i])) {
       // found Answer
       _answerActions = [];
       _answerAnswerList = _getAnswers(i, onGetInputLines[i], onGetInputLines[i - 1], _cartridgeVariables);
+
       for (var answer in _answerAnswerList) {
         if (answer != 'NIL') {
           resultAnswerData.add(WherigoAnswerData(
@@ -55,21 +58,23 @@ WherigoAnswer _analyzeAndExtractOnGetInputSectionData(List<String> onGetInputLin
       do {
         i++;
         onGetInputLines[i] = onGetInputLines[i].trim();
-        if (!(onGetInputLines[i].trim() == '}' || onGetInputLines[i].trim() == '},')) {
-          if (onGetInputLines[i].trimLeft().startsWith(_obfuscatorFunction)) {
+        if (!(onGetInputLines[i] == '}' || onGetInputLines[i] == '},')) {
+          int obfuscation = _getObfuscatorFunction(onGetInputLines[i], _obfuscatorFunction);
+          //if (onGetInputLines[i].startsWith()) {
+          if (obfuscation > 0) {
             _answerActions.add(WherigoActionMessageElementData(
                 ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON,
                 ActionMessageContent: deobfuscateUrwigoText(
-                    onGetInputLines[i].trim().replaceAll(_obfuscatorFunction + '("', '').replaceAll('")', ''),
-                    _obfuscatorTable)));
+                    onGetInputLines[i].trim().replaceAll(_obfuscatorFunction[obfuscation] + '("', '').replaceAll('")', ''),
+                    _obfuscatorTable[obfuscation])));
           } else {
             _answerActions.add(WherigoActionMessageElementData(
                 ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON,
                 ActionMessageContent:
-                    onGetInputLines[i].trim().replaceAll(_obfuscatorFunction + '("', '').replaceAll('")', '')));
+                    onGetInputLines[i]));
           }
         }
-      } while (!onGetInputLines[i].trim().startsWith('}'));
+      } while (!onGetInputLines[i].startsWith('}'));
     } // end buttons
 
     else {
@@ -84,39 +89,68 @@ WherigoAnswer _analyzeAndExtractOnGetInputSectionData(List<String> onGetInputLin
   );
 }
 
+int _getObfuscatorFunction(String line, List<String> obfuscatorFunction) {
+  int result = 0;
+  for (int i = 0; i < obfuscatorFunction.length; i++) {
+    if (line.contains(obfuscatorFunction[i])) {
+      result = i;
+      break;
+    }
+  }
+  return result;
+}
+
 List<String> _getAnswers(int i, String line, String lineBefore, List<WherigoVariableData> variables) {
-  if (line.trim().startsWith('if input == ') ||
-      line.trim().startsWith('if input >= ') ||
-      line.trim().startsWith('if input <= ') ||
-      line.trim().startsWith('elseif input == ') ||
-      line.trim().startsWith('elseif input >= ') ||
-      line.trim().startsWith('elseif input <= ') ||
-      line.trim().startsWith('if ' + _answerVariable + ' == ') ||
-      line.trim().startsWith('elseif ' + _answerVariable + ' == ')) {
-    if (line.contains('<=') && line.contains('>=')) {
+  line = line.trim();
+  if (line == 'else') {
+    return ['-<ELSE>-'];
+  }
+  line = line.replaceAll('tonumber', '').replaceAll('""', '').replaceAll('(', '').replaceAll(')', '');
+  if (line.startsWith('if input == ') ||
+      line.startsWith('if input >= ') ||
+      line.startsWith('if input > ') ||
+      line.startsWith('if input < ') ||
+      line.startsWith('if input <= ') ||
+      line.startsWith('elseif input == ') ||
+      line.startsWith('elseif input >= ') ||
+      line.startsWith('elseif input > ') ||
+      line.startsWith('elseif input < ') ||
+      line.startsWith('elseif input <= ') ||
+      line.startsWith('if ' + _answerVariable + ' == ') ||
+      line.startsWith('elseif ' + _answerVariable + ' == ')) {
+    if ((line.contains('<=') && line.contains('>=')) || (line.contains('<') && line.contains('>'))) {
       return [
         line
-            .trimLeft()
             .replaceAll('if', '')
             .replaceAll('else', '')
-            .replaceAll('==', '')
+            //.replaceAll('=', '')
+            //.replaceAll('>', '')
+            //.replaceAll('<', '')
+            .replaceAll('input', '')
             .replaceAll('then', '')
             .replaceAll(' ', '')
-            .replaceAll('and', ' and ')
-            .replaceAll('or', ' or ')
+            .replaceAll('and', ' && ')
+            .replaceAll('or', ' || ')
       ];
     }
-    return line
-        .trimLeft()
+    String answers = line
         .replaceAll('if', '')
         .replaceAll('else', '')
         .replaceAll('input', '')
         .replaceAll('==', '')
+        //.replaceAll('>', '')
+        //.replaceAll('<', '')
         .replaceAll('then', '')
-        .replaceAll(_answerVariable, '')
+        //.replaceAll(_answerVariable, '')
         .replaceAll(' ', '')
-        .replaceAll('and', ' and ')
-        .split(RegExp(r'(or)'));
+        .replaceAll('"', '')
+        .replaceAll('and', ' && ');
+        //.replaceAll('or', ' || ');
+    if (answers.length > _answerVariable.length) {
+      answers = answers.replaceAll(_answerVariable, '');
+    }
+
+    return answers.split(RegExp(r'(or)'));
   } else if (RegExp(r'(_Urwigo.Hash)').hasMatch(line)) {
     List<String> results = [];
     int hashvalue = 0;
@@ -152,9 +186,10 @@ List<String> _getAnswers(int i, String line, String lineBefore, List<WherigoVari
           '\x01' +
           breakUrwigoHash(hashvalue, HASH.NUMERIC).toString());
     });
+
     return results;
-  } else if (line.trim().startsWith('if Wherigo.NoCaseEquals(') ||
-      line.trim().startsWith('elseif Wherigo.NoCaseEquals(')) {
+  } else if (line.trim().startsWith('if Wherigo.NoCaseEquals') ||
+      line.trim().startsWith('elseif Wherigo.NoCaseEquals')) {
     if (_answerVariable.isEmpty) _answerVariable = _getVariable(lineBefore);
     line = line
         .trim()
@@ -172,9 +207,6 @@ List<String> _getAnswers(int i, String line, String lineBefore, List<WherigoVari
         .replaceAll('input', '')
         .replaceAll('Answer,', '')
         .trim();
-    //if (RegExp(r'(' + obfuscator + ')').hasMatch(line)) {
-    //  line = deobfuscateUrwigoText(line.replaceAll(obfuscator, '').replaceAll('("', '').replaceAll('")', ''), dtable);
-    //}
     line = line.split(' or ').map((element) {
       return element.trim();
     }).join('\n');
@@ -189,26 +221,33 @@ List<String> _getAnswers(int i, String line, String lineBefore, List<WherigoVari
     if (line.isEmpty) {
       return ['NIL'];
     }
+
     return [line];
   }
   return [];
 }
 
 bool _OnGetInputSectionEnd(String line) {
-  if (line.trim().startsWith('if input == ') ||
-      line.trim().startsWith('if input >= ') ||
-      line.trim().startsWith('if input <= ') ||
-      line.trim().startsWith('elseif input == ') ||
-      line.trim().startsWith('elseif input >= ') ||
-      line.trim().startsWith('elseif input <= ') ||
-      line.trim().startsWith('if _Urwigo.Hash(') ||
-      line.trim().startsWith('if (_Urwigo.Hash(') ||
-      line.trim().startsWith('elseif _Urwigo.Hash(') ||
-      line.trim().startsWith('elseif (_Urwigo.Hash(') ||
-      line.trim().startsWith('if Wherigo.NoCaseEquals(') ||
-      line.trim().startsWith('elseif Wherigo.NoCaseEquals(') ||
-      line.trim().startsWith('if ' + _answerVariable + ' == ') ||
-      line.trim().startsWith('elseif ' + _answerVariable + ' == ')) {
+  line = line.trim();
+  if (line.startsWith('if input == ') ||
+      line.startsWith('if input >= ') ||
+      line.startsWith('if input > ') ||
+      line.startsWith('if input < ') ||
+      line.startsWith('if input <= ') ||
+      line.startsWith('elseif input == ') ||
+      line.startsWith('elseif input >= ') ||
+      line.startsWith('elseif input > ') ||
+      line.startsWith('elseif input < ') ||
+      line.startsWith('elseif input <= ') ||
+      line.startsWith('if _Urwigo.Hash(') ||
+      line.startsWith('if (_Urwigo.Hash(') ||
+      line.startsWith('elseif _Urwigo.Hash(') ||
+      line.startsWith('elseif (_Urwigo.Hash(') ||
+      line.startsWith('if Wherigo.NoCaseEquals(') ||
+      line.startsWith('elseif Wherigo.NoCaseEquals(') ||
+      line.startsWith('if ' + _answerVariable + ' == ') ||
+      line.startsWith('elseif ' + _answerVariable + ' == ') ||
+      line.trim() == 'else') {
     return true;
   } else {
     return false;

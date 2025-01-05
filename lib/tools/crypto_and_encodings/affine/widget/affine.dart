@@ -49,14 +49,6 @@ class _AffineState extends State<Affine> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        GCWTwoOptionsSwitch(
-          value: _currentMode,
-          onChanged: (value) {
-            setState(() {
-              _currentMode = value;
-            });
-          },
-        ),
         _currentMode == GCWSwitchPosition.left
             ? GCWTextField(
                 controller: _encodeController,
@@ -74,6 +66,14 @@ class _AffineState extends State<Affine> {
                   });
                 },
               ),
+        GCWTwoOptionsSwitch(
+          value: _currentMode,
+          onChanged: (value) {
+            setState(() {
+              _currentMode = value;
+            });
+          },
+        ),
         GCWDropDownSpinner(
           title: i18n(context, 'affine_key_a'),
           index: _currentKeyAIndex,

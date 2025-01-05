@@ -14,7 +14,7 @@ class AlphabetValues {
   }
 
   /*
-  Because of: https://github.com/S-Man42/GCWizard/issues/102;
+  Because of: https://github.com/GCWizard/GCWizard/issues/102;
   WebVersion always generates SS for ß. That's because JavaScript's toUpperCase() does this.
 
   To avoid behaviour differences between Dart and JavaScript, here is a toUpperCase() function

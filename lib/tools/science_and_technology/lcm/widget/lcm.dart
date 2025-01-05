@@ -7,22 +7,12 @@ class LCM extends StatefulWidget {
   const LCM({Key? key}) : super(key: key);
 
   @override
-  LCMState createState() => LCMState();
+  _LCMState createState() => _LCMState();
 }
 
-class LCMState extends State<LCM> {
+class _LCMState extends State<LCM> {
   int _currentInputA = 0;
   int _currentInputB = 0;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {

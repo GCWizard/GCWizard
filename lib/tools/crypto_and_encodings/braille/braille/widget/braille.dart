@@ -175,7 +175,7 @@ class _BrailleState extends State<Braille> {
       return Column(
         children: <Widget>[
           _buildDigitalOutput(segments),
-          GCWOutput(title: i18n(context, 'braille_output_numbers'), child: segments.buildOutput())
+          GCWOutput(title: i18n(context, 'braille_output_numbers'), child: segments.buildOutput().join(' '))
         ],
       );
     } else {

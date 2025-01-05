@@ -3,17 +3,21 @@ import 'package:gc_wizard/tools/science_and_technology/teletypewriter/_common/lo
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/constants.dart';
 
-enum ChappeCodebook { ALPHABET, CODEPOINTS, DIGITS, KULIBIN }
+enum ChappeCodebook { ALPHABET, CODEPOINTS, CODEPOINTS_ASCII, DIGITS, KULIBIN, FOYBREGUET }
 
 const Map<ChappeCodebook, CodebookConfig> CHAPPE_CODEBOOK = {
   ChappeCodebook.DIGITS:
       CodebookConfig(title: 'telegraph_chappe_digits_title', subtitle: 'telegraph_chappe_digits_description'),
   ChappeCodebook.CODEPOINTS:
       CodebookConfig(title: 'telegraph_chappe_codepoints_title', subtitle: 'telegraph_chappe_codepoints_description'),
+  ChappeCodebook.CODEPOINTS_ASCII:
+  CodebookConfig(title: 'telegraph_chappe_codepoints_ascii_title', subtitle: 'telegraph_chappe_codepoints_ascii_description'),
   ChappeCodebook.ALPHABET:
       CodebookConfig(title: 'telegraph_chappe_alphabet_title', subtitle: 'telegraph_chappe_alphabet_description'),
   ChappeCodebook.KULIBIN:
       CodebookConfig(title: 'telegraph_chappe_kulibin_title', subtitle: 'telegraph_chappe_kulibin_description'),
+  ChappeCodebook.FOYBREGUET:
+      CodebookConfig(title: 'telegraph_chappe_foybreguet_title', subtitle: 'telegraph_chappe_foybreguet_description'),
 };
 
 const Map<String, List<String>> _CODEBOOK_CHAPPE_DIGITS = {
@@ -163,6 +167,68 @@ const Map<String, List<String>> _CODEBOOK_CHAPPE_CODEPOINTS = {
   '92': ['10', '1l', '50', '5a'],
 };
 
+const Map<String, List<String>> _CODEBOOK_CHAPPE_CODEPOINTS_ASCII = {
+  ' ': ['30', '3a', '70', '7o'],
+  '!': ['30', '3b', '70', '7r'],
+  '"': ['30', '3a', '70', '7l'],
+  '#': ['30', '3b', '70', '7a'],
+  '\$': ['30', '3a', '70', '7b'],
+  '%': ['30', '3r', '70', '7o'],
+  '&': ['30', '3l', '70', '7u'],
+  "'": ['30', '3r', '70', '7l'],
+  '(': ['30', '3l', '70', '7r'],
+  ')': ['30', '3r', '70', '7b'],
+  '*': ['30', '3l', '70', '7a'],
+  '+': ['30', '3r', '70', '7u'],
+  ',': ['30', '3l', '70', '7o'],
+  '-': ['30', '3r', '70', '7a'],
+  '.': ['30', '3l', '70', '7b'],
+  '/': ['10', '1o', '50'],
+  '0': ['10', '1u', '50'],
+  '1': ['10', '50', '5o'],
+  '2': ['10', '50', '5u'],
+  '3': ['10', '1r', '50'],
+  '4': ['10', '1l', '50'],
+  '5': ['10', '50', '5l'],
+  '6': ['10', '50', '5r'],
+  '7': ['10', '1a', '50'],
+  '8': ['10', '1b', '50'],
+  '9': ['10', '50', '5a'],
+  ':': ['10', '50', '5b'],
+  ';': ['10', '1o', '50', '5o'],
+  '<': ['10', '1u', '50', '5u'],
+  '=': ['10', '1o', '50', '5l'],
+  '>': ['10', '1u', '50', '5r'],
+  '?': ['10', '1o', '50', '5a'],
+  '@': ['10', '1u', '50', '5b'],
+  'A': ['10', '1o', '50', '5u'],
+  'B': ['10', '1u', '50', '5o'],
+  'C': ['10', '1o', '50', '5r'],
+  'D': ['10', '1u', '50', '5l'],
+  'E': ['10', '1o', '50', '5b'],
+  'F': ['10', '1u', '50', '5a'],
+  'G': ['10', '1a', '50', '5o'],
+  'H': ['10', '1b', '50', '5u'],
+  'I': ['10', '1a', '50', '5l'],
+  'J': ['10', '1b', '50', '5r'],
+  'K': ['10', '1a', '50', '5a'],
+  'L': ['10', '1b', '50', '5b'],
+  'M': ['10', '1a', '50', '5u'],
+  'N': ['10', '1b', '50', '5o'],
+  'O': ['10', '1a', '50', '5r'],
+  'P': ['10', '1b', '50', '5l'],
+  'Q': ['10', '1a', '50', '5b'],
+  'R': ['10', '1b', '50', '5a'],
+  'S': ['10', '1r', '50', '5o'],
+  'T': ['10', '1l', '50', '5u'],
+  'U': ['10', '1r', '50', '5a'],
+  'V': ['10', '1l', '50', '5b'],
+  'W': ['10', '1r', '50', '5u'],
+  'X': ['10', '1l', '50', '5o'],
+  'Y': ['10', '1r', '50', '5r'],
+  'Z': ['10', '1l', '50', '5l'],
+};
+
 const Map<String, List<String>> _CODEBOOK_KULIBIN = {
   'A': ['10', '1r', '50', '5l'],
   'B': ['20', '2r', '60', '6l'],
@@ -202,6 +268,35 @@ const Map<String, List<String>> _CODEBOOK_KULIBIN = {
   '&': ['20', '60', '6l'],
 };
 
+const Map<String, List<String>> _CODEBOOK_FOYBREGUET = {
+  'A': ['10', '1u', '50'],
+  'B': ['10', '1l', '50'],
+  'C': ['10', '1a', '50'],
+  'D': ['10', '1b', '50', '5a'],
+  'E': ['10', '1b', '50'],
+  'F': ['10', '1r', '50'],
+  'G': ['10', '1o', '50'],
+  'H': ['10', '50', '5o'],
+  'I': ['10', '50', '5l'],
+  'J': ['10', '1l', '50', '5a'],
+  'K': ['10', '50', '5l'],
+  'L': ['10', '1a', '50', '5b'],
+  'M': ['10', '50', '5b'],
+  'N': ['10', '50', '5r'],
+  'O': ['10', '50', '5u'],
+  'P': ['10', '1u', '50', '5a'],
+  'Q': ['10', '1l', '50', '5a'],
+  'R': ['10', '1a', '50', '5a'],
+  'S': ['10', '1l', '50', '5b'],
+  'T': ['10', '1r', '50', '50'],
+  'U': ['10', '1b', '50', '5a'],
+  'V': ['10', '1o', '50', '5a'],
+  'W': ['10', '1u', '50'],
+  'X': ['10', '1u', '50', '5a'],
+  'Y': ['10', '1r', '50', '5a'],
+  'Z': ['10', '1l', '50', '5b'],
+};
+
 Segments encodeChappe(String input, ChappeCodebook language) {
   List<String> inputs = [];
   if (language == ChappeCodebook.CODEPOINTS) {
@@ -219,17 +314,24 @@ Segments encodeChappe(String input, ChappeCodebook language) {
     case ChappeCodebook.CODEPOINTS:
       CODEBOOK = _CODEBOOK_CHAPPE_CODEPOINTS;
       break;
+    case ChappeCodebook.CODEPOINTS_ASCII:
+      CODEBOOK = _CODEBOOK_CHAPPE_CODEPOINTS_ASCII;
+      break;
     case ChappeCodebook.DIGITS:
       CODEBOOK = _CODEBOOK_CHAPPE_DIGITS;
       break;
     case ChappeCodebook.KULIBIN:
       CODEBOOK = _CODEBOOK_KULIBIN;
       break;
+    case ChappeCodebook.FOYBREGUET:
+      CODEBOOK = _CODEBOOK_FOYBREGUET;
+      break;
   }
-
+  String char = '';
   for (int i = 0; i < inputs.length; i++) {
-    if (CODEBOOK[inputs[i].toUpperCase()] != null) {
-      result.add(CODEBOOK[inputs[i].toUpperCase()]!);
+    char = inputs[i].toUpperCase();
+    if (CODEBOOK[char] != null) {
+      result.add(CODEBOOK[char]!);
     }
   }
   return Segments(displays: result);
@@ -250,11 +352,17 @@ SegmentsText decodeVisualChappe(List<String>? inputs, ChappeCodebook language) {
     case ChappeCodebook.CODEPOINTS:
       CODEBOOK = switchMapKeyValue(_CODEBOOK_CHAPPE_CODEPOINTS);
       break;
+    case ChappeCodebook.CODEPOINTS_ASCII:
+      CODEBOOK = switchMapKeyValue(_CODEBOOK_CHAPPE_CODEPOINTS_ASCII);
+      break;
     case ChappeCodebook.DIGITS:
       CODEBOOK = switchMapKeyValue(_CODEBOOK_CHAPPE_DIGITS);
       break;
     case ChappeCodebook.KULIBIN:
       CODEBOOK = switchMapKeyValue(_CODEBOOK_KULIBIN);
+      break;
+    case ChappeCodebook.FOYBREGUET:
+      CODEBOOK = switchMapKeyValue(_CODEBOOK_FOYBREGUET);
       break;
   }
 
@@ -308,11 +416,17 @@ SegmentsText decodeTextChappeTelegraph(String inputs, ChappeCodebook language) {
     case ChappeCodebook.CODEPOINTS:
       CODEBOOK = _CODEBOOK_CHAPPE_CODEPOINTS;
       break;
+    case ChappeCodebook.CODEPOINTS_ASCII:
+      CODEBOOK = _CODEBOOK_CHAPPE_CODEPOINTS_ASCII;
+      break;
     case ChappeCodebook.DIGITS:
       CODEBOOK = _CODEBOOK_CHAPPE_DIGITS;
       break;
     case ChappeCodebook.KULIBIN:
       CODEBOOK = _CODEBOOK_KULIBIN;
+      break;
+    case ChappeCodebook.FOYBREGUET:
+      CODEBOOK = _CODEBOOK_FOYBREGUET;
       break;
   }
 

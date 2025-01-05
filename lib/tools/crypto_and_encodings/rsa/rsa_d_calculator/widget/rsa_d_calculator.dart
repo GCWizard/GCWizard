@@ -76,8 +76,8 @@ class _RSADCalculatorState extends State<RSADCalculator> {
       var q = BigInt.tryParse(_currentQ);
 
       _output = GCWDefaultOutput(child: calculateD(e, p, q).toString());
-    } catch (exception) {
-      showSnackBar(i18n(context, exception.toString()), context);
+    } on FormatException catch (e) {
+      showSnackBar(i18n(context, e.message), context);
       _output = null;
     }
   }

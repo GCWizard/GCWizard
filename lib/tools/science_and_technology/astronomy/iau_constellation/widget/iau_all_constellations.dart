@@ -3,7 +3,7 @@ import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
-import 'package:gc_wizard/common_widgets/gcw_tool.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/tools/science_and_technology/astronomy/iau_constellation/logic/iau_constellation.dart';
@@ -84,8 +84,6 @@ class IAUAllConstellationsState extends State<IAUAllConstellations> {
       case IAU_CONSTELLATION_SORT.MAGNITUDO:
         sortableList.sort((a, b) => a.magnitudo.compareTo(b.magnitudo) * sortOrder);
         break;
-      default:
-        break;
     }
 
     return sortableList
@@ -111,9 +109,6 @@ class IAUAllConstellationsState extends State<IAUAllConstellations> {
               break;
             case IAU_CONSTELLATION_SORT.MAGNITUDO:
               relevantValue = constellation.magnitudo;
-              break;
-            default:
-              relevantValue = '';
               break;
           }
 
@@ -143,8 +138,6 @@ class IAUAllConstellationsState extends State<IAUAllConstellations> {
         return ['', i18n(context, 'iau_constellation_visibility'), i18n(context, 'iau_constellation_iauname')];
       case IAU_CONSTELLATION_SORT.MAGNITUDO:
         return ['', i18n(context, 'iau_constellation_magnitudo'), i18n(context, 'iau_constellation_iauname')];
-      default:
-        return [];
     }
   }
 

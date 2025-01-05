@@ -35,3 +35,4 @@ SegmentedAngle segmentBearings(
 
   return SegmentedAngle(points, segmentAngle);
 }
+

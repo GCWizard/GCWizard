@@ -1,5 +1,5 @@
 // ported from http://www.jgiesen.de/astro/astroJS/seasons2/seasons.js
-// with permission of the owner via email (2020-06-26, forwarded to geocache.wizard@gmail.com on 2020-06-29)
+// with permission of the owner via email (2020-06-26, forwarded to info@gcwizard.net on 2020-06-29)
 part of 'package:gc_wizard/tools/science_and_technology/astronomy/seasons/logic/seasons.dart';
 
 double _r0(double t) {
@@ -152,7 +152,7 @@ double _earthR(int date, int month, int year, double UT) {
   return (_r0(T) + _r1(T) * T + _r2(T) * T * T + _r3(T) * T * T * T + _r4(T) * T * T * T * T) / (1.0E8);
 }
 
-DateTimeDouble _perihelion(int year) {
+(DateTime, double) _perihelion(int year) {
   double minR = 10;
   var d = 0;
   var h = 100.0;
@@ -209,11 +209,10 @@ DateTimeDouble _perihelion(int year) {
 
   var time = hoursToHHmmss(h);
 
-  return DateTimeDouble(
-      datetime: DateTime(year, 1, d, time.hour, time.minute, time.second, time.millisecond), value: rp);
+  return (DateTime.utc(year, 1, d, time.hour, time.minute, time.second, time.millisecond), rp);
 }
 
-DateTimeDouble _aphelion(int year) {
+(DateTime, double) _aphelion(int year) {
   var minR = 0.0;
   var d = 0;
   var h = 100.0;
@@ -271,6 +270,5 @@ DateTimeDouble _aphelion(int year) {
 
   var time = hoursToHHmmss(h);
 
-  return DateTimeDouble(
-      datetime: DateTime(year, 7, d, time.hour, time.minute, time.second, time.millisecond), value: ra);
+  return (DateTime.utc(year, 7, d, time.hour, time.minute, time.second, time.millisecond), ra);
 }

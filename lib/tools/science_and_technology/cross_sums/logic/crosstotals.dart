@@ -212,7 +212,7 @@ BigInt crossProduct(List<int> list) {
   }).reduce((a, b) => a * b);
 }
 
-int countCharacters(List<int> list) {
+int countElements(List<int> list) {
   return list.length;
 }
 
@@ -226,4 +226,8 @@ int countLetters(String text) {
 
 int countDigits(String text) {
   return text.replaceAll(RegExp(r'\D'), '').length;
+}
+
+double average(List<int> list) {
+  return sum(list).toDouble() / list.length;
 }

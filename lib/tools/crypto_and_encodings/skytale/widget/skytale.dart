@@ -62,7 +62,7 @@ class _SkytaleState extends State<Skytale> {
           value: _currentPerimeter,
           onChanged: (value) {
             setState(() {
-              _currentPerimeter = value;
+              _currentPerimeter = (value == 0) ? 1 : value;
             });
           },
         ),
@@ -86,7 +86,7 @@ class _SkytaleState extends State<Skytale> {
           value: _currentStripWidth,
           onChanged: (value) {
             setState(() {
-              _currentStripWidth = value;
+              _currentStripWidth = (value == 0) ? 1 : value;
             });
           },
         ),

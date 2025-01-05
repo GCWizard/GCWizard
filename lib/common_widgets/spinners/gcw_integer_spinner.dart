@@ -25,22 +25,23 @@ class GCWIntegerSpinner extends StatefulWidget {
   final SpinnerLayout layout;
   final FocusNode? focusNode;
   final SpinnerOverflowType overflow;
+  final List<int> flexValues;
 
-  GCWIntegerSpinner(
-      {Key? key,
-      required this.onChanged,
-      this.title,
-      required this.value,
-      this.min = MIN_INT,
-      this.max = MAX_INT,
-      this.leftPadZeros,
-      this.controller,
-      this.layout = SpinnerLayout.HORIZONTAL,
-      this.focusNode,
-      this.overflow =
-          SpinnerOverflowType.ALLOW_OVERFLOW // TODO: Automatically true if this.min == null || this.max == null
-      })
-      : super(key: key);
+  GCWIntegerSpinner({
+    Key? key,
+    required this.onChanged,
+    this.title,
+    required this.value,
+    this.min = MIN_INT,
+    this.max = MAX_INT,
+    this.leftPadZeros,
+    this.controller,
+    this.layout = SpinnerLayout.HORIZONTAL,
+    this.focusNode,
+    this.overflow =
+        SpinnerOverflowType.ALLOW_OVERFLOW, // TODO: Automatically true if this.min == null || this.max == null
+    this.flexValues = const [],
+  }) : super(key: key);
 
   @override
   _GCWIntegerSpinnerState createState() => _GCWIntegerSpinnerState();
@@ -108,7 +109,10 @@ class _GCWIntegerSpinnerState extends State<GCWIntegerSpinner> {
   }
 
   Widget _buildTitle() {
-    return (widget.title == null) ? Container() : Expanded(flex: 1, child: GCWText(text: widget.title! + ':'));
+    return (widget.title == null)
+        ? Container()
+        : Expanded(
+            flex: widget.flexValues.isNotEmpty ? widget.flexValues[0] : 1, child: GCWText(text: widget.title! + ':'));
   }
 
   Widget _buildTextField() {
@@ -133,7 +137,7 @@ class _GCWIntegerSpinnerState extends State<GCWIntegerSpinner> {
         children: <Widget>[
           _buildTitle(),
           Expanded(
-              flex: 3,
+              flex: widget.flexValues.length > 1 ? widget.flexValues[1] : 3,
               child: Row(
                 children: <Widget>[
                   Container(
@@ -154,7 +158,7 @@ class _GCWIntegerSpinnerState extends State<GCWIntegerSpinner> {
         children: <Widget>[
           _buildTitle(),
           Expanded(
-              flex: 3,
+              flex: widget.flexValues.length > 1 ? widget.flexValues[1] : 3,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
@@ -178,8 +182,6 @@ class _GCWIntegerSpinnerState extends State<GCWIntegerSpinner> {
 
       _controller.text = text;
     }
-
-    // print(_currentValue);
 
     widget.onChanged(_currentValue);
   }

@@ -3,6 +3,7 @@ import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/iata_icao_search/logic/iata_icao.dart';
@@ -48,7 +49,6 @@ class _IATAICAOSearchState extends State<IATAICAOSearch> {
         GCWTwoOptionsSwitch(
           value: _currentMode,
           notitle: true,
-          title: i18n(context, 'iataicao_search'),
           leftValue: i18n(context, 'iataicao_search_name'),
           rightValue: i18n(context, 'iataicao_search_code'),
           onChanged: (value) {
@@ -61,7 +61,7 @@ class _IATAICAOSearchState extends State<IATAICAOSearch> {
         _currentMode == GCWSwitchPosition.left
             ? GCWTextField(
                 controller: _inputControllerName,
-                hintText: i18n(context, 'iataicao_search_contains'),
+                hintText: i18n(context, 'common_name_contains'),
                 onChanged: (text) {
                   setState(() {
                     _currentInputName = text;
@@ -85,7 +85,7 @@ class _IATAICAOSearchState extends State<IATAICAOSearch> {
                   ),
                   GCWTextField(
                     controller: _inputControllerCode,
-                    hintText: i18n(context, 'iataicao_search_startswith'),
+                    hintText: i18n(context, 'common_code_startswith'),
                     onChanged: (text) {
                       setState(() {
                         _currentInputCode = text;
@@ -110,16 +110,23 @@ class _IATAICAOSearchState extends State<IATAICAOSearch> {
 
   Widget _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
-      // search for name
-      if (_currentInputName.isEmpty) return Container();
+      if (_currentInputName.isEmpty) {
+        return Container();
+      } else if (_currentInputName.length < 2) {
+        return GCWOutputText(text: i18n(context, "iataicao_searchtext_too_short") + "!");
+      }
 
       List<List<String>> data = [];
       List<int> flexValues = List<int>.generate(4, (index) => 1);
 
       data =
           IATA_ICAO_CODES.values.where((e) => e.name.toLowerCase().contains(_currentInputName.toLowerCase())).map((e) {
-        return [e.name, e.iata, e.icoa, e.location_served];
-      }).toList();
+            return [e.name, e.iata, e.icoa, e.location_served];
+          }).toList();
+
+      if (data.isEmpty) {
+        return GCWOutputText(text: i18n(context, "common_nothingfound") + "!");
+      }
 
       flexValues = [2, 1, 1, 2];
       data.sort((a, b) => a[0].compareTo(b[0]));

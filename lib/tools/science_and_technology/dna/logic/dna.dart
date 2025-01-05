@@ -9,10 +9,10 @@ class AminoAcid {
   final List<String> nucleobaseSequences;
   final NucleobaseSequenceType type;
 
-  AminoAcid(this.name, this.symbolShort, this.symbolLong, this.nucleobaseSequences, this.type);
+  const AminoAcid(this.name, this.symbolShort, this.symbolLong, this.nucleobaseSequences, this.type);
 }
 
-List<AminoAcid> aminoAcids = [
+const List<AminoAcid> aminoAcids = [
   AminoAcid('dna_aminoacid_phenylalanine', 'F', 'Phe', ['UUC', 'UUU'], NucleobaseSequenceType.NORMAL),
   AminoAcid(
       'dna_aminoacid_leucine', 'L', 'Leu', ['UUA', 'UUG', 'CUU', 'CUC', 'CUA', 'CUG'], NucleobaseSequenceType.NORMAL),
@@ -32,8 +32,7 @@ List<AminoAcid> aminoAcids = [
   AminoAcid('dna_aminoacid_threonine', 'T', 'Thr', ['ACU', 'ACA', 'ACC', 'ACG'], NucleobaseSequenceType.NORMAL),
   AminoAcid('dna_aminoacid_asparagine', 'N', 'Asn', ['AAU', 'AAC'], NucleobaseSequenceType.NORMAL),
   AminoAcid('dna_aminoacid_lysine', 'K', 'Lys', ['AAA', 'AAG'], NucleobaseSequenceType.NORMAL),
-  AminoAcid('dna_aminoacid_valine', 'V', 'Val', ['GUA', 'GUC', 'GUU'], NucleobaseSequenceType.NORMAL),
-  AminoAcid(null, null, null, ['GUG'], NucleobaseSequenceType.START),
+  AminoAcid('dna_aminoacid_valine', 'V', 'Val', ['GUA', 'GUC', 'GUU', 'GUG'], NucleobaseSequenceType.NORMAL),
   AminoAcid('dna_aminoacid_alanine', 'A', 'Ala', ['GCU', 'GCG', 'GCC', 'GCA'], NucleobaseSequenceType.NORMAL),
   AminoAcid('dna_aminoacid_asparticacid', 'D', 'Asp', ['GAU', 'GAC'], NucleobaseSequenceType.NORMAL),
   AminoAcid('dna_aminoacid_glutamicacid', 'E', 'Glu', ['GAA', 'GAG'], NucleobaseSequenceType.NORMAL),

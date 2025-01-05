@@ -24,13 +24,20 @@ class GCWDoubleTextInputFormatter extends TextInputFormatter {
 
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    var value = newValue.text.replaceAll(',', '.');
-
-    if (!_exp.hasMatch(value)) {
+    var newSanitized = newValue.text.trim();
+    if (!_exp.hasMatch(newSanitized.replaceAll(',', '.'))) {
       return oldValue;
     }
 
-    return _checkBounds(value) ? newValue : oldValue;
+    if (_checkBounds(newSanitized.replaceAll(',', '.'))) {
+      return TextEditingValue(
+        text: newSanitized, selection: TextSelection.fromPosition(
+          TextPosition(offset: newSanitized.length),
+        ),
+      );
+    } else {
+      return oldValue;
+    }
   }
 
   String _buildIntegerRegex() {

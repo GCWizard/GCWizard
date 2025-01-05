@@ -24,7 +24,7 @@ int? gcCodeToID(String gcCode) {
   } else {
     if (gcCode.contains(RegExp('[ILOSU]'))) throw const FormatException(_NO_VALID_GC_CODE);
 
-    var value = int.tryParse(convertBase(gcCode, 31, 10, alphabet: _ALPHABET));
+    var value = int.tryParse(convertBaseToInt(gcCode, 31, inputAlphabet: _ALPHABET));
     if (value == null) throw const FormatException(_NO_VALID_GC_CODE);
 
     return value + _OFFSET; //Base31 with negative offset
@@ -37,5 +37,5 @@ String idToGCCode(int id) {
   if (id < 65536) return 'GC' + (convertBase('$id', 10, 16));
 
   id -= _OFFSET;
-  return 'GC' + (convertBase('$id', 10, 31, alphabet: _ALPHABET));
+  return 'GC' + (convertIntToBase('$id', 31, outputAlphabet: _ALPHABET));
 }

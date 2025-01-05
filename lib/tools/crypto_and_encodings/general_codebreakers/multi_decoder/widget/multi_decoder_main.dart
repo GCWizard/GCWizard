@@ -164,9 +164,9 @@ class _MultiDecoderState extends State<MultiDecoder> {
       String result = value.toString();
 
       if (tool.internalToolName == MDT_INTERNALNAMES_COORDINATEFORMATS) {
-        var coordFormat = coordinateFormatMetadataByPersistenceKey((value ?? '').toString());
-        if (coordFormat != null) {
-          result = coordFormat.name;
+        var widgetInfo = coordinateWidgetInfoByByPersistenceKey((value ?? '').toString());
+        if (widgetInfo != null) {
+          result = widgetInfo.name;
         }
       }
       if ([MDT_INTERNALNAMES_BASE, MDT_INTERNALNAMES_BCD].contains(tool.internalToolName)) {
