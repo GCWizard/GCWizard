@@ -54,6 +54,8 @@ import 'package:gc_wizard/application/category_views/selector_lists/number_seque
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_lucas_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_luckynumbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_lychrel_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_memorableprimes_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_memorableprimesindexes_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_mersenne_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_mersenneexponents_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_mersennefermat_selection.dart';
@@ -413,6 +415,8 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsth
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucas/widget/lucas.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucky_numbers/widget/lucky_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lychrel/widget/lychrel.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/memorable_primes/widget/memorable_primes.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/memorable_primes/widget/memorable_primes_indexes.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersenne/widget/mersenne.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersenne_exponents/widget/mersenne_exponents.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersenne_primes/widget/mersenne_primes.dart';
@@ -3882,6 +3886,38 @@ void initializeRegistry(BuildContext context) {
           'primes',
           'numbersequence_permutableprimesselection',
         ]),
+    GCWTool(
+        tool: const NumberSequenceMemorablePrimesSelection(),
+        id: 'numbersequence_memorableprimes',
+        searchKeys: const [
+          'numbersequence',
+          'primes',
+          'numbersequence_memorableprimesselection',
+        ], licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Manon Bischoff',
+            publisher: 'Spektrum.de',
+            title: 'Jagd auf die eindrucksvollsten Primzahlen',
+            sourceUrl: 'https://web.archive.org/web/20250104103000/https://www.spektrum.de/kolumne/wer-findet-die-mysterioesesten-primzahlen/2246135',
+          ),
+        ],),
+    GCWTool(
+        tool: const NumberSequenceMemorablePrimesIndexesSelection(),
+        id: 'numbersequence_memorableprimesindexes',
+        searchKeys: const [
+          'numbersequence',
+          'primes',
+          'numbersequence_memorableprimesindexesselection',
+        ], licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Manon Bischoff',
+            publisher: 'Spektrum.de',
+            title: 'Jagd auf die eindrucksvollsten Primzahlen',
+            sourceUrl: 'https://web.archive.org/web/20250104103000/https://www.spektrum.de/kolumne/wer-findet-die-mysterioesesten-primzahlen/2246135',
+          ),
+        ],),
     GCWTool(tool: const NumberSequenceLuckyNumbersSelection(), id: 'numbersequence_luckynumbers', searchKeys: const [
       'numbersequence',
       'numbersequence_luckynumbersselection',
@@ -4599,34 +4635,88 @@ void initializeRegistry(BuildContext context) {
         id_prefix: 'lychrel_numbers_',
         searchKeys: const []),
 
-    //NumberSequenceSelection Mersenne Primes ****************************************************************************************
+    //NumberSequenceSelection Permutable Primes ****************************************************************************************
     GCWTool(
         tool: const NumberSequencePermutablePrimesNthNumber(),
         id: 'numbersequence_nth',
-        id_prefix: 'mersenne_primes_',
+        id_prefix: 'permutable_primes_',
         searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePermutablePrimesRange(),
         id: 'numbersequence_range',
-        id_prefix: 'mersenne_primes_',
+        id_prefix: 'permutable_primes_',
         searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePermutablePrimesCheckNumber(),
         id: 'numbersequence_check',
-        id_prefix: 'mersenne_primes_',
+        id_prefix: 'permutable_primes_',
         searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePermutablePrimesDigits(),
         id: 'numbersequence_digits',
-        id_prefix: 'mersenne_primes_',
+        id_prefix: 'permutable_primes_',
         searchKeys: const []),
     GCWTool(
         tool: const NumberSequencePermutablePrimesContainsDigits(),
         id: 'numbersequence_containsdigits',
-        id_prefix: 'mersenne_primes_',
+        id_prefix: 'permutable_primes_',
         searchKeys: const []),
 
-    //NumberSequenceSelection  Primes ****************************************************************************************
+    //NumberSequenceSelection Memorbale Primes ****************************************************************************************
+    GCWTool(
+        tool: const NumberSequenceMemorablePrimesNthNumber(),
+        id: 'numbersequence_nth',
+        id_prefix: 'memorable_primes_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceMemorablePrimesRange(),
+        id: 'numbersequence_range',
+        id_prefix: 'memorable_primes_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceMemorablePrimesCheckNumber(),
+        id: 'numbersequence_check',
+        id_prefix: 'memorable_primes_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceMemorablePrimesDigits(),
+        id: 'numbersequence_digits',
+        id_prefix: 'memorable_primes_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceMemorablePrimesContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        id_prefix: 'memorable_primes_',
+        searchKeys: const []),
+
+    //NumberSequenceSelection Memorbale Primes Indexes ****************************************************************************************
+    GCWTool(
+        tool: const NumberSequenceMemorablePrimesIndexesNthNumber(),
+        id: 'numbersequence_nth',
+        id_prefix: 'memorable_primes_indexes_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceMemorablePrimesIndexesRange(),
+        id: 'numbersequence_range',
+        id_prefix: 'memorable_primes_indexes_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceMemorablePrimesIndexesCheckNumber(),
+        id: 'numbersequence_check',
+        id_prefix: 'memorable_primes_indexes_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceMemorablePrimesIndexesDigits(),
+        id: 'numbersequence_digits',
+        id_prefix: 'memorable_primes_indexes_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceMemorablePrimesIndexesContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        id_prefix: 'memorable_primes_indexes_',
+        searchKeys: const []),
+
+    //NumberSequenceSelection Primes ****************************************************************************************
     GCWTool(
         tool: const NumberSequencePrimesNthNumber(),
         id: 'numbersequence_nth',

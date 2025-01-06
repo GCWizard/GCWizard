@@ -314,6 +314,8 @@
   "numbersequence_pellselection": "a000129",
   "numbersequence_perfectnumbersselection": "a000396 perfect numbers",
   "numbersequence_permutableprimesselection": "a258706 permutableprimes permutations",
+  "numbersequence_memorableprimesselection": "memorableprimes palindromes",
+  "numbersequence_memorableprimesindexesselection": "memorableprimes palindromes",
   "numbersequence_primarypseudoperfectnumbersselection": "a054377 primarypseudoperfect numbers",
   "numbersequence_recamanselection": "a005132",
   "numbersequence_sublimenumbersselection": "a081357 numbers",
