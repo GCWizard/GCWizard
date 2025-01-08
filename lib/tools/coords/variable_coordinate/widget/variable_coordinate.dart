@@ -120,7 +120,8 @@ class _VariableCoordinateState extends State<VariableCoordinate> {
 
   bool _checkValidEditedValue(String input) {
     if (!VARIABLESTRING.hasMatch(input)) {
-      showSnackBar(i18n(context, 'formulasolver_values_novalidinterpolated'), context);
+      showGCWAlertDialog(context, '', i18n(context, 'formulasolver_values_novalidinterpolated'),
+          cancelButton: false, () {});
       return false;
     }
     return true;
@@ -203,7 +204,7 @@ class _VariableCoordinateState extends State<VariableCoordinate> {
                 i18n(context, 'coords_variablecoordinate_manyresults_text', parameters: [countCombinations]),
                 () {
                   _calculateOutput(context);
-                },
+                }, cancelButton: false
               );
             } else {
               _calculateOutput(context);
