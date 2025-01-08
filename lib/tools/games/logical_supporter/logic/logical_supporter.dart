@@ -7,6 +7,7 @@ import 'package:gc_wizard/utils/json_utils.dart';
 
 const int maxCategoriesCount = 26;
 const int minItemCount = 2;
+const int maxItemCount = 99;
 
 enum LogicalFillType { USER_FILLED, CALCULATED }
 
@@ -575,8 +576,8 @@ class Logical {
 		var data = jsonMap[_jsonItemsCount];
 		if (getJsonType(data) == JsonType.SIMPLE_TYPE) {
 			logical.itemsCount = int.tryParse(data.toString()) ?? minItemCount;
-			if (logical.itemsCount > 99) {
-				logical.itemsCount = 99;
+			if (logical.itemsCount > maxItemCount) {
+				logical.itemsCount = maxItemCount;
 				logical.state = LogicalState.InvalidData;
 			} else if (logical.itemsCount < minItemCount) {
 				logical.itemsCount = minItemCount;

@@ -59,6 +59,8 @@ class LogicalSupporterState extends State<LogicalSupporter> {
             } else {
               setState(() {
                 _currentBoard = _importJsonFile(value.bytes);
+                _categoriesCount = _currentBoard.categoriesCount;
+                _itemsCount = _currentBoard.itemsCount;
               });
             }
           },
@@ -93,7 +95,7 @@ class LogicalSupporterState extends State<LogicalSupporter> {
                 flexValues: const [1, 1],
                 overflow: SpinnerOverflowType.SUPPRESS_OVERFLOW,
                 min: minItemCount,
-                max: 99,
+                max: maxItemCount,
                 onChanged: (value) {
                   setState(() {
                     _itemsCount = value;
