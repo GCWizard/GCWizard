@@ -1,5 +1,6 @@
 import 'package:gc_wizard/tools/coords/_common/formats/bosch/logic/bosch.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dec/logic/dec.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/dfcigrid/logic/dfcigrid.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dmm/logic/dmm.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dms/logic/dms.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dutchgrid/logic/dutchgrid.dart';
@@ -39,6 +40,7 @@ enum CoordinateFormatKey {
   SWISS_GRID,
   SWISS_GRID_PLUS,
   DUTCH_GRID,
+  DFCI_GRID,
   GAUSS_KRUEGER,
   LAMBERT,
   MAIDENHEAD,
@@ -77,6 +79,7 @@ enum CoordinateFormatKey {
   LAMBERT93_CC48,
   LAMBERT93_CC49,
   LAMBERT93_CC50,
+  LAMBERT_EPSG27572,
   //S2Cells
   S2CELLS_HILBERT_QUADRATIC,
   S2CELLS_HILBERT_TAN,
@@ -115,7 +118,7 @@ enum CoordinateFormatKey {
   SLIPPYMAP_30,
   //MapCode Subtypes
   MAPCODE_LOCAL,
-  MAPCODE_INTERNATIONAL
+  MAPCODE_INTERNATIONAL,
 }
 
 /// sorted by priority (parse coordinates)
@@ -147,6 +150,7 @@ final allCoordinateFormatDefinitions = [
   BoschFormatDefinition,
   GARSFormatDefinition,
   S2CellsHilbertFormatDefinition,
+  DfciGridFormatDefinition,
 
   GeohashFormatDefinition, // Must be last one in list!
 ];

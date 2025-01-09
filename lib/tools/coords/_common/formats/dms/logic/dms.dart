@@ -313,36 +313,38 @@ DMSCoordinate? _parseDMSTrailingSigns(String text) {
 
 const _PATTERN_DMS_TRAILINGSIGN = '^\\s*?'
     '(\\d{1,3})\\s*?[\\s°]\\s*?' //lat degrees + symbol
-    '([0-5]?\\d)\\s*?[\\s\'´′`‘’]\\s*?' //lat minutes + symbol
+    '([0-5]?\\d)\\s*?$MINUTES_SYMBOL\\s*?' //lat minutes + symbol
     '([0-5]?\\d)\\s*?' //lat seconds
     '(?:\\s*?[.,]\\s*?(\\d+))?\\s*?' //lat milliseconds
-    '[\\s"″“”]?\\s*?' //lat seconds symbol
-    '([NS]$LETTER*?|[\\+\\-])\\s*?' //lat sign
+    '(?:$SECONDS_SYMBOL|$MINUTES_SYMBOL{2})?\\s*?' //lat seconds symbol
+    '([NS]$LETTER*?|[\\+\\-])' //lat sign
 
-    '[,\\s]\\s*?' //delimiter lat lon
+    '\\s*?$DELIMITER_SYMBOL\\s*?' //delimiter lat lon
 
     '(\\d{1,3})\\s*?[\\s°]\\s*?' //lon degrees + symbol
-    '([0-5]?\\d)\\s*?[\\s\'´′`’‘]\\s*?' //lon minutes + symbol
+    '([0-5]?\\d)\\s*?$MINUTES_SYMBOL\\s*?' //lon minutes + symbol
     '([0-5]?\\d)\\s*?' //lon seconds
     '(?:\\s*?[.,]\\s*?(\\d+))?\\s*?' //lon milliseconds
-    '[\\s"″“”]?\\s*?' //lon seconds symbol
+    '(?:$SECONDS_SYMBOL|$MINUTES_SYMBOL{2})?\\s*?' //lon seconds symbol
     '([EWO]$LETTER*?|[\\+\\-])' //lon sign;
     '\\s*?';
+
+
 
 const _PATTERN_DMS = '^\\s*?'
     '([NS]$LETTER*?|[\\+\\-])?\\s*?' //lat sign
     '(\\d{1,3})\\s*?[\\s°]\\s*?' //lat degrees + symbol
-    '([0-5]?\\d)\\s*?[\\s\'´′`’‘]\\s*?' //lat minutes + symbol
+    '([0-5]?\\d)\\s*?$MINUTES_SYMBOL\\s*?' //lat minutes + symbol
     '([0-5]?\\d)\\s*?' //lat seconds
     '(?:\\s*?[.,]\\s*?(\\d+))?\\s*?' //lat milliseconds
-    '[\\s"″“”]?\\s*?' //lat seconds symbol
+    '(?:$SECONDS_SYMBOL|$MINUTES_SYMBOL{2})?' //lat seconds symbol
 
-    '\\s*?[,\\s]\\s*?' //delimiter lat lon
+    '\\s*?$DELIMITER_SYMBOL\\s*?' //delimiter lat lon
 
     '([EWO]$LETTER*?|[\\+\\-])?\\s*?' //lon sign
     '(\\d{1,3})\\s*?[\\s°]\\s*?' //lon degrees + symbol
-    '([0-5]?\\d)\\s*?[\\s\'´′`‘’]\\s*?' //lon minutes + symbol
+    '([0-5]?\\d)\\s*?$MINUTES_SYMBOL\\s*?' //lon minutes + symbol
     '([0-5]?\\d)\\s*?' //lon seconds
     '(?:\\s*?[.,]\\s*?(\\d+))?\\s*?' //lon milliseconds
-    '[\\s"″“”]?' //lon seconds symbol
+    '(?:$SECONDS_SYMBOL|$MINUTES_SYMBOL{2})?' //lon seconds symbol
     '\\s*?';

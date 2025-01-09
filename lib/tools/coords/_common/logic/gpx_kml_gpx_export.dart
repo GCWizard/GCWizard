@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
+import 'package:gc_wizard/utils/ui_dependent_utils/color_utils.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:xml/xml.dart';
@@ -358,7 +359,7 @@ class _KmlWriter {
   }
 
   String _ColorCode(Color color) {
-    var s = color.value.toRadixString(16);
+    var s = colorValue(color).toRadixString(16);
     return s.substring(0, 2) + s.substring(6, 8) + s.substring(4, 6) + s.substring(2, 4);
   }
 }

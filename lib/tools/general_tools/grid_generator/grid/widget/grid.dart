@@ -186,8 +186,6 @@ class _GridState extends State<Grid> {
         return [_GridBoxEnumerationStartDirection.RIGHT, _GridBoxEnumerationStartDirection.UP];
       case _GridEnumerationStart.BOTTOM_RIGHT:
         return [_GridBoxEnumerationStartDirection.LEFT, _GridBoxEnumerationStartDirection.UP];
-      default:
-        return [_GridBoxEnumerationStartDirection.RIGHT, _GridBoxEnumerationStartDirection.DOWN];
     }
   }
 
@@ -415,8 +413,6 @@ class _GridState extends State<Grid> {
               case _GridBoxEnumerationStartDirection.DOWN:
                 name = 'grid_boxes_startdirection_down';
                 break;
-              default:
-                name = '';
             }
 
             return GCWDropDownMenuItem(value: direction, child: i18n(context, name));

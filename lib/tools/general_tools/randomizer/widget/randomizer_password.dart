@@ -6,8 +6,9 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
-import 'package:gc_wizard/tools/general_tools/randomizer/logic/randomizer.dart';
+import 'package:gc_wizard/tools/general_tools/randomizer/logic/randomizer_password.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
+import 'package:intl/intl.dart';
 
 class RandomizerPassword extends StatefulWidget {
   const RandomizerPassword({Key? key}) : super(key: key);
@@ -171,9 +172,18 @@ class _RandomizerPasswordState extends State<RandomizerPassword> {
     _currentOutput = GCWDefaultOutput(
       child: Column(
         children: [
-          GCWColumnedMultilineOutput(data: out.map((String pswd) => [pswd]).toList())
+          GCWColumnedMultilineOutput(
+            data: out.map((String pswd) => [pswd, _entropy(pswd)]).toList(),
+            flexValues: const [2,1],
+            copyColumn: 0,
+          )
         ],
       ),
     );
+  }
+
+  String _entropy(String text) {
+    var entropy = NumberFormat('0.###').format(bitEntropy(text));
+    return '$entropy bits';
   }
 }

@@ -29,8 +29,8 @@ class _WeatherSymbolsState extends State<WeatherSymbols> {
 
   Future<void> _initialize() async {
     for (String clazz in _WEATHERSYMBOL_CLASSES) {
-      var symbolTableData = SymbolTableData(context, 'weather_$clazz');
-      await symbolTableData.initialize();
+      var symbolTableData = SymbolTableData('weather_$clazz');
+      await symbolTableData.initialize(context);
 
       _data.putIfAbsent(clazz, () => symbolTableData);
     }

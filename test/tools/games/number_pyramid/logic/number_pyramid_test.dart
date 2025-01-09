@@ -15,10 +15,10 @@ void main() {
     ];
 
     for (var elem in _inputsToExpected) {
-      test('input: ${elem['input']}', () {
+      test('input: ${elem['input']}', () async {
 
         var _actual = NumberPyramid(0, pyramidList: elem['input'] as List<List<int?>>);
-        _actual.solvePyramid(10);
+        await _actual.solvePyramid(10);
         expect(_actual.solutions?[0].solution, elem['expectedOutput']);
         expect(_actual.solutions?.length, elem['solutionCount']);
       });

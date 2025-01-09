@@ -53,3 +53,114 @@ int lcm(int a, int b) {
   }
   return result;
 }
+
+/// Multiplication of two matrices
+List<List<double>>? matrixMultiplication(List<List<double>> matrix1, List<List<double>> matrix2) {
+  if (matrix1.isEmpty || matrix2.isEmpty || matrix1[0].length != matrix2.length) {
+    return null;
+  }
+  var resultMatrix = List<List<double>>.generate(matrix1.length, (index) => List<double>.filled(matrix2.length, 0));
+
+  for (int i = 0; i < matrix1.length; i++) {
+    for (int j = 0; j < matrix2[0].length; j++) {
+      for (int x = 0; x < matrix1[0].length; x++) {
+        resultMatrix[i][j] += matrix1[i][x] * matrix2[x][j];
+      }
+    }
+  }
+  return resultMatrix;
+}
+
+// ported from https://dev.to/rk042/how-to-inverse-a-matrix-in-c-12jg
+/// Invert of a square matrix
+List<List<double>>? matrixInvert(List<List<double>> matrix) {
+  if (matrix.isEmpty || matrix[0].isEmpty) return null;
+
+  int n = matrix.length;
+  var augmented = List<List<double>>.generate(n, (index) => List<double>.filled(n * 2, 0));
+
+  // Initialize augmented matrix with the input matrix and the identity matrix
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++) {
+      augmented[i][j] = matrix[i][j];
+      augmented[i][j + n] = (i == j) ? 1 : 0;
+    }
+  }
+
+  // Apply Gaussian elimination
+  for (int i = 0; i < n; i++) {
+    int pivotRow = i;
+    for (int j = i + 1; j < n; j++) {
+      if (augmented[j][i].abs() > (augmented[pivotRow][i].abs())) {
+        pivotRow = j;
+      }
+    }
+
+    if (pivotRow != i) {
+      for (int k = 0; k < 2 * n; k++) {
+        double temp = augmented[i][k];
+        augmented[i][k] = augmented[pivotRow][k];
+        augmented[pivotRow][k] = temp;
+      }
+    }
+
+    if (augmented[i][i].abs() < 1e-10) return null;
+
+    var pivot = augmented[i][i];
+    for (int j = 0; j < 2 * n; j++) {
+      augmented[i][j] /= pivot;
+    }
+
+    for (int j = 0; j < n; j++) {
+      if (j != i) {
+        var factor = augmented[j][i];
+        for (int k = 0; k < 2 * n; k++) {
+          augmented[j][k] -= factor * augmented[i][k];
+        }
+      }
+    }
+  }
+
+  var result = List<List<double>>.generate(n, (index) => List<double>.filled(n, 0));
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++) {
+      result[i][j] = augmented[i][j + n];
+    }
+  }
+  return result;
+}
+
+/// Determinant of a square matrix
+double matrixDeterminant(List<List<double>> matrix) {
+  int n = matrix.length;
+  if (matrix.isEmpty || matrix[0].isEmpty) return 0.0;
+
+  var _matrix = List<List<double>>.generate(n, (index) => List<double>.from(matrix[index]));
+
+  for (int i = 0; i < n; i++) {
+    if (_matrix[i][i] == 0) {
+      for (int row = i; row < n; row++) {
+        if (_matrix[i][row] != 0) { //flip row
+          for (int k = 0; k < n; k++) {
+            double tmp = _matrix[k][i];
+            _matrix[k][i] = _matrix[k][row];
+            _matrix[k][row] = tmp;
+          }
+        }
+      }
+    }
+    if (_matrix[i][i] == 0) continue;
+    for (int j = i + 1; j < n; j++) {
+      //generate 0s by addition
+      double faktor = -_matrix[j][i] / _matrix[i][i];
+      for (int k = 0; k < n; k++) {
+        _matrix[j][k] += faktor * _matrix[i][k];
+      }
+    }
+  }
+  double result = 1;
+  for (int i = 0; i < n; i++) {
+    result *= _matrix[i][i];
+  }
+  return result;
+}

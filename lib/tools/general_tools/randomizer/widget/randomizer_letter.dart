@@ -93,7 +93,6 @@ class _RandomizerLetterState extends State<RandomizerLetter> {
                 case _LetterCase.SMALL: text = i18n(context, 'randomizer_letter_smallcase'); break;
                 case _LetterCase.CAPITAL: text = i18n(context, 'randomizer_letter_capitalcase'); break;
                 case _LetterCase.BOTH: text = i18n(context, 'randomizer_letter_bothcases'); break;
-                default: break;
               }
 
               return GCWDropDownMenuItem(

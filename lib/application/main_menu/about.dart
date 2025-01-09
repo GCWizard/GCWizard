@@ -292,6 +292,7 @@ class _AboutState extends State<About> {
                     'Sechsfüssler',
                     'Stefan J.',
                     'Stefan K.',
+                    'SzpiegDonPedro',
                     'Team kesteri',
                     'Thomas B.',
                     'tebarius',

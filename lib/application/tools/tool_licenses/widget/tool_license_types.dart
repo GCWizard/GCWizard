@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 enum ToolLicenseType {
   PRIVATE_PERMISSION, // use as dummy; data will be taken from ToolLicensePrivatePermission object
   FREE_TO_USE,
+  CHARITYWARE,
   PERSONAL_USE,
   AL, // Artistic License
   APACHE2, // Apache 2.0
@@ -73,6 +74,7 @@ String _licenseType(BuildContext context, ToolLicenseType licenseType) {
     case ToolLicenseType.GITHUB_DEFAULT: return 'Github Default License';
     case ToolLicenseType.GFDL: return 'GNU Free Documentation License';
     case ToolLicenseType.PUBLIC_DOMAIN: return 'Public Domain';
+    case ToolLicenseType.CHARITYWARE: return 'Charityware';
     case ToolLicenseType.NON_COMMERCIAL: return i18n(context, 'toollicenses_noncommercial');
     case ToolLicenseType.REPRODUCTION_NEEDED: return i18n(context, 'toollicenses_reproduction_needed');
     case ToolLicenseType.OFL11: return 'SIL Open Font License Version 1.1';

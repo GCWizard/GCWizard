@@ -14,15 +14,25 @@ class MayaCalendarSelection extends GCWSelection {
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       if (className(element.tool) == className(const SymbolTable()) &&
-          (element.tool as SymbolTable).symbolKey == 'maya_calendar_longcount') return true;
+          (element.tool as SymbolTable).symbolKey == 'maya_calendar_longcount') {
+        return true;
+      }
       if (className(element.tool) == className(const SymbolTable()) &&
-          (element.tool as SymbolTable).symbolKey == 'maya_calendar_haab_codices') return true;
+          (element.tool as SymbolTable).symbolKey == 'maya_calendar_haab_codices') {
+        return true;
+      }
       if (className(element.tool) == className(const SymbolTable()) &&
-          (element.tool as SymbolTable).symbolKey == 'maya_calendar_haab_inscripts') return true;
+          (element.tool as SymbolTable).symbolKey == 'maya_calendar_haab_inscripts') {
+        return true;
+      }
       if (className(element.tool) == className(const SymbolTable()) &&
-          (element.tool as SymbolTable).symbolKey == 'maya_calendar_tzolkin_codices') return true;
+          (element.tool as SymbolTable).symbolKey == 'maya_calendar_tzolkin_codices') {
+        return true;
+      }
       if (className(element.tool) == className(const SymbolTable()) &&
-          (element.tool as SymbolTable).symbolKey == 'maya_calendar_tzolkin_inscripts') return true;
+          (element.tool as SymbolTable).symbolKey == 'maya_calendar_tzolkin_inscripts') {
+        return true;
+      }
 
       return [
         className(const MayaCalendar()),

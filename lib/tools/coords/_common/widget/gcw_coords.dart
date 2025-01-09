@@ -21,6 +21,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_integer_textfield.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/bosch/logic/bosch.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dec/logic/dec.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/dfcigrid/logic/dfcigrid.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dmm/logic/dmm.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dms/logic/dms.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dutchgrid/logic/dutchgrid.dart';
@@ -52,9 +53,9 @@ import 'package:gc_wizard/tools/coords/_common/formats/xyz/logic/xyz.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_definition.dart';
-import 'package:gc_wizard/tools/coords/_common/widget/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/coord_format_inputs/degrees_lat_textinputformatter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/coord_format_inputs/degrees_lon_textinputformatter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_formatselector.dart';
@@ -70,6 +71,7 @@ import 'package:location/location.dart';
 
 part 'package:gc_wizard/tools/coords/_common/formats/bosch/widget/gcw_coords_bosch.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/dec/widget/gcw_coords_dec.dart';
+part 'package:gc_wizard/tools/coords/_common/formats/dfcigrid/widget/gcw_coords_dfcigrid.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/dmm/widget/gcw_coords_dmm.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/dms/widget/gcw_coords_dms.dart';
 part 'package:gc_wizard/tools/coords/_common/formats/dutchgrid/widget/gcw_coords_dutchgrid.dart';
@@ -412,5 +414,6 @@ var allCoordinateWidgetInfos = [
   _GCWCoordWidgetInfoGeo3x3(),
   _GCWCoordWidgetInfoMapCode(),
   _GCWCoordWidgetInfoGARS(),
-  _GCWCoordWidgetInfoS2CellsHilbert()
+  _GCWCoordWidgetInfoS2CellsHilbert(),
+  _GCWCoordWidgetInfoDfciGrid()
 ];

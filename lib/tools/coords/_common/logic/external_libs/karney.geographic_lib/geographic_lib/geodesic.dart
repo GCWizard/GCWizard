@@ -548,7 +548,9 @@ class _Geodesic {
         // Need at least 2, to handle 90 0 90 180
         if (sig12 < 3 * tiny_ ||
             // Prevent negative s12 or m12 for short lines
-            (sig12 < _tol0_ && (s12x < 0 || m12x < 0))) sig12 = m12x = s12x = 0;
+            (sig12 < _tol0_ && (s12x < 0 || m12x < 0))) {
+          sig12 = m12x = s12x = 0;
+        }
         m12x *= b;
         s12x *= b;
         a12 = _toDegrees(sig12);
@@ -639,7 +641,9 @@ class _Geodesic {
           // Reversed test to allow escape with NaNs
           if (tripb ||
               !(v.abs() >= (tripn ? 8 : 1) * _tol0_) ||
-              numit == _maxit2_) break;
+              numit == _maxit2_) {
+            break;
+          }
           // Update bracketing values
           if (v > 0 && (numit > _maxit1_ || calp1 / salp1 > _calp1b / _salp1b)) {
             _salp1b = salp1;

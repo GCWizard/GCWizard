@@ -28,6 +28,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/substi
 import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/logic/substitution_logic_aggregator.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/widget/quadgram_loader.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/widget/substitution_breaker_items.dart';
+import 'package:gc_wizard/tools/symbol_tables/_common/logic/symbol_table_data.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_container.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_table_tool.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/widget/symbol_table.dart';
@@ -35,6 +36,7 @@ import 'package:gc_wizard/tools/symbol_tables/symbol_replacer/logic/symbol_repla
 import 'package:gc_wizard/tools/symbol_tables/symbol_replacer/widget/symbol_replacer_manual_control.dart';
 import 'package:gc_wizard/tools/symbol_tables/symbol_replacer/widget/symbol_replacer_symboldata.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
+import 'package:gc_wizard/utils/method_limiter.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 import 'package:tuple/tuple.dart';
 
@@ -519,14 +521,16 @@ class _SymbolReplacerState extends State<SymbolReplacer> {
 
   Future<GCWAsyncExecuterParameters?> _buildJobDataSearchSymbolTable() async {
     var list = <List<Map<String, SymbolReplacerSymbolData>>>[];
+    var limiter = MethodLimiter(MAX_PARALLEL_LOADS);
     if (_symbolImage == null) return null;
 
     list = await Future.wait(_compareSymbolItems.map((_symbolTableViewData) async {
       var symbolTableViewData = _symbolTableViewData.value;
-      if (symbolTableViewData.data == null) await symbolTableViewData.initialize(context);
+      if (symbolTableViewData.data == null) await limiter.callMethod(() => symbolTableViewData.initialize(context));
 
       return symbolTableViewData.data?.images ?? [];
     }));
+
 
     return GCWAsyncExecuterParameters(
         Tuple2<SymbolReplacerImage, List<List<Map<String, SymbolReplacerSymbolData>>>>(_symbolImage!, list));
