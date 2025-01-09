@@ -109,7 +109,9 @@ bool validDateTime(int year, int month, int day) {
   // https://stackoverflow.com/questions/67144785/flutter-dart-datetime-max-min-value
   if (year > _DATETIME_MAX_YEAR ||
       (year == _DATETIME_MAX_YEAR && month > _DATETIME_MAX_MONTH) ||
-      (year == _DATETIME_MAX_YEAR && month == _DATETIME_MAX_MONTH && day > _DATETIME_MAX_DAY)) {
+      (year == _DATETIME_MAX_YEAR && month == _DATETIME_MAX_MONTH && day > _DATETIME_MAX_DAY) ||
+      (year == _DATETIME_MAX_YEAR && (month + _DATETIME_MAX_DAY % 30) >= _DATETIME_MAX_MONTH &&
+          day > _DATETIME_MAX_DAY % 30)) {
     return false;
   }
 
