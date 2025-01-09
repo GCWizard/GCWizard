@@ -548,12 +548,11 @@ void initializeRegistry(BuildContext context) {
       'buchstabenwerte',
       'bww'
     ], licenses: const []),
-    ]),
     GCWTool(tool: const Alphametics(), id: 'symbol_arithmetic', categories: const [
       ToolCategory.GAMES
     ], searchKeys: [
       'symbol_arithmetic',
-    ]),
+    ], licenses: const []),
     GCWTool(tool: const Amsco(), id: 'amsco', categories: const [
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
