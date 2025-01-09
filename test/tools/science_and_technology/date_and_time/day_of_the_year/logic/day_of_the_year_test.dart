@@ -18,6 +18,8 @@ void main() {
 
       {'year' : 2020, 'day': 367, 'expectedOutput' : DayOfTheYearOutput(DateTime(2021, 1, 1),  1, 5, 6, 53, 1)},
       {'year' : 2022, 'day': 0,   'expectedOutput' : DayOfTheYearOutput(DateTime(2021, 12, 31), 365, 5, 6, 52, 53)},
+
+      {'year' : 2022, 'day': 999999999999,   'expectedOutput' : DayOfTheYearOutput(DateTime(-142138, 04, 12, 17, 27, 40, 230, 656), 102, 6, 7, 15, 15)},
     ];
 
     for (var elem in _inputsToExpected) {
