@@ -264,7 +264,6 @@
   "ballistics_maxspeed": "max Speed",
   "ballistics_drag": "Drag/Air resistance",
   "ballistics_drag_none": "No Drag/Air resistance",
-  "ballistics_drag_stokes": "Drag/Air resistance according Stokes",
   "ballistics_drag_newton": "Drag/Air resistance according Newton",
   "ballistics_diameter": "Diameter",
   "ballistics_cw": "Drag coefficient cw",

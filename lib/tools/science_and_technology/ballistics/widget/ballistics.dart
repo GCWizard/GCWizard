@@ -171,10 +171,6 @@ class BallisticsState extends State<Ballistics> {
         output = calculateBallisticsNoDrag(
             _currentInputVelocity, _currentInputAngle, _currentInputAcceleration, _currentInputHeight);
         break;
-      case AIR_RESISTANCE.STOKES:
-        output = calculateBallisticsStokes(_currentInputVelocity, _currentInputAngle, _currentInputAcceleration,
-            _currentInputHeight, _currentInputMass, _currentInputDiameter, _currentInputDrag, _currentInputDensity);
-        break;
       case AIR_RESISTANCE.NEWTON:
         output = calculateBallisticsNewton(_currentInputVelocity, _currentInputAngle, _currentInputAcceleration,
             _currentInputHeight, _currentInputMass, _currentInputDiameter, _currentInputDrag, _currentInputDensity);
