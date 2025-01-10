@@ -24,33 +24,6 @@ OutputBallistics calculateBallisticsNoDrag(double velocity, double angle, double
   return OutputBallistics(Time: time, Height: maxHeight, Distance: distance, maxSpeed: maxSpeed);
 }
 
-//TO DO calculation
-OutputBallistics calculateBallisticsStokes(double velocity, double angle, double acceleration, double startHeight,  double mass, double diameter, double drag, double density){
-// https://www.geogebra.org/m/tEypsSwj#material/sPGWKHD2
-
-  const viscosityAir = 18.2; //μPa·s
-  double k1 = 6 * pi * viscosityAir * velocity;
-  angle = angle / 180 * pi;
-
-  double XofT(double T){
-    return mass * velocity * cos(angle) / k1 * (1 - pow(e, -k1 * T / mass));
-  }
-
-  double YofT(double T){
-    return startHeight + mass / k1 * (velocity * sin(angle) + mass * acceleration / k1) * (1 - pow(e, -k1 * T / mass)) - mass * acceleration / k1 * T;
-  }
-
-  double time = 0.0;
-  double distance = 0.0;
-  double y = startHeight;
-  double maxHeight = 0.0;
-
-
-  double maxSpeed = 0.0;
-
-  return OutputBallistics(Time: time, Height: maxHeight, Distance: distance, maxSpeed: maxSpeed);
-}
-
 OutputBallistics calculateBallisticsNewton(double V0, double Winkel, double g, double startHeight, double Masse, double a, double cw, double rho) {
 // Newton    https://matheplanet.com/default3.html?call=article.php%3fsid=735&ref=http://www.google.ch/search%3fhlX=de%2526qX=Schiefer+wurf+F+%253D+k+*+v%255E2%2526metaX=
 // https://www.geogebra.org/m/tEypsSwj#material/UCbRqoGb
@@ -171,7 +144,7 @@ OutputBallistics calculateBallisticsNewton(double V0, double Winkel, double g, d
   double Tu  = 0.0; // Zeit bis Scheitel
 
   // iterationswerte
-  double  T1, T2, Tm, H1, H2, Hm;
+  double  T1, T2, Tm, H2, Hm;
 
   double ln(double x) {
     return log(x) / log(e);
@@ -207,11 +180,9 @@ OutputBallistics calculateBallisticsNewton(double V0, double Winkel, double g, d
   T = Tu;
   T1 = Tu;
   T2 = Tu * 1.5;
-  H1 = YofTdown(T1);
   H2 = YofTdown(T2);
   while (H2 > 0) {
     T1 = T2;
-    H1 = H2;
     T2 = T2 + Tu / 2;
     H2 = YofTdown(T2);
   }
