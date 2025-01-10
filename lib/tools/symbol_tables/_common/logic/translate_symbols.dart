@@ -178,7 +178,7 @@ String translatedName(String filename) {
   var suffix = file[1].trim();
 
   if (name.startsWith('_')) {
-    newFilename = name.substring(1);
+    name = name.substring(1);
   }
 
   if (TRANSLATIONS.containsKey(name)) {
