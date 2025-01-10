@@ -148,9 +148,8 @@ class SymbolTableData {
     var setTranslateable = false;
 
     String key;
-
     if (_COMMON_SYMBOLS.containsKey(imageKey)) {
-      key = _COMMON_SYMBOLS[imageKey]!;
+      key = _COMMON_SYMBOLS[imageKey]![0]; // first of list
     } else if ((_config.translate.contains(imageKey))) {
       if (_config.translationPrefix.isNotEmpty) {
         key = i18n(context, _config.translationPrefix + imageKey);
