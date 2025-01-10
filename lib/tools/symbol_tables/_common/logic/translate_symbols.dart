@@ -170,26 +170,25 @@ const Map<String, String> TRANSLATIONS = {
 };
 
 String translatedName(String filename) {
-  if (filename.isEmpty || !filename.toLowerCase().endsWith('.png')) return '';
+  if (filename.isEmpty || !filename.toLowerCase().endsWith('.png')) {
+    return '';
+  }
 
-  String newFilename = '';
-  List<String> file = filename.split('.');
-  var name = file[0].trim();
-  var suffix = file[1].trim();
+  final parts = filename.split('.');
+  if (parts.length != 2) return '';
+
+  var name = parts[0].trim();
+  final suffix = parts[1].trim();
 
   if (name.startsWith('_')) {
     name = name.substring(1);
   }
 
-  if (TRANSLATIONS.containsKey(name)) {
-    newFilename = TRANSLATIONS[name]!;
-  } else {
-    newFilename = name;
-  }
+  final translated = TRANSLATIONS[name] ?? name;
 
-  if (newFilename.substring(0, 1) == newFilename.substring(0, 1).toUpperCase()) {
-    newFilename = "_" + newFilename;
-  }
+  final formattedName = translated[0] == translated[0].toUpperCase()
+      ? '_$translated'
+      : translated;
 
-  return newFilename + '.' + suffix;
+  return '$formattedName.$suffix';
 }
