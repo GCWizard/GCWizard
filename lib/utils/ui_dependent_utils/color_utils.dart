@@ -8,7 +8,7 @@ String colorToHexString(Color color) {
 
 Color hexStringToColor(String hex) {
   RGB rgb = HexCode(hex).toRGB();
-  return Color.fromARGB(255, rgb.r.floor(), rgb.g.floor(), rgb.b.floor());
+  return Color.fromARGB(255, rgb.red.floor(), rgb.green.floor(), rgb.blue.floor());
 }
 
 int colorValue (Color color) {
