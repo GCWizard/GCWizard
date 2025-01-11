@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:math_expressions/math_expressions.dart';
+
 
 class Helper {
   static Iterable<List<int>> iterativeHeapPermute(List<int> A) sync* {
@@ -143,13 +145,31 @@ extension GroupByExtension<E> on Iterable<E> {
     return map;
   }
 }
+final parser = Parser();
 
 class Formula {
-  String formula;
+  late String formula;
+  late List<Token> token;
   bool onlyAddition = false;
   Set<String> usedMembers = <String>{};
 
-  Formula(this.formula);
+
+  Formula(String expression) {
+    formula = expression;
+    token = parser.lex.tokenize(formula);
+
+    print(token.where((t) => t.type == TokenType.VAR).length);
+  usedMembers = token.where((t) => t.type == TokenType.VAR).map((t) => t.text).toSet() ;
+    print(usedMembers);
+    if (usedMembers.length == 1) {
+      var exp = parser.parse(formula);
+      Expression expDerived = exp.derive(usedMembers.first);
+      print(usedMembers.first + ' ' + expDerived.toString());
+      print(usedMembers.first + ' ' + expDerived.simplify().toString());
+      final context = ContextModel();
+      print(usedMembers.first + ' ' + expDerived.evaluate(EvaluationType.REAL, context).toString());
+    }
+  }
 }
 
 class PossibleValues {

@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:math_expressions/math_expressions.dart';
 
+import 'helper.dart';
+
 /// Funktion, die den maximalen Wert in den Gleichungen findet
 int findMaxValueInEquations(List<String> equations) {
   final parser = Parser();
@@ -185,6 +187,8 @@ void main() {
   //
   // // Manuelle Übergabe der Variablenliste
   // List<String> variables = ['A', 'B', 'C', 'D'];
+
+  equations.forEach((f) => print(Formula(f).toString()));
 
   var startTime = DateTime.now();
   // Lösen
