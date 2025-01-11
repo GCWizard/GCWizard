@@ -21,21 +21,22 @@ import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/text_input_formatters/variablestring_textinputformatter.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
-import 'package:gc_wizard/tools/games/alphametics/logic/alphametics.dart';
+import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/alphametic.dart';
 import 'package:gc_wizard/tools/games/catan/logic/catan.dart';
+import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/helper.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 
 import '../logic/alphametics_.dart';
 
 
-class Alphametics extends StatefulWidget {
-  const Alphametics({Key? key}) : super(key: key);
+class VerbalArithmetic extends StatefulWidget {
+  const VerbalArithmetic({Key? key}) : super(key: key);
 
   @override
-  AlphameticsState createState() => AlphameticsState();
+  VerbalArithmeticState createState() => VerbalArithmeticState();
 }
 
-class AlphameticsState extends State<Alphametics> {
+class VerbalArithmeticState extends State<VerbalArithmetic> {
   late TextEditingController _inputController;
   late TextEditingController _maskController;
 

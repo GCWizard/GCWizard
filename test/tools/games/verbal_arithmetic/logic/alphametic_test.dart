@@ -1,5 +1,6 @@
 import "package:flutter_test/flutter_test.dart";
-import 'package:gc_wizard/tools/games/alphametics/logic/chatgpt_alphametics8_1.dart';
+import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/alphametic.dart';
+import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/helper.dart';
 
 void main() {
 
@@ -26,16 +27,16 @@ void main() {
 
     _inputsToExpected.forEach((elem) {
       test('formulas: ${elem['input']}', () {
-// var equation = Formula(elem['input'] as String);
+ var equation = Formula(elem['input'] as String);
 // var values = PossibleValues.initPossibleValues(equation.usedMembers, true);
 //
 // removeLeadingZero([equation], values);
 //
 //         var _actual = values.getOutput(equation.formula, Alphametics01.solve(equation, values)!.first);
 //         var equation = Formula(elem['input'] as String);
-        var _actual = solveAlphametic(elem['input'] as String);
+        var _actual = solveAlphametic(equation);
         if (_actual != null) {
-          var result = modifiedFormula(elem['input'] as String, _actual);
+          var result = modifiedFormula(equation.formula, _actual);
           expect(result, elem['expectedOutput']);
         } else {
           expect(_actual, elem['expectedOutput']);

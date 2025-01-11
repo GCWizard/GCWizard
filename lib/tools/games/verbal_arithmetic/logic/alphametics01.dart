@@ -2,7 +2,7 @@
 // import 'dart:math';
 //import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitution.dart';
 
-part of 'alphametics.dart';
+part of '_alphametics.dart';
 
 
 

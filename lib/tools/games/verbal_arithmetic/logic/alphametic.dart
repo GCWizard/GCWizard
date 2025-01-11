@@ -1,14 +1,37 @@
 import 'dart:collection';
 import 'dart:math';
+import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/helper.dart';
 import 'package:math_expressions/math_expressions.dart';
 
+class SymbolArithmeticJobData {
+  final List<String> formulas;
+  final Map<String, String> substitutions;
+
+  SymbolArithmeticJobData({
+    required this.formulas,
+    required this.substitutions,
+  });
+}
+
+class SymbolArithmeticOutput {
+  final List<String> formulas;
+  final List<Map<String, String>> solutions;
+  final bool error;
+
+  SymbolArithmeticOutput({
+    required this.formulas,
+    required this.solutions,
+    required this.error,
+  });
+}
+
 // Funktion, die Alphametic-Rätsel löst
-HashMap<String, int>? solveAlphametic(String formula) {
+HashMap<String, int>? solveAlphametic(Formula formula) {
   var letters = <String>{};
   var leadingLetters = <String>{};
 
   // Extrahiere alle Buchstaben und bestimme die führenden Buchstaben
-  for (var token in formula.split(RegExp(r'[^A-Z]'))) {
+  for (var token in formula.formula.split(RegExp(r'[^A-Z]'))) {
     if (token.isNotEmpty) {
       // letters.addAll(token.split(''));
       // if (leadingLetters.isEmpty || leadingLetters.length == token.length) {
@@ -34,7 +57,7 @@ HashMap<String, int>? solveAlphametic(String formula) {
   print("Gesamtanzahl der Permutationen: $totalPermutations");
 
   // Generiere Permutationen und evaluiere jede Kombination
-  return _permuteAndEvaluate(letterList, formula, leadingLetters, totalPermutations);
+  return _permuteAndEvaluate(letterList, formula.formula, leadingLetters, totalPermutations);
 }
 
 // Funktion zum Berechnen der Fakultät
@@ -159,28 +182,28 @@ num eval(String expression) {
 void main() {
   var startTime = DateTime.now();
   // Beispiel: SEND + MORE = MONEY
-  solveAlphametic("SEND+MORE=MONEY");
+  solveAlphametic(Formula("SEND+MORE=MONEY"));
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 
   startTime = DateTime.now();
   // Beispiel: ELEVEN + NINE + FIVE + FIVE = THIRTY
-  solveAlphametic("ELEVEN+NINE+FIVE+FIVE=THIRTY");
+  solveAlphametic(Formula("ELEVEN+NINE+FIVE+FIVE=THIRTY"));
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 
   startTime = DateTime.now();
   // Beispiel: ENIGMA / M = TIMES
-  solveAlphametic("ENIGMA/M=TIMES");
+  solveAlphametic(Formula("ENIGMA/M=TIMES"));
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 
   startTime = DateTime.now();
   // Beispiel: "BASE + BALL = GAMES
-  solveAlphametic("BASE + BALL = GAMES");
+  solveAlphametic(Formula("BASE + BALL = GAMES"));
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 
   startTime = DateTime.now();
   // Beispiel: THIS + A + FIRE... (langes Beispiel)
-  solveAlphametic(
-      "THIS+A+FIRE+THEREFORE+FOR+ALL+HISTORIES+I+TELL+A+TALE+THAT+FALSIFIES+ITS+TITLE+TIS+A+LIE+THE+TALE+OF+THE+LAST+FIRE+HORSES+LATE+AFTER+THE+FIRST+FATHERS+FORESEE+THE+HORRORS+THE+LAST+FREE+TROLL+TERRIFIES+THE+HORSES+OF+FIRE+THE+TROLL+RESTS+AT+THE+HOLE+OF+LOSSES+IT+IS+THERE+THAT+SHE+STORES+ROLES+OF+LEATHERS+AFTER+SHE+SATISFIES+HER+HATE+OFF+THOSE+FEARS+A+TASTE+RISES+AS+SHE+HEARS+THE+LEAST+FAR+HORSE+THOSE+FAST+HORSES+THAT+FIRST+HEAR+THE+TROLL+FLEE+OFF+TO+THE+FOREST+THE+HORSES+THAT+ALERTS+RAISE+THE+STARES+OF+THE+OTHERS+AS+THE+TROLL+ASSAILS+AT+THE+TOTAL+SHIFT+HER+TEETH+TEAR+HOOF+OFF+TORSO+AS+THE+LAST+HORSE+FORFEITS+ITS+LIFE+THE+FIRST+FATHERS+HEAR+OF+THE+HORRORS+THEIR+FEARS+THAT+THE+FIRES+FOR+THEIR+FEASTS+ARREST+AS+THE+FIRST+FATHERS+RESETTLE+THE+LAST+OF+THE+FIRE+HORSES+THE+LAST+TROLL+HARASSES+THE+FOREST+HEART+FREE+AT+LAST+OF+THE+LAST+TROLL+ALL+OFFER+THEIR+FIRE+HEAT+TO+THE+ASSISTERS+FAR+OFF+THE+TROLL+FASTS+ITS+LIFE+SHORTER+AS+STARS+RISE+THE+HORSES+REST+SAFE+AFTER+ALL+SHARE+HOT+FISH+AS+THEIR+AFFILIATES+TAILOR+A+ROOFS+FOR+THEIR+SAFE=FORTRESSES");
+  solveAlphametic(Formula(
+      "THIS+A+FIRE+THEREFORE+FOR+ALL+HISTORIES+I+TELL+A+TALE+THAT+FALSIFIES+ITS+TITLE+TIS+A+LIE+THE+TALE+OF+THE+LAST+FIRE+HORSES+LATE+AFTER+THE+FIRST+FATHERS+FORESEE+THE+HORRORS+THE+LAST+FREE+TROLL+TERRIFIES+THE+HORSES+OF+FIRE+THE+TROLL+RESTS+AT+THE+HOLE+OF+LOSSES+IT+IS+THERE+THAT+SHE+STORES+ROLES+OF+LEATHERS+AFTER+SHE+SATISFIES+HER+HATE+OFF+THOSE+FEARS+A+TASTE+RISES+AS+SHE+HEARS+THE+LEAST+FAR+HORSE+THOSE+FAST+HORSES+THAT+FIRST+HEAR+THE+TROLL+FLEE+OFF+TO+THE+FOREST+THE+HORSES+THAT+ALERTS+RAISE+THE+STARES+OF+THE+OTHERS+AS+THE+TROLL+ASSAILS+AT+THE+TOTAL+SHIFT+HER+TEETH+TEAR+HOOF+OFF+TORSO+AS+THE+LAST+HORSE+FORFEITS+ITS+LIFE+THE+FIRST+FATHERS+HEAR+OF+THE+HORRORS+THEIR+FEARS+THAT+THE+FIRES+FOR+THEIR+FEASTS+ARREST+AS+THE+FIRST+FATHERS+RESETTLE+THE+LAST+OF+THE+FIRE+HORSES+THE+LAST+TROLL+HARASSES+THE+FOREST+HEART+FREE+AT+LAST+OF+THE+LAST+TROLL+ALL+OFFER+THEIR+FIRE+HEAT+TO+THE+ASSISTERS+FAR+OFF+THE+TROLL+FASTS+ITS+LIFE+SHORTER+AS+STARS+RISE+THE+HORSES+REST+SAFE+AFTER+ALL+SHARE+HOT+FISH+AS+THEIR+AFFILIATES+TAILOR+A+ROOFS+FOR+THEIR+SAFE=FORTRESSES"));
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 
   // Lösung gefunden: {S: 2, O: 3, N: 1, Y: 5, E: 8, M: 0, D: 7, R: 6}

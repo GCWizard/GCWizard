@@ -1,6 +1,6 @@
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/formula_solver/logic/formula_parser.dart';
-import 'package:gc_wizard/tools/games/alphametics/logic/alphametics_.dart';
+import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/alphametics_.dart';
 
 void main() {
   _formulaStateToString(FormulaState state) {
