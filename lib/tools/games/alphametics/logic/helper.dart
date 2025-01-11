@@ -149,16 +149,19 @@ final parser = Parser();
 
 class Formula {
   late String formula;
+  late Expression exp;
   late List<Token> token;
   bool onlyAddition = false;
   Set<String> usedMembers = <String>{};
 
 
-  Formula(String expression) {
-    formula = expression;
+  Formula(String equation) {
+    formula = equation;
     token = parser.lex.tokenize(formula);
+    exp = parser.parse(formula);
 
     print(token.where((t) => t.type == TokenType.VAR).length);
+    // Funktion, um Variablen aus einem Ausdruck zu extrahieren
   usedMembers = token.where((t) => t.type == TokenType.VAR).map((t) => t.text).toSet() ;
     print(usedMembers);
     if (usedMembers.length == 1) {
@@ -169,6 +172,10 @@ class Formula {
       final context = ContextModel();
       print(usedMembers.first + ' ' + expDerived.evaluate(EvaluationType.REAL, context).toString());
     }
+  }
+
+  Iterable<int> get Values {
+    return token.where((t) => t.type == TokenType.VAL).map((t) => int.parse(t.text));
   }
 }
 
