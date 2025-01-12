@@ -3355,7 +3355,7 @@
   "major_system_title": "Major System",
   "major_system_description": "The major system is a mnemonic technique used to help in memorizing numbers. Actually it uses the German language system.",
   "major_system_example": "major system → 364 0013",
-  "major_system_settings_capitalized_only": "Noun Mode. Capitalized Words Only",
+  "major_system_settings_capitalized_only": "Noun mode. Only capitalised words are encoded",
   "major_system_output_plaintext": "Cleaned Text",
   "mathematical_constants_title": "Mathematical Constants",
   "mathematical_constants_additionalnames": "Other Names",

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
-import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
@@ -63,9 +62,9 @@ class _MajorSystemState extends State<MajorSystem> {
                   child: i18n(context, languageName(language)));
             }).toList(),
         ),
-        GCWTextDivider(
-            text: i18n(context, 'major_system_settings_capitalized_only')),
+
         GCWOnOffSwitch(
+            title: i18n(context, 'major_system_settings_capitalized_only'),
             value: _nounMode,
             onChanged: (value) {
               setState(() {
