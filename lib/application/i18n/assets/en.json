@@ -578,6 +578,7 @@
   "ccitt_5_title": "CCITT IA-5",
   "ccitt_5_description": "International Alphabet No 5, 7 Bit Code",
   "ccitt_5_example": "CACHE → 1000011 1000001 1000011 1001000 1000101",
+  "changelog_3.3.1": "[fix] coordinate calculation\n[fix] Calender (Thanks, JanRei)\n[fix] symbol table (Thanks, JanRei)\n[fix] Logical supporter (Thanks, JanRei)\n[fix] Key value editor\n[fix] Hill cipher",
   "changelog_3.3.0": "[new] Upside Down Text\n[new] Major system\n[new] Password Entropy\n[new] Game of Life rle import\n[new] Coord Format: DFCI Grid\n[new] Many Symbol Tables\n[fix] Gerke (Thanks, clandra)\n[fix] Many bug fixes",
   "changelog_3.2.3": "[fix] Amino Acids Overview (Thanks, SzpiegDonPedro)\n[fix] Symbol Replacer (Thanks, SzpiegDonPedro)",
   "changelog_3.2.2": "[new] Randomizer: Rock Paper Scissors\n[fix] Enigma (Thanks, mister-rage)\n[fix] Formula Solver: Formula References",
