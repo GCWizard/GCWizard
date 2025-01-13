@@ -15,10 +15,10 @@ class Hill extends StatefulWidget {
   const Hill({Key? key}) : super(key: key);
 
   @override
-  HillState createState() => HillState();
+  _HillState createState() => _HillState();
 }
 
-class HillState extends State<Hill> {
+class _HillState extends State<Hill> {
   late TextEditingController _encodeController;
   late TextEditingController _encodeKeyController;
   late TextEditingController _decodeController;
