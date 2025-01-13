@@ -1685,9 +1685,9 @@ void initializeRegistry(BuildContext context) {
         licenses: const []),
     GCWTool(
         tool: const VerbalArithmetic(),
-        id: 'symbol_arithmetic',
+        id: 'verbal_arithmetic',
         categories: const [ToolCategory.GAMES],
-        searchKeys: const ['symbol_arithmetic'],
+        searchKeys: const ['verbal_arithmetic'],
         licenses: const []),
     GCWTool(
         tool: const VanitySelection(),

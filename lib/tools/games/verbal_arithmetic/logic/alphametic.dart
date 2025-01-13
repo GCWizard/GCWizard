@@ -14,43 +14,43 @@ Future<SymbolArithmeticOutput?> solveAlphameticsAsync(GCWAsyncExecuterParameters
   var data = jobData.parameters as SymbolArithmeticJobData;
 
   var output = solveAlphametic(data.formulas.first, sendAsyncPort: jobData.sendAsyncPort);
-
+print(output);
   if (jobData.sendAsyncPort != null) jobData.sendAsyncPort!.send(output);
 
   return output;
 }
 
-Future<SymbolArithmeticOutput?> solveAlphametic(String formula, {SendPort? sendAsyncPort}) async {
-  return _solveAlphametic(Formula(formula), sendAsyncPort: sendAsyncPort);
+SymbolArithmeticOutput? solveAlphametic(String formula, {SendPort? sendAsyncPort}) {
+  return _solveAlphametic(Formula(formula, singleLetter: true), sendAsyncPort: sendAsyncPort);
 }
 
 // Funktion, die Alphametic-Rätsel löst
-Future<SymbolArithmeticOutput?> _solveAlphametic(Formula formula, {SendPort? sendAsyncPort}) async {
-  var letters = <String>{};
-  var leadingLetters = <String>{};
-
-  // Extract all letters and determine the leading letters
-  for (var token in formula.formula.split(RegExp(r'[^A-Z]'))) {
-    if (token.isNotEmpty) {
-      letters.addAll(token.split(''));
-      leadingLetters.add(token[0]);
-    }
-  }
+SymbolArithmeticOutput? _solveAlphametic(Formula formula, {SendPort? sendAsyncPort}) {
+  // var letters = <String>{};
+  // var leadingLetters = <String>{};
+  //
+  // // Extract all letters and determine the leading letters
+  // for (var token in formula.formula.split(RegExp(r'[^A-Z]'))) {
+  //   if (token.isNotEmpty) {
+  //     letters.addAll(token.split(''));
+  //     leadingLetters.add(token[0]);
+  //   }
+  // }
 
   // Check if there are too many letters (maximum 10)
-  if (letters.length > 10) {
+  if (formula.usedMembers.length > 10) {
     // print("Zu viele verschiedene Buchstaben, um eine Lösung zu finden.");
     return SymbolArithmeticOutput(formulas: [], solutions: null, error: 'TooManyLetters');
   }
 
-  var letterList = letters.toList();
+  var letterList = formula.usedMembers.toList();
 
   // Calculating the number of possible permutations
   var totalPermutations = _factorial(10) ~/ _factorial(10 - letterList.length);
   // print("Gesamtanzahl der Permutationen: $totalPermutations");
 
   // Generate permutations and evaluate each combination
-  var result = _permuteAndEvaluate(letterList, formula.formula, leadingLetters, totalPermutations, sendAsyncPort);
+  var result = _permuteAndEvaluate(letterList, formula.formula, formula.leadingLetters, totalPermutations, sendAsyncPort);
 
   return SymbolArithmeticOutput(formulas: [formula.formula], solutions: result, error: '');
 }

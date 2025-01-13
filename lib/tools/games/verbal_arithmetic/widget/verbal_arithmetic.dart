@@ -12,7 +12,6 @@ import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
 import 'package:gc_wizard/common_widgets/key_value_editor/gcw_key_value_editor.dart';
@@ -22,7 +21,6 @@ import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/text_input_formatters/variablestring_textinputformatter.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/alphametic.dart';
-import 'package:gc_wizard/tools/games/catan/logic/catan.dart';
 import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/helper.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 
@@ -30,10 +28,10 @@ class VerbalArithmetic extends StatefulWidget {
   const VerbalArithmetic({Key? key}) : super(key: key);
 
   @override
-  VerbalArithmeticState createState() => VerbalArithmeticState();
+  _VerbalArithmeticState createState() => _VerbalArithmeticState();
 }
 
-class VerbalArithmeticState extends State<VerbalArithmetic> {
+class _VerbalArithmeticState extends State<VerbalArithmetic> {
   late TextEditingController _inputController;
   late TextEditingController _maskController;
   late TextEditingController _inputNumberGridController;
@@ -125,10 +123,7 @@ class VerbalArithmeticState extends State<VerbalArithmetic> {
           },
         ),
         _currentMode == GCWSwitchPosition.left ? _buildAlphameticsInput() : _buildNumberGridInput(),
-        GCWDefaultOutput(
-            child: encodeCatan(
-                _currentInput, _currentMode == GCWSwitchPosition.left ? CatanMode.BASE : CatanMode.EXPANSION)
-                .join(' '))
+        _buildOutput()
       ],
     );
   }
@@ -138,13 +133,14 @@ class VerbalArithmeticState extends State<VerbalArithmetic> {
       children: <Widget>[
         GCWTextField(
           hintText: 'SEND + MORE = MONEY',
-            controller: _inputAlphameticsController,
-            onChanged: (text) {
-              setState(() {
-                _currentAlphameticsInput = text;
-              });
-            }
-          )
+          controller: _inputAlphameticsController,
+          onChanged: (text) {
+            setState(() {
+              _currentAlphameticsInput = text;
+            });
+          }
+        ),
+        _buildSubmitButton(),
       ],
     );
   }
@@ -165,20 +161,19 @@ class VerbalArithmeticState extends State<VerbalArithmetic> {
         _currentGridMode == GCWSwitchPosition.left ? _buildNumberGridTextboxInput() : _buildNumberGridGridInput(),
       ]
     );
-
   }
 
   Widget _buildNumberGridTextboxInput() {
     return Column(
       children: <Widget>[
         GCWTextField(
-            hintText: 'A * B = 1428\nC - D = 12\nA * C = 840\nB - D = 33',
-            controller: _inputNumberGridController,
-            onChanged: (text) {
-              setState(() {
-                _currentNumberGridInput = text;
-              });
-            }
+          hintText: 'A * B = 1428\nC - D = 12\nA * C = 840\nB - D = 33',
+          controller: _inputNumberGridController,
+          onChanged: (text) {
+            setState(() {
+              _currentNumberGridInput = text;
+            });
+          }
         )
       ],
     );
@@ -196,52 +191,52 @@ class VerbalArithmeticState extends State<VerbalArithmetic> {
             });
           },
           child: Column(
-              children: <Widget>[
-                GCWIntegerSpinner(
-                  title: i18n(context, 'common_row_count'),
-                  value: _rowCount,
-                  min: 1,
-                  max: 20,
-                  onChanged: (value) {
-                    setState(() {
-                      _rowCount = value;
-                      _resizeMatrix();
-                    });
-                  },
-                ),
-                GCWIntegerSpinner(
-                  title: i18n(context, 'common_column_count'),
-                  value: _columnCount,
-                  min: 1,
-                  max: 20,
-                  onChanged: (value) {
-                    setState(() {
-                      _columnCount = value;
-                      _resizeMatrix();
-                    });
-                  },
-                ),
-              ]),
+            children: <Widget>[
+              GCWIntegerSpinner(
+                title: i18n(context, 'common_row_count'),
+                value: _rowCount,
+                min: 1,
+                max: 20,
+                onChanged: (value) {
+                  setState(() {
+                    _rowCount = value;
+                    _resizeMatrix();
+                  });
+                },
+              ),
+              GCWIntegerSpinner(
+                title: i18n(context, 'common_column_count'),
+                value: _columnCount,
+                min: 1,
+                max: 20,
+                onChanged: (value) {
+                  setState(() {
+                    _columnCount = value;
+                    _resizeMatrix();
+                  });
+                },
+              ),
+            ]),
         ),
 
         GCWTextDivider(
-            text : '',
-            trailing: Row(children: <Widget>[
-              GCWPasteButton(
-                iconSize: IconButtonSize.SMALL,
-                onSelected: _parseClipboard,
-              ),
-              GCWIconButton(
-                size: IconButtonSize.SMALL,
-                icon: Icons.content_copy,
-                onPressed: () {
-                  _currentMatrix.substitutions = _getSubstitutions();
-                  var copyText = _currentMatrix.toJson();
-                  if (copyText.isEmpty) return;
-                  insertIntoGCWClipboard(context, copyText);
-                },
-              )
-            ])
+          text : '',
+          trailing: Row(children: <Widget>[
+            GCWPasteButton(
+              iconSize: IconButtonSize.SMALL,
+              onSelected: _parseClipboard,
+            ),
+            GCWIconButton(
+              size: IconButtonSize.SMALL,
+              icon: Icons.content_copy,
+              onPressed: () {
+                _currentMatrix.substitutions = _getSubstitutions();
+                var copyText = _currentMatrix.toJson();
+                if (copyText.isEmpty) return;
+                insertIntoGCWClipboard(context, copyText);
+              },
+            )
+          ])
         ),
 
         GCWPainterContainer(
@@ -254,19 +249,15 @@ class VerbalArithmeticState extends State<VerbalArithmetic> {
             var valid = _currentMatrix.isValidMatrix();
             print(valid.toString());
             if (valid) {
-              for(var y = 0; y < _currentMatrix.getRowsCount()-2; y+=2){
+              for(var y = 0; y < _currentMatrix.getRowsCount()-2; y += 2){
                 print(_currentMatrix.buildRowFormula(y));
               }
-              for(var x = 0; x < _currentMatrix.getColumnsCount()-2; x+=2){
+              for(var x = 0; x < _currentMatrix.getColumnsCount()-2; x += 2){
                 print(_currentMatrix.buildColumnFormula(x));
               }
             }
           },
         ),
-        GCWDefaultOutput(
-            child: encodeCatan(
-                _currentInput, _currentMode == GCWSwitchPosition.left ? CatanMode.BASE : CatanMode.EXPANSION)
-                .join(' '))
       ],
     );
   }
@@ -275,7 +266,7 @@ class VerbalArithmeticState extends State<VerbalArithmetic> {
     return Column(
       children: <Widget>[
         GCWDefaultOutput(
-            child: 'dummy'
+          child: _currentOutput
         )
       ],
     );
@@ -293,14 +284,14 @@ class VerbalArithmeticState extends State<VerbalArithmetic> {
             });
           },
           child: GCWKeyValueEditor(
-              keyHintText: i18n(context, 'coords_variablecoordinate_variable'),
-              valueHintText: i18n(context, 'coords_variablecoordinate_possiblevalues'),
-              addValueInputFormatters: [VariableStringTextInputFormatter()],
-              valueFlex: 4,
-              onNewEntryChanged: (entry) => _updateNewEntry(entry),
-              onAddEntry: (entry) => _addEntry(entry),
-              entries: _currentSubstitutions,
-              onUpdateEntry: (entry) => _updateEntry(entry),
+            keyHintText: i18n(context, 'coords_variablecoordinate_variable'),
+            valueHintText: i18n(context, 'coords_variablecoordinate_possiblevalues'),
+            addValueInputFormatters: [VariableStringTextInputFormatter()],
+            valueFlex: 4,
+            onNewEntryChanged: (entry) => _updateNewEntry(entry),
+            onAddEntry: (entry) => _addEntry(entry),
+            entries: _currentSubstitutions,
+            onUpdateEntry: (entry) => _updateEntry(entry),
           )
         )
     ]);
@@ -488,14 +479,19 @@ class VerbalArithmeticState extends State<VerbalArithmetic> {
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   setState(() {});
     // });
-
-    var _substitutions = _getSubstitutions();
-    var _formulas = _getFormulas();
+    List<String>? _formulas;
+    if (_currentMode == GCWSwitchPosition.left) {
+      if (_currentAlphameticsInput.isEmpty) return null;
+      _formulas = [_currentAlphameticsInput];
+    } else {
+      var _substitutions = _getSubstitutions();
+      _formulas = _getFormulas();
+    }
     if (_formulas == null) return null;
 
     return GCWAsyncExecuterParameters(SymbolArithmeticJobData(
         formulas: _formulas,
-        substitutions: _substitutions));
+        substitutions: {}));
   }
 
   void _showOutput(SymbolArithmeticOutput? output) {

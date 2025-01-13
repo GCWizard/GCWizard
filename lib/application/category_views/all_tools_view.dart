@@ -176,7 +176,6 @@ import 'package:gc_wizard/tools/crypto_and_encodings/vigenere/widget/vigenere.da
 import 'package:gc_wizard/tools/crypto_and_encodings/wasd/widget/wasd.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/zamonian_numbers/widget/zamonian_numbers.dart';
 import 'package:gc_wizard/tools/formula_solver/widget/formula_solver_formulagroups.dart';
-import 'package:gc_wizard/tools/games/alphametics/widget/alphametics.dart';
 import 'package:gc_wizard/tools/games/bowling/widget/bowling.dart';
 import 'package:gc_wizard/tools/games/catan/widget/catan.dart';
 import 'package:gc_wizard/tools/games/logical_supporter/widget/logical_supporter.dart';
@@ -184,6 +183,7 @@ import 'package:gc_wizard/tools/games/nonogram/widget/nonogram_solver.dart';
 import 'package:gc_wizard/tools/games/number_pyramid/widget/number_pyramid_solver.dart';
 import 'package:gc_wizard/tools/games/sudoku/sudoku_solver/widget/sudoku_solver.dart';
 import 'package:gc_wizard/tools/games/tower_of_hanoi/widget/tower_of_hanoi.dart';
+import 'package:gc_wizard/tools/games/verbal_arithmetic/widget/verbal_arithmetic.dart';
 import 'package:gc_wizard/tools/games/word_search/widget/word_search.dart';
 import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_selection.dart';
 import 'package:gc_wizard/tools/images_and_files/animated_image/widget/animated_image.dart';
@@ -532,7 +532,6 @@ void _initStaticToolList() {
       className(const AlcoholMass()),
       className(const ALGOL()),
       className(AlphabetValues()),
-      className(const Alphametics()),
       className(const Amsco()),
       className(const AnimatedImage()),
       className(const AnimatedImageMorseCode()),
@@ -794,6 +793,7 @@ void _initStaticToolList() {
       className(const VanitySelection()),
       className(const VariableCoordinateFormulas()),
       className(const VelocityAcceleration()),
+      className(const VerbalArithmetic()),
       className(Vigenere()),
       className(const VigenereBreaker()),
       className(const VisualCryptography()),

@@ -159,13 +159,6 @@ class Helper {
 }
 
 
-
-// class Tuple2<T1, T2> {
-//   final T1 item1;
-//   final T2 item2;
-//   Tuple2(this.item1, this.item2);
-// }
-
 extension GroupByExtension<E> on Iterable<E> {
   Map<K, List<E>> groupBy<K>(K Function(E) keyFunction) {
     var map = <K, List<E>>{};
@@ -183,26 +176,39 @@ class Formula {
   late Expression exp;
   late List<Token> token;
   bool onlyAddition = false;
+  bool singleLetter = false;
   Set<String> usedMembers = <String>{};
+  Set<String> leadingLetters = <String>{};
 
+  Formula(String equation, {this.singleLetter = false}) {
+    formula = equation.toUpperCase();
+    if (singleLetter) {
+      // Extract all letters and determine the leading letters
+      for (var token in formula.split(RegExp(r'[^A-Z]'))) {
+        if (token.isNotEmpty) {
+          usedMembers.addAll(token.split(''));
+          leadingLetters.add(token[0]);
+        }
+      }
+    } else {
+      token = parser.lex.tokenize(formula);
+      exp = parser.parse(formula);
 
-  Formula(String equation) {
-    formula = equation;
-    token = parser.lex.tokenize(formula);
-    exp = parser.parse(formula);
-
-    print(token.where((t) => t.type == TokenType.VAR).length);
-    // Funktion, um Variablen aus einem Ausdruck zu extrahieren
-  usedMembers = token.where((t) => t.type == TokenType.VAR).map((t) => t.text).toSet() ;
-    print(usedMembers);
-    if (usedMembers.length == 1) {
-      var exp = parser.parse(formula);
-      Expression expDerived = exp.derive(usedMembers.first);
-      print(usedMembers.first + ' ' + expDerived.toString());
-      print(usedMembers.first + ' ' + expDerived.simplify().toString());
-      final context = ContextModel();
-      print(usedMembers.first + ' ' + expDerived.evaluate(EvaluationType.REAL, context).toString());
+      print(token
+          .where((t) => t.type == TokenType.VAR)
+          .length);
+      // Funktion, um Variablen aus einem Ausdruck zu extrahieren
+      usedMembers = token.where((t) => t.type == TokenType.VAR).map((t) => t.text).toSet();
     }
+    print(usedMembers);
+    // if (usedMembers.length == 1) {
+    //   var exp = parser.parse(formula);
+    //   Expression expDerived = exp.derive(usedMembers.first);
+    //   print(usedMembers.first + ' ' + expDerived.toString());
+    //   print(usedMembers.first + ' ' + expDerived.simplify().toString());
+    //   final context = ContextModel();
+    //   print(usedMembers.first + ' ' + expDerived.evaluate(EvaluationType.REAL, context).toString());
+    // }
   }
 
   Iterable<int> get Values {

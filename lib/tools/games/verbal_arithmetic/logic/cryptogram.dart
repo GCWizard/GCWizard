@@ -20,14 +20,14 @@ Future<SymbolArithmeticOutput?> solveCryptogramAsync(GCWAsyncExecuterParameters 
   return output;
 }
 
-Future<SymbolArithmeticOutput?> solveCryptogram(List<String> formulas, {SendPort? sendAsyncPort}) async {
+SymbolArithmeticOutput? solveCryptogram(List<String> formulas, {SendPort? sendAsyncPort}) {
   var _formulas = formulas.map((formula) => Formula(formula)).toList();
   return _solveCryptogram(_formulas, sendAsyncPort);
 }
 
 
 /// Funktion, die versucht, die Gleichungen zu lösen.
-Future<SymbolArithmeticOutput?> _solveCryptogram(List<Formula> equations, SendPort? sendAsyncPort) async {
+SymbolArithmeticOutput? _solveCryptogram(List<Formula> equations, SendPort? sendAsyncPort) {
   // Alle Variablen extrahieren
   final Set<String> variables = {};
   for (var equation in equations) {
