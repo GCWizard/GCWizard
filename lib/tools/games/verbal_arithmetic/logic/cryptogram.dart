@@ -1,76 +1,33 @@
+import 'dart:collection';
+import 'dart:isolate';
 import 'dart:math';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:math_expressions/math_expressions.dart';
 
 import 'helper.dart';
 
-/// Funktion, die den maximalen Wert in den Gleichungen findet
-int findMaxValueInEquations(List<Formula> equations) {
-  int maxValue = 0;
-  final constants = <int>[];
-
-  for (var equation in equations) {
-    for (var value in equation.Values) {
-      constants.add(value);
-    }
+Future<SymbolArithmeticOutput?> solveCryptogramAsync(GCWAsyncExecuterParameters jobData) async {
+  if (jobData.parameters is! SymbolArithmeticJobData) {
+    return null;
   }
-  if (constants.isNotEmpty) {
-    maxValue = max(maxValue, constants.reduce(max));
-  }
-  if (maxValue == 0) maxValue = 100;
 
-  // Suche nach numerischen Werten in den Gleichungen
-  // for (var equation in equations) {
-  //   var exp = parser.parse(equation);
-  //   final constants = <int>[];
-  //   exp.traverse((node) {
-  //     if (node is Number) {
-  //       constants.add(node.value.toInt());
-  //     }
-  //   });
-  //   if (constants.isNotEmpty) {
-  //     maxValue = max(maxValue, constants.reduce(max));
-  //   }
-  // }
+  var data = jobData.parameters as SymbolArithmeticJobData;
 
-  return maxValue;
+  var output = solveCryptogram(data.formulas, sendAsyncPort: jobData.sendAsyncPort);
+
+  if (jobData.sendAsyncPort != null) jobData.sendAsyncPort!.send(output);
+
+  return output;
 }
 
-/// Sortiert die Gleichungen so, dass die Gleichung mit den wenigsten Variablenkombinationen zuerst gelöst wird
-List<Formula> sortEquationsByVariableCombinations(List<Formula> equations, Set<String> variables, int maxValue) {
-  final parser = Parser();
-  final variableDomainSize = maxValue + 1;  // Die Anzahl möglicher Werte pro Variable (0 bis maxValue)
-
-  // Berechne das Heuristikmaß für jede Gleichung (Summe aus Variablenanzahl * Wertebereich)
-  List<MapEntry<Formula, int>> equationScores = equations.map((equation) {
-    // var exp = parser.parse(equation);
-    // var equationVariables = <String>{};
-    // equationVariables = equation.usedMembers;
-
-    // Extrahiere Variablen aus der Gleichung
-    // exp.traverse((node) {
-    //   if (node is Variable) {
-    //     equationVariables.add(node.name);
-    //   }
-    // });
-    // var regExp = RegExp(r'\w+');
-    // regExp.allMatches(equation).forEach((match) {
-    //   equationVariables.add(match.group(0)!);
-    // });
-
-    // Heuristik: Anzahl Variablen * mögliche Wertebereiche pro Variable
-    int score = equation.usedMembers.length * variableDomainSize;
-    return MapEntry(equation, score);
-  }).toList();
-
-  // Sortiere die Gleichungen nach der berechneten Heuristik (aufsteigend)
-  equationScores.sort((a, b) => a.value.compareTo(b.value));
-
-  // Gib die sortierten Gleichungen zurück
-  return equationScores.map((entry) => entry.key).toList();
+Future<SymbolArithmeticOutput?> solveCryptogram(List<String> formulas, {SendPort? sendAsyncPort}) async {
+  var _formulas = formulas.map((formula) => Formula(formula)).toList();
+  return _solveCryptogram(_formulas, sendAsyncPort);
 }
+
 
 /// Funktion, die versucht, die Gleichungen zu lösen.
-void solveCryptogram(List<Formula> equations) {
+Future<SymbolArithmeticOutput?> _solveCryptogram(List<Formula> equations, SendPort? sendAsyncPort) async {
   // Alle Variablen extrahieren
   final Set<String> variables = {};
   for (var equation in equations) {
@@ -81,11 +38,11 @@ void solveCryptogram(List<Formula> equations) {
   final variableList = variables.toList()..sort();
 
   // Automatischen Wertebereich ermitteln
-  final maxValue = findMaxValueInEquations(equations);
+  final maxValue = _findMaxValueInEquations(equations);
   final range = List.generate(maxValue + 1, (index) => index);
 
   // Sortiere die Gleichungen nach dem Heuristikmaß
-  equations = sortEquationsByVariableCombinations(equations, variables, maxValue);
+  equations = _sortEquationsByVariableCombinations(equations, variables, maxValue);
 
   // Funktion zur Evaluierung einer Gleichung mit gegebenen Variablenwerten
   bool evaluateEquations(Map<String, int> variableValues, List<Formula> equations) {
@@ -112,7 +69,7 @@ void solveCryptogram(List<Formula> equations) {
   }
 
   // Rekursive Funktion zur Suche nach Lösungen (Branch-and-Bound)
-  bool solve(Map<String, int> assignedValues, List<String> remainingVariables, List<int> availableValues) {
+  bool solve(HashMap<String, int> assignedValues, List<String> remainingVariables, List<int> availableValues) {
     // Wenn alle Variablen belegt sind, überprüfe die Gleichungen
     if (remainingVariables.isEmpty) {
       if (evaluateEquations(assignedValues, equations)) {
@@ -149,8 +106,77 @@ void solveCryptogram(List<Formula> equations) {
     return false;
   }
 
+  var mapping = HashMap<String, int>();
   // Initiale Aufruf der Lösungssuche
-  solve({}, variableList, range);
+  var result = solve(mapping, variableList, range);
+  var formulas = equations.map((formula) => formula.formula).toList();
+  return SymbolArithmeticOutput(formulas: formulas, solutions: mapping, error: '');
+}
+
+/// Funktion, die den maximalen Wert in den Gleichungen findet
+int _findMaxValueInEquations(List<Formula> equations) {
+  int maxValue = 0;
+  final constants = <int>[];
+
+  for (var equation in equations) {
+    for (var value in equation.Values) {
+      constants.add(value);
+    }
+  }
+  if (constants.isNotEmpty) {
+    maxValue = max(maxValue, constants.reduce(max));
+  }
+  if (maxValue == 0) maxValue = 100;
+
+  // Suche nach numerischen Werten in den Gleichungen
+  // for (var equation in equations) {
+  //   var exp = parser.parse(equation);
+  //   final constants = <int>[];
+  //   exp.traverse((node) {
+  //     if (node is Number) {
+  //       constants.add(node.value.toInt());
+  //     }
+  //   });
+  //   if (constants.isNotEmpty) {
+  //     maxValue = max(maxValue, constants.reduce(max));
+  //   }
+  // }
+
+  return maxValue;
+}
+
+/// Sortiert die Gleichungen so, dass die Gleichung mit den wenigsten Variablenkombinationen zuerst gelöst wird
+List<Formula> _sortEquationsByVariableCombinations(List<Formula> equations, Set<String> variables, int maxValue) {
+  final parser = Parser();
+  final variableDomainSize = maxValue + 1;  // Die Anzahl möglicher Werte pro Variable (0 bis maxValue)
+
+  // Berechne das Heuristikmaß für jede Gleichung (Summe aus Variablenanzahl * Wertebereich)
+  List<MapEntry<Formula, int>> equationScores = equations.map((equation) {
+    // var exp = parser.parse(equation);
+    // var equationVariables = <String>{};
+    // equationVariables = equation.usedMembers;
+
+    // Extrahiere Variablen aus der Gleichung
+    // exp.traverse((node) {
+    //   if (node is Variable) {
+    //     equationVariables.add(node.name);
+    //   }
+    // });
+    // var regExp = RegExp(r'\w+');
+    // regExp.allMatches(equation).forEach((match) {
+    //   equationVariables.add(match.group(0)!);
+    // });
+
+    // Heuristik: Anzahl Variablen * mögliche Wertebereiche pro Variable
+    int score = equation.usedMembers.length * variableDomainSize;
+    return MapEntry(equation, score);
+  }).toList();
+
+  // Sortiere die Gleichungen nach der berechneten Heuristik (aufsteigend)
+  equationScores.sort((a, b) => a.value.compareTo(b.value));
+
+  // Gib die sortierten Gleichungen zurück
+  return equationScores.map((entry) => entry.key).toList();
 }
 
 void main() {
@@ -192,10 +218,70 @@ void main() {
   // // Manuelle Übergabe der Variablenliste
   // List<String> variables = ['A', 'B', 'C', 'D'];
 
-  var _equations = equations.map((equation) => Formula(equation)).toList();
+  // var _equations = equations.map((equation) => Formula(equation)).toList();
 
   var startTime = DateTime.now();
   // Lösen
-  solveCryptogram(_equations);
+  solveCryptogram(equations);
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 }
+
+// import 'package:math_expressions/math_expressions.dart';
+//
+// void main() {
+//   // Beispiel: Lösen des Systems:
+//   // A * B = 1428
+//   // C - D = 12
+//   // A * C = 840
+//   // B - D = 33
+//
+//   // Wir versuchen, das System numerisch zu lösen:
+//   double A = 0, B = 0, C = 0, D = 0;
+//   double tolerance = 0.0001; // Toleranz für die Lösung
+//   double learningRate = 0.01; // Lernrate für die numerische Lösung
+//
+//   // Startwerte für die Variablen
+//   A = 10;
+//   B = 10;
+//   C = 10;
+//   D = 10;
+//
+//   // Hilfsfunktion zur Berechnung des Fehlers
+//   double error() {
+//     double eq1 = A * B - 1428;
+//     double eq2 = C - D - 12;
+//     double eq3 = A * C - 840;
+//     double eq4 = B - D - 33;
+//
+//     // Fehler ist die Summe der Quadrate der Abweichungen
+//     return eq1 * eq1 + eq2 * eq2 + eq3 * eq3 + eq4 * eq4;
+//   }
+//
+//   // Iterativer Ansatz (Gradientenabstieg)
+//   while (error() > tolerance) {
+//     // Berechne die Ableitungen (Gradienten) für jede Gleichung
+//     double eq1 = A * B - 1428;
+//     double eq2 = C - D - 12;
+//     double eq3 = A * C - 840;
+//     double eq4 = B - D - 33;
+//
+//     // Berechne die partiellen Ableitungen (Zahlenbeispiel)
+//     double dA = B * eq1 + C * eq3;
+//     double dB = A * eq1 + eq4;
+//     double dC = A * eq3 - eq2;
+//     double dD = eq2 + eq4;
+//
+//     // Update der Werte durch Subtraktion der Lernrate * Ableitung
+//     A -= learningRate * dA;
+//     B -= learningRate * dB;
+//     C -= learningRate * dC;
+//     D -= learningRate * dD;
+//
+//     // Debug-Ausgabe
+//     print("A: $A, B: $B, C: $C, D: $D, Fehler: ${error()}");
+//   }
+//
+//   // Endergebnis
+//   print("Lösung: A = $A, B = $B, C = $C, D = $D");
+// }
+

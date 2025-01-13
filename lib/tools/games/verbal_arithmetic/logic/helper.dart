@@ -1,8 +1,31 @@
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:math';
 
 import 'package:gc_wizard/utils/json_utils.dart';
 import 'package:math_expressions/math_expressions.dart';
+
+class SymbolArithmeticJobData {
+  final List<String> formulas;
+  final Map<String, String> substitutions;
+
+  SymbolArithmeticJobData({
+    required this.formulas,
+    required this.substitutions,
+  });
+}
+
+class SymbolArithmeticOutput {
+  final List<String> formulas;
+  final HashMap<String, int>? solutions;
+  final String error;
+
+  SymbolArithmeticOutput({
+    required this.formulas,
+    required this.solutions,
+    required this.error,
+  });
+}
 
 const Map<String, String> operatorList = {
   '+':'+',

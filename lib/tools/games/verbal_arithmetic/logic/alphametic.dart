@@ -1,85 +1,82 @@
 import 'dart:collection';
+import 'dart:isolate';
 import 'dart:math';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/helper.dart';
+import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:math_expressions/math_expressions.dart';
 
-class SymbolArithmeticJobData {
-  final List<String> formulas;
-  final Map<String, String> substitutions;
-
-  SymbolArithmeticJobData({
-    required this.formulas,
-    required this.substitutions,
-  });
-}
-
-class SymbolArithmeticOutput {
-  final List<String> formulas;
-  final List<Map<String, String>> solutions;
-  final bool error;
-
-  SymbolArithmeticOutput({
-    required this.formulas,
-    required this.solutions,
-    required this.error,
-  });
-}
-
-// Funktion, die Alphametic-Rätsel löst
-HashMap<String, int>? solveAlphametic(Formula formula) {
-  var letters = <String>{};
-  var leadingLetters = <String>{};
-
-  // Extrahiere alle Buchstaben und bestimme die führenden Buchstaben
-  for (var token in formula.formula.split(RegExp(r'[^A-Z]'))) {
-    if (token.isNotEmpty) {
-      // letters.addAll(token.split(''));
-      // if (leadingLetters.isEmpty || leadingLetters.length == token.length) {
-      //   leadingLetters.add(token[0]);
-      // }
-      letters.addAll(token.split(''));
-      leadingLetters.add(token[0]); // Alle führenden Buchstaben speichern
-
-    }
-  }
-
-  // Prüfen, ob zu viele Buchstaben vorhanden sind (maximal 10)
-  if (letters.length > 10) {
-    print("Zu viele verschiedene Buchstaben, um eine Lösung zu finden.");
+Future<SymbolArithmeticOutput?> solveAlphameticsAsync(GCWAsyncExecuterParameters jobData) async {
+  if (jobData.parameters is! SymbolArithmeticJobData) {
     return null;
   }
 
-  // Liste der Buchstaben
-  var letterList = letters.toList();
+  var data = jobData.parameters as SymbolArithmeticJobData;
 
-  // Berechnung der Anzahl der möglichen Permutationen
-  var totalPermutations = _factorial(10) ~/ _factorial(10 - letterList.length);
-  print("Gesamtanzahl der Permutationen: $totalPermutations");
+  var output = solveAlphametic(data.formulas.first, sendAsyncPort: jobData.sendAsyncPort);
 
-  // Generiere Permutationen und evaluiere jede Kombination
-  return _permuteAndEvaluate(letterList, formula.formula, leadingLetters, totalPermutations);
+  if (jobData.sendAsyncPort != null) jobData.sendAsyncPort!.send(output);
+
+  return output;
 }
 
-// Funktion zum Berechnen der Fakultät
+Future<SymbolArithmeticOutput?> solveAlphametic(String formula, {SendPort? sendAsyncPort}) async {
+  return _solveAlphametic(Formula(formula), sendAsyncPort: sendAsyncPort);
+}
+
+// Funktion, die Alphametic-Rätsel löst
+Future<SymbolArithmeticOutput?> _solveAlphametic(Formula formula, {SendPort? sendAsyncPort}) async {
+  var letters = <String>{};
+  var leadingLetters = <String>{};
+
+  // Extract all letters and determine the leading letters
+  for (var token in formula.formula.split(RegExp(r'[^A-Z]'))) {
+    if (token.isNotEmpty) {
+      letters.addAll(token.split(''));
+      leadingLetters.add(token[0]);
+    }
+  }
+
+  // Check if there are too many letters (maximum 10)
+  if (letters.length > 10) {
+    // print("Zu viele verschiedene Buchstaben, um eine Lösung zu finden.");
+    return SymbolArithmeticOutput(formulas: [], solutions: null, error: 'TooManyLetters');
+  }
+
+  var letterList = letters.toList();
+
+  // Calculating the number of possible permutations
+  var totalPermutations = _factorial(10) ~/ _factorial(10 - letterList.length);
+  // print("Gesamtanzahl der Permutationen: $totalPermutations");
+
+  // Generate permutations and evaluate each combination
+  var result = _permuteAndEvaluate(letterList, formula.formula, leadingLetters, totalPermutations, sendAsyncPort);
+
+  return SymbolArithmeticOutput(formulas: [formula.formula], solutions: result, error: '');
+}
+
+// Function for calculating the factorial
 int _factorial(int n) {
   if (n <= 1) return 1;
   return n * _factorial(n - 1);
 }
 
 // Funktion zum Generieren von Permutationen und gleichzeitiger Auswertung
-HashMap<String, int>? _permuteAndEvaluate(List<String> letters, String formula, Set<String> leadingLetters, int totalPermutations) {
+HashMap<String, int>? _permuteAndEvaluate(List<String> letters, String formula, Set<String> leadingLetters,
+    int totalPermutations, SendPort? sendAsyncPort) {
   var availableDigits = List.generate(10, (i) => i);
   var allPermutations = _generatePermutations(letters.length, availableDigits);
-  int count = 0;
+  int progress = 0;
   int stepSize  = max(totalPermutations ~/ 100, 1);
 
   for (var perm in allPermutations) {
-    count++;
+    progress++;
 
     // progress bar
-    if (count % stepSize == 0) {
-      var progress = (count / totalPermutations * 100).toStringAsFixed(2);
+    if (sendAsyncPort != null && progress % stepSize == 0) {
+      // var progress = (count / totalPermutations * 100).toStringAsFixed(2);
       // print("Fortschritt: $progress%");
+      sendAsyncPort.send(DoubleText(PROGRESS, progress / totalPermutations));
     }
 
     var mapping = HashMap<String, int>();
@@ -182,28 +179,28 @@ num eval(String expression) {
 void main() {
   var startTime = DateTime.now();
   // Beispiel: SEND + MORE = MONEY
-  solveAlphametic(Formula("SEND+MORE=MONEY"));
+  solveAlphametic("SEND+MORE=MONEY");
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 
   startTime = DateTime.now();
   // Beispiel: ELEVEN + NINE + FIVE + FIVE = THIRTY
-  solveAlphametic(Formula("ELEVEN+NINE+FIVE+FIVE=THIRTY"));
+  solveAlphametic("ELEVEN+NINE+FIVE+FIVE=THIRTY");
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 
   startTime = DateTime.now();
   // Beispiel: ENIGMA / M = TIMES
-  solveAlphametic(Formula("ENIGMA/M=TIMES"));
+  solveAlphametic("ENIGMA/M=TIMES");
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 
   startTime = DateTime.now();
   // Beispiel: "BASE + BALL = GAMES
-  solveAlphametic(Formula("BASE + BALL = GAMES"));
+  solveAlphametic("BASE + BALL = GAMES");
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 
   startTime = DateTime.now();
   // Beispiel: THIS + A + FIRE... (langes Beispiel)
-  solveAlphametic(Formula(
-      "THIS+A+FIRE+THEREFORE+FOR+ALL+HISTORIES+I+TELL+A+TALE+THAT+FALSIFIES+ITS+TITLE+TIS+A+LIE+THE+TALE+OF+THE+LAST+FIRE+HORSES+LATE+AFTER+THE+FIRST+FATHERS+FORESEE+THE+HORRORS+THE+LAST+FREE+TROLL+TERRIFIES+THE+HORSES+OF+FIRE+THE+TROLL+RESTS+AT+THE+HOLE+OF+LOSSES+IT+IS+THERE+THAT+SHE+STORES+ROLES+OF+LEATHERS+AFTER+SHE+SATISFIES+HER+HATE+OFF+THOSE+FEARS+A+TASTE+RISES+AS+SHE+HEARS+THE+LEAST+FAR+HORSE+THOSE+FAST+HORSES+THAT+FIRST+HEAR+THE+TROLL+FLEE+OFF+TO+THE+FOREST+THE+HORSES+THAT+ALERTS+RAISE+THE+STARES+OF+THE+OTHERS+AS+THE+TROLL+ASSAILS+AT+THE+TOTAL+SHIFT+HER+TEETH+TEAR+HOOF+OFF+TORSO+AS+THE+LAST+HORSE+FORFEITS+ITS+LIFE+THE+FIRST+FATHERS+HEAR+OF+THE+HORRORS+THEIR+FEARS+THAT+THE+FIRES+FOR+THEIR+FEASTS+ARREST+AS+THE+FIRST+FATHERS+RESETTLE+THE+LAST+OF+THE+FIRE+HORSES+THE+LAST+TROLL+HARASSES+THE+FOREST+HEART+FREE+AT+LAST+OF+THE+LAST+TROLL+ALL+OFFER+THEIR+FIRE+HEAT+TO+THE+ASSISTERS+FAR+OFF+THE+TROLL+FASTS+ITS+LIFE+SHORTER+AS+STARS+RISE+THE+HORSES+REST+SAFE+AFTER+ALL+SHARE+HOT+FISH+AS+THEIR+AFFILIATES+TAILOR+A+ROOFS+FOR+THEIR+SAFE=FORTRESSES"));
+  solveAlphametic(
+      "THIS+A+FIRE+THEREFORE+FOR+ALL+HISTORIES+I+TELL+A+TALE+THAT+FALSIFIES+ITS+TITLE+TIS+A+LIE+THE+TALE+OF+THE+LAST+FIRE+HORSES+LATE+AFTER+THE+FIRST+FATHERS+FORESEE+THE+HORRORS+THE+LAST+FREE+TROLL+TERRIFIES+THE+HORSES+OF+FIRE+THE+TROLL+RESTS+AT+THE+HOLE+OF+LOSSES+IT+IS+THERE+THAT+SHE+STORES+ROLES+OF+LEATHERS+AFTER+SHE+SATISFIES+HER+HATE+OFF+THOSE+FEARS+A+TASTE+RISES+AS+SHE+HEARS+THE+LEAST+FAR+HORSE+THOSE+FAST+HORSES+THAT+FIRST+HEAR+THE+TROLL+FLEE+OFF+TO+THE+FOREST+THE+HORSES+THAT+ALERTS+RAISE+THE+STARES+OF+THE+OTHERS+AS+THE+TROLL+ASSAILS+AT+THE+TOTAL+SHIFT+HER+TEETH+TEAR+HOOF+OFF+TORSO+AS+THE+LAST+HORSE+FORFEITS+ITS+LIFE+THE+FIRST+FATHERS+HEAR+OF+THE+HORRORS+THEIR+FEARS+THAT+THE+FIRES+FOR+THEIR+FEASTS+ARREST+AS+THE+FIRST+FATHERS+RESETTLE+THE+LAST+OF+THE+FIRE+HORSES+THE+LAST+TROLL+HARASSES+THE+FOREST+HEART+FREE+AT+LAST+OF+THE+LAST+TROLL+ALL+OFFER+THEIR+FIRE+HEAT+TO+THE+ASSISTERS+FAR+OFF+THE+TROLL+FASTS+ITS+LIFE+SHORTER+AS+STARS+RISE+THE+HORSES+REST+SAFE+AFTER+ALL+SHARE+HOT+FISH+AS+THEIR+AFFILIATES+TAILOR+A+ROOFS+FOR+THEIR+SAFE=FORTRESSES");
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 
   // Lösung gefunden: {S: 2, O: 3, N: 1, Y: 5, E: 8, M: 0, D: 7, R: 6}
