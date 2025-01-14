@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
+import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
@@ -114,17 +115,31 @@ class _HillState extends State<Hill> {
             });
           },
         ),
-        GCWTextField(
-          controller: _encodeKeyController,
-          hintText: i18n(context, 'common_key'),
-          onChanged: (text) {
-            setState(() {
-              _currentEncodeKey = text;
-            });
-          },
-        ),
-
-        ]);
+        Row(
+          children: [
+            Expanded(
+              flex: 4,
+              child: GCWTextField(
+                controller: _encodeKeyController,
+                hintText: i18n(context, 'common_key'),
+                onChanged: (text) {
+                  setState(() {
+                    _currentEncodeKey = text;
+                  });
+                },
+              ),
+            ),
+            GCWIconButton(
+                icon: Icons.auto_fix_high,
+                onPressed: () {
+                  setState(() {
+                    _currentEncodeKey = generateValidKey(_currentMatrixSize, buildAlphabet(_currentAlphabet));
+                    _encodeKeyController.text = _currentEncodeKey;
+                  });
+                }
+            ),
+        ])
+    ]);
   }
 
   Widget _buildOptions() {

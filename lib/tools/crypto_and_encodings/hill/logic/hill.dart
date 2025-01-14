@@ -138,6 +138,43 @@ List<List<double>> _getKeyMatrix(String key, int matrixSize, Map<String, String>
   return keyMatrix;
 }
 
+// Following function generates a valid key string
+String generateValidKey(int matrixSize, Map<String, String> alphabet) {
+  var key = '';
+  List<List<double>>? _matrix;
+  var values = alphabet.values.map((value) => double.parse(value)).toList();
+
+  for(var i=0; i< 10000; i++) {
+    _matrix = _generateRandomMatrix(matrixSize, values);
+    if (_validKeyMatrix(_matrix, alphabet.length)) {
+      break;
+    } else {
+      _matrix = null;
+    }
+  }
+
+  if (_matrix != null) {
+    var alphabetMap = switchMapKeyValue(alphabet);
+    for (int i = 0; i < matrixSize; i++) {
+      for (int j = 0; j < matrixSize; j++) {
+        key += _valueToChar(_matrix[i][j].round() % alphabetMap.length, alphabetMap);
+      }
+    }
+  }
+  return key;
+}
+
+List<List<double>> _generateRandomMatrix(int matrixSize, List<double> values) {
+  Random rand = Random();
+  var _matrix = List<List<double>>.generate(matrixSize, (index) => List<double>.filled(matrixSize, 0));
+  for (int i = 0; i < matrixSize; i++) {
+    for (int j = 0; j < matrixSize; j++) {
+      _matrix[i][j] = values[rand.nextInt(values.length)];
+    }
+  }
+  return _matrix;
+}
+
 String getViewKeyMatrix(String key, int matrixSize, Map<String, String> alphabet) {
   key = _removeNonAlphabetCharacters(key, alphabet);
   var keyMatrix = _getKeyMatrix(key, matrixSize, alphabet);
