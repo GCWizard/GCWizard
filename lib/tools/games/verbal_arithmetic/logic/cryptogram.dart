@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:isolate';
 import 'dart:math';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
+import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:math_expressions/math_expressions.dart';
 
 import 'helper.dart';
@@ -41,6 +42,11 @@ SymbolArithmeticOutput? _solveCryptogram(List<Formula> equations, SendPort? send
   final maxValue = _findMaxValueInEquations(equations);
   final range = List.generate(maxValue + 1, (index) => index);
 
+  // Calculating the number of possible permutations
+  int totalPermutations = factorial(max(maxValue, 1)) ~/ factorial(max(maxValue - variables.length, 1));
+  int progress = 0;
+  int stepSize  = max(totalPermutations ~/ 100, 1);
+
   // Sortiere die Gleichungen nach dem Heuristikmaß
   equations = _sortEquationsByVariableCombinations(equations, variables, maxValue);
 
@@ -73,7 +79,8 @@ SymbolArithmeticOutput? _solveCryptogram(List<Formula> equations, SendPort? send
     // Wenn alle Variablen belegt sind, überprüfe die Gleichungen
     if (remainingVariables.isEmpty) {
       if (evaluateEquations(assignedValues, equations)) {
-        print('Lösung gefunden: $assignedValues');
+        var equation = equations.first.formula;
+        print('Lösung gefunden: $equation $assignedValues');
         return true;
       }
       return false;
@@ -85,6 +92,15 @@ SymbolArithmeticOutput? _solveCryptogram(List<Formula> equations, SendPort? send
     // Werte ausprobieren (Branch-and-Bound)
     for (var value in availableValues) {
       assignedValues[variable] = value;
+
+      progress++;
+
+      // progress bar
+      if (sendAsyncPort != null && progress % stepSize == 0) {
+        // var progress = (count / totalPermutations * 100).toStringAsFixed(2);
+        // print("Fortschritt: $progress%");
+        sendAsyncPort.send(DoubleText(PROGRESS, progress / totalPermutations));
+      }
 
       // Frühzeitige Prüfung der Gültigkeit der Zuweisungen
       if (!evaluateEquations(assignedValues, equations)) {
@@ -127,20 +143,6 @@ int _findMaxValueInEquations(List<Formula> equations) {
     maxValue = max(maxValue, constants.reduce(max));
   }
   if (maxValue == 0) maxValue = 100;
-
-  // Suche nach numerischen Werten in den Gleichungen
-  // for (var equation in equations) {
-  //   var exp = parser.parse(equation);
-  //   final constants = <int>[];
-  //   exp.traverse((node) {
-  //     if (node is Number) {
-  //       constants.add(node.value.toInt());
-  //     }
-  //   });
-  //   if (constants.isNotEmpty) {
-  //     maxValue = max(maxValue, constants.reduce(max));
-  //   }
-  // }
 
   return maxValue;
 }
@@ -192,39 +194,53 @@ void main() {
     "D*B+E+C*A+F-31"
   ];
   // List<String> variables = ['A', 'B', 'C', 'D', 'E', 'F'];
-
-  // List<String> equations = [
-  // 'A+A+B+B+C+D-49',
-  // 'E+C+E+F+D+D-67',
-  // 'D+F+C+E+D+D-56',
-  // 'A+A+A+A+F+D-36',
-  // 'D+F+F+D+F+D-60',
-  // 'A+A+A+A+C+D-25',
-  // 'A+E+D+A+D+A-47',
-  // 'A+C+F+A+F+A-37',
-  // 'B+E+C+A+F+A-56',
-  // 'B+F+E+A+D+A-63',
-  // 'C+D+D+F+F+C-42',
-  // 'D+D+D+D+D+D-48',
-  // ];
-  // List<String> variables = ['A', 'B', 'C', 'D', 'E', 'F'];
-
-  // List<String> equations = [
-  // 'A*B-1428',
-  // 'C-D-12',
-  // 'A*C-840',
-  // 'B-D-33',
-  // ];
-  // // Manuelle Übergabe der Variablenliste
-  // List<String> variables = ['A', 'B', 'C', 'D'];
-
-  // var _equations = equations.map((equation) => Formula(equation)).toList();
-
   var startTime = DateTime.now();
   // Lösen
   solveCryptogram(equations);
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
+
+  equations = [
+  'A+A+B+B+C+D-49',
+  'E+C+E+F+D+D-67',
+  'D+F+C+E+D+D-56',
+  'A+A+A+A+F+D-36',
+  'D+F+F+D+F+D-60',
+  'A+A+A+A+C+D-25',
+  'A+E+D+A+D+A-47',
+  'A+C+F+A+F+A-37',
+  'B+E+C+A+F+A-56',
+  'B+F+E+A+D+A-63',
+  'C+D+D+F+F+C-42',
+  'D+D+D+D+D+D-48',
+  ];
+  // List<String> variables = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+  startTime = DateTime.now();
+  // Lösen
+  solveCryptogram(equations);
+  print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
+
+   equations = [
+  'A*B-1428',
+  'C-D-12',
+  'A*C-840',
+  'B-D-33',
+  ];
+  // // Manuelle Übergabe der Variablenliste
+  // List<String> variables = ['A', 'B', 'C', 'D'];
+
+  startTime = DateTime.now();
+  // Lösen
+  solveCryptogram(equations);
+  print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 }
+
+// Lösung gefunden: B+A*C+C*A-D-65 {F: 1, A: 4, D: 0, C: 7, E: 2, B: 9}
+// 2274ms
+// Lösung gefunden: D+D+D+D+D+D-48 {F: 12, A: 4, D: 8, C: 1, E: 19, B: 16}
+// 853ms
+// Lösung gefunden: A*B-1428 {A: 28, D: 18, C: 30, B: 51}
+// 48ms
 
 // import 'package:math_expressions/math_expressions.dart';
 //

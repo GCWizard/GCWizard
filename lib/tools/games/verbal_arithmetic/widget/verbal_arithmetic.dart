@@ -17,10 +17,10 @@ import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
 import 'package:gc_wizard/common_widgets/key_value_editor/gcw_key_value_editor.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
-import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/text_input_formatters/variablestring_textinputformatter.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/alphametic.dart';
+import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/cryptogram.dart';
 import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/helper.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 
@@ -29,6 +29,12 @@ class VerbalArithmetic extends StatefulWidget {
 
   @override
   _VerbalArithmeticState createState() => _VerbalArithmeticState();
+}
+
+enum ViewMode {
+  Alphametic,
+  SymbolMatrixTextBox,
+  SymbolMatrixGrid
 }
 
 class _VerbalArithmeticState extends State<VerbalArithmetic> {
@@ -44,15 +50,14 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
   var _currentToInput = '';
   var _currentNumberGridInput = '';
   var _currentAlphameticsInput = '';
-  var _currentMode = GCWSwitchPosition.left;
-  var _currentGridMode = GCWSwitchPosition.left;
+  var _currentMode = ViewMode.Alphametic;
 
   var _currentIdCount = 0;
   final List<KeyValueBase> _currentSubstitutions = [];
 
   int _rowCount = 2;
   int _columnCount = 2;
-  SymbolMatrix _currentMatrix = SymbolMatrix(2, 2);
+  SymbolMatrixGrid _currentMatrix = SymbolMatrixGrid(2, 2);
   List<List<TextEditingController?>> _textEditingControllerArray = [];
   bool _currentExpanded = true;
   bool _currentValuesExpanded = true;
@@ -112,20 +117,43 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        GCWTwoOptionsSwitch(
-          leftValue: 'Alphametics', //,i18n(context, 'common_row_count'),
-          rightValue: 'Grid',
-           value: _currentMode,
-           onChanged: (value) {
+        GCWDropDown<ViewMode>(
+        value: _currentMode,
+          items: [
+            GCWDropDownMenuItem(
+              value: ViewMode.Alphametic,
+              child: 'Alphametic',
+            ),
+            GCWDropDownMenuItem(
+              value: ViewMode.SymbolMatrixTextBox,
+              child: 'SymbolMatrix TextBox',
+            ),
+            GCWDropDownMenuItem(
+              value: ViewMode.SymbolMatrixGrid,
+              child: 'SymbolMatrix Grid',
+            )
+          ],
+          onChanged: (value) {
             setState(() {
               _currentMode = value;
             });
-          },
+          }
         ),
-        _currentMode == GCWSwitchPosition.left ? _buildAlphameticsInput() : _buildNumberGridInput(),
+        _buildInput(),
+        _buildSubmitButton(),
         _buildOutput()
-      ],
-    );
+      ]);
+  }
+
+  Widget _buildInput() {
+    switch (_currentMode) {
+      case ViewMode.Alphametic:
+        return _buildAlphameticsInput();
+      case ViewMode.SymbolMatrixTextBox:
+        return _buildNumberGridTextboxInput();
+      case ViewMode.SymbolMatrixGrid:
+        return _buildNumberGridGridInput();
+    }
   }
 
   Widget _buildAlphameticsInput() {
@@ -140,28 +168,10 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
             });
           }
         ),
-        _buildSubmitButton(),
       ],
     );
   }
 
-  Widget _buildNumberGridInput() {
-    return Column(
-      children: <Widget>[
-        GCWTwoOptionsSwitch(
-          leftValue: 'TextBox', //,i18n(context, 'common_row_count'),
-          rightValue: 'Grid',
-          value: _currentGridMode,
-          onChanged: (value) {
-            setState(() {
-              _currentGridMode = value;
-            });
-          },
-        ),
-        _currentGridMode == GCWSwitchPosition.left ? _buildNumberGridTextboxInput() : _buildNumberGridGridInput(),
-      ]
-    );
-  }
 
   Widget _buildNumberGridTextboxInput() {
     return Column(
@@ -243,19 +253,12 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
           child: _buildTable(_rowCount, _columnCount),
         ),
         _buildVariablesEditor(),
-        _buildSubmitButton(),
+
         GCWIconButton(
+          size: IconButtonSize.SMALL,
+          icon: Icons.auto_fix_high,
           onPressed: () {
-            var valid = _currentMatrix.isValidMatrix();
-            print(valid.toString());
-            if (valid) {
-              for(var y = 0; y < _currentMatrix.getRowsCount()-2; y += 2){
-                print(_currentMatrix.buildRowFormula(y));
-              }
-              for(var x = 0; x < _currentMatrix.getColumnsCount()-2; x += 2){
-                print(_currentMatrix.buildColumnFormula(x));
-              }
-            }
+            var formulas = _currentMatrix.buildFormulas();
           },
         ),
       ],
@@ -304,18 +307,33 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
       builder: (context) {
         return Center(
           child: SizedBox(
-            height: 220,
-            width: 150,
-            child: GCWAsyncExecuter<SymbolArithmeticOutput?>(
-              isolatedFunction: solveAlphameticsAsync,
-              parameter: _buildJobData,
-              onReady: (data) => _showOutput(data),
-              isOverlay: true,
-            ),
+            height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
+            width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
+            child: asyncExecuter(),
           ),
         );
       },
     );
+  }
+
+  GCWAsyncExecuter<SymbolArithmeticOutput?> asyncExecuter() {
+    switch (_currentMode) {
+      case ViewMode.Alphametic:
+        return GCWAsyncExecuter<SymbolArithmeticOutput?>(
+          isolatedFunction: solveAlphameticsAsync,
+          parameter: _buildJobData,
+          onReady: (data) => _showOutput(data),
+          isOverlay: true,
+          );
+      case ViewMode.SymbolMatrixTextBox:
+      case ViewMode.SymbolMatrixGrid:
+        return GCWAsyncExecuter<SymbolArithmeticOutput?>(
+          isolatedFunction: solveCryptogramAsync,
+          parameter: _buildJobData,
+          onReady: (data) => _showOutput(data),
+          isOverlay: true,
+        );
+    }
   }
 
   Widget _buildSubmitButton() {
@@ -328,11 +346,11 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
 
   void _parseClipboard(String text) {
     setState(() {
-      var matrix = SymbolMatrix.fromJson(text);
+      var matrix = SymbolMatrixGrid.fromJson(text);
       if (matrix == null) {
         _rowCount = 2;
         _columnCount = 2;
-        _currentMatrix = SymbolMatrix(_rowCount, _columnCount);
+        _currentMatrix = SymbolMatrixGrid(_rowCount, _columnCount);
       } else {
         _currentMatrix = matrix;
         _rowCount = matrix.rowCount;
@@ -443,7 +461,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
   }
 
   void _resizeMatrix() {
-    _currentMatrix = SymbolMatrix(_rowCount, _columnCount, oldMatrix: _currentMatrix);
+    _currentMatrix = SymbolMatrixGrid(_rowCount, _columnCount, oldMatrix: _currentMatrix);
     _buildtextEditingControllerArray(_rowCount, _columnCount);
   }
 
@@ -461,33 +479,24 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     return _substitutions;
   }
 
-  List<String>? _getFormulas() {
-    if (!_currentMatrix.isValidMatrix()) return null;
-    var formulas = <String>[];
-    for(var y = 0; y < _currentMatrix.getRowsCount()-2; y+=2) {
-      formulas.add(_currentMatrix.buildRowFormula(y));
-    }
-
-    for(var x = 0; x < _currentMatrix.getColumnsCount()-2; x+=2) {
-      formulas.add(_currentMatrix.buildColumnFormula(x));
-    }
-    return formulas;
-  }
 
   Future<GCWAsyncExecuterParameters?> _buildJobData() async {
-    // _currentOutput = '';
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   setState(() {});
-    // });
-    List<String>? _formulas;
-    if (_currentMode == GCWSwitchPosition.left) {
-      if (_currentAlphameticsInput.isEmpty) return null;
-      _formulas = [_currentAlphameticsInput];
-    } else {
-      var _substitutions = _getSubstitutions();
-      _formulas = _getFormulas();
+
+    List<String> _formulas;
+    switch (_currentMode) {
+      case ViewMode.Alphametic:
+        if (_currentAlphameticsInput.isEmpty) return null;
+        _formulas = [_currentAlphameticsInput];
+        break;
+      case ViewMode.SymbolMatrixTextBox:
+        _formulas = SymbolMatrixString.buildFormulas(_currentNumberGridInput);
+      case ViewMode.SymbolMatrixGrid:
+        var _substitutions = _getSubstitutions();
+        _formulas = _currentMatrix.buildFormulas();
+        break;
     }
-    if (_formulas == null) return null;
+
+    if (_formulas.isEmpty) return null;
 
     return GCWAsyncExecuterParameters(SymbolArithmeticJobData(
         formulas: _formulas,

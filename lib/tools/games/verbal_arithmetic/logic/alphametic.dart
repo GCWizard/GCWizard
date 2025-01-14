@@ -45,27 +45,25 @@ SymbolArithmeticOutput? _solveAlphametic(Formula formula, {SendPort? sendAsyncPo
 
   var letterList = formula.usedMembers.toList();
 
-  // Calculating the number of possible permutations
-  var totalPermutations = _factorial(10) ~/ _factorial(10 - letterList.length);
+
   // print("Gesamtanzahl der Permutationen: $totalPermutations");
 
   // Generate permutations and evaluate each combination
-  var result = _permuteAndEvaluate(letterList, formula.formula, formula.leadingLetters, totalPermutations, sendAsyncPort);
+  var result = _permuteAndEvaluate(letterList, formula.formula, formula.leadingLetters, sendAsyncPort);
 
   return SymbolArithmeticOutput(formulas: [formula.formula], solutions: result, error: '');
 }
 
-// Function for calculating the factorial
-int _factorial(int n) {
-  if (n <= 1) return 1;
-  return n * _factorial(n - 1);
-}
+
 
 // Funktion zum Generieren von Permutationen und gleichzeitiger Auswertung
 HashMap<String, int>? _permuteAndEvaluate(List<String> letters, String formula, Set<String> leadingLetters,
-    int totalPermutations, SendPort? sendAsyncPort) {
+     SendPort? sendAsyncPort) {
   var availableDigits = List.generate(10, (i) => i);
   var allPermutations = _generatePermutations(letters.length, availableDigits);
+
+  // Calculating the number of possible permutations
+  int totalPermutations = factorial(10) ~/ factorial(10 - letters.length);
   int progress = 0;
   int stepSize  = max(totalPermutations ~/ 100, 1);
 

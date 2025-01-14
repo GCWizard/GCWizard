@@ -34,6 +34,12 @@ const Map<String, String> operatorList = {
   '÷':'/'
 };
 
+// Function for calculating the factorial
+int factorial(int n) {
+  if (n <= 1) return 1;
+  return n * factorial(n - 1);
+}
+
 class Helper {
   static Iterable<List<int>> iterativeHeapPermute(List<int> A) sync* {
     var n = A.length;
@@ -194,13 +200,13 @@ class Formula {
       token = parser.lex.tokenize(formula);
       exp = parser.parse(formula);
 
-      print(token
-          .where((t) => t.type == TokenType.VAR)
-          .length);
+      // print(token
+      //     .where((t) => t.type == TokenType.VAR)
+      //     .length);
       // Funktion, um Variablen aus einem Ausdruck zu extrahieren
       usedMembers = token.where((t) => t.type == TokenType.VAR).map((t) => t.text).toSet();
     }
-    print(usedMembers);
+    // print(usedMembers);
     // if (usedMembers.length == 1) {
     //   var exp = parser.parse(formula);
     //   Expression expDerived = exp.derive(usedMembers.first);
@@ -216,14 +222,23 @@ class Formula {
   }
 }
 
+class SymbolMatrixString {
+  static List<String> buildFormulas(String input) {
+    if (input.trim().isEmpty) return [];
+    var formulas = const LineSplitter().convert(input);
+    formulas.removeWhere((formula) => formula.trim().isEmpty);
+    formulas = formulas.map((formula) => formula.trim()).toList();
+    return formulas;
+  }
+}
 
-class SymbolMatrix {
+class SymbolMatrixGrid {
   List<List<String>> matrix = [];
   Map<String, String> substitutions = {};
   late int columnCount;
   late int rowCount;
 
-  SymbolMatrix (this.rowCount, this.columnCount, {SymbolMatrix? oldMatrix}) {
+  SymbolMatrixGrid (this.rowCount, this.columnCount, {SymbolMatrixGrid? oldMatrix}) {
     matrix = <List<String>>[];
     for(var y = 0; y < getRowsCount(); y++) {
       matrix.add(List<String>.filled(getColumnsCount(), ''));
@@ -328,6 +343,19 @@ class SymbolMatrix {
     return formula + ')';
   }
 
+  List<String> buildFormulas() {
+    var formulas = <String>[];
+
+    if (!isValidMatrix()) return formulas;
+    for(var y = 0; y < getRowsCount()-2; y += 2){
+      formulas.add(buildRowFormula(y));
+    }
+    for(var x = 0; x < getColumnsCount()-2; x += 2){
+      formulas.add(buildColumnFormula(x));
+    }
+    return formulas;
+  }
+
   String toJson() {
     var list = <String>[];
     for(var y = 0; y < matrix.length; y++) {
@@ -355,11 +383,11 @@ class SymbolMatrix {
   }
 
 
-  static SymbolMatrix? fromJson(String text) {
+  static SymbolMatrixGrid? fromJson(String text) {
     if (text.isEmpty) return null;
     var json = asJsonMap(jsonDecode(text));
 
-    SymbolMatrix matrix;
+    SymbolMatrixGrid matrix;
     // var rowCount = toIntOrNull(json['rows']);
     // var columnCount = toIntOrNull(json['columns']);
     // var values = asJsonMap(json['values']);
