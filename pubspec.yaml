@@ -176,7 +176,11 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/cyrillic_numbers/
     - lib/tools/symbol_tables/_common/assets/daedric/
     - lib/tools/symbol_tables/_common/assets/dagger/
-    - lib/tools/symbol_tables/_common/assets/dancing_men/
+    - lib/tools/symbol_tables/_common/assets/dancing_men_original/
+    - lib/tools/symbol_tables/_common/assets/dancing_men_v1/
+    - lib/tools/symbol_tables/_common/assets/dancing_men_v2/
+    - lib/tools/symbol_tables/_common/assets/dancing_men_v3/
+    - lib/tools/symbol_tables/_common/assets/dancing_men_v4/
     - lib/tools/symbol_tables/_common/assets/deafblind/
     - lib/tools/symbol_tables/_common/assets/devanagari_numerals/
     - lib/tools/symbol_tables/_common/assets/dinotopia/

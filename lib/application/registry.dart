@@ -5776,23 +5776,56 @@ void initializeRegistry(BuildContext context) {
           sourceUrl: 'https://web.archive.org/web/20110714122346/http://www.mouserfonts.com/Files/baitz/dagger.zip',
           customComment: 'License text in source file')
     ]),
-    GCWSymbolTableTool(symbolKey: 'dancing_men', symbolSearchStrings: const [
+    GCWSymbolTableTool(symbolKey: 'dancing_men_original', symbolSearchStrings: const [
       'symbol_dancing_men',
     ], licenses: [
-      ToolLicenseOnlineBook(
+      ToolLicenseOnlineArticle(
           context: context,
-          author: 'Arthur Conan Doyle',
-          title: 'The Return of Sherlock Holmes - Chapter III: The Adventure of the Dancing Men',
-          year: 1905,
+          author: 'Arthur Conan Doyle Encyclopedia - ',
+          title: 'Dancing Men Alphabet',
           sourceUrl:
           'https://web.archive.org/web/20230310063322/https://en.wikisource.org/wiki/The_Return_of_Sherlock_Holmes/Chapter_3'),
-      ToolLicenseOnlineBook(
+
+    ]),
+    GCWSymbolTableTool(symbolKey: 'dancing_men_v1', symbolSearchStrings: const [
+      'symbol_dancing_men',
+    ], licenses: [
+      ToolLicenseFont(
           context: context,
-          author: 'en.wikipedia.org and contributors',
-          title: 'The Adventure of the Dancing Men',
+          author: 'Gutenberg Labo',
+          title: 'Dancing Men',
+          year: 2011,
           sourceUrl:
-          'https://web.archive.org/web/20210108115120/https://en.wikipedia.org/wiki/The_Adventure_of_the_Dancing_Men',
-          licenseType: ToolLicenseType.CCBYSA4),
+          'https://web.archive.org/web/20210923113944/https://www.oocities.org/timessquare/4965/sffont.html#dino',
+          licenseType: ToolLicenseType.FREE_TO_USE,),
+    ]),
+    GCWSymbolTableTool(symbolKey: 'dancing_men_v2', symbolSearchStrings: const [
+      'symbol_dancing_men',
+    ], licenses: [
+      ToolLicenseFont(
+        context: context,
+        author: 'Martin Bergman',
+        title: 'Dancing Men',
+        year: 1994,
+        sourceUrl:
+        'https://web.archive.org/web/20250114205352/https://www.fontspace.com/dancingmen-font-f9653',
+        licenseType: ToolLicenseType.FREE_TO_USE,),
+    ]),
+    GCWSymbolTableTool(symbolKey: 'dancing_men_v3', symbolSearchStrings: const [
+      'symbol_dancing_men',
+    ], licenses: [
+      ToolLicenseFont(
+        context: context,
+        author: 'cwethanp',
+        title: 'Dancing Men Regular Font',
+        year: 1994,
+        sourceUrl:
+        'https://web.archive.org/web/20250114210212/https://blogfonts.com/dancing-men-regular.font',
+        licenseType: ToolLicenseType.FREE_TO_USE,)
+    ]),
+    GCWSymbolTableTool(symbolKey: 'dancing_men_v4', symbolSearchStrings: const [
+      'symbol_dancing_men',
+    ], licenses: [
       stl._toolLicenseWrixonGeheimsprachen,
     ]),
     GCWSymbolTableTool(symbolKey: 'deafblind', symbolSearchStrings: const [
