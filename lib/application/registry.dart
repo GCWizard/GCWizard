@@ -5817,10 +5817,10 @@ void initializeRegistry(BuildContext context) {
       ToolLicenseFont(
         context: context,
         author: 'cwethanp',
-        title: 'Dancing Men Regular Font',
-        year: 1994,
+        title: 'Dancing Men Regular',
+        year: 2010,
         sourceUrl:
-        'https://web.archive.org/web/20250114210212/https://blogfonts.com/dancing-men-regular.font',
+        'https://web.archive.org/web/20250115210209/https://de.fonts2u.com/dancing-men-regular.schriftart',
         licenseType: ToolLicenseType.FREE_TO_USE,)
     ]),
     GCWSymbolTableTool(symbolKey: 'dancing_men_v4', symbolSearchStrings: const [
