@@ -21,7 +21,11 @@ print(output);
 }
 
 SymbolArithmeticOutput? solveAlphametic(String formula, {SendPort? sendAsyncPort}) {
-  return _solveAlphametic(Formula(formula, singleLetter: true), sendAsyncPort: sendAsyncPort);
+  var _formula = Formula(formula, singleLetter: true);
+  if (!_formula.validFormula) {
+    return SymbolArithmeticOutput(formulas: [_formula], solutions: HashMap<String, int>(), error: 'InvalidFormula');
+  }
+  return _solveAlphametic(_formula, sendAsyncPort: sendAsyncPort);
 }
 
 // Funktion, die Alphametic-Rätsel löst
@@ -38,7 +42,7 @@ SymbolArithmeticOutput? _solveAlphametic(Formula formula, {SendPort? sendAsyncPo
   // Generate permutations and evaluate each combination
   var result = _permuteAndEvaluate(letterList, formula.formula, formula.leadingLetters, sendAsyncPort);
 
-  return SymbolArithmeticOutput(formulas: [formula.formula], solutions: result, error: '');
+  return SymbolArithmeticOutput(formulas: [formula], solutions: result, error: '');
 }
 
 
@@ -50,17 +54,17 @@ HashMap<String, int>? _permuteAndEvaluate(List<String> letters, String formula, 
 
   // Calculating the number of possible permutations
   int totalPermutations = _factorial(10) ~/ _factorial(10 - letters.length);
-  int progress = 0;
+  int count = 0;
   int stepSize  = max(totalPermutations ~/ 100, 1);
 
   for (var perm in allPermutations) {
 
     // progress bar
-    progress++;
-    if (sendAsyncPort != null && progress % stepSize == 0) {
+    count++;
+    if (sendAsyncPort != null && count % stepSize == 0) {
       // var progress = (count / totalPermutations * 100).toStringAsFixed(2);
       // print("Fortschritt: $progress%");
-      sendAsyncPort.send(DoubleText(PROGRESS, progress / totalPermutations));
+      sendAsyncPort.send(DoubleText(PROGRESS, count / totalPermutations));
     }
 
     var mapping = HashMap<String, int>();

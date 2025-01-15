@@ -16,7 +16,7 @@ class SymbolArithmeticJobData {
 }
 
 class SymbolArithmeticOutput {
-  final List<String> formulas;
+  final List<Formula> formulas;
   final HashMap<String, int>? solutions;
   final String error;
 
@@ -173,26 +173,36 @@ final parser = Parser();
 
 class Formula {
   late String formula;
+  late String formatedFormula;
   late Expression exp;
   late List<Token> token;
   bool onlyAddition = false;
   bool singleLetter = false;
+  bool validFormula = true;
   Set<String> usedMembers = <String>{};
   Set<String> leadingLetters = <String>{};
 
   Formula(String equation, {this.singleLetter = false}) {
     formula = equation.toUpperCase();
+    formatedFormula = formula.replaceAll(' ', '').replaceAll('==', '=');
+
     if (singleLetter) {
       // Extract all letters and determine the leading letters
-      for (var token in formula.split(RegExp(r'[^A-Z]'))) {
+      for (var token in formatedFormula.split(RegExp(r'[^A-Z]'))) {
         if (token.isNotEmpty) {
           usedMembers.addAll(token.split(''));
           leadingLetters.add(token[0]);
         }
       }
     } else {
-      token = parser.lex.tokenize(formula);
-      exp = parser.parse(formula);
+      if (formatedFormula.contains('=')) {
+        var members = formatedFormula.split('=');
+        formatedFormula = members[0] + '-(' + members[1]+ ')';
+        validFormula &= !(members.length > 2);
+      }
+
+      token = parser.lex.tokenize(formatedFormula);
+      exp = parser.parse(formatedFormula);
 
       // print(token
       //     .where((t) => t.type == TokenType.VAR)
@@ -213,6 +223,17 @@ class Formula {
 
   Iterable<int> get Values {
     return token.where((t) => t.type == TokenType.VAL).map((t) => int.parse(t.text));
+  }
+
+  String getOutput(HashMap<String, int> result) {
+    return _replaceLetters(formula, result);
+  }
+
+  String _replaceLetters(String equation, HashMap<String, int> result) {
+    for (var key in result.keys) {
+      equation = equation.replaceAll(key, result[key].toString());
+    }
+    return equation;
   }
 }
 
@@ -539,3 +560,51 @@ class PossibleValues {
   }
 }
 
+// int calculatePossibilities(int totalNumbers, int variableCount) {
+//   // Berechne Permutationen P(n, r) = n! / (n-r)!
+//   int result = 1;
+//   for (int i = 0; i < variableCount; i++) {
+//     result *= (totalNumbers - i);
+//   }
+//   return result;
+// }
+//
+// void main() {
+//   // Anzahl der möglichen Zahlen (z.B. range.length)
+//   int totalNumbers = 10; // Beispiel: 10 mögliche Zahlen
+//   // Anzahl der Variablen (z.B. variableList.length)
+//   int variableCount = 4;  // Beispiel: 4 Variablen
+//
+//   // Berechne die Anzahl der Möglichkeiten
+//   int possibilities = calculatePossibilities(totalNumbers, variableCount);
+//
+//   print("Die Anzahl der Möglichkeiten: $possibilities");
+//
+//   // Testfall mit 1429 möglichen Lösungen
+//   int testTotalNumbers = 7;  // Beispiel: 7 mögliche Zahlen
+//   int testVariableCount = 4; // Beispiel: 4 Variablen
+//   int testPossibilities = calculatePossibilities(testTotalNumbers, testVariableCount);
+//
+//   print("Testfall - Möglichkeiten mit 4 Variablen und 1429 möglichen Lösungen: $testPossibilities");
+// }
+
+int calculatePossibilities(int totalNumbers, int variableCount) {
+  // Berechne Permutationen P(n, r) = n! / (n-r)!
+  int result = 1;
+  for (int i = 0; i < variableCount; i++) {
+    result *= (totalNumbers - i);
+  }
+  return result;
+}
+
+void main() {
+  // Anzahl der möglichen Zahlen (1429 Zahlen)
+  int totalNumbers = 1429;
+  // Anzahl der Variablen (z.B. 4 Variablen)
+  int variableCount = 4;
+
+  // Berechne die Anzahl der Möglichkeiten
+  int possibilities = calculatePossibilities(totalNumbers, variableCount);
+
+  print("Die Anzahl der Möglichkeiten mit $variableCount Variablen und $totalNumbers Zahlen: $possibilities");
+}

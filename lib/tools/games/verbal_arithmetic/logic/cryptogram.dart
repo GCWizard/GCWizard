@@ -23,6 +23,10 @@ Future<SymbolArithmeticOutput?> solveCryptogramAsync(GCWAsyncExecuterParameters 
 
 SymbolArithmeticOutput? solveCryptogram(List<String> formulas, {SendPort? sendAsyncPort}) {
   var _formulas = formulas.map((formula) => Formula(formula)).toList();
+  var notValid = _formulas.any((formula) => !formula.validFormula);
+  if (notValid) {
+    return SymbolArithmeticOutput(formulas: _formulas, solutions: HashMap<String, int>(), error: 'InvalidFormula');
+  }
   return _solveCryptogram(_formulas, sendAsyncPort);
 }
 
@@ -43,9 +47,13 @@ SymbolArithmeticOutput? _solveCryptogram(List<Formula> equations, SendPort? send
   final range = List.generate(maxValue + 1, (index) => index);
 
   // Calculating the number of possible permutations
-  int totalPermutations = pow((range.length + 1), variableList.length).toInt();
-  int progress = 0;
-  int stepSize  = max(totalPermutations ~/ 100, 1);
+  // int totalPermutations = pow((range.length + 1), variableList.length).toInt();
+
+  // int totalPermutations = calculatePossibilities(range.length, variableList.length);
+  // int count = 0;
+
+  // print(_factorial(10));
+  // int _totalPermutations = _factorial(range.length) ~/ _factorial((range.length - variableList.length));
 
   // Sortiere die Gleichungen nach dem Heuristikmaß
   equations = _sortEquationsByVariableCombinations(equations, variables, maxValue);
@@ -53,7 +61,6 @@ SymbolArithmeticOutput? _solveCryptogram(List<Formula> equations, SendPort? send
   // Funktion zur Evaluierung einer Gleichung mit gegebenen Variablenwerten
   bool evaluateEquations(Map<String, int> variableValues, List<Formula> equations) {
     for (var equation in equations) {
-      // var exp = parser.parse(equation);
       final context = ContextModel();
 
       // Nur gebundene Variablen in den Kontext einfügen
@@ -66,14 +73,6 @@ SymbolArithmeticOutput? _solveCryptogram(List<Formula> equations, SendPort? send
         continue;  // Überspringe diese Gleichung, bis alle Variablen belegt sind
       }
 
-      // progress bar
-      progress++;
-      if (sendAsyncPort != null && progress % stepSize == 0) {
-        // var progress = (count / totalPermutations * 100).toStringAsFixed(2);
-        // print("Fortschritt: $progress%");
-        sendAsyncPort.send(DoubleText(PROGRESS, progress / totalPermutations));
-      }
-
       // Wenn die Gleichung unter den aktuellen Werten nicht 0 ist, breche ab
       if (equation.exp.evaluate(EvaluationType.REAL, context) != 0) {
         return false;
@@ -82,13 +81,31 @@ SymbolArithmeticOutput? _solveCryptogram(List<Formula> equations, SendPort? send
     return true;
   }
 
+  // Berechne die Gesamtzahl der Möglichkeiten für die Fortschrittsanzeige
+  final totalPermutations = calculatePossibilities(range.length, variableList.length);
+  int currentCombination = 0; // Fortschrittszähler
+  int stepSize  = max(totalPermutations ~/ 100, 1);
+  int nextSendStep = stepSize;
+
+  void sendProgress() {
+    if (sendAsyncPort != null && currentCombination >= nextSendStep) {
+      // var progress = (currentCombination / totalPermutations * 100).toStringAsFixed(2);
+      // print("Fortschritt: $progress%");
+      nextSendStep += stepSize;
+      sendAsyncPort.send(DoubleText(PROGRESS, currentCombination / totalPermutations));
+    }
+  }
+
   // Rekursive Funktion zur Suche nach Lösungen (Branch-and-Bound)
   bool solve(HashMap<String, int> assignedValues, List<String> remainingVariables, List<int> availableValues) {
     // Wenn alle Variablen belegt sind, überprüfe die Gleichungen
     if (remainingVariables.isEmpty) {
+
       if (evaluateEquations(assignedValues, equations)) {
         var equation = equations.first.formula;
-        print('Lösung gefunden: $equation $assignedValues');
+        var _progress = (currentCombination / totalPermutations * 100).toStringAsFixed(2);
+        // print("Fortschritt: $_progress%");
+        print('Lösung gefunden: $equation $assignedValues $currentCombination% $totalPermutations');
         return true;
       }
       return false;
@@ -101,18 +118,14 @@ SymbolArithmeticOutput? _solveCryptogram(List<Formula> equations, SendPort? send
     for (var value in availableValues) {
       assignedValues[variable] = value;
 
-      progress++;
-
-      // progress bar
-      if (sendAsyncPort != null && progress % stepSize == 0) {
-        // var progress = (count / totalPermutations * 100).toStringAsFixed(2);
-        // print("Fortschritt: $progress%");
-        sendAsyncPort.send(DoubleText(PROGRESS, progress / totalPermutations));
-      }
+      currentCombination++; // Erhöhe den Fortschrittszähler
+      sendProgress();
 
       // Frühzeitige Prüfung der Gültigkeit der Zuweisungen
       if (!evaluateEquations(assignedValues, equations)) {
         assignedValues.remove(variable);
+        currentCombination += calculatePossibilities(range.length, variableList.length);
+        sendProgress();
         continue;
       }
 
@@ -133,8 +146,27 @@ SymbolArithmeticOutput? _solveCryptogram(List<Formula> equations, SendPort? send
   var mapping = HashMap<String, int>();
   // Initiale Aufruf der Lösungssuche
   var result = solve(mapping, variableList, range);
+  var range_length =range.length;
+  var variableList_length = variableList.length;
+  print('Keine Lösung gefunden:  $currentCombination% $totalPermutations $range_length $range_length $variableList_length');
   var formulas = equations.map((formula) => formula.formula).toList();
-  return SymbolArithmeticOutput(formulas: formulas, solutions: mapping, error: '');
+  return SymbolArithmeticOutput(formulas: equations, solutions: mapping, error: '');
+}
+
+// // Funktion zur Anzeige des Fortschritts
+// void showProgress(int current, int total) {
+//   double progress = (current / total) * 100;
+//   print('Fortschritt: ${progress.toStringAsFixed(2)}%');
+// }
+
+int calculatePossibilities(int totalNumbers, int variableCount) {
+  // // Berechne Permutationen P(n, r) = n! / (n-r)!
+  // int result = 1;
+  // for (int i = 0; i < variableCount; i++) {
+  //   result *= (totalNumbers - i);
+  // }
+  int result = pow(totalNumbers, variableCount-1).toInt();
+  return result;
 }
 
 /// Funktion, die den maximalen Wert in den Gleichungen findet
@@ -157,7 +189,7 @@ int _findMaxValueInEquations(List<Formula> equations) {
 
 /// Sortiert die Gleichungen so, dass die Gleichung mit den wenigsten Variablenkombinationen zuerst gelöst wird
 List<Formula> _sortEquationsByVariableCombinations(List<Formula> equations, Set<String> variables, int maxValue) {
-  final parser = Parser();
+  // final parser = Parser();
   final variableDomainSize = maxValue + 1;  // Die Anzahl möglicher Werte pro Variable (0 bis maxValue)
 
   // Berechne das Heuristikmaß für jede Gleichung (Summe aus Variablenanzahl * Wertebereich)

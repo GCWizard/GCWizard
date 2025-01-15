@@ -34,9 +34,9 @@ void main() {
 //
 //         var _actual = values.getOutput(equation.formula, Alphametics01.solve(equation, values)!.first);
 //         var equation = Formula(elem['input'] as String);
-        var _actual = solveAlphametic(equation);
+        var _actual = solveAlphametic(elem['input'] as String);
         if (_actual != null) {
-          var result = modifiedFormula(equation.formula, _actual);
+          var result = _actual.formulas.first.getOutput(_actual.solutions!);
           expect(result, elem['expectedOutput']);
         } else {
           expect(_actual, elem['expectedOutput']);

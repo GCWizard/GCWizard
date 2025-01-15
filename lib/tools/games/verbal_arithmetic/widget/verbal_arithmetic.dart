@@ -510,11 +510,12 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     }
     if (output.error.isNotEmpty) {
       _currentOutput = i18n(context, 'verbal_arithmetic_' + output.error.toLowerCase(),
-          ifTranslationNotExists: output.error );
-    } else if (output.solutions!.isEmpty ) {
+          ifTranslationNotExists: output.error);
+    } else if (output.solutions == null || output.solutions!.isEmpty) {
       _currentOutput =  i18n(context, 'verbal_arithmetic_solutionnotfound');
     } else {
       _currentOutput = output.solutions.toString();
+      _currentOutput += '\n' + output.formulas.map((formula) => formula.getOutput(output.solutions!)).join('\n');
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {

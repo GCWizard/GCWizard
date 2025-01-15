@@ -196,7 +196,6 @@ class PossibleValues {
     for (var key in result.keys) {
       equation = equation.replaceAll(key, result[key].toString());
     }
-
     return equation;
   }
 
