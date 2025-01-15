@@ -9,7 +9,7 @@ const int maxVal = 9;
 Parser p = Parser();
 
 // Berechnet den Wert des Ausdrucks mit den angegebenen Variablenwerten
-int evaluateExpression(String formula, Map<String, int> variables) {
+int? evaluateExpression(String formula, Map<String, int> variables) {
   Expression exp = p.parse(formula);
   ContextModel cm = ContextModel();
 
@@ -17,7 +17,7 @@ int evaluateExpression(String formula, Map<String, int> variables) {
     cm.bindVariable(Variable(varName), Number(value));
   });
 
-  return exp.evaluate(EvaluationType.REAL, cm).toInt();
+  return (exp.evaluate(EvaluationType.REAL, cm) as int?)?.toInt();
 }
 
 // Testet, ob alle Formeln für die aktuelle Variablenbelegung erfüllt sind
@@ -27,7 +27,7 @@ bool checkAllFormulas(List<String> formulas, Map<String, int> variables) {
     String expr = parts[0].trim();
     int expected = int.parse(parts[1].trim());
 
-    int result = evaluateExpression(expr, variables);
+    var result = evaluateExpression(expr, variables);
     if (result != expected) {
       return false; // Eine der Formeln wurde nicht erfüllt
     }

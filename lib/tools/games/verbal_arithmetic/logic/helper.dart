@@ -34,12 +34,6 @@ const Map<String, String> operatorList = {
   '÷':'/'
 };
 
-// Function for calculating the factorial
-int factorial(int n) {
-  if (n <= 1) return 1;
-  return n * factorial(n - 1);
-}
-
 class Helper {
   static Iterable<List<int>> iterativeHeapPermute(List<int> A) sync* {
     var n = A.length;

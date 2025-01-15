@@ -43,7 +43,7 @@ SymbolArithmeticOutput? _solveCryptogram(List<Formula> equations, SendPort? send
   final range = List.generate(maxValue + 1, (index) => index);
 
   // Calculating the number of possible permutations
-  int totalPermutations = factorial(max(maxValue, 1)) ~/ factorial(max(maxValue - variables.length, 1));
+  int totalPermutations = pow((range.length + 1), variableList.length).toInt();
   int progress = 0;
   int stepSize  = max(totalPermutations ~/ 100, 1);
 
@@ -64,6 +64,14 @@ SymbolArithmeticOutput? _solveCryptogram(List<Formula> equations, SendPort? send
       // Überprüfen, ob alle Variablen in der Gleichung definiert sind
       if (!variableValues.keys.toSet().containsAll(equation.usedMembers)) {
         continue;  // Überspringe diese Gleichung, bis alle Variablen belegt sind
+      }
+
+      // progress bar
+      progress++;
+      if (sendAsyncPort != null && progress % stepSize == 0) {
+        // var progress = (count / totalPermutations * 100).toStringAsFixed(2);
+        // print("Fortschritt: $progress%");
+        sendAsyncPort.send(DoubleText(PROGRESS, progress / totalPermutations));
       }
 
       // Wenn die Gleichung unter den aktuellen Werten nicht 0 ist, breche ab

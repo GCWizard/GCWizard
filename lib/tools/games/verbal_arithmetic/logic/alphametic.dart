@@ -26,16 +26,6 @@ SymbolArithmeticOutput? solveAlphametic(String formula, {SendPort? sendAsyncPort
 
 // Funktion, die Alphametic-Rätsel löst
 SymbolArithmeticOutput? _solveAlphametic(Formula formula, {SendPort? sendAsyncPort}) {
-  // var letters = <String>{};
-  // var leadingLetters = <String>{};
-  //
-  // // Extract all letters and determine the leading letters
-  // for (var token in formula.formula.split(RegExp(r'[^A-Z]'))) {
-  //   if (token.isNotEmpty) {
-  //     letters.addAll(token.split(''));
-  //     leadingLetters.add(token[0]);
-  //   }
-  // }
 
   // Check if there are too many letters (maximum 10)
   if (formula.usedMembers.length > 10) {
@@ -45,15 +35,11 @@ SymbolArithmeticOutput? _solveAlphametic(Formula formula, {SendPort? sendAsyncPo
 
   var letterList = formula.usedMembers.toList();
 
-
-  // print("Gesamtanzahl der Permutationen: $totalPermutations");
-
   // Generate permutations and evaluate each combination
   var result = _permuteAndEvaluate(letterList, formula.formula, formula.leadingLetters, sendAsyncPort);
 
   return SymbolArithmeticOutput(formulas: [formula.formula], solutions: result, error: '');
 }
-
 
 
 // Funktion zum Generieren von Permutationen und gleichzeitiger Auswertung
@@ -63,14 +49,14 @@ HashMap<String, int>? _permuteAndEvaluate(List<String> letters, String formula, 
   var allPermutations = _generatePermutations(letters.length, availableDigits);
 
   // Calculating the number of possible permutations
-  int totalPermutations = factorial(10) ~/ factorial(10 - letters.length);
+  int totalPermutations = _factorial(10) ~/ _factorial(10 - letters.length);
   int progress = 0;
   int stepSize  = max(totalPermutations ~/ 100, 1);
 
   for (var perm in allPermutations) {
-    progress++;
 
     // progress bar
+    progress++;
     if (sendAsyncPort != null && progress % stepSize == 0) {
       // var progress = (count / totalPermutations * 100).toStringAsFixed(2);
       // print("Fortschritt: $progress%");
@@ -97,6 +83,12 @@ HashMap<String, int>? _permuteAndEvaluate(List<String> letters, String formula, 
   // Falls keine Lösung gefunden wird
   print("Keine Lösung gefunden. $formula");
   return null;
+}
+
+// Function for calculating the factorial
+int _factorial(int n) {
+  if (n <= 1) return 1;
+  return n * _factorial(n - 1);
 }
 
 // Funktion zur Generierung aller Permutationen
