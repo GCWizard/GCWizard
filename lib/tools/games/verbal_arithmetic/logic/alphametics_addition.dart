@@ -59,13 +59,13 @@ bool __solveAlphametics(List<String> leftSide, String rightSide, List<String> le
   letters.removeAt(0);
 
   for (var digit in digits) {
-    _count++;
     if (usedDigits.contains(digit)) continue;
 
     // Vermeidung führender Nullen.
     if (digit == 0 && (leftSide.any((word) => word.startsWith(currentLetter)) || rightSide.startsWith(currentLetter))) {
       continue;
     }
+    _count++;
     _sendProgress();
 
     letterToDigit[currentLetter] = digit;
