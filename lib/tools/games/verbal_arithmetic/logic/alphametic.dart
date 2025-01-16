@@ -6,6 +6,8 @@ import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/helper.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:math_expressions/math_expressions.dart';
 
+part 'package:gc_wizard/tools/games/verbal_arithmetic/logic/alphametics_addition.dart';
+
 Future<VerbalArithmeticOutput?> solveAlphameticsAsync(GCWAsyncExecuterParameters jobData) async {
   if (jobData.parameters is! VerbalArithmeticJobData) {
     return null;
@@ -23,15 +25,22 @@ VerbalArithmeticOutput? solveAlphametic(String equation, {SendPort? sendAsyncPor
   if (!_equation.validFormula) {
     return VerbalArithmeticOutput(equations: [_equation], solutions: HashMap<String, int>(), error: 'InvalidFormula');
   }
-  return _solveAlphametic(_equation, sendAsyncPort: sendAsyncPort);
+
+  // Check if there are too many letters (maximum 10)
+  if (_equation.usedMembers.length > 10) {
+    return VerbalArithmeticOutput(equations: [], solutions: null, error: 'TooManyLetters');
+  }
+
+  if (_equation.onlyAddition) {
+    return _solveAlphameticAdd(_equation, sendAsyncPort: sendAsyncPort);
+  } else {
+    return _solveAlphametic(_equation, sendAsyncPort: sendAsyncPort);
+  }
 }
 
 // Funktion, die Alphametic-Rätsel löst
 VerbalArithmeticOutput? _solveAlphametic(Equation equation, {SendPort? sendAsyncPort}) {
-  // Check if there are too many letters (maximum 10)
-  if (equation.usedMembers.length > 10) {
-    return VerbalArithmeticOutput(equations: [], solutions: null, error: 'TooManyLetters');
-  }
+
   var letterList = equation.usedMembers.toList();
 
   // Generate permutations and evaluate each combination
@@ -48,12 +57,11 @@ HashMap<String, int>? _permuteAndEvaluate(List<String> letters, String formula, 
   var allPermutations = _generatePermutations(letters.length, availableDigits);
 
   // Calculating the number of possible permutations
-  int totalPermutations = _factorial(10) ~/ _factorial(10 - letters.length);
+  int totalPermutations = factorial(10) ~/ factorial(10 - letters.length);
   int count = 0;
   int stepSize  = max(totalPermutations ~/ 100, 1);
 
   for (var perm in allPermutations) {
-
     // progress bar
     count++;
     if (sendAsyncPort != null && count % stepSize == 0) {
@@ -80,12 +88,6 @@ HashMap<String, int>? _permuteAndEvaluate(List<String> letters, String formula, 
   // Falls keine Lösung gefunden wird
   print("Keine Lösung gefunden. $formula");
   return null;
-}
-
-// Function for calculating the factorial
-int _factorial(int n) {
-  if (n <= 1) return 1;
-  return n * _factorial(n - 1);
 }
 
 // Funktion zur Generierung aller Permutationen
@@ -190,4 +192,18 @@ void main() {
   // Gesamtanzahl der Permutationen: 604800
   // Lösung gefunden: BASE + BALL = GAMES {A: 4, S: 6, B: 2, E: 1, M: 9, G: 0, L: 5}
   // 553ms
+  // Lösung gefunden: THIS+A+FIRE+THEREFORE+FOR+ALL+HISTORIES+I+TELL+A+TALE+THAT+FALSIFIES+ITS+TITLE+TIS+A+LIE+THE+TALE+OF+THE+LAST+FIRE+HORSES+LATE+AFTER+THE+FIRST+FATHERS+FORESEE+THE+HORRORS+THE+LAST+FREE+TROLL+TERRIFIES+THE+HORSES+OF+FIRE+THE+TROLL+RESTS+AT+THE+HOLE+OF+LOSSES+IT+IS+THERE+THAT+SHE+STORES+ROLES+OF+LEATHERS+AFTER+SHE+SATISFIES+HER+HATE+OFF+THOSE+FEARS+A+TASTE+RISES+AS+SHE+HEARS+THE+LEAST+FAR+HORSE+THOSE+FAST+HORSES+THAT+FIRST+HEAR+THE+TROLL+FLEE+OFF+TO+THE+FOREST+THE+HORSES+THAT+ALERTS+RAISE+THE+STARES+OF+THE+OTHERS+AS+THE+TROLL+ASSAILS+AT+THE+TOTAL+SHIFT+HER+TEETH+TEAR+HOOF+OFF+TORSO+AS+THE+LAST+HORSE+FORFEITS+ITS+LIFE+THE+FIRST+FATHERS+HEAR+OF+THE+HORRORS+THEIR+FEARS+THAT+THE+FIRES+FOR+THEIR+FEASTS+ARREST+AS+THE+FIRST+FATHERS+RESETTLE+THE+LAST+OF+THE+FIRE+HORSES+THE+LAST+TROLL+HARASSES+THE+FOREST+HEART+FREE+AT+LAST+OF+THE+LAST+TROLL+ALL+OFFER+THEIR+FIRE+HEAT+TO+THE+ASSISTERS+FAR+OFF+THE+TROLL+FASTS+ITS+LIFE+SHORTER+AS+STARS+RISE+THE+HORSES+REST+SAFE+AFTER+ALL+SHARE+HOT+FISH+AS+THEIR+AFFILIATES+TAILOR+A+ROOFS+FOR+THEIR+SAFE=FORTRESSES {S: 4, A: 1, F: 5, O: 6, T: 9, E: 0, H: 8, I: 7, R: 3, L: 2}
+  // 95336ms
+
+  // mit Spezial Methode für Addition
+  // Lösung gefunden: SEND+MORE=MONEY. {S: 9, O: 0, N: 6, Y: 2, E: 5, M: 1, D: 7, R: 8}
+  // 352ms
+  // Lösung gefunden: ELEVEN+NINE+FIVE+FIVE=THIRTY. {F: 4, T: 8, N: 5, Y: 6, E: 7, V: 2, H: 1, R: 3, I: 0, L: 9}
+  // 1180ms
+  // Lösung gefunden: ENIGMA/M=TIMES {S: 3, A: 6, T: 9, N: 8, E: 1, M: 2, I: 0, G: 4}
+  // 838ms
+  // Lösung gefunden: BASE + BALL = GAMES. {S: 8, A: 4, E: 3, B: 7, M: 9, G: 1, L: 5}
+  // 85ms
+  // Lösung gefunden: THIS+A+FIRE+THEREFORE+FOR+ALL+HISTORIES+I+TELL+A+TALE+THAT+FALSIFIES+ITS+TITLE+TIS+A+LIE+THE+TALE+OF+THE+LAST+FIRE+HORSES+LATE+AFTER+THE+FIRST+FATHERS+FORESEE+THE+HORRORS+THE+LAST+FREE+TROLL+TERRIFIES+THE+HORSES+OF+FIRE+THE+TROLL+RESTS+AT+THE+HOLE+OF+LOSSES+IT+IS+THERE+THAT+SHE+STORES+ROLES+OF+LEATHERS+AFTER+SHE+SATISFIES+HER+HATE+OFF+THOSE+FEARS+A+TASTE+RISES+AS+SHE+HEARS+THE+LEAST+FAR+HORSE+THOSE+FAST+HORSES+THAT+FIRST+HEAR+THE+TROLL+FLEE+OFF+TO+THE+FOREST+THE+HORSES+THAT+ALERTS+RAISE+THE+STARES+OF+THE+OTHERS+AS+THE+TROLL+ASSAILS+AT+THE+TOTAL+SHIFT+HER+TEETH+TEAR+HOOF+OFF+TORSO+AS+THE+LAST+HORSE+FORFEITS+ITS+LIFE+THE+FIRST+FATHERS+HEAR+OF+THE+HORRORS+THEIR+FEARS+THAT+THE+FIRES+FOR+THEIR+FEASTS+ARREST+AS+THE+FIRST+FATHERS+RESETTLE+THE+LAST+OF+THE+FIRE+HORSES+THE+LAST+TROLL+HARASSES+THE+FOREST+HEART+FREE+AT+LAST+OF+THE+LAST+TROLL+ALL+OFFER+THEIR+FIRE+HEAT+TO+THE+ASSISTERS+FAR+OFF+THE+TROLL+FASTS+ITS+LIFE+SHORTER+AS+STARS+RISE+THE+HORSES+REST+SAFE+AFTER+ALL+SHARE+HOT+FISH+AS+THEIR+AFFILIATES+TAILOR+A+ROOFS+FOR+THEIR+SAFE=FORTRESSES. {F: 5, A: 1, S: 4, O: 6, T: 9, E: 0, H: 8, I: 7, R: 3, L: 2}
+  // 4031ms
 }

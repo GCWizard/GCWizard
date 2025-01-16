@@ -2,10 +2,9 @@ import 'dart:collection';
 import 'dart:isolate';
 import 'dart:math';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
+import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/helper.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:math_expressions/math_expressions.dart';
-
-import 'helper.dart';
 
 Future<VerbalArithmeticOutput?> solveCryptogramAsync(GCWAsyncExecuterParameters jobData) async {
   if (jobData.parameters is! VerbalArithmeticJobData) {

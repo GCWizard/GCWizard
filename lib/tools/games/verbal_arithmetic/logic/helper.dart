@@ -42,7 +42,6 @@ class Equation {
   late String formatedEquation;
   late Expression exp;
   late List<Token> token;
-  bool onlyAddition = false;
   bool singleLetter = false;
   bool validFormula = true;
   Set<String> usedMembers = <String>{};
@@ -50,7 +49,7 @@ class Equation {
 
   Equation(this.equation, {this.singleLetter = false}) {
     equation = equation.toUpperCase();
-    formatedEquation = equation.replaceAll(' ', '').replaceAll('==', '=');
+    formatedEquation = _formatEquation();
 
     if (singleLetter) {
       // Extract all letters and determine the leading letters
@@ -75,6 +74,26 @@ class Equation {
 
   Iterable<int> get Values {
     return token.where((t) => t.type == TokenType.VAL).map((t) => int.parse(t.text));
+  }
+
+  bool get onlyAddition {
+    for (var op in ['-','*','/']) {
+      if (formatedEquation.contains(op)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  String _formatEquation() {
+    const  operatorReplaceList = {
+      '÷':'/'
+    };
+    var out = equation.replaceAll('==', '=');
+    for (var op in operatorReplaceList.entries) {
+      out = equation.replaceAll(op.key, op.value);
+    }
+    return out;
   }
 
   String getOutput(HashMap<String, int> result) {
@@ -277,3 +296,8 @@ class SymbolMatrixGrid {
   }
 }
 
+// Function for calculating the factorial
+int factorial(int n) {
+  if (n <= 1) return 1;
+  return n * factorial(n - 1);
+}
