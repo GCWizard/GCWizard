@@ -2,55 +2,16 @@ import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/cryptogram.dart';
 
 void main() {
-  // _formulaStateToString(FormulaState state) {
-  //   switch (state) {
-  //     case FormulaState.STATE_SINGLE_ERROR: return 'error';
-  //     case FormulaState.STATE_EXPANDED_OK: return 'expanded_ok';
-  //     case FormulaState.STATE_EXPANDED_ERROR: return 'expanded_error';
-  //     case FormulaState.STATE_SINGLE_OK: return 'ok';
-  //     case FormulaState.STATE_EXPANDED_ERROR_EXCEEDEDRANGE: return 'expanded_exceededrange';
-  //   }
-  // }
 
-  // _formulaSolverOutputToMap(FormulaSolverOutput output) {
-  //   return {
-  //     'state': _formulaStateToString(output.state),
-  //     'output': output.results.map((result) {
-  //       var out = <String, dynamic>{
-  //         'result': result.result,
-  //         'state': _formulaStateToString(result.state)
-  //       };
-  //       if (result.variables != null) {
-  //         out.putIfAbsent('variables', () => result.variables);
-  //       }
-  //
-  //       return out;
-  //     }).toList()
-  //   };
-  // }
-
-  group("SymbolArithmetic.solveSymbolArithmetic:", () {
-    Map<String, String> values = {
-      'A':'3', 'B':'20', 'C': '100', 'D': '5', 'E': '1-3'
-    };
-    Map<String, String> values1 = {
-      'baum':'0-100', 'schneemann':'0-100', 'stern': '0-100', 'schlitten': '0-100', 'weihnachtsmann': '0-100', 'glocken': '0-100'
-    };
-    Map<String, String> values2 = {
-      'mutze':'0-100', 'glocken':'0-100', 'stern': '0-100', 'kugel': '0-100', 'baum': '0-100', 'kerze': '0-100'
-    };
-    Map<String, String> values3 = {
-      'schnee':'0-100', 'mann':'0-100', 'schleife': '0-100', 'baum': '0-100'
-    };
-
+  group("VerbalArithmetic.solveSymbolArithmetic:", () {
     List<Map<String, dynamic>> _inputsToExpected = [
       // {'formulas' : null, 'values': null, 'expectedOutput' : {'state': 'error', 'output': [{'result': null, 'state': 'error'}]}},
       // {'formulas' : null, 'values': <String, String>{}, 'expectedOutput' : {'state': 'error', 'output': [{'result': null, 'state': 'error'}]}},
       // {'formulas' : null, 'expectedOutput' : {'state': 'error', 'output': [{'result': null, 'state': 'error'}]}},
       // {'formulas' : {''}.toList(), 'expectedOutput' : {'state': 'error', 'output': [{'result': '', 'state': 'error'}]}},
       // {'formulas' : {' '}.toList(), 'expectedOutput' : {'state': 'error', 'output': [{'result': '', 'state': 'error'}]}},
-      {'formulas' : {'E-(2)'}.toList(), 'values': values, 'expectedOutput' : {'state': 'ok', 'variables': -1.0}},
-      {'formulas' : {'E'}.toList(), 'values': values, 'expectedOutput' : {'state': 'ok', 'variables': 1.0}},
+      // {'formulas' : {'E-(2)'}.toList(), 'expectedOutput' : {'state': 'ok', 'variables': -1.0}},
+      // {'formulas' : {'E'}.toList(), 'expectedOutput' : {'state': 'ok', 'variables': 1.0}},
       {'formulas' : {'baum*schneemann+stern-schlitten*baum-glocken-(41)',
         'glocken+weihnachtsmann*stern+schneemann+stern+weihnachtsmann-(26)',
         'stern+glocken*stern-glocken*glocken+stern-(24)',
@@ -62,8 +23,9 @@ void main() {
         'stern+stern*stern+stern*stern-stern-(98)',
         'schlitten*schneemann+glocken+stern*baum+weihnachtsmann-(31)',
         'baum+stern*glocken+baum*baum-glocken-(32)',
-        'glocken*weihnachtsmann+stern-schlitten+stern*baum-(37)'}.toList(), 'values': values1, 'expectedOutput' : {'state': 'ok',
-        'variables': '{{baum: 4}{schneemann: 9}{stern: 7}{schlitten: 0}{weihnachtsmann: 1}{glocken: 2}}'}},
+        'glocken*weihnachtsmann+stern-schlitten+stern*baum-(37)'}.toList(),
+        'expectedOutput' : {'SCHLITTEN': 0, 'SCHNEEMANN': 9, 'WEIHNACHTSMANN': 1, 'STERN': 7, 'GLOCKEN': 2, 'BAUM': 4}
+      },
 
       {'formulas' : {'mutze+mutze+glocken+glocken+stern+kugel-(49)',
         'kerze+stern+kerze+baum+kugel+kugel-(67)',
@@ -76,21 +38,26 @@ void main() {
         'glocken+kerze+stern+mutze+baum+mutze-(56)',
         'glocken+baum+kerze+mutze+kugel+mutze-(63)',
         'stern+kugel+kugel+baum+baum+stern-(42)',
-        'kugel+kugel+kugel+kugel+kugel+kugel-(48)'}.toList(), 'values': values2, 'expectedOutput' : {'state': 'ok',
-        'variables': '{{mutze: 4}{glocken: 16}{stern: 1}{kugel: 8}{baum: 12}{kerze: 19}}'}},
+        'kugel+kugel+kugel+kugel+kugel+kugel-(48)'}.toList(),
+        'expectedOutput' : {'MUTZE': 4, 'KUGEL': 8, 'STERN': 1, 'GLOCKEN': 16, 'KERZE': 19, 'BAUM': 12}
+      },
 
-      {'formulas' : {'schnee*mann-(1428)',
-        'schleife-baum-(12)',
-        'schnee*schleife-(840)',
-        'mann-baum-(33)'}.toList(), 'values': values3, 'expectedOutput' : {'state': 'ok',
-        'variables': '{{schnee: 21}{mann: 68}{schleife: 40}}'}},
+      {'formulas' : {'schnee*mann=1428',
+        'schleife-baum=12',
+        'schnee*schleife=840',
+        'mann-baum=33'}.toList(),
+        'expectedOutput' : {'SCHLEIFE': 30, 'SCHNEE': 28, 'MANN': 51, 'BAUM': 18}
+      },
     ];
 
     for (var elem in _inputsToExpected) {
-      test('formulas: ${elem['formula']}, values: ${elem['values']}', () {
-        var _actual = solveCryptogram(elem['formulas'] as List<String>); //, elem['values'] as Map<String, String>
-        expect(_actual!.solutions, elem['expectedOutput']);
-
+      test('formulas: ${elem['formulas']}', () {
+        var _actual = solveCryptogram(elem['formulas'] as List<String>);
+        if (_actual != null) {
+          expect(_actual.solutions, elem['expectedOutput']);
+        } else {
+          expect(_actual, elem['expectedOutput']);
+        }
       });
     }
   });

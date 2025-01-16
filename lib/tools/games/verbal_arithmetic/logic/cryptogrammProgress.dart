@@ -5,13 +5,13 @@ import 'package:math_expressions/math_expressions.dart';
 
 import 'helper.dart';
 
-SymbolArithmeticOutput? solveCryptogram(List<String> formulas, {SendPort? sendAsyncPort}) {
-  var _formulas = formulas.map((formula) => Formula(formula)).toList();
+VerbalArithmeticOutput? solveCryptogram(List<String> formulas, {SendPort? sendAsyncPort}) {
+  var _formulas = formulas.map((formula) => Equation(formula)).toList();
   return _solveCryptogram(_formulas, sendAsyncPort);
 }
 
 /// Funktion, die versucht, die Gleichungen zu lösen.
-SymbolArithmeticOutput? _solveCryptogram(List<Formula> equations, SendPort? sendAsyncPort) {
+VerbalArithmeticOutput? _solveCryptogram(List<Equation> equations, SendPort? sendAsyncPort) {
   // Alle Variablen extrahieren
   final Set<String> variables = {};
   for (var equation in equations) {
@@ -33,7 +33,7 @@ SymbolArithmeticOutput? _solveCryptogram(List<Formula> equations, SendPort? send
   int currentCombination = 0; // Fortschrittszähler
 
   // Funktion zur Evaluierung einer Gleichung mit gegebenen Variablenwerten
-  bool evaluateEquations(Map<String, int> variableValues, List<Formula> equations) {
+  bool evaluateEquations(Map<String, int> variableValues, List<Equation> equations) {
     for (var equation in equations) {
       final context = ContextModel();
 
@@ -112,8 +112,7 @@ SymbolArithmeticOutput? _solveCryptogram(List<Formula> equations, SendPort? send
     print('Keine Lösung gefunden.');
   }
 
-  var formulas = equations.map((formula) => formula.formula).toList();
-  return SymbolArithmeticOutput(formulas: formulas, solutions: mapping, error: '');
+  return VerbalArithmeticOutput(equations: equations, solutions: mapping, error: '');
 }
 
 /// Funktion zur Berechnung der möglichen Kombinationen
@@ -122,7 +121,7 @@ int calculatePossibilities(int totalNumbers, int variableCount) {
 }
 
 /// Funktion, die den maximalen Wert in den Gleichungen findet
-int _findMaxValueInEquations(List<Formula> equations) {
+int _findMaxValueInEquations(List<Equation> equations) {
   int maxValue = 0;
   final constants = <int>[];
 
@@ -140,11 +139,11 @@ int _findMaxValueInEquations(List<Formula> equations) {
 }
 
 /// Sortiert die Gleichungen so, dass die Gleichung mit den wenigsten Variablenkombinationen zuerst gelöst wird
-List<Formula> _sortEquationsByVariableCombinations(List<Formula> equations, Set<String> variables, int maxValue) {
+List<Equation> _sortEquationsByVariableCombinations(List<Equation> equations, Set<String> variables, int maxValue) {
   final variableDomainSize = maxValue + 1;  // Die Anzahl möglicher Werte pro Variable (0 bis maxValue)
 
   // Berechne das Heuristikmaß für jede Gleichung (Summe aus Variablenanzahl * Wertebereich)
-  List<MapEntry<Formula, int>> equationScores = equations.map((equation) {
+  List<MapEntry<Equation, int>> equationScores = equations.map((equation) {
     int score = equation.usedMembers.length * variableDomainSize;
     return MapEntry(equation, score);
   }).toList();
