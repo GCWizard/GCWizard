@@ -5,23 +5,23 @@ import 'dart:math';
 import 'package:gc_wizard/utils/json_utils.dart';
 import 'package:math_expressions/math_expressions.dart';
 
-class SymbolArithmeticJobData {
-  final List<String> formulas;
+class VerbalArithmeticJobData {
+  final List<String> equations;
   final Map<String, String> substitutions;
 
-  SymbolArithmeticJobData({
-    required this.formulas,
+  VerbalArithmeticJobData({
+    required this.equations,
     required this.substitutions,
   });
 }
 
-class SymbolArithmeticOutput {
-  final List<Formula> formulas;
+class VerbalArithmeticOutput {
+  final List<Equation> equations;
   final HashMap<String, int>? solutions;
   final String error;
 
-  SymbolArithmeticOutput({
-    required this.formulas,
+  VerbalArithmeticOutput({
+    required this.equations,
     required this.solutions,
     required this.error,
   });
@@ -34,146 +34,12 @@ const Map<String, String> operatorList = {
   '÷':'/'
 };
 
-class Helper {
-  static Iterable<List<int>> iterativeHeapPermute(List<int> A) sync* {
-    var n = A.length;
-    var c = List<int>.filled(n, 0);
 
-    yield A.toList();
-
-    var i = 0;
-
-    while (i < n) {
-      if (c[i] < i) {
-        if ((i & 1) == 0) {
-          swap(A, 0, i);
-        } else {
-          swap(A, c[i], i);
-        }
-
-        yield A.toList();
-
-        c[i]++;
-        i = 0;
-      } else {
-        c[i] = 0;
-        i++;
-      }
-    }
-  }
-
-  static Iterable<List<int>> combinations(List<int> values, int k) sync* {
-    if (k == 0) {
-      yield [];
-    } else {
-      for (var i = 0; i < values.length; i++) {
-        var e = values[i];
-        for (var c in combinations(values.sublist(i + 1), k - 1)) {
-          yield [e, ...c];
-        }
-      }
-    }
-  }
-
-  static Iterable<List<int>> kPerms(List<int> values, int k) sync* {
-    if (k == values.length) {
-      yield* iterativeHeapPermute(values);
-    } else {
-      for (var combination in combinations(values, k)) {
-        yield* iterativeHeapPermute(combination.toList());
-      }
-    }
-  }
-
-  static Iterable<List<int>> transpose(Iterable<Iterable<int>> list) sync* {
-    if (list.isEmpty) {
-      yield [];
-    } else {
-      var firstRow = list.first.toList();
-      for (var i = 0; i < firstRow.length; i++) {
-        yield list.map((row) => row.elementAt(i)).toList();
-      }
-    }
-  }
-
-  static Iterable<String> unknowns(String equation) {
-    return equation
-        .split('')
-        .where((c) => !'+*-/='.contains(c))
-        .toSet();
-  }
-
-  static Map<String, int> mapCharsToTokens(Iterable<String> chars) {
-    var result = <String, int>{};
-    var i = 0;
-    for (var c in chars) {
-      result[c] = i++;
-    }
-    return result;
-  }
-
-  static List<List<int>> tokenise(Map<String, int> tokens, String input) {
-    return input
-        .replaceAll('==', '=')
-        .replaceAll(' ', '')
-        .split(RegExp(r'[+*-/=0123456789]'))
-        .map((item) => item.split('').map((c) => tokens[c]!).toList())
-        .toList();
-  }
-
-  static Set<int> noLeadingZero(Iterable<Iterable<int>> input) {
-    return input.map((f) => f.first).toSet();
-  }
-
-  static List<bool> buildZeroMask(Set<int> noZeroSet, int size) {
-    return List.generate(size, (z) => !noZeroSet.contains(z));
-  }
-
-  // static List<Tuple2<int, List<Tuple2<int, int>>>> parse(Iterable<Iterable<int>> input) {
-  //   var list = input
-  //       .map((l) => l.toList().reversed.map((i) => i + 1).toList())
-  //       .where((e) => e.isNotEmpty)
-  //       .toList().reversed;
-  //
-  //   var l1 = transpose(list);
-  //
-  //   var l2 = l1.map((r) => r.where((i) => i > 0).map((i) => i - 1));
-  //
-  //   // return l2
-  //   //     .map((col) => Tuple2(col.first, col.skip(1).groupBy((i) => i)
-  //   //     .map((grp) => Tuple2(grp.key, grp.length)).toList()))
-  //   //     .toList();
-  //
-  //   var l3 = l2.map((col) => Tuple2(col.first, col.skip(1).groupBy((i) => i)
-  //       .map<int, List<int>>((key, value) => MapEntry(key, value)).toList()))
-  //       .toList();
-  // }
-
-  static final List<int> range = List.generate(10, (i) => i);
-
-  static void swap(List<int> list, int i, int j) {
-    var temp = list[i];
-    list[i] = list[j];
-    list[j] = temp;
-  }
-}
-
-
-extension GroupByExtension<E> on Iterable<E> {
-  Map<K, List<E>> groupBy<K>(K Function(E) keyFunction) {
-    var map = <K, List<E>>{};
-    for (var element in this) {
-      var key = keyFunction(element);
-      map.putIfAbsent(key, () => []).add(element);
-    }
-    return map;
-  }
-}
 final parser = Parser();
 
-class Formula {
-  late String formula;
-  late String formatedFormula;
+class Equation {
+  late String equation;
+  late String formatedEquation;
   late Expression exp;
   late List<Token> token;
   bool onlyAddition = false;
@@ -182,43 +48,29 @@ class Formula {
   Set<String> usedMembers = <String>{};
   Set<String> leadingLetters = <String>{};
 
-  Formula(String equation, {this.singleLetter = false}) {
-    formula = equation.toUpperCase();
-    formatedFormula = formula.replaceAll(' ', '').replaceAll('==', '=');
+  Equation(this.equation, {this.singleLetter = false}) {
+    equation = equation.toUpperCase();
+    formatedEquation = equation.replaceAll(' ', '').replaceAll('==', '=');
 
     if (singleLetter) {
       // Extract all letters and determine the leading letters
-      for (var token in formatedFormula.split(RegExp(r'[^A-Z]'))) {
+      for (var token in formatedEquation.split(RegExp(r'[^A-Z]'))) {
         if (token.isNotEmpty) {
           usedMembers.addAll(token.split(''));
           leadingLetters.add(token[0]);
         }
       }
     } else {
-      if (formatedFormula.contains('=')) {
-        var members = formatedFormula.split('=');
-        formatedFormula = members[0] + '-(' + members[1]+ ')';
+      if (formatedEquation.contains('=')) {
+        var members = formatedEquation.split('=');
+        formatedEquation = members[0] + '-(' + members[1]+ ')';
         validFormula &= !(members.length > 2);
       }
+      token = parser.lex.tokenize(formatedEquation);
+      exp = parser.parse(formatedEquation);
 
-      token = parser.lex.tokenize(formatedFormula);
-      exp = parser.parse(formatedFormula);
-
-      // print(token
-      //     .where((t) => t.type == TokenType.VAR)
-      //     .length);
-      // Funktion, um Variablen aus einem Ausdruck zu extrahieren
       usedMembers = token.where((t) => t.type == TokenType.VAR).map((t) => t.text).toSet();
     }
-    // print(usedMembers);
-    // if (usedMembers.length == 1) {
-    //   var exp = parser.parse(formula);
-    //   Expression expDerived = exp.derive(usedMembers.first);
-    //   print(usedMembers.first + ' ' + expDerived.toString());
-    //   print(usedMembers.first + ' ' + expDerived.simplify().toString());
-    //   final context = ContextModel();
-    //   print(usedMembers.first + ' ' + expDerived.evaluate(EvaluationType.REAL, context).toString());
-    // }
   }
 
   Iterable<int> get Values {
@@ -226,19 +78,19 @@ class Formula {
   }
 
   String getOutput(HashMap<String, int> result) {
-    return _replaceLetters(formula, result);
+    return replaceValues(equation, result);
   }
 
-  String _replaceLetters(String equation, HashMap<String, int> result) {
-    for (var key in result.keys) {
-      equation = equation.replaceAll(key, result[key].toString());
+  static String replaceValues(String equation, Map<String, int> mapping) {
+    for (var key in mapping.keys) {
+      equation = equation.replaceAll(key, mapping[key].toString());
     }
     return equation;
   }
 }
 
 class SymbolMatrixString {
-  static List<String> buildFormulas(String input) {
+  static List<String> buildEquations(String input) {
     if (input.trim().isEmpty) return [];
     var formulas = const LineSplitter().convert(input);
     formulas.removeWhere((formula) => formula.trim().isEmpty);
@@ -330,7 +182,7 @@ class SymbolMatrixGrid {
     return true;
   }
 
-  String buildRowFormula(int y) {
+  String buildRowEquation(int y) {
     var formula = '';
     for (var x = 0; x < matrix[y].length; x++) {
       if (x % 2 == 0) {
@@ -344,7 +196,7 @@ class SymbolMatrixGrid {
     return formula + ')';
   }
 
-  String buildColumnFormula(int x) {
+  String buildColumnEquation(int x) {
     var formula = '';
     for (var y = 0; y < matrix.length; y++) {
       if (y % 2 == 0) {
@@ -358,17 +210,17 @@ class SymbolMatrixGrid {
     return formula + ')';
   }
 
-  List<String> buildFormulas() {
-    var formulas = <String>[];
+  List<String> buildEquations() {
+    var equations = <String>[];
 
-    if (!isValidMatrix()) return formulas;
+    if (!isValidMatrix()) return equations;
     for(var y = 0; y < getRowsCount()-2; y += 2){
-      formulas.add(buildRowFormula(y));
+      equations.add(buildRowEquation(y));
     }
     for(var x = 0; x < getColumnsCount()-2; x += 2){
-      formulas.add(buildColumnFormula(x));
+      equations.add(buildColumnEquation(x));
     }
-    return formulas;
+    return equations;
   }
 
   String toJson() {
@@ -425,186 +277,3 @@ class SymbolMatrixGrid {
   }
 }
 
-class PossibleValues {
-  final Map<String, List<int>> _possibleValues;
-
-  PossibleValues(this._possibleValues);
-
-  bool isSuccess() {
-    return _possibleValues.values.every((v) => v.length == 1);
-  }
-
-  /// Returns a list of possible dictionaries under the assumption that the specified character is equal to the specified value.
-  List<Map<String, int>> getPossibleDictionaries(String letter, int possibleValue, Set<String> usedMembers) {
-    var result = <Map<String, int>>[];
-    var keysSortedByCountOfValues = _possibleValues.keys
-        .where((member) => usedMembers.contains(member))
-        .toList()
-      ..sort((a, b) => _possibleValues[a]!.length.compareTo(_possibleValues[b]!.length));
-
-    for (var key in keysSortedByCountOfValues) {
-      var values = key == letter ? [possibleValue] : _possibleValues[key]!;
-
-      if (result.isEmpty) {
-        for (var i in values) {
-          result.add({key: i});
-        }
-      } else {
-        var tmp = <Map<String, int>>[];
-
-        for (var j = 0; j < result.length; j++) {
-          var curDic = result[j];
-          var curValues = values.where((v) => !curDic.containsValue(v)).toList();
-
-          if (curValues.isEmpty) {
-            result.removeAt(j);
-            j--;
-            continue;
-          }
-
-          for (var curValue in curValues) {
-            if (!curDic.containsKey(key)) {
-              curDic[key] = curValue;
-            } else {
-              var newDictionary = Map<String, int>.from(curDic);
-              newDictionary[key] = curValue;
-              tmp.add(newDictionary);
-            }
-          }
-        }
-        result.addAll(tmp);
-      }
-    }
-
-    return result.where((dic) => dic.keys.length == usedMembers.length).toList();
-  }
-
-  Map<String, int> getResult() {
-    return _possibleValues.map((c, i) => MapEntry(c, i[0]));
-  }
-
-  Map<String, List<int>> getPossibleValues() {
-    return _possibleValues;
-  }
-
-  Iterable<MapEntry<String, List<int>>> getPossibleValuesForMembers(Set<String> usedMembers) {
-    return _possibleValues.entries
-        .where((entry) => usedMembers.contains(entry.key));
-        //.map((key, value) => MapEntry(key, value));
-  }
-
-  /// Set the only possible value for the character.
-  void set(String ch, int val) {
-    _possibleValues[ch] = [val];
-
-    for (var key in _possibleValues.keys.where((k) => k != ch)) {
-      remove(key, val);
-    }
-  }
-
-  /// Remove value from the list of possible.
-  void remove(String ch, int val) {
-    if (!_possibleValues[ch]!.contains(val)) return;
-
-    _possibleValues[ch]!.remove(val);
-
-    if (_possibleValues[ch]!.isEmpty) {
-      throw ArgumentError("No solution");
-    }
-
-    if (_possibleValues[ch]!.length == 1) {
-      for (var key in _possibleValues.keys.where((k) => k != ch)) {
-        remove(key, _possibleValues[ch]![0]);
-      }
-    }
-  }
-
-  /// The leading digit of a multi-digit number must not be zero.
-  void removeLeadingZero(List<String> terms, String result) {
-    if (_possibleValues.containsKey(result[0])) remove(result[0], 0);
-
-    for (var ch in terms.map((t) => t[0]).toSet()) {
-      if (_possibleValues.containsKey(ch)) remove(ch, 0);
-    }
-  }
-
-  void checkFirstLetterInResult(List<String> terms, String result) {
-    var maxSum = terms
-        .map((t) => pow(10, t.length) as int)
-        .reduce((a, b) => a + b);
-    var maxSumStr = maxSum.toString();
-
-    if (maxSumStr.length > result.length) return;
-
-    if (maxSumStr.startsWith('1')) {
-      set(result[0], 1);
-    } else {
-      for (var i = int.parse(maxSumStr[0]) + 1; i < 10; i++) {
-        remove(result[0], i);
-      }
-    }
-  }
-
-  // Cartesian product to get permutations without duplicates.
-  Iterable<List<int>> permutations1(Set<String> usedMembers) {
-    Iterable<List<int>> emptyList = [<int>[]];
-    var val = getPossibleValuesForMembers(usedMembers).map((entry) => entry.value);
-
-    return val.fold(emptyList, (accumulator, sequence) {
-      return [
-        for (var accseq in accumulator)
-          for (var item in sequence.where((value) => !accseq.contains(value)))
-            [...accseq, item]
-      ];
-    });
-  }
-}
-
-// int calculatePossibilities(int totalNumbers, int variableCount) {
-//   // Berechne Permutationen P(n, r) = n! / (n-r)!
-//   int result = 1;
-//   for (int i = 0; i < variableCount; i++) {
-//     result *= (totalNumbers - i);
-//   }
-//   return result;
-// }
-//
-// void main() {
-//   // Anzahl der möglichen Zahlen (z.B. range.length)
-//   int totalNumbers = 10; // Beispiel: 10 mögliche Zahlen
-//   // Anzahl der Variablen (z.B. variableList.length)
-//   int variableCount = 4;  // Beispiel: 4 Variablen
-//
-//   // Berechne die Anzahl der Möglichkeiten
-//   int possibilities = calculatePossibilities(totalNumbers, variableCount);
-//
-//   print("Die Anzahl der Möglichkeiten: $possibilities");
-//
-//   // Testfall mit 1429 möglichen Lösungen
-//   int testTotalNumbers = 7;  // Beispiel: 7 mögliche Zahlen
-//   int testVariableCount = 4; // Beispiel: 4 Variablen
-//   int testPossibilities = calculatePossibilities(testTotalNumbers, testVariableCount);
-//
-//   print("Testfall - Möglichkeiten mit 4 Variablen und 1429 möglichen Lösungen: $testPossibilities");
-// }
-
-int calculatePossibilities(int totalNumbers, int variableCount) {
-  // Berechne Permutationen P(n, r) = n! / (n-r)!
-  int result = 1;
-  for (int i = 0; i < variableCount; i++) {
-    result *= (totalNumbers - i);
-  }
-  return result;
-}
-
-void main() {
-  // Anzahl der möglichen Zahlen (1429 Zahlen)
-  int totalNumbers = 1429;
-  // Anzahl der Variablen (z.B. 4 Variablen)
-  int variableCount = 4;
-
-  // Berechne die Anzahl der Möglichkeiten
-  int possibilities = calculatePossibilities(totalNumbers, variableCount);
-
-  print("Die Anzahl der Möglichkeiten mit $variableCount Variablen und $totalNumbers Zahlen: $possibilities");
-}

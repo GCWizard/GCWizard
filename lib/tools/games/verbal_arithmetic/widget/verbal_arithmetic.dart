@@ -112,7 +112,6 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     _currentToInput = entry.value;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -123,14 +122,17 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
             GCWDropDownMenuItem(
               value: ViewMode.Alphametic,
               child: 'Alphametic',
+              subtitle: 'SEND + MORE = MONEY'
             ),
             GCWDropDownMenuItem(
               value: ViewMode.SymbolMatrixTextBox,
               child: 'SymbolMatrix TextBox',
+              subtitle: 'A*B=1428\nC-D=12\nA*C=840\nB-D=33',
             ),
             GCWDropDownMenuItem(
               value: ViewMode.SymbolMatrixGrid,
               child: 'SymbolMatrix Grid',
+              subtitle: ' A * B = 1428\n *   -\n C - D = 12\n =   =\n840 33',
             )
           ],
           onChanged: (value) {

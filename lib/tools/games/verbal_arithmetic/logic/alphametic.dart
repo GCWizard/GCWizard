@@ -10,39 +10,34 @@ Future<SymbolArithmeticOutput?> solveAlphameticsAsync(GCWAsyncExecuterParameters
   if (jobData.parameters is! SymbolArithmeticJobData) {
     return null;
   }
-
   var data = jobData.parameters as SymbolArithmeticJobData;
+  var output = solveAlphametic(data.equations.first, sendAsyncPort: jobData.sendAsyncPort);
 
-  var output = solveAlphametic(data.formulas.first, sendAsyncPort: jobData.sendAsyncPort);
-print(output);
   if (jobData.sendAsyncPort != null) jobData.sendAsyncPort!.send(output);
 
   return output;
 }
 
-SymbolArithmeticOutput? solveAlphametic(String formula, {SendPort? sendAsyncPort}) {
-  var _formula = Formula(formula, singleLetter: true);
-  if (!_formula.validFormula) {
-    return SymbolArithmeticOutput(formulas: [_formula], solutions: HashMap<String, int>(), error: 'InvalidFormula');
+SymbolArithmeticOutput? solveAlphametic(String equation, {SendPort? sendAsyncPort}) {
+  var _equation = Equation(equation, singleLetter: true);
+  if (!_equation.validFormula) {
+    return SymbolArithmeticOutput(equations: [_equation], solutions: HashMap<String, int>(), error: 'InvalidFormula');
   }
-  return _solveAlphametic(_formula, sendAsyncPort: sendAsyncPort);
+  return _solveAlphametic(_equation, sendAsyncPort: sendAsyncPort);
 }
 
 // Funktion, die Alphametic-Rätsel löst
-SymbolArithmeticOutput? _solveAlphametic(Formula formula, {SendPort? sendAsyncPort}) {
-
+SymbolArithmeticOutput? _solveAlphametic(Equation equation, {SendPort? sendAsyncPort}) {
   // Check if there are too many letters (maximum 10)
-  if (formula.usedMembers.length > 10) {
-    // print("Zu viele verschiedene Buchstaben, um eine Lösung zu finden.");
-    return SymbolArithmeticOutput(formulas: [], solutions: null, error: 'TooManyLetters');
+  if (equation.usedMembers.length > 10) {
+    return SymbolArithmeticOutput(equations: [], solutions: null, error: 'TooManyLetters');
   }
-
-  var letterList = formula.usedMembers.toList();
+  var letterList = equation.usedMembers.toList();
 
   // Generate permutations and evaluate each combination
-  var result = _permuteAndEvaluate(letterList, formula.formula, formula.leadingLetters, sendAsyncPort);
+  var result = _permuteAndEvaluate(letterList, equation.equation, equation.leadingLetters, sendAsyncPort);
 
-  return SymbolArithmeticOutput(formulas: [formula], solutions: result, error: '');
+  return SymbolArithmeticOutput(equations: [equation], solutions: result, error: '');
 }
 
 
@@ -62,8 +57,6 @@ HashMap<String, int>? _permuteAndEvaluate(List<String> letters, String formula, 
     // progress bar
     count++;
     if (sendAsyncPort != null && count % stepSize == 0) {
-      // var progress = (count / totalPermutations * 100).toStringAsFixed(2);
-      // print("Fortschritt: $progress%");
       sendAsyncPort.send(DoubleText(PROGRESS, count / totalPermutations));
     }
 
@@ -78,7 +71,7 @@ HashMap<String, int>? _permuteAndEvaluate(List<String> letters, String formula, 
     }
 
     // Check if this permutation solves the formula
-    if (evaluateFormula(formula, mapping)) {
+    if (_evaluateFormula(formula, mapping)) {
       print("Lösung gefunden: $formula $mapping");
       return mapping;
     }
@@ -111,46 +104,18 @@ Iterable<List<int>> _generatePermutations(int length, List<int> availableDigits)
   }
 }
 
-String modifiedFormula(String formula, Map<String, int> mapping) {
-  for (var entry in mapping.entries) {
-    formula = formula.replaceAll(entry.key, entry.value.toString());
-  }
-
-  return formula;
-}
-
 // Funktion zur Auswertung der Formel
-bool evaluateFormula(String formula, Map<String, int> mapping) {
-  // Replacing the letters with their corresponding digits in the formula
-  // var modifiedFormula = formula.split('').map((char) {
-  //   if (RegExp(r'[A-Z]').hasMatch(char)) {
-  //     return mapping[char].toString();
-  //   }
-  //   return char;
-  // }).join('');
-  // var modifiedFormula = RegExp(r'[A-Z]').allMatches(formula).map((char) {
-  //   if (RegExp(r'[A-Z]').hasMatch(char)) {
-  //     return mapping[char].toString();
-  //   }
-  //   return char;
-  // }).join('');
-  // var modifiedFormula = formula.split('').map((char) {
-  //   for (var key in result.keys) {
-  //     equation = equation.replaceAll(key, result[key].toString());
-  //   }
-  //
-  //   return equation;
-  // }).join('');
+bool _evaluateFormula(String equation, Map<String, int> mapping) {
 
   // Split expression into left and right side
   // var sides = modifiedFormula.split('=');
-  var sides = modifiedFormula(formula, mapping).split('=');
+  var sides = Equation.replaceValues(equation, mapping).split('=');
   if (sides.length != 2) return false;
 
   try {
     // Auswerten beider Seiten des Ausdrucks
-    var leftValue = eval(sides[0]);
-    var rightValue = eval(sides[1]);
+    var leftValue = _eval(sides[0]);
+    var rightValue = _eval(sides[1]);
 
     // Check if the left and right sides are equal
     return leftValue == rightValue;
@@ -158,14 +123,14 @@ bool evaluateFormula(String formula, Map<String, int> mapping) {
     return false;
   }
 }
-Parser parser = Parser();
-ContextModel cm = ContextModel();
+
+ContextModel _cm = ContextModel();
 
 // function for evaluating the mathematical expression
-num eval(String expression) {
+num _eval(String expression) {
   Expression exp = parser.parse(expression);
 
-  var result = exp.evaluate(EvaluationType.REAL, cm);
+  var result = exp.evaluate(EvaluationType.REAL, _cm);
   return result != null && result is num ? result : double.negativeInfinity;
 }
 
