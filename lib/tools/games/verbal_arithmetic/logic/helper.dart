@@ -127,7 +127,7 @@ class SymbolMatrixGrid {
     return rowCount * 2 + 1;
   }
 
-    String? getOperator(int y, int x) {
+  String? getOperator(int y, int x) {
     if  (!_validPosition(y, x)) {
       return null;
     }
@@ -182,7 +182,7 @@ class SymbolMatrixGrid {
     return true;
   }
 
-  String buildRowEquation(int y) {
+  String _buildRowEquation(int y) {
     var formula = '';
     for (var x = 0; x < matrix[y].length; x++) {
       if (x % 2 == 0) {
@@ -196,7 +196,7 @@ class SymbolMatrixGrid {
     return formula + ')';
   }
 
-  String buildColumnEquation(int x) {
+  String _buildColumnEquation(int x) {
     var formula = '';
     for (var y = 0; y < matrix.length; y++) {
       if (y % 2 == 0) {
@@ -215,10 +215,10 @@ class SymbolMatrixGrid {
 
     if (!isValidMatrix()) return equations;
     for(var y = 0; y < getRowsCount()-2; y += 2){
-      equations.add(buildRowEquation(y));
+      equations.add(_buildRowEquation(y));
     }
     for(var x = 0; x < getColumnsCount()-2; x += 2){
-      equations.add(buildColumnEquation(x));
+      equations.add(_buildColumnEquation(x));
     }
     return equations;
   }

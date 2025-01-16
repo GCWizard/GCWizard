@@ -6,11 +6,11 @@ import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/helper.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:math_expressions/math_expressions.dart';
 
-Future<SymbolArithmeticOutput?> solveAlphameticsAsync(GCWAsyncExecuterParameters jobData) async {
-  if (jobData.parameters is! SymbolArithmeticJobData) {
+Future<VerbalArithmeticOutput?> solveAlphameticsAsync(GCWAsyncExecuterParameters jobData) async {
+  if (jobData.parameters is! VerbalArithmeticJobData) {
     return null;
   }
-  var data = jobData.parameters as SymbolArithmeticJobData;
+  var data = jobData.parameters as VerbalArithmeticJobData;
   var output = solveAlphametic(data.equations.first, sendAsyncPort: jobData.sendAsyncPort);
 
   if (jobData.sendAsyncPort != null) jobData.sendAsyncPort!.send(output);
@@ -18,26 +18,26 @@ Future<SymbolArithmeticOutput?> solveAlphameticsAsync(GCWAsyncExecuterParameters
   return output;
 }
 
-SymbolArithmeticOutput? solveAlphametic(String equation, {SendPort? sendAsyncPort}) {
+VerbalArithmeticOutput? solveAlphametic(String equation, {SendPort? sendAsyncPort}) {
   var _equation = Equation(equation, singleLetter: true);
   if (!_equation.validFormula) {
-    return SymbolArithmeticOutput(equations: [_equation], solutions: HashMap<String, int>(), error: 'InvalidFormula');
+    return VerbalArithmeticOutput(equations: [_equation], solutions: HashMap<String, int>(), error: 'InvalidFormula');
   }
   return _solveAlphametic(_equation, sendAsyncPort: sendAsyncPort);
 }
 
 // Funktion, die Alphametic-Rätsel löst
-SymbolArithmeticOutput? _solveAlphametic(Equation equation, {SendPort? sendAsyncPort}) {
+VerbalArithmeticOutput? _solveAlphametic(Equation equation, {SendPort? sendAsyncPort}) {
   // Check if there are too many letters (maximum 10)
   if (equation.usedMembers.length > 10) {
-    return SymbolArithmeticOutput(equations: [], solutions: null, error: 'TooManyLetters');
+    return VerbalArithmeticOutput(equations: [], solutions: null, error: 'TooManyLetters');
   }
   var letterList = equation.usedMembers.toList();
 
   // Generate permutations and evaluate each combination
   var result = _permuteAndEvaluate(letterList, equation.equation, equation.leadingLetters, sendAsyncPort);
 
-  return SymbolArithmeticOutput(equations: [equation], solutions: result, error: '');
+  return VerbalArithmeticOutput(equations: [equation], solutions: result, error: '');
 }
 
 
