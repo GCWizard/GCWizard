@@ -6,11 +6,6 @@ VerbalArithmeticOutput? _solveAlphameticAdd(Equation equation, {SendPort? sendAs
   var leftSide = sides[0].split('+').map((s) => s.trim()).toList();
   var rightSide = sides[1].trim();
 
-  // Check if there are too many letters (maximum 10)
-  if (equation.usedMembers.length > 10) {
-    return VerbalArithmeticOutput(equations: [], solutions: null, error: 'TooManyLetters');
-  }
-
   // Berechne die Häufigkeit der Buchstaben und sortiere sie nach Häufigkeit.
   Map<String, int> frequencyMap = _letterFrequency([...leftSide, rightSide]);
   List<String> letters = equation.usedMembers.toList()

@@ -23,7 +23,7 @@ Future<VerbalArithmeticOutput?> solveAlphameticsAsync(GCWAsyncExecuterParameters
 VerbalArithmeticOutput? solveAlphametic(String equation, {SendPort? sendAsyncPort}) {
   var _equation = Equation(equation, singleLetter: true);
   if (!_equation.validFormula) {
-    return VerbalArithmeticOutput(equations: [_equation], solutions: HashMap<String, int>(), error: 'InvalidFormula');
+    return VerbalArithmeticOutput(equations: [_equation], solutions: null, error: 'InvalidFormula');
   }
 
   // Check if there are too many letters (maximum 10)

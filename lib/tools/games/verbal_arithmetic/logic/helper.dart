@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:gc_wizard/utils/json_utils.dart';
 import 'package:math_expressions/math_expressions.dart';
+import 'package:utility/utility.dart';
 
 class VerbalArithmeticJobData {
   final List<String> equations;
@@ -50,6 +51,7 @@ class Equation {
   Equation(this.equation, {this.singleLetter = false}) {
     equation = equation.toUpperCase();
     formatedEquation = _formatEquation();
+    validFormula &= !(formatedEquation.count('=') > 1);
 
     if (singleLetter) {
       // Extract all letters and determine the leading letters
@@ -63,7 +65,6 @@ class Equation {
       if (formatedEquation.contains('=')) {
         var members = formatedEquation.split('=');
         formatedEquation = members[0] + '-(' + members[1]+ ')';
-        validFormula &= !(members.length > 2);
       }
       token = parser.lex.tokenize(formatedEquation);
       exp = parser.parse(formatedEquation);
@@ -82,7 +83,7 @@ class Equation {
         return false;
       }
     }
-    return true;
+    return formatedEquation.contains('+');
   }
 
   String _formatEquation() {
@@ -91,7 +92,7 @@ class Equation {
     };
     var out = equation.replaceAll('==', '=');
     for (var op in operatorReplaceList.entries) {
-      out = equation.replaceAll(op.key, op.value);
+      out = out.replaceAll(op.key, op.value);
     }
     return out;
   }

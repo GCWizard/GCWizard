@@ -22,7 +22,7 @@ VerbalArithmeticOutput? solveCryptogram(List<String> equations, {SendPort? sendA
   var _equations = equations.map((formula) => Equation(formula)).toList();
   var notValid = _equations.any((formula) => !formula.validFormula);
   if (notValid) {
-    return VerbalArithmeticOutput(equations: _equations, solutions: HashMap<String, int>(), error: 'InvalidFormula');
+    return VerbalArithmeticOutput(equations: _equations, solutions: null, error: 'InvalidFormula');
   }
   return _solveCryptogram(_equations, sendAsyncPort);
 }
@@ -41,15 +41,6 @@ VerbalArithmeticOutput? _solveCryptogram(List<Equation> equations, SendPort? sen
   // Automatischen Wertebereich ermitteln
   final maxValue = _findMaxValueInEquations(equations);
   final range = List.generate(maxValue + 1, (index) => index);
-
-  // Calculating the number of possible permutations
-  // int totalPermutations = pow((range.length + 1), variableList.length).toInt();
-
-  // int totalPermutations = calculatePossibilities(range.length, variableList.length);
-  // int count = 0;
-
-  // print(_factorial(10));
-  // int _totalPermutations = _factorial(range.length) ~/ _factorial((range.length - variableList.length));
 
   // Sortiere die Gleichungen nach dem Heuristikmaß
   equations = _sortEquationsByVariableCombinations(equations, variables, maxValue);
@@ -85,8 +76,6 @@ VerbalArithmeticOutput? _solveCryptogram(List<Equation> equations, SendPort? sen
 
   void sendProgress() {
     if (sendAsyncPort != null && currentCombination >= nextSendStep) {
-      // var progress = (currentCombination / totalPermutations * 100).toStringAsFixed(2);
-      // print("Fortschritt: $progress%");
       nextSendStep += stepSize;
       sendAsyncPort.send(DoubleText(PROGRESS, currentCombination / totalPermutations));
     }
@@ -145,7 +134,6 @@ VerbalArithmeticOutput? _solveCryptogram(List<Equation> equations, SendPort? sen
   var range_length =range.length;
   var variableList_length = variableList.length;
   print('Keine Lösung gefunden:  $currentCombination% $totalPermutations $range_length $range_length $variableList_length');
-  var formulas = equations.map((formula) => formula.equation).toList();
   return VerbalArithmeticOutput(equations: equations, solutions: mapping, error: '');
 }
 
@@ -174,7 +162,6 @@ int _findMaxValueInEquations(List<Equation> equations) {
 
 /// Sortiert die Gleichungen so, dass die Gleichung mit den wenigsten Variablenkombinationen zuerst gelöst wird
 List<Equation> _sortEquationsByVariableCombinations(List<Equation> equations, Set<String> variables, int maxValue) {
-  // final parser = Parser();
   final variableDomainSize = maxValue + 1;  // Die Anzahl möglicher Werte pro Variable (0 bis maxValue)
 
   // Berechne das Heuristikmaß für jede Gleichung (Summe aus Variablenanzahl * Wertebereich)

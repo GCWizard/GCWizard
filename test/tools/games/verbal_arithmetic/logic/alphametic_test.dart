@@ -6,10 +6,10 @@ void main() {
   group("Alphametics.solve:", () {
 
     List<Map<String, Object?>> _inputsToExpected = [
-      {'input' : '', 'expectedOutput' : null},
-      {'input' : ' ', 'expectedOutput' : null},
-      {'input' : 'A + B = 99', 'expectedOutput' : null},
-      {'input' : 'BASE + BALL === GAMES', 'expectedOutput' : null},
+      {'input' : '', 'expectedOutput' : ''},
+      {'input' : ' ', 'expectedOutput' : ''},
+      {'input' : 'A + B = 99', 'expectedOutput' : ''},
+      {'input' : 'BASE + BALL === GAMES', 'expectedOutput' : 'InvalidFormula'},
       {'input' : 'BASE + BALL == GAMES', 'expectedOutput' : '7483 + 7455 == 14938'},
       {'input' : 'BIG + CAT = LION', 'expectedOutput' : '204 + 859 = 1063'}, //mehrere Lösungen '324 + 956 = 1280', ..
       {'input' : 'ELEVEN + NINE + FIVE + FIVE = THIRTY', 'expectedOutput' : '797275 + 5057 + 4027 + 4027 = 810386'},
@@ -21,13 +21,14 @@ void main() {
       {'input' : 'COUPLE + COUPLE = QUARTET', 'expectedOutput' : '653924 + 653924 = 1307848'},
       {'input' : 'DO + YOU + FEEL = LUCKY', 'expectedOutput' : '57 + 870 + 9441 = 10368'},
       {'input' : 'ELEVEN + NINE + FIVE + FIVE = THIRTY', 'expectedOutput' : '797275 + 5057 + 4027 + 4027 = 810386'},
+      {'input' : 'abcde * A = eeeeee', 'expectedOutput' : '79365 * 7 = 555555'},
     ];
 
     _inputsToExpected.forEach((elem) {
       test('formulas: ${elem['input']}', () {
         var _actual = solveAlphametic(elem['input'] as String);
         if (_actual != null) {
-          var result = (_actual.solutions == null) ? null : _actual.equations.first.getOutput(_actual.solutions!);
+          var result = (_actual.solutions == null) ? _actual.error : _actual.equations.first.getOutput(_actual.solutions!);
           expect(result, elem['expectedOutput']);
         } else {
           expect(_actual, elem['expectedOutput']);
