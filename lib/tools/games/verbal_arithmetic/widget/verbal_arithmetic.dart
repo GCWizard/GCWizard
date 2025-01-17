@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
@@ -14,15 +13,12 @@ import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
-import 'package:gc_wizard/common_widgets/key_value_editor/gcw_key_value_editor.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
-import 'package:gc_wizard/common_widgets/text_input_formatters/variablestring_textinputformatter.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/alphametic.dart';
 import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/cryptogram.dart';
 import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/helper.dart';
-import 'package:gc_wizard/utils/complex_return_types.dart';
 
 class VerbalArithmetic extends StatefulWidget {
   const VerbalArithmetic({Key? key}) : super(key: key);
@@ -38,36 +34,25 @@ enum _ViewMode {
 }
 
 class _VerbalArithmeticState extends State<VerbalArithmetic> {
-  late TextEditingController _inputController;
-  late TextEditingController _maskController;
   late TextEditingController _inputNumberGridController;
   late TextEditingController _inputAlphameticsController;
 
-  var _currentInput = '';
   var _currentOutput = '';
-  var _currentMask = '';
-  var _currentFromInput = '';
-  var _currentToInput = '';
   var _currentNumberGridInput = '';
   var _currentAlphameticsInput = '';
   var _currentMode = _ViewMode.Alphametic;
-
-  var _currentIdCount = 0;
-  final List<KeyValueBase> _currentSubstitutions = [];
+  var _currentGridScale = 0.0;
 
   int _rowCount = 2;
   int _columnCount = 2;
   SymbolMatrixGrid _currentMatrix = SymbolMatrixGrid(2, 2);
   List<List<TextEditingController?>> _textEditingControllerArray = [];
   bool _currentExpanded = true;
-  bool _currentValuesExpanded = true;
 
   @override
   void initState() {
     super.initState();
 
-    _inputController = TextEditingController(text: _currentInput);
-    _maskController = TextEditingController(text: _currentMask);
     _inputNumberGridController = TextEditingController(text: _currentNumberGridInput);
     _inputAlphameticsController = TextEditingController(text: _currentAlphameticsInput);
 
@@ -76,44 +61,24 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
 
   @override
   void dispose() {
-    _inputController.dispose();
-    _maskController.dispose();
     _inputNumberGridController.dispose();
     _inputAlphameticsController.dispose();
 
     for(var y = 0; y < _textEditingControllerArray.length; y++) {
       for (var x = 0; x < _textEditingControllerArray[y].length; x++) {
-        if (_textEditingControllerArray[y][x] != null) {
-          _textEditingControllerArray[y][x]?.dispose();
-        }
+        _textEditingControllerArray[y][x]?.dispose();
       }
     }
-
+    _textEditingControllerArray.clear();
     super.dispose();
-  }
-
-  void _addEntry(KeyValueBase entry) {
-    if (entry.key.isEmpty) return;
-    _currentIdCount++;
-    if (_currentSubstitutions.firstWhereOrNull((_entry) => _entry.id == _currentIdCount) == null) {
-      entry.id = _currentIdCount;
-      return _currentSubstitutions.add(entry);
-    }
-    //_calculateOutput();
-  }
-
-
-  void _updateEntry(KeyValueBase entry) {
-    //_calculateOutput();
-  }
-
-  void _updateNewEntry(KeyValueBase entry) {
-    _currentFromInput = entry.key;
-    _currentToInput = entry.value;
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_currentGridScale <= 0) {
+      _currentGridScale = max(1, (_tableMinWidth() / maxScreenWidth(context)));
+    }
+
     return Column(
       children: <Widget>[
         GCWDropDown<_ViewMode>(
@@ -242,7 +207,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
               size: IconButtonSize.SMALL,
               icon: Icons.content_copy,
               onPressed: () {
-                _currentMatrix.substitutions = _getSubstitutions();
+                // _currentMatrix.substitutions = _getSubstitutions();
                 var copyText = _currentMatrix.toJson();
                 if (copyText.isEmpty) return;
                 insertIntoGCWClipboard(context, copyText);
@@ -250,12 +215,13 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
             )
           ])
         ),
-
         GCWPainterContainer(
+          scale: _currentGridScale,
           child: _buildTable(_rowCount, _columnCount),
+          onChanged: (scale) {
+            _currentGridScale = scale;
+          },
         ),
-        _buildVariablesEditor(),
-
         GCWIconButton(
           size: IconButtonSize.SMALL,
           icon: Icons.auto_fix_high,
@@ -275,31 +241,6 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
         )
       ],
     );
-  }
-
-  Widget _buildVariablesEditor() {
-    return Column(
-      children: <Widget>[
-        GCWExpandableTextDivider(
-          text: i18n(context, 'coords_variablecoordinate_variables'),
-          expanded: _currentValuesExpanded,
-          onChanged: (value) {
-            setState(() {
-              _currentValuesExpanded = value;
-            });
-          },
-          child: GCWKeyValueEditor(
-            keyHintText: i18n(context, 'coords_variablecoordinate_variable'),
-            valueHintText: i18n(context, 'coords_variablecoordinate_possiblevalues'),
-            addValueInputFormatters: [VariableStringTextInputFormatter()],
-            valueFlex: 4,
-            onNewEntryChanged: (entry) => _updateNewEntry(entry),
-            onAddEntry: (entry) => _addEntry(entry),
-            entries: _currentSubstitutions,
-            onUpdateEntry: (entry) => _updateEntry(entry),
-          )
-        )
-    ]);
   }
 
   void _onDoCalculation() async {
@@ -364,12 +305,12 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
 
   Widget _buildTable(int rowCount, int columnCount) {
     var rows = <TableRow>[];
-    for (var i=0; i < _currentMatrix.getRowsCount(); i++) {
+    for (var i = 0; i < _currentMatrix.getRowsCount(); i++) {
       rows.add(_buildTableRow(rowCount, columnCount, i));
     }
 
     return Table(
-        border: TableBorder.all(),
+        border: const TableBorder.symmetric(outside: BorderSide(width: 5,)),
         columnWidths: _columnWidthConfiguration(columnCount),
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         children: rows
@@ -392,9 +333,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
             )
           );
         } else if (columnIndex == _currentMatrix.getColumnsCount() - 2) {
-          cells.add(
-            _equalText(rowIndex, columnIndex)
-          );
+          cells.add(_equalText(rowIndex, columnIndex));
         } else {
           cells.add(
             (rowIndex == _currentMatrix.getRowsCount() - 1)
@@ -409,9 +348,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
           : _operatorDropDown(rowIndex, columnIndex)
         );
       } else {
-        cells.add(
-          Container()
-        );
+        cells.add(Container());
       }
     }
 
@@ -422,14 +359,20 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
 
   Map<int, TableColumnWidth> _columnWidthConfiguration(int columnCount) {
     var config = <int, TableColumnWidth>{};
-    for(var columnIndex = 0; columnIndex < _currentMatrix.getColumnsCount(); columnIndex++) {
+    var columsCount = _currentMatrix.getColumnsCount();
+    for(var columnIndex = 0; columnIndex < columsCount; columnIndex++) {
       if (columnIndex % 2 == 0) {
-        config.addAll({columnIndex: const FixedColumnWidth(100)}); //IntrinsicColumnWidth FlexColumnWidth()
+        config.addAll({columnIndex:  const FlexColumnWidth()});
       } else {
-        config.addAll({columnIndex: FixedColumnWidth((columnIndex == _currentMatrix.getColumnsCount() - 2) ? 30 : 60)});
+        config.addAll({columnIndex: FixedColumnWidth((columnIndex == columsCount - 2) ? 30 : 60)});
       }
     }
     return config;
+  }
+
+  int _tableMinWidth() {
+    var count = _currentMatrix.getColumnsCount();
+    return (count +1) * 60 + (count - 1) * 60 + 3;
   }
 
   Widget _equalText(int rowIndex, int columnIndex) {
@@ -463,26 +406,10 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
 
   void _resizeMatrix() {
     _currentMatrix = SymbolMatrixGrid(_rowCount, _columnCount, oldMatrix: _currentMatrix);
-    _buildtextEditingControllerArray(_rowCount, _columnCount);
+    _buildTextEditingControllerArray(_rowCount, _columnCount);
   }
-
-  Map<String, String> _getSubstitutions() {
-    var _substitutions = <String, String>{};
-    for (var entry in _currentSubstitutions) {
-      _substitutions.putIfAbsent(entry.key, () => entry.value);
-    }
-
-    if (_currentFromInput.isNotEmpty &&
-        _currentToInput.isNotEmpty) {
-      _substitutions.putIfAbsent(_currentFromInput, () => _currentToInput);
-    }
-
-    return _substitutions;
-  }
-
 
   Future<GCWAsyncExecuterParameters?> _buildJobData() async {
-
     List<String> _equations;
     switch (_currentMode) {
       case _ViewMode.Alphametic:
@@ -492,11 +419,10 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
       case _ViewMode.SymbolMatrixTextBox:
         _equations = SymbolMatrixString.buildEquations(_currentNumberGridInput);
       case _ViewMode.SymbolMatrixGrid:
-        var _substitutions = _getSubstitutions();
+        // var _substitutions = _getSubstitutions();
         _equations = _currentMatrix.buildEquations();
         break;
     }
-
     if (_equations.isEmpty) return null;
 
     return GCWAsyncExecuterParameters(VerbalArithmeticJobData(
@@ -524,10 +450,10 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     });
   }
 
-  void _buildtextEditingControllerArray(int rowCount, int columnCount) {
+  void _buildTextEditingControllerArray(int rowCount, int columnCount) {
     var matrix =<List<TextEditingController?>>[];
     for(var y = 0; y < _currentMatrix.getRowsCount(); y++) {
-      matrix.add(List<TextEditingController>.filled(_currentMatrix.getColumnsCount(), TextEditingController()));
+      matrix.add(List<TextEditingController?>.filled(_currentMatrix.getColumnsCount(), null));
     }
 
     for(var y = 0; y < min(matrix.length, _textEditingControllerArray.length); y++) {
@@ -537,13 +463,10 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
 
       for(var y = matrix.length; y < _textEditingControllerArray.length; y++) {
         for (var x = matrix[0].length; x < _textEditingControllerArray[y].length; x++) {
-          if (_textEditingControllerArray[y][x] != null) {
-            _textEditingControllerArray[y][x]?.dispose();
-          }
+          _textEditingControllerArray[y][x]?.dispose();
         }
       }
     }
-
     _textEditingControllerArray = matrix;
   }
 
@@ -551,7 +474,6 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     if (_textEditingControllerArray[rowIndex][columnIndex] == null) {
       _textEditingControllerArray[rowIndex][columnIndex] = TextEditingController();
     }
-
     _textEditingControllerArray[rowIndex][columnIndex]!.text = text;
 
     return _textEditingControllerArray[rowIndex][columnIndex];
