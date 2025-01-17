@@ -294,6 +294,8 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/mandalorian/
     - lib/tools/symbol_tables/_common/assets/marain/
     - lib/tools/symbol_tables/_common/assets/marain_v2/
+    - lib/tools/symbol_tables/_common/assets/mary_stuart_babington/
+    - lib/tools/symbol_tables/_common/assets/mary_stuart_castelnau/
     - lib/tools/symbol_tables/_common/assets/matoran/
     - lib/tools/symbol_tables/_common/assets/maya_calendar_haab_codices/
     - lib/tools/symbol_tables/_common/assets/maya_calendar_haab_inscripts/
