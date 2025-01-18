@@ -5,6 +5,7 @@ import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
+import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -78,7 +79,13 @@ class _NumberSequenceRangeState extends State<NumberSequenceRange> {
         ),
         GCWSubmitButton(onPressed: () {
           setState(() {
-            _calculateRange();
+            showGCWAlertDialog(
+                context,
+                i18n(context, 'numbersequence_range_hint_title'),
+                i18n(context, 'numbersequence_range_hint_description',),
+                    () async {
+                      _calculateRange();
+                }, cancelButton: true);
           });
         }),
         _currentOutput
