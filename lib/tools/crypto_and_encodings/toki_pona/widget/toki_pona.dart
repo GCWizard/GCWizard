@@ -1,0 +1,88 @@
+import 'package:flutter/material.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
+import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
+import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/toki_pona/logic/toki_pona.dart';
+
+class TokiPona extends StatefulWidget {
+  const TokiPona({Key? key}) : super(key: key);
+
+  @override
+  _TokiPonaState createState() => _TokiPonaState();
+}
+
+class _TokiPonaState extends State<TokiPona> {
+  String _currentInput = '';
+
+  GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
+  GCWSwitchPosition _currentCryptMode = GCWSwitchPosition.left;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        GCWTextField(
+          onChanged: (text) {
+            setState(() {
+              _currentInput = text;
+            });
+          },
+        ),
+        GCWTwoOptionsSwitch(
+          value: _currentMode,
+          onChanged: (mode) {
+            setState(() {
+              _currentMode = mode;
+            });
+          },
+        ),
+        GCWTwoOptionsSwitch(
+          value: _currentCryptMode,
+          title: i18n(context, 'tokipona_cryptmode'),
+          leftValue: i18n(context, 'tokipona_cryptmode_numbers'),
+          rightValue: i18n(context, 'tokipona_cryptmode_letters'),
+          onChanged: (mode) {
+            setState(() {
+              _currentCryptMode = mode;
+            });
+          },
+        ),
+        _buildOutput()
+      ],
+    );
+  }
+
+  TokiPonaMode _tokiPonaMode() {
+    return _currentCryptMode == GCWSwitchPosition.left ? TokiPonaMode.NUMBERS : TokiPonaMode.LETTERS;
+  }
+
+  Widget _buildOutput() {
+    Map<int, String>? outputs;
+    if (_currentMode == GCWSwitchPosition.left) {
+      outputs = encodeTokiPona(_currentInput, _tokiPonaMode());
+    } else {
+      outputs = decodeTokiPona(_currentInput, _tokiPonaMode());
+    }
+
+    if (outputs == null) return const GCWDefaultOutput();
+
+    if (outputs[10] == null || outputs[0] == outputs[10]) {
+      return GCWDefaultOutput(child: outputs[0]);
+    } else {
+      return Column(
+        children: [
+          GCWOutput(
+            title: i18n(context, 'common_output') + ': "BE QUICK" = 0',
+            child: outputs[0],
+          ),
+          GCWOutput(
+            title: i18n(context, 'common_output') + ': "BE QUICK" = 10',
+            child: outputs[10],
+          ),
+        ],
+      );
+    }
+  }
+}

@@ -94,6 +94,7 @@ import 'package:gc_wizard/application/category_views/selector_lists/sqrt5_select
 import 'package:gc_wizard/application/category_views/selector_lists/symbol_table_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/telegraph_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/teletypewriter_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/toki_pona_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/tomtom_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/uic_wagoncode_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/vanity_selection.dart';
@@ -271,6 +272,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/substitution/widget/substit
 import 'package:gc_wizard/tools/crypto_and_encodings/tap_code/widget/tap_code.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/tapir/widget/tapir.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/text_analysis/widget/text_analysis.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/toki_pona/widget/toki_pona.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/tomtom/widget/tomtom.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/trifid/widget/trifid.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/trithemius/widget/trithemius.dart';
@@ -1654,6 +1656,11 @@ void initializeRegistry(BuildContext context) {
         id: 'tomtom_selection',
         categories: const [ToolCategory.CRYPTOGRAPHY],
         searchKeys: const []),
+    GCWTool(
+        tool: const TokiPonaSelection(),
+        id: 'toki_pona_selection',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const ['symbol_toki_pona']),
     GCWTool(tool: const TowerOfHanoi(), id: 'tower_of_hanoi', categories: const [
       ToolCategory.GAMES
     ], searchKeys: const [
@@ -8194,6 +8201,72 @@ void initializeRegistry(BuildContext context) {
       stl._toolLicenseMyGeoToolsCodeTabellen,
       stl._toolLicenseGeocachingToolbox,
     ]),
+    GCWSymbolTableTool(symbolKey: 'toki_pona_letters_names', symbolSearchStrings: const [
+      'toki_pona',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'de.wikipedia.org and contributors',
+          title: 'Toki Pona',
+          sourceUrl:
+          'https://de.wikipedia.org/w/index.php?title=Toki_Pona&oldid=252164258',
+          licenseType: ToolLicenseType.CCBYSA4)
+    ]),
+    GCWSymbolTableTool(symbolKey: 'toki_pona_letters_symbols', symbolSearchStrings: const [
+      'toki_pona',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'de.wikipedia.org and contributors',
+          title: 'Toki Pona',
+          sourceUrl:
+          'https://de.wikipedia.org/w/index.php?title=Toki_Pona&oldid=252164258',
+          licenseType: ToolLicenseType.CCBYSA4)
+    ]),
+    GCWSymbolTableTool(symbolKey: 'toki_pona_numbers', symbolSearchStrings: const [
+      'toki_pona',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'de.wikipedia.org and contributors',
+          title: 'Toki Pona',
+          sourceUrl:
+          'https://de.wikipedia.org/w/index.php?title=Toki_Pona&oldid=252164258',
+          licenseType: ToolLicenseType.CCBYSA4)
+    ]),
+    GCWSymbolTableTool(symbolKey: 'toki_pona_numbers_sitelen_pona', symbolSearchStrings: const [
+      'toki_pona',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'de.wikipedia.org and contributors',
+          title: 'Toki Pona',
+          sourceUrl:
+          'https://de.wikipedia.org/w/index.php?title=Toki_Pona&oldid=252164258',
+          licenseType: ToolLicenseType.CCBYSA4)
+    ]),
+    GCWSymbolTableTool(symbolKey: 'toki_pona_numbers_sitelen_telo', symbolSearchStrings: const [
+      'toki_pona',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'de.wikipedia.org and contributors',
+          title: 'Toki Pona',
+          sourceUrl:
+          'https://de.wikipedia.org/w/index.php?title=Toki_Pona&oldid=252164258',
+          licenseType: ToolLicenseType.CCBYSA4)
+    ]),
+    GCWSymbolTableTool(symbolKey: 'toki_pona_numbers_sitelen_sitelen', symbolSearchStrings: const [
+      'toki_pona',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'de.wikipedia.org and contributors',
+          title: 'Toki Pona',
+          sourceUrl:
+          'https://de.wikipedia.org/w/index.php?title=Toki_Pona&oldid=252164258',
+          licenseType: ToolLicenseType.CCBYSA4)
+    ]),
     GCWSymbolTableTool(symbolKey: 'trafficsigns_germany', symbolSearchStrings: const [
       'symbol_trafficsigns_germany',
     ], licenses: [
@@ -8800,6 +8873,10 @@ void initializeRegistry(BuildContext context) {
     GCWTool(tool: const TomTom(), id: 'tomtom', searchKeys: const [
       'tomtom',
     ]),
+
+    //Toki Pona Selection **************************************************************************************************
+    GCWTool(tool: const TokiPona(), id: 'toki_pona', categories: const [
+    ], ),
 
     // UICWagonCodeSelection ***************************************************************************************
     GCWTool(tool: const UICWagonCode(), id: 'uic_wagoncode', searchKeys: const [

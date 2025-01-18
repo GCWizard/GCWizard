@@ -415,6 +415,12 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/tifinagh/
     - lib/tools/symbol_tables/_common/assets/tines/
     - lib/tools/symbol_tables/_common/assets/tll/
+    - lib/tools/symbol_tables/_common/assets/toki_pona_letters_names/
+    - lib/tools/symbol_tables/_common/assets/toki_pona_letters_symbols/
+    - lib/tools/symbol_tables/_common/assets/toki_pona_numbers/
+    - lib/tools/symbol_tables/_common/assets/toki_pona_numbers_sitelen_pona/
+    - lib/tools/symbol_tables/_common/assets/toki_pona_numbers_sitelen_telo/
+    - lib/tools/symbol_tables/_common/assets/toki_pona_numbers_sitelen_sitelen/
     - lib/tools/symbol_tables/_common/assets/tomtom/
     - lib/tools/symbol_tables/_common/assets/trafficsigns_germany/
     - lib/tools/symbol_tables/_common/assets/ulog/
