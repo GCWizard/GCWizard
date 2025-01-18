@@ -3646,7 +3646,7 @@
   "numbersequence_output_col_3": "Starts at",
   "numbersequence_notfound": "Not found",
   "numbersequence_range_hint_title": "Warning: Take care and check range",
-  "numbersequence_range_hint_description": "Due to range and number of digits per calculated number the calculation could last very long and/or crash the app dur to memory problems. Are you sure to do the calculation?",
+  "numbersequence_range_hint_description": "Due to range - you will produce %s1 lines with numbers - and number of digits per calculated number the calculation could last very long and/or crash the app due to memory problems. \n\nAre you sure to do the calculation?",
   "numeralbases_title": "Positional Numeral Systems - Radix",
   "numeralbases_description": "Converts numbers between different radix (e.g. hexadecimal or binary into decimal)",
   "numeralbases_example": "101010 → 42, 2A → 42",
