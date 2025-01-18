@@ -110,7 +110,7 @@ class _TokiPonaState extends State<TokiPona> {
     if (_currentMode == GCWSwitchPosition.left) {
       outputs = encodeTokiPona(_currentEncodeInput, _tokiPonaMode());
     } else {
-      outputs = decodeTokiPona(_currentDecodeInput, _tokiPonaMode());
+      outputs = decodeTokiPona(_currentDecodeInput);
     }
 
     return GCWDefaultOutput(child: outputs);

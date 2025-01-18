@@ -40,7 +40,7 @@ const Map<String, String> _KEYWORDS_LETTERS = {
   'w': 'waso',
 };
 
-String decodeTokiPona(String input, TokiPonaMode mode) {
+String decodeTokiPona(String input) {
   if (input.isEmpty) return '';
 
   Map<String, String> replaceMap = switchMapKeyValue(_KEYWORDS_LETTERS)
