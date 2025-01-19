@@ -319,6 +319,7 @@ import 'package:gc_wizard/tools/images_and_files/image_stretch_shrink/widget/ima
 import 'package:gc_wizard/tools/images_and_files/magic_eye_solver/widget/magic_eye_solver.dart';
 import 'package:gc_wizard/tools/images_and_files/qr_code/widget/qr_code.dart';
 import 'package:gc_wizard/tools/images_and_files/stegano/widget/stegano.dart';
+import 'package:gc_wizard/tools/images_and_files/tupper_formula/widget/tupper_formula.dart';
 import 'package:gc_wizard/tools/images_and_files/visual_cryptography/widget/visual_cryptography.dart';
 import 'package:gc_wizard/tools/general_tools/gcwizardscript/widget/gcwizard_script.dart';
 import 'package:gc_wizard/tools/science_and_technology/alcohol_mass/widget/alcohol_mass.dart';
@@ -1884,6 +1885,11 @@ void initializeRegistry(BuildContext context) {
       ToolCategory.SCIENCE_AND_TECHNOLOGY
     ], searchKeys: const [
       'tts',
+    ]),
+    GCWTool(tool: const TupperFormula(), id: 'tupper_formula', categories: const [
+      ToolCategory.IMAGES_AND_FILES,
+    ], searchKeys: const [
+      'tupper_formula',
     ]),
     GCWTool(tool: const UFI(), id: 'ufi', categories: const [
       ToolCategory.CRYPTOGRAPHY,
