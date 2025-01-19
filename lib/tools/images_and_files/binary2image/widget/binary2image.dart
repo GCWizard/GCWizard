@@ -32,7 +32,7 @@ class _Binary2ImageState extends State<Binary2Image> {
   String? _currentInput;
   Uint8List? _outData;
   String? _codeData;
-  int _currentLines = 1;
+  int _currentLines = 0;
   GCWSwitchPosition _imageFormat = GCWSwitchPosition.right;
   var _squareFormat = false;
   var _inverse = false;
