@@ -396,6 +396,8 @@
   "binary2image_description": "Converts binary data to an image",
   "binary2image_example": "100110100100 → image",
   "binary2image_squareFormat": "Square format",
+  "binary2image_customFormat" : "Custom format",
+  "binary2image_numberOfLines": "Lines",
   "binary2image_invers": "Invers",
   "binary2image_code_data": "Code data",
   "bloodalcoholcontent_title": "Blood Alcohol Content (BAC)",
