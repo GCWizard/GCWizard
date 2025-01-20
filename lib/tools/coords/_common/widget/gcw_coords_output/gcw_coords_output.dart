@@ -51,9 +51,11 @@ class _GCWCoordsOutputState extends State<GCWCoordsOutput> {
               Container(
                 padding: const EdgeInsets.only(bottom: 15),
                 child: GCWOutput(
-                  child: output is BaseCoordinate ? formatCoordOutput(output.toLatLng()!, output.format, widget.ellipsoid) : output,
+                  child: output is BaseCoordinate
+                      ? _formatedCoordOutput(output)
+                      : output,
                   copyText: output is BaseCoordinate
-                      ? formatCoordOutput(output.toLatLng()!, output.format, widget.ellipsoid, false).replaceAll('\n', ' ')
+                      ? _formatedCoordOutput(output, false).replaceAll('\n', ' ')
                       : ((output is String) || (output is int) || (output is double) ? output.toString() : null)
                 ),
               ));
@@ -108,6 +110,11 @@ class _GCWCoordsOutputState extends State<GCWCoordsOutput> {
           },
         ),
         children: _children);
+  }
+
+  String _formatedCoordOutput(BaseCoordinate output, [bool defaultPrecision = true]) {
+    var latLng = output.toLatLng();
+    return latLng == null ? '' : formatCoordOutput(latLng, output.format, widget.ellipsoid, defaultPrecision);
   }
 
   Future<void> _exportCoordinates(
