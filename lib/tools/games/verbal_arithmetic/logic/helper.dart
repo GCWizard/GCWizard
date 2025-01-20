@@ -86,6 +86,10 @@ class Equation {
     return formatedEquation.contains('+');
   }
 
+  bool get containsNumbers {
+    return RegExp(r'\d').hasMatch(formatedEquation);
+  }
+
   String _formatEquation() {
     const  operatorReplaceList = {
       '÷':'/'
