@@ -4,6 +4,7 @@ import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
+import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
@@ -12,6 +13,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/images_and_files/binary2image/logic/binary2image.dart';
 import 'package:gc_wizard/tools/images_and_files/qr_code/logic/qr_code.dart';
 import 'package:gc_wizard/tools/images_and_files/tupper_formula/logic/tupper_formula.dart';
+import 'package:gc_wizard/tools/images_and_files/tupper_formula/widget/tupper_formula_board.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
@@ -28,6 +30,8 @@ class TupperFormula extends StatefulWidget {
 
 class _TupperFormulaState extends State<TupperFormula> {
   var _currentInput = '';
+
+  TupperData _board = TupperData();
 
   Uint8List? _outData;
   String? _codeData;
@@ -54,9 +58,20 @@ class _TupperFormulaState extends State<TupperFormula> {
     return Column(
       children: <Widget>[
         _currentMode == GCWSwitchPosition.left
-            ? _buildWidgetCreateImage()
+            ? GCWPainterContainer(
+                child: TupperFormulaBoard(
+                  state: _board.currentBoard,
+                  onChanged: (newBoard) {
+                    setState(() {
+                      _board.reset(board: newBoard);
+                    });
+                  },
+                ),
+              )
             : GCWTextField(
-                inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9]')),],
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+                ],
                 labelText: 'k',
                 controller: _inputController,
                 onChanged: (value) {

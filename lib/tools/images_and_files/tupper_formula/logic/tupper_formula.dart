@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:gc_wizard/tools/science_and_technology/numeral_bases/logic/numeral_bases.dart';
 
 String kToImage(String kString) {
@@ -29,4 +31,40 @@ String kToImage(String kString) {
     imageBinaryRotaded.add(line);
   }
   return imageBinaryRotaded.join('\n');
+}
+
+class TupperData {
+  late List<List<List<bool>>> boards;
+  List<List<bool>> currentBoard = [];
+  var step = 0;
+
+  TupperData({List<List<bool>>? content}) {
+    _generateBoard(content);
+  }
+
+  void _generateBoard(List<List<bool>>? content) {
+    var _newBoard = List<List<bool>>.generate(17, (index) => List<bool>.generate(106, (index) => false));
+
+    if (content != null && content.isNotEmpty) {
+      for (int i = 0; i < min(17, content.length); i++) {
+        for (int j = 0; j < min(106, content[i].length); j++) {
+          _newBoard[i][j] = content[i][j];
+        }
+      }
+    }
+
+    boards = <List<List<bool>>>[];
+    boards.add(_newBoard);
+
+    currentBoard = List.from(_newBoard);
+    step = 0;
+  }
+
+  void reset({List<List<bool>>? board}) {
+    boards = <List<List<bool>>>[];
+    boards.add(board ?? List.from(currentBoard));
+
+    step = 0;
+  }
+
 }

@@ -1888,6 +1888,7 @@ void initializeRegistry(BuildContext context) {
     ]),
     GCWTool(tool: const TupperFormula(), id: 'tupper_formula', categories: const [
       ToolCategory.IMAGES_AND_FILES,
+      ToolCategory.CRYPTOGRAPHY,
     ], searchKeys: const [
       'tupper_formula',
     ]),
