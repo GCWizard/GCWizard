@@ -92,12 +92,14 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
             GCWDropDownMenuItem(
               value: _ViewMode.SymbolMatrixTextBox,
               child: 'SymbolMatrix TextBox',
-              subtitle: 'A*B=1428\nC-D=12\nA*C=840\nB-D=33',
+              subtitle: 'A * B = 1428\nC - D = 12\nA * C = 840\nB - D = 33',
+              maxSubtitleLines: 4
             ),
             GCWDropDownMenuItem(
               value: _ViewMode.SymbolMatrixGrid,
               child: 'SymbolMatrix Grid',
-              subtitle: ' A * B = 1428\n *   -\n C - D = 12\n =   =\n840 33',
+              subtitle: ' A * B = 1428\n  *    -\n C  - D = 12\n =    =\n840 33',
+                maxSubtitleLines: 5
             )
           ],
           onChanged: (value) {
