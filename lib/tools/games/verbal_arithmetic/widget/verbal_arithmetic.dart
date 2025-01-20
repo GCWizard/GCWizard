@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
@@ -13,6 +14,7 @@ import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
@@ -37,7 +39,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
   late TextEditingController _inputNumberGridController;
   late TextEditingController _inputAlphameticsController;
 
-  var _currentOutput = '';
+  Widget? _currentOutput;
   var _currentNumberGridInput = '';
   var _currentAlphameticsInput = '';
   var _currentMode = _ViewMode.Alphametic;
@@ -236,13 +238,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
   }
 
   Widget _buildOutput() {
-    return Column(
-      children: <Widget>[
-        GCWDefaultOutput(
-          child: _currentOutput
-        )
-      ],
-    );
+    return _currentOutput ?? const GCWDefaultOutput(child: '');
   }
 
   void _onDoCalculation() async {
@@ -359,6 +355,9 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     );
   }
 
+  static const double _OPERATORCOLUMNWIDTH = 60.0;
+  static const double _EQUALSIGNWIDTH = 30.0;
+
   Map<int, TableColumnWidth> _columnWidthConfiguration(int columnCount) {
     var config = <int, TableColumnWidth>{};
     var columsCount = _currentMatrix.getColumnsCount();
@@ -366,15 +365,17 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
       if (columnIndex % 2 == 0) {
         config.addAll({columnIndex:  const FlexColumnWidth()});
       } else {
-        config.addAll({columnIndex: FixedColumnWidth((columnIndex == columsCount - 2) ? 30 : 60)});
+        config.addAll({columnIndex: FixedColumnWidth((columnIndex == columsCount - 2)
+            ? _EQUALSIGNWIDTH
+            : _OPERATORCOLUMNWIDTH)});
       }
     }
     return config;
   }
 
-  int _tableMinWidth() {
+  double _tableMinWidth() {
     var count = _currentMatrix.getColumnsCount();
-    return (count +1) * 60 + (count - 1) * 60 + 3;
+    return (count + 1) * _OPERATORCOLUMNWIDTH + (count - 1) * _OPERATORCOLUMNWIDTH + _EQUALSIGNWIDTH;
   }
 
   Widget _equalText(int rowIndex, int columnIndex) {
@@ -421,7 +422,6 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
       case _ViewMode.SymbolMatrixTextBox:
         _equations = SymbolMatrixString.buildEquations(_currentNumberGridInput);
       case _ViewMode.SymbolMatrixGrid:
-        // var _substitutions = _getSubstitutions();
         _equations = _currentMatrix.buildEquations();
         break;
     }
@@ -434,17 +434,25 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
 
   void _showOutput(VerbalArithmeticOutput? output) {
     if (output == null) {
-      _currentOutput = ''; //invalid data
+      _currentOutput = null; //invalid data
       return;
     }
     if (output.error.isNotEmpty) {
-      _currentOutput = i18n(context, 'verbal_arithmetic_' + output.error.toLowerCase(),
-          ifTranslationNotExists: output.error);
+      _currentOutput = GCWDefaultOutput(child:
+        i18n(context, 'verbal_arithmetic_' + output.error.toLowerCase(), ifTranslationNotExists: output.error));
     } else if (output.solutions == null || output.solutions!.isEmpty) {
-      _currentOutput =  i18n(context, 'verbal_arithmetic_solutionnotfound');
+      _currentOutput =  GCWDefaultOutput(child: i18n(context, 'verbal_arithmetic_solutionnotfound'));
     } else {
-      _currentOutput = output.solutions.toString();
-      _currentOutput += '\n' + output.equations.map((equation) => equation.getOutput(output.solutions!)).join('\n');
+      var solution = output.solutions!.entries.toList();
+      solution.sort(((a, b) => a.key.compareTo(b.key)));
+      var _columnData = solution.map((entry) => [entry.key, entry.value]).toList();
+      _currentOutput = Column(
+          children: <Widget>[
+            GCWColumnedMultilineOutput(data: _columnData, flexValues: const [3, 1], copyColumn: 1, copyAll: true),
+            GCWDefaultOutput(child:
+                output.equations.map((equation) => equation.getOutput(output.solutions!)).join('\n')),
+          ]
+      );
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
