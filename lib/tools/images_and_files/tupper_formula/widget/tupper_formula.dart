@@ -1,6 +1,5 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
@@ -57,15 +56,16 @@ class _TupperFormulaState extends State<TupperFormula> {
         _currentMode == GCWSwitchPosition.left
             ? _buildWidgetCreateImage()
             : GCWTextField(
-          labelText: 'k',
-          controller: _inputController,
-          onChanged: (value) {
-            setState(() {
-              _currentInput = value;
-              _createOutput();
-            });
-          },
-        ),
+                inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9]')),],
+                labelText: 'k',
+                controller: _inputController,
+                onChanged: (value) {
+                  setState(() {
+                    _currentInput = value;
+                    _createOutput();
+                  });
+                },
+              ),
         GCWTwoOptionsSwitch(
           value: _currentMode,
           onChanged: (value) {
@@ -115,15 +115,21 @@ class _TupperFormulaState extends State<TupperFormula> {
 
     return Column(children: <Widget>[
       GCWImageView(imageData: GCWImageViewData(GCWFile(bytes: _outData!))),
-      _codeData != null ? GCWOutput(title: i18n(context, 'binary2image_code_data'), child: _codeData) : Container(),
+      _codeData != null
+          ? GCWOutput(
+              title: i18n(context, 'binary2image_code_data'), child: _codeData)
+          : Container(),
     ]);
   }
 
-
   Future<void> _exportFile(BuildContext context, Uint8List data) async {
     var fileType = getFileType(data);
-    await saveByteDataToFile(context, data, buildFileNameWithDate('img_', fileType)).then((value) {
-      var content = fileClass(fileType) == FileClass.IMAGE ? imageContent(context, data) : null;
+    await saveByteDataToFile(
+            context, data, buildFileNameWithDate('img_', fileType))
+        .then((value) {
+      var content = fileClass(fileType) == FileClass.IMAGE
+          ? imageContent(context, data)
+          : null;
       if (value) showExportedFileDialog(context, contentWidget: content);
     });
   }

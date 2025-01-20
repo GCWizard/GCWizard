@@ -2,8 +2,11 @@ import 'package:gc_wizard/tools/science_and_technology/numeral_bases/logic/numer
 
 String kToImage(String kString) {
   List<String> imageBinary = [];
+  List<String> imageBinaryRotaded = [];
 
   String binary = '';
+  String pixel = '';
+  String line = '';
 
   BigInt k = BigInt.parse(kString);
   BigInt n17 = BigInt.from(17);
@@ -16,5 +19,14 @@ String kToImage(String kString) {
     }
   }
 
-  return imageBinary.join('\n');
+  binary = imageBinary.join('');
+  for (int i = 0; i < 17; i++) {
+    line = '';
+    for (int j = 105; j >= 0; j--) {
+      pixel = binary[j * 17 + i];
+      line = line + pixel;
+    }
+    imageBinaryRotaded.add(line);
+  }
+  return imageBinaryRotaded.join('\n');
 }
