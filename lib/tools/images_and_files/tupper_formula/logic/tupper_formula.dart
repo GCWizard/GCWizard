@@ -34,9 +34,7 @@ String kToImage(String kString) {
 }
 
 class TupperData {
-  late List<List<List<bool>>> boards;
   List<List<bool>> currentBoard = [];
-  var step = 0;
 
   TupperData({List<List<bool>>? content}) {
     _generateBoard(content);
@@ -53,18 +51,16 @@ class TupperData {
       }
     }
 
-    boards = <List<List<bool>>>[];
-    boards.add(_newBoard);
-
     currentBoard = List.from(_newBoard);
-    step = 0;
   }
 
   void reset({List<List<bool>>? board}) {
-    boards = <List<List<bool>>>[];
-    boards.add(board ?? List.from(currentBoard));
-
-    step = 0;
+    currentBoard = board!;
   }
 
+  BigInt getK() {
+    BigInt k = BigInt.two;
+    print(currentBoard);
+    return k;
+  }
 }

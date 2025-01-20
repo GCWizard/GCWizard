@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
-import 'package:gc_wizard/application/theme/theme_colors.dart';
-import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
+import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
 import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
@@ -36,12 +35,12 @@ class _TupperFormulaState extends State<TupperFormula> {
   Uint8List? _outData;
   String? _codeData;
 
+  BigInt _currentK = BigInt.zero;
+
   late TextEditingController _inputController;
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
 
-  var lastCurrentInputLength = 0;
-
-  @override
+   @override
   void initState() {
     super.initState();
     _inputController = TextEditingController(text: _currentInput);
@@ -58,15 +57,24 @@ class _TupperFormulaState extends State<TupperFormula> {
     return Column(
       children: <Widget>[
         _currentMode == GCWSwitchPosition.left
-            ? GCWPainterContainer(
-                child: TupperFormulaBoard(
-                  state: _board.currentBoard,
-                  onChanged: (newBoard) {
+            ? Column(
+                children: [
+                  GCWPainterContainer(
+                    child: TupperFormulaBoard(
+                      state: _board.currentBoard,
+                      onChanged: (newBoard) {
+                        setState(() {
+                          _board.reset(board: newBoard);
+                        });
+                      },
+                    ),
+                  ),
+                  GCWSubmitButton(onPressed: () {
                     setState(() {
-                      _board.reset(board: newBoard);
+                      _currentK = _board.getK();
                     });
-                  },
-                ),
+                  },),
+                ],
               )
             : GCWTextField(
                 inputFormatters: [
@@ -77,7 +85,7 @@ class _TupperFormulaState extends State<TupperFormula> {
                 onChanged: (value) {
                   setState(() {
                     _currentInput = value;
-                    _createOutput();
+                    _createImageOutput();
                   });
                 },
               ),
@@ -89,25 +97,23 @@ class _TupperFormulaState extends State<TupperFormula> {
             });
           },
         ),
-        GCWDefaultOutput(
-            trailing: GCWIconButton(
-              icon: Icons.save,
-              size: IconButtonSize.SMALL,
-              iconColor: _outData == null ? themeColors().inactive() : null,
-              onPressed: () {
-                _outData == null ? null : _exportFile(context, _outData!);
-              },
-            ),
-            child: _buildOutput())
+        _buildOutput(),
       ],
     );
   }
 
-  Widget _buildWidgetCreateImage() {
-    return Container();
+  Widget _buildOutput() {
+     if (_currentMode == GCWSwitchPosition.right) {
+        return GCWDefaultOutput(
+            child: _buildImageOutput());
+     } else {
+        return GCWDefaultOutput(
+          child: _currentK.toString(),
+        );
+     }
   }
 
-  void _createOutput() {
+  void _createImageOutput() {
     _outData = null;
     _codeData = null;
 
@@ -125,7 +131,7 @@ class _TupperFormulaState extends State<TupperFormula> {
     });
   }
 
-  Widget _buildOutput() {
+  Widget _buildImageOutput() {
     if (_outData == null) return Container();
 
     return Column(children: <Widget>[
