@@ -55,12 +55,49 @@ class TupperData {
   }
 
   void reset({List<List<bool>>? board}) {
-    currentBoard = board!;
+    if (board == null) {
+      currentBoard = List.from(List<List<bool>>.generate(17, (index) => List<bool>.generate(106, (index) => false)));
+    } else {
+      currentBoard = board;
+    }
   }
 
   BigInt getK() {
-    BigInt k = BigInt.two;
-    print(currentBoard);
+    BigInt k = BigInt.zero;
+
+    List<String> boardBinary = [];
+    String line = '';
+    for (List<bool> row in currentBoard) {
+      line = '';
+      for (bool column in row) {
+        if (column) {
+          line = line + '1';
+        } else {
+          line = line + '0';
+        }
+      }
+    boardBinary.add(line);
+    }
+
+    String binary = boardBinary.join('');
+    String pixel = '';
+    List<String> boardBinaryRotated = [];
+    for (int i = 105; i >= 0; i--) {
+      line = '';
+      for (int j = 0; j < 17; j++) {
+        pixel = binary[i + j * 106];
+        line = line + pixel;
+      }
+      boardBinaryRotated.add(line);
+    }
+    binary = boardBinaryRotated.join('');
+
+    String decimal = convertBase(binary, 2, 10);
+
+    k = BigInt.parse(decimal);
+
+    k = k * BigInt.from(17);
+
     return k;
   }
 }

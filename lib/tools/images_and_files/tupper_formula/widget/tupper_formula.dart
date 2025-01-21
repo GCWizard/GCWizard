@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
-import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
+import 'package:gc_wizard/application/theme/theme_colors.dart';
+import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
 import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
@@ -40,7 +41,7 @@ class _TupperFormulaState extends State<TupperFormula> {
   late TextEditingController _inputController;
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
 
-   @override
+  @override
   void initState() {
     super.initState();
     _inputController = TextEditingController(text: _currentInput);
@@ -69,11 +70,34 @@ class _TupperFormulaState extends State<TupperFormula> {
                       },
                     ),
                   ),
-                  GCWSubmitButton(onPressed: () {
-                    setState(() {
-                      _currentK = _board.getK();
-                    });
-                  },),
+                  Row(children: [
+                    Expanded(
+                      child: GCWIconButton(
+                        iconColor: themeColors().dialogText(),
+                        backgroundColor: themeColors().dialog(),
+                        size: IconButtonSize.SMALL,
+                        icon: Icons.calculate_outlined,
+                        onPressed: () {
+                          setState(() {
+                            _currentK = _board.getK();
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: GCWIconButton(
+                        iconColor: themeColors().dialogText(),
+                        backgroundColor: themeColors().dialog(),
+                        size: IconButtonSize.SMALL,
+                        icon: Icons.clear,
+                        onPressed: () {
+                          setState(() {
+                            _board.reset();
+                          });
+                        },
+                      ),
+                    )
+                  ]),
                 ],
               )
             : GCWTextField(
@@ -103,14 +127,13 @@ class _TupperFormulaState extends State<TupperFormula> {
   }
 
   Widget _buildOutput() {
-     if (_currentMode == GCWSwitchPosition.right) {
-        return GCWDefaultOutput(
-            child: _buildImageOutput());
-     } else {
-        return GCWDefaultOutput(
-          child: _currentK.toString(),
-        );
-     }
+    if (_currentMode == GCWSwitchPosition.right) {
+      return GCWDefaultOutput(child: _buildImageOutput());
+    } else {
+      return GCWDefaultOutput(
+        child: _currentK.toString(),
+      );
+    }
   }
 
   void _createImageOutput() {
