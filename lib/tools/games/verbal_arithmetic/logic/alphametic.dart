@@ -13,12 +13,17 @@ Future<VerbalArithmeticOutput?> solveAlphameticsAsync(GCWAsyncExecuterParameters
     return null;
   }
   var data = jobData.parameters as VerbalArithmeticJobData;
-  var output = solveAlphametic(data.equations.first, sendAsyncPort: jobData.sendAsyncPort);
 
+  var output = solveAlphametic(data.equations.first, sendAsyncPort: jobData.sendAsyncPort);
+  _allSolutions = data.allSolutions;
+  _allowLeadingZeros = data.allowLeadingZeros;
   if (jobData.sendAsyncPort != null) jobData.sendAsyncPort!.send(output);
 
   return output;
 }
+
+bool _allSolutions = false;
+bool _allowLeadingZeros = false;
 
 VerbalArithmeticOutput? solveAlphametic(String equation, {SendPort? sendAsyncPort}) {
   var _equation = Equation(equation, singleLetter: true);
@@ -74,7 +79,7 @@ HashMap<String, int>? _permuteAndEvaluate(List<String> letters, String formula, 
     }
 
     // Ausschließen von Permutationen mit führenden Nullen
-    if (leadingLetters.any((letter) => mapping[letter] == 0)) {
+    if (!_allowLeadingZeros && leadingLetters.any((letter) => mapping[letter] == 0)) {
       continue;
     }
 

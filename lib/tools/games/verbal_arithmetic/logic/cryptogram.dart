@@ -131,9 +131,9 @@ VerbalArithmeticOutput? _solveCryptogram(List<Equation> equations, SendPort? sen
   var mapping = HashMap<String, int>();
   // Initiale Aufruf der Lösungssuche
   var result = solve(mapping, variableList, range);
-  var range_length =range.length;
-  var variableList_length = variableList.length;
-  print('Keine Lösung gefunden:  $currentCombination% $totalPermutations $range_length $range_length $variableList_length');
+  // var range_length =range.length;
+  // var variableList_length = variableList.length;
+  // print('Keine Lösung gefunden:  $currentCombination% $totalPermutations $range_length $range_length $variableList_length');
   return VerbalArithmeticOutput(equations: equations, solutions: mapping, error: '');
 }
 

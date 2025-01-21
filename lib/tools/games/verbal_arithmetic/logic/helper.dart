@@ -9,10 +9,14 @@ import 'package:utility/utility.dart';
 class VerbalArithmeticJobData {
   final List<String> equations;
   final Map<String, String> substitutions;
+  final bool allSolutions;
+  final bool allowLeadingZeros;
 
   VerbalArithmeticJobData({
     required this.equations,
     required this.substitutions,
+    required this.allSolutions,
+    required this.allowLeadingZeros,
   });
 }
 

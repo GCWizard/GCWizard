@@ -57,8 +57,10 @@ bool __solveAlphametics(List<String> leftSide, String rightSide, List<String> le
     if (usedDigits.contains(digit)) continue;
 
     // Vermeidung führender Nullen.
-    if (digit == 0 && (leftSide.any((word) => word.startsWith(currentLetter)) || rightSide.startsWith(currentLetter))) {
-      continue;
+    if (digit == 0 && !_allowLeadingZeros) {
+      if (leftSide.any((word) => word.startsWith(currentLetter)) || rightSide.startsWith(currentLetter)) {
+        continue;
+      }
     }
     _count++;
     _sendProgress();
