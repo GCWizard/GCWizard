@@ -1903,7 +1903,14 @@ void initializeRegistry(BuildContext context) {
               title: "Tupper's self-referential formula",
               sourceUrl:
                   'https://en.wikipedia.org/w/index.php?title=Tupper%27s_self-referential_formula&oldid=1268384498',
-              licenseType: ToolLicenseType.CCBYSA4)
+              licenseType: ToolLicenseType.CCBYSA4),
+          ToolLicenseOnlineArticle(
+              context: context,
+              author: 'Jeff Tupper',
+              title: "Reliable Two-Dimensional Graphing Methods for Mathematical Formulae with Two Free Variables",
+              sourceUrl:
+              'https://web.archive.org/web/20250122201114/https://www.dgp.toronto.edu/~mooncake/papers/SIGGRAPH2001_Tupper.pdf',
+              )
         ]),
     GCWTool(tool: const UFI(), id: 'ufi', categories: const [
       ToolCategory.CRYPTOGRAPHY,
