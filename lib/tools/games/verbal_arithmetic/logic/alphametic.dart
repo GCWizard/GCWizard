@@ -49,15 +49,33 @@ VerbalArithmeticOutput? _solveAlphametic(Equation equation, {SendPort? sendAsync
   var letterList = equation.usedMembers.toList();
 
   // Generate permutations and evaluate each combination
-  var mapping = _permuteAndEvaluate(letterList, equation.equation, equation.leadingLetters, sendAsyncPort);
+  var mappings = _permuteAndEvaluate(letterList, equation.equation, equation.leadingLetters, sendAsyncPort);
+  var solutions = <HashMap<String, int>>[];
+  for (var mapping in mappings) {
+    if (mapping != null) {
+      solutions.add(mapping);
 
-  return VerbalArithmeticOutput(equations: [equation], solutions: mapping == null ? [] : [mapping], error: '');
+      var _equation = equation.formatedEquation;
+      print('Lösung gefunden: $_equation. $mapping');
+
+      if (!_allSolutions) {
+        break;
+        //return VerbalArithmeticOutput(equations: [equation], solutions: solutions, error: '');
+      }
+    }
+  }
+
+  if (solutions.isEmpty) {
+    var _equation = equation.formatedEquation;
+    print("Keine Lösung gefunden. $_equation");
+  }
+  return VerbalArithmeticOutput(equations: [equation], solutions: solutions, error: '');
 }
 
 
 // Funktion zum Generieren von Permutationen und gleichzeitiger Auswertung
-HashMap<String, int>? _permuteAndEvaluate(List<String> letters, String formula, Set<String> leadingLetters,
-     SendPort? sendAsyncPort) {
+Iterable<HashMap<String, int>?> _permuteAndEvaluate(List<String> letters, String formula, Set<String> leadingLetters,
+     SendPort? sendAsyncPort) sync* {
   var availableDigits = List.generate(10, (i) => i);
   var allPermutations = _generatePermutations(letters.length, availableDigits);
 
@@ -85,14 +103,14 @@ HashMap<String, int>? _permuteAndEvaluate(List<String> letters, String formula, 
 
     // Check if this permutation solves the formula
     if (_evaluateFormula(formula, mapping)) {
-      print("Lösung gefunden: $formula $mapping");
-      return mapping;
+      // print("Lösung gefunden: $formula $mapping");
+      yield mapping;
     }
   }
 
   // Falls keine Lösung gefunden wird
-  print("Keine Lösung gefunden. $formula");
-  return null;
+  // print("Keine Lösung gefunden. $formula");
+  yield null;
 }
 
 // Funktion zur Generierung aller Permutationen
@@ -143,6 +161,7 @@ num _eval(String expression) {
 
 
 void main() {
+  _allSolutions = true;
   var startTime = DateTime.now();
   // Beispiel: SEND + MORE = MONEY
   solveAlphametic("SEND+MORE=MONEY");

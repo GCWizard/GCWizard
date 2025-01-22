@@ -23,17 +23,37 @@ VerbalArithmeticOutput? _solveAlphameticAdd(Equation equation, {SendPort? sendAs
   _nextSendStep = _stepSize;
   _sendAsyncPort = sendAsyncPort;
 
-  var _equation = equation.formatedEquation;
-  if (__solveAlphametics(leftSide, rightSide, letters, digits, mapping, usedDigits) != null) {
-    print('Lösung gefunden: $_equation. $mapping');
-    // var result = mapping.forEach((letter, digit) {
-    //   print('$letter = $digit');
-    // });
-    return VerbalArithmeticOutput(equations: [equation], solutions: [mapping], error: '');
-  } else {
-    print('Keine Lösung gefunden. $_equation');
-    return VerbalArithmeticOutput(equations: [equation], solutions: [], error: '');
+  // var _equation = equation.formatedEquation;
+  // if (__solveAlphametics(leftSide, rightSide, letters, digits, mapping, usedDigits) != null) {
+  //   print('Lösung gefunden: $_equation. $mapping');
+  //   // var result = mapping.forEach((letter, digit) {
+  //   //   print('$letter = $digit');
+  //   // });
+  //   return VerbalArithmeticOutput(equations: [equation], solutions: [mapping], error: '');
+  // } else {
+  //   print('Keine Lösung gefunden. $_equation');
+  //   return VerbalArithmeticOutput(equations: [equation], solutions: [], error: '');
+  // }
+  var mappings = __solveAlphametics(leftSide, rightSide, letters, digits, mapping, usedDigits);
+  var solutions = <HashMap<String, int>>[];
+  for (var mapping in mappings) {
+    if (mapping != null) {
+      solutions.add(mapping as HashMap<String, int>);
+
+      var _equation = equation.formatedEquation;
+      print('Lösung gefunden: $_equation. $mapping');
+
+      if (!_allSolutions) {
+        break;
+        //return VerbalArithmeticOutput(equations: [equation], solutions: solutions, error: '');
+      }
+    }
   }
+  if (solutions.isEmpty) {
+    var _equation = equation.formatedEquation;
+    print("Keine Lösung gefunden. $_equation");
+  }
+  return VerbalArithmeticOutput(equations: [equation], solutions: solutions, error: '');
 }
 
 // Calculating the number of possible permutations
@@ -44,10 +64,10 @@ int _nextSendStep = 1;
 SendPort? _sendAsyncPort;
 
 // Funktion zum Lösen eines Alphametics mit Backtracking und Optimierungen.
-Map<String, int>? __solveAlphametics(List<String> leftSide, String rightSide, List<String> letters, List<int> digits,
-    Map<String, int> letterToDigit, Set<int> usedDigits) {
+Iterable<Map<String, int>?> __solveAlphametics(List<String> leftSide, String rightSide, List<String> letters, List<int> digits,
+    Map<String, int> letterToDigit, Set<int> usedDigits) sync* {
   if (letters.isEmpty) {
-    return _isValid(letterToDigit, leftSide, rightSide) ? letterToDigit : null;
+    yield _isValid(letterToDigit, leftSide, rightSide) ? letterToDigit : null;
   }
 
   String currentLetter = letters.first;
@@ -68,8 +88,11 @@ Map<String, int>? __solveAlphametics(List<String> leftSide, String rightSide, Li
     letterToDigit[currentLetter] = digit;
     usedDigits.add(digit);
 
-    if (__solveAlphametics(leftSide, rightSide, letters, digits, letterToDigit, usedDigits) != null) {
-      return letterToDigit;
+    //ToDo buggy null wird nicht als falsch erkannt
+    if (__solveAlphametics(leftSide, rightSide, letters, digits, letterToDigit, usedDigits).isNotEmpty) {
+      yield _isValid(letterToDigit, leftSide, rightSide) ? letterToDigit : null;
+    } else {
+      letterToDigit = letterToDigit;
     }
 
     letterToDigit.remove(currentLetter);
@@ -77,7 +100,7 @@ Map<String, int>? __solveAlphametics(List<String> leftSide, String rightSide, Li
   }
 
   letters.insert(0, currentLetter);
-  return null;
+  yield null;
 }
 
 void _sendProgress() {
