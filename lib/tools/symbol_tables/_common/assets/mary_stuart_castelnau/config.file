@@ -1,7 +1,5 @@
 {
 	"translate" : ["repeat",
-	"delete",
-	"null",
-	"fullstop"
+	"delete"
 	]
 }
