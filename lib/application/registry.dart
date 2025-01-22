@@ -1886,12 +1886,25 @@ void initializeRegistry(BuildContext context) {
     ], searchKeys: const [
       'tts',
     ]),
-    GCWTool(tool: const TupperFormula(), id: 'tupper_formula', categories: const [
-      ToolCategory.IMAGES_AND_FILES,
-      ToolCategory.CRYPTOGRAPHY,
-    ], searchKeys: const [
-      'tupper_formula',
-    ]),
+    GCWTool(
+        tool: const TupperFormula(),
+        id: 'tupper_formula',
+        categories: const [
+          ToolCategory.IMAGES_AND_FILES,
+          ToolCategory.CRYPTOGRAPHY,
+        ],
+        searchKeys: const [
+          'tupper_formula',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+              context: context,
+              author: 'en.wikipedia.org and contributors',
+              title: "Tupper's self-referential formula",
+              sourceUrl:
+                  'https://en.wikipedia.org/w/index.php?title=Tupper%27s_self-referential_formula&oldid=1268384498',
+              licenseType: ToolLicenseType.CCBYSA4)
+        ]),
     GCWTool(tool: const UFI(), id: 'ufi', categories: const [
       ToolCategory.CRYPTOGRAPHY,
       ToolCategory.SCIENCE_AND_TECHNOLOGY
