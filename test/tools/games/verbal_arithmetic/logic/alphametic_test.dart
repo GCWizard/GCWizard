@@ -33,7 +33,7 @@ void main() {
       test('formulas: ${elem['input']}', () {
         var _actual = solveAlphametic(elem['input'] as String);
         if (_actual != null) {
-          var result = (_actual.solutions == null) ? _actual.error : _actual.equations.first.getOutput(_actual.solutions!);
+          var result = (_actual.solutions.isEmpty) ? _actual.error : _actual.equations.first.getOutput(_actual.solutions.first);
           expect(result, elem['expectedOutput']);
         } else {
           expect(_actual, elem['expectedOutput']);

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/cryptogram.dart';
 
@@ -5,8 +7,8 @@ void main() {
 
   group("VerbalArithmetic.solveSymbolArithmetic:", () {
     List<Map<String, dynamic>> _inputsToExpected = [
-      {'formulas' : {''}.toList(), 'expectedOutput' : {'state': 'error', 'output': [{'result': '', 'state': 'error'}]}},
-      {'formulas' : {' '}.toList(), 'expectedOutput' : {'state': 'error', 'output': [{'result': '', 'state': 'error'}]}},
+      {'formulas' : {''}.toList(), 'expectedOutput' : <HashMap<String, int>>[]},
+      {'formulas' : {' '}.toList(), 'expectedOutput' : <HashMap<String, int>>[]},
       {'formulas' : {'E-(2)'}.toList(), 'expectedOutput' : {'E': 2}},
       {'formulas' : {'E'}.toList(), 'expectedOutput' : {'E': 0}},
       // {'formulas' : {'baum*schneemann+stern-schlitten*baum-glocken=41',
@@ -56,8 +58,10 @@ void main() {
     for (var elem in _inputsToExpected) {
       test('formulas: ${elem['formulas']}', () {
         var _actual = solveCryptogram(elem['formulas'] as List<String>);
-        if (_actual != null) {
-          expect(_actual.solutions, elem['expectedOutput']);
+        if (_actual != null && _actual.solutions.isNotEmpty) {
+          expect(_actual.solutions.first, elem['expectedOutput']);
+        } else if (_actual != null && _actual.solutions.isEmpty) {
+            expect(_actual.solutions, elem['expectedOutput']);
         } else {
           expect(_actual, elem['expectedOutput']);
         }

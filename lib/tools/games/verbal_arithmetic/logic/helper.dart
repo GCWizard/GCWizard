@@ -71,7 +71,11 @@ class Equation {
         formatedEquation = members[0] + '-(' + members[1]+ ')';
       }
       token = parser.lex.tokenize(formatedEquation);
-      exp = parser.parse(formatedEquation);
+      if (formatedEquation.isNotEmpty) {
+        exp = parser.parse(formatedEquation);
+      } else {
+        validFormula = false;
+      }
 
       usedMembers = token.where((t) => t.type == TokenType.VAR).map((t) => t.text).toSet();
     }
@@ -102,7 +106,7 @@ class Equation {
     for (var op in operatorReplaceList.entries) {
       out = out.replaceAll(op.key, op.value);
     }
-    return out;
+    return out.trim();
   }
 
   String getOutput(HashMap<String, int> result) {

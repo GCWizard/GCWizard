@@ -82,7 +82,7 @@ VerbalArithmeticOutput? _solveCryptogram(List<Equation> equations, SendPort? sen
   }
 
   // Rekursive Funktion zur Suche nach Lösungen (Branch-and-Bound)
-  bool solve(HashMap<String, int> assignedValues, List<String> remainingVariables, List<int> availableValues) {
+  HashMap<String, int>? solve(HashMap<String, int> assignedValues, List<String> remainingVariables, List<int> availableValues) {
     // Wenn alle Variablen belegt sind, überprüfe die Gleichungen
     if (remainingVariables.isEmpty) {
 
@@ -91,9 +91,9 @@ VerbalArithmeticOutput? _solveCryptogram(List<Equation> equations, SendPort? sen
         var _progress = (currentCombination / totalPermutations * 100).toStringAsFixed(2);
         // print("Fortschritt: $_progress%");
         print('Lösung gefunden: $equation $assignedValues $currentCombination% $totalPermutations');
-        return true;
+        return assignedValues;
       }
-      return false;
+      return null;
     }
 
     // Nächste Variable auswählen
@@ -115,8 +115,8 @@ VerbalArithmeticOutput? _solveCryptogram(List<Equation> equations, SendPort? sen
       }
 
       // Rekursion für den nächsten Schritt
-      if (solve(assignedValues, remainingVariables, availableValues.where((v) => v != value).toList())) {
-        return true;
+      if (solve(assignedValues, remainingVariables, availableValues.where((v) => v != value).toList()) != null) {
+        return assignedValues;
       }
 
       // Rückgängigmachen der Zuweisung, falls kein Erfolg
@@ -125,16 +125,15 @@ VerbalArithmeticOutput? _solveCryptogram(List<Equation> equations, SendPort? sen
 
     // Keine Lösung gefunden in diesem Pfad
     remainingVariables.insert(0, variable);
-    return false;
+    return null;
   }
 
-  var mapping = HashMap<String, int>();
   // Initiale Aufruf der Lösungssuche
-  var result = solve(mapping, variableList, range);
+  var mapping = solve(HashMap<String, int>(), variableList, range);
   // var range_length =range.length;
   // var variableList_length = variableList.length;
   // print('Keine Lösung gefunden:  $currentCombination% $totalPermutations $range_length $range_length $variableList_length');
-  return VerbalArithmeticOutput(equations: equations, solutions: [mapping], error: '');
+  return VerbalArithmeticOutput(equations: equations, solutions: mapping == null ? [] : [mapping], error: '');
 }
 
 int _calculatePossibilities(int totalNumbers, int variableCount) {

@@ -24,7 +24,7 @@ VerbalArithmeticOutput? _solveAlphameticAdd(Equation equation, {SendPort? sendAs
   _sendAsyncPort = sendAsyncPort;
 
   var _equation = equation.formatedEquation;
-  if (__solveAlphametics(leftSide, rightSide, letters, digits, mapping, usedDigits)) {
+  if (__solveAlphametics(leftSide, rightSide, letters, digits, mapping, usedDigits) != null) {
     print('Lösung gefunden: $_equation. $mapping');
     // var result = mapping.forEach((letter, digit) {
     //   print('$letter = $digit');
@@ -44,10 +44,10 @@ int _nextSendStep = 1;
 SendPort? _sendAsyncPort;
 
 // Funktion zum Lösen eines Alphametics mit Backtracking und Optimierungen.
-bool __solveAlphametics(List<String> leftSide, String rightSide, List<String> letters, List<int> digits,
+Map<String, int>? __solveAlphametics(List<String> leftSide, String rightSide, List<String> letters, List<int> digits,
     Map<String, int> letterToDigit, Set<int> usedDigits) {
   if (letters.isEmpty) {
-    return _isValid(letterToDigit, leftSide, rightSide);
+    return _isValid(letterToDigit, leftSide, rightSide) ? letterToDigit : null;
   }
 
   String currentLetter = letters.first;
@@ -68,8 +68,8 @@ bool __solveAlphametics(List<String> leftSide, String rightSide, List<String> le
     letterToDigit[currentLetter] = digit;
     usedDigits.add(digit);
 
-    if (__solveAlphametics(leftSide, rightSide, letters, digits, letterToDigit, usedDigits)) {
-      return true;
+    if (__solveAlphametics(leftSide, rightSide, letters, digits, letterToDigit, usedDigits) != null) {
+      return letterToDigit;
     }
 
     letterToDigit.remove(currentLetter);
@@ -77,7 +77,7 @@ bool __solveAlphametics(List<String> leftSide, String rightSide, List<String> le
   }
 
   letters.insert(0, currentLetter);
-  return false;
+  return null;
 }
 
 void _sendProgress() {
