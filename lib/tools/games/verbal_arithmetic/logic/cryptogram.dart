@@ -22,7 +22,7 @@ VerbalArithmeticOutput? solveCryptogram(List<String> equations, {SendPort? sendA
   var _equations = equations.map((formula) => Equation(formula)).toList();
   var notValid = _equations.any((formula) => !formula.validFormula);
   if (notValid) {
-    return VerbalArithmeticOutput(equations: _equations, solutions: null, error: 'InvalidFormula');
+    return VerbalArithmeticOutput(equations: _equations, solutions: [], error: 'InvalidFormula');
   }
   return _solveCryptogram(_equations, sendAsyncPort);
 }
@@ -134,7 +134,7 @@ VerbalArithmeticOutput? _solveCryptogram(List<Equation> equations, SendPort? sen
   // var range_length =range.length;
   // var variableList_length = variableList.length;
   // print('Keine Lösung gefunden:  $currentCombination% $totalPermutations $range_length $range_length $variableList_length');
-  return VerbalArithmeticOutput(equations: equations, solutions: mapping, error: '');
+  return VerbalArithmeticOutput(equations: equations, solutions: [mapping], error: '');
 }
 
 int _calculatePossibilities(int totalNumbers, int variableCount) {

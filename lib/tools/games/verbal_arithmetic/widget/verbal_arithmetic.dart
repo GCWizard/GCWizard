@@ -490,17 +490,21 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     if (output.error.isNotEmpty) {
       _currentOutput = GCWDefaultOutput(child:
         i18n(context, 'verbal_arithmetic_' + output.error.toLowerCase(), ifTranslationNotExists: output.error));
-    } else if (output.solutions == null || output.solutions!.isEmpty) {
+    } else if (output.solutions.isEmpty) {
       _currentOutput =  GCWDefaultOutput(child: i18n(context, 'verbal_arithmetic_solutionnotfound'));
     } else {
-      var solution = output.solutions!.entries.toList();
+      var solution = output.solutions.first.entries.toList();
       solution.sort(((a, b) => a.key.compareTo(b.key)));
       var _columnData = solution.map((entry) => [entry.key, entry.value]).toList();
+
+      var equations = output.solutions.map((solution) {
+        return output.equations.map((equation) => equation.getOutput(solution)).join('\n');
+      }).join('\n\n');
+
       _currentOutput = Column(
           children: <Widget>[
             GCWColumnedMultilineOutput(data: _columnData, flexValues: const [3, 1], copyColumn: 1, copyAll: true),
-            GCWDefaultOutput(child:
-                output.equations.map((equation) => equation.getOutput(output.solutions!)).join('\n')),
+            GCWDefaultOutput(child: equations),
           ]
       );
     }

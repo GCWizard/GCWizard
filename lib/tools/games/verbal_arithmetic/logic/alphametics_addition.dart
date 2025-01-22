@@ -29,10 +29,10 @@ VerbalArithmeticOutput? _solveAlphameticAdd(Equation equation, {SendPort? sendAs
     // var result = mapping.forEach((letter, digit) {
     //   print('$letter = $digit');
     // });
-    return VerbalArithmeticOutput(equations: [equation], solutions: mapping, error: '');
+    return VerbalArithmeticOutput(equations: [equation], solutions: [mapping], error: '');
   } else {
     print('Keine Lösung gefunden. $_equation');
-    return VerbalArithmeticOutput(equations: [equation], solutions: null, error: '');
+    return VerbalArithmeticOutput(equations: [equation], solutions: [], error: '');
   }
 }
 

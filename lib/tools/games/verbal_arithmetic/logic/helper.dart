@@ -22,7 +22,7 @@ class VerbalArithmeticJobData {
 
 class VerbalArithmeticOutput {
   final List<Equation> equations;
-  final HashMap<String, int>? solutions;
+  final List<HashMap<String, int>> solutions;
   final String error;
 
   VerbalArithmeticOutput({

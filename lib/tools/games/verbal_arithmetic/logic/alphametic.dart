@@ -28,12 +28,12 @@ bool _allowLeadingZeros = false;
 VerbalArithmeticOutput? solveAlphametic(String equation, {SendPort? sendAsyncPort}) {
   var _equation = Equation(equation, singleLetter: true);
   if (!_equation.validFormula) {
-    return VerbalArithmeticOutput(equations: [_equation], solutions: null, error: 'InvalidFormula');
+    return VerbalArithmeticOutput(equations: [_equation], solutions: [], error: 'InvalidFormula');
   }
 
   // Check if there are too many letters (maximum 10)
   if (_equation.usedMembers.length > 10) {
-    return VerbalArithmeticOutput(equations: [], solutions: null, error: 'TooManyLetters');
+    return VerbalArithmeticOutput(equations: [], solutions: [], error: 'TooManyLetters');
   }
 
   if (_equation.onlyAddition) {
@@ -49,9 +49,9 @@ VerbalArithmeticOutput? _solveAlphametic(Equation equation, {SendPort? sendAsync
   var letterList = equation.usedMembers.toList();
 
   // Generate permutations and evaluate each combination
-  var result = _permuteAndEvaluate(letterList, equation.equation, equation.leadingLetters, sendAsyncPort);
+  var mapping = _permuteAndEvaluate(letterList, equation.equation, equation.leadingLetters, sendAsyncPort);
 
-  return VerbalArithmeticOutput(equations: [equation], solutions: result, error: '');
+  return VerbalArithmeticOutput(equations: [equation], solutions: mapping == null ? [] : [mapping], error: '');
 }
 
 
