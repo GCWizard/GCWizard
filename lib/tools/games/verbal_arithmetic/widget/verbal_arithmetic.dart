@@ -197,15 +197,15 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
   }
 
   Widget _buildAllowLeadingZerosOption() {
-    if (_currentMode == _ViewMode.SymbolMatrixGrid) {
+    if (_currentMode == _ViewMode.SymbolMatrixTextBox || _currentMode == _ViewMode.SymbolMatrixGrid) {
       return Container();
     }
     return GCWOnOffSwitch(
-      title: 'All solutions', //i18n(context, 'dates_daycalculator_countstart'),
-      value: _currentAllSolutions,
+      title: 'Allow Leading Zeros', //i18n(context, 'dates_daycalculator_countstart'),
+      value: _currentAllowLeadingZeros,
       onChanged: (value) {
         setState(() {
-          _currentAllSolutions = value;
+          _currentAllowLeadingZeros = value;
         });
       },
     );
@@ -355,7 +355,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     }
 
     return Table(
-        border: const TableBorder.symmetric(outside: BorderSide(width: 5,)),
+        border: const TableBorder.symmetric(outside: BorderSide(width: 5, color: Colors.transparent)),
         columnWidths: _columnWidthConfiguration(columnCount),
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         children: rows
