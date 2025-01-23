@@ -88,11 +88,8 @@ Iterable<Map<String, int>?> __solveAlphametics(List<String> leftSide, String rig
     letterToDigit[currentLetter] = digit;
     usedDigits.add(digit);
 
-    //ToDo buggy null wird nicht als falsch erkannt
-    if (__solveAlphametics(leftSide, rightSide, letters, digits, letterToDigit, usedDigits).isNotEmpty) {
-      yield _isValid(letterToDigit, leftSide, rightSide) ? letterToDigit : null;
-    } else {
-      letterToDigit = letterToDigit;
+    if (__solveAlphametics(leftSide, rightSide, letters, digits, letterToDigit, usedDigits).first != null) {
+      yield letterToDigit;
     }
 
     letterToDigit.remove(currentLetter);

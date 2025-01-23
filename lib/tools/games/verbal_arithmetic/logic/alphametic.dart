@@ -13,10 +13,11 @@ Future<VerbalArithmeticOutput?> solveAlphameticsAsync(GCWAsyncExecuterParameters
     return null;
   }
   var data = jobData.parameters as VerbalArithmeticJobData;
-
-  var output = solveAlphametic(data.equations.first, sendAsyncPort: jobData.sendAsyncPort);
   _allSolutions = data.allSolutions;
   _allowLeadingZeros = data.allowLeadingZeros;
+
+  var output = solveAlphametic(data.equations.first, sendAsyncPort: jobData.sendAsyncPort);
+
   if (jobData.sendAsyncPort != null) jobData.sendAsyncPort!.send(output);
 
   return output;
@@ -187,22 +188,6 @@ void main() {
   solveAlphametic(
       "THIS+A+FIRE+THEREFORE+FOR+ALL+HISTORIES+I+TELL+A+TALE+THAT+FALSIFIES+ITS+TITLE+TIS+A+LIE+THE+TALE+OF+THE+LAST+FIRE+HORSES+LATE+AFTER+THE+FIRST+FATHERS+FORESEE+THE+HORRORS+THE+LAST+FREE+TROLL+TERRIFIES+THE+HORSES+OF+FIRE+THE+TROLL+RESTS+AT+THE+HOLE+OF+LOSSES+IT+IS+THERE+THAT+SHE+STORES+ROLES+OF+LEATHERS+AFTER+SHE+SATISFIES+HER+HATE+OFF+THOSE+FEARS+A+TASTE+RISES+AS+SHE+HEARS+THE+LEAST+FAR+HORSE+THOSE+FAST+HORSES+THAT+FIRST+HEAR+THE+TROLL+FLEE+OFF+TO+THE+FOREST+THE+HORSES+THAT+ALERTS+RAISE+THE+STARES+OF+THE+OTHERS+AS+THE+TROLL+ASSAILS+AT+THE+TOTAL+SHIFT+HER+TEETH+TEAR+HOOF+OFF+TORSO+AS+THE+LAST+HORSE+FORFEITS+ITS+LIFE+THE+FIRST+FATHERS+HEAR+OF+THE+HORRORS+THEIR+FEARS+THAT+THE+FIRES+FOR+THEIR+FEASTS+ARREST+AS+THE+FIRST+FATHERS+RESETTLE+THE+LAST+OF+THE+FIRE+HORSES+THE+LAST+TROLL+HARASSES+THE+FOREST+HEART+FREE+AT+LAST+OF+THE+LAST+TROLL+ALL+OFFER+THEIR+FIRE+HEAT+TO+THE+ASSISTERS+FAR+OFF+THE+TROLL+FASTS+ITS+LIFE+SHORTER+AS+STARS+RISE+THE+HORSES+REST+SAFE+AFTER+ALL+SHARE+HOT+FISH+AS+THEIR+AFFILIATES+TAILOR+A+ROOFS+FOR+THEIR+SAFE=FORTRESSES");
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
-
-  // Lösung gefunden: {S: 2, O: 3, N: 1, Y: 5, E: 8, M: 0, D: 7, R: 6}
-  // 3890ms
-  // Lösung gefunden: {F: 4, T: 8, N: 5, Y: 6, E: 7, V: 2, H: 1, R: 3, I: 0, L: 9}
-  // 40694ms
-  // Lösung gefunden: {S: 3, A: 6, T: 9, N: 8, E: 1, M: 2, I: 0, G: 4}
-  // 1557ms
-
-  // Lösung gefunden: {S: 2, O: 3, N: 1, Y: 5, E: 8, M: 0, D: 7, R: 6}
-  // 2592ms
-  // Lösung gefunden: {F: 4, T: 8, N: 5, Y: 6, E: 7, V: 2, H: 1, R: 3, I: 0, L: 9}
-  // 29443ms
-  // Lösung gefunden: {S: 3, A: 6, T: 9, N: 8, E: 1, M: 2, I: 0, G: 4}
-  // 1006ms
-  // Lösung gefunden: {A: 4, S: 6, B: 2, E: 1, M: 9, G: 0, L: 5}
-  // 691ms
 
   // Gesamtanzahl der Permutationen: 1814400
   // Lösung gefunden: SEND+MORE=MONEY {S: 2, O: 3, N: 1, Y: 5, E: 8, M: 0, D: 7, R: 6}
