@@ -44,7 +44,6 @@ VerbalArithmeticOutput? solveAlphametic(String equation, {SendPort? sendAsyncPor
   }
 }
 
-// Funktion, die Alphametic-Rätsel löst
 VerbalArithmeticOutput? _solveAlphametic(Equation equation, {SendPort? sendAsyncPort}) {
 
   var letterList = equation.usedMembers.toList();
@@ -97,24 +96,22 @@ Iterable<HashMap<String, int>?> _permuteAndEvaluate(List<String> letters, String
       mapping[letters[i]] = perm[i];
     }
 
-    // Ausschließen von Permutationen mit führenden Nullen
+    // Avoid leading zeros.
     if (!_allowLeadingZeros && leadingLetters.any((letter) => mapping[letter] == 0)) {
       continue;
     }
 
     // Check if this permutation solves the formula
     if (_evaluateFormula(formula, mapping)) {
-      // print("Lösung gefunden: $formula $mapping");
       yield mapping;
     }
   }
 
-  // Falls keine Lösung gefunden wird
-  // print("Keine Lösung gefunden. $formula");
+  // no solution is found
   yield null;
 }
 
-// Funktion zur Generierung aller Permutationen
+/// function for generating all permutations
 Iterable<List<int>> _generatePermutations(int length, List<int> availableDigits) sync* {
   if (length == 0) {
     yield [];

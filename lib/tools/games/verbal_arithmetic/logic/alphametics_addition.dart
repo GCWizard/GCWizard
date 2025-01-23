@@ -1,17 +1,15 @@
 part of 'package:gc_wizard/tools/games/verbal_arithmetic/logic/alphametic.dart';
 
-// Hauptfunktion zum Lösen eines Alphametic-Puzzles.
 VerbalArithmeticOutput? _solveAlphameticAdd(Equation equation, {SendPort? sendAsyncPort}) {
   var sides = equation.formatedEquation.split('=');
   var leftSide = sides[0].split('+').map((s) => s.trim()).toList();
   var rightSide = sides[1].trim();
 
-  // Berechne die Häufigkeit der Buchstaben und sortiere sie nach Häufigkeit.
+  // Calculate the frequency of the letters and sort them by frequency
   Map<String, int> frequencyMap = _letterFrequency([...leftSide, rightSide]);
   List<String> letters = equation.usedMembers.toList()
     ..sort((a, b) => frequencyMap[b]!.compareTo(frequencyMap[a]!));
 
-  // Ziffern von 0 bis 9, die den Buchstaben zugewiesen werden können.
   List<int> digits = List.generate(10, (i) => i);
   var mapping = HashMap<String, int>();
   Set<int> usedDigits = {};
@@ -23,29 +21,18 @@ VerbalArithmeticOutput? _solveAlphameticAdd(Equation equation, {SendPort? sendAs
   _nextSendStep = _stepSize;
   _sendAsyncPort = sendAsyncPort;
 
-  // var _equation = equation.formatedEquation;
-  // if (__solveAlphametics(leftSide, rightSide, letters, digits, mapping, usedDigits) != null) {
-  //   print('Lösung gefunden: $_equation. $mapping');
-  //   // var result = mapping.forEach((letter, digit) {
-  //   //   print('$letter = $digit');
-  //   // });
-  //   return VerbalArithmeticOutput(equations: [equation], solutions: [mapping], error: '');
-  // } else {
-  //   print('Keine Lösung gefunden. $_equation');
-  //   return VerbalArithmeticOutput(equations: [equation], solutions: [], error: '');
-  // }
   var mappings = __solveAlphametics(leftSide, rightSide, letters, digits, mapping, usedDigits);
   var solutions = <HashMap<String, int>>[];
   for (var mapping in mappings) {
     if (mapping != null) {
       solutions.add(mapping as HashMap<String, int>);
 
+      var out = equation.getOutput(mapping);
       var _equation = equation.formatedEquation;
-      print('Lösung gefunden: $_equation. $mapping');
+      print('Lösung gefunden: $_equation. $out'); //$mapping
 
       if (!_allSolutions) {
         break;
-        //return VerbalArithmeticOutput(equations: [equation], solutions: solutions, error: '');
       }
     }
   }
@@ -63,7 +50,7 @@ int _stepSize = 1;
 int _nextSendStep = 1;
 SendPort? _sendAsyncPort;
 
-// Funktion zum Lösen eines Alphametics mit Backtracking und Optimierungen.
+/// Solving an Alphametic with Backtracking
 Iterable<Map<String, int>?> __solveAlphametics(List<String> leftSide, String rightSide, List<String> letters, List<int> digits,
     Map<String, int> letterToDigit, Set<int> usedDigits) sync* {
   if (letters.isEmpty) {
@@ -76,7 +63,7 @@ Iterable<Map<String, int>?> __solveAlphametics(List<String> leftSide, String rig
   for (var digit in digits) {
     if (usedDigits.contains(digit)) continue;
 
-    // Vermeidung führender Nullen.
+    // Avoid leading zeros.
     if (digit == 0 && !_allowLeadingZeros) {
       if (leftSide.any((word) => word.startsWith(currentLetter)) || rightSide.startsWith(currentLetter)) {
         continue;
@@ -102,14 +89,12 @@ Iterable<Map<String, int>?> __solveAlphametics(List<String> leftSide, String rig
 
 void _sendProgress() {
   if (_sendAsyncPort != null && _count >= _nextSendStep) {
-    // var progress = (currentCombination / totalPermutations * 100).toStringAsFixed(2);
-    // print("Fortschritt: $progress%");
     _nextSendStep += _stepSize;
     _sendAsyncPort?.send(DoubleText(PROGRESS, _count / _totalPermutations));
   }
 }
 
-// Funktion zur Berechnung der Häufigkeit jedes Buchstabens in der Gleichung.
+/// Function to calculate the frequency of each letter in the equation.
 Map<String, int> _letterFrequency(List<String> words) {
   Map<String, int> frequency = {};
   for (var word in words) {
@@ -120,7 +105,7 @@ Map<String, int> _letterFrequency(List<String> words) {
   return frequency;
 }
 
-// Funktion zur Überprüfung, ob eine Ziffernzuweisung korrekt ist.
+/// Function to check whether a digit assignment is correct.
 bool _isValid(Map<String, int> letterToDigit, List<String> leftSide, String rightSide) {
   int sum = 0;
 
