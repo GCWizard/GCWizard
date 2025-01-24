@@ -7618,6 +7618,34 @@ void initializeRegistry(BuildContext context) {
               'https://web.archive.org/web/20200906044202/https://www.deviantart.com/sarinilli/art/Gerudo-Typography-Font-278213135',
           licenseType: ToolLicenseType.PERSONAL_USE)
     ]),
+    GCWSymbolTableTool(symbolKey: 'gesture_numbers_01', symbolSearchStrings: const [
+      'symbol_signlanguage',
+      'symbol_finger_numbers',
+    ], licenses: [
+      ToolLicenseOnlineBook(
+          context: context,
+          author: 'Jakob Leupold',
+          title: 'Theatrum Arithmetico-Geometricum',
+          publisher: 'Breitkopf',
+          year: 1774,
+          customComment: 'urn:nbn:de:bsz:14-db-id3372953791',
+          sourceUrl:'https://web.archive.org/web/20250124215104/https://digital.slub-dresden.de/werkansicht/dlf/26205/1',
+          licenseType: ToolLicenseType.PUBLIC_DOMAIN)
+    ]),
+    GCWSymbolTableTool(symbolKey: 'gesture_numbers_02', symbolSearchStrings: const [
+      'symbol_signlanguage',
+      'symbol_finger_numbers',
+    ], licenses: [
+      ToolLicenseOnlineBook(
+          context: context,
+          author: 'Jakob Leupold',
+          title: 'Theatrum Arithmetico-Geometricum',
+          publisher: 'Breitkopf',
+          year: 1774,
+          customComment: 'urn:nbn:de:bsz:14-db-id3372953791',
+          sourceUrl:'https://web.archive.org/web/20250124215104/https://digital.slub-dresden.de/werkansicht/dlf/26205/1',
+          licenseType: ToolLicenseType.PUBLIC_DOMAIN)
+    ]),
     GCWSymbolTableTool(symbolKey: 'glagolitic', symbolSearchStrings: const [
       'symbol_gnommish',
     ], licenses: [

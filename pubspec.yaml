@@ -230,6 +230,8 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/geovlog/
     - lib/tools/symbol_tables/_common/assets/gernreich/
     - lib/tools/symbol_tables/_common/assets/gerudo/
+    - lib/tools/symbol_tables/_common/assets/gesture_numbers_01/
+    - lib/tools/symbol_tables/_common/assets/gesture_numbers_02/
     - lib/tools/symbol_tables/_common/assets/glagolitic/
     - lib/tools/symbol_tables/_common/assets/gnommish/
     - lib/tools/symbol_tables/_common/assets/greek_numerals/
