@@ -123,7 +123,7 @@ VerbalArithmeticOutput? _solveCryptogram(List<Equation> equations, SendPort? sen
       assignedValues.remove(variable);
     }
 
-    // Keine Lösung gefunden in diesem Pfad
+    // no solution is found
     remainingVariables.insert(0, variable);
     return null;
   }

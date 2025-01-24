@@ -37,7 +37,7 @@ VerbalArithmeticOutput? solveAlphametic(String equation, {SendPort? sendAsyncPor
     return VerbalArithmeticOutput(equations: [], solutions: [], error: 'TooManyLetters');
   }
 
-  if (_equation.onlyAddition) {
+  if (_equation.onlyAddition && 1==2) {
     return _solveAlphameticAdd(_equation, sendAsyncPort: sendAsyncPort);
   } else {
     return _solveAlphametic(_equation, sendAsyncPort: sendAsyncPort);
@@ -58,9 +58,8 @@ VerbalArithmeticOutput? _solveAlphametic(Equation equation, {SendPort? sendAsync
       var _equation = equation.formatedEquation;
       print('Lösung gefunden: $_equation. $mapping');
 
-      if (!_allSolutions) {
+      if (!_allSolutions || _solutions.length >= MAX_SOLUTIONS) {
         break;
-        //return VerbalArithmeticOutput(equations: [equation], solutions: solutions, error: '');
       }
     }
   }

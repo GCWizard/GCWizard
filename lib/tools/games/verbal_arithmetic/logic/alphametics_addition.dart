@@ -20,27 +20,19 @@ VerbalArithmeticOutput? _solveAlphameticAdd(Equation equation, {SendPort? sendAs
   _stepSize  = max(_totalPermutations ~/ 100, 1);
   _nextSendStep = _stepSize;
   _sendAsyncPort = sendAsyncPort;
-
-  var mappings = __solveAlphametics(leftSide, rightSide, letters, digits, mapping, usedDigits);
-  var solutions = <HashMap<String, int>>[];
-  for (var mapping in mappings) {
-    if (mapping != null) {
-      solutions.add(mapping);
-
-      var out = equation.getOutput(solutions.last);
-      var _equation = equation.formatedEquation;
-      print('Lösung gefunden: $_equation. $out'); //$mapping
-
-      if (!_allSolutions) {
-        break;
-      }
-    }
-  }
-  if (solutions.isEmpty) {
+print((factorial(10) ~/ factorial(10 - letters.length + 1)).toString() + ' ' + (factorial(10) ~/ factorial(10 - letters.length)).toString());
+  __solveAlphametics(leftSide, rightSide, letters, digits, mapping, usedDigits);
+  // for (var solution in solutions) {
+  //     var out = equation.getOutput(solution);
+  //     var _equation = equation.formatedEquation;
+  //     print('Lösung gefunden: $_equation. $out'); //$mapping
+  // }
+  print('Lösung gefunden: ' + _solutions.length.toString());
+  if (_solutions.isEmpty) {
     var _equation = equation.formatedEquation;
     print("Keine Lösung gefunden. $_equation");
   }
-  return VerbalArithmeticOutput(equations: [equation], solutions: solutions, error: '');
+  return VerbalArithmeticOutput(equations: [equation], solutions: _solutions, error: '');
 }
 
 // Calculating the number of possible permutations
@@ -49,12 +41,13 @@ int _count = 0;
 int _stepSize = 1;
 int _nextSendStep = 1;
 SendPort? _sendAsyncPort;
+List<HashMap<String, int>> _solutions = [];
 
 /// Solving an Alphametic with Backtracking
-Iterable<HashMap<String, int>?> __solveAlphametics(List<String> leftSide, String rightSide, List<String> letters, List<int> digits,
-    Map<String, int> letterToDigit, Set<int> usedDigits) sync* {
+bool __solveAlphametics(List<String> leftSide, String rightSide, List<String> letters, List<int> digits,
+    Map<String, int> letterToDigit, Set<int> usedDigits) {
   if (letters.isEmpty) {
-    yield _isValid(letterToDigit, leftSide, rightSide) ? HashMap<String, int>.from(letterToDigit) : null;
+    return _isValid(letterToDigit, leftSide, rightSide);
   }
 
   String currentLetter = letters.first;
@@ -75,16 +68,18 @@ Iterable<HashMap<String, int>?> __solveAlphametics(List<String> leftSide, String
     letterToDigit[currentLetter] = digit;
     usedDigits.add(digit);
 
-    if (__solveAlphametics(leftSide, rightSide, letters, digits, letterToDigit, usedDigits).first != null) {
-      yield HashMap<String, int>.from(letterToDigit);
+    if (__solveAlphametics(leftSide, rightSide, letters, digits, letterToDigit, usedDigits)) {
+      _solutions.add(HashMap<String, int>.from(letterToDigit));
+      if (!_allSolutions || _solutions.length >= MAX_SOLUTIONS) return true;
     }
 
     letterToDigit.remove(currentLetter);
     usedDigits.remove(digit);
   }
 
+  // no solution is found
   letters.insert(0, currentLetter);
-  yield null;
+  return false;
 }
 
 void _sendProgress() {

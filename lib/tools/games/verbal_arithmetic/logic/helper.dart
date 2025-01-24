@@ -6,6 +6,8 @@ import 'package:gc_wizard/utils/json_utils.dart';
 import 'package:math_expressions/math_expressions.dart';
 import 'package:utility/utility.dart';
 
+const int MAX_SOLUTIONS = 100;
+
 class VerbalArithmeticJobData {
   final List<String> equations;
   final Map<String, String> substitutions;
