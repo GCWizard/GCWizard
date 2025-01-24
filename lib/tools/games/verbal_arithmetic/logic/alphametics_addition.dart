@@ -25,9 +25,9 @@ VerbalArithmeticOutput? _solveAlphameticAdd(Equation equation, {SendPort? sendAs
   var solutions = <HashMap<String, int>>[];
   for (var mapping in mappings) {
     if (mapping != null) {
-      solutions.add(mapping as HashMap<String, int>);
+      solutions.add(mapping);
 
-      var out = equation.getOutput(mapping);
+      var out = equation.getOutput(solutions.last);
       var _equation = equation.formatedEquation;
       print('Lösung gefunden: $_equation. $out'); //$mapping
 
@@ -51,10 +51,10 @@ int _nextSendStep = 1;
 SendPort? _sendAsyncPort;
 
 /// Solving an Alphametic with Backtracking
-Iterable<Map<String, int>?> __solveAlphametics(List<String> leftSide, String rightSide, List<String> letters, List<int> digits,
+Iterable<HashMap<String, int>?> __solveAlphametics(List<String> leftSide, String rightSide, List<String> letters, List<int> digits,
     Map<String, int> letterToDigit, Set<int> usedDigits) sync* {
   if (letters.isEmpty) {
-    yield _isValid(letterToDigit, leftSide, rightSide) ? letterToDigit : null;
+    yield _isValid(letterToDigit, leftSide, rightSide) ? HashMap<String, int>.from(letterToDigit) : null;
   }
 
   String currentLetter = letters.first;
@@ -76,7 +76,7 @@ Iterable<Map<String, int>?> __solveAlphametics(List<String> leftSide, String rig
     usedDigits.add(digit);
 
     if (__solveAlphametics(leftSide, rightSide, letters, digits, letterToDigit, usedDigits).first != null) {
-      yield letterToDigit;
+      yield HashMap<String, int>.from(letterToDigit);
     }
 
     letterToDigit.remove(currentLetter);
