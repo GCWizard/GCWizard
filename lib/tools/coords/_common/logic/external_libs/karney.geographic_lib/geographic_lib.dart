@@ -3,6 +3,8 @@ import 'dart:math';
 
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
+import 'package:gc_wizard/tools/general_tools/randomizer/logic/randomizer.dart';
+import 'package:gc_wizard/tools/science_and_technology/periodic_table/_common/logic/periodic_table.dart';
 import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 import 'package:gc_wizard/utils/data_type_utils/double_type_utils.dart';
@@ -109,29 +111,42 @@ LatLng reverseAzimuthalProjection(LatLng coord, double bearing, double distance,
 
   // % Solve the trig problem on the auxiliary sphere to give sig12
   double _lat2 = double.nan, _lon2 = double.nan;
-  var dazi1 = double.nan;
+  var delta = double.nan;
+  int cnt = 0;
   do {
     var azi0 = asin(sin(azi1) * cos(bet1));
-    var bet2 = acos(sin(azi0) / sin(azi2));
-    var sig1 = atan2(sin(bet1), cos(azi1) * cos(bet1)) / deg;
-    var sig2 = atan2(sin(bet2), cos(azi2) * cos(bet2)) / deg;
-    sig12 = sig2 - sig1;
+    // Two possible signs for bet2 -- try both
+    var _bet2 = acos(sin(azi0) / sin(azi2));
+    var _dazi1 = double.nan;
+    for (int i in [-1, 1]) {
+      var bet2 = _bet2 * i;
+      var sig1 = atan2(sin(bet1), cos(azi1) * cos(bet1)) / deg;
+      var sig2 = atan2(sin(bet2), cos(azi2) * cos(bet2)) / deg;
+      sig12 = sig2 - sig1;
 
-    // Solve the direct problem to give s12x
-    var directData = geodeticDirect(coord, azi1 / deg, sig12, ellipsoid, true);
-    var lat2 = directData.lat2;
-    var s12x = directData.s12;
-    var m12 = directData.m12;
-    bet2 = atan((1 - ellipsoid.f) * tan(lat2 * deg));
-    var w2 = sqrt(1 - ellipsoid.e2 * cos(bet2) * cos(bet2));
-    // % The correction to azi1, see Eq (79) of [4]
-    dazi1 = -(s12x - s12) / (m12 * tan(azi2) - ellipsoid.a * w2 / (tan(azi1) * tan(bet2) * cos(azi2)));
-    azi1 = azi1 + dazi1;
+      // Solve the direct problem to give s12x
+      var directData = geodeticDirect(coord, azi1 / deg, utils.normalizeLon(sig12), ellipsoid, true);
+      var lat2 = directData.lat2;
+      var s12x = directData.s12;
+      var m12 = directData.m12;
+      bet2 = atan((1 - ellipsoid.f) * tan(lat2 * deg));
+      var w2 = sqrt(1 - ellipsoid.e2 * cos(bet2) * cos(bet2));
+      // % The correction to azi1, see Eq (79) of [4]
+      var dazi1 = -(s12x - s12) /
+          (m12 * tan(azi2) -
+          ellipsoid.a * w2 / (tan(azi1) * tan(bet2) * cos(azi2)));
 
-    _lat2 = directData.lat2;
-    _lon2 = directData.lon2;
+      if (_dazi1.isNaN || dazi1.abs() < _dazi1.abs()) {
+        _dazi1 = dazi1;
+        _lat2 = directData.lat2;
+        _lon2 = directData.lon2;
+      }
+    }
 
-  } while (dazi1 > 10e-10);
+    azi1 = azi1 + _dazi1;
+    delta = _dazi1;
+
+  } while (++cnt <= 10 && delta.abs() > 1e-10);
 
   return LatLng(_lat2, _lon2);
 }
@@ -151,43 +166,75 @@ void main() {
   // print(projection(start, bearingToDest, dist, ells));
 
 
-  var lats = [-67.5, -45.0/*, -22.5, 0.0, 22.5, 45.0, 67.5*/];
-  var lons = [-180.0, -135.0/*, -90.0, -45.0, 0.0, 45.0, 90.0, 135.0, 180.0*/];
+  var lats = [-67.5, -45.0, -22.5, 0.0, 22.5, 45.0, 67.5];
+  var lons = [-180.0, -135.0, -90.0, -45.0, 0.0, 45.0, 90.0, 135.0, 180.0];
 
   var ellipsoid = Ellipsoid.WGS84;
 
   var i = 0;
   var j = 0;
 
-  for (var lat1 in lats) {
-    for (var lon1 in lons) {
-      var coord1 = LatLng(lat1, lon1);
-      for (var lat2 in lats) {
-        for (var lon2 in lons) {
-          print(i++);
-          var coord2 = LatLng(lat2, lon2);
-          if (utils.equalsLatLng(coord1, coord2)) continue;
-          GeodesicData karney = geodeticInverse(coord1, coord2, ellipsoid);
+  // for (var lat1 in lats) {
+  //   for (var lon1 in lons) {
+  //     var coord1 = LatLng(lat1, lon1);
+  //     for (var lat2 in lats) {
+  //       for (var lon2 in lons) {
+  //         var coord2 = LatLng(lat2, lon2);
+  
+  for (int i = 0; i < 10000; i++) {
+    var coord1 = LatLng(randomDouble(52.354394, 52.354903), randomDouble(13.336786, 13.337303));
+    var coord2 = LatLng(randomDouble(52.354394, 52.354903), randomDouble(13.336786, 13.337303));
 
-          var _1to2 = reverseAzimuthalProjection(coord2, karney.azi1, karney.s12, ellipsoid);
-          if (!utils.equalsLatLng(coord1, _1to2, tolerance: 1e-10)) {
-            print(j++);
-            print('DATA =========');
-            print(coord2);
-            print(karney.azi1);
-            print(karney.s12);
-            print('EXPECT ========');
-            print(coord1);
-            print('IST =======');
-            print(_1to2);
-            print('PROBE ======');
-            print(projection(_1to2, karney.azi1, karney.s12, ells));
-            print('');
-          }
+    if (utils.equalsLatLng(coord1, coord2)) continue;
+    GeodesicData karney = geodeticInverse(coord1, coord2, ellipsoid);
+
+    print((++i).toString() + ': ' + coord2.toString() + ' <- ' +
+        coord1.toString() + '; azi: ' + karney.azi1.toString() + ', s12: ' +
+        karney.s12.toString());
+    LatLng? _1to2;
+    List<LatLng> temp = [];
+    try {
+      _1to2 = reverseAzimuthalProjection(
+          coord2, karney.azi1, karney.s12, ellipsoid);
+      if (!utils.equalsLatLng(coord1, _1to2, tolerance: 1e-10)) {
+        throw Exception();
+      }
+    } catch (e) {
+      print(
+          'ERROR ==============================================================');
+      var temp = reverseProjection(coord2, karney.azi1, karney.s12, ellipsoid);
+      print(temp);
+      _1to2 = null;
+      for (LatLng ll in temp) {
+        var x = projection(ll, karney.azi1, karney.s12, ells);
+        if (utils.equalsLatLng(coord2, x, tolerance: 1e-5)) {
+          _1to2 = x;
+          break;
         }
       }
     }
+
+    if (_1to2 == null) {
+      j++;
+      print('DATA =========');
+      print(coord2);
+      print(karney.azi1);
+      print(karney.s12);
+      print('EXPECT ========');
+      print(coord1);
+      print('IST =======');
+      print(_1to2);
+      // print('PROBE ======');
+      // print(projection(_1to2, karney.azi1, karney.s12, ells));
+      // print('');
+    }
   }
+        // }
+  //     }
+  //   }
+  // }
+
+  print('$j ERRORS ====================================================');
 
 
 }
