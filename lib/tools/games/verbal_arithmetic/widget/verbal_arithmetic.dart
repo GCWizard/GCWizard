@@ -147,10 +147,6 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
 
 
   Widget _buildNumberGridTextboxInput() {
-    if (_currentMode != _ViewMode.SymbolMatrixGrid) {
-      return Container();
-    }
-
     return Column(
       children: <Widget>[
         GCWTextField(
@@ -364,10 +360,13 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
 
   TableRow _buildTableRow(int rowCount, int columnCount, int rowIndex) {
     var cells = <Widget>[];
+    var rowsCount = _currentMatrix.getRowsCount() - 1;
+    var columnsCount = _currentMatrix.getColumnsCount() - 1;
 
-    for(var columnIndex = 0; columnIndex < _currentMatrix.getColumnsCount(); columnIndex++) {
+
+    for(var columnIndex = 0; columnIndex <= columnsCount; columnIndex++) {
       if (rowIndex % 2 == 0) {
-        if (columnIndex % 2 == 0) {
+        if (columnIndex % 2 == 0 && !( columnIndex == columnsCount && rowIndex == rowsCount)) {
           cells.add(
             GCWTextField(
               controller: _getTextEditingController(rowIndex, columnIndex,
@@ -377,16 +376,16 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
               }
             )
           );
-        } else if (columnIndex == _currentMatrix.getColumnsCount() - 2) {
+        } else if (columnIndex == columnsCount - 1 && rowIndex != rowsCount) {
           cells.add(_equalText(rowIndex, columnIndex));
         } else {
           cells.add(
-            (rowIndex == _currentMatrix.getRowsCount() - 1)
+            (rowIndex == rowsCount)
             ? Container() // last row
             : _operatorDropDown(rowIndex, columnIndex)
           );
         }
-      } else if (columnIndex % 2 == 0 && columnIndex < _currentMatrix.getColumnsCount() - 1) {
+      } else if (columnIndex % 2 == 0 && columnIndex < columnsCount - 1) {
         cells.add(
           (rowIndex == _currentMatrix.getRowsCount() - 2)
           ? _equalText(rowIndex, columnIndex) // pre last row

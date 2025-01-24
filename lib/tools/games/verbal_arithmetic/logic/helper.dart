@@ -196,7 +196,7 @@ class SymbolMatrixGrid {
       for (var x = 0; x < matrix[y].length; x++) {
         if (y % 2 == 0) {
           if (x % 2 == 0) {
-            if (matrix[y][x].isEmpty) {
+            if (matrix[y][x].isEmpty && y != matrix.length -1) {
               return false;
             }
           } else if (x < getColumnsCount() - 2 && y < getRowsCount() - 2) {
@@ -222,12 +222,12 @@ class SymbolMatrixGrid {
       if (x % 2 == 0) {
         formula += matrix[y][x];
       } else if (x < getColumnsCount() - 2) {
-        formula += operatorList[matrix[y][x]]!;
+        formula += ' ' + operatorList[matrix[y][x]]! + ' ';
       } else {
-        formula += '-('; //=
+        formula += ' = ';
       }
     }
-    return formula + ')';
+    return formula;
   }
 
   String _buildColumnEquation(int x) {
@@ -236,12 +236,12 @@ class SymbolMatrixGrid {
       if (y % 2 == 0) {
         formula += matrix[y][x];
       } else if (y < getRowsCount() - 2) {
-        formula += operatorList[matrix[y][x]]!;
+        formula += ' ' + operatorList[matrix[y][x]]! + ' ';
       }else {
-        formula += '-('; //=
+        formula += ' = ';
       }
     }
-    return formula + ')';
+    return formula;
   }
 
   List<String> buildEquations() {

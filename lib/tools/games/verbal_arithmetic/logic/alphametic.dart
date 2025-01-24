@@ -37,7 +37,7 @@ VerbalArithmeticOutput? solveAlphametic(String equation, {SendPort? sendAsyncPor
     return VerbalArithmeticOutput(equations: [], solutions: [], error: 'TooManyLetters');
   }
 
-  if (_equation.onlyAddition && 1==2) {
+  if (_equation.onlyAddition) {
     return _solveAlphameticAdd(_equation, sendAsyncPort: sendAsyncPort);
   } else {
     return _solveAlphametic(_equation, sendAsyncPort: sendAsyncPort);

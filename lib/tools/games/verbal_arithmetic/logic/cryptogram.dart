@@ -19,9 +19,9 @@ Future<VerbalArithmeticOutput?> solveCryptogramAsync(GCWAsyncExecuterParameters 
 }
 
 VerbalArithmeticOutput? solveCryptogram(List<String> equations, {SendPort? sendAsyncPort}) {
-  var _equations = equations.map((formula) => Equation(formula)).toList();
-  var notValid = _equations.any((formula) => !formula.validFormula);
-  if (notValid) {
+  var _equations = equations.map((equation) => Equation(equation)).toList();
+  var notValid = _equations.any((equation) => !equation.validFormula);
+  if (notValid || _equations.isEmpty) {
     return VerbalArithmeticOutput(equations: _equations, solutions: [], error: 'InvalidFormula');
   }
   return _solveCryptogram(_equations, sendAsyncPort);

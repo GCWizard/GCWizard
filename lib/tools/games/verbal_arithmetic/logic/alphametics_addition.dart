@@ -1,12 +1,21 @@
 part of 'package:gc_wizard/tools/games/verbal_arithmetic/logic/alphametic.dart';
 
+class EquationData {
+  late List<String> leftSide;
+  late List<String> rightSide;
+
+  late Set<String> leadingLetters;
+}
+
 VerbalArithmeticOutput? _solveAlphameticAdd(Equation equation, {SendPort? sendAsyncPort}) {
+  var equationData = EquationData();
   var sides = equation.formatedEquation.split('=');
-  var leftSide = sides[0].split('+').map((s) => s.trim()).toList();
-  var rightSide = sides[1].trim();
+  equationData.leftSide = sides[0].split('+').map((s) => s.trim()).toList();
+  equationData.rightSide = sides[1].split('+').map((s) => s.trim()).toList();
+  equationData.leadingLetters = equation.leadingLetters;
 
   // Calculate the frequency of the letters and sort them by frequency
-  Map<String, int> frequencyMap = _letterFrequency([...leftSide, rightSide]);
+  Map<String, int> frequencyMap = _letterFrequency([...equationData.leftSide, ...equationData.rightSide]);
   List<String> letters = equation.usedMembers.toList()
     ..sort((a, b) => frequencyMap[b]!.compareTo(frequencyMap[a]!));
 
@@ -20,12 +29,13 @@ VerbalArithmeticOutput? _solveAlphameticAdd(Equation equation, {SendPort? sendAs
   _stepSize  = max(_totalPermutations ~/ 100, 1);
   _nextSendStep = _stepSize;
   _sendAsyncPort = sendAsyncPort;
+  _solutions.clear();
 print((factorial(10) ~/ factorial(10 - letters.length + 1)).toString() + ' ' + (factorial(10) ~/ factorial(10 - letters.length)).toString());
-  __solveAlphametics(leftSide, rightSide, letters, digits, mapping, usedDigits);
+  __solveAlphametics(equationData, letters, digits, mapping, usedDigits);
   // for (var solution in solutions) {
-  //     var out = equation.getOutput(solution);
-  //     var _equation = equation.formatedEquation;
-  //     print('Lösung gefunden: $_equation. $out'); //$mapping
+      var out = equation.getOutput(_solutions.first);
+      var _equation = equation.formatedEquation;
+      print('Lösung gefunden: $_equation. $out'); //$mapping
   // }
   print('Lösung gefunden: ' + _solutions.length.toString());
   if (_solutions.isEmpty) {
@@ -44,10 +54,10 @@ SendPort? _sendAsyncPort;
 List<HashMap<String, int>> _solutions = [];
 
 /// Solving an Alphametic with Backtracking
-bool __solveAlphametics(List<String> leftSide, String rightSide, List<String> letters, List<int> digits,
+bool __solveAlphametics(EquationData equationData, List<String> letters, List<int> digits,
     Map<String, int> letterToDigit, Set<int> usedDigits) {
   if (letters.isEmpty) {
-    return _isValid(letterToDigit, leftSide, rightSide);
+    return _isValid(letterToDigit, equationData);
   }
 
   String currentLetter = letters.first;
@@ -58,7 +68,7 @@ bool __solveAlphametics(List<String> leftSide, String rightSide, List<String> le
 
     // Avoid leading zeros.
     if (digit == 0 && !_allowLeadingZeros) {
-      if (leftSide.any((word) => word.startsWith(currentLetter)) || rightSide.startsWith(currentLetter)) {
+      if (equationData.leadingLetters.contains(currentLetter)) {
         continue;
       }
     }
@@ -68,7 +78,7 @@ bool __solveAlphametics(List<String> leftSide, String rightSide, List<String> le
     letterToDigit[currentLetter] = digit;
     usedDigits.add(digit);
 
-    if (__solveAlphametics(leftSide, rightSide, letters, digits, letterToDigit, usedDigits)) {
+    if (__solveAlphametics(equationData, letters, digits, letterToDigit, usedDigits)) {
       _solutions.add(HashMap<String, int>.from(letterToDigit));
       if (!_allSolutions || _solutions.length >= MAX_SOLUTIONS) return true;
     }
@@ -101,10 +111,10 @@ Map<String, int> _letterFrequency(List<String> words) {
 }
 
 /// Function to check whether a digit assignment is correct.
-bool _isValid(Map<String, int> letterToDigit, List<String> leftSide, String rightSide) {
+bool _isValid(Map<String, int> letterToDigit, EquationData equationData) {
   int sum = 0;
 
-  for (var word in leftSide) {
+  for (var word in equationData.leftSide) {
     int wordValue = 0;
     for (var letter in word.split('')) {
       wordValue = wordValue * 10 + (letterToDigit[letter] ?? 0);
@@ -113,8 +123,12 @@ bool _isValid(Map<String, int> letterToDigit, List<String> leftSide, String righ
   }
 
   int resultValue = 0;
-  for (var letter in rightSide.split('')) {
-    resultValue = resultValue * 10 + (letterToDigit[letter] ?? 0);
+  for (var word in equationData.rightSide) {
+    int wordValue = 0;
+    for (var letter in word.split('')) {
+      wordValue = wordValue * 10 + (letterToDigit[letter] ?? 0);
+    }
+    resultValue += wordValue;
   }
 
   return sum == resultValue;
