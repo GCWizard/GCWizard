@@ -13,10 +13,9 @@ Future<VerbalArithmeticOutput?> solveAlphameticsAsync(GCWAsyncExecuterParameters
     return null;
   }
   var data = jobData.parameters as VerbalArithmeticJobData;
-  _allSolutions = data.allSolutions;
-  _allowLeadingZeros = data.allowLeadingZeros;
 
-  var output = solveAlphametic(data.equations.first, sendAsyncPort: jobData.sendAsyncPort);
+  var output = solveAlphametic(data.equations.first, data.allSolutions, data.allowLeadingZeros,
+      sendAsyncPort: jobData.sendAsyncPort);
 
   if (jobData.sendAsyncPort != null) jobData.sendAsyncPort!.send(output);
 
@@ -26,7 +25,8 @@ Future<VerbalArithmeticOutput?> solveAlphameticsAsync(GCWAsyncExecuterParameters
 bool _allSolutions = false;
 bool _allowLeadingZeros = false;
 
-VerbalArithmeticOutput? solveAlphametic(String equation, {SendPort? sendAsyncPort}) {
+VerbalArithmeticOutput? solveAlphametic(String equation, bool allSolutions, bool allowLeadingZeros,
+    {SendPort? sendAsyncPort}) {
   var _equation = Equation(equation, singleLetter: true);
   if (!_equation.validFormula) {
     return VerbalArithmeticOutput(equations: [_equation], solutions: [], error: 'InvalidFormula');
@@ -36,7 +36,8 @@ VerbalArithmeticOutput? solveAlphametic(String equation, {SendPort? sendAsyncPor
   if (_equation.usedMembers.length > 10) {
     return VerbalArithmeticOutput(equations: [], solutions: [], error: 'TooManyLetters');
   }
-
+  _allSolutions = allSolutions;
+  _allowLeadingZeros = allowLeadingZeros;
   if (_equation.onlyAddition) {
     return _solveAlphameticAdd(_equation, sendAsyncPort: sendAsyncPort);
   } else {
@@ -161,28 +162,28 @@ void main() {
   _allSolutions = true;
   var startTime = DateTime.now();
   // Beispiel: SEND + MORE = MONEY
-  solveAlphametic("SEND+MORE=MONEY");
+  solveAlphametic("SEND+MORE=MONEY", false, false);
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 
   startTime = DateTime.now();
   // Beispiel: ELEVEN + NINE + FIVE + FIVE = THIRTY
-  solveAlphametic("ELEVEN+NINE+FIVE+FIVE=THIRTY");
+  solveAlphametic("ELEVEN+NINE+FIVE+FIVE=THIRTY", false, false);
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 
   startTime = DateTime.now();
   // Beispiel: ENIGMA / M = TIMES
-  solveAlphametic("ENIGMA/M=TIMES");
+  solveAlphametic("ENIGMA/M=TIMES", false, false);
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 
   startTime = DateTime.now();
   // Beispiel: "BASE + BALL = GAMES
-  solveAlphametic("BASE + BALL = GAMES");
+  solveAlphametic("BASE + BALL = GAMES", false, false);
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 
   startTime = DateTime.now();
   // Beispiel: THIS + A + FIRE... (langes Beispiel)
   solveAlphametic(
-      "THIS+A+FIRE+THEREFORE+FOR+ALL+HISTORIES+I+TELL+A+TALE+THAT+FALSIFIES+ITS+TITLE+TIS+A+LIE+THE+TALE+OF+THE+LAST+FIRE+HORSES+LATE+AFTER+THE+FIRST+FATHERS+FORESEE+THE+HORRORS+THE+LAST+FREE+TROLL+TERRIFIES+THE+HORSES+OF+FIRE+THE+TROLL+RESTS+AT+THE+HOLE+OF+LOSSES+IT+IS+THERE+THAT+SHE+STORES+ROLES+OF+LEATHERS+AFTER+SHE+SATISFIES+HER+HATE+OFF+THOSE+FEARS+A+TASTE+RISES+AS+SHE+HEARS+THE+LEAST+FAR+HORSE+THOSE+FAST+HORSES+THAT+FIRST+HEAR+THE+TROLL+FLEE+OFF+TO+THE+FOREST+THE+HORSES+THAT+ALERTS+RAISE+THE+STARES+OF+THE+OTHERS+AS+THE+TROLL+ASSAILS+AT+THE+TOTAL+SHIFT+HER+TEETH+TEAR+HOOF+OFF+TORSO+AS+THE+LAST+HORSE+FORFEITS+ITS+LIFE+THE+FIRST+FATHERS+HEAR+OF+THE+HORRORS+THEIR+FEARS+THAT+THE+FIRES+FOR+THEIR+FEASTS+ARREST+AS+THE+FIRST+FATHERS+RESETTLE+THE+LAST+OF+THE+FIRE+HORSES+THE+LAST+TROLL+HARASSES+THE+FOREST+HEART+FREE+AT+LAST+OF+THE+LAST+TROLL+ALL+OFFER+THEIR+FIRE+HEAT+TO+THE+ASSISTERS+FAR+OFF+THE+TROLL+FASTS+ITS+LIFE+SHORTER+AS+STARS+RISE+THE+HORSES+REST+SAFE+AFTER+ALL+SHARE+HOT+FISH+AS+THEIR+AFFILIATES+TAILOR+A+ROOFS+FOR+THEIR+SAFE=FORTRESSES");
+      "THIS+A+FIRE+THEREFORE+FOR+ALL+HISTORIES+I+TELL+A+TALE+THAT+FALSIFIES+ITS+TITLE+TIS+A+LIE+THE+TALE+OF+THE+LAST+FIRE+HORSES+LATE+AFTER+THE+FIRST+FATHERS+FORESEE+THE+HORRORS+THE+LAST+FREE+TROLL+TERRIFIES+THE+HORSES+OF+FIRE+THE+TROLL+RESTS+AT+THE+HOLE+OF+LOSSES+IT+IS+THERE+THAT+SHE+STORES+ROLES+OF+LEATHERS+AFTER+SHE+SATISFIES+HER+HATE+OFF+THOSE+FEARS+A+TASTE+RISES+AS+SHE+HEARS+THE+LEAST+FAR+HORSE+THOSE+FAST+HORSES+THAT+FIRST+HEAR+THE+TROLL+FLEE+OFF+TO+THE+FOREST+THE+HORSES+THAT+ALERTS+RAISE+THE+STARES+OF+THE+OTHERS+AS+THE+TROLL+ASSAILS+AT+THE+TOTAL+SHIFT+HER+TEETH+TEAR+HOOF+OFF+TORSO+AS+THE+LAST+HORSE+FORFEITS+ITS+LIFE+THE+FIRST+FATHERS+HEAR+OF+THE+HORRORS+THEIR+FEARS+THAT+THE+FIRES+FOR+THEIR+FEASTS+ARREST+AS+THE+FIRST+FATHERS+RESETTLE+THE+LAST+OF+THE+FIRE+HORSES+THE+LAST+TROLL+HARASSES+THE+FOREST+HEART+FREE+AT+LAST+OF+THE+LAST+TROLL+ALL+OFFER+THEIR+FIRE+HEAT+TO+THE+ASSISTERS+FAR+OFF+THE+TROLL+FASTS+ITS+LIFE+SHORTER+AS+STARS+RISE+THE+HORSES+REST+SAFE+AFTER+ALL+SHARE+HOT+FISH+AS+THEIR+AFFILIATES+TAILOR+A+ROOFS+FOR+THEIR+SAFE=FORTRESSES", false, false);
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 
   // Gesamtanzahl der Permutationen: 1814400

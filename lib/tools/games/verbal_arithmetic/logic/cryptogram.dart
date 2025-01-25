@@ -17,13 +17,15 @@ Future<VerbalArithmeticOutput?> solveCryptogramAsync(GCWAsyncExecuterParameters 
 
   return output;
 }
+bool _allSolutions = false;
 
-VerbalArithmeticOutput? solveCryptogram(List<String> equations, {SendPort? sendAsyncPort}) {
+VerbalArithmeticOutput? solveCryptogram(List<String> equations, bool allSolutions, {SendPort? sendAsyncPort}) {
   var _equations = equations.map((equation) => Equation(equation)).toList();
   var notValid = _equations.any((equation) => !equation.validFormula);
   if (notValid || _equations.isEmpty) {
     return VerbalArithmeticOutput(equations: _equations, solutions: [], error: 'InvalidFormula');
   }
+  _allSolutions = allSolutions;
   return _solveCryptogram(_equations, sendAsyncPort);
 }
 
@@ -192,7 +194,7 @@ void main() {
 
   var startTime = DateTime.now();
   // Lösen
-  solveCryptogram(equations);
+  solveCryptogram(equations, false);
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 
   equations = [
@@ -212,7 +214,7 @@ void main() {
 
   startTime = DateTime.now();
   // Lösen
-  solveCryptogram(equations);
+  solveCryptogram(equations, false);
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 
    equations = [
@@ -224,7 +226,7 @@ void main() {
 
   startTime = DateTime.now();
   // Lösen
-  solveCryptogram(equations);
+  solveCryptogram(equations, false);
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 }
 

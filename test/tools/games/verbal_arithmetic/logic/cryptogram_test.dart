@@ -61,7 +61,8 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('formulas: ${elem['formulas']}', () {
-        var _actual = solveCryptogram(elem['formulas'] as List<String>);
+        var allSolutions = elem['allSolutions'] != null;
+        var _actual = solveCryptogram(elem['formulas'] as List<String>, allSolutions);
         if (_actual != null && _actual.solutions.isNotEmpty) {
           expect(_actual.solutions.first, elem['expectedOutput']);
         } else if (_actual != null && _actual.solutions.isEmpty) {

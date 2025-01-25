@@ -24,6 +24,8 @@ void main() {
       {'input' : 'abcde * A = eeeeee', 'expectedOutput' : '79365 * 7 = 555555'},
       {'input' : 'abcde * 7 = eeeeee', 'expectedOutput' : '79365 * 7 = 555555'},
       {'input' : 'abcde * A = 5eeeee', 'expectedOutput' : '79365 * 7 = 555555'},
+      {'input' : 'A = A', 'allSolutions': true, 'expectedOutput' : '1 = 1', 'expectedOutputCount' : 9},
+      {'input' : 'A = A', 'allSolutions': true, 'allowLeadingZeros': true, 'expectedOutput' : '0 = 0', 'expectedOutputCount' : 10},
       // {'input' : 'abcde * A - eeeeee', 'expectedOutput' : '79365 * 7 = 555555'},
       // {'input' : 'ELEVEN + NINE + 4IVE + FIVE = THIRTY', 'expectedOutput' : '797275 + 5057 + 4027 + 4027 = 810386'},
 
@@ -31,10 +33,15 @@ void main() {
 
     _inputsToExpected.forEach((elem) {
       test('formulas: ${elem['input']}', () {
-        var _actual = solveAlphametic(elem['input'] as String);
+        var allSolutions = elem['allSolutions'] != null;
+        var allowLeadingZeros = elem['allowLeadingZeros'] != null;
+        var _actual = solveAlphametic(elem['input'] as String, allSolutions, allowLeadingZeros);
         if (_actual != null) {
           var result = (_actual.solutions.isEmpty) ? _actual.error : _actual.equations.first.getOutput(_actual.solutions.first);
           expect(result, elem['expectedOutput']);
+          if (allSolutions) {
+            expect(_actual.solutions.length, elem['expectedOutputCount']);
+          }
         } else {
           expect(_actual, elem['expectedOutput']);
         }
