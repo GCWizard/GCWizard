@@ -244,6 +244,7 @@
   "iataicao": "airfieldcodes airportcodes aerodromecodes aircrafts planes landingareas landingplaces aviation aerospace",
   "iau_constellation": "iau constellations stars internationalastronomyunion stellar images",
   "icecodes": "balticsea ice floe melting snow iceberg icecodes",
+  "id3_tag": "id3 mp3 tag",
   "ieee754": "floatingnumbers floatnumbers float32 float64 real",
   "image_colorcorrections": "colorcorrections colourcorrections adjustments hue saturation brightness rgb red blue green",
   "image_fliprotate": "flip mirror reverse horizontally vertically rotate rotations",

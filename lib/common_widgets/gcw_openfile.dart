@@ -25,6 +25,7 @@ import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:http/http.dart' as http;
 
 final SUPPORTED_IMAGE_TYPES = fileTypesByFileClass(FileClass.IMAGE);
+final SUPPORTED_SOUND_TYPES = fileTypesByFileClass(FileClass.SOUND);
 
 enum OpenFileType {FILE, URL, GALLERY, CAMERA}
 

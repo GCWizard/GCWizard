@@ -192,6 +192,7 @@ import 'package:gc_wizard/tools/images_and_files/exif_reader/widget/exif_reader.
 import 'package:gc_wizard/tools/images_and_files/hex_viewer/widget/hex_viewer.dart';
 import 'package:gc_wizard/tools/images_and_files/hexstring2file/widget/hexstring2file.dart';
 import 'package:gc_wizard/tools/images_and_files/hidden_data/widget/hidden_data.dart';
+import 'package:gc_wizard/tools/images_and_files/id3_tag/widget/id3_tag.dart';
 import 'package:gc_wizard/tools/images_and_files/image_colorcorrections/widget/image_colorcorrections.dart';
 import 'package:gc_wizard/tools/images_and_files/image_flip_rotate/widget/image_flip_rotate.dart';
 import 'package:gc_wizard/tools/images_and_files/image_stretch_shrink/widget/image_stretch_shrink.dart';
@@ -649,6 +650,7 @@ void _initStaticToolList() {
         ConstellationName: 'Andromeda',
       )),
       className(const IceCodesSelection()),
+      className(const ID3Tag()),
       className(const IEEE754()),
       className(const ILLIAC()),
       className(const ImageColorCorrections()),
