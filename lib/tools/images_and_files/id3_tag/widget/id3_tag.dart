@@ -17,21 +17,27 @@ import 'package:id3_codec/encode_metadata.dart';
 import 'package:id3_codec/id3_encoder.dart';
 
 class ID3Tag extends StatefulWidget {
-  final GCWFile? file;
-
-  const ID3Tag({Key? key, this.file}) : super(key: key);
+  const ID3Tag({Key? key}) : super(key: key);
 
   @override
   _ID3TagState createState() => _ID3TagState();
 }
 
 class _ID3TagState extends State<ID3Tag> {
-  GCWFile? _file;
+  GCWFile? _currentSoundFile;
   GCWFile? _currentImageFile;
+  String _currentArtist = '';
+  String _currentTitle = '';
+  String _currentAlbum = '';
+  String _currentYear = '';
+  String _currentComment = '';
+  int _currentTrack = 0;
+  int _currentGenre = 0;
 
   ID3TagList _ID3TagList = EMPTY_ID3TAGLIST;
 
-  bool _fileLoaded = false;
+  bool _soundFileLoaded = false;
+  bool _imageFileLoaded = false;
 
   ID3_VERSION _versionID3 = ID3_VERSION.V24;
 
@@ -40,12 +46,6 @@ class _ID3TagState extends State<ID3Tag> {
   @override
   initState() {
     super.initState();
-
-    if (widget.file != null) {
-      _file = widget.file;
-      _ID3TagList = decodeID3MetaData(_file!.bytes);
-      _fileLoaded = true;
-    }
   }
 
   @override
@@ -54,28 +54,32 @@ class _ID3TagState extends State<ID3Tag> {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        GCWTwoOptionsSwitch(
-          leftValue: i18n(context, 'metadata_read'),
-          rightValue: i18n(context, 'metadata_write'),
-          value: _currentMode,
-          onChanged: (value) {
-            _currentMode = value;
-          },
-        ),
         GCWOpenFile(
+          title: i18n(context, 'metadata_soundfile'),
           supportedFileTypes: SUPPORTED_SOUND_TYPES,
-          suppressGallery: false,
+          suppressGallery: true,
           onLoaded: (_file) {
             if (_file == null) {
               showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'),
                   context);
               return;
             }
-            _fileLoaded = true;
+            _soundFileLoaded = true;
+            _currentSoundFile = _file;
 
-            _ID3TagList = decodeID3MetaData(_file.bytes);
+            _ID3TagList = decodeID3MetaData(_currentSoundFile!.bytes);
 
             setState(() {});
+          },
+        ),
+        GCWTwoOptionsSwitch(
+          leftValue: i18n(context, 'metadata_read'),
+          rightValue: i18n(context, 'metadata_write'),
+          value: _currentMode,
+          onChanged: (value) {
+            setState(() {
+              _currentMode = value;
+            });
           },
         ),
         (_currentMode == GCWSwitchPosition.right)
@@ -87,7 +91,7 @@ class _ID3TagState extends State<ID3Tag> {
   }
 
   Widget _buildOutput() {
-    if (!_fileLoaded) {
+    if (!_soundFileLoaded) {
       return Container();
     }
 
@@ -95,17 +99,17 @@ class _ID3TagState extends State<ID3Tag> {
       child: Column(
         children: [
           GCWExpandableTextDivider(
-            text: 'Header',
+            text: i18n(context, 'metadata_header'),
             child:
                 GCWColumnedMultilineOutput(data: _ID3TagList.tableTagsHeader),
           ),
           GCWExpandableTextDivider(
-            text: 'Frames',
+            text: i18n(context, 'metadata_frames'),
             child:
                 GCWColumnedMultilineOutput(data: _ID3TagList.tableTagsFrames),
           ),
           GCWExpandableTextDivider(
-            text: 'Padding',
+            text: i18n(context, 'metadata_padding'),
             child:
                 GCWColumnedMultilineOutput(data: _ID3TagList.tableTagsPadding),
           ),
@@ -114,7 +118,7 @@ class _ID3TagState extends State<ID3Tag> {
               : Container(),
           _ID3TagList.tableTagsMisc.isNotEmpty
               ? GCWExpandableTextDivider(
-                  text: '?',
+            text: i18n(context, 'metadata_miscelleanous'),
                   child: GCWColumnedMultilineOutput(
                       data: _ID3TagList.tableTagsMisc),
                 )
@@ -137,7 +141,7 @@ class _ID3TagState extends State<ID3Tag> {
     }
 
     return GCWExpandableTextDivider(
-        text: 'Images',
+        text: i18n(context, 'metadata_images'),
         child: Column(
           children: result,
         ));
@@ -145,63 +149,68 @@ class _ID3TagState extends State<ID3Tag> {
 
   Widget _buildWidgetInputMetaData() {
     List<int> resultBytes = [];
-    if (_fileLoaded) {
+    if (_soundFileLoaded) {
       return Column(
         children: [
           GCWOpenFile(
+            title: i18n(context, 'metadata_imagefile'),
             supportedFileTypes: SUPPORTED_IMAGE_TYPES,
             suppressGallery: false,
             onLoaded: (_imageFile) {
               if (_imageFile == null) {
-                showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'),
+                showSnackBar(
+                    i18n(context, 'common_loadfile_exception_notloaded'),
                     context);
                 return;
               }
               _currentImageFile = _imageFile;
+              _imageFileLoaded = true;
               setState(() {});
             },
           ),
           GCWButton(
               text: i18n(context, 'metadata_write'),
               onPressed: () {
-                final encoder = ID3Encoder(_file!.bytes);
+                final encoder = ID3Encoder(_currentSoundFile?.bytes as List<int>);
                 switch (_versionID3) {
                   case ID3_VERSION.V1:
                   case ID3_VERSION.V11:
                     resultBytes = encoder.encodeSync(MetadataV1Body(
-                        title: 'Ting wo shuo,xiexie ni',
-                        artist: 'Wu ming',
-                        album: 'Gan en you ni',
-                        year: '2021',
-                        comment: 'I am very happy!',
-                        track: 1,
-                        genre: 2));
+                      title: _currentTitle,
+                      artist: _currentArtist,
+                      album: _currentAlbum,
+                      year: _currentYear,
+                      comment: _currentComment,
+                      track: _currentTrack,
+                      genre: _currentGenre,
+                    ));
                     break;
                   case ID3_VERSION.V23:
                     resultBytes = encoder.encodeSync(MetadataV2p3Body(
-                      title: '听我说谢谢你！',
-                      imageBytes: _currentImageFile?.bytes,
-                      artist: '歌手ijinfeng',
-                      userDefines: {
-                        "时长": '2:48',
-                        "userId": "ijinfeng"
-                      },
-                      album: 'ijinfeng的专辑',
-                    ));                     break;
+                      title: _currentTitle,
+                      imageBytes:
+                          _imageFileLoaded ? _currentImageFile?.bytes : null,
+                      artist: _currentArtist,
+                      userDefines: {"时长": '2:48', "userId": "ijinfeng"},
+                      album: _currentAlbum,
+                    ));
+                    break;
                   case ID3_VERSION.V24:
                     resultBytes = encoder.encodeSync(MetadataV2p4Body(
-                      title: '听我说谢谢你！',
-                      imageBytes: _currentImageFile?.bytes,
-                      artist: '歌手ijinfeng',
-                      userDefines: {
-                        "时长": '2:48',
-                        "userId": "ijinfeng"
-                      },
-                      album: 'ijinfeng的专辑',
-                    ));                     break;
+                      title: _currentTitle,
+                      imageBytes:
+                          _imageFileLoaded ? _currentImageFile?.bytes : null,
+                      artist: _currentArtist,
+                      userDefines: {"时长": '2:48', "userId": "ijinfeng"},
+                      album: _currentAlbum,
+                    ));
+                    break;
                 }
+                //TO DO write resultBytes to File
+
                 setState(() {
-                  _ID3TagList = decodeID3MetaData(Uint8List.fromList(resultBytes));
+                  _ID3TagList =
+                      decodeID3MetaData(Uint8List.fromList(resultBytes));
                 });
               })
         ],
