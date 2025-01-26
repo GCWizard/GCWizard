@@ -1161,6 +1161,14 @@ void initializeRegistry(BuildContext context) {
       ToolCategory.IMAGES_AND_FILES
     ], searchKeys: const [
       'id3_tag',
+    ], licenses: [
+      ToolLicenseCodeLibrary(
+          context: context,
+          author: 'jinfeng',
+          title: 'id3_codec',
+          sourceUrl:
+              'https://web.archive.org/web/20250126104939/https://github.com/ijinfeng/id3_codec',
+          licenseType: ToolLicenseType.MIT)
     ]),
     GCWTool(tool: const IEEE754(), id: 'ieee754', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
@@ -1911,12 +1919,13 @@ void initializeRegistry(BuildContext context) {
                   'https://en.wikipedia.org/w/index.php?title=Tupper%27s_self-referential_formula&oldid=1268384498',
               licenseType: ToolLicenseType.CCBYSA4),
           ToolLicenseOnlineArticle(
-              context: context,
-              author: 'Jeff Tupper',
-              title: "Reliable Two-Dimensional Graphing Methods for Mathematical Formulae with Two Free Variables",
-              sourceUrl:
-              'https://web.archive.org/web/20250122201114/https://www.dgp.toronto.edu/~mooncake/papers/SIGGRAPH2001_Tupper.pdf',
-              )
+            context: context,
+            author: 'Jeff Tupper',
+            title:
+                "Reliable Two-Dimensional Graphing Methods for Mathematical Formulae with Two Free Variables",
+            sourceUrl:
+                'https://web.archive.org/web/20250122201114/https://www.dgp.toronto.edu/~mooncake/papers/SIGGRAPH2001_Tupper.pdf',
+          )
         ]),
     GCWTool(tool: const UFI(), id: 'ufi', categories: const [
       ToolCategory.CRYPTOGRAPHY,
@@ -8276,30 +8285,38 @@ void initializeRegistry(BuildContext context) {
               'https://web.archive.org/web/20240801172315/https://fontstruct.com/fontstructions/show/1445997/marain-dots',
           licenseType: ToolLicenseType.CCBYSA3)
     ]),
-    GCWSymbolTableTool(symbolKey: 'mary_stuart_babington', symbolSearchStrings: const [
-      'symbol_mary_stuart',
-    ], licenses: [
-      ToolLicenseOnlineArticle(
-        context: context,
-        author: 'Emilio Barone, Gaia Barone',
-        title: 'Unscrambling Codes: From Hieroglyphs to Market News',
-        sourceUrl:
-        'https://web.archive.org/web/20250117200927/https://www.researchgate.net/publication/359543315_Unscrambling_Codes_From_Hieroglyphs_to_Market_News',
-        customComment: 'DOI:10.2139/ssrn.4049797',)
-    ]),
-    GCWSymbolTableTool(symbolKey: 'mary_stuart_castelnau', symbolSearchStrings: const [
-      'symbol_mary_stuart',
-    ], licenses: [
-      ToolLicenseOnlineArticle(
-          context: context,
-          author: 'George Lasry, Norbert Biermann, Satoshi Tomokiyo',
-          title: 'Deciphering Mary Stuart’s lost letters from 1578-1584',
-          year: 2023,
-          sourceUrl:
-          'https://web.archive.org/web/20250117200108/https://www.tandfonline.com/doi/full/10.1080/01611194.2022.2160677',
-          licenseType: ToolLicenseType.CCBYNCND40,
-          customComment: 'DOI: https://doi.org/10.1080/01611194.2022.2160677'),
-      ]),
+    GCWSymbolTableTool(
+        symbolKey: 'mary_stuart_babington',
+        symbolSearchStrings: const [
+          'symbol_mary_stuart',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Emilio Barone, Gaia Barone',
+            title: 'Unscrambling Codes: From Hieroglyphs to Market News',
+            sourceUrl:
+                'https://web.archive.org/web/20250117200927/https://www.researchgate.net/publication/359543315_Unscrambling_Codes_From_Hieroglyphs_to_Market_News',
+            customComment: 'DOI:10.2139/ssrn.4049797',
+          )
+        ]),
+    GCWSymbolTableTool(
+        symbolKey: 'mary_stuart_castelnau',
+        symbolSearchStrings: const [
+          'symbol_mary_stuart',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+              context: context,
+              author: 'George Lasry, Norbert Biermann, Satoshi Tomokiyo',
+              title: 'Deciphering Mary Stuart’s lost letters from 1578-1584',
+              year: 2023,
+              sourceUrl:
+                  'https://web.archive.org/web/20250117200108/https://www.tandfonline.com/doi/full/10.1080/01611194.2022.2160677',
+              licenseType: ToolLicenseType.CCBYNCND40,
+              customComment:
+                  'DOI: https://doi.org/10.1080/01611194.2022.2160677'),
+        ]),
     GCWSymbolTableTool(symbolKey: 'matoran', symbolSearchStrings: const [
       'symbol_matoran',
     ], licenses: [
