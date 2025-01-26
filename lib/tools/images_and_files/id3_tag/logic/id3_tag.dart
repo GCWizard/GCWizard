@@ -3,6 +3,8 @@ import 'dart:typed_data';
 
 import 'package:id3_codec/id3_codec.dart';
 
+enum ID3_VERSION {V1, V11, V23, V24}
+
 class ID3TagList {
   final List<List<String>> tableTagsHeader;
   final List<List<String>> tableTagsFrames;
@@ -18,6 +20,13 @@ class ID3TagList {
     required this.tableTagsImages, });
 }
 
+const EMPTY_ID3TAGLIST = ID3TagList(
+tableTagsHeader: [],
+tableTagsFrames: [],
+tableTagsPadding: [],
+tableTagsImages: [],
+tableTagsMisc: []);
+
 class ID3FrameTagList {
   final List<List<String>> tableTagsFrames;
   final List<List<String>> tableTagsImages;
@@ -25,13 +34,14 @@ class ID3FrameTagList {
   const ID3FrameTagList({required this.tableTagsFrames, required this.tableTagsImages, });
 }
 
+const EMPTY_ID3FRAMELIST = ID3FrameTagList(tableTagsFrames: [], tableTagsImages: []);
 
 ID3TagList decodeID3MetaData(Uint8List bytes){
   final decoder = ID3Decoder(bytes);
   final metadata = decoder.decodeSync();
 
   List<List<String>> _tableTagsHeader = [];
-  ID3FrameTagList _tableTagsFrames = ID3FrameTagList(tableTagsFrames: [], tableTagsImages: []);
+  ID3FrameTagList _tableTagsFrames = EMPTY_ID3FRAMELIST;
   List<List<String>> _tableTagsPadding = [];
   List<List<String>> _tableTagsMisc = [];
 
@@ -75,7 +85,7 @@ ID3FrameTagList _buildTableTagsFrames(List<dynamic> data) {
   List<List<String>> resultFrames = [];
   List<List<String>> resultImages = [];
 
-  data.forEach((dataSet) {
+  for (var dataSet in data) {
     if (dataSet.runtimeType.toString() == 'LinkedMap<dynamic, dynamic>') {
       final dataMap = json.decode(json.encode(dataSet)) as Map<String, dynamic>;
       dataMap.forEach((key, value) {
@@ -96,7 +106,7 @@ ID3FrameTagList _buildTableTagsFrames(List<dynamic> data) {
         }
       });
     }
-  });
+  }
 
   return ID3FrameTagList(tableTagsFrames: resultFrames, tableTagsImages: resultImages, );
 }

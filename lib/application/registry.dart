@@ -1157,10 +1157,10 @@ void initializeRegistry(BuildContext context) {
       categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
       searchKeys: const [],
     ),
-    GCWTool(tool: const ID3Tag(), id: 'id3_tag', categories: const [
+    GCWTool(tool: const ID3Tag(), id: 'metadata_id3_tag', categories: const [
       ToolCategory.IMAGES_AND_FILES
     ], searchKeys: const [
-      'id3_tag',
+      'metadata_id3_tag',
     ], licenses: [
       ToolLicenseCodeLibrary(
           context: context,
