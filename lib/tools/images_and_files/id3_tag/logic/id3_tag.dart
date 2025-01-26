@@ -18,15 +18,21 @@ class ID3TagList {
     required this.tableTagsImages, });
 }
 
+class ID3FrameTagList {
+  final List<List<String>> tableTagsFrames;
+  final List<List<String>> tableTagsImages;
+
+  const ID3FrameTagList({required this.tableTagsFrames, required this.tableTagsImages, });
+}
+
 
 ID3TagList decodeID3MetaData(Uint8List bytes){
   final decoder = ID3Decoder(bytes);
   final metadata = decoder.decodeSync();
 
   List<List<String>> _tableTagsHeader = [];
-  List<List<String>> _tableTagsFrames = [];
+  ID3FrameTagList _tableTagsFrames = ID3FrameTagList(tableTagsFrames: [], tableTagsImages: []);
   List<List<String>> _tableTagsPadding = [];
-  List<List<String>> _tableTagsImages = [];
   List<List<String>> _tableTagsMisc = [];
 
   for (var data in metadata) {
@@ -43,10 +49,10 @@ ID3TagList decodeID3MetaData(Uint8List bytes){
 
   return ID3TagList(
       tableTagsHeader: _tableTagsHeader,
-      tableTagsFrames: _tableTagsFrames,
+      tableTagsFrames: _tableTagsFrames.tableTagsFrames,
       tableTagsPadding: _tableTagsPadding,
       tableTagsMisc: _tableTagsMisc,
-      tableTagsImages: _tableTagsImages);
+      tableTagsImages: _tableTagsFrames.tableTagsImages);
 }
 
 List<List<String>> _buildTableTagsHeader(Map<dynamic, dynamic> data) {
@@ -65,8 +71,10 @@ List<List<String>> _buildTableTagsPadding(Map<dynamic, dynamic> data) {
   return result;
 }
 
-List<List<String>> _buildTableTagsFrames(List<dynamic> data) {
-  List<List<String>> result = [];
+ID3FrameTagList _buildTableTagsFrames(List<dynamic> data) {
+  List<List<String>> resultFrames = [];
+  List<List<String>> resultImages = [];
+
   data.forEach((dataSet) {
     if (dataSet.runtimeType.toString() == 'LinkedMap<dynamic, dynamic>') {
       final dataMap = json.decode(json.encode(dataSet)) as Map<String, dynamic>;
@@ -76,19 +84,21 @@ List<List<String>> _buildTableTagsFrames(List<dynamic> data) {
             final valueMap = json.decode(json.encode(value)) as Map<String, dynamic>;
             valueMap.forEach((subKey, value){
               switch (subKey) {
-                case 'Base64': result.add([key, subKey, value.toString()]);break;
-                default: result.add([key, subKey, value.toString()]);
+                case 'Base64':
+                  resultImages.add([key, subKey, value.toString()]);
+                  resultFrames.add([key, subKey, '<Image Data>']);
+                  break;
+                default: resultFrames.add([key, subKey, value.toString()]);
               }
-
             });
             break;
-          default: result.add([key, value.toString(), '']);
+          default: resultFrames.add([key, value.toString(), '']);
         }
       });
     }
   });
 
-  return result;
+  return ID3FrameTagList(tableTagsFrames: resultFrames, tableTagsImages: resultImages, );
 }
 
 List<List<String>> _buildTableTagsMisc(Map<dynamic, dynamic> data) {

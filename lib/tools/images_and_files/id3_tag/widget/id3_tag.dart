@@ -1,8 +1,12 @@
 
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
+import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/base/_common/logic/base.dart';
 import 'package:gc_wizard/tools/images_and_files/id3_tag/logic/id3_tag.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
@@ -107,6 +111,26 @@ class _ID3TagState extends State<ID3Tag> {
   }
 
   Widget _buildImageOutput(List<List<String>> imageData) {
-    return Container();
+    if (imageData.isEmpty) return Container();
+
+    List<Widget> result = [];
+
+    imageData.forEach((imageEntry){
+
+      result.add(
+          GCWImageView(
+            imageData: GCWImageViewData(
+              GCWFile(bytes: Uint8List.fromList(decodeBase64(imageEntry[2]).codeUnits))
+            )
+          )
+      );
+    });
+
+    return GCWExpandableTextDivider(
+      text: 'Images',
+      child: Column(
+        children: result,
+      )
+    );
   }
 }

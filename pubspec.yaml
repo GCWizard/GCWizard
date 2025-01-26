@@ -33,7 +33,9 @@ dependencies:
   highlight: ^0.7.0
   http: ^1.2.2
   http_parser: ^4.1.1
-  id3_codec: ^1.0.3
+  id3_codec:
+    git:
+      url: https://github.com/t-m-z/id3_codec.git
   image: ^4.5.2
   image_picker: ^1.1.1
   intl: ^0.19.0

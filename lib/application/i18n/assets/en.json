@@ -3172,7 +3172,7 @@
   "icecodes_system_sigrid_92": "10/10",
   "icecodes_system_sigrid_99": "Unknown",
   "id3_tag_title": "ID3 Tag",
-  "id3_tag_description": "Read and edit ID3 Tags",
+  "id3_tag_description": "Display ID3 Metadata",
   "ieee754_title": "IEEE-754 Floating Point Converter",
   "ieee754_description": "Convert between the decimal representation of numbers and the binary format used by all modern CPUs",
   "ieee754_example": "1.02 → 00111111100000101000111101011100",
