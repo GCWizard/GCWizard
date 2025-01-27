@@ -16,6 +16,7 @@ import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
+
 import 'package:id3_codec/encode_metadata.dart';
 import 'package:id3_codec/id3_encoder.dart';
 
@@ -188,7 +189,8 @@ class _ID3TagState extends State<ID3Tag> {
         onPressed: () {
           final encoder = ID3Encoder(_currentSoundFile?.bytes as List<int>);
           switch (_versionID3) {
-            case ID3_VERSION.V1:
+            case ID3_VERSION.NULL: break;
+            case ID3_VERSION.V10:
             case ID3_VERSION.V11:
               resultBytes = encoder.encodeSync(MetadataV1Body(
                 title: _currentTitle,
@@ -324,7 +326,7 @@ class _ID3TagState extends State<ID3Tag> {
 
   Future<void> _exportFile(BuildContext context, Uint8List data, String filename) async {
     await saveByteDataToFile(context, data, filename).then((value) {
-      if (value) showExportedFileDialog(context, contentWidget: imageContent(context, data));
+      if (value) showExportedFileDialog(context, );
     });
   }
 

@@ -1,5 +1,7 @@
-/// Genre list in ID3v1
-/// https://web.archive.org/web/20151121080450/http://id3.org/id3v2.3.0#Appendix_A_-_Genre_List_from_ID3v1
+part of 'package:gc_wizard/tools/images_and_files/id3_tag/logic/id3_tag.dart';
+
+// Genre list in ID3v1
+// https://web.archive.org/web/20151121080450/http://id3.org/id3v2.3.0#Appendix_A_-_Genre_List_from_ID3v1
 const List<String> genreList = [
   'Blues',
   'Classic Rock',

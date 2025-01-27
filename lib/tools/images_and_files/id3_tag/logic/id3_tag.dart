@@ -3,43 +3,46 @@ import 'dart:typed_data';
 
 import 'package:id3_codec/id3_codec.dart';
 
-enum ID3_VERSION { V1, V11, V23, V24 }
+part 'package:gc_wizard/tools/images_and_files/id3_tag/logic/id3_tag_classes.dart';
+part 'package:gc_wizard/tools/images_and_files/id3_tag/logic/id3_tag_data.dart';
 
-class ID3TagList {
-  final List<List<String>> tableTagsHeader;
-  final List<List<String>> tableTagsFrames;
-  final List<List<String>> tableTagsPadding;
-  final List<List<String>> tableTagsMisc;
-  final List<List<String>> tableTagsImages;
+enum ID3_VERSION { NULL, V10, V11, V23, V24 }
 
-  const ID3TagList({
-    required this.tableTagsHeader,
-    required this.tableTagsFrames,
-    required this.tableTagsPadding,
-    required this.tableTagsMisc,
-    required this.tableTagsImages,
-  });
+ID3TagData ID3MetaInfoToDataSet(Uint8List bytes) {
+  final decoder = ID3Decoder(bytes);
+  final metadata = decoder.decodeSync();
+
+  ID3_VERSION version = ID3_VERSION.NULL;
+
+  Map<String, dynamic> dataJSON = metadata[0].toTagMap();
+
+  if (dataJSON['Version'] != null) {
+    switch (dataJSON['Version']) {
+      case 'v1' : version = ID3_VERSION.V10; break;
+      default: version = ID3_VERSION.V11;
+    }
+  } else if (dataJSON['Header'] != null) {
+    switch (dataJSON['Header']['Version']) {
+      case 'v2.3.0' : version = ID3_VERSION.V23; break;
+      default: version = ID3_VERSION.V24;
+    }
+  }
+
+  switch (version) {
+    case ID3_VERSION.V10: break;
+    case ID3_VERSION.V11: break;
+    case ID3_VERSION.V23: break;
+    case ID3_VERSION.V24: break;
+    default: break;
+  }
+
+  return ID3TagData(
+      version: version,
+      ID3v10data: null,
+      ID3v11data: null,
+      ID3v23data: null,
+      ID3v24data: null);
 }
-
-const EMPTY_ID3TAGLIST = ID3TagList(
-    tableTagsHeader: [],
-    tableTagsFrames: [],
-    tableTagsPadding: [],
-    tableTagsImages: [],
-    tableTagsMisc: []);
-
-class ID3FrameTagList {
-  final List<List<String>> tableTagsFrames;
-  final List<List<String>> tableTagsImages;
-
-  const ID3FrameTagList({
-    required this.tableTagsFrames,
-    required this.tableTagsImages,
-  });
-}
-
-const EMPTY_ID3FRAMELIST =
-    ID3FrameTagList(tableTagsFrames: [], tableTagsImages: []);
 
 ID3TagList decodeID3MetaData(Uint8List bytes) {
   final decoder = ID3Decoder(bytes);
@@ -53,7 +56,12 @@ ID3TagList decodeID3MetaData(Uint8List bytes) {
   for (var data in metadata) {
     Map<String, dynamic> dataJSON = data.toTagMap();
     dataJSON.forEach((key, value) {
+      print(key.toString() + ' ' + value.toString());
+      print(
+          '------------------------------------------------------------------');
       switch (key) {
+        case "Version":
+          break;
         case "Header":
           _tableTagsHeader =
               _buildTableTagsHeader(value as Map<dynamic, dynamic>);
