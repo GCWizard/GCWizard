@@ -25,7 +25,7 @@ class MultiDecoderToolRomanNumbers extends AbstractMultiDecoderTool {
                   ? RomanNumberType.USE_SUBTRACTION_RULE
                   : RomanNumberType.ONLY_ADDITION;
 
-              return decodeRomanNumbers(input, type: type);
+              return decodeRomanInput(input, type);
             },
             options: options);
   @override
