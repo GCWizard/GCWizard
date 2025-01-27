@@ -163,16 +163,20 @@ class _MultiDecoderState extends State<MultiDecoder> {
     var optionValues = tool.options.values.map((Object? value) {
       String result = value.toString();
 
-      if (tool.internalToolName == MDT_INTERNALNAMES_COORDINATEFORMATS) {
-        var widgetInfo = coordinateWidgetInfoByByPersistenceKey((value ?? '').toString());
-        if (widgetInfo != null) {
-          result = widgetInfo.name;
-        }
+      switch (tool.internalToolName) {
+        case MDT_INTERNALNAMES_COORDINATEFORMATS:
+          var widgetInfo = coordinateWidgetInfoByByPersistenceKey((value ?? '').toString());
+          if (widgetInfo != null) {
+            result = widgetInfo.name;
+          }
+          break;
+        case MDT_INTERNALNAMES_BASE:
+        case MDT_INTERNALNAMES_BCD:
+          result += '_title';
+          break;
+        case 'multidecoder_tool_vanitymultitap_title':
+          result  = MDT_INTERNALNAMES_VANITY_MULTITAP; //fix renamed key
       }
-      if ([MDT_INTERNALNAMES_BASE, MDT_INTERNALNAMES_BCD].contains(tool.internalToolName)) {
-        result += '_title';
-      }
-
       return i18n(context, result, ifTranslationNotExists: result);
     }).join(', ');
 
