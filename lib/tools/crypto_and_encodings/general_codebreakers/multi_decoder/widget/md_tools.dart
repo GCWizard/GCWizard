@@ -260,6 +260,7 @@ AbstractMultiDecoderTool _multiDecoderToolToGCWMultiDecoderTool(BuildContext con
       gcwTool = MultiDecoderToolTapir(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_VANITY_MULTITAP:
+    case 'multidecoder_tool_vanitymultitap_title': //fix key renamed
       gcwTool = MultiDecoderToolVanityMultitap(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_VANITY_NUMBERSEARCH:

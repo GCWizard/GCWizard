@@ -49,3 +49,11 @@ int? decodeRomanNumbers(String input, {RomanNumberType type = RomanNumberType.US
 
   return out;
 }
+
+String decodeRomanInput(String input, RomanNumberType type) {
+  return input
+        .split(RegExp(r'\s+'))
+        .map((number) => decodeRomanNumbers(number, type: type))
+        .where((number) => number != null)
+        .join(' ');
+}
