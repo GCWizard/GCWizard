@@ -25,7 +25,7 @@ VerbalArithmeticOutput? solveCryptogram(List<String> equations, bool allSolution
   var _equations = equations.map((equation) => Equation(equation)).toList();
   var notValid = _equations.any((equation) => !equation.validFormula);
   if (notValid || _equations.isEmpty) {
-    return VerbalArithmeticOutput(equations: _equations, solutions: [], error: 'InvalidFormula');
+    return VerbalArithmeticOutput(equations: _equations, solutions: [], error: 'InvalidEquation');
   }
   _allSolutions = allSolutions;
   return _solveCryptogram(_equations, sendAsyncPort);

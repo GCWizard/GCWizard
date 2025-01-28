@@ -9,7 +9,6 @@ import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_paste_button.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
-import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
@@ -257,12 +256,12 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
               size: IconButtonSize.SMALL,
               icon: Icons.content_copy,
               onPressed: () {
-                // _currentMatrix.substitutions = _getSubstitutions();
                 var copyText = _currentMatrix.toJson();
                 if (copyText.isEmpty) return;
                 insertIntoGCWClipboard(context, copyText);
-              },
-            )
+              }
+            ),
+            Container(width: 10)
           ]),
           child: _buildTable(_rowCount, _columnCount),
         ),

@@ -11,6 +11,7 @@ class GCWPainterContainer extends StatefulWidget {
   final double scale;
   final bool? suppressTopSpace;
   final bool? suppressBottomSpace;
+  final Widget? trailing;
 
   const GCWPainterContainer(
       {Key? key, required this.child, this.scale = 1, this.suppressTopSpace, this.suppressBottomSpace,

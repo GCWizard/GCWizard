@@ -34,7 +34,7 @@ VerbalArithmeticOutput? solveAlphametic(String equation, bool allSolutions, bool
     {SendPort? sendAsyncPort}) {
   var _equation = Equation(equation, singleLetter: true);
   if (!_equation.validFormula) {
-    return VerbalArithmeticOutput(equations: [_equation], solutions: [], error: 'InvalidFormula');
+    return VerbalArithmeticOutput(equations: [_equation], solutions: [], error: 'InvalidEquation');
   }
 
   if (_equation.usedMembers.length > 10) {
