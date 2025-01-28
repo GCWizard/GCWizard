@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -10,6 +12,17 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>de</string>
+		<string>nl</string>
+		<string>es</string>
+		<string>ko</string>
+		<string>sk</string>
+		<string>sv</string>
+		<string>pl</string>
+	</array>
 	<key>CFBundleName</key>
 	<string>GC Wizard</string>
 	<key>CFBundlePackageType</key>
@@ -24,18 +37,18 @@
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Used for loading media files into file tools</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Not used but required by internal dependency 'r_scan'</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Used by coordinate functions as location input and by coordinate tools for showing current position</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Used by coordinate functions as location input and by coordinate tools for showing current position</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Used by coordinate functions as location input and by coordinate tools for showing current position</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Used for loading images into image tools</string>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>Used for loading media files into file tools</string>
-	<key>kTCCServiceMediaLibrary</key>
-	<string>Used for loading media files into file tools</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -57,20 +70,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
-	<key>CFBundleLocalizations</key>
-        <array>
-            <string>en</string>
-            <string>de</string>
-            <string>nl</string>
-            <string>es</string>
-            <string>ko</string>
-            <string>sk</string>
-            <string>sv</string>
-            <string>pl</string>
-        </array>
+	<key>kTCCServiceMediaLibrary</key>
+	<string>Used for loading media files into file tools</string>
 </dict>
 </plist>
