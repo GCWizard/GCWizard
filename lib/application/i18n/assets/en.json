@@ -7021,7 +7021,7 @@
   "velocity_acceleration_title" : "Velocity and Acceleration",
   "velocity_acceleration_description" : "Calculates velocity based on time and either distance or acceleration",
   "velocity_acceleration_distance": "Distance",
-  "verbal_arithmetic_title": "Verbal Arithmetic/ Cryptogram",
+  "verbal_arithmetic_title": "Verbal Arithmetic/ Symbol Matrix",
   "verbal_arithmetic_description": "Solving a equations or a matrix of equations.",
   "verbal_arithmetic_solutionnotfound": "No solution found",
   "verbal_arithmetic_toomanyletters": "Too many letters",

@@ -265,13 +265,6 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
           ]),
           child: _buildTable(_rowCount, _columnCount),
         ),
-        GCWIconButton(
-          size: IconButtonSize.SMALL,
-          icon: Icons.auto_fix_high,
-          onPressed: () {
-            var equations = _currentMatrix.buildEquations();
-          },
-        ),
       ],
     );
   }
@@ -347,7 +340,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     }
 
     return Table(
-        border: const TableBorder.symmetric(outside: BorderSide(width: 5, color: Colors.transparent)),
+        border: const TableBorder.symmetric(outside: BorderSide(width: _BORDERWIDTH, color: Colors.transparent)),
         columnWidths: _columnWidthConfiguration(columnCount),
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         children: rows
@@ -397,8 +390,10 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     );
   }
 
-  static const double _OPERATORCOLUMNWIDTH = 40.0;
+  static const double _VALUECOLUMNWIDTH = 20.0;
+  static const double _OPERATORCOLUMNWIDTH = 55.0;
   static const double _EQUALSIGNWIDTH = 30.0;
+  static const double _BORDERWIDTH = 5.0;
 
   Map<int, TableColumnWidth> _columnWidthConfiguration(int columnCount) {
     var config = <int, TableColumnWidth>{};
@@ -417,7 +412,8 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
 
   double _tableMinWidth() {
     var count = _currentMatrix.getColumnsCount();
-    return (count + 1) * _OPERATORCOLUMNWIDTH + (count - 1) * _OPERATORCOLUMNWIDTH + _EQUALSIGNWIDTH;
+    return (count + 1) * _VALUECOLUMNWIDTH + (count - 1) * _OPERATORCOLUMNWIDTH
+        + _EQUALSIGNWIDTH + 2 * _BORDERWIDTH;
   }
 
   Widget _equalText(int rowIndex, int columnIndex) {
