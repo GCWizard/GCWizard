@@ -1,8 +1,37 @@
+int _intSqrt(int number) {
+  int result = 0;
+  int bit = 1 << 30;
+
+  while (bit > number) {
+    bit >>= 2;
+  }
+
+  while (bit != 0) {
+    if (number >= result + bit) {
+      number -= result + bit;
+      result = (result >> 1) + bit;
+    } else {
+      result >>= 1;
+    }
+    bit >>= 2;
+  }
+
+  return result;
+}
+
 List<int> divisors(int number) {
   List<int> divisorList = <int>[];
-  for (int i = 1; i < number ~/ 2 + 1; i++) {
-    if (number % i == 0) divisorList.add(i);
+  int sqrtNumber = _intSqrt(number);
+
+  for (int i = 1; i <= sqrtNumber; i++) {
+    if (number % i == 0) {
+      divisorList.add(i);
+      if (i != number ~/ i) {
+        divisorList.add(number ~/ i);
+      }
+    }
   }
-  divisorList.add(number);
+
+  divisorList.sort();
   return divisorList;
 }
