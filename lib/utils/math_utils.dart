@@ -58,17 +58,8 @@ double cot(double a) {
   return cos(a) / sin(a);
 }
 
-// https://stackoverflow.com/a/28394191/3984221
 double acot(double a) {
   return atan(1.0 / a);
-
-  // if (a > 1.0) {
-  //   return atan(1.0 / a);
-  // } else if (a < -1.0) {
-  //   return pi + atan(1.0 / a);
-  // } else {
-  //   return pi / 2.0 - atan(a);
-  // }
 }
 
 /// Multiplication of two matrices

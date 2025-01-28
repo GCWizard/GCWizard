@@ -2,9 +2,6 @@
 import 'dart:math';
 
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
-import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
-import 'package:gc_wizard/tools/general_tools/randomizer/logic/randomizer.dart';
-import 'package:gc_wizard/tools/science_and_technology/periodic_table/_common/logic/periodic_table.dart';
 import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 import 'package:gc_wizard/utils/data_type_utils/double_type_utils.dart';
@@ -84,7 +81,7 @@ class Rhumb {
 // [5] Karney Matlab code: https://gis.stackexchange.com/a/488090/160294
 // Note (MAL 01/2025): Due to limitation mentioned in SSA [3] as well as with polar points, this is currently not quite perfect
 //     Therefore should not used stand-alone atm which is the reason, that is currently combined with the old
-//     evolutional approach
+//     interval arithmetics approach
 LatLng reverseAzimuthalProjection(LatLng coord, double bearing, double distance, Ellipsoid ellipsoid) {
   var betaDeg = bearing;
   if (betaDeg > 180) {
@@ -138,7 +135,7 @@ LatLng reverseAzimuthalProjection(LatLng coord, double bearing, double distance,
     azi1 = azi1 + _dazi1;
     delta = _dazi1;
 
-  } while (++cnt <= 10 && delta.abs() > 1e-10);
+  } while (++cnt <= 20 && delta.abs() > 1e-10);
 
   return LatLng(_lat2, _lon2);
 }

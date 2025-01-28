@@ -30,13 +30,13 @@ LatLng projectionVincenty(LatLng coord, double bearing, double distance, Ellipso
 }
 
 class _ReverseProjectionCalculator extends IntervalCalculator {
-  _ReverseProjectionCalculator(_ReverseProjectionEvolutionalParameters parameters, Ellipsoid ells) : super(parameters, ells) {
+  _ReverseProjectionCalculator(_ReverseProjectionIntervalParameters parameters, Ellipsoid ells) : super(parameters, ells) {
     eps = 1e-10;
   }
 
   @override
   bool checkCell(CoordinateCell cell, IntervalCalculatorParameters parameters) {
-    var params = parameters as _ReverseProjectionEvolutionalParameters;
+    var params = parameters as _ReverseProjectionIntervalParameters;
 
     Interval distanceToCoord = cell.distanceTo(params.coordinate);
     Interval bearingToCoord = cell.bearingTo(params.coordinate);
@@ -60,18 +60,18 @@ class _ReverseProjectionCalculator extends IntervalCalculator {
 //     This old, incredibly not performant and not deterministic approach is still
 //     available to catch the edge cases. Combined together the both approaches
 //     give a good, but not perfect result.
-List<LatLng> _reverseProjectionEvolutional(LatLng coord, double bearing, double distance, Ellipsoid ellipsoid) {
+List<LatLng> _reverseProjectionInterval(LatLng coord, double bearing, double distance, Ellipsoid ellipsoid) {
   bearing = normalizeBearing(bearing);
 
-  return _ReverseProjectionCalculator(_ReverseProjectionEvolutionalParameters(coord, bearing, distance), ellipsoid).check();
+  return _ReverseProjectionCalculator(_ReverseProjectionIntervalParameters(coord, bearing, distance), ellipsoid).check();
 }
 
-class _ReverseProjectionEvolutionalParameters extends IntervalCalculatorParameters {
+class _ReverseProjectionIntervalParameters extends IntervalCalculatorParameters {
   LatLng coordinate;
   double bearing;
   double distance;
 
-  _ReverseProjectionEvolutionalParameters(this.coordinate, this.bearing, this.distance);
+  _ReverseProjectionIntervalParameters(this.coordinate, this.bearing, this.distance);
 }
 
 LatLng? reverseProjection(LatLng coord, double bearing, double distance, Ellipsoid ellipsoid) {
@@ -94,19 +94,21 @@ LatLng? reverseProjection(LatLng coord, double bearing, double distance, Ellipso
     projected = reverseAzimuthalProjection(coord, bearing, distance, ellipsoid);
     var start = projection(projected, bearing, distance, ellipsoid);
 
-    if (!utils.equalsLatLng(coord, start, tolerance: 1e-5)) {
+    if (!utils.equalsLatLng(coord, start, tolerance: 1e-10)) {
       throw Exception();
     }
   } catch (e) {
-    // Otherwise try evolutional
+    // Otherwise try interval arithmetics
 
     projected = null;
 
-    var projectedEvolutional = _reverseProjectionEvolutional(coord, bearing, distance, ellipsoid);
-    for (LatLng ll in projectedEvolutional) {
+    var projectedInterval = _reverseProjectionInterval(coord, bearing, distance, ellipsoid);
+
+    for (LatLng ll in projectedInterval) {
       var x = projection(ll, bearing, distance, ellipsoid);
-      if (utils.equalsLatLng(coord, x, tolerance: 1e-5)) {
-        projected = x;
+
+      if (utils.equalsLatLng(coord, x, tolerance: 1e-8)) {
+        projected = ll;
         break;
       }
     }
