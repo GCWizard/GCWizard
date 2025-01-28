@@ -118,6 +118,15 @@ class _VariableCoordinateState extends State<VariableCoordinate> {
     updateFormulaValue(entry, widget.formula);
   }
 
+  bool _checkValidEditedValue(String input) {
+    if (!VARIABLESTRING.hasMatch(input)) {
+      showGCWAlertDialog(context, '', i18n(context, 'formulasolver_values_novalidinterpolated'),
+          cancelButton: false, () {});
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -195,7 +204,7 @@ class _VariableCoordinateState extends State<VariableCoordinate> {
                 i18n(context, 'coords_variablecoordinate_manyresults_text', parameters: [countCombinations]),
                 () {
                   _calculateOutput(context);
-                },
+                }, cancelButton: false
               );
             } else {
               _calculateOutput(context);
@@ -218,10 +227,7 @@ class _VariableCoordinateState extends State<VariableCoordinate> {
       onAddEntry: (entry) => _addEntry(entry),
       onUpdateEntry: (entry) => _updateEntry(entry),
       addOnDispose: true,
-      validateEditedValue: (String input) {
-        return VARIABLESTRING.hasMatch(input);
-      },
-      invalidEditedValueMessage: i18n(context, 'formulasolver_values_novalidinterpolated'),
+      validateEditedValue: (String input) => _checkValidEditedValue(input),
     );
   }
 

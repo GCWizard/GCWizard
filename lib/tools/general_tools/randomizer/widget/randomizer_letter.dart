@@ -22,6 +22,13 @@ class RandomizerLetter extends StatefulWidget {
   _RandomizerLetterState createState() => _RandomizerLetterState();
 }
 
+class _Alphabet {
+  Alphabet alphabet;
+  String alphabetName;
+
+  _Alphabet(this.alphabet, this.alphabetName);
+}
+
 enum _LetterCase {SMALL, CAPITAL, BOTH}
 
 class _RandomizerLetterState extends State<RandomizerLetter> {
@@ -35,14 +42,14 @@ class _RandomizerLetterState extends State<RandomizerLetter> {
   Widget _currentOutput = const GCWDefaultOutput();
 
   final _alphabets = [
-    alphabetAZ,
-    alphabetGerman1,
-    alphabetDanish,
-    alphabetFrench2,
-    alphabetSpanish1,
-    alphabetPolish1,
-    alphabetGreek1,
-    alphabetRussian1
+    _Alphabet(alphabetAZ, 'alphabet_name_az'),
+    _Alphabet(alphabetGerman1, 'common_language_german'),
+    _Alphabet(alphabetDanish, 'common_language_danish'),
+    _Alphabet(alphabetFrench2, 'common_language_french'),
+    _Alphabet(alphabetSpanish1, 'common_language_spanish'),
+    _Alphabet(alphabetPolish1, 'common_language_polish'),
+    _Alphabet(alphabetGreek1, 'common_language_greek'),
+    _Alphabet(alphabetRussian1, 'common_language_russian'),
   ];
 
   @override
@@ -72,10 +79,10 @@ class _RandomizerLetterState extends State<RandomizerLetter> {
         GCWDropDown<Alphabet>(
           title: i18n(context, 'common_alphabet'),
           value: _currentAlphabet,
-          items: _alphabets.map((Alphabet value) {
+          items: _alphabets.map((_Alphabet value) {
             return GCWDropDownMenuItem(
-              value: value,
-              child: i18n(context, value.key).split(RegExp(r'[^A-Za-z]'))[0]
+              value: value.alphabet,
+              child: i18n(context, value.alphabetName)
             );
           }).toList(),
           onChanged: (Alphabet value) {
@@ -93,7 +100,6 @@ class _RandomizerLetterState extends State<RandomizerLetter> {
                 case _LetterCase.SMALL: text = i18n(context, 'randomizer_letter_smallcase'); break;
                 case _LetterCase.CAPITAL: text = i18n(context, 'randomizer_letter_capitalcase'); break;
                 case _LetterCase.BOTH: text = i18n(context, 'randomizer_letter_bothcases'); break;
-                default: break;
               }
 
               return GCWDropDownMenuItem(

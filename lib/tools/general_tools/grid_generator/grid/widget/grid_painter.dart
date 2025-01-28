@@ -451,7 +451,7 @@ class _CustomGridPainter extends CustomPainter {
         }
 
         paint.style = PaintingStyle.fill;
-        paint.color = paint.color.withOpacity(0.0);
+        paint.color = paint.color.withAlpha(0);
 
         var mode = _TapMode.SINGLE;
 
@@ -541,7 +541,7 @@ class _CustomGridPainter extends CustomPainter {
           textPainter.paint(canvas, Offset(x + boxWidth - textPainter.width * 0.5, 0.0));
         }
 
-        paint.color = paint.color.withOpacity(0.0);
+        paint.color = paint.color.withAlpha(0);
 
         _touchCanvas.drawRect(Rect.fromLTWH(x + boxWidth / 2, 0.0, boxWidth, boxHeight), paint, onTapDown: (tapDetail) {
           onTapped(i, j, countRows, countColumns, _TapMode.COLUMN);
@@ -553,7 +553,7 @@ class _CustomGridPainter extends CustomPainter {
           textPainter.paint(canvas, Offset(0.0, y + boxHeight - textPainter.height * 0.5));
         }
 
-        paint.color = paint.color.withOpacity(0.0);
+        paint.color = paint.color.withAlpha(0);
 
         _touchCanvas.drawRect(Rect.fromLTWH(0.0 / 2, y + boxHeight / 2, boxWidth, boxHeight), paint,
             onTapDown: (tapDetail) {
@@ -569,7 +569,7 @@ class _CustomGridPainter extends CustomPainter {
 
         paint.color = gridState[i] != null && gridState[i]![j] != null
             ? (_GRID_COLORS[gridState[i]?[j]]?['color']) ?? Colors.black
-            : paint.color.withOpacity(0.0);
+            : paint.color.withAlpha(0);
 
         paint.style = PaintingStyle.fill;
 
@@ -600,7 +600,7 @@ class _CustomGridPainter extends CustomPainter {
             : themeColors().gridBackground();
         paint.style = PaintingStyle.fill;
 
-        if (i == 0 || j == 0) paint.color = paint.color.withOpacity(0.0);
+        if (i == 0 || j == 0) paint.color = paint.color.withAlpha(0);
 
         _touchCanvas.drawRect(Rect.fromLTWH(x, y, boxWidth, boxHeight), paint, onTapDown: (tapDetail) {
           _TapMode mode;

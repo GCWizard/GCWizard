@@ -100,7 +100,9 @@ class UICWagonCodeSpecialVehicle extends UICWagonCode {
       const [
         '17', '18', '48', '49', '67', '68', '69', '88', '89', '97', '98', '99'
       ].contains(subtypeCode)
-    ) return null;
+    ) {
+      return null;
+    }
 
     if (subtypeCode.endsWith('0') || subtypeCode == '09') {
       return 'common_other';

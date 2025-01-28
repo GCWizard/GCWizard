@@ -73,7 +73,7 @@ class _Rhumb {
     return d != 0 ? _GeoMath.asinh(x * y > 0 ? d * (x + y) / (x * hy + y * hx) : x * hy - y * hx) / d : 1 / hx;
   }
 
-  static double Dgd(double x, double y) {
+  static double _Dgd(double x, double y) {
     return _Datan(_sinh(x), _sinh(y)) * _Dsinh(x, y);
   }
 
@@ -270,7 +270,7 @@ class _Rhumb {
     } else {
       psix *= _GeoMath.degree();
       psiy *= _GeoMath.degree();
-      return _DConformalToRectifying(_gd(psix), _gd(psiy)) * Dgd(psix, psiy);
+      return _DConformalToRectifying(_gd(psix), _gd(psiy)) * _Dgd(psix, psiy);
     }
   }
 

@@ -241,3 +241,7 @@ String decompressString(String text) {
   var decompressedBytes = const ZLibDecoder().decodeBytes(compressedBytes);
   return utf8.decode(decompressedBytes);
 }
+
+bool hasLetters(String text) {
+  return removeAccents(text).contains(RegExp(r'[A-Za-z]'));
+}

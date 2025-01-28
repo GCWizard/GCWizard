@@ -53,8 +53,6 @@ class _MultiDecoderToolRomanNumbersState extends State<MultiDecoderToolRomanNumb
             case RomanNumberType.ONLY_ADDITION:
               key = MDT_ROMANNUMBERS_OPTION_MODE_ADDITION;
               break;
-            default:
-              key = MDT_ROMANNUMBERS_OPTION_MODE_ADDITION;
           }
 
           return GCWDropDownMenuItem(

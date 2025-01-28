@@ -18,10 +18,10 @@ class WordSearch extends StatefulWidget {
   const WordSearch({Key? key}) : super(key: key);
 
   @override
-  WordSearchState createState() => WordSearchState();
+  _WordSearchState createState() => _WordSearchState();
 }
 
-class WordSearchState extends State<WordSearch> {
+class _WordSearchState extends State<WordSearch> {
   late TextEditingController _inputController;
   late TextEditingController _wordsController;
 

@@ -77,7 +77,7 @@ const List<Ellipsoid> allEllipsoids = [
   Ellipsoid('Clarke 1880', 6378249.145, 293.465),
   Ellipsoid('Clarke 1880 Arc', 6378249.145, 293.4663077),
   Ellipsoid('Clarke 1880 Benoit', 6378300.789, 293.466316),
-  Ellipsoid('Clarke 1880 IGN', 6378249.2, 293.466021),
+  Ellipsoid('Clarke 1880 IGN', 6378249.2, 293.466021293627),
   Ellipsoid('Clarke 1880 RGS', 6378249.145, 293.4650060791153),
   Ellipsoid('Clarke 1880 SGA 1922', 6378249.2, 293.46598),
   Ellipsoid('Danish 1876', 6377019.27, 300.0),

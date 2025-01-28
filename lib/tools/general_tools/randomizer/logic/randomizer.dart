@@ -48,21 +48,6 @@ RGB randomColor() {
   return RGB(r.toDouble(), g.toDouble(), b.toDouble());
 }
 
-String passwordGenerator(String characters, int length) {
-  var out = '';
-  if (characters.isEmpty || length <= 0) {
-    return out;
-  }
-
-  var random = Random();
-  for (int i = 0; i < length; i++) {
-    var index = random.nextInt(characters.length);
-    out += characters[index];
-  }
-
-  return out;
-}
-
 DateTime randomDateTime(DateTime from, DateTime to) {
   var seconds = to.difference(from).inSeconds;
   var randomSeconds = randomInteger(0, seconds);

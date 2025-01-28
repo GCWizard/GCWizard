@@ -478,17 +478,28 @@ class FormulaParser {
 
   List<FormulaValue> _prepareValues(List<FormulaValue> values) {
     List<FormulaValue> val = [];
+
     for (var element in values) {
       var key = element.key.trim();
       var value = normalizeCharacters(element.value);
       value = value.replaceAll(RegExp(r'\n'), ' ');
 
       if (value.isEmpty) {
-        value = key;
-      } else if (element.type == null || element.type == FormulaValueType.FIXED) {
+        continue;
+      }
+
+      if (!hasLetters(key)) {
+        continue;
+      }
+
+      if (element.type == null || element.type == FormulaValueType.FIXED) {
         value = value.trim();
         if (value.contains(_SUPPORTED_OPERATION_CHARACTERS) && !_isString(value)) {
           value = '($value)';
+        }
+      } else if (element.type == FormulaValueType.INTERPOLATED) {
+        if (!VARIABLESTRING.hasMatch(value)) {
+          continue;
         }
       }
 

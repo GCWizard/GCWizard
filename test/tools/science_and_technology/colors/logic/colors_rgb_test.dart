@@ -35,4 +35,24 @@ void main() {
       });
     }
   });
+
+  group("Colors.HexCode:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : 'ff0000', 'expectedOutput' : '#FF0000'},
+      {'input' : '00ff00', 'expectedOutput' : '#00FF00'},
+      {'input' : 'ff0000', 'expectedOutput' : '#FF0000'},
+      {'input' : 'fff', 'expectedOutput' : '#FFFFFF'},
+      {'input' : 'ff00', 'expectedOutput' : '#00FF00'},
+      {'input' : '#ff0000', 'expectedOutput' : '#FF0000'},
+      {'input' : '0xff0000', 'expectedOutput' : '#FF0000'},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}', () {
+        var hexCode = HexCode(elem['input'] as String);
+        var _actual = hexCode.toString();
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
 }

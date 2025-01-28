@@ -124,6 +124,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/vigene
 import 'package:gc_wizard/tools/crypto_and_encodings/gray/widget/gray.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/gronsfeld/widget/gronsfeld.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/hashes/hash_breaker/widget/hash_breaker.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/hill/widget/hill.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/homophone/widget/homophone.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/houdini/widget/houdini.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/kamasutra/widget/kamasutra.dart';
@@ -134,6 +135,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/language_games/judoon/widge
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/pig_latin/widget/pig_latin.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/robber_language/widget/robber_language.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/spoon_language/widget/spoon_language.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/major_system/widget/major_system.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/mexican_army_cipher_wheel/widget/mexican_army_cipher_wheel.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/morbit/widget/morbit.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/navajo/widget/navajo.dart';
@@ -169,6 +171,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/text_analysis/widget/text_a
 import 'package:gc_wizard/tools/crypto_and_encodings/trifid/widget/trifid.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/trithemius/widget/trithemius.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/universal_product_code/widget/universal_product_code.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/upsidedown/widget/upsidedown.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/vigenere/widget/vigenere.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/wasd/widget/wasd.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/zamonian_numbers/widget/zamonian_numbers.dart';
@@ -195,6 +198,7 @@ import 'package:gc_wizard/tools/images_and_files/image_stretch_shrink/widget/ima
 import 'package:gc_wizard/tools/images_and_files/magic_eye_solver/widget/magic_eye_solver.dart';
 import 'package:gc_wizard/tools/images_and_files/qr_code/widget/qr_code.dart';
 import 'package:gc_wizard/tools/images_and_files/stegano/widget/stegano.dart';
+import 'package:gc_wizard/tools/images_and_files/tupper_formula/widget/tupper_formula.dart';
 import 'package:gc_wizard/tools/images_and_files/visual_cryptography/widget/visual_cryptography.dart';
 import 'package:gc_wizard/tools/general_tools/gcwizardscript/widget/gcwizard_script.dart';
 import 'package:gc_wizard/tools/science_and_technology/alcohol_mass/widget/alcohol_mass.dart';
@@ -214,6 +218,7 @@ import 'package:gc_wizard/tools/science_and_technology/astronomy/seasons/widget/
 import 'package:gc_wizard/tools/science_and_technology/astronomy/shadow_length/widget/shadow_length.dart';
 import 'package:gc_wizard/tools/science_and_technology/astronomy/sun_position/widget/sun_position.dart';
 import 'package:gc_wizard/tools/science_and_technology/astronomy/sun_rise_set/widget/sun_rise_set.dart';
+import 'package:gc_wizard/tools/science_and_technology/ballistics/widget/ballistics.dart';
 import 'package:gc_wizard/tools/science_and_technology/binary/widget/binary.dart';
 import 'package:gc_wizard/tools/science_and_technology/blood_alcohol_content/widget/blood_alcohol_content.dart';
 import 'package:gc_wizard/tools/science_and_technology/colors/color_tool/widget/color_tool.dart';
@@ -539,6 +544,7 @@ void _initStaticToolList() {
       className(const BabylonNumbersSelection()),
       className(const Bacon()),
       className(const BaconAnalyze()),
+      className(const Ballistics()),
       className(const BaseSelection()),
       className(const Battleship()),
       className(const BCDSelection()),
@@ -632,6 +638,7 @@ void _initStaticToolList() {
       className(const HexString2File()),
       className(const HexViewer()),
       className(const HiddenData()),
+      className(const Hill()),
       className(const Hohoho()),
       className(const Homophone()),
       className(const Houdini()),
@@ -664,6 +671,7 @@ void _initStaticToolList() {
       className(const LCM()),
       className(const LogicalSupporter()),
       className(const MagicEyeSolver()),
+      className(const MajorSystem()),
       className(const MathematicalConstants()),
       className(const Malbolge()),
       className(MapView()),
@@ -773,6 +781,7 @@ void _initStaticToolList() {
       className(const TimeCalculator()),
       className(const TomTomSelection()),
       className(const TowerOfHanoi()),
+      className(const TupperFormula()),
       className(const Trifid()),
       className(const Trithemius()),
       className(const TTS()),
@@ -781,6 +790,7 @@ void _initStaticToolList() {
       className(const UniversalProductCode()),
       className(const UnitConverter()),
       className(const UnixTime()),
+      className(const UpsideDown()),
       className(const UrwigoHashBreaker()),
       className(const UrwigoTextDeobfuscation()),
       className(const VanitySelection()),

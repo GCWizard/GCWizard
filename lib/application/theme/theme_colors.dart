@@ -73,8 +73,6 @@ void setThemeColors(ThemeType type) {
     case ThemeType.LIGHT:
       _themeColors = _ThemeColorsLight();
       break;
-    default:
-      return;
   }
 }
 

@@ -28,13 +28,11 @@ class LogicalSupporter extends StatefulWidget {
   const LogicalSupporter({Key? key}) : super(key: key);
 
   @override
-  LogicalSupporterState createState() => LogicalSupporterState();
+  _LogicalSupporterState createState() => _LogicalSupporterState();
 }
 
-class LogicalSupporterState extends State<LogicalSupporter> {
+class _LogicalSupporterState extends State<LogicalSupporter> {
   late Logical _currentBoard;
-  var _categoriesCount = 4;
-  var _itemsCount = 5;
   var _currentExpanded = true;
   double _scale = 1;
 
@@ -42,7 +40,7 @@ class LogicalSupporterState extends State<LogicalSupporter> {
   void initState() {
     super.initState();
 
-    _currentBoard = Logical(_categoriesCount, _itemsCount);
+    _currentBoard = Logical(4, 5);
   }
 
   @override
@@ -75,29 +73,27 @@ class LogicalSupporterState extends State<LogicalSupporter> {
             children: <Widget>[
               GCWIntegerSpinner(
                 title: i18n(context, 'logicalsupporter_categories'),
-                value: _categoriesCount,
+                value: _currentBoard.categoriesCount,
                 flexValues: const [1, 1],
                 overflow: SpinnerOverflowType.SUPPRESS_OVERFLOW,
                 min: minItemCount,
                 max: maxCategoriesCount,
                 onChanged: (value) {
                   setState(() {
-                    _categoriesCount = value;
-                    _currentBoard = Logical(_categoriesCount, _itemsCount, logical: _currentBoard);
+                    _currentBoard = Logical(value, _currentBoard.itemsCount, logical: _currentBoard);
                   });
                 },
               ),
               GCWIntegerSpinner(
                 title: i18n(context, 'logicalsupporter_items'),
-                value: _itemsCount,
+                value: _currentBoard.itemsCount,
                 flexValues: const [1, 1],
                 overflow: SpinnerOverflowType.SUPPRESS_OVERFLOW,
                 min: minItemCount,
-                max: 99,
+                max: maxItemCount,
                 onChanged: (value) {
                   setState(() {
-                    _itemsCount = value;
-                    _currentBoard = Logical(_categoriesCount, _itemsCount, logical: _currentBoard);
+                    _currentBoard = Logical(_currentBoard.categoriesCount, value, logical: _currentBoard);
                   });
                 },
               ),

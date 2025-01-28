@@ -5,7 +5,7 @@ import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:latlong2/latlong.dart';
 
 void main() {
-  group("Parser.mgrs.parseLatLon:", () {
+  group("Converter.mgrs.parseLatLon:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'text': '', 'expectedOutput': null},
       {'text': 'ÖD31365480657013431886', 'expectedOutput': null},

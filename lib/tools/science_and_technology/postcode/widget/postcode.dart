@@ -275,8 +275,6 @@ class PostcodeState extends State<Postcode> {
           }
         case ErrorCode.Character:
           return GCWDefaultOutput(child: i18n(context, 'postcode_invalid_character'));
-        default:
-          return GCWDefaultOutput(child: i18n(context, 'postcode_invalid_data'));
       }
     }
   }

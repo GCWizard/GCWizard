@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:isolate';
 import 'dart:math';
 
@@ -6,7 +5,7 @@ import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_param
 import 'package:gc_wizard/utils/complex_return_types.dart';
 
 final RegExp VARIABLESTRING =
-    RegExp(r'^((\s*\d+(\s*-\s*(\d*|\d+\s*#\s*\d*))?)\s*,)*(\s*\d*|(\s*\d+\s*-\s*(\d*|\d+\s*#\s*\d*)))\s*$');
+RegExp(r'^\s*\d+\s*(\s*\-\s*\d+\s*(\s*#\s*\d+\s*)?)?(\s*,\s*\d+\s*(\s*\-\s*\d+\s*(\s*#\s*\d+\s*)?)?)*$');
 
 enum VariableStringExpanderBreakCondition { RUN_ALL, BREAK_ON_FIRST_FOUND }
 
@@ -64,9 +63,9 @@ class VariableStringExpander {
 
   VariableStringExpander(this._input, this._substitutions,
       {this.onAfterExpandedText,
-      this.breakCondition = VariableStringExpanderBreakCondition.RUN_ALL,
-      this.orderAndUnique = true,
-      this.sendAsyncPort}) {
+        this.breakCondition = VariableStringExpanderBreakCondition.RUN_ALL,
+        this.orderAndUnique = true,
+        this.sendAsyncPort}) {
     onAfterExpandedText ??= (e) => e;
   }
 
@@ -91,21 +90,20 @@ class VariableStringExpander {
     dynamic output; // Explicit dynamic type is intended here!
 
     if (orderAndUnique) {
-      output = SplayTreeSet<String>();
+      output = <int?>{};
     } else {
-      output = <String>[];
+      output = <int?>[];
     }
 
     group = group.replaceAll(RegExp(r'[^\d,\-#]'), '');
-
-    if (group.isEmpty) return [];
+    if (group.isEmpty) return <String>[];
 
     var ranges = group.split(',');
     for (var range in ranges) {
       var rangeParts = range.split('#');
       var rangeBounds = rangeParts[0].split('-');
       if (rangeBounds.length == 1) {
-        output.add(int.tryParse(rangeBounds[0]).toString());
+        output.add(int.tryParse(rangeBounds[0]));
         continue;
       }
 
@@ -113,7 +111,7 @@ class VariableStringExpander {
       var end = int.parse(rangeBounds[1]);
 
       if (start == end) {
-        output.add(start.toString());
+        output.add(start);
         continue;
       }
 
@@ -122,16 +120,21 @@ class VariableStringExpander {
 
       if (start < end) {
         for (int i = start; i <= end; i += increment) {
-          output.add(i.toString());
+          output.add(i);
         }
       } else {
         for (int i = start; i >= end; i -= increment) {
-          output.add(i.toString());
+          output.add(i);
         }
       }
     }
 
-    return output.toList() as List<String>;
+    if (orderAndUnique) {
+      output = (output as Set<int?>).toList();
+      output.sort();
+    }
+
+    return (output as List<int?>).map((int? elem) => elem.toString()).toList();
   }
 
   // counting indexes like a normal numeral system:
@@ -214,9 +217,9 @@ class VariableStringExpander {
 
       for (_variableValueIndex = 0; _variableValueIndex < _variableValueIndexes.length; _variableValueIndex++) {
         _variableGroup = _variableGroup.toUpperCase().replaceAll(
-              _substitutionKeys[_variableValueIndex],
-              _expandedVariableGroups[_variableValueIndex][_variableValueIndexes[_variableValueIndex]],
-            );
+          _substitutionKeys[_variableValueIndex],
+          _expandedVariableGroups[_variableValueIndex][_variableValueIndexes[_variableValueIndex]],
+        );
       }
 
       _result = _result!.replaceFirst(_variableGroups[_variableGroupIndex], _variableGroup);
@@ -226,12 +229,12 @@ class VariableStringExpander {
   List<VariableStringExpanderValue> run({bool onlyPrecheck = false}) {
     if (_input.isEmpty) return [];
 
-    if (_substitutions == null || _substitutions!.isEmpty) {
+    if (_substitutions == null || _substitutions.isEmpty) {
       return [VariableStringExpanderValue(text: _input)];
     }
 
     // expand all groups, initialize lists
-    for (MapEntry<String, String> substitution in _substitutions!.entries) {
+    for (MapEntry<String, String> substitution in _substitutions.entries) {
       if (!VARIABLESTRING.hasMatch(substitution.value)) {
         return [VariableStringExpanderValue(text: _input)];
       }

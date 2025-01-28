@@ -404,11 +404,12 @@ void main() {
 
   var compressString1 = '{"id":1,"points":[{"uid":"1","lat":49.21387306534769,"lon":9.167703270198661,"format":"coords_dmm","color":"#9D4F00","sameColor":true,"isEditable":true},{"uid":"2","lat":48.9810459300513,"lon":9.662252083550984,"format":"coords_dmm","color":"#00E6AB","sameColor":true,"isEditable":true},{"uid":"3","lat":48.44437694269581,"lon":9.171790450474285,"format":"coords_dmm","color":"#A5AA00","sameColor":true,"isEditable":true},{"uid":"4","lat":48.849432434119365,"lon":8.170431282942687,"format":"coords_dmm","color":"#00729A","sameColor":true,"isEditable":true}],"polylines":[{"uid":"5","pointIDs":["4","1","2","3","4"],"color":"#F44336","type":"geodetic"}]}';
   var decompressString1 = 'eAGVkstuwjAQRf9luo3Q2DN+THZpAanfUEUVJSmKlGCUhAVC+ffahdLsgO2RfOfo+p6hqSBXGRxCsx8HyD/OcEwIFGTQbkbIWRZakXeE1hA7K5GHPeSyUNY5JO1Qibc2hnyHvktPYBtCXw2fVdfFlG1oQx/hiyx5jRjJsOnqtwsd+2OdQTOsqmbcfLX1hUzZn4a+afiFeIVshBCNopuFtVobjZ6MQfF81wJxZYvX5yxoZsHMFFtgbcV49V+GU06iHrJj7c1djcIUxbNl8EzDszBpJlZKyJqrh48eyKS018nQuwfqcFqKhzzKNJP21Db7er4UA9f5vC8T/rVM60lfl4pjKGf31rE+shGPp0MMhl0dqnpstjCV0w/mk7ub';
+  var decompressString2 = 'eJyV0t1qwkAQBeB3md4uYWZn9mdyl1aFPkORYk1aAokrSbwQ8d3LVmtzp709MOzH2XOCtoaSDOxTu5tGKN9OcMgREBjoNhOUooUljoHRO5bg1UCXdlBqQT4EZBuQNHpPBj7T0OcT2KY01ON73fdgYJu6NEAJT7qQFSIYGDd983JJp+HQGGjHZd1Om4+uuSRn88uwN0YsNBKKU0Z0xDeF99Y6i5GdQ41yV4G49NXz/xQ8U4gIB69ivbpIf2UECoriUILY6O4yKldV/y1DZowoKmyFhUjZu6sjFhRQmGy0WRjDA3UEq9VDjnWeSXfs2l0zX4qD63xeFzn+Ueb15K/LxQmsZ++tRJg9GJiO+wZK+GpS3UztFs7r8zfmk7ub';
 
   group("StringUtils.compressString:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
-      {'input' : compressString1, 'expectedOutput' : decompressString1},
+      {'input' : compressString1, 'expectedOutput' : decompressString2},
     ];
 
     for (var elem in _inputsToExpected) {
@@ -423,11 +424,36 @@ void main() {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
       {'input' : decompressString1, 'expectedOutput' : compressString1},
+      {'input' : decompressString2, 'expectedOutput' : compressString1},
     ];
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
         var _actual = decompressString(elem['input'] as String);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
+
+  group("StringUtils.hasLetters:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '', 'expectedOutput' : false},
+      {'input' : '123', 'expectedOutput' : false},
+      {'input' : '123a123', 'expectedOutput' : true},
+      {'input' : '123.1', 'expectedOutput' : false},
+      {'input' : '123,1', 'expectedOutput' : false},
+      {'input' : ' ', 'expectedOutput' : false},
+      {'input' : 'ABC', 'expectedOutput' : true},
+      {'input' : 'AbC', 'expectedOutput' : true},
+      {'input' : '\'', 'expectedOutput' : false},
+      {'input' : 'ä', 'expectedOutput' : true},
+      {'input' : 'á', 'expectedOutput' : true},
+      {'input' : 'ß', 'expectedOutput' : true},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}', () {
+        var _actual = hasLetters(elem['input'] as String);
         expect(_actual, elem['expectedOutput']);
       });
     }

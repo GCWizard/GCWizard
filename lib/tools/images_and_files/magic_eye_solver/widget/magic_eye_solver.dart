@@ -212,19 +212,21 @@ class _MagicEyeSolverState extends State<MagicEyeSolver> {
       return;
     }
 
-    _encodeOutData = output.item1;
-    if (output.item2 == MagicEyeErrorCode.IMAGE_TOO_SMALL) {
-      showSnackBar(i18n(context, 'magic_eye_image_too_small'), context);
-    }
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {});
+      setState(() {
+        _encodeOutData = output.item1;
+        if (output.item2 == MagicEyeErrorCode.IMAGE_TOO_SMALL) {
+          showSnackBar(i18n(context, 'magic_eye_image_too_small'), context);
+        }
+      });
     });
   }
 
   void _generateEncodeImage() async {
     if (_encodeHiddenDataImage == null ||
-        (_currentEncodeTextureType == TextureType.BITMAP && _encodeTextureImage == null)) return;
+        (_currentEncodeTextureType == TextureType.BITMAP && _encodeTextureImage == null)) {
+      return;
+    }
 
     await showDialog<bool>(
       context: context,

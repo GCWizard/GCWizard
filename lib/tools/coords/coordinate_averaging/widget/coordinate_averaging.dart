@@ -119,14 +119,14 @@ class _CoordinateAveragingState extends State<CoordinateAveraging> {
                     }).toList();
 
                     mapPoints.add(GCWMapPoint(
-                        point: _averagedLocations.first.coord,
+                        point: _averagedLocations.last.coord,
                         color: COLOR_MAP_CALCULATEDPOINT,
                         isEditable: false,
                         isVisible: true,
                         markerText: i18n(context, 'coords_averaging_averaged'),
                         circle: GCWMapCircle(
-                            centerPoint: _averagedLocations.first.coord,
-                            radius: _averagedLocations.first.accuracy,
+                            centerPoint: _averagedLocations.last.coord,
+                            radius: _averagedLocations.last.accuracy,
                             color: COLOR_MAP_CALCULATEDPOINT)));
 
                     openInMap(context, mapPoints);

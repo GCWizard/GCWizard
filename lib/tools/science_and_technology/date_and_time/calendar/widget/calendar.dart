@@ -75,7 +75,7 @@ class _CalendarState extends State<Calendar> {
               value: _currentTimeStamp,
               min: 1,
               max:
-                  8640000000000, //max days in seconds according to DateTime https://stackoverflow.com/questions/67144785/flutter-dart-datetime-max-min-value
+                  864000000000, //max days in seconds according to DateTime https://stackoverflow.com/questions/67144785/flutter-dart-datetime-max-min-value
               onChanged: (value) {
                 setState(() {
                   _currentTimeStamp = value;

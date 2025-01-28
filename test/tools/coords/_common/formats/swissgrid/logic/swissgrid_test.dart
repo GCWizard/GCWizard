@@ -5,7 +5,7 @@ import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:latlong2/latlong.dart';
 
 void main() {
-  group("Parser.swissgrid.parseLatLon:", () {
+  group("Converter.swissgrid.parseLatLon:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'text': '', 'expectedOutput': null},
       {'text': '1989048.7411670878 278659.94052181806', 'expectedOutput': {'format': CoordinateFormatKey.SWISS_GRID, 'coordinate': const LatLng(46.2110174566, 025.598495717)}},
