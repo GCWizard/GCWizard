@@ -19,7 +19,7 @@ import 'package:latlong2/latlong.dart';
 class WaypointProjection extends StatefulWidget {
   final GCWMapLineType type;
   final LatLng Function(LatLng coord, double bearingDeg, double distance, Ellipsoid ellipsoid) calculate;
-  final List<LatLng> Function(LatLng coord, double bearingDeg, double distance, Ellipsoid ellipsoid) calculateReverse;
+  final LatLng? Function(LatLng coord, double bearingDeg, double distance, Ellipsoid ellipsoid) calculateReverse;
 
   const WaypointProjection({Key? key, required this.type, required this.calculate, required this.calculateReverse})
       : super(key: key);
@@ -34,7 +34,7 @@ class _WaypointProjectionState extends State<WaypointProjection> {
   var _currentBearing = defaultDoubleText;
   var _currentReverse = false;
 
-  var _currentValues = [defaultCoordinate];
+  var _currentValues = defaultCoordinate;
   var _currentMapPoints = <GCWMapPoint>[];
   var _currentMapPolylines = <GCWMapPolyline>[];
 
@@ -110,12 +110,14 @@ class _WaypointProjectionState extends State<WaypointProjection> {
         return;
       }
 
-      _currentValues = widget.calculateReverse(
+      var _currentReverseProjected = widget.calculateReverse(
           _currentCoords.toLatLng()!, _currentBearing.value, _currentDistance, defaultEllipsoid);
-      if (_currentValues.isEmpty) {
+      if (_currentReverseProjected == null) {
         _currentOutput = [i18n(context, 'coords_waypointprojection_reverse_nocoordinatefound')];
         return;
       }
+
+      _currentValues = _currentReverseProjected;
 
       _currentMapPoints = [
         GCWMapPoint(
@@ -126,21 +128,18 @@ class _WaypointProjectionState extends State<WaypointProjection> {
 
       _currentMapPolylines = <GCWMapPolyline>[];
 
-      for (var projection in _currentValues) {
-        var projectionMapPoint = GCWMapPoint(
-            point: projection,
-            color: COLOR_MAP_CALCULATEDPOINT,
-            markerText: i18n(context, 'coords_waypointprojection_end'),
-            coordinateFormat: _currentOutputFormat);
+      var projectionMapPoint = GCWMapPoint(
+          point: _currentValues,
+          color: COLOR_MAP_CALCULATEDPOINT,
+          markerText: i18n(context, 'coords_waypointprojection_end'),
+          coordinateFormat: _currentOutputFormat);
 
-        _currentMapPoints.add(projectionMapPoint);
+      _currentMapPoints.add(projectionMapPoint);
 
-        _currentMapPolylines.add(GCWMapPolyline(points: [projectionMapPoint, _currentMapPoints[0]]));
-      }
+      _currentMapPolylines.add(GCWMapPolyline(points: [projectionMapPoint, _currentMapPoints[0]]));
+
     } else {
-      _currentValues = [
-        widget.calculate(_currentCoords.toLatLng()!, _currentBearing.value, _currentDistance, defaultEllipsoid)
-      ];
+      _currentValues = widget.calculate(_currentCoords.toLatLng()!, _currentBearing.value, _currentDistance, defaultEllipsoid);
 
       _currentMapPoints = [
         GCWMapPoint(
@@ -148,7 +147,7 @@ class _WaypointProjectionState extends State<WaypointProjection> {
             markerText: i18n(context, 'coords_waypointprojection_start'),
             coordinateFormat: _currentCoords.format),
         GCWMapPoint(
-            point: _currentValues[0],
+            point: _currentValues,
             color: COLOR_MAP_CALCULATEDPOINT,
             markerText: i18n(context, 'coords_waypointprojection_end'),
             coordinateFormat: _currentOutputFormat)
@@ -159,8 +158,6 @@ class _WaypointProjectionState extends State<WaypointProjection> {
       ];
     }
 
-    _currentOutput = _currentValues.map((LatLng value) {
-      return buildCoordinate(_currentOutputFormat, value);
-    }).toList();
+    _currentOutput = [buildCoordinate(_currentOutputFormat, _currentValues)];
   }
 }

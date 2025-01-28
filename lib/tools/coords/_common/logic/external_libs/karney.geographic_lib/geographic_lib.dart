@@ -82,18 +82,10 @@ class Rhumb {
 // [3] Spherical solution: https://en.wikipedia.org/wiki/Solution_of_triangles#Two_sides_and_non-included_angle_given_(spherical_SSA)
 // [4] Theoretical basis/Newton equation; Karney (2011): http://arxiv.org/abs/1102.1215
 // [5] Karney Matlab code: https://gis.stackexchange.com/a/488090/160294
+// Note (MAL 01/2025): Due to limitation mentioned in SSA [3] as well as with polar points, this is currently not quite perfect
+//     Therefore should not used stand-alone atm which is the reason, that is currently combined with the old
+//     evolutional approach
 LatLng reverseAzimuthalProjection(LatLng coord, double bearing, double distance, Ellipsoid ellipsoid) {
-  bearing = normalizeBearing(bearing);
-
-  if (distance == 0.0) {
-    return coord;
-  }
-
-  if (bearing == 0 || bearing == 180) {
-    var direct = geodeticDirect(coord, bearing - 180, distance, ellipsoid);
-    return LatLng(direct.lat2, direct.lon2);
-  }
-
   var betaDeg = bearing;
   if (betaDeg > 180) {
     betaDeg = 360 - betaDeg;
@@ -150,92 +142,3 @@ LatLng reverseAzimuthalProjection(LatLng coord, double bearing, double distance,
 
   return LatLng(_lat2, _lon2);
 }
-
-// seems to work... sometimes.
-// -67.5/-135; 110.941157761°; 1880234.999048m should point to -67.5/-180,
-// but instead gives something in the northern hemisphere with a distance that cannot be...
-// it even doesn't converge the delta azi1 (dazi1)
-void main() {
-  var dest = LatLng(52.0, 13.0);
-  var bearingToDest = 123.0;
-  var dist = 100000.0;
-  var ells = Ellipsoid.WGS84;
-
-  //var start = reverseAzimuthalProjection(dest, bearingToDest, dist, ells);
-  // print(start);
-  // print(projection(start, bearingToDest, dist, ells));
-
-
-  var lats = [-67.5, -45.0, -22.5, 0.0, 22.5, 45.0, 67.5];
-  var lons = [-180.0, -135.0, -90.0, -45.0, 0.0, 45.0, 90.0, 135.0, 180.0];
-
-  var ellipsoid = Ellipsoid.WGS84;
-
-  var i = 0;
-  var j = 0;
-
-  // for (var lat1 in lats) {
-  //   for (var lon1 in lons) {
-  //     var coord1 = LatLng(lat1, lon1);
-  //     for (var lat2 in lats) {
-  //       for (var lon2 in lons) {
-  //         var coord2 = LatLng(lat2, lon2);
-  
-  for (int i = 0; i < 10000; i++) {
-    var coord1 = LatLng(randomDouble(52.354394, 52.354903), randomDouble(13.336786, 13.337303));
-    var coord2 = LatLng(randomDouble(52.354394, 52.354903), randomDouble(13.336786, 13.337303));
-
-    if (utils.equalsLatLng(coord1, coord2)) continue;
-    GeodesicData karney = geodeticInverse(coord1, coord2, ellipsoid);
-
-    print((++i).toString() + ': ' + coord2.toString() + ' <- ' +
-        coord1.toString() + '; azi: ' + karney.azi1.toString() + ', s12: ' +
-        karney.s12.toString());
-    LatLng? _1to2;
-    List<LatLng> temp = [];
-    try {
-      _1to2 = reverseAzimuthalProjection(
-          coord2, karney.azi1, karney.s12, ellipsoid);
-      if (!utils.equalsLatLng(coord1, _1to2, tolerance: 1e-10)) {
-        throw Exception();
-      }
-    } catch (e) {
-      print(
-          'ERROR ==============================================================');
-      var temp = reverseProjection(coord2, karney.azi1, karney.s12, ellipsoid);
-      print(temp);
-      _1to2 = null;
-      for (LatLng ll in temp) {
-        var x = projection(ll, karney.azi1, karney.s12, ells);
-        if (utils.equalsLatLng(coord2, x, tolerance: 1e-5)) {
-          _1to2 = x;
-          break;
-        }
-      }
-    }
-
-    if (_1to2 == null) {
-      j++;
-      print('DATA =========');
-      print(coord2);
-      print(karney.azi1);
-      print(karney.s12);
-      print('EXPECT ========');
-      print(coord1);
-      print('IST =======');
-      print(_1to2);
-      // print('PROBE ======');
-      // print(projection(_1to2, karney.azi1, karney.s12, ells));
-      // print('');
-    }
-  }
-        // }
-  //     }
-  //   }
-  // }
-
-  print('$j ERRORS ====================================================');
-
-
-}
-
