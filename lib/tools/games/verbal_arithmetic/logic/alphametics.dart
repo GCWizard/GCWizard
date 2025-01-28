@@ -44,7 +44,6 @@ VerbalArithmeticOutput? solveAlphametic(String equation, bool allSolutions, bool
   _allSolutions = allSolutions;
   _allowLeadingZeros = allowLeadingZeros;
 
-  // Calculating the number of possible permutations
   _totalPermutations = _calculatePossibilities(_equation.usedMembers.length);
   _currentCombination = 0;
   _stepSize  = max(_totalPermutations ~/ 100, 1);

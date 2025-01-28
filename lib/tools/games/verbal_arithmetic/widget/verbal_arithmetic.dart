@@ -78,7 +78,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
   @override
   Widget build(BuildContext context) {
     if (_currentGridScale <= 0) {
-      _currentGridScale = max(1, (_tableMinWidth() / maxScreenWidth(context)));
+      _setMinGridScale(1);
     }
 
     return Column(
@@ -175,7 +175,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
           child: Column(
             children: <Widget>[
               GCWOnOffSwitch(
-                title: 'All solutions', //i18n(context, 'dates_daycalculator_countstart'),
+                title: i18n(context, 'verbal_arithmetic_all_solutions'),
                 value: _currentAllSolutions,
                 onChanged: (value) {
                   setState(() {
@@ -196,7 +196,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
       return Container();
     }
     return GCWOnOffSwitch(
-      title: 'Allow Leading Zeros', //i18n(context, 'dates_daycalculator_countstart'),
+      title: i18n(context, 'verbal_arithmetic_allow_leading_zeros'),
       value: _currentAllowLeadingZeros,
       onChanged: (value) {
         setState(() {
@@ -232,6 +232,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
           onChanged: (value) {
             setState(() {
               _columnCount = value;
+              _setMinGridScale(_currentGridScale);
               _resizeMatrix();
             });
           },
@@ -536,5 +537,9 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     _textEditingControllerArray[rowIndex][columnIndex]!.text = text;
 
     return _textEditingControllerArray[rowIndex][columnIndex];
+  }
+
+  void _setMinGridScale(double minScale) {
+    _currentGridScale = max(minScale, (_tableMinWidth() / maxScreenWidth(context)));
   }
 }

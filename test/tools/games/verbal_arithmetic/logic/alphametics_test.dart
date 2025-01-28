@@ -1,5 +1,5 @@
 import "package:flutter_test/flutter_test.dart";
-import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/alphametic.dart';
+import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/alphametics.dart';
 
 void main() {
 
@@ -31,7 +31,7 @@ void main() {
 
     ];
 
-    _inputsToExpected.forEach((elem) {
+    for (var elem in _inputsToExpected) {
       test('formulas: ${elem['input']}', () {
         var allSolutions = elem['allSolutions'] != null;
         var allowLeadingZeros = elem['allowLeadingZeros'] != null;

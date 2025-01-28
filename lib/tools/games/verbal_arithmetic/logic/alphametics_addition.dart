@@ -1,4 +1,4 @@
-part of 'package:gc_wizard/tools/games/verbal_arithmetic/logic/alphametic.dart';
+part of 'package:gc_wizard/tools/games/verbal_arithmetic/logic/alphametics.dart';
 
 class EquationData {
   late List<String> leftSide;
@@ -43,7 +43,11 @@ List<HashMap<String, int>> _solutions = [];
 bool __solveAlphametics(EquationData equationData, List<String> letters, List<int> digits,
     Map<String, int> letterToDigit, Set<int> usedDigits) {
   if (letters.isEmpty) {
-    return _isValid(letterToDigit, equationData);
+    if (_isValid(letterToDigit, equationData)) {
+      _solutions.add(HashMap<String, int>.from(letterToDigit));
+      return true;
+    }
+    return false;
   }
 
   String currentLetter = letters.first;
@@ -65,7 +69,6 @@ bool __solveAlphametics(EquationData equationData, List<String> letters, List<in
     usedDigits.add(digit);
 
     if (__solveAlphametics(equationData, letters, digits, letterToDigit, usedDigits)) {
-      _solutions.add(HashMap<String, int>.from(letterToDigit));
       if (!_allSolutions || _solutions.length >= MAX_SOLUTIONS) return true;
     }
 

@@ -7023,6 +7023,8 @@
   "velocity_acceleration_distance": "Distance",
   "verbal_arithmetic_title": "Verbal Arithmetic/ Symbol Matrix",
   "verbal_arithmetic_description": "Solving a equations or a matrix of equations.",
+  "verbal_arithmetic_all_solutions": "All solutions",
+  "verbal_arithmetic_allow_leading_zeros": "Allow leading zeros",
   "verbal_arithmetic_solutionnotfound": "No solution found",
   "verbal_arithmetic_toomanyletters": "Too many letters",
   "vigenere_selection_title": "Vigenère Cipher",
