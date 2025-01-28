@@ -7,14 +7,13 @@ class EquationData {
   late Set<String> leadingLetters;
 }
 
-VerbalArithmeticOutput? _solveAlphameticAdd(Equation equation, {SendPort? sendAsyncPort}) {
+VerbalArithmeticOutput? _solveAlphameticAdd(Equation equation) {
   var equationData = EquationData();
   var sides = equation.formatedEquation.split('=');
   equationData.leftSide = sides[0].split('+').map((s) => s.trim()).toList();
   equationData.rightSide = sides[1].split('+').map((s) => s.trim()).toList();
   equationData.leadingLetters = equation.leadingLetters;
 
-  // Calculate the frequency of the letters and sort them by frequency
   Map<String, int> frequencyMap = _letterFrequency([...equationData.leftSide, ...equationData.rightSide]);
   List<String> letters = equation.usedMembers.toList()
     ..sort((a, b) => frequencyMap[b]!.compareTo(frequencyMap[a]!));
@@ -23,14 +22,8 @@ VerbalArithmeticOutput? _solveAlphameticAdd(Equation equation, {SendPort? sendAs
   var mapping = HashMap<String, int>();
   Set<int> usedDigits = {};
 
-  // Calculating the number of possible permutations
-  _totalPermutations = factorial(10) ~/ factorial(10 - letters.length);
-  _count = 0;
-  _stepSize  = max(_totalPermutations ~/ 100, 1);
-  _nextSendStep = _stepSize;
-  _sendAsyncPort = sendAsyncPort;
   _solutions.clear();
-print((factorial(10) ~/ factorial(10 - letters.length + 1)).toString() + ' ' + (factorial(10) ~/ factorial(10 - letters.length)).toString());
+
   __solveAlphametics(equationData, letters, digits, mapping, usedDigits);
   // for (var solution in solutions) {
       var out = equation.getOutput(_solutions.first);
@@ -45,15 +38,8 @@ print((factorial(10) ~/ factorial(10 - letters.length + 1)).toString() + ' ' + (
   return VerbalArithmeticOutput(equations: [equation], solutions: _solutions, error: '');
 }
 
-// Calculating the number of possible permutations
-int _totalPermutations = 0;
-int _count = 0;
-int _stepSize = 1;
-int _nextSendStep = 1;
-SendPort? _sendAsyncPort;
 List<HashMap<String, int>> _solutions = [];
 
-/// Solving an Alphametic with Backtracking
 bool __solveAlphametics(EquationData equationData, List<String> letters, List<int> digits,
     Map<String, int> letterToDigit, Set<int> usedDigits) {
   if (letters.isEmpty) {
@@ -72,7 +58,7 @@ bool __solveAlphametics(EquationData equationData, List<String> letters, List<in
         continue;
       }
     }
-    _count++;
+    _currentCombination++;
     _sendProgress();
 
     letterToDigit[currentLetter] = digit;
@@ -87,19 +73,11 @@ bool __solveAlphametics(EquationData equationData, List<String> letters, List<in
     usedDigits.remove(digit);
   }
 
-  // no solution is found
   letters.insert(0, currentLetter);
   return false;
 }
 
-void _sendProgress() {
-  if (_sendAsyncPort != null && _count >= _nextSendStep) {
-    _nextSendStep += _stepSize;
-    _sendAsyncPort?.send(DoubleText(PROGRESS, _count / _totalPermutations));
-  }
-}
-
-/// Function to calculate the frequency of each letter in the equation.
+/// calculate the frequency of each letter in the equation.
 Map<String, int> _letterFrequency(List<String> words) {
   Map<String, int> frequency = {};
   for (var word in words) {
@@ -110,7 +88,7 @@ Map<String, int> _letterFrequency(List<String> words) {
   return frequency;
 }
 
-/// Function to check whether a digit assignment is correct.
+/// check whether a digit assignment is correct.
 bool _isValid(Map<String, int> letterToDigit, EquationData equationData) {
   int sum = 0;
 

@@ -24,6 +24,11 @@ Future<VerbalArithmeticOutput?> solveAlphameticsAsync(GCWAsyncExecuterParameters
 
 bool _allSolutions = false;
 bool _allowLeadingZeros = false;
+int _totalPermutations = 0;
+int _currentCombination = 0;
+int _stepSize = 1;
+int _nextSendStep = 1;
+SendPort? _sendAsyncPort;
 
 VerbalArithmeticOutput? solveAlphametic(String equation, bool allSolutions, bool allowLeadingZeros,
     {SendPort? sendAsyncPort}) {
@@ -32,25 +37,33 @@ VerbalArithmeticOutput? solveAlphametic(String equation, bool allSolutions, bool
     return VerbalArithmeticOutput(equations: [_equation], solutions: [], error: 'InvalidFormula');
   }
 
-  // Check if there are too many letters (maximum 10)
   if (_equation.usedMembers.length > 10) {
     return VerbalArithmeticOutput(equations: [], solutions: [], error: 'TooManyLetters');
   }
+
   _allSolutions = allSolutions;
   _allowLeadingZeros = allowLeadingZeros;
+
+  // Calculating the number of possible permutations
+  _totalPermutations = _calculatePossibilities(_equation.usedMembers.length);
+  _currentCombination = 0;
+  _stepSize  = max(_totalPermutations ~/ 100, 1);
+  _nextSendStep = _stepSize;
+  _sendAsyncPort = sendAsyncPort;
+
   if (_equation.onlyAddition) {
-    return _solveAlphameticAdd(_equation, sendAsyncPort: sendAsyncPort);
+    return _solveAlphameticAdd(_equation);
   } else {
-    return _solveAlphametic(_equation, sendAsyncPort: sendAsyncPort);
+    return _solveAlphametic(_equation);
   }
 }
 
-VerbalArithmeticOutput? _solveAlphametic(Equation equation, {SendPort? sendAsyncPort}) {
+VerbalArithmeticOutput? _solveAlphametic(Equation equation) {
 
   var letterList = equation.usedMembers.toList();
 
   // Generate permutations and evaluate each combination
-  var mappings = _permuteAndEvaluate(letterList, equation.equation, equation.leadingLetters, sendAsyncPort);
+  var mappings = _permuteAndEvaluate(letterList, equation.equation, equation.leadingLetters);
   var solutions = <HashMap<String, int>>[];
   for (var mapping in mappings) {
     if (mapping != null) {
@@ -59,7 +72,7 @@ VerbalArithmeticOutput? _solveAlphametic(Equation equation, {SendPort? sendAsync
       var _equation = equation.formatedEquation;
       print('Lösung gefunden: $_equation. $mapping');
 
-      if (!_allSolutions || _solutions.length >= MAX_SOLUTIONS) {
+      if (!_allSolutions || solutions.length >= MAX_SOLUTIONS) {
         break;
       }
     }
@@ -72,24 +85,14 @@ VerbalArithmeticOutput? _solveAlphametic(Equation equation, {SendPort? sendAsync
   return VerbalArithmeticOutput(equations: [equation], solutions: solutions, error: '');
 }
 
-
-// Funktion zum Generieren von Permutationen und gleichzeitiger Auswertung
-Iterable<HashMap<String, int>?> _permuteAndEvaluate(List<String> letters, String formula, Set<String> leadingLetters,
-     SendPort? sendAsyncPort) sync* {
+Iterable<HashMap<String, int>?> _permuteAndEvaluate(List<String> letters, String formula,
+    Set<String> leadingLetters) sync* {
   var availableDigits = List.generate(10, (i) => i);
   var allPermutations = _generatePermutations(letters.length, availableDigits);
 
-  // Calculating the number of possible permutations
-  int totalPermutations = factorial(10) ~/ factorial(10 - letters.length);
-  int count = 0;
-  int stepSize  = max(totalPermutations ~/ 100, 1);
-
   for (var perm in allPermutations) {
-    // progress bar
-    count++;
-    if (sendAsyncPort != null && count % stepSize == 0) {
-      sendAsyncPort.send(DoubleText(PROGRESS, count / totalPermutations));
-    }
+    _currentCombination++;
+    _sendProgress();
 
     var mapping = HashMap<String, int>();
     for (var i = 0; i < letters.length; i++) {
@@ -107,8 +110,14 @@ Iterable<HashMap<String, int>?> _permuteAndEvaluate(List<String> letters, String
     }
   }
 
-  // no solution is found
   yield null;
+}
+
+void _sendProgress() {
+  if (_sendAsyncPort != null && _currentCombination >= _nextSendStep) {
+    _nextSendStep += _stepSize;
+    _sendAsyncPort?.send(DoubleText(PROGRESS, _currentCombination / _totalPermutations));
+  }
 }
 
 /// function for generating all permutations
@@ -157,6 +166,10 @@ num _eval(String expression) {
   return result != null && result is num ? result : double.negativeInfinity;
 }
 
+/// Calculating the number of possible permutations
+int _calculatePossibilities(int lettersCount) {
+  return factorial(10) ~/ factorial(10 - lettersCount);
+}
 
 void main() {
   _allSolutions = true;
