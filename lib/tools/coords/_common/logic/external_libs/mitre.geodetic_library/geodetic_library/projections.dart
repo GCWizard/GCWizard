@@ -131,18 +131,18 @@ _ProjectToGeoReturn _projectToGeo(_LLPoint pt1, double geoStartAz, _LLPoint pt3,
     newPt1 = _LLPoint.fromLatLng(projectionRadian(pt1.toLatLng(), geoStartAz + _M_PI, (5.0 + dist12) * _NMI_IN_METERS, ellipsoid));
     dist12 = 5.0;
     distBear = distanceBearing(newPt1.toLatLng(), pt1.toLatLng(), ellipsoid);
-    geoStartAz = distBear.distance;
-    crs21 = distBear.bearingAToBInRadian;
+    geoStartAz = distBear.bearingAToBInRadian;
+    crs21 = distBear.bearingBToAInRadian;
     pt1 = newPt1;
 
   } else if (dist12.abs() < 5.0) {
     /* pt3 is within 5.0 nmi of being abeam pt1
          * move pt1 backward 5 nmi to give the algorithms room to work */
-    newPt1 = _LLPoint.fromLatLng(projectionRadian(pt1.toLatLng(), geoStartAz + _M_PI, (5.0 + dist12) * _NMI_IN_METERS, ellipsoid));
+    newPt1 = _LLPoint.fromLatLng(projectionRadian(pt1.toLatLng(), geoStartAz + _M_PI, 5.0 * _NMI_IN_METERS, ellipsoid));
     dist12 = 5.0 + dist12;
     distBear = distanceBearing(newPt1.toLatLng(), pt1.toLatLng(), ellipsoid);
-    geoStartAz = distBear.distance / _NMI_IN_METERS;
-    crs21 = distBear.bearingAToBInRadian;
+    geoStartAz = distBear.bearingAToBInRadian;
+    crs21 = distBear.bearingBToAInRadian;
     pt1 = newPt1;
   }
 

@@ -72,6 +72,15 @@ class _HashBreakerState extends State<HashBreaker> {
     _currentToInput = entry.value;
   }
 
+  bool _checkValidEditedValue(String input) {
+    if (!VARIABLESTRING.hasMatch(input)) {
+      showGCWAlertDialog(context, '', i18n(context, 'formulasolver_values_novalidinterpolated'),
+          cancelButton: false, () {});
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -126,10 +135,7 @@ class _HashBreakerState extends State<HashBreaker> {
       entries: _currentSubstitutions,
       onNewEntryChanged: (entry) => _updateNewEntry(entry),
       onAddEntry: (entry) => _onAddEntry(entry),
-      validateEditedValue: (String input) {
-        return VARIABLESTRING.hasMatch(input);
-      },
-      invalidEditedValueMessage: i18n(context, 'formulasolver_values_novalidinterpolated'),
+      validateEditedValue: (String input) => _checkValidEditedValue(input),
     );
   }
 
@@ -166,8 +172,7 @@ class _HashBreakerState extends State<HashBreaker> {
             i18n(context, 'hashes_hashbreaker_manycombinations_text', parameters: [countCombinations]),
             () async {
               _onDoCalculation();
-            },
-          );
+            }, cancelButton: false);
         } else {
           _onDoCalculation();
         }

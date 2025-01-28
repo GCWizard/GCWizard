@@ -18,7 +18,7 @@ void main() {
     for (var elem in _inputsToExpected) {
       test('date: ${elem['date']}', () {
         var _actual = DateTimeUTCToExcelTime(elem['date'] as DateTime);
-        expect(_actual.error == '' ? _actual.timeStamp : _actual.error, (elem['expectedOutput']));
+        expect(_actual.error == '' ? _actual.timeStamp : _actual.error, elem['expectedOutput']);
       });
     }
   });
@@ -36,7 +36,7 @@ void main() {
     ];
 
     for (var elem in _inputsToExpected) {
-      test('expectedOutput: ${elem['expectedOutput']}', () {
+      test('ExcelTimeStamp: ${elem['ExcelTimeStamp']}', () {
         var _actual = ExcelTimeToDateTimeUTC(elem['ExcelTimeStamp'] as double);
         expect(_actual.gregorianDateTimeUTC, elem['expectedOutput']);
       });

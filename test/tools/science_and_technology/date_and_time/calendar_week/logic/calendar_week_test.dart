@@ -88,7 +88,7 @@ void main() {
     for (var elem in _inputsToExpected) {
       test('date: ${elem['date']}, iso: ${elem['iso']}', () {
         var _actual = calendarWeek(elem['date'] as DateTime, iso: elem['iso'] as bool);
-        expect(_actual, (elem['expectedOutput'] as int));
+        expect(_actual, elem['expectedOutput']);
       });
     }
   });

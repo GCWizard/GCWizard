@@ -105,7 +105,7 @@ class _UICWagonCodeState extends State<UICWagonCode> {
             ]),
             GCWTextDivider(text: i18n(context, 'uic_category')),
             GCWColumnedMultilineOutput(data: [
-              [i18n(context, 'uic_type_code'), tractiveData.typeCode],
+              [i18n(context, 'uic_typecode'), tractiveData.typeCode],
               [i18n(context, 'uic_type'), i18n(context, tractiveData.type)],
               [i18n(context, 'uic_tractiveunit_class_code'), tractiveData.clazzCode],
               if (tractiveData.clazz != null) [i18n(context, 'uic_tractiveunit_class'), i18n(context, tractiveData.clazz!)],
@@ -136,10 +136,10 @@ class _UICWagonCodeState extends State<UICWagonCode> {
             ]),
             GCWTextDivider(text: i18n(context, 'uic_category')),
             GCWColumnedMultilineOutput(data: [
-              [i18n(context, 'uic_type_code'), specialData.typeCode],
+              [i18n(context, 'uic_typecode'), specialData.typeCode],
               [i18n(context, 'uic_type'), i18n(context, specialData.type)],
-              [i18n(context, 'uic_subtype_code'), specialData.subTypeCode],
-              if (specialData.subType != null) [i18n(context, 'uic_subtype'), i18n(context, specialData.subType!)],
+              [i18n(context, 'uic_specialvehicle_subtype_code'), specialData.subTypeCode],
+              if (specialData.subType != null) [i18n(context, 'uic_specialvehicle_subtype'), i18n(context, specialData.subType!)],
             ]),
             GCWTextDivider(text: i18n(context, 'uic_classification')),
             GCWColumnedMultilineOutput(data: [

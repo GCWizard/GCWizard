@@ -518,8 +518,8 @@ namespace GC_Wizard_SymbolTables_Pdf
 			var yPosition = position.Y + size.Height;
 
 			gfx.DrawLine(pen, new XPoint(position.X, yPosition), new XPoint(position.X + size.Width, yPosition));
-			gfx.DrawLine(pen, new XPoint(position.X, yPosition), new XPoint(position.X, yPosition * 0.8));
-			gfx.DrawLine(pen, new XPoint(position.X + size.Width, yPosition), new XPoint(position.X + size.Width, yPosition * 0.8));
+			gfx.DrawLine(pen, new XPoint(position.X, yPosition), new XPoint(position.X, yPosition - size.Width * 0.2));
+			gfx.DrawLine(pen, new XPoint(position.X + size.Width, yPosition), new XPoint(position.X + size.Width, yPosition - size.Width * 0.2));
 
 			return yPosition;
 		}
