@@ -11,9 +11,11 @@ class GCWPainterContainer extends StatefulWidget {
   final double scale;
   final bool? suppressTopSpace;
   final bool? suppressBottomSpace;
+  final Widget? trailing;
 
   const GCWPainterContainer(
-      {Key? key, required this.child, this.scale = 1, this.suppressTopSpace, this.suppressBottomSpace, this.onChanged})
+      {Key? key, required this.child, this.scale = 1, this.suppressTopSpace, this.suppressBottomSpace,
+        this.trailing, this.onChanged})
       : super(key: key);
 
   @override
@@ -38,6 +40,7 @@ class _GCWPainterContainerState extends State<GCWPainterContainer> {
           suppressTopSpace: widget.suppressTopSpace,
           suppressBottomSpace: widget.suppressBottomSpace,
           trailing: Row(children: <Widget>[
+            widget.trailing ?? Container(),
             GCWIconButton(
               size: IconButtonSize.SMALL,
               icon: Icons.zoom_in,

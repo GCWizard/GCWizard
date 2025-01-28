@@ -292,6 +292,7 @@ import 'package:gc_wizard/tools/games/scrabble/scrabble/widget/scrabble.dart';
 import 'package:gc_wizard/tools/games/scrabble/scrabble_overview/widget/scrabble_overview.dart';
 import 'package:gc_wizard/tools/games/sudoku/sudoku_solver/widget/sudoku_solver.dart';
 import 'package:gc_wizard/tools/games/tower_of_hanoi/widget/tower_of_hanoi.dart';
+import 'package:gc_wizard/tools/games/verbal_arithmetic/widget/verbal_arithmetic.dart';
 import 'package:gc_wizard/tools/games/word_search/widget/word_search.dart';
 import 'package:gc_wizard/tools/general_tools/grid_generator/grid/widget/grid.dart';
 import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_cards.dart';
@@ -1960,6 +1961,12 @@ void initializeRegistry(BuildContext context) {
         id: 'velocity_acceleration',
         categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
         searchKeys: const ['velocity_acceleration'],
+        licenses: const []),
+    GCWTool(
+        tool: const VerbalArithmetic(),
+        id: 'verbal_arithmetic',
+        categories: const [ToolCategory.GAMES],
+        searchKeys: const ['verbal_arithmetic'],
         licenses: const []),
     GCWTool(
         tool: const VanitySelection(),
