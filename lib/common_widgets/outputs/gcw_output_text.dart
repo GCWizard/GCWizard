@@ -39,14 +39,13 @@ class _GCWOutputTextState extends State<GCWOutputText> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          child: //Align(
-              //alignment: Alignment.centerLeft,
+          child:
              SelectableText(
                 widget.text ?? '',
                 textAlign: TextAlign.left,
                 style: widget.style ?? (widget.isMonotype ? gcwMonotypeTextStyle() : gcwTextStyle()),
                 selectionControls: GCWTextSelectionControls(),
-              )//),
+              )
         ),
         widget.text != null && widget.text!.isNotEmpty && !widget.suppressCopyButton
             ?
