@@ -243,8 +243,11 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
   Widget _buildNumberGridGridInput() {
     return Column(
       children: <Widget>[
-        GCWTextDivider(
-          text : '',
+        GCWPainterContainer(
+          scale: _currentGridScale,
+          onChanged: (scale) {
+            _currentGridScale = scale;
+          },
           trailing: Row(children: <Widget>[
             GCWPasteButton(
               iconSize: IconButtonSize.SMALL,
@@ -260,14 +263,8 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
                 insertIntoGCWClipboard(context, copyText);
               },
             )
-          ])
-        ),
-        GCWPainterContainer(
-          scale: _currentGridScale,
+          ]),
           child: _buildTable(_rowCount, _columnCount),
-          onChanged: (scale) {
-            _currentGridScale = scale;
-          },
         ),
         GCWIconButton(
           size: IconButtonSize.SMALL,
@@ -401,7 +398,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     );
   }
 
-  static const double _OPERATORCOLUMNWIDTH = 60.0;
+  static const double _OPERATORCOLUMNWIDTH = 40.0;
   static const double _EQUALSIGNWIDTH = 30.0;
 
   Map<int, TableColumnWidth> _columnWidthConfiguration(int columnCount) {
