@@ -182,8 +182,9 @@ class _GameOfLifeState extends State<GameOfLife> {
             max: MAX_SIZE,
             value: _currentSize.x,
             onChanged: (value) {
+              var size = max<int>(2, value);
               setState(() {
-                _currentSize = differentSize ? Point<int>(value, _currentSize.y) : Point<int>(value, value);
+                _currentSize = differentSize ? Point<int>(size, _currentSize.y) : Point<int>(size, size);
                 _board = GameOfLifeData(_currentSize, _board.rules, content: _board.currentBoard);
                 _board.reset();
               });
@@ -203,8 +204,9 @@ class _GameOfLifeState extends State<GameOfLife> {
                     max: MAX_SIZE,
                     value: _currentSize.y,
                     onChanged: (value) {
+                      var size = max<int>(2, value);
                       setState(() {
-                        _currentSize = differentSize ? Point<int>(_currentSize.x, value) : Point<int>(value, value);
+                        _currentSize = differentSize ? Point<int>(_currentSize.x, size) : Point<int>(size, size);
                         _board = GameOfLifeData(_currentSize, _board.rules, content: _board.currentBoard);
                         _board.reset();
                       });
