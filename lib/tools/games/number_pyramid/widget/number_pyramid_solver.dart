@@ -21,10 +21,10 @@ class NumberPyramidSolver extends StatefulWidget {
   const NumberPyramidSolver({Key? key}) : super(key: key);
 
   @override
-  NumberPyramidSolverState createState() => NumberPyramidSolverState();
+  _NumberPyramidSolverState createState() => _NumberPyramidSolverState();
 }
 
-class NumberPyramidSolverState extends State<NumberPyramidSolver> {
+class _NumberPyramidSolverState extends State<NumberPyramidSolver> {
   late NumberPyramid _currentBoard;
   int _currentSolution = 0;
 

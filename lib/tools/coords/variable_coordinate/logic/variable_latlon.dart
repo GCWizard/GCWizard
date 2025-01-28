@@ -100,15 +100,13 @@ VariableCoordinateResults parseVariableLatLon(String coordinate, Map<String, Str
       //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      List<VariableCoordinateSingleResult> _projectCoordinates(BaseCoordinate coordinate) {
+      VariableCoordinateSingleResult? _projectCoordinates(BaseCoordinate coordinate) {
         if (projectionData!.reverse) {
-          List<LatLng> revProjected = reverseProjection(coordinate.toLatLng()!, parsedBearing,
+          LatLng? revProjected = reverseProjection(coordinate.toLatLng()!, parsedBearing,
               projectionData.distanceUnit.toMeter(parsedDistance), projectionData.ellipsoid ?? defaultEllipsoid);
-          if (revProjected.isEmpty) return [];
+          if (revProjected == null) return null;
 
-          var projected = revProjected.map((LatLng projection) {
-            return VariableCoordinateSingleResult(projection, expandedText.variables);
-          }).toList();
+          var projected = VariableCoordinateSingleResult(revProjected, expandedText.variables);
 
           return projected;
         } else {
@@ -117,7 +115,7 @@ VariableCoordinateResults parseVariableLatLon(String coordinate, Map<String, Str
                   projectionData.ellipsoid ?? defaultEllipsoid),
               expandedText.variables);
 
-          return [projected];
+          return projected;
         }
       }
 
@@ -129,10 +127,16 @@ VariableCoordinateResults parseVariableLatLon(String coordinate, Map<String, Str
         continue;
       }
 
-      coords.addAll(_projectCoordinates(parsedCoord.coordinate));
+      var projected = _projectCoordinates(parsedCoord.coordinate);
+      if (projected != null) {
+        coords.add(projected);
+      }
 
       if (parsedCoord.leftPadCoordinate != null) {
-        leftPadCoords.addAll(_projectCoordinates(parsedCoord.leftPadCoordinate!));
+        projected = _projectCoordinates(parsedCoord.leftPadCoordinate!);
+        if (projected != null) {
+          leftPadCoords.add(projected);
+        }
       }
     } else {
       var parsedCoord = _parseCoordText(_removeBrackets(expandedText.result));

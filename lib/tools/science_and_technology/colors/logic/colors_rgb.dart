@@ -69,8 +69,8 @@ class HexCode extends GCWBaseColor {
       hexCode = hexCode.split('').map((character) => character * 2).join();
     }
 
-    if (hexCode.length < 6) hexCode = hexCode.padRight(6, '0');
-    if (hexCode.length > 6) hexCode = hexCode.substring(0, 6);
+    if (hexCode.length < 6) hexCode = hexCode.padLeft(6, '0');
+    if (hexCode.length > 6) hexCode = hexCode.substring(hexCode.length - 6, hexCode.length);
   }
 
   @override

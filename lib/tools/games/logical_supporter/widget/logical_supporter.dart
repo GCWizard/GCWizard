@@ -28,10 +28,10 @@ class LogicalSupporter extends StatefulWidget {
   const LogicalSupporter({Key? key}) : super(key: key);
 
   @override
-  LogicalSupporterState createState() => LogicalSupporterState();
+  _LogicalSupporterState createState() => _LogicalSupporterState();
 }
 
-class LogicalSupporterState extends State<LogicalSupporter> {
+class _LogicalSupporterState extends State<LogicalSupporter> {
   late Logical _currentBoard;
   var _currentExpanded = true;
   double _scale = 1;

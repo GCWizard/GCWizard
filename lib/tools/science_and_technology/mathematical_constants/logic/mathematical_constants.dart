@@ -56,6 +56,7 @@ const Map<String, MathematicalConstant> MATHEMATICAL_CONSTANTS = {
       tool: 'sqrt3'),
   'mathematical_constants_sqrt5':
       MathematicalConstant(symbol: '\u221a5', value: '2.23606 79774 99789 69640 91736 68731 27623 ...', tool: 'sqrt5'),
+  'mathematical_constants_grothendieckprime': MathematicalConstant(value: '57'),
   'mathematical_constants_hitchhiker': MathematicalConstant(value: '42'),
   'mathematical_constants_sheldonprime': MathematicalConstant(value: '73'),
   'mathematical_constants_eulermascheroni': MathematicalConstant(

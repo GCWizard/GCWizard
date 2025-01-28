@@ -35,7 +35,7 @@ class NonogramSolver extends StatefulWidget {
   const NonogramSolver({Key? key}) : super(key: key);
 
   @override
-  NonogramSolverState createState() => NonogramSolverState();
+  _NonogramSolverState createState() => _NonogramSolverState();
 }
 
 enum _DecryptWizardStep {
@@ -59,7 +59,7 @@ enum _EncryptWizardStep {
   DRAW_MANUALLY
 }
 
-class NonogramSolverState extends State<NonogramSolver> {
+class _NonogramSolverState extends State<NonogramSolver> {
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
   late PuzzleWidgetValues _decryptPuzzle;
   late PuzzleWidgetValues _encryptPuzzle;
