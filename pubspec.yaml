@@ -379,6 +379,7 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/semaphore/
     - lib/tools/symbol_tables/_common/assets/shadoks/
     - lib/tools/symbol_tables/_common/assets/sheikah/
+    - lib/tools/symbol_tables/_common/assets/sheliak/
     - lib/tools/symbol_tables/_common/assets/shoes/
     - lib/tools/symbol_tables/_common/assets/siemens/
     - lib/tools/symbol_tables/_common/assets/sign/
@@ -418,6 +419,12 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/tifinagh/
     - lib/tools/symbol_tables/_common/assets/tines/
     - lib/tools/symbol_tables/_common/assets/tll/
+    - lib/tools/symbol_tables/_common/assets/toki_pona_letters_names/
+    - lib/tools/symbol_tables/_common/assets/toki_pona_letters_symbols/
+    - lib/tools/symbol_tables/_common/assets/toki_pona_numbers/
+    - lib/tools/symbol_tables/_common/assets/toki_pona_numbers_sitelen_pona/
+    - lib/tools/symbol_tables/_common/assets/toki_pona_numbers_sitelen_telo/
+    - lib/tools/symbol_tables/_common/assets/toki_pona_numbers_sitelen_sitelen/
     - lib/tools/symbol_tables/_common/assets/tomtom/
     - lib/tools/symbol_tables/_common/assets/trafficsigns_germany/
     - lib/tools/symbol_tables/_common/assets/ulog/
