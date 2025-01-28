@@ -1,4 +1,4 @@
-int intSqrt(int number) {
+int _intSqrt(int number) {
   int result = 0;
   int bit = 1 << 30;
 
@@ -21,7 +21,7 @@ int intSqrt(int number) {
 
 List<int> divisors(int number) {
   List<int> divisorList = <int>[];
-  int sqrtNumber = intSqrt(number);
+  int sqrtNumber = _intSqrt(number);
 
   for (int i = 1; i <= sqrtNumber; i++) {
     if (number % i == 0) {
