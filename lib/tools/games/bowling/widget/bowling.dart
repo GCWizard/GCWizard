@@ -227,7 +227,7 @@ class _BowlingState extends State<Bowling> {
         i + 1,
         _currentBowlingScore[i].one,
         (_currentBowlingScore[i].one == 10) && (i < 9) ? null : _currentBowlingScore[i].two,
-        (i == 9) && (_currentBowlingScore[i].one + _currentBowlingScore[i].two == 10)
+        (i == 9) && (_currentBowlingScore[i].one + _currentBowlingScore[i].two >= 10)
             ? _currentBowlingScore[i].three
             : null,
         _currentFrameTotals[i],
