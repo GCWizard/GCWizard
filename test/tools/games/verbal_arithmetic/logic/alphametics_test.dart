@@ -46,7 +46,7 @@ void main() {
           expect(_actual, elem['expectedOutput']);
         }
       });
-    });
+    };
   });
 
 

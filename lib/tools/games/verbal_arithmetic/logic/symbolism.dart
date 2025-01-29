@@ -12,7 +12,7 @@ Future<VerbalArithmeticOutput?> solveCryptogramAsync(GCWAsyncExecuterParameters 
   }
   var data = jobData.parameters as VerbalArithmeticJobData;
 
-  var output = solveCryptogram(data.equations, data.allSolutions, sendAsyncPort: jobData.sendAsyncPort);
+  var output = solveSymbolism(data.equations, data.allSolutions, sendAsyncPort: jobData.sendAsyncPort);
 
   if (jobData.sendAsyncPort != null) jobData.sendAsyncPort!.send(output);
 
@@ -21,14 +21,15 @@ Future<VerbalArithmeticOutput?> solveCryptogramAsync(GCWAsyncExecuterParameters 
 
 bool _allSolutions = false;
 
-VerbalArithmeticOutput? solveCryptogram(List<String> equations, bool allSolutions, {SendPort? sendAsyncPort}) {
-  var _equations = equations.map((equation) => Equation(equation, rearrange: true)).toList();
+VerbalArithmeticOutput? solveSymbolism(List<String> equations, bool allSolutions, {SendPort? sendAsyncPort}) {
+  var _equations = equations.map((equation) => Equation(equation, singleLetter: true, rearrange: true)).toList();
   var notValid = _equations.any((equation) => !equation.validFormula);
   if (notValid || _equations.isEmpty) {
     return VerbalArithmeticOutput(equations: _equations, solutions: [], error: 'InvalidEquation');
   }
+
   _allSolutions = allSolutions;
-  return _solveCryptogram(_equations, sendAsyncPort);
+  return _solveSymbolism(_equations, sendAsyncPort);
 }
 
 int _totalPermutations = 0;
@@ -38,26 +39,24 @@ int _nextSendStep = 1;
 SendPort? _sendAsyncPort;
 List<HashMap<String, int>> _solutions = [];
 
-VerbalArithmeticOutput? _solveCryptogram(List<Equation> equations, SendPort? sendAsyncPort) {
+VerbalArithmeticOutput? _solveSymbolism(List<Equation> equations, SendPort? sendAsyncPort) {
   final Set<String> variables = {};
   for (var equation in equations) {
     variables.addAll(equation.usedMembers);
   }
 
-  final variableList = variables.toList();
+  final variableList = variables.toList()..sort();
 
-  // Automatically determine value range
-  final maxValue = _findMaxValueInEquations(equations);
-  final range = List.generate(maxValue + 1, (index) => index);
+  final digits = List.generate(10, (i) => i);
 
-  equations = _sortEquationsByVariableCombinations(equations, variables, maxValue);
+  // equations = _sortEquationsByVariableCombinations(equations, variables, maxValue);
 
-  _totalPermutations = _calculatePossibilities(range.length, variableList.length);
+  _totalPermutations = _calculatePossibilities(digits.length, variableList.length);
   _currentCombination = 0;
   _stepSize  = max(_totalPermutations ~/ 100, 1);
   _nextSendStep = _stepSize;
 
-  __solveCryptogram(equations, HashMap<String, int>(), variableList, range);
+  __solveCryptogram(equations, HashMap<String, int>(), variableList, digits);
 
   return VerbalArithmeticOutput(equations: equations, solutions: _solutions, error: '');
 }
@@ -68,7 +67,8 @@ bool __solveCryptogram(List<Equation> equations, HashMap<String, int> assignedVa
   if (remainingVariables.isEmpty) {
     if (_evaluateEquation(assignedValues, equations)) {
       var equation = equations.first.equation;
-
+      // var solution = assignedValues.entries.toList();
+      // solution.sort(((a, b) => a.key.compareTo(b.key)));
       print('Lösung gefunden: $equation $assignedValues $_currentCombination% $_totalPermutations');
 
       _solutions.add(assignedValues);
@@ -116,23 +116,6 @@ int _calculatePossibilities(int totalNumbers, int variableCount) {
   return pow(totalNumbers, variableCount-1).toInt();
 }
 
-int _findMaxValueInEquations(List<Equation> equations) {
-  int maxValue = 0;
-  final constants = <int>[];
-
-  for (var equation in equations) {
-    for (var value in equation.Values) {
-      constants.add(value);
-    }
-  }
-  if (constants.isNotEmpty) {
-    maxValue = max(maxValue, constants.reduce(max));
-  }
-  if (maxValue == 0) maxValue = 100;
-
-  return maxValue;
-}
-
 /// Sorts the equations so that the equation with the fewest combinations of variables is solved first
 List<Equation> _sortEquationsByVariableCombinations(List<Equation> equations, Set<String> variables, int maxValue) {
   final variableDomainSize = maxValue + 1;
@@ -148,23 +131,21 @@ List<Equation> _sortEquationsByVariableCombinations(List<Equation> equations, Se
   return equationScores.map((entry) => entry.key).toList();
 }
 
-bool _evaluateEquation(Map<String, int> variableValues, List<Equation> equations) {
+bool _evaluateEquation(Map<String, int> mapping, List<Equation> equations) {
   for (var equation in equations) {
 
     // all variables definied ?
-    if (!variableValues.keys.toSet().containsAll(equation.usedMembers)) {
+    if (!mapping.keys.toSet().containsAll(equation.usedMembers)) {
       continue;
     }
 
     final context = ContextModel();
 
-    variableValues.forEach((varName, value) {
-      context.bindVariable(Variable(varName), Number(value));
-    });
+    var expression = Equation.replaceValues(equation.formatedEquation, mapping);
+    Expression exp = parser.parse(expression);
 
-    if (equation.exp.evaluate(EvaluationType.REAL, context) != 0) {
-      return false;
-    }
+    var result = exp.evaluate(EvaluationType.REAL, context);
+    if (result != 0) return false;
   }
   return true;
 }
@@ -172,60 +153,44 @@ bool _evaluateEquation(Map<String, int> variableValues, List<Equation> equations
 void main() {
   // Beispielgleichungen
   List<String> equations = [
-    "B+A*C+C*A-D-65",  // Gleichung angepasst für math_expressions (gleichsetzen mit 0)
-    "E-D+C*A+A-C-27",
-    "A*E+C*B-E*B-53",
-    "A*B+C-D*A-E-41",
-    "B*C+C-F+E*A-77",
-    "E*F+C-D+C*A-37",
-    "B+F*E*A-D+C-24",
-    "D*B+E+C*A+F-31"
+    "ABCB+DEAF=GFFB",
+    "AEEF+AHG=AGIG",
+    "EBB*AH=HGCF",
+    "ABCB-AEEF=EBB",
+    "DEAF/AHG=AH",
+    "GFFB+AGIG=HGCF"
   ];
 
   var startTime = DateTime.now();
   // Lösen
-  solveCryptogram(equations, false);
+  solveSymbolism(equations, false);
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 
   equations = [
-  'A+A+B+B+C+D-49',
-  'E+C+E+F+D+D-67',
-  'D+F+C+E+D+D-56',
-  'A+A+A+A+F+D-36',
-  'D+F+F+D+F+D-60',
-  'A+A+A+A+C+D-25',
-  'A+E+D+A+D+A-47',
-  'A+C+F+A+F+A-37',
-  'B+E+C+A+F+A-56',
-  'B+F+E+A+D+A-63',
-  'C+D+D+F+F+C-42',
-  'D+D+D+D+D+D-48',
+  "GJ*DJ=LBAC",
+  "BJKD+BCCK=DJKB",
+  "BJLH-GF=BHJL",
+  "BJKD-GJ=BJLH",
+  "BCCK/DJ=GF",
+  "DJKB-LBAC=BHJL"
   ];
 
   startTime = DateTime.now();
   // Lösen
-  solveCryptogram(equations, false);
+  solveSymbolism(equations, false);
   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 
-   equations = [
-  'A*B-1428',
-  'C-D-12',
-  'A*C-840',
-  'B-D-33',
-  ];
-
-  startTime = DateTime.now();
-  // Lösen
-  solveCryptogram(equations, false);
-  print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
 }
 
-// Lösung gefunden: B+A*C+C*A-D-65 {F: 1, A: 4, D: 0, C: 7, E: 2, B: 9}
-// 2274ms
-// Lösung gefunden: D+D+D+D+D+D-48 {F: 12, A: 4, D: 8, C: 1, E: 19, B: 16}
-// 853ms
-// Lösung gefunden: A*B-1428 {A: 28, D: 18, C: 30, B: 51}
-// 48ms
+// Solution for Example 1: {A: 1, B: 6, C: 9, D: 2, E: 3, F: 0, G: 4, H: 5, I: 8}
+// 2532ms
+// Solution for Example 2: {G: 5, J: 7, D: 3, K: 8, B: 1, C: 9, F: 4, L: 2, H: 6, A: 0}
+// 8365ms
+
+// Lösung gefunden: ABCB+DEAF=GFFB {F: 0, A: 1, E: 3, B: 6, H: 5, D: 2, C: 9, I: 8, G: 4} 656608% 100000000
+// 253ms
+// Lösung gefunden: GJ*DJ=LBAC {F: 4, A: 0, J: 7, K: 8, B: 1, H: 6, D: 3, C: 9, G: 5, L: 2} 98282% 1000000000
+// 248ms
 
 // import 'package:math_expressions/math_expressions.dart';
 //

@@ -50,15 +50,18 @@ class Equation {
   late Expression exp;
   late List<Token> token;
   bool singleLetter = false;
+  bool rearrange = false;
   bool validFormula = true;
   Set<String> usedMembers = <String>{};
   Set<String> leadingLetters = <String>{};
 
-  Equation(this.equation, {this.singleLetter = false}) {
+  Equation(this.equation, {this.singleLetter = false, this.rearrange = false}) {
     equation = equation.toUpperCase();
     formatedEquation = _formatEquation();
     validFormula &= !(formatedEquation.count('=') > 1);
-
+    if (rearrange) {
+      formatedEquation = _rearrange(formatedEquation);
+    }
     if (singleLetter) {
       // Extract all letters and determine the leading letters
       for (var token in formatedEquation.split(RegExp(r'[^A-Z]'))) {
@@ -68,10 +71,6 @@ class Equation {
         }
       }
     } else {
-      if (formatedEquation.contains('=')) {
-        var members = formatedEquation.split('=');
-        formatedEquation = members[0] + '-(' + members[1]+ ')';
-      }
       token = parser.lex.tokenize(formatedEquation);
       if (formatedEquation.isNotEmpty) {
         exp = parser.parse(formatedEquation);
@@ -109,6 +108,14 @@ class Equation {
       out = out.replaceAll(op.key, op.value);
     }
     return out.trim();
+  }
+
+  String _rearrange(String equation) {
+    if (equation.contains('=')) {
+      var members = equation.split('=');
+      equation = members[0] + '-(' + members[1]+ ')';
+    }
+    return equation;
   }
 
   String getOutput(HashMap<String, int> result) {

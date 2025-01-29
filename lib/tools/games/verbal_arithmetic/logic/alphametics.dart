@@ -104,7 +104,7 @@ Iterable<HashMap<String, int>?> _permuteAndEvaluate(List<String> letters, String
     }
 
     // Check if this permutation solves the formula
-    if (_evaluateFormula(formula, mapping)) {
+    if (_evaluateEquation(formula, mapping)) {
       yield mapping;
     }
   }
@@ -135,20 +135,14 @@ Iterable<List<int>> _generatePermutations(int length, List<int> availableDigits)
   }
 }
 
-// Funktion zur Auswertung der Formel
-bool _evaluateFormula(String equation, Map<String, int> mapping) {
-
-  // Split expression into left and right side
-  // var sides = modifiedFormula.split('=');
+bool _evaluateEquation(String equation, Map<String, int> mapping) {
   var sides = Equation.replaceValues(equation, mapping).split('=');
   if (sides.length != 2) return false;
 
   try {
-    // Auswerten beider Seiten des Ausdrucks
     var leftValue = _eval(sides[0]);
     var rightValue = _eval(sides[1]);
 
-    // Check if the left and right sides are equal
     return leftValue == rightValue;
   } catch (e) {
     return false;

@@ -17,7 +17,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
-import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/alphametic.dart';
+import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/alphametics.dart';
 import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/cryptogram.dart';
 import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/helper.dart';
 
@@ -42,7 +42,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
   var _currentNumberGridInput = '';
   var _currentAlphameticsInput = '';
   var _currentMode = _ViewMode.Alphametic;
-  var _currentAllSolutions = false;
+  var _currentAllSolutions = true;
   var _currentAllowLeadingZeros = false;
   var _currentGridScale = 0.0;
   int _rowCount = 2;
@@ -300,7 +300,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
         equationData.insert (0, [i18n(context, 'common_count') + ': '
             + (output.solutions.length >= 100 ? '>100' : output.solutions.length.toString())]);
       }
-      var equationWidget = GCWColumnedMultilineOutput(data: equationData, copyColumn: 1, copyAll: true,
+      var equationWidget = GCWColumnedMultilineOutput(data: equationData, copyColumn: 0, copyAll: true,
         hasHeader: output.solutions.length >= 100);
 
       _currentOutput = Column(
