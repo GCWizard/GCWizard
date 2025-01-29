@@ -20,6 +20,12 @@ Future<VerbalArithmeticOutput?> solveCryptogramAsync(GCWAsyncExecuterParameters 
 }
 
 bool _allSolutions = false;
+int _totalPermutations = 0;
+int _currentCombination = 0;
+int _stepSize = 1;
+int _nextSendStep = 1;
+SendPort? _sendAsyncPort;
+List<HashMap<String, int>> _solutions = [];
 
 VerbalArithmeticOutput? solveCryptogram(List<String> equations, bool allSolutions, {SendPort? sendAsyncPort}) {
   var _equations = equations.map((equation) => Equation(equation, rearrange: true)).toList();
@@ -30,13 +36,6 @@ VerbalArithmeticOutput? solveCryptogram(List<String> equations, bool allSolution
   _allSolutions = allSolutions;
   return _solveCryptogram(_equations, sendAsyncPort);
 }
-
-int _totalPermutations = 0;
-int _currentCombination = 0;
-int _stepSize = 1;
-int _nextSendStep = 1;
-SendPort? _sendAsyncPort;
-List<HashMap<String, int>> _solutions = [];
 
 VerbalArithmeticOutput? _solveCryptogram(List<Equation> equations, SendPort? sendAsyncPort) {
   final Set<String> variables = {};
@@ -50,7 +49,8 @@ VerbalArithmeticOutput? _solveCryptogram(List<Equation> equations, SendPort? sen
   final maxValue = _findMaxValueInEquations(equations);
   final range = List.generate(maxValue + 1, (index) => index);
 
-  equations = _sortEquationsByVariableCombinations(equations, variables, maxValue);
+  _solutions.clear();
+  equations = _sortEquations(equations);
 
   _totalPermutations = _calculatePossibilities(range.length, variableList.length);
   _currentCombination = 0;
@@ -62,16 +62,16 @@ VerbalArithmeticOutput? _solveCryptogram(List<Equation> equations, SendPort? sen
   return VerbalArithmeticOutput(equations: equations, solutions: _solutions, error: '');
 }
 
-bool __solveCryptogram(List<Equation> equations, HashMap<String, int> assignedValues, List<String> remainingVariables,
+bool __solveCryptogram(List<Equation> equations, HashMap<String, int> mapping, List<String> remainingVariables,
     List<int> availableValues) {
 
   if (remainingVariables.isEmpty) {
-    if (_evaluateEquation(assignedValues, equations)) {
+    if (_evaluateEquation(mapping, equations)) {
       var equation = equations.first.equation;
 
-      print('Lösung gefunden: $equation $assignedValues $_currentCombination% $_totalPermutations');
+      print('Lösung gefunden: $equation $mapping $_currentCombination% $_totalPermutations');
 
-      _solutions.add(assignedValues);
+      _solutions.add(mapping);
       if (!_allSolutions || _solutions.length >= MAX_SOLUTIONS) return true;
     }
     return false;
@@ -80,24 +80,24 @@ bool __solveCryptogram(List<Equation> equations, HashMap<String, int> assignedVa
   String variable = remainingVariables.removeAt(0);
 
   for (var value in availableValues) {
-    assignedValues[variable] = value;
+    mapping[variable] = value;
 
     _currentCombination++;
     _sendProgress();
 
-    if (!_evaluateEquation(assignedValues, equations)) {
-      assignedValues.remove(variable);
+    if (!_evaluateEquation(mapping, equations)) {
+      mapping.remove(variable);
       _currentCombination += _calculatePossibilities(availableValues.length, remainingVariables.length);
       _sendProgress();
       continue;
     }
 
-    if (__solveCryptogram(equations, assignedValues, remainingVariables,
+    if (__solveCryptogram(equations, mapping, remainingVariables,
         availableValues.where((v) => v != value).toList())) {
       if (!_allSolutions || _solutions.length >= MAX_SOLUTIONS) return true;
     }
 
-    assignedValues.remove(variable);
+    mapping.remove(variable);
   }
 
   remainingVariables.insert(0, variable);
@@ -133,13 +133,13 @@ int _findMaxValueInEquations(List<Equation> equations) {
   return maxValue;
 }
 
-/// Sorts the equations so that the equation with the fewest combinations of variables is solved first
-List<Equation> _sortEquationsByVariableCombinations(List<Equation> equations, Set<String> variables, int maxValue) {
-  final variableDomainSize = maxValue + 1;
+List<Equation> _sortEquations(List<Equation> equations) {
 
   List<MapEntry<Equation, int>> equationScores = equations.map((equation) {
-    // Heuristic: number of variables * possible value ranges per variable
-    int score = equation.usedMembers.length * variableDomainSize;
+    int score = equation.usedMembers.length;
+    if (equation.formatedEquation.contains('*')) score *= 2;
+    if (equation.formatedEquation.contains('/')) score *= 2;
+
     return MapEntry(equation, score);
   }).toList();
 

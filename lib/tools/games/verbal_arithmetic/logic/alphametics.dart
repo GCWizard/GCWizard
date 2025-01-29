@@ -153,9 +153,7 @@ ContextModel _cm = ContextModel();
 
 // function for evaluating the mathematical expression
 num _eval(String expression) {
-  Expression exp = parser.parse(expression);
-
-  var result = exp.evaluate(EvaluationType.REAL, _cm);
+  var result = parser.parse(expression).evaluate(EvaluationType.REAL, _cm);
   return result != null && result is num ? result : double.negativeInfinity;
 }
 
