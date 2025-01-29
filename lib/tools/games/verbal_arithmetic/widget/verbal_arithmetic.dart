@@ -274,6 +274,48 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     return _currentOutput ?? const GCWDefaultOutput(child: '');
   }
 
+  void _showOutput(VerbalArithmeticOutput? output) {
+    if (output == null) {
+      _currentOutput = null; //invalid data
+      return;
+    }
+    if (output.error.isNotEmpty) {
+      _currentOutput = GCWDefaultOutput(child:
+      i18n(context, 'verbal_arithmetic_' + output.error.toLowerCase(), ifTranslationNotExists: output.error));
+    } else if (output.solutions.isEmpty) {
+      _currentOutput =  GCWDefaultOutput(child: i18n(context, 'verbal_arithmetic_solutionnotfound'));
+    } else {
+      Widget solutionWidget = Container();
+      var equationData = output.solutions.map((solution) {
+        return [output.equations.map((equation) => equation.getOutput(solution)).join('\n')];
+      }).toList();
+
+      if (output.solutions.length == 1) {
+        var solution = output.solutions.first.entries.toList();
+        solution.sort(((a, b) => a.key.compareTo(b.key)));
+        var columnData = solution.map((entry) => [entry.key, entry.value]).toList();
+        solutionWidget = GCWColumnedMultilineOutput(data: columnData, flexValues: const [3, 1],
+            copyColumn: 1, copyAll: true);
+      } else {
+        equationData.insert (0, [i18n(context, 'common_count') + ': '
+            + (output.solutions.length >= 100 ? '>100' : output.solutions.length.toString())]);
+      }
+      var equationWidget = GCWColumnedMultilineOutput(data: equationData, copyColumn: 1, copyAll: true,
+        hasHeader: output.solutions.length >= 100);
+
+      _currentOutput = Column(
+          children: <Widget>[
+            solutionWidget,
+            GCWDefaultOutput(child: equationWidget),
+          ]
+      );
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
+  }
+
   void _onDoCalculation() async {
     await showDialog<bool>(
       context: context,
@@ -472,42 +514,6 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
         allSolutions: _currentAllSolutions,
         allowLeadingZeros: _currentAllowLeadingZeros
     ));
-  }
-
-  void _showOutput(VerbalArithmeticOutput? output) {
-    if (output == null) {
-      _currentOutput = null; //invalid data
-      return;
-    }
-    if (output.error.isNotEmpty) {
-      _currentOutput = GCWDefaultOutput(child:
-        i18n(context, 'verbal_arithmetic_' + output.error.toLowerCase(), ifTranslationNotExists: output.error));
-    } else if (output.solutions.isEmpty) {
-      _currentOutput =  GCWDefaultOutput(child: i18n(context, 'verbal_arithmetic_solutionnotfound'));
-    } else {
-      Widget solutionWidget = Container();
-      if (output.solutions.length == 1) {
-        var solution = output.solutions.first.entries.toList();
-        solution.sort(((a, b) => a.key.compareTo(b.key)));
-        var _columnData = solution.map((entry) => [entry.key, entry.value]).toList();
-        solutionWidget = GCWColumnedMultilineOutput(data: _columnData, flexValues: const [3, 1],
-            copyColumn: 1, copyAll: true);
-      }
-      var equations = output.solutions.map((solution) {
-        return output.equations.map((equation) => equation.getOutput(solution)).join('\n');
-      }).join('\n\n');
-
-      _currentOutput = Column(
-          children: <Widget>[
-            solutionWidget,
-            GCWDefaultOutput(child: equations),
-          ]
-      );
-    }
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {});
-    });
   }
 
   void _buildTextEditingControllerArray(int rowCount, int columnCount) {
