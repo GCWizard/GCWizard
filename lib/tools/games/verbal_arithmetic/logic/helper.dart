@@ -173,13 +173,18 @@ class SymbolMatrixGrid {
   }
 
   String getOperator(int y, int x) {
-    if  (!_validPosition(y, x)) {
+    if (!_validPosition(y, x)) {
       return '';
     }
     var value = matrix[y][x];
     if (!operatorList.containsKey(value)) {
-      value = operatorList.keys.first;
-      setValue(y, x, value);
+      if (x != getColumnsCount() -1) {
+        value = operatorList.keys.first;
+        setValue(y, x, value);
+      } else if (value != '') {
+        value = operatorList.keys.first;
+        setValue(y, x, value);
+      }
     }
     return value;
   }

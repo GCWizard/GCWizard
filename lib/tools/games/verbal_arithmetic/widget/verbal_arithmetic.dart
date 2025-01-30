@@ -95,7 +95,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
             GCWDropDownMenuItem(
                 value: _ViewMode.AlphameticGrid,
                 child: i18n(context, 'verbal_arithmetic_alphametic') + ' ' + i18n(context, 'verbal_arithmetic_grid'),
-                subtitle: 'A * C = C\n  +   -\nB * A = B\n =   =\nC   B',
+                subtitle: 'A * C = C\n+   -\nB * A = B\n=   =\nC   B',
                 maxSubtitleLines: 5
             ),
             GCWDropDownMenuItem(
@@ -369,7 +369,11 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
 
     for(var columnIndex = 0; columnIndex <= columnsCount; columnIndex++) {
       if (rowIndex % 2 == 0) {
-        if (columnIndex % 2 == 0 && (!(columnIndex == columnsCount && rowIndex == rowsCount) || _calcLastColumn())) {
+        if (columnIndex % 2 == 0) {
+          if ((columnIndex == columnsCount && rowIndex == rowsCount) && !_calcLastColumn()) {
+            cells.add(Container());
+            continue;
+          }
           cells.add(
             GCWTextField(
               controller: _getTextEditingController(rowIndex, columnIndex,
@@ -379,17 +383,25 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
               }
             )
           );
-        } else if (columnIndex == columnsCount - 1 && (rowIndex != rowsCount || _calcLastColumn())) {
-          cells.add(_equalText(rowIndex, columnIndex));
+        } else if (columnIndex == columnsCount - 1 && rowIndex != rowsCount) {
+           cells.add(_equalText(rowIndex, columnIndex));
+        } else if (rowIndex < rowsCount) {
+          cells.add(_operatorDropDown(rowIndex, columnIndex));
         } else {
-          cells.add(_operatorDropDown(rowIndex, columnIndex, emptyEntry: rowIndex == rowsCount));
+          cells.add(Container());
         }
-      } else if (columnIndex % 2 == 0 && columnIndex < columnsCount - 1) {
-        cells.add(
-          (rowIndex == _currentMatrix.getRowsCount() - 2)
-          ? _equalText(rowIndex, columnIndex) // pre last row
-          : _operatorDropDown(rowIndex, columnIndex)
-        );
+      } else if (columnIndex % 2 == 0 ) {
+        if (rowIndex == rowsCount - 1) {
+          if (columnIndex == columnsCount && !_calcLastColumn()) {
+            cells.add(Container());
+          } else {
+            cells.add(_equalText(rowIndex, columnIndex));
+          }
+        } else if (rowIndex < rowsCount) {
+          cells.add(_operatorDropDown(rowIndex, columnIndex, emptyEntry: columnIndex == columnsCount));
+        } else {
+          cells.add(Container());
+        }
       } else {
         cells.add(Container());
       }
@@ -404,7 +416,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     var rowsCount = _currentMatrix.getRowsCount() - 1;
     var columnsCount = _currentMatrix.getColumnsCount() - 1;
 
-    for(var rowIndex = 1; rowIndex < rowsCount; rowIndex += 2) {
+    for(var rowIndex = 1; rowIndex < rowsCount - 1; rowIndex += 2) {
       if (_currentMatrix.getOperator(rowIndex, columnsCount).isNotEmpty) {
         return true;
       }
