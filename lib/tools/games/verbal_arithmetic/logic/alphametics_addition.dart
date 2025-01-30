@@ -40,10 +40,10 @@ VerbalArithmeticOutput? _solveAlphameticAdd(Equation equation) {
 List<HashMap<String, int>> _solutions = [];
 
 bool __solveAlphametics(EquationData equationData, List<String> letters, List<int> digits,
-    Map<String, int> letterToDigit, Set<int> usedDigits) {
+    Map<String, int> mapping, Set<int> usedDigits) {
   if (letters.isEmpty) {
-    if (__evaluateEquation(letterToDigit, equationData)) {
-      _solutions.add(HashMap<String, int>.from(letterToDigit));
+    if (__evaluateEquation(mapping, equationData)) {
+      _solutions.add(HashMap<String, int>.from(mapping));
       return true;
     }
     return false;
@@ -64,14 +64,14 @@ bool __solveAlphametics(EquationData equationData, List<String> letters, List<in
     _currentCombination++;
     _sendProgress();
 
-    letterToDigit[currentLetter] = digit;
+    mapping[currentLetter] = digit;
     usedDigits.add(digit);
 
-    if (__solveAlphametics(equationData, letters, digits, letterToDigit, usedDigits)) {
+    if (__solveAlphametics(equationData, letters, digits, mapping, usedDigits)) {
       if (!_allSolutions || _solutions.length >= MAX_SOLUTIONS) return true;
     }
 
-    letterToDigit.remove(currentLetter);
+    mapping.remove(currentLetter);
     usedDigits.remove(digit);
   }
 

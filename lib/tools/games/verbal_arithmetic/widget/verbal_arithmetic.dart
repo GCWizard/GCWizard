@@ -215,7 +215,8 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
   }
 
   Widget _buildNumberGridGridOption() {
-    if (_currentMode != _ViewMode.SymbolMatrixGrid) {
+    if (_currentMode != _ViewMode.SymbolMatrixGrid &&
+        _currentMode != _ViewMode.AlphameticGrid) {
       return Container();
     }
     return Column(

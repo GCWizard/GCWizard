@@ -26,7 +26,7 @@ bool __solveSymbolism(List<Equation> equations, HashMap<String, int> mapping, Li
       // solution.sort(((a, b) => a.key.compareTo(b.key)));
       print('Lösung gefunden: $equation $mapping $_currentCombination% $_totalPermutations');
 
-      _solutions.add(mapping);
+      _solutions.add(HashMap<String, int>.from(mapping));
       if (!_allSolutions || _solutions.length >= MAX_SOLUTIONS) return true;
     }
     return false;
