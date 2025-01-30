@@ -11,7 +11,7 @@ void main() {
       {'input' : [' ', ''], 'expectedOutput' : ''},
       {'input' : ['A + B = 99'], 'expectedOutput' : ''},
       {'input' : ['BASE + BALL === GAMES'], 'expectedOutput' : 'InvalidEquation'},
-      {'input' : ['BASE + BALL == GAMES'], 'expectedOutput' : '7483 + 7455 == 14938'},
+      {'input' : ['BASE + BALL == GAMES', ' '], 'expectedOutput' : '7483 + 7455 == 14938'},
       {'input' : ['BIG + CAT = LION'], 'expectedOutput' : '204 + 859 = 1063'}, //mehrere Lösungen '324 + 956 = 1280', ..
       {'input' : ['ELEVEN + NINE + FIVE + FIVE = THIRTY'], 'expectedOutput' : '797275 + 5057 + 4027 + 4027 = 810386'},
       {'input' : ['SEND+MORE=MONEY'], 'expectedOutput' : '9567+1085=10652'},

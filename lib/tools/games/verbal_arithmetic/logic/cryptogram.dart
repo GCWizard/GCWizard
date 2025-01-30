@@ -28,7 +28,9 @@ SendPort? _sendAsyncPort;
 List<HashMap<String, int>> _solutions = [];
 
 VerbalArithmeticOutput? solveCryptogram(List<String> equations, bool allSolutions, {SendPort? sendAsyncPort}) {
+  deleteEmptyLines(equations);
   var _equations = equations.map((equation) => Equation(equation, rearrange: true)).toList();
+
   var notValid = _equations.any((equation) => !equation.validFormula);
   if (notValid || _equations.isEmpty) {
     return VerbalArithmeticOutput(equations: _equations, solutions: [], error: 'InvalidEquation');

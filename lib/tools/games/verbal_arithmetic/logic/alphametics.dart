@@ -33,7 +33,14 @@ SendPort? _sendAsyncPort;
 
 VerbalArithmeticOutput? solveAlphametic(List<String> equations, bool allSolutions, bool allowLeadingZeros,
     {SendPort? sendAsyncPort}) {
-  var _equations = equations.map((equation) => Equation(equation, singleLetter: true, rearrange: equations.length > 1)).toList();
+  deleteEmptyLines(equations);
+  var _equations = equations.map((equation) => Equation(equation, singleLetter: true,
+      rearrange: equations.length > 1)).toList();
+
+  if (_equations.length <= 1 && equations.length > 1) {
+    _equations = equations.map((equation) => Equation(equation, singleLetter: true,
+        rearrange: _equations.length > 1)).toList();
+  }
   var notValid = _equations.any((equation) => !equation.validFormula);
   if (notValid || _equations.isEmpty) {
     return VerbalArithmeticOutput(equations: _equations, solutions: [], error: 'InvalidEquation');
@@ -70,13 +77,13 @@ VerbalArithmeticOutput? _solveAlphametic(Equation equation) {
   var letterList = equation.usedMembers.toList();
 
   // Generate permutations and evaluate each combination
-  var mappings = _permuteAndEvaluate(letterList, equation.equation, equation.leadingLetters);
+  var mappings = _permuteAndEvaluate(letterList, equation.formatedEquation, equation.leadingLetters);
   var solutions = <HashMap<String, int>>[];
   for (var mapping in mappings) {
     if (mapping != null) {
       solutions.add(mapping);
 
-      var _equation = equation.formatedEquation;
+      var _equation = equation.equation;
       print('Lösung gefunden: $_equation. $mapping');
 
       if (!_allSolutions || solutions.length >= MAX_SOLUTIONS) {
@@ -86,7 +93,7 @@ VerbalArithmeticOutput? _solveAlphametic(Equation equation) {
   }
 
   if (solutions.isEmpty) {
-    var _equation = equation.formatedEquation;
+    var _equation = equation.equation;
     print("Keine Lösung gefunden. $_equation");
   }
   return VerbalArithmeticOutput(equations: [equation], solutions: solutions, error: '');
