@@ -33,7 +33,7 @@ SendPort? _sendAsyncPort;
 
 VerbalArithmeticOutput? solveAlphametic(List<String> equations, bool allSolutions, bool allowLeadingZeros,
     {SendPort? sendAsyncPort}) {
-  deleteEmptyLines(equations);
+  SymbolMatrixString.deleteEmptyLines(equations);
   var _equations = equations.map((equation) => Equation(equation, singleLetter: true,
       rearrange: equations.length > 1)).toList();
 

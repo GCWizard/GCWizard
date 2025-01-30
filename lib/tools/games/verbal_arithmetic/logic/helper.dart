@@ -133,10 +133,14 @@ class Equation {
 class SymbolMatrixString {
   static List<String> buildEquations(String input) {
     if (input.trim().isEmpty) return [];
-    var formulas = const LineSplitter().convert(input);
-    formulas.removeWhere((formula) => formula.trim().isEmpty);
-    formulas = formulas.map((formula) => formula.trim()).toList();
-    return formulas;
+    var equations = const LineSplitter().convert(input);
+    deleteEmptyLines(equations);
+    equations = equations.map((equation) => equation.trim()).toList();
+    return equations;
+  }
+
+  static void deleteEmptyLines(List<String> equations) {
+    equations.removeWhere((equation) => equation.trim().isEmpty);
   }
 }
 
@@ -310,6 +314,3 @@ int factorial(int n) {
   return n * factorial(n - 1);
 }
 
-void deleteEmptyLines(List<String> equations) {
-  equations.removeWhere((equation) => equation.trim().isEmpty);
-}
