@@ -35,6 +35,8 @@ Map<int, int> _getPrimeFactorMap(List<BigInt> factors) {
 }
 
 List<int> divisors(int number) {
+  if (number <= 0) return [0];
+
   var factors = integerFactorization(number);
   var primeFactors = _getPrimeFactorMap(factors);
   var divisors = _getDivisorsFromPrimeFactors(primeFactors);
