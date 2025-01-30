@@ -236,9 +236,11 @@ class SymbolMatrixGrid {
     var formula = '';
     for (var x = 0; x < matrix[y].length; x++) {
       if (x % 2 == 0) {
-        formula += matrix[y][x];
+        if (getValue(y, x).isEmpty) return '';
+        formula += getValue(y, x);
       } else if (x < getColumnsCount() - 2) {
-        formula += ' ' + operatorList[matrix[y][x]]! + ' ';
+        if (getOperator(y, x).isEmpty) return '';
+        formula += ' ' + getOperator(y, x) + ' ';
       } else {
         formula += ' = ';
       }
@@ -250,9 +252,11 @@ class SymbolMatrixGrid {
     var formula = '';
     for (var y = 0; y < matrix.length; y++) {
       if (y % 2 == 0) {
+        if (getValue(y, x).isEmpty) return '';
         formula += matrix[y][x];
       } else if (y < getRowsCount() - 2) {
-        formula += ' ' + operatorList[matrix[y][x]]! + ' ';
+        if (getOperator(y, x).isEmpty) return '';
+        formula += ' ' + getOperator(y, x) + ' ';
       } else {
         formula += ' = ';
       }
@@ -262,13 +266,24 @@ class SymbolMatrixGrid {
 
   List<String> buildEquations() {
     var equations = <String>[];
+    String equation;
 
     if (!isValidMatrix()) return equations;
-    for(var y = 0; y < getRowsCount() - (calcLastRow() ? 0 : 2); y += 2){
-      equations.add(_buildRowEquation(y));
+    for(var y = 0; y < getRowsCount() - (calcLastRow() ? 0 : 2); y += 2) {
+      equation = _buildRowEquation(y);
+      if (equation.isEmpty) {
+        if (y != getRowsCount() - 1) return [];
+      } else {
+        equations.add(equation);
+      }
     }
-    for(var x = 0; x < getColumnsCount()- (calcLastColumn() ? 0 : 2); x += 2){
-      equations.add(_buildColumnEquation(x));
+    for(var x = 0; x < getColumnsCount() - (calcLastColumn() ? 0 : 2); x += 2) {
+      equation = _buildRowEquation(x);
+      if (equation.isEmpty) {
+        if (x != getColumnsCount() - 1) return [];
+      } else {
+        equations.add(equation);
+      }
     }
     return equations;
   }
