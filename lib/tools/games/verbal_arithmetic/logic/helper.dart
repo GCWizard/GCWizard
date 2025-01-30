@@ -168,9 +168,9 @@ class SymbolMatrixGrid {
     return rowCount * 2 + 1;
   }
 
-  String? getOperator(int y, int x) {
+  String getOperator(int y, int x) {
     if  (!_validPosition(y, x)) {
-      return null;
+      return '';
     }
     var value = matrix[y][x];
     if (!operatorList.containsKey(value)) {
@@ -180,9 +180,9 @@ class SymbolMatrixGrid {
     return value;
   }
 
-  String? getValue(int y, int x) {
+  String getValue(int y, int x) {
     if (!_validPosition(y, x)) {
-      return null;
+      return '';
     }
     return matrix[y][x];
   }
@@ -274,22 +274,8 @@ class SymbolMatrixGrid {
       }
     }
 
-    return (jsonEncode({'columns': columnCount, 'rows': rowCount,
-      'values': list.toString(), 'substitutions': _toJsonSubstitutions(substitutions)}).toString());
+    return (jsonEncode({'columns': columnCount, 'rows': rowCount, 'values': list.toString()}).toString());
   }
-
-  static String? _toJsonSubstitutions(Map<String, String>? substitutions) {
-    if (substitutions == null) return null;
-    var list = <String>[];
-    substitutions.forEach((key, value) {
-      list.add(jsonEncode({'key': key, 'value': value}));
-    });
-
-    if (list.isEmpty) return null;
-
-    return jsonEncode(list);
-  }
-
 
   static SymbolMatrixGrid? fromJson(String text) {
     if (text.isEmpty) return null;

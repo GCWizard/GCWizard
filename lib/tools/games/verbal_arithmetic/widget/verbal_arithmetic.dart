@@ -395,10 +395,9 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     var rowsCount = _currentMatrix.getRowsCount() - 1;
     var columnsCount = _currentMatrix.getColumnsCount() - 1;
 
-
     for(var columnIndex = 0; columnIndex <= columnsCount; columnIndex++) {
       if (rowIndex % 2 == 0) {
-        if (columnIndex % 2 == 0 && !( columnIndex == columnsCount && rowIndex == rowsCount)) {
+        if (columnIndex % 2 == 0 && (!(columnIndex == columnsCount && rowIndex == rowsCount) || _calcLastColumn())) {
           cells.add(
             GCWTextField(
               controller: _getTextEditingController(rowIndex, columnIndex,
@@ -408,14 +407,10 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
               }
             )
           );
-        } else if (columnIndex == columnsCount - 1 && rowIndex != rowsCount) {
+        } else if (columnIndex == columnsCount - 1 && (rowIndex != rowsCount || _calcLastColumn())) {
           cells.add(_equalText(rowIndex, columnIndex));
         } else {
-          cells.add(
-            (rowIndex == rowsCount)
-            ? Container() // last row
-            : _operatorDropDown(rowIndex, columnIndex)
-          );
+          cells.add(_operatorDropDown(rowIndex, columnIndex, emptyEntry: rowIndex == rowsCount));
         }
       } else if (columnIndex % 2 == 0 && columnIndex < columnsCount - 1) {
         cells.add(
@@ -431,6 +426,18 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     return TableRow(
       children: cells,
     );
+  }
+
+  bool _calcLastColumn() {
+    var rowsCount = _currentMatrix.getRowsCount() - 1;
+    var columnsCount = _currentMatrix.getColumnsCount() - 1;
+
+    for(var rowIndex = 1; rowIndex < rowsCount; rowIndex += 2) {
+      if (_currentMatrix.getOperator(rowIndex, columnsCount).isNotEmpty) {
+        return true;
+      }
+    }
+    return false;
   }
 
   static const double _VALUECOLUMNWIDTH = 20.0;
@@ -467,9 +474,15 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     );
   }
 
-  Widget _operatorDropDown(int rowIndex, int columnIndex) {
+  Widget _operatorDropDown(int rowIndex, int columnIndex, {bool emptyEntry= false}) {
     var list = <GCWDropDownMenuItem<String>>[];
 
+    if (emptyEntry) {
+      list.add(GCWDropDownMenuItem(
+        value: '',
+        child: '',
+      ));
+    }
     operatorList.forEach((key, value) {
       list.add(GCWDropDownMenuItem(
         value: key,
