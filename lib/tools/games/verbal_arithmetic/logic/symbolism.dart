@@ -6,9 +6,9 @@ VerbalArithmeticOutput? _solveSymbolism(List<Equation> equations, Set<String> va
   final digits = List.generate(10, (i) => i);
 
   _solutions.clear();
-  equations = _sortEquations(equations);
+  var _equations = _sortEquations(equations);
 
-  __solveSymbolism(equations, HashMap<String, int>(), variableList, digits);
+  __solveSymbolism(_equations, HashMap<String, int>(), variableList, digits);
 
   return VerbalArithmeticOutput(equations: equations, solutions: _solutions, error: '');
 }
@@ -69,7 +69,7 @@ List<Equation> _sortEquations(List<Equation> equations) {
     return MapEntry(equation, score);
   }).toList();
 
-  equationScores.sort((a, b) => a.value.compareTo(b.value));
+  equationScores.sort((a, b) => b.value.compareTo(a.value));
 
   return equationScores.map((entry) => entry.key).toList();
 }

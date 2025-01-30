@@ -50,14 +50,15 @@ VerbalArithmeticOutput? _solveCryptogram(List<Equation> equations, SendPort? sen
   final range = List.generate(maxValue + 1, (index) => index);
 
   _solutions.clear();
-  equations = _sortEquations(equations);
+  var _equations = _sortEquations(equations);
 
   _totalPermutations = _calculatePossibilities(range.length, variableList.length);
   _currentCombination = 0;
   _stepSize  = max(_totalPermutations ~/ 100, 1);
   _nextSendStep = _stepSize;
+  _sendAsyncPort = sendAsyncPort;
 
-  __solveCryptogram(equations, HashMap<String, int>(), variableList, range);
+  __solveCryptogram(_equations, HashMap<String, int>(), variableList, range);
 
   return VerbalArithmeticOutput(equations: equations, solutions: _solutions, error: '');
 }

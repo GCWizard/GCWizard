@@ -25,7 +25,7 @@ VerbalArithmeticOutput? _solveAlphameticAdd(Equation equation) {
   _solutions.clear();
 
   __solveAlphametics(equationData, letters, digits, mapping, usedDigits);
-  var out = equation.getOutput(_solutions.first);
+  var out = _solutions.isEmpty ? '' : equation.getOutput(_solutions.first);
   var _equation = equation.formatedEquation;
   print('Lösung gefunden: $_equation. $out'); //$mapping
 
