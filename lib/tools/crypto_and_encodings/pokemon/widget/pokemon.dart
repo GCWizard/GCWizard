@@ -53,7 +53,7 @@ class _PokemonState extends State<Pokemon> {
             ? GCWTextField(
                 controller: _decodeController,
                 inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[a-z A-Z]')),
+                  FilteringTextInputFormatter.allow(RegExp(r'[a-z A-Z\s]')),
                 ],
                 onChanged: (text) {
                   setState(() {
