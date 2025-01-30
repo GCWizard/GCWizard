@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:gc_wizard/utils/data_type_utils/object_type_utils.dart';
 import 'package:gc_wizard/utils/json_utils.dart';
 import 'package:math_expressions/math_expressions.dart';
 import 'package:utility/utility.dart';
@@ -146,7 +147,6 @@ class SymbolMatrixString {
 
 class SymbolMatrixGrid {
   List<List<String>> matrix = [];
-  Map<String, String> substitutions = {};
   late int columnCount;
   late int rowCount;
 
@@ -196,7 +196,7 @@ class SymbolMatrixGrid {
     return matrix[y][x];
   }
 
-    void setValue(int y, int x, String text) {
+  void setValue(int y, int x, String text) {
     if (!_validPosition(y, x)) {
       return;
     }
@@ -302,38 +302,37 @@ class SymbolMatrixGrid {
     for(var y = 0; y < matrix.length; y++) {
       for (var x = 0; x < matrix[y].length; x++) {
         if (matrix[y][x].isNotEmpty) {
-          list.add(({'x': x, 'y': y, 'v': matrix[y][x]}).toString());
+          list.add(jsonEncode(<String, Object>{'x': x, 'y': y, 'v': matrix[y][x]}));
         }
       }
     }
-
-    return (jsonEncode({'columns': columnCount, 'rows': rowCount, 'values': list.toString()}).toString());
+    return jsonEncode({'columns': columnCount, 'rows': rowCount, 'values': jsonEncode(list)});
   }
 
   static SymbolMatrixGrid? fromJson(String text) {
     if (text.isEmpty) return null;
     var json = asJsonMap(jsonDecode(text));
 
-    SymbolMatrixGrid matrix;
-    // var rowCount = toIntOrNull(json['rows']);
-    // var columnCount = toIntOrNull(json['columns']);
-    // var values = asJsonMap(json['values']);
-    // if (rowCount == null || columnCount == null) return null;
-    //
-    // matrix = SymbolMatrix(rowCount, columnCount);
-    // if (values.isNotEmpty) {
-    //   values.forEach((key, value) {
-    //     var element = asJsonMap(jsonDecode(value));
-    //     var x = toIntOrNull(element['x']);
-    //     var y = toIntOrNull(element['y']);
-    //     var value = toStringOrNull(element['v']);
-    //     if (x != null && y != null && value != null) {
-    //       matrix.setValue(y, x, value);
-    //     }
-    //   }
-    // }
-    // matrix.substitutions = _fromJsonSubstitutions(jsonDecode(json)['substitutions']);
-    // return matrix;
+    var rowCount = toIntOrNull(json['rows']);
+    var columnCount = toIntOrNull(json['columns']);
+    var valueString = toStringOrNull(json['values']);
+    if (valueString == null) return null;
+    var values = toStringListOrNull(jsonDecode(valueString));
+    if (rowCount == null || columnCount == null|| values == null) return null;
+
+    var matrix = SymbolMatrixGrid(rowCount, columnCount);
+    if (values.isNotEmpty) {
+      for (var _value in values) {
+          var element = asJsonMap(jsonDecode(_value.toString()));
+          var x = toIntOrNull(element['x']);
+          var y = toIntOrNull(element['y']);
+          var value = toStringOrNull(element['v']);
+          if (x != null && y != null && value != null) {
+            matrix.setValue(y, x, value);
+          }
+      }
+    }
+    return matrix;
   }
 }
 

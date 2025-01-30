@@ -387,7 +387,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
           cells.add(
             GCWTextField(
               controller: _getTextEditingController(rowIndex, columnIndex,
-                  _currentMatrix.getValue(rowIndex, columnIndex) ?? ''),
+                  _currentMatrix.getValue(rowIndex, columnIndex)),
               onChanged: (text) {
                 _currentMatrix.setValue(rowIndex, columnIndex, text);
               }
