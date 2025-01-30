@@ -120,6 +120,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
         _buildOptionWidget(),
         _buildInput(),
         _buildSubmitButton(),
+        _buildTestButton(),
         _buildOutput()
       ]);
   }
@@ -332,6 +333,13 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
       },
     );
   }
+  Widget _buildTestButton() {
+    return GCWSubmitButton(
+      onPressed: () async {
+        print(_currentMatrix.buildEquations().join('\n'));
+      },
+    );
+  }
 
   void _parseClipboard(String text) {
     setState(() {
@@ -371,7 +379,8 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     for(var columnIndex = 0; columnIndex <= columnsCount; columnIndex++) {
       if (rowIndex % 2 == 0) {
         if (columnIndex % 2 == 0) {
-          if ((columnIndex == columnsCount && rowIndex == rowsCount) && !_calcLastColumn()) {
+          if ((columnIndex == columnsCount && rowIndex == rowsCount) &&
+              !_currentMatrix.calcLastColumn() && !_currentMatrix.calcLastRow()) {
             cells.add(Container());
             continue;
           }
@@ -384,16 +393,18 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
               }
             )
           );
-        } else if (columnIndex == columnsCount - 1 && rowIndex != rowsCount) {
+        } else if ((columnIndex == columnsCount - 1) && (rowIndex != rowsCount || _currentMatrix.calcLastRow())) {
            cells.add(_equalText(rowIndex, columnIndex));
         } else if (rowIndex < rowsCount) {
           cells.add(_operatorDropDown(rowIndex, columnIndex));
+        } else if ((rowIndex == rowsCount) && (columnIndex != columnsCount - 1)) {
+          cells.add(_operatorDropDown(rowIndex, columnIndex, emptyEntry: true));
         } else {
           cells.add(Container());
         }
       } else if (columnIndex % 2 == 0 ) {
         if (rowIndex == rowsCount - 1) {
-          if (columnIndex == columnsCount && !_calcLastColumn()) {
+          if (columnIndex == columnsCount && !_currentMatrix.calcLastColumn()) {
             cells.add(Container());
           } else {
             cells.add(_equalText(rowIndex, columnIndex));
@@ -411,18 +422,6 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     return TableRow(
       children: cells,
     );
-  }
-
-  bool _calcLastColumn() {
-    var rowsCount = _currentMatrix.getRowsCount() - 1;
-    var columnsCount = _currentMatrix.getColumnsCount() - 1;
-
-    for(var rowIndex = 1; rowIndex < rowsCount - 1; rowIndex += 2) {
-      if (_currentMatrix.getOperator(rowIndex, columnsCount).isNotEmpty) {
-        return true;
-      }
-    }
-    return false;
   }
 
   static const double _VALUECOLUMNWIDTH = 20.0;
