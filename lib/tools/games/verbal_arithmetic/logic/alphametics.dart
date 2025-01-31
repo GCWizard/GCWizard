@@ -30,6 +30,7 @@ int _currentCombination = 0;
 int _stepSize = 1;
 int _nextSendStep = 1;
 SendPort? _sendAsyncPort;
+ContextModel _cm = ContextModel();
 
 VerbalArithmeticOutput? solveAlphametic(List<String> equations, bool allSolutions, bool allowLeadingZeros,
     {SendPort? sendAsyncPort}) {
@@ -47,8 +48,10 @@ VerbalArithmeticOutput? solveAlphametic(List<String> equations, bool allSolution
   }
 
   final Set<String> variables = {};
+  final Set<String> leadingVariables = {};
   for (var equation in _equations) {
     variables.addAll(equation.usedMembers);
+    leadingVariables.addAll(equation.leadingLetters);
   }
   if (variables.length > 10) {
     return VerbalArithmeticOutput(equations: [], solutions: [], error: 'TooManyLetters');
@@ -84,7 +87,7 @@ VerbalArithmeticOutput? _solveAlphametic(Equation equation) {
       solutions.add(mapping);
 
       var _equation = equation.equation;
-      print('Lösung gefunden: $_equation. $mapping');
+      print('Lösung gefunden: $_equation. $mapping $_currentCombination% $_totalPermutations');
 
       if (!_allSolutions || solutions.length >= MAX_SOLUTIONS) {
         break;
@@ -113,12 +116,10 @@ Iterable<HashMap<String, int>?> _permuteAndEvaluate(List<String> letters, String
       mapping[letters[i]] = perm[i];
     }
 
-    // Avoid leading zeros.
     if (!_allowLeadingZeros && leadingLetters.any((letter) => mapping[letter] == 0)) {
       continue;
     }
 
-    // Check if this permutation solves the formula
     if (_evaluateEquation(formula, mapping)) {
       yield mapping;
     }
@@ -164,18 +165,23 @@ bool _evaluateEquation(String equation, Map<String, int> mapping) {
   }
 }
 
-ContextModel _cm = ContextModel();
-
-// function for evaluating the mathematical expression
 num _eval(String expression) {
   var result = parser.parse(expression).evaluate(EvaluationType.REAL, _cm);
   return result != null && result is num ? result : double.negativeInfinity;
 }
 
-/// Calculating the number of possible permutations
 int _calculatePossibilities(int lettersCount) {
   return factorial(10) ~/ factorial(10 - lettersCount);
 }
+
+int factorialRange(int start, int end) {
+  int result = 1;
+  for (int i = start; i > end; i--) {
+    result *= i;
+  }
+  return result;
+}
+
 
 void main() {
   _allSolutions = true;

@@ -329,18 +329,19 @@ class SymbolMatrixGrid {
 
   static SymbolMatrixGrid? fromJson(String text) {
     if (text.isEmpty) return null;
-    var json = asJsonMap(jsonDecode(text));
+    try {
+      var json = asJsonMap(jsonDecode(text));
 
-    var rowCount = toIntOrNull(json['rows']);
-    var columnCount = toIntOrNull(json['columns']);
-    var valueString = toStringOrNull(json['values']);
-    if (valueString == null) return null;
-    var values = toStringListOrNull(jsonDecode(valueString));
-    if (rowCount == null || columnCount == null|| values == null) return null;
+      var rowCount = toIntOrNull(json['rows']);
+      var columnCount = toIntOrNull(json['columns']);
+      var valueString = toStringOrNull(json['values']);
+      if (valueString == null) return null;
+      var values = toStringListOrNull(jsonDecode(valueString));
+      if (rowCount == null || columnCount == null || values == null) return null;
 
-    var matrix = SymbolMatrixGrid(rowCount, columnCount);
-    if (values.isNotEmpty) {
-      for (var _value in values) {
+      var matrix = SymbolMatrixGrid(rowCount, columnCount);
+      if (values.isNotEmpty) {
+        for (var _value in values) {
           var element = asJsonMap(jsonDecode(_value.toString()));
           var x = toIntOrNull(element['x']);
           var y = toIntOrNull(element['y']);
@@ -348,13 +349,15 @@ class SymbolMatrixGrid {
           if (x != null && y != null && value != null) {
             matrix.setValue(y, x, value);
           }
+        }
       }
+      return matrix;
+    } catch (e) {
+      return null;
     }
-    return matrix;
   }
 }
 
-// Function for calculating the factorial
 int factorial(int n) {
   if (n <= 1) return 1;
   return n * factorial(n - 1);

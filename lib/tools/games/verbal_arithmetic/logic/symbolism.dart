@@ -42,7 +42,6 @@ bool __solveSymbolism(List<Equation> equations, HashMap<String, int> mapping, Li
 
     if (!_evaluateEquationSymbolism(mapping, equations)) {
       mapping.remove(variable);
-      // _currentCombination += _calculatePossibilities(availableValues.length, remainingVariables.length);
       _sendProgress();
       continue;
     }

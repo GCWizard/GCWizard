@@ -7106,6 +7106,7 @@
   "verbal_arithmetic_grid": "Grid",
   "verbal_arithmetic_all_solutions": "All solutions",
   "verbal_arithmetic_allow_leading_zeros": "Allow leading zeros",
+  "verbal_arithmetic_invalidequation": "Invalid equation",
   "verbal_arithmetic_solutionnotfound": "No solution found",
   "verbal_arithmetic_toomanyletters": "Too many letters",
   "vigenere_selection_title": "Vigenère Cipher",

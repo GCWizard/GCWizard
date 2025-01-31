@@ -96,7 +96,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
             GCWDropDownMenuItem(
                 value: _ViewMode.AlphameticGrid,
                 child: i18n(context, 'verbal_arithmetic_alphametic') + ' ' + i18n(context, 'verbal_arithmetic_grid'),
-                subtitle: 'A * C = C\n+   -\nB * A = B\n=   =\nC   B',
+                subtitle: 'A * C = C\n+     -\nB * A = B\n=     =\nC     B',
                 maxSubtitleLines: 5
             ),
             GCWDropDownMenuItem(
@@ -294,42 +294,43 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
 
   void _createOutput(VerbalArithmeticOutput? output) {
     if (output == null) {
-      _currentOutput = null; //invalid data
-      return;
-    }
-    if (output.error.isNotEmpty) {
-      _currentOutput = GCWDefaultOutput(child:
-      i18n(context, 'verbal_arithmetic_' + output.error.toLowerCase(), ifTranslationNotExists: output.error));
-    } else if (output.solutions.isEmpty) {
-      _currentOutput =  GCWDefaultOutput(child: i18n(context, 'verbal_arithmetic_solutionnotfound'));
+      _currentOutput = GCWDefaultOutput(child: i18n(context, 'verbal_arithmetic_invalidequation'));
+
     } else {
-      Widget solutionWidget = Container();
-      var equationData = output.solutions.map((solution) {
-        return [output.equations.map((equation) => equation.getOutput(solution)).join('\n')];
-      }).toList();
-
-      if (output.solutions.length == 1) {
-        var solution = output.solutions.first.entries.toList();
-        solution.sort(((a, b) => a.key.compareTo(b.key)));
-        var columnData = solution.map((entry) => [entry.key, entry.value]).toList();
-        solutionWidget = GCWColumnedMultilineOutput(data: columnData, flexValues: const [3, 1],
-            copyColumn: 1, copyAll: true);
+      if (output.error.isNotEmpty) {
+        _currentOutput = GCWDefaultOutput(child:
+        i18n(context, 'verbal_arithmetic_' + output.error.toLowerCase(), ifTranslationNotExists: output.error));
+      } else if (output.solutions.isEmpty) {
+        _currentOutput =  GCWDefaultOutput(child: i18n(context, 'verbal_arithmetic_solutionnotfound'));
       } else {
-        if (output.solutions.length >= MAX_SOLUTIONS) {
-          equationData.insert (0, [i18n(context, 'sudokusolver_maximumsolutions')]);
-         } else {
-          equationData.insert (0, [i18n(context, 'common_count') + ': ' + output.solutions.length.toString()]);
-        }
-      }
-      var equationWidget = GCWColumnedMultilineOutput(data: equationData, copyColumn: 0, copyAll: true,
-        hasHeader: output.solutions.length > 1);
+        Widget solutionWidget = Container();
+        var equationData = output.solutions.map((solution) {
+          return [output.equations.map((equation) => equation.getOutput(solution)).join('\n')];
+        }).toList();
 
-      _currentOutput = Column(
-          children: <Widget>[
-            GCWDefaultOutput(child: solutionWidget),
-            GCWDefaultOutput(child: equationWidget),
-          ]
-      );
+        if (output.solutions.length == 1) {
+          var solution = output.solutions.first.entries.toList();
+          solution.sort(((a, b) => a.key.compareTo(b.key)));
+          var columnData = solution.map((entry) => [entry.key, entry.value]).toList();
+          solutionWidget = GCWColumnedMultilineOutput(data: columnData, flexValues: const [3, 1],
+              copyColumn: 1, copyAll: true);
+        } else {
+          if (output.solutions.length >= MAX_SOLUTIONS) {
+            equationData.insert(0, [i18n(context, 'sudokusolver_maximumsolutions')]);
+          } else {
+            equationData.insert(0, [i18n(context, 'common_count') + ': ' + output.solutions.length.toString()]);
+          }
+        }
+        var equationWidget = GCWColumnedMultilineOutput(data: equationData, copyColumn: 0, copyAll: true,
+            hasHeader: output.solutions.length > 1);
+
+        _currentOutput = Column(
+            children: <Widget>[
+              GCWDefaultOutput(child: solutionWidget),
+              GCWDefaultOutput(child: equationWidget),
+            ]
+        );
+      }
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -359,11 +360,6 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
         _currentMatrix = SymbolMatrixGrid(0, 0);
       } else {
         _currentMatrix = matrix;
-      }
-      if (_currentMode == _ViewMode.AlphameticGrid) {
-        _currentAlphameticsMatrix = _currentMatrix;
-      } else if (_currentMode == _ViewMode.SymbolMatrixGrid) {
-        _currentSymbolMatrixGridMatrix = _currentMatrix;
       }
       _resizeMatrix();
     });
@@ -497,8 +493,17 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     );
   }
 
+  void _setMinGridScale(double minScale) {
+    _currentGridScale = max(minScale, (_tableMinWidth() / maxScreenWidth(context)));
+  }
+
   void _resizeMatrix() {
     _currentMatrix = SymbolMatrixGrid(_currentMatrix.rowCount, _currentMatrix.columnCount, oldMatrix: _currentMatrix);
+    if (_currentMode == _ViewMode.AlphameticGrid) {
+      _currentAlphameticsMatrix = _currentMatrix;
+    } else if (_currentMode == _ViewMode.SymbolMatrixGrid) {
+      _currentSymbolMatrixGridMatrix = _currentMatrix;
+    }
     _buildTextEditingControllerArray();
   }
 
@@ -515,7 +520,9 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
 
       for(var y = matrix.length; y < _textEditingControllerArray.length; y++) {
         for (var x = matrix[0].length; x < _textEditingControllerArray[y].length; x++) {
-          _textEditingControllerArray[y][x]?.dispose();
+          if (_textEditingControllerArray[y][x] != null) {
+            _textEditingControllerArray[y][x]?.dispose();
+          }
         }
       }
     }
@@ -531,9 +538,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     return _textEditingControllerArray[rowIndex][columnIndex];
   }
 
-  void _setMinGridScale(double minScale) {
-    _currentGridScale = max(minScale, (_tableMinWidth() / maxScreenWidth(context)));
-  }
+
 
   void _onDoCalculation() async {
     await showDialog<bool>(

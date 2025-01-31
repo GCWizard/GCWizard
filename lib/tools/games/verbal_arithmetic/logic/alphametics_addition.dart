@@ -27,7 +27,7 @@ VerbalArithmeticOutput? _solveAlphameticAdd(Equation equation) {
   __solveAlphametics(equationData, letters, digits, mapping, usedDigits);
   var out = _solutions.isEmpty ? '' : equation.getOutput(_solutions.first);
   var _equation = equation.formatedEquation;
-  print('Lösung gefunden: $_equation. $out'); //$mapping
+  print('Lösung gefunden: $_equation. $out $_currentCombination% $_totalPermutations'); //$mapping
 
   print('Lösung gefunden: ' + _solutions.length.toString());
   if (_solutions.isEmpty) {
@@ -79,7 +79,6 @@ bool __solveAlphametics(EquationData equationData, List<String> letters, List<in
   return false;
 }
 
-/// calculate the frequency of each letter in the equation.
 Map<String, int> _letterFrequency(List<String> words) {
   Map<String, int> frequency = {};
   for (var word in words) {
@@ -90,7 +89,6 @@ Map<String, int> _letterFrequency(List<String> words) {
   return frequency;
 }
 
-/// check whether a digit assignment is correct.
 bool __evaluateEquation(Map<String, int> letterToDigit, EquationData equationData) {
   int sum = 0;
 
