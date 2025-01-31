@@ -8,6 +8,7 @@ import 'package:math_expressions/math_expressions.dart';
 import 'package:utility/utility.dart';
 
 const int MAX_SOLUTIONS = 100;
+const int MAX_GRIDSIZE = 20;
 
 class VerbalArithmeticJobData {
   final List<String> equations;
@@ -152,6 +153,8 @@ class SymbolMatrixGrid {
 
   SymbolMatrixGrid (this.rowCount, this.columnCount, {SymbolMatrixGrid? oldMatrix}) {
     matrix = <List<String>>[];
+    rowCount = min(max(2, rowCount), MAX_GRIDSIZE);
+    columnCount = min(max(2, columnCount), MAX_GRIDSIZE);
     for(var y = 0; y < getRowsCount(); y++) {
       matrix.add(List<String>.filled(getColumnsCount(), ''));
     }

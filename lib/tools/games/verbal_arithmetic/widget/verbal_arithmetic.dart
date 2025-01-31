@@ -40,23 +40,24 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
   late TextEditingController _inputAlphameticsController;
 
   Widget? _currentOutput;
-  var _currentNumberGridInput = '';
   var _currentAlphameticsInput = '';
+  var _currentSymbolMatrixInput = '';
   var _currentMode = _ViewMode.Alphametic;
   var _currentAllSolutions = true;
   var _currentAllowLeadingZeros = false;
   var _currentGridScale = 0.0;
-  int _rowCount = 2;
-  int _columnCount = 2;
-  SymbolMatrixGrid _currentMatrix = SymbolMatrixGrid(2, 2);
+  SymbolMatrixGrid _currentAlphameticsMatrix = SymbolMatrixGrid(0, 0);
+  SymbolMatrixGrid _currentSymbolMatrixGridMatrix = SymbolMatrixGrid(0, 0);
+  late SymbolMatrixGrid _currentMatrix;
   List<List<TextEditingController?>> _textEditingControllerArray = [];
   bool _currentExpanded = false;
 
   @override
   void initState() {
     super.initState();
+    _currentMatrix = _currentAlphameticsMatrix;
 
-    _inputNumberGridController = TextEditingController(text: _currentNumberGridInput);
+    _inputNumberGridController = TextEditingController(text: _currentSymbolMatrixInput);
     _inputAlphameticsController = TextEditingController(text: _currentAlphameticsInput);
 
     _resizeMatrix();
@@ -114,6 +115,12 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
           onChanged: (value) {
             setState(() {
               _currentMode = value;
+              if (_currentMode == _ViewMode.AlphameticGrid) {
+                _currentMatrix =_currentAlphameticsMatrix;
+              } else if (_currentMode == _ViewMode.SymbolMatrixGrid) {
+                _currentMatrix =_currentSymbolMatrixGridMatrix;
+              }
+              _currentOutput = null;
             });
           }
         ),
@@ -130,11 +137,11 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
       case _ViewMode.Alphametic:
         return _buildAlphameticsInput();
       case _ViewMode.AlphameticGrid:
-        return _buildNumberGridGridInput();
+        return _buildSymbolMatrixGridInput();
       case _ViewMode.SymbolMatrixTextBox:
-        return _buildNumberGridTextboxInput();
+        return _buildSymbolMatrixTextboxInput();
       case _ViewMode.SymbolMatrixGrid:
-        return _buildNumberGridGridInput();
+        return _buildSymbolMatrixGridInput();
     }
   }
 
@@ -154,7 +161,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     );
   }
 
-  Widget _buildNumberGridTextboxInput() {
+  Widget _buildSymbolMatrixTextboxInput() {
     return Column(
       children: <Widget>[
         GCWTextField(
@@ -162,7 +169,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
           controller: _inputNumberGridController,
           onChanged: (text) {
             setState(() {
-              _currentNumberGridInput = text;
+              _currentSymbolMatrixInput = text;
             });
           }
         )
@@ -224,24 +231,24 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
       children: <Widget>[
         GCWIntegerSpinner(
           title: i18n(context, 'common_row_count'),
-          value: _rowCount,
+          value: _currentMatrix.rowCount,
           min: 1,
-          max: 20,
+          max: MAX_GRIDSIZE,
           onChanged: (value) {
             setState(() {
-              _rowCount = value;
+              _currentMatrix.rowCount = value;
               _resizeMatrix();
             });
           },
         ),
         GCWIntegerSpinner(
           title: i18n(context, 'common_column_count'),
-          value: _columnCount,
+          value: _currentMatrix.columnCount,
           min: 1,
-          max: 20,
+          max: MAX_GRIDSIZE,
           onChanged: (value) {
             setState(() {
-              _columnCount = value;
+              _currentMatrix.columnCount = value;
               _setMinGridScale(_currentGridScale);
               _resizeMatrix();
             });
@@ -250,11 +257,12 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
       ]);
   }
 
-  Widget _buildNumberGridGridInput() {
+  Widget _buildSymbolMatrixGridInput() {
     return Column(
       children: <Widget>[
         GCWPainterContainer(
           scale: _currentGridScale,
+          minScale: 1,
           onChanged: (scale) {
             _currentGridScale = scale;
           },
@@ -274,7 +282,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
             ),
             Container(width: 10)
           ]),
-          child: _buildTable(_rowCount, _columnCount),
+          child: _buildTable(_currentMatrix.rowCount, _currentMatrix.columnCount),
         ),
       ],
     );
@@ -284,7 +292,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     return _currentOutput ?? const GCWDefaultOutput(child: '');
   }
 
-  void _showOutput(VerbalArithmeticOutput? output) {
+  void _createOutput(VerbalArithmeticOutput? output) {
     if (output == null) {
       _currentOutput = null; //invalid data
       return;
@@ -307,15 +315,18 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
         solutionWidget = GCWColumnedMultilineOutput(data: columnData, flexValues: const [3, 1],
             copyColumn: 1, copyAll: true);
       } else {
-        equationData.insert (0, [i18n(context, 'common_count') + ': '
-            + (output.solutions.length >= 100 ? '>100' : output.solutions.length.toString())]);
+        if (output.solutions.length >= MAX_SOLUTIONS) {
+          equationData.insert (0, [i18n(context, 'sudokusolver_maximumsolutions')]);
+         } else {
+          equationData.insert (0, [i18n(context, 'common_count') + ': ' + output.solutions.length.toString()]);
+        }
       }
       var equationWidget = GCWColumnedMultilineOutput(data: equationData, copyColumn: 0, copyAll: true,
-        hasHeader: output.solutions.length >= 100);
+        hasHeader: output.solutions.length > 1);
 
       _currentOutput = Column(
           children: <Widget>[
-            solutionWidget,
+            GCWDefaultOutput(child: solutionWidget),
             GCWDefaultOutput(child: equationWidget),
           ]
       );
@@ -345,13 +356,14 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
     setState(() {
       var matrix = SymbolMatrixGrid.fromJson(text);
       if (matrix == null) {
-        _rowCount = 2;
-        _columnCount = 2;
-        _currentMatrix = SymbolMatrixGrid(_rowCount, _columnCount);
+        _currentMatrix = SymbolMatrixGrid(0, 0);
       } else {
         _currentMatrix = matrix;
-        _rowCount = matrix.rowCount;
-        _columnCount = matrix.columnCount;
+      }
+      if (_currentMode == _ViewMode.AlphameticGrid) {
+        _currentAlphameticsMatrix = _currentMatrix;
+      } else if (_currentMode == _ViewMode.SymbolMatrixGrid) {
+        _currentSymbolMatrixGridMatrix = _currentMatrix;
       }
       _resizeMatrix();
     });
@@ -486,11 +498,11 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
   }
 
   void _resizeMatrix() {
-    _currentMatrix = SymbolMatrixGrid(_rowCount, _columnCount, oldMatrix: _currentMatrix);
-    _buildTextEditingControllerArray(_rowCount, _columnCount);
+    _currentMatrix = SymbolMatrixGrid(_currentMatrix.rowCount, _currentMatrix.columnCount, oldMatrix: _currentMatrix);
+    _buildTextEditingControllerArray();
   }
 
-  void _buildTextEditingControllerArray(int rowCount, int columnCount) {
+  void _buildTextEditingControllerArray() {
     var matrix =<List<TextEditingController?>>[];
     for(var y = 0; y < _currentMatrix.getRowsCount(); y++) {
       matrix.add(List<TextEditingController?>.filled(_currentMatrix.getColumnsCount(), null));
@@ -532,21 +544,21 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
           child: SizedBox(
             height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
             width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
-            child: asyncExecuter(),
+            child: _asyncExecuter(),
           ),
         );
       },
     );
   }
 
-  GCWAsyncExecuter<VerbalArithmeticOutput?> asyncExecuter() {
+  GCWAsyncExecuter<VerbalArithmeticOutput?> _asyncExecuter() {
     switch (_currentMode) {
       case _ViewMode.Alphametic:
       case _ViewMode.AlphameticGrid:
         return GCWAsyncExecuter<VerbalArithmeticOutput?>(
           isolatedFunction: solveAlphameticsAsync,
           parameter: _buildJobData,
-          onReady: (data) => _showOutput(data),
+          onReady: (data) => _createOutput(data),
           isOverlay: true,
         );
       case _ViewMode.SymbolMatrixTextBox:
@@ -554,7 +566,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
         return GCWAsyncExecuter<VerbalArithmeticOutput?>(
           isolatedFunction: solveCryptogramAsync,
           parameter: _buildJobData,
-          onReady: (data) => _showOutput(data),
+          onReady: (data) => _createOutput(data),
           isOverlay: true,
         );
     }
@@ -571,7 +583,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
         _equations = _currentMatrix.buildEquations();
         break;
       case _ViewMode.SymbolMatrixTextBox:
-        _equations = SymbolMatrixString.buildEquations(_currentNumberGridInput);
+        _equations = SymbolMatrixString.buildEquations(_currentSymbolMatrixInput);
       case _ViewMode.SymbolMatrixGrid:
         _equations = _currentMatrix.buildEquations();
         break;
