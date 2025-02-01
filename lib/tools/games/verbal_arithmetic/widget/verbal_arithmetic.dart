@@ -12,8 +12,11 @@ import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
+import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_entry_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
@@ -39,7 +42,8 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
   late TextEditingController _inputNumberGridController;
   late TextEditingController _inputAlphameticsController;
 
-  Widget? _currentOutput;
+  VerbalArithmeticOutput? _currentOutput;
+  var _currentOutputIndex = 1;
   var _currentAlphameticsInput = '';
   var _currentSymbolMatrixInput = '';
   var _currentMode = _ViewMode.Alphametic;
@@ -286,51 +290,70 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
   }
 
   Widget _buildOutput() {
-    return _currentOutput ?? const GCWDefaultOutput(child: '');
-  }
-
-  void _createOutput(VerbalArithmeticOutput? output) {
-    if (output == null) {
-      _currentOutput = GCWDefaultOutput(child: i18n(context, 'verbal_arithmetic_invalidequation'));
-
+    if (_currentOutput == null) {
+      return const GCWDefaultOutput(child: '');
+    } else if (_currentOutput!.error.isNotEmpty) {
+      return GCWDefaultOutput(child:
+        i18n(context, 'verbal_arithmetic_' + _currentOutput!.error.toLowerCase(),
+            ifTranslationNotExists: _currentOutput!.error));
+    } else if (_currentOutput!.solutions.isEmpty) {
+      return GCWDefaultOutput(child: i18n(context, 'verbal_arithmetic_solutionnotfound'));
     } else {
-      if (output.error.isNotEmpty) {
-        _currentOutput = GCWDefaultOutput(child:
-        i18n(context, 'verbal_arithmetic_' + output.error.toLowerCase(), ifTranslationNotExists: output.error));
-      } else if (output.solutions.isEmpty) {
-        _currentOutput =  GCWDefaultOutput(child: i18n(context, 'verbal_arithmetic_solutionnotfound'));
-      } else {
-        Widget solutionWidget = Container();
-        var equationData = output.solutions.map((solution) {
-          return [output.equations.map((equation) => equation.getOutput(solution)).join('\n')];
-        }).toList();
+      Widget spinnerWidget = Container();
+      Widget solutionWidget = Container();
+      Widget equationWidget = Container();
 
-        if (output.solutions.length == 1) {
-          var solution = output.solutions.first.entries.toList();
-          solution.sort(((a, b) => a.key.compareTo(b.key)));
-          var columnData = solution.map((entry) => [entry.key, entry.value]).toList();
-          solutionWidget = GCWColumnedMultilineOutput(data: columnData, flexValues: const [3, 1],
-              copyColumn: 1, copyAll: true);
-          solutionWidget = GCWDefaultOutput(child: solutionWidget);
-        } else {
-          if (output.solutions.length >= MAX_SOLUTIONS) {
-            equationData.insert(0, [i18n(context, 'sudokusolver_maximumsolutions')]);
-          } else {
-            equationData.insert(0, [i18n(context, 'common_count') + ': ' + output.solutions.length.toString()]);
-          }
-        }
-        var equationWidget = GCWColumnedMultilineOutput(data: equationData, copyColumn: 0, copyAll: true,
-            hasHeader: output.solutions.length > 1);
-
-        _currentOutput = Column(
+      if (_currentOutputIndex > _currentOutput!.solutions.length) {
+        _currentOutputIndex = _currentOutput!.solutions.length;
+      }
+      if (_currentOutput!.solutions.length > 1) {
+        spinnerWidget = Column(
             children: <Widget>[
-              solutionWidget,
-              GCWDefaultOutput(child: equationWidget),
+              (_currentOutput!.solutions.length >= MAX_SOLUTIONS)
+                  ? GCWText(text: i18n(context, 'sudokusolver_maximumsolutions'))
+                  : Container(),
+              GCWEntrySpinner(
+                  index: _currentOutputIndex,
+                  max: _currentOutput!.solutions.length,
+                  onChanged: (index) {
+                    setState(() {
+                      _currentOutputIndex = index;
+                    });
+                  }
+              ),
             ]
         );
       }
-    }
 
+      var solution = _currentOutput!.solutions[_currentOutputIndex - 1].entries.toList();
+      solution.sort(((a, b) => a.key.compareTo(b.key)));
+      var columnData = solution.map((entry) => [entry.key, entry.value]).toList();
+
+      solutionWidget = GCWColumnedMultilineOutput(data: columnData, flexValues: const [3, 1],
+          copyColumn: 1, copyAll: true);
+
+      equationWidget = GCWOutput(child: _currentOutput!.equations.map((equation) =>
+          equation.getOutput(_currentOutput!.solutions[_currentOutputIndex - 1])).join('\n'));
+
+      return GCWDefaultOutput(child: Column(
+        children: <Widget>[
+          spinnerWidget,
+          Container(height: 10),
+          solutionWidget,
+          Container(height: 10),
+          equationWidget
+        ]
+      ));
+    }
+  }
+
+  void _saveOutput(VerbalArithmeticOutput? output) {
+    _currentOutputIndex = 1;
+    if (output == null) {
+      _currentOutput = VerbalArithmeticOutput(equations: [], solutions: [], error: 'invalidequation');
+    } else {
+      _currentOutput = output;
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {});
     });
@@ -539,7 +562,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
         return GCWAsyncExecuter<VerbalArithmeticOutput?>(
           isolatedFunction: solveAlphameticsAsync,
           parameter: _buildJobData,
-          onReady: (data) => _createOutput(data),
+          onReady: (data) => _saveOutput(data),
           isOverlay: true,
         );
       case _ViewMode.SymbolMatrixTextBox:
@@ -547,7 +570,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
         return GCWAsyncExecuter<VerbalArithmeticOutput?>(
           isolatedFunction: solveCryptogramAsync,
           parameter: _buildJobData,
-          onReady: (data) => _createOutput(data),
+          onReady: (data) => _saveOutput(data),
           isOverlay: true,
         );
     }

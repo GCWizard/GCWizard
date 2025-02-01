@@ -7,7 +7,7 @@ class GCWEntrySpinner extends StatefulWidget {
   final String? text;
   final String? textExtension;
   final TextStyle? style;
-  final int value;
+  final int index;
   final int max;
   final bool viewBraces;
   final bool suppressOverflow;
@@ -19,7 +19,7 @@ class GCWEntrySpinner extends StatefulWidget {
       this.text,
       this.textExtension,
       this.style,
-      required this.value,
+      required this.index,
       required this.max,
       this.viewBraces = false,
       this.suppressOverflow = false,
@@ -31,16 +31,17 @@ class GCWEntrySpinner extends StatefulWidget {
 }
 
 class _GCWEntrySpinnerState extends State<GCWEntrySpinner> {
-  var _currentValue = 1;
+  var _currentIndex = 1;
 
   @override
   Widget build(BuildContext context) {
-    _currentValue = widget.value;
+    _currentIndex = widget.index;
 
     return Row(
       children: <Widget>[
         GCWIconButton(
-          icon: Icons.arrow_back_ios,
+          icon: Icons.arrow_forward_ios,
+          rotateDegrees: 180,
           onPressed: () {
             _decreaseValue();
           },
@@ -50,7 +51,7 @@ class _GCWEntrySpinnerState extends State<GCWEntrySpinner> {
             align: Alignment.center,
             text: (widget.text == null ? '' : widget.text! + ' ') +
                 (widget.viewBraces ? '(' : '') +
-                _currentValue.toString() + ' / ' + widget.max.toString() +
+                _currentIndex.toString() + '/ ' + widget.max.toString() +
                 (widget.viewBraces ? ')' : '') +
                 (widget.textExtension ?? ''),
             style: widget.style,
@@ -68,32 +69,32 @@ class _GCWEntrySpinnerState extends State<GCWEntrySpinner> {
   }
 
   void _decreaseValue() {
-    _currentValue--;
-    if (_currentValue < 1) {
+    _currentIndex--;
+    if (_currentIndex < 1) {
       if (widget.suppressOverflow) {
-        _currentValue = 1;
+        _currentIndex = 1;
         return;
       } else {
-        _currentValue = widget.max;
+        _currentIndex = widget.max;
       }
     }
     setState(() {
-      widget.onChanged(_currentValue);
+      widget.onChanged(_currentIndex);
     });
   }
 
   void _increaseValue() {
-    _currentValue++;
-    if (_currentValue > widget.max) {
+    _currentIndex++;
+    if (_currentIndex > widget.max) {
       if (widget.suppressOverflow) {
-        _currentValue = widget.max;
+        _currentIndex = widget.max;
         return;
       } else {
-        _currentValue = 1;
+        _currentIndex = 1;
       }
     }
     setState(() {
-      widget.onChanged(_currentValue);
+      widget.onChanged(_currentIndex);
     });
   }
 }
