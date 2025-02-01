@@ -49,7 +49,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
   SymbolMatrixGrid _currentAlphameticsMatrix = SymbolMatrixGrid(0, 0);
   SymbolMatrixGrid _currentSymbolMatrixGridMatrix = SymbolMatrixGrid(0, 0);
   late SymbolMatrixGrid _currentMatrix;
-  List<List<TextEditingController?>> _textEditingControllerArray = [];
+  final List<List<TextEditingController?>> _textEditingControllerArray = [];
   bool _currentExpanded = false;
 
   @override
@@ -59,8 +59,6 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
 
     _inputNumberGridController = TextEditingController(text: _currentSymbolMatrixInput);
     _inputAlphameticsController = TextEditingController(text: _currentAlphameticsInput);
-
-    _resizeMatrix();
   }
 
   @override
@@ -127,7 +125,6 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
         _buildOptionWidget(),
         _buildInput(),
         _buildSubmitButton(),
-        _buildTestButton(),
         _buildOutput()
       ]);
   }
@@ -345,13 +342,6 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
       },
     );
   }
-  Widget _buildTestButton() {
-    return GCWSubmitButton(
-      onPressed: () async {
-        print(_currentMatrix.buildEquations().join('\n'));
-      },
-    );
-  }
 
   void _parseClipboard(String text) {
     setState(() {
@@ -361,7 +351,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
       } else {
         _currentMatrix = matrix;
       }
-      _resizeMatrix();
+      _syncMatrix();
     });
   }
 
@@ -499,37 +489,24 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
 
   void _resizeMatrix() {
     _currentMatrix = SymbolMatrixGrid(_currentMatrix.rowCount, _currentMatrix.columnCount, oldMatrix: _currentMatrix);
+    _syncMatrix();
+  }
+
+  void _syncMatrix() {
     if (_currentMode == _ViewMode.AlphameticGrid) {
       _currentAlphameticsMatrix = _currentMatrix;
     } else if (_currentMode == _ViewMode.SymbolMatrixGrid) {
       _currentSymbolMatrixGridMatrix = _currentMatrix;
     }
-    _buildTextEditingControllerArray();
-  }
-
-  void _buildTextEditingControllerArray() {
-    var matrix =<List<TextEditingController?>>[];
-    for(var y = 0; y < _currentMatrix.getRowsCount(); y++) {
-      matrix.add(List<TextEditingController?>.filled(_currentMatrix.getColumnsCount(), null));
-    }
-
-    for(var y = 0; y < min(matrix.length, _textEditingControllerArray.length); y++) {
-      for (var x = 0; x < min(matrix[y].length, _textEditingControllerArray[y].length); x++) {
-        matrix[y][x] = _textEditingControllerArray[y][x];
-      }
-
-      for(var y = matrix.length; y < _textEditingControllerArray.length; y++) {
-        for (var x = matrix[0].length; x < _textEditingControllerArray[y].length; x++) {
-          if (_textEditingControllerArray[y][x] != null) {
-            _textEditingControllerArray[y][x]?.dispose();
-          }
-        }
-      }
-    }
-    _textEditingControllerArray = matrix;
   }
 
   TextEditingController? _getTextEditingController(int rowIndex, int columnIndex, String text) {
+    while (_textEditingControllerArray.length <= rowIndex) {
+      _textEditingControllerArray.add(<TextEditingController?>[]);
+    }
+    while (_textEditingControllerArray[rowIndex].length <= columnIndex) {
+      _textEditingControllerArray[rowIndex].add(null);
+    }
     if (_textEditingControllerArray[rowIndex][columnIndex] == null) {
       _textEditingControllerArray[rowIndex][columnIndex] = TextEditingController();
     }
@@ -537,8 +514,6 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
 
     return _textEditingControllerArray[rowIndex][columnIndex];
   }
-
-
 
   void _onDoCalculation() async {
     await showDialog<bool>(
