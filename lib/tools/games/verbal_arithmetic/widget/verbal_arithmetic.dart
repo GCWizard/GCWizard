@@ -94,7 +94,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
             GCWDropDownMenuItem(
                 value: _ViewMode.AlphameticGrid,
                 child: i18n(context, 'verbal_arithmetic_alphametic') + ' ' + i18n(context, 'verbal_arithmetic_grid'),
-                subtitle: 'A * C = C\n+     -\nB * A = B\n=     =\nC     B',
+                subtitle: 'ABCB + DEAF = GFFB\n    -            ÷\nAEEF + AEEF = AEEF\n    =            =\n EBB        AH',
                 maxSubtitleLines: 5
             ),
             GCWDropDownMenuItem(
@@ -311,6 +311,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
           var columnData = solution.map((entry) => [entry.key, entry.value]).toList();
           solutionWidget = GCWColumnedMultilineOutput(data: columnData, flexValues: const [3, 1],
               copyColumn: 1, copyAll: true);
+          solutionWidget = GCWDefaultOutput(child: solutionWidget);
         } else {
           if (output.solutions.length >= MAX_SOLUTIONS) {
             equationData.insert(0, [i18n(context, 'sudokusolver_maximumsolutions')]);
@@ -323,7 +324,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
 
         _currentOutput = Column(
             children: <Widget>[
-              GCWDefaultOutput(child: solutionWidget),
+              solutionWidget,
               GCWDefaultOutput(child: equationWidget),
             ]
         );

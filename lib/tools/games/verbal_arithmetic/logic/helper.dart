@@ -281,7 +281,7 @@ class SymbolMatrixGrid {
       }
     }
     for(var x = 0; x < getColumnsCount() - (calcLastColumn() ? 0 : 2); x += 2) {
-      equation = _buildRowEquation(x);
+      equation = _buildColumnEquation(x);
       if (equation.isEmpty) {
         if (x != getColumnsCount() - 1) return [];
       } else {
