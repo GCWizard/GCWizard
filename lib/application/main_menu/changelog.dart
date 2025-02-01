@@ -6,6 +6,7 @@ import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:intl/intl.dart';
 
 final CHANGELOG = {
+  '3.3.2': DateTime(2025, 02, 10),
   '3.3.1': DateTime(2025, 01, 27),
   '3.3.0': DateTime(2025, 01, 7),
   '3.2.3': DateTime(2024, 11, 22),
