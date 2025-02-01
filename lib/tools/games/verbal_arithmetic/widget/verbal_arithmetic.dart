@@ -5,14 +5,15 @@ import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
+import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_paste_button.dart';
-import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
+import 'package:gc_wizard/common_widgets/key_value_editor/gcw_key_value_editor.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
@@ -23,6 +24,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/alphametics.dart';
 import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/cryptogram.dart';
 import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/helper.dart';
+import 'package:gc_wizard/utils/complex_return_types.dart';
 
 class VerbalArithmetic extends StatefulWidget {
   const VerbalArithmetic({Key? key}) : super(key: key);
@@ -325,7 +327,8 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
         );
       }
 
-      var solution = _currentOutput!.solutions[_currentOutputIndex - 1].entries.toList();
+      var mapping = _currentOutput!.solutions[_currentOutputIndex - 1];
+      var solution = mapping.entries.toList();
       solution.sort(((a, b) => a.key.compareTo(b.key)));
       var columnData = solution.map((entry) => [entry.key, entry.value]).toList();
 
@@ -333,17 +336,31 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
           copyColumn: 1, copyAll: true);
 
       equationWidget = GCWOutput(child: _currentOutput!.equations.map((equation) =>
-          equation.getOutput(_currentOutput!.solutions[_currentOutputIndex - 1])).join('\n'));
+          equation.getOutput(mapping)).join('\n'));
 
-      return GCWDefaultOutput(child: Column(
-        children: <Widget>[
-          spinnerWidget,
-          Container(height: 10),
-          solutionWidget,
-          Container(height: 10),
-          equationWidget
-        ]
-      ));
+      var copyButton = GCWIconButton(
+          size: IconButtonSize.SMALL,
+          icon: Icons.content_copy,
+          onPressed: () {
+            var copyText = toKeyValueJson(solution
+                .map((entry) => KeyValueBase(null, entry.key, entry.value.toString())).toList());
+            if (copyText == null) return;
+            insertIntoGCWClipboard(context, copyText);
+          },
+        );
+
+      return GCWDefaultOutput(
+        trailing: copyButton,
+        child: Column(
+          children: <Widget>[
+            spinnerWidget,
+            Container(height: 10),
+            solutionWidget,
+            Container(height: 10),
+            equationWidget
+          ]
+        ),
+      );
     }
   }
 
@@ -360,7 +377,8 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
   }
 
   Widget _buildSubmitButton() {
-    return GCWSubmitButton(
+    return GCWButton(
+      text: i18n(context, 'sudokusolver_solve'),
       onPressed: () async {
         _onDoCalculation();
       },
