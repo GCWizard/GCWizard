@@ -20,9 +20,17 @@ Future<VerbalArithmeticOutput?> solveCryptogramAsync(GCWAsyncExecuterParameters 
 }
 
 bool _allSolutions = false;
+int _totalPermutations = 0;
+int _currentCombination = 0;
+int _stepSize = 1;
+int _nextSendStep = 1;
+SendPort? _sendAsyncPort;
+List<HashMap<String, int>> _solutions = [];
 
 VerbalArithmeticOutput? solveCryptogram(List<String> equations, bool allSolutions, {SendPort? sendAsyncPort}) {
-  var _equations = equations.map((equation) => Equation(equation)).toList();
+  SymbolMatrixString.deleteEmptyLines(equations);
+  var _equations = equations.map((equation) => Equation(equation, rearrange: true)).toList();
+
   var notValid = _equations.any((equation) => !equation.validFormula);
   if (notValid || _equations.isEmpty) {
     return VerbalArithmeticOutput(equations: _equations, solutions: [], error: 'InvalidEquation');
@@ -31,50 +39,42 @@ VerbalArithmeticOutput? solveCryptogram(List<String> equations, bool allSolution
   return _solveCryptogram(_equations, sendAsyncPort);
 }
 
-int _totalPermutations = 0;
-int _currentCombination = 0;
-int _stepSize = 1;
-int _nextSendStep = 1;
-SendPort? _sendAsyncPort;
-List<HashMap<String, int>> _solutions = [];
-
 VerbalArithmeticOutput? _solveCryptogram(List<Equation> equations, SendPort? sendAsyncPort) {
   final Set<String> variables = {};
   for (var equation in equations) {
     variables.addAll(equation.usedMembers);
   }
 
-  // Variablen sortieren für eine konsistente Verarbeitung
-  final variableList = variables.toList()..sort();
+  final variableList = variables.toList();
 
-  // Automatischen Wertebereich ermitteln
+  // Automatically determine value range
   final maxValue = _findMaxValueInEquations(equations);
   final range = List.generate(maxValue + 1, (index) => index);
 
-  equations = _sortEquationsByVariableCombinations(equations, variables, maxValue);
+  _solutions.clear();
+  var _equations = _sortEquations(equations);
 
   _totalPermutations = _calculatePossibilities(range.length, variableList.length);
   _currentCombination = 0;
   _stepSize  = max(_totalPermutations ~/ 100, 1);
   _nextSendStep = _stepSize;
+  _sendAsyncPort = sendAsyncPort;
 
-  __solveCryptogram(equations, HashMap<String, int>(), variableList, range);
+  __solveCryptogram(_equations, HashMap<String, int>(), variableList, range);
 
   return VerbalArithmeticOutput(equations: equations, solutions: _solutions, error: '');
 }
 
-bool __solveCryptogram(List<Equation> equations, HashMap<String, int> assignedValues, List<String> remainingVariables,
+bool __solveCryptogram(List<Equation> equations, HashMap<String, int> mapping, List<String> remainingVariables,
     List<int> availableValues) {
-  // Wenn alle Variablen belegt sind, überprüfe die Gleichungen
-  if (remainingVariables.isEmpty) {
 
-    if (_isValid(assignedValues, equations)) {
+  if (remainingVariables.isEmpty) {
+    if (_evaluateEquation(mapping, equations)) {
       var equation = equations.first.equation;
-      // var _progress = (_currentCombination / _totalPermutations * 100).toStringAsFixed(2);
-      // print("Fortschritt: $_progress%");
-      print('Lösung gefunden: $equation $assignedValues $_currentCombination% $_totalPermutations');
-      // return assignedValues;
-      _solutions.add(assignedValues);
+
+      print('Lösung gefunden: $equation $mapping $_currentCombination% $_totalPermutations');
+
+      _solutions.add(mapping);
       if (!_allSolutions || _solutions.length >= MAX_SOLUTIONS) return true;
     }
     return false;
@@ -83,30 +83,29 @@ bool __solveCryptogram(List<Equation> equations, HashMap<String, int> assignedVa
   String variable = remainingVariables.removeAt(0);
 
   for (var value in availableValues) {
-    assignedValues[variable] = value;
+    mapping[variable] = value;
 
     _currentCombination++;
     _sendProgress();
 
-    if (!_isValid(assignedValues, equations)) {
-      assignedValues.remove(variable);
+    if (!_evaluateEquation(mapping, equations)) {
+      mapping.remove(variable);
       _currentCombination += _calculatePossibilities(availableValues.length, remainingVariables.length);
       _sendProgress();
       continue;
     }
 
-    if (__solveCryptogram(equations, assignedValues, remainingVariables,
+    if (__solveCryptogram(equations, mapping, remainingVariables,
         availableValues.where((v) => v != value).toList())) {
-      return true;
+      if (!_allSolutions || _solutions.length >= MAX_SOLUTIONS) return true;
     }
 
-    assignedValues.remove(variable);
+    mapping.remove(variable);
   }
 
   remainingVariables.insert(0, variable);
   return false;
 }
-
 
 void _sendProgress() {
   if (_sendAsyncPort != null && _currentCombination >= _nextSendStep) {
@@ -137,13 +136,13 @@ int _findMaxValueInEquations(List<Equation> equations) {
   return maxValue;
 }
 
-/// Sorts the equations so that the equation with the fewest combinations of variables is solved first
-List<Equation> _sortEquationsByVariableCombinations(List<Equation> equations, Set<String> variables, int maxValue) {
-  final variableDomainSize = maxValue + 1;
+List<Equation> _sortEquations(List<Equation> equations) {
 
   List<MapEntry<Equation, int>> equationScores = equations.map((equation) {
-    // Heuristic: number of variables * possible value ranges per variable
-    int score = equation.usedMembers.length * variableDomainSize;
+    int score = equation.usedMembers.length;
+    if (equation.formatedEquation.contains('*')) score *= 2;
+    if (equation.formatedEquation.contains('/')) score *= 2;
+
     return MapEntry(equation, score);
   }).toList();
 
@@ -152,21 +151,20 @@ List<Equation> _sortEquationsByVariableCombinations(List<Equation> equations, Se
   return equationScores.map((entry) => entry.key).toList();
 }
 
-bool _isValid(Map<String, int> variableValues, List<Equation> equations) {
+bool _evaluateEquation(Map<String, int> variableValues, List<Equation> equations) {
   for (var equation in equations) {
+
+    // all variables definied ?
+    if (!variableValues.keys.toSet().containsAll(equation.usedMembers)) {
+      continue;
+    }
+
     final context = ContextModel();
 
-    // Nur gebundene Variablen in den Kontext einfügen
     variableValues.forEach((varName, value) {
       context.bindVariable(Variable(varName), Number(value));
     });
 
-    // Überprüfen, ob alle Variablen in der Gleichung definiert sind
-    if (!variableValues.keys.toSet().containsAll(equation.usedMembers)) {
-      continue;  // Überspringe diese Gleichung, bis alle Variablen belegt sind
-    }
-
-    // Wenn die Gleichung unter den aktuellen Werten nicht 0 ist, breche ab
     if (equation.exp.evaluate(EvaluationType.REAL, context) != 0) {
       return false;
     }

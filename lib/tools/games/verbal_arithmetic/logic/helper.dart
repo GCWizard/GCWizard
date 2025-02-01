@@ -2,11 +2,13 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:gc_wizard/utils/data_type_utils/object_type_utils.dart';
 import 'package:gc_wizard/utils/json_utils.dart';
 import 'package:math_expressions/math_expressions.dart';
 import 'package:utility/utility.dart';
 
 const int MAX_SOLUTIONS = 100;
+const int MAX_GRIDSIZE = 20;
 
 class VerbalArithmeticJobData {
   final List<String> equations;
@@ -50,15 +52,18 @@ class Equation {
   late Expression exp;
   late List<Token> token;
   bool singleLetter = false;
+  bool rearrange = false;
   bool validFormula = true;
   Set<String> usedMembers = <String>{};
   Set<String> leadingLetters = <String>{};
 
-  Equation(this.equation, {this.singleLetter = false}) {
+  Equation(this.equation, {this.singleLetter = false, this.rearrange = false}) {
     equation = equation.toUpperCase();
     formatedEquation = _formatEquation();
     validFormula &= !(formatedEquation.count('=') > 1);
-
+    if (rearrange) {
+      formatedEquation = _rearrange(formatedEquation);
+    }
     if (singleLetter) {
       // Extract all letters and determine the leading letters
       for (var token in formatedEquation.split(RegExp(r'[^A-Z]'))) {
@@ -68,10 +73,6 @@ class Equation {
         }
       }
     } else {
-      if (formatedEquation.contains('=')) {
-        var members = formatedEquation.split('=');
-        formatedEquation = members[0] + '-(' + members[1]+ ')';
-      }
       token = parser.lex.tokenize(formatedEquation);
       if (formatedEquation.isNotEmpty) {
         exp = parser.parse(formatedEquation);
@@ -111,6 +112,14 @@ class Equation {
     return out.trim();
   }
 
+  String _rearrange(String equation) {
+    if (equation.contains('=')) {
+      var members = equation.split('=');
+      equation = members[0] + '-(' + members[1]+ ')';
+    }
+    return equation;
+  }
+
   String getOutput(HashMap<String, int> result) {
     return replaceValues(equation, result);
   }
@@ -126,21 +135,26 @@ class Equation {
 class SymbolMatrixString {
   static List<String> buildEquations(String input) {
     if (input.trim().isEmpty) return [];
-    var formulas = const LineSplitter().convert(input);
-    formulas.removeWhere((formula) => formula.trim().isEmpty);
-    formulas = formulas.map((formula) => formula.trim()).toList();
-    return formulas;
+    var equations = const LineSplitter().convert(input);
+    deleteEmptyLines(equations);
+    equations = equations.map((equation) => equation.trim()).toList();
+    return equations;
+  }
+
+  static void deleteEmptyLines(List<String> equations) {
+    equations.removeWhere((equation) => equation.trim().isEmpty);
   }
 }
 
 class SymbolMatrixGrid {
   List<List<String>> matrix = [];
-  Map<String, String> substitutions = {};
   late int columnCount;
   late int rowCount;
 
   SymbolMatrixGrid (this.rowCount, this.columnCount, {SymbolMatrixGrid? oldMatrix}) {
     matrix = <List<String>>[];
+    rowCount = min(max(2, rowCount), MAX_GRIDSIZE);
+    columnCount = min(max(2, columnCount), MAX_GRIDSIZE);
     for(var y = 0; y < getRowsCount(); y++) {
       matrix.add(List<String>.filled(getColumnsCount(), ''));
     }
@@ -161,26 +175,31 @@ class SymbolMatrixGrid {
     return rowCount * 2 + 1;
   }
 
-  String? getOperator(int y, int x) {
-    if  (!_validPosition(y, x)) {
-      return null;
+  String getOperator(int y, int x) {
+    if (!_validPosition(y, x)) {
+      return '';
     }
     var value = matrix[y][x];
     if (!operatorList.containsKey(value)) {
-      value = operatorList.keys.first;
-      setValue(y, x, value);
+      if (x != getColumnsCount() - 1 && y != getRowsCount() - 1) {
+        value = operatorList.keys.first;
+        setValue(y, x, value);
+      } else if (value != '') {
+        value = operatorList.keys.first;
+        setValue(y, x, value);
+      }
     }
     return value;
   }
 
-  String? getValue(int y, int x) {
+  String getValue(int y, int x) {
     if (!_validPosition(y, x)) {
-      return null;
+      return '';
     }
     return matrix[y][x];
   }
 
-    void setValue(int y, int x, String text) {
+  void setValue(int y, int x, String text) {
     if (!_validPosition(y, x)) {
       return;
     }
@@ -220,9 +239,11 @@ class SymbolMatrixGrid {
     var formula = '';
     for (var x = 0; x < matrix[y].length; x++) {
       if (x % 2 == 0) {
-        formula += matrix[y][x];
+        if (getValue(y, x).isEmpty) return '';
+        formula += getValue(y, x);
       } else if (x < getColumnsCount() - 2) {
-        formula += ' ' + operatorList[matrix[y][x]]! + ' ';
+        if (getOperator(y, x).isEmpty) return '';
+        formula += ' ' + getOperator(y, x) + ' ';
       } else {
         formula += ' = ';
       }
@@ -234,10 +255,12 @@ class SymbolMatrixGrid {
     var formula = '';
     for (var y = 0; y < matrix.length; y++) {
       if (y % 2 == 0) {
+        if (getValue(y, x).isEmpty) return '';
         formula += matrix[y][x];
       } else if (y < getRowsCount() - 2) {
-        formula += ' ' + operatorList[matrix[y][x]]! + ' ';
-      }else {
+        if (getOperator(y, x).isEmpty) return '';
+        formula += ' ' + getOperator(y, x) + ' ';
+      } else {
         formula += ' = ';
       }
     }
@@ -246,15 +269,50 @@ class SymbolMatrixGrid {
 
   List<String> buildEquations() {
     var equations = <String>[];
+    String equation;
 
     if (!isValidMatrix()) return equations;
-    for(var y = 0; y < getRowsCount()-2; y += 2){
-      equations.add(_buildRowEquation(y));
+    for(var y = 0; y < getRowsCount() - (calcLastRow() ? 0 : 2); y += 2) {
+      equation = _buildRowEquation(y);
+      if (equation.isEmpty) {
+        if (y != getRowsCount() - 1) return [];
+      } else {
+        equations.add(equation);
+      }
     }
-    for(var x = 0; x < getColumnsCount()-2; x += 2){
-      equations.add(_buildColumnEquation(x));
+    for(var x = 0; x < getColumnsCount() - (calcLastColumn() ? 0 : 2); x += 2) {
+      equation = _buildRowEquation(x);
+      if (equation.isEmpty) {
+        if (x != getColumnsCount() - 1) return [];
+      } else {
+        equations.add(equation);
+      }
     }
     return equations;
+  }
+
+  bool calcLastColumn() {
+    var rowsCount = getRowsCount() - 1;
+    var columnsCount = getColumnsCount() - 1;
+
+    for(var rowIndex = 1; rowIndex < rowsCount - 1; rowIndex += 2) {
+      if (getOperator(rowIndex, columnsCount).isNotEmpty) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool calcLastRow() {
+    var rowsCount = getRowsCount() - 1;
+    var columnsCount = getColumnsCount() - 1;
+
+    for(var columnIndex = 1; columnIndex < columnsCount - 1; columnIndex += 2) {
+      if (getOperator(rowsCount, columnIndex).isNotEmpty) {
+        return true;
+      }
+    }
+    return false;
   }
 
   String toJson() {
@@ -262,57 +320,46 @@ class SymbolMatrixGrid {
     for(var y = 0; y < matrix.length; y++) {
       for (var x = 0; x < matrix[y].length; x++) {
         if (matrix[y][x].isNotEmpty) {
-          list.add(({'x': x, 'y': y, 'v': matrix[y][x]}).toString());
+          list.add(jsonEncode(<String, Object>{'x': x, 'y': y, 'v': matrix[y][x]}));
         }
       }
     }
-
-    return (jsonEncode({'columns': columnCount, 'rows': rowCount,
-      'values': list.toString(), 'substitutions': _toJsonSubstitutions(substitutions)}).toString());
+    return jsonEncode({'columns': columnCount, 'rows': rowCount, 'values': jsonEncode(list)});
   }
-
-  static String? _toJsonSubstitutions(Map<String, String>? substitutions) {
-    if (substitutions == null) return null;
-    var list = <String>[];
-    substitutions.forEach((key, value) {
-      list.add(jsonEncode({'key': key, 'value': value}));
-    });
-
-    if (list.isEmpty) return null;
-
-    return jsonEncode(list);
-  }
-
 
   static SymbolMatrixGrid? fromJson(String text) {
     if (text.isEmpty) return null;
-    var json = asJsonMap(jsonDecode(text));
+    try {
+      var json = asJsonMap(jsonDecode(text));
 
-    SymbolMatrixGrid matrix;
-    // var rowCount = toIntOrNull(json['rows']);
-    // var columnCount = toIntOrNull(json['columns']);
-    // var values = asJsonMap(json['values']);
-    // if (rowCount == null || columnCount == null) return null;
-    //
-    // matrix = SymbolMatrix(rowCount, columnCount);
-    // if (values.isNotEmpty) {
-    //   values.forEach((key, value) {
-    //     var element = asJsonMap(jsonDecode(value));
-    //     var x = toIntOrNull(element['x']);
-    //     var y = toIntOrNull(element['y']);
-    //     var value = toStringOrNull(element['v']);
-    //     if (x != null && y != null && value != null) {
-    //       matrix.setValue(y, x, value);
-    //     }
-    //   }
-    // }
-    // matrix.substitutions = _fromJsonSubstitutions(jsonDecode(json)['substitutions']);
-    // return matrix;
+      var rowCount = toIntOrNull(json['rows']);
+      var columnCount = toIntOrNull(json['columns']);
+      var valueString = toStringOrNull(json['values']);
+      if (valueString == null) return null;
+      var values = toStringListOrNull(jsonDecode(valueString));
+      if (rowCount == null || columnCount == null || values == null) return null;
+
+      var matrix = SymbolMatrixGrid(rowCount, columnCount);
+      if (values.isNotEmpty) {
+        for (var _value in values) {
+          var element = asJsonMap(jsonDecode(_value.toString()));
+          var x = toIntOrNull(element['x']);
+          var y = toIntOrNull(element['y']);
+          var value = toStringOrNull(element['v']);
+          if (x != null && y != null && value != null) {
+            matrix.setValue(y, x, value);
+          }
+        }
+      }
+      return matrix;
+    } catch (e) {
+      return null;
+    }
   }
 }
 
-// Function for calculating the factorial
 int factorial(int n) {
   if (n <= 1) return 1;
   return n * factorial(n - 1);
 }
+

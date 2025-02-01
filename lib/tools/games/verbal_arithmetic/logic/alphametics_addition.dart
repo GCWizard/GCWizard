@@ -1,4 +1,4 @@
-part of 'package:gc_wizard/tools/games/verbal_arithmetic/logic/alphametic.dart';
+part of 'package:gc_wizard/tools/games/verbal_arithmetic/logic/alphametics.dart';
 
 class EquationData {
   late List<String> leftSide;
@@ -25,11 +25,10 @@ VerbalArithmeticOutput? _solveAlphameticAdd(Equation equation) {
   _solutions.clear();
 
   __solveAlphametics(equationData, letters, digits, mapping, usedDigits);
-  // for (var solution in solutions) {
-      var out = equation.getOutput(_solutions.first);
-      var _equation = equation.formatedEquation;
-      print('Lösung gefunden: $_equation. $out'); //$mapping
-  // }
+  var out = _solutions.isEmpty ? '' : equation.getOutput(_solutions.first);
+  var _equation = equation.formatedEquation;
+  print('Lösung gefunden: $_equation. $out $_currentCombination% $_totalPermutations'); //$mapping
+
   print('Lösung gefunden: ' + _solutions.length.toString());
   if (_solutions.isEmpty) {
     var _equation = equation.formatedEquation;
@@ -41,9 +40,13 @@ VerbalArithmeticOutput? _solveAlphameticAdd(Equation equation) {
 List<HashMap<String, int>> _solutions = [];
 
 bool __solveAlphametics(EquationData equationData, List<String> letters, List<int> digits,
-    Map<String, int> letterToDigit, Set<int> usedDigits) {
+    Map<String, int> mapping, Set<int> usedDigits) {
   if (letters.isEmpty) {
-    return _isValid(letterToDigit, equationData);
+    if (__evaluateEquation(mapping, equationData)) {
+      _solutions.add(HashMap<String, int>.from(mapping));
+      return true;
+    }
+    return false;
   }
 
   String currentLetter = letters.first;
@@ -61,15 +64,14 @@ bool __solveAlphametics(EquationData equationData, List<String> letters, List<in
     _currentCombination++;
     _sendProgress();
 
-    letterToDigit[currentLetter] = digit;
+    mapping[currentLetter] = digit;
     usedDigits.add(digit);
 
-    if (__solveAlphametics(equationData, letters, digits, letterToDigit, usedDigits)) {
-      _solutions.add(HashMap<String, int>.from(letterToDigit));
+    if (__solveAlphametics(equationData, letters, digits, mapping, usedDigits)) {
       if (!_allSolutions || _solutions.length >= MAX_SOLUTIONS) return true;
     }
 
-    letterToDigit.remove(currentLetter);
+    mapping.remove(currentLetter);
     usedDigits.remove(digit);
   }
 
@@ -77,7 +79,6 @@ bool __solveAlphametics(EquationData equationData, List<String> letters, List<in
   return false;
 }
 
-/// calculate the frequency of each letter in the equation.
 Map<String, int> _letterFrequency(List<String> words) {
   Map<String, int> frequency = {};
   for (var word in words) {
@@ -88,8 +89,7 @@ Map<String, int> _letterFrequency(List<String> words) {
   return frequency;
 }
 
-/// check whether a digit assignment is correct.
-bool _isValid(Map<String, int> letterToDigit, EquationData equationData) {
+bool __evaluateEquation(Map<String, int> letterToDigit, EquationData equationData) {
   int sum = 0;
 
   for (var word in equationData.leftSide) {

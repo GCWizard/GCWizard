@@ -9,13 +9,15 @@ class GCWPainterContainer extends StatefulWidget {
   final void Function(double)? onChanged;
   final Widget child;
   final double scale;
+  final double? minScale;
+  final double? maxScale;
   final bool? suppressTopSpace;
   final bool? suppressBottomSpace;
   final Widget? trailing;
 
   const GCWPainterContainer(
-      {Key? key, required this.child, this.scale = 1, this.suppressTopSpace, this.suppressBottomSpace,
-        this.trailing, this.onChanged})
+      {Key? key, required this.child, this.scale = 1, this.minScale, this.maxScale, this.suppressTopSpace,
+        this.suppressBottomSpace, this.trailing, this.onChanged})
       : super(key: key);
 
   @override
@@ -47,6 +49,7 @@ class _GCWPainterContainerState extends State<GCWPainterContainer> {
               onPressed: () {
                 setState(() {
                   _currentScale += 0.1;
+                  _currentScale = (widget.maxScale != null ? min(_currentScale, widget.maxScale!) : _currentScale);
                   if (widget.onChanged != null) widget.onChanged!(_currentScale);
                 });
               },
@@ -57,6 +60,7 @@ class _GCWPainterContainerState extends State<GCWPainterContainer> {
               onPressed: () {
                 setState(() {
                   _currentScale = max(0.1, _currentScale - 0.1);
+                  _currentScale = (widget.minScale != null ? max(_currentScale, widget.minScale!) : _currentScale);
                   if (widget.onChanged != null) widget.onChanged!(_currentScale);
                 });
               },
