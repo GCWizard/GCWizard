@@ -41,8 +41,7 @@ class GCWColumnedMultilineOutputNew extends StatefulWidget {
       _GCWColumnedMultilineOutputNewState();
 }
 
-class _GCWColumnedMultilineOutputNewState
-    extends State<GCWColumnedMultilineOutputNew> {
+class _GCWColumnedMultilineOutputNewState extends State<GCWColumnedMultilineOutputNew> {
   late final int columns = widget.data.isNotEmpty ? widget.data[0].length : 0;
   late int _currentLimit = widget.maxRowLimit;
   late ScrollController _scrollController;
