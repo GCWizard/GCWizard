@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
@@ -9,7 +11,7 @@ class GCWEntrySpinner extends StatefulWidget {
   final TextStyle? style;
   final int index;
   final int max;
-  final bool viewBraces;
+  final int stepSize;
   final bool suppressOverflow;
   final Widget? trailing;
 
@@ -21,7 +23,7 @@ class GCWEntrySpinner extends StatefulWidget {
       this.style,
       required this.index,
       required this.max,
-      this.viewBraces = false,
+      this.stepSize = 1,
       this.suppressOverflow = false,
       this.trailing})
       : super(key: key);
@@ -50,9 +52,7 @@ class _GCWEntrySpinnerState extends State<GCWEntrySpinner> {
           child: GCWText(
             align: Alignment.center,
             text: (widget.text == null ? '' : widget.text! + ' ') +
-                (widget.viewBraces ? '(' : '') +
-                _currentIndex.toString() + '/ ' + widget.max.toString() +
-                (widget.viewBraces ? ')' : '') +
+                _formatIndexText() +
                 (widget.textExtension ?? ''),
             style: widget.style,
           ),
@@ -68,8 +68,16 @@ class _GCWEntrySpinnerState extends State<GCWEntrySpinner> {
     );
   }
 
+  String _formatIndexText() {
+    if (widget.stepSize > 1) {
+      return '$_currentIndex - ${min(_currentIndex + widget.stepSize - 1, widget.max)}/ ${widget.max}';
+    } else {
+      return '$_currentIndex/ ${widget.max}';
+    }
+  }
+
   void _decreaseValue() {
-    _currentIndex--;
+    _currentIndex -= widget.stepSize;
     if (_currentIndex < 1) {
       if (widget.suppressOverflow) {
         _currentIndex = 1;
@@ -84,10 +92,10 @@ class _GCWEntrySpinnerState extends State<GCWEntrySpinner> {
   }
 
   void _increaseValue() {
-    _currentIndex++;
+    _currentIndex += widget.stepSize;
     if (_currentIndex > widget.max) {
       if (widget.suppressOverflow) {
-        _currentIndex = widget.max;
+        _currentIndex = widget.max - widget.stepSize + 1;
         return;
       } else {
         _currentIndex = 1;
