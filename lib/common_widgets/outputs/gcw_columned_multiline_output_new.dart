@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
-import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
-import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
+import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:image/image.dart';
 
-import '../../application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'gcw_output_text.dart';
 
 class GCWColumnedMultilineOutputNew extends StatefulWidget {
@@ -24,37 +21,93 @@ class GCWColumnedMultilineOutputNew extends StatefulWidget {
   final List<Widget>? firstRows;
   final int maxRowLimit;
 
-  const GCWColumnedMultilineOutputNew({Key? key,
-    required this.data,
-    this.flexValues = const [],
-    this.copyColumn,
-    this.suppressCopyButtons = false,
-    this.hasHeader = false,
-    this.copyAll = false,
-    this.tappables,
-    this.style,
-    this.fontSize = 0.0,
-    this.firstRows,
-    this.maxRowLimit = 500})
+  const GCWColumnedMultilineOutputNew(
+      {Key? key,
+      required this.data,
+      this.flexValues = const [],
+      this.copyColumn,
+      this.suppressCopyButtons = false,
+      this.hasHeader = false,
+      this.copyAll = false,
+      this.tappables,
+      this.style,
+      this.fontSize = 0.0,
+      this.firstRows,
+      this.maxRowLimit = 200})
       : super(key: key);
 
   @override
-  _GCWColumnedMultilineOutputNewState createState() => _GCWColumnedMultilineOutputNewState();
+  _GCWColumnedMultilineOutputNewState createState() =>
+      _GCWColumnedMultilineOutputNewState();
 }
 
-class _GCWColumnedMultilineOutputNewState extends State<GCWColumnedMultilineOutputNew> {
+class _GCWColumnedMultilineOutputNewState
+    extends State<GCWColumnedMultilineOutputNew> {
   late final int columns = widget.data.isNotEmpty ? widget.data[0].length : 0;
+  late int _currentLimit = widget.maxRowLimit;
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      _loadMore();
+    }
+  }
+
+  void _loadMore() {
+    setState(() {
+      _currentLimit =
+          (_currentLimit + widget.maxRowLimit).clamp(0, widget.data.length);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        padding: const EdgeInsets.all(5),
-        itemCount: widget.data.length,
-        itemBuilder: (context, i) {
-          return _buildRow(i);
-        }
+    int itemCount = widget.data.length;
+    bool hasMore = _currentLimit < itemCount;
+
+    return SizedBox(
+        height: MediaQuery.of(context).size.height *
+            0.6, // todo
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                controller: _scrollController,
+                padding: const EdgeInsets.all(5),
+                itemCount: _currentLimit + (hasMore ? 1 : 0),
+                itemBuilder: (context, index) {
+                  if (index >= _currentLimit) {
+                    return _buildLoadMoreButton();
+                  }
+                  return _buildRow(index);
+                },
+              ),
+            ),
+          ],
+        ));
+  }
+
+  Widget _buildLoadMoreButton() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GCWButton(
+        text: i18n(context, 'common_loading'),
+        onPressed: _loadMore,
+      ),
     );
   }
 
@@ -62,14 +115,17 @@ class _GCWColumnedMultilineOutputNewState extends State<GCWColumnedMultilineOutp
     if (rowIdx >= widget.data.length) return const SizedBox.shrink();
 
     List<dynamic> rowData = widget.data[rowIdx]; // Die Zeile als Liste holen
-    String copytext = (widget.copyColumn != null && widget.copyColumn! < rowData.length)
-        ? rowData[widget.copyColumn!].toString()
-        : rowData[rowData.length-1].toString();
+    String copytext =
+        (widget.copyColumn != null && widget.copyColumn! < rowData.length)
+            ? rowData[widget.copyColumn!].toString()
+            : rowData[rowData.length - 1].toString();
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
       decoration: BoxDecoration(
-        color: rowIdx.isOdd ? themeColors().outputListOddRows() : themeColors().primaryBackground(),
+        color: rowIdx.isOdd
+            ? themeColors().outputListOddRows()
+            : themeColors().primaryBackground(),
       ),
       child: Row(
         children: rowData.asMap().entries.map((entry) {
@@ -78,10 +134,10 @@ class _GCWColumnedMultilineOutputNewState extends State<GCWColumnedMultilineOutp
           var isLastCol = colIndex == rowData.length - 1;
 
           return Expanded(
-              flex: colIndex < widget.flexValues.length ? widget
-                  .flexValues[colIndex] : 1, // Standardflex = 1
-              child: _outText(value, rowIdx, isLastCol, copytext)
-          );
+              flex: colIndex < widget.flexValues.length
+                  ? widget.flexValues[colIndex]
+                  : 1,
+              child: _outText(value, rowIdx, isLastCol, copytext));
         }).toList(),
       ),
     );
@@ -96,10 +152,10 @@ class _GCWColumnedMultilineOutputNewState extends State<GCWColumnedMultilineOutp
     }
     if (isLastCol) {
       return GCWOutputText(
-        text: value,
-        style: _text_style,
-        suppressCopyButton: widget.suppressCopyButtons,
-        copyText: copytext);
+          text: value,
+          style: _text_style,
+          suppressCopyButton: widget.suppressCopyButtons,
+          copyText: copytext);
     }
     return GCWText(text: value, style: _text_style);
   }
