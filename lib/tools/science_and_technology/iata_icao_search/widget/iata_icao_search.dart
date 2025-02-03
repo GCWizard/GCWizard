@@ -8,6 +8,8 @@ import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/iata_icao_search/logic/iata_icao.dart';
 
+import '../../../../common_widgets/outputs/gcw_columned_multiline_output_new.dart';
+
 class IATAICAOSearch extends StatefulWidget {
   const IATAICAOSearch({Key? key}) : super(key: key);
 
@@ -137,7 +139,7 @@ class _IATAICAOSearchState extends State<IATAICAOSearch> {
         i18n(context, 'common_place')
       ]);
 
-      return GCWColumnedMultilineOutput(data: data, flexValues: flexValues, copyColumn: 1, hasHeader: true);
+      return GCWColumnedMultilineOutputNew(data: data, flexValues: flexValues, copyColumn: 1, hasHeader: true);
     } else {
       // search for code
       if (_currentInputCode.isEmpty) return Container();
@@ -165,7 +167,7 @@ class _IATAICAOSearchState extends State<IATAICAOSearch> {
           i18n(context, 'common_place')
         ]);
 
-        return GCWColumnedMultilineOutput(data: data, flexValues: flexValues, copyColumn: 2, hasHeader: true);
+        return GCWColumnedMultilineOutputNew(data: data, flexValues: flexValues, copyColumn: 2, hasHeader: true);
       } else {
         var data = IATA_ICAO_CODES.values.where((e) => (e.icoa.startsWith(_currentInputCode.toUpperCase()))).map((e) {
           return [e.icoa, e.iata, e.name, e.location_served];
@@ -186,7 +188,7 @@ class _IATAICAOSearchState extends State<IATAICAOSearch> {
           i18n(context, 'common_place')
         ]);
 
-        return GCWColumnedMultilineOutput(data: data, flexValues: flexValues, copyColumn: 2, hasHeader: true);
+        return GCWColumnedMultilineOutputNew(data: data, flexValues: flexValues, copyColumn: 2, hasHeader: true);
       }
     }
   }
