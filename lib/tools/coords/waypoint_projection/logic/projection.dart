@@ -87,7 +87,6 @@ LatLng? reverseProjection(LatLng coord, double bearing, double distance, Ellipso
   }
 
   LatLng? projected;
-  List<LatLng> projectedEvolutional = [];
 
   try {
     // Try Karney's Newton approach
