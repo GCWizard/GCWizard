@@ -36,7 +36,7 @@ class _AzimuthalEquidistant {
     double azi0 = _GeoMath.atan2d(x, y),
         s = _GeoMath.hypot(x, y);
     double sig, m;
-    var data = _Geodesic(ellipsoid.a, ellipsoid.f).direct(lat0, lon0, azi0, s);
+    var data = _Geodesic(ellipsoid.a, ellipsoid.f).direct(lat0, lon0, azi0, false, s);
     var lat = data.lat2;
     var lon = data.lon2;
     var azi = data.azi2;

@@ -54,6 +54,14 @@ int lcm(int a, int b) {
   return result;
 }
 
+double cot(double a) {
+  return cos(a) / sin(a);
+}
+
+double acot(double a) {
+  return atan(1.0 / a);
+}
+
 /// Multiplication of two matrices
 List<List<double>>? matrixMultiplication(List<List<double>> matrix1, List<List<double>> matrix2) {
   if (matrix1.isEmpty || matrix2.isEmpty || matrix1[0].length != matrix2.length) {

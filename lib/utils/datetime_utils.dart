@@ -108,7 +108,7 @@ DateTime maxDateTime() {
 bool validDateTime(int year, int month, int day) {
   // https://stackoverflow.com/questions/67144785/flutter-dart-datetime-max-min-value
   try {
-    DateTime testDate = DateTime(year, month, day);
+    DateTime(year, month, day);
   } catch (exception) {
     return false;
   }

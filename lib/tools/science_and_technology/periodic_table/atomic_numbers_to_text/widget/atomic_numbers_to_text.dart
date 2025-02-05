@@ -22,7 +22,7 @@ class _AtomicNumbersToTextState extends State<AtomicNumbersToText> {
   String _currentEncryptInput = '';
   List<int> _currentDecryptInput = [];
 
-  var _currentMode = GCWSwitchPosition.right;
+  var _currentMode = GCWSwitchPosition.left;
 
   @override
   void initState() {

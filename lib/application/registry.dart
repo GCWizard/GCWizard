@@ -292,6 +292,7 @@ import 'package:gc_wizard/tools/games/scrabble/scrabble/widget/scrabble.dart';
 import 'package:gc_wizard/tools/games/scrabble/scrabble_overview/widget/scrabble_overview.dart';
 import 'package:gc_wizard/tools/games/sudoku/sudoku_solver/widget/sudoku_solver.dart';
 import 'package:gc_wizard/tools/games/tower_of_hanoi/widget/tower_of_hanoi.dart';
+import 'package:gc_wizard/tools/games/verbal_arithmetic/widget/verbal_arithmetic.dart';
 import 'package:gc_wizard/tools/games/word_search/widget/word_search.dart';
 import 'package:gc_wizard/tools/general_tools/grid_generator/grid/widget/grid.dart';
 import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_cards.dart';
@@ -319,6 +320,7 @@ import 'package:gc_wizard/tools/images_and_files/image_stretch_shrink/widget/ima
 import 'package:gc_wizard/tools/images_and_files/magic_eye_solver/widget/magic_eye_solver.dart';
 import 'package:gc_wizard/tools/images_and_files/qr_code/widget/qr_code.dart';
 import 'package:gc_wizard/tools/images_and_files/stegano/widget/stegano.dart';
+import 'package:gc_wizard/tools/images_and_files/tupper_formula/widget/tupper_formula.dart';
 import 'package:gc_wizard/tools/images_and_files/visual_cryptography/widget/visual_cryptography.dart';
 import 'package:gc_wizard/tools/general_tools/gcwizardscript/widget/gcwizard_script.dart';
 import 'package:gc_wizard/tools/science_and_technology/alcohol_mass/widget/alcohol_mass.dart';
@@ -1885,6 +1887,32 @@ void initializeRegistry(BuildContext context) {
     ], searchKeys: const [
       'tts',
     ]),
+    GCWTool(
+        tool: const TupperFormula(),
+        id: 'tupper_formula',
+        categories: const [
+          ToolCategory.IMAGES_AND_FILES,
+          ToolCategory.CRYPTOGRAPHY,
+        ],
+        searchKeys: const [
+          'tupper_formula',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+              context: context,
+              author: 'en.wikipedia.org and contributors',
+              title: "Tupper's self-referential formula",
+              sourceUrl:
+                  'https://en.wikipedia.org/w/index.php?title=Tupper%27s_self-referential_formula&oldid=1268384498',
+              licenseType: ToolLicenseType.CCBYSA4),
+          ToolLicenseOnlineArticle(
+              context: context,
+              author: 'Jeff Tupper',
+              title: "Reliable Two-Dimensional Graphing Methods for Mathematical Formulae with Two Free Variables",
+              sourceUrl:
+              'https://web.archive.org/web/20250122201114/https://www.dgp.toronto.edu/~mooncake/papers/SIGGRAPH2001_Tupper.pdf',
+              )
+        ]),
     GCWTool(tool: const UFI(), id: 'ufi', categories: const [
       ToolCategory.CRYPTOGRAPHY,
       ToolCategory.SCIENCE_AND_TECHNOLOGY
@@ -1933,6 +1961,12 @@ void initializeRegistry(BuildContext context) {
         id: 'velocity_acceleration',
         categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
         searchKeys: const ['velocity_acceleration'],
+        licenses: const []),
+    GCWTool(
+        tool: const VerbalArithmetic(),
+        id: 'verbal_arithmetic',
+        categories: const [ToolCategory.GAMES],
+        searchKeys: const ['verbal_arithmetic'],
         licenses: const []),
     GCWTool(
         tool: const VanitySelection(),
@@ -7591,6 +7625,34 @@ void initializeRegistry(BuildContext context) {
               'https://web.archive.org/web/20200906044202/https://www.deviantart.com/sarinilli/art/Gerudo-Typography-Font-278213135',
           licenseType: ToolLicenseType.PERSONAL_USE)
     ]),
+    GCWSymbolTableTool(symbolKey: 'gesture_numbers_01', symbolSearchStrings: const [
+      'symbol_signlanguage',
+      'symbol_finger_numbers',
+    ], licenses: [
+      ToolLicenseOnlineBook(
+          context: context,
+          author: 'Jakob Leupold',
+          title: 'Theatrum Arithmetico-Geometricum',
+          publisher: 'Breitkopf',
+          year: 1774,
+          customComment: 'urn:nbn:de:bsz:14-db-id3372953791',
+          sourceUrl:'https://web.archive.org/web/20250124215104/https://digital.slub-dresden.de/werkansicht/dlf/26205/1',
+          licenseType: ToolLicenseType.PUBLIC_DOMAIN)
+    ]),
+    GCWSymbolTableTool(symbolKey: 'gesture_numbers_02', symbolSearchStrings: const [
+      'symbol_signlanguage',
+      'symbol_finger_numbers',
+    ], licenses: [
+      ToolLicenseOnlineBook(
+          context: context,
+          author: 'Jakob Leupold',
+          title: 'Theatrum Arithmetico-Geometricum',
+          publisher: 'Breitkopf',
+          year: 1774,
+          customComment: 'urn:nbn:de:bsz:14-db-id3372953791',
+          sourceUrl:'https://web.archive.org/web/20250124215104/https://digital.slub-dresden.de/werkansicht/dlf/26205/1',
+          licenseType: ToolLicenseType.PUBLIC_DOMAIN)
+    ]),
     GCWSymbolTableTool(symbolKey: 'glagolitic', symbolSearchStrings: const [
       'symbol_gnommish',
     ], licenses: [
@@ -8243,6 +8305,30 @@ void initializeRegistry(BuildContext context) {
               'https://web.archive.org/web/20240801172315/https://fontstruct.com/fontstructions/show/1445997/marain-dots',
           licenseType: ToolLicenseType.CCBYSA3)
     ]),
+    GCWSymbolTableTool(symbolKey: 'mary_stuart_babington', symbolSearchStrings: const [
+      'symbol_mary_stuart',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+        context: context,
+        author: 'Emilio Barone, Gaia Barone',
+        title: 'Unscrambling Codes: From Hieroglyphs to Market News',
+        sourceUrl:
+        'https://web.archive.org/web/20250117200927/https://www.researchgate.net/publication/359543315_Unscrambling_Codes_From_Hieroglyphs_to_Market_News',
+        customComment: 'DOI:10.2139/ssrn.4049797',)
+    ]),
+    GCWSymbolTableTool(symbolKey: 'mary_stuart_castelnau', symbolSearchStrings: const [
+      'symbol_mary_stuart',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'George Lasry, Norbert Biermann, Satoshi Tomokiyo',
+          title: 'Deciphering Mary Stuart’s lost letters from 1578-1584',
+          year: 2023,
+          sourceUrl:
+          'https://web.archive.org/web/20250117200108/https://www.tandfonline.com/doi/full/10.1080/01611194.2022.2160677',
+          licenseType: ToolLicenseType.CCBYNCND40,
+          customComment: 'DOI: https://doi.org/10.1080/01611194.2022.2160677'),
+      ]),
     GCWSymbolTableTool(symbolKey: 'matoran', symbolSearchStrings: const [
       'symbol_matoran',
     ], licenses: [

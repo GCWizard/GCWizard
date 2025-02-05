@@ -183,6 +183,7 @@ import 'package:gc_wizard/tools/games/nonogram/widget/nonogram_solver.dart';
 import 'package:gc_wizard/tools/games/number_pyramid/widget/number_pyramid_solver.dart';
 import 'package:gc_wizard/tools/games/sudoku/sudoku_solver/widget/sudoku_solver.dart';
 import 'package:gc_wizard/tools/games/tower_of_hanoi/widget/tower_of_hanoi.dart';
+import 'package:gc_wizard/tools/games/verbal_arithmetic/widget/verbal_arithmetic.dart';
 import 'package:gc_wizard/tools/games/word_search/widget/word_search.dart';
 import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_selection.dart';
 import 'package:gc_wizard/tools/images_and_files/animated_image/widget/animated_image.dart';
@@ -198,6 +199,7 @@ import 'package:gc_wizard/tools/images_and_files/image_stretch_shrink/widget/ima
 import 'package:gc_wizard/tools/images_and_files/magic_eye_solver/widget/magic_eye_solver.dart';
 import 'package:gc_wizard/tools/images_and_files/qr_code/widget/qr_code.dart';
 import 'package:gc_wizard/tools/images_and_files/stegano/widget/stegano.dart';
+import 'package:gc_wizard/tools/images_and_files/tupper_formula/widget/tupper_formula.dart';
 import 'package:gc_wizard/tools/images_and_files/visual_cryptography/widget/visual_cryptography.dart';
 import 'package:gc_wizard/tools/general_tools/gcwizardscript/widget/gcwizard_script.dart';
 import 'package:gc_wizard/tools/science_and_technology/alcohol_mass/widget/alcohol_mass.dart';
@@ -780,6 +782,7 @@ void _initStaticToolList() {
       className(const TimeCalculator()),
       className(const TomTomSelection()),
       className(const TowerOfHanoi()),
+      className(const TupperFormula()),
       className(const Trifid()),
       className(const Trithemius()),
       className(const TTS()),
@@ -794,6 +797,7 @@ void _initStaticToolList() {
       className(const VanitySelection()),
       className(const VariableCoordinateFormulas()),
       className(const VelocityAcceleration()),
+      className(const VerbalArithmetic()),
       className(Vigenere()),
       className(const VigenereBreaker()),
       className(const VisualCryptography()),
