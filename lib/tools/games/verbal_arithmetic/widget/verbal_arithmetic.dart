@@ -17,7 +17,7 @@ import 'package:gc_wizard/common_widgets/key_value_editor/gcw_key_value_editor.d
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
-import 'package:gc_wizard/common_widgets/spinners/gcw_entry_spinner.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_page_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
@@ -314,7 +314,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
               (_currentOutput!.solutions.length >= MAX_SOLUTIONS)
                   ? GCWText(text: i18n(context, 'sudokusolver_maximumsolutions'))
                   : Container(),
-              GCWEntrySpinner(
+              GCWPageSpinner(
                   index: _currentOutputIndex,
                   max: _currentOutput!.solutions.length,
                   onChanged: (index) {
