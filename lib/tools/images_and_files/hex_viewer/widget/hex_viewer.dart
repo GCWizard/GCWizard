@@ -13,7 +13,7 @@ import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/gcw_textviewer.dart';
 import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
-import 'package:gc_wizard/common_widgets/spinners/gcw_entry_spinner.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_page_spinner.dart';
 import 'package:gc_wizard/tools/images_and_files/hexstring2file/logic/hexstring2file.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
@@ -146,7 +146,7 @@ class _HexViewerState extends State<HexViewer> {
         if (_hexData!.length > _MAX_LINES)
           Container(
             padding: const EdgeInsets.only(bottom: 10),
-            child: GCWEntrySpinner(
+            child: GCWPageSpinner(
               text: i18n(context, 'hexviewer_lines') + ':',
               max: _hexDataLines?.ceil() ?? 0,
               stepSize: _MAX_LINES,

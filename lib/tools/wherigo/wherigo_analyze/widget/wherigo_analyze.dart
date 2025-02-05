@@ -27,7 +27,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_files_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
-import 'package:gc_wizard/common_widgets/spinners/gcw_entry_spinner.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_page_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_code_textfield.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/coordinate_text_formatter.dart';
@@ -684,7 +684,7 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
             )
           ]),
         ),
-        GCWEntrySpinner(
+        GCWPageSpinner(
           text: i18n(context, 'wherigo_data_media'),
           max: WherigoCartridgeGWCData.NumberOfObjects,
           index: _mediaFileIndex,
@@ -816,7 +816,7 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
               ]),
             )
           : const GCWDefaultOutput(),
-      GCWEntrySpinner(
+      GCWPageSpinner(
         text: i18n(context, 'wherigo_data_character'),
         max: WherigoCartridgeLUAData.Characters.length,
         index: _characterIndex,
@@ -887,7 +887,7 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
           ),
         ]),
       ),
-      GCWEntrySpinner(
+      GCWPageSpinner(
         text: i18n(context, 'wherigo_data_zone'),
         max: WherigoCartridgeLUAData.Zones.length,
         index: _zoneIndex,
@@ -928,7 +928,7 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
     }
     return Column(children: <Widget>[
       const GCWDefaultOutput(),
-      GCWEntrySpinner(
+      GCWPageSpinner(
         text: i18n(context, 'wherigo_data_input'),
         max: WherigoCartridgeLUAData.Inputs.length,
         index: _inputIndex,
@@ -953,7 +953,7 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
 
       if (WherigoCartridgeLUAData.Inputs[_inputIndex - 1].InputAnswers.isNotEmpty)
         Column(children: <Widget>[
-          GCWEntrySpinner(
+          GCWPageSpinner(
             text: i18n(context, 'wherigo_data_answer'),
             max: WherigoCartridgeLUAData.Inputs[_inputIndex - 1].InputAnswers.length,
             index: _answerIndex,
@@ -1005,7 +1005,7 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
 
     return Column(children: <Widget>[
       const GCWDefaultOutput(),
-      GCWEntrySpinner(
+      GCWPageSpinner(
         text: i18n(context, 'wherigo_data_task'),
         max: WherigoCartridgeLUAData.Tasks.length,
         index: _taskIndex,
@@ -1036,7 +1036,7 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
 
     return Column(children: <Widget>[
       const GCWDefaultOutput(),
-      GCWEntrySpinner(
+      GCWPageSpinner(
         text: i18n(context, 'wherigo_data_timer'),
         max: WherigoCartridgeLUAData.Timers.length,
         index: _timerIndex,
@@ -1083,7 +1083,7 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
               ]),
             )
           : const GCWDefaultOutput(),
-      GCWEntrySpinner(
+      GCWPageSpinner(
         text: i18n(context, 'wherigo_data_item'),
         max: WherigoCartridgeLUAData.Items.length,
         index: _itemIndex,
@@ -1143,7 +1143,7 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
           )
         ]),
       ),
-      GCWEntrySpinner(
+      GCWPageSpinner(
         text: i18n(context, 'wherigo_data_message'),
         max: WherigoCartridgeLUAData.Messages.length,
         index: _messageIndex,
@@ -1167,7 +1167,7 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
 
     return Column(children: <Widget>[
       const GCWDefaultOutput(),
-      GCWEntrySpinner(
+      GCWPageSpinner(
         max: WherigoCartridgeLUAData.Variables.length,
         index: _identifierIndex,
         onChanged: (index) {
@@ -1197,7 +1197,7 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
 
     return Column(children: <Widget>[
       const GCWDefaultOutput(),
-      GCWEntrySpinner(
+      GCWPageSpinner(
         max: WherigoCartridgeLUAData.BuilderVariables.length,
         index: _builderIdentifierIndex,
         onChanged: (index) {

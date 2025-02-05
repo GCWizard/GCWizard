@@ -9,7 +9,7 @@ import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
 import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:gc_wizard/common_widgets/spinners/gcw_entry_spinner.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_page_spinner.dart';
 import 'package:gc_wizard/tools/games/sudoku/logic/sudoku_solver.dart';
 import 'package:touchable/touchable.dart';
 
@@ -51,7 +51,7 @@ class _SudokuSolverState extends State<SudokuSolver> {
         ),
         Container(height: 8 * DOUBLE_DEFAULT_MARGIN),
         if (_currentBoard.solutions != null && _currentBoard.solutions!.length > 1)
-          GCWEntrySpinner(
+          GCWPageSpinner(
             textExtension:  (_currentBoard.solutions!.length >= _MAX_SOLUTIONS ? ' *' : ''),
             max: _currentBoard.solutions!.length,
             index: _currentSolution + 1,
