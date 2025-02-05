@@ -281,7 +281,7 @@ class SymbolMatrixGrid {
       }
     }
     for(var x = 0; x < getColumnsCount() - (calcLastColumn() ? 0 : 2); x += 2) {
-      equation = _buildRowEquation(x);
+      equation = _buildColumnEquation(x);
       if (equation.isEmpty) {
         if (x != getColumnsCount() - 1) return [];
       } else {
@@ -316,15 +316,22 @@ class SymbolMatrixGrid {
   }
 
   String toJson() {
-    var list = <String>[];
+    var list = <Map<String, Object?>>[];
+
+    Map<String, Object?> entryToMap(int x, int y, String value) => {
+      'x': x,
+      'y': y,
+      'v': value,
+    };
+
     for(var y = 0; y < matrix.length; y++) {
       for (var x = 0; x < matrix[y].length; x++) {
         if (matrix[y][x].isNotEmpty) {
-          list.add(jsonEncode(<String, Object>{'x': x, 'y': y, 'v': matrix[y][x]}));
+          list.add(entryToMap(x, y, matrix[y][x]));
         }
       }
     }
-    return jsonEncode({'columns': columnCount, 'rows': rowCount, 'values': jsonEncode(list)});
+    return jsonEncode({'columns': columnCount, 'rows': rowCount, 'values': list});
   }
 
   static SymbolMatrixGrid? fromJson(String text) {
@@ -334,18 +341,16 @@ class SymbolMatrixGrid {
 
       var rowCount = toIntOrNull(json['rows']);
       var columnCount = toIntOrNull(json['columns']);
-      var valueString = toStringOrNull(json['values']);
-      if (valueString == null) return null;
-      var values = toStringListOrNull(jsonDecode(valueString));
+      var values = asJsonArrayOrNull(json['values']);
       if (rowCount == null || columnCount == null || values == null) return null;
 
       var matrix = SymbolMatrixGrid(rowCount, columnCount);
-      if (values.isNotEmpty) {
-        for (var _value in values) {
-          var element = asJsonMap(jsonDecode(_value.toString()));
-          var x = toIntOrNull(element['x']);
-          var y = toIntOrNull(element['y']);
-          var value = toStringOrNull(element['v']);
+      for (var _value in values) {
+        var entry = asJsonMapOrNull(_value);
+        if (entry != null) {
+          var x = toIntOrNull(entry['x']);
+          var y = toIntOrNull(entry['y']);
+          var value = toStringOrNull(entry['v']);
           if (x != null && y != null && value != null) {
             matrix.setValue(y, x, value);
           }

@@ -5,7 +5,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/games/scrabble/logic/scrabble_sets.dart';
-import 'package:gc_wizard/tools/games/scrabble/scrabble/logic/scrabble.dart';
+import 'package:gc_wizard/tools/games/scrabble/logic/scrabble.dart';
 import 'package:gc_wizard/tools/science_and_technology/cross_sums/widget/crosstotal_output.dart';
 import 'package:gc_wizard/tools/science_and_technology/cross_sums/widget/crosstotal_switch.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';

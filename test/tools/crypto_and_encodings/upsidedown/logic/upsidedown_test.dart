@@ -8,7 +8,7 @@ void main() {
 
       {'input' : '0123456789', 'expectedOutput' : '68L9ဌ߈Ɛζ⇂0'},
       {'input' : 'abcdefghijklmnopqrstuvwxyz', 'expectedOutput' : 'zʎxʍʌnʇsɹbdouɯlʞſ̣!ɥᵷɟǝpɔqɐ'},
-      {'input' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : 'Z⅄XMɅՈꞱSꓤꝹԀONꟽ⅂ꓘꓩIH⅁ℲEꓷƆꓭⱯ'},
+      {'input' : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'expectedOutput' : 'Z⅄XMɅՈꞱSꓤꝹԀONꟽ⅂ꓘꓩIH⅁ℲƎꓷƆꓭⱯ'},
     ];
 
     for (var elem in _inputsToExpected) {

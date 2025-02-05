@@ -21,11 +21,6 @@ bool __solveSymbolism(List<Equation> equations, HashMap<String, int> mapping, Li
       if (!_allowLeadingZeros && _hasLeadingZeros(mapping, equations)) {
         return false;
       }
-      var equation = equations.first.equation;
-      // var solution = assignedValues.entries.toList();
-      // solution.sort(((a, b) => a.key.compareTo(b.key)));
-      print('Lösung gefunden: $equation $mapping $_currentCombination% $_totalPermutations');
-
       _solutions.add(HashMap<String, int>.from(mapping));
       if (!_allSolutions || _solutions.length >= MAX_SOLUTIONS) return true;
     }
@@ -101,46 +96,4 @@ bool _hasLeadingZeros(Map<String, int> mapping, List<Equation> equations) {
   }
   return false;
 }
-
-// void main() {
-//   // Beispielgleichungen
-//   List<String> equations = [
-//     "ABCB+DEAF=GFFB",
-//     "AEEF+AHG=AGIG",
-//     "EBB*AH=HGCF",
-//     "ABCB-AEEF=EBB",
-//     "DEAF/AHG=AH",
-//     "GFFB+AGIG=HGCF"
-//   ];
-//
-//   var startTime = DateTime.now();
-//   // Lösen
-//   solveSymbolism(equations, false, false);
-//   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
-//
-//   equations = [
-//   "GJ*DJ=LBAC",
-//   "BJKD+BCCK=DJKB",
-//   "BJLH-GF=BHJL",
-//   "BJKD-GJ=BJLH",
-//   "BCCK/DJ=GF",
-//   "DJKB-LBAC=BHJL"
-//   ];
-//
-//   startTime = DateTime.now();
-//   // Lösen
-//   solveSymbolism(equations, false, false);
-//   print(DateTime.now().difference(startTime).inMilliseconds.toString() + 'ms');
-//
-// }
-
-// Solution for Example 1: {A: 1, B: 6, C: 9, D: 2, E: 3, F: 0, G: 4, H: 5, I: 8}
-// 2532ms
-// Solution for Example 2: {G: 5, J: 7, D: 3, K: 8, B: 1, C: 9, F: 4, L: 2, H: 6, A: 0}
-// 8365ms
-
-// Lösung gefunden: ABCB-AEEF=EBB {F: 0, A: 1, E: 3, B: 6, H: 5, D: 2, C: 9, I: 8, G: 4} 656608% 100000000
-// 233ms
-// Lösung gefunden: BJKD+BCCK=DJKB {F: 4, A: 0, J: 7, K: 8, B: 1, H: 6, D: 3, C: 9, G: 5, L: 2} 98282% 1000000000
-// 233ms
 
