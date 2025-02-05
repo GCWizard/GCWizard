@@ -1,4 +1,4 @@
-part of 'package:gc_wizard/tools/games/sudoku/sudoku_solver/widget/sudoku_solver.dart';
+part of 'package:gc_wizard/tools/games/sudoku/widget/sudoku_solver.dart';
 
 class _SudokuBoard extends StatefulWidget {
   final void Function(SudokuBoard) onChanged;

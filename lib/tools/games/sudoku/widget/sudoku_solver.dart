@@ -13,7 +13,7 @@ import 'package:gc_wizard/common_widgets/spinners/gcw_page_spinner.dart';
 import 'package:gc_wizard/tools/games/sudoku/logic/sudoku_solver.dart';
 import 'package:touchable/touchable.dart';
 
-part 'package:gc_wizard/tools/games/sudoku/sudoku_solver/widget/sudoku_board.dart';
+part 'package:gc_wizard/tools/games/sudoku/widget/sudoku_board.dart';
 
 class SudokuSolver extends StatefulWidget {
   const SudokuSolver({Key? key}) : super(key: key);
