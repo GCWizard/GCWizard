@@ -5,6 +5,7 @@ import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_page_spinner.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/irrational_numbers/_common/logic/irrational_numbers.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
@@ -82,33 +83,16 @@ class _IrrationalNumbersSearchState extends State<IrrationalNumbersSearch> {
     var selector = (_totalCurrentSolutions > 1)
         ? Container(
             margin: const EdgeInsets.symmetric(vertical: 5 * DOUBLE_DEFAULT_MARGIN),
-            child: Row(
-              children: [
-                GCWIconButton(
-                  icon: Icons.arrow_back_ios,
-                  onPressed: () {
-                    setState(() {
-                      _currentSolution = (_currentSolution - 1 + _totalCurrentSolutions) % _totalCurrentSolutions;
-                    });
-                  },
-                ),
-                Expanded(
-                  child: GCWText(
-                      align: Alignment.center,
-                      text:
-                          '${_currentSolution + 1}/$_totalCurrentSolutions' // + (_currentSolutions.length >= _MAX_SOLUTIONS ? ' *' : ''),
-                      ),
-                ),
-                GCWIconButton(
-                  icon: Icons.arrow_forward_ios,
-                  onPressed: () {
-                    setState(() {
-                      _currentSolution = (_currentSolution + 1) % _totalCurrentSolutions;
-                    });
-                  },
-                ),
-              ],
-            ))
+            child: GCWPageSpinner(
+              max: _totalCurrentSolutions,
+              index: _currentSolution + 1,
+              onChanged: (index) {
+                setState(() {
+                  _currentSolution = index - 1;
+                });
+              },
+            ),
+          )
         : Container();
 
     var _solution = _solutions[_currentSolution];
