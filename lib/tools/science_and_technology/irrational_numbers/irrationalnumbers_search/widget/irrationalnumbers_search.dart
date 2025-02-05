@@ -5,7 +5,7 @@ import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
-import 'package:gc_wizard/common_widgets/spinners/gcw_entry_spinner.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_page_spinner.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/irrational_numbers/_common/logic/irrational_numbers.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
@@ -83,7 +83,7 @@ class _IrrationalNumbersSearchState extends State<IrrationalNumbersSearch> {
     var selector = (_totalCurrentSolutions > 1)
         ? Container(
             margin: const EdgeInsets.symmetric(vertical: 5 * DOUBLE_DEFAULT_MARGIN),
-            child: GCWEntrySpinner(
+            child: GCWPageSpinner(
               max: _totalCurrentSolutions,
               index: _currentSolution + 1,
               onChanged: (index) {

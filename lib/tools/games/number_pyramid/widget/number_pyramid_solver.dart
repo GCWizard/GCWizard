@@ -9,7 +9,7 @@ import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:gc_wizard/common_widgets/spinners/gcw_entry_spinner.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_page_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/text_input_formatters/gcw_integer_textinputformatter.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
@@ -76,7 +76,7 @@ class _NumberPyramidSolverState extends State<NumberPyramidSolver> {
         if (_currentBoard.solutions != null && _currentBoard.solutions!.length > 1)
           Container(
             margin: const EdgeInsets.only(top: 5 * DOUBLE_DEFAULT_MARGIN),
-            child: GCWEntrySpinner(
+            child: GCWPageSpinner(
               textExtension:  (_currentBoard.solutions!.length >= _MAX_SOLUTIONS ? ' *' : ''),
               max: _currentBoard.solutions!.length,
               index: _currentSolution + 1,
