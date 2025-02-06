@@ -63,7 +63,7 @@ class _GCWDropDownState<T> extends State<GCWDropDown<T>> {
                           width: 1.0),
                     ),
                     child: DropdownButtonHideUnderline(
-                        child: DropdownButton<T?>(
+                        child: Material(child: DropdownButton<T?>(
                       itemHeight: null,
                       isExpanded: true,
                       icon: Icon(
@@ -95,7 +95,7 @@ class _GCWDropDownState<T> extends State<GCWDropDown<T>> {
                               );
                             }).toList();
                           },
-                    )))))
+                    ))))))
       ],
     );
   }

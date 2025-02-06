@@ -14,8 +14,13 @@ class GCWKeyValueInput extends StatefulWidget {
   late int? valueFlex;
   late void Function()? onSetState;
 
+  final bool Function(String)? validateAddedKey;
+  final bool Function(String)? validateAddedValue;
+
   GCWKeyValueInput({
     Key? key,
+    this.validateAddedKey,
+    this.validateAddedValue
   }) : super(key: key);
 
   @override
@@ -78,6 +83,7 @@ class GCWKeyValueInputState extends State<GCWKeyValueInput> {
     return Expanded(
         flex: 2,
         child: GCWTextField(
+          key: const Key('gcwtextfield_keyvalueinput_newentry_key'),
           hintText: widget.keyHintText,
           controller: _keyController,
           inputFormatters: widget.keyInputFormatters,
@@ -99,6 +105,7 @@ class GCWKeyValueInputState extends State<GCWKeyValueInput> {
 
   Widget addIcon() {
     return GCWIconButton(
+        key: const Key('gcwiconbutton_keyvalueinput_newentry_add'),
         icon: Icons.add,
         onPressed: () {
           if (!validInput()) {
@@ -115,6 +122,7 @@ class GCWKeyValueInputState extends State<GCWKeyValueInput> {
     return Expanded(
       flex: widget.valueFlex ?? 2,
       child: GCWTextField(
+        key: const Key('gcwtextfield_keyvalueinput_newentry_value'),
         hintText: widget.valueHintText,
         controller: _valueController,
         inputFormatters: widget.valueInputFormatters,
@@ -133,6 +141,13 @@ class GCWKeyValueInputState extends State<GCWKeyValueInput> {
   }
 
   void addEntry(KeyValueBase entry, {bool clearInput = true}) {
+    if (widget.validateAddedKey != null && widget.validateAddedKey!(entry.key) == false) {
+      return;
+    }
+    if (widget.validateAddedValue != null && widget.validateAddedValue!(entry.value) == false) {
+      return;
+    }
+
     if (widget.onAddEntry == null) {
       widget.entries.add(entry);
     } else {

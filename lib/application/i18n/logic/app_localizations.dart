@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -101,6 +102,11 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
  */
 String i18n(BuildContext context, String key,
     {List<dynamic> parameters = const [], bool useDefaultLanguage = false, String ifTranslationNotExists = ''}) {
+  final isTest = Platform.environment.containsKey('FLUTTER_TEST');
+  if (isTest) {
+    return key;
+  }
+
   Map<String, String> parametersMap = {};
   for (int i = parameters.length; i >= 1; i--) {
     parametersMap.putIfAbsent('%s' + i.toString(), () => parameters[i - 1].toString());

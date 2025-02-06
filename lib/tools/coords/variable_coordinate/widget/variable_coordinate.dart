@@ -12,7 +12,6 @@ import 'package:gc_wizard/common_widgets/key_value_editor/gcw_key_value_editor.d
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
-import 'package:gc_wizard/common_widgets/text_input_formatters/variablestring_textinputformatter.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/common_widgets/units/gcw_unit_dropdown.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dmm/logic/dmm.dart';
@@ -118,7 +117,7 @@ class _VariableCoordinateState extends State<VariableCoordinate> {
     updateFormulaValue(entry, widget.formula);
   }
 
-  bool _checkValidEditedValue(String input) {
+  bool _checkValidValue(String input) {
     if (!VARIABLESTRING.hasMatch(input)) {
       showGCWAlertDialog(context, '', i18n(context, 'formulasolver_values_novalidinterpolated'),
           cancelButton: false, () {});
@@ -220,14 +219,14 @@ class _VariableCoordinateState extends State<VariableCoordinate> {
     return GCWKeyValueEditor(
       keyHintText: i18n(context, 'coords_variablecoordinate_variable'),
       valueHintText: i18n(context, 'coords_variablecoordinate_possiblevalues'),
-      addValueInputFormatters: [VariableStringTextInputFormatter()],
       valueFlex: 4,
       onNewEntryChanged: (entry) => _updateNewEntry(entry),
       entries: widget.formula.values,
       onAddEntry: (entry) => _addEntry(entry),
       onUpdateEntry: (entry) => _updateEntry(entry),
       addOnDispose: true,
-      validateEditedValue: (String input) => _checkValidEditedValue(input),
+      validateAddedValue: (String input) => _checkValidValue(input),
+      validateEditedValue: (String input) => _checkValidValue(input),
     );
   }
 

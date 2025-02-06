@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
@@ -26,7 +28,12 @@ BaseCoordinate get defaultBaseCoordinate {
 const CoordinateFormatKey _fallbackDefaultCoordFormatKey = CoordinateFormatKey.DMM;
 
 CoordinateFormat get defaultCoordinateFormat {
-  var formatStr = Prefs.getString(PREFERENCE_COORD_DEFAULT_FORMAT);
+  var formatStr = '';
+
+  final isTest = Platform.environment.containsKey('FLUTTER_TEST');
+  if (!isTest) {
+    formatStr = Prefs.getString(PREFERENCE_COORD_DEFAULT_FORMAT);
+  }
 
   CoordinateFormatKey format;
   if (formatStr.isEmpty) {
@@ -90,13 +97,25 @@ int defaultHemiphereLongitude() {
 Ellipsoid get defaultEllipsoid {
   var _WGS84Ells = Ellipsoid.WGS84;
 
-  String type = Prefs.getString(PREFERENCE_COORD_DEFAULT_ELLIPSOID_TYPE);
-  if (type.isEmpty) {
+
+  String type = '';
+  final isTest = Platform.environment.containsKey('FLUTTER_TEST');
+  if (!isTest) {
+    type = Prefs.getString(PREFERENCE_COORD_DEFAULT_ELLIPSOID_TYPE);
+  }
+  if (type.isEmpty || isTest) {
     type = EllipsoidType.STANDARD.toString();
   }
 
   if (type == EllipsoidType.STANDARD.toString()) {
-    var ells = getEllipsoidByName(Prefs.getString(PREFERENCE_COORD_DEFAULT_ELLIPSOID_NAME));
+    var name = '';
+    if (!isTest) {
+      name = Prefs.getString(PREFERENCE_COORD_DEFAULT_ELLIPSOID_NAME);
+    } else {
+      name = ELLIPSOID_NAME_WGS84;
+    }
+
+    var ells = getEllipsoidByName(name);
     if (ells == null) {
       return _WGS84Ells;
     }

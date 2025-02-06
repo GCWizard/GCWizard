@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/length.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit.dart';
@@ -5,6 +7,11 @@ import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit
 import 'package:prefs/prefs.dart';
 
 Length get defaultLengthUnit {
+  final isTest = Platform.environment.containsKey('FLUTTER_TEST');
+  if (isTest) {
+    return UNITCATEGORY_LENGTH.defaultUnit;
+  }
+
   var pref = Prefs.getString(PREFERENCE_DEFAULT_LENGTH_UNIT);
   if (pref.isEmpty) {
     return UNITCATEGORY_LENGTH.defaultUnit;

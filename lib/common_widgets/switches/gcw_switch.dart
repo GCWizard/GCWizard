@@ -25,7 +25,7 @@ class GCWSwitch extends StatefulWidget {
 class _GCWSwitchState extends State<GCWSwitch> {
   @override
   Widget build(BuildContext context) {
-    return Switch(
+    return Material(child: Switch(
         value: widget.value,
         onChanged: (bool value) {
           setState(() {
@@ -35,6 +35,6 @@ class _GCWSwitchState extends State<GCWSwitch> {
         activeColor: widget.activeThumbColor,
         activeTrackColor: widget.activeTrackColor,
         inactiveTrackColor: widget.inactiveTrackColor,
-        inactiveThumbColor: widget.inactiveThumbColor);
+        inactiveThumbColor: widget.inactiveThumbColor));
   }
 }

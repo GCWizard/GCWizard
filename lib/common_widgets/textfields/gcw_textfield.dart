@@ -77,7 +77,7 @@ class _GCWTextFieldState extends State<GCWTextField> {
     var textField = Container(
         margin: const EdgeInsets.symmetric(vertical: DEFAULT_MARGIN),
         child: LayoutBuilder(builder: (context, constraints) {
-          return TextFormField(
+          return Material(child: TextFormField(
             autocorrect: false,
             decoration: InputDecoration(
                 hintText: widget.hintText,
@@ -133,7 +133,7 @@ class _GCWTextFieldState extends State<GCWTextField> {
             maxLengthEnforcement: MaxLengthEnforcement.enforced,
             maxLength: widget.maxLength,
             selectionControls: GCWTextSelectionControls(),
-          );
+          ));
         }));
 
     if (widget.title.isEmpty) return textField;

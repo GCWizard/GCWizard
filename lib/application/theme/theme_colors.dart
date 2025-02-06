@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:prefs/prefs.dart';
@@ -79,7 +81,13 @@ void setThemeColors(ThemeType type) {
 ThemeColors themeColors() {
   if (_themeColors != null) return _themeColors!;
 
-  var themeSetting = Prefs.getString(PREFERENCE_THEME_COLOR);
+  var themeSetting = ThemeType.DARK.toString();
+
+  final isTest = Platform.environment.containsKey('FLUTTER_TEST');
+  if (!isTest) {
+    themeSetting = Prefs.getString(PREFERENCE_THEME_COLOR);
+  }
+
   var type = ThemeType.values.firstWhere((e) => e.toString() == themeSetting);
 
   setThemeColors(type);
