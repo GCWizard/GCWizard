@@ -37,6 +37,14 @@ const _SQRT5 = 2.23606797749978969640917366873127623;
 
 var _SUPPORTED_OPERATION_CHARACTERS = RegExp(r'[+\-*!^%/]');
 
+class _GCWGrammarParser extends GrammarParser {
+  final ParserOptions options;
+
+  _GCWGrammarParser(this.options) : super(options) {
+    constants.remove('e'); // to avoid confusion when entering the much more often case "e as variable"; using e as constant, do e(1) or e^1
+  }
+}
+
 class FormulaParser {
   final ContextModel _context = ContextModel();
 
@@ -46,7 +54,6 @@ class FormulaParser {
   Map<String, String> safedTextsMap = {};
 
   static const Map<String, double> CONSTANTS = {
-    'e': e,
     'ln10': ln10,
     'ln2': ln2,
     'log2e': log2e,
@@ -67,7 +74,7 @@ class FormulaParser {
     'sqrt5': _SQRT5,
   };
 
-  ExpressionParser parser = GrammarParser(
+  ExpressionParser parser = _GCWGrammarParser(
       const ParserOptions(
           constants: CONSTANTS
       )

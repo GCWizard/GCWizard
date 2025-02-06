@@ -88,7 +88,7 @@ void main() {
       {'formula' : 'sqrt3', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '1.732050807569', 'state': 'ok'}]}},
       {'formula' : 'sqrt5', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2.2360679775', 'state': 'ok'}]}},
       {'formula' : 'log10e', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0.434294481903', 'state': 'ok'}]}},
-      {'formula' : 'e', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2.718281828459', 'state': 'ok'}]}},
+      {'formula' : 'e', 'expectedOutput' : {'state': 'error', 'output': [{'result': 'e', 'state': 'error'}]}}, // e is excluded from constants to avoid confusing variable names (E as variable is much more often used than e as a constant)
 
       //math library testing
       {'formula' : '36^(1:2)', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '6', 'state': 'ok'}]}},
@@ -100,6 +100,7 @@ void main() {
       {'formula' : 'A + 1', 'values': {'A': '\u03a6'}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2.61803398875', 'state': 'ok'}]}},
       {'formula' : '5! + 1', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '121', 'state': 'ok'}]}},
       {'formula' : 'nth(round(11653180/56*0.006,0),2)', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2', 'state': 'ok'}]}},
+      {'formula' : 'e(1)', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2.718281828459', 'state': 'ok'}]}},
       {'formula' : 'e(8)', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2980.957987041728', 'state': 'ok'}]}},
       {'formula' : 'e^8', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2980.957987041728', 'state': 'ok'}]}},
       {'formula' : '8e', 'expectedOutput' : {'state': 'error', 'output': [{'result': '8e', 'state': 'error'}]}},
