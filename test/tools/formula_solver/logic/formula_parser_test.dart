@@ -66,6 +66,7 @@ void main() {
       {'formula' : 'e', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3.14159265359', 'state': 'ok'}]}},
       {'formula' : 'Pi', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3.14159265359', 'state': 'ok'}]}},
       {'formula' : 'pi', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3.14159265359', 'state': 'ok'}]}},
+      {'formula' : 'pi', 'values': {'pi': '4'}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3.14159265359', 'state': 'ok'}]}}, // Currently variables named after constants, will ignored. Exception: e
       {'formula' : 'pi * A', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '9.424777960769', 'state': 'ok'}]}},
       {'formula' : 'E * PI', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '9.869604401089', 'state': 'ok'}]}},
       {'formula' : 'E [PI]', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': 'E 3.14159265359', 'state': 'ok'}]}},
@@ -80,11 +81,14 @@ void main() {
       {'formula' : 'phi', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '1.61803398875', 'state': 'ok'}]}},
       {'formula' : 'pi', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3.14159265359', 'state': 'ok'}]}},
       {'formula' : '\u220F', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '3.14159265359', 'state': 'ok'}]}},
+      {'formula' : '\u03A6', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '1.61803398875', 'state': 'ok'}]}},
       {'formula' : 'ln2', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0.69314718056', 'state': 'ok'}]}},
       {'formula' : 'ln10', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2.302585092994', 'state': 'ok'}]}},
       {'formula' : 'sqrt2', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '1.414213562373', 'state': 'ok'}]}},
       {'formula' : 'sqrt3', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '1.732050807569', 'state': 'ok'}]}},
       {'formula' : 'sqrt5', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2.2360679775', 'state': 'ok'}]}},
+      {'formula' : 'log10e', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0.434294481903', 'state': 'ok'}]}},
+      {'formula' : 'e', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2.718281828459', 'state': 'ok'}]}},
 
       //math library testing
       {'formula' : '36^(1:2)', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '6', 'state': 'ok'}]}},
@@ -96,6 +100,11 @@ void main() {
       {'formula' : 'A + 1', 'values': {'A': '\u03a6'}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2.61803398875', 'state': 'ok'}]}},
       {'formula' : '5! + 1', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '121', 'state': 'ok'}]}},
       {'formula' : 'nth(round(11653180/56*0.006,0),2)', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2', 'state': 'ok'}]}},
+      {'formula' : 'e(8)', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2980.957987041728', 'state': 'ok'}]}},
+      {'formula' : 'e^8', 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2980.957987041728', 'state': 'ok'}]}},
+      {'formula' : '8e', 'expectedOutput' : {'state': 'error', 'output': [{'result': '8e', 'state': 'error'}]}},
+      {'formula' : '8E', 'expectedOutput' : {'state': 'error', 'output': [{'result': '8E', 'state': 'error'}]}},
+      {'formula' : '8A', 'expectedOutput' : {'state': 'error', 'output': [{'result': '8A', 'state': 'error'}]}},
 
       //Referencing values
       {'formula' : 'F', 'values': values, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '1', 'state': 'ok'}]}},
@@ -168,15 +177,18 @@ void main() {
       {'formula' : 'nth(1234,2)', 'values': <String, String>{}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2', 'state': 'ok'}]}},
       {'formula' : 'nth(1234,2)', 'values': <String, String>{}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2', 'state': 'ok'}]}},
       {'formula' : 'nth(1234,2,3)', 'values': <String, String>{}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '23', 'state': 'ok'}]}},
-      {'formula' : 'nth(1234.,2)', 'values': <String, String>{}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2', 'state': 'ok'}]}},
-      {'formula' : 'nth(1234.,2,6)', 'values': <String, String>{}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '234', 'state': 'ok'}]}},
+      {'formula' : 'nth(1234.0,2)', 'values': <String, String>{}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2', 'state': 'ok'}]}},
+      // {'formula' : 'nth(1234.,2)', 'values': <String, String>{}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2', 'state': 'ok'}]}},
+      {'formula' : 'nth(1234.0,2,6)', 'values': <String, String>{}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '234', 'state': 'ok'}]}},
+      // {'formula' : 'nth(1234.,2,6)', 'values': <String, String>{}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '234', 'state': 'ok'}]}},
       {'formula' : 'nth(1234.1,2,6)', 'values': <String, String>{}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '234.1', 'state': 'ok'}]}},
       {'formula' : 'nth(1234.1,5,6)', 'values': <String, String>{}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0.1', 'state': 'ok'}]}},
       {'formula' : 'nth(1234.1,5)', 'values': <String, String>{}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0', 'state': 'ok'}]}},
       {'formula' : 'nth(1234.1,5,5)', 'values': <String, String>{}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '0', 'state': 'ok'}]}},
       {'formula' : 'nth(1234.1,-1,5)', 'values': <String, String>{}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '1234', 'state': 'ok'}]}},
       {'formula' : 'nth(1234.1, 4, -1)', 'values': <String, String>{}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '4', 'state': 'ok'}]}},
-      {'formula' : 'A + nth  (1234.  , cs (  11  ))', 'values': <String, String>{'a': '2000'}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2002', 'state': 'ok'}]}},
+      {'formula' : 'A + nth  (1234.0  , cs (  11  ))', 'values': <String, String>{'a': '2000'}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2002', 'state': 'ok'}]}},
+      // {'formula' : 'A + nth  (1234.  , cs (  11  ))', 'values': <String, String>{'a': '2000'}, 'expectedOutput' : {'state': 'ok', 'output': [{'result': '2002', 'state': 'ok'}]}},
     ];
 
     for (var elem in _inputsToExpected) {

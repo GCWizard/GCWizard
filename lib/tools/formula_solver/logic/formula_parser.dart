@@ -39,7 +39,6 @@ var _SUPPORTED_OPERATION_CHARACTERS = RegExp(r'[+\-*!^%/]');
 
 class FormulaParser {
   final ContextModel _context = ContextModel();
-  Parser parser = Parser();
 
   bool unlimitedExpanded = false;
   Map<String, String> safedFormulasMap = {};
@@ -47,10 +46,11 @@ class FormulaParser {
   Map<String, String> safedTextsMap = {};
 
   static const Map<String, double> CONSTANTS = {
+    'e': e,
     'ln10': ln10,
     'ln2': ln2,
-    // 'log2e': log2e,    // not supported due to a problem by the math expression lib: https://github.com/fkleon/math-expressions/issues/35
-    // 'log10e': log10e,  // not supported due to a problem by the math expression lib: https://github.com/fkleon/math-expressions/issues/35
+    'log2e': log2e,
+    'log10e': log10e,
     'pi': pi,
     '\u03A0': pi,
     '\u03C0': pi,
@@ -61,11 +61,17 @@ class FormulaParser {
     '\u03C6': _PHI,
     '\u03d5': _PHI,
     '\u0278': _PHI,
-    // 'sqrt1_2': sqrt1_2, // not supported due to a problem by the math expression lib: https://github.com/fkleon/math-expressions/issues/35
+    'sqrt1_2': sqrt1_2,
     'sqrt2': sqrt2,
     'sqrt3': _SQRT3,
     'sqrt5': _SQRT5,
   };
+
+  ExpressionParser parser = GrammarParser(
+      const ParserOptions(
+          constants: CONSTANTS
+      )
+  );
 
   static const List<String> _BUILTIN_FUNCTIONS = [
     'sqrt',
@@ -180,10 +186,6 @@ class FormulaParser {
   };
 
   FormulaParser({this.unlimitedExpanded = false}) {
-    for (var constant in CONSTANTS.entries) {
-      _context.bindVariableName(constant.key, Number(constant.value));
-    }
-
     _CUSTOM_FUNCTIONS.forEach((name, handler) {
       parser.addFunction(name, handler);
     });
