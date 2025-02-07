@@ -4,12 +4,11 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
-import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
-import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_page_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/spinner_constants.dart';
 import 'package:gc_wizard/tools/games/bowling/logic/bowling.dart';
@@ -69,37 +68,16 @@ class _BowlingState extends State<Bowling> {
           suppressTopSpace: true,
           suppressBottomSpace: true,
         ),
-        Row(
-          children: <Widget>[
-            GCWIconButton(
-              icon: Icons.arrow_back_ios,
-              onPressed: () {
-                setState(() {
-                  _currentFrame--;
-                  if (_currentFrame < 0) _currentFrame = 9;
-
-                  _setThrowPointsForCurrentFrame();
-                });
-              },
-            ),
-            Expanded(
-              child: GCWText(
-                align: Alignment.center,
-                text: i18n(context, 'bowling_frame') + ' ' + (_currentFrame + 1).toString() + ' / 10',
-              ),
-            ),
-            GCWIconButton(
-              icon: Icons.arrow_forward_ios,
-              onPressed: () {
-                setState(() {
-                  _currentFrame++;
-                  if (_currentFrame > 9) _currentFrame = 0;
-
-                  _setThrowPointsForCurrentFrame();
-                });
-              },
-            ),
-          ],
+        GCWPageSpinner(
+          text: i18n(context, 'bowling_frame'),
+          max: 10,
+          index: _currentFrame + 1,
+          onChanged: (index) {
+            setState(() {
+              _currentFrame = index - 1;
+              _setThrowPointsForCurrentFrame();
+            });
+          },
         ),
         Row(children: <Widget>[
           Expanded(

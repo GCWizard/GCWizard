@@ -3,12 +3,12 @@ import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
-import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_delete_alertdialog.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
 import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_page_spinner.dart';
 import 'package:gc_wizard/tools/games/sudoku/logic/sudoku_solver.dart';
 import 'package:touchable/touchable.dart';
 
@@ -50,35 +50,16 @@ class _SudokuSolverState extends State<SudokuSolver> {
         ),
         Container(height: 8 * DOUBLE_DEFAULT_MARGIN),
         if (_currentBoard.solutions != null && _currentBoard.solutions!.length > 1)
-          Row(
-            children: [
-              GCWIconButton(
-                icon: Icons.arrow_back_ios,
-                onPressed: () {
-                  setState(() {
-                    _currentSolution =
-                        (_currentSolution - 1 + _currentBoard.solutions!.length) % _currentBoard.solutions!.length;
-                    _showSolution();
-                  });
-                },
-              ),
-              Expanded(
-                child: GCWText(
-                  align: Alignment.center,
-                  text: '${_currentSolution + 1}/${_currentBoard.solutions!.length}' +
-                      (_currentBoard.solutions!.length >= _MAX_SOLUTIONS ? ' *' : ''),
-                ),
-              ),
-              GCWIconButton(
-                icon: Icons.arrow_forward_ios,
-                onPressed: () {
-                  setState(() {
-                    _currentSolution = (_currentSolution + 1) % _currentBoard.solutions!.length;
-                    _showSolution();
-                  });
-                },
-              ),
-            ],
+          GCWPageSpinner(
+            textExtension:  (_currentBoard.solutions!.length >= _MAX_SOLUTIONS ? ' *' : ''),
+            max: _currentBoard.solutions!.length,
+            index: _currentSolution + 1,
+            onChanged: (index) {
+              setState(() {
+                _currentSolution = index - 1;
+                _showSolution();
+              });
+            },
           ),
         if (_currentBoard.solutions != null && _currentBoard.solutions!.length >= _MAX_SOLUTIONS)
           Container(

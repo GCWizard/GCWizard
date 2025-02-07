@@ -27,6 +27,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_files_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_page_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_code_textfield.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/coordinate_text_formatter.dart';
@@ -683,37 +684,15 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
             )
           ]),
         ),
-        Row(
-          children: <Widget>[
-            GCWIconButton(
-              icon: Icons.arrow_back_ios,
-              onPressed: () {
-                setState(() {
-                  _mediaFileIndex--;
-                  if (_mediaFileIndex < 1) _mediaFileIndex = WherigoCartridgeGWCData.NumberOfObjects - 1;
-                });
-              },
-            ),
-            Expanded(
-              child: GCWText(
-                align: Alignment.center,
-                text: i18n(context, 'wherigo_data_media') +
-                    ' ' +
-                    _mediaFileIndex.toString() +
-                    ' / ' +
-                    (WherigoCartridgeGWCData.NumberOfObjects - 1).toString(),
-              ),
-            ),
-            GCWIconButton(
-              icon: Icons.arrow_forward_ios,
-              onPressed: () {
-                setState(() {
-                  _mediaFileIndex++;
-                  if (_mediaFileIndex > WherigoCartridgeGWCData.NumberOfObjects - 1) _mediaFileIndex = 1;
-                });
-              },
-            ),
-          ],
+        GCWPageSpinner(
+          text: i18n(context, 'wherigo_data_media'),
+          max: WherigoCartridgeGWCData.NumberOfObjects,
+          index: _mediaFileIndex,
+          onChanged: (index) {
+            setState(() {
+              _mediaFileIndex = index;
+            });
+          },
         ),
         if (_mediaFileIndex > WherigoCartridgeGWCData.MediaFilesContents.length - 1)
           GCWOutputText(
@@ -837,57 +816,36 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
               ]),
             )
           : const GCWDefaultOutput(),
-      Row(
-        children: <Widget>[
-          GCWIconButton(
-            icon: Icons.arrow_back_ios,
-            onPressed: () {
-              setState(() {
-                _characterIndex--;
-                if (_characterIndex < 1) _characterIndex = WherigoCartridgeLUAData.Characters.length;
-              });
-            },
-          ),
-          Expanded(
-            child: GCWText(
-              align: Alignment.center,
-              text: i18n(context, 'wherigo_data_character') +
-                  ' ' +
-                  _characterIndex.toString() +
-                  ' / ' +
-                  (WherigoCartridgeLUAData.Characters.length).toString(),
-            ),
-          ),
-          if (WherigoCartridgeLUAData.Characters[_characterIndex - 1].CharacterZonepoint.Latitude != 0.0 &&
-              WherigoCartridgeLUAData.Characters[_characterIndex - 1].CharacterZonepoint.Longitude != 0.0)
-            GCWIconButton(
-              icon: Icons.my_location,
-              size: IconButtonSize.SMALL,
-              iconColor: themeColors().mainFont(),
-              onPressed: () {
-                _openInMap(
-                    _currentZonePoints(
-                        WherigoCartridgeLUAData.Characters[_characterIndex - 1].CharacterName,
-                        WherigoZonePoint(
-                            Latitude:
-                                WherigoCartridgeLUAData.Characters[_characterIndex - 1].CharacterZonepoint.Latitude,
-                            Longitude:
-                                WherigoCartridgeLUAData.Characters[_characterIndex - 1].CharacterZonepoint.Longitude,
-                            Altitude:
-                                WherigoCartridgeLUAData.Characters[_characterIndex - 1].CharacterZonepoint.Altitude)),
-                    []);
-              },
-            ),
-          GCWIconButton(
-            icon: Icons.arrow_forward_ios,
-            onPressed: () {
-              setState(() {
-                _characterIndex++;
-                if (_characterIndex > WherigoCartridgeLUAData.Characters.length) _characterIndex = 1;
-              });
-            },
-          ),
-        ],
+      GCWPageSpinner(
+        text: i18n(context, 'wherigo_data_character'),
+        max: WherigoCartridgeLUAData.Characters.length,
+        index: _characterIndex,
+        onChanged: (index) {
+          setState(() {
+            _characterIndex = index;
+          });
+        },
+        trailing: (WherigoCartridgeLUAData.Characters[_characterIndex - 1].CharacterZonepoint.Latitude != 0.0 &&
+                  WherigoCartridgeLUAData.Characters[_characterIndex - 1].CharacterZonepoint.Longitude != 0.0)
+            ? GCWIconButton(
+                icon: Icons.my_location,
+                size: IconButtonSize.SMALL,
+                iconColor: themeColors().mainFont(),
+                onPressed: () {
+                  _openInMap(
+                      _currentZonePoints(
+                          WherigoCartridgeLUAData.Characters[_characterIndex - 1].CharacterName,
+                          WherigoZonePoint(
+                              Latitude:
+                              WherigoCartridgeLUAData.Characters[_characterIndex - 1].CharacterZonepoint.Latitude,
+                              Longitude:
+                              WherigoCartridgeLUAData.Characters[_characterIndex - 1].CharacterZonepoint.Longitude,
+                              Altitude:
+                              WherigoCartridgeLUAData.Characters[_characterIndex - 1].CharacterZonepoint.Altitude)),
+                      []);
+                },
+              )
+            : null,
       ),
       _buildImageView(
           context,
@@ -929,48 +887,26 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
           ),
         ]),
       ),
-      Row(
-        children: <Widget>[
-          GCWIconButton(
-            icon: Icons.arrow_back_ios,
-            onPressed: () {
-              setState(() {
-                _zoneIndex--;
-                if (_zoneIndex < 1) _zoneIndex = WherigoCartridgeLUAData.Zones.length;
-              });
-            },
-          ),
-          Expanded(
-            child: GCWText(
-              align: Alignment.center,
-              text: i18n(context, 'wherigo_data_zone') +
-                  ' ' +
-                  _zoneIndex.toString() +
-                  ' / ' +
-                  (WherigoCartridgeLUAData.Zones.length).toString(),
-            ),
-          ),
-          GCWIconButton(
-            icon: Icons.my_location,
-            size: IconButtonSize.SMALL,
-            iconColor: themeColors().mainFont(),
-            onPressed: () {
-              _openInMap(
-                  _currentZonePoints(WherigoCartridgeLUAData.Zones[_zoneIndex - 1].ZoneName,
-                      WherigoCartridgeLUAData.Zones[_zoneIndex - 1].ZoneOriginalPoint),
-                  _currentZonePolylines(WherigoCartridgeLUAData.Zones[_zoneIndex - 1].ZonePoints));
-            },
-          ),
-          GCWIconButton(
-            icon: Icons.arrow_forward_ios,
-            onPressed: () {
-              setState(() {
-                _zoneIndex++;
-                if (_zoneIndex > WherigoCartridgeLUAData.Zones.length) _zoneIndex = 1;
-              });
-            },
-          ),
-        ],
+      GCWPageSpinner(
+        text: i18n(context, 'wherigo_data_zone'),
+        max: WherigoCartridgeLUAData.Zones.length,
+        index: _zoneIndex,
+        onChanged: (index) {
+          setState(() {
+            _zoneIndex = index;
+          });
+        },
+        trailing: GCWIconButton(
+          icon: Icons.my_location,
+          size: IconButtonSize.SMALL,
+          iconColor: themeColors().mainFont(),
+          onPressed: () {
+            _openInMap(
+                _currentZonePoints(WherigoCartridgeLUAData.Zones[_zoneIndex - 1].ZoneName,
+                    WherigoCartridgeLUAData.Zones[_zoneIndex - 1].ZoneOriginalPoint),
+                _currentZonePolylines(WherigoCartridgeLUAData.Zones[_zoneIndex - 1].ZonePoints));
+          },
+        ),
       ),
       _buildImageView(
           context,
@@ -992,39 +928,16 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
     }
     return Column(children: <Widget>[
       const GCWDefaultOutput(),
-      Row(
-        children: <Widget>[
-          GCWIconButton(
-            icon: Icons.arrow_back_ios,
-            onPressed: () {
-              setState(() {
-                _inputIndex--;
-                _answerIndex = 1;
-                if (_inputIndex < 1) _inputIndex = WherigoCartridgeLUAData.Inputs.length;
-              });
-            },
-          ),
-          Expanded(
-            child: GCWText(
-              align: Alignment.center,
-              text: i18n(context, 'wherigo_data_input') +
-                  ' ' +
-                  _inputIndex.toString() +
-                  ' / ' +
-                  (WherigoCartridgeLUAData.Inputs.length).toString(),
-            ),
-          ),
-          GCWIconButton(
-            icon: Icons.arrow_forward_ios,
-            onPressed: () {
-              setState(() {
-                _inputIndex++;
-                _answerIndex = 1;
-                if (_inputIndex > WherigoCartridgeLUAData.Inputs.length) _inputIndex = 1;
-              });
-            },
-          ),
-        ],
+      GCWPageSpinner(
+        text: i18n(context, 'wherigo_data_input'),
+        max: WherigoCartridgeLUAData.Inputs.length,
+        index: _inputIndex,
+        onChanged: (index) {
+          setState(() {
+            _inputIndex = index;
+            _answerIndex = 1;
+          });
+        },
       ),
 
       // Widget for Input-Details
@@ -1040,41 +953,15 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
 
       if (WherigoCartridgeLUAData.Inputs[_inputIndex - 1].InputAnswers.isNotEmpty)
         Column(children: <Widget>[
-          Row(
-            children: <Widget>[
-              GCWIconButton(
-                icon: Icons.arrow_back_ios,
-                onPressed: () {
-                  setState(() {
-                    _answerIndex--;
-                    if (_answerIndex < 1) {
-                      _answerIndex = WherigoCartridgeLUAData.Inputs[_inputIndex - 1].InputAnswers.length;
-                    }
-                  });
-                },
-              ),
-              Expanded(
-                child: GCWText(
-                  align: Alignment.center,
-                  text: i18n(context, 'wherigo_data_answer') +
-                      ' ' +
-                      _answerIndex.toString() +
-                      ' / ' +
-                      (WherigoCartridgeLUAData.Inputs[_inputIndex - 1].InputAnswers.length).toString(),
-                ),
-              ),
-              GCWIconButton(
-                icon: Icons.arrow_forward_ios,
-                onPressed: () {
-                  setState(() {
-                    _answerIndex++;
-                    if (_answerIndex > WherigoCartridgeLUAData.Inputs[_inputIndex - 1].InputAnswers.length) {
-                      _answerIndex = 1;
-                    }
-                  });
-                },
-              ),
-            ],
+          GCWPageSpinner(
+            text: i18n(context, 'wherigo_data_answer'),
+            max: WherigoCartridgeLUAData.Inputs[_inputIndex - 1].InputAnswers.length,
+            index: _answerIndex,
+            onChanged: (index) {
+              setState(() {
+                _answerIndex = index;
+              });
+            },
           ),
           Column(
             children: <Widget>[
@@ -1118,37 +1005,15 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
 
     return Column(children: <Widget>[
       const GCWDefaultOutput(),
-      Row(
-        children: <Widget>[
-          GCWIconButton(
-            icon: Icons.arrow_back_ios,
-            onPressed: () {
-              setState(() {
-                _taskIndex--;
-                if (_taskIndex < 1) _taskIndex = WherigoCartridgeLUAData.Tasks.length;
-              });
-            },
-          ),
-          Expanded(
-            child: GCWText(
-              align: Alignment.center,
-              text: i18n(context, 'wherigo_data_task') +
-                  ' ' +
-                  _taskIndex.toString() +
-                  ' / ' +
-                  (WherigoCartridgeLUAData.Tasks.length).toString(),
-            ),
-          ),
-          GCWIconButton(
-            icon: Icons.arrow_forward_ios,
-            onPressed: () {
-              setState(() {
-                _taskIndex++;
-                if (_taskIndex > WherigoCartridgeLUAData.Tasks.length) _taskIndex = 1;
-              });
-            },
-          ),
-        ],
+      GCWPageSpinner(
+        text: i18n(context, 'wherigo_data_task'),
+        max: WherigoCartridgeLUAData.Tasks.length,
+        index: _taskIndex,
+        onChanged: (index) {
+          setState(() {
+            _taskIndex = index;
+          });
+        },
       ),
       _buildImageView(
           context,
@@ -1171,37 +1036,15 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
 
     return Column(children: <Widget>[
       const GCWDefaultOutput(),
-      Row(
-        children: <Widget>[
-          GCWIconButton(
-            icon: Icons.arrow_back_ios,
-            onPressed: () {
-              setState(() {
-                _timerIndex--;
-                if (_timerIndex < 1) _timerIndex = WherigoCartridgeLUAData.Timers.length;
-              });
-            },
-          ),
-          Expanded(
-            child: GCWText(
-              align: Alignment.center,
-              text: i18n(context, 'wherigo_data_timer') +
-                  ' ' +
-                  _timerIndex.toString() +
-                  ' / ' +
-                  (WherigoCartridgeLUAData.Timers.length).toString(),
-            ),
-          ),
-          GCWIconButton(
-            icon: Icons.arrow_forward_ios,
-            onPressed: () {
-              setState(() {
-                _timerIndex++;
-                if (_timerIndex > WherigoCartridgeLUAData.Timers.length) _timerIndex = 1;
-              });
-            },
-          ),
-        ],
+      GCWPageSpinner(
+        text: i18n(context, 'wherigo_data_timer'),
+        max: WherigoCartridgeLUAData.Timers.length,
+        index: _timerIndex,
+        onChanged: (index) {
+          setState(() {
+            _timerIndex = index;
+          });
+        },
       ),
       GCWColumnedMultilineOutput(
           data: _buildOutputListOfTimerData(context, WherigoCartridgeLUAData.Timers[_timerIndex - 1]),
@@ -1240,54 +1083,33 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
               ]),
             )
           : const GCWDefaultOutput(),
-      Row(
-        children: <Widget>[
-          GCWIconButton(
-            icon: Icons.arrow_back_ios,
+      GCWPageSpinner(
+        text: i18n(context, 'wherigo_data_item'),
+        max: WherigoCartridgeLUAData.Items.length,
+        index: _itemIndex,
+        onChanged: (index) {
+          setState(() {
+            _itemIndex = index;
+          });
+        },
+        trailing: (WherigoCartridgeLUAData.Items[_itemIndex - 1].ItemZonepoint.Latitude != 0.0 &&
+                  WherigoCartridgeLUAData.Items[_itemIndex - 1].ItemZonepoint.Longitude != 0.0)
+          ? GCWIconButton(
+            icon: Icons.my_location,
+            size: IconButtonSize.SMALL,
+            iconColor: themeColors().mainFont(),
             onPressed: () {
-              setState(() {
-                _itemIndex--;
-                if (_itemIndex < 1) _itemIndex = WherigoCartridgeLUAData.Items.length;
-              });
-            },
-          ),
-          Expanded(
-            child: GCWText(
-              align: Alignment.center,
-              text: i18n(context, 'wherigo_data_item') +
-                  ' ' +
-                  _itemIndex.toString() +
-                  ' / ' +
-                  (WherigoCartridgeLUAData.Items.length).toString(),
-            ),
-          ),
-          if (WherigoCartridgeLUAData.Items[_itemIndex - 1].ItemZonepoint.Latitude != 0.0 &&
-              WherigoCartridgeLUAData.Items[_itemIndex - 1].ItemZonepoint.Longitude != 0.0)
-            GCWIconButton(
-              icon: Icons.my_location,
-              size: IconButtonSize.SMALL,
-              iconColor: themeColors().mainFont(),
-              onPressed: () {
-                _openInMap(
-                    _currentZonePoints(
-                        WherigoCartridgeLUAData.Items[_itemIndex - 1].ItemName,
-                        WherigoZonePoint(
-                            Latitude: WherigoCartridgeLUAData.Items[_itemIndex - 1].ItemZonepoint.Latitude,
-                            Longitude: WherigoCartridgeLUAData.Items[_itemIndex - 1].ItemZonepoint.Longitude,
-                            Altitude: WherigoCartridgeLUAData.Items[_itemIndex - 1].ItemZonepoint.Altitude)),
-                    []);
+              _openInMap(
+                  _currentZonePoints(
+                      WherigoCartridgeLUAData.Items[_itemIndex - 1].ItemName,
+                      WherigoZonePoint(
+                          Latitude: WherigoCartridgeLUAData.Items[_itemIndex - 1].ItemZonepoint.Latitude,
+                          Longitude: WherigoCartridgeLUAData.Items[_itemIndex - 1].ItemZonepoint.Longitude,
+                          Altitude: WherigoCartridgeLUAData.Items[_itemIndex - 1].ItemZonepoint.Altitude)),
+                  []);
               },
-            ),
-          GCWIconButton(
-            icon: Icons.arrow_forward_ios,
-            onPressed: () {
-              setState(() {
-                _itemIndex++;
-                if (_itemIndex > WherigoCartridgeLUAData.Items.length) _itemIndex = 1;
-              });
-            },
-          ),
-        ],
+            )
+          : null,
       ),
       _buildImageView(
           context,
@@ -1321,37 +1143,15 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
           )
         ]),
       ),
-      Row(
-        children: <Widget>[
-          GCWIconButton(
-            icon: Icons.arrow_back_ios,
-            onPressed: () {
-              setState(() {
-                _messageIndex--;
-                if (_messageIndex < 1) _messageIndex = WherigoCartridgeLUAData.Messages.length;
-              });
-            },
-          ),
-          Expanded(
-            child: GCWText(
-              align: Alignment.center,
-              text: i18n(context, 'wherigo_data_message') +
-                  ' ' +
-                  _messageIndex.toString() +
-                  ' / ' +
-                  (WherigoCartridgeLUAData.Messages.length).toString(),
-            ),
-          ),
-          GCWIconButton(
-            icon: Icons.arrow_forward_ios,
-            onPressed: () {
-              setState(() {
-                _messageIndex++;
-                if (_messageIndex > WherigoCartridgeLUAData.Messages.length) _messageIndex = 1;
-              });
-            },
-          ),
-        ],
+      GCWPageSpinner(
+        text: i18n(context, 'wherigo_data_message'),
+        max: WherigoCartridgeLUAData.Messages.length,
+        index: _messageIndex,
+        onChanged: (index) {
+          setState(() {
+            _messageIndex = index;
+          });
+        },
       ),
       Column(children: _buildOutputListOfMessageData(context, WherigoCartridgeLUAData.Messages[_messageIndex - 1]))
     ]);
@@ -1367,33 +1167,14 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
 
     return Column(children: <Widget>[
       const GCWDefaultOutput(),
-      Row(
-        children: <Widget>[
-          GCWIconButton(
-            icon: Icons.arrow_back_ios,
-            onPressed: () {
-              setState(() {
-                _identifierIndex--;
-                if (_identifierIndex < 1) _identifierIndex = WherigoCartridgeLUAData.Variables.length;
-              });
-            },
-          ),
-          Expanded(
-            child: GCWText(
-              align: Alignment.center,
-              text: _identifierIndex.toString() + ' / ' + (WherigoCartridgeLUAData.Variables.length).toString(),
-            ),
-          ),
-          GCWIconButton(
-            icon: Icons.arrow_forward_ios,
-            onPressed: () {
-              setState(() {
-                _identifierIndex++;
-                if (_identifierIndex > WherigoCartridgeLUAData.Variables.length) _identifierIndex = 1;
-              });
-            },
-          ),
-        ],
+      GCWPageSpinner(
+        max: WherigoCartridgeLUAData.Variables.length,
+        index: _identifierIndex,
+        onChanged: (index) {
+          setState(() {
+            _identifierIndex = index;
+          });
+        },
       ),
       GCWColumnedMultilineOutput(
           data: _buildOutputListOfVariables(context, WherigoCartridgeLUAData.Variables[_identifierIndex - 1])),
@@ -1416,39 +1197,14 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
 
     return Column(children: <Widget>[
       const GCWDefaultOutput(),
-      Row(
-        children: <Widget>[
-          GCWIconButton(
-            icon: Icons.arrow_back_ios,
-            onPressed: () {
-              setState(() {
-                _builderIdentifierIndex--;
-                if (_builderIdentifierIndex < 1) {
-                  _builderIdentifierIndex = WherigoCartridgeLUAData.BuilderVariables.length;
-                }
-              });
-            },
-          ),
-          Expanded(
-            child: GCWText(
-              align: Alignment.center,
-              text: _builderIdentifierIndex.toString() +
-                  ' / ' +
-                  (WherigoCartridgeLUAData.BuilderVariables.length).toString(),
-            ),
-          ),
-          GCWIconButton(
-            icon: Icons.arrow_forward_ios,
-            onPressed: () {
-              setState(() {
-                _builderIdentifierIndex++;
-                if (_builderIdentifierIndex > WherigoCartridgeLUAData.BuilderVariables.length) {
-                  _builderIdentifierIndex = 1;
-                }
-              });
-            },
-          ),
-        ],
+      GCWPageSpinner(
+        max: WherigoCartridgeLUAData.BuilderVariables.length,
+        index: _builderIdentifierIndex,
+        onChanged: (index) {
+          setState(() {
+            _builderIdentifierIndex = index;
+          });
+        },
       ),
       GCWColumnedMultilineOutput(
           data: _buildOutputListOfBuilderVariables(
