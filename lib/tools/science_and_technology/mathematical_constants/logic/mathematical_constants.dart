@@ -10,6 +10,10 @@ class MathematicalConstant {
 }
 
 const Map<String, MathematicalConstant> MATHEMATICAL_CONSTANTS = {
+  'mathematical_constants_kaprekar': MathematicalConstant(
+    symbol: '6174',
+    value: '6174',
+  ),
   'mathematical_constants_zero': MathematicalConstant(
     symbol: '0',
     value: '0',

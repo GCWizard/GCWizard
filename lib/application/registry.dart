@@ -401,6 +401,7 @@ import 'package:gc_wizard/tools/science_and_technology/irrational_numbers/silver
 import 'package:gc_wizard/tools/science_and_technology/irrational_numbers/sqrt2/widget/sqrt2.dart';
 import 'package:gc_wizard/tools/science_and_technology/irrational_numbers/sqrt3/widget/sqrt3.dart';
 import 'package:gc_wizard/tools/science_and_technology/irrational_numbers/sqrt5/widget/sqrt5.dart';
+import 'package:gc_wizard/tools/science_and_technology/kaprekar/widget/kaprekar.dart';
 import 'package:gc_wizard/tools/science_and_technology/keyboard/keyboard_layout/widget/keyboard_layout.dart';
 import 'package:gc_wizard/tools/science_and_technology/keyboard/keyboard_numbers/widget/keyboard_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/lcm/widget/lcm.dart';
@@ -1216,6 +1217,26 @@ void initializeRegistry(BuildContext context) {
       'rotation',
       'kamasutra',
     ]),
+    GCWTool(tool: const Kaprekar(), id: 'kaprekar', categories: const [
+      ToolCategory.SCIENCE_AND_TECHNOLOGY
+    ], searchKeys: const [
+      'mathematical_constants',
+      'kaprekar',
+    ],
+    licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'en.wikipedia.org and contributors',
+          title: '6174',
+          sourceUrl:
+          'https://en.wikipedia.org/w/index.php?title=6174&oldid=1273658196'),
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'en.wikipedia.org and contributors',
+          title: "Kaprekar's routine",
+          sourceUrl:
+          'https://en.wikipedia.org/w/index.php?title=Kaprekar%27s_routine&oldid=1274436905')
+    ],),
     GCWTool(tool: const Kenny(), id: 'kenny', categories: const [
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [

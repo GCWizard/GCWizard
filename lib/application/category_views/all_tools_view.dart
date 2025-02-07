@@ -259,6 +259,7 @@ import 'package:gc_wizard/tools/science_and_technology/hexadecimal/widget/hexade
 import 'package:gc_wizard/tools/science_and_technology/iata_icao_search/widget/iata_icao_search.dart';
 import 'package:gc_wizard/tools/science_and_technology/ieee754/widget/ieee754.dart';
 import 'package:gc_wizard/tools/science_and_technology/ip_codes/widget/ip_codes.dart';
+import 'package:gc_wizard/tools/science_and_technology/kaprekar/widget/kaprekar.dart';
 import 'package:gc_wizard/tools/science_and_technology/lcm/widget/lcm.dart';
 import 'package:gc_wizard/tools/science_and_technology/mathematical_constants/widget/mathematical_constants.dart';
 import 'package:gc_wizard/tools/science_and_technology/music_notes/music_notes/widget/music_notes.dart';
@@ -666,6 +667,7 @@ void _initStaticToolList() {
       className(const IteratedCrossSumRangeFrequency()),
       className(const Judoon()),
       className(const Kamasutra()),
+      className(const Kaprekar()),
       className(const KarolRobot()),
       className(const Kenny()),
       className(const KeyboardSelection()),
