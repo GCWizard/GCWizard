@@ -3619,7 +3619,6 @@ void initializeRegistry(BuildContext context) {
 
     //Elements of Geocaching Selection ***********************************************************************
     GCWTool(tool: const ElementsOfGeocaching(), id: 'elementsofgeocaching', searchKeys: const [
-      'elementsofgeocaching',
     ], licenses: [
       stl._toolLicenseElementsOfGeocachingGeocacherMagazine,
       stl._toolLicenseElementsOfGeocachingGeocachenBE,
@@ -5682,6 +5681,8 @@ void initializeRegistry(BuildContext context) {
         tool: const AtomicNumbersToText(),
         id: 'atomicnumberstotext',
         searchKeys: const [
+          'periodictable',
+          'elementsofgeocaching',
           'periodictable_atomicnumbers',
         ]),
 
