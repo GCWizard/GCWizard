@@ -3,9 +3,11 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
+import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
+import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/tools/science_and_technology/periodic_table/_common/logic/elements_of_geocaching.dart';
@@ -170,7 +172,16 @@ class _ElementsOfGeocachingDataViewState extends State<ElementsOfGeocachingDataV
     return listItems.entries.map((entry) {
       return GCWDropDownMenuItem(
         value: entry.value,
-        child: entry.key.toString(),
+        child: category == ElementsOfGeocachingCategory.TYPE
+            ? Row (
+                children: [
+                  Container(color: elementsOfGeocachingTypeToColor[entry.value]!.color, width: 50, height: defaultFontSize() * 2),
+                  Container(width: 2* DOUBLE_DEFAULT_MARGIN),
+                  Text(entry.key.toString()),
+                ],
+              )
+
+            : entry.key.toString(),
       );
     }).toList();
   }
@@ -228,6 +239,16 @@ class _ElementsOfGeocachingDataViewState extends State<ElementsOfGeocachingDataV
         [
           i18n(context, 'elementsofgeocaching_attribute_type'),
           i18n(context, elementsOfGeocachingTypeToString[eoge.type]!)
+        ],
+        [
+          i18n(context, 'common_color'),
+          Row(
+            children: [
+              Container(color: elementsOfGeocachingTypeToColor[eoge.type]!.color, width: 50, height: defaultFontSize() * 2),
+              Container(width: 2* DOUBLE_DEFAULT_MARGIN),
+              GCWText(text: i18n(context, elementsOfGeocachingTypeToColor[eoge.type]!.name))
+            ],
+          )
         ],
       ]
     };

@@ -983,6 +983,7 @@
   "common_clipboard_notextdatafound": "No text data found in clipboard",
   "common_clipboard_copied": "Copied to clipboard",
   "common_code_startswith": "Code starts with ...",
+  "common_color": "Color",
   "common_common": "Common",
   "common_copy": "Copy",
   "common_count": "Count",
