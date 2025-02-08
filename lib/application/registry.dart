@@ -29,6 +29,7 @@ import 'package:gc_wizard/application/category_views/selector_lists/dates_select
 import 'package:gc_wizard/application/category_views/selector_lists/dna_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/e_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/easter_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/elements_of_geocaching_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/esoteric_programminglanguages_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/games_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/general_codebreakers_selection.dart';
@@ -440,7 +441,9 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/weird_nu
 import 'package:gc_wizard/tools/science_and_technology/numeral_bases/widget/numeral_bases.dart';
 import 'package:gc_wizard/tools/science_and_technology/paperformat/widget/paperformat.dart';
 import 'package:gc_wizard/tools/science_and_technology/periodic_table/atomic_numbers_to_text/widget/atomic_numbers_to_text.dart';
+import 'package:gc_wizard/tools/science_and_technology/periodic_table/periodic_table/widget/elements_of_geocaching.dart';
 import 'package:gc_wizard/tools/science_and_technology/periodic_table/periodic_table/widget/periodic_table.dart';
+import 'package:gc_wizard/tools/science_and_technology/periodic_table/periodic_table_data_view/widget/elements_of_geocaching_data_view.dart';
 import 'package:gc_wizard/tools/science_and_technology/periodic_table/periodic_table_data_view/widget/periodic_table_data_view.dart';
 import 'package:gc_wizard/tools/science_and_technology/physical_constants/widget/physical_constants.dart';
 import 'package:gc_wizard/tools/science_and_technology/piano/widget/piano.dart';
@@ -886,6 +889,16 @@ void initializeRegistry(BuildContext context) {
     ], searchKeys: const [
       'dtmf',
     ]),
+    GCWTool(
+        tool: const ElementsOfGeocachingSelection(),
+        id: 'elementsofgeocaching_selection',
+        categories: const [
+          ToolCategory.SCIENCE_AND_TECHNOLOGY
+        ],
+        searchKeys: const [
+          'periodictable',
+          'elementsofgeocaching',
+        ]),
     GCWTool(
         tool: const EnclosedAreas(),
         id: 'enclosedareas',
@@ -3603,6 +3616,21 @@ void initializeRegistry(BuildContext context) {
         searchKeys: const [
           'esearch',
         ]),
+
+    //Elements of Geocaching Selection ***********************************************************************
+    GCWTool(tool: const ElementsOfGeocaching(), id: 'elementsofgeocaching', searchKeys: const [
+      'elementsofgeocaching',
+    ], licenses: [
+      stl._toolLicenseElementsOfGeocachingGeocacherMagazine,
+      stl._toolLicenseElementsOfGeocachingGeocachenBE,
+    ],),
+    GCWTool(tool: const ElementsOfGeocachingDataView(atomicNumber: 1), id: 'elementsofgeocaching_dataview',
+        searchKeys: const [
+      'elementsofgeocaching_dataview',
+    ], licenses: [
+        stl._toolLicenseElementsOfGeocachingGeocacherMagazine,
+        stl._toolLicenseElementsOfGeocachingGeocachenBE,
+      ],),
 
     //Easter Selection ***************************************************************************************
     GCWTool(

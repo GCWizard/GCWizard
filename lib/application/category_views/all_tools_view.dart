@@ -266,7 +266,9 @@ import 'package:gc_wizard/tools/science_and_technology/music_notes/music_notes/w
 import 'package:gc_wizard/tools/science_and_technology/numeral_bases/widget/numeral_bases.dart';
 import 'package:gc_wizard/tools/science_and_technology/paperformat/widget/paperformat.dart';
 import 'package:gc_wizard/tools/science_and_technology/periodic_table/atomic_numbers_to_text/widget/atomic_numbers_to_text.dart';
+import 'package:gc_wizard/tools/science_and_technology/periodic_table/periodic_table/widget/elements_of_geocaching.dart';
 import 'package:gc_wizard/tools/science_and_technology/periodic_table/periodic_table/widget/periodic_table.dart';
+import 'package:gc_wizard/tools/science_and_technology/periodic_table/periodic_table_data_view/widget/elements_of_geocaching_data_view.dart';
 import 'package:gc_wizard/tools/science_and_technology/periodic_table/periodic_table_data_view/widget/periodic_table_data_view.dart';
 import 'package:gc_wizard/tools/science_and_technology/physical_constants/widget/physical_constants.dart';
 import 'package:gc_wizard/tools/science_and_technology/piano/widget/piano.dart';
@@ -613,6 +615,8 @@ void _initStaticToolList() {
       className(const EasterSelection()),
       className(const EarwigoTextDeobfuscation()),
       className(const EdelcrantzTelegraph()),
+      className(const ElementsOfGeocaching()),
+      className(const ElementsOfGeocachingDataView(atomicNumber: 1)),
       className(const EllipsoidTransform()),
       className(const EnclosedAreas()),
       className(const Enigma()),
