@@ -67,8 +67,10 @@ class _TeletypewriterPunchTapeState extends State<TeletypewriterPunchTape> {
         },
         items: ALL_CODES_CODEBOOK.entries.map((mode) {
           return GCWDropDownMenuItem(
-              value: mode.key, child: i18n(context, mode.value.title),
-              subtitle: i18n(context, mode.value.subtitle) + (mode.value.schema != null ? '\n' + mode.value.schema! : ''));
+              value: mode.key,
+              child: i18n(context, mode.value.title),
+              subtitle:
+                  i18n(context, mode.value.subtitle) + (mode.value.schema != null ? '\n' + mode.value.schema! : ''));
         }).toList(),
       ),
       GCWTwoOptionsSwitch(
@@ -131,7 +133,7 @@ class _TeletypewriterPunchTapeState extends State<TeletypewriterPunchTape> {
                   GCWTextField(
                     controller: _decodeInputController,
                     inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'[ 01]')),
+                      FilteringTextInputFormatter.allow(RegExp(r'[ 01\s]')),
                     ],
                     onChanged: (text) {
                       setState(() {
@@ -143,7 +145,7 @@ class _TeletypewriterPunchTapeState extends State<TeletypewriterPunchTape> {
                   GCWTextField(
                     controller: _decodeInputController,
                     inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'[ 0123456789]')),
+                      FilteringTextInputFormatter.allow(RegExp(r'[ 0123456789\s]')),
                     ],
                     onChanged: (text) {
                       setState(() {
