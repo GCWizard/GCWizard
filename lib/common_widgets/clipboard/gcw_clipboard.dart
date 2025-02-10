@@ -36,7 +36,7 @@ class ClipboardItem {
 
   String toJson() {
     return jsonEncode(
-        {_CLIPBOARD_ITEM_FIELD_TEXT: text, _CLIPBOARD_ITEM_FIELD_CREATED: datetime.microsecondsSinceEpoch.toString()});
+        {_CLIPBOARD_ITEM_FIELD_TEXT: text, _CLIPBOARD_ITEM_FIELD_CREATED: datetime.millisecondsSinceEpoch.toString()});
   }
 
   @override
