@@ -15,6 +15,7 @@ import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_formatselector.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
+import 'package:gc_wizard/utils/string_utils.dart';
 
 class FormatConverter extends StatefulWidget {
   const FormatConverter({Key? key}) : super(key: key);
@@ -101,7 +102,11 @@ class _FormatConverterState extends State<FormatConverter> {
       _currentOutput = buildCoordinate(_currentOutputFormat, outputLatLng);
       _currentMapPoint = GCWMapPoint(point: outputLatLng);
     } else {
-      _currentOutput = i18n(context, 'coords_formatconverter_invalid_coordinate');
+      _currentOutput = i18n(context, 'coords_formatconverter_' + enumName(ErrorCode.Invalid_Coordinate.toString()).toLowerCase());
+      if (_currentCoords.errorCode != ErrorCode.OK && _currentCoords.errorCode != ErrorCode.Invalid_Coordinate) {
+        _currentOutput = _currentOutput.toString() +
+            '\n' + i18n(context, 'coords_formatconverter_' + enumName(_currentCoords.errorCode.toString()).toLowerCase());
+      }
       _currentMapPoint = GCWMapPoint(point: defaultCoordinate);
       _currentAllOutput = GCWCoordsOutput(outputs: [_currentOutput], points: [_currentMapPoint]);
       return;

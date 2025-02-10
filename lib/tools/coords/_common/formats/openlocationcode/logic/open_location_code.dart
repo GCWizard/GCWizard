@@ -30,12 +30,18 @@ class OpenLocationCodeCoordinate extends BaseCoordinate {
   @override
   CoordinateFormat get format => CoordinateFormat(CoordinateFormatKey.OPEN_LOCATION_CODE);
   String text;
+  var _errorCode = ErrorCode.OK;
 
   OpenLocationCodeCoordinate(this.text);
 
   @override
+  ErrorCode get errorCode => _errorCode;
+
+  @override
   LatLng? toLatLng() {
-    return _openLocationCodeToLatLon(this);
+    var result = _openLocationCodeToLatLon(this);
+    _errorCode = (result == null && _isShort(text)) ? ErrorCode.OLC_ShortFormat : ErrorCode.OK;
+    return result;
   }
 
   static OpenLocationCodeCoordinate fromLatLon(LatLng coord, [int codeLength = 14]) {
