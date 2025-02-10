@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -29,7 +28,7 @@ TextStyle gcwTextStyle({double fontSize = 0}) {
 
 TextStyle gcwBetaStyle() {
   return TextStyle(
-      // backgroundColor: themeColors().accent(),
+    // backgroundColor: themeColors().accent(),
       color: themeColors().dialogText(),
       fontSize: fontSizeSmall(),
       fontWeight: FontWeight.bold,
@@ -140,11 +139,6 @@ Color _shadeColor(Color color, double factor) => Color.fromRGBO(
     _shadeValue(color.r, factor), _shadeValue(color.g, factor), _shadeValue(color.b, factor), 1);
 
 double defaultFontSize() {
-  final isTest = Platform.environment.containsKey('FLUTTER_TEST');
-  if (isTest) {
-    return 16.0;
-  }
-
   var fontSize = Prefs.getDouble(PREFERENCE_THEME_FONT_SIZE);
 
   if (fontSize < FONT_SIZE_MIN) {

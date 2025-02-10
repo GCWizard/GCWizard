@@ -77,7 +77,7 @@ class _GCWTextFieldState extends State<GCWTextField> {
     var textField = Container(
         margin: const EdgeInsets.symmetric(vertical: DEFAULT_MARGIN),
         child: LayoutBuilder(builder: (context, constraints) {
-          return Material(child: TextFormField(
+          return TextFormField(
             autocorrect: false,
             decoration: InputDecoration(
                 hintText: widget.hintText,
@@ -93,29 +93,29 @@ class _GCWTextFieldState extends State<GCWTextField> {
                 ),
                 suffixIcon: constraints.maxWidth > 100
                     ? InkWell(
-                        child: Container(
-                          padding: const EdgeInsets.only(right: 5, top: 5, bottom: 5),
-                          child: Icon(
-                            Icons.clear,
-                            color: colors.mainFont(),
-                          ),
-                        ),
-                        onTap: () {
-                          if (widget.controller != null) widget.controller?.clear();
+                  child: Container(
+                    padding: const EdgeInsets.only(right: 5, top: 5, bottom: 5),
+                    child: Icon(
+                      Icons.clear,
+                      color: colors.mainFont(),
+                    ),
+                  ),
+                  onTap: () {
+                    if (widget.controller != null) widget.controller?.clear();
 
-                          _controller.clear();
+                    _controller.clear();
 
-                          if (widget.onChanged != null) widget.onChanged!('');
+                    if (widget.onChanged != null) widget.onChanged!('');
 
-                          if (widget.inputFormatters != null) {
-                            widget.inputFormatters?.forEach((formatter) {
-                              if (formatter is GCWMaskTextInputFormatter) {
-                                formatter.clear();
-                              }
-                            });
-                          }
-                        },
-                      )
+                    if (widget.inputFormatters != null) {
+                      widget.inputFormatters?.forEach((formatter) {
+                        if (formatter is GCWMaskTextInputFormatter) {
+                          formatter.clear();
+                        }
+                      });
+                    }
+                  },
+                )
                     : null),
             onChanged: widget.onChanged,
             controller: widget.controller ?? _controller,
@@ -133,7 +133,7 @@ class _GCWTextFieldState extends State<GCWTextField> {
             maxLengthEnforcement: MaxLengthEnforcement.enforced,
             maxLength: widget.maxLength,
             selectionControls: GCWTextSelectionControls(),
-          ));
+          );
         }));
 
     if (widget.title.isEmpty) return textField;
