@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:prefs/prefs.dart';
@@ -83,7 +84,7 @@ ThemeColors themeColors() {
 
   var themeSetting = ThemeType.DARK.toString();
 
-  final isTest = Platform.environment.containsKey('FLUTTER_TEST');
+  final isTest = !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
   if (!isTest) {
     themeSetting = Prefs.getString(PREFERENCE_THEME_COLOR);
   }

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/_common/gcw_package_info.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
@@ -140,7 +141,7 @@ Color _shadeColor(Color color, double factor) => Color.fromRGBO(
     _shadeValue(color.r, factor), _shadeValue(color.g, factor), _shadeValue(color.b, factor), 1);
 
 double defaultFontSize() {
-  final isTest = Platform.environment.containsKey('FLUTTER_TEST');
+  final isTest = !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
   if (isTest) {
     return 16.0;
   }

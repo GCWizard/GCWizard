@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gc_wizard/application/category_views/all_tools_view.dart';
@@ -102,7 +103,7 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
  */
 String i18n(BuildContext context, String key,
     {List<dynamic> parameters = const [], bool useDefaultLanguage = false, String ifTranslationNotExists = ''}) {
-  final isTest = Platform.environment.containsKey('FLUTTER_TEST');
+  final isTest = !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
   if (isTest) {
     return key;
   }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
@@ -30,7 +31,7 @@ const CoordinateFormatKey _fallbackDefaultCoordFormatKey = CoordinateFormatKey.D
 CoordinateFormat get defaultCoordinateFormat {
   var formatStr = '';
 
-  final isTest = Platform.environment.containsKey('FLUTTER_TEST');
+  final isTest = !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
   if (!isTest) {
     formatStr = Prefs.getString(PREFERENCE_COORD_DEFAULT_FORMAT);
   }
@@ -99,7 +100,7 @@ Ellipsoid get defaultEllipsoid {
 
 
   String type = '';
-  final isTest = Platform.environment.containsKey('FLUTTER_TEST');
+  final isTest = !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
   if (!isTest) {
     type = Prefs.getString(PREFERENCE_COORD_DEFAULT_ELLIPSOID_TYPE);
   }
