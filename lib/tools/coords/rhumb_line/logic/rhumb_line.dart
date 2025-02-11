@@ -1,6 +1,7 @@
 import 'package:gc_wizard/tools/coords/_common/logic/distance_bearing.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 import 'package:latlong2/latlong.dart';
 
 bool _isNearPole(double lat) {
@@ -42,7 +43,7 @@ LatLng projection(LatLng coord, double bearingDeg, double distance, Ellipsoid el
     lon = 0.0;
   }
 
-  return LatLng(lat, lon);
+  return utils.normalizeLatLon(lat, lon);
 }
 
 List<LatLng> reverseProjection(LatLng coord, double bearing, double distance, Ellipsoid ellipsoid) {

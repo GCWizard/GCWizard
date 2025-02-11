@@ -3,6 +3,7 @@ import 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geogra
 import 'package:gc_wizard/tools/coords/_common/logic/external_libs/pkohut.geoformulas/geoformulas.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/intervals/coordinate_cell.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/intervals/interval_calculator.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 import 'package:latlong2/latlong.dart';
 
 LatLng projection(LatLng coord, double bearingDeg, double distance, Ellipsoid ellipsoid) {
@@ -25,7 +26,9 @@ LatLng projectionVincenty(LatLng coord, double bearing, double distance, Ellipso
 
   bearing = normalizeBearing(bearing);
 
-  return vincentyDirect(coord, bearing, distance, ellipsoid);
+  var projected = vincentyDirect(coord, bearing, distance, ellipsoid);
+
+  return utils.normalizeLatLon(projected.latitude, projected.longitude);
 }
 
 class _ReverseProjectionCalculator extends IntervalCalculator {

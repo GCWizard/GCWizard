@@ -34,10 +34,13 @@ import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/gpx_kml_gpx_import.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_export_dialog.dart';
+import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
+import 'package:gc_wizard/tools/coords/intersect_lines/intersect_four_points/logic/intersect_four_points.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/map_view/persistence/mapview_persistence_adapter.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/mappoint_editor.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/mappolyline_editor.dart';
+import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/default_units_getter.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/length.dart';
@@ -1154,8 +1157,35 @@ class _GCWMapViewState extends State<GCWMapView> {
 
     for (var polyline in widget.polylines) {
       for (var line in polyline.lines) {
-        _polylines.add(Polyline(points: line.shape, strokeWidth: _POLYGON_STROKEWIDTH,
+        var polys = <Polyline>[];
+        LatLng? lastLL;
+        var points = <LatLng>[];
+        for (LatLng ll in line.shape) {
+          if (lastLL == null) {
+            points.add(ll);
+            lastLL = ll;
+            continue;
+          } else {
+            if (
+              (lastLL.longitude > 175 && lastLL.longitude <= 180 && ll.longitude >= -180 && ll.longitude < -175) ||
+                  (lastLL.longitude < -175 && lastLL.longitude >= -180 && ll.longitude <= 180 && ll.longitude > 175)
+            ) {
+              polys.add(Polyline(points: points, strokeWidth: _POLYGON_STROKEWIDTH,
+                  color: polyline.color, hitValue: line));
+              points = [ll];
+            } else {
+              points.add(ll);
+            }
+            lastLL = ll;
+          }
+        }
+
+        polys.add(Polyline(points: points, strokeWidth: _POLYGON_STROKEWIDTH,
             color: polyline.color, hitValue: line));
+        _polylines.addAll(polys);
+
+        // _polylines.add(Polyline(points: line.shape, strokeWidth: _POLYGON_STROKEWIDTH,
+        //     color: polyline.color, hitValue: line));
       }
     }
 

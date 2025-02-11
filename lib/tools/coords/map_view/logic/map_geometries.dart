@@ -5,6 +5,7 @@ import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/distance_bearing.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart' as geodetic;
+import 'package:gc_wizard/tools/coords/intersect_lines/intersect_four_points/logic/intersect_four_points.dart';
 import 'package:gc_wizard/tools/coords/rhumb_line/logic/rhumb_line.dart' as rhumbline;
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:latlong2/latlong.dart';
@@ -99,9 +100,36 @@ class GCWMapLine extends GCWMapSimpleGeometry {
 
     var _countSteps = (_distBear.distance / stepLengthInM).floor();
 
-    for (int _i = 1; _i < _countSteps; _i++) {
-      var _nextPoint = projection(start.point, _distBear.bearingAToB, stepLengthInM * _i, defaultEllipsoid);
+    LatLng lastLng = start.point;
+    for (int _i = 1; _i <= _countSteps; _i++) {
+      var distance = _i < _countSteps ? stepLengthInM * _i : _distBear.distance;
+
+      var _nextPoint = projection(start.point, _distBear.bearingAToB, distance, defaultEllipsoid);
+
+      if (
+        (lastLng.longitude > 175 && lastLng.longitude <= 180 && _nextPoint.longitude >= -180 && _nextPoint.longitude < -175) ||
+        (lastLng.longitude < -175 && lastLng.longitude >= -180 && _nextPoint.longitude <= 180 && _nextPoint.longitude > 175)
+      ) {
+        var newPointA = intersectFourPoints(lastLng, _nextPoint, const LatLng(90, 179.999999999999), const LatLng(-90, 179.999999999999), defaultEllipsoid);
+        var newPointB = intersectFourPoints(lastLng, _nextPoint, const LatLng(90, -179.999999999999), const LatLng(-90, -179.999999999999), defaultEllipsoid);
+
+        if (lastLng.longitude > 175) {
+          shape.add(newPointA);
+          shape.add(newPointB);
+        } else {
+          shape.add(newPointB);
+          shape.add(newPointA);
+        }
+      }
       shape.add(_nextPoint);
+      // if (_i >= 3400) {
+      //   print('===$_i===');
+      //   print(lastLng);
+      //   print(_nextPoint);
+      //   print(shape.sublist(shape.length - 3, shape.length));
+      // }
+      lastLng = _nextPoint;
+
     }
 
     shape.add(end!.point);
