@@ -236,6 +236,8 @@ bool _isFull(String code) {
   }
   // If it's short, it's not full.
   if (_isShort(code)) {
+    print('shortCode');
+
     return false;
   }
   // Work out what the first latitude character indicates for latitude.
