@@ -232,6 +232,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/morbit/widget/morbit.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/morse/widget/morse.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/navajo/widget/navajo.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/navajo/widget/navajo_list.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/nema/widget/nema.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/numeral_words_converter/widget/numeral_words_converter.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/numeral_words_identify_languages/widget/numeral_words_identify_languages.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/numeral_words_lists/widget/numeral_words_lists.dart';
@@ -1417,6 +1418,48 @@ void initializeRegistry(BuildContext context) {
           title: 'Navajo Code Talkers\' Dictionary REVISED 15 JUNE 1945',
           sourceUrl:
               'https://web.archive.org/web/20240722205845/https://www.history.navy.mil/research/library/online-reading-room/title-list-alphabetically/n/navajo-code-talker-dictionary.html')
+    ]),
+    GCWTool(tool: const NEMA(), id: 'nema', categories: const [
+      ToolCategory.CRYPTOGRAPHY
+    ], searchKeys: const [
+      'nema',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+        context: context,
+        author: 'en.wikipedia.org and contributors',
+        title: 'NEMA (machine)',
+        licenseType: ToolLicenseType.CCBYSA4,
+        licenseUrl:
+        'https://en.wikipedia.org/w/index.php?title=Wikipedia:Text_of_the_Creative_Commons_Attribution-ShareAlike_4.0_International_License&oldid=1162946924',
+        sourceUrl:
+        'https://en.wikipedia.org/w/index.php?title=NEMA_(machine)&oldid=1239630258',
+      ),
+      ToolLicenseOnlineArticle(
+          context: context,
+          author:
+          'Walter Schmid',
+          title: 'Die Chiffriermaschine Nema',
+          year: 2005,
+          month: 2,
+          sourceUrl:
+          'https://web.archive.org/web/20250211181906/https://www.cryptomuseum.com/pub/files/WS_nema.pdf',
+      privatePermission: ToolLicensePrivatePermission(
+          context: context,
+          medium: 'E-Mail',
+          permissionAuthor: 'Walter Schmid',
+          permissionYear: 2025,
+          permissionMonth: 2,
+          permissionDay: 11)),
+      ToolLicenseOnlineArticle(
+          context: context,
+          author:
+          'Geoff Sullivan, Frode Weierud',
+          title: 'The Swiss NEMA Cipher Machine',
+          year: 1999,
+          month: 10,
+          sourceUrl:
+          'https://web.archive.org/web/20250209205344/https://cryptocellar.org/pubs/nema.pdf',
+          ),
     ]),
     GCWTool(
         tool: const NonogramSolver(),

@@ -1,0 +1,45 @@
+part of 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema.dart';
+
+/*  KMOBNEMA                                              DATUM: November 04
+    Virtuelle Chiffriermaschine NEMA (K-Mob)
+    Vorhandene Fortschaltwalzen: 12 - 13 - 14 - 15 - 17 - 18 (22/1)
+    Vorhandene Kontaktwalzen: A - B - C - D - E - F
+    Innerer und äusserer Schlüssel kann eingestellt werden
+    innerer Schlüssel kann angezeigt werden (Schalter on/off)
+    Klar-/Chiffriertext werden auf einem Laufband angezeigt.
+    Taste Backstep für einen Schritt zurück, mehrfach verwendbar
+    Taste Automatischer Vorschub für +100 und +1000 Schritte (Testzwecke)
+    Laufband verfügt über einen Speicher von 1600 Zeichen
+*/
+
+
+/* hier die vorrätigen Walzen, 6 Fortschaltwalzen und 6 Kontaktwalzen */
+const List<List<int>> nema_v_oper =
+[[0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,0,1,1,1,1,1,1],
+[1,1,0,1,1,1,1,0,0,1,1,0,1,1,0,1,1,1,0,1,1,1,1,1,1,0],
+[0,0,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,0,0,1,0,1,0,1],
+[1,0,0,1,1,0,1,0,0,0,0,0,1,0,1,1,1,1,1,1,0,1,0,1,1,1],
+[0,1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,1,0,1,0,1,1,0,1,1,0],
+[1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1,0,1,1],
+[13,17,8,5,15,23,8,17,4,12,12,15,8,22,15,2,21,8,5,14,11,21,8,9,17,2],
+[10,8,22,10,15,7,24,0,3,5,15,5,15,9,1,3,7,17,25,12,6,11,24,6,23,3],
+[15,12,3,17,15,25,23,1,17,15,16,22,9,4,8,25,19,1,14,8,22,17,14,5,25,12],
+[22,8,25,1,20,0,14,21,4,20,9,15,13,23,9,0,18,25,15,25,1,16,10,17,15,18],
+[7,16,14,16,20,16,17,5,5,17,18,20,8,22,16,3,6,20,7,15,12,8,19,17,12,2],
+[25,20,4,1,12,7,14,12,14,2,3,7,21,2,0,11,15,7,16,4,16,6,7,20,11,3]];
+
+
+/* hier die Inversionen der obigen Kontaktwalzen */
+
+const List<List<int>> nema_iv_oper =
+[[0],[0],[0],[0],[0],[0],
+/* Platzhalter für die Nockenscheiben */
+
+[11,24,3,11,18,15,17,12,21,4,18,5,22,13,18,9,5,24,9,11,18,14,14,21,9,18],
+[20,11,23,20,2,14,15,0,9,18,16,23,19,16,21,25,21,1,23,11,2,3,17,19,4,11],
+[10,18,21,3,1,23,12,4,25,7,12,14,9,14,1,11,4,22,25,11,9,17,18,1,11,9],
+[11,1,5,6,25,0,16,11,8,18,3,10,22,11,9,0,1,8,1,17,12,25,4,17,6,13],
+[9,24,8,18,10,6,14,19,11,4,14,6,21,21,9,7,12,10,23,10,18,10,20,9,6,19],
+[15,20,23,19,25,11,22,5,10,15,10,24,19,23,0,24,14,6,19,14,12,6,12,12,19,1]];
+
+List<int> nema_einstellung_oper = [0,6,1,7,2,8,3,9];
