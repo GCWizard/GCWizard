@@ -15,13 +15,13 @@ class GCWDropDown<T> extends StatefulWidget {
 
   const GCWDropDown(
       {Key? key,
-      required this.value,
-      required this.items,
-      required this.onChanged,
-      this.selectedItemBuilder,
-      this.title,
-      this.alternativeColor = false,
-      this.flexValues = _flexValues})
+        required this.value,
+        required this.items,
+        required this.onChanged,
+        this.selectedItemBuilder,
+        this.title,
+        this.alternativeColor = false,
+        this.flexValues = _flexValues})
       : super(key: key);
 
   @override
@@ -63,39 +63,39 @@ class _GCWDropDownState<T> extends State<GCWDropDown<T>> {
                           width: 1.0),
                     ),
                     child: DropdownButtonHideUnderline(
-                        child: Material(child: DropdownButton<T?>(
-                      itemHeight: null,
-                      isExpanded: true,
-                      icon: Icon(
-                        Icons.arrow_drop_down,
-                        size: 30,
-                        color: widget.alternativeColor ? colors.dialogText() : colors.secondary(),
-                      ),
-                      value: _currentValue, // ?? widget.items[0].value,
-                      items: widget.items.map((item) {
-                        return DropdownMenuItem<T>(value: item._internalValue, child: _buildMenuItemChild<T>(item));
-                      }).toList(),
-                      onChanged: (value) {
-                        if (value != null) {
-                          widget.onChanged(value);
-                        }
-                      },
-                      style: textStyle,
-                      selectedItemBuilder: widget.selectedItemBuilder ??
-                          (context) {
-                            return widget.items.map((item) {
-                              return Align(
-                                alignment: Alignment.centerLeft,
-                                child: item.child is Widget
-                                    ? item.child as Widget
-                                    : Text(
-                                        item.child.toString(),
-                                        style: textStyle,
-                                      ),
-                              );
-                            }).toList();
+                        child: DropdownButton<T?>(
+                          itemHeight: null,
+                          isExpanded: true,
+                          icon: Icon(
+                            Icons.arrow_drop_down,
+                            size: 30,
+                            color: widget.alternativeColor ? colors.dialogText() : colors.secondary(),
+                          ),
+                          value: _currentValue, // ?? widget.items[0].value,
+                          items: widget.items.map((item) {
+                            return DropdownMenuItem<T>(value: item._internalValue, child: _buildMenuItemChild<T>(item));
+                          }).toList(),
+                          onChanged: (value) {
+                            if (value != null) {
+                              widget.onChanged(value);
+                            }
                           },
-                    ))))))
+                          style: textStyle,
+                          selectedItemBuilder: widget.selectedItemBuilder ??
+                                  (context) {
+                                return widget.items.map((item) {
+                                  return Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: item.child is Widget
+                                        ? item.child as Widget
+                                        : Text(
+                                      item.child.toString(),
+                                      style: textStyle,
+                                    ),
+                                  );
+                                }).toList();
+                              },
+                        )))))
       ],
     );
   }
@@ -108,9 +108,9 @@ Widget _buildMenuItemChild<T>(GCWDropDownMenuItem<T> item) {
     return item.child is Widget
         ? item.child as Widget
         : Text(
-            item.child.toString(),
-            style: item.style ?? gcwTextStyle(),
-          );
+      item.child.toString(),
+      style: item.style ?? gcwTextStyle(),
+    );
   } else {
     return Container(
       padding: const EdgeInsets.only(bottom: 10),

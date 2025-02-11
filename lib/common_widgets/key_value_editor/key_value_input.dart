@@ -83,7 +83,6 @@ class GCWKeyValueInputState extends State<GCWKeyValueInput> {
     return Expanded(
         flex: 2,
         child: GCWTextField(
-          key: const Key('gcwtextfield_keyvalueinput_newentry_key'),
           hintText: widget.keyHintText,
           controller: _keyController,
           inputFormatters: widget.keyInputFormatters,
@@ -105,7 +104,6 @@ class GCWKeyValueInputState extends State<GCWKeyValueInput> {
 
   Widget addIcon() {
     return GCWIconButton(
-        key: const Key('gcwiconbutton_keyvalueinput_newentry_add'),
         icon: Icons.add,
         onPressed: () {
           if (!validInput()) {
@@ -122,7 +120,6 @@ class GCWKeyValueInputState extends State<GCWKeyValueInput> {
     return Expanded(
       flex: widget.valueFlex ?? 2,
       child: GCWTextField(
-        key: const Key('gcwtextfield_keyvalueinput_newentry_value'),
         hintText: widget.valueHintText,
         controller: _valueController,
         inputFormatters: widget.valueInputFormatters,
