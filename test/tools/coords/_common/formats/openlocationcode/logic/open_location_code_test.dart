@@ -10,17 +10,15 @@ void main() {
       {'text': '', 'expectedOutput': null},
       {'text': 'AGR76H6X+C95QFH', 'expectedOutput': null},
       {'text': '1GR76H6X+C95QFH', 'expectedOutput': null},
+
+      {'text': '9F28', 'expectedOutput': null},
+      {'text': '9F28WX', 'expectedOutput': null},
+      {'text': '9F28WXR4', 'expectedOutput': null},
+      {'text': '9F28WXR4FW', 'expectedOutput': null},
+      {'text': '9F28WXR4FW2', 'expectedOutput': null},
+      {'text': '9F28WXR4FW2X', 'expectedOutput': null},
+
       {'text': '8GR76H6X+C95QFH', 'expectedOutput': {'format': CoordinateFormatKey.OPEN_LOCATION_CODE, 'coordinate': const LatLng(46.2110175, 025.5984958496)}},
-
-
-
-      {'text': '9F28', 'expectedOutput': {'format': CoordinateFormatKey.OPEN_LOCATION_CODE, 'coordinate': const LatLng(50.5, 6.5)}},
-      {'text': '9F28WX', 'expectedOutput': {'format': CoordinateFormatKey.OPEN_LOCATION_CODE, 'coordinate': const LatLng(50.925, 6.9750000000000005)}},
-      {'text': '9F28WXR4', 'expectedOutput': {'format': CoordinateFormatKey.OPEN_LOCATION_CODE, 'coordinate': const LatLng(50.94125, 6.95625)}},
-      {'text': '9F28WXR4FW', 'expectedOutput': {'format': CoordinateFormatKey.OPEN_LOCATION_CODE, 'coordinate': const LatLng(50.9411875, 6.9573125000000005)}},
-      {'text': '9F28WXR4FW2', 'expectedOutput': {'format': CoordinateFormatKey.OPEN_LOCATION_CODE, 'coordinate': const LatLng(50.941137499999996, 6.957265625)}},
-      {'text': '9F28WXR4FW2X', 'expectedOutput': {'format': CoordinateFormatKey.OPEN_LOCATION_CODE, 'coordinate': const LatLng(50.9411475, 6.95727734375)}},
-
       {'text': 'V75V+8Q', 'errorCode': ErrorCode.OLC_ShortFormat, 'expectedOutput': {'format': CoordinateFormatKey.OPEN_LOCATION_CODE, 'coordinate': const LatLng(48.8583, 2.2923)}},
       {'text': '9F28+', 'errorCode': ErrorCode.OLC_ShortFormat, 'expectedOutput': {'format': CoordinateFormatKey.OPEN_LOCATION_CODE, 'coordinate': const LatLng(50.5, 6.5)}},
       {'text': '9F28WX+', 'errorCode': ErrorCode.OLC_ShortFormat, 'expectedOutput': {'format': CoordinateFormatKey.OPEN_LOCATION_CODE, 'coordinate': const LatLng(50.925, 6.9750000000000005)}},

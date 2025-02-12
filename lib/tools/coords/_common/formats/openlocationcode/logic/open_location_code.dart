@@ -239,8 +239,6 @@ Tuple2<bool, bool> _isFull(String code) {
   }
   // If it's short, it's not full.
   if (_isShort(code)) {
-    print('shortCode');
-
     return const Tuple2<bool, bool>(false, true);
   }
   // Work out what the first latitude character indicates for latitude.
@@ -338,7 +336,7 @@ OpenLocationCodeCoordinate? _parseOpenLocationCode(String input) {
 String _sanitizeOLCode(String olc) {
   var olcParts = olc.split('+');
   if (olcParts.length < 2) return '';
-  var prefix = olcParts[0]; //.padRight(_separatorPosition, '0');
+  var prefix = olcParts[0];
 
   var suffix = '';
   if (prefix.length > _separatorPosition) suffix = prefix.substring(_separatorPosition);
