@@ -20,6 +20,7 @@ import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:tuple/tuple.dart';
 
 const openLocationCodeKey = 'coords_openlocationcode';
 
@@ -36,6 +37,8 @@ class OpenLocationCodeCoordinate extends BaseCoordinate {
 
   @override
   ErrorCode get errorCode => _errorCode;
+
+  set errorCode(ErrorCode errorCode) => _errorCode = errorCode;
 
   @override
   LatLng? toLatLng() {
@@ -230,31 +233,31 @@ bool _isShort(String code) {
 /// and also that the latitude and longitude values are legal. If the prefix
 /// character is present, it must be the first character. If the separator
 /// character is present, it must be after four characters.
-bool _isFull(String code) {
+Tuple2<bool, bool> _isFull(String code) {
   if (!_isValid(code)) {
-    return false;
+    return const Tuple2<bool, bool>(false, false);
   }
   // If it's short, it's not full.
   if (_isShort(code)) {
     print('shortCode');
 
-    return false;
+    return const Tuple2<bool, bool>(false, true);
   }
   // Work out what the first latitude character indicates for latitude.
   var firstLatValue = _decode[code.codeUnitAt(0)] * _encodingBase;
   if (firstLatValue >= _latitudeMax * 2) {
     // The code would decode to a latitude of >= 90 degrees.
-    return false;
+    return const Tuple2<bool, bool>(false, false);
   }
   if (code.length > 1) {
     // Work out what the first longitude character indicates for longitude.
     var firstLngValue = _decode[code.codeUnitAt(1)] * _encodingBase;
     if (firstLngValue >= _longitudeMax * 2) {
       // The code would decode to a longitude of >= 180 degrees.
-      return false;
+      return const Tuple2<bool, bool>(false, false);
     }
   }
-  return true;
+  return const Tuple2<bool, bool>(true, false);
 }
 
 /// Encode a location into an Open Location Code.
@@ -328,17 +331,19 @@ OpenLocationCodeCoordinate _latLonToOpenLocationCode(LatLng coords, {int codeLen
 
 OpenLocationCodeCoordinate? _parseOpenLocationCode(String input) {
   var openLocationCode = OpenLocationCodeCoordinate(input);
-  return _openLocationCodeToLatLon(openLocationCode) == null ? null : openLocationCode;
+  var result = _openLocationCodeToLatLon(openLocationCode);
+  return result == null && openLocationCode.errorCode == ErrorCode.OK ? null : openLocationCode;
 }
 
 String _sanitizeOLCode(String olc) {
   var olcParts = olc.split('+');
-  var prefix = olcParts[0].padRight(8, '0');
+  if (olcParts.length < 2) return '';
+  var prefix = olcParts[0]; //.padRight(_separatorPosition, '0');
 
   var suffix = '';
-  if (prefix.length > 8) suffix = prefix.substring(8);
+  if (prefix.length > _separatorPosition) suffix = prefix.substring(_separatorPosition);
 
-  prefix = prefix.substring(0, 8) + '+';
+  prefix = prefix + '+';
 
   if (olcParts.length > 1) suffix += olcParts[1];
 
@@ -351,12 +356,16 @@ String _sanitizeOLCode(String olc) {
 LatLng? _openLocationCodeToLatLon(OpenLocationCodeCoordinate openLocationCode) {
   if (openLocationCode.text.isEmpty) return null;
 
-  var len = openLocationCode.text.replaceAll('+', '').length;
+  var len = openLocationCode.text.replaceAll(_separator, '').length;
   if (len <= 10 && len.isOdd) return null;
 
   try {
     var code = _sanitizeOLCode(openLocationCode.text);
-    if (!_isFull(code)) {
+    var _isFullResult = _isFull(code);
+    if (!_isFullResult.item1) {
+      if (_isFullResult.item2) {
+        openLocationCode.errorCode = ErrorCode.OLC_ShortFormat;
+      }
       return null;
     }
     // Strip out separator character (we've already established the code is

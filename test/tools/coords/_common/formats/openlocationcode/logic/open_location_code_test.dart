@@ -14,8 +14,8 @@ void main() {
 
 
 
-      {'text': '9F28', 'errorCode': ErrorCode.OLC_ShortFormat, 'expectedOutput': {'format': CoordinateFormatKey.OPEN_LOCATION_CODE, 'coordinate': const LatLng(50.5, 6.5)}},
-      {'text': '9F28WX', 'errorCode': ErrorCode.OLC_ShortFormat, 'expectedOutput': {'format': CoordinateFormatKey.OPEN_LOCATION_CODE, 'coordinate': const LatLng(50.925, 6.9750000000000005)}},
+      {'text': '9F28', 'expectedOutput': {'format': CoordinateFormatKey.OPEN_LOCATION_CODE, 'coordinate': const LatLng(50.5, 6.5)}},
+      {'text': '9F28WX', 'expectedOutput': {'format': CoordinateFormatKey.OPEN_LOCATION_CODE, 'coordinate': const LatLng(50.925, 6.9750000000000005)}},
       {'text': '9F28WXR4', 'expectedOutput': {'format': CoordinateFormatKey.OPEN_LOCATION_CODE, 'coordinate': const LatLng(50.94125, 6.95625)}},
       {'text': '9F28WXR4FW', 'expectedOutput': {'format': CoordinateFormatKey.OPEN_LOCATION_CODE, 'coordinate': const LatLng(50.9411875, 6.9573125000000005)}},
       {'text': '9F28WXR4FW2', 'expectedOutput': {'format': CoordinateFormatKey.OPEN_LOCATION_CODE, 'coordinate': const LatLng(50.941137499999996, 6.957265625)}},
@@ -40,7 +40,7 @@ void main() {
         } else {
           var __actual = _actual.toLatLng();
           if (__actual == null) {
-            expect(_actual, elem['errorCode']);
+            expect(_actual.errorCode, elem['errorCode']);
           } else {
             expect((__actual.latitude - ((elem['expectedOutput'] as Map<String, Object>)['coordinate'] as LatLng).latitude).abs() < 1e-8, true);
             expect((__actual.longitude - ((elem['expectedOutput'] as Map<String, Object>)['coordinate'] as LatLng).longitude).abs() < 1e-8, true);
