@@ -19,63 +19,62 @@
 #include <dos.h>
 #include <time.h>
 
-void maske(void);		*/
-/* Aufbau der Hauptmaske *//*
+void maske(void);
+/* Aufbau der Hauptmaske */
 
-void vorschub(void);            */
-/* Vorschub der Walzen um einen Schritt *//*
+void vorschub(void);
+/* Vorschub der Walzen um einen Schritt */
 
-void backstep(void);		*/
-/* Walzen einen Schritt zurück *//*
+void backstep(void);
+/* Walzen einen Schritt zurück */
 
-void anzeige(int,int);		*/
-/* Anzeige auf Lampenfeld, eintrag im Laufband *//*
+void anzeige(int,int);
+/* Anzeige auf Lampenfeld, eintrag im Laufband */
 
-void rotoren_anzeigen(void);	*/
-/* neu berechnete Walzenstellungen anzeigen *//*
+void rotoren_anzeigen(void);
+/* neu berechnete Walzenstellungen anzeigen */
 
-void aussen(void);		*/
-/* äusseren Schlüssel einstellen *//*
+void aussen(void);
+/* äusseren Schlüssel einstellen */
 
-void innen_wahl(void);          */
-/* inneren Schlüssel wählen *//*
+void innen_wahl(void);
+/* inneren Schlüssel wählen */
 
-void is_anzeigen(int);		*/
-/* inneren Schlüssel anzeigen on/off *//*
+void is_anzeigen(int);
+/* inneren Schlüssel anzeigen on/off */
 
-void is_einstellen(void);	*/
-/* Informationen für IS übernehmen *//*
+void is_einstellen(void);
+/* Informationen für IS übernehmen */
 
-void reset_zaehler(void);	*/
-/* Reset Schrittzähler *//*
+void reset_zaehler(void);
+/* Reset Schrittzähler */
 
-void cursor(int);		*/
+void cursor(int);
 /* Cursor ein/aus *//*
 
-void fragen(void);	        */
-/* Fragen, ob Programm wirklich verlassen *//*
+void fragen(void);
+/* Fragen, ob Programm wirklich verlassen */
 
-void ende(void);                */
-/* Standardeinstellungen, Programm verlassen *//*
+void ende(void);
+/* Standardeinstellungen, Programm verlassen */
 
-void laufband(void);		*/
-/* Laufband Klar-Chiffrat *//*
+void laufband(void);
+/* Laufband Klar-Chiffrat */
 
-void zaehler_anpassen(int);     */
-/* Zähler um (int) korrigieren und anzeigen *//*
+void zaehler_anpassen(int);
+/* Zähler um (int) korrigieren und anzeigen */
 
-void lampe_aus(void);		*/
-/* Buchstabe an Lampenfeld ausschalten *//*
+void lampe_aus(void);
+/* Buchstabe an Lampenfeld ausschalten */
 
-char chiffrieren(int);		*/
-/* Taste in Chiffrat umsetzen *//*
+char chiffrieren(int);
+/* Taste in Chiffrat umsetzen */
 
-void autovorschub(int);         */
-/* Vorschub um wählbare Anzahl Steps *//*
+void autovorschub(int);
+/* Vorschub um wählbare Anzahl Steps */
 
 
-*/
-/* hier die vorrätigen Walzen, 4 Fortschaltwalzen und 4 Kontaktwalzen *//*
+/* hier die vorrätigen Walzen, 4 Fortschaltwalzen und 4 Kontaktwalzen */
 
 const int v[8][26]=
 {{1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0},
@@ -87,8 +86,8 @@ const int v[8][26]=
 {15,12,3,17,15,25,23,1,17,15,16,22,9,4,8,25,19,1,14,8,22,17,14,5,25,12},
 {22,8,25,1,20,0,14,21,4,20,9,15,13,23,9,0,18,25,15,25,1,16,10,17,15,18}};
 
-*/
-/* hier die Inversionen der obigen Kontaktwalzen *//*
+
+/* hier die Inversionen der obigen Kontaktwalzen */
 
 const int iv[8][26]=
 {{0},{0},{0},{0},
@@ -97,18 +96,18 @@ const int iv[8][26]=
 {10,18,21,3,1,23,12,4,25,7,12,14,9,14,1,11,4,22,25,11,9,17,18,1,11,9},
 {11,1,5,6,25,0,16,11,8,18,3,10,22,11,9,0,1,8,1,17,12,25,4,17,6,13}};
 
-*/
-/* Die Bezeichnung der obigen Walzen *//*
+
+/* Die Bezeichnung der obigen Walzen */
 
 const char auswahl[]={"16192021A B C D "};
-*/
-/*   ^ ^ ^ ^ ^ ^ ^ ^  *//*
+
+/*   ^ ^ ^ ^ ^ ^ ^ ^  */
 
 
-*/
+
 /* Spezialfälle, s0 und s10 sind die Steuerscheiben an der Walze 10, 'um'
    ist die Umkehrwalze, 'in' gibt den Zusammenhang Taste -> Position der
-   Anschlusskontakte, 'ini' denjenigen Position -> Taste *//*
+   Anschlusskontakte, 'ini' denjenigen Position -> Taste */
 
 const int s10[]={1,0,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,0};
 const int s0[]= {0,1,0,1,1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0};
@@ -116,28 +115,28 @@ const int um[]= {10,21,13,10,2,2,24,24,13,10,16,14,8,16,10,13,7,1,25,16,18,13,5,
 const int in[]= {14,1,3,12,22,11,10,9,17,8,7,6,25,0,16,15,24,21,13,20,18,2,23,4,5,19,};
 const char ini[]= {"NBVCXYLKJHGFDSAPOIUZTREWQM"};
 
-*/
+
 /* Die momentan eingestellten Steuerscheiben s, Kontaktwalzen r und deren
-   Inversion ir. Die Zahlen beziehen sich auf die Walzennummer. *//*
+   Inversion ir. Die Zahlen beziehen sich auf die Walzennummer. */
 
 int s2[26], s4[26], s6[26], s8[26];
 int r3[26], r5[26], r7[26], r9[26];
 int ir3[26], ir5[26], ir7[26], ir9[26];
 
-*/
-/* Die Stellung der Walzen 1 ... 10  (0 wird nicht benötigt) *//*
+
+/* Die Stellung der Walzen 1 ... 10  (0 wird nicht benötigt) */
 
 int rotor[11];
 
-*/
-/* 1600 Klar- und Geheimtextzeichen werden gespeichert *//*
+
+/* 1600 Klar- und Geheimtextzeichen werden gespeichert */
 
 int klar[1600], chiff[1600], zeiger = 0;
 
-*/
+
 /* Die Reihenfolge der Walzen 2 .. 9, 1 ist Umkehrwalze, 10 feste Walze.
    der Default-Schlüssel ist: 16-A 19-B 20-C 21-D. Die Zahl entspricht der
-   Position in der Liste 'v' *//*
+   Position in der Liste 'v' */
 
 
 int einstellung[]={0,4,1,5,2,6,3,7};
@@ -150,67 +149,67 @@ main()
 {
 int taste;
 char resultat;
-maske();                       */
-/* Maske aufbauen *//*
+maske();
+/* Maske aufbauen */
 
-is_einstellen();               */
-/* Default IS übernehmen *//*
+is_einstellen();
+/* Default IS übernehmen */
 
-cursor(0);			*/
-/* Cursor ausschalten *//*
+cursor(0);
+/* Cursor ausschalten */
 
-for (j=0;j<1600;j++)		*/
-/* Speicherbereich mit Blanks belegen *//*
+for (j=0;j<1600;j++)
+/* Speicherbereich mit Blanks belegen */
 
 {
 klar[j]=32;  chiff[j]=32;
 }
-while(1)			*/
-/* Beginn Hauptloop, verlassen mit Taste ESC *//*
+while(1)
+/* Beginn Hauptloop, verlassen mit Taste ESC */
 
 {
-if (kbhit())			*/
-/* Taste gedrückt? *//*
+if (kbhit())
+/* Taste gedrückt? */
 
 {
 taste = getch();
-if (taste == 0)             */
-/* Spezialtaste, zweistellig? *//*
+if (taste == 0)
+/* Spezialtaste, zweistellig? */
 
 {
 if (lampe_ein) lampe_aus();
-switch (getch())          */
+switch (getch())
 /* Ja *//*
 
 {
-case 68: aussen(); break;       	*/
-/* F10 äusserer Schlüssel einst. *//*
+case 68: aussen(); break;
+/* F10 äusserer Schlüssel einst. */
 
-case 67: innen_wahl(); break;        	*/
-/* F9 innerer Schlüssel einst. *//*
+case 67: innen_wahl(); break;
+/* F9 innerer Schlüssel einst. */
 
-case 66: is_anzeigen(1); break; 	*/
-/* F8 inneren Schlüssel anzeigen *//*
+case 66: is_anzeigen(1); break;
+/* F8 inneren Schlüssel anzeigen */
 
-case 104: reset_zaehler(); break;	*/
-/* ALT-F1 Reset Counter *//*
+case 104: reset_zaehler(); break;
+/* ALT-F1 Reset Counter */
 
-case 106: autovorschub(100); break;     */
-/* ALT-F3 Autovorschub +100 *//*
+case 106: autovorschub(100); break;
+/* ALT-F3 Autovorschub +100 */
 
-case 107: autovorschub(1000);           */
-/* ALT-F4 Autovorschub +1000 *//*
+case 107: autovorschub(1000);
+/* ALT-F4 Autovorschub +1000 */
 
 }
 }
-if (taste == 27)                   */
-/* Programmabbruch mit ESC *//*
+if (taste == 27)
+/* Programmabbruch mit ESC */
 
 {
 if (lampe_ein) lampe_aus();
 fragen();
 }
-if (taste == 8)                     */
+if (taste == 8)
 /* Taste Backstep *//*
 
 {
@@ -218,35 +217,35 @@ if (lampe_ein) lampe_aus();
 backstep();
 rotoren_anzeigen();
 }
-if(isalpha(taste))                  */
-/* Nur Alpha-Tasten werden chiffriert *//*
+if(isalpha(taste))
+/* Nur Alpha-Tasten werden chiffriert */
 
 {
-vorschub(); 	                */
-/* zuerst Vorschub *//*
+vorschub();
+/* zuerst Vorschub */
 
-rotoren_anzeigen();		*/
-/* dann neue Walzenlage anzeigen *//*
+rotoren_anzeigen();
+/* dann neue Walzenlage anzeigen */
 
-taste = tolower(taste);           */
-/* Tastendruck in Kleinbuchstaben *//*
+taste = tolower(taste);
+/* Tastendruck in Kleinbuchstaben */
 
-resultat = chiffrieren(taste);    */
-/* dann chiffrieren *//*
+resultat = chiffrieren(taste);
+/* dann chiffrieren */
 
-anzeige(taste,resultat);          */
-/* und auf dem Tastenfeld anzeigen *//*
+anzeige(taste,resultat);
+/* und auf dem Tastenfeld anzeigen */
 
 }
 }
-if (lampe_ein && (clock()-beginn > 40)) lampe_aus(); 	*/
-/* letzte Taste löschen *//*
+if (lampe_ein && (clock()-beginn > 40)) lampe_aus();
+/* letzte Taste löschen */
 
-}                                      */
-/* Ende Hauptloop *//*
+}
+/* Ende Hauptloop */
 
-}    					*/
-/* Ende main *//*
+}
+/* Ende main */
 
 
 void lampe_aus(void)
@@ -266,42 +265,39 @@ gotoxy(62,7); cprintf("%05ld",display);
 
 void autovorschub(int anzahl)
 {
-while (anzahl != 0)            */
-/* verweilen bis die mit 'anzahl' vorgegebenen *//*
+while (anzahl != 0)
+/* verweilen bis die mit 'anzahl' vorgegebenen */
 
-{                             */
-/* Tastendrucke ausgeführt sind *//*
+{
+/* Tastendrucke ausgeführt sind */
 
 vorschub();
 --anzahl;
-rotoren_anzeigen();          */
-/* könnte auch ausserhalb der Klammer sein *//*
+rotoren_anzeigen();
+/* könnte auch ausserhalb der Klammer sein */
 
 }
-for (j=0;j<1600;++j)           */
-/* Laufband und Speicher löschen *//*
+for (j=0;j<1600;++j)
+/* Laufband und Speicher löschen */
 
 {
 klar[j] = 32; chiff[j] = 32;
 }
 zeiger = 0;
-laufband();  			*/
-/* Laufband löschen, ist jetzt blank *//*
+laufband();
+/* Laufband löschen, ist jetzt blank */
 
 }
 
-void vorschub(void)             */
-/* Tastendruck auf Walzen übertragen *//*
+void vorschub(void)
+/* Tastendruck auf Walzen übertragen */
 
 {
-zaehler_anpassen(1);          */
-/* Zähler, 5-stellig nachführen *//*
+zaehler_anpassen(1);
+/* Zähler, 5-stellig nachführen */
 
-*/
-/* die Rotoren 3 und 7 haben doppelte Abhängigkeit *//*
-
-*/
-/* die Rotoren 4 und 8 haben einfache Abhängigkeit von s0 *//*
+/* die Rotoren 3 und 7 haben doppelte Abhängigkeit */
+/* die Rotoren 4 und 8 haben einfache Abhängigkeit von s0 */
 
 if (s0[((rotor[10]+17)%26)])
 {
@@ -310,14 +306,14 @@ rotor[4] = (rotor[4]+25)%26;
 if (s8[((rotor[8]+16)%26)]) rotor[7] = (rotor[7]+25)%26;
 rotor[8] = (rotor[8]+25)%26;
 }
-*/
-/* die Rotoren 1, 5 und 9 haben einfache Abhängigkeit *//*
+
+/* die Rotoren 1, 5 und 9 haben einfache Abhängigkeit */
 
 if (s2[((rotor[2]+16)%26)])  rotor[1] = (rotor[1]+25)%26;
 if (s6[((rotor[6]+16)%26)])  rotor[5] = (rotor[5]+25)%26;
 if (s10[((rotor[10]+16)%26)]) rotor[9] = (rotor[9]+25)%26;
-*/
-/* die Rotoren 2, 6 und 10 werden bei jedem Tastendruck bewegt *//*
+
+/* die Rotoren 2, 6 und 10 werden bei jedem Tastendruck bewegt */
 
 rotor[2] = (rotor[2]+25)%26;
 rotor[6] = (rotor[6]+25)%26;
@@ -326,11 +322,10 @@ rotor[10]= (rotor[10]+25)%26;
 
 void backstep(void)
 {
-zaehler_anpassen(-1);                 	*/
+zaehler_anpassen(-1);
 /* Display um 1 zurück *//*
 
-*/
-/* genau umgekehrte Reihenfolge wie beim Schritt vor!!, wichtig!! *//*
+/* genau umgekehrte Reihenfolge wie beim Schritt vor!!, wichtig!! */
 
 rotor[2] = (rotor[2]+1)%26;
 rotor[6] = (rotor[6]+1)%26;
@@ -345,8 +340,8 @@ if (s4[((rotor[4]+16)%26)]) rotor[3] = (rotor[3]+1)%26;
 rotor[8] = (rotor[8]+1)%26;
 if (s8[((rotor[8]+16)%26)]) rotor[7] = (rotor[7]+1)%26;
 }
-if (zeiger)                     */
-/* bearbeiten nur bis Zeiger auf Null *//*
+if (zeiger)
+/* bearbeiten nur bis Zeiger auf Null */
 
 {
 klar[--zeiger] = 32;
@@ -356,12 +351,12 @@ laufband();
 }
 
 char chiffrieren(int klartext)
-{                      */
-/* Klartext wird als Kleinbuchstabe mitgebracht *//*
+{
+/* Klartext wird als Kleinbuchstabe mitgebracht */
 
 int zwischen;
-zwischen = in[klartext-97];       */
-/* Offset weg und Position auf Anschlusskontakten *//*
+zwischen = in[klartext-97];
+/* Offset weg und Position auf Anschlusskontakten */
 
 zwischen = (zwischen + r9[(zwischen+rotor[9])%26])%26;
 zwischen = (zwischen + r7[(zwischen+rotor[7])%26])%26;
@@ -372,8 +367,8 @@ zwischen = (zwischen + ir3[(zwischen+rotor[3])%26])%26;
 zwischen = (zwischen + ir5[(zwischen+rotor[5])%26])%26;
 zwischen = (zwischen + ir7[(zwischen+rotor[7])%26])%26;
 zwischen = (zwischen + ir9[(zwischen+rotor[9])%26])%26;
-return(ini[zwischen]);            */
-/* von Anschlussplatte auf Buchstaben *//*
+return(ini[zwischen]);
+/* von Anschlussplatte auf Buchstaben */
 
 }
 
@@ -392,18 +387,18 @@ gotoxy(48,7); cprintf("%c",rotor[9]+65);
 gotoxy(52,7); cprintf("%c",rotor[10]+65);
 }
 
-void aussen(void)               */
-/* Žusseren Schlüssel einstellen *//*
+void aussen(void)
+/* Žusseren Schlüssel einstellen */
 
 {
-int tast, buff[1000],j;       */
-/* Fenster bereitstellen *//*
+int tast, buff[1000],j;
+/* Fenster bereitstellen */
 
 gettext(13,9,59,18,&buff);
 window(13,9,59,18);
 clrscr();
-textcolor(WHITE);             */
-/* Maske aufbauen *//*
+textcolor(WHITE);
+/* Maske aufbauen */
 
 gotoxy(1,1);
 cputs("                                               "
@@ -417,57 +412,51 @@ cputs("                                               "
 "   Ausführen und zurück mit Enter            ");
 textcolor(YELLOW);
 gotoxy(1,1);
-cputs("   \030");         	*/
-/* Pfeil einzeichnen *//*
+cputs("   \030");
+/* Pfeil einzeichnen */
 
-j=1;                          */
-/* bei Walze 1 *//*
+j=1;
+/* bei Walze 1 */
 
-while ((tast = getch()) != 13)
-{
-if (tast == 0) switch(getch())              */
-/* zweistellig auswerten *//*
-
-{
-case 77:if (j != 10)
-{
-gotoxy(1,1);
-cputs("                                            ");
-++j;
-gotoxy(j*4,1);
-cputs("\030");
-}
-break;
-case 75:if (j != 1)
-{
-gotoxy(1,1);
-cputs("                                            ");
---j;
-gotoxy(j*4,1);
-cputs("\030");
-}
-break;
-case 72:rotor[j]=(rotor[j]+1)%26; window(1,1,80,25); rotoren_anzeigen();
-window(13,9,69,18); break;
-case 80:rotor[j]=(rotor[j]+25)%26; window(1,1,80,25); rotoren_anzeigen();
-window(13,9,69,18);
-}
+while ((tast = getch()) != 13) {
+    if (tast == 0) switch(getch()) {
+    /* zweistellig auswerten */
+    case 77:if (j != 10) {
+        gotoxy(1,1);
+        cputs("                                            ");
+        ++j;
+        gotoxy(j*4,1);
+        cputs("\030");
+        }
+        break;
+    case 75:if (j != 1){
+        gotoxy(1,1);
+        cputs("                                            ");
+        --j;
+        gotoxy(j*4,1);
+        cputs("\030");
+        }
+        break;
+    case 72:rotor[j]=(rotor[j]+1)%26; window(1,1,80,25); rotoren_anzeigen();
+    window(13,9,69,18); break;
+    case 80:rotor[j]=(rotor[j]+25)%26; window(1,1,80,25); rotoren_anzeigen();
+    window(13,9,69,18);
+    }
 }
 puttext(13,9,59,18,&buff);
 window(1,1,80,25);
 }
 
-void innen_wahl(void)		*/
-/* inneren Schlüssel wählen *//*
+void innen_wahl(void)
+/* inneren Schlüssel wählen */
 
 {
 int buff[2000], tast, anzahl, pos = 0, rot = 0;
 int fehler = 1, i, statuslb;
-*/
-/*statuslb = lbaktiv;*//*
 
-*/
-/* if (lbaktiv == 1) laufband();*//*
+/*statuslb = lbaktiv;*/
+
+/* if (lbaktiv == 1) laufband();*/
 
 gettext(10,5,80,20,&buff);
 window(10,5,80,20);
@@ -485,95 +474,96 @@ cputs("                                                                       "
 "Mit Pfeiltasten \033 \032 Position einstellen.                A              "
 "Mit Pfeiltasten \031 \030 Walze auswählen.                    B              "
 "                                                        C              "
-"šbernehmen mit Zwischenraum-Taste                       D              "
+"übernehmen mit Zwischenraum-Taste                       D              "
 "                                                                       "
 "Ausführen und zurück mit Enter                                        ");
-for (j=0;j<8;j++)
-{
-gotoxy(1+j*5,6);
-i=einstellung[j];
-cprintf("%c%c",auswahl[i*2],auswahl[i*2+1]);
-}
-while (fehler == 1)
-{
-tast = getch();
-gotoxy(1,16);  	*/
-/* Fehlermeldung löschen *//*
 
-cputs("                                 ");
-if (tast == 0) switch (getch())
-{
-case 77: if (pos < 7)
-{
-gotoxy(1,7); cputs("                                     ");
-++pos;
-gotoxy(1+pos*5,7); cputs("\030");
+for (j=0;j<8;j++){
+    gotoxy(1+j*5,6);
+    i=einstellung[j];
+    cprintf("%c%c",auswahl[i*2],auswahl[i*2+1]);
 }
-break;
-case 75: if (pos != 0)
-{
-gotoxy(1,7); cputs("                                    ");
---pos;
-gotoxy(1+pos*5,7); cputs("\030");
-}
-break;
-case 80: if (rot < 7)
-{
-gotoxy(55,5+rot);  cputs(" ");
-rot++;
-gotoxy(55,5+rot);  cputs(">");
-}
-break;
-case 72: if (rot != 0)
-{
-gotoxy(55,5+rot);  cputs(" ");
-rot--;
-gotoxy(55,5+rot);  cputs(">");
-}
-}
-if (tast == 32)                    */
-/* Blank *//*
 
-{
-if (((pos%2 == 0) && (rot < 4)) || ((pos%2 == 1) && (rot > 3)))
-{
-gotoxy(1+pos*5,6);
-cprintf("%c%c",auswahl[rot*2],auswahl[rot*2+1]);
-einstellung[pos]=rot;
-}
-}
-if (tast == 13)		*/
-/* Taste Enter, prüfen auf doppelte Belegung *//*
+while (fehler == 1) {
+    tast = getch();
+    gotoxy(1,16);
+    /* Fehlermeldung löschen */
 
-{
-fehler = 0;
-for (j=0;j<=6;j++)
-{
-for (i=j+1;i<=7;i++) if (einstellung[j] == einstellung[i]) fehler=1;
+    cputs("                                 ");
+    if (tast == 0) switch (getch()) {
+    case 77: if (pos < 7) {
+        gotoxy(1,7); cputs("                                     ");
+        ++pos;
+        gotoxy(1+pos*5,7); cputs("\030");
+        }
+        break;
+    case 75: if (pos != 0) {
+        gotoxy(1,7); cputs("                                    ");
+        --pos;
+        gotoxy(1+pos*5,7); cputs("\030");
+        }
+        break;
+    case 80: if (rot < 7) {
+        gotoxy(55,5+rot);  cputs(" ");
+        rot++;
+        gotoxy(55,5+rot);  cputs(">");
+        }
+        break;
+    case 72: if (rot != 0) {
+        gotoxy(55,5+rot);  cputs(" ");
+        rot--;
+        gotoxy(55,5+rot);  cputs(">");
+        }
+    }
+    if (tast == 32) {
+    /* Blank */
+    // auswahl[]={"16192021A B C D "};
+        if (((pos%2 == 0) && (rot < 4)) || // pos 0,2,4,6 rot 0,1,2,3
+            ((pos%2 == 1) && (rot > 3)) {  // pos 1,3,5,7 rot 4,5,6,7
+            gotoxy(1+pos*5,6);
+            cprintf("%c%c",auswahl[rot*2],auswahl[rot*2+1]);
+            einstellung[pos]=rot;
+            // einstellung = {0, ... 7}
+            // 0 => 16
+            // 1 => 19
+            // 2 => 20
+            // 3 => 21
+            // 4 => A
+            // 5 => B
+            // 6 => C
+            // 7 => D
+        }
+    }
+    if (tast == 13)	{
+    /* Taste Enter, prüfen auf doppelte Belegung */
+
+        fehler = 0;
+        for (j=0;j<=6;j++) {
+            for (i=j+1;i<=7;i++) if (einstellung[j] == einstellung[i]) fehler=1;
+        }
+
+        if (fehler) {
+            textcolor(LIGHTRED);
+            gotoxy (1,16); cputs("Walzen sind mehrfach verwendet!");
+            textcolor(WHITE);
+        }
+    }
 }
-if (fehler)
-{
-textcolor(LIGHTRED);
-gotoxy (1,16); cputs("Walzen sind mehrfach verwendet!");
-textcolor(WHITE);
-}
-}
-}
-is_einstellen();  */
-/* fehlerfrei, Inneren Schlüssel einstellen *//*
+is_einstellen();
+/* fehlerfrei, Inneren Schlüssel einstellen */
 
 puttext(10,5,80,20,&buff);
 window(1,1,80,25);
-is_anzeigen(0);       */
-/* bestehender Status ein/aus bleibt bestehen *//*
+is_anzeigen(0);
+/* bestehender Status ein/aus bleibt bestehen */
 
 }
 
 void is_anzeigen(int umschalt)
 {
 static int schalter, i;
-schalter = (schalter+umschalt)%2;      */
-/* schaltet um, wenn 1 mitgegeben wird *//*
+schalter = (schalter+umschalt)%2;
+/* schaltet um, wenn 1 mitgegeben wird */
 
 textcolor(LIGHTGRAY);
 if (schalter)
@@ -588,16 +578,16 @@ gotoxy(20+j*4,5); cprintf("%c%c",auswahl[i*2],auswahl[i*2+1]);
 }
 else
 {
-gotoxy(16,5); cputs("                                        "); */
-/* löschen *//*
+gotoxy(16,5); cputs("                                        ");
+/* löschen */
 
 }
 }
 
 void is_einstellen(void)
 {
-for (j=0;j<=25;j++)		  */
-/* übernimmt die Werte aus dem Vorrat *//*
+for (j=0;j<=25;j++)
+/* übernimmt die Werte aus dem Vorrat */
 
 {
 s2[j] = v[einstellung[0]][j];
@@ -618,11 +608,11 @@ ir9[j] = iv[einstellung[7]][j];
 void reset_zaehler(void)
 {
 zaehler = 100000;
-zaehler_anpassen(0);           */
-/* bleibt auf 00000 *//*
+zaehler_anpassen(0);
+/* bleibt auf 00000 */
 
-for (j=0;j<1600;j++) 		*/
-/* Laufband löschen *//*
+for (j=0;j<1600;j++)
+/* Laufband löschen */
 
 {
 klar[j] = 32;
@@ -635,41 +625,41 @@ laufband();
 void anzeige(int tast, int chiffrat)
 {
 int offset;
-*/
-/* Position der Buchstaben auf dem Lampenfeld *//*
+
+/* Position der Buchstaben auf dem Lampenfeld */
 
 const int posx[] =
 {18,36,28,26,24,30,34,38,44,42,46,50,44,40,48,52,16,28,22,32,40,32,20,24,20,36};
 const int posy[] =
 {15,17,17,15,13,15,15,15,13,15,15,15,17,17,13,13,13,13,15,13,13,17,13,17,17,13};
-*/
-/*  a  b  c  d  e  f  g  h  i  j  k  l  m  n  o  p  q  r  s  t  u  v  w  x  y  z   *//*
 
-beginn = clock();                  */
-/* Zeit merken für Autoabschaltung *//*
+/*  a  b  c  d  e  f  g  h  i  j  k  l  m  n  o  p  q  r  s  t  u  v  w  x  y  z   */
 
-if (lampe_ein) lampe_aus();        */
-/* falls altes Zeichen noch leuchtet, löschen *//*
+beginn = clock();
+/* Zeit merken für Autoabschaltung */
+
+if (lampe_ein) lampe_aus();
+/* falls altes Zeichen noch leuchtet, löschen */
 
 textcolor(YELLOW);
 offset = chiffrat-65;
 gotoxy(posx[offset],posy[offset]);
-cprintf("%c",chiffrat);            */
-/* neues Zeichen anzeigen *//*
+cprintf("%c",chiffrat);
+/* neues Zeichen anzeigen */
 
-lampe_ein = chiffrat;              */
-/* markieren, dass und welche Lampe *//*
+lampe_ein = chiffrat;
+/* markieren, dass und welche Lampe */
 
 vorherig_x=wherex()-1;
 vorherig_y=wherey();
 if (zeiger < 1595)
 {
 klar[zeiger]=tast;
-chiff[zeiger++]=chiffrat;         */
-/* neue Werte einsetzen *//*
+chiff[zeiger++]=chiffrat;
+/* neue Werte einsetzen */
 
-laufband();                       */
-/* Laufband anzeigen *//*
+laufband();
+/* Laufband anzeigen */
 
 }
 else
@@ -681,8 +671,8 @@ cprintf("    Chiffrieren ist weiterhin möglich, aber ohne Anzeige auf dem Laufb
 }
 }
 
-void cursor(int ein)            */
-/* Cursor ein/aus, Steuerung mit Parameter *//*
+void cursor(int ein)
+/* Cursor ein/aus, Steuerung mit Parameter */
 
 {
 static int alt_cursor_start, alt_cursor_stop;
@@ -732,8 +722,8 @@ cprintf("%c",chiff[offset + j]);
 void fragen(void)
 {
 int buf[200];
-gettext(14,6,68,8,&buf);              */
-/* Fenster sichern *//*
+gettext(14,6,68,8,&buf);
+/* Fenster sichern */
 
 window(14,6,68,8);
 textcolor(BLACK);
@@ -760,20 +750,20 @@ void maske(void)
 {
 int pos, i;
 const int anfang[] ={'A','A','A','A','A','A','A','A','A','A'}; */
-/* Ini-Schlüssel *//*
+/* Ini-Schlüssel */
 
-const int wert[] = {'1','2','3','4','5','6','7','8','9','0',   */
-/* 1 Zahlenreihe *//*
+const int wert[] = {'1','2','3','4','5','6','7','8','9','0',
+/* 1 Zahlenreihe */
 
-'Q','W','E','R','T','Z','U','I','O','P',   */
+'Q','W','E','R','T','Z','U','I','O','P',
 /* 3 Buchstaben- *//*
 
-'A','S','D','F','G','H','J','K','L',       */
-/*   reihen *//*
+'A','S','D','F','G','H','J','K','L',
+/*   reihen */
 
 'Y','X','C','V','B','N','M'};
-const int posx[] = {16,20,24,28,32,36,40,44,48,52,  */
-/* zugehörige Positionen *//*
+const int posx[] = {16,20,24,28,32,36,40,44,48,52,
+/* zugehörige Positionen */
 
 16,20,24,28,32,36,40,44,48,52,
 18,22,26,30,34,38,42,46,50,
@@ -784,8 +774,8 @@ const int posy[] = {12,12,12,12,12,12,12,12,12,12,
 17,17,17,17,17,17,17};
 for (i=0;i<10;i++) rotor[i+1] = anfang[i]-65;
 clrscr();
-textattr(BROWN);                                    */
-/* Braun auf schwarz *//*
+textattr(BROWN);
+/* Braun auf schwarz */
 
 cputs("      ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿       "
 "      ³                                                                 ³       "
