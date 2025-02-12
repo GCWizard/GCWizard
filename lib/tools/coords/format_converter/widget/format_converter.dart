@@ -101,12 +101,15 @@ class _FormatConverterState extends State<FormatConverter> {
     if (outputLatLng != null) {
       _currentOutput = buildCoordinate(_currentOutputFormat, outputLatLng);
       _currentMapPoint = GCWMapPoint(point: outputLatLng);
-    } else {
-      _currentOutput = i18n(context, 'coords_formatconverter_' + enumName(ErrorCode.Invalid_Coordinate.toString()).toLowerCase());
-      if (_currentCoords.errorCode != ErrorCode.OK && _currentCoords.errorCode != ErrorCode.Invalid_Coordinate) {
-        _currentOutput = _currentOutput.toString() +
-            '\n' + i18n(context, 'coords_formatconverter_' + enumName(_currentCoords.errorCode.toString()).toLowerCase());
+
+      if (_currentOutput is BaseCoordinate && (_currentOutput as BaseCoordinate).errorCode != ErrorCode.OK) {
+        var output = _currentOutput.toString();
+        if (output.isNotEmpty) output += '\n';
+        output += _coordErrorOutput(_currentOutput as BaseCoordinate);
       }
+    } else {
+      _currentOutput = _coordErrorOutput(_currentCoords);
+
       _currentMapPoint = GCWMapPoint(point: defaultCoordinate);
       _currentAllOutput = GCWCoordsOutput(outputs: [_currentOutput], points: [_currentMapPoint]);
       return;
@@ -115,6 +118,16 @@ class _FormatConverterState extends State<FormatConverter> {
     if (_currentOutputFormat.type == CoordinateFormatKey.ALL) {
       _currentAllOutput = _calculateAllOutput(context);
     }
+  }
+
+  String _coordErrorOutput(BaseCoordinate coords) {
+    var output =
+      i18n(context, 'coords_formatconverter_' + enumName(ErrorCode.Invalid_Coordinate.toString()).toLowerCase());
+    if (coords.errorCode != ErrorCode.OK && coords.errorCode != ErrorCode.Invalid_Coordinate) {
+      output += '\n' +
+          i18n(context, 'coords_formatconverter_' + enumName(coords.errorCode.toString()).toLowerCase());
+    }
+    return output;
   }
 
   Widget _calculateAllOutput(BuildContext context) {

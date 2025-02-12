@@ -38,7 +38,8 @@ import 'coordinate_format_definition.dart';
 enum ErrorCode {
   OK,
   Invalid_Coordinate,
-  Checksum_error,
+  Checksum_Error,
+  Outside_Borders,
   OLC_ShortFormat
 }
 

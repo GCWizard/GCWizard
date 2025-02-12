@@ -2071,6 +2071,7 @@
   "coords_formatconverter_invalid_coordinate": "Invalid coordinate format",
   "coords_formatconverter_checksum_error": "Checksum error",
   "coords_formatconverter_olc_shortformat": "Unsupported short format",
+  "coords_formatconverter_outside_borders": "Outside the Borders",
   "coords_formatconverter_dfci_grid": "DFCI Grid",
   "coords_formatconverter_gausskrueger_easting": "R/X (Easting)",
   "coords_formatconverter_gausskrueger_northing": "H/Y (Northing)",

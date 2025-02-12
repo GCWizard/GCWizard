@@ -1,6 +1,7 @@
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/coords/_common/formats/dfcigrid/logic/dfcigrid.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:latlong2/latlong.dart';
 
 void main() {
@@ -35,6 +36,22 @@ void main() {
 
         var _actual = DfciGridCoordinate.fromLatLon((elem['coord'] as Map<String, Object>)['coordinate'] as LatLng);
         expect(_actual.toString(), elem['text']);
+      });
+    }
+  });
+
+  group("Converter.dfcigrid.errorCode:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'errorCode': ErrorCode.OK, 'coord': {'format': CoordinateFormatKey.DFCI_GRID, 'coordinate': const LatLng(46.02234102, 3.71204547)}},
+      {'errorCode': ErrorCode.Outside_Borders, 'coord': {'format': CoordinateFormatKey.DFCI_GRID, 'coordinate': const LatLng(48.0, 50.0)}},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      if (elem['coord'] == null) continue;
+      test('coord: ${((elem['coord'] as Map<String, Object>)['coordinate'] as LatLng)}', () {
+
+        var _actual = DfciGridCoordinate.fromLatLon((elem['coord'] as Map<String, Object>)['coordinate'] as LatLng);
+        expect(_actual.errorCode, elem['errorCode']);
       });
     }
   });

@@ -28,7 +28,7 @@ class ReverseWherigoWaldmeisterCoordinate extends BaseCoordinate {
   @override
   LatLng? toLatLng() {
     var result = _reverseWIGWaldmeisterToLatLon(this);
-    _errorCode = (result == null) ? ErrorCode.Checksum_error : ErrorCode.OK;
+    _errorCode = (result == null) ? ErrorCode.Checksum_Error : ErrorCode.OK;
     return result;
   }
 

@@ -16,12 +16,23 @@ class DfciGridCoordinate extends BaseCoordinate {
   @override
   CoordinateFormat get format => CoordinateFormat(CoordinateFormatKey.DFCI_GRID);
   String text;
+  var _errorCode = ErrorCode.OK;
 
   DfciGridCoordinate(this.text);
 
   @override
+  ErrorCode get errorCode => _errorCode;
+
+  set errorCode(ErrorCode errorCode) => _errorCode = errorCode;
+
+  @override
   LatLng? toLatLng() {
-    return _parseDFCI(text);
+    var result = _parseDFCI(text);
+    if (result != null && (!_validDFCICoord(LatLng (result.latitude, result.longitude)))) {
+      _errorCode = ErrorCode.Outside_Borders;
+      return null;
+    }
+    return result;
   }
 
   static DfciGridCoordinate fromLatLon(LatLng coord) {
@@ -43,20 +54,25 @@ DfciGridCoordinate _latLonToDfciGrid(LatLng coord) {
   var dfci = DfciGridCoordinate(dfciGrid);
   dfci.latitude = coord.latitude;
   dfci.longitude = coord.longitude;
+  if (!_validDFCICoord(coord)) {
+    dfci.errorCode = ErrorCode.Outside_Borders;
+  }
   return dfci;
 }
 
 DfciGridCoordinate? _parseDfciGrid(String input) {
- var coord = _parseDFCI(input);
- if (coord == null) {
+  var coord = _parseDFCI(input);
+  if (coord == null) {
    return null;
- } else {
+  } else {
    var dfci = DfciGridCoordinate(input);
    dfci.latitude = coord.latitude;
    dfci.longitude = coord.longitude;
+   if (!_validDFCICoord(coord)) {
+     dfci.errorCode = ErrorCode.Outside_Borders;
+   }
    return dfci;
- }
-
+  }
 }
 
 /** Convert coordinate to French DFCI grid
