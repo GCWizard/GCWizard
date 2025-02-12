@@ -6,6 +6,7 @@ import 'package:gc_wizard/common_widgets/dropdowns/gcw_abc_dropdown.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/enigma/logic/enigma.dart';
@@ -24,20 +25,15 @@ class NEMA extends StatefulWidget {
 
 class _NEMAState extends State<NEMA> {
   late TextEditingController _inputController;
-  late TextEditingController _innerKeyExerController;
-  late TextEditingController _innerKeyOperController;
+  late TextEditingController _innerKeyController;
   late TextEditingController _outerKeyController;
 
   String _currentInput = '';
   String _currentInnerKey = '';
-  String _currentInnerKeyExer = '20-B 19-A 21-C 16-D';
-  String _currentInnerKeyOper = '12-B 13-A 14-C 15-D 17-E 18-F';
-  String _currentOuterKey = 'DISTELFINK';
+  String _currentOuterKey = '';
 
-  final MaskTextInputFormatter _MASKINPUTFORMATTER_innerKey_exer =
+  final MaskTextInputFormatter _MASKINPUTFORMATTER_innerKey =
   MaskTextInputFormatter(mask: "@@-# @@-# @@-# @@-#", filter: {"@": RegExp(r'[0-9]'), "#": RegExp(r'[A-Za-z]')});
-  final MaskTextInputFormatter _MASKINPUTFORMATTER_innerKey_oper =
-  MaskTextInputFormatter(mask: "@@-# @@-# @@-# @@-# @@-# @@-#", filter: {"@": RegExp(r'[0-9]'), "#": RegExp(r'[A-Za-z]')});
   final MaskTextInputFormatter _MASKINPUTFORMATTER_outerKey =
   MaskTextInputFormatter(mask: "##########", filter: {"#": RegExp(r'[A-Za-z]')});
 
@@ -49,16 +45,14 @@ class _NEMAState extends State<NEMA> {
     super.initState();
 
     _inputController = TextEditingController(text: _currentInput);
-    _innerKeyExerController = TextEditingController(text: _currentInnerKeyExer);
-    _innerKeyOperController = TextEditingController(text: _currentInnerKeyOper);
+    _innerKeyController = TextEditingController(text: _currentInnerKey);
     _outerKeyController = TextEditingController(text: _currentOuterKey);
   }
 
   @override
   void dispose() {
     _inputController.dispose();
-    _innerKeyExerController.dispose();
-    _innerKeyOperController.dispose();
+    _innerKeyController.dispose();
     _outerKeyController.dispose();
 
     super.dispose();
@@ -99,26 +93,13 @@ class _NEMAState extends State<NEMA> {
                 text: i18n(context, 'nema_inner_key'),
                 suppressTopSpace: true,
               ),
-              _currentMode == GCWSwitchPosition.right
-                  ? GCWTextField(
-                controller: _innerKeyExerController,
-                hintText: '16-A 19-B 20-C 21-D',
-                inputFormatters: [_MASKINPUTFORMATTER_innerKey_exer],
+              GCWTextField(
+                controller: _innerKeyController,
+                hintText: '12-A 13-B 14-C 15-D',
+                inputFormatters: [_MASKINPUTFORMATTER_innerKey],
                 onChanged: (text) {
                   setState(() {
-                    _currentInnerKeyExer = text;
-                    _currentInnerKey = _currentInnerKeyExer;
-                  });
-                },
-              )
-                  : GCWTextField(
-                controller: _innerKeyOperController,
-                hintText: '12-A 13-B 14-C 15-D 17-E 18-F',
-                inputFormatters: [_MASKINPUTFORMATTER_innerKey_oper],
-                onChanged: (text) {
-                  setState(() {
-                    _currentInnerKeyOper = text;
-                    _currentInnerKey = _currentInnerKeyOper;
+                    _currentInnerKey = text;
                   });
                 },
               ),
@@ -146,14 +127,22 @@ class _NEMAState extends State<NEMA> {
   }
 
   Widget _buildOutput() {
-      print(_currentInnerKey);
-    if (nema_valid_key(_currentInnerKey, _currentType)) {
-      return GCWDefaultOutput(
-        child: nema(_currentInput, _currentType, _currentInnerKey, _currentOuterKey),
+    if (nema_valid_key(_currentInnerKey, _currentType) && _currentOuterKey.length == 10) {
+      NEMAOutput output = nema(_currentInput, _currentType, _currentInnerKey, _currentOuterKey);
+      return Column(
+        children: [
+          GCWDefaultOutput(
+            child: output.output,
+          ),
+          GCWTextDivider(
+              text: i18n(context, 'nema_rotor')),
+          GCWOutput(
+              child: output.rotor),
+        ],
       );
     } else {
       return GCWDefaultOutput(
-        child: i18n(context, 'nema_error_invalid_inner_key')
+        child: i18n(context, 'nema_error_invalid_key')
       );
     }
   }

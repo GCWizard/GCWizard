@@ -1,13 +1,18 @@
 part 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema_data_exer.dart';
 part 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema_data_oper.dart';
 
+class NEMAOutput{
+  String output;
+  String rotor;
+
+  NEMAOutput({required this.output, required this.rotor});
+}
+
 enum NEMA_TYPE { EXER, OPER }
 
 List<List<int>> _v = [];
 List<List<int>> _iv = [];
 List<int> _einstellung = [0, 0, 0, 0, 0, 0, 0, 0];
-
-int _zaehler = 0;
 
 /* Spezialfälle, s0 und s10 sind die Steuerscheiben an der Walze 10, 'um'
    ist die Umkehrwalze, 'in' gibt den Zusammenhang Taste -> Position der
@@ -227,17 +232,15 @@ void nema_init(NEMA_TYPE type) {
     case NEMA_TYPE.EXER:
       _v = nema_v_exer;
       _iv = nema_iv_exer;
-//      _einstellung = nema_einstellung_exer;
       break;
     case NEMA_TYPE.OPER:
       _v = nema_v_oper;
       _iv = nema_iv_oper;
-//      _einstellung = nema_einstellung_oper;
       break;
   }
 }
 
-String nema(
+NEMAOutput nema(
   String input,
   NEMA_TYPE type,
   String innerKey,
@@ -257,7 +260,11 @@ String nema(
     output.add(_chiffrieren(char.toLowerCase().codeUnitAt(0)));
   });
 
-  return output.join('');
+  String rotor = '';
+  for (int i = 1; i < _rotor.length; i++) {
+    rotor = rotor + String.fromCharCode(_rotor[i] + 65);
+  }
+  return NEMAOutput(output: output.join(''), rotor: rotor);
 }
 
 void _outerKeyToRotor(String outerKey) {
