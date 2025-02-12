@@ -251,7 +251,6 @@ String nema(
   _is_einstellen();
 
   _outerKeyToRotor(outerKey.toUpperCase());
-   _vorschub();
 
   input.split('').forEach((char) {
     _vorschub();
