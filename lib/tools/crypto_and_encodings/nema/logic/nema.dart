@@ -155,7 +155,16 @@ bool _nema_valid_key_exer(String key) {
   int error = 0;
 
   List<String> checkList = [];
-  List<String> keyList = ['16', '19', '20', '21', 'A', 'B', 'C', 'D',];
+  List<String> keyList = [
+    '16',
+    '19',
+    '20',
+    '21',
+    'A',
+    'B',
+    'C',
+    'D',
+  ];
   key.split('-').forEach((element) {
     if (keyList.contains(element)) {
       if (checkList.contains(element)) {
@@ -173,7 +182,20 @@ bool _nema_valid_key_exer(String key) {
 bool _nema_valid_key_oper(String key) {
   int error = 0;
   List<String> checkList = [];
-  List<String> keyList = ['12', '13', '14', '15', '17', '18', 'A', 'B', 'C', 'D', 'E', 'F'];
+  List<String> keyList = [
+    '12',
+    '13',
+    '14',
+    '15',
+    '17',
+    '18',
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F'
+  ];
   key.replaceAll(' ', '-').split('-').forEach((element) {
     if (keyList.contains(element)) {
       if (checkList.contains(element)) {
@@ -215,7 +237,12 @@ void nema_init(NEMA_TYPE type) {
   }
 }
 
-String nema(String input, NEMA_TYPE type, String innerKey, String outerKey, ) {
+String nema(
+  String input,
+  NEMA_TYPE type,
+  String innerKey,
+  String outerKey,
+) {
   List<String> output = [];
 
   nema_init(type);
@@ -224,8 +251,10 @@ String nema(String input, NEMA_TYPE type, String innerKey, String outerKey, ) {
   _is_einstellen();
 
   _outerKeyToRotor(outerKey.toUpperCase());
+   _vorschub();
 
   input.split('').forEach((char) {
+    _vorschub();
     output.add(_chiffrieren(char.toLowerCase().codeUnitAt(0)));
   });
 
@@ -238,10 +267,10 @@ void _outerKeyToRotor(String outerKey) {
   }
 }
 
-void _innerKeyToEinstellung(NEMA_TYPE type, String innerKey){
+void _innerKeyToEinstellung(NEMA_TYPE type, String innerKey) {
   int index = 0;
   Map<NEMA_TYPE, Map<String, int>> key = {
-    NEMA_TYPE.EXER : {
+    NEMA_TYPE.EXER: {
       '16': 0,
       '19': 1,
       '20': 2,
@@ -251,7 +280,7 @@ void _innerKeyToEinstellung(NEMA_TYPE type, String innerKey){
       'C': 6,
       'D': 7,
     },
-    NEMA_TYPE.OPER : {
+    NEMA_TYPE.OPER: {
       '12': 0,
       '13': 1,
       '14': 2,
@@ -266,16 +295,16 @@ void _innerKeyToEinstellung(NEMA_TYPE type, String innerKey){
       'F': 11,
     }
   };
-  innerKey.replaceAll(' ', '-').split('-').forEach((element){
+  innerKey.replaceAll(' ', '-').split('-').forEach((element) {
     _einstellung[index] = key[type]![element]!;
     index++;
   });
 }
 
-String _chiffrieren(int klartext){
+String _chiffrieren(int klartext) {
 /* Klartext wird als Kleinbuchstabe mitgebracht */
 
-  int zwischen = _in[klartext-97];
+  int zwischen = _in[klartext - 97];
 /* Offset weg und Position auf Anschlusskontakten */
 
   zwischen = (zwischen + _r9[(zwischen + _rotor[9]) % 26]) % 26;
@@ -287,11 +316,10 @@ String _chiffrieren(int klartext){
   zwischen = (zwischen + _ir5[(zwischen + _rotor[5]) % 26]) % 26;
   zwischen = (zwischen + _ir7[(zwischen + _rotor[7]) % 26]) % 26;
   zwischen = (zwischen + _ir9[(zwischen + _rotor[9]) % 26]) % 26;
-  
-  return(_ini[zwischen]);
+
+  return (_ini[zwischen]);
 /* von Anschlussplatte auf Buchstaben */
 }
-
 
 void _is_einstellen() {
   for (int j = 0; j <= 25; j++) {
@@ -309,4 +337,30 @@ void _is_einstellen() {
     _ir7[j] = _iv[_einstellung[5]][j];
     _ir9[j] = _iv[_einstellung[7]][j];
   }
+}
+
+void _vorschub() {
+  /* Tastendruck auf Walzen übertragen */
+
+/* die Rotoren 3 und 7 haben doppelte Abhängigkeit */
+/* die Rotoren 4 und 8 haben einfache Abhängigkeit von s0 */
+
+  if (_s0[((_rotor[10] + 17) % 26)] != 0) {
+    if (_s4[((_rotor[4] + 16) % 26)] != 0) _rotor[3] = (_rotor[3] + 25) % 26;
+    _rotor[4] = (_rotor[4] + 25) % 26;
+    if (_s8[((_rotor[8] + 16) % 26)] != 0) _rotor[7] = (_rotor[7] + 25) % 26;
+    _rotor[8] = (_rotor[8] + 25) % 26;
+  }
+
+/* die Rotoren 1, 5 und 9 haben einfache Abhängigkeit */
+
+  if (_s2[((_rotor[2] + 16) % 26)] != 0) _rotor[1] = (_rotor[1] + 25) % 26;
+  if (_s6[((_rotor[6] + 16) % 26)] != 0) _rotor[5] = (_rotor[5] + 25) % 26;
+  if (_s10[((_rotor[10] + 16) % 26)] != 0) _rotor[9] = (_rotor[9] + 25) % 26;
+
+/* die Rotoren 2, 6 und 10 werden bei jedem Tastendruck bewegt */
+
+  _rotor[2] = (_rotor[2] + 25) % 26;
+  _rotor[6] = (_rotor[6] + 25) % 26;
+  _rotor[10] = (_rotor[10] + 25) % 26;
 }
