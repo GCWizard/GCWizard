@@ -1,3 +1,5 @@
+import 'package:gc_wizard/utils/collection_utils.dart';
+
 part 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema_source.dart';
 part 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema_data_exer.dart';
 part 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema_data_oper.dart';
@@ -11,6 +13,18 @@ class NEMAOutput{
 
 enum NEMA_TYPE { EXER, OPER }
 
+Map<String, String> NEMA_DIGIT_TO_LETTER = {
+  '1': 'q',
+  '2': 'w',
+  '3': 'e',
+  '4': 'r',
+  '5': 't',
+  '6': 'z',
+  '7': 'u',
+  '8': 'i',
+  '9': 'o',
+  '0': 'p',
+};
 
 bool _nema_valid_key_exer(String key) {
   int error = 0;
@@ -121,7 +135,11 @@ NEMAOutput nema(
 
   input.replaceAll(' ', '').split('').forEach((char) {
     _vorschub();
-    output.add(_chiffrieren(char.toLowerCase().codeUnitAt(0)));
+    if (NEMA_DIGIT_TO_LETTER[char] != null) {
+      output.add(_chiffrieren(NEMA_DIGIT_TO_LETTER[char]!.codeUnitAt(0)));
+    } else {
+      output.add(_chiffrieren(char.toLowerCase().codeUnitAt(0)));
+    }
   });
 
   String rotor = '';

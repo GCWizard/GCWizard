@@ -49,6 +49,28 @@ void main() {
         'outerKey': 'AAAAAAAAAA',
         'type': NEMA_TYPE.OPER,
         'expectedOutput' : 'HALLO GCWIZ ARD'},
+      ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}, innerKey: ${elem['innerKey']}, outerKey: ${elem['outerKey']}, type: ${elem['type']}', () {
+        NEMAOutput _actual = nema(elem['input'] as String, elem['type'] as NEMA_TYPE, elem['innerKey'] as String, elem['outerKey'] as String,);
+        expect(_actual.output, elem['expectedOutput']);
+      });
+    }
+  });
+
+  group("NEMA.digits:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : 'final bei nord x12y punkt 345y und ost x67y und x890y',
+        'innerKey': '12-A 13-B 14-C 15-D',
+        'outerKey': 'AAAAAAAAAA',
+        'type': NEMA_TYPE.OPER,
+        'expectedOutput' : 'CFYZB VJYFP DSEXZ NVDLR VXHYA SHWJF IKLYM GPSSR ZGG'},
+      {'input' : 'CFYZB VJYFP DSEXZ NVDLR VXHYA SHWJF IKLYM GPSSR ZGG',
+        'innerKey': '12-A 13-B 14-C 15-D',
+        'outerKey': 'AAAAAAAAAA',
+        'type': NEMA_TYPE.OPER,
+        'expectedOutput' : 'FINAL BEINO RDXQW YPUNK TERTY UNDOS TXZUY UNDXI OPY'},
     ];
 
     for (var elem in _inputsToExpected) {
