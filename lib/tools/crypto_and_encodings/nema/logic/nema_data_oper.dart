@@ -526,3 +526,11 @@ const List<List<int>> nema_iv_oper = [
     1
   ]
 ];
+
+/* Spezialfälle, s0 und s10 sind die Steuerscheiben an der Walze 10 */
+const List<int> nema_s10_oper = [
+  1,1,0,0,1,0,1,1,0,0,1,0,1,1,0,1,1,1,1,0,0,1,1,1,0,0,
+];
+const List<int> nema_s0_oper = [
+  0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,
+];

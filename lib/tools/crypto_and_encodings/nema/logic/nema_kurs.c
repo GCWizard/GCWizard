@@ -103,9 +103,10 @@ const char auswahl[]={"16192021A B C D "};
 
 
 
-/* Spezialfälle, s0 und s10 sind die Steuerscheiben an der Walze 10, 'um'
-   ist die Umkehrwalze, 'in' gibt den Zusammenhang Taste -> Position der
-   Anschlusskontakte, 'ini' denjenigen Position -> Taste */
+/* Spezialfälle, s0 und s10 sind die Steuerscheiben an der Walze 10,
+ * 'um' ist die Umkehrwalze,
+ * 'in' gibt den Zusammenhang Taste -> Position der Anschlusskontakte,
+   'ini' denjenigen Position -> Taste */
 
 const int s10[]={1,0,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,0};
 const int s0[]= {0,1,0,1,1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0};

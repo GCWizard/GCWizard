@@ -353,3 +353,61 @@ const List<List<int>> nema_iv_exer = [
     13
   ]
 ];
+
+/* Spezialfälle, s0 und s10 sind die Steuerscheiben an der Walze 10 */
+const List<int> nema_s10_exer = [
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0
+];
+const List<int> nema_s0_exer = [
+  0,
+  1,
+  0,
+  1,
+  1,
+  0,
+  0,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+];
