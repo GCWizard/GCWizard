@@ -689,7 +689,7 @@ class Logical {
 	}
 
 	static Point<int>? _jsonValueFromString(String value, Logical logical) {
-		return Point<int>(logical.fullLine(logical._mapRowToColumnBlockIndex(alphabet_AZ[value[0].toUpperCase()]!) - 1,
+		return Point<int>(logical.fullLine(alphabet_AZ[value[0].toUpperCase()]! - 1,
 				int.tryParse(value[1]) ?? 0),
 				logical.fullLine(alphabet_AZ[value[2].toUpperCase()]! - 2, int.tryParse(value[3]) ?? 0));
 	}
