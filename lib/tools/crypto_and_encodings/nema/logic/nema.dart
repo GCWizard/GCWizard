@@ -1,5 +1,3 @@
-import 'package:gc_wizard/utils/collection_utils.dart';
-
 part 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema_source.dart';
 part 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema_data_exer.dart';
 part 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema_data_oper.dart';
