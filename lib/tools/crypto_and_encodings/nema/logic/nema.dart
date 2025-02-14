@@ -11,7 +11,7 @@ class NEMAOutput{
 
 enum NEMA_TYPE { EXER, OPER }
 
-Map<String, String> NEMA_DIGIT_TO_LETTER = {
+const Map<String, String> NEMA_DIGIT_TO_LETTER = {
   '1': 'q',
   '2': 'w',
   '3': 'e',
@@ -28,7 +28,7 @@ bool _nema_valid_key_exer(String key) {
   int error = 0;
 
   List<String> checkList = [];
-  List<String> keyList = [
+  const List<String> keyList = [
     '16',
     '19',
     '20',
@@ -55,7 +55,7 @@ bool _nema_valid_key_exer(String key) {
 bool _nema_valid_key_oper(String key) {
   int error = 0;
   List<String> checkList = [];
-  List<String> keyList = [
+  const List<String> keyList = [
     '12',
     '13',
     '14',
@@ -155,7 +155,7 @@ void _outerKeyToRotor(String outerKey) {
 
 void _innerKeyToEinstellung(NEMA_TYPE type, String innerKey) {
   int index = 0;
-  Map<NEMA_TYPE, Map<String, int>> key = {
+  const Map<NEMA_TYPE, Map<String, int>> key = {
     NEMA_TYPE.EXER: {
       '16': 0,
       '19': 1,

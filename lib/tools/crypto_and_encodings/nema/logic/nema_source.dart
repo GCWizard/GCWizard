@@ -12,15 +12,14 @@ part of 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema.dart';
 *    NEMA_KMOB.C  simulating the NEMA for operational use
 *    NEMA_KURS.C  simulating the NEMA for training purpose
 *
+* For deeper insight please check the attached C files.
+*
 * */
 
 List<List<int>> _v = [];
 List<List<int>> _iv = [];
 List<int> _einstellung = [0, 0, 0, 0, 0, 0, 0, 0];
 
-/* Spezialfälle, s0 und s10 sind die Steuerscheiben an der Walze 10, 'um'
-   ist die Umkehrwalze, 'in' gibt den Zusammenhang Taste -> Position der
-   Anschlusskontakte, 'ini' denjenigen Position -> Taste */
 List<int> _s0 = [];
 List<int> _s10 = [];
 
@@ -83,9 +82,6 @@ const List<int> _in = [
 
 const String _ini = "NBVCXYLKJHGFDSAPOIUZTREWQM";
 
-/* Die momentan eingestellten Steuerscheiben s, Kontaktwalzen r und deren
-   Inversion ir. Die Zahlen beziehen sich auf die Walzennummer. */
-
 List<int> _s2 = List.filled(26, 0);
 List<int> _s4 = List.filled(26, 0);
 List<int> _s6 = List.filled(26, 0);
@@ -99,8 +95,6 @@ List<int> _ir5 = List.filled(26, 0);
 List<int> _ir7 = List.filled(26, 0);
 List<int> _ir9 = List.filled(26, 0);
 
-/* Die Stellung der Walzen 1 ... 10  (0 wird nicht benötigt) */
-
 List<int> _rotor = List.filled(
   11,
   0,
@@ -108,10 +102,8 @@ List<int> _rotor = List.filled(
 
 
 String _chiffrieren(int klartext) {
-/* Klartext wird als Kleinbuchstabe mitgebracht */
 
   int zwischen = _in[klartext - 97];
-/* Offset weg und Position auf Anschlusskontakten */
 
   zwischen = (zwischen + _r9[(zwischen + _rotor[9]) % 26]) % 26;
   zwischen = (zwischen + _r7[(zwischen + _rotor[7]) % 26]) % 26;
@@ -124,12 +116,11 @@ String _chiffrieren(int klartext) {
   zwischen = (zwischen + _ir9[(zwischen + _rotor[9]) % 26]) % 26;
 
   return (_ini[zwischen]);
-/* von Anschlussplatte auf Buchstaben */
 }
 
 void _is_einstellen() {
   for (int j = 0; j <= 25; j++) {
-/* übernimmt die Werte aus dem Vorrat */
+
     _s2[j] = _v[_einstellung[0]][j];
     _s4[j] = _v[_einstellung[2]][j];
     _s6[j] = _v[_einstellung[4]][j];
@@ -146,10 +137,6 @@ void _is_einstellen() {
 }
 
 void _vorschub() {
-  /* Tastendruck auf Walzen übertragen */
-
-/* die Rotoren 3 und 7 haben doppelte Abhängigkeit */
-/* die Rotoren 4 und 8 haben einfache Abhängigkeit von s0 */
 
   if (_s0[((_rotor[10] + 17) % 26)] != 0) {
     if (_s4[((_rotor[4] + 16) % 26)] != 0) _rotor[3] = (_rotor[3] + 25) % 26;
@@ -158,13 +145,9 @@ void _vorschub() {
     _rotor[8] = (_rotor[8] + 25) % 26;
   }
 
-/* die Rotoren 1, 5 und 9 haben einfache Abhängigkeit */
-
   if (_s2[((_rotor[2] + 16) % 26)] != 0) _rotor[1] = (_rotor[1] + 25) % 26;
   if (_s6[((_rotor[6] + 16) % 26)] != 0) _rotor[5] = (_rotor[5] + 25) % 26;
   if (_s10[((_rotor[10] + 16) % 26)] != 0) _rotor[9] = (_rotor[9] + 25) % 26;
-
-/* die Rotoren 2, 6 und 10 werden bei jedem Tastendruck bewegt */
 
   _rotor[2] = (_rotor[2] + 25) % 26;
   _rotor[6] = (_rotor[6] + 25) % 26;

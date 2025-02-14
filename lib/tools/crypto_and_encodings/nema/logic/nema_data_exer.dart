@@ -1,12 +1,11 @@
 part of 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema.dart';
 
-/*  KURSNEMA                                              DATUM: November 04
-    Virtuelle Chiffriermaschine NEMA (Schulen und Kurse)
-    Vorhandene Fortschaltwalzen: 16 - 19 - 20 - 21 (23/2)
-    Vorhandene Kontaktwalzen: A - B - C - D
+/*  KURSNEMA - NEMA cipher machine used for trainings
+    progression rotors: 16 - 19 - 20 - 21 (23/2)
+    contact rotors: A - B - C - D
 */
 
-/* hier die vorrätigen Walzen, 4 Fortschaltwalzen und 4 Kontaktwalzen */
+// Data of the available rotors: 4 progression rotors and 4 contact rotors
 const List<List<int>> nema_v_exer = [
   [
     1,
@@ -234,7 +233,7 @@ const List<List<int>> nema_v_exer = [
   ]
 ];
 
-/* hier die Inversionen der obigen Kontaktwalzen */
+// Data of the inverted contact rotors
 const List<List<int>> nema_iv_exer = [
   [0],
   [0],
@@ -354,7 +353,7 @@ const List<List<int>> nema_iv_exer = [
   ]
 ];
 
-/* Spezialfälle, s0 und s10 sind die Steuerscheiben an der Walze 10 */
+// Special cases, s0 and s10 are the steering parts of rotor 10
 const List<int> nema_s10_exer = [
   1,
   0,

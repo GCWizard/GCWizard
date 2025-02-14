@@ -1,12 +1,11 @@
 part of 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema.dart';
 
-/*  KMOBNEMA                                              DATUM: November 04
-    Virtuelle Chiffriermaschine NEMA (K-Mob)
-    Vorhandene Fortschaltwalzen: 12 - 13 - 14 - 15 - 17 - 18 (22/1)
-    Vorhandene Kontaktwalzen: A - B - C - D - E - F
+/*  KMOBNEMA - NEMA cipher machine intended to be used for wartime
+    progression rotors: 12 - 13 - 14 - 15 - 17 - 18 (22/1)
+    contact rotors: A - B - C - D - E - F
 */
 
-/* hier die vorrätigen Walzen, 6 Fortschaltwalzen und 6 Kontaktwalzen */
+// Data of the available rotors: 6 progression rotors and 6 contact rotors
 const List<List<int>> nema_v_oper = [
   [
     0,
@@ -346,8 +345,7 @@ const List<List<int>> nema_v_oper = [
   ]
 ];
 
-/* hier die Inversionen der obigen Kontaktwalzen */
-
+// Data of the inverted contact rotors
 const List<List<int>> nema_iv_oper = [
   [0],
   [0],
@@ -527,7 +525,7 @@ const List<List<int>> nema_iv_oper = [
   ]
 ];
 
-/* Spezialfälle, s0 und s10 sind die Steuerscheiben an der Walze 10 */
+// Special cases, s0 and s10 are the steering parts of rotor 10
 const List<int> nema_s10_oper = [
   1,1,0,0,1,0,1,1,0,0,1,0,1,1,0,1,1,1,1,0,0,1,1,1,0,0,
 ];
