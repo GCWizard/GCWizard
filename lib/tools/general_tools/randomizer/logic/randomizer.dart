@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors_rgb.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:latlong2/latlong.dart';

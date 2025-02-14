@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'dart:math';
+
 import 'package:gc_wizard/utils/stack.dart';
 
 const MAXDISCCOUNT = 100;
