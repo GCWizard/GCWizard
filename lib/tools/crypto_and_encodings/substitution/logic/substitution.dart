@@ -1,10 +1,11 @@
 import 'dart:collection';
 
 String substitution(String input, Map<String, String> substitutions, {bool caseSensitive = true}) {
+
   if (input.isEmpty) return '';
 
   if (!caseSensitive) {
-    input = input.toUpperCase();
+    input = input.replaceAll('ß', '\u1e9e').toUpperCase();
   }
 
   if (substitutions.keys.where((key) => key.isNotEmpty).isEmpty) return input;
@@ -62,6 +63,5 @@ String substitution(String input, Map<String, String> substitutions, {bool caseS
   for (var entry in replacements.entries) {
     if (substCopy.containsKey(entry.value)) output += substCopy[entry.value]!;
   }
-
   return output;
 }

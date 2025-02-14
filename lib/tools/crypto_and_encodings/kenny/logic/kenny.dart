@@ -89,6 +89,7 @@ String decryptKenny(String input, List<String>? replaceCharacters, bool caseSens
   }
 
   // substitute key characters/string with non-writeable characters
+
   var _input = substitution(input, substitutions, caseSensitive: false);
   int chunkStart = 0; // start position of chunk in the original text
   int chunkOffset = 0; // position in the chunk
@@ -148,7 +149,13 @@ String decryptKenny(String input, List<String>? replaceCharacters, bool caseSens
   }
   // restore unused chunks to the original text
   output = _restoreChunks(output + _input, input, 0, substitutionsSwitched);
-  if (!caseSensitive) output = output.toUpperCase();
+  if (!caseSensitive) {
+    if (output == 'ß') {
+      output = '\u1E9E';
+    } else {
+      output = output.replaceAll('ß', '\u1e9e').toUpperCase();
+    }
+  }
 
   return output;
 }
