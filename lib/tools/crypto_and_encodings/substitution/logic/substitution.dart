@@ -5,6 +5,8 @@ String substitution(String input, Map<String, String> substitutions, {bool caseS
   if (input.isEmpty) return '';
 
   if (!caseSensitive) {
+    // ('ß').toUpperCase() => 'SS' which is deprecated according to https://en.wikipedia.org/wiki/%C3%9F
+    // As of 2024, when writing in capital letters, ⟨ẞ⟩ or '\u1e9e' is preferred
     input = input.replaceAll('ß', '\u1e9e').toUpperCase();
   }
 

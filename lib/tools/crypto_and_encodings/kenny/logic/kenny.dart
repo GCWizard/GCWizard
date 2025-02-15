@@ -150,11 +150,9 @@ String decryptKenny(String input, List<String>? replaceCharacters, bool caseSens
   // restore unused chunks to the original text
   output = _restoreChunks(output + _input, input, 0, substitutionsSwitched);
   if (!caseSensitive) {
-    if (output == 'ß') {
-      output = '\u1E9E';
-    } else {
-      output = output.replaceAll('ß', '\u1e9e').toUpperCase();
-    }
+    // ('ß').toUpperCase() => 'SS' which is deprecated according to https://en.wikipedia.org/wiki/%C3%9F
+    // As of 2024, when writing in capital letters, ⟨ẞ⟩ or '\u1e9e' is preferred
+    output = output.replaceAll('ß', '\u1e9e').toUpperCase();
   }
 
   return output;
