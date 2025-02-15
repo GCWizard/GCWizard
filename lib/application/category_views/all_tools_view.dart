@@ -423,37 +423,48 @@ class _MainViewState extends State<MainView> {
 
     var toolList = (_isSearching && _searchText.isNotEmpty) ? _getSearchedList() : null;
 
-    return DefaultTabController(
-      length: 3,
-      initialIndex: Prefs.getBool(PREFERENCE_TABS_USE_DEFAULT_TAB)
-          ? Prefs.getInt(PREFERENCE_TABS_DEFAULT_TAB)
-          : Prefs.getInt(PREFERENCE_TABS_LAST_VIEWED_TAB),
-      child: Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(
-            bottom: TabBar(
-              onTap: (value) {
-                Prefs.setInt(PREFERENCE_TABS_LAST_VIEWED_TAB, value);
-              },
-              tabs: const [
-                Tab(icon: Icon(Icons.category)),
-                Tab(icon: Icon(Icons.list)),
-                Tab(icon: Icon(Icons.star)),
-              ],
-            ),
-            leading: _buildIcon(),
-            title: _buildTitleAndSearchTextField(),
-            actions: <Widget>[_buildSearchActionButton()]),
-        drawer: buildMainMenu(context),
-        body: TabBarView(
-          children: [
-            GCWToolList(toolList: toolList ?? _categoryList),
-            GCWToolList(toolList: toolList ?? _mainToolList),
-            GCWToolList(toolList: toolList ?? Favorites.favoritedGCWTools()),
-          ],
+    if (!(_isSearching && _searchText.isNotEmpty)) {
+      return DefaultTabController(
+        length: 3,
+        initialIndex: Prefs.getBool(PREFERENCE_TABS_USE_DEFAULT_TAB)
+            ? Prefs.getInt(PREFERENCE_TABS_DEFAULT_TAB)
+            : Prefs.getInt(PREFERENCE_TABS_LAST_VIEWED_TAB),
+        child: Scaffold(
+          key: _scaffoldKey,
+          appBar: AppBar(
+              bottom: TabBar(
+                onTap: (value) {
+                  Prefs.setInt(PREFERENCE_TABS_LAST_VIEWED_TAB, value);
+                },
+                tabs: const [
+                  Tab(icon: Icon(Icons.category)),
+                  Tab(icon: Icon(Icons.list)),
+                  Tab(icon: Icon(Icons.star)),
+                ],
+              ),
+              leading: _buildIcon(),
+              title: _buildTitleAndSearchTextField(),
+              actions: <Widget>[_buildSearchActionButton()]),
+          drawer: buildMainMenu(context),
+          body: TabBarView(
+            children: [
+              GCWToolList(toolList: toolList ?? _categoryList),
+              GCWToolList(toolList: toolList ?? _mainToolList),
+              GCWToolList(toolList: toolList ?? Favorites.favoritedGCWTools()),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      return Scaffold(
+          appBar: AppBar(
+              leading: _buildIcon(),
+              title: _buildTitleAndSearchTextField(),
+              actions: <Widget>[_buildSearchActionButton()]
+          ),
+          drawer: buildMainMenu(context),
+          body: GCWToolList(toolList: toolList!));
+    }
   }
 
   NoAnimationMaterialPageRoute<GCWTool>? _checkDeepLink() {
