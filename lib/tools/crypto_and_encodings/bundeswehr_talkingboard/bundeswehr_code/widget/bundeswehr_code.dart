@@ -137,12 +137,6 @@ class _BundeswehrTalkingBoardObfuscationState extends State<BundeswehrTalkingBoa
                 onPressed: () {
                   setState(() {
                     _tableSource = TABLE_SOURCE.CUSTOM;
-                    // _buildAuthTable(context,
-                    //     custom: _tableSource == TABLE_SOURCE.CUSTOM, authTable: _currentAuthTableCustom);
-                    // _buildNumeralCode(context,
-                    //     custom: _tableSource == TABLE_SOURCE.CUSTOM,
-                    //     xAxis: _currentNumeralCodeXaxisCustom,
-                    //     yAxis: _currentNumeralCodeYaxisCustom);
                   });
                 },
               ),
