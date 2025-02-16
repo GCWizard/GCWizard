@@ -246,7 +246,7 @@ class _BundeswehrTalkingBoardAuthentificationState extends State<BundeswehrTalki
                   GCWIconButton(
                     icon: Icons.save,
                     size: IconButtonSize.SMALL,
-                    iconColor: _contentToSave == false ? themeColors().inActive() : null,
+                    iconColor: _contentToSave == false ? themeColors().inactive() : null,
                     onPressed: () {
                       _contentToSave == false
                           ? null
@@ -302,7 +302,7 @@ class _BundeswehrTalkingBoardAuthentificationState extends State<BundeswehrTalki
                   GCWIconButton(
                     icon: Icons.save,
                     size: IconButtonSize.SMALL,
-                    iconColor: _contentToSave == false ? themeColors().inActive() : null,
+                    iconColor: _contentToSave == false ? themeColors().inactive() : null,
                     onPressed: () {
                       _contentToSave == false
                           ? null
