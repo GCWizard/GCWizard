@@ -6,6 +6,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar_week/logic/calendar_week.dart';
+import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:intl/intl.dart';
 
 class CalendarWeek extends StatefulWidget {
@@ -16,7 +17,7 @@ class CalendarWeek extends StatefulWidget {
 }
 
 class _CalendarWeekState extends State<CalendarWeek> {
-  late DateTime _currentEncryptionDate;
+  late DateTimeTZ _currentEncryptionDate;
 
   var _currentWeek = 1;
   late int _currentYear;
@@ -26,9 +27,8 @@ class _CalendarWeekState extends State<CalendarWeek> {
 
   @override
   void initState() {
-    DateTime now = DateTime.now();
-    _currentYear = now.year;
-    _currentEncryptionDate = DateTime(now.year, now.month, now.day);
+    _currentEncryptionDate = DateTimeTZ.now();
+    _currentYear = _currentEncryptionDate.toLocalTime().year;
     super.initState();
   }
 
@@ -56,10 +56,9 @@ class _CalendarWeekState extends State<CalendarWeek> {
         _currentMode == GCWSwitchPosition.left
             ? GCWDateTimePicker(
                 config: const {DateTimePickerConfig.DATE},
-                datetime: _currentEncryptionDate,
                 onChanged: (value) {
                   setState(() {
-                    _currentEncryptionDate = value.datetime;
+                    _currentEncryptionDate = value;
                   });
                 },
               )
@@ -94,7 +93,7 @@ class _CalendarWeekState extends State<CalendarWeek> {
     Object out;
 
     if (_currentMode == GCWSwitchPosition.left) {
-      out = calendarWeek(_currentEncryptionDate, iso: _currentISOMode == GCWSwitchPosition.left);
+      out = calendarWeek(_currentEncryptionDate.toLocalTime(), iso: _currentISOMode == GCWSwitchPosition.left);
     } else {
       try {
         var dates = datesForCalendarWeek(_currentYear, _currentWeek, iso: _currentISOMode == GCWSwitchPosition.left);

@@ -32,8 +32,6 @@ class _EnigmaRotorDropDownState extends State<EnigmaRotorDropDown> {
       case EnigmaRotorType.REFLECTOR:
         _currentRotor = defaultRotorReflector;
         break;
-      default:
-        _currentRotor = '';
     }
   }
 

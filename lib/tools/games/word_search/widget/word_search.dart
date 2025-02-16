@@ -18,10 +18,10 @@ class WordSearch extends StatefulWidget {
   const WordSearch({Key? key}) : super(key: key);
 
   @override
-  WordSearchState createState() => WordSearchState();
+  _WordSearchState createState() => _WordSearchState();
 }
 
-class WordSearchState extends State<WordSearch> {
+class _WordSearchState extends State<WordSearch> {
   late TextEditingController _inputController;
   late TextEditingController _wordsController;
 
@@ -169,28 +169,28 @@ class WordSearchState extends State<WordSearch> {
   Widget _buildButtonRow() {
     return Row(children: <Widget>[
       Expanded(
-          child: Container(
-        padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
-        child: GCWButton(
-          text: _viewOutput.isEmpty ? i18n(context, 'common_search') : i18n(context, 'word_search_search_more'),
-          onPressed: () {
-            setState(() {
-              _calcOutputFillGapMode();
-            });
-          },
-        ),
+        child: Container(
+          padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
+          child: GCWButton(
+            text: _viewOutput.isEmpty ? i18n(context, 'common_search') : i18n(context, 'word_search_search_more'),
+            onPressed: () {
+              setState(() {
+                _calcOutputFillGapMode();
+              });
+            },
+          ),
       )),
       Expanded(
-          child: Container(
-        padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
-        child: GCWButton(
-          text: i18n(context, 'word_search_delete_letters'),
-          onPressed: () {
-            setState(() {
-              _deleteMarkedLetters();
-            });
-          },
-        ),
+        child: Container(
+          padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
+          child: GCWButton(
+            text: i18n(context, 'word_search_delete_letters'),
+            onPressed: () {
+              setState(() {
+                _deleteMarkedLetters();
+              });
+            },
+          ),
       )),
       Expanded(
         child: Container(

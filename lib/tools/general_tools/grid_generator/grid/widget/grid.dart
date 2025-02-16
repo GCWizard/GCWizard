@@ -186,8 +186,6 @@ class _GridState extends State<Grid> {
         return [_GridBoxEnumerationStartDirection.RIGHT, _GridBoxEnumerationStartDirection.UP];
       case _GridEnumerationStart.BOTTOM_RIGHT:
         return [_GridBoxEnumerationStartDirection.LEFT, _GridBoxEnumerationStartDirection.UP];
-      default:
-        return [_GridBoxEnumerationStartDirection.RIGHT, _GridBoxEnumerationStartDirection.DOWN];
     }
   }
 
@@ -415,8 +413,6 @@ class _GridState extends State<Grid> {
               case _GridBoxEnumerationStartDirection.DOWN:
                 name = 'grid_boxes_startdirection_down';
                 break;
-              default:
-                name = '';
             }
 
             return GCWDropDownMenuItem(value: direction, child: i18n(context, name));
@@ -507,7 +503,7 @@ class _GridState extends State<Grid> {
     if (enumeration.contains(RegExp(r'[,\-]')) && VARIABLESTRING.hasMatch(enumeration)) {
       var expanded = VariableStringExpander('x', {'x': enumeration}, orderAndUnique: false)
           .run()
-          .map((e) => e.text)
+          .map((VariableStringExpanderValue e) => e.text)
           .whereType<String>()
           .toList();
 

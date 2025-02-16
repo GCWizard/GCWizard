@@ -1,6 +1,6 @@
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/games/scrabble/logic/scrabble_sets.dart';
-import 'package:gc_wizard/tools/games/scrabble/scrabble/logic/scrabble.dart';
+import 'package:gc_wizard/tools/games/scrabble/logic/scrabble.dart';
 
 void main() {
   group("Scrabble.textToLetterValues:", () {

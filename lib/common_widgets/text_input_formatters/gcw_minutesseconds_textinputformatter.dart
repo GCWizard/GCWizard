@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:gc_wizard/utils/ui_dependent_utils/textinputformatter_utils.dart';
 
 class GCWMinutesSecondsTextInputFormatter extends TextInputFormatter {
   @override
@@ -11,11 +12,7 @@ class GCWMinutesSecondsTextInputFormatter extends TextInputFormatter {
     if (_newInt == null) return oldValue;
 
     if (_newInt >= 0 && _newInt < 60) {
-      return TextEditingValue(
-        text: newSanitized, selection: TextSelection.fromPosition(
-          TextPosition(offset: newSanitized.length),
-        ),
-      );
+      return newValueEditingValue(newValue, newSanitized);
     }
 
     return oldValue;

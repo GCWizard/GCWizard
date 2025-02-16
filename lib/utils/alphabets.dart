@@ -294,13 +294,13 @@ const Alphabet alphabetGreek1 = Alphabet(key: 'alphabet_name_greek1', type: Alph
   '\u039F': '15', // Ο
   '\u03A0': '16', // Π
   '\u03A1': '17', // Ρ
-  '\u03A2': '18', // Σ
-  '\u03A3': '19', // Τ
-  '\u03A4': '20', // Υ
-  '\u03A5': '21', // Φ
-  '\u03A6': '22', // Χ
-  '\u03A7': '23', // Ψ
-  '\u03A8': '24', // Ω
+  '\u03A3': '18', // Σ
+  '\u03A4': '19', // Τ
+  '\u03A5': '20', // Υ
+  '\u03A6': '21', // Φ
+  '\u03A7': '22', // Χ
+  '\u03A8': '23', // Ψ
+  '\u03A9': '24', // Ω
 });
 
 const Alphabet alphabetGreek2 = Alphabet(key: 'alphabet_name_greek2', type: AlphabetType.STANDARD, alphabet: {

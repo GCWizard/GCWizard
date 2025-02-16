@@ -4,6 +4,7 @@ class Acceleration extends Unit {
   late double Function(double) toMetersPerSquareSecond;
   late double Function(double) fromMetersPerSquareSecond;
 
+
   Acceleration({
     required String name,
     required String symbol,
@@ -33,3 +34,4 @@ final List<Acceleration> accelerations = [
   ACCELERATION_STANDARDGRAVITY,
   ACCELERATION_GAL
 ];
+

@@ -93,6 +93,7 @@ class _SteganoState extends State<Stegano> {
         ),
         GCWOpenFile(
           supportedFileTypes: SUPPORTED_IMAGE_TYPES,
+          suppressGallery: false,
           onLoaded: (file) {
             if (file == null) return;
             setState(() {

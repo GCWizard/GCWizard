@@ -9,7 +9,6 @@ import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/key_value_editor/gcw_key_value_editor.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
-import 'package:gc_wizard/common_widgets/text_input_formatters/variablestring_textinputformatter.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/hashes/hash_breaker/logic/hash_breaker.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/hashes/logic/hashes.dart';
@@ -72,6 +71,15 @@ class _HashBreakerState extends State<HashBreaker> {
     _currentToInput = entry.value;
   }
 
+  bool _checkValidValue(String input) {
+    if (!VARIABLESTRING.hasMatch(input)) {
+      showGCWAlertDialog(context, '', i18n(context, 'formulasolver_values_novalidinterpolated'),
+          cancelButton: false, () {});
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -121,15 +129,12 @@ class _HashBreakerState extends State<HashBreaker> {
     return GCWKeyValueEditor(
       keyHintText: i18n(context, 'coords_variablecoordinate_variable'),
       valueHintText: i18n(context, 'coords_variablecoordinate_possiblevalues'),
-      addValueInputFormatters: [VariableStringTextInputFormatter()],
       valueFlex: 4,
       entries: _currentSubstitutions,
       onNewEntryChanged: (entry) => _updateNewEntry(entry),
       onAddEntry: (entry) => _onAddEntry(entry),
-      validateEditedValue: (String input) {
-        return VARIABLESTRING.hasMatch(input);
-      },
-      invalidEditedValueMessage: i18n(context, 'formulasolver_values_novalidinterpolated'),
+      validateAddedValue: (String input) => _checkValidValue(input),
+      validateEditedValue: (String input) => _checkValidValue(input),
     );
   }
 
@@ -166,8 +171,7 @@ class _HashBreakerState extends State<HashBreaker> {
             i18n(context, 'hashes_hashbreaker_manycombinations_text', parameters: [countCombinations]),
             () async {
               _onDoCalculation();
-            },
-          );
+            }, cancelButton: false);
         } else {
           _onDoCalculation();
         }

@@ -26,7 +26,7 @@ String luaStringToString(String pString) {
   int tOrd = 0;
   int tStrLen = pString.length;
 
-  var tEscapeMapping = {"t": 9, "n": 10, "r": 13, "a": 7, "f": 12, "v": 11, "b": 8, "e": 27, "\\": 92, "\"": 34};
+  const tEscapeMapping = {"t": 9, "n": 10, "r": 13, "a": 7, "f": 12, "v": 11, "b": 8, "e": 27, "\\": 92, "\"": 34};
 
   while (tOffset < tStrLen) {
     if (pString[tOffset] == '\\') {

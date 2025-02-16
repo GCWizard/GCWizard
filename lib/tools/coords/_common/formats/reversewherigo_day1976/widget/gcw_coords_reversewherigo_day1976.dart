@@ -8,7 +8,7 @@ class _GCWCoordWidgetInfoReverseWherigoDay1976 extends GCWCoordWidgetInfo {
   @override
   String get name => 'Reverse Wherigo (Day1976)';
   @override
-  String get example => '3f8f1, z4ee4';
+  String get example => '3f8f1, z5dd5';
 
   @override
   _GCWCoordWidget mainWidget(

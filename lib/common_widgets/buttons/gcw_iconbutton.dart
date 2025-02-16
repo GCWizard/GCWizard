@@ -3,7 +3,7 @@ import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/utils/math_utils.dart';
 
-enum IconButtonSize { NORMAL, SMALL, TINY }
+enum IconButtonSize { NORMAL, SMALL, TINY, LARGE }
 
 class GCWIconButton extends StatelessWidget {
   final void Function() onPressed;
@@ -58,6 +58,11 @@ class GCWIconButton extends StatelessWidget {
         _containerWidth = 21.0;
         _buttonHeight = 18.0;
         _iconSize = iconSize ?? 17.0;
+        break;
+      case IconButtonSize.LARGE:
+        _containerWidth = 52.0;
+        _buttonHeight = 48.0;
+        _iconSize = iconSize ?? 30.0;
         break;
       default:
         throw Exception('Icon size is NULL');

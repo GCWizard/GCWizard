@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:math';
 
+import 'package:archive/archive_io.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
 
@@ -74,19 +76,14 @@ String insertSpaceEveryNthCharacter(String input, int n) {
 String insertEveryNthCharacter(String input, int n, String textToInsert) {
   if (n <= 0) return input;
 
-  String out = '';
-  int i = 0;
-  while (i < input.length) {
-    if (input.length - i <= n) {
-      out += input.substring(i);
-      break;
+  StringBuffer buffer = StringBuffer();
+  for (int i = 0; i < input.length; i++) {
+    if (i > 0 && i % n == 0) {
+      buffer.write(textToInsert);
     }
-
-    out += input.substring(i, min(i + n, input.length)) + textToInsert;
-    i += n;
+    buffer.write(input[i]);
   }
-
-  return out;
+  return buffer.toString();
 }
 
 bool isUpperCase(String letter) {
@@ -229,4 +226,22 @@ List<String> splitGroupsOfSameCharacters(String text) {
   }
 
   return out;
+}
+
+String compressString(String text) {
+  if (text.isEmpty) return '';
+  var bytes = utf8.encode(text);
+  var compressedBytes = const ZLibEncoder().encode(bytes);
+  return base64.encode(compressedBytes);
+}
+
+String decompressString(String text) {
+  if (text.isEmpty) return '';
+  var compressedBytes = base64.decode(text);
+  var decompressedBytes = const ZLibDecoder().decodeBytes(compressedBytes);
+  return utf8.decode(decompressedBytes);
+}
+
+bool hasLetters(String text) {
+  return removeAccents(text).contains(RegExp(r'[A-Za-z]'));
 }

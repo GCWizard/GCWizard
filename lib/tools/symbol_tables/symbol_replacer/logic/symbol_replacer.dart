@@ -424,7 +424,7 @@ class SymbolReplacerImage {
         symbol.bmp.height,
       );
 
-      var color = Image.ColorRgb8(Colors.orangeAccent.red, Colors.orangeAccent.green, Colors.orangeAccent.blue);
+      var color = Image.ColorRgb8(Colors.orangeAccent.r.round(), Colors.orangeAccent.g.round(), Colors.orangeAccent.b.round());
       Image.drawRect(bmp, x1: rect.left, y1: rect.top, x2: rect.right, y2: rect.bottom, color: color);
       Image.drawRect(bmp, x1: rect.left - 1, y1: rect.top - 1, x2: rect.right + 1, y2: rect.bottom + 1, color: color);
     }

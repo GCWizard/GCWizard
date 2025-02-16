@@ -16,7 +16,9 @@ class ColorsSelection extends GCWSelection {
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       if (className(element.tool) == className(const SymbolTable()) &&
-          (element.tool as SymbolTable).symbolKey.startsWith('color_code')) return true;
+          (element.tool as SymbolTable).symbolKey.startsWith('color_code')) {
+        return true;
+      }
 
       return [className(const ColorTool()), className(const PantoneColorCodes()), className(const RALColorCodes())]
           .contains(className(element.tool));

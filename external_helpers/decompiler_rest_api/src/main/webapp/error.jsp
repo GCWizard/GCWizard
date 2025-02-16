@@ -20,7 +20,7 @@
       <h1>Hmmm! That doesn't look good!</h1>
       <div>
         <p>When you're geocaching, you're stressed. This page probably doesn't help with that. <br>But we love to solve problems, so reach one of us directly and we'll get this site back on track.</p>
-        <p>Email: <a href="mailto:geocache.wizard@gmail.com">GC Wizard-Team</a></p><hr>
+        <p>Email: <a href="mailto:info@gcwizard.net">GC Wizard-Team</a></p><hr>
         <p>Go back to <a href="https://gcwizard.net/">gcwizard.net</a></p>
       </div>
     </article>

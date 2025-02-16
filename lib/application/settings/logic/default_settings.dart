@@ -169,10 +169,10 @@ void _initDefaultSettings(PreferencesInitMode mode, {String reinitSinglePreferen
     Prefs.setString(PREFERENCE_COORD_DEFAULT_HEMISPHERE_LONGITUDE, HemisphereLongitude.East.toString());
   }
 
-  if (reinitSinglePreference == PREFERENCE_COORD_PRECISION_DMM ||
+  if (reinitSinglePreference == PREFERENCE_COORD_PRECISION_DMM_COPY ||
       _reinitAll ||
-      Prefs.get(PREFERENCE_COORD_PRECISION_DMM) == null) {
-    Prefs.setInt(PREFERENCE_COORD_PRECISION_DMM, 3);
+      Prefs.get(PREFERENCE_COORD_PRECISION_DMM_COPY) == null) {
+    Prefs.setInt(PREFERENCE_COORD_PRECISION_DMM_COPY, 3);
   }
 
   if (reinitSinglePreference == PREFERENCE_COORD_VARIABLECOORDINATE_FORMULAS ||
@@ -254,6 +254,12 @@ void _initDefaultSettings(PreferencesInitMode mode, {String reinitSinglePreferen
     refreshMultiDecoderTools();
   }
 
+  if (reinitSinglePreference == PREFERENCE_RANDOMIZER_LISTS ||
+      _reinitAll ||
+      Prefs.get(PREFERENCE_RANDOMIZER_LISTS) == null) {
+    Prefs.setString(PREFERENCE_RANDOMIZER_LISTS, '{}');
+  }
+
   if (reinitSinglePreference == PREFERENCE_SYMBOLTABLES_COUNTCOLUMNS_PORTRAIT ||
       _reinitAll ||
       Prefs.get(PREFERENCE_SYMBOLTABLES_COUNTCOLUMNS_PORTRAIT) == null) {
@@ -281,7 +287,7 @@ void _initDefaultSettings(PreferencesInitMode mode, {String reinitSinglePreferen
   if (reinitSinglePreference == PREFERENCE_TABS_LAST_VIEWED_TAB ||
       _reinitAll ||
       Prefs.get(PREFERENCE_TABS_LAST_VIEWED_TAB) == null) {
-    Prefs.setInt(PREFERENCE_TABS_LAST_VIEWED_TAB, 2);
+    Prefs.setInt(PREFERENCE_TABS_LAST_VIEWED_TAB, _favorites.isEmpty ? 0 : 2);
   }
 
   if (reinitSinglePreference == PREFERENCE_THEME_COLOR || _reinitAll ||

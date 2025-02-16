@@ -84,8 +84,6 @@ class IAUAllConstellationsState extends State<IAUAllConstellations> {
       case IAU_CONSTELLATION_SORT.MAGNITUDO:
         sortableList.sort((a, b) => a.magnitudo.compareTo(b.magnitudo) * sortOrder);
         break;
-      default:
-        break;
     }
 
     return sortableList
@@ -111,9 +109,6 @@ class IAUAllConstellationsState extends State<IAUAllConstellations> {
               break;
             case IAU_CONSTELLATION_SORT.MAGNITUDO:
               relevantValue = constellation.magnitudo;
-              break;
-            default:
-              relevantValue = '';
               break;
           }
 
@@ -143,8 +138,6 @@ class IAUAllConstellationsState extends State<IAUAllConstellations> {
         return ['', i18n(context, 'iau_constellation_visibility'), i18n(context, 'iau_constellation_iauname')];
       case IAU_CONSTELLATION_SORT.MAGNITUDO:
         return ['', i18n(context, 'iau_constellation_magnitudo'), i18n(context, 'iau_constellation_iauname')];
-      default:
-        return [];
     }
   }
 

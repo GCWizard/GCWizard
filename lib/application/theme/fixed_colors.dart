@@ -9,6 +9,9 @@ const COLOR_MAP_USERPOSITION = Colors.orange;
 const COLOR_MAP_ICONBUTTONS = Colors.black26;
 const COLOR_MAP_ACTIVATED_ICONBUTTON = Color.fromARGB(200, 255, 87, 40);
 
+const COLOR_MAP_GPX_IMPORT_PARKING = Colors.blueAccent;
+const COLOR_MAP_GPX_IMPORT_WAYPOINT = Colors.teal;
+
 const COLOR_MAP_LICENSETEXT = Color(0xFF26282F);
 const COLOR_MAP_LICENSETEXT_BACKGROUND = Colors.white;
 

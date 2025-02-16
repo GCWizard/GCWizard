@@ -11,11 +11,11 @@ part of 'package:gc_wizard/tools/coords/_common/logic/external_libs/mitre.geodet
  */
 
 class _Vector {
-  double x;
-  double y;
-  double z;
+  double x = 0.0;
+  double y = 0.0;
+  double z = 0.0;
 
-  _Vector([this.x = 0.0, this.y = 0.0, this.z = 0.0]);
+  _Vector();
 }
 
 _Vector _mapToUnitSphere(_LLPoint p) {

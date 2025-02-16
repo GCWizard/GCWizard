@@ -1,9 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:touchable/touchable.dart';
 
 class GameOfLifeBoard extends StatefulWidget {
-  final int size;
+  final Point<int> size;
   final void Function(List<List<bool>>) onChanged;
   final List<List<bool>> state;
 
@@ -20,77 +22,82 @@ class _GameOfLifeBoardState extends State<GameOfLifeBoard> {
       children: <Widget>[
         Expanded(
             child: AspectRatio(
-                aspectRatio: 1 / 1,
+                aspectRatio: max(widget.size.x, 1) / max(widget.size.y, 1),
                 child: CanvasTouchDetector(
                   gesturesToOverride: const [GestureType.onTapDown],
                   builder: (context) {
                     return CustomPaint(
-                        painter: GameOfLifePainter(context, widget.size, widget.state, (int x, int y, bool value) {
+                        painter: GameOfLifePainter(context, widget.size, widget.state, (int x, int y) {
                       setState(() {
-                        widget.state[x][y] = value;
+                        widget.state[x][y] = !widget.state[x][y];
                         widget.onChanged(widget.state);
                       });
                     }));
                   },
-                )))
+                )
+            )
+        )
       ],
     );
   }
 }
 
 class GameOfLifePainter extends CustomPainter {
-  final int size;
+  final Point<int> size;
   final List<List<bool>> state;
   final BuildContext context;
-  final void Function(int, int, bool) onSetCell;
+  final void Function(int, int) onInvertCell;
 
-  GameOfLifePainter(this.context, this.size, this.state, this.onSetCell);
+  GameOfLifePainter(this.context, this.size, this.state, this.onInvertCell);
 
   @override
   void paint(Canvas canvas, Size size) {
     var _touchCanvas = TouchyCanvas(context, canvas);
+    var paintLine = Paint();
+    var paintFull = Paint();
+    var paintBackground = Paint();
+    var paintTransparent = Paint();
+    double boxSize = size.width / this.size.x;
 
-    var paint = Paint();
-    paint.style = PaintingStyle.stroke;
+    paintLine.strokeWidth = (max(this.size.x, this.size.y) > 20) ? 1 : 2;
+    paintLine.style = PaintingStyle.stroke;
+    paintLine.color = themeColors().secondary();
 
-    double boxSize = size.width / this.size;
+    paintBackground.style = PaintingStyle.fill;
+    paintBackground.color = themeColors().gridBackground();
 
-    for (int i = 0; i < this.size; i++) {
-      for (int j = 0; j < this.size; j++) {
-        paint.strokeWidth = this.size > 20 ? 1 : 2;
+    paintTransparent.style = PaintingStyle.fill;
+    paintTransparent.color = Colors.transparent;
 
-        var x = j * boxSize;
-        var y = i * boxSize;
+    paintFull.style = PaintingStyle.fill;
+    paintFull.color = themeColors().mainFont();
 
-        var isSet = state[i][j] == true;
 
-        paint.color = isSet ? themeColors().mainFont() : themeColors().gridBackground();
-        paint.style = PaintingStyle.fill;
-
-        _touchCanvas.drawRect(Rect.fromLTWH(x, y, boxSize, boxSize), paint);
-
-        paint.color = themeColors().secondary();
-
-        if (this.size > 50) paint.color = paint.color.withOpacity(0.0);
-
-        _touchCanvas.drawLine(Offset(x, 0.0), Offset(x, size.width), paint);
-        _touchCanvas.drawLine(Offset(0.0, y), Offset(size.height, y), paint);
-
-        paint.color = paint.color.withOpacity(0.0);
-        _touchCanvas.drawRect(Rect.fromLTWH(x, y, boxSize, boxSize), paint, onTapDown: (tapDetail) {
-          onSetCell(i, j, !isSet);
-        });
+    _touchCanvas.drawRect(Rect.fromLTWH(0, 0, this.size.x  * boxSize, this.size.y * boxSize), paintBackground);
+    
+    for (int i = 0; i < this.size.y; i++) {
+      for (int j = 0; j < this.size.x; j++) {
+        if (state[i][j]) {
+          _touchCanvas.drawRect(Rect.fromLTWH(j * boxSize, i * boxSize, boxSize, boxSize), paintFull);
+        }
       }
     }
 
-    if (this.size > 50) {
-      paint.color = paint.color.withOpacity(0.0);
-    } else {
-      paint.color = themeColors().secondary();
+    if (max(this.size.x, this.size.y) <= 50) {
+      for (double j = 0; j <= this.size.x * boxSize + 0.0000001; j += boxSize) {
+        _touchCanvas.drawLine(Offset(j, 0.0), Offset(j, size.height), paintLine);
+      }
+      for (double i = 0; i <= this.size.y * boxSize + 0.0000001; i += boxSize) {
+        _touchCanvas.drawLine(Offset(0.0, i), Offset(size.width, i), paintLine);
+      }
     }
 
-    _touchCanvas.drawLine(Offset(size.height, 0.0), Offset(size.height, size.width), paint);
-    _touchCanvas.drawLine(Offset(0.0, size.width), Offset(size.height, size.width), paint);
+    _touchCanvas.drawRect(Rect.fromLTWH(0, 0, this.size.x  * boxSize, this.size.y * boxSize), paintTransparent,
+        onTapDown: (tapDetail) {
+          var j = (tapDetail.localPosition.dx / boxSize).toInt();
+          var i = (tapDetail.localPosition.dy / boxSize).toInt();
+          onInvertCell(i, j);
+        });
   }
 
   @override

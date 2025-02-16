@@ -22,7 +22,7 @@ class _ThemeColorsLight extends ThemeColors {
   }
 
   @override
-  Color inActive() {
+  Color inactive() {
     return Colors.grey;
   }
 
@@ -78,7 +78,7 @@ class _ThemeColorsLight extends ThemeColors {
 
   @override
   Color switchTrack1() {
-    return _lightGray.withOpacity(0.5);
+    return _lightGray.withAlpha((255.0 * 0.5).round());
   }
 
   @override
@@ -88,7 +88,7 @@ class _ThemeColorsLight extends ThemeColors {
 
   @override
   Color switchTrack2() {
-    return secondary().withOpacity(0.5);
+    return secondary().withAlpha((255.0 * 0.5).round());
   }
 
   @override
@@ -99,9 +99,9 @@ class _ThemeColorsLight extends ThemeColors {
   @override
   Color checkBoxFillColor(Set<WidgetState> states) {
     if (states.contains(WidgetState.disabled)) {
-      return _lightGray.withOpacity(0.5);
+      return _lightGray.withAlpha((255.0 * 0.5).round());
     }
-    return _lightGray.withOpacity(0.5);
+    return _lightGray.withAlpha((255.0 * 0.5).round());
   }
 
   @override
@@ -111,7 +111,7 @@ class _ThemeColorsLight extends ThemeColors {
 
   @override
   Color checkBoxFocusColor() {
-    return secondary().withOpacity(0.5);
+    return secondary().withAlpha((255.0 * 0.5).round());
   }
 
   @override
@@ -122,9 +122,9 @@ class _ThemeColorsLight extends ThemeColors {
   @override
   Color checkBoxOverlayColor(Set<WidgetState> states) {
     if (states.contains(WidgetState.disabled)) {
-      return secondary().withOpacity(0.5);
+      return secondary().withAlpha((255.0 * 0.5).round());
     }
-    return secondary().withOpacity(0.5);
+    return secondary().withAlpha((255.0 * 0.5).round());
   }
 
   @override

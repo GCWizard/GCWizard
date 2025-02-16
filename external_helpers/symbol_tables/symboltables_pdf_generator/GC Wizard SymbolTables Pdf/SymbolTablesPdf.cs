@@ -244,15 +244,15 @@ namespace GC_Wizard_SymbolTables_Pdf
 			foreach (var entry in directorys)
 			{
 				//Debug.Print(licenseEntry.Value);
-				//offset = DrawSymbolTable(path, entry.Value, entry.Key, document, ref page, ref gfx, offset, languagefile, languagefileEn, licenseEntries);
+				offset = DrawSymbolTable(path, entry.Value, entry.Key, document, ref page, ref gfx, offset, languagefile, languagefileEn, licenseEntries);
 
-				//offset.X = BorderWidthLeft;
-				//offset.Y += ImageSize + 20;
+				offset.X = BorderWidthLeft;
+				offset.Y += ImageSize + 20;
 
 				Progress += progress_offset;
 			}
 
-			offset = DrawLicenses(document, ref page, ref gfx, offset, languagefile, languagefileEn, licenseEntries);
+			//offset = DrawLicenses(document, ref page, ref gfx, offset, languagefile, languagefileEn, licenseEntries);
 
 			Progress = 100;
 		}
@@ -279,8 +279,17 @@ namespace GC_Wizard_SymbolTables_Pdf
 			var license = "";
 			if (licenseEntries.ContainsKey(folder))
 			{
-				var sourceLabel = GetSourceLabel();
-				license = "(" + sourceLabel + ": " + licenseEntries[folder] + ")";
+				var label = GetSourceLabel();
+				var licenseEntry = licenseEntries[folder];
+
+                // only license available ?
+                if (licenseEntry.StartsWith("(") & licenseEntry.EndsWith(")"))
+                {
+					licenseEntry = licenseEntry.Substring(1, licenseEntry.Count() -2);
+                    label = GetLicenseLabel();
+                }
+
+                license =  label + ": " + licenseEntry;
 			}
 
 			if (name == null)
@@ -509,8 +518,8 @@ namespace GC_Wizard_SymbolTables_Pdf
 			var yPosition = position.Y + size.Height;
 
 			gfx.DrawLine(pen, new XPoint(position.X, yPosition), new XPoint(position.X + size.Width, yPosition));
-			gfx.DrawLine(pen, new XPoint(position.X, yPosition), new XPoint(position.X, yPosition * 0.8));
-			gfx.DrawLine(pen, new XPoint(position.X + size.Width, yPosition), new XPoint(position.X + size.Width, yPosition * 0.8));
+			gfx.DrawLine(pen, new XPoint(position.X, yPosition), new XPoint(position.X, yPosition - size.Width * 0.2));
+			gfx.DrawLine(pen, new XPoint(position.X + size.Width, yPosition), new XPoint(position.X + size.Width, yPosition - size.Width * 0.2));
 
 			return yPosition;
 		}
@@ -1097,7 +1106,7 @@ namespace GC_Wizard_SymbolTables_Pdf
 								licenseEntry = RemoveQuotationMark(privatePermission.Groups[1].Value).Trim();
 						}
 
-						var entry = "(" + licenseEntry + ")";
+						var entry = String.IsNullOrEmpty(licenseEntry) ? "" :  "(" + licenseEntry + ")";
 
 						var sourceUrlEntry = licensesSourceUrlRegEx.Match(usedEntry.Groups[0].Value);
 						if (sourceUrlEntry.Success)
@@ -1147,13 +1156,16 @@ namespace GC_Wizard_SymbolTables_Pdf
 		{
 			var result = url;
 			var webArchiveRegEx = new Regex(@"https://web.archive.org/web/[\d]+/(.*)'", RegexOptions.Singleline);
+            var webArchiveRegEx1 = new Regex(@"http://web.archive.org/web/[\d]+/(.*)'", RegexOptions.Singleline);
 
-			if (url.Contains("wikipedia") && url.Contains("&oldid"))
+            if (url.Contains("wikipedia") && url.Contains("&oldid"))
 				result = url.Substring(0, url.IndexOf("&oldid"));
 			else if (webArchiveRegEx.Match(url).Success)
 				result = webArchiveRegEx.Match(url).Groups[1].Value;
+            else if (webArchiveRegEx1.Match(url).Success)
+                result = webArchiveRegEx1.Match(url).Groups[1].Value;
 
-			return RemoveQuotationMark(result.Trim());
+            return RemoveQuotationMark(result.Trim());
 		}
 
 		private static String RemoveQuotationMark(String text)

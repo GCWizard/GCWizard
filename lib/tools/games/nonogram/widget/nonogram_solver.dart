@@ -35,7 +35,7 @@ class NonogramSolver extends StatefulWidget {
   const NonogramSolver({Key? key}) : super(key: key);
 
   @override
-  NonogramSolverState createState() => NonogramSolverState();
+  _NonogramSolverState createState() => _NonogramSolverState();
 }
 
 enum _DecryptWizardStep {
@@ -59,7 +59,7 @@ enum _EncryptWizardStep {
   DRAW_MANUALLY
 }
 
-class NonogramSolverState extends State<NonogramSolver> {
+class _NonogramSolverState extends State<NonogramSolver> {
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
   late PuzzleWidgetValues _decryptPuzzle;
   late PuzzleWidgetValues _encryptPuzzle;
@@ -98,7 +98,7 @@ class NonogramSolverState extends State<NonogramSolver> {
           ? GCWTextDivider(
               text: i18n(context, 'nonogramsolver_setup_generator'),
               trailing: GCWIconButton(
-                iconColor: _currentEncryptStep == _EncryptWizardStep.FILE_OR_MANUAL ? themeColors().inActive() : null,
+                iconColor: _currentEncryptStep == _EncryptWizardStep.FILE_OR_MANUAL ? themeColors().inactive() : null,
                 size: IconButtonSize.SMALL,
                 icon: Icons.undo,
                 onPressed: () {
@@ -489,7 +489,7 @@ class NonogramSolverState extends State<NonogramSolver> {
     var row = Row(
       children: <Widget>[
         GCWIconButton(
-          iconColor: _currentDecryptStep == _DecryptWizardStep.FILE_OR_MANUAL ? themeColors().inActive() : null,
+          iconColor: _currentDecryptStep == _DecryptWizardStep.FILE_OR_MANUAL ? themeColors().inactive() : null,
           size: IconButtonSize.SMALL,
           icon: Icons.undo,
           onPressed: () {

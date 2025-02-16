@@ -9,7 +9,7 @@
 
 import 'package:gc_wizard/utils/collection_utils.dart';
 
-final _DigitToBCDOriginal = {
+const _DigitToBCDOriginal = {
   '0': "0000",
   '1': '0001',
   '2': '0010',
@@ -21,7 +21,7 @@ final _DigitToBCDOriginal = {
   '8': '1000',
   '9': '1001'
 };
-final _DigitToBCDAiken = {
+const _DigitToBCDAiken = {
   '0': '0000',
   '1': '0001',
   '2': '0010',
@@ -33,7 +33,7 @@ final _DigitToBCDAiken = {
   '8': '1110',
   '9': '1111'
 };
-final _DigitToBCDStibitz = {
+const _DigitToBCDStibitz = {
   '0': '0011',
   '1': '0100',
   '2': '0101',
@@ -45,7 +45,7 @@ final _DigitToBCDStibitz = {
   '8': '1011',
   '9': '1100'
 };
-final _DigitToBCDGray = {
+const _DigitToBCDGray = {
   '0': '0000',
   '1': '0001',
   '2': '0011',
@@ -57,7 +57,7 @@ final _DigitToBCDGray = {
   '8': '1100',
   '9': '1101'
 };
-final _DigitToBCDGlixon = {
+const _DigitToBCDGlixon = {
   '0': '0000',
   '1': '0001',
   '2': '0011',
@@ -69,7 +69,7 @@ final _DigitToBCDGlixon = {
   '8': '1100',
   '9': '1000'
 };
-final _DigitToBCDOBrien = {
+const _DigitToBCDOBrien = {
   '0': '0001',
   '1': '0011',
   '2': '0010',
@@ -81,7 +81,7 @@ final _DigitToBCDOBrien = {
   '8': '1011',
   '9': '1001'
 };
-final _DigitToBCDPetherick = {
+const _DigitToBCDPetherick = {
   '0': '0101',
   '1': '0001',
   '2': '0011',
@@ -93,7 +93,7 @@ final _DigitToBCDPetherick = {
   '8': '1001',
   '9': '1101'
 };
-final _DigitToBCDTompkins = {
+const _DigitToBCDTompkins = {
   '0': '0010',
   '1': '0011',
   '2': '0111',
@@ -105,7 +105,7 @@ final _DigitToBCDTompkins = {
   '8': '1011',
   '9': '1010'
 };
-final _DigitToBCDGrayExcess = {
+const _DigitToBCDGrayExcess = {
   '0': '0010',
   '1': '0110',
   '2': '0111',
@@ -117,7 +117,7 @@ final _DigitToBCDGrayExcess = {
   '8': '1111',
   '9': '1011'
 };
-final _DigitToBCDLibawCraig = {
+const _DigitToBCDLibawCraig = {
   '0': '00000',
   '1': '00001',
   '2': '00011',
@@ -129,7 +129,7 @@ final _DigitToBCDLibawCraig = {
   '8': '11000',
   '9': '10000'
 };
-final _DigitToBCD2of5 = {
+const _DigitToBCD2of5 = {
   '0': '00011',
   '1': '00101',
   '2': '00110',
@@ -141,7 +141,7 @@ final _DigitToBCD2of5 = {
   '8': '10100',
   '9': '11000'
 };
-final _DigitToBCD2of5Postnet = {
+const _DigitToBCD2of5Postnet = {
   '0': '11000',
   '1': '00011',
   '2': '00101',
@@ -153,7 +153,7 @@ final _DigitToBCD2of5Postnet = {
   '8': '10010',
   '9': '10100'
 };
-final _DigitToBCD2of5Planet = {
+const _DigitToBCD2of5Planet = {
   '0': '00111',
   '1': '11100',
   '2': '11010',
@@ -165,7 +165,7 @@ final _DigitToBCD2of5Planet = {
   '8': '01101',
   '9': '01011'
 };
-final _DigitToBCDHamming = {
+const _DigitToBCDHamming = {
   '0': '0000000',
   '1': '0000111',
   '2': '0011001',
@@ -177,7 +177,7 @@ final _DigitToBCDHamming = {
   '8': '1001011',
   '9': '1001100'
 };
-final _DigitToBCDBiquinaer = {
+const _DigitToBCDBiquinaer = {
   '0': '1000001',
   '1': '1000010',
   '2': '1000100',
@@ -189,7 +189,7 @@ final _DigitToBCDBiquinaer = {
   '8': '0101000',
   '9': '0110000'
 };
-final _DigitToBCD1of10 = {
+const _DigitToBCD1of10 = {
   '0': '0000000001',
   '1': '0000000010',
   '2': '0000000100',

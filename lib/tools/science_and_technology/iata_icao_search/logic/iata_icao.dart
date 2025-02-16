@@ -15403,7 +15403,7 @@ const Map<String, IataIcaoCodes> IATA_ICAO_CODES = {
       icoa: "MPMG",
       location_served: "Panama City, Panama"),
   "PAD": IataIcaoCodes(
-      name: "Paderborn Lippstadt Airport",
+      name: "Paderborn Lippstadt Airport Heinz Nixdorf",
       iata: "PAD",
       icoa: "EDLP",
       location_served: "Paderborn / Lippstadt, North Rhine-Westphalia, Germany"),

@@ -5,6 +5,7 @@ import 'package:gc_wizard/common_widgets/gcw_datetime_picker.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/day_calculator/logic/day_calculator.dart';
+import 'package:gc_wizard/utils/complex_return_types.dart';
 
 class DayCalculator extends StatefulWidget {
   const DayCalculator({Key? key}) : super(key: key);
@@ -14,18 +15,19 @@ class DayCalculator extends StatefulWidget {
 }
 
 class _DayCalculatorState extends State<DayCalculator> {
-  late DateTime _currentStartDate;
-  late DateTime _currentEndDate;
+  late DateTimeTZ _currentStartDate;
+  late DateTimeTZ _currentEndDate;
 
   var _currentCountStart = true;
   var _currentCountEnd = true;
 
   @override
   void initState() {
-    DateTime now = DateTime.now();
-    _currentStartDate = DateTime(now.year, now.month, now.day);
-    _currentEndDate = DateTime(now.year, now.month, now.day);
     super.initState();
+
+    DateTime now = DateTime.now();
+    _currentStartDate = DateTimeTZ(dateTimeUtc: DateTime.utc(now.year, now.month, now.day), timezone: now.timeZoneOffset);
+    _currentEndDate = DateTimeTZ(dateTimeUtc: DateTime.utc(now.year, now.month, now.day), timezone: now.timeZoneOffset);
   }
 
   @override
@@ -34,22 +36,22 @@ class _DayCalculatorState extends State<DayCalculator> {
       children: <Widget>[
         GCWTextDivider(text: i18n(context, 'dates_daycalculator_startdate')),
         GCWDateTimePicker(
-          config: const {DateTimePickerConfig.DATE},
+          config: const {DateTimePickerConfig.DATE, DateTimePickerConfig.TIMEZONES},
           datetime: _currentStartDate,
           onChanged: (value) {
             setState(() {
-              _currentStartDate = value.datetime;
+               _currentStartDate = value;
             });
           },
         ),
         GCWTextDivider(text: i18n(context, 'dates_daycalculator_enddate')),
         GCWDateTimePicker(
-          config: const {DateTimePickerConfig.DATE},
+          config: const {DateTimePickerConfig.DATE, DateTimePickerConfig.TIMEZONES},
           datetime: _currentEndDate,
           onChanged: (value) {
             setState(() {
-              _currentEndDate = value.datetime;
-            });
+              _currentEndDate = value;
+             });
           },
         ),
         GCWOnOffSwitch(
@@ -76,7 +78,7 @@ class _DayCalculatorState extends State<DayCalculator> {
   }
 
   Widget _buildOutput() {
-    var outputData = calculateDayDifferences(_currentStartDate, _currentEndDate,
+    var outputData = calculateDayDifferences(_currentStartDate.toLocalTime(), _currentEndDate.toLocalTime(),
         countStart: _currentCountStart, countEnd: _currentCountEnd);
 
     var rows = [

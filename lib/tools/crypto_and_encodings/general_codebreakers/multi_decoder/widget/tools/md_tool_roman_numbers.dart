@@ -14,8 +14,7 @@ class MultiDecoderToolRomanNumbers extends AbstractMultiDecoderTool {
       {Key? key,
       required int id,
       required String name,
-      required Map<String, Object?> options,
-      required BuildContext context})
+      required Map<String, Object?> options})
       : super(
             key: key,
             id: id,
@@ -26,7 +25,7 @@ class MultiDecoderToolRomanNumbers extends AbstractMultiDecoderTool {
                   ? RomanNumberType.USE_SUBTRACTION_RULE
                   : RomanNumberType.ONLY_ADDITION;
 
-              return decodeRomanNumbers(input, type: type);
+              return decodeRomanInput(input, type);
             },
             options: options);
   @override
@@ -54,8 +53,6 @@ class _MultiDecoderToolRomanNumbersState extends State<MultiDecoderToolRomanNumb
             case RomanNumberType.ONLY_ADDITION:
               key = MDT_ROMANNUMBERS_OPTION_MODE_ADDITION;
               break;
-            default:
-              key = MDT_ROMANNUMBERS_OPTION_MODE_ADDITION;
           }
 
           return GCWDropDownMenuItem(

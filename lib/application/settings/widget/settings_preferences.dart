@@ -9,6 +9,7 @@ import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
+import 'package:gc_wizard/common_widgets/gcw_stringlisteditor.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_double_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
@@ -198,9 +199,8 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
       case PrefType.STRINGLIST:
         if (_editedValue is! List<String> && _editedValue is! List<Object>) return false;
 
-        var list = Prefs.get(key);
-        if (list == null) return true;
-        if ((_editedValue as List).length != (list as List<String>).length) return true;
+        var list = Prefs.getStringList(key);
+        if ((_editedValue as List).length != list.length) return true;
 
         for (var i = 0; i < list.length; i++) {
           if ((_editedValue as List)[i].toString() != list[i].toString()) {
@@ -237,7 +237,7 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
   GCWIconButton _buildUndoButton(String key) {
     return GCWIconButton(
       icon: Icons.refresh,
-      iconColor: _prefValueHasChanged(key) ? null : themeColors().inActive(),
+      iconColor: _prefValueHasChanged(key) ? null : themeColors().inactive(),
       onPressed: () {
         setState(() {
           _editedValue = null;
@@ -331,70 +331,13 @@ class _SettingsPreferencesState extends State<SettingsPreferences> {
           _controllers = [];
         }
 
-        var children = <Widget>[
-          Row(
-            children: [
-              Expanded(
-                child: Container(),
-              ),
-              GCWIconButton(
-                icon: Icons.add,
-                onPressed: () {
-                  setState(() {
-                    (_editedValue as List).add('');
-                    _controllers = [];
-                  });
-                },
-              )
-            ],
-          )
-        ];
-
-        if ((_editedValue as List).isEmpty) {
-          return Column(
-            children: children,
-          );
-        }
-
-        for (var i = 0; i < (_editedValue as List).length; i++) {
-          _controllers.add(TextEditingController(text: (_editedValue as List)[i].toString()));
-        }
-
-        children.addAll((_editedValue as List)
-            .asMap()
-            .map<int, Widget>((index, item) {
-              return MapEntry<int, Widget>(
-                  index,
-                  Row(
-                    children: [
-                      Expanded(
-                        child: GCWTextField(
-                          controller: _controllers[index],
-                          onChanged: (value) {
-                            setState(() {
-                              (_editedValue as List)[index] = value;
-                            });
-                          },
-                        ),
-                      ),
-                      Container(width: DOUBLE_DEFAULT_MARGIN),
-                      GCWIconButton(
-                        icon: Icons.remove,
-                        onPressed: () {
-                          setState(() {
-                            (_editedValue as List).removeAt(index);
-                            _controllers = [];
-                          });
-                        },
-                      )
-                    ],
-                  ));
-            })
-            .values
-            .toList());
-
-        return Column(
-          children: children,
+        return GCWStringlistEditor(
+          list: _editedValue as List<String>,
+          controllers: _controllers,
+          onChanged: () {
+            setState(() {
+            });
+          }
         );
     }
   }

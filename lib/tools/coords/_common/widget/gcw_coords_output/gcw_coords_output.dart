@@ -6,7 +6,7 @@ import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/gcw_toolbar.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_multiple_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_text_formatter.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
@@ -51,9 +51,11 @@ class _GCWCoordsOutputState extends State<GCWCoordsOutput> {
               Container(
                 padding: const EdgeInsets.only(bottom: 15),
                 child: GCWOutput(
-                  child: output is BaseCoordinate ? formatCoordOutput(output.toLatLng()!, output.format, widget.ellipsoid) : output,
+                  child: output is BaseCoordinate
+                      ? _formatedCoordOutput(output)
+                      : output,
                   copyText: output is BaseCoordinate
-                      ? formatCoordOutput(output.toLatLng()!, output.format, widget.ellipsoid, false).replaceAll('\n', ' ')
+                      ? _formatedCoordOutput(output, false).replaceAll('\n', ' ')
                       : ((output is String) || (output is int) || (output is double) ? output.toString() : null)
                 ),
               ));
@@ -100,7 +102,7 @@ class _GCWCoordsOutputState extends State<GCWCoordsOutput> {
         trailing: GCWIconButton(
           icon: Icons.save,
           size: IconButtonSize.SMALL,
-          iconColor: _hasOutput ? null : themeColors().inActive(),
+          iconColor: _hasOutput ? null : themeColors().inactive(),
           onPressed: () {
             if (_hasOutput) {
               _exportCoordinates(context, widget.points, widget.polylines);
@@ -108,6 +110,11 @@ class _GCWCoordsOutputState extends State<GCWCoordsOutput> {
           },
         ),
         children: _children);
+  }
+
+  String _formatedCoordOutput(BaseCoordinate output, [bool defaultPrecision = true]) {
+    var latLng = output.toLatLng();
+    return latLng == null ? '' : formatCoordOutput(latLng, output.format, widget.ellipsoid, defaultPrecision);
   }
 
   Future<void> _exportCoordinates(

@@ -1,4 +1,5 @@
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 const _PACKAGE_INFO_UNKNOWN = 'unknown';
 
@@ -27,7 +28,7 @@ class GCWPackageInfo {
 
   GCWPackageInfo._(PackageInfo info) {
     packageName = info.packageName;
-    appName = info.appName;
+    appName = kIsWeb ? 'GC Wizard' : info.appName; // due to strange bug: https://github.com/GCWizard/GCWizard/issues/1880
     version = info.version;
     buildNumber = info.buildNumber;
     buildSignature = info.buildSignature;

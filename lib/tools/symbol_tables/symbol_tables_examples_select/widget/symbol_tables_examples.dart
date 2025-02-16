@@ -1,14 +1,17 @@
+
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
+import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/logic/symbol_table_data.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_table_text_to_symbols.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_table_tool.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_table_zoom_buttons.dart';
+import 'package:gc_wizard/utils/method_limiter.dart';
 import 'package:prefs/prefs.dart';
 
 class SymbolTableExamples extends StatefulWidget {
@@ -23,6 +26,7 @@ class SymbolTableExamples extends StatefulWidget {
 class _SymbolTableExamplesState extends State<SymbolTableExamples> {
   late TextEditingController _controller;
   String _currentInput = 'ABC123';
+  Widget? _createdSymbols;
 
   var symbolKeys = <String>[];
 
@@ -39,7 +43,7 @@ class _SymbolTableExamplesState extends State<SymbolTableExamples> {
       return;
     }
 
-    symbolKeys = List.from(widget.symbolKeys);
+    symbolKeys = List<String>.from(widget.symbolKeys);
   }
 
   @override
@@ -55,6 +59,8 @@ class _SymbolTableExamplesState extends State<SymbolTableExamples> {
         ? Prefs.getInt(PREFERENCE_SYMBOLTABLES_COUNTCOLUMNS_PORTRAIT)
         : Prefs.getInt(PREFERENCE_SYMBOLTABLES_COUNTCOLUMNS_LANDSCAPE);
 
+    _createdSymbols ??= _createSymbols(countColumns);
+
     return Column(
       children: <Widget>[
         GCWTextDivider(
@@ -68,6 +74,13 @@ class _SymbolTableExamplesState extends State<SymbolTableExamples> {
               _currentInput = text;
             });
           },
+        ),
+        GCWSubmitButton(
+          onPressed: () {
+            setState(() {
+              _createdSymbols = _createSymbols(countColumns);
+            });
+          }
         ),
         GCWTextDivider(
             text: i18n(context, 'common_output'),
@@ -86,33 +99,44 @@ class _SymbolTableExamplesState extends State<SymbolTableExamples> {
               onPanDown: (_) {
                 FocusManager.instance.primaryFocus?.unfocus();
               },
-              child: _createSymbols(countColumns)),
+              child: _createdSymbols),
         )
       ],
     );
   }
 
   Widget _createSymbols(int countColumns) {
-    var symbols = symbolKeys.map<Widget>((symbolKey) {
-      return Column(
-        children: [
-          GCWTextDivider(
+    var limiter = MethodLimiter(MAX_PARALLEL_LOADS);
+
+    return ListView.builder(
+      itemCount: symbolKeys.length,
+      addAutomaticKeepAlives: false,
+      addRepaintBoundaries: false,
+      addSemanticIndexes: false,
+      itemBuilder: (context, index) {
+        String symbolKey = symbolKeys[index];
+        return Column(
+          children: [
+            GCWTextDivider(
               text: i18n(context, 'symboltables_${symbolKey}_title'),
               trailing: GCWIconButton(
                 icon: Icons.open_in_new,
                 size: IconButtonSize.SMALL,
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      NoAnimationMaterialPageRoute<GCWSymbolTableTool>(
-                          builder: (context) => GCWSymbolTableTool(
-                                symbolKey: symbolKey,
-                                symbolSearchStrings: const [],
-                              )));
+                    context,
+                    NoAnimationMaterialPageRoute<GCWSymbolTableTool>(
+                      builder: (context) => GCWSymbolTableTool(
+                        symbolKey: symbolKey,
+                        symbolSearchStrings: const [],
+                      ),
+                    ),
+                  );
                 },
-              )),
-          FutureBuilder<SymbolTableData>(
-              future: _loadSymbolData(symbolKey),
+              )
+            ),
+            FutureBuilder<SymbolTableData>(
+              future: _loadSymbolData(symbolKey, index, limiter),
               builder: (BuildContext context, AsyncSnapshot<SymbolTableData> snapshot) {
                 if (snapshot.hasData && snapshot.data is SymbolTableData) {
                   return GCWSymbolTableTextToSymbols(
@@ -126,18 +150,18 @@ class _SymbolTableExamplesState extends State<SymbolTableExamples> {
                 } else {
                   return Container();
                 }
-              })
-        ],
-      );
-    }).toList();
-
-    return SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(), primary: true, child: Column(children: symbols));
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
-  Future<SymbolTableData> _loadSymbolData(String symbolKey) async {
-    var symbolTableData = SymbolTableData(context, symbolKey);
-    await symbolTableData.initialize();
+  Future<SymbolTableData> _loadSymbolData(String symbolKey, int index, MethodLimiter limiter) async {
+    var symbolTableData = SymbolTableData(symbolKey);
+
+    await limiter.callMethod(() => symbolTableData.initialize(context));
 
     return symbolTableData;
   }

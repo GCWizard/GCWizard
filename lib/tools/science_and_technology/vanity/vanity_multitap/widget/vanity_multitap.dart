@@ -294,8 +294,6 @@ class _VanityMultitapState extends State<VanityMultitap> {
         return '123';
       case PhoneCaseMode.SPECIAL_CHARACTERS:
         return i18n(context, 'vanity_multitap_specialchars');
-      default:
-        return '';
     }
   }
 }

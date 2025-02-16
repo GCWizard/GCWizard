@@ -7,6 +7,9 @@ import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 
 const LETTER = '[A-ZÄÖÜ]';
+const MINUTES_SYMBOL = '[\\s\'´′`’‘]';
+const SECONDS_SYMBOL = '[\\s"″“”]';
+const DELIMITER_SYMBOL = '[\\s,;/|\\\\]';
 const decKey = 'coords_dec';
 var regexEnd = '';
 
@@ -188,9 +191,9 @@ const _PATTERN_DEC_TRAILINGSIGN = '^\\s*?'
     '(\\d{1,3})\\s*?' //lat degrees
     '(?:\\s*?[.,]\\s*?(\\d+))?\\s*?' //lat millidegrees
     '[\\s°]?\\s*?' //lat degrees symbol
-    '([NS]$LETTER*?|[\\+\\-])\\s*?' //lat sign
+    '([NS]$LETTER*?|[\\+\\-])' //lat sign
 
-    '[,\\s]\\s*?' //delimiter lat lon
+    '\\s*?$DELIMITER_SYMBOL\\s*?' //delimiter lat lon
 
     '(\\d{1,3})\\s*?' //lon degrees
     '(?:\\s*?[.,]\\s*?(\\d+))?\\s*?' //lon millidegrees
@@ -202,9 +205,9 @@ const _PATTERN_DEC = '^\\s*?'
     '([NS]$LETTER*?|[\\+\\-])?\\s*?' //lat sign
     '(\\d{1,3})\\s*?' //lat degrees
     '(?:\\s*?[.,]\\s*?(\\d+))?\\s*?' //lat millidegrees
-    '[\\s°]?\\s*?' //lat degree symbol
+    '[\\s°]?'//lat degree symbol
 
-    '\\s*?[,\\s]\\s*?' //delimiter lat lon
+    '\\s*?$DELIMITER_SYMBOL\\s*?' //delimiter lat lon
 
     '([EWO]$LETTER*?|[\\+\\-])?\\s*?' //lon sign
     '(\\d{1,3})\\s*?' //lon degrees

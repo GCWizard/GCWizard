@@ -106,7 +106,7 @@ String decodePokemon(String chiffreText) {
   if (chiffreText.isEmpty) return '';
 
   List<String> result = [];
-  chiffreText = chiffreText.toLowerCase();
+  chiffreText = chiffreText.toLowerCase().replaceAll(RegExp(r'(\s+)'), ' ');
   chiffreText.split(' ').forEach((element) {
     result.add(_decode(element));
   });

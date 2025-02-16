@@ -9,24 +9,19 @@ import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 
 void showCoordinatesExportDialog(BuildContext context, List<GCWMapPoint> points, List<GCWMapPolyline> polylines,
     {String? json}) {
-  showGCWDialog(context, i18n(context, 'coords_export_saved'), Text(i18n(context, 'coords_export_fileformat')), [
+  showGCWDialog(context, i18n(context, 'common_savefile'), Text(i18n(context, 'coords_export_fileformat')), [
     json != null
         ? GCWDialogButton(
             text: 'JSON',
             onPressed: () async {
-              var possibleExportMode =
-                  json.length < MAX_QR_TEXT_LENGTH_FOR_EXPORT ? PossibleExportMode.BOTH : PossibleExportMode.TEXTONLY;
               showGCWDialog(
                   context,
                   'JSON ' + i18n(context, 'common_text'),
                   GCWTextExport(
                     text: json,
-                    initMode:
-                    TextExportMode.TEXT,
-                    possibleExportMode: possibleExportMode,
-                    addSaveButton: true,
+                    initMode: TextExportMode.TEXT,
                     saveFilenamePrefix: 'coords',
-                    saveFileType: FileType.JSON,
+                    saveFileTypeText: FileType.JSON,
                   ),
                   [GCWDialogButton(text: i18n(context, 'common_ok'))],
                   cancelButton: false);

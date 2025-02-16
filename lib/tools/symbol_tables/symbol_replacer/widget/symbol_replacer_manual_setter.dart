@@ -174,7 +174,7 @@ class _SymbolReplacerManualSetterState extends State<SymbolReplacerManualSetter>
             icon: Icons.alt_route,
             iconColor: _symbolMap.values.any((symbol) => symbol.values.first.primarySelected)
                 ? null
-                : themeColors().inActive(),
+                : themeColors().inactive(),
             onPressed: () {
               setState(() {
                 if (_currentMode == GCWSwitchPosition.left) {
@@ -239,6 +239,7 @@ class _SymbolReplacerManualSetterState extends State<SymbolReplacerManualSetter>
         value: symbolData,
         child: Row(children: [
           Container(
+            constraints: const BoxConstraints(maxHeight : DEFAULT_LISTITEM_SIZE + 18),
             margin: const EdgeInsets.only(left: 2, top: 2, bottom: 2, right: 10),
             child: (iconBytes != null)
                 ? GCWSymbolContainer(symbol: Image.memory(iconBytes))

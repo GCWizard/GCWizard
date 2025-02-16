@@ -3,7 +3,7 @@ import 'package:gc_wizard/tools/coords/_common/formats/maidenhead/logic/maidenhe
 import 'package:latlong2/latlong.dart';
 
 void main() {
-  group("Converter.maidenhead.latlonToMaidenhead:", () {
+  group("Converter.maidenhead.fromLatLon:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'coord': const LatLng(89.99999, 179.99999), 'expectedOutput': 'RR99XX99XX99RK01'},
       {'coord': const LatLng(-89.99999, 179.99999), 'expectedOutput': 'RA90XA90XA90RN08'},
@@ -21,7 +21,7 @@ void main() {
     }
   });
 
-  group("Converter.maidenhead.maidenheadToLatLon:", () {
+  group("Converter.maidenhead.parseLatLon:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'expectedOutput': null, 'coord': ''},
       {'expectedOutput': null, 'coord': 'ÖD31365480657013431886'},

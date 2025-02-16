@@ -153,12 +153,20 @@ String toolName(BuildContext context, GCWTool tool) {
 class _GCWToolState extends State<GCWTool> {
   late String _toolName;
   late String _defaultLanguageToolName;
+  late FocusNode _focusNode;
 
   @override
   void initState() {
     _setToolCount(widget.longId);
+    _focusNode = FocusNode();
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -178,7 +186,14 @@ class _GCWToolState extends State<GCWTool> {
             menuItemBuilder: (context) => _buildToolBarItems(),
           ) : Container()
         ]),
-        body: _buildBody());
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).requestFocus(_focusNode),
+        child: Focus(
+          focusNode: _focusNode,
+          child: _buildBody(),
+        ),
+      ),
+    );
   }
 
   String _normalizeManualSearchString(String text) {

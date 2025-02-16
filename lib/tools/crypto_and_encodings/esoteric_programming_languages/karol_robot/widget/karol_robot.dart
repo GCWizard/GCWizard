@@ -133,7 +133,7 @@ class _KarolRobotState extends State<KarolRobot> {
               trailing: GCWIconButton(
                 icon: Icons.save,
                 size: IconButtonSize.SMALL,
-                iconColor: _outDecodeData == null ? themeColors().inActive() : null,
+                iconColor: _outDecodeData == null ? themeColors().inactive() : null,
                 onPressed: () {
                   _outDecodeData == null ? null : _exportFile(context, _outDecodeData!);
                 },

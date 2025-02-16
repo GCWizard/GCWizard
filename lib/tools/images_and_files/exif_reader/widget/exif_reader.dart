@@ -61,6 +61,7 @@ class _ExifReaderState extends State<ExifReader> {
       children: <Widget>[
         GCWOpenFile(
           supportedFileTypes: SUPPORTED_IMAGE_TYPES,
+          suppressGallery: false,
           onLoaded: (_file) {
             if (_file == null) {
               showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);

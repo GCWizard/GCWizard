@@ -43,22 +43,26 @@ class _FormulaSolverFormulaValuesState extends State<_FormulaSolverFormulaValues
   }
 
   void _addEntry(KeyValueBase entry) {
-    if (entry.key.isNotEmpty) {
-      if (int.tryParse(entry.key) != null) {
-        showGCWAlertDialog(context, i18n(context, 'formulasolver_values_alerts_keynumbers_title'),
-            i18n(context, 'formulasolver_values_alerts_keynumbers_text'), () {});
-        return;
-      }
-
-      if (entry is FormulaValue) {
-        insertFormulaValue(entry, widget.group);
-      }
-      _newKeyController.text = _maxLetter();
+    if (!_checkValidKey(entry.key)) return;
+    
+    if (entry is FormulaValue) {
+      insertFormulaValue(entry, widget.group);
     }
+    _newKeyController.text = _maxLetter();
   }
 
   void _updateEntry(KeyValueBase entry) {
     updateAndSave(widget.group);
+  }
+
+  bool _checkValidKey(String key) {
+    if (!hasLetters(key)) {
+      showGCWAlertDialog(context,
+          i18n(context, 'formulasolver_values_alerts_keynumbers_title'),
+          i18n(context, 'formulasolver_values_alerts_keynumbers_text'), () {});
+      return false;
+    }
+    return true;
   }
 
   @override
@@ -76,6 +80,7 @@ class _FormulaSolverFormulaValuesState extends State<_FormulaSolverFormulaValues
             onUpdateEntry: (entry) => _updateEntry(entry),
             onCreateInput: (Key? key) => _FormulaValueTypeKeyInput(key: key),
             onCreateNewItem: (entry, odd) => _createNewItem(entry, odd),
+            validateEditedKey: (String key) => _checkValidKey(key),
             trailing: GCWIconButton(
               customIcon: Image.asset('lib/application/_common/assets/img/cgeo_logo.png'),
               size: IconButtonSize.SMALL,
@@ -95,6 +100,8 @@ class _FormulaSolverFormulaValuesState extends State<_FormulaSolverFormulaValues
     return _FormulaValueTypeKeyValueItem(
       keyValueEntry: entry,
       odd: odd,
+      validateEditedKey: (String key) => _checkValidKey(key),
+      validateEditedValue: null
     );
   }
 }

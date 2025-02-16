@@ -158,7 +158,7 @@ class _DTMFState extends State<DTMF> {
           if (_currentMode == GCWSwitchPosition.left) {
             _playlist = _currentEncodeInput;
           } else {
-            _playlist = _currentDecodeInput;
+            _playlist = output;
           }
           await Dtmf.playTone(
               digits: _playlist,

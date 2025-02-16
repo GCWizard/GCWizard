@@ -79,9 +79,6 @@ class GCWMapLine extends GCWMapSimpleGeometry {
       case GCWMapLineType.RHUMB:
         _calculateRhumbShape();
         break;
-      default:
-        _calculateGeodeticShape();
-        break;
     }
   }
 

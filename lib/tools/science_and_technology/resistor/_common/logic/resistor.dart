@@ -197,8 +197,6 @@ int? getPositionByNumberAndType(int numberBands, ResistorBandType type) {
         return 5;
       case ResistorBandType.TEMPERATURE_COEFFICIENT:
         return 6;
-      default:
-        return null;
     }
   }
 }

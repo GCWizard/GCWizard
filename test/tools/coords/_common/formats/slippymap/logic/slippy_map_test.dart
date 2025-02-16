@@ -4,7 +4,7 @@ import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants
 import 'package:latlong2/latlong.dart';
 
 void main() {
-  group("Parser.slippy_map.parseLatLon:", () {
+  group("Converter.slippy_map.parseLatLon:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'text': '', 'expectedOutput': null},
       {'text': '584.813499 363.434344', 'expectedOutput': {'format': CoordinateFormatKey.SLIPPY_MAP, 'coordinate': const LatLng(46.211017406, 025.5984957422)}},

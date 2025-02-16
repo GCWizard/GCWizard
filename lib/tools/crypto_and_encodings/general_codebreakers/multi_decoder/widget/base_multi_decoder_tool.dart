@@ -45,5 +45,5 @@ class _MultiDecoderToolDummyState extends State<MultiDecoderToolDummy> {
 }
 
 String? stringNullableTypeCheck(Object? value, String? defaultValue) {
-  return (isString(String) || value == null) ? value as String? : defaultValue;
+  return (isString(value) || value == null) ? value as String? : defaultValue;
 }

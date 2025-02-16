@@ -126,6 +126,7 @@ _LLPoint _geodeticToGeocentric(_LLPoint pt, Ellipsoid ellipsoid) {
   return newPt;
 }
 
+// ignore: unused_element
 _LLPoint _geocentricToGeodetic(_LLPoint pt, Ellipsoid ellipsoid) {
   _LLPoint newPt = _LLPoint(pt.latitude, pt.longitude);
   newPt.latitude = _geodeticLat(newPt.latitude, ellipsoid);

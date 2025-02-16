@@ -28,6 +28,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/substi
 import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/logic/substitution_logic_aggregator.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/widget/quadgram_loader.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/widget/substitution_breaker_items.dart';
+import 'package:gc_wizard/tools/symbol_tables/_common/logic/symbol_table_data.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_container.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_table_tool.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/widget/symbol_table.dart';
@@ -35,6 +36,7 @@ import 'package:gc_wizard/tools/symbol_tables/symbol_replacer/logic/symbol_repla
 import 'package:gc_wizard/tools/symbol_tables/symbol_replacer/widget/symbol_replacer_manual_control.dart';
 import 'package:gc_wizard/tools/symbol_tables/symbol_replacer/widget/symbol_replacer_symboldata.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
+import 'package:gc_wizard/utils/method_limiter.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 import 'package:tuple/tuple.dart';
 
@@ -90,6 +92,7 @@ class _SymbolReplacerState extends State<SymbolReplacer> {
 
     return Column(children: <Widget>[
       GCWOpenFile(
+        suppressGallery: false,
         supportedFileTypes: SUPPORTED_IMAGE_TYPES,
         onLoaded: (_file) {
           if (_file == null) {
@@ -242,7 +245,7 @@ class _SymbolReplacerState extends State<SymbolReplacer> {
             )),
         GCWIconButton(
           icon: Icons.remove,
-          iconColor: _symbolImage == null ? themeColors().inActive() : null,
+          iconColor: _symbolImage == null ? themeColors().inactive() : null,
           onPressed: () {
             if (_symbolImage != null) {
               _currentMergeDistance = _symbolImage!.prevMergeDistance(_currentMergeDistance);
@@ -252,7 +255,7 @@ class _SymbolReplacerState extends State<SymbolReplacer> {
         ),
         GCWIconButton(
           icon: Icons.add,
-          iconColor: _symbolImage == null ? themeColors().inActive() : null,
+          iconColor: _symbolImage == null ? themeColors().inactive() : null,
           onPressed: () {
             if (_symbolImage != null) {
               _currentMergeDistance = _symbolImage!.nextMergeDistance(_currentMergeDistance);
@@ -302,7 +305,7 @@ class _SymbolReplacerState extends State<SymbolReplacer> {
         Container(width: 5),
         GCWIconButton(
             icon: Icons.alt_route,
-            iconColor: _symbolImage == null ? themeColors().inActive() : null,
+            iconColor: _symbolImage == null ? themeColors().inactive() : null,
             onPressed: () {
               if (_symbolImage != null) {
                 _symbolImage!.resetGroupText();
@@ -315,7 +318,7 @@ class _SymbolReplacerState extends State<SymbolReplacer> {
         Container(width: 5),
         GCWIconButton(
             icon: Icons.auto_fix_high,
-            iconColor: _symbolImage == null ? themeColors().inActive() : null,
+            iconColor: _symbolImage == null ? themeColors().inactive() : null,
             onPressed: () {
               _showAutoSearchDialog();
             }),
@@ -335,42 +338,46 @@ class _SymbolReplacerState extends State<SymbolReplacer> {
     showGCWDialog(
         context,
         '',
-        Column(children: <Widget>[
-          GCWTextDivider(
-            text: i18n(context, 'symbol_replacer_automatic_header'),
-            style: gcwDialogTextStyle(),
-            suppressTopSpace: true,
-          ),
-          GCWDropDown<SubstitutionBreakerAlphabet>(
-            value: _currentAlphabet,
-            alternativeColor: true,
-            onChanged: (value) {
-              setState(() {
-                _currentAlphabet = value;
-              });
-            },
-            items: SubstitutionBreakerAlphabetItems(context).entries.map((alphabet) {
-              return GCWDropDownMenuItem(
-                value: alphabet.key,
-                child: alphabet.value,
-              );
-            }).toList(),
-          ),
-          GCWDialogButton(
-            text: i18n(context, 'symbol_replacer_start'),
-            onPressed: () {
-              _startSubstitutionBreaker();
-            },
-          ),
-          Container(height: 20),
-          GCWTextDivider(text: i18n(context, 'symbol_replacer_symboltable_search_header'), style: gcwDialogTextStyle()),
-          GCWDialogButton(
-            text: i18n(context, 'symbol_replacer_start'),
-            onPressed: () {
-              _startJobDataSearchSymbolTable();
-            },
-          ),
-        ]),
+        StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Column(children: <Widget>[
+              GCWTextDivider(
+                text: i18n(context, 'symbol_replacer_automatic_header'),
+                style: gcwDialogTextStyle(),
+                suppressTopSpace: true,
+              ),
+              GCWDropDown<SubstitutionBreakerAlphabet>(
+                value: _currentAlphabet,
+                alternativeColor: true,
+                onChanged: (value) {
+                  setState(() {
+                    _currentAlphabet = value;
+                  });
+                },
+                items: SubstitutionBreakerAlphabetItems(context).entries.map((alphabet) {
+                  return GCWDropDownMenuItem(
+                    value: alphabet.key,
+                    child: alphabet.value,
+                  );
+                }).toList(),
+              ),
+              GCWDialogButton(
+                text: i18n(context, 'symbol_replacer_start'),
+                onPressed: () {
+                  _startSubstitutionBreaker();
+                },
+              ),
+              Container(height: 20),
+              GCWTextDivider(text: i18n(context, 'symbol_replacer_symboltable_search_header'), style: gcwDialogTextStyle()),
+              GCWDialogButton(
+                text: i18n(context, 'symbol_replacer_start'),
+                onPressed: () {
+                  _startJobDataSearchSymbolTable();
+                },
+              ),
+            ]);
+          }
+        ),
         []);
   }
 
@@ -456,8 +463,9 @@ class _SymbolReplacerState extends State<SymbolReplacer> {
   Widget _buildDropDownMenuItem(GCWSymbolContainer? icon, String? toolName, String? description) {
     return Row(children: [
       Container(
+        constraints: const BoxConstraints(maxHeight : DEFAULT_LISTITEM_SIZE + 18),
         margin: const EdgeInsets.only(left: 2, top: 2, bottom: 2, right: 10),
-        child: (icon != null) ? icon : Container(width: 50),
+        child: (icon != null) ? icon : Container(width: DEFAULT_LISTITEM_SIZE),
       ),
       Expanded(
           child: Column(
@@ -513,14 +521,16 @@ class _SymbolReplacerState extends State<SymbolReplacer> {
 
   Future<GCWAsyncExecuterParameters?> _buildJobDataSearchSymbolTable() async {
     var list = <List<Map<String, SymbolReplacerSymbolData>>>[];
+    var limiter = MethodLimiter(MAX_PARALLEL_LOADS);
     if (_symbolImage == null) return null;
 
     list = await Future.wait(_compareSymbolItems.map((_symbolTableViewData) async {
       var symbolTableViewData = _symbolTableViewData.value;
-      if (symbolTableViewData.data == null) await symbolTableViewData.initialize(context);
+      if (symbolTableViewData.data == null) await limiter.callMethod(() => symbolTableViewData.initialize(context));
 
       return symbolTableViewData.data?.images ?? [];
     }));
+
 
     return GCWAsyncExecuterParameters(
         Tuple2<SymbolReplacerImage, List<List<Map<String, SymbolReplacerSymbolData>>>>(_symbolImage!, list));

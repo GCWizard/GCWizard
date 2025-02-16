@@ -31,8 +31,8 @@ void _checkAndGetObfuscatorURWIGO(List<String> lines) {
 
 void _checkAndGetObfuscatorWWBorGSUB() {
   if (RegExp(r'(WWB_deobf)').hasMatch(_LUAFile)) {
-    _obfuscatorFunction[0] = 'WWB_deobf';
-    _obfuscatorTable[0] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@.-~';
+    _obfuscatorFunction.add('WWB_deobf');
+    _obfuscatorTable.add('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@.-~');
     _obfuscatorFound = true;
     RegExp(r'WWB_deobf\(".*?"\)').allMatches(_LUAFile).forEach((obfuscatedText) {
       var group = obfuscatedText.group(0);
@@ -41,8 +41,8 @@ void _checkAndGetObfuscatorWWBorGSUB() {
       _LUAFile = _LUAFile.replaceAll(group, '"' + deObfuscateText(group, _obfuscatorFunction[0], _obfuscatorTable[0]) + '"');
     });
   } else if (RegExp(r'(gsub_wig)').hasMatch(_LUAFile)) {
-    _obfuscatorFunction[0] = 'gsub_wig';
-    _obfuscatorTable[0] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@.-~';
+    _obfuscatorFunction.add('gsub_wig');
+    _obfuscatorTable.add('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@.-~');
     _obfuscatorFound = true;
     RegExp(r'gsub_wig\(".*?"\)').allMatches(_LUAFile).forEach((obfuscatedText) {
       var group = obfuscatedText.group(0);

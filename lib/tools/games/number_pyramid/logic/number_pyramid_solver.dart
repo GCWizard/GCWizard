@@ -60,7 +60,7 @@ class NumberPyramid {
     return pyramid[y][x]?.value;
   }
 
-  /// return valid position
+  /// return value changed
   bool setValue(int x, int y, int? value, NumberPyramidFillType type) {
     int? oldValue;
     bool valueChanged = false;
@@ -88,7 +88,7 @@ class NumberPyramid {
     return !(y < 0 || y >= pyramid.length || x < 0 || x >= pyramid[y].length);
   }
 
-  void solvePyramid(int maxSolutions) {
+  Future<void> solvePyramid(int maxSolutions) async {
     var solutions = solve(_solveableBoard(), maxSolutions: maxSolutions);
     if (solutions == null) {
       this.solutions = null;

@@ -49,8 +49,6 @@ String? createPolybiosAlphabet(int gridDimension,
         case PolybiosMode.x90ZA:
           fillAlphabet = alphabet_AZ.keys.toList().reversed.join();
           break;
-        default:
-          break;
       }
 
       switch (modificationMode) {
@@ -99,8 +97,6 @@ String? createPolybiosAlphabet(int gridDimension,
           var alphabet = alphabet_09.keys.toList().reversed.toList();
           alphabet.addAll(alphabetAZ.reversed.toList());
           fillAlphabet = alphabet.join();
-          break;
-        default:
           break;
       }
       break;

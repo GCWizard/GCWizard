@@ -1,7 +1,6 @@
 part of 'package:gc_wizard/tools/science_and_technology/checkdigits/logic/checkdigits.dart';
 
 // https://www.geldschein.at/euro-banknoten/euro_seriennummer.html
-// https://kryptografie.de/kryptografie/chiffre/euro-banknote.htm
 // http://www.pruefziffernberechnung.de/B/Banknoten-EUR.shtml
 
 const EUROBANKNOTEDATA = {

@@ -7,7 +7,6 @@ import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_paste_button.dart';
 import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
-import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
@@ -43,8 +42,10 @@ class GCWKeyValueEditor extends StatefulWidget {
   final bool editAllowed;
   final void Function(KeyValueBase)? onUpdateEntry;
 
+  final bool Function(String)? validateAddedKey;
+  final bool Function(String)? validateAddedValue;
+  final bool Function(String)? validateEditedKey;
   final bool Function(String)? validateEditedValue;
-  final String? invalidEditedValueMessage;
 
   const GCWKeyValueEditor(
       {Key? key,
@@ -66,8 +67,10 @@ class GCWKeyValueEditor extends StatefulWidget {
       this.onCreateInput,
       this.onCreateNewItem,
       this.trailing,
-      this.validateEditedValue,
-      this.invalidEditedValueMessage})
+      this.validateAddedKey,
+      this.validateAddedValue,
+      this.validateEditedKey,
+      this.validateEditedValue})
       : super(key: key);
 
   @override
@@ -89,7 +92,11 @@ class _GCWKeyValueEditor extends State<GCWKeyValueEditor> {
     if (widget.onCreateInput != null) {
       input = widget.onCreateInput!(_InputState);
     } else {
-      input = GCWKeyValueInput(key: _InputState);
+      input = GCWKeyValueInput(
+        key: _InputState,
+        validateAddedKey: widget.validateAddedKey,
+        validateAddedValue: widget.validateAddedValue,
+      );
     }
 
     input.keyController = widget.keyController;
@@ -157,8 +164,8 @@ class _GCWKeyValueEditor extends State<GCWKeyValueEditor> {
       item = GCWKeyValueItem(
           keyValueEntry: entry,
           odd: odd,
-          validateEditedValue: widget.validateEditedValue,
-          invalidEditedValueMessage: widget.invalidEditedValueMessage);
+          validateEditedKey: widget.validateEditedKey,
+          validateEditedValue: widget.validateEditedValue);
     }
 
     item.keyValueEditorControl = _keyValueEditorControl;
@@ -177,12 +184,15 @@ class _GCWKeyValueEditor extends State<GCWKeyValueEditor> {
   }
 
   String? _toJson() {
-    var list = widget.entries.map((e) {
-      return jsonEncode({'key': e.key, 'value': e.value});
-    }).toList();
-
-    if (list.isEmpty) return null;
-
-    return jsonEncode(list);
+    return toKeyValueJson(widget.entries);
   }
+}
+
+String? toKeyValueJson(List<KeyValueBase> entries) {
+  var list = entries.map((e) {
+    return jsonEncode({'key': e.key, 'value': e.value});
+  }).toList();
+
+  if (list.isEmpty) return null;
+  return jsonEncode(list);
 }

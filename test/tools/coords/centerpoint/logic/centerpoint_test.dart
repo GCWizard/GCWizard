@@ -1,6 +1,6 @@
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
-import 'package:gc_wizard/tools/coords/centerpoint/logic/centerpoint.dart';
+import 'package:gc_wizard/tools/coords/centerpoint/center_three_points/logic/center_three_points.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -15,7 +15,7 @@ void main() {
     for (var elem in _inputsToExpected) {
       test('coord1: ${elem['coord1']}, coord2: ${elem['coord2']}, coord2: ${elem['coord3']}', () {
         var actual = centerPointThreePoints(elem['coord1'] as LatLng, elem['coord2'] as LatLng, elem['coord3'] as LatLng, ells!);
-        expect(equalsLatLng(actual.first.centerPoint, elem['expectedOutput'] as LatLng), true);
+        expect(equalsLatLng(actual.centerPoint, elem['expectedOutput'] as LatLng), true);
       });
     }
   });

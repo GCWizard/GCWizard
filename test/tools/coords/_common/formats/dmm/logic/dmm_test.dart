@@ -28,6 +28,9 @@ final List<Map<String, Object?>> inputsToExpectedDMM = [
   {'text': '52 12 N 20 12 E', 'expectedOutput': {'format': CoordinateFormatKey.DMM, 'coordinate': const LatLng(52.2, 20.2)}},
   {'text': '52 06 S 20 6 W', 'expectedOutput': {'format': CoordinateFormatKey.DMM, 'coordinate': const LatLng(-52.1, -20.1)}},
   {'text': 'N 52°12.312’  E 004°06.312’', 'expectedOutput': {'format': CoordinateFormatKey.DMM, 'coordinate': const LatLng(52.2052, 4.1052)}},
+  {'text': 'N 52°12.312’,  E 004°06.312’', 'expectedOutput': {'format': CoordinateFormatKey.DMM, 'coordinate': const LatLng(52.2052, 4.1052)}},
+  {'text': 'N 52°12.312’ ,  E 004°06.312’', 'expectedOutput': {'format': CoordinateFormatKey.DMM, 'coordinate': const LatLng(52.2052, 4.1052)}},
+  {'text': 'N 52°12.312’ ; E 004°06.312’', 'expectedOutput': {'format': CoordinateFormatKey.DMM, 'coordinate': const LatLng(52.2052, 4.1052)}},
 
   {'text': 'N 52° 12.312\' E 20° 12.312\'', 'expectedOutput': {'format': CoordinateFormatKey.DMM, 'coordinate': const LatLng(52.2052, 20.2052)}},
   {'text': 'N 52°12.312\' E 20°12.312\'', 'expectedOutput': {'format': CoordinateFormatKey.DMM, 'coordinate': const LatLng(52.2052, 20.2052)}},

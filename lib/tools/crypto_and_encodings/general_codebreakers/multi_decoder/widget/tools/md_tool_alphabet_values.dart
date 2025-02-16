@@ -14,8 +14,7 @@ class MultiDecoderToolAlphabetValues extends AbstractMultiDecoderTool {
       {Key? key,
       required int id,
       required String name,
-      required Map<String, Object?> options,
-      required BuildContext context})
+      required Map<String, Object?> options})
       : super(
           key: key,
           id: id,

@@ -1,160 +1,17 @@
 ==============================
-
+s
 Android Release Build command:
 flutter build appbundle --release --target-platform android-arm,android-arm64
 
 ==============================
 Format code:
-
+s
 Activation of dart format:
 flutter pub global activate dart_style
 dart format lib -l 120
 
 ==============================
-Build Checklist
 
-- Crowdin translations: crowdin download
-- Project explorer, project root, right click -> Optimize Imports
-- Format code: dart format lib -l 120
-- flutter upgrade
-- flutter pub get
-- Build
-
-==============================
-
-Release Checklist
-
-Meta:
-
-	- Write Changelog: Check closed PRs and commit history for new features, big fixes or changes
-		- Write changelog string as late as possible because the translations shouldn't get outdated if something will be added
-		- Wait for translators for translating the changelog; you gonna need them for the app stores
-		- Hide old changelog strings in Crowdin, it's not necessary to translate them furtherly
-	- In changelogs.dart add new version and probable release date
-	- In Crowdin check percentages for languages and put them into supported_locales.dart
-	- Update Flutter last time before final internal testing on both, your Android and your iOS machine
-		- If new Flutter version will be published later, it should be ignored since you are not able to test possible impacts anymore
-	- Same for Dependencies: Last check for outdated packages and upgrading to latest possible without risking too big changes
-	- Update the dependencies in the licenses.dart (remove or add new, check for their licenses)
-	- Update about.dart for contributors and relevant translators (and maybe team member changes)
-	- Check mails, forums and social media and whatever for bug reporters or relevant feature requests to add these people to "Testers" in about.dart
-	- Check if you want to update the README.md
-	- App Stores:
-		- iOS: Prepare new version:
-			- Add new language page if one new translation was added
-				- Normal Version: 
-					- Add Short Description
-						- only <X> characters
-					- Add Long Description:
-						- Country flag symbols make problems. Remove them
-						- Check for automatically included empty lines and remove them if necessary
-						- only 4000 characters
-					- Optional: Screenshots in that language
-				- Gold Version:
-					- Generally the same but different Short text and add the "Gold Long Description" part in front of normal Long Description Text (both, short and long part explain that this is pure donation, no additional features)
-			- Add changelog all languages (when and if translated! EN is default otherwise)
-			- Save and Send To Review
-		- Android:
-			- Pretty the same for new languages: Create a new language and add short and long descriptions for Normal and Gold. Remember 500 character limitations per language
-				- Currently no "bad" characters known
-			- Changelogs can only be added on real release, e.g. internal or beta test
-	- Check legal websites:
-		- cookie_policy.html contains a list of cookies. Every "Pref" used in the code will be stored as a cookie. So if you added some in the new version, you need to add them in the websites
-		- privacy_police.html contains the permissions the app needs, like localisation or file access. It also lists the destinations of third party web links like OpenStreetMap or the Dow Jones API Check if the list is still up-to-date
-		- impressum.html: Your contact data is still up-to-date?
-		- Don't forget to update the "Last updated" section of the files
-		- Remember: For privacy reasons, the legal websites are not part of the public GitHub repository. So ensure to make the changes also in your back-up
-	- Prepare blog post for new version in EN and DE
-	- Hopefully everything works fine. But prepare yourself for nasty issues like unsupported XCode or POD versions, new App/PlayStore restrictions, review denies, ...
-
-Actual Release:
-
-	- Check new version (incl. build number) in Pubspec.yaml
-	- Check correct name in android/app/src/main/AndroidManifest.xml
-	- on final version release, don't forget to "optimize imports" and format code (see Build Checklist)
-
-	Release internal test:
-	- Build Android version 
-		- load to Internal Test in Google Play Console
-		- Set Release Version to <new version>, e.g. 5.2.0
-		- Optional: Add changelogs in translated and supported languages
-			- Becomes mandatory for at least Beta version!
-			- usually you need to shorten them because of too few characters; start with removing the "Thanks" parts
-		- Save -> Start roll-out
-	- Build iOS version on Mac
-		- build on console
-		- open built app in XCode via ios/Runner.xcworkspace
-		- check correct version and build number for the Runner Target (General/Identity)
-		- bundle for all iOS devices (Product/Build For/Destinations/)
-		- archive bundle (takes some time, even if no progress visible) (Product/Archive)
-		- Distribute to Apple App Store / Testflight
-		- on AppStore/TestFlight website: wait for processing (takes ca. 30 min)
-		- check "No Encryption Algorithms" (or similar)
-	- Build Web version
-		- Load to /app_test/ 
-	- Final test should take 1-2 weeks
-
-	Release beta:
-	- Android:
-		- Promote internal test version to Closed and Open Testing (Alpha / Beta)
-		- Insert new changelogs for all supported languages
-			- If already done on a previous release you can select "Copy from previous release"
-		- Save -> Send for review -> Start roll-out
-	- iOS:
-		- Simply add "GCWizard Testers" as users to test version
-		- Insert new changelogs for EN and DE
-	- Release blog post for new version
-	- Propagate in social media
-	- Beta test should take 1-2 weeks (usually no registered user will ever report anything)
-		
-	Release public:
-	- Android:
-		- Promote open test version to public
-		- Save -> Send for review -> Start roll-out
-		- Update Rollout Settings from 20 to 100%
-		- Reviewing may take a few days
-	- iOS:
-		- Go to normal AppStore
-		- Create new version with correct version number
-		- Add changelogs for all supported languages
-			- If changelog translation in a supported language is not provided, add EN changelog manually
-		- Add Build Version (from TestFlight)
-		- Save/Send to Review -> now it's only on status "Ready for review"
-		- Menu/General/App Reviews -> Transmit to Review
-		- Reviewing may take a few days
-	- Repeat with Gold Versions:
-		- Recommendation: Wait until Normal versions really passed the official reviews to be sure that nothing went wrong
-		- Android:
-		    - Replace normal icons in android/app/src/main/res with android/app/src/main/res/icons_gold
-		    - change package name to gc_wizard_gold:
-			    - in file: android/app/src/main/AndroidManifest.xml (and application/android:label to "GC Wizard Gold", too)
-			    - in file: android/app/build.gradle -> defaultConfig and android/namespace
-		- iOS:
-		    - Replace normal icons in ios/Runner/Assets.xcassets/AppIcon.appiconset/ with ios/Runner/Assets.xcassets/AppIcon.appiconset/icons_gold
-			- change bundle identifier in XCode/Info.plist in ios/Runner to de.sman42.gcWizardGold
-			- change Display Name to GC Wizard Gold
-		- Release process same
-	- Web:
-		- Rename /app/ directory to /app_<current_version> -- e.g. new version is 5.2.0 and old version was 5.1.4, the new dir would be /app_5.1.4
-		- Rename /app_test/ to /app/
-		- Create new empty directory /app_test/
-	
-After Release:
-
-    - Restore local workspace repos from gold to normal version (git reset --hard)
-	- Remind the release in forums and social media
-	- GitHub:
-		- Merge your version branch onto master branch
-		- Tag the merge commit with the version number
-		- Remove feature branches
-		- Maybe remove older version branches
-		- Create next main version branch and next bugfix branch on this commit (if new version is 5.2.0, create 5.3.0 - or 6.0.0 for major plans - and 5.2.1)
-		- Currently the next version branch is main branch on Github because most contributors don't check the destination branch for a PR and the reviewer misses this as well regularly ;) So, if this practise should be continued:
-			- Go to GitHub settings and set relevant branch as main branch instead of master 
-		- Propagate new status to developers
-    - Crowdin: Hide last "changelog" string (Past changelog don't need to be translated)
-
-==============================
 Common Build Error Fixes:
 
 flutter upgrade --force

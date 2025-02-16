@@ -143,7 +143,7 @@ class Strategy {
         return null;
       }
       return LineMetaData(line, index, zeros);
-    }).whereNotNull();
+    }).nonNulls;
 
     // sort by estimated computation effort
     if (skipEarly) {

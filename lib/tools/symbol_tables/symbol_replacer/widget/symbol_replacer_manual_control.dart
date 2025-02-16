@@ -163,7 +163,7 @@ class _SymbolReplacerManualControlState extends State<SymbolReplacerManualContro
                 GCWIconButton(
                   icon: Icons.add_circle,
                   iconColor: _selectedSymbolData == null
-                      ? themeColors().inActive()
+                      ? themeColors().inactive()
                       : _addActiv
                           ? Colors.red
                           : null,
@@ -177,7 +177,7 @@ class _SymbolReplacerManualControlState extends State<SymbolReplacerManualContro
                 GCWIconButton(
                   icon: Icons.remove_circle,
                   iconColor: _selectedSymbolData == null
-                      ? themeColors().inActive()
+                      ? themeColors().inactive()
                       : _removeActiv
                           ? Colors.red
                           : null,

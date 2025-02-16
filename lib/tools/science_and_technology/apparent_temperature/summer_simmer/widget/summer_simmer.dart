@@ -62,7 +62,11 @@ class _SummerSimmerIndexState extends State<SummerSimmerIndex> {
   }
 
   Widget _buildOutput(BuildContext context) {
-    double summersimmer = calculateSummerSimmerIndex(_currentTemperature, _currentHumidity);
+    double summersimmer = 0.0;
+    double summersimmer_c = calculateSummerSimmerIndex(_currentTemperature, _currentHumidity);
+
+    summersimmer = TEMPERATURE_CELSIUS.toKelvin(summersimmer_c);
+    summersimmer = _currentOutputUnit.fromReference(summersimmer);
 
     String hintT = '';
     if (_currentTemperature < 18) {
@@ -74,7 +78,7 @@ class _SummerSimmerIndexState extends State<SummerSimmerIndex> {
 
     var hint = [hintT, hintH].where((element) => element.isNotEmpty).join('\n');
 
-    String hintSummerSimmer = _calculateHintSummerSimmer(summersimmer);
+    String hintSummerSimmer = _calculateHintSummerSimmer(summersimmer_c);
 
     return Column(
       children: [
@@ -85,14 +89,13 @@ class _SummerSimmerIndexState extends State<SummerSimmerIndex> {
             padding: const EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN),
             child: GCWIconButton(
               icon: Icons.wb_sunny,
-              iconColor: _colorSummerSimmer(summersimmer),
+              iconColor: _colorSummerSimmer(summersimmer_c),
               backgroundColor: const Color(0xFF4d4d4d),
               onPressed: () {},
             ),
           ),
           Expanded(
             flex: 2,
-            //child: Text(_currentOutputUnit.symbol),
             child: Container(
                 margin: const EdgeInsets.only(left: DEFAULT_MARGIN, right: 2 * DEFAULT_MARGIN),
                 child: GCWUnitDropDown(
@@ -103,10 +106,9 @@ class _SummerSimmerIndexState extends State<SummerSimmerIndex> {
                   onChanged: (value) {
                     setState(() {
                       _currentOutputUnit = value;
-                    });
                   },
-                )),
-          ),
+                );}),
+          )),
           Expanded(
             flex: 2,
             child: Container(
@@ -123,55 +125,63 @@ class _SummerSimmerIndexState extends State<SummerSimmerIndex> {
   }
 
   String _calculateHintSummerSimmer(double summersimmer) {
-    if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.LIGHT_BLUE]!) {
-      if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.WHITE]!) {
-        if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.LIGHT_YELLOW]!) {
-          if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.YELLOW]!) {
-            if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.ORANGE]!) {
-              if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.RED]!) {
-                return 'summersimmerindex_index_red';
+    if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.PINK]!) {
+      if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.ORANGE]!) {
+        if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.GREEN]!) {
+          if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.PURPLE]!) {
+            if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.RED]!) {
+              if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.BROWN]!) {
+                if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.BLACK]!) {
+                  return 'summersimmerindex_index_8';
+                } else {
+                  return 'summersimmerindex_index_7';
+                }
               } else {
-                return 'summersimmerindex_index_orange';
+                return 'summersimmerindex_index_6';
               }
             } else {
-              return 'summersimmerindex_index_yellow';
+              return 'summersimmerindex_index_5';
             }
           } else {
-            return 'summersimmerindex_index_light_yellow';
+            return 'summersimmerindex_index_4';
           }
         } else {
-          return 'summersimmerindex_index_white';
+          return 'summersimmerindex_index_3';
         }
       } else {
-        return 'summersimmerindex_index_light_blue';
+        return 'summersimmerindex_index_2';
       }
     } else {
-      return 'summersimmerindex_index_blue';
+      return 'summersimmerindex_index_1';
     }
   }
 
   Color _colorSummerSimmer(double summersimmer) {
-    if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.LIGHT_BLUE]!) {
-      if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.WHITE]!) {
-        if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.LIGHT_YELLOW]!) {
-          if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.YELLOW]!) {
-            if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.ORANGE]!) {
-              if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.RED]!) {
-                return Colors.red;
+    if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.PINK]!) {
+      if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.ORANGE]!) {
+        if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.GREEN]!) {
+          if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.PURPLE]!) {
+            if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.RED]!) {
+              if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.BROWN]!) {
+                if (summersimmer > SUMMERSIMMER_HEAT_STRESS[SUMMERSIMMER_HEATSTRESS_CONDITION.BLACK]!) {
+                  return Colors.black;
+                } else {
+                  return Colors.brown;
+                }
               } else {
-                return Colors.orange;
+                return Colors.red;
               }
             } else {
-              return Colors.yellow;
+              return Colors.purple;
             }
           } else {
-            return Colors.yellowAccent;
+            return Colors.green;
           }
         } else {
-          return Colors.white;
+          return Colors.orange;
         }
       } else {
-        return Colors.lightBlueAccent;
+        return Colors.pink.shade300;
       }
     } else {
       return Colors.blue;

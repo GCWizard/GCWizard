@@ -42,7 +42,7 @@ void main(){
           VanityWordsDecodeOutput('2248', 'ACHT', '8', false),
           VanityWordsDecodeOutput('6386', 'NEUN', '9', false),
         ]},
-      // ambigous
+      // ambiguous
       {'input' : '9376 53336 392 3943 743336 67436 39439432 8779 298379 7342 79372', 'language' : NumeralWordsLanguage.POL,
         'expectedOutput' : [
           VanityWordsDecodeOutput('9376', 'ZERO', '0', false),
@@ -53,6 +53,19 @@ void main(){
           VanityWordsDecodeOutput('67436', 'OSIEM', '8', false),
           VanityWordsDecodeOutput('3943', 'DWIE', '2', true),
           VanityWordsDecodeOutput('39439432', 'DZIEWIĘĆ', '9', true),
+        ]},
+      {'input' : '6855 84733 33473', 'language' : NumeralWordsLanguage.FRA,
+        'expectedOutput' : [
+          VanityWordsDecodeOutput('?', '', '', false),
+          VanityWordsDecodeOutput('?', '', '', false),
+          VanityWordsDecodeOutput('?', '', '', false),
+          VanityWordsDecodeOutput('?', '', '', false),
+          VanityWordsDecodeOutput('?', '', '', false),
+          VanityWordsDecodeOutput('?', '', '', false),
+          VanityWordsDecodeOutput('?', '', '', false),
+          VanityWordsDecodeOutput('?', '', '', false),
+          VanityWordsDecodeOutput('?', '', '', false),
+          VanityWordsDecodeOutput('33473', 'DEGRÉ', '°', false),
         ]},
     ];
 

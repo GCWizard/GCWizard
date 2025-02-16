@@ -8,7 +8,7 @@ import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat_distance.dart';
-import 'package:gc_wizard/tools/coords/centerpoint/logic/centerpoint.dart';
+import 'package:gc_wizard/tools/coords/centerpoint/center_two_points/logic/center_two_points.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/default_units_getter.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/length.dart';
@@ -89,11 +89,11 @@ class _CenterTwoPointsState extends State<CenterTwoPoints> {
     _currentDistance = _result.distance;
 
     _currentOutput = [];
-    _currentOutput.add(buildCoordinate(_currentOutputFormat, _currentCenter));
+    _currentOutput.add(buildCoordinate(_currentOutputFormat, _currentCenter) as Object);
     _currentOutput.add(GCWOutputText(
       text: '${i18n(context, 'coords_center_distance')}: ${doubleFormat.format(_currentOutputUnit.fromMeter(_currentDistance))} ${_currentOutputUnit.symbol}',
       copyText: _currentOutputUnit.fromMeter(_currentDistance).toString(),
-    ));
+    ) as Object);
 
     var mapPointCurrentCoords1 = GCWMapPoint(
         point: _currentCoords1.toLatLng()!,

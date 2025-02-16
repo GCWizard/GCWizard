@@ -23,7 +23,7 @@ final _LENGTH_STATUTEMILE = Length(name: 'common_unit_length_mi_name', symbol: '
 
 final _LENGTH_NAUTICALMILE = Length(name: 'common_unit_length_nm_name', symbol: 'nm', inMeters: 1852.0);
 
-final _LENGTH_INCH = Length(name: 'common_unit_length_in_name', symbol: 'in', inMeters: 0.3048 / 12.0);
+final LENGTH_INCH = Length(name: 'common_unit_length_in_name', symbol: 'in', inMeters: 0.3048 / 12.0);
 
 final LENGTH_FOOT = Length(name: 'common_unit_length_ft_name', symbol: 'ft', inMeters: 0.3048);
 
@@ -108,7 +108,7 @@ final _LENGTH_SMOOT = Length(
 final List<Length> baseLengths = [
   LENGTH_METER,
   _LENGTH_STATUTEMILE,
-  _LENGTH_INCH,
+  LENGTH_INCH,
   LENGTH_FOOT,
   _LENGTH_YARD,
   _LENGTH_FATHOM,

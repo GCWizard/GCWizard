@@ -243,12 +243,6 @@ void main() {
       var coord1 = LatLng(rand.nextDouble() * 180.0 - 90.0, rand.nextDouble() * 360.0 - 180.0);
       var coord2 = LatLng(rand.nextDouble() * 180.0 - 90.0, rand.nextDouble() * 360.0 - 180.0);
 
-      if (i % 10000 == 0) {
-        print(i);
-        print(coord1);
-        print(coord2);
-      }
-
       try {
         // Karney
         GeodesicData karney = geodeticInverse(coord1, coord2, ellipsoid);

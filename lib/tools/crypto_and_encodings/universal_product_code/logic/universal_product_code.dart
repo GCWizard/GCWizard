@@ -96,8 +96,6 @@ abstract class _UniversalProductCodeDecoder {
         return _decodeCorrectEncoding();
       case _UPCDecodeMode.BINARY_CORRECT_ENCODING:
         return _decodeCorrectEncoding(_fromBarcodeBinary());
-      default:
-        throw Exception('INVALID CODE');
     }
   }
 }

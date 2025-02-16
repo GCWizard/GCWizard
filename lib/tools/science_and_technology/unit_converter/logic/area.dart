@@ -23,7 +23,7 @@ final AREA_SQUAREKILOMETER =
 
 final _AREA_SQUAREDEZIMETER = Area(name: 'common_unit_area_dm2_name', symbol: 'dm\u00B2', inSquareMeters: 0.1 * 0.1);
 
-final _AREA_SQUARECENTIMETER = Area(name: 'common_unit_area_cm2_name', symbol: 'cm\u00B2', inSquareMeters: 0.01 * 0.01);
+final AREA_SQUARECENTIMETER = Area(name: 'common_unit_area_cm2_name', symbol: 'cm\u00B2', inSquareMeters: 0.01 * 0.01);
 
 final AREA_SQUAREMILLIMETER =
     Area(name: 'common_unit_area_mm2_name', symbol: 'mm\u00B2', inSquareMeters: 0.001 * 0.001);
@@ -40,7 +40,7 @@ final _AREA_CENTIARE = Area(name: 'common_unit_area_ca_name', symbol: 'ca', inSq
 
 final _AREA_SQUAREFOOT = Area(name: 'common_unit_area_sqft_name', symbol: 'sq ft', inSquareMeters: 0.3048 * 0.3048);
 
-final _AREA_SQUAREINCH =
+final AREA_SQUAREINCH =
     Area(name: 'common_unit_area_sqin_name', symbol: 'sq in', inSquareMeters: 0.3048 * 0.3048 / 144.0);
 
 final _AREA_SQUAREYARD = Area(name: 'common_unit_area_sqyd_name', symbol: 'sq yd', inSquareMeters: 0.3048 * 0.3048 * 9);
@@ -69,11 +69,11 @@ final _AREA_ROMAN_SALTUS = Area(name: 'common_unit_area_roman_saltus_name', symb
 
 final List<Area> areas = [
   AREA_SQUAREMILLIMETER,
-  _AREA_SQUARECENTIMETER,
+  AREA_SQUARECENTIMETER,
   _AREA_SQUAREDEZIMETER,
   AREA_SQUAREMETER,
   AREA_SQUAREKILOMETER,
-  _AREA_SQUAREINCH,
+  AREA_SQUAREINCH,
   _AREA_SQUAREFOOT,
   _AREA_SQUAREYARD,
   _AREA_SQUAREMILE,

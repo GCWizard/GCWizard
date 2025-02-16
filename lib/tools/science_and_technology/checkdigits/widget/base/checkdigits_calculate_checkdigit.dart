@@ -75,8 +75,6 @@ class CheckDigitsCalculateCheckDigitState extends State<CheckDigitsCalculateChec
         return _formatOutput_UIC(output);
       case CheckDigitsMode.CREDITCARD:
         return _formatOutput_Creditcard(output);
-      default:
-        return '';
     }
   }
 

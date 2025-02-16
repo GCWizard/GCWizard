@@ -4,7 +4,7 @@ import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:latlong2/latlong.dart';
 
 void main() {
-  group("Converter.gars.latLonToGARS:", () {
+  group("Converter.gars.fromLatLon:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'coord': const LatLng(89.99999, 179.99999), 'expectedOutput': '720QZ23'},
       {'coord': const LatLng(-89.99999, 179.99999), 'expectedOutput': '720AA49'},

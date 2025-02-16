@@ -25,7 +25,7 @@ void main() {
     for (var elem in _inputsToExpected) {
       test('sequence: ${elem['sequence']}, position: ${elem['position']}', () async {
         //var _actual = numberSequencesGetNumberAt(elem['sequence'] as NumberSequencesMode, elem['position'] as int?);
-        var _actual = await calculateNumberAtAsync(GetNumberAtJobData(sequence: elem['sequence'] as NumberSequencesMode, n: elem['position'] as int,) as GCWAsyncExecuterParameters?, );
+        var _actual = await calculateNumberAtAsync(GCWAsyncExecuterParameters(GetNumberAtJobData(sequence: elem['sequence'] as NumberSequencesMode, n: elem['position'] as int)));
         expect(_actual, elem['expectedOutput']);
       });
     }
@@ -75,7 +75,7 @@ void main() {
       {'sequence' : NumberSequencesMode.FACTORIAL,        'start' : 10, 'stop' : 15, 'expectedOutput' : [3628800, 39916800, 479001600, 6227020800, 87178291200, 1307674368000]},
       {'sequence' : NumberSequencesMode.LYCHREL,          'start' : 10, 'stop' : 15, 'expectedOutput' : [887, 978, 986, 1495, 1497]},
       {'sequence' : NumberSequencesMode.PRIMES,           'start' : 10, 'stop' : 15, 'expectedOutput' : [31, 37, 41, 43, 47, 53]},
-      {'sequence' : NumberSequencesMode.BUSY_BEAVER,      'start' : 0, 'stop' : 4, 'expectedOutput' : [1, 6, 11, 107, 47176870 ]},
+      {'sequence' : NumberSequencesMode.BUSY_BEAVER,      'start' :  0, 'stop' :  4, 'expectedOutput' : [1, 6, 21, 107, 47176870 ]},
     ];
 
     for (var elem in _inputsToExpected) {
@@ -154,12 +154,12 @@ void main() {
           38, 2)},
       {'sequence' : NumberSequencesMode.PRIMES,           'maxIndex' : 1000,  'number' : '1560', 'expectedOutput' : PositionOfSequenceOutput('15601',
           1818, 1)},
-      {'sequence' : NumberSequencesMode.BUSY_BEAVER,      'maxIndex' : 4,  'number' : '17', 'expectedOutput' : PositionOfSequenceOutput('47176870 ',
-          5, 3)},
+      {'sequence' : NumberSequencesMode.BUSY_BEAVER,      'maxIndex' : 4,  'number' : '17', 'expectedOutput' : PositionOfSequenceOutput('47176870',
+          4, 3)},
     ];
 
     for (var elem in _inputsToExpected) {
-      test('sequence: ${elem['sequence']}, number: ${elem['start']}', () {
+      test('sequence: ${elem['sequence']}, number: ${elem['number']}', () {
         PositionOfSequenceOutput _actual = numberSequencesGetFirstPositionOfSequence(elem['sequence'] as NumberSequencesMode, elem['number'] as String?, elem['maxIndex'] as int);
         expect(_actual.number, (elem['expectedOutput'] as PositionOfSequenceOutput).number);
         expect(_actual.positionSequence, (elem['expectedOutput'] as PositionOfSequenceOutput).positionSequence);

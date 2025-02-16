@@ -14,7 +14,9 @@ class CistercianNumbersSelection extends GCWSelection {
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       if (className(element.tool) == className(const SymbolTable()) &&
-          (element.tool as SymbolTable).symbolKey == 'cistercian') return true;
+          (element.tool as SymbolTable).symbolKey == 'cistercian') {
+        return true;
+      }
 
       return [
         className(const CistercianNumbers()),

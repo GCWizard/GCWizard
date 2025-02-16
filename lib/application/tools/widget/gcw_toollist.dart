@@ -8,7 +8,8 @@ import 'package:gc_wizard/application/navigation/no_animation_material_page_rout
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
-import 'package:gc_wizard/common_widgets/dialogs/gcw_delete_alertdialog.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/utils/constants.dart';
@@ -92,7 +93,7 @@ class _GCWToolListState extends State<GCWToolList> {
         color: themeColors().mainFont(),
         onPressed: () {
           if (tool.isFavorite) {
-            showDeleteAlertDialog(context, tool.toolName ?? UNKNOWN_ELEMENT, () {
+            _showDeleteFavoriteAlertDialog(context, tool.toolName ?? UNKNOWN_ELEMENT, () {
               Favorites.update(tool.longId, FavoriteChangeStatus.REMOVE);
 
               setState(() {
@@ -111,7 +112,7 @@ class _GCWToolListState extends State<GCWToolList> {
     );
   }
 
-  Widget _buildDescription(BuildContext context, GCWTool tool) {
+  Widget? _buildDescription(BuildContext context, GCWTool tool) {
     IgnorePointer? descriptionText;
     if (Prefs.getBool(PREFERENCE_TOOLLIST_SHOW_DESCRIPTIONS) &&
         tool.description != null &&
@@ -147,6 +148,11 @@ class _GCWToolListState extends State<GCWToolList> {
             padding: const EdgeInsets.only(left: DEFAULT_DESCRIPTION_MARGIN),
             child: content,
           )
-        : Container();
+        : null;
   }
+}
+
+void _showDeleteFavoriteAlertDialog(BuildContext context, String deleteableText, void Function() onOKPressed) {
+  showGCWAlertDialog(context, i18n(context, 'common_deletealtert_favorite_title'),
+      i18n(context, 'common_deletealtert_favorite_text', parameters: [deleteableText]), onOKPressed);
 }

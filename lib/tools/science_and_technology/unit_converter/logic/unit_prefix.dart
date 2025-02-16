@@ -12,8 +12,8 @@ final _UNITPREFIX_HECTO = UnitPrefix('common_unit_prefix_hecto', 'h', 1.0e2);
 final _UNITPREFIX_DECA = UnitPrefix('common_unit_prefix_deca', 'da', 1.0e1);
 final UNITPREFIX_NONE = UnitPrefix('', '', 1.0);
 final _UNITPREFIX_DECI = UnitPrefix('common_unit_prefix_deci', 'd', 1.0e-1);
-final _UNITPREFIX_CENTI = UnitPrefix('common_unit_prefix_centi', 'c', 1.0e-2);
-final _UNITPREFIX_MILLI = UnitPrefix('common_unit_prefix_milli', 'm', 1.0e-3);
+final UNITPREFIX_CENTI = UnitPrefix('common_unit_prefix_centi', 'c', 1.0e-2);
+final UNITPREFIX_MILLI = UnitPrefix('common_unit_prefix_milli', 'm', 1.0e-3);
 final _UNITPREFIX_MICRO = UnitPrefix('common_unit_prefix_micro', '\u00B5', 1.0e-6);
 final _UNITPREFIX_NANO = UnitPrefix('common_unit_prefix_nano', 'n', 1.0e-9);
 final _UNITPREFIX_PICO = UnitPrefix('common_unit_prefix_pico', 'p', 1.0e-12);
@@ -39,8 +39,8 @@ final unitPrefixes = [
   _UNITPREFIX_DECA,
   UNITPREFIX_NONE,
   _UNITPREFIX_DECI,
-  _UNITPREFIX_CENTI,
-  _UNITPREFIX_MILLI,
+  UNITPREFIX_CENTI,
+  UNITPREFIX_MILLI,
   _UNITPREFIX_MICRO,
   _UNITPREFIX_NANO,
   _UNITPREFIX_PICO,

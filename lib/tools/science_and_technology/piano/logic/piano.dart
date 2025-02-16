@@ -40,8 +40,6 @@ class PianoKey {
         return color;
       case fields.latin:
         return color;
-      default:
-        return '';
     }
   }
 }

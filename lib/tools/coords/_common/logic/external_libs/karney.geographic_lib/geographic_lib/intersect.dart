@@ -73,10 +73,14 @@ class _Intersect {
       _t4,                      // capture radius for spherical sol in Solve0
       _t5,                      // longest shortest geodesic
       _d1,                      // tile spacing for Closest
+// ignore: unused_field
       _d2,                      // tile spacing for Next
-      _d3;                      // tile spacing for All
+// ignore: unused_field
+      _d3;
+  // tile spacing for All
+  // ignore: unused_field
   late int _cnt0, _cnt1, _cnt2, _cnt3, _cnt4;
-  late final SetComp _comp;
+  late final _SetComp _comp;
 
   _Intersect(this._a, this._f) {
     _geod = _Geodesic(_a, _f);
@@ -85,7 +89,7 @@ class _Intersect {
     _eps = 3 * practical_epsilon;
     _tol = _d * pow(practical_epsilon, 3/4.0);
     _delta = _d * pow(practical_epsilon, 1/5.0);
-    _comp = SetComp(_delta);
+    _comp = _SetComp(_delta);
     _cnt0 = 0;
     _cnt1 = 0;
     _cnt2 = 0;
@@ -148,7 +152,7 @@ class _Intersect {
     );
     double s = ConjugateDist(line, (1 + _f / 2) * _a * _GeoMath.pi() / 2, true);
     if (lat2 != null) {
-      lat2 = line.Position(false, s, _GeodesicMask.LATITUDE).lat2;
+      lat2 = line._genPosition(false, s, _GeodesicMask.LATITUDE).lat2;
     }
     return _DistPolarReturn(s, lat2);
   }
@@ -163,7 +167,7 @@ class _Intersect {
     double s = s3;
     for (int i = 0; i < 100; ++i) {
       double m13, M13, M31;
-      var data = line.Position(false, s,
+      var data = line._genPosition(false, s,
           _GeodesicMask.REDUCEDLENGTH |
           _GeodesicMask.GEODESICSCALE);
 
@@ -193,6 +197,7 @@ class _Intersect {
     }
     double azi0 = 46;
     _ConjDistReturn cdr = conjdist(azi0);
+    // ignore: unused_local_variable
     double s0 = cdr.ret, ds0 = cdr.ds, sa = cdr.sp, sb = cdr.sm;
     double azi1 = 44;
     cdr = conjdist(azi1);
@@ -224,7 +229,7 @@ class _Intersect {
     _GeodesicLine line = _geod._Line(0, 0, azi, LineCaps);
     double s = ConjugateDist(line, _d, false);
 
-    XPoint p = Basic(line, line, XPoint(s/2, -3*s/2));
+    _XPoint p = Basic(line, line, _XPoint(s/2, -3*s/2));
     double sp = p.x;
     double sm = p.y;
     double ds = p.Dist() - 2*s;
@@ -232,12 +237,12 @@ class _Intersect {
     return _ConjDistReturn(s, ds, sp, sm);
   }
 
-  XPoint Spherical(_GeodesicLine lineX, _GeodesicLine lineY, XPoint p) {
+  _XPoint Spherical(_GeodesicLine lineX, _GeodesicLine lineY, _XPoint p) {
     // threshold for coincident geodesics and intersections; this corresponds
     // to about 4.3 nm on WGS84.
-    var data = lineX.PositionOnlyDistance(p.x);
+    var data = lineX._genPositionOnlyDistance(p.x);
     double latX = data.lat2, lonX = data.lon2, aziX = data.azi2;
-    data = lineY.PositionOnlyDistance(p.y);
+    data = lineY._genPositionOnlyDistance(p.y);
     double latY = data.lat2, lonY = data.lon2, aziY = data.azi2;
     data = _geod.inverse(latX, lonX, latY, lonY);
     double z = data.s12, aziXa = data.azi1, aziYa = data.azi2;
@@ -287,15 +292,15 @@ class _Intersect {
       sY = _R * atan2(sinX * sinz, -sinX * cosY * cosz + cosX * sinY);
       c = 0;
     }
-    return XPoint(sX, sY, c);
+    return _XPoint(sX, sY, c);
   }
 
-  XPoint Basic(_GeodesicLine lineX, _GeodesicLine lineY, XPoint p0) {
+  _XPoint Basic(_GeodesicLine lineX, _GeodesicLine lineY, _XPoint p0) {
     ++_cnt1;
-    XPoint q = p0;
+    _XPoint q = p0;
     for (int n = 0; n < numit_ || _GEOGRAPHICLIB_PANIC; ++n) {
       ++_cnt0;
-      XPoint dq = Spherical(lineX, lineY, q);
+      _XPoint dq = Spherical(lineX, lineY, q);
       q += dq;
       if (q.c != 0 || !(dq.Dist() > _tol)) break; // break if nan
     }
@@ -319,60 +324,61 @@ class _Intersect {
    *
    * The returned intersection minimizes Intersect::Dist(\e p, \e p0).
    **********************************************************************/
-  Point closest(double latX, double lonX, double aziX, double latY, double lonY, double aziY) {
+  _Point closest(double latX, double lonX, double aziX, double latY, double lonY, double aziY) {
     return _closest(_geod._Line(latX, lonX, aziX, LineCaps), _geod._Line(latY, lonY, aziY, LineCaps));
   }
 
-  Point _closest(_GeodesicLine lineX, _GeodesicLine lineY) {
-    XPoint p = ClosestInt(lineX, lineY);
+  _Point _closest(_GeodesicLine lineX, _GeodesicLine lineY) {
+    _XPoint p = ClosestInt(lineX, lineY);
     return p.data();
   }
 
-  XPoint ClosestInt(_GeodesicLine lineX, _GeodesicLine lineY) {
+  _XPoint ClosestInt(_GeodesicLine lineX, _GeodesicLine lineY) {
     const int num = 5;
     const ix = <int>[0,  1, -1,  0,  0];
     const iy = <int>[0,  0,  0,  1, -1];
     var skip = <bool>[false,  false,  false,  false,  false];
-    XPoint q = XPoint.fromDefault();                    // Best intersection so far
+    _XPoint q = _XPoint.fromDefault();                    // Best intersection so far
     for (int n = 0; n < num; ++n) {
       if (skip[n]) continue;
-      XPoint qx = Basic(lineX, lineY, XPoint(ix[n] * _d1, iy[n] * _d1));
+      _XPoint qx = Basic(lineX, lineY, _XPoint(ix[n] * _d1, iy[n] * _d1));
       if (_comp.eq(q, qx)) continue;
       if (qx.Dist() < _t1) { q = qx; ++_cnt2; break; }
       if (n == 0 || qx.Dist() < q.Dist()) { q = qx; ++_cnt2; }
       for (int m = n + 1; m < num; ++m) {
         skip[m] = skip[m] ||
-            qx.Dist(XPoint(ix[m] * _d1, iy[m] * _d1)) < 2 * _t1 - _d1 - _delta;
+            qx.Dist(_XPoint(ix[m] * _d1, iy[m] * _d1)) < 2 * _t1 - _d1 - _delta;
       }
     }
     return q;
   }
 }
 
-class Point {
+class _Point {
   final double first;
   final double second;
   
-  Point(this.first, this.second);
+  _Point(this.first, this.second);
 }
 
 // An internal version of Point with a little more functionality
-class XPoint {
+class _XPoint {
   double x, y;
   int c;
 
-  XPoint(this.x, this.y, [this.c = 0]);
+  _XPoint(this.x, this.y, [this.c = 0]);
 
-  static XPoint fromDefault() {
-    return XPoint(double.nan, double.nan, 0);
+  static _XPoint fromDefault() {
+    return _XPoint(double.nan, double.nan, 0);
   }
 
-  static XPoint fromPoint(Point p) {
-    return XPoint(p.first, p.second, 0);
+  // ignore: unused_element
+  static _XPoint fromPoint(_Point p) {
+    return _XPoint(p.first, p.second, 0);
   }
 
-  XPoint operator +(XPoint p) {
-    XPoint t = this;
+  _XPoint operator +(_XPoint p) {
+    _XPoint t = this;
 
     t.x += p.x; t.y += p.y;
     if (p.c != 0) t.c = p.c;
@@ -380,22 +386,22 @@ class XPoint {
     return t;
   }
 
-  double Dist([XPoint? p]) {
-    if (p == null) return d1(x, y);
+  double Dist([_XPoint? p]) {
+    if (p == null) return _d1(x, y);
 
-    return d1(x - p.x, y - p.y);
+    return _d1(x - p.x, y - p.y);
   }
 
-  Point data() { return Point(x, y);}
+  _Point data() { return _Point(x, y);}
 }
 
-class SetComp {
+class _SetComp {
   final double _delta;
 
-  SetComp(this._delta);
+  _SetComp(this._delta);
 
-  bool eq(XPoint p, XPoint q) {
-    return d1(p.x - q.x, p.y - q.y) <= _delta;
+  bool eq(_XPoint p, _XPoint q) {
+    return _d1(p.x - q.x, p.y - q.y) <= _delta;
   }
   
   // bool operator()(XPoint p, XPoint q) {
@@ -403,7 +409,7 @@ class SetComp {
   // }
 }
 
-double d1(double x, double y) {
+double _d1(double x, double y) {
   return x.abs() + y.abs();
 }
 

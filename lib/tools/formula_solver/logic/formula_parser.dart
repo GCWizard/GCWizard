@@ -37,9 +37,16 @@ const _SQRT5 = 2.23606797749978969640917366873127623;
 
 var _SUPPORTED_OPERATION_CHARACTERS = RegExp(r'[+\-*!^%/]');
 
+class _GCWGrammarParser extends GrammarParser {
+  final ParserOptions options;
+
+  _GCWGrammarParser(this.options) : super(options) {
+    constants.remove('e'); // to avoid confusion when entering the much more often case "e as variable"; using e as constant, do e(1) or e^1
+  }
+}
+
 class FormulaParser {
   final ContextModel _context = ContextModel();
-  Parser parser = Parser();
 
   bool unlimitedExpanded = false;
   Map<String, String> safedFormulasMap = {};
@@ -49,8 +56,8 @@ class FormulaParser {
   static const Map<String, double> CONSTANTS = {
     'ln10': ln10,
     'ln2': ln2,
-    // 'log2e': log2e,    // not supported due to a problem by the math expression lib: https://github.com/fkleon/math-expressions/issues/35
-    // 'log10e': log10e,  // not supported due to a problem by the math expression lib: https://github.com/fkleon/math-expressions/issues/35
+    'log2e': log2e,
+    'log10e': log10e,
     'pi': pi,
     '\u03A0': pi,
     '\u03C0': pi,
@@ -61,11 +68,17 @@ class FormulaParser {
     '\u03C6': _PHI,
     '\u03d5': _PHI,
     '\u0278': _PHI,
-    // 'sqrt1_2': sqrt1_2, // not supported due to a problem by the math expression lib: https://github.com/fkleon/math-expressions/issues/35
+    'sqrt1_2': sqrt1_2,
     'sqrt2': sqrt2,
     'sqrt3': _SQRT3,
     'sqrt5': _SQRT5,
   };
+
+  ExpressionParser parser = _GCWGrammarParser(
+      const ParserOptions(
+          constants: CONSTANTS
+      )
+  );
 
   static const List<String> _BUILTIN_FUNCTIONS = [
     'sqrt',
@@ -94,7 +107,7 @@ class FormulaParser {
       var precision = 0;
       if (numbers.length > 1) precision = numbers[1].toInt();
 
-      return round(numbers.first, precision: precision);
+      return round(numbers.first, precision: precision).toDouble();
     },
     'sindeg': (List<double> numbers) => sin(degreesToRadian(numbers.first)),
     'cosdeg': (List<double> numbers) => cos(degreesToRadian(numbers.first)),
@@ -180,10 +193,6 @@ class FormulaParser {
   };
 
   FormulaParser({this.unlimitedExpanded = false}) {
-    for (var constant in CONSTANTS.entries) {
-      _context.bindVariableName(constant.key, Number(constant.value));
-    }
-
     _CUSTOM_FUNCTIONS.forEach((name, handler) {
       parser.addFunction(name, handler);
     });
@@ -299,6 +308,7 @@ class FormulaParser {
     formula = normalizeCharacters(formula);
     formula = normalizeMathematicalSymbols(formula);
     safedFormulasMap = {};
+    safedTextsMap = {};
 
     List<FormulaValue> preparedValues = _prepareValues(values);
 
@@ -477,16 +487,28 @@ class FormulaParser {
 
   List<FormulaValue> _prepareValues(List<FormulaValue> values) {
     List<FormulaValue> val = [];
+
     for (var element in values) {
       var key = element.key.trim();
       var value = normalizeCharacters(element.value);
+      value = value.replaceAll(RegExp(r'\n'), ' ');
 
       if (value.isEmpty) {
-        value = key;
-      } else if (element.type == null || element.type == FormulaValueType.FIXED) {
+        continue;
+      }
+
+      if (!hasLetters(key)) {
+        continue;
+      }
+
+      if (element.type == null || element.type == FormulaValueType.FIXED) {
         value = value.trim();
         if (value.contains(_SUPPORTED_OPERATION_CHARACTERS) && !_isString(value)) {
           value = '($value)';
+        }
+      } else if (element.type == FormulaValueType.INTERPOLATED) {
+        if (!VARIABLESTRING.hasMatch(value)) {
+          continue;
         }
       }
 

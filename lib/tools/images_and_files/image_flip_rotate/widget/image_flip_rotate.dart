@@ -62,6 +62,7 @@ class _ImageFlipRotateState extends State<ImageFlipRotate> {
       children: <Widget>[
         GCWOpenFile(
           supportedFileTypes: SUPPORTED_IMAGE_TYPES,
+          suppressGallery: false,
           onLoaded: (GCWFile? value) {
             if (value == null || !_validateData(value.bytes)) {
               showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
