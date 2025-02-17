@@ -8122,7 +8122,7 @@ void initializeRegistry(BuildContext context) {
           context: context,
           author: 'Unknown',
           title: 'Braunsmühle Webpage',
-          sourceUrl: 'https://www.braunsmuehle.de',
+          sourceUrl: 'https://web.archive.org/web/20221103091143/https://www.braunsmuehle.de/muehle/technik/Muehlensprache-Die-Stellung-der-Fluegel--25/',
           licenseType: ToolLicenseType.FREE_TO_USE,
           customComment: 'Allowed by web admin via personal email 9.10.2024'),
     ]),
@@ -8131,11 +8131,11 @@ void initializeRegistry(BuildContext context) {
     ], licenses: [
       ToolLicenseOnlineArticle(
           context: context,
-          author: 'Jasper Snijders, Iris Nolten, Bob Ribberink en Jolijn Uit het Broek',
-          title: 'Dewiekenvandemolen Webpage',
-          sourceUrl: 'https://dewiekenvandemolen.jouwweb.nl/leuke-weetjes',
+          author: 'Unknown authors',
+          title: 'https://geocachen.be',
+          sourceUrl: 'https://web.archive.org/web/20241004220413/https://geocachen.be/geocaching/geocache-puzzels-oplossen/molentaal/',
           licenseType: ToolLicenseType.FREE_TO_USE,
-          customComment: 'Muss noch eingeholt werden'), // todo ask for License
+          customComment: 'Pending'), // todo ask for License
     ]),
     GCWSymbolTableTool(symbolKey: 'windforce_beaufort', symbolSearchStrings: const [
         'beaufort',
