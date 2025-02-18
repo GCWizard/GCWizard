@@ -4,6 +4,8 @@ import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
 
+import '../gcw_text.dart';
+
 class GCWColumnedMultilineOutput extends StatefulWidget {
   //TODO: Is input data type correctly defined? Is there a better way than List<List<...>>? Own return type?
   // -> I found lists with different types (example -> blood_alcohol -> dynamic list)
@@ -21,20 +23,20 @@ class GCWColumnedMultilineOutput extends StatefulWidget {
 
   final int maxRowLimit;
 
-  const GCWColumnedMultilineOutput({Key? key,
-    required this.data,
-    this.flexValues = const [],
-    this.copyColumn,
-    this.suppressCopyButtons = false,
-    this.hasHeader = false,
-    this.copyAll = false,
-    this.tappables,
-    this.style,
-    this.fontSize = 0.0,
-    this.firstRows,
-    this.lastRows,
-
-    this.maxRowLimit = 200}) // max loaded rows for Listview.builder
+  const GCWColumnedMultilineOutput(
+      {Key? key,
+      required this.data,
+      this.flexValues = const [],
+      this.copyColumn,
+      this.suppressCopyButtons = false,
+      this.hasHeader = false,
+      this.copyAll = false,
+      this.tappables,
+      this.style,
+      this.fontSize = 0.0,
+      this.firstRows,
+      this.lastRows,
+      this.maxRowLimit = 200}) // max loaded rows for Listview.builder
       : super(key: key);
 
   @override
@@ -72,7 +74,24 @@ class _GCWColumnedMultilineOutputState extends State<GCWColumnedMultilineOutput>
 
   @override
   Widget build(BuildContext context) {
+    bool veryLongList = widget.data.length > widget.maxRowLimit;
+
+    if (veryLongList) {
+      return SizedBox(
+        height: MediaQuery.of(context).size.height * 0.6,
+        child: Column(
+          children: [
+            _buildFirstRows(),
+            (widget.hasHeader) ? _buildHeader() : const SizedBox.shrink(),
+            Expanded(child: _buildListView()),
+            _buildLastRows()
+          ],
+        ),
+      );
+    }
+
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         _buildFirstRows(),
         (widget.hasHeader) ? _buildHeader() : const SizedBox.shrink(),
@@ -85,17 +104,21 @@ class _GCWColumnedMultilineOutputState extends State<GCWColumnedMultilineOutput>
   Widget _buildListView() {
     bool hasMore = _currentLimit < widget.data.length;
 
-    return ListView.builder(
-      shrinkWrap: true,
-      controller: _scrollController,
-      padding: const EdgeInsets.symmetric(vertical: 2),
-      itemCount: _currentLimit + (hasMore ? 1 : 0),
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () => widget.tappables?[index + (widget.hasHeader ? 1 : 0)].call(),
-          child: _buildRow(widget.hasHeader ? index + 1 : index),
-        );
-      },
+    return Scrollbar(
+      child: ListView.builder(
+        shrinkWrap: widget.data.length <= widget.maxRowLimit ? true : false,
+        controller: _scrollController,
+        padding: const EdgeInsets.symmetric(vertical: 2),
+        itemCount: _currentLimit + (hasMore ? 1 : 0),
+        itemBuilder: (context, index) {
+          return (widget.tappables != null)
+              ? GestureDetector(
+                  onTap: () => widget.tappables?[index + (widget.hasHeader ? 1 : 0)].call(),
+                  child: _buildRow(widget.hasHeader ? index + 1 : index),
+                )
+              : _buildRow(widget.hasHeader ? index + 1 : index);
+        },
+      ),
     );
   }
 
@@ -137,26 +160,26 @@ class _GCWColumnedMultilineOutputState extends State<GCWColumnedMultilineOutput>
     return Container(
         padding: const EdgeInsets.symmetric(vertical: 2),
         decoration: BoxDecoration(color: rowColor),
-        child: _buildRowEntries(rowData, rowIdx, copyText)  // todo: Tap effect on tappables
-    );
+        child: _buildRowEntries(rowData, rowIdx, copyText)
+        );
   }
 
   Widget _buildRowEntries(List<dynamic> rowData, int rowIdx, String copytext, {bool boldType = false}) {
     return Row(
         children: rowData.asMap().entries.map((entry) {
-          var colIndex = entry.key;
-          var value = entry.value;
-          var isLastCol = colIndex == rowData.length - 1;
+      var colIndex = entry.key;
+      var value = entry.value;
+      var isLastCol = colIndex == rowData.length - 1;
 
-          return Expanded(
-              flex: colIndex < widget.flexValues.length ? widget.flexValues[colIndex] : 1,
-              child: _buildColumnElement(value, rowIdx, isLastCol, copytext, boldType: boldType));
-        }).toList());
+      return Expanded(
+          flex: colIndex < widget.flexValues.length ? widget.flexValues[colIndex] : 1,
+          child: _buildColumnElement(value, rowIdx, isLastCol, copytext, boldType: boldType));
+    }).toList());
   }
 
   Widget _buildColumnElement(dynamic value, int rowIdx, bool isLastCol, String copytext, {bool boldType = false}) {
     Widget output;
-    Widget button= const SizedBox.shrink();
+    Widget button = const SizedBox.shrink();
 
     var isFirst = rowIdx == 0;
     var _text_style = widget.style ?? gcwTextStyle();
@@ -165,11 +188,15 @@ class _GCWColumnedMultilineOutputState extends State<GCWColumnedMultilineOutput>
     if (value is Widget) {
       output = Expanded(child: value);
     } else {
-      output = Expanded(child: Text((value ?? '').toString(), style: _text_style));
+      output = Expanded(
+          child: (widget.tappables != null)
+              ? Text((value ?? '').toString(), style: _text_style)
+              : GCWText(text: (value ?? '').toString(), style: _text_style));
     }
 
     if (isLastCol) {
-      if (widget.copyAll && isFirst && widget.hasHeader) { // bigger copy all button in header row
+      if (widget.copyAll && isFirst && widget.hasHeader) {
+        // bigger copy all button in header row
         button = GCWIconButton(
           icon: Icons.content_copy,
           iconSize: 14,
@@ -189,7 +216,7 @@ class _GCWColumnedMultilineOutputState extends State<GCWColumnedMultilineOutput>
         );
       }
     }
-    return Row(spacing:1, children: [output, button]);
+    return Row(spacing: 1, children: [output, button]);
   }
 
   String _getCopyText(List<dynamic> rowData) {
