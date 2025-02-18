@@ -1481,6 +1481,7 @@
   "common_exportfile_nowritepermission": "Permission for writing files denied.",
   "common_exportfile_sharefile": "Share file",
   "common_exportfile_openfile": "Open file",
+  "common_exportfile_supported_formats": "Supported formats",
   "common_exportfile_saveoutput": "Save Output",
   "common_exportfile_selectfolder": "Save file to this folder",
   "common_exportfile_selectfolder_title": "Save to folder",

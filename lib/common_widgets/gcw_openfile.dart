@@ -299,6 +299,7 @@ void showOpenFileDialog(BuildContext context, List<FileType> supportedFileTypes,
       context,
       i18n(context, 'common_loadfile_showopen'),
       Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           GCWOpenFile(
             supportedFileTypes: supportedFileTypes,
@@ -309,6 +310,11 @@ void showOpenFileDialog(BuildContext context, List<FileType> supportedFileTypes,
               Navigator.of(context).pop();
             },
           ),
+          GCWText(text: i18n(context, 'common_exportfile_supported_formats') +':',
+              style: gcwDialogTextStyle()),
+          GCWText(
+            text: supportedFileTypes.map((element) => element.name).toList().join(', '),
+            style: gcwDialogTextStyle()),
         ],
       ),
       []);
