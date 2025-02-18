@@ -295,6 +295,7 @@ class _GCWOpenFileState extends State<GCWOpenFile> {
 }
 
 void showOpenFileDialog(BuildContext context, List<FileType> supportedFileTypes, void Function(GCWFile?) onLoaded) {
+  var text_style = gcwDialogTextStyle();
   showGCWDialog(
       context,
       i18n(context, 'common_loadfile_showopen'),
@@ -310,11 +311,12 @@ void showOpenFileDialog(BuildContext context, List<FileType> supportedFileTypes,
               Navigator.of(context).pop();
             },
           ),
-          GCWText(text: i18n(context, 'common_exportfile_supported_formats') +':',
-              style: gcwDialogTextStyle()),
+          GCWText(
+            text: i18n(context, 'common_exportfile_supported_formats') +':',
+            style: text_style),
           GCWText(
             text: supportedFileTypes.map((element) => element.name).toList().join(', '),
-            style: gcwDialogTextStyle()),
+            style: text_style),
         ],
       ),
       []);
