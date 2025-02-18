@@ -8047,17 +8047,6 @@ void initializeRegistry(BuildContext context) {
               'https://fontmeme.com/fonts/illuminati-dirigens-cipher-berlin-version-font/',
           licenseType: ToolLicenseType.FREE_TO_USE)
     ]),
-    GCWSymbolTableTool(symbolKey: 'intergalactic', symbolSearchStrings: const [
-      'symbol_intergalactic',
-    ], licenses: [
-      ToolLicenseFont(
-          context: context,
-          author: 'Aaqil A. Azhar (Foneer)',
-          title: 'Robotica SGA',
-          sourceUrl:
-              'https://web.archive.org/web/20240730195127/https://fontstruct.com/fontstructions/show/2324755/robotica-sga',
-          licenseType: ToolLicenseType.NON_COMMERCIAL)
-    ]),
     GCWSymbolTableTool(symbolKey: 'interlac', symbolSearchStrings: const [
       'symbol_interlac',
     ], licenses: [
@@ -9490,6 +9479,23 @@ void initializeRegistry(BuildContext context) {
           sourceUrl:
               'https://web.archive.org/web/20210306061331/https://www.1001fonts.com/sprykski-font.html',
           licenseType: ToolLicenseType.PERSONAL_USE)
+    ]),
+    GCWSymbolTableTool(symbolKey: 'standardgalacticalphabet', symbolSearchStrings: const [
+      'symbol_standardgalacticalphabet',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Keen Wiki and contributors',
+          title: 'Standard Galactic Alphabet',
+          sourceUrl:
+          'https://web.archive.org/web/20250130012447/https://keenwiki.shikadi.net/wiki/Standard_Galactic_Alphabet'),
+      ToolLicenseFont(
+          context: context,
+          author: 'Aaqil A. Azhar (Foneer)',
+          title: 'Robotica SGA',
+          sourceUrl:
+          'https://web.archive.org/web/20240730195127/https://fontstruct.com/fontstructions/show/2324755/robotica-sga',
+          licenseType: ToolLicenseType.NON_COMMERCIAL)
     ]),
     GCWSymbolTableTool(symbolKey: 'steinheil', symbolSearchStrings: const [
       'symbol_steinheil',
