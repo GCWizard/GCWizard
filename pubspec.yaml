@@ -67,6 +67,9 @@ dependencies:
   week_of_year: ^2.0.0
   xml: ^6.3.0
 
+dependency_overrides:
+  meta: ^1.15.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
