@@ -587,19 +587,19 @@ class _GCWMapViewState extends State<GCWMapView> {
     );
   }
 
-  late Point<double> _markerPointStart;
+  late Offset _markerPointStart;
 
   void _onPanStart(DragStartDetails details, GCWMapPoint point) {
-    _markerPointStart = const Epsg3857().latLngToPoint(point.point, _mapController.camera.zoom);
+    _markerPointStart = const Epsg3857().latLngToOffset(point.point, _mapController.camera.zoom);
 
-    _markerPointStart -= details.localPosition.toPoint();
+    _markerPointStart -= details.localPosition;
   }
 
   void _onPanUpdate(DragUpdateDetails details, GCWMapPoint point) {
     _popupLayerController.hidePopup();
 
     LatLng pointToLatLng =
-        const Epsg3857().pointToLatLng(_markerPointStart + details.localPosition.toPoint(), _mapController.camera.zoom);
+        const Epsg3857().offsetToLatLng(_markerPointStart + details.localPosition, _mapController.camera.zoom);
 
     point.point = pointToLatLng;
 
@@ -1157,35 +1157,35 @@ class _GCWMapViewState extends State<GCWMapView> {
 
     for (var polyline in widget.polylines) {
       for (var line in polyline.lines) {
-        var polys = <Polyline>[];
-        LatLng? lastLL;
-        var points = <LatLng>[];
-        for (LatLng ll in line.shape) {
-          if (lastLL == null) {
-            points.add(ll);
-            lastLL = ll;
-            continue;
-          } else {
-            if (
-              (lastLL.longitude > 175 && lastLL.longitude <= 180 && ll.longitude >= -180 && ll.longitude < -175) ||
-                  (lastLL.longitude < -175 && lastLL.longitude >= -180 && ll.longitude <= 180 && ll.longitude > 175)
-            ) {
-              polys.add(Polyline(points: points, strokeWidth: _POLYGON_STROKEWIDTH,
-                  color: polyline.color, hitValue: line));
-              points = [ll];
-            } else {
-              points.add(ll);
-            }
-            lastLL = ll;
-          }
-        }
-
-        polys.add(Polyline(points: points, strokeWidth: _POLYGON_STROKEWIDTH,
-            color: polyline.color, hitValue: line));
-        _polylines.addAll(polys);
-
-        // _polylines.add(Polyline(points: line.shape, strokeWidth: _POLYGON_STROKEWIDTH,
+        // var polys = <Polyline>[];
+        // LatLng? lastLL;
+        // var points = <LatLng>[];
+        // for (LatLng ll in line.shape) {
+        //   if (lastLL == null) {
+        //     points.add(ll);
+        //     lastLL = ll;
+        //     continue;
+        //   } else {
+        //     if (
+        //       (lastLL.longitude > 175 && lastLL.longitude <= 180 && ll.longitude >= -180 && ll.longitude < -175) ||
+        //           (lastLL.longitude < -175 && lastLL.longitude >= -180 && ll.longitude <= 180 && ll.longitude > 175)
+        //     ) {
+        //       polys.add(Polyline(points: points, strokeWidth: _POLYGON_STROKEWIDTH,
+        //           color: polyline.color, hitValue: line));
+        //       points = [ll];
+        //     } else {
+        //       points.add(ll);
+        //     }
+        //     lastLL = ll;
+        //   }
+        // }
+        //
+        // polys.add(Polyline(points: points, strokeWidth: _POLYGON_STROKEWIDTH,
         //     color: polyline.color, hitValue: line));
+        // _polylines.addAll(polys);
+
+        _polylines.add(Polyline(points: line.shape, strokeWidth: _POLYGON_STROKEWIDTH,
+            color: polyline.color, hitValue: line));
       }
     }
 
