@@ -10127,7 +10127,7 @@ void initializeRegistry(BuildContext context) {
           author: 'commons.wikimedia.org and contributors',
           title: 'Wingdings',
           sourceUrl:
-              'https://commons.wikimedia.org/w/index.php?title=Wind_speed&oldid=760157124',
+              'https://commons.wikimedia.org/wiki/File:Wingdings.png',
           licenseType: ToolLicenseType.PUBLIC_DOMAIN)
     ]),
     GCWSymbolTableTool(
