@@ -33,7 +33,9 @@ android {
 
     val keystorePropertiesFile = rootProject.file("key.properties")
     val keystoreProperties = Properties().apply {
-        load(FileInputStream(keystorePropertiesFile))
+        if (keystorePropertiesFile.exists()) {
+            load(FileInputStream(keystorePropertiesFile))
+        }
     }
 
     signingConfigs {
