@@ -1,9 +1,8 @@
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/area.dart';
-import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit_prefix.dart';
-import 'package:intl/intl.dart';
-
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/length.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit.dart';
+import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit_prefix.dart';
+import 'package:intl/intl.dart';
 
 const double _inchFactor = 0.3048 / 12.0 * 1000;
 

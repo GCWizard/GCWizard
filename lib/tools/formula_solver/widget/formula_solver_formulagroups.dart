@@ -9,6 +9,7 @@ import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_paste_button.dart';
@@ -23,7 +24,6 @@ import 'package:gc_wizard/common_widgets/gcw_formula_list_editor.dart';
 import 'package:gc_wizard/common_widgets/gcw_popup_menu.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/key_value_editor/gcw_key_value_editor.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
@@ -115,7 +115,7 @@ class _FormulaSolverFormulaGroupsState extends State<FormulaSolverFormulaGroups>
         toolName: '${entry.name} - ${i18n(context, 'formulasolver_formulas')}',
         helpSearchString: 'formulasolver_formulas',
         defaultLanguageToolName: '${entry.name} - ${i18n(context, 'formulasolver_formulas', useDefaultLanguage: true)}',
-        id: '',
+        id: 'formulasolver',
       );
     } else {
       return null;

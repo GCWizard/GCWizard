@@ -12,6 +12,7 @@ void showExportedFileDialog(BuildContext context, {Widget? contentWidget}) {
       contentWidget == null
           ? null
           : Column(
+              mainAxisSize: MainAxisSize.min,
               children: [contentWidget],
             ),
       [

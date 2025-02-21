@@ -31,6 +31,9 @@ void main() {
 
       {'input' : '1', 'replaceCharacters': ['m', 'p', 'f'], 'expectedOutput' : '1', 'caseSensitive' : true},
       {'input' : 'A1', 'replaceCharacters': ['m', 'p', 'f'], 'expectedOutput' : 'Mmm1', 'caseSensitive' : true},
+
+      {'input' : 'ß This is a test', 'replaceCharacters': ['m', 'p', 'f'], 'expectedOutput' : 'fmmfmm fmpmfpmfffmm mfffmm mmm fmpmppfmmfmp', 'caseSensitive' : false},
+      {'input' : 'ß This is a test', 'replaceCharacters': ['m', 'p', 'f'], 'expectedOutput' : 'fmmfmm Fmpmfpmfffmm mfffmm mmm fmpmppfmmfmp', 'caseSensitive' : true},
     ];
 
     for (var elem in _inputsToExpected) {
@@ -142,6 +145,9 @@ void main() {
       {'input' : 'Mpfapff', 'replaceCharacters': ['m', 'p', 'f'], 'expectedOutput' : 'FAR', 'caseSensitive' : false},
 
       {'input' : 'MfmFmffmp mfmmppppmmmmmmfmfpfmp!', 'replaceCharacters': ['m', 'p', 'f'], 'expectedOutput' : 'GUT GEMACHT!', 'caseSensitive' : false},
+
+      {'input' : 'ß Fmpmfpmfffmm mfffmm mmm fmpmppfmmfmp', 'replaceCharacters': ['m', 'p', 'f'], 'expectedOutput' : 'ẞ THIS IS A TEST', 'caseSensitive' : false},
+      {'input' : 'ß Fmpmfpmfffmm mfffmm mmm fmpmppfmmfmp', 'replaceCharacters': ['m', 'p', 'f'], 'expectedOutput' : 'ß This is a test', 'caseSensitive' : true},
     ];
 
     for (var elem in _inputsToExpected) {

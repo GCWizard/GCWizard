@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 
 class GCWTextViewer extends StatefulWidget {
   final String text;
@@ -50,7 +50,7 @@ void openInTextViewer(BuildContext context, String text) {
           builder: (context) => GCWTool(
                 tool: GCWTextViewer(text: text),
                 toolName: i18n(context, 'textviewer_title'),
-                id: '',
+                id: 'textviewer',
                 suppressHelpButton: true,
               )));
 }

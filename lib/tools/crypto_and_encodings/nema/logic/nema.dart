@@ -1,6 +1,6 @@
-part 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema_source.dart';
 part 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema_data_exer.dart';
 part 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema_data_oper.dart';
+part 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema_source.dart';
 
 class NEMAOutput{
   String output;
