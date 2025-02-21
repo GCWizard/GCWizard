@@ -1505,6 +1505,7 @@
   "common_loadfile_exception_wrongtype_gwc": "Wrong File type - not a valid GWC-File.",
   "common_loadfile_exception_wrongtype_lua": "Wrong File type - not a valid LUA Sourcefile.",
   "common_loadfile_loaded": "Loaded",
+  "common_loadfile_loading": "Loading",
   "common_loadfile_currentlyloaded": "Currently Loaded",
   "common_language": "Language",
   "common_language_bulgarian": "Bulgarian",
