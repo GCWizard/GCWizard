@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
-import 'package:gc_wizard/tools/crypto_and_encodings/upsidedown/logic/upsidedown.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/upsidedown/logic/upsidedown.dart';
 
 class UpsideDown extends StatefulWidget {
   const UpsideDown({Key? key}) : super(key: key);

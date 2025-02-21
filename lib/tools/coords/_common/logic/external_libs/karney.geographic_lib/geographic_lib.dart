@@ -8,6 +8,7 @@ import 'package:gc_wizard/utils/data_type_utils/double_type_utils.dart';
 import 'package:gc_wizard/utils/math_utils.dart';
 import 'package:latlong2/latlong.dart';
 
+part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geodesic_data.dart';
 // parts
 part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/aux_angle.dart';
 part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/aux_latitude.dart';
@@ -17,7 +18,6 @@ part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geograph
 part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/elliptic_function.dart';
 part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/geo_math.dart';
 part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/geodesic.dart';
-part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geodesic_data.dart';
 part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/geodesic_line.dart';
 part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/geodesic_mask.dart';
 part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/intersect.dart';

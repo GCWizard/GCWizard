@@ -58,7 +58,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
       helpSearchString: 'formulasolver_values',
       defaultLanguageToolName:
           '${widget.group.name} - ${i18n(context, 'formulasolver_values', useDefaultLanguage: true)}',
-      id: '',
+      id: 'formulasolver',
     );
 
     Future<void> _navigateToSubPage(BuildContext context) async {
@@ -162,7 +162,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                 tool: VariableCoordinate(formula: formula),
                 toolName: '${formula.name} - ${i18n(context, 'coords_variablecoordinate_title')}',
                 helpSearchString: 'coords_variablecoordinate_title',
-                id: '${formula.name} - ${i18n(context, 'coords_variablecoordinate_title', useDefaultLanguage: true)}')));
+                id: 'coords_variablecoordinate')));
   }
 
   String _removeOuterSquareBrackets(String formula) {

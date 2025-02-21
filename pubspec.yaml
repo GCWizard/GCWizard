@@ -266,7 +266,6 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/iching/
     - lib/tools/symbol_tables/_common/assets/illuminati_v1/
     - lib/tools/symbol_tables/_common/assets/illuminati_v2/
-    - lib/tools/symbol_tables/_common/assets/intergalactic/
     - lib/tools/symbol_tables/_common/assets/interlac/
     - lib/tools/symbol_tables/_common/assets/iokharic/
     - lib/tools/symbol_tables/_common/assets/iso7010_firesafety/
@@ -395,6 +394,7 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/space_invaders/
     - lib/tools/symbol_tables/_common/assets/spintype/
     - lib/tools/symbol_tables/_common/assets/sprykski/
+    - lib/tools/symbol_tables/_common/assets/standardgalacticalphabet/
     - lib/tools/symbol_tables/_common/assets/steinheil/
     - lib/tools/symbol_tables/_common/assets/stenography/
     - lib/tools/symbol_tables/_common/assets/stippelcode/
@@ -448,6 +448,8 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/weather_ww/
     - lib/tools/symbol_tables/_common/assets/webdings/
     - lib/tools/symbol_tables/_common/assets/westernunion/
+    - lib/tools/symbol_tables/_common/assets/wind_mill_signals_v1/
+    - lib/tools/symbol_tables/_common/assets/wind_mill_signals_v2/
     - lib/tools/symbol_tables/_common/assets/windforce_beaufort/
     - lib/tools/symbol_tables/_common/assets/windforce_knots/
     - lib/tools/symbol_tables/_common/assets/window/

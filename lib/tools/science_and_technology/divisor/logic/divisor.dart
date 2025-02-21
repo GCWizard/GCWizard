@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:gc_wizard/tools/science_and_technology/primes/_common/logic/primes.dart';
 
 List<int> _getDivisorsFromPrimeFactors(Map<int, int> primeFactors) {

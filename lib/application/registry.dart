@@ -8047,17 +8047,6 @@ void initializeRegistry(BuildContext context) {
               'https://fontmeme.com/fonts/illuminati-dirigens-cipher-berlin-version-font/',
           licenseType: ToolLicenseType.FREE_TO_USE)
     ]),
-    GCWSymbolTableTool(symbolKey: 'intergalactic', symbolSearchStrings: const [
-      'symbol_intergalactic',
-    ], licenses: [
-      ToolLicenseFont(
-          context: context,
-          author: 'Aaqil A. Azhar (Foneer)',
-          title: 'Robotica SGA',
-          sourceUrl:
-              'https://web.archive.org/web/20240730195127/https://fontstruct.com/fontstructions/show/2324755/robotica-sga',
-          licenseType: ToolLicenseType.NON_COMMERCIAL)
-    ]),
     GCWSymbolTableTool(symbolKey: 'interlac', symbolSearchStrings: const [
       'symbol_interlac',
     ], licenses: [
@@ -9491,6 +9480,23 @@ void initializeRegistry(BuildContext context) {
               'https://web.archive.org/web/20210306061331/https://www.1001fonts.com/sprykski-font.html',
           licenseType: ToolLicenseType.PERSONAL_USE)
     ]),
+    GCWSymbolTableTool(symbolKey: 'standardgalacticalphabet', symbolSearchStrings: const [
+      'symbol_standardgalacticalphabet',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Keen Wiki and contributors',
+          title: 'Standard Galactic Alphabet',
+          sourceUrl:
+          'https://web.archive.org/web/20250130012447/https://keenwiki.shikadi.net/wiki/Standard_Galactic_Alphabet'),
+      ToolLicenseFont(
+          context: context,
+          author: 'Aaqil A. Azhar (Foneer)',
+          title: 'Robotica SGA',
+          sourceUrl:
+          'https://web.archive.org/web/20240730195127/https://fontstruct.com/fontstructions/show/2324755/robotica-sga',
+          licenseType: ToolLicenseType.NON_COMMERCIAL)
+    ]),
     GCWSymbolTableTool(symbolKey: 'steinheil', symbolSearchStrings: const [
       'symbol_steinheil',
       'telegraph',
@@ -10119,6 +10125,28 @@ void initializeRegistry(BuildContext context) {
                   'https://commons.wikimedia.org/w/index.php?title=Wind_speed&oldid=760157124',
               licenseType: ToolLicenseType.CCBYSA4)
         ]),
+    GCWSymbolTableTool(symbolKey: 'wind_mill_signals_v1', symbolSearchStrings: const [
+      'symbol_wind_mill_signals_v1',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Unknown',
+          title: 'Braunsmühle Webpage',
+          sourceUrl: 'https://web.archive.org/web/20221103091143/https://www.braunsmuehle.de/muehle/technik/Muehlensprache-Die-Stellung-der-Fluegel--25/',
+          licenseType: ToolLicenseType.FREE_TO_USE,
+          customComment: 'Allowed by web admin via personal email 9.10.2024'),
+    ]),
+    GCWSymbolTableTool(symbolKey: 'wind_mill_signals_v2', symbolSearchStrings: const [
+      'symbol_wind_mill_signals_v2',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Unknown authors',
+          title: 'https://geocachen.be',
+          sourceUrl: 'https://web.archive.org/web/20241004220413/https://geocachen.be/geocaching/geocache-puzzels-oplossen/molentaal/',
+          licenseType: ToolLicenseType.FREE_TO_USE,
+          customComment: 'Pending'), // todo ask for License
+    ]),
     GCWSymbolTableTool(symbolKey: 'wingdings', symbolSearchStrings: const [
       'symbol_wingdings',
     ], licenses: [
@@ -10127,7 +10155,7 @@ void initializeRegistry(BuildContext context) {
           author: 'commons.wikimedia.org and contributors',
           title: 'Wingdings',
           sourceUrl:
-              'https://commons.wikimedia.org/w/index.php?title=Wind_speed&oldid=760157124',
+              'https://commons.wikimedia.org/wiki/File:Wingdings.png',
           licenseType: ToolLicenseType.PUBLIC_DOMAIN)
     ]),
     GCWSymbolTableTool(
