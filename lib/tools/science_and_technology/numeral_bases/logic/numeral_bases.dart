@@ -57,7 +57,10 @@ String convertBase(String input, int startBase, int destinationBase, {String? in
     throw const FormatException('Negative Values on negative bases are not defined');
   }
 
-  var number = input.split('.');
+  // what about ,
+  // => check locales to differ between . and , to get correct decimalSeperator
+  // => convert , to .
+  var number = input.replaceAll(',', '.').split('.');
 
   if (number.length == 2 && (destinationBase < 0 || startBase < 0)) {
     var d = _negaDoubleToDec(number[0], number[1], startBase, usedInputAlphabet);
