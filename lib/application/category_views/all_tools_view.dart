@@ -457,6 +457,7 @@ class _MainViewState extends State<MainView> {
       );
     } else {
       return Scaffold(
+          key: _scaffoldKey,
           appBar: AppBar(
               leading: _buildIcon(),
               title: _buildTitleAndSearchTextField(),
