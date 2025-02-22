@@ -1,6 +1,7 @@
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/coords/_common/formats/reversewherigo_waldmeister/logic/reverse_wherigo_waldmeister.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:latlong2/latlong.dart';
 
 void main() {
@@ -75,17 +76,18 @@ void main() {
 
   group("Converter.reverseWherigooWaldmeister.checkSumTest:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      {'coordinate': null, 'text': ['580498', '850012', '847837']},
-      {'coordinate': null, 'text': ['580597', '860012', '847837']},
-      {'coordinate': null, 'text': ['580497', '851012', '847937']},
-      {'coordinate': null, 'text': ['580497', '850013', '847837']},
-      {'coordinate': null, 'text': ['580497', '850012', '857837']},
+      {'coordinate': null, 'errorCode': ErrorCode.Checksum_Error, 'text': ['580498', '850012', '847837']},
+      {'coordinate': null, 'errorCode': ErrorCode.Checksum_Error, 'text': ['580597', '860012', '847837']},
+      {'coordinate': null, 'errorCode': ErrorCode.Checksum_Error, 'text': ['580497', '851012', '847937']},
+      {'coordinate': null, 'errorCode': ErrorCode.Checksum_Error, 'text': ['580497', '850013', '847837']},
+      {'coordinate': null, 'errorCode': ErrorCode.Checksum_Error, 'text': ['580497', '850012', '857837']},
     ];
 
     for (var elem in _inputsToExpected) {
       test('text: ${elem['text']}', () {
-        var _actual = ReverseWherigoWaldmeisterCoordinate.parse((elem['text'] as List<String>).join(' '))?.toLatLng();
-        expect(_actual, elem['coordinate']);
+        var _actual = ReverseWherigoWaldmeisterCoordinate.parse((elem['text'] as List<String>).join(' '));
+        expect(_actual?.toLatLng(), elem['coordinate']);
+        expect(_actual?.errorCode, elem['errorCode']);
       });
     }
   });

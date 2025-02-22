@@ -15,6 +15,8 @@ import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_formatselector.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
+import 'package:gc_wizard/utils/string_utils.dart';
+import 'package:latlong2/latlong.dart';
 
 class FormatConverter extends StatefulWidget {
   const FormatConverter({Key? key}) : super(key: key);
@@ -97,11 +99,10 @@ class _FormatConverterState extends State<FormatConverter> {
 
   void _calculateOutput(BuildContext context) {
     var outputLatLng = _currentCoords.toLatLng();
+    _currentOutput = _buildCoordOutput(outputLatLng, _currentCoords, _currentOutputFormat);
     if (outputLatLng != null) {
-      _currentOutput = buildCoordinate(_currentOutputFormat, outputLatLng);
       _currentMapPoint = GCWMapPoint(point: outputLatLng);
     } else {
-      _currentOutput = i18n(context, 'coords_formatconverter_invalid_coordinate');
       _currentMapPoint = GCWMapPoint(point: defaultCoordinate);
       _currentAllOutput = GCWCoordsOutput(outputs: [_currentOutput], points: [_currentMapPoint]);
       return;
@@ -112,10 +113,38 @@ class _FormatConverterState extends State<FormatConverter> {
     }
   }
 
-  Widget _calculateAllOutput(BuildContext context) {
-    var ellipsoid = defaultEllipsoid;
+  Object _buildCoordOutput(LatLng? latLng, BaseCoordinate coord, CoordinateFormat format) {
+    if (latLng != null) {
+      var baseCoords = buildCoordinate(format, latLng);
+      return _supplementOutput(latLng, baseCoords, format);
+    } else {
+      return _coordErrorOutput(_currentCoords);
+    }
+  }
 
-    List<List<String>> children = _currentCoords.toLatLng() == null
+  Object _supplementOutput(LatLng latLng, BaseCoordinate coords, CoordinateFormat format) {
+    if (coords.errorCode != ErrorCode.OK) {
+      var output = formatCoordOutput(latLng, format);
+      if (output.isNotEmpty) output += '\n';
+      return output + _coordErrorOutput(coords);
+    }
+    return coords;
+  }
+
+  String _coordErrorOutput(BaseCoordinate coords) {
+    var output =
+      i18n(context, 'coords_formatconverter_' + enumName(ErrorCode.Invalid_Coordinate.toString()).toLowerCase());
+    if (coords.errorCode != ErrorCode.OK && coords.errorCode != ErrorCode.Invalid_Coordinate) {
+      output += '\n' +
+          i18n(context, 'coords_formatconverter_' + enumName(coords.errorCode.toString()).toLowerCase());
+    }
+    return output;
+  }
+
+  Widget _calculateAllOutput(BuildContext context) {
+    var outputLatLng = _currentCoords.toLatLng();
+
+    List<List<String>> children = outputLatLng == null
         ? []
         : allCoordinateWidgetInfos.map((coordFormat) {
             var format = CoordinateFormat(coordFormat.type);
@@ -128,8 +157,12 @@ class _FormatConverterState extends State<FormatConverter> {
                 name += '\n' + subtypeName;
               }
             }
+            var output = _buildCoordOutput(outputLatLng, _currentCoords, format);
+            if (output is BaseCoordinate) {
+              output = formatCoordOutput(outputLatLng, format);
+            }
 
-            return [name, formatCoordOutput(_currentCoords.toLatLng()!, format, ellipsoid)];
+            return [name, output.toString()];
           }).toList();
 
     return GCWDefaultOutput(child: GCWColumnedMultilineOutput(data: children));
