@@ -120,6 +120,7 @@ const List<String> TESTER = [
   'Roland Rosenfeld',
   'schatzi-s',
   'Sechsfüssler',
+  'Skarden',
   'Stefan J.',
   'Stefan K.',
   'SzpiegDonPedro',
