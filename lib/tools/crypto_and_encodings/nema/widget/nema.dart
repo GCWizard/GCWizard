@@ -119,7 +119,7 @@ class _NEMAState extends State<NEMA> {
                 },
               ),
               GCWTextDivider(
-                text: i18n(context, 'nema_outer_key'),
+                text: i18n(context, 'nema_outer_key') +' / ' + i18n(context, 'nema_rotor'),
                 suppressTopSpace: false,
               ),
               GCWTextField(
@@ -205,7 +205,7 @@ class _NEMAState extends State<NEMA> {
           GCWDefaultOutput(
             child: output.output,
           ),
-          GCWTextDivider(text: i18n(context, 'nema_rotor')),
+          GCWTextDivider(text: i18n(context, 'nema_outer_key') +' / ' + i18n(context, 'nema_rotor')),
           GCWOutput(child: output.rotor),
           GCWExpandableTextDivider(
             expanded: false,
