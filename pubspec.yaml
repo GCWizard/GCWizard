@@ -378,6 +378,7 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/runes/
     - lib/tools/symbol_tables/_common/assets/sanluca/
     - lib/tools/symbol_tables/_common/assets/sarati/
+    - lib/tools/symbol_tables/_common/assets/scream/
     - lib/tools/symbol_tables/_common/assets/semaphore/
     - lib/tools/symbol_tables/_common/assets/shadoks/
     - lib/tools/symbol_tables/_common/assets/sheikah/
