@@ -31,8 +31,8 @@ class _NEMAState extends State<NEMA> {
   String _currentOuterKey = '';
 
   String _currentSpace = 'XY';
-  String _currentLetter = 'Y';
-  String _currentDigit = 'X';
+  String _currentShiftToLetter = 'Y';
+  String _currentShiftToDigit = 'X';
 
   final MaskTextInputFormatter _MASKINPUTFORMATTER_innerKey =
       MaskTextInputFormatter(
@@ -54,8 +54,8 @@ class _NEMAState extends State<NEMA> {
     _outerKeyController = TextEditingController(text: _currentOuterKey);
 
     _spaceController = TextEditingController(text: _currentSpace);
-    _letterController = TextEditingController(text: _currentLetter);
-    _digitController = TextEditingController(text: _currentDigit);
+    _letterController = TextEditingController(text: _currentShiftToLetter);
+    _digitController = TextEditingController(text: _currentShiftToDigit);
   }
 
   @override
@@ -152,7 +152,7 @@ class _NEMAState extends State<NEMA> {
                           controller: _spaceController,
                           onChanged: (text) {
                             setState(() {
-                              _currentSpace = text;
+                              _currentSpace = text.toUpperCase();
                             });
                           })),
                 ],
@@ -168,7 +168,7 @@ class _NEMAState extends State<NEMA> {
                           controller: _digitController,
                           onChanged: (text) {
                             setState(() {
-                              _currentDigit = text;
+                              _currentShiftToDigit = text.toUpperCase();
                             });
                           })),
                 ],
@@ -184,7 +184,7 @@ class _NEMAState extends State<NEMA> {
                           controller: _letterController,
                           onChanged: (text) {
                             setState(() {
-                              _currentLetter = text;
+                              _currentShiftToLetter = text.toUpperCase();
                             });
                           })),
                 ],
@@ -236,9 +236,9 @@ class _NEMAState extends State<NEMA> {
     };
     List<String> interpretedOutput = [];
     bool isDigitMode = false;
-    output.replaceAll(' ', '').replaceAll('XY', ' ').split('').forEach((char) {
+    output.replaceAll(' ', '').replaceAll(_currentSpace, ' ').split('').forEach((char) {
       if (isDigitMode) {
-        if (char == 'Y') {
+        if (char == _currentShiftToLetter) {
           isDigitMode = false;
         } else if (NEMA_LETTER_TO_DIGIT[char] != null) {
           interpretedOutput.add(NEMA_LETTER_TO_DIGIT[char]!);
@@ -246,7 +246,7 @@ class _NEMAState extends State<NEMA> {
           interpretedOutput.add(char);
         }
       } else {
-        if (char == 'X') {
+        if (char == _currentShiftToDigit) {
           isDigitMode = true;
         } else {
           interpretedOutput.add(char);
