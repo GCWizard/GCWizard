@@ -81,7 +81,9 @@ class _VariableCoordinateFormulasState extends State<VariableCoordinateFormulas>
   void _addNewFormula(String name) {
     if (name.isNotEmpty) {
       var formula = VariableCoordinateFormula(name);
-      insertFormula(formula);
+      setState(() {
+        insertFormula(formula);
+      });
     }
   }
 

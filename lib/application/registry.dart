@@ -1049,12 +1049,13 @@ void initializeRegistry(BuildContext context) {
     GCWTool(tool: const Geohashing(), id: 'geohashing', categories: const [
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
+      'xkcd',
       'geohashing',
     ], licenses: [
       ToolLicenseOnlineArticle(
           context: context,
           author: 'Randall Munroe (xkcd.com)',
-          title: 'XKCD 426: Geohashing',
+          title: 'xkcd 426: Geohashing',
           licenseType: ToolLicenseType.CCNC25,
           licenseUrl:
               'https://web.archive.org/web/20240715221350/https://creativecommons.org/licenses/by-nc/2.5/',
@@ -1321,8 +1322,18 @@ void initializeRegistry(BuildContext context) {
     GCWTool(tool: const MathematicalConstants(), id: 'mathematical_constants', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
     ], searchKeys: const [
+      'xkcd',
       'mathematical_constants',
     ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Randall Munroe (xkcd.com)',
+          title: 'xkcd 221: Random Number',
+          licenseType: ToolLicenseType.CCNC25,
+          licenseUrl:
+          'https://web.archive.org/web/20240715221350/https://creativecommons.org/licenses/by-nc/2.5/',
+          sourceUrl:
+          'https://web.archive.org/web/20250201070150/https://xkcd.com/221/'),
       ToolLicenseOnlineArticle(
           context: context,
           author: 'Physical Measurement Laboratory of NIST',
@@ -3814,6 +3825,7 @@ void initializeRegistry(BuildContext context) {
           licenseType: ToolLicenseType.CC0_1),
     ]),
     GCWTool(tool: const Deadfish(), id: 'deadfish', searchKeys: const [
+      'xkcd',
       'esotericprogramminglanguage',
       'esoteric_deadfish',
     ], licenses: [
@@ -9306,6 +9318,20 @@ void initializeRegistry(BuildContext context) {
       'symbol_sarati',
     ], licenses: [
       stl._toolLicenseMyGeoToolsCodeTabellen,
+    ]),
+    GCWSymbolTableTool(symbolKey: 'scream', symbolSearchStrings: const [
+      'xkcd',
+      'symbol_scream',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Randall Munroe (xkcd.com)',
+          title: 'xkcd 3054: Scream Cipher',
+          licenseType: ToolLicenseType.CCNC25,
+          licenseUrl:
+          'https://web.archive.org/web/20240715221350/https://creativecommons.org/licenses/by-nc/2.5/',
+          sourceUrl:
+          'https://web.archive.org/web/20250221182516/https://xkcd.com/3054/'),
     ]),
     GCWSymbolTableTool(symbolKey: 'semaphore', symbolSearchStrings: const [
       'symbol_semaphore',
