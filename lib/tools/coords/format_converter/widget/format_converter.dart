@@ -123,7 +123,7 @@ class _FormatConverterState extends State<FormatConverter> {
   }
 
   Object _supplementOutput(LatLng latLng, BaseCoordinate coords, CoordinateFormat format) {
-    if (coords.errorCode != ErrorCode.OK) {
+    if (coords.stateCode != StateCode.OK) {
       var output = formatCoordOutput(latLng, format);
       if (output.isNotEmpty) output += '\n';
       return output + _coordErrorOutput(coords);
@@ -133,10 +133,10 @@ class _FormatConverterState extends State<FormatConverter> {
 
   String _coordErrorOutput(BaseCoordinate coords) {
     var output =
-      i18n(context, 'coords_formatconverter_' + enumName(ErrorCode.Invalid_Coordinate.toString()).toLowerCase());
-    if (coords.errorCode != ErrorCode.OK && coords.errorCode != ErrorCode.Invalid_Coordinate) {
+      i18n(context, 'coords_formatconverter_' + enumName(StateCode.Invalid_Coordinate.toString()).toLowerCase());
+    if (coords.stateCode != StateCode.OK && coords.stateCode != StateCode.Invalid_Coordinate) {
       output += '\n' +
-          i18n(context, 'coords_formatconverter_' + enumName(coords.errorCode.toString()).toLowerCase());
+          i18n(context, 'coords_formatconverter_' + enumName(coords.stateCode.toString()).toLowerCase());
     }
     return output;
   }

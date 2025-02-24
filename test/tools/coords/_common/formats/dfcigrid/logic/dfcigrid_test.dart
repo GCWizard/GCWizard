@@ -42,8 +42,8 @@ void main() {
 
   group("Converter.dfcigrid.errorCode:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      {'errorCode': ErrorCode.OK, 'coord': {'format': CoordinateFormatKey.DFCI_GRID, 'coordinate': const LatLng(46.02234102, 3.71204547)}},
-      {'errorCode': ErrorCode.Outside_Borders, 'coord': {'format': CoordinateFormatKey.DFCI_GRID, 'coordinate': const LatLng(48.0, 50.0)}},
+      {'stateCode': StateCode.OK, 'coord': {'format': CoordinateFormatKey.DFCI_GRID, 'coordinate': const LatLng(46.02234102, 3.71204547)}},
+      {'stateCode': StateCode.Outside_Borders, 'coord': {'format': CoordinateFormatKey.DFCI_GRID, 'coordinate': const LatLng(48.0, 50.0)}},
     ];
 
     for (var elem in _inputsToExpected) {
@@ -51,7 +51,7 @@ void main() {
       test('coord: ${((elem['coord'] as Map<String, Object>)['coordinate'] as LatLng)}', () {
 
         var _actual = DfciGridCoordinate.fromLatLon((elem['coord'] as Map<String, Object>)['coordinate'] as LatLng);
-        expect(_actual.errorCode, elem['errorCode']);
+        expect(_actual.stateCode, elem['stateCode']);
       });
     }
   });

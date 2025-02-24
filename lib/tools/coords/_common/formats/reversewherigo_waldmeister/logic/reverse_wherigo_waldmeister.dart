@@ -18,17 +18,17 @@ class ReverseWherigoWaldmeisterCoordinate extends BaseCoordinate {
   @override
   CoordinateFormat get format => CoordinateFormat(CoordinateFormatKey.REVERSE_WIG_WALDMEISTER);
   int a, b, c;
-  var _errorCode = ErrorCode.OK;
+  var _stateCode = StateCode.OK;
 
   ReverseWherigoWaldmeisterCoordinate(this.a, this.b, this.c);
 
   @override
-  ErrorCode get errorCode => _errorCode;
+  StateCode get stateCode => _stateCode;
 
   @override
   LatLng? toLatLng() {
     var result = _reverseWIGWaldmeisterToLatLon(this);
-    _errorCode = (result == null) ? ErrorCode.Checksum_Error : ErrorCode.OK;
+    _stateCode = (result == null) ? StateCode.Checksum_Error : StateCode.OK;
     return result;
   }
 

@@ -35,7 +35,7 @@ import 'package:latlong2/latlong.dart';
 
 import 'coordinate_format_definition.dart';
 
-enum ErrorCode {
+enum StateCode {
   OK,
   Invalid_Coordinate,
   Checksum_Error,
@@ -53,7 +53,7 @@ abstract class BaseCoordinate {
     this.longitude = longitude ?? defaultCoord.defaultCoordinate.longitude;
   }
 
-  ErrorCode get errorCode => ErrorCode.OK;
+  StateCode get stateCode => StateCode.OK;
 
   LatLng? toLatLng() {
     return LatLng(latitude, longitude);

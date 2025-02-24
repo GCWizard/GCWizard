@@ -76,18 +76,18 @@ void main() {
 
   group("Converter.reverseWherigooWaldmeister.checkSumTest:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      {'coordinate': null, 'errorCode': ErrorCode.Checksum_Error, 'text': ['580498', '850012', '847837']},
-      {'coordinate': null, 'errorCode': ErrorCode.Checksum_Error, 'text': ['580597', '860012', '847837']},
-      {'coordinate': null, 'errorCode': ErrorCode.Checksum_Error, 'text': ['580497', '851012', '847937']},
-      {'coordinate': null, 'errorCode': ErrorCode.Checksum_Error, 'text': ['580497', '850013', '847837']},
-      {'coordinate': null, 'errorCode': ErrorCode.Checksum_Error, 'text': ['580497', '850012', '857837']},
+      {'coordinate': null, 'stateCode': StateCode.Checksum_Error, 'text': ['580498', '850012', '847837']},
+      {'coordinate': null, 'stateCode': StateCode.Checksum_Error, 'text': ['580597', '860012', '847837']},
+      {'coordinate': null, 'stateCode': StateCode.Checksum_Error, 'text': ['580497', '851012', '847937']},
+      {'coordinate': null, 'stateCode': StateCode.Checksum_Error, 'text': ['580497', '850013', '847837']},
+      {'coordinate': null, 'stateCode': StateCode.Checksum_Error, 'text': ['580497', '850012', '857837']},
     ];
 
     for (var elem in _inputsToExpected) {
       test('text: ${elem['text']}', () {
         var _actual = ReverseWherigoWaldmeisterCoordinate.parse((elem['text'] as List<String>).join(' '));
         expect(_actual?.toLatLng(), elem['coordinate']);
-        expect(_actual?.errorCode, elem['errorCode']);
+        expect(_actual?.stateCode, elem['stateCode']);
       });
     }
   });

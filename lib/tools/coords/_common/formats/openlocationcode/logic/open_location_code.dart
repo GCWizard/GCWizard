@@ -30,19 +30,19 @@ class OpenLocationCodeCoordinate extends BaseCoordinate {
   @override
   CoordinateFormat get format => CoordinateFormat(CoordinateFormatKey.OPEN_LOCATION_CODE);
   String text;
-  var _errorCode = ErrorCode.OK;
+  var _stateCode = StateCode.OK;
 
   OpenLocationCodeCoordinate(this.text);
 
   @override
-  ErrorCode get errorCode => _errorCode;
+  StateCode get stateCode => _stateCode;
 
-  set errorCode(ErrorCode errorCode) => _errorCode = errorCode;
+  set stateCode(StateCode errorCode) => _stateCode = errorCode;
 
   @override
   LatLng? toLatLng() {
     var result = _openLocationCodeToLatLon(this);
-    _errorCode = (result == null && _isShort(text)) ? ErrorCode.OLC_ShortFormat : ErrorCode.OK;
+    _stateCode = (result == null && _isShort(text)) ? StateCode.OLC_ShortFormat : StateCode.OK;
     return result;
   }
 
@@ -329,7 +329,7 @@ OpenLocationCodeCoordinate _latLonToOpenLocationCode(LatLng coords, {int codeLen
 OpenLocationCodeCoordinate? _parseOpenLocationCode(String input) {
   var openLocationCode = OpenLocationCodeCoordinate(input);
   var result = _openLocationCodeToLatLon(openLocationCode);
-  return result == null && openLocationCode.errorCode == ErrorCode.OK ? null : openLocationCode;
+  return result == null && openLocationCode.stateCode == StateCode.OK ? null : openLocationCode;
 }
 
 String _sanitizeOLCode(String olc) {
@@ -361,7 +361,7 @@ LatLng? _openLocationCodeToLatLon(OpenLocationCodeCoordinate openLocationCode) {
     var _isFullResult = _isFull(code);
     if (!_isFullResult.isFull) {
       if (_isFullResult.isShort) {
-        openLocationCode.errorCode = ErrorCode.OLC_ShortFormat;
+        openLocationCode.stateCode = StateCode.OLC_ShortFormat;
       }
       return null;
     }

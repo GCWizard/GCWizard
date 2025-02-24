@@ -16,20 +16,20 @@ class DfciGridCoordinate extends BaseCoordinate {
   @override
   CoordinateFormat get format => CoordinateFormat(CoordinateFormatKey.DFCI_GRID);
   String text;
-  var _errorCode = ErrorCode.OK;
+  var _stateCode = StateCode.OK;
 
   DfciGridCoordinate(this.text);
 
   @override
-  ErrorCode get errorCode => _errorCode;
+  StateCode get stateCode => _stateCode;
 
-  set errorCode(ErrorCode errorCode) => _errorCode = errorCode;
+  set stateCode(StateCode stateCode) => _stateCode = stateCode;
 
   @override
   LatLng? toLatLng() {
     var result = _parseDFCI(text);
     if (result != null && (!_validDFCICoord(LatLng (result.latitude, result.longitude)))) {
-      _errorCode = ErrorCode.Outside_Borders;
+      _stateCode = StateCode.Outside_Borders;
       return null;
     }
     return result;
@@ -55,7 +55,7 @@ DfciGridCoordinate _latLonToDfciGrid(LatLng coord) {
   dfci.latitude = coord.latitude;
   dfci.longitude = coord.longitude;
   if (!_validDFCICoord(coord)) {
-    dfci.errorCode = ErrorCode.Outside_Borders;
+    dfci.stateCode = StateCode.Outside_Borders;
   }
   return dfci;
 }
@@ -69,7 +69,7 @@ DfciGridCoordinate? _parseDfciGrid(String input) {
    dfci.latitude = coord.latitude;
    dfci.longitude = coord.longitude;
    if (!_validDFCICoord(coord)) {
-     dfci.errorCode = ErrorCode.Outside_Borders;
+     dfci.stateCode = StateCode.Outside_Borders;
    }
    return dfci;
   }
