@@ -683,15 +683,21 @@ class Logical {
 
 	static String _jsonValueToString(int x, int y, Logical logical) {
 		if (!logical._validPosition(x, y)) return '';
-		return alphabet_AZIndexes[
-		logical.mapColumnToRowBlockIndex(logical.blockIndex(x)) + 1]!.toLowerCase() + logical.blockLine(x).toString() +
-				alphabet_AZIndexes[logical.blockIndex(y) + 2]!.toLowerCase() + logical.blockLine(y).toString();
+		var row = alphabet_AZIndexes[logical.blockIndex(y) + 2]!.toLowerCase() + logical.blockLine(y).toString();
+		var column= alphabet_AZIndexes[logical.mapColumnToRowBlockIndex(logical.blockIndex(x)) + 1]!.toLowerCase() +
+				logical.blockLine(x).toString();
+
+		return row + column;
 	}
 
 	static Point<int>? _jsonValueFromString(String value, Logical logical) {
-		return Point<int>(logical.fullLine(alphabet_AZ[value[0].toUpperCase()]! - 1,
-				int.tryParse(value[1]) ?? 0),
-				logical.fullLine(alphabet_AZ[value[2].toUpperCase()]! - 2, int.tryParse(value[3]) ?? 0));
+		var yBlock = alphabet_AZ[value[0].toUpperCase()]! - 2;
+		var yLine = int.tryParse(value[1]) ?? 0;
+
+		var xBlock = logical.mapColumnToRowBlockIndex(alphabet_AZ[value[2].toUpperCase()]! - 1);
+		var xLine = int.tryParse(value[3]) ?? 0;
+
+		return Point<int>(logical.fullLine(xBlock, xLine), logical.fullLine(yBlock, yLine));
 	}
 }
 

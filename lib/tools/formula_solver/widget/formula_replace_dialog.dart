@@ -51,6 +51,7 @@ class _FormulaReplaceState extends State<_FormulaReplace> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         GCWTextDivider(
             text: i18n(context, 'formulasolver_formulas_modifiedformula') +

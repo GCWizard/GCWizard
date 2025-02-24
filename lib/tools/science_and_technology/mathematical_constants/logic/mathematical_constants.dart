@@ -14,6 +14,10 @@ const Map<String, MathematicalConstant> MATHEMATICAL_CONSTANTS = {
     symbol: '6174',
     value: '6174',
   ),
+  'mathematical_constants_xkcdrandomnumber': MathematicalConstant(
+    symbol: '4',
+    value: '4',
+  ),
   'mathematical_constants_zero': MathematicalConstant(
     symbol: '0',
     value: '0',

@@ -92,7 +92,8 @@ class _NumeralBasesState extends State<NumeralBases> {
 
     var calculateableToBases = _currentToMode == GCWSwitchPosition.left ? _COMMON_BASES : [_currentToKey];
     List<String> values = calculateableToBases.map((toBase) {
-      return _currentInput.split(RegExp(r'[.,\-;\s]+')).where((element) => element.isNotEmpty).map((value) {
+      return _currentInput.split(RegExp(r'[\-;\s]+')).where((element) => element.isNotEmpty).map((value) {
+        // handle ',' and '.' as decimalpoint and not as a separator of numbers
         if (value.startsWith('-') && _currentFromKey < 0) {
           return i18n(context, 'common_notdefined');
         }

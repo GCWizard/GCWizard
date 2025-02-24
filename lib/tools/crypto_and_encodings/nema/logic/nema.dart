@@ -1,6 +1,6 @@
-part 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema_source.dart';
 part 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema_data_exer.dart';
 part 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema_data_oper.dart';
+part 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema_source.dart';
 
 class NEMAOutput{
   String output;
@@ -118,9 +118,10 @@ NEMAOutput nema(
   String innerKey,
   String outerKey,
 ) {
-  if (input.isEmpty || innerKey.isEmpty || outerKey.isEmpty) {
+  if (innerKey.isEmpty || outerKey.isEmpty) {
     return NEMAOutput(output: '', rotor: '');
   }
+  String rotor = outerKey.toUpperCase();
 
   List<String> output = [];
 
@@ -140,7 +141,7 @@ NEMAOutput nema(
     }
   });
 
-  String rotor = '';
+  rotor = '';
   for (int i = 1; i < _rotor.length; i++) {
     rotor = rotor + String.fromCharCode(_rotor[i] + 65);
   }

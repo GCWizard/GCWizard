@@ -1049,12 +1049,13 @@ void initializeRegistry(BuildContext context) {
     GCWTool(tool: const Geohashing(), id: 'geohashing', categories: const [
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
+      'xkcd',
       'geohashing',
     ], licenses: [
       ToolLicenseOnlineArticle(
           context: context,
           author: 'Randall Munroe (xkcd.com)',
-          title: 'XKCD 426: Geohashing',
+          title: 'xkcd 426: Geohashing',
           licenseType: ToolLicenseType.CCNC25,
           licenseUrl:
               'https://web.archive.org/web/20240715221350/https://creativecommons.org/licenses/by-nc/2.5/',
@@ -1321,8 +1322,18 @@ void initializeRegistry(BuildContext context) {
     GCWTool(tool: const MathematicalConstants(), id: 'mathematical_constants', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
     ], searchKeys: const [
+      'xkcd',
       'mathematical_constants',
     ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Randall Munroe (xkcd.com)',
+          title: 'xkcd 221: Random Number',
+          licenseType: ToolLicenseType.CCNC25,
+          licenseUrl:
+          'https://web.archive.org/web/20240715221350/https://creativecommons.org/licenses/by-nc/2.5/',
+          sourceUrl:
+          'https://web.archive.org/web/20250201070150/https://xkcd.com/221/'),
       ToolLicenseOnlineArticle(
           context: context,
           author: 'Physical Measurement Laboratory of NIST',
@@ -3814,6 +3825,7 @@ void initializeRegistry(BuildContext context) {
           licenseType: ToolLicenseType.CC0_1),
     ]),
     GCWTool(tool: const Deadfish(), id: 'deadfish', searchKeys: const [
+      'xkcd',
       'esotericprogramminglanguage',
       'esoteric_deadfish',
     ], licenses: [
@@ -8047,17 +8059,6 @@ void initializeRegistry(BuildContext context) {
               'https://fontmeme.com/fonts/illuminati-dirigens-cipher-berlin-version-font/',
           licenseType: ToolLicenseType.FREE_TO_USE)
     ]),
-    GCWSymbolTableTool(symbolKey: 'intergalactic', symbolSearchStrings: const [
-      'symbol_intergalactic',
-    ], licenses: [
-      ToolLicenseFont(
-          context: context,
-          author: 'Aaqil A. Azhar (Foneer)',
-          title: 'Robotica SGA',
-          sourceUrl:
-              'https://web.archive.org/web/20240730195127/https://fontstruct.com/fontstructions/show/2324755/robotica-sga',
-          licenseType: ToolLicenseType.NON_COMMERCIAL)
-    ]),
     GCWSymbolTableTool(symbolKey: 'interlac', symbolSearchStrings: const [
       'symbol_interlac',
     ], licenses: [
@@ -9318,6 +9319,20 @@ void initializeRegistry(BuildContext context) {
     ], licenses: [
       stl._toolLicenseMyGeoToolsCodeTabellen,
     ]),
+    GCWSymbolTableTool(symbolKey: 'scream', symbolSearchStrings: const [
+      'xkcd',
+      'symbol_scream',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Randall Munroe (xkcd.com)',
+          title: 'xkcd 3054: Scream Cipher',
+          licenseType: ToolLicenseType.CCNC25,
+          licenseUrl:
+          'https://web.archive.org/web/20240715221350/https://creativecommons.org/licenses/by-nc/2.5/',
+          sourceUrl:
+          'https://web.archive.org/web/20250221182516/https://xkcd.com/3054/'),
+    ]),
     GCWSymbolTableTool(symbolKey: 'semaphore', symbolSearchStrings: const [
       'symbol_semaphore',
     ], licenses: [
@@ -9490,6 +9505,23 @@ void initializeRegistry(BuildContext context) {
           sourceUrl:
               'https://web.archive.org/web/20210306061331/https://www.1001fonts.com/sprykski-font.html',
           licenseType: ToolLicenseType.PERSONAL_USE)
+    ]),
+    GCWSymbolTableTool(symbolKey: 'standardgalacticalphabet', symbolSearchStrings: const [
+      'symbol_standardgalacticalphabet',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Keen Wiki and contributors',
+          title: 'Standard Galactic Alphabet',
+          sourceUrl:
+          'https://web.archive.org/web/20250130012447/https://keenwiki.shikadi.net/wiki/Standard_Galactic_Alphabet'),
+      ToolLicenseFont(
+          context: context,
+          author: 'Aaqil A. Azhar (Foneer)',
+          title: 'Robotica SGA',
+          sourceUrl:
+          'https://web.archive.org/web/20240730195127/https://fontstruct.com/fontstructions/show/2324755/robotica-sga',
+          licenseType: ToolLicenseType.NON_COMMERCIAL)
     ]),
     GCWSymbolTableTool(symbolKey: 'steinheil', symbolSearchStrings: const [
       'symbol_steinheil',
@@ -10119,6 +10151,28 @@ void initializeRegistry(BuildContext context) {
                   'https://commons.wikimedia.org/w/index.php?title=Wind_speed&oldid=760157124',
               licenseType: ToolLicenseType.CCBYSA4)
         ]),
+    GCWSymbolTableTool(symbolKey: 'wind_mill_signals_v1', symbolSearchStrings: const [
+      'symbol_wind_mill_signals_v1',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Unknown',
+          title: 'Braunsmühle Webpage',
+          sourceUrl: 'https://web.archive.org/web/20221103091143/https://www.braunsmuehle.de/muehle/technik/Muehlensprache-Die-Stellung-der-Fluegel--25/',
+          licenseType: ToolLicenseType.FREE_TO_USE,
+          customComment: 'Allowed by web admin via personal email 9.10.2024'),
+    ]),
+    GCWSymbolTableTool(symbolKey: 'wind_mill_signals_v2', symbolSearchStrings: const [
+      'symbol_wind_mill_signals_v2',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Unknown authors',
+          title: 'https://geocachen.be',
+          sourceUrl: 'https://web.archive.org/web/20241004220413/https://geocachen.be/geocaching/geocache-puzzels-oplossen/molentaal/',
+          licenseType: ToolLicenseType.FREE_TO_USE,
+          customComment: 'Pending'), // todo ask for License
+    ]),
     GCWSymbolTableTool(symbolKey: 'wingdings', symbolSearchStrings: const [
       'symbol_wingdings',
     ], licenses: [
@@ -10127,7 +10181,7 @@ void initializeRegistry(BuildContext context) {
           author: 'commons.wikimedia.org and contributors',
           title: 'Wingdings',
           sourceUrl:
-              'https://commons.wikimedia.org/w/index.php?title=Wind_speed&oldid=760157124',
+              'https://commons.wikimedia.org/wiki/File:Wingdings.png',
           licenseType: ToolLicenseType.PUBLIC_DOMAIN)
     ]),
     GCWSymbolTableTool(

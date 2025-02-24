@@ -76,6 +76,27 @@ String decryptKenny(String input, List<String>? replaceCharacters, bool caseSens
 
   var replaceToCharacters = [String.fromCharCode(0), String.fromCharCode(1), String.fromCharCode(2)];
 
+  List<String> specialHandling = [
+    'ß', // \u+00DF
+    'ﬀ', // \u+FB00
+    'ﬁ', // \u+FB01
+    'ﬂ', // \u+FB02
+    'ﬃ', // \u+FB03
+    'ﬄ', // \u+FB04
+    'ﬅ', // \u+FB05
+    'ﬆ', // \u+FB06
+  ];
+  Map<String, String> specialMapping = {
+    'ß' : String.fromCharCode(3) + String.fromCharCode(1),
+    'ﬀ' : String.fromCharCode(3) + String.fromCharCode(2),
+    'ﬁ' : String.fromCharCode(3) + String.fromCharCode(3),
+    'ﬂ' : String.fromCharCode(3) + String.fromCharCode(4),
+    'ﬃ' : String.fromCharCode(3) + String.fromCharCode(5),
+    'ﬄ' : String.fromCharCode(3) + String.fromCharCode(6),
+    'ﬅ' : String.fromCharCode(3) + String.fromCharCode(7),
+    'ﬆ' : String.fromCharCode(3) + String.fromCharCode(8),
+  };
+
   Map<String, String> substitutions = {};
   Map<String, String> substitutionsSwitched = {};
   Map<String, String> integerSubstitutions = {};
@@ -88,7 +109,12 @@ String decryptKenny(String input, List<String>? replaceCharacters, bool caseSens
     integerSubstitutions.putIfAbsent(replaceToCharacters[i], () => i.toString());
   }
 
+  // substitute special characters like 'ß' with non-writeable characters
+  for (String char in specialHandling) {
+    input = input.replaceAll(char, specialMapping[char]!);
+  }
   // substitute key characters/string with non-writeable characters
+
   var _input = substitution(input, substitutions, caseSensitive: false);
   int chunkStart = 0; // start position of chunk in the original text
   int chunkOffset = 0; // position in the chunk
@@ -148,7 +174,16 @@ String decryptKenny(String input, List<String>? replaceCharacters, bool caseSens
   }
   // restore unused chunks to the original text
   output = _restoreChunks(output + _input, input, 0, substitutionsSwitched);
-  if (!caseSensitive) output = output.toUpperCase();
+  if (!caseSensitive) {
+    // ('ß').toUpperCase() => 'SS' which is deprecated according to https://en.wikipedia.org/wiki/%C3%9F
+    // As of 2024, when writing in capital letters, ⟨ẞ⟩ or '\u1e9e' is preferred
+    // output = output.replaceAll('ß', '\u1e9e').toUpperCase();
+    output = output.toUpperCase();
+  }
+
+  for (String char in specialHandling) {
+    output = output.replaceAll(specialMapping[char]!, char);
+  }
 
   return output;
 }

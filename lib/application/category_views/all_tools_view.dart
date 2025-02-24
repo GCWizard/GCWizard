@@ -51,10 +51,10 @@ import 'package:gc_wizard/application/searchstrings/logic/search_strings.dart';
 import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
-import 'package:gc_wizard/application/webapi/deeplinks/deeplinks.dart';
-import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
 import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/application/tools/widget/gcw_toollist.dart';
+import 'package:gc_wizard/application/webapi/deeplinks/deeplinks.dart';
+import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
 import 'package:gc_wizard/common_widgets/gcw_web_statefulwidget.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/coords/antipodes/widget/antipodes.dart';
@@ -144,8 +144,8 @@ import 'package:gc_wizard/tools/crypto_and_encodings/one_time_pad/widget/one_tim
 import 'package:gc_wizard/tools/crypto_and_encodings/playfair/widget/playfair.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/pokemon/widget/pokemon.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/pollux/widget/pollux.dart';
-import 'package:gc_wizard/tools/crypto_and_encodings/porta/widget/porta.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/polybios/widget/polybios.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/porta/widget/porta.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/prime_alphabet/widget/prime_alphabet.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rabbit/widget/rabbit.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/ragbaby/widget/ragbaby.dart';
@@ -185,6 +185,7 @@ import 'package:gc_wizard/tools/games/sudoku/widget/sudoku_solver.dart';
 import 'package:gc_wizard/tools/games/tower_of_hanoi/widget/tower_of_hanoi.dart';
 import 'package:gc_wizard/tools/games/verbal_arithmetic/widget/verbal_arithmetic.dart';
 import 'package:gc_wizard/tools/games/word_search/widget/word_search.dart';
+import 'package:gc_wizard/tools/general_tools/gcwizardscript/widget/gcwizard_script.dart';
 import 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_selection.dart';
 import 'package:gc_wizard/tools/images_and_files/animated_image/widget/animated_image.dart';
 import 'package:gc_wizard/tools/images_and_files/animated_image_morse_code/widget/animated_image_morse_code.dart';
@@ -201,7 +202,6 @@ import 'package:gc_wizard/tools/images_and_files/qr_code/widget/qr_code.dart';
 import 'package:gc_wizard/tools/images_and_files/stegano/widget/stegano.dart';
 import 'package:gc_wizard/tools/images_and_files/tupper_formula/widget/tupper_formula.dart';
 import 'package:gc_wizard/tools/images_and_files/visual_cryptography/widget/visual_cryptography.dart';
-import 'package:gc_wizard/tools/general_tools/gcwizardscript/widget/gcwizard_script.dart';
 import 'package:gc_wizard/tools/science_and_technology/alcohol_mass/widget/alcohol_mass.dart';
 import 'package:gc_wizard/tools/science_and_technology/alphabet_number_systems/hebrew/widget/hebrew_number_system.dart';
 import 'package:gc_wizard/tools/science_and_technology/alphabet_number_systems/milesian/widget/milesian_number_system.dart';
@@ -245,8 +245,8 @@ import 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar_we
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/day_calculator/widget/day_calculator.dart';
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/day_of_the_year/widget/day_of_the_year.dart';
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/epoch_time/excel_time/widget/excel_time.dart';
-import 'package:gc_wizard/tools/science_and_technology/date_and_time/time_calculator/widget/time_calculator.dart';
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/epoch_time/unix_time/widget/unix_time.dart';
+import 'package:gc_wizard/tools/science_and_technology/date_and_time/time_calculator/widget/time_calculator.dart';
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/weekday/widget/weekday.dart';
 import 'package:gc_wizard/tools/science_and_technology/decabit/widget/decabit.dart';
 import 'package:gc_wizard/tools/science_and_technology/divisor/widget/divisor.dart';
@@ -423,37 +423,49 @@ class _MainViewState extends State<MainView> {
 
     var toolList = (_isSearching && _searchText.isNotEmpty) ? _getSearchedList() : null;
 
-    return DefaultTabController(
-      length: 3,
-      initialIndex: Prefs.getBool(PREFERENCE_TABS_USE_DEFAULT_TAB)
-          ? Prefs.getInt(PREFERENCE_TABS_DEFAULT_TAB)
-          : Prefs.getInt(PREFERENCE_TABS_LAST_VIEWED_TAB),
-      child: Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(
-            bottom: TabBar(
-              onTap: (value) {
-                Prefs.setInt(PREFERENCE_TABS_LAST_VIEWED_TAB, value);
-              },
-              tabs: const [
-                Tab(icon: Icon(Icons.category)),
-                Tab(icon: Icon(Icons.list)),
-                Tab(icon: Icon(Icons.star)),
-              ],
-            ),
-            leading: _buildIcon(),
-            title: _buildTitleAndSearchTextField(),
-            actions: <Widget>[_buildSearchActionButton()]),
-        drawer: buildMainMenu(context),
-        body: TabBarView(
-          children: [
-            GCWToolList(toolList: toolList ?? _categoryList),
-            GCWToolList(toolList: toolList ?? _mainToolList),
-            GCWToolList(toolList: toolList ?? Favorites.favoritedGCWTools()),
-          ],
+    if (!(_isSearching && _searchText.isNotEmpty)) {
+      return DefaultTabController(
+        length: 3,
+        initialIndex: Prefs.getBool(PREFERENCE_TABS_USE_DEFAULT_TAB)
+            ? Prefs.getInt(PREFERENCE_TABS_DEFAULT_TAB)
+            : Prefs.getInt(PREFERENCE_TABS_LAST_VIEWED_TAB),
+        child: Scaffold(
+          key: _scaffoldKey,
+          appBar: AppBar(
+              bottom: TabBar(
+                onTap: (value) {
+                  Prefs.setInt(PREFERENCE_TABS_LAST_VIEWED_TAB, value);
+                },
+                tabs: const [
+                  Tab(icon: Icon(Icons.category)),
+                  Tab(icon: Icon(Icons.list)),
+                  Tab(icon: Icon(Icons.star)),
+                ],
+              ),
+              leading: _buildIcon(),
+              title: _buildTitleAndSearchTextField(),
+              actions: <Widget>[_buildSearchActionButton()]),
+          drawer: buildMainMenu(context),
+          body: TabBarView(
+            children: [
+              GCWToolList(toolList: toolList ?? _categoryList),
+              GCWToolList(toolList: toolList ?? _mainToolList),
+              GCWToolList(toolList: toolList ?? Favorites.favoritedGCWTools()),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      return Scaffold(
+          key: _scaffoldKey,
+          appBar: AppBar(
+              leading: _buildIcon(),
+              title: _buildTitleAndSearchTextField(),
+              actions: <Widget>[_buildSearchActionButton()]
+          ),
+          drawer: buildMainMenu(context),
+          body: GCWToolList(toolList: toolList!));
+    }
   }
 
   NoAnimationMaterialPageRoute<GCWTool>? _checkDeepLink() {

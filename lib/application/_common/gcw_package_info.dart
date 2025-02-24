@@ -1,5 +1,5 @@
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:package_info_plus/package_info_plus.dart';
 
 const _PACKAGE_INFO_UNKNOWN = 'unknown';
 
