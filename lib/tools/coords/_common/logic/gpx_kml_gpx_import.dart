@@ -147,13 +147,13 @@ class _GpxReader {
         wpt.markerText = name;
         if (tag.contains('Parking')) {
           wpt.color = COLOR_MAP_GPX_IMPORT_PARKING;
-          wpt.tag = WaypointType.PARKING;
+          wpt.type = WaypointType.PARKING;
         } else if (tag.contains('Virtual')) {
           wpt.color = COLOR_MAP_GPX_IMPORT_VIRTUALSTAGE;
-          wpt.tag = WaypointType.VIRTUAL;
+          wpt.type = WaypointType.VIRTUAL;
         } else if (tag.contains('Physical')) {
           wpt.color = COLOR_MAP_GPX_IMPORT_PHYSICALSTAGE;
-          wpt.tag = WaypointType.PHYSICAL;
+          wpt.type = WaypointType.PHYSICAL;
         }
       } else {
         wpt.markerText = xmlElement.getElement('desc')?.innerText;
