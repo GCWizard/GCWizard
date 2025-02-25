@@ -108,8 +108,16 @@ class _GpxWriter {
         }
         _writeElement(builder, 'cmt', '');
         _writeElement(builder, 'desc', '');
-        _writeElement(builder, 'sym', 'Virtual Stage');
-        _writeElement(builder, 'type', 'Waypoint|Virtual Stage');
+        if (wpt.tag == WaypointType.PARKING) {
+          _writeElement(builder, 'sym', 'Parking Area');
+        } else if (wpt.tag == WaypointType.PHYSICAL) {
+          _writeElement(builder, 'sym', 'Physical Stage');
+        } else if (wpt.tag == WaypointType.VIRTUAL) {
+          _writeElement(builder, 'sym', 'Virtual Stage');
+        } else {
+          _writeElement(builder, 'sym', '');
+        }
+        _writeElement(builder, 'type', wpt.tagToString());
         builder.element('gsak:wptExtension', nest: () {
           _writeElement(builder, 'gsak:Parent', cacheName);
         });

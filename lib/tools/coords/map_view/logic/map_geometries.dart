@@ -10,11 +10,14 @@ import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart
 import 'package:latlong2/latlong.dart';
 import 'package:uuid/uuid.dart';
 
+enum WaypointType {PARKING, VIRTUAL, PHYSICAL}
+
 class GCWMapPoint {
   String? uuid;
   LatLng point;
   String? markerText;
   Color color;
+  WaypointType? tag;
   CoordinateFormat? coordinateFormat;
   bool isEditable;
   GCWMapCircle? circle;
@@ -26,6 +29,7 @@ class GCWMapPoint {
       required this.point,
       this.markerText,
       this.color = COLOR_MAP_POINT,
+      this.tag,
       this.coordinateFormat,
       this.isEditable = false,
       this.circle,
@@ -47,6 +51,19 @@ class GCWMapPoint {
       if (circleColorSameAsPointColor) circle!.color = color;
 
       circle!._update();
+    }
+  }
+
+  String tagToString () {
+    switch (tag) {
+      case WaypointType.PARKING:
+        return 'Waypoint|Parking Area';
+      case WaypointType.VIRTUAL:
+        return 'Waypoint|Virtual Stage';
+      case WaypointType.PHYSICAL:
+        return 'Waypoint|Physical Stage';
+      case null:
+        return '';
     }
   }
 }
