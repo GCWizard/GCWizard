@@ -17,7 +17,7 @@ class GCWMapPoint {
   LatLng point;
   String? markerText;
   Color color;
-  WaypointType? tag;
+  WaypointType? type;
   CoordinateFormat? coordinateFormat;
   bool isEditable;
   GCWMapCircle? circle;
@@ -29,7 +29,7 @@ class GCWMapPoint {
       required this.point,
       this.markerText,
       this.color = COLOR_MAP_POINT,
-      this.tag,
+      this.type,
       this.coordinateFormat,
       this.isEditable = false,
       this.circle,
@@ -51,19 +51,6 @@ class GCWMapPoint {
       if (circleColorSameAsPointColor) circle!.color = color;
 
       circle!._update();
-    }
-  }
-
-  String tagToString () {
-    switch (tag) {
-      case WaypointType.PARKING:
-        return 'Waypoint|Parking Area';
-      case WaypointType.VIRTUAL:
-        return 'Waypoint|Virtual Stage';
-      case WaypointType.PHYSICAL:
-        return 'Waypoint|Physical Stage';
-      case null:
-        return '';
     }
   }
 }
