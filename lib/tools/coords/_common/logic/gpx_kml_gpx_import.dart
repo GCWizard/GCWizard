@@ -141,16 +141,19 @@ class _GpxReader {
           point: LatLng(double.tryParse(lat) ?? 0, double.tryParse(lon) ?? 0),
           isEditable: true);
       var name = xmlElement.getElement('name')?.innerText ?? '';
+      var tag = xmlElement.getElement('type')?.innerText ?? '';
 
       if (name.isNotEmpty) {
         wpt.markerText = name;
-        if (name.startsWith("P")) {
-          // Parking coordinate only for gc.com
+        if (tag.contains('Parking')) {
           wpt.color = COLOR_MAP_GPX_IMPORT_PARKING;
-        } else if (name.startsWith(RegExp('[0-9]')) ||
-            RegExp(r'-.{2}$').hasMatch(name)) {
-          // waypoint gc.com or oc.com
-          wpt.color = COLOR_MAP_GPX_IMPORT_WAYPOINT;
+          wpt.tag = WaypointType.PARKING;
+        } else if (tag.contains('Virtual')) {
+          wpt.color = COLOR_MAP_GPX_IMPORT_VIRTUALSTAGE;
+          wpt.tag = WaypointType.VIRTUAL;
+        } else if (tag.contains('Physical')) {
+          wpt.color = COLOR_MAP_GPX_IMPORT_PHYSICALSTAGE;
+          wpt.tag = WaypointType.PHYSICAL;
         }
       } else {
         wpt.markerText = xmlElement.getElement('desc')?.innerText;
