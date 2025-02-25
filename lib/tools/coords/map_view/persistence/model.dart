@@ -1,5 +1,6 @@
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/gpx_kml_gpx_export.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/utils/data_type_utils/object_type_utils.dart';
 import 'package:gc_wizard/utils/json_utils.dart';
@@ -65,13 +66,14 @@ class MapPointDAO {
   String coordinateFormat;
   bool isVisible;
   String color;
+  WaypointType? type;
   double? radius;
   bool circleColorSameAsColor;
   String? circleColor;
   bool? isEditable;
 
   MapPointDAO(this.uuid, this.name, this.latitude, this.longitude, this.coordinateFormat, this.isVisible, this.color,
-      this.radius, this.circleColorSameAsColor, this.circleColor, this.isEditable);
+      this.type, this.radius, this.circleColorSameAsColor, this.circleColor, this.isEditable);
 
   Map<String, Object?> toMap() => {
         'uuid': uuid,
@@ -81,6 +83,7 @@ class MapPointDAO {
         'coordinateFormat': coordinateFormat,
         'isVisible': isVisible,
         'color': color,
+        'type': typeAsString[type],
         'radius': radius,
         'circleColorSameAsColor': circleColorSameAsColor,
         'circleColor': circleColor,
@@ -95,6 +98,7 @@ class MapPointDAO {
         coordinateFormat = toStringOrNull(json['coordinateFormat']) ?? defaultCoordinateFormatPersistenceKey,
         isVisible = toBoolOrNull(json['isVisible']) ?? true,
         color = toStringOrNull(json['color']) ?? colorToHexString(COLOR_MAP_POINT),
+        type = stringAsType[toStringOrNull(json['type'])],
         radius = toDoubleOrNull(json['radius']),
         circleColorSameAsColor = toBoolOrNull(json['circleColorSameAsColor']) ?? true,
         circleColor = toStringOrNull(json['circleColor']) ?? colorToHexString(COLOR_MAP_POINT),

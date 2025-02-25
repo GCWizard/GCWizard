@@ -144,7 +144,7 @@ class _GpxReader {
       var tag = xmlElement.getElement('type')?.innerText ?? '';
 
       if (name.isNotEmpty) {
-        wpt.markerText = name;
+        wpt.markerText = '$name\n${tag.split('|')[1]}';
         if (tag.contains('Parking')) {
           wpt.color = COLOR_MAP_GPX_IMPORT_PARKING;
           wpt.type = WaypointType.PARKING;
@@ -154,6 +154,9 @@ class _GpxReader {
         } else if (tag.contains('Physical')) {
           wpt.color = COLOR_MAP_GPX_IMPORT_PHYSICALSTAGE;
           wpt.type = WaypointType.PHYSICAL;
+        } else if (tag.contains('Reference')) {
+          wpt.color = COLOR_MAP_GPX_IMPORT_REFERENCEPOINT;
+          wpt.type = WaypointType.REFERENCE;
         }
       } else {
         wpt.markerText = xmlElement.getElement('desc')?.innerText;

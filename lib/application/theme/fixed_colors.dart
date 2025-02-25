@@ -9,9 +9,11 @@ const COLOR_MAP_USERPOSITION = Colors.orange;
 const COLOR_MAP_ICONBUTTONS = Colors.black26;
 const COLOR_MAP_ACTIVATED_ICONBUTTON = Color.fromARGB(200, 255, 87, 40);
 
-const COLOR_MAP_GPX_IMPORT_PARKING = Colors.blueAccent;
+const COLOR_MAP_GPX_IMPORT_PARKING = Colors.blueAccent; // todo: better colors
 const COLOR_MAP_GPX_IMPORT_VIRTUALSTAGE = Colors.teal;
-const COLOR_MAP_GPX_IMPORT_PHYSICALSTAGE = Colors.lime;
+const COLOR_MAP_GPX_IMPORT_PHYSICALSTAGE = Colors.indigo;
+const COLOR_MAP_GPX_IMPORT_REFERENCEPOINT = Colors.brown;
+
 
 const COLOR_MAP_LICENSETEXT = Color(0xFF26282F);
 const COLOR_MAP_LICENSETEXT_BACKGROUND = Colors.white;

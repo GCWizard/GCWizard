@@ -35,6 +35,7 @@ class MapViewPersistenceAdapter {
         persistenceKeyByCoordinateFormatKey(gcwMapPoint.coordinateFormat!.type),
         gcwMapPoint.isVisible,
         colorToHexString(gcwMapPoint.color),
+        gcwMapPoint.type,
         gcwMapPoint.hasCircle() ? gcwMapPoint.circle!.radius : null,
         gcwMapPoint.circleColorSameAsPointColor,
         gcwMapPoint.hasCircle() ? colorToHexString(gcwMapPoint.circle!.color) : null,
@@ -51,6 +52,7 @@ class MapViewPersistenceAdapter {
         coordinateFormat: CoordinateFormat.fromPersistenceKey(mapPointDAO.coordinateFormat),
         isVisible: mapPointDAO.isVisible,
         color: hexStringToColor(mapPointDAO.color),
+        type: mapPointDAO.type,
         circle: mapPointDAO.radius != null
             ? GCWMapCircle(
                 centerPoint: coords,
@@ -167,6 +169,7 @@ class MapViewPersistenceAdapter {
     mapPointDAO.coordinateFormat = persistenceKeyByCoordinateFormatKey(mapPoint.coordinateFormat!.type);
     mapPointDAO.isVisible = mapPoint.isVisible;
     mapPointDAO.color = colorToHexString(mapPoint.color);
+    mapPointDAO.type = mapPoint.type;
     mapPointDAO.radius = mapPoint.hasCircle() ? mapPoint.circle!.radius : null;
     mapPointDAO.circleColorSameAsColor = mapPoint.circleColorSameAsPointColor;
     mapPointDAO.circleColor = mapPoint.hasCircle() ? colorToHexString(mapPoint.circle!.color) : null;

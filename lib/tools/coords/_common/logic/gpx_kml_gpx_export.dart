@@ -36,16 +36,25 @@ Future<bool> exportCoordinates(BuildContext context, List<GCWMapPoint> points, L
   }
 }
 
-final Map<WaypointType, String> _symAsString = {
+final Map<WaypointType, String> symAsString = {
   WaypointType.PARKING: 'Parking Area',
   WaypointType.VIRTUAL: 'Virtual Stage',
   WaypointType.PHYSICAL: 'Physical Stage',
+  WaypointType.REFERENCE: 'Reference Point'
 };
 
-final Map<WaypointType, String> _typeAsString = {
+final Map<WaypointType, String> typeAsString = {
   WaypointType.PARKING: 'Waypoint|Parking Area',
   WaypointType.VIRTUAL: 'Waypoint|Virtual Stage',
   WaypointType.PHYSICAL: 'Waypoint|Physical Stage',
+  WaypointType.REFERENCE: 'Waypoint|Reference Point'
+};
+
+final Map<String, WaypointType> stringAsType = {
+  'Waypoint|Parking Area': WaypointType.PARKING,
+  'Waypoint|Virtual Stage': WaypointType.VIRTUAL,
+  'Waypoint|Physical Stage': WaypointType.PHYSICAL,
+  'Waypoint|Reference Point': WaypointType.REFERENCE,
 };
 
 /// Convert points into GPX
@@ -120,8 +129,8 @@ class _GpxWriter {
         }
         _writeElement(builder, 'cmt', '');
         _writeElement(builder, 'desc', '');
-        _writeElement(builder, 'sym', _symAsString[wpt.type] ?? '');
-        _writeElement(builder, 'type', _typeAsString[wpt.type] ?? '');
+        _writeElement(builder, 'sym', symAsString[wpt.type] ?? '');
+        _writeElement(builder, 'type', typeAsString[wpt.type] ?? '');
         builder.element('gsak:wptExtension', nest: () {
           _writeElement(builder, 'gsak:Parent', cacheName);
         });

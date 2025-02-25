@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
+
 bool isDouble(Object? value) {
   if (value == null) return false;
 
@@ -70,6 +72,14 @@ bool? toBoolOrNull(Object? value) {
 String? toStringOrNull(Object? value) {
   if (isString(value)) {
     return value as String;
+  }
+
+  return null;
+}
+
+WaypointType? toWaypointOrNull (Object? value) {
+  if (value is WaypointType) {
+    return value;
   }
 
   return null;
