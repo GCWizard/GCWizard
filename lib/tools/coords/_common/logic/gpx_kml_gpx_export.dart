@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
+import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/color_utils.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
@@ -36,26 +37,19 @@ Future<bool> exportCoordinates(BuildContext context, List<GCWMapPoint> points, L
   }
 }
 
-final Map<WaypointType, String> symAsString = {
+final Map<WaypointType, String> _descriptions = {
+  WaypointType.OTHER: 'Other',
   WaypointType.PARKING: 'Parking Area',
   WaypointType.VIRTUAL: 'Virtual Stage',
   WaypointType.PHYSICAL: 'Physical Stage',
-  WaypointType.REFERENCE: 'Reference Point'
+  WaypointType.REFERENCE: 'Reference Point',
 };
 
-final Map<WaypointType, String> typeAsString = {
-  WaypointType.PARKING: 'Waypoint|Parking Area',
-  WaypointType.VIRTUAL: 'Waypoint|Virtual Stage',
-  WaypointType.PHYSICAL: 'Waypoint|Physical Stage',
-  WaypointType.REFERENCE: 'Waypoint|Reference Point'
-};
-
-final Map<String, WaypointType> stringAsType = {
-  'Waypoint|Parking Area': WaypointType.PARKING,
-  'Waypoint|Virtual Stage': WaypointType.VIRTUAL,
-  'Waypoint|Physical Stage': WaypointType.PHYSICAL,
-  'Waypoint|Reference Point': WaypointType.REFERENCE,
-};
+final Map<WaypointType, String> symAsString = Map.unmodifiable(_descriptions);
+final Map<WaypointType, String> typeAsString = Map.unmodifiable(
+  _descriptions.map((key, value) => MapEntry(key, 'Waypoint|$value')),
+);
+final Map<String, WaypointType> stringAsType = switchMapKeyValue(typeAsString);
 
 /// Convert points into GPX
 class _GpxWriter {
@@ -130,7 +124,7 @@ class _GpxWriter {
         _writeElement(builder, 'cmt', '');
         _writeElement(builder, 'desc', '');
         _writeElement(builder, 'sym', symAsString[wpt.type] ?? '');
-        _writeElement(builder, 'type', typeAsString[wpt.type] ?? '');
+        _writeElement(builder, 'type', typeAsString[wpt.type] ?? 'Waypoint|Other');
         builder.element('gsak:wptExtension', nest: () {
           _writeElement(builder, 'gsak:Parent', cacheName);
         });
