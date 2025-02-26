@@ -142,6 +142,7 @@ class MapViewPersistenceAdapter {
         coordinateFormat: coordinateFormat ?? defaultCoordinateFormat,
         isEditable: true,
         color: HSVColor.fromAHSV(1.0, random.nextDouble() * 360.0, 1.0, random.nextDouble() / 2 + 0.5).toColor(),
+        type: WaypointType.OTHER,
         circleColorSameAsPointColor: true);
 
     insertMapPointDAO(gcwMapPointToMapPointDAO(mapPoint), _mapViewDAO);

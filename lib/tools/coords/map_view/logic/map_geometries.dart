@@ -10,7 +10,7 @@ import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart
 import 'package:latlong2/latlong.dart';
 import 'package:uuid/uuid.dart';
 
-enum WaypointType {PARKING, VIRTUAL, PHYSICAL, REFERENCE}
+enum WaypointType {OTHER, PARKING, VIRTUAL, PHYSICAL, REFERENCE}
 
 class GCWMapPoint {
   String? uuid;
