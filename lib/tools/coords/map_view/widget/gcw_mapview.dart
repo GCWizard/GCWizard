@@ -1039,7 +1039,7 @@ class _GCWMapViewState extends State<GCWMapView> {
                               ? Matrix4.translationValues(-10.0, 0.0, 0.0)
                               : null,
                           child: Text(
-                              gcwMarker.coordinateDescription!,
+                              '${gcwMarker.coordinateDescription!} (${gcwMarker.mapPoint.type.toString()})',
                               style: gcwDialogTextStyle().copyWith(fontWeight: FontWeight.bold),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,),
