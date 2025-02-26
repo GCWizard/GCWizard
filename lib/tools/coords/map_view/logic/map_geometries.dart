@@ -10,7 +10,80 @@ import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart
 import 'package:latlong2/latlong.dart';
 import 'package:uuid/uuid.dart';
 
-enum WaypointType {OTHER, PARKING, VIRTUAL, PHYSICAL, REFERENCE}
+class WaypointType {
+  final String type;
+
+  const WaypointType._(this.type);
+
+  static const WaypointType OTHER = WaypointType._("Other");
+  static const WaypointType PARKING = WaypointType._("Parking Area");
+  static const WaypointType VIRTUAL = WaypointType._("Virtual Stage");
+  static const WaypointType PHYSICAL = WaypointType._("Physical Stage");
+  static const WaypointType REFERENCE = WaypointType._("Reference Point");
+  static const WaypointType FINAL = WaypointType._("Final Location");
+
+  static const List<WaypointType> values = [
+    OTHER,
+    PARKING,
+    VIRTUAL,
+    PHYSICAL,
+    REFERENCE,
+    FINAL,
+  ];
+
+  @override
+  String toString() => type;
+
+  static WaypointType fromString(String? value) {
+    if (value == null) return OTHER;
+
+    String processedValue = value.contains('|') ? value.split('|').last.trim() : value;
+
+    return values.firstWhere(
+          (e) => e.type.toLowerCase() == processedValue.toLowerCase(),
+      orElse: () => OTHER,
+    );
+  }
+
+  // icon not yet used
+  static final Map<WaypointType, Map<String, dynamic>> _waypointDetails = {
+    OTHER: {
+      'name': "Other",
+      'color': COLOR_MAP_POINT,
+      'icon': const Icon(Icons.location_searching_outlined),
+    },
+    PARKING: {
+      'name': "Parking Area",
+      'color': COLOR_MAP_GPX_IMPORT_PARKING,
+      'icon': const Icon(Icons.local_parking),
+    },
+    VIRTUAL: {
+      'name': "Virtual Stage",
+      'color': COLOR_MAP_GPX_IMPORT_VIRTUALSTAGE,
+      'icon': const Icon(Icons.location_pin),
+    },
+    PHYSICAL: {
+      'name': "Physical Stage",
+      'color': COLOR_MAP_GPX_IMPORT_PHYSICALSTAGE,
+      'icon': const Icon(Icons.location_pin),
+    },
+    REFERENCE: {
+      'name': "Reference Point",
+      'color': COLOR_MAP_GPX_IMPORT_REFERENCEPOINT,
+      'icon': const Icon(Icons.star_border),
+    },
+    FINAL: {
+      'name': "Final Location",
+      'color': COLOR_MAP_GPX_IMPORT_FINAL,
+      'icon': const Icon(Icons.flag),
+    },
+  };
+
+  // getter
+  String get name => _waypointDetails[this]?['name'] as String? ?? "Unknown";
+  Color get color => _waypointDetails[this]?['color'] as Color? ?? Colors.black;
+  Icon get icon => _waypointDetails[this]?['icon'] as Icon? ?? const Icon(Icons.help_outline);
+}
 
 class GCWMapPoint {
   String? uuid;
