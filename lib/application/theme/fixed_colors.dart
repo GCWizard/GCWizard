@@ -13,6 +13,7 @@ const COLOR_MAP_GPX_IMPORT_PARKING = Colors.blueAccent; // todo: better colors
 const COLOR_MAP_GPX_IMPORT_VIRTUALSTAGE = Colors.teal;
 const COLOR_MAP_GPX_IMPORT_PHYSICALSTAGE = Colors.indigo;
 const COLOR_MAP_GPX_IMPORT_REFERENCEPOINT = Colors.brown;
+const COLOR_MAP_GPX_IMPORT_FINAL = Colors.red;
 
 
 const COLOR_MAP_LICENSETEXT = Color(0xFF26282F);

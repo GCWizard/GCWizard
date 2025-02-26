@@ -1032,15 +1032,19 @@ class _GCWMapViewState extends State<GCWMapView> {
                     : Container(),
                 gcwMarker.coordinateDescription == null
                     ? Container()
-                    : Container(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        transform: widget.isEditable && !_isOwnPosition(gcwMarker.mapPoint)
-                            ? Matrix4.translationValues(-10.0, 0.0, 0.0)
-                            : null,
-                        child: GCWText(
-                            text: gcwMarker.coordinateDescription!,
-                            style: gcwDialogTextStyle().copyWith(fontWeight: FontWeight.bold)),
-                      ),
+                    : Expanded(
+                      child: Container(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          transform: widget.isEditable && !_isOwnPosition(gcwMarker.mapPoint)
+                              ? Matrix4.translationValues(-10.0, 0.0, 0.0)
+                              : null,
+                          child: Text(
+                              gcwMarker.coordinateDescription!,
+                              style: gcwDialogTextStyle().copyWith(fontWeight: FontWeight.bold),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,),
+                        ),
+                    ),
               ],
             ),
             Container(margin: const EdgeInsets.only(bottom: 5)),

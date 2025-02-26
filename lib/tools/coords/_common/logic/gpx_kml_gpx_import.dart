@@ -141,29 +141,29 @@ class _GpxReader {
           point: LatLng(double.tryParse(lat) ?? 0, double.tryParse(lon) ?? 0),
           isEditable: true);
       var name = xmlElement.getElement('name')?.innerText ?? '';
-      var tag = xmlElement.getElement('type')?.innerText ?? '';
+      var type = xmlElement.getElement('type')?.innerText ?? '';
+      var wpType = WaypointType.fromString(type);
 
       if (name.isNotEmpty) {
-        wpt.markerText = '$name\n${tag.replaceAll(r'Waypoint|', '')}';
-        if (tag.contains('Parking')) {
-          wpt.color = COLOR_MAP_GPX_IMPORT_PARKING;
-          wpt.type = WaypointType.PARKING;
-        } else if (tag.contains('Virtual')) {
-          wpt.color = COLOR_MAP_GPX_IMPORT_VIRTUALSTAGE;
-          wpt.type = WaypointType.VIRTUAL;
-        } else if (tag.contains('Physical')) {
-          wpt.color = COLOR_MAP_GPX_IMPORT_PHYSICALSTAGE;
-          wpt.type = WaypointType.PHYSICAL;
-        } else if (tag.contains('Reference')) {
-          wpt.color = COLOR_MAP_GPX_IMPORT_REFERENCEPOINT;
-          wpt.type = WaypointType.REFERENCE;
-        } else {
-          wpt.color = COLOR_MAP_POINT;
-          wpt.type = WaypointType.OTHER;
-        }
+        wpt.markerText = '$name (${type.replaceAll('Waypoint|', '').replaceAll('Geocache|', '')})';
       } else {
         wpt.markerText = xmlElement.getElement('desc')?.innerText;
       }
+
+      if (type.isNotEmpty) {
+        wpt.color = wpType.color;
+        wpt.type = wpType;
+      } else {
+        wpt.color = COLOR_MAP_POINT;
+        wpt.type = WaypointType.OTHER;
+      }
+
+      if (wpt.type == WaypointType.FINAL  // ignores c:geo Final (0.0, 0.0) for unsolved caches
+          && wpt.point.latitude == (0.0)
+          && wpt.point.longitude == (0.0)) {
+        return null;
+      }
+
       return wpt;
     }
     return null;
