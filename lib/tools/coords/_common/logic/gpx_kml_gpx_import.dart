@@ -146,6 +146,8 @@ class _GpxReader {
 
       if (name.isNotEmpty) {
         wpt.markerText = name;
+        // wpt.markerText = '$name (${type.replaceAll('Waypoint|', '').replaceAll('Geocache|', '')})';
+
       } else {
         wpt.markerText = xmlElement.getElement('desc')?.innerText;
       }
