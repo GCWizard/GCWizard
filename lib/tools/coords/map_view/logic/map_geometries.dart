@@ -31,6 +31,20 @@ class WaypointType {
     FINAL,
   ];
 
+  // icon not yet used
+  static const _pointTypes = <String, (String name, Color color, Icon icon)>{
+    'Other': ("Other", COLOR_MAP_POINT, Icon(Icons.location_searching_outlined)),
+    'Parking Area': ("Parking Area", COLOR_MAP_GPX_IMPORT_PARKING, Icon(Icons.local_parking)),
+    'Virtual Stage': ("Virtual Stage", COLOR_MAP_GPX_IMPORT_VIRTUALSTAGE, Icon(Icons.location_pin)),
+    'Physical Stage': ("Physical Stage", COLOR_MAP_GPX_IMPORT_PHYSICALSTAGE, Icon(Icons.location_pin)),
+    'Reference Point': ("Reference Point", COLOR_MAP_GPX_IMPORT_REFERENCEPOINT, Icon(Icons.star_border)),
+    'Final Location': ("Final Location", COLOR_MAP_GPX_IMPORT_FINAL, Icon(Icons.flag)),
+  };
+
+  String get name => _pointTypes[type]?.$1 ?? "Unknown";
+  Color get color => _pointTypes[type]?.$2 ?? Colors.black;
+  Icon get icon => _pointTypes[type]?.$3 ?? const Icon(Icons.help_outline);
+
   @override
   String toString() => type;
 
@@ -44,45 +58,6 @@ class WaypointType {
       orElse: () => OTHER,
     );
   }
-
-  // icon not yet used
-  static final Map<WaypointType, Map<String, dynamic>> _waypointDetails = {
-    OTHER: {
-      'name': "Other",
-      'color': COLOR_MAP_POINT,
-      'icon': const Icon(Icons.location_searching_outlined),
-    },
-    PARKING: {
-      'name': "Parking Area",
-      'color': COLOR_MAP_GPX_IMPORT_PARKING,
-      'icon': const Icon(Icons.local_parking),
-    },
-    VIRTUAL: {
-      'name': "Virtual Stage",
-      'color': COLOR_MAP_GPX_IMPORT_VIRTUALSTAGE,
-      'icon': const Icon(Icons.location_pin),
-    },
-    PHYSICAL: {
-      'name': "Physical Stage",
-      'color': COLOR_MAP_GPX_IMPORT_PHYSICALSTAGE,
-      'icon': const Icon(Icons.location_pin),
-    },
-    REFERENCE: {
-      'name': "Reference Point",
-      'color': COLOR_MAP_GPX_IMPORT_REFERENCEPOINT,
-      'icon': const Icon(Icons.star_border),
-    },
-    FINAL: {
-      'name': "Final Location",
-      'color': COLOR_MAP_GPX_IMPORT_FINAL,
-      'icon': const Icon(Icons.flag),
-    },
-  };
-
-  // getter
-  String get name => _waypointDetails[this]?['name'] as String? ?? "Unknown";
-  Color get color => _waypointDetails[this]?['color'] as Color? ?? Colors.black;
-  Icon get icon => _waypointDetails[this]?['icon'] as Icon? ?? const Icon(Icons.help_outline);
 }
 
 class GCWMapPoint {
