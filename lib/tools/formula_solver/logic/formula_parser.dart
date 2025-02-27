@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/alphabet_values/logic/alphabet_values.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitution.dart';
 import 'package:gc_wizard/tools/formula_solver/persistence/model.dart';
@@ -727,5 +728,55 @@ class FormulaSolverOutput {
   @override
   String toString() {
     return "{'state': $state, 'results': $results}";
+  }
+}
+
+List<FormulaSolverOutput> formatFormulas(List<Formula> formulas, List<FormulaValue> values) {
+  var formulaReferences = <String, String>{};
+  return formulas.mapIndexed((index, formula) => formatFormula(index+1, formula, values, formulaReferences)).toList();
+}
+
+FormulaSolverOutput formatFormula(int index, Formula formula, List<FormulaValue> values, Map<String, String> formulaReferences) {
+
+
+  String _sanitizeFormulaReferences(String formula) {
+    return formula.replaceAllMapped(
+        RegExp(r'{(.*?)}'), (match) => '{' + match[1]!.toLowerCase().replaceAll(RegExp(r'\s'), '') + '}');
+  }
+
+  String _removeOuterSquareBrackets(String formula) {
+    formula = formula.trim();
+    if (formula.startsWith('[') && formula.endsWith(']')) {
+      formula = formula.substring(1, formula.length - 1);
+    }
+
+    return formula;
+  }
+
+  var formulaToParse =
+  substitution(_sanitizeFormulaReferences(formula.formula), formulaReferences, caseSensitive: false);
+  FormulaSolverOutput calculated = formulaParser.parse(formulaToParse, values);
+
+
+  String firstFormulaResult;
+  switch (calculated.state) {
+    case FormulaState.STATE_SINGLE_OK:
+      firstFormulaResult = calculated.results.first.result;
+      break;
+    case FormulaState.STATE_SINGLE_ERROR:
+      firstFormulaResult = '(${_removeOuterSquareBrackets(calculated.results.first.result)})';
+      break;
+    default:
+      firstFormulaResult = '(${_removeOuterSquareBrackets(formula.formula)})';
+      break;
+  }
+
+  firstFormulaResult = firstFormulaResult.replaceAll(RegExp(r'\n'), ' ');
+
+  formulaReferences.putIfAbsent('{${index + 1}}',
+          () => RECURSIVE_FORMULA_REPLACEMENT_START + firstFormulaResult + RECURSIVE_FORMULA_REPLACEMENT_END);
+  if (formula.name.isNotEmpty) {
+    formulaReferences.putIfAbsent('{${formula.name.toLowerCase().replaceAll(RegExp(r'\s'), '')}}',
+            () => RECURSIVE_FORMULA_REPLACEMENT_START + firstFormulaResult + RECURSIVE_FORMULA_REPLACEMENT_END);
   }
 }
