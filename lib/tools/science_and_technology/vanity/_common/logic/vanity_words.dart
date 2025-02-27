@@ -38,6 +38,14 @@ const _VanityToDEU = {
   '4723': 'GRAD',
   '78658': 'PUNKT',
   '642487': 'NICHTS',
+  '343737': 'DIESER',
+  '22243': 'CACHE',
+  '478': 'IST',
+  '98': 'ZU',
+  '346336': 'FINDEN',
+  '234': 'BEI',
+  '863': 'UND',
+  '34625': 'FINAL',
 };
 const _VanityToENG = {
   '9376': 'ZERO',
@@ -56,6 +64,8 @@ const _VanityToENG = {
   '76884': 'SOUTH',
   '334733': 'DEGREE',
   '76468': 'POINT',
+  '22243': 'CACHE',
+  '34625': 'FINAL',
 };
 const _VanityToFRA = {
   '9376': 'ZÉRO',
@@ -74,6 +84,7 @@ const _VanityToFRA = {
   '783': 'SUD',
   '33473': 'DEGRÉ',
   '76468': 'POINT',
+  '22243': 'CACHE',
 };
 const _VanityToITA = {
   '9376': 'ZERO',
