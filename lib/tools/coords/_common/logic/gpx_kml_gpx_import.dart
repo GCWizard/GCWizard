@@ -143,7 +143,7 @@ class _GpxReader {
       var name = xmlElement.getElement('name')?.innerText ?? '';
       var type = xmlElement.getElement('type')?.innerText ?? '';
       var wpType = WaypointType.fromString(type);
-
+      print('$wpType $type $name');
       if (name.isNotEmpty) {
         wpt.markerText = name;
       } else {

@@ -984,6 +984,7 @@ class _GCWMapViewState extends State<GCWMapView> {
   Widget _buildPopup(Marker marker) {
     ThemeColors colors = themeColors();
     _GCWMarker gcwMarker = marker as _GCWMarker;
+    String _gcwMarkerString = gcwMarker.mapPoint.type.toString();
 
     var height = 100.0;
     if (widget.isEditable) height += 50; // for FROM/TO Line Buttons
@@ -1039,10 +1040,12 @@ class _GCWMapViewState extends State<GCWMapView> {
                               ? Matrix4.translationValues(-10.0, 0.0, 0.0)
                               : null,
                           child: Text(
-                              '${gcwMarker.coordinateDescription!} (${gcwMarker.mapPoint.type.toString()})',
+                              (_gcwMarkerString.isNotEmpty)
+                                  ? '${gcwMarker.coordinateDescription!} ($_gcwMarkerString)'
+                                  : gcwMarker.coordinateDescription!,
                               style: gcwDialogTextStyle().copyWith(fontWeight: FontWeight.bold),
                               maxLines: 2,
-                              overflow: TextOverflow.ellipsis,),
+                              overflow: TextOverflow.ellipsis),
                         ),
                     ),
               ],
