@@ -97,7 +97,8 @@ class MapPointDAO {
         coordinateFormat = toStringOrNull(json['coordinateFormat']) ?? defaultCoordinateFormatPersistenceKey,
         isVisible = toBoolOrNull(json['isVisible']) ?? true,
         color = toStringOrNull(json['color']) ?? colorToHexString(COLOR_MAP_POINT),
-        type = WaypointType.fromString(toStringOrNull(json['type']) ?? 'OTHER'),        radius = toDoubleOrNull(json['radius']),
+        type = WaypointType.fromString(toStringOrNull(json['type'])),
+        radius = toDoubleOrNull(json['radius']),
         circleColorSameAsColor = toBoolOrNull(json['circleColorSameAsColor']) ?? true,
         circleColor = toStringOrNull(json['circleColor']) ?? colorToHexString(COLOR_MAP_POINT),
         isEditable = toBoolOrNull(json['isEditable']) ?? false;
