@@ -47,7 +47,6 @@ class WaypointType {
     if (value == null) return OTHER;
 
     String processedValue = value.contains('|') ? value.split('|').last.trim() : value;
-    print(processedValue);
     return values.firstWhere(
           (e) => e.type.toLowerCase() == processedValue.toLowerCase(),
       orElse: () => OTHER,
