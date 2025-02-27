@@ -12,52 +12,50 @@ import 'package:uuid/uuid.dart';
 
 class WaypointType {
   final String type;
-
-  const WaypointType._(this.type);
-
-  static const WaypointType OTHER = WaypointType._("Other");
-  static const WaypointType PARKING = WaypointType._("Parking Area");
-  static const WaypointType VIRTUAL = WaypointType._("Virtual Stage");
-  static const WaypointType PHYSICAL = WaypointType._("Physical Stage");
-  static const WaypointType REFERENCE = WaypointType._("Reference Point");
-  static const WaypointType FINAL = WaypointType._("Final Location");
+  final Color color;
+  final Icon icon;
 
   static const List<WaypointType> values = [
     OTHER,
-    PARKING,
-    VIRTUAL,
-    PHYSICAL,
-    REFERENCE,
-    FINAL,
+    MULTICACHE, UNKNOWNCACHE, TRADITIONAL, // todo: Traditional, Event, Virtual, ...
+    PARKING, VIRTUAL,  PHYSICAL, REFERENCE, FINAL,
   ];
 
-  // icon not yet used
-  static const _pointTypes = <String, (String name, Color color, Icon icon)>{
-    'Other': ("Other", COLOR_MAP_POINT, Icon(Icons.location_searching_outlined)),
-    'Parking Area': ("Parking Area", COLOR_MAP_GPX_IMPORT_PARKING, Icon(Icons.local_parking)),
-    'Virtual Stage': ("Virtual Stage", COLOR_MAP_GPX_IMPORT_VIRTUALSTAGE, Icon(Icons.location_pin)),
-    'Physical Stage': ("Physical Stage", COLOR_MAP_GPX_IMPORT_PHYSICALSTAGE, Icon(Icons.location_pin)),
-    'Reference Point': ("Reference Point", COLOR_MAP_GPX_IMPORT_REFERENCEPOINT, Icon(Icons.star_border)),
-    'Final Location': ("Final Location", COLOR_MAP_GPX_IMPORT_FINAL, Icon(Icons.flag)),
-  };
+  const WaypointType._(this.type, this.color, this.icon);
 
-  String get name => _pointTypes[type]?.$1 ?? "Unknown";
-  Color get color => _pointTypes[type]?.$2 ?? Colors.black;
-  Icon get icon => _pointTypes[type]?.$3 ?? const Icon(Icons.help_outline);
+  static const WaypointType OTHER = WaypointType._(
+      "Other", COLOR_MAP_POINT, Icon(Icons.location_searching_outlined));
+  static const WaypointType MULTICACHE = WaypointType._(
+      "Multi-cache", COLOR_MAP_POINT, Icon(Icons.add_location_alt));
+  static const WaypointType UNKNOWNCACHE = WaypointType._(
+      "Unknown Cache", COLOR_MAP_POINT, Icon(Icons.question_mark));
+  static const WaypointType TRADITIONAL = WaypointType._(
+      "Traditional Cache", COLOR_MAP_POINT, Icon(Icons.my_location));
 
-  @override
-  String toString() => type;
+  static const WaypointType PARKING = WaypointType._(
+      "Parking Area", COLOR_MAP_GPX_IMPORT_PARKING, Icon(Icons.local_parking));
+  static const WaypointType VIRTUAL = WaypointType._(
+      "Virtual Stage", COLOR_MAP_GPX_IMPORT_VIRTUALSTAGE, Icon(Icons.location_pin));
+  static const WaypointType PHYSICAL = WaypointType._(
+      "Physical Stage", COLOR_MAP_GPX_IMPORT_PHYSICALSTAGE, Icon(Icons.location_pin));
+  static const WaypointType REFERENCE = WaypointType._(
+      "Reference Point", COLOR_MAP_GPX_IMPORT_REFERENCEPOINT, Icon(Icons.star_border));
+  static const WaypointType FINAL = WaypointType._(
+      "Final Location", COLOR_MAP_GPX_IMPORT_FINAL, Icon(Icons.flag));
 
   static WaypointType fromString(String? value) {
     if (value == null) return OTHER;
 
     String processedValue = value.contains('|') ? value.split('|').last.trim() : value;
-
+    print(processedValue);
     return values.firstWhere(
           (e) => e.type.toLowerCase() == processedValue.toLowerCase(),
       orElse: () => OTHER,
     );
   }
+
+  @override
+  String toString() => type; // Direkt den Typ zurückgeben
 }
 
 class GCWMapPoint {
