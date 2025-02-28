@@ -34,7 +34,6 @@ import 'package:gc_wizard/tools/coords/map_view/widget/gcw_mapview.dart';
 import 'package:gc_wizard/tools/coords/variable_coordinate/persistence/json_provider.dart' as var_coords_provider;
 import 'package:gc_wizard/tools/coords/variable_coordinate/persistence/model.dart' as var_coords_model;
 import 'package:gc_wizard/tools/coords/variable_coordinate/widget/variable_coordinate.dart';
-import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitution.dart';
 import 'package:gc_wizard/tools/formula_solver/logic/formula_painter.dart';
 import 'package:gc_wizard/tools/formula_solver/logic/formula_parser.dart';
 import 'package:gc_wizard/tools/formula_solver/persistence/json_provider.dart';

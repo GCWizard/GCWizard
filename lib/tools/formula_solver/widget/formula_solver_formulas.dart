@@ -164,91 +164,42 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                 helpSearchString: 'coords_variablecoordinate_title',
                 id: 'coords_variablecoordinate')));
   }
-
-  String _removeOuterSquareBrackets(String formula) {
-    formula = formula.trim();
-    if (formula.startsWith('[') && formula.endsWith(']')) {
-      formula = formula.substring(1, formula.length - 1);
-    }
-
-    return formula;
-  }
-
-  String _sanitizeFormulaReferences(String formula) {
-    return formula.replaceAllMapped(
-        RegExp(r'{(.*?)}'), (match) => '{' + match[1]!.toLowerCase().replaceAll(RegExp(r'\s'), '') + '}');
-  }
-
+  
   Column _buildGroupList(BuildContext context) {
     var odd = true;
 
-    var formulaReferences = <String, String>{};
-
     var rows = formatAndParseFormulas(widget.group.formulas, widget.group.values)
-        .map((calculated) {
-    // var rows = widget.group.formulas
-    //     .asMap()
-    //     .map((index, formula) {
-    //       /*
-    //           TODO: TECHNICAL DEBT:
-    //           - Violation of layer separation principle (https://en.wikipedia.org/wiki/Separation_of_concerns)
-    //           - Logic should be completely separated from UI (
-    //               In fact, this is for the recursive/referenced formulas... And therefore, this is part of
-    //               the logic. It needs to be moved from the frontend part
-    //             )
-    //        */
-    //       var formulaToParse =
-    //           substitution(_sanitizeFormulaReferences(formula.formula), formulaReferences, caseSensitive: false);
-    //       FormulaSolverOutput calculated = formulaParser.parse(formulaToParse, widget.group.values);
-    //
-    //       var resultType =
-    //           calculated.results.length > 1 ? _FormulaSolverResultType.INTERPOLATED : _FormulaSolverResultType.FIXED;
-    //
-    //       String firstFormulaResult;
-    //       switch (calculated.state) {
-    //         case FormulaState.STATE_SINGLE_OK:
-    //           firstFormulaResult = calculated.results.first.result;
-    //           break;
-    //         case FormulaState.STATE_SINGLE_ERROR:
-    //           firstFormulaResult = '(${_removeOuterSquareBrackets(calculated.results.first.result)})';
-    //           break;
-    //         default:
-    //           firstFormulaResult = '(${_removeOuterSquareBrackets(formula.formula)})';
-    //           break;
-    //       }
-    //
-    //       firstFormulaResult = firstFormulaResult.replaceAll(RegExp(r'\n'), ' ');
-    //
-    //       formulaReferences.putIfAbsent('{${index + 1}}',
-    //           () => RECURSIVE_FORMULA_REPLACEMENT_START + firstFormulaResult + RECURSIVE_FORMULA_REPLACEMENT_END);
-    //       if (formula.name.isNotEmpty) {
-    //         formulaReferences.putIfAbsent('{${formula.name.toLowerCase().replaceAll(RegExp(r'\s'), '')}}',
-    //             () => RECURSIVE_FORMULA_REPLACEMENT_START + firstFormulaResult + RECURSIVE_FORMULA_REPLACEMENT_END);
-    //       }
+        .mapIndexed((index, calculated) {
 
           Widget output;
 
+          var resultType =
+              calculated.output.results.length > 1
+                  ? _FormulaSolverResultType.INTERPOLATED
+                  : _FormulaSolverResultType.FIXED;
+
+
           Map<int, _ParsedCoordinate> _foundFormulaCoordinates = {};
-          calculated.results.asMap().forEach((idx, result) {
+          calculated.output.results.asMap().forEach((idx, result) {
             BaseCoordinate? _foundFormulaCoordinate = parseStandardFormats(result.result, wholeString: true);
             if (_foundFormulaCoordinate != null && _foundFormulaCoordinate.toLatLng() != null) {
               _foundFormulaCoordinates.putIfAbsent(
                   idx + 1,
                   () => _ParsedCoordinate(_foundFormulaCoordinate, resultType,
-                      '${formula.id}' + (calculated.results.length > 1 ? '.${idx + 1}' : '')));
+                      '${calculated.formula.id}' + (calculated.output.results.length > 1 ? '.${idx + 1}' : '')));
             }
           });
           if (_foundFormulaCoordinates.isNotEmpty) {
             _foundCoordinates.putIfAbsent(index + 1, () => _foundFormulaCoordinates);
           }
 
-          var hasName = formula.name.isNotEmpty;
+          var hasName =calculated.formula.name.isNotEmpty;
 
           Widget row = Container(
             padding: const EdgeInsets.only(top: DEFAULT_MARGIN),
             child: Row(
               children: <Widget>[
-                _currentEditId == formula.id
+                _currentEditId == calculated.formula.id
                     ? Expanded(
                         child: Padding(
                         padding: const EdgeInsets.only(
@@ -265,7 +216,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                         ),
                       ))
                     : Container(),
-                _currentEditNameId == formula.id
+                _currentEditNameId == calculated.formula.id
                     ? Expanded(
                         child: Padding(
                         padding: const EdgeInsets.only(
@@ -282,7 +233,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                         ),
                       ))
                     : Container(),
-                _currentEditId != formula.id && _currentEditNameId != formula.id
+                _currentEditId != calculated.formula.id && _currentEditNameId != calculated.formula.id
                     ? Expanded(
                         child: Column(children: <Widget>[
                         hasName
@@ -293,7 +244,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                                     children: [
                                       Container(height: 2 * DOUBLE_DEFAULT_MARGIN),
                                       GCWTextDivider(
-                                        text: formula.name,
+                                        text: calculated.formula.name,
                                         suppressTopSpace: true,
                                       ),
                                     ],
@@ -306,7 +257,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                             SizedBox(width: 35, child: GCWText(text: (index + 1).toString() + '.')),
                             Flexible(
                               child: _buildFormulaText(
-                                  formula.formula, widget.group.values, index + 1, widget.group.formulas),
+                                  calculated.formula.formula, widget.group.values, index + 1, widget.group.formulas),
                             )
                           ],
                         ),
@@ -317,7 +268,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                               width: 35,
                               alignment: Alignment.topLeft,
                               child: [FormulaState.STATE_SINGLE_OK, FormulaState.STATE_EXPANDED_OK]
-                                      .contains(calculated.state)
+                                      .contains(calculated.output.state)
                                   ? Icon(
                                       Icons.check,
                                       color: _themeColors.mainFont(),
@@ -327,25 +278,25 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                                       color: themeColors().formulaError(),
                                     ),
                             ),
-                            Flexible(child: _buildFormulaOutput(index, calculated, _foundFormulaCoordinates))
+                            Flexible(child: _buildFormulaOutput(index, calculated.output, _foundFormulaCoordinates))
                           ],
                         ))
                       ]))
                     : Container(),
-                _currentEditId == formula.id || _currentEditNameId == formula.id
+                _currentEditId == calculated.formula.id || _currentEditNameId == calculated.formula.id
                     ? GCWIconButton(
                         icon: Icons.check,
                         onPressed: () {
-                          if (_currentEditId == formula.id) {
-                            formula.formula = _currentEditedFormula;
-                            _updateFormula(formula);
+                          if (_currentEditId == calculated.formula.id) {
+                            calculated.formula.formula = _currentEditedFormula;
+                            _updateFormula(calculated.formula);
                             setState(() {
                               _currentEditId = null;
                               _editFormulaController.clear();
                             });
-                          } else if (_currentEditNameId == formula.id) {
-                            formula.name = _currentEditedName;
-                            _updateFormula(formula);
+                          } else if (_currentEditNameId == calculated.formula.id) {
+                            calculated.formula.name = _currentEditedName;
+                            _updateFormula(calculated.formula);
                             setState(() {
                               _currentEditNameId = null;
                               _editNameController.clear();
@@ -363,21 +314,21 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                                   child:
                                       iconedGCWPopupMenuItem(context, Icons.edit, 'formulasolver_formulas_editformula'),
                                   action: (index) => setState(() {
-                                        _currentEditId = formula.id;
-                                        _currentEditedFormula = formula.formula;
-                                        _editFormulaController.text = formula.formula;
+                                        _currentEditId = calculated.formula.id;
+                                        _currentEditedFormula = calculated.formula.formula;
+                                        _editFormulaController.text = calculated.formula.formula;
                                         FocusScope.of(context).requestFocus(_editFocusNode);
                                       })),
                               GCWPopupMenuItem(
                                   child: iconedGCWPopupMenuItem(
                                       context, Icons.edit, 'formulasolver_formulas_modifyformula'),
                                   action: (index) => setState(() {
-                                        _showFormulaReplaceDialog(context, [formula],
+                                        _showFormulaReplaceDialog(context, [calculated.formula],
                                             onOkPressed: (List<Formula> value) {
-                                          if (formula.formula == value.first.formula) return;
+                                          if (calculated.formula.formula == value.first.formula) return;
 
-                                          formula.formula = value.first.formula;
-                                          _updateFormula(formula);
+                                          calculated.formula.formula = value.first.formula;
+                                          _updateFormula(calculated.formula);
                                           setState(() {});
                                         });
                                       })),
@@ -385,9 +336,9 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                                   child: iconedGCWPopupMenuItem(
                                       context, Icons.text_fields, 'formulasolver_formulas_nameformula'),
                                   action: (index) => setState(() {
-                                        _currentEditNameId = formula.id;
-                                        _currentEditedName = formula.name;
-                                        _editNameController.text = formula.name;
+                                        _currentEditNameId = calculated.formula.id;
+                                        _currentEditedName = calculated.formula.name;
+                                        _editNameController.text = calculated.formula.name;
                                         FocusScope.of(context).requestFocus(_editFocusNode);
                                       })),
                               GCWPopupMenuItem(
@@ -395,26 +346,26 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                                       context, Icons.delete, 'formulasolver_formulas_removeformula'),
                                   action: (index) => showDeleteAlertDialog(
                                         context,
-                                        formula.formula,
+                                        calculated.formula.formula,
                                         () {
-                                          _removeFormula(formula);
+                                          _removeFormula(calculated.formula);
                                           setState(() {});
                                         },
                                       )),
                               GCWPopupMenuItem(
                                 child: iconedGCWPopupMenuItem(
                                     context, Icons.content_copy, 'formulasolver_formulas_copyformula'),
-                                action: (index) => insertIntoGCWClipboard(context, formula.formula),
+                                action: (index) => insertIntoGCWClipboard(context, calculated.formula.formula),
                               ),
                               GCWPopupMenuItem(
                                   child: iconedGCWPopupMenuItem(
                                       context,
                                       Icons.content_copy,
-                                      calculated.results.length > 1
+                                      calculated.output.results.length > 1
                                           ? 'formulasolver_formulas_copyresults'
                                           : 'formulasolver_formulas_copyresult'),
                                   action: (index) => insertIntoGCWClipboard(
-                                      context, calculated.results.map((result) => result.result).join('\n'))),
+                                      context, calculated.output.results.map((result) => result.result).join('\n'))),
                               GCWPopupMenuItem(
                                   child: iconedGCWPopupMenuItem(
                                     context,
@@ -422,7 +373,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                                     'formulasolver_formulas_openinvarcoords',
                                   ),
                                   action: (index) {
-                                    var varCoordsFormula = _exportToVariableCoordinate(formula);
+                                    var varCoordsFormula = _exportToVariableCoordinate(calculated.formula);
                                     _openInVariableCoordinate(varCoordsFormula);
                                   }),
                               if (_foundFormulaCoordinates.isNotEmpty)
@@ -447,7 +398,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
             ),
           );
 
-          if (_currentEditId != formula.id && _currentEditNameId != formula.id) {
+          if (_currentEditId != calculated.formula.id && _currentEditNameId != calculated.formula.id) {
             row = IntrinsicHeight(child: row);
           }
 
@@ -458,10 +409,10 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
           }
           odd = !odd;
 
-          return MapEntry(index, output);
+          return output;
         })
-        .values
         .toList();
+
 
     if (rows.isNotEmpty) {
       rows.insert(

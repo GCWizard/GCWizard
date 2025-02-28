@@ -195,7 +195,7 @@ class FormulaParser {
 
   FormulaParser({this.unlimitedExpanded = false}) {
     _CUSTOM_FUNCTIONS.forEach((name, handler) {
-      parser.addFunction(name, handler);
+      parser.addFunction(name, handler, replace: true);
     });
   }
 
@@ -731,12 +731,13 @@ class FormulaSolverOutput {
   }
 }
 
-List<FormulaSolverOutput> formatAndParseFormulas(List<Formula> formulas, List<FormulaValue> values) {
+List<({Formula formula, FormulaSolverOutput output})> formatAndParseFormulas(List<Formula> formulas, List<FormulaValue> values) {
   var formulaReferences = <String, String>{};
   var formulaParser = FormulaParser();
 
-  return formulas.mapIndexed((index, formula) => formatAndParseFormula(index+1, formula, values,
-      formulaReferences, formulaParser)).toList();
+  return formulas.mapIndexed((index, formula) => (
+      formula: formula,
+      output: formatAndParseFormula(index, formula, values, formulaReferences, formulaParser))).toList();
 }
 
 FormulaSolverOutput formatAndParseFormula(int index, Formula formula, List<FormulaValue> values, Map<String,
