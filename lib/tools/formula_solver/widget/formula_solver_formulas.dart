@@ -184,45 +184,47 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
 
     var formulaReferences = <String, String>{};
 
-    var rows = widget.group.formulas
-        .asMap()
-        .map((index, formula) {
-          /*
-              TODO: TECHNICAL DEBT:
-              - Violation of layer separation principle (https://en.wikipedia.org/wiki/Separation_of_concerns)
-              - Logic should be completely separated from UI (
-                  In fact, this is for the recursive/referenced formulas... And therefore, this is part of
-                  the logic. It needs to be moved from the frontend part
-                )
-           */
-          var formulaToParse =
-              substitution(_sanitizeFormulaReferences(formula.formula), formulaReferences, caseSensitive: false);
-          FormulaSolverOutput calculated = formulaParser.parse(formulaToParse, widget.group.values);
-
-          var resultType =
-              calculated.results.length > 1 ? _FormulaSolverResultType.INTERPOLATED : _FormulaSolverResultType.FIXED;
-
-          String firstFormulaResult;
-          switch (calculated.state) {
-            case FormulaState.STATE_SINGLE_OK:
-              firstFormulaResult = calculated.results.first.result;
-              break;
-            case FormulaState.STATE_SINGLE_ERROR:
-              firstFormulaResult = '(${_removeOuterSquareBrackets(calculated.results.first.result)})';
-              break;
-            default:
-              firstFormulaResult = '(${_removeOuterSquareBrackets(formula.formula)})';
-              break;
-          }
-
-          firstFormulaResult = firstFormulaResult.replaceAll(RegExp(r'\n'), ' ');
-
-          formulaReferences.putIfAbsent('{${index + 1}}',
-              () => RECURSIVE_FORMULA_REPLACEMENT_START + firstFormulaResult + RECURSIVE_FORMULA_REPLACEMENT_END);
-          if (formula.name.isNotEmpty) {
-            formulaReferences.putIfAbsent('{${formula.name.toLowerCase().replaceAll(RegExp(r'\s'), '')}}',
-                () => RECURSIVE_FORMULA_REPLACEMENT_START + firstFormulaResult + RECURSIVE_FORMULA_REPLACEMENT_END);
-          }
+    var rows = formatAndParseFormulas(widget.group.formulas, widget.group.values)
+        .map((calculated) {
+    // var rows = widget.group.formulas
+    //     .asMap()
+    //     .map((index, formula) {
+    //       /*
+    //           TODO: TECHNICAL DEBT:
+    //           - Violation of layer separation principle (https://en.wikipedia.org/wiki/Separation_of_concerns)
+    //           - Logic should be completely separated from UI (
+    //               In fact, this is for the recursive/referenced formulas... And therefore, this is part of
+    //               the logic. It needs to be moved from the frontend part
+    //             )
+    //        */
+    //       var formulaToParse =
+    //           substitution(_sanitizeFormulaReferences(formula.formula), formulaReferences, caseSensitive: false);
+    //       FormulaSolverOutput calculated = formulaParser.parse(formulaToParse, widget.group.values);
+    //
+    //       var resultType =
+    //           calculated.results.length > 1 ? _FormulaSolverResultType.INTERPOLATED : _FormulaSolverResultType.FIXED;
+    //
+    //       String firstFormulaResult;
+    //       switch (calculated.state) {
+    //         case FormulaState.STATE_SINGLE_OK:
+    //           firstFormulaResult = calculated.results.first.result;
+    //           break;
+    //         case FormulaState.STATE_SINGLE_ERROR:
+    //           firstFormulaResult = '(${_removeOuterSquareBrackets(calculated.results.first.result)})';
+    //           break;
+    //         default:
+    //           firstFormulaResult = '(${_removeOuterSquareBrackets(formula.formula)})';
+    //           break;
+    //       }
+    //
+    //       firstFormulaResult = firstFormulaResult.replaceAll(RegExp(r'\n'), ' ');
+    //
+    //       formulaReferences.putIfAbsent('{${index + 1}}',
+    //           () => RECURSIVE_FORMULA_REPLACEMENT_START + firstFormulaResult + RECURSIVE_FORMULA_REPLACEMENT_END);
+    //       if (formula.name.isNotEmpty) {
+    //         formulaReferences.putIfAbsent('{${formula.name.toLowerCase().replaceAll(RegExp(r'\s'), '')}}',
+    //             () => RECURSIVE_FORMULA_REPLACEMENT_START + firstFormulaResult + RECURSIVE_FORMULA_REPLACEMENT_END);
+    //       }
 
           Widget output;
 
