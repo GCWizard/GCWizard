@@ -164,42 +164,42 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                 helpSearchString: 'coords_variablecoordinate_title',
                 id: 'coords_variablecoordinate')));
   }
-  
+
   Column _buildGroupList(BuildContext context) {
     var odd = true;
 
     var rows = formatAndParseFormulas(widget.group.formulas, widget.group.values)
-        .mapIndexed((index, calculated) {
+        .mapIndexed((index, parserResult) {
 
           Widget output;
 
           var resultType =
-              calculated.output.results.length > 1
+              parserResult.output.results.length > 1
                   ? _FormulaSolverResultType.INTERPOLATED
                   : _FormulaSolverResultType.FIXED;
 
 
           Map<int, _ParsedCoordinate> _foundFormulaCoordinates = {};
-          calculated.output.results.asMap().forEach((idx, result) {
+          parserResult.output.results.asMap().forEach((idx, result) {
             BaseCoordinate? _foundFormulaCoordinate = parseStandardFormats(result.result, wholeString: true);
             if (_foundFormulaCoordinate != null && _foundFormulaCoordinate.toLatLng() != null) {
               _foundFormulaCoordinates.putIfAbsent(
                   idx + 1,
                   () => _ParsedCoordinate(_foundFormulaCoordinate, resultType,
-                      '${calculated.formula.id}' + (calculated.output.results.length > 1 ? '.${idx + 1}' : '')));
+                      '${parserResult.formula.id}' + (parserResult.output.results.length > 1 ? '.${idx + 1}' : '')));
             }
           });
           if (_foundFormulaCoordinates.isNotEmpty) {
             _foundCoordinates.putIfAbsent(index + 1, () => _foundFormulaCoordinates);
           }
 
-          var hasName =calculated.formula.name.isNotEmpty;
+          var hasName =parserResult.formula.name.isNotEmpty;
 
           Widget row = Container(
             padding: const EdgeInsets.only(top: DEFAULT_MARGIN),
             child: Row(
               children: <Widget>[
-                _currentEditId == calculated.formula.id
+                _currentEditId == parserResult.formula.id
                     ? Expanded(
                         child: Padding(
                         padding: const EdgeInsets.only(
@@ -216,7 +216,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                         ),
                       ))
                     : Container(),
-                _currentEditNameId == calculated.formula.id
+                _currentEditNameId == parserResult.formula.id
                     ? Expanded(
                         child: Padding(
                         padding: const EdgeInsets.only(
@@ -233,7 +233,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                         ),
                       ))
                     : Container(),
-                _currentEditId != calculated.formula.id && _currentEditNameId != calculated.formula.id
+                _currentEditId != parserResult.formula.id && _currentEditNameId != parserResult.formula.id
                     ? Expanded(
                         child: Column(children: <Widget>[
                         hasName
@@ -244,7 +244,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                                     children: [
                                       Container(height: 2 * DOUBLE_DEFAULT_MARGIN),
                                       GCWTextDivider(
-                                        text: calculated.formula.name,
+                                        text: parserResult.formula.name,
                                         suppressTopSpace: true,
                                       ),
                                     ],
@@ -257,7 +257,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                             SizedBox(width: 35, child: GCWText(text: (index + 1).toString() + '.')),
                             Flexible(
                               child: _buildFormulaText(
-                                  calculated.formula.formula, widget.group.values, index + 1, widget.group.formulas),
+                                  parserResult.formula.formula, widget.group.values, index + 1, widget.group.formulas),
                             )
                           ],
                         ),
@@ -268,7 +268,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                               width: 35,
                               alignment: Alignment.topLeft,
                               child: [FormulaState.STATE_SINGLE_OK, FormulaState.STATE_EXPANDED_OK]
-                                      .contains(calculated.output.state)
+                                      .contains(parserResult.output.state)
                                   ? Icon(
                                       Icons.check,
                                       color: _themeColors.mainFont(),
@@ -278,25 +278,25 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                                       color: themeColors().formulaError(),
                                     ),
                             ),
-                            Flexible(child: _buildFormulaOutput(index, calculated.output, _foundFormulaCoordinates))
+                            Flexible(child: _buildFormulaOutput(index, parserResult.output, _foundFormulaCoordinates))
                           ],
                         ))
                       ]))
                     : Container(),
-                _currentEditId == calculated.formula.id || _currentEditNameId == calculated.formula.id
+                _currentEditId == parserResult.formula.id || _currentEditNameId == parserResult.formula.id
                     ? GCWIconButton(
                         icon: Icons.check,
                         onPressed: () {
-                          if (_currentEditId == calculated.formula.id) {
-                            calculated.formula.formula = _currentEditedFormula;
-                            _updateFormula(calculated.formula);
+                          if (_currentEditId == parserResult.formula.id) {
+                            parserResult.formula.formula = _currentEditedFormula;
+                            _updateFormula(parserResult.formula);
                             setState(() {
                               _currentEditId = null;
                               _editFormulaController.clear();
                             });
-                          } else if (_currentEditNameId == calculated.formula.id) {
-                            calculated.formula.name = _currentEditedName;
-                            _updateFormula(calculated.formula);
+                          } else if (_currentEditNameId == parserResult.formula.id) {
+                            parserResult.formula.name = _currentEditedName;
+                            _updateFormula(parserResult.formula);
                             setState(() {
                               _currentEditNameId = null;
                               _editNameController.clear();
@@ -314,21 +314,21 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                                   child:
                                       iconedGCWPopupMenuItem(context, Icons.edit, 'formulasolver_formulas_editformula'),
                                   action: (index) => setState(() {
-                                        _currentEditId = calculated.formula.id;
-                                        _currentEditedFormula = calculated.formula.formula;
-                                        _editFormulaController.text = calculated.formula.formula;
+                                        _currentEditId = parserResult.formula.id;
+                                        _currentEditedFormula = parserResult.formula.formula;
+                                        _editFormulaController.text = parserResult.formula.formula;
                                         FocusScope.of(context).requestFocus(_editFocusNode);
                                       })),
                               GCWPopupMenuItem(
                                   child: iconedGCWPopupMenuItem(
                                       context, Icons.edit, 'formulasolver_formulas_modifyformula'),
                                   action: (index) => setState(() {
-                                        _showFormulaReplaceDialog(context, [calculated.formula],
+                                        _showFormulaReplaceDialog(context, [parserResult.formula],
                                             onOkPressed: (List<Formula> value) {
-                                          if (calculated.formula.formula == value.first.formula) return;
+                                          if (parserResult.formula.formula == value.first.formula) return;
 
-                                          calculated.formula.formula = value.first.formula;
-                                          _updateFormula(calculated.formula);
+                                          parserResult.formula.formula = value.first.formula;
+                                          _updateFormula(parserResult.formula);
                                           setState(() {});
                                         });
                                       })),
@@ -336,9 +336,9 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                                   child: iconedGCWPopupMenuItem(
                                       context, Icons.text_fields, 'formulasolver_formulas_nameformula'),
                                   action: (index) => setState(() {
-                                        _currentEditNameId = calculated.formula.id;
-                                        _currentEditedName = calculated.formula.name;
-                                        _editNameController.text = calculated.formula.name;
+                                        _currentEditNameId = parserResult.formula.id;
+                                        _currentEditedName = parserResult.formula.name;
+                                        _editNameController.text = parserResult.formula.name;
                                         FocusScope.of(context).requestFocus(_editFocusNode);
                                       })),
                               GCWPopupMenuItem(
@@ -346,26 +346,26 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                                       context, Icons.delete, 'formulasolver_formulas_removeformula'),
                                   action: (index) => showDeleteAlertDialog(
                                         context,
-                                        calculated.formula.formula,
+                                        parserResult.formula.formula,
                                         () {
-                                          _removeFormula(calculated.formula);
+                                          _removeFormula(parserResult.formula);
                                           setState(() {});
                                         },
                                       )),
                               GCWPopupMenuItem(
                                 child: iconedGCWPopupMenuItem(
                                     context, Icons.content_copy, 'formulasolver_formulas_copyformula'),
-                                action: (index) => insertIntoGCWClipboard(context, calculated.formula.formula),
+                                action: (index) => insertIntoGCWClipboard(context, parserResult.formula.formula),
                               ),
                               GCWPopupMenuItem(
                                   child: iconedGCWPopupMenuItem(
                                       context,
                                       Icons.content_copy,
-                                      calculated.output.results.length > 1
+                                      parserResult.output.results.length > 1
                                           ? 'formulasolver_formulas_copyresults'
                                           : 'formulasolver_formulas_copyresult'),
                                   action: (index) => insertIntoGCWClipboard(
-                                      context, calculated.output.results.map((result) => result.result).join('\n'))),
+                                      context, parserResult.output.results.map((result) => result.result).join('\n'))),
                               GCWPopupMenuItem(
                                   child: iconedGCWPopupMenuItem(
                                     context,
@@ -373,7 +373,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                                     'formulasolver_formulas_openinvarcoords',
                                   ),
                                   action: (index) {
-                                    var varCoordsFormula = _exportToVariableCoordinate(calculated.formula);
+                                    var varCoordsFormula = _exportToVariableCoordinate(parserResult.formula);
                                     _openInVariableCoordinate(varCoordsFormula);
                                   }),
                               if (_foundFormulaCoordinates.isNotEmpty)
@@ -398,7 +398,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
             ),
           );
 
-          if (_currentEditId != calculated.formula.id && _currentEditNameId != calculated.formula.id) {
+          if (_currentEditId != parserResult.formula.id && _currentEditNameId != parserResult.formula.id) {
             row = IntrinsicHeight(child: row);
           }
 

@@ -731,9 +731,10 @@ class FormulaSolverOutput {
   }
 }
 
-List<({Formula formula, FormulaSolverOutput output})> formatAndParseFormulas(List<Formula> formulas, List<FormulaValue> values) {
+List<({Formula formula, FormulaSolverOutput output})> formatAndParseFormulas(List<Formula> formulas,
+    List<FormulaValue> values, {bool unlimitedExpanded = false}) {
   var formulaReferences = <String, String>{};
-  var formulaParser = FormulaParser();
+  var formulaParser = FormulaParser(unlimitedExpanded: unlimitedExpanded);
 
   return formulas.mapIndexed((index, formula) => (
       formula: formula,
@@ -742,7 +743,6 @@ List<({Formula formula, FormulaSolverOutput output})> formatAndParseFormulas(Lis
 
 FormulaSolverOutput formatAndParseFormula(int index, Formula formula, List<FormulaValue> values, Map<String,
     String> formulaReferences, FormulaParser formulaParser) {
-
 
   String _sanitizeFormulaReferences(String formula) {
     return formula.replaceAllMapped(
