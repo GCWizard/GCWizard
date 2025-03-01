@@ -738,10 +738,10 @@ List<({Formula formula, FormulaSolverOutput output})> formatAndParseFormulas(Lis
 
   return formulas.mapIndexed((index, formula) => (
       formula: formula,
-      output: formatAndParseFormula(index, formula, values, formulaReferences, formulaParser))).toList();
+      output: _formatAndParseFormula(index, formula, values, formulaReferences, formulaParser))).toList();
 }
 
-FormulaSolverOutput formatAndParseFormula(int index, Formula formula, List<FormulaValue> values, Map<String,
+FormulaSolverOutput _formatAndParseFormula(int index, Formula formula, List<FormulaValue> values, Map<String,
     String> formulaReferences, FormulaParser formulaParser) {
 
   String _sanitizeFormulaReferences(String formula) {
