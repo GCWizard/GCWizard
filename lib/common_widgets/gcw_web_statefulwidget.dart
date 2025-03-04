@@ -10,6 +10,10 @@ abstract class GCWWebStatefulWidget extends StatefulWidget {
     webParameter = parameter;
   }
 
+  Map<String, dynamic>? get deepLinkParameter {
+    return null;
+  }
+
   bool hasWebParameter() {
     return webParameter != null && webParameter!.isNotEmpty;
   }

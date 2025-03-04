@@ -1,12 +1,19 @@
 part of 'package:gc_wizard/tools/formula_solver/widget/formula_solver_formulagroups.dart';
 
-class _FormulaSolverFormulas extends StatefulWidget {
+class _FormulaSolverFormulas extends GCWWebStatefulWidget {
   final FormulaGroup group;
 
-  const _FormulaSolverFormulas({Key? key, required this.group}) : super(key: key);
+  _FormulaSolverFormulas({Key? key, required this.group}) : super(key: key, apiSpecification: '');
 
   @override
   _FormulaSolverFormulasState createState() => _FormulaSolverFormulasState();
+
+  @override
+  Map<String, dynamic>? get deepLinkParameter {
+    String text = jsonEncode(group.toMap());
+
+    return {'input': text};
+  }
 }
 
 enum _FormulaSolverResultType { INTERPOLATED, FIXED }
