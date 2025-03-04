@@ -4,15 +4,11 @@ part 'package:gc_wizard/tools/crypto_and_encodings/avemaria/logic/avemaria_data.
 
 String decodeAveMaria(String chiffre) {
   List<String> result = [];
-  List<String> code = chiffre.toLowerCase().split('  ');
+  List<String> code = chiffre.toLowerCase().replaceAll(RegExp('\n|\r|\r\n'), "  ").split(RegExp(' {2:}'));
 
   for (String word in code) {
     for (String letter in word.split(' ')) {
-      if (_AVE_MARIA[letter] == null) {
-        result.add(' ');
-      } else {
-        result.add(_AVE_MARIA[letter]!);
-      }
+       result.add(_AVE_MARIA[letter] ?? ' ');
     }
   }
   return result.join('');
