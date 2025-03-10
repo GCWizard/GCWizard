@@ -210,13 +210,18 @@ class _GCWMapViewState extends State<GCWMapView> {
       });
     }
 
+    var _tileServerUrlTemplate = Prefs.getString(PREFERENCE_LANGUAGE_CODE) != 'de'
+        ? 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+        : 'https://tile.openstreetmap.de/{z}/{x}/{y}.png';
+
+
     var tileLayer = _currentLayer == _LayerType.MAPBOX_SATELLITE && _mapBoxToken != null && _mapBoxToken!.isNotEmpty
         ? TileLayer(
             urlTemplate: 'https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token={accessToken}',
             additionalOptions: {'accessToken': _mapBoxToken!},
           )
         : TileLayer(
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            urlTemplate: _tileServerUrlTemplate,
           );
 
     var layers = <Widget>[tileLayer];
