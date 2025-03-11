@@ -664,4 +664,93 @@ void main() {
       });
     }
   });
+
+  group("FormulaParser.formatAndParseFormulas:", ()
+  {
+    Map<String, String> values = {
+      'A': '3', 'B': '20', 'C': '100', 'D': '5', 'E': 'Pi', 'F': '2 - 1', 'G': 'B - A + 1',
+      'Q': '1', 'R': '0', 'S': '200', 'T': '20', 'U': '12', 'V': '9', 'W': '4', 'X': '30', 'Y': '4', 'Z': '50'
+    };
+
+    List<Map<String, Object?>> _inputsToExpected = [
+      {
+        'formula': 'A',
+        'values': <String, String>{},
+        'expectedOutput': {'state': 'error', 'output': [{'result': 'A', 'state': 'error'}]}
+      },
+      {
+        'formula': '0',
+        'values': <String, String>{},
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '0', 'state': 'ok'}]}
+      },
+      {
+        'formula': '0',
+        'values': <String, String>{'0': '1'},
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '0', 'state': 'ok'}]}
+      },
+
+      {'formula': 'A', 'values': values, 'expectedOutput': {'state': 'ok', 'output': [{'result': '3', 'state': 'ok'}]}},
+      {
+        'formula': 'AB',
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '320', 'state': 'ok'}]}
+      },
+      {
+        'formula': 'A+B',
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '23', 'state': 'ok'}]}
+      },
+      {
+        'formula': 'A + B',
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '23', 'state': 'ok'}]}
+      },
+      {
+        'formula': '[A + B]',
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '23', 'state': 'ok'}]}
+      },
+      {
+        'formula': '[A] + [B]',
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '3 + 20', 'state': 'ok'}]}
+      },
+      {
+        'formula': 'AB + C',
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '420', 'state': 'ok'}]}
+      },
+      {
+        'formula': '(AB) + C',
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '420', 'state': 'ok'}]}
+      },
+      {
+        'formula': 'A(B + C)',
+        'values': values,
+        'expectedOutput': {'state': 'error', 'output': [{'result': '3(20 + 100)', 'state': 'error'}]}
+      },
+      {
+        'formula': '[A][(B + C)]',
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '3120', 'state': 'ok'}]}
+      },
+      {
+        'formula': '[A*(B + C)]\n',
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '360', 'state': 'ok'}]}
+      },
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('formula: ${elem['formula']}, values: ${elem['values']}', () {
+        var values = <FormulaValue>[];
+        for (var value in (elem['values'] as Map<String, String>).entries) {
+          values.add(FormulaValue(value.key, value.value));
+        }
+        var _actual = formatAndParseFormulas([Formula(elem['formula'] as String)], values);
+        expect(_formulaSolverOutputToMap(_actual.first.output), elem['expectedOutput']);
+      });
+    }
+  });
 }
