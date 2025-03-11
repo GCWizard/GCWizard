@@ -70,7 +70,52 @@ const String _apiSpecification = '''
         "required": true,
         "description": "Formula data in json format",
         "schema": {
-          "type": "string"
+          "type":"object",
+          "properties":{
+            "id":{
+              "type":"number",
+              "required":true
+            },
+            "name":{
+              "type":"string",
+              "required":true
+            },
+            "price":{
+              "type": "number",
+              "minimum":0,
+              "required":true
+            },
+            "formulas":{
+              "type":"array",
+              "properties":{
+                "id":{
+                  "type":"number",
+                  "required":true
+                },
+                "name":{
+                  "type":"string",
+                  "required":true
+                },
+              }
+            }
+            "values":{
+              "type":"array",
+              "properties":{
+                "id":{
+                  "type":"number",
+                  "required":true
+                },
+                "key":{
+                  "type":"string",
+                  "required":true
+                },
+                "value":{
+                  "type":"string",
+                  "required":true
+                },
+              }
+            }
+          }
         }
       },
     ]
