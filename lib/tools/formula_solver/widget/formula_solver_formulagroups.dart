@@ -80,11 +80,6 @@ const String _apiSpecification = '''
               "type":"string",
               "required":true
             },
-            "price":{
-              "type": "number",
-              "minimum":0,
-              "required":true
-            },
             "formulas":{
               "type":"array",
               "properties":{
@@ -112,6 +107,14 @@ const String _apiSpecification = '''
                 "value":{
                   "type":"string",
                   "required":true
+                },
+                "type":{
+                  "type":"string",
+                  "required":false
+                  "enum": [
+                    FormulaValueType
+                  ],
+                  "default": "fixed"
                 },
               }
             }
