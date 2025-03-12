@@ -7192,7 +7192,7 @@
   "velocity_acceleration_description" : "Calculates velocity based on time and either distance or acceleration",
   "velocity_acceleration_distance": "Distance",
   "verbal_arithmetic_title": "Verbal Arithmetic/ Symbol Matrix",
-  "verbal_arithmetic_description": "Solving a equations or a matrix of equations.",
+  "verbal_arithmetic_description": "Solving an equation or a matrix of equations.",
   "verbal_arithmetic_alphametic": "Alphametic",
   "verbal_arithmetic_symbolmatrix": "SymbolMatrix",
   "verbal_arithmetic_grid": "Grid",
