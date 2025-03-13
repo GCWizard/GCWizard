@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gc_wizard/application/_common/gcw_package_info.dart';
 import 'package:gc_wizard/application/category_views/favorites.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/babylon_numbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/base_selection.dart';
@@ -328,6 +329,7 @@ class _MainViewState extends State<MainView> {
   final _searchController = TextEditingController();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   var _searchText = '';
+  bool _goldVersion = false;
   final _SHOW_SUPPORT_HINT_EVERY_N = 50;
 
   @override
@@ -377,7 +379,8 @@ class _MainViewState extends State<MainView> {
           cancelButton: false);
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
+      await _checkForGoldVersion();
       var countAppOpened = Prefs.getInt(PREFERENCE_APP_COUNT_OPENED);
 
       if (countAppOpened > 1 && Prefs.getString(PREFERENCE_CHANGELOG_DISPLAYED) != CHANGELOG.keys.first) {
@@ -386,7 +389,7 @@ class _MainViewState extends State<MainView> {
         return;
       }
 
-      if (countAppOpened > 0 && (countAppOpened == 10 || countAppOpened % _SHOW_SUPPORT_HINT_EVERY_N == 0)) {
+      if (countAppOpened > 0 && !_goldVersion && (countAppOpened == 10 || countAppOpened % _SHOW_SUPPORT_HINT_EVERY_N == 0)) {
         showGCWAlertDialog(
           context,
           i18n(context, 'common_support_title'),
@@ -403,6 +406,13 @@ class _MainViewState extends State<MainView> {
     _searchController.dispose();
 
     super.dispose();
+  }
+
+  Future<void> _checkForGoldVersion() async {
+    await GCWPackageInfo.init();
+    setState(() {
+      _goldVersion = GCWPackageInfo.getInstance().appName.toLowerCase().contains('gold');
+    });
   }
 
   @override
