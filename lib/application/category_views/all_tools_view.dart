@@ -329,6 +329,7 @@ class _MainViewState extends State<MainView> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   var _searchText = '';
   final _SHOW_SUPPORT_HINT_EVERY_N = 50;
+  final _IS_REGULAR_VERSION = !Prefs.getString(PREFERENCE_APP_NAME).toLowerCase().contains('gold');
 
   @override
   void initState() {
@@ -386,7 +387,8 @@ class _MainViewState extends State<MainView> {
         return;
       }
 
-      if (countAppOpened > 0 && (countAppOpened == 10 || countAppOpened % _SHOW_SUPPORT_HINT_EVERY_N == 0)) {
+      if (countAppOpened > 0 && _IS_REGULAR_VERSION
+          && (countAppOpened == 10 || countAppOpened % _SHOW_SUPPORT_HINT_EVERY_N == 0)) {
         showGCWAlertDialog(
           context,
           i18n(context, 'common_support_title'),
