@@ -7,6 +7,7 @@ import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/i18n/logic/supported_locales.dart';
 import 'package:gc_wizard/application/navigation/navigation_service.dart';
 import 'package:gc_wizard/application/settings/logic/default_settings.dart';
+import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/application/webapi/deeplinks/deeplinks.dart';
@@ -23,6 +24,7 @@ void main() async {
   initializePreferences();
 
   await GCWPackageInfo.init();
+  Prefs.setString(PREFERENCE_APP_NAME, GCWPackageInfo.getInstance().appName);
 
   runApp(App(appLanguage: appLanguage));
 }
