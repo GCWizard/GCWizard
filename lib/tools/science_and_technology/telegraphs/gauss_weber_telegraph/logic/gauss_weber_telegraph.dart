@@ -195,7 +195,7 @@ const Map<String, String> _SCHILLING_CANSTATT = {
   '&': 'rrlr',
   'schillingcanstatt_stop': 'lrll',
   'schillingcanstatt_goon': 'lrrl',
-  'schillingcanntatt_finish': 'llrl'
+  'schillingcanstatt_finish': 'llrl'
 };
 
 const Map<String, String> _WHEATSTONE_COOKE_5 = {

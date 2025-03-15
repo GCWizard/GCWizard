@@ -6372,7 +6372,7 @@
   "telegraph_schillingcanstatt_description": "Electrical Telegraph with 1 needle, Code based on the deflection of the needle (left/right)",
   "telegraph_schillingcanstatt_example": "HELLO → rll r lrrr lrrr rlr",
   "telegraph_schillingcanstatt_stop": "STOP",
-  "telegraph_schillingcanstatt_goon": "Go ON",
+  "telegraph_schillingcanstatt_goon": "GO ON",
   "telegraph_schillingcanstatt_finish": "FINISH",
   "telegraph_steinheil_title": "Steinheil Telegraph (Germany)",
   "telegraph_steinheil_description": "Electrical Telegraph with 2 pins invented by Carl August von Steinheil, 1837",
