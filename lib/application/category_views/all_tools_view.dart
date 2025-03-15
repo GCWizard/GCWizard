@@ -329,7 +329,6 @@ class _MainViewState extends State<MainView> {
   final _searchController = TextEditingController();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   var _searchText = '';
-  bool _goldVersion = false;
   final _SHOW_SUPPORT_HINT_EVERY_N = 50;
 
   @override
@@ -380,7 +379,7 @@ class _MainViewState extends State<MainView> {
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) async{
-      await _checkForGoldVersion();
+      bool goldVersion = await _checkForGoldVersion();
       var countAppOpened = Prefs.getInt(PREFERENCE_APP_COUNT_OPENED);
 
       if (countAppOpened > 1 && Prefs.getString(PREFERENCE_CHANGELOG_DISPLAYED) != CHANGELOG.keys.first) {
@@ -389,7 +388,7 @@ class _MainViewState extends State<MainView> {
         return;
       }
 
-      if (countAppOpened > 0 && !_goldVersion && (countAppOpened == 10 || countAppOpened % _SHOW_SUPPORT_HINT_EVERY_N == 0)) {
+      if (countAppOpened > 0 && !goldVersion && (countAppOpened == 10 || countAppOpened % _SHOW_SUPPORT_HINT_EVERY_N == 0)) {
         showGCWAlertDialog(
           context,
           i18n(context, 'common_support_title'),
@@ -408,11 +407,9 @@ class _MainViewState extends State<MainView> {
     super.dispose();
   }
 
-  Future<void> _checkForGoldVersion() async {
+  Future<bool> _checkForGoldVersion() async {
     await GCWPackageInfo.init();
-    setState(() {
-      _goldVersion = GCWPackageInfo.getInstance().appName.toLowerCase().contains('gold');
-    });
+    return GCWPackageInfo.getInstance().appName.toLowerCase().contains('gold');
   }
 
   @override
