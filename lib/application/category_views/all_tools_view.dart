@@ -379,8 +379,8 @@ class _MainViewState extends State<MainView> {
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) async{
-      bool goldVersion = await _checkForGoldVersion();
       var countAppOpened = Prefs.getInt(PREFERENCE_APP_COUNT_OPENED);
+      bool showSupportHint = true;
 
       if (countAppOpened > 1 && Prefs.getString(PREFERENCE_CHANGELOG_DISPLAYED) != CHANGELOG.keys.first) {
         _showWhatsNewDialog();
@@ -388,7 +388,11 @@ class _MainViewState extends State<MainView> {
         return;
       }
 
-      if (countAppOpened > 0 && !goldVersion && (countAppOpened == 10 || countAppOpened % _SHOW_SUPPORT_HINT_EVERY_N == 0)) {
+      if (countAppOpened > 0 && (countAppOpened == 10 || countAppOpened % _SHOW_SUPPORT_HINT_EVERY_N == 0)) {
+        showSupportHint = !(await _checkForGoldVersion()) ;
+      }
+
+      if (showSupportHint) {
         showGCWAlertDialog(
           context,
           i18n(context, 'common_support_title'),
