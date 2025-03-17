@@ -1,6 +1,20 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/science_and_technology/numeral_bases/logic/numeral_bases.dart';
+
+Map<int, int> TUPPER_COLOR_NUMBERS = {
+  0: 2,
+  1: 4,
+  2: 8,
+  3: 16,
+};
+
+Map<int, List<Color>> TUPPER_COLORS = {
+  2: [Colors.white, Colors.black],
+  4: [Colors.white, Colors.black, Colors.cyan, Colors.purpleAccent],
+  8: [Colors.white, Colors.black, Colors.red, Colors.yellow, Colors.green, Colors.blue, Colors.orange, Colors.purpleAccent]
+};
 
 String kToImage(String kString) {
   List<String> imageBinary = [];
@@ -34,14 +48,14 @@ String kToImage(String kString) {
 }
 
 class TupperData {
-  List<List<bool>> currentBoard = [];
+  List<List<int>> currentBoard = [];
 
-  TupperData({List<List<bool>>? content}) {
+  TupperData({List<List<int>>? content}) {
     _generateBoard(content);
   }
 
-  void _generateBoard(List<List<bool>>? content) {
-    var _newBoard = List<List<bool>>.generate(17, (index) => List<bool>.generate(106, (index) => false));
+  void _generateBoard(List<List<int>>? content) {
+    var _newBoard = List<List<int>>.generate(17, (index) => List<int>.generate(106, (index) => 0));
 
     if (content != null && content.isNotEmpty) {
       for (int i = 0; i < min(17, content.length); i++) {
@@ -54,7 +68,7 @@ class TupperData {
     currentBoard = List.from(_newBoard);
   }
 
-  void reset({List<List<bool>>? board}) {
+  void reset({List<List<int>>? board}) {
     if (board == null) {
       currentBoard = List.from(List<List<bool>>.generate(17, (index) => List<bool>.generate(106, (index) => false)));
     } else {
@@ -67,10 +81,10 @@ class TupperData {
 
     List<String> boardBinary = [];
     String line = '';
-    for (List<bool> row in currentBoard) {
+    for (List<int> row in currentBoard) {
       line = '';
-      for (bool column in row) {
-        if (column) {
+      for (int column in row) {
+        if (column != 0) {
           line = line + '1';
         } else {
           line = line + '0';

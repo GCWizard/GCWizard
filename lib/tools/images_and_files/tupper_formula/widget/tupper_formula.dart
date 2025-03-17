@@ -7,7 +7,9 @@ import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_dropdown_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
+import 'package:gc_wizard/common_widgets/textfields/gcw_integer_textfield.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/images_and_files/binary2image/logic/binary2image.dart';
 import 'package:gc_wizard/tools/images_and_files/qr_code/logic/qr_code.dart';
@@ -27,6 +29,12 @@ class TupperFormula extends StatefulWidget {
 
 class _TupperFormulaState extends State<TupperFormula> {
   var _currentInput = '';
+  var _currentWidth = 106;
+  var _currentHeight = 17;
+  var _currentColorIndex = 0;
+
+  late TextEditingController _widthController;
+  late TextEditingController _heightController;
 
   final _board = TupperData();
 
@@ -42,6 +50,8 @@ class _TupperFormulaState extends State<TupperFormula> {
   void initState() {
     super.initState();
     _inputController = TextEditingController(text: _currentInput);
+    _widthController = TextEditingController(text: _currentWidth.toString());
+    _heightController = TextEditingController(text: _currentHeight.toString());
   }
 
   @override
@@ -57,8 +67,43 @@ class _TupperFormulaState extends State<TupperFormula> {
         _currentMode == GCWSwitchPosition.left
             ? Column(
                 children: [
+                  Row(
+                    children: [
+                      Expanded(
+                          child: GCWIntegerTextField(
+                        hintText: i18n(context, 'common_key'),
+                        controller: _widthController,
+                        onChanged: (value) {
+                          setState(() {
+                            _currentWidth = value.value;
+                          });
+                        },
+                      )),
+                      Expanded(
+                          child: GCWIntegerTextField(
+                        hintText: i18n(context, 'common_key'),
+                        controller: _heightController,
+                        onChanged: (value) {
+                          setState(() {
+                            _currentHeight = value.value;
+                          });
+                        },
+                      )),
+                    ],
+                  ),
+                  GCWDropDownSpinner(
+                      onChanged: (value) {
+                        setState(() {
+                          _currentColorIndex = value;
+                        });
+                      },
+                      index: _currentColorIndex,
+                      items: ['2', '4', '8', '16']),
                   GCWPainterContainer(
                     child: TupperFormulaBoard(
+                      width: _currentWidth,
+                      height: _currentHeight,
+                      colors: TUPPER_COLOR_NUMBERS[_currentColorIndex]!,
                       state: _board.currentBoard,
                       onChanged: (newBoard) {
                         setState(() {
