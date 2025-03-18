@@ -13,12 +13,10 @@ class JulianDate {
     julianDateUTCNoon = gregorianCalendarToJulianDate(datetime.dateTimeUtc);
 
     julianDate = julianDateUTCNoon +
-        (datetime.dateTimeUtc.hour -
-                datetime.timezone.inMinutes / 60.0 +
+        (datetime.dateTimeUtc.hour +
                 datetime.dateTimeUtc.minute / 60.0 +
                 datetime.dateTimeUtc.second / 3600.0) /
             24.0;
-
     deltaT = _deltaT(datetime.dateTimeUtc.year, datetime.dateTimeUtc.month);
     terrestrialDynamicalTime = julianDate + deltaT / 24.0 / 3600.0;
   }
