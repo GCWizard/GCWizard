@@ -28,10 +28,11 @@ class TupperFormula extends StatefulWidget {
 }
 
 class _TupperFormulaState extends State<TupperFormula> {
-  var _currentInput = '';
-  var _currentWidth = 106;
-  var _currentHeight = 17;
-  var _currentColorIndex = 0;
+  String _currentInput = '';
+  int _currentWidth = 106;
+  int _currentHeight = 17;
+  int _currentColorIndex = 0;
+  GCWSwitchPosition _currentFormulaMode = GCWSwitchPosition.left;
 
   late TextEditingController _widthController;
   late TextEditingController _heightController;
@@ -64,41 +65,70 @@ class _TupperFormulaState extends State<TupperFormula> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        GCWTwoOptionsSwitch(
+          value: _currentMode,
+          onChanged: (value) {
+            setState(() {
+              _currentMode = value;
+            });
+          },
+        ),
         _currentMode == GCWSwitchPosition.left
             ? Column(
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                          child: GCWIntegerTextField(
-                        hintText: i18n(context, 'common_key'),
-                        controller: _widthController,
-                        onChanged: (value) {
-                          setState(() {
-                            _currentWidth = value.value;
-                          });
-                        },
-                      )),
-                      Expanded(
-                          child: GCWIntegerTextField(
-                        hintText: i18n(context, 'common_key'),
-                        controller: _heightController,
-                        onChanged: (value) {
-                          setState(() {
-                            _currentHeight = value.value;
-                          });
-                        },
-                      )),
-                    ],
+                  GCWTwoOptionsSwitch(
+                    leftValue: i18n(context, 'common_original'),
+                    rightValue: i18n(context, 'common_custom'),
+                    value: _currentFormulaMode,
+                    onChanged: (value) {
+                      setState(() {
+                        _currentFormulaMode = value;
+                        if (_currentFormulaMode == GCWSwitchPosition.left) {
+                          _currentHeight = 17;
+                          _currentWidth = 106;
+                          _currentColorIndex = 0;
+                        }
+                      });
+                    },
                   ),
-                  GCWDropDownSpinner(
-                      onChanged: (value) {
-                        setState(() {
-                          _currentColorIndex = value;
-                        });
-                      },
-                      index: _currentColorIndex,
-                      items: ['2', '4', '8', '16']),
+                  (_currentFormulaMode == GCWSwitchPosition.right)
+                  ?  Column(
+                      children: [
+                      Row(
+                        children: [
+                          Expanded(
+                              child: GCWIntegerTextField(
+                                hintText: i18n(context, 'common_width'),
+                                controller: _widthController,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _currentWidth = value.value;
+                                  });
+                                },
+                              )),
+                          Expanded(
+                              child: GCWIntegerTextField(
+                                hintText: i18n(context, 'common_height'),
+                                controller: _heightController,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _currentHeight = value.value;
+                                  });
+                                },
+                              )),
+                        ],
+                      ),
+                        GCWDropDownSpinner(
+                            onChanged: (value) {
+                              setState(() {
+                                _currentColorIndex = value;
+                              });
+                            },
+                            index: _currentColorIndex,
+                            items: ['2', '4', '8', '16']),
+                        ]
+                    )
+                  : Container(),
                   GCWPainterContainer(
                     child: TupperFormulaBoard(
                       width: _currentWidth,
@@ -121,7 +151,7 @@ class _TupperFormulaState extends State<TupperFormula> {
                         icon: Icons.calculate_outlined,
                         onPressed: () {
                           setState(() {
-                            _currentK = _board.getK();
+                            _currentK = _board.getK(_currentFormulaMode == GCWSwitchPosition.left);
                           });
                         },
                       ),
@@ -155,14 +185,6 @@ class _TupperFormulaState extends State<TupperFormula> {
                   });
                 },
               ),
-        GCWTwoOptionsSwitch(
-          value: _currentMode,
-          onChanged: (value) {
-            setState(() {
-              _currentMode = value;
-            });
-          },
-        ),
         _buildOutput(),
       ],
     );
@@ -182,7 +204,7 @@ class _TupperFormulaState extends State<TupperFormula> {
     _outData = null;
     _codeData = null;
 
-    var image = binary2image(kToImage(_currentInput), false, false);
+    var image = binary2image(kToImage(_currentInput, _currentFormulaMode == GCWSwitchPosition.left), false, false);
     if (image == null) return;
     input2Image(image).then((value) {
       setState(() {

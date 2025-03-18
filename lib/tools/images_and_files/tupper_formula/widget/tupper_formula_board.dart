@@ -14,7 +14,14 @@ class TupperFormulaBoard extends StatefulWidget {
   final int height;
   final int colors;
 
-  const TupperFormulaBoard({Key? key, required this.onChanged, required this.state, required this.width, required this.height, required this.colors}) : super(key: key);
+  const TupperFormulaBoard(
+      {Key? key,
+      required this.onChanged,
+      required this.state,
+      required this.width,
+      required this.height,
+      required this.colors})
+      : super(key: key);
 
   @override
   _TupperFormulaBoardState createState() => _TupperFormulaBoardState();
@@ -27,26 +34,32 @@ class _TupperFormulaBoardState extends State<TupperFormulaBoard> {
       children: <Widget>[
         Expanded(
             child: AspectRatio(
-                aspectRatio: widget.width / widget.height,
+                aspectRatio: (widget.width != 0 && widget.height != 0)
+                    ? widget.width / widget.height
+                    : 1.0,
                 child: CanvasTouchDetector(
                   gesturesToOverride: const [GestureType.onTapDown],
                   builder: (context) {
                     return CustomPaint(
-                        painter: TupperFormulaBoardPainter(context, widget.state, (int x, int y) {
-                      setState(() {
-                        //widget.state[x][y] = !widget.state[x][y];
-                        widget.state[x][y] = widget.state[x][y] + 1;
-                        if (widget.state[x][y] == widget.colors) widget.state[x][y] = 0;
-                        widget.onChanged(widget.state);
-                      });
-                    },
-                        widget.width,
-                        widget.height,
-                        widget.colors,));
+                        painter: TupperFormulaBoardPainter(
+                      context,
+                      widget.state,
+                      (int x, int y) {
+                        setState(() {
+                          //widget.state[x][y] = !widget.state[x][y];
+                          widget.state[x][y] = widget.state[x][y] + 1;
+                          if (widget.state[x][y] == widget.colors) {
+                            widget.state[x][y] = 0;
+                          }
+                          widget.onChanged(widget.state);
+                        });
+                      },
+                      widget.width,
+                      widget.height,
+                      widget.colors,
+                    ));
                   },
-                )
-            )
-        )
+                )))
       ],
     );
   }
@@ -61,7 +74,8 @@ class TupperFormulaBoardPainter extends CustomPainter {
   final int height;
   final int colors;
 
-  TupperFormulaBoardPainter(this.context, this.state, this.onInvertCell, this.width, this.height, this.colors);
+  TupperFormulaBoardPainter(this.context, this.state, this.onInvertCell,
+      this.width, this.height, this.colors);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -85,9 +99,11 @@ class TupperFormulaBoardPainter extends CustomPainter {
     paintFull.style = PaintingStyle.fill;
     paintFull.color = themeColors().mainFont();
 
-
-    _touchCanvas.drawRect(Rect.fromLTWH(0, 0, width  * boxSize, height * boxSize), paintBackground);
-    
+    if (width != 0 && height != 0) {
+      _touchCanvas.drawRect(
+          Rect.fromLTWH(0, 0, width * boxSize, height * boxSize),
+          paintBackground);
+    }
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         //if (state[i][j]) {
@@ -102,21 +118,23 @@ class TupperFormulaBoardPainter extends CustomPainter {
 
     if (max(width, height) <= 50) {
       for (double j = 0; j <= width * boxSize + 0.0000001; j += boxSize) {
-        _touchCanvas.drawLine(Offset(j, 0.0), Offset(j, size.height), paintLine);
+        _touchCanvas.drawLine(
+            Offset(j, 0.0), Offset(j, size.height), paintLine);
       }
       for (double i = 0; i <= height * boxSize + 0.0000001; i += boxSize) {
         _touchCanvas.drawLine(Offset(0.0, i), Offset(size.width, i), paintLine);
       }
     }
 
-    _touchCanvas.drawRect(Rect.fromLTWH(0, 0, width  * boxSize, height * boxSize), paintTransparent,
-        onTapDown: (tapDetail) {
-          var j = (tapDetail.localPosition.dx / boxSize).toInt();
-          var i = (tapDetail.localPosition.dy / boxSize).toInt();
-          //onInvertCell(i, j);
-          state[i][j] = state[i][j] + 1;
-          if (state[i][j] == colors) state[i][j] = 0;
-        });
+    _touchCanvas.drawRect(
+        Rect.fromLTWH(0, 0, width * boxSize, height * boxSize),
+        paintTransparent, onTapDown: (tapDetail) {
+      var j = (tapDetail.localPosition.dx / boxSize).toInt();
+      var i = (tapDetail.localPosition.dy / boxSize).toInt();
+      //onInvertCell(i, j);
+      state[i][j] = state[i][j] + 1;
+      if (state[i][j] == colors) state[i][j] = 0;
+    });
   }
 
   @override

@@ -13,10 +13,13 @@ Map<int, int> TUPPER_COLOR_NUMBERS = {
 Map<int, List<Color>> TUPPER_COLORS = {
   2: [Colors.white, Colors.black],
   4: [Colors.white, Colors.black, Colors.cyan, Colors.purpleAccent],
-  8: [Colors.white, Colors.black, Colors.red, Colors.yellow, Colors.green, Colors.blue, Colors.orange, Colors.purpleAccent]
+  8: [Colors.white, Colors.black, Colors.cyan, Colors.purpleAccent, Colors.red, Colors.yellow, Colors.green, Colors.brown,],
+  16: [Colors.white, Colors.black, Colors.cyan, Colors.purpleAccent, Colors.red, Colors.yellow, Colors.green, Colors.brown,
+      Colors.red, Colors.yellow, Colors.green, Colors.brown, Colors.red, Colors.yellow, Colors.green, Colors.brown,
+  ],
 };
 
-String kToImage(String kString) {
+String _kToImageOriginal(String kString){
   List<String> imageBinary = [];
   List<String> imageBinaryRotaded = [];
 
@@ -25,6 +28,7 @@ String kToImage(String kString) {
   String line = '';
 
   BigInt k = BigInt.parse(kString);
+
   BigInt n17 = BigInt.from(17);
 
   if (k % n17 == BigInt.zero) {
@@ -45,6 +49,27 @@ String kToImage(String kString) {
     imageBinaryRotaded.add(line);
   }
   return imageBinaryRotaded.join('\n');
+}
+
+String _kToImageCustom(String kString){
+  List<String> imageBinary = [];
+  List<String> imageBinaryRotaded = [];
+
+  String binary = '';
+  String pixel = '';
+  String line = '';
+
+  BigInt k = BigInt.parse(kString);
+
+  return '';
+}
+
+String kToImage(String kString, bool original) {
+  if (original) {
+    return _kToImageOriginal(kString);
+  } else {
+    return _kToImageCustom(kString);
+  }
 }
 
 class TupperData {
@@ -70,13 +95,17 @@ class TupperData {
 
   void reset({List<List<int>>? board}) {
     if (board == null) {
-      currentBoard = List.from(List<List<bool>>.generate(17, (index) => List<bool>.generate(106, (index) => false)));
+      currentBoard = List.from(List<List<int>>.generate(17, (index) => List<int>.generate(106, (index) => 0)));
     } else {
       currentBoard = board;
     }
   }
 
-  BigInt getK() {
+  BigInt _getKCustom() {
+    return BigInt.zero;
+  }
+
+  BigInt _getKOriginal() {
     BigInt k = BigInt.zero;
 
     List<String> boardBinary = [];
@@ -113,5 +142,13 @@ class TupperData {
     k = k * BigInt.from(17);
 
     return k;
+  }
+
+  BigInt getK(bool original) {
+    if (original)  {
+      return _getKOriginal();
+    } else {
+      return _getKCustom();
+    }
   }
 }
