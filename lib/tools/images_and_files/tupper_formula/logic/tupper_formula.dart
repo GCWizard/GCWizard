@@ -10,13 +10,30 @@ Map<int, int> TUPPER_COLOR_NUMBERS = {
   3: 16,
 };
 
+const _BLACK = Color(0xff000000);
+const _WHITE = Color(0xffffffff);
+const _CYAN = Color(0xff00aaaa);
+const _MAGENTA = Color(0xffaa00aa);
+const _LIGHTGREY = Color(0xffaaaaaa);
+const _BLUE = Color(0xff0000aa);
+const _GREEN = Color(0xff00aa00);
+const _RED = Color(0xffaa0000);
+const _YELLOW = Color(0xffaaaa00);
+const _DARKGREY = Color(0xff555555);
+const _LIGHTBLUE = Color(0xff0000ff);
+const _LIGHTGREEN = Color(0xff00ff00);
+const _LIGHTCYAN = Color(0xff00ffff);
+const _LIGHTRED = Color(0xffff0000);
+const _LIGHTMAGENTA = Color(0xffff00ff);
+const _LIGHTYELLOW = Color(0xffffff00);
+const _ORANGE = Colors.orange;
+
 Map<int, List<Color>> TUPPER_COLORS = {
-  2: [Colors.white, Colors.black],
-  4: [Colors.white, Colors.black, Colors.cyan, Colors.purpleAccent],
-  8: [Colors.white, Colors.black, Colors.cyan, Colors.purpleAccent, Colors.red, Colors.yellow, Colors.green, Colors.brown,],
-  16: [Colors.white, Colors.black, Colors.cyan, Colors.purpleAccent, Colors.red, Colors.yellow, Colors.green, Colors.brown,
-      Colors.red, Colors.yellow, Colors.green, Colors.brown, Colors.red, Colors.yellow, Colors.green, Colors.brown,
-  ],
+  2: [_WHITE, _BLACK],
+  4: [_WHITE, _CYAN, _MAGENTA, _BLACK, ],
+  8: [_WHITE, _LIGHTBLUE, _LIGHTRED, _LIGHTYELLOW, _GREEN, _LIGHTGREY, _ORANGE, _BLACK],
+  16: [_WHITE, _BLUE, _GREEN, _CYAN, _RED, _MAGENTA, _YELLOW, _LIGHTGREY,
+        _DARKGREY, _LIGHTBLUE, _LIGHTGREEN, _LIGHTCYAN, _LIGHTRED, _LIGHTMAGENTA, _LIGHTYELLOW, _BLACK]
 };
 
 String _kToImageOriginal(String kString){
@@ -74,13 +91,15 @@ String kToImage(String kString, bool original) {
 
 class TupperData {
   List<List<int>> currentBoard = [];
+  late int width;
+  late int height;
 
-  TupperData({List<List<int>>? content}) {
+  TupperData({List<List<int>>? content, int width = 106, int height = 17}) {
     _generateBoard(content);
   }
 
   void _generateBoard(List<List<int>>? content) {
-    var _newBoard = List<List<int>>.generate(17, (index) => List<int>.generate(106, (index) => 0));
+    var _newBoard = List<List<int>>.generate(height, (index) => List<int>.generate(width, (index) => 0));
 
     if (content != null && content.isNotEmpty) {
       for (int i = 0; i < min(17, content.length); i++) {
@@ -95,7 +114,7 @@ class TupperData {
 
   void reset({List<List<int>>? board}) {
     if (board == null) {
-      currentBoard = List.from(List<List<int>>.generate(17, (index) => List<int>.generate(106, (index) => 0)));
+      currentBoard = List.from(List<List<int>>.generate(height, (index) => List<int>.generate(width, (index) => 0)));
     } else {
       currentBoard = board;
     }

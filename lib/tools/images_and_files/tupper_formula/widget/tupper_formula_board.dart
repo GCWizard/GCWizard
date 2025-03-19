@@ -109,7 +109,11 @@ class TupperFormulaBoardPainter extends CustomPainter {
         //if (state[i][j]) {
         //  _touchCanvas.drawRect(Rect.fromLTWH(j * boxSize, i * boxSize, boxSize, boxSize), paintFull);
         //}
-        paintFull.color = TUPPER_COLORS[colors]![state[i][j]];
+        if (state[i][j] < colors) {
+          paintFull.color = TUPPER_COLORS[colors]![state[i][j]];
+        } else {
+          paintFull.color = Colors.black;
+        }
         _touchCanvas.drawRect(
             Rect.fromLTWH(j * boxSize, i * boxSize, boxSize, boxSize),
             paintFull);
@@ -131,9 +135,9 @@ class TupperFormulaBoardPainter extends CustomPainter {
         paintTransparent, onTapDown: (tapDetail) {
       var j = (tapDetail.localPosition.dx / boxSize).toInt();
       var i = (tapDetail.localPosition.dy / boxSize).toInt();
-      //onInvertCell(i, j);
-      state[i][j] = state[i][j] + 1;
-      if (state[i][j] == colors) state[i][j] = 0;
+      onInvertCell(i, j);
+      //state[i][j] = state[i][j] + 1;
+      //if (state[i][j] == colors) state[i][j] = 0;
     });
   }
 

@@ -37,7 +37,7 @@ class _TupperFormulaState extends State<TupperFormula> {
   late TextEditingController _widthController;
   late TextEditingController _heightController;
 
-  final _board = TupperData();
+  late TupperData _board;
 
   Uint8List? _outData;
   String? _codeData;
@@ -63,6 +63,7 @@ class _TupperFormulaState extends State<TupperFormula> {
 
   @override
   Widget build(BuildContext context) {
+    _board = TupperData(width: _currentWidth, height: _currentHeight);
     return Column(
       children: <Widget>[
         GCWTwoOptionsSwitch(
