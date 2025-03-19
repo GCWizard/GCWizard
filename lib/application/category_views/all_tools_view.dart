@@ -380,7 +380,6 @@ class _MainViewState extends State<MainView> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       var countAppOpened = Prefs.getInt(PREFERENCE_APP_COUNT_OPENED);
-      bool showSupportHint = true;
 
       if (countAppOpened > 1 && Prefs.getString(PREFERENCE_CHANGELOG_DISPLAYED) != CHANGELOG.keys.first) {
         _showWhatsNewDialog();
@@ -389,16 +388,16 @@ class _MainViewState extends State<MainView> {
       }
 
       if (countAppOpened > 0 && (countAppOpened == 10 || countAppOpened % _SHOW_SUPPORT_HINT_EVERY_N == 0)) {
-        showSupportHint = !(await _checkForGoldVersion()) ;
-      }
-
-      if (showSupportHint) {
-        showGCWAlertDialog(
-          context,
-          i18n(context, 'common_support_title'),
-          i18n(context, 'common_support_text', parameters: [Prefs.getInt(PREFERENCE_APP_COUNT_OPENED)]),
-          () => launchUrl(Uri.parse(i18n(context, 'common_support_link'))),
-        );
+        _checkForGoldVersion().then((value) {
+          if (!value) {
+            showGCWAlertDialog(
+              context,
+              i18n(context, 'common_support_title'),
+              i18n(context, 'common_support_text', parameters: [Prefs.getInt(PREFERENCE_APP_COUNT_OPENED)]),
+                  () => launchUrl(Uri.parse(i18n(context, 'common_support_link'))),
+            );
+          }
+        });
       }
     });
   }
