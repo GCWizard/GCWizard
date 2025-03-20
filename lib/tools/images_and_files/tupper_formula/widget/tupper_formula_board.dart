@@ -51,6 +51,7 @@ class _TupperFormulaBoardState extends State<TupperFormulaBoard> {
                           if (widget.state[x][y] == widget.colors) {
                             widget.state[x][y] = 0;
                           }
+                          print(x.toString()+' '+y.toString()+' '+widget.state[x][y].toString());
                           widget.onChanged(widget.state);
                         });
                       },
@@ -136,8 +137,6 @@ class TupperFormulaBoardPainter extends CustomPainter {
       var j = (tapDetail.localPosition.dx / boxSize).toInt();
       var i = (tapDetail.localPosition.dy / boxSize).toInt();
       onInvertCell(i, j);
-      //state[i][j] = state[i][j] + 1;
-      //if (state[i][j] == colors) state[i][j] = 0;
     });
   }
 

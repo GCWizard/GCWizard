@@ -95,10 +95,10 @@ class TupperData {
   late int height;
 
   TupperData({List<List<int>>? content, int width = 106, int height = 17}) {
-    _generateBoard(content);
+    _generateBoard(content, width, height);
   }
 
-  void _generateBoard(List<List<int>>? content) {
+  void _generateBoard(List<List<int>>? content, int width, int height) {
     var _newBoard = List<List<int>>.generate(height, (index) => List<int>.generate(width, (index) => 0));
 
     if (content != null && content.isNotEmpty) {

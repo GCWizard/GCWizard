@@ -53,6 +53,8 @@ class _TupperFormulaState extends State<TupperFormula> {
     _inputController = TextEditingController(text: _currentInput);
     _widthController = TextEditingController(text: _currentWidth.toString());
     _heightController = TextEditingController(text: _currentHeight.toString());
+
+    _board = TupperData(width: _currentWidth, height: _currentHeight);
   }
 
   @override
@@ -63,7 +65,6 @@ class _TupperFormulaState extends State<TupperFormula> {
 
   @override
   Widget build(BuildContext context) {
-    _board = TupperData(width: _currentWidth, height: _currentHeight);
     return Column(
       children: <Widget>[
         GCWTwoOptionsSwitch(
