@@ -51,7 +51,6 @@ class _TupperFormulaBoardState extends State<TupperFormulaBoard> {
                           if (widget.state[x][y] == widget.colors) {
                             widget.state[x][y] = 0;
                           }
-                          print(x.toString()+' '+y.toString()+' '+widget.state[x][y].toString());
                           widget.onChanged(widget.state);
                         });
                       },

@@ -8,8 +8,8 @@ import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_dropdown_spinner.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
-import 'package:gc_wizard/common_widgets/textfields/gcw_integer_textfield.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/images_and_files/binary2image/logic/binary2image.dart';
 import 'package:gc_wizard/tools/images_and_files/qr_code/logic/qr_code.dart';
@@ -32,10 +32,8 @@ class _TupperFormulaState extends State<TupperFormula> {
   int _currentWidth = 106;
   int _currentHeight = 17;
   int _currentColorIndex = 0;
+  int _currentColors = 2;
   GCWSwitchPosition _currentFormulaMode = GCWSwitchPosition.left;
-
-  late TextEditingController _widthController;
-  late TextEditingController _heightController;
 
   late TupperData _board;
 
@@ -51,8 +49,6 @@ class _TupperFormulaState extends State<TupperFormula> {
   void initState() {
     super.initState();
     _inputController = TextEditingController(text: _currentInput);
-    _widthController = TextEditingController(text: _currentWidth.toString());
-    _heightController = TextEditingController(text: _currentHeight.toString());
 
     _board = TupperData(width: _currentWidth, height: _currentHeight);
   }
@@ -75,62 +71,78 @@ class _TupperFormulaState extends State<TupperFormula> {
             });
           },
         ),
-        _currentMode == GCWSwitchPosition.left
+        GCWTwoOptionsSwitch(
+          leftValue: i18n(context, 'common_original'),
+          rightValue: i18n(context, 'common_custom'),
+          value: _currentFormulaMode,
+          onChanged: (value) {
+            setState(() {
+              _currentFormulaMode = value;
+              if (_currentFormulaMode == GCWSwitchPosition.left) {
+                _currentHeight = 17;
+                _currentWidth = 106;
+                _currentColorIndex = 0;
+              }
+            });
+          },
+        ),
+        (_currentFormulaMode == GCWSwitchPosition.right) // custom
+            ? Column(children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: GCWIntegerSpinner(
+                          title: i18n(context, 'common_width'),
+                          min: 1,
+                          max: 640,
+                          onChanged: (value) {
+                            setState(() {
+                              _currentWidth = value;
+                              _board = TupperData(
+                                  width: _currentWidth, height: _currentHeight);
+                            });
+                          },
+                          value: _currentWidth),
+                    ),
+                    Expanded(
+                      child: GCWIntegerSpinner(
+                          title: i18n(context, 'common_height'),
+                          min: 1,
+                          max: 480,
+                          onChanged: (value) {
+                            setState(() {
+                              _currentHeight = value;
+                              _board = TupperData(
+                                  width: _currentWidth, height: _currentHeight);
+                            });
+                          },
+                          value: _currentHeight),
+                    ),
+                  ],
+                ),
+                _currentMode == GCWSwitchPosition.left // encrypt
+                    ? GCWDropDownSpinner(
+                        onChanged: (value) {
+                          setState(() {
+                            _currentColorIndex = value;
+                          });
+                        },
+                        index: _currentColorIndex,
+                        items: const ['2', '4', '8', '16'])
+                    : GCWIntegerSpinner(
+                        min: 2,
+                        max: 256,
+                        onChanged: (value) {
+                          setState(() {
+                            _currentColors = value;
+                          });
+                        },
+                        value: _currentColors),
+              ])
+            : Container(),
+        _currentMode == GCWSwitchPosition.left // encrypt
             ? Column(
                 children: [
-                  GCWTwoOptionsSwitch(
-                    leftValue: i18n(context, 'common_original'),
-                    rightValue: i18n(context, 'common_custom'),
-                    value: _currentFormulaMode,
-                    onChanged: (value) {
-                      setState(() {
-                        _currentFormulaMode = value;
-                        if (_currentFormulaMode == GCWSwitchPosition.left) {
-                          _currentHeight = 17;
-                          _currentWidth = 106;
-                          _currentColorIndex = 0;
-                        }
-                      });
-                    },
-                  ),
-                  (_currentFormulaMode == GCWSwitchPosition.right)
-                  ?  Column(
-                      children: [
-                      Row(
-                        children: [
-                          Expanded(
-                              child: GCWIntegerTextField(
-                                hintText: i18n(context, 'common_width'),
-                                controller: _widthController,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _currentWidth = value.value;
-                                  });
-                                },
-                              )),
-                          Expanded(
-                              child: GCWIntegerTextField(
-                                hintText: i18n(context, 'common_height'),
-                                controller: _heightController,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _currentHeight = value.value;
-                                  });
-                                },
-                              )),
-                        ],
-                      ),
-                        GCWDropDownSpinner(
-                            onChanged: (value) {
-                              setState(() {
-                                _currentColorIndex = value;
-                              });
-                            },
-                            index: _currentColorIndex,
-                            items: ['2', '4', '8', '16']),
-                        ]
-                    )
-                  : Container(),
                   GCWPainterContainer(
                     child: TupperFormulaBoard(
                       width: _currentWidth,
@@ -153,7 +165,8 @@ class _TupperFormulaState extends State<TupperFormula> {
                         icon: Icons.calculate_outlined,
                         onPressed: () {
                           setState(() {
-                            _currentK = _board.getK(_currentFormulaMode == GCWSwitchPosition.left);
+                            _currentK = _board.getK(
+                                _currentFormulaMode == GCWSwitchPosition.left,);
                           });
                         },
                       ),
@@ -206,7 +219,10 @@ class _TupperFormulaState extends State<TupperFormula> {
     _outData = null;
     _codeData = null;
 
-    var image = binary2image(kToImage(_currentInput, _currentFormulaMode == GCWSwitchPosition.left), false, false);
+    var image = binary2Image(
+        kToImage(_currentInput, _currentFormulaMode == GCWSwitchPosition.left,
+            _currentWidth, _currentHeight, _currentColors),
+    );
     if (image == null) return;
     input2Image(image).then((value) {
       setState(() {
@@ -231,4 +247,5 @@ class _TupperFormulaState extends State<TupperFormula> {
           : Container(),
     ]);
   }
+
 }
