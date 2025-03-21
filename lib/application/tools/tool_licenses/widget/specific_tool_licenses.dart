@@ -251,5 +251,21 @@ class _SpecificToolLicenses {
       title: 'UIC 438-X'
     );
   }
+
+  ToolLicenseEntry get _toolLicenseElementsOfGeocachingGeocacherMagazine {
+    return ToolLicenseOfflineArticle(context: context,
+      author: 'Geocacher Magazine',
+      year: 2010,
+      title: 'Elements of Geocaching'
+    );
+  }
+
+  ToolLicenseEntry get _toolLicenseElementsOfGeocachingGeocachenBE {
+    return ToolLicenseOnlineArticle(context: context,
+        author: 'geocachen.be',
+        title: 'Elements of Geocaching',
+        sourceUrl: 'https://web.archive.org/web/20241103163521/https://geocachen.be/geocaching/geocache-puzzels-oplossen/elements-of-geocaching/'
+    );
+  }
 }
 

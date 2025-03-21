@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/gcw_popup_menu.dart';
-import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:photo_view/photo_view.dart';
 
 class GCWImageViewFullScreen extends StatefulWidget {
@@ -122,6 +122,6 @@ void openInFullScreen(BuildContext context, Uint8List imgData, Color bgColor) {
                 toolName: i18n(context, 'imageview_fullscreen_title'),
                 defaultLanguageToolName: i18n(context, 'imageview_fullscreen_title', useDefaultLanguage: true),
                 suppressHelpButton: true,
-                id: '',
+                id: 'imageview_fullscreen',
               )));
 }

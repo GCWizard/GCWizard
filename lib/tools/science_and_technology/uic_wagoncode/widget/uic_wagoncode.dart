@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
-import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
+import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
@@ -105,7 +105,7 @@ class _UICWagonCodeState extends State<UICWagonCode> {
             ]),
             GCWTextDivider(text: i18n(context, 'uic_category')),
             GCWColumnedMultilineOutput(data: [
-              [i18n(context, 'uic_type_code'), tractiveData.typeCode],
+              [i18n(context, 'uic_typecode'), tractiveData.typeCode],
               [i18n(context, 'uic_type'), i18n(context, tractiveData.type)],
               [i18n(context, 'uic_tractiveunit_class_code'), tractiveData.clazzCode],
               if (tractiveData.clazz != null) [i18n(context, 'uic_tractiveunit_class'), i18n(context, tractiveData.clazz!)],
@@ -136,10 +136,10 @@ class _UICWagonCodeState extends State<UICWagonCode> {
             ]),
             GCWTextDivider(text: i18n(context, 'uic_category')),
             GCWColumnedMultilineOutput(data: [
-              [i18n(context, 'uic_type_code'), specialData.typeCode],
+              [i18n(context, 'uic_typecode'), specialData.typeCode],
               [i18n(context, 'uic_type'), i18n(context, specialData.type)],
-              [i18n(context, 'uic_subtype_code'), specialData.subTypeCode],
-              if (specialData.subType != null) [i18n(context, 'uic_subtype'), i18n(context, specialData.subType!)],
+              [i18n(context, 'uic_specialvehicle_subtype_code'), specialData.subTypeCode],
+              if (specialData.subType != null) [i18n(context, 'uic_specialvehicle_subtype'), i18n(context, specialData.subType!)],
             ]),
             GCWTextDivider(text: i18n(context, 'uic_classification')),
             GCWColumnedMultilineOutput(data: [

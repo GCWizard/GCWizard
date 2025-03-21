@@ -10,12 +10,12 @@ class GCWSwitch extends StatefulWidget {
 
   const GCWSwitch(
       {Key? key,
-      this.value = false,
-      required this.onChanged,
-      this.inactiveThumbColor,
-      this.inactiveTrackColor,
-      this.activeThumbColor,
-      this.activeTrackColor})
+        this.value = false,
+        required this.onChanged,
+        this.inactiveThumbColor,
+        this.inactiveTrackColor,
+        this.activeThumbColor,
+        this.activeTrackColor})
       : super(key: key);
 
   @override

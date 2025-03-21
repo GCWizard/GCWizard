@@ -8,6 +8,7 @@ const List<String> _mdtToolsRegistry = [
   MDT_INTERNALNAMES_REVERSE,
   MDT_INTERNALNAMES_ATBASH,
   MDT_INTERNALNAMES_ALPHABETVALUES,
+  MDT_INTERNALNAMES_ATOMICNUMBERS,
   MDT_INTERNALNAMES_ASCII,
   MDT_INTERNALNAMES_NUMERALBASES,
   MDT_INTERNALNAMES_BASE,
@@ -51,6 +52,7 @@ const List<String> _mdtToolsRegistry = [
 /// all multiDecoder default options
 final _initialOptions = <String, Map<String, Object>>{
   MDT_INTERNALNAMES_ALPHABETVALUES: {MDT_ALPHABETVALUES_OPTION_ALPHABET: 'alphabet_name_az'},
+  MDT_INTERNALNAMES_ATOMICNUMBERS: {MDT_ATOMICNUMBERS_OPTION_MODE: MDT_ATOMICNUMBERS_OPTION_MODE_SYMBOLSTONUMBERS},
   MDT_INTERNALNAMES_BACON: {MDT_BACON_OPTION_MODE: MDT_BACON_OPTION_MODE_AB},
   MDT_INTERNALNAMES_BASE: {MDT_BASE_OPTION_BASEFUNCTION: 'base_base64'},
   MDT_INTERNALNAMES_BCD: {MDT_BCD_OPTION_BCDFUNCTION: 'bcd_original'},
@@ -260,6 +262,7 @@ AbstractMultiDecoderTool _multiDecoderToolToGCWMultiDecoderTool(BuildContext con
       gcwTool = MultiDecoderToolTapir(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_VANITY_MULTITAP:
+    case 'multidecoder_tool_vanitymultitap_title': //fix key renamed
       gcwTool = MultiDecoderToolVanityMultitap(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_VANITY_NUMBERSEARCH:
@@ -271,6 +274,8 @@ AbstractMultiDecoderTool _multiDecoderToolToGCWMultiDecoderTool(BuildContext con
     case MDT_INTERNALNAMES_WASD:
       gcwTool = MultiDecoderToolWasd(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
+    case MDT_INTERNALNAMES_ATOMICNUMBERS:
+      gcwTool = MultiDecoderToolAtomicNumbers(id: mdtTool.id, name: mdtTool.name, options: options);
     default:
       gcwTool = MultiDecoderToolDummy();
       break;
@@ -450,6 +455,12 @@ void _initializeMultiToolDecoder(BuildContext context) {
         i18n(context, MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_MALBOLGE), MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_MALBOLGE),
     MultiDecoderToolEntity(
         i18n(context, MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_WHITESPACE), MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_WHITESPACE),
+    MultiDecoderToolEntity(
+        i18n(context, MDT_INTERNALNAMES_ATOMICNUMBERS), MDT_INTERNALNAMES_ATOMICNUMBERS,
+        options: [MultiDecoderToolOption(MDT_ATOMICNUMBERS_OPTION_MODE, MDT_ATOMICNUMBERS_OPTION_MODE_SYMBOLSTONUMBERS)]),
+    MultiDecoderToolEntity(
+        i18n(context, MDT_INTERNALNAMES_ATOMICNUMBERS), MDT_INTERNALNAMES_ATOMICNUMBERS,
+        options: [MultiDecoderToolOption(MDT_ATOMICNUMBERS_OPTION_MODE, MDT_ATOMICNUMBERS_OPTION_MODE_NUMBERSTOSYMBOLS)]),
   ];
 
   for (int i = 25; i >= 1; i--) {

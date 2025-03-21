@@ -5,14 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/gcw_textviewer.dart';
-import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_page_spinner.dart';
 import 'package:gc_wizard/tools/images_and_files/hexstring2file/logic/hexstring2file.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
@@ -145,42 +146,17 @@ class _HexViewerState extends State<HexViewer> {
         if (_hexData!.length > _MAX_LINES)
           Container(
             padding: const EdgeInsets.only(bottom: 10),
-            child: Row(
-              children: [
-                GCWIconButton(
-                  icon: Icons.arrow_back_ios,
-                  onPressed: () {
-                    setState(() {
-                      _currentLines -= _MAX_LINES;
-                      if (_currentLines < 0) {
-                        _currentLines = (_hexDataLines!.floor() ~/ _MAX_LINES) * _MAX_LINES;
-                      }
-
-                      _resetScrollViews();
-                    });
-                  },
-                ),
-                Expanded(
-                  child: GCWText(
-                    text:
-                        '${i18n(context, 'hexviewer_lines')}: ${_currentLines + 1} - ${min(_currentLines + _MAX_LINES, _hexDataLines?.ceil() as int)} / ${_hexDataLines?.ceil()}',
-                    align: Alignment.center,
-                  ),
-                ),
-                GCWIconButton(
-                  icon: Icons.arrow_forward_ios,
-                  onPressed: () {
-                    setState(() {
-                      _currentLines += _MAX_LINES;
-                      if (_currentLines > _hexDataLines!) {
-                        _currentLines = 0;
-                      }
-
-                      _resetScrollViews();
-                    });
-                  },
-                )
-              ],
+            child: GCWPageSpinner(
+              text: i18n(context, 'hexviewer_lines') + ':',
+              max: _hexDataLines?.ceil() ?? 0,
+              stepSize: _MAX_LINES,
+              index: _currentLines + 1,
+              onChanged: (index) {
+                setState(() {
+                  _currentLines = index - 1;
+                  _resetScrollViews();
+                });
+              },
             ),
           ),
         Row(

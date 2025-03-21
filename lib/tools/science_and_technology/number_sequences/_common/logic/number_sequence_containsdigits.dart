@@ -306,6 +306,12 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
       case NumberSequencesMode.PERMUTABLE_PRIMES:
         sequenceList.addAll(permutable_primes);
         break;
+      case NumberSequencesMode.MEMORABLE_PRIMES:
+        sequenceList.addAll(memorable_primes);
+        break;
+      case NumberSequencesMode.MEMORABLE_PRIMES_INDEXES:
+        sequenceList.addAll(memorable_primes_indexes);
+        break;
       case NumberSequencesMode.LUCKY_NUMBERS:
         sequenceList.addAll(lucky_numbers);
         break;

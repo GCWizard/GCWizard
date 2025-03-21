@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_divider.dart';
 import 'package:gc_wizard/tools/general_tools/gcwizardscript/logic/gcwizard_script.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
@@ -26,7 +27,7 @@ class _GCWizardScriptHelpState extends State<GCWizardScriptHelp> {
               child: InkWell(
                 child: Text(
                   i18n(context, GCW_SKRIPT_HELP_URLS[key]![0]),
-                  style: const TextStyle(color: Colors.white, decoration: TextDecoration.underline),
+                  style: TextStyle(color: themeColors().mainFont(), decoration: TextDecoration.underline),
                 ),
                 onTap: () {
                   launchUrl(Uri.parse(GCW_SKRIPT_HELP_URLS[key]![1]));

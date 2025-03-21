@@ -12,14 +12,13 @@ import 'package:gc_wizard/common_widgets/key_value_editor/gcw_key_value_editor.d
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
-import 'package:gc_wizard/common_widgets/text_input_formatters/variablestring_textinputformatter.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/common_widgets/units/gcw_unit_dropdown.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dmm/logic/dmm.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
-import 'package:gc_wizard/tools/coords/_common/widget/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
@@ -118,6 +117,15 @@ class _VariableCoordinateState extends State<VariableCoordinate> {
     updateFormulaValue(entry, widget.formula);
   }
 
+  bool _checkValidValue(String input) {
+    if (!VARIABLESTRING.hasMatch(input)) {
+      showGCWAlertDialog(context, '', i18n(context, 'formulasolver_values_novalidinterpolated'),
+          cancelButton: false, () {});
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -195,7 +203,7 @@ class _VariableCoordinateState extends State<VariableCoordinate> {
                 i18n(context, 'coords_variablecoordinate_manyresults_text', parameters: [countCombinations]),
                 () {
                   _calculateOutput(context);
-                },
+                }, cancelButton: false
               );
             } else {
               _calculateOutput(context);
@@ -211,17 +219,14 @@ class _VariableCoordinateState extends State<VariableCoordinate> {
     return GCWKeyValueEditor(
       keyHintText: i18n(context, 'coords_variablecoordinate_variable'),
       valueHintText: i18n(context, 'coords_variablecoordinate_possiblevalues'),
-      addValueInputFormatters: [VariableStringTextInputFormatter()],
       valueFlex: 4,
       onNewEntryChanged: (entry) => _updateNewEntry(entry),
       entries: widget.formula.values,
       onAddEntry: (entry) => _addEntry(entry),
       onUpdateEntry: (entry) => _updateEntry(entry),
       addOnDispose: true,
-      validateEditedValue: (String input) {
-        return VARIABLESTRING.hasMatch(input);
-      },
-      invalidEditedValueMessage: i18n(context, 'formulasolver_values_novalidinterpolated'),
+      validateAddedValue: (String input) => _checkValidValue(input),
+      validateEditedValue: (String input) => _checkValidValue(input),
     );
   }
 

@@ -4,8 +4,6 @@ import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart
 import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:latlong2/latlong.dart';
 
-
-
 void main() {
   group("Projection.reverseProjection:", () {
     List<Map<String, Object?>> _inputsToExpected = [
@@ -17,16 +15,18 @@ void main() {
       {'coord' : const LatLng(-78.35656674071589, -70.35858934072675), 'expectedOutput': const LatLng(6.13284033603278, -123.91294932358062), 'bearing': 170.61935386006067, 'distance': 9902447.165614301},
       {'coord' : const LatLng(-78.35656674071589, -70.35858934072675), 'expectedOutput': const LatLng(6.13284033603278, -123.91294932358062), 'bearing': 170.61935386006067, 'distance': 9902447.165614301},
       {'coord' : const LatLng(50.9824, 011.0930833333), 'expectedOutput': const LatLng(37.459265, -78.848104), 'bearing': 45.631928848, 'distance': 6885736.0},
+      {'coord' : const LatLng(52.2861344, 013.4839812334), 'expectedOutput': const LatLng(52.28521511, 013.518545), 'bearing': 272.4969693, 'distance': 2360.8896896},
     ];
 
     for (var elem in _inputsToExpected) {
       test('coord: ${elem['coord']}, bearing: ${elem['bearing']}, distance: ${elem['distance']}', () {
         var actual = reverseProjection(elem['coord'] as LatLng, elem['bearing'] as double, elem['distance'] as double, Ellipsoid.WGS84);
         var equals = false;
-        for (LatLng l in actual) {
-          if (equalsLatLng(l, elem['expectedOutput'] as LatLng, tolerance: 1e-5)) {
-            equals = true;
-          }
+
+        expect(false, actual == null);
+
+        if (equalsLatLng(actual!, elem['expectedOutput'] as LatLng, tolerance: 1e-5)) {
+          equals = true;
         }
         expect(equals, true);
       });

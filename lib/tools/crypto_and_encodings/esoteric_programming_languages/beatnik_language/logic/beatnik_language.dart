@@ -7,7 +7,7 @@
 
 import 'dart:math';
 
-import 'package:gc_wizard/tools/games/scrabble/scrabble/logic/scrabble.dart';
+import 'package:gc_wizard/tools/games/scrabble/logic/scrabble.dart';
 
 class BeatnikOutput {
   final List<String> output;

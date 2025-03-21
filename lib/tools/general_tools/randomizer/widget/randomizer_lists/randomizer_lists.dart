@@ -7,6 +7,7 @@ import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_paste_button.dart';
@@ -19,7 +20,6 @@ import 'package:gc_wizard/common_widgets/gcw_popup_menu.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_stringlisteditor.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/gcw_text_export.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -35,8 +35,8 @@ import 'package:gc_wizard/utils/json_utils.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
 part 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_lists/randomizer_lists_elements.dart';
-part 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_lists/randomizer_lists_list.dart';
 part 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_lists/randomizer_lists_groups.dart';
+part 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_lists/randomizer_lists_list.dart';
 part 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_lists/randomizer_lists_shuffle.dart';
 
 class RandomizerLists extends StatefulWidget {

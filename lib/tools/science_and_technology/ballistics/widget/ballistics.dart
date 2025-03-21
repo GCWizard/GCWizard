@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/drag.dart';
 import 'package:intl/intl.dart';
-
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
 import 'package:gc_wizard/common_widgets/units/gcw_unit_input.dart';
 import 'package:gc_wizard/common_widgets/units/gcw_units.dart';
-
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/density.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/mass.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/acceleration.dart';

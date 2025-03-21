@@ -161,17 +161,7 @@ class _MultiDecoderState extends State<MultiDecoder> {
 
   String _toolTitle(AbstractMultiDecoderTool tool) {
     var optionValues = tool.options.values.map((Object? value) {
-      String result = value.toString();
-
-      if (tool.internalToolName == MDT_INTERNALNAMES_COORDINATEFORMATS) {
-        var widgetInfo = coordinateWidgetInfoByByPersistenceKey((value ?? '').toString());
-        if (widgetInfo != null) {
-          result = widgetInfo.name;
-        }
-      }
-      if ([MDT_INTERNALNAMES_BASE, MDT_INTERNALNAMES_BCD].contains(tool.internalToolName)) {
-        result += '_title';
-      }
+      var result =  _optionNameKey(value.toString(), tool.internalToolName);
 
       return i18n(context, result, ifTranslationNotExists: result);
     }).join(', ');

@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:gc_wizard/common_widgets/text_input_formatters/gcw_double_textinputformatter.dart';
+import 'package:gc_wizard/utils/ui_dependent_utils/textinputformatter_utils.dart';
 
 class GCWBearingTextInputFormatter extends GCWDoubleTextInputFormatter {
   GCWBearingTextInputFormatter();
@@ -17,10 +18,6 @@ class GCWBearingTextInputFormatter extends GCWDoubleTextInputFormatter {
     var _newDouble = double.tryParse(newValue.text.replaceFirst(',', '.'));
     if (_newDouble == null) return oldValue;
 
-    return TextEditingValue(
-      text: newSanitized, selection: TextSelection.fromPosition(
-        TextPosition(offset: newSanitized.length),
-      ),
-    );
+    return newValueEditingValue(newValue, newSanitized);
   }
 }

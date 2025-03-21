@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors_rgb.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:latlong2/latlong.dart';
@@ -46,21 +46,6 @@ RGB randomColor() {
   var b = random.nextInt(256);
 
   return RGB(r.toDouble(), g.toDouble(), b.toDouble());
-}
-
-String passwordGenerator(String characters, int length) {
-  var out = '';
-  if (characters.isEmpty || length <= 0) {
-    return out;
-  }
-
-  var random = Random();
-  for (int i = 0; i < length; i++) {
-    var index = random.nextInt(characters.length);
-    out += characters[index];
-  }
-
-  return out;
 }
 
 DateTime randomDateTime(DateTime from, DateTime to) {

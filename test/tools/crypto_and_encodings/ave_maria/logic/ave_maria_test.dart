@@ -4,9 +4,9 @@ import 'package:gc_wizard/tools/crypto_and_encodings/avemaria/logic/avemaria.dar
 void main() {
   group("AveMaria.encodeAveMaria:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      {'input' : '', 'expectedOutput' : ' '},
-
-      {'input' : 'gc wizard ist toll', 'expectedOutput' : 'GC UIZARD IST TOLL'}
+      {'input' : '', 'expectedOutput' : ''},
+      // doesn't work because randomized word in encoding
+      // {'input' : 'gc wizard ist toll', 'expectedOutput' : 'maximus pius   auctor sapientissimus moderator deus incompraehensibilis opifex   sapientissimus conseruator pacificus   redemptor gloriosus immortalis immortalis'}
     ];
 
     for (var elem in _inputsToExpected) {
@@ -19,9 +19,11 @@ void main() {
 
   group("AveMaria.decodeAveMaria:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      {'input' : '', 'expectedOutput' : ' '},
+      {'input' : '', 'expectedOutput' : ''},
 
-      {'expectedOutput' : 'GC UIZARD IST TOLL', 'input' : 'consolator conditor   misericors sapientissimus magnificus deus incompraehensibilis piissimus   iudex omnipotens pacificus   pacificus gloriosus illustrator immortalis'},
+      {'expectedOutput' : 'GC UIZARD IST TOLL', 'input' : 'consolator conditor    misericors sapientissimus magnificus deus incompraehensibilis piissimus   iudex omnipotens pacificus   pacificus gloriosus illustrator immortalis'},
+
+      {'expectedOutput' : 'QUICK BROUN FOX', 'input' : 'sanctissimus misericors iudex conditor illuminator   clementissimus incompraehensibilis gloriosus auctor rex   dominator imperator misericordissimus'},
     ];
 
     for (var elem in _inputsToExpected) {

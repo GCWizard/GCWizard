@@ -434,6 +434,7 @@ class MapViewPersistenceAdapter {
       "(\"type\":geodetic,)": "",
       "(\",type\":geodetic})": "}",
       "(\"circleColorSameAsColor\":true,)": "",
+      "(\"circleColor\":\"#000000\",)": "",
    };
 
     regExpList.forEach((key, value) {

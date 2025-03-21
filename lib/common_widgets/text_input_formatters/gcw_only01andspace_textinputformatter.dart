@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:gc_wizard/utils/ui_dependent_utils/textinputformatter_utils.dart';
 
 class GCWOnly01AndSpaceInputFormatter extends TextInputFormatter {
   @override
@@ -7,10 +8,6 @@ class GCWOnly01AndSpaceInputFormatter extends TextInputFormatter {
 
     if (newSanitized.length != newSanitized.replaceAll(RegExp(r'[^01 ]'), '').length) return oldValue;
 
-    return TextEditingValue(
-      text: newSanitized, selection: TextSelection.fromPosition(
-        TextPosition(offset: newSanitized.length),
-      ),
-    );
+    return newValueEditingValue(newValue, newSanitized);
   }
 }

@@ -28,7 +28,7 @@ TextStyle gcwTextStyle({double fontSize = 0}) {
 
 TextStyle gcwBetaStyle() {
   return TextStyle(
-      // backgroundColor: themeColors().accent(),
+    // backgroundColor: themeColors().accent(),
       color: themeColors().dialogText(),
       fontSize: fontSizeSmall(),
       fontWeight: FontWeight.bold,

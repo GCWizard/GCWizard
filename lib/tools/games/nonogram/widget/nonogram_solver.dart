@@ -16,8 +16,8 @@ import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
-import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
+import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
@@ -35,7 +35,7 @@ class NonogramSolver extends StatefulWidget {
   const NonogramSolver({Key? key}) : super(key: key);
 
   @override
-  NonogramSolverState createState() => NonogramSolverState();
+  _NonogramSolverState createState() => _NonogramSolverState();
 }
 
 enum _DecryptWizardStep {
@@ -59,7 +59,7 @@ enum _EncryptWizardStep {
   DRAW_MANUALLY
 }
 
-class NonogramSolverState extends State<NonogramSolver> {
+class _NonogramSolverState extends State<NonogramSolver> {
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
   late PuzzleWidgetValues _decryptPuzzle;
   late PuzzleWidgetValues _encryptPuzzle;

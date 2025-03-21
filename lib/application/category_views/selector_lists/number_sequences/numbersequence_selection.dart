@@ -11,6 +11,8 @@ import 'package:gc_wizard/application/category_views/selector_lists/number_seque
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_lucas_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_luckynumbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_lychrel_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_memorableprimes_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_memorableprimesindexes_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_mersenne_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_mersenneexponents_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_mersennefermat_selection.dart';
@@ -26,9 +28,9 @@ import 'package:gc_wizard/application/category_views/selector_lists/number_seque
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_superperfectnumbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_weirdnumbers_selection.dart';
 import 'package:gc_wizard/application/registry.dart';
-import 'package:gc_wizard/common_widgets/gcw_selection.dart';
 import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/application/tools/widget/gcw_toollist.dart';
+import 'package:gc_wizard/common_widgets/gcw_selection.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceSelection extends GCWSelection {
@@ -52,6 +54,8 @@ class NumberSequenceSelection extends GCWSelection {
         className(const NumberSequenceWeirdNumbersSelection()),
         className(const NumberSequenceSublimeNumbersSelection()),
         className(const NumberSequencePermutablePrimesSelection()),
+        className(const NumberSequenceMemorablePrimesSelection()),
+        className(const NumberSequenceMemorablePrimesIndexesSelection()),
         className(const NumberSequenceLuckyNumbersSelection()),
         className(const NumberSequenceHappyNumbersSelection()),
         className(const NumberSequenceBellSelection()),

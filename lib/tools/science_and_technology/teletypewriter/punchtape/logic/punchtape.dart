@@ -4,12 +4,14 @@ import 'package:gc_wizard/tools/science_and_technology/teletypewriter/_common/lo
 
 enum PUNCHTAPE_INTERPRETER_MODE { MODE_54321, MODE_12345, MODE_54123 }
 
-class PunchtapeOutput extends Segments{
+class PunchtapeOutput extends Segments {
   final String text54321;
   final String text54123;
   final String text12345;
 
-  PunchtapeOutput({required List<List<String>> displays, required this.text54321, required this.text54123, required this.text12345}) : super(displays: displays);
+  PunchtapeOutput(
+      {required List<List<String>> displays, required this.text54321, required this.text54123, required this.text12345})
+      : super(displays: displays);
 }
 
 List<String> _decenary2segments(String decenary, bool order12345, TeletypewriterCodebook language) {
@@ -101,7 +103,7 @@ List<String> _buildBinaryListFromDecimalList(List<int> input) {
 List<int> _buildIntListFromBinaryList(List<String> input) {
   List<int> result = [];
   for (String element in input) {
-    if (int.tryParse(convertBase(element, 2, 10))!= null ) {
+    if (int.tryParse(convertBase(element, 2, 10)) != null) {
       result.add(int.parse(convertBase(element, 2, 10)));
     }
   }
@@ -120,7 +122,6 @@ Segments encodePunchtape(String input, TeletypewriterCodebook language, bool ord
 
 String _decodeTextPunchtapeSingleMode(
     String inputs, TeletypewriterCodebook language, bool numbersOnly, PUNCHTAPE_INTERPRETER_MODE interpreterMode) {
-
   if (language == TeletypewriterCodebook.BAUDOT_54123) {
     switch (interpreterMode) {
       case PUNCHTAPE_INTERPRETER_MODE.MODE_54321:
@@ -157,12 +158,13 @@ String _decodeTextPunchtapeSingleMode(
   return decodeTeletypewriter(intList, language, numbersOnly: numbersOnly);
 }
 
-PunchtapeOutput decodeTextPunchtape(
-    String inputs, TeletypewriterCodebook language, bool numbersOnly) {
+PunchtapeOutput decodeTextPunchtape(String inputs, TeletypewriterCodebook language, bool numbersOnly) {
   if (inputs.isEmpty) return PunchtapeOutput(displays: [], text54321: '', text54123: '', text12345: '');
 
   var displays = <List<String>>[];
   List<int> intList = [];
+
+  inputs = inputs.replaceAll(RegExp(r'(\s)+'), ' ');
 
   inputs.split(' ').forEach((element) {
     var val = int.tryParse(convertBase(element, 2, 10));
@@ -235,8 +237,10 @@ PunchtapeOutput decodeVisualPunchtape(List<List<String>> displays, Teletypewrite
 
   return PunchtapeOutput(
       displays: displays,
-      text54321: _decodeVisualPunchtapeSingleMode(displays, language, numbersOnly, PUNCHTAPE_INTERPRETER_MODE.MODE_54321),
-      text54123: _decodeVisualPunchtapeSingleMode(displays, language, numbersOnly, PUNCHTAPE_INTERPRETER_MODE.MODE_54123),
-      text12345: _decodeVisualPunchtapeSingleMode(displays, language, numbersOnly, PUNCHTAPE_INTERPRETER_MODE.MODE_12345));
+      text54321:
+          _decodeVisualPunchtapeSingleMode(displays, language, numbersOnly, PUNCHTAPE_INTERPRETER_MODE.MODE_54321),
+      text54123:
+          _decodeVisualPunchtapeSingleMode(displays, language, numbersOnly, PUNCHTAPE_INTERPRETER_MODE.MODE_54123),
+      text12345:
+          _decodeVisualPunchtapeSingleMode(displays, language, numbersOnly, PUNCHTAPE_INTERPRETER_MODE.MODE_12345));
 }
-
