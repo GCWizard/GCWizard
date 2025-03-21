@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/drag.dart';
+import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/time.dart';
 import 'package:intl/intl.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
@@ -35,15 +36,22 @@ class BallisticsState extends State<Ballistics> {
   double _currentInputDiameter = 0.0;
   double _currentInputDrag = 0.0;
   double _currentInputMass = 0.0;
+  double _currentInputDuration = 0.0;
 
   GCWUnitsValue<Unit> _currentOutputDistanceUnit =
       GCWUnitsValue<Unit>(UNITCATEGORY_LENGTH.defaultUnit, UNITPREFIX_NONE);
-  GCWUnitsValue<Unit> _currentOutputTimeUnit = GCWUnitsValue<Unit>(UNITCATEGORY_TIME.defaultUnit, UNITPREFIX_NONE);
+  GCWUnitsValue<Unit> _currentOutputTimeUnit =
+      GCWUnitsValue<Unit>(UNITCATEGORY_TIME.defaultUnit, UNITPREFIX_NONE);
   GCWUnitsValue<Unit> _currentOutputMaxSpeedUnit =
       GCWUnitsValue<Unit>(UNITCATEGORY_VELOCITY.defaultUnit, UNITPREFIX_NONE);
-  GCWUnitsValue<Unit> _currentOutputHeightUnit = GCWUnitsValue<Unit>(UNITCATEGORY_LENGTH.defaultUnit, UNITPREFIX_NONE);
+  GCWUnitsValue<Unit> _currentOutputHeightUnit =
+      GCWUnitsValue<Unit>(UNITCATEGORY_LENGTH.defaultUnit, UNITPREFIX_NONE);
+  GCWUnitsValue<Unit> _currentOutputDurationtUnit =
+      GCWUnitsValue<Unit>(UNITCATEGORY_TIME.defaultUnit, UNITPREFIX_NONE);
 
   AIR_RESISTANCE _currentAirResistanceMode = AIR_RESISTANCE.NONE;
+
+  BALLISTICS_DATA_MODE _currentInputBallisticsDataMode = BALLISTICS_DATA_MODE.ANGLE_DURATION_TO_DISTANCE_VELOCITY;
 
   @override
   void initState() {
@@ -54,108 +62,9 @@ class BallisticsState extends State<Ballistics> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        GCWUnitInput(
-          value: _currentInputVelocity,
-          title: i18n(context, 'unitconverter_category_velocity'),
-          unitCategory: UNITCATEGORY_VELOCITY,
-          onChanged: (value) {
-            setState(() {
-              _currentInputVelocity = value;
-            });
-          },
-        ),
-        GCWUnitInput<Angle>(
-          value: _currentInputAngle,
-          title: i18n(context, 'unitconverter_category_angle'),
-          unitCategory: UNITCATEGORY_ANGLE,
-          onChanged: (value) {
-            setState(() {
-              _currentInputAngle = value;
-            });
-          },
-        ),
-        GCWUnitInput<Length>(
-          value: _currentInputHeight,
-          title: i18n(context, 'ballistics_height'),
-          unitCategory: UNITCATEGORY_LENGTH,
-          onChanged: (value) {
-            setState(() {
-              _currentInputHeight = value;
-            });
-          },
-        ),
-        GCWUnitInput<Acceleration>(
-          value: _currentInputAcceleration,
-          title: i18n(context, 'unitconverter_category_acceleration'),
-          unitCategory: UNITCATEGORY_ACCELERATION,
-          onChanged: (value) {
-            setState(() {
-              _currentInputAcceleration = value;
-            });
-          },
-        ),
-        GCWDropDown(
-          title: i18n(context, 'ballistics_drag'),
-          value: _currentAirResistanceMode,
-          onChanged: (value) {
-            setState(() {
-              _currentAirResistanceMode = value;
-            });
-          },
-          items: AIR_RESISTANCE_LIST.entries.map((mode) {
-            return GCWDropDownMenuItem(
-              value: mode.key,
-              child: i18n(context, mode.value),
-            );
-          }).toList(),
-        ),
-        _currentAirResistanceMode != AIR_RESISTANCE.NONE
-            ? Column(
-                children: <Widget>[
-                  GCWUnitInput<Mass>(
-                    value: _currentInputMass,
-                    title: i18n(context, 'unitconverter_category_mass'),
-                    unitCategory: UNITCATEGORY_MASS,
-                    unitList: allMasses(),
-                    onChanged: (value) {
-                      setState(() {
-                        _currentInputMass = MASS_KILOGRAM.fromGram(value);
-                      });
-                    },
-                  ),
-                  GCWUnitInput<Length>(
-                    value: _currentInputDiameter,
-                    title: i18n(context, 'ballistics_diameter'),
-                    unitCategory: UNITCATEGORY_LENGTH,
-                    onChanged: (value) {
-                      setState(() {
-                        _currentInputDiameter = value;
-                      });
-                    },
-                  ),
-                  GCWUnitInput<Density>(
-                    value: _currentInputDensity,
-                    title: i18n(context, 'unitconverter_category_density'),
-                    unitCategory: UNITCATEGORY_DENSITY,
-                    onChanged: (value) {
-                      setState(() {
-                        _currentInputDensity = DENSITY_KILOGRAMPERCUBICMETER.fromGramPerCubicMeter(value);
-                      });
-                    },
-                  ),
-                  GCWUnitInput<Drag>(
-                    value: _currentInputDrag,
-                    title: i18n(context, 'ballistics_cw'),
-                    unitCategory: UNITCATEGORY_DRAG,
-                    onChanged: (value) {
-                      setState(() {
-                        _currentInputDrag = value;
-                      });
-                    },
-                  ),
-                ],
-              )
-            : Container(),
+        _buildInputDragMode(context),
+        _buildInputBallisticsData(context),
+        _buildInputDragData(context),
         GCWDefaultOutput(child: _calculateOutput())
       ],
     );
@@ -166,22 +75,33 @@ class BallisticsState extends State<Ballistics> {
 
     switch (_currentAirResistanceMode) {
       case AIR_RESISTANCE.NONE:
-        output = calculateBallisticsNoDrag(
-            _currentInputVelocity, _currentInputAngle, _currentInputAcceleration, _currentInputHeight);
+        output = calculateBallisticsNoDrag(_currentInputVelocity,
+            _currentInputAngle, _currentInputAcceleration, _currentInputHeight);
         break;
       case AIR_RESISTANCE.NEWTON:
-        output = calculateBallisticsNewton(_currentInputVelocity, _currentInputAngle, _currentInputAcceleration,
-            _currentInputHeight, _currentInputMass, _currentInputDiameter, _currentInputDrag, _currentInputDensity);
+        output = calculateBallisticsNewton(
+            _currentInputVelocity,
+            _currentInputAngle,
+            _currentInputAcceleration,
+            _currentInputHeight,
+            _currentInputMass,
+            _currentInputDiameter,
+            _currentInputDrag,
+            _currentInputDensity);
     }
 
     double outputDistanceValue =
-        _currentOutputDistanceUnit.value.fromReference(output.Distance) / _currentOutputDistanceUnit.prefix.value;
+        _currentOutputDistanceUnit.value.fromReference(output.Distance) /
+            _currentOutputDistanceUnit.prefix.value;
     double outputTimeValue =
-        _currentOutputTimeUnit.value.fromReference(output.Time) / _currentOutputTimeUnit.prefix.value;
+        _currentOutputTimeUnit.value.fromReference(output.Time) /
+            _currentOutputTimeUnit.prefix.value;
     double outputMaxSpeedValue =
-        _currentOutputMaxSpeedUnit.value.fromReference(output.maxSpeed) / _currentOutputMaxSpeedUnit.prefix.value;
+        _currentOutputMaxSpeedUnit.value.fromReference(output.maxSpeed) /
+            _currentOutputMaxSpeedUnit.prefix.value;
     double outputHeightValue =
-        _currentOutputHeightUnit.value.fromReference(output.Height) / _currentOutputHeightUnit.prefix.value;
+        _currentOutputHeightUnit.value.fromReference(output.Height) /
+            _currentOutputHeightUnit.prefix.value;
 
     return Column(
       children: <Widget>[
@@ -197,9 +117,11 @@ class BallisticsState extends State<Ballistics> {
             Expanded(
               flex: 2,
               child: Container(
-                padding: const EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN, left: DOUBLE_DEFAULT_MARGIN),
+                padding: const EdgeInsets.only(
+                    right: DOUBLE_DEFAULT_MARGIN, left: DOUBLE_DEFAULT_MARGIN),
                 child: GCWOutputText(
-                  text: NumberFormat('0.0' + '#####').format(outputDistanceValue),
+                  text:
+                      NumberFormat('0.0' + '#####').format(outputDistanceValue),
                 ),
               ),
             ),
@@ -213,7 +135,8 @@ class BallisticsState extends State<Ballistics> {
                   onChanged: (GCWUnitsValue value) {
                     setState(() {
                       _currentOutputDistanceUnit = value;
-                      outputDistanceValue = _currentOutputDistanceUnit.value.fromReference(output.Distance) /
+                      outputDistanceValue = _currentOutputDistanceUnit.value
+                              .fromReference(output.Distance) /
                           _currentOutputDistanceUnit.prefix.value;
                     });
                   },
@@ -232,7 +155,8 @@ class BallisticsState extends State<Ballistics> {
             Expanded(
               flex: 2,
               child: Container(
-                padding: const EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN, left: DOUBLE_DEFAULT_MARGIN),
+                padding: const EdgeInsets.only(
+                    right: DOUBLE_DEFAULT_MARGIN, left: DOUBLE_DEFAULT_MARGIN),
                 child: GCWOutputText(
                   text: NumberFormat('0.0' + '#####').format(outputTimeValue),
                 ),
@@ -248,8 +172,9 @@ class BallisticsState extends State<Ballistics> {
                 onChanged: (GCWUnitsValue value) {
                   setState(() {
                     _currentOutputTimeUnit = value;
-                    outputDistanceValue =
-                        _currentOutputTimeUnit.value.fromReference(output.Time) / _currentOutputTimeUnit.prefix.value;
+                    outputDistanceValue = _currentOutputTimeUnit.value
+                            .fromReference(output.Time) /
+                        _currentOutputTimeUnit.prefix.value;
                   });
                 },
               ),
@@ -268,7 +193,8 @@ class BallisticsState extends State<Ballistics> {
             Expanded(
               flex: 2,
               child: Container(
-                padding: const EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN, left: DOUBLE_DEFAULT_MARGIN),
+                padding: const EdgeInsets.only(
+                    right: DOUBLE_DEFAULT_MARGIN, left: DOUBLE_DEFAULT_MARGIN),
                 child: GCWOutputText(
                   text: NumberFormat('0.0' + '#####').format(outputHeightValue),
                 ),
@@ -284,7 +210,8 @@ class BallisticsState extends State<Ballistics> {
                   onChanged: (GCWUnitsValue value) {
                     setState(() {
                       _currentOutputHeightUnit = value;
-                      outputHeightValue = _currentOutputHeightUnit.value.fromReference(output.Height) /
+                      outputHeightValue = _currentOutputHeightUnit.value
+                              .fromReference(output.Height) /
                           _currentOutputHeightUnit.prefix.value;
                     });
                   },
@@ -303,11 +230,14 @@ class BallisticsState extends State<Ballistics> {
             Expanded(
               flex: 2,
               child: Container(
-                padding: const EdgeInsets.only(right: DOUBLE_DEFAULT_MARGIN, left: DOUBLE_DEFAULT_MARGIN),
+                padding: const EdgeInsets.only(
+                    right: DOUBLE_DEFAULT_MARGIN, left: DOUBLE_DEFAULT_MARGIN),
                 child: GCWOutputText(
                   text: (outputMaxSpeedValue > 0)
-                      ? NumberFormat('0.0' + '#####').format(outputMaxSpeedValue)
-                      : NumberFormat('0.0' + '#####').format(_currentInputVelocity),
+                      ? NumberFormat('0.0' + '#####')
+                          .format(outputMaxSpeedValue)
+                      : NumberFormat('0.0' + '#####')
+                          .format(_currentInputVelocity),
                 ),
               ),
             ),
@@ -321,7 +251,8 @@ class BallisticsState extends State<Ballistics> {
                 onChanged: (GCWUnitsValue value) {
                   setState(() {
                     _currentOutputMaxSpeedUnit = value;
-                    outputMaxSpeedValue = _currentOutputMaxSpeedUnit.value.fromReference(output.maxSpeed) /
+                    outputMaxSpeedValue = _currentOutputMaxSpeedUnit.value
+                            .fromReference(output.maxSpeed) /
                         _currentOutputMaxSpeedUnit.prefix.value;
                   });
                 },
@@ -331,5 +262,198 @@ class BallisticsState extends State<Ballistics> {
         ),
       ],
     );
+  }
+
+  Widget _buildInputDragMode(BuildContext context) {
+    return GCWDropDown(
+      title: i18n(context, 'ballistics_drag'),
+      value: _currentAirResistanceMode,
+      onChanged: (value) {
+        setState(() {
+          _currentAirResistanceMode = value;
+        });
+      },
+      items: AIR_RESISTANCE_LIST.entries.map((mode) {
+        return GCWDropDownMenuItem(
+          value: mode.key,
+          child: i18n(context, mode.value),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildInputVelocyity(BuildContext context) {
+    return GCWUnitInput(
+      value: _currentInputVelocity,
+      title: i18n(context, 'unitconverter_category_velocity'),
+      unitCategory: UNITCATEGORY_VELOCITY,
+      onChanged: (value) {
+        setState(() {
+          _currentInputVelocity = value;
+        });
+      },
+    );
+  }
+
+  Widget _buildInputAngle(BuildContext context) {
+    return GCWUnitInput<Angle>(
+      value: _currentInputAngle,
+      title: i18n(context, 'unitconverter_category_angle'),
+      unitCategory: UNITCATEGORY_ANGLE,
+      onChanged: (value) {
+        setState(() {
+          _currentInputAngle = value;
+        });
+      },
+    );
+  }
+
+  Widget _buildInputHeight(BuildContext context) {
+    return GCWUnitInput<Length>(
+      value: _currentInputHeight,
+      title: i18n(context, 'ballistics_height'),
+      unitCategory: UNITCATEGORY_LENGTH,
+      onChanged: (value) {
+        setState(() {
+          _currentInputHeight = value;
+        });
+      },
+    );
+  }
+
+  Widget _buildInputAcceleration(BuildContext context) {
+    return GCWUnitInput<Acceleration>(
+      value: _currentInputAcceleration,
+      title: i18n(context, 'unitconverter_category_acceleration'),
+      unitCategory: UNITCATEGORY_ACCELERATION,
+      onChanged: (value) {
+        setState(() {
+          _currentInputAcceleration = value;
+        });
+      },
+    );
+  }
+
+  Widget _buildInputMass(BuildContext context) {
+    return GCWUnitInput<Mass>(
+      value: _currentInputMass,
+      title: i18n(context, 'unitconverter_category_mass'),
+      unitCategory: UNITCATEGORY_MASS,
+      unitList: allMasses(),
+      onChanged: (value) {
+        setState(() {
+          _currentInputMass = MASS_KILOGRAM.fromGram(value);
+        });
+      },
+    );
+  }
+
+  Widget _buildInputDiameter(BuildContext context) {
+    return GCWUnitInput<Length>(
+      value: _currentInputDiameter,
+      title: i18n(context, 'ballistics_diameter'),
+      unitCategory: UNITCATEGORY_LENGTH,
+      onChanged: (value) {
+        setState(() {
+          _currentInputDiameter = value;
+        });
+      },
+    );
+  }
+
+  Widget _buildInputDensity(BuildContext context) {
+    return GCWUnitInput<Density>(
+      value: _currentInputDensity,
+      title: i18n(context, 'unitconverter_category_density'),
+      unitCategory: UNITCATEGORY_DENSITY,
+      onChanged: (value) {
+        setState(() {
+          _currentInputDensity =
+              DENSITY_KILOGRAMPERCUBICMETER.fromGramPerCubicMeter(value);
+        });
+      },
+    );
+  }
+
+  Widget _buildInputDrag(BuildContext context) {
+    return GCWUnitInput<Drag>(
+      value: _currentInputDrag,
+      title: i18n(context, 'ballistics_cw'),
+      unitCategory: UNITCATEGORY_DRAG,
+      onChanged: (value) {
+        setState(() {
+          _currentInputDrag = value;
+        });
+      },
+    );
+  }
+
+  Widget _buildInputTime(BuildContext context) {
+    return GCWUnitInput<Time>(
+      value: _currentInputDuration,
+      title: i18n(context, 'ballistics_time'),
+      unitCategory: UNITCATEGORY_TIME,
+      onChanged: (value) {
+        setState(() {
+          _currentInputDuration = value;
+        });
+      },
+    );
+  }
+
+  Widget _buildInputBallisticsDataMode(BuildContext context) {
+    return GCWDropDown(
+      title: i18n(context, 'ballistics_data_mode'),
+      value: _currentInputBallisticsDataMode,
+      onChanged: (value) {
+        setState(() {
+          _currentInputBallisticsDataMode = value;
+        });
+      },
+      items: BALLISTICS_DATA_MODE_LIST.entries.map((mode) {
+        return GCWDropDownMenuItem(
+          value: mode.key,
+          child: i18n(context, mode.value),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildInputBallisticsData(BuildContext context) {
+    return Column(
+      children: [
+        _buildInputBallisticsDataMode(context),
+        if (_currentInputBallisticsDataMode == BALLISTICS_DATA_MODE.ANGLE_VELOCITY_TO_DISTANCE_DURATION)
+          Column(
+            children: [
+              _buildInputAngle(context),
+              _buildInputVelocyity(context),
+            ],
+          ),
+        if (_currentInputBallisticsDataMode == BALLISTICS_DATA_MODE.ANGLE_DURATION_TO_DISTANCE_VELOCITY)
+          Column(
+            children: [
+              _buildInputAngle(context),
+              _buildInputTime(context),
+            ],
+          ),
+
+        _buildInputHeight(context),
+        _buildInputAcceleration(context),
+      ],
+    );
+  }
+
+  Widget _buildInputDragData(BuildContext context) {
+    return _currentAirResistanceMode != AIR_RESISTANCE.NONE
+        ? Column(
+            children: <Widget>[
+              _buildInputMass(context),
+              _buildInputDiameter(context),
+              _buildInputDensity(context),
+              _buildInputDrag(context),
+            ],
+          )
+        : Container();
   }
 }

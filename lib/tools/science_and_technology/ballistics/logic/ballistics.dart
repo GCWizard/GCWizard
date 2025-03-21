@@ -21,7 +21,7 @@ OutputBallistics calculateBallisticsNoDrag(double velocity, double angle, double
   distance = time * v0x;
   maxSpeed  = sqrt(2 * acceleration * maxHeight + v0x*v0x);
 
-  return OutputBallistics(Time: time, Height: maxHeight, Distance: distance, maxSpeed: maxSpeed);
+  return OutputBallistics(Time: time, Height: maxHeight, Distance: distance, maxSpeed: maxSpeed, Speed: velocity);
 }
 
 OutputBallistics calculateBallisticsNewton(double V0, double Winkel, double g, double startHeight, double Masse, double a, double cw, double rho) {
@@ -166,7 +166,7 @@ OutputBallistics calculateBallisticsNewton(double V0, double Winkel, double g, d
   Vxo = V0 * cos(Winkel / 180 * pi);
 
   if (a == 0 || rho == 0 || Masse == 0) {
-    return OutputBallistics(Time: 0.0, Height: 0.0, Distance: 0.0, maxSpeed: 0.0);
+    return OutputBallistics(Time: 0.0, Height: 0.0, Distance: 0.0, maxSpeed: 0.0, Speed: 0.0);
   }
 
   a = a * a / 4 * pi;
@@ -201,5 +201,5 @@ OutputBallistics calculateBallisticsNewton(double V0, double Winkel, double g, d
 
   W = XofT(T);
 
-  return OutputBallistics(Time: T, Height: H, Distance: W, maxSpeed: maxSpeed);
+  return OutputBallistics(Time: T, Height: H, Distance: W, maxSpeed: maxSpeed, Speed: V0);
 }

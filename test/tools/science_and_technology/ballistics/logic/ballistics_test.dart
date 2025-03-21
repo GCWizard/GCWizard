@@ -15,7 +15,7 @@ void main() {
         'diameter': 0.0,
         'density': 0.0,
         'dragcoefficient': 0.0,
-        'expectedOutput': OutputBallistics(Time: 0.0, Height: 0.0, Distance: 0.0, maxSpeed: 0.0)
+        'expectedOutput': OutputBallistics(Time: 0.0, Height: 0.0, Distance: 0.0, maxSpeed: 0.0, Speed: 0.0)
       },
       {
         'velocity': 10.0,
@@ -27,7 +27,7 @@ void main() {
         'diameter': 0.0,
         'density': 0.0,
         'dragcoefficient': 0.0,
-        'expectedOutput': OutputBallistics(Time: 1.9723308267639443, Height: 5.822629969418959, Distance: 9.861654133819723, maxSpeed: 11.8)
+        'expectedOutput': OutputBallistics(Time: 1.9723308267639443, Height: 5.822629969418959, Distance: 9.861654133819723, maxSpeed: 11.8, Speed: 10.0)
       },
       {
         'velocity': 0.0,
@@ -39,7 +39,7 @@ void main() {
         'diameter': 0.0,
         'density': 0.0,
         'dragcoefficient': 0.0,
-        'expectedOutput': OutputBallistics(Time: 0.0, Height: 0.0, Distance: 0.0, maxSpeed: 0.0)
+        'expectedOutput': OutputBallistics(Time: 0.0, Height: 0.0, Distance: 0.0, maxSpeed: 0.0, Speed: 0.0)
       },
     ];
 
@@ -47,7 +47,7 @@ void main() {
       test(
           'velocity: ${elem['velocity']}, angle: ${elem['angle']}, height: ${elem['height']}, acceleration: ${elem['acceleration']}, '
           'acceleration: ${elem['inputUnit2']}, prefix: ${elem['prefix']}', () {
-        OutputBallistics _actual = OutputBallistics(Time: 0, Height: 0, Distance: 0, maxSpeed: 0);
+        OutputBallistics _actual = OutputBallistics(Time: 0, Height: 0, Distance: 0, maxSpeed: 0, Speed: 0.0);
         switch (elem['drag']) {
           case AIR_RESISTANCE.NONE:
             _actual = calculateBallisticsNoDrag(elem['velocity'] as double, elem['angle'] as double,
