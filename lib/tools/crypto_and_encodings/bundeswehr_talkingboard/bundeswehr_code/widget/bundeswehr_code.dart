@@ -8,6 +8,7 @@ import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
+import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -41,15 +42,15 @@ class _BundeswehrTalkingBoardObfuscationState
   String _currentNumeralCodeXaxisCustom = '';
   String _currentNumeralCodeYaxisCustom = '';
 
+  TABLE_SOURCE _tableSource = TABLE_SOURCE.NONE;
+
   BundeswehrTalkingBoardAuthentificationTable? _tableNumeralCode;
 
   String _numeralCodeString = '';
 
   bool _contentToSave = false;
-  TABLE_SOURCE _tableSource = TABLE_SOURCE.NONE;
 
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
-  GCWSwitchPosition _currentTableMode = GCWSwitchPosition.left;
 
   final _cryptedTextMaskFormatter = GCWMaskTextInputFormatter(
       mask: '## ' * 1000 + '##', filter: {"#": RegExp(r'[a-zA-Z]')});
@@ -84,204 +85,29 @@ class _BundeswehrTalkingBoardObfuscationState
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        GCWTwoOptionsSwitch(
-          value: _currentMode,
-          onChanged: (value) {
-            setState(() {
-              _currentMode = value;
-            });
-          },
-        ),
+        _widgetSwitchMode(context),
         _currentMode == GCWSwitchPosition.right
-            ? GCWTextField(
-                controller: _decodeController,
-                inputFormatters: [_cryptedTextMaskFormatter],
-                hintText: 'AB EF HG IJ MA ...',
-                onChanged: (text) {
-                  setState(() {
-                    _currentDecode = (text.isEmpty)
-                        ? ''
-                        : _cryptedTextMaskFormatter.getMaskedText();
-                  });
-                },
-              )
-            : GCWTextField(
-                controller: _encodeController,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9]')),
-                ],
-                onChanged: (text) {
-                  setState(() {
-                    _currentEncode = text;
-                  });
-                },
-              ),
-        _currentMode == GCWSwitchPosition.left
-            ? GCWTwoOptionsSwitch(
-                rightValue: i18n(
-                    context, 'bundeswehr_talkingboard_auth_table_mode_random'),
-                leftValue: i18n(
-                    context, 'bundeswehr_talkingboard_auth_table_mode_custom'),
-                value: _currentTableMode,
-                onChanged: (value) {
-                  setState(() {
-                    _currentTableMode = value;
-                    _buildNumeralCode(
-                        custom: _currentTableMode == GCWSwitchPosition.left,
-                        xAxis: _currentNumeralCodeXaxisCustom,
-                        yAxis: _currentNumeralCodeYaxisCustom);
-                  });
-                },
-              )
-            : Container(),
+            ? _widgetInputDecode(context)
+            : _widgetInputEncode(context),
         GCWTextDivider(
           text:
               i18n(context, 'bundeswehr_talkingboard_auth_table_numeral_code'),
           trailing: Row(
             children: [
-              GCWIconButton(
-                icon: Icons.create,
-                size: IconButtonSize.SMALL,
-                iconColor: _currentMode == GCWSwitchPosition.right
-                    ? themeColors().checkBoxActiveColor()
-                    : _currentTableMode == GCWSwitchPosition.left
-                        ? themeColors().inactive()
-                        : null,
-                onPressed: () {
-                  setState(() {
-                    _tableSource = TABLE_SOURCE.CUSTOM;
-                  });
-                },
-              ),
-              GCWIconButton(
-                icon: Icons.auto_fix_high,
-                size: IconButtonSize.SMALL,
-                iconColor: _currentMode == GCWSwitchPosition.left
-                    ? themeColors().inactive()
-                    : null,
-                onPressed: () {
-                  setState(() {
-                    if (_currentMode == GCWSwitchPosition.left) {
-                      _tableSource = TABLE_SOURCE.RANDOM;
-                      _contentToSave = true;
-                      _buildNumeralCode(
-                          custom: _tableSource == TABLE_SOURCE.CUSTOM,
-                          xAxis: _currentNumeralCodeXaxisCustom,
-                          yAxis: _currentNumeralCodeYaxisCustom);
-                    }
-                  });
-                },
-              ),
-              GCWIconButton(
-                icon: Icons.file_open,
-                size: IconButtonSize.SMALL,
-                onPressed: () {
-                  setState(() {
-                    _tableSource = TABLE_SOURCE.FILE;
-                  });
-                },
-              ),
-              GCWIconButton(
-                icon: Icons.save,
-                size: IconButtonSize.SMALL,
-                iconColor:
-                    _contentToSave == false ? themeColors().inactive() : null,
-                onPressed: () {
-                  _contentToSave == false
-                      ? null
-                      : _exportFile(
-                          context,
-                          BundeswehrTalkingBoard(
-                              xAxisNumeralCode: _tableNumeralCode!.xAxis,
-                              yAxisNumeralCode: _tableNumeralCode!.yAxis,
-                              AuthentificationCode: []).toByteList(),
-                          'BWTalkingBoard',
-                          FileType.TXT);
-                },
-              )
+              _widgetIconButtonRandom(context),
+              _widgetIconButtonOpen(context),
+              _widgetIconButtonSave(context),
             ],
           ),
         ),
         Column(
           children: <Widget>[
             (_tableSource == TABLE_SOURCE.FILE)
-                ? GCWOpenFile(
-                    title: i18n(context, 'common_exportfile_openfile'),
-                    onLoaded: (_bundeswehrTalkingBoard) {
-                      if (_bundeswehrTalkingBoard == null) {
-                        showSnackBar(
-                            i18n(
-                                context, 'common_loadfile_exception_notloaded'),
-                            context);
-                        return;
-                      }
-                      BundeswehrTalkingBoard bwTalkingBoard =
-                          BundeswehrTalkingBoard.fromJson(jsonDecode(
-                                  String.fromCharCodes(
-                                      _bundeswehrTalkingBoard.bytes))
-                              as Map<String, dynamic>);
-
-                      _tableNumeralCode =
-                          BundeswehrTalkingBoardAuthentificationTable(
-                        xAxis: bwTalkingBoard.xAxisNumeralCode,
-                        yAxis: bwTalkingBoard.yAxisNumeralCode,
-                        Content: BUNDESWEHR_TALKINGBOARD_NUMERALCODE,
-                      );
-                      setState(() {
-                        _currentNumeralCodeXaxisCustom =
-                            bwTalkingBoard.xAxisNumeralCode.join('');
-                        _currentNumeralCodeYaxisCustom =
-                            bwTalkingBoard.yAxisNumeralCode.join('');
-                        _numeralCodeCustomXaxis.text =
-                            _currentNumeralCodeXaxisCustom;
-                        _numeralCodeCustomYaxis.text =
-                            _currentNumeralCodeYaxisCustom;
-                        _numeralCodeString =
-                            BundeswehrTalkingBoardCreateNumeralCodeTableString(
-                                bwTalkingBoard.xAxisNumeralCode,
-                                bwTalkingBoard.yAxisNumeralCode);
-                      });
-                      _contentToSave = true;
-                    },
-                  )
+                ? _widgetOpenFile(context)
                 : Container(),
-            _currentTableMode == GCWSwitchPosition.right
-                ? GCWOutputText(
-                    text: _numeralCodeString,
-                    isMonotype: true,
-                  )
-                : Column(
-                    children: <Widget>[
-                      GCWTextField(
-                        controller: _numeralCodeCustomXaxis,
-                        hintText: i18n(context,
-                            'bundeswehr_talkingboard_auth_table_numeral_code_x_axis'),
-                        inputFormatters: [_numeralCodeyXAxisCodeMaskFormatter],
-                        onChanged: (text) {
-                          setState(() {
-                            _currentNumeralCodeXaxisCustom = (text.isEmpty)
-                                ? ''
-                                : _numeralCodeyXAxisCodeMaskFormatter
-                                    .getMaskedText();
-                          });
-                        },
-                      ),
-                      GCWTextField(
-                        controller: _numeralCodeCustomYaxis,
-                        hintText: i18n(context,
-                            'bundeswehr_talkingboard_auth_table_numeral_code_y_axis'),
-                        inputFormatters: [_numeralCodeYAxisCodeMaskFormatter],
-                        onChanged: (text) {
-                          setState(() {
-                            _currentNumeralCodeYaxisCustom = (text.isEmpty)
-                                ? ''
-                                : _numeralCodeYAxisCodeMaskFormatter
-                                    .getMaskedText();
-                          });
-                        },
-                      ),
-                    ],
-                  )
+            _widgetInputXAxis(context),
+            _widgetInputYAxis(context),
+            _widgetDisplayNumeralCode(context),
           ],
         ),
         _calculateOutput(context),
@@ -292,20 +118,15 @@ class _BundeswehrTalkingBoardObfuscationState
   Widget _calculateOutput(BuildContext context) {
     BundeswehrTalkingBoardCodingOutput output;
 
-    if (_currentTableMode == GCWSwitchPosition.left) {
-      // encrypt
-      _buildNumeralCode(
-          custom: _currentTableMode == GCWSwitchPosition.left,
-          xAxis: _currentNumeralCodeXaxisCustom,
-          yAxis: _currentNumeralCodeYaxisCustom);
-      if (_numeralCodeString.startsWith('bundeswehr_')) {
-        return GCWDefaultOutput(
-          child: i18n(context, _numeralCodeString),
-        );
-      }
+    if (_numeralCodeString.startsWith('bundeswehr_')) {
+      return GCWDefaultOutput(
+        child: i18n(context, _numeralCodeString),
+      );
     }
     if (_tableNumeralCode == null) {
-      return const GCWDefaultOutput();
+      return GCWDefaultOutput(
+        child: i18n(context, BUNDESWEHR_TALKINGBOARD_AUTH_RESPONSE_EMPTY_CUSTOM_NUMERAL_TABLE),
+      );
     }
 
     if (_currentMode == GCWSwitchPosition.right) {
@@ -333,7 +154,7 @@ class _BundeswehrTalkingBoardObfuscationState
 
       if (_invalidSingleAxisTitle(xAxis)) {
         _tableNumeralCode = BundeswehrTalkingBoardAuthentificationTable(
-            yAxis: [], xAxis: [], Content: []);
+            yAxis: [], xAxis: [], Content: [], Encoding: {});
         _numeralCodeString =
             BUNDESWEHR_TALKINGBOARD_AUTH_RESPONSE_INVALID_X_AXIS_NUMERAL_TABLE;
         return;
@@ -341,7 +162,7 @@ class _BundeswehrTalkingBoardObfuscationState
 
       if (_invalidSingleAxisTitle(yAxis)) {
         _tableNumeralCode = BundeswehrTalkingBoardAuthentificationTable(
-            yAxis: [], xAxis: [], Content: []);
+            yAxis: [], xAxis: [], Content: [], Encoding: {});
         _numeralCodeString =
             BUNDESWEHR_TALKINGBOARD_AUTH_RESPONSE_INVALID_Y_AXIS_NUMERAL_TABLE;
         return;
@@ -349,7 +170,7 @@ class _BundeswehrTalkingBoardObfuscationState
 
       if (_invalidAxisDescription(xAxis + yAxis)) {
         _tableNumeralCode = BundeswehrTalkingBoardAuthentificationTable(
-            yAxis: [], xAxis: [], Content: []);
+            yAxis: [], xAxis: [], Content: [], Encoding: {});
         _numeralCodeString =
             BUNDESWEHR_TALKINGBOARD_AUTH_RESPONSE_INVALID_NUMERAL_TABLE;
         return;
@@ -397,6 +218,8 @@ class _BundeswehrTalkingBoardObfuscationState
       _colTitle = description.substring(0, 13).split('');
       _rowTitle = description.substring(13).split('');
     }
+    _currentNumeralCodeXaxisCustom = _colTitle.join('');
+    _currentNumeralCodeYaxisCustom = _rowTitle.join('');
 
     _numeralCode.addAll('0123456789ABC'.split(''));
     _numeralCode.addAll('D0123456789EF'.split(''));
@@ -879,5 +702,179 @@ class _BundeswehrTalkingBoardObfuscationState
             fileExtension(fileType));
 
     if (value) showExportedFileDialog(context);
+  }
+
+  Widget _widgetSwitchMode(BuildContext context) {
+    return GCWTwoOptionsSwitch(
+      value: _currentMode,
+      onChanged: (value) {
+        setState(() {
+          _currentMode = value;
+        });
+      },
+    );
+  }
+
+  Widget _widgetInputDecode(BuildContext context) {
+    return GCWTextField(
+      controller: _decodeController,
+      inputFormatters: [_cryptedTextMaskFormatter],
+      hintText: 'AB EF HG IJ MA ...',
+      onChanged: (text) {
+        setState(() {
+          _currentDecode =
+              (text.isEmpty) ? '' : _cryptedTextMaskFormatter.getMaskedText();
+        });
+      },
+    );
+  }
+
+  Widget _widgetInputEncode(BuildContext context) {
+    return GCWTextField(
+      controller: _encodeController,
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9]')),
+      ],
+      onChanged: (text) {
+        setState(() {
+          _currentEncode = text;
+        });
+      },
+    );
+  }
+
+  Widget _widgetInputXAxis(BuildContext context) {
+    return GCWTextField(
+      controller: _numeralCodeCustomXaxis,
+      hintText: i18n(
+          context, 'bundeswehr_talkingboard_auth_table_numeral_code_x_axis'),
+      inputFormatters: [_numeralCodeyXAxisCodeMaskFormatter],
+      onChanged: (text) {
+        setState(() {
+          _currentNumeralCodeXaxisCustom = (text.isEmpty)
+              ? ''
+              : _numeralCodeyXAxisCodeMaskFormatter.getMaskedText();
+          _buildNumeralCode(
+              custom: true,
+              xAxis: _currentNumeralCodeXaxisCustom,
+              yAxis: _currentNumeralCodeYaxisCustom);
+        });
+      },
+    );
+  }
+
+  Widget _widgetInputYAxis(BuildContext context) {
+    return GCWTextField(
+      controller: _numeralCodeCustomYaxis,
+      hintText: i18n(
+          context, 'bundeswehr_talkingboard_auth_table_numeral_code_y_axis'),
+      inputFormatters: [_numeralCodeYAxisCodeMaskFormatter],
+      onChanged: (text) {
+        setState(() {
+          _currentNumeralCodeYaxisCustom = (text.isEmpty)
+              ? ''
+              : _numeralCodeYAxisCodeMaskFormatter.getMaskedText();
+          _buildNumeralCode(
+              custom: true,
+              xAxis: _currentNumeralCodeXaxisCustom,
+              yAxis: _currentNumeralCodeYaxisCustom);
+        });
+      },
+    );
+  }
+
+  Widget _widgetDisplayNumeralCode(BuildContext context) {
+    return GCWExpandableTextDivider(
+        text: i18n(context, 'bundeswehr_talkingboard_auth_numeral_code'),
+        expanded: false,
+        suppressTopSpace: false,
+        child: _numeralCodeString.startsWith('bundeswehr')
+        ? Container()
+        : GCWOutputText(
+          text:  _numeralCodeString,
+          isMonotype: true,
+        ));
+  }
+
+  Widget _widgetOpenFile(BuildContext context) {
+    return GCWOpenFile(
+      title: i18n(context, 'common_exportfile_openfile'),
+      onLoaded: (_bundeswehrTalkingBoard) {
+        if (_bundeswehrTalkingBoard == null) {
+          showSnackBar(
+              i18n(context, 'common_loadfile_exception_notloaded'), context);
+          return;
+        }
+        BundeswehrTalkingBoard bwTalkingBoard = BundeswehrTalkingBoard.fromJson(
+            jsonDecode(String.fromCharCodes(_bundeswehrTalkingBoard.bytes))
+                as Map<String, dynamic>);
+
+        setState(() {
+          _currentNumeralCodeXaxisCustom =
+              bwTalkingBoard.xAxisNumeralCode.join('');
+          _numeralCodeCustomXaxis.text = _currentNumeralCodeXaxisCustom;
+
+          _currentNumeralCodeYaxisCustom =
+              bwTalkingBoard.yAxisNumeralCode.join('');
+          _numeralCodeCustomYaxis.text = _currentNumeralCodeYaxisCustom;
+
+          _buildNumeralCode(custom: true, xAxis: _currentNumeralCodeXaxisCustom, yAxis: _currentNumeralCodeYaxisCustom);
+        });
+        _contentToSave = true;
+      },
+    );
+  }
+
+  Widget _widgetIconButtonSave(BuildContext context){
+    return GCWIconButton(
+      icon: Icons.save,
+      size: IconButtonSize.SMALL,
+      iconColor:
+      _contentToSave == false ? themeColors().inactive() : null,
+      onPressed: () {
+        _contentToSave == false
+            ? null
+            : _exportFile(
+            context,
+            BundeswehrTalkingBoard(
+                xAxisNumeralCode: _tableNumeralCode!.xAxis,
+                yAxisNumeralCode: _tableNumeralCode!.yAxis,
+                AuthentificationCode: []).toByteList(),
+            'BWTalkingBoard',
+            FileType.TXT);
+      },
+    );
+  }
+
+  Widget _widgetIconButtonOpen(BuildContext context){
+    return GCWIconButton(
+      icon: Icons.file_open,
+      size: IconButtonSize.SMALL,
+      onPressed: () {
+        setState(() {
+          _tableSource = TABLE_SOURCE.FILE;
+        });
+      },
+    );
+  }
+
+  Widget _widgetIconButtonRandom(BuildContext context){
+    return GCWIconButton(
+      icon: Icons.auto_fix_high,
+      size: IconButtonSize.SMALL,
+      onPressed: () {
+        setState(() {
+          if (_currentMode == GCWSwitchPosition.left) {
+            _contentToSave = true;
+            _buildNumeralCode(
+                custom: false,
+                xAxis: '',
+                yAxis: '');
+            _numeralCodeCustomXaxis.text = _currentNumeralCodeXaxisCustom;
+            _numeralCodeCustomYaxis.text = _currentNumeralCodeYaxisCustom;
+          }
+        });
+      },
+    );
   }
 }
