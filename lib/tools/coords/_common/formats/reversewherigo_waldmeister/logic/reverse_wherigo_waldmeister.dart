@@ -19,12 +19,18 @@ class ReverseWherigoWaldmeisterCoordinate extends BaseCoordinate {
   @override
   CoordinateFormat get format => CoordinateFormat(CoordinateFormatKey.REVERSE_WIG_WALDMEISTER);
   int a, b, c;
+  var _stateCode = StateCode.OK;
 
   ReverseWherigoWaldmeisterCoordinate(this.a, this.b, this.c);
 
   @override
+  StateCode get stateCode => _stateCode;
+
+  @override
   LatLng? toLatLng() {
-    return _reverseWIGWaldmeisterToLatLon(this);
+    var result = _reverseWIGWaldmeisterToLatLon(this);
+    _stateCode = (result == null) ? StateCode.Checksum_Error : StateCode.OK;
+    return result;
   }
 
   static ReverseWherigoWaldmeisterCoordinate fromLatLon(LatLng coord) {
@@ -355,10 +361,7 @@ ReverseWherigoWaldmeisterCoordinate? _parseReverseWherigoWaldmeister(String inpu
 
   if (a == null || b == null || c == null) return null;
 
-  var waldmeister = ReverseWherigoWaldmeisterCoordinate(a, b, c);
-
-  if (!checkSumTest(waldmeister)) return null;
-  return waldmeister;
+  return ReverseWherigoWaldmeisterCoordinate(a, b, c);
 }
 
 bool checkSumTest(ReverseWherigoWaldmeisterCoordinate waldmeister) {

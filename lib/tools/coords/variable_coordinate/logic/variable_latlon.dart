@@ -75,13 +75,14 @@ VariableCoordinateResults parseVariableLatLon(String coordinate, Map<String, Str
     }
   }
 
-  var calculated = FormulaParser(unlimitedExpanded: true).parse(textToExpand,
-      substitutions.entries.map((e) => FormulaValue(e.key, e.value, type: FormulaValueType.INTERPOLATED)).toList());
+
+  var values = substitutions.entries.map((e) => FormulaValue(e.key, e.value, type: FormulaValueType.INTERPOLATED)).toList();
+  var parserResult = formatAndParseFormulas([Formula(textToExpand)], values, unlimitedExpanded: true);
 
   var coords = <VariableCoordinateSingleResult>[];
   var leftPadCoords = <VariableCoordinateSingleResult>[];
 
-  for (FormulaSolverSingleResult expandedText in calculated.results) {
+  for (FormulaSolverSingleResult expandedText in parserResult.first.output.results) {
     if (withProjection) {
       var evaluatedTexts = expandedText.result.split(String.fromCharCode(1));
 

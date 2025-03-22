@@ -134,9 +134,9 @@ class _GaussWeberTelegraphState extends State<GaussWeberTelegraph> {
           output = decodeGaussWeberTelegraph(_currentDecodeInput, widget.mode);
         }
         output = output
-            .replaceAll('telegraph_schillingcanstatt_stop', i18n(context, 'telegraph_schillingcanstatt_stop'))
-            .replaceAll('telegraph_schillingcanstatt_goon', i18n(context, 'telegraph_schillingcanstatt_goon'))
-            .replaceAll('telegraph_schillingcanstatt_finish', i18n(context, 'telegraph_schillingcanstatt_finish'));
+            .replaceAll('schillingcanstatt_stop', i18n(context, 'telegraph_schillingcanstatt_stop'))
+            .replaceAll('schillingcanstatt_goon', i18n(context, 'telegraph_schillingcanstatt_goon'))
+            .replaceAll('schillingcanstatt_finish', i18n(context, 'telegraph_schillingcanstatt_finish'));
       }
 
       return GCWDefaultOutput(child: output);

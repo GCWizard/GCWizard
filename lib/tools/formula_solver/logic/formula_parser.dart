@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/alphabet_values/logic/alphabet_values.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitution.dart';
 import 'package:gc_wizard/tools/formula_solver/persistence/model.dart';
@@ -46,7 +47,7 @@ class _GCWGrammarParser extends GrammarParser {
 }
 
 class FormulaParser {
-  final ContextModel _context = ContextModel();
+  static final ContextModel _context = ContextModel();
 
   bool unlimitedExpanded = false;
   Map<String, String> safedFormulasMap = {};
@@ -74,7 +75,7 @@ class FormulaParser {
     'sqrt5': _SQRT5,
   };
 
-  ExpressionParser parser = _GCWGrammarParser(
+  static ExpressionParser parser = _GCWGrammarParser(
       const ParserOptions(
           constants: CONSTANTS
       )
@@ -194,7 +195,7 @@ class FormulaParser {
 
   FormulaParser({this.unlimitedExpanded = false}) {
     _CUSTOM_FUNCTIONS.forEach((name, handler) {
-      parser.addFunction(name, handler);
+      parser.addFunction(name, handler, replace: true);
     });
   }
 
@@ -406,7 +407,7 @@ class FormulaParser {
     }
   }
 
-  bool _isString(String formula) {
+  static bool _isString(String formula) {
     var _formula = formula.trim();
     if (_formula.startsWith('(') && _formula.endsWith(')')) {
       _formula = _formula.substring(1, _formula.length - 1).trim();
@@ -431,13 +432,13 @@ class FormulaParser {
     return substitutedFormula;
   }
 
-  bool _isFullySubstituted(String tempSubstitutedFormula, String substitutedFormula) {
+  static bool _isFullySubstituted(String tempSubstitutedFormula, String substitutedFormula) {
     return double.tryParse(tempSubstitutedFormula.replaceAll(RegExp(r'[()]'), '')) != null ||
         substitutedFormula == tempSubstitutedFormula ||
         substitutedFormula == tempSubstitutedFormula.replaceAll(RegExp(r'[()]'), '');
   }
 
-  String _evaluateTextFunctions(String formula) {
+  static String _evaluateTextFunctions(String formula) {
     var out = formula.toLowerCase();
 
     _CUSTOM_TEXT_FUNCTIONS.forEach((String name, int Function(String) function) {
@@ -460,7 +461,7 @@ class FormulaParser {
     return out;
   }
 
-  String tryGetOnlyStrings(String formula) {
+  static String tryGetOnlyStrings(String formula) {
     try {
       return _contentFromString(formula);
     } catch (e) {
@@ -468,7 +469,7 @@ class FormulaParser {
     }
   }
 
-  String _evaluateFormula(String formula) {
+  static String _evaluateFormula(String formula) {
     // Remove Brackets; the formula evaluation only needs the internal content
     var hasBrackets = formula.startsWith('[') && formula.endsWith(']');
     formula = hasBrackets ? formula.substring(1, formula.length - 1) : formula;
@@ -527,12 +528,12 @@ class FormulaParser {
     return val;
   }
 
-  FormulaSolverOutput _simpleErrorOutput(String formula) {
+  static FormulaSolverOutput _simpleErrorOutput(String formula) {
     return FormulaSolverOutput(
         FormulaState.STATE_SINGLE_ERROR, [FormulaSolverSingleResult(FormulaState.STATE_SINGLE_ERROR, formula)]);
   }
 
-  final String _MATCHED_VARIABLES_NO_KEY = '\x00';
+  static const String _MATCHED_VARIABLES_NO_KEY = '\x00';
   FormulaSolverOutput parse(String formula, List<FormulaValue> values, {bool expandValues = true}) {
     formula = formula.trim();
 
@@ -678,7 +679,7 @@ class FormulaParser {
     return FormulaSolverOutput(overallState, output);
   }
 
-  String _formatOutput(dynamic value) {
+  static String _formatOutput(dynamic value) {
     if (value is double) {
       return NumberFormat('0.############').format(value);
     } else {
@@ -728,4 +729,61 @@ class FormulaSolverOutput {
   String toString() {
     return "{'state': $state, 'results': $results}";
   }
+}
+
+List<({Formula formula, FormulaSolverOutput output})> formatAndParseFormulas(List<Formula> formulas,
+    List<FormulaValue> values, {bool unlimitedExpanded = false}) {
+  var formulaReferences = <String, String>{};
+  var formulaParser = FormulaParser(unlimitedExpanded: unlimitedExpanded);
+
+  return formulas.mapIndexed((index, formula) => (
+      formula: formula,
+      output: _formatAndParseFormula(index, formula, values, formulaReferences, formulaParser))).toList();
+}
+
+FormulaSolverOutput _formatAndParseFormula(int index, Formula formula, List<FormulaValue> values, Map<String,
+    String> formulaReferences, FormulaParser formulaParser) {
+
+  String _sanitizeFormulaReferences(String formula) {
+    return formula.replaceAllMapped(
+        RegExp(r'{(.*?)}'), (match) => '{' + match[1]!.toLowerCase().replaceAll(RegExp(r'\s'), '') + '}');
+  }
+
+  String _removeOuterSquareBrackets(String formula) {
+    formula = formula.trim();
+    if (formula.startsWith('[') && formula.endsWith(']')) {
+      formula = formula.substring(1, formula.length - 1);
+    }
+
+    return formula;
+  }
+
+  var formulaToParse =
+  substitution(_sanitizeFormulaReferences(formula.formula), formulaReferences, caseSensitive: false);
+  FormulaSolverOutput calculated = formulaParser.parse(formulaToParse, values);
+
+
+  String firstFormulaResult;
+  switch (calculated.state) {
+    case FormulaState.STATE_SINGLE_OK:
+      firstFormulaResult = calculated.results.first.result;
+      break;
+    case FormulaState.STATE_SINGLE_ERROR:
+      firstFormulaResult = '(${_removeOuterSquareBrackets(calculated.results.first.result)})';
+      break;
+    default:
+      firstFormulaResult = '(${_removeOuterSquareBrackets(formula.formula)})';
+      break;
+  }
+
+  firstFormulaResult = firstFormulaResult.replaceAll(RegExp(r'\n'), ' ');
+
+  formulaReferences.putIfAbsent('{${index + 1}}',
+          () => RECURSIVE_FORMULA_REPLACEMENT_START + firstFormulaResult + RECURSIVE_FORMULA_REPLACEMENT_END);
+  if (formula.name.isNotEmpty) {
+    formulaReferences.putIfAbsent('{${formula.name.toLowerCase().replaceAll(RegExp(r'\s'), '')}}',
+            () => RECURSIVE_FORMULA_REPLACEMENT_START + firstFormulaResult + RECURSIVE_FORMULA_REPLACEMENT_END);
+  }
+
+  return calculated;
 }

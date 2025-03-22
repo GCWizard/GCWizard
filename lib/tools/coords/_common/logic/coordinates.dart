@@ -35,6 +35,14 @@ import 'package:latlong2/latlong.dart';
 
 import 'coordinate_format_definition.dart';
 
+enum StateCode {
+  OK,
+  Invalid_Coordinate,
+  Checksum_Error,
+  Outside_Borders,
+  OLC_ShortFormat
+}
+
 abstract class BaseCoordinate {
   CoordinateFormat get format;
   late double latitude;
@@ -45,7 +53,8 @@ abstract class BaseCoordinate {
     this.longitude = longitude ?? defaultCoord.defaultCoordinate.longitude;
   }
 
-  // TODO: Make this null-safe. Some inheriting CoordFormats may return null here. This shall be avoided.
+  StateCode get stateCode => StateCode.OK;
+
   LatLng? toLatLng() {
     return LatLng(latitude, longitude);
   }

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/formula_solver/logic/formula_parser.dart';
 import 'package:gc_wizard/tools/formula_solver/persistence/model.dart';
@@ -661,6 +662,115 @@ void main() {
           _actual = FormulaParser().parse(elem['formula'] as String, elem['values'] as List<FormulaValue>, expandValues: elem['expandValues'] as bool);
         }
         expect(_formulaSolverOutputToMap(_actual), elem['expectedOutput']);
+      });
+    }
+  });
+
+  group("FormulaParser.formatAndParseFormulas:", ()
+  {
+    Map<String, String> values = {
+      'A': '3', 'B': '20', 'C': '100', 'D': '5', 'E': 'Pi', 'F': '2 - 1', 'G': 'B - A + 1',
+      'Q': '1', 'R': '0', 'S': '200', 'T': '20', 'U': '12', 'V': '9', 'W': '4', 'X': '30', 'Y': '4', 'Z': '50'
+    };
+
+    List<Map<String, Object?>> _inputsToExpected = [
+      {
+        'formulas': ['A'],
+        'values': <String, String>{},
+        'expectedOutput': {'state': 'error', 'output': [{'result': 'A', 'state': 'error'}]}
+      },
+      {
+        'formulas': ['0'],
+        'values': <String, String>{},
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '0', 'state': 'ok'}]}
+      },
+      {
+        'formulas': ['0'],
+        'values': <String, String>{'0': '1'},
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '0', 'state': 'ok'}]}
+      },
+
+      {'formulas': ['A'], 'values': values, 'expectedOutput': {'state': 'ok', 'output': [{'result': '3', 'state': 'ok'}]}},
+      {
+        'formulas': ['AB'],
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '320', 'state': 'ok'}]}
+      },
+      {
+        'formulas': ['A+B'],
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '23', 'state': 'ok'}]}
+      },
+      {
+        'formulas': ['A + B'],
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '23', 'state': 'ok'}]}
+      },
+      {
+        'formulas': ['[A + B]'],
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '23', 'state': 'ok'}]}
+      },
+      {
+        'formulas': ['[A] + [B]'],
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '3 + 20', 'state': 'ok'}]}
+      },
+      {
+        'formulas': ['AB + C'],
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '420', 'state': 'ok'}]}
+      },
+      {
+        'formulas': ['(AB) + C'],
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '420', 'state': 'ok'}]}
+      },
+      {
+        'formulas': ['A(B + C)'],
+        'values': values,
+        'expectedOutput': {'state': 'error', 'output': [{'result': '3(20 + 100)', 'state': 'error'}]}
+      },
+      {
+        'formulas': ['[A][(B + C)]'],
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '3120', 'state': 'ok'}]}
+      },
+      {
+        'formulas': ['[A*(B + C)]\n'],
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '360', 'state': 'ok'}]}
+      },
+      {
+        'formulas': ['A*Q', '{1}*{1}'],
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '9', 'state': 'ok'}]}
+      },
+      {
+        'formulas': ['A*Q', '[{1}*{1}]'],
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '9', 'state': 'ok'}]}
+      },
+      {
+        'formulas': ['A*Q', '[{A}*{A}]', '{B}'],
+        'formulaNames': ['A', 'B', 'C'],
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '9', 'state': 'ok'}]}
+      },
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('formula: ${elem['formulas']}, values: ${elem['values']}', () {
+        var formulas = (elem['formulas'] as List<String>).map((formula) => Formula(formula)).toList();
+        if (elem['formulaNames'] != null) {
+          (elem['formulaNames'] as List<String>).forEachIndexed((index, name) => formulas[index].name = name);
+        }
+        var values = <FormulaValue>[];
+        for (var value in (elem['values'] as Map<String, String>).entries) {
+          values.add(FormulaValue(value.key, value.value));
+        }
+        var _actual = formatAndParseFormulas(formulas, values);
+        expect(_formulaSolverOutputToMap(_actual.last.output), elem['expectedOutput']);
       });
     }
   });

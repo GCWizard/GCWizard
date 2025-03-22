@@ -969,7 +969,7 @@ void initializeRegistry(BuildContext context) {
       licenses: const [],
     ),
     GCWTool(
-        tool: const FormulaSolverFormulaGroups(),
+        tool: FormulaSolverFormulaGroups(),
         id: 'formulasolver',
         searchKeys: const [
           'formulasolver',
