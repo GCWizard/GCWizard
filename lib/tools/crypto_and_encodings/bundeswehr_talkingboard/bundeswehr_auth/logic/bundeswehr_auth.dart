@@ -395,7 +395,6 @@ BundeswehrTalkingBoardAuthentificationOutput buildAuthBundeswehr(
           tupel3.add(t2 + t1);
         }
       }
-
       return BundeswehrTalkingBoardAuthentificationOutput(
           ResponseCode: [BUNDESWEHR_TALKINGBOARD_AUTH_RESPONSE_OK],
           Tupel1: tupel1,
