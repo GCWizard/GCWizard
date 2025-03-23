@@ -8,6 +8,7 @@ import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
+import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
@@ -15,6 +16,7 @@ import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
+import 'package:gc_wizard/common_widgets/gcw_text_export.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_dropdown_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
@@ -154,7 +156,7 @@ class _BundeswehrTalkingBoardAuthentificationState
                 // ),
                 _widgetIconButtonRandom(),
                 _widgetIconButtonOpen(),
-                _widgetIconButtonSave(context)
+                _widgetIconButtonQR(context),
               ],
             ),
             child: Column(children: <Widget>[
@@ -262,24 +264,33 @@ class _BundeswehrTalkingBoardAuthentificationState
     );
   }
 
-  GCWIconButton _widgetIconButtonSave(BuildContext context) {
+  Widget _widgetIconButtonQR(BuildContext context){
     return GCWIconButton(
-      icon: Icons.save,
+      icon: Icons.qr_code,
       size: IconButtonSize.SMALL,
-      iconColor: _contentToSave == false ? themeColors().inactive() : null,
+      iconColor:
+      _contentToSave == false ? themeColors().inactive() : null,
       onPressed: () {
-        _contentToSave == false
-            ? null
-            : _exportFile(
-                context,
-                BundeswehrTalkingBoard(
-                        xAxisNumeralCode: _tableNumeralCode.xAxis,
-                        yAxisNumeralCode: _tableNumeralCode.yAxis,
-                        AuthentificationCode:
-                            _tableAuthentificationCode.Content)
-                    .toByteList(),
-                'BWTalkingBoard',
-                FileType.TXT);
+        showGCWDialog(
+            context,
+            i18n(context, 'bundeswehr_talkingboard_export_tables'),
+            GCWTextExport(
+              text: BundeswehrTalkingBoard(
+                  xAxisNumeralCode: _tableNumeralCode.xAxis,
+                  yAxisNumeralCode: _tableNumeralCode.yAxis,
+                  AuthentificationCode: []).toString(),
+              saveFileTypeText: FileType.JSON,
+              saveFilenamePrefix: 'BWTalkingBoard',
+            ),
+            [
+              GCWDialogButton(
+                text: i18n(context, 'common_cancel'),
+              )
+            ],
+            cancelButton: false);
+        setState(() {
+
+        });
       },
     );
   }

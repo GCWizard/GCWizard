@@ -472,6 +472,7 @@
   "brainfk_error_customundefined": "Custom not defined",
   "bundeswehr_talkingboard_selection_title": "Bundeswehr Talking board",
   "bundeswehr_talkingboard_selection_description": "Obfuscation/Authentication tools using the Bundeswehr Talking board",
+  "bundeswehr_talkingboard_export_tables": "Export Tables",
   "bundeswehr_talkingboard_create_tables": "Create Tables",
   "bundeswehr_talkingboard_tables": "Bundeswehr Talkingboard Tables",
   "bundeswehr_talkingboard_auth_title": "Bundeswehr Authentication",
