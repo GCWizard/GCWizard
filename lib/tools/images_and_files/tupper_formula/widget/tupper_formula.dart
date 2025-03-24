@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
+import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -187,19 +188,29 @@ class _TupperFormulaState extends State<TupperFormula> {
                   ]),
                 ],
               )
-            : GCWTextField(
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-                ],
-                labelText: 'k',
-                controller: _inputController,
-                onChanged: (value) {
+            : Column(
+          children: [
+            GCWTextField(
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+              ],
+              labelText: 'k',
+              controller: _inputController,
+              onChanged: (value) {
+                setState(() {
+                  _currentInput = value;
+                });
+              },
+            ),
+            GCWSubmitButton(
+                onPressed: () {
                   setState(() {
-                    _currentInput = value;
                     _createImageOutput();
                   });
                 },
-              ),
+                ),
+          ],
+        ),
         _buildOutput(),
       ],
     );
