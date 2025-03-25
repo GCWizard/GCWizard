@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/gcw_web_statefulwidget.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
-import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
-import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/larrabee/logic/larrabee.dart';
@@ -39,16 +37,6 @@ const String _apiSpecification = '''
         },
         {
           "in": "query",
-          "name": "a",
-          "required": true,
-          "description": "Value for letter A",
-          "schema": {
-            "type": "integer"
-          },
-          "default": 0
-        },
-        {
-          "in": "query",
           "name": "mode",
           "description": "Defines encoding or decoding mode",
           "schema": {
@@ -79,10 +67,7 @@ class _LarrabeeState extends State<Larrabee> {
 
   String _currentInput = '';
   String _currentKey = '';
-  int _currentAValue = 0;
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
-  bool _currentAutokey = false;
-  bool _currentNonLetters = false;
 
   @override
   void initState() {
@@ -95,9 +80,6 @@ class _LarrabeeState extends State<Larrabee> {
 
       _currentInput = widget.getWebParameter('input') ?? _currentInput;
       _currentKey = widget.getWebParameter('key') ?? _currentKey;
-
-      var a = widget.getWebParameter('a');
-      if (a != null) _currentAValue = int.tryParse(a) ?? _currentAValue;
 
       widget.webParameter = null;
     }
@@ -134,35 +116,6 @@ class _LarrabeeState extends State<Larrabee> {
             });
           },
         ),
-        GCWIntegerSpinner(
-          title: 'A',
-          value: _currentAValue,
-          onChanged: (value) {
-            setState(() {
-              _currentAValue = value;
-            });
-          },
-        ),
-        GCWOnOffSwitch(
-          title: i18n(context, 'vigenere_autokey'),
-          value: _currentAutokey,
-          onChanged: (value) {
-            setState(() {
-              _currentAutokey = value;
-            });
-          },
-        ),
-        _currentAutokey == false
-            ? GCWOnOffSwitch(
-                title: i18n(context, 'vigenere_ignorenonletters'),
-                value: _currentNonLetters,
-                onChanged: (value) {
-                  setState(() {
-                    _currentNonLetters = value;
-                  });
-                },
-              )
-            : Container(),
         GCWTwoOptionsSwitch(
           value: _currentMode,
           onChanged: (value) {
@@ -180,20 +133,14 @@ class _LarrabeeState extends State<Larrabee> {
     var output = '';
 
     if (_currentMode == GCWSwitchPosition.left) {
-      output = encryptVigenere(
+      output = encryptLarrabee(
         _currentInput,
-        _currentKey,
-        _currentAutokey,
-        aValue: _currentAValue,
-        ignoreNonLetters: _currentAutokey ? true : _currentNonLetters,
+        _currentKey
       );
     } else {
-      output = decryptVigenere(
+      output = decryptLarrabee(
         _currentInput,
-        _currentKey,
-        _currentAutokey,
-        aValue: _currentAValue,
-        ignoreNonLetters: _currentAutokey ? true : _currentNonLetters,
+        _currentKey
       );
     }
 
