@@ -225,6 +225,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/language_games/duck_speak/w
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/pig_latin/widget/pig_latin.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/robber_language/widget/robber_language.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/spoon_language/widget/spoon_language.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/larrabee/widget/larrabee.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/major_system/widget/major_system.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/maya_numbers/widget/maya_numbers.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/mexican_army_cipher_wheel/widget/mexican_army_cipher_wheel.dart';
@@ -10814,7 +10815,7 @@ void initializeRegistry(BuildContext context) {
             sourceUrl:
                 'https://web.archive.org/web/20240414052702/https://guballa.de/bits-and-bytes/implementierung-des-vigenere-solvers',
           )
-        ]),
+      ]),
     GCWTool(tool: Vigenere(), id: 'vigenere', searchKeys: const [
       'vigenere',
       'rotation',
@@ -10828,6 +10829,20 @@ void initializeRegistry(BuildContext context) {
       'vigenere',
       'rotation',
       'trithemius',
+    ]),
+    GCWTool(tool: Larrabee(), id: 'larrabee', searchKeys: const [
+      'vigenere',
+      'rotation',
+      'larrabee',
+      ],
+      licenses: [
+        ToolLicenseOnlineBook(
+          context: context,
+          author: 'Charles Hathaway Larrabee',
+          title:
+            'CIPHER, LETTER AND TELEGRAPH CODE',
+          sourceUrl:
+            'https://people.duke.edu/~ng46/collections/larrabees-cipher-1884.pdf')
     ]),
     GCWTool(
         tool: const WeddingAnniversaries(),

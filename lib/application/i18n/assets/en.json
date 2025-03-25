@@ -3404,6 +3404,8 @@
   "keyboard_mode_android_samsung_4": "Android, Samsung (Layer 4)",
   "languagegames_selection_title": "Language Games",
   "languagegames_selection_description": "Secret languages for children",
+  "larrabee_title": "Larrabee Cipher",
+  "larrabee_description": "Special case of Vigenère encryption, numbers can also be encrypted",
   "lcm_title": "Least Common Multiple (LCM)",
   "lcm_description": "Calculates the LCM of two Numbers",
   "lcm_example": "24, 36 → 72",
