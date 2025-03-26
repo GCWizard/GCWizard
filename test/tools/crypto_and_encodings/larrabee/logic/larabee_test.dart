@@ -16,6 +16,8 @@ void main() {
 
       {'input' : 'Ab12c', 'key': 'mnO', 'expectedOutput' : 'MoENNPo'},
       {'input' : ' A%67bC DeF_', 'key': 'MN', 'expectedOutput' : ' M%DNSSoO QqS_'},
+
+      {'input' : ' A123456789123', 'key': 'MN', 'expectedOutput' : ' MDUNNPPRRTTVCPMOO'},
     ];
 
     for (var elem in _inputsToExpected) {
@@ -47,6 +49,8 @@ void main() {
       {'input' : ' M%dNSSoO QqS_', 'key': 'MN', 'expectedOutput' : ' A%67bC DeF_'},
       {'input' : ' M%DnSSoO QqS_', 'key': 'MN', 'expectedOutput' : ' A%67bC DeF_'},
       {'input' : ' M%DnsSoO QqS_', 'key': 'MN', 'expectedOutput' : ' A%67bC DeF_'},
+
+      {'input' : ' MDUNNPPRRTTVCPMOO', 'key': 'MN', 'expectedOutput' : ' A123456789123'},
     ];
 
     for (var elem in _inputsToExpected) {

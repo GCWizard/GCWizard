@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:collection/collection.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/vigenere/logic/vigenere.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
@@ -31,11 +33,14 @@ String _replaceNumbers(String input) {
   var numbers = switchMapKeyValue(_numbers);
 
   for (var match in matches.reversed) {
-    var numbersCoded = match.group(0)!.split('').mapIndexed((index, number) =>
-        index < 10 ? numbers[number] : number).join();
-    numbersCoded = _numberIdentifier +
-        (numbersCoded.length < 10 ? numbers[numbersCoded.length.toString()] ?? '' : numbers[9.toString()] ?? '') +
-        numbersCoded;
+    var numbersCoded = '';
+
+    for (var i = 0; i < match.group(0)!.length; i+=9) {
+      var numberBlock = match.group(0)!.substring(i, min(i+9, match.group(0)!.length));
+      numbersCoded += _numberIdentifier +
+          (numbers[numberBlock.length.toString()] ?? '') +
+          numberBlock.split('').map((number) => numbers[number]).join();
+    }
     input = input.replaceRange(match.start, match.end, numbersCoded);
   }
   return input;
