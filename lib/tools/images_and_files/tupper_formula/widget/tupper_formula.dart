@@ -132,7 +132,7 @@ class _TupperFormulaState extends State<TupperFormula> {
                         items: const ['2', '4', '8', '16'])
                     : GCWIntegerSpinner(
                         min: 2,
-                        max: 256,
+                        max: 24,
                         onChanged: (value) {
                           setState(() {
                             _currentColors = value;

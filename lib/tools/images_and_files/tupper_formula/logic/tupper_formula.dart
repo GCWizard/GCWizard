@@ -96,7 +96,7 @@ String _kToImageCustom(String kString, int width, int height, int colors){
     for (int j = 0; j < width; j++) {
       temp = (k_small ~/ c.pow(height * j + i));
       //temp = (k_small ~/ BigInt.from(pow(colors, height * j + i)));
-      imageBinary.add(convertBase((temp % c).toString(), 10, 16));
+      imageBinary.add(convertBase((temp % c).toString(), 10, 27));
     }
   }
 
