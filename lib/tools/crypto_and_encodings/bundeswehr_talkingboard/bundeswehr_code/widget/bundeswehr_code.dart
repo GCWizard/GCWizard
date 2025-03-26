@@ -7,7 +7,6 @@ import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
-import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
@@ -21,8 +20,6 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/bundeswehr_talkingboard/bundeswehr_auth/logic/bundeswehr_auth.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/bundeswehr_talkingboard/bundeswehr_code/logic/bundeswehr_code.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
-import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
-import 'package:intl/intl.dart';
 
 class BundeswehrTalkingBoardObfuscation extends StatefulWidget {
   const BundeswehrTalkingBoardObfuscation({Key? key}) : super(key: key);
@@ -760,19 +757,6 @@ class _BundeswehrTalkingBoardObfuscationState
       }
     });
     return (dublicates.length != text.length);
-  }
-
-  void _exportFile(BuildContext context, Uint8List data, String name,
-      FileType fileType) async {
-    var value = await saveByteDataToFile(
-        context,
-        data,
-        name +
-            DateFormat('yyyyMMdd_HHmmss').format(DateTime.now()) +
-            '.' +
-            fileExtension(fileType));
-
-    if (value) showExportedFileDialog(context);
   }
 
   Widget _widgetSwitchMode(BuildContext context) {

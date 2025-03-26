@@ -9,7 +9,6 @@ import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
-import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
@@ -24,8 +23,6 @@ import 'package:gc_wizard/common_widgets/text_input_formatters/wrapper_for_maskt
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/bundeswehr_talkingboard/bundeswehr_auth/logic/bundeswehr_auth.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
-import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
-import 'package:intl/intl.dart';
 
 class BundeswehrTalkingBoardAuthentification extends StatefulWidget {
   const BundeswehrTalkingBoardAuthentification({Key? key}) : super(key: key);
@@ -139,21 +136,6 @@ class _BundeswehrTalkingBoardAuthentificationState
             suppressTopSpace: false,
             trailing: Row(
               children: [
-                // GCWIconButton(
-                //   icon: Icons.create,
-                //   size: IconButtonSize.SMALL,
-                //   onPressed: () {
-                //     setState(() {
-                //       _tableSource = TABLE_SOURCE.CUSTOM;
-                //       // _buildAuthTable(context,
-                //       //     custom: _tableSource == TABLE_SOURCE.CUSTOM, authTable: _currentAuthTableCustom);
-                //       // _buildNumeralCode(context,
-                //       //     custom: _tableSource == TABLE_SOURCE.CUSTOM,
-                //       //     xAxis: _currentNumeralCodeXaxisCustom,
-                //       //     yAxis: _currentNumeralCodeYaxisCustom);
-                //     });
-                //   },
-                // ),
                 _widgetIconButtonRandom(),
                 _widgetIconButtonOpen(),
                 _widgetIconButtonQR(context),
@@ -438,8 +420,6 @@ class _BundeswehrTalkingBoardAuthentificationState
 
   Widget _buildOutputWidget(BuildContext context) {
     Widget resultWidget = Container();
-
-    //_calculateOutput();
 
     if (_currentMode == GCWSwitchPosition.right) {
       // check auth
@@ -815,19 +795,6 @@ class _BundeswehrTalkingBoardAuthentificationState
       }
     });
     return (dublicates.length != text.length);
-  }
-
-  void _exportFile(BuildContext context, Uint8List data, String name,
-      FileType fileType) async {
-    var value = await saveByteDataToFile(
-        context,
-        data,
-        name +
-            DateFormat('yyyyMMdd_HHmmss').format(DateTime.now()) +
-            '.' +
-            fileExtension(fileType));
-
-    if (value) showExportedFileDialog(context);
   }
 
   void _calculateOutput() {
