@@ -277,6 +277,7 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/ita1_1929/
     - lib/tools/symbol_tables/_common/assets/ita2_1929/
     - lib/tools/symbol_tables/_common/assets/ita2_1931/
+    - lib/tools/symbol_tables/_common/assets/jacobite/
     - lib/tools/symbol_tables/_common/assets/japanese_numerals/
     - lib/tools/symbol_tables/_common/assets/kabouter_abc/
     - lib/tools/symbol_tables/_common/assets/kabouter_abc_1947/
@@ -363,6 +364,7 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/puzzle/
     - lib/tools/symbol_tables/_common/assets/puzzle_2/
     - lib/tools/symbol_tables/_common/assets/quadoo/
+    - lib/tools/symbol_tables/_common/assets/qonos/
     - lib/tools/symbol_tables/_common/assets/ravkan/
     - lib/tools/symbol_tables/_common/assets/ravkan_extended/
     - lib/tools/symbol_tables/_common/assets/reality/
@@ -457,7 +459,9 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/wingdings/
     - lib/tools/symbol_tables/_common/assets/wingdings2/
     - lib/tools/symbol_tables/_common/assets/wingdings3/
+    - lib/tools/symbol_tables/_common/assets/xelbet/
     - lib/tools/symbol_tables/_common/assets/yan_koryani/
+    - lib/tools/symbol_tables/_common/assets/yavin/
     - lib/tools/symbol_tables/_common/assets/yinyang/
     - lib/tools/symbol_tables/_common/assets/zamonian/
     - lib/tools/symbol_tables/_common/assets/zentradi/

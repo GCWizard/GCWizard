@@ -8187,6 +8187,22 @@ void initializeRegistry(BuildContext context) {
         symbolSearchStrings: const ['ccitt', 'symbol_murray', 'teletypewriter'],
         licenses: const []),
     GCWSymbolTableTool(
+        symbolKey: 'jacobite',
+        symbolSearchStrings: const [
+          'symbol_jacobite',
+        ],
+        licenses: [
+          ToolLicenseOnlineBook(
+              context: context,
+              author: 'Edmund Fry',
+              title: 'Pantographia: Containing Accurate Copies of All the Known Alphabets in the World; Together With an English Explanation of the Peculiar Force or Power of each letter to which are added: specimens of all well-authenticated Oral Languages; Forming a Comprehensive digest of phonology',
+              publisher: '',
+              year: 1799,
+              sourceUrl:
+              'https://ia600900.us.archive.org/19/items/pantographiacont00fryeiala/pantographiacont00fryeiala.pdf',
+          )
+        ]),
+    GCWSymbolTableTool(
         symbolKey: 'japanese_numerals',
         symbolSearchStrings: const [
           'japanese_numerals',
@@ -9175,6 +9191,21 @@ void initializeRegistry(BuildContext context) {
               'https://web.archive.org/web/20240808130803/https://fakoo.de/quadoo.html',
           licenseType: ToolLicenseType.CCBYNCND40)
     ]),
+    GCWSymbolTableTool(
+        symbolKey: 'qonos',
+        symbolSearchStrings: const [
+          'symbol_qonos',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Mike H. Lee & Josh Dixon',
+            title: "Klingon® Qo'nos",
+            sourceUrl:
+            'https://web.archive.org/web/20250328202611/http://www.oocities.org/timessquare/4965/qonos.zip',
+            licenseType: ToolLicenseType.CHARITYWARE,
+          )
+        ]),
     GCWSymbolTableTool(symbolKey: 'ravkan', symbolSearchStrings: const [
       'symbol_ravkan',
     ], licenses: [
@@ -10235,6 +10266,45 @@ void initializeRegistry(BuildContext context) {
               'https://en.wikipedia.org/w/index.php?title=Wingdings&oldid=1234924688',
           licenseType: ToolLicenseType.PUBLIC_DOMAIN)
     ]),
+    GCWSymbolTableTool(
+      symbolKey: 'xelbet', symbolSearchStrings: const [
+      'symbol_xelbet',
+    ],
+      licenses: [
+        ToolLicenseImage(
+          context: context,
+          author: 'Alex Gomez',
+          title: 'Xelbet',
+          sourceUrl:
+          'https://web.archive.org/web/20250328202024/https://www.omniglot.com/conscripts/xelbet.htm',
+          licenseUseType: ToolLicenseUseType.COPY,
+          licenseType: ToolLicenseType.PRIVATE_PERMISSION,
+          privatePermission: ToolLicensePrivatePermission(
+              context: context,
+              medium: 'e-mail',
+              permissionYear: 2024,
+              permissionMonth: 7,
+              permissionDay: 31,
+              permissionAuthor: 'Simon Ager (Omniglot)'),
+        )
+      ],
+    ),
+    GCWSymbolTableTool(
+        symbolKey: 'yavin',
+        symbolSearchStrings: const [
+          'symbol_yavin',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Tommy of Escondido',
+            title: "StarWars Yavin 4 temple font",
+            sourceUrl:
+            'https://www.oocities.org/timessquare/4965/swyavin4.zip',
+            licenseType: ToolLicenseType.CHARITYWARE,
+          )
+        ]),
+
     GCWSymbolTableTool(symbolKey: 'yan_koryani', symbolSearchStrings: const [
       'symbol_yan_koryani',
     ], licenses: [
