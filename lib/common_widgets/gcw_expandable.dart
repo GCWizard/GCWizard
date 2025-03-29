@@ -7,6 +7,7 @@ class GCWExpandableTextDivider extends StatefulWidget {
   final TextStyle? style;
   final bool expanded;
   final Widget? child;
+  final Widget? trailing;
   final void Function(bool)? onChanged;
   final bool? suppressBottomSpace;
   final bool? suppressTopSpace;
@@ -17,6 +18,7 @@ class GCWExpandableTextDivider extends StatefulWidget {
       this.expanded = true,
       this.style,
       this.child,
+      this.trailing,
       this.onChanged,
       this.suppressBottomSpace,
       this.suppressTopSpace = true})
@@ -28,7 +30,8 @@ class GCWExpandableTextDivider extends StatefulWidget {
 
 class _GCWExpandableTextDividerState extends State<GCWExpandableTextDivider> {
   bool? _currentExpanded;
-
+  Widget trailing = Container();
+  
   void _toggleExpand() {
     setState(() {
       _currentExpanded = !_currentExpanded!;
@@ -43,6 +46,7 @@ class _GCWExpandableTextDividerState extends State<GCWExpandableTextDivider> {
   Widget build(BuildContext context) {
     _currentExpanded ??= widget.expanded;
 
+    if (widget.trailing != null) trailing = widget.trailing!;
     return Column(
       children: [
         InkWell(
@@ -51,10 +55,15 @@ class _GCWExpandableTextDividerState extends State<GCWExpandableTextDivider> {
             suppressTopSpace: widget.suppressTopSpace,
             suppressBottomSpace: widget.suppressBottomSpace,
             style: widget.style,
-            trailing: GCWIconButton(
-              icon: _currentExpanded! ? Icons.arrow_drop_up : Icons.arrow_drop_down,
-              size: IconButtonSize.TINY,
-              onPressed: () => _toggleExpand(),
+            trailing: Row(
+              children: <Widget>[
+                trailing,
+                GCWIconButton(
+                  icon: _currentExpanded! ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                  size: IconButtonSize.TINY,
+                  onPressed: () => _toggleExpand(),
+                )
+              ],
             ),
           ),
           onTap: () => _toggleExpand(),

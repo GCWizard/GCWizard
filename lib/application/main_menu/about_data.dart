@@ -116,6 +116,7 @@ const List<String> TESTER = [
   'Pascal M.',
   'Peter S.-H.',
   'radlerandi',
+  'realMrTom',
   'Richard M.',
   'Roland Rosenfeld',
   'schatzi-s',

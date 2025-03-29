@@ -12,7 +12,43 @@
 // ixsyukfqdgevc
 // ozjrpwmatlbnh
 
-enum BundeswehrTalkingBoardAuthentificationTableType { AUTHENTIFICATIONTABLE, NUMERALCODE }
+import 'dart:typed_data';
+
+enum BundeswehrTalkingBoardAuthentificationTableType {AUTHENTIFICATIONTABLE, NUMERALCODE}
+enum TABLE_SOURCE {NONE, CUSTOM, RANDOM, FILE}
+
+class BundeswehrTalkingBoard {
+  final List<String> xAxisNumeralCode;
+  final List<String> yAxisNumeralCode;
+  final List<String> AuthentificationCode;
+
+  BundeswehrTalkingBoard({
+    required this.xAxisNumeralCode,
+    required this.yAxisNumeralCode,
+    required this.AuthentificationCode,
+  });
+
+  @override
+  toString() {
+    return "{\n" +
+        '  "xAxisNumeralCode" : "' + xAxisNumeralCode.join('') + '",\n' +
+        '  "yAxisNumeralCode" : "' + yAxisNumeralCode.join('') + '",\n' +
+        '  "AuthentificationCode" : "' + AuthentificationCode.join(' ') + '"\n' +
+        "}";
+  }
+
+  Uint8List toByteList() {
+    return Uint8List.fromList(toString().codeUnits);
+  }
+
+  Map<String, dynamic> toJson() =>
+      {'xAxis': xAxisNumeralCode, 'yAxis': yAxisNumeralCode, 'AuthentificationCode': AuthentificationCode};
+
+  BundeswehrTalkingBoard.fromJson(Map<String, dynamic> json)
+      : xAxisNumeralCode = (json['xAxisNumeralCode']! as String).split(''),
+  yAxisNumeralCode = (json['yAxisNumeralCode']! as String).split(''),
+  AuthentificationCode = (json['AuthentificationCode']! as String).split(' ');
+}
 
 class BundeswehrTalkingBoardAuthentificationTable {
   final List<String> xAxis;
@@ -25,7 +61,6 @@ class BundeswehrTalkingBoardAuthentificationTable {
 }
 
 class BundeswehrTalkingBoardAuthentificationOutput {
-  // TODO Thomas: Why is ResponseCode a List, not a simple String?
   final List<String> ResponseCode;
   final List<String>? Tupel1;
   final List<String>? Tupel2;
@@ -59,6 +94,178 @@ const BUNDESWEHR_TALKINGBOARD_AUTH_TABLE_X_AXIS = [
   'X',
   'Y',
   'Z',
+];
+
+const BUNDESWEHR_TALKINGBOARD_NUMERALCODE = [
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  'A',
+  'B',
+  'C',
+  'D',
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  'E',
+  'F',
+  'G',
+  'H',
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  'I',
+  'J',
+  'K',
+  'L',
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '9',
+  'M',
+  'N',
+  'O',
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '8',
+  '9',
+  'P',
+  'Q',
+  'R',
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '7',
+  '8',
+  '9',
+  'S',
+  'T',
+  'U',
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '6',
+  '7',
+  '8',
+  '9',
+  'V',
+  'W',
+  'X',
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  'Y',
+  'Z',
+  'A',
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  'D',
+  'E',
+  'G',
+  '0',
+  '1',
+  '2',
+  '3',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  'H',
+  'I',
+  'L',
+  '0',
+  '1',
+  '2',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  'N',
+  'O',
+  'R',
+  '0',
+  '1',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  'S',
+  'T',
+  'U',
+  '0',
 ];
 
 const _LETTERS = [
@@ -183,7 +390,6 @@ BundeswehrTalkingBoardAuthentificationOutput buildAuthBundeswehr(
           tupel3.add(t2 + t1);
         }
       }
-
       return BundeswehrTalkingBoardAuthentificationOutput(
           ResponseCode: [BUNDESWEHR_TALKINGBOARD_AUTH_RESPONSE_OK],
           Tupel1: tupel1,
@@ -346,4 +552,53 @@ bool _tableIsInvalid(
     case BundeswehrTalkingBoardAuthentificationTableType.NUMERALCODE:
       return (table.xAxis.length != 13 || table.yAxis.length != 13 || table.Content.length < 169);
   }
+}
+
+String BundeswehrTalkingBoardCreateAuthTableString(List<String> authCode){
+  Map<String, Map<String, String>> _authTable = {};
+
+  int i = 0;
+  for (var row in BUNDESWEHR_TALKINGBOARD_AUTH_TABLE_Y_AXIS) {
+    Map<String, String> authTableRow = {};
+    for (var col in BUNDESWEHR_TALKINGBOARD_AUTH_TABLE_X_AXIS) {
+      authTableRow[col] = authCode[i];
+      i++;
+    }
+    _authTable[row] = authTableRow;
+  }
+
+  i = 0;
+  String _authTableString = '     V   W   X   Y   Z \n-----------------------\n';
+  for (String element in BUNDESWEHR_TALKINGBOARD_AUTH_TABLE_Y_AXIS) {
+    _authTableString = _authTableString +
+        ' ' +
+        element +
+        '   ' +
+        authCode[i].toString().padLeft(2, '0') +
+        '  ' +
+        authCode[i + 1].toString().padLeft(2, '0') +
+        '  ' +
+        authCode[i + 2].toString().padLeft(2, '0') +
+        '  ' +
+        authCode[i + 3].toString().padLeft(2, '0') +
+        '  ' +
+        authCode[i + 4].toString().padLeft(2, '0') +
+        '\n';
+    i = i + 5;
+  }
+  return _authTableString;
+}
+
+String BundeswehrTalkingBoardCreateNumeralCodeTableString(List<String> _xAxisTitle, List<String> _yAxisTitle){
+  int i = 0;
+  String _numeralCodeString = '   ' + _xAxisTitle.join(' ') + '\n----------------------------\n ';
+  for (var row in _yAxisTitle) {
+    _numeralCodeString = _numeralCodeString + row + ' ';
+    for (int j = 0; j < 13; j++) {
+      _numeralCodeString = _numeralCodeString + BUNDESWEHR_TALKINGBOARD_NUMERALCODE[i * 13 + j] + ' ';
+    }
+    i++;
+    _numeralCodeString = _numeralCodeString + '\n ';
+  }
+  return _numeralCodeString;
 }
