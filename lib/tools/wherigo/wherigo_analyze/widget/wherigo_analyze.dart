@@ -626,13 +626,6 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
       );
     }
 
-    if ((WherigoCartridgeLUAData.Media.isEmpty)) {
-      return GCWDefaultOutput(
-        child: i18n(context, 'wherigo_data_nodata'),
-        suppressCopyButton: true,
-      );
-    }
-
     List<List<String>> _outputMedia = [];
     String filename = '';
 
@@ -686,7 +679,7 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
         ),
         GCWPageSpinner(
           text: i18n(context, 'wherigo_data_media'),
-          max: WherigoCartridgeGWCData.NumberOfObjects,
+          max: WherigoCartridgeGWCData.NumberOfObjects - 1,
           index: _mediaFileIndex,
           onChanged: (index) {
             setState(() {
