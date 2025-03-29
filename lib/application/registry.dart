@@ -10842,7 +10842,7 @@ void initializeRegistry(BuildContext context) {
           title:
             'CIPHER, LETTER AND TELEGRAPH CODE',
           sourceUrl:
-            'https://people.duke.edu/~ng46/collections/larrabees-cipher-1884.pdf')
+            'https://web.archive.org/web/20250328183717/https://people.duke.edu/~ng46/collections/larrabees-cipher-1884.pdf')
     ]),
     GCWTool(
         tool: const WeddingAnniversaries(),
