@@ -341,6 +341,7 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/oak_island_money_pit_extended/
     - lib/tools/symbol_tables/_common/assets/oak_island_money_pit_libyan/
     - lib/tools/symbol_tables/_common/assets/ogham/
+    - lib/tools/symbol_tables/_common/assets/old_hungarian/
     - lib/tools/symbol_tables/_common/assets/optical_fiber_fotag/
     - lib/tools/symbol_tables/_common/assets/optical_fiber_iec60304/
     - lib/tools/symbol_tables/_common/assets/optical_fiber_swisscom/

@@ -8928,6 +8928,18 @@ void initializeRegistry(BuildContext context) {
               'https://en.wikipedia.org/w/index.php?title=Ogham&oldid=1234313745',
           licenseType: ToolLicenseType.CCBYSA4)
     ]),
+    GCWSymbolTableTool(symbolKey: 'old_hungarian', symbolSearchStrings: const [
+      'symbol_old_hungarian',
+      'symbol_runes',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'en.wikipedia.org and contributors',
+          title: 'Old Hungarian script',
+          sourceUrl:
+          'https://en.wikipedia.org/w/index.php?title=Old_Hungarian_script&oldid=1276174822',
+          licenseType: ToolLicenseType.CCBYSA4)
+    ]),
     GCWSymbolTableTool(
         symbolKey: 'optical_fiber_fotag',
         symbolSearchStrings: const [
