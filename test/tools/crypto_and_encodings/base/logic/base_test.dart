@@ -32,6 +32,7 @@ void main() {
       {'expectedOutput' : '', 'input' : 'h'},
       {'expectedOutput' : '', 'input' : 'ha'},
       {'expectedOutput' : '', 'input' : 'kl'},
+      {'expectedOutput' : 'Bei hü die Hex geht links,', 'input' : '4265692068c3bc20646965204865782067656874206c696e6b732c'},
     ];
 
     for (var elem in _inputsToExpected) {
