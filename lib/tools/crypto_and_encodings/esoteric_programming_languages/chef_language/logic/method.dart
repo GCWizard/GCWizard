@@ -224,13 +224,13 @@ class _Method {
       } else if (matchers[11].hasMatch(line)) {
         // stürzen || gießen
         type = _CHEF_Method.Ausgiessen;
-        mixingbowl = (matchers[11].firstMatch(line)!.group(4) == null
+        mixingbowl = (matchers[11].firstMatch(line)!.group(5) == null
                 ? 1
-                : int.parse(matchers[11].firstMatch(line)!.group(4)!)) -
+                : int.parse(matchers[11].firstMatch(line)!.group(5)!)) -
             1;
-        bakingdish = (matchers[11].firstMatch(line)!.group(12) == null
+        bakingdish = (matchers[11].firstMatch(line)!.group(14) == null
                 ? 1
-                : int.parse(matchers[11].firstMatch(line)!.group(12)!)) -
+                : int.parse(matchers[11].firstMatch(line)!.group(14)!)) -
             1;
       } else if (matchers[12].hasMatch(line)) {
         // zur seite stellen

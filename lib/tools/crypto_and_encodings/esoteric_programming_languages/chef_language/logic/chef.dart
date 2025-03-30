@@ -37,18 +37,18 @@ class _Chef {
     }
 
     // trim lines
-    for (int i = 1; i < recipe.length; i++) {
+    for (int i = 0; i < recipe.length; i++) {
       recipe[i] = recipe[i].trim();
-      // add blank lines before aux recipes
-      if (recipe[i].endsWith('.')) {
-        //recipe[i] = '\n' + recipe[i];
+      // add dot at end of line where necessary
+      if (recipe[i].isNotEmpty && !recipe[i].endsWith('.') && !recipe[i].endsWith(':')) {
+        recipe[i] = recipe[i] + '.';
       }
     }
     readRecipe = recipe.join('\n');
 
-    // check and add missing title
+    // check and add missing title if necessary
     if (readRecipe.startsWith('ingredients') || readRecipe.startsWith('zutaten')) {
-      readRecipe = 'nouvelle cuisine\n\n' + readRecipe;
+      readRecipe = 'nouvelle cuisine.\n\n' + readRecipe;
     }
 
     // check and repair recipe regarding blank lines, whitespace
@@ -132,8 +132,37 @@ class _Chef {
       }
       s0 = recipe[i];
     }
+
+    // remove unnecessary sections like cooking time and oven temperature
+    int endIngredientSection = 0;
+    methodSection = false;
+    for (int i = 1; i < recipe.length; i++) {
+      if (recipe[i].startsWith("ingredients") ||
+          recipe[i].startsWith("zutaten")) {
+        ingredientSection = true;
+      }
+      if (ingredientSection && recipe[i].isEmpty) {
+        endIngredientSection = i;
+        ingredientSection = false;
+      }
+      if (recipe[i].startsWith("method") ||
+          recipe[i].startsWith("zubereitung")) {
+      }
+    }
+
+    int i = endIngredientSection + 1;
+    while (!methodSection) {
+      if (recipe[i].startsWith("method") ||
+          recipe[i].startsWith("zubereitung")) {
+        methodSection = true;
+      } else {
+      recipe.removeAt(i);
+      }
+    }
+
+    // start decoding
     readRecipe = recipe.join('\n');
-    readRecipe = readRecipe.replaceAll(RegExp(r'\n(\n)+'), '\n\n');
+    readRecipe = readRecipe.replaceAll(' und ', '. ').replaceAll(RegExp(r'\n(\n)+'), '\n\n');
     recipe = readRecipe.split("\n\n");
     for (int i = 0; i < recipe.length; i++) {
       line = recipe[i];

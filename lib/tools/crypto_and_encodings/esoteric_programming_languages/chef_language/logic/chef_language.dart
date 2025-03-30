@@ -331,16 +331,15 @@ bool isValid(String input) {
 
 List<String> interpretChef(String language, String? recipe, String? input) {
   if (recipe == null || recipe.isEmpty) return <String>[];
-
   return _decodeChef(language, normalizeUmlauts(recipe.toLowerCase().replaceAll(RegExp(r' +'), ' ')), input ?? '');
 }
 
 List<String> _decodeChef(String language, String recipe, String additionalIngredients) {
-  _Chef interpreter = _Chef(recipe, language);
+ _Chef interpreter = _Chef(recipe, language);
   List<String> result = [];
+
   if (interpreter.valid) {
     interpreter.bake(language, additionalIngredients);
-
     if (interpreter.valid) {
       result.addAll(interpreter.meal);
 

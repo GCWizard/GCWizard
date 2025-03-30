@@ -43,6 +43,8 @@ class _Ingredient {
       _name = _name! + tokens[i] + (i == tokens.length - 1 ? '' : ' ');
       i++;
     }
+
+    _name = _name!.substring(0, _name!.length - 1);
     _name = _name!
         .replaceAll('teaspoons', '')
         .replaceAll('teaspoon', '')

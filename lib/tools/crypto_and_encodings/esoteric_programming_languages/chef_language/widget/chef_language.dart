@@ -222,7 +222,6 @@ class _ChefState extends State<Chef> {
           output = chefBuildOutputText(context, [
             'common_programming_error_runtime',
             'chef_error_runtime_exception',
-            'chef_error_structure_recipe_missing_title'
           ]);
         }
       } else {
