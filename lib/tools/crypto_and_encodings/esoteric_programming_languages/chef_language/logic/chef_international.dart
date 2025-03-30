@@ -107,8 +107,10 @@ final List<RegExp> _CHEF_matchersDEU = [
   RegExp(r'^(einfrieren|gefriere)( fuer (\d+) stunde(n)?)?$'),
   RegExp(r'^serviere mit (dem |einem )?([a-z0-9 ]+)$'),
   RegExp(r'^vorschlag: (.*)$'),
+  RegExp(r'^(.*)(servieren)$'), // sonderfall von kryptoggrafie.de
+  RegExp(r'^(.*)(koecheln)(.*)$'), // sonderfall von kryptoggrafie.de
   RegExp(r'^solange ([a-z0-9]+) bis ((das |den |die )?([a-z0-9 -]+))? zur weiterarbeitung bereit$'),
-  RegExp(r'^(das |den |die )?([a-z0-9]+) ([a-z0-9 ]+)$')
+  RegExp(r'^(das |den |die )?([a-z0-9]+) ([a-z0-9 ]+)$'),
 ];
 
 final RegExp _CHEF_MeasureType = RegExp(r'^heaped$|^level$|^gestrichen$|^gehaeuft$');

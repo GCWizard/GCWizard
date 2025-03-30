@@ -827,6 +827,7 @@
   "chef_language_DEU": "German",
   "chef_language_ENG": "English",
   "chef_generate_auxiliary_recipe": "Use auxiliary recipes",
+  "chef_recipe_adjusted": "Adjusted Recipe",
   "chef_error_structure_recipe": "STRUCTURAL ERROR",
   "chef_error_structure_subrecipe": "Something wrong with the additional recipe",
   "chef_error_structure_recipe_title_en": "Recipe part 'Title'",
