@@ -250,9 +250,15 @@ class _Method {
     } else if (matchers[16].hasMatch(line)) {
       // servieren - sonderfall von kryptoggrafie.de
       print('servieren');
+      type = _CHEF_Method.Ausgiessen;
+      mixingbowl = 0;
+      bakingdish = 0;
+
     } else if (matchers[17].hasMatch(line)) {
       // köcheln - sonderfall von kryptoggrafie.de
       print('köcheln');
+      type = _CHEF_Method.SchuesselErhitzen;
+      mixingbowl = 0;
     } else if (matchers[18].hasMatch(line)) {
       // solange yyy bis zutat zur ...
       type = _CHEF_Method.WiederholenBis;

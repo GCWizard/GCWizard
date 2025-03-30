@@ -34,7 +34,11 @@ class _ChefState extends State<Chef> {
   String _currentTime = '';
   String _currentTemperature = '';
   String _currentOutputToGenerate = '';
-  String _currentOutput = '';
+  String _currentOutputInterpreter = '';
+  String _currentOutputGenerator = '';
+  String _currentLanguageString = 'ENG';
+  String _currentAdjustedRecipe = '';
+
 
   var TimeInputFormatter = GCWMaskTextInputFormatter(
       mask: '#' * 3, // allow 3 characters input
@@ -101,6 +105,12 @@ class _ChefState extends State<Chef> {
       onChanged: (value) {
         setState(() {
           _currentLanguage = value;
+          if (_currentLanguage == GCWSwitchPosition.left) {
+            _currentLanguageString = 'DEU';
+          } else {
+            _currentLanguageString = 'ENG';
+          }
+
         });
       },
     );
@@ -213,7 +223,20 @@ class _ChefState extends State<Chef> {
         GCWSubmitButton(
           onPressed: () {
             setState(() {
-              //_currentRecipe = _adjustRecipe(_currentRecipe);
+              if (isValid(_currentInputFromFridge)) {
+                try {
+                  CHEFOutputInterpret output = interpretChef(_currentLanguageString, _currentRecipe, _currentInputFromFridge);
+                  _currentOutputInterpreter = chefBuildOutputText(context, output.output);
+                  _currentAdjustedRecipe = output.recipe;
+                } catch (e) {
+                  _currentOutputInterpreter = chefBuildOutputText(context, [
+                    'common_programming_error_runtime',
+                    'chef_error_runtime_exception',
+                  ]);
+                }
+              } else {
+                _currentOutputInterpreter = chefBuildOutputText(context, ['common_programming_error_runtime', 'chef_error_runtime_invalid_input']);
+              }
             });
           },
         ),
@@ -225,51 +248,39 @@ class _ChefState extends State<Chef> {
 
     Widget outputWidget;
 
-    String language = 'ENG';
-    if (_currentLanguage == GCWSwitchPosition.left) language = 'DEU';
     if (_currentMode == GCWSwitchPosition.right) {
       // generate chef
       if (_currentTitle.isEmpty) {
-        _currentOutput =
+        _currentOutputGenerator =
             chefBuildOutputText(context, ['chef_error_structure_recipe', 'chef_error_structure_recipe_missing_title']);
-      } else if (_currentOutput.isEmpty) {
-        _currentOutput =
+      } else if (_currentOutputGenerator.isEmpty) {
+        _currentOutputGenerator =
             chefBuildOutputText(context, ['chef_error_structure_recipe', 'chef_error_structure_recipe_missing_output']);
       } else {
-        _currentOutput = generateChef(language, _currentTitle, _currentRemark, _currentTime, _currentTemperature,
-            _currentOutput, _auxilaryRecipes);
+        _currentOutputGenerator = generateChef(_currentLanguageString, _currentTitle, _currentRemark, _currentTime, _currentTemperature,
+            _currentOutputGenerator, _auxilaryRecipes);
       }
       outputWidget = GCWOutputText(
-        text: _currentOutput.trim(),
+        text: _currentOutputGenerator.trim(),
         isMonotype: true,
       );
     } else {
       // interpret chef
-      if (isValid(_currentInputFromFridge)) {
-        try {
-          _currentOutput = chefBuildOutputText(context, interpretChef(language, _currentRecipe, _currentInputFromFridge));
-        } catch (e) {
-          _currentOutput = chefBuildOutputText(context, [
-            'common_programming_error_runtime',
-            'chef_error_runtime_exception',
-          ]);
-        }
-      } else {
-        _currentOutput = chefBuildOutputText(context, ['common_programming_error_runtime', 'chef_error_runtime_invalid_input']);
-      }
+
       outputWidget = Column(
         children: [
+          GCWOutputText(
+            text: _currentOutputInterpreter.trim(),
+            isMonotype: true,
+          ),
           GCWExpandableTextDivider(
             expanded: false,
+            suppressTopSpace: false,
             text: i18n(context, 'chef_recipe_adjusted'),
             child: GCWOutputText(
-              text: _currentRecipe,
+              text: _currentAdjustedRecipe,
               isMonotype: true,
             ),
-          ),
-          GCWOutputText(
-            text: _currentOutput.trim(),
-            isMonotype: true,
           ),
         ],
       );
@@ -305,148 +316,4 @@ String chefBuildOutputText(BuildContext context, List<String> outputList) {
   return output;
 }
 
-String _adjustRecipe(String readRecipe){
 
-  // remove blank lines at start and trim lines
-  List<String> recipe = readRecipe.split('\n');
-  while (recipe[0].isEmpty) {
-    for (int i = 1; i < recipe.length; i++) {
-      recipe[i - 1] = recipe[i].trim();
-    }
-  }
-
-  // remove blank lines at end
-  while (recipe[recipe.length - 1].isEmpty) {
-    recipe.removeAt(recipe.length - 1);
-  }
-
-  // trim lines
-  for (int i = 0; i < recipe.length; i++) {
-    recipe[i] = recipe[i].trim();
-    // add dot at end of line where necessary
-    if (recipe[i].isNotEmpty && !recipe[i].endsWith('.') && !recipe[i].endsWith(':')) {
-      recipe[i] = recipe[i] + '.';
-    }
-  }
-  readRecipe = recipe.join('\n');
-
-  // check and add missing title if necessary
-  if (readRecipe.startsWith('ingredients') || readRecipe.startsWith('zutaten')) {
-    readRecipe = 'nouvelle cuisine.\n\n' + readRecipe;
-  }
-
-  // check and repair recipe regarding blank lines, whitespace
-  recipe = readRecipe.split('\n');
-
-  // remove blank lines inside sections ingredients, methods
-  bool ingredientSection = false;
-  bool methodSection = false;
-  bool auxRecipe = false;
-
-  for (int i = 0; i < recipe.length - 1; i++) {
-    if (recipe[i].startsWith("ingredients") || recipe[i].startsWith("zutaten")) ingredientSection = true;
-
-    if (recipe[i].startsWith("cooking time") ||
-        recipe[i].startsWith("garzeit") ||
-        recipe[i].startsWith("pre-heat oven") ||
-        recipe[i].startsWith("pre heat oven") ||
-        recipe[i].startsWith("ofen auf") ||
-        recipe[i].startsWith("method") ||
-        recipe[i].startsWith("zubereitung")) {
-      ingredientSection = false;
-    }
-
-    if (recipe[i].startsWith("method") || recipe[i].startsWith("zubereitung")) methodSection = true;
-
-    if (recipe[i].startsWith("serves") || recipe[i].startsWith("portionen")) {
-      methodSection = false;
-      auxRecipe = true;
-    }
-
-    if ((recipe[i].isEmpty || recipe[i] == '\n') && ingredientSection) {
-      if (recipe[i + 1].startsWith('method') ||
-          recipe[i + 1].startsWith('zubereitung') ||
-          recipe[i + 1].startsWith("cooking time") ||
-          recipe[i + 1].startsWith("garzeit") ||
-          recipe[i + 1].startsWith("pre-heat oven") ||
-          recipe[i + 1].startsWith("pre heat oven") ||
-          recipe[i + 1].startsWith("ofen auf") ||
-          recipe[i + 1].startsWith("serves") ||
-          recipe[i + 1].startsWith("portionen")) {
-      } else {
-        recipe.removeAt(i);
-      }
-    }
-
-    if ((recipe[i] == '' || recipe[i] == '\n') && methodSection) {
-      if (recipe[i + 1].startsWith('method') ||
-          recipe[i + 1].startsWith('zubereitung') ||
-          recipe[i + 1].startsWith("cooking time") ||
-          recipe[i + 1].startsWith("garzeit") ||
-          recipe[i + 1].startsWith("pre-heat oven") ||
-          recipe[i + 1].startsWith("pre heat oven") ||
-          recipe[i + 1].startsWith("ofen auf") ||
-          recipe[i + 1].startsWith("serves") ||
-          recipe[i + 1].startsWith("portionen") ||
-          _isMethod(recipe[i + 1])) {
-      } else {
-        if (!auxRecipe) recipe.removeAt(i);
-      }
-    }
-  }
-  recipe = recipe.join('\n').split('\n');
-
-  // add blank lines to build the necessary sections
-  String s0 = recipe[0];
-  for (int i = 1; i < recipe.length; i++) {
-    if (recipe[i].startsWith("ingredients") ||
-        recipe[i].startsWith("zutaten") ||
-        recipe[i].startsWith("cooking time") ||
-        recipe[i].startsWith("garzeit") ||
-        recipe[i].startsWith("pre-heat oven") ||
-        recipe[i].startsWith("pre heat oven") ||
-        recipe[i].startsWith("ofen auf") ||
-        recipe[i].startsWith("method") ||
-        recipe[i].startsWith("zubereitung") ||
-        recipe[i].startsWith("serves") ||
-        recipe[i].startsWith("portionen")) {
-      if (s0.isNotEmpty) {
-        recipe[i] = '\n' + recipe[i];
-      }
-    }
-    s0 = recipe[i];
-  }
-
-  // remove unnecessary sections like cooking time and oven temperature
-  int endIngredientSection = 0;
-  methodSection = false;
-  for (int i = 1; i < recipe.length; i++) {
-    if (recipe[i].startsWith("ingredients") ||
-        recipe[i].startsWith("zutaten")) {
-      ingredientSection = true;
-    }
-    if (ingredientSection && recipe[i].isEmpty) {
-      endIngredientSection = i;
-      ingredientSection = false;
-    }
-    if (recipe[i].startsWith("method") ||
-        recipe[i].startsWith("zubereitung")) {
-    }
-  }
-
-  int i = endIngredientSection + 1;
-  while (!methodSection) {
-    if (recipe[i].startsWith("method") ||
-        recipe[i].startsWith("zubereitung")) {
-      methodSection = true;
-    } else {
-      recipe.removeAt(i);
-    }
-  }
-
-  // handle ' und '
-  readRecipe = recipe.join('\n');
-  readRecipe = readRecipe.replaceAll(' und ', '. ').replaceAll(RegExp(r'\n(\n)+'), '\n\n');
-
-  return readRecipe;
-}

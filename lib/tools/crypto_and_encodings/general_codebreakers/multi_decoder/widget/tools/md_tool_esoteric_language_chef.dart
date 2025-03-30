@@ -35,7 +35,7 @@ class MultiDecoderToolEsotericLanguageChef extends AbstractMultiDecoderTool {
                           checkStringFormatOrDefaultOption(MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_CHEF, options,
                               MDT_ESOTERIC_LANGUAGE_CHEF_OPTION_MODE),
                           input.toLowerCase().replaceAll('  ', ' '),
-                          key));
+                          key).output);
                   return result.trim();
                 }
               } catch (e) {}

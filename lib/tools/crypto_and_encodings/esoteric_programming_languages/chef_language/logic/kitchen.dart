@@ -67,9 +67,17 @@ class _Kitchen {
     int i = 0;
     bool deepfrozen = false;
     bool exceptionArose = false;
+    print('methodloop -----------------------------------------------------------------');
     methodloop:
     while (i < (methods?.length ?? 0) && !deepfrozen && !exceptionArose) {
       _Method m = methods![i];
+      print('   n     '+m.n.toString());
+      print('   type  '+m.type.toString());
+      print('   ingr  '+m.ingredient.toString());
+      print('   bowl  '+m.mixingbowl.toString());
+      print('   dish  '+m.bakingdish.toString());
+      print('   verb  '+m.verb.toString());
+      print('   -------------------------------------------------');
       if (m.type == _CHEF_Method.Invalid) {
         valid = false;
         error.addAll([
@@ -224,6 +232,7 @@ class _Kitchen {
         case _CHEF_Method.LiquefyBowl:
         case _CHEF_Method.SchuesselErhitzen:
           mixingbowls[m.mixingbowl!].liquefy();
+          bakingdishes[m.mixingbowl!].liquefy();
           liquefyMissing = false;
           break;
 
