@@ -1,0 +1,181 @@
+import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
+import 'package:gc_wizard/tools/science_and_technology/teletypewriter/_common/logic/teletypewriter.dart';
+import 'package:gc_wizard/utils/collection_utils.dart';
+import 'package:gc_wizard/utils/constants.dart';
+
+
+const Map<String, List<String>> _CharsToSegmentsLetters = {
+  ' ': [],
+  'a': ['2','3','5','6','9'],
+  'b': ['1','2','6','8'],
+  'c': ['2','6','9'],
+  'd': ['2','3','4','5','6'],
+  'e': ['2','3','6'],
+  'f': ['1','2','3','4'],
+  'g': ['1','3','4','5'],
+  'h': ['1','2','3','5','8','9'],
+  'i': ['3','4'],
+  'j': ['3','6','7'],
+  'k': ['2','3','5','7','9'],
+  'l': ['1','2','3','6'],
+  'm': ['2','3','5','8','9'],
+  'n': ['2','3','5','9'],
+  'o': ['3','5','9'],
+  'p': ['1','2','3','4','5'],
+  'q': ['1','2','4','5','6'],
+  'r': ['2','3','5'],
+  's': ['3','5','6','8'],
+  't': ['2','4','5','6','9'],
+  'u': ['2','6','8','9'],
+  'v': ['2','6','8'],
+  'w': ['2','3','6','8','9'],
+  'x': ['1','3','4','6'],
+  'y': ['3','4','5','7'],
+  'z': ['2','5','6','9'],
+  'A': ['2','3','4','5','8','9'],
+  'B': ['1','3','4','5','6','7','8','9'],
+  'C': ['2','4','6','7','9'],
+  'D': ['1','2','3','4','6','8'],
+  'E': ['1','2','3','4','5','6','7','9'],
+  'F': ['1','2','3','4','5','7'],
+  'G': ['2','4','6','7','8','9'],
+  'H': ['1','2','3','5','7','8','9'],
+  'I': ['3','4','5','6','9'],
+  'J': ['3','6','7','8'],
+  'K': ['1','2','3','5','7','9'],
+  'L': ['1','2','3','6','9'],
+  'M': ['1','2','3','4','5','7','8','9'],
+  'N': ['1','2','3','4','7','8','9'],
+  'O': ['2','4','6','8'],
+  'P': ['1','2','3','4','5','8'],
+  'Q': ['2','4','6','8','9'],
+  'R': ['1','2','3','4','5','7','9'],
+  'S': ['3','4','5','6','7'],
+  'T': ['1','4','5','6','7'],
+  'U': ['1','2','3','6','7','8','9'],
+  'V': ['1','2','6','7','8'],
+  'W': ['1','2','3','5','6','7','8','9'],
+  'X': ['1','3','5','7','9'],
+  'Y': ['1','5','6','7'],
+  'Z': ['1','3','4','5','6','7','9'],
+  'Ä': ['2','3','4','5','7','8','9'],
+  'Ö': ['2','4','6','7','8'],
+  'Ü': ['1','2','3','6','7','9'],
+  'ä': ['2','3','5','6','7'],
+  'ö': ['3','5','7','9'],
+  'ü': ['1','3','6','7'],
+  '1': ['5','7','8','9'],
+  '2': ['1','3','4','5','9'],
+  '3': ['1','3','4','5','6','8'],
+  '4': ['1','2','5','6','8'],
+  '5': ['1','2','4','5','6','7'],
+  '6': ['1','2','3','5','6','8','9'],
+  '7': ['1','4','6','7','8'],
+  '8': ['1','2','4','5','6','8','9'],
+  '9': ['1','2','4','5','7','8','9'],
+  '0': ['1','2','3','4','6','7','8','9'],
+};
+
+
+Segments _encodeFakoo(String input) {
+  List<String> inputs = input.split('');
+  var result = Segments.Empty();
+
+  bool numberFollows = false;
+
+  Map<String, List<String>> _charsToSegments = <String, List<String>>{};
+  _charsToSegments.addAll(_CharsToSegmentsLetters[BrailleLanguage.STD] ?? {});
+  _charsToSegments.addAll(_charsToSegmentsDigits);
+
+  for (int i = 0; i < inputs.length; i++) {
+    if (_isNumber(inputs[i])) {
+      if (!numberFollows) {
+        result.addSegment(_SWITCH_NUMBERFOLLOWS);
+        numberFollows = true;
+      }
+    } else {
+      if (_isNumberLetter(inputs[i]) && numberFollows) result.addSegment(_SWITCH_LETTERFOLLOWS);
+      numberFollows = false;
+    }
+    if (_charsToSegments[inputs[i].toLowerCase()] != null) result.addSegment(_charsToSegments[inputs[i].toLowerCase()]);
+  }
+  return result;
+}
+
+SegmentsChars decodeFakoo(List<String> inputs) {
+  var displays = <List<String>>[];
+
+  var antoineMap = Map<String, List<String>>.from(_charsToSegmentsLettersAntoine);
+  antoineMap.remove('NUMBERFOLLOWS');
+
+  var _segmentsToCharsBASICBraille = switchMapKeyValue(_CharsToSegmentsLetters[BrailleLanguage.STD] ?? {});
+  _segmentsToCharsBASICBraille.addAll(switchMapKeyValue(antoineMap));
+
+  List<String> text = inputs.map((input) {
+    var char = '';
+    var charH = '';
+    var display = <String>[];
+    input.split('').forEach((element) {
+      display.add(element);
+    });
+
+    if (_segmentsToCharsBASICBraille
+            .map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ==
+        null) {
+      char = char + UNKNOWN_ELEMENT;
+    } else {
+      charH = _segmentsToCharsBASICBraille
+              .map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ??
+          '';
+      if (letters) {
+        char = char + charH;
+      } else // digits
+      if ((_LetterToDigit[charH] == null) && (_AntoineToDigit[charH] == null)) {
+        char = char + UNKNOWN_ELEMENT;
+      } else if (_LetterToDigit[charH] == null) {
+        char = char + (_AntoineToDigit[charH] ?? '');
+      } else {
+        char = char + (_LetterToDigit[charH] ?? '');
+      }
+    }
+
+    displays.add(display);
+
+    return char;
+  }).toList();
+
+  return SegmentsChars(displays: displays, chars: text);
+}
+
+List<String> _sanitizeDecodeInput(List<String> input) {
+  var pattern = language == BrailleLanguage.EUR ? RegExp(r'[^1-8]') : RegExp(r'[^1-6]');
+
+  return input.map((code) {
+    var chars = code.replaceAll(pattern, '').split('').toList();
+    chars.sort();
+    return chars.join();
+  }).toList();
+}
+
+SegmentsChars decodeFakoo(List<String>? input) {
+  if (input == null || input.isEmpty) return SegmentsChars(displays: [], chars: []);
+
+
+
+  switch (language) {
+    case BrailleLanguage.BASIC:
+      return _decodeFakoo(input, letters);
+    case BrailleLanguage.SIMPLE:
+      return _decodeBrailleSIMPLE(input);
+    case BrailleLanguage.DEU:
+      return _decodeBrailleDEU(input);
+    case BrailleLanguage.ENG:
+      return _decodeBrailleENG(input);
+    case BrailleLanguage.FRA:
+      return _decodeBrailleFRA(input);
+    case BrailleLanguage.EUR:
+      return _decodeBrailleEUR(input);
+    default:
+      return SegmentsChars(displays: [], chars: []);
+  }
+}
