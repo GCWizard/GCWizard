@@ -2028,6 +2028,15 @@ void initializeRegistry(BuildContext context) {
             publisher: 'Universität Bremen',
             sourceUrl:
             'https://web.archive.org/web/20250320184629/https://www.uni-bremen.de/fileadmin/user_upload/fachbereiche/fb3/analysis/feb-tupper-formula.pdf',
+            licenseType: ToolLicenseType.PRIVATE_PERMISSION,
+              privatePermission: ToolLicensePrivatePermission(
+                context: context,
+                medium: 'e-Mail',
+                permissionYear: 2025,
+                permissionMonth: 4,
+                permissionDay: 1,
+                permissionAuthor: 'Ellen Rudolph',
+              ),
           )
         ]),
     GCWTool(tool: const UFI(), id: 'ufi', categories: const [
