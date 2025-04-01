@@ -116,6 +116,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_langua
 import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/ook/widget/ook.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/piet/widget/piet.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/whitespace_language/widget/whitespace_language.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/fakoo/widget/fakoo.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/fox/widget/fox.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/gade/widget/gade.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/gc_code/widget/gc_code.dart';
@@ -647,6 +648,7 @@ void _initStaticToolList() {
       className(const ExifReader()),
       className(const EquilateralTriangle()),
       className(const ESelection()),
+      className(const Fakoo()),
       className(const FormatConverter()),
       className(FormulaSolverFormulaGroups()),
       className(const FourteenSegments()),

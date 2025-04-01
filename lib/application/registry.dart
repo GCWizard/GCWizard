@@ -202,6 +202,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_langua
 import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/ook/widget/ook.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/piet/widget/piet.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/whitespace_language/widget/whitespace_language.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/fakoo/widget/fakoo.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/fox/widget/fox.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/gade/widget/gade.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/gc_code/widget/gc_code.dart';
@@ -968,6 +969,22 @@ void initializeRegistry(BuildContext context) {
         'exif',
       ],
       licenses: const [],
+    ),
+    GCWTool(
+        tool: Fakoo(),
+        id: 'fakoo',
+        searchKeys: const [
+          'symbol_fakoo',
+      ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+              context: context,
+              author: 'Alexander Fakoó',
+              title: 'FAKOO.DE',
+              sourceUrl:
+              'https://web.archive.org/web/20240808105937/https://fakoo.de/',
+              licenseType: ToolLicenseType.CCBYNCND40)
+        ]
     ),
     GCWTool(
         tool: FormulaSolverFormulaGroups(),
