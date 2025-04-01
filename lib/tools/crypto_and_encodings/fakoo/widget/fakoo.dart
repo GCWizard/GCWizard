@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
-import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_toolbar.dart';
+import 'package:gc_wizard/common_widgets/gcw_touchcanvas.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
-import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/fakoo/logic/fakoo.dart';
-import 'package:gc_wizard/tools/crypto_and_encodings/fakoo/widget/fakoo_segment_display.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/n_segment_display.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/segmentdisplay_output.dart';
+import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/segmentdisplay_painter.dart';
+
+part 'package:gc_wizard/tools/crypto_and_encodings/fakoo/widget/fakoo_segment_display.dart';
 
 class Fakoo extends StatefulWidget {
   const Fakoo({super.key});
@@ -25,9 +25,8 @@ class _FakooState extends State<Fakoo> {
   String _currentEncodeInput = '';
   late TextEditingController _encodeController;
 
-  Segments _currentDisplays = Segments.Empty();
+  var _currentDisplays = Segments.Empty();
   var _currentMode = GCWSwitchPosition.right;
-
 
   @override
   void initState() {
@@ -53,20 +52,19 @@ class _FakooState extends State<Fakoo> {
           });
         },
       ),
-      if (_currentMode == GCWSwitchPosition.left) // encrypt: input number => output segment
-        GCWTextField(
-          controller: _encodeController,
-          onChanged: (text) {
-            setState(() {
-              _currentEncodeInput = text;
-            });
-          },
-        )
-      else
-        Column(
-          // decrpyt: input segment => output number
-          children: <Widget>[_buildVisualDecryption()],
-        ),
+      (_currentMode == GCWSwitchPosition.left) // encrypt: input number => output segment
+          ? GCWTextField(
+        controller: _encodeController,
+        onChanged: (text) {
+          setState(() {
+            _currentEncodeInput = text;
+          });
+        },
+      )
+          : Column(
+        // decrpyt: input segment => output number
+        children: <Widget>[_buildVisualDecryption()],
+      ),
       _buildOutput()
     ]);
   }
@@ -95,7 +93,7 @@ class _FakooState extends State<Fakoo> {
           child: Row(
             children: <Widget>[
               Expanded(
-                child: FakooSegmentDisplay(
+                child: _FakooSegmentDisplay(
                   segments: currentDisplay,
                   onChanged: onChanged,
                 ),
@@ -136,7 +134,7 @@ class _FakooState extends State<Fakoo> {
   Widget _buildDigitalOutput(Segments segments) {
     return SegmentDisplayOutput(
         segmentFunction: (displayedSegments, readOnly) {
-          return FakooSegmentDisplay(segments: displayedSegments, readOnly: readOnly);
+          return _FakooSegmentDisplay(segments: displayedSegments, readOnly: readOnly);
         },
         segments: segments,
         readOnly: true);
@@ -145,11 +143,10 @@ class _FakooState extends State<Fakoo> {
   Widget _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
       //encode
-      var segments = encodeBraille(_currentEncodeInput, _currentLanguage);
+      var segments = encodeFakoo(_currentEncodeInput);
       return Column(
         children: <Widget>[
           _buildDigitalOutput(segments),
-          GCWOutput(title: i18n(context, 'braille_output_numbers'), child: segments.buildOutput().join(' '))
         ],
       );
     } else {
@@ -159,35 +156,9 @@ class _FakooState extends State<Fakoo> {
       return Column(
         children: <Widget>[
           _buildDigitalOutput(segments),
-            Column(
-              children: [
-                GCWDefaultOutput(child: _normalizeChars(segments.chars.join())),
-                if (segmentsBasicLetters.chars.join().toUpperCase() != segments.chars.join())
-                  GCWOutput(
-                    title: i18n(context, 'brailledotnumbers_basic_letters'),
-                    child: segmentsBasicLetters.chars.join().toUpperCase(),
-                  ),
-                if (segmentsBasicDigits.chars.join().toUpperCase() != segments.chars.join())
-                  GCWOutput(
-                    title: i18n(context, 'brailledotnumbers_basic_digits'),
-                    child: segmentsBasicDigits.chars.join().toUpperCase(),
-                  ),
-              ],
-            )
+          GCWDefaultOutput(child: segments.chars.join('')),
         ],
       );
-    }
-  }
-
-  String _normalizeChars(String input) {
-    if (input.endsWith('NUMBER FOLLOWS>')) {
-      return input.replaceAll('<NUMBER FOLLOWS>', '').replaceAll('<ANTOINE NUMBER FOLLOWS>', '') +
-          i18n(context, 'symboltables_braille_de_number_follows');
-    } else if (input.endsWith('ANTOINE NUMBER FOLLOWS>')) {
-      return input.replaceAll('<NUMBER FOLLOWS>', '').replaceAll('<ANTOINE NUMBER FOLLOWS>', '') +
-          i18n(context, 'symboltables_braille_en_mathmatics_follows');
-    } else {
-      return input.replaceAll('<NUMBER FOLLOWS>', '').replaceAll('<ANTOINE NUMBER FOLLOWS>', '');
     }
   }
 }

@@ -4,7 +4,7 @@ import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/constants.dart';
 
 //https://fakoo.de/fakoo/9-punkt-decoder.html
-const Map<String, List<String>> _CharsToSegmentsLetters = {
+const Map<String, List<String>> _CODEBOOK_FAKOO = {
   ' ': [],
   'a': ['2','3','5','6','9'],
   'b': ['1','2','6','8'],
@@ -74,7 +74,6 @@ const Map<String, List<String>> _CharsToSegmentsLetters = {
   '8': ['1','2','4','5','6','8','9'],
   '9': ['1','2','4','5','7','8','9'],
   '0': ['1','2','3','4','6','7','8','9'],
-//Satzzeichen
   '.': ['6'],
   ',': ['35'],
   ':': ['46'],
@@ -193,13 +192,13 @@ const Map<String, List<String>> _CharsToSegmentsLetters = {
   '[uh]': ['3458'],
   '[u1]': ['2567'],
   '[u2]': ['2459'],
-  '[uh]': ['3458'],
+  // '[uh]': ['3458'],
   '[u4]': ['1568'],
  //Karten-Symbole
   '[hz]': ['124678'],
-  '#': ['1379'],
-  '+': ['24568'],
-  '±': ['2345689'],
+  // '#': ['1379'],
+  // '+': ['24568'],
+  // '±': ['2345689'],
   //Leserichtung
   '[lr]': ['138'],
   '[ac]': ['349'],
@@ -208,105 +207,48 @@ const Map<String, List<String>> _CharsToSegmentsLetters = {
 };
 
 
-Segments _encodeFakoo(String input) {
+Segments encodeFakoo(String input) {
   List<String> inputs = input.split('');
-  var result = Segments.Empty();
-
-  bool numberFollows = false;
-
-  Map<String, List<String>> _charsToSegments = <String, List<String>>{};
-  _charsToSegments.addAll(_CharsToSegmentsLetters[BrailleLanguage.STD] ?? {});
-  _charsToSegments.addAll(_charsToSegmentsDigits);
-
+  List<List<String>> result = [];
   for (int i = 0; i < inputs.length; i++) {
-    if (_isNumber(inputs[i])) {
-      if (!numberFollows) {
-        result.addSegment(_SWITCH_NUMBERFOLLOWS);
-        numberFollows = true;
-      }
-    } else {
-      if (_isNumberLetter(inputs[i]) && numberFollows) result.addSegment(_SWITCH_LETTERFOLLOWS);
-      numberFollows = false;
-    }
-    if (_charsToSegments[inputs[i].toLowerCase()] != null) result.addSegment(_charsToSegments[inputs[i].toLowerCase()]);
+  if (_CODEBOOK_FAKOO[inputs[i]] != null) result.add(_CODEBOOK_FAKOO[inputs[i]]!);
   }
-  return result;
+  return Segments(displays: result);
 }
 
-SegmentsChars decodeFakoo(List<String> inputs) {
+SegmentsChars decodeFakoo(List<String>? inputs) {
+  if (inputs == null || inputs.isEmpty) return SegmentsChars(displays: [], chars: []);
+
   var displays = <List<String>>[];
+  var segment = <String>[];
 
-  var antoineMap = Map<String, List<String>>.from(_charsToSegmentsLettersAntoine);
-  antoineMap.remove('NUMBERFOLLOWS');
+  Map<List<String>, String> CODEBOOK = switchMapKeyValue(_CODEBOOK_FAKOO);
 
-  var _segmentsToCharsBASICBraille = switchMapKeyValue(_CharsToSegmentsLetters[BrailleLanguage.STD] ?? {});
-  _segmentsToCharsBASICBraille.addAll(switchMapKeyValue(antoineMap));
+  for (var element in inputs) {
+  segment = _stringToSegment(element);
+  displays.add(segment);
+  }
 
   List<String> text = inputs.map((input) {
-    var char = '';
-    var charH = '';
-    var display = <String>[];
-    input.split('').forEach((element) {
-      display.add(element);
-    });
+  var char = '';
 
-    if (_segmentsToCharsBASICBraille
-            .map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ==
-        null) {
-      char = char + UNKNOWN_ELEMENT;
-    } else {
-      charH = _segmentsToCharsBASICBraille
-              .map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ??
-          '';
-      if (letters) {
-        char = char + charH;
-      } else // digits
-      if ((_LetterToDigit[charH] == null) && (_AntoineToDigit[charH] == null)) {
-        char = char + UNKNOWN_ELEMENT;
-      } else if (_LetterToDigit[charH] == null) {
-        char = char + (_AntoineToDigit[charH] ?? '');
-      } else {
-        char = char + (_LetterToDigit[charH] ?? '');
-      }
-    }
+  if (CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] == null) {
+  char = char + UNKNOWN_ELEMENT;
+  } else {
+  var charH = CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()];
+  char = char + (charH ?? '');
+  }
 
-    displays.add(display);
-
-    return char;
+  return char;
   }).toList();
 
   return SegmentsChars(displays: displays, chars: text);
 }
 
-List<String> _sanitizeDecodeInput(List<String> input) {
-  var pattern = language == BrailleLanguage.EUR ? RegExp(r'[^1-8]') : RegExp(r'[^1-6]');
-
-  return input.map((code) {
-    var chars = code.replaceAll(pattern, '').split('').toList();
-    chars.sort();
-    return chars.join();
-  }).toList();
-}
-
-SegmentsChars decodeFakoo(List<String>? input) {
-  if (input == null || input.isEmpty) return SegmentsChars(displays: [], chars: []);
-
-
-
-  switch (language) {
-    case BrailleLanguage.BASIC:
-      return _decodeFakoo(input, letters);
-    case BrailleLanguage.SIMPLE:
-      return _decodeBrailleSIMPLE(input);
-    case BrailleLanguage.DEU:
-      return _decodeBrailleDEU(input);
-    case BrailleLanguage.ENG:
-      return _decodeBrailleENG(input);
-    case BrailleLanguage.FRA:
-      return _decodeBrailleFRA(input);
-    case BrailleLanguage.EUR:
-      return _decodeBrailleEUR(input);
-    default:
-      return SegmentsChars(displays: [], chars: []);
+  List<String> _stringToSegment(String input) {
+  List<String> result = [];
+  for (int i = 0; i < input.length; i++) {
+  result.add(input[i]);
   }
-}
+  return result;
+  }

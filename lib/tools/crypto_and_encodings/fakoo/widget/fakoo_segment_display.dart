@@ -1,18 +1,23 @@
-import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/theme/theme.dart';
-import 'package:gc_wizard/common_widgets/gcw_touchcanvas.dart';
-import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
-import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/n_segment_display.dart';
-import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/segmentdisplay_painter.dart';
+part of 'package:gc_wizard/tools/crypto_and_encodings/fakoo/widget/fakoo.dart';
 
-const _INITIAL_SEGMENTS = <String, bool>{'1': false, '4': false, '2': false, '5': false, '3': false, '6': false};
+const _INITIAL_SEGMENTS = <String, bool>{
+  '1': false,
+  '2': false,
+  '3': false,
+  '4': false,
+  '5': false,
+  '6': false,
+  '7': false,
+  '8': false,
+  '9': false
+};
 
-const _FAKOO_RELATIVE_DISPLAY_WIDTH = 50;
+const _FAKOO_RELATIVE_DISPLAY_WIDTH = 70;
 const _FAKOO_RELATIVE_DISPLAY_HEIGHT = 100;
 const _FAKOO_RADIUS = 10.0;
 
-class FakooSegmentDisplay extends NSegmentDisplay {
-  FakooSegmentDisplay(
+class _FakooSegmentDisplay extends NSegmentDisplay {
+  _FakooSegmentDisplay(
       {super.key,
       required super.segments,
       super.readOnly,
@@ -32,7 +37,10 @@ class FakooSegmentDisplay extends NSegmentDisplay {
                 '3': [15, 80],
                 '4': [35, 20],
                 '5': [35, 50],
-                '6': [35, 80]
+                '6': [35, 80],
+                '7': [55, 20],
+                '8': [55, 50],
+                '9': [55, 80]
               };
 
               circles.forEach((key, value) {
