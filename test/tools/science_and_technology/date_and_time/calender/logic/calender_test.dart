@@ -48,7 +48,7 @@ void main() {
     for (var elem in _inputsToExpected) {
       test('jd: ${elem['jd']}', () {
         var _actual = JulianDateToPersianYazdegardCalendar(elem['jd'] as double);
-        if (_actual == null) {
+        if (_actual == null || elem['expectedOutput'] == null) {
           expect(_actual, elem['expectedOutput']);
         } else {
           expect(_actual.day, (elem['expectedOutput'] as DateTime).day);
@@ -70,7 +70,7 @@ void main() {
     for (var elem in _inputsToExpected) {
       test('jd: ${elem['jd']}', () {
         var _actual = JulianDateToHebrewCalendar(elem['jd'] as double);
-        if (_actual == null) {
+        if (_actual == null || elem['expectedOutput'] == null) {
           expect(_actual, elem['expectedOutput']);
         } else {
           expect(_actual.day, (elem['expectedOutput'] as DateTime).day);
@@ -92,7 +92,7 @@ void main() {
     for (var elem in _inputsToExpected) {
       test('jd: ${elem['jd']}', () {
         var _actual = JulianDateToIslamicCalendar(elem['jd'] as double);
-        if (_actual == null) {
+        if (_actual == null || elem['expectedOutput'] == null) {
           expect(_actual, elem['expectedOutput']);
         } else {
           expect(_actual.day, (elem['expectedOutput'] as DateTime).day);
@@ -114,7 +114,7 @@ void main() {
     for (var elem in _inputsToExpected) {
       test('jd: ${elem['jd']}', () {
         var _actual = JulianDateToCopticCalendar(elem['jd'] as double);
-        if (_actual == null) {
+        if (_actual == null || elem['expectedOutput'] == null) {
           expect(_actual, elem['expectedOutput']);
         } else {
           expect(_actual.day, (elem['expectedOutput'] as DateTime).day);

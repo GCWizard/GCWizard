@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/checkdigits/widget/checkd
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class CheckDigitsEUROSelection extends GCWSelection {
-  const CheckDigitsEUROSelection({Key? key}) : super(key: key);
+  const CheckDigitsEUROSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

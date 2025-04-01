@@ -14,7 +14,7 @@ import 'package:intl/intl.dart';
 class ColorTool extends StatefulWidget {
   final RGB? color;
 
-  const ColorTool({Key? key, this.color}) : super(key: key);
+  const ColorTool({super.key, this.color});
 
   @override
   _ColorToolState createState() => _ColorToolState();

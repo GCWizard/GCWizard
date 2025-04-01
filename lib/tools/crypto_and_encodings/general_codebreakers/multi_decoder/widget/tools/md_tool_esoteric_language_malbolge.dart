@@ -6,11 +6,8 @@ const MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_MALBOLGE = 'malbolge_title';
 
 class MultiDecoderToolEsotericLanguageMalbolge extends AbstractMultiDecoderTool {
   MultiDecoderToolEsotericLanguageMalbolge(
-      {Key? key, required int id, required String name, required Map<String, Object?> options})
+      {super.key, required super.id, required super.name, required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_MALBOLGE,
             optionalKey: true,
             onDecode: (String input, String key) {
@@ -29,8 +26,7 @@ class MultiDecoderToolEsotericLanguageMalbolge extends AbstractMultiDecoderTool 
                 }
               } catch (e) {}
               return null;
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolEsotericLanguageMalbolgeState();
 }

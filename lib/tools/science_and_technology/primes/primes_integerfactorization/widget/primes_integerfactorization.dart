@@ -6,7 +6,7 @@ import 'package:gc_wizard/tools/science_and_technology/primes/_common/logic/prim
 class IntegerFactorization extends StatefulWidget {
   final String? numberLabel;
 
-  const IntegerFactorization({Key? key, this.numberLabel}) : super(key: key);
+  const IntegerFactorization({super.key, this.numberLabel});
 
   @override
   _IntegerFactorizationState createState() => _IntegerFactorizationState();

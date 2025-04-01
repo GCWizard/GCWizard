@@ -13,7 +13,7 @@ import 'package:gc_wizard/utils/datetime_utils.dart';
 import 'package:intl/intl.dart';
 
 class MoonPosition extends StatefulWidget {
-  const MoonPosition({Key? key}) : super(key: key);
+  const MoonPosition({super.key});
 
   @override
   _MoonPositionState createState() => _MoonPositionState();

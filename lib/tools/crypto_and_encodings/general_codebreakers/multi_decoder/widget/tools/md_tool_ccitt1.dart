@@ -14,14 +14,11 @@ const MDT_CCITT1_OPTION_MODE_BINARY = 'common_numeralbase_binary';
 
 class MultiDecoderToolCcitt1 extends AbstractMultiDecoderTool {
   MultiDecoderToolCcitt1(
-      {Key? key,
-      required int id,
-      required String name,
-      required Map<String, Object?> options})
+      {super.key,
+      required super.id,
+      required super.name,
+      required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_CCITT1,
             onDecode: (String input, String key) {
               if (checkStringFormatOrDefaultOption(MDT_INTERNALNAMES_CCITT1, options, MDT_CCITT1_OPTION_MODE) ==
@@ -33,8 +30,7 @@ class MultiDecoderToolCcitt1 extends AbstractMultiDecoderTool {
               } else {
                 return decodeTeletypewriter(textToIntList(input), TeletypewriterCodebook.BAUDOT_54123);
               }
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolCcitt1State();
 }

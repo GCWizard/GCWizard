@@ -10,7 +10,7 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/gauss_weber_te
 class GaussWeberTelegraph extends StatefulWidget {
   final GaussWeberTelegraphMode mode;
 
-  const GaussWeberTelegraph({Key? key, this.mode = GaussWeberTelegraphMode.GAUSS_WEBER_ORIGINAL_V1}) : super(key: key);
+  const GaussWeberTelegraph({super.key, this.mode = GaussWeberTelegraphMode.GAUSS_WEBER_ORIGINAL_V1});
 
   @override
   _GaussWeberTelegraphState createState() => _GaussWeberTelegraphState();
@@ -134,9 +134,9 @@ class _GaussWeberTelegraphState extends State<GaussWeberTelegraph> {
           output = decodeGaussWeberTelegraph(_currentDecodeInput, widget.mode);
         }
         output = output
-            .replaceAll('telegraph_schillingcanstatt_stop', i18n(context, 'telegraph_schillingcanstatt_stop'))
-            .replaceAll('telegraph_schillingcanstatt_goon', i18n(context, 'telegraph_schillingcanstatt_goon'))
-            .replaceAll('telegraph_schillingcanstatt_finish', i18n(context, 'telegraph_schillingcanstatt_finish'));
+            .replaceAll('schillingcanstatt_stop', i18n(context, 'telegraph_schillingcanstatt_stop'))
+            .replaceAll('schillingcanstatt_goon', i18n(context, 'telegraph_schillingcanstatt_goon'))
+            .replaceAll('schillingcanstatt_finish', i18n(context, 'telegraph_schillingcanstatt_finish'));
       }
 
       return GCWDefaultOutput(child: output);

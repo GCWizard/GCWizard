@@ -14,7 +14,7 @@ import 'package:gc_wizard/tools/general_tools/randomizer/logic/randomizer_lists.
 import 'package:gc_wizard/tools/science_and_technology/cross_sums/widget/crosstotal_output.dart';
 
 class RandomizerInteger extends StatefulWidget {
-  const RandomizerInteger({Key? key}) : super(key: key);
+  const RandomizerInteger({super.key});
 
   @override
   _RandomizerIntegerState createState() => _RandomizerIntegerState();

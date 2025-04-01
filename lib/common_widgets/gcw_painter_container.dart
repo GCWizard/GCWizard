@@ -16,9 +16,8 @@ class GCWPainterContainer extends StatefulWidget {
   final Widget? trailing;
 
   const GCWPainterContainer(
-      {Key? key, required this.child, this.scale = 1, this.minScale, this.maxScale, this.suppressTopSpace,
-        this.suppressBottomSpace, this.trailing, this.onChanged})
-      : super(key: key);
+      {super.key, required this.child, this.scale = 1, this.minScale, this.maxScale, this.suppressTopSpace,
+        this.suppressBottomSpace, this.trailing, this.onChanged});
 
   @override
   _GCWPainterContainerState createState() => _GCWPainterContainerState();

@@ -1,7 +1,7 @@
 part of 'package:gc_wizard/tools/formula_solver/widget/formula_solver_formulagroups.dart';
 
 class _FormulaValueTypeKeyInput extends GCWKeyValueInput {
-  _FormulaValueTypeKeyInput({Key? key}) : super(key: key);
+  _FormulaValueTypeKeyInput({super.key});
 
   @override
   GCWKeyValueInputState createState() => _GCWKeyValueTypeNewEntryState();

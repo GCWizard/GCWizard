@@ -11,7 +11,7 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/w
 import 'package:gc_wizard/utils/constants.dart';
 
 class Beghilos extends StatefulWidget {
-  const Beghilos({Key? key}) : super(key: key);
+  const Beghilos({super.key});
 
   @override
   _BeghilosState createState() => _BeghilosState();

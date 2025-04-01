@@ -10,8 +10,7 @@ class GCWMultipleOutput extends StatefulWidget {
   final Widget? trailing;
 
   const GCWMultipleOutput(
-      {Key? key, required this.children, this.suppressDefaultTitle = false, this.trailing, this.title})
-      : super(key: key);
+      {super.key, required this.children, this.suppressDefaultTitle = false, this.trailing, this.title});
 
   @override
   _GCWMultipleOutputState createState() => _GCWMultipleOutputState();

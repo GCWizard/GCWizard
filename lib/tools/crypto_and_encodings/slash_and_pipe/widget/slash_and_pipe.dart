@@ -13,7 +13,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/slash_and_pipe/logic/slash_
 import 'package:gc_wizard/utils/ui_dependent_utils/text_widget_utils.dart';
 
 class SlashAndPipe extends StatefulWidget {
-  const SlashAndPipe({Key? key}) : super(key: key);
+  const SlashAndPipe({super.key});
 
   @override
   _SlashAndPipeState createState() => _SlashAndPipeState();

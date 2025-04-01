@@ -4,7 +4,7 @@ class _GCWColorYUV extends StatefulWidget {
   final void Function(YUV) onChanged;
   final YUV? color;
 
-  const _GCWColorYUV({Key? key, required this.onChanged, this.color}) : super(key: key);
+  const _GCWColorYUV({required this.onChanged, this.color});
 
   @override
   _GCWColorYUVState createState() => _GCWColorYUVState();

@@ -12,13 +12,12 @@ class GCWUnitDropDown<T extends Unit> extends StatefulWidget {
   final bool onlyShowSymbols;
 
   const GCWUnitDropDown(
-      {Key? key,
+      {super.key,
       required this.onChanged,
       required this.value,
       this.unitList,
       this.onlyShowSymbols = true,
-      this.unitCategory})
-      : super(key: key);
+      this.unitCategory});
 
   @override
   GCWUnitDropDownState<T> createState() => GCWUnitDropDownState<T>();

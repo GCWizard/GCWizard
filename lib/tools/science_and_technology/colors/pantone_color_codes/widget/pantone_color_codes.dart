@@ -18,7 +18,7 @@ import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors_rgb.d
 import 'package:gc_wizard/tools/science_and_technology/colors/pantone_color_codes/logic/pantone_color_codes.dart';
 
 class PantoneColorCodes extends StatefulWidget {
-  const PantoneColorCodes({Key? key}) : super(key: key);
+  const PantoneColorCodes({super.key});
 
   @override
   _PantoneColorCodesState createState() => _PantoneColorCodesState();

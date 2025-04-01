@@ -26,7 +26,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 
 class Geohashing extends StatefulWidget {
-  const Geohashing({Key? key}) : super(key: key);
+  const Geohashing({super.key});
 
   @override
   _GeohashingState createState() => _GeohashingState();

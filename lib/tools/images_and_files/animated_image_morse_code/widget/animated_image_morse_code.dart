@@ -30,7 +30,7 @@ import 'package:tuple/tuple.dart';
 class AnimatedImageMorseCode extends StatefulWidget {
   final GCWFile? file;
 
-  const AnimatedImageMorseCode({Key? key, this.file}) : super(key: key);
+  const AnimatedImageMorseCode({super.key, this.file});
 
   @override
   _AnimatedImageMorseCodeState createState() => _AnimatedImageMorseCodeState();

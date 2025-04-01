@@ -8,7 +8,7 @@ import 'package:gc_wizard/tools/symbol_tables/_common/widget/symbol_table.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class BeaufortSelection extends GCWSelection {
-  const BeaufortSelection({Key? key}) : super(key: key);
+  const BeaufortSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

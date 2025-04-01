@@ -6,7 +6,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/hashes/logic/hashes.dart';
 
 class HashIdentification extends StatefulWidget {
-  const HashIdentification({Key? key}) : super(key: key);
+  const HashIdentification({super.key});
 
   @override
   _HashIdentificationState createState() => _HashIdentificationState();

@@ -10,7 +10,7 @@ import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:intl/intl.dart';
 
 class CalendarWeek extends StatefulWidget {
-  const CalendarWeek({Key? key}) : super(key: key);
+  const CalendarWeek({super.key});
 
   @override
   _CalendarWeekState createState() => _CalendarWeekState();

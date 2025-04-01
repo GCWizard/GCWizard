@@ -19,7 +19,7 @@ import 'package:gc_wizard/tools/science_and_technology/teletypewriter/punchtape_
 import 'package:gc_wizard/tools/science_and_technology/teletypewriter/punchtape_segment_display/widget/punchtape_segmentdisplay_output.dart';
 
 class TeletypewriterPunchTape extends StatefulWidget {
-  const TeletypewriterPunchTape({Key? key}) : super(key: key);
+  const TeletypewriterPunchTape({super.key});
 
   @override
   _TeletypewriterPunchTapeState createState() => _TeletypewriterPunchTapeState();

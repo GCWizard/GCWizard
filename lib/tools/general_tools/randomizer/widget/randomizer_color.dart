@@ -14,7 +14,7 @@ import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors_cmyk.
 import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors_rgb.dart';
 
 class RandomizerColor extends StatefulWidget {
-  const RandomizerColor({Key? key}) : super(key: key);
+  const RandomizerColor({super.key});
 
   @override
   _RandomizerColorState createState() => _RandomizerColorState();

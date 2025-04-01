@@ -19,7 +19,7 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/prussia_telegr
 part 'package:gc_wizard/tools/science_and_technology/telegraphs/prussia_telegraph/widget/prussia_telegraph_segment_display.dart';
 
 class PrussiaTelegraph extends StatefulWidget {
-  const PrussiaTelegraph({Key? key}) : super(key: key);
+  const PrussiaTelegraph({super.key});
 
   @override
   _PrussiaTelegraphState createState() => _PrussiaTelegraphState();

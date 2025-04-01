@@ -16,7 +16,7 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/w
 part 'package:gc_wizard/tools/crypto_and_encodings/babylon_numbers/widget/babylon_numbers_segment_display.dart';
 
 class BabylonNumbers extends StatefulWidget {
-  const BabylonNumbers({Key? key}) : super(key: key);
+  const BabylonNumbers({super.key});
 
   @override
   _BabylonNumbersState createState() => _BabylonNumbersState();

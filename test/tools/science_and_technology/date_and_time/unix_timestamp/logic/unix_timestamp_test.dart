@@ -22,10 +22,10 @@ void main() {
 
   group("UnixTimeStampToDate:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      {'expectedOutput' : DateTime.utc(2023, 6, 22, 17, 40, 31), 'UnixTimeSTamp' : 1687455631},
-      {'expectedOutput' : DateTime.utc(1994, 2, 11, 0, 0, 0), 'UnixTimeSTamp' : 760924800},
-      {'expectedOutput' : DateTime.utc(1970, 1, 16, 1, 11, 57), 'UnixTimeSTamp' : 1300317},
-      {'expectedOutput' : DateTime.utc(1970, 1, 1, 0, 0, 0), 'UnixTimeSTamp' : 0},
+      {'expectedOutput' : DateTime.utc(2023, 6, 22, 17, 40, 31), 'UnixTimeStamp' : 1687455631},
+      {'expectedOutput' : DateTime.utc(1994, 2, 11, 0, 0, 0), 'UnixTimeStamp' : 760924800},
+      {'expectedOutput' : DateTime.utc(1970, 1, 16, 1, 11, 57), 'UnixTimeStamp' : 1300317},
+      {'expectedOutput' : DateTime.utc(1970, 1, 1, 0, 0, 0), 'UnixTimeStamp' : 0},
       {'expectedOutput' : DateTime.utc(8319, 09, 05, 12, 48, 39, 689, 664), 'UnixTimeStamp' : 99999999999999999},
       {'expectedOutput' : DateTime.utc(-4380, 04, 28, 11, 11, 20, 310, 336), 'UnixTimeStamp' : -99999999999999999},
     ];

@@ -13,7 +13,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/rsa/rsa_primes_calculator/w
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class RSASelection extends GCWSelection {
-  const RSASelection({Key? key}) : super(key: key);
+  const RSASelection({super.key});
 
   @override
   Widget build(BuildContext context) {

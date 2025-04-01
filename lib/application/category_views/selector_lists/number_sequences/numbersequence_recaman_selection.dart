@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/recaman/
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceRecamanSelection extends GCWSelection {
-  const NumberSequenceRecamanSelection({Key? key}) : super(key: key);
+  const NumberSequenceRecamanSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

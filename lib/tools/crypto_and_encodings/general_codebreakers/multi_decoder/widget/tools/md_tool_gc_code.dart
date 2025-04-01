@@ -11,15 +11,12 @@ const MDT_GCCODE_OPTION_MODE_GCCODETOID = 'multidecoder_tool_gccode_option_mode_
 
 class MultiDecoderToolGCCode extends AbstractMultiDecoderTool {
   MultiDecoderToolGCCode(
-      {Key? key,
-      required int id,
-      required String name,
-      required Map<String, Object?> options,
+      {super.key,
+      required super.id,
+      required super.name,
+      required super.options,
       required BuildContext context})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_GCCODE,
             onDecode: (String input, String key) {
               if (options[MDT_GCCODE_OPTION_MODE] == MDT_GCCODE_OPTION_MODE_IDTOGCCODE) {
@@ -27,8 +24,7 @@ class MultiDecoderToolGCCode extends AbstractMultiDecoderTool {
               } else {
                 return gcCodeToID(input);
               }
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolGCCodeState();
 }

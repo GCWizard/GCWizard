@@ -10,11 +10,11 @@ class GCWIntegerListTextField extends StatefulWidget {
   final String? hintText;
 
   const GCWIntegerListTextField({
-    Key? key,
+    super.key,
     required this.onChanged,
     this.controller,
     this.hintText,
-  }) : super(key: key);
+  });
 
   @override
   _GCWIntegerListTextFieldState createState() => _GCWIntegerListTextFieldState();

@@ -7,19 +7,15 @@ const MDT_INTERNALNAMES_VIGENERE = 'multidecoder_tool_vigenere_title';
 const MDT_VIGENERE_OPTION_KEY = 'onetimepad_keyoffset';
 
 class MultiDecoderToolVigenere extends AbstractMultiDecoderTool {
-  MultiDecoderToolVigenere({Key? key, required int id, required String name, required Map<String, Object?> options})
+  MultiDecoderToolVigenere({super.key, required super.id, required super.name, required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_VIGENERE,
             onDecode: (String input, String key) {
               return decryptVigenere(input, key, false,
                   aValue:
                       checkIntFormatOrDefaultOption(MDT_INTERNALNAMES_VIGENERE, options, MDT_VIGENERE_OPTION_KEY) - 1);
             },
-            requiresKey: true,
-            options: options);
+            requiresKey: true);
 
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolVigenereState();

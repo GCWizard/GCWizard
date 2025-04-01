@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsth
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceJacobsthalSelection extends GCWSelection {
-  const NumberSequenceJacobsthalSelection({Key? key}) : super(key: key);
+  const NumberSequenceJacobsthalSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

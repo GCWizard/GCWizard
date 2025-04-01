@@ -6,7 +6,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/tools/science_and_technology/icecodes/logic/icecodes.dart';
 
 class IceCodes extends StatefulWidget {
-  const IceCodes({Key? key}) : super(key: key);
+  const IceCodes({super.key});
 
   @override
   _IceCodesState createState() => _IceCodesState();

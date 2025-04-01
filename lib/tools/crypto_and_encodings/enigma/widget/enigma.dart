@@ -19,7 +19,7 @@ import 'package:tuple/tuple.dart';
 part 'package:gc_wizard/tools/crypto_and_encodings/enigma/widget/enigma_rotor_dropdown.dart';
 
 class Enigma extends StatefulWidget {
-  const Enigma({Key? key}) : super(key: key);
+  const Enigma({super.key});
 
   @override
   _EnigmaState createState() => _EnigmaState();

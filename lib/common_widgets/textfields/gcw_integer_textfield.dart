@@ -18,15 +18,14 @@ class GCWIntegerTextField extends StatefulWidget {
   final FocusNode? focusNode;
 
   const GCWIntegerTextField(
-      {Key? key,
+      {super.key,
       required this.onChanged,
       this.controller,
       this.textInputFormatter,
       this.hintText,
       this.min,
       this.max,
-      this.focusNode})
-      : super(key: key);
+      this.focusNode});
 
   @override
   _GCWIntegerTextFieldState createState() => _GCWIntegerTextFieldState();

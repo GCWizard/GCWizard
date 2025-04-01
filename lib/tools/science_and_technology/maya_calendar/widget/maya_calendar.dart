@@ -14,7 +14,7 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/w
 import 'package:intl/intl.dart';
 
 class MayaCalendar extends StatefulWidget {
-  const MayaCalendar({Key? key}) : super(key: key);
+  const MayaCalendar({super.key});
 
   @override
   _MayaCalendarState createState() => _MayaCalendarState();

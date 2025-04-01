@@ -5,7 +5,7 @@ import 'package:gc_wizard/application/tools/widget/gcw_toollist.dart';
 import 'package:gc_wizard/common_widgets/gcw_selection.dart';
 
 class CryptographySelection extends GCWSelection {
-  const CryptographySelection({Key? key}) : super(key: key);
+  const CryptographySelection({super.key});
 
   @override
   Widget build(BuildContext context) {

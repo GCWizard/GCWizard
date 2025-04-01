@@ -11,7 +11,7 @@ import 'package:gc_wizard/tools/science_and_technology/periodic_table/periodic_t
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class PeriodicTableSelection extends GCWSelection {
-  const PeriodicTableSelection({Key? key}) : super(key: key);
+  const PeriodicTableSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

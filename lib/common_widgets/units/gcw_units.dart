@@ -21,13 +21,12 @@ class GCWUnits<T extends Unit> extends StatefulWidget {
   final GCWUnitsValue? value;
 
   const GCWUnits(
-      {Key? key,
+      {super.key,
       required this.unitCategory,
       required this.onChanged,
       this.onlyShowUnitSymbols = false,
       this.onlyShowPrefixSymbols = true,
-      this.value})
-      : super(key: key);
+      this.value});
 
   @override
   _GCWUnitsState createState() => _GCWUnitsState<T>();

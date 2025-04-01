@@ -30,7 +30,7 @@ void main() async {
 class App extends StatelessWidget {
   final AppLanguage appLanguage;
 
-  const App({Key? key, required this.appLanguage}) : super(key: key);
+  const App({super.key, required this.appLanguage});
 
   @override
   Widget build(BuildContext context) {

@@ -37,7 +37,7 @@ import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
 
 class GCWizardScript extends StatefulWidget {
-  const GCWizardScript({Key? key}) : super(key: key);
+  const GCWizardScript({super.key});
 
   @override
   GCWizardScriptState createState() => GCWizardScriptState();

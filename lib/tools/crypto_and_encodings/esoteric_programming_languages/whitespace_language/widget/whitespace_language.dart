@@ -11,7 +11,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/whitespace_language/logic/whitespace_language.dart';
 
 class WhitespaceLanguage extends StatefulWidget {
-  const WhitespaceLanguage({Key? key}) : super(key: key);
+  const WhitespaceLanguage({super.key});
 
   @override
   _WhitespaceLanguageState createState() => _WhitespaceLanguageState();

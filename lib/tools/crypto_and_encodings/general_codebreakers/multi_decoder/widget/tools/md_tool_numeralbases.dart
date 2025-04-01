@@ -7,11 +7,8 @@ const MDT_INTERNALNAMES_NUMERALBASES = 'multidecoder_tool_numeralbases_title';
 const MDT_NUMERALBASES_OPTION_FROM = 'multidecoder_tool_numeralbases_option_from';
 
 class MultiDecoderToolNumeralBases extends AbstractMultiDecoderTool {
-  MultiDecoderToolNumeralBases({Key? key, required int id, required String name, required Map<String, Object?> options})
+  MultiDecoderToolNumeralBases({super.key, required super.id, required super.name, required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_NUMERALBASES,
             onDecode: (String input, String key) {
               return input
@@ -24,8 +21,7 @@ class MultiDecoderToolNumeralBases extends AbstractMultiDecoderTool {
                       10))
                   .join(' ')
                   .trim();
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolNumeralBasesState();
 }

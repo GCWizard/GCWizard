@@ -13,7 +13,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/_common/logic/crypt_alphabe
 import 'package:gc_wizard/tools/crypto_and_encodings/polybios/logic/polybios.dart';
 
 class Polybios extends StatefulWidget {
-  const Polybios({Key? key}) : super(key: key);
+  const Polybios({super.key});
 
   @override
   _PolybiosState createState() => _PolybiosState();

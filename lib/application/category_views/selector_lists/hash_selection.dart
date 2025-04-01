@@ -11,7 +11,7 @@ import 'package:gc_wizard/tools/wherigo/urwigo_hashbreaker/widget/urwigo_hashbre
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class HashSelection extends GCWSelection {
-  const HashSelection({Key? key}) : super(key: key);
+  const HashSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

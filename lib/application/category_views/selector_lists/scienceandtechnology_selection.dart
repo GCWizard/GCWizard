@@ -5,7 +5,7 @@ import 'package:gc_wizard/application/tools/widget/gcw_toollist.dart';
 import 'package:gc_wizard/common_widgets/gcw_selection.dart';
 
 class ScienceAndTechnologySelection extends GCWSelection {
-  const ScienceAndTechnologySelection({Key? key}) : super(key: key);
+  const ScienceAndTechnologySelection({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -19,7 +19,7 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/ohlsen_telegra
 part 'package:gc_wizard/tools/science_and_technology/telegraphs/ohlsen_telegraph/widget/ohlsen_segment_display.dart';
 
 class OhlsenTelegraph extends StatefulWidget {
-  const OhlsenTelegraph({Key? key}) : super(key: key);
+  const OhlsenTelegraph({super.key});
 
   @override
   _OhlsenTelegraphState createState() => _OhlsenTelegraphState();

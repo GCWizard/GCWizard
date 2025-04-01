@@ -12,7 +12,7 @@ import 'package:gc_wizard/tools/science_and_technology/uic_wagoncode/widget/uic_
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class UICWagonCodeSelection extends GCWSelection {
-  const UICWagonCodeSelection({Key? key}) : super(key: key);
+  const UICWagonCodeSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

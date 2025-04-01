@@ -11,7 +11,7 @@ import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
 class IEEE754 extends StatefulWidget {
-  const IEEE754({Key? key}) : super(key: key);
+  const IEEE754({super.key});
 
   @override
   _IEEE754State createState() => _IEEE754State();

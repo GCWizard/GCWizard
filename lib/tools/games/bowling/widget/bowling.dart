@@ -14,7 +14,7 @@ import 'package:gc_wizard/common_widgets/spinners/spinner_constants.dart';
 import 'package:gc_wizard/tools/games/bowling/logic/bowling.dart';
 
 class Bowling extends StatefulWidget {
-  const Bowling({Key? key}) : super(key: key);
+  const Bowling({super.key});
 
   @override
   _BowlingState createState() => _BowlingState();

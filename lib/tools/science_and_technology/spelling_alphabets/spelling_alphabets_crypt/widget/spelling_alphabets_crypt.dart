@@ -11,7 +11,7 @@ import 'package:gc_wizard/tools/science_and_technology/spelling_alphabets/_commo
 import 'package:gc_wizard/tools/science_and_technology/spelling_alphabets/spelling_alphabets_crypt/logic/spelling_alphabets_crypt.dart';
 
 class SpellingAlphabetsCrypt extends StatefulWidget {
-  const SpellingAlphabetsCrypt({Key? key}) : super(key: key);
+  const SpellingAlphabetsCrypt({super.key});
 
   @override
   SpellingAlphabetsCryptState createState() => SpellingAlphabetsCryptState();

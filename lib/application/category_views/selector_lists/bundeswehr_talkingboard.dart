@@ -8,7 +8,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/bundeswehr_talkingboard/bun
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class BundeswehrTalkingBoardSelection extends GCWSelection {
-  const BundeswehrTalkingBoardSelection({Key? key}) : super(key: key);
+  const BundeswehrTalkingBoardSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

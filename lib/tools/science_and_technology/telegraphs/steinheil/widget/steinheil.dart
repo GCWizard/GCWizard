@@ -15,7 +15,7 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/steinheil/logi
 part 'package:gc_wizard/tools/science_and_technology/telegraphs/steinheil/widget/steinheil_segment_display.dart';
 
 class SteinheilTelegraph extends StatefulWidget {
-  const SteinheilTelegraph({Key? key}) : super(key: key);
+  const SteinheilTelegraph({super.key});
 
   @override
   _SteinheilTelegraphState createState() => _SteinheilTelegraphState();

@@ -14,7 +14,7 @@ import 'package:gc_wizard/utils/string_utils.dart';
 class UICWagonCode extends StatefulWidget {
   final String? uicNumber;
 
-  const UICWagonCode({Key? key, this.uicNumber}) : super(key: key);
+  const UICWagonCode({super.key, this.uicNumber});
 
   @override
   _UICWagonCodeState createState() => _UICWagonCodeState();

@@ -67,7 +67,7 @@ const String _apiSpecification = '''
 ''';
 
 class Vigenere extends GCWWebStatefulWidget {
-  Vigenere({Key? key}) : super(key: key, apiSpecification: _apiSpecification);
+  Vigenere({super.key}) : super(apiSpecification: _apiSpecification);
 
   @override
   _VigenereState createState() => _VigenereState();

@@ -14,15 +14,14 @@ class GCWDropDown<T> extends StatefulWidget {
   static const _flexValues = [1, 3];
 
   const GCWDropDown(
-      {Key? key,
+      {super.key,
         required this.value,
         required this.items,
         required this.onChanged,
         this.selectedItemBuilder,
         this.title,
         this.alternativeColor = false,
-        this.flexValues = _flexValues})
-      : super(key: key);
+        this.flexValues = _flexValues});
 
   @override
   _GCWDropDownState<T> createState() => _GCWDropDownState<T>();

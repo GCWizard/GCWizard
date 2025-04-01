@@ -20,14 +20,14 @@ class EpochTime extends StatefulWidget {
   final EpochTimeOutput Function(DateTime) dateToEpoch;
 
   const EpochTime({
-    Key? key,
+    super.key,
     required this.min,
     required this.max,
     required this.epochType,
     required this.timestampIsInt,
     required this.epochToDate,
     required this.dateToEpoch,
-  }) : super(key: key);
+  });
 
   @override
   _EpochTimeState createState() => _EpochTimeState();

@@ -11,14 +11,11 @@ const MDT_ALPHABETVALUES_OPTION_ALPHABET = 'multidecoder_tool_alphabetvalues_opt
 
 class MultiDecoderToolAlphabetValues extends AbstractMultiDecoderTool {
   MultiDecoderToolAlphabetValues(
-      {Key? key,
-      required int id,
-      required String name,
-      required Map<String, Object?> options})
+      {super.key,
+      required super.id,
+      required super.name,
+      required super.options})
       : super(
-          key: key,
-          id: id,
-          name: name,
           internalToolName: MDT_INTERNALNAMES_ALPHABETVALUES,
           onDecode: (String input, String key) {
             var alphabet = ALL_ALPHABETS
@@ -32,7 +29,6 @@ class MultiDecoderToolAlphabetValues extends AbstractMultiDecoderTool {
                 .valuesToText(input.split(RegExp(r'\D')).map((value) => int.tryParse(value) ?? 0).toList())
                 .replaceAll(UNKNOWN_ELEMENT, '');
           },
-          options: options,
         );
 
   @override

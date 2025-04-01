@@ -9,7 +9,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/uic_wagoncode/logic/uic_wagoncode_passenger_lettercodes.dart';
 
 class UICWagonCodePassengerLettercodes extends StatefulWidget {
-  const UICWagonCodePassengerLettercodes({Key? key}) : super(key: key);
+  const UICWagonCodePassengerLettercodes({super.key});
 
   @override
   _UICWagonCodePassengerLettercodesState createState() => _UICWagonCodePassengerLettercodesState();

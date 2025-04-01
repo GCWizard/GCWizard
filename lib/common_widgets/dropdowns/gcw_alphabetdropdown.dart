@@ -13,7 +13,7 @@ class GCWAlphabetDropDown<T> extends StatefulWidget {
   final String? textFieldHintText;
 
   const GCWAlphabetDropDown({
-    Key? key,
+    super.key,
     required this.value,
     required this.items,
     required this.onChanged,
@@ -21,7 +21,7 @@ class GCWAlphabetDropDown<T> extends StatefulWidget {
     required this.customModeKey,
     this.textFieldController,
     this.textFieldHintText,
-  }) : super(key: key);
+  });
 
   @override
   _GCWAlphabetDropDownState<T> createState() => _GCWAlphabetDropDownState<T>();

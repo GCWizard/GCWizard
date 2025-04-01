@@ -11,7 +11,7 @@ import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:intl/intl.dart';
 
 class RandomizerPassword extends StatefulWidget {
-  const RandomizerPassword({Key? key}) : super(key: key);
+  const RandomizerPassword({super.key});
 
   @override
   _RandomizerPasswordState createState() => _RandomizerPasswordState();

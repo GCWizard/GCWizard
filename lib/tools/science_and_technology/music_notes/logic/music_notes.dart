@@ -376,10 +376,10 @@ SegmentsChars decodeNotes(List<String>? inputs, NotesCodebook notes) {
     }
 
     if (CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] == null) {
-      char = char + UNKNOWN_ELEMENT;
+      char += UNKNOWN_ELEMENT;
     } else {
       charH = CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ?? '';
-      char = char + charH;
+      char += charH;
     }
 
     displays.add(display);

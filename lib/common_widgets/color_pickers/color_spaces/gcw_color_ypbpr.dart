@@ -4,7 +4,7 @@ class _GCWColorYPbPr extends StatefulWidget {
   final void Function(YPbPr) onChanged;
   final YPbPr? color;
 
-  const _GCWColorYPbPr({Key? key, required this.onChanged, this.color}) : super(key: key);
+  const _GCWColorYPbPr({required this.onChanged, this.color});
 
   @override
   _GCWColorYPbPrState createState() => _GCWColorYPbPrState();

@@ -21,8 +21,7 @@ class WaypointProjection extends StatefulWidget {
   final LatLng Function(LatLng coord, double bearingDeg, double distance, Ellipsoid ellipsoid) calculate;
   final LatLng? Function(LatLng coord, double bearingDeg, double distance, Ellipsoid ellipsoid) calculateReverse;
 
-  const WaypointProjection({Key? key, required this.type, required this.calculate, required this.calculateReverse})
-      : super(key: key);
+  const WaypointProjection({super.key, required this.type, required this.calculate, required this.calculateReverse});
 
   @override
   _WaypointProjectionState createState() => _WaypointProjectionState();

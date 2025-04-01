@@ -17,7 +17,7 @@ part 'about_data.dart';
 const _ABOUT_MAINTAINER = 'Mark \'S-Man42\' Lorenz';
 
 class About extends StatefulWidget {
-  const About({Key? key}) : super(key: key);
+  const About({super.key});
 
   @override
   _AboutState createState() => _AboutState();

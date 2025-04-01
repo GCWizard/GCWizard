@@ -16,7 +16,7 @@ class GCWPageSpinner extends StatefulWidget {
   final Widget? trailing;
 
   const GCWPageSpinner(
-      {Key? key,
+      {super.key,
         required this.onChanged,
         this.text,
         this.textExtension,
@@ -25,8 +25,7 @@ class GCWPageSpinner extends StatefulWidget {
         required this.max,
         this.stepSize = 1,
         this.suppressOverflow = false,
-        this.trailing})
-      : super(key: key);
+        this.trailing});
 
   @override
   _GCWPageSpinnerState createState() => _GCWPageSpinnerState();

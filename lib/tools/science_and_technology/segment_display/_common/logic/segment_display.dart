@@ -749,36 +749,33 @@ class Segments {
 class SegmentsText extends Segments {
   final String text;
 
-  SegmentsText({required List<List<String>> displays, required this.text}) : super(displays: displays);
+  SegmentsText({required super.displays, required this.text});
 }
 
 class SegmentsCodpoints extends SegmentsText {
   final String codepoints;
 
-  SegmentsCodpoints({required List<List<String>> displays, required String text, required this.codepoints})
-      : super(displays: displays, text: text);
+  SegmentsCodpoints({required super.displays, required super.text, required this.codepoints});
 }
 
 class SegmentsChars extends Segments {
   final List<String> chars;
 
-  SegmentsChars({required List<List<String>> displays, required this.chars}) : super(displays: displays);
+  SegmentsChars({required super.displays, required this.chars});
 }
 
 class SegmentsVigesimal extends Segments {
   final List<int> numbers;
   final BigInt vigesimal;
 
-  SegmentsVigesimal({required List<List<String>> displays, required this.numbers, required this.vigesimal})
-      : super(displays: displays);
+  SegmentsVigesimal({required super.displays, required this.numbers, required this.vigesimal});
 }
 
 class SegmentsSexagesimal extends Segments {
   final List<int> numbers;
   final BigInt sexagesimal;
 
-  SegmentsSexagesimal({required List<List<String>> displays, required this.numbers, required this.sexagesimal})
-      : super(displays: displays);
+  SegmentsSexagesimal({required super.displays, required this.numbers, required this.sexagesimal});
 }
 
 Segments encodeSegment(String input, SegmentDisplayType segmentType) {

@@ -63,7 +63,7 @@ const String _apiSpecification = '''
 ''';
 
 class SubstitutionBreaker extends GCWWebStatefulWidget {
-  SubstitutionBreaker({Key? key}) : super(key: key, apiSpecification: _apiSpecification);
+  SubstitutionBreaker({super.key}) : super(apiSpecification: _apiSpecification);
 
   @override
   _SubstitutionBreakerState createState() => _SubstitutionBreakerState();

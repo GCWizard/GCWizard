@@ -150,6 +150,7 @@ Future<WherigoCartridge> getCartridgeGWC(Uint8List byteListGWC, bool offline, {S
       _getMediaFilesFromGWC(byteListGWC);
     }
   } // if checks to do GWC
+
   return WherigoCartridge(
       cartridgeGWC: WherigoCartridgeGWC(
         Signature: _GWCSignature,
@@ -307,6 +308,7 @@ void _getSignatureFromGWC(Uint8List byteListGWC) {
 }
 
 void _getMediaFilesFromGWC(Uint8List byteListGWC) {
+
   try {
     // analysing GWC - reading Media-Files
     for (int i = 1; i < _GWCMediaFilesHeaders.length; i++) {
@@ -330,6 +332,7 @@ void _getMediaFilesFromGWC(Uint8List byteListGWC) {
         _GWCMediaFilesContents.add(WherigoMediaFileContent(
             _GWCMediaFilesHeaders[i].MediaFileID, _WHERIGO_MEDIATYPE_UNK, Uint8List.fromList([]), 0));
       }
+
     }
   } catch (exception) {
     _GWCStatus = WHERIGO_ANALYSE_RESULT_STATUS.ERROR_GWC;

@@ -1,4 +1,4 @@
-/***********************************************************************
+/*
     Dart port of Java implementation of
     ======================
     GeographicLib
@@ -9,7 +9,7 @@
  * https://geographiclib.sourceforge.io/
  * https://sourceforge.net/projects/geographiclib/
 
- **********************************************************************/
+*/
 part of 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
 
 const bool _GEOGRAPHICLIB_PANIC = false;
@@ -20,7 +20,7 @@ const int _GEOGRAPHICLIB_PRECISION = 3;
  * <p>
  * Define mathematical functions and constants so that any version of Java
  * can be used.
- **********************************************************************/
+*/
 // ignore_for_file: unused_field
 // ignore_for_file: unused_element
 class _GeoMath {

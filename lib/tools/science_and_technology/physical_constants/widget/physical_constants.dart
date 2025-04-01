@@ -8,7 +8,7 @@ import 'package:gc_wizard/tools/science_and_technology/physical_constants/logic/
 import 'package:gc_wizard/utils/ui_dependent_utils/text_widget_utils.dart';
 
 class PhysicalConstants extends StatefulWidget {
-  const PhysicalConstants({Key? key}) : super(key: key);
+  const PhysicalConstants({super.key});
 
   @override
   _PhysicalConstantsState createState() => _PhysicalConstantsState();

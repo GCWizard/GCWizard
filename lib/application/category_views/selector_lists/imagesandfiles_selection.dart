@@ -5,7 +5,7 @@ import 'package:gc_wizard/application/tools/widget/gcw_toollist.dart';
 import 'package:gc_wizard/common_widgets/gcw_selection.dart';
 
 class ImagesAndFilesSelection extends GCWSelection {
-  const ImagesAndFilesSelection({Key? key}) : super(key: key);
+  const ImagesAndFilesSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

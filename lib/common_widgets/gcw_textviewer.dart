@@ -10,7 +10,7 @@ import 'package:gc_wizard/common_widgets/gcw_text.dart';
 class GCWTextViewer extends StatefulWidget {
   final String text;
 
-  const GCWTextViewer({Key? key, required this.text}) : super(key: key);
+  const GCWTextViewer({super.key, required this.text});
 
   @override
   _GCWTextViewerState createState() => _GCWTextViewerState();

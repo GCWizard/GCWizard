@@ -14,8 +14,7 @@ class LogicalBoard extends StatefulWidget {
   final Logical board;
   final void Function(int, int) onTapped;
 
-  const LogicalBoard({Key? key, required this.onChanged, required this.board, required this.onTapped})
-      : super(key: key);
+  const LogicalBoard({super.key, required this.onChanged, required this.board, required this.onTapped});
 
   @override
   _LogicalBoardState createState() => _LogicalBoardState();

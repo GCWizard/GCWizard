@@ -17,7 +17,7 @@ Map<String, String> solveQuadraticEquation(String currentA, String currentB, Str
   double b = 0.0;
   double c = 0.0;
 
-  final parser = Parser();
+  final parser = GrammarParser();
   final _context = ContextModel();
 
   var evalResult = _parseExpression(currentA, parser, _context);
@@ -71,7 +71,7 @@ Map<String, String> solveQuadraticEquation(String currentA, String currentB, Str
   return result;
 }
 
-dynamic _parseExpression(String value, Parser parser, ContextModel context) {
+dynamic _parseExpression(String value, GrammarParser parser, ContextModel context) {
   try {
     Expression expression = parser.parse(value);
     return expression.evaluate(EvaluationType.REAL, context);

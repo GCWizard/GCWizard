@@ -8,7 +8,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/kenny/logic/kenny.dart';
 
 class Kenny extends StatefulWidget {
-  const Kenny({Key? key}) : super(key: key);
+  const Kenny({super.key});
 
   @override
   _KennyState createState() => _KennyState();

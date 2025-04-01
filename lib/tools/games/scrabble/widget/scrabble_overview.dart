@@ -6,7 +6,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/tools/games/scrabble/logic/scrabble_sets.dart';
 
 class ScrabbleOverview extends StatefulWidget {
-  const ScrabbleOverview({Key? key}) : super(key: key);
+  const ScrabbleOverview({super.key});
 
   @override
   _ScrabbleOverviewState createState() => _ScrabbleOverviewState();

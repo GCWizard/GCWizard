@@ -15,7 +15,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/games/word_search/logic/word_search.dart';
 
 class WordSearch extends StatefulWidget {
-  const WordSearch({Key? key}) : super(key: key);
+  const WordSearch({super.key});
 
   @override
   _WordSearchState createState() => _WordSearchState();

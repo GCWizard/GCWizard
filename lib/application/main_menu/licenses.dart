@@ -12,7 +12,7 @@ import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 
 class Licenses extends StatefulWidget {
-  const Licenses({Key? key}) : super(key: key);
+  const Licenses({super.key});
 
   @override
   _LicensesState createState() => _LicensesState();

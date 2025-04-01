@@ -27,7 +27,7 @@ class GCWSymbolTableSymbolMatrix extends StatefulWidget {
   final double scale;
 
   const GCWSymbolTableSymbolMatrix(
-      {Key? key,
+      {super.key,
       required this.imageData,
       required this.countColumns,
       required this.mediaQueryData,
@@ -37,8 +37,7 @@ class GCWSymbolTableSymbolMatrix extends StatefulWidget {
       this.fixed = false,
       this.overlayOn = true,
       this.symbolKey = '',
-      this.scale = 1.0})
-      : super(key: key);
+      this.scale = 1.0});
 
   @override
   _GCWSymbolTableSymbolMatrixState createState() => _GCWSymbolTableSymbolMatrixState();

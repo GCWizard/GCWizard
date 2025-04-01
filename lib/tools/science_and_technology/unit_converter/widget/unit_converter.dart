@@ -71,7 +71,7 @@ final List<UnitCategoryConfig> _categories = [
 ];
 
 class UnitConverter extends StatefulWidget {
-  const UnitConverter({Key? key}) : super(key: key);
+  const UnitConverter({super.key});
 
   @override
   _UnitConverterState createState() => _UnitConverterState();

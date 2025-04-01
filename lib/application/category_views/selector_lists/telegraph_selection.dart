@@ -20,7 +20,7 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/wigwag/widget/
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class TelegraphSelection extends GCWSelection {
-  const TelegraphSelection({Key? key}) : super(key: key);
+  const TelegraphSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -12,7 +12,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/language_games/spoon_langua
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class LanguageGamesSelection extends GCWSelection {
-  const LanguageGamesSelection({Key? key}) : super(key: key);
+  const LanguageGamesSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

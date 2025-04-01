@@ -23,7 +23,7 @@ class ResectionJobData {
 }
 
 class _ResectionCalculator extends IntervalCalculator {
-  _ResectionCalculator(ResectionParameters parameters, Ellipsoid ells) : super(parameters, ells);
+  _ResectionCalculator(ResectionParameters super.parameters, super.ells);
 
   // If there is one interval [350, 400] and one [10, 50], they need to be
   // adjusted against each other to be comparable. So either the first is going to

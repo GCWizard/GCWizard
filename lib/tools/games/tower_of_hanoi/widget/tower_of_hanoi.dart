@@ -11,7 +11,7 @@ import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/tools/games/tower_of_hanoi/logic/tower_of_hanoi.dart';
 
 class TowerOfHanoi extends StatefulWidget {
-  const TowerOfHanoi({Key? key}) : super(key: key);
+  const TowerOfHanoi({super.key});
 
   @override
   _TowerOfHanoiState createState() => _TowerOfHanoiState();

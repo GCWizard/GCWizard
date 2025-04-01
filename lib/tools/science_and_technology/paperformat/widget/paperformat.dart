@@ -10,7 +10,7 @@ import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/leng
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit_prefix.dart';
 
 class PaperFormats extends StatefulWidget {
-  const PaperFormats({Key? key}) : super(key: key);
+  const PaperFormats({super.key});
 
   @override
   _PaperFormatState createState() => _PaperFormatState();

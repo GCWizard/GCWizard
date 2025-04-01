@@ -23,14 +23,13 @@ class GCWCoordsOutput extends StatefulWidget {
   late final Ellipsoid ellipsoid;
 
   GCWCoordsOutput(
-      {Key? key,
+      {super.key,
       required this.outputs,
       List<GCWMapPoint>? points,
       List<GCWMapPolyline>? polylines,
       this.mapButtonTop = false,
       this.title,
-      Ellipsoid? ellipsoid})
-      : super(key: key) {
+      Ellipsoid? ellipsoid}) {
     this.points = points ?? [];
     this.polylines = polylines ?? [];
     this.ellipsoid = ellipsoid ?? defaultEllipsoid;

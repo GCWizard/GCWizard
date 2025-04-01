@@ -45,7 +45,7 @@ const String _apiSpecification = '''
 ''';
 
 class RotationGeneral extends GCWWebStatefulWidget {
-  RotationGeneral({Key? key}) : super(key: key, apiSpecification: _apiSpecification);
+  RotationGeneral({super.key}) : super(apiSpecification: _apiSpecification);
 
   @override
   _RotationGeneralState createState() => _RotationGeneralState();

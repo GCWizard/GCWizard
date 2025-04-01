@@ -114,14 +114,13 @@ class GCWCoords extends StatefulWidget {
   final bool suppressTopSpace;
 
   const GCWCoords(
-      {Key? key,
+      {super.key,
       this.title,
       required this.onChanged,
       this.coordinates,
       required this.coordsFormat,
       this.suppressTopSpace = false
-      })
-      : super(key: key);
+      });
 
   @override
   _GCWCoordsState createState() => _GCWCoordsState();

@@ -9,7 +9,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/book_cipher/logic/book_cipher.dart';
 
 class BookCipher extends StatefulWidget {
-  const BookCipher({Key? key}) : super(key: key);
+  const BookCipher({super.key});
 
   @override
   _BookCipherState createState() => _BookCipherState();

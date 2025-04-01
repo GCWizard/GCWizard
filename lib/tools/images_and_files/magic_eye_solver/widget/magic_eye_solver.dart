@@ -19,7 +19,7 @@ import 'package:image/image.dart' as Image;
 import 'package:tuple/tuple.dart';
 
 class MagicEyeSolver extends StatefulWidget {
-  const MagicEyeSolver({Key? key}) : super(key: key);
+  const MagicEyeSolver({super.key});
 
   @override
   _MagicEyeSolverState createState() => _MagicEyeSolverState();

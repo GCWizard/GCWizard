@@ -17,7 +17,7 @@ enum PlayerState { stopped, playing, paused }
 class GCWSoundPlayer extends StatefulWidget {
   final GCWFile file;
 
-  const GCWSoundPlayer({Key? key, required this.file}) : super(key: key);
+  const GCWSoundPlayer({super.key, required this.file});
 
   @override
   _GCWSoundPlayerState createState() => _GCWSoundPlayerState();

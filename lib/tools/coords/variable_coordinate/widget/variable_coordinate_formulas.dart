@@ -16,7 +16,7 @@ import 'package:gc_wizard/utils/json_utils.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
 class VariableCoordinateFormulas extends StatefulWidget {
-  const VariableCoordinateFormulas({Key? key}) : super(key: key);
+  const VariableCoordinateFormulas({super.key});
 
   @override
   _VariableCoordinateFormulasState createState() => _VariableCoordinateFormulasState();

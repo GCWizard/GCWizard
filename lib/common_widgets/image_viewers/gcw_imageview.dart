@@ -43,7 +43,7 @@ class GCWImageView extends StatefulWidget {
   final Set<GCWImageViewOpenInTools>? suppressOpenInTool;
 
   const GCWImageView(
-      {Key? key,
+      {super.key,
       required this.imageData,
       this.toolBarRight = true,
       this.extension,
@@ -51,8 +51,7 @@ class GCWImageView extends StatefulWidget {
       this.suppressedButtons,
       this.maxHeightInPreview,
       this.suppressOpenInTool,
-      this.onBeforeLoadBigImage})
-      : super(key: key);
+      this.onBeforeLoadBigImage});
 
   @override
   _GCWImageViewState createState() => _GCWImageViewState();

@@ -18,14 +18,13 @@ class GCWDistance extends StatefulWidget {
   final TextEditingController? controller;
 
   const GCWDistance(
-      {Key? key,
+      {super.key,
       required this.onChanged,
       this.hintText,
       this.value,
       this.unit,
       this.allowNegativeValues = false,
-      this.controller})
-      : super(key: key);
+      this.controller});
 
   @override
   _GCWDistanceState createState() => _GCWDistanceState();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gc_wizard/application/_common/gcw_package_info.dart';
 import 'package:gc_wizard/application/category_views/favorites.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/babylon_numbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/base_selection.dart';
@@ -135,6 +136,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/language_games/judoon/widge
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/pig_latin/widget/pig_latin.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/robber_language/widget/robber_language.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/spoon_language/widget/spoon_language.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/larrabee/widget/larrabee.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/major_system/widget/major_system.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/mexican_army_cipher_wheel/widget/mexican_army_cipher_wheel.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/morbit/widget/morbit.dart';
@@ -316,8 +318,8 @@ import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 import 'package:prefs/prefs.dart';
 
 class MainView extends GCWWebStatefulWidget {
-  MainView({Key? key, Map<String, String>? webParameter})
-      : super(key: key, webParameter: webParameter, apiSpecification: null);
+  MainView({super.key, super.webParameter})
+      : super(apiSpecification: null);
 
   @override
   _MainViewState createState() => _MainViewState();
@@ -387,12 +389,16 @@ class _MainViewState extends State<MainView> {
       }
 
       if (countAppOpened > 0 && (countAppOpened == 10 || countAppOpened % _SHOW_SUPPORT_HINT_EVERY_N == 0)) {
-        showGCWAlertDialog(
-          context,
-          i18n(context, 'common_support_title'),
-          i18n(context, 'common_support_text', parameters: [Prefs.getInt(PREFERENCE_APP_COUNT_OPENED)]),
-          () => launchUrl(Uri.parse(i18n(context, 'common_support_link'))),
-        );
+        _checkForGoldVersion().then((value) {
+          if (!value) {
+            showGCWAlertDialog(
+              context,
+              i18n(context, 'common_support_title'),
+              i18n(context, 'common_support_text', parameters: [Prefs.getInt(PREFERENCE_APP_COUNT_OPENED)]),
+                  () => launchUrl(Uri.parse(i18n(context, 'common_support_link'))),
+            );
+          }
+        });
       }
     });
   }
@@ -403,6 +409,11 @@ class _MainViewState extends State<MainView> {
     _searchController.dispose();
 
     super.dispose();
+  }
+
+  Future<bool> _checkForGoldVersion() async {
+    await GCWPackageInfo.init();
+    return GCWPackageInfo.getInstance().appName.toLowerCase().contains('gold');
   }
 
   @override
@@ -637,7 +648,7 @@ void _initStaticToolList() {
       className(const EquilateralTriangle()),
       className(const ESelection()),
       className(const FormatConverter()),
-      className(const FormulaSolverFormulaGroups()),
+      className(FormulaSolverFormulaGroups()),
       className(const FourteenSegments()),
       className(const Fox()),
       className(const Gade()),
@@ -687,6 +698,7 @@ void _initStaticToolList() {
       className(const KarolRobot()),
       className(const Kenny()),
       className(const KeyboardSelection()),
+      className(Larrabee()),
       className(const LCM()),
       className(const LogicalSupporter()),
       className(const MagicEyeSolver()),
@@ -843,7 +855,7 @@ void _initStaticToolList() {
     return [
       className(const CoordsSelection()),
       className(const CryptographySelection()),
-      className(const FormulaSolverFormulaGroups()),
+      className(FormulaSolverFormulaGroups()),
       className(const GamesSelection()),
       className(const GeneralCodebreakersSelection()),
       className(const ImagesAndFilesSelection()),

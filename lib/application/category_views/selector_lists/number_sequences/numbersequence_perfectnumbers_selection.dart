@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/perfect_
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequencePerfectNumbersSelection extends GCWSelection {
-  const NumberSequencePerfectNumbersSelection({Key? key}) : super(key: key);
+  const NumberSequencePerfectNumbersSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

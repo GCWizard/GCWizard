@@ -12,7 +12,7 @@ import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:latlong2/latlong.dart';
 
 class IntersectFourPoints extends StatefulWidget {
-  const IntersectFourPoints({Key? key}) : super(key: key);
+  const IntersectFourPoints({super.key});
 
   @override
   _IntersectFourPointsState createState() => _IntersectFourPointsState();

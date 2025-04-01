@@ -11,7 +11,7 @@ import 'package:gc_wizard/tools/science_and_technology/primes/primes_primeindex/
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class PrimesSelection extends GCWSelection {
-  const PrimesSelection({Key? key}) : super(key: key);
+  const PrimesSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

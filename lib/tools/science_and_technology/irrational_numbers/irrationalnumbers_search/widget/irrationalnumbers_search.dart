@@ -11,7 +11,7 @@ import 'package:gc_wizard/utils/string_utils.dart';
 class IrrationalNumbersSearch extends StatefulWidget {
   final IrrationalNumber irrationalNumber;
 
-  const IrrationalNumbersSearch({Key? key, required this.irrationalNumber}) : super(key: key);
+  const IrrationalNumbersSearch({super.key, required this.irrationalNumber});
 
   @override
   _IrrationalNumbersSearchState createState() => _IrrationalNumbersSearchState();

@@ -15,7 +15,7 @@ import 'package:gc_wizard/tools/science_and_technology/guitar_strings/logic/guit
 import 'package:tuple/tuple.dart';
 
 class GuitarStrings extends StatefulWidget {
-  const GuitarStrings({Key? key}) : super(key: key);
+  const GuitarStrings({super.key});
 
   @override
   _GuitarStringsState createState() => _GuitarStringsState();

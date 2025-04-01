@@ -2,18 +2,11 @@ part of 'package:gc_wizard/tools/formula_solver/widget/formula_solver_formulagro
 
 class _FormulaValueTypeKeyValueItem extends GCWKeyValueItem {
   _FormulaValueTypeKeyValueItem({
-    Key? key,
-    required KeyValueBase keyValueEntry,
-    required bool odd,
-    required bool Function(String)? validateEditedKey,
-    required bool Function(String)? validateEditedValue
-  }) : super(
-          key: key,
-          keyValueEntry: keyValueEntry,
-          odd: odd,
-          validateEditedKey: validateEditedKey,
-          validateEditedValue: validateEditedValue
-        );
+    required super.keyValueEntry,
+    required super.odd,
+    required super.validateEditedKey,
+    required super.validateEditedValue
+  });
 
   @override
   GCWKeyValueItemState createState() => _GCWKeyValueTypeItemState();

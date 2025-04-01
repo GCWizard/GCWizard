@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/fibonacc
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceFibonacciSelection extends GCWSelection {
-  const NumberSequenceFibonacciSelection({Key? key}) : super(key: key);
+  const NumberSequenceFibonacciSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

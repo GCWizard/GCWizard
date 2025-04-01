@@ -18,7 +18,7 @@ import 'package:gc_wizard/tools/games/game_of_life/widget/game_of_life_board.dar
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 
 class GameOfLife extends StatefulWidget {
-  const GameOfLife({Key? key}) : super(key: key);
+  const GameOfLife({super.key});
 
   @override
   _GameOfLifeState createState() => _GameOfLifeState();

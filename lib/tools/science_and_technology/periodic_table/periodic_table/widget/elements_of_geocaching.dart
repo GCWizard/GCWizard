@@ -10,7 +10,7 @@ import 'package:gc_wizard/tools/science_and_technology/periodic_table/_common/lo
 import 'package:gc_wizard/tools/science_and_technology/periodic_table/periodic_table_data_view/widget/elements_of_geocaching_data_view.dart';
 
 class ElementsOfGeocaching extends StatefulWidget {
-  const ElementsOfGeocaching({Key? key}) : super(key: key);
+  const ElementsOfGeocaching({super.key});
 
   @override
   _ElementsOfGeocachingState createState() => _ElementsOfGeocachingState();

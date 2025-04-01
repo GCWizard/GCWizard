@@ -5,12 +5,10 @@ enum _HueColor { Red, Yellow, Green, Cyan, Blue, Magenta }
 enum _Darkness { Light, Normal, Dark }
 
 class _PietBlockOpResolver {
-  /// <summary>
   /// Calculates the operation signified by the transition from block1 to block2
-  /// </summary>
   /// <param name="block1">The egress block</param>
   /// <param name="block2">The ingress block</param>
-  /// <returns>An operation</returns>
+  /// Returns An operation
   _PietOps resolve(_PietBlock block1, _PietBlock block2) {
     var ret1 = _tryResolveColor(block1.color);
     var ret2 = _tryResolveColor(block2.color);

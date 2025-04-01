@@ -15,7 +15,7 @@ import 'package:gc_wizard/utils/datetime_utils.dart';
 import 'package:intl/intl.dart';
 
 class DayOfTheYear extends StatefulWidget {
-  const DayOfTheYear({Key? key}) : super(key: key);
+  const DayOfTheYear({super.key});
 
   @override
   _DayOfTheYearState createState() => _DayOfTheYearState();

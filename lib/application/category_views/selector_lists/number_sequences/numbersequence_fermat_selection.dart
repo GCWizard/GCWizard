@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/fermat/w
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceFermatSelection extends GCWSelection {
-  const NumberSequenceFermatSelection({Key? key}) : super(key: key);
+  const NumberSequenceFermatSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

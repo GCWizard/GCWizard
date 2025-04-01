@@ -13,7 +13,7 @@ import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:latlong2/latlong.dart';
 
 class IntersectTwoCircles extends StatefulWidget {
-  const IntersectTwoCircles({Key? key}) : super(key: key);
+  const IntersectTwoCircles({super.key});
 
   @override
   _IntersectTwoCirclesState createState() => _IntersectTwoCirclesState();

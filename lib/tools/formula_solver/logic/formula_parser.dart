@@ -698,8 +698,7 @@ abstract class _FormulaSolverResult {
 class FormulaSolverSingleResult extends _FormulaSolverResult {
   final String result;
 
-  FormulaSolverSingleResult(FormulaState state, this.result, {Map<String, String>? variables})
-      : super(state, variables: variables);
+  FormulaSolverSingleResult(super.state, this.result, {super.variables});
 
   @override
   String toString() {
@@ -710,8 +709,7 @@ class FormulaSolverSingleResult extends _FormulaSolverResult {
 class FormulaSolverMultiResult extends _FormulaSolverResult {
   final List<FormulaSolverSingleResult> results;
 
-  FormulaSolverMultiResult(FormulaState state, this.results, {Map<String, String>? variables})
-      : super(state, variables: variables);
+  FormulaSolverMultiResult(super.state, this.results, {super.variables});
 
   @override
   String toString() {

@@ -9,7 +9,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rc4/logic/rc4.dart';
 
 class RC4 extends StatefulWidget {
-  const RC4({Key? key}) : super(key: key);
+  const RC4({super.key});
 
   @override
   _RC4State createState() => _RC4State();

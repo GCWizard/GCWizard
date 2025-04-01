@@ -62,7 +62,7 @@ part 'package:gc_wizard/tools/wherigo/wherigo_analyze/widget/wherigo_widget_outp
 part 'package:gc_wizard/tools/wherigo/wherigo_analyze/widget/wherigo_widget_output_zones.dart';
 
 class WherigoAnalyze extends StatefulWidget {
-  const WherigoAnalyze({Key? key}) : super(key: key);
+  const WherigoAnalyze({super.key});
 
   @override
   _WherigoAnalyzeState createState() => _WherigoAnalyzeState();
@@ -626,13 +626,6 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
       );
     }
 
-    if ((WherigoCartridgeLUAData.Media.isEmpty)) {
-      return GCWDefaultOutput(
-        child: i18n(context, 'wherigo_data_nodata'),
-        suppressCopyButton: true,
-      );
-    }
-
     List<List<String>> _outputMedia = [];
     String filename = '';
 
@@ -686,7 +679,7 @@ class _WherigoAnalyzeState extends State<WherigoAnalyze> {
         ),
         GCWPageSpinner(
           text: i18n(context, 'wherigo_data_media'),
-          max: WherigoCartridgeGWCData.NumberOfObjects,
+          max: WherigoCartridgeGWCData.NumberOfObjects - 1,
           index: _mediaFileIndex,
           onChanged: (index) {
             setState(() {

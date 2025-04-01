@@ -110,7 +110,7 @@ class GCWTool extends StatefulWidget {
   String indexedSearchStrings = '';
 
   GCWTool(
-      {Key? key,
+      {super.key,
       required this.tool,
       this.toolName,
       this.defaultLanguageToolName,
@@ -127,8 +127,7 @@ class GCWTool extends StatefulWidget {
       this.suppressAppBarButtons = false,
       this.deeplinkAlias,
       this.licenses,
-      this.toolBarItemList = const []})
-      : super(key: key) {
+      this.toolBarItemList = const []}) {
     longId = className(tool) + '_' + (id);
 
     if (iconPath != null) {

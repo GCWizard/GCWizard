@@ -6,7 +6,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/deadfish/logic/deadfish.dart';
 
 class Deadfish extends StatefulWidget {
-  const Deadfish({Key? key}) : super(key: key);
+  const Deadfish({super.key});
 
   @override
   _DeadfishState createState() => _DeadfishState();

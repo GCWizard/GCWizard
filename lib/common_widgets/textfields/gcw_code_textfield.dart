@@ -27,7 +27,7 @@ class GCWCodeTextField extends StatefulWidget {
   final GCWCodeTextFieldLineNumberStyle? lineNumberStyle;
 
   GCWCodeTextField(
-      {Key? key,
+      {super.key,
       this.onChanged,
       required this.controller,
       this.stringMap,
@@ -37,8 +37,7 @@ class GCWCodeTextField extends StatefulWidget {
       this.wrap,
       this.language,
       this.lineNumbers = false,
-      this.lineNumberStyle})
-      : super(key: key) {
+      this.lineNumberStyle}) {
     textStyle ??= gcwMonotypeTextStyle();
   }
 

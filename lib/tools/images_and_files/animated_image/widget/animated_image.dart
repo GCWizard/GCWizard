@@ -27,7 +27,7 @@ final List<FileType> ANIMATED_IMAGE_ALLOWED_FILETYPES = [FileType.GIF, FileType.
 class AnimatedImage extends StatefulWidget {
   final GCWFile? file;
 
-  const AnimatedImage({Key? key, this.file}) : super(key: key);
+  const AnimatedImage({super.key, this.file});
 
   @override
   _AnimatedImageState createState() => _AnimatedImageState();

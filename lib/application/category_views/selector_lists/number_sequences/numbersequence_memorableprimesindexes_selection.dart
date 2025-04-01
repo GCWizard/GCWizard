@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/memorabl
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceMemorablePrimesIndexesSelection extends GCWSelection {
-  const NumberSequenceMemorablePrimesIndexesSelection({Key? key}) : super(key: key);
+  const NumberSequenceMemorablePrimesIndexesSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

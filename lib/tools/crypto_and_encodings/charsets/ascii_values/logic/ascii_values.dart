@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 const int _MAX_UTF16 = 1112064;
 
 List<int> asciiEncode(String input) {
@@ -14,5 +16,10 @@ String asciiDecode(List<int?> input) {
 
   if (list.isEmpty) return '';
 
-  return String.fromCharCodes(list);
+  try {
+    return utf8.decoder.convert(list);
+  } catch (e) {
+    return String.fromCharCodes(list);
+  }
+
 }

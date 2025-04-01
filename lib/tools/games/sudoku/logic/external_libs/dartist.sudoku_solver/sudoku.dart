@@ -1,5 +1,5 @@
 // ported and adjusted for Dart2+ from https://github.com/dartist/sudoku_solver
-/**
+/*
     Copyright (c) 2013, Demis Bellot
     Copyright (c) 2013, Adam Singer
     Copyright (c) 2013, Matias Meno

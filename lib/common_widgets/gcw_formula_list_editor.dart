@@ -28,7 +28,7 @@ class GCWFormulaListEditor extends StatefulWidget {
   final bool formulaGroups;
 
   const GCWFormulaListEditor({
-    Key? key,
+    super.key,
     required this.formulaList,
     required this.buildGCWTool,
     required this.onAddEntry,
@@ -36,7 +36,7 @@ class GCWFormulaListEditor extends StatefulWidget {
     this.newEntryHintText,
     this.middleWidget,
     this.formulaGroups = false,
-  }) : super(key: key);
+  });
 
   @override
   _GCWFormulaListEditor createState() => _GCWFormulaListEditor();
@@ -271,7 +271,7 @@ class _GCWFormulaListEditor extends State<GCWFormulaListEditor> {
   }
 
   void _exportGroup(FormulaBase entry) {
-    String text = jsonEncode(entry.toMap()).toString();
+    String text = jsonEncode(entry.toMap());
     text = normalizeCharacters(text);
     var mode = text.length > MAX_QR_TEXT_LENGTH_FOR_EXPORT ? TextExportMode.TEXT : TextExportMode.QR;
 

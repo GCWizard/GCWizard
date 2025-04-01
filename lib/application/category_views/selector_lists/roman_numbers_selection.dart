@@ -8,7 +8,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/roman_numbers/roman_numbers
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class RomanNumbersSelection extends GCWSelection {
-  const RomanNumbersSelection({Key? key}) : super(key: key);
+  const RomanNumbersSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

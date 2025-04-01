@@ -13,7 +13,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/hill/logic/hill.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 
 class Hill extends StatefulWidget {
-  const Hill({Key? key}) : super(key: key);
+  const Hill({super.key});
 
   @override
   _HillState createState() => _HillState();

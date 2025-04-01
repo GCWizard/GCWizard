@@ -7,7 +7,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/wherigo/logic/earwigo_tools.dart';
 
 class EarwigoTextDeobfuscation extends StatefulWidget {
-  const EarwigoTextDeobfuscation({Key? key}) : super(key: key);
+  const EarwigoTextDeobfuscation({super.key});
 
   @override
   _EarwigoTextDeobfuscationState createState() => _EarwigoTextDeobfuscationState();

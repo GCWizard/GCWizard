@@ -5,16 +5,12 @@ import 'package:gc_wizard/tools/crypto_and_encodings/tapir/logic/tapir.dart';
 const MDT_INTERNALNAMES_TAPIR = 'multidecoder_tool_tapir_title';
 
 class MultiDecoderToolTapir extends AbstractMultiDecoderTool {
-  MultiDecoderToolTapir({Key? key, required int id, required String name, required Map<String, Object?> options})
+  MultiDecoderToolTapir({super.key, required super.id, required super.name, required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_TAPIR,
             onDecode: (String input, String key) {
               return decryptTapir(input, key);
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolTapirState();
 }

@@ -10,7 +10,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/reverse/logic/reverse.dart'
 import 'package:gc_wizard/utils/alphabets.dart';
 
 class Chao extends StatefulWidget {
-  const Chao({Key? key}) : super(key: key);
+  const Chao({super.key});
 
   @override
   _ChaoState createState() => _ChaoState();

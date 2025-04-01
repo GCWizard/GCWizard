@@ -6,7 +6,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/toki_pona/logic/toki_pona.dart';
 
 class TokiPona extends StatefulWidget {
-  const TokiPona({Key? key}) : super(key: key);
+  const TokiPona({super.key});
 
   @override
   _TokiPonaState createState() => _TokiPonaState();

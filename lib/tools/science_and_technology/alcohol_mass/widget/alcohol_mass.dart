@@ -18,7 +18,7 @@ const _VOLUME = 'alcoholmass_volume';
 const _ALCOHOL_MASS_BY_VOLUME = 'alcoholmass_alcoholbyvolume';
 
 class AlcoholMass extends StatefulWidget {
-  const AlcoholMass({Key? key}) : super(key: key);
+  const AlcoholMass({super.key});
 
   @override
   _AlcoholMassState createState() => _AlcoholMassState();

@@ -9,7 +9,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/ragbaby/logic/ragbaby.dart';
 
 class Ragbaby extends StatefulWidget {
-  const Ragbaby({Key? key}) : super(key: key);
+  const Ragbaby({super.key});
 
   @override
   _RagbabyState createState() => _RagbabyState();

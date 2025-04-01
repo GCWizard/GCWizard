@@ -12,14 +12,11 @@ const MDT_ATOMICNUMBERS_OPTION_MODE_NUMBERSTOSYMBOLS = 'multidecoder_tool_atomic
 
 class MultiDecoderToolAtomicNumbers extends AbstractMultiDecoderTool {
   MultiDecoderToolAtomicNumbers(
-      {Key? key,
-      required int id,
-      required String name,
-      required Map<String, Object?> options})
+      {super.key,
+      required super.id,
+      required super.name,
+      required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_ATOMICNUMBERS,
             onDecode: (String input, String key) {
               var symbolsToNumbers = options[MDT_ATOMICNUMBERS_OPTION_MODE] == MDT_ATOMICNUMBERS_OPTION_MODE_SYMBOLSTONUMBERS;
@@ -30,8 +27,7 @@ class MultiDecoderToolAtomicNumbers extends AbstractMultiDecoderTool {
                 var numbers = textToIntList(input);
                 return atomicNumbersToText(numbers);
               }
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolAtomicNumbersState();
 }

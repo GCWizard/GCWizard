@@ -11,8 +11,8 @@ import 'package:gc_wizard/tools/science_and_technology/astronomy/iau_constellati
 
 class IAUAllConstellations extends StatefulWidget {
   const IAUAllConstellations({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   IAUAllConstellationsState createState() => IAUAllConstellationsState();

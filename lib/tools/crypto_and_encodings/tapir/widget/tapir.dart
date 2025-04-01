@@ -56,7 +56,7 @@ const String _apiSpecification = '''
 ''';
 
 class Tapir extends GCWWebStatefulWidget {
-  Tapir({Key? key}) : super(key: key, apiSpecification: _apiSpecification);
+  Tapir({super.key}) : super(apiSpecification: _apiSpecification);
 
   @override
   _TapirState createState() => _TapirState();

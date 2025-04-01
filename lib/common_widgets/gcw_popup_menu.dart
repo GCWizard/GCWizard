@@ -21,7 +21,7 @@ class GCWPopupMenu extends StatefulWidget {
   final Function? onBeforePressed;
 
   const GCWPopupMenu({
-    Key? key,
+    super.key,
     required this.menuItemBuilder,
     this.icon,
     this.customIcon,
@@ -34,7 +34,7 @@ class GCWPopupMenu extends StatefulWidget {
     this.textSelectionToolBarButtonPadding,
     this.textSelectionToolBarButtonLabel,
     this.buttonNoBorder,
-  }) : super(key: key);
+  });
 
   @override
   _GCWPopupMenuState createState() => _GCWPopupMenuState();

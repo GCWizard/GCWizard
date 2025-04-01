@@ -1,4 +1,4 @@
-/***********************************************************************
+/*
     Dart port of Java implementation of
     ======================
     GeographicLib
@@ -9,7 +9,7 @@
  * https://geographiclib.sourceforge.io/
  * https://sourceforge.net/projects/geographiclib/
 
- **********************************************************************/
+*/
 
 part of 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
 
@@ -17,15 +17,15 @@ part of 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geogr
  * A pair of double precision numbers.
  * <p>
  * This duplicates the C++ class {@code std::pair<double, double>}.
- **********************************************************************/
+*/
 class _Pair {
   /*
    * The first member of the pair.
-   **********************************************************************/
+ */
   double first;
   /*
    * The second member of the pair.
-   **********************************************************************/
+  */
   double second;
 
   _Pair([this.first = double.nan, this.second = double.nan]);

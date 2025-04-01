@@ -10,7 +10,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rabbit/logic/rabbit.dart';
 
 class Rabbit extends StatefulWidget {
-  const Rabbit({Key? key}) : super(key: key);
+  const Rabbit({super.key});
 
   @override
   _RabbitState createState() => _RabbitState();

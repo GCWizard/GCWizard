@@ -26,17 +26,12 @@ const _OHLSEN_RELATIVE_DISPLAY_HEIGHT = 160;
 const _OHLSEN_RADIUS = 10.0;
 
 class _OhlsenSegmentDisplay extends NSegmentDisplay {
-  _OhlsenSegmentDisplay(
-      {Key? key,
-      required Map<String, bool> segments,
-      bool readOnly = false,
-      void Function(Map<String, bool>)? onChanged})
+  _OhlsenSegmentDisplay({
+      required super.segments,
+      super.readOnly,
+      super.onChanged})
       : super(
-            key: key,
             initialSegments: _INITIAL_SEGMENTS,
-            segments: segments,
-            readOnly: readOnly,
-            onChanged: onChanged,
             type: SegmentDisplayType.CUSTOM,
             customPaint: (GCWTouchCanvas canvas, Size size, Map<String, bool> currentSegments, Function setSegmentState,
                 Color segment_color_on, Color segment_color_off) {

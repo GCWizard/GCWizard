@@ -34,7 +34,7 @@ const String _apiSpecification = '''
 ''';
 
 class Atbash extends GCWWebStatefulWidget {
-  Atbash({Key? key}) : super(key: key, apiSpecification: _apiSpecification);
+  Atbash({super.key}) : super(apiSpecification: _apiSpecification);
 
   @override
   _AtbashState createState() => _AtbashState();

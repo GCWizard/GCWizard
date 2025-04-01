@@ -5,7 +5,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/fox/logic/fox.dart';
 
 class Fox extends StatefulWidget {
-  const Fox({Key? key}) : super(key: key);
+  const Fox({super.key});
 
   @override
   _FoxState createState() => _FoxState();

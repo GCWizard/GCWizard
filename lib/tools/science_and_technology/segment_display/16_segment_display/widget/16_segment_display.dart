@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/n_segment_display.dart';
 
@@ -24,16 +23,12 @@ const _INITIAL_SEGMENTS = <String, bool>{
 
 class SixteenSegmentDisplay extends NSegmentDisplay {
   SixteenSegmentDisplay(
-      {Key? key,
-      required Map<String, bool> segments,
+      {super.key,
+      required super.segments,
       SegmentDisplayType? type,
-      bool readOnly = false,
-      void Function(Map<String, bool>)? onChanged})
+      super.readOnly,
+      super.onChanged})
       : super(
-            key: key,
             initialSegments: _INITIAL_SEGMENTS,
-            segments: segments,
-            readOnly: readOnly,
-            onChanged: onChanged,
             type: (Variants16Segment.contains(type) ? type : null) ?? SegmentDisplayType.SIXTEEN);
 }

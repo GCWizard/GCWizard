@@ -28,7 +28,7 @@ class GCWIntegerSpinner extends StatefulWidget {
   final List<int> flexValues;
 
   GCWIntegerSpinner({
-    Key? key,
+    super.key,
     required this.onChanged,
     this.title,
     required this.value,
@@ -41,7 +41,7 @@ class GCWIntegerSpinner extends StatefulWidget {
     this.overflow =
         SpinnerOverflowType.ALLOW_OVERFLOW, // TODO: Automatically true if this.min == null || this.max == null
     this.flexValues = const [],
-  }) : super(key: key);
+  });
 
   @override
   _GCWIntegerSpinnerState createState() => _GCWIntegerSpinnerState();

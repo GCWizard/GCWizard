@@ -16,7 +16,7 @@ import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/leng
 import 'package:gc_wizard/utils/constants.dart';
 
 class IntersectThreeCircles extends StatefulWidget {
-  const IntersectThreeCircles({Key? key}) : super(key: key);
+  const IntersectThreeCircles({super.key});
 
   @override
   _IntersectThreeCirclesState createState() => _IntersectThreeCirclesState();

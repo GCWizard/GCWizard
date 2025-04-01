@@ -8,7 +8,7 @@ import 'package:gc_wizard/tools/science_and_technology/astronomy/easter/easter_y
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class EasterSelection extends GCWSelection {
-  const EasterSelection({Key? key}) : super(key: key);
+  const EasterSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

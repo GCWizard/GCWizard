@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersenne
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceMersenneFermatSelection extends GCWSelection {
-  const NumberSequenceMersenneFermatSelection({Key? key}) : super(key: key);
+  const NumberSequenceMersenneFermatSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

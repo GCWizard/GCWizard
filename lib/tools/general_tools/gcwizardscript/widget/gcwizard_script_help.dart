@@ -6,7 +6,7 @@ import 'package:gc_wizard/tools/general_tools/gcwizardscript/logic/gcwizard_scri
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class GCWizardScriptHelp extends StatefulWidget {
-  const GCWizardScriptHelp({Key? key}) : super(key: key);
+  const GCWizardScriptHelp({super.key});
 
   @override
   _GCWizardScriptHelpState createState() => _GCWizardScriptHelpState();

@@ -225,6 +225,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/language_games/duck_speak/w
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/pig_latin/widget/pig_latin.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/robber_language/widget/robber_language.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/spoon_language/widget/spoon_language.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/larrabee/widget/larrabee.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/major_system/widget/major_system.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/maya_numbers/widget/maya_numbers.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/mexican_army_cipher_wheel/widget/mexican_army_cipher_wheel.dart';
@@ -664,22 +665,22 @@ void initializeRegistry(BuildContext context) {
       ToolCategory.SCIENCE_AND_TECHNOLOGY
     ], searchKeys: const [
       'ballistics',
-    ], licenses: [
-      ToolLicenseCodeLibrary(
-          context: context,
-          author: 'Thomas "KoenigDickbauch" Bornhaupt',
-          title: 'Weitwurf (Mopsos)',
-          privatePermission: ToolLicensePrivatePermission(
-            context: context,
-            medium: 'e-mail',
-            permissionYear: 2022,
-            permissionMonth: 9,
-            permissionDay: 12,
-          ),
-          sourceUrl:
-              'https://web.archive.org/web/20240811192840/http://mopsos.net/',
-          licenseType: ToolLicenseType.PRIVATE_PERMISSION)
-    ]),
+    ],
+        licenses: [
+          ToolLicenseCodeLibrary(
+              context: context,
+              author: 'Thomas "KoenigDickbauch" Bornhaupt',
+              title: 'Weitwurf (Mopsos)',
+              privatePermission: ToolLicensePrivatePermission(
+                context: context,
+                medium: 'e-mail',
+                permissionYear: 2022,
+                permissionMonth: 9,
+                permissionDay: 12,
+              ),
+              sourceUrl: 'https://web.archive.org/web/20240811192840/http://mopsos.net/',
+              licenseType: ToolLicenseType.PRIVATE_PERMISSION)
+        ]),
     GCWTool(
         tool: const BaseSelection(),
         id: 'base_selection',
@@ -969,7 +970,7 @@ void initializeRegistry(BuildContext context) {
       licenses: const [],
     ),
     GCWTool(
-        tool: const FormulaSolverFormulaGroups(),
+        tool: FormulaSolverFormulaGroups(),
         id: 'formulasolver',
         searchKeys: const [
           'formulasolver',
@@ -8198,6 +8199,22 @@ void initializeRegistry(BuildContext context) {
         symbolSearchStrings: const ['ccitt', 'symbol_murray', 'teletypewriter'],
         licenses: const []),
     GCWSymbolTableTool(
+        symbolKey: 'jacobite',
+        symbolSearchStrings: const [
+          'symbol_jacobite',
+        ],
+        licenses: [
+          ToolLicenseOnlineBook(
+              context: context,
+              author: 'Edmund Fry',
+              title: 'Pantographia: Containing Accurate Copies of All the Known Alphabets in the World; Together With an English Explanation of the Peculiar Force or Power of each letter to which are added: specimens of all well-authenticated Oral Languages; Forming a Comprehensive digest of phonology',
+              publisher: '',
+              year: 1799,
+              sourceUrl:
+              'https://ia600900.us.archive.org/19/items/pantographiacont00fryeiala/pantographiacont00fryeiala.pdf',
+          )
+        ]),
+    GCWSymbolTableTool(
         symbolKey: 'japanese_numerals',
         symbolSearchStrings: const [
           'japanese_numerals',
@@ -8939,6 +8956,18 @@ void initializeRegistry(BuildContext context) {
               'https://en.wikipedia.org/w/index.php?title=Ogham&oldid=1234313745',
           licenseType: ToolLicenseType.CCBYSA4)
     ]),
+    GCWSymbolTableTool(symbolKey: 'old_hungarian', symbolSearchStrings: const [
+      'symbol_old_hungarian',
+      'symbol_runes',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'en.wikipedia.org and contributors',
+          title: 'Old Hungarian script',
+          sourceUrl:
+          'https://en.wikipedia.org/w/index.php?title=Old_Hungarian_script&oldid=1276174822',
+          licenseType: ToolLicenseType.CCBYSA4)
+    ]),
     GCWSymbolTableTool(
         symbolKey: 'optical_fiber_fotag',
         symbolSearchStrings: const [
@@ -9186,6 +9215,21 @@ void initializeRegistry(BuildContext context) {
               'https://web.archive.org/web/20240808130803/https://fakoo.de/quadoo.html',
           licenseType: ToolLicenseType.CCBYNCND40)
     ]),
+    GCWSymbolTableTool(
+        symbolKey: 'qonos',
+        symbolSearchStrings: const [
+          'symbol_qonos',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Mike H. Lee & Josh Dixon',
+            title: "Klingon® Qo'nos",
+            sourceUrl:
+            'https://web.archive.org/web/20250328202611/http://www.oocities.org/timessquare/4965/qonos.zip',
+            licenseType: ToolLicenseType.CHARITYWARE,
+          )
+        ]),
     GCWSymbolTableTool(symbolKey: 'ravkan', symbolSearchStrings: const [
       'symbol_ravkan',
     ], licenses: [
@@ -10246,6 +10290,45 @@ void initializeRegistry(BuildContext context) {
               'https://en.wikipedia.org/w/index.php?title=Wingdings&oldid=1234924688',
           licenseType: ToolLicenseType.PUBLIC_DOMAIN)
     ]),
+    GCWSymbolTableTool(
+      symbolKey: 'xelbet', symbolSearchStrings: const [
+      'symbol_xelbet',
+    ],
+      licenses: [
+        ToolLicenseImage(
+          context: context,
+          author: 'Alex Gomez',
+          title: 'Xelbet',
+          sourceUrl:
+          'https://web.archive.org/web/20250328202024/https://www.omniglot.com/conscripts/xelbet.htm',
+          licenseUseType: ToolLicenseUseType.COPY,
+          licenseType: ToolLicenseType.PRIVATE_PERMISSION,
+          privatePermission: ToolLicensePrivatePermission(
+              context: context,
+              medium: 'e-mail',
+              permissionYear: 2024,
+              permissionMonth: 7,
+              permissionDay: 31,
+              permissionAuthor: 'Simon Ager (Omniglot)'),
+        )
+      ],
+    ),
+    GCWSymbolTableTool(
+        symbolKey: 'yavin',
+        symbolSearchStrings: const [
+          'symbol_yavin',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Tommy of Escondido',
+            title: "StarWars Yavin 4 temple font",
+            sourceUrl:
+            'https://www.oocities.org/timessquare/4965/swyavin4.zip',
+            licenseType: ToolLicenseType.CHARITYWARE,
+          )
+        ]),
+
     GCWSymbolTableTool(symbolKey: 'yan_koryani', symbolSearchStrings: const [
       'symbol_yan_koryani',
     ], licenses: [
@@ -10825,7 +10908,7 @@ void initializeRegistry(BuildContext context) {
             sourceUrl:
                 'https://web.archive.org/web/20240414052702/https://guballa.de/bits-and-bytes/implementierung-des-vigenere-solvers',
           )
-        ]),
+      ]),
     GCWTool(tool: Vigenere(), id: 'vigenere', searchKeys: const [
       'vigenere',
       'rotation',
@@ -10839,6 +10922,20 @@ void initializeRegistry(BuildContext context) {
       'vigenere',
       'rotation',
       'trithemius',
+    ]),
+    GCWTool(tool: Larrabee(), id: 'larrabee', searchKeys: const [
+      'vigenere',
+      'rotation',
+      'larrabee',
+      ],
+      licenses: [
+        ToolLicenseOnlineBook(
+          context: context,
+          author: 'Charles Hathaway Larrabee',
+          title:
+            'CIPHER, LETTER AND TELEGRAPH CODE',
+          sourceUrl:
+            'https://web.archive.org/web/20250328183717/https://people.duke.edu/~ng46/collections/larrabees-cipher-1884.pdf')
     ]),
     GCWTool(
         tool: const WeddingAnniversaries(),

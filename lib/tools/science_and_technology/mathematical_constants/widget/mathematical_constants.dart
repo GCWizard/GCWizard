@@ -17,7 +17,7 @@ import 'package:gc_wizard/tools/science_and_technology/mathematical_constants/lo
 import 'package:gc_wizard/utils/ui_dependent_utils/text_widget_utils.dart';
 
 class MathematicalConstants extends StatefulWidget {
-  const MathematicalConstants({Key? key}) : super(key: key);
+  const MathematicalConstants({super.key});
 
   @override
   _MathematicalConstantsState createState() => _MathematicalConstantsState();

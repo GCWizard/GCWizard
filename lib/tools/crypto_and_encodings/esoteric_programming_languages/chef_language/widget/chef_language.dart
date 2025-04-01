@@ -10,7 +10,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/chef_language/logic/chef_language.dart';
 
 class Chef extends StatefulWidget {
-  const Chef({Key? key}) : super(key: key);
+  const Chef({super.key});
 
   @override
   _ChefState createState() => _ChefState();

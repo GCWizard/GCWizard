@@ -4,7 +4,7 @@ class _RandomizerListsList extends StatefulWidget {
   final String name;
   final List<String> list;
 
-  const _RandomizerListsList({Key? key, required this.name, required this.list}) : super(key: key);
+  const _RandomizerListsList({required this.name, required this.list});
 
   @override
   _RandomizerListsListState createState() => _RandomizerListsListState();

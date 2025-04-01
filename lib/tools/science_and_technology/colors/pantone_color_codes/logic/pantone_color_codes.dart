@@ -17,11 +17,11 @@ class PantoneColorExt extends PantoneColor {
   final String? prefix;
 
   const PantoneColorExt({
-    required String colorcode,
-    required String name,
+    required super.colorcode,
+    required super.name,
     this.suffix,
     this.prefix,
-  }) : super(colorcode: colorcode, name: name);
+  });
 }
 
 const Map<String, PantoneColorExt> PANTONE_COLOR_CODES_WITH_NAMES = {

@@ -17,7 +17,7 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/pasley_telegra
 part 'package:gc_wizard/tools/science_and_technology/telegraphs/pasley_telegraph/widget/pasley_segment_display.dart';
 
 class PasleyTelegraph extends StatefulWidget {
-  const PasleyTelegraph({Key? key}) : super(key: key);
+  const PasleyTelegraph({super.key});
 
   @override
   _PasleyTelegraphState createState() => _PasleyTelegraphState();

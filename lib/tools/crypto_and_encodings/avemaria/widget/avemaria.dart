@@ -6,7 +6,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/avemaria/logic/avemaria.dart';
 
 class AveMaria extends StatefulWidget {
-  const AveMaria({Key? key}) : super(key: key);
+  const AveMaria({super.key});
 
   @override
   AveMariaState createState() => AveMariaState();
@@ -43,7 +43,7 @@ class AveMariaState extends State<AveMaria> {
             ? GCWTextField(
                 controller: _encodeController,
                 inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[a-zA-Z ]')),
+                  FilteringTextInputFormatter.allow(RegExp('[a-zA-Z \n]')),
                 ],
                 onChanged: (text) {
                   setState(() {
@@ -55,7 +55,7 @@ class AveMariaState extends State<AveMaria> {
             : GCWTextField(
                 controller: _decodeController,
                 inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[a-zA-Z ]')),
+                  FilteringTextInputFormatter.allow(RegExp('[a-zA-Z \n]')),
                 ],
                 onChanged: (text) {
                   setState(() {

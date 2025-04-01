@@ -22,7 +22,7 @@ import 'package:gc_wizard/utils/ui_dependent_utils/image_utils/image_utils.dart'
 class TupperFormula extends StatefulWidget {
   final GCWFile? file;
 
-  const TupperFormula({Key? key, this.file}) : super(key: key);
+  const TupperFormula({super.key, this.file});
 
   @override
   _TupperFormulaState createState() => _TupperFormulaState();

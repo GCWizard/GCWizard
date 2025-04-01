@@ -6,7 +6,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/navajo/logic/navajo.dart';
 
 class NavajoList extends StatefulWidget {
-  const NavajoList({Key? key}) : super(key: key);
+  const NavajoList({super.key});
 
   @override
   NavajoListState createState() => NavajoListState();

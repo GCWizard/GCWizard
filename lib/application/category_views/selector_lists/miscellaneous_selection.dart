@@ -5,7 +5,7 @@ import 'package:gc_wizard/application/tools/widget/gcw_toollist.dart';
 import 'package:gc_wizard/common_widgets/gcw_selection.dart';
 
 class MiscellaneousSelection extends GCWSelection {
-  const MiscellaneousSelection({Key? key}) : super(key: key);
+  const MiscellaneousSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

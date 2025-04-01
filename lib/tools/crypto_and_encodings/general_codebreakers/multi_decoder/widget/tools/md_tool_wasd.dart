@@ -12,22 +12,18 @@ const MDT_WASD_OPTION_SET = 'wasd_control_set';
 
 class MultiDecoderToolWasd extends AbstractMultiDecoderTool {
   MultiDecoderToolWasd(
-      {Key? key,
-      required int id,
-      required String name,
-      required Map<String, Object?> options})
+      {super.key,
+      required super.id,
+      required super.name,
+      required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_WASD,
             onDecode: (String input, String key) {
               var value = checkStringFormatOrDefaultOption(MDT_INTERNALNAMES_WASD, options, MDT_WASD_OPTION_SET);
               var output = binary2image(decodeWASDGraphic(input, (value.characters.toList())), false, false);
               if (output == null) return null;
               return input2Image(output);
-            },
-            options: options);
+            });
 
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolWasdState();

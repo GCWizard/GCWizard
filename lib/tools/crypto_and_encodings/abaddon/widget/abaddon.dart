@@ -11,7 +11,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/abaddon/logic/abaddon.dart'
 import 'package:gc_wizard/utils/ui_dependent_utils/text_widget_utils.dart';
 
 class Abaddon extends StatefulWidget {
-  const Abaddon({Key? key}) : super(key: key);
+  const Abaddon({super.key});
 
   @override
   _AbaddonState createState() => _AbaddonState();

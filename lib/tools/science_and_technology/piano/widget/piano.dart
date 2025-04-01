@@ -8,7 +8,7 @@ import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/tools/science_and_technology/piano/logic/piano.dart';
 
 class Piano extends StatefulWidget {
-  const Piano({Key? key}) : super(key: key);
+  const Piano({super.key});
 
   @override
   _PianoState createState() => _PianoState();

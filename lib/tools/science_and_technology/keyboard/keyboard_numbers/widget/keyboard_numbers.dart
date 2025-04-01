@@ -8,7 +8,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/keyboard/_common/logic/keyboard.dart';
 
 class KeyboardNumbers extends StatefulWidget {
-  const KeyboardNumbers({Key? key}) : super(key: key);
+  const KeyboardNumbers({super.key});
 
   @override
   _KeyboardNumbersState createState() => _KeyboardNumbersState();

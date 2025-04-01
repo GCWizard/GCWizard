@@ -23,6 +23,7 @@ class TupperFormulaBoard extends StatefulWidget {
       required this.colors})
       : super(key: key);
 
+
   @override
   _TupperFormulaBoardState createState() => _TupperFormulaBoardState();
 }

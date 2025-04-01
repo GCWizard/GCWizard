@@ -27,7 +27,7 @@ const String _apiSpecification = '''
 ''';
 
 class MultiDecoder extends GCWWebStatefulWidget {
-  MultiDecoder({Key? key}) : super(key: key, apiSpecification: _apiSpecification);
+  MultiDecoder({super.key}) : super(apiSpecification: _apiSpecification);
 
   @override
   _MultiDecoderState createState() => _MultiDecoderState();

@@ -7,7 +7,7 @@ class NonogramBoard extends StatefulWidget {
   final Puzzle board;
   final void Function(int, int)? onTapped;
 
-  const NonogramBoard({Key? key, required this.onChanged, required this.board, this.onTapped}) : super(key: key);
+  const NonogramBoard({super.key, required this.onChanged, required this.board, this.onTapped});
 
   @override
   _NonogramBoardState createState() => _NonogramBoardState();

@@ -38,7 +38,7 @@ class FormulaGroup extends FormulaBase {
     return values.length;
   }
 
-  FormulaGroup(String name) : super(name);
+  FormulaGroup(super.name);
 
   @override
   Map<String, Object?> toMap() => {

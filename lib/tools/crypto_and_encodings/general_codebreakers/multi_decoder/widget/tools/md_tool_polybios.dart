@@ -10,11 +10,8 @@ const MDT_INTERNALNAMES_POLYBIOS = 'multidecoder_tool_polybios_title';
 const MDT_POLYBIOS_OPTION_MODE = 'multidecoder_tool_polybios_option_mode';
 
 class MultiDecoderToolPolybios extends AbstractMultiDecoderTool {
-  MultiDecoderToolPolybios({Key? key, required int id, required String name, required Map<String, Object?> options})
+  MultiDecoderToolPolybios({super.key, required super.id, required super.name, required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_POLYBIOS,
             onDecode: (String input, String key) {
               var polybiosOutput = decryptPolybios(input, key,
@@ -23,8 +20,7 @@ class MultiDecoderToolPolybios extends AbstractMultiDecoderTool {
                       _parseStringToEnum(stringNullableTypeCheck(options[MDT_POLYBIOS_OPTION_MODE], null)));
               return polybiosOutput?.output;
             },
-            requiresKey: true,
-            options: options);
+            requiresKey: true);
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolPolybiosState();
 }

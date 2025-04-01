@@ -9,7 +9,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/keyboard/_common/logic/keyboard.dart';
 
 class KeyboardLayout extends StatefulWidget {
-  const KeyboardLayout({Key? key}) : super(key: key);
+  const KeyboardLayout({super.key});
 
   @override
   _KeyboardLayoutState createState() => _KeyboardLayoutState();

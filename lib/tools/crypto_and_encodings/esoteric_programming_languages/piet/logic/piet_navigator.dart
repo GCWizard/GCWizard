@@ -129,9 +129,7 @@ class _PietNavigator {
         block.containsPixel(Point<int>(exitPoint.x, exitPoint.y));
   }
 
-  /// <summary>
   /// Rotates abs(turns) times. In turns is positive rotates clockwise otherwise counter clockwise
-  /// </summary>
   /// <param name="turns">I</param>
   void rotateDirectionPointer(int turns) {
     _direction = _Direction.values[(direction.index + turns) % 4];

@@ -12,7 +12,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/amsco/logic/amsco.dart';
 
 class Amsco extends StatefulWidget {
-  const Amsco({Key? key}) : super(key: key);
+  const Amsco({super.key});
 
   @override
   _AmscoState createState() => _AmscoState();

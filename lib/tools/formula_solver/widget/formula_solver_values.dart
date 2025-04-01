@@ -3,7 +3,7 @@ part of 'package:gc_wizard/tools/formula_solver/widget/formula_solver_formulagro
 class _FormulaSolverFormulaValues extends StatefulWidget {
   final FormulaGroup group;
 
-  const _FormulaSolverFormulaValues({Key? key, required this.group}) : super(key: key);
+  const _FormulaSolverFormulaValues({required this.group});
 
   @override
   _FormulaSolverFormulaValuesState createState() => _FormulaSolverFormulaValuesState();

@@ -17,7 +17,7 @@ class GCWCheckBox extends StatefulWidget {
   final WidgetStateProperty<Color>? overlayColor;
 
   const GCWCheckBox(
-      {Key? key,
+      {super.key,
       required this.value,
       required this.onChanged,
       required this.title,
@@ -29,8 +29,7 @@ class GCWCheckBox extends StatefulWidget {
       this.checkColor,
       this.focusColor,
       this.hoverColor,
-      this.overlayColor})
-      : super(key: key);
+      this.overlayColor});
 
   @override
   _GCWCheckBoxState createState() => _GCWCheckBoxState();

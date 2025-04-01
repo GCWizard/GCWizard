@@ -27,7 +27,7 @@ class GCWTextField extends StatefulWidget {
   final List<int> flexValues;
 
   const GCWTextField({
-    Key? key,
+    super.key,
     this.onChanged,
     this.controller,
     this.validate,
@@ -46,7 +46,7 @@ class GCWTextField extends StatefulWidget {
     this.fontSize,
     this.style,
     this.flexValues = const [],
-  }) : super(key: key);
+  });
 
   @override
   _GCWTextFieldState createState() => _GCWTextFieldState();

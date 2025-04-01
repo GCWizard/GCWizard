@@ -11,9 +11,9 @@ abstract class AbstractAlphabetNumberSystem extends StatefulWidget {
   final ALPHABET_NUMBER_SYSTEMS alphabetNumberSystem;
 
   const AbstractAlphabetNumberSystem({
-    Key? key,
+    super.key,
     required this.alphabetNumberSystem,
-  }) : super(key: key);
+  });
 
   @override
   _AbstractAlphabetNumberSystemState createState() => _AbstractAlphabetNumberSystemState();

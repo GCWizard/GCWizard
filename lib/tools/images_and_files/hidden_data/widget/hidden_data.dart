@@ -23,7 +23,7 @@ import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
 class HiddenData extends StatefulWidget {
   final GCWFile? file;
 
-  const HiddenData({Key? key, this.file}) : super(key: key);
+  const HiddenData({super.key, this.file});
 
   @override
   _HiddenDataState createState() => _HiddenDataState();
