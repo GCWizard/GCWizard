@@ -6,9 +6,7 @@ import 'package:gc_wizard/tools/images_and_files/tupper_formula/logic/tupper_for
 import 'package:touchable/touchable.dart';
 
 class TupperFormulaBoard extends StatefulWidget {
-  //final void Function(List<List<bool>>) onChanged;
   final void Function(List<List<int>>) onChanged;
-  //final List<List<bool>> state;
   final List<List<int>> state;
   final int width;
   final int height;
@@ -47,7 +45,6 @@ class _TupperFormulaBoardState extends State<TupperFormulaBoard> {
                       widget.state,
                       (int x, int y) {
                         setState(() {
-                          //widget.state[x][y] = !widget.state[x][y];
                           widget.state[x][y] = widget.state[x][y] + 1;
                           if (widget.state[x][y] == widget.colors) {
                             widget.state[x][y] = 0;
@@ -67,7 +64,6 @@ class _TupperFormulaBoardState extends State<TupperFormulaBoard> {
 }
 
 class TupperFormulaBoardPainter extends CustomPainter {
-  //final List<List<bool>> state;
   final List<List<int>> state;
   final BuildContext context;
   final void Function(int, int) onInvertCell;
@@ -107,9 +103,6 @@ class TupperFormulaBoardPainter extends CustomPainter {
     }
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        //if (state[i][j]) {
-        //  _touchCanvas.drawRect(Rect.fromLTWH(j * boxSize, i * boxSize, boxSize, boxSize), paintFull);
-        //}
         if (state[i][j] < colors) {
           paintFull.color = TUPPER_COLORS[colors]![state[i][j]];
         } else {
