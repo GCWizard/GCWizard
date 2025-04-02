@@ -17,8 +17,7 @@ const _FAKOO_RELATIVE_DISPLAY_HEIGHT = 100;
 const _FAKOO_RADIUS = 10.0;
 
 class _FakooSegmentDisplay extends NSegmentDisplay {
-  _FakooSegmentDisplay(
-      {super.key,
+  _FakooSegmentDisplay({
       required super.segments,
       super.readOnly,
       super.onChanged})
