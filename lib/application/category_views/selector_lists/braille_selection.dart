@@ -15,7 +15,8 @@ class BrailleSelection extends GCWSelection {
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       if (className(element.tool) == className(const SymbolTable()) &&
-          (element.tool as SymbolTable).symbolKey.startsWith('braille_')) {
+          ((element.tool as SymbolTable).symbolKey.startsWith('braille_') ||
+          (element.tool as SymbolTable).symbolKey.startsWith('fakoo_'))) {
         return true;
       }
 

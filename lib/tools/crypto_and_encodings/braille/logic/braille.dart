@@ -1,3 +1,4 @@
+import 'package:gc_wizard/tools/crypto_and_encodings/braille/logic/fakoo.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
 import 'package:gc_wizard/tools/science_and_technology/teletypewriter/_common/logic/teletypewriter.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
@@ -1347,6 +1348,8 @@ Segments encodeBraille(String input, BrailleLanguage language) {
       return _encodeBrailleFRA(input);
     case BrailleLanguage.EUR:
       return _encodeBrailleEUR(input);
+    case BrailleLanguage.FAKOO:
+      return encodeFakoo(input);
     default:
       return Segments.Empty();
   }
@@ -2258,7 +2261,15 @@ SegmentsChars _decodeBrailleEUR(List<String> inputs) {
 }
 
 List<String> _sanitizeDecodeInput(List<String> input, BrailleLanguage language) {
-  var pattern = language == BrailleLanguage.EUR ? RegExp(r'[^1-8]') : RegExp(r'[^1-6]');
+  RegExp pattern;
+  switch (language) {
+    case BrailleLanguage.EUR:
+      pattern = RegExp(r'[^1-8]');
+    case BrailleLanguage.FAKOO:
+      pattern = RegExp(r'[^1-9]');
+    default:
+      pattern = RegExp(r'[^1-6]');
+  }
 
   return input.map((code) {
     var chars = code.replaceAll(pattern, '').split('').toList();
@@ -2285,6 +2296,8 @@ SegmentsChars decodeBraille(List<String>? input, BrailleLanguage language, bool 
       return _decodeBrailleFRA(input);
     case BrailleLanguage.EUR:
       return _decodeBrailleEUR(input);
+    case BrailleLanguage.FAKOO:
+      return decodeFakoo(input);
     default:
       return SegmentsChars(displays: [], chars: []);
   }

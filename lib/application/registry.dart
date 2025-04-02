@@ -2630,12 +2630,14 @@ void initializeRegistry(BuildContext context) {
     //Braille Selection ****************************************************************
     GCWTool(tool: const Braille(), id: 'braille', searchKeys: const [
       'braille',
+      'symbol_fakoo'
     ], licenses: const []),
     GCWTool(
         tool: const BrailleDotNumbers(),
         id: 'brailledotnumbers',
         searchKeys: const [
           'braille',
+          'symbol_fakoo'
         ],
         licenses: const []),
 
