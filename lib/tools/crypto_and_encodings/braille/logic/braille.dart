@@ -1205,7 +1205,7 @@ Segments _encodeBrailleENG(String input) {
           inputs[i + 2] == 't' &&
           inputs[i + 3] == 'h') {
         result.addSegment(_charsToSegments['with']);
-        i = i + 3;
+        i += 3;
       } else if (inputs[i] == 't' && i < inputs.length - 2 && inputs[i + 1] == 'h' && inputs[i + 2] == 'e') {
         result.addSegment(_charsToSegments['the']);
         i += 2;
@@ -1661,7 +1661,7 @@ SegmentsChars _decodeBrailleDEU(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 3;
+              i += 3;
             } else if (i + 2 < maxLength && inputs[i + 1] == '245' && inputs[i + 2] == '356') {
               text.add('%');
               var display = <String>[];
