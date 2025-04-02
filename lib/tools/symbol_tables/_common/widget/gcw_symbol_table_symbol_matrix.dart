@@ -150,7 +150,7 @@ class _GCWSymbolTableSymbolMatrixState extends State<GCWSymbolTableSymbolMatrix>
                           //TODO: Using GCWText instead: Currently it would expand the textfield width to max.
                           child: AutoSizeText(
                             _showSpaceSymbolInOverlay(symbolText),
-                            style: gcwTextStyle().copyWith(color: colors.dialogText(), fontWeight: FontWeight.bold),
+                            style: gcwTextStyle().copyWith(color: colors.dialogText(), fontWeight: FontWeight.bold, fontFamily: 'Noto'),
                             maxLines: 2,
                             minFontSize: 9.0,
                           ),
