@@ -211,7 +211,7 @@ Segments encodeFakoo(String input) {
   List<String> inputs = input.split('');
   List<List<String>> result = [];
   for (int i = 0; i < inputs.length; i++) {
-  if (_CODEBOOK_FAKOO[inputs[i]] != null) result.add(_CODEBOOK_FAKOO[inputs[i]]!);
+    if (_CODEBOOK_FAKOO[inputs[i]] != null) result.add(_CODEBOOK_FAKOO[inputs[i]]!);
   }
   return Segments(displays: result);
 }
@@ -225,30 +225,30 @@ SegmentsChars decodeFakoo(List<String>? inputs) {
   Map<List<String>, String> CODEBOOK = switchMapKeyValue(_CODEBOOK_FAKOO);
 
   for (var element in inputs) {
-  segment = _stringToSegment(element);
-  displays.add(segment);
+    segment = _stringToSegment(element);
+    displays.add(segment);
   }
 
   List<String> text = inputs.map((input) {
-  var char = '';
+    var char = '';
 
-  if (CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] == null) {
-  char = char + UNKNOWN_ELEMENT;
-  } else {
-  var charH = CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()];
-  char = char + (charH ?? '');
-  }
+    if (CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] == null) {
+      char += UNKNOWN_ELEMENT;
+    } else {
+    var charH = CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()];
+      char += (charH ?? '');
+    }
 
-  return char;
+    return char;
   }).toList();
 
   return SegmentsChars(displays: displays, chars: text);
 }
 
-  List<String> _stringToSegment(String input) {
+List<String> _stringToSegment(String input) {
   List<String> result = [];
   for (int i = 0; i < input.length; i++) {
-  result.add(input[i]);
+    result.add(input[i]);
   }
   return result;
-  }
+}

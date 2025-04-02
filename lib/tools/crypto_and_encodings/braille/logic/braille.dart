@@ -1158,7 +1158,7 @@ Segments _encodeBrailleDEU(String input) {
         i++;
       } else if (inputs[i] == 's' && i < inputs.length - 2 && inputs[i + 1] == 'c' && inputs[i + 2] == 'h') {
         result.addSegment(_charsToSegments['sch']);
-        i = i + 2;
+        i += 2;
       } else if (_charsToSegments[inputs[i]] != null) {
         result.addSegment(_charsToSegments[inputs[i]]);
       }
@@ -1208,19 +1208,19 @@ Segments _encodeBrailleENG(String input) {
         i = i + 3;
       } else if (inputs[i] == 't' && i < inputs.length - 2 && inputs[i + 1] == 'h' && inputs[i + 2] == 'e') {
         result.addSegment(_charsToSegments['the']);
-        i = i + 2;
+        i += 2;
       } else if (inputs[i] == 'i' && i < inputs.length - 2 && inputs[i + 1] == 'n' && inputs[i + 2] == 'g') {
         result.addSegment(_charsToSegments['ing']);
-        i = i + 2;
+        i += 2;
       } else if (inputs[i] == 's' && i < inputs.length - 2 && inputs[i + 1] == 'c' && inputs[i + 2] == 'h') {
         result.addSegment(_charsToSegments['sch']);
-        i = i + 2;
+        i += 2;
       } else if (inputs[i] == 'a' && i < inputs.length - 2 && inputs[i + 1] == 'n' && inputs[i + 2] == 'd') {
         result.addSegment(_charsToSegments['and']);
-        i = i + 2;
+        i += 2;
       } else if (inputs[i] == 'f' && i < inputs.length - 2 && inputs[i + 1] == 'o' && inputs[i + 2] == 'r') {
         result.addSegment(_charsToSegments['for']);
-        i = i + 2;
+        i += 2;
       } else if (inputs[i] == 'c' && i < inputs.length - 1 && inputs[i + 1] == 'h') {
         result.addSegment(_charsToSegments['ch']);
         i++;
@@ -1542,7 +1542,7 @@ SegmentsChars _decodeBrailleDEU(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 2;
+              i += 2;
             } else if (i + 1 < maxLength) {
               switch (inputs[i + 1]) {
                 case '235':
@@ -1578,7 +1578,7 @@ SegmentsChars _decodeBrailleDEU(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 1;
+              i += 1;
             }
             break;
           case '5':
@@ -1596,7 +1596,7 @@ SegmentsChars _decodeBrailleDEU(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 1;
+              i += 1;
             }
             break;
           case '6':
@@ -1611,7 +1611,7 @@ SegmentsChars _decodeBrailleDEU(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 1;
+              i += 1;
             } else {}
             break;
           case '456':
@@ -1626,7 +1626,7 @@ SegmentsChars _decodeBrailleDEU(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 1;
+              i += 1;
             }
             if (i + 2 < maxLength && inputs[i + 1] == '3' && inputs[i + 2] == '3') {
               text.add('}');
@@ -1640,7 +1640,7 @@ SegmentsChars _decodeBrailleDEU(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 2;
+              i += 2;
             }
             break;
           case '3456':
@@ -1674,7 +1674,7 @@ SegmentsChars _decodeBrailleDEU(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 2;
+              i += 2;
             } else {
               numberFollows = true;
             }
@@ -1793,7 +1793,7 @@ SegmentsChars _decodeBrailleENG(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 1;
+              i += 1;
             }
             break;
           case '5':
@@ -1826,7 +1826,7 @@ SegmentsChars _decodeBrailleENG(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 1;
+              i += 1;
             }
             break;
           case '6':
@@ -1847,7 +1847,7 @@ SegmentsChars _decodeBrailleENG(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 1;
+              i += 1;
             }
             break;
           case '45':
@@ -1871,7 +1871,7 @@ SegmentsChars _decodeBrailleENG(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 1;
+              i += 1;
             }
             break;
           case '46':
@@ -1895,7 +1895,7 @@ SegmentsChars _decodeBrailleENG(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 1;
+              i += 1;
             }
             break;
           case '345':
@@ -1910,7 +1910,7 @@ SegmentsChars _decodeBrailleENG(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 1;
+              i += 1;
             }
             break;
           case '456':
@@ -1943,7 +1943,7 @@ SegmentsChars _decodeBrailleENG(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 1;
+              i += 1;
             }
             break;
         }
@@ -2055,7 +2055,7 @@ SegmentsChars _decodeBrailleFRA(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 2;
+              i += 2;
             }
             if (i + 1 < maxLength) {
               switch (inputs[i + 1]) {
@@ -2095,7 +2095,7 @@ SegmentsChars _decodeBrailleFRA(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 1;
+              i += 1;
             }
             break;
           case '6':
@@ -2111,7 +2111,7 @@ SegmentsChars _decodeBrailleFRA(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 2;
+              i += 2;
             }
             if (i + 1 < maxLength) {
               switch (inputs[i + 1]) {
@@ -2137,7 +2137,7 @@ SegmentsChars _decodeBrailleFRA(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 1;
+              i += 1;
             }
             antoineNumberFollows = true;
             break;
@@ -2149,7 +2149,7 @@ SegmentsChars _decodeBrailleFRA(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 1;
+              i += 1;
             }
             break;
           case '56':
@@ -2163,7 +2163,7 @@ SegmentsChars _decodeBrailleFRA(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 1;
+              i += 1;
             }
             if (i + 2 < maxLength && inputs[i + 1] == '3' && inputs[i + 2] == '3') {
               text.add('}');
@@ -2177,7 +2177,7 @@ SegmentsChars _decodeBrailleFRA(List<String> inputs) {
                 display.add(element);
               });
               displays.add(display);
-              i = i + 2;
+              i += 2;
             }
             break;
         }
