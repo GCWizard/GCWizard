@@ -135,7 +135,7 @@ SegmentsChars decodeSemaphore(List<String> inputs) {
     String symbol = '';
 
     if (CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] == null) {
-      char = char + UNKNOWN_ELEMENT;
+      char += UNKNOWN_ELEMENT;
     } else {
       symbol = CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ?? '';
       if (symbol == 'symboltables_semaphore_letters_following' ||
@@ -145,18 +145,18 @@ SegmentsChars decodeSemaphore(List<String> inputs) {
           symbol == 'symboltables_semaphore_rest') {
         switch (symbol) {
           case 'symboltables_semaphore_letters_following':
-            if (letter_follows) char = char + 'J';
+            if (letter_follows) char += 'J';
             letter_follows = true;
             break;
           case 'symboltables_semaphore_numerals_following':
             letter_follows = false;
             break;
           case 'symboltables_semaphore_rest':
-            char = char + ' ';
+            char += ' ';
             break;
           case 'symboltables_semaphore_cancel':
           case 'symboltables_semaphore_error':
-            char = char + symbol;
+            char += symbol;
             break;
         }
       } else {
@@ -172,7 +172,7 @@ SegmentsChars decodeSemaphore(List<String> inputs) {
           charH = _DIGIT2LETTER[symbol]!;
         }
 
-        char = char + charH;
+        char += charH;
       }
     }
 
@@ -187,7 +187,7 @@ List<String> _stringToSegment(String input) {
   int j = 0;
   for (int i = 0; i < input.length / 2; i++) {
     result.add(input[j] + input[j + 1]);
-    j = j + 2;
+    j += 2;
   }
   return result;
 }
