@@ -1,4 +1,4 @@
-part of 'package:gc_wizard/tools/crypto_and_encodings/fakoo/widget/fakoo.dart';
+part of 'package:gc_wizard/tools/crypto_and_encodings/braille/fakoo/widget/fakoo.dart';
 
 const _INITIAL_SEGMENTS = <String, bool>{
   '1': false,
@@ -16,8 +16,8 @@ const _FAKOO_RELATIVE_DISPLAY_WIDTH = 70;
 const _FAKOO_RELATIVE_DISPLAY_HEIGHT = 100;
 const _FAKOO_RADIUS = 10.0;
 
-class _FakooSegmentDisplay extends NSegmentDisplay {
-  _FakooSegmentDisplay(
+class FakooSegmentDisplay extends NSegmentDisplay {
+  FakooSegmentDisplay(
       {super.key,
       required super.segments,
       super.readOnly,

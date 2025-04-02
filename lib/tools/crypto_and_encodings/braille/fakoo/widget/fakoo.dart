@@ -6,13 +6,13 @@ import 'package:gc_wizard/common_widgets/gcw_touchcanvas.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
-import 'package:gc_wizard/tools/crypto_and_encodings/fakoo/logic/fakoo.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/braille/logic/fakoo.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/n_segment_display.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/segmentdisplay_output.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/segmentdisplay_painter.dart';
 
-part 'package:gc_wizard/tools/crypto_and_encodings/fakoo/widget/fakoo_segment_display.dart';
+part 'package:gc_wizard/tools/crypto_and_encodings/braille/fakoo/widget/fakoo_segment_display.dart';
 
 class Fakoo extends StatefulWidget {
   const Fakoo({super.key});
@@ -93,7 +93,7 @@ class _FakooState extends State<Fakoo> {
           child: Row(
             children: <Widget>[
               Expanded(
-                child: _FakooSegmentDisplay(
+                child: FakooSegmentDisplay(
                   segments: currentDisplay,
                   onChanged: onChanged,
                 ),
@@ -134,7 +134,7 @@ class _FakooState extends State<Fakoo> {
   Widget _buildDigitalOutput(Segments segments) {
     return SegmentDisplayOutput(
         segmentFunction: (displayedSegments, readOnly) {
-          return _FakooSegmentDisplay(segments: displayedSegments, readOnly: readOnly);
+          return FakooSegmentDisplay(segments: displayedSegments, readOnly: readOnly);
         },
         segments: segments,
         readOnly: true);

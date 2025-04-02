@@ -35,7 +35,7 @@ import 'package:gc_wizard/utils/constants.dart';
 // FRA GC4QBHK Bonus Braille 2 https://www.geocaching.com/geocache/GC4QBHK
 // FRA GC4QBHC Bonus Braille 1 https://www.geocaching.com/geocache/GC4QBHC
 
-enum BrailleLanguage { BASIC, SIMPLE, STD, DEU, ENG, FRA, EUR }
+enum BrailleLanguage { BASIC, SIMPLE, STD, DEU, ENG, FRA, EUR, FAKOO }
 
 const Map<BrailleLanguage, CodebookConfig> BRAILLE_LANGUAGES = {
   BrailleLanguage.SIMPLE:
@@ -45,6 +45,7 @@ const Map<BrailleLanguage, CodebookConfig> BRAILLE_LANGUAGES = {
       CodebookConfig(title: 'common_language_english', subtitle: 'braille_language_english_description'),
   BrailleLanguage.FRA: CodebookConfig(title: 'common_language_french', subtitle: 'braille_language_french_description'),
   BrailleLanguage.EUR: CodebookConfig(title: 'braille_language_euro', subtitle: ''),
+  BrailleLanguage.FAKOO: CodebookConfig(title: 'symboltables_fakoo_title', subtitle: 'symboltables_fakoo_description'),
 };
 
 const Map<BrailleLanguage, Map<String, List<String>>> _CharsToSegmentsLetters = {
