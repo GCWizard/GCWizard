@@ -154,10 +154,11 @@ class TupperData {
     int colors = _getColors(currentBoard);
 
     BigInt k = BigInt.zero;
+    BigInt c = BigInt.from(colors);
 
     for (int j = 0; j < width; j++) {
       for (int i = 0; i < height; i++) {
-        k += BigInt.from(currentBoard[height - i - 1][j]) * BigInt.from(pow(colors, j * height + i) as int);
+        k += BigInt.from(currentBoard[height - i - 1][j]) * c.pow(j * height + i);
       }
     }
 
