@@ -231,8 +231,7 @@ class _Method {
           ? 1
           : int.parse(matchers[11].firstMatch(line)!.group(14)!)) -
           1;
-      print('stürzen von '+mixingbowl.toString()+' nach '+bakingdish.toString());
-    } else if (matchers[12].hasMatch(line)) {
+     } else if (matchers[12].hasMatch(line)) {
       // zur seite stellen
       type = _CHEF_Method.BeiseiteStellen;
     } else if (matchers[13].hasMatch(line)) {
@@ -249,14 +248,12 @@ class _Method {
       type = _CHEF_Method.Erinnern;
     } else if (matchers[16].hasMatch(line)) {
       // servieren - sonderfall von kryptoggrafie.de
-      print('servieren');
       type = _CHEF_Method.Ausgiessen;
       mixingbowl = 0;
       bakingdish = 0;
 
     } else if (matchers[17].hasMatch(line)) {
       // köcheln - sonderfall von kryptoggrafie.de
-      print('köcheln');
       type = _CHEF_Method.SchuesselErhitzen;
       mixingbowl = 0;
     } else if (matchers[18].hasMatch(line)) {
