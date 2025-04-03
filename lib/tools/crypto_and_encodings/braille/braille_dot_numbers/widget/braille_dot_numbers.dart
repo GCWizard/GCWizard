@@ -7,7 +7,7 @@ import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/text_input_formatters/wrapper_for_masktextinputformatter.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/braille/braille_euro_segment_display/widget/braille_euro_segment_display.dart';
-import 'package:gc_wizard/tools/crypto_and_encodings/braille/fakoo/widget/fakoo.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/braille/fakoo/widget/fakoo_segment_display.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/braille/logic/braille.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/braille/widget/braille_segment_display.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/logic/segment_display.dart';
