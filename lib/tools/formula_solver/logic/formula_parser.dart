@@ -276,16 +276,16 @@ class FormulaParser {
   // Because: When a former formula will be included, this one IS still ready calculated and does not need another calculation round
   String _safeFormulaReplacements(String formula) {
     var formulaReplacementPattern =
-        RegExp(RECURSIVE_FORMULA_REPLACEMENT_START + '(.*?)' + RECURSIVE_FORMULA_REPLACEMENT_END);
+    RegExp(RECURSIVE_FORMULA_REPLACEMENT_START + '(.*?)?' + RECURSIVE_FORMULA_REPLACEMENT_END);
     var matches = formulaReplacementPattern.allMatches(formula);
 
     for (Match m in matches) {
       var group = m.group(0);
       if (group == null) continue;
       safedFormulaReplacementMap.putIfAbsent(group,
-          () => '$_SAFED_RECURSIVE_FORMULA_MARKER${safedFormulaReplacementMap.length}$_SAFED_RECURSIVE_FORMULA_MARKER');
-      formula = substitution(formula, safedFormulaReplacementMap);
+              () => '$_SAFED_RECURSIVE_FORMULA_MARKER${safedFormulaReplacementMap.length}$_SAFED_RECURSIVE_FORMULA_MARKER');
     }
+    formula = substitution(formula, safedFormulaReplacementMap);
 
     return formula;
   }
