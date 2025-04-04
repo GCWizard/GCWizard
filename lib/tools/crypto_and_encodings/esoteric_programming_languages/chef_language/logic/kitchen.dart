@@ -56,9 +56,6 @@ class _Kitchen {
   }
 
   _Container? cook(String additionalIngredients, String language, int depth) {
-print('inside cooking process');
-print(additionalIngredients);
-print(depth);
     int ingredientIndex = 0;
     List<String> input = additionalIngredients.split(' ');
 
@@ -72,7 +69,6 @@ print(depth);
     methodloop:
     while (i < (methods?.length ?? 0) && !deepfrozen && !exceptionArose) {
       _Method m = methods![i];
-      print(m.type);
       if (m.type == _CHEF_Method.Invalid) {
         valid = false;
         error.addAll([
@@ -166,7 +162,6 @@ print(depth);
         case _CHEF_Method.Combine:
         case _CHEF_Method.Kombinieren:
           if (mixingbowls[m.mixingbowl!].size() == 0) {
-            print('ERROR (mixingbowls[m.mixingbowl!].size() == 0)');
             valid = false;
             error.addAll([
               _CHEF_Messages[language]?['common_programming_error_runtime'] ?? '',
@@ -178,14 +173,6 @@ print(depth);
             return null;
           }
           c = mixingbowls[m.mixingbowl!].peek();
-          print(c);
-          print(c._name);
-          print(c._state);
-          print(c._value);
-          print(m.ingredient);
-          print(ingredients[m.ingredient]!);
-          print(ingredients[m.ingredient]!._amount);
-          print(ingredients[m.ingredient]!.getAmount());
           c.setValue(c.getValue() * ingredients[m.ingredient]!.getAmount()!);
           break;
 
@@ -340,11 +327,8 @@ print(depth);
             loops.removeAt(0);
             continue methodloop;
           }
-
         case _CHEF_Method.Serve:
         case _CHEF_Method.Servieren:
-        print('');
-        print('Serve');
           if (recipes[m.auxrecipe!.toLowerCase()] == null) {
             valid = false;
             error.addAll([
@@ -354,17 +338,10 @@ print(depth);
             ]);
             return null;
           }
-          print(recipes[m.auxrecipe!.toLowerCase()]);
-          print(recipes[m.auxrecipe!.toLowerCase()]?.ingredients);
-          print(recipes[m.auxrecipe!.toLowerCase()]?.methods);
           try {
-            print('Start kitchen');
             _Kitchen k = _Kitchen(recipes, recipes[m.auxrecipe!.toLowerCase()]!, mixingbowls, bakingdishes, language);
-            print('start cooking');
             _Container? con = k.cook(additionalIngredients, language, depth + 1);
-            print('end cooking');
             if (k.exception) {
-              print('k.exception '+k.exception.toString());
               valid = false;
               exception = true;
               exceptionArose = true;
@@ -372,9 +349,7 @@ print(depth);
               error.addAll(k.error);
               continue methodloop;
             } else if (con != null) {
-              print('con != null true');
               mixingbowls[0].combine(con);
-              print('mixingbowls[0].combine(con) done');
             } else {
               valid = false;
               error.addAll([
