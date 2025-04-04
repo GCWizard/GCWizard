@@ -342,7 +342,6 @@ CHEFOutputInterpret interpretChef(String language, String? recipe, String? input
 }
 
 CHEFOutputInterpret _decodeChef(String language, String recipe, String additionalIngredients) {
-
   recipe = _adjustRecipe(recipe);
 
  _Chef interpreter = _Chef(recipe, language);
@@ -380,9 +379,8 @@ CHEFOutputInterpret _decodeChef(String language, String recipe, String additiona
 }
 
 String _adjustRecipe(String readRecipe){
-
   // remove blank lines at start and trim lines
-  List<String> recipe = readRecipe.split('\n');
+  List<String> recipe = readRecipe.toLowerCase().split('\n');
   while (recipe[0].isEmpty) {
     for (int i = 1; i < recipe.length; i++) {
       recipe[i - 1] = recipe[i].trim();
@@ -485,26 +483,24 @@ String _adjustRecipe(String readRecipe){
         recipe[i].startsWith("serves") ||
         recipe[i].startsWith("portionen")) {
       if (s0.isNotEmpty) {
-        recipe[i] = '\n' + recipe[i];
+        recipe.insert(i, '\n');
+        i++;
+        //recipe[i] = '\n' + recipe[i];
       }
     }
     s0 = recipe[i];
   }
-
   // remove unnecessary sections like cooking time and oven temperature
   int endIngredientSection = 0;
   methodSection = false;
-  for (int i = 1; i < recipe.length; i++) {
+  for (int i = 0; i < recipe.length; i++) {
     if (recipe[i].startsWith("ingredients") ||
         recipe[i].startsWith("zutaten")) {
       ingredientSection = true;
     }
-    if (ingredientSection && recipe[i].isEmpty) {
+    if (ingredientSection && (recipe[i].length == 1 || recipe[i].isEmpty)) {
       endIngredientSection = i;
       ingredientSection = false;
-    }
-    if (recipe[i].startsWith("method") ||
-        recipe[i].startsWith("zubereitung")) {
     }
   }
 
@@ -520,8 +516,7 @@ String _adjustRecipe(String readRecipe){
 
   // handle ' und '
   readRecipe = recipe.join('\n');
-  readRecipe = readRecipe.replaceAll(' und ', '. ').replaceAll(RegExp(r'\n(\n)+'), '\n\n');
-
+  readRecipe = readRecipe.replaceAll(' und ', '. ').replaceAll(RegExp(r'\n\n(\n)+'), '\n\n');
   return readRecipe;
 }
 
