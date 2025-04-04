@@ -69,7 +69,7 @@ class _NotesSegmentDisplay extends NSegmentDisplay {
               var LINE_OFFSET_Y = size.height / _NOTES_RELATIVE_DISPLAY_HEIGHT * 20.0;
               var LINE_DISTANCE = size.height / _NOTES_RELATIVE_DISPLAY_HEIGHT * 30.0;
 
-              var lines = [
+              const lines = [
                 helpLine5,
                 helpLine4,
                 helpLine3,
@@ -144,7 +144,7 @@ class _NotesSegmentDisplay extends NSegmentDisplay {
                     SEGMENTS_COLOR_OFF);
               }
 
-              var notePositions = [105, 35, -35, -105];
+              const notePositions = [105, 35, -35, -105];
               counter = 0;
               for (var key in notePosition) {
                 var offsetX = size.width /
