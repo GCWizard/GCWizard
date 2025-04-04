@@ -38,7 +38,7 @@ class _MurraySegmentDisplay extends NSegmentDisplay {
                         Size(pointSize * 3 + 2, pointSize * 2 + 2),
                     paint);
 
-                if (size.height < 50) return;
+                if (size.height < NSegmentDisplay.MIN_HEIGHT) return;
               });
 
               shutters.forEach((key, value) {
@@ -51,7 +51,7 @@ class _MurraySegmentDisplay extends NSegmentDisplay {
                   setSegmentState(key, !segmentActive(currentSegments, key));
                 });
 
-                if (size.height < 50) return;
+                if (size.height < NSegmentDisplay.MIN_HEIGHT) return;
               });
             });
 }

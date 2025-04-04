@@ -65,7 +65,7 @@ class _EdelcrantzSegmentDisplay extends NSegmentDisplay {
                         Size(pointSize * 3 + 1, pointSize * 2 + 2),
                     paint);
 
-                if (size.height < 50) return;
+                if (size.height < NSegmentDisplay.MIN_HEIGHT) return;
               });
 
               shutters.forEach((key, value) {
@@ -79,7 +79,7 @@ class _EdelcrantzSegmentDisplay extends NSegmentDisplay {
                   setSegmentState(shutterSegments[key], !segmentActive(currentSegments, shutterSegments[key]!));
                 });
 
-                if (size.height < 50) return;
+                if (size.height < NSegmentDisplay.MIN_HEIGHT) return;
               });
             });
 }

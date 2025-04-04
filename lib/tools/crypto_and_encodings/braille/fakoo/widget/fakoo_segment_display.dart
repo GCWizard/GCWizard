@@ -61,7 +61,7 @@ class FakooSegmentDisplay extends NSegmentDisplay {
                   setSegmentState(key, !segmentActive(currentSegments, key));
                 });
 
-                if (size.height < 50) return;
+                if (size.height < NSegmentDisplay.MIN_HEIGHT) return;
 
                 TextSpan span =
                     TextSpan(style: gcwTextStyle().copyWith(color: Colors.white, fontSize: pointSize * 1.3), text: key);

@@ -91,7 +91,7 @@ class _OhlsenSegmentDisplay extends NSegmentDisplay {
                         Size(value[2] * 3 + 2, value[3] * 2 + 2),
                     paint);
 
-                if (size.height < 50) return;
+                if (size.height < NSegmentDisplay.MIN_HEIGHT) return;
               });
 
               shutters.forEach((key, value) {
@@ -177,7 +177,7 @@ class _OhlsenSegmentDisplay extends NSegmentDisplay {
                   }
                 });
 
-                if (size.height < 50) return;
+                if (size.height < NSegmentDisplay.MIN_HEIGHT) return;
               });
             });
 }

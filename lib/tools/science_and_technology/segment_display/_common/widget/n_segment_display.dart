@@ -7,6 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/w
 import 'package:touchable/touchable.dart';
 
 class NSegmentDisplay extends StatefulWidget {
+  static const int MIN_HEIGHT = 50;
   final Map<String, bool> initialSegments;
   final double aspectRatio;
   final SegmentDisplayType type;

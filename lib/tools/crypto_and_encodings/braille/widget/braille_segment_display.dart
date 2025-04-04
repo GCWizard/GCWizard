@@ -26,7 +26,7 @@ class BrailleSegmentDisplay extends NSegmentDisplay {
               var SEGMENTS_COLOR_ON = segment_color_on;
               var SEGMENTS_COLOR_OFF = segment_color_off;
 
-              var circles = {
+              const circles = {
                 '1': [15, 20],
                 '2': [15, 50],
                 '3': [15, 80],
@@ -48,7 +48,7 @@ class BrailleSegmentDisplay extends NSegmentDisplay {
                   setSegmentState(key, !segmentActive(currentSegments, key));
                 });
 
-                if (size.height < 50) return;
+                if (size.height < NSegmentDisplay.MIN_HEIGHT) return;
 
                 TextSpan span =
                     TextSpan(style: gcwTextStyle().copyWith(color: Colors.white, fontSize: pointSize * 1.3), text: key);

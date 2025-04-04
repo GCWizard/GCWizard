@@ -31,7 +31,7 @@ class _SteinheilSegmentDisplay extends NSegmentDisplay {
         var SEGMENTS_COLOR_ON = segment_color_on;
         var SEGMENTS_COLOR_OFF = segment_color_off;
 
-        var circles = {
+        const circles = {
           'a': [15, 20],
           'b': [40, 20],
           'c': [65, 20],
@@ -185,7 +185,7 @@ class _SteinheilSegmentDisplay extends NSegmentDisplay {
               paint,
             );
           }
-          if (size.height < 50) return;
+          if (size.height < NSegmentDisplay.MIN_HEIGHT) return;
 
         });
       });

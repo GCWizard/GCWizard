@@ -66,7 +66,7 @@ class PUNCHTAPESegmentDisplay extends NSegmentDisplay {
                     pointSize + 2,
                     paint);
 
-                if (size.height < 50) return;
+                if (size.height < NSegmentDisplay.MIN_HEIGHT) return;
               });
 
               circles.forEach((key, value) {
@@ -79,7 +79,7 @@ class PUNCHTAPESegmentDisplay extends NSegmentDisplay {
                   setSegmentState(key, !segmentActive(currentSegments, key));
                 });
 
-                if (size.height < 50) return;
+                if (size.height < NSegmentDisplay.MIN_HEIGHT) return;
               });
 
               // print leadingHole

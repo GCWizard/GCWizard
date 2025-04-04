@@ -16,7 +16,7 @@ const _INITIAL_SEGMENTS = <String, bool>{
   '8': false
 };
 
-const _EUROBRAILLE_RELATIVE_DISPLAY_WIDTH = 51;
+const _EUROBRAILLE_RELATIVE_DISPLAY_WIDTH = 50;
 const _EUROBRAILLE_RELATIVE_DISPLAY_HEIGHT = 130;
 const _EUROBRAILLE_RADIUS = 12;
 
@@ -35,7 +35,7 @@ class BrailleEuroSegmentDisplay extends NSegmentDisplay {
               var SEGMENTS_COLOR_ON = segment_color_on;
               var SEGMENTS_COLOR_OFF = segment_color_off;
 
-              var circles = {
+              const circles = {
                 '1': [15, 20],
                 '2': [15, 50],
                 '3': [15, 80],
@@ -59,7 +59,7 @@ class BrailleEuroSegmentDisplay extends NSegmentDisplay {
                   setSegmentState(key, !segmentActive(currentSegments, key));
                 });
 
-                if (size.height < 50) return;
+                if (size.height < NSegmentDisplay.MIN_HEIGHT) return;
 
                 TextSpan span =
                     TextSpan(style: gcwTextStyle().copyWith(color: Colors.white, fontSize: pointSize * 1.3), text: key);
