@@ -235,6 +235,18 @@ class _Chef {
 
   void bake(String language, String additionalIngredients) {
     if (mainrecipe == null) return;
+    print('################################################################');
+    recipes.forEach((key, value) {
+      print(key+' --------------------------------------------------');
+      print(value);
+      value.ingredients.forEach((key, value) {
+        print(key);
+      });
+      value.methods?.forEach((key) {
+        print(key.type);
+      });
+    });
+    print('################################################################');
     _Kitchen k = _Kitchen(recipes, mainrecipe!, null, null, language);
     if (k.valid) {
       k.cook(additionalIngredients, language, 1);

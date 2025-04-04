@@ -406,7 +406,6 @@ String _adjustRecipe(String readRecipe){
   if (readRecipe.startsWith('ingredients') || readRecipe.startsWith('zutaten')) {
     readRecipe = 'nouvelle cuisine.\n\n' + readRecipe;
   }
-
   // check and repair recipe regarding blank lines, whitespace
   recipe = readRecipe.split('\n');
 
@@ -490,6 +489,7 @@ String _adjustRecipe(String readRecipe){
     }
     s0 = recipe[i];
   }
+
   // remove unnecessary sections like cooking time and oven temperature
   int endIngredientSection = 0;
   methodSection = false;
@@ -517,6 +517,7 @@ String _adjustRecipe(String readRecipe){
   // handle ' und '
   readRecipe = recipe.join('\n');
   readRecipe = readRecipe.replaceAll(' und ', '. ').replaceAll(RegExp(r'\n\n(\n)+'), '\n\n');
+
   return readRecipe;
 }
 

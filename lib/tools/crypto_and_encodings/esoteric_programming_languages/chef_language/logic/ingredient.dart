@@ -69,10 +69,10 @@ class _Ingredient {
         .replaceAll('pinch', '')
         .replaceAll('prisen', '')
         .replaceAll('prise', '')
-        .replaceAll('stück', '')
-        .replaceAll('stücke', '')
-        .replaceAll('pieces', '')
-        .replaceAll('piece', '')
+        //.replaceAll('stück', '')
+        //.replaceAll('stücke', '')
+        //.replaceAll('pieces', '')
+        //.replaceAll('piece', '')
         .trim();
     if (_name!.isEmpty) {
       _name = 'INVALID';
