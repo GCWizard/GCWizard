@@ -200,8 +200,8 @@ const Map<String, String> _COMMON_SYMBOLS = {
   "yogh": "ȝ",
   "k_bar_above": "k̄",
   "K_bar_above": "K̄",
-  "Yr": "Ʀ",
-  "yr": "ʀ",
+  "Yr": "ᚱ",
+  "yr": "ᚱ",
   "Eng": "Ŋ",
   "eng": "ŋ"
 };
