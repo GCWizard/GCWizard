@@ -20,7 +20,7 @@ import 'package:gc_wizard/utils/ui_dependent_utils/image_utils/image_utils.dart'
 import 'package:gc_wizard/utils/ui_dependent_utils/text_widget_utils.dart';
 
 class WASD extends StatefulWidget {
-  const WASD({Key? key}) : super(key: key);
+  const WASD({super.key});
 
   @override
   _WASDState createState() => _WASDState();

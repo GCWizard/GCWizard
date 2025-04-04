@@ -19,7 +19,7 @@ import 'package:image/image.dart' as Image;
 class ImageFlipRotate extends StatefulWidget {
   final GCWFile? file;
 
-  const ImageFlipRotate({Key? key, this.file}) : super(key: key);
+  const ImageFlipRotate({super.key, this.file});
 
   @override
   _ImageFlipRotateState createState() => _ImageFlipRotateState();

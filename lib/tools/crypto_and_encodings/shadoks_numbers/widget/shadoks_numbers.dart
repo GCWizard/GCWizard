@@ -16,7 +16,7 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/w
 part 'package:gc_wizard/tools/crypto_and_encodings/shadoks_numbers/widget/shadoks_numbers_segment_display.dart';
 
 class ShadoksNumbers extends StatefulWidget {
-  const ShadoksNumbers({Key? key}) : super(key: key);
+  const ShadoksNumbers({super.key});
 
   @override
   _ShadoksNumbersState createState() => _ShadoksNumbersState();

@@ -15,7 +15,7 @@ import 'package:gc_wizard/tools/science_and_technology/periodic_table/_common/lo
 class ElementsOfGeocachingDataView extends StatefulWidget {
   final int atomicNumber;
 
-  const ElementsOfGeocachingDataView({Key? key, required this.atomicNumber}) : super(key: key);
+  const ElementsOfGeocachingDataView({super.key, required this.atomicNumber});
 
   @override
   _ElementsOfGeocachingDataViewState createState() => _ElementsOfGeocachingDataViewState();

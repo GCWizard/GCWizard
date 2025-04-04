@@ -12,7 +12,7 @@ import 'package:gc_wizard/tools/science_and_technology/countries/country_flags/w
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class CountriesSelection extends GCWSelection {
-  const CountriesSelection({Key? key}) : super(key: key);
+  const CountriesSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

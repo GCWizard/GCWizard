@@ -2,8 +2,8 @@ part of 'package:gc_wizard/tools/crypto_and_encodings/alphabet_values/widget/alp
 
 class _AlphabetValuesKeyValueInput extends GCWKeyValueInput {
   _AlphabetValuesKeyValueInput({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   GCWKeyValueInputState createState() => _GCWKeyValueAlphabetNewEntryState();

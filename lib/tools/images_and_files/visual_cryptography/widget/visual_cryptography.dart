@@ -24,7 +24,7 @@ import 'package:image/image.dart' as img;
 import 'package:tuple/tuple.dart';
 
 class VisualCryptography extends StatefulWidget {
-  const VisualCryptography({Key? key}) : super(key: key);
+  const VisualCryptography({super.key});
 
   @override
   _VisualCryptographyState createState() => _VisualCryptographyState();

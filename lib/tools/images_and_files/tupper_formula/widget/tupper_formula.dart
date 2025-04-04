@@ -3,10 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
+import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_dropdown_spinner.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/images_and_files/binary2image/logic/binary2image.dart';
@@ -19,16 +22,21 @@ import 'package:gc_wizard/utils/ui_dependent_utils/image_utils/image_utils.dart'
 class TupperFormula extends StatefulWidget {
   final GCWFile? file;
 
-  const TupperFormula({Key? key, this.file}) : super(key: key);
+  const TupperFormula({super.key, this.file});
 
   @override
   _TupperFormulaState createState() => _TupperFormulaState();
 }
 
 class _TupperFormulaState extends State<TupperFormula> {
-  var _currentInput = '';
+  String _currentInput = '';
+  int _currentWidth = 106;
+  int _currentHeight = 17;
+  int _currentColorIndex = 0;
+  int _currentColors = 2;
+  GCWSwitchPosition _currentFormulaMode = GCWSwitchPosition.left;
 
-  final _board = TupperData();
+  late TupperData _board;
 
   Uint8List? _outData;
   String? _codeData;
@@ -42,6 +50,8 @@ class _TupperFormulaState extends State<TupperFormula> {
   void initState() {
     super.initState();
     _inputController = TextEditingController(text: _currentInput);
+
+    _board = TupperData(width: _currentWidth, height: _currentHeight);
   }
 
   @override
@@ -54,11 +64,91 @@ class _TupperFormulaState extends State<TupperFormula> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        _currentMode == GCWSwitchPosition.left
+        GCWTwoOptionsSwitch(
+          value: _currentMode,
+          onChanged: (value) {
+            setState(() {
+              _currentMode = value;
+            });
+          },
+        ),
+        GCWTwoOptionsSwitch(
+          leftValue: i18n(context, 'common_original'),
+          rightValue: i18n(context, 'common_custom'),
+          value: _currentFormulaMode,
+          onChanged: (value) {
+            setState(() {
+              _currentFormulaMode = value;
+              if (_currentFormulaMode == GCWSwitchPosition.left) {
+                _currentHeight = 17;
+                _currentWidth = 106;
+                _currentColorIndex = 0;
+              }
+            });
+          },
+        ),
+        (_currentFormulaMode == GCWSwitchPosition.right) // custom
+            ? Column(children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: GCWIntegerSpinner(
+                          title: i18n(context, 'common_width'),
+                          min: 1,
+                          max: 640,
+                          onChanged: (value) {
+                            setState(() {
+                              _currentWidth = value;
+                              _board = TupperData(
+                                  width: _currentWidth, height: _currentHeight);
+                            });
+                          },
+                          value: _currentWidth),
+                    ),
+                    Expanded(
+                      child: GCWIntegerSpinner(
+                          title: i18n(context, 'common_height'),
+                          min: 1,
+                          max: 480,
+                          onChanged: (value) {
+                            setState(() {
+                              _currentHeight = value;
+                              _board = TupperData(
+                                  width: _currentWidth, height: _currentHeight);
+                            });
+                          },
+                          value: _currentHeight),
+                    ),
+                  ],
+                ),
+                _currentMode == GCWSwitchPosition.left // encrypt
+                    ? GCWDropDownSpinner(
+                        onChanged: (value) {
+                          setState(() {
+                            _currentColorIndex = value;
+                          });
+                        },
+                        index: _currentColorIndex,
+                        items: const ['2', '4', '8', '16'])
+                    : GCWIntegerSpinner(
+                        min: 2,
+                        max: 24,
+                        onChanged: (value) {
+                          setState(() {
+                            _currentColors = value;
+                          });
+                        },
+                        value: _currentColors),
+              ])
+            : Container(),
+        _currentMode == GCWSwitchPosition.left // encrypt
             ? Column(
                 children: [
                   GCWPainterContainer(
                     child: TupperFormulaBoard(
+                      width: _currentWidth,
+                      height: _currentHeight,
+                      colors: TUPPER_COLOR_NUMBERS[_currentColorIndex]!,
                       state: _board.currentBoard,
                       onChanged: (newBoard) {
                         setState(() {
@@ -76,7 +166,8 @@ class _TupperFormulaState extends State<TupperFormula> {
                         icon: Icons.calculate_outlined,
                         onPressed: () {
                           setState(() {
-                            _currentK = _board.getK();
+                            _currentK = _board.getK(
+                                _currentFormulaMode == GCWSwitchPosition.left,);
                           });
                         },
                       ),
@@ -97,26 +188,28 @@ class _TupperFormulaState extends State<TupperFormula> {
                   ]),
                 ],
               )
-            : GCWTextField(
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-                ],
-                labelText: 'k',
-                controller: _inputController,
-                onChanged: (value) {
+            : Column(
+          children: [
+            GCWTextField(
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+              ],
+              labelText: 'k',
+              controller: _inputController,
+              onChanged: (value) {
+                setState(() {
+                  _currentInput = value;
+                });
+              },
+            ),
+            GCWSubmitButton(
+                onPressed: () {
                   setState(() {
-                    _currentInput = value;
                     _createImageOutput();
                   });
                 },
-              ),
-        GCWTwoOptionsSwitch(
-          value: _currentMode,
-          onChanged: (value) {
-            setState(() {
-              _currentMode = value;
-            });
-          },
+                ),
+          ],
         ),
         _buildOutput(),
       ],
@@ -137,7 +230,10 @@ class _TupperFormulaState extends State<TupperFormula> {
     _outData = null;
     _codeData = null;
 
-    var image = binary2image(kToImage(_currentInput), false, false);
+    var image = binary2Image(
+        kToImage(_currentInput, _currentFormulaMode == GCWSwitchPosition.left,
+            _currentWidth, _currentHeight, _currentColors),
+    );
     if (image == null) return;
     input2Image(image).then((value) {
       setState(() {
@@ -162,4 +258,5 @@ class _TupperFormulaState extends State<TupperFormula> {
           : Container(),
     ]);
   }
+
 }

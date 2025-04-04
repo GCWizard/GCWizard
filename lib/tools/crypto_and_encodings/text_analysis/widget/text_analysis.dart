@@ -15,7 +15,7 @@ import 'package:intl/intl.dart';
 enum _SORT_TYPES { ALPHABETICAL, COUNT_GROUP, COUNT_OVERALL }
 
 class TextAnalysis extends StatefulWidget {
-  const TextAnalysis({Key? key}) : super(key: key);
+  const TextAnalysis({super.key});
 
   @override
   _TextAnalysisState createState() => _TextAnalysisState();

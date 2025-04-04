@@ -12,7 +12,7 @@ import 'package:gc_wizard/tools/coords/dmm_offset/logic/dmm_offset.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 
 class DMMOffset extends StatefulWidget {
-  const DMMOffset({Key? key}) : super(key: key);
+  const DMMOffset({super.key});
 
   @override
   _DMMOffsetState createState() => _DMMOffsetState();

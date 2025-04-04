@@ -9,7 +9,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/_common/logic/numeral_words.dart';
 
 class NumeralWordsIdentifyLanguages extends StatefulWidget {
-  const NumeralWordsIdentifyLanguages({Key? key}) : super(key: key);
+  const NumeralWordsIdentifyLanguages({super.key});
 
   @override
   _NumeralWordsIdentifyLanguagesState createState() => _NumeralWordsIdentifyLanguagesState();

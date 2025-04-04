@@ -9,7 +9,7 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/7_segment
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class SegmentDisplaySelection extends GCWSelection {
-  const SegmentDisplaySelection({Key? key}) : super(key: key);
+  const SegmentDisplaySelection({super.key});
 
   @override
   Widget build(BuildContext context) {

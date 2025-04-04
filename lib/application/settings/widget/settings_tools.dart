@@ -8,7 +8,7 @@ import 'package:gc_wizard/tools/science_and_technology/maya_calendar/logic/maya_
 import 'package:prefs/prefs.dart';
 
 class ToolSettings extends StatefulWidget {
-  const ToolSettings({Key? key}) : super(key: key);
+  const ToolSettings({super.key});
 
   @override
   _ToolSettingsState createState() => _ToolSettingsState();

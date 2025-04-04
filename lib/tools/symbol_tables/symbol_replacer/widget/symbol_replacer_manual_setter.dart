@@ -4,7 +4,7 @@ class SymbolReplacerManualSetter extends StatefulWidget {
   final SymbolReplacerImage symbolImage;
   final List<Symbol> viewSymbols;
 
-  const SymbolReplacerManualSetter({Key? key, required this.symbolImage, required this.viewSymbols}) : super(key: key);
+  const SymbolReplacerManualSetter({super.key, required this.symbolImage, required this.viewSymbols});
 
   @override
   _SymbolReplacerManualSetterState createState() => _SymbolReplacerManualSetterState();

@@ -26,7 +26,7 @@ import 'package:prefs/prefs.dart';
 part 'package:gc_wizard/application/settings/widget/ellipsoid_picker.dart';
 
 class CoordinatesSettings extends StatefulWidget {
-  const CoordinatesSettings({Key? key}) : super(key: key);
+  const CoordinatesSettings({super.key});
 
   @override
   _CoordinatesSettingsState createState() => _CoordinatesSettingsState();

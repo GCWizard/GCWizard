@@ -40,7 +40,7 @@ part 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_lists/r
 part 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_lists/randomizer_lists_shuffle.dart';
 
 class RandomizerLists extends StatefulWidget {
-  const RandomizerLists({Key? key}) : super(key: key);
+  const RandomizerLists({super.key});
 
   @override
   _RandomizerListsState createState() => _RandomizerListsState();

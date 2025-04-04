@@ -11,14 +11,13 @@ class GCWRadioButtonSet extends StatefulWidget {
   final int? number;
 
   const GCWRadioButtonSet(
-      {Key? key,
+      {super.key,
       this.title,
       this.number,
       required this.activeButton,
       required this.buttons,
       required this.onChanged,
-      this.notitle = false})
-      : super(key: key);
+      this.notitle = false});
 
   @override
   _GCWRadioButtonSetState createState() => _GCWRadioButtonSetState();

@@ -11,7 +11,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/quadratic_equation/logic/quadratic_equation.dart';
 
 class QuadraticEquation extends StatefulWidget {
-  const QuadraticEquation({Key? key}) : super(key: key);
+  const QuadraticEquation({super.key});
 
   @override
   _QuadraticEquationState createState() => _QuadraticEquationState();

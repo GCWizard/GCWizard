@@ -9,14 +9,13 @@ class GCWSwitch extends StatefulWidget {
   final Color? activeTrackColor;
 
   const GCWSwitch(
-      {Key? key,
+      {super.key,
         this.value = false,
         required this.onChanged,
         this.inactiveThumbColor,
         this.inactiveTrackColor,
         this.activeThumbColor,
-        this.activeTrackColor})
-      : super(key: key);
+        this.activeTrackColor});
 
   @override
   _GCWSwitchState createState() => _GCWSwitchState();

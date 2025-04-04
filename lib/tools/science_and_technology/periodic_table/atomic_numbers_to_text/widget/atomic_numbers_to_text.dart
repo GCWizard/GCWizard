@@ -14,7 +14,7 @@ import 'package:gc_wizard/utils/constants.dart';
 enum _AtomicNumbersToTextDataSet{NORMAL_PSE, ELEMENTS_OF_GEOCACHING}
 
 class AtomicNumbersToText extends StatefulWidget {
-  const AtomicNumbersToText({Key? key}) : super(key: key);
+  const AtomicNumbersToText({super.key});
 
   @override
   _AtomicNumbersToTextState createState() => _AtomicNumbersToTextState();

@@ -19,7 +19,7 @@ import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:intl/intl.dart';
 
 class ShadowLength extends StatefulWidget {
-  const ShadowLength({Key? key}) : super(key: key);
+  const ShadowLength({super.key});
 
   @override
   _ShadowLengthState createState() => _ShadowLengthState();

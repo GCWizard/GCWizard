@@ -4,7 +4,7 @@ import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/utils/math_utils.dart';
 
 class LCM extends StatefulWidget {
-  const LCM({Key? key}) : super(key: key);
+  const LCM({super.key});
 
   @override
   _LCMState createState() => _LCMState();

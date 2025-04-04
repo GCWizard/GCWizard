@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/irrational_numbers/e/widg
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class ESelection extends GCWSelection {
-  const ESelection({Key? key}) : super(key: key);
+  const ESelection({super.key});
 
   @override
   Widget build(BuildContext context) {

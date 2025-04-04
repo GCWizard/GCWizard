@@ -21,7 +21,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 
 class CoordinateAveraging extends StatefulWidget {
-  const CoordinateAveraging({Key? key}) : super(key: key);
+  const CoordinateAveraging({super.key});
 
   @override
   _CoordinateAveragingState createState() => _CoordinateAveragingState();

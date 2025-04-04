@@ -13,7 +13,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/polybios/logic/polybios.dar
 import 'package:gc_wizard/tools/crypto_and_encodings/straddling_checkerboard/logic/straddling_checkerboard.dart';
 
 class StraddlingCheckerboard extends StatefulWidget {
-  const StraddlingCheckerboard({Key? key}) : super(key: key);
+  const StraddlingCheckerboard({super.key});
 
   @override
   _StraddlingCheckerboardState createState() => _StraddlingCheckerboardState();

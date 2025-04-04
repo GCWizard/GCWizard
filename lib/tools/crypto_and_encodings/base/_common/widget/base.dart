@@ -24,12 +24,11 @@ abstract class AbstractBase extends GCWWebStatefulWidget {
   final bool searchMultimedia;
 
   AbstractBase(
-      {Key? key,
+      {super.key,
       required this.encode,
       required this.decode,
       required this.searchMultimedia,
-      required super.apiSpecification})
-      : super(key: key);
+      required super.apiSpecification});
 
   @override
   _AbstractBaseState createState() => _AbstractBaseState();

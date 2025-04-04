@@ -7,7 +7,7 @@ class NumeralBaseSpinner extends StatefulWidget {
   final void Function(int) onChanged;
   final int value;
 
-  const NumeralBaseSpinner({Key? key, required this.onChanged, this.value = 10}) : super(key: key);
+  const NumeralBaseSpinner({super.key, required this.onChanged, this.value = 10});
 
   @override
   _NumeralBaseSpinnerState createState() => _NumeralBaseSpinnerState();

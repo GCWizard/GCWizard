@@ -28,7 +28,7 @@ class GCWFormulaListEditor extends StatefulWidget {
   final bool formulaGroups;
 
   const GCWFormulaListEditor({
-    Key? key,
+    super.key,
     required this.formulaList,
     required this.buildGCWTool,
     required this.onAddEntry,
@@ -36,7 +36,7 @@ class GCWFormulaListEditor extends StatefulWidget {
     this.newEntryHintText,
     this.middleWidget,
     this.formulaGroups = false,
-  }) : super(key: key);
+  });
 
   @override
   _GCWFormulaListEditor createState() => _GCWFormulaListEditor();

@@ -757,6 +757,11 @@ void main() {
         'values': values,
         'expectedOutput': {'state': 'ok', 'output': [{'result': '9', 'state': 'ok'}]}
       },
+      {
+        'formulas': ['123', '321', '{1}.{2}'],
+        'values': values,
+        'expectedOutput': {'state': 'ok', 'output': [{'result': '123.321', 'state': 'ok'}]}
+      },
     ];
 
     for (var elem in _inputsToExpected) {

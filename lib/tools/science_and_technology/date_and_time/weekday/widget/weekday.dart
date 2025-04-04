@@ -7,7 +7,7 @@ import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/datetime_utils.dart';
 
 class Weekday extends StatefulWidget {
-  const Weekday({Key? key}) : super(key: key);
+  const Weekday({super.key});
 
   @override
   _WeekdayState createState() => _WeekdayState();

@@ -30,7 +30,7 @@ LatLng projectionVincenty(LatLng coord, double bearing, double distance, Ellipso
 }
 
 class _ReverseProjectionCalculator extends IntervalCalculator {
-  _ReverseProjectionCalculator(_ReverseProjectionIntervalParameters parameters, Ellipsoid ells) : super(parameters, ells) {
+  _ReverseProjectionCalculator(_ReverseProjectionIntervalParameters super.parameters, super.ells) {
     eps = 1e-10;
   }
 

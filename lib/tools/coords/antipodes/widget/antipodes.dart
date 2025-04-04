@@ -12,7 +12,7 @@ import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:latlong2/latlong.dart';
 
 class Antipodes extends StatefulWidget {
-  const Antipodes({Key? key}) : super(key: key);
+  const Antipodes({super.key});
 
   @override
   _AntipodesState createState() => _AntipodesState();

@@ -14,7 +14,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:prefs/prefs.dart';
 
 class GCWClipboardEditor extends StatefulWidget {
-  const GCWClipboardEditor({Key? key}) : super(key: key);
+  const GCWClipboardEditor({super.key});
 
   @override
   _GCWClipboardEditorState createState() => _GCWClipboardEditorState();

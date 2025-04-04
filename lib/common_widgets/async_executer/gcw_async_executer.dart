@@ -19,12 +19,12 @@ class GCWAsyncExecuter<T> extends StatefulWidget {
   final bool isOverlay;
 
   const GCWAsyncExecuter({
-    Key? key,
+    super.key,
     required this.isolatedFunction,
     required this.parameter,
     required this.onReady,
     this.isOverlay = true,
-  }) : super(key: key);
+  });
 
   @override
   _GCWAsyncExecuterState<T> createState() => _GCWAsyncExecuterState<T>();

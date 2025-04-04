@@ -17,7 +17,7 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/foy_breguet/lo
 part 'package:gc_wizard/tools/science_and_technology/telegraphs/foy_breguet/widget/foy_breguet_segment_display.dart';
 
 class FoyBreguetTelegraph extends StatefulWidget {
-  const FoyBreguetTelegraph({Key? key}) : super(key: key);
+  const FoyBreguetTelegraph({super.key});
 
   @override
   _ChappeTelegraphState createState() => _ChappeTelegraphState();

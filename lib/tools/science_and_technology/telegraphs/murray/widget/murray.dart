@@ -17,7 +17,7 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/murray/logic/m
 part 'package:gc_wizard/tools/science_and_technology/telegraphs/murray/widget/murray_segment_display.dart';
 
 class MurrayTelegraph extends StatefulWidget {
-  const MurrayTelegraph({Key? key}) : super(key: key);
+  const MurrayTelegraph({super.key});
 
   @override
   _MurrayTelegraphState createState() => _MurrayTelegraphState();

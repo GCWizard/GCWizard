@@ -10,7 +10,7 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/gauss_weber_te
 class GaussWeberTelegraph extends StatefulWidget {
   final GaussWeberTelegraphMode mode;
 
-  const GaussWeberTelegraph({Key? key, this.mode = GaussWeberTelegraphMode.GAUSS_WEBER_ORIGINAL_V1}) : super(key: key);
+  const GaussWeberTelegraph({super.key, this.mode = GaussWeberTelegraphMode.GAUSS_WEBER_ORIGINAL_V1});
 
   @override
   _GaussWeberTelegraphState createState() => _GaussWeberTelegraphState();

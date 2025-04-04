@@ -8,7 +8,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rsa/logic/rsa.dart';
 
 class RSADCalculator extends StatefulWidget {
-  const RSADCalculator({Key? key}) : super(key: key);
+  const RSADCalculator({super.key});
 
   @override
   _RSADCalculatorState createState() => _RSADCalculatorState();

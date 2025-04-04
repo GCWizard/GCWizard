@@ -10,7 +10,7 @@ import 'package:gc_wizard/tools/wherigo/wherigo_analyze/widget/wherigo_analyze.d
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class WherigoSelection extends GCWSelection {
-  const WherigoSelection({Key? key}) : super(key: key);
+  const WherigoSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

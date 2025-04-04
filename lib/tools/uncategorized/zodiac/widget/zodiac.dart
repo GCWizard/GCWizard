@@ -20,7 +20,7 @@ enum _ZODIACSIGNS_ATTRIBUTES {
 }
 
 class Zodiac extends StatefulWidget {
-  const Zodiac({Key? key}) : super(key: key);
+  const Zodiac({super.key});
 
   @override
   _ZodiacState createState() => _ZodiacState();

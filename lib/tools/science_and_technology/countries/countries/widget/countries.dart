@@ -10,7 +10,7 @@ import 'package:gc_wizard/utils/string_utils.dart';
 class Countries extends StatefulWidget {
   final List<CountryProperties> fields;
 
-  const Countries({Key? key, required this.fields}) : super(key: key);
+  const Countries({super.key, required this.fields});
 
   @override
   _CountriesState createState() => _CountriesState();

@@ -13,7 +13,7 @@ class GCWExpandableTextDivider extends StatefulWidget {
   final bool? suppressTopSpace;
 
   const GCWExpandableTextDivider(
-      {Key? key,
+      {super.key,
       this.text = '',
       this.expanded = true,
       this.style,
@@ -21,8 +21,7 @@ class GCWExpandableTextDivider extends StatefulWidget {
       this.trailing,
       this.onChanged,
       this.suppressBottomSpace,
-      this.suppressTopSpace = true})
-      : super(key: key);
+      this.suppressTopSpace = true});
 
   @override
   _GCWExpandableTextDividerState createState() => _GCWExpandableTextDividerState();

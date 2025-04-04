@@ -10,14 +10,13 @@ class GCWSymbolContainer extends StatefulWidget {
   final bool showBorder;
 
   const GCWSymbolContainer(
-      {Key? key,
+      {super.key,
       required this.symbol,
       this.backgroundColor,
       this.borderColor,
       this.borderWidth,
       this.showBackground = true,
-      this.showBorder = true})
-      : super(key: key);
+      this.showBorder = true});
 
   @override
   _GCWSymbolContainerState createState() => _GCWSymbolContainerState();

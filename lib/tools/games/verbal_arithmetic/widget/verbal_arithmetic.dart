@@ -27,7 +27,7 @@ import 'package:gc_wizard/tools/games/verbal_arithmetic/logic/helper.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 
 class VerbalArithmetic extends StatefulWidget {
-  const VerbalArithmetic({Key? key}) : super(key: key);
+  const VerbalArithmetic({super.key});
 
   @override
   _VerbalArithmeticState createState() => _VerbalArithmeticState();

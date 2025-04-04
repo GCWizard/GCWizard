@@ -5,16 +5,12 @@ import 'package:gc_wizard/tools/crypto_and_encodings/kenny/logic/kenny.dart';
 const MDT_INTERNALNAMES_KENNY = 'multidecoder_tool_kenny_title';
 
 class MultiDecoderToolKenny extends AbstractMultiDecoderTool {
-  MultiDecoderToolKenny({Key? key, required int id, required String name, required Map<String, Object?> options})
+  MultiDecoderToolKenny({super.key, required super.id, required super.name, required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_KENNY,
             onDecode: (String input, String key) {
               return decryptKenny(input, ['m', 'p', 'f'], true);
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolKennyState();
 }

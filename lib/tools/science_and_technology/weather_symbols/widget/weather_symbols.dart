@@ -9,7 +9,7 @@ import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_containe
 const _WEATHERSYMBOL_CLASSES = ['ww', 'w', 'a', 'n', 'c', 'cl', 'cm', 'ch'];
 
 class WeatherSymbols extends StatefulWidget {
-  const WeatherSymbols({Key? key}) : super(key: key);
+  const WeatherSymbols({super.key});
 
   @override
   _WeatherSymbolsState createState() => _WeatherSymbolsState();

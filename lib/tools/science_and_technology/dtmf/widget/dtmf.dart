@@ -13,7 +13,7 @@ import 'package:gc_wizard/tools/science_and_technology/dtmf/logic/dtmf.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/text_widget_utils.dart';
 
 class DTMF extends StatefulWidget {
-  const DTMF({Key? key}) : super(key: key);
+  const DTMF({super.key});
 
   @override
   _DTMFState createState() => _DTMFState();

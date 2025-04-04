@@ -24,7 +24,7 @@ class GCWColumnedMultilineOutput extends StatefulWidget {
   final int maxRowLimit;
 
   const GCWColumnedMultilineOutput(
-      {Key? key,
+      {super.key,
       required this.data,
       this.flexValues = const [],
       this.copyColumn,
@@ -36,8 +36,7 @@ class GCWColumnedMultilineOutput extends StatefulWidget {
       this.fontSize = 0.0,
       this.firstRows,
       this.lastRows,
-      this.maxRowLimit = 150}) // max loaded rows for Listview.builder
-      : super(key: key);
+      this.maxRowLimit = 150});
 
   @override
   _GCWColumnedMultilineOutputState createState() => _GCWColumnedMultilineOutputState();

@@ -16,7 +16,7 @@ import 'package:gc_wizard/tools/science_and_technology/cross_sums/widget/crossto
 import 'package:gc_wizard/utils/alphabets.dart';
 
 class RandomizerLetter extends StatefulWidget {
-  const RandomizerLetter({Key? key}) : super(key: key);
+  const RandomizerLetter({super.key});
 
   @override
   _RandomizerLetterState createState() => _RandomizerLetterState();

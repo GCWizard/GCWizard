@@ -11,7 +11,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/nema/logic/nema.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class NEMA extends StatefulWidget {
-  const NEMA({Key? key}) : super(key: key);
+  const NEMA({super.key});
 
   @override
   _NEMAState createState() => _NEMAState();

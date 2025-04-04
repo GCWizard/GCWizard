@@ -19,7 +19,7 @@ import 'package:gc_wizard/utils/string_utils.dart';
 import 'package:latlong2/latlong.dart';
 
 class FormatConverter extends StatefulWidget {
-  const FormatConverter({Key? key}) : super(key: key);
+  const FormatConverter({super.key});
 
   @override
   _FormatConverterState createState() => _FormatConverterState();
@@ -171,8 +171,8 @@ class _FormatConverterState extends State<FormatConverter> {
 
 class _GCWCoordsFormatSelectorAll extends GCWCoordsFormatSelector {
   const _GCWCoordsFormatSelectorAll(
-      {Key? key, required void Function(CoordinateFormat) onChanged, required CoordinateFormat format})
-      : super(key: key, input: false, onChanged: onChanged, format: format);
+      {required super.onChanged, required super.format})
+      : super(input: false);
 
   @override
   List<GCWDropDownMenuItem<CoordinateFormatKey>> getDropDownItems(BuildContext context) {

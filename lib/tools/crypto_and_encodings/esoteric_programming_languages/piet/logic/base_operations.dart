@@ -37,18 +37,14 @@ class _BaseOperations {
     _toggleCodelChooser = toggleCodelChooser;
   }
 
-  /// <summary>
   /// Pushes the value of the color block just exited on to the stack
-  /// </summary>
   void push() {
     _PietBlock exitedBlock = _getExitedBlock();
 
     _stack.push(exitedBlock.blockCount);
   }
 
-  /// <summary>
   /// Pops the top value off the stack and discards it
-  /// </summary>
   int? pop() {
     return _stack.pop();
   }

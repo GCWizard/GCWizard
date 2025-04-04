@@ -25,7 +25,7 @@ part 'package:gc_wizard/tools/symbol_tables/symbol_replacer/widget/symbol_replac
 class SymbolReplacerManualControl extends StatefulWidget {
   final SymbolReplacerImage symbolImage;
 
-  const SymbolReplacerManualControl({Key? key, required this.symbolImage}) : super(key: key);
+  const SymbolReplacerManualControl({super.key, required this.symbolImage});
 
   @override
   _SymbolReplacerManualControlState createState() => _SymbolReplacerManualControlState();

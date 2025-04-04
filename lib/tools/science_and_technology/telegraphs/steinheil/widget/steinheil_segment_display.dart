@@ -19,16 +19,11 @@ const _STEINHEIL_RADIUS = 10;
 class _SteinheilSegmentDisplay extends NSegmentDisplay {
 
   _SteinheilSegmentDisplay({
-    Key? key,
-    required Map<String, bool> segments,
-    bool readOnly = false,
-    void Function(Map<String, bool>)? onChanged})
+    required super.segments,
+    super.readOnly,
+    super.onChanged})
       : super(
-      key: key,
       initialSegments: _INITIAL_SEGMENTS,
-      segments: segments,
-      readOnly: readOnly,
-      onChanged: onChanged,
       type: SegmentDisplayType.CUSTOM,
       customPaint: (GCWTouchCanvas canvas, Size size, Map<String, bool> currentSegments, Function setSegmentState,
           Color segment_color_on, Color segment_color_off) {

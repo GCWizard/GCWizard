@@ -14,7 +14,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/polybios/logic/polybios.dar
 import 'package:gc_wizard/tools/crypto_and_encodings/trifid/logic/trifid.dart';
 
 class Trifid extends StatefulWidget {
-  const Trifid({Key? key}) : super(key: key);
+  const Trifid({super.key});
 
   @override
   _TrifidState createState() => _TrifidState();

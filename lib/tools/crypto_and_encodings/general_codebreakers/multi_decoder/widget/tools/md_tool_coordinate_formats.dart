@@ -16,14 +16,11 @@ const MDT_COORDINATEFORMATS_OPTION_FORMAT = 'multidecoder_tool_coordinateformats
 
 class MultiDecoderToolCoordinateFormats extends AbstractMultiDecoderTool {
   MultiDecoderToolCoordinateFormats(
-      {Key? key,
-      required int id,
-      required String name,
-      required Map<String, Object?> options})
+      {super.key,
+      required super.id,
+      required super.name,
+      required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_COORDINATEFORMATS,
             onDecode: (String input, String key) {
               input = input.replaceAll(RegExp(r'\s+'), ' ').toUpperCase();
@@ -38,8 +35,7 @@ class MultiDecoderToolCoordinateFormats extends AbstractMultiDecoderTool {
                 return formatCoordOutput(latlng, defaultCoordinateFormat, defaultEllipsoid);
               } catch (e) {}
               return null;
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolCoordinateFormatsState();
 }

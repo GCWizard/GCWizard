@@ -11,7 +11,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/complex_numbers/logic/complex_numbers.dart';
 
 class ComplexNumbers extends StatefulWidget {
-  const ComplexNumbers({Key? key}) : super(key: key);
+  const ComplexNumbers({super.key});
 
   @override
   _ComplexNumbersState createState() => _ComplexNumbersState();

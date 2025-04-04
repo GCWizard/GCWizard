@@ -146,7 +146,7 @@ void main() {
 
       {'input' : 'MfmFmffmp mfmmppppmmmmmmfmfpfmp!', 'replaceCharacters': ['m', 'p', 'f'], 'expectedOutput' : 'GUT GEMACHT!', 'caseSensitive' : false},
 
-      {'input' : 'ß Fmpmfpmfffmm mfffmm mmm fmpmppfmmfmp', 'replaceCharacters': ['m', 'p', 'f'], 'expectedOutput' : 'ẞ THIS IS A TEST', 'caseSensitive' : false},
+      {'input' : 'ß Fmpmfpmfffmm mfffmm mmm fmpmppfmmfmp', 'replaceCharacters': ['m', 'p', 'f'], 'expectedOutput' : 'ß THIS IS A TEST', 'caseSensitive' : false},
       {'input' : 'ß Fmpmfpmfffmm mfffmm mmm fmpmppfmmfmp', 'replaceCharacters': ['m', 'p', 'f'], 'expectedOutput' : 'ß This is a test', 'caseSensitive' : true},
     ];
 

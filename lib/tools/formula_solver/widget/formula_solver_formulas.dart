@@ -3,7 +3,7 @@ part of 'package:gc_wizard/tools/formula_solver/widget/formula_solver_formulagro
 class _FormulaSolverFormulas extends GCWWebStatefulWidget {
   final FormulaGroup group;
 
-  _FormulaSolverFormulas({Key? key, required this.group}) : super(key: key, apiSpecification: '');
+  _FormulaSolverFormulas({required this.group}) : super(apiSpecification: '');
 
   @override
   _FormulaSolverFormulasState createState() => _FormulaSolverFormulasState();

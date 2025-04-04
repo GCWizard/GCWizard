@@ -6,7 +6,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/cipher_wheel/logic/cipher_wheel.dart';
 
 class CipherWheel extends StatefulWidget {
-  const CipherWheel({Key? key}) : super(key: key);
+  const CipherWheel({super.key});
 
   @override
   _CipherWheelState createState() => _CipherWheelState();

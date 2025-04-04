@@ -1371,20 +1371,20 @@ SegmentsChars _decodeBrailleBASIC(List<String> inputs, bool letters) {
     if (_segmentsToCharsBASICBraille
             .map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ==
         null) {
-      char = char + UNKNOWN_ELEMENT;
+      char += UNKNOWN_ELEMENT;
     } else {
       charH = _segmentsToCharsBASICBraille
               .map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ??
           '';
       if (letters) {
-        char = char + charH;
+        char += charH;
       } else // digits
       if ((_LetterToDigit[charH] == null) && (_AntoineToDigit[charH] == null)) {
-        char = char + UNKNOWN_ELEMENT;
+        char += UNKNOWN_ELEMENT;
       } else if (_LetterToDigit[charH] == null) {
-        char = char + (_AntoineToDigit[charH] ?? '');
+        char += (_AntoineToDigit[charH] ?? '');
       } else {
-        char = char + (_LetterToDigit[charH] ?? '');
+        char += (_LetterToDigit[charH] ?? '');
       }
     }
 
@@ -1428,22 +1428,22 @@ SegmentsChars _decodeBrailleSIMPLE(List<String> inputs) {
     if (_segmentsToCharsSIMPLEBrailleFrench
             .map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ==
         null) {
-      char = char + UNKNOWN_ELEMENT;
+      char += UNKNOWN_ELEMENT;
     } else {
       charH = _segmentsToCharsSIMPLEBrailleFrench
               .map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ??
           '';
       if (charH == 'NUMBERFOLLOWS') {
-        char = char + '<NUMBER FOLLOWS>';
+        char += '<NUMBER FOLLOWS>';
         _numberFollows = true;
       } else if (charH == 'ANTOINENUMBERFOLLOWS') {
-        char = char + '<ANTOINE NUMBER FOLLOWS>';
+        char += '<ANTOINE NUMBER FOLLOWS>';
         _antoinenumberFollows = true;
         _numberFollows = false;
       } else if (charH == ' ') {
         _numberFollows = false;
         _antoinenumberFollows = false;
-        char = char + charH;
+        char += charH;
       } else {
         // no switch but char to analyze
         if (_numberFollows) {
@@ -1462,7 +1462,7 @@ SegmentsChars _decodeBrailleSIMPLE(List<String> inputs) {
           charH = UNKNOWN_ELEMENT;
         }
 
-        char = char + charH;
+        char += charH;
       }
     }
     displays.add(display);
@@ -2241,12 +2241,10 @@ SegmentsChars _decodeBrailleEUR(List<String> inputs) {
     if (switchMapKeyValue(_charsToSegmentsEUR)
             .map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ==
         null) {
-      char = char + UNKNOWN_ELEMENT;
+      char += UNKNOWN_ELEMENT;
     } else {
-      char = char +
-          (switchMapKeyValue(_charsToSegmentsEUR)
-                  .map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ??
-              '');
+      char += (switchMapKeyValue(_charsToSegmentsEUR)
+                  .map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ?? '');
     }
     displays.add(display);
 

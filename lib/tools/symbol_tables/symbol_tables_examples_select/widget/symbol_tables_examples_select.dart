@@ -19,7 +19,7 @@ const _LOGO_NAME = 'logo.png';
 const _ALERT_COUNT_SELECTIONS = 50;
 
 class SymbolTableExamplesSelect extends StatefulWidget {
-  const SymbolTableExamplesSelect({Key? key}) : super(key: key);
+  const SymbolTableExamplesSelect({super.key});
 
   @override
   _SymbolTableExamplesSelectState createState() => _SymbolTableExamplesSelectState();

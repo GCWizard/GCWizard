@@ -8,7 +8,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/bacon/logic/bacon.dart';
 
 class Bacon extends StatefulWidget {
-  const Bacon({Key? key}) : super(key: key);
+  const Bacon({super.key});
 
   @override
   _BaconState createState() => _BaconState();

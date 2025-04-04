@@ -25,14 +25,13 @@ class PunchtapeSegmentDisplayOutput extends StatefulWidget {
   final TeletypewriterCodebook codeBook;
 
   const PunchtapeSegmentDisplayOutput(
-      {Key? key,
+      {super.key,
       this.upsideDownButton = false,
       required this.segmentFunction,
       required this.segments,
       required this.readOnly,
       this.trailing,
-      required this.codeBook})
-      : super(key: key);
+      required this.codeBook});
 
   @override
   _PunchtapeSegmentDisplayOutputState createState() => _PunchtapeSegmentDisplayOutputState();

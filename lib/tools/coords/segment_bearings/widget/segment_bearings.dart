@@ -22,7 +22,7 @@ import 'package:gc_wizard/utils/constants.dart';
 import 'package:latlong2/latlong.dart';
 
 class SegmentBearings extends StatefulWidget {
-  const SegmentBearings({Key? key}) : super(key: key);
+  const SegmentBearings({super.key});
 
   @override
   _SegmentBearingsState createState() => _SegmentBearingsState();

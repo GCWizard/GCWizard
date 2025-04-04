@@ -19,7 +19,7 @@ import 'package:gc_wizard/utils/ui_dependent_utils/image_utils/image_utils.dart'
 class Piet extends StatefulWidget {
   final GCWFile? file;
 
-  const Piet({Key? key, this.file}) : super(key: key);
+  const Piet({super.key, this.file});
 
   @override
   _PietState createState() => _PietState();

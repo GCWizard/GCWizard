@@ -25,7 +25,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/bundeswehr_talkingboard/bun
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 
 class BundeswehrTalkingBoardAuthentification extends StatefulWidget {
-  const BundeswehrTalkingBoardAuthentification({Key? key}) : super(key: key);
+  const BundeswehrTalkingBoardAuthentification({super.key});
 
   @override
   _BundeswehrTalkingBoardAuthentificationState createState() =>

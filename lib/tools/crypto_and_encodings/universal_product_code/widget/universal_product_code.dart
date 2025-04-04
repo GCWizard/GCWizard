@@ -11,7 +11,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/universal_product_code/logi
 import 'package:gc_wizard/tools/images_and_files/binary2image/widget/binary2image.dart';
 
 class UniversalProductCode extends StatefulWidget {
-  const UniversalProductCode({Key? key}) : super(key: key);
+  const UniversalProductCode({super.key});
 
   @override
   _UniversalProductCodeState createState() => _UniversalProductCodeState();

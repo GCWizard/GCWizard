@@ -18,7 +18,7 @@ import 'package:image/image.dart' as Image;
 class ImageStretchShrink extends StatefulWidget {
   final GCWFile? file;
 
-  const ImageStretchShrink({Key? key, this.file}) : super(key: key);
+  const ImageStretchShrink({super.key, this.file});
 
   @override
   _ImageStretchShrinkState createState() => _ImageStretchShrinkState();

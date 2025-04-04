@@ -18,7 +18,7 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/chappe/logic/c
 part 'package:gc_wizard/tools/science_and_technology/telegraphs/chappe/widget/chappe_segment_display.dart';
 
 class ChappeTelegraph extends StatefulWidget {
-  const ChappeTelegraph({Key? key}) : super(key: key);
+  const ChappeTelegraph({super.key});
 
   @override
   _ChappeTelegraphState createState() => _ChappeTelegraphState();

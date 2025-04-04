@@ -18,7 +18,7 @@ import 'package:touchable/touchable.dart';
 part 'package:gc_wizard/tools/games/number_pyramid/widget/number_pyramid_board.dart';
 
 class NumberPyramidSolver extends StatefulWidget {
-  const NumberPyramidSolver({Key? key}) : super(key: key);
+  const NumberPyramidSolver({super.key});
 
   @override
   _NumberPyramidSolverState createState() => _NumberPyramidSolverState();

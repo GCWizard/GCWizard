@@ -14,7 +14,7 @@ import 'package:gc_wizard/tools/symbol_tables/_common/widget/symbol_table.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class CCITTSelection extends GCWSelection {
-  const CCITTSelection({Key? key}) : super(key: key);
+  const CCITTSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

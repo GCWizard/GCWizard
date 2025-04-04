@@ -16,12 +16,11 @@ class GCWKeyValueItem extends StatefulWidget {
   final bool Function(String)? validateEditedValue;
 
   GCWKeyValueItem(
-      {Key? key,
+      {super.key,
       required this.keyValueEntry,
       required this.odd,
       this.validateEditedKey,
-      this.validateEditedValue})
-      : super(key: key);
+      this.validateEditedValue});
 
   @override
   GCWKeyValueItemState createState() => GCWKeyValueItemState();

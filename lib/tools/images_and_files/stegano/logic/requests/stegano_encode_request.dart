@@ -4,5 +4,5 @@ class _SteganoEncodeRequest extends _SteganoBaseRequest {
   final String message;
   final String? filename;
 
-  _SteganoEncodeRequest(Uint8List imageData, this.message, {String? key, this.filename}) : super(imageData, key: key);
+  _SteganoEncodeRequest(super.imageData, this.message, {super.key, this.filename});
 }

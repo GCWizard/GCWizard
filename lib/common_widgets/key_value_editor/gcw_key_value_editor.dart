@@ -48,7 +48,7 @@ class GCWKeyValueEditor extends StatefulWidget {
   final bool Function(String)? validateEditedValue;
 
   const GCWKeyValueEditor(
-      {Key? key,
+      {super.key,
       required this.entries,
       this.keyHintText,
       this.keyController,
@@ -70,8 +70,7 @@ class GCWKeyValueEditor extends StatefulWidget {
       this.validateAddedKey,
       this.validateAddedValue,
       this.validateEditedKey,
-      this.validateEditedValue})
-      : super(key: key);
+      this.validateEditedValue});
 
   @override
   _GCWKeyValueEditor createState() => _GCWKeyValueEditor();

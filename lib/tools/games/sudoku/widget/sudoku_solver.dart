@@ -15,7 +15,7 @@ import 'package:touchable/touchable.dart';
 part 'package:gc_wizard/tools/games/sudoku/widget/sudoku_board.dart';
 
 class SudokuSolver extends StatefulWidget {
-  const SudokuSolver({Key? key}) : super(key: key);
+  const SudokuSolver({super.key});
 
   @override
   _SudokuSolverState createState() => _SudokuSolverState();

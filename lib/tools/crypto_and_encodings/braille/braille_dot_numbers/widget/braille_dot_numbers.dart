@@ -13,7 +13,7 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/l
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/segmentdisplay_output.dart';
 
 class BrailleDotNumbers extends StatefulWidget {
-  const BrailleDotNumbers({Key? key}) : super(key: key);
+  const BrailleDotNumbers({super.key});
 
   @override
   _BrailleDotNumbersState createState() => _BrailleDotNumbersState();

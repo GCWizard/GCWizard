@@ -10,7 +10,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/mexican_army_cipher_wheel/logic/mexican_army_cipher_wheel.dart';
 
 class MexicanArmyCipherWheel extends StatefulWidget {
-  const MexicanArmyCipherWheel({Key? key}) : super(key: key);
+  const MexicanArmyCipherWheel({super.key});
 
   @override
   _MexicanArmyCipherWheelState createState() => _MexicanArmyCipherWheelState();

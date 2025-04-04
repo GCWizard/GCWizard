@@ -10,7 +10,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/dna/logic/dna.dart';
 
 class DNANucleicAcidSequence extends StatefulWidget {
-  const DNANucleicAcidSequence({Key? key}) : super(key: key);
+  const DNANucleicAcidSequence({super.key});
 
   @override
   _DNANucleicAcidSequenceState createState() => _DNANucleicAcidSequenceState();

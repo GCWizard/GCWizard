@@ -12,7 +12,7 @@ import 'package:gc_wizard/tools/coords/ellipsoid_transform/logic/ellipsoid_trans
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 
 class EllipsoidTransform extends StatefulWidget {
-  const EllipsoidTransform({Key? key}) : super(key: key);
+  const EllipsoidTransform({super.key});
 
   @override
   _EllipsoidTransformState createState() => _EllipsoidTransformState();

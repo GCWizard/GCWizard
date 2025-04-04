@@ -5,7 +5,7 @@ import 'package:gc_wizard/application/theme/theme_colors.dart';
 class MainMenuEntryStub extends StatefulWidget {
   final Widget content;
 
-  const MainMenuEntryStub({Key? key, required this.content}) : super(key: key);
+  const MainMenuEntryStub({super.key, required this.content});
 
   @override
   _MainMenuEntryStubState createState() => _MainMenuEntryStubState();

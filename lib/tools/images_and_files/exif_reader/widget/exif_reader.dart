@@ -28,7 +28,7 @@ import 'package:latlong2/latlong.dart';
 class ExifReader extends StatefulWidget {
   final GCWFile? file;
 
-  const ExifReader({Key? key, this.file}) : super(key: key);
+  const ExifReader({super.key, this.file});
 
   @override
   _ExifReaderState createState() => _ExifReaderState();

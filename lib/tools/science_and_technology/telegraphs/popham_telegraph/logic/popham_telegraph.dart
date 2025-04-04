@@ -74,9 +74,9 @@ SegmentsText decodeVisualPopham(List<String> inputs) {
   List<String> text = inputs.map((input) {
     var char = '';
     if (CODEBOOK[input] == null) {
-      char = char + UNKNOWN_ELEMENT;
+      char += UNKNOWN_ELEMENT;
     } else {
-      char = char + CODEBOOK[input]!;
+      char += CODEBOOK[input]!;
     }
 
     return char;

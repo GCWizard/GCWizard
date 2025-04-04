@@ -9,11 +9,8 @@ const MDT_BACON_OPTION_MODE_01 = '01';
 const MDT_BACON_OPTION_MODE_AB = 'AB';
 
 class MultiDecoderToolBacon extends AbstractMultiDecoderTool {
-  MultiDecoderToolBacon({Key? key, required int id, required String name, required Map<String, Object?> options})
+  MultiDecoderToolBacon({super.key, required super.id, required super.name, required super.options})
       : super(
-          key: key,
-          id: id,
-          name: name,
           internalToolName: MDT_INTERNALNAMES_BACON,
           onDecode: (String input, String key) {
             return decodeBacon(input,
@@ -21,7 +18,6 @@ class MultiDecoderToolBacon extends AbstractMultiDecoderTool {
                 binary: checkStringFormatOrDefaultOption(MDT_INTERNALNAMES_BACON, options, MDT_BACON_OPTION_MODE) ==
                     MDT_BACON_OPTION_MODE_01);
           },
-          options: options,
         );
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolBaconState();

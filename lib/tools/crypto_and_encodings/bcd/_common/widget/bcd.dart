@@ -8,7 +8,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/bcd/_common/logic/bcd.dart'
 abstract class AbstractBCD extends StatefulWidget {
   final BCDType type;
 
-  const AbstractBCD({Key? key, required this.type}) : super(key: key);
+  const AbstractBCD({super.key, required this.type});
 
   @override
   _AbstractBCDState createState() => _AbstractBCDState();

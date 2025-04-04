@@ -15,7 +15,7 @@ import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit
 import 'package:intl/intl.dart';
 
 class HeatIndex extends StatefulWidget {
-  const HeatIndex({Key? key}) : super(key: key);
+  const HeatIndex({super.key});
 
   @override
   _HeatIndexState createState() => _HeatIndexState();

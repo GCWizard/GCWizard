@@ -34,7 +34,6 @@ class _GridPainter extends StatefulWidget {
   _GridBoxEnumerationStartDirection boxEnumerationStartDirection;
 
   _GridPainter({
-    Key? key,
     this.type = _GridType.BOXES,
     this.countRows = 10,
     this.countColumns = 10,
@@ -45,7 +44,7 @@ class _GridPainter extends StatefulWidget {
     this.boxEnumerationStart = _GridEnumerationStart.TOP_LEFT,
     this.boxEnumerationStartDirection = _GridBoxEnumerationStartDirection.RIGHT,
     this.boxEnumerationBehaviour = _GridBoxEnumerationBehaviour.ALIGNED,
-  }) : super(key: key);
+  });
 
   @override
   _GridPainterState createState() => _GridPainterState();

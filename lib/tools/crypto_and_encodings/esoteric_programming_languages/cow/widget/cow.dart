@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_langua
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class Cow extends StatefulWidget {
-  const Cow({Key? key}) : super(key: key);
+  const Cow({super.key});
 
   @override
   _CowState createState() => _CowState();

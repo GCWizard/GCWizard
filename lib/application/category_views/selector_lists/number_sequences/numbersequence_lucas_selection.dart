@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucas/wi
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceLucasSelection extends GCWSelection {
-  const NumberSequenceLucasSelection({Key? key}) : super(key: key);
+  const NumberSequenceLucasSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

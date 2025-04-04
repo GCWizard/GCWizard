@@ -8,7 +8,7 @@ import 'package:gc_wizard/utils/data_type_utils/object_type_utils.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 
 class CountriesFlags extends StatefulWidget {
-  const CountriesFlags({Key? key}) : super(key: key);
+  const CountriesFlags({super.key});
 
   @override
   _CountriesFlagsState createState() => _CountriesFlagsState();

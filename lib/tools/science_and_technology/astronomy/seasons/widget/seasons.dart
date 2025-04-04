@@ -8,7 +8,7 @@ import 'package:gc_wizard/tools/science_and_technology/astronomy/seasons/logic/s
 import 'package:intl/intl.dart';
 
 class Seasons extends StatefulWidget {
-  const Seasons({Key? key}) : super(key: key);
+  const Seasons({super.key});
 
   @override
   _SeasonsState createState() => _SeasonsState();

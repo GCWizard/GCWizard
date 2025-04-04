@@ -12,7 +12,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/vigenere/widget/vigenere.da
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class VigenereSelection extends GCWSelection {
-  const VigenereSelection({Key? key}) : super(key: key);
+  const VigenereSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -19,7 +19,7 @@ import 'package:gc_wizard/utils/ui_dependent_utils/image_utils/image_utils.dart'
 class Binary2Image extends StatefulWidget {
   final String? barcodeBinary;
 
-  const Binary2Image({Key? key, this.barcodeBinary}) : super(key: key);
+  const Binary2Image({super.key, this.barcodeBinary});
 
   @override
   _Binary2ImageState createState() => _Binary2ImageState();

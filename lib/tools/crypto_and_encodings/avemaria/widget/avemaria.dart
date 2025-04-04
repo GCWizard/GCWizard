@@ -6,7 +6,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/avemaria/logic/avemaria.dart';
 
 class AveMaria extends StatefulWidget {
-  const AveMaria({Key? key}) : super(key: key);
+  const AveMaria({super.key});
 
   @override
   AveMariaState createState() => AveMariaState();

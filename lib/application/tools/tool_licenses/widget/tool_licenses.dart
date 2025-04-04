@@ -6,7 +6,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.d
 
 class ToolLicenses extends StatefulWidget {
   final List<ToolLicenseEntry> licenses;
-  const ToolLicenses({Key? key, required this.licenses}) : super(key: key);
+  const ToolLicenses({super.key, required this.licenses});
 
   @override
   _ToolLicensesState createState() => _ToolLicensesState();

@@ -126,7 +126,7 @@ const String _apiSpecification = '''
 ''';
 
 class FormulaSolverFormulaGroups extends GCWWebStatefulWidget {
-  FormulaSolverFormulaGroups({Key? key}) : super(key: key, apiSpecification: _apiSpecification);
+  FormulaSolverFormulaGroups({super.key}) : super(apiSpecification: _apiSpecification);
 
   @override
   _FormulaSolverFormulaGroupsState createState() => _FormulaSolverFormulaGroupsState();

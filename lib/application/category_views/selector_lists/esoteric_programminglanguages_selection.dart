@@ -18,7 +18,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_langua
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class EsotericProgrammingLanguageSelection extends GCWSelection {
-  const EsotericProgrammingLanguageSelection({Key? key}) : super(key: key);
+  const EsotericProgrammingLanguageSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

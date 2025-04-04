@@ -15,14 +15,14 @@ class GCWDatePicker extends StatefulWidget {
   final TextEditingController? dayController;
 
   const GCWDatePicker({
-    Key? key,
+    super.key,
     required this.onChanged,
     required this.date,
     this.type = CalendarSystem.GREGORIANCALENDAR,
     this.yearController,
     this.monthController,
     this.dayController,
-  }) : super(key: key);
+  });
 
   @override
   _GCWDatePickerState createState() => _GCWDatePickerState();

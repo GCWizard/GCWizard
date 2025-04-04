@@ -16,7 +16,7 @@ import 'package:gc_wizard/tools/formula_solver/widget/formula_solver_formulagrou
 import 'package:gc_wizard/utils/alphabets.dart';
 
 class Gade extends StatefulWidget {
-  const Gade({Key? key}) : super(key: key);
+  const Gade({super.key});
 
   @override
   _GadeState createState() => _GadeState();

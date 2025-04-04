@@ -34,7 +34,7 @@ import 'package:gc_wizard/common_widgets/gcw_selection.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceSelection extends GCWSelection {
-  const NumberSequenceSelection({Key? key}) : super(key: key);
+  const NumberSequenceSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

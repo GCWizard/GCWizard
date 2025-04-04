@@ -33,7 +33,7 @@ const String _apiSpecification = '''
 ''';
 
 class MapView extends GCWWebStatefulWidget {
-  MapView({Key? key}) : super(key: key, apiSpecification: _apiSpecification);
+  MapView({super.key}) : super(apiSpecification: _apiSpecification);
 
   @override
   _MapViewState createState() => _MapViewState();

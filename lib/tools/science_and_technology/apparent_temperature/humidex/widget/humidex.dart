@@ -16,7 +16,7 @@ import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit
 import 'package:intl/intl.dart';
 
 class Humidex extends StatefulWidget {
-  const Humidex({Key? key}) : super(key: key);
+  const Humidex({super.key});
 
   @override
   _HumidexState createState() => _HumidexState();

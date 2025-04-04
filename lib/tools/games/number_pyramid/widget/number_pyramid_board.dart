@@ -10,8 +10,7 @@ class NumberPyramidBoard extends StatefulWidget {
   final NumberPyramid board;
 
   const NumberPyramidBoard(
-      {Key? key, required this.onChanged, required this.board, this.type = NumberPyramidFillType.CALCULATED})
-      : super(key: key);
+      {super.key, required this.onChanged, required this.board, this.type = NumberPyramidFillType.CALCULATED});
 
   @override
   _NumberPyramidBoardState createState() => _NumberPyramidBoardState();

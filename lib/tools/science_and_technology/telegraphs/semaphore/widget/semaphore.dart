@@ -16,7 +16,7 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/semaphore/logi
 part 'package:gc_wizard/tools/science_and_technology/telegraphs/semaphore/widget/semaphore_segment_display.dart';
 
 class SemaphoreTelegraph extends StatefulWidget {
-  const SemaphoreTelegraph({Key? key}) : super(key: key);
+  const SemaphoreTelegraph({super.key});
 
   @override
   _SemaphoreTelegraphState createState() => _SemaphoreTelegraphState();

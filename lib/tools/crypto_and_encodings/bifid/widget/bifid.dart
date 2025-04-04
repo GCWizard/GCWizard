@@ -15,7 +15,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/bifid/logic/bifid.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/polybios/logic/polybios.dart';
 
 class Bifid extends StatefulWidget {
-  const Bifid({Key? key}) : super(key: key);
+  const Bifid({super.key});
 
   @override
   _BifidState createState() => _BifidState();

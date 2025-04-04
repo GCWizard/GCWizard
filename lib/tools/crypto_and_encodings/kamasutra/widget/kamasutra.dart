@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/kamasutra/logic/kamasutra.d
 import 'package:gc_wizard/utils/alphabets.dart';
 
 class Kamasutra extends StatefulWidget {
-  const Kamasutra({Key? key}) : super(key: key);
+  const Kamasutra({super.key});
 
   @override
   _KamasutraState createState() => _KamasutraState();

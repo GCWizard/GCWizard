@@ -55,7 +55,7 @@ const String _apiSpecification = '''
 ''';
 
 class Larrabee extends GCWWebStatefulWidget {
-  Larrabee({Key? key}) : super(key: key, apiSpecification: _apiSpecification);
+  Larrabee({super.key}) : super(apiSpecification: _apiSpecification);
 
   @override
   _LarrabeeState createState() => _LarrabeeState();

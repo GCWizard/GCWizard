@@ -44,7 +44,7 @@ class SymbolReplacer extends StatefulWidget {
   final GCWFile? platformFile;
   final String? symbolKey;
 
-  const SymbolReplacer({Key? key, this.platformFile, this.symbolKey}) : super(key: key);
+  const SymbolReplacer({super.key, this.platformFile, this.symbolKey});
 
   @override
   _SymbolReplacerState createState() => _SymbolReplacerState();

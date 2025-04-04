@@ -13,7 +13,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/base/base91/widget/base91.d
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class BaseSelection extends GCWSelection {
-  const BaseSelection({Key? key}) : super(key: key);
+  const BaseSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

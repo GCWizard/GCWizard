@@ -24,7 +24,7 @@ import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
 import 'package:prefs/prefs.dart';
 
 class SaveRestoreSettings extends StatefulWidget {
-  const SaveRestoreSettings({Key? key}) : super(key: key);
+  const SaveRestoreSettings({super.key});
 
   @override
   _SaveRestoreSettingsState createState() => _SaveRestoreSettingsState();

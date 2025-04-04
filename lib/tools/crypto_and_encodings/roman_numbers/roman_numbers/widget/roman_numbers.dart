@@ -47,7 +47,7 @@ const String _apiSpecification = '''
 ''';
 
 class RomanNumbers extends GCWWebStatefulWidget {
-  RomanNumbers({Key? key}) : super(key: key, apiSpecification: _apiSpecification);
+  RomanNumbers({super.key}) : super(apiSpecification: _apiSpecification);
 
   @override
   _RomanNumbersState createState() => _RomanNumbersState();

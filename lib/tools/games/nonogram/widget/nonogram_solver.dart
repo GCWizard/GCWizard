@@ -32,7 +32,7 @@ import 'package:touchable/touchable.dart';
 part 'package:gc_wizard/tools/games/nonogram/widget/nonogram_board.dart';
 
 class NonogramSolver extends StatefulWidget {
-  const NonogramSolver({Key? key}) : super(key: key);
+  const NonogramSolver({super.key});
 
   @override
   _NonogramSolverState createState() => _NonogramSolverState();

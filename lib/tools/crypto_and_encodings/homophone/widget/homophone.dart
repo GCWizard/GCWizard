@@ -24,7 +24,7 @@ import 'package:gc_wizard/utils/complex_return_types.dart';
 enum _KeyType { CUSTOM_KEY_LIST, CUSTOM_KEY_MAP, GENERATED }
 
 class Homophone extends StatefulWidget {
-  const Homophone({Key? key}) : super(key: key);
+  const Homophone({super.key});
 
   @override
   _HomophoneState createState() => _HomophoneState();

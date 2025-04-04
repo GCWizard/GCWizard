@@ -7,11 +7,8 @@ const MDT_INTERNALNAMES_ONETIMEPAD = 'multidecoder_tool_onetimepad_title';
 const MDT_ONETIMEPAD_OPTION_KEY = 'onetimepad_keyoffset';
 
 class MultiDecoderToolOneTimePad extends AbstractMultiDecoderTool {
-  MultiDecoderToolOneTimePad({Key? key, required int id, required String name, required Map<String, Object?> options})
+  MultiDecoderToolOneTimePad({super.key, required super.id, required super.name, required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_ONETIMEPAD,
             onDecode: (String input, String key) {
               return decryptOneTimePad(input, key,
@@ -19,8 +16,7 @@ class MultiDecoderToolOneTimePad extends AbstractMultiDecoderTool {
                       checkIntFormatOrDefaultOption(MDT_INTERNALNAMES_ONETIMEPAD, options, MDT_ONETIMEPAD_OPTION_KEY) -
                           1);
             },
-            requiresKey: true,
-            options: options);
+            requiresKey: true);
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolOneTimePadState();
 }

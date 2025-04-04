@@ -18,7 +18,7 @@ import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/leng
 import 'package:gc_wizard/utils/constants.dart';
 
 class SegmentLine extends StatefulWidget {
-  const SegmentLine({Key? key}) : super(key: key);
+  const SegmentLine({super.key});
 
   @override
   _SegmentLineState createState() => _SegmentLineState();

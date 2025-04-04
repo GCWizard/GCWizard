@@ -57,7 +57,7 @@ const String _apiSpecification = '''
 ''';
 
 class Playfair extends GCWWebStatefulWidget {
-  Playfair({Key? key}) : super(key: key, apiSpecification: _apiSpecification);
+  Playfair({super.key}) : super(apiSpecification: _apiSpecification);
 
   @override
   _PlayfairState createState() => _PlayfairState();

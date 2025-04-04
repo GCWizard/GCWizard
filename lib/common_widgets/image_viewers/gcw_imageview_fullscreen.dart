@@ -13,7 +13,7 @@ class GCWImageViewFullScreen extends StatefulWidget {
   final Uint8List imageData;
   final Color bgColor;
 
-  const GCWImageViewFullScreen({Key? key, required this.imageData, required this.bgColor}) : super(key: key);
+  const GCWImageViewFullScreen({super.key, required this.imageData, required this.bgColor});
 
   @override
   _GCWImageViewFullScreenState createState() => _GCWImageViewFullScreenState();

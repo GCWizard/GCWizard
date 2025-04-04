@@ -7,10 +7,10 @@ class GCWABCDropDown extends StatefulWidget {
   final int? value;
 
   const GCWABCDropDown({
-    Key? key,
+    super.key,
     required this.onChanged,
     this.value,
-  }) : super(key: key);
+  });
 
   @override
   _GCWABCDropDownState createState() => _GCWABCDropDownState();

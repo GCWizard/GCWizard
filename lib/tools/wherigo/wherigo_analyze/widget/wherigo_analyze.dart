@@ -62,7 +62,7 @@ part 'package:gc_wizard/tools/wherigo/wherigo_analyze/widget/wherigo_widget_outp
 part 'package:gc_wizard/tools/wherigo/wherigo_analyze/widget/wherigo_widget_output_zones.dart';
 
 class WherigoAnalyze extends StatefulWidget {
-  const WherigoAnalyze({Key? key}) : super(key: key);
+  const WherigoAnalyze({super.key});
 
   @override
   _WherigoAnalyzeState createState() => _WherigoAnalyzeState();

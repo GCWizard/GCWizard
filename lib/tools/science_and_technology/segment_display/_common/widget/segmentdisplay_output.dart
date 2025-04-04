@@ -28,7 +28,7 @@ class SegmentDisplayOutput extends StatefulWidget {
   final double? horizontalSymbolPadding;
 
   const SegmentDisplayOutput(
-      {Key? key,
+      {super.key,
       this.upsideDownButton = false,
       required this.segmentFunction,
       required this.segments,
@@ -36,8 +36,7 @@ class SegmentDisplayOutput extends StatefulWidget {
       this.trailing,
       this.showZoomButtons = true,
       this.verticalSymbolPadding,
-      this.horizontalSymbolPadding})
-      : super(key: key);
+      this.horizontalSymbolPadding});
 
   @override
   _SegmentDisplayOutputState createState() => _SegmentDisplayOutputState();

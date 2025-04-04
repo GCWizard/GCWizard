@@ -4,7 +4,7 @@ class _SudokuBoard extends StatefulWidget {
   final void Function(SudokuBoard) onChanged;
   final SudokuBoard board;
 
-  const _SudokuBoard({Key? key, required this.onChanged, required this.board}) : super(key: key);
+  const _SudokuBoard({required this.onChanged, required this.board});
 
   @override
   _SudokuBoardState createState() => _SudokuBoardState();

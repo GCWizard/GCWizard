@@ -8,7 +8,7 @@ import 'package:gc_wizard/tools/science_and_technology/spelling_alphabets/spelli
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class SpellingAlphabetsSelection extends GCWSelection {
-  const SpellingAlphabetsSelection({Key? key}) : super(key: key);
+  const SpellingAlphabetsSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

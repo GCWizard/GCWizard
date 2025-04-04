@@ -71,7 +71,7 @@ const String _apiSpecification = '''
 ''';
 
 class AlphabetValues extends GCWWebStatefulWidget {
-  AlphabetValues({Key? key}) : super(key: key, apiSpecification: _apiSpecification);
+  AlphabetValues({super.key}) : super(apiSpecification: _apiSpecification);
 
   @override
   _AlphabetValuesState createState() => _AlphabetValuesState();

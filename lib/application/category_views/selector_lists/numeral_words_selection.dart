@@ -10,7 +10,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/numeral_words
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumeralWordsSelection extends GCWSelection {
-  const NumeralWordsSelection({Key? key}) : super(key: key);
+  const NumeralWordsSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

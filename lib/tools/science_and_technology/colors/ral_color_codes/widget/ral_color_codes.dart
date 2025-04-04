@@ -20,7 +20,7 @@ import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors_rgb.d
 import 'package:gc_wizard/tools/science_and_technology/colors/ral_color_codes/logic/ral_color_codes.dart';
 
 class RALColorCodes extends StatefulWidget {
-  const RALColorCodes({Key? key}) : super(key: key);
+  const RALColorCodes({super.key});
 
   @override
   _RALColorCodesState createState() => _RALColorCodesState();

@@ -6,7 +6,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/pollux/logic/pollux.dart';
 
 class Pollux extends StatefulWidget {
-  const Pollux({Key? key}) : super(key: key);
+  const Pollux({super.key});
 
   @override
   _PolluxState createState() => _PolluxState();

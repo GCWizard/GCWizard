@@ -18,7 +18,7 @@ import 'package:gc_wizard/utils/constants.dart';
 import 'package:latlong2/latlong.dart';
 
 class CrossBearing extends StatefulWidget {
-  const CrossBearing({Key? key}) : super(key: key);
+  const CrossBearing({super.key});
 
   @override
   _CrossBearingState createState() => _CrossBearingState();

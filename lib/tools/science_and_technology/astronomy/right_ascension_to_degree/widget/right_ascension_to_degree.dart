@@ -24,7 +24,7 @@ import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/science_and_technology/astronomy/right_ascension_to_degree/logic/right_ascension_to_degree.dart';
 
 class RightAscensionToDegree extends StatefulWidget {
-  const RightAscensionToDegree({Key? key}) : super(key: key);
+  const RightAscensionToDegree({super.key});
 
   @override
   _RightAscensionToDegreeState createState() => _RightAscensionToDegreeState();

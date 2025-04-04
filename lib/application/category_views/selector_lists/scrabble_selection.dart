@@ -8,7 +8,7 @@ import 'package:gc_wizard/tools/games/scrabble/widget/scrabble_overview.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class ScrabbleSelection extends GCWSelection {
-  const ScrabbleSelection({Key? key}) : super(key: key);
+  const ScrabbleSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

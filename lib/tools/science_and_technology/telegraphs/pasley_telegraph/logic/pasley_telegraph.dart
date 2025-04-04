@@ -144,7 +144,7 @@ SegmentsText decodeVisualPasley(List<String> inputs) {
     var char = '';
     var charH = '';
     if (CODEBOOK[input] == null) {
-      char = char + UNKNOWN_ELEMENT;
+      char += UNKNOWN_ELEMENT;
     } else {
       charH = CODEBOOK[input]!;
       if (charH == 'LETTERFOLLOWS') {
@@ -152,7 +152,7 @@ SegmentsText decodeVisualPasley(List<String> inputs) {
       } else if (charH == 'NUMBERFOLLOWS') {
         letter = false;
       } else {
-        char = char + (_decode(charH, letter) ?? '');
+        char += (_decode(charH, letter) ?? '');
       }
     }
 

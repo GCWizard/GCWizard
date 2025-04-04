@@ -276,16 +276,16 @@ class FormulaParser {
   // Because: When a former formula will be included, this one IS still ready calculated and does not need another calculation round
   String _safeFormulaReplacements(String formula) {
     var formulaReplacementPattern =
-        RegExp(RECURSIVE_FORMULA_REPLACEMENT_START + '(.*?)' + RECURSIVE_FORMULA_REPLACEMENT_END);
+    RegExp(RECURSIVE_FORMULA_REPLACEMENT_START + '(.*?)?' + RECURSIVE_FORMULA_REPLACEMENT_END);
     var matches = formulaReplacementPattern.allMatches(formula);
 
     for (Match m in matches) {
       var group = m.group(0);
       if (group == null) continue;
       safedFormulaReplacementMap.putIfAbsent(group,
-          () => '$_SAFED_RECURSIVE_FORMULA_MARKER${safedFormulaReplacementMap.length}$_SAFED_RECURSIVE_FORMULA_MARKER');
-      formula = substitution(formula, safedFormulaReplacementMap);
+              () => '$_SAFED_RECURSIVE_FORMULA_MARKER${safedFormulaReplacementMap.length}$_SAFED_RECURSIVE_FORMULA_MARKER');
     }
+    formula = substitution(formula, safedFormulaReplacementMap);
 
     return formula;
   }
@@ -698,8 +698,7 @@ abstract class _FormulaSolverResult {
 class FormulaSolverSingleResult extends _FormulaSolverResult {
   final String result;
 
-  FormulaSolverSingleResult(FormulaState state, this.result, {Map<String, String>? variables})
-      : super(state, variables: variables);
+  FormulaSolverSingleResult(super.state, this.result, {super.variables});
 
   @override
   String toString() {
@@ -710,8 +709,7 @@ class FormulaSolverSingleResult extends _FormulaSolverResult {
 class FormulaSolverMultiResult extends _FormulaSolverResult {
   final List<FormulaSolverSingleResult> results;
 
-  FormulaSolverMultiResult(FormulaState state, this.results, {Map<String, String>? variables})
-      : super(state, variables: variables);
+  FormulaSolverMultiResult(super.state, this.results, {super.variables});
 
   @override
   String toString() {

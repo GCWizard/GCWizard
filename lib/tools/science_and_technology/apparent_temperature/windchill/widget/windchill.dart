@@ -15,7 +15,7 @@ import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/velo
 import 'package:intl/intl.dart';
 
 class Windchill extends StatefulWidget {
-  const Windchill({Key? key}) : super(key: key);
+  const Windchill({super.key});
 
   @override
   _WindchillState createState() => _WindchillState();

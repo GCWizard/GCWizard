@@ -14,7 +14,7 @@ class Teletypewriter extends StatefulWidget {
   final TeletypewriterCodebook defaultCodebook;
   final Map<TeletypewriterCodebook, CodebookConfig>? codebook;
 
-  const Teletypewriter({Key? key, required this.defaultCodebook, required this.codebook}) : super(key: key);
+  const Teletypewriter({super.key, required this.defaultCodebook, required this.codebook});
 
   @override
   _TeletypewriterState createState() => _TeletypewriterState();

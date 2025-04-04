@@ -16,7 +16,7 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/w
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/segmentdisplay_output.dart';
 
 class Braille extends StatefulWidget {
-  const Braille({Key? key}) : super(key: key);
+  const Braille({super.key});
 
   @override
   _BrailleState createState() => _BrailleState();

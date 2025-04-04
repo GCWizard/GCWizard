@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/pell_luc
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequencePellLucasSelection extends GCWSelection {
-  const NumberSequencePellLucasSelection({Key? key}) : super(key: key);
+  const NumberSequencePellLucasSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

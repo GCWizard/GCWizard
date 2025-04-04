@@ -9,7 +9,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/gronsfeld/logic/gronsfeld.dart';
 
 class Gronsfeld extends StatefulWidget {
-  const Gronsfeld({Key? key}) : super(key: key);
+  const Gronsfeld({super.key});
 
   @override
   _GronsfeldState createState() => _GronsfeldState();

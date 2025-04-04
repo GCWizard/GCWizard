@@ -20,7 +20,7 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/edelcrantz/log
 part 'package:gc_wizard/tools/science_and_technology/telegraphs/edelcrantz/widget/edelcrantz_segment_display.dart';
 
 class EdelcrantzTelegraph extends StatefulWidget {
-  const EdelcrantzTelegraph({Key? key}) : super(key: key);
+  const EdelcrantzTelegraph({super.key});
 
   @override
   _EdelcrantzTelegraphState createState() => _EdelcrantzTelegraphState();

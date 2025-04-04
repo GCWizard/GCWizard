@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/happy_nu
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequenceHappyNumbersSelection extends GCWSelection {
-  const NumberSequenceHappyNumbersSelection({Key? key}) : super(key: key);
+  const NumberSequenceHappyNumbersSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -38,7 +38,7 @@ class GCWOpenFile extends StatefulWidget {
   final bool suppressGallery;
 
   const GCWOpenFile(
-      {Key? key,
+      {super.key,
       required this.onLoaded,
       this.supportedFileTypes,
       this.title,
@@ -46,8 +46,7 @@ class GCWOpenFile extends StatefulWidget {
       this.file,
       this.suppressHeader = false,
       this.suppressGallery = true}
-      )
-      : super(key: key);
+      );
 
   @override
   _GCWOpenFileState createState() => _GCWOpenFileState();

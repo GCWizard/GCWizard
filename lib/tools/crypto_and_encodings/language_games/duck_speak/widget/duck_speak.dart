@@ -6,7 +6,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/language_games/duck_speak/logic/duck_speak.dart';
 
 class DuckSpeak extends StatefulWidget {
-  const DuckSpeak({Key? key}) : super(key: key);
+  const DuckSpeak({super.key});
 
   @override
   _DuckSpeakState createState() => _DuckSpeakState();

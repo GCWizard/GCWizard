@@ -3,7 +3,7 @@ part of 'package:gc_wizard/tools/general_tools/randomizer/widget/randomizer_list
 class _RandomizerListsGroups extends StatefulWidget {
   final List<String> list;
 
-  const _RandomizerListsGroups({Key? key, required this.list}) : super(key: key);
+  const _RandomizerListsGroups({required this.list});
 
   @override
   _RandomizerListsGroupsState createState() => _RandomizerListsGroupsState();

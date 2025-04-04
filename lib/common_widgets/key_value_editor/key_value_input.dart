@@ -18,10 +18,10 @@ class GCWKeyValueInput extends StatefulWidget {
   final bool Function(String)? validateAddedValue;
 
   GCWKeyValueInput({
-    Key? key,
+    super.key,
     this.validateAddedKey,
     this.validateAddedValue
-  }) : super(key: key);
+  });
 
   @override
   GCWKeyValueInputState createState() => GCWKeyValueInputState();

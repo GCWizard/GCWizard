@@ -9,11 +9,8 @@ const MDT_SEGMENTDISPLAY_OPTION_NUMBERSEGMENTS = 'multidecoder_tool_segmentdispl
 
 class MultiDecoderToolSegmentDisplay extends AbstractMultiDecoderTool {
   MultiDecoderToolSegmentDisplay(
-      {Key? key, required int id, required String name, required Map<String, Object?> options})
+      {super.key, required super.id, required super.name, required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_SEGMENTDISPLAY,
             onDecode: (String input, String key) {
               SegmentDisplayType segmentType;
@@ -33,8 +30,7 @@ class MultiDecoderToolSegmentDisplay extends AbstractMultiDecoderTool {
                   segmentType = SegmentDisplayType.SEVEN;
               }
               return decodeSegment(input, segmentType).text.replaceAll(UNKNOWN_ELEMENT, '');
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolSegmentDisplayState();
 }

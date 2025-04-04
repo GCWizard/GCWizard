@@ -14,7 +14,7 @@ import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
 class NumeralWordsConverter extends StatefulWidget {
-  const NumeralWordsConverter({Key? key}) : super(key: key);
+  const NumeralWordsConverter({super.key});
 
   @override
   _NumeralWordsConverterState createState() => _NumeralWordsConverterState();

@@ -11,7 +11,7 @@ import 'package:gc_wizard/tools/science_and_technology/cross_sums/iterated_cross
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class CrossSumSelection extends GCWSelection {
-  const CrossSumSelection({Key? key}) : super(key: key);
+  const CrossSumSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

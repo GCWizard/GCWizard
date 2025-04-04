@@ -10,14 +10,11 @@ const MDT_VANITYMULTITAP_OPTION_PHONEMODEL = 'multidecoder_tool_vanity_multitap_
 
 class MultiDecoderToolVanityMultitap extends AbstractMultiDecoderTool {
   MultiDecoderToolVanityMultitap(
-      {Key? key,
-      required int id,
-      required String name,
-      required Map<String, Object?> options})
+      {super.key,
+      required super.id,
+      required super.name,
+      required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_VANITY_MULTITAP,
             onDecode: (String input, String key) {
               PhoneModel model;
@@ -43,8 +40,7 @@ class MultiDecoderToolVanityMultitap extends AbstractMultiDecoderTool {
               }
 
               return decodeVanityMultitap(input, model, PhoneInputLanguage.UNSPECIFIED)?.item2;
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolVanityMultitapState();
 }

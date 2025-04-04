@@ -108,7 +108,7 @@ final _GRID_CONFIGURATIONS = {
 };
 
 class Grid extends StatefulWidget {
-  const Grid({Key? key}) : super(key: key);
+  const Grid({super.key});
 
   @override
   _GridState createState() => _GridState();

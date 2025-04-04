@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/irrational_numbers/silver
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class SilverRatioSelection extends GCWSelection {
-  const SilverRatioSelection({Key? key}) : super(key: key);
+  const SilverRatioSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

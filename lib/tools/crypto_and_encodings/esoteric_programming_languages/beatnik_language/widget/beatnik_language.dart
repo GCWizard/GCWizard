@@ -14,7 +14,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_langua
 import 'package:gc_wizard/tools/games/scrabble/logic/scrabble_sets.dart';
 
 class Beatnik extends StatefulWidget {
-  const Beatnik({Key? key}) : super(key: key);
+  const Beatnik({super.key});
 
   @override
   _BeatnikState createState() => _BeatnikState();

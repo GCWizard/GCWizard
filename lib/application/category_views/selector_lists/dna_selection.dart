@@ -9,7 +9,7 @@ import 'package:gc_wizard/tools/science_and_technology/dna/dna_nucleicacidsequen
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class DNASelection extends GCWSelection {
-  const DNASelection({Key? key}) : super(key: key);
+  const DNASelection({super.key});
 
   @override
   Widget build(BuildContext context) {

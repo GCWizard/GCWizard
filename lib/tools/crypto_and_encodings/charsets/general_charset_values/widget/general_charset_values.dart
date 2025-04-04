@@ -15,8 +15,7 @@ class GeneralCharsetValues extends StatefulWidget {
   final String Function(List<int>) decode;
   final String charsetName;
 
-  const GeneralCharsetValues({Key? key, required this.encode, required this.decode, required this.charsetName})
-      : super(key: key);
+  const GeneralCharsetValues({super.key, required this.encode, required this.decode, required this.charsetName});
 
   @override
   _GeneralCharsetValuesState createState() => _GeneralCharsetValuesState();

@@ -17,7 +17,7 @@ import 'package:gc_wizard/tools/science_and_technology/telegraphs/popham_telegra
 part 'package:gc_wizard/tools/science_and_technology/telegraphs/popham_telegraph/widget/popham_segment_display.dart';
 
 class PophamTelegraph extends StatefulWidget {
-  const PophamTelegraph({Key? key}) : super(key: key);
+  const PophamTelegraph({super.key});
 
   @override
   _PophamTelegraphState createState() => _PophamTelegraphState();

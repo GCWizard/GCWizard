@@ -8,7 +8,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/gray/logic/gray.dart';
 
 class Gray extends StatefulWidget {
-  const Gray({Key? key}) : super(key: key);
+  const Gray({super.key});
 
   @override
   _GrayState createState() => _GrayState();

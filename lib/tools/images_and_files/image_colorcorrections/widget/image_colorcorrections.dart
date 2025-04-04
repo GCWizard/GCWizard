@@ -28,7 +28,7 @@ import 'package:prefs/prefs.dart';
 class ImageColorCorrections extends StatefulWidget {
   final GCWFile? file;
 
-  const ImageColorCorrections({Key? key, this.file}) : super(key: key);
+  const ImageColorCorrections({super.key, this.file});
 
   @override
   _ImageColorCorrectionsState createState() => _ImageColorCorrectionsState();

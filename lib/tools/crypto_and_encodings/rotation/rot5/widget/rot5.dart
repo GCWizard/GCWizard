@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rotation/logic/rotation.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rotation/widget/base_rot.dart';
 
@@ -30,5 +29,5 @@ const String _apiSpecification = '''
 ''';
 
 class Rot5 extends AbstractRotation {
-  Rot5({Key? key}) : super(key: key, rotate: Rotator().rot5, apiSpecification: _apiSpecification);
+  Rot5({super.key}) : super(rotate: Rotator().rot5, apiSpecification: _apiSpecification);
 }

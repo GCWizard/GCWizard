@@ -8,7 +8,7 @@ import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/tools/science_and_technology/kaprekar/logic/kaprekar.dart';
 
 class Kaprekar extends StatefulWidget {
-  const Kaprekar({Key? key}) : super(key: key);
+  const Kaprekar({super.key});
 
   @override
   _KaprekarState createState() => _KaprekarState();

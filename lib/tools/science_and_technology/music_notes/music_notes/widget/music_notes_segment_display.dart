@@ -50,17 +50,12 @@ const _NOTES_RELATIVE_DISPLAY_WIDTH_OUTPUT = 160;
 const _NOTES_RELATIVE_DISPLAY_HEIGHT = 445;
 
 class _NotesSegmentDisplay extends NSegmentDisplay {
-  _NotesSegmentDisplay(
-      {Key? key,
-      required Map<String, bool> segments,
-      bool readOnly = false,
-      void Function(Map<String, bool>)? onChanged})
+  _NotesSegmentDisplay({
+      required super.segments,
+      super.readOnly,
+      super.onChanged})
       : super(
-            key: key,
             initialSegments: _INITIAL_SEGMENTS,
-            segments: segments,
-            readOnly: readOnly,
-            onChanged: onChanged,
             aspectRatio: readOnly
                 ? _NOTES_RELATIVE_DISPLAY_WIDTH_OUTPUT / _NOTES_RELATIVE_DISPLAY_HEIGHT
                 : SEGMENTS_RELATIVE_DISPLAY_WIDTH / SEGMENTS_RELATIVE_DISPLAY_HEIGHT,

@@ -25,7 +25,7 @@ import 'package:touchable/touchable.dart';
 part 'package:gc_wizard/tools/games/logical_supporter/widget/logical_supporter_board.dart';
 
 class LogicalSupporter extends StatefulWidget {
-  const LogicalSupporter({Key? key}) : super(key: key);
+  const LogicalSupporter({super.key});
 
   @override
   _LogicalSupporterState createState() => _LogicalSupporterState();

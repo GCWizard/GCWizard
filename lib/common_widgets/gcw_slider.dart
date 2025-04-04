@@ -16,7 +16,7 @@ class GCWSlider extends StatefulWidget {
   final Object? rightValue;
 
   const GCWSlider(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.value,
       required this.onChanged,
@@ -25,8 +25,7 @@ class GCWSlider extends StatefulWidget {
       required this.max,
       this.suppressReset = false,
       this.leftValue,
-      this.rightValue})
-      : super(key: key);
+      this.rightValue});
 
   @override
   _GCWSliderState createState() => _GCWSliderState();

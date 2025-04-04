@@ -5,7 +5,7 @@ import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 class GCWSubmitButton extends StatefulWidget {
   final void Function() onPressed;
 
-  const GCWSubmitButton({Key? key, required this.onPressed}) : super(key: key);
+  const GCWSubmitButton({super.key, required this.onPressed});
 
   @override
   _GCWSubmitButtonState createState() => _GCWSubmitButtonState();

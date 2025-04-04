@@ -22,7 +22,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/bundeswehr_talkingboard/bun
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 
 class BundeswehrTalkingBoardObfuscation extends StatefulWidget {
-  const BundeswehrTalkingBoardObfuscation({Key? key}) : super(key: key);
+  const BundeswehrTalkingBoardObfuscation({super.key});
 
   @override
   _BundeswehrTalkingBoardObfuscationState createState() =>

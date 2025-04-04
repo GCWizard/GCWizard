@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/irrational_numbers/sqrt3/
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class SQRT3Selection extends GCWSelection {
-  const SQRT3Selection({Key? key}) : super(key: key);
+  const SQRT3Selection({super.key});
 
   @override
   Widget build(BuildContext context) {

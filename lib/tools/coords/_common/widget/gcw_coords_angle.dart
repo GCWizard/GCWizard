@@ -10,7 +10,7 @@ class GCWAngle extends StatefulWidget {
   final void Function(DoubleText) onChanged;
   final String? hintText;
 
-  const GCWAngle({Key? key, required this.onChanged, this.hintText}) : super(key: key);
+  const GCWAngle({super.key, required this.onChanged, this.hintText});
 
   @override
   _GCWAngleState createState() => _GCWAngleState();

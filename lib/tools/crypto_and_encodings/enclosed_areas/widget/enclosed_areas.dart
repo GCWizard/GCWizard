@@ -7,7 +7,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/enclosed_areas/logic/enclosed_areas.dart';
 
 class EnclosedAreas extends StatefulWidget {
-  const EnclosedAreas({Key? key}) : super(key: key);
+  const EnclosedAreas({super.key});
 
   @override
   _EnclosedAreasState createState() => _EnclosedAreasState();

@@ -15,7 +15,7 @@ import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit
 import 'package:intl/intl.dart';
 
 class SummerSimmerIndex extends StatefulWidget {
-  const SummerSimmerIndex({Key? key}) : super(key: key);
+  const SummerSimmerIndex({super.key});
 
   @override
   _SummerSimmerIndexState createState() => _SummerSimmerIndexState();
