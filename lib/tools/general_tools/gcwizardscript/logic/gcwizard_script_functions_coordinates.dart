@@ -128,15 +128,15 @@ _GCWList _convertTo(Object target) {
               ' ' +
               result.dmsLatitude.degrees.toString() +
               '° ' +
-              result.dmsLatitude.minutes.toStringAsFixed(3) +
+              result.dmsLatitude.minutes.toStringAsFixed(0) +
               "' " +
               result.dmsLatitude.seconds.toStringAsFixed(3) +
-              " " +
+              '" ' +
               _lonSign(result.dmsLongitude.sign) +
               ' ' +
               result.dmsLongitude.degrees.toString() +
               '° ' +
-              result.dmsLongitude.minutes.toStringAsFixed(3) +
+              result.dmsLongitude.minutes.toStringAsFixed(0) +
               "' " +
               result.dmsLongitude.seconds.toStringAsFixed(3) +
               '"');
@@ -146,7 +146,7 @@ _GCWList _convertTo(Object target) {
               ' ' +
               result.dmsLatitude.degrees.toString() +
               '° ' +
-              result.dmsLatitude.minutes.toStringAsFixed(3) +
+              result.dmsLatitude.minutes.toStringAsFixed(0) +
               "' " +
               result.dmsLatitude.seconds.toStringAsFixed(3) +
               '"');
@@ -160,7 +160,7 @@ _GCWList _convertTo(Object target) {
               ' ' +
               result.dmsLongitude.degrees.toString() +
               '° ' +
-              result.dmsLongitude.minutes.toStringAsFixed(3) +
+              result.dmsLongitude.minutes.toStringAsFixed(0) +
               "' " +
               result.dmsLongitude.seconds.toStringAsFixed(3) +
               '"');
