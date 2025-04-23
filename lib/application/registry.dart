@@ -1325,7 +1325,6 @@ void initializeRegistry(BuildContext context) {
     ], searchKeys: const [
       'xkcd',
       'mathematical_constants',
-      'ramanujan',
       'kaprekar',
     ], licenses: [
       ToolLicenseOnlineArticle(
