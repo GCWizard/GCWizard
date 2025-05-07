@@ -206,8 +206,11 @@ class _SubstitutionState extends State<Substitution> {
     _toList.shuffle();
 
     var rand = Random();
-    var _min = min<int>(fromAlphabet.length, _toList.length);
-    for (int i = 0; i < _min; i++) {
+    var len = fromAlphabet.length;
+    if (_currentUniqueResults) {
+      len = min<int>(fromAlphabet.length, _toList.length);
+    }
+    for (int i = 0; i < len; i++) {
       _addEntry(KeyValueBase(null, fromAlphabet[i], _toList[_currentUniqueResults ? i : rand.nextInt(_toList.length)]));
     }
   }
