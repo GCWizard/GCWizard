@@ -203,6 +203,15 @@ Future<List<BigInt>> calculateRange(GetNumberRangeJobData data,
       case NumberSequencesMode.BUSY_BEAVER:
         sequenceList.addAll(busy_beaver_numbers);
         break;
+      case NumberSequencesMode.CARMICHAEL:
+        sequenceList.addAll(carmichael_numbers);
+        break;
+      case NumberSequencesMode.HARSHAD:
+        sequenceList.addAll(harshad_numbers);
+        break;
+      case NumberSequencesMode.TAXICAB:
+        sequenceList.addAll(taxicab_numbers);
+        break;
       default:
         {}
     }

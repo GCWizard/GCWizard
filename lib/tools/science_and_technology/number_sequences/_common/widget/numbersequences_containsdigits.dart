@@ -54,6 +54,11 @@ class _NumberSequenceContainsDigitsState extends State<NumberSequenceContainsDig
 
     detailedOutput = numberSequencesGetFirstPositionOfSequence(widget.mode, currentInputN.toString(), widget.maxIndex);
 
+    if (detailedOutput.number == '-1') {
+      _currentOutput = GCWDefaultOutput(child: i18n(context, 'numbersequence_notfound'));
+      return;
+    }
+
     columnData.add([
       i18n(context, 'numbersequence_output_col_1'),
       i18n(context, 'numbersequence_output_col_2'),

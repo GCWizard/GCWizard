@@ -44,11 +44,13 @@ import 'package:gc_wizard/application/category_views/selector_lists/miscellaneou
 import 'package:gc_wizard/application/category_views/selector_lists/morse_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_bell_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_busybeaver_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_carmichaelnumber_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_catalan_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_factorial_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_fermat_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_fibonacci_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_happynumbers_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_harshadnumber_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_jacobsthal_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_jacobsthallucas_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_jacobsthaloblong_selection.dart';
@@ -69,8 +71,10 @@ import 'package:gc_wizard/application/category_views/selector_lists/number_seque
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_primes_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_recaman_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_sphenicnumber_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_sublimenumbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_superperfectnumbers_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_taxicab_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_weirdnumbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/numeral_words_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/periodic_table_selection.dart';
@@ -411,8 +415,10 @@ import 'package:gc_wizard/tools/science_and_technology/lcm/widget/lcm.dart';
 import 'package:gc_wizard/tools/science_and_technology/mathematical_constants/widget/mathematical_constants.dart';
 import 'package:gc_wizard/tools/science_and_technology/maya_calendar/widget/maya_calendar.dart';
 import 'package:gc_wizard/tools/science_and_technology/music_notes/music_notes/widget/music_notes.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/Harshad/widget/Harshad_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/bell/widget/bell.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/busybeaver/widget/busybeaver.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/carmichael/widget/carmichael_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/catalan/widget/catalan.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/factorial/widget/factorial.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/fermat/widget/fermat.dart';
@@ -437,8 +443,10 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/permutab
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/primarypseudoperfect_numbers/widget/primarypseudoperfect_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/primes/widget/primes.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/recaman/widget/recaman.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/sphenic_numbers/widget/spenic_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/sublime_numbers/widget/sublime_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/superperfect_numbers/widget/superperfect_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/taxicab/widget/taxicab_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/weird_numbers/widget/weird_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/numeral_bases/widget/numeral_bases.dart';
 import 'package:gc_wizard/tools/science_and_technology/paperformat/widget/paperformat.dart';
@@ -4735,6 +4743,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceFactorialSelection(),
         id: 'numbersequence_factorial',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_factorialselection',
         ]),
@@ -4742,6 +4751,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceFibonacciSelection(),
         id: 'numbersequence_fibonacci',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_fibonacciselection',
         ]),
@@ -4749,6 +4759,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceMersenneSelection(),
         id: 'numbersequence_mersenne',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_mersenneselection',
         ]),
@@ -4756,6 +4767,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceMersennePrimesSelection(),
         id: 'numbersequence_mersenneprimes',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'primes',
           'numbersequence_mersenneprimesselection',
@@ -4764,6 +4776,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequencePrimesSelection(),
         id: 'numbersequence_primes',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'primes',
         ]),
@@ -4771,6 +4784,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceMersenneExponentsSelection(),
         id: 'numbersequence_mersenneexponents',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_mersenneexponentsselection',
         ]),
@@ -4778,6 +4792,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceMersenneFermatSelection(),
         id: 'numbersequence_mersennefermat',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_mersennefermatselection',
         ]),
@@ -4785,6 +4800,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceFermatSelection(),
         id: 'numbersequence_fermat',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_fermatselection',
         ]),
@@ -4792,6 +4808,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequencePerfectNumbersSelection(),
         id: 'numbersequence_perfectnumbers',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_perfectnumbersselection',
         ]),
@@ -4799,6 +4816,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceSuperPerfectNumbersSelection(),
         id: 'numbersequence_superperfectnumbers',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_superperfectnumbersselection',
         ]),
@@ -4806,6 +4824,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequencePrimaryPseudoPerfectNumbersSelection(),
         id: 'numbersequence_primarypseudoperfectnumbers',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_primarypseudoperfectnumbersselection',
         ]),
@@ -4813,6 +4832,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceWeirdNumbersSelection(),
         id: 'numbersequence_weirdnumbers',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_weirdnumbersselection',
         ]),
@@ -4820,6 +4840,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceSublimeNumbersSelection(),
         id: 'numbersequence_sublimenumbers',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_sublimenumbersselection',
         ]),
@@ -4827,6 +4848,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequencePermutablePrimesSelection(),
         id: 'numbersequence_permutableprimes',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'primes',
           'numbersequence_permutableprimesselection',
@@ -4835,6 +4857,7 @@ void initializeRegistry(BuildContext context) {
       tool: const NumberSequenceMemorablePrimesSelection(),
       id: 'numbersequence_memorableprimes',
       searchKeys: const [
+        'numbers',
         'numbersequence',
         'primes',
         'numbersequence_memorableprimesselection',
@@ -4854,6 +4877,7 @@ void initializeRegistry(BuildContext context) {
       tool: const NumberSequenceMemorablePrimesIndexesSelection(),
       id: 'numbersequence_memorableprimesindexes',
       searchKeys: const [
+        'numbers',
         'numbersequence',
         'primes',
         'numbersequence_memorableprimesindexesselection',
@@ -4873,6 +4897,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceLuckyNumbersSelection(),
         id: 'numbersequence_luckynumbers',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_luckynumbersselection',
         ]),
@@ -4880,6 +4905,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceHappyNumbersSelection(),
         id: 'numbersequence_happynumbers',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_happynumbersselection',
         ]),
@@ -4887,6 +4913,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceBellSelection(),
         id: 'numbersequence_bell',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_bellselection',
         ]),
@@ -4894,6 +4921,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequencePellSelection(),
         id: 'numbersequence_pell',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_pellselection',
         ]),
@@ -4901,6 +4929,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceLucasSelection(),
         id: 'numbersequence_lucas',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_lucasselection',
         ]),
@@ -4908,6 +4937,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequencePellLucasSelection(),
         id: 'numbersequence_pelllucas',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_pelllucasselection',
         ]),
@@ -4915,6 +4945,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceJacobsthalSelection(),
         id: 'numbersequence_jacobsthal',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_jacobsthalselection',
         ]),
@@ -4922,6 +4953,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceJacobsthalLucasSelection(),
         id: 'numbersequence_jacobsthallucas',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_jacobsthallucasselection',
         ]),
@@ -4929,6 +4961,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceJacobsthalOblongSelection(),
         id: 'numbersequence_jacobsthaloblong',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_jacobsthaloblongselection',
         ]),
@@ -4936,6 +4969,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceCatalanSelection(),
         id: 'numbersequence_catalan',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_catalanselection',
         ]),
@@ -4943,6 +4977,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceRecamanSelection(),
         id: 'numbersequence_recaman',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_recamanselection',
         ]),
@@ -4950,6 +4985,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceLychrelSelection(),
         id: 'numbersequence_lychrel',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_lychrelselection',
         ]),
@@ -4957,8 +4993,41 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceBusyBeaverSelection(),
         id: 'numbersequence_busy_beaver',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_busy_beavernumbersselection',
+        ]),
+    GCWTool(
+        tool: const NumberSequenceSphenicNumberSelection(),
+        id: 'numbersequence_sphenicnumbers',
+        searchKeys: const [
+          'numbers',
+          'numbersequence',
+          'numbersequence_sphenicnumberselection',
+        ]),
+    GCWTool(
+        tool: const NumberSequenceCarmichaelNumbersSelection(),
+        id: 'numbersequence_carmichaelnumbers',
+        searchKeys: const [
+          'numbers',
+          'numbersequence',
+          'numbersequence_carmichaelnumbersselection',
+        ]),
+    GCWTool(
+        tool: const NumberSequenceHarshadNumberSelection(),
+        id: 'numbersequence_harshadnumbers',
+        searchKeys: const [
+          'numbers',
+          'numbersequence',
+          'numbersequence_harshadnumbersselection',
+        ]),
+    GCWTool(
+        tool: const NumberSequenceTaxicabNumbersSelection(),
+        id: 'numbersequence_taxicabnumbers',
+        searchKeys: const [
+          'numbers',
+          'numbersequence',
+          'numbersequence_taxicabnumbersselection',
         ]),
 
     //NumberSequenceSelection BusyBeaver ****************************************************************************************
@@ -4986,6 +5055,114 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceBusyBeaverContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'busy_beaver_',
+        searchKeys: const []),
+
+    //NumberSequenceSelection Carmichael NUmbers ****************************************************************************************
+    GCWTool(
+        tool: const NumberSequenceCarmichaelNumbersNthNumber(),
+        id: 'numbersequence_nth',
+        id_prefix: 'carmichaelnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceCarmichaelNumbersRange(),
+        id: 'numbersequence_range',
+        id_prefix: 'carmichaelnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceCarmichaelNumbersCheckNumber(),
+        id: 'numbersequence_check',
+        id_prefix: 'carmichaelnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceCarmichaelNumbersDigits(),
+        id: 'numbersequence_digits',
+        id_prefix: 'carmichaelnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceCarmichaelNumbersContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        id_prefix: 'carmichaelnumbers_',
+        searchKeys: const []),
+
+    //NumberSequenceSelection Sphenic NUmbers ****************************************************************************************
+    GCWTool(
+        tool: const NumberSequenceSphenicNumbersNthNumber(),
+        id: 'numbersequence_nth',
+        id_prefix: 'sphenicnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceSphenicNumbersRange(),
+        id: 'numbersequence_range',
+        id_prefix: 'sphenicnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceSphenicNumbersCheckNumber(),
+        id: 'numbersequence_check',
+        id_prefix: 'sphenicnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceSphenicNumbersDigits(),
+        id: 'numbersequence_digits',
+        id_prefix: 'sphenicnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceSphenicNumbersContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        id_prefix: 'sphenicnumbers_',
+        searchKeys: const []),
+
+    //NumberSequenceSelection Harshad NUmbers ****************************************************************************************
+    GCWTool(
+        tool: const NumberSequenceHarshadNumbersNthNumber(),
+        id: 'numbersequence_nth',
+        id_prefix: 'harshadnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceHarshadNumbersRange(),
+        id: 'numbersequence_range',
+        id_prefix: 'harshadnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceHarshadNumbersCheckNumber(),
+        id: 'numbersequence_check',
+        id_prefix: 'harshadnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceHarshadNumbersDigits(),
+        id: 'numbersequence_digits',
+        id_prefix: 'harshadnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceHarshadNumbersContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        id_prefix: 'harshadnumbers_',
+        searchKeys: const []),
+
+    //NumberSequenceSelection Taxicab NUmbers ****************************************************************************************
+    GCWTool(
+        tool: const NumberSequenceTaxicabNumbersNthNumber(),
+        id: 'numbersequence_nth',
+        id_prefix: 'taxicabnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceTaxicabNumbersRange(),
+        id: 'numbersequence_range',
+        id_prefix: 'taxicabnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceTaxicabNumbersCheckNumber(),
+        id: 'numbersequence_check',
+        id_prefix: 'taxicabnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceTaxicabNumbersDigits(),
+        id: 'numbersequence_digits',
+        id_prefix: 'taxicabnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceTaxicabNumbersContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        id_prefix: 'taxicabnumbers_',
         searchKeys: const []),
 
     //NumberSequenceSelection Factorial ****************************************************************************************
