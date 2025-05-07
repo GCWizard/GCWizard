@@ -229,7 +229,7 @@ class _GCWCoordsState extends State<GCWCoords> {
                   context,
                   _currentCoordsLatLng != null
                       ? formatCoordOutput(_currentCoordsLatLng, _currentCoordinateFormat, defaultEllipsoid, false)
-                      : '');
+                      : '$_currentCoords');
             }),
         Container(width: DEFAULT_MARGIN),
         GCWIconButton(
