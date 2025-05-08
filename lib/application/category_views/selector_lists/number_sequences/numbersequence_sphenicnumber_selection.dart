@@ -6,8 +6,8 @@ import 'package:gc_wizard/common_widgets/gcw_selection.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/sphenic_numbers/widget/spenic_numbers.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
-class NumberSequenceSphenicNumberSelection extends GCWSelection {
-  const NumberSequenceSphenicNumberSelection({super.key});
+class NumberSequenceSphenicNumbersSelection extends GCWSelection {
+  const NumberSequenceSphenicNumbersSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

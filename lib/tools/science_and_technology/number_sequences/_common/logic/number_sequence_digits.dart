@@ -163,6 +163,9 @@ List<BigInt> numberSequencesGetNumbersWithNDigits(NumberSequencesMode sequence, 
       case NumberSequencesMode.BELL:
         sequenceList.addAll(bell_numbers);
         break;
+      case NumberSequencesMode.LONELY:
+        sequenceList.addAll(lonely_numbers);
+        break;
       default:
         return numberList;
     }

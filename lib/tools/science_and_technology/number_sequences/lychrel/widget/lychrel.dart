@@ -7,22 +7,22 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 
 class NumberSequenceLychrelCheckNumber extends NumberSequenceCheckNumber {
   const NumberSequenceLychrelCheckNumber({super.key})
-      : super(mode: NumberSequencesMode.LYCHREL, maxIndex: 246);
+      : super(mode: NumberSequencesMode.LYCHREL, maxIndex: 20000);
 }
 
 class NumberSequenceLychrelDigits extends NumberSequenceDigits {
-  const NumberSequenceLychrelDigits({super.key}) : super(mode: NumberSequencesMode.LYCHREL, maxDigits: 4);
+  const NumberSequenceLychrelDigits({super.key}) : super(mode: NumberSequencesMode.LYCHREL, maxDigits: 6);
 }
 
 class NumberSequenceLychrelRange extends NumberSequenceRange {
-  const NumberSequenceLychrelRange({super.key}) : super(mode: NumberSequencesMode.LYCHREL, maxIndex: 246);
+  const NumberSequenceLychrelRange({super.key}) : super(mode: NumberSequencesMode.LYCHREL, maxIndex: 20000);
 }
 
 class NumberSequenceLychrelNthNumber extends NumberSequenceNthNumber {
-  const NumberSequenceLychrelNthNumber({super.key}) : super(mode: NumberSequencesMode.LYCHREL, maxIndex: 246);
+  const NumberSequenceLychrelNthNumber({super.key}) : super(mode: NumberSequencesMode.LYCHREL, maxIndex: 20000);
 }
 
 class NumberSequenceLychrelContainsDigits extends NumberSequenceContainsDigits {
   const NumberSequenceLychrelContainsDigits({super.key})
-      : super(mode: NumberSequencesMode.LYCHREL, maxIndex: 246);
+      : super(mode: NumberSequencesMode.LYCHREL, maxIndex: 20000);
 }

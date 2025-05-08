@@ -202,6 +202,9 @@ Future<List<BigInt>> calculateRange(GetNumberRangeJobData data,
       case NumberSequencesMode.BELL:
         sequenceList.addAll(bell_numbers);
         break;
+      case NumberSequencesMode.LONELY:
+        sequenceList.addAll(lonely_numbers);
+        break;
       default:
         {}
     }

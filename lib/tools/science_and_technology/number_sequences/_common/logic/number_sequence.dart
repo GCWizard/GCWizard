@@ -46,6 +46,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/busybeav
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/carmichael/logic/list_carmichael_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/happy_numbers/logic/list_happy_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/harshad/logic/list_harshad_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/lonely_numbers/logic/list_lonely_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucky_numbers/logic/list_lucky_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lychrel/logic/list_lychrel_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/memorable_primes/logic/list_permutable_primes.dart';
@@ -101,6 +102,7 @@ const Map<NumberSequencesMode, String> NUMBERSEQUENCE_TITLE = {
   NumberSequencesMode.SPHENIC: 'numbersequence_sphenicnumbers_title',
   NumberSequencesMode.HARSHAD: 'numbersequence_harshadnumbers_title',
   NumberSequencesMode.TAXICAB: 'numbersequence_taxicabnumbers_title',
+  NumberSequencesMode.LONELY: 'numbersequence_lonelynumbers_title',
 };
 
 class PositionOfSequenceOutput {
@@ -143,7 +145,8 @@ enum NumberSequencesMode {
   SPHENIC,
   CARMICHAEL,
   HARSHAD,
-  TAXICAB
+  TAXICAB,
+  LONELY
 }
 
 final Zero = BigInt.zero;

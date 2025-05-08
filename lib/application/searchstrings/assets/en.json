@@ -312,6 +312,7 @@
   "numbersequence_superperfectnumbersselection": "superperfectnumbers",
   "numbersequence_weirdnumbersselection": "weirdnumbers",
   "numbersequence_sphenicnumbersselection": "sphenicnumbers",
+  "numbersequence_lonelynumbersselection": "lonelynumbers",
   "numeralbases": "hexadecimal octal octenary numeral systems",
   "numeralwords": "numeralwords numberwords numerals",
   "numeralwords_identifylanguages": "languageidentification findlanguages searchlanguages indentifylanguages",

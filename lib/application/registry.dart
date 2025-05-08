@@ -54,6 +54,7 @@ import 'package:gc_wizard/application/category_views/selector_lists/number_seque
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_jacobsthal_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_jacobsthallucas_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_jacobsthaloblong_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_lonelynumbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_lucas_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_luckynumbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_lychrel_selection.dart';
@@ -427,6 +428,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/happy_nu
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsthal/widget/jacobsthal.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsthal_lucas/widget/jacobsthal_lucas.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsthal_oblong/widget/jacobsthal_oblong.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/lonely_numbers/widget/lonely_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucas/widget/lucas.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucky_numbers/widget/lucky_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lychrel/widget/lychrel.dart';
@@ -1666,7 +1668,16 @@ void initializeRegistry(BuildContext context) {
         tool: const PrimesSelection(),
         id: 'primes_selection',
         categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-        searchKeys: const []),
+        searchKeys: const [],
+      licenses: [
+        ToolLicenseOnlineArticle(
+          context: context,
+          author: 'numbergenerator.org',
+          title: 'Prime Number List 1 - 10000000',
+          sourceUrl:
+          'https://web.archive.org/web/20250508131535/https://numbergenerator.org/numberlist/prime-numbers/1-10000000#',
+        ),
+      ],),
     GCWTool(tool: const Projectiles(), id: 'projectiles', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
     ], searchKeys: const [
@@ -4779,7 +4790,16 @@ void initializeRegistry(BuildContext context) {
           'numbers',
           'numbersequence',
           'primes',
-        ]),
+        ],
+      licenses: [
+        ToolLicenseOnlineArticle(
+          context: context,
+          author: 'numbergenerator.org',
+          title: 'Prime Number List 1 - 10000000',
+          sourceUrl:
+          'https://web.archive.org/web/20250508131535/https://numbergenerator.org/numberlist/prime-numbers/1-10000000#',
+        ),
+      ],),
     GCWTool(
         tool: const NumberSequenceMersenneExponentsSelection(),
         id: 'numbersequence_mersenneexponents',
@@ -4787,7 +4807,16 @@ void initializeRegistry(BuildContext context) {
           'numbers',
           'numbersequence',
           'numbersequence_mersenneexponentsselection',
-        ]),
+        ],
+      licenses: [
+        ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Great Internet Mersenne Prime Seach (GIMPS)',
+          title: 'List of Known Mersenne Prime Numbers',
+          sourceUrl:
+          'https://web.archive.org/web/20250505191859/https://www.mersenne.org/primes/',
+        ),
+      ],),
     GCWTool(
         tool: const NumberSequenceMersenneFermatSelection(),
         id: 'numbersequence_mersennefermat',
@@ -4811,6 +4840,15 @@ void initializeRegistry(BuildContext context) {
           'numbers',
           'numbersequence',
           'numbersequence_perfectnumbersselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A000396',
+            sourceUrl:
+            'https://web.archive.org/web/20250401030223/https://oeis.org/A000396/b000396.txt',
+          ),
         ]),
     GCWTool(
         tool: const NumberSequenceSuperPerfectNumbersSelection(),
@@ -4819,6 +4857,15 @@ void initializeRegistry(BuildContext context) {
           'numbers',
           'numbersequence',
           'numbersequence_superperfectnumbersselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A019279',
+            sourceUrl:
+            'https://web.archive.org/web/20241110082329/https://oeis.org/A019279/b019279.txt',
+          ),
         ]),
     GCWTool(
         tool: const NumberSequencePrimaryPseudoPerfectNumbersSelection(),
@@ -4835,6 +4882,15 @@ void initializeRegistry(BuildContext context) {
           'numbers',
           'numbersequence',
           'numbersequence_weirdnumbersselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A006037',
+            sourceUrl:
+            'https://web.archive.org/web/20230326022112/https://oeis.org/A006037/b006037.txt',
+          ),
         ]),
     GCWTool(
         tool: const NumberSequenceSublimeNumbersSelection(),
@@ -4843,7 +4899,16 @@ void initializeRegistry(BuildContext context) {
           'numbers',
           'numbersequence',
           'numbersequence_sublimenumbersselection',
-        ]),
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+          context: context,
+          author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+          title: 'A081357',
+          sourceUrl:
+          'https://web.archive.org/web/20240917152812/https://oeis.org/A081357/b081357.txt',
+        ),
+    ]),
     GCWTool(
         tool: const NumberSequencePermutablePrimesSelection(),
         id: 'numbersequence_permutableprimes',
@@ -4852,7 +4917,18 @@ void initializeRegistry(BuildContext context) {
           'numbersequence',
           'primes',
           'numbersequence_permutableprimesselection',
-        ]),
+        ], licenses: [
+          ToolLicenseOnlineArticle(
+          context: context,
+          author: 'en.wikipedia.org and contributors',
+          title: 'Permutable prime',
+          licenseType: ToolLicenseType.CCBYSA4,
+          licenseUrl:
+          'https://en.wikipedia.org/w/index.php?title=Wikipedia:Text_of_the_Creative_Commons_Attribution-ShareAlike_4.0_International_License&oldid=1162946924',
+          sourceUrl:
+          'https://en.wikipedia.org/w/index.php?title=Permutable_prime&oldid=1247788259',
+        )
+    ]),
     GCWTool(
       tool: const NumberSequenceMemorablePrimesSelection(),
       id: 'numbersequence_memorableprimes',
@@ -4908,6 +4984,15 @@ void initializeRegistry(BuildContext context) {
           'numbers',
           'numbersequence',
           'numbersequence_happynumbersselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A007770',
+            sourceUrl:
+            'https://web.archive.org/web/20250107001844/https://oeis.org/A007770/b007770.txt',
+          ),
         ]),
     GCWTool(
         tool: const NumberSequenceBellSelection(),
@@ -4997,6 +5082,15 @@ void initializeRegistry(BuildContext context) {
           'numbers',
           'numbersequence',
           'numbersequence_lychrelselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A023108',
+            sourceUrl:
+            'https://web.archive.org/web/20250219235747/https://oeis.org/A023108/b023108.txt',
+          ),
         ]),
     GCWTool(
         tool: const NumberSequenceBusyBeaverSelection(),
@@ -5007,7 +5101,82 @@ void initializeRegistry(BuildContext context) {
           'numbersequence_busy_beavernumbersselection',
         ]),
     GCWTool(
-        tool: const NumberSequenceSphenicNumberSelection(),
+        tool: const NumberSequenceSphenicNumbersSelection(),
+        id: 'numbersequence_sphenicnumbers',
+        searchKeys: const [
+          'numbers',
+          'numbersequence',
+          'numbersequence_sphenicnumberselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A007304',
+            sourceUrl:
+            'https://web.archive.org/web/20250114133913/https://oeis.org/A007304/b007304.txt',
+          ),
+        ]),
+    GCWTool(
+        tool: const NumberSequenceCarmichaelNumbersSelection(),
+        id: 'numbersequence_carmichaelnumbers',
+        searchKeys: const [
+          'numbers',
+          'numbersequence',
+          'numbersequence_carmichaelnumbersselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A002997',
+            sourceUrl:
+            'https://web.archive.org/web/20241217192642/https://oeis.org/A002997/b002997.txt',
+          ),
+        ]),
+    GCWTool(
+        tool: const NumberSequenceHarshadNumbersSelection(),
+        id: 'numbersequence_harshadnumbers',
+        searchKeys: const [
+          'numbers',
+          'numbersequence',
+          'numbersequence_harshadnumbersselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A005349',
+            sourceUrl:
+            'https://web.archive.org/web/20250114224547/https://oeis.org/A005349/b005349.txt',
+          ),
+        ]),
+    GCWTool(
+        tool: const NumberSequenceTaxicabNumbersSelection(),
+        id: 'numbersequence_taxicabnumbers',
+        searchKeys: const [
+          'numbers',
+          'numbersequence',
+          'numbersequence_taxicabnumbersselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A011541',
+            sourceUrl:
+            'https://web.archive.org/web/20250407200104/https://oeis.org/A011541/b011541.txt',
+          ),
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Manon Bischof',
+            title: 'Vergesst die 42, die Lieblingszahl von Nerds ist 1729',
+            sourceUrl:
+            'https://web.archive.org/web/20250426232004/https://www.spektrum.de/kolumne/srinivasa-ramanujan-und-die-taxicab-zahl-1729/2261407',
+          ),
+        ]),
+    GCWTool(
+        tool: const NumberSequenceSphenicNumbersSelection(),
         id: 'numbersequence_sphenicnumbers',
         searchKeys: const [
           'numbers',
@@ -5025,38 +5194,49 @@ void initializeRegistry(BuildContext context) {
           ),
         ]),
     GCWTool(
-        tool: const NumberSequenceCarmichaelNumbersSelection(),
-        id: 'numbersequence_carmichaelnumbers',
+        tool: const NumberSequenceLonelyNumbersSelection(),
+        id: 'numbersequence_lonelynumbers',
         searchKeys: const [
           'numbers',
           'numbersequence',
-          'numbersequence_carmichaelnumbersselection',
-        ]),
-    GCWTool(
-        tool: const NumberSequenceHarshadNumberSelection(),
-        id: 'numbersequence_harshadnumbers',
-        searchKeys: const [
-          'numbers',
-          'numbersequence',
-          'numbersequence_harshadnumbersselection',
+          'numbersequence_lonelynumberselection',
         ],
         licenses: [
           ToolLicenseOnlineArticle(
             context: context,
-            author: 'Giovanni Resta',
-            title: 'Harshad Numbers',
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A051650',
             sourceUrl:
-            'https://web.archive.org/web/20240317143328/https://www.numbersaplenty.com/set/Harshad_number/more.php',
+            'https://web.archive.org/web/20250226124743/https://oeis.org/A051650/b051650.txt',
           ),
         ]),
+
+    //NumberSequenceSelection LonelyNumbers ****************************************************************************************
     GCWTool(
-        tool: const NumberSequenceTaxicabNumbersSelection(),
-        id: 'numbersequence_taxicabnumbers',
-        searchKeys: const [
-          'numbers',
-          'numbersequence',
-          'numbersequence_taxicabnumbersselection',
-        ]),
+        tool: const NumberSequenceLonelyNumbersNthNumber(),
+        id: 'numbersequence_nth',
+        id_prefix: 'lonelynumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceLonelyNumbersRange(),
+        id: 'numbersequence_range',
+        id_prefix: 'lonelynumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceLonelyNumbersCheckNumber(),
+        id: 'numbersequence_check',
+        id_prefix: 'lonelynumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceLonelyNumbersDigits(),
+        id: 'numbersequence_digits',
+        id_prefix: 'lonelynumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceLonelyNumbersContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        id_prefix: 'lonelynumbers_',
+        searchKeys: const []),
 
     //NumberSequenceSelection BusyBeaver ****************************************************************************************
     GCWTool(
@@ -5797,7 +5977,16 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequencePrimaryPseudoPerfectNumbersNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'pseudoperfect_numbers_',
-        searchKeys: const []),
+        searchKeys: const [],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A054377',
+            sourceUrl:
+            'https://web.archive.org/web/20241110161323/https://oeis.org/A054377/b054377.txt',
+          ),
+        ]),
     GCWTool(
         tool: const NumberSequencePrimaryPseudoPerfectNumbersRange(),
         id: 'numbersequence_range',

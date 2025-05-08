@@ -6,21 +6,21 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequenceCarmichaelNumbersCheckNumber extends NumberSequenceCheckNumber {
-  const NumberSequenceCarmichaelNumbersCheckNumber({super.key}) : super(mode: NumberSequencesMode.CARMICHAEL, maxIndex: 818);
+  const NumberSequenceCarmichaelNumbersCheckNumber({super.key}) : super(mode: NumberSequencesMode.CARMICHAEL, maxIndex: 10000);
 }
 
 class NumberSequenceCarmichaelNumbersDigits extends NumberSequenceDigits {
-  const NumberSequenceCarmichaelNumbersDigits({super.key}) : super(mode: NumberSequencesMode.CARMICHAEL, maxDigits: 15);
+  const NumberSequenceCarmichaelNumbersDigits({super.key}) : super(mode: NumberSequencesMode.CARMICHAEL, maxDigits: 13);
 }
 
 class NumberSequenceCarmichaelNumbersRange extends NumberSequenceRange {
-  const NumberSequenceCarmichaelNumbersRange({super.key}) : super(mode: NumberSequencesMode.CARMICHAEL, maxIndex: 818);
+  const NumberSequenceCarmichaelNumbersRange({super.key}) : super(mode: NumberSequencesMode.CARMICHAEL, maxIndex: 10000);
 }
 
 class NumberSequenceCarmichaelNumbersNthNumber extends NumberSequenceNthNumber {
-  const NumberSequenceCarmichaelNumbersNthNumber({super.key}) : super(mode: NumberSequencesMode.CARMICHAEL, maxIndex: 818);
+  const NumberSequenceCarmichaelNumbersNthNumber({super.key}) : super(mode: NumberSequencesMode.CARMICHAEL, maxIndex: 10000);
 }
 
 class NumberSequenceCarmichaelNumbersContainsDigits extends NumberSequenceContainsDigits {
-  const NumberSequenceCarmichaelNumbersContainsDigits({super.key}) : super(mode: NumberSequencesMode.CARMICHAEL, maxIndex: 818);
+  const NumberSequenceCarmichaelNumbersContainsDigits({super.key}) : super(mode: NumberSequencesMode.CARMICHAEL, maxIndex: 10000);
 }
