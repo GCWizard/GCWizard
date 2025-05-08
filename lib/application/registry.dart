@@ -4916,7 +4916,16 @@ void initializeRegistry(BuildContext context) {
           'numbers',
           'numbersequence',
           'numbersequence_bellselection',
-        ]),
+        ],
+      licenses: [
+        ToolLicenseOnlineArticle(
+          context: context,
+          author: 'John Sokol',
+          title: 'The First 1000 Bells numbers',
+          sourceUrl:
+          'https://web.archive.org/web/20231206110849/https://www.dnull.com/bells/bell1000.html',
+        ),
+      ],),
     GCWTool(
         tool: const NumberSequencePellSelection(),
         id: 'numbersequence_pell',
@@ -5004,6 +5013,16 @@ void initializeRegistry(BuildContext context) {
           'numbers',
           'numbersequence',
           'numbersequence_sphenicnumberselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Unknown',
+            publisher: 'OAIS',
+            title: 'A007304',
+            sourceUrl:
+            'https://web.archive.org/web/20250114133913/https://oeis.org/A007304/b007304.txt',
+          ),
         ]),
     GCWTool(
         tool: const NumberSequenceCarmichaelNumbersSelection(),
@@ -5020,6 +5039,15 @@ void initializeRegistry(BuildContext context) {
           'numbers',
           'numbersequence',
           'numbersequence_harshadnumbersselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Giovanni Resta',
+            title: 'Harshad Numbers',
+            sourceUrl:
+            'https://web.archive.org/web/20240317143328/https://www.numbersaplenty.com/set/Harshad_number/more.php',
+          ),
         ]),
     GCWTool(
         tool: const NumberSequenceTaxicabNumbersSelection(),

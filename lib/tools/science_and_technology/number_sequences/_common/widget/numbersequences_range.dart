@@ -22,8 +22,8 @@ class NumberSequenceRange extends StatefulWidget {
 }
 
 class _NumberSequenceRangeState extends State<NumberSequenceRange> {
-  int _currentInputStop = 0;
-  int _currentInputStart = 0;
+  int _currentInputStop = 1;
+  int _currentInputStart = 1;
 
   Widget _currentOutput = const GCWDefaultOutput();
   late TextEditingController _stopController;
@@ -47,7 +47,6 @@ class _NumberSequenceRangeState extends State<NumberSequenceRange> {
       children: <Widget>[
         GCWTextDivider(
           text: i18n(context, NUMBERSEQUENCE_TITLE[widget.mode]!),
-          style: const TextStyle(fontSize: 20),
         ),
         Text(
           i18n(context, 'numbersequence_maxindex') + ' = ' + widget.maxIndex.toString(),
@@ -55,7 +54,7 @@ class _NumberSequenceRangeState extends State<NumberSequenceRange> {
         GCWIntegerSpinner(
           title: i18n(context, 'numbersequence_inputstart'),
           value: _currentInputStart,
-          min: 0,
+          min: 1,
           max: widget.maxIndex,
           onChanged: (value) {
             setState(() {
@@ -116,16 +115,17 @@ class _NumberSequenceRangeState extends State<NumberSequenceRange> {
   }
 
   Future<GCWAsyncExecuterParameters?> _buildJobData() async {
-    return GCWAsyncExecuterParameters(GetNumberRangeJobData(sequence: widget.mode, start: _currentInputStart, stop: _currentInputStop));
+    return GCWAsyncExecuterParameters(GetNumberRangeJobData(sequence: widget.mode, start: _currentInputStart - 1, stop: _currentInputStop - 1));
   }
 
   void _showOutput(List<BigInt> output) {
-    List<List<String>> columnData = [];
-    for (BigInt element in output) {
-      columnData.add([element.toString()]);
+    List<List<String>> columnData = [['n', i18n(context, 'common_element')]];
+    for (int i = 0; i < output.length; i++) {
+      BigInt element = output[i];
+      columnData.add([(i + _currentInputStart).toString(), element.toString()]);
     }
 
-    _currentOutput = GCWDefaultOutput(child: GCWColumnedMultilineOutput(data: columnData));
+    _currentOutput = GCWDefaultOutput(child: GCWColumnedMultilineOutput(data: columnData, flexValues: [1, 5], hasHeader: true,));
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {});

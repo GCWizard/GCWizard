@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 
 class NumberSequenceWeirdNumbersCheckNumber extends NumberSequenceCheckNumber {
   const NumberSequenceWeirdNumbersCheckNumber({super.key})
-      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 34);
+      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 35);
 }
 
 class NumberSequenceWeirdNumbersDigits extends NumberSequenceDigits {
@@ -17,15 +17,15 @@ class NumberSequenceWeirdNumbersDigits extends NumberSequenceDigits {
 
 class NumberSequenceWeirdNumbersRange extends NumberSequenceRange {
   const NumberSequenceWeirdNumbersRange({super.key})
-      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 34);
+      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 35);
 }
 
 class NumberSequenceWeirdNumbersNthNumber extends NumberSequenceNthNumber {
   const NumberSequenceWeirdNumbersNthNumber({super.key})
-      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 34);
+      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 35);
 }
 
 class NumberSequenceWeirdNumbersContainsDigits extends NumberSequenceContainsDigits {
   const NumberSequenceWeirdNumbersContainsDigits({super.key})
-      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 34);
+      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 35);
 }

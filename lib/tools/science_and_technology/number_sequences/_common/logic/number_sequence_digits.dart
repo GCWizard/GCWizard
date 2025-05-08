@@ -101,22 +101,6 @@ List<BigInt> numberSequencesGetNumbersWithNDigits(NumberSequencesMode sequence, 
       if (number.toString().length == digits) numberList.add(number);
       index = index + One;
     }
-  } else if (sequence == NumberSequencesMode.BELL) {
-    List<BigInt> bellList = <BigInt>[];
-    BigInt number = One;
-    int index = 0;
-    while (number.toString().length < digits + 1) {
-      if (index == 0) {
-        number = One;
-      } else {
-        for (int k = 0; k <= index - 1; k++) {
-          number = number + _getBinomialCoefficient(index - 1, k) * bellList[k];
-        }
-      }
-      bellList.add(number);
-      if (number.toString().length == digits) numberList.add(number);
-      index = index + 1;
-    }
   } else {
     switch (sequence) {
       case NumberSequencesMode.PRIMES:
@@ -172,6 +156,12 @@ List<BigInt> numberSequencesGetNumbersWithNDigits(NumberSequencesMode sequence, 
         break;
       case NumberSequencesMode.TAXICAB:
         sequenceList.addAll(taxicab_numbers);
+        break;
+      case NumberSequencesMode.SPHENIC:
+        sequenceList.addAll(sphenic_numbers);
+        break;
+      case NumberSequencesMode.BELL:
+        sequenceList.addAll(bell_numbers);
         break;
       default:
         return numberList;

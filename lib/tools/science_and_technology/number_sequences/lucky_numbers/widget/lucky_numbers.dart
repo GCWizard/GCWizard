@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 
 class NumberSequenceLuckyNumbersCheckNumber extends NumberSequenceCheckNumber {
   const NumberSequenceLuckyNumbersCheckNumber({super.key})
-      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71917);
+      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71918);
 }
 
 class NumberSequenceLuckyNumbersDigits extends NumberSequenceDigits {
@@ -17,15 +17,15 @@ class NumberSequenceLuckyNumbersDigits extends NumberSequenceDigits {
 
 class NumberSequenceLuckyNumbersRange extends NumberSequenceRange {
   const NumberSequenceLuckyNumbersRange({super.key})
-      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71917);
+      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71918);
 }
 
 class NumberSequenceLuckyNumbersNthNumber extends NumberSequenceNthNumber {
   const NumberSequenceLuckyNumbersNthNumber({super.key})
-      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71917);
+      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71918);
 }
 
 class NumberSequenceLuckyNumbersContainsDigits extends NumberSequenceContainsDigits {
   const NumberSequenceLuckyNumbersContainsDigits({super.key})
-      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71917);
+      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71918);
 }

@@ -251,29 +251,6 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
         index++;
       }
     }
-  } else if (sequence == NumberSequencesMode.BELL) {
-    List<BigInt> bellList = <BigInt>[];
-    if (check == Zero.toString()) {} else {
-      while ((index <= maxIndex) && (BigInt.parse(check) > number)) {
-        if (index == 0) {
-          number = One;
-        } else {
-          for (int k = 0; k <= index - 1; k++) {
-            number = number + _getBinomialCoefficient(index - 1, k) * bellList[k];
-          }
-        }
-        bellList.add(number);
-        numberString = number.toString();
-        if (expr.hasMatch(numberString)) {
-          int j = 0;
-          while (!numberString.substring(j).startsWith(check)) {
-            j++;
-          }
-          return PositionOfSequenceOutput(numberString, index, j + 1);
-        }
-        index++;
-      }
-    }
   } else {
     switch (sequence) {
       case NumberSequencesMode.PRIMES:
@@ -329,6 +306,12 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
         break;
       case NumberSequencesMode.TAXICAB:
         sequenceList.addAll(taxicab_numbers);
+        break;
+      case NumberSequencesMode.SPHENIC:
+        sequenceList.addAll(sphenic_numbers);
+        break;
+      case NumberSequencesMode.BELL:
+        sequenceList.addAll(bell_numbers);
         break;
       default:
         {}

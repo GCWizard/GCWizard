@@ -6,7 +6,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequenceBusyBeaverCheckNumber extends NumberSequenceCheckNumber {
-  const NumberSequenceBusyBeaverCheckNumber({super.key}) : super(mode: NumberSequencesMode.BUSY_BEAVER, maxIndex: 4);
+  const NumberSequenceBusyBeaverCheckNumber({super.key}) : super(mode: NumberSequencesMode.BUSY_BEAVER, maxIndex: 5);
 }
 
 class NumberSequenceBusyBeaverDigits extends NumberSequenceDigits {
@@ -14,13 +14,13 @@ class NumberSequenceBusyBeaverDigits extends NumberSequenceDigits {
 }
 
 class NumberSequenceBusyBeaverRange extends NumberSequenceRange {
-  const NumberSequenceBusyBeaverRange({super.key}) : super(mode: NumberSequencesMode.BUSY_BEAVER, maxIndex: 4);
+  const NumberSequenceBusyBeaverRange({super.key}) : super(mode: NumberSequencesMode.BUSY_BEAVER, maxIndex: 5);
 }
 
 class NumberSequenceBusyBeaverNthNumber extends NumberSequenceNthNumber {
-  const NumberSequenceBusyBeaverNthNumber({super.key}) : super(mode: NumberSequencesMode.BUSY_BEAVER, maxIndex: 4);
+  const NumberSequenceBusyBeaverNthNumber({super.key}) : super(mode: NumberSequencesMode.BUSY_BEAVER, maxIndex: 5);
 }
 
 class NumberSequenceBusyBeaverContainsDigits extends NumberSequenceContainsDigits {
-  const NumberSequenceBusyBeaverContainsDigits({super.key}) : super(mode: NumberSequencesMode.BUSY_BEAVER, maxIndex: 4);
+  const NumberSequenceBusyBeaverContainsDigits({super.key}) : super(mode: NumberSequencesMode.BUSY_BEAVER, maxIndex: 5);
 }

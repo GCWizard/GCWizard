@@ -6,7 +6,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequenceHarshadNumbersCheckNumber extends NumberSequenceCheckNumber {
-  const NumberSequenceHarshadNumbersCheckNumber({super.key}) : super(mode: NumberSequencesMode.HARSHAD, maxIndex: 599);
+  const NumberSequenceHarshadNumbersCheckNumber({super.key}) : super(mode: NumberSequencesMode.HARSHAD, maxIndex: 600);
 }
 
 class NumberSequenceHarshadNumbersDigits extends NumberSequenceDigits {
@@ -14,13 +14,13 @@ class NumberSequenceHarshadNumbersDigits extends NumberSequenceDigits {
 }
 
 class NumberSequenceHarshadNumbersRange extends NumberSequenceRange {
-  const NumberSequenceHarshadNumbersRange({super.key}) : super(mode: NumberSequencesMode.HARSHAD, maxIndex: 599);
+  const NumberSequenceHarshadNumbersRange({super.key}) : super(mode: NumberSequencesMode.HARSHAD, maxIndex: 600);
 }
 
 class NumberSequenceHarshadNumbersNthNumber extends NumberSequenceNthNumber {
-  const NumberSequenceHarshadNumbersNthNumber({super.key}) : super(mode: NumberSequencesMode.HARSHAD, maxIndex: 599);
+  const NumberSequenceHarshadNumbersNthNumber({super.key}) : super(mode: NumberSequencesMode.HARSHAD, maxIndex: 600);
 }
 
 class NumberSequenceHarshadNumbersContainsDigits extends NumberSequenceContainsDigits {
-  const NumberSequenceHarshadNumbersContainsDigits({super.key}) : super(mode: NumberSequencesMode.HARSHAD, maxIndex: 599);
+  const NumberSequenceHarshadNumbersContainsDigits({super.key}) : super(mode: NumberSequencesMode.HARSHAD, maxIndex: 600);
 }

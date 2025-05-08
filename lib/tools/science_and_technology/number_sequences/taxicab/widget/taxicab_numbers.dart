@@ -6,7 +6,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequenceTaxicabNumbersCheckNumber extends NumberSequenceCheckNumber {
-  const NumberSequenceTaxicabNumbersCheckNumber({super.key}) : super(mode: NumberSequencesMode.TAXICAB, maxIndex: 5);
+  const NumberSequenceTaxicabNumbersCheckNumber({super.key}) : super(mode: NumberSequencesMode.TAXICAB, maxIndex: 6);
 }
 
 class NumberSequenceTaxicabNumbersDigits extends NumberSequenceDigits {
@@ -14,13 +14,13 @@ class NumberSequenceTaxicabNumbersDigits extends NumberSequenceDigits {
 }
 
 class NumberSequenceTaxicabNumbersRange extends NumberSequenceRange {
-  const NumberSequenceTaxicabNumbersRange({super.key}) : super(mode: NumberSequencesMode.TAXICAB, maxIndex: 5);
+  const NumberSequenceTaxicabNumbersRange({super.key}) : super(mode: NumberSequencesMode.TAXICAB, maxIndex: 6);
 }
 
 class NumberSequenceTaxicabNumbersNthNumber extends NumberSequenceNthNumber {
-  const NumberSequenceTaxicabNumbersNthNumber({super.key}) : super(mode: NumberSequencesMode.TAXICAB, maxIndex: 5);
+  const NumberSequenceTaxicabNumbersNthNumber({super.key}) : super(mode: NumberSequencesMode.TAXICAB, maxIndex: 6);
 }
 
 class NumberSequenceTaxicabNumbersContainsDigits extends NumberSequenceContainsDigits {
-  const NumberSequenceTaxicabNumbersContainsDigits({super.key}) : super(mode: NumberSequencesMode.TAXICAB, maxIndex: 5);
+  const NumberSequenceTaxicabNumbersContainsDigits({super.key}) : super(mode: NumberSequencesMode.TAXICAB, maxIndex: 6);
 }
