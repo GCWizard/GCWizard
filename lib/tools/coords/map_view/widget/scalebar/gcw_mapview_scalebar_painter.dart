@@ -7,7 +7,7 @@ class GCWMapViewScalebarPainter extends CustomPainter {
   final double scalebarLength;
 
   /// marker points
-  final List<Point<double>> scalebarPoints;
+  final List<Offset> scalebarPoints;
 
   /// width of the scalebar line stroke
   final double strokeWidth;
@@ -60,18 +60,18 @@ class GCWMapViewScalebarPainter extends CustomPainter {
     );
     _textPainters[1].paint(
       canvas,
-      Offset(max(0, labelX), scalebarPoints[1].y - scalebarPoints[0].y - textY),
+      Offset(max(0, labelX), scalebarPoints[1].dy - scalebarPoints[0].dy - textY),
     );
     _textPainters[2].paint(
       canvas,
-      Offset(max(0, labelX), scalebarPoints[2].y - scalebarPoints[0].y - textY),
+      Offset(max(0, labelX), scalebarPoints[2].dy - scalebarPoints[0].dy - textY),
     );
     _textPainters[3].paint(
       canvas,
-      Offset(max(0, labelX), scalebarPoints[3].y - scalebarPoints[0].y - textY),
+      Offset(max(0, labelX), scalebarPoints[3].dy - scalebarPoints[0].dy - textY),
     );
 
-    final length = scalebarPoints[3].y - scalebarPoints[0].y;
+    final length = scalebarPoints[3].dy - scalebarPoints[0].dy;
 
     final linePoints = Float32List.fromList(<double>[
       //main line
@@ -88,21 +88,21 @@ class GCWMapViewScalebarPainter extends CustomPainter {
 
       // 1. section
       _halfStrokeWidth,
-      scalebarPoints[1].y - scalebarPoints[0].y - _halfStrokeWidth,
+      scalebarPoints[1].dy - scalebarPoints[0].dy - _halfStrokeWidth,
       lineWidth,
-      scalebarPoints[1].y - scalebarPoints[0].y - _halfStrokeWidth,
+      scalebarPoints[1].dy - scalebarPoints[0].dy - _halfStrokeWidth,
 
       // 2. section
       _halfStrokeWidth,
-      scalebarPoints[2].y - scalebarPoints[0].y - _halfStrokeWidth,
+      scalebarPoints[2].dy - scalebarPoints[0].dy - _halfStrokeWidth,
       lineWidth,
-      scalebarPoints[2].y - scalebarPoints[0].y - _halfStrokeWidth,
+      scalebarPoints[2].dy - scalebarPoints[0].dy - _halfStrokeWidth,
 
       // top marker
       _halfStrokeWidth,
-      scalebarPoints[3].y - scalebarPoints[0].y - _halfStrokeWidth,
+      scalebarPoints[3].dy - scalebarPoints[0].dy - _halfStrokeWidth,
       lineWidth,
-      scalebarPoints[3].y - scalebarPoints[0].y - _halfStrokeWidth,
+      scalebarPoints[3].dy - scalebarPoints[0].dy - _halfStrokeWidth,
     ]);
 
     // draw lines as raw points
