@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 
 class NumberSequenceMemorablePrimesIndexesCheckNumber extends NumberSequenceCheckNumber {
   const NumberSequenceMemorablePrimesIndexesCheckNumber({super.key})
-      : super(mode: NumberSequencesMode.MEMORABLE_PRIMES_INDEXES, maxIndex: 1);
+      : super(mode: NumberSequencesMode.MEMORABLE_PRIMES_INDEXES, maxIndex: 2);
 }
 
 class NumberSequenceMemorablePrimesIndexesDigits extends NumberSequenceDigits {
@@ -17,15 +17,15 @@ class NumberSequenceMemorablePrimesIndexesDigits extends NumberSequenceDigits {
 
 class NumberSequenceMemorablePrimesIndexesRange extends NumberSequenceRange {
   const NumberSequenceMemorablePrimesIndexesRange({super.key})
-      : super(mode: NumberSequencesMode.MEMORABLE_PRIMES_INDEXES, maxIndex: 1);
+      : super(mode: NumberSequencesMode.MEMORABLE_PRIMES_INDEXES, maxIndex: 2);
 }
 
 class NumberSequenceMemorablePrimesIndexesNthNumber extends NumberSequenceNthNumber {
   const NumberSequenceMemorablePrimesIndexesNthNumber({super.key})
-      : super(mode: NumberSequencesMode.MEMORABLE_PRIMES_INDEXES, maxIndex: 1);
+      : super(mode: NumberSequencesMode.MEMORABLE_PRIMES_INDEXES, maxIndex: 2);
 }
 
 class NumberSequenceMemorablePrimesIndexesContainsDigits extends NumberSequenceContainsDigits {
   const NumberSequenceMemorablePrimesIndexesContainsDigits({super.key})
-      : super(mode: NumberSequencesMode.MEMORABLE_PRIMES_INDEXES, maxIndex: 1);
+      : super(mode: NumberSequencesMode.MEMORABLE_PRIMES_INDEXES, maxIndex: 2);
 }

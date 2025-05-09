@@ -7,25 +7,25 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 
 class NumberSequenceLuckyNumbersCheckNumber extends NumberSequenceCheckNumber {
   const NumberSequenceLuckyNumbersCheckNumber({super.key})
-      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71917);
+      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 100000);
 }
 
 class NumberSequenceLuckyNumbersDigits extends NumberSequenceDigits {
   const NumberSequenceLuckyNumbersDigits({super.key})
-      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxDigits: 6);
+      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxDigits: 7);
 }
 
 class NumberSequenceLuckyNumbersRange extends NumberSequenceRange {
   const NumberSequenceLuckyNumbersRange({super.key})
-      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71917);
+      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 100000);
 }
 
 class NumberSequenceLuckyNumbersNthNumber extends NumberSequenceNthNumber {
   const NumberSequenceLuckyNumbersNthNumber({super.key})
-      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71917);
+      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 100000);
 }
 
 class NumberSequenceLuckyNumbersContainsDigits extends NumberSequenceContainsDigits {
   const NumberSequenceLuckyNumbersContainsDigits({super.key})
-      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71917);
+      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 100000);
 }

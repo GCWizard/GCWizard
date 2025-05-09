@@ -40,7 +40,6 @@ class _NumberSequenceCheckNumberState extends State<NumberSequenceCheckNumber> {
       children: <Widget>[
         GCWTextDivider(
           text: i18n(context, NUMBERSEQUENCE_TITLE[widget.mode]!),
-          style: const TextStyle(fontSize: 20),
         ),
         GCWTextField(
           controller: currentInputController,

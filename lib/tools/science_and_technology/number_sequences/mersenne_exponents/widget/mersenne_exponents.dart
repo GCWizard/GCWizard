@@ -7,25 +7,25 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 
 class NumberSequenceMersenneExponentsCheckNumber extends NumberSequenceCheckNumber {
   const NumberSequenceMersenneExponentsCheckNumber({super.key})
-      : super(mode: NumberSequencesMode.MERSENNE_EXPONENTS, maxIndex: 50);
+      : super(mode: NumberSequencesMode.MERSENNE_EXPONENTS, maxIndex: 52);
 }
 
 class NumberSequenceMersenneExponentsDigits extends NumberSequenceDigits {
   const NumberSequenceMersenneExponentsDigits({super.key})
-      : super(mode: NumberSequencesMode.MERSENNE_EXPONENTS, maxDigits: 8);
+      : super(mode: NumberSequencesMode.MERSENNE_EXPONENTS, maxDigits: 9);
 }
 
 class NumberSequenceMersenneExponentsRange extends NumberSequenceRange {
   const NumberSequenceMersenneExponentsRange({super.key})
-      : super(mode: NumberSequencesMode.MERSENNE_EXPONENTS, maxIndex: 50);
+      : super(mode: NumberSequencesMode.MERSENNE_EXPONENTS, maxIndex: 52);
 }
 
 class NumberSequenceMersenneExponentsNthNumber extends NumberSequenceNthNumber {
   const NumberSequenceMersenneExponentsNthNumber({super.key})
-      : super(mode: NumberSequencesMode.MERSENNE_EXPONENTS, maxIndex: 50);
+      : super(mode: NumberSequencesMode.MERSENNE_EXPONENTS, maxIndex: 52);
 }
 
 class NumberSequenceMersenneExponentsContainsDigits extends NumberSequenceContainsDigits {
   const NumberSequenceMersenneExponentsContainsDigits({super.key})
-      : super(mode: NumberSequencesMode.MERSENNE_EXPONENTS, maxIndex: 50);
+      : super(mode: NumberSequencesMode.MERSENNE_EXPONENTS, maxIndex: 52);
 }

@@ -7,25 +7,25 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 
 class NumberSequenceWeirdNumbersCheckNumber extends NumberSequenceCheckNumber {
   const NumberSequenceWeirdNumbersCheckNumber({super.key})
-      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 34);
+      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 10000);
 }
 
 class NumberSequenceWeirdNumbersDigits extends NumberSequenceDigits {
   const NumberSequenceWeirdNumbersDigits({super.key})
-      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxDigits: 5);
+      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxDigits: 7);
 }
 
 class NumberSequenceWeirdNumbersRange extends NumberSequenceRange {
   const NumberSequenceWeirdNumbersRange({super.key})
-      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 34);
+      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 10000);
 }
 
 class NumberSequenceWeirdNumbersNthNumber extends NumberSequenceNthNumber {
   const NumberSequenceWeirdNumbersNthNumber({super.key})
-      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 34);
+      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 10000);
 }
 
 class NumberSequenceWeirdNumbersContainsDigits extends NumberSequenceContainsDigits {
   const NumberSequenceWeirdNumbersContainsDigits({super.key})
-      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 34);
+      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 10000);
 }
