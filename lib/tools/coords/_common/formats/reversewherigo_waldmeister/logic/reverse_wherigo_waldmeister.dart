@@ -361,7 +361,10 @@ ReverseWherigoWaldmeisterCoordinate? _parseReverseWherigoWaldmeister(String inpu
 
   if (a == null || b == null || c == null) return null;
 
-  return ReverseWherigoWaldmeisterCoordinate(a, b, c);
+  var waldmeister = ReverseWherigoWaldmeisterCoordinate(a, b, c);
+  
+  if (!checkSumTest(waldmeister)) return null;
+  return waldmeister;
 }
 
 bool checkSumTest(ReverseWherigoWaldmeisterCoordinate waldmeister) {
