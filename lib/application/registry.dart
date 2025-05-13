@@ -44,14 +44,17 @@ import 'package:gc_wizard/application/category_views/selector_lists/miscellaneou
 import 'package:gc_wizard/application/category_views/selector_lists/morse_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_bell_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_busybeaver_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_carmichaelnumber_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_catalan_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_factorial_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_fermat_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_fibonacci_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_happynumbers_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_harshadnumber_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_jacobsthal_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_jacobsthallucas_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_jacobsthaloblong_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_lonelynumbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_lucas_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_luckynumbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_lychrel_selection.dart';
@@ -61,6 +64,7 @@ import 'package:gc_wizard/application/category_views/selector_lists/number_seque
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_mersenneexponents_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_mersennefermat_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_mersenneprimes_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_palindromeprimes_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_pell_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_pelllucas_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_perfectnumbers_selection.dart';
@@ -69,8 +73,10 @@ import 'package:gc_wizard/application/category_views/selector_lists/number_seque
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_primes_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_recaman_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_sphenicnumber_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_sublimenumbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_superperfectnumbers_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_taxicab_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_weirdnumbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/numeral_words_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/periodic_table_selection.dart';
@@ -411,8 +417,10 @@ import 'package:gc_wizard/tools/science_and_technology/lcm/widget/lcm.dart';
 import 'package:gc_wizard/tools/science_and_technology/mathematical_constants/widget/mathematical_constants.dart';
 import 'package:gc_wizard/tools/science_and_technology/maya_calendar/widget/maya_calendar.dart';
 import 'package:gc_wizard/tools/science_and_technology/music_notes/music_notes/widget/music_notes.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/Harshad/widget/Harshad_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/bell/widget/bell.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/busybeaver/widget/busybeaver.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/carmichael/widget/carmichael_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/catalan/widget/catalan.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/factorial/widget/factorial.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/fermat/widget/fermat.dart';
@@ -421,6 +429,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/happy_nu
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsthal/widget/jacobsthal.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsthal_lucas/widget/jacobsthal_lucas.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsthal_oblong/widget/jacobsthal_oblong.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/lonely_numbers/widget/lonely_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucas/widget/lucas.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucky_numbers/widget/lucky_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lychrel/widget/lychrel.dart';
@@ -430,6 +439,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersenne
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersenne_exponents/widget/mersenne_exponents.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersenne_primes/widget/mersenne_primes.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersennefermat/widget/mersennefermat.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/palindrome_primes/widget/palindrome_primes.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/pell/widget/pell.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/pell_lucas/widget/pell_lucas.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/perfect_numbers/widget/perfect_numbers.dart';
@@ -437,8 +447,10 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/permutab
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/primarypseudoperfect_numbers/widget/primarypseudoperfect_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/primes/widget/primes.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/recaman/widget/recaman.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/sphenic_numbers/widget/spenic_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/sublime_numbers/widget/sublime_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/superperfect_numbers/widget/superperfect_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/taxicab/widget/taxicab_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/weird_numbers/widget/weird_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/numeral_bases/widget/numeral_bases.dart';
 import 'package:gc_wizard/tools/science_and_technology/paperformat/widget/paperformat.dart';
@@ -1658,7 +1670,16 @@ void initializeRegistry(BuildContext context) {
         tool: const PrimesSelection(),
         id: 'primes_selection',
         categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
-        searchKeys: const []),
+        searchKeys: const [],
+      licenses: [
+        ToolLicenseOnlineArticle(
+          context: context,
+          author: 'numbergenerator.org',
+          title: 'Prime Number List 1 - 10000000',
+          sourceUrl:
+          'https://web.archive.org/web/20250508131535/https://numbergenerator.org/numberlist/prime-numbers/1-10000000#',
+        ),
+      ],),
     GCWTool(tool: const Projectiles(), id: 'projectiles', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
     ], searchKeys: const [
@@ -4735,6 +4756,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceFactorialSelection(),
         id: 'numbersequence_factorial',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_factorialselection',
         ]),
@@ -4742,6 +4764,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceFibonacciSelection(),
         id: 'numbersequence_fibonacci',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_fibonacciselection',
         ]),
@@ -4749,6 +4772,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceMersenneSelection(),
         id: 'numbersequence_mersenne',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_mersenneselection',
         ]),
@@ -4756,6 +4780,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceMersennePrimesSelection(),
         id: 'numbersequence_mersenneprimes',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'primes',
           'numbersequence_mersenneprimesselection',
@@ -4764,20 +4789,42 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequencePrimesSelection(),
         id: 'numbersequence_primes',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'primes',
-        ]),
+        ],
+      licenses: [
+        ToolLicenseOnlineArticle(
+          context: context,
+          author: 'numbergenerator.org',
+          title: 'Prime Number List 1 - 10000000',
+          sourceUrl:
+          'https://web.archive.org/web/20250508131535/https://numbergenerator.org/numberlist/prime-numbers/1-10000000#',
+        ),
+      ],),
     GCWTool(
         tool: const NumberSequenceMersenneExponentsSelection(),
         id: 'numbersequence_mersenneexponents',
         searchKeys: const [
+          'numbers',
+          'primes',
           'numbersequence',
           'numbersequence_mersenneexponentsselection',
-        ]),
+        ],
+      licenses: [
+        ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Great Internet Mersenne Prime Seach (GIMPS)',
+          title: 'List of Known Mersenne Prime Numbers',
+          sourceUrl:
+          'https://web.archive.org/web/20250505191859/https://www.mersenne.org/primes/',
+        ),
+      ],),
     GCWTool(
         tool: const NumberSequenceMersenneFermatSelection(),
         id: 'numbersequence_mersennefermat',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_mersennefermatselection',
         ]),
@@ -4785,6 +4832,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceFermatSelection(),
         id: 'numbersequence_fermat',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_fermatselection',
         ]),
@@ -4792,20 +4840,41 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequencePerfectNumbersSelection(),
         id: 'numbersequence_perfectnumbers',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_perfectnumbersselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A000396',
+            sourceUrl:
+            'https://web.archive.org/web/20250401030223/https://oeis.org/A000396/b000396.txt',
+          ),
         ]),
     GCWTool(
         tool: const NumberSequenceSuperPerfectNumbersSelection(),
         id: 'numbersequence_superperfectnumbers',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_superperfectnumbersselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A019279',
+            sourceUrl:
+            'https://web.archive.org/web/20241110082329/https://oeis.org/A019279/b019279.txt',
+          ),
         ]),
     GCWTool(
         tool: const NumberSequencePrimaryPseudoPerfectNumbersSelection(),
         id: 'numbersequence_primarypseudoperfectnumbers',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_primarypseudoperfectnumbersselection',
         ]),
@@ -4813,28 +4882,61 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceWeirdNumbersSelection(),
         id: 'numbersequence_weirdnumbers',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_weirdnumbersselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A006037',
+            sourceUrl:
+            'https://web.archive.org/web/20230326022112/https://oeis.org/A006037/b006037.txt',
+          ),
         ]),
     GCWTool(
         tool: const NumberSequenceSublimeNumbersSelection(),
         id: 'numbersequence_sublimenumbers',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_sublimenumbersselection',
-        ]),
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+          context: context,
+          author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+          title: 'A081357',
+          sourceUrl:
+          'https://web.archive.org/web/20240917152812/https://oeis.org/A081357/b081357.txt',
+        ),
+    ]),
     GCWTool(
         tool: const NumberSequencePermutablePrimesSelection(),
         id: 'numbersequence_permutableprimes',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'primes',
           'numbersequence_permutableprimesselection',
-        ]),
+        ], licenses: [
+          ToolLicenseOnlineArticle(
+          context: context,
+          author: 'en.wikipedia.org and contributors',
+          title: 'Permutable prime',
+          licenseType: ToolLicenseType.CCBYSA4,
+          licenseUrl:
+          'https://en.wikipedia.org/w/index.php?title=Wikipedia:Text_of_the_Creative_Commons_Attribution-ShareAlike_4.0_International_License&oldid=1162946924',
+          sourceUrl:
+          'https://en.wikipedia.org/w/index.php?title=Permutable_prime&oldid=1247788259',
+        )
+    ]),
     GCWTool(
       tool: const NumberSequenceMemorablePrimesSelection(),
       id: 'numbersequence_memorableprimes',
       searchKeys: const [
+        'numbers',
         'numbersequence',
         'primes',
         'numbersequence_memorableprimesselection',
@@ -4854,6 +4956,7 @@ void initializeRegistry(BuildContext context) {
       tool: const NumberSequenceMemorablePrimesIndexesSelection(),
       id: 'numbersequence_memorableprimesindexes',
       searchKeys: const [
+        'numbers',
         'numbersequence',
         'primes',
         'numbersequence_memorableprimesindexesselection',
@@ -4873,6 +4976,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceLuckyNumbersSelection(),
         id: 'numbersequence_luckynumbers',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_luckynumbersselection',
         ]),
@@ -4880,20 +4984,41 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceHappyNumbersSelection(),
         id: 'numbersequence_happynumbers',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_happynumbersselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A007770',
+            sourceUrl:
+            'https://web.archive.org/web/20250107001844/https://oeis.org/A007770/b007770.txt',
+          ),
         ]),
     GCWTool(
         tool: const NumberSequenceBellSelection(),
         id: 'numbersequence_bell',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_bellselection',
-        ]),
+        ],
+      licenses: [
+        ToolLicenseOnlineArticle(
+          context: context,
+          author: 'John Sokol',
+          title: 'The First 1000 Bells numbers',
+          sourceUrl:
+          'https://web.archive.org/web/20231206110849/https://www.dnull.com/bells/bell1000.html',
+        ),
+      ],),
     GCWTool(
         tool: const NumberSequencePellSelection(),
         id: 'numbersequence_pell',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_pellselection',
         ]),
@@ -4901,6 +5026,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceLucasSelection(),
         id: 'numbersequence_lucas',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_lucasselection',
         ]),
@@ -4908,6 +5034,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequencePellLucasSelection(),
         id: 'numbersequence_pelllucas',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_pelllucasselection',
         ]),
@@ -4915,6 +5042,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceJacobsthalSelection(),
         id: 'numbersequence_jacobsthal',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_jacobsthalselection',
         ]),
@@ -4922,6 +5050,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceJacobsthalLucasSelection(),
         id: 'numbersequence_jacobsthallucas',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_jacobsthallucasselection',
         ]),
@@ -4929,6 +5058,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceJacobsthalOblongSelection(),
         id: 'numbersequence_jacobsthaloblong',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_jacobsthaloblongselection',
         ]),
@@ -4936,6 +5066,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceCatalanSelection(),
         id: 'numbersequence_catalan',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_catalanselection',
         ]),
@@ -4943,6 +5074,7 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceRecamanSelection(),
         id: 'numbersequence_recaman',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_recamanselection',
         ]),
@@ -4950,16 +5082,183 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceLychrelSelection(),
         id: 'numbersequence_lychrel',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_lychrelselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A023108',
+            sourceUrl:
+            'https://web.archive.org/web/20250219235747/https://oeis.org/A023108/b023108.txt',
+          ),
         ]),
     GCWTool(
         tool: const NumberSequenceBusyBeaverSelection(),
         id: 'numbersequence_busy_beaver',
         searchKeys: const [
+          'numbers',
           'numbersequence',
           'numbersequence_busy_beavernumbersselection',
         ]),
+    GCWTool(
+        tool: const NumberSequenceSphenicNumbersSelection(),
+        id: 'numbersequence_sphenicnumbers',
+        searchKeys: const [
+          'numbers',
+          'numbersequence',
+          'numbersequence_sphenicnumberselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A007304',
+            sourceUrl:
+            'https://web.archive.org/web/20250114133913/https://oeis.org/A007304/b007304.txt',
+          ),
+        ]),
+    GCWTool(
+        tool: const NumberSequenceCarmichaelNumbersSelection(),
+        id: 'numbersequence_carmichaelnumbers',
+        searchKeys: const [
+          'numbers',
+          'numbersequence',
+          'numbersequence_carmichaelnumbersselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A002997',
+            sourceUrl:
+            'https://web.archive.org/web/20241217192642/https://oeis.org/A002997/b002997.txt',
+          ),
+        ]),
+    GCWTool(
+        tool: const NumberSequenceHarshadNumbersSelection(),
+        id: 'numbersequence_harshadnumbers',
+        searchKeys: const [
+          'numbers',
+          'numbersequence',
+          'numbersequence_harshadnumbersselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A005349',
+            sourceUrl:
+            'https://web.archive.org/web/20250114224547/https://oeis.org/A005349/b005349.txt',
+          ),
+        ]),
+    GCWTool(
+        tool: const NumberSequenceTaxicabNumbersSelection(),
+        id: 'numbersequence_taxicabnumbers',
+        searchKeys: const [
+          'numbers',
+          'numbersequence',
+          'numbersequence_taxicabnumbersselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A011541',
+            sourceUrl:
+            'https://web.archive.org/web/20250407200104/https://oeis.org/A011541/b011541.txt',
+          ),
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Manon Bischof',
+            title: 'Vergesst die 42, die Lieblingszahl von Nerds ist 1729',
+            sourceUrl:
+            'https://web.archive.org/web/20250426232004/https://www.spektrum.de/kolumne/srinivasa-ramanujan-und-die-taxicab-zahl-1729/2261407',
+          ),
+        ]),
+    GCWTool(
+        tool: const NumberSequenceSphenicNumbersSelection(),
+        id: 'numbersequence_sphenicnumbers',
+        searchKeys: const [
+          'numbers',
+          'numbersequence',
+          'numbersequence_sphenicnumbersselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Unknown',
+            publisher: 'OAIS',
+            title: 'A007304',
+            sourceUrl:
+            'https://web.archive.org/web/20250114133913/https://oeis.org/A007304/b007304.txt',
+          ),
+        ]),
+    GCWTool(
+        tool: const NumberSequenceLonelyNumbersSelection(),
+        id: 'numbersequence_lonelynumbers',
+        searchKeys: const [
+          'numbers',
+          'numbersequence',
+          'numbersequence_lonelynumbersselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A051650',
+            sourceUrl:
+            'https://web.archive.org/web/20250226124743/https://oeis.org/A051650/b051650.txt',
+          ),
+        ]),
+    GCWTool(
+        tool: const NumberSequencePalindromePrimesSelection(),
+        id: 'numbersequence_palindromeprimes',
+        searchKeys: const [
+          'numbers',
+          'primes',
+          'numbersequence',
+          'numbersequence_palindromeprimesselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Unknown',
+            publisher: 'OAIS',
+            title: 'A002385',
+            sourceUrl:
+            'https://web.archive.org/web/20241229231226/https://oeis.org/A002385/b002385.txt',
+          ),
+        ]),
+
+    //NumberSequenceSelection LonelyNumbers ****************************************************************************************
+    GCWTool(
+        tool: const NumberSequenceLonelyNumbersNthNumber(),
+        id: 'numbersequence_nth',
+        id_prefix: 'lonelynumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceLonelyNumbersRange(),
+        id: 'numbersequence_range',
+        id_prefix: 'lonelynumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceLonelyNumbersCheckNumber(),
+        id: 'numbersequence_check',
+        id_prefix: 'lonelynumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceLonelyNumbersDigits(),
+        id: 'numbersequence_digits',
+        id_prefix: 'lonelynumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceLonelyNumbersContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        id_prefix: 'lonelynumbers_',
+        searchKeys: const []),
 
     //NumberSequenceSelection BusyBeaver ****************************************************************************************
     GCWTool(
@@ -4986,6 +5285,141 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceBusyBeaverContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'busy_beaver_',
+        searchKeys: const []),
+
+    //NumberSequenceSelection Carmichael NUmbers ****************************************************************************************
+    GCWTool(
+        tool: const NumberSequenceCarmichaelNumbersNthNumber(),
+        id: 'numbersequence_nth',
+        id_prefix: 'carmichaelnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceCarmichaelNumbersRange(),
+        id: 'numbersequence_range',
+        id_prefix: 'carmichaelnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceCarmichaelNumbersCheckNumber(),
+        id: 'numbersequence_check',
+        id_prefix: 'carmichaelnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceCarmichaelNumbersDigits(),
+        id: 'numbersequence_digits',
+        id_prefix: 'carmichaelnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceCarmichaelNumbersContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        id_prefix: 'carmichaelnumbers_',
+        searchKeys: const []),
+
+    //NumberSequenceSelection Sphenic NUmbers ****************************************************************************************
+    GCWTool(
+        tool: const NumberSequenceSphenicNumbersNthNumber(),
+        id: 'numbersequence_nth',
+        id_prefix: 'sphenicnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceSphenicNumbersRange(),
+        id: 'numbersequence_range',
+        id_prefix: 'sphenicnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceSphenicNumbersCheckNumber(),
+        id: 'numbersequence_check',
+        id_prefix: 'sphenicnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceSphenicNumbersDigits(),
+        id: 'numbersequence_digits',
+        id_prefix: 'sphenicnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceSphenicNumbersContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        id_prefix: 'sphenicnumbers_',
+        searchKeys: const []),
+
+    //NumberSequenceSelection Harshad NUmbers ****************************************************************************************
+    GCWTool(
+        tool: const NumberSequenceHarshadNumbersNthNumber(),
+        id: 'numbersequence_nth',
+        id_prefix: 'harshadnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceHarshadNumbersRange(),
+        id: 'numbersequence_range',
+        id_prefix: 'harshadnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceHarshadNumbersCheckNumber(),
+        id: 'numbersequence_check',
+        id_prefix: 'harshadnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceHarshadNumbersDigits(),
+        id: 'numbersequence_digits',
+        id_prefix: 'harshadnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceHarshadNumbersContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        id_prefix: 'harshadnumbers_',
+        searchKeys: const []),
+
+    //NumberSequenceSelection Taxicab NUmbers ****************************************************************************************
+    GCWTool(
+        tool: const NumberSequenceTaxicabNumbersNthNumber(),
+        id: 'numbersequence_nth',
+        id_prefix: 'taxicabnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceTaxicabNumbersRange(),
+        id: 'numbersequence_range',
+        id_prefix: 'taxicabnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceTaxicabNumbersCheckNumber(),
+        id: 'numbersequence_check',
+        id_prefix: 'taxicabnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceTaxicabNumbersDigits(),
+        id: 'numbersequence_digits',
+        id_prefix: 'taxicabnumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceTaxicabNumbersContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        id_prefix: 'taxicabnumbers_',
+        searchKeys: const []),
+
+    //NumberSequenceSelection Palindrome Primes ****************************************************************************************
+    GCWTool(
+        tool: const NumberSequencePalindromePrimesNthNumber(),
+        id: 'numbersequence_nth',
+        id_prefix: 'palindromeprimes_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequencePalindromePrimesRange(),
+        id: 'numbersequence_range',
+        id_prefix: 'palindromeprimes_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequencePalindromePrimesCheckNumber(),
+        id: 'numbersequence_check',
+        id_prefix: 'palindromeprimes_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequencePalindromePrimesDigits(),
+        id: 'numbersequence_digits',
+        id_prefix: 'palindromeprimes_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequencePalindromePrimesContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        id_prefix: 'palindromeprimes_',
         searchKeys: const []),
 
     //NumberSequenceSelection Factorial ****************************************************************************************
@@ -5592,7 +6026,16 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequencePrimaryPseudoPerfectNumbersNthNumber(),
         id: 'numbersequence_nth',
         id_prefix: 'pseudoperfect_numbers_',
-        searchKeys: const []),
+        searchKeys: const [],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            title: 'A054377',
+            sourceUrl:
+            'https://web.archive.org/web/20241110161323/https://oeis.org/A054377/b054377.txt',
+          ),
+        ]),
     GCWTool(
         tool: const NumberSequencePrimaryPseudoPerfectNumbersRange(),
         id: 'numbersequence_range',

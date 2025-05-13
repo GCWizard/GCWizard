@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 
 class NumberSequenceMemorablePrimesCheckNumber extends NumberSequenceCheckNumber {
   const NumberSequenceMemorablePrimesCheckNumber({super.key})
-      : super(mode: NumberSequencesMode.MEMORABLE_PRIMES, maxIndex: 1);
+      : super(mode: NumberSequencesMode.MEMORABLE_PRIMES, maxIndex: 2);
 }
 
 class NumberSequenceMemorablePrimesDigits extends NumberSequenceDigits {
@@ -17,15 +17,15 @@ class NumberSequenceMemorablePrimesDigits extends NumberSequenceDigits {
 
 class NumberSequenceMemorablePrimesRange extends NumberSequenceRange {
   const NumberSequenceMemorablePrimesRange({super.key})
-      : super(mode: NumberSequencesMode.MEMORABLE_PRIMES, maxIndex: 1);
+      : super(mode: NumberSequencesMode.MEMORABLE_PRIMES, maxIndex: 2);
 }
 
 class NumberSequenceMemorablePrimesNthNumber extends NumberSequenceNthNumber {
   const NumberSequenceMemorablePrimesNthNumber({super.key})
-      : super(mode: NumberSequencesMode.MEMORABLE_PRIMES, maxIndex: 1);
+      : super(mode: NumberSequencesMode.MEMORABLE_PRIMES, maxIndex: 2);
 }
 
 class NumberSequenceMemorablePrimesContainsDigits extends NumberSequenceContainsDigits {
   const NumberSequenceMemorablePrimesContainsDigits({super.key})
-      : super(mode: NumberSequencesMode.MEMORABLE_PRIMES, maxIndex: 1);
+      : super(mode: NumberSequencesMode.MEMORABLE_PRIMES, maxIndex: 2);
 }

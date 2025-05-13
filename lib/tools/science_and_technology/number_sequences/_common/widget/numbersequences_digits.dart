@@ -34,7 +34,6 @@ class _NumberSequenceDigitsState extends State<NumberSequenceDigits> {
       children: <Widget>[
         GCWTextDivider(
           text: i18n(context, NUMBERSEQUENCE_TITLE[widget.mode]!),
-          style: const TextStyle(fontSize: 20),
         ),
         GCWIntegerSpinner(
           title: i18n(context, 'numbersequence_inputd'),

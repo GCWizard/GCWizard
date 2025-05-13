@@ -41,19 +41,26 @@ import 'dart:isolate';
 import 'dart:math';
 
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/bell/logic/list_bell_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/busybeaver/logic/list_busy_beaver_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/carmichael/logic/list_carmichael_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/happy_numbers/logic/list_happy_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/harshad/logic/list_harshad_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/lonely_numbers/logic/list_lonely_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucky_numbers/logic/list_lucky_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lychrel/logic/list_lychrel_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/memorable_primes/logic/list_permutable_primes.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersenne_exponents/logic/list_mersenne_exponents.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersenne_primes/logic/list_mersenne_primes.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/palindrome_primes/logic/list_palindrome_primes.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/perfect_numbers/logic/list_perfect_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/permutable_primes/logic/list_permutable_primes.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/primarypseudoperfect_numbers/logic/list_primary_pseudo_perfect_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/primes/logic/list_primes.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/sphenic_numbers/logic/list_sphenic_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/sublime_numbers/logic/list_sublime_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/superperfect_numbers/logic/list_super_perfect_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/taxicab/logic/list_taxicab_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/weird_numbers/logic/list_weird_numbers.dart';
 
 part 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence_checknumber.dart';
@@ -92,6 +99,12 @@ const Map<NumberSequencesMode, String> NUMBERSEQUENCE_TITLE = {
   NumberSequencesMode.LUCKY_NUMBERS: 'numbersequence_luckynumbers_title',
   NumberSequencesMode.HAPPY_NUMBERS: 'numbersequence_happynumbers_title',
   NumberSequencesMode.BUSY_BEAVER: 'numbersequence_busy_beaver_title',
+  NumberSequencesMode.CARMICHAEL: 'numbersequence_carmichaelnumbers_title',
+  NumberSequencesMode.SPHENIC: 'numbersequence_sphenicnumbers_title',
+  NumberSequencesMode.HARSHAD: 'numbersequence_harshadnumbers_title',
+  NumberSequencesMode.TAXICAB: 'numbersequence_taxicabnumbers_title',
+  NumberSequencesMode.LONELY: 'numbersequence_lonelynumbers_title',
+  NumberSequencesMode.PALINDROME_PRIMES: 'numbersequence_palindromeprimes_title',
 };
 
 class PositionOfSequenceOutput {
@@ -131,6 +144,12 @@ enum NumberSequencesMode {
   LUCKY_NUMBERS,
   HAPPY_NUMBERS,
   BUSY_BEAVER,
+  SPHENIC,
+  CARMICHAEL,
+  HARSHAD,
+  TAXICAB,
+  LONELY,
+  PALINDROME_PRIMES
 }
 
 final Zero = BigInt.zero;

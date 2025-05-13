@@ -7,25 +7,25 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 
 class NumberSequencePerfectNumbersCheckNumber extends NumberSequenceCheckNumber {
   const NumberSequencePerfectNumbersCheckNumber({super.key})
-      : super(mode: NumberSequencesMode.PERFECT_NUMBERS, maxIndex: 11);
+      : super(mode: NumberSequencesMode.PERFECT_NUMBERS, maxIndex: 15);
 }
 
 class NumberSequencePerfectNumbersDigits extends NumberSequenceDigits {
   const NumberSequencePerfectNumbersDigits({super.key})
-      : super(mode: NumberSequencesMode.PERFECT_NUMBERS, maxDigits: 80);
+      : super(mode: NumberSequencesMode.PERFECT_NUMBERS, maxDigits: 770);
 }
 
 class NumberSequencePerfectNumbersRange extends NumberSequenceRange {
   const NumberSequencePerfectNumbersRange({super.key})
-      : super(mode: NumberSequencesMode.PERFECT_NUMBERS, maxIndex: 11);
+      : super(mode: NumberSequencesMode.PERFECT_NUMBERS, maxIndex: 15);
 }
 
 class NumberSequencePerfectNumbersNthNumber extends NumberSequenceNthNumber {
   const NumberSequencePerfectNumbersNthNumber({super.key})
-      : super(mode: NumberSequencesMode.PERFECT_NUMBERS, maxIndex: 11);
+      : super(mode: NumberSequencesMode.PERFECT_NUMBERS, maxIndex: 15);
 }
 
 class NumberSequencePerfectNumbersContainsDigits extends NumberSequenceContainsDigits {
   const NumberSequencePerfectNumbersContainsDigits({super.key})
-      : super(mode: NumberSequencesMode.PERFECT_NUMBERS, maxIndex: 11);
+      : super(mode: NumberSequencesMode.PERFECT_NUMBERS, maxIndex: 15);
 }
