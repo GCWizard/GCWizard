@@ -102,7 +102,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
         while (!numberString.substring(j).startsWith(check)) {
           j++;
         }
-        return PositionOfSequenceOutput(numberString, index, (j + 1));
+        return PositionOfSequenceOutput(numberString, index + 1, (j + 1));
       }
       index++;
     }
@@ -126,7 +126,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
           while (!numberString.substring(j).startsWith(check)) {
             j++;
           }
-          return PositionOfSequenceOutput(numberString, index, j + 1);
+          return PositionOfSequenceOutput(numberString, index + 1, j + 1);
         }
         index++;
       }
@@ -151,7 +151,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
           while (!numberString.substring(j).startsWith(check)) {
             j++;
           }
-          return PositionOfSequenceOutput(numberString, index, j + 1);
+          return PositionOfSequenceOutput(numberString, index + 1, j + 1);
         }
         index++;
       }
@@ -174,7 +174,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
         while (!numberString.substring(j).startsWith(check)) {
           j++;
         }
-        return PositionOfSequenceOutput(numberString, index, j + 1);
+        return PositionOfSequenceOutput(numberString, index + 1, j + 1);
       }
       index++;
     }
@@ -195,7 +195,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
           while (!numberString.substring(j).startsWith(check)) {
             j++;
           }
-          return PositionOfSequenceOutput(numberString, index, j + 1);
+          return PositionOfSequenceOutput(numberString, index + 1, j + 1);
         }
         index++;
         number = pn1 + pn0;
@@ -226,7 +226,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
         while (!numberString.substring(j).startsWith(check)) {
           j++;
         }
-        return PositionOfSequenceOutput(numberString, index, j + 1);
+        return PositionOfSequenceOutput(numberString, index + 1, j + 1);
       }
       index++;
     }
@@ -246,7 +246,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
           while (!numberString.substring(j).startsWith(check)) {
             j++;
           }
-          return PositionOfSequenceOutput(numberString, index, j + 1);
+          return PositionOfSequenceOutput(numberString, index + 1, j + 1);
         }
         index++;
       }
@@ -316,6 +316,9 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
       case NumberSequencesMode.LONELY:
         sequenceList.addAll(lonely_numbers);
         break;
+      case NumberSequencesMode.PALINDROME_PRIMES:
+        sequenceList.addAll(palindrome_primes);
+        break;
       default:
         {}
     }
@@ -325,7 +328,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
         while (!sequenceList[i].substring(j).startsWith(check)) {
           j++;
         }
-        return PositionOfSequenceOutput(sequenceList[i], i, j + 1);
+        return PositionOfSequenceOutput(sequenceList[i], i + 1, j + 1);
       }
     }
   }

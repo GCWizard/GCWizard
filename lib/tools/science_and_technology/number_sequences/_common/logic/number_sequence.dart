@@ -52,6 +52,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/lychrel/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/memorable_primes/logic/list_permutable_primes.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersenne_exponents/logic/list_mersenne_exponents.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersenne_primes/logic/list_mersenne_primes.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/palindrome_primes/logic/list_palindrome_primes.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/perfect_numbers/logic/list_perfect_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/permutable_primes/logic/list_permutable_primes.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/primarypseudoperfect_numbers/logic/list_primary_pseudo_perfect_numbers.dart';
@@ -103,6 +104,7 @@ const Map<NumberSequencesMode, String> NUMBERSEQUENCE_TITLE = {
   NumberSequencesMode.HARSHAD: 'numbersequence_harshadnumbers_title',
   NumberSequencesMode.TAXICAB: 'numbersequence_taxicabnumbers_title',
   NumberSequencesMode.LONELY: 'numbersequence_lonelynumbers_title',
+  NumberSequencesMode.PALINDROME_PRIMES: 'numbersequence_palindromeprimes_title',
 };
 
 class PositionOfSequenceOutput {
@@ -146,7 +148,8 @@ enum NumberSequencesMode {
   CARMICHAEL,
   HARSHAD,
   TAXICAB,
-  LONELY
+  LONELY,
+  PALINDROME_PRIMES
 }
 
 final Zero = BigInt.zero;

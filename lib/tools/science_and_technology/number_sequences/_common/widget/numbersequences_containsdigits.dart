@@ -18,7 +18,7 @@ class NumberSequenceContainsDigits extends StatefulWidget {
 }
 
 class _NumberSequenceContainsDigitsState extends State<NumberSequenceContainsDigits> {
-  String _currentInputN = '0';
+  String _currentInputN = '';
   late TextEditingController currentInputController;
 
   Widget _currentOutput = const GCWDefaultOutput();
@@ -50,7 +50,7 @@ class _NumberSequenceContainsDigitsState extends State<NumberSequenceContainsDig
           onChanged: (text) {
             setState(() {
               if (text.isEmpty) {
-                _currentInputN = '0';
+                _currentInputN = '';
               } else {
                 _currentInputN = text;
               }
@@ -68,6 +68,10 @@ class _NumberSequenceContainsDigitsState extends State<NumberSequenceContainsDig
   }
 
   void _buildOutput() {
+    if (_currentInputN.isEmpty) {
+      return;
+    }
+
     List<List<String>> columnData = [];
     PositionOfSequenceOutput detailedOutput;
 

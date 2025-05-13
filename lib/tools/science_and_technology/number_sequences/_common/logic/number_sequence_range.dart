@@ -205,6 +205,9 @@ Future<List<BigInt>> calculateRange(GetNumberRangeJobData data,
       case NumberSequencesMode.LONELY:
         sequenceList.addAll(lonely_numbers);
         break;
+      case NumberSequencesMode.PALINDROME_PRIMES:
+        sequenceList.addAll(palindrome_primes);
+        break;
       default:
         {}
     }

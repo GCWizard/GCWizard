@@ -64,6 +64,7 @@ import 'package:gc_wizard/application/category_views/selector_lists/number_seque
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_mersenneexponents_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_mersennefermat_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_mersenneprimes_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_palindromeprimes_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_pell_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_pelllucas_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_perfectnumbers_selection.dart';
@@ -438,6 +439,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersenne
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersenne_exponents/widget/mersenne_exponents.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersenne_primes/widget/mersenne_primes.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersennefermat/widget/mersennefermat.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/palindrome_primes/widget/palindrome_primes.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/pell/widget/pell.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/pell_lucas/widget/pell_lucas.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/perfect_numbers/widget/perfect_numbers.dart';
@@ -4805,6 +4807,7 @@ void initializeRegistry(BuildContext context) {
         id: 'numbersequence_mersenneexponents',
         searchKeys: const [
           'numbers',
+          'primes',
           'numbersequence',
           'numbersequence_mersenneexponentsselection',
         ],
@@ -5181,7 +5184,7 @@ void initializeRegistry(BuildContext context) {
         searchKeys: const [
           'numbers',
           'numbersequence',
-          'numbersequence_sphenicnumberselection',
+          'numbersequence_sphenicnumbersselection',
         ],
         licenses: [
           ToolLicenseOnlineArticle(
@@ -5199,7 +5202,7 @@ void initializeRegistry(BuildContext context) {
         searchKeys: const [
           'numbers',
           'numbersequence',
-          'numbersequence_lonelynumberselection',
+          'numbersequence_lonelynumbersselection',
         ],
         licenses: [
           ToolLicenseOnlineArticle(
@@ -5208,6 +5211,25 @@ void initializeRegistry(BuildContext context) {
             title: 'A051650',
             sourceUrl:
             'https://web.archive.org/web/20250226124743/https://oeis.org/A051650/b051650.txt',
+          ),
+        ]),
+    GCWTool(
+        tool: const NumberSequencePalindromePrimesSelection(),
+        id: 'numbersequence_palindromeprimes',
+        searchKeys: const [
+          'numbers',
+          'primes',
+          'numbersequence',
+          'numbersequence_palindromeprimesselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Unknown',
+            publisher: 'OAIS',
+            title: 'A002385',
+            sourceUrl:
+            'https://web.archive.org/web/20241229231226/https://oeis.org/A002385/b002385.txt',
           ),
         ]),
 
@@ -5371,6 +5393,33 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequenceTaxicabNumbersContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'taxicabnumbers_',
+        searchKeys: const []),
+
+    //NumberSequenceSelection Palindrome Primes ****************************************************************************************
+    GCWTool(
+        tool: const NumberSequencePalindromePrimesNthNumber(),
+        id: 'numbersequence_nth',
+        id_prefix: 'palindromeprimes_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequencePalindromePrimesRange(),
+        id: 'numbersequence_range',
+        id_prefix: 'palindromeprimes_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequencePalindromePrimesCheckNumber(),
+        id: 'numbersequence_check',
+        id_prefix: 'palindromeprimes_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequencePalindromePrimesDigits(),
+        id: 'numbersequence_digits',
+        id_prefix: 'palindromeprimes_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequencePalindromePrimesContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        id_prefix: 'palindromeprimes_',
         searchKeys: const []),
 
     //NumberSequenceSelection Factorial ****************************************************************************************

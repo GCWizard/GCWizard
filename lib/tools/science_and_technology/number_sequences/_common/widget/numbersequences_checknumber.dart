@@ -17,7 +17,7 @@ class NumberSequenceCheckNumber extends StatefulWidget {
 }
 
 class _NumberSequenceCheckNumberState extends State<NumberSequenceCheckNumber> {
-  String _currentInputN = '0';
+  String _currentInputN = '';
   late TextEditingController currentInputController;
 
   Widget _currentOutput = const GCWDefaultOutput();
@@ -49,7 +49,7 @@ class _NumberSequenceCheckNumberState extends State<NumberSequenceCheckNumber> {
           onChanged: (text) {
             setState(() {
               if (text.isEmpty) {
-                _currentInputN = '0';
+                _currentInputN = '';
               } else {
                 _currentInputN = text;
               }
@@ -67,6 +67,10 @@ class _NumberSequenceCheckNumberState extends State<NumberSequenceCheckNumber> {
   }
 
   void _buildOutput() {
+    if (_currentInputN.isEmpty) {
+      return;
+    }
+
     var checked = numberSequencesCheckNumber(widget.mode, BigInt.parse(_currentInputN), widget.maxIndex);
 
     String output;
