@@ -4,15 +4,6 @@ import 'package:gc_wizard/tools/crypto_and_encodings/_common/logic/crypt_alphabe
 import 'package:gc_wizard/utils/alphabets.dart';
 
 enum PolybiosMode { AZ09, ZA90, x90ZA, x09AZ, CUSTOM }
-enum PolybiosException { LABELSIZE_ERROR, DOUBLE_CHARACTER_ERROR, ALPHABET_ERROR }
-
-PolybiosOutput _error(PolybiosException exception) {
-  switch (exception) {
-    case PolybiosException.LABELSIZE_ERROR: return PolybiosOutput('Labels are not 5 or 6 characters long', '');
-    case PolybiosException.DOUBLE_CHARACTER_ERROR: return PolybiosOutput('Labeltext needs unique characters', '');
-    case PolybiosException.ALPHABET_ERROR: return PolybiosOutput('Alphabet error', '');
-  }
-}
 
 class PolybiosOutput {
   final String output;
@@ -33,9 +24,9 @@ String _sanitizeAlphabet(String alphabet) {
   return alphabet.split('').toSet().join();
 }
 
-bool _hasDoubleChars(String text) {
-  return text.length != text.split('').toSet().length;
-}
+// bool _hasDoubleChars(String text) {
+//   return text.length != text.split('').toSet().length;
+// }
 
 String? createPolybiosAlphabet(int gridDimension,
     {String? firstLetters = '',
@@ -119,7 +110,7 @@ String? createPolybiosAlphabet(int gridDimension,
 
   var alphabet = _sanitizeAlphabet(firstLetters + fillAlphabet);
 
-  if (alphabet.length < gridDimension * gridDimension) return _error(PolybiosException.ALPHABET_ERROR).output;
+  if (alphabet.length < gridDimension * gridDimension) return null; //TODO Exception
 
   return alphabet.substring(0, gridDimension * gridDimension);
 }
@@ -163,13 +154,12 @@ PolybiosOutput? encryptPolybios(String input, String rowIndexes,
   colIndexes = colIndexes.toUpperCase();
 
   int dim = rowIndexes.length;
-  if (dim != 5 && dim != 6) return _error(PolybiosException.LABELSIZE_ERROR);
-  if (dim != colIndexes.length) return _error(PolybiosException.LABELSIZE_ERROR);
-  if (_hasDoubleChars(rowIndexes) || _hasDoubleChars(colIndexes)) return _error(PolybiosException.DOUBLE_CHARACTER_ERROR);
+  if (dim != 5 && dim != 6) return null; // TODO: Exception
+  // if (_hasDoubleChars(rowIndexes) || _hasDoubleChars(colIndexes)) return null;
 
   var alphabet = createPolybiosAlphabet(dim,
       mode: mode, fillAlphabet: fillAlphabet, firstLetters: firstLetters, modificationMode: modificationMode);
-  if (alphabet == null) return _error(PolybiosException.ALPHABET_ERROR);
+  if (alphabet == null) return null; // TODO: Exception
 
   input = input.toUpperCase();
 
@@ -203,9 +193,8 @@ PolybiosOutput? decryptPolybios(String input, String rowIndexes,
   colIndexes = colIndexes.toUpperCase();
 
   int dim = rowIndexes.length;
-  if (dim != 5 && dim != 6) return _error(PolybiosException.LABELSIZE_ERROR);
-  if (dim != colIndexes.length) return _error(PolybiosException.LABELSIZE_ERROR);
-  if (_hasDoubleChars(rowIndexes) || _hasDoubleChars(colIndexes)) return _error(PolybiosException.DOUBLE_CHARACTER_ERROR);
+  if (dim != 5 && dim != 6) return null;
+  // if (_hasDoubleChars(rowIndexes) || _hasDoubleChars(colIndexes)) return null;
 
   var alphabet = createPolybiosAlphabet(dim,
       mode: mode, fillAlphabet: fillAlphabet, firstLetters: firstLetters, modificationMode: modificationMode);
