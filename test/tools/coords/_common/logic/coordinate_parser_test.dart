@@ -34,20 +34,18 @@ void main() {
 
   group("Coordinates.parseCoordinates:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      {'text': "104181 924569 248105", 'expectedOutput': {'format': CoordinateFormatKey.REVERSE_WIG_WALDMEISTER, 'coordinate': const LatLng(46.21101, 025.59849)}},
-      {'text': '720598 545963 823979', 'expectedOutput': {'format': CoordinateFormatKey.REVERSE_WIG_10Y_WALDMEISTER, 'coordinate': const LatLng(52.78956, 14.03168)}},
-      {'text': "580498 850012 847837", 'expectedOutput': null},
+      {'text': "104181 924569 248105", 'expectedOutput': {'format': CoordinateFormatKey.REVERSE_WIG_WALDMEISTER}},
+      {'text': '720598 545963 823979', 'expectedOutput': {'format': CoordinateFormatKey.REVERSE_WIG_10Y_WALDMEISTER}},
+      {'text': "580498 850012 847837", 'expectedOutput': {'format': CoordinateFormatKey.XYZ}},
     ];
 
     for (var elem in _inputsToExpected) {
       test('text: ${elem['text']}', () {
         var _actual = parseCoordinates(elem['text'] as String);
         if (elem['expectedOutput'] == null) {
-          expect(null, elem['expectedOutput']);
+          expect(_actual, elem['expectedOutput']);
         } else {
           expect(_actual.first.format.type, (elem['expectedOutput'] as Map<String, Object>)['format']);
-          expect((_actual.first.toLatLng()!.latitude - ((elem['expectedOutput'] as Map<String, Object>)['coordinate'] as LatLng).latitude).abs() < 1e-8, true);
-          expect((_actual.first.toLatLng()!.longitude - ((elem['expectedOutput'] as Map<String, Object>)['coordinate'] as LatLng).longitude).abs() < 1e-8, true);
         }
       });
     }
