@@ -38,7 +38,9 @@ class ReverseWherigoWaldmeisterCoordinate extends BaseCoordinate {
   }
 
   static ReverseWherigoWaldmeisterCoordinate? parse(String input) {
-    return _parseReverseWherigoWaldmeister(input);
+    var result = _parseReverseWherigoWaldmeister(input);
+    result?.toLatLng();
+    return result;
   }
 
   String _leftPadComponent(int x) {
