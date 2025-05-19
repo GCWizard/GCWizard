@@ -61,7 +61,7 @@ LatLng? _reverseWIGWaldmeisterToLatLon(ReverseWherigoWaldmeisterCoordinate waldm
   var b = waldmeister.b;
   var c = waldmeister.c;
 
-  if (!checkSumTest(waldmeister)) return null;
+  if (!_checkSumTest(waldmeister)) return null;
 
   int _latSign = 1;
   int _lonSign = 1;
@@ -363,13 +363,10 @@ ReverseWherigoWaldmeisterCoordinate? _parseReverseWherigoWaldmeister(String inpu
 
   if (a == null || b == null || c == null) return null;
 
-  var waldmeister = ReverseWherigoWaldmeisterCoordinate(a, b, c);
-  
-  if (!checkSumTest(waldmeister)) return null;
-  return waldmeister;
+  return ReverseWherigoWaldmeisterCoordinate(a, b, c);
 }
 
-bool checkSumTest(ReverseWherigoWaldmeisterCoordinate waldmeister) {
+bool _checkSumTest(ReverseWherigoWaldmeisterCoordinate waldmeister) {
   var b3Calc = __b3CheckSum(waldmeister).toInt();
   var c3Calc = __c3CheckSum(waldmeister).toInt();
 
