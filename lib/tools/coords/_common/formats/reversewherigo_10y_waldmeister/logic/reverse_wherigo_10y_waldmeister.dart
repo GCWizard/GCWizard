@@ -18,12 +18,19 @@ class ReverseWherigo10YWaldmeisterCoordinate extends BaseCoordinate {
   @override
   CoordinateFormat get format => CoordinateFormat(CoordinateFormatKey.REVERSE_WIG_10Y_WALDMEISTER);
   int a, b, c;
+  var _stateCode = StateCode.OK;
 
   ReverseWherigo10YWaldmeisterCoordinate(this.a, this.b, this.c);
 
   @override
+  StateCode get stateCode => _stateCode;
+
+  @override
   LatLng? toLatLng() {
-    return _wig10YWaldmeisterToWigWaldmeister(this).toLatLng();
+    var result = _wig10YWaldmeisterToWigWaldmeister(this);
+    var latLng = result.toLatLng();
+    _stateCode = result.stateCode;
+    return latLng;
   }
 
   static ReverseWherigo10YWaldmeisterCoordinate fromLatLon(LatLng coord) {
@@ -31,7 +38,9 @@ class ReverseWherigo10YWaldmeisterCoordinate extends BaseCoordinate {
   }
 
   static ReverseWherigo10YWaldmeisterCoordinate? parse(String input) {
-    return _parseReverseWherigo10YWaldmeister(input);
+    var result = _parseReverseWherigo10YWaldmeister(input);
+    result?.toLatLng();
+    return result;
   }
 
   String _leftPadComponent(int x) {
@@ -96,8 +105,5 @@ ReverseWherigo10YWaldmeisterCoordinate? _parseReverseWherigo10YWaldmeister(Strin
 
   if (a == null || b == null || c == null) return null;
 
-  var _10Y = ReverseWherigo10YWaldmeisterCoordinate(a, b, c);
-
-  if (!checkSumTest(_wig10YWaldmeisterToWigWaldmeister(_10Y))) return null;
-  return _10Y;
+  return ReverseWherigo10YWaldmeisterCoordinate(a, b, c);
 }
