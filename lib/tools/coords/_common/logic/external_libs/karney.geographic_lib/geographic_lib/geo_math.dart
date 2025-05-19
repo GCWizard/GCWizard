@@ -264,7 +264,7 @@ class _GeoMath {
    * The range of <i>x</i> is unrestricted; <i>y</i> must be positive.
    **********************************************************************/
   static double remainder(double x, double y) {
-    x = x % y;
+    x %= y;
     return x < -y / 2 ? x + y : (x < y / 2 ? x : x - y);
   }
 

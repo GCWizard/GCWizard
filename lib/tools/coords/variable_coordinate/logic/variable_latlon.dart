@@ -84,7 +84,7 @@ VariableCoordinateResults parseVariableLatLon(String coordinate, Map<String, Str
 
   for (FormulaSolverSingleResult expandedText in parserResult.first.output.results) {
     if (withProjection) {
-      var evaluatedTexts = expandedText.result.split(String.fromCharCode(1));
+      var evaluatedTexts = expandedText.result.split('\u0001');
 
       var parsedCoord = _parseCoordText(_removeBrackets(evaluatedTexts[0]));
       if (parsedCoord == null) continue;

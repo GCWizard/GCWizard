@@ -147,7 +147,7 @@ class _ShadoksNumbersState extends State<ShadoksNumbers> {
   String _segmentsToShadoks(Segments segments) {
     String result = '';
     for (var element in segments.displays) {
-      result = result + (_segmentToWord[element.join('')] ?? '');
+      result += (_segmentToWord[element.join('')] ?? '');
     }
     return result;
   }

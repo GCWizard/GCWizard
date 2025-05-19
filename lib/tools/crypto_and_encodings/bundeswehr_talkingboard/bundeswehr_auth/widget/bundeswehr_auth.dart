@@ -641,7 +641,7 @@ class _BundeswehrTalkingBoardAuthentificationState
           '  ' +
           authCode[i + 4].toString().padLeft(2, '0') +
           '\n';
-      i = i + 5;
+      i += 5;
     }
 
     List<String> authCodeList = [];

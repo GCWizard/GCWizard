@@ -97,7 +97,7 @@ String encodePokemon(String plainText) {
   if (plainText.isEmpty) return '';
   String result = '';
   for (int i = 0; i < plainText.length; i++) {
-    result = result + (_POKEMON[plainText[i].toLowerCase()] ?? '');
+    result += (_POKEMON[plainText[i].toLowerCase()] ?? '');
   }
   return result.toUpperCase();
 }
@@ -126,7 +126,7 @@ String _decode(String input) {
     while (j < _DECODE_POKEMON.length) {
       if (cypher.startsWith(_DECODE_POKEMON[j].keys.toList()[0])) {
         cypher = cypher.replaceFirst(_DECODE_POKEMON[j].keys.toList()[0], '');
-        result = result + _DECODE_POKEMON[j].values.toList()[0];
+        result += _DECODE_POKEMON[j].values.toList()[0];
         j = _DECODE_POKEMON.length;
         iteration = cypher.length;
       }

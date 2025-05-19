@@ -51,7 +51,7 @@ ADFGVXReturnType? _encrypt(String input, String substitutionKey, String transpos
   var newIndexes = List<int>.generate(transpositionKey.length, (_) => -1);
   transpositionKey.split('').asMap().forEach((index, character) {
     var characterPosition = transpositionKeySorted.indexOf(character);
-    transpositionKeySorted[characterPosition] = String.fromCharCode(0);
+    transpositionKeySorted[characterPosition] = '\u0000';
     newIndexes[characterPosition] = index;
   });
 
@@ -91,7 +91,7 @@ ADFGVXReturnType? _decrypt(String input, String substitutionKey, String transpos
     var newIndexes = List<int>.generate(transpositionKey.length, (_) => -1);
     transpositionKey.split('').asMap().forEach((index, character) {
       var characterPosition = transpositionKeySorted.indexOf(character);
-      transpositionKeySorted[characterPosition] = String.fromCharCode(0);
+      transpositionKeySorted[characterPosition] = '\u0000';
       newIndexes[index] = characterPosition;
     });
 
@@ -111,7 +111,7 @@ ADFGVXReturnType? _decrypt(String input, String substitutionKey, String transpos
       }
 
       var chunk = input.substring(i, i + maxRow);
-      if (fillColumn) chunk += String.fromCharCode(0);
+      if (fillColumn) chunk += '\u0000';
 
       matrix[index] = chunk.split('');
       i += maxRow;
@@ -120,7 +120,7 @@ ADFGVXReturnType? _decrypt(String input, String substitutionKey, String transpos
     transposed = '';
     for (int i = 0; i < countRows; i++) {
       for (int j = 0; j < countColumns; j++) {
-        if (matrix[j][i] != String.fromCharCode(0)) transposed = transposed! + matrix[j][i];
+        if (matrix[j][i] != '\u0000') transposed = transposed! + matrix[j][i];
       }
     }
   }

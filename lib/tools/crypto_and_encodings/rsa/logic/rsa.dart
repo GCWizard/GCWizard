@@ -48,7 +48,7 @@ BigInt? calculateD(BigInt? e, BigInt? p, BigInt? q) {
   var phiN = phi(p, q);
   var i = BigInt.one;
   while ((i < phiN) && (i * e) % phiN != BigInt.one) {
-    i = i + BigInt.one;
+    i += BigInt.one;
   }
 
   if (i >= phiN) throw const FormatException('rsa_error_could.not.calc.d');

@@ -54,9 +54,9 @@ BundeswehrTalkingBoardCodingOutput decodeBundeswehr(
 
   cypherText.split(' ').forEach((pair) {
     if (pair.length == 2) {
-      result = result + _decodeNumeralCode(pair, tableNumeralCode);
+      result += _decodeNumeralCode(pair, tableNumeralCode);
     } else {
-      result = result + UNKNOWN_ELEMENT;
+      result += UNKNOWN_ELEMENT;
     }
   });
   return BundeswehrTalkingBoardCodingOutput(ResponseCode: BUNDESWEHR_TALKINGBOARD_CODE_RESPONSE_OK, Details: result);

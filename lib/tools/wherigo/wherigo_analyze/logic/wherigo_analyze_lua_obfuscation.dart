@@ -7,7 +7,7 @@ void _deObfuscateAllTexts() {
     RegExp(r'' + _obfuscatorFunction[i] + '\\(".*?"\\)').allMatches(_LUAFile).forEach((obfuscatedText) {
       var group = obfuscatedText.group(0);
       if (group == null) return;
-      _LUAFile = _LUAFile.replaceAll(group, '"' + deObfuscateText(group, _obfuscatorFunction[i], _obfuscatorTable[i]) + '"');
+      _LUAFile = _LUAFile.replaceAll(group, '"' + _deObfuscateText(group, _obfuscatorFunction[i], _obfuscatorTable[i]) + '"');
     });
   }
 }
@@ -38,7 +38,7 @@ void _checkAndGetObfuscatorWWBorGSUB() {
       var group = obfuscatedText.group(0);
       if (group == null) return;
 
-      _LUAFile = _LUAFile.replaceAll(group, '"' + deObfuscateText(group, _obfuscatorFunction[0], _obfuscatorTable[0]) + '"');
+      _LUAFile = _LUAFile.replaceAll(group, '"' + _deObfuscateText(group, _obfuscatorFunction[0], _obfuscatorTable[0]) + '"');
     });
   } else if (RegExp(r'(gsub_wig)').hasMatch(_LUAFile)) {
     _obfuscatorFunction.add('gsub_wig');
@@ -48,7 +48,7 @@ void _checkAndGetObfuscatorWWBorGSUB() {
       var group = obfuscatedText.group(0);
       if (group == null) return;
 
-      _LUAFile = _LUAFile.replaceAll(group, '"' + deObfuscateText(group, _obfuscatorFunction[0], _obfuscatorTable[0]) + '"');
+      _LUAFile = _LUAFile.replaceAll(group, '"' + _deObfuscateText(group, _obfuscatorFunction[0], _obfuscatorTable[0]) + '"');
     });
   }
 }

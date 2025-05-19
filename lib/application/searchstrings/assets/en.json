@@ -75,7 +75,6 @@
   "chao": "",
   "checkdigits": "checkdigits",
   "checkdigits_ean": "",
-  "checkdigits_imei": "typeallocationcode typeapprovalcode finalassemblycode",
   "checkdigits_uic": "internationalunionofrailways",
   "checkdigits_iban": "",
   "checkdigits_isbn": "",

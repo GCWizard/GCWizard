@@ -166,7 +166,7 @@ List<int> jewDayAndMonthInYear(int days, int yearlength) {
   while (newSum > 0 && i < 12) {
     oldSum = newSum;
     newSum = oldSum - mschema[i];
-    i = i + 1;
+    i += 1;
   }
   List<int> resArr = [1, 1];
   resArr[0] = oldSum + 1;
@@ -195,7 +195,7 @@ int daysInJewYear(int d, int m, int yearlength) {
   int days = 0;
   while (i < m - 1) {
     days = days + mschema[i];
-    i = i + 1;
+    i += 1;
   }
   return days + d;
 }

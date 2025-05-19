@@ -419,9 +419,9 @@ String _segments2binary(List<String> segments2convert, TeletypewriterCodebook la
   String result = '';
   for (int i = 1; i < 9; i++) {
     if (segments.contains(i.toString())) {
-      result = result + '1';
+      result += '1';
     } else {
-      result = result + '0';
+      result += '0';
     }
   }
   result = result.substring(0, BINARY_LENGTH[language]);

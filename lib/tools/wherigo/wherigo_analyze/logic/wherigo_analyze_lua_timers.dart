@@ -29,15 +29,15 @@ WherigoTimerData _analyzeAndExtractTimerSectionData(List<String> lines) {
     lines[i] = lines[i].trim();
 
     if (RegExp(r'( Wherigo.ZTimer\()').hasMatch(lines[i])) {
-      LUAname = getLUAName(lines[i]);
+      LUAname = _getLUAName(lines[i]);
     }
 
     if (lines[i].trim().startsWith(LUAname + '.Id')) {
-      id = getLineData(lines[i], LUAname, 'Id', _obfuscatorFunction, _obfuscatorTable);
+      id = _getLineData(lines[i], LUAname, 'Id', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].trim().startsWith(LUAname + '.Name')) {
-      name = getLineData(lines[i], LUAname, 'Name', _obfuscatorFunction, _obfuscatorTable);
+      name = _getLineData(lines[i], LUAname, 'Name', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].trim().startsWith(LUAname + '.Description')) {
@@ -50,19 +50,19 @@ WherigoTimerData _analyzeAndExtractTimerSectionData(List<String> lines) {
         lines[i] = lines[i].trim();
         if (i > lines.length - 1 || lines[i].trim().startsWith(LUAname + '.Visible')) _sectionDescription = false;
       } while (_sectionDescription);
-      description = getLineData(description, LUAname, 'Description', _obfuscatorFunction, _obfuscatorTable);
+      description = _getLineData(description, LUAname, 'Description', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].trim().startsWith(LUAname + '.Duration')) {
-      duration = getLineData(lines[i], LUAname, 'Duration', _obfuscatorFunction, _obfuscatorTable).trim();
+      duration = _getLineData(lines[i], LUAname, 'Duration', _obfuscatorFunction, _obfuscatorTable).trim();
     }
 
     if (lines[i].trim().startsWith(LUAname + '.Type')) {
-      type = getLineData(lines[i], LUAname, 'Type', _obfuscatorFunction, _obfuscatorTable).trim().toLowerCase();
+      type = _getLineData(lines[i], LUAname, 'Type', _obfuscatorFunction, _obfuscatorTable).trim().toLowerCase();
     }
 
     if (lines[i].trim().startsWith(LUAname + '.Visible')) {
-      visible = getLineData(lines[i], LUAname, 'Visible', _obfuscatorFunction, _obfuscatorTable).trim().toLowerCase();
+      visible = _getLineData(lines[i], LUAname, 'Visible', _obfuscatorFunction, _obfuscatorTable).trim().toLowerCase();
     }
   }
   return WherigoTimerData(

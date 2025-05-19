@@ -1,28 +1,27 @@
 part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/logic/wherigo_analyze.dart';
 
-int START_NUMBEROFOBJECTS = 7;
-int START_OBJCETADRESS = 9;
-int START_HEADER = 0;
-int START_FILES = 0;
+int _START_NUMBEROFOBJECTS = 7;
+int _START_OBJCETADRESS = 9;
+int _START_HEADER = 0;
 
 const LENGTH_BYTE = 1;
-const LENGTH_SHORT = 2;
-const LENGTH_USHORT = 2;
+const _LENGTH_SHORT = 2;
+const _LENGTH_USHORT = 2;
 const LENGTH_INT = 4;
-const LENGTH_LONG = 4;
-const LENGTH_DOUBLE = 8;
+const _LENGTH_LONG = 4;
+const _LENGTH_DOUBLE = 8;
 
-WherigoStringOffset readString(Uint8List byteList, int offset) {
+_WherigoStringOffset readString(Uint8List byteList, int offset) {
   // zero-terminated string - 0x00
   String result = '';
   while (byteList[offset] != 0) {
-    result = result + String.fromCharCode(byteList[offset]);
+    result += String.fromCharCode(byteList[offset]);
     offset++;
   }
-  return WherigoStringOffset(result, offset + 1);
+  return _WherigoStringOffset(result, offset + 1);
 }
 
-double readDouble(Uint8List byteList, int offset) {
+double _readDouble(Uint8List byteList, int offset) {
   // 8 Byte
   Uint8List bytes = Uint8List(8);
   bytes[7] = byteList[offset];
@@ -36,7 +35,7 @@ double readDouble(Uint8List byteList, int offset) {
   return ByteData.sublistView(bytes).getFloat64(0);
 }
 
-int readLong(Uint8List byteList, int offset) {
+int _readLong(Uint8List byteList, int offset) {
   // 8 Byte
   return (byteList[offset]) +
       byteList[offset + 1] * 256 +
@@ -57,7 +56,7 @@ int readShort(Uint8List byteList, int offset) {
   return byteList[offset] + 256 * byteList[offset + 1];
 }
 
-int readUShort(Uint8List byteList, int offset) {
+int _readUShort(Uint8List byteList, int offset) {
   // 2 Byte Little Endian
   return byteList[offset] + 256 * byteList[offset + 1];
 }
@@ -76,12 +75,12 @@ bool isInvalidCartridge(Uint8List byteList) {
   //        BYTE     "CART"
   //        BYTE     0x00
   String Signature = '';
-  Signature = Signature + byteList[0].toString(); // 2
-  Signature = Signature + byteList[1].toString(); // 10 or 11
-  Signature = Signature + String.fromCharCode(byteList[2]); // C
-  Signature = Signature + String.fromCharCode(byteList[3]); // A
-  Signature = Signature + String.fromCharCode(byteList[4]); // R
-  Signature = Signature + String.fromCharCode(byteList[5]); // T
+  Signature += byteList[0].toString(); // 2
+  Signature += byteList[1].toString(); // 10 or 11
+  Signature += String.fromCharCode(byteList[2]); // C
+  Signature += String.fromCharCode(byteList[3]); // A
+  Signature += String.fromCharCode(byteList[4]); // R
+  Signature += String.fromCharCode(byteList[5]); // T
   if (Signature == '210CART' || Signature == '211CART') {
     return false;
   } else {

@@ -63,7 +63,7 @@ WherigoActionMessageElementData _handleAnswerLine(String line) {
         ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: line);
   } else if (line.startsWith('Text = ')) {
     return WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: getTextData(line));
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: _getTextData(line));
   } else if (line.startsWith('Media = ')) {
     return WherigoActionMessageElementData(
         ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
@@ -74,7 +74,7 @@ WherigoActionMessageElementData _handleAnswerLine(String line) {
       return WherigoActionMessageElementData(
           ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON,
           ActionMessageContent:
-              getTextData(line.replaceAll('Buttons = {', '').replaceAll('},', '').replaceAll('}', '')));
+              _getTextData(line.replaceAll('Buttons = {', '').replaceAll('},', '').replaceAll('}', '')));
     }
   } else if (line.startsWith('if ') || line.startsWith('elseif ') || line.startsWith('else')) {
     return WherigoActionMessageElementData(

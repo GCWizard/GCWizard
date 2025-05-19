@@ -26,9 +26,9 @@ const _MAX_EXPANDED = 100;
 
 const RECURSIVE_FORMULA_REPLACEMENT_START = '{\u0000';
 const RECURSIVE_FORMULA_REPLACEMENT_END = '\u0000}';
-const _SAFED_FUNCTION_MARKER = '\x01';
-const _SAFED_RECURSIVE_FORMULA_MARKER = '\x02';
-const _SAFED_TEXTS_MARKER = '\x03';
+const _SAFED_FUNCTION_MARKER = '\u0001';
+const _SAFED_RECURSIVE_FORMULA_MARKER = '\u0002';
+const _SAFED_TEXTS_MARKER = '\u0003';
 const _STRING_MARKER_APOSTROPHE = "'";
 const _STRING_MARKER_QUOTE = '"';
 
@@ -533,7 +533,7 @@ class FormulaParser {
         FormulaState.STATE_SINGLE_ERROR, [FormulaSolverSingleResult(FormulaState.STATE_SINGLE_ERROR, formula)]);
   }
 
-  static const String _MATCHED_VARIABLES_NO_KEY = '\x00';
+  static const String _MATCHED_VARIABLES_NO_KEY = '\u0000';
   FormulaSolverOutput parse(String formula, List<FormulaValue> values, {bool expandValues = true}) {
     formula = formula.trim();
 

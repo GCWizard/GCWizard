@@ -1,17 +1,17 @@
 part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/logic/wherigo_analyze.dart';
 
-class WherigoStringOffset {
+class _WherigoStringOffset {
   final String ASCIIZ;
   final int offset;
 
-  WherigoStringOffset(this.ASCIIZ, this.offset);
+  _WherigoStringOffset(this.ASCIIZ, this.offset);
 }
 
-class WherigoMediaFileHeader {
+class _WherigoMediaFileHeader {
   final int MediaFileID;
   final int MediaFileAddress;
 
-  WherigoMediaFileHeader(this.MediaFileID, this.MediaFileAddress);
+  _WherigoMediaFileHeader(this.MediaFileID, this.MediaFileAddress);
 }
 
 class WherigoMediaFileContent {
@@ -23,14 +23,14 @@ class WherigoMediaFileContent {
   WherigoMediaFileContent(this.MediaFileID, this.MediaFileType, this.MediaFileBytes, this.MediaFileLength);
 }
 
-class WherigoObjectData {
+class _WherigoObjectData {
   final String ObjectID;
   final int ObjectIndex;
   final String ObjectName;
   final String ObjectMedia;
   final WHERIGO_OBJECT_TYPE ObjectType;
 
-  WherigoObjectData(
+  _WherigoObjectData(
     this.ObjectID,
     this.ObjectIndex,
     this.ObjectName,
@@ -306,7 +306,7 @@ class WherigoTimerData {
 class WherigoCartridgeGWC {
   final String Signature;
   final int NumberOfObjects;
-  final List<WherigoMediaFileHeader> MediaFilesHeaders;
+  final List<_WherigoMediaFileHeader> MediaFilesHeaders;
   final List<WherigoMediaFileContent> MediaFilesContents;
   final int HeaderLength;
   final int Splashscreen;
@@ -377,7 +377,7 @@ class WherigoCartridgeLUA {
   final List<List<WherigoActionMessageElementData>> Messages;
   final List<WherigoVariableData> Variables;
   final List<WherigoBuilderVariableData> BuilderVariables;
-  final Map<String, WherigoObjectData> NameToObject;
+  final Map<String, _WherigoObjectData> NameToObject;
   final WHERIGO_ANALYSE_RESULT_STATUS ResultStatus;
   final List<String> ResultsLUA;
   final WherigoZonePoint StartLocation;

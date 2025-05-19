@@ -296,7 +296,7 @@ lampe_ein = 0;
 
 void zaehler_anpassen(int schritt)
 {
-zaehler = zaehler + schritt;
+zaehler += schritt;
 display = zaehler%100000;
 textcolor(WHITE);
 gotoxy(62,7); cprintf("%05ld",display);

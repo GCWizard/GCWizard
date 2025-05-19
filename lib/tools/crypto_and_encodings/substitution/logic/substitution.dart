@@ -47,7 +47,7 @@ String substitution(String input, Map<String, String> substitutions, {bool caseS
       var index = input.indexOf(key, i);
       replacements.putIfAbsent(index, () => key);
 
-      input = input.replaceRange(index, index + key.length, String.fromCharCode(0) * key.length);
+      input = input.replaceRange(index, index + key.length, '\u0000' * key.length);
 
       i = index + key.length;
     }
@@ -56,7 +56,7 @@ String substitution(String input, Map<String, String> substitutions, {bool caseS
   //Unconsidered elements are put into the index map and the substitution map
   //The will be replaced by themselves.
   input.split('').asMap().forEach((index, character) {
-    if (character != String.fromCharCode(0)) {
+    if (character != '\u0000') {
       replacements.putIfAbsent(index, () => character);
       substCopy.putIfAbsent(character, () => character);
     }

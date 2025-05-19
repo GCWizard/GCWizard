@@ -56,7 +56,7 @@ List<Widget> _buildOutputListByteCodeStructure(BuildContext context, Uint8List b
         bytes.sublist(offset, offset + 2).join('.') + ' ' + bytes.sublist(offset + 2, offset + 2 + 4).join('.'),
         readShort(bytes, offset).toString() + ' ' + readInt(bytes, offset + 2).toString()
       ]);
-      offset = offset + 2 + 4;
+      offset += 2 + 4;
     }
     return GCWExpandableTextDivider(
       text: i18n(context, 'wherigo_data_mediafiles'),
@@ -151,14 +151,14 @@ List<Widget> _buildOutputListByteCodeStructure(BuildContext context, Uint8List b
                 ' ' +
                 readInt(bytes, offset + 5).toString()
           ]);
-          offset = offset + LENGTH_BYTE + LENGTH_INT + LENGTH_INT + readInt(bytes, offset + 5);
+          offset += LENGTH_BYTE + LENGTH_INT + LENGTH_INT + readInt(bytes, offset + 5);
         } else {
           content.add([
             offset.toString().padLeft(7, ' '),
             bytes.sublist(offset, offset + 1).join('.'),
             readByte(bytes, offset).toString()
           ]);
-          offset = offset + LENGTH_BYTE;
+          offset += LENGTH_BYTE;
         }
       } catch (exception) {
         i = numberOfObjects;
@@ -191,11 +191,11 @@ List<Widget> _buildOutputListByteCodeStructure(BuildContext context, Uint8List b
   result.add(_buildSectionMediaFiles(numberOfObjects));
   result.add(_buildSectionHeader());
 
-  offset = offset + LENGTH_INT + readInt(bytes, offset);
+  offset += LENGTH_INT + readInt(bytes, offset);
 
   result.add(_buildSectionLUAByteCode());
 
-  offset = offset + LENGTH_INT + readInt(bytes, offset);
+  offset += LENGTH_INT + readInt(bytes, offset);
 
   result.add(_buildSectionMediaFilesDetails());
 

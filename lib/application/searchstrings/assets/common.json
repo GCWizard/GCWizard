@@ -88,7 +88,7 @@
   "chao": "chao john francis byrne",
   "checkdigits": "",
   "checkdigits_ean": "ean gtin europeanarticlenumber globaltradeitemnumber",
-  "checkdigits_imei": "imei internationalmobilestationequipmentidentity",
+  "checkdigits_imei": "imei internationalmobilestationequipmentidentity typeallocationcode typeapprovalcode finalassemblycode",
   "checkdigits_uic": "uic",
   "checkdigits_iban": "iban internationalbankingaccountnumber",
   "checkdigits_isbn": "isbn internationalstandardbooknumber",

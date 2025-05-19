@@ -49,7 +49,7 @@ Future<WherigoCartridge> getLuaCartridgeAsync(GCWAsyncExecuterParameters? jobDat
   if (jobData?.parameters is! WherigoJobData) return Future.value(WherigoCartridge());
 
   var lua = jobData!.parameters as WherigoJobData;
-  var output = await getCartridgeLUA(lua.jobDataBytes, lua.jobDataMode, sendAsyncPort: jobData.sendAsyncPort);
+  var output = await _getCartridgeLUA(lua.jobDataBytes, lua.jobDataMode, sendAsyncPort: jobData.sendAsyncPort);
 
   jobData.sendAsyncPort?.send(output);
 

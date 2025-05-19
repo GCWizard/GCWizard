@@ -97,7 +97,7 @@ List<AminoAcid> decodeRNANucleobaseSequence(String input) {
   if (input.isEmpty) return [];
 
   var out = <AminoAcid>[];
-  for (int i = 0; i < input.length; i = i + 3) {
+  for (int i = 0; i < input.length; i += 3) {
     var sequence = input.substring(i, i + 3);
     var aminoAcid = aminoAcidByNucleobaseSequence(sequence);
     if (aminoAcid != null) out.add(aminoAcid);

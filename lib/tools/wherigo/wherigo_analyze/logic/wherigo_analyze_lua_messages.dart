@@ -13,9 +13,9 @@ List<List<WherigoActionMessageElementData>> _getAllMessagesAndDialogsFromLUA(
     lines[i] = lines[i].trim();
     try {
       if (RegExp(r'(Wherigo.ZCartridge\()').hasMatch(lines[i])) {
-        WHERIGOcurrentObjectSection = WHERIGO_OBJECT_TYPE.MESSAGES;
+        _WHERIGOcurrentObjectSection = WHERIGO_OBJECT_TYPE.MESSAGES;
       }
-      if (WHERIGOcurrentObjectSection == WHERIGO_OBJECT_TYPE.MESSAGES) {
+      if (_WHERIGOcurrentObjectSection == WHERIGO_OBJECT_TYPE.MESSAGES) {
         if (lines[i].trimLeft().startsWith('_Urwigo.MessageBox(') ||
             lines[i].trimLeft().startsWith('Wherigo.MessageBox(')) {
           _singleMessageDialog = [];
@@ -60,7 +60,7 @@ List<List<WherigoActionMessageElementData>> _getAllMessagesAndDialogsFromLUA(
             do {
               if (lines[i].trimLeft().startsWith('Text')) {
                 _singleMessageDialog.add(WherigoActionMessageElementData(
-                    ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: getTextData(lines[i])));
+                    ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: _getTextData(lines[i])));
               } else if (lines[i].trimLeft().startsWith('Media')) {
                 _singleMessageDialog.add(WherigoActionMessageElementData(
                     ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
@@ -71,7 +71,7 @@ List<List<WherigoActionMessageElementData>> _getAllMessagesAndDialogsFromLUA(
                   // single line
                   _singleMessageDialog.add(WherigoActionMessageElementData(
                       ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON,
-                      ActionMessageContent: getTextData(
+                      ActionMessageContent: _getTextData(
                           lines[i].trim().replaceAll('Buttons = {', '').replaceAll('},', '').replaceAll('}', ''))));
                 } else {
                   // multi line
@@ -79,7 +79,7 @@ List<List<WherigoActionMessageElementData>> _getAllMessagesAndDialogsFromLUA(
                   lines[i] = lines[i].trim();
                   List<String> buttonText = [];
                   do {
-                    buttonText.add(getTextData(lines[i].replaceAll('),', ')').trim()));
+                    buttonText.add(_getTextData(lines[i].replaceAll('),', ')').trim()));
                     i++;
                     lines[i] = lines[i].trim();
                   } while (!lines[i].trimLeft().startsWith('}'));
@@ -142,7 +142,7 @@ List<List<WherigoActionMessageElementData>> _getAllMessagesAndDialogsFromLUA(
               }
             } else if (lines[i].trimLeft().startsWith('Text = ')) {
               _singleMessageDialog.add(WherigoActionMessageElementData(
-                  ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: getTextData(lines[i])));
+                  ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: _getTextData(lines[i])));
             } else if (lines[i].trimLeft().startsWith('Media')) {
               _singleMessageDialog.add(WherigoActionMessageElementData(
                   ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
@@ -153,7 +153,7 @@ List<List<WherigoActionMessageElementData>> _getAllMessagesAndDialogsFromLUA(
               do {
                 _singleMessageDialog.add(WherigoActionMessageElementData(
                     ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON,
-                    ActionMessageContent: getTextData('Text = ' + lines[i].trim())));
+                    ActionMessageContent: _getTextData('Text = ' + lines[i].trim())));
                 i++;
                 lines[i] = lines[i].trim();
               } while (lines[i] != '}');
@@ -212,7 +212,7 @@ List<List<WherigoActionMessageElementData>> _getAllMessagesAndDialogsFromLUA(
               _sectionMessages = false;
             } else if (lines[i].trimLeft().startsWith('Text = ')) {
               _singleMessageDialog.add(WherigoActionMessageElementData(
-                  ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: getTextData(lines[i])));
+                  ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: _getTextData(lines[i])));
             } else if (lines[i].trimLeft().startsWith('Media')) {
               _singleMessageDialog.add(WherigoActionMessageElementData(
                   ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
@@ -223,7 +223,7 @@ List<List<WherigoActionMessageElementData>> _getAllMessagesAndDialogsFromLUA(
               do {
                 _singleMessageDialog.add(WherigoActionMessageElementData(
                     ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON,
-                    ActionMessageContent: getTextData('Text = ' + lines[i].trim())));
+                    ActionMessageContent: _getTextData('Text = ' + lines[i].trim())));
                 i++;
                 lines[i] = lines[i].trim();
               } while (lines[i].trimLeft() != '}');
@@ -241,7 +241,7 @@ List<List<WherigoActionMessageElementData>> _getAllMessagesAndDialogsFromLUA(
       }
     } catch (exception) {
       _LUAAnalyzeStatus = WHERIGO_ANALYSE_RESULT_STATUS.ERROR_LUA;
-      _LUAAnalyzeResults.addAll(addExceptionErrorMessage(i, 'wherigo_error_lua_messages', exception));
+      _LUAAnalyzeResults.addAll(_addExceptionErrorMessage(i, 'wherigo_error_lua_messages', exception));
     }
   } // end of second parse for i = 0 to lines.length - getting Messages/Dialogs
   return resultCartridgeMessages;

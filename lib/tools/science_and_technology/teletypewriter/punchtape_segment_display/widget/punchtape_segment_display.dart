@@ -45,13 +45,13 @@ class PUNCHTAPESegmentDisplay extends NSegmentDisplay {
               int x = 10;
 
               for (int i = 1; i <= punchHoles; i++) {
-                if (i == sprocketHole) x = x + 30;
+                if (i == sprocketHole) x += 30;
                 List<int> coordsList = [];
                 coordsList.add(x);
                 coordsList.add(30);
                 circles[i.toString()] = [];
                 circles[i.toString()]!.addAll(coordsList);
-                x = x + 30;
+                x += 30;
               }
               //circles = {'1': [10, 30], '2': [40, 30], '3': [100, 30],'4': [130, 30],'5': [160, 30]};
 

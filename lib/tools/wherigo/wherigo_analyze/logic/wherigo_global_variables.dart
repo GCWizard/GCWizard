@@ -10,6 +10,6 @@ WherigoCartridgeLUA WherigoCartridgeLUAData = WHERIGO_EMPTYCARTRIDGE_LUA;
 
 bool WHERIGOExpertMode = false;
 
-Map<String, WherigoObjectData> WHERIGONameToObject = {};
+Map<String, _WherigoObjectData> WHERIGONameToObject = {};
 
-WHERIGO_OBJECT_TYPE WHERIGOcurrentObjectSection = WHERIGO_OBJECT_TYPE.NONE;
+WHERIGO_OBJECT_TYPE _WHERIGOcurrentObjectSection = WHERIGO_OBJECT_TYPE.NONE;

@@ -74,7 +74,7 @@ String decryptKenny(String input, List<String>? replaceCharacters, bool caseSens
 
   if (replaceCharacters == null || replaceCharacters.length < 3) return '';
 
-  var replaceToCharacters = [String.fromCharCode(0), String.fromCharCode(1), String.fromCharCode(2)];
+  var replaceToCharacters = ['\u0000', '\u0001', '\u0002'];
 
   List<String> specialHandling = [
     'ß', // \u+00DF
@@ -87,14 +87,14 @@ String decryptKenny(String input, List<String>? replaceCharacters, bool caseSens
     'ﬆ', // \u+FB06
   ];
   Map<String, String> specialMapping = {
-    'ß' : String.fromCharCode(3) + String.fromCharCode(1),
-    'ﬀ' : String.fromCharCode(3) + String.fromCharCode(2),
-    'ﬁ' : String.fromCharCode(3) + String.fromCharCode(3),
-    'ﬂ' : String.fromCharCode(3) + String.fromCharCode(4),
-    'ﬃ' : String.fromCharCode(3) + String.fromCharCode(5),
-    'ﬄ' : String.fromCharCode(3) + String.fromCharCode(6),
-    'ﬅ' : String.fromCharCode(3) + String.fromCharCode(7),
-    'ﬆ' : String.fromCharCode(3) + String.fromCharCode(8),
+    'ß' : '\u0003' + '\u0001',
+    'ﬀ' : '\u0003' + '\u0002',
+    'ﬁ' : '\u0003' + '\u0003',
+    'ﬂ' : '\u0003' + '\u0004',
+    'ﬃ' : '\u0003' + '\u0005',
+    'ﬄ' : '\u0003' + '\u0006',
+    'ﬅ' : '\u0003' + '\u0007',
+    'ﬆ' : '\u0003' + '\u0008',
   };
 
   Map<String, String> substitutions = {};

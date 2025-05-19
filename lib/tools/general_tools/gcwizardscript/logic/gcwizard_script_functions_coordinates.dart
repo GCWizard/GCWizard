@@ -855,7 +855,7 @@ String _dectodmm(Object? dec) {
 
   result = ((dec as double).truncate()).toString() + '° ';
   ms = (dec - dec.truncate()) * 60;
-  result = result + ms.toStringAsFixed(3) + "' ";
+  result += ms.toStringAsFixed(3) + "' ";
 
   return result;
 }
@@ -867,10 +867,10 @@ String _dectodms(Object? dec) {
 
   result = ((dec as double).truncate()).toString() + '° ';
   ms = (dec - dec.truncate()) * 60;
-  result = result + ms.truncate().toString() + "' ";
+  result += ms.truncate().toString() + "' ";
 
   ms = (ms - ms.truncate()) * 60;
-  result = result + ms.toStringAsFixed(3) + '"';
+  result += ms.toStringAsFixed(3) + '"';
 
   return result;
 }

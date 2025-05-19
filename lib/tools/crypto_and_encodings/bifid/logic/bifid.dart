@@ -32,7 +32,7 @@ BifidOutput encryptBifid(String input, String key,
   String row2 = '';
   String helpInput = '';
 
-  for (var i = 0; i < polybiosEncoded.length; i = i + 2) {
+  for (var i = 0; i < polybiosEncoded.length; i += 2) {
     row1 = row1 + polybiosEncoded.substring(i, i + 1);
     row2 = row2 + polybiosEncoded.substring(i + 1, i + 2);
   }
@@ -72,7 +72,7 @@ BifidOutput decryptBifid(String input, String key,
   row1 = polybiosEncoded.substring(0, polybiosEncoded.length ~/ 2);
   row2 = polybiosEncoded.substring(polybiosEncoded.length ~/ 2, polybiosEncoded.length);
 
-  for (var i = 0; i < polybiosEncoded.length / 2; i = i + 1) {
+  for (var i = 0; i < polybiosEncoded.length / 2; i += 1) {
     helpInput = helpInput + row1.substring(i, i + 1) + row2.substring(i, i + 1);
   }
 

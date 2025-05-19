@@ -126,10 +126,10 @@ TrifidOutput decryptTrifid(String input, int blockSize,
 
 String _MatrixToString(String alphabet) {
   String result = '';
-  result = result + '  |   1      |   2      |   3  \n';
-  result = result + '  | 1 2 3    | 1 2 3    | 1 2 3\n';
-  result = result + '--+------  --+------  --+------\n';
-  result = result +
+  result += '  |   1      |   2      |   3  \n';
+  result += '  | 1 2 3    | 1 2 3    | 1 2 3\n';
+  result += '--+------  --+------  --+------\n';
+  result +=
       '1 | ' +
       alphabet[0] +
       ' ' +
@@ -149,7 +149,7 @@ String _MatrixToString(String alphabet) {
       ' ' +
       alphabet[20] +
       '\n';
-  result = result +
+  result +=
       '2 | ' +
       alphabet[3] +
       ' ' +
@@ -169,7 +169,7 @@ String _MatrixToString(String alphabet) {
       ' ' +
       alphabet[23] +
       '\n';
-  result = result +
+  result +=
       '3 | ' +
       alphabet[6] +
       ' ' +
@@ -212,10 +212,10 @@ bool incompleteCustomAlphabet(String alphabet) {
   String result = '';
   for (int j = 0; j < 26; j++) {
     if (alphabet[j] != '+') {
-      result = result + alphabet[j];
+      result += alphabet[j];
     } else {
       for (int i = j + 1; i < 26; i++) {
-        result = result + alphabet[i];
+        result += alphabet[i];
       }
       j = 26;
     }
@@ -225,10 +225,10 @@ bool incompleteCustomAlphabet(String alphabet) {
   for (int i = 65; i < 92; i++) {
     for (int j = 0; j < alphabet.length; j++) {
       if (alphabet[j] != String.fromCharCode(i)) {
-        result = result + alphabet[j];
+        result += alphabet[j];
       } else {
         for (int k = j + 1; k < alphabet.length; k++) {
-          result = result + alphabet[k];
+          result += alphabet[k];
         }
         j = alphabet.length;
       }

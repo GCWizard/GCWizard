@@ -471,7 +471,7 @@ class GCWizardScriptState extends State<GCWizardScript> {
         result = (position < program.length) ? program[position - 1] : program[program.length - 1];
       }
       for (int i = position; (i < program.length && i < position + 6); i++) {
-        result = result + program[i];
+        result += program[i];
       }
     }
     return result.replaceAll('\n', '↩') + '\n' + '   ^';

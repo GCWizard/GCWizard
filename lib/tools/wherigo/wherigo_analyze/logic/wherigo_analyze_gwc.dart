@@ -94,7 +94,7 @@ WHERIGO_ANALYSE_RESULT_STATUS _GWCStatus = WHERIGO_ANALYSE_RESULT_STATUS.OK;
 WHERIGO_FILE_LOAD_STATE _checksToDo = WHERIGO_FILE_LOAD_STATE.NULL;
 String _GWCSignature = '';
 int _GWCNumberOfObjects = 0;
-List<WherigoMediaFileHeader> _GWCMediaFilesHeaders = [];
+List<_WherigoMediaFileHeader> _GWCMediaFilesHeaders = [];
 List<WherigoMediaFileContent> _GWCMediaFilesContents = [];
 int _GWCMediaFileID = 0;
 int _GWCAddress = 0;
@@ -119,7 +119,7 @@ String _GWCRecommendedDevice = '';
 int _GWCLengthOfCompletionCode = 0;
 String _GWCCompletionCode = '';
 int _GWCoffset = 0;
-WherigoStringOffset _GWCASCIIZ = WherigoStringOffset('', 0);
+_WherigoStringOffset _GWCASCIIZ = _WherigoStringOffset('', 0);
 int _GWCMediaFileLength = 0;
 int _GWCValidMediaFile = 0;
 int _GWCMediaFileType = 0;
@@ -187,12 +187,12 @@ void _getHeaderFromGWC(Uint8List byteListGWC) {
   try {
     // get Header
     _getSignatureFromGWC(byteListGWC);
-    _GWCNumberOfObjects = readUShort(byteListGWC, START_NUMBEROFOBJECTS);
-    _GWCoffset = START_OBJCETADRESS; // File Header LUA File
+    _GWCNumberOfObjects = _readUShort(byteListGWC, _START_NUMBEROFOBJECTS);
+    _GWCoffset = _START_OBJCETADRESS; // File Header LUA File
 
     _getMediaFileAddressesFromGWC(byteListGWC);
 
-    START_HEADER = START_OBJCETADRESS + _GWCNumberOfObjects * 6;
+    _START_HEADER = _START_OBJCETADRESS + _GWCNumberOfObjects * 6;
     _getHeaderDetailsFromGWC(byteListGWC);
 
     // sendAsyncPort?.send(DoubleText(PROGRESS, 5));
@@ -206,33 +206,32 @@ void _getHeaderFromGWC(Uint8List byteListGWC) {
 }
 
 void _getHeaderDetailsFromGWC(Uint8List byteListGWC) {
-  _GWCoffset = START_HEADER;
+  _GWCoffset = _START_HEADER;
 
-  _GWCHeaderLength = readLong(byteListGWC, _GWCoffset);
-  _GWCoffset = _GWCoffset + LENGTH_LONG;
-  START_FILES = START_HEADER + _GWCHeaderLength;
+  _GWCHeaderLength = _readLong(byteListGWC, _GWCoffset);
+  _GWCoffset += _LENGTH_LONG;
 
-  _GWCLatitude = readDouble(byteListGWC, _GWCoffset);
+  _GWCLatitude = _readDouble(byteListGWC, _GWCoffset);
   if (_GWCLatitude < -90.0 || _GWCLatitude > 90.0) _GWCLatitude = 0.0;
-  _GWCoffset = _GWCoffset + LENGTH_DOUBLE;
-  _GWCLongitude = readDouble(byteListGWC, _GWCoffset);
+  _GWCoffset += _LENGTH_DOUBLE;
+  _GWCLongitude = _readDouble(byteListGWC, _GWCoffset);
   if (_GWCLongitude < -180.0 || _GWCLongitude > 180.0) _GWCLongitude = 0.0;
-  _GWCoffset = _GWCoffset + LENGTH_DOUBLE;
-  _GWCAltitude = readDouble(byteListGWC, _GWCoffset);
-  _GWCoffset = _GWCoffset + LENGTH_DOUBLE;
+  _GWCoffset += _LENGTH_DOUBLE;
+  _GWCAltitude = _readDouble(byteListGWC, _GWCoffset);
+  _GWCoffset += _LENGTH_DOUBLE;
 
-  _GWCDateOfCreation = readLong(byteListGWC, _GWCoffset);
-  _GWCoffset = _GWCoffset + LENGTH_LONG;
+  _GWCDateOfCreation = _readLong(byteListGWC, _GWCoffset);
+  _GWCoffset += _LENGTH_LONG;
 
   // no idea what the meaning of this long is
-  readLong(byteListGWC, _GWCoffset);
+  _readLong(byteListGWC, _GWCoffset);
 
-  _GWCoffset = _GWCoffset + LENGTH_LONG;
+  _GWCoffset += _LENGTH_LONG;
   _GWCSplashscreen = readShort(byteListGWC, _GWCoffset);
-  _GWCoffset = _GWCoffset + LENGTH_SHORT;
+  _GWCoffset += _LENGTH_SHORT;
 
   _GWCSplashscreenIcon = readShort(byteListGWC, _GWCoffset);
-  _GWCoffset = _GWCoffset + LENGTH_SHORT;
+  _GWCoffset += _LENGTH_SHORT;
 
   _GWCASCIIZ = readString(byteListGWC, _GWCoffset);
   _GWCTypeOfCartridge = _GWCASCIIZ.ASCIIZ;
@@ -242,11 +241,11 @@ void _getHeaderDetailsFromGWC(Uint8List byteListGWC) {
   _GWCPlayer = _GWCASCIIZ.ASCIIZ;
   _GWCoffset = _GWCASCIIZ.offset;
 
-  _GWCPlayerID = readLong(byteListGWC, _GWCoffset);
-  _GWCoffset = _GWCoffset + LENGTH_LONG;
+  _GWCPlayerID = _readLong(byteListGWC, _GWCoffset);
+  _GWCoffset += _LENGTH_LONG;
 
-  _GWCPlayerID = readLong(byteListGWC, _GWCoffset);
-  _GWCoffset = _GWCoffset + LENGTH_LONG;
+  _GWCPlayerID = _readLong(byteListGWC, _GWCoffset);
+  _GWCoffset += _LENGTH_LONG;
 
   _GWCASCIIZ = readString(byteListGWC, _GWCoffset);
   _GWCCartridgeLUAName = _GWCASCIIZ.ASCIIZ;
@@ -281,7 +280,7 @@ void _getHeaderDetailsFromGWC(Uint8List byteListGWC) {
   _GWCoffset = _GWCASCIIZ.offset;
 
   _GWCLengthOfCompletionCode = readInt(byteListGWC, _GWCoffset);
-  _GWCoffset = _GWCoffset + LENGTH_INT;
+  _GWCoffset += LENGTH_INT;
 
   _GWCASCIIZ = readString(byteListGWC, _GWCoffset);
   _GWCCompletionCode = _GWCASCIIZ.ASCIIZ;
@@ -290,21 +289,21 @@ void _getHeaderDetailsFromGWC(Uint8List byteListGWC) {
 
 void _getMediaFileAddressesFromGWC(Uint8List byteListGWC) {
   for (int i = 0; i < _GWCNumberOfObjects; i++) {
-    _GWCMediaFileID = readUShort(byteListGWC, _GWCoffset);
-    _GWCoffset = _GWCoffset + LENGTH_USHORT;
+    _GWCMediaFileID = _readUShort(byteListGWC, _GWCoffset);
+    _GWCoffset += _LENGTH_USHORT;
     _GWCAddress = readInt(byteListGWC, _GWCoffset);
-    _GWCoffset = _GWCoffset + LENGTH_INT;
-    _GWCMediaFilesHeaders.add(WherigoMediaFileHeader(_GWCMediaFileID, _GWCAddress));
+    _GWCoffset += LENGTH_INT;
+    _GWCMediaFilesHeaders.add(_WherigoMediaFileHeader(_GWCMediaFileID, _GWCAddress));
   }
 }
 
 void _getSignatureFromGWC(Uint8List byteListGWC) {
-  _GWCSignature = _GWCSignature + byteListGWC[0].toString();
-  _GWCSignature = _GWCSignature + byteListGWC[1].toString();
-  _GWCSignature = _GWCSignature + String.fromCharCode(byteListGWC[2]);
-  _GWCSignature = _GWCSignature + String.fromCharCode(byteListGWC[3]);
-  _GWCSignature = _GWCSignature + String.fromCharCode(byteListGWC[4]);
-  _GWCSignature = _GWCSignature + String.fromCharCode(byteListGWC[5]);
+  _GWCSignature += byteListGWC[0].toString();
+  _GWCSignature += byteListGWC[1].toString();
+  _GWCSignature += String.fromCharCode(byteListGWC[2]);
+  _GWCSignature += String.fromCharCode(byteListGWC[3]);
+  _GWCSignature += String.fromCharCode(byteListGWC[4]);
+  _GWCSignature += String.fromCharCode(byteListGWC[5]);
 }
 
 void _getMediaFilesFromGWC(Uint8List byteListGWC) {
@@ -316,15 +315,15 @@ void _getMediaFilesFromGWC(Uint8List byteListGWC) {
       _GWCValidMediaFile = readByte(byteListGWC, _GWCoffset);
       if (_GWCValidMediaFile != 0) {
         // read Filetype
-        _GWCoffset = _GWCoffset + LENGTH_BYTE;
+        _GWCoffset += LENGTH_BYTE;
         _GWCMediaFileType = readInt(byteListGWC, _GWCoffset);
 
         // read Length
-        _GWCoffset = _GWCoffset + LENGTH_INT;
+        _GWCoffset += LENGTH_INT;
         _GWCMediaFileLength = readInt(byteListGWC, _GWCoffset);
 
         // read bytes
-        _GWCoffset = _GWCoffset + LENGTH_INT;
+        _GWCoffset += LENGTH_INT;
         _GWCMediaFilesContents.add(WherigoMediaFileContent(_GWCMediaFilesHeaders[i].MediaFileID, _GWCMediaFileType,
             Uint8List.sublistView(byteListGWC, _GWCoffset, _GWCoffset + _GWCMediaFileLength), _GWCMediaFileLength));
       } else {
@@ -350,10 +349,10 @@ void _getLUAByteCodeFromGWC(Uint8List byteListGWC) {
     // analysing GWC - LUA Byte-Code
     // read LUA Byte-Code Object(this.ObjectID, this.Address, this.Type, this.Bytes);
     _GWCMediaFileLength = readInt(byteListGWC, _GWCoffset);
-    _GWCoffset = _GWCoffset + LENGTH_INT;
+    _GWCoffset += LENGTH_INT;
     _GWCMediaFilesContents.add(WherigoMediaFileContent(
         0, 0, Uint8List.sublistView(byteListGWC, _GWCoffset, _GWCoffset + _GWCMediaFileLength), _GWCMediaFileLength));
-    _GWCoffset = _GWCoffset + _GWCMediaFileLength;
+    _GWCoffset += _GWCMediaFileLength;
 
     //sendAsyncPort?.send(DoubleText(PROGRESS, 7));
   } catch (exception) {

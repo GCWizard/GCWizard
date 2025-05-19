@@ -131,7 +131,7 @@ GaussKruegerCoordinate _latLonToGaussKrueger(LatLng coord, CoordinateFormatKey s
 
   double L = newCoord.longitude;
   int L0 = 15;
-  for (int i = 6; i <= 12; i = i + 3) {
+  for (int i = 6; i <= 12; i += 3) {
     if ((L - i).abs() < 1.5) {
       L0 = i;
       break;

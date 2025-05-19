@@ -31,7 +31,7 @@ class _GCWList {
     //https://stackoverflow.com/questions/67847956/can-i-sort-listdynamic-in-dart
     _contents.sort(
       (a, b) {
-        if ((a is num && b is num)) {
+        if (a is num && b is num) {
           return a.compareTo(b);
         }
         if (a is String && b is String) {
@@ -73,7 +73,7 @@ class _GCWList {
     //https://stackoverflow.com/questions/67847956/can-i-sort-listdynamic-in-dart
     _contents.sort(
       (a, b) {
-        if ((a is num && b is num)) {
+        if (a is num && b is num) {
           return a.compareTo(b);
         }
         if (a is String && b is String) {

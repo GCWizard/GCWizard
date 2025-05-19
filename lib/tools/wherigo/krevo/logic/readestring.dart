@@ -32,7 +32,7 @@ String gsub_wig(String str) {
     int p = find(rot_palette, c);
     if (p != -1) {
       int jump = (i % 8) + 9;
-      p = p + jump;
+      p += jump;
       if (plen < p) p = p - plen;
       c = rot_palette[p - 1];
     } else {
@@ -74,7 +74,7 @@ String wwb_deobf(String str) {
     int p = find(rot_palette, c);
     if (p != -1) {
       jump = (d % 8) + 9;
-      p = p - jump;
+      p -= jump;
       if (p < 1) p = p + plen;
       c = rot_palette[p - 1];
     } else {

@@ -47,10 +47,10 @@ class _Container {
     String result = '';
     for (int i = _contents.length; i > 0; i--) {
       if (_contents[i - 1].getState() == _State.Dry) {
-        result = result + _contents[i - 1].getValue().toString() + '';
+        result += _contents[i - 1].getValue().toString() + '';
       } else {
         // return charCodes
-        result = result + String.fromCharCode(_contents[i - 1].getValue());
+        result += String.fromCharCode(_contents[i - 1].getValue());
       }
     }
     return result;
