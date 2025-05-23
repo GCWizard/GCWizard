@@ -83,29 +83,7 @@ class _PolybiosState extends State<Polybios> {
             });
           },
         ),
-        GCWTextDivider(text: i18n(context, 'polybios_labels')),
-        GCWTextField(
-          title: i18n(context, 'polybios_row_labels'),
-          hintText: i18n(context, 'polybios_row_labels'),
-          maxLength: 6,
-          controller: _rowLabelController,
-          onChanged: (text) {
-            setState(() {
-              _currentRowLabel = text;
-            });
-          },
-        ),
-        GCWTextField(
-          title: i18n(context, 'polybios_column_lables'),
-          hintText: i18n(context, 'polybios_column_lables'),
-          maxLength: 6,
-          controller: _colLabelController,
-          onChanged: (text) {
-            setState(() {
-              _currentColLabel = text;
-            });
-          },
-        ),
+        _buildOptions(),
         GCWTextDivider(text: i18n(context, 'common_alphabet')),
         GCWAlphabetDropDown<PolybiosMode>(
           value: _currentPolybiosMode,
@@ -143,31 +121,30 @@ class _PolybiosState extends State<Polybios> {
       text: i18n(context, 'common_options'),
       expanded: false,
       child: Column(
-         children: [
-            GCWTextDivider(text: i18n(context, 'polybios_labels')),
-            GCWTextField(
+        children: [
+          GCWTextField(
             title: i18n(context, 'polybios_row_labels'),
             maxLength: 6,
-            controller: _rowIndexController,
+            controller: _rowLabelController,
             onChanged: (text) {
-            setState(() {
-            _currentRowIndex = text;
-            });
+              setState(() {
+                _currentRowLabel = text;
+              });
             },
-            ),
-            GCWTextField(
-              title: i18n(context, 'polybios_column_lables'),
-              maxLength: 6,
-              controller: _colIndexController,
-              onChanged: (text) {
-                setState(() {
-                  _currentColIndex = text;
-                });
-              },
-            ),
-          ],
-        ),
-      );
+          ),
+          GCWTextField(
+            title: i18n(context, 'polybios_column_lables'),
+            maxLength: 6,
+            controller: _colLabelController,
+            onChanged: (text) {
+              setState(() {
+                _currentColLabel = text;
+              });
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildOutput(BuildContext context) {
@@ -177,11 +154,17 @@ class _PolybiosState extends State<Polybios> {
 
     PolybiosOutput? _currentOutput;
     if (_currentMode == GCWSwitchPosition.left) {
-      _currentOutput = encryptPolybios(_currentInput, _currentRowLabel, colIndexes: _currentColLabel,
-          mode: _currentPolybiosMode, modificationMode: _currentModificationMode, fillAlphabet: _currentAlphabet);
+      _currentOutput = encryptPolybios(_currentInput, _currentRowLabel,
+          colIndexes: _currentColLabel,
+          mode: _currentPolybiosMode,
+          modificationMode: _currentModificationMode,
+          fillAlphabet: _currentAlphabet);
     } else {
-      _currentOutput = decryptPolybios(_currentInput, _currentRowLabel, colIndexes: _currentColLabel,
-          mode: _currentPolybiosMode, modificationMode: _currentModificationMode, fillAlphabet: _currentAlphabet);
+      _currentOutput = decryptPolybios(_currentInput, _currentRowLabel,
+          colIndexes: _currentColLabel,
+          mode: _currentPolybiosMode,
+          modificationMode: _currentModificationMode,
+          fillAlphabet: _currentAlphabet);
     }
 
     if (_currentOutput == null || _currentOutput.output.isEmpty) {
