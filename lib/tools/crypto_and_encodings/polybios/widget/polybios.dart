@@ -22,13 +22,13 @@ class Polybios extends StatefulWidget {
 
 class _PolybiosState extends State<Polybios> {
   late TextEditingController _inputController;
-  late TextEditingController _rowIndexController;
-  late TextEditingController _colIndexController;
+  late TextEditingController _rowLabelController;
+  late TextEditingController _colLabelController;
   late TextEditingController _alphabetController;
 
   String _currentInput = '';
-  String _currentRowIndex = '12345';
-  String _currentColIndex = '12345';
+  String _currentRowLabel = '12345';
+  String _currentColLabel = '12345';
 
   PolybiosMode _currentPolybiosMode = PolybiosMode.AZ09;
   String _currentAlphabet = '';
@@ -41,16 +41,16 @@ class _PolybiosState extends State<Polybios> {
   void initState() {
     super.initState();
     _inputController = TextEditingController(text: _currentInput);
-    _rowIndexController = TextEditingController(text: _currentRowIndex);
-    _colIndexController = TextEditingController(text: _currentColIndex);
+    _rowLabelController = TextEditingController(text: _currentRowLabel);
+    _colLabelController = TextEditingController(text: _currentColLabel);
     _alphabetController = TextEditingController(text: _currentAlphabet);
   }
 
   @override
   void dispose() {
     _inputController.dispose();
-    _rowIndexController.dispose();
-    _colIndexController.dispose();
+    _rowLabelController.dispose();
+    _colLabelController.dispose();
     _alphabetController.dispose();
     super.dispose();
   }
@@ -83,8 +83,29 @@ class _PolybiosState extends State<Polybios> {
             });
           },
         ),
-        _buildOptions(),
-
+        GCWTextDivider(text: i18n(context, 'polybios_labels')),
+        GCWTextField(
+          title: i18n(context, 'polybios_row_labels'),
+          hintText: i18n(context, 'polybios_row_labels'),
+          maxLength: 6,
+          controller: _rowLabelController,
+          onChanged: (text) {
+            setState(() {
+              _currentRowLabel = text;
+            });
+          },
+        ),
+        GCWTextField(
+          title: i18n(context, 'polybios_column_lables'),
+          hintText: i18n(context, 'polybios_column_lables'),
+          maxLength: 6,
+          controller: _colLabelController,
+          onChanged: (text) {
+            setState(() {
+              _currentColLabel = text;
+            });
+          },
+        ),
         GCWTextDivider(text: i18n(context, 'common_alphabet')),
         GCWAlphabetDropDown<PolybiosMode>(
           value: _currentPolybiosMode,
@@ -102,7 +123,7 @@ class _PolybiosState extends State<Polybios> {
             });
           },
         ),
-        _currentRowIndex.length < 6
+        _currentRowLabel.length < 6
             ? GCWAlphabetModificationDropDown(
                 value: _currentModificationMode,
                 onChanged: (value) {
@@ -150,16 +171,16 @@ class _PolybiosState extends State<Polybios> {
   }
 
   Widget _buildOutput(BuildContext context) {
-    if (_currentInput.isEmpty || ![5, 6].contains(_currentRowIndex.length)) {
+    if (_currentInput.isEmpty || ![5, 6].contains(_currentRowLabel.length)) {
       return const GCWDefaultOutput(); // TODO: Exception
     }
 
     PolybiosOutput? _currentOutput;
     if (_currentMode == GCWSwitchPosition.left) {
-      _currentOutput = encryptPolybios(_currentInput, _currentRowIndex, colIndexes: _currentColIndex,
+      _currentOutput = encryptPolybios(_currentInput, _currentRowLabel, colIndexes: _currentColLabel,
           mode: _currentPolybiosMode, modificationMode: _currentModificationMode, fillAlphabet: _currentAlphabet);
     } else {
-      _currentOutput = decryptPolybios(_currentInput, _currentRowIndex, colIndexes: _currentColIndex,
+      _currentOutput = decryptPolybios(_currentInput, _currentRowLabel, colIndexes: _currentColLabel,
           mode: _currentPolybiosMode, modificationMode: _currentModificationMode, fillAlphabet: _currentAlphabet);
     }
 
