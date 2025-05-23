@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_alphabetdropdown.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_alphabetmodification_dropdown.dart';
@@ -95,25 +96,36 @@ class _PolybiosState extends State<Polybios> {
       expanded: false,
       child: Column(
         children: [
-          GCWTextField(
-            title: i18n(context, 'polybios_row_labels'),
-            maxLength: 6,
-            controller: _rowLabelController,
-            onChanged: (text) {
-              setState(() {
-                _currentRowLabel = text;
-              });
-            },
-          ),
-          GCWTextField(
-            title: i18n(context, 'polybios_column_lables'),
-            maxLength: 6,
-            controller: _colLabelController,
-            onChanged: (text) {
-              setState(() {
-                _currentColLabel = text;
-              });
-            },
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    GCWTextField(
+                      title: i18n(context, 'polybios_row_labels'),
+                      maxLength: 6,
+                      controller: _rowLabelController,
+                      onChanged: (text) {
+                        setState(() {
+                          _currentRowLabel = text;
+                        });
+                      },
+                    ),
+                    GCWTextField(
+                      title: i18n(context, 'polybios_column_lables'),
+                      maxLength: 6,
+                      controller: _colLabelController,
+                      onChanged: (text) {
+                        setState(() {
+                          _currentColLabel = text;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              _buildSwapButton(),
+            ],
           ),
           GCWTextDivider(text: i18n(context, 'common_alphabet')),
           GCWAlphabetDropDown<PolybiosMode>(
@@ -134,16 +146,35 @@ class _PolybiosState extends State<Polybios> {
           ),
           _currentRowLabel.length < 6
               ? GCWAlphabetModificationDropDown(
-            value: _currentModificationMode,
-            onChanged: (value) {
-              setState(() {
-                _currentModificationMode = value;
-              });
-            },
-          )
+                  value: _currentModificationMode,
+                  onChanged: (value) {
+                    setState(() {
+                      _currentModificationMode = value;
+                    });
+                  },
+                )
               : Container(),
         ],
       ),
+    );
+  }
+
+  Widget _buildSwapButton() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: GCWIconButton(
+          icon: Icons.swap_vert,
+          // size: IconButtonSize.SMALL,
+          onPressed: () {
+            setState(() {
+              var tempLabel = _currentRowLabel;
+              _currentRowLabel = _currentColLabel;
+              _currentColLabel = tempLabel;
+
+              _rowLabelController.text = _currentRowLabel;
+              _colLabelController.text = _currentColLabel;
+            });
+          }),
     );
   }
 
