@@ -83,40 +83,13 @@ class _PolybiosState extends State<Polybios> {
             });
           },
         ),
-        _buildOptions(),
-        GCWTextDivider(text: i18n(context, 'common_alphabet')),
-        GCWAlphabetDropDown<PolybiosMode>(
-          value: _currentPolybiosMode,
-          items: polybiosModeItems,
-          customModeKey: PolybiosMode.CUSTOM,
-          textFieldController: _alphabetController,
-          onChanged: (value) {
-            setState(() {
-              _currentPolybiosMode = value;
-            });
-          },
-          onCustomAlphabetChanged: (text) {
-            setState(() {
-              _currentAlphabet = text;
-            });
-          },
-        ),
-        _currentRowLabel.length < 6
-            ? GCWAlphabetModificationDropDown(
-                value: _currentModificationMode,
-                onChanged: (value) {
-                  setState(() {
-                    _currentModificationMode = value;
-                  });
-                },
-              )
-            : Container(),
+        _buildOptions(polybiosModeItems),
         _buildOutput(context)
       ],
     );
   }
 
-  Widget _buildOptions() {
+  Widget _buildOptions(Map<PolybiosMode, String> polybiosModeItems) {
     return GCWExpandableTextDivider(
       text: i18n(context, 'common_options'),
       expanded: false,
@@ -142,6 +115,33 @@ class _PolybiosState extends State<Polybios> {
               });
             },
           ),
+          GCWTextDivider(text: i18n(context, 'common_alphabet')),
+          GCWAlphabetDropDown<PolybiosMode>(
+            value: _currentPolybiosMode,
+            items: polybiosModeItems,
+            customModeKey: PolybiosMode.CUSTOM,
+            textFieldController: _alphabetController,
+            onChanged: (value) {
+              setState(() {
+                _currentPolybiosMode = value;
+              });
+            },
+            onCustomAlphabetChanged: (text) {
+              setState(() {
+                _currentAlphabet = text;
+              });
+            },
+          ),
+          _currentRowLabel.length < 6
+              ? GCWAlphabetModificationDropDown(
+            value: _currentModificationMode,
+            onChanged: (value) {
+              setState(() {
+                _currentModificationMode = value;
+              });
+            },
+          )
+              : Container(),
         ],
       ),
     );
