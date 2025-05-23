@@ -3,6 +3,7 @@ import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_alphabetdropdown.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_alphabetmodification_dropdown.dart';
+import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_multiple_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
@@ -82,27 +83,8 @@ class _PolybiosState extends State<Polybios> {
             });
           },
         ),
-        GCWTextDivider(text: i18n(context, 'polybios_labels')),
-        GCWTextField(
-          title: i18n(context, 'polybios_row_labels'),
-          maxLength: 6,
-          controller: _rowIndexController,
-          onChanged: (text) {
-            setState(() {
-              _currentRowIndex = text;
-            });
-          },
-        ),
-        GCWTextField(
-          title: i18n(context, 'polybios_column_lables'),
-          maxLength: 6,
-          controller: _colIndexController,
-          onChanged: (text) {
-            setState(() {
-              _currentColIndex = text;
-            });
-          },
-        ),
+        _buildOptions(),
+
         GCWTextDivider(text: i18n(context, 'common_alphabet')),
         GCWAlphabetDropDown<PolybiosMode>(
           value: _currentPolybiosMode,
@@ -133,6 +115,38 @@ class _PolybiosState extends State<Polybios> {
         _buildOutput(context)
       ],
     );
+  }
+
+  Widget _buildOptions() {
+    return GCWExpandableTextDivider(
+      text: i18n(context, 'common_options'),
+      expanded: false,
+      child: Column(
+         children: [
+            GCWTextDivider(text: i18n(context, 'polybios_labels')),
+            GCWTextField(
+            title: i18n(context, 'polybios_row_labels'),
+            maxLength: 6,
+            controller: _rowIndexController,
+            onChanged: (text) {
+            setState(() {
+            _currentRowIndex = text;
+            });
+            },
+            ),
+            GCWTextField(
+              title: i18n(context, 'polybios_column_lables'),
+              maxLength: 6,
+              controller: _colIndexController,
+              onChanged: (text) {
+                setState(() {
+                  _currentColIndex = text;
+                });
+              },
+            ),
+          ],
+        ),
+      );
   }
 
   Widget _buildOutput(BuildContext context) {
