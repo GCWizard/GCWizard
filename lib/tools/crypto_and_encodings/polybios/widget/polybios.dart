@@ -26,10 +26,12 @@ class _PolybiosState extends State<Polybios> {
   late TextEditingController _rowLabelController;
   late TextEditingController _colLabelController;
   late TextEditingController _alphabetController;
+  late TextEditingController _passwordController;
 
   String _currentInput = '';
   String _currentRowLabel = '12345';
   String _currentColLabel = '12345';
+  String _currentPassword = '';
 
   PolybiosMode _currentPolybiosMode = PolybiosMode.AZ09;
   String _currentAlphabet = '';
@@ -45,6 +47,7 @@ class _PolybiosState extends State<Polybios> {
     _rowLabelController = TextEditingController(text: _currentRowLabel);
     _colLabelController = TextEditingController(text: _currentColLabel);
     _alphabetController = TextEditingController(text: _currentAlphabet);
+    _passwordController = TextEditingController(text: _currentPassword);
   }
 
   @override
@@ -53,6 +56,7 @@ class _PolybiosState extends State<Polybios> {
     _rowLabelController.dispose();
     _colLabelController.dispose();
     _alphabetController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -113,6 +117,7 @@ class _PolybiosState extends State<Polybios> {
                     ),
                     GCWTextField(
                       title: i18n(context, 'polybios_column_lables'),
+                      hintText: _currentRowLabel,
                       maxLength: 6,
                       controller: _colLabelController,
                       onChanged: (text) {
@@ -127,7 +132,21 @@ class _PolybiosState extends State<Polybios> {
               _buildSwapButton(),
             ],
           ),
-          GCWTextDivider(text: i18n(context, 'common_alphabet')),
+          GCWTextDivider(text: '${i18n(context, 'common_key')} / ${i18n(context, 'common_alphabet')}'),
+          GCWTextField(
+              hintText: i18n(context, 'polybios_optional_passwort'),
+              controller: _passwordController,
+              onChanged: (text) {
+                setState(() {
+                  _currentPassword = text;
+                  if (_currentPassword.isNotEmpty) {
+                    _currentPolybiosMode = PolybiosMode.CUSTOM;
+                    _currentAlphabet = _currentPassword;
+                  } else {
+                    _currentPolybiosMode = PolybiosMode.AZ09;
+                  }
+                });
+              }),
           GCWAlphabetDropDown<PolybiosMode>(
             value: _currentPolybiosMode,
             items: polybiosModeItems,
@@ -164,7 +183,6 @@ class _PolybiosState extends State<Polybios> {
       padding: const EdgeInsets.only(left: 8.0),
       child: GCWIconButton(
           icon: Icons.swap_vert,
-          // size: IconButtonSize.SMALL,
           onPressed: () {
             setState(() {
               var tempLabel = _currentRowLabel;
