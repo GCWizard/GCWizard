@@ -80,43 +80,46 @@ class _GCWTextFieldState extends State<GCWTextField> {
           return TextFormField(
             autocorrect: false,
             decoration: InputDecoration(
-                hintText: widget.hintText,
-                hintStyle: gcwTextStyle().copyWith(color: widget.hintColor ?? themeColors().textFieldHintText()),
-                labelText: widget.labelText,
-                fillColor: widget.filled == true ? colors.textFieldFill() : null,
-                filled: widget.filled,
-                prefixIcon: widget.icon,
-                isDense: true,
-                suffixIconConstraints: const BoxConstraints(
-                  minWidth: 2,
-                  minHeight: 2,
+              hintText: widget.hintText,
+              hintStyle: gcwTextStyle().copyWith(color: widget.hintColor ?? themeColors().textFieldHintText()),
+              labelText: widget.labelText,
+              fillColor: widget.filled == true ? colors.textFieldFill() : null,
+              filled: widget.filled,
+              prefixIcon: widget.icon,
+              isDense: true,
+              suffixIconConstraints: const BoxConstraints(minWidth: 2, minHeight: 2),
+              suffixIcon: constraints.maxWidth > 100
+                  ? InkWell(
+                child: Container(
+                  padding: const EdgeInsets.only(right: 5, top: 5, bottom: 5),
+                  child: Icon(Icons.clear, color: colors.mainFont()),
                 ),
-                suffixIcon: constraints.maxWidth > 100
-                    ? InkWell(
-                  child: Container(
-                    padding: const EdgeInsets.only(right: 5, top: 5, bottom: 5),
-                    child: Icon(
-                      Icons.clear,
-                      color: colors.mainFont(),
-                    ),
-                  ),
-                  onTap: () {
-                    if (widget.controller != null) widget.controller?.clear();
-
-                    _controller.clear();
-
-                    if (widget.onChanged != null) widget.onChanged!('');
-
-                    if (widget.inputFormatters != null) {
-                      widget.inputFormatters?.forEach((formatter) {
-                        if (formatter is GCWMaskTextInputFormatter) {
-                          formatter.clear();
-                        }
-                      });
-                    }
+                onTap: () {
+                  widget.controller?.clear();
+                  _controller.clear();
+                  widget.onChanged?.call('');
+                  widget.inputFormatters?.forEach((f) {
+                    if (f is GCWMaskTextInputFormatter) f.clear();
+                  });
+                },
+              )
+                  : null,
+              suffix: widget.maxLength != null
+                  ? Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: ValueListenableBuilder<TextEditingValue>(
+                  valueListenable: _controller,
+                  builder: (context, value, _) {
+                    return Text(
+                      '${value.text.length}/${widget.maxLength}',
+                      style: TextStyle(color: colors.textFieldHintText(), fontSize: 12),
+                    );
                   },
-                )
-                    : null),
+                ),
+              )
+                  : null,
+              counterText: '', // verhindert den unteren Zähler
+            ),
             onChanged: widget.onChanged,
             controller: widget.controller ?? _controller,
             autovalidateMode: AutovalidateMode.always,
