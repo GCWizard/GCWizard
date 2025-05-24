@@ -3,21 +3,14 @@ part of 'package:gc_wizard/tools/coords/map_view/widget/gcw_mapview.dart';
 /// This is the [CustomPainter] that draws the scalebar label and lines
 /// onto the canvas.
 class GCWMapViewScalebarPainter extends CustomPainter {
-  /// length of the scalebar
-  final double scalebarLength;
-
   /// marker points
-  final List<Point<double>> scalebarPoints;
+  final List<Offset> scalebarPoints;
 
   /// width of the scalebar line stroke
   final double strokeWidth;
 
   /// scalebar line height
   final double lineWidth;
-
-  /// The alignment is used to align the scalebar if it is smaller than the
-  /// text label.
-  final Alignment alignment;
 
   /// The cached half of the line stroke width
   late final _halfStrokeWidth = strokeWidth / 2;
@@ -27,13 +20,11 @@ class GCWMapViewScalebarPainter extends CustomPainter {
 
   /// Create a new [GCWMapViewScalebar], internally used in the [GCWMapViewScalebar].
   GCWMapViewScalebarPainter({
-    required this.scalebarLength,
     required this.scalebarPoints,
     required List<TextSpan> texts,
     required this.strokeWidth,
     required this.lineWidth,
     required Color lineColor,
-    required this.alignment,
   }) : _textPainters = texts.map((text) => TextPainter(
     text: text,
     textDirection: ui.TextDirection.ltr,
@@ -60,18 +51,18 @@ class GCWMapViewScalebarPainter extends CustomPainter {
     );
     _textPainters[1].paint(
       canvas,
-      Offset(max(0, labelX), scalebarPoints[1].y - scalebarPoints[0].y - textY),
+      Offset(max(0, labelX), scalebarPoints[1].dy - scalebarPoints[0].dy - textY),
     );
     _textPainters[2].paint(
       canvas,
-      Offset(max(0, labelX), scalebarPoints[2].y - scalebarPoints[0].y - textY),
+      Offset(max(0, labelX), scalebarPoints[2].dy - scalebarPoints[0].dy - textY),
     );
     _textPainters[3].paint(
       canvas,
-      Offset(max(0, labelX), scalebarPoints[3].y - scalebarPoints[0].y - textY),
+      Offset(max(0, labelX), scalebarPoints[3].dy - scalebarPoints[0].dy - textY),
     );
 
-    final length = scalebarPoints[3].y - scalebarPoints[0].y;
+    final length = scalebarPoints[3].dy - scalebarPoints[0].dy;
 
     final linePoints = Float32List.fromList(<double>[
       //main line
@@ -88,21 +79,21 @@ class GCWMapViewScalebarPainter extends CustomPainter {
 
       // 1. section
       _halfStrokeWidth,
-      scalebarPoints[1].y - scalebarPoints[0].y - _halfStrokeWidth,
+      scalebarPoints[1].dy - scalebarPoints[0].dy - _halfStrokeWidth,
       lineWidth,
-      scalebarPoints[1].y - scalebarPoints[0].y - _halfStrokeWidth,
+      scalebarPoints[1].dy - scalebarPoints[0].dy - _halfStrokeWidth,
 
       // 2. section
       _halfStrokeWidth,
-      scalebarPoints[2].y - scalebarPoints[0].y - _halfStrokeWidth,
+      scalebarPoints[2].dy - scalebarPoints[0].dy - _halfStrokeWidth,
       lineWidth,
-      scalebarPoints[2].y - scalebarPoints[0].y - _halfStrokeWidth,
+      scalebarPoints[2].dy - scalebarPoints[0].dy - _halfStrokeWidth,
 
       // top marker
       _halfStrokeWidth,
-      scalebarPoints[3].y - scalebarPoints[0].y - _halfStrokeWidth,
+      scalebarPoints[3].dy - scalebarPoints[0].dy - _halfStrokeWidth,
       lineWidth,
-      scalebarPoints[3].y - scalebarPoints[0].y - _halfStrokeWidth,
+      scalebarPoints[3].dy - scalebarPoints[0].dy - _halfStrokeWidth,
     ]);
 
     // draw lines as raw points

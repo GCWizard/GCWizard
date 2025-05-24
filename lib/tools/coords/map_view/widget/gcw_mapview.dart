@@ -582,19 +582,19 @@ class _GCWMapViewState extends State<GCWMapView> {
     );
   }
 
-  late Point<double> _markerPointStart;
+  late Offset _markerPointStart;
 
   void _onPanStart(DragStartDetails details, GCWMapPoint point) {
-    _markerPointStart = const Epsg3857().latLngToPoint(point.point, _mapController.camera.zoom);
+    _markerPointStart = const Epsg3857().latLngToOffset(point.point, _mapController.camera.zoom);
 
-    _markerPointStart -= details.localPosition.toPoint();
+    _markerPointStart -= details.localPosition;
   }
 
   void _onPanUpdate(DragUpdateDetails details, GCWMapPoint point) {
     _popupLayerController.hidePopup();
 
     LatLng pointToLatLng =
-        const Epsg3857().pointToLatLng(_markerPointStart + details.localPosition.toPoint(), _mapController.camera.zoom);
+        const Epsg3857().offsetToLatLng(_markerPointStart + details.localPosition, _mapController.camera.zoom);
 
     point.point = pointToLatLng;
 
