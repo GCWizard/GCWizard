@@ -144,6 +144,7 @@ class _PolybiosState extends State<Polybios> {
                     _currentAlphabet = _currentPassword;
                   } else {
                     _currentPolybiosMode = PolybiosMode.AZ09;
+                    _currentAlphabet = '';
                   }
                 });
               }),
@@ -155,6 +156,16 @@ class _PolybiosState extends State<Polybios> {
             onChanged: (value) {
               setState(() {
                 _currentPolybiosMode = value;
+                if (value != PolybiosMode.CUSTOM) {
+                  _currentPassword = '';
+                  _passwordController.text = '';
+                } else {
+                  if (_passwordController.text.isNotEmpty) {
+                    _currentAlphabet = _passwordController.text;
+                  } else {
+                    _currentAlphabet = _alphabetController.text;
+                  }
+                }
               });
             },
             onCustomAlphabetChanged: (text) {
