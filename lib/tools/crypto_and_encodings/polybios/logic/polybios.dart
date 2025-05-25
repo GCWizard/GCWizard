@@ -24,10 +24,6 @@ String _sanitizeAlphabet(String alphabet) {
   return alphabet.split('').toSet().join();
 }
 
-// bool _hasDoubleChars(String text) {
-//   return text.length != text.split('').toSet().length;
-// }
-
 String? createPolybiosAlphabet(int gridDimension,
     {String? firstLetters = '',
     PolybiosMode mode = PolybiosMode.AZ09,
@@ -69,7 +65,6 @@ String? createPolybiosAlphabet(int gridDimension,
           fillAlphabet = fillAlphabet.replaceAll('Q', '');
           break;
       }
-
       break;
     case 6:
       var alphabetAZ = alphabet_AZ.keys.toList();
@@ -155,7 +150,6 @@ PolybiosOutput? encryptPolybios(String input, String rowIndexes,
 
   int dim = rowIndexes.length;
   if (dim != 5 && dim != 6) return null; // TODO: Exception
-  // if (_hasDoubleChars(rowIndexes) || _hasDoubleChars(colIndexes)) return null;
 
   var alphabet = createPolybiosAlphabet(dim,
       mode: mode, fillAlphabet: fillAlphabet, firstLetters: firstLetters, modificationMode: modificationMode);
@@ -194,7 +188,6 @@ PolybiosOutput? decryptPolybios(String input, String rowIndexes,
 
   int dim = rowIndexes.length;
   if (dim != 5 && dim != 6) return null;
-  // if (_hasDoubleChars(rowIndexes) || _hasDoubleChars(colIndexes)) return null;
 
   var alphabet = createPolybiosAlphabet(dim,
       mode: mode, fillAlphabet: fillAlphabet, firstLetters: firstLetters, modificationMode: modificationMode);
