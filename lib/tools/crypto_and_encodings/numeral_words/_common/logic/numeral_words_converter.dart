@@ -3,25 +3,22 @@ part of 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/_common/logi
 OutputConvertToNumber decodeNumeralWordToNumber(NumeralWordsLanguage _currentLanguage, String currentDecodeInput) {
   if (currentDecodeInput.isEmpty) return OutputConvertToNumber(number: 0, numbersystem: '', title: '', error: '');
 
-  if (_currentLanguage == NumeralWordsLanguage.ROU) {
-    if (_isROU(currentDecodeInput)) {
-      String number = _decodeROU(currentDecodeInput);
-      return OutputConvertToNumber(number: int.parse(number), numbersystem: number, title: '', error: '');
-    } else {
-      return OutputConvertToNumber(number: 0, numbersystem: '', title: '', error: 'numeralwords_converter_error_rou');
-    }
+  switch (_currentLanguage) {
+    case NumeralWordsLanguage.ROU:
+      return _decodeROU(currentDecodeInput);
+    case NumeralWordsLanguage.NAVI:
+      return _decodeNavi(currentDecodeInput);
+    case NumeralWordsLanguage.SHA:
+      break;
+    case NumeralWordsLanguage.MIN:
+      break;
+    case NumeralWordsLanguage.KLI:
+      break;
+    case NumeralWordsLanguage.MAO:
+      break;
+    default: OutputConvertToNumber(number: 0, numbersystem: '', title: '', error: '');
   }
-  if (_currentLanguage == NumeralWordsLanguage.NAVI) {
-    if (_isNavi(currentDecodeInput)) {
-      return OutputConvertToNumber(
-          number: int.parse(_decodeNavi(currentDecodeInput)),
-          numbersystem: convertBase(_decodeNavi(currentDecodeInput), 10, 8),
-          title: 'common_numeralbase_octenary',
-          error: '');
-    } else {
-      return OutputConvertToNumber(number: 0, numbersystem: '', title: '', error: 'numeralwords_converter_error_navi');
-    }
-  }
+
   if (_currentLanguage == NumeralWordsLanguage.SHA) {
     if (_isShadoks(currentDecodeInput)) {
       return OutputConvertToNumber(
@@ -33,7 +30,8 @@ OutputConvertToNumber decodeNumeralWordToNumber(NumeralWordsLanguage _currentLan
       return OutputConvertToNumber(
           number: 0, numbersystem: '', title: '', error: 'numeralwords_converter_error_shadoks');
     }
-  } else if (_currentLanguage == NumeralWordsLanguage.MIN) {
+  }
+  else if (_currentLanguage == NumeralWordsLanguage.MIN) {
     if (_isMinion(currentDecodeInput)) {
       return OutputConvertToNumber(
           number: int.parse(_decodeMinion(currentDecodeInput)), numbersystem: '', title: '', error: '');
@@ -41,7 +39,8 @@ OutputConvertToNumber decodeNumeralWordToNumber(NumeralWordsLanguage _currentLan
       return OutputConvertToNumber(
           number: 0, numbersystem: '', title: '', error: 'numeralwords_converter_error_minion');
     }
-  } else if (_currentLanguage == NumeralWordsLanguage.KLI) {
+  }
+  else if (_currentLanguage == NumeralWordsLanguage.KLI) {
     if (_isKlingon(currentDecodeInput)) {
       RegExp expr = RegExp(
           r"((wa'|cha'|wej|los|vagh|jav|soch|chorgh|hut)(bip|netlh|sad|sanid|vatlh|mah)[ -]?)+(wa'|cha'|wej|los|vagh|jav|soch|chorgh|hut)?(\s|$)");
@@ -60,9 +59,7 @@ OutputConvertToNumber decodeNumeralWordToNumber(NumeralWordsLanguage _currentLan
       return OutputConvertToNumber(
           number: 0, numbersystem: '', title: '', error: 'numeralwords_converter_error_klingon');
     }
-  } else {
-    return OutputConvertToNumber(number: 0, numbersystem: '', title: '', error: '');
-  }
+  } 
 }
 
 OutputConvertToNumeralWord encodeNumberToNumeralWord(NumeralWordsLanguage _currentLanguage, int currentNumber) {
@@ -77,6 +74,8 @@ OutputConvertToNumeralWord encodeNumberToNumeralWord(NumeralWordsLanguage _curre
       return _encodeKlingon(currentNumber);
     case NumeralWordsLanguage.ROU:
       return _encodeROU(currentNumber);
+    case NumeralWordsLanguage.MAO:
+      return _encodeMaori(currentNumber);
     default:
       return OutputConvertToNumeralWord(numeralWord: '', targetNumberSystem: '', title: '', errorMessage: '');
   }
@@ -135,197 +134,207 @@ String _decodeMultipleKlingon(String kliNumber) {
   return number.toString();
 }
 
-String _decodeNavi(String element) {
+OutputConvertToNumber _decodeNavi(String element) {
   // https://de.wikipedia.org/wiki/Na%E2%80%99vi-Sprache#Zahlen
   // https://james-camerons-avatar.fandom.com/de/wiki/Oktale_Arithmetik
   // https://forum.learnnavi.org/navi-lernen/das-navi-zahlensystem/#:~:text=Das%20Na%27vi%20hat%20zwei%20Lehnw%C3%B6rter%20aus%20dem%20Englischen.,Ziffern%2C%20wie%20z.%20B.%20Telefonnummern%2C%20Autokennzeichen%2C%20IDs%20etc.
-  String octal = '';
-  if (_NAVIWordToNum[element] != null) return (_NAVIWordToNum[element] ?? '');
+      if (_isNavi(element)) {
+      String number = '';
+      String octal = '';
+      if (_NAVIWordToNum[element] != null) number = (_NAVIWordToNum[element] ?? '');
 
-  element = element
-      .replaceAll('zame', 'zamme')
-      .replaceAll('zavo', 'zamvo')
-      .replaceAll('zapxe', 'zampxe')
-      .replaceAll('zatsi', 'zamtsi')
-      .replaceAll('zapu', 'zampu')
-      .replaceAll('zamrr', 'zammrr')
-      .replaceAll('zaki', 'zamki')
-      .replaceAll('zasing', 'zamsing')
-      .replaceAll('voaw', 'volaw')
-      .replaceAll('vomun', 'volmun')
-      .replaceAll('vopey', 'volpey')
-      .replaceAll('vosing', 'volsing')
-      .replaceAll('vomrr', 'volmrr')
-      .replaceAll('vofu', 'volfu')
-      .replaceAll('vohin', 'volhin');
+      element = element
+          .replaceAll('zame', 'zamme')
+          .replaceAll('zavo', 'zamvo')
+          .replaceAll('zapxe', 'zampxe')
+          .replaceAll('zatsi', 'zamtsi')
+          .replaceAll('zapu', 'zampu')
+          .replaceAll('zamrr', 'zammrr')
+          .replaceAll('zaki', 'zamki')
+          .replaceAll('zasing', 'zamsing')
+          .replaceAll('voaw', 'volaw')
+          .replaceAll('vomun', 'volmun')
+          .replaceAll('vopey', 'volpey')
+          .replaceAll('vosing', 'volsing')
+          .replaceAll('vomrr', 'volmrr')
+          .replaceAll('vofu', 'volfu')
+          .replaceAll('vohin', 'volhin');
 
-  // check 4096
-  if (element.contains('kizazam') ||
-      element.contains('puzazam') ||
-      element.contains('mrrzazam') ||
-      element.contains('tsizazam') ||
-      element.contains('pxezazam') ||
-      element.contains('mezazam') ||
-      element.contains('zazam')) {
-    if (element.contains('kizazam')) {
-      octal = '7';
-      element = element.replaceAll('kizazam', '');
-    } else if (element.contains('puzazam')) {
-      octal = '6';
-      element = element.replaceAll('puzazam', '');
-    } else if (element.contains('mrrzazam')) {
-      octal = '5';
-      element = element.replaceAll('mrrzazam', '');
-    } else if (element.contains('tsizazam')) {
-      octal = '4';
-      element = element.replaceAll('tsizazam', '');
-    } else if (element.contains('pxezazam')) {
-      octal = '3';
-      element = element.replaceAll('pxezazam', '');
-    } else if (element.contains('mezazam')) {
-      octal = '2';
-      element = element.replaceAll('mezazam', '');
-    } else if (element.contains('zazam')) {
-      octal = '1';
-      element = element.replaceAll('zazam', '');
+      // check 4096
+      if (element.contains('kizazam') ||
+          element.contains('puzazam') ||
+          element.contains('mrrzazam') ||
+          element.contains('tsizazam') ||
+          element.contains('pxezazam') ||
+          element.contains('mezazam') ||
+          element.contains('zazam')) {
+        if (element.contains('kizazam')) {
+          octal = '7';
+          element = element.replaceAll('kizazam', '');
+        } else if (element.contains('puzazam')) {
+          octal = '6';
+          element = element.replaceAll('puzazam', '');
+        } else if (element.contains('mrrzazam')) {
+          octal = '5';
+          element = element.replaceAll('mrrzazam', '');
+        } else if (element.contains('tsizazam')) {
+          octal = '4';
+          element = element.replaceAll('tsizazam', '');
+        } else if (element.contains('pxezazam')) {
+          octal = '3';
+          element = element.replaceAll('pxezazam', '');
+        } else if (element.contains('mezazam')) {
+          octal = '2';
+          element = element.replaceAll('mezazam', '');
+        } else if (element.contains('zazam')) {
+          octal = '1';
+          element = element.replaceAll('zazam', '');
+        }
+      } else {
+        octal = '0';
+      }
+
+      // check 512
+      if (element.contains('kivozam') ||
+          element.contains('puvozam') ||
+          element.contains('mrrvozam') ||
+          element.contains('tsivozam') ||
+          element.contains('pxevozam') ||
+          element.contains('mevozam') ||
+          element.contains('vozam')) {
+        if (element.contains('kivozam')) {
+          octal = octal + '7';
+          element = element.replaceAll('kivozam', '');
+        } else if (element.contains('puvozam')) {
+          octal = octal + '6';
+          element = element.replaceAll('puvozam', '');
+        } else if (element.contains('mrrvozam')) {
+          octal = octal + '5';
+          element = element.replaceAll('mrrvozam', '');
+        } else if (element.contains('tsivozam')) {
+          octal = octal + '4';
+          element = element.replaceAll('tsivozam', '');
+        } else if (element.contains('pxevozam')) {
+          octal = octal + '3';
+          element = element.replaceAll('pxevozam', '');
+        } else if (element.contains('mevozam')) {
+          octal = octal + '2';
+          element = element.replaceAll('mevozam', '');
+        } else if (element.contains('vozam')) {
+          octal = octal + '1';
+          element = element.replaceAll('vozam', '');
+        }
+      } else {
+        octal = octal + '0';
+      }
+
+      // check 64
+      if (element.contains('kizam') ||
+          element.contains('puzam') ||
+          element.contains('mrrzam') ||
+          element.contains('tsizam') ||
+          element.contains('pxezam') ||
+          element.contains('mezam') ||
+          element.contains('zam')) {
+        if (element.contains('kizam')) {
+          octal = octal + '7';
+          element = element.replaceAll('kizam', '');
+        } else if (element.contains('puzam')) {
+          octal = octal + '6';
+          element = element.replaceAll('puzam', '');
+        } else if (element.contains('mrrzam')) {
+          octal = octal + '5';
+          element = element.replaceAll('mrrzam', '');
+        } else if (element.contains('tsizam')) {
+          octal = octal + '4';
+          element = element.replaceAll('tsizam', '');
+        } else if (element.contains('pxezam')) {
+          octal = octal + '3';
+          element = element.replaceAll('pxezam', '');
+        } else if (element.contains('mezam')) {
+          octal = octal + '2';
+          element = element.replaceAll('mezam', '');
+        } else if (element.contains('zam')) {
+          octal = octal + '1';
+          element = element.replaceAll('zam', '');
+        }
+      } else {
+        octal = octal + '0';
+      }
+
+      // check 8
+      if (element.contains('kivol') ||
+          element.contains('puvol') ||
+          element.contains('mrrvol') ||
+          element.contains('tsivol') ||
+          element.contains('pxevol') ||
+          element.contains('mevol') ||
+          element.contains('vol')) {
+        if (element.contains('kivol')) {
+          octal = octal + '7';
+          element = element.replaceAll('kivol', '');
+        } else if (element.contains('puvol')) {
+          octal = octal + '6';
+          element = element.replaceAll('puvol', '');
+        } else if (element.contains('mrrvol')) {
+          octal = octal + '5';
+          element = element.replaceAll('mrrvol', '');
+        } else if (element.contains('tsivol')) {
+          octal = octal + '4';
+          element = element.replaceAll('tsivol', '');
+        } else if (element.contains('pxevol')) {
+          octal = octal + '3';
+          element = element.replaceAll('pxevol', '');
+        } else if (element.contains('mevol')) {
+          octal = octal + '2';
+          element = element.replaceAll('mevol', '');
+        } else if (element.contains('vol')) {
+          octal = octal + '1';
+          element = element.replaceAll('vol', '');
+        }
+      } else {
+        octal = octal + '0';
+      }
+
+      // check 1
+      if (element.contains('hin') ||
+          element.contains('fu') ||
+          element.contains('mrr') ||
+          element.contains('sing') ||
+          element.contains('pey') ||
+          element.contains('mun') ||
+          element.contains('aw')) {
+        if (element.contains('hin')) {
+          octal = octal + '7';
+        } else if (element.contains('fu')) {
+          octal = octal + '6';
+        } else if (element.contains('mrr')) {
+          octal = octal + '5';
+        } else if (element.contains('sing')) {
+          octal = octal + '4';
+        } else if (element.contains('pey')) {
+          octal = octal + '3';
+        } else if (element.contains('mun')) {
+          octal = octal + '2';
+        } else if (element.contains('aw')) {
+          octal = octal + '1';
+        }
+      } else {
+        octal = octal + '0';
+      }
+
+      number = convertBase(octal, 8, 10);
+      return OutputConvertToNumber(
+          number: int.parse(number),
+          numbersystem: convertBase(number, 10, 8),
+          title: 'common_numeralbase_octenary',
+          error: '');
+    } else {
+      return OutputConvertToNumber(number: 0, numbersystem: '', title: '', error: 'numeralwords_converter_error_navi');
     }
-  } else {
-    octal = '0';
-  }
-
-  // check 512
-  if (element.contains('kivozam') ||
-      element.contains('puvozam') ||
-      element.contains('mrrvozam') ||
-      element.contains('tsivozam') ||
-      element.contains('pxevozam') ||
-      element.contains('mevozam') ||
-      element.contains('vozam')) {
-    if (element.contains('kivozam')) {
-      octal = octal + '7';
-      element = element.replaceAll('kivozam', '');
-    } else if (element.contains('puvozam')) {
-      octal = octal + '6';
-      element = element.replaceAll('puvozam', '');
-    } else if (element.contains('mrrvozam')) {
-      octal = octal + '5';
-      element = element.replaceAll('mrrvozam', '');
-    } else if (element.contains('tsivozam')) {
-      octal = octal + '4';
-      element = element.replaceAll('tsivozam', '');
-    } else if (element.contains('pxevozam')) {
-      octal = octal + '3';
-      element = element.replaceAll('pxevozam', '');
-    } else if (element.contains('mevozam')) {
-      octal = octal + '2';
-      element = element.replaceAll('mevozam', '');
-    } else if (element.contains('vozam')) {
-      octal = octal + '1';
-      element = element.replaceAll('vozam', '');
-    }
-  } else {
-    octal = octal + '0';
-  }
-
-  // check 64
-  if (element.contains('kizam') ||
-      element.contains('puzam') ||
-      element.contains('mrrzam') ||
-      element.contains('tsizam') ||
-      element.contains('pxezam') ||
-      element.contains('mezam') ||
-      element.contains('zam')) {
-    if (element.contains('kizam')) {
-      octal = octal + '7';
-      element = element.replaceAll('kizam', '');
-    } else if (element.contains('puzam')) {
-      octal = octal + '6';
-      element = element.replaceAll('puzam', '');
-    } else if (element.contains('mrrzam')) {
-      octal = octal + '5';
-      element = element.replaceAll('mrrzam', '');
-    } else if (element.contains('tsizam')) {
-      octal = octal + '4';
-      element = element.replaceAll('tsizam', '');
-    } else if (element.contains('pxezam')) {
-      octal = octal + '3';
-      element = element.replaceAll('pxezam', '');
-    } else if (element.contains('mezam')) {
-      octal = octal + '2';
-      element = element.replaceAll('mezam', '');
-    } else if (element.contains('zam')) {
-      octal = octal + '1';
-      element = element.replaceAll('zam', '');
-    }
-  } else {
-    octal = octal + '0';
-  }
-
-  // check 8
-  if (element.contains('kivol') ||
-      element.contains('puvol') ||
-      element.contains('mrrvol') ||
-      element.contains('tsivol') ||
-      element.contains('pxevol') ||
-      element.contains('mevol') ||
-      element.contains('vol')) {
-    if (element.contains('kivol')) {
-      octal = octal + '7';
-      element = element.replaceAll('kivol', '');
-    } else if (element.contains('puvol')) {
-      octal = octal + '6';
-      element = element.replaceAll('puvol', '');
-    } else if (element.contains('mrrvol')) {
-      octal = octal + '5';
-      element = element.replaceAll('mrrvol', '');
-    } else if (element.contains('tsivol')) {
-      octal = octal + '4';
-      element = element.replaceAll('tsivol', '');
-    } else if (element.contains('pxevol')) {
-      octal = octal + '3';
-      element = element.replaceAll('pxevol', '');
-    } else if (element.contains('mevol')) {
-      octal = octal + '2';
-      element = element.replaceAll('mevol', '');
-    } else if (element.contains('vol')) {
-      octal = octal + '1';
-      element = element.replaceAll('vol', '');
-    }
-  } else {
-    octal = octal + '0';
-  }
-
-  // check 1
-  if (element.contains('hin') ||
-      element.contains('fu') ||
-      element.contains('mrr') ||
-      element.contains('sing') ||
-      element.contains('pey') ||
-      element.contains('mun') ||
-      element.contains('aw')) {
-    if (element.contains('hin')) {
-      octal = octal + '7';
-    } else if (element.contains('fu')) {
-      octal = octal + '6';
-    } else if (element.contains('mrr')) {
-      octal = octal + '5';
-    } else if (element.contains('sing')) {
-      octal = octal + '4';
-    } else if (element.contains('pey')) {
-      octal = octal + '3';
-    } else if (element.contains('mun')) {
-      octal = octal + '2';
-    } else if (element.contains('aw')) {
-      octal = octal + '1';
-    }
-  } else {
-    octal = octal + '0';
-  }
-
-  return convertBase(octal, 8, 10);
 }
 
-String _decodeROU(String element) {
+OutputConvertToNumber _decodeROU(String element) {
   int decodeTripel(String element, Map<String, String> ROU_numbers) {
     List<String> syllables = [];
 
@@ -352,18 +361,23 @@ String _decodeROU(String element) {
     return decodeTupel(element.trim(), ROU_numbers);
   }
 
-  List<String> syllables = [];
-  if (element.contains('de mii')) {
-    syllables = element.split('de mii');
+  if (_isROU(element)) {
+    int number = 0;
+    List<String> syllables = [];
+    if (element.contains('de mii')) {
+      syllables = element.split('de mii');
+    } else {
+      syllables = element.split('mii');
+    }
+    Map<String, String> ROU_numbers = _normalize(_ROUWordToNum, NumeralWordsLanguage.ROU);
+    if (syllables.length == 1) {
+      number = decodeTripel(syllables[0].trim(), ROU_numbers);
+    } else {
+      number = (decodeTripel(syllables[0].trim(), ROU_numbers) * 1000 + decodeTripel(syllables[1].trim(), ROU_numbers));
+    }
+    return OutputConvertToNumber(number: number, numbersystem: number.toString(), title: '', error: '');
   } else {
-    syllables = element.split('mii');
-  }
-  Map<String, String> ROU_numbers = _normalize(_ROUWordToNum, NumeralWordsLanguage.ROU);
-  if (syllables.length == 1) {
-    return decodeTripel(syllables[0].trim(), ROU_numbers).toString();
-  } else {
-    return (decodeTripel(syllables[0].trim(), ROU_numbers) * 1000 + decodeTripel(syllables[1].trim(), ROU_numbers))
-        .toString();
+    return OutputConvertToNumber(number: 0, numbersystem: '', title: '', error: 'numeralwords_converter_error_rou');
   }
 }
 
@@ -818,6 +832,53 @@ OutputConvertToNumeralWord _encodeShadok(int currentNumber) {
       errorMessage: '');
 }
 
+OutputConvertToNumeralWord _encodeMaori(int currentNumber) {
+  List<String> numeralWord = [];
+  List<String> digits = currentNumber.toString().split('');
+  int digit = 0;
+  int tenth = 0;
+  Map<String, String> numWords = switchMapKeyValue(_MAOWordToNum);
+
+  if (numWords[currentNumber.toString()] != null) {
+    numeralWord.add(numWords[currentNumber.toString()]!);
+  } else {
+    for (int i = digits.length; i > 0; i--) {
+      digit = int.parse(digits[digits.length - i]);
+      tenth = pow(10, i - 1).toInt();
+      if (digit != 0) {
+        if (tenth == 1000) {
+          if (digit == 1) {
+            numeralWord.add('kotahi mano');
+          } else {
+            numeralWord.add(numWords[digit.toString()]! + ' ' + 'mano');
+          }
+        } else if (tenth == 10) {
+          int digit0 = int.parse(digits[digits.length - 1]);
+          if (digit == 1) {
+            numeralWord.add(numWords[tenth.toString()]! + ' ' + 'ma' + ' ' + numWords[digit0.toString()]!);
+          } else {
+            numeralWord.add(numWords[digit.toString()]! + ' ' + numWords[tenth.toString()]! + ' ' + 'ma' + ' ' + numWords[digit0.toString()]!);
+          }
+          break;
+        } else {
+          if (numWords[(digit * tenth).toString()] != null) {
+            numeralWord.add(numWords[(digit * tenth).toString()]!);
+          } else {
+            numeralWord.add(numWords[digit.toString()]! + ' ' + numWords[tenth.toString()]!);
+          }
+        }
+      }
+
+    }
+  }
+
+  return OutputConvertToNumeralWord(
+      numeralWord: numeralWord.join(' '),
+      targetNumberSystem: '',
+      title: '',
+      errorMessage: '');
+}
+
 bool _isKlingon(String element) {
   if (element != '') {
     return (element
@@ -981,4 +1042,29 @@ bool _isShadoks(String element) {
   } else {
     return false;
   }
+}
+
+bool _isMaori(String element) {
+  if (element != '') {
+    element = element
+        .replaceAll(' ', '')
+        .replaceAll('kore', '')
+        .replaceAll('tahi', '')
+        .replaceAll('rua', '')
+        .replaceAll('toru', '')
+        .replaceAll('wha', '')
+        .replaceAll('rima', '')
+        .replaceAll('ono', '')
+        .replaceAll('whitu', '')
+        .replaceAll('waru', '')
+        .replaceAll('iwa', '')
+        .replaceAll('tekau', '')
+        .replaceAll('kotahi', '')
+        .replaceAll('rau', '')
+        .replaceAll('mano', '')
+        .replaceAll('miriona', '');
+
+    return (element.isEmpty);
+  }
+  return false;
 }

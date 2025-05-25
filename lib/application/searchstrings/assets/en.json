@@ -316,7 +316,7 @@
   "numeralbases": "hexadecimal octal octenary numeral systems",
   "numeralwords": "numeralwords numberwords numerals",
   "numeralwords_identifylanguages": "languageidentification findlanguages searchlanguages indentifylanguages",
-  "numeralwords_lang": "cyrillic german english klingonian french italian danish spanish dutch norwegian polish portuguese swedish russian volapuk esperanto solresol latincorean sinocorean hangul thai sorbian",
+  "numeralwords_lang": "maori cyrillic german english klingonian french italian danish spanish dutch norwegian polish portuguese swedish russian volapuk esperanto solresol latincorean sinocorean hangul thai sorbian",
   "numeralwordslists": "",
   "numeralwordsconverter": "klingonian",
   "numeralwordstextsearch": "textanalysis textsearch",
