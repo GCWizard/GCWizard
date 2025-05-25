@@ -148,32 +148,34 @@ class _PolybiosState extends State<Polybios> {
                   }
                 });
               }),
-          GCWAlphabetDropDown<PolybiosMode>(
-            value: _currentPolybiosMode,
-            items: polybiosModeItems,
-            customModeKey: PolybiosMode.CUSTOM,
-            textFieldController: _alphabetController,
-            onChanged: (value) {
-              setState(() {
-                _currentPolybiosMode = value;
-                if (value != PolybiosMode.CUSTOM) {
-                  _currentPassword = '';
-                  _passwordController.text = '';
-                } else {
-                  if (_passwordController.text.isNotEmpty) {
-                    _currentAlphabet = _passwordController.text;
+          (_currentPassword.isNotEmpty)
+            ? Container()
+            : GCWAlphabetDropDown<PolybiosMode>(
+              value: _currentPolybiosMode,
+              items: polybiosModeItems,
+              customModeKey: PolybiosMode.CUSTOM,
+              textFieldController: _alphabetController,
+              onChanged: (value) {
+                setState(() {
+                  _currentPolybiosMode = value;
+                  if (value != PolybiosMode.CUSTOM) {
+                    _currentPassword = '';
+                    _passwordController.text = '';
                   } else {
-                    _currentAlphabet = _alphabetController.text;
+                    if (_passwordController.text.isNotEmpty) {
+                      _currentAlphabet = _passwordController.text;
+                    } else {
+                      _currentAlphabet = _alphabetController.text;
+                    }
                   }
-                }
-              });
-            },
-            onCustomAlphabetChanged: (text) {
-              setState(() {
-                _currentAlphabet = text;
-              });
-            },
-          ),
+                });
+              },
+              onCustomAlphabetChanged: (text) {
+                setState(() {
+                  _currentAlphabet = text;
+                });
+              },
+            ),
           _currentRowLabel.length < 6
               ? GCWAlphabetModificationDropDown(
                   value: _currentModificationMode,
