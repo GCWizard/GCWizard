@@ -12,6 +12,8 @@ List<Map<String, Object?>> _inputsMathToExpected = [
   {'code' : 'print 4 | 1', 'expectedOutput' : '5'},
   {'code' : 'print 4 → 1', 'expectedOutput' : '2'},
   {'code' : 'print 4 ← 1', 'expectedOutput' : '8'},
+  {'code' : 'print 4 @ 1', 'expectedOutput' : '5'},
+  {'code' : 'print 4 @ 8', 'expectedOutput' : '12'},
 
   {'code' : 'print MOD(11, 3)', 'expectedOutput' : '2'},
   {'code' : 'print MOD(11.0, 3)', 'expectedOutput' : '2.0'},

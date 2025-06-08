@@ -2115,7 +2115,8 @@ class _GCWizardSCriptInterpreter {
     result = evaluateExpressionUnaryFunctionOperator();
 
     while (
-        (op = state.token[0]) == '→' || op == '←' || op == '&' || op == '|') {
+        (op = state.token[0]) == '→' || op == '←' || op == '&' || op == '|' || op == '@') {
+      print('token = '+op);
       getToken();
       partialResult = evaluateExpressionUnaryFunctionOperator();
       if (_isNotAInt(partialResult) && _isNotAInt(result)) {
@@ -2133,6 +2134,9 @@ class _GCWizardSCriptInterpreter {
             break;
           case '|': // or
             result = (result as int) | (partialResult as int);
+            break;
+          case '@': // xor
+            result = (result as int) ^ (partialResult as int);
             break;
         }
       }
@@ -2399,7 +2403,7 @@ class _GCWizardSCriptInterpreter {
   }
 
   bool isDelimiter(String c) {
-    if ((" \n\r,;<>+-/*%^=()&|←→~".contains(c))) return true;
+    if ((" \n\r,;<>+-/*%^=()&|←→~@".contains(c))) return true;
     return false;
   }
 
