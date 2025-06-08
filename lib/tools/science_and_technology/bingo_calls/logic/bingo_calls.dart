@@ -16,7 +16,7 @@ class BingoCall {
 enum BINGOCALLS_LANGUAGES { DE, EN }
 
 const Map<BINGOCALLS_LANGUAGES, String> BINGOCALLS_LANGUAGE_LIST = {
-  BINGOCALLS_LANGUAGES.DE: "common_language_german",
+  //BINGOCALLS_LANGUAGES.DE: "common_language_german",
   BINGOCALLS_LANGUAGES.EN: "common_language_english",
 };
 
