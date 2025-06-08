@@ -52,6 +52,8 @@ enum SPELLING {
   RUSLAT,
   GRC,
   GRCLAT,
+  ITU1927,
+  LAPD,
 }
 
 const Map<SPELLING, String> SPELLING_LIST = {
@@ -74,7 +76,7 @@ const Map<SPELLING, String> SPELLING_LIST = {
   SPELLING.FRACAN: "spelling_alphabets_language_quebec",
   SPELLING.DEU1950: "spelling_alphabets_language_deu1950",
   SPELLING.DEU2022: "spelling_alphabets_language_deu2022",
-  SPELLING.AUT: "common_country_Austria",
+  SPELLING.AUT: "spelling_alphabets_language_aut1081",
   SPELLING.DEUDDR: "spelling_alphabets_language_gdr",
   SPELLING.NLD: "common_country_Netherlands",
   SPELLING.EPO: "spelling_alphabets_language_esperanto",
@@ -98,6 +100,8 @@ const Map<SPELLING, String> SPELLING_LIST = {
   SPELLING.RUSLAT: "spelling_alphabets_language_ruslat",
   SPELLING.GRC: "common_country_Greece",
   SPELLING.GRCLAT: "spelling_alphabets_language_grclat",
+  SPELLING.ITU1927: "spelling_alphabets_language_itu1927",
+  SPELLING.LAPD: "spelling_alphabets_language_lapd",
 };
 
 const List<MapEntry<String, String>> _spellingARRL1930 = [
@@ -353,6 +357,34 @@ const List<MapEntry<String, String>> _spellingICAO1947 = [
   MapEntry<String, String>("Z", "Zebra"),
 ];
 const List<MapEntry<String, String>> _spellingAPCO1967 = [
+  MapEntry<String, String>("A", "Adam"),
+  MapEntry<String, String>("B", "Boy"),
+  MapEntry<String, String>("C", "Charles"),
+  MapEntry<String, String>("D", "David"),
+  MapEntry<String, String>("E", "Edward"),
+  MapEntry<String, String>("F", "Frank"),
+  MapEntry<String, String>("G", "George"),
+  MapEntry<String, String>("H", "Henry"),
+  MapEntry<String, String>("I", "Ida"),
+  MapEntry<String, String>("J", "John"),
+  MapEntry<String, String>("K", "King"),
+  MapEntry<String, String>("L", "Lincoln"),
+  MapEntry<String, String>("M", "Mary"),
+  MapEntry<String, String>("N", "Nora"),
+  MapEntry<String, String>("O", "Ocean"),
+  MapEntry<String, String>("P", "Paul"),
+  MapEntry<String, String>("Q", "Queen"),
+  MapEntry<String, String>("R", "Robert"),
+  MapEntry<String, String>("S", "Sam"),
+  MapEntry<String, String>("T", "Tom"),
+  MapEntry<String, String>("U", "Union"),
+  MapEntry<String, String>("V", "Victor"),
+  MapEntry<String, String>("W", "William"),
+  MapEntry<String, String>("X", "X-Ray"),
+  MapEntry<String, String>("Y", "Young"),
+  MapEntry<String, String>("Z", "Zebra"),
+];
+const List<MapEntry<String, String>> _spellingLAPD = [
   MapEntry<String, String>("A", "Adam"),
   MapEntry<String, String>("B", "Boy"),
   MapEntry<String, String>("C", "Charles"),
@@ -1306,6 +1338,34 @@ const List<MapEntry<String, String>> _spellingGRCLAT = [
   MapEntry<String, String>("Ψ,ψ", "psichí"),
   MapEntry<String, String>("Ω,ω", "oméga"),
 ];
+const List<MapEntry<String, String>> _spellingITU1927 = [
+  MapEntry<String, String>("Α", "Amsterdam"),
+  MapEntry<String, String>("Β", "Baltimore"),
+  MapEntry<String, String>("C", "Casablanca"),
+  MapEntry<String, String>("D", "Danemark"),
+  MapEntry<String, String>("Ε", "Edison"),
+  MapEntry<String, String>("F", "Florida"),
+  MapEntry<String, String>("G", "Gallipoli"),
+  MapEntry<String, String>("H", "Havanna"),
+  MapEntry<String, String>("Ι", "Italia"),
+  MapEntry<String, String>("J", "Jerusalem"),
+  MapEntry<String, String>("K", "Kilogram"),
+  MapEntry<String, String>("L", "Liverpool"),
+  MapEntry<String, String>("M", "Madagaskar"),
+  MapEntry<String, String>("N", "New York"),
+  MapEntry<String, String>("O", "Oslo"),
+  MapEntry<String, String>("P", "Paris"),
+  MapEntry<String, String>("Q", "Quebéc"),
+  MapEntry<String, String>("R", "Roma"),
+  MapEntry<String, String>("S", "Santiago"),
+  MapEntry<String, String>("T", "Tripoli"),
+  MapEntry<String, String>("U", "Uppsala"),
+  MapEntry<String, String>("V", "Valencia"),
+  MapEntry<String, String>("W", "Washington"),
+  MapEntry<String, String>("X", "Xanthippe"),
+  MapEntry<String, String>("Y", "Yokohama"),
+  MapEntry<String, String>("Z", "Zürich"),
+];
 
 const Map<SPELLING, List<MapEntry<String, String>>> SPELLING_ALPHABETS = {
   SPELLING.ICAO1947: _spellingICAO1947,
@@ -1351,6 +1411,8 @@ const Map<SPELLING, List<MapEntry<String, String>>> SPELLING_ALPHABETS = {
   SPELLING.RUSLAT: _spellingRUSLAT,
   SPELLING.GRC: _spellingGRC,
   SPELLING.GRCLAT: _spellingGRCLAT,
+  SPELLING.ITU1927: _spellingITU1927,
+  SPELLING.LAPD: _spellingLAPD,
 };
 
 final Map<Locale, SPELLING> SUPPORTED_SPELLING_LOCALES = {
