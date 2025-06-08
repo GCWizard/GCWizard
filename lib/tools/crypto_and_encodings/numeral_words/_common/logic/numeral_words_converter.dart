@@ -59,7 +59,7 @@ OutputConvertToNumber decodeNumeralWordToNumber(NumeralWordsLanguage _currentLan
       return OutputConvertToNumber(
           number: 0, numbersystem: '', title: '', error: 'numeralwords_converter_error_klingon');
     }
-  } 
+  }
 }
 
 OutputConvertToNumeralWord encodeNumberToNumeralWord(NumeralWordsLanguage _currentLanguage, int currentNumber) {
