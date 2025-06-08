@@ -410,10 +410,9 @@ class _GCWizardSCriptInterpreter {
 
   void getDATA() {
     state.script.split('\n').forEach((line) {
-      line = line.trim();
-      if (line.substring(0, line.length > 5 ? 5 : line.length).toUpperCase() ==
-          'DATA ') {
-        line.substring(5).split(',').forEach((data) {
+      line = line.trim().toUpperCase();
+      if (line.contains('DATA ')) {
+        line.split('DATA ')[1].split(',').forEach((data) {
           data = data.trim().replaceAll('"', '');
           if (int.tryParse(data) != null) {
             state.listDATA.add(int.parse(data));
