@@ -3,13 +3,9 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/i18n/logic/supported_locales.dart';
-import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
-import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
-import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
-import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/bingo_calls/logic/bingo_calls.dart';
 
 class BingoCalls extends StatefulWidget {
@@ -79,7 +75,7 @@ class _BingoCallsState extends State<BingoCalls> {
     return GCWDefaultOutput(
       child: GCWColumnedMultilineOutput(
         data: output,
-        flexValues: const [1, 2, 3],
+        flexValues: const [1, 2, 4],
       ),
     );
   }

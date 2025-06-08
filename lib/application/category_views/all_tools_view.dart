@@ -223,6 +223,7 @@ import 'package:gc_wizard/tools/science_and_technology/astronomy/sun_position/wi
 import 'package:gc_wizard/tools/science_and_technology/astronomy/sun_rise_set/widget/sun_rise_set.dart';
 import 'package:gc_wizard/tools/science_and_technology/ballistics/widget/ballistics.dart';
 import 'package:gc_wizard/tools/science_and_technology/binary/widget/binary.dart';
+import 'package:gc_wizard/tools/science_and_technology/bingo_calls/widget/bingo_calls.dart';
 import 'package:gc_wizard/tools/science_and_technology/blood_alcohol_content/widget/blood_alcohol_content.dart';
 import 'package:gc_wizard/tools/science_and_technology/colors/color_tool/widget/color_tool.dart';
 import 'package:gc_wizard/tools/science_and_technology/colors/pantone_color_codes/widget/pantone_color_codes.dart';
@@ -575,6 +576,7 @@ void _initStaticToolList() {
       className(const Bifid()),
       className(const Binary()),
       className(const Binary2Image()),
+      className(const BingoCalls()),
       className(const BloodAlcoholContent()),
       className(const BookCipher()),
       className(const Bowling()),

@@ -354,6 +354,7 @@ import 'package:gc_wizard/tools/science_and_technology/astronomy/sun_rise_set/wi
 import 'package:gc_wizard/tools/science_and_technology/ballistics/widget/ballistics.dart';
 import 'package:gc_wizard/tools/science_and_technology/beaufort/widget/beaufort.dart';
 import 'package:gc_wizard/tools/science_and_technology/binary/widget/binary.dart';
+import 'package:gc_wizard/tools/science_and_technology/bingo_calls/widget/bingo_calls.dart';
 import 'package:gc_wizard/tools/science_and_technology/blood_alcohol_content/widget/blood_alcohol_content.dart';
 import 'package:gc_wizard/tools/science_and_technology/checkdigits/widget/checkdigits_creditcard.dart';
 import 'package:gc_wizard/tools/science_and_technology/checkdigits/widget/checkdigits_de_taxid.dart';
@@ -753,7 +754,11 @@ void initializeRegistry(BuildContext context) {
       'barcodes',
       'images',
     ]),
-    GCWTool(tool: const BookCipher(), id: 'book_cipher', categories: const [
+    GCWTool(tool: const BingoCalls(), id: 'bingo_calls', categories: const [
+      ToolCategory.SCIENCE_AND_TECHNOLOGY
+    ], searchKeys: const [
+      'bingo_calls',
+    ]),GCWTool(tool: const BookCipher(), id: 'book_cipher', categories: const [
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
       'bookcipher',
