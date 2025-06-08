@@ -17,8 +17,8 @@ class BingoCalls extends StatefulWidget {
 
 class _BingoCallsState extends State<BingoCalls> {
 
-  BINGOCALLS_LANGUAGES _currentLanguage = BINGOCALLS_LANGUAGES.DE;
-  bool _setDefaultLanguage = false;
+  BINGOCALLS_LANGUAGES _currentLanguage = BINGOCALLS_LANGUAGES.EN;
+  //bool _setDefaultLanguage = false;
   
   @override
   void initState() {
@@ -33,10 +33,11 @@ class _BingoCallsState extends State<BingoCalls> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_setDefaultLanguage) {
-      _currentLanguage = _defaultLanguage(context);
-      _setDefaultLanguage = true;
-    }
+    // TODO check for correct translations
+    //if (!_setDefaultLanguage) {
+    //  _currentLanguage = _defaultLanguage(context);
+    //  _setDefaultLanguage = true;
+    //}
 
     return Column(
       children: <Widget>[
