@@ -341,23 +341,30 @@ class GCWizardScriptState extends State<GCWizardScript> {
           ),
           GCWOutputText(
             style: gcwMonotypeTextStyle(),
-            text: i18n(context, _currentOutput.ErrorMessage) +
-                '\n' +
-                i18n(context, 'gcwizard_script_error_position') +
-                ': ' +
-                _currentOutput.ErrorPosition.toString() +
-                '\n' +
-                i18n(context, 'gcwizard_script_error_line') +
-                ': ' +
-                _printFaultyLine(_currentProgram, _currentOutput.ErrorPosition) +
-                '\n' +
-                '=> ' +
-                _printFaultyProgram(_currentProgram, _currentOutput.ErrorPosition),
+            text: _errorMessage(),
             isMonotype: true,
           ),
         ],
       );
     }
+  }
+
+  String _errorMessage(){
+    String errorPosition = i18n(context, 'gcwizard_script_error_position');
+    String errorLine = i18n(context, 'gcwizard_script_error_line');
+
+    if (errorLine.length > errorPosition.length) {
+      errorPosition = errorPosition.padRight(errorLine.length, ' ');
+    } else {
+      errorLine = errorLine.padRight(errorPosition.length, ' ');
+    }
+
+    String errorHint = '=>'.padLeft(errorPosition.length, ' ');
+
+    return i18n(context, _currentOutput.ErrorMessage) + '\n' +
+        errorPosition + ': ' + _currentOutput.ErrorPosition.toString() + '\n' +
+        errorLine + ': ' + _printFaultyLine(_currentProgram, _currentOutput.ErrorPosition) + '\n' +
+        errorHint + '  ' + _printFaultyProgram(_currentProgram, _currentOutput.ErrorPosition, errorHint.length - 1);
   }
 
   Future<GCWAsyncExecuterParameters?> _buildInterpreterJobData() async {
@@ -451,19 +458,18 @@ class GCWizardScriptState extends State<GCWizardScript> {
     int pc = position >= program.length ? program.length - 1 : position;
     if (program.isNotEmpty) {
       while (pc > 0 && program[pc] != '\n') {
-        line = program[pc] + line;
         pc--;
       }
-      pc = position + 1;
-      while (pc < program.length && program[pc] != '\n') {
-        line = line + program[pc];
-        pc++;
+      pc--;
+      while (pc > 0 && program[pc] != '\n') {
+        line = program[pc] + line;
+        pc--;
       }
     }
     return line;
   }
 
-  String _printFaultyProgram(String program, int position) {
+  String _printFaultyProgram(String program, int position, int padding) {
     String result = '';
 
     if (program.isNotEmpty) {
@@ -474,7 +480,7 @@ class GCWizardScriptState extends State<GCWizardScript> {
         result += program[i];
       }
     }
-    return result.replaceAll('\n', '↩') + '\n' + '   ^';
+    return result.replaceAll('\n', '↩') + '\n' + '   ^'.padLeft(4 + padding, ' ');
   }
 
   void _showDialogBoxInput(BuildContext context, String text) {
