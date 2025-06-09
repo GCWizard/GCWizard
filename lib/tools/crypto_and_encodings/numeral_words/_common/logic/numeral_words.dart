@@ -5,11 +5,16 @@ import 'package:gc_wizard/tools/science_and_technology/numeral_bases/logic/numer
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
-import 'package:path/path.dart';
 
 part 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/_common/logic/numeral_words_classes.dart';
-part 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/_common/logic/numeral_words_converter.dart';
 part 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/_common/logic/numeral_words_maps.dart';
+part 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/_common/logic/numeral_words_converter.dart';
+part 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/_common/logic/numeral_words_converter_kli.dart';
+part 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/_common/logic/numeral_words_converter_mao.dart';
+part 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/_common/logic/numeral_words_converter_min.dart';
+part 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/_common/logic/numeral_words_converter_navi.dart';
+part 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/_common/logic/numeral_words_converter_rou.dart';
+part 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/_common/logic/numeral_words_converter_sha.dart';
 
 List<NumeralWordsDecodeOutput> decodeNumeralwords(
     {required String input, required NumeralWordsLanguage language, bool decodeModeWholeWords = false}) {
@@ -258,19 +263,19 @@ List<NumeralWordsDecodeOutput> decodeNumeralwords(
         } else if (_isShadoks(element) &&
             (language == NumeralWordsLanguage.ALL || language == NumeralWordsLanguage.SHA)) {
           output.add(NumeralWordsDecodeOutput(
-              _decodeShadoks(element), element, _languageList?[NumeralWordsLanguage.SHA] ?? ''));
+              _decodeShadoks(element).number.toString(), element, _languageList?[NumeralWordsLanguage.SHA] ?? ''));
         } else if (_isMinion(element) &&
             (language == NumeralWordsLanguage.ALL || language == NumeralWordsLanguage.MIN)) {
           output.add(NumeralWordsDecodeOutput(
-              _decodeMinion(element), element, _languageList?[NumeralWordsLanguage.MIN] ?? ''));
+              _decodeMinion(element).number.toString(), element, _languageList?[NumeralWordsLanguage.MIN] ?? ''));
         } else if (_isKlingon(element) &&
             (language == NumeralWordsLanguage.ALL || language == NumeralWordsLanguage.KLI)) {
-          output.add(NumeralWordsDecodeOutput(_decodeKlingon(element), element.replaceAll('€', ' ').trim(),
+          output.add(NumeralWordsDecodeOutput(_decodeKlingon(element).number.toString(), element.replaceAll('€', ' ').trim(),
               _languageList?[NumeralWordsLanguage.KLI] ?? ''));
         } else if (_isNavi(element) &&
             (language == NumeralWordsLanguage.ALL || language == NumeralWordsLanguage.NAVI)) {
           output.add(
-              NumeralWordsDecodeOutput(_decodeNavi(element), element, _languageList?[NumeralWordsLanguage.NAVI] ?? ''));
+              NumeralWordsDecodeOutput(_decodeNavi(element).number.toString(), element, _languageList?[NumeralWordsLanguage.NAVI] ?? ''));
         } else if (_isNumeral(element)) {
           // checks - if is a number/digit
           output.add(NumeralWordsDecodeOutput(element, element, _languageList?[NumeralWordsLanguage.NUM] ?? ''));
