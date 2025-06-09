@@ -82,12 +82,22 @@ void main() {
       {'input' : 'ABJICKWVQ', 'key': '123456', 'mode': PolybiosMode.AZ09, 'fillAlphabet': null, 'modificationMode': AlphabetModificationMode.C_TO_K, 'expectedOutput' : '11 12 24 23 13 25 45 44 35'},
       {'input' : 'ABJICKWVQ', 'key': '123456', 'mode': PolybiosMode.AZ09, 'fillAlphabet': null, 'modificationMode': AlphabetModificationMode.W_TO_VV, 'expectedOutput' : '11 12 24 23 13 25 45 44 35'},
       {'input' : 'ABJICKWVQ', 'key': '123456', 'mode': PolybiosMode.AZ09, 'fillAlphabet': null, 'modificationMode': AlphabetModificationMode.REMOVE_Q, 'expectedOutput' : '11 12 24 23 13 25 45 44 35'},
+
+      {'input' : 'FXPIZTYYYE', 'key': '12345', 'colIndexes': '54321', 'mode': PolybiosMode.AZ09, 'fillAlphabet': null, 'modificationMode': AlphabetModificationMode.W_TO_VV, 'expectedOutput' : '25 53 45 22 51 41 52 52 52 11'},
+      {'input' : 'AXMFZQYYYT', 'key': '12345', 'colIndexes': '54321', 'mode': PolybiosMode.CUSTOM, 'fillAlphabet': 'secret', 'modificationMode': AlphabetModificationMode.W_TO_VV, 'expectedOutput' : '25 53 45 22 51 41 52 52 52 11'},
+      {'input' : 'FEIJDHTUN', 'key': '123456', 'colIndexes': '654321', 'mode': PolybiosMode.AZ09, 'fillAlphabet': null, 'modificationMode': AlphabetModificationMode.J_TO_I, 'expectedOutput' : '11 12 24 23 13 25 45 44 35'},
+      {'input' : 'ATFGRDQUK', 'key': '123456', 'colIndexes': '654321', 'mode': PolybiosMode.CUSTOM, 'fillAlphabet': 'secret', 'modificationMode': AlphabetModificationMode.J_TO_I, 'expectedOutput' : '11 12 24 23 13 25 45 44 35'},
+
     ];
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, key: ${elem['key']}, mode: ${elem['mode']}, modMode: ${elem['modificationMode']}, fillAlphabet: ${elem['fillAlphabet']}', () {
         PolybiosOutput? _actual;
-        if (elem['modificationMode'] != null) {
+        if (elem['modificationMode'] != null && elem['colIndexes'] != null) {
+          _actual = encryptPolybios(elem['input'] as String, elem['key'] as String, colIndexes: elem['colIndexes'] as String, mode: elem['mode'] as PolybiosMode, fillAlphabet: elem['fillAlphabet'] as String?, modificationMode: elem['modificationMode'] as AlphabetModificationMode);
+        } else if (elem['colIndexes'] != null) {
+          _actual = encryptPolybios(elem['input'] as String, elem['key'] as String, colIndexes: elem['colIndexes'] as String, mode: elem['mode'] as PolybiosMode, fillAlphabet: elem['fillAlphabet'] as String?);
+        } else if (elem['modificationMode'] != null) {
           _actual = encryptPolybios(elem['input'] as String, elem['key'] as String, mode: elem['mode'] as PolybiosMode, fillAlphabet: elem['fillAlphabet'] as String?, modificationMode: elem['modificationMode'] as AlphabetModificationMode);
         } else {
           _actual = encryptPolybios(elem['input'] as String, elem['key'] as String, mode: elem['mode'] as PolybiosMode, fillAlphabet: elem['fillAlphabet'] as String?);
@@ -150,12 +160,21 @@ void main() {
       {'expectedOutput' : 'ABJICKWVQ', 'key': '123456', 'mode': PolybiosMode.AZ09, 'fillAlphabet': null, 'modificationMode': AlphabetModificationMode.C_TO_K, 'input' : '11 12 24 23 13 25 45 44 35'},
       {'expectedOutput' : 'ABJICKWVQ', 'key': '123456', 'mode': PolybiosMode.AZ09, 'fillAlphabet': null, 'modificationMode': AlphabetModificationMode.W_TO_VV, 'input' : '11 12 24 23 13 25 45 44 35'},
       {'expectedOutput' : 'ABJICKWVQ', 'key': '123456', 'mode': PolybiosMode.AZ09, 'fillAlphabet': null, 'modificationMode': AlphabetModificationMode.REMOVE_Q, 'input' : '11 12 24 23 13 25 45 44 35'},
+
+      {'expectedOutput' : 'FXPIZTYYYE', 'key': '12345', 'colIndexes': '54321', 'mode': PolybiosMode.AZ09, 'fillAlphabet': null, 'modificationMode': AlphabetModificationMode.W_TO_VV, 'input' : '25 53 45 22 51 41 52 52 52 11'},
+      {'expectedOutput' : 'AXMFZQYYYT', 'key': '12345', 'colIndexes': '54321', 'mode': PolybiosMode.CUSTOM, 'fillAlphabet': 'secret', 'modificationMode': AlphabetModificationMode.W_TO_VV, 'input' : '25 53 45 22 51 41 52 52 52 11'},
+      {'expectedOutput' : 'FEIJDHTUN', 'key': '123456', 'colIndexes': '654321', 'mode': PolybiosMode.AZ09, 'fillAlphabet': null, 'modificationMode': AlphabetModificationMode.J_TO_I, 'input' : '11 12 24 23 13 25 45 44 35'},
+      {'expectedOutput' : 'ATFGRDQUK', 'key': '123456', 'colIndexes': '654321', 'mode': PolybiosMode.CUSTOM, 'fillAlphabet': 'secret', 'modificationMode': AlphabetModificationMode.J_TO_I, 'input' : '11 12 24 23 13 25 45 44 35'},
     ];
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, key: ${elem['key']}, mode: ${elem['mode']}, modMode: ${elem['modificationMode']}, alphabet: ${elem['fillAlphabet']}', () {
         PolybiosOutput? _actual;
-        if (elem['modificationMode'] != null) {
+        if (elem['modificationMode'] != null && elem['colIndexes'] != null) {
+          _actual = decryptPolybios(elem['input'] as String, elem['key'] as String, colIndexes: elem['colIndexes'] as String, mode: elem['mode'] as PolybiosMode, fillAlphabet: elem['fillAlphabet'] as String?, modificationMode: elem['modificationMode'] as AlphabetModificationMode);
+        } else if (elem['colIndexes'] != null){
+          _actual = decryptPolybios(elem['input'] as String, elem['key'] as String, colIndexes: elem['colIndexes'] as String, mode: elem['mode'] as PolybiosMode, fillAlphabet: elem['fillAlphabet'] as String?);
+        } else if (elem['modificationMode'] != null) {
           _actual = decryptPolybios(elem['input'] as String, elem['key'] as String, mode: elem['mode'] as PolybiosMode, fillAlphabet: elem['fillAlphabet'] as String?, modificationMode: elem['modificationMode'] as AlphabetModificationMode);
         } else {
           _actual = decryptPolybios(elem['input'] as String, elem['key'] as String, mode: elem['mode'] as PolybiosMode, fillAlphabet: elem['fillAlphabet'] as String?);
