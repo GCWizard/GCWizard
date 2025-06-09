@@ -1380,6 +1380,7 @@ const Map<String, String> _LOJWordToNum = {
 const Map<String, String> _MAOWordToNum = {
   // https://www.woodwardlanguages.com/lesson/maori-numbers-1-100/
   'kore': '0',
+  'kotahi': '1',
   'tahi': '1',
   'rua': '2',
   'toru': '3',
@@ -1417,10 +1418,17 @@ const Map<String, String> _MAOWordToNum = {
   'waru rau': '800',
   'iwa rau': '900',
   'kotahi mano': '1000',
+  'rua mano': '2000',
   'tekau mano': '10000',
+  'rua tekau mano': '20000',
   'kotahi rau mano': '100000',
   'kotahi miriona': '1000000',
   'tekau miriona': '10000000',
+  'rua tekau miriona': '20000000',
+  'kotahi rau miriona': '100000000',
+  'rua rau miriona': '100000000',
+  'tahi piriona': '1000000000',
+  'toru piriona': '3000000000',
 };
 const Map<String, String> _MAPWordToNum = {
   'kinhe': '1',
@@ -2208,7 +2216,6 @@ const Map<String, String> _VOLWordToNum = {
   'lofued': 'numeralwords_e',
   'vesued': 'numeralwords_w',
 };
-
 const Map<String, String> _SORBUPPWordToNum = {
   'nul': '0',
   'jedyn': '1',
@@ -2247,7 +2254,6 @@ const Map<String, String> _SORBUPPWordToNum = {
   'sto': '100',
   'tysac': '1000',
 };
-
 const Map<String, String> _SORBLOWWordToNum = {
   'nul': '0',
   'jaden': '1',

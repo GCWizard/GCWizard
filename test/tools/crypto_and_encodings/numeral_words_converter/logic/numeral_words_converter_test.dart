@@ -87,4 +87,46 @@ void main(){
     }
   });
 
+  group("decode Maori:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      // empty input
+      { 'input': null, 'language': NumeralWordsLanguage.MAO,        'expectedOutput': OutputConvertToNumber(number: 0, numbersystem: '', title: '', error: 'numeralwords_converter_error_navi')},
+      { 'input': '', 'language': NumeralWordsLanguage.MAO,        'expectedOutput': OutputConvertToNumber(number: 0, numbersystem: '', title: '', error: '')},
+      { 'input': 'kotahi mano iwa rau waru tekau ma rua', 'language': NumeralWordsLanguage.MAO,        'expectedOutput': OutputConvertToNumber(number: 1982, numbersystem: '', title: '', error: '')},
+      { 'input': 'rua mano tekau ma ono', 'language': NumeralWordsLanguage.MAO,        'expectedOutput': OutputConvertToNumber(number: 2016, numbersystem: '', title: '', error: '')},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test(
+          'input: ${elem['input']}, language: ${elem['language']}, ', () {
+        var _actual = decodeNumeralWordToNumber(elem['language'] as NumeralWordsLanguage, removeAccents(elem['input'].toString().toLowerCase()));
+        if (_actual.error == 'numeralwords_converter_error_navi') {
+          expect(_actual.error, (elem['expectedOutput'] as OutputConvertToNumber).error);
+        } else {
+          expect(_actual.number, (elem['expectedOutput'] as OutputConvertToNumber).number);
+        }
+      });
+    }
+  });
+
+  group("encode Maori:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      // zero input
+      { 'input': 0, 'language': NumeralWordsLanguage.MAO,        'expectedOutput': OutputConvertToNumeralWord(numeralWord: 'kore', targetNumberSystem: '', title: '', errorMessage: '')},
+      { 'input': 1982, 'language': NumeralWordsLanguage.MAO,        'expectedOutput': OutputConvertToNumeralWord(numeralWord: 'kotahi mano iwa rau waru tekau ma rua', targetNumberSystem: '', title: '', errorMessage: '')},
+      { 'input': 2016, 'language': NumeralWordsLanguage.MAO,        'expectedOutput': OutputConvertToNumeralWord(numeralWord: 'rua mano tekau ma ono', targetNumberSystem: '', title: '', errorMessage: '')},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test(
+          'input: ${elem['input']}, language: ${elem['language']}, ', () {
+        var _actual = encodeNumberToNumeralWord(elem['language'] as NumeralWordsLanguage, elem['input'] as int);
+        if (_actual.error == 'numeralwords_converter_error_navi') {
+          expect(_actual.error, (elem['expectedOutput'] as OutputConvertToNumeralWord).error);
+        } else {
+          expect(_actual.numeralWord, (elem['expectedOutput'] as OutputConvertToNumeralWord).numeralWord);
+        }
+      });
+    }
+  });
 }

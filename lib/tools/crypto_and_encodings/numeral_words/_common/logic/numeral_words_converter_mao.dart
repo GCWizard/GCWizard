@@ -48,15 +48,108 @@ OutputConvertToNumeralWord _encodeMaori(int currentNumber) {
 }
 
 OutputConvertToNumber _decodeMaori(String element) {
-  return OutputConvertToNumber(number: 0, numbersystem: '', title: '', error: '');
+  // kotahi mano iwa rau waru tekau ma rua
+  element = element.toLowerCase().replaceAll(' ', '').replaceAll('.', '').replaceAll(',', '');
+  List<String> maoriElements = [];
+  int number = 0;
+  int detailedNumber = 0;
+  if (_isMaori(element)) {
+    if (element.contains('piriona')) {
+      maoriElements = element.split('piriona');
+      detailedNumber = _getMaoriNumber(maoriElements[0]);
+      element = maoriElements[1];
+      number = number + 1000000000 * detailedNumber;
+    }
+
+    if (element.contains('miriona')) {
+      maoriElements = element.split('miriona');
+      detailedNumber = _getMaoriNumber(maoriElements[0]);
+      element = maoriElements[1];
+      number = number + 1000000 * detailedNumber;
+    }
+
+    if (element.contains('mano')) {
+      maoriElements = element.split('mano');
+      detailedNumber = _getMaoriNumber(maoriElements[0]);
+      element = maoriElements[1].trim();
+      number = number + 1000 * detailedNumber;
+    }
+    number = number + _getMaoriNumber(element);
+    return OutputConvertToNumber(number: number, numbersystem: '', title: '', error: '');
+  } else {
+    return OutputConvertToNumber(number: 0, numbersystem: '', title: '', error: '');
+  }
+}
+
+int _getMaoriNumber(String element){
+  if (_isMaori(element)) {
+    int hundred = 0;
+    int ten = 0;
+    int one = 0;
+    List<String> maoriNumber = [];
+
+    if (element.contains('rau')) {
+      maoriNumber = element.split('rau');
+      if (maoriNumber[0].isNotEmpty) {
+        if (int.tryParse(_MAOWordToNum[maoriNumber[0]]!) != null) {
+          hundred = int.parse(_MAOWordToNum[maoriNumber[0]]!);
+          maoriNumber[1].isNotEmpty ? element = maoriNumber[1] : element = '';
+        } else {
+          hundred = 0;
+        }
+      } else {
+        hundred = 1;
+      }
+    }
+    if (element.contains('tekau')) {
+      maoriNumber = element.split('tekau');
+      if (maoriNumber.length == 2 && maoriNumber[0].isNotEmpty) {
+        if (int.tryParse(_MAOWordToNum[maoriNumber[0]]!) != null) {
+          ten = int.parse(_MAOWordToNum[maoriNumber[0]]!);
+          maoriNumber[1].isNotEmpty ? element = maoriNumber[1] : element = '';
+        } else {
+          ten = 0;
+        }
+      } else {
+        ten = 1;
+      }
+    }
+    if (element.contains('rima')) {
+      one = 5;
+    } else if (element.contains('ma')) {
+      maoriNumber = element.split('ma');
+      if (maoriNumber[1].isNotEmpty) {
+        if (int.tryParse(_MAOWordToNum[maoriNumber[1]]!) != null) {
+          one = int.parse(_MAOWordToNum[maoriNumber[1]]!);
+        } else {
+          one = 0;
+        }
+      }
+    } else {
+      if (_MAOWordToNum[element] != null) {
+        if (int.tryParse(_MAOWordToNum[element]!) != null) {
+          one = int.parse(_MAOWordToNum[element]!);
+        } else {
+          one = 0;
+        }
+      }
+    }
+
+    return hundred * 100 + ten * 10 + one;
+  } else {
+    return 0;
+  }
 }
 
 bool _isMaori(String element) {
   if (element != '') {
     element = element
         .replaceAll(' ', '')
+        .replaceAll(',', '')
+        .replaceAll('.', '')
+        .replaceAll('mano', '')
         .replaceAll('kore', '')
-        .replaceAll('tahi', '')
+        .replaceAll('kotahi', '')
         .replaceAll('rua', '')
         .replaceAll('toru', '')
         .replaceAll('wha', '')
@@ -66,11 +159,11 @@ bool _isMaori(String element) {
         .replaceAll('waru', '')
         .replaceAll('iwa', '')
         .replaceAll('tekau', '')
-        .replaceAll('kotahi', '')
+        .replaceAll('tahi', '')
         .replaceAll('rau', '')
-        .replaceAll('mano', '')
-        .replaceAll('miriona', '');
-
+        .replaceAll('ma', '')
+        .replaceAll('miriona', '')
+        .replaceAll('piriona', '');
     return (element.isEmpty);
   }
   return false;

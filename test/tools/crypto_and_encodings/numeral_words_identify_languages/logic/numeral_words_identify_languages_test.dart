@@ -170,6 +170,7 @@ void main(){
         'expectedOutput' : [
           NumeralWordsDecodeOutput('4', 'si', 'numeralwords_language_chi'),
           NumeralWordsDecodeOutput('', 'si', 'common_language_thai_rtgs'),
+          NumeralWordsDecodeOutput('9', 'iwa', 'numeralwords_language_mao'),
           NumeralWordsDecodeOutput('2', 'i', 'common_language_sino_korean'),
           NumeralWordsDecodeOutput('1', 'wa', 'numeralwords_language_kli'),
           NumeralWordsDecodeOutput('8', 'acht', 'common_language_german'),

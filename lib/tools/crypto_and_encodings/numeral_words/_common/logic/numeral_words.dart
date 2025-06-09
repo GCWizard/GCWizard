@@ -270,7 +270,7 @@ List<NumeralWordsDecodeOutput> decodeNumeralwords(
               _decodeMinion(element).number.toString(), element, _languageList?[NumeralWordsLanguage.MIN] ?? ''));
         } else if (_isKlingon(element) &&
             (language == NumeralWordsLanguage.ALL || language == NumeralWordsLanguage.KLI)) {
-          output.add(NumeralWordsDecodeOutput(_decodeKlingon(element).number.toString(), element.replaceAll('€', ' ').trim(),
+          output.add(NumeralWordsDecodeOutput(_decodeKlingonString(element), element.replaceAll('€', ' ').trim(),
               _languageList?[NumeralWordsLanguage.KLI] ?? ''));
         } else if (_isNavi(element) &&
             (language == NumeralWordsLanguage.ALL || language == NumeralWordsLanguage.NAVI)) {
