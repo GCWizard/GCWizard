@@ -758,7 +758,8 @@ void initializeRegistry(BuildContext context) {
       ToolCategory.SCIENCE_AND_TECHNOLOGY
     ], searchKeys: const [
       'bingo_calls',
-    ]),GCWTool(tool: const BookCipher(), id: 'book_cipher', categories: const [
+    ]),
+    GCWTool(tool: const BookCipher(), id: 'book_cipher', categories: const [
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
       'bookcipher',

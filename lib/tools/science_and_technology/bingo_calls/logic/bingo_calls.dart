@@ -1,5 +1,5 @@
-import 'dart:core';
-import 'dart:ui';
+//import 'dart:core';
+//import 'dart:ui';
 
 class BingoCall {
   final int number;
@@ -13,6 +13,7 @@ class BingoCall {
   });
 }
 
+/*
 enum BINGOCALLS_LANGUAGES { DE, EN }
 
 const Map<BINGOCALLS_LANGUAGES, String> BINGOCALLS_LANGUAGE_LIST = {
@@ -28,6 +29,460 @@ final Map<Locale, BINGOCALLS_LANGUAGES> SUPPORTED_SPELLING_LOCALES = {
 const Map<BINGOCALLS_LANGUAGES, Map<String, BingoCall>> BINGO_CALLS = {
   BINGOCALLS_LANGUAGES.DE: BINGO_CALLS_DE,
   BINGOCALLS_LANGUAGES.EN: BINGO_CALLS_EN,
+};
+
+const Map<String, BingoCall> BINGO_CALLS_DE = {
+  // https://gamblingngo.com/de/guides/bingo-calls/
+  '1': BingoCall(
+    number: 1,
+    title: ['Kellys Auge'],
+    description: 'ein militärischer Slang oder eine Anspielung auf einen australischen Volkshelden, Ned Kelly',
+  ),
+  '2': BingoCall(
+    number: 2,
+    title: ['Eine kleine Ente'],
+    description: '2 sieht aus wie eine kleine Ente, daher der Spitzname',
+  ),
+  '3': BingoCall(
+    number: 3,
+    title: ['Tasse Tee'],
+    description: 'drei Reime mit Tee, und die Briten lieben ihre Tasse Tee',
+  ),
+  '4': BingoCall(
+    number: 4,
+    title: ['Klopfe an die tür'],
+    description: 'vier, an die Tür klopfen, ein weiterer Reim',
+  ),
+  '5': BingoCall(
+    number: 5,
+    title: ['Man Alive'],
+    description: 'fünf Reime mit lebendig',
+  ),
+  '6': BingoCall(
+    number: 6,
+    title: ['Tom Mix', 'Halbes Dutzend'],
+    description: 'ein Verweis auf einen US-Westernfilmstar Tom Mix, der sich auf sechs reimt; Ein halbes Dutzend ist sechs',
+  ),
+  '7': BingoCall(
+    number: 7,
+    title: ['Glückliche sieben'],
+    description: 'Sieben gilt in vielen Kulturen als Glückszahl, natürlich auch im Bingo',
+  ),
+  '8': BingoCall(
+    number: 8,
+    title: ['Garden Gate'],
+    description: 'gate reimt sich auf acht, aber es gibt eine Legende von einem Gartentor, das eine verschlüsselte Nachricht ist',
+  ),
+  '9': BingoCall(
+    number: 9,
+    title: ['Arztbefehle '],
+    description: 'ein Hinweis auf die Abführpille Nummer 9, die Soldaten während des Zweiten Weltkriegs gegeben wurde',
+  ),
+  '10': BingoCall(
+    number: 10,
+    title: ['Boris Höhle'],
+    description: 'eine Referenz von 10 Downing Street, der Residenz des Premierministers (der Spitzname ändert sich mit jedem neuen Premierminister)',
+  ),
+  '11': BingoCall(
+    number: 11,
+    title: ['Beine 11 '],
+    description: '11 sieht aus wie ein Paar schlanke Beine, am liebsten eine Frau mit Absätzen',
+  ),
+  '12': BingoCall(
+    number: 12,
+    title: ['Ein Dutzend'],
+    description: 'Ein Dutzend ist 12',
+  ),
+  '13': BingoCall(
+    number: 13,
+    title: ['Pech für manche'],
+    description: '13 gilt als Unglückszahl, aber nur für manche, wie der Bingo-Spruch schon sagt',
+  ),
+  '14': BingoCall(
+    number: 14,
+    title: ['Valentinstag '],
+    description: 'ein Hinweis auf den 14. Februar, den Tag der Liebe und Romantik',
+  ),
+  '15': BingoCall(
+    number: 15,
+    title: ['Jung und scharf '],
+    description: 'fünfzehn Reime mit scharf',
+  ),
+  '16': BingoCall(
+    number: 16,
+    title: ['süß 16'],
+    description: 'ein Hinweis auf die Sweet 16, wenn sich eine Person in einen Erwachsenen verwandelt',
+  ),
+  '17': BingoCall(
+    number: 17,
+    title: ['Dancing Queen'],
+    description: 'bezieht sich auf ABBAs Dancing Queen, „…young and sweet, only seventeen.“',
+  ),
+  '18': BingoCall(
+    number: 18,
+    title: ['Coming of Age'],
+    description: 'das Alter, in dem man rechtlich erwachsen wird',
+  ),
+  '19': BingoCall(
+    number: 19,
+    title: ['Auf Wiedersehen Teenager '],
+    description: 'das letzte Teenagerjahr',
+  ),
+  '20': BingoCall(
+    number: 20,
+    title: ['Ein Ergebnis', 'viel bekommen'],
+    description: '20 Einheiten in einer Partitur / mit zwanzig viele Reime bekommen',
+  ),
+  '21': BingoCall(
+    number: 21,
+    title: ['Königsblau Gesundheit'],
+    description: 'ein Hinweis auf den königlichen Gruß von 21 Kanonen',
+  ),
+  '22': BingoCall(
+    number: 22,
+    title: ['Zwei kleine Enten'],
+    description: '22 sieht aus wie zwei kleine Enten nebeneinander',
+  ),
+  '23': BingoCall(
+    number: 23,
+    title: ['Der Herr ist mein Hirte'],
+    description: 'ein Hinweis auf den ersten Vers von Psalm 23 des Alten Testaments',
+  ),
+  '24': BingoCall(
+    number: 24,
+    title: ['Zwei Dutzend'],
+    description: '12 ist ein Dutzend, 24 ist zwei Dutzend',
+  ),
+  '25': BingoCall(
+    number: 25,
+    title: ['Ente und Tauche'],
+    description: '2 ist eine Ente, fünf Reime mit Tauchen',
+  ),
+  '26': BingoCall(
+    number: 26,
+    title: ['A bis Z', 'halbe Krone'],
+    description: 'das Alphabet hat 26 Buchstaben; zwei Schilling und sechs Pence (26) machten eine halbe Krone',
+  ),
+  '27': BingoCall(
+    number: 27,
+    title: ['Tor zum Himmel'],
+    description: 'ein Hinweis darauf, einen Gewinn auf der Nummer 27 zu nennen',
+  ),
+  '28': BingoCall(
+    number: 28,
+    title: ['Übergewicht', 'in einem Zustand'],
+    description: 'ein Hinweis auf jemanden, der sich in einem Zustand befindet, sich schlecht fühlt, übergewichtig ist',
+  ),
+  '29': BingoCall(
+    number: 29,
+    title: ['Rise and Shine'],
+    description: 'Rise and Shine reimt sich auf neunundzwanzig',
+  ),
+  '30': BingoCall(
+    number: 30,
+    title: ['Schmutzige Gertie'],
+    description: 'ein Reim auf ein humorvolles Soldatenlied aus den 1920er Jahren „Dirty Gertie from Bizerte“',
+  ),
+  '31': BingoCall(
+    number: 31,
+    title: ['Steh auf und lauf'],
+    description: 'der Ausdruck reimt sich auf die Zahl einunddreißig',
+  ),
+  '32': BingoCall(
+    number: 32,
+    title: ['Schnalle meinen Schuh'],
+    description: 'der Ausdruck reimt sich auf die Zahl zweiunddreißig',
+  ),
+  '33': BingoCall(
+    number: 33,
+    title: ['Alle drei'],
+    description: '33 sind alle Dreien in einem 90-Ball-Bingo',
+  ),
+  '34': BingoCall(
+    number: 34,
+    title: ['Frage nach mehr'],
+    description: 'der Ausdruck reimt sich auf vierunddreißig',
+  ),
+  '35': BingoCall(
+    number: 35,
+    title: ['Springen und Jive'],
+    description: 'ein Reim mit der Zahl fünfunddreißig',
+  ),
+  '36': BingoCall(
+    number: 36,
+    title: ['Drei Dutzend'],
+    description: '12 ist ein Dutzend, 36 ist drei Dutzend',
+  ),
+  '37': BingoCall(
+    number: 37,
+    title: ['Mehr als 11'],
+    description: 'ein Satz, der sich auf siebenunddreißig reimt',
+  ),
+  '38': BingoCall(
+    number: 38,
+    title: ['Christmas Cake'],
+    description: 'ein Satz, der sich auf achtunddreißig reimt',
+  ),
+  '39': BingoCall(
+    number: 39,
+    title: ['39 Schritte'],
+    description: 'eine Anspielung auf den berühmten Alfred-Hitchcock-Film „Die 39 Stufen“',
+  ),
+  '40': BingoCall(
+    number: 40,
+    title: ['Freche 40'],
+    description: 'eine Anspielung auf den Satz „das Leben beginnt mit 40!“',
+  ),
+  '41': BingoCall(
+    number: 41,
+    title: ['Zeit für Spaß'],
+    description: 'ein Satz, der sich auf einundvierzig reimt',
+  ),
+  '42': BingoCall(
+    number: 42,
+    title: ['Winnie the Pooh'],
+    description: 'ein Verweis auf das beliebte Märchenbuch über einen honigliebenden Bären',
+  ),
+  '43': BingoCall(
+    number: 43,
+    title: ['Auf die Knie'],
+    description: 'ein Hinweis auf einen Ausdruck, der von den britischen Soldaten verwendet wurde',
+  ),
+  '44': BingoCall(
+    number: 44,
+    title: ['Hängende Schubladen'],
+    description: 'ein Hinweis auf schlaffe Hosen',
+  ),
+  '45': BingoCall(
+    number: 45,
+    title: ['Auf halbem Wege'],
+    description: 'in einem 90-Ball-Bingo-Spiel ist 45 die Hälfte des Ziels',
+  ),
+  '46': BingoCall(
+    number: 46,
+    title: ['Bis hin zu Tricks'],
+    description: '',
+  ),
+  '47': BingoCall(
+    number: 47,
+    title: [''],
+    description: '',
+  ),
+  '48': BingoCall(
+    number: 48,
+    title: ['Vier Dutzend'],
+    description: '12 ist ein Dutzend, 48 ist vier Dutzend',
+  ),
+  '49': BingoCall(
+    number: 49,
+    title: [''],
+    description: '',
+  ),
+  '50': BingoCall(
+    number: 50,
+    title: [''],
+    description: '',
+  ),
+  '51': BingoCall(
+    number: 51,
+    title: [''],
+    description: '',
+  ),
+  '52': BingoCall(
+    number: 52,
+    title: [''],
+    description: '',
+  ),
+  '53': BingoCall(
+    number: 53,
+    title: ['Hier kommt Herbie'],
+    description: '53 ist die Nummer des VW Käfers Herbie aus den Walt-Disney-Filmen',
+  ),
+  '54': BingoCall(
+    number: 54,
+    title: [''],
+    description: '',
+  ),
+  '55': BingoCall(
+    number: 55,
+    title: ['lebende Schlangen'],
+    description: 'eine Anspielung auf die Fünfer, die wie zusammengerollte Schlangen aussehen',
+  ),
+  '56': BingoCall(
+    number: 56,
+    title: [''],
+    description: '',
+  ),
+  '57': BingoCall(
+    number: 57,
+    title: ['Heinz Sorten'],
+    description: 'ein Hinweis auf die 57 Sorten Konservenprodukte von Heinz, die Zahl 57 steht auf dem Etikett der Heinz-Produkte',
+  ),
+  '58': BingoCall(
+    number: 58,
+    title: [''],
+    description: '',
+  ),
+  '59': BingoCall(
+    number: 59,
+    title: [''],
+    description: '',
+  ),
+  '60': BingoCall(
+    number: 60,
+    title: ['Fünf Dutzend', 'Oma wird munter'],
+    description: '12 ist ein Dutzend, 60 ist fünf Dutzend; das traditionelle Alter, in dem Frauen im Vereinigten Königreich in Rente gingen',
+  ),
+  '61': BingoCall(
+    number: 61,
+    title: [''],
+    description: '',
+  ),
+  '62': BingoCall(
+    number: 62,
+    title: [''],
+    description: '',
+  ),
+  '63': BingoCall(
+    number: 63,
+    title: [''],
+    description: '',
+  ),
+  '64': BingoCall(
+    number: 64,
+    title: [''],
+    description: '',
+  ),
+  '65': BingoCall(
+    number: 65,
+    title: ['Alterspension '],
+    description: 'as traditionelle Alter, in dem Männer im Vereinigten Königreich in Rente gingen',
+  ),
+  '66': BingoCall(
+    number: 66,
+    title: [''],
+    description: '',
+  ),
+  '67': BingoCall(
+    number: 67,
+    title: [''],
+    description: '',
+  ),
+  '68': BingoCall(
+    number: 68,
+    title: [''],
+    description: '',
+  ),
+  '69': BingoCall(
+    number: 69,
+    title: [''],
+    description: '',
+  ),
+  '70': BingoCall(
+    number: 70,
+    title: [''],
+    description: '',
+  ),
+  '71': BingoCall(
+    number: 71,
+    title: [''],
+    description: '',
+  ),
+  '72': BingoCall(
+    number: 72,
+    title: ['Sechs Dutzend'],
+    description: '12 ist ein Dutzend, 72 ist sechs Dutzend',
+  ),
+  '73': BingoCall(
+    number: 73,
+    title: [''],
+    description: '',
+  ),
+  '74': BingoCall(
+    number: 74,
+    title: [''],
+    description: '',
+  ),
+  '75': BingoCall(
+    number: 75,
+    title: [''],
+    description: '',
+  ),
+  '76': BingoCall(
+    number: 76,
+    title: [''],
+    description: '',
+  ),
+  '77': BingoCall(
+    number: 77,
+    title: ['Sunset Strip'],
+    description: 'ein Verweis auf die TV-Serie „77, Sunset Strip“',
+  ),
+  '78': BingoCall(
+    number: 7,
+    title: [''],
+    description: '',
+  ),
+  '79': BingoCall(
+    number: 79,
+    title: [''],
+    description: '',
+  ),
+  '80': BingoCall(
+    number: 80,
+    title: [''],
+    description: '',
+  ),
+  '81': BingoCall(
+    number: 81,
+    title: [''],
+    description: '',
+  ),
+  '82': BingoCall(
+    number: 82,
+    title: [''],
+    description: '',
+  ),
+  '83': BingoCall(
+    number: 83,
+    title: [''],
+    description: '',
+  ),
+  '84': BingoCall(
+    number: 84,
+    title: ['Sieben Dutzend'],
+    description: '21 ist ein Dutzend, 84 ist sieben Dutzend',
+  ),
+  '85': BingoCall(
+    number: 85,
+    title: [''],
+    description: '',
+  ),
+  '86': BingoCall(
+    number: 86,
+    title: [''],
+    description: '',
+  ),
+  '87': BingoCall(
+    number: 87,
+    title: [''],
+    description: '',
+  ),
+  '88': BingoCall(
+    number: 88,
+    title: ['Zwei fette Damen'],
+    description: 'die zwei Achten sehen nebeneinander aus wie dicke Damen',
+  ),
+  '89': BingoCall(
+    number: 89,
+    title: ['Fast da'],
+    description: 'die vorletzte Bingozahl, fast bis zum Ende',
+  ),
+  '90': BingoCall(
+    number: 90,
+    title: ['Top of the Shop', 'End of the Line', 'So weit wir gehen'],
+    description: 'ein Hinweis auf die höchste oder letzte Zahl im Bingo',
+  ),
 };
 
 const Map<String, BingoCall> BINGO_CALLS_ = {
@@ -482,6 +937,7 @@ const Map<String, BingoCall> BINGO_CALLS_ = {
     description: '',
   ),
 };
+*/
 
 const Map<String, BingoCall> BINGO_CALLS_EN = {
   // https://blog.meccabingo.com/bingo-calls-complete-list/
@@ -942,457 +1398,5 @@ const Map<String, BingoCall> BINGO_CALLS_EN = {
   ),
 };
 
-const Map<String, BingoCall> BINGO_CALLS_DE = {
-  // https://gamblingngo.com/de/guides/bingo-calls/
-  '1': BingoCall(
-    number: 1,
-    title: ['Kellys Auge'],
-    description: 'ein militärischer Slang oder eine Anspielung auf einen australischen Volkshelden, Ned Kelly',
-  ),
-  '2': BingoCall(
-    number: 2,
-    title: ['Eine kleine Ente'],
-    description: '2 sieht aus wie eine kleine Ente, daher der Spitzname',
-  ),
-  '3': BingoCall(
-    number: 3,
-    title: ['Tasse Tee'],
-    description: 'drei Reime mit Tee, und die Briten lieben ihre Tasse Tee',
-  ),
-  '4': BingoCall(
-    number: 4,
-    title: ['Klopfe an die tür'],
-    description: 'vier, an die Tür klopfen, ein weiterer Reim',
-  ),
-  '5': BingoCall(
-    number: 5,
-    title: ['Man Alive'],
-    description: 'fünf Reime mit lebendig',
-  ),
-  '6': BingoCall(
-    number: 6,
-    title: ['Tom Mix', 'Halbes Dutzend'],
-    description: 'ein Verweis auf einen US-Westernfilmstar Tom Mix, der sich auf sechs reimt; Ein halbes Dutzend ist sechs',
-  ),
-  '7': BingoCall(
-    number: 7,
-    title: ['Glückliche sieben'],
-    description: 'Sieben gilt in vielen Kulturen als Glückszahl, natürlich auch im Bingo',
-  ),
-  '8': BingoCall(
-    number: 8,
-    title: ['Garden Gate'],
-    description: 'gate reimt sich auf acht, aber es gibt eine Legende von einem Gartentor, das eine verschlüsselte Nachricht ist',
-  ),
-  '9': BingoCall(
-    number: 9,
-    title: ['Arztbefehle '],
-    description: 'ein Hinweis auf die Abführpille Nummer 9, die Soldaten während des Zweiten Weltkriegs gegeben wurde',
-  ),
-  '10': BingoCall(
-    number: 10,
-    title: ['Boris Höhle'],
-    description: 'eine Referenz von 10 Downing Street, der Residenz des Premierministers (der Spitzname ändert sich mit jedem neuen Premierminister)',
-  ),
-  '11': BingoCall(
-    number: 11,
-    title: ['Beine 11 '],
-    description: '11 sieht aus wie ein Paar schlanke Beine, am liebsten eine Frau mit Absätzen',
-  ),
-  '12': BingoCall(
-    number: 12,
-    title: ['Ein Dutzend'],
-    description: 'Ein Dutzend ist 12',
-  ),
-  '13': BingoCall(
-    number: 13,
-    title: ['Pech für manche'],
-    description: '13 gilt als Unglückszahl, aber nur für manche, wie der Bingo-Spruch schon sagt',
-  ),
-  '14': BingoCall(
-    number: 14,
-    title: ['Valentinstag '],
-    description: 'ein Hinweis auf den 14. Februar, den Tag der Liebe und Romantik',
-  ),
-  '15': BingoCall(
-    number: 15,
-    title: ['Jung und scharf '],
-    description: 'fünfzehn Reime mit scharf',
-  ),
-  '16': BingoCall(
-    number: 16,
-    title: ['süß 16'],
-    description: 'ein Hinweis auf die Sweet 16, wenn sich eine Person in einen Erwachsenen verwandelt',
-  ),
-  '17': BingoCall(
-    number: 17,
-    title: ['Dancing Queen'],
-    description: 'bezieht sich auf ABBAs Dancing Queen, „…young and sweet, only seventeen.“',
-  ),
-  '18': BingoCall(
-    number: 18,
-    title: ['Coming of Age'],
-    description: 'das Alter, in dem man rechtlich erwachsen wird',
-  ),
-  '19': BingoCall(
-    number: 19,
-    title: ['Auf Wiedersehen Teenager '],
-    description: 'das letzte Teenagerjahr',
-  ),
-  '20': BingoCall(
-    number: 20,
-    title: ['Ein Ergebnis', 'viel bekommen'],
-    description: '20 Einheiten in einer Partitur / mit zwanzig viele Reime bekommen',
-  ),
-  '21': BingoCall(
-    number: 21,
-    title: ['Königsblau Gesundheit'],
-    description: 'ein Hinweis auf den königlichen Gruß von 21 Kanonen',
-  ),
-  '22': BingoCall(
-    number: 22,
-    title: ['Zwei kleine Enten'],
-    description: '22 sieht aus wie zwei kleine Enten nebeneinander',
-  ),
-  '23': BingoCall(
-    number: 23,
-    title: ['Der Herr ist mein Hirte'],
-    description: 'ein Hinweis auf den ersten Vers von Psalm 23 des Alten Testaments',
-  ),
-  '24': BingoCall(
-    number: 24,
-    title: ['Zwei Dutzend'],
-    description: '12 ist ein Dutzend, 24 ist zwei Dutzend',
-  ),
-  '25': BingoCall(
-    number: 25,
-    title: ['Ente und Tauche'],
-    description: '2 ist eine Ente, fünf Reime mit Tauchen',
-  ),
-  '26': BingoCall(
-    number: 26,
-    title: ['A bis Z', 'halbe Krone'],
-    description: 'das Alphabet hat 26 Buchstaben; zwei Schilling und sechs Pence (26) machten eine halbe Krone',
-  ),
-  '27': BingoCall(
-    number: 27,
-    title: ['Tor zum Himmel'],
-    description: 'ein Hinweis darauf, einen Gewinn auf der Nummer 27 zu nennen',
-  ),
-  '28': BingoCall(
-    number: 28,
-    title: ['Übergewicht', 'in einem Zustand'],
-    description: 'ein Hinweis auf jemanden, der sich in einem Zustand befindet, sich schlecht fühlt, übergewichtig ist',
-  ),
-  '29': BingoCall(
-    number: 29,
-    title: ['Rise and Shine'],
-    description: 'Rise and Shine reimt sich auf neunundzwanzig',
-  ),
-  '30': BingoCall(
-    number: 30,
-    title: ['Schmutzige Gertie'],
-    description: 'ein Reim auf ein humorvolles Soldatenlied aus den 1920er Jahren „Dirty Gertie from Bizerte“',
-  ),
-  '31': BingoCall(
-    number: 31,
-    title: ['Steh auf und lauf'],
-    description: 'der Ausdruck reimt sich auf die Zahl einunddreißig',
-  ),
-  '32': BingoCall(
-    number: 32,
-    title: ['Schnalle meinen Schuh'],
-    description: 'der Ausdruck reimt sich auf die Zahl zweiunddreißig',
-  ),
-  '33': BingoCall(
-    number: 33,
-    title: ['Alle drei'],
-    description: '33 sind alle Dreien in einem 90-Ball-Bingo',
-  ),
-  '34': BingoCall(
-    number: 34,
-    title: ['Frage nach mehr'],
-    description: 'der Ausdruck reimt sich auf vierunddreißig',
-  ),
-  '35': BingoCall(
-    number: 35,
-    title: ['Springen und Jive'],
-    description: 'ein Reim mit der Zahl fünfunddreißig',
-  ),
-  '36': BingoCall(
-    number: 36,
-    title: ['Drei Dutzend'],
-    description: '12 ist ein Dutzend, 36 ist drei Dutzend',
-  ),
-  '37': BingoCall(
-    number: 37,
-    title: ['Mehr als 11'],
-    description: 'ein Satz, der sich auf siebenunddreißig reimt',
-  ),
-  '38': BingoCall(
-    number: 38,
-    title: ['Christmas Cake'],
-    description: 'ein Satz, der sich auf achtunddreißig reimt',
-  ),
-  '39': BingoCall(
-    number: 39,
-    title: ['39 Schritte'],
-    description: 'eine Anspielung auf den berühmten Alfred-Hitchcock-Film „Die 39 Stufen“',
-  ),
-  '40': BingoCall(
-    number: 40,
-    title: ['Freche 40'],
-    description: 'eine Anspielung auf den Satz „das Leben beginnt mit 40!“',
-  ),
-  '41': BingoCall(
-    number: 41,
-    title: ['Zeit für Spaß'],
-    description: 'ein Satz, der sich auf einundvierzig reimt',
-  ),
-  '42': BingoCall(
-    number: 42,
-    title: ['Winnie the Pooh'],
-    description: 'ein Verweis auf das beliebte Märchenbuch über einen honigliebenden Bären',
-  ),
-  '43': BingoCall(
-    number: 43,
-    title: ['Auf die Knie'],
-    description: 'ein Hinweis auf einen Ausdruck, der von den britischen Soldaten verwendet wurde',
-  ),
-  '44': BingoCall(
-    number: 44,
-    title: ['Hängende Schubladen'],
-    description: 'ein Hinweis auf schlaffe Hosen',
-  ),
-  '45': BingoCall(
-    number: 45,
-    title: ['Auf halbem Wege'],
-    description: 'in einem 90-Ball-Bingo-Spiel ist 45 die Hälfte des Ziels',
-  ),
-  '46': BingoCall(
-    number: 46,
-    title: ['Bis hin zu Tricks'],
-    description: '',
-  ),
-  '47': BingoCall(
-    number: 47,
-    title: [''],
-    description: '',
-  ),
-  '48': BingoCall(
-    number: 48,
-    title: ['Vier Dutzend'],
-    description: '12 ist ein Dutzend, 48 ist vier Dutzend',
-  ),
-  '49': BingoCall(
-    number: 49,
-    title: [''],
-    description: '',
-  ),
-  '50': BingoCall(
-    number: 50,
-    title: [''],
-    description: '',
-  ),
-  '51': BingoCall(
-    number: 51,
-    title: [''],
-    description: '',
-  ),
-  '52': BingoCall(
-    number: 52,
-    title: [''],
-    description: '',
-  ),
-  '53': BingoCall(
-    number: 53,
-    title: ['Hier kommt Herbie'],
-    description: '53 ist die Nummer des VW Käfers Herbie aus den Walt-Disney-Filmen',
-  ),
-  '54': BingoCall(
-    number: 54,
-    title: [''],
-    description: '',
-  ),
-  '55': BingoCall(
-    number: 55,
-    title: ['lebende Schlangen'],
-    description: 'eine Anspielung auf die Fünfer, die wie zusammengerollte Schlangen aussehen',
-  ),
-  '56': BingoCall(
-    number: 56,
-    title: [''],
-    description: '',
-  ),
-  '57': BingoCall(
-    number: 57,
-    title: ['Heinz Sorten'],
-    description: 'ein Hinweis auf die 57 Sorten Konservenprodukte von Heinz, die Zahl 57 steht auf dem Etikett der Heinz-Produkte',
-  ),
-  '58': BingoCall(
-    number: 58,
-    title: [''],
-    description: '',
-  ),
-  '59': BingoCall(
-    number: 59,
-    title: [''],
-    description: '',
-  ),
-  '60': BingoCall(
-    number: 60,
-    title: ['Fünf Dutzend', 'Oma wird munter'],
-    description: '12 ist ein Dutzend, 60 ist fünf Dutzend; das traditionelle Alter, in dem Frauen im Vereinigten Königreich in Rente gingen',
-  ),
-  '61': BingoCall(
-    number: 61,
-    title: [''],
-    description: '',
-  ),
-  '62': BingoCall(
-    number: 62,
-    title: [''],
-    description: '',
-  ),
-  '63': BingoCall(
-    number: 63,
-    title: [''],
-    description: '',
-  ),
-  '64': BingoCall(
-    number: 64,
-    title: [''],
-    description: '',
-  ),
-  '65': BingoCall(
-    number: 65,
-    title: ['Alterspension '],
-    description: 'as traditionelle Alter, in dem Männer im Vereinigten Königreich in Rente gingen',
-  ),
-  '66': BingoCall(
-    number: 66,
-    title: [''],
-    description: '',
-  ),
-  '67': BingoCall(
-    number: 67,
-    title: [''],
-    description: '',
-  ),
-  '68': BingoCall(
-    number: 68,
-    title: [''],
-    description: '',
-  ),
-  '69': BingoCall(
-    number: 69,
-    title: [''],
-    description: '',
-  ),
-  '70': BingoCall(
-    number: 70,
-    title: [''],
-    description: '',
-  ),
-  '71': BingoCall(
-    number: 71,
-    title: [''],
-    description: '',
-  ),
-  '72': BingoCall(
-    number: 72,
-    title: ['Sechs Dutzend'],
-    description: '12 ist ein Dutzend, 72 ist sechs Dutzend',
-  ),
-  '73': BingoCall(
-    number: 73,
-    title: [''],
-    description: '',
-  ),
-  '74': BingoCall(
-    number: 74,
-    title: [''],
-    description: '',
-  ),
-  '75': BingoCall(
-    number: 75,
-    title: [''],
-    description: '',
-  ),
-  '76': BingoCall(
-    number: 76,
-    title: [''],
-    description: '',
-  ),
-  '77': BingoCall(
-    number: 77,
-    title: ['Sunset Strip'],
-    description: 'ein Verweis auf die TV-Serie „77, Sunset Strip“',
-  ),
-  '78': BingoCall(
-    number: 7,
-    title: [''],
-    description: '',
-  ),
-  '79': BingoCall(
-    number: 79,
-    title: [''],
-    description: '',
-  ),
-  '80': BingoCall(
-    number: 80,
-    title: [''],
-    description: '',
-  ),
-  '81': BingoCall(
-    number: 81,
-    title: [''],
-    description: '',
-  ),
-  '82': BingoCall(
-    number: 82,
-    title: [''],
-    description: '',
-  ),
-  '83': BingoCall(
-    number: 83,
-    title: [''],
-    description: '',
-  ),
-  '84': BingoCall(
-    number: 84,
-    title: ['Sieben Dutzend'],
-    description: '21 ist ein Dutzend, 84 ist sieben Dutzend',
-  ),
-  '85': BingoCall(
-    number: 85,
-    title: [''],
-    description: '',
-  ),
-  '86': BingoCall(
-    number: 86,
-    title: [''],
-    description: '',
-  ),
-  '87': BingoCall(
-    number: 87,
-    title: [''],
-    description: '',
-  ),
-  '88': BingoCall(
-    number: 88,
-    title: ['Zwei fette Damen'],
-    description: 'die zwei Achten sehen nebeneinander aus wie dicke Damen',
-  ),
-  '89': BingoCall(
-    number: 89,
-    title: ['Fast da'],
-    description: 'die vorletzte Bingozahl, fast bis zum Ende',
-  ),
-  '90': BingoCall(
-    number: 90,
-    title: ['Top of the Shop', 'End of the Line', 'So weit wir gehen'],
-    description: 'ein Hinweis auf die höchste oder letzte Zahl im Bingo',
-  ),
-};
+
 
