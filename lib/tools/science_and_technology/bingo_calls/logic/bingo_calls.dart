@@ -1,5 +1,5 @@
-//import 'dart:core';
-//import 'dart:ui';
+import 'dart:core';
+import 'dart:ui';
 
 class BingoCall {
   final int number;
@@ -13,7 +13,6 @@ class BingoCall {
   });
 }
 
-/*
 enum BINGOCALLS_LANGUAGES { DE, EN }
 
 const Map<BINGOCALLS_LANGUAGES, String> BINGOCALLS_LANGUAGE_LIST = {
@@ -22,15 +21,16 @@ const Map<BINGOCALLS_LANGUAGES, String> BINGOCALLS_LANGUAGE_LIST = {
 };
 
 final Map<Locale, BINGOCALLS_LANGUAGES> SUPPORTED_SPELLING_LOCALES = {
-  const Locale('de'): BINGOCALLS_LANGUAGES.DE,
+  //const Locale('de'): BINGOCALLS_LANGUAGES.DE,
   const Locale('en'): BINGOCALLS_LANGUAGES.EN,
 };
 
 const Map<BINGOCALLS_LANGUAGES, Map<String, BingoCall>> BINGO_CALLS = {
-  BINGOCALLS_LANGUAGES.DE: BINGO_CALLS_DE,
+  //BINGOCALLS_LANGUAGES.DE: BINGO_CALLS_DE,
   BINGOCALLS_LANGUAGES.EN: BINGO_CALLS_EN,
 };
 
+/*
 const Map<String, BingoCall> BINGO_CALLS_DE = {
   // https://gamblingngo.com/de/guides/bingo-calls/
   '1': BingoCall(
