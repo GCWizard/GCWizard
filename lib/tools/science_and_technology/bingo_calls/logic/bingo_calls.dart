@@ -30,6 +30,11 @@ const Map<BINGOCALLS_LANGUAGES, Map<String, BingoCall>> BINGO_CALLS = {
   BINGOCALLS_LANGUAGES.EN: BINGO_CALLS_EN,
 };
 
+// TMZ (6/2025): for the time beeing there exists only an english version
+// if there exists Bingo calls in other languages the following maps should be enhanced:
+// - BINGOCALLS_LANGUAGE_LIST
+// - SUPPORTED_SPELLING_LOCALES
+// - BINGO_CALLS
 /*
 const Map<String, BingoCall> BINGO_CALLS_DE = {
   // https://gamblingngo.com/de/guides/bingo-calls/

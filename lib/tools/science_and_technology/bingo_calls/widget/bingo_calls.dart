@@ -33,7 +33,8 @@ class _BingoCallsState extends State<BingoCalls> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO check for correct translations
+    // TMZ (6/2025): for the time beeing there exists only an english version
+    // if there exists Bingo calls in other languages the default language should be set
     //if (!_setDefaultLanguage) {
     //  _currentLanguage = _defaultLanguage(context);
     //  _setDefaultLanguage = true;
