@@ -61,7 +61,7 @@ class BallisticsState extends State<Ballistics> {
   AIR_RESISTANCE _currentAirResistanceMode = AIR_RESISTANCE.NONE;
 
   BALLISTICS_DATA_MODE _currentInputBallisticsDataMode =
-      BALLISTICS_DATA_MODE.ANGLE_DURATION_TO_DISTANCE_VELOCITY;
+      BALLISTICS_DATA_MODE.ANGLE_VELOCITY_TO_DISTANCE_DURATION;
 
   @override
   void initState() {
@@ -94,14 +94,15 @@ class BallisticsState extends State<Ballistics> {
         break;
       case AIR_RESISTANCE.NEWTON:
         output = calculateBallisticsNewton(
-            _currentInputVelocity,
-            _currentInputAngle,
-            _currentInputAcceleration,
-            _currentInputHeight,
-            _currentInputMass,
-            _currentInputDiameter,
-            _currentInputDrag,
-            _currentInputDensity);
+            V0: _currentInputVelocity,
+            Winkel: _currentInputAngle,
+            g: _currentInputAcceleration,
+            startHeight: _currentInputHeight,
+            Masse: _currentInputMass,
+            a: _currentInputDiameter,
+            cw: _currentInputDrag,
+            rho: _currentInputDensity,
+            dataMode: _currentInputBallisticsDataMode);
     }
 
     _outputAngleValue =
@@ -590,9 +591,12 @@ class BallisticsState extends State<Ballistics> {
   }
 
   Widget _buildInputBallisticsData(BuildContext context) {
+    if (_currentAirResistanceMode == AIR_RESISTANCE.NEWTON) {
+      _currentInputBallisticsDataMode == BALLISTICS_DATA_MODE.ANGLE_VELOCITY_TO_DISTANCE_DURATION;
+    }
     return Column(
       children: [
-        _buildInputBallisticsDataMode(context),
+        (_currentAirResistanceMode == AIR_RESISTANCE.NONE) ? _buildInputBallisticsDataMode(context) : Container(),
         if (_currentInputBallisticsDataMode ==
             BALLISTICS_DATA_MODE.ANGLE_VELOCITY_TO_DISTANCE_DURATION)
           Column(
