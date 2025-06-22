@@ -65,14 +65,15 @@ void main() {
             break;
           case AIR_RESISTANCE.NEWTON:
             _actual = calculateBallisticsNewton(
-              elem['velocity'] as double,
-              elem['angle'] as double,
-              elem['acceleration'] as double,
-              elem['height'] as double,
-              elem['mass'] as double,
-              elem['diameter'] as double,
-              elem['dragcoefficient'] as double,
-              elem['density'] as double,
+              V0: elem['velocity'] as double,
+              Winkel: elem['angle'] as double,
+              g: elem['acceleration'] as double,
+              startHeight: elem['height'] as double,
+              Masse: elem['mass'] as double,
+              a: elem['diameter'] as double,
+              cw: elem['dragcoefficient'] as double,
+              rho: elem['density'] as double,
+              dataMode: BALLISTICS_DATA_MODE.ANGLE_VELOCITY_TO_DISTANCE_DURATION,
             );
             break;
         }
