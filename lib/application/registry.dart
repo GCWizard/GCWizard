@@ -194,6 +194,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/chao/widget/chao.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/charsets/ascii_values/widget/ascii_values.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/cipher_wheel/widget/cipher_wheel.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/cistercian_numbers/widget/cistercian_numbers.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/echo/widget/echo.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/enclosed_areas/widget/enclosed_areas.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/enigma/widget/enigma.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/beatnik_language/widget/beatnik_language.dart';
@@ -902,6 +903,11 @@ void initializeRegistry(BuildContext context) {
       ToolCategory.SCIENCE_AND_TECHNOLOGY
     ], searchKeys: const [
       'dtmf',
+    ]),
+    GCWTool(tool: const Echo(), id: 'echo', categories: const [
+      ToolCategory.CRYPTOGRAPHY
+    ], searchKeys: const [
+      'echo'
     ]),
     GCWTool(
         tool: const ElementsOfGeocachingSelection(),

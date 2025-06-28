@@ -102,6 +102,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/caesar/widget/caesar.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/chao/widget/chao.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/charsets/ascii_values/widget/ascii_values.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/cipher_wheel/widget/cipher_wheel.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/echo/widget/echo.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/enclosed_areas/widget/enclosed_areas.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/enigma/widget/enigma.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/beatnik_language/widget/beatnik_language.dart';
@@ -630,6 +631,7 @@ void _initStaticToolList() {
       className(const DuckSpeak()),
       className(const EasterSelection()),
       className(const EarwigoTextDeobfuscation()),
+      className(const Echo()),
       className(const EdelcrantzTelegraph()),
       className(const ElementsOfGeocaching()),
       className(const ElementsOfGeocachingDataView(atomicNumber: 1)),
