@@ -25,6 +25,7 @@ class _BeghilosState extends State<Beghilos> {
   var _currentInputDecode = '';
   var _currentMode = GCWSwitchPosition.right;
   var _currentDisplays = Segments.Empty();
+  var _currentType = GCWSwitchPosition.right;
 
   @override
   void initState() {
@@ -69,6 +70,16 @@ class _BeghilosState extends State<Beghilos> {
             });
           },
         ),
+        GCWTwoOptionsSwitch(
+          value: _currentType,
+          leftValue: 'Gg → 69; 6 ↔ 9',
+          rightValue: 'Gg ↔ 69',
+          onChanged: (value) {
+            setState(() {
+              _currentType = value;
+            });
+          },
+        ),
         _buildOutput(),
       ],
     );
@@ -76,9 +87,11 @@ class _BeghilosState extends State<Beghilos> {
 
   Widget _buildOutput() {
     var rows = <Widget>[];
+    var _type = _currentType == GCWSwitchPosition.right ? BeghilosType.LOWER_G_TO_SIX : BeghilosType.NINE_TO_SIX;
+
     var textOutput = _currentMode == GCWSwitchPosition.left
-        ? decodeBeghilos(_currentInputDecode)
-        : encodeBeghilos(_currentInputEncode.text);
+        ? decodeBeghilos(_currentInputDecode, _type)
+        : encodeBeghilos(_currentInputEncode.text, _type);
 
     if (textOutput.isEmpty) return const GCWDefaultOutput();
 

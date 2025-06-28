@@ -9,7 +9,7 @@ class MultiDecoderToolBeghilos extends AbstractMultiDecoderTool {
       : super(
             internalToolName: MDT_INTERNALNAMES_BEGHILOS,
             onDecode: (String input, String key) {
-              return decodeBeghilos(input);
+              return decodeBeghilos(input, BeghilosType.LOWER_G_TO_SIX);
             });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolBeghilosState();

@@ -1,6 +1,17 @@
 import 'package:gc_wizard/utils/collection_utils.dart';
 
-final _AlphabetMap = {
+enum BeghilosType {LOWER_G_TO_SIX, NINE_TO_SIX}
+
+final _AlphabetMap_LOWER_G_TO_SIX = {
+  'b': '8',
+  'e': '3',
+  'H': '4',
+  'i': '1',
+  'l': '7',
+  'o': '0',
+  's': '5',
+  'z': '2',
+
   'B': '8',
   'E': '3',
   'G': '9',
@@ -14,16 +25,40 @@ final _AlphabetMap = {
   ' ': ' ',
   '.': '.'
 };
-final _AlphabetMapExtension = {'b': '8', 'e': '3', 'H': '4', 'i': '1', 'l': '7', 'o': '0', 's': '5', 'z': '2'};
 
-String decodeBeghilos(String input) {
-  var alphabetMap = Map<String, String>.from(_AlphabetMap);
-  alphabetMap.addAll(_AlphabetMapExtension);
+final _AlphabetMap_NINE_TO_SIX = {
+  'b': '8',
+  'e': '3',
+  'H': '4',
+  'i': '1',
+  'l': '7',
+  'o': '0',
+  's': '5',
+  'z': '2',
+
+  'B': '8',
+  'E': '3',
+  'G': '9',
+  'g': '6',
+  '6': '9',
+  '9': '6',
+  'h': '4',
+  'I': '1',
+  'L': '7',
+  'O': '0',
+  'S': '5',
+  'Z': '2',
+  ' ': ' ',
+  '.': '.'
+};
+
+String decodeBeghilos(String input, BeghilosType type) {
+  var alphabetMap = Map<String, String>.from(type == BeghilosType.LOWER_G_TO_SIX ? _AlphabetMap_LOWER_G_TO_SIX : _AlphabetMap_NINE_TO_SIX);
   return _translateBeghilos(input, alphabetMap);
 }
 
-String encodeBeghilos(String input) {
-  return _translateBeghilos(input, switchMapKeyValue(_AlphabetMap));
+String encodeBeghilos(String input, BeghilosType type) {
+  return _translateBeghilos(input, switchMapKeyValue(type == BeghilosType.LOWER_G_TO_SIX ? _AlphabetMap_LOWER_G_TO_SIX : _AlphabetMap_NINE_TO_SIX));
 }
 
 String _translateBeghilos(String input, Map<String, String> alphabetMap) {
@@ -33,6 +68,6 @@ String _translateBeghilos(String input, Map<String, String> alphabetMap) {
     return alphabetMap.containsKey(letter) ? alphabetMap[letter] : '';
   }).join();
 
-  output = output.trim();
+   output = output.trim();
   return output.split('').reversed.join('');
 }
