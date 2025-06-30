@@ -1518,10 +1518,10 @@ void initializeRegistry(BuildContext context) {
               author: 'Thomas Rosenau',
               title: 'Nonogram Solver',
               sourceUrl:
-                  'https://web.archivechive.org/web/20240819161712/https://github.com/ThomasR/nonogram-solver',
+                  'https://web.archive.org/web/20240819161712/https://github.com/ThomasR/nonogram-solver',
               licenseType: ToolLicenseType.APACHE2,
               licenseUrl:
-                  'https://web.archivechive.org/web/20240819161901/https://github.com/ThomasR/nonogram-solver?tab=Apache-2.0-1-ov-file'),
+                  'https://web.archive.org/web/20240819161901/https://github.com/ThomasR/nonogram-solver?tab=Apache-2.0-1-ov-file'),
         ]),
     GCWTool(
         tool: const NumberPyramidSolver(),
@@ -1540,10 +1540,10 @@ void initializeRegistry(BuildContext context) {
               author: 'Dennis \'dennistreysa\' P.',
               title: 'Py-Ramid',
               sourceUrl:
-                  'https://web.archivechive.org/web/20240819161342/https://github.com/dennistreysa/Py-Ramid',
+                  'https://web.archive.org/web/20240819161342/https://github.com/dennistreysa/Py-Ramid',
               licenseType: ToolLicenseType.GPL3,
               licenseUrl:
-                  'https://web.archivechive.org/web/20240819161613/https://github.com/dennistreysa/Py-Ramid?tab=GPL-3.0-1-ov-file'),
+                  'https://web.archive.org/web/20240819161613/https://github.com/dennistreysa/Py-Ramid?tab=GPL-3.0-1-ov-file'),
         ]),
     GCWTool(
         tool: const NumberSequenceSelection(),
@@ -1932,10 +1932,10 @@ void initializeRegistry(BuildContext context) {
           author: 'Demis Bellot, Adam Singer, Matias Meno',
           title: 'Sudoku Solver',
           sourceUrl:
-              'https://web.archivechive.org/web/20240819162156/https://github.com/dartist/sudoku_solver',
+              'https://web.archive.org/web/20240819162156/https://github.com/dartist/sudoku_solver',
           licenseType: ToolLicenseType.FREE_TO_USE,
           licenseUrl:
-              'https://web.archivechive.org/web/20240819162341/https://github.com/dartist/sudoku_solver/blob/master/LICENSE'),
+              'https://web.archive.org/web/20240819162341/https://github.com/dartist/sudoku_solver/blob/master/LICENSE'),
     ]),
     GCWTool(
       tool: const SymbolTableSelection(),
@@ -3023,9 +3023,9 @@ void initializeRegistry(BuildContext context) {
           title: 'rijksdriehoek',
           licenseType: ToolLicenseType.MIT,
           licenseUrl:
-              'https://github.com/GCWizard/rijksdriehoek/blob/dfea5221b8e3f9f44b6f0102114ab92f36eca5b2/LICENSE',
+              'https://web.archive.org/web/20250630124332/https://github.com/djvanderlaan/rijksdriehoek/blob/master/LICENSE',
           sourceUrl:
-              'hhttps://github.com/GCWizard/rijksdriehoek/tree/dfea5221b8e3f9f44b6f0102114ab92f36eca5b2',
+              'https://web.archive.org/web/20250630124702/https://github.com/djvanderlaan/rijksdriehoek',
         ),
         ToolLicenseOnlineArticle(
             context: context,
@@ -3059,9 +3059,9 @@ void initializeRegistry(BuildContext context) {
             title: 'Geo3x3',
             licenseType: ToolLicenseType.CC0_1,
             licenseUrl:
-                'https://github.com/GCWizard/Geo3x3/tree/ca45f4a2c5fcebd806d1dbf615c7a26a8cad1150?tab=License-1-ov-file',
+                'https://web.archive.org/web/20250630130101/https://github.com/taisukef/Geo3x3?tab=CC0-1.0-1-ov-file#readme',
             sourceUrl:
-                'https://github.com/GCWizard/Geo3x3/tree/ca45f4a2c5fcebd806d1dbf615c7a26a8cad1150'),
+                'https://web.archive.org/web/20250507134944/https://github.com/taisukef/Geo3x3/'),
         ToolLicenseOnlineArticle(
             context: context,
             author: '@sa2da',
@@ -3077,9 +3077,9 @@ void initializeRegistry(BuildContext context) {
             title: 'geohex4j',
             licenseType: ToolLicenseType.MIT,
             licenseUrl:
-                'https://github.com/GCWizard/geohex4j/tree/464acda075666e0c2cb868935b334371c7f2eb97?tab=readme-ov-file#license',
+                'https://web.archive.org/web/20250630131013/https://github.com/chsh/geohex4j?tab=readme-ov-file#license',
             sourceUrl:
-                'https://github.com/GCWizard/geohex4j/tree/464acda075666e0c2cb868935b334371c7f2eb97'),
+                'https://web.archive.org/web/20230226071438/https://github.com/chsh/geohex4j'),
         ToolLicenseOnlineArticle(
           context: context,
           author: 'Ziyad S. Al-Salloum (makaney.net)',
@@ -3097,18 +3097,18 @@ void initializeRegistry(BuildContext context) {
             title: 'mapcode-js',
             licenseType: ToolLicenseType.APACHE2,
             licenseUrl:
-                'https://github.com/GCWizard/mapcode-js/blob/25abcc53f4a15b996810a9d0fd00ff2efd0f2eeb/LICENSE',
+                'https://web.archive.org/web/20250630133145/https://github.com/mapcode-foundation/mapcode-js/blob/master/LICENSE',
             sourceUrl:
-                'https://github.com/GCWizard/mapcode-js/tree/25abcc53f4a15b996810a9d0fd00ff2efd0f2eeb'),
+                'https://web.archive.org/web/20240303102849/https://github.com/mapcode-foundation/mapcode-js'),
         ToolLicensePortedCode(
             context: context,
             author: '@Google',
             title: 'Open Location Code',
             licenseType: ToolLicenseType.APACHE2,
             licenseUrl:
-                'https://github.com/GCWizard/open-location-code/blob/dfcebc905b81c3d9c987f7b3ac6e992f1e8710c6/LICENSE',
+                'https://web.archive.org/web/20250116091702/https://github.com/google/open-location-code/blob/main/LICENSE',
             sourceUrl:
-                'https://github.com/GCWizard/open-location-code/tree/dfcebc905b81c3d9c987f7b3ac6e992f1e8710c6'),
+                'https://web.archive.org/web/20250524075014/https://github.com/google/open-location-code'),
         ToolLicenseOnlineArticle(
             context: context,
             author: 'OpenStreetMap.org and contributors',
@@ -3144,10 +3144,10 @@ void initializeRegistry(BuildContext context) {
             context: context,
             author: 'Patrick \'PattuX\' Wienhöft (GitHub)',
             title: 'Auto Reverse Wherigo Solver',
-            sourceUrl: 'https://github.com/PattuX/auto_reverse_wig_solver',
+            sourceUrl: 'https://web.archive.org/web/20201111160230/https://github.com/PattuX/auto_reverse_wig_solver',
             licenseType: ToolLicenseType.MIT,
             licenseUrl:
-                'https://github.com/PattuX/auto_reverse_wig_solver/blob/master/LICENSE.txt'),
+                'https://web.archive.org/web/20250630134152/https://github.com/PattuX/auto_reverse_wig_solver/blob/master/LICENSE.txt'),
         ToolLicensePortedCode(
             context: context,
             author: 'Google Inc.',
@@ -3180,7 +3180,7 @@ void initializeRegistry(BuildContext context) {
               title: 'GeoFormula and TerpsTest',
               licenseType: ToolLicenseType.APACHE2,
               licenseUrl:
-                  'https://github.com/GCWizard/GeoFormulas/tree/ac40eb5589883999f830908cd1db45c73e1e1267?tab=readme-ov-file#legal-stuff',
+                  'https://web.archive.org/web/20250630134556/https://github.com/pkohut/GeoFormulas?tab=readme-ov-file#legal-stuff',
               sourceUrl:
                   'http://web.archive.org/web/20240812021538/https://github.com/pkohut/GeoFormulas'),
           ToolLicensePortedCode(
@@ -3236,9 +3236,9 @@ void initializeRegistry(BuildContext context) {
               title: 'GPS Averaging',
               licenseType: ToolLicenseType.APACHE2,
               licenseUrl:
-                  'https://github.com/GCWizard/GPS-Averaging/blob/260eb5464d6d1b969c3f30bce42c5cf7848aab93/LICENSE.md',
+                  'https://web.archive.org/web/20170228083134/https://github.com/davidvavra/GPS-Averaging/blob/master/LICENSE.md',
               sourceUrl:
-                  'https://github.com/GCWizard/GPS-Averaging/tree/260eb5464d6d1b969c3f30bce42c5cf7848aab93')
+                  'https://web.archive.org/web/20201128223844/https://github.com/davidvavra/GPS-Averaging')
         ]),
     GCWTool(
         tool: const CenterTwoPoints(),
@@ -3833,15 +3833,19 @@ void initializeRegistry(BuildContext context) {
           context: context,
           author: 'Fabian Mastenbroek',
           title: 'brainfuck',
-          sourceUrl: 'https://github.com/fabianishere/brainfuck',
-          licenseType: ToolLicenseType.APACHE2),
+          sourceUrl: 'https://web.archive.org/web/20250511150306/https://github.com/fabianishere/brainfuck',
+          licenseType: ToolLicenseType.APACHE2,
+          licenseUrl: 'https://web.archive.org/web/20221209052016/https://github.com/fabianishere/brainfuck/blob/master/LICENSE.txt'
+      ),
       ToolLicensePortedCode(
           context: context,
           author: 'Anar Software',
           title: 'BrainJuck Generator',
           sourceUrl:
-              'https://github.com/anars/BrainJuck/blob/master/source/com/anars/brainjuck/Generator.java',
-          licenseType: ToolLicenseType.GPL3),
+              'https://web.archive.org/web/20250630135425/https://github.com/anars/BrainJuck/blob/master/source/com/anars/brainjuck/Generator.java',
+          licenseType: ToolLicenseType.GPL3,
+          licenseUrl: 'https://web.archive.org/web/20250630135314/https://github.com/anars/BrainJuck/blob/master/license.txt'
+      ),
     ]),
     GCWTool(tool: const Cow(), id: 'cow', searchKeys: const [
       'esotericprogramminglanguage',
@@ -6744,7 +6748,7 @@ void initializeRegistry(BuildContext context) {
               licenseUrl:
                   'https://web.archive.org/web/20240724150805/https://github.com/jforshee/ImageHashing/blob/master/README.md',
               sourceUrl:
-                  'https://web.archive.org/web/20240000000000*/https://github.com/jforshee/ImageHashing/blob/master/ImageHashing/ImageHashing.cs',
+                  'https://web.archive.org/web/20240724145840/https://github.com/jforshee/ImageHashing/blob/master/ImageHashing/ImageHashing.cs',
               licenseType: ToolLicenseType.FREE_TO_USE),
         ]),
 
@@ -8126,7 +8130,7 @@ void initializeRegistry(BuildContext context) {
           author: 'Darrell Johnson, Leandro Pardini',
           title: 'Futurama Alien Alphabet One',
           sourceUrl:
-              'https://web.archive.org/web/20190704113955/www.futurama-madhouse.net/fonts/index.shtml',
+              'https://web.archive.org/web/20190704113955/https://www.futurama-madhouse.net/fonts/index.shtml',
           licenseType: ToolLicenseType.FREE_TO_USE)
     ]),
     GCWSymbolTableTool(symbolKey: 'futurama_2', symbolSearchStrings: const [
@@ -8137,7 +8141,7 @@ void initializeRegistry(BuildContext context) {
           author: 'Leandro Pardini',
           title: 'Futurama Alien Alphabet Two',
           sourceUrl:
-              'https://web.archive.org/web/20190704113955/www.futurama-madhouse.net/fonts/index.shtml',
+              'https://web.archive.org/web/20190704113955/https://www.futurama-madhouse.net/fonts/index.shtml',
           licenseType: ToolLicenseType.FREE_TO_USE)
     ]),
     GCWSymbolTableTool(symbolKey: 'gallifreyan', symbolSearchStrings: const [
