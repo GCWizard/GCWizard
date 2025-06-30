@@ -17,7 +17,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, key: ${elem['key']}', () {
-        var _actual = encodeEcho(elem['input'] as String, elem['key'] as String);
+        var _actual = encryptEcho(elem['input'] as String, elem['key'] as String);
         expect(_actual.output, (elem['expectedOutput'] as EchoOutput).output);
         expect(_actual.state, (elem['expectedOutput'] as EchoOutput).state);
       });
@@ -39,7 +39,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, key: ${elem['key']}', () {
-        var _actual = decodeEcho(elem['input'] as String, elem['key'] as String);
+        var _actual = decryptEcho(elem['input'] as String, elem['key'] as String);
         expect(_actual.output, (elem['expectedOutput'] as EchoOutput).output);
         expect(_actual.state, (elem['expectedOutput'] as EchoOutput).state);
       });

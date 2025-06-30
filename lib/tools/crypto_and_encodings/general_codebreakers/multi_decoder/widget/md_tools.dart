@@ -47,6 +47,7 @@ const List<String> _mdtToolsRegistry = [
   MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_KAROL_ROBOT,
   MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_MALBOLGE,
   MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_WHITESPACE,
+  MDT_INTERNALNAMES_ECHO,
 ];
 
 /// all multiDecoder default options
@@ -261,8 +262,11 @@ AbstractMultiDecoderTool _multiDecoderToolToGCWMultiDecoderTool(BuildContext con
     case MDT_INTERNALNAMES_TAPIR:
       gcwTool = MultiDecoderToolTapir(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
+    case MDT_INTERNALNAMES_ECHO:
+      gcwTool = MultiDecoderToolEcho(id: mdtTool.id, name: mdtTool.name, options: options);
+      break;
     case MDT_INTERNALNAMES_VANITY_MULTITAP:
-    case 'multidecoder_tool_vanitymultitap_title': //fix key renamed
+    case 'multidecoder_tool_vanitymultitap_title': //MAL 06/2025: Do not remove! Backwards compatibility; key renamed
       gcwTool = MultiDecoderToolVanityMultitap(id: mdtTool.id, name: mdtTool.name, options: options);
       break;
     case MDT_INTERNALNAMES_VANITY_NUMBERSEARCH:
@@ -407,6 +411,7 @@ void _initializeMultiToolDecoder(BuildContext context) {
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_PLAYFAIR), MDT_INTERNALNAMES_PLAYFAIR),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_POLYBIOS), MDT_INTERNALNAMES_POLYBIOS),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_TAPIR), MDT_INTERNALNAMES_TAPIR),
+    MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ECHO), MDT_INTERNALNAMES_ECHO),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_POKEMON), MDT_INTERNALNAMES_POKEMON),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_KEYBOARDNUMBERS), MDT_INTERNALNAMES_KEYBOARDNUMBERS),
     MultiDecoderToolEntity(i18n(context, MDT_INTERNALNAMES_ENCLOSEDAREAS), MDT_INTERNALNAMES_ENCLOSEDAREAS),

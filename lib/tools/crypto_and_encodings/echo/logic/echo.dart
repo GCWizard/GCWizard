@@ -10,7 +10,7 @@ class EchoOutput {
   EchoOutput(this.output, this.state);
 }
 
-EchoOutput encodeEcho(String input, String key) {
+EchoOutput encryptEcho(String input, String key) {
   if (input.length < 2) {
     return EchoOutput('', EchoState.ERROR_INPUT_TOO_SHORT);
   }
@@ -36,7 +36,7 @@ EchoOutput encodeEcho(String input, String key) {
   return EchoOutput(output, EchoState.OK);
 }
 
-EchoOutput decodeEcho(String input, String key) {
+EchoOutput decryptEcho(String input, String key) {
   if (input.length < 2) {
     return EchoOutput('', EchoState.ERROR_INPUT_TOO_SHORT);
   }
@@ -73,7 +73,7 @@ EchoOutput decodeEcho(String input, String key) {
 
 void main() {
   // var output = encodeEcho('2.5.9.19.16.9.5.12.11.12.1.18.20.5.24.20', '0123456789.');
-  var output = decodeEcho('2704803603038004337318337383415990456559', '0123456789.');
+  var output = decryptEcho('2704803603038004337318337383415990456559', '0123456789.');
   print(output.state);
   print(output.output);
 }

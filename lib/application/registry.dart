@@ -908,6 +908,14 @@ void initializeRegistry(BuildContext context) {
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
       'echo'
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+        context: context,
+        author: 'Oliver Kuhlemann (kryptografie.de)',
+        title: 'Echo Chiffre',
+        sourceUrl:
+          'https://web.archive.org/web/20250630084348/https://kryptografie.de/kryptografie/chiffre/echo-chiffre.htm',
+      )
     ]),
     GCWTool(
         tool: const ElementsOfGeocachingSelection(),

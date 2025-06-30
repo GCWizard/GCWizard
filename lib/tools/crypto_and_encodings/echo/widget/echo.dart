@@ -73,9 +73,9 @@ class _EchoState extends State<Echo> {
     String outputText;
 
     if (_currentMode == GCWSwitchPosition.right) {
-      output = decodeEcho(_currentInput, _currentKey);
+      output = decryptEcho(_currentInput, _currentKey);
     } else {
-      output = encodeEcho(_currentInput, _currentKey);
+      output = encryptEcho(_currentInput, _currentKey);
     }
 
     switch (output.state) {
