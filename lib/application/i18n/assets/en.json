@@ -6504,7 +6504,7 @@
   "textanalysis_control_unitseparator": "Unit Separator",
   "textanalysis_control_delete": "Delete",
   "textanalysis_letterfrequencies_title": "Letter Frequencies",
-  "textanalysis_letterfrequencies_description": "Counts frequencies of letters and compares them with real letter frequencies of some languages",
+  "textanalysis_letterfrequencies_description": "For crypto analysis. Counts frequencies of letters and compares them with real letter frequencies of some languages",
   "textanalysis_letterfrequencies_sort_alphabet_subtitle": "Input ordered by alphabet. Last column: Language values for letters.",
   "textanalysis_letterfrequencies_sort_countaligned_aligned": "Aligned",
   "textanalysis_letterfrequencies_sort_countaligned_aligned_subtitle": "Input ordered by count. Last column: Language values for letters.",
