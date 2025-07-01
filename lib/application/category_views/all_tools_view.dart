@@ -170,6 +170,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/substitution/widget/substit
 import 'package:gc_wizard/tools/crypto_and_encodings/tap_code/widget/tap_code.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/tapir/widget/tapir.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/text_analysis/widget/text_analysis.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/text_analysis/widget/text_analysis_letter_frequencies.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/trifid/widget/trifid.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/trithemius/widget/trithemius.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/universal_product_code/widget/universal_product_code.dart';
@@ -804,6 +805,7 @@ void _initStaticToolList() {
       className(const TeletypewriterSelection()),
       className(const TeletypewriterPunchTape()),
       className(const TextAnalysis()),
+      className(const TextAnalysisLetterFrequencies()),
       className(const TimeCalculator()),
       className(const TomTomSelection()),
       className(const TowerOfHanoi()),

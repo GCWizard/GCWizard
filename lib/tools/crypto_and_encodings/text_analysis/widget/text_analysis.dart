@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_divider.dart';
-import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
+import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/text_analysis/logic/text_analysis.dart';
 import 'package:intl/intl.dart';
 
-enum _SORT_TYPES { ALPHABETICAL, COUNT_GROUP, COUNT_OVERALL }
+enum _MODES {ALL_IN_ONE, GROUPED}
+enum _SORT_TYPES { ALPHABETICAL, COUNT_GROUP}
 
 class TextAnalysis extends StatefulWidget {
   const TextAnalysis({super.key});
@@ -33,7 +34,10 @@ class _TextAnalysisState extends State<TextAnalysis> {
   var _currentUseControlChars = true;
 
   var _currentCaseSensitive = true;
-  var _currentSort = _SORT_TYPES.ALPHABETICAL;
+  var _currentSort = GCWSwitchPosition.left;
+  var _currentSortValue = _SORT_TYPES.ALPHABETICAL;
+  var _currentMode = GCWSwitchPosition.left;
+  var _currentModeValue = _MODES.ALL_IN_ONE;
 
   @override
   void initState() {
@@ -131,30 +135,36 @@ class _TextAnalysisState extends State<TextAnalysis> {
                 ],
               )
             : Container(),
-        GCWDropDown<_SORT_TYPES>(
-          value: _currentSort,
-          title: i18n(context, 'common_sortby'),
-          onChanged: (value) {
-            setState(() {
-              _currentSort = value;
-            });
-          },
-          items: _SORT_TYPES.values.map((type) {
-            String childText;
-            switch (type) {
-              case _SORT_TYPES.ALPHABETICAL:
-                childText = 'textanalysis_sort_alphabetical';
-                break;
-              case _SORT_TYPES.COUNT_GROUP:
-                childText = 'textanalysis_sort_countgroup';
-                break;
-              case _SORT_TYPES.COUNT_OVERALL:
-                childText = 'textanalysis_sort_countoverall';
-                break;
+        GCWTwoOptionsSwitch(
+            leftValue: i18n(context, 'textanalysis_showmode_allinone'),
+            rightValue: i18n(context, 'textanalysis_showmode_grouped'),
+            value: _currentMode,
+            onChanged: (value) {
+              setState(() {
+                _currentMode = value;
+                if (_currentMode == GCWSwitchPosition.left) {
+                  _currentModeValue = _MODES.ALL_IN_ONE;
+                } else {
+                  _currentModeValue = _MODES.GROUPED;
+                }
+              });
             }
-
-            return GCWDropDownMenuItem(value: type, child: i18n(context, childText));
-          }).toList(),
+        ),
+        GCWTwoOptionsSwitch(
+          title: i18n(context, 'common_sortby'),
+          leftValue: i18n(context, 'common_alphabet'),
+          rightValue: i18n(context, 'common_count'),
+          value: _currentSort,
+            onChanged: (value) {
+              setState(() {
+                _currentSort = value;
+                if (_currentSort == GCWSwitchPosition.left) {
+                  _currentSortValue = _SORT_TYPES.ALPHABETICAL;
+                } else {
+                  _currentSortValue = _SORT_TYPES.COUNT_GROUP;
+                }
+              });
+            }
         ),
         GCWDefaultOutput(child: _buildOutput())
       ],
@@ -188,12 +198,11 @@ class _TextAnalysisState extends State<TextAnalysis> {
     ];
 
     var entries = map.entries.toList();
-    switch (_currentSort) {
+    switch (_currentSortValue) {
       case _SORT_TYPES.ALPHABETICAL:
         entries.sort((a, b) => a.key.compareTo(b.key));
         break;
       case _SORT_TYPES.COUNT_GROUP:
-      case _SORT_TYPES.COUNT_OVERALL:
         entries.sort((a, b) => b.value.compareTo(a.value));
         break;
     }
@@ -210,14 +219,14 @@ class _TextAnalysisState extends State<TextAnalysis> {
         numFormat.format(e.value / totalCount * 100)
       ];
 
-      if (_currentSort != _SORT_TYPES.COUNT_OVERALL) {
+      if (_currentModeValue != _MODES.ALL_IN_ONE) {
         data.insert(2, numFormat.format(e.value / groupCount * 100));
       }
 
       return data;
     }).toList();
 
-    if (_currentSort == _SORT_TYPES.COUNT_OVERALL) {
+    if (_currentModeValue == _MODES.ALL_IN_ONE) {
       groupDetailed.insert(0, [
         i18n(context, 'textanalysis_character'),
         i18n(context, 'textanalysis_count'),
@@ -239,11 +248,11 @@ class _TextAnalysisState extends State<TextAnalysis> {
     if (group == null) return Container();
 
     var flexValues =
-        _currentSort == _SORT_TYPES.COUNT_OVERALL ? [2, 1, 1] : [group.isControlCharGroup ? 2 : 1, 1, 1, 1];
+        _currentModeValue == _MODES.ALL_IN_ONE ? [2, 1, 1] : [group.isControlCharGroup ? 2 : 1, 1, 1, 1];
 
     var child = Column(
       children: [
-        _currentSort != _SORT_TYPES.COUNT_OVERALL
+        _currentModeValue != _MODES.ALL_IN_ONE
             ? Column(
                 children: [
                   GCWColumnedMultilineOutput(data: group.common, copyColumn: 1),
@@ -262,7 +271,7 @@ class _TextAnalysisState extends State<TextAnalysis> {
         Container(
           height: 5 * DOUBLE_DEFAULT_MARGIN,
         ),
-        _currentSort == _SORT_TYPES.COUNT_OVERALL
+        _currentModeValue == _MODES.ALL_IN_ONE
             ? child
             : GCWExpandableTextDivider(
                 text: i18n(context, 'common_group') + ': ' + i18n(context, title ?? ''), child: child)
@@ -341,7 +350,7 @@ class _TextAnalysisState extends State<TextAnalysis> {
           [i18n(context, 'textanalysis_distinctcharacters'), totalDistinctCharacterCount],
         ], copyColumn: 1));
 
-    if (_currentSort == _SORT_TYPES.COUNT_OVERALL) {
+    if (_currentModeValue == _MODES.ALL_IN_ONE) {
       return _buildOverallGroupOutput(analysis, commonOutput, totalCharacterCount);
     } else {
       return _buildGroupsOutput(analysis, totalCharacterCount, commonOutput);

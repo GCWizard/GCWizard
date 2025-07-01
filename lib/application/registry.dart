@@ -281,6 +281,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/substitution/widget/substit
 import 'package:gc_wizard/tools/crypto_and_encodings/tap_code/widget/tap_code.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/tapir/widget/tapir.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/text_analysis/widget/text_analysis.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/text_analysis/widget/text_analysis_letter_frequencies.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/toki_pona/widget/toki_pona.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/tomtom/widget/tomtom.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/trifid/widget/trifid.dart';
@@ -1980,8 +1981,12 @@ void initializeRegistry(BuildContext context) {
         tool: const TextAnalysis(),
         id: 'textanalysis',
         categories: const [ToolCategory.CRYPTOGRAPHY],
-        searchKeys: const ['alphabetvalues', 'asciivalues', 'textanalysis'],
-        licenses: const []),
+        searchKeys: const ['alphabetvalues', 'asciivalues', 'textanalysis', 'textanalysis_letterfrequencies']),
+    GCWTool(
+        tool: const TextAnalysisLetterFrequencies(),
+        id: 'textanalysis_letterfrequencies',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const ['alphabetvalues', 'textanalysis', 'textanalysis_letterfrequencies']),
     GCWTool(tool: const Trifid(), id: 'trifid', categories: const [
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
