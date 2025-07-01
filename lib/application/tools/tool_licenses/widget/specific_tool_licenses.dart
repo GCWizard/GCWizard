@@ -64,6 +64,24 @@ class _SpecificToolLicenses {
     );
   }
 
+  ToolLicenseEntry get _toolLicenseGCMuseum {
+    return ToolLicenseOfflineArticle(
+        context: _context,
+        author: 'Museum of Geocaching',
+        title: 'Museum of Geocaching (GC75CX3)',
+    );
+  }
+
+  ToolLicenseEntry get _toolLicenseNinasSchmierblock {
+    return ToolLicenseOnlineArticle(
+      context: _context,
+      author: 'Nina Geiger',
+      title: 'Geocaching Mysteries lösen (Ninas, Schmierblo(g)ck)',
+      sourceUrl: 'https://web.archive.org/web/20240510134622/https://www.justchaos.de/blog/ninas_schmierblogck_mysteries_loesen_als.pdf',
+      licenseType: ToolLicenseType.PRIVATE_PERMISSION
+    );
+  }
+
   ToolLicenseEntry get _toolLicenseGeoMidpoint {
     return ToolLicenseOnlineArticle(
       context: _context,

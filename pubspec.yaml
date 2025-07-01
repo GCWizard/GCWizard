@@ -116,6 +116,7 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/adlam/
     - lib/tools/symbol_tables/_common/assets/albhed/
     - lib/tools/symbol_tables/_common/assets/alchemy/
+    - lib/tools/symbol_tables/_common/assets/alchemy_code_gc_muzeum/
     - lib/tools/symbol_tables/_common/assets/alchemy_alphabet/
     - lib/tools/symbol_tables/_common/assets/alien_mushrooms/
     - lib/tools/symbol_tables/_common/assets/allemans_germains/
@@ -158,6 +159,7 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/chappe_v2/
     - lib/tools/symbol_tables/_common/assets/charactere_antique/
     - lib/tools/symbol_tables/_common/assets/cherokee/
+    - lib/tools/symbol_tables/_common/assets/chinese/
     - lib/tools/symbol_tables/_common/assets/chinese_numerals/
     - lib/tools/symbol_tables/_common/assets/christmas/
     - lib/tools/symbol_tables/_common/assets/cicero/
@@ -201,6 +203,7 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/dragon_language/
     - lib/tools/symbol_tables/_common/assets/dragon_runes/
     - lib/tools/symbol_tables/_common/assets/eastern_arabic_indian_numerals/
+    - lib/tools/symbol_tables/_common/assets/egypt/
     - lib/tools/symbol_tables/_common/assets/egyptian_numerals/
     - lib/tools/symbol_tables/_common/assets/elia/
     - lib/tools/symbol_tables/_common/assets/enn_agrammaton/
@@ -370,6 +373,8 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/puzzle_2/
     - lib/tools/symbol_tables/_common/assets/quadoo/
     - lib/tools/symbol_tables/_common/assets/qonos/
+    - lib/tools/symbol_tables/_common/assets/rainbow_gc_muzeum/
+    - lib/tools/symbol_tables/_common/assets/rainbow_nina_schmierblock/
     - lib/tools/symbol_tables/_common/assets/ravkan/
     - lib/tools/symbol_tables/_common/assets/ravkan_extended/
     - lib/tools/symbol_tables/_common/assets/reality/
@@ -383,6 +388,8 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/robots/
     - lib/tools/symbol_tables/_common/assets/romulan/
     - lib/tools/symbol_tables/_common/assets/runes/
+    - lib/tools/symbol_tables/_common/assets/samurai/
+    - lib/tools/symbol_tables/_common/assets/samurai2/
     - lib/tools/symbol_tables/_common/assets/sanluca/
     - lib/tools/symbol_tables/_common/assets/sarati/
     - lib/tools/symbol_tables/_common/assets/scream/
@@ -455,6 +462,7 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/weather_w/
     - lib/tools/symbol_tables/_common/assets/weather_ww/
     - lib/tools/symbol_tables/_common/assets/webdings/
+    - lib/tools/symbol_tables/_common/assets/weldon/
     - lib/tools/symbol_tables/_common/assets/westernunion/
     - lib/tools/symbol_tables/_common/assets/wind_mill_signals_v1/
     - lib/tools/symbol_tables/_common/assets/wind_mill_signals_v2/
