@@ -1986,7 +1986,20 @@ void initializeRegistry(BuildContext context) {
         tool: const TextAnalysisLetterFrequencies(),
         id: 'textanalysis_letterfrequencies',
         categories: const [ToolCategory.CRYPTOGRAPHY],
-        searchKeys: const ['alphabetvalues', 'textanalysis', 'textanalysis_letterfrequencies']),
+        searchKeys: const ['alphabetvalues', 'textanalysis', 'textanalysis_letterfrequencies'],
+        licenses: [
+          ToolLicensePortedCode(
+              context: context,
+              author: 'en.wikipedia.org and contributors',
+              title: 'Letter frequency',
+              licenseType: ToolLicenseType.CCBYSA4,
+              licenseUrl:
+                'https://en.wikipedia.org/w/index.php?title=Wikipedia:Text_of_the_Creative_Commons_Attribution-ShareAlike_4.0_International_License&oldid=1162946924',
+              sourceUrl:
+                'https://en.wikipedia.org/w/index.php?title=Letter_frequency&oldid=1295211904',
+          ),
+        ]
+    ),
     GCWTool(tool: const Trifid(), id: 'trifid', categories: const [
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
