@@ -31,6 +31,7 @@ enum ToolLicenseType {
   CC0_1, // Creative Commons CC0 1.0
   MIT, // MIT
   MPL2, // MPL-2.0
+  GPL2, //GNU GPL v2.0
   GPL3, //GNU GPL v3.0
   GITHUB_DEFAULT, //Github Default
   GFDL, // GNU Free Documentation License
@@ -73,6 +74,7 @@ String _licenseType(BuildContext context, ToolLicenseType licenseType) {
     case ToolLicenseType.CC0_1: return 'Creative Commons CC0 1.0';
     case ToolLicenseType.MIT: return 'MIT License';
     case ToolLicenseType.MPL2: return 'Mozilla Public License Version 2.0';
+    case ToolLicenseType.GPL2: return 'GNU GPL v2.0 License';
     case ToolLicenseType.GPL3: return 'GNU GPL v3.0 License';
     case ToolLicenseType.GITHUB_DEFAULT: return 'Github Default License';
     case ToolLicenseType.GFDL: return 'GNU Free Documentation License';

@@ -405,6 +405,7 @@ import 'package:gc_wizard/tools/science_and_technology/hexadecimal/widget/hexade
 import 'package:gc_wizard/tools/science_and_technology/iata_icao_search/widget/iata_icao_search.dart';
 import 'package:gc_wizard/tools/science_and_technology/icecodes/widget/icecodes.dart';
 import 'package:gc_wizard/tools/science_and_technology/ieee754/widget/ieee754.dart';
+import 'package:gc_wizard/tools/science_and_technology/ip_address/widget/ip_address.dart';
 import 'package:gc_wizard/tools/science_and_technology/ip_codes/widget/ip_codes.dart';
 import 'package:gc_wizard/tools/science_and_technology/irrational_numbers/e/widget/e.dart';
 import 'package:gc_wizard/tools/science_and_technology/irrational_numbers/phi/widget/phi.dart';
@@ -1255,11 +1256,38 @@ void initializeRegistry(BuildContext context) {
         ],
         licenses: const []),
     GCWTool(
+        tool: const IPAddress(),
+        id: 'ipaddress',
+        categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
+        searchKeys: const ['ipaddress'],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Krischan Jodies',
+            title: 'IP Calculator',
+            sourceUrl:
+              'https://web.archive.org/web/20250701101320/https://jodies.de/ipcalc',
+            licenseType: ToolLicenseType.GPL2,
+            licenseUrl:
+              'https://web.archive.org/web/20250702124344/https://github.com/kjokjo/ipcalc?tab=License-1-ov-file'
+          ),
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'de.wikipedia.org and contributors',
+            title: 'Netzmaske',
+            sourceUrl:
+              'https://de.wikipedia.org/w/index.php?title=Netzmaske&oldid=256171407',
+            licenseType: ToolLicenseType.CCBYSA4,
+            licenseUrl:
+              'https://web.archive.org/web/20240718115628/https://creativecommons.org/licenses/by-sa/4.0/deed.de',
+          ),
+        ]
+    ),
+    GCWTool(
         tool: const IPCodes(),
         id: 'ipcodes',
         categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
         searchKeys: const ['ipcodes']),
-
     GCWTool(tool: const Kamasutra(), id: 'kamasutra', categories: const [
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
