@@ -117,7 +117,7 @@ class _IPAddressState extends State<IPAddress> {
       data: [
         [i18n(context, 'ipaddress_subnetmask'), output.subnetMask.subnet.toString() + ' (${output.subnetMask.toBits()})', output.subnetMask.subnet.toBinaryString()],
         [i18n(context, 'ipaddress_networkname'), output.networkNameIPPart.toString() + '/${output.subnetMask.toBits()}', output.networkNameIPPart.toBinaryString()],
-        [i18n(context, 'ipaddress_networkclass'), output.networkClass, null],
+        [i18n(context, 'ipaddress_networkclass'), output.networkClass ?? '-', null],
         [i18n(context, 'ipaddress_broadcastip'), _nullableIPs(output.broadcastIP), _nullableBinaryIPs(output.broadcastIP)],
         [i18n(context, 'ipaddress_startip'), _nullableIPs(output.startIP), _nullableBinaryIPs(output.startIP)],
         [i18n(context, 'ipaddress_endip'), _nullableIPs(output.endIP), _nullableBinaryIPs(output.endIP)],
