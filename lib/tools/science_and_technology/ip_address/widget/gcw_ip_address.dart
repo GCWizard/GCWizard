@@ -1,15 +1,22 @@
-part of 'package:gc_wizard/tools/science_and_technology/ip_address/widget/ip_address.dart' ;
+import 'package:flutter/material.dart';
+import 'package:gc_wizard/application/theme/theme.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
+import 'package:gc_wizard/common_widgets/spinners/spinner_constants.dart';
+import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
+import 'package:gc_wizard/common_widgets/text_input_formatters/gcw_only01anddot_textinputformatter.dart';
+import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
+import 'package:gc_wizard/tools/science_and_technology/ip_address/logic/ip_address.dart';
 
-class _GCWIPAddress extends StatefulWidget {
+class GCWIPAddress extends StatefulWidget {
   final void Function(IP) onChanged;
   final IP? value;
-  const _GCWIPAddress({super.key, required this.value, required this.onChanged});
+  const GCWIPAddress({super.key, required this.value, required this.onChanged});
 
   @override
   _GCWIPAddressState createState() => _GCWIPAddressState();
 }
 
-class _GCWIPAddressState extends State<_GCWIPAddress> {
+class _GCWIPAddressState extends State<GCWIPAddress> {
   List<int> _currentSpinnerValue = [];
   IP _currentValue = IP([0,0,0,0]);
 

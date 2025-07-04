@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:gc_wizard/utils/string_utils.dart';
-import 'package:pointycastle/asn1.dart';
 
 class IP {
   late final bool isValid;
@@ -225,4 +224,49 @@ IPSubnet ipSubnet(IP ip, IPSubnetMask subnetMask) {
     usableNumberIPs: usableNumbersIPs,
     totalNumbersIPs: totalNumbersIPs,
   );
+}
+
+int compareIP(IP a, IP b) {
+  return a.toBinaryString().compareTo(b.toBinaryString());
+}
+
+String nullableIPsToString(IP? ip) {
+  if (ip == null) {
+    return '-';
+  } else {
+    return ip.toString();
+  }
+}
+
+String nullableBinaryIPsToString(IP? ip) {
+  if (ip == null) {
+    return '-';
+  } else {
+    return ip.toBinaryString();
+  }
+}
+
+IPSubnet minimumSubnet(IP a, IP b) {
+  var _a = a;
+  var _b = b;
+
+  if (compareIP(_a, _b) > 0) {
+    var temp = _a;
+    _a = _b;
+    _b = temp;
+  }
+
+  for (int i = 32; i >= 0; i--) {
+    var subnetA = IPSubnetMask.fromBits(i);
+    var networkA = _networkName(_a, subnetA);
+
+    var subnetB = IPSubnetMask.fromBits(i);
+    var networkB = _networkName(_b, subnetB);
+
+    if (compareIP(networkA, networkB) == 0) {
+      return ipSubnet(_a, subnetA);
+    }
+  }
+
+  return ipSubnet(_a, IPSubnetMask.fromBits(0));
 }

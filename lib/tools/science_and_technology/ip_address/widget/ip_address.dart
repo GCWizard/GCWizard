@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
-import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
-import 'package:gc_wizard/common_widgets/spinners/spinner_constants.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
-import 'package:gc_wizard/common_widgets/text_input_formatters/gcw_only01anddot_textinputformatter.dart';
-import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/ip_address/logic/ip_address.dart';
-
-part 'package:gc_wizard/tools/science_and_technology/ip_address/widget/gcw_ip_address.dart' ;
+import 'package:gc_wizard/tools/science_and_technology/ip_address/widget/gcw_ip_address.dart';
 
 class IPAddress extends StatefulWidget {
   const IPAddress({super.key});
@@ -39,7 +34,7 @@ class _IPAddressState extends State<IPAddress> {
     return Column(
       children: <Widget>[
         GCWTextDivider(text: i18n(context, 'ipaddress_ipaddress')),
-        _GCWIPAddress(
+        GCWIPAddress(
           value: _currentInputIP,
           onChanged: (IP value) {
             setState(() {
@@ -71,7 +66,7 @@ class _IPAddressState extends State<IPAddress> {
                 });
               },
             )
-          : _GCWIPAddress(
+          : GCWIPAddress(
               value: _currentSubnetMaskIP,
               onChanged: (IP value) {
                 setState(() {
@@ -97,30 +92,14 @@ class _IPAddressState extends State<IPAddress> {
 
     var output = ipSubnet(_currentInputIP, _currentSubnetMask);
 
-    String _nullableIPs(IP? ip) {
-      if (ip == null) {
-        return '-';
-      } else {
-        return ip.toString();
-      }
-    }
-
-    String _nullableBinaryIPs(IP? ip) {
-      if (ip == null) {
-        return '-';
-      } else {
-        return ip.toBinaryString();
-      }
-    }
-
     return GCWColumnedMultilineOutput(
       data: [
         [i18n(context, 'ipaddress_subnetmask'), output.subnetMask.subnet.toString() + ' (${output.subnetMask.toBits()})', output.subnetMask.subnet.toBinaryString()],
         [i18n(context, 'ipaddress_networkname'), output.networkNameIPPart.toString() + '/${output.subnetMask.toBits()}', output.networkNameIPPart.toBinaryString()],
         [i18n(context, 'ipaddress_networkclass'), output.networkClass ?? '-', null],
-        [i18n(context, 'ipaddress_broadcastip'), _nullableIPs(output.broadcastIP), _nullableBinaryIPs(output.broadcastIP)],
-        [i18n(context, 'ipaddress_startip'), _nullableIPs(output.startIP), _nullableBinaryIPs(output.startIP)],
-        [i18n(context, 'ipaddress_endip'), _nullableIPs(output.endIP), _nullableBinaryIPs(output.endIP)],
+        [i18n(context, 'ipaddress_broadcastip'), nullableIPsToString(output.broadcastIP), nullableBinaryIPsToString(output.broadcastIP)],
+        [i18n(context, 'ipaddress_startip'), nullableIPsToString(output.startIP), nullableBinaryIPsToString(output.startIP)],
+        [i18n(context, 'ipaddress_endip'), nullableIPsToString(output.endIP), nullableBinaryIPsToString(output.endIP)],
         [i18n(context, 'ipaddress_totalips'), output.totalNumbersIPs, null],
         [i18n(context, 'ipaddress_usableips'), output.usableNumberIPs, null],
       ],
