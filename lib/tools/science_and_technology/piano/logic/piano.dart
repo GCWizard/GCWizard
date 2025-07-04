@@ -2,7 +2,7 @@
 // https://en.wikipedia.org/wiki/Piano_key_frequencies
 // https://fr.wikipedia.org/wiki/Fr%C3%A9quences_des_touches_du_piano
 
-enum fields { color, frequency, helmholtz, scientific, german, midi, latin }
+enum PianoFields { COLOR, FREQUENCY, HELMHOLTZ, SCIENTIFIC, GERMAN, MIDI, LATIN }
 
 class PianoKey {
   final String number;
@@ -24,22 +24,22 @@ class PianoKey {
       required this.midi,
       required this.latin});
 
-  String getField(fields field) {
+  String getField(PianoFields field) {
     switch (field) {
-      case fields.color:
+      case PianoFields.COLOR:
         return color;
-      case fields.frequency:
-        return color;
-      case fields.helmholtz:
-        return color;
-      case fields.scientific:
-        return color;
-      case fields.german:
-        return color;
-      case fields.midi:
-        return color;
-      case fields.latin:
-        return color;
+      case PianoFields.FREQUENCY:
+        return frequency;
+      case PianoFields.HELMHOLTZ:
+        return helmholtz;
+      case PianoFields.SCIENTIFIC:
+        return scientific;
+      case PianoFields.GERMAN:
+        return german;
+      case PianoFields.MIDI:
+        return midi;
+      case PianoFields.LATIN:
+        return latin;
     }
   }
 }

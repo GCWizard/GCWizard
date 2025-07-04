@@ -33,7 +33,8 @@ class _PianoState extends State<Piano> {
 
   @override
   Widget build(BuildContext context) {
-    var field = _currentSort == 0 ? fields.values.first : fields.values.elementAt(_currentSort - 1);
+    var field = _currentSort == 0 ? PianoFields.values.first : PianoFields.values.elementAt(_currentSort - 1);
+
     return Column(
       children: <Widget>[
         GCWDropDown<int>(
@@ -44,7 +45,7 @@ class _PianoState extends State<Piano> {
               _currentSort = value;
               _isColorSort = _currentSort == 1;
             });
-            field = _currentSort == 0 ? fields.values.first : fields.values.elementAt(_currentSort - 1);
+            field = _currentSort == 0 ? PianoFields.values.first : PianoFields.values.elementAt(_currentSort - 1);
           },
           items: _currentSortList
               .asMap()
@@ -85,13 +86,23 @@ class _PianoState extends State<Piano> {
   Widget _buildOutput() {
     if (_isColorSort) {
       var chosenColor = _currentColor == GCWSwitchPosition.left ? 'white' : 'black';
-      var data = PIANO_KEYS.entries.where((element) => element.value.color.endsWith(chosenColor)).map((element) {
-        return [element.value.number, element.value.frequency];
+      var dataIdx = <void Function()>[() => {}];
+      var data = PIANO_KEYS.entries.toList().asMap().entries.where((element) => element.value.value.color.endsWith(chosenColor)).map((element) {
+        dataIdx.add( () {
+          setState(() {
+            _currentSort = 0;
+            _currentIndex = element.key;
+            _isColorSort = false;
+          });
+        });
+        return [element.value.value.number, element.value.value.frequency];
       }).toList();
 
       data.insert(0, [i18n(context, 'piano_number'), i18n(context, 'piano_frequency')]);
 
-      return GCWColumnedMultilineOutput(data: data, hasHeader: true, flexValues: const [1, 2]);
+      return GCWColumnedMultilineOutput(data: data, hasHeader: true, flexValues: const [1, 2],
+        tappables: dataIdx
+      );
     } else {
       var keyNumber = PIANO_KEYS.keys.toList()[_currentIndex];
 
