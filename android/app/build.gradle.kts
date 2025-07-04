@@ -22,7 +22,7 @@ android {
         applicationId = "de.sman42.gc_wizard"
 
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
