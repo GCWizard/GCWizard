@@ -47,15 +47,16 @@ class _AnimatedImageState extends State<AnimatedImage> {
   AnimatedImageOutput? _outData;
   GCWFile? _file;
   bool _play = false;
+
   var _currentMode = GCWSwitchPosition.right;
-  final List<MapEntry<int, int>> _encodeDurations = []; //image index, duration
+  final List<GCWImageViewData> _encodeImageData = [];
+  final List<MapEntry<int, int>> _encodeDurations = [];
   final List<List<TextEditingController?>> _textEditingControllerArray = [];
   final _loopDurationController = TextEditingController();
   var _loopDuration = 0;
   final _loopCountController = TextEditingController();
   var _loopCount = 0;
   Uint8List? _outDataEncode;
-  final List<GCWImageViewData> _encodeImageData = [];
   var _modeEncode = EncodeMode.LOOP;
   var _expandedEncodeOptions = false;
 
@@ -262,37 +263,15 @@ class _AnimatedImageState extends State<AnimatedImage> {
           });
         },
       ),
-      GCWTextDivider(
-        text: '',
-        trailing: Row(children: <Widget>[
-          GCWIconButton(
-            icon: Icons.delete,
-            size: IconButtonSize.SMALL,
-            iconColor: _outData != null && !_play ? null : themeColors().inactive(),
-            onPressed: () {
-              setState(() {
-                _encodeImageData.removeWhere((data) => data.marked ?? false);
-                updateEncodeImageData(_encodeImageData);
-              });
-            },
-          ),
-        ]),
-      ),
-      GCWGallery(
-          imageData: _encodeImageData,
-          onDoubleTap: (index) {
-            setState(() {
-              updateEncodeImageData(_encodeImageData, inversMarked: _encodeImageData[index]);
-            });
-          }
-
-      ),
+      _buildEncodeGallery(_encodeImageData, setState),
       _buildEncodeOptions(),
       _buildEncodeTable(),
       _buildEncodeSubmitButton(),
       _buildOutputEncode()
     ]);
   }
+
+
   Widget _buildEncodeOptions() {
     return GCWExpandableTextDivider(
       text: i18n(context, 'common_options'),
@@ -489,12 +468,9 @@ class _AnimatedImageState extends State<AnimatedImage> {
 
   void _saveOutputEncode(Uint8List? output) {
     _outDataEncode = output;
-try {
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    setState(() {});
-  });
-} catch (e) {}
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
   }
 
   Widget _buildOutputEncode() {
@@ -526,8 +502,36 @@ void openInAnimatedImage(BuildContext context, GCWFile file) {
               tool: AnimatedImage(file: file), toolName: i18n(context, 'animated_image_title'), id: 'animated_image')));
 }
 
-void updateEncodeImageData(List<GCWImageViewData> list, {Uint8List? addImage,
-    GCWImageViewData? inversMarked}) {
+Widget _buildEncodeGallery(List<GCWImageViewData> list, Function setState ) {
+  return Column(
+      children: [
+        GCWTextDivider(
+          text: '',
+          trailing: Row(children: <Widget>[
+            GCWIconButton(
+              icon: Icons.delete,
+              size: IconButtonSize.SMALL,
+              //iconColor: _outData != null && !_play ? null : themeColors().inactive(),
+              onPressed: () {
+                list.removeWhere((data) => data.marked ?? false);
+                updateEncodeImageData(list);
+                setState(() {});
+              },
+            ),
+          ]),
+        ),
+        GCWGallery(
+            imageData: list,
+            onDoubleTap: (index) {
+              updateEncodeImageData(list, inversMarked: list[index]);
+              setState(() {});
+            }
+        ),
+      ]
+  );
+}
+
+void updateEncodeImageData(List<GCWImageViewData> list, {Uint8List? addImage, GCWImageViewData? inversMarked}) {
   if (inversMarked != null) {
     var i = list.indexOf(inversMarked);
     if (i >= 0) {

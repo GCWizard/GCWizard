@@ -45,13 +45,24 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
   bool _play = false;
   bool _filtered = true;
 
-  Uint8List? _highImage;
-  Uint8List? _lowImage;
+  Uint8List? _imageOn;
+  Uint8List? _imageOff;
   String _currentInput = '';
   int _currentDotDuration = 400;
   late TextEditingController _currentDotDurationController;
   late TextEditingController _currentInputController;
   Uint8List? _encodeOutputImage;
+
+  // //var _currentMode = GCWSwitchPosition.right;
+  // final List<GCWImageViewData> _encodeImageData = [];
+  //
+  // final _loopDurationController = TextEditingController();
+  // var _loopDuration = 0;
+  // final _loopCountController = TextEditingController();
+  // var _loopCount = 0;
+  // Uint8List? _outDataEncode;
+  // var _modeEncode = EncodeMode.LOOP;
+  // var _expandedEncodeOptions = false;
 
   @override
   void initState() {
@@ -207,12 +218,12 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
         onLoaded: (GCWFile? value) {
           if (value != null) {
             setState(() {
-              _highImage = value.bytes;
+              _imageOn = value.bytes;
             });
           }
         },
       ),
-      Container(child: _highImage != null ? Image.memory(_highImage!) : const SizedBox(height: 20)),
+      Container(child: _imageOn != null ? Image.memory(_imageOn!) : const SizedBox(height: 20)),
 
       GCWTextDivider(text: i18n(context, 'animated_image_morse_code_low_signal')),
         Column(children: [
@@ -222,12 +233,12 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
             onLoaded: (GCWFile? value) {
               if (value != null) {
                 setState(() {
-                  _lowImage = value.bytes;
+                  _imageOff = value.bytes;
                 });
               }
             },
           ),
-          Container(child: _lowImage != null ? Image.memory(_lowImage!) : const SizedBox(height: 50, width: 200)),
+          Container(child: _imageOff != null ? Image.memory(_imageOff!) : const SizedBox(height: 50, width: 200)),
          ]),
 
       Row(children: <Widget>[
@@ -384,9 +395,9 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
   }
 
   Future<GCWAsyncExecuterParameters?> _buildJobDataEncode() async {
-    if (_highImage == null || _lowImage == null) return null;
+    if (_imageOn == null || _imageOff == null) return null;
     return GCWAsyncExecuterParameters(
-        Tuple4<Uint8List, Uint8List, String, int>(_highImage!, _lowImage!, _currentInput, _currentDotDuration));
+        Tuple4<Uint8List, Uint8List, String, int>(_imageOn!, _imageOff!, _currentInput, _currentDotDuration));
   }
 
   void _saveOutputDecode(AnimatedImageMorseOutput? output) {

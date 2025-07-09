@@ -37,27 +37,42 @@ List<MapEntry<int, int>> _prepareDurations(int imageOn, int imageOff, int dotDur
     int? imageFirst, int? imageFirstDuration, int? imageLast, int? imageLastDuration) {
 
   var list = <MapEntry<int, int>>[];
-  var morse = decodeMorse(text);
+  var input = encodeMorse(text);
+
   if (imageFirst != null) {
     list.add(MapEntry(imageFirst, imageFirstDuration ?? dotDurationLength));
   }
-  for (var i = 0; i < morse.length; i++) {
-    if (morse[i] == '.') {
-      list.add(MapEntry(imageOn, dotDurationLength));
-      list.add(MapEntry(imageOff, dotDurationLength));
-    } else if (morse[i] == '-') {
-      list.add(MapEntry(imageOff, dotDurationLength * 3));
-      list.add(MapEntry(imageOff, dotDurationLength));
-    } else {
-      if (list.isNotEmpty && list.last.key == imageOff && list.last.value == dotDurationLength) {
-        list.last = MapEntry(imageOff, dotDurationLength * 5);
-      } else {
-        list.add(MapEntry(imageOff, dotDurationLength * 5));
-      }
+
+  input = input.replaceAll('| ', '|');
+  input = input.replaceAll(' |', '|');
+  input = input.replaceAll('.', '.*');
+  input = input.replaceAll('-', '-*');
+  input = input.replaceAll('* ', ' ');
+  if (input[input.length - 1] == '*' && input.length > 1) input = input.substring(0, input.length - 1);
+
+  for (var i = 0; i < input.length; i++) {
+    switch (input[i]) {
+      case '.':
+        list.add(MapEntry(imageOn, dotDurationLength));
+        break;
+      case '-':
+        list.add(MapEntry(imageOn, dotDurationLength * 3));
+        break;
+      case '*':
+        list.add(MapEntry(imageOff, dotDurationLength));
+        break;
+      case ' ':
+        list.add(MapEntry(imageOff, dotDurationLength * 3));
+        break;
+      case '|':
+        list.add(MapEntry(imageOff, dotDurationLength * 7));
+        break;
     }
   }
+
   if (imageLast != null) {
     list.add(MapEntry(imageLast, imageLastDuration ?? dotDurationLength));
   }
+
   return list;
 }
