@@ -14,6 +14,7 @@ class GamesSelection extends GCWSelection {
     final List<GCWTool> _toolList =
       registeredTools.where((element) => element.categories.contains(ToolCategory.GAMES)
           || (className(element.tool) == className(const SymbolTable()) && (element.tool as SymbolTable).symbolKey == 'billiard_balls')
+          || (className(element.tool) == className(const SymbolTable()) && (element.tool as SymbolTable).symbolKey == 'snooker')
     ).toList();
     _toolList.sort((a, b) => sortToolList(a, b));
 
