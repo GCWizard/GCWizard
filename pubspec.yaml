@@ -406,6 +406,7 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/slash_and_pipe/
     - lib/tools/symbol_tables/_common/assets/slash_and_pipe_codeofclaw/
     - lib/tools/symbol_tables/_common/assets/slash_and_pipe_underland/
+    - lib/tools/symbol_tables/_common/assets/snooker/
     - lib/tools/symbol_tables/_common/assets/solmisation/
     - lib/tools/symbol_tables/_common/assets/space_invaders/
     - lib/tools/symbol_tables/_common/assets/spintype/
