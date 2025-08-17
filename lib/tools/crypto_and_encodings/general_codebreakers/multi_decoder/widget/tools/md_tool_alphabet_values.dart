@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/alphabet_values/logic/alphabet_values.dart' as logic;
 import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/multi_decoder/widget/multi_decoder.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:gc_wizard/utils/constants.dart';
+import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 const MDT_INTERNALNAMES_ALPHABETVALUES = 'multidecoder_tool_alphabetvalues_title';
 const MDT_ALPHABETVALUES_OPTION_ALPHABET = 'multidecoder_tool_alphabetvalues_option_alphabet';
@@ -45,7 +45,7 @@ class _MultiDecoderToolAlphabetValuesState extends State<MultiDecoderToolAlphabe
         items: ALL_ALPHABETS.map((alphabet) {
           return GCWDropDownMenuItem(
               value: alphabet.key,
-              child: alphabet.type == AlphabetType.STANDARD ? i18n(context, alphabet.key) : alphabet.name ?? '');
+              child: getAlphabetName(context, alphabet));
         }).toList(),
         onChanged: (value) {
           setState(() {

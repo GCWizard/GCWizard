@@ -1,5 +1,6 @@
+import 'package:gc_wizard/application/webapi/deeplinks/deeplinks.dart';
+
 import 'package:gcw_server/controller.dart';
-import 'package:gcw_server/web_parameter.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 
@@ -29,7 +30,7 @@ WebParameter? parseUrl(Request settings) {
   var uri = Uri.parse(settings.url.toString());
   var title = uri.pathSegments.isNotEmpty ? uri.pathSegments[0] : '';
 
-  return WebParameter(title: title, arguments: uri.queryParameters, settings: settings);
+  return WebParameter(title: title, arguments: uri.queryParameters, settings: null);
 }
 
 

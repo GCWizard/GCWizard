@@ -7,8 +7,13 @@ environment:
   sdk: ">=3.5.0 <4.0.0"
 
 dependencies:
+  flutter:
+    sdk: flutter
   shelf: ^1.4.0
   gc_wizard:
     path: ./../
+
+dependency_overrides:
+  meta: ^1.15.0
 
 

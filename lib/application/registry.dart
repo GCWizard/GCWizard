@@ -7196,6 +7196,8 @@ void initializeRegistry(BuildContext context) {
     ]),
     GCWSymbolTableTool(symbolKey: 'billiard_balls', symbolSearchStrings: const [
       'symbol_billiard_balls',
+      'color',
+      'circle',
     ], licenses: [
       ToolLicenseImage(
           context: context,
@@ -7309,6 +7311,7 @@ void initializeRegistry(BuildContext context) {
         symbolKey: 'chain_of_death_direction',
         symbolSearchStrings: const [
           'symbol_chain_of_death_direction',
+          'circle'
         ],
         licenses: [
           stl._toolLicenseWrixonGeheimsprachen,
@@ -8267,6 +8270,7 @@ void initializeRegistry(BuildContext context) {
     ]),
     GCWSymbolTableTool(symbolKey: 'gallifreyan', symbolSearchStrings: const [
       'symbol_gallifreyan',
+      'circle'
     ], licenses: [
       ToolLicenseImage(
           context: context,
@@ -8922,6 +8926,7 @@ void initializeRegistry(BuildContext context) {
     ]),
     GCWSymbolTableTool(symbolKey: 'krypton', symbolSearchStrings: const [
       'symbol_krypton',
+      'circle'
     ], licenses: [
       stl._toolLicenseCullyLong,
     ]),
@@ -9074,6 +9079,7 @@ void initializeRegistry(BuildContext context) {
       ]),
     GCWSymbolTableTool(symbolKey: 'matoran', symbolSearchStrings: const [
       'symbol_matoran',
+      'circle'
     ], licenses: [
       ToolLicenseFont(
           context: context,
@@ -9178,6 +9184,7 @@ void initializeRegistry(BuildContext context) {
     ]),
     GCWSymbolTableTool(symbolKey: 'moon_phases', symbolSearchStrings: const [
       'symbol_moon_phases',
+      'circle'
     ], licenses: [
       ToolLicenseOnlineArticle(
           context: context,
@@ -10166,6 +10173,23 @@ void initializeRegistry(BuildContext context) {
                   'https://en.wikipedia.org/w/index.php?title=Gregor_and_the_Code_of_Claw&oldid=1176094103',
               licenseType: ToolLicenseType.CCBYSA4)
         ]),
+    GCWSymbolTableTool(
+        symbolKey: 'snooker',
+        symbolSearchStrings: const [
+          'symbol_snooker',
+          'symbol_billiard_balls',
+          'color',
+          'circle',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+              context: context,
+              author: 'de.wikipedia and contributors',
+              title: 'Liste der Snooker-Begriffe',
+              sourceUrl:
+              'https://de.m.wikipedia.org/w/index.php?title=Liste_der_Snooker-Begriffe&oldid=256502442',
+              licenseType: ToolLicenseType.CCBYSA4)
+        ]),
     GCWSymbolTableTool(symbolKey: 'solmisation', symbolSearchStrings: const [
       'symbol_solmisation',
     ], licenses: [
@@ -10258,6 +10282,7 @@ void initializeRegistry(BuildContext context) {
     ], licenses: const []),
     GCWSymbolTableTool(symbolKey: 'stippelcode', symbolSearchStrings: const [
       'symbol_stippelcode',
+      'circle'
     ], licenses: [
       stl._toolLicenseGeocachingToolbox,
     ]),
@@ -10786,6 +10811,7 @@ void initializeRegistry(BuildContext context) {
       'weather',
       'weather_n',
       'weather_clouds'
+      'circle'
     ], licenses: [
       ToolLicenseImage(
           context: context,
