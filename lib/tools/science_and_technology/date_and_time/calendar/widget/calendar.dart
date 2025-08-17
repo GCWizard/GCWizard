@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
-import 'package:gc_wizard/common_widgets/gcw_date_picker.dart';
+import 'package:gc_wizard/common_widgets/gcw_custom_date_picker.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_double_spinner.dart';
@@ -24,16 +24,14 @@ class Calendar extends StatefulWidget {
 
 class _CalendarState extends State<Calendar> {
   CalendarSystem _currentCalendarSystem = CalendarSystem.JULIANDATE;
-  double _currentJulianDate = 0.0;
+  double _currentJulianDate = gregorianCalendarToJulianDate(DateTime.now());
+  CustomCalendarDate _currentCalendarDate = CustomCalendarDate(year: DateTime.now().year, month: DateTime.now().month, day: DateTime.now().day);
+
   int _currentTimeStamp = 0;
-  late DateTime _currentDate;
   bool excelBug = false;
 
   @override
   void initState() {
-    DateTime now = DateTime.now();
-    _currentDate = DateTime(now.year, now.month, now.day);
-    _currentJulianDate = gregorianCalendarToJulianDate(_currentDate);
     super.initState();
   }
 
@@ -97,15 +95,15 @@ class _CalendarState extends State<Calendar> {
             _currentCalendarSystem == CalendarSystem.GREGORIANCALENDAR ||
             _currentCalendarSystem == CalendarSystem.ISLAMICCALENDAR ||
             _currentCalendarSystem == CalendarSystem.COPTICCALENDAR ||
-            _currentCalendarSystem == CalendarSystem.PERSIANYAZDEGARDCALENDAR ||
             _currentCalendarSystem == CalendarSystem.POTRZEBIECALENDAR ||
-            _currentCalendarSystem == CalendarSystem.HEBREWCALENDAR)
-          GCWDatePicker(
-            date: _currentDate,
+            _currentCalendarSystem == CalendarSystem.HEBREWCALENDAR ||
+            _currentCalendarSystem == CalendarSystem.PERSIANYAZDEGARDCALENDAR)
+          GCWCustomDatePicker(
+            date: _currentCalendarDate,
             type: _currentCalendarSystem,
             onChanged: (value) {
               setState(() {
-                _currentDate = value;
+                _currentCalendarDate = value;
               });
             },
           ),
@@ -135,31 +133,31 @@ class _CalendarState extends State<Calendar> {
           output['dates_weekday_title'] = i18n(context, WEEKDAY[Weekday(jd)]!);
           break;
         case CalendarSystem.GREGORIANCALENDAR:
-          jd = gregorianCalendarToJulianDate(_currentDate);
+          jd = gregorianCalendarToJulianDate(DateTime(_currentCalendarDate.year, _currentCalendarDate.month, _currentCalendarDate.day));
           output['dates_weekday_title'] = i18n(context, WEEKDAY[Weekday(jd)]!);
           break;
         case CalendarSystem.JULIANCALENDAR:
-          jd = julianCalendarToJulianDate(_currentDate);
+          jd = julianCalendarToJulianDate(DateTime(_currentCalendarDate.year, _currentCalendarDate.month, _currentCalendarDate.day));
           output['dates_weekday_title'] = i18n(context, WEEKDAY[Weekday(jd)]!);
           break;
         case CalendarSystem.ISLAMICCALENDAR:
-          jd = IslamicCalendarToJulianDate(_currentDate);
+          jd = IslamicCalendarToJulianDate(_currentCalendarDate);
           output['dates_weekday_title'] = WEEKDAY_ISLAMIC[Weekday(jd)];
           break;
         case CalendarSystem.PERSIANYAZDEGARDCALENDAR:
-          jd = PersianYazdegardCalendarToJulianDate(_currentDate);
+          jd = PersianYazdegardCalendarToJulianDate(_currentCalendarDate);
           output['dates_weekday_title'] = WEEKDAY_PERSIAN[Weekday(jd)];
           break;
         case CalendarSystem.HEBREWCALENDAR:
-          jd = HebrewCalendarToJulianDate(_currentDate);
+          jd = HebrewCalendarToJulianDate(_currentCalendarDate);
           output['dates_weekday_title'] = WEEKDAY_HEBREW[Weekday(jd)];
           break;
         case CalendarSystem.COPTICCALENDAR:
-          jd = CopticCalendarToJulianDate(_currentDate);
+          jd = CopticCalendarToJulianDate(_currentCalendarDate);
           output['dates_weekday_title'] = i18n(context, WEEKDAY[Weekday(jd)]!);
           break;
         case CalendarSystem.POTRZEBIECALENDAR:
-          jd = PotrzebieCalendarToJulianDate(_currentDate);
+          jd = PotrzebieCalendarToJulianDate(DateTime(_currentCalendarDate.year, _currentCalendarDate.month, _currentCalendarDate.day));
           output['dates_weekday_title'] = i18n(context, WEEKDAY[Weekday(jd)]!);
           break;
         case CalendarSystem.UNIXTIMESTAMP:

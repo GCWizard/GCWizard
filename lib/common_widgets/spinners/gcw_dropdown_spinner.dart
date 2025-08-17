@@ -112,6 +112,7 @@ class _GCWDropDownSpinnerState extends State<GCWDropDownSpinner> {
 
   void _setValueAndEmitOnChange(int newIndex) {
     _currentIndex = newIndex;
+    print(_currentIndex);
     widget.onChanged(_currentIndex);
   }
 }

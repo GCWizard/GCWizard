@@ -26,74 +26,79 @@ const Map<CalendarSystem, Map<int, String>> MONTH_NAMES = {
 };
 
 const Map<int, String> MONTH_ISLAMIC = {
-  1: 'Muharram',
-  2: 'Safar',
-  3: 'Rabi al-Awwal',
-  4: 'Rabi al-Akhir',
-  5: 'Djumada l-Ula',
-  6: 'Djumada t-Akhira',
-  7: 'Radjab',
-  8: 'Shaban',
-  9: 'Ramadan',
-  10: 'Shawwal',
-  11: 'Dhu l-Kada',
-  12: 'Dhu l-Hidjdja'
+  0: 'Muharram',
+  1: 'Safar',
+  2: 'Rabi al-Awwal',
+  3: 'Rabi al-Akhir',
+  4: 'Djumada l-Ula',
+  5: 'Djumada t-Akhira',
+  6: 'Radjab',
+  7: 'Shaban',
+  8: 'Ramadan',
+  9: 'Shawwal',
+  10: 'Dhu l-Kada',
+  11: 'Dhu l-Hidjdja'
 };
+
 const Map<int, String> MONTH_PERSIAN = {
-  1: 'Farwardin',
-  2: 'Ordibehescht',
-  3: 'Chordād',
-  4: 'Tir',
-  5: 'Mordād',
-  6: 'Schahriwar',
-  7: 'Mehr',
-  8: 'Ābān',
-  9: 'Āzar',
-  10: 'Déi',
-  11: 'Bahman',
-  12: 'Esfand'
+  0: 'Farwardin',
+  1: 'Ordibehescht',
+  2: 'Chordād',
+  3: 'Tir',
+  4: 'Mordād',
+  5: 'Schahriwar',
+  6: 'Mehr',
+  7: 'Ābān',
+  8: 'Āzar',
+  9: 'Déi',
+  10: 'Bahman',
+  11: 'Esfand'
 };
+
 const Map<int, String> MONTH_COPTIC = {
-  1: 'Thoth',
-  2: 'Paophi',
-  3: 'Athyr',
-  4: 'Cohiac',
-  5: 'Tybi',
-  6: 'Mesir',
-  7: 'Phamenoth',
-  8: 'Pharmouthi',
-  9: 'Pachons',
-  10: 'Payni',
-  11: 'Epiphi',
-  12: 'Mesori'
+  0: 'Thoth',
+  1: 'Paophi',
+  2: 'Athyr',
+  3: 'Cohiac',
+  4: 'Tybi',
+  5: 'Mesir',
+  6: 'Phamenoth',
+  7: 'Pharmouthi',
+  8: 'Pachons',
+  9: 'Payni',
+  10: 'Epiphi',
+  11: 'Mesori'
 };
+
 const Map<int, String> MONTH_HEBREW = {
-  1: 'Tishri',
-  2: 'Heshvan',
-  3: 'Kislev',
-  4: 'Tevet',
-  5: 'Shevat',
-  6: 'Adar beth',
-  7: 'Adar aleph',
-  8: 'Nisan',
-  9: 'Iyar',
-  10: 'Sivan',
-  11: 'Tammuz',
-  12: 'Av',
-  13: 'Elul'
+  0: 'Tishri',
+  1: 'Heshvan',
+  2: 'Kislev',
+  3: 'Tevet',
+  4: 'Shevat',
+  5: 'Adar beth',
+  6: 'Adar aleph',
+  7: 'Nisan',
+  8: 'Iyar',
+  9: 'Sivan',
+  10: 'Tammuz',
+  11: 'Av',
+  12: 'Elul'
 };
+
 const Map<int, String> MONTH_POTRZEBIE = {
-  1: 'Tales',
-  2: 'Calculated',
-  3: 'To',
-  4: 'Drive',
-  5: 'You',
-  6: 'Humor',
-  7: 'In',
-  8: 'A',
-  9: 'Jugular',
-  10: 'Vein',
+  0: 'Tales',
+  1: 'Calculated',
+  2: 'To',
+  3: 'Drive',
+  4: 'You',
+  5: 'Humor',
+  6: 'In',
+  7: 'A',
+  8: 'Jugular',
+  9: 'Vein',
 };
+
 const Map<int, String> WEEKDAY_ISLAMIC = {
   1: 'yaum al-ahad',
   2: 'yaum al-ithnayna',
