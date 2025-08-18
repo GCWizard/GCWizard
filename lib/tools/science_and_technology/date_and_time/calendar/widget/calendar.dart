@@ -174,24 +174,26 @@ class _CalendarState extends State<Calendar> {
 
       output['dates_calendar_system_juliandate'] = (jd + 0.5).floor();
 
-      output['dates_calendar_system_juliancalendar'] =
-          _DateOutputToString(context, julianDateToJulianCalendar(jd), CalendarSystem.JULIANCALENDAR);
-
       output['dates_calendar_system_modifiedjuliandate'] = JulianDateToModifedJulianDate(jd);
 
-      output['dates_calendar_system_gregoriancalendar'] =
-          _DateOutputToString(context, julianDateToGregorianCalendar(jd), CalendarSystem.GREGORIANCALENDAR);
+      (_currentCalendarSystem !=CalendarSystem.JULIANCALENDAR ) ? output['dates_calendar_system_juliancalendar'] =
+          _DateOutputToString(context, julianDateToJulianCalendar(jd), CalendarSystem.JULIANCALENDAR) : null;
 
-      output['dates_calendar_system_islamiccalendar'] =
-          _DateOutputToString(context, JulianDateToIslamicCalendar(jd), CalendarSystem.ISLAMICCALENDAR);
+      (_currentCalendarSystem !=CalendarSystem.GREGORIANCALENDAR ) ? output['dates_calendar_system_gregoriancalendar'] =
+          _DateOutputToString(context, julianDateToGregorianCalendar(jd), CalendarSystem.GREGORIANCALENDAR) : null;
 
-      output['dates_calendar_system_hebrewcalendar'] = _HebrewDateToString(JulianDateToHebrewCalendar(jd), jd);
+      (_currentCalendarSystem !=CalendarSystem.ISLAMICCALENDAR ) ? output['dates_calendar_system_islamiccalendar'] =
+          _DateOutputToString(context, JulianDateToIslamicCalendar(jd), CalendarSystem.ISLAMICCALENDAR) : null;
 
-      output['dates_calendar_system_persiancalendar'] = _DateOutputToString(
-          context, JulianDateToPersianYazdegardCalendar(jd), CalendarSystem.PERSIANYAZDEGARDCALENDAR);
+      (_currentCalendarSystem !=CalendarSystem.HEBREWCALENDAR ) ? output['dates_calendar_system_hebrewcalendar'] = _HebrewDateToString(JulianDateToHebrewCalendar(jd), jd) : null;
 
-      output['dates_calendar_system_copticcalendar'] =
-          _DateOutputToString(context, JulianDateToCopticCalendar(jd), CalendarSystem.COPTICCALENDAR);
+      (_currentCalendarSystem !=CalendarSystem.PERSIANYAZDEGARDCALENDAR ) ? output['dates_calendar_system_persiancalendar'] = _DateOutputToString(
+          context, JulianDateToPersianYazdegardCalendar(jd), CalendarSystem.PERSIANYAZDEGARDCALENDAR) : null;
+
+      (_currentCalendarSystem !=CalendarSystem.COPTICCALENDAR ) ? output['dates_calendar_system_copticcalendar'] =
+          _DateOutputToString(context, JulianDateToCopticCalendar(jd), CalendarSystem.COPTICCALENDAR) : null;
+
+      (_currentCalendarSystem !=CalendarSystem.POTRZEBIECALENDAR ) ? output['dates_calendar_system_potrzebiecalendar'] = _PotrzebieToString(jd) : null;
 
       output['dates_calendar_system_mayacalendar_daycount'] =
           _invalidMayaDate(jd) ? i18n(context, 'dates_calendar_error') : JulianDateToMayaDayCount(jd).toString();
@@ -207,19 +209,17 @@ class _CalendarState extends State<Calendar> {
           ? i18n(context, 'dates_calendar_error')
           : MayaLongCountToTzolkin(JulianDateToMayaLongCount(jd));
 
-      output['dates_calendar_system_potrzebiecalendar'] = _PotrzebieToString(jd);
-
-      output['dates_calendar_system_exceltimestamp'] = _invalidExcelDate(jd)
+      (_currentCalendarSystem !=CalendarSystem.EXCELTIMESTAMP ) ? output['dates_calendar_system_exceltimestamp'] = _invalidExcelDate(jd)
           ? i18n(context, 'dates_calendar_excel_error')
           : (_currentCalendarSystem == CalendarSystem.EXCELTIMESTAMP)
               ? _currentTimeStamp
-              : JulianDateToExcelTimestamp(jd);
+              : JulianDateToExcelTimestamp(jd) : null;
 
-      output['dates_calendar_system_unixtimestamp'] = _invalidUnixDate(jd)
+      (_currentCalendarSystem !=CalendarSystem.UNIXTIMESTAMP ) ? output['dates_calendar_system_unixtimestamp'] = _invalidUnixDate(jd)
           ? i18n(context, 'dates_calendar_unix_error')
           : (_currentCalendarSystem == CalendarSystem.UNIXTIMESTAMP)
               ? _currentTimeStamp
-              : JulianDateToUnixTimestamp(jd);
+              : JulianDateToUnixTimestamp(jd) : null;
 
       outputWidget = GCWDefaultOutput(
         child: GCWColumnedMultilineOutput(

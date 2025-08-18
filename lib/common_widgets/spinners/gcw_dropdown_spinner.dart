@@ -96,7 +96,6 @@ class _GCWDropDownSpinnerState extends State<GCWDropDownSpinner> {
   }
 
   Container _buildDropDown() {
-    print('builddropdown '+(widget.index % widget.items.length).toString());
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: DEFAULT_MARGIN),
       child: GCWDropDown<int>(
