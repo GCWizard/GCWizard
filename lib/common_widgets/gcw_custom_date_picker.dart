@@ -140,8 +140,7 @@ class _GCWCustomDatePickerState extends State<GCWCustomDatePicker> {
         }).toList(),
         onChanged: (value) {
           setState(() {
-            _currentMonth = value + 1;
-            print(_currentMonth);
+            _currentMonth = value;
             _setCurrentValueAndEmitOnChange();
             if (_currentMonth.toString().length == 2) {
               FocusScope.of(context).requestFocus(_dayFocusNode);
