@@ -1,6 +1,9 @@
 part of 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar/logic/calendar.dart';
 
 DateTime? JulianDateToIslamicCalendar(double jd) {
+
+  if (jd < MIN_JD || jd > MAX_JD) return null;
+
   int l = (jd + 0.5).floor() - 1948440 + 10632;
   int n = intPart((l - 1) / 10631);
   l = l - 10631 * n + 354;

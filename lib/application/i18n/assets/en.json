@@ -2385,6 +2385,7 @@
   "dates_calendar_system_exceltimestamp": "EXCEL Timestamp",
   "dates_calendar_system_unixtimestamp": "UNIX Timestamp",
   "dates_calendar_error" : "ERROR - negative years are not applicable",
+  "dates_calendar_error_jd" : "ERROR - negative Julian Dates are not applicable",
   "dates_calendar_error_overflow" : "ERROR - Range of Date exceeds limit",
   "dates_calendar_unix_error" : "ERROR - Dates prior to 1970/1/1 0:00:00h UTC are not applicable",
   "dates_calendar_excel_error" : "ERROR - Dates prior to 1900/1/1 0:00:00h UTC are not applicable",

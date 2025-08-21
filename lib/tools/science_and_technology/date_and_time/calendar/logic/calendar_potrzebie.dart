@@ -7,7 +7,10 @@ class PotrzebieCalendarOutput {
   PotrzebieCalendarOutput(this.date, this.suffix);
 }
 
-PotrzebieCalendarOutput JulianDateToPotrzebieCalendar(double jd) {
+PotrzebieCalendarOutput? JulianDateToPotrzebieCalendar(double jd) {
+
+  if (jd < MIN_JD || jd > MAX_JD) return null;
+
 // Day 0 in the Potrzebie-System is 01.10.1952
 // Before MAD - B.M.   -   zero   -   Cowzofski Madi C.M
   double jd_p_zero = gregorianCalendarToJulianDate(DateTime(1952, 10, 1));

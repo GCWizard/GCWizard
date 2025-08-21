@@ -13,8 +13,10 @@ enum CalendarSystem {
   UNIXTIMESTAMP,
 }
 
-const JD_UNIX_START = 2440587.5;
+const MIN_JD = 0.0;
+const MAX_JD = 99999999.9;
 
+const JD_UNIX_START = 2440587.5;
 const JD_EXCEL_START = 2415020.5;
 
 const Map<CalendarSystem, Map<int, String>> MONTH_NAMES = {

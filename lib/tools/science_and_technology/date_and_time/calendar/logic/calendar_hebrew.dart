@@ -144,6 +144,9 @@ int JewishYearLength(double jd) {
 }
 
 DateTime? JulianDateToHebrewCalendar(double jd) {
+
+  if (jd < MIN_JD || jd > MAX_JD) return null;
+
   int jday = 1;
   int jmonth = 1;
   DateTime GregorianDate = julianDateToGregorianCalendar(jd);

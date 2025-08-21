@@ -1,6 +1,9 @@
 part of 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar/logic/calendar.dart';
 
 DateTime? JulianDateToCopticCalendar(double jd) {
+
+  if (jd < MIN_JD || jd > MAX_JD) return null;
+
   int cop_j_bar = (jd + 0.5).floor() + 124;
 
   int cop_y_bar = intPart((4 * cop_j_bar + 3) / 1461);

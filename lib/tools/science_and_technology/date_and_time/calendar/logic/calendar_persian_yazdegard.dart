@@ -1,6 +1,9 @@
 part of 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar/logic/calendar.dart';
 
 DateTime? JulianDateToPersianYazdegardCalendar(double jd) {
+
+  if (jd < MIN_JD || jd > MAX_JD) return null;
+
   int epagflg = 0; // Epagomenai: Change at 1007 Jul./376 Yaz.
   int epag_change = 2088938;
   int d_diff = intPart(jd + 0.5) - 1952063;
