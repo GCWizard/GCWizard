@@ -256,7 +256,6 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/hichus/
     - lib/tools/symbol_tables/_common/assets/hieratic_numerals/
     - lib/tools/symbol_tables/_common/assets/hieroglyphs/
-    - lib/tools/symbol_tables/_common/assets/hieroglyphs_v2/
     - lib/tools/symbol_tables/_common/assets/hobbit_runes/
     - lib/tools/symbol_tables/_common/assets/honorius_thebanus/
     - lib/tools/symbol_tables/_common/assets/hvd/
