@@ -14,7 +14,7 @@ class GCWPopupMenu extends StatefulWidget {
   final Color? iconColor;
   final Color? backgroundColor;
   final bool isTextSelectionToolBarButton;
-  final EdgeInsets? textSelectionToolBarButtonPadding;
+  final EdgeInsetsGeometry? textSelectionToolBarButtonPadding;
   final String? textSelectionToolBarButtonLabel;
   final bool? buttonNoBorder;
 

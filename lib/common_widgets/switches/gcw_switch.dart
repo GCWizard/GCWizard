@@ -31,7 +31,7 @@ class _GCWSwitchState extends State<GCWSwitch> {
             widget.onChanged(value);
           });
         },
-        activeColor: widget.activeThumbColor,
+        activeThumbColor: widget.activeThumbColor,
         activeTrackColor: widget.activeTrackColor,
         inactiveTrackColor: widget.inactiveTrackColor,
         inactiveThumbColor: widget.inactiveThumbColor);

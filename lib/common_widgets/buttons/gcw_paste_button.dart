@@ -22,7 +22,7 @@ class GCWPasteButton extends StatefulWidget {
   final Widget? customIcon;
   final Color? backgroundColor;
   final bool? isTextSelectionToolBarButton;
-  final EdgeInsets? textSelectionToolBarButtonPadding;
+  final EdgeInsetsGeometry? textSelectionToolBarButtonPadding;
   final String? textSelectionToolBarButtonLabel;
 
   const GCWPasteButton(
