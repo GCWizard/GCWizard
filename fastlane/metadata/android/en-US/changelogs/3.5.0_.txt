@@ -1,0 +1,7 @@
+[new] Echo
+[new] Subnetmask
+[new] Bingo
+[new] Cryptoanalysis/ Text Analysis
+[new] Many Symbol Tables
+[chg] Beghilos
+[fix] Many bug fixes
