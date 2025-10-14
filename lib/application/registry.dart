@@ -668,12 +668,6 @@ void initializeRegistry(BuildContext context) {
         id: 'babylonnumbers_selection',
         categories: const [ToolCategory.CRYPTOGRAPHY],
         searchKeys: const []),
-    GCWTool(tool: const Bacon(), id: 'bacon', categories: const [
-      ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: const [
-      'bacon',
-      'binary',
-    ]),
     GCWTool(
         tool: const BaconSelection(),
         id: 'bacon_selection',
@@ -2462,32 +2456,21 @@ void initializeRegistry(BuildContext context) {
         ]),
 
     //Babylon Numbers Selection **************************************************************************************
-    GCWTool(
-        tool: const BabylonNumbers(),
-        id: 'babylonnumbers',
+    GCWTool(tool: const BabylonNumbers(), id: 'babylonnumbers',
         searchKeys: const [
           'babylonian_numerals',
         ],
         licenses: const []),
 
     //BaconSelection **************************************************************************************************
-    GCWTool(
-        tool: const Bacon(),
-        id: 'bacon',
-        categories: const [],
-        searchKeys: const [
-          'bacon',
-          'binary',
-        ]),
-    GCWTool(
-        tool: const BaconAnalyze(),
-        id: 'bacon_analyze',
-        categories: const [],
-        searchKeys: const [
-          'bacon',
-          'binary',
-        ]),
-
+    GCWTool(tool: const Bacon(), id: 'bacon', searchKeys: const [
+      'bacon',
+      'binary',
+    ]),
+    GCWTool(tool: const BaconAnalyze(), id: 'bacon_analyze', searchKeys: const [
+      'bacon',
+      'binary',
+    ]),
     //BaseSelection **************************************************************************************************
     GCWTool(tool: Base16(), id: 'base_base16', searchKeys: const [
       'base',
@@ -5220,6 +5203,7 @@ void initializeRegistry(BuildContext context) {
           ToolLicenseOnlineArticle(
             context: context,
             author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            publisher: 'OAIS',
             title: 'A007304',
             sourceUrl:
             'https://web.archive.org/web/20250114133913/https://oeis.org/A007304/b007304.txt',
@@ -5281,24 +5265,6 @@ void initializeRegistry(BuildContext context) {
             title: 'Vergesst die 42, die Lieblingszahl von Nerds ist 1729',
             sourceUrl:
             'https://web.archive.org/web/20250426232004/https://www.spektrum.de/kolumne/srinivasa-ramanujan-und-die-taxicab-zahl-1729/2261407',
-          ),
-        ]),
-    GCWTool(
-        tool: const NumberSequenceSphenicNumbersSelection(),
-        id: 'numbersequence_sphenicnumbers',
-        searchKeys: const [
-          'numbers',
-          'numbersequence',
-          'numbersequence_sphenicnumbersselection',
-        ],
-        licenses: [
-          ToolLicenseOnlineArticle(
-            context: context,
-            author: 'Unknown',
-            publisher: 'OAIS',
-            title: 'A007304',
-            sourceUrl:
-            'https://web.archive.org/web/20250114133913/https://oeis.org/A007304/b007304.txt',
           ),
         ]),
     GCWTool(
@@ -7196,6 +7162,8 @@ void initializeRegistry(BuildContext context) {
     ]),
     GCWSymbolTableTool(symbolKey: 'billiard_balls', symbolSearchStrings: const [
       'symbol_billiard_balls',
+      'color',
+      'circle',
     ], licenses: [
       ToolLicenseImage(
           context: context,
@@ -7309,6 +7277,7 @@ void initializeRegistry(BuildContext context) {
         symbolKey: 'chain_of_death_direction',
         symbolSearchStrings: const [
           'symbol_chain_of_death_direction',
+          'circle'
         ],
         licenses: [
           stl._toolLicenseWrixonGeheimsprachen,
@@ -8267,6 +8236,7 @@ void initializeRegistry(BuildContext context) {
     ]),
     GCWSymbolTableTool(symbolKey: 'gallifreyan', symbolSearchStrings: const [
       'symbol_gallifreyan',
+      'circle'
     ], licenses: [
       ToolLicenseImage(
           context: context,
@@ -8495,10 +8465,15 @@ void initializeRegistry(BuildContext context) {
         ]),
     GCWSymbolTableTool(symbolKey: 'hieroglyphs', symbolSearchStrings: const [
       'symbol_hieroglyphs',
-    ], licenses: const []),
-    GCWSymbolTableTool(symbolKey: 'hieroglyphs_v2', symbolSearchStrings: const [
-      'symbol_hieroglyphs',
-    ], licenses: const []),
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'de.wikipedia.org and contributors',
+          title: 'Ägyptische Hieroglyphen',
+          sourceUrl:
+          'https://de.wikipedia.org/w/index.php?title=%C3%84gyptische_Hieroglyphen&oldid=256091998',
+          licenseType: ToolLicenseType.CCBYSA4)
+    ]),
     GCWSymbolTableTool(symbolKey: 'hobbit_runes', symbolSearchStrings: const [
       'symbol_lordoftherings',
       'symbol_runes',
@@ -8922,6 +8897,7 @@ void initializeRegistry(BuildContext context) {
     ]),
     GCWSymbolTableTool(symbolKey: 'krypton', symbolSearchStrings: const [
       'symbol_krypton',
+      'circle'
     ], licenses: [
       stl._toolLicenseCullyLong,
     ]),
@@ -9074,6 +9050,7 @@ void initializeRegistry(BuildContext context) {
       ]),
     GCWSymbolTableTool(symbolKey: 'matoran', symbolSearchStrings: const [
       'symbol_matoran',
+      'circle'
     ], licenses: [
       ToolLicenseFont(
           context: context,
@@ -9178,6 +9155,7 @@ void initializeRegistry(BuildContext context) {
     ]),
     GCWSymbolTableTool(symbolKey: 'moon_phases', symbolSearchStrings: const [
       'symbol_moon_phases',
+      'circle'
     ], licenses: [
       ToolLicenseOnlineArticle(
           context: context,
@@ -10166,6 +10144,23 @@ void initializeRegistry(BuildContext context) {
                   'https://en.wikipedia.org/w/index.php?title=Gregor_and_the_Code_of_Claw&oldid=1176094103',
               licenseType: ToolLicenseType.CCBYSA4)
         ]),
+    GCWSymbolTableTool(
+        symbolKey: 'snooker',
+        symbolSearchStrings: const [
+          'symbol_snooker',
+          'symbol_billiard_balls',
+          'color',
+          'circle',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+              context: context,
+              author: 'de.wikipedia and contributors',
+              title: 'Liste der Snooker-Begriffe',
+              sourceUrl:
+              'https://de.m.wikipedia.org/w/index.php?title=Liste_der_Snooker-Begriffe&oldid=256502442',
+              licenseType: ToolLicenseType.CCBYSA4)
+        ]),
     GCWSymbolTableTool(symbolKey: 'solmisation', symbolSearchStrings: const [
       'symbol_solmisation',
     ], licenses: [
@@ -10258,6 +10253,7 @@ void initializeRegistry(BuildContext context) {
     ], licenses: const []),
     GCWSymbolTableTool(symbolKey: 'stippelcode', symbolSearchStrings: const [
       'symbol_stippelcode',
+      'circle'
     ], licenses: [
       stl._toolLicenseGeocachingToolbox,
     ]),
@@ -10786,6 +10782,7 @@ void initializeRegistry(BuildContext context) {
       'weather',
       'weather_n',
       'weather_clouds'
+      'circle'
     ], licenses: [
       ToolLicenseImage(
           context: context,
@@ -10898,17 +10895,6 @@ void initializeRegistry(BuildContext context) {
           sourceUrl: 'https://web.archive.org/web/20241004220413/https://geocachen.be/geocaching/geocache-puzzels-oplossen/molentaal/',
           licenseType: ToolLicenseType.FREE_TO_USE,
           customComment: 'Pending'), // todo ask for License
-    ]),
-    GCWSymbolTableTool(symbolKey: 'wingdings', symbolSearchStrings: const [
-      'symbol_wingdings',
-    ], licenses: [
-      ToolLicenseOnlineArticle(
-          context: context,
-          author: 'commons.wikimedia.org and contributors',
-          title: 'Wingdings',
-          sourceUrl:
-              'https://commons.wikimedia.org/wiki/File:Wingdings.png',
-          licenseType: ToolLicenseType.PUBLIC_DOMAIN)
     ]),
     GCWSymbolTableTool(
         symbolKey: 'windforce_knots',

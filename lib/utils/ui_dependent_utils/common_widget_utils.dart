@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:url_launcher/url_launcher.dart' as urlLauncher;
 
 String className(Widget widget) {
@@ -35,4 +36,8 @@ String? languageISOCodeToI18nLanguageName(BuildContext context, String code) {
     case 'cy': return i18n(context, 'common_language_welsh');
     default: return null;
   }
+}
+
+String getAlphabetName(BuildContext context, Alphabet alphabet) {
+  return alphabet.type == AlphabetType.STANDARD ? i18n(context, alphabet.key) : alphabet.name ?? '';
 }

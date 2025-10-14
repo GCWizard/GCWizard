@@ -143,6 +143,6 @@ class GCWDropDownMenuItem<T> {
   late T? _internalValue;
 
   GCWDropDownMenuItem({required this.value, required this.child, this.subtitle, this.style, this.maxSubtitleLines}) {
-    _internalValue = this.value;
+    _internalValue = value;
   }
 }

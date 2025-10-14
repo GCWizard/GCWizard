@@ -1,20 +1,22 @@
 part of 'about.dart';
 
-const List<String> PROJECTLEAD = ['Mike \'MikeBi\' B.', 'Thomas \'TMZ\' Z.'];
+const List<String> _ABOUT_PROJECTLEAD = ['Mike \'MikeBi\' B.', 'Thomas \'TMZ\' Z.'];
 
-const List<String> DEVELOPMENT = [
+const List<String> _ABOUT_DEVELOPMENT = [
   'Mike \'MikeBi\' B.', 'Thomas \'TMZ\' Z.', 'Mark \'S-Man42\' Lorenz', 'Olli \'Rinser\''
 ];
 
-const List<String> SPECIALTHANKS = ['Daniel \'Eisbehr\' K. (Maintainer GCC)'];
+const List<String> _ABOUT_CREATOR = ['Mark \'S-Man42\' Lorenz'];
 
-const List<String> TESTS = [ 'Andy \'Puma66\' (Special Support)', 'Maria \'Nebelsturm\''];
+const List<String> _ABOUT_SPECIALTHANKS = ['Daniel \'Eisbehr\' K. (Maintainer GCC)'];
 
-const List<String> MANUALCREATORS = ['Andreas \'TeamBirdy2404\'', 'Thomas \'TMZ\' Z.', 'Marcia \'Linsty\''];
+const List<String> _ABOUT_TESTS = [ 'Andy \'Puma66\' (Special Support)', 'Maria \'Nebelsturm\''];
 
-const List<String> MISC = ['Henrike \'69and71\' (Translations)'];
+const List<String> _ABOUT_MANUALCREATORS = ['Andreas \'TeamBirdy2404\'', 'Thomas \'TMZ\' Z.', 'Marcia \'Linsty\''];
 
-const List<String> CONTRIBUTORS = [
+const List<String> _ABOUT_MISC = ['Henrike \'69and71\' (Translations)'];
+
+const List<String> _ABOUT_CONTRIBUTORS = [
   '\xc4ggsb\xe4rde (Symbol Tables)',
   'andre0707 (Day1976 Code)',
   'capoaira (Code)',
@@ -32,7 +34,7 @@ const List<String> CONTRIBUTORS = [
   'wollpirat (Food, Tea & more)'
 ];
 
-const List<String> TRANSLATORS = [
+const List<String> _ABOUT_TRANSLATORS = [
   'alantheandroid (IT)',
   'alexgonc (PT, ES)',
   'bimsor (DK)',
@@ -67,7 +69,7 @@ const List<String> TRANSLATORS = [
   'Xoyn (RU)',
 ];
 
-const List<String> TESTER = [
+const List<String> _ABOUT_TESTER = [
   '4-Everus',
   '83_Seth',
   'Amelie2401',

@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
-import 'package:gc_wizard/application/i18n/logic/supported_locales.dart';
+//import 'package:gc_wizard/application/i18n/logic/supported_locales.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -82,12 +82,12 @@ class _BingoCallsState extends State<BingoCalls> {
     );
   }
 
-  BINGOCALLS_LANGUAGES _defaultLanguage(BuildContext context) {
-    final Locale appLocale = Localizations.localeOf(context);
-    if (isLocaleSupported(appLocale)) {
-      return SUPPORTED_SPELLING_LOCALES[appLocale]!;
-    } else {
-      return SUPPORTED_SPELLING_LOCALES[DEFAULT_LOCALE]!;
-    }
-  }
+  // BINGOCALLS_LANGUAGES _defaultLanguage(BuildContext context) {
+  //   final Locale appLocale = Localizations.localeOf(context);
+  //   if (isLocaleSupported(appLocale)) {
+  //     return SUPPORTED_SPELLING_LOCALES[appLocale]!;
+  //   } else {
+  //     return SUPPORTED_SPELLING_LOCALES[DEFAULT_LOCALE]!;
+  //   }
+  // }
 }

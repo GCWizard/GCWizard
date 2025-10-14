@@ -14,8 +14,6 @@ import 'package:gc_wizard/utils/ui_dependent_utils/text_widget_utils.dart';
 
 part 'about_data.dart';
 
-const _ABOUT_MAINTAINER = 'Mark \'S-Man42\' Lorenz';
-
 class About extends StatefulWidget {
   const About({super.key});
 
@@ -25,6 +23,8 @@ class About extends StatefulWidget {
 
 class _AboutState extends State<About> {
   late GCWPackageInfo _packageInfo;
+
+  final _PADDING_CONTAINER = EdgeInsets.only(top: 15, bottom: 10);
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _AboutState extends State<About> {
 
   Container _buildUrl(String key) {
     return Container(
-      padding: const EdgeInsets.only(top: 15, bottom: 10),
+      padding: _PADDING_CONTAINER,
       child: Row(children: <Widget>[
         Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_$key'))),
         Expanded(
@@ -58,16 +58,10 @@ class _AboutState extends State<About> {
         Text(GCWPackageInfo.getInstance().appName, style: gcwTextStyle().copyWith(fontWeight: FontWeight.bold, fontSize: defaultFontSize() + 5)),
         const GCWDivider(),
         Container(
-            padding: const EdgeInsets.only(top: 15),
+            padding: _PADDING_CONTAINER,
             child: Row(children: <Widget>[
               Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_version'))),
               Expanded(flex: 3, child: GCWText(text: '${_packageInfo.version} (Build: ${_packageInfo.buildNumber})'))
-            ])),
-        Container(
-            padding: const EdgeInsets.only(top: 15, bottom: 10),
-            child: Row(children: <Widget>[
-              Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_creator'))),
-              const Expanded(flex: 3, child: GCWText(text: _ABOUT_MAINTAINER))
             ])),
         const GCWDivider(),
         RichText(
@@ -77,16 +71,31 @@ class _AboutState extends State<About> {
           ], style: gcwTextStyle()),
         ),
         Container(
-            padding: const EdgeInsets.only(top: 15, bottom: 10),
+            padding: _PADDING_CONTAINER,
             child: Column(
               children: [
-                _buildTeamEntries('about_projectlead', PROJECTLEAD),
-                _buildTeamEntries('about_development', DEVELOPMENT),
-                _buildTeamEntries('about_tests', TESTS),
-                _buildTeamEntries('about_manualcreators', MANUALCREATORS),
-                _buildTeamEntries('about_misc', MISC),
+                _buildTeamEntries('about_projectlead', _ABOUT_PROJECTLEAD),
+                _buildTeamEntries('about_development', _ABOUT_DEVELOPMENT),
+                _buildTeamEntries('about_tests', _ABOUT_TESTS),
+                _buildTeamEntries('about_manualcreators', _ABOUT_MANUALCREATORS),
+                _buildTeamEntries('about_misc', _ABOUT_MISC),
               ],
             )),
+        const GCWDivider(),
+        Container(
+          padding: _PADDING_CONTAINER,
+          child: Column(
+            children: <Widget>[
+              _buildOthersEntries('about_creator', _ABOUT_CREATOR, '\n'),
+            ]
+          ),
+        ),
+        const GCWDivider(),
+        Container(
+          padding: _PADDING_CONTAINER,
+          child:
+          GCWText(align: Alignment.center, textAlign: TextAlign.center, text: '🏳️‍🌈  ' + i18n(context, 'about_notfornazis') + '  🏳️‍🌈'),
+        ),
         const GCWDivider(),
         _buildUrl('contact_email'),
         _buildUrl('manual'),
@@ -103,7 +112,7 @@ class _AboutState extends State<About> {
         const GCWDivider(),
         InkWell(
           child: Container(
-            padding: const EdgeInsets.only(top: 15, bottom: 10),
+            padding: _PADDING_CONTAINER,
             child: Align(
               alignment: Alignment.center,
               child: Text(
@@ -121,22 +130,16 @@ class _AboutState extends State<About> {
         ),
         const GCWDivider(),
         Container(
-          padding: const EdgeInsets.only(top: 15, bottom: 10),
+          padding: _PADDING_CONTAINER,
           child: Column(
             children: <Widget>[
-              _buildOthersEntries('about_specialthanks', SPECIALTHANKS, '\n'),
-              _buildOthersEntries('about_contributors', CONTRIBUTORS, '\n'),
-              _buildOthersEntries('about_translators', TRANSLATORS, ', '),
-              _buildOthersEntries('about_testers', TESTER, ', '),
+              _buildOthersEntries('about_specialthanks', _ABOUT_SPECIALTHANKS, '\n'),
+              _buildOthersEntries('about_contributors', _ABOUT_CONTRIBUTORS, '\n'),
+              _buildOthersEntries('about_translators', _ABOUT_TRANSLATORS, ', '),
+              _buildOthersEntries('about_testers', _ABOUT_TESTER, ', '),
             ],
           ),
         ),
-        const GCWDivider(),
-        Container(
-          padding: const EdgeInsets.only(top: 15, bottom: 10),
-          child:
-              GCWText(align: Alignment.center, textAlign: TextAlign.center, text: '🏳️‍🌈  ' + i18n(context, 'about_notfornazis') + '  🏳️‍🌈'),
-        )
       ],
     );
 
