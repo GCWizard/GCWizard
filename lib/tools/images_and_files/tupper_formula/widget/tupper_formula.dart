@@ -180,7 +180,8 @@ class _TupperFormulaState extends State<TupperFormula> {
                         icon: Icons.clear,
                         onPressed: () {
                           setState(() {
-                            _board.reset();
+                            _board = TupperData(width: _currentWidth, height: _currentHeight);
+                            //_board.reset();
                           });
                         },
                       ),
@@ -194,7 +195,6 @@ class _TupperFormulaState extends State<TupperFormula> {
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp('[0-9]')),
               ],
-              labelText: 'k',
               controller: _inputController,
               onChanged: (value) {
                 setState(() {
