@@ -205,9 +205,9 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
               ),
               _buildAllowLeadingZerosOption(),
               _buildNumberGridGridOption(),
-              GCWText(text: 'Advanced output'),
+              GCWText(text: i18n(context, 'common_advanced_output') + ':'),
               GCWTextField(
-                hintText: 'N [EM MD-O].[RSY] E [R YS.NOR]',
+                hintText: 'N [EM] [MD-O].[RSY] E [R] [YS.NOR]',
                 onChanged: (String text) {
                   setState(() {
                     _advancedOutputInput = text;
@@ -351,7 +351,10 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
 
       var advancedOutput = getAdvancedOutput(mapping, _currentOutput?.advancedOutputInput ?? '');
       if (advancedOutput.isNotEmpty) {
-        advancedOutputWidget = GCWOutput(child: advancedOutput);
+        advancedOutputWidget = GCWOutput(
+            title: i18n(context, 'common_advanced_output'),
+            child: advancedOutput
+        );
       }
 
       var copyButton = GCWIconButton(

@@ -32,7 +32,7 @@ class VerbalArithmeticOutput {
   final List<Equation> equations;
   final List<HashMap<String, int>> solutions;
   final String error;
-  final String advancedOutputInput;
+  String advancedOutputInput;
 
   VerbalArithmeticOutput({
     required this.equations,
@@ -383,10 +383,10 @@ String getAdvancedOutput(HashMap<String, int> result, String advancedOutputInput
   }
 
   final values = result.entries.map((entry) => FormulaValue(entry.key, entry.value.toString())).toList();
-  final output = FormulaParser().parse(advancedOutputInput, values);
+  final calculated = formatAndParseFormulas([Formula(advancedOutputInput)], values);
 
-  if (output.results.isNotEmpty) {
-    return output.results.first.result;
+  if (calculated.isNotEmpty) {
+    return calculated.first.output.results.first.result;
   }
 
   return '';

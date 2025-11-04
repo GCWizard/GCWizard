@@ -986,6 +986,7 @@
   "combinatorics_combinationpermutation_description": "All subgroups and arrangements of characters",
   "combinatorics_combinationpermutation_example": "ABC → A B C AB AC BA BC CA CB ABC ACB BAC BCA CAB CBA",
   "common_accuracy": "Accuracy",
+  "common_advanced_output": "Advanced output",
   "common_alphabet": "Alphabet",
   "common_app_title": "GC Wizard",
   "common_area": "Area",
