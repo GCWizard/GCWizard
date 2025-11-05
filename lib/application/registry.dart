@@ -3164,6 +3164,12 @@ void initializeRegistry(BuildContext context) {
                 'https://web.archive.org/web/20250630134152/https://github.com/PattuX/auto_reverse_wig_solver/blob/master/LICENSE.txt'),
         ToolLicensePortedCode(
             context: context,
+            author: 'MZCacheHunter',
+            title: 'The Reverse Cache (10Y) ',
+            sourceUrl: 'https://web.archive.org/web/20251105192200/https://www.wherigo.com/cartridge/details.aspx?CGUID=62e80ba9-8ce2-4c1b-90d3-64740526966b',
+            licenseType: ToolLicenseType.REPRODUCTION_NEEDED),
+        ToolLicensePortedCode(
+            context: context,
             author: 'Google Inc.',
             title: 's2-geometry-library-java',
             sourceUrl:
