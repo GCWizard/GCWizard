@@ -105,6 +105,7 @@ const Map<NumberSequencesMode, String> NUMBERSEQUENCE_TITLE = {
   NumberSequencesMode.TAXICAB: 'numbersequence_taxicabnumbers_title',
   NumberSequencesMode.LONELY: 'numbersequence_lonelynumbers_title',
   NumberSequencesMode.PALINDROME_PRIMES: 'numbersequence_palindromeprimes_title',
+  NumberSequencesMode.SUITABLE_NUMBERS: 'numbersequence_suitablenumbers_title',
 };
 
 class PositionOfSequenceOutput {
@@ -149,7 +150,8 @@ enum NumberSequencesMode {
   HARSHAD,
   TAXICAB,
   LONELY,
-  PALINDROME_PRIMES
+  PALINDROME_PRIMES,
+  SUITABLE_NUMBERS,
 }
 
 final Zero = BigInt.zero;
