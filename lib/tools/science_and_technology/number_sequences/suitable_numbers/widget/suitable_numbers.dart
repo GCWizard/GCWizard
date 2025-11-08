@@ -27,5 +27,5 @@ class NumberSequenceSuitableNumbersNthNumber extends NumberSequenceNthNumber {
 
 class NumberSequenceSuitableNumbersContainsDigits extends NumberSequenceContainsDigits {
   const NumberSequenceSuitableNumbersContainsDigits({super.key})
-      : super(mode: NumberSequencesMode.SUBLIME_NUMBERS, maxIndex: 2);
+      : super(mode: NumberSequencesMode.SUITABLE_NUMBERS, maxIndex: 65);
 }

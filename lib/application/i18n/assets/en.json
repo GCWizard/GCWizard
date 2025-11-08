@@ -3802,7 +3802,7 @@
   "numbersequence_palindromeprimes_description": "Primes that can be read in both directions\nOEIS A002385, until n = 10000",
   "numbersequence_palindromeprimes_example": "2, 3, ..., 929, ..., 32423, ...",
   "numbersequence_suitablenumbers_title": "Suitable Numbers",
-  "numbersequence_suitablenumbers_description": "OEIS A002997, until n = 10000",
+  "numbersequence_suitablenumbers_description": "OEIS A000926, until n = 65",
   "numbersequence_suitablenumbers_example": "1, 2, 3, ..., 820, ... 1365, 1848",
   "numbersequence_nth_title": "Get n-th Number",
   "numbersequence_nth_description": "Attention: First number is n = 1, whereas some sources start at n = 0",

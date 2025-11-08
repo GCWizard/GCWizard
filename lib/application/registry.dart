@@ -5307,7 +5307,7 @@ void initializeRegistry(BuildContext context) {
         ]),
     GCWTool(
         tool: const NumberSequenceSuitableNumbersSelection(),
-        id: 'numbersequence_palindromeprimes',
+        id: 'numbersequence_suitablenumbers',
         searchKeys: const [
           'numbers',
           'numbersequence',

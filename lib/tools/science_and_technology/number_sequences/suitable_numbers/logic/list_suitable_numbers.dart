@@ -1,4 +1,4 @@
-const List<String> suitable_number = [
+const List<String> suitable_numbers = [
   '1',
   '2',
   '3',
