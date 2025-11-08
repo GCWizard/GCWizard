@@ -75,8 +75,8 @@ class LifePattern {
 
   /// Load from an RLE file if path provided
   factory LifePattern.fromRLEFile(String path) {
-    final content = File(path).readAsStringSync();
-    return LifePattern.fromRLE(content);
+    //final content = File(path).readAsStringSync();
+    return LifePattern.fromRLE(path);
   }
 
   /// Parse RLE content
@@ -279,13 +279,7 @@ class BitmapLifePattern extends LifePattern {
 
     // Load template.rle (if available) else create empty source
     LifePattern source;
-    final templatePath = 'template.rle';
-    //if (File(templatePath).existsSync()) {
-    //  //print('Loading template.rle from $templatePath');
-    //  source = LifePattern.fromRLEFile(templatePath);
-    //} else {
-      //print('template.rle not found; creating an empty template placeholder.');
-      source = LifePattern();
+    source = LifePattern.fromRLEFile('TEMPLATE_RLE');
       // create a simple placeholder pattern large enough for copies
       for (int y = 0; y < 300; y += 10) {
         for (int x = 0; x < 300; x += 10) {
