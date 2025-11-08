@@ -2644,6 +2644,8 @@
   "gameoflife_fillall": "Fill all",
   "gameoflife_livingcells": "%s1 living cells",
   "gameoflife_size_too_large": "Size too large (>%s1)",
+  "gameoflife_input_to_generate": "Pattern to generate",
+  "gameoflife_generate_rle": "Generate RLE",
   "games_selection_title": "Games",
   "games_selection_description": "Support for famous games (e.g. Scrabble, Sudoku, ...)",
   "gccode_title": "GeoCache Code",
