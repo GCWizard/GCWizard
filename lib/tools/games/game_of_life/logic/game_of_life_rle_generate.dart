@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:gc_wizard/tools/games/game_of_life/logic/generate_rle/template_rle.dart';
+
 //import 'package:gc_wizard/tools/games/game_of_life/logic/generate_rle/font.dart';
 //import 'package:gc_wizard/tools/games/game_of_life/logic/generate_rle/life_pattern.dart';
 
@@ -279,7 +281,7 @@ class BitmapLifePattern extends LifePattern {
 
     // Load template.rle (if available) else create empty source
     LifePattern source;
-    source = LifePattern.fromRLEFile('TEMPLATE_RLE');
+    source = LifePattern.fromRLEFile(TEMPLATE_RLE);
       // create a simple placeholder pattern large enough for copies
       for (int y = 0; y < 300; y += 10) {
         for (int x = 0; x < 300; x += 10) {
