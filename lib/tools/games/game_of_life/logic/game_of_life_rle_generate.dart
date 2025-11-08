@@ -13,7 +13,8 @@ String generate_rle(String stringToGenerate){
 
   List<List<bool?>>? drawing;
 
-  final font = Font('font.txt');
+  //final font = RLEPatternFont('font.txt');
+  final font = RLEPatternFont();
   drawing = font.drawingForString(stringToGenerate);
   height = drawing.length;
   var wmax = 0;
@@ -271,7 +272,7 @@ class BitmapLifePattern extends LifePattern {
   int width = 0; // number of columns (in the Ruby code this is chunks-based)
   BitmapLifePattern(int columnsArg, int rowsArg) : super() {
     // Note: columnsArg maps to "columns" as in the Ruby main invocation.
-    //print('Generating board of size ${columnsArg}x${rowsArg}');
+    print('Generating board of size ${columnsArg}x${rowsArg}');
 
     // Ruby logic: columns = [((columns - 5) / 4.0).ceil, 0].max
     final columns = max(0, ((columnsArg - 5) / 4.0).ceil());
@@ -279,10 +280,10 @@ class BitmapLifePattern extends LifePattern {
     // Load template.rle (if available) else create empty source
     LifePattern source;
     final templatePath = 'template.rle';
-    if (File(templatePath).existsSync()) {
-      //print('Loading template.rle from $templatePath');
-      source = LifePattern.fromRLEFile(templatePath);
-    } else {
+    //if (File(templatePath).existsSync()) {
+    //  //print('Loading template.rle from $templatePath');
+    //  source = LifePattern.fromRLEFile(templatePath);
+    //} else {
       //print('template.rle not found; creating an empty template placeholder.');
       source = LifePattern();
       // create a simple placeholder pattern large enough for copies
@@ -291,7 +292,7 @@ class BitmapLifePattern extends LifePattern {
           if ((x + y) % 20 == 0) source.setCell(x, y);
         }
       }
-    }
+    //}
 
     // copy regions (match Ruby indices)
     final top = source.copy(225, 0, 40, 45);
@@ -348,7 +349,7 @@ class BitmapLifePattern extends LifePattern {
 
     height = rowsArg;
     width = columns * 4 + 5;
-    //print('Actual size ${height}x${width}');
+    print('Actual size ${height}x${width}');
   }
 
   void clearPixel(int col, int row) {
@@ -364,37 +365,40 @@ class BitmapLifePattern extends LifePattern {
 
   /// drawing is List<List<bool?>> where null or false -> clear
   void draw(List<List<bool?>> drawing) {
+    String line = '';
     for (var row = 0; row < height; row++) {
+      line = '';
       for (var col = 0; col < width; col++) {
         final cell = (row < drawing.length && col < drawing[row].length)
             ? drawing[row][col]
             : null;
         if (cell == null || cell == false) {
           clearPixel(col, row);
-          stdout.write('.');
+          line = line + '.';
         } else {
-          stdout.write('*');
+          line = line + '*';
         }
       }
-      stdout.writeln('');
+      print(line);
     }
   }
 }
 
+
 /// Simple Font implementation:
 /// - If font.txt exists and is in a simple block format (see code comments), it will be used.
 /// - Otherwise a fallback built-in 5x5 font for A-Z, 0-9 and space is used.
-class Font {
+class RLEPatternFont {
   final Map<String, List<List<int>>> glyphs = {};
 
-  Font(String path) {
-    final f = File(path);
-    if (f.existsSync()) {
-      _loadFromFile(f);
-    } else {
-      _loadFallback();
-    }
-  }
+  RLEPatternFont() {
+  //final f = File(path ?? 'font.txt');
+  //if (f.existsSync()) {
+  //  _loadFromFile(f);
+  //} else {
+    _loadFallback();
+  //}
+}
 
   void _loadFromFile(File f) {
     // Very simple parsing: each glyph block starts with a line "CHAR X"
@@ -520,3 +524,4 @@ class Font {
     return rows;
   }
 }
+

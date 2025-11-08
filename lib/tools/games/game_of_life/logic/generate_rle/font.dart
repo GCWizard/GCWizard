@@ -123,10 +123,10 @@ const _RLE_FONT_DATA =
     '00000000c00040004000600040004000c0000000,'
     '00004000a8001000000000000000000000000000';
 
-class Font {
+class RLEPatternFont {
   final List<String> _binary = [];
 
-  Font() {
+  RLEPatternFont() {
     var chars = _RLE_FONT_DATA.split(",");
     for (var string in chars) {
       var binaryString = int.parse(string, radix: 16).toRadixString(2);
