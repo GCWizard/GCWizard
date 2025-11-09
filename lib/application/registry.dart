@@ -1057,7 +1057,7 @@ void initializeRegistry(BuildContext context) {
           title: 'Game of Life pattern generator and tools',
           licenseType: ToolLicenseType.MIT,
           licenseUrl:
-              'https://github.com/tlrobinson/life-gen/',
+              'https://github.com/tlrobinson/life-gen/commit/005f5cca4a10ab5884983755ddafab2617a90188',
           sourceUrl:
               'https://github.com/tlrobinson/life-gen/'),
       ToolLicenseCodeLibrary(
