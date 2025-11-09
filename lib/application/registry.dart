@@ -1053,13 +1053,21 @@ void initializeRegistry(BuildContext context) {
     ], licenses: [
       ToolLicenseOnlineArticle(
           context: context,
-          author: 'de.wikipedia.org and contributors',
-          title: 'Conways_Spiel_des_Lebens',
-          licenseType: ToolLicenseType.CCBYSA4,
+          author: 'Thomas L. Robinson',
+          title: 'Game of Life pattern generator and tools',
+          licenseType: ToolLicenseType.MIT,
           licenseUrl:
-              'https://web.archive.org/web/20240718115628/https://creativecommons.org/licenses/by-sa/4.0/deed.de',
+              'https://github.com/tlrobinson/life-gen/',
           sourceUrl:
-              'https://de.wikipedia.org/w/index.php?title=Conways_Spiel_des_Lebens&oldid=246560171'),
+              'https://github.com/tlrobinson/life-gen/'),
+      ToolLicenseCodeLibrary(
+          context: context,
+          author: 'NovaCrypto',
+          title: 'Base58',
+          sourceUrl:
+          'https://web.archive.org/web/20240722085432/https://github.com/NovaCrypto/Base58',
+          licenseType: ToolLicenseType.GPL3),
+
     ]),
     GCWTool(tool: const GCCode(), id: 'gccode', categories: const [
       ToolCategory.CRYPTOGRAPHY
