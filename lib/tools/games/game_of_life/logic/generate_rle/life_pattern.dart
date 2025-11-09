@@ -23,8 +23,9 @@
 //    # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 //    # OTHER DEALINGS IN THE SOFTWARE.
 
-import 'dart:io';
+part of 'package:gc_wizard/tools/games/game_of_life/logic/game_of_life_rle_generate.dart';
 
+/*
 class LifePattern {
   List<List<bool?>?> map = [];
 
@@ -218,4 +219,4 @@ class LifePattern {
     }
     return result;
   }
-}
+}*/

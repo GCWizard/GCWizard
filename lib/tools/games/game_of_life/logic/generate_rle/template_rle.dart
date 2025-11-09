@@ -1,3 +1,5 @@
+part of 'package:gc_wizard/tools/games/game_of_life/logic/game_of_life_rle_generate.dart';
+
 const TEMPLATE_RLE = '#CXRLE Pos=0,0 Gen=0\n' +
 'x = 265, y = 293, rule = B3/S23\n' +
 '233bo\$234bo3bo\$225b2o2b2o8bo12b2o\$225b2o2bo5b2o2bo12b2o\$229bobo5b2o\$\n' +
