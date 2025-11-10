@@ -2,11 +2,15 @@ import 'package:gc_wizard/tools/games/scrabble/logic/scrabble_sets.dart';
 
 enum _SCRABBLE_MODE { FREQUENCY, LETTER_VALUE }
 
-List<int> _textToValues(String text, String scrabbleVersion, _SCRABBLE_MODE mode) {
+ScrabbleSet? getScrabbleSet(String scrabbleVersion) {
+  return scrabbleSets[scrabbleVersion];
+}
+
+List<int?> _textToValues(String text, String scrabbleVersion, _SCRABBLE_MODE mode) {
   if (text.isEmpty) return [];
 
-  List<int> output = [];
-  var _set = scrabbleSets[scrabbleVersion];
+  List<int?> output = [];
+  var _set = getScrabbleSet(scrabbleVersion);
   if (_set == null) return [];
 
   ScrabbleSet set = _set;
@@ -23,7 +27,7 @@ List<int> _textToValues(String text, String scrabbleVersion, _SCRABBLE_MODE mode
           if (set.existLetter(tile)) {
             output.add(mode == _SCRABBLE_MODE.FREQUENCY ? set.letterFrequency(tile) : set.letterValue(tile));
           } else {
-            output.add(0);
+            output.add(null);
           }
           text = text.substring(tileLength, text.length);
           tileLength = 3;
@@ -40,10 +44,10 @@ List<int> _textToValues(String text, String scrabbleVersion, _SCRABBLE_MODE mode
   return output;
 }
 
-List<int> scrabbleTextToLetterValues(String text, String scrabbleVersion) {
+List<int?> scrabbleTextToLetterValues(String text, String scrabbleVersion) {
   return _textToValues(text, scrabbleVersion, _SCRABBLE_MODE.LETTER_VALUE);
 }
 
-List<int> scrabbleTextToLetterFrequencies(String text, String scrabbleVersion) {
+List<int?> scrabbleTextToLetterFrequencies(String text, String scrabbleVersion) {
   return _textToValues(text, scrabbleVersion, _SCRABBLE_MODE.FREQUENCY);
 }
