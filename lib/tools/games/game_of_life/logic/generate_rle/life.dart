@@ -38,7 +38,7 @@ class LifePatternPoint {
 }
 
 /// LifePattern class supports RLE load/save and region operations.
-class LifePattern {
+/*class LifePattern {
   // store live cells
   final Set<LifePatternPoint> _cells = {};
 
@@ -234,7 +234,7 @@ class LifePattern {
       }
     }
   }
-}
+}*/
 
 /// BitmapLifePattern reproduces the Ruby logic
 class BitmapLifePattern extends LifePattern {
@@ -250,7 +250,8 @@ class BitmapLifePattern extends LifePattern {
 
     // Load template.rle (if available) else create empty source
     LifePattern source;
-    source = LifePattern.fromRLEFile(TEMPLATE_RLE);
+    //source = LifePattern.fromRLEFile(_TEMPLATE_RLE);
+    source = LifePattern.loadRLE();
     // create a simple placeholder pattern large enough for copies
     for (int y = 0; y < 300; y += 10) {
       for (int x = 0; x < 300; x += 10) {

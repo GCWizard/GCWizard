@@ -34,6 +34,7 @@ class RLEPatternFont {
     for (var string in chars) {
       var binaryString = int.parse(string, radix: 16).toRadixString(2);
       _binary.add('0' * (160 - binaryString.length) + binaryString);
+      print(string+' '+binaryString.toString()+' '+_binary.toString());
     }
   }
 

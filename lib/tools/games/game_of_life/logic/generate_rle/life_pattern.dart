@@ -25,25 +25,28 @@
 
 part of 'package:gc_wizard/tools/games/game_of_life/logic/game_of_life_rle_generate.dart';
 
-/*
+
 class LifePattern {
   List<List<bool?>?> map = [];
 
   LifePattern([String? filename]) {
     if (filename != null) {
-      loadRLE(filename);
+      //loadRLE(filename);
+      loadRLE();
     }
   }
 
-  void loadRLE(String filename) {
+  //void loadRLE(String filename) {
+  void loadRLE() {
     int row = 0;
     int col = 0;
 
-    final lines = File(filename).readAsLinesSync();
+    //final lines = File(filename).readAsLinesSync();
+    final lines = _TEMPLATE_RLE.split('\n');
 
     for (var line in lines) {
       if (RegExp(r'^(#|x |x=)').hasMatch(line)) {
-        //print("META: $line");
+        print("META: $line");
       } else {
         final regExp = RegExp(r'[0-9]*[bo\$]|!');
         final matches = regExp.allMatches(line);
@@ -70,18 +73,17 @@ class LifePattern {
             } else if (char == "b") {
               col += length;
             } else {
-              //print("OH NO $char");
+              print("OH NO $char");
             }
           } else if (run == "!") {
-            //print("END!");
+            print("END!");
           } else {
-            //print("unknown:$run");
+            print("unknown:$run");
           }
         }
       }
     }
-
-    //print("rows=${map.length}");
+    print("rows=${map.length}");
   }
 
   Iterable<String> yieldRLE() sync* {
@@ -95,7 +97,8 @@ class LifePattern {
     }
   }
 
-  void writeRLE(String filename) {
+  //String writeRLE(String filename) {
+  String writeRLE() {
     int x = 0;
     for (var obj in map) {
       if (obj != null && obj.length > x) {
@@ -104,8 +107,10 @@ class LifePattern {
     }
     int y = map.length;
 
-    final f = File(filename).openSync(mode: FileMode.write);
-    f.writeStringSync("x = $x, y = $y, rule = B3/S23\n");
+    //final f = File(filename).openSync(mode: FileMode.write);
+    final f = StringBuffer();
+    //f.writeStringSync("x = $x, y = $y, rule = B3/S23\n");
+    f.write("x = $x, y = $y, rule = B3/S23\n");
 
     String? current;
     int count = 0;
@@ -115,11 +120,14 @@ class LifePattern {
       if (char == current) {
         count++;
       } else {
-        if (count > 1) f.writeStringSync(count.toString());
-        if (count > 0) f.writeStringSync(current!);
+        //if (count > 1) f.writeStringSync(count.toString());
+        if (count > 1) f.write(count.toString());
+        //if (count > 0) f.writeStringSync(current!);
+        if (count > 0) f.write(current!);
 
         if (sinceNewline > 80) {
-          f.writeStringSync("\n");
+          //f.writeStringSync("\n");
+          f.write("\n");
           sinceNewline = 0;
         }
 
@@ -129,11 +137,15 @@ class LifePattern {
       sinceNewline++;
     }
 
-    if (count > 1) f.writeStringSync(count.toString());
-    if (count > 0) f.writeStringSync(current!);
+    //if (count > 1) f.writeStringSync(count.toString());
+    if (count > 1) f.write(count.toString());
+    //if (count > 0) f.writeStringSync(current!);
+    if (count > 0) f.write(current!);
 
-    f.writeStringSync("!");
-    f.closeSync();
+    //f.writeStringSync("!");
+    //f.closeSync();
+    f.write("!");
+    return f.toString();
   }
 
   bool? get(int x, int y) {
@@ -219,4 +231,4 @@ class LifePattern {
     }
     return result;
   }
-}*/
+}
