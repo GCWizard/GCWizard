@@ -2,6 +2,8 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:gc_wizard/tools/formula_solver/logic/formula_parser.dart';
+import 'package:gc_wizard/tools/formula_solver/persistence/model.dart';
 import 'package:gc_wizard/utils/data_type_utils/object_type_utils.dart';
 import 'package:gc_wizard/utils/json_utils.dart';
 import 'package:math_expressions/math_expressions.dart';
@@ -15,12 +17,14 @@ class VerbalArithmeticJobData {
   final Map<String, String> substitutions;
   final bool allSolutions;
   final bool allowLeadingZeros;
+  final String advancedOutputInput;
 
   VerbalArithmeticJobData({
     required this.equations,
     required this.substitutions,
     required this.allSolutions,
     required this.allowLeadingZeros,
+    required this.advancedOutputInput,
   });
 }
 
@@ -28,11 +32,13 @@ class VerbalArithmeticOutput {
   final List<Equation> equations;
   final List<HashMap<String, int>> solutions;
   final String error;
+  String advancedOutputInput;
 
   VerbalArithmeticOutput({
     required this.equations,
     required this.solutions,
     required this.error,
+    this.advancedOutputInput = ''
   });
 }
 
@@ -371,3 +377,17 @@ int factorial(int n) {
   return n * factorial(n - 1);
 }
 
+String getAdvancedOutput(HashMap<String, int> result, String advancedOutputInput) {
+  if (advancedOutputInput.trim().isEmpty) {
+    return '';
+  }
+
+  final values = result.entries.map((entry) => FormulaValue(entry.key, entry.value.toString())).toList();
+  final calculated = formatAndParseFormulas([Formula(advancedOutputInput)], values);
+
+  if (calculated.isNotEmpty) {
+    return calculated.first.output.results.first.result;
+  }
+
+  return '';
+}

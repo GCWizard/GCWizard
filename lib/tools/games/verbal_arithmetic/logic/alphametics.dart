@@ -18,6 +18,7 @@ Future<VerbalArithmeticOutput?> solveAlphameticsAsync(GCWAsyncExecuterParameters
 
   var output = solveAlphametic(data.equations, data.allSolutions, data.allowLeadingZeros,
       sendAsyncPort: jobData.sendAsyncPort);
+  output?.advancedOutputInput = data.advancedOutputInput;
 
   if (jobData.sendAsyncPort != null) jobData.sendAsyncPort!.send(output);
 

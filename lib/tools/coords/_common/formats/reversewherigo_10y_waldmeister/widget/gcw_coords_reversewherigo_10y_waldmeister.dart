@@ -8,7 +8,7 @@ class _GCWCoordWidgetInfoReverseWherigo10YWaldmeister extends GCWCoordWidgetInfo
   @override
   String get name => 'Reverse Wherigo (10Y Waldmeister)';
   @override
-  String get example => '237787, 953944, 469026';
+  String get example => '(by MZCacheHunter)\n237787, 953944, 469026';
 
   @override
   _GCWCoordWidget mainWidget(

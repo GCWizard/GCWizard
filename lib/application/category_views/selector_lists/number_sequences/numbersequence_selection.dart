@@ -30,6 +30,7 @@ import 'package:gc_wizard/application/category_views/selector_lists/number_seque
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_recaman_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_sphenicnumber_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_sublimenumbers_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_suitablenumbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_superperfectnumbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_taxicab_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_weirdnumbers_selection.dart';
@@ -80,6 +81,7 @@ class NumberSequenceSelection extends GCWSelection {
         className(const NumberSequenceHarshadNumbersSelection()),
         className(const NumberSequenceLonelyNumbersSelection()),
         className(const NumberSequencePalindromePrimesSelection()),
+        className(const NumberSequenceSuitableNumbersSelection()),
       ].contains(className(element.tool));
     }).toList();
 
