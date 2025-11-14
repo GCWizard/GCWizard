@@ -241,12 +241,10 @@ BeatnikOutput interpretBeatnik(String ScrabbleVersion, String sourcecode, String
 
   for (int i = 0; i < program.length; i++) {
     if (!normalized) {
-      List<int> scrabbleValues =  scrabbleTextToLetterValues(program[i], ScrabbleVersion).where((value) => value != null) as List<int>;
-      _currentValues = scrabbleValues;
-      value = 0;
-      for (int j = 0; j < _currentValues.length; j++) {
-        value = value + _currentValues[j];
-      }
+      value = scrabbleTextToLetterValues(program[i], ScrabbleVersion)
+          .whereType<int>()
+          .toList()
+          .fold(0, (previousValue, element) => previousValue + element);
     } else {
       value = int.tryParse(program[i]) ?? 0;
     }

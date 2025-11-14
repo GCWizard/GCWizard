@@ -31,6 +31,7 @@ class CrosstotalOutput extends StatefulWidget {
 
 class _CrosstotalOutputState extends State<CrosstotalOutput> {
   var _currentMode = GCWSwitchPosition.left;
+  var _currentZeroValueBreakMode = GCWSwitchPosition.left;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +64,8 @@ class _CrosstotalOutputState extends State<CrosstotalOutput> {
 
       var vals = <int>[];
       for (int i = 0; i < values.length; i++) {
-        if (values[i] == null) {
+        if (values[i] == null
+            || (_currentZeroValueBreakMode == GCWSwitchPosition.right && values[i] == 0)) {
           if (vals.isNotEmpty) {
             out.add(_calc(vals));
           }
@@ -89,8 +91,12 @@ class _CrosstotalOutputState extends State<CrosstotalOutput> {
     if (_currentMode == GCWSwitchPosition.left) { // Letter Mode
       return function(text).toString();
     } else {
+      var _validChars = _currentZeroValueBreakMode == GCWSwitchPosition.left
+        ? widget.textValidCharacters
+        : widget.textValidCharacters.replaceAll(' ', '');
+
       return text
-          .split(RegExp('[^' + widget.textValidCharacters + ']'))
+          .split(RegExp('[^' + _validChars + ']'))
           .where((String word) => word.isNotEmpty)
           .map((String word) => function(word).toString())
           .join(' ');
@@ -178,7 +184,27 @@ class _CrosstotalOutputState extends State<CrosstotalOutput> {
                   _currentMode = value;
                 });
               },
-            )
+            ),
+            _currentMode == GCWSwitchPosition.right
+                && (widget.values.contains(0)
+                || (widget.text.contains(' ') && widget.textValidCharacters.contains(' '))
+            )?
+              Column(
+                children: [
+                  GCWTextDivider(text: i18n(context, 'crosstotal_wordmode_groups_ignorezero')),
+                  GCWTwoOptionsSwitch(
+                    notitle: true,
+                    leftValue: i18n(context, 'common_no'),
+                    rightValue: i18n(context, 'common_yes'),
+                    value: _currentZeroValueBreakMode,
+                    onChanged: (value) {
+                      setState(() {
+                        _currentZeroValueBreakMode = value;
+                      });
+                    },
+                  )
+                ],
+              ) : Container()
           ],
         ) : Container(),
         GCWTextDivider(text: i18n(context, 'crosstotal_commonsums')),
