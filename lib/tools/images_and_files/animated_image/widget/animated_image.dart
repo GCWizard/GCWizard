@@ -354,8 +354,8 @@ class _AnimatedImageState extends State<AnimatedImage> {
     var headerStyle = gcwTextStyle().copyWith(fontWeight: FontWeight.bold);
     rows.add(TableRow(children: [
       Container(),
-      GCWText(text: i18n(context, 'common_index'), style: headerStyle),
-      _loopDuration > 0 ? Container() : GCWText(text: 'Duration' + ' (ms)', style: headerStyle),
+      GCWText(text: 'i'), //i18n(context, 'common_index'), style: headerStyle),
+      _loopDuration > 0 ? Container() : GCWText(text: 'D'), //'Duration' + ' (ms)', style: headerStyle),),
       Container()])
     );
     for (var i = 0; i < _encodeDurations.length + 1; i++) {
@@ -530,8 +530,8 @@ Widget buildEncodeGallery(List<GCWImageViewData> list, Function setState) {
   );
 }
 
-void updateEncodeImageData(List<GCWImageViewData> list, {Uint8List? addImage,
-    GCWImageViewData? inversMarked}) {
+void updateEncodeImageData(List<GCWImageViewData> list, {Uint8List? addImage, GCWImageViewData? inversMarked}) {
+
   if (inversMarked != null) {
     var i = list.indexOf(inversMarked);
     if (i >= 0) {
@@ -545,9 +545,9 @@ void updateEncodeImageData(List<GCWImageViewData> list, {Uint8List? addImage,
   }
 
   var imageCount = list.length;
-  for (var i = 0; i < list.length; i++) {
+  for (var i = 0; i < imageCount; i++) {
     String description = (i + 1).toString() + '/$imageCount';
-    list.add(GCWImageViewData(list[i].file,
+    list[i] = (GCWImageViewData(list[i].file,
         description: description,
         marked: list[i].marked));
   }
