@@ -2,7 +2,7 @@ import 'dart:math';
 
 part 'package:gc_wizard/tools/games/game_of_life/logic/generate_rle/template_rle.dart';
 part 'package:gc_wizard/tools/games/game_of_life/logic/generate_rle/font.dart';
-part 'package:gc_wizard/tools/games/game_of_life/logic/generate_rle/font_data.dart';
+part 'package:gc_wizard/tools/games/game_of_life/logic/generate_rle/font_text.dart';
 part 'package:gc_wizard/tools/games/game_of_life/logic/generate_rle/life.dart';
 part 'package:gc_wizard/tools/games/game_of_life/logic/generate_rle/life_pattern.dart';
 

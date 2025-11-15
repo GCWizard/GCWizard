@@ -232,3 +232,172 @@ class LifePattern {
     return result;
   }
 }
+
+class LifePattern {
+  LifePattern({String filename}) {
+    _map = [];
+    if (filename != null) {
+      loadRLE(filename);
+    }
+  }
+
+  List<List<bool>> _map;
+
+  List<List<bool>> get map => _map;
+
+  void loadRLE(String filename) {
+    int row = 0;
+    int col = 0;
+
+    new File(filename).openRead().transform(UTF8.decoder).transform(new LineSplitter()).listen((String line) {
+      if (line.contains(new RegExp(r'^(#|x |x=)'))) {
+        print("META: $line");
+      } else {
+        line.split(new RegExp(r'[0-9]*[bo\$]|!')).forEach((String run) {
+          Match match = new RegExp(r'([0-9]*)([bo\$])').firstMatch(run);
+          if (match != null) {
+            int length = match.group(1).isEmpty ? 1 : int.parse(match.group(1));
+            if (match.group(2) == "\$") {
+              row += length;
+              col = 0;
+            } else if (match.group(2) == "o") {
+              for (int i = 0; i < length; i++) {
+                set(col, row, true);
+                col++;
+              }
+            } else if (match.group(2) == "b") {
+              col += length;
+            } else {
+              print("OH NO ${match.group(2)}");
+            }
+          } else if (run == "!") {
+            print("END!");
+          } else {
+            print("unknown: $run");
+          }
+        });
+      }
+    });
+    print("rows=${_map.length}");
+  }
+
+  void yieldRLE(void yield(String char)) {
+    _map.forEach((List<bool> row) {
+      if (row != null) {
+        row.forEach((bool col) {
+          yield(col ? "o" : "b");
+        });
+      }
+      yield("\$\n");
+    });
+  }
+
+  void writeRLE(String filename) {
+    int x = _map.fold(0, (int memo, List<bool> obj) => (obj != null && obj.length > memo) ? obj.length : memo);
+    int y = _map.length;
+
+    new File(filename).openWrite().write("x = $x, y = $y, rule = B3/S23\n");
+
+    String current;
+    int count = 0;
+    int sinceNewline = 0;
+    yieldRLE((String char) {
+      if (char == current) {
+        count++;
+      } else {
+        if (count > 1) {
+          new File(filename).openWrite().write(count.toString());
+        }
+        if (count > 0) {
+          new File(filename).openWrite().write(current);
+        }
+
+        if (sinceNewline > 80) {
+          new File(filename).openWrite().write("\n");
+          sinceNewline = 0;
+        }
+
+        current = char;
+        count = 1;
+      }
+    });
+
+    if (count > 1) {
+      new File(filename).openWrite().write(count.toString());
+    }
+    if (count > 0) {
+      new File(filename).openWrite().write(current);
+    }
+
+    new File(filename).openWrite().write("!");
+  }
+
+  bool get(int x, int y) => _map[y] != null && _map[y][x];
+
+  void set(int x, int y, bool value) {
+    if (_map[y] == null) {
+      _map[y] = [];
+    }
+    _map[y][x] = value;
+  }
+
+  void each(void yield(int x, int y)) {
+    int rowNum = 0;
+    _map.forEach((List<bool> row) {
+      int colNum = 0;
+      if (row != null) {
+        row.forEach((bool col) {
+          if (col != null) {
+            yield(colNum, rowNum);
+          }
+          colNum++;
+        });
+      }
+      rowNum++;
+    });
+  }
+
+  void setRect(int x, int y, int w, int h, bool value) {
+    for (int col = x; col < x + w; col++) {
+      for (int row = y; row < y + h; row++) {
+        set(col, row, value);
+      }
+    }
+  }
+
+  LifePattern copy(int x, int y, int w, int h) {
+    LifePattern result = new LifePattern();
+    for (int col = 0; col < w; col++) {
+      for (int row = 0; row < h; row++) {
+        if (get(x + col, y + row)) {
+          result.set(col, row, true);
+        }
+      }
+    }
+    return result;
+  }
+
+  LifePattern cut(int x, int y, int w, int h) {
+    LifePattern result = copy(x, y, w, h);
+    setRect(x, y, w, h, null);
+    return result;
+  }
+
+  void overlay(LifePattern map, {int sx: 0, int sy: 0}) {
+    map.each((int x, int y) {
+      set(x + sx, y + sy, true);
+    });
+  }
+
+  LifePattern duplicate() {
+    LifePattern result = new LifePattern();
+    _map.forEach((List<bool> row) {
+      if (row == null) {
+        result.map.add(null);
+      } else {
+        result.map.add(row.toList());
+      }
+    });
+    return result;
+  }
+}
