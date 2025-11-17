@@ -314,9 +314,9 @@ class _AnimatedImageState extends State<AnimatedImage> {
                     controller: _loopDurationController,
                     min: 0,
                     onChanged: (value) {
-                      // setState(() {
-                      _loopDuration = value.value;
-                      // });
+                      setState(() {
+                        _loopDuration = value.value;
+                      });
                     },
                   ),
               )
@@ -344,6 +344,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
               )
             ],
           ),
+          Container(height: 10)
         ],
       ),
     );
@@ -352,12 +353,17 @@ class _AnimatedImageState extends State<AnimatedImage> {
   Widget _buildEncodeTable() {
     var rows = <TableRow>[];
     var headerStyle = gcwTextStyle().copyWith(fontWeight: FontWeight.bold);
+    // header
     rows.add(TableRow(children: [
       Container(),
-      GCWText(text: 'i'), //i18n(context, 'common_index'), style: headerStyle),
-      _loopDuration > 0 ? Container() : GCWText(text: 'D'), //'Duration' + ' (ms)', style: headerStyle),),
+      _verticalDivider,
+      GCWText(text: i18n(context, 'common_index'), style: headerStyle),
+      _verticalDivider,
+      _showLoopDuration() ? GCWText(text: 'Duration' + ' (ms)', style: headerStyle) : Container(),
+      _verticalDivider,
       Container()])
     );
+    // rows
     for (var i = 0; i < _encodeDurations.length + 1; i++) {
       var rowColor = i.isOdd ? themeColors().outputListOddRows() : themeColors().primaryBackground();
       Widget imageWidget = Container();
@@ -367,10 +373,12 @@ class _AnimatedImageState extends State<AnimatedImage> {
         imageWidget = GCWSymbolContainer(symbol: image);
         imageWidget = SizedBox(height: 32, child: imageWidget);
       }
+
       rows.add(TableRow(
         decoration: BoxDecoration(color: rowColor),
         children: [
           imageWidget,
+          Container(),
           GCWIntegerTextField(
             min: 0,
             controller: _getTextEditingController(i, 0,
@@ -385,27 +393,32 @@ class _AnimatedImageState extends State<AnimatedImage> {
               }
             },
           ),
-          _loopDuration > 0
-            ? Container()
-            : GCWIntegerTextField(
-              min: 0,
-              controller: _getTextEditingController(i, 1,
-                  i < _encodeDurations.length ? _encodeDurations[i].value.toString(): ''),
-              onChanged: (IntegerText ret) {
-                if (i < _encodeDurations.length) {
-                  _encodeDurations[i] = MapEntry<int, int>(_encodeDurations[i].key, ret.value);
-                } else {
-                  setState(() {
-                    _encodeDurations.add(MapEntry<int, int>(0, ret.value));
-                  });
-                }
-              },
-            ),
+          Container(),
+          _showLoopDuration()
+            ? GCWIntegerTextField(
+                min: 0,
+                hintText: '300',
+                controller: _getTextEditingController(i, 1,
+                    i < _encodeDurations.length ? _encodeDurations[i].value.toString(): ''),
+                onChanged: (IntegerText ret) {
+                  if (i < _encodeDurations.length) {
+                    _encodeDurations[i] = MapEntry<int, int>(_encodeDurations[i].key, ret.value);
+                  } else {
+                    setState(() {
+                      _encodeDurations.add(MapEntry<int, int>(0, ret.value));
+                    });
+                  }
+                },
+              )
+            : Container(),
+          Container(),
           GCWIconButton(
             icon: Icons.remove,
             onPressed: () {
               setState(() {
-                _encodeDurations.removeAt(i);
+                if (i < _encodeDurations.length) {
+                  _encodeDurations.removeAt(i);
+                }
               });
             },
           )
@@ -414,20 +427,35 @@ class _AnimatedImageState extends State<AnimatedImage> {
     }
     return Row(children: [
       Expanded(flex: 1, child: Container()),
-      Expanded(flex: 6, child:
+      Expanded(flex: 12, child:
         Table(
-          border: const TableBorder.symmetric(outside: BorderSide(width: 1, color: Colors.transparent)),
+          //border: const TableBorder(verticalInside: BorderSide(width: 20, color: Colors.greenAccent)),
+          // border: const TableBorder.symmetric(
+          //   outside: BorderSide(width: 10, color: Colors.transparent),
+          //   inside: BorderSide(width: 20, color: Colors.greenAccent)),
           columnWidths: {
             0: FixedColumnWidth(40),
-            1: FlexColumnWidth(50),
-            2: _loopDuration >= 0 ? FixedColumnWidth(0) : FlexColumnWidth(50),
-            3: IntrinsicColumnWidth()},
+            1: FixedColumnWidth(5),
+            2: FlexColumnWidth(50),
+            3: _showLoopDuration() ? FixedColumnWidth(5) : FixedColumnWidth(0),
+            4: _showLoopDuration() ? FlexColumnWidth(50) : FixedColumnWidth(0),
+            5: FixedColumnWidth(5),
+            6: IntrinsicColumnWidth()},
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           children: rows
         ),
       ),
       Expanded(flex: 1, child: Container()),
     ]);
+  }
+
+  final Widget _verticalDivider = const VerticalDivider(
+    color: Colors.blue,
+    thickness: 1,
+  );
+
+  bool _showLoopDuration() {
+    return _loopDuration <= 0;
   }
 
   TextEditingController? _getTextEditingController(int rowIndex, int columnIndex, String text) {
@@ -483,12 +511,9 @@ class _AnimatedImageState extends State<AnimatedImage> {
 
   void _saveOutputEncode(Uint8List? output) {
     _outDataEncode = output;
-try {
-  // WidgetsBinding.instance.addPostFrameCallback((_) {
-    setState(() {});
-  // });
-} catch (e) {}
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
   }
 
   Widget _buildOutputEncode() {
