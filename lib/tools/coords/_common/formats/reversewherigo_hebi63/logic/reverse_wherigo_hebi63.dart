@@ -91,6 +91,8 @@ LatLng? _reverseWIGHebi63ToLatLon(ReverseWherigoHebi63Coordinate hebi63) {
               int.parse(hebi63String[4]) - int.parse(hebi63String[3]));
   int latMinute1 = _decodeModulo10(int.parse(hebi63String[5]) - int.parse(hebi63String[4]));
   print(latMinute10.toString()+latMinute1.toString());
+  double latMinuteDec = (latMinute10 * 10 +latMinute1).toDouble();
+  print(latMinuteDec);
   int latMinute1_100 = _decodeModulo10(
                       int.parse(hebi63String[6]) - int.parse(hebi63String[5]));
   int latMinute1_10 = _decodeModulo10(
@@ -98,7 +100,9 @@ LatLng? _reverseWIGHebi63ToLatLon(ReverseWherigoHebi63Coordinate hebi63) {
   int latMinute1_1 = _decodeModulo10(
                   int.parse(hebi63String[8]) - int.parse(hebi63String[7]));
   print(latMinute1_100.toString()+latMinute1_10.toString()+latMinute1_1.toString());
-  latMinute = (latMinute10 * 10 +latMinute1) + (latMinute1_100 * 100 + latMinute1_10 * 10 + latMinute1_1) / 100.0;
+  double latMinuteFrac = (latMinute1_100 * 100 + latMinute1_10 * 10 + latMinute1_1) / 100.0;
+  print(latMinuteFrac);
+  latMinute = latMinuteDec + latMinuteFrac;
   print(latMinute);
   digit =
       _decodeModulo10(int.parse(hebi63String[9]) - int.parse(hebi63String[8]));
