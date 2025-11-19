@@ -71,9 +71,9 @@ ReverseWherigoHebi63Coordinate _latLonToReverseWIGHebi63(LatLng coord) {
   var __lat = coord.latitude;
   var __lon = coord.longitude;
 
-  String a, b, c;
-  
-   if (a == null || b == null || c == null) return null;
+  String a = '';
+  String b = '';
+  String c = '';
 
   return ReverseWherigoHebi63Coordinate(int.parse(a), int.parse(b), int.parse(c));
 }
