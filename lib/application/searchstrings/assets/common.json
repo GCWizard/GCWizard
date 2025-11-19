@@ -120,7 +120,7 @@
   "coordinates_distancebearing": "",
   "coordinates_ellipsoidtransform": "bessel 1841 bessel krassowski krasowksi krasovsky krassovsky 1950 1830 potsdam dhdn2001 dhdn1995 pulkowo mgi lv95 ed50 clarke 1866 osgb36 wgs84",
   "coordinates_equilateraltriangle": "",
-  "coordinates_formatconverter": "s2cells davidhilbert robertboschgmbh hartwigkoch franknaberfeld de10239432a1 gars globalareareferencesystem lambert93 lambert2008 lambert72 etrs89lcc cc42 cc43 cc44 cc45 cc46 cc47 cc48 cc49 cc50 l93 l70 l2008 rgf93 reseaugeodesiquefrancais lamb93 makaneycodes mkc quadtree nac naturalareacodes naturalareacoding openlocationcodes pluscodes olc 10ywaldmeister y10waldmeister xyz ecef reversewherigo reversewhereigo amersfoort reversewig maidenhead dutchgrid rd rijksdriehoeks geohash geohex geo3x3 qth swissgrid swiss grid mercator gausskruger gausskrueger mgrs utm dec deg dms 1903 ch1903+ lv03 lv95 slippymap tiles mapcode dfci",
+  "coordinates_formatconverter": "s2cells davidhilbert robertboschgmbh hartwigkoch franknaberfeld de10239432a1 gars globalareareferencesystem lambert93 lambert2008 lambert72 etrs89lcc cc42 cc43 cc44 cc45 cc46 cc47 cc48 cc49 cc50 l93 l70 l2008 rgf93 reseaugeodesiquefrancais lamb93 makaneycodes mkc quadtree nac naturalareacodes naturalareacoding openlocationcodes pluscodes olc 10ywaldmeister y10waldmeister xyz ecef reversewherigo reversewhereigo amersfoort reversewig maidenhead dutchgrid rd rijksdriehoeks geohash geohex geo3x3 qth swissgrid swiss grid mercator gausskruger gausskrueger mgrs utm dec deg dms 1903 ch1903+ lv03 lv95 slippymap tiles mapcode dfci hebi63",
   "coordinates_intersectbearing": "",
   "coordinates_intersectfourpoints": "4",
   "coordinates_intersectgeodeticandcircle": "",
