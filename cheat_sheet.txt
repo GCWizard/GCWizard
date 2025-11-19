@@ -94,15 +94,8 @@ XCode No access to accounts:
 Restart XCode or restart entire macOS
 
 ========
-Crowdin Script, install jq using Scoop.sh:
-Windows/Powershell
-
-Set-ExecutionPolicy RemoteSigned -scope CurrentUser
-iwr -useb get.scoop.sh | iex
-scoop bucket add extras
-scoop install jq
-
-Run Scripts in external_helpers/crowdin using the GitBash
+Crowdin CLI Install:
+https://github.com/crowdin/crowdin-cli/releases/latest/download/crowdin.exe
 
 Crowdin Upload: crowdin upload sources
 Crowdin Download: crowdin download

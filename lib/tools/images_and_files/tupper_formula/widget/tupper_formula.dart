@@ -1,14 +1,16 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
+import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
-import 'package:gc_wizard/common_widgets/spinners/gcw_dropdown_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
@@ -32,7 +34,7 @@ class _TupperFormulaState extends State<TupperFormula> {
   String _currentInput = '';
   int _currentWidth = 106;
   int _currentHeight = 17;
-  int _currentColorIndex = 0;
+  int _currentColorIndex = 1;
   int _currentColors = 2;
   GCWSwitchPosition _currentFormulaMode = GCWSwitchPosition.left;
 
@@ -122,14 +124,23 @@ class _TupperFormulaState extends State<TupperFormula> {
                   ],
                 ),
                 _currentMode == GCWSwitchPosition.left // encrypt
-                    ? GCWDropDownSpinner(
+                    ? GCWDropDown(
+                  title: i18n(context, 'common_color'),
+                        value: _currentColorIndex,
                         onChanged: (value) {
                           setState(() {
                             _currentColorIndex = value;
                           });
                         },
-                        index: _currentColorIndex,
-                        items: const ['2', '4', '8', '16'])
+                        items: SplayTreeMap<int, int>.from(
+                          TUPPER_COLOR_NUMBERS,
+                        ).entries.map((mode) {
+                          return GCWDropDownMenuItem(
+                            value: mode.key,
+                            child: mode.value,
+                          );
+                        }).toList(),
+                      )
                     : GCWIntegerSpinner(
                         min: 2,
                         max: 24,
@@ -167,7 +178,8 @@ class _TupperFormulaState extends State<TupperFormula> {
                         onPressed: () {
                           setState(() {
                             _currentK = _board.getK(
-                                _currentFormulaMode == GCWSwitchPosition.left,);
+                              _currentFormulaMode == GCWSwitchPosition.left,
+                            );
                           });
                         },
                       ),
@@ -180,7 +192,9 @@ class _TupperFormulaState extends State<TupperFormula> {
                         icon: Icons.clear,
                         onPressed: () {
                           setState(() {
-                            _board.reset();
+                            _board = TupperData(
+                                width: _currentWidth, height: _currentHeight);
+                            //_board.reset();
                           });
                         },
                       ),
@@ -189,28 +203,27 @@ class _TupperFormulaState extends State<TupperFormula> {
                 ],
               )
             : Column(
-          children: [
-            GCWTextField(
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-              ],
-              labelText: 'k',
-              controller: _inputController,
-              onChanged: (value) {
-                setState(() {
-                  _currentInput = value;
-                });
-              },
-            ),
-            GCWSubmitButton(
-                onPressed: () {
-                  setState(() {
-                    _createImageOutput();
-                  });
-                },
-                ),
-          ],
-        ),
+                children: [
+                  GCWTextField(
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+                    ],
+                    controller: _inputController,
+                    onChanged: (value) {
+                      setState(() {
+                        _currentInput = value;
+                      });
+                    },
+                  ),
+                  GCWSubmitButton(
+                    onPressed: () {
+                      setState(() {
+                        _createImageOutput();
+                      });
+                    },
+                  ),
+                ],
+              ),
         _buildOutput(),
       ],
     );
@@ -231,8 +244,8 @@ class _TupperFormulaState extends State<TupperFormula> {
     _codeData = null;
 
     var image = binary2Image(
-        kToImage(_currentInput, _currentFormulaMode == GCWSwitchPosition.left,
-            _currentWidth, _currentHeight, _currentColors),
+      kToImage(_currentInput, _currentFormulaMode == GCWSwitchPosition.left,
+          _currentWidth, _currentHeight, _currentColors),
     );
     if (image == null) return;
     input2Image(image).then((value) {
@@ -258,5 +271,4 @@ class _TupperFormulaState extends State<TupperFormula> {
           : Container(),
     ]);
   }
-
 }

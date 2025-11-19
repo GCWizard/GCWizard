@@ -12,12 +12,12 @@ class AnimatedImageMorseCodeJobData {
   final int? imageFirstDuration;
   final int? imageLast;
   final int? imageLastDuration;
-  final int dotDuration;
+  final int ditDuration;
   final String text;
   final int loopCount;
 
   AnimatedImageMorseCodeJobData({required this.images, required this.imageOn, required this.imageOff,
-    required this.dotDuration, required this.text, this.imageFirst, this.imageFirstDuration,
+    required this.ditDuration, required this.text, this.imageFirst, this.imageFirstDuration,
     this.imageLast, this.imageLastDuration, this.loopCount = 0});
 }
 
@@ -25,7 +25,7 @@ Future<Uint8List?> createImageMorseCodeAsync(GCWAsyncExecuterParameters? jobData
   if (jobData?.parameters is! AnimatedImageMorseCodeJobData) return null;
 
   var data = jobData!.parameters as AnimatedImageMorseCodeJobData;
-  var output = createImage(data.images, _prepareDurations(data.imageOn, data.imageOff, data.dotDuration,
+  var output = createImage(data.images, _prepareDurations(data.imageOn, data.imageOff, data.ditDuration,
       data.text, data.imageFirst, data.imageFirstDuration, data.imageLast, data.imageLastDuration), data.loopCount);
 
   jobData.sendAsyncPort?.send(output);
@@ -33,46 +33,44 @@ Future<Uint8List?> createImageMorseCodeAsync(GCWAsyncExecuterParameters? jobData
   return output;
 }
 
-List<MapEntry<int, int>> _prepareDurations(int imageOn, int imageOff, int dotDurationLength, String text,
+List<MapEntry<int, int>> _prepareDurations(int imageOn, int imageOff, int ditDurationLength, String text,
     int? imageFirst, int? imageFirstDuration, int? imageLast, int? imageLastDuration) {
 
   var list = <MapEntry<int, int>>[];
-  var input = encodeMorse(text);
+  text = encodeMorse(text);
 
   if (imageFirst != null) {
-    list.add(MapEntry(imageFirst, imageFirstDuration ?? dotDurationLength));
+    list.add(MapEntry(imageFirst, imageFirstDuration ?? ditDurationLength));
   }
 
-  input = input.replaceAll('| ', '|');
-  input = input.replaceAll(' |', '|');
-  input = input.replaceAll('.', '.*');
-  input = input.replaceAll('-', '-*');
-  input = input.replaceAll('* ', ' ');
-  if (input[input.length - 1] == '*' && input.length > 1) input = input.substring(0, input.length - 1);
+  text = text.replaceAll('| ', '|');
+  text = text.replaceAll(' |', '|');
+  text = text.replaceAll('.', '.*');
+  text = text.replaceAll('-', '-*');
+  text = text.replaceAll('* ', ' ');
+  if (text[text.length - 1] == '*' && text.length > 1) text = text.substring(0, text.length - 1);
 
-  for (var i = 0; i < input.length; i++) {
-    switch (input[i]) {
+  for (var i = 0; i < text.length; i++) {
+    switch (text[i]) {
       case '.':
-        list.add(MapEntry(imageOn, dotDurationLength));
+        list.add(MapEntry(imageOn, ditDurationLength));
         break;
       case '-':
-        list.add(MapEntry(imageOn, dotDurationLength * 3));
+        list.add(MapEntry(imageOn, ditDurationLength * 3));
         break;
       case '*':
-        list.add(MapEntry(imageOff, dotDurationLength));
+        list.add(MapEntry(imageOff, ditDurationLength));
         break;
       case ' ':
-        list.add(MapEntry(imageOff, dotDurationLength * 3));
+        list.add(MapEntry(imageOff, ditDurationLength * 3));
         break;
       case '|':
-        list.add(MapEntry(imageOff, dotDurationLength * 7));
+        list.add(MapEntry(imageOff, ditDurationLength * 7));
         break;
     }
   }
-
   if (imageLast != null) {
-    list.add(MapEntry(imageLast, imageLastDuration ?? dotDurationLength));
+    list.add(MapEntry(imageLast, imageLastDuration ?? ditDurationLength));
   }
-
   return list;
 }

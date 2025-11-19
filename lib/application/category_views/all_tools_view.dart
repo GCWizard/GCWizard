@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/_common/gcw_package_info.dart';
 import 'package:gc_wizard/application/category_views/favorites.dart';
@@ -387,7 +388,7 @@ class _MainViewState extends State<MainView> {
 
       if (countAppOpened > 0 && (countAppOpened == 10 || countAppOpened % _SHOW_SUPPORT_HINT_EVERY_N == 0)) {
         _checkForGoldVersion().then((value) {
-          if (!value) {
+          if (!value && !kIsWeb) {
             showGCWAlertDialog(
               context,
               i18n(context, 'common_support_title'),

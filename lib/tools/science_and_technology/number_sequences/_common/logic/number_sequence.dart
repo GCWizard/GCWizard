@@ -62,6 +62,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/sublime_
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/superperfect_numbers/logic/list_super_perfect_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/taxicab/logic/list_taxicab_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/weird_numbers/logic/list_weird_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/suitable_numbers/logic/list_suitable_numbers.dart';
 
 part 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence_checknumber.dart';
 part 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence_containsdigits.dart';
@@ -105,6 +106,7 @@ const Map<NumberSequencesMode, String> NUMBERSEQUENCE_TITLE = {
   NumberSequencesMode.TAXICAB: 'numbersequence_taxicabnumbers_title',
   NumberSequencesMode.LONELY: 'numbersequence_lonelynumbers_title',
   NumberSequencesMode.PALINDROME_PRIMES: 'numbersequence_palindromeprimes_title',
+  NumberSequencesMode.SUITABLE_NUMBERS: 'numbersequence_suitablenumbers_title',
 };
 
 class PositionOfSequenceOutput {
@@ -149,7 +151,8 @@ enum NumberSequencesMode {
   HARSHAD,
   TAXICAB,
   LONELY,
-  PALINDROME_PRIMES
+  PALINDROME_PRIMES,
+  SUITABLE_NUMBERS,
 }
 
 final Zero = BigInt.zero;

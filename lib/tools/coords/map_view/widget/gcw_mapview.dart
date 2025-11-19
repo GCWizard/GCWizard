@@ -216,7 +216,8 @@ class _GCWMapViewState extends State<GCWMapView> {
           )
         : TileLayer(
             urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          );
+            userAgentPackageName: 'dev.fleaflet.flutter_map.de.sman42.gcWizard',
+    );
 
     var layers = <Widget>[tileLayer];
     layers.addAll(_buildLinesAndMarkersLayers());

@@ -76,6 +76,7 @@ import 'package:gc_wizard/application/category_views/selector_lists/number_seque
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_sphenicnumber_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_sublimenumbers_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_suitablenumbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_superperfectnumbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_taxicab_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_weirdnumbers_selection.dart';
@@ -455,6 +456,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/primes/w
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/recaman/widget/recaman.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/sphenic_numbers/widget/spenic_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/sublime_numbers/widget/sublime_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/suitable_numbers/widget/suitable_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/superperfect_numbers/widget/superperfect_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/taxicab/widget/taxicab_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/weird_numbers/widget/weird_numbers.dart';
@@ -668,12 +670,6 @@ void initializeRegistry(BuildContext context) {
         id: 'babylonnumbers_selection',
         categories: const [ToolCategory.CRYPTOGRAPHY],
         searchKeys: const []),
-    GCWTool(tool: const Bacon(), id: 'bacon', categories: const [
-      ToolCategory.CRYPTOGRAPHY
-    ], searchKeys: const [
-      'bacon',
-      'binary',
-    ]),
     GCWTool(
         tool: const BaconSelection(),
         id: 'bacon_selection',
@@ -2462,32 +2458,21 @@ void initializeRegistry(BuildContext context) {
         ]),
 
     //Babylon Numbers Selection **************************************************************************************
-    GCWTool(
-        tool: const BabylonNumbers(),
-        id: 'babylonnumbers',
+    GCWTool(tool: const BabylonNumbers(), id: 'babylonnumbers',
         searchKeys: const [
           'babylonian_numerals',
         ],
         licenses: const []),
 
     //BaconSelection **************************************************************************************************
-    GCWTool(
-        tool: const Bacon(),
-        id: 'bacon',
-        categories: const [],
-        searchKeys: const [
-          'bacon',
-          'binary',
-        ]),
-    GCWTool(
-        tool: const BaconAnalyze(),
-        id: 'bacon_analyze',
-        categories: const [],
-        searchKeys: const [
-          'bacon',
-          'binary',
-        ]),
-
+    GCWTool(tool: const Bacon(), id: 'bacon', searchKeys: const [
+      'bacon',
+      'binary',
+    ]),
+    GCWTool(tool: const BaconAnalyze(), id: 'bacon_analyze', searchKeys: const [
+      'bacon',
+      'binary',
+    ]),
     //BaseSelection **************************************************************************************************
     GCWTool(tool: Base16(), id: 'base_base16', searchKeys: const [
       'base',
@@ -3179,6 +3164,12 @@ void initializeRegistry(BuildContext context) {
             licenseType: ToolLicenseType.MIT,
             licenseUrl:
                 'https://web.archive.org/web/20250630134152/https://github.com/PattuX/auto_reverse_wig_solver/blob/master/LICENSE.txt'),
+        ToolLicensePortedCode(
+            context: context,
+            author: 'MZCacheHunter',
+            title: 'The Reverse Cache (10Y) ',
+            sourceUrl: 'https://web.archive.org/web/20251105192200/https://www.wherigo.com/cartridge/details.aspx?CGUID=62e80ba9-8ce2-4c1b-90d3-64740526966b',
+            licenseType: ToolLicenseType.REPRODUCTION_NEEDED),
         ToolLicensePortedCode(
             context: context,
             author: 'Google Inc.',
@@ -5220,6 +5211,7 @@ void initializeRegistry(BuildContext context) {
           ToolLicenseOnlineArticle(
             context: context,
             author: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
+            publisher: 'OAIS',
             title: 'A007304',
             sourceUrl:
             'https://web.archive.org/web/20250114133913/https://oeis.org/A007304/b007304.txt',
@@ -5284,24 +5276,6 @@ void initializeRegistry(BuildContext context) {
           ),
         ]),
     GCWTool(
-        tool: const NumberSequenceSphenicNumbersSelection(),
-        id: 'numbersequence_sphenicnumbers',
-        searchKeys: const [
-          'numbers',
-          'numbersequence',
-          'numbersequence_sphenicnumbersselection',
-        ],
-        licenses: [
-          ToolLicenseOnlineArticle(
-            context: context,
-            author: 'Unknown',
-            publisher: 'OAIS',
-            title: 'A007304',
-            sourceUrl:
-            'https://web.archive.org/web/20250114133913/https://oeis.org/A007304/b007304.txt',
-          ),
-        ]),
-    GCWTool(
         tool: const NumberSequenceLonelyNumbersSelection(),
         id: 'numbersequence_lonelynumbers',
         searchKeys: const [
@@ -5331,12 +5305,76 @@ void initializeRegistry(BuildContext context) {
           ToolLicenseOnlineArticle(
             context: context,
             author: 'Unknown',
-            publisher: 'OAIS',
+            publisher: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
             title: 'A002385',
             sourceUrl:
             'https://web.archive.org/web/20241229231226/https://oeis.org/A002385/b002385.txt',
           ),
         ]),
+    GCWTool(
+        tool: const NumberSequenceSuitableNumbersSelection(),
+        id: 'numbersequence_suitablenumbers',
+        searchKeys: const [
+          'numbers',
+          'numbersequence',
+          'numbersequence_suitablenumbersselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Unknown',
+            publisher: 'OEIS',
+            title: 'A000926',
+            sourceUrl:
+            'https://web.archive.org/web/20241229231226/https://oeis.org/A002385/b002385.txt',
+          ),
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'en.wikipedia.org and contributors',
+            title: 'Idoneal number',
+            licenseType: ToolLicenseType.CCBYSA4,
+            licenseUrl:
+            'https://en.wikipedia.org/w/index.php?title=Wikipedia:Text_of_the_Creative_Commons_Attribution-ShareAlike_4.0_International_License&oldid=1162946924',
+            sourceUrl:
+            'https://en.wikipedia.org/w/index.php?title=Idoneal_number&oldid=1283811656',
+          ),
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Florian Freistetter',
+            publisher: 'Spektrum.de',
+            title: 'Das Geheimnis um geeignete Zahlen',
+            sourceUrl:
+            'https://web.archive.org/web/20251105212042/https://www.spektrum.de/kolumne/das-geheimnis-um-geeignete-zahlen/2283662',
+          ),
+        ]),
+
+    //NumberSequenceSelection SuitableNumbers ****************************************************************************************
+    GCWTool(
+        tool: const NumberSequenceSuitableNumbersNthNumber(),
+        id: 'numbersequence_nth',
+        id_prefix: 'suitablenumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceSuitableNumbersRange(),
+        id: 'numbersequence_range',
+        id_prefix: 'suitablenumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceSuitableNumbersCheckNumber(),
+        id: 'numbersequence_check',
+        id_prefix: 'suitablenumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceSuitableNumbersDigits(),
+        id: 'numbersequence_digits',
+        id_prefix: 'suitablenumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceSuitableNumbersContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        id_prefix: 'suitablenumbers_',
+        searchKeys: const []),
+
 
     //NumberSequenceSelection LonelyNumbers ****************************************************************************************
     GCWTool(
@@ -7196,6 +7234,8 @@ void initializeRegistry(BuildContext context) {
     ]),
     GCWSymbolTableTool(symbolKey: 'billiard_balls', symbolSearchStrings: const [
       'symbol_billiard_balls',
+      'color',
+      'circle',
     ], licenses: [
       ToolLicenseImage(
           context: context,
@@ -7309,6 +7349,7 @@ void initializeRegistry(BuildContext context) {
         symbolKey: 'chain_of_death_direction',
         symbolSearchStrings: const [
           'symbol_chain_of_death_direction',
+          'circle'
         ],
         licenses: [
           stl._toolLicenseWrixonGeheimsprachen,
@@ -8267,6 +8308,7 @@ void initializeRegistry(BuildContext context) {
     ]),
     GCWSymbolTableTool(symbolKey: 'gallifreyan', symbolSearchStrings: const [
       'symbol_gallifreyan',
+      'circle'
     ], licenses: [
       ToolLicenseImage(
           context: context,
@@ -8495,10 +8537,15 @@ void initializeRegistry(BuildContext context) {
         ]),
     GCWSymbolTableTool(symbolKey: 'hieroglyphs', symbolSearchStrings: const [
       'symbol_hieroglyphs',
-    ], licenses: const []),
-    GCWSymbolTableTool(symbolKey: 'hieroglyphs_v2', symbolSearchStrings: const [
-      'symbol_hieroglyphs',
-    ], licenses: const []),
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'de.wikipedia.org and contributors',
+          title: 'Ägyptische Hieroglyphen',
+          sourceUrl:
+          'https://de.wikipedia.org/w/index.php?title=%C3%84gyptische_Hieroglyphen&oldid=256091998',
+          licenseType: ToolLicenseType.CCBYSA4)
+    ]),
     GCWSymbolTableTool(symbolKey: 'hobbit_runes', symbolSearchStrings: const [
       'symbol_lordoftherings',
       'symbol_runes',
@@ -8922,6 +8969,7 @@ void initializeRegistry(BuildContext context) {
     ]),
     GCWSymbolTableTool(symbolKey: 'krypton', symbolSearchStrings: const [
       'symbol_krypton',
+      'circle'
     ], licenses: [
       stl._toolLicenseCullyLong,
     ]),
@@ -9074,6 +9122,7 @@ void initializeRegistry(BuildContext context) {
       ]),
     GCWSymbolTableTool(symbolKey: 'matoran', symbolSearchStrings: const [
       'symbol_matoran',
+      'circle'
     ], licenses: [
       ToolLicenseFont(
           context: context,
@@ -9178,6 +9227,7 @@ void initializeRegistry(BuildContext context) {
     ]),
     GCWSymbolTableTool(symbolKey: 'moon_phases', symbolSearchStrings: const [
       'symbol_moon_phases',
+      'circle'
     ], licenses: [
       ToolLicenseOnlineArticle(
           context: context,
@@ -10166,6 +10216,23 @@ void initializeRegistry(BuildContext context) {
                   'https://en.wikipedia.org/w/index.php?title=Gregor_and_the_Code_of_Claw&oldid=1176094103',
               licenseType: ToolLicenseType.CCBYSA4)
         ]),
+    GCWSymbolTableTool(
+        symbolKey: 'snooker',
+        symbolSearchStrings: const [
+          'symbol_snooker',
+          'symbol_billiard_balls',
+          'color',
+          'circle',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+              context: context,
+              author: 'de.wikipedia and contributors',
+              title: 'Liste der Snooker-Begriffe',
+              sourceUrl:
+              'https://de.m.wikipedia.org/w/index.php?title=Liste_der_Snooker-Begriffe&oldid=256502442',
+              licenseType: ToolLicenseType.CCBYSA4)
+        ]),
     GCWSymbolTableTool(symbolKey: 'solmisation', symbolSearchStrings: const [
       'symbol_solmisation',
     ], licenses: [
@@ -10258,6 +10325,7 @@ void initializeRegistry(BuildContext context) {
     ], licenses: const []),
     GCWSymbolTableTool(symbolKey: 'stippelcode', symbolSearchStrings: const [
       'symbol_stippelcode',
+      'circle'
     ], licenses: [
       stl._toolLicenseGeocachingToolbox,
     ]),
@@ -10786,6 +10854,7 @@ void initializeRegistry(BuildContext context) {
       'weather',
       'weather_n',
       'weather_clouds'
+      'circle'
     ], licenses: [
       ToolLicenseImage(
           context: context,
@@ -10898,17 +10967,6 @@ void initializeRegistry(BuildContext context) {
           sourceUrl: 'https://web.archive.org/web/20241004220413/https://geocachen.be/geocaching/geocache-puzzels-oplossen/molentaal/',
           licenseType: ToolLicenseType.FREE_TO_USE,
           customComment: 'Pending'), // todo ask for License
-    ]),
-    GCWSymbolTableTool(symbolKey: 'wingdings', symbolSearchStrings: const [
-      'symbol_wingdings',
-    ], licenses: [
-      ToolLicenseOnlineArticle(
-          context: context,
-          author: 'commons.wikimedia.org and contributors',
-          title: 'Wingdings',
-          sourceUrl:
-              'https://commons.wikimedia.org/wiki/File:Wingdings.png',
-          licenseType: ToolLicenseType.PUBLIC_DOMAIN)
     ]),
     GCWSymbolTableTool(
         symbolKey: 'windforce_knots',

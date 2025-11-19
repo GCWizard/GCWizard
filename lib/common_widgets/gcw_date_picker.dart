@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
-import 'package:gc_wizard/common_widgets/spinners/gcw_dropdown_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/spinner_constants.dart';
-import 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar/logic/calendar_constants.dart';
 
 class GCWDatePicker extends StatefulWidget {
   final void Function(DateTime) onChanged;
   final DateTime date;
-  final CalendarSystem type;
 
   final TextEditingController? yearController;
   final TextEditingController? monthController;
@@ -18,7 +14,6 @@ class GCWDatePicker extends StatefulWidget {
     super.key,
     required this.onChanged,
     required this.date,
-    this.type = CalendarSystem.GREGORIANCALENDAR,
     this.yearController,
     this.monthController,
     this.dayController,
@@ -77,7 +72,7 @@ class _GCWDatePickerState extends State<GCWDatePicker> {
                 controller: widget.yearController,
                 value: _currentYear,
                 min: -5000,
-                max: 5000,
+                max: 9000,
                 onChanged: (value) {
                   setState(() {
                     _currentYear = value;
@@ -91,29 +86,27 @@ class _GCWDatePickerState extends State<GCWDatePicker> {
               )),
         ),
         Expanded(
-            child: Padding(padding: const EdgeInsets.only(left: 2, right: 2), child: _buildMonthSpinner(widget.type))),
+            child: Padding(padding: const EdgeInsets.only(left: 2, right: 2), child: _buildMonthSpinner())),
         Expanded(
             child: Padding(
           padding: const EdgeInsets.only(left: 2),
-          child: _buildDaySpinner(widget.type),
+          child: _buildDaySpinner(),
         ))
       ],
     );
   }
 
-  Widget _buildDaySpinner(CalendarSystem type) {
-    int maxDays = 31;
-    if (type == CalendarSystem.POTRZEBIECALENDAR) maxDays = 10;
-
+  Widget _buildDaySpinner() {
     return GCWIntegerSpinner(
       focusNode: _dayFocusNode,
       layout: SpinnerLayout.VERTICAL,
       controller: widget.dayController,
       value: _currentDay,
       min: 1,
-      max: maxDays,
+      max: 31,
       onChanged: (value) {
         setState(() {
+
           _currentDay = value;
           _setCurrentValueAndEmitOnChange();
         });
@@ -121,29 +114,7 @@ class _GCWDatePickerState extends State<GCWDatePicker> {
     );
   }
 
-  Widget _buildMonthSpinner(CalendarSystem type) {
-    if (type == CalendarSystem.ISLAMICCALENDAR ||
-        type == CalendarSystem.PERSIANYAZDEGARDCALENDAR ||
-        type == CalendarSystem.HEBREWCALENDAR ||
-        type == CalendarSystem.POTRZEBIECALENDAR ||
-        type == CalendarSystem.COPTICCALENDAR) {
-      return GCWDropDownSpinner(
-        index: _currentMonth,
-        layout: SpinnerLayout.VERTICAL,
-        items: MONTH_NAMES[type]!.entries.map((entry) {
-          return GCWDropDownMenuItem(value: entry.key - 1, child: entry.value);
-        }).toList(),
-        onChanged: (value) {
-          setState(() {
-            _currentMonth = value;
-            _setCurrentNamedCalendarValueAndEmitOnChange();
-            if (_currentMonth.toString().length == 2) {
-              FocusScope.of(context).requestFocus(_dayFocusNode);
-            }
-          });
-        },
-      );
-    } else if (type == CalendarSystem.JULIANCALENDAR || type == CalendarSystem.GREGORIANCALENDAR) {
+  Widget _buildMonthSpinner() {
       return GCWIntegerSpinner(
         focusNode: _monthFocusNode,
         layout: SpinnerLayout.VERTICAL,
@@ -162,13 +133,6 @@ class _GCWDatePickerState extends State<GCWDatePicker> {
           });
         },
       );
-    } else {
-      return Container();
-    }
-  }
-
-  void _setCurrentNamedCalendarValueAndEmitOnChange() {
-    widget.onChanged(DateTime(_currentYear, _currentMonth + 1, _currentDay));
   }
 
   void _setCurrentValueAndEmitOnChange() {

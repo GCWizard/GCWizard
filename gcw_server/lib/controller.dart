@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:gc_wizard/application/webapi/api_mapper.dart';
+import 'package:gc_wizard/application/webapi/deeplinks/deeplinks.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/alphabet_values/api_mapper/alphabet_values.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/morse/api_mapper/morse.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/reverse/api_mapper/reverse.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/roman_numbers/api_mapper/roman_numbers.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rotation/api_mapper/rotation.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
-import 'package:gcw_server/web_parameter.dart';
 
 final Set<APIMapper> _apiList = {
   AlphabetValuesAPIMapper(),

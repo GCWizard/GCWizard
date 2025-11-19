@@ -82,7 +82,7 @@ class _VigenereState extends State<Vigenere> {
   int _currentAValue = 0;
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
   bool _currentAutokey = false;
-  bool _currentNonLetters = false;
+  bool _currentNonLetters = true;
 
   @override
   void initState() {

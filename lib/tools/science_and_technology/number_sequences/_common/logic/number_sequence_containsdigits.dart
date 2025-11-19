@@ -319,6 +319,9 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
       case NumberSequencesMode.PALINDROME_PRIMES:
         sequenceList.addAll(palindrome_primes);
         break;
+      case NumberSequencesMode.SUITABLE_NUMBERS:
+        sequenceList.addAll(suitable_numbers);
+        break;
       default:
         {}
     }

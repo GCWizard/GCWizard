@@ -71,30 +71,33 @@ Uint8List? createImage(List<Uint8List> images,  List<MapEntry<int, int>> duratio
       convertedImages.add(convertedImage);
     }
 
+    // image count optimization
+    for (var i = durations.length - 1; i > 0; i--) {
+      if (durations[i].key == durations[i - 1].key) {
+        durations[i - 1] = MapEntry<int, int>(durations[i].key, durations[i].value + durations[i - 1].value);
+        durations.removeAt(i);
+      }
+    }
+
     var animation = <Image.Image>[];
     for (var i = 0; i < durations.length; i++) {
-      if (durations[i].key > 0 && durations[i].key <= convertedImages.length ) {
-        var imageClone = Image.Image.from(convertedImages[durations[i].key - 1]!);
-        imageClone.frameDuration = max(durations[i].value, 0);
-
+      var key = durations[i].key;
+      if (key > 0 && key <= convertedImages.length && convertedImages[key - 1] != null) {
+        var imageClone = Image.Image.from(convertedImages[key - 1]!);
+        if (i < durations.length ) {
+          imageClone.frameDuration = max(durations[i].value, 0);
+        }
         animation.add(imageClone);
       }
     }
 
-    // image count optimation
-    for (var i = animation.length - 1; i > 0; i--) {
-      if (durations[i].key == durations[i - 1].key) {
-        animation[i - 1].frameDuration += animation[i].frameDuration;
-        animation.removeAt(i);
-      }
-    }
-
-    var encoder = Image.GifEncoder(repeat: max(loopCount, 0));
+    var encoder = Image.GifEncoder(repeat: loopCount);
     for (var image in animation) {
       encoder.addFrame(image);
     }
 
     return encoder.finish();
+
   } on Exception {
     return null;
   }

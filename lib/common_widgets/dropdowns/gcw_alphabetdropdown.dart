@@ -7,7 +7,8 @@ class GCWAlphabetDropDown<T> extends StatefulWidget {
   final void Function(T) onChanged;
   final void Function(String)? onCustomAlphabetChanged;
   final Map<T, String> items;
-  final T customModeKey;
+  final Map<T, String>? subtitles;
+  final T? customModeKey;
   final T value;
   final TextEditingController? textFieldController;
   final String? textFieldHintText;
@@ -16,9 +17,10 @@ class GCWAlphabetDropDown<T> extends StatefulWidget {
     super.key,
     required this.value,
     required this.items,
+    this.subtitles,
     required this.onChanged,
     this.onCustomAlphabetChanged,
-    required this.customModeKey,
+    this.customModeKey,
     this.textFieldController,
     this.textFieldHintText,
   });
@@ -42,10 +44,14 @@ class _GCWAlphabetDropDownState<T> extends State<GCWAlphabetDropDown<T>> {
           });
         },
         items: widget.items.entries.map((mode) {
-          return GCWDropDownMenuItem(value: mode.key, child: mode.value);
+          return GCWDropDownMenuItem(
+            value: mode.key,
+            child: mode.value,
+            subtitle: widget.subtitles?[mode.key] ?? ''
+          );
         }).toList(),
       ),
-      if (_currentMode == widget.customModeKey)
+      if (widget.customModeKey != null && _currentMode == widget.customModeKey)
         GCWTextField(
           hintText: widget.textFieldHintText ?? i18n(context, 'common_alphabet'),
           controller: widget.textFieldController,

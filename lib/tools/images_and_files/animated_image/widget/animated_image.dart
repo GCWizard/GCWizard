@@ -47,16 +47,15 @@ class _AnimatedImageState extends State<AnimatedImage> {
   AnimatedImageOutput? _outData;
   GCWFile? _file;
   bool _play = false;
-
   var _currentMode = GCWSwitchPosition.right;
-  final List<GCWImageViewData> _encodeImageData = [];
-  final List<MapEntry<int, int>> _encodeDurations = [];
+  final List<MapEntry<int, int>> _encodeDurations = []; //image index, duration
   final List<List<TextEditingController?>> _textEditingControllerArray = [];
   final _loopDurationController = TextEditingController();
   var _loopDuration = 0;
   final _loopCountController = TextEditingController();
   var _loopCount = 0;
   Uint8List? _outDataEncode;
+  final List<GCWImageViewData> _encodeImageData = [];
   var _modeEncode = EncodeMode.LOOP;
   var _expandedEncodeOptions = false;
 
@@ -263,15 +262,29 @@ class _AnimatedImageState extends State<AnimatedImage> {
           });
         },
       ),
-      _buildEncodeGallery(_encodeImageData, setState),
+      GCWTextDivider(
+        text: '',
+        trailing: Row(children: <Widget>[
+          GCWIconButton(
+            icon: Icons.delete,
+            size: IconButtonSize.SMALL,
+            iconColor: _outData != null && !_play ? null : themeColors().inactive(),
+            onPressed: () {
+              setState(() {
+                _encodeImageData.removeWhere((data) => data.marked ?? false);
+                updateEncodeImageData(_encodeImageData);
+              });
+            },
+          ),
+        ]),
+      ),
+      buildEncodeGallery(_encodeImageData, setState),
       _buildEncodeOptions(),
       _buildEncodeTable(),
       _buildEncodeSubmitButton(),
       _buildOutputEncode()
     ]);
   }
-
-
   Widget _buildEncodeOptions() {
     return GCWExpandableTextDivider(
       text: i18n(context, 'common_options'),
@@ -301,9 +314,9 @@ class _AnimatedImageState extends State<AnimatedImage> {
                     controller: _loopDurationController,
                     min: 0,
                     onChanged: (value) {
-                      // setState(() {
-                      _loopDuration = value.value;
-                      // });
+                      setState(() {
+                        _loopDuration = value.value;
+                      });
                     },
                   ),
               )
@@ -331,6 +344,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
               )
             ],
           ),
+          Container(height: 10)
         ],
       ),
     );
@@ -339,12 +353,17 @@ class _AnimatedImageState extends State<AnimatedImage> {
   Widget _buildEncodeTable() {
     var rows = <TableRow>[];
     var headerStyle = gcwTextStyle().copyWith(fontWeight: FontWeight.bold);
+    // header
     rows.add(TableRow(children: [
       Container(),
+      _verticalDivider,
       GCWText(text: i18n(context, 'common_index'), style: headerStyle),
-      GCWText(text: 'Duration' + ' (ms)', style: headerStyle),
+      _verticalDivider,
+      _showLoopDuration() ? GCWText(text: 'Duration' + ' (ms)', style: headerStyle) : Container(),
+      _verticalDivider,
       Container()])
     );
+    // rows
     for (var i = 0; i < _encodeDurations.length + 1; i++) {
       var rowColor = i.isOdd ? themeColors().outputListOddRows() : themeColors().primaryBackground();
       Widget imageWidget = Container();
@@ -354,10 +373,12 @@ class _AnimatedImageState extends State<AnimatedImage> {
         imageWidget = GCWSymbolContainer(symbol: image);
         imageWidget = SizedBox(height: 32, child: imageWidget);
       }
+
       rows.add(TableRow(
         decoration: BoxDecoration(color: rowColor),
         children: [
           imageWidget,
+          Container(),
           GCWIntegerTextField(
             min: 0,
             controller: _getTextEditingController(i, 0,
@@ -372,27 +393,32 @@ class _AnimatedImageState extends State<AnimatedImage> {
               }
             },
           ),
-          _loopDuration >= 0
-            ? Container()
-            : GCWIntegerTextField(
-              min: 0,
-              controller: _getTextEditingController(i, 1,
-                  i < _encodeDurations.length ? _encodeDurations[i].value.toString(): ''),
-              onChanged: (IntegerText ret) {
-                if (i < _encodeDurations.length) {
-                  _encodeDurations[i] = MapEntry<int, int>(_encodeDurations[i].key, ret.value);
-                } else {
-                  setState(() {
-                    _encodeDurations.add(MapEntry<int, int>(0, ret.value));
-                  });
-                }
-              },
-            ),
+          Container(),
+          _showLoopDuration()
+            ? GCWIntegerTextField(
+                min: 0,
+                hintText: '300',
+                controller: _getTextEditingController(i, 1,
+                    i < _encodeDurations.length ? _encodeDurations[i].value.toString(): ''),
+                onChanged: (IntegerText ret) {
+                  if (i < _encodeDurations.length) {
+                    _encodeDurations[i] = MapEntry<int, int>(_encodeDurations[i].key, ret.value);
+                  } else {
+                    setState(() {
+                      _encodeDurations.add(MapEntry<int, int>(0, ret.value));
+                    });
+                  }
+                },
+              )
+            : Container(),
+          Container(),
           GCWIconButton(
             icon: Icons.remove,
             onPressed: () {
               setState(() {
-                _encodeDurations.removeAt(i);
+                if (i < _encodeDurations.length) {
+                  _encodeDurations.removeAt(i);
+                }
               });
             },
           )
@@ -401,18 +427,35 @@ class _AnimatedImageState extends State<AnimatedImage> {
     }
     return Row(children: [
       Expanded(flex: 1, child: Container()),
-      Expanded(flex: 6, child:
+      Expanded(flex: 12, child:
         Table(
-          border: const TableBorder.symmetric(outside: BorderSide(width: 1, color: Colors.transparent)),
-          columnWidths: {0: FlexColumnWidth(50),
-            1: _loopDuration >= 0 ? FixedColumnWidth(0) : FlexColumnWidth(50),
-            2: IntrinsicColumnWidth()},
+          //border: const TableBorder(verticalInside: BorderSide(width: 20, color: Colors.greenAccent)),
+          // border: const TableBorder.symmetric(
+          //   outside: BorderSide(width: 10, color: Colors.transparent),
+          //   inside: BorderSide(width: 20, color: Colors.greenAccent)),
+          columnWidths: {
+            0: FixedColumnWidth(40),
+            1: FixedColumnWidth(5),
+            2: FlexColumnWidth(50),
+            3: _showLoopDuration() ? FixedColumnWidth(5) : FixedColumnWidth(0),
+            4: _showLoopDuration() ? FlexColumnWidth(50) : FixedColumnWidth(0),
+            5: FixedColumnWidth(5),
+            6: IntrinsicColumnWidth()},
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           children: rows
         ),
       ),
       Expanded(flex: 1, child: Container()),
     ]);
+  }
+
+  final Widget _verticalDivider = const VerticalDivider(
+    color: Colors.blue,
+    thickness: 1,
+  );
+
+  bool _showLoopDuration() {
+    return _loopDuration <= 0;
   }
 
   TextEditingController? _getTextEditingController(int rowIndex, int columnIndex, String text) {
@@ -502,36 +545,18 @@ void openInAnimatedImage(BuildContext context, GCWFile file) {
               tool: AnimatedImage(file: file), toolName: i18n(context, 'animated_image_title'), id: 'animated_image')));
 }
 
-Widget _buildEncodeGallery(List<GCWImageViewData> list, Function setState ) {
-  return Column(
-      children: [
-        GCWTextDivider(
-          text: '',
-          trailing: Row(children: <Widget>[
-            GCWIconButton(
-              icon: Icons.delete,
-              size: IconButtonSize.SMALL,
-              //iconColor: _outData != null && !_play ? null : themeColors().inactive(),
-              onPressed: () {
-                list.removeWhere((data) => data.marked ?? false);
-                updateEncodeImageData(list);
-                setState(() {});
-              },
-            ),
-          ]),
-        ),
-        GCWGallery(
-            imageData: list,
-            onDoubleTap: (index) {
-              updateEncodeImageData(list, inversMarked: list[index]);
-              setState(() {});
-            }
-        ),
-      ]
+Widget buildEncodeGallery(List<GCWImageViewData> list, Function setState) {
+  return GCWGallery(
+      imageData: list,
+      onDoubleTap: (index) {
+        updateEncodeImageData(list, inversMarked: list[index]);
+        setState(() {});
+      }
   );
 }
 
 void updateEncodeImageData(List<GCWImageViewData> list, {Uint8List? addImage, GCWImageViewData? inversMarked}) {
+
   if (inversMarked != null) {
     var i = list.indexOf(inversMarked);
     if (i >= 0) {
@@ -545,9 +570,9 @@ void updateEncodeImageData(List<GCWImageViewData> list, {Uint8List? addImage, GC
   }
 
   var imageCount = list.length;
-  for (var i = 0; i < list.length; i++) {
+  for (var i = 0; i < imageCount; i++) {
     String description = (i + 1).toString() + '/$imageCount';
-    list.add(GCWImageViewData(list[i].file,
+    list[i] = (GCWImageViewData(list[i].file,
         description: description,
         marked: list[i].marked));
   }

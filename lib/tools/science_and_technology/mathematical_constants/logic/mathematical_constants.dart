@@ -10,6 +10,12 @@ class MathematicalConstant {
 }
 
 const Map<String, MathematicalConstant> MATHEMATICAL_CONSTANTS = {
+  'mathematical_constants_sophomoresdream_1': MathematicalConstant(
+      value: '1.29128 59970 62663 54040 72825 90595 60054 ...',
+  ),
+  'mathematical_constants_sophomoresdream_2': MathematicalConstant(
+      value: '0.78343 05107 12134 40705 92643 86526 97546 ...',
+  ),
   'mathematical_constants_ramanujan': MathematicalConstant(
     value: '1729',
     additional_names: ['mathematical_constants_hardyramanujan']
