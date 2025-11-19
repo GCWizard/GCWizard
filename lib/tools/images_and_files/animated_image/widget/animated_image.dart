@@ -453,7 +453,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
   }
   Widget _buildEncodeList() {
     var rows = _encodeDurations.mapIndexed((index, data) => _buildEncodeRowEntry(index)).toList();
-    rows.add(_buildEncodeRowEntry(_encodeDurations.length);
+    rows.add(_buildEncodeRowEntry(_encodeDurations.length));
 
     return Column(
       children: rows,
