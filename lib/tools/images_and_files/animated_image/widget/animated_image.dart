@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
@@ -13,6 +14,7 @@ import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_divider.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
+import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
@@ -280,7 +282,8 @@ class _AnimatedImageState extends State<AnimatedImage> {
       ),
       buildEncodeGallery(_encodeImageData, setState),
       _buildEncodeOptions(),
-      _buildEncodeTable(),
+      //_buildEncodeTable(),
+      _buildEncodeList(),
       _buildEncodeSubmitButton(),
       _buildOutputEncode()
     ]);
@@ -448,12 +451,20 @@ class _AnimatedImageState extends State<AnimatedImage> {
       Expanded(flex: 1, child: Container()),
     ]);
   }
+  Widget _buildEncodeList() {
+    var rows = _encodeDurations.mapIndexed((index, data) => _buildEncodeRowEntry(index)).toList();
+    rows.add(_buildEncodeRowEntry(_encodeDurations.length);
 
-  Widget _buildEncodeRowEntry(int i) {
+    return Column(
+      children: rows,
+    );
+  }
+
+  Widget _buildEncodeRowEntry(int index) {
     Widget imageWidget = Container();
-    if (i < _encodeDurations.length && _encodeDurations[i].key > 0 &&
-        _encodeDurations[i].key <= _encodeImageData.length) {
-      var image = Image.memory(_encodeImageData[_encodeDurations[i].key - 1].file.bytes);
+    if (index < _encodeDurations.length && _encodeDurations[index].key > 0 &&
+        _encodeDurations[index].key <= _encodeImageData.length) {
+      var image = Image.memory(_encodeImageData[_encodeDurations[index].key - 1].file.bytes);
       imageWidget = GCWSymbolContainer(symbol: image);
       imageWidget = SizedBox(height: 32, child: imageWidget);
     }
@@ -463,17 +474,15 @@ class _AnimatedImageState extends State<AnimatedImage> {
         Column(
           children: [
             imageWidget,
-            // Container(
-            //   padding: const EdgeInsets.only(left: DEFAULT_DESCRIPTION_MARGIN),
-            //   child: GCWText(
-            //     text: tool.options.entries.map((entry) {
-            //       var result = _optionNameKey(entry.value.toString(), tool.internalToolName);
-            //
-            //       return '${i18n(context, entry.key)}: ${i18n(context, result.toString(), ifTranslationNotExists: result)}';
-            //     }).join('\n'),
-            //     style: gcwDescriptionTextStyle(),
-            //   ),
-            // )
+            GCWDropDown<int>(
+                value: _encodeDurations[index].key,
+                onChanged: (value) {
+                  setState(() {
+                    _encodeDurations[index] = MapEntry<int, int>(value, _encodeDurations[index].value);
+                  });
+                },
+                items:_buildDropDownMenuItems(),
+            )
           ],
         ),
         Expanded(
@@ -481,11 +490,11 @@ class _AnimatedImageState extends State<AnimatedImage> {
             children: [
               GCWIntegerTextField(
                 min: 0,
-                controller: _getTextEditingController(i, 0,
-                    i < _encodeDurations.length ? _encodeDurations[i].key.toString(): ''),
+                controller: _getTextEditingController(index, 0,
+                    index < _encodeDurations.length ? _encodeDurations[index].key.toString(): ''),
                 onChanged: (IntegerText ret) {
-                  if (i < _encodeDurations.length) {
-                    _encodeDurations[i] = MapEntry<int, int>(ret.value, _encodeDurations[i].value);
+                  if (index < _encodeDurations.length) {
+                    _encodeDurations[index] = MapEntry<int, int>(ret.value, _encodeDurations[index].value);
                   } else {
                     setState(() {
                       _encodeDurations.add(MapEntry<int, int>(ret.value, 0));
@@ -502,8 +511,8 @@ class _AnimatedImageState extends State<AnimatedImage> {
               icon: Icons.remove,
               onPressed: () {
                 setState(() {
-                  _encodeDurations.removeAt(i);
-                  _textEditingControllerArray.removeAt(i);
+                  _encodeDurations.removeAt(index);
+                  _textEditingControllerArray.removeAt(index);
                 });
               },
             ),
@@ -518,11 +527,11 @@ class _AnimatedImageState extends State<AnimatedImage> {
               icon: Icons.arrow_drop_up,
               onPressed: () {
                 setState(() {
-                  if (i > 0) {
-                    var entry = _encodeDurations.removeAt(i);
-                    _encodeDurations.insert(i - 1, entry);
-                    var entry_ =_textEditingControllerArray.removeAt(i);
-                    _textEditingControllerArray.insert(i - 1, entry_);
+                  if (index > 0) {
+                    var entry = _encodeDurations.removeAt(index);
+                    _encodeDurations.insert(index - 1, entry);
+                    var entry_ =_textEditingControllerArray.removeAt(index);
+                    _textEditingControllerArray.insert(index - 1, entry_);
                   }
                 });
               },
@@ -531,11 +540,11 @@ class _AnimatedImageState extends State<AnimatedImage> {
               icon: Icons.arrow_drop_down,
               onPressed: () {
                 setState(() {
-                  if (i < _encodeDurations.length - 1) {
-                    var entry = _encodeDurations.removeAt(i);
-                    _encodeDurations.insert(i + 1, entry);
-                    var entry_ =_textEditingControllerArray.removeAt(i);
-                    _textEditingControllerArray.insert(i + 1, entry_);
+                  if (index < _encodeDurations.length - 1) {
+                    var entry = _encodeDurations.removeAt(index);
+                    _encodeDurations.insert(index + 1, entry);
+                    var entry_ =_textEditingControllerArray.removeAt(index);
+                    _textEditingControllerArray.insert(index + 1, entry_);
                   }
                 });
               },
@@ -546,6 +555,27 @@ class _AnimatedImageState extends State<AnimatedImage> {
     );
   }
 
+  List<GCWDropDownMenuItem<int>> _buildDropDownMenuItems() {
+    GCWDropDownMenuItem<int> _buildDropDownMenuItem(int i) {
+      Widget imageWidget = Container();
+      if (i >= 0 && i < _encodeDurations.length && _encodeDurations[i].key > 0 &&
+          _encodeDurations[i].key <= _encodeImageData.length) {
+        var image = Image.memory(_encodeImageData[_encodeDurations[i].key - 1].file.bytes);
+        imageWidget = GCWSymbolContainer(symbol: image);
+      }
+      imageWidget = SizedBox(height: 32, child: imageWidget);
+
+      return GCWDropDownMenuItem(
+          value: i,
+          child: Row(children: [
+            imageWidget
+          ]));
+    }
+
+    var list = _encodeImageData.mapIndexed((index, data) => _buildDropDownMenuItem(index)).toList();
+    list.insert(0, _buildDropDownMenuItem(_encodeDurations.length));
+    return list;
+  }
 
   final Widget _verticalDivider = const VerticalDivider(
     color: Colors.blue,
