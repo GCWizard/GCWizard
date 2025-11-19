@@ -449,6 +449,104 @@ class _AnimatedImageState extends State<AnimatedImage> {
     ]);
   }
 
+  Widget _buildEncodeRowEntry(int i) {
+    Widget imageWidget = Container();
+    if (i < _encodeDurations.length && _encodeDurations[i].key > 0 &&
+        _encodeDurations[i].key <= _encodeImageData.length) {
+      var image = Image.memory(_encodeImageData[_encodeDurations[i].key - 1].file.bytes);
+      imageWidget = GCWSymbolContainer(symbol: image);
+      imageWidget = SizedBox(height: 32, child: imageWidget);
+    }
+
+    return Row(
+      children: [
+        Column(
+          children: [
+            imageWidget,
+            // Container(
+            //   padding: const EdgeInsets.only(left: DEFAULT_DESCRIPTION_MARGIN),
+            //   child: GCWText(
+            //     text: tool.options.entries.map((entry) {
+            //       var result = _optionNameKey(entry.value.toString(), tool.internalToolName);
+            //
+            //       return '${i18n(context, entry.key)}: ${i18n(context, result.toString(), ifTranslationNotExists: result)}';
+            //     }).join('\n'),
+            //     style: gcwDescriptionTextStyle(),
+            //   ),
+            // )
+          ],
+        ),
+        Expanded(
+          child: Column(
+            children: [
+              GCWIntegerTextField(
+                min: 0,
+                controller: _getTextEditingController(i, 0,
+                    i < _encodeDurations.length ? _encodeDurations[i].key.toString(): ''),
+                onChanged: (IntegerText ret) {
+                  if (i < _encodeDurations.length) {
+                    _encodeDurations[i] = MapEntry<int, int>(ret.value, _encodeDurations[i].value);
+                  } else {
+                    setState(() {
+                      _encodeDurations.add(MapEntry<int, int>(ret.value, 0));
+                    });
+                  }
+                },
+              ),
+            ]
+          )
+        ),
+        Column(
+          children: [
+            GCWIconButton(
+              icon: Icons.remove,
+              onPressed: () {
+                setState(() {
+                  _encodeDurations.removeAt(i);
+                  _textEditingControllerArray.removeAt(i);
+                });
+              },
+            ),
+            GCWIconButton(
+              onPressed: () {}
+            )
+          ],
+        ),
+        Column(
+          children: [
+            GCWIconButton(
+              icon: Icons.arrow_drop_up,
+              onPressed: () {
+                setState(() {
+                  if (i > 0) {
+                    var entry = _encodeDurations.removeAt(i);
+                    _encodeDurations.insert(i - 1, entry);
+                    var entry_ =_textEditingControllerArray.removeAt(i);
+                    _textEditingControllerArray.insert(i - 1, entry_);
+                  }
+                });
+              },
+            ),
+            GCWIconButton(
+              icon: Icons.arrow_drop_down,
+              onPressed: () {
+                setState(() {
+                  if (i < _encodeDurations.length - 1) {
+                    var entry = _encodeDurations.removeAt(i);
+                    _encodeDurations.insert(i + 1, entry);
+                    var entry_ =_textEditingControllerArray.removeAt(i);
+                    _textEditingControllerArray.insert(i + 1, entry_);
+                  }
+                });
+              },
+            )
+          ],
+        )
+      ],
+    );
+  }
+
+
   final Widget _verticalDivider = const VerticalDivider(
     color: Colors.blue,
     thickness: 1,
