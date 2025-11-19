@@ -404,6 +404,7 @@ var allCoordinateWidgetInfos = [
   _GCWCoordWidgetInfoReverseWherigoWaldmeister(),
   _GCWCoordWidgetInfoReverseWherigoDay1976(),
   _GCWCoordWidgetInfoReverseWherigo10YWaldmeister(),
+  _GCWCoordWidgetInfoReverseWherigoHebi63(),
   _GCWCoordWidgetInfoGeohash(),
   _GCWCoordWidgetInfoBosch(),
   _GCWCoordWidgetInfoMakaney(),

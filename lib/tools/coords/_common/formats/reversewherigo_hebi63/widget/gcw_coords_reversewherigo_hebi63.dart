@@ -2,7 +2,7 @@ part of 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 
 class _GCWCoordWidgetInfoReverseWherigoHebi63 extends GCWCoordWidgetInfo {
   @override
-  CoordinateFormatKey get type => CoordinateFormatKey.REVERSE_WIG_WALDMEISTER;
+  CoordinateFormatKey get type => CoordinateFormatKey.REVERSE_WIG_HEBI63;
   @override
   String get i18nKey => reverseWherigoHebi63Key;
   @override
