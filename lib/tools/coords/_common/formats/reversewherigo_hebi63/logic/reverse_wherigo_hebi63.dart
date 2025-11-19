@@ -53,9 +53,6 @@ class ReverseWherigoHebi63Coordinate extends BaseCoordinate {
   }
 }
 
-const int _wLength = 6;
-const int _latLonFactor = 100000;
-
 LatLng? _reverseWIGHebi63ToLatLon(ReverseWherigoHebi63Coordinate hebi63) {
   var a = hebi63.a;
   var b = hebi63.b;
@@ -77,36 +74,23 @@ LatLng? _reverseWIGHebi63ToLatLon(ReverseWherigoHebi63Coordinate hebi63) {
 
   digit =
       _decodeModulo10(int.parse(hebi63String[1]) - int.parse(hebi63String[0]));
-  ((0 <= digit) && (digit <= 4)) ? latSign = 0 : latSign = -1;
+  ((0 <= digit) && (digit <= 4)) ? latSign = 1 : latSign = -1;
 
   int latDegree10 =
           _decodeModulo10(
               int.parse(hebi63String[2]) - int.parse(hebi63String[1])) ;
   int latDegree1 = _decodeModulo10(int.parse(hebi63String[3]) - int.parse(hebi63String[2]));
-  print(latDegree10.toString()+latDegree1.toString());
   latDegree = latDegree10 * 10 + latDegree1;
-  print(latDegree);
 
-  int latMinute10 = _decodeModulo10(
-              int.parse(hebi63String[4]) - int.parse(hebi63String[3]));
-  int latMinute1 = _decodeModulo10(int.parse(hebi63String[5]) - int.parse(hebi63String[4]));
-  print(latMinute10.toString()+latMinute1.toString());
-  double latMinuteDec = (latMinute10 * 10 +latMinute1).toDouble();
-  print(latMinuteDec);
-  int latMinute1_100 = _decodeModulo10(
-                      int.parse(hebi63String[6]) - int.parse(hebi63String[5]));
-  int latMinute1_10 = _decodeModulo10(
-                      int.parse(hebi63String[7]) - int.parse(hebi63String[6]));
-  int latMinute1_1 = _decodeModulo10(
-                  int.parse(hebi63String[8]) - int.parse(hebi63String[7]));
-  print(latMinute1_100.toString()+latMinute1_10.toString()+latMinute1_1.toString());
-  double latMinuteFrac = (latMinute1_100 * 100 + latMinute1_10 * 10 + latMinute1_1) / 100.0;
-  print(latMinuteFrac);
-  latMinute = latMinuteDec + latMinuteFrac;
-  print(latMinute);
+  latMinute = (_decodeModulo10(
+      int.parse(hebi63String[4]) - int.parse(hebi63String[3])) * 10 + _decodeModulo10(int.parse(hebi63String[5]) - int.parse(hebi63String[4]))).toDouble() + (_decodeModulo10(
+      int.parse(hebi63String[6]) - int.parse(hebi63String[5])) * 100 + _decodeModulo10(
+      int.parse(hebi63String[7]) - int.parse(hebi63String[6])) * 10 + _decodeModulo10(
+      int.parse(hebi63String[8]) - int.parse(hebi63String[7]))) / 1000.0;
+
   digit =
       _decodeModulo10(int.parse(hebi63String[9]) - int.parse(hebi63String[8]));
-  ((0 <= digit) && (digit <= 4)) ? lonSign = -1 : lonSign = 0;
+  ((0 <= digit) && (digit <= 4)) ? lonSign = -1 : lonSign = 1;
 
   digit =
       _decodeModulo10(int.parse(hebi63String[10]) - int.parse(hebi63String[9]));
@@ -122,7 +106,7 @@ LatLng? _reverseWIGHebi63ToLatLon(ReverseWherigoHebi63Coordinate hebi63) {
           _decodeModulo10(
               int.parse(hebi63String[13]) - int.parse(hebi63String[12])) +
       _decodeModulo10(int.parse(hebi63String[14]) - int.parse(hebi63String[13]));
-  print(lonMinute);
+
   lonMinute = lonMinute +
       (100 *
                   _decodeModulo10(int.parse(hebi63String[15]) -
@@ -132,27 +116,19 @@ LatLng? _reverseWIGHebi63ToLatLon(ReverseWherigoHebi63Coordinate hebi63) {
                       int.parse(hebi63String[15])) +
               _decodeModulo10(
                   int.parse(hebi63String[17]) - int.parse(hebi63String[16]))) /
-          100.0;
-print('-----------------------');
-print(latSign);
-print(latDegree);
-print(latMinute);
-print(lonSign);
-print(lonDegree);
-print(lonMinute);
+          1000.0;
+
   DMMLatitude _lat = DMMLatitude(latSign, latDegree, latMinute);
   DMMLongitude _lon = DMMLongitude(lonSign, lonDegree, lonMinute);
-  print(_lat.toString());
-  print(_lon.toString());
-  return dmmToLatLon(DMMCoordinate(_lat, _lon));
+
+  return DMMCoordinate(DMMLatitude(latSign, latDegree, latMinute), DMMLongitude(lonSign, lonDegree, lonMinute)).toLatLng();
+  //return dmmToLatLon(DMMCoordinate(_lat, _lon));
 }
 
 int _decodeModulo10(int x) {
   if (x < 0) {
-    print(x+10);
     return x + 10;
   } else {
-    print(x);
     return x;
   }
 }

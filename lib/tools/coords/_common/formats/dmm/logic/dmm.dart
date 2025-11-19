@@ -114,7 +114,7 @@ class DMMCoordinate extends BaseCoordinate {
 
   @override
   LatLng? toLatLng() {
-    return dmmToLatLon(this);
+    return _dmmToLatLon(this);
   }
 
   static DMMCoordinate fromLatLon(LatLng coord) {
@@ -148,7 +148,7 @@ String getCoordinateSignString(int sign, bool isLatitude) {
   return _sign;
 }
 
-LatLng dmmToLatLon(DMMCoordinate dmm) {
+LatLng _dmmToLatLon(DMMCoordinate dmm) {
   return decToLatLon(_DMMToDEC(dmm));
 }
 
