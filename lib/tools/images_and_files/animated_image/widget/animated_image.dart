@@ -451,9 +451,10 @@ class _AnimatedImageState extends State<AnimatedImage> {
       Expanded(flex: 1, child: Container()),
     ]);
   }
+
   Widget _buildEncodeList() {
     var rows = _encodeDurations.mapIndexed((index, data) => _buildEncodeRowEntry(index)).toList();
-    rows.add(_buildEncodeRowEntry(_encodeDurations.length);
+    rows.add(_buildEncodeRowEntry(-1));
 
     return Column(
       children: rows,
@@ -461,45 +462,47 @@ class _AnimatedImageState extends State<AnimatedImage> {
   }
 
   Widget _buildEncodeRowEntry(int index) {
-    Widget imageWidget = Container();
-    if (index < _encodeDurations.length && _encodeDurations[index].key > 0 &&
-        _encodeDurations[index].key <= _encodeImageData.length) {
-      var image = Image.memory(_encodeImageData[_encodeDurations[index].key - 1].file.bytes);
-      imageWidget = GCWSymbolContainer(symbol: image);
-      imageWidget = SizedBox(height: 32, child: imageWidget);
-    }
-
     return Row(
       children: [
-        Column(
-          children: [
-            imageWidget,
-            GCWDropDown<int>(
-                value: _encodeDurations[index].key,
-                onChanged: (value) {
-                  setState(() {
-                    _encodeDurations[index] = MapEntry<int, int>(value, _encodeDurations[index].value);
-                  });
-                },
-                items:_buildDropDownMenuItems(),
-            )
-          ],
-        ),
         Expanded(
+            child: Container()
+        ),
+        SizedBox(
+          width: 150,
+          child: Column(
+            children: [
+              GCWDropDown<int>(
+                  value: index,
+                  onChanged: (value) {
+                    setState(() {
+                      if (index >= 0) {
+                        _encodeDurations[index] = MapEntry<int, int>(value, _encodeDurations[index].value);
+                      } else if (value >= 0) {
+                        _encodeDurations.add(MapEntry<int, int>(value, 0));
+                      }
+                    });
+                  },
+                  items:_buildDropDownMenuItems(),
+              )
+            ],
+          ),
+        ),
+        SizedBox(
+          width: 150,
           child: Column(
             children: [
               GCWIntegerTextField(
                 min: 0,
                 controller: _getTextEditingController(index, 0,
-                    index < _encodeDurations.length ? _encodeDurations[index].key.toString(): ''),
+                    index >= 0 ? _encodeDurations[index].value.toString(): ''),
                 onChanged: (IntegerText ret) {
-                  if (index < _encodeDurations.length) {
-                    _encodeDurations[index] = MapEntry<int, int>(ret.value, _encodeDurations[index].value);
-                  } else {
-                    setState(() {
-                      _encodeDurations.add(MapEntry<int, int>(ret.value, 0));
-                    });
-                  }
+                  setState(() {
+                    if (index >= 0) {
+                      _encodeDurations[index] = MapEntry<int, int>(_encodeDurations[index].key, ret.value);
+                    } else {
+                      _encodeDurations.add(MapEntry<int, int>(-1, ret.value));
+                    }
+                  });
                 },
               ),
             ]
@@ -517,6 +520,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
               },
             ),
             GCWIconButton(
+              icon: Icons.remove,
               onPressed: () {}
             )
           ],
@@ -540,7 +544,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
               icon: Icons.arrow_drop_down,
               onPressed: () {
                 setState(() {
-                  if (index < _encodeDurations.length - 1) {
+                  if (index >= 0 && index < _encodeDurations.length - 1) {
                     var entry = _encodeDurations.removeAt(index);
                     _encodeDurations.insert(index + 1, entry);
                     var entry_ =_textEditingControllerArray.removeAt(index);
@@ -550,30 +554,35 @@ class _AnimatedImageState extends State<AnimatedImage> {
               },
             )
           ],
+        ),
+        Expanded(
+            child: Container()
         )
       ],
     );
   }
 
   List<GCWDropDownMenuItem<int>> _buildDropDownMenuItems() {
-    GCWDropDownMenuItem<int> _buildDropDownMenuItem(int i) {
+
+    GCWDropDownMenuItem<int> _buildDropDownMenuItem(int index) {
       Widget imageWidget = Container();
-      if (i >= 0 && i < _encodeDurations.length && _encodeDurations[i].key > 0 &&
-          _encodeDurations[i].key <= _encodeImageData.length) {
-        var image = Image.memory(_encodeImageData[_encodeDurations[i].key - 1].file.bytes);
+      if (index >= 0 && _encodeDurations[index].key >= 0) {
+        var image = Image.memory(_encodeImageData[_encodeDurations[index].key].file.bytes);
         imageWidget = GCWSymbolContainer(symbol: image);
+        imageWidget = SizedBox(height: 32, child: imageWidget);
+      } else {
+        imageWidget = SizedBox(height: 32, width: 32, child: imageWidget);
       }
-      imageWidget = SizedBox(height: 32, child: imageWidget);
 
       return GCWDropDownMenuItem(
-          value: i,
+          value: index,
           child: Row(children: [
             imageWidget
           ]));
     }
 
     var list = _encodeImageData.mapIndexed((index, data) => _buildDropDownMenuItem(index)).toList();
-    list.insert(0, _buildDropDownMenuItem(_encodeDurations.length));
+    list.insert(0, _buildDropDownMenuItem(-1));
     return list;
   }
 
@@ -587,6 +596,9 @@ class _AnimatedImageState extends State<AnimatedImage> {
   }
 
   TextEditingController? _getTextEditingController(int rowIndex, int columnIndex, String text) {
+    if (rowIndex < 0) {
+      rowIndex = _encodeDurations.length;
+    }
     while (_textEditingControllerArray.length <= rowIndex) {
       _textEditingControllerArray.add(<TextEditingController?>[]);
     }
