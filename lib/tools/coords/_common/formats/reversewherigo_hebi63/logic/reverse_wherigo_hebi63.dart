@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:gc_wizard/tools/coords/_common/formats/dmm/logic/dmm.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
@@ -77,16 +79,26 @@ LatLng? _reverseWIGHebi63ToLatLon(ReverseWherigoHebi63Coordinate hebi63) {
   ((0 <= digit) && (digit <= 4)) ? latSign = 1 : latSign = -1;
 
   int latDegree10 =
-          _decodeModulo10(
-              int.parse(hebi63String[2]) - int.parse(hebi63String[1])) ;
-  int latDegree1 = _decodeModulo10(int.parse(hebi63String[3]) - int.parse(hebi63String[2]));
+      _decodeModulo10(int.parse(hebi63String[2]) - int.parse(hebi63String[1]));
+  int latDegree1 =
+      _decodeModulo10(int.parse(hebi63String[3]) - int.parse(hebi63String[2]));
   latDegree = latDegree10 * 10 + latDegree1;
 
   latMinute = (_decodeModulo10(
-      int.parse(hebi63String[4]) - int.parse(hebi63String[3])) * 10 + _decodeModulo10(int.parse(hebi63String[5]) - int.parse(hebi63String[4]))).toDouble() + (_decodeModulo10(
-      int.parse(hebi63String[6]) - int.parse(hebi63String[5])) * 100 + _decodeModulo10(
-      int.parse(hebi63String[7]) - int.parse(hebi63String[6])) * 10 + _decodeModulo10(
-      int.parse(hebi63String[8]) - int.parse(hebi63String[7]))) / 1000.0;
+                      int.parse(hebi63String[4]) - int.parse(hebi63String[3])) *
+                  10 +
+              _decodeModulo10(
+                  int.parse(hebi63String[5]) - int.parse(hebi63String[4])))
+          .toDouble() +
+      (_decodeModulo10(
+                      int.parse(hebi63String[6]) - int.parse(hebi63String[5])) *
+                  100 +
+              _decodeModulo10(
+                      int.parse(hebi63String[7]) - int.parse(hebi63String[6])) *
+                  10 +
+              _decodeModulo10(
+                  int.parse(hebi63String[8]) - int.parse(hebi63String[7]))) /
+          1000.0;
 
   digit =
       _decodeModulo10(int.parse(hebi63String[9]) - int.parse(hebi63String[8]));
@@ -105,7 +117,8 @@ LatLng? _reverseWIGHebi63ToLatLon(ReverseWherigoHebi63Coordinate hebi63) {
   lonMinute = 10.0 *
           _decodeModulo10(
               int.parse(hebi63String[13]) - int.parse(hebi63String[12])) +
-      _decodeModulo10(int.parse(hebi63String[14]) - int.parse(hebi63String[13]));
+      _decodeModulo10(
+          int.parse(hebi63String[14]) - int.parse(hebi63String[13]));
 
   lonMinute = lonMinute +
       (100 *
@@ -121,7 +134,9 @@ LatLng? _reverseWIGHebi63ToLatLon(ReverseWherigoHebi63Coordinate hebi63) {
   DMMLatitude _lat = DMMLatitude(latSign, latDegree, latMinute);
   DMMLongitude _lon = DMMLongitude(lonSign, lonDegree, lonMinute);
 
-  return DMMCoordinate(DMMLatitude(latSign, latDegree, latMinute), DMMLongitude(lonSign, lonDegree, lonMinute)).toLatLng();
+  return DMMCoordinate(DMMLatitude(latSign, latDegree, latMinute),
+          DMMLongitude(lonSign, lonDegree, lonMinute))
+      .toLatLng();
   //return dmmToLatLon(DMMCoordinate(_lat, _lon));
 }
 
@@ -140,6 +155,27 @@ ReverseWherigoHebi63Coordinate _latLonToReverseWIGHebi63(LatLng coord) {
   String a = '';
   String b = '';
   String c = '';
+
+  String hebi63 = '';
+
+  var rndInt = Random();
+
+  String dmmCoordString = rndInt.nextInt(10).toString() + DMMCoordinate.fromLatLon(coord)
+      .toString(3)
+      .replaceAll('.', '')
+      .replaceAll('°', '')
+      .replaceAll("'", '')
+      .replaceAll('\n', '')
+      .replaceAll(' ', '')
+      .replaceAll('N', rndInt.nextInt(5).toString())
+      .replaceAll('S', (5 + rndInt.nextInt(5)).toString())
+      .replaceAll('W', rndInt.nextInt(5).toString())
+      .replaceAll('E', (5 + rndInt.nextInt(5)).toString());
+
+  hebi63 = dmmCoordString;
+  a = hebi63.substring(0, 6);
+  b = hebi63.substring(6, 12);
+  c = hebi63.substring(12);
 
   return ReverseWherigoHebi63Coordinate(
       int.parse(a), int.parse(b), int.parse(c));
