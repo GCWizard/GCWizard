@@ -53,12 +53,13 @@ class _AnimatedImageState extends State<AnimatedImage> {
   final List<MapEntry<int, int>> _encodeDurations = []; //image index, duration
   final List<List<TextEditingController?>> _textEditingControllerArray = [];
   final _loopDurationController = TextEditingController();
-  var _loopDuration = 0;
-  final _loopCountController = TextEditingController();
-  var _loopCount = 0;
+
+  final _loopCountEncodeController = TextEditingController();
   Uint8List? _outDataEncode;
   final List<GCWImageViewData> _encodeImageData = [];
   var _modeEncode = EncodeMode.LOOP;
+  var _loopCountEncode = 0;
+  var _loopDurationEncode = 0;
   var _expandedEncodeOptions = false;
 
 
@@ -71,7 +72,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
     }
     _textEditingControllerArray.clear();
     _loopDurationController.dispose();
-    _loopCountController.dispose();
+    _loopCountEncodeController.dispose();
     super.dispose();
   }
 
@@ -298,10 +299,13 @@ class _AnimatedImageState extends State<AnimatedImage> {
       child: Column(
         children: [
           GCWTwoOptionsSwitch(
-              value: _modeEncode == EncodeMode.LOOP ? GCWSwitchPosition.right : GCWSwitchPosition.left,
-              onChanged:  (value) {
-                _modeEncode = value == GCWSwitchPosition.right ? EncodeMode.LOOP: EncodeMode.REVERSE;
-              }
+            title: "Loop Modus",
+            leftValue: "Forward/ Reverse",
+            rightValue: "Forward",
+            value: _modeEncode == EncodeMode.LOOP ? GCWSwitchPosition.right : GCWSwitchPosition.left,
+            onChanged:  (value) {
+              _modeEncode = value == GCWSwitchPosition.right ? EncodeMode.LOOP: EncodeMode.REVERSE;
+            }
           ),
           Row(
             children: [
@@ -309,7 +313,8 @@ class _AnimatedImageState extends State<AnimatedImage> {
                   flex: 1,
                   child: GCWText(
                     text: 'Loop Duration' + ' (ms):',
-                  )),
+                  )
+              ),
               Expanded(
                   flex: 3,
                   child: GCWIntegerTextField(
@@ -318,7 +323,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
                     min: 0,
                     onChanged: (value) {
                       setState(() {
-                        _loopDuration = value.value;
+                        _loopDurationEncode = value.value;
                       });
                     },
                   ),
@@ -336,11 +341,11 @@ class _AnimatedImageState extends State<AnimatedImage> {
                 flex: 3,
                 child: GCWIntegerTextField(
                   hintText: '0 -> ∞',
-                  controller: _loopCountController,
+                  controller: _loopCountEncodeController,
                   min: 0,
                   onChanged: (value) {
                     // setState(() {
-                    _loopCount = value.value;
+                    _loopCountEncode = value.value;
                     // });
                   },
                 ),
@@ -592,7 +597,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
   );
 
   bool _showLoopDuration() {
-    return _loopDuration <= 0;
+    return _loopDurationEncode <= 0;
   }
 
   TextEditingController? _getTextEditingController(int rowIndex, int columnIndex, String text) {
@@ -643,8 +648,8 @@ class _AnimatedImageState extends State<AnimatedImage> {
             images: _encodeImageData.map((data) => data.file.bytes).toList(),
             durations: _encodeDurations,
             mode: _modeEncode,
-            loopDisplayDuration: _loopDuration,
-            loopCount: _loopCount
+            loopDisplayDuration: _loopDurationEncode,
+            loopCount: _loopCountEncode
         )
     );
   }
