@@ -51,7 +51,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
   bool _play = false;
   var _currentMode = GCWSwitchPosition.right;
   final List<MapEntry<int, int>> _encodeDurations = []; //image index, duration
-  final List<List<TextEditingController?>> _textEditingControllerArray = [];
+  final List<TextEditingController?> _textEditingControllerArray = [];
   final _loopDurationController = TextEditingController();
   var _loopDuration = 0;
   final _loopCountController = TextEditingController();
@@ -65,9 +65,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
   @override
   void dispose() {
     for(var y = 0; y < _textEditingControllerArray.length; y++) {
-      for (var x = 0; x < _textEditingControllerArray[y].length; x++) {
-        _textEditingControllerArray[y][x]?.dispose();
-      }
+      _textEditingControllerArray[y]?.dispose();
     }
     _textEditingControllerArray.clear();
     _loopDurationController.dispose();
@@ -282,7 +280,6 @@ class _AnimatedImageState extends State<AnimatedImage> {
       ),
       buildEncodeGallery(_encodeImageData, setState),
       _buildEncodeOptions(),
-      //_buildEncodeTable(),
       _buildEncodeList(),
       _buildEncodeSubmitButton(),
       _buildOutputEncode()
@@ -353,107 +350,24 @@ class _AnimatedImageState extends State<AnimatedImage> {
     );
   }
 
-  Widget _buildEncodeTable() {
-    var rows = <TableRow>[];
-    var headerStyle = gcwTextStyle().copyWith(fontWeight: FontWeight.bold);
-    // header
-    rows.add(TableRow(children: [
-      Container(),
-      _verticalDivider,
-      GCWText(text: i18n(context, 'common_index'), style: headerStyle),
-      _verticalDivider,
-      _showLoopDuration() ? GCWText(text: 'Duration' + ' (ms)', style: headerStyle) : Container(),
-      _verticalDivider,
-      Container()])
-    );
-    // rows
-    for (var i = 0; i < _encodeDurations.length + 1; i++) {
-      var rowColor = i.isOdd ? themeColors().outputListOddRows() : themeColors().primaryBackground();
-      Widget imageWidget = Container();
-      if (i < _encodeDurations.length && _encodeDurations[i].key > 0 &&
-          _encodeDurations[i].key <= _encodeImageData.length) {
-        var image = Image.memory(_encodeImageData[_encodeDurations[i].key - 1].file.bytes);
-        imageWidget = GCWSymbolContainer(symbol: image);
-        imageWidget = SizedBox(height: 32, child: imageWidget);
-      }
-
-      rows.add(TableRow(
-        decoration: BoxDecoration(color: rowColor),
-        children: [
-          imageWidget,
-          Container(),
-          GCWIntegerTextField(
-            min: 0,
-            controller: _getTextEditingController(i, 0,
-                i < _encodeDurations.length ? _encodeDurations[i].key.toString(): ''),
-            onChanged: (IntegerText ret) {
-              if (i < _encodeDurations.length) {
-                _encodeDurations[i] = MapEntry<int, int>(ret.value, _encodeDurations[i].value);
-              } else {
-                setState(() {
-                  _encodeDurations.add(MapEntry<int, int>(ret.value, 0));
-                });
-              }
-            },
-          ),
-          Container(),
-          _showLoopDuration()
-            ? GCWIntegerTextField(
-                min: 0,
-                hintText: '300',
-                controller: _getTextEditingController(i, 1,
-                    i < _encodeDurations.length ? _encodeDurations[i].value.toString(): ''),
-                onChanged: (IntegerText ret) {
-                  if (i < _encodeDurations.length) {
-                    _encodeDurations[i] = MapEntry<int, int>(_encodeDurations[i].key, ret.value);
-                  } else {
-                    setState(() {
-                      _encodeDurations.add(MapEntry<int, int>(0, ret.value));
-                    });
-                  }
-                },
-              )
-            : Container(),
-          Container(),
-          GCWIconButton(
-            icon: Icons.remove,
-            onPressed: () {
-              setState(() {
-                if (i < _encodeDurations.length) {
-                  _encodeDurations.removeAt(i);
-                }
-              });
-            },
-          )
-      ])
-      );
-    }
-    return Row(children: [
-      Expanded(flex: 1, child: Container()),
-      Expanded(flex: 12, child:
-        Table(
-          //border: const TableBorder(verticalInside: BorderSide(width: 20, color: Colors.greenAccent)),
-          // border: const TableBorder.symmetric(
-          //   outside: BorderSide(width: 10, color: Colors.transparent),
-          //   inside: BorderSide(width: 20, color: Colors.greenAccent)),
-          columnWidths: {
-            0: FixedColumnWidth(40),
-            1: FixedColumnWidth(5),
-            2: FlexColumnWidth(50),
-            3: _showLoopDuration() ? FixedColumnWidth(5) : FixedColumnWidth(0),
-            4: _showLoopDuration() ? FlexColumnWidth(50) : FixedColumnWidth(0),
-            5: FixedColumnWidth(5),
-            6: IntrinsicColumnWidth()},
-          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          children: rows
-        ),
-      ),
-      Expanded(flex: 1, child: Container()),
-    ]);
-  }
   Widget _buildEncodeList() {
     var rows = _encodeDurations.mapIndexed((index, data) => _buildEncodeRowEntry(index)).toList();
-    rows.add(_buildEncodeRowEntry(_encodeDurations.length));
+    rows.add(_buildEncodeRowEntry(-1));
+
+    var headerStyle = gcwTextStyle().copyWith(fontWeight: FontWeight.bold);
+    Widget header =Row(
+      children: [
+        Expanded(child: Container()),
+        SizedBox(width: 100, child: Container()),
+        _showLoopDuration()
+          ? SizedBox(width: 150, child: GCWText(text: 'Duration' + ' (ms)', style: headerStyle))
+          : Container(),
+        SizedBox(width: 40, child: Container()),
+        SizedBox(width: 40, child: Container()),
+        Expanded(child: Container()),
+      ]
+    );
+    rows.insert(0, header);
 
     return Column(
       children: rows,
@@ -461,50 +375,54 @@ class _AnimatedImageState extends State<AnimatedImage> {
   }
 
   Widget _buildEncodeRowEntry(int index) {
-    Widget imageWidget = Container();
-    if (index < _encodeDurations.length && _encodeDurations[index].key > 0 &&
-        _encodeDurations[index].key <= _encodeImageData.length) {
-      var image = Image.memory(_encodeImageData[_encodeDurations[index].key - 1].file.bytes);
-      imageWidget = GCWSymbolContainer(symbol: image);
-      imageWidget = SizedBox(height: 32, child: imageWidget);
-    }
-
     return Row(
       children: [
-        Column(
-          children: [
-            imageWidget,
-            GCWDropDown<int>(
-                value: _encodeDurations[index].key,
-                onChanged: (value) {
-                  setState(() {
-                    _encodeDurations[index] = MapEntry<int, int>(value, _encodeDurations[index].value);
-                  });
-                },
-                items:_buildDropDownMenuItems(),
-            )
-          ],
-        ),
-        Expanded(
+        Expanded(child: Container()),
+        SizedBox(
+          width: 100,
           child: Column(
             children: [
-              GCWIntegerTextField(
-                min: 0,
-                controller: _getTextEditingController(index, 0,
-                    index < _encodeDurations.length ? _encodeDurations[index].key.toString(): ''),
-                onChanged: (IntegerText ret) {
-                  if (index < _encodeDurations.length) {
-                    _encodeDurations[index] = MapEntry<int, int>(ret.value, _encodeDurations[index].value);
-                  } else {
-                    setState(() {
-                      _encodeDurations.add(MapEntry<int, int>(ret.value, 0));
-                    });
-                  }
+              GCWDropDown<int>(
+                value: _newEntry(index) ? index : _encodeDurations[index].key,
+                onChanged: (value) {
+                  setState(() {
+                    if (!_newEntry(index)) {
+                      var entry = MapEntry<int, int>(value, _encodeDurations[index].value);
+                      _encodeDurations[index] = entry;
+                    } else if (!_newEntry(value)) {
+                      var duration = _getTextEditingController(index, null).value;
+                      var entry = MapEntry<int, int>(value, duration as int);
+                      _encodeDurations.add(entry);
+                    }
+                  });
                 },
-              ),
-            ]
-          )
+                items: _buildDropDownMenuItems(),
+              )
+            ],
+          ),
         ),
+        _showLoopDuration()
+          ? SizedBox(
+              width: 150,
+              child: Column(
+                children: [
+                  GCWIntegerTextField(
+                    min: 0,
+                    controller: _getTextEditingController(index,
+                        !_newEntry(index) ? _encodeDurations[index].value.toString(): ''),
+                    onChanged: (IntegerText ret) {
+                      setState(() {
+                        if (!_newEntry(index)) {
+                          var entry = MapEntry<int, int>(_encodeDurations[index].key, ret.value);
+                          _encodeDurations[index] = entry;
+                        }
+                      });
+                    },
+                  ),
+                ]
+              )
+            )
+          : Container(),
         Column(
           children: [
             GCWIconButton(
@@ -516,9 +434,6 @@ class _AnimatedImageState extends State<AnimatedImage> {
                 });
               },
             ),
-            GCWIconButton(
-              onPressed: () {}
-            )
           ],
         ),
         Column(
@@ -550,55 +465,57 @@ class _AnimatedImageState extends State<AnimatedImage> {
               },
             )
           ],
-        )
+        ),
+        Expanded(child: Container()),
       ],
     );
   }
 
   List<GCWDropDownMenuItem<int>> _buildDropDownMenuItems() {
-    GCWDropDownMenuItem<int> _buildDropDownMenuItem(int i) {
+    GCWDropDownMenuItem<int> _buildDropDownMenuItem(int index) {
       Widget imageWidget = Container();
-      if (i >= 0 && i < _encodeDurations.length && _encodeDurations[i].key > 0 &&
-          _encodeDurations[i].key <= _encodeImageData.length) {
-        var image = Image.memory(_encodeImageData[_encodeDurations[i].key - 1].file.bytes);
+      var imageIndex = _newEntry(index) ? index : _encodeDurations[index].key;
+      if (imageIndex >= 0 && imageIndex < _encodeImageData.length) {
+        var image = Image.memory(_encodeImageData[imageIndex].file.bytes);
         imageWidget = GCWSymbolContainer(symbol: image);
+        imageWidget = SizedBox(height: 32, child: imageWidget);
+      } else {
+        imageWidget = SizedBox(height: 32, width: 32, child: imageWidget);
       }
-      imageWidget = SizedBox(height: 32, child: imageWidget);
 
       return GCWDropDownMenuItem(
-          value: i,
+          value: index,
           child: Row(children: [
             imageWidget
           ]));
     }
 
     var list = _encodeImageData.mapIndexed((index, data) => _buildDropDownMenuItem(index)).toList();
-    list.insert(0, _buildDropDownMenuItem(_encodeDurations.length));
+    list.insert(0, _buildDropDownMenuItem(-1));
     return list;
   }
-
-  final Widget _verticalDivider = const VerticalDivider(
-    color: Colors.blue,
-    thickness: 1,
-  );
 
   bool _showLoopDuration() {
     return _loopDuration <= 0;
   }
 
-  TextEditingController? _getTextEditingController(int rowIndex, int columnIndex, String text) {
-    while (_textEditingControllerArray.length <= rowIndex) {
-      _textEditingControllerArray.add(<TextEditingController?>[]);
-    }
-    while (_textEditingControllerArray[rowIndex].length <= columnIndex) {
-      _textEditingControllerArray[rowIndex].add(null);
-    }
-    if (_textEditingControllerArray[rowIndex][columnIndex] == null) {
-      _textEditingControllerArray[rowIndex][columnIndex] = TextEditingController();
-    }
-    _textEditingControllerArray[rowIndex][columnIndex]!.text = text;
+  bool _newEntry(int index) {
+    return index < 0 || index >= _encodeDurations.length;
+  }
 
-    return _textEditingControllerArray[rowIndex][columnIndex];
+  TextEditingController _getTextEditingController(int rowIndex, String? text) {
+    if (_newEntry(rowIndex)) {
+      rowIndex = _encodeDurations.length;
+    }
+    while (_textEditingControllerArray.length <= rowIndex) {
+      _textEditingControllerArray.add(TextEditingController());
+    }
+
+    if (text != null) {
+      _textEditingControllerArray[rowIndex]!.text = text;
+    }
+
+    return _textEditingControllerArray[rowIndex]!;
   }
 
   Widget _buildEncodeSubmitButton() {
