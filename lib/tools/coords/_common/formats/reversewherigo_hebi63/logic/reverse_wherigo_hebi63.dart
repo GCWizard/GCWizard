@@ -131,9 +131,6 @@ LatLng? _reverseWIGHebi63ToLatLon(ReverseWherigoHebi63Coordinate hebi63) {
                   int.parse(hebi63String[17]) - int.parse(hebi63String[16]))) /
           1000.0;
 
-  DMMLatitude _lat = DMMLatitude(latSign, latDegree, latMinute);
-  DMMLongitude _lon = DMMLongitude(lonSign, lonDegree, lonMinute);
-
   return DMMCoordinate(DMMLatitude(latSign, latDegree, latMinute),
           DMMLongitude(lonSign, lonDegree, lonMinute))
       .toLatLng();
@@ -149,9 +146,6 @@ int _decodeModulo10(int x) {
 }
 
 ReverseWherigoHebi63Coordinate _latLonToReverseWIGHebi63(LatLng coord) {
-  var __lat = coord.latitude;
-  var __lon = coord.longitude;
-
   String a = '';
   String b = '';
   String c = '';
@@ -172,7 +166,17 @@ ReverseWherigoHebi63Coordinate _latLonToReverseWIGHebi63(LatLng coord) {
       .replaceAll('W', rndInt.nextInt(5).toString())
       .replaceAll('E', (5 + rndInt.nextInt(5)).toString());
 
-  hebi63 = dmmCoordString;
+  if (dmmCoordString[10] == '0') {
+    dmmCoordString = dmmCoordString.substring(0,10) + rndInt.nextInt(5).toString() + dmmCoordString.substring(11);
+  } else {
+    dmmCoordString = dmmCoordString.substring(0,10) + (5 + rndInt.nextInt(5)).toString() + dmmCoordString.substring(11);
+  }
+
+  hebi63 = dmmCoordString[0];
+  for (int i = 1; i <= 17; i++) {
+    hebi63 = hebi63 + ((int.parse(hebi63[i - 1]) + int.parse(dmmCoordString[i])) % 10).toString();
+  }
+
   a = hebi63.substring(0, 6);
   b = hebi63.substring(6, 12);
   c = hebi63.substring(12);
