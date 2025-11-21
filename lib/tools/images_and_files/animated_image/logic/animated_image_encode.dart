@@ -3,9 +3,8 @@ import 'dart:typed_data';
 
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:image/image.dart' as Image;
-import 'package:utility/utility.dart';
 
-enum EncodeMode {LOOP, REVERSE}
+enum EncodeMode {FORWARD, FORWARDREVERSE}
 
 class AnimatedImageJobData {
   final List<Uint8List> images;
@@ -36,23 +35,23 @@ List<MapEntry<int, int>> _prepareDurations(List<MapEntry<int, int>> durations, E
   List<MapEntry<int, int>>? list;
 
   if (loopDisplayDuration != null && loopDisplayDuration > 0) {
+    var imageCount = durations.length;
+    if (mode == EncodeMode.FORWARDREVERSE) {
+      imageCount = imageCount * 2 - 1;
+    }
+    imageCount = max(imageCount, 1);
     list = List<MapEntry<int, int>>.from(durations);
-    var duration = (max(loopDisplayDuration, 0) / max(durations.length, 1)).toInt();
+    var duration = (max(loopDisplayDuration, 0) / imageCount).toInt();
     for (var i = 0; i < list.length; i++) {
       list[i] = MapEntry(list[i].key, duration);
     }
   }
 
-  if (mode == EncodeMode.REVERSE) {
+  if (mode == EncodeMode.FORWARDREVERSE) {
     // 1234, 321, 234 no image with double view length
     list = list ?? List<MapEntry<int, int>>.from(durations);
 
-    var list2 = list.reversed.toList();
-    list2.removeFirst();
-    list.addAll(list2);
-    list2 = List<MapEntry<int, int>>.from(durations);
-    list2.removeFirst();
-    list.addAll(list2);
+    list.addAll(list.reversed.skip(1).toList());
     return list;
   }
   return list ?? durations;

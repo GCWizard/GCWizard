@@ -58,7 +58,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
   var _loopCount = 0;
   Uint8List? _outDataEncode;
   final List<GCWImageViewData> _encodeImageData = [];
-  var _modeEncode = EncodeMode.LOOP;
+  var _modeEncode = EncodeMode.FORWARD;
   var _expandedEncodeOptions = false;
 
 
@@ -285,6 +285,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
       _buildOutputEncode()
     ]);
   }
+
   Widget _buildEncodeOptions() {
     return GCWExpandableTextDivider(
       text: i18n(context, 'common_options'),
@@ -295,22 +296,26 @@ class _AnimatedImageState extends State<AnimatedImage> {
       child: Column(
         children: [
           GCWTwoOptionsSwitch(
-              value: _modeEncode == EncodeMode.LOOP ? GCWSwitchPosition.right : GCWSwitchPosition.left,
+              leftValue: "Forward/ Reverse",
+              rightValue: "Forward",
+              value: _modeEncode == EncodeMode.FORWARD ? GCWSwitchPosition.right : GCWSwitchPosition.left,
               onChanged:  (value) {
-                _modeEncode = value == GCWSwitchPosition.right ? EncodeMode.LOOP: EncodeMode.REVERSE;
+                setState(() {
+                  _modeEncode = value == GCWSwitchPosition.right ? EncodeMode.FORWARD : EncodeMode.FORWARDREVERSE;
+                });
               }
           ),
           Row(
             children: [
               Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: GCWText(
                     text: 'Loop Duration' + ' (ms):',
                   )),
               Expanded(
-                  flex: 3,
+                  flex: 2,
                   child: GCWIntegerTextField(
-                    hintText: '300',
+                    hintText: '1000',
                     controller: _loopDurationController,
                     min: 0,
                     onChanged: (value) {
@@ -325,20 +330,20 @@ class _AnimatedImageState extends State<AnimatedImage> {
           Row(
             children: [
               Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: GCWText(
                     text: 'Loop count' + ':',
                   )),
               Expanded(
-                flex: 3,
+                flex: 2,
                 child: GCWIntegerTextField(
                   hintText: '0 -> ∞',
                   controller: _loopCountController,
                   min: 0,
                   onChanged: (value) {
-                    // setState(() {
-                    _loopCount = value.value;
-                    // });
+                    setState(() {
+                      _loopCount = value.value;
+                    });
                   },
                 ),
               )
@@ -352,25 +357,37 @@ class _AnimatedImageState extends State<AnimatedImage> {
 
   Widget _buildEncodeList() {
     var rows = _encodeDurations.mapIndexed((index, data) => _buildEncodeRowEntry(index)).toList();
-    rows.add(_buildEncodeRowEntry(-1));
+    rows.add(Container(child: _buildEncodeRowEntry(-1)));
 
     var headerStyle = gcwTextStyle().copyWith(fontWeight: FontWeight.bold);
-    Widget header =Row(
+    Widget header = Row(
       children: [
         Expanded(child: Container()),
-        SizedBox(width: 100, child: Container()),
-        _showLoopDuration()
-          ? SizedBox(width: 150, child: GCWText(text: 'Duration' + ' (ms)', style: headerStyle))
+        SizedBox(width: 140, child: Container()),
+        SizedBox(width: 5),
+        _showEncodeLoopDuration()
+          ? SizedBox(width: 130, child: GCWText(text: 'Duration' + ' (ms)', style: headerStyle))
           : Container(),
+        _showEncodeLoopDuration()
+            ? SizedBox(width: 5)
+            : Container(),
         SizedBox(width: 40, child: Container()),
         SizedBox(width: 40, child: Container()),
         Expanded(child: Container()),
       ]
     );
-    rows.insert(0, header);
+    rows.insert(0, Container(child: header));
 
+    var odd = true;
     return Column(
-      children: rows,
+      children: rows.map((row) {
+        odd = !odd;
+        if (odd) {
+          return Container(color: themeColors().outputListOddRows(), child: row);
+        } else {
+          return Container(child: row);
+        }
+      }).toList()
     );
   }
 
@@ -379,40 +396,43 @@ class _AnimatedImageState extends State<AnimatedImage> {
       children: [
         Expanded(child: Container()),
         SizedBox(
-          width: 100,
+          width: 140,
           child: Column(
             children: [
               GCWDropDown<int>(
-                value: _newEntry(index) ? index : _encodeDurations[index].key,
+                value: _newEncodeEntry(index) ? index : _encodeDurations[index].key,
                 onChanged: (value) {
                   setState(() {
-                    if (!_newEntry(index)) {
+                    if (!_newEncodeEntry(index)) {
                       var entry = MapEntry<int, int>(value, _encodeDurations[index].value);
                       _encodeDurations[index] = entry;
-                    } else if (!_newEntry(value)) {
+                    } else if (value >= 0) {
                       var duration = _getTextEditingController(index, null).value;
-                      var entry = MapEntry<int, int>(value, duration as int);
+                      var durationValue = int.tryParse(duration.text) ?? 0;
+                      var entry = MapEntry<int, int>(value, durationValue);
                       _encodeDurations.add(entry);
                     }
                   });
                 },
-                items: _buildDropDownMenuItems(),
-              )
+                items: _buildDropDownMenuItems(index),
+              ),
             ],
           ),
         ),
-        _showLoopDuration()
+        SizedBox(width: 5),
+        _showEncodeLoopDuration()
           ? SizedBox(
-              width: 150,
+              width: 130,
               child: Column(
                 children: [
                   GCWIntegerTextField(
                     min: 0,
-                    controller: _getTextEditingController(index,
-                        !_newEntry(index) ? _encodeDurations[index].value.toString(): ''),
+                    controller:  _newEncodeEntry(index)
+                        ? _getTextEditingController(index, null)
+                        : _getTextEditingController(index, _encodeDurations[index].value.toString()),
                     onChanged: (IntegerText ret) {
                       setState(() {
-                        if (!_newEntry(index)) {
+                        if (!_newEncodeEntry(index)) {
                           var entry = MapEntry<int, int>(_encodeDurations[index].key, ret.value);
                           _encodeDurations[index] = entry;
                         }
@@ -422,6 +442,9 @@ class _AnimatedImageState extends State<AnimatedImage> {
                 ]
               )
             )
+          : Container(),
+        _showEncodeLoopDuration()
+          ? SizedBox(width: 5)
           : Container(),
         Column(
           children: [
@@ -445,8 +468,6 @@ class _AnimatedImageState extends State<AnimatedImage> {
                   if (index > 0) {
                     var entry = _encodeDurations.removeAt(index);
                     _encodeDurations.insert(index - 1, entry);
-                    var entry_ =_textEditingControllerArray.removeAt(index);
-                    _textEditingControllerArray.insert(index - 1, entry_);
                   }
                 });
               },
@@ -455,11 +476,9 @@ class _AnimatedImageState extends State<AnimatedImage> {
               icon: Icons.arrow_drop_down,
               onPressed: () {
                 setState(() {
-                  if (index < _encodeDurations.length - 1) {
+                  if (index>= 0 && index < _encodeDurations.length - 1) {
                     var entry = _encodeDurations.removeAt(index);
                     _encodeDurations.insert(index + 1, entry);
-                    var entry_ =_textEditingControllerArray.removeAt(index);
-                    _textEditingControllerArray.insert(index + 1, entry_);
                   }
                 });
               },
@@ -471,16 +490,15 @@ class _AnimatedImageState extends State<AnimatedImage> {
     );
   }
 
-  List<GCWDropDownMenuItem<int>> _buildDropDownMenuItems() {
+  List<GCWDropDownMenuItem<int>> _buildDropDownMenuItems(int index) {
     GCWDropDownMenuItem<int> _buildDropDownMenuItem(int index) {
       Widget imageWidget = Container();
-      var imageIndex = _newEntry(index) ? index : _encodeDurations[index].key;
-      if (imageIndex >= 0 && imageIndex < _encodeImageData.length) {
-        var image = Image.memory(_encodeImageData[imageIndex].file.bytes);
+      if (index >= 0 && index < _encodeImageData.length) {
+        var image = Image.memory(_encodeImageData[index].file.bytes);
         imageWidget = GCWSymbolContainer(symbol: image);
-        imageWidget = SizedBox(height: 32, child: imageWidget);
+        imageWidget = SizedBox(height: 80, child: imageWidget);
       } else {
-        imageWidget = SizedBox(height: 32, width: 32, child: imageWidget);
+        imageWidget = SizedBox(height: 80, width: 80, child: imageWidget);
       }
 
       return GCWDropDownMenuItem(
@@ -491,20 +509,22 @@ class _AnimatedImageState extends State<AnimatedImage> {
     }
 
     var list = _encodeImageData.mapIndexed((index, data) => _buildDropDownMenuItem(index)).toList();
-    list.insert(0, _buildDropDownMenuItem(-1));
+    if (_newEncodeEntry(index)) {
+      list.insert(0, _buildDropDownMenuItem(-1));
+    }
     return list;
   }
 
-  bool _showLoopDuration() {
+  bool _showEncodeLoopDuration() {
     return _loopDuration <= 0;
   }
 
-  bool _newEntry(int index) {
+  bool _newEncodeEntry(int index) {
     return index < 0 || index >= _encodeDurations.length;
   }
 
   TextEditingController _getTextEditingController(int rowIndex, String? text) {
-    if (_newEntry(rowIndex)) {
+    if (_newEncodeEntry(rowIndex)) {
       rowIndex = _encodeDurations.length;
     }
     while (_textEditingControllerArray.length <= rowIndex) {
