@@ -71,7 +71,7 @@ class _RegExState extends State<RegEx> {
   Widget _buildOutput() {
     try {
       RegExp regex = RegExp(_currentPattern);
-      _calculatedPattern = getRegExPattern(_currentInput, _currentPattern);
+      _calculatedPattern = evaluateRegExPattern(_currentInput, _currentPattern);
       return Column(children: [
         GCWDefaultOutput(
             child: Column(
