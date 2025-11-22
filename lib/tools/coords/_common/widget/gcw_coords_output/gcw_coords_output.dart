@@ -14,6 +14,8 @@ import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_export_dialog.d
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/gcw_mapview.dart';
 
+String _outputCopyText = '';
+
 class GCWCoordsOutput extends StatefulWidget {
   final List<Object> outputs;
   late final List<GCWMapPoint> points;
@@ -51,12 +53,10 @@ class _GCWCoordsOutputState extends State<GCWCoordsOutput> {
                 padding: const EdgeInsets.only(bottom: 15),
                 child: GCWOutput(
                   child: output is BaseCoordinate
-                      ? _formatedCoordOutput(output)
-                      : output,
-                  copyText: output is BaseCoordinate
-                      ? _formatedCoordOutput(output, false).replaceAll('\n', ' ')
-                      : ((output is String) || (output is int) || (output is double) ? output.toString() : null)
-                ),
+                    ? _formatedCoordOutput(output)
+                    : _normalCoordOutput(output) ,
+                  copyText: _outputCopyText,
+                  ),
               ));
         })
         .values
@@ -111,10 +111,22 @@ class _GCWCoordsOutputState extends State<GCWCoordsOutput> {
         children: _children);
   }
 
-  String _formatedCoordOutput(BaseCoordinate output, [bool defaultPrecision = true]) {
+  String _formatedCoordOutput(BaseCoordinate output) {
     var latLng = output.toLatLng();
-    return latLng == null ? '' : formatCoordOutput(latLng, output.format, widget.ellipsoid, defaultPrecision);
+    if (latLng == null) {
+      _outputCopyText = '';
+      return '';
+    } else {
+      _outputCopyText = formatCoordOutput(latLng, output.format, widget.ellipsoid, false).replaceAll('\n', ' ');
+      return formatCoordOutput(latLng, output.format, widget.ellipsoid, true);
+    }
   }
+
+  String _normalCoordOutput(Object output) {
+    _outputCopyText = output.toString();
+    return _outputCopyText;
+  }
+
 
   Future<void> _exportCoordinates(
       BuildContext context, List<GCWMapPoint> points, List<GCWMapPolyline> polylines) async {

@@ -5,16 +5,8 @@ import 'package:latlong2/latlong.dart';
 void main() {
   group("Converter.reverseWherigoHebi63.fromLatLon:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      {'coordinate': const LatLng(0.0, 0.0), 'text': ['000100', '009000', '005000']},
-      {'coordinate': const LatLng(-87.08835, -179.80245), 'text': ['580497', '850012', '847837']},
-      {'coordinate': const LatLng(11.01746, -178.2824), 'text': ['711326', '807210', '749148']},
-      {'coordinate': const LatLng(65.11828, -98.00437), 'text': ['801385', '675004', '136829']},
-      {'coordinate': const LatLng(37.75955, -40.888), 'text': ['587307', '303808', '507954']},
-      {'coordinate': const LatLng(-6.86326, 66.11175), 'text': ['618266', '053101', '671326']},
-      {'coordinate': const LatLng(1.93502, 97.3164), 'text': ['500162', '191310', '948307']},
-      {'coordinate': const LatLng(-13.44442, 118.51471), 'text': ['254283', '115114', '470441']},
-      {'coordinate': const LatLng(-18.86006, 176.54396), 'text': ['658268', '168413', '695007']},
-      {'coordinate': const LatLng(89.67067, 179.13098), 'text': ['716199', '889310', '792067']},
+      // does not work because of the use of random numbers
+      //{'coordinate': const LatLng(0.0, 0.0), 'text': ['244444', '009000', '005000']},
     ];
 
     for (var elem in _inputsToExpected) {
@@ -29,18 +21,14 @@ void main() {
 
   group("Converter.reverseWherigoHebi63.parseLatLon:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      {'coordinate': const LatLng(0.0, 0.0), 'text': ['000100', '009000', '005000']},
-      {'coordinate': const LatLng(-87.08835, -179.80245), 'text': ['580497', '850012', '847837']},
-      {'coordinate': const LatLng(11.01746, -178.2824), 'text': ['711326', '807210', '749148']},
-      {'coordinate': const LatLng(65.11828, -98.00437), 'text': ['801385', '675004', '136829']},
-      {'coordinate': const LatLng(37.75955, -40.888), 'text': ['587307', '303808', '507954']},
-      {'coordinate': const LatLng(-6.86326, 66.11175), 'text': ['618266', '053101', '671326']},
-      {'coordinate': const LatLng(1.93502, 97.3164), 'text': ['500162', '191310', '948307']},
-      {'coordinate': const LatLng(-13.44442, 118.51471), 'text': ['254283', '115114', '470441']},
-      {'coordinate': const LatLng(-18.86006, 176.54396), 'text': ['658268', '168413', '695007']},
-      {'coordinate': const LatLng(89.67067, 179.13098), 'text': ['716199', '889310', '792067']},
-      {'coordinate': const LatLng(50.65646, 10.99135), 'text': ['696100', '551901', '538641']},
-      {'coordinate': const LatLng(50.6607, 10.98846), 'text': ['096100', '569808', '648071']},
+      {'coordinate': const LatLng(0.0, 0.0), 'text': ['011111', '111666', '666666']},
+
+      // N 52° 19.321' E 014° 06.179'   52.3220166667 014.1029833333
+      {'coordinate': const LatLng(52.3220166667, 014.1029833333), 'text': ['683565', '801690', '440187']},
+      {'coordinate': const LatLng(52.3220166667, 014.1029833333), 'text': ['561343', '689689', '339076']},
+      {'coordinate': const LatLng(52.3220166667, 014.1029833333), 'text': ['783565', '801701', '551298']},
+      {'coordinate': const LatLng(52.3220166667, 014.1029833333), 'text': ['672454', '790889', '339076']},
+
     ];
 
     for (var elem in _inputsToExpected) {
