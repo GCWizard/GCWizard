@@ -169,6 +169,9 @@ List<BigInt> numberSequencesGetNumbersWithNDigits(NumberSequencesMode sequence, 
       case NumberSequencesMode.PALINDROME_PRIMES:
         sequenceList.addAll(palindrome_primes);
         break;
+      case NumberSequencesMode.SUITABLE_NUMBERS:
+        sequenceList.addAll(suitable_numbers);
+        break;
       default:
         return numberList;
     }

@@ -318,6 +318,7 @@
   "numbersequence_sphenicnumbersselection": "sphenicnumbers",
   "numbersequence_lonelynumbersselection": "lonelynumbers",
   "numbersequence_palindromeprimesselection": "palindromeprimes palindromes",
+  "numbersequence_suitablenumbersselection": "suitablenumbers convienientnumbers ideonealnumbers",
   "numeralbases": "hexadecimal octal octenary numeral systems",
   "numeralwords": "numeralwords numberwords numerals",
   "numeralwords_identifylanguages": "languageidentification findlanguages searchlanguages indentifylanguages",

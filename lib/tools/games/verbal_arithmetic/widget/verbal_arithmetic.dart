@@ -57,6 +57,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
   late SymbolMatrixGrid _currentMatrix;
   final List<List<TextEditingController?>> _textEditingControllerArray = [];
   bool _currentExpanded = false;
+  var _advancedOutputInput = '';
 
   @override
   void initState() {
@@ -204,6 +205,15 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
               ),
               _buildAllowLeadingZerosOption(),
               _buildNumberGridGridOption(),
+              GCWText(text: i18n(context, 'common_advanced_output') + ':'),
+              GCWTextField(
+                hintText: 'N [EM] [MD-O].[RSY] E [R] [YS.NOR]',
+                onChanged: (String text) {
+                  setState(() {
+                    _advancedOutputInput = text;
+                  });
+                }
+              ),
               Container(height: 10)
             ]),
           )
@@ -304,6 +314,7 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
       Widget spinnerWidget = Container();
       Widget solutionWidget = Container();
       Widget equationWidget = Container();
+      Widget advancedOutputWidget = Container();
 
       if (_currentOutputIndex > _currentOutput!.solutions.length) {
         _currentOutputIndex = _currentOutput!.solutions.length;
@@ -338,6 +349,14 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
       equationWidget = GCWOutput(child: _currentOutput!.equations.map((equation) =>
           equation.getOutput(mapping)).join('\n'));
 
+      var advancedOutput = getAdvancedOutput(mapping, _currentOutput?.advancedOutputInput ?? '');
+      if (advancedOutput.isNotEmpty) {
+        advancedOutputWidget = GCWOutput(
+            title: i18n(context, 'common_advanced_output'),
+            child: advancedOutput
+        );
+      }
+
       var copyButton = GCWIconButton(
           size: IconButtonSize.SMALL,
           icon: Icons.content_copy,
@@ -357,7 +376,9 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
             Container(height: 10),
             solutionWidget,
             Container(height: 10),
-            equationWidget
+            equationWidget,
+            Container(height: (advancedOutput.isNotEmpty ? 10 : 0)),
+            advancedOutputWidget,
           ]
         ),
       );
@@ -616,7 +637,8 @@ class _VerbalArithmeticState extends State<VerbalArithmetic> {
         equations: _equations,
         substitutions: {},
         allSolutions: _currentAllSolutions,
-        allowLeadingZeros: _currentAllowLeadingZeros
+        allowLeadingZeros: _currentAllowLeadingZeros,
+        advancedOutputInput: _advancedOutputInput
     ));
   }
 }

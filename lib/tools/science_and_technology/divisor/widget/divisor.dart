@@ -67,6 +67,7 @@ class _DivisorState extends State<Divisor> {
             text: _currentInputN.toString(),
             values: divisors(_currentInputN),
             inputType: CROSSTOTAL_INPUT_TYPE.NUMBERS,
+            suppressWordMode: true,
           )
       ],
     );

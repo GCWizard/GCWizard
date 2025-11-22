@@ -21,7 +21,7 @@ class _ScrabbleState extends State<Scrabble> {
   late TextEditingController _controller;
 
   var _currentInput = '';
-  var _currentValues = <int>[];
+  var _currentValues = <int?>[];
   var _currentScrabbleVersion = scrabbleID_EN;
   GCWSwitchPosition _currentMode = GCWSwitchPosition.left;
   bool _currentCrosstotalMode = true;
@@ -90,10 +90,22 @@ class _ScrabbleState extends State<Scrabble> {
         ),
         GCWDefaultOutput(child: _output),
         _currentCrosstotalMode
-            ? CrosstotalOutput(text: _currentInput, values: List<int>.from(_currentValues))
+            ? CrosstotalOutput(
+                text: _currentInput.toUpperCase(),
+                values: List<int?>.from(_currentValues),
+                textValidCharacters: _validCharacters()
+              )
             : Container()
       ],
     );
+  }
+
+  String _validCharacters() {
+    var set = getScrabbleSet(_currentScrabbleVersion);
+    if (set == null || set.letters.isEmpty) {
+      return 'A-Z '; // Mind the gap. Space is important, bc it is a valid Scrabble char
+    }
+    return set.letters.keys.join();
   }
 
   void _calculateOutput() {

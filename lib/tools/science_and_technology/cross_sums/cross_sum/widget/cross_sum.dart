@@ -29,7 +29,12 @@ class _CrossSumState extends State<CrossSum> {
             });
           },
         ),
-        CrosstotalOutput(text: _currentValue.toString(), values: [_currentValue], suppressSums: true)
+        CrosstotalOutput(
+            text: _currentValue.toString(),
+            values: [_currentValue],
+            suppressSums: true,
+            suppressWordMode: true,
+        )
       ],
     );
   }

@@ -76,6 +76,7 @@ import 'package:gc_wizard/application/category_views/selector_lists/number_seque
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_sphenicnumber_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_sublimenumbers_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_suitablenumbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_superperfectnumbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_taxicab_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_weirdnumbers_selection.dart';
@@ -455,6 +456,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/primes/w
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/recaman/widget/recaman.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/sphenic_numbers/widget/spenic_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/sublime_numbers/widget/sublime_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/suitable_numbers/widget/suitable_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/superperfect_numbers/widget/superperfect_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/taxicab/widget/taxicab_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/weird_numbers/widget/weird_numbers.dart';
@@ -1810,7 +1812,7 @@ void initializeRegistry(BuildContext context) {
         tool: const ScrabbleSelection(),
         id: 'scrabble_selection',
         categories: const [ToolCategory.GAMES],
-        searchKeys: const ['games']),
+        searchKeys: const ['games', 'games_scrabble']),
     GCWTool(
         tool: const MiscellaneousSelection(),
         id: 'miscellaneous_selection',
@@ -3170,6 +3172,12 @@ void initializeRegistry(BuildContext context) {
             licenseType: ToolLicenseType.MIT,
             licenseUrl:
                 'https://web.archive.org/web/20250630134152/https://github.com/PattuX/auto_reverse_wig_solver/blob/master/LICENSE.txt'),
+        ToolLicensePortedCode(
+            context: context,
+            author: 'MZCacheHunter',
+            title: 'The Reverse Cache (10Y) ',
+            sourceUrl: 'https://web.archive.org/web/20251105192200/https://www.wherigo.com/cartridge/details.aspx?CGUID=62e80ba9-8ce2-4c1b-90d3-64740526966b',
+            licenseType: ToolLicenseType.REPRODUCTION_NEEDED),
         ToolLicensePortedCode(
             context: context,
             author: 'Google Inc.',
@@ -5305,12 +5313,76 @@ void initializeRegistry(BuildContext context) {
           ToolLicenseOnlineArticle(
             context: context,
             author: 'Unknown',
-            publisher: 'OAIS',
+            publisher: 'The On-Line Encyclopedia of Integer Sequences (OEIS)',
             title: 'A002385',
             sourceUrl:
             'https://web.archive.org/web/20241229231226/https://oeis.org/A002385/b002385.txt',
           ),
         ]),
+    GCWTool(
+        tool: const NumberSequenceSuitableNumbersSelection(),
+        id: 'numbersequence_suitablenumbers',
+        searchKeys: const [
+          'numbers',
+          'numbersequence',
+          'numbersequence_suitablenumbersselection',
+        ],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Unknown',
+            publisher: 'OEIS',
+            title: 'A000926',
+            sourceUrl:
+            'https://web.archive.org/web/20241229231226/https://oeis.org/A002385/b002385.txt',
+          ),
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'en.wikipedia.org and contributors',
+            title: 'Idoneal number',
+            licenseType: ToolLicenseType.CCBYSA4,
+            licenseUrl:
+            'https://en.wikipedia.org/w/index.php?title=Wikipedia:Text_of_the_Creative_Commons_Attribution-ShareAlike_4.0_International_License&oldid=1162946924',
+            sourceUrl:
+            'https://en.wikipedia.org/w/index.php?title=Idoneal_number&oldid=1283811656',
+          ),
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Florian Freistetter',
+            publisher: 'Spektrum.de',
+            title: 'Das Geheimnis um geeignete Zahlen',
+            sourceUrl:
+            'https://web.archive.org/web/20251105212042/https://www.spektrum.de/kolumne/das-geheimnis-um-geeignete-zahlen/2283662',
+          ),
+        ]),
+
+    //NumberSequenceSelection SuitableNumbers ****************************************************************************************
+    GCWTool(
+        tool: const NumberSequenceSuitableNumbersNthNumber(),
+        id: 'numbersequence_nth',
+        id_prefix: 'suitablenumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceSuitableNumbersRange(),
+        id: 'numbersequence_range',
+        id_prefix: 'suitablenumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceSuitableNumbersCheckNumber(),
+        id: 'numbersequence_check',
+        id_prefix: 'suitablenumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceSuitableNumbersDigits(),
+        id: 'numbersequence_digits',
+        id_prefix: 'suitablenumbers_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceSuitableNumbersContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        id_prefix: 'suitablenumbers_',
+        searchKeys: const []),
+
 
     //NumberSequenceSelection LonelyNumbers ****************************************************************************************
     GCWTool(
@@ -6538,9 +6610,7 @@ void initializeRegistry(BuildContext context) {
 
     //Scrabble Selection *****************************************************************************************
 
-    GCWTool(tool: const Scrabble(), id: 'scrabble', searchKeys: const [
-      'games_scrabble',
-    ], licenses: [
+    GCWTool(tool: const Scrabble(), id: 'scrabble', licenses: [
       ToolLicenseOnlineArticle(
         context: context,
         author: 'en.wikipedia.org and contributors',
@@ -6564,9 +6634,6 @@ void initializeRegistry(BuildContext context) {
     GCWTool(
         tool: const ScrabbleOverview(),
         id: 'scrabbleoverview',
-        searchKeys: const [
-          'games_scrabble',
-        ],
         licenses: [
           ToolLicenseOnlineArticle(
             context: context,
