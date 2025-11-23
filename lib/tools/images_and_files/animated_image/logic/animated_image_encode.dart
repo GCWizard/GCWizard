@@ -59,7 +59,7 @@ List<MapEntry<int, int>> _prepareDurations(List<MapEntry<int, int>> durations, E
       list.removeAt(i);
     }
   }
-  
+
   return list;
 }
 

@@ -280,7 +280,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
       ),
       buildEncodeGallery(_encodeImageData, setState),
       _buildEncodeOptions(),
-      _buildEncodeList(),
+      buildEncodeList(setState, _encodeDurations, _encodeImageData, _textEditingControllerArray, _loopDuration),
       _buildEncodeSubmitButton(),
       _buildOutputEncode()
     ]);
@@ -353,189 +353,6 @@ class _AnimatedImageState extends State<AnimatedImage> {
         ],
       ),
     );
-  }
-
-  Widget _buildEncodeList() {
-    var rows = _encodeDurations.mapIndexed((index, data) => _buildEncodeRowEntry(index)).toList();
-    rows.add(Container(child: _buildEncodeRowEntry(-1)));
-
-    var headerStyle = gcwTextStyle().copyWith(fontWeight: FontWeight.bold);
-    Widget header = Row(
-      children: [
-        Expanded(child: Container()),
-        SizedBox(width: 140, child: Container()),
-        SizedBox(width: 5),
-        _showEncodeLoopDuration()
-          ? SizedBox(width: 130, child: GCWText(text: 'Duration' + ' (ms)', style: headerStyle))
-          : Container(),
-        _showEncodeLoopDuration()
-            ? SizedBox(width: 5)
-            : Container(),
-        SizedBox(width: 40, child: Container()),
-        SizedBox(width: 40, child: Container()),
-        Expanded(child: Container()),
-      ]
-    );
-    rows.insert(0, Container(child: header));
-
-    var odd = true;
-    return Column(
-      children: rows.map((row) {
-        odd = !odd;
-        if (odd) {
-          return Container(color: themeColors().outputListOddRows(), child: row);
-        } else {
-          return Container(child: row);
-        }
-      }).toList()
-    );
-  }
-
-  Widget _buildEncodeRowEntry(int index) {
-    return Row(
-      children: [
-        Expanded(child: Container()),
-        SizedBox(
-          width: 140,
-          child: Column(
-            children: [
-              GCWDropDown<int>(
-                value: _newEncodeEntry(index) ? index : _encodeDurations[index].key,
-                onChanged: (value) {
-                  setState(() {
-                    if (!_newEncodeEntry(index)) {
-                      var entry = MapEntry<int, int>(value, _encodeDurations[index].value);
-                      _encodeDurations[index] = entry;
-                    } else if (value >= 0) {
-                      var duration = _getTextEditingController(index, null).value;
-                      var durationValue = int.tryParse(duration.text) ?? 0;
-                      var entry = MapEntry<int, int>(value, durationValue);
-                      _encodeDurations.add(entry);
-                    }
-                  });
-                },
-                items: _buildDropDownMenuItems(index),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(width: 5),
-        _showEncodeLoopDuration()
-          ? SizedBox(
-              width: 130,
-              child: Column(
-                children: [
-                  GCWIntegerTextField(
-                    min: 0,
-                    controller:  _newEncodeEntry(index)
-                        ? _getTextEditingController(index, null)
-                        : _getTextEditingController(index, _encodeDurations[index].value.toString()),
-                    onChanged: (IntegerText ret) {
-                      setState(() {
-                        if (!_newEncodeEntry(index)) {
-                          var entry = MapEntry<int, int>(_encodeDurations[index].key, ret.value);
-                          _encodeDurations[index] = entry;
-                        }
-                      });
-                    },
-                  ),
-                ]
-              )
-            )
-          : Container(),
-        _showEncodeLoopDuration()
-          ? SizedBox(width: 5)
-          : Container(),
-        Column(
-          children: [
-            GCWIconButton(
-              icon: Icons.remove,
-              onPressed: () {
-                setState(() {
-                  _encodeDurations.removeAt(index);
-                  _textEditingControllerArray.removeAt(index);
-                });
-              },
-            ),
-          ],
-        ),
-        Column(
-          children: [
-            GCWIconButton(
-              icon: Icons.arrow_drop_up,
-              onPressed: () {
-                setState(() {
-                  if (index > 0) {
-                    var entry = _encodeDurations.removeAt(index);
-                    _encodeDurations.insert(index - 1, entry);
-                  }
-                });
-              },
-            ),
-            GCWIconButton(
-              icon: Icons.arrow_drop_down,
-              onPressed: () {
-                setState(() {
-                  if (index>= 0 && index < _encodeDurations.length - 1) {
-                    var entry = _encodeDurations.removeAt(index);
-                    _encodeDurations.insert(index + 1, entry);
-                  }
-                });
-              },
-            )
-          ],
-        ),
-        Expanded(child: Container()),
-      ],
-    );
-  }
-
-  List<GCWDropDownMenuItem<int>> _buildDropDownMenuItems(int index) {
-    GCWDropDownMenuItem<int> _buildDropDownMenuItem(int index) {
-      Widget imageWidget = Container();
-      if (index >= 0 && index < _encodeImageData.length) {
-        var image = Image.memory(_encodeImageData[index].file.bytes);
-        imageWidget = GCWSymbolContainer(symbol: image);
-        imageWidget = SizedBox(height: 80, child: imageWidget);
-      } else {
-        imageWidget = SizedBox(height: 80, width: 80, child: imageWidget);
-      }
-
-      return GCWDropDownMenuItem(
-          value: index,
-          child: Row(children: [
-            imageWidget
-          ]));
-    }
-
-    var list = _encodeImageData.mapIndexed((index, data) => _buildDropDownMenuItem(index)).toList();
-    if (_newEncodeEntry(index)) {
-      list.insert(0, _buildDropDownMenuItem(-1));
-    }
-    return list;
-  }
-
-  bool _showEncodeLoopDuration() {
-    return _loopDuration <= 0;
-  }
-
-  bool _newEncodeEntry(int index) {
-    return index < 0 || index >= _encodeDurations.length;
-  }
-
-  TextEditingController _getTextEditingController(int rowIndex, String? text) {
-    if (_newEncodeEntry(rowIndex)) {
-      rowIndex = _encodeDurations.length;
-    }
-    while (_textEditingControllerArray.length <= rowIndex) {
-      _textEditingControllerArray.add(TextEditingController());
-    }
-
-    if (text != null) {
-      _textEditingControllerArray[rowIndex]!.text = text;
-    }
-
-    return _textEditingControllerArray[rowIndex]!;
   }
 
   Widget _buildEncodeSubmitButton() {
@@ -641,4 +458,192 @@ void updateEncodeImageData(List<GCWImageViewData> list, {Uint8List? addImage, GC
         description: description,
         marked: list[i].marked));
   }
+}
+
+Widget buildEncodeList(Function setState, List<MapEntry<int, int>> encodeDurations,
+    List<GCWImageViewData> encodeImageData, List<TextEditingController?> textEditingController,
+    int loopDuration, [bool singleEntry = false]) {
+
+  bool _showEncodeLoopDuration() {
+    return loopDuration <= 0;
+  }
+
+  bool _newEncodeEntry(int index) {
+    return index < 0 || index >= encodeDurations.length;
+  }
+
+  TextEditingController _getTextEditingController(int rowIndex, String? text) {
+    if (_newEncodeEntry(rowIndex)) {
+      rowIndex = encodeDurations.length;
+    }
+    while (textEditingController.length <= rowIndex) {
+      textEditingController.add(TextEditingController());
+    }
+
+    if (text != null) {
+      textEditingController[rowIndex]!.text = text;
+    }
+
+    return textEditingController[rowIndex]!;
+  }
+
+  List<GCWDropDownMenuItem<int>> _buildDropDownMenuItems(int index) {
+    GCWDropDownMenuItem<int> _buildDropDownMenuItem(int index) {
+      Widget imageWidget = Container();
+      if (index >= 0 && index < encodeImageData.length) {
+        var image = Image.memory(encodeImageData[index].file.bytes);
+        imageWidget = GCWSymbolContainer(symbol: image);
+        imageWidget = SizedBox(height: 80, child: imageWidget);
+      } else {
+        imageWidget = SizedBox(height: 80, width: 80, child: imageWidget);
+      }
+
+      return GCWDropDownMenuItem(
+          value: index,
+          child: Row(children: [
+            imageWidget
+          ]));
+    }
+
+    var list = encodeImageData.mapIndexed((index, data) => _buildDropDownMenuItem(index)).toList();
+    if (_newEncodeEntry(index)) {
+      list.insert(0, _buildDropDownMenuItem(-1));
+    }
+    return list;
+  }
+
+  Widget _buildEncodeRowEntry(int index) {
+    return Row(
+      children: [
+        Expanded(child: Container()),
+        SizedBox(
+          width: 140,
+          child: Column(
+            children: [
+              GCWDropDown<int>(
+                value: _newEncodeEntry(index) ? index : encodeDurations[index].key,
+                onChanged: (value) {
+                  setState(() {
+                    if (!_newEncodeEntry(index)) {
+                      var entry = MapEntry<int, int>(value, encodeDurations[index].value);
+                      encodeDurations[index] = entry;
+                    } else if (value >= 0) {
+                      var duration = _getTextEditingController(index, null).value;
+                      var durationValue = int.tryParse(duration.text) ?? 0;
+                      var entry = MapEntry<int, int>(value, durationValue);
+                      encodeDurations.add(entry);
+                    }
+                  });
+                },
+                items: _buildDropDownMenuItems(index),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(width: 5),
+        _showEncodeLoopDuration()
+            ? SizedBox(
+            width: 130,
+            child: Column(
+                children: [
+                  GCWIntegerTextField(
+                    min: 0,
+                    controller:  _newEncodeEntry(index)
+                        ? _getTextEditingController(index, null)
+                        : _getTextEditingController(index, encodeDurations[index].value.toString()),
+                    onChanged: (IntegerText ret) {
+                      setState(() {
+                        if (!_newEncodeEntry(index)) {
+                          var entry = MapEntry<int, int>(encodeDurations[index].key, ret.value);
+                          encodeDurations[index] = entry;
+                        }
+                      });
+                    },
+                  ),
+                ]
+            )
+        )
+            : Container(),
+        _showEncodeLoopDuration()
+            ? SizedBox(width: 5)
+            : Container(),
+        Column(
+          children: [
+            GCWIconButton(
+              icon: Icons.remove,
+              onPressed: () {
+                setState(() {
+                  encodeDurations.removeAt(index);
+                  textEditingController.removeAt(index);
+                });
+              },
+            ),
+          ],
+        ),
+        Column(
+          children: [
+            GCWIconButton(
+              icon: Icons.arrow_drop_up,
+              onPressed: () {
+                setState(() {
+                  if (index > 0) {
+                    var entry = encodeDurations.removeAt(index);
+                    encodeDurations.insert(index - 1, entry);
+                  }
+                });
+              },
+            ),
+            GCWIconButton(
+              icon: Icons.arrow_drop_down,
+              onPressed: () {
+                setState(() {
+                  if (index>= 0 && index < encodeDurations.length - 1) {
+                    var entry = encodeDurations.removeAt(index);
+                    encodeDurations.insert(index + 1, entry);
+                  }
+                });
+              },
+            )
+          ],
+        ),
+        Expanded(child: Container()),
+      ],
+    );
+  }
+
+  var rows = encodeDurations.mapIndexed((index, data) => _buildEncodeRowEntry(index)).toList();
+  if (!singleEntry || encodeDurations.isEmpty ) {
+    rows.add(Container(child: _buildEncodeRowEntry(-1)));
+  }
+
+  var headerStyle = gcwTextStyle().copyWith(fontWeight: FontWeight.bold);
+  Widget header = Row(
+      children: [
+        Expanded(child: Container()),
+        SizedBox(width: 140, child: Container()),
+        SizedBox(width: 5),
+        _showEncodeLoopDuration()
+            ? SizedBox(width: 130, child: GCWText(text: 'Duration' + ' (ms)', style: headerStyle))
+            : Container(),
+        _showEncodeLoopDuration()
+            ? SizedBox(width: 5)
+            : Container(),
+        SizedBox(width: 40, child: Container()),
+        SizedBox(width: 40, child: Container()),
+        Expanded(child: Container()),
+      ]
+  );
+  rows.insert(0, Container(child: header));
+
+  var odd = true;
+  return Column(
+      children: rows.map((row) {
+        odd = !odd;
+        if (odd) {
+          return Container(color: themeColors().outputListOddRows(), child: row);
+        } else {
+          return Container(child: row);
+        }
+      }).toList()
+  );
 }
