@@ -31,9 +31,11 @@ class RLEPatternFont {
 
   RLEPatternFont() {
     var chars = _RLE_FONT_DATA.split(",");
+    var binaryString = '';
     for (var string in chars) {
-      var binaryString = int.parse(string, radix: 16).toRadixString(2);
-      _binary.add('0' * (160 - binaryString.length) + binaryString);
+      binaryString = BigInt.parse(string, radix: 16).toRadixString(2).padLeft(160, '0');
+      //_binary.add('0' * (160 - binaryString.length) + binaryString);
+      _binary.add(binaryString);
     }
   }
 

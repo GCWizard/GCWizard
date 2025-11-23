@@ -11,6 +11,7 @@ import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/gcw_text_export.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
@@ -46,6 +47,8 @@ class _GameOfLifeState extends State<GameOfLife> {
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
   String _currentInput = '';
   late TextEditingController _inputController;
+
+  String _currentRLE = '';
 
   @override
   void initState() {
@@ -213,20 +216,24 @@ class _GameOfLifeState extends State<GameOfLife> {
             });
           },
         ),
-        _widgetGenerateButtonQR( context)
+        _widgetGenerateButton(context),
+        GCWDefaultOutput(
+          trailing: _widgetSaveButton(context),
+          child: _currentRLE,
+          copyText: _currentRLE,
+        )
       ],
     );
   }
 
-  Widget _widgetGenerateButtonQR(BuildContext context) {
-    return GCWButton(
-      text: i18n(context, 'gameoflife_generate_rle'),
-      onPressed: () {
-        showGCWDialog(
+  Widget _widgetSaveButton(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          showGCWDialog(
             context,
             i18n(context, 'gameoflife_generate_rle'),
             GCWTextExport(
-              text: generate_rle(_currentInput),
+              text: _currentRLE,
               saveFileTypeText: FileType.TXT,
               saveFilenamePrefix: 'rle',
             ),
@@ -236,6 +243,17 @@ class _GameOfLifeState extends State<GameOfLife> {
               )
             ],
             cancelButton: false);
+            setState(() {});
+        },
+        icon: Icon(Icons.save))
+    ;
+  }
+
+  Widget _widgetGenerateButton(BuildContext context) {
+    return GCWButton(
+      text: i18n(context, 'gameoflife_generate_rle'),
+      onPressed: () {
+        _currentRLE = generate_rle(_currentInput);
         setState(() {});
       },
     );
