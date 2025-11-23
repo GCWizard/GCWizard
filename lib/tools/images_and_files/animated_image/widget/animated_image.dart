@@ -296,8 +296,8 @@ class _AnimatedImageState extends State<AnimatedImage> {
       child: Column(
         children: [
           GCWTwoOptionsSwitch(
-              leftValue: "Forward/ Reverse",
-              rightValue: "Forward",
+              leftValue: i18n(context, 'common_forward') + "/ " + i18n(context, 'Reverse'),
+              rightValue: i18n(context, 'common_forward'),
               value: _modeEncode == EncodeMode.FORWARD ? GCWSwitchPosition.right : GCWSwitchPosition.left,
               onChanged:  (value) {
                 setState(() {
@@ -310,7 +310,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
               Expanded(
                   flex: 2,
                   child: GCWText(
-                    text: 'Loop Duration' + ' (ms):',
+                    text: i18n(context, 'animated_image_loop_duration') + ' (ms):',
                   )),
               Expanded(
                   flex: 2,
