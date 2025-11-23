@@ -32,7 +32,7 @@ Future<Uint8List?> createImageAsync(GCWAsyncExecuterParameters? jobData) async {
 List<MapEntry<int, int>> _prepareDurations(List<MapEntry<int, int>> durations, EncodeMode mode,
     int? loopDisplayDuration) {
 
-  List<MapEntry<int, int>>? list;
+  var list = List<MapEntry<int, int>>.from(durations);
 
   if (loopDisplayDuration != null && loopDisplayDuration > 0) {
     var imageCount = durations.length;
@@ -40,7 +40,7 @@ List<MapEntry<int, int>> _prepareDurations(List<MapEntry<int, int>> durations, E
       imageCount = imageCount * 2 - 1;
     }
     imageCount = max(imageCount, 1);
-    list = List<MapEntry<int, int>>.from(durations);
+
     var duration = (max(loopDisplayDuration, 0) / imageCount).toInt();
     for (var i = 0; i < list.length; i++) {
       list[i] = MapEntry(list[i].key, duration);
@@ -49,12 +49,18 @@ List<MapEntry<int, int>> _prepareDurations(List<MapEntry<int, int>> durations, E
 
   if (mode == EncodeMode.FORWARDREVERSE) {
     // 1234, 321, 234 no image with double view length
-    list = list ?? List<MapEntry<int, int>>.from(durations);
-
     list.addAll(list.reversed.skip(1).toList());
-    return list;
   }
-  return list ?? durations;
+
+  // image count optimization
+  for (var i = list.length - 1; i > 0; i--) {
+    if (list[i].key == durations[i - 1].key) {
+      list[i - 1] = MapEntry<int, int>(list[i].key, list[i].value + list[i - 1].value);
+      list.removeAt(i);
+    }
+  }
+  
+  return list;
 }
 
 Uint8List? createImage(List<Uint8List> images,  List<MapEntry<int, int>> durations, int loopCount) {
@@ -68,14 +74,6 @@ Uint8List? createImage(List<Uint8List> images,  List<MapEntry<int, int>> duratio
         convertedImage = decoder.decode(bytes);
       }
       convertedImages.add(convertedImage);
-    }
-
-    // image count optimization
-    for (var i = durations.length - 1; i > 0; i--) {
-      if (durations[i].key == durations[i - 1].key) {
-        durations[i - 1] = MapEntry<int, int>(durations[i].key, durations[i].value + durations[i - 1].value);
-        durations.removeAt(i);
-      }
     }
 
     var animation = <Image.Image>[];
