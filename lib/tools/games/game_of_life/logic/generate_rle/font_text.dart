@@ -25,6 +25,20 @@
 
 part of 'package:gc_wizard/tools/games/game_of_life/logic/game_of_life_rle_generate.dart';
 
+// Implementation of the font:
+//    1st element index   0 implements ASCII  32 = space
+//   17th element index  16 implements ASCII  48 = 0
+//   34rd element index  33 implements ASCII  65 = A
+//   ...
+//  145th element index 144 implements ASCII 176 = °
+//   ...
+//
+// The ASCII Codes > 126 are derived using GC Wizard ASCII to Value
+//
+// Every character is defined as a hexadecimal number
+//                            which represents a 160 bit binary digit
+//                            which represents a 10x16 Bitmap
+
 const _RLE_FONT_DATA =
     '0000000000000000000000000000000000000000,' //   0 =  32
     '0000800080008000800080000000800000000000,'

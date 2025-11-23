@@ -234,8 +234,8 @@ class _GameOfLifeState extends State<GameOfLife> {
             i18n(context, 'gameoflife_generate_rle'),
             GCWTextExport(
               text: _currentRLE,
-              saveFileTypeText: FileType.TXT,
-              saveFilenamePrefix: 'rle',
+              saveFileTypeText: FileType.RLE,
+              saveFilenamePrefix: 'conway',
             ),
             [
               GCWDialogButton(
