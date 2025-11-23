@@ -43,6 +43,9 @@ class RLEPatternFont {
     int left = 0;
     for (var c in string.codeUnits) {
       int index = c - 32;
+      if (index >= _binary.length) {
+        index = _binary.length - 1;
+      }
       var binary = _binary[index];
       int width = 0;
       int row = 0, col = 0;
