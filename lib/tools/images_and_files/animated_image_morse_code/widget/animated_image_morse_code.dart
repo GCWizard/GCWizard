@@ -48,7 +48,7 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
   Uint8List? _imageOn;
   Uint8List? _imageOff;
   String _currentInput = '';
-  int _currentDotDuration = 400;
+  int _currentDotDurationEncode = 400;
   late TextEditingController _currentDotDurationController;
   late TextEditingController _currentInputController;
   Uint8List? _encodeOutputImage;
@@ -69,7 +69,7 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
     super.initState();
 
     _currentInputController = TextEditingController(text: _currentInput);
-    _currentDotDurationController = TextEditingController(text: _currentDotDuration.toString());
+    _currentDotDurationController = TextEditingController(text: _currentDotDurationEncode.toString());
   }
 
   @override
@@ -246,13 +246,13 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
         Expanded(
             flex: 2,
             child: GCWIntegerSpinner(
-              value: _currentDotDuration,
+              value: _currentDotDurationEncode,
               controller: _currentDotDurationController,
               min: 0,
               max: 999999,
               onChanged: (value) {
                 setState(() {
-                  _currentDotDuration = value;
+                  _currentDotDurationEncode = value;
                 });
               },
             )),
@@ -397,7 +397,7 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
   Future<GCWAsyncExecuterParameters?> _buildJobDataEncode() async {
     if (_imageOn == null || _imageOff == null) return null;
     return GCWAsyncExecuterParameters(
-        Tuple4<Uint8List, Uint8List, String, int>(_imageOn!, _imageOff!, _currentInput, _currentDotDuration));
+        Tuple4<Uint8List, Uint8List, String, int>(_imageOn!, _imageOff!, _currentInput, _currentDotDurationEncode));
   }
 
   void _saveOutputDecode(AnimatedImageMorseOutput? output) {
