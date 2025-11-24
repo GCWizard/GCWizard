@@ -51,7 +51,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
   bool _play = false;
   var _currentMode = GCWSwitchPosition.right;
   final List<MapEntry<int, int>> _encodeDurations = []; //image index, duration
-  final List<TextEditingController?> _textEditingControllerArray = [];
+  final List<TextEditingController?> _textEditingController = [];
   final _loopDurationController = TextEditingController();
   var _loopDuration = 0;
   final _loopCountController = TextEditingController();
@@ -64,10 +64,10 @@ class _AnimatedImageState extends State<AnimatedImage> {
 
   @override
   void dispose() {
-    for(var y = 0; y < _textEditingControllerArray.length; y++) {
-      _textEditingControllerArray[y]?.dispose();
+    for(var y = 0; y < _textEditingController.length; y++) {
+      _textEditingController[y]?.dispose();
     }
-    _textEditingControllerArray.clear();
+    _textEditingController.clear();
     _loopDurationController.dispose();
     _loopCountController.dispose();
     super.dispose();
@@ -280,7 +280,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
       ),
       buildEncodeGallery(_encodeImageData, setState),
       _buildEncodeOptions(),
-      buildEncodeList(setState, _encodeDurations, _encodeImageData, _textEditingControllerArray, _loopDuration),
+      buildEncodeList(setState, _encodeDurations, _encodeImageData, _textEditingController, _loopDuration),
       _buildEncodeSubmitButton(),
       _buildOutputEncode()
     ]);

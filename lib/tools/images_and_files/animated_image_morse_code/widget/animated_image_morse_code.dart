@@ -53,16 +53,12 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
   late TextEditingController _currentInputController;
   Uint8List? _encodeOutputImage;
 
-  // //var _currentMode = GCWSwitchPosition.right;
-  // final List<GCWImageViewData> _encodeImageData = [];
-  //
-  // final _loopDurationController = TextEditingController();
-  // var _loopDuration = 0;
-  // final _loopCountController = TextEditingController();
-  // var _loopCount = 0;
-  // Uint8List? _outDataEncode;
-  // var _modeEncode = EncodeMode.LOOP;
-  // var _expandedEncodeOptions = false;
+  final List<GCWImageViewData> _encodeImageData = [];
+  final List<TextEditingController?> _textEditingStartController = [];
+  final List<TextEditingController?> _textEditingEndController = [];
+
+  final List<MapEntry<int, int>> _encodeDurationsStart = []; //image index, duration
+  final List<MapEntry<int, int>> _encodeDurationsEnd = []; //image index, duration
 
   @override
   void initState() {
@@ -74,6 +70,13 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
 
   @override
   void dispose() {
+    for(var y = 0; y < _textEditingStartController.length; y++) {
+      _textEditingStartController[y]?.dispose();
+    }
+    for(var y = 0; y < _textEditingEndController.length; y++) {
+      _textEditingEndController[y]?.dispose();
+    }
+
     _currentInputController.dispose();
     _currentDotDurationController.dispose();
 
@@ -96,11 +99,11 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
           });
         },
       ),
-      _currentMode == GCWSwitchPosition.right ? _decodeWidgets() : _encodeWidgets()
+      _currentMode == GCWSwitchPosition.right ? _decodeWidget() : _encodeWidget()
     ]);
   }
 
-  Widget _decodeWidgets() {
+  Widget _decodeWidget() {
     return Column(children: <Widget>[
       GCWOpenFile(
         supportedFileTypes: ANIMATED_IMAGE_ALLOWED_FILETYPES,
@@ -209,54 +212,40 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
     ]);
   }
 
-  Widget _encodeWidgets() {
-    return Column(children: [
-      GCWTextDivider(text: i18n(context, 'animated_image_morse_code_high_signal')),
+  Widget _encodeWidget() {
+    return Column(children: <Widget>[
       GCWOpenFile(
-        supportedFileTypes: ANIMATED_IMAGE_ALLOWED_FILETYPES,
+        supportedFileTypes: SUPPORTED_IMAGE_TYPES,
         suppressGallery: false,
         onLoaded: (GCWFile? value) {
-          if (value != null) {
-            setState(() {
-              _imageOn = value.bytes;
-            });
+          if (value == null) {
+            showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
+            return;
           }
+          setState(() {
+            updateEncodeImageData(_encodeImageData, addImage: value.bytes);
+          });
         },
       ),
-      Container(child: _imageOn != null ? Image.memory(_imageOn!) : const SizedBox(height: 20)),
-
-      GCWTextDivider(text: i18n(context, 'animated_image_morse_code_low_signal')),
-        Column(children: [
-          GCWOpenFile(
-            supportedFileTypes: ANIMATED_IMAGE_ALLOWED_FILETYPES,
-            suppressGallery: false,
-            onLoaded: (GCWFile? value) {
-              if (value != null) {
-                setState(() {
-                  _imageOff = value.bytes;
-                });
-              }
+      GCWTextDivider(
+        text: '',
+        trailing: Row(children: <Widget>[
+          GCWIconButton(
+            icon: Icons.delete,
+            size: IconButtonSize.SMALL,
+            iconColor: _outData != null && !_play ? null : themeColors().inactive(),
+            onPressed: () {
+              setState(() {
+                _encodeImageData.removeWhere((data) => data.marked ?? false);
+                updateEncodeImageData(_encodeImageData);
+              });
             },
           ),
-          Container(child: _imageOff != null ? Image.memory(_imageOff!) : const SizedBox(height: 50, width: 200)),
-         ]),
-
-      Row(children: <Widget>[
-        Expanded(flex: 1, child: GCWText(text: i18n(context, 'animated_image_morse_code_dot_duration') + ':')),
-        Expanded(
-            flex: 2,
-            child: GCWIntegerSpinner(
-              value: _currentDotDurationEncode,
-              controller: _currentDotDurationController,
-              min: 0,
-              max: 999999,
-              onChanged: (value) {
-                setState(() {
-                  _currentDotDurationEncode = value;
-                });
-              },
-            )),
-      ]),
+        ]),
+      ),
+      buildEncodeGallery(_encodeImageData, setState),
+      //_buildEncodeOptions(),
+      buildEncodeList(setState, _encodeDurationsStart, _encodeImageData, _textEditingStartController, -1),
       GCWTextField(
         controller: _currentInputController,
         onChanged: (text) {
@@ -265,21 +254,83 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
           });
         },
       ),
+      buildEncodeList(setState, _encodeDurationsEnd, _encodeImageData, _textEditingEndController, -1),
       _buildEncodeSubmitButton(),
-      GCWDefaultOutput(
-          trailing: Row(children: <Widget>[
-            GCWIconButton(
-              icon: Icons.save,
-              size: IconButtonSize.SMALL,
-              iconColor: _encodeOutputImage == null ? themeColors().inactive() : null,
-              onPressed: () {
-                if (_encodeOutputImage != null) _exportFile(context, _encodeOutputImage!);
-              },
-            )
-          ]),
-          child: _buildOutputEncode())
+      _buildOutputEncode()
     ]);
   }
+
+  // Widget _encodeWidgets() {
+  //   return Column(children: [
+  //     GCWTextDivider(text: i18n(context, 'animated_image_morse_code_high_signal')),
+  //     GCWOpenFile(
+  //       supportedFileTypes: ANIMATED_IMAGE_ALLOWED_FILETYPES,
+  //       suppressGallery: false,
+  //       onLoaded: (GCWFile? value) {
+  //         if (value != null) {
+  //           setState(() {
+  //             _imageOn = value.bytes;
+  //           });
+  //         }
+  //       },
+  //     ),
+  //     Container(child: _imageOn != null ? Image.memory(_imageOn!) : const SizedBox(height: 20)),
+  //
+  //     GCWTextDivider(text: i18n(context, 'animated_image_morse_code_low_signal')),
+  //       Column(children: [
+  //         GCWOpenFile(
+  //           supportedFileTypes: ANIMATED_IMAGE_ALLOWED_FILETYPES,
+  //           suppressGallery: false,
+  //           onLoaded: (GCWFile? value) {
+  //             if (value != null) {
+  //               setState(() {
+  //                 _imageOff = value.bytes;
+  //               });
+  //             }
+  //           },
+  //         ),
+  //         Container(child: _imageOff != null ? Image.memory(_imageOff!) : const SizedBox(height: 50, width: 200)),
+  //        ]),
+  //
+  //     Row(children: <Widget>[
+  //       Expanded(flex: 1, child: GCWText(text: i18n(context, 'animated_image_morse_code_dot_duration') + ':')),
+  //       Expanded(
+  //           flex: 2,
+  //           child: GCWIntegerSpinner(
+  //             value: _currentDotDurationEncode,
+  //             controller: _currentDotDurationController,
+  //             min: 0,
+  //             max: 999999,
+  //             onChanged: (value) {
+  //               setState(() {
+  //                 _currentDotDurationEncode = value;
+  //               });
+  //             },
+  //           )),
+  //     ]),
+  //     GCWTextField(
+  //       controller: _currentInputController,
+  //       onChanged: (text) {
+  //         setState(() {
+  //           _currentInput = text;
+  //         });
+  //       },
+  //     ),
+  //     _buildEncodeSubmitButton(),
+  //     GCWDefaultOutput(
+  //         trailing: Row(children: <Widget>[
+  //           GCWIconButton(
+  //             icon: Icons.save,
+  //             size: IconButtonSize.SMALL,
+  //             iconColor: _encodeOutputImage == null ? themeColors().inactive() : null,
+  //             onPressed: () {
+  //               if (_encodeOutputImage != null) _exportFile(context, _encodeOutputImage!);
+  //             },
+  //           )
+  //         ]),
+  //         child: _buildOutputEncode())
+  //   ]);
+  // }
 
   Widget _buildEncodeSubmitButton() {
     return GCWSubmitButton(onPressed: () async {
