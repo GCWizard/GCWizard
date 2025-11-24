@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:latlong2/latlong.dart';
 
 const reverseWherigoHebi63Key =
-    'coords_reversewhereigo_hebi63'; /* typo known. DO NOT change!*/
+    'coords_reversewherigo_hebi63';
 
 final ReverseWherigoHebi63FormatDefinition = CoordinateFormatDefinition(
     CoordinateFormatKey.REVERSE_WIG_HEBI63,
