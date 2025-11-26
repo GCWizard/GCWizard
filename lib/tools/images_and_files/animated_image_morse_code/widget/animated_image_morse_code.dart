@@ -7,8 +7,8 @@ import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart'
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
-import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
+import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
@@ -17,14 +17,12 @@ import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
-import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
+import 'package:gc_wizard/common_widgets/textfields/gcw_integer_textfield.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/images_and_files/animated_image/widget/animated_image.dart';
 import 'package:gc_wizard/tools/images_and_files/animated_image_morse_code/logic/animated_image_morse_code.dart';
-import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
-import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
 import 'package:tuple/tuple.dart';
 
 class AnimatedImageMorseCode extends StatefulWidget {
@@ -51,6 +49,9 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
   int _currentDotDurationEncode = 400;
   late TextEditingController _currentDotDurationController;
   late TextEditingController _currentInputController;
+
+  final _loopCountController = TextEditingController();
+  var _loopCount = 0;
   Uint8List? _encodeOutputImage;
 
   final List<GCWImageViewData> _encodeImageData = [];
@@ -79,7 +80,7 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
 
     _currentInputController.dispose();
     _currentDotDurationController.dispose();
-
+    _loopCountController.dispose();
     super.dispose();
   }
 
@@ -157,7 +158,7 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
               size: IconButtonSize.SMALL,
               iconColor: _outData == null ? themeColors().inactive() : null,
               onPressed: () {
-                if (_outData != null && _file?.name != null) _exportFiles(context, _file!.name!, _outData!.images);
+                if (_outData != null && _file?.name != null) exportFiles(context, _file!.name!, _outData!.images);
               },
             )
           ]),
@@ -244,7 +245,7 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
         ]),
       ),
       buildEncodeGallery(_encodeImageData, setState),
-      //_buildEncodeOptions(),
+      _buildEncodeOptions(),
       buildEncodeList(setState, _encodeDurationsStart, _encodeImageData, _textEditingStartController, -1),
       GCWTextField(
         controller: _currentInputController,
@@ -324,13 +325,82 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
   //             size: IconButtonSize.SMALL,
   //             iconColor: _encodeOutputImage == null ? themeColors().inactive() : null,
   //             onPressed: () {
-  //               if (_encodeOutputImage != null) _exportFile(context, _encodeOutputImage!);
+  //               if (_encodeOutputImage != null) exportFile(context, _encodeOutputImage!);
   //             },
   //           )
   //         ]),
   //         child: _buildOutputEncode())
   //   ]);
   // }
+
+  Widget _buildEncodeOptions() {
+    return GCWExpandableTextDivider(
+      text: i18n(context, 'common_options'),
+      expanded: _expandedEncodeOptions,
+      onChanged: (value) {
+        _expandedEncodeOptions = value;
+      },
+      child: Column(
+        children: [
+          GCWTwoOptionsSwitch(
+              leftValue: i18n(context, 'common_forward') + "/ " + i18n(context, 'Reverse'),
+              rightValue: i18n(context, 'common_forward'),
+              value: _modeEncode == EncodeMode.FORWARD ? GCWSwitchPosition.right : GCWSwitchPosition.left,
+              onChanged:  (value) {
+                setState(() {
+                  _modeEncode = value == GCWSwitchPosition.right ? EncodeMode.FORWARD : EncodeMode.FORWARDREVERSE;
+                });
+              }
+          ),
+          Row(
+            children: [
+              Expanded(
+                  flex: 2,
+                  child: GCWText(
+                    text: i18n(context, 'animated_image_loop_duration') + ' (ms):',
+                  )),
+              Expanded(
+                flex: 2,
+                child: GCWIntegerTextField(
+                  hintText: '1000',
+                  controller: _loopDurationController,
+                  min: 0,
+                  onChanged: (value) {
+                    setState(() {
+                      _loopDuration = value.value;
+                    });
+                  },
+                ),
+              )
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                  flex: 2,
+                  child: GCWText(
+                    text: 'Loop count' + ':',
+                  )),
+              Expanded(
+                flex: 2,
+                child: GCWIntegerTextField(
+                  hintText: '0 -> ∞',
+                  controller: _loopCountController,
+                  min: 0,
+                  onChanged: (value) {
+                    setState(() {
+                      _loopCount = value.value;
+                    });
+                  },
+                ),
+              )
+            ],
+          ),
+          Container(height: 10)
+        ],
+      ),
+    );
+  }
 
   Widget _buildEncodeSubmitButton() {
     return GCWSubmitButton(onPressed: () async {
@@ -358,7 +428,22 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
   Widget _buildOutputEncode() {
     if (_encodeOutputImage == null) return Container();
 
-    return Column(children: <Widget>[Image.memory(_encodeOutputImage!)]);
+    return GCWDefaultOutput(
+        trailing: Row(children: <Widget>[
+          GCWIconButton(
+            icon: Icons.save,
+            size: IconButtonSize.SMALL,
+            iconColor: _encodeOutputImage == null ? themeColors().inactive() : null,
+            onPressed: () {
+              if (_encodeOutputImage != null) exportFile(context, _encodeOutputImage!);
+            },
+          )
+        ]),
+
+        child: _encodeOutputImage == null
+            ? Container()
+            : Image.memory(_encodeOutputImage!)
+    );
   }
 
   void _initMarkedList(List<Uint8List> images, List<List<int>> imagesFiltered) {
@@ -480,22 +565,6 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {});
-    });
-  }
-
-  Future<void> _exportFiles(BuildContext context, String fileName, List<Uint8List> data) async {
-    createZipFile(fileName, '.' + fileExtension(FileType.PNG), data).then((bytes) async {
-      await saveByteDataToFile(context, bytes, buildFileNameWithDate('anim_', FileType.ZIP)).then((value) {
-        if (value) showExportedFileDialog(context);
-      });
-    });
-  }
-
-  Future<void> _exportFile(BuildContext context, Uint8List data) async {
-    var fileType = getFileType(data);
-    await saveByteDataToFile(context, data, buildFileNameWithDate('anim_export_', fileType)).then((value) {
-      var content = fileClass(fileType) == FileClass.IMAGE ? imageContent(context, data) : null;
-      if (value) showExportedFileDialog(context, contentWidget: content);
     });
   }
 }

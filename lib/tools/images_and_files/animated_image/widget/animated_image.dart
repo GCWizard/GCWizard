@@ -56,7 +56,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
   var _loopDuration = 0;
   final _loopCountController = TextEditingController();
   var _loopCount = 0;
-  Uint8List? _outDataEncode;
+  Uint8List? _encodeOutputImage;
   final List<GCWImageViewData> _encodeImageData = [];
   var _modeEncode = EncodeMode.FORWARD;
   var _expandedEncodeOptions = false;
@@ -392,22 +392,31 @@ class _AnimatedImageState extends State<AnimatedImage> {
   }
 
   void _saveOutputEncode(Uint8List? output) {
-    _outDataEncode = output;
+    _encodeOutputImage = output;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {});
     });
   }
 
   Widget _buildOutputEncode() {
-    if (_outDataEncode == null) return Container();
+    if (_encodeOutputImage == null) return Container();
 
-    return GCWDefaultOutput(child:
-      GCWImageView(
-        imageData: GCWImageViewData(GCWFile(bytes: _outDataEncode ?? Uint8List(0))),
-        toolBarRight: true,
-        fileName: buildFileNameWithDate('img1_', null),
-      )
-    );
+    return GCWDefaultOutput(
+      trailing: Row(children: <Widget>[
+        GCWIconButton(
+          icon: Icons.save,
+          size: IconButtonSize.SMALL,
+          iconColor: _encodeOutputImage == null ? themeColors().inactive() : null,
+          onPressed: () {
+            if (_encodeOutputImage != null) exportFile(context, _encodeOutputImage!);
+          },
+        )
+      ]),
+
+      child: _encodeOutputImage == null
+              ? Container()
+              : Image.memory(_encodeOutputImage!)
+      );
   }
 
   Future<void> _exportFiles(BuildContext context, String fileName, List<Uint8List> data) async {
@@ -646,4 +655,20 @@ Widget buildEncodeList(Function setState, List<MapEntry<int, int>> encodeDuratio
         }
       }).toList()
   );
+}
+
+Future<void> exportFiles(BuildContext context, String fileName, List<Uint8List> data) async {
+  createZipFile(fileName, '.' + fileExtension(FileType.PNG), data).then((bytes) async {
+    await saveByteDataToFile(context, bytes, buildFileNameWithDate('anim_', FileType.ZIP)).then((value) {
+      if (value) showExportedFileDialog(context);
+    });
+  });
+}
+
+Future<void> exportFile(BuildContext context, Uint8List data) async {
+  var fileType = getFileType(data);
+  await saveByteDataToFile(context, data, buildFileNameWithDate('anim_export_', fileType)).then((value) {
+    var content = fileClass(fileType) == FileClass.IMAGE ? imageContent(context, data) : null;
+    if (value) showExportedFileDialog(context, contentWidget: content);
+  });
 }
