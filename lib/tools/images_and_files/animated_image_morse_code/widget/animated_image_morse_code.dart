@@ -17,6 +17,7 @@ import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_integer_textfield.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
@@ -53,6 +54,7 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
   final _loopCountController = TextEditingController();
   var _loopCount = 0;
   Uint8List? _encodeOutputImage;
+  var _expandedEncodeOptions = false;
 
   final List<GCWImageViewData> _encodeImageData = [];
   final List<TextEditingController?> _textEditingStartController = [];
@@ -342,38 +344,22 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
       },
       child: Column(
         children: [
-          GCWTwoOptionsSwitch(
-              leftValue: i18n(context, 'common_forward') + "/ " + i18n(context, 'Reverse'),
-              rightValue: i18n(context, 'common_forward'),
-              value: _modeEncode == EncodeMode.FORWARD ? GCWSwitchPosition.right : GCWSwitchPosition.left,
-              onChanged:  (value) {
-                setState(() {
-                  _modeEncode = value == GCWSwitchPosition.right ? EncodeMode.FORWARD : EncodeMode.FORWARDREVERSE;
-                });
-              }
-          ),
-          Row(
-            children: [
-              Expanded(
-                  flex: 2,
-                  child: GCWText(
-                    text: i18n(context, 'animated_image_loop_duration') + ' (ms):',
-                  )),
-              Expanded(
+          Row(children: <Widget>[
+            Expanded(flex: 1, child: GCWText(text: i18n(context, 'animated_image_morse_code_dot_duration') + ':')),
+            Expanded(
                 flex: 2,
-                child: GCWIntegerTextField(
-                  hintText: '1000',
-                  controller: _loopDurationController,
+                child: GCWIntegerSpinner(
+                  value: _currentDotDurationEncode,
+                  controller: _currentDotDurationController,
                   min: 0,
+                  max: 999999,
                   onChanged: (value) {
                     setState(() {
-                      _loopDuration = value.value;
+                      _currentDotDurationEncode = value;
                     });
                   },
-                ),
-              )
-            ],
-          ),
+                )),
+          ]),
           Row(
             children: [
               Expanded(
