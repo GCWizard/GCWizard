@@ -576,45 +576,49 @@ Widget buildEncodeList(Function setState, List<MapEntry<int, int>> encodeDuratio
         _showEncodeLoopDuration()
             ? SizedBox(width: 5)
             : Container(),
-        Column(
-          children: [
-            GCWIconButton(
-              icon: Icons.remove,
-              onPressed: () {
-                setState(() {
-                  encodeDurations.removeAt(index);
-                  textEditingController.removeAt(index);
-                });
-              },
+        singleEntry
+          ? Container()
+          : Column(
+            children: [
+              GCWIconButton(
+                icon: Icons.remove,
+                onPressed: () {
+                  setState(() {
+                    encodeDurations.removeAt(index);
+                    textEditingController.removeAt(index);
+                  });
+                },
+              ),
+            ],
+          ),
+        singleEntry
+            ? Container()
+            : Column(
+              children: [
+                GCWIconButton(
+                  icon: Icons.arrow_drop_up,
+                  onPressed: () {
+                    setState(() {
+                      if (index > 0) {
+                        var entry = encodeDurations.removeAt(index);
+                        encodeDurations.insert(index - 1, entry);
+                      }
+                    });
+                  },
+                ),
+                GCWIconButton(
+                  icon: Icons.arrow_drop_down,
+                  onPressed: () {
+                    setState(() {
+                      if (index>= 0 && index < encodeDurations.length - 1) {
+                        var entry = encodeDurations.removeAt(index);
+                        encodeDurations.insert(index + 1, entry);
+                      }
+                    });
+                  },
+                )
+              ],
             ),
-          ],
-        ),
-        Column(
-          children: [
-            GCWIconButton(
-              icon: Icons.arrow_drop_up,
-              onPressed: () {
-                setState(() {
-                  if (index > 0) {
-                    var entry = encodeDurations.removeAt(index);
-                    encodeDurations.insert(index - 1, entry);
-                  }
-                });
-              },
-            ),
-            GCWIconButton(
-              icon: Icons.arrow_drop_down,
-              onPressed: () {
-                setState(() {
-                  if (index>= 0 && index < encodeDurations.length - 1) {
-                    var entry = encodeDurations.removeAt(index);
-                    encodeDurations.insert(index + 1, entry);
-                  }
-                });
-              },
-            )
-          ],
-        ),
         Expanded(child: Container()),
       ],
     );
@@ -637,8 +641,8 @@ Widget buildEncodeList(Function setState, List<MapEntry<int, int>> encodeDuratio
         _showEncodeLoopDuration()
             ? SizedBox(width: 5)
             : Container(),
-        SizedBox(width: 40, child: Container()),
-        SizedBox(width: 40, child: Container()),
+        singleEntry ? Container() : SizedBox(width: 40, child: Container()),
+        singleEntry ? Container() : SizedBox(width: 40, child: Container()),
         Expanded(child: Container()),
       ]
   );
