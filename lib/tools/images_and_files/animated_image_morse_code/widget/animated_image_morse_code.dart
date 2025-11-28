@@ -458,7 +458,7 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
             images: _encodeImageData.map((data) => data.file.bytes).toList(),
             imageHigh: _encodeDurationsHigh.first.value,
             imageLow: _encodeDurationsLow.first.value,
-            ditDuration: _currentDotDurationEncode,
+            dotDuration: _currentDotDurationEncode,
             text: _currentInput,
             durationsStart: _encodeDurationsStart,
             durationsEnd: _encodeDurationsEnd,

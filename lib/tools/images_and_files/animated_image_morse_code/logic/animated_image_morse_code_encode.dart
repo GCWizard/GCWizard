@@ -10,12 +10,12 @@ class AnimatedImageMorseCodeJobData {
   final int imageLow;
   final List<MapEntry<int, int>> durationsStart;
   final List<MapEntry<int, int>> durationsEnd;
-  final int ditDuration;
+  final int dotDuration;
   final String text;
   final int loopCount;
 
   AnimatedImageMorseCodeJobData({required this.images, required this.imageHigh, required this.imageLow,
-    required this.ditDuration, required this.text, required this.durationsStart,
+    required this.dotDuration, required this.text, required this.durationsStart,
     required this.durationsEnd, this.loopCount = 0});
 }
 
@@ -23,7 +23,7 @@ Future<Uint8List?> createImageMorseCodeAsync(GCWAsyncExecuterParameters? jobData
   if (jobData?.parameters is! AnimatedImageMorseCodeJobData) return null;
 
   var data = jobData!.parameters as AnimatedImageMorseCodeJobData;
-  var output = createImage(data.images, _prepareDurations(data.imageHigh, data.imageLow, data.ditDuration,
+  var output = createImage(data.images, _prepareDurations(data.imageHigh, data.imageLow, data.dotDuration,
       data.text, data.durationsStart, data.durationsEnd), data.loopCount);
 
   jobData.sendAsyncPort?.send(output);
@@ -31,7 +31,7 @@ Future<Uint8List?> createImageMorseCodeAsync(GCWAsyncExecuterParameters? jobData
   return output;
 }
 
-List<MapEntry<int, int>> _prepareDurations(int imageHigh, int imageLow, int ditDurationLength, String text,
+List<MapEntry<int, int>> _prepareDurations(int imageHigh, int imageLow, int dotDurationLength, String text,
     List<MapEntry<int, int>> durationsStart, List<MapEntry<int, int>> durationsEnd) {
 
   var list = <MapEntry<int, int>>[];
@@ -50,19 +50,19 @@ List<MapEntry<int, int>> _prepareDurations(int imageHigh, int imageLow, int ditD
   for (var i = 0; i < text.length; i++) {
     switch (text[i]) {
       case '.':
-        list.add(MapEntry(imageHigh, ditDurationLength));
+        list.add(MapEntry(imageHigh, dotDurationLength));
         break;
       case '-':
-        list.add(MapEntry(imageHigh, ditDurationLength * 3));
+        list.add(MapEntry(imageHigh, dotDurationLength * 3));
         break;
       case '*':
-        list.add(MapEntry(imageLow, ditDurationLength));
+        list.add(MapEntry(imageLow, dotDurationLength));
         break;
       case ' ':
-        list.add(MapEntry(imageLow, ditDurationLength * 3));
+        list.add(MapEntry(imageLow, dotDurationLength * 3));
         break;
       case '|':
-        list.add(MapEntry(imageLow, ditDurationLength * 7));
+        list.add(MapEntry(imageLow, dotDurationLength * 7));
         break;
     }
   }
