@@ -23,8 +23,8 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_integer_textfield.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/images_and_files/animated_image/widget/animated_image.dart';
 import 'package:gc_wizard/tools/images_and_files/animated_image_morse_code/logic/animated_image_morse_code.dart';
+import 'package:gc_wizard/tools/images_and_files/animated_image_morse_code/logic/animated_image_morse_code_encode.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
-import 'package:tuple/tuple.dart';
 
 class AnimatedImageMorseCode extends StatefulWidget {
   final GCWFile? file;
@@ -44,8 +44,6 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
   bool _play = false;
   bool _filtered = true;
 
-  Uint8List? _imageOn;
-  Uint8List? _imageOff;
   String _currentInput = '';
   int _currentDotDurationEncode = 400;
   late TextEditingController _currentDotDurationController;
@@ -454,9 +452,19 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
   }
 
   Future<GCWAsyncExecuterParameters?> _buildJobDataEncode() async {
-    if (_imageOn == null || _imageOff == null) return null;
+    if (_encodeDurationsHigh.isEmpty || _encodeDurationsLow.isEmpty) return null;
     return GCWAsyncExecuterParameters(
-        Tuple4<Uint8List, Uint8List, String, int>(_imageOn!, _imageOff!, _currentInput, _currentDotDurationEncode));
+        AnimatedImageMorseCodeJobData(
+            images: _encodeImageData.map((data) => data.file.bytes).toList(),
+            imageHigh: _encodeDurationsHigh.first.value,
+            imageLow: _encodeDurationsLow.first.value,
+            ditDuration: _currentDotDurationEncode,
+            text: _currentInput,
+            durationsStart: _encodeDurationsStart,
+            durationsEnd: _encodeDurationsEnd,
+            loopCount: _loopCount
+        )
+    );
   }
 
   void _saveOutputDecode(AnimatedImageMorseOutput? output) {

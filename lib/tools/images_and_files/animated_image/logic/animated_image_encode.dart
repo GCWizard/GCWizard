@@ -54,7 +54,7 @@ List<MapEntry<int, int>> _prepareDurations(List<MapEntry<int, int>> durations, E
 
   // image count optimization
   for (var i = list.length - 1; i > 0; i--) {
-    if (list[i].key == durations[i - 1].key) {
+    if (list[i].key == list[i - 1].key) {
       list[i - 1] = MapEntry<int, int>(list[i].key, list[i].value + list[i - 1].value);
       list.removeAt(i);
     }
