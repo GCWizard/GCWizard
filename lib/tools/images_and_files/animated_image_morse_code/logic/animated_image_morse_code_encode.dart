@@ -68,7 +68,7 @@ List<MapEntry<int, int>> _prepareDurations(int imageHigh, int imageLow, int dotD
   }
 
   list.addAll(durationsEnd);
-  list.removeWhere((entry) => entry.key < 0 || entry.value <= 0);
+  list.removeWhere((entry) => entry.key < 0 || entry.value < 0);
 
   // image count optimization
   for (var i = list.length - 1; i > 0; i--) {

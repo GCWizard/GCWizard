@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:collection/collection.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:image/image.dart' as Image;
 
@@ -52,7 +53,7 @@ List<MapEntry<int, int>> _prepareDurations(List<MapEntry<int, int>> durations, E
     list.addAll(list.reversed.skip(1).toList());
   }
 
-  list.removeWhere((entry) => entry.key < 0 || entry.value <= 0);
+  list.removeWhere((entry) => entry.key < 0 || entry.value < 0);
 
   // image count optimization
   for (var i = list.length - 1; i > 0; i--) {
@@ -69,14 +70,17 @@ Uint8List? createImage(List<Uint8List> images,  List<MapEntry<int, int>> duratio
   try {
     if (images.isEmpty || durations.isEmpty) return null;
     var convertedImages = <Image.Image?>[];
-    for (var bytes in images) {
-      var decoder = Image.findDecoderForData(bytes);
+
+    images.forEachIndexed((index, image) {
       Image.Image? convertedImage;
-      if (decoder != null) {
-        convertedImage = decoder.decode(bytes);
+      if (durations.any((entry) => entry.key == index)) {
+        var decoder = Image.findDecoderForData(image);
+        if (decoder != null) {
+          convertedImage = decoder.decode(image);
+        }
       }
       convertedImages.add(convertedImage);
-    }
+    });
 
     var animation = <Image.Image>[];
     for (var i = 0; i < durations.length; i++) {
@@ -84,7 +88,7 @@ Uint8List? createImage(List<Uint8List> images,  List<MapEntry<int, int>> duratio
       if (key >= 0 && key < convertedImages.length && convertedImages[key] != null) {
         var imageClone = Image.Image.from(convertedImages[key]!);
         if (i < durations.length ) {
-          imageClone.frameDuration = max((durations[i].value/ 10).toInt(), 0);
+          imageClone.frameDuration = max(durations[i].value, 0);
         }
         animation.add(imageClone);
       }
@@ -92,7 +96,7 @@ Uint8List? createImage(List<Uint8List> images,  List<MapEntry<int, int>> duratio
 
     var encoder = Image.GifEncoder(repeat: max(loopCount, 0));
     for (var image in animation) {
-      encoder.addFrame(image);
+      encoder.addFrame(image, duration: (image.frameDuration/ 10).toInt());
     }
 
     return encoder.finish();

@@ -263,20 +263,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
         },
       ),
       GCWTextDivider(
-        text: '',
-        trailing: Row(children: <Widget>[
-          GCWIconButton(
-            icon: Icons.delete,
-            size: IconButtonSize.SMALL,
-            iconColor: _outData != null && !_play ? null : themeColors().inactive(),
-            onPressed: () {
-              setState(() {
-                _encodeImageData.removeWhere((data) => data.marked ?? false);
-                updateEncodeImageData(_encodeImageData);
-              });
-            },
-          ),
-        ]),
+        text: ''
       ),
       buildEncodeGallery(_encodeImageData, setState),
       _buildEncodeOptions(),
