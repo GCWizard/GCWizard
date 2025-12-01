@@ -33,6 +33,7 @@ List<MapEntry<int, int>> _prepareDurations(List<MapEntry<int, int>> durations, E
     int? loopDisplayDuration) {
 
   var list = List<MapEntry<int, int>>.from(durations);
+  list.removeWhere((entry) => entry.key < 0 || entry.value <= 0);
 
   if (loopDisplayDuration != null && loopDisplayDuration > 0) {
     var imageCount = durations.length;
@@ -79,16 +80,16 @@ Uint8List? createImage(List<Uint8List> images,  List<MapEntry<int, int>> duratio
     var animation = <Image.Image>[];
     for (var i = 0; i < durations.length; i++) {
       var key = durations[i].key;
-      if (key > 0 && key <= convertedImages.length && convertedImages[key - 1] != null) {
-        var imageClone = Image.Image.from(convertedImages[key - 1]!);
+      if (key >= 0 && key < convertedImages.length && convertedImages[key] != null) {
+        var imageClone = Image.Image.from(convertedImages[key]!);
         if (i < durations.length ) {
-          imageClone.frameDuration = max(durations[i].value, 0);
+          imageClone.frameDuration = max((durations[i].value/ 10).toInt(), 0);
         }
         animation.add(imageClone);
       }
     }
 
-    var encoder = Image.GifEncoder(repeat: loopCount);
+    var encoder = Image.GifEncoder(repeat: max(loopCount, 0));
     for (var image in animation) {
       encoder.addFrame(image);
     }

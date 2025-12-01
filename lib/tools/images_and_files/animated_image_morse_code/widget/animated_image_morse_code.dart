@@ -334,7 +334,7 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
               height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
               width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
               child: GCWAsyncExecuter<Uint8List?>(
-                isolatedFunction: createImageAsync,
+                isolatedFunction: createImageMorseCodeAsync,
                 parameter: _buildJobDataEncode,
                 onReady: (data) => _saveOutputEncode(data),
                 isOverlay: true,
@@ -456,8 +456,8 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
     return GCWAsyncExecuterParameters(
         AnimatedImageMorseCodeJobData(
             images: _encodeImageData.map((data) => data.file.bytes).toList(),
-            imageHigh: _encodeDurationsHigh.first.value,
-            imageLow: _encodeDurationsLow.first.value,
+            imageHigh: _encodeDurationsHigh.first.key,
+            imageLow: _encodeDurationsLow.first.key,
             dotDuration: _currentDotDurationEncode,
             text: _currentInput,
             durationsStart: _encodeDurationsStart,

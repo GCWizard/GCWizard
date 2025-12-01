@@ -584,8 +584,10 @@ Widget buildEncodeList(Function setState, List<MapEntry<int, int>> encodeDuratio
                 icon: Icons.remove,
                 onPressed: () {
                   setState(() {
-                    encodeDurations.removeAt(index);
-                    textEditingController.removeAt(index);
+                    if (index >= 0 && index < encodeDurations.length) {
+                      encodeDurations.removeAt(index);
+                      textEditingController.removeAt(index);
+                    }
                   });
                 },
               ),

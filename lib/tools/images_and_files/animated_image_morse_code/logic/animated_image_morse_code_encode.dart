@@ -45,7 +45,7 @@ List<MapEntry<int, int>> _prepareDurations(int imageHigh, int imageLow, int dotD
   text = text.replaceAll('.', '.*');
   text = text.replaceAll('-', '-*');
   text = text.replaceAll('* ', ' ');
-  if (text[text.length - 1] == '*' && text.length > 1) text = text.substring(0, text.length - 1);
+  if (text.isNotEmpty && text[text.length - 1] == '*') text = text.substring(0, text.length - 1);
 
   for (var i = 0; i < text.length; i++) {
     switch (text[i]) {
@@ -68,6 +68,7 @@ List<MapEntry<int, int>> _prepareDurations(int imageHigh, int imageLow, int dotD
   }
 
   list.addAll(durationsEnd);
+  list.removeWhere((entry) => entry.key < 0 || entry.value <= 0);
 
   // image count optimization
   for (var i = list.length - 1; i > 0; i--) {
