@@ -332,7 +332,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
               Expanded(
                   flex: 2,
                   child: GCWText(
-                    text: 'Loop count' + ':',
+                    text: i18n(context, 'animated_image_loop_count') + ':',
                   )),
               Expanded(
                 flex: 2,

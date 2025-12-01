@@ -252,9 +252,9 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
       buildEncodeList(setState, _encodeDurationsHigh, _encodeImageData, [], 1, true),
       GCWTextDivider(text: i18n(context, 'animated_image_morse_code_low_signal')),
       buildEncodeList(setState, _encodeDurationsLow, _encodeImageData, [], 1, true),
-      GCWTextDivider(text: 'Init sequence'),
+      GCWTextDivider(text: i18n(context, 'animated_image_morse_code_start_sequence')),
       buildEncodeList(setState, _encodeDurationsStart, _encodeImageData, _textEditingStartController, -1),
-      GCWTextDivider(text: 'Text'),
+      GCWTextDivider(text: i18n(context, 'common_text')),
       GCWTextField(
         controller: _currentInputController,
         onChanged: (text) {
@@ -263,7 +263,7 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
           });
         },
       ),
-      GCWTextDivider(text: 'End sequence'),
+      GCWTextDivider(text: i18n(context, 'animated_image_morse_code_end_sequence')),
       buildEncodeList(setState, _encodeDurationsEnd, _encodeImageData, _textEditingEndController, -1),
       _buildEncodeSubmitButton(),
       _buildOutputEncode()
@@ -300,7 +300,7 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
               Expanded(
                   flex: 2,
                   child: GCWText(
-                    text: 'Loop count' + ':',
+                    text: i18n(context, 'animated_image_loop_count') + ':',
                   )),
               Expanded(
                 flex: 2,
