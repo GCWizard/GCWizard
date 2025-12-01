@@ -33,7 +33,6 @@ List<MapEntry<int, int>> _prepareDurations(List<MapEntry<int, int>> durations, E
     int? loopDisplayDuration) {
 
   var list = List<MapEntry<int, int>>.from(durations);
-  list.removeWhere((entry) => entry.key < 0 || entry.value <= 0);
 
   if (loopDisplayDuration != null && loopDisplayDuration > 0) {
     var imageCount = durations.length;
@@ -52,6 +51,8 @@ List<MapEntry<int, int>> _prepareDurations(List<MapEntry<int, int>> durations, E
     // 1234, 321, 234 no image with double view length
     list.addAll(list.reversed.skip(1).toList());
   }
+
+  list.removeWhere((entry) => entry.key < 0 || entry.value <= 0);
 
   // image count optimization
   for (var i = list.length - 1; i > 0; i--) {

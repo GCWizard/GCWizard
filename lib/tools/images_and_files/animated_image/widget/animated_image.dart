@@ -296,7 +296,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
       child: Column(
         children: [
           GCWTwoOptionsSwitch(
-              leftValue: i18n(context, 'common_forward') + "/ " + i18n(context, 'Reverse'),
+              leftValue: i18n(context, 'common_forward') + "/ " + i18n(context, 'common_reverse'),
               rightValue: i18n(context, 'common_forward'),
               value: _modeEncode == EncodeMode.FORWARD ? GCWSwitchPosition.right : GCWSwitchPosition.left,
               onChanged:  (value) {
