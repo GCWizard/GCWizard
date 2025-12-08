@@ -478,6 +478,7 @@ import 'package:gc_wizard/tools/science_and_technology/primes/primes_primeindex/
 import 'package:gc_wizard/tools/science_and_technology/projectiles/widget/projectiles.dart';
 import 'package:gc_wizard/tools/science_and_technology/quadratic_equation/widget/quadratic_equation.dart';
 import 'package:gc_wizard/tools/science_and_technology/recycling/widget/recycling.dart';
+import 'package:gc_wizard/tools/science_and_technology/regex/widget/regex.dart';
 import 'package:gc_wizard/tools/science_and_technology/resistor/resistor_colorcodecalculator/widget/resistor_colorcodecalculator.dart';
 import 'package:gc_wizard/tools/science_and_technology/resistor/resistor_eia96/widget/resistor_eia96.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/14_segment_display/widget/fourteen_segments.dart';
@@ -1055,13 +1056,21 @@ void initializeRegistry(BuildContext context) {
     ], licenses: [
       ToolLicenseOnlineArticle(
           context: context,
-          author: 'de.wikipedia.org and contributors',
-          title: 'Conways_Spiel_des_Lebens',
-          licenseType: ToolLicenseType.CCBYSA4,
+          author: 'Thomas L. Robinson',
+          title: 'Game of Life pattern generator and tools',
+          licenseType: ToolLicenseType.MIT,
           licenseUrl:
-              'https://web.archive.org/web/20240718115628/https://creativecommons.org/licenses/by-sa/4.0/deed.de',
+              'https://github.com/tlrobinson/life-gen/commit/005f5cca4a10ab5884983755ddafab2617a90188',
           sourceUrl:
-              'https://de.wikipedia.org/w/index.php?title=Conways_Spiel_des_Lebens&oldid=246560171'),
+              'https://github.com/tlrobinson/life-gen/'),
+      ToolLicenseCodeLibrary(
+          context: context,
+          author: 'NovaCrypto',
+          title: 'Base58',
+          sourceUrl:
+          'https://web.archive.org/web/20240722085432/https://github.com/NovaCrypto/Base58',
+          licenseType: ToolLicenseType.GPL3),
+
     ]),
     GCWTool(tool: const GCCode(), id: 'gccode', categories: const [
       ToolCategory.CRYPTOGRAPHY
@@ -1769,6 +1778,11 @@ void initializeRegistry(BuildContext context) {
     ], searchKeys: const [
       'recycling',
     ]),
+    GCWTool(tool: const RegEx(), id: 'regex', categories: const [
+      ToolCategory.SCIENCE_AND_TECHNOLOGY
+    ], searchKeys: const [
+      'regex',
+    ]),
     GCWTool(
         tool: const ResistorSelection(),
         id: 'resistor_selection',
@@ -1804,7 +1818,7 @@ void initializeRegistry(BuildContext context) {
         tool: const ScrabbleSelection(),
         id: 'scrabble_selection',
         categories: const [ToolCategory.GAMES],
-        searchKeys: const ['games']),
+        searchKeys: const ['games', 'games_scrabble']),
     GCWTool(
         tool: const MiscellaneousSelection(),
         id: 'miscellaneous_selection',
@@ -6602,9 +6616,7 @@ void initializeRegistry(BuildContext context) {
 
     //Scrabble Selection *****************************************************************************************
 
-    GCWTool(tool: const Scrabble(), id: 'scrabble', searchKeys: const [
-      'games_scrabble',
-    ], licenses: [
+    GCWTool(tool: const Scrabble(), id: 'scrabble', licenses: [
       ToolLicenseOnlineArticle(
         context: context,
         author: 'en.wikipedia.org and contributors',
@@ -6628,9 +6640,6 @@ void initializeRegistry(BuildContext context) {
     GCWTool(
         tool: const ScrabbleOverview(),
         id: 'scrabbleoverview',
-        searchKeys: const [
-          'games_scrabble',
-        ],
         licenses: [
           ToolLicenseOnlineArticle(
             context: context,

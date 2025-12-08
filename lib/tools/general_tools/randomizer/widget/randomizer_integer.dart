@@ -124,7 +124,12 @@ class _RandomizerIntegerState extends State<RandomizerInteger> {
       output.add(Container(height: DOUBLE_DEFAULT_MARGIN));
     }
     output.add(GCWOutput(child: outText));
-    output.add(CrosstotalOutput(text: outText, values: out, inputType: CROSSTOTAL_INPUT_TYPE.NUMBERS));
+    output.add(CrosstotalOutput(
+        text: outText,
+        values: out,
+        inputType: CROSSTOTAL_INPUT_TYPE.NUMBERS,
+        suppressWordMode: true,
+    ));
 
     _currentOutput = GCWDefaultOutput(
       child: Column(

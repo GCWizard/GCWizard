@@ -149,10 +149,18 @@ class _GeneralCharsetValuesState extends State<GeneralCharsetValues> {
 
   Widget _buildCrossTotals() {
     if (_currentMode == GCWSwitchPosition.left) {
-      return CrosstotalOutput(text: _currentEncodeInput, values: widget.encode(_currentEncodeInput));
+      return CrosstotalOutput(
+          text: _currentEncodeInput,
+          values: widget.encode(_currentEncodeInput),
+          suppressWordMode: true,
+      );
     } else {
       var _decoded = _calculateDecoded();
-      return CrosstotalOutput(text: _decoded.text, values: _decoded.value);
+      return CrosstotalOutput(
+          text: _decoded.text,
+          values: _decoded.value,
+          suppressWordMode: true,
+      );
     }
   }
 

@@ -53,9 +53,9 @@ class _GCWCoordsOutputState extends State<GCWCoordsOutput> {
                   child: output is BaseCoordinate
                       ? _formatedCoordOutput(output)
                       : output,
-                  copyText: output is BaseCoordinate
-                      ? _formatedCoordOutput(output, false).replaceAll('\n', ' ')
-                      : ((output is String) || (output is int) || (output is double) ? output.toString() : null)
+                    copyText: output is BaseCoordinate
+                        ? _formatedCoordOutput(output, false).replaceAll('\n', ' ')
+                        : ((output is String) || (output is int) || (output is double) ? output.toString() : null)
                 ),
               ));
         })

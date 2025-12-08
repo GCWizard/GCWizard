@@ -284,6 +284,7 @@ import 'package:gc_wizard/tools/science_and_technology/postcode/widget/postcode.
 import 'package:gc_wizard/tools/science_and_technology/projectiles/widget/projectiles.dart';
 import 'package:gc_wizard/tools/science_and_technology/quadratic_equation/widget/quadratic_equation.dart';
 import 'package:gc_wizard/tools/science_and_technology/recycling/widget/recycling.dart';
+import 'package:gc_wizard/tools/science_and_technology/regex/widget/regex.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/14_segment_display/widget/fourteen_segments.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/16_segment_display/widget/sixteen_segments.dart';
 import 'package:gc_wizard/tools/science_and_technology/segment_display/7_segment_display/widget/seven_segments.dart';
@@ -765,6 +766,7 @@ void _initStaticToolList() {
       className(const RandomizerSelection()),
       className(const RC4()),
       className(const Recycling()),
+      className(const RegEx()),
       className(const Resection()),
       className(const ResistorSelection()),
       className(const Reverse()),

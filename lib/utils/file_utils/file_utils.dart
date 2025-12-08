@@ -46,6 +46,7 @@ enum FileType {
   LUAC,
   GWC,
   LUA,
+  RLE,
 }
 
 enum FileClass { IMAGE, ARCHIVE, SOUND, DATA, TEXT, BINARY }
@@ -71,6 +72,11 @@ class FileTypeInfo {
 
 const Map<FileType, FileTypeInfo> _FILE_TYPES = {
   // GCWizard's own suffix. e.g. for settings
+  FileType.RLE: FileTypeInfo(
+    extensions: ['rle'],
+    file_class: FileClass.DATA,
+  ),
+
   FileType.GCW: FileTypeInfo(
     extensions: ['gcw'],
     file_class: FileClass.DATA,
@@ -89,6 +95,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
   ], mime_types: [
     'image/jpeg'
   ], file_class: FileClass.IMAGE),
+
   FileType.GIF: FileTypeInfo(extensions: [
     'gif'
   ], magic_bytes: <List<int>>[
@@ -97,6 +104,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
   ], mime_types: [
     'image/gif'
   ], file_class: FileClass.IMAGE),
+
   FileType.PNG: FileTypeInfo(extensions: [
     'png'
   ], magic_bytes: <List<int>>[
@@ -104,6 +112,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
   ], mime_types: [
     'image/png'
   ], file_class: FileClass.IMAGE),
+
   FileType.BMP: FileTypeInfo(extensions: [
     'bmp'
   ], magic_bytes: <List<int>>[
@@ -113,6 +122,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
     'image/x-bmp',
     'image/x-ms-bmp'
   ], file_class: FileClass.IMAGE),
+
   FileType.TIFF: FileTypeInfo(extensions: [
     'tiff',
     'tif'
@@ -122,6 +132,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
   ], mime_types: [
     'image/tiff'
   ], file_class: FileClass.IMAGE),
+
   FileType.WEBP: FileTypeInfo(extensions: [
     'webp'
   ], magic_bytes: <List<int>>[
@@ -134,6 +145,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
   ], mime_types: [
     'image/webp'
   ], file_class: FileClass.IMAGE),
+
   FileType.ZIP: FileTypeInfo(extensions: [
     'zip'
   ], magic_bytes: <List<int>>[
@@ -143,6 +155,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
     'application/octet-stream',
     'application/x-zip-compressed'
   ], file_class: FileClass.ARCHIVE),
+
   FileType._7Z: FileTypeInfo(extensions: [
     '7z',
     '7zip'
@@ -153,6 +166,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
     'application/x-7z-compressed',
     'application/octet-stream'
   ], file_class: FileClass.ARCHIVE),
+
   FileType.TAR: FileTypeInfo(
       extensions: ['tar'],
       magic_bytes: <List<int>>[
@@ -161,6 +175,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
       magic_bytes_offset: 257,
       mime_types: ['application/x-tar', 'application/octet-stream', 'application/tar'],
       file_class: FileClass.ARCHIVE),
+
   FileType.RAR: FileTypeInfo(extensions: [
     'rar'
   ], magic_bytes: <List<int>>[
@@ -171,6 +186,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
     'application/x-rar-compressed',
     'application/octet-stream'
   ], file_class: FileClass.ARCHIVE),
+
   FileType.GZIP: FileTypeInfo(extensions: [
     'gz'
   ], magic_bytes: <List<int>>[
@@ -178,6 +194,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
   ], mime_types: [
     'application/gzip'
   ], file_class: FileClass.ARCHIVE),
+
   FileType.BZIP2: FileTypeInfo(extensions: [
     'bz2'
   ], magic_bytes: <List<int>>[
@@ -185,6 +202,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
   ], mime_types: [
     'application/x-bzip'
   ], file_class: FileClass.ARCHIVE),
+
   FileType.WMV: FileTypeInfo(extensions: [
     'wmv'
   ], mime_types: [
@@ -198,6 +216,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
     0x56,
     0x45
   ], file_class: FileClass.SOUND),
+
   FileType.WAV: FileTypeInfo(extensions: [
     'wav'
   ], magic_bytes: <List<int>>[
@@ -212,6 +231,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
     'audio/wav',
     'audio/x-wav'
   ], file_class: FileClass.SOUND),
+
   FileType.MIDI: FileTypeInfo(extensions: [
     'mid',
     'midi'
@@ -221,6 +241,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
     'audio/midi',
     'audio/x-midi'
   ], file_class: FileClass.SOUND),
+
   FileType.MP3: FileTypeInfo(extensions: [
     'mp3'
   ], magic_bytes: <List<int>>[
@@ -235,6 +256,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
     'audio/mpeg3',
     'audio/x-mpeg-3'
   ], file_class: FileClass.SOUND),
+
   FileType.OGG: FileTypeInfo(extensions: [
     'ogg',
     'oga'
@@ -244,6 +266,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
     'audio/ogg',
     'application/ogg'
   ], file_class: FileClass.SOUND),
+
   FileType.SND: FileTypeInfo(extensions: [
     'snd'
   ], magic_bytes: <List<int>>[
@@ -252,6 +275,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
   ], mime_types: [
     'audio/snd'
   ], file_class: FileClass.SOUND),
+
   FileType.FDL: FileTypeInfo(extensions: [
     'fdl'
   ], magic_bytes: <List<int>>[
@@ -259,10 +283,13 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
   ], mime_types: [
     'application/octet-stream'
   ], file_class: FileClass.SOUND),
+
   FileType.TXT: FileTypeInfo(
       extensions: ['txt'], magic_bytes: <List<int>>[], mime_types: ['text/plain'], file_class: FileClass.TEXT),
+
   FileType.JSON: FileTypeInfo(
       extensions: ['json'], magic_bytes: <List<int>>[], mime_types: ['text/plain'], file_class: FileClass.TEXT),
+
   FileType.PDF: FileTypeInfo(extensions: [
     'pdf'
   ], magic_bytes: <List<int>>[
@@ -271,6 +298,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
     'application/pdf',
     'application/octet-stream'
   ], file_class: FileClass.DATA),
+
   FileType.EXE: FileTypeInfo(extensions: [
     'exe'
   ], magic_bytes: <List<int>>[
@@ -279,12 +307,14 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
   ], mime_types: [
     'application/octet-stream'
   ], file_class: FileClass.DATA),
+
   FileType.GPX: FileTypeInfo(
       extensions: ['gpx'],
       magic_bytes: <List<int>>[],
       file_class: FileClass.DATA,
       mime_types: ['application/gpx', 'application/gpx+xml'],
       uniform_type_identifier: 'com.topografix.gpx'),
+
   FileType.KML: FileTypeInfo(
       extensions: ['kml'],
       magic_bytes: <List<int>>[],
@@ -297,6 +327,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
         'application/vnd.google-earth.kml'
       ],
       uniform_type_identifier: 'com.google.earth.kml'),
+
   FileType.KMZ: FileTypeInfo(
       extensions: ['kmz'],
       magic_bytes: <List<int>>[],
@@ -308,6 +339,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
         'application/vnd.google-earth.kmz+xml',
         'application/vnd.google-earth.kmz'
       ]),
+
   FileType.LUAC: FileTypeInfo(extensions: [
     'luac'
   ], magic_bytes: <List<int>>[
@@ -315,6 +347,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
   ], mime_types: [
     'application/octet-stream'
   ], file_class: FileClass.BINARY),
+
   FileType.GWC: FileTypeInfo(extensions: [
     'gwc'
   ], magic_bytes: <List<int>>[
@@ -323,6 +356,7 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
   ], mime_types: [
     'application/octet-stream'
   ], file_class: FileClass.BINARY),
+
   FileType.LUA: FileTypeInfo(extensions: [
     'lua'
   ], magic_bytes: <List<int>>[

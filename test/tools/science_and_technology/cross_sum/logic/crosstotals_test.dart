@@ -364,13 +364,13 @@ void main() {
 
   group("Crosstotals.countDistinctCharacters:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      {'list' : [-20, -10, -1, 891, 589, 1, 2, 336, 784, -10, -1, 891, -1], 'expectedOutput' : 9},
-      {'list' : <int>[], 'expectedOutput' : 0},
+      {'text' : ' zIo120ß/k Da.ßÀöẞ? abc123', 'expectedOutput' : 20},
+      {'text' : '', 'expectedOutput' : 0},
     ];
 
     for (var elem in _inputsToExpected) {
-      test('list: ${elem['list']}', () {
-        var _actual = countDistinctCharacters(elem['list'] as List<int>);
+      test('text: ${elem['text']}', () {
+        var _actual = countDistinctCharacters(elem['text'] as String);
         expect(_actual, elem['expectedOutput']);
       });
     }

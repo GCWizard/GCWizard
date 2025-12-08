@@ -79,7 +79,12 @@ class _RandomizerDiceState extends State<RandomizerDice> {
 
     var output = <Widget>[];
     output.add(GCWOutput(child: outText));
-    output.add(CrosstotalOutput(text: outText, values: out, inputType: CROSSTOTAL_INPUT_TYPE.NUMBERS));
+    output.add(CrosstotalOutput(
+        text: outText,
+        values: out,
+        inputType: CROSSTOTAL_INPUT_TYPE.NUMBERS,
+        suppressWordMode: true,
+    ));
 
     _currentOutput = GCWDefaultOutput(
       child: Column(
