@@ -24,6 +24,7 @@ import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_integer_textfield.dart';
 import 'package:gc_wizard/tools/images_and_files/animated_image/logic/animated_image.dart';
@@ -52,15 +53,13 @@ class _AnimatedImageState extends State<AnimatedImage> {
   var _currentMode = GCWSwitchPosition.right;
   final List<MapEntry<int, int>> _encodeDurations = []; //image index, duration
   final List<TextEditingController?> _textEditingController = [];
-  final _loopDurationController = TextEditingController();
   var _loopDuration = 0;
-  final _loopCountController = TextEditingController();
   var _loopCount = 0;
   Uint8List? _encodeOutputImage;
   final List<GCWImageViewData> _encodeImageData = [];
   var _modeEncode = EncodeMode.FORWARD;
   var _expandedEncodeOptions = false;
-
+  int _encodeScale = 100;
 
   @override
   void dispose() {
@@ -68,8 +67,6 @@ class _AnimatedImageState extends State<AnimatedImage> {
       _textEditingController[y]?.dispose();
     }
     _textEditingController.clear();
-    _loopDurationController.dispose();
-    _loopCountController.dispose();
     super.dispose();
   }
 
@@ -292,49 +289,41 @@ class _AnimatedImageState extends State<AnimatedImage> {
                 });
               }
           ),
-          Row(
-            children: [
-              Expanded(
-                  flex: 2,
-                  child: GCWText(
-                    text: i18n(context, 'animated_image_loop_duration') + ' (ms):',
-                  )),
-              Expanded(
-                  flex: 2,
-                  child: GCWIntegerTextField(
-                    hintText: '1000',
-                    controller: _loopDurationController,
-                    min: 0,
-                    onChanged: (value) {
-                      setState(() {
-                        _loopDuration = value.value;
-                      });
-                    },
-                  ),
-              )
-            ],
+          GCWIntegerSpinner(
+            title: i18n(context, 'animated_image_loop_duration') + ' (ms):',
+            flexValues: [1, 1],
+            value: _loopDuration,
+            min: 0,
+            max: 999999,
+            onChanged: (value) {
+              setState(() {
+                _loopDuration = value;
+              });
+            },
           ),
-          Row(
-            children: [
-              Expanded(
-                  flex: 2,
-                  child: GCWText(
-                    text: i18n(context, 'animated_image_loop_count') + ':',
-                  )),
-              Expanded(
-                flex: 2,
-                child: GCWIntegerTextField(
-                  hintText: '0 -> ∞',
-                  controller: _loopCountController,
-                  min: 0,
-                  onChanged: (value) {
-                    setState(() {
-                      _loopCount = value.value;
-                    });
-                  },
-                ),
-              )
-            ],
+          GCWIntegerSpinner(
+            title: i18n(context, 'animated_image_loop_count'),
+            flexValues: [1, 1],
+            value: _loopCount,
+            min: 0,
+            max: 999999,
+            onChanged: (value) {
+              setState(() {
+                _loopCount = value;
+              });
+            },
+          ),
+          GCWIntegerSpinner(
+            title: i18n(context, 'visual_cryptography_scale'),
+            flexValues: [1, 1],
+            value: _encodeScale,
+            min: 1,
+            max: 1000,
+            onChanged: (value) {
+              setState(() {
+                _encodeScale = value;
+              });
+            },
           ),
           Container(height: 10)
         ],
@@ -373,7 +362,8 @@ class _AnimatedImageState extends State<AnimatedImage> {
             durations: _encodeDurations,
             mode: _modeEncode,
             loopDisplayDuration: _loopDuration,
-            loopCount: _loopCount
+            loopCount: _loopCount,
+            scale: _encodeScale
         )
     );
   }

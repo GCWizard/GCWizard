@@ -11,7 +11,6 @@ import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
-import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_gallery.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -19,7 +18,6 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
-import 'package:gc_wizard/common_widgets/textfields/gcw_integer_textfield.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/images_and_files/animated_image/widget/animated_image.dart';
 import 'package:gc_wizard/tools/images_and_files/animated_image_morse_code/logic/animated_image_morse_code.dart';
@@ -46,13 +44,12 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
 
   String _currentInput = '';
   int _currentDotDurationEncode = 400;
-  late TextEditingController _currentDotDurationController;
   late TextEditingController _currentInputController;
 
-  final _loopCountController = TextEditingController();
   var _loopCount = 0;
   Uint8List? _encodeOutputImage;
   var _expandedEncodeOptions = false;
+  int _encodeScale = 100;
 
   final List<GCWImageViewData> _encodeImageData = [];
   final List<TextEditingController?> _textEditingStartController = [];
@@ -68,7 +65,6 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
     super.initState();
 
     _currentInputController = TextEditingController(text: _currentInput);
-    _currentDotDurationController = TextEditingController(text: _currentDotDurationEncode.toString());
   }
 
   @override
@@ -81,8 +77,6 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
     }
 
     _currentInputController.dispose();
-    _currentDotDurationController.dispose();
-    _loopCountController.dispose();
     super.dispose();
   }
 
@@ -279,43 +273,42 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
       },
       child: Column(
         children: [
-          Row(children: <Widget>[
-            Expanded(flex: 2, child: GCWText(text: i18n(context, 'animated_image_morse_code_dot_duration') + ':')),
-            Expanded(
-                flex: 2,
-                child: GCWIntegerSpinner(
-                  value: _currentDotDurationEncode,
-                  controller: _currentDotDurationController,
-                  min: 0,
-                  max: 999999,
-                  onChanged: (value) {
-                    setState(() {
-                      _currentDotDurationEncode = value;
-                    });
-                  },
-                )),
-          ]),
-          Row(
-            children: [
-              Expanded(
-                  flex: 2,
-                  child: GCWText(
-                    text: i18n(context, 'animated_image_loop_count') + ':',
-                  )),
-              Expanded(
-                flex: 2,
-                child: GCWIntegerTextField(
-                  hintText: '0 -> ∞',
-                  controller: _loopCountController,
-                  min: 0,
-                  onChanged: (value) {
-                    setState(() {
-                      _loopCount = value.value;
-                    });
-                  },
-                ),
-              )
-            ],
+          GCWIntegerSpinner(
+            title: i18n(context, 'animated_image_morse_code_dot_duration'),
+            flexValues: [1, 1],
+            value: _currentDotDurationEncode,
+            min: 0,
+            max: 999999,
+            onChanged: (value) {
+              setState(() {
+                _currentDotDurationEncode = value;
+              });
+            },
+          ),
+          GCWIntegerSpinner(
+            title: i18n(context, 'animated_image_loop_count'),
+            flexValues: [1, 1],
+            value: _loopCount,
+            min: 0,
+            max: 999999,
+            onChanged: (value) {
+              setState(() {
+                _loopCount = value;
+              });
+            },
+          ),
+          GCWIntegerSpinner(
+            title: i18n(context, 'visual_cryptography_scale'),
+            flexValues: [1, 1],
+            value: _encodeScale,
+            min: 1,
+            max: 1000,
+            onChanged: (value) {
+              setState(() {
+                _encodeScale = value;
+                //_updateEncodeImageSize();
+              });
+            },
           ),
           Container(height: 10)
         ],
@@ -462,7 +455,8 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
             text: _currentInput,
             durationsStart: _encodeDurationsStart,
             durationsEnd: _encodeDurationsEnd,
-            loopCount: _loopCount
+            loopCount: _loopCount,
+            scale: _encodeScale
         )
     );
   }

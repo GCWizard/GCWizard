@@ -13,9 +13,10 @@ class AnimatedImageJobData {
   final EncodeMode mode;
   final int? loopDisplayDuration;
   final int loopCount;
+  final int scale;
 
   AnimatedImageJobData({required this.images, required this.durations, required this.mode,
-    this.loopDisplayDuration, this.loopCount = 0});
+    this.loopDisplayDuration, required this.loopCount, required this.scale});
 }
 
 Future<Uint8List?> createImageAsync(GCWAsyncExecuterParameters? jobData) async {
@@ -23,7 +24,7 @@ Future<Uint8List?> createImageAsync(GCWAsyncExecuterParameters? jobData) async {
 
   var data = jobData!.parameters as AnimatedImageJobData;
   var output = createImage(data.images, _prepareDurations(data.durations, data.mode, data.loopDisplayDuration)
-      , data.loopCount);
+      , data.loopCount, data.scale);
 
   jobData.sendAsyncPort?.send(output);
 
@@ -66,7 +67,7 @@ List<MapEntry<int, int>> _prepareDurations(List<MapEntry<int, int>> durations, E
   return list;
 }
 
-Uint8List? createImage(List<Uint8List> images,  List<MapEntry<int, int>> durations, int loopCount) {
+Uint8List? createImage(List<Uint8List> images,  List<MapEntry<int, int>> durations, int loopCount, int scale) {
   try {
     if (images.isEmpty || durations.isEmpty) return null;
     var convertedImages = <Image.Image?>[];

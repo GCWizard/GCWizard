@@ -13,10 +13,11 @@ class AnimatedImageMorseCodeJobData {
   final int dotDuration;
   final String text;
   final int loopCount;
+  final int scale;
 
   AnimatedImageMorseCodeJobData({required this.images, required this.imageHigh, required this.imageLow,
     required this.dotDuration, required this.text, required this.durationsStart,
-    required this.durationsEnd, this.loopCount = 0});
+    required this.durationsEnd, required this.loopCount, required this.scale});
 }
 
 Future<Uint8List?> createImageMorseCodeAsync(GCWAsyncExecuterParameters? jobData) async {
@@ -24,7 +25,7 @@ Future<Uint8List?> createImageMorseCodeAsync(GCWAsyncExecuterParameters? jobData
 
   var data = jobData!.parameters as AnimatedImageMorseCodeJobData;
   var output = createImage(data.images, _prepareDurations(data.imageHigh, data.imageLow, data.dotDuration,
-      data.text, data.durationsStart, data.durationsEnd), data.loopCount);
+      data.text, data.durationsStart, data.durationsEnd), data.loopCount, data.scale);
 
   jobData.sendAsyncPort?.send(output);
 
