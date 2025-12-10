@@ -290,7 +290,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
               }
           ),
           GCWIntegerSpinner(
-            title: i18n(context, 'animated_image_loop_duration') + ' (ms):',
+            title: i18n(context, 'animated_image_loop_duration') + ' (ms)',
             flexValues: [1, 1],
             value: _loopDuration,
             min: 0,
@@ -302,7 +302,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
             },
           ),
           GCWIntegerSpinner(
-            title: i18n(context, 'animated_image_loop_count'),
+            title: i18n(context, 'animated_image_loop_count') + ' (0 → ∞)',
             flexValues: [1, 1],
             value: _loopCount,
             min: 0,
