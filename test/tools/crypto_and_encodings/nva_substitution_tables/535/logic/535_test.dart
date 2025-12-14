@@ -6,9 +6,9 @@ void main() {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
-      {'input' : 'aeinrs', 'expectedOutput' : '01234 59090'},
-      {'input' : 'nord 453', 'expectedOutput' : '38147 38944 45553 33899 09090'},
-      {'input' : 'nachricht negativ', 'expectedOutput' : '65966 61390'},
+      {'input' : 'aeinrs', 'expectedOutput' : '01234 58787'},
+      {'input' : 'nord 453', 'expectedOutput' : '37046 28787'},
+      {'input' : 'nachricht negativ', 'expectedOutput' : '95969 61387'},
     ];
 
     for (var elem in _inputsToExpected) {
@@ -23,9 +23,9 @@ void main() {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
-      {'expectedOutput' : 'aeinrs..', 'input' : '01234 59090'},
-      {'expectedOutput' : 'nord 453...', 'input' : '38147 38944 45553 33899 09090'},
-      {'expectedOutput' : 'nachricht negativ.', 'input' : '65966 61390'},
+      {'expectedOutput' : 'AEINRS..', 'input' : '01234 58787'},
+      {'expectedOutput' : 'NORD..', 'input' : '37046 28787'},
+      {'expectedOutput' : 'NACHRICHTNEGATIV.', 'input' : '95969 61387'},
     ];
 
     for (var elem in _inputsToExpected) {

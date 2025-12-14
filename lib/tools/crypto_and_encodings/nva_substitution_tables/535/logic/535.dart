@@ -1,4 +1,5 @@
 import 'package:gc_wizard/utils/collection_utils.dart';
+import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/_common/logic/common.dart';
 
@@ -29,12 +30,9 @@ const _FILLING = '87';
 String _encode535(String input) {
   //remove non-encodable chars
   input = input.toUpperCase();
-  input = input
-      .split('')
-      .where((char) => _AZTo535[char] != null)
-      .join();
+  input = input.split('').where((char) => _AZTo535[char] != null).join();
 
-    List<String> out = [];
+  List<String> out = [];
 
   //encode
   int i = 0;
@@ -83,7 +81,43 @@ String _decode535(String input) {
   int i = 0;
   while (i < input.length) {
     String? character;
+    var code = input.substring(i, i + 1);
+    if (code == _CODE_FOLLOW) {
+      if (i + 4 < input.length) {
+        code = input.substring(i + 1, i + 4);
+        character = CodeToTITANZ[code];
+        if (character != null) {
+          out += character;
+        } else {
+          out += UNKNOWN_ELEMENT;
+        }
+        i += 4;
+        continue;
+      } else {
+        out += UNKNOWN_ELEMENT;
+        i++;
+        continue;
+      }
+    } else {
+      if (i + 1 < input.length) {
+        code = input.substring(i, i + 2);
 
+        character = _535ToAZ[code];
+        if (character != null) {
+          out += character;
+          i += 2;
+          continue;
+        } else {
+          code = input.substring(i, i + 1);
+          character = _535ToAZ[code];
+          if (character != null) {
+            out += character;
+            i += 1;
+            continue;
+          }
+        }
+      }
+    }
   }
 
   return out.trim();
