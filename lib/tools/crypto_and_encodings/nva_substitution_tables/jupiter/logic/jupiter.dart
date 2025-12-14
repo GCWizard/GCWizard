@@ -199,8 +199,6 @@ String _decodeJupiter(String input) {
   return out.trim();
 }
 
-
-
 String decryptJupiter(String input, String? keyOneTimePad) {
   input = input.replaceAll(RegExp(r'\D'), '');
   if (input.isEmpty) return '';
