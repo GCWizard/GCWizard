@@ -154,8 +154,7 @@ String _encodeHVA(String input, bool codeHVA1950) {
   while (i < input.length) {
     String? code = codebook(input, i, _CodeToHVA);
     if (code != null) {
-      out.add(_CODE_FOLLOW);
-      out.add(TITANZToCode[code]!);
+      out.add(_CodeToHVA[code]!);
       i += code.length;
     } else {
       if (isLetterMode) {
@@ -247,64 +246,47 @@ String _decodeHVA(String input, bool codeHVA1950) {
   while (i < input.length) {
     String? character;
     var code = input.substring(i, i + 1);
-    if (code == _CODE_FOLLOW) {
-      if (i + 4 < input.length) {
-        code = input.substring(i + 1, i + 4);
-        character = CodeToTITANZ[code];
-        if (character != null) {
-          out += character;
-        } else {
-          out += UNKNOWN_ELEMENT;
-        }
-        i += 4;
+
+    if (i + 1 < input.length) {
+      code = input.substring(i, i + 2);
+      if (code == _LETTERS_NUMBER_SWITCH) {
+        isLetterMode = !isLetterMode;
+        i += 2;
         continue;
       } else {
-        out += UNKNOWN_ELEMENT;
-        i++;
-        continue;
-      }
-    } else {
-      if (i + 1 < input.length) {
-        code = input.substring(i, i + 2);
-        if (code == _LETTERS_NUMBER_SWITCH) {
-          isLetterMode = !isLetterMode;
-          i += 2;
-          continue;
-        } else {
-          if (isLetterMode) {
+        if (isLetterMode) {
+          character = _HVAToAZ[code];
+          if (character != null) {
+            out += character;
+            i += 2;
+            continue;
+          } else {
+            code = input.substring(i, i + 1);
             character = _HVAToAZ[code];
             if (character != null) {
               out += character;
-              i += 2;
-              continue;
-            } else {
-              code = input.substring(i, i + 1);
-              character = _HVAToAZ[code];
-              if (character != null) {
-                out += character;
-                i += 1;
-                continue;
-              }
-            }
-          } else {
-            code = input.substring(i, i + 3);
-            character = _HVAToNumbers[code];
-            if (character != null) {
-              out += character;
-              i += 3;
-              continue;
-            } else {
-              out += UNKNOWN_ELEMENT;
-              i += 2;
+              i += 1;
               continue;
             }
           }
+        } else {
+          code = input.substring(i, i + 3);
+          character = _HVAToNumbers[code];
+          if (character != null) {
+            out += character;
+            i += 3;
+            continue;
+          } else {
+            out += UNKNOWN_ELEMENT;
+            i += 2;
+            continue;
+          }
         }
-      } else {
-        out += UNKNOWN_ELEMENT;
-        i++;
-        continue;
       }
+    } else {
+      out += UNKNOWN_ELEMENT;
+      i++;
+      continue;
     }
   }
 
