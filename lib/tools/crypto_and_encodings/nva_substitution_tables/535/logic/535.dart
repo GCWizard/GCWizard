@@ -37,7 +37,7 @@ String _encode535(String input) {
   //encode
   int i = 0;
   while (i < input.length) {
-    String? code = codebookTitanZ(input, i);
+    String? code = codebook(input, i, TITANZToCode);
     if (code != null) {
       out.add(_CODE_FOLLOW);
       out.add(TITANZToCode[code]!);

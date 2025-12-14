@@ -244,8 +244,8 @@ final Map<String, String> TITANZToCode = {
   'TBK': '767',
 };
 
-String? codebookTitanZ(String input, int i) {
-  for (var key in TITANZToCode.keys) {
+String? codebook(String input, int i, Map<String, String> codeBook) {
+  for (var key in codeBook.keys) {
     if (input.startsWith(key, i)) {
       return key;
     }
