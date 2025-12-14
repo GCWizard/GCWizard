@@ -4,29 +4,78 @@ import 'package:gc_wizard/utils/string_utils.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/_common/logic/common.dart';
 
 const Map<String, String> _AZToHVA1950 = {
-  'A': '0', 'E': '1', 'I': '2', 'N': '3', 'R': '4', 'S': '5',
-  'B': '71', 'C': '72', 'D': '73', 'F': '74',
-  'G': '75', 'H': '76', 'J': '77', 'K': '78', 'L': '79',
-  'M': '80', 'O': '81', 'P': '83', 'Q': '84', 'T': '86',
-  'U': '87', 'V': '95', 'W': '96', 'X': '97', 'Y': '98',
-  'Z': '99',
-  '\u00C4': '70', // Ä
-  '\u00D6': '82', // Ö
-  '\u00DC': '88', // Ü
-  '\u00DF': '85', // ß
-  '.': '90'
+  'I': '0', 'R': '1', 'N': '2', 'E': '8', 'S': '6', 'T': '5',
+  'A': '91', 'B': '96', 'C': '95', 'D': '98', 'F': '94', 'G': '97',
+  'H': '41', 'J': '40', 'K': '42', 'L': '46', 'M': '48', 'O': '49', 'P': '43',
+  'Q': '72', 'U': '75', 'V': '74', 'W': '77',
+  'X': '31', 'Y': '30', 'Z': '32',
+  '\u00C4': '90', // Ä
+  '\u00D6': '47', // Ö
+  '\u00DC': '78', // Ü
+  '\u00DF': '76', // ß
+  '.': '38',
 };
 final Map<String, String> _HVA1950ToAZ = switchMapKeyValue(_AZToHVA1950);
 
-final Map<String, String> _AZToHVA1970 = {};
+final Map<String, String> _CodeToHVA1950 = {
+  'BERICHT': '92',
+  'INFORMATION': '99',
+  'No': '93',
+  'BESTÄTIGEN': '45',
+  'STIMMUNG': '44',
+  'BENÖTIGEN': '71',
+  'ABLAGE': '70',
+  'TELEGRAMM': '79',
+  'POST ERHALTEN': '73',
+  'TREFF': '36',
+};
+final Map<String, String> _HVA1950ToCode = switchMapKeyValue(_CodeToHVA1950);
+
+final Map<String, String> _AZToHVA1970 = {
+  'S': '7', 'E': '9', 'A': '8', 'I': '2', 'T': '5', 'N': '4',
+  'B': '69', 'C': '68', 'D': '64', 'F': '66', 'G': '60',
+  'H': '07', 'J': '09', 'K': '08', 'L': '02', 'M': '04', 'O': '01', 'P': '03',
+  'Q': '00',
+  'R': '17', 'U': '12', 'V': '11', 'W': '16', 'X': '10',
+  'Y': '37', 'Z': '39',
+  '\u00C4': '67', // Ä
+  '\u00D6': '06', // Ö
+  '\u00DC': '15', // Ü
+  '\u00DF': '18', // ß
+  '.': '32',
+};
 final Map<String, String> _HVA1970ToAZ = switchMapKeyValue(_AZToHVA1970);
 
+final Map<String, String> _CodeToHVA1970 = {
+  'ERHALTEN': '62',
+  'BENÖTIGEN': '65',
+  'MITTEILEN': '61',
+  'MITTEILUNG': '61',
+  'TELEGRAMM': '63',
+  'INFORMATION': '05',
+  'STIMMUNG': '19',
+  'BERICHT': '14',
+  'BESTÄTIGEN': '13',
+  'TBK': '33',
+};
+final Map<String, String> _HVA1970ToCode = {
+  '62': 'ERHALTEN',
+  '65': 'BENÖTIGEN',
+  '61': 'MITTEILEN/-UNG',
+  '63': 'TELEGRAMM',
+  '05': 'INFORMATION',
+  '19': 'STIMMUNG',
+  '14': 'BERICHT',
+  '13': 'BESTÄTIGEN',
+  '33': 'TBK',
+};
+
 const Map<String, String> _NumbersToHVA1950 = {
-  ':': '93',
-  '.': '90',
-  ',': '91',
-  '-': '92',
-  '/': '94',
+  ',': '34',
+  '-': '39',
+  ':': '37',
+  '(': '33',
+  ')': '33',
   '0': '000',
   '1': '111',
   '2': '222',
@@ -38,14 +87,16 @@ const Map<String, String> _NumbersToHVA1950 = {
   '8': '888',
   '9': '999'
 };
-final Map<String, String> _HVA1950ToNumbers = switchMapKeyValue(_NumbersToHVA1950);
+final Map<String, String> _HVA1950ToNumbers =
+    switchMapKeyValue(_NumbersToHVA1950);
 
 const Map<String, String> _NumbersToHVA1970 = {
-  ':': '93',
-  '.': '90',
-  ',': '91',
-  '-': '92',
-  '/': '94',
+  ':': '31',
+  '.': '32',
+  ',': '35',
+  '(': '36',
+  ')': '36',
+  '/': '30',
   '0': '000',
   '1': '111',
   '2': '222',
@@ -57,17 +108,19 @@ const Map<String, String> _NumbersToHVA1970 = {
   '8': '888',
   '9': '999'
 };
-final Map<String, String> _HVA1970ToNumbers = switchMapKeyValue(_NumbersToHVA1970);
+final Map<String, String> _HVA1970ToNumbers =
+    switchMapKeyValue(_NumbersToHVA1970);
 
 const _LETTERS_NUMBER_SWITCH_HVA1950 = '35';
 const _FILLING_HVA1950 = '38';
 
-const _LETTERS_NUMBER_SWITCH_HVA1970 = '35';
-const _FILLING_HVA1970 = '38';
+const _LETTERS_NUMBER_SWITCH_HVA1970 = '38';
+const _FILLING_HVA1970 = '32';
 
 String _encodeHVA(String input, bool codeHVA1950) {
   Map<String, String> _AZToHVA = {};
   Map<String, String> _NumbersToHVA = {};
+  Map<String, String> _CodeToHVA = {};
 
   String _LETTERS_NUMBER_SWITCH = '';
   String _FILLING = '';
@@ -77,19 +130,20 @@ String _encodeHVA(String input, bool codeHVA1950) {
     _FILLING = _FILLING_HVA1950;
     _AZToHVA = _AZToHVA1950;
     _NumbersToHVA = _NumbersToHVA1950;
+    _CodeToHVA = _HVA1950ToCode;
   } else {
     _LETTERS_NUMBER_SWITCH = _LETTERS_NUMBER_SWITCH_HVA1970;
     _FILLING = _FILLING_HVA1970;
     _AZToHVA = _AZToHVA1970;
     _NumbersToHVA = _NumbersToHVA1970;
+    _CodeToHVA = _HVA1970ToCode;
   }
 
   //remove non-encodable chars
   input = input.toUpperCase();
   input = input
       .split('')
-      .where((char) =>
-  _AZToHVA[char] != null || _NumbersToHVA[char] != null)
+      .where((char) => _AZToHVA[char] != null || _NumbersToHVA[char] != null)
       .join();
 
   var isLetterMode = true;
@@ -170,6 +224,7 @@ String _decodeHVA(String input, bool codeHVA1950) {
 
   Map<String, String> _HVAToAZ = {};
   Map<String, String> _HVAToNumbers = {};
+  Map<String, String> _HVAToCode = {};
 
   String _LETTERS_NUMBER_SWITCH = '';
 
@@ -177,10 +232,12 @@ String _decodeHVA(String input, bool codeHVA1950) {
     _LETTERS_NUMBER_SWITCH = _LETTERS_NUMBER_SWITCH_HVA1950;
     _HVAToAZ = _HVA1950ToAZ;
     _HVAToNumbers = _HVA1950ToNumbers;
+    _HVAToCode = _HVA1950ToCode;
   } else {
     _LETTERS_NUMBER_SWITCH = _LETTERS_NUMBER_SWITCH_HVA1970;
     _HVAToAZ = _HVA1970ToAZ;
     _HVAToNumbers = _HVA1970ToNumbers;
+    _HVAToCode = _HVA1970ToCode;
   }
 
   var isLetterMode = true;
