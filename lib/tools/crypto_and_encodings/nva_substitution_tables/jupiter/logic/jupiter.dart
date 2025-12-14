@@ -60,7 +60,7 @@ String _encodeJupiter(String input) {
   while (i < input.length) {
     String? code = codebookTitanZ(input, i);
     if (code != null) {
-      out.add('6');
+      out.add(_CODE_FOLLOW);
       out.add(TITANZToCode[code]!);
       i += code.length;
     } else {

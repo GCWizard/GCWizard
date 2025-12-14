@@ -58,7 +58,7 @@ String _encodeJuno(String input) {
   while (i < input.length) {
     String? code = codebookTitanZ(input, i);
     if (code != null) {
-      out.add('6');
+      out.add(_CODE_FOLLOW);
       out.add(TITANZToCode[code]!);
       i += code.length;
     } else {
@@ -101,7 +101,7 @@ String _encodeJuno(String input) {
   var output = out.join();
 
   //fill to dividable by 5
-  if (output.length % 5 != 0) {
+  if (output.length % 5 != 0 && !isLetterMode) {
     output += _LETTERS_NUMBER_SWITCH;
   }
   while (output.length % 5 != 0) {
