@@ -1,5 +1,6 @@
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/_common/logic/common.dart';
 
 const Map<String, String> _AZToZebra = {
   ' ': '86', 'A': '0', 'E': '1', 'I': '2', 'N': '3',
@@ -109,40 +110,16 @@ String _encodeZebra(String input) {
   return output;
 }
 
-String _addOneTimePad(String input, String keyOneTimePad) {
-  keyOneTimePad = keyOneTimePad.replaceAll(RegExp(r'\D'), '');
-  if (keyOneTimePad.isEmpty) return input;
-
-  var out = '';
-  for (int i = 0; i < input.length; i++) {
-    if (i >= keyOneTimePad.length) {
-      out += input[i];
-      continue;
-    }
-
-    int a = int.tryParse(input[i]) ?? 0;
-    int b = int.tryParse(keyOneTimePad[i]) ?? 0;
-
-    out += ((a + b) % 10).toString();
-  }
-
-  return out;
-}
-
 String encryptZebra(String input, String? keyOneTimePad) {
   if (input.isEmpty) return '';
 
   var output = _encodeZebra(input);
 
   if (keyOneTimePad != null && keyOneTimePad.isNotEmpty) {
-    output = _addOneTimePad(output, keyOneTimePad);
+    output = addOneTimePad(output, keyOneTimePad);
   }
 
   return insertSpaceEveryNthCharacter(output, 5);
-}
-
-String? _checkCode(String code, bool isLetterMode) {
-  return isLetterMode ? _ZebraToAZ[code] : _ZebraToNumbers[code];
 }
 
 String _decodeZebra(String input) {
@@ -164,7 +141,7 @@ String _decodeZebra(String input) {
         continue;
       }
       code = input.substring(i, i + 3);
-      character = _checkCode(code, isLetterMode);
+      character = checkCode(code, isLetterMode, _ZebraToAZ, _ZebraToNumbers);
       i += 3;
       if (character != null) {
         out += character;
@@ -182,7 +159,7 @@ String _decodeZebra(String input) {
         continue;
       }
 
-      character = _checkCode(code, isLetterMode);
+      character = checkCode(code, isLetterMode, _ZebraToAZ, _ZebraToNumbers);
       if (character != null) {
         out += character;
         i += 2;
@@ -190,7 +167,7 @@ String _decodeZebra(String input) {
       }
     }
 
-    character = _checkCode(input[i], isLetterMode);
+    character = checkCode(input[i], isLetterMode, _ZebraToAZ, _ZebraToNumbers);
     if (character != null) {
       out += character;
     }
@@ -200,32 +177,12 @@ String _decodeZebra(String input) {
   return out.trim();
 }
 
-String _subtractOneTimePad(String input, String keyOneTimePad) {
-  keyOneTimePad = keyOneTimePad.replaceAll(RegExp(r'\D'), '');
-  if (keyOneTimePad.isEmpty) return input;
-
-  var out = '';
-  for (int i = 0; i < input.length; i++) {
-    if (i >= keyOneTimePad.length) {
-      out += input[i];
-      continue;
-    }
-
-    int a = int.tryParse(input[i]) ?? 0;
-    int b = int.tryParse(keyOneTimePad[i]) ?? 0;
-
-    out += ((a - b) % 10).toString();
-  }
-
-  return out;
-}
-
 String decryptZebra(String input, String? keyOneTimePad) {
   input = input.replaceAll(RegExp(r'\D'), '');
   if (input.isEmpty) return '';
 
   if (keyOneTimePad != null && keyOneTimePad.isNotEmpty) {
-    input = _subtractOneTimePad(input, keyOneTimePad);
+    input = subtractOneTimePad(input, keyOneTimePad);
   }
 
   return _decodeZebra(input);
