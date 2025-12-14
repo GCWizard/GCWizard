@@ -27,9 +27,9 @@ void main() {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
 
-      {'expectedOutput' : 'aeinrs..', 'input' : '01234 59090'},
-      {'expectedOutput' : 'nord 453...', 'input' : '38147 38944 45553 33899 09090'},
-      {'expectedOutput' : 'nachricht negativ.', 'input' : '65966 61390'},
+      {'expectedOutput' : 'AEINRS..', 'input' : '01234 59090'},
+      {'expectedOutput' : 'NORD453...', 'input' : '38147 38944 45553 33899 09090'},
+      {'expectedOutput' : 'NACHRICHTNEGATIV.', 'input' : '65966 61390'},
 
       // https://scz.bplaced.net/m.html#kurras
       {'input' : '71286 86195 81452 72768 67112 81427 52307 96541 90781 23181 42752 30791 57276 27278 13903 87423 76079 86909 09090', 'expectedOutput' : 'BITTEVORSICHTBEIORIGINALMATERIAL.KEINEORIGINALESCHICKEN.NURINHALT....'},

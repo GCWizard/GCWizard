@@ -103,7 +103,7 @@ String _encodeJupiter(String input) {
   var output = out.join();
 
   //fill to dividable by 5
-  if (output.length % 5 != 0) {
+  if (output.length % 5 != 0 && !isLetterMode) {
     output += _LETTERS_NUMBER_SWITCH;
   }
   while (output.length % 5 != 0) {
