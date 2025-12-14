@@ -145,6 +145,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/morbit/widget/morbit.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/navajo/widget/navajo.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/navajo/widget/navajo_list.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/535/widget/535.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/hva/widget/hva.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/juno/widget/juno.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/jupiter/widget/jupiter.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/zebra/widget/zebra.dart';
@@ -679,6 +680,7 @@ void _initStaticToolList() {
       className(const Homophone()),
       className(const Houdini()),
       className(const Humidex()),
+      className(HVA()),
       className(const IATAICAOSearch()),
       className(const IAUAllConstellations()),
       className(const IAUSingleConstellation(

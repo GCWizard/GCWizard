@@ -248,6 +248,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/numeral_words
 import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/numeral_words_lists/widget/numeral_words_lists.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/numeral_words_text_search/widget/numeral_words_text_search.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/535/widget/535.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/hva/widget/hva.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/juno/widget/juno.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/jupiter/widget/jupiter.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/zebra/widget/zebra.dart';
@@ -1224,6 +1225,22 @@ void initializeRegistry(BuildContext context) {
     ], searchKeys: const [
       'houdini',
     ]),
+    GCWTool(
+      tool: HVA(),
+      id: 'hva',
+      categories: const [ToolCategory.CRYPTOGRAPHY],
+      searchKeys: const ['hva', 'numbers'],
+      licenses: [
+        ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Jörg Drobick',
+            title: 'Der SAS- und Chiffrierdienst (SCD) DDR Seit 1995 - Manuelle Chiffrierverfahren',
+            licenseType: ToolLicenseType.NON_COMMERCIAL,
+            licenseUrl:
+            'https://web.archive.org/web/20251207183924/https://scz.bplaced.net/',
+            sourceUrl:
+            'https://web.archive.org/web/20251207183113/https://scz.bplaced.net/m.html'),
+      ],),
     GCWTool(tool: const IATAICAOSearch(), id: 'iataicao', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
     ], searchKeys: const [
