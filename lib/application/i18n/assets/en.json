@@ -1026,6 +1026,7 @@
   "common_encrypt": "Encrypt",
   "common_end": "End",
   "common_error": "Error",
+  "common_error_invalid_length_5": "Error: invalid Length; Length mus be an multiple of 5",
   "common_error_url": "https://blog.gcwizard.net/manual/uncategorized/error-404-no-entry-found/",
   "common_example": "Example",
   "common_false": "False",

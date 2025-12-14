@@ -154,7 +154,11 @@ class _JupiterState extends State<Jupiter> {
     if (_currentMode == GCWSwitchPosition.left) {
       return encryptJupiter(_currentInput, _currentOneTimePad);
     } else {
-      return decryptJupiter(_currentInput, _currentOneTimePad);
+      if (_currentInput.replaceAll(RegExp(r'\s'), '').length % 5 == 0) {
+        return decryptJupiter(_currentInput, _currentOneTimePad);
+      } else {
+        return i18n(context, 'common_error_invalid_length_5');
+      }
     }
   }
 }

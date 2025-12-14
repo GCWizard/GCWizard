@@ -1,4 +1,5 @@
 import 'package:gc_wizard/utils/collection_utils.dart';
+import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
 const Map<String, String> _AZToJupiter = {
@@ -12,16 +13,17 @@ const Map<String, String> _AZToJupiter = {
   '\u00D6': '82', // Ö
   '\u00DC': '88', // Ü
   '\u00DF': '85', // ß
+  '.': '90',
+};
+final Map<String, String> _JupiterToAZ = switchMapKeyValue(_AZToJupiter);
+
+const Map<String, String> _NumbersToJupiter = {
   ':': '93',
   '.': '90',
   '-': '92',
   '+': '91',
   '(': '94',
   ')': '94',
-};
-final Map<String, String> _JupiterToAZ = switchMapKeyValue(_AZToJupiter);
-
-const Map<String, String> _NumbersToJupiter = {
   '0': '000',
   '1': '111',
   '2': '222',
@@ -36,7 +38,7 @@ const Map<String, String> _NumbersToJupiter = {
 final Map<String, String> _JupiterToNumbers =
     switchMapKeyValue(_NumbersToJupiter);
 
-final Map<String, String> _CodeToTITANZUpper = {
+final Map<String, String> _CodeToTITANZ = {
   '000': 'ABGESANDT',
   '253': 'DECKADRESSE',
   '505': 'LAUFEND',
@@ -280,6 +282,7 @@ final Map<String, String> _TITANZToCode = {
   'ÜBER': '820',
   'TBK': '767',
 };
+
 const _LETTERS_NUMBER_SWITCH = '89';
 const _CODE_FOLLOW = '6';
 const _FILLING = '90';
@@ -305,94 +308,59 @@ String _encodeJupiter(String input) {
       out.add(_TITANZToCode[code]!);
       i += code.length;
     } else {
-        if (isLetterMode) {
-          var character = _AZToJupiter[input[i]];
-          if (character != null) {
-            out.add(character);
-            i++;
-            continue;
-          } else {
-            character = _NumbersToJupiter[input[i]];
-            if (character != null) {
-              out.add(_LETTERS_NUMBER_SWITCH);
-              out.add(character);
-              isLetterMode = false;
-              i++;
-              continue;
-            }
-          }
+      if (isLetterMode) {
+        var character = _AZToJupiter[input[i]];
+        if (character != null) {
+          out.add(character);
+          i++;
+          continue;
         } else {
-          var character = _NumbersToJupiter[input[i]];
+          character = _NumbersToJupiter[input[i]];
           if (character != null) {
+            out.add(_LETTERS_NUMBER_SWITCH);
             out.add(character);
+            isLetterMode = false;
             i++;
             continue;
-          } else {
-            character = _AZToJupiter[input[i]];
-            if (character != null) {
-              out.add(_LETTERS_NUMBER_SWITCH);
-              out.add(character);
-              isLetterMode = true;
-              i++;
-              continue;
-            }
           }
         }
+      } else {
+        var character = _NumbersToJupiter[input[i]];
+        if (character != null) {
+          out.add(character);
+          i++;
+          continue;
+        } else {
+          character = _AZToJupiter[input[i]];
+          if (character != null) {
+            out.add(_LETTERS_NUMBER_SWITCH);
+            out.add(character);
+            isLetterMode = true;
+            i++;
+            continue;
+          }
+        }
+      }
     }
-
-    //    if (isLetterMode && i + 1 < input.length) {
-    //       code = _AZToJupiter[input.substring(i, i + 2)];
-    //       if (code != null) {
-    //         out.add(code);
-    //         i += 2;
-    //         continue;
-    //       }
-    //     }
-    //
-    //     var character = input[i++];
-    //
-    //     if (isLetterMode) {
-    //       var code = _AZToJupiter[character];
-    //       if (code != null) {
-    //         out.add(code);
-    //       } else {
-    //         code = _NumbersToJupiter[character];
-    //         if (code != null) {
-    //           out.add(_NUMBERS_FOLLOW);
-    //           out.add(code);
-    //           isLetterMode = false;
-    //         }
-    //       }
-    //     } else {
-    //       var code = _NumbersToJupiter[character];
-    //       if (code != null) {
-    //         out.add(code);
-    //       } else {
-    //         code = _AZToJupiter[character];
-    //         if (code != null) {
-    //           out.add(_NUMBERS_FOLLOW);
-    //           out.add(code);
-    //           isLetterMode = true;
-    //         }
-    //       }
-    }
+  }
 
   var output = out.join();
 
   //fill to dividable by 5
-  var isFirstFillingLetter = true;
+  if (output.length % 5 != 0) {
+    output += _LETTERS_NUMBER_SWITCH;
+  }
   while (output.length % 5 != 0) {
-    output += _FILLING[isFirstFillingLetter ? 0 : 1];
-    isFirstFillingLetter = !isFirstFillingLetter;
+    output += _FILLING;
   }
 
   return output;
 }
 
 String? _codebook(String input, int i) {
-  for (var value in _TITANZToCode.values) {
-    if (input.startsWith(value, i)) {
-      return value;
+  for (var key in _TITANZToCode.keys) {
+    if (input.startsWith(key, i)) {
+      return key;
     }
   }
   return null;
@@ -430,10 +398,6 @@ String encryptJupiter(String input, String? keyOneTimePad) {
   return insertSpaceEveryNthCharacter(output, 5);
 }
 
-String? _checkCode(String code, bool isLetterMode) {
-  return isLetterMode ? _JupiterToAZ[code] : _JupiterToNumbers[code];
-}
-
 String _decodeJupiter(String input) {
   if (input.isEmpty) return '';
 
@@ -443,33 +407,87 @@ String _decodeJupiter(String input) {
   int i = 0;
   while (i < input.length) {
     String? character;
-
-    if (i + 1 < input.length) {
-      var code = input.substring(i, i + 2);
-
-      if (code == _LETTERS_NUMBER_SWITCH) {
-        isLetterMode = true;
-        i += 2;
+    var code = input.substring(i, i + 1);
+    if (code == _CODE_FOLLOW) {
+      if (i + 4 < input.length) {
+        code = input.substring(i + 1, i + 4);
+        character = _CodeToTITANZ[code];
+        if (character != null) {
+          out += character;
+        } else {
+          out += UNKNOWN_ELEMENT;
+        }
+        i += 4;
+        continue;
+      } else {
+        out += UNKNOWN_ELEMENT;
+        i++;
         continue;
       }
-
-      if (code == _LETTERS_NUMBER_SWITCH) {
-        isLetterMode = false;
-        i += 2;
-        continue;
-      }
-
-      character = _checkCode(code, isLetterMode);
-      if (character != null) {
-        out += character;
-        i += 2;
+    } else {
+      if (i + 1 < input.length) {
+        code = input.substring(i, i + 2);
+        if (code == _LETTERS_NUMBER_SWITCH) {
+          isLetterMode = !isLetterMode;
+          i += 2;
+          continue;
+        } else {
+          if (isLetterMode) {
+            character = _JupiterToAZ[code];
+            if (character != null) {
+              out += character;
+              i += 2;
+              continue;
+            } else {
+              code = input.substring(i, i + 1);
+              character = _JupiterToAZ[code];
+              if (character != null) {
+                out += character;
+                i += 1;
+                continue;
+              }
+            }
+          } else {
+            code = input.substring(i, i + 3);
+            character = _JupiterToNumbers[code];
+            if (character != null) {
+              out += character;
+              i += 3;
+              continue;
+            } else {
+              out += UNKNOWN_ELEMENT;
+              i += 2;
+              continue;
+            }
+          }
+        }
+      } else {
+        out += UNKNOWN_ELEMENT;
+        i++;
         continue;
       }
     }
-
-    character = _checkCode(input[i++], isLetterMode);
-    if (character != null) out += character;
   }
+
+  // if (i + 1 < input.length) {
+  //   var code = input.substring(i, i + 2);
+  //
+  //   if (code == _LETTERS_NUMBER_SWITCH) {
+  //     isLetterMode = !isLetterMode;
+  //     i += 2;
+  //     continue;
+  //   }
+  //
+  //   character = _checkCode(code, isLetterMode);
+  //   if (character != null) {
+  //     out += character;
+  //     i += 2;
+  //     continue;
+  //   }
+  // }
+  //
+  // character = _checkCode(input[i++], isLetterMode);
+  // if (character != null) out += character;
 
   return out.trim();
 }
