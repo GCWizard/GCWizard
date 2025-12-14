@@ -6,13 +6,13 @@ import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/text_input_formatters/wrapper_for_masktextinputformatter.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
-import 'package:gc_wizard/tools/crypto_and_encodings/tapir/logic/tapir.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/jupiter/logic/jupiter.dart';
 
 const String _apiSpecification = '''
 {
-  "/tapir" : {
+  "/Jupiter" : {
     "get": {
-      "summary": "Tapir Tool",
+      "summary": "Jupiter Tool",
       "responses": {
         "204": {
           "description": "Tool loaded. No response data."
@@ -55,14 +55,14 @@ const String _apiSpecification = '''
 }
 ''';
 
-class Tapir extends GCWWebStatefulWidget {
-  Tapir({super.key}) : super(apiSpecification: _apiSpecification);
+class Jupiter extends GCWWebStatefulWidget {
+  Jupiter({super.key}) : super(apiSpecification: _apiSpecification);
 
   @override
-  _TapirState createState() => _TapirState();
+  _JupiterState createState() => _JupiterState();
 }
 
-class _TapirState extends State<Tapir> {
+class _JupiterState extends State<Jupiter> {
   late TextEditingController _inputController;
   late TextEditingController _otpController;
 
@@ -125,7 +125,7 @@ class _TapirState extends State<Tapir> {
           },
         ),
         GCWOnOffSwitch(
-          title: i18n(context, 'tapir_onetimepad'),
+          title: i18n(context, 'common_onetimepad'),
           value: _currentOneTimePadMode,
           onChanged: (value) {
             setState(() {
@@ -135,15 +135,15 @@ class _TapirState extends State<Tapir> {
         ),
         _currentOneTimePadMode
             ? GCWTextField(
-                controller: _otpController,
-                inputFormatters: [_maskFormatter],
-                hintText: '12345 67890 12...',
-                onChanged: (value) {
-                  setState(() {
-                    _currentOneTimePad = value;
-                  });
-                },
-              )
+          controller: _otpController,
+          inputFormatters: [_maskFormatter],
+          hintText: '12345 67890 12...',
+          onChanged: (value) {
+            setState(() {
+              _currentOneTimePad = value;
+            });
+          },
+        )
             : Container(),
         GCWDefaultOutput(child: _buildOutput()),
       ],
@@ -152,9 +152,9 @@ class _TapirState extends State<Tapir> {
 
   String _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
-      return encryptTapir(_currentInput, _currentOneTimePad);
+      return encryptJupiter(_currentInput, _currentOneTimePad);
     } else {
-      return decryptTapir(_currentInput, _currentOneTimePad);
+      return decryptJupiter(_currentInput, _currentOneTimePad);
     }
   }
 }

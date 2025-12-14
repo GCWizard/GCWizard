@@ -220,7 +220,6 @@ BeatnikOutput interpretBeatnik(String ScrabbleVersion, String sourcecode, String
     return BeatnikOutput([''], [''], [''], [''], [DebugOutput('', '', '', '')]);
   }
 
-  var _currentValues = <int>[];
   int value = 0;
 
   List<int> assembler = <int>[];

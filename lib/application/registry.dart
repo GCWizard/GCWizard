@@ -247,6 +247,10 @@ import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/numeral_words
 import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/numeral_words_identify_languages/widget/numeral_words_identify_languages.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/numeral_words_lists/widget/numeral_words_lists.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/numeral_words_text_search/widget/numeral_words_text_search.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/535/widget/535.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/juno/widget/juno.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/jupiter/widget/jupiter.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/zebra/widget/zebra.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/one_time_pad/widget/one_time_pad.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/playfair/widget/playfair.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/pokemon/widget/pokemon.dart';
@@ -282,7 +286,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/solitaire/widget/solitaire.
 import 'package:gc_wizard/tools/crypto_and_encodings/straddling_checkerboard/widget/straddling_checkerboard.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/substitution/widget/substitution.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/tap_code/widget/tap_code.dart';
-import 'package:gc_wizard/tools/crypto_and_encodings/tapir/widget/tapir.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/tapir/widget/tapir.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/text_analysis/widget/text_analysis.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/text_analysis/widget/text_analysis_letter_frequencies.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/toki_pona/widget/toki_pona.dart';
@@ -1119,6 +1123,22 @@ void initializeRegistry(BuildContext context) {
       'binary',
       'gray',
     ]),
+    GCWTool(
+        tool: Grenztruppen535(),
+        id: '535',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const ['535', 'numbers'],
+        licenses: [
+          ToolLicenseOnlineArticle(
+              context: context,
+              author: 'Jörg Drobick',
+              title: 'Der SAS- und Chiffrierdienst (SCD) DDR Seit 1995 - Manuelle Chiffrierverfahren',
+              licenseType: ToolLicenseType.NON_COMMERCIAL,
+              licenseUrl:
+              'https://web.archive.org/web/20251207183924/https://scz.bplaced.net/',
+              sourceUrl:
+              'https://web.archive.org/web/20251207183113/https://scz.bplaced.net/m.html'),
+        ],),
     GCWTool(tool: const Grid(), id: 'grid', categories: const [
       ToolCategory.GAMES
     ], searchKeys: const [
@@ -1272,6 +1292,38 @@ void initializeRegistry(BuildContext context) {
         id: 'ipcodes',
         categories: const [ToolCategory.SCIENCE_AND_TECHNOLOGY],
         searchKeys: const ['ipcodes']),
+    GCWTool(
+        tool: Juno(),
+        id: 'juno',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const ['juno', 'numbers'],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Jörg Drobick',
+            title: 'Der SAS- und Chiffrierdienst (SCD) DDR Seit 1995 - Manuelle Chiffrierverfahren',
+            licenseType: ToolLicenseType.NON_COMMERCIAL,
+            licenseUrl:
+            'https://web.archive.org/web/20251207183924/https://scz.bplaced.net/',
+            sourceUrl:
+            'https://web.archive.org/web/20251207183113/https://scz.bplaced.net/m.html'),
+        ],),
+    GCWTool(
+        tool: Jupiter(),
+        id: 'jupiter',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const ['jupiter', 'numbers'],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Jörg Drobick',
+            title: 'Der SAS- und Chiffrierdienst (SCD) DDR Seit 1995 - Manuelle Chiffrierverfahren',
+            licenseType: ToolLicenseType.NON_COMMERCIAL,
+            licenseUrl:
+            'https://web.archive.org/web/20251207183924/https://scz.bplaced.net/',
+            sourceUrl:
+            'https://web.archive.org/web/20251207183113/https://scz.bplaced.net/m.html'),
+        ],),
     GCWTool(tool: const Kamasutra(), id: 'kamasutra', categories: const [
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
@@ -2233,6 +2285,22 @@ void initializeRegistry(BuildContext context) {
     ], searchKeys: const [
       'zc1',
     ]),
+    GCWTool(
+        tool: Zebra(),
+        id: 'zebra',
+        categories: const [ToolCategory.CRYPTOGRAPHY],
+        searchKeys: const ['zebra', 'numbers'],
+        licenses: [
+          ToolLicenseOnlineArticle(
+            context: context,
+            author: 'Jörg Drobick',
+            title: 'Der SAS- und Chiffrierdienst (SCD) DDR Seit 1995 - Manuelle Chiffrierverfahren',
+            licenseType: ToolLicenseType.NON_COMMERCIAL,
+            licenseUrl:
+            'https://web.archive.org/web/20251207183924/https://scz.bplaced.net/',
+            sourceUrl:
+            'https://web.archive.org/web/20251207183113/https://scz.bplaced.net/m.html'),
+        ],),
     GCWTool(
         tool: const ZodiacSelection(),
         id: 'zodiac_selection',

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/multi_decoder/widget/multi_decoder.dart';
-import 'package:gc_wizard/tools/crypto_and_encodings/tapir/logic/tapir.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/tapir/logic/tapir.dart';
 
 const MDT_INTERNALNAMES_TAPIR = 'multidecoder_tool_tapir_title';
 
