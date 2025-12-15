@@ -14,6 +14,11 @@ const Map<String, String> _AZToHVA1950 = {
   '\u00DC': '78', // Ü
   '\u00DF': '76', // ß
   '.': '38',
+  ',': '34',
+  '-': '39',
+  ':': '37',
+  '(': '33',
+  ')': '33',
 };
 final Map<String, String> _HVA1950ToAZ = switchMapKeyValue(_AZToHVA1950);
 
@@ -31,6 +36,24 @@ final Map<String, String> _CodeToHVA1950 = {
 };
 final Map<String, String> _HVA1950ToCode = switchMapKeyValue(_CodeToHVA1950);
 
+const Map<String, String> _NumbersToHVA1950 = {
+  '0': '000',
+  '1': '111',
+  '2': '222',
+  '3': '333',
+  '4': '444',
+  '5': '555',
+  '6': '666',
+  '7': '777',
+  '8': '888',
+  '9': '999'
+};
+final Map<String, String> _HVA1950ToNumbers =
+    switchMapKeyValue(_NumbersToHVA1950);
+
+const _LETTERS_NUMBER_SWITCH_HVA1950 = '35';
+const _FILLING_HVA1950 = '38';
+
 final Map<String, String> _AZToHVA1970 = {
   'S': '7', 'E': '9', 'A': '8', 'I': '2', 'T': '5', 'N': '4',
   'B': '69', 'C': '68', 'D': '64', 'F': '66', 'G': '60',
@@ -43,6 +66,12 @@ final Map<String, String> _AZToHVA1970 = {
   '\u00DC': '15', // Ü
   '\u00DF': '18', // ß
   '.': '32',
+  ':': '31',
+  '.': '32',
+  ',': '35',
+  '(': '36',
+  ')': '36',
+  '/': '30',
 };
 final Map<String, String> _HVA1970ToAZ = switchMapKeyValue(_AZToHVA1970);
 
@@ -70,33 +99,7 @@ final Map<String, String> _HVA1970ToCode = {
   '33': 'TBK',
 };
 
-const Map<String, String> _NumbersToHVA1950 = {
-  ',': '34',
-  '-': '39',
-  ':': '37',
-  '(': '33',
-  ')': '33',
-  '0': '000',
-  '1': '111',
-  '2': '222',
-  '3': '333',
-  '4': '444',
-  '5': '555',
-  '6': '666',
-  '7': '777',
-  '8': '888',
-  '9': '999'
-};
-final Map<String, String> _HVA1950ToNumbers =
-    switchMapKeyValue(_NumbersToHVA1950);
-
 const Map<String, String> _NumbersToHVA1970 = {
-  ':': '31',
-  '.': '32',
-  ',': '35',
-  '(': '36',
-  ')': '36',
-  '/': '30',
   '0': '000',
   '1': '111',
   '2': '222',
@@ -109,10 +112,7 @@ const Map<String, String> _NumbersToHVA1970 = {
   '9': '999'
 };
 final Map<String, String> _HVA1970ToNumbers =
-    switchMapKeyValue(_NumbersToHVA1970);
-
-const _LETTERS_NUMBER_SWITCH_HVA1950 = '35';
-const _FILLING_HVA1950 = '38';
+switchMapKeyValue(_NumbersToHVA1970);
 
 const _LETTERS_NUMBER_SWITCH_HVA1970 = '38';
 const _FILLING_HVA1970 = '32';
@@ -130,13 +130,13 @@ String _encodeHVA(String input, bool codeHVA1950) {
     _FILLING = _FILLING_HVA1950;
     _AZToHVA = _AZToHVA1950;
     _NumbersToHVA = _NumbersToHVA1950;
-    _CodeToHVA = _HVA1950ToCode;
+    _CodeToHVA = _CodeToHVA1950;
   } else {
     _LETTERS_NUMBER_SWITCH = _LETTERS_NUMBER_SWITCH_HVA1970;
     _FILLING = _FILLING_HVA1970;
     _AZToHVA = _AZToHVA1970;
     _NumbersToHVA = _NumbersToHVA1970;
-    _CodeToHVA = _HVA1970ToCode;
+    _CodeToHVA = _CodeToHVA1970;
   }
 
   //remove non-encodable chars
@@ -230,13 +230,13 @@ String _decodeHVA(String input, bool codeHVA1950) {
   if (codeHVA1950) {
     _LETTERS_NUMBER_SWITCH = _LETTERS_NUMBER_SWITCH_HVA1950;
     _HVAToAZ = _HVA1950ToAZ;
+    _HVAToAZ.addAll(_HVA1950ToCode);
     _HVAToNumbers = _HVA1950ToNumbers;
-    _HVAToCode = _HVA1950ToCode;
   } else {
     _LETTERS_NUMBER_SWITCH = _LETTERS_NUMBER_SWITCH_HVA1970;
     _HVAToAZ = _HVA1970ToAZ;
     _HVAToNumbers = _HVA1970ToNumbers;
-    _HVAToCode = _HVA1970ToCode;
+    _HVAToAZ.addAll(_HVA1970ToCode);
   }
 
   var isLetterMode = true;
