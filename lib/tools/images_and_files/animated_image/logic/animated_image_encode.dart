@@ -98,13 +98,14 @@ Uint8List? createImage(List<Uint8List> images,  List<MapEntry<int, int>> duratio
     convertedImages.forEachIndexed((index, convertedImage) {
       if (convertedImage != null) {
         if (convertedImage.width != maxWidth || convertedImage.height != maxHeight) {
-          if (scale != 100) {
-            convertedImage = Image.copyResize(convertedImage, maintainAspect: true,
-                width: (convertedImage.width * scale) ~/ 100);
+          if ((maxWidth/ convertedImage.width) < (maxHeight/ convertedImage.height)
+              && (convertedImage.width != maxWidth)) {
+            convertedImage = Image.copyResize(convertedImage, maintainAspect: true, width: maxWidth);
+          } else if (convertedImage.height != maxHeight) {
+            convertedImage = Image.copyResize(convertedImage, maintainAspect: true, height: maxHeight);
           }
-          if (convertedImage.width > maxWidth || convertedImage.height > maxHeight) {
-            convertedImage = Image.copyResize(convertedImage, width: maxWidth, height: maxHeight);
-          } else {
+
+          if (convertedImage.width < maxWidth || convertedImage.height < maxHeight) {
             convertedImage = Image.copyExpandCanvas(convertedImage,
                 newWidth: maxWidth, newHeight: maxHeight, position: Image.ExpandCanvasPosition.center);
           }
