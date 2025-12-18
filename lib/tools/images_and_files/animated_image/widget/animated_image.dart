@@ -95,6 +95,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
 
     return Column(children: <Widget>[
       GCWOpenFile(
+        key: Key('decode'),
         supportedFileTypes: ANIMATED_IMAGE_ALLOWED_FILETYPES,
         suppressGallery: false,
         onLoaded: (GCWFile? value) {
@@ -247,6 +248,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
   Widget buildEncodeWidget(BuildContext context) {
     return Column(children: <Widget>[
       GCWOpenFile(
+        key: Key('encode'),
         supportedFileTypes: SUPPORTED_IMAGE_TYPES,
         suppressGallery: false,
         onLoaded: (GCWFile? value) {
