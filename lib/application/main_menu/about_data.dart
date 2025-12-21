@@ -79,6 +79,7 @@ const List<String> _ABOUT_TESTER = [
   'Bleg1966',
   'Cycle73',
   'Dawn T.',
+  'DerJoshi',
   'Don Rodolphos',
   'Felix Z.',
   'ferrrix',
