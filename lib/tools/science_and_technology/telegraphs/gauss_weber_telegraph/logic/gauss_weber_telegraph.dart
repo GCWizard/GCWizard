@@ -199,6 +199,7 @@ const Map<String, String> _SCHILLING_CANSTATT = {
 };
 
 const Map<String, String> _WHEATSTONE_COOKE_5 = {
+  // https://en.wikipedia.org/wiki/Cooke_and_Wheatstone_telegraph
   'A': '/|||\\',
   'B': '/||\\|',
   'D': '|/||\\',
@@ -206,7 +207,7 @@ const Map<String, String> _WHEATSTONE_COOKE_5 = {
   'F': '|/|\\|',
   'G': '||/|\\',
   'H': '/\\|||',
-  'I': '|/|||',
+  'I': '|/\\||',
   'K': '||/\\|',
   'L': '|||/\\',
   'M': '\\/|||',
@@ -222,6 +223,7 @@ const Map<String, String> _WHEATSTONE_COOKE_5 = {
 };
 
 const Map<String, String> _WHEATSTONE_COOKE_2 = {
+  // https://en.wikipedia.org/wiki/Cooke_and_Wheatstone_telegraph
   'A': '[\\\\  |]',
   'B': '[\\\\\\ |]',
   'C': '[\\/ |]',
