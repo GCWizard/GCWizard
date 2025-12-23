@@ -9,6 +9,11 @@ void main() {
 
       {'input' : 'gc wizard ist toll', 'language': SPELLING.NATO, 'expectedOutput' : 'GOLF CHARLIE WHISKEY INDIA ZULU ALFA ROMEO DELTA INDIA SIERRA TANGO TANGO OSCAR LIMA LIMA'},
 
+      {'input' : 'gc wizard ist toll', 'language': SPELLING.GRC, 'expectedOutput' : 'ΊΣΚΙΟΣ ΖΕΥΣ ΑΣΤΉΡ ΊΣΚΙΟΣ ΤΊΓΡΗΣ ΤΊΓΡΗΣ ΟΣΜΉ'},
+      {'input' : 'gc wizard ist toll', 'language': SPELLING.GRCLAT, 'expectedOutput' : 'ÍSKIOS ZEFS ASTÍR ÍSKIOS TÍGRIS TÍGRIS OSMÍ'},
+
+      {'input' : 'gc wizard ist toll', 'language': SPELLING.RUS, 'expectedOutput' : 'СЕРГЕЙ АНТОН ТАМАРА ТАМАРА ОЛЬГА'},
+      {'input' : 'gc wizard ist toll', 'language': SPELLING.RUSLAT, 'expectedOutput' : 'SERGEI ANTON TAMARA TAMARA OLGA'},
     ];
 
     for (var elem in _inputsToExpected) {
@@ -23,9 +28,13 @@ void main() {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'language': SPELLING.NATO, 'expectedOutput' : ''},
 
-      {'expectedOutput' : 'GCWIZARDISTTOLL', 'language': SPELLING.NATO, 'input' : 'GOLF CHARLIE  WHISKEY INDIA ZULU ALPHA ROMEO DELTA  INDIA SIERRA TANGO TANGO OSCAR LIMA LIMA'},
       {'expectedOutput' : 'GCWIZARDISTTOLL', 'language': SPELLING.NATO, 'input' : 'GOLF CHARLIE  WHISKEY INDIA ZULU ALFA ROMEO DELTA  INDIA SIERRA TANGO TANGO OSCAR LIMA LIMA'},
 
+      {'expectedOutput' : 'IZAITTO', 'language': SPELLING.GRC, 'input' : 'ΊΣΚΙΟΣ ΖΕΥΣ ΑΣΤΉΡ ΊΣΚΙΟΣ ΤΊΓΡΗΣ ΤΊΓΡΗΣ ΟΣΜΉ'},
+      {'expectedOutput' : 'IZAITTO', 'language': SPELLING.GRCLAT, 'input' : 'ÍSKIOS ZEFS ASTÍR ÍSKIOS TÍGRIS TÍGRIS OSMÍ'},
+
+      {'expectedOutput' : 'CATTO', 'language': SPELLING.RUS, 'input' : 'СЕРГЕЙ АНТОН ТАМАРА ТАМАРА ОЛЬГА'},
+      {'expectedOutput' : 'CATTO', 'language': SPELLING.RUSLAT, 'input' : 'SERGEI ANTON TAMARA TAMARA OLGA'},
     ];
 
     for (var elem in _inputsToExpected) {
