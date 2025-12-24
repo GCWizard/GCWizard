@@ -152,6 +152,7 @@ import 'package:gc_wizard/tools/coords/waypoint_projection/widget/waypoint_proje
 import 'package:gc_wizard/tools/crypto_and_encodings/abaddon/widget/abaddon.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/adfgvx/widget/adfgvx.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/affine/widget/affine.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/scout/widget/scout.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/alphabet_values/widget/alphabet_values.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/amsco/widget/amsco.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/atbash/widget/atbash.dart';
@@ -1935,6 +1936,11 @@ void initializeRegistry(BuildContext context) {
         id: 'scrabble_selection',
         categories: const [ToolCategory.GAMES],
         searchKeys: const ['games', 'games_scrabble']),
+    GCWTool(tool: const Scout(), id: 'scout', categories: const [
+      ToolCategory.CRYPTOGRAPHY
+    ], searchKeys: const [
+      'scout',
+    ]),
     GCWTool(
         tool: const MiscellaneousSelection(),
         id: 'miscellaneous_selection',

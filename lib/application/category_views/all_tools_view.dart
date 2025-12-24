@@ -86,6 +86,7 @@ import 'package:gc_wizard/tools/coords/waypoint_projection/widget/waypoint_proje
 import 'package:gc_wizard/tools/crypto_and_encodings/abaddon/widget/abaddon.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/adfgvx/widget/adfgvx.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/affine/widget/affine.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/scout/widget/scout.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/alphabet_values/widget/alphabet_values.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/amsco/widget/amsco.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/atbash/widget/atbash.dart';
@@ -804,6 +805,7 @@ void _initStaticToolList() {
       className(const RSASelection()),
       className(const SchillingCanstattTelegraph()),
       className(const ScrabbleSelection()),
+      className(const Scout()),
       className(const ShadowLength()),
       className(const ShadoksSelection()),
       className(const Seasons()),
