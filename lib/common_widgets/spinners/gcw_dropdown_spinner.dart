@@ -29,28 +29,19 @@ class _GCWDropDownSpinnerState extends State<GCWDropDownSpinner> {
 
   void _increaseValue() {
     setState(() {
-      if (_currentIndex + 1 > widget.items.length) {
-        _setValueAndEmitOnChange(1);
-      } else {
-        _setValueAndEmitOnChange(_currentIndex + 1);
-      }
+      _setValueAndEmitOnChange((_currentIndex + 1) % widget.items.length);
     });
   }
 
   void _decreaseValue() {
     setState(() {
-      if (_currentIndex - 1 < 1) {
-        _setValueAndEmitOnChange(widget.items.length);
-      } else {
-        _setValueAndEmitOnChange(_currentIndex - 1);
-      }
+      _setValueAndEmitOnChange((_currentIndex - 1) % widget.items.length);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     _currentIndex = widget.index;
-
     if (widget.layout == SpinnerLayout.HORIZONTAL) {
       return Row(
         children: <Widget>[
@@ -99,7 +90,7 @@ class _GCWDropDownSpinnerState extends State<GCWDropDownSpinner> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: DEFAULT_MARGIN),
       child: GCWDropDown<int>(
-        value: (widget.index % widget.items.length == 0) ? widget.items.length : widget.index % widget.items.length,
+        value: widget.index % widget.items.length,
         onChanged: (int newValue) {
           setState(() {
             _setValueAndEmitOnChange(newValue);
