@@ -1,5 +1,4 @@
 List<List<String>> evaluateRegExPattern(String input, String pattern) {
-  if (input.isEmpty) return [];
   if (pattern.isEmpty) {
     return [
       [input]
