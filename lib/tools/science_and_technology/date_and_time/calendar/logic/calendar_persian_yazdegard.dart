@@ -23,7 +23,7 @@ DateTime? JulianDateToPersianYazdegardCalendar(double jd) {
   }
 }
 
-double PersianYazdegardCalendarToJulianDate(DateTime date) {
+double PersianYazdegardCalendarToJulianDate(CustomCalendarDate date) {
   int epagflg = 0; // Epagomenai: Change at 1007 Jul./376 Yaz.
   int yaz_ep = 1951668;
   int m = date.month;

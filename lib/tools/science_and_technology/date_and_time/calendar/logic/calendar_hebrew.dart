@@ -205,7 +205,7 @@ DateTime? JulianDateToHebrewCalendar(double jd) {
   }
 }
 
-double HebrewCalendarToJulianDate(DateTime date) {
+double HebrewCalendarToJulianDate(CustomCalendarDate date) {
   int jy = date.year;
   int m = date.month;
   int d = date.day;

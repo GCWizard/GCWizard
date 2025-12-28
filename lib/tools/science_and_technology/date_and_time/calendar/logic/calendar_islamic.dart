@@ -21,7 +21,7 @@ DateTime? JulianDateToIslamicCalendar(double jd) {
   }
 }
 
-double IslamicCalendarToJulianDate(DateTime date) {
+double IslamicCalendarToJulianDate(CustomCalendarDate date) {
   int d = date.day;
   int m = date.month;
   int y = date.year;

@@ -17,6 +17,14 @@ part 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar/logi
 part 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar/logic/calendar_potrzebie.dart';
 part 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar/logic/calendar_unix.dart';
 
+class CustomCalendarDate {
+  int day;
+  int month;
+  int year;
+
+  CustomCalendarDate({required this.year, required this.month, required this.day});
+}
+
 int intPart(double floatNum) {
   if (floatNum < -0.0000001) {
     return (floatNum - 0.0000001).ceil();
