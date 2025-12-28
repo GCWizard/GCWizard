@@ -1,5 +1,7 @@
 part of 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar/logic/calendar.dart';
 
+// https://www.aoi.uzh.ch/de/islamwissenschaft/studium/tools/kalenderumrechnung/jewish.html
+
 const List<int> _jregyeardef = [30, 29, 29, 29, 30, 29, 30, 29, 30, 29, 30, 29];
 const List<int> _jregyearreg = [30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29];
 const List<int> _jregyearcom = [30, 30, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29];

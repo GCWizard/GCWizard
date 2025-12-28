@@ -25,6 +25,9 @@ class CustomCalendarDate {
   CustomCalendarDate({required this.year, required this.month, required this.day});
 }
 
+// https://www.aoi.uzh.ch/de/islamwissenschaft/studium/tools/kalenderumrechnung/jewish.html
+// cf. Jean Meeus, Astronomical Algorithms, Willmann-Bell 2009 pp. 71–73
+
 int intPart(double floatNum) {
   if (floatNum < -0.0000001) {
     return (floatNum - 0.0000001).ceil();
