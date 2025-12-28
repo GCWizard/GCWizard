@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_dropdown_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/spinner_constants.dart';
-import 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar/logic/calendar.dart';
-import 'package:gc_wizard/tools/science_and_technology/date_and_time/calendar/logic/calendar_constants.dart';
+
+import 'package:gc_wizard/application/theme/theme.dart';
 
 class GCWCustomDatePicker extends StatefulWidget {
-  final void Function(CustomCalendarDate) onChanged;
-  final CustomCalendarDate date;
-  final CalendarSystem type;
+  final void Function(DateTime) onChanged;
+  final DateTime date;
+  final List<String>? months;
+  final int? maxDays;
 
   final TextEditingController? yearController;
   final TextEditingController? monthController;
@@ -19,10 +19,11 @@ class GCWCustomDatePicker extends StatefulWidget {
     super.key,
     required this.onChanged,
     required this.date,
-    this.type = CalendarSystem.GREGORIANCALENDAR,
     this.yearController,
     this.monthController,
     this.dayController,
+    this.months,
+    this.maxDays,
   });
 
   @override
@@ -51,7 +52,7 @@ class _GCWCustomDatePickerState extends State<GCWCustomDatePicker> {
   }
 
   void initValues() {
-    CustomCalendarDate date = widget.date;
+    DateTime date = widget.date;
     _currentYear = date.year;
     _currentMonth = date.month;
     _currentDay = date.day;
@@ -94,28 +95,24 @@ class _GCWCustomDatePickerState extends State<GCWCustomDatePicker> {
         Expanded(
             child: Padding(
                 padding: const EdgeInsets.only(left: 2, right: 2),
-                child: _buildMonthSpinner(widget.type)
-            )),
+                child: _buildMonthSpinner(widget.months))),
         Expanded(
             child: Padding(
           padding: const EdgeInsets.only(left: 2),
-          child: _buildDaySpinner(widget.type),
+          child: _buildDaySpinner(widget.maxDays),
         ))
       ],
     );
   }
 
-  Widget _buildDaySpinner(CalendarSystem type) {
-    int maxDays = 31;
-    if (type == CalendarSystem.POTRZEBIECALENDAR) maxDays = 10;
-
+  Widget _buildDaySpinner(int? maxDays) {
     return GCWIntegerSpinner(
       focusNode: _dayFocusNode,
       layout: SpinnerLayout.VERTICAL,
       controller: widget.dayController,
       value: _currentDay,
       min: 1,
-      max: maxDays,
+      max: maxDays ?? 31,
       onChanged: (value) {
         setState(() {
           _currentDay = value;
@@ -125,22 +122,30 @@ class _GCWCustomDatePickerState extends State<GCWCustomDatePicker> {
     );
   }
 
-  Widget _buildMonthSpinner(CalendarSystem type) {
-    switch (type) {
-      case CalendarSystem.ISLAMICCALENDAR:
-      case CalendarSystem.PERSIANYAZDEGARDCALENDAR:
-      case CalendarSystem.HEBREWCALENDAR:
-      case CalendarSystem.POTRZEBIECALENDAR:
-      case CalendarSystem.COPTICCALENDAR:
+  Widget _buildMonthSpinner(List<String>? months) {
+    if (months != null) {
       return GCWDropDownSpinner(
         index: _currentMonth,
         layout: SpinnerLayout.VERTICAL,
-        items: MONTH_NAMES[type]!.entries.map((entry) {
-          return GCWDropDownMenuItem(value: entry.key, child: entry.value);
+        //       onChanged: (value) {
+        //         setState(() {
+        //           _currentValue = value;
+        //           widget.onChanged(_currentValue! + 1);
+        //         });
+        //       },
+        //
+        items: months.map((entry) {
+          var text = entry;
+          return Text(
+            text,
+            style: gcwTextStyle(),
+          );
+          //return GCWDropDownMenuItem(value: entry.key, child: entry.value);
         }).toList(),
         onChanged: (value) {
           setState(() {
-            _currentMonth = value;
+            print(value);
+            _currentMonth = value % months.length;
             _setCurrentValueAndEmitOnChange();
             if (_currentMonth.toString().length == 2) {
               FocusScope.of(context).requestFocus(_dayFocusNode);
@@ -148,8 +153,7 @@ class _GCWCustomDatePickerState extends State<GCWCustomDatePicker> {
           });
         },
       );
-      case CalendarSystem.JULIANCALENDAR:
-      case CalendarSystem.GREGORIANCALENDAR:
+    } else {
       return GCWIntegerSpinner(
         focusNode: _monthFocusNode,
         layout: SpinnerLayout.VERTICAL,
@@ -168,12 +172,10 @@ class _GCWCustomDatePickerState extends State<GCWCustomDatePicker> {
           });
         },
       );
-      default: return Container();
     }
   }
 
   void _setCurrentValueAndEmitOnChange() {
-    widget.onChanged(CustomCalendarDate(
-        year: _currentYear, month: _currentMonth, day: _currentDay));
+    widget.onChanged(DateTime(_currentYear, _currentMonth, _currentDay));
   }
 }

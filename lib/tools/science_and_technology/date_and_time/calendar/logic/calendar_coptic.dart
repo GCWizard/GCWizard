@@ -21,7 +21,7 @@ DateTime? JulianDateToCopticCalendar(double jd) {
   }
 }
 
-double CopticCalendarToJulianDate(CustomCalendarDate date) {
+double CopticCalendarToJulianDate(DateTime date) {
   int cop_d = date.day;
   int cop_m = date.month;
   int cop_y = date.year;

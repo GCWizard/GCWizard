@@ -25,7 +25,8 @@ class Calendar extends StatefulWidget {
 class _CalendarState extends State<Calendar> {
   CalendarSystem _currentCalendarSystem = CalendarSystem.JULIANDATE;
   double _currentJulianDate = gregorianCalendarToJulianDate(DateTime.now());
-  CustomCalendarDate _currentCalendarDate = CustomCalendarDate(year: DateTime.now().year, month: DateTime.now().month, day: DateTime.now().day);
+  //CustomCalendarDate _currentCalendarDate = CustomCalendarDate(year: DateTime.now().year, month: DateTime.now().month, day: DateTime.now().day);
+  DateTime _currentCalendarDate = DateTime.now();
 
   int _currentTimeStamp = 0;
   bool excelBug = false;
@@ -44,55 +45,14 @@ class _CalendarState extends State<Calendar> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        GCWDropDown<CalendarSystem>(
-          value: _currentCalendarSystem,
-          onChanged: (value) {
-            setState(() {
-              _currentCalendarSystem = value;
-            });
-          },
-          items: CALENDAR_SYSTEM.entries.map((system) {
-            return GCWDropDownMenuItem(
-              value: system.key,
-              child: i18n(context, system.value),
-            );
-          }).toList(),
-        ),
+        _buildInputWidgetCalendarSystem(context),
         if (_currentCalendarSystem == CalendarSystem.JULIANDATE ||
             _currentCalendarSystem == CalendarSystem.MODIFIEDJULIANDATE)
-          GCWDoubleSpinner(
-              value: _currentJulianDate,
-              numberDecimalDigits: 2,
-              min: MIN_JD,
-              max: MAX_JD,
-              onChanged: (value) {
-                setState(() {
-                  _currentJulianDate = value;
-                });
-              }),
+          _buildInputWidgetJulianDate(),
         if (_currentCalendarSystem == CalendarSystem.UNIXTIMESTAMP)
-          GCWIntegerSpinner(
-              value: _currentTimeStamp,
-              min: 1,
-              max:
-                  864000000000, //max days in seconds according to DateTime https://stackoverflow.com/questions/67144785/flutter-dart-datetime-max-min-value
-              onChanged: (value) {
-                setState(() {
-                  _currentTimeStamp = value;
-                });
-              }),
+          _buildInputWidgetUnixTimeStamp(),
         if (_currentCalendarSystem == CalendarSystem.EXCELTIMESTAMP)
-          GCWIntegerSpinner(
-              value: _currentTimeStamp,
-              min: 1,
-              max:
-                  100000000, //max days according to DateTime https://stackoverflow.com/questions/67144785/flutter-dart-datetime-max-min-value
-              onChanged: (value) {
-                setState(() {
-                  _currentTimeStamp = value;
-                  excelBug = (_currentTimeStamp == 60);
-                });
-              }),
+          _buildInputWidgetExcelTimeStamp(),
         if (_currentCalendarSystem == CalendarSystem.JULIANCALENDAR ||
             _currentCalendarSystem == CalendarSystem.GREGORIANCALENDAR ||
             _currentCalendarSystem == CalendarSystem.ISLAMICCALENDAR ||
@@ -100,22 +60,85 @@ class _CalendarState extends State<Calendar> {
             _currentCalendarSystem == CalendarSystem.POTRZEBIECALENDAR ||
             _currentCalendarSystem == CalendarSystem.HEBREWCALENDAR ||
             _currentCalendarSystem == CalendarSystem.PERSIANYAZDEGARDCALENDAR)
-          GCWCustomDatePicker(
-            date: _currentCalendarDate,
-            type: _currentCalendarSystem,
-            onChanged: (value) {
-              setState(() {
-                _currentCalendarDate = value;
-              });
-            },
-          ),
+          _buildInputWidgetCalendarDate(),
         _buildOutput()
       ],
     );
   }
 
+  GCWCustomDatePicker _buildInputWidgetCalendarDate() {
+    return GCWCustomDatePicker(
+          date: _currentCalendarDate,
+          months: MONTH_NAMES[_currentCalendarSystem]?.entries.map((entry) => entry.value).toList(),
+          maxDays: _currentCalendarSystem == CalendarSystem.POTRZEBIECALENDAR ? 10 : 31,
+          onChanged: (value) {
+            setState(() {
+              _currentCalendarDate = value;
+            });
+          },
+        );
+  }
+
+  GCWDropDown<CalendarSystem> _buildInputWidgetCalendarSystem(BuildContext context) {
+    return GCWDropDown<CalendarSystem>(
+        value: _currentCalendarSystem,
+        onChanged: (value) {
+          setState(() {
+            _currentCalendarSystem = value;
+          });
+        },
+        items: CALENDAR_SYSTEM.entries.map((system) {
+          return GCWDropDownMenuItem(
+            value: system.key,
+            child: i18n(context, system.value),
+          );
+        }).toList(),
+      );
+  }
+
+  GCWDoubleSpinner _buildInputWidgetJulianDate() {
+    return GCWDoubleSpinner(
+            value: _currentJulianDate,
+            numberDecimalDigits: 2,
+            min: MIN_JD,
+            max: MAX_JD,
+            onChanged: (value) {
+              setState(() {
+                _currentJulianDate = value;
+              });
+            });
+  }
+
+  GCWIntegerSpinner _buildInputWidgetExcelTimeStamp() {
+    return GCWIntegerSpinner(
+            value: _currentTimeStamp,
+            min: 1,
+            max:
+                100000000, //max days according to DateTime https://stackoverflow.com/questions/67144785/flutter-dart-datetime-max-min-value
+            onChanged: (value) {
+              setState(() {
+                _currentTimeStamp = value;
+                excelBug = (_currentTimeStamp == 60);
+              });
+            });
+  }
+
+  GCWIntegerSpinner _buildInputWidgetUnixTimeStamp() {
+    return GCWIntegerSpinner(
+            value: _currentTimeStamp,
+            min: 1,
+            max:
+                864000000000, //max days in seconds according to DateTime https://stackoverflow.com/questions/67144785/flutter-dart-datetime-max-min-value
+            onChanged: (value) {
+              setState(() {
+                _currentTimeStamp = value;
+              });
+            });
+  }
+
   Widget _buildOutput() {
     Widget outputWidget;
+    print('date =>  '+_currentCalendarDate.year.toString()+' '+_currentCalendarDate.month.toString()+' '+_currentCalendarDate.day.toString());
     if (excelBug) {
       outputWidget = Column(children: <Widget>[
         GCWDefaultOutput(child: i18n(context, 'excel_time_bug')),
