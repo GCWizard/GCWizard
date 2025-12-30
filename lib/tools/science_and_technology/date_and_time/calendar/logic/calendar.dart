@@ -23,6 +23,10 @@ class CustomCalendarDate {
   int year;
 
   CustomCalendarDate({required this.year, required this.month, required this.day});
+
+  String toString(){
+    return '$day.$month.$year';
+  }
 }
 
 // https://www.aoi.uzh.ch/de/islamwissenschaft/studium/tools/kalenderumrechnung/jewish.html
