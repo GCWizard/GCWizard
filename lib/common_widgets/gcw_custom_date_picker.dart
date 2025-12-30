@@ -139,6 +139,7 @@ class _GCWCustomDatePickerState extends State<GCWCustomDatePicker> {
         }).toList(),
         onChanged: (value) {
           setState(() {
+            // TODO adjust value from 0..11 to 1..12
             _currentMonth = value;
             _setCurrentValueAndEmitOnChange();
             if (_currentMonth.toString().length == 2) {

@@ -129,6 +129,8 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
+  // workaround because GCWCustomDatePicker return month 0..11 instead of 1..12
+  // TODO adjust GCWCustomDatePicker to return 1..12
   CustomCalendarDate _correctCalendarDate(
       CustomCalendarDate date, CalendarSystem type) {
     switch (type) {
@@ -160,7 +162,9 @@ class _CalendarState extends State<Calendar> {
     } else {
       double jd = 0.0;
       var output = <String, Object?>{};
+
       // workaround because GCWCustomDatePicker return month 0..11 instead of 1..12
+      // TODO adjust GCWCustomDatePicker to return 1..12
       _currentCalendarDate =
           _correctCalendarDate(_currentCalendarDate, _currentCalendarSystem);
       switch (_currentCalendarSystem) {
