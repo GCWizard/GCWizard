@@ -14,7 +14,7 @@ enum MIDIFields {
 }
 
 class MIDIKey {
-  final String number;
+  final String midi;
   final String color;
   final String frequency;
   final String helmholtz;
@@ -25,15 +25,15 @@ class MIDIKey {
   final String keyboard;
 
   const MIDIKey(
-      {required this.number,
-        required this.color,
-        required this.frequency,
-        required this.helmholtz,
-        required this.scientific,
-        required this.german,
-        required this.piano,
-        required this.latin,
-        required this.keyboard});
+      {required this.midi,
+      required this.color,
+      required this.frequency,
+      required this.helmholtz,
+      required this.scientific,
+      required this.german,
+      required this.piano,
+      required this.latin,
+      required this.keyboard});
 
   String getField(MIDIFields field) {
     switch (field) {
@@ -61,7 +61,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
 // https://inspiredacoustics.com/en/MIDI_note_numbers_and_center_frequencies
 // https://sengpielaudio.com/Rechner-notennamen.htm
   0: MIDIKey(
-      number: "0",
+      midi: "0",
       color: "common_color_white",
       frequency: "8.18",
       helmholtz: "",
@@ -71,7 +71,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "",
       keyboard: ""),
   1: MIDIKey(
-      number: "1",
+      midi: "1",
       color: "common_color_black",
       frequency: "8.66",
       helmholtz: "",
@@ -81,7 +81,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "",
       keyboard: ""),
   2: MIDIKey(
-      number: "2",
+      midi: "2",
       color: "common_color_white",
       frequency: "9.18",
       helmholtz: "",
@@ -91,7 +91,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "",
       keyboard: ""),
   3: MIDIKey(
-      number: "3",
+      midi: "3",
       color: "common_color_black",
       frequency: "9.72",
       helmholtz: "",
@@ -101,7 +101,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "",
       keyboard: ""),
   4: MIDIKey(
-      number: "4",
+      midi: "4",
       color: "common_color_white",
       frequency: "10.30",
       helmholtz: "",
@@ -111,7 +111,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "",
       keyboard: ""),
   5: MIDIKey(
-      number: "5",
+      midi: "5",
       color: "common_color_white",
       frequency: "10.91",
       helmholtz: "",
@@ -121,7 +121,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "",
       keyboard: ""),
   6: MIDIKey(
-      number: "6",
+      midi: "6",
       color: "common_color_black",
       frequency: "11.56",
       helmholtz: "",
@@ -131,7 +131,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "",
       keyboard: ""),
   7: MIDIKey(
-      number: "7",
+      midi: "7",
       color: "common_color_white",
       frequency: "12.25",
       helmholtz: "",
@@ -141,7 +141,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "",
       keyboard: ""),
   8: MIDIKey(
-      number: "8",
+      midi: "8",
       color: "common_color_black",
       frequency: "12.98",
       helmholtz: "",
@@ -151,7 +151,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "",
       keyboard: ""),
   9: MIDIKey(
-      number: "9",
+      midi: "9",
       color: "common_color_white",
       frequency: "13.75",
       helmholtz: "",
@@ -161,7 +161,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "",
       keyboard: ""),
   10: MIDIKey(
-      number: "10",
+      midi: "10",
       color: "common_color_black",
       frequency: "14.57",
       helmholtz: "",
@@ -171,7 +171,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "",
       keyboard: ""),
   11: MIDIKey(
-      number: "11",
+      midi: "11",
       color: "common_color_white",
       frequency: "15.43",
       helmholtz: "",
@@ -181,7 +181,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "",
       keyboard: ""),
   12: MIDIKey(
-      number: "12",
+      midi: "12",
       color: "common_color_white",
       frequency: "16.35160",
       helmholtz: "C͵͵ sub-contra-octave",
@@ -191,7 +191,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Do-1",
       keyboard: ""),
   13: MIDIKey(
-      number: "13",
+      midi: "13",
       color: "common_color_black",
       frequency: "17.32391",
       helmholtz: "C♯͵͵/D♭͵͵",
@@ -201,7 +201,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Do-1#",
       keyboard: ""),
   14: MIDIKey(
-      number: "14",
+      midi: "14",
       color: "common_color_white",
       frequency: "18.35405",
       helmholtz: "D͵͵",
@@ -211,7 +211,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Re-1",
       keyboard: ""),
   15: MIDIKey(
-      number: "15",
+      midi: "15",
       color: "common_color_black",
       frequency: "19.44544",
       helmholtz: "D♯͵͵/E♭͵͵",
@@ -221,7 +221,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Re-1#",
       keyboard: ""),
   16: MIDIKey(
-      number: "16",
+      midi: "16",
       color: "common_color_white",
       frequency: "20.60172",
       helmholtz: "E͵͵",
@@ -231,7 +231,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Mi-1",
       keyboard: ""),
   17: MIDIKey(
-      number: "17",
+      midi: "17",
       color: "common_color_white",
       frequency: "21.82676",
       helmholtz: "F͵͵",
@@ -241,7 +241,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Fa-1",
       keyboard: ""),
   18: MIDIKey(
-      number: "18",
+      midi: "18",
       color: "common_color_black",
       frequency: "23.12465",
       helmholtz: "F♯͵͵/G♭͵͵",
@@ -251,7 +251,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Fa-1#",
       keyboard: ""),
   19: MIDIKey(
-      number: "19",
+      midi: "19",
       color: "common_color_white",
       frequency: "24.49971",
       helmholtz: "G͵͵",
@@ -261,7 +261,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "SOl-1",
       keyboard: ""),
   20: MIDIKey(
-      number: "20",
+      midi: "20",
       color: "common_color_black",
       frequency: "25.95654",
       helmholtz: "G♯͵͵/A♭͵͵",
@@ -271,7 +271,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Sol-1#",
       keyboard: ""),
   21: MIDIKey(
-      number: "21",
+      midi: "21",
       color: "common_color_white",
       frequency: "27.50000",
       helmholtz: "A͵͵",
@@ -281,7 +281,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "La-1",
       keyboard: ""),
   22: MIDIKey(
-      number: "22",
+      midi: "22",
       color: "common_color_black",
       frequency: "29.13524",
       helmholtz: "A♯͵͵/B♭͵͵",
@@ -291,7 +291,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "La-1#",
       keyboard: ""),
   23: MIDIKey(
-      number: "23",
+      midi: "23",
       color: "common_color_white",
       frequency: "30.86771",
       helmholtz: "B͵͵",
@@ -301,7 +301,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Si-1",
       keyboard: ""),
   24: MIDIKey(
-      number: "24",
+      midi: "24",
       color: "common_color_white",
       frequency: "32.70320",
       helmholtz: "C͵ contra-octave",
@@ -311,7 +311,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Do0",
       keyboard: ""),
   25: MIDIKey(
-      number: "25",
+      midi: "25",
       color: "common_color_black",
       frequency: "34.64783",
       helmholtz: "C♯͵/D♭͵",
@@ -321,7 +321,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Do0#",
       keyboard: ""),
   26: MIDIKey(
-      number: "26",
+      midi: "26",
       color: "common_color_white",
       frequency: "36.70810",
       helmholtz: "D͵",
@@ -331,7 +331,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Re0",
       keyboard: ""),
   27: MIDIKey(
-      number: "27",
+      midi: "27",
       color: "common_color_black",
       frequency: "38.89087",
       helmholtz: "D♯͵/E♭͵",
@@ -341,7 +341,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Re0#",
       keyboard: ""),
   28: MIDIKey(
-      number: "28",
+      midi: "28",
       color: "common_color_white",
       frequency: "41.20344",
       helmholtz: "E͵",
@@ -351,7 +351,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Mi0",
       keyboard: ""),
   29: MIDIKey(
-      number: "29",
+      midi: "29",
       color: "common_color_white",
       frequency: "43.65353",
       helmholtz: "F͵",
@@ -361,7 +361,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Fa0",
       keyboard: ""),
   30: MIDIKey(
-      number: "30",
+      midi: "30",
       color: "common_color_black",
       frequency: "46.24930",
       helmholtz: "F♯͵/G♭͵",
@@ -371,7 +371,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Fa0#",
       keyboard: ""),
   31: MIDIKey(
-      number: "31",
+      midi: "31",
       color: "common_color_white",
       frequency: "48.99943",
       helmholtz: "G͵",
@@ -381,7 +381,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Sol0",
       keyboard: ""),
   32: MIDIKey(
-      number: "32",
+      midi: "32",
       color: "common_color_black",
       frequency: "51.91309",
       helmholtz: "G♯͵/A♭͵",
@@ -391,7 +391,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Sol0#",
       keyboard: ""),
   33: MIDIKey(
-      number: "33",
+      midi: "33",
       color: "common_color_white",
       frequency: "55.00000",
       helmholtz: "A͵",
@@ -401,7 +401,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "La0",
       keyboard: ""),
   34: MIDIKey(
-      number: "34",
+      midi: "34",
       color: "common_color_black",
       frequency: "58.27047",
       helmholtz: "A♯͵/B♭͵",
@@ -411,7 +411,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "La0#",
       keyboard: ""),
   35: MIDIKey(
-      number: "35",
+      midi: "35",
       color: "common_color_white",
       frequency: "61.73541",
       helmholtz: "B͵",
@@ -421,7 +421,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Si0",
       keyboard: ""),
   36: MIDIKey(
-      number: "36",
+      midi: "36",
       color: "common_color_white",
       frequency: "65.40639",
       helmholtz: "C great octave",
@@ -431,7 +431,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Do1",
       keyboard: "1"),
   37: MIDIKey(
-      number: "37",
+      midi: "37",
       color: "common_color_black",
       frequency: "69.29566",
       helmholtz: "C♯/D♭",
@@ -441,7 +441,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Do1#",
       keyboard: "2"),
   38: MIDIKey(
-      number: "38",
+      midi: "38",
       color: "common_color_white",
       frequency: "73.41619",
       helmholtz: "D",
@@ -451,7 +451,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Re1",
       keyboard: "3"),
   39: MIDIKey(
-      number: "39",
+      midi: "39",
       color: "common_color_black",
       frequency: "77.78175",
       helmholtz: "D♯/E♭",
@@ -461,7 +461,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Re1#",
       keyboard: "4"),
   40: MIDIKey(
-      number: "40",
+      midi: "40",
       color: "common_color_white",
       frequency: "82.40689",
       helmholtz: "E",
@@ -471,7 +471,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Mi1",
       keyboard: "5"),
   41: MIDIKey(
-      number: "41",
+      midi: "41",
       color: "common_color_white",
       frequency: "87.30706",
       helmholtz: "F",
@@ -481,7 +481,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Fa1",
       keyboard: "6"),
   42: MIDIKey(
-      number: "42",
+      midi: "42",
       color: "common_color_black",
       frequency: "92.49861",
       helmholtz: "F♯/G♭",
@@ -491,7 +491,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Fa1#",
       keyboard: "7"),
   43: MIDIKey(
-      number: "43",
+      midi: "43",
       color: "common_color_white",
       frequency: "97.99886",
       helmholtz: "G",
@@ -501,7 +501,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Sol1",
       keyboard: "8"),
   44: MIDIKey(
-      number: "44",
+      midi: "44",
       color: "common_color_black",
       frequency: "103.8262",
       helmholtz: "G♯/A♭",
@@ -511,7 +511,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Sol1#",
       keyboard: "9"),
   45: MIDIKey(
-      number: "45",
+      midi: "45",
       color: "common_color_white",
       frequency: "110.0000",
       helmholtz: "A",
@@ -521,7 +521,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "La1",
       keyboard: "10"),
   46: MIDIKey(
-      number: "46",
+      midi: "46",
       color: "common_color_black",
       frequency: "116.5409",
       helmholtz: "A♯/B♭",
@@ -531,7 +531,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "La1#",
       keyboard: "11"),
   47: MIDIKey(
-      number: "47",
+      midi: "47",
       color: "common_color_white",
       frequency: "123.4708",
       helmholtz: "B",
@@ -541,7 +541,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Si1",
       keyboard: "12"),
   48: MIDIKey(
-      number: "48",
+      midi: "48",
       color: "common_color_white",
       frequency: "130.8128",
       helmholtz: "c small octave",
@@ -551,7 +551,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Do2",
       keyboard: "13"),
   49: MIDIKey(
-      number: "49",
+      midi: "49",
       color: "common_color_black",
       frequency: "138.5913",
       helmholtz: "c♯/d♭",
@@ -561,7 +561,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Do2#",
       keyboard: "14"),
   50: MIDIKey(
-      number: "50",
+      midi: "50",
       color: "common_color_white",
       frequency: "146.8324",
       helmholtz: "d",
@@ -571,7 +571,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Re2",
       keyboard: "15"),
   51: MIDIKey(
-      number: "51",
+      midi: "51",
       color: "common_color_black",
       frequency: "155.5635",
       helmholtz: "d♯/e♭",
@@ -581,7 +581,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Re2#",
       keyboard: "16"),
   52: MIDIKey(
-      number: "52",
+      midi: "52",
       color: "common_color_white",
       frequency: "164.8138",
       helmholtz: "e",
@@ -591,7 +591,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Mi2",
       keyboard: "17"),
   53: MIDIKey(
-      number: "53",
+      midi: "53",
       color: "common_color_white",
       frequency: "174.6141",
       helmholtz: "f",
@@ -601,7 +601,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Fa2",
       keyboard: "18"),
   54: MIDIKey(
-      number: "54",
+      midi: "54",
       color: "common_color_black",
       frequency: "184.9972",
       helmholtz: "f♯/g♭",
@@ -611,7 +611,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Fa2#",
       keyboard: "19"),
   55: MIDIKey(
-      number: "55",
+      midi: "55",
       color: "common_color_white",
       frequency: "195.9977",
       helmholtz: "g",
@@ -621,7 +621,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Sol2",
       keyboard: "20"),
   56: MIDIKey(
-      number: "56",
+      midi: "56",
       color: "common_color_black",
       frequency: "207.6523",
       helmholtz: "g♯/a♭",
@@ -631,7 +631,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Sol2#",
       keyboard: "21"),
   57: MIDIKey(
-      number: "57",
+      midi: "57",
       color: "common_color_white",
       frequency: "220.0000",
       helmholtz: "a",
@@ -641,7 +641,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "La2",
       keyboard: "22"),
   58: MIDIKey(
-      number: "58",
+      midi: "58",
       color: "common_color_black",
       frequency: "233.0819",
       helmholtz: "a♯/b♭",
@@ -651,7 +651,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "La2#",
       keyboard: "23"),
   59: MIDIKey(
-      number: "59",
+      midi: "59",
       color: "common_color_white",
       frequency: "246.9417",
       helmholtz: "b",
@@ -661,7 +661,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Si2",
       keyboard: "24"),
   60: MIDIKey(
-      number: "60",
+      midi: "60",
       color: "common_color_white",
       frequency: "261.6256",
       helmholtz: "c′ 1-line octave",
@@ -671,7 +671,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Do3",
       keyboard: "25"),
   61: MIDIKey(
-      number: "61",
+      midi: "61",
       color: "common_color_black",
       frequency: "277.1826",
       helmholtz: "c♯′/d♭′",
@@ -681,7 +681,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Do3#",
       keyboard: "26"),
   62: MIDIKey(
-      number: "62",
+      midi: "62",
       color: "common_color_white",
       frequency: "293.6648",
       helmholtz: "d′",
@@ -691,7 +691,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Re3",
       keyboard: "27"),
   63: MIDIKey(
-      number: "63",
+      midi: "63",
       color: "common_color_black",
       frequency: "311.1270",
       helmholtz: "d♯′/e♭′",
@@ -701,7 +701,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Re3#",
       keyboard: "28"),
   64: MIDIKey(
-      number: "64",
+      midi: "64",
       color: "common_color_white",
       frequency: "329.6276",
       helmholtz: "e′",
@@ -711,7 +711,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Mi3",
       keyboard: "29"),
   65: MIDIKey(
-      number: "65",
+      midi: "65",
       color: "common_color_white",
       frequency: "349.2282",
       helmholtz: "f′",
@@ -721,7 +721,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Fa3",
       keyboard: "30"),
   66: MIDIKey(
-      number: "66",
+      midi: "66",
       color: "common_color_black",
       frequency: "369.9944",
       helmholtz: "f♯′/g♭′",
@@ -731,7 +731,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Fa3#",
       keyboard: "31"),
   67: MIDIKey(
-      number: "67",
+      midi: "67",
       color: "common_color_white",
       frequency: "391.9954",
       helmholtz: "g′",
@@ -741,7 +741,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Sol3",
       keyboard: "32"),
   68: MIDIKey(
-      number: "68",
+      midi: "68",
       color: "common_color_black",
       frequency: "415.3047",
       helmholtz: "g♯′/a♭′",
@@ -751,7 +751,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Sol3#",
       keyboard: "33"),
   69: MIDIKey(
-      number: "69",
+      midi: "69",
       color: "common_color_white",
       frequency: "440.0000",
       helmholtz: "a′",
@@ -761,7 +761,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "La3",
       keyboard: "34"),
   70: MIDIKey(
-      number: "70",
+      midi: "70",
       color: "common_color_black",
       frequency: "466.1638",
       helmholtz: "a♯′/b♭′",
@@ -771,7 +771,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "La3#",
       keyboard: "35"),
   71: MIDIKey(
-      number: "71",
+      midi: "71",
       color: "common_color_white",
       frequency: "493.8833",
       helmholtz: "b′",
@@ -781,7 +781,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Si3",
       keyboard: "36"),
   72: MIDIKey(
-      number: "72",
+      midi: "72",
       color: "common_color_white",
       frequency: "523.2511",
       helmholtz: "c′′ 2-line octave",
@@ -791,7 +791,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Do4",
       keyboard: "37"),
   73: MIDIKey(
-      number: "73",
+      midi: "73",
       color: "common_color_black",
       frequency: "554.3653",
       helmholtz: "c♯′′/d♭′′",
@@ -801,7 +801,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Do4#",
       keyboard: "38"),
   74: MIDIKey(
-      number: "74",
+      midi: "74",
       color: "common_color_white",
       frequency: "587.3295",
       helmholtz: "d′′",
@@ -811,7 +811,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Re4",
       keyboard: "39"),
   75: MIDIKey(
-      number: "75",
+      midi: "75",
       color: "common_color_black",
       frequency: "622.2540",
       helmholtz: "d♯′′/e♭′′",
@@ -821,7 +821,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Re4#",
       keyboard: "40"),
   76: MIDIKey(
-      number: "76",
+      midi: "76",
       color: "common_color_white",
       frequency: "659.2551",
       helmholtz: "e′′",
@@ -831,7 +831,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Mi4",
       keyboard: "41"),
   77: MIDIKey(
-      number: "77",
+      midi: "77",
       color: "common_color_white",
       frequency: "698.4565",
       helmholtz: "f′′",
@@ -841,7 +841,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Fa4",
       keyboard: "42"),
   78: MIDIKey(
-      number: "78",
+      midi: "78",
       color: "common_color_black",
       frequency: "739.9888",
       helmholtz: "f♯′′/g♭′′",
@@ -851,7 +851,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Fa4#",
       keyboard: "43"),
   79: MIDIKey(
-      number: "79",
+      midi: "79",
       color: "common_color_white",
       frequency: "783.9909",
       helmholtz: "g′′",
@@ -861,7 +861,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Sol4",
       keyboard: "44"),
   80: MIDIKey(
-      number: "80",
+      midi: "80",
       color: "common_color_black",
       frequency: "830.6094",
       helmholtz: "g♯′′/a♭′′",
@@ -871,7 +871,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Sol4#",
       keyboard: "45"),
   81: MIDIKey(
-      number: "81",
+      midi: "81",
       color: "common_color_white",
       frequency: "880.0000",
       helmholtz: "a′′",
@@ -881,7 +881,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "La4",
       keyboard: "46"),
   82: MIDIKey(
-      number: "82",
+      midi: "82",
       color: "common_color_black",
       frequency: "932.3275",
       helmholtz: "a♯′′/b♭′′",
@@ -891,7 +891,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "La4#",
       keyboard: "47"),
   83: MIDIKey(
-      number: "83",
+      midi: "83",
       color: "common_color_white",
       frequency: "987.7666",
       helmholtz: "b′′",
@@ -901,7 +901,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Si4",
       keyboard: "48"),
   84: MIDIKey(
-      number: "84",
+      midi: "84",
       color: "common_color_white",
       frequency: "1046.502",
       helmholtz: "c′′′ 3-line octave",
@@ -911,7 +911,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Do5",
       keyboard: "49"),
   85: MIDIKey(
-      number: "85",
+      midi: "85",
       color: "common_color_black",
       frequency: "1108.731",
       helmholtz: "c♯′′′/d♭′′′",
@@ -921,7 +921,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Do5#",
       keyboard: "50"),
   86: MIDIKey(
-      number: "86",
+      midi: "86",
       color: "common_color_white",
       frequency: "1174.659",
       helmholtz: "d′′′",
@@ -931,7 +931,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Re5",
       keyboard: "51"),
   87: MIDIKey(
-      number: "87",
+      midi: "87",
       color: "common_color_black",
       frequency: "1244.508",
       helmholtz: "d♯′′′/e♭′′′",
@@ -941,7 +941,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Re5#",
       keyboard: "52"),
   88: MIDIKey(
-      number: "88",
+      midi: "88",
       color: "common_color_white",
       frequency: "1318.510",
       helmholtz: "e′′′",
@@ -951,7 +951,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Mi5",
       keyboard: "53"),
   89: MIDIKey(
-      number: "89",
+      midi: "89",
       color: "common_color_white",
       frequency: "1396.913",
       helmholtz: "f′′′",
@@ -961,7 +961,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Fa5",
       keyboard: "54"),
   90: MIDIKey(
-      number: "90",
+      midi: "90",
       color: "common_color_black",
       frequency: "1479.978",
       helmholtz: "f♯′′′/g♭′′′",
@@ -971,7 +971,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Fa5#",
       keyboard: "55"),
   91: MIDIKey(
-      number: "91",
+      midi: "91",
       color: "common_color_white",
       frequency: "1567.982",
       helmholtz: "g′′′",
@@ -981,7 +981,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Sol5",
       keyboard: "56"),
   92: MIDIKey(
-      number: "92",
+      midi: "92",
       color: "common_color_black",
       frequency: "1661.219",
       helmholtz: "g♯′′′/a♭′′′",
@@ -991,7 +991,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Sol5#",
       keyboard: "57"),
   93: MIDIKey(
-      number: "93",
+      midi: "93",
       color: "common_color_white",
       frequency: "1760.000",
       helmholtz: "a′′′",
@@ -1001,7 +1001,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "La5",
       keyboard: "58"),
   94: MIDIKey(
-      number: "94",
+      midi: "94",
       color: "common_color_black",
       frequency: "1864.655",
       helmholtz: "a♯′′′/b♭′′′",
@@ -1011,7 +1011,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "La5#",
       keyboard: "59"),
   95: MIDIKey(
-      number: "95",
+      midi: "95",
       color: "common_color_white",
       frequency: "1975.533",
       helmholtz: "b′′′",
@@ -1021,7 +1021,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Si5",
       keyboard: "60"),
   96: MIDIKey(
-      number: "96",
+      midi: "96",
       color: "common_color_white",
       frequency: "2093.005",
       helmholtz: "c′′′′ 4-line octave",
@@ -1031,7 +1031,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Do6",
       keyboard: "61"),
   97: MIDIKey(
-      number: "97",
+      midi: "97",
       color: "common_color_black",
       frequency: "2217.461",
       helmholtz: "c♯′′′′/d♭′′′′",
@@ -1041,7 +1041,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Do6#",
       keyboard: ""),
   98: MIDIKey(
-      number: "98",
+      midi: "98",
       color: "common_color_white",
       frequency: "2349.318",
       helmholtz: "d′′′′",
@@ -1051,7 +1051,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Re6",
       keyboard: ""),
   99: MIDIKey(
-      number: "99",
+      midi: "99",
       color: "common_color_black",
       frequency: "2489.016",
       helmholtz: "d♯′′′′/e♭′′′′",
@@ -1061,7 +1061,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Re6#",
       keyboard: ""),
   100: MIDIKey(
-      number: "100",
+      midi: "100",
       color: "common_color_white",
       frequency: "2637.020",
       helmholtz: "e′′′′",
@@ -1071,7 +1071,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Mi6",
       keyboard: ""),
   101: MIDIKey(
-      number: "101",
+      midi: "101",
       color: "common_color_white",
       frequency: "2793.826",
       helmholtz: "f′′′′",
@@ -1081,7 +1081,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Fa6",
       keyboard: ""),
   102: MIDIKey(
-      number: "102",
+      midi: "102",
       color: "common_color_black",
       frequency: "2959.955",
       helmholtz: "f♯′′′′/g♭′′′′",
@@ -1091,7 +1091,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Fa6#",
       keyboard: ""),
   103: MIDIKey(
-      number: "103",
+      midi: "103",
       color: "common_color_white",
       frequency: "3135.963",
       helmholtz: "g′′′′",
@@ -1101,7 +1101,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Sol6",
       keyboard: ""),
   104: MIDIKey(
-      number: "104",
+      midi: "104",
       color: "common_color_black",
       frequency: "3322.438",
       helmholtz: "g♯′′′′/a♭′′′′",
@@ -1111,7 +1111,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Sol6#",
       keyboard: ""),
   105: MIDIKey(
-      number: "105",
+      midi: "105",
       color: "common_color_white",
       frequency: "3520.000",
       helmholtz: "a′′′′",
@@ -1121,7 +1121,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "La6",
       keyboard: ""),
   106: MIDIKey(
-      number: "106",
+      midi: "106",
       color: "common_color_black",
       frequency: "3729.310",
       helmholtz: "a♯′′′′/b♭′′′′",
@@ -1131,7 +1131,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "La6#",
       keyboard: ""),
   107: MIDIKey(
-      number: "107",
+      midi: "107",
       color: "common_color_white",
       frequency: "3951.066",
       helmholtz: "b′′′′",
@@ -1141,7 +1141,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Si6",
       keyboard: ""),
   108: MIDIKey(
-      number: "108",
+      midi: "108",
       color: "common_color_white",
       frequency: "4186.009",
       helmholtz: "c′′′′′ 5-line octave",
@@ -1151,7 +1151,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Do7",
       keyboard: ""),
   109: MIDIKey(
-      number: "109",
+      midi: "109",
       color: "common_color_black",
       frequency: "4434.922",
       helmholtz: "c♯′′′′′/d♭′′′′′",
@@ -1161,7 +1161,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Do7#",
       keyboard: ""),
   110: MIDIKey(
-      number: "110",
+      midi: "110",
       color: "common_color_white",
       frequency: "4698.636",
       helmholtz: "d′′′′′",
@@ -1171,7 +1171,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Re7",
       keyboard: ""),
   111: MIDIKey(
-      number: "111",
+      midi: "111",
       color: "common_color_black",
       frequency: "4978.032",
       helmholtz: "d♯′′′′′/e♭′′′′′",
@@ -1181,7 +1181,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Re7#",
       keyboard: ""),
   112: MIDIKey(
-      number: "112",
+      midi: "112",
       color: "common_color_white",
       frequency: "5274.041",
       helmholtz: "e′′′′′",
@@ -1191,7 +1191,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Mi7",
       keyboard: ""),
   113: MIDIKey(
-      number: "113",
+      midi: "113",
       color: "common_color_white",
       frequency: "5587.652",
       helmholtz: "f′′′′′",
@@ -1201,7 +1201,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Fa7",
       keyboard: ""),
   114: MIDIKey(
-      number: "114",
+      midi: "114",
       color: "common_color_black",
       frequency: "5919.911",
       helmholtz: "f♯′′′′′/g♭′′′′′",
@@ -1211,7 +1211,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Fa7#",
       keyboard: ""),
   115: MIDIKey(
-      number: "115",
+      midi: "115",
       color: "common_color_white",
       frequency: "6271.927",
       helmholtz: "g′′′′′",
@@ -1221,7 +1221,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Sol7",
       keyboard: ""),
   116: MIDIKey(
-      number: "116",
+      midi: "116",
       color: "common_color_black",
       frequency: "6644.875",
       helmholtz: "g♯′′′′′/a♭′′′′′",
@@ -1231,7 +1231,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Sol7#",
       keyboard: ""),
   117: MIDIKey(
-      number: "117",
+      midi: "117",
       color: "common_color_white",
       frequency: "7040.000",
       helmholtz: "a′′′′′",
@@ -1241,7 +1241,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "La7",
       keyboard: ""),
   118: MIDIKey(
-      number: "118",
+      midi: "118",
       color: "common_color_black",
       frequency: "7458.620",
       helmholtz: "a♯′′′′′/b♭′′′′′",
@@ -1251,7 +1251,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "La6#",
       keyboard: ""),
   119: MIDIKey(
-      number: "119",
+      midi: "119",
       color: "common_color_white",
       frequency: "7902.133",
       helmholtz: "b′′′′′",
@@ -1261,7 +1261,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "Si7",
       keyboard: ""),
   120: MIDIKey(
-      number: "120",
+      midi: "120",
       color: "common_color_white",
       frequency: "8372.02",
       helmholtz: "c′′′′′",
@@ -1271,7 +1271,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "",
       keyboard: ""),
   121: MIDIKey(
-      number: "121",
+      midi: "121",
       color: "common_color_black",
       frequency: "8869.84",
       helmholtz: "c♯’’’’’’/d♭’’’’’’",
@@ -1281,7 +1281,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "",
       keyboard: ""),
   122: MIDIKey(
-      number: "122",
+      midi: "122",
       color: "common_color_white",
       frequency: "9397.27",
       helmholtz: "d’’’’’’",
@@ -1291,7 +1291,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "",
       keyboard: ""),
   123: MIDIKey(
-      number: "123",
+      midi: "123",
       color: "common_color_black",
       frequency: "9956.06",
       helmholtz: "d♯’’’’’’/e♭’’’’’’",
@@ -1301,7 +1301,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "",
       keyboard: ""),
   124: MIDIKey(
-      number: "125",
+      midi: "125",
       color: "common_color_white",
       frequency: "10548.08",
       helmholtz: "e’’’’’’",
@@ -1311,7 +1311,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "",
       keyboard: ""),
   125: MIDIKey(
-      number: "125",
+      midi: "125",
       color: "common_color_white",
       frequency: "11175.30",
       helmholtz: "f’’’’’’",
@@ -1321,7 +1321,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "",
       keyboard: ""),
   126: MIDIKey(
-      number: "126",
+      midi: "126",
       color: "common_color_black",
       frequency: "11839.82",
       helmholtz: "f♯’’’’’’/g♭’’’’’’",
@@ -1331,7 +1331,7 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "",
       keyboard: ""),
   127: MIDIKey(
-      number: "127",
+      midi: "127",
       color: "common_color_white",
       frequency: "12543.85",
       helmholtz: "g’’’’’’",
@@ -1341,3 +1341,202 @@ const Map<int, MIDIKey> MIDI_KEYS = {
       latin: "",
       keyboard: ""),
 };
+
+const Map<int, String> MIDI_INSTRUMENTS = {
+  // https://en.wikipedia.org/wiki/General_MIDI#Program_change_events
+//Piano
+  1: "Acoustic Grand Piano or Piano 1",
+  2: "Bright Acoustic Piano or Piano 2",
+  3: "Electric Grand Piano or Piano 3 (usually modeled after Yamaha CP-70)",
+  4: "Honky-tonk Piano",
+  5: "Electric Piano 1 (usually a Rhodes or Wurlitzer piano)",
+  6: "Electric Piano 2 (usually an FM piano patch, often chorused)",
+  7: "Harpsichord (often with a fixed velocity level)",
+  8: "Clavinet",
+// Chromatic Percussion
+  9: "Celesta",
+  10: "Glockenspiel",
+  11: "Music Box",
+  12: "Vibraphone",
+  13: "Marimba",
+  14: "Xylophone",
+  15: "Tubular Bells",
+  16: "Dulcimer or Santoor",
+// Organ
+  17: "Drawbar Organ or Organ 1",
+  18: "Percussive Organ or Organ 2",
+  19: "Rock Organ or Organ 3",
+  20: "Church Organ",
+  21: "Reed Organ",
+  22: "Accordion",
+  23: "Harmonica",
+  24: "Bandoneon or Tango Accordion",
+// Guitar
+// In most synthesizer interpretations, guitar and bass sounds are set an octave lower than other instruments.
+// 25 Acoustic Guitar (nylon)
+// 26 Acoustic Guitar (steel)
+// 27 Electric Guitar (jazz)
+// 28 Electric Guitar (clean, often chorused, resembling a Stratocaster run through a Roland Jazz Chorus amplifier)
+// 29 Electric Guitar (muted)
+// 30 Overdriven Guitar
+// 31 Distortion Guitar
+// 32 Guitar Harmonics
+// Bass
+// 33 Acoustic Bass
+// 34 Electric Bass (finger)
+// 35 Electric Bass (picked)
+// 36 Fretless Bass
+// 37 Slap Bass 1
+// 38 Slap Bass 2
+// 39 Synth Bass 1
+// 40 Synth Bass 2
+// Strings
+// 41 Violin
+// 42 Viola
+// 43 Cello
+// 44 Contrabass
+// 45 Tremolo Strings
+// 46 Pizzicato Strings
+// 47 Orchestral Harp
+// 48 Timpani
+// Ensemble
+// 49 String Ensemble 1 (often in marcato)
+// 50 String Ensemble 2 (slower attack than String Ensemble 1)
+// 51 Synth Strings 1
+// 52 Synth Strings 2
+// 53 Choir Aahs
+// 54 Voice Oohs (or Doos)
+// 55 Synth Voice or Synth Choir
+// 56 Orchestra Hit
+// Brass
+// 57 Trumpet
+// 58 Trombone
+// 59 Tuba
+// 60 Muted Trumpet
+// 61 French Horn
+// 62 Brass Section
+// 63 Synth Brass 1
+// 64 Synth Brass 2
+// Reed
+// 65 Soprano Sax
+// 66 Alto Sax
+// 67 Tenor Sax
+// 68 Baritone Sax
+// 69 Oboe
+// 70 English Horn
+// 71 Bassoon
+// 72 Clarinet
+// Pipe
+// 73 Piccolo
+// 74 Flute
+// 75 Recorder
+// 76 Pan Flute
+// 77 Blown bottle
+// 78 Shakuhachi
+// 79 Whistle
+// 80 Ocarina
+// Synth Lead
+// 81 Lead 1 (square, often chorused)
+// 82 Lead 2 (sawtooth or saw, often chorused)
+// 83 Lead 3 (calliope, usually resembling a woodwind)
+// 84 Lead 4 (chiff)
+// 85 Lead 5 (charang, a guitar-like lead)
+// 86 Lead 6 (voice, derived from "synth voice" with faster attack)
+// 87 Lead 7 (fifths)
+// 88 Lead 8 (bass and lead or solo lead or sometimes mistakenly called "brass and lead")
+// Synth Pad
+// 89 Pad 1 (new age, pad stacked with a bell, often derived from "Fantasia" patch from Roland D-50)
+// 90 Pad 2 (warm, a mellower pad with slow attack)
+// 91 Pad 3 (polysynth or poly, a saw-like percussive pad resembling an early 1980s polyphonic synthesizer)
+// 92 Pad 4 (choir, identical to "synth voice" with longer decay)
+// 93 Pad 5 (bowed glass or bowed, a sound resembling a glass harmonica)
+// 94 Pad 6 (metallic, often created from a piano or guitar sample played with the attack removed)
+// 95 Pad 7 (halo, choir-like pad, often with a filter effect)
+// 96 Pad 8 (sweep, pad with a pronounced "wah" filter effect)
+// Synth Effects
+// 97 FX 1 (rain, a bright pluck with echoing pulses that decreases in pitch)
+// 98 FX 2 (soundtrack, a bright perfect fifth pad)
+// 99 FX 3 (crystal, a synthesized bell sound)
+// 100 FX 4 (atmosphere, usually a classical guitar-like sound)
+// 101 FX 5 (brightness, bright pad stacked with choir or bell)
+// 102 FX 6 (goblins, a slow-attack pad with chirping or murmuring sounds)
+// 103 FX 7 (echoes or echo drops, similar to "rain")
+// 104 FX 8 (sci-fi or star theme, usually an electric guitar-like pad)
+// Ethnic
+  105: "Sitar",
+  106: "Banjo",
+  107: "Shamisen",
+  108: "Koto",
+  109: "Kalimba",
+  110: "Bag pipe",
+  111: "Fiddle",
+  112: "Shanai",
+// Percussive
+  113: "Tinkle Bell",
+  114: "Agogô or cowbell",
+  115: "Steel Drums",
+  116: "Woodblock",
+  117: "Taiko Drum or Surdo",
+  118: "Melodic Tom",
+  119:
+      "Synth Drum (a synthesized tom-tom derived from Simmons electronic drum)",
+  120: "Reverse Cymbal",
+// Sound Effects
+  121: "Guitar Fret Noise",
+  122: "Breath Noise",
+  123: "Seashore",
+  124: "Bird Tweet",
+  125: "Telephone Ring",
+  126: "Helicopter",
+  127: "Applause",
+  128: "Gunshot",
+};
+
+const Map<int, String> MIDI_PERCUSSIONS = {};
+// 35 Acoustic Bass Drum or Low Bass Drum
+// 36 Electric Bass Drum or High Bass Drum
+// 37 Side Stick
+// 38 Acoustic Snare
+// 39 Hand Clap
+// 40 Electric Snare or Rimshot
+// 41 Low Floor Tom
+// 42 Closed Hi-hat
+// 43 High Floor Tom
+// 44 Pedal Hi-hat
+// 45 Low Tom
+// 46 Open Hi-hat
+// 47 Low-Mid Tom
+// 48 High-Mid Tom
+// 49 Crash Cymbal 1
+// 50 High Tom
+// 51 Ride Cymbal 1
+// 52 Chinese Cymbal
+// 53 Ride Bell
+// 54 Tambourine
+// 55 Splash Cymbal
+// 56 Cowbell
+// 57 Crash Cymbal 2
+// 58 Vibraslap
+// 59 Ride Cymbal 2
+// 60 High Bongo
+// 61 Low Bongo
+// 62 Mute High Conga
+// 63 Open High Conga
+// 64 Low Conga
+// 65 High Timbale
+// 66 Low Timbale
+// 67 High Agogô
+// 68 Low Agogô
+// 69 Cabasa
+// 70 Maracas
+// 71 Short Whistle
+// 72 Long Whistle
+// 73 Short Güiro
+// 74 Long Güiro
+// 75 Claves
+// 76 High Woodblock
+// 77 Low Woodblock
+// 78 Mute Cuíca
+// 79 Open Cuíca
+// 80 Mute Triangle
+// 81 Open Triangle
