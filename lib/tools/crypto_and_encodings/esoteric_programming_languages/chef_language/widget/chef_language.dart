@@ -110,7 +110,6 @@ class _ChefState extends State<Chef> {
           } else {
             _currentLanguageString = 'ENG';
           }
-
         });
       },
     );
@@ -190,7 +189,22 @@ class _ChefState extends State<Chef> {
             });
           },
         ),
-        GCWTextDivider(text: i18n(context, 'common_programming_hint_sourcecode')),
+        GCWSubmitButton(
+          onPressed: () {
+            setState(() {
+              if (_currentTitle.isEmpty) {
+                _currentOutputGenerator =
+                    chefBuildOutputText(context, ['chef_error_structure_recipe', 'chef_error_structure_recipe_missing_title']);
+              } else if (_currentOutputGenerator.isEmpty) {
+                _currentOutputGenerator =
+                    chefBuildOutputText(context, ['chef_error_structure_recipe', 'chef_error_structure_recipe_missing_output']);
+              } else {
+                _currentOutputGenerator = generateChef(_currentLanguageString, _currentTitle, _currentRemark, _currentTime, _currentTemperature,
+                    _currentOutputToGenerate, _auxilaryRecipes);
+              }
+            });
+          },
+        ),
       ],
     );
   }
@@ -250,16 +264,6 @@ class _ChefState extends State<Chef> {
 
     if (_currentMode == GCWSwitchPosition.right) {
       // generate chef
-      if (_currentTitle.isEmpty) {
-        _currentOutputGenerator =
-            chefBuildOutputText(context, ['chef_error_structure_recipe', 'chef_error_structure_recipe_missing_title']);
-      } else if (_currentOutputGenerator.isEmpty) {
-        _currentOutputGenerator =
-            chefBuildOutputText(context, ['chef_error_structure_recipe', 'chef_error_structure_recipe_missing_output']);
-      } else {
-        _currentOutputGenerator = generateChef(_currentLanguageString, _currentTitle, _currentRemark, _currentTime, _currentTemperature,
-            _currentOutputGenerator, _auxilaryRecipes);
-      }
       outputWidget = GCWOutputText(
         text: _currentOutputGenerator.trim(),
         isMonotype: true,
@@ -297,8 +301,10 @@ class _ChefState extends State<Chef> {
   GCWSwitchPosition _defaultLanguage(BuildContext context) {
     final Locale appLocale = Localizations.localeOf(context);
     if (appLocale == const Locale('de')) {
+      _currentLanguageString = 'DEU';
       return GCWSwitchPosition.left;
     } else {
+      _currentLanguageString = 'ENG';
       return GCWSwitchPosition.right;
     }
   }
