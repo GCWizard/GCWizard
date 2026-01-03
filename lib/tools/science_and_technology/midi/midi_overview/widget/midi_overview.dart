@@ -41,9 +41,10 @@ class _MIDIState extends State<MIDI> {
   int _currentProgram = 0;
   int _currentVolume = 100;
   int _currentMIDINote = 0;
-  final String _ASSET_PATH = 'lib/tools/science_and_technology/midi/assets/VelocityGrandPiano.sf2';
+  final String _ASSET_PATH =
+      'lib/tools/science_and_technology/midi/assets/VelocityGrandPiano.sf2';
 
-    Future<void> _initializeMidi() async {
+  Future<void> _initializeMidi() async {
     try {
       await _midiEngine.unmute();
       // https://rkhive.com/rk-download/piano/velocity_grand_piano.zip
@@ -114,10 +115,15 @@ class _MIDIState extends State<MIDI> {
 
   @override
   Widget build(BuildContext context) {
-    _currentField = _currentSort == 0 ? MIDIFields.values.first : MIDIFields.values.elementAt(_currentSort - 1);
+    _currentField = _currentSort == 0
+        ? MIDIFields.values.first
+        : MIDIFields.values.elementAt(_currentSort - 1);
 
-    _currentDropDownSpinnerList = MIDI_KEYS.values.where((e) => e.getField(_currentField).isNotEmpty).map((e) {
-      return ((_currentSort == 0) ? e.midi : e.getField(_currentField)).toString();
+    _currentDropDownSpinnerList = MIDI_KEYS.values
+        .where((e) => e.getField(_currentField).isNotEmpty)
+        .map((e) {
+      return ((_currentSort == 0) ? e.midi : e.getField(_currentField))
+          .toString();
     }).toList();
 
     return Column(
@@ -130,50 +136,74 @@ class _MIDIState extends State<MIDI> {
               _currentSort = value;
               _isColorSort = _currentSort == 1;
             });
-            _currentField = _currentSort == 0 ? MIDIFields.values.first : MIDIFields.values.elementAt(_currentSort - 1);
+            _currentField = _currentSort == 0
+                ? MIDIFields.values.first
+                : MIDIFields.values.elementAt(_currentSort - 1);
           },
           items: _currentSortList
               .asMap()
               .map((index, field) {
-            return MapEntry(index, GCWDropDownMenuItem(value: index, child: i18n(context, field)));
-          })
+                return MapEntry(
+                    index,
+                    GCWDropDownMenuItem(
+                        value: index, child: i18n(context, field)));
+              })
               .values
               .toList(),
         ),
         _isColorSort
             ? GCWTwoOptionsSwitch(
-          title: i18n(context, 'midi_color'),
-          leftValue: i18n(context, 'common_color_white'),
-          rightValue: i18n(context, 'common_color_black'),
-          value: _currentColor,
-          onChanged: (value) {
-            setState(() {
-              _currentColor = value;
-            });
-          },
-        )
+                title: i18n(context, 'midi_color'),
+                leftValue: i18n(context, 'common_color_white'),
+                rightValue: i18n(context, 'common_color_black'),
+                value: _currentColor,
+                onChanged: (value) {
+                  setState(() {
+                    _currentColor = value;
+                  });
+                },
+              )
             : GCWDropDownSpinner(
-          index: _currentIndex,
-          items: _currentDropDownSpinnerList,
-          onChanged: (value) {
-            setState(() {
-              _currentIndex = value;
-            });
-          },
-        ),
+                index: _currentIndex,
+                items: _currentDropDownSpinnerList,
+                onChanged: (value) {
+                  setState(() {
+                    _currentIndex = value;
+                  });
+                },
+              ),
         GCWDefaultOutput(child: _buildOutput()),
       ],
     );
+  }
+
+  int? findKeyByField<T, F>(
+    Map<int, T> map,
+    F Function(T value) fieldSelector,
+    F expectedValue,
+  ) {
+    for (final entry in map.entries) {
+      if (fieldSelector(entry.value) == expectedValue) {
+        return entry.key;
+      }
+    }
+    return null;
   }
 
   Widget _buildOutput() {
     Widget dataSet = Container();
 
     if (_isColorSort) {
-      var chosenColor = _currentColor == GCWSwitchPosition.left ? 'white' : 'black';
+      var chosenColor =
+          _currentColor == GCWSwitchPosition.left ? 'white' : 'black';
       var dataIdx = <void Function()>[() => {}];
-      var data = MIDI_KEYS.entries.toList().asMap().entries.where((element) => element.value.value.color.endsWith(chosenColor)).map((element) {
-        dataIdx.add( () {
+      var data = MIDI_KEYS.entries
+          .toList()
+          .asMap()
+          .entries
+          .where((element) => element.value.value.color.endsWith(chosenColor))
+          .map((element) {
+        dataIdx.add(() {
           setState(() {
             _currentSort = 0;
             _currentIndex = element.key;
@@ -183,25 +213,84 @@ class _MIDIState extends State<MIDI> {
         return [element.value.value.midi, element.value.value.frequency];
       }).toList();
 
-      data.insert(0, [i18n(context, 'midi_number'), i18n(context, 'midi_frequency')]);
+      data.insert(
+          0, [i18n(context, 'midi_number'), i18n(context, 'midi_frequency')]);
 
-      return GCWColumnedMultilineOutput(data: data, hasHeader: true, flexValues: const [1, 2],
-          tappables: dataIdx
-      );
+      return GCWColumnedMultilineOutput(
+          data: data,
+          hasHeader: true,
+          flexValues: const [1, 2],
+          tappables: dataIdx);
     } else {
-      // _currentField
-      // _currentDropDownSpinnerList[_currentIndex]
-      
-      var keyNumber = MIDI_KEYS.keys.toList()[_currentIndex];
+      int? key = 0;
+      if (_currentSort == 0) {
+        key = _currentIndex;
+      }
+      else {
+        switch (_currentField) {
+          case MIDIFields.KEYBOARD:
+            key = findKeyByField<MIDIKey, String>(
+              MIDI_KEYS,
+              (p) => p.keyboard,
+              _currentDropDownSpinnerList[_currentIndex],
+            );
+            break;
+          case MIDIFields.PIANO:
+            key = findKeyByField<MIDIKey, String>(
+              MIDI_KEYS,
+              (p) => p.piano,
+              _currentDropDownSpinnerList[_currentIndex],
+            );
+            break;
+          case MIDIFields.COLOR:
+            break;
+          case MIDIFields.FREQUENCY:
+            key = findKeyByField<MIDIKey, String>(
+              MIDI_KEYS,
+              (p) => p.frequency,
+              _currentDropDownSpinnerList[_currentIndex],
+            );
+          case MIDIFields.HELMHOLTZ:
+            key = findKeyByField<MIDIKey, String>(
+              MIDI_KEYS,
+              (p) => p.helmholtz,
+              _currentDropDownSpinnerList[_currentIndex],
+            );
+          case MIDIFields.SCIENTIFIC:
+            key = findKeyByField<MIDIKey, String>(
+              MIDI_KEYS,
+              (p) => p.scientific,
+              _currentDropDownSpinnerList[_currentIndex],
+            );
+          case MIDIFields.GERMAN:
+            key = findKeyByField<MIDIKey, String>(
+              MIDI_KEYS,
+              (p) => p.german,
+              _currentDropDownSpinnerList[_currentIndex],
+            );
+          case MIDIFields.LATIN:
+            key = findKeyByField<MIDIKey, String>(
+              MIDI_KEYS,
+              (p) => p.latin,
+              _currentDropDownSpinnerList[_currentIndex],
+            );
+        }
+      }
+      key ??= 0;
+
+      var keyNumber = MIDI_KEYS.keys.toList()[key]; //_currentIndex];
       _currentMIDINote = int.parse(MIDI_KEYS[keyNumber]!.midi);
       dataSet = GCWColumnedMultilineOutput(data: [
-        [i18n(context, 'midi_number'), MIDI_KEYS[keyNumber]!.midi],
-        [i18n(context, 'midi_color'), i18n(context, MIDI_KEYS[keyNumber]!.color)],
+        [i18n(context, 'midi_midi'), MIDI_KEYS[keyNumber]!.midi],
+        [
+          i18n(context, 'midi_color'),
+          i18n(context, MIDI_KEYS[keyNumber]!.color)
+        ],
         [i18n(context, 'midi_frequency'), MIDI_KEYS[keyNumber]!.frequency],
         [i18n(context, 'midi_helmholtz'), MIDI_KEYS[keyNumber]!.helmholtz],
         [i18n(context, 'midi_scientific'), MIDI_KEYS[keyNumber]!.scientific],
         [i18n(context, 'midi_german'), MIDI_KEYS[keyNumber]!.german],
-        [i18n(context, 'midi_midi'), MIDI_KEYS[keyNumber]!.piano],
+        [i18n(context, 'midi_piano'), MIDI_KEYS[keyNumber]!.piano],
         [i18n(context, 'midi_latin'), MIDI_KEYS[keyNumber]!.latin],
         [i18n(context, 'midi_keyboard'), MIDI_KEYS[keyNumber]!.keyboard],
       ], flexValues: const [
@@ -209,32 +298,30 @@ class _MIDIState extends State<MIDI> {
         2
       ]);
     }
-    return Column(
+    return Column(children: [
+      dataSet,
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          dataSet,
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GCWIconButton(
-                icon: Icons.play_arrow,
-                onPressed: () {
-                  setState(() {
-                    _playNote(_currentMIDINote);
-                  });
-                },
-              ),
-              GCWIconButton(
-                icon: Icons.stop,
-                onPressed: () {
-                  setState(() {
-                    _stopNote(_currentMIDINote);
-                  });
-                },
-              ),
-            ],
+          GCWIconButton(
+            icon: Icons.play_arrow,
+            onPressed: () {
+              setState(() {
+                _playNote(_currentMIDINote);
+              });
+            },
           ),
-        ]
-    );
+          GCWIconButton(
+            icon: Icons.stop,
+            onPressed: () {
+              setState(() {
+                _stopNote(_currentMIDINote);
+              });
+            },
+          ),
+        ],
+      ),
+    ]);
   }
 }
