@@ -429,6 +429,7 @@ import 'package:gc_wizard/tools/science_and_technology/keyboard/keyboard_numbers
 import 'package:gc_wizard/tools/science_and_technology/lcm/widget/lcm.dart';
 import 'package:gc_wizard/tools/science_and_technology/mathematical_constants/widget/mathematical_constants.dart';
 import 'package:gc_wizard/tools/science_and_technology/maya_calendar/widget/maya_calendar.dart';
+import 'package:gc_wizard/tools/science_and_technology/midi/midi_overview/widget/midi_overview.dart';
 import 'package:gc_wizard/tools/science_and_technology/music_notes/music_notes/widget/music_notes.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/Harshad/widget/Harshad_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/bell/widget/bell.dart';
@@ -1491,6 +1492,34 @@ void initializeRegistry(BuildContext context) {
           'cipherwheel',
           'mexicanarmycipherwheel',
         ]),
+    GCWTool(tool: const MIDI(), id: 'midi', categories: const [
+      ToolCategory.SCIENCE_AND_TECHNOLOGY
+    ], searchKeys: const [
+      'music',
+      'music_notes',
+      'piano',
+      'midi',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+        context: context,
+        author: 'InspiredAcoustics',
+        title: 'MIDI note numbers and center frequencies',
+        sourceUrl:
+        'https://web.archive.org/web/20260103131245/https://inspiredacoustics.com/en/MIDI_note_numbers_and_center_frequencies',
+      ),
+      ToolLicenseOnlineArticle(
+        context: context,
+        author: 'en.wikipedia.org and contributors',
+        title: 'General MIDI',
+        licenseType: ToolLicenseType.CCBYSA4,
+        licenseUrl:
+        'https://en.wikipedia.org/w/index.php?title=Wikipedia:Text_of_the_Creative_Commons_Attribution-ShareAlike_4.0_International_License&oldid=1162946924',
+        sourceUrl:
+        'https://en.wikipedia.org/w/index.php?title=General_MIDI&oldid=1320989440',
+      ),
+    ]
+    ),
+
     GCWTool(
         tool: const MilesianNumberSystem(),
         id: 'milesian_numbers',

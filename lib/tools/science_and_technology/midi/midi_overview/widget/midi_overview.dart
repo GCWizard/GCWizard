@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_midi_engine/flutter_midi_engine.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
@@ -8,7 +7,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.d
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_dropdown_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
-import 'package:gc_wizard/tools/science_and_technology/midi/_commin/logic/midi_data.dart';
+import 'package:gc_wizard/tools/science_and_technology/midi/_common/logic/midi_data.dart';
 
 class MIDI extends StatefulWidget {
   const MIDI({super.key});
@@ -60,20 +59,6 @@ class _MIDIState extends State<MIDI> {
       await _midiEngine.unmute();
       // https://rkhive.com/rk-download/piano/velocity_grand_piano.zip
       // Creative Commons 1.0
-
-      try {
-        final byteData = await DefaultAssetBundle.of(context).load(_ASSET_PATH);
-        print(byteData);
-        //final file = await _writeBytesToFile(
-        //  byteData,
-        //  fileName ?? assetPath.split('/').last,
-        //);
-        //if (file == null) return false;
-        //return await loadSoundfont(file.path);
-      } catch (e) {
-        debugPrint('Error loading soundfont from asset: $e');
-        //return false;
-      }
 
       final success = await _midiEngine.loadSoundfontFromAsset(_ASSET_PATH);
 
@@ -140,7 +125,7 @@ class _MIDIState extends State<MIDI> {
 
   @override
   Widget build(BuildContext context) {
-    var field = _currentSort == 0 ? PianoFields.values.first : PianoFields.values.elementAt(_currentSort - 1);
+    var field = _currentSort == 0 ? MIDIFields.values.first : MIDIFields.values.elementAt(_currentSort - 1);
 
     return Column(
       children: <Widget>[
@@ -152,7 +137,7 @@ class _MIDIState extends State<MIDI> {
               _currentSort = value;
               _isColorSort = _currentSort == 1;
             });
-            field = _currentSort == 0 ? PianoFields.values.first : PianoFields.values.elementAt(_currentSort - 1);
+            field = _currentSort == 0 ? MIDIFields.values.first : MIDIFields.values.elementAt(_currentSort - 1);
           },
           items: _currentSortList
               .asMap()
@@ -176,7 +161,7 @@ class _MIDIState extends State<MIDI> {
         )
             : GCWDropDownSpinner(
           index: _currentIndex,
-          items: PIANO_KEYS.values.where((e) => e.getField(field).isNotEmpty).map((e) {
+          items: MIDI_KEYS.values.where((e) => e.getField(field).isNotEmpty).map((e) {
             return ((_currentSort == 0) ? e.number : e.getField(field)).toString();
           }).toList(),
           onChanged: (value) {
@@ -196,7 +181,7 @@ class _MIDIState extends State<MIDI> {
     if (_isColorSort) {
       var chosenColor = _currentColor == GCWSwitchPosition.left ? 'white' : 'black';
       var dataIdx = <void Function()>[() => {}];
-      var data = PIANO_KEYS.entries.toList().asMap().entries.where((element) => element.value.value.color.endsWith(chosenColor)).map((element) {
+      var data = MIDI_KEYS.entries.toList().asMap().entries.where((element) => element.value.value.color.endsWith(chosenColor)).map((element) {
         dataIdx.add( () {
           setState(() {
             _currentSort = 0;
@@ -213,18 +198,18 @@ class _MIDIState extends State<MIDI> {
           tappables: dataIdx
       );
     } else {
-      var keyNumber = PIANO_KEYS.keys.toList()[_currentIndex];
-      _currentMIDINote = int.parse(PIANO_KEYS[keyNumber]!.midi);
+      var keyNumber = MIDI_KEYS.keys.toList()[_currentIndex];
+      _currentMIDINote = int.parse(MIDI_KEYS[keyNumber]!.number);
       dataSet = GCWColumnedMultilineOutput(data: [
-        [i18n(context, 'piano_number'), PIANO_KEYS[keyNumber]!.number],
-        [i18n(context, 'piano_color'), i18n(context, PIANO_KEYS[keyNumber]!.color)],
-        [i18n(context, 'piano_frequency'), PIANO_KEYS[keyNumber]!.frequency],
-        [i18n(context, 'piano_helmholtz'), PIANO_KEYS[keyNumber]!.helmholtz],
-        [i18n(context, 'piano_scientific'), PIANO_KEYS[keyNumber]!.scientific],
-        [i18n(context, 'piano_german'), PIANO_KEYS[keyNumber]!.german],
-        [i18n(context, 'piano_midi'), PIANO_KEYS[keyNumber]!.midi],
-        [i18n(context, 'piano_latin'), PIANO_KEYS[keyNumber]!.latin],
-        [i18n(context, 'piano_keyboard'), PIANO_KEYS[keyNumber]!.keyboard],
+        [i18n(context, 'piano_number'), MIDI_KEYS[keyNumber]!.number],
+        [i18n(context, 'piano_color'), i18n(context, MIDI_KEYS[keyNumber]!.color)],
+        [i18n(context, 'piano_frequency'), MIDI_KEYS[keyNumber]!.frequency],
+        [i18n(context, 'piano_helmholtz'), MIDI_KEYS[keyNumber]!.helmholtz],
+        [i18n(context, 'piano_scientific'), MIDI_KEYS[keyNumber]!.scientific],
+        [i18n(context, 'piano_german'), MIDI_KEYS[keyNumber]!.german],
+        [i18n(context, 'piano_midi'), MIDI_KEYS[keyNumber]!.piano],
+        [i18n(context, 'piano_latin'), MIDI_KEYS[keyNumber]!.latin],
+        [i18n(context, 'piano_keyboard'), MIDI_KEYS[keyNumber]!.keyboard],
       ], flexValues: const [
         1,
         2

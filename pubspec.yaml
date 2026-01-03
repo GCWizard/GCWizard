@@ -34,6 +34,7 @@ dependencies:
     sdk: flutter
   flutter_map: ^8.2.2
   flutter_map_marker_popup: ^8.1.0
+  flutter_midi_engine: ^0.1.3
   highlight: ^0.7.0
   http: ^1.6.0
   http_parser: ^4.1.2
@@ -111,6 +112,7 @@ flutter:
     - lib/tools/coords/_common/assets/icons/
     - lib/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/assets/quadgrams/
     - lib/tools/science_and_technology/astronomy/iau_constellation/assets/
+    - lib/tools/science_and_technology/midi/assets/
     - lib/tools/science_and_technology/segment_display/7_segment_display/assets/
     - lib/tools/science_and_technology/segment_display/14_segment_display/assets/
     - lib/tools/science_and_technology/segment_display/16_segment_display/assets/
