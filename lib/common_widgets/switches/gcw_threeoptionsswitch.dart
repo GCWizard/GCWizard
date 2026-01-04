@@ -13,14 +13,13 @@ class GCWThreeOptionsSwitch extends StatefulWidget {
   final bool notitle;
 
   const GCWThreeOptionsSwitch(
-      {Key? key,
+      {super.key,
         this.title,
         required this.labels,
         required this.position,
         required this.onChanged,
         this.alternativeColor = false,
-        this.notitle = false})
-      : super(key: key);
+        this.notitle = false});
 
   @override
   _GCWThreeOptionsSwitchState createState() => _GCWThreeOptionsSwitchState();

@@ -1,11 +1,15 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
+import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/midi/midi_coding/logic/midi_coding.dart';
-
+import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 
 class MIDICoding extends StatefulWidget {
   const MIDICoding({super.key});
@@ -24,6 +28,8 @@ class MIDICodingState extends State<MIDICoding> {
   int _currentType = 0;
 
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
+
+  Uint8List _MIDINotesImage = Uint8List.fromList([]);
 
   @override
   void initState() {
@@ -54,28 +60,30 @@ class MIDICodingState extends State<MIDICoding> {
         ),
         _currentMode == GCWSwitchPosition.left
             ? GCWTextField(
-          controller: _encodeController,
-          onChanged: (text) {
-            setState(() {
-              _currentEncodeInput = text;
-              _calculateOutput();
-            });
-          },
-        )
+                controller: _encodeController,
+                onChanged: (text) {
+                  setState(() {
+                    _currentEncodeInput = text;
+                    _calculateOutput();
+                  });
+                },
+              )
             : GCWTextField(
-          controller: _decodeController,
-          onChanged: (text) {
-            setState(() {
-              _currentDecodeInput = text;
-              _calculateOutput();
-            });
-          },
-        ),
+                controller: _decodeController,
+                onChanged: (text) {
+                  setState(() {
+                    _currentDecodeInput = text;
+                    _calculateOutput();
+                  });
+                },
+              ),
         GCWDropDown(
           title: i18n(context, 'common_type'),
           items: MIDI_CODING.entries.map((mode) {
             return GCWDropDownMenuItem(
-                value: mode.key, child: i18n(context, mode.value), );
+              value: mode.key,
+              child: i18n(context, mode.value),
+            );
           }).toList(),
           value: _currentType,
           onChanged: (value) {
@@ -85,9 +93,33 @@ class MIDICodingState extends State<MIDICoding> {
             });
           },
         ),
-        GCWDefaultOutput(child: _calculateOutput())
+        GCWDefaultOutput(child: _calculateOutput()),
+        (_currentMode == GCWSwitchPosition.left)
+            ? _WidgetGraphicEncodeOutput()
+            : Container()
       ],
     );
+  }
+
+  Widget _WidgetGraphicEncodeOutput() {
+    MIDINotes2Image(
+      _currentEncodeInput,
+    ).then((value) {
+      setState(() {
+        _MIDINotesImage = value;
+      });
+    });
+    if (_MIDINotesImage.isEmpty) {
+      return Container();
+    }
+    else {
+      return GCWOutput(
+          title: i18n(context, 'midi_coding_graphic'),
+          child: GCWImageView(
+            imageData: GCWImageViewData(GCWFile(bytes: _MIDINotesImage)),
+            suppressOpenInTool: const {GCWImageViewOpenInTools.METADATA, GCWImageViewOpenInTools.HIDDENDATA},
+          ));
+    }
   }
 
   String _calculateOutput() {

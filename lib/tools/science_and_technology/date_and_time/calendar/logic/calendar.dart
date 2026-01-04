@@ -24,6 +24,7 @@ class CustomCalendarDate {
 
   CustomCalendarDate({required this.year, required this.month, required this.day});
 
+  @override
   String toString(){
     return '$day.$month.$year';
   }

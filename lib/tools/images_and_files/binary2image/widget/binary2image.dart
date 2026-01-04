@@ -117,7 +117,7 @@ class _Binary2ImageState extends State<Binary2Image> {
     var image = binary2image(_currentInput!, _squareFormat, _inverse, customLines : _imageFormat == GCWSwitchPosition.right ? _currentLines : 0);
     if (image == null) return;
     input2Image(image).then((value) {
-      setState(() {
+        setState(() {
         _outData = value;
         scanBytes(_outData).then((value) {
           setState(() {

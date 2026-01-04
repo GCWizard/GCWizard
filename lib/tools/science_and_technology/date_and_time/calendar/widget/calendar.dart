@@ -106,7 +106,6 @@ class _CalendarState extends State<Calendar> {
               setState(() {
                 _currentCalendarDate = CustomCalendarDate(
                     year: value.year, month: value.month, day: value.day);
-                print(_currentCalendarDate.toString());
               });
             },
           ),
