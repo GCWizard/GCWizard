@@ -3,11 +3,14 @@ import 'package:flutter_midi_engine/flutter_midi_engine.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
+import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_dropdown_spinner.dart';
+import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/tools/science_and_technology/midi/_common/logic/midi_data.dart';
+import 'package:gc_wizard/tools/science_and_technology/midi/midi_overview/logic/midi_overview.dart';
 
 class MIDI extends StatefulWidget {
   const MIDI({super.key});
@@ -54,6 +57,7 @@ class _MIDIState extends State<MIDI> {
 
       if (success) {
         await _midiEngine.setVolume(volume: _currentVolume);
+        await _midiEngine.changeProgram(program: _currentProgram);
 
         setState(() {
           _isInitialized = true;
@@ -82,7 +86,7 @@ class _MIDIState extends State<MIDI> {
 
     await _midiEngine.playNote(
       note: note,
-      velocity: 100,
+      velocity: _currentVolume,
     );
   }
 
@@ -172,22 +176,45 @@ class _MIDIState extends State<MIDI> {
                   });
                 },
               ),
+        GCWExpandableTextDivider(
+          text: i18n(context, 'common_options'),
+          expanded: false,
+          child: Column(
+            children: [
+              GCWIntegerSpinner(
+                title: i18n(context, 'midi_volume'),
+                min: 0,
+                max: 127,
+                value: _currentVolume,
+                onChanged: (int value) {
+                  setState(() {
+                    _currentVolume = value;
+                    _changeVolume(_currentVolume.toDouble());
+                  });
+                },
+              ),
+              GCWDropDownSpinner(
+                title: i18n(context, 'midi_program'),
+                index: _currentProgram,
+                items: MIDI_INSTRUMENTS
+                    .map((key, value) {
+                      return MapEntry(key, value);
+                    })
+                    .values
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _currentProgram = value;
+                    _changeInstrument(_currentProgram);
+                  });
+                },
+              )
+            ],
+          ),
+        ),
         GCWDefaultOutput(child: _buildOutput()),
       ],
     );
-  }
-
-  int? findKeyByField<T, F>(
-    Map<int, T> map,
-    F Function(T value) fieldSelector,
-    F expectedValue,
-  ) {
-    for (final entry in map.entries) {
-      if (fieldSelector(entry.value) == expectedValue) {
-        return entry.key;
-      }
-    }
-    return null;
   }
 
   Widget _buildOutput() {
@@ -225,8 +252,7 @@ class _MIDIState extends State<MIDI> {
       int? key = 0;
       if (_currentSort == 0) {
         key = _currentIndex;
-      }
-      else {
+      } else {
         switch (_currentField) {
           case MIDIFields.KEYBOARD:
             key = findKeyByField<MIDIKey, String>(
