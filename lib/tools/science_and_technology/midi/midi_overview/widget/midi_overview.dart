@@ -8,6 +8,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.d
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_dropdown_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
+import 'package:gc_wizard/common_widgets/switches/gcw_threeoptionsswitch.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/tools/science_and_technology/midi/_common/logic/midi_data.dart';
 import 'package:gc_wizard/tools/science_and_technology/midi/midi_overview/logic/midi_overview.dart';
@@ -20,6 +21,7 @@ class MIDI extends StatefulWidget {
 }
 
 class _MIDIState extends State<MIDI> {
+  int _currentMIDIData = 0;
   var _currentSort = 0;
   var _currentIndex = 0; // Key number 1
   final List<String> _currentSortList = [
@@ -132,6 +134,23 @@ class _MIDIState extends State<MIDI> {
 
     return Column(
       children: <Widget>[
+        GCWThreeOptionsSwitch(
+          labels: [i18n(context, 'midi_midi'), i18n(context, 'midi_instruments'), i18n(context, 'midi_percussions')],
+          position: _currentMIDIData,
+            onChanged: (position) {
+              setState(() {
+                _currentMIDIData = position;
+              });
+            },),
+        if (_currentMIDIData == 0) _buildInputMIDINotes(),
+        GCWDefaultOutput(child: _buildOutput()),
+      ],
+    );
+  }
+
+  Widget _buildInputMIDINotes(){
+    return Column(
+      children: <Widget>[
         GCWDropDown<int>(
           title: i18n(context, 'midi_sort'),
           value: _currentSort,
@@ -147,35 +166,35 @@ class _MIDIState extends State<MIDI> {
           items: _currentSortList
               .asMap()
               .map((index, field) {
-                return MapEntry(
-                    index,
-                    GCWDropDownMenuItem(
-                        value: index, child: i18n(context, field)));
-              })
+            return MapEntry(
+                index,
+                GCWDropDownMenuItem(
+                    value: index, child: i18n(context, field)));
+          })
               .values
               .toList(),
         ),
         _isColorSort
             ? GCWTwoOptionsSwitch(
-                title: i18n(context, 'midi_color'),
-                leftValue: i18n(context, 'common_color_white'),
-                rightValue: i18n(context, 'common_color_black'),
-                value: _currentColor,
-                onChanged: (value) {
-                  setState(() {
-                    _currentColor = value;
-                  });
-                },
-              )
+          title: i18n(context, 'midi_color'),
+          leftValue: i18n(context, 'common_color_white'),
+          rightValue: i18n(context, 'common_color_black'),
+          value: _currentColor,
+          onChanged: (value) {
+            setState(() {
+              _currentColor = value;
+            });
+          },
+        )
             : GCWDropDownSpinner(
-                index: _currentIndex,
-                items: _currentDropDownSpinnerList,
-                onChanged: (value) {
-                  setState(() {
-                    _currentIndex = value;
-                  });
-                },
-              ),
+          index: _currentIndex,
+          items: _currentDropDownSpinnerList,
+          onChanged: (value) {
+            setState(() {
+              _currentIndex = value;
+            });
+          },
+        ),
         GCWExpandableTextDivider(
           text: i18n(context, 'common_options'),
           expanded: false,
@@ -198,8 +217,8 @@ class _MIDIState extends State<MIDI> {
                 index: _currentProgram,
                 items: MIDI_INSTRUMENTS
                     .map((key, value) {
-                      return MapEntry(key, value);
-                    })
+                  return MapEntry(key, value);
+                })
                     .values
                     .toList(),
                 onChanged: (value) {
@@ -212,17 +231,16 @@ class _MIDIState extends State<MIDI> {
             ],
           ),
         ),
-        GCWDefaultOutput(child: _buildOutput()),
       ],
     );
   }
 
-  Widget _buildOutput() {
+  Widget _buildOutputMIDINotes(){
     Widget dataSet = Container();
 
     if (_isColorSort) {
       var chosenColor =
-          _currentColor == GCWSwitchPosition.left ? 'white' : 'black';
+      _currentColor == GCWSwitchPosition.left ? 'white' : 'black';
       var dataIdx = <void Function()>[() => {}];
       var data = MIDI_KEYS.entries
           .toList()
@@ -257,14 +275,14 @@ class _MIDIState extends State<MIDI> {
           case MIDIFields.KEYBOARD:
             key = findKeyByField<MIDIKey, String>(
               MIDI_KEYS,
-              (p) => p.keyboard,
+                  (p) => p.keyboard,
               _currentDropDownSpinnerList[_currentIndex],
             );
             break;
           case MIDIFields.PIANO:
             key = findKeyByField<MIDIKey, String>(
               MIDI_KEYS,
-              (p) => p.piano,
+                  (p) => p.piano,
               _currentDropDownSpinnerList[_currentIndex],
             );
             break;
@@ -273,31 +291,31 @@ class _MIDIState extends State<MIDI> {
           case MIDIFields.FREQUENCY:
             key = findKeyByField<MIDIKey, String>(
               MIDI_KEYS,
-              (p) => p.frequency,
+                  (p) => p.frequency,
               _currentDropDownSpinnerList[_currentIndex],
             );
           case MIDIFields.HELMHOLTZ:
             key = findKeyByField<MIDIKey, String>(
               MIDI_KEYS,
-              (p) => p.helmholtz,
+                  (p) => p.helmholtz,
               _currentDropDownSpinnerList[_currentIndex],
             );
           case MIDIFields.SCIENTIFIC:
             key = findKeyByField<MIDIKey, String>(
               MIDI_KEYS,
-              (p) => p.scientific,
+                  (p) => p.scientific,
               _currentDropDownSpinnerList[_currentIndex],
             );
           case MIDIFields.GERMAN:
             key = findKeyByField<MIDIKey, String>(
               MIDI_KEYS,
-              (p) => p.german,
+                  (p) => p.german,
               _currentDropDownSpinnerList[_currentIndex],
             );
           case MIDIFields.LATIN:
             key = findKeyByField<MIDIKey, String>(
               MIDI_KEYS,
-              (p) => p.latin,
+                  (p) => p.latin,
               _currentDropDownSpinnerList[_currentIndex],
             );
         }
@@ -349,5 +367,26 @@ class _MIDIState extends State<MIDI> {
         ],
       ),
     ]);
+
+  }
+
+  Widget _buildOutputMIDIInstruments(){
+    List<List<String>> data = MIDI_INSTRUMENTS.entries.map((e) => [e.key.toString(), e.value]) .toList();
+    return GCWColumnedMultilineOutput(data: data, flexValues: const [1, 6]);
+  }
+
+  Widget _buildOutputMIDIPercussions(){
+    List<List<String>> data = MIDI_PERCUSSIONS.entries.map((e) => [e.key.toString(), e.value]) .toList();
+    return GCWColumnedMultilineOutput(data: data, flexValues: const [1, 6]);
+  }
+
+  Widget _buildOutput() {
+    Widget result = Container();
+    switch (_currentMIDIData) {
+      case 0: result = _buildOutputMIDINotes();
+      case 1: result =  _buildOutputMIDIInstruments();
+      case 2: result =  _buildOutputMIDIPercussions();
+    }
+    return result;
   }
 }
