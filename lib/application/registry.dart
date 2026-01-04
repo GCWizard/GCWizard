@@ -1518,6 +1518,14 @@ void initializeRegistry(BuildContext context) {
         sourceUrl:
         'https://en.wikipedia.org/w/index.php?title=General_MIDI&oldid=1320989440',
       ),
+      ToolLicenseCodeLibrary(
+          context: context,
+          author: 'Nick Fox-Gieg,',
+          title: 'RKhive Velocity Grand Piano',
+          sourceUrl: 'https://web.archive.org/web/20260104152502/https://rkhive.com/rk-download/piano/velocity_grand_piano.zip',
+          licenseType: ToolLicenseType.CC0_1,
+          licenseUrl: 'https://web.archive.org/web/20260104153234/https://rkhive.com/legal.html',
+      ),
     ]
     ),
     GCWTool(tool: const MIDICoding(), id: 'midi_coding', categories: const [

@@ -4,6 +4,7 @@ import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
+import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_dropdown_spinner.dart';
@@ -52,9 +53,6 @@ class _MIDIState extends State<MIDI> {
   Future<void> _initializeMidi() async {
     try {
       await _midiEngine.unmute();
-      // https://rkhive.com/rk-download/piano/velocity_grand_piano.zip
-      // Creative Commons 1.0
-
       final success = await _midiEngine.loadSoundfontFromAsset(_ASSET_PATH);
 
       if (success) {
@@ -66,7 +64,7 @@ class _MIDIState extends State<MIDI> {
         });
       }
     } catch (e) {
-      debugPrint('Failed to initialize MIDI: $e');
+      showSnackBar(i18n(context, 'midi_load_error') + ': $e', context);
     }
   }
 
@@ -135,7 +133,7 @@ class _MIDIState extends State<MIDI> {
     return Column(
       children: <Widget>[
         GCWThreeOptionsSwitch(
-          labels: [i18n(context, 'midi_midi'), i18n(context, 'midi_instruments'), i18n(context, 'midi_percussions')],
+          labels: [i18n(context, 'midi_notes'), i18n(context, 'midi_instruments'), i18n(context, 'midi_percussions')],
           position: _currentMIDIData,
             onChanged: (position) {
               setState(() {
