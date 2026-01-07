@@ -288,10 +288,11 @@ const _VIOLIN_KEY = '       ##            ' +
     '    ###      ##      ' +
     '       ######        ';
 
-const _BASS_KEY = '    #######          ' +
-    '  ##      ###        ' +
-    ' #         ###       ' +
-    '#           ###   ## ' +
+const _BASS_KEY =
+    '    #####            ' +
+    '  ##     ##          ' +
+    ' #        ###        ' +
+    '#          ###    ## ' +
     '#           ###  ####' +
     '#           ###  ####' +
     '#           ###   ## ' +
@@ -351,10 +352,9 @@ Future<Uint8List> MIDINotes2Image(
 
     input.split('').forEach((character) {
       int note = character.codeUnitAt(0);
+      result = result + NOTE_WIDTH + SPACE;
       if (_MIDINotesGraphic[note].sharp) {
-        result = result + CROSS_WIDTH + SPACE;
-      } else {
-        result = result + NOTE_WIDTH + SPACE;
+        result = result + CROSS_WIDTH + SPACE / 4;
       }
     });
     return result;
@@ -410,7 +410,7 @@ Future<Uint8List> MIDINotes2Image(
 
   canvas.drawLine(Offset(BOUNDS, yOffset + 8 * LINE_SPACE),
       Offset(BOUNDS, yOffset + 4 * LINE_SPACE), paint);
-  canvas.drawLine(Offset(width - BOUNDS, yOffset - 8 * LINE_SPACE),
+  canvas.drawLine(Offset(width - BOUNDS, yOffset + 8 * LINE_SPACE),
       Offset(width - BOUNDS, yOffset + 4 * LINE_SPACE), paint);
 
   xOffset = BOUNDS + SPACE;
@@ -519,9 +519,5 @@ Future<Uint8List> MIDINotes2Image(
       .toImage(width.floor(), height.floor());
   final data = await img.toByteData(format: ui.ImageByteFormat.png);
 
-  final byteData = await img.toByteData(format: ui.ImageByteFormat.rawRgba);
-  if (byteData != null) {
-    return trimNullBytes(data!.buffer.asUint8List());
+  return trimNullBytes(data!.buffer.asUint8List());
   }
-  return trimNullBytes(Uint8List.fromList([]));
-}
