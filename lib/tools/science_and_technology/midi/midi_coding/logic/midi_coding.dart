@@ -84,37 +84,37 @@ class MIDINoteGraphicData {
 }
 
 List<MIDINoteGraphicData> _MIDINotesGraphic = [
-  MIDINoteGraphicData(34, 0, false, true), //     0   c
-  MIDINoteGraphicData(34, 0, false, false), //     1       is
-  MIDINoteGraphicData(33, 0, true, true), //     2   d
-  MIDINoteGraphicData(33, 0, true, false), //     3       is
-  MIDINoteGraphicData(32, 0, false, true), //     4   e
-  MIDINoteGraphicData(31, 0, false, true), //     5   f
-  MIDINoteGraphicData(31, 0, true, false), //     6       is
-  MIDINoteGraphicData(30, 0, true, true), //     7   g
-  MIDINoteGraphicData(30, 0, false, false), //     8       is
-  MIDINoteGraphicData(29, 0, false, true), //     9   a
-  MIDINoteGraphicData(29, 0, true, false), //    10       is
-  MIDINoteGraphicData(28, 0, true, true), //    11   h
+  MIDINoteGraphicData(34, 15, false, true), //     0   c
+  MIDINoteGraphicData(34, 15, false, false), //     1       is
+  MIDINoteGraphicData(33, 14, true, true), //     2   d
+  MIDINoteGraphicData(33, 14, true, false), //     3       is
+  MIDINoteGraphicData(32, 14, false, true), //     4   e
+  MIDINoteGraphicData(31, 13, false, true), //     5   f
+  MIDINoteGraphicData(31, 13, true, false), //     6       is
+  MIDINoteGraphicData(30, 13, true, true), //     7   g
+  MIDINoteGraphicData(30, 13, false, false), //     8       is
+  MIDINoteGraphicData(29, 12, false, true), //     9   a
+  MIDINoteGraphicData(29, 12, true, false), //    10       is
+  MIDINoteGraphicData(28, 12, true, true), //    11   h
   // 0 octave
-  MIDINoteGraphicData(27, 0, false, true), //    12     c
-  MIDINoteGraphicData(27, 0, false, false), //    13       is
-  MIDINoteGraphicData(26, 0, true, true), //    14     d
-  MIDINoteGraphicData(26, 0, true, false), //    15        is
-  MIDINoteGraphicData(25, 0, false, true), //    16     e
-  MIDINoteGraphicData(24, 0, false, true), //    17     f
-  MIDINoteGraphicData(24, 0, true, false), //    18       is
-  MIDINoteGraphicData(23, 0, true, true), //    19     g
-  MIDINoteGraphicData(23, 0, false, false), //    20       is
-  MIDINoteGraphicData(22, 0, false, true), //    21     a
-  MIDINoteGraphicData(22, 0, true, false), //    22       is
-  MIDINoteGraphicData(21, 0, true, true), //    23     h
+  MIDINoteGraphicData(27, 11, false, true), //    12     c
+  MIDINoteGraphicData(27, 11, false, false), //    13       is
+  MIDINoteGraphicData(26, 11, true, true), //    14     d
+  MIDINoteGraphicData(26, 11, true, false), //    15        is
+  MIDINoteGraphicData(25, 10, false, true), //    16     e
+  MIDINoteGraphicData(24, 10, false, true), //    17     f
+  MIDINoteGraphicData(24, 10, true, false), //    18       is
+  MIDINoteGraphicData(23, 9, true, true), //    19     g
+  MIDINoteGraphicData(23, 9, false, false), //    20       is
+  MIDINoteGraphicData(22, 9, false, true), //    21     a
+  MIDINoteGraphicData(22, 8, true, false), //    22       is
+  MIDINoteGraphicData(21, 8, true, true), //    23     h
   // 1st octave
-  MIDINoteGraphicData(20, 0, false, true), //    24     c
-  MIDINoteGraphicData(20, 0, false, false), //    25       is
-  MIDINoteGraphicData(19, 0, true, true), //    26     d
-  MIDINoteGraphicData(19, 0, true, false), //    27       is
-  MIDINoteGraphicData(18, 0, false, true), //    28     e
+  MIDINoteGraphicData(20, 8, false, true), //    24     c
+  MIDINoteGraphicData(20, 8, false, false), //    25       is
+  MIDINoteGraphicData(19, 7, true, true), //    26     d
+  MIDINoteGraphicData(19, 7, true, false), //    27       is
+  MIDINoteGraphicData(18, 7, false, true), //    28     e
   MIDINoteGraphicData(17, 0, false, true), //    29     f
   MIDINoteGraphicData(17, 0, true, false), //    30       is
   MIDINoteGraphicData(16, 0, true, true), //    31     g
@@ -136,8 +136,8 @@ List<MIDINoteGraphicData> _MIDINotesGraphic = [
   MIDINoteGraphicData(8, 0, true, false), //    46       is
   MIDINoteGraphicData(7, 0, true, true), //    47   h
   // 3rd octave
-  MIDINoteGraphicData(6, 0, true, true), //    48   C3  c
-  MIDINoteGraphicData(6, 0, true, false), //    49     is
+  MIDINoteGraphicData(6, 1, true, true), //    48   C3  c
+  MIDINoteGraphicData(6, 1, true, false), //    49     is
   MIDINoteGraphicData(5, 0, false, true), //    50   D3  d
   MIDINoteGraphicData(5, 0, false, false), //    51     is
   MIDINoteGraphicData(4, 0, true, true), //    52   E3  e
@@ -176,53 +176,56 @@ List<MIDINoteGraphicData> _MIDINotesGraphic = [
   MIDINoteGraphicData(-14, 5, true, false), //    83    h
   // 6th octave
   MIDINoteGraphicData(-15, 5, false, true), //    84   c
-  MIDINoteGraphicData(-15, 5, false, true), //    85
+  MIDINoteGraphicData(-15, 5, false, true), //    85      is
   MIDINoteGraphicData(-16, 6, true, false), //    86   d
-  MIDINoteGraphicData(-16, 6, true, true), //    87
+  MIDINoteGraphicData(-16, 6, true, true), //    87      is
   MIDINoteGraphicData(-17, 6, false, false), //    88   e
-  MIDINoteGraphicData(-18, 0, false, true), //    89   f
-  MIDINoteGraphicData(-18, 0, true, false), //    90
-  MIDINoteGraphicData(-19, 0, true, true), //    91   g
-  MIDINoteGraphicData(-19, 0, false, true), //    92
-  MIDINoteGraphicData(-20, 0, false, false), //    93   a
-  MIDINoteGraphicData(-20, 0, true, true), //    94
-  MIDINoteGraphicData(-21, 0, true, false), //    95   h
+  MIDINoteGraphicData(-18, 7, false, true), //    89   f
+  MIDINoteGraphicData(-18, 7, true, false), //    90      is
+  MIDINoteGraphicData(-19, 7, true, true), //    91   g
+  MIDINoteGraphicData(-19, 7, false, false), //    92      is
+  MIDINoteGraphicData(-20, 8, false, true), //    93   a
+  MIDINoteGraphicData(-20, 8, true, false), //    94      is
+  MIDINoteGraphicData(-21, 8, true, true), //    95   h
   // 7th octave
-  MIDINoteGraphicData(-22, 0, false, true), //    96   c
-  MIDINoteGraphicData(-22, 0, false, true), //    97
-  MIDINoteGraphicData(-23, 0, true, false), //    98   d
-  MIDINoteGraphicData(-23, 0, true, true), //    99
-  MIDINoteGraphicData(-24, 0, false, true), //   100   e
-  MIDINoteGraphicData(-25, 0, false, false), //   101   f
-  MIDINoteGraphicData(-25, 0, true, true), //   102
-  MIDINoteGraphicData(-26, 0, true, false), //   103   g
-  MIDINoteGraphicData(-26, 0, false, true), //   104
-  MIDINoteGraphicData(-27, 0, false, true), //   105   a
-  MIDINoteGraphicData(-27, 0, true, false), //   106
-  MIDINoteGraphicData(-28, 0, true, true), //   107   h
+  MIDINoteGraphicData(-22, 9, false, true), //    96   c
+  MIDINoteGraphicData(-22, 9, false, false), //    97
+  MIDINoteGraphicData(-23, 9, true, true), //    98   d
+  MIDINoteGraphicData(-23, 9, true, false), //    99
+  MIDINoteGraphicData(-24, 10, false, true), //   100   e
+  MIDINoteGraphicData(-25, 10, false, true), //   101   f
+  MIDINoteGraphicData(-25, 10, true, false), //   102
+  MIDINoteGraphicData(-26, 11, true, true), //   103   g
+  MIDINoteGraphicData(-26, 11, false, false), //   104
+  MIDINoteGraphicData(-27, 11, false, true), //   105   a
+  MIDINoteGraphicData(-27, 11, true, false), //   106
+  MIDINoteGraphicData(-28, 12, true, true), //   107   h
   // 8th octave
-  MIDINoteGraphicData(-29, 0, false, false), //   108   c
-  MIDINoteGraphicData(-29, 0, false, true), //   109
-  MIDINoteGraphicData(-30, 0, true, false), //   110   d
-  MIDINoteGraphicData(-30, 0, true, true), //   111
-  MIDINoteGraphicData(-31, 0, false, true), //   112   e
-  MIDINoteGraphicData(-32, 0, false, false), //   113   f
-  MIDINoteGraphicData(-32, 0, true, true), //   114
-  MIDINoteGraphicData(-33, 0, true, false), //   115   g
-  MIDINoteGraphicData(-33, 0, false, true), //   116
-  MIDINoteGraphicData(-34, 0, false, true), //   117   a
-  MIDINoteGraphicData(-34, 0, true, false), //   118
-  MIDINoteGraphicData(-35, 0, true, true), //   119   h
+  MIDINoteGraphicData(-29, 12, false, true), //   108   c
+  MIDINoteGraphicData(-29, 12, false, false), //   109
+  MIDINoteGraphicData(-30, 13, true, true), //   110   d
+  MIDINoteGraphicData(-30, 13, true, false), //   111
+  MIDINoteGraphicData(-31, 13, false, true), //   112   e
+  MIDINoteGraphicData(-32, 14, false, true), //   113   f
+  MIDINoteGraphicData(-32, 14, true, false), //   114
+  MIDINoteGraphicData(-33, 14, true, true), //   115   g
+  MIDINoteGraphicData(-33, 14, false, false), //   116
+  MIDINoteGraphicData(-34, 15, false, true), //   117   a
+  MIDINoteGraphicData(-34, 15, true, false), //   118
+  MIDINoteGraphicData(-35, 15, true, true), //   119   h
   // 9th octave
-  MIDINoteGraphicData(-36, 0, false, true), //   120   c
-  MIDINoteGraphicData(-36, 0, false, false), //   121
-  MIDINoteGraphicData(-37, 0, true, true), //   122   d
-  MIDINoteGraphicData(-37, 0, true, false), //   123
-  MIDINoteGraphicData(-38, 0, false, true), //   124   e
-  MIDINoteGraphicData(-39, 0, false, true), //   125   f
-  MIDINoteGraphicData(-39, 0, true, false), //   126
-  MIDINoteGraphicData(-40, 0, true, false), //   127   g
+  MIDINoteGraphicData(-36, 16, false, true), //   120   c
+  MIDINoteGraphicData(-36, 16, false, false), //   121      is
+  MIDINoteGraphicData(-37, 16, true, true), //   122   d
+  MIDINoteGraphicData(-37, 16, true, false), //   123      is
+  MIDINoteGraphicData(-38, 17, false, true), //   124   e
+  MIDINoteGraphicData(-39, 17, false, true), //   125   f
+  MIDINoteGraphicData(-39, 17, true, false), //   126      is
+  MIDINoteGraphicData(-40, 18, true, true), //   127   g
 ];
+
+const _BREAK =
+    '############' + '############' + '############' + '############';
 
 const _CROSS = '      #    #' +
     '     #    # ' +
@@ -241,25 +244,33 @@ const _NOTE = '    ####    ' +
     '  ##    ##  ' +
     '    ####    ';
 
-const _KEY = '       ##            ' +
-    '      #  #           ' +
+const _VIOLIN_KEY = '       ##            ' +
+    '      ###            ' +
     '     ##  #           ' +
-    '    ##    #          ' +
-    '    ##    #          ' +
-    '    ##    ##         ' +
-    '     #    ##         ' +
+    '    ###   #          ' +
+    '    ##     #         ' +
+    '    ##      #        ' +
+    '    ##      ##       ' +
+    '    ##      ##       ' +
+    '    ##      ##       ' +
+    '     #     ##        ' +
+    '      #   ##         ' +
     '      #  ##          ' +
-    '      #  #           ' +
-    '       ##            ' +
+    '       ###           ' +
     '     ####            ' +
-    '   ###  #            ' +
+    '   #### #            ' +
+    '  ####  #            ' +
+    ' ####   #            ' +
     ' ###    #            ' +
-    '##      ########     ' +
+    '###     ########     ' +
     '##    #############  ' +
     '##   ##    #      ###' +
     '##   ##    #      ###' +
     '##    ##   #       ##' +
+    '##    ##   #       ##' +
     ' ##    #   #       ##' +
+    ' ##    #   #       ##' +
+    '  ##        #      ##' +
     '  ##        #      ##' +
     '   ##       #     ## ' +
     '    ###     #    ##  ' +
@@ -277,35 +288,78 @@ const _KEY = '       ##            ' +
     '    ###      ##      ' +
     '       ######        ';
 
+const _BASS_KEY =
+    '    #######          ' +
+    '  ##      ###        ' +
+    ' #         ###       ' +
+    '#           ###   ## ' +
+    '#           ###  ####' +
+    '#           ###  ####' +
+    '#           ###   ## ' +
+    '####        ###      ' +
+    ' ####       ###      ' +
+    ' ####       ###      ' +
+    '  ##        ###      ' +
+    '            ###      ' +
+    '            ###      ' +
+    '            ###   ## ' +
+    '            ###  ####' +
+    '            ###  ####' +
+    '            ###   ## ' +
+    '            ###      ' +
+    '            ###      ' +
+    '            ###      ' +
+    '            ###      ' +
+    '            ###      ' +
+    '            ###      ' +
+    '            ###      ' +
+    '            ###      ' +
+    '            ###      ' +
+    '           ###       ' +
+    '           ###       ' +
+    '          ###        ' +
+    '          ###        ' +
+    '         ###         ' +
+    '         ###         ' +
+    '        ###          ' +
+    '       ###           ' +
+    '      ###            ' +
+    '     ##              ' +
+    '   ##                ' +
+    '##                   ';
 
 Future<Uint8List> MIDINotes2Image(
   String input,
 ) async {
-
   const BOUNDS = 10.0;
   const CROSS_WIDTH = 12;
   const CROSS_HEIGHT = 8;
   const NOTE_WIDTH = 15;
   const NOTE_HEIGHT = 10;
-  const KEY_WIDTH = 21;
-  const KEY_HEIGHT = 35;
+  const VIOLIN_KEY_WIDTH = 21;
+  const VIOLIN_KEY_HEIGHT = 43;
+  const BASS_KEY_WIDTH = 21;
+  const BASS_KEY_HEIGHT = 38;
+  const BREAK_WIDTH = 12;
+  const BREAK_HEIGHT = 4;
   const NOTE_SHEET_HEIGHT = 650.0;
-  const BASELINE = 400.0;
+  const BASELINE = 325.0;
   const SPACE = NOTE_WIDTH;
   const LINE_SPACE = 10.0;
 
-  double calcWidth(String input){
-    double result = BOUNDS + NOTE_WIDTH + BOUNDS;
+  double calcWidth(String input) {
+    double result = BOUNDS + VIOLIN_KEY_WIDTH + BOUNDS;
 
     //input.split('').forEach((character) {
     //  int note = character.codeUnitAt(0);
-    for (int note = 32; note < 128; note++){
+    for (int note = 0; note < 128; note++) {
       if (_MIDINotesGraphic[note].sharp) {
         result = result + CROSS_WIDTH + SPACE;
       } else {
         result = result + NOTE_WIDTH + SPACE;
       }
     }
+    result = result * 3 / 2;
     //});
     return result;
   }
@@ -340,31 +394,13 @@ Future<Uint8List> MIDINotes2Image(
       Offset(width - BOUNDS, yOffset - LINE_SPACE), paint);
   canvas.drawLine(Offset(BOUNDS, yOffset - 2 * LINE_SPACE),
       Offset(width - BOUNDS, yOffset - 2 * LINE_SPACE), paint);
-paint.color= Colors.grey;
-  canvas.drawLine(Offset(BOUNDS, yOffset - 3 * LINE_SPACE),
-      Offset(width - BOUNDS, yOffset - 3 * LINE_SPACE), paint);
-  canvas.drawLine(Offset(BOUNDS, yOffset - 4 * LINE_SPACE),
-      Offset(width - BOUNDS, yOffset - 4 * LINE_SPACE), paint);
-  canvas.drawLine(Offset(BOUNDS, yOffset - 5 * LINE_SPACE),
-      Offset(width - BOUNDS, yOffset - 5 * LINE_SPACE), paint);
-  canvas.drawLine(Offset(BOUNDS, yOffset - 6 * LINE_SPACE),
-      Offset(width - BOUNDS, yOffset - 6 * LINE_SPACE), paint);
-  canvas.drawLine(Offset(BOUNDS, yOffset - 7 * LINE_SPACE),
-      Offset(width - BOUNDS, yOffset - 7 * LINE_SPACE), paint);
-  canvas.drawLine(Offset(BOUNDS, yOffset - 8 * LINE_SPACE),
-      Offset(width - BOUNDS, yOffset - 8 * LINE_SPACE), paint);
-  canvas.drawLine(Offset(BOUNDS, yOffset - 9 * LINE_SPACE),
-      Offset(width - BOUNDS, yOffset - 9 * LINE_SPACE), paint);
-  canvas.drawLine(Offset(BOUNDS, yOffset - 10 * LINE_SPACE),
-      Offset(width - BOUNDS, yOffset - 10 * LINE_SPACE), paint);
-  canvas.drawLine(Offset(BOUNDS, yOffset - 11 * LINE_SPACE),
-      Offset(width - BOUNDS, yOffset - 11 * LINE_SPACE), paint);
-  canvas.drawLine(Offset(BOUNDS, yOffset - 12 * LINE_SPACE),
-      Offset(width - BOUNDS, yOffset - 12 * LINE_SPACE), paint);
-  canvas.drawLine(Offset(BOUNDS, yOffset - 13 * LINE_SPACE),
-      Offset(width - BOUNDS, yOffset - 13 * LINE_SPACE), paint);
-  canvas.drawLine(Offset(BOUNDS, yOffset + 3 * LINE_SPACE),
-      Offset(width - BOUNDS, yOffset + 3 * LINE_SPACE), paint);
+
+  canvas.drawLine(Offset(BOUNDS, yOffset - 2 * LINE_SPACE),
+      Offset(BOUNDS, yOffset + 2 * LINE_SPACE), paint);
+  canvas.drawLine(Offset(width - BOUNDS, yOffset - 2 * LINE_SPACE),
+      Offset(width - BOUNDS, yOffset + 2 * LINE_SPACE), paint);
+
+  // draw lines bass
   canvas.drawLine(Offset(BOUNDS, yOffset + 4 * LINE_SPACE),
       Offset(width - BOUNDS, yOffset + 4 * LINE_SPACE), paint);
   canvas.drawLine(Offset(BOUNDS, yOffset + 5 * LINE_SPACE),
@@ -376,76 +412,109 @@ paint.color= Colors.grey;
   canvas.drawLine(Offset(BOUNDS, yOffset + 8 * LINE_SPACE),
       Offset(width - BOUNDS, yOffset + 8 * LINE_SPACE), paint);
 
-  paint.color= Colors.black;
-  canvas.drawLine(Offset(BOUNDS, yOffset - 2 * LINE_SPACE),
-      Offset(BOUNDS, yOffset + 2 * LINE_SPACE), paint);
-  canvas.drawLine(Offset(width - BOUNDS, yOffset - 2 * LINE_SPACE),
-      Offset(width - BOUNDS, yOffset + 2 * LINE_SPACE), paint);
+  canvas.drawLine(Offset(BOUNDS, yOffset + 8 * LINE_SPACE),
+      Offset(BOUNDS, yOffset + 4 * LINE_SPACE), paint);
+  canvas.drawLine(Offset(width - BOUNDS, yOffset - 8 * LINE_SPACE),
+      Offset(width - BOUNDS, yOffset + 4 * LINE_SPACE), paint);
 
-  // draw KEY
   xOffset = BOUNDS + SPACE;
+
+  // draw VIOLIN KEY
   yOffset = BOUNDS + (NOTE_SHEET_HEIGHT ~/ 2) - 17;
-  for (int y = 0; y < KEY_HEIGHT; y++) {
-    for (int x = 0; x < KEY_WIDTH; x++) {
-      if (_KEY[y * KEY_WIDTH + x] == '#') {
+  for (int y = 0; y < VIOLIN_KEY_HEIGHT; y++) {
+    for (int x = 0; x < VIOLIN_KEY_WIDTH; x++) {
+      if (_VIOLIN_KEY[y * VIOLIN_KEY_WIDTH + x] == '#') {
+        canvas.drawCircle(Offset(xOffset + x, yOffset + y), 0.5, paint);
+      }
+    }
+  }
+
+  // draw BASS KEY
+  yOffset = BOUNDS + BASELINE + 4 * LINE_SPACE;
+  for (int y = 0; y < BASS_KEY_HEIGHT; y++) {
+    for (int x = 0; x < BASS_KEY_WIDTH; x++) {
+      if (_BASS_KEY[y * BASS_KEY_WIDTH + x] == '#') {
         canvas.drawCircle(Offset(xOffset + x, yOffset + y), 0.5, paint);
       }
     }
   }
 
   // draw NOTES
-  xOffset = BOUNDS + KEY_WIDTH + 2 * SPACE;
+  xOffset = BOUNDS + VIOLIN_KEY_WIDTH + 2 * SPACE;
   yOffset = 0.0;
 
   //input.split('').forEach((character) {
   //  int note = character.codeUnitAt(0);
-  for (int note = 32; note < 128; note++){
-    // draw Note
-    paint.style = PaintingStyle.fill;
-    yOffset = BOUNDS +
-        NOTE_SHEET_HEIGHT / 2 +
-        _MIDINotesGraphic[note].offset * LINE_SPACE / 2 -
-        LINE_SPACE / 2;
-
-    canvas.drawOval(
-        Rect.fromLTWH(xOffset, yOffset, NOTE_WIDTH * 1.0, NOTE_HEIGHT * 1.0),
-        paint);
-
-    //draw cross
-    paint.style = PaintingStyle.stroke;
-    if (!_MIDINotesGraphic[note].sharp) {
+  for (int note = 0; note < 129; note++) {
+    print(note);
+    if (note > 127) {
+      // draw break
+      paint.style = PaintingStyle.stroke;
       xOffset = xOffset + NOTE_WIDTH + SPACE / 4;
-      for (int y = 0; y < CROSS_HEIGHT; y++) {
-        for (int x = 0; x < CROSS_WIDTH; x++) {
-          if (_CROSS[y * CROSS_WIDTH + x] == '#') {
-            canvas.drawCircle(Offset(xOffset + x, yOffset + y), 0.5, paint);
+      for (int y = 0; y < BREAK_HEIGHT; y++) {
+        for (int x = 0; x < BREAK_WIDTH; x++) {
+          if (_BREAK[y * BREAK_WIDTH + x] == '#') {
+            canvas.drawCircle(Offset(xOffset + x, BASELINE + y), 0.5, paint);
           }
         }
       }
-    }
-
-    // draw lines
-    paint.style = PaintingStyle.stroke;
-    if (_MIDINotesGraphic[note].offset < 0) {
-      yOffset = BOUNDS + (NOTE_SHEET_HEIGHT ~/ 2) - 2 * LINE_SPACE;
+      xOffset = xOffset + BREAK_WIDTH + SPACE;
     } else {
-      yOffset = BOUNDS + (NOTE_SHEET_HEIGHT ~/ 2) + 2 * LINE_SPACE;
-    }
-    for (int i = 0; i < _MIDINotesGraphic[note].lines; i++) {
-      if (_MIDINotesGraphic[note].offset < 0) {
-        yOffset = yOffset - LINE_SPACE;
-      } else {
-        yOffset = yOffset + LINE_SPACE;
-      }
-      if (_MIDINotesGraphic[note].sharp) {
-        canvas.drawLine(Offset(xOffset - SPACE / 3, yOffset),
-            Offset(xOffset + NOTE_WIDTH + SPACE / 3, yOffset), paint);
-      } else {
-        canvas.drawLine( Offset(xOffset - NOTE_WIDTH - SPACE / 3, yOffset ), Offset(xOffset + NOTE_WIDTH + SPACE / 3, yOffset ), paint);
-      }
-    }
+      // draw Note
+      paint.style = PaintingStyle.fill;
+      yOffset = BOUNDS +
+          NOTE_SHEET_HEIGHT / 2 +
+          _MIDINotesGraphic[note].offset * LINE_SPACE / 2 -
+          LINE_SPACE / 2;
 
-    xOffset = xOffset + NOTE_WIDTH + SPACE;
+      canvas.drawOval(
+          Rect.fromLTWH(xOffset, yOffset, NOTE_WIDTH * 1.0, NOTE_HEIGHT * 1.0),
+          paint);
+
+      // draw cross
+      paint.style = PaintingStyle.stroke;
+      if (!_MIDINotesGraphic[note].sharp) {
+        xOffset = xOffset + NOTE_WIDTH + SPACE / 4;
+        for (int y = 0; y < CROSS_HEIGHT; y++) {
+          for (int x = 0; x < CROSS_WIDTH; x++) {
+            if (_CROSS[y * CROSS_WIDTH + x] == '#') {
+              canvas.drawCircle(Offset(xOffset + x, yOffset + y), 0.5, paint);
+            }
+          }
+        }
+      }
+
+      // draw lines
+      paint.style = PaintingStyle.stroke;
+      if (_MIDINotesGraphic[note].offset < 0) {
+        yOffset = BOUNDS + BASELINE - 2 * LINE_SPACE;
+      } else {
+        yOffset = BOUNDS + BASELINE + 2 * LINE_SPACE;
+      }
+
+      for (int i = 0; i < _MIDINotesGraphic[note].lines; i++) {
+        if (_MIDINotesGraphic[note].offset < 0) {
+          yOffset = yOffset - LINE_SPACE;
+        } else {
+          yOffset = yOffset + LINE_SPACE;
+        }
+        if (_MIDINotesGraphic[note].sharp) {
+          if ((_MIDINotesGraphic[note].offset < 0) ||
+              (_MIDINotesGraphic[note].offset > 0 && _MIDINotesGraphic[note].lines == 1) ||
+              (_MIDINotesGraphic[note].offset > 0 && i > 6)) {
+            canvas.drawLine(Offset(xOffset - SPACE / 3, yOffset),
+          Offset(xOffset + NOTE_WIDTH + SPACE / 3, yOffset), paint);}
+        } else {
+          if ((_MIDINotesGraphic[note].offset < 0) ||
+              (_MIDINotesGraphic[note].offset > 0 && _MIDINotesGraphic[note].lines == 1) ||
+              (_MIDINotesGraphic[note].offset > 0 && i > 6)) {
+            canvas.drawLine(Offset(xOffset - NOTE_WIDTH - SPACE / 3, yOffset),
+                Offset(xOffset + NOTE_WIDTH + SPACE / 3, yOffset), paint);
+          }
+        }
+      }
+      xOffset = xOffset + NOTE_WIDTH + SPACE;
+    }
   }
   //});
 
