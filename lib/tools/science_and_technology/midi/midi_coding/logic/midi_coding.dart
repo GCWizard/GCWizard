@@ -288,8 +288,7 @@ const _VIOLIN_KEY = '       ##            ' +
     '    ###      ##      ' +
     '       ######        ';
 
-const _BASS_KEY =
-    '    #######          ' +
+const _BASS_KEY = '    #######          ' +
     '  ##      ###        ' +
     ' #         ###       ' +
     '#           ###   ## ' +
@@ -350,17 +349,14 @@ Future<Uint8List> MIDINotes2Image(
   double calcWidth(String input) {
     double result = BOUNDS + VIOLIN_KEY_WIDTH + BOUNDS;
 
-    //input.split('').forEach((character) {
-    //  int note = character.codeUnitAt(0);
-    for (int note = 0; note < 128; note++) {
+    input.split('').forEach((character) {
+      int note = character.codeUnitAt(0);
       if (_MIDINotesGraphic[note].sharp) {
         result = result + CROSS_WIDTH + SPACE;
       } else {
         result = result + NOTE_WIDTH + SPACE;
       }
-    }
-    result = result * 3 / 2;
-    //});
+    });
     return result;
   }
 
@@ -443,10 +439,8 @@ Future<Uint8List> MIDINotes2Image(
   xOffset = BOUNDS + VIOLIN_KEY_WIDTH + 2 * SPACE;
   yOffset = 0.0;
 
-  //input.split('').forEach((character) {
-  //  int note = character.codeUnitAt(0);
-  for (int note = 0; note < 129; note++) {
-    print(note);
+  input.split('').forEach((character) {
+    int note = character.codeUnitAt(0);
     if (note > 127) {
       // draw break
       paint.style = PaintingStyle.stroke;
@@ -500,13 +494,16 @@ Future<Uint8List> MIDINotes2Image(
         }
         if (_MIDINotesGraphic[note].sharp) {
           if ((_MIDINotesGraphic[note].offset < 0) ||
-              (_MIDINotesGraphic[note].offset > 0 && _MIDINotesGraphic[note].lines == 1) ||
+              (_MIDINotesGraphic[note].offset > 0 &&
+                  _MIDINotesGraphic[note].lines == 1) ||
               (_MIDINotesGraphic[note].offset > 0 && i > 6)) {
             canvas.drawLine(Offset(xOffset - SPACE / 3, yOffset),
-          Offset(xOffset + NOTE_WIDTH + SPACE / 3, yOffset), paint);}
+                Offset(xOffset + NOTE_WIDTH + SPACE / 3, yOffset), paint);
+          }
         } else {
           if ((_MIDINotesGraphic[note].offset < 0) ||
-              (_MIDINotesGraphic[note].offset > 0 && _MIDINotesGraphic[note].lines == 1) ||
+              (_MIDINotesGraphic[note].offset > 0 &&
+                  _MIDINotesGraphic[note].lines == 1) ||
               (_MIDINotesGraphic[note].offset > 0 && i > 6)) {
             canvas.drawLine(Offset(xOffset - NOTE_WIDTH - SPACE / 3, yOffset),
                 Offset(xOffset + NOTE_WIDTH + SPACE / 3, yOffset), paint);
@@ -515,8 +512,7 @@ Future<Uint8List> MIDINotes2Image(
       }
       xOffset = xOffset + NOTE_WIDTH + SPACE;
     }
-  }
-  //});
+  });
 
   final img = await canvasRecorder
       .endRecording()
