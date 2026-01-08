@@ -3613,6 +3613,7 @@
   "midi_coding_description": "En/Decoding using MIDI notes",
   "midi_coding_example": "ABC → ",
   "midi_coding_graphic" : "Music sheet",
+  "midi_coding_create_graphic" : "Create Music sheet",
   "milesian_numbers_title": "Milesian Numbersystem",
   "milesian_numbers_description": "Converts Numbers in and from the Milesian Numbersystem",
   "milesian_numbers_example": "821 → ωκα",

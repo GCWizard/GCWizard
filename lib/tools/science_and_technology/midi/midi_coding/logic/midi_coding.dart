@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/science_and_technology/midi/_common/logic/midi_data.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
+import 'package:gc_wizard/utils/constants.dart';
 
 const Map<int, String> MIDI_CODING = {
   0: 'midi_frequency',
@@ -59,7 +60,7 @@ String encodeMIDI(String _currentEncodeInput, int _currentType) {
 
   return _currentEncodeInput.split('').map((character) {
     var code = CODEBOOK[character.codeUnitAt(0)];
-    return code ?? '';
+    return code ?? UNKNOWN_ELEMENT;
   }).join(' ');
 }
 
@@ -70,7 +71,7 @@ String decodeMIDI(String _currentEncodeInput, int _currentType) {
 
   return _currentEncodeInput.split(' ').map((code) {
     var ascii = CODEBOOK[code];
-    return ascii != null ? String.fromCharCode(ascii) : '';
+    return ascii != null ? String.fromCharCode(ascii) : UNKNOWN_ELEMENT;
   }).join('');
 }
 
@@ -309,16 +310,16 @@ const _BASS_KEY =
     '            ###      ' +
     '            ###      ' +
     '            ###      ' +
-    '            ###      ' +
-    '            ###      ' +
-    '            ###      ' +
-    '            ###      ' +
-    '            ###      ' +
-    '            ###      ' +
+    '           ###       ' +
+    '           ###       ' +
+    '           ###       ' +
     '           ###       ' +
     '           ###       ' +
     '          ###        ' +
     '          ###        ' +
+    '          ###        ' +
+    '          ###        ' +
+    '         ###         ' +
     '         ###         ' +
     '         ###         ' +
     '        ###          ' +
@@ -343,18 +344,20 @@ Future<Uint8List> MIDINotes2Image(
   const BREAK_WIDTH = 12;
   const BREAK_HEIGHT = 4;
   const NOTE_SHEET_HEIGHT = 650.0;
-  const BASELINE = 325.0;
+  const BASELINE = NOTE_SHEET_HEIGHT / 2;
   const SPACE = NOTE_WIDTH;
   const LINE_SPACE = 10.0;
 
   double calcWidth(String input) {
-    double result = BOUNDS + VIOLIN_KEY_WIDTH + BOUNDS;
+    double result = BOUNDS + VIOLIN_KEY_WIDTH + SPACE + BOUNDS;
 
     input.split('').forEach((character) {
       int note = character.codeUnitAt(0);
       result = result + NOTE_WIDTH + SPACE;
-      if (_MIDINotesGraphic[note].sharp) {
-        result = result + CROSS_WIDTH + SPACE / 4;
+      if (note > 127) {
+        result = result + BREAK_WIDTH + SPACE;
+      } else if (_MIDINotesGraphic[note].sharp) {
+        result = result + CROSS_WIDTH + SPACE;
       }
     });
     return result;
@@ -378,7 +381,7 @@ Future<Uint8List> MIDINotes2Image(
   paint.style = PaintingStyle.stroke;
 
   // draw lines
-  double yOffset = BOUNDS + NOTE_SHEET_HEIGHT / 2;
+  double yOffset = BOUNDS + BASELINE;
   double xOffset = BOUNDS;
   canvas.drawLine(Offset(BOUNDS, yOffset + 2 * LINE_SPACE),
       Offset(width - BOUNDS, yOffset + 2 * LINE_SPACE), paint);
@@ -448,7 +451,7 @@ Future<Uint8List> MIDINotes2Image(
       for (int y = 0; y < BREAK_HEIGHT; y++) {
         for (int x = 0; x < BREAK_WIDTH; x++) {
           if (_BREAK[y * BREAK_WIDTH + x] == '#') {
-            canvas.drawCircle(Offset(xOffset + x, BASELINE + y), 0.5, paint);
+            canvas.drawCircle(Offset(xOffset + x, BOUNDS + BASELINE + y), 0.5, paint);
           }
         }
       }

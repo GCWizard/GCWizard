@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -95,20 +96,31 @@ class MIDICodingState extends State<MIDICoding> {
         ),
         GCWDefaultOutput(child: _calculateOutput()),
         (_currentMode == GCWSwitchPosition.left)
-            ? _WidgetGraphicEncodeOutput()
+            ? Column(
+                children: [
+                  GCWButton(
+                    onPressed: () {
+                      setState(() {
+                        MIDINotes2Image(
+                          _currentEncodeInput,
+                        ).then((value) {
+                          setState(() {
+                            _MIDINotesImage = value;
+                          });
+                        });
+                      });
+                    },
+                    text: i18n(context, 'midi_coding_create_graphic'),
+                  ),
+                  _WidgetGraphicEncodeOutput()
+                ],
+        )
             : Container()
       ],
     );
   }
 
   Widget _WidgetGraphicEncodeOutput() {
-    MIDINotes2Image(
-      _currentEncodeInput,
-    ).then((value) {
-      setState(() {
-        _MIDINotesImage = value;
-      });
-    });
     if (_MIDINotesImage.isEmpty) {
       return Container();
     }
