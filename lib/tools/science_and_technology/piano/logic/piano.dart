@@ -1,10 +1,12 @@
 // https://de.wikipedia.org/wiki/Frequenzen_der_gleichstufigen_Stimmung
 // https://en.wikipedia.org/wiki/Piano_key_frequencies
 // https://fr.wikipedia.org/wiki/Fr%C3%A9quences_des_touches_du_piano
+// https://it.wikipedia.org/wiki/Frequenze_del_pianoforte
+
 
 import 'dart:math';
 
-enum PianoFields { COLOR, FREQUENCY, HELMHOLTZ, SCIENTIFIC, GERMAN, MIDI, LATIN }
+enum PianoFields { COLOR, FREQUENCY, HELMHOLTZ, SCIENTIFIC, GERMAN, ITALIAN, MIDI }
 
 enum MiddleCStandard {
   C3, // Yamaha Standard
@@ -19,8 +21,8 @@ class PianoKey {
   final String helmholtz;
   final String scientific;
   final String german;
+  final String italian;
   final String midi;
-  final String latin;
 
   const PianoKey({
     required this.number,
@@ -29,8 +31,8 @@ class PianoKey {
     required this.helmholtz,
     required this.scientific,
     required this.german,
+    required this.italian,
     required this.midi,
-    required this.latin,
   });
 
   String getField(PianoFields field) {
@@ -45,10 +47,10 @@ class PianoKey {
         return scientific;
       case PianoFields.GERMAN:
         return german;
+      case PianoFields.ITALIAN:
+        return italian;
       case PianoFields.MIDI:
         return midi;
-      case PianoFields.LATIN:
-        return latin;
     }
   }
 }
@@ -84,7 +86,7 @@ class PianoCalculator {
     "H"
   ];
 
-  static const List<String> _notesLatin = [
+  static const List<String> _notesItalian = [
     "Do",
     "Do♯/Re♭",
     "Re",
@@ -279,9 +281,9 @@ class PianoCalculator {
     final scientific = _notesScientific[chromaIndex].split('/').map((s) => "$s$octave").join('/');
     final scientificStr = scientific + getScientificSuffix(scientific);
 
-    // latin & german
+    // italian & german
     final String octaveSuffix = (octave - 1).toString();
-    final latin = _notesLatin[chromaIndex].split('/').map((s) => "$s$octaveSuffix").join('/');
+    final italian = _notesItalian[chromaIndex].split('/').map((s) => "$s$octaveSuffix").join('/');
 
     final german = _notesGerman[chromaIndex].split('/').map((part) {
       if (octave == 0) return "${part}2";
@@ -301,8 +303,8 @@ class PianoCalculator {
       helmholtz: helmholtz,
       scientific: scientificStr,
       german: german,
+      italian: italian,
       midi: midiStr,
-      latin: latin,
     );
   }
 }
