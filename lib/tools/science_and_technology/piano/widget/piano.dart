@@ -34,9 +34,8 @@ class _PianoState extends State<Piano> {
     'piano_helmholtz',
     'piano_scientific',
     'piano_german',
-    'piano_italian'
+    'piano_italian',
     'piano_midi',
-
   ];
 
   var _currentColor = GCWSwitchPosition.left;
@@ -163,8 +162,8 @@ class _PianoState extends State<Piano> {
         [i18n(context, 'piano_frequency'), currentKey.frequency],
         [i18n(context, 'piano_helmholtz'), currentKey.helmholtz],
         [i18n(context, 'piano_scientific'), currentKey.scientific],
-        [i18n(context, 'common_language_german'), currentKey.german],
-        [i18n(context, 'common_language_italian'), currentKey.italian],
+        [i18n(context, 'piano_german'), currentKey.german],
+        [i18n(context, 'piano_italian'), currentKey.italian],
         [i18n(context, 'piano_midi'), currentKey.midi],
       ], flexValues: const [
         1,
