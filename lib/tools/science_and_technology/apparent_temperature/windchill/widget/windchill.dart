@@ -36,7 +36,7 @@ class _WindchillState extends State<Windchill> {
           title: i18n(context, 'common_measure_temperature'),
           initialUnit: TEMPERATURE_CELSIUS,
           min: -50.0,
-          max: 10.0,
+          max: 50.0,
           unitList: temperatures,
           onChanged: (value) {
             setState(() {
@@ -117,6 +117,16 @@ class _WindchillState extends State<Windchill> {
       GCWOutput(
         child: hintWindchill,
       ),
+      _currentTemperature > 10.0
+        ? Column(
+            children: [
+              GCWTextDivider(text: i18n(context, 'heatindex_hint')),
+              GCWOutput(
+                child: i18n(context, 'windchill_hint'),
+              ),
+            ],
+          )
+        : Container(),
     ]);
   }
 

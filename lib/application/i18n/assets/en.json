@@ -8034,6 +8034,7 @@
   "windchill_index_index_lightblue": "Frostbite within 30 min to be expected",
   "windchill_index_index_blue": "Frostbite within 10 min to be expected",
   "windchill_index_index_darkblue": "Frostbite within 5 min to be expected",
+  "windchill_hint": "Caution: Windchill is only defined for temperatures below 10°C",
   "wordokusolver_title": "Wordoku Solver",
   "wordokusolver_description": "Creates a solution for a given Wordoku",
   "word_search_title": "Word Search (Letter Grid)",
