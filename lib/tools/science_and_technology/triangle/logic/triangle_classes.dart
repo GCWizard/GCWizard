@@ -29,6 +29,9 @@ class XYPoint{
 
   XYPoint({this.x = 0.0, this.y = 0.0});
 
+  XYPoint operator +(XYPoint other) => XYPoint(x: x + other.x, y: y + other.y);
+  XYPoint operator /(double s) => XYPoint(x: x / s, y: y / s);
+
   PolarPoint toPolarPoint(){
     // https://mathepedia.de/Kugelkoordinaten.html
     return PolarPoint(

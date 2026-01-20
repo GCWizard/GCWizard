@@ -59,6 +59,8 @@ class TriangleState extends State<Triangle> {
   late XYPoint _gergonne;
   late XYPoint _lemoine;
   late XYPoint _nagel;
+  late XYPoint _napoleon1;
+  late XYPoint _napoleon2;
   late XYPoint _spieker;
   late XYPoint _feuerbach;
   late XYPoint _mitten;
@@ -320,6 +322,8 @@ class TriangleState extends State<Triangle> {
     _gergonne = triangleGergonne(_A, _B, _C);
     _lemoine = triangleLemoine(_A, _B, _C);
     _nagel = triangleNagel(_A, _B, _C);
+    _napoleon1 = triangleNapoleonOuter(_A, _B, _C);
+    _napoleon2 = triangleNapoleonInner(_A, _B, _C);
     _spieker = triangleSpieker(_A, _B, _C);
     _feuerbach = triangleFeuerbach(_A, _B, _C);
     _mitten = triangleMitten(_A, _B, _C);
@@ -367,46 +371,49 @@ class TriangleState extends State<Triangle> {
       [i18n(context, 'triangle_output_area'), triangleArea(_A, _B, _C).toStringAsFixed(3), null, null],
     ];
     _outputDataPointsSidesMidPoint = [
+      [null, i18n(context, 'triangle_output_x'), i18n(context, 'triangle_output_y'), null],
       [
-        'a\nx, y',
+        'a',
         _sidesMidPoint[0].x.toStringAsFixed(3),
         _sidesMidPoint[0].y.toStringAsFixed(3),
         null,
       ],
       [
-        'b\nx, y',
+        'b',
         _sidesMidPoint[1].x.toStringAsFixed(3),
         _sidesMidPoint[1].y.toStringAsFixed(3),
         null,
       ],
       [
-        'c\nx, y',
+        'c',
         _sidesMidPoint[2].x.toStringAsFixed(3),
         _sidesMidPoint[2].y.toStringAsFixed(3),
         null,
       ],
     ];
     _outputDataPointsAltitudeBasePoints = [
+      [null, i18n(context, 'triangle_output_x'), i18n(context, 'triangle_output_y'), null],
       [
-        'a\nx, y',
+        'a',
         _altitudesBasePoint[0].x.toStringAsFixed(3),
         _altitudesBasePoint[0].y.toStringAsFixed(3),
         null,
       ],
       [
-        'b\nx, y',
+        'b',
         _altitudesBasePoint[1].x.toStringAsFixed(3),
         _altitudesBasePoint[1].y.toStringAsFixed(3),
         null,
       ],
       [
-        'c\nx, y',
+        'c',
         _altitudesBasePoint[2].x.toStringAsFixed(3),
         _altitudesBasePoint[2].y.toStringAsFixed(3),
         null,
       ],
     ];
     _outputPoints = [
+      [null, i18n(context, 'triangle_output_x'), i18n(context, 'triangle_output_y'), null],
       [
         i18n(context, 'triangle_output_incenter'),
         _innercircle.x.toStringAsFixed(3),
@@ -435,6 +442,8 @@ class TriangleState extends State<Triangle> {
       [i18n(context, 'triangle_output_lemoine'), _lemoine.x.toStringAsFixed(3), _lemoine.y.toStringAsFixed(3), null],
       [i18n(context, 'triangle_output_gergonne'), _gergonne.x.toStringAsFixed(3), _gergonne.y.toStringAsFixed(3), null],
       [i18n(context, 'triangle_output_nagel'), _nagel.x.toStringAsFixed(3), _nagel.y.toStringAsFixed(3), null],
+      [i18n(context, 'triangle_output_napoleon_outer'), _napoleon1.x.toStringAsFixed(3), _napoleon1.y.toStringAsFixed(3), null],
+      [i18n(context, 'triangle_output_napoleon_inner'), _napoleon2.x.toStringAsFixed(3), _napoleon2.y.toStringAsFixed(3), null],
       [i18n(context, 'triangle_output_mitten'), _mitten.x.toStringAsFixed(3), _mitten.y.toStringAsFixed(3), null],
       [i18n(context, 'triangle_output_spieker'), _spieker.x.toStringAsFixed(3), _spieker.y.toStringAsFixed(3), null],
       [
@@ -445,6 +454,7 @@ class TriangleState extends State<Triangle> {
       ],
     ];
     _outputCircles = [
+      [null, i18n(context, 'triangle_output_x'), i18n(context, 'triangle_output_y'), i18n(context, 'triangle_output_r')],
       [
         i18n(context, 'triangle_output_incircle'),
         _innercircle.x.toStringAsFixed(3),
@@ -495,6 +505,8 @@ class TriangleState extends State<Triangle> {
       L: _lemoine,
       M: _mitten,
       N: _nagel,
+      N1: _napoleon1,
+      N2: _napoleon2,
       S: _spieker,
       O: _orthocenter,
       G: _gergonne,
@@ -510,6 +522,30 @@ class TriangleState extends State<Triangle> {
       EA: _exCircle[0],
       EB: _exCircle[1],
       EC: _exCircle[2],
+      labels: [
+        i18n(context, 'triangle_output_sides'), // 0
+        i18n(context, 'triangle_output_angles'), // 1
+        i18n(context, 'triangle_output_area'), // 2
+        i18n(context, 'triangle_output_circumference'), // 3
+        i18n(context, 'triangle_output_sidesmidpoint'), // 4
+        i18n(context, 'triangle_output_altitudesbasepoint'), // 5
+        i18n(context, 'triangle_output_centroid'), // 6
+        i18n(context, 'triangle_output_altitude'), // 7
+        i18n(context, 'triangle_output_lemoine'), // 8
+        i18n(context, 'triangle_output_gergonne'), // 9
+        i18n(context, 'triangle_output_nagel'), // 10
+        i18n(context, 'triangle_output_napoleon_outer'), // 11
+        i18n(context, 'triangle_output_napoleon_inner'), // 12
+        i18n(context, 'triangle_output_mitten'), // 13
+        i18n(context, 'triangle_output_spieker'), // 14
+        i18n(context, 'triangle_output_feuerbach'), // 15
+        i18n(context, 'triangle_output_incenter'), // 16
+        i18n(context, 'triangle_output_circumcenter'), // 17
+        i18n(context, 'triangle_output_incircle'), // 18
+        i18n(context, 'triangle_output_excircle'), // 19
+        i18n(context, 'triangle_output_circumscribedcircle'), // 20
+        i18n(context, 'triangle_output_feuerbachcircle'), // 21
+      ],
     ).then((value) {
       setState(() {
         _triangleImage = value;
