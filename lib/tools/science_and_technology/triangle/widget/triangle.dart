@@ -15,7 +15,7 @@ import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:gc_wizard/tools/science_and_technology/triangle/logic/triangle.dart';
 
 class Triangle extends StatefulWidget {
-  const Triangle({Key? key}) : super(key: key);
+  const Triangle({super.key});
 
   @override
   TriangleState createState() => TriangleState();
