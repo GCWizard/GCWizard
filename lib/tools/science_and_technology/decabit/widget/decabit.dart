@@ -12,7 +12,7 @@ import 'package:gc_wizard/tools/science_and_technology/decabit/logic/decabit.dar
 import 'package:gc_wizard/utils/ui_dependent_utils/text_widget_utils.dart';
 
 class Decabit extends StatefulWidget {
-  const Decabit({Key? key}) : super(key: key);
+  const Decabit({super.key});
 
   @override
   _DecabitState createState() => _DecabitState();

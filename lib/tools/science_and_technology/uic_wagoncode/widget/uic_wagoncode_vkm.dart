@@ -9,7 +9,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/uic_wagoncode/logic/uic_wagoncode_vkm.dart';
 
 class UICWagonCodeVKM extends StatefulWidget {
-  const UICWagonCodeVKM({Key? key}) : super(key: key);
+  const UICWagonCodeVKM({super.key});
 
   @override
   _UICWagonCodeVKMState createState() => _UICWagonCodeVKMState();

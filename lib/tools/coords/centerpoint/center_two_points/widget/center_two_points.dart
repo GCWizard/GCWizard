@@ -16,7 +16,7 @@ import 'package:gc_wizard/utils/constants.dart';
 import 'package:latlong2/latlong.dart';
 
 class CenterTwoPoints extends StatefulWidget {
-  const CenterTwoPoints({Key? key}) : super(key: key);
+  const CenterTwoPoints({super.key});
 
   @override
   _CenterTwoPointsState createState() => _CenterTwoPointsState();

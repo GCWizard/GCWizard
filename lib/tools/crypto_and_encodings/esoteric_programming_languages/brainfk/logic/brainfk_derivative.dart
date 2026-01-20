@@ -45,7 +45,7 @@ class BrainfkDerivatives {
         var allCharKeys = substitutions.keys.join();
         allCharKeys = _sanitizeRegExpCharacters(allCharKeys);
         code = code.replaceAll(RegExp(r'[^' + allCharKeys + ']'), '');
-        code = insertEveryNthCharacter(code, fixedSize!, '\x00');
+        code = insertEveryNthCharacter(code, fixedSize!, '\u0000');
       }
 
       code = substitution(code, substitutions, caseSensitive: isCaseSensitive);

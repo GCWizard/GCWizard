@@ -1,16 +1,16 @@
-/***********************************************************************
+/*
     Dart port of C++ implementation of
     ======================
     GeographicLib
     ======================
 
-* \file DAuxLatitude.hpp
-* \brief Header for the GeographicLib::DAuxLatitude class
-*
-* Copyright (c) Charles Karney (2022-2023) <karney@alum.mit.edu> and licensed
-* under the MIT/X11 License.  For more information, see
-* https://geographiclib.sourceforge.io/
-**********************************************************************/
+ * \file DAuxLatitude.hpp
+ * \brief Header for the GeographicLib::DAuxLatitude class
+ *
+ * Copyright (c) Charles Karney (2022-2023) <karney@alum.mit.edu> and licensed
+ * under the MIT/X11 License.  For more information, see
+ * https://geographiclib.sourceforge.io/
+*/
 
 part of 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
 

@@ -226,4 +226,18 @@ void main() {
       });
     }
   });
+
+  group("RomanNumbers.decodeRomanInput:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'expectedOutput' : '88 121', 'input' : 'LXXXVIII XCIX', 'type': RomanNumberType.ONLY_ADDITION},
+      {'expectedOutput' : '1104 3888', 'input' : 'MIVC MMMDCCCLXXXVIII', 'type': RomanNumberType.USE_SUBTRACTION_RULE},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}, type: ${elem['type']}', () {
+        var _actual = decodeRomanInput(elem['input'] as String, elem['type'] as RomanNumberType);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
 }

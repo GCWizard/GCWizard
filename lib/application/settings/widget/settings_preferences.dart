@@ -20,7 +20,7 @@ import 'package:prefs/prefs.dart';
 const _PREF_VALUE_MAX_LENGTH = 300;
 
 class SettingsPreferences extends StatefulWidget {
-  const SettingsPreferences({Key? key}) : super(key: key);
+  const SettingsPreferences({super.key});
 
   @override
   _SettingsPreferencesState createState() => _SettingsPreferencesState();

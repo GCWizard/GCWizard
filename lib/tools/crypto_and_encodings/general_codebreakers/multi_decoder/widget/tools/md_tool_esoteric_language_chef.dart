@@ -15,15 +15,12 @@ const MDT_ESOTERIC_LANGUAGES_CHEF_OPTION_GERMAN = 'common_language_german';
 
 class MultiDecoderToolEsotericLanguageChef extends AbstractMultiDecoderTool {
   MultiDecoderToolEsotericLanguageChef(
-      {Key? key,
-      required int id,
-      required String name,
-      required Map<String, Object?> options,
+      {super.key,
+      required super.id,
+      required super.name,
+      required super.options,
       required BuildContext context})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_CHEF,
             optionalKey: true,
             onDecode: (String input, String key) {
@@ -35,13 +32,12 @@ class MultiDecoderToolEsotericLanguageChef extends AbstractMultiDecoderTool {
                           checkStringFormatOrDefaultOption(MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_CHEF, options,
                               MDT_ESOTERIC_LANGUAGE_CHEF_OPTION_MODE),
                           input.toLowerCase().replaceAll('  ', ' '),
-                          key));
+                          key).output);
                   return result.trim();
                 }
               } catch (e) {}
               return null;
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolEsotericLanguageChefState();
 }

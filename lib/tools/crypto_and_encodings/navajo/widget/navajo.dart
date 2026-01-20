@@ -7,7 +7,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/navajo/logic/navajo.dart';
 
 class Navajo extends StatefulWidget {
-  const Navajo({Key? key}) : super(key: key);
+  const Navajo({super.key});
 
   @override
   _NavajoState createState() => _NavajoState();

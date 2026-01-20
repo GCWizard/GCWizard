@@ -6,18 +6,17 @@ import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
-import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
-import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
+import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
+import 'package:gc_wizard/common_widgets/dialogs/gcw_delete_alertdialog.dart';
+import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
+import 'package:gc_wizard/common_widgets/gcw_popup_menu.dart';
+import 'package:gc_wizard/common_widgets/gcw_text.dart';
+import 'package:gc_wizard/common_widgets/gcw_text_export.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/formula_solver/persistence/model.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
-
-import 'package:gc_wizard/common_widgets/dialogs/gcw_delete_alertdialog.dart';
-import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
-import 'package:gc_wizard/common_widgets/gcw_popup_menu.dart';
-import 'package:gc_wizard/common_widgets/gcw_text_export.dart';
 
 class GCWFormulaListEditor extends StatefulWidget {
   final List<FormulaBase> formulaList;
@@ -29,7 +28,7 @@ class GCWFormulaListEditor extends StatefulWidget {
   final bool formulaGroups;
 
   const GCWFormulaListEditor({
-    Key? key,
+    super.key,
     required this.formulaList,
     required this.buildGCWTool,
     required this.onAddEntry,
@@ -37,7 +36,7 @@ class GCWFormulaListEditor extends StatefulWidget {
     this.newEntryHintText,
     this.middleWidget,
     this.formulaGroups = false,
-  }) : super(key: key);
+  });
 
   @override
   _GCWFormulaListEditor createState() => _GCWFormulaListEditor();
@@ -272,7 +271,7 @@ class _GCWFormulaListEditor extends State<GCWFormulaListEditor> {
   }
 
   void _exportGroup(FormulaBase entry) {
-    String text = jsonEncode(entry.toMap()).toString();
+    String text = jsonEncode(entry.toMap());
     text = normalizeCharacters(text);
     var mode = text.length > MAX_QR_TEXT_LENGTH_FOR_EXPORT ? TextExportMode.TEXT : TextExportMode.QR;
 

@@ -7,9 +7,9 @@ import 'package:gc_wizard/tools/science_and_technology/checkdigits/logic/checkdi
 class CheckDigitsCalculateCheckDigit extends StatefulWidget {
   final CheckDigitsMode mode;
   const CheckDigitsCalculateCheckDigit({
-    Key? key,
+    super.key,
     required this.mode,
-  }) : super(key: key);
+  });
 
   @override
   CheckDigitsCalculateCheckDigitState createState() => CheckDigitsCalculateCheckDigitState();
@@ -84,9 +84,9 @@ class CheckDigitsCalculateCheckDigitState extends State<CheckDigitsCalculateChec
     }
     String result = '';
     for (int i = 0; i < output.length; i++) {
-      result = result + output[i];
+      result += output[i];
       if ((i + 1) % 4 == 0) {
-        result = result + ' ';
+        result += ' ';
       }
     }
     return result;
@@ -98,9 +98,9 @@ class CheckDigitsCalculateCheckDigitState extends State<CheckDigitsCalculateChec
     }
     String result = '';
     for (int i = 0; i < output.length; i++) {
-      result = result + output[i];
+      result += output[i];
       if ((i + 1) % 4 == 0) {
-        result = result + ' ';
+        result += ' ';
       }
     }
     return result;

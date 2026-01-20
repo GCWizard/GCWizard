@@ -15,7 +15,3 @@ bool doubleEquals(double a, double b, {double tolerance = 1e-10}) {
 bool isDouble(String text) {
   return double.tryParse(text) != null;
 }
-
-int sign(double value) {
-  return value == 0 ? 1 : value.sign.toInt();
-}

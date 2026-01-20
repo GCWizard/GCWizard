@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/base/_common/logic/base.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/base/_common/widget/base.dart';
 
@@ -43,9 +42,8 @@ const String _apiSpecification = '''
 ''';
 
 class Base122 extends AbstractBase {
-  Base122({Key? key})
+  Base122({super.key})
       : super(
-            key: key,
             encode: encodeBase122,
             decode: decodeBase122,
             searchMultimedia: false,

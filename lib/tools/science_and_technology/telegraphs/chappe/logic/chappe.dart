@@ -376,10 +376,10 @@ SegmentsText decodeVisualChappe(List<String>? inputs, ChappeCodebook language) {
     var charH = '';
 
     if (CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] == null) {
-      char = char + UNKNOWN_ELEMENT;
+      char += UNKNOWN_ELEMENT;
     } else {
       charH = CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] ?? '';
-      char = char + charH;
+      char += charH;
     }
 
     return char;
@@ -393,7 +393,7 @@ List<String> _stringToSegment(String input) {
     int j = 0;
     for (int i = 0; i < input.length / 2; i++) {
       result.add(input[j] + input[j + 1]);
-      j = j + 2;
+      j += 2;
     }
     return result;
   } else {

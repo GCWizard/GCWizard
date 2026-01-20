@@ -9,6 +9,7 @@ import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_paste_button.dart';
@@ -23,7 +24,7 @@ import 'package:gc_wizard/common_widgets/gcw_formula_list_editor.dart';
 import 'package:gc_wizard/common_widgets/gcw_popup_menu.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
+import 'package:gc_wizard/common_widgets/gcw_web_statefulwidget.dart';
 import 'package:gc_wizard/common_widgets/key_value_editor/gcw_key_value_editor.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
@@ -34,7 +35,6 @@ import 'package:gc_wizard/tools/coords/map_view/widget/gcw_mapview.dart';
 import 'package:gc_wizard/tools/coords/variable_coordinate/persistence/json_provider.dart' as var_coords_provider;
 import 'package:gc_wizard/tools/coords/variable_coordinate/persistence/model.dart' as var_coords_model;
 import 'package:gc_wizard/tools/coords/variable_coordinate/widget/variable_coordinate.dart';
-import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitution.dart';
 import 'package:gc_wizard/tools/formula_solver/logic/formula_painter.dart';
 import 'package:gc_wizard/tools/formula_solver/logic/formula_parser.dart';
 import 'package:gc_wizard/tools/formula_solver/persistence/json_provider.dart';
@@ -53,8 +53,80 @@ part 'package:gc_wizard/tools/formula_solver/widget/formula_solver_values.dart';
 part 'package:gc_wizard/tools/formula_solver/widget/formula_value_type_key_value_input.dart';
 part 'package:gc_wizard/tools/formula_solver/widget/formula_value_type_key_value_item.dart';
 
-class FormulaSolverFormulaGroups extends StatefulWidget {
-  const FormulaSolverFormulaGroups({Key? key}) : super(key: key);
+const String _apiSpecification = '''
+{
+  "/formulasolver" : {
+    "get": {
+      "summary": "Formula Solver Tool",
+      "responses": {
+        "description": "Calculate Formulas"
+      }
+    },
+    "parameters" : [
+      {
+        "in": "query",
+        "name": "input",
+        "required": true,
+        "description": "Formula data in json format",
+        "schema": {
+          "type":"object",
+          "properties":{
+            "id":{
+              "type":"number",
+              "required":true
+            },
+            "name":{
+              "type":"string",
+              "required":true
+            },
+            "formulas":{
+              "type":"array",
+              "properties":{
+                "id":{
+                  "type":"number",
+                  "required":true
+                },
+                "name":{
+                  "type":"string",
+                  "required":true
+                },
+              }
+            }
+            "values":{
+              "type":"array",
+              "properties":{
+                "id":{
+                  "type":"number",
+                  "required":true
+                },
+                "key":{
+                  "type":"string",
+                  "required":true
+                },
+                "value":{
+                  "type":"string",
+                  "required":true
+                },
+                "type":{
+                  "type":"string",
+                  "required":false
+                  "enum": [
+                    FormulaValueType
+                  ],
+                  "default": "fixed"
+                },
+              }
+            }
+          }
+        }
+      },
+    ]
+  }
+}
+''';
+
+class FormulaSolverFormulaGroups extends GCWWebStatefulWidget {
+  FormulaSolverFormulaGroups({super.key}) : super(apiSpecification: _apiSpecification);
 
   @override
   _FormulaSolverFormulaGroupsState createState() => _FormulaSolverFormulaGroupsState();
@@ -70,6 +142,18 @@ class _FormulaSolverFormulaGroupsState extends State<FormulaSolverFormulaGroups>
 
   @override
   Widget build(BuildContext context) {
+
+    if (widget.hasWebParameter()) {
+      var data = widget.getWebParameter('input');
+      if (data != null) {
+        var id = importFormulaGroupFromJson(context, data);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          openFormulas(id);
+        });
+      }
+      widget.webParameter = null;
+    }
+
     return Column(
       children: <Widget>[
         GCWTextDivider(
@@ -106,6 +190,15 @@ class _FormulaSolverFormulaGroupsState extends State<FormulaSolverFormulaGroups>
     }
   }
 
+  void openFormulas(int id) {
+    var gcwTool = _buildNavigateGCWTool(id);
+    if (gcwTool == null) return;
+
+    Navigator.push(
+        context,
+        NoAnimationMaterialPageRoute<GCWTool>(builder: (context) => gcwTool));
+  }
+
   GCWTool? _buildNavigateGCWTool(int id) {
     var entry = formulaGroups.firstWhereOrNull((formula) => formula.id == id);
 
@@ -115,7 +208,7 @@ class _FormulaSolverFormulaGroupsState extends State<FormulaSolverFormulaGroups>
         toolName: '${entry.name} - ${i18n(context, 'formulasolver_formulas')}',
         helpSearchString: 'formulasolver_formulas',
         defaultLanguageToolName: '${entry.name} - ${i18n(context, 'formulasolver_formulas', useDefaultLanguage: true)}',
-        id: '',
+        id: 'formulasolver',
       );
     } else {
       return null;
@@ -137,17 +230,17 @@ String _createImportGroupName(BuildContext context, String currentName) {
   return name;
 }
 
-void importFormulaGroupFromJson(BuildContext context, String data) {
+int importFormulaGroupFromJson(BuildContext context, String data) {
   data = normalizeCharacters(data);
   var group = FormulaGroup.fromJson(asJsonMap(jsonDecode(data)));
   group.name = _createImportGroupName(context, group.name);
 
-  insertGroup(group);
+  return insertGroup(group);
 }
 
 void openInFormulaGroups(BuildContext context) {
   Navigator.push(
       context,
       NoAnimationMaterialPageRoute<GCWTool>(
-          builder: (context) => GCWTool(tool: const FormulaSolverFormulaGroups(), id: 'formulasolver')));
+          builder: (context) => GCWTool(tool: FormulaSolverFormulaGroups(), id: 'formulasolver')));
 }

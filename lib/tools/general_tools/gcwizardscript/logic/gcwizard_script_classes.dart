@@ -95,7 +95,7 @@ class _GCWizardScriptClassLabelStack {
   String toString() {
     String result = '';
     _contents.forEach((key, value) {
-      result = result + key + ', ' + value.toString() + '\n';
+      result += key + ', ' + value.toString() + '\n';
     });
     return result;
   }

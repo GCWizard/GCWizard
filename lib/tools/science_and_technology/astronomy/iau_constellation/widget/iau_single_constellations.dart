@@ -12,7 +12,7 @@ import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 class IAUSingleConstellation extends StatefulWidget {
   final String ConstellationName;
 
-  const IAUSingleConstellation({Key? key, required this.ConstellationName}) : super(key: key);
+  const IAUSingleConstellation({super.key, required this.ConstellationName});
 
   @override
   IAUSingleConstellationState createState() => IAUSingleConstellationState();

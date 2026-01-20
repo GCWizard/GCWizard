@@ -1,7 +1,7 @@
 part of 'package:gc_wizard/tools/formula_solver/widget/formula_solver_formulagroups.dart';
 
 class _FormulaValueTypeKeyInput extends GCWKeyValueInput {
-  _FormulaValueTypeKeyInput({Key? key}) : super(key: key);
+  _FormulaValueTypeKeyInput({super.key});
 
   @override
   GCWKeyValueInputState createState() => _GCWKeyValueTypeNewEntryState();
@@ -58,7 +58,8 @@ class _GCWKeyValueTypeNewEntryState extends GCWKeyValueInputState {
   bool validInput() {
     if (_currentType == FormulaValueType.INTERPOLATED) {
       if (!VARIABLESTRING.hasMatch(currentValue.toLowerCase())) {
-        showSnackBar(i18n(context, 'formulasolver_values_novalidinterpolated'), context);
+        showGCWAlertDialog(context, '', i18n(context, 'formulasolver_values_novalidinterpolated'),
+            cancelButton: false, () {});
         return false;
       }
     }

@@ -9,18 +9,14 @@ const MDT_INTERNALNAMES_RAGBABY = 'multidecoder_tool_ragbaby_title';
 const MDT_RAGBABY_OPTION_MODE = 'multidecoder_tool_ragbaby_option_mode';
 
 class MultiDecoderToolRagbaby extends AbstractMultiDecoderTool {
-  MultiDecoderToolRagbaby({Key? key, required int id, required String name, required Map<String, Object?> options})
+  MultiDecoderToolRagbaby({super.key, required super.id, required super.name, required super.options})
       : super(
-      key: key,
-      id: id,
-      name: name,
       internalToolName: MDT_INTERNALNAMES_RAGBABY,
       onDecode: (String input, String key) {
         return decryptRagbaby(input, key,
             type: _parseStringToEnum(stringNullableTypeCheck(options[MDT_RAGBABY_OPTION_MODE], null)));
       },
-      requiresKey: true,
-      options: options);
+      requiresKey: true);
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolRagbabyState();
 }

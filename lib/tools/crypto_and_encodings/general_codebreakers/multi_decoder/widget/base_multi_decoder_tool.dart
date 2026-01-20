@@ -10,15 +10,14 @@ abstract class AbstractMultiDecoderTool extends StatefulWidget {
   late final Map<String, Object?> options;
 
   AbstractMultiDecoderTool(
-      {Key? key,
+      {super.key,
       required this.id,
       required this.name,
       required this.internalToolName,
       required this.onDecode,
       this.requiresKey = false,
       this.optionalKey = false,
-      required this.options})
-      : super(key: key);
+      required this.options});
 }
 
 class MultiDecoderToolDummy extends AbstractMultiDecoderTool {

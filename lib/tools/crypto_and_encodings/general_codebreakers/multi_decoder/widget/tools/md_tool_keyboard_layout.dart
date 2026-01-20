@@ -11,14 +11,11 @@ const MDT_KEYBOARDLAYOUT_OPTION_TO = 'keyboard_to';
 
 class MultiDecoderToolKeyboardLayout extends AbstractMultiDecoderTool {
   MultiDecoderToolKeyboardLayout(
-      {Key? key,
-      required int id,
-      required String name,
-      required Map<String, Object?> options})
+      {super.key,
+      required super.id,
+      required super.name,
+      required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_KEYBOARDLAYOUT,
             onDecode: (String input, String key) {
               var from = getKeyboardTypeByName(checkStringFormatOrDefaultOption(
@@ -33,8 +30,7 @@ class MultiDecoderToolKeyboardLayout extends AbstractMultiDecoderTool {
                       '');
               if (from == null || to == null) return null;
               return encodeKeyboard(input, from, to);
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolKeyboardLayoutState();
 }

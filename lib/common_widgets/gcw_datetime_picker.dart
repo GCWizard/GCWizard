@@ -102,7 +102,7 @@ class GCWDateTimePicker extends StatefulWidget {
   final TextEditingController? mSecondsController;
 
   const GCWDateTimePicker({
-    Key? key,
+    super.key,
     required this.onChanged,
     this.datetime,
     this.duration,
@@ -118,7 +118,7 @@ class GCWDateTimePicker extends StatefulWidget {
     this.minutesController,
     this.secondsController,
     this.mSecondsController,
-  }) : super(key: key);
+  });
 
   @override
   _GCWDateTimePickerState createState() => _GCWDateTimePickerState();

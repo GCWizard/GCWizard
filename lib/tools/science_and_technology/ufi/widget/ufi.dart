@@ -11,7 +11,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/ufi/logic/ufi.dart' as logic;
 
 class UFI extends StatefulWidget {
-  const UFI({Key? key}) : super(key: key);
+  const UFI({super.key});
 
   @override
   _UFIState createState() => _UFIState();

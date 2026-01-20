@@ -9,7 +9,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/skytale/logic/skytale.dart';
 
 class Skytale extends StatefulWidget {
-  const Skytale({Key? key}) : super(key: key);
+  const Skytale({super.key});
 
   @override
   _SkytaleState createState() => _SkytaleState();

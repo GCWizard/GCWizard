@@ -8,11 +8,8 @@ const MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_KAROL_ROBOT = 'karol_robot_title';
 
 class MultiDecoderToolEsotericLanguageKarolRobot extends AbstractMultiDecoderTool {
   MultiDecoderToolEsotericLanguageKarolRobot(
-      {Key? key, required int id, required String name, required Map<String, Object?> options})
+      {super.key, required super.id, required super.name, required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_KAROL_ROBOT,
             optionalKey: true,
             onDecode: (String input, String key) {
@@ -25,8 +22,7 @@ class MultiDecoderToolEsotericLanguageKarolRobot extends AbstractMultiDecoderToo
                 }
               } catch (e) {}
               return null;
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolEsotericLanguageKarolRobotState();
 }

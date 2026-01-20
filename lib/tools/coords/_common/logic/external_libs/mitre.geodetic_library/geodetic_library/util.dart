@@ -31,9 +31,9 @@ double _modcrs(double crs) {
 double _modpos(double x, double y) {
   /* returns positive remainder of x/y. */
 
-  x = x % y;
+  x %= y;
   if (x < 0.0) {
-    x = x + y;
+    x += y;
   }
   return x;
 }

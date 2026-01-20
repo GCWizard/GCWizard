@@ -5,7 +5,7 @@ import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 class CrosstotalSwitch extends StatefulWidget {
   final void Function(bool) onChanged;
 
-  const CrosstotalSwitch({Key? key, required this.onChanged}) : super(key: key);
+  const CrosstotalSwitch({super.key, required this.onChanged});
 
   @override
   _CrosstotalSwitchState createState() => _CrosstotalSwitchState();

@@ -9,18 +9,14 @@ const MDT_INTERNALNAMES_PLAYFAIR = 'multidecoder_tool_playfair_title';
 const MDT_PLAYFAIR_OPTION_MODE = 'multidecoder_tool_playfair_option_mode';
 
 class MultiDecoderToolPlayfair extends AbstractMultiDecoderTool {
-  MultiDecoderToolPlayfair({Key? key, required int id, required String name, required Map<String, Object?> options})
+  MultiDecoderToolPlayfair({super.key, required super.id, required super.name, required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_PLAYFAIR,
             onDecode: (String input, String key) {
               return decryptPlayfair(input, key,
                   mode: _parseStringToEnum(stringNullableTypeCheck(options[MDT_PLAYFAIR_OPTION_MODE], null)));
             },
-            requiresKey: true,
-            options: options);
+            requiresKey: true);
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolPlayfairState();
 }

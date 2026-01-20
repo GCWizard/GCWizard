@@ -14,7 +14,7 @@ class BundeswehrTalkingBoardCodingOutput {
 
 BundeswehrTalkingBoardCodingOutput encodeBundeswehr(
     String plainText, BundeswehrTalkingBoardAuthentificationTable tableEncoding) {
-  if (tableEncoding.Encoding!.isEmpty) {
+  if (tableEncoding.Encoding == null || tableEncoding.Encoding!.isEmpty) {
     return BundeswehrTalkingBoardCodingOutput(
         ResponseCode: BUNDESWEHR_TALKINGBOARD_AUTH_RESPONSE_EMPTY_CUSTOM_NUMERAL_TABLE, Details: '');
   }
@@ -54,9 +54,9 @@ BundeswehrTalkingBoardCodingOutput decodeBundeswehr(
 
   cypherText.split(' ').forEach((pair) {
     if (pair.length == 2) {
-      result = result + _decodeNumeralCode(pair, tableNumeralCode);
+      result += _decodeNumeralCode(pair, tableNumeralCode);
     } else {
-      result = result + UNKNOWN_ELEMENT;
+      result += UNKNOWN_ELEMENT;
     }
   });
   return BundeswehrTalkingBoardCodingOutput(ResponseCode: BUNDESWEHR_TALKINGBOARD_CODE_RESPONSE_OK, Details: result);

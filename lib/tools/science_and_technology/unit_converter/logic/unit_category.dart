@@ -2,6 +2,7 @@ import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/acce
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/angle.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/area.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/density.dart';
+import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/drag.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/energy.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/force.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/length.dart';
@@ -21,6 +22,7 @@ final UNITCATEGORY_ANGLE = UnitCategory<Angle>('unitconverter_category_angle', a
 final UNITCATEGORY_AREA = UnitCategory<Area>('unitconverter_category_area', areas, AREA_SQUAREMETER, false);
 final UNITCATEGORY_DENSITY =
     UnitCategory<Density>('unitconverter_category_density', densities, DENSITY_KILOGRAMPERCUBICMETER, false);
+final UNITCATEGORY_DRAG = UnitCategory<Drag>('unitconverter_category_frag', drags, DRAG, true);
 final UNITCATEGORY_ENERGY = UnitCategory<Energy>('unitconverter_category_energy', energies, ENERGY_JOULE, true);
 final UNITCATEGORY_FORCE = UnitCategory<Force>('unitconverter_category_force', forces, FORCE_NEWTON, true);
 final UNITCATEGORY_LENGTH = UnitCategory<Length>('unitconverter_category_length', baseLengths, LENGTH_METER, true);

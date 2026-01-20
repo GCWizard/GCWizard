@@ -9,7 +9,7 @@ import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/utils/datetime_utils.dart';
 
 class TimeCalculator extends StatefulWidget {
-  const TimeCalculator({Key? key}) : super(key: key);
+  const TimeCalculator({super.key});
 
   @override
   _TimeCalculatorState createState() => _TimeCalculatorState();

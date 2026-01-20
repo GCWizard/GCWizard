@@ -12,7 +12,7 @@ class Brainfk extends StatefulWidget {
   final String Function(String, {String? input})? interpret;
   final String Function(String)? generate;
 
-  const Brainfk({Key? key, this.interpret, this.generate}) : super(key: key);
+  const Brainfk({super.key, this.interpret, this.generate});
 
   @override
   _BrainfkState createState() => _BrainfkState();

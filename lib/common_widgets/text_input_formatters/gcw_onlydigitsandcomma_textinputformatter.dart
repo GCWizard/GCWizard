@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:gc_wizard/utils/ui_dependent_utils/textinputformatter_utils.dart';
 
 class GCWOnlyDigitsAndCommaInputFormatter extends TextInputFormatter {
   @override
@@ -6,10 +7,6 @@ class GCWOnlyDigitsAndCommaInputFormatter extends TextInputFormatter {
     var newSanitized = newValue.text.trim();
     if (newSanitized.length != newSanitized.replaceAll(RegExp(r'[^0-9,]'), '').length) return oldValue;
 
-    return TextEditingValue(
-      text: newSanitized, selection: TextSelection.fromPosition(
-        TextPosition(offset: newSanitized.length),
-      ),
-    );
+    return newValueEditingValue(newValue, newSanitized);
   }
 }

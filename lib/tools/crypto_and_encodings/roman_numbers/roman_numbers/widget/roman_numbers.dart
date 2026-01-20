@@ -47,7 +47,7 @@ const String _apiSpecification = '''
 ''';
 
 class RomanNumbers extends GCWWebStatefulWidget {
-  RomanNumbers({Key? key}) : super(key: key, apiSpecification: _apiSpecification);
+  RomanNumbers({super.key}) : super(apiSpecification: _apiSpecification);
 
   @override
   _RomanNumbersState createState() => _RomanNumbersState();
@@ -135,16 +135,8 @@ class _RomanNumbersState extends State<RomanNumbers> {
       ];
     } else {
       output = [
-        _currentDecodeInput
-            .split(RegExp(r'\s+'))
-            .map((number) => decodeRomanNumbers(number, type: RomanNumberType.USE_SUBTRACTION_RULE))
-            .where((number) => number != null)
-            .join(' '),
-        _currentDecodeInput
-            .split(RegExp(r'\s+'))
-            .map((number) => decodeRomanNumbers(number, type: RomanNumberType.ONLY_ADDITION))
-            .where((number) => number != null)
-            .join(' ')
+        decodeRomanInput(_currentDecodeInput, RomanNumberType.USE_SUBTRACTION_RULE),
+        decodeRomanInput(_currentDecodeInput, RomanNumberType.ONLY_ADDITION)
       ];
     }
 

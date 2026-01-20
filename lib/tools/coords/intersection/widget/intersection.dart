@@ -20,7 +20,7 @@ import 'package:gc_wizard/utils/constants.dart';
 import 'package:latlong2/latlong.dart';
 
 class Intersection extends StatefulWidget {
-  const Intersection({Key? key}) : super(key: key);
+  const Intersection({super.key});
 
   @override
   _IntersectionState createState() => _IntersectionState();

@@ -5,16 +5,12 @@ import 'package:gc_wizard/tools/crypto_and_encodings/rotation/logic/rotation.dar
 const MDT_INTERNALNAMES_ROT18 = 'multidecoder_tool_rot18_title';
 
 class MultiDecoderToolROT18 extends AbstractMultiDecoderTool {
-  MultiDecoderToolROT18({Key? key, required int id, required String name, required Map<String, Object?> options})
+  MultiDecoderToolROT18({super.key, required super.id, required super.name, required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_ROT18,
             onDecode: (String input, String key) {
               return Rotator().rot18(input);
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolROT18State();
 }

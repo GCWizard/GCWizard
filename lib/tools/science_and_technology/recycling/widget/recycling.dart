@@ -4,7 +4,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.d
 import 'package:gc_wizard/tools/science_and_technology/recycling/logic/recycling.dart';
 
 class Recycling extends StatefulWidget {
-  const Recycling({Key? key}) : super(key: key);
+  const Recycling({super.key});
 
   @override
   _RecyclingState createState() => _RecyclingState();

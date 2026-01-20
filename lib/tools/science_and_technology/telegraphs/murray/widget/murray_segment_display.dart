@@ -7,17 +7,12 @@ const _MURRAY_RELATIVE_DISPLAY_HEIGHT = 110;
 const _MURRAY_RADIUS = 10.0;
 
 class _MurraySegmentDisplay extends NSegmentDisplay {
-  _MurraySegmentDisplay(
-      {Key? key,
-      required Map<String, bool> segments,
-      bool readOnly = false,
-      void Function(Map<String, bool>)? onChanged})
+  _MurraySegmentDisplay({
+      required super.segments,
+      super.readOnly,
+      super.onChanged})
       : super(
-            key: key,
             initialSegments: _INITIAL_SEGMENTS,
-            segments: segments,
-            readOnly: readOnly,
-            onChanged: onChanged,
             type: SegmentDisplayType.CUSTOM,
             customPaint: (GCWTouchCanvas canvas, Size size, Map<String, bool> currentSegments, Function setSegmentState,
                 Color segment_color_on, Color segment_color_off) {
@@ -43,7 +38,7 @@ class _MurraySegmentDisplay extends NSegmentDisplay {
                         Size(pointSize * 3 + 2, pointSize * 2 + 2),
                     paint);
 
-                if (size.height < 50) return;
+                if (size.height < NSegmentDisplay.MIN_HEIGHT) return;
               });
 
               shutters.forEach((key, value) {
@@ -56,7 +51,7 @@ class _MurraySegmentDisplay extends NSegmentDisplay {
                   setSegmentState(key, !segmentActive(currentSegments, key));
                 });
 
-                if (size.height < 50) return;
+                if (size.height < NSegmentDisplay.MIN_HEIGHT) return;
               });
             });
 }

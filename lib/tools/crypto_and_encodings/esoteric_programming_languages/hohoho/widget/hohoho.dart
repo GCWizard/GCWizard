@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_langua
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class Hohoho extends StatefulWidget {
-  const Hohoho({Key? key}) : super(key: key);
+  const Hohoho({super.key});
 
   @override
   _HohohoState createState() => _HohohoState();

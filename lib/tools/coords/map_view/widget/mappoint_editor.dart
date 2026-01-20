@@ -16,7 +16,7 @@ class MapPointEditor extends StatefulWidget {
   final GCWMapPoint mapPoint;
   Length lengthUnit;
 
-  MapPointEditor({Key? key, required this.mapPoint, required this.lengthUnit}) : super(key: key);
+  MapPointEditor({super.key, required this.mapPoint, required this.lengthUnit});
 
   @override
   _MapPointEditorState createState() => _MapPointEditorState();

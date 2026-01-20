@@ -6,7 +6,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/pokemon/logic/pokemon.dart';
 
 class Pokemon extends StatefulWidget {
-  const Pokemon({Key? key}) : super(key: key);
+  const Pokemon({super.key});
 
   @override
   _PokemonState createState() => _PokemonState();
@@ -53,7 +53,7 @@ class _PokemonState extends State<Pokemon> {
             ? GCWTextField(
                 controller: _decodeController,
                 inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp('[a-z A-Z]')),
+                  FilteringTextInputFormatter.allow(RegExp(r'[a-z A-Z\s]')),
                 ],
                 onChanged: (text) {
                   setState(() {

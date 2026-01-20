@@ -9,21 +9,17 @@ const MDT_KEYBOARDNUMBERS_OPTION_TYPE = 'multidecoder_tool_keyboardnumbers_type'
 
 class MultiDecoderToolKeyboardNumbers extends AbstractMultiDecoderTool {
   MultiDecoderToolKeyboardNumbers(
-      {Key? key,
-      required int id,
-      required String name,
-      required Map<String, Object?> options})
+      {super.key,
+      required super.id,
+      required super.name,
+      required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_KEYBOARDNUMBERS,
             onDecode: (String input, String key) {
               return keyboardNumbersByName[checkStringFormatOrDefaultOption(
                       MDT_INTERNALNAMES_KEYBOARDNUMBERS, options, MDT_KEYBOARDNUMBERS_OPTION_TYPE)]!(input)
                   .trim();
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolKeyboardNumbersState();
 }

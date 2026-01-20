@@ -17,7 +17,7 @@ import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
 
 class HexString2File extends StatefulWidget {
-  const HexString2File({Key? key}) : super(key: key);
+  const HexString2File({super.key});
 
   @override
   _HexString2FileState createState() => _HexString2FileState();

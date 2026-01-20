@@ -1,0 +1,61 @@
+De GC Wizard is een open-source tool collectie.
+
+Het werd oorspronkelijk gemaakt om Geocachers een offline tool aan te bieden om hen te ondersteunen met mysteries en raadsels. De GC Wizard bevat dus talloze hulpmiddelen voor eenvoudige cryptografie, geografische en wetenschappelijke berekeningen en honderden sets van verschillende symbolen.
+
+Ondertussen is het project zeer groot geworden en kan het bruikbaar zijn voor veel niet-Geocaching problemen.
+
+Vertaald naar 🇬🇧 🇩🇪 🇫🇷 🇰🇷
+
+<b>Hoogtepunten</b>
+
+<b>Algemeen</b>
+• Formule Oplosser: Voor het afhandelen van Multi fase variabelen
+• Multi Decoder: Voer een onbekende code in en laat verschillende decoders en rekenmachines deze achter elkaar interpreteren
+• Meer dan 200 sets Symbool Tabellen: Gebruik een directe decodering van symbolen voor tekens; sla eigen codering op als een afbeelding
+• Online Handleiding: Elke tool heeft een eigen handmatige pagina, vertaald in 🇬🇧 🇩🇪 🇫🇷
+
+<b>Cryptografie & coderingen</b>
+• Alfabet Waarden (A = 1, B = 2, ...): Configureerbare alfabets met taalspecifieke karakterverwerking
+• Braille grafische decoder: Typ de punten in een grafische interface; ondersteunt verschillende talen
+• Cijferboek : Kies het juiste systeem (bijvoorbeeld Lijn + Letter Cijfer of Sectie + Regel + Woordnummer, . .), geef speciale tekens en lege lijnen aan...
+• Enigma: Een volledig werkende Enigma simulator incl. talloze mogelijke instellingen
+• Esoterische talen: Generatoren en vertalers voor meerdere esoterische programmeertalen zoals Brainf**k, Ook, Malbolge en Chef
+• Morse
+• Numerale woorden: lijsten met belangrijke getallen in verschillende talen. Voor Engels + Duits zijn er parsers om zelfs complexe numerieke woorden te identificeren
+• Vervanging en Vigeneľre Codebrekers: Probeer de oplossing te vinden zonder de sleutels te kennen
+• Klassieke Codes: Playfair, Polybios, Railfence, ...
+• Historische codes: Caesar, Vigeneρnere, telegraaf codes, ...
+• Militaire codes: ADFGX, Cipher Wheel, Tapir, ...
+• Technische coderingen: BCD, CCITT, Hashes (incl. brute-force hash breaker), RSA, ...
+
+<b>Coördinaten</b>
+• Hoge precisie coördinaat algoritmen die nauwkeurige berekeningen ondersteunen, zelfs met zeer lange afstanden door altijd de vorm van de aarde (ellipsoïd) in overweging te nemen
+• Ondersteuning van verschillende ellipsoiden, zelfs andere planeten
+• Coördinaatformaten: ondersteuning van UTM, MGRS, XYZ, SwissGrid, NAC, PlusCode, Geohash, ...
+• Trefpunt-projectie: inclusief nauwkeurige omgekeerde projectie
+• Open Kaart: Stel eigen punten en regels in, meet paden, export als en import van GPX/KML; OpenStreetMap en satellietweergave
+• Variabele coördinaten: Interpolate coördinatenformules als sommige delen van coördinaat niet worden gegeven. Bekijk de resultaten op de kaart
+• Cross bearing, Centraal punt van twee en drie coördinaten, verschillende snijpunten van lijnen en cirkels, ...
+
+<b>Wetenschap en Technologie</b>
+• Astronomie: zon- en maanpositie op een bepaalde plaats en tijd berekenen
+• Kleurruimte Converter: Converteer kleurwaarden tussen RGB, HSL, Hex, CMYK, ...
+• Landen: ISO, aanroep- en kenteken-registratiecodes, vlaggen
+• Datum en tijd functies: Week dag, tijd verschillen, ...
+• Irrationele getallen: π, φ en e: Toon en zoek tot 1 Miljoen. cijfers
+• Nummer reeksen: Factorial, Fibonacci en Co.
+• Numerieke systemen: Zet decimaal om naar binair, hexadecimaal, ...
+• Periodieke tabel van de elementen: Interactieve weergave; lijsten die de elementen sorteren op elk criterium
+• Telefoontoetsen: Zet klassieke telefoontoetsen om in letters. Ondersteunt specifieke telefoonmodel eigen gedrag
+• Priemgetallen: zoek priemgetallen tot 1 miljoen.
+• Segmentweergave: grafische interface voor het decoderen en coderen van 7 tot 16 segmentdisplays
+• Eenheid Converter: Lengte, Volume, Druk, Kracht en nog veel meer; Omzetten tussen gemeenschappelijke eenheden incl. voorvoegsels zoals micro en kilo
+• Schijnbare temperatuur, kruissommen, DTMF, toetsenbordindelingen, projectielen, weerstandscodes, ...
+
+<b>Afbeeldingen en bestanden</b>
+• Hex-viewer
+• Exif/Metadata-viewer
+• Analyseer frames van geanimeerde afbeeldingen
+• Kleurcorrecties: Aanpassen contrast, saturatie, randdetectie, ...
+• Zoek naar verborgen data of verborgen archieven
+• Lees QR/Barcodes van afbeeldingen, maak ze aan vanuit binaire invoer

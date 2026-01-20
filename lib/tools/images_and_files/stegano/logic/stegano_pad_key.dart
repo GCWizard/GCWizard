@@ -4,5 +4,5 @@ String _steganoPadKey(String key) {
   if (key.length > 32) {
     throw Exception('cryption_key_length_greater_than_32');
   }
-  return key.padRight(32, '\x00');
+  return key.padRight(32, '\u0000');
 }

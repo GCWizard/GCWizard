@@ -6,7 +6,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/games/catan/logic/catan.dart';
 
 class Catan extends StatefulWidget {
-  const Catan({Key? key}) : super(key: key);
+  const Catan({super.key});
 
   @override
   _CatanState createState() => _CatanState();

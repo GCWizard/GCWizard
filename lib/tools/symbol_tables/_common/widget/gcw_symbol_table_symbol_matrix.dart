@@ -6,8 +6,8 @@ import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
-import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
+import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/logic/symbol_table_data.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_container.dart';
@@ -27,7 +27,7 @@ class GCWSymbolTableSymbolMatrix extends StatefulWidget {
   final double scale;
 
   const GCWSymbolTableSymbolMatrix(
-      {Key? key,
+      {super.key,
       required this.imageData,
       required this.countColumns,
       required this.mediaQueryData,
@@ -37,8 +37,7 @@ class GCWSymbolTableSymbolMatrix extends StatefulWidget {
       this.fixed = false,
       this.overlayOn = true,
       this.symbolKey = '',
-      this.scale = 1.0})
-      : super(key: key);
+      this.scale = 1.0});
 
   @override
   _GCWSymbolTableSymbolMatrixState createState() => _GCWSymbolTableSymbolMatrixState();
@@ -151,7 +150,7 @@ class _GCWSymbolTableSymbolMatrixState extends State<GCWSymbolTableSymbolMatrix>
                           //TODO: Using GCWText instead: Currently it would expand the textfield width to max.
                           child: AutoSizeText(
                             _showSpaceSymbolInOverlay(symbolText),
-                            style: gcwTextStyle().copyWith(color: colors.dialogText(), fontWeight: FontWeight.bold),
+                            style: gcwTextStyle().copyWith(color: colors.dialogText(), fontWeight: FontWeight.bold, fontFamily: 'Noto'),
                             maxLines: 2,
                             minFontSize: 9.0,
                           ),

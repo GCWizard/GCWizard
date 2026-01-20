@@ -24,7 +24,7 @@ import 'package:image/image.dart' as img;
 import 'package:tuple/tuple.dart';
 
 class VisualCryptography extends StatefulWidget {
-  const VisualCryptography({Key? key}) : super(key: key);
+  const VisualCryptography({super.key});
 
   @override
   _VisualCryptographyState createState() => _VisualCryptographyState();
@@ -79,14 +79,14 @@ class _VisualCryptographyState extends State<VisualCryptography> {
         supportedFileTypes: SUPPORTED_IMAGE_TYPES,
         suppressGallery: false,
         file: _decodeImage1,
-        onLoaded: (_file) {
-          if (_file == null) {
+        onLoaded: (GCWFile? value) {
+          if (value == null) {
             showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
             return;
           }
 
           setState(() {
-            _decodeImage1 = _file;
+            _decodeImage1 = value;
           });
         },
       ),
@@ -96,14 +96,14 @@ class _VisualCryptographyState extends State<VisualCryptography> {
         supportedFileTypes: SUPPORTED_IMAGE_TYPES,
         suppressGallery: false,
         file: _decodeImage2,
-        onLoaded: (_file) {
-          if (_file == null) {
+        onLoaded: (GCWFile? value) {
+          if (value == null) {
             showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
             return;
           }
 
           setState(() {
-            _decodeImage2 = _file;
+            _decodeImage2 = value;
           });
         },
       ),
@@ -166,14 +166,14 @@ class _VisualCryptographyState extends State<VisualCryptography> {
         supportedFileTypes: SUPPORTED_IMAGE_TYPES,
         suppressGallery: false,
         file: _encodeImage,
-        onLoaded: (_file) {
-          if (_file == null) {
+        onLoaded: (GCWFile? value) {
+          if (value == null) {
             showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
             return;
           }
 
           setState(() {
-            _encodeImage = _file;
+            _encodeImage = value;
             _encodeOutputImages = null;
             __encodeImageSize();
           });
@@ -202,14 +202,14 @@ class _VisualCryptographyState extends State<VisualCryptography> {
                   suppressHeader: true,
                   suppressGallery: false,
                   file: _encodeKeyImage,
-                  onLoaded: (_file) {
-                    if (_file == null) {
+                  onLoaded: (GCWFile? value) {
+                    if (value == null) {
                       showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
                       return;
                     }
 
                     setState(() {
-                      _encodeKeyImage = _file;
+                      _encodeKeyImage = value;
                       _encodeOutputImages = null;
                       __encodeKeyImageSize();
                     });

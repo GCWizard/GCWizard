@@ -1,4 +1,4 @@
-/***********************************************************************
+/*
     Dart port of Java implementation of
     ======================
     GeographicLib
@@ -9,7 +9,7 @@
  * https://geographiclib.sourceforge.io/
  * https://sourceforge.net/projects/geographiclib/
 
- **********************************************************************/
+*/
 part of 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
 
 /*

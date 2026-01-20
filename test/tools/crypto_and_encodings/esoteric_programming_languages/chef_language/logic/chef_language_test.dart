@@ -172,10 +172,10 @@ Serves 1.''';
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        CHEFOutputInterpret _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
         var length = (elem['expectedOutput'] as List<dynamic>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
+          expect(_actual.output[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
     }
@@ -472,10 +472,10 @@ Serves 1.''';
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        CHEFOutputInterpret _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
         var length = (elem['expectedOutput'] as List<dynamic>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
+          expect(_actual.output[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
     }
@@ -757,10 +757,10 @@ Serves.''';
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        CHEFOutputInterpret _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
         var length = (elem['expectedOutput'] as List<dynamic>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
+          expect(_actual.output[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
     }
@@ -1076,10 +1076,10 @@ Add cocoa powder into the mixing bowl.''';
 
       for (var elem in _inputsToExpected) {
         test('input: ${elem['input']}', () {
-          var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+          CHEFOutputInterpret _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
           var length = (elem['expectedOutput'] as List<String>).length;
           for (int i = 0; i < length; i++) {
-            expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
+            expect(_actual.output[i], (elem['expectedOutput'] as List<String>)[i]);
           }
         });
       }
@@ -1360,10 +1360,10 @@ Portionen: 1.''';
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        CHEFOutputInterpret _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
         var length = (elem['expectedOutput'] as List<dynamic>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], (elem['expectedOutput'] as List<dynamic>)[i]);
+          expect(_actual.output[i], (elem['expectedOutput'] as List<dynamic>)[i]);
         }
       });
     }
@@ -1492,10 +1492,10 @@ Serves 1.''';
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        CHEFOutputInterpret _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
         var length = (elem['expectedOutput'] as List<String>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
+          expect(_actual.output[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
     }
@@ -1625,10 +1625,10 @@ Serves 1.''';
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        CHEFOutputInterpret _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
         var length = (elem['expectedOutput'] as List<String>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
+          expect(_actual.output[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
     }
@@ -1924,10 +1924,10 @@ Refrigerate for 1 hour.''';
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        CHEFOutputInterpret _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
         var length = (elem['expectedOutput'] as List<String>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
+          expect(_actual.output[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
     }
@@ -2006,10 +2006,10 @@ Refrigerate for 1 hour.''';
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        CHEFOutputInterpret _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
         var length = (elem['expectedOutput'] as List<dynamic>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
+          expect(_actual.output[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
     }
@@ -2061,148 +2061,361 @@ Ingredients.
 100 kg peanuts
 
 Method.
-Put full stops into mixing bowl. Put rhubarb into mixing bowl. Put elderberries into mixing bowl.
-Put elderberries into mixing bowl. Put bananas into mixing bowl.
-Put spaces into mixing bowl. Put figs into mixing bowl. Put onion into mixing bowl.
-Put spaces into mixing bowl. Put strawberries into mixing bowl. Put elderberries into mixing bowl.
-Put lemon into mixing bowl. Put tomatoes into mixing bowl. Put tomatoes into mixing bowl. Put onion
-into mixing bowl. Put black cherry into mixing bowl.
-Put spaces into mixing bowl. Put melange into mixing bowl.
-Put full stops into mixing bowl. Put full stops into mixing bowl. Put full stops into mixing bowl.
-Put elderberries into mixing bowl. Put rhubarb into mixing bowl. Put onion into mixing bowl. Put
-mango into mixing bowl.
-Put spaces into mixing bowl. Put elderberries into mixing bowl. Put mango into mixing bowl. Put
-onion into mixing bowl. Put strawberries into mixing bowl.
-Put spaces into mixing bowl. Put yellowberries into mixing bowl. Put u into mixing bowl. Put bananas
-into mixing bowl.
-Put spaces into mixing bowl. Put dragonfruit into mixing bowl. Put nuts into mixing bowl. Put apples
-into mixing bowl.
-Put spaces into mixing bowl. Put elderberries into mixing bowl. Put rhubarb into mixing bowl. Put
-onion into mixing bowl. Put tomatoes into mixing bowl. Put strawberries into mixing bowl.
-Put spaces into mixing bowl. Put elderberries into mixing bowl. Put horse mangos into mixing bowl. 
+Put full stops into mixing bowl.
+Put rhubarb into mixing bowl.
+Put elderberries into mixing bowl.
+Put elderberries into mixing bowl.
+Put bananas into mixing bowl.
+Put spaces into mixing bowl.
+Put figs into mixing bowl.
+Put onion into mixing bowl.
+Put spaces into mixing bowl.
+Put strawberries into mixing bowl.
+Put elderberries into mixing bowl.
+Put lemon into mixing bowl.
 Put tomatoes into mixing bowl.
-Put spaces into mixing bowl. Put onion into mixing bowl. Put tomatoes into mixing bowl.
-Put spaces into mixing bowl. Put onion into mixing bowl. Put grapefruit into mixing bowl.
-Put newlines into mixing bowl. Put full stops into mixing bowl. Put full stops into mixing bowl. Put
-full stops into mixing bowl. Put rhubarb into mixing bowl. Put elderberries into mixing bowl. Put
-elderberries into mixing bowl. Put bananas into mixing bowl. Put spaces into mixing bowl. Put figs
-into mixing bowl. Put onion into mixing bowl.
-Put spaces into mixing bowl. Put elderberries into mixing bowl. Put lemon into mixing bowl. Put
-tomatoes into mixing bowl. Put tomatoes into mixing bowl. Put onion into mixing bowl. Put bananas
-into mixing bowl.
-Put spaces into mixing bowl. Put elderberries into mixing bowl. Put rhubarb into mixing bowl. Put
-onion into mixing bowl. Put mango into mixing bowl.
-Put spaces into mixing bowl. Put onion into mixing bowl. Put nuts into mixing bowl.
-Put spaces into mixing bowl. Put commas into mixing bowl. Put lemon into mixing bowl. Put lemon into
-mixing bowl. Put apples into mixing bowl. Put water into mixing bowl.
-Put spaces into mixing bowl. Put elderberries into mixing bowl. Put horse mangos into mixing bowl. 
 Put tomatoes into mixing bowl.
-Put spaces into mixing bowl. Put nuts into mixing bowl. Put onion into mixing bowl.
-Put spaces into mixing bowl. Put rhubarb into mixing bowl. Put elderberries into mixing bowl. Put
-elderberries into mixing bowl. Put bananas into mixing bowl.
-Put spaces into mixing bowl. Put figs into mixing bowl. Put onion into mixing bowl.
-Put spaces into mixing bowl. Put elderberries into mixing bowl. Put lemon into mixing bowl. Put
-tomatoes into mixing bowl. Put tomatoes into mixing bowl. Put onion into mixing bowl. Put bananas
-into mixing bowl.
-Put spaces into mixing bowl. Put elderberries into mixing bowl. Put rhubarb into mixing bowl. Put
-onion into mixing bowl. Put mango into mixing bowl.
-Put spaces into mixing bowl. Put onion into mixing bowl. Put nauclea into mixing bowl. Put newlines
-into mixing bowl.
-Put newlines into mixing bowl. Put full stops into mixing bowl. Put lemon into mixing bowl. Put
-lemon into mixing bowl. Put apples into mixing bowl. Put water into mixing bowl.
-Put spaces into mixing bowl. Put elderberries into mixing bowl. Put horse mangos into mixing bowl. 
-Put tomatoes into mixing bowl.
-Put spaces into mixing bowl. Put nuts into mixing bowl. Put onion into mixing bowl.
-Put spaces into mixing bowl. Put rhubarb into mixing bowl. Put elderberries into mixing bowl. Put
-elderberries into mixing bowl. Put bananas into mixing bowl.
-Put spaces into mixing bowl. Put figs into mixing bowl. Put onion into mixing bowl.
-Put spaces into mixing bowl. Put strawberries into mixing bowl. Put elderberries into mixing bowl.
-Put lemon into mixing bowl. Put tomatoes into mixing bowl. Put tomatoes into mixing bowl. Put onion
-into mixing bowl. Put bananas into mixing bowl.
-Put spaces into mixing bowl. Put elderberries into mixing bowl. Put rhubarb into mixing bowl. Put
-onion into mixing bowl. Put mango into mixing bowl.
-Put spaces into mixing bowl. Put onion into mixing bowl. Put nuts into mixing bowl.
-Put spaces into mixing bowl. Put commas into mixing bowl. Put dragonfruit into mixing bowl. Put nuts
-into mixing bowl. Put u into mixing bowl. Put onion into mixing bowl. Put rhubarb into mixing bowl.
+Put onion into mixing bowl.
+Put black cherry into mixing bowl.
+Put spaces into mixing bowl.
+Put melange into mixing bowl.
+Put full stops into mixing bowl.
+Put full stops into mixing bowl.
+Put full stops into mixing bowl.
+Put elderberries into mixing bowl.
+Put rhubarb into mixing bowl.
+Put onion into mixing bowl.
+Put mango into mixing bowl.
+Put spaces into mixing bowl.
+Put elderberries into mixing bowl.
+Put mango into mixing bowl.
+Put onion into mixing bowl.
+Put strawberries into mixing bowl.
+Put spaces into mixing bowl.
+Put yellowberries into mixing bowl.
+Put u into mixing bowl.
+Put bananas into mixing bowl.
+Put spaces into mixing bowl.
+Put dragonfruit into mixing bowl.
+Put nuts into mixing bowl.
 Put apples into mixing bowl.
-Put spaces into mixing bowl. Put tomatoes into mixing bowl. Put indian figs into mixing bowl.
-Put spaces into mixing bowl. Put strawberries into mixing bowl. Put strawberries into mixing bowl.
-Put apples into mixing bowl. Put pineapple into mixing bowl.
-Put spaces into mixing bowl. Put dragonfruit into mixing bowl. Put nuts into mixing bowl. Put apples
-into mixing bowl.
-Put spaces into mixing bowl. Put nuts into mixing bowl. Put water into mixing bowl. Put onion into
-mixing bowl. Put dragonfruit into mixing bowl.
-Put spaces into mixing bowl. Put elderberries into mixing bowl. Put nuts into mixing bowl. Put onion
-into mixing bowl.
-Put spaces into mixing bowl. Put elderberries into mixing bowl. Put kiwi into mixing bowl. Put
-apples into mixing bowl. Put tea into mixing bowl.
-Put newlines into mixing bowl. Put full stops into mixing bowl. Put rhubarb into mixing bowl. Put
-elderberries into mixing bowl. Put elderberries into mixing bowl. Put bananas into mixing bowl.
-Put spaces into mixing bowl. Put figs into mixing bowl. Put onion into mixing bowl.
-Put spaces into mixing bowl. Put elderberries into mixing bowl. Put lemon into mixing bowl. Put
-tomatoes into mixing bowl. Put tomatoes into mixing bowl. Put onion into mixing bowl. Put bananas
-into mixing bowl.
-Put spaces into mixing bowl. Put programmer into mixing bowl. Put spaces into mixing bowl.
-Put commas into mixing bowl. Put lemon into mixing bowl. Put lemon into mixing bowl. Put apples into
-mixing bowl. Put water into mixing bowl.
-Put spaces into mixing bowl. Put elderberries into mixing bowl. Put horse mangos into mixing bowl. 
+Put spaces into mixing bowl.
+Put elderberries into mixing bowl.
+Put rhubarb into mixing bowl.
+Put onion into mixing bowl.
 Put tomatoes into mixing bowl.
-Put spaces into mixing bowl. Put nuts into mixing bowl. Put onion into mixing bowl.
-Put spaces into mixing bowl. Put rhubarb into mixing bowl. Put elderberries into mixing bowl. Put
-elderberries into mixing bowl. Put bananas into mixing bowl.
-Put spaces into mixing bowl. Put figs into mixing bowl. Put onion into mixing bowl.
-Put spaces into mixing bowl. Put elderberries into mixing bowl. Put lemon into mixing bowl. Put
-tomatoes into mixing bowl. Put tomatoes into mixing bowl. Put onion into mixing bowl. Put black
-cherry into mixing bowl.
-Put spaces into mixing bowl. Put programmer into mixing bowl.
-Drink the beer. Put newlines into mixing bowl. Put newlines into mixing bowl.
-Put full stops into mixing bowl. Put lemon into mixing bowl. Put lemon into mixing bowl. Put apples
-into mixing bowl. Put water into mixing bowl.
-Put spaces into mixing bowl. Put elderberries into mixing bowl. Put horse mangos into mixing bowl. 
+Put strawberries into mixing bowl.
+Put spaces into mixing bowl.
+Put elderberries into mixing bowl.
+Put horse mangos into mixing bowl. 
 Put tomatoes into mixing bowl.
-Put spaces into mixing bowl. Put nuts into mixing bowl. Put onion into mixing bowl.
-Put spaces into mixing bowl. Put rhubarb into mixing bowl. Put elderberries into mixing bowl. Put
-elderberries into mixing bowl. Put bananas into mixing bowl.
-Put spaces into mixing bowl. Put figs into mixing bowl. Put onion into mixing bowl.
-Put spaces into mixing bowl. Put strawberries into mixing bowl. Put elderberries into mixing bowl.
-Put lemon into mixing bowl. Put tomatoes into mixing bowl. Put tomatoes into mixing bowl. Put onion
-into mixing bowl. Put bananas into mixing bowl.
-Put spaces into mixing bowl. Put peanuts into mixing bowl. Remove beer from mixing bowl. Remove
-programmer from mixing bowl.
-Put spaces into mixing bowl. Put commas into mixing bowl. Put dragonfruit into mixing bowl. Put nuts
-into mixing bowl. Put u into mixing bowl. Put onion into mixing bowl. Put rhubarb into mixing bowl.
+Put spaces into mixing bowl.
+Put onion into mixing bowl.
+Put tomatoes into mixing bowl.
+Put spaces into mixing bowl.
+Put onion into mixing bowl.
+Put grapefruit into mixing bowl.
+Put newlines into mixing bowl.
+Put full stops into mixing bowl.
+Put full stops into mixing bowl.
+Put full stops into mixing bowl.
+Put rhubarb into mixing bowl.
+Put elderberries into mixing bowl.
+Put elderberries into mixing bowl.
+Put bananas into mixing bowl.
+Put spaces into mixing bowl.
+Put figs into mixing bowl.
+Put onion into mixing bowl.
+Put spaces into mixing bowl.
+Put elderberries into mixing bowl.
+Put lemon into mixing bowl.
+Put tomatoes into mixing bowl.
+Put tomatoes into mixing bowl.
+Put onion into mixing bowl.
+Put bananas into mixing bowl.
+Put spaces into mixing bowl.
+Put elderberries into mixing bowl.
+Put rhubarb into mixing bowl.
+Put onion into mixing bowl.
+Put mango into mixing bowl.
+Put spaces into mixing bowl.
+Put onion into mixing bowl.
+Put nuts into mixing bowl.
+Put spaces into mixing bowl.
+Put commas into mixing bowl.
+Put lemon into mixing bowl.
+Put lemon into mixing bowl.
 Put apples into mixing bowl.
-Put spaces into mixing bowl. Put tomatoes into mixing bowl. Put indian figs into mixing bowl.
-Put spaces into mixing bowl. Put strawberries into mixing bowl. Put strawberries into mixing bowl.
-Put apples into mixing bowl. Put pineapple into mixing bowl.
-Put spaces into mixing bowl. Put dragonfruit into mixing bowl. Put nuts into mixing bowl. Put apples
-into mixing bowl.
-Put spaces into mixing bowl. Put nuts into mixing bowl. Put water into mixing bowl. Put onion into
-mixing bowl. Put dragonfruit into mixing bowl.
-Put spaces into mixing bowl. Put elderberries into mixing bowl. Put nuts into mixing bowl. Put onion
-into mixing bowl.
-Put spaces into mixing bowl. Put elderberries into mixing bowl. Put kiwi into mixing bowl. Put
-apples into mixing bowl. Put tea into mixing bowl.
-Put newlines into mixing bowl. Put full stops into mixing bowl. Put rhubarb into mixing bowl. Put
-elderberries into mixing bowl. Put elderberries into mixing bowl. Put bananas into mixing bowl.
-Put spaces into mixing bowl. Put figs into mixing bowl. Put onion into mixing bowl.
-Put spaces into mixing bowl. Put strawberries into mixing bowl. Put elderberries into mixing bowl.
-Put lemon into mixing bowl. Put tomatoes into mixing bowl. Put tomatoes into mixing bowl. Put onion
-into mixing bowl. Put bananas into mixing bowl.
-Put spaces into mixing bowl. Put peanuts into mixing bowl. Remove beer from mixing bowl. Put spaces
-into mixing bowl.
-Put commas into mixing bowl. Put lemon into mixing bowl. Put lemon into mixing bowl. Put apples into
-mixing bowl. Put water into mixing bowl.
-Put spaces into mixing bowl. Put elderberries into mixing bowl. Put horse mangos into mixing bowl. 
+Put water into mixing bowl.
+Put spaces into mixing bowl.
+Put elderberries into mixing bowl.
+Put horse mangos into mixing bowl. 
 Put tomatoes into mixing bowl.
-Put spaces into mixing bowl. Put nuts into mixing bowl. Put onion into mixing bowl.
-Put spaces into mixing bowl. Put rhubarb into mixing bowl. Put elderberries into mixing bowl. Put
-elderberries into mixing bowl. Put bananas into mixing bowl.
-Put spaces into mixing bowl. Put figs into mixing bowl. Put onion into mixing bowl.
-Put spaces into mixing bowl. Put strawberries into mixing bowl. Put elderberries into mixing bowl.
-Put lemon into mixing bowl. Put tomatoes into mixing bowl. Put tomatoes into mixing bowl. Put onion
-into mixing bowl. Put black cherry into mixing bowl.
-Put spaces into mixing bowl. Put peanuts into mixing bowl. Remove beer from mixing bowl.
+Put spaces into mixing bowl.
+Put nuts into mixing bowl.
+Put onion into mixing bowl.
+Put spaces into mixing bowl.
+Put rhubarb into mixing bowl.
+Put elderberries into mixing bowl.
+Put elderberries into mixing bowl.
+Put bananas into mixing bowl.
+Put spaces into mixing bowl.
+Put figs into mixing bowl.
+Put onion into mixing bowl.
+Put spaces into mixing bowl.
+Put elderberries into mixing bowl.
+Put lemon into mixing bowl.
+Put tomatoes into mixing bowl.
+Put tomatoes into mixing bowl.
+Put onion into mixing bowl.
+Put bananas into mixing bowl.
+Put spaces into mixing bowl.
+Put elderberries into mixing bowl.
+Put rhubarb into mixing bowl.
+Put onion into mixing bowl.
+Put mango into mixing bowl.
+Put spaces into mixing bowl.
+Put onion into mixing bowl.
+Put nauclea into mixing bowl.
+Put newlines into mixing bowl.
+Put newlines into mixing bowl.
+Put full stops into mixing bowl.
+Put lemon into mixing bowl.
+Put lemon into mixing bowl.
+Put apples into mixing bowl.
+Put water into mixing bowl.
+Put spaces into mixing bowl.
+Put elderberries into mixing bowl.
+Put horse mangos into mixing bowl. 
+Put tomatoes into mixing bowl.
+Put spaces into mixing bowl.
+Put nuts into mixing bowl.
+Put onion into mixing bowl.
+Put spaces into mixing bowl.
+Put rhubarb into mixing bowl.
+Put elderberries into mixing bowl.
+Put elderberries into mixing bowl.
+Put bananas into mixing bowl.
+Put spaces into mixing bowl.
+Put figs into mixing bowl.
+Put onion into mixing bowl.
+Put spaces into mixing bowl.
+Put strawberries into mixing bowl.
+Put elderberries into mixing bowl.
+Put lemon into mixing bowl.
+Put tomatoes into mixing bowl.
+Put tomatoes into mixing bowl.
+Put onion into mixing bowl.
+Put bananas into mixing bowl.
+Put spaces into mixing bowl.
+Put elderberries into mixing bowl.
+Put rhubarb into mixing bowl.
+Put onion into mixing bowl.
+Put mango into mixing bowl.
+Put spaces into mixing bowl.
+Put onion into mixing bowl.
+Put nuts into mixing bowl.
+Put spaces into mixing bowl.
+Put commas into mixing bowl.
+Put dragonfruit into mixing bowl.
+Put nuts into mixing bowl.
+Put u into mixing bowl.
+Put onion into mixing bowl.
+Put rhubarb into mixing bowl.
+Put apples into mixing bowl.
+Put spaces into mixing bowl.
+Put tomatoes into mixing bowl.
+Put indian figs into mixing bowl.
+Put spaces into mixing bowl.
+Put strawberries into mixing bowl.
+Put strawberries into mixing bowl.
+Put apples into mixing bowl.
+Put pineapple into mixing bowl.
+Put spaces into mixing bowl.
+Put dragonfruit into mixing bowl.
+Put nuts into mixing bowl.
+Put apples into mixing bowl.
+Put spaces into mixing bowl.
+Put nuts into mixing bowl.
+Put water into mixing bowl.
+Put onion into mixing bowl.
+Put dragonfruit into mixing bowl.
+Put spaces into mixing bowl.
+Put elderberries into mixing bowl.
+Put nuts into mixing bowl.
+Put onion into mixing bowl.
+Put spaces into mixing bowl.
+Put elderberries into mixing bowl.
+Put kiwi into mixing bowl.
+Put apples into mixing bowl.
+Put tea into mixing bowl.
+Put newlines into mixing bowl.
+Put full stops into mixing bowl.
+Put rhubarb into mixing bowl.
+Put elderberries into mixing bowl.
+Put elderberries into mixing bowl.
+Put bananas into mixing bowl.
+Put spaces into mixing bowl.
+Put figs into mixing bowl.
+Put onion into mixing bowl.
+Put spaces into mixing bowl.
+Put elderberries into mixing bowl.
+Put lemon into mixing bowl.
+Put tomatoes into mixing bowl.
+Put tomatoes into mixing bowl.
+Put onion into mixing bowl.
+Put bananas into mixing bowl.
+Put spaces into mixing bowl.
+Put programmer into mixing bowl.
+Put spaces into mixing bowl.
+Put commas into mixing bowl.
+Put lemon into mixing bowl.
+Put lemon into mixing bowl.
+Put apples into mixing bowl.
+Put water into mixing bowl.
+Put spaces into mixing bowl.
+Put elderberries into mixing bowl.
+Put horse mangos into mixing bowl. 
+Put tomatoes into mixing bowl.
+Put spaces into mixing bowl.
+Put nuts into mixing bowl.
+Put onion into mixing bowl.
+Put spaces into mixing bowl.
+Put rhubarb into mixing bowl.
+Put elderberries into mixing bowl.
+Put elderberries into mixing bowl.
+Put bananas into mixing bowl.
+Put spaces into mixing bowl.
+Put figs into mixing bowl.
+Put onion into mixing bowl.
+Put spaces into mixing bowl.
+Put elderberries into mixing bowl.
+Put lemon into mixing bowl.
+Put tomatoes into mixing bowl.
+Put tomatoes into mixing bowl.
+Put onion into mixing bowl.
+Put black cherry into mixing bowl.
+Put spaces into mixing bowl.
+Put programmer into mixing bowl.
+Drink the beer.
+Put newlines into mixing bowl.
+Put newlines into mixing bowl.
+Put full stops into mixing bowl.
+Put lemon into mixing bowl.
+Put lemon into mixing bowl.
+Put apples into mixing bowl.
+Put water into mixing bowl.
+Put spaces into mixing bowl.
+Put elderberries into mixing bowl.
+Put horse mangos into mixing bowl. 
+Put tomatoes into mixing bowl.
+Put spaces into mixing bowl.
+Put nuts into mixing bowl.
+Put onion into mixing bowl.
+Put spaces into mixing bowl.
+Put rhubarb into mixing bowl.
+Put elderberries into mixing bowl.
+Put elderberries into mixing bowl.
+Put bananas into mixing bowl.
+Put spaces into mixing bowl.
+Put figs into mixing bowl.
+Put onion into mixing bowl.
+Put spaces into mixing bowl.
+Put strawberries into mixing bowl.
+Put elderberries into mixing bowl.
+Put lemon into mixing bowl.
+Put tomatoes into mixing bowl.
+Put tomatoes into mixing bowl.
+Put onion into mixing bowl.
+Put bananas into mixing bowl.
+Put spaces into mixing bowl.
+Put peanuts into mixing bowl. 
+Remove beer from mixing bowl. 
+Remove programmer from mixing bowl.
+Put spaces into mixing bowl.
+Put commas into mixing bowl.
+Put dragonfruit into mixing bowl.
+Put nuts into mixing bowl.
+Put u into mixing bowl.
+Put onion into mixing bowl.
+Put rhubarb into mixing bowl.
+Put apples into mixing bowl.
+Put spaces into mixing bowl.
+Put tomatoes into mixing bowl.
+Put indian figs into mixing bowl.
+Put spaces into mixing bowl.
+Put strawberries into mixing bowl.
+Put strawberries into mixing bowl.
+Put apples into mixing bowl.
+Put pineapple into mixing bowl.
+Put spaces into mixing bowl.
+Put dragonfruit into mixing bowl.
+Put nuts into mixing bowl.
+Put apples into mixing bowl.
+Put spaces into mixing bowl.
+Put nuts into mixing bowl.
+Put water into mixing bowl.
+Put onion into mixing bowl.
+Put dragonfruit into mixing bowl.
+Put spaces into mixing bowl.
+Put elderberries into mixing bowl.
+Put nuts into mixing bowl.
+Put onion into mixing bowl.
+Put spaces into mixing bowl.
+Put elderberries into mixing bowl.
+Put kiwi into mixing bowl.
+Put apples into mixing bowl.
+Put tea into mixing bowl.
+Put newlines into mixing bowl.
+Put full stops into mixing bowl.
+Put rhubarb into mixing bowl.
+Put elderberries into mixing bowl.
+Put elderberries into mixing bowl.
+Put bananas into mixing bowl.
+Put spaces into mixing bowl.
+Put figs into mixing bowl.
+Put onion into mixing bowl.
+Put spaces into mixing bowl. 
+Put strawberries into mixing bowl.
+Put elderberries into mixing bowl.
+Put lemon into mixing bowl. 
+Put tomatoes into mixing bowl.
+Put tomatoes into mixing bowl.
+Put onion into mixing bowl.
+Put bananas into mixing bowl.
+Put spaces into mixing bowl. 
+Put peanuts into mixing bowl. Remove beer from mixing bowl. 
+Put spaces into mixing bowl.
+Put commas into mixing bowl.
+Put lemon into mixing bowl.
+Put lemon into mixing bowl.
+Put apples into mixing bowl.
+Put water into mixing bowl.
+Put spaces into mixing bowl.
+Put elderberries into mixing bowl.
+Put horse mangos into mixing bowl. 
+Put tomatoes into mixing bowl.
+Put spaces into mixing bowl.
+Put nuts into mixing bowl.
+Put onion into mixing bowl.
+Put spaces into mixing bowl.
+Put rhubarb into mixing bowl.
+Put elderberries into mixing bowl.
+Put elderberries into mixing bowl.
+Put bananas into mixing bowl.
+Put spaces into mixing bowl.
+Put figs into mixing bowl.
+Put onion into mixing bowl.
+Put spaces into mixing bowl.
+Put strawberries into mixing bowl.
+Put elderberries into mixing bowl.
+Put lemon into mixing bowl.
+Put tomatoes into mixing bowl.
+Put tomatoes into mixing bowl.
+Put onion into mixing bowl.
+Put black cherry into mixing bowl.
+Put spaces into mixing bowl.
+Put peanuts into mixing bowl. Remove beer from mixing bowl.
 Enjoy the beer until Drinked. Pour contents of the mixing bowl into the baking dish.
 
 Serves 1.''';
@@ -2213,10 +2426,10 @@ Serves 1.''';
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        CHEFOutputInterpret _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
         var length = (elem['expectedOutput'] as List<String>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
+          expect(_actual.output[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
     }
@@ -2711,10 +2924,10 @@ Serves 1.''';
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        CHEFOutputInterpret _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
         var length = (elem['expectedOutput'] as List<String>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
+          expect(_actual.output[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
     }
@@ -2806,10 +3019,10 @@ Portionen: 1.''';
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        CHEFOutputInterpret _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
         var length = (elem['expectedOutput'] as List<String>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
+          expect(_actual.output[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
     }
@@ -2839,7 +3052,8 @@ Cooking time: 12 hours.
 Pre-heat oven to 180 degrees Celsius.
 
 Method.
-Put beef stew meat into mixing bowl. Combine potatoes into mixing bowl. Hash the bay leaves. Remove garlic from mixing bowl. Mix the mixing bowl well. Chop the bay leaves until hashed. Put all-purpose flour into mixing bowl. Remove ground black pepper. Add gummy bears. Remove ground black pepper. Add gummy bears. Divide garlic into mixing bowl. Put potatoes into mixing bowl. Combine beef stew meat into mixing bowl. Grind the garlic. Remove carrots from mixing bowl. Work the garlic until grinded. Add salt. Put salt into mixing bowl. Combine potatoes into mixing bowl. Fold ground black pepper into mixing bowl. Add bay leaves. Put ground black pepper into mixing bowl. Add gummy bears. Add beef stew meat. Add carrots. Put garlic into mixing bowl. Add carrots. Remove salt. Fold garlic into mixing bowl. Put garlic into mixing bowl. Add carrots. Remove salt. Fold carrots into mixing bowl. Put beef stew meat into mixing bowl. Slice the carrots. Combine beef stew meat into mixing bowl. Handle the carrots until sliced. Add potatoes. Remove beef stew meat. Divide garlic into mixing bowl. Put gummy bears into mixing bowl. Remove salt. Fold carrots into mixing bowl. Put bay leaves into mixing bowl. Add garlic. Add beef stew meat. Fold bay leaves into mixing bowl. Put carrots into mixing bowl. Remove salt. Fold bay leaves into mixing bowl. Put carrots into mixing bowl. Add garlic. Add salt. Combine bay leaves. Put potatoes into mixing bowl. Remove salt.
+Put beef stew meat into mixing bowl. Combine potatoes into mixing bowl. Hash the bay leaves. Remove garlic from mixing bowl. Mix the mixing bowl well. Chop the bay leaves until hashed.
+Put all-purpose flour into mixing bowl. Remove ground black pepper. Add gummy bears. Remove ground black pepper. Add gummy bears. Divide garlic into mixing bowl. Put potatoes into mixing bowl. Combine beef stew meat into mixing bowl. Grind the garlic. Remove carrots from mixing bowl. Work the garlic until grinded. Add salt. Put salt into mixing bowl. Combine potatoes into mixing bowl. Fold ground black pepper into mixing bowl. Add bay leaves. Put ground black pepper into mixing bowl. Add gummy bears. Add beef stew meat. Add carrots. Put garlic into mixing bowl. Add carrots. Remove salt. Fold garlic into mixing bowl. Put garlic into mixing bowl. Add carrots. Remove salt. Fold carrots into mixing bowl. Put beef stew meat into mixing bowl. Slice the carrots. Combine beef stew meat into mixing bowl. Handle the carrots until sliced. Add potatoes. Remove beef stew meat. Divide garlic into mixing bowl. Put gummy bears into mixing bowl. Remove salt. Fold carrots into mixing bowl. Put bay leaves into mixing bowl. Add garlic. Add beef stew meat. Fold bay leaves into mixing bowl. Put carrots into mixing bowl. Remove salt. Fold bay leaves into mixing bowl. Put carrots into mixing bowl. Add garlic. Add salt. Combine bay leaves. Put potatoes into mixing bowl. Remove salt.
 Put bay leaves into mixing bowl. Combine beef stew meat. Fold bay leaves into mixing bowl. Put potatoes into mixing bowl. Add potatoes. Remove bay leaves. Remove carrots. Put all-purpose flour into mixing bowl. Divide garlic into mixing bowl. Add carrots. Remove garlic. Put carrots into mixing bowl. Add carrots. Remove beef stew meat. Fold ground black pepper into mixing bowl. Put gummy bears into mixing bowl. Mill the ground black pepper. Add gummy bears into mixing bowl. Mill the ground black pepper until milled. Add salt. Serve with Chocolate Cake. Liquify contents of the mixing bowl. Pour contents of the mixing bowl into the baking dish. Clean mixing bowl. Serve with Haxe. Liquify contents of the mixing bowl. Pour contents of the mixing bowl into the baking dish.
 
 Serves 1.
@@ -3046,6 +3260,34 @@ Eier aus dem Kühlschrank nehmen. Eier in die Schüssel geben. Mehl in die Schü
 
 Portionen: 1.''';
 
+    var GCAHATY = '''Oma Bärbels sensationelle Suppe
+
+Zutaten:
+51 Eier
+49 g Mehl
+53 ml Milch
+46 ml Wasser
+51 g Zucker
+32 g Stachelbeeren
+176 ml Bratensoße
+48 g Puderzucker
+69 g Lychees
+52 g Grapefruit
+50 g Datteln
+54 g Pekannüsse
+78 g Erdnüsse
+
+Garzeit:
+1 Stunde
+
+Ofentemperatur:
+Ofen auf 180 Grad Celsius vorheizen
+
+Zubereitung:
+Eier in die Schüssel geben. Mehl in die Schüssel geben. Milch in die Schüssel geben. Wasser in die Schüssel geben. Zucker in die Schüssel geben. Mehl in die Schüssel geben. Stachelbeeren in die Schüssel geben. Bratensoße in die Schüssel geben. Eier in die Schüssel geben. Mehl in die Schüssel geben. Puderzucker in die Schüssel geben. Stachelbeeren in die Schüssel geben. Lychees in die Schüssel geben. Stachelbeeren in die Schüssel geben. Mehl in die Schüssel geben. Grapefruit in die Schüssel geben. Datteln in die Schüssel geben. Wasser in die Schüssel geben. Pekannüsse in die Schüssel geben. Datteln in die Schüssel geben. Stachelbeeren in die Schüssel geben. Bratensoße in die Schüssel geben. Grapefruit in die Schüssel geben. Milch in die Schüssel geben. Stachelbeeren in die Schüssel geben. Erdnüsse in die Schüssel geben. Schüssel in einen großen Topf stürzen. Schüssel abwaschen und das Ganze im Topf für 30 Minuten schööön köcheln lassen und dann servieren.
+
+Portionen: 1''';
+
     List<Map<String, Object?>> _inputsToExpected = [
       {'language' : 'ENG', 'input' : '',  'recipe' : GC6HRCE, 'expectedOutput' : ['21m296g E013 17.699N52 25.763']},
       {'language' : 'DEU', 'input' : '',  'recipe' : GC9CAQJ, 'expectedOutput' : ['809711711510111098114ot1310', '','chef_warning_liquefy_missing_title', '» Inhalt der Schüssel auf dem Stövchen erhitzen. «', 'chef_warning_liquefy_missing_hint', '» Schüssel in eine Servierschale stürzen. «']},  // works in emulator
@@ -3053,15 +3295,16 @@ Portionen: 1.''';
       {'language' : 'DEU', 'input' : '',  'recipe' : GC7NYHW, 'expectedOutput' : ['5256176325256.565452326932484857176324848.55249']},
       {'language' : 'DEU', 'input' : '',  'recipe' : GC8WY5T, 'expectedOutput' : ['783253491763250534651525332326932541763251494657515213106511010310110811032105110325410932Hö104101']},
       {'language' : 'DEU', 'input' : '',  'recipe' : GC8WY5TCorrect, 'expectedOutput' : ['N 51° 25.345  E 6° 31.934\r\nAngeln in 6m Höhe']},
-      {'language' : 'DEU', 'input' : '109 3',  'recipe' : GC82M59, 'expectedOutput' : ['5248176327048109']}, //52 48 176 3270 48 109
+      {'language' : 'DEU', 'input' : '109 3',  'recipe' : GC82M59, 'expectedOutput' : ['5248176327048109']},
+      {'language' : 'DEU', 'input' : '',  'recipe' : GCAHATY, 'expectedOutput' : ['N 54° 26.241 E 013° 13.513']},
     ];
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
+        CHEFOutputInterpret _actual = interpretChef(elem['language'] as String, (elem['recipe'] as String?)?.toLowerCase(), elem['input'] as String?);
         var length = (elem['expectedOutput'] as List<String>).length;
         for (int i = 0; i < length; i++) {
-          expect(_actual[i], (elem['expectedOutput'] as List<String>)[i]);
+          expect(_actual.output[i], (elem['expectedOutput'] as List<String>)[i]);
         }
       });
     }

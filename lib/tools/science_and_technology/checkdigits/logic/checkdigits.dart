@@ -271,7 +271,7 @@ List<String> _CalculateDigitsOnlyNumbers(String number, Function f, {String head
   len = maxNumber.length;
   if (len > 0) {
     maxDigits = int.parse(maxNumber);
-    for (int i = 0; i < maxDigits; i++) {
+    for (int i = 0; i <= maxDigits; i++) {
       maxNumber = i.toString();
       maxNumber = maxNumber.padLeft(len, '0');
       index = 0;

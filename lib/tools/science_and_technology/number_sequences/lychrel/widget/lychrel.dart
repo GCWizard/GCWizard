@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_checknumber.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_containsdigits.dart';
@@ -7,23 +6,23 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequenceLychrelCheckNumber extends NumberSequenceCheckNumber {
-  const NumberSequenceLychrelCheckNumber({Key? key})
-      : super(key: key, mode: NumberSequencesMode.LYCHREL, maxIndex: 246);
+  const NumberSequenceLychrelCheckNumber({super.key})
+      : super(mode: NumberSequencesMode.LYCHREL, maxIndex: 20000);
 }
 
 class NumberSequenceLychrelDigits extends NumberSequenceDigits {
-  const NumberSequenceLychrelDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.LYCHREL, maxDigits: 4);
+  const NumberSequenceLychrelDigits({super.key}) : super(mode: NumberSequencesMode.LYCHREL, maxDigits: 6);
 }
 
 class NumberSequenceLychrelRange extends NumberSequenceRange {
-  const NumberSequenceLychrelRange({Key? key}) : super(key: key, mode: NumberSequencesMode.LYCHREL, maxIndex: 246);
+  const NumberSequenceLychrelRange({super.key}) : super(mode: NumberSequencesMode.LYCHREL, maxIndex: 20000);
 }
 
 class NumberSequenceLychrelNthNumber extends NumberSequenceNthNumber {
-  const NumberSequenceLychrelNthNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.LYCHREL, maxIndex: 246);
+  const NumberSequenceLychrelNthNumber({super.key}) : super(mode: NumberSequencesMode.LYCHREL, maxIndex: 20000);
 }
 
 class NumberSequenceLychrelContainsDigits extends NumberSequenceContainsDigits {
-  const NumberSequenceLychrelContainsDigits({Key? key})
-      : super(key: key, mode: NumberSequencesMode.LYCHREL, maxIndex: 246);
+  const NumberSequenceLychrelContainsDigits({super.key})
+      : super(mode: NumberSequencesMode.LYCHREL, maxIndex: 20000);
 }

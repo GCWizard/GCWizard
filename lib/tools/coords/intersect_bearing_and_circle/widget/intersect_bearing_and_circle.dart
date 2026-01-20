@@ -19,7 +19,7 @@ import 'package:gc_wizard/utils/constants.dart';
 import 'package:latlong2/latlong.dart';
 
 class IntersectGeodeticAndCircle extends StatefulWidget {
-  const IntersectGeodeticAndCircle({Key? key}) : super(key: key);
+  const IntersectGeodeticAndCircle({super.key});
 
   @override
   _IntersectBearingAndCircleState createState() => _IntersectBearingAndCircleState();

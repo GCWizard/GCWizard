@@ -4,7 +4,7 @@ class _GCWColorHSL extends StatefulWidget {
   final void Function(HSL) onChanged;
   final HSL? color;
 
-  const _GCWColorHSL({Key? key, required this.onChanged, this.color}) : super(key: key);
+  const _GCWColorHSL({required this.onChanged, this.color});
 
   @override
   _GCWColorHSLState createState() => _GCWColorHSLState();

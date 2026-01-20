@@ -21,7 +21,7 @@ import 'package:prefs/prefs.dart';
 import 'package:provider/provider.dart';
 
 class GeneralSettings extends StatefulWidget {
-  const GeneralSettings({Key? key}) : super(key: key);
+  const GeneralSettings({super.key});
 
   @override
   _GeneralSettingsState createState() => _GeneralSettingsState();

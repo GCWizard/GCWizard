@@ -10,8 +10,7 @@ class GCWOutput extends StatefulWidget {
   final Widget? trailing;
 
   const GCWOutput(
-      {Key? key, required this.child, this.title, this.suppressCopyButton = false, this.copyText, this.trailing})
-      : super(key: key);
+      {super.key, required this.child, this.title, this.suppressCopyButton = false, this.copyText, this.trailing});
 
   @override
   _GCWOutputState createState() => _GCWOutputState();

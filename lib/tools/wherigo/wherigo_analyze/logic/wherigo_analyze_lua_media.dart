@@ -37,15 +37,15 @@ WherigoMediaData _analyzeAndExtractMediaSectionData(List<String> lines) {
     lines[i] = lines[i].trim();
     //print(lines[i]);
     if (RegExp(r'(Wherigo.ZMedia\()').hasMatch(lines[i])) {
-      LUAname = getLUAName(lines[i]);
+      LUAname = _getLUAName(lines[i]);
     }
     if (lines[i].replaceAll(LUAname + '.', '').startsWith('Id')) {
-      id = getLineData(lines[i], LUAname, 'Id', _obfuscatorFunction, _obfuscatorTable);
+      id = _getLineData(lines[i], LUAname, 'Id', _obfuscatorFunction, _obfuscatorTable);
     } else if (lines[i].replaceAll(LUAname + '.', '').startsWith('Name')) {
-      name = getLineData(lines[i], LUAname, 'Name', _obfuscatorFunction, _obfuscatorTable);
+      name = _getLineData(lines[i], LUAname, 'Name', _obfuscatorFunction, _obfuscatorTable);
     } else if (lines[i].replaceAll(LUAname + '.', '').startsWith('Description')) {
       if (lines[i + 1].trim().replaceAll(LUAname + '.', '').startsWith('AltText')) {
-        description = getLineData(lines[i], LUAname, 'Description', _obfuscatorFunction, _obfuscatorTable);
+        description = _getLineData(lines[i], LUAname, 'Description', _obfuscatorFunction, _obfuscatorTable);
       } else {
         _sectionInner = true;
         description = lines[i].replaceAll(LUAname + '.', '');
@@ -59,9 +59,9 @@ WherigoMediaData _analyzeAndExtractMediaSectionData(List<String> lines) {
           i++;
         } while (_sectionInner);
       }
-      if (description.startsWith('WWB_multi')) description = removeWWB(description);
+      if (description.startsWith('WWB_multi')) description = _removeWWB(description);
     } else if (lines[i].replaceAll(LUAname + '.', '').startsWith('AltText')) {
-      alttext = getLineData(lines[i], LUAname, 'AltText', _obfuscatorFunction, _obfuscatorTable);
+      alttext = _getLineData(lines[i], LUAname, 'AltText', _obfuscatorFunction, _obfuscatorTable);
     } else if (lines[i].replaceAll(LUAname + '.', '').startsWith('Resources')) {
       if (lines[i].replaceAll(LUAname + '.', '').endsWith('{}')) {
         filename = '';
@@ -71,9 +71,9 @@ WherigoMediaData _analyzeAndExtractMediaSectionData(List<String> lines) {
         _sectionInner = true;
         do {
           if (lines[i].startsWith('Filename = ')) {
-            filename = getStructData(lines[i], 'Filename');
+            filename = _getStructData(lines[i], 'Filename');
           } else if (lines[i].startsWith('Type = ')) {
-            type = getStructData(lines[i], 'Type');
+            type = _getStructData(lines[i], 'Type');
           } else if (lines[i].startsWith('Directives = ')) {
             _sectionInner = false;
           }

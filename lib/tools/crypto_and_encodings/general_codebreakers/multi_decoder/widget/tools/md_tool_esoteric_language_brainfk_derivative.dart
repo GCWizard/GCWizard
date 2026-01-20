@@ -15,15 +15,12 @@ const MDT_ESOTERIC_LANGUAGE_BRAINFK_DERIVATIVE_OPTION_BRAINFK = 'brainfk_title';
 
 class MultiDecoderToolEsotericLanguageBrainfkDerivative extends AbstractMultiDecoderTool {
   MultiDecoderToolEsotericLanguageBrainfkDerivative(
-      {Key? key,
-      required int id,
-      required String name,
-      required Map<String, Object?> options,
+      {super.key,
+      required super.id,
+      required super.name,
+      required super.options,
       required BuildContext context})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_BRAINFK_DERIVATIVE,
             optionalKey: true,
             onDecode: (String input, String key) {
@@ -49,8 +46,7 @@ class MultiDecoderToolEsotericLanguageBrainfkDerivative extends AbstractMultiDec
                   return null;
                 }
               }
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolEsotericLanguageBrainfkDerivateState();
 }

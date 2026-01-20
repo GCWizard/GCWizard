@@ -1,4 +1,4 @@
-/***********************************************************************
+/*
     Dart port of Java implementation of
     ======================
     GeographicLib
@@ -8,8 +8,7 @@
  * under the MIT/X11 License.  For more information, see
  * https://geographiclib.sourceforge.io/
  * https://sourceforge.net/projects/geographiclib/
-
- **********************************************************************/
+ */
 part of 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
 
 /*
@@ -312,10 +311,11 @@ class _Geodesic {
    * prolate ellipsoid, an additional condition is necessary for a shortest
    * path: the longitudinal extent must not exceed of 180&deg;.)
    **********************************************************************/
-  GeodesicData direct(double lat1, double lon1, double azi1, double s12) {
-    return _direct(lat1, lon1, azi1, false, s12,
+  GeodesicData direct(double lat1, double lon1, double azi1, bool arcmode, double s12) {
+    return _direct(lat1, lon1, azi1, arcmode, s12,
         _GeodesicMask.LATITUDE | _GeodesicMask.LONGITUDE | _GeodesicMask.AZIMUTH |
-        _GeodesicMask.REDUCEDLENGTH | _GeodesicMask.GEODESICSCALE | _GeodesicMask.AREA
+        _GeodesicMask.REDUCEDLENGTH | _GeodesicMask.GEODESICSCALE | _GeodesicMask.AREA |
+        _GeodesicMask.DISTANCE
     );
   }
 

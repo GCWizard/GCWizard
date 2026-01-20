@@ -6,16 +6,16 @@ import 'package:gc_wizard/application/main_menu/mainmenuentry_stub.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
 import 'package:gc_wizard/application/registry.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/text_widget_utils.dart';
 
-const _ABOUT_MAINTAINER = 'Mark \'S-Man42\' Lorenz';
+part 'about_data.dart';
 
 class About extends StatefulWidget {
-  const About({Key? key}) : super(key: key);
+  const About({super.key});
 
   @override
   _AboutState createState() => _AboutState();
@@ -23,6 +23,8 @@ class About extends StatefulWidget {
 
 class _AboutState extends State<About> {
   late GCWPackageInfo _packageInfo;
+
+  final _PADDING_CONTAINER = EdgeInsets.only(top: 15, bottom: 10);
 
   @override
   void initState() {
@@ -36,7 +38,7 @@ class _AboutState extends State<About> {
 
   Container _buildUrl(String key) {
     return Container(
-      padding: const EdgeInsets.only(top: 15, bottom: 10),
+      padding: _PADDING_CONTAINER,
       child: Row(children: <Widget>[
         Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_$key'))),
         Expanded(
@@ -51,23 +53,15 @@ class _AboutState extends State<About> {
 
   @override
   Widget build(BuildContext context) {
-    var spaceHeight = 25.0;
-
     var content = Column(
       children: <Widget>[
         Text(GCWPackageInfo.getInstance().appName, style: gcwTextStyle().copyWith(fontWeight: FontWeight.bold, fontSize: defaultFontSize() + 5)),
         const GCWDivider(),
         Container(
-            padding: const EdgeInsets.only(top: 15),
+            padding: _PADDING_CONTAINER,
             child: Row(children: <Widget>[
               Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_version'))),
               Expanded(flex: 3, child: GCWText(text: '${_packageInfo.version} (Build: ${_packageInfo.buildNumber})'))
-            ])),
-        Container(
-            padding: const EdgeInsets.only(top: 15, bottom: 10),
-            child: Row(children: <Widget>[
-              Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_creator'))),
-              const Expanded(flex: 3, child: GCWText(text: _ABOUT_MAINTAINER))
             ])),
         const GCWDivider(),
         RichText(
@@ -77,52 +71,31 @@ class _AboutState extends State<About> {
           ], style: gcwTextStyle()),
         ),
         Container(
-            padding: const EdgeInsets.only(top: 15, bottom: 10),
+            padding: _PADDING_CONTAINER,
             child: Column(
               children: [
-                Row(children: <Widget>[
-                  Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_projectlead'))),
-                  Expanded(flex: 3, child: GCWText(text: [
-                    'Mike \'MikeBi\' B.',
-                    'Thomas \'TMZ\' Z.',
-                  ].join('\n'))),
-                ]),
-                Container(height: spaceHeight),
-                Row(children: <Widget>[
-                  Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_development'))),
-                  Expanded(flex: 3, child: GCWText(text: [
-                    'Mike \'MikeBi\' B.',
-                    'Thomas \'TMZ\' Z.',
-                    'Mark \'S-Man42\' Lorenz',
-                    'Olli \'Rinser\''
-                  ].join('\n'))),
-                ]),
-                Container(height: spaceHeight),
-                Row(children: <Widget>[
-                  Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_tests'))),
-                  Expanded(flex: 3, child: GCWText(text: [
-                    'Andy \'Puma66\' (Special Support)',
-                    'Maria \'Nebelsturm\'',
-                  ].join('\n'))),
-                ]),
-                Container(height: spaceHeight),
-                Row(children: <Widget>[
-                  Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_manualcreators'))),
-                  Expanded(flex: 3, child: GCWText(text: [
-                    'Andreas \'TeamBirdy2404\'',
-                    'Thomas \'TMZ\' Z.',
-                    'Marcia \'Linsty\'',
-                  ].join('\n'))),
-                ]),
-                Container(height: spaceHeight),
-                Row(children: <Widget>[
-                  Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_misc'))),
-                  Expanded(flex: 3, child: GCWText(text: [
-                    'Henrike \'69and71\' (Translations)',
-                  ].join('\n'))),
-                ])
+                _buildTeamEntries('about_projectlead', _ABOUT_PROJECTLEAD),
+                _buildTeamEntries('about_development', _ABOUT_DEVELOPMENT),
+                _buildTeamEntries('about_tests', _ABOUT_TESTS),
+                _buildTeamEntries('about_manualcreators', _ABOUT_MANUALCREATORS),
+                _buildTeamEntries('about_misc', _ABOUT_MISC),
               ],
             )),
+        const GCWDivider(),
+        Container(
+          padding: _PADDING_CONTAINER,
+          child: Column(
+            children: <Widget>[
+              _buildOthersEntries('about_creator', _ABOUT_CREATOR, '\n'),
+            ]
+          ),
+        ),
+        const GCWDivider(),
+        Container(
+          padding: _PADDING_CONTAINER,
+          child:
+          GCWText(align: Alignment.center, textAlign: TextAlign.center, text: '🏳️‍🌈  ' + i18n(context, 'about_notfornazis') + '  🏳️‍🌈'),
+        ),
         const GCWDivider(),
         _buildUrl('contact_email'),
         _buildUrl('manual'),
@@ -139,7 +112,7 @@ class _AboutState extends State<About> {
         const GCWDivider(),
         InkWell(
           child: Container(
-            padding: const EdgeInsets.only(top: 15, bottom: 10),
+            padding: _PADDING_CONTAINER,
             child: Align(
               alignment: Alignment.center,
               child: Text(
@@ -157,168 +130,44 @@ class _AboutState extends State<About> {
         ),
         const GCWDivider(),
         Container(
-          padding: const EdgeInsets.only(top: 15, bottom: 10),
+          padding: _PADDING_CONTAINER,
           child: Column(
             children: <Widget>[
-              RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(children: [
-                  TextSpan(text: i18n(context, 'about_specialthanks') + '\n', style: gcwBoldTextStyle()),
-                  const TextSpan(text: 'Daniel \'Eisbehr\' K. (Maintainer GCC)' '\n')
-                ], style: gcwTextStyle()),
-              ),
-              RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(children: [
-                  TextSpan(text: i18n(context, 'about_contributors') + '\n', style: gcwBoldTextStyle()),
-                  TextSpan(
-                      text: [
-                            '\xc4ggsb\xe4rde (Symbol Tables)',
-                            'andre0707 (Day1976 Code)',
-                            'capoaira (Code)',
-                            'Dennis \'dennistreysa\' (Code)',
-                            'Frank \'Wizardland\' (podKst.de) (Hardware)',
-                            'Geo-Link (Hardware & Symbol Tables)',
-                            'Karl B. (Coords Algorithms)',
-                            'Ludovic \'LudoO\' Valente (Code & Translation FR)',
-                            'Michael D. (Symbol Tables)',
-                            'Nina \'nike1972\' G. (Nina\'s Schmierblo(g)ck) (Manual)',
-                            'moenk (GK Coords)',
-                            'radioscout (Research)',
-                            'Schnatt (Symbol Tables)',
-                            'Udo J. (Code)',
-                            'wollpirat (Food, Tea & more)'
-                          ].join('\n') +
-                          '\n'),
-                ], style: gcwTextStyle()),
-              ),
-              RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(children: [
-                  TextSpan(text: i18n(context, 'about_translators') + '\n', style: gcwBoldTextStyle()),
-                  TextSpan(
-                      text: [
-                            'alantheandroid (IT)',
-                            'alexgonc (PT, ES)',
-                            'bimsor (DK)',
-                            'Cavit A. (TR)',
-                            'crazedllama (KO)',
-                            'DrakeZero (ES)',
-                            'drobec (SK)',
-                            'emrszon (ES)',
-                            'hakuchi (IT)',
-                            '69and71 (NL, SV)',
-                            'Igor Č. (SK)',
-                            'j_janus (PL)',
-                            'Joao F. (PT)',
-                            'Johan-V (NL)',
-                            'juroot (SK)',
-                            'MAJ (ES)',
-                            'Martanal (CZ)',
-                            'n3oklan (CZ)',
-                            'Paul Z. (NL)',
-                            'Paweł B. (PL)',
-                            'proXmiii (SK)',
-                            'przematcr (PL)',
-                            'QouiZ (EL)',
-                            'S182 (IT)',
-                            'Silvia O. (SK)',
-                            'tkemer (EL)',
-                            'Todclerc (NL)',
-                            'verturin (FR, IT)',
-                            'vike91 (FI)',
-                            'Vojta_ (CZ)',
-                            'Willa_Lecznica (PL)',
-                            'Xoyn (RU)',
-                          ].join(', ') +
-                          '\n')
-                ], style: gcwTextStyle()),
-              ),
-              RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(children: [
-                  TextSpan(text: i18n(context, 'about_testers') + '\n', style: gcwBoldTextStyle()),
-                  TextSpan(
-                      text: [
-                    '4-Everus',
-                    '83_Seth',
-                    'Amelie2401',
-                    'Andreas E.',
-                    'Andreas L.',
-                    'baer2006',
-                    'Bleg1966',
-                    'Cycle73',
-                    'Dawn T.',
-                    'Don Rodolphos',
-                    'Headbanger-Berlin',
-                    'Felix Z.',
-                    'ferrrix',
-                    'Filu \'Aye, Käppn!\' 43 & Stormi \'Aaarrh\' 2061',
-                    'finding tresor',
-                    'Flosphor',
-                    'Franz K.',
-                    'Freakyfinder',
-                    'geo_aug',
-                    'GrafZahl75',
-                    'hwi',
-                    'Isidore S.',
-                    'JanRei',
-                    'Johannes C.',
-                    'Jonas M.',
-                    'kinderarzt',
-                    'Klumpenkukuk',
-                    'Lue',
-                    'LupiMus',
-                    'Lutz \'DL3BZZ\'',
-                    'mahoplus',
-                    'Markus M.',
-                    'Martin Sch.',
-                    'Martina F.',
-                    'mgo',
-                    'MicDie',
-                    'Michael St.',
-                    'Mondlinger',
-                    'MrDosinger & MsDosinger',
-                    'mister-rage',
-                    'musketon',
-                    'Niki R.',
-                    'Palk \'geogedoens.de\'',
-                    'Pamakaru',
-                    'Pascal M.',
-                    'Peter S.-H.',
-                    'radlerandi',
-                    'Richard M.',
-                    'schatzi-s',
-                    'Sechsfüssler',
-                    'Stefan J.',
-                    'Stefan K.',
-                    'SzpiegDonPedro',
-                    'Team kesteri',
-                    'Thomas B.',
-                    'tebarius',
-                    'tomcat06',
-                    'trekkiefreak76',
-                    'Vlad_Tepes',
-                    'Vyrembi',
-                    'waldstadt',
-                    'WeinWalker',
-                    'WingsAndTales',
-                    'zoRRo'
-                  ].join(', '))
-                ], style: gcwTextStyle()),
-              ),
+              _buildOthersEntries('about_specialthanks', _ABOUT_SPECIALTHANKS, '\n'),
+              _buildOthersEntries('about_contributors', _ABOUT_CONTRIBUTORS, '\n'),
+              _buildOthersEntries('about_translators', _ABOUT_TRANSLATORS, ', '),
+              _buildOthersEntries('about_testers', _ABOUT_TESTER, ', '),
             ],
           ),
         ),
-        const GCWDivider(),
-        Container(
-          padding: const EdgeInsets.only(top: 15, bottom: 10),
-          child:
-              GCWText(align: Alignment.center, textAlign: TextAlign.center, text: '🏳️‍🌈  ' + i18n(context, 'about_notfornazis') + '  🏳️‍🌈'),
-        )
       ],
     );
 
     return MainMenuEntryStub(content: content);
+  }
+
+  Widget _buildTeamEntries(String key, List<String> participants) {
+    var spaceHeight = 25.0;
+
+    return
+      Column(
+          children: [
+            Row(children: <Widget>[
+              Expanded(flex: 2, child: GCWText(text: i18n(context, key))),
+              Expanded(flex: 3, child: GCWText(text: participants.join('\n'))),
+            ]),
+            key != 'about_misc' ? Container(height: spaceHeight) : Container()
+          ]);
+  }
+
+  Widget _buildOthersEntries(String key, List<String> participants, String delimiter) {
+    return
+      RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(children: [
+          TextSpan(text: i18n(context, key) + '\n', style: gcwBoldTextStyle()),
+          TextSpan(text: participants.join(delimiter) + '\n')
+        ], style: gcwTextStyle()),
+      );
   }
 }

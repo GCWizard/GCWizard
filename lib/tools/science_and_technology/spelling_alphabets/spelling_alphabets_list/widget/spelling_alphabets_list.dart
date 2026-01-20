@@ -9,7 +9,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/tools/science_and_technology/spelling_alphabets/_common/spelling_alphabets_data.dart';
 
 class SpellingAlphabetsList extends StatefulWidget {
-  const SpellingAlphabetsList({Key? key}) : super(key: key);
+  const SpellingAlphabetsList({super.key});
 
   @override
   SpellingAlphabetsListState createState() => SpellingAlphabetsListState();

@@ -19,16 +19,11 @@ const _STEINHEIL_RADIUS = 10;
 class _SteinheilSegmentDisplay extends NSegmentDisplay {
 
   _SteinheilSegmentDisplay({
-    Key? key,
-    required Map<String, bool> segments,
-    bool readOnly = false,
-    void Function(Map<String, bool>)? onChanged})
+    required super.segments,
+    super.readOnly,
+    super.onChanged})
       : super(
-      key: key,
       initialSegments: _INITIAL_SEGMENTS,
-      segments: segments,
-      readOnly: readOnly,
-      onChanged: onChanged,
       type: SegmentDisplayType.CUSTOM,
       customPaint: (GCWTouchCanvas canvas, Size size, Map<String, bool> currentSegments, Function setSegmentState,
           Color segment_color_on, Color segment_color_off) {
@@ -36,7 +31,7 @@ class _SteinheilSegmentDisplay extends NSegmentDisplay {
         var SEGMENTS_COLOR_ON = segment_color_on;
         var SEGMENTS_COLOR_OFF = segment_color_off;
 
-        var circles = {
+        const circles = {
           'a': [15, 20],
           'b': [40, 20],
           'c': [65, 20],
@@ -190,7 +185,7 @@ class _SteinheilSegmentDisplay extends NSegmentDisplay {
               paint,
             );
           }
-          if (size.height < 50) return;
+          if (size.height < NSegmentDisplay.MIN_HEIGHT) return;
 
         });
       });

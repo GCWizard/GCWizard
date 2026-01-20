@@ -13,7 +13,7 @@ import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit
 part 'package:gc_wizard/tools/science_and_technology/resistor/resistor_colorcodecalculator/widget/resistor_band_dropdown.dart';
 
 class ResistorColorCodeCalculator extends StatefulWidget {
-  const ResistorColorCodeCalculator({Key? key}) : super(key: key);
+  const ResistorColorCodeCalculator({super.key});
 
   @override
   _ResistorColorCodeCalculatorState createState() => _ResistorColorCodeCalculatorState();

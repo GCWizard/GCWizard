@@ -7,7 +7,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/tools/science_and_technology/astronomy/easter/logic/easter.dart';
 
 class EasterYears extends StatefulWidget {
-  const EasterYears({Key? key}) : super(key: key);
+  const EasterYears({super.key});
 
   @override
   _EasterYearsState createState() => _EasterYearsState();

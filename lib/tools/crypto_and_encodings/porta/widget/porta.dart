@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/porta/logic/porta.dart';
 
 
 class Porta extends StatefulWidget {
-  const Porta({Key? key}) : super(key: key);
+  const Porta({super.key});
 
   @override
   _PortaState createState() => _PortaState();

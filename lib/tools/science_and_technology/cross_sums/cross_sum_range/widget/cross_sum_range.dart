@@ -18,7 +18,7 @@ const _ALERT_MAX_RANGE = 25000;
 class CrossSumRange extends StatefulWidget {
   final CrossSumType type;
 
-  const CrossSumRange({Key? key, this.type = CrossSumType.NORMAL}) : super(key: key);
+  const CrossSumRange({super.key, this.type = CrossSumType.NORMAL});
 
   @override
   _CrossSumRangeState createState() => _CrossSumRangeState();

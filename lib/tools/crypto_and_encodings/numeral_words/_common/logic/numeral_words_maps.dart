@@ -46,6 +46,7 @@ enum NumeralWordsLanguage {
   KYR,
   LOJ,
   LAT,
+  MAO,
   MEG,
   MIN,
   NAVI,
@@ -1376,6 +1377,59 @@ const Map<String, String> _LOJWordToNum = {
   'so': '9',
   'pano': '10',
 };
+const Map<String, String> _MAOWordToNum = {
+  // https://www.woodwardlanguages.com/lesson/maori-numbers-1-100/
+  'kore': '0',
+  'kotahi': '1',
+  'tahi': '1',
+  'rua': '2',
+  'toru': '3',
+  'wha': '4',
+  'rima': '5',
+  'ono': '6',
+  'whitu': '7',
+  'waru': '8',
+  'iwa': '9',
+  'tekau': '10',
+  'tekau ma tahi': '11',
+  'tekau ma rua': '12',
+  'tekau ma toru': '13',
+  'tekau ma wha': '14',
+  'tekau ma rima': '15',
+  'tekau ma ono': '16',
+  'tekau ma whitu': '17',
+  'tekau ma waru': '18',
+  'tekau ma iwa': '19',
+  'rua tekau': '20',
+  'toru tekau': '30',
+  'wha tekau': '40',
+  'rima tekau': '50',
+  'ono tekau': '60',
+  'whitu tekau': '70',
+  'waru tekau': '80',
+  'ima tekau': '90',
+  'kotahi rau': '100',
+  'rua rau': '200',
+  'toru rau': '300',
+  'wha rau': '400',
+  'rima rau': '500',
+  'ono rau': '600',
+  'whitu rau': '700',
+  'waru rau': '800',
+  'iwa rau': '900',
+  'kotahi mano': '1000',
+  'rua mano': '2000',
+  'tekau mano': '10000',
+  'rua tekau mano': '20000',
+  'kotahi rau mano': '100000',
+  'kotahi miriona': '1000000',
+  'tekau miriona': '10000000',
+  'rua tekau miriona': '20000000',
+  'kotahi rau miriona': '100000000',
+  'rua rau miriona': '100000000',
+  'tahi piriona': '1000000000',
+  'toru piriona': '3000000000',
+};
 const Map<String, String> _MAPWordToNum = {
   'kinhe': '1',
   'epu': '2',
@@ -2162,7 +2216,6 @@ const Map<String, String> _VOLWordToNum = {
   'lofued': 'numeralwords_e',
   'vesued': 'numeralwords_w',
 };
-
 const Map<String, String> _SORBUPPWordToNum = {
   'nul': '0',
   'jedyn': '1',
@@ -2201,7 +2254,6 @@ const Map<String, String> _SORBUPPWordToNum = {
   'sto': '100',
   'tysac': '1000',
 };
-
 const Map<String, String> _SORBLOWWordToNum = {
   'nul': '0',
   'jaden': '1',
@@ -2290,6 +2342,7 @@ final Map<NumeralWordsLanguage, List<int>> MIN_MAX_NUMBER = {
   NumeralWordsLanguage.NAVI: [0, 32767], // 0-7 octal
   NumeralWordsLanguage.SHA: [0, MAX_INT], // 0-3 quaternery
   NumeralWordsLanguage.ROU: [0, 999999], // 0-9 decimal
+  NumeralWordsLanguage.MAO: [0, 9999999], // 0-9 decimal
 };
 
 const Map<NumeralWordsLanguage, String> NUMERALWORDS_LANGUAGES = {
@@ -2358,6 +2411,7 @@ const Map<NumeralWordsLanguage, String> NUMERALWORDS_LANGUAGES = {
   NumeralWordsLanguage.THAI: 'common_language_thai',
   NumeralWordsLanguage.THAIRTGS: 'common_language_thai_rtgs',
   NumeralWordsLanguage.ROU: 'common_language_romanian',
+  NumeralWordsLanguage.MAO: 'numeralwords_language_mao',
 };
 
 const Map<NumeralWordsLanguage, String> NUMERALWORDS_LANGUAGES_CONVERTER = {
@@ -2366,6 +2420,7 @@ const Map<NumeralWordsLanguage, String> NUMERALWORDS_LANGUAGES_CONVERTER = {
   NumeralWordsLanguage.NAVI: 'numeralwords_language_navi',
   NumeralWordsLanguage.SHA: 'numeralwords_language_sha',
   NumeralWordsLanguage.ROU: 'common_language_romanian',
+  NumeralWordsLanguage.MAO: 'numeralwords_language_mao',
 };
 
 final Map<NumeralWordsLanguage, Map<String, String>> NUMERAL_WORDS = {
@@ -2404,6 +2459,7 @@ final Map<NumeralWordsLanguage, Map<String, String>> NUMERAL_WORDS = {
   NumeralWordsLanguage.KYR: _KYRWordToNum,
   NumeralWordsLanguage.LAT: _LATWordToNum,
   NumeralWordsLanguage.LOJ: _LOJWordToNum,
+  NumeralWordsLanguage.MAO: _MAOWordToNum,
   NumeralWordsLanguage.MAP: _MAPWordToNum,
   NumeralWordsLanguage.MEG: _MEGWordToNum,
   NumeralWordsLanguage.MIN: _MINWordToNum,

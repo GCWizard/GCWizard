@@ -63,17 +63,12 @@ const _CHAPPE_RELATIVE_DISPLAY_WIDTH = 180;
 const _CHAPPE_RELATIVE_DISPLAY_HEIGHT = 200;
 
 class _ChappeTelegraphSegmentDisplay extends NSegmentDisplay {
-  _ChappeTelegraphSegmentDisplay(
-      {Key? key,
-        required Map<String, bool> segments,
-        bool readOnly = false,
-        void Function(Map<String, bool>)? onChanged})
+  _ChappeTelegraphSegmentDisplay({
+        required super.segments,
+        super.readOnly,
+        super.onChanged})
       : super(
-      key: key,
       initialSegments: _INITIAL_SEGMENTS,
-      segments: segments,
-      readOnly: readOnly,
-      onChanged: onChanged,
       type: SegmentDisplayType.CUSTOM,
       customPaint: (GCWTouchCanvas canvas, Size size, Map<String, bool> currentSegments, Function setSegmentState,
           Color segment_color_on, Color segment_color_off) {

@@ -20,7 +20,7 @@ class GCWUnitInput<T extends Unit> extends StatefulWidget {
   final void Function(double) onChanged;
 
   const GCWUnitInput(
-      {Key? key,
+      {super.key,
       this.title,
       this.min = MIN_DOUBLE,
       this.max = MAX_DOUBLE,
@@ -30,8 +30,7 @@ class GCWUnitInput<T extends Unit> extends StatefulWidget {
       this.unitList,
       this.initialUnit,
       required this.onChanged,
-      this.suppressOverflow = false})
-      : super(key: key);
+      this.suppressOverflow = false});
 
   @override
   _GCWUnitInputState<T> createState() => _GCWUnitInputState<T>();

@@ -18,17 +18,12 @@ const _EDELCRANTZ_RELATIVE_DISPLAY_HEIGHT = 150;
 const _EDELCRANTZ_RADIUS = 10.0;
 
 class _EdelcrantzSegmentDisplay extends NSegmentDisplay {
-  _EdelcrantzSegmentDisplay(
-      {Key? key,
-      required Map<String, bool> segments,
-      bool readOnly = false,
-      void Function(Map<String, bool>)? onChanged})
+  _EdelcrantzSegmentDisplay({
+      required super.segments,
+      super.readOnly,
+      super.onChanged})
       : super(
-            key: key,
             initialSegments: _INITIAL_SEGMENTS,
-            segments: segments,
-            readOnly: readOnly,
-            onChanged: onChanged,
             type: SegmentDisplayType.CUSTOM,
             customPaint: (GCWTouchCanvas canvas, Size size, Map<String, bool> currentSegments, Function setSegmentState,
                 Color segment_color_on, Color segment_color_off) {
@@ -70,7 +65,7 @@ class _EdelcrantzSegmentDisplay extends NSegmentDisplay {
                         Size(pointSize * 3 + 1, pointSize * 2 + 2),
                     paint);
 
-                if (size.height < 50) return;
+                if (size.height < NSegmentDisplay.MIN_HEIGHT) return;
               });
 
               shutters.forEach((key, value) {
@@ -84,7 +79,7 @@ class _EdelcrantzSegmentDisplay extends NSegmentDisplay {
                   setSegmentState(shutterSegments[key], !segmentActive(currentSegments, shutterSegments[key]!));
                 });
 
-                if (size.height < 50) return;
+                if (size.height < NSegmentDisplay.MIN_HEIGHT) return;
               });
             });
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_checknumber.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_containsdigits.dart';
@@ -7,21 +6,21 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequenceBellCheckNumber extends NumberSequenceCheckNumber {
-  const NumberSequenceBellCheckNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.BELL, maxIndex: 555);
+  const NumberSequenceBellCheckNumber({super.key}) : super(mode: NumberSequencesMode.BELL, maxIndex: 1001);
 }
 
 class NumberSequenceBellDigits extends NumberSequenceDigits {
-  const NumberSequenceBellDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.BELL, maxDigits: 1111);
+  const NumberSequenceBellDigits({super.key}) : super(mode: NumberSequencesMode.BELL, maxDigits: 1928);
 }
 
 class NumberSequenceBellRange extends NumberSequenceRange {
-  const NumberSequenceBellRange({Key? key}) : super(key: key, mode: NumberSequencesMode.BELL, maxIndex: 555);
+  const NumberSequenceBellRange({super.key}) : super(mode: NumberSequencesMode.BELL, maxIndex: 1001);
 }
 
 class NumberSequenceBellNthNumber extends NumberSequenceNthNumber {
-  const NumberSequenceBellNthNumber({Key? key}) : super(key: key, mode: NumberSequencesMode.BELL, maxIndex: 555);
+  const NumberSequenceBellNthNumber({super.key}) : super(mode: NumberSequencesMode.BELL, maxIndex: 1001);
 }
 
 class NumberSequenceBellContainsDigits extends NumberSequenceContainsDigits {
-  const NumberSequenceBellContainsDigits({Key? key}) : super(key: key, mode: NumberSequencesMode.BELL, maxIndex: 555);
+  const NumberSequenceBellContainsDigits({super.key}) : super(mode: NumberSequencesMode.BELL, maxIndex: 1001);
 }

@@ -17,7 +17,7 @@ import 'package:prefs/prefs.dart';
 class SymbolTableExamples extends StatefulWidget {
   final List<String> symbolKeys;
 
-  const SymbolTableExamples({Key? key, required this.symbolKeys}) : super(key: key);
+  const SymbolTableExamples({super.key, required this.symbolKeys});
 
   @override
   _SymbolTableExamplesState createState() => _SymbolTableExamplesState();

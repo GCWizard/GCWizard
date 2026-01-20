@@ -12,15 +12,12 @@ const MDT_ESOTERIC_LANGUAGES_DEADFISH_OPTION_XKCD = 'deadfish_mode_right';
 
 class MultiDecoderToolEsotericLanguageDeadfish extends AbstractMultiDecoderTool {
   MultiDecoderToolEsotericLanguageDeadfish(
-      {Key? key,
-      required int id,
-      required String name,
-      required Map<String, Object?> options,
+      {super.key,
+      required super.id,
+      required super.name,
+      required super.options,
       required BuildContext context})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_DEADFISH,
             optionalKey: true,
             onDecode: (String input, String key) {
@@ -41,8 +38,7 @@ class MultiDecoderToolEsotericLanguageDeadfish extends AbstractMultiDecoderTool 
                 return output.trim().isEmpty ? null : output;
               } catch (e) {}
               return null;
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolEsotericLanguageDeadfishState();
 }

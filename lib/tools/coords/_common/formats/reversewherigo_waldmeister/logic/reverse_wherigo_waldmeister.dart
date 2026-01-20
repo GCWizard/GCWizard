@@ -1,8 +1,9 @@
 import 'dart:math';
+
+import 'package:gc_wizard/tools/coords/_common/formats/dec/logic/dec.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
-import 'package:gc_wizard/tools/coords/_common/formats/dec/logic/dec.dart';
 import 'package:latlong2/latlong.dart';
 
 const reverseWherigoWaldmeisterKey = 'coords_reversewhereigo_waldmeister'; /* typo known. DO NOT change!*/
@@ -18,12 +19,18 @@ class ReverseWherigoWaldmeisterCoordinate extends BaseCoordinate {
   @override
   CoordinateFormat get format => CoordinateFormat(CoordinateFormatKey.REVERSE_WIG_WALDMEISTER);
   int a, b, c;
+  var _stateCode = StateCode.OK;
 
   ReverseWherigoWaldmeisterCoordinate(this.a, this.b, this.c);
 
   @override
+  StateCode get stateCode => _stateCode;
+
+  @override
   LatLng? toLatLng() {
-    return _reverseWIGWaldmeisterToLatLon(this);
+    var result = _reverseWIGWaldmeisterToLatLon(this);
+    _stateCode = (result == null) ? StateCode.Checksum_Error : StateCode.OK;
+    return result;
   }
 
   static ReverseWherigoWaldmeisterCoordinate fromLatLon(LatLng coord) {
@@ -31,7 +38,9 @@ class ReverseWherigoWaldmeisterCoordinate extends BaseCoordinate {
   }
 
   static ReverseWherigoWaldmeisterCoordinate? parse(String input) {
-    return _parseReverseWherigoWaldmeister(input);
+    var result = _parseReverseWherigoWaldmeister(input);
+    result?.toLatLng();
+    return result;
   }
 
   String _leftPadComponent(int x) {
@@ -52,7 +61,7 @@ LatLng? _reverseWIGWaldmeisterToLatLon(ReverseWherigoWaldmeisterCoordinate waldm
   var b = waldmeister.b;
   var c = waldmeister.c;
 
-  if (!checkSumTest(waldmeister)) return null;
+  if (!_checkSumTest(waldmeister)) return null;
 
   int _latSign = 1;
   int _lonSign = 1;
@@ -354,13 +363,10 @@ ReverseWherigoWaldmeisterCoordinate? _parseReverseWherigoWaldmeister(String inpu
 
   if (a == null || b == null || c == null) return null;
 
-  var waldmeister = ReverseWherigoWaldmeisterCoordinate(a, b, c);
-
-  if (!checkSumTest(waldmeister)) return null;
-  return waldmeister;
+  return ReverseWherigoWaldmeisterCoordinate(a, b, c);
 }
 
-bool checkSumTest(ReverseWherigoWaldmeisterCoordinate waldmeister) {
+bool _checkSumTest(ReverseWherigoWaldmeisterCoordinate waldmeister) {
   var b3Calc = __b3CheckSum(waldmeister).toInt();
   var c3Calc = __c3CheckSum(waldmeister).toInt();
 

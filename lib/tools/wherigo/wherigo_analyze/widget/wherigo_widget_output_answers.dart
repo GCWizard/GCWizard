@@ -14,7 +14,7 @@ String _answerIsVariable(String answer) {
 List<List<String>> _buildOutputListAnswers(BuildContext context,
     WherigoInputData input, WherigoAnswerData data, String LUASourceCode) {
   List<List<String>> result = [];
-  List<String> answers = data.AnswerAnswer.split('\x01');
+  List<String> answers = data.AnswerAnswer.split('\u0001');
   var hash = answers[0].trim();
   var answerAlphabetical = answers.length >= 2 ? answers[1].trim() : null;
   var answerNumeric = answers.length == 3 ? answers[2].trim() : null;

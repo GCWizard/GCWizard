@@ -6,7 +6,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/morbit/logic/morbit.dart';
 
 class Morbit extends StatefulWidget {
-  const Morbit({Key? key}) : super(key: key);
+  const Morbit({super.key});
 
   @override
   _MorbitState createState() => _MorbitState();

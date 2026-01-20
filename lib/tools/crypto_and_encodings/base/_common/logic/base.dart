@@ -21,11 +21,11 @@ String decodeBase16(String input) {
 
   if (input.length % 2 != 0) input = input + ' ';
 
-  return List.generate(input.length, (i) => i % 2 == 0 ? input.substring(i, i + 2) : null)
+  List<int> codeUnits = List.generate(input.length, (i) => i % 2 == 0 ? input.substring(i, i + 2) : null)
       .where((b) => b != null && RegExp(r'[0-9A-Fa-f]{2}').hasMatch(b))
-      .map((b) => String.fromCharCode(int.parse(b!, radix: 16)))
-      .toList()
-      .join();
+      .map((b) => (int.parse(b!, radix: 16)))
+      .toList();
+  return utf8.decoder.convert(codeUnits );
 }
 
 String encodeBase16(String input) {

@@ -72,6 +72,7 @@ void main() {
       {'text' : '01 101 0', 'expectedOutput' : <int>[1, 101, 0]},
       {'text' : '23 42 555', 'expectedOutput' : <int>[23, 42, 555]},
       {'text' : '  23      42   555   ', 'expectedOutput' : <int>[23, 42, 555]},
+      {'text' : '1, 16, 43', 'expectedOutput' : <int>[1, 16, 43]},
 
       {'text' : '1dasjk1123ssd12jd10ak', 'expectedOutput' : <int>[1, 1123, 12, 10]},
       {'text' : '23.4.16.-.19.3.2', 'expectedOutput' : <int>[23,4,16,19,3,2]},

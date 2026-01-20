@@ -11,7 +11,7 @@ import 'package:gc_wizard/tools/science_and_technology/vanity/_common/logic/vani
 import 'package:gc_wizard/utils/string_utils.dart';
 
 class VanityWordsTextSearch extends StatefulWidget {
-  const VanityWordsTextSearch({Key? key}) : super(key: key);
+  const VanityWordsTextSearch({super.key});
 
   @override
   _VanityWordsTextSearchState createState() => _VanityWordsTextSearchState();

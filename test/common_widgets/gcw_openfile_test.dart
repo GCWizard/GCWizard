@@ -3,7 +3,7 @@ import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_param
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 
 void main() {
-  group("_GCWOoenFile.downloadFileAsync:", () {
+  group("_GCWOpenFile.downloadFileAsync:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'url' : 'https://s3.amazonaws.com/gs-geo-images/cab6d299-7f28-4791-9df3-d904e46e7d5e.jpg', 'expectedOutput' : 17723},
       {'url' : 'https://img.geocaching.com/cab6d299-7f28-4791-9df3-d904e46e7d5e.jpg', 'expectedOutput' : 17723},

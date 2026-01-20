@@ -11,7 +11,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/malbolge/logic/malbolge.dart';
 
 class Malbolge extends StatefulWidget {
-  const Malbolge({Key? key}) : super(key: key);
+  const Malbolge({super.key});
 
   @override
   _MalbolgeState createState() => _MalbolgeState();

@@ -19,7 +19,7 @@ import 'package:image/image.dart' as Image;
 import 'package:tuple/tuple.dart';
 
 class MagicEyeSolver extends StatefulWidget {
-  const MagicEyeSolver({Key? key}) : super(key: key);
+  const MagicEyeSolver({super.key});
 
   @override
   _MagicEyeSolverState createState() => _MagicEyeSolverState();
@@ -58,13 +58,13 @@ class _MagicEyeSolverState extends State<MagicEyeSolver> {
         supportedFileTypes: SUPPORTED_IMAGE_TYPES,
         suppressGallery: false,
         file: _decodeImage,
-        onLoaded: (_file) {
-          if (_file == null) {
+        onLoaded: (GCWFile? value) {
+          if (value == null) {
             showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
             return;
           }
 
-          _decodeImage = _file;
+          _decodeImage = value;
           _decodeImageData = null;
           _decodeOutData = null;
           _displacement = null;
@@ -130,12 +130,12 @@ class _MagicEyeSolverState extends State<MagicEyeSolver> {
         supportedFileTypes: SUPPORTED_IMAGE_TYPES,
         suppressGallery: false,
         file: _encodeHiddenDataImage,
-        onLoaded: (_file) {
-          if (_file == null) {
+        onLoaded: (GCWFile? value) {
+          if (value == null) {
             showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
             return;
           }
-          _encodeHiddenDataImage = _file;
+          _encodeHiddenDataImage = value;
           _generateEncodeImage();
         },
       ),
@@ -176,12 +176,12 @@ class _MagicEyeSolverState extends State<MagicEyeSolver> {
               supportedFileTypes: SUPPORTED_IMAGE_TYPES,
               suppressGallery: false,
               file: _encodeTextureImage,
-              onLoaded: (_file) {
-                if (_file == null) {
+              onLoaded: (GCWFile? value) {
+                if (value == null) {
                   showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
                   return;
                 }
-                _encodeTextureImage = _file;
+                _encodeTextureImage = value;
                 _generateEncodeImage();
               },
             )

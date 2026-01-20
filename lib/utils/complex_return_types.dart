@@ -52,8 +52,7 @@ class Uint8ListText {
 class DateTimeTZDuration extends DateTimeTZ {
   Duration duration;
 
-  DateTimeTZDuration({required DateTime dateTimeUtc, Duration timezone = const Duration(), required this.duration})
-      : super(dateTimeUtc: dateTimeUtc, timezone: timezone);
+  DateTimeTZDuration({required super.dateTimeUtc, super.timezone, required this.duration});
 }
 
 class DateTimeTZ {

@@ -27,7 +27,7 @@ void _showFormulaReplaceDialog(BuildContext context, List<Formula> formulas,
 class _FormulaReplace extends StatefulWidget {
   final List<Formula> formulas;
 
-  const _FormulaReplace({Key? key, required this.formulas}) : super(key: key);
+  const _FormulaReplace({required this.formulas});
 
   @override
   _FormulaReplaceState createState() => _FormulaReplaceState();
@@ -51,6 +51,7 @@ class _FormulaReplaceState extends State<_FormulaReplace> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         GCWTextDivider(
             text: i18n(context, 'formulasolver_formulas_modifiedformula') +

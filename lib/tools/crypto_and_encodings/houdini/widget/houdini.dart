@@ -7,7 +7,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/houdini/logic/houdini.dart';
 
 class Houdini extends StatefulWidget {
-  const Houdini({Key? key}) : super(key: key);
+  const Houdini({super.key});
 
   @override
   _HoudiniState createState() => _HoudiniState();

@@ -12,7 +12,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/tomtom/logic/tomtom.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/text_widget_utils.dart';
 
 class TomTom extends StatefulWidget {
-  const TomTom({Key? key}) : super(key: key);
+  const TomTom({super.key});
 
   @override
   _TomTomState createState() => _TomTomState();

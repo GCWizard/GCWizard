@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/text_widget_utils.dart';
 import 'package:intl/intl.dart';
@@ -7,12 +8,14 @@ import 'package:intl/intl.dart';
 enum ToolLicenseType {
   PRIVATE_PERMISSION, // use as dummy; data will be taken from ToolLicensePrivatePermission object
   FREE_TO_USE,
+  CHARITYWARE,
   PERSONAL_USE,
   AL, // Artistic License
   APACHE2, // Apache 2.0
   BSD, // BSD
   BSD2, // BSD2
   BSD3, // BSD v3
+  CCBY, // Creative Commons CC BY (without version)
   CCBY4, // Creative Commons CC BY 4.0
   CCBY3US, // Creative Commons CC BY 3.0 US
   CCBYNC40, // Creative Commons CC BY-NC-SA 4.0
@@ -28,6 +31,7 @@ enum ToolLicenseType {
   CC0_1, // Creative Commons CC0 1.0
   MIT, // MIT
   MPL2, // MPL-2.0
+  GPL2, //GNU GPL v2.0
   GPL3, //GNU GPL v3.0
   GITHUB_DEFAULT, //Github Default
   GFDL, // GNU Free Documentation License
@@ -54,6 +58,7 @@ String _licenseType(BuildContext context, ToolLicenseType licenseType) {
     case ToolLicenseType.BSD: return 'BSD License';
     case ToolLicenseType.BSD2: return 'BSD-2-Clause';
     case ToolLicenseType.BSD3: return 'BSD-3-Clause';
+    case ToolLicenseType.CCBY: return 'Creative Commons CC BY';
     case ToolLicenseType.CCBY4: return 'Creative Commons CC BY 4.0';
     case ToolLicenseType.CCBY3US: return 'Creative Commons CC BY 3.0 US';
     case ToolLicenseType.CCBYNC40: return 'Creative Commons CC BY-NC-SA 4.0';
@@ -69,10 +74,12 @@ String _licenseType(BuildContext context, ToolLicenseType licenseType) {
     case ToolLicenseType.CC0_1: return 'Creative Commons CC0 1.0';
     case ToolLicenseType.MIT: return 'MIT License';
     case ToolLicenseType.MPL2: return 'Mozilla Public License Version 2.0';
+    case ToolLicenseType.GPL2: return 'GNU GPL v2.0 License';
     case ToolLicenseType.GPL3: return 'GNU GPL v3.0 License';
     case ToolLicenseType.GITHUB_DEFAULT: return 'Github Default License';
     case ToolLicenseType.GFDL: return 'GNU Free Documentation License';
     case ToolLicenseType.PUBLIC_DOMAIN: return 'Public Domain';
+    case ToolLicenseType.CHARITYWARE: return 'Charityware';
     case ToolLicenseType.NON_COMMERCIAL: return i18n(context, 'toollicenses_noncommercial');
     case ToolLicenseType.REPRODUCTION_NEEDED: return i18n(context, 'toollicenses_reproduction_needed');
     case ToolLicenseType.OFL11: return 'SIL Open Font License Version 1.1';
@@ -106,6 +113,40 @@ String toolLicenseTypeString(BuildContext context, ToolLicenseEntry toolLicense)
   if (toolLicense is ToolLicenseAPI) return i18n(context, 'toollicenses_api');
 
   return '';
+}
+
+const String _WEBARCHIVE_INDICATOR = 'web.archive.org';
+
+Row _buildSourceUrl(String text, String link) {
+  var children = <Widget>[];
+  var _rawLink = link;
+
+  if (link.contains(_WEBARCHIVE_INDICATOR)) {
+    _rawLink = 'http' + link.split('http')[2];
+  }
+
+  children.add(buildUrl(text, _rawLink));
+  if (link.contains(_WEBARCHIVE_INDICATOR)) {
+    children.add(Container(
+      width: DOUBLE_DEFAULT_MARGIN,
+    ));
+
+    children.add(
+      Text('(')
+    );
+
+    children.add(
+        buildUrl('Web Archive', link)
+    );
+
+    children.add(
+        Text(')')
+    );
+  }
+
+  return Row(
+    children: children,
+  );
 }
 
 abstract class ToolLicenseEntry {
@@ -259,7 +300,7 @@ class ToolLicenseOnlineBook extends ToolLicenseEntry {
   List<Object> toRow() {
     var out = <Object>[author];
     var _title = title;
-    out.add(buildUrl(_title, sourceUrl));
+    out.add(_buildSourceUrl(_title, sourceUrl));
     var date = _getDate(context, year, month, day);
     if (date != null) out.add(date);
     if (isbn != null) out.add('ISBN: ' + isbn!);
@@ -270,7 +311,7 @@ class ToolLicenseOnlineBook extends ToolLicenseEntry {
     if (licenseType != null && licenseType != ToolLicenseType.PRIVATE_PERMISSION) {
       var _lType = _licenseType(context, licenseType!);
       if (licenseUrl != null) {
-        _license = buildUrl(_lType, licenseUrl!);
+        _license = _buildSourceUrl(_lType, licenseUrl!);
       } else {
         _license = _lType;
       }
@@ -367,7 +408,7 @@ class ToolLicenseOnlineArticle extends ToolLicenseEntry {
   List<Object> toRow() {
     var out = <Object>[author];
     var _title = title;
-    out.add(buildUrl(_title, sourceUrl));
+    out.add(_buildSourceUrl(_title, sourceUrl));
     var date = _getDate(context, year, month, day);
     if (date != null) out.add(date);
     if (publisher != null) out.add(publisher!);
@@ -377,7 +418,7 @@ class ToolLicenseOnlineArticle extends ToolLicenseEntry {
     if (licenseType != null && licenseType != ToolLicenseType.PRIVATE_PERMISSION) {
       var _lType = _licenseType(context, licenseType!);
       if (licenseUrl != null) {
-        _license = buildUrl(_lType, licenseUrl!);
+        _license = _buildSourceUrl(_lType, licenseUrl!);
       } else {
         _license = _lType;
       }
@@ -432,7 +473,7 @@ class ToolLicenseCodeLibrary extends ToolLicenseEntry {
     var out = <Object>[author];
     var _title = title;
     if (version != null) _title += ' (' + version! + ')';
-    out.add(buildUrl(_title, sourceUrl));
+    out.add(_buildSourceUrl(_title, sourceUrl));
     var date = _getDate(context, year, month, day);
     if (date != null) out.add(date);
     if (privatePermission != null) out.add(privatePermission.toString());
@@ -440,7 +481,7 @@ class ToolLicenseCodeLibrary extends ToolLicenseEntry {
     if (licenseType != ToolLicenseType.PRIVATE_PERMISSION) {
       Object _license;
       if (licenseUrl != null) {
-        _license = buildUrl(_licenseType(context, licenseType), licenseUrl!);
+        _license = _buildSourceUrl(_licenseType(context, licenseType), licenseUrl!);
       } else {
         _license = _licenseType(context, licenseType);
       }
@@ -495,7 +536,7 @@ class ToolLicensePortedCode extends ToolLicenseEntry {
     var out = <Object>[author];
     var _title = title;
     if (version != null) _title += ' (' + version! + ')';
-    out.add(sourceUrl.isEmpty ? _title : buildUrl(_title, sourceUrl));
+    out.add(sourceUrl.isEmpty ? _title : _buildSourceUrl(_title, sourceUrl));
     var date = _getDate(context, year, month, day);
     if (date != null) out.add(date);
     if (privatePermission != null) out.add(privatePermission.toString());
@@ -503,7 +544,7 @@ class ToolLicensePortedCode extends ToolLicenseEntry {
     if (licenseType != ToolLicenseType.PRIVATE_PERMISSION) {
       Object _license;
       if (licenseUrl != null) {
-        _license = buildUrl(_licenseType(context, licenseType), licenseUrl!);
+        _license = _buildSourceUrl(_licenseType(context, licenseType), licenseUrl!);
       } else {
         _license = _licenseType(context, licenseType);
       }
@@ -560,7 +601,7 @@ class ToolLicenseImage extends ToolLicenseEntry {
     var out = <Object>[author];
     var _title = title;
     if (version != null) _title += ' (' + version! + ')';
-    out.add(buildUrl(_title, sourceUrl));
+    out.add(_buildSourceUrl(_title, sourceUrl));
     var date = _getDate(context, year, month, day);
     if (date != null) out.add(date);
     if (privatePermission != null) out.add(privatePermission.toString());
@@ -568,7 +609,7 @@ class ToolLicenseImage extends ToolLicenseEntry {
     if (licenseType != ToolLicenseType.PRIVATE_PERMISSION) {
       Object _license;
       if (licenseUrl != null) {
-        _license = buildUrl(_licenseType(context, licenseType), licenseUrl!);
+        _license = _buildSourceUrl(_licenseType(context, licenseType), licenseUrl!);
       } else {
         _license = _licenseType(context, licenseType);
       }
@@ -626,7 +667,7 @@ class ToolLicenseFont extends ToolLicenseEntry {
     var out = <Object>[author];
     var _title = title;
     if (version != null) _title += ' (' + version! + ')';
-    out.add(buildUrl(_title, sourceUrl));
+    out.add(_buildSourceUrl(_title, sourceUrl));
     var date = _getDate(context, year, month, day);
     if (date != null) out.add(date);
     if (privatePermission != null) out.add(privatePermission.toString());
@@ -634,7 +675,7 @@ class ToolLicenseFont extends ToolLicenseEntry {
     if (licenseType != ToolLicenseType.PRIVATE_PERMISSION) {
       Object _license;
       if (licenseUrl != null) {
-        _license = buildUrl(_licenseType(context, licenseType), licenseUrl!);
+        _license = _buildSourceUrl(_licenseType(context, licenseType), licenseUrl!);
       } else {
         _license = _licenseType(context, licenseType);
       }
@@ -691,7 +732,7 @@ class ToolLicenseFile extends ToolLicenseEntry {
     var out = <Object>[author];
     var _title = title;
     if (version != null) _title += ' (' + version! + ')';
-    out.add(buildUrl(_title, sourceUrl));
+    out.add(_buildSourceUrl(_title, sourceUrl));
     var date = _getDate(context, year, month, day);
     if (date != null) out.add(date);
     if (privatePermission != null) out.add(privatePermission.toString());
@@ -699,7 +740,7 @@ class ToolLicenseFile extends ToolLicenseEntry {
     if (licenseType != ToolLicenseType.PRIVATE_PERMISSION) {
       Object _license;
       if (licenseUrl != null) {
-        _license = buildUrl(_licenseType(context, licenseType), licenseUrl!);
+        _license = _buildSourceUrl(_licenseType(context, licenseType), licenseUrl!);
       } else {
         _license = _licenseType(context, licenseType);
       }
@@ -757,7 +798,7 @@ class ToolLicenseAPI extends ToolLicenseEntry {
     var out = <Object>[author];
     var _title = title;
     if (version != null) _title += ' (' + version! + ')';
-    out.add(buildUrl(_title, sourceUrl));
+    out.add(_buildSourceUrl(_title, sourceUrl));
     var date = _getDate(context, year, month, day);
     if (date != null) out.add(date);
     if (privatePermission != null) out.add(privatePermission.toString());
@@ -765,7 +806,7 @@ class ToolLicenseAPI extends ToolLicenseEntry {
     if (licenseType != ToolLicenseType.PRIVATE_PERMISSION) {
       Object _license;
       if (licenseUrl != null) {
-        _license = buildUrl(_licenseType(context, licenseType), licenseUrl!);
+        _license = _buildSourceUrl(_licenseType(context, licenseType), licenseUrl!);
       } else {
         _license = _licenseType(context, licenseType);
       }

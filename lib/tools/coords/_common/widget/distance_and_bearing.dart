@@ -20,7 +20,7 @@ class DistanceBearing extends StatefulWidget {
   final GCWMapLineType type;
   final DistanceBearingData Function(LatLng coord1, LatLng coord2, Ellipsoid ellipsoid) calculate;
 
-  const DistanceBearing({Key? key, required this.type, required this.calculate}) : super(key: key);
+  const DistanceBearing({super.key, required this.type, required this.calculate});
 
   @override
   _DistanceBearingState createState() => _DistanceBearingState();

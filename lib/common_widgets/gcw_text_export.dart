@@ -27,14 +27,13 @@ class GCWTextExport extends StatefulWidget {
   final String? saveFilenamePrefix;
 
   GCWTextExport(
-      {Key? key,
+      {super.key,
       required this.text,
       this.onModeChanged,
       this.possibleExportMode = PossibleExportMode.BOTH,
       this.initMode = TextExportMode.QR,
       this.saveFileTypeText,
-      this.saveFilenamePrefix})
-      : super(key: key) {
+      this.saveFilenamePrefix}) {
     if (text.length > MAX_QR_TEXT_LENGTH_FOR_EXPORT) {
       possibleExportMode = PossibleExportMode.TEXTONLY;
       initMode = TextExportMode.TEXT;

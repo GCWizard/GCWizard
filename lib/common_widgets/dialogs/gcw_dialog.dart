@@ -43,7 +43,7 @@ class GCWDialogButton extends StatefulWidget {
   final void Function()? onPressed;
   final bool suppressClose;
 
-  const GCWDialogButton({Key? key, required this.text, this.onPressed, this.suppressClose = false}) : super(key: key);
+  const GCWDialogButton({super.key, required this.text, this.onPressed, this.suppressClose = false});
 
   @override
   _GCWDialogButtonState createState() => _GCWDialogButtonState();

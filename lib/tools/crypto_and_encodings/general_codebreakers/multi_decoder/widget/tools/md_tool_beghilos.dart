@@ -5,16 +5,12 @@ import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/multi_
 const MDT_INTERNALNAMES_BEGHILOS = 'multidecoder_tool_beghilos_title';
 
 class MultiDecoderToolBeghilos extends AbstractMultiDecoderTool {
-  MultiDecoderToolBeghilos({Key? key, required int id, required String name, required Map<String, Object?> options})
+  MultiDecoderToolBeghilos({super.key, required super.id, required super.name, required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_BEGHILOS,
             onDecode: (String input, String key) {
-              return decodeBeghilos(input);
-            },
-            options: options);
+              return decodeBeghilos(input, BeghilosType.LOWER_G_TO_SIX);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolBeghilosState();
 }

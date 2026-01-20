@@ -1,0 +1,7 @@
+[new] Ballistics
+[new] Larrabee
+[new] Fakoo Segment Display
+[new] Many Symbol Tables
+[chg] Tupper
+[chg] Vanity Words
+[fix] Many bug fixes

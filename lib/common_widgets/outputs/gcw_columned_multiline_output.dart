@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
@@ -18,9 +19,12 @@ class GCWColumnedMultilineOutput extends StatefulWidget {
   final TextStyle? style;
   final double fontSize;
   final List<Widget>? firstRows;
+  final List<Widget>? lastRows;
+
+  final int maxRowLimit;
 
   const GCWColumnedMultilineOutput(
-      {Key? key,
+      {super.key,
       required this.data,
       this.flexValues = const [],
       this.copyColumn,
@@ -30,109 +34,223 @@ class GCWColumnedMultilineOutput extends StatefulWidget {
       this.tappables,
       this.style,
       this.fontSize = 0.0,
-      this.firstRows})
-      : super(key: key);
+      this.firstRows,
+      this.lastRows,
+      this.maxRowLimit = 150});
 
   @override
   _GCWColumnedMultilineOutputState createState() => _GCWColumnedMultilineOutputState();
 }
 
 class _GCWColumnedMultilineOutputState extends State<GCWColumnedMultilineOutput> {
-  @override
-  Widget build(BuildContext context) {
-    var rows = _columnedMultiLineOutputRows();
-    if (widget.firstRows != null) rows.insertAll(0, widget.firstRows!);
+  late int _currentLimit = widget.maxRowLimit;
+  late ScrollController _scrollController;
+  bool _isLoading = false;
 
-    return Column(children: rows);
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
   }
 
-  List<Widget> _columnedMultiLineOutputRows() {
-    var odd = true;
-    var isFirst = true;
-    var copyColumn = widget.copyColumn;
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
-    int index = 0;
-    return widget.data.map((rowData) {
-      Widget output;
-      var textStyle = widget.style ?? gcwTextStyle(fontSize: widget.fontSize);
+  void _scrollListener() {
+    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      _loadMore();
+    }
+  }
 
-      var columns = rowData
-          .asMap()
-          .map((index, column) {
-            var _textStyle = textStyle;
-            if (isFirst && widget.hasHeader) _textStyle = _textStyle.copyWith(fontWeight: FontWeight.bold);
+  void _loadMore() async {
+    if (_isLoading || _currentLimit >= widget.data.length) return;
+    setState(() {
+      _isLoading = true;
+    });
 
-            Widget child;
+    await Future<void>.delayed(const Duration(milliseconds: 1000));
 
-            if (column is Widget) {
-              child = column;
-            } else {
-              if (widget.tappables == null || widget.tappables!.isEmpty) {
-                child = GCWText(text: column != null ? column.toString() : '', style: _textStyle);
-              } else {
-                child = Text(column != null ? column.toString() : '', style: _textStyle);
-              }
-            }
+    setState(() {
+      _currentLimit = (_currentLimit + widget.maxRowLimit).clamp(0, widget.data.length);
+      _isLoading = false;
+    });
+  }
 
-            return MapEntry(
-                index, Expanded(flex: index < widget.flexValues.length ? widget.flexValues[index] : 1, child: child));
-          })
-          .values
-          .toList();
+  @override
+  Widget build(BuildContext context) {
+    bool veryLongList = widget.data.length > widget.maxRowLimit;
 
-      String? copyText;
-      copyColumn ??= rowData.length - 1;
-      if (copyColumn != null && copyColumn! >= 0) {
-        copyText = rowData[copyColumn!] is Widget ? null : rowData[copyColumn!].toString();
-        if (isFirst && widget.hasHeader && widget.copyAll) {
-          copyText = '';
-          widget.data.skip(1).forEach((dataRow) {
-            copyText = (copyText ?? '') + dataRow[copyColumn!].toString() + '\n';
-          });
-        }
-      }
-
-      var row = Container(
-        margin: const EdgeInsets.only(top: 6, bottom: 6),
-        child: Row(
+    if (veryLongList) {
+      return SizedBox(
+        height: MediaQuery.of(context).size.height * 0.6,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
-              child: Row(children: columns),
-            ),
-            copyText == null || copyText!.isEmpty
-                ? Container(width: 21.0)
-                : Container(
-                    child: (((isFirst && widget.hasHeader) & !widget.copyAll) || widget.suppressCopyButtons)
-                        ? Container()
-                        : GCWIconButton(
-                            icon: Icons.content_copy,
-                            iconSize: 14,
-                            size: IconButtonSize.TINY,
-                            onPressed: () {
-                              insertIntoGCWClipboard(context, copyText!);
-                            },
-                          ),
-                  )
+            _buildFirstRows(),
+            (widget.hasHeader) ? _buildHeader() : const SizedBox.shrink(),
+            Expanded(child: _buildListView()),
+            if (_isLoading) Center(child: _buildLoadingIndicator()),
+            _buildLastRows()
           ],
         ),
       );
+    }
 
-      if (odd) {
-        output = Container(color: themeColors().outputListOddRows(), child: row);
-      } else {
-        output = Container(child: row);
-      }
-      odd = !odd;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildFirstRows(),
+        (widget.hasHeader) ? _buildHeader() : const SizedBox.shrink(),
+        _buildListView(),
+        _buildLastRows()
+      ],
+    );
+  }
 
-      isFirst = false;
-      if (widget.tappables != null) {
-        return InkWell(
-          onTap: widget.tappables![index++],
-          child: output,
+  Widget _buildLoadingIndicator() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GCWText(
+        text: i18n(context, 'common_loadfile_loading') + ' ...',
+        align: Alignment.center,
+      ),
+    );
+  }
+
+  Widget _buildListView() {
+    bool hasMore = _currentLimit < widget.data.length;
+
+    return Scrollbar(
+      child: ListView.builder(
+        shrinkWrap: widget.data.length <= widget.maxRowLimit ? true : false,
+        controller: _scrollController,
+        padding: const EdgeInsets.symmetric(vertical: 2),
+        itemCount: _currentLimit + (hasMore ? 1 : 0),
+        itemBuilder: (context, index) {
+          return (widget.tappables != null)
+              ? GestureDetector(
+                  onTap: () => widget.tappables?[index + (widget.hasHeader ? 1 : 0)].call(),
+                  child: _buildRow(widget.hasHeader ? index + 1 : index),
+                )
+              : _buildRow(widget.hasHeader ? index + 1 : index);
+        },
+      ),
+    );
+  }
+
+  Widget _buildFirstRows() {
+    if (widget.firstRows != null) {
+      return Column(children: widget.firstRows!.map((firstWidget) => firstWidget).toList());
+    }
+    return const SizedBox.shrink();
+  }
+
+  Widget _buildLastRows() {
+    if (widget.lastRows != null) {
+      return Column(children: widget.lastRows!.map((firstWidget) => firstWidget).toList());
+    }
+    return const SizedBox.shrink();
+  }
+
+  Widget _buildHeader() {
+    if (widget.data.isEmpty || widget.data.first.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final List<dynamic> rowData = widget.data.first;
+    final String copytext = _getItemsAtPosition(widget.data, widget.copyColumn ?? rowData.length - 1);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 2),
+      child: _buildRowEntries(rowData, 0, copytext, boldType: true),
+    );
+  }
+
+  Widget _buildRow(int rowIdx) {
+    if (rowIdx >= widget.data.length) return const SizedBox.shrink();
+
+    List<dynamic> rowData = widget.data[rowIdx];
+    String copyText = _getCopyText(rowData);
+    var rowColor = rowIdx.isOdd ? themeColors().outputListOddRows() : themeColors().primaryBackground();
+
+    return Container(
+        padding: const EdgeInsets.symmetric(vertical: 2),
+        decoration: BoxDecoration(color: rowColor),
+        child: _buildRowEntries(rowData, rowIdx, copyText));
+  }
+
+  Widget _buildRowEntries(List<dynamic> rowData, int rowIdx, String copytext, {bool boldType = false}) {
+    return Row(
+        children: rowData.asMap().entries.map((entry) {
+      var colIndex = entry.key;
+      var value = entry.value;
+      var isLastCol = colIndex == rowData.length - 1;
+
+      return Expanded(
+          flex: colIndex < widget.flexValues.length ? widget.flexValues[colIndex] : 1,
+          child: _buildColumnElement(value, rowIdx, isLastCol, copytext, boldType: boldType));
+    }).toList());
+  }
+
+  Widget _buildColumnElement(dynamic value, int rowIdx, bool isLastCol, String copytext, {bool boldType = false}) {
+    Widget output;
+    Widget button = const SizedBox.shrink();
+
+    var isFirst = rowIdx == 0;
+    var _text_style = widget.style ?? gcwTextStyle();
+    _text_style = (boldType) ? _text_style.copyWith(fontWeight: FontWeight.bold) : _text_style;
+
+    if (value is Widget) {
+      output = Expanded(child: value);
+    } else {
+      output = Expanded(
+          child: (widget.tappables != null)
+              ? Text((value ?? '').toString(), style: _text_style)
+              : GCWText(text: (value ?? '').toString(), style: _text_style));
+    }
+
+    if (isLastCol) {
+      if (widget.copyAll && isFirst && widget.hasHeader) {
+        // bigger copy all button in header row
+        button = GCWIconButton(
+          icon: Icons.content_copy,
+          iconSize: 14,
+          size: IconButtonSize.SMALL,
+          onPressed: () {
+            insertIntoGCWClipboard(context, copytext);
+          },
         );
-      } else {
-        return output;
+      } else if (!widget.suppressCopyButtons) {
+        button = GCWIconButton(
+          icon: Icons.content_copy,
+          iconSize: 12,
+          size: IconButtonSize.TINY,
+          onPressed: () {
+            insertIntoGCWClipboard(context, copytext);
+          },
+        );
       }
-    }).toList();
+    }
+    return Row(spacing: 1, children: [output, button]);
+  }
+
+  String _getCopyText(List<dynamic> rowData) {
+    if (widget.copyColumn != null && widget.copyColumn! < rowData.length) {
+      return rowData[widget.copyColumn!].toString();
+    }
+    return rowData.isNotEmpty ? rowData.last.toString() : '';
+  }
+
+  String _getItemsAtPosition(List<List<Object?>> data, int copyColumn) {
+    if (data.isEmpty || copyColumn < 0) return '';
+
+    return data
+        .where((innerList) => innerList.length > copyColumn)
+        .map((innerList) => innerList[copyColumn]?.toString() ?? '')
+        .join('\n');
   }
 }

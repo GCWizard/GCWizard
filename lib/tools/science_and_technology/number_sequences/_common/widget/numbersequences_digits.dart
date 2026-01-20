@@ -9,7 +9,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 class NumberSequenceDigits extends StatefulWidget {
   final NumberSequencesMode mode;
   final int maxDigits;
-  const NumberSequenceDigits({Key? key, required this.mode, required this.maxDigits}) : super(key: key);
+  const NumberSequenceDigits({super.key, required this.mode, required this.maxDigits});
 
   @override
   _NumberSequenceDigitsState createState() => _NumberSequenceDigitsState();
@@ -34,7 +34,6 @@ class _NumberSequenceDigitsState extends State<NumberSequenceDigits> {
       children: <Widget>[
         GCWTextDivider(
           text: i18n(context, NUMBERSEQUENCE_TITLE[widget.mode]!),
-          style: const TextStyle(fontSize: 20),
         ),
         GCWIntegerSpinner(
           title: i18n(context, 'numbersequence_inputd'),

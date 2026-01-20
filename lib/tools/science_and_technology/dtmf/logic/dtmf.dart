@@ -43,7 +43,7 @@ String decodeDTMF(String chiffre) {
       .toList();
 
   var _dtmfCodes = <List<int?>>[];
-  for (var i = 0; i < _chiffreListClean.length - 1; i = i + 2) {
+  for (var i = 0; i < _chiffreListClean.length - 1; i += 2) {
     if (i + 1 <= _chiffreListClean.length - 1) {
       var _tones = [_chiffreListClean[i], _chiffreListClean[i + 1]];
       _tones.sort();

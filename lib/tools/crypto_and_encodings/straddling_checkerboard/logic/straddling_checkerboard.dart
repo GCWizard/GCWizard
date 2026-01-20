@@ -256,12 +256,12 @@ String _buildGrid(Map<String, String> grid, String columnOrder, bool matrix4x10)
 
   if (columnOrder.isEmpty) columnOrder = '0123456789';
 
-  result = result + '  | ' + columnOrder.split('').join(' ') + '\n';
-  result = result + '-----------------------' + '\n';
+  result += '  | ' + columnOrder.split('').join(' ') + '\n';
+  result += '-----------------------' + '\n';
 
-  result = result + '  |';
+  result += '  |';
   for (int i = 0; i < 10; i++) {
-    result = result + ' ' + (grid[columnOrder[i]] ?? '');
+    result += ' ' + (grid[columnOrder[i]] ?? '');
     if (grid[columnOrder[i]] == ' ' && line1.isEmpty) {
       line1 = columnOrder[i];
     } else if (grid[columnOrder[i]] == ' ' && line2.isEmpty) {
@@ -270,24 +270,24 @@ String _buildGrid(Map<String, String> grid, String columnOrder, bool matrix4x10)
       line3 = columnOrder[i];
     }
   }
-  result = result + '\n';
+  result += '\n';
 
-  result = result + line1 + ' |';
+  result += line1 + ' |';
   for (int i = 0; i < 10; i++) {
-    result = result + ' ' + (grid[line1 + columnOrder[i]] ?? '');
+    result += ' ' + (grid[line1 + columnOrder[i]] ?? '');
   }
-  result = result + '\n';
+  result += '\n';
 
-  result = result + line2 + ' |';
+  result += line2 + ' |';
   for (int i = 0; i < 10; i++) {
-    result = result + ' ' + (grid[line2 + columnOrder[i]] ?? '');
+    result += ' ' + (grid[line2 + columnOrder[i]] ?? '');
   }
 
   if (matrix4x10) {
-    result = result + '\n';
-    result = result + line3 + ' |';
+    result += '\n';
+    result += line3 + ' |';
     for (int i = 0; i < 10; i++) {
-      result = result + ' ' + (grid[line3 + columnOrder[i]] ?? '');
+      result += ' ' + (grid[line3 + columnOrder[i]] ?? '');
     }
   }
   return result;

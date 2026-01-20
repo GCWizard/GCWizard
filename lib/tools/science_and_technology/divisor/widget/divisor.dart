@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/cross_sums/widget/crossto
 import 'package:gc_wizard/tools/science_and_technology/divisor/logic/divisor.dart';
 
 class Divisor extends StatefulWidget {
-  const Divisor({Key? key}) : super(key: key);
+  const Divisor({super.key});
 
   @override
   _DivisorState createState() => _DivisorState();
@@ -67,6 +67,7 @@ class _DivisorState extends State<Divisor> {
             text: _currentInputN.toString(),
             values: divisors(_currentInputN),
             inputType: CROSSTOTAL_INPUT_TYPE.NUMBERS,
+            suppressWordMode: true,
           )
       ],
     );

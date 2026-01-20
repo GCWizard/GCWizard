@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_checknumber.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_containsdigits.dart';
@@ -7,26 +6,26 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequenceHappyNumbersCheckNumber extends NumberSequenceCheckNumber {
-  const NumberSequenceHappyNumbersCheckNumber({Key? key})
-      : super(key: key, mode: NumberSequencesMode.HAPPY_NUMBERS, maxIndex: 142);
+  const NumberSequenceHappyNumbersCheckNumber({super.key})
+      : super(mode: NumberSequencesMode.HAPPY_NUMBERS, maxIndex: 100000);
 }
 
 class NumberSequenceHappyNumbersDigits extends NumberSequenceDigits {
-  const NumberSequenceHappyNumbersDigits({Key? key})
-      : super(key: key, mode: NumberSequencesMode.HAPPY_NUMBERS, maxDigits: 4);
+  const NumberSequenceHappyNumbersDigits({super.key})
+      : super(mode: NumberSequencesMode.HAPPY_NUMBERS, maxDigits: 6);
 }
 
 class NumberSequenceHappyNumbersRange extends NumberSequenceRange {
-  const NumberSequenceHappyNumbersRange({Key? key})
-      : super(key: key, mode: NumberSequencesMode.HAPPY_NUMBERS, maxIndex: 142);
+  const NumberSequenceHappyNumbersRange({super.key})
+      : super(mode: NumberSequencesMode.HAPPY_NUMBERS, maxIndex: 100000);
 }
 
 class NumberSequenceHappyNumbersNthNumber extends NumberSequenceNthNumber {
-  const NumberSequenceHappyNumbersNthNumber({Key? key})
-      : super(key: key, mode: NumberSequencesMode.HAPPY_NUMBERS, maxIndex: 142);
+  const NumberSequenceHappyNumbersNthNumber({super.key})
+      : super(mode: NumberSequencesMode.HAPPY_NUMBERS, maxIndex: 100000);
 }
 
 class NumberSequenceHappyNumbersContainsDigits extends NumberSequenceContainsDigits {
-  const NumberSequenceHappyNumbersContainsDigits({Key? key})
-      : super(key: key, mode: NumberSequencesMode.HAPPY_NUMBERS, maxIndex: 142);
+  const NumberSequenceHappyNumbersContainsDigits({super.key})
+      : super(mode: NumberSequencesMode.HAPPY_NUMBERS, maxIndex: 100000);
 }

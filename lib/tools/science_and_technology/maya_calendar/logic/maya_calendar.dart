@@ -200,7 +200,7 @@ String convertDecToMayaCalendar(String input) {
       value++;
       numberDec = numberDec - (mayaCalendarSystem[position - 1]);
     }
-    result = result + _alphabet[value];
+    result += _alphabet[value];
   }
   return result;
 }

@@ -20,16 +20,12 @@ class PUNCHTAPESegmentDisplay extends NSegmentDisplay {
   final TeletypewriterCodebook codeBook;
 
   PUNCHTAPESegmentDisplay(this.codeBook,
-      {Key? key,
-      required Map<String, bool> segments,
-      bool readOnly = false,
-      void Function(Map<String, bool>)? onChanged})
+      {super.key,
+      required super.segments,
+      super.readOnly,
+      super.onChanged})
       : super(
-            key: key,
             initialSegments: _INITIAL_SEGMENTS,
-            segments: segments,
-            readOnly: readOnly,
-            onChanged: onChanged,
             type: SegmentDisplayType.CUSTOM,
             customPaint: (GCWTouchCanvas canvas, Size size, Map<String, bool> currentSegments, Function setSegmentState,
                 Color segment_color_on, Color segment_color_off) {
@@ -49,13 +45,13 @@ class PUNCHTAPESegmentDisplay extends NSegmentDisplay {
               int x = 10;
 
               for (int i = 1; i <= punchHoles; i++) {
-                if (i == sprocketHole) x = x + 30;
+                if (i == sprocketHole) x += 30;
                 List<int> coordsList = [];
                 coordsList.add(x);
                 coordsList.add(30);
                 circles[i.toString()] = [];
                 circles[i.toString()]!.addAll(coordsList);
-                x = x + 30;
+                x += 30;
               }
               //circles = {'1': [10, 30], '2': [40, 30], '3': [100, 30],'4': [130, 30],'5': [160, 30]};
 
@@ -70,7 +66,7 @@ class PUNCHTAPESegmentDisplay extends NSegmentDisplay {
                     pointSize + 2,
                     paint);
 
-                if (size.height < 50) return;
+                if (size.height < NSegmentDisplay.MIN_HEIGHT) return;
               });
 
               circles.forEach((key, value) {
@@ -83,7 +79,7 @@ class PUNCHTAPESegmentDisplay extends NSegmentDisplay {
                   setSegmentState(key, !segmentActive(currentSegments, key));
                 });
 
-                if (size.height < 50) return;
+                if (size.height < NSegmentDisplay.MIN_HEIGHT) return;
               });
 
               // print leadingHole

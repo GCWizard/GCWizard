@@ -8,16 +8,16 @@ import 'package:gc_wizard/application/category_views/selector_lists/sqrt3_select
 import 'package:gc_wizard/application/category_views/selector_lists/sqrt5_selection.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
-import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/tools/science_and_technology/mathematical_constants/logic/mathematical_constants.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/text_widget_utils.dart';
 
 class MathematicalConstants extends StatefulWidget {
-  const MathematicalConstants({Key? key}) : super(key: key);
+  const MathematicalConstants({super.key});
 
   @override
   _MathematicalConstantsState createState() => _MathematicalConstantsState();
@@ -25,18 +25,16 @@ class MathematicalConstants extends StatefulWidget {
 
 class _MathematicalConstantsState extends State<MathematicalConstants> {
   String _currentConstant = '';
-  late Map<String, MathematicalConstant> _constants;
+  Map<String, MathematicalConstant> _constants = {};
 
   final List<String> _orderedConstantKeys = [];
 
   @override
-  void initState() {
-    super.initState();
-    _constants = _buildConstants(context);
-  }
-
-  @override
   Widget build(BuildContext context) {
+    if (_constants.isEmpty) {
+      _constants = _buildConstants(context);
+    }
+
     return Column(
       children: <Widget>[
         GCWDropDown<String>(

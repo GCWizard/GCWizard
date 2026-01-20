@@ -68,7 +68,7 @@ const String _apiSpecification = '''
 ''';
 
 class OneTimePad extends GCWWebStatefulWidget {
-  OneTimePad({Key? key}) : super(key: key, apiSpecification: _apiSpecification);
+  OneTimePad({super.key}) : super(apiSpecification: _apiSpecification);
 
   @override
   _OneTimePadState createState() => _OneTimePadState();

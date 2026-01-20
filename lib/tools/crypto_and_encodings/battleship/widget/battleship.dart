@@ -14,7 +14,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/battleship/logic/battleship.dart';
 
 class Battleship extends StatefulWidget {
-  const Battleship({Key? key}) : super(key: key);
+  const Battleship({super.key});
 
   @override
   BattleshipState createState() => BattleshipState();

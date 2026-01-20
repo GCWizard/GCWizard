@@ -9,7 +9,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/numeral_bases/logic/numeral_bases.dart';
 
 class Binary extends StatefulWidget {
-  const Binary({Key? key}) : super(key: key);
+  const Binary({super.key});
 
   @override
   _BinaryState createState() => _BinaryState();

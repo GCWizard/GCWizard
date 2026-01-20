@@ -11,14 +11,11 @@ const MDT_BASE_OPTION_BASEFUNCTION = 'multidecoder_tool_base_option_basefunction
 
 class MultiDecoderToolBase extends AbstractMultiDecoderTool {
   MultiDecoderToolBase(
-      {Key? key,
-      required int id,
-      required String name,
-      required Map<String, Object?> options})
+      {super.key,
+      required super.id,
+      required super.name,
+      required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_BASE,
             onDecode: (String input, String key) {
               var function = BASE_FUNCTIONS[_getBaseKey(options, MDT_BASE_OPTION_BASEFUNCTION)];
@@ -26,8 +23,7 @@ class MultiDecoderToolBase extends AbstractMultiDecoderTool {
               var output = function(input);
               var _output = output.replaceAll(UNKNOWN_ELEMENT, '');
               return _output.trim().isEmpty ? null : output;
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolBaseState();
 }

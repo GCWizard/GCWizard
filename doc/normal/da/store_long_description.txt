@@ -1,20 +1,20 @@
-The GC Wizard is an open-source tool collection.
+GC Wizard er en open-source værktøjssamling.
 
-It was originally created to offer Geocachers as an offline tool to support them with in-field mysteries and riddles. So, the GC Wizard contains numerous tools for simple cryptography, geographic and scientific calculations as well as hundreds of sets of various symbols.
+Det startede som et offline værktøj til at hjælpe geocachere med at løse in-field mysteries og gåder ude i marken. I dag indeholder GC Wizard mange værktøjer til enkel kryptografi, geografiske og videnskabelige beregninger samt hundredvis af sæt af forskellige symboler.
 
-Meanwhile the project became very huge and might be practicable for many non-Geocaching issues.
+Efterhånden er projektet vokset enormt, og kan være nyttigt til mange ikke-geocaching formål.
 
-Translated into 🇬🇧 🇩🇪 🇫🇷 🇰🇷
+Oversat til 🇬🇧 🇩🇪 🇫🇷 🇰🇷
 
-<b>Highlights</b>
+<b>Højdepunkter</b>
 
-<b>General</b>
-• Formula Solver: For handling multi stage variables
-• Multi Decoder: Enter an unknown code and let several decoders and calculators interpret it in a row
-• More than 200 sets of Symbol Tables: Direct decoding symbols to characters; save own encoding as an image
-• Online Manual: Every tool has its own manual page, translated into 🇬🇧 🇩🇪 🇫🇷
+<b>Generelt</b>
+• Formel løser: Til håndtering af svar i multier
+• Multi Dekoder: Indtast en tekst i en ukendt kode, og GC Matrix kan afprøve teksten i flere dekodere og regnemaskiner
+• Over 200 sæt symboltabeller: afkoder symboler til tegn, eller gem egen kodning som billede
+• Online Manual: Hvert værktøj har sin egen manual, oversat til 🇬🇧 :Tyskland: 🇫🇷
 
-<b>Cryptography & Encodings</b>
+<b>Krypteringer & Kodninger</b>
 • Alphabet Values (A = 1, B = 2, ...): Configurable alphabets with language specific special character handling
 • Braille graphical decoder: Type the points into a graphical interface; supports different languages
 • Book Cipher: Choose the correct system (e.g. Line + Letter Number or Section + Line + Word Number, ...), handle special characters and empty lines, ...

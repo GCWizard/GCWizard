@@ -7,6 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/w
 import 'package:touchable/touchable.dart';
 
 class NSegmentDisplay extends StatefulWidget {
+  static const int MIN_HEIGHT = 50;
   final Map<String, bool> initialSegments;
   final double aspectRatio;
   final SegmentDisplayType type;
@@ -19,15 +20,14 @@ class NSegmentDisplay extends StatefulWidget {
   late _NSegmentDisplayState nSegmentDisplayState;
 
   NSegmentDisplay(
-      {Key? key,
+      {super.key,
       required this.initialSegments,
       required this.type,
       required this.segments,
       this.readOnly = false,
       required this.onChanged,
       this.customPaint,
-      this.aspectRatio = SEGMENTS_RELATIVE_DISPLAY_WIDTH / SEGMENTS_RELATIVE_DISPLAY_HEIGHT})
-      : super(key: key);
+      this.aspectRatio = SEGMENTS_RELATIVE_DISPLAY_WIDTH / SEGMENTS_RELATIVE_DISPLAY_HEIGHT});
 
   @override
   _NSegmentDisplayState createState() => _NSegmentDisplayState();

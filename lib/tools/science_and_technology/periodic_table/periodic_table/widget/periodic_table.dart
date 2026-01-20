@@ -16,7 +16,7 @@ const _LEGEND_WIDTH = 2;
 const _LEGEND_START_IUPAC_GROUP = 6;
 
 class PeriodicTable extends StatefulWidget {
-  const PeriodicTable({Key? key}) : super(key: key);
+  const PeriodicTable({super.key});
 
   @override
   _PeriodicTableState createState() => _PeriodicTableState();

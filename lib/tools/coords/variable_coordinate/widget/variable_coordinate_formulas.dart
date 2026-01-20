@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_paste_button.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_formula_list_editor.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
-import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/tools/coords/variable_coordinate/persistence/json_provider.dart';
 import 'package:gc_wizard/tools/coords/variable_coordinate/persistence/model.dart';
 import 'package:gc_wizard/tools/coords/variable_coordinate/widget/variable_coordinate.dart';
@@ -16,7 +16,7 @@ import 'package:gc_wizard/utils/json_utils.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
 class VariableCoordinateFormulas extends StatefulWidget {
-  const VariableCoordinateFormulas({Key? key}) : super(key: key);
+  const VariableCoordinateFormulas({super.key});
 
   @override
   _VariableCoordinateFormulasState createState() => _VariableCoordinateFormulasState();
@@ -81,7 +81,9 @@ class _VariableCoordinateFormulasState extends State<VariableCoordinateFormulas>
   void _addNewFormula(String name) {
     if (name.isNotEmpty) {
       var formula = VariableCoordinateFormula(name);
-      insertFormula(formula);
+      setState(() {
+        insertFormula(formula);
+      });
     }
   }
 

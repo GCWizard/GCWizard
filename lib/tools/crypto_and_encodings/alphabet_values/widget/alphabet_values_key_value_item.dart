@@ -2,14 +2,9 @@ part of 'package:gc_wizard/tools/crypto_and_encodings/alphabet_values/widget/alp
 
 class _AlphabetValuesKeyValueItem extends GCWKeyValueItem {
   _AlphabetValuesKeyValueItem({
-    Key? key,
-    required KeyValueBase keyValueEntry,
-    required bool odd,
-  }) : super(
-          key: key,
-          keyValueEntry: keyValueEntry,
-          odd: odd,
-        );
+    required super.keyValueEntry,
+    required super.odd,
+  });
 
   @override
   GCWKeyValueItemState createState() => _GCWKeyValueAlphabetEntryState();

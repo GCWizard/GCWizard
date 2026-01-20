@@ -35,12 +35,10 @@ class _PietStack {
     return _applyTernaryIf((int s1, int s2) => m(s2, s1), (int s1, _) => s1 != 0) ? 1 : 0;
   }
 
-  /// <summary>
   /// Computes a proper modulo rather than a remainder.
-  /// </summary>
   /// <param name="a">the dividend</param>
   /// <param name="n">the divisor</param>
-  /// <returns>the modulus</returns>
+  /// Returns the modulus
   int m(int a, int n) {
     // kudos to Erdal G of Stackoverflow - https://stackoverflow.com/a/61524484
 

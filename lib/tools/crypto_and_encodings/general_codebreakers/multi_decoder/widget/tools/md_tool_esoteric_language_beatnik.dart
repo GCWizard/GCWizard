@@ -11,15 +11,12 @@ const MDT_ESOTERIC_LANGUAGE_BEATNIK_OPTION_MODE = 'beatnik_hint_scrabble';
 
 class MultiDecoderToolEsotericLanguageBeatnik extends AbstractMultiDecoderTool {
   MultiDecoderToolEsotericLanguageBeatnik(
-      {Key? key,
-      required int id,
-      required String name,
-      required Map<String, Object?> options,
+      {super.key,
+      required super.id,
+      required super.name,
+      required super.options,
       required BuildContext context})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_BEATNIK,
             optionalKey: true,
             onDecode: (String input, String key) {
@@ -38,8 +35,7 @@ class MultiDecoderToolEsotericLanguageBeatnik extends AbstractMultiDecoderTool {
               } catch (e) {
                 return null;
               }
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolEsotericLanguageBeatnikState();
 }

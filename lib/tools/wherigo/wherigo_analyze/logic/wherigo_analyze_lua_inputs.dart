@@ -36,15 +36,15 @@ WherigoInputData _analyzeAndExtractInputSectionData(List<String> lines) {
     lines[i] = lines[i].trim();
 
     if (RegExp(r'( Wherigo.ZInput\()').hasMatch(lines[i])) {
-      LUAname = getLUAName(lines[i]);
+      LUAname = _getLUAName(lines[i]);
     }
 
     if (lines[i].startsWith(LUAname + '.Id')) {
-      id = getLineData(lines[i], LUAname, 'Id', _obfuscatorFunction, _obfuscatorTable);
+      id = _getLineData(lines[i], LUAname, 'Id', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.Name')) {
-      name = getLineData(lines[i], LUAname, 'Name', _obfuscatorFunction, _obfuscatorTable);
+      name = _getLineData(lines[i], LUAname, 'Name', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.Description')) {
@@ -58,37 +58,37 @@ WherigoInputData _analyzeAndExtractInputSectionData(List<String> lines) {
         if (i > lines.length - 1 || lines[i].startsWith(LUAname + '.Visible')) _sectionDescription = false;
       } while (_sectionDescription);
       i--;
-      description = getLineData(description, LUAname, 'Description', _obfuscatorFunction, _obfuscatorTable);
+      description = _getLineData(description, LUAname, 'Description', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.Media')) {
-      media = getLineData(lines[i], LUAname, 'Media', _obfuscatorFunction, _obfuscatorTable);
+      media = _getLineData(lines[i], LUAname, 'Media', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.Visible')) {
-      visible = getLineData(lines[i], LUAname, 'Visible', _obfuscatorFunction, _obfuscatorTable);
+      visible = _getLineData(lines[i], LUAname, 'Visible', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.Icon')) {
-      icon = getLineData(lines[i], LUAname, 'Icon', _obfuscatorFunction, _obfuscatorTable);
+      icon = _getLineData(lines[i], LUAname, 'Icon', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.InputType')) {
-      inputType = getLineData(lines[i], LUAname, 'InputType', _obfuscatorFunction, _obfuscatorTable);
+      inputType = _getLineData(lines[i], LUAname, 'InputType', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.InputVariableId')) {
-      variableID = getLineData(lines[i], LUAname, 'InputVariableId', _obfuscatorFunction, _obfuscatorTable);
+      variableID = _getLineData(lines[i], LUAname, 'InputVariableId', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.Text')) {
       if (lines[i].endsWith('"')) {
-        text = getLineData(lines[i], LUAname, 'Text', _obfuscatorFunction, _obfuscatorTable);
+        text = _getLineData(lines[i], LUAname, 'Text', _obfuscatorFunction, _obfuscatorTable);
       } else if (lines[i].contains('[[') && lines[i].endsWith(']]')) {
-        text = getLineData(lines[i].replaceAll('[[', '"').replaceAll(']]', '"'), LUAname, 'Text', _obfuscatorFunction,
+        text = _getLineData(lines[i].replaceAll('[[', '"').replaceAll(']]', '"'), LUAname, 'Text', _obfuscatorFunction,
             _obfuscatorTable);
       } else if (lines[i].contains('WWB_multi') && lines[i].endsWith(')')) {
-        text = getLineData(lines[i].replaceAll('WWB_multiplatform_string("', '"').replaceAll('")', '"'), LUAname,
+        text = _getLineData(lines[i].replaceAll('WWB_multiplatform_string("', '"').replaceAll('")', '"'), LUAname,
             'Text', _obfuscatorFunction, _obfuscatorTable);
       } else {
         // multi Lines of Text
@@ -97,14 +97,14 @@ WherigoInputData _analyzeAndExtractInputSectionData(List<String> lines) {
           i++;
           text = text + lines[i];
         } while (_notEndOfInputText(lines[i + 1], LUAname));
-        text = normalizeWIGText(text.replaceAll(']]', '').replaceAll('<BR>', '\n'));
+        text = _normalizeWIGText(text.replaceAll(']]', '').replaceAll('<BR>', '\n'));
       }
     }
 
     if (lines[i].startsWith(LUAname + '.Choices')) {
       listChoices = [];
       if (lines[i + 1].trim().startsWith(LUAname + '.InputType') || lines[i + 1].trim().startsWith(LUAname + '.Text')) {
-        listChoices.addAll(getChoicesSingleLine(lines[i], LUAname, _obfuscatorFunction, _obfuscatorTable));
+        listChoices.addAll(_getChoicesSingleLine(lines[i], LUAname, _obfuscatorFunction, _obfuscatorTable));
       } else {
         i++;
         _sectionChoices = true;

@@ -8,7 +8,7 @@ import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/tools/general_tools/randomizer/logic/randomizer.dart';
 
 class RandomizerCoin extends StatefulWidget {
-  const RandomizerCoin({Key? key}) : super(key: key);
+  const RandomizerCoin({super.key});
 
   @override
   _RandomizerCoinState createState() => _RandomizerCoinState();

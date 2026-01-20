@@ -108,7 +108,7 @@ final _GRID_CONFIGURATIONS = {
 };
 
 class Grid extends StatefulWidget {
-  const Grid({Key? key}) : super(key: key);
+  const Grid({super.key});
 
   @override
   _GridState createState() => _GridState();
@@ -503,7 +503,7 @@ class _GridState extends State<Grid> {
     if (enumeration.contains(RegExp(r'[,\-]')) && VARIABLESTRING.hasMatch(enumeration)) {
       var expanded = VariableStringExpander('x', {'x': enumeration}, orderAndUnique: false)
           .run()
-          .map((e) => e.text)
+          .map((VariableStringExpanderValue e) => e.text)
           .whereType<String>()
           .toList();
 

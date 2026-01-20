@@ -16,6 +16,7 @@ import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_paste_button.dart';
 import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
@@ -25,20 +26,18 @@ import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_popup_menu.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_parser.dart';
-import 'package:gc_wizard/tools/coords/_common/widget/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/gpx_kml_gpx_import.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_export_dialog.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/map_view/persistence/mapview_persistence_adapter.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/mappoint_editor.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/mappolyline_editor.dart';
-
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/default_units_getter.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/length.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
@@ -74,8 +73,7 @@ class GCWMapView extends StatefulWidget {
   late List<GCWMapPolyline> polylines;
   final bool isEditable;
 
-  GCWMapView({Key? key, required this.points, List<GCWMapPolyline>? polylines, this.isEditable = false})
-      : super(key: key) {
+  GCWMapView({super.key, required this.points, List<GCWMapPolyline>? polylines, this.isEditable = false}) {
     this.polylines = polylines ?? [];
   }
 
@@ -218,7 +216,8 @@ class _GCWMapViewState extends State<GCWMapView> {
           )
         : TileLayer(
             urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          );
+            userAgentPackageName: 'dev.fleaflet.flutter_map.de.sman42.gcWizard',
+    );
 
     var layers = <Widget>[tileLayer];
     layers.addAll(_buildLinesAndMarkersLayers());
@@ -584,19 +583,19 @@ class _GCWMapViewState extends State<GCWMapView> {
     );
   }
 
-  late Point<double> _markerPointStart;
+  late Offset _markerPointStart;
 
   void _onPanStart(DragStartDetails details, GCWMapPoint point) {
-    _markerPointStart = const Epsg3857().latLngToPoint(point.point, _mapController.camera.zoom);
+    _markerPointStart = const Epsg3857().latLngToOffset(point.point, _mapController.camera.zoom);
 
-    _markerPointStart -= details.localPosition.toPoint();
+    _markerPointStart -= details.localPosition;
   }
 
   void _onPanUpdate(DragUpdateDetails details, GCWMapPoint point) {
     _popupLayerController.hidePopup();
 
     LatLng pointToLatLng =
-        const Epsg3857().pointToLatLng(_markerPointStart + details.localPosition.toPoint(), _mapController.camera.zoom);
+        const Epsg3857().offsetToLatLng(_markerPointStart + details.localPosition, _mapController.camera.zoom);
 
     point.point = pointToLatLng;
 
@@ -1254,25 +1253,18 @@ class _GCWMarker extends Marker {
   _GCWMarker({
     this.coordinateDescription,
     required this.mapPoint,
-    required Widget child,
-    required double width,
-    required double height,
-    required Alignment alignment
-  }) : super(point: mapPoint.point, child: child, width: width, height: height, alignment: alignment);
+    required super.child,
+    required super.width,
+    required super.height,
+    required Alignment super.alignment
+  }) : super(point: mapPoint.point);
 }
 
 class _GCWTappablePolyline extends Polyline {
   GCWMapSimpleGeometry child;
 
   _GCWTappablePolyline(
-      {required List<LatLng> points, required double strokeWidth, required Color color, required this.child,
-        Object? hitValue})
-      : super(
-          points: points,
-          strokeWidth: strokeWidth,
-          color: color,
-          hitValue: hitValue
-        );
+      {required super.points, required super.strokeWidth, required super.color, required this.child});
 }
 
 class _GCWMapPopupController {

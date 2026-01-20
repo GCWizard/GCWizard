@@ -113,17 +113,13 @@ class SymbolReplacerImage {
     _image = image;
     _outputImageBytes = image;
   }
-
-  /// <summary>
+  
   /// source image
-  /// </summary>
   Uint8List getImage() {
     return _image;
   }
-
-  /// <summary>
+  
   /// Image with symbol borders
-  /// </summary>
   Uint8List? getBorderImage() {
     if (_outputImageBytes != null) return _outputImageBytes!;
 
@@ -132,17 +128,13 @@ class SymbolReplacerImage {
     _outputImageBytes = encodeTrimmedPng(mergedImage);
     return _outputImageBytes;
   }
-
-  /// <summary>
+  
   /// SymbolImage with compary symbols (symbol table)
-  /// </summary>
   SymbolReplacerImage? getCompareImage() {
     return _usedCompareSymbolsImage;
   }
-
-  /// <summary>
+  
   /// determines the text based on the assigned symbols
-  /// </summary>
   String? getTextOutput({bool withLinebreak = false}) {
     var output = '';
     var referenceWidth = _referenceWidth(symbols);
@@ -158,10 +150,8 @@ class SymbolReplacerImage {
     }
     return output.trim();
   }
-
-  /// <summary>
+  
   /// seperate symbols from image and create SymbolGroups
-  /// </summary>
   void splitAndGroupSymbols(int blackLevel, double similarityLevel,
       {int gap = 1,
       List<Map<String, SymbolReplacerSymbolData>>? compareSymbols,
@@ -239,21 +229,17 @@ class SymbolReplacerImage {
 
     symbolScale = calcSymbolScale();
   }
-
-  /// <summary>
+  
   /// add Symbol to SymbolGroup
-  /// </summary>
   void addToGroup(Symbol symbol, SymbolGroup? symbolGroup) {
     if (symbolGroup == null) return;
     _removeSymbolFromGroup(symbol);
 
     _addSymbolToGroup(symbol, symbolGroup);
   }
-
-  /// <summary>
+  
   /// remove Symbol from SymbolGroup
   /// delete SymbolGroup if empty
-  /// </summary>
   void _removeSymbolFromGroup(Symbol symbol) {
     if (symbol.symbolGroup != null) {
       // remove symbol from
@@ -263,10 +249,8 @@ class SymbolReplacerImage {
       symbol.symbolGroup = null;
     }
   }
-
-  /// <summary>
+  
   /// remove Symbol from SymbolGroup (create new SymbolGroup)
-  /// </summary>
   void removeFromGroup(Symbol symbol) {
     _removeSymbolFromGroup(symbol);
     var symbolGroup = SymbolGroup();
@@ -282,10 +266,8 @@ class SymbolReplacerImage {
     }
     symbol.symbolGroup = symbolGroup;
   }
-
-  /// <summary>
+  
   /// SymbolGroup for these symbols together
-  /// </summary>
   void buildSymbolGroup(List<Symbol> symbols) {
     if (symbols.isEmpty) return;
 
@@ -294,10 +276,8 @@ class SymbolReplacerImage {
       addToGroup(symbols[i], symbols.first.symbolGroup);
     }
   }
-
-  /// <summary>
+  
   /// merge SymbolGroups with same compareSymbol
-  /// </summary>
   void mergeSymbolGroups() {
     if (symbolGroups.isEmpty) return;
 
@@ -315,20 +295,16 @@ class SymbolReplacerImage {
       }
     }
   }
-
-  /// <summary>
+  
   /// reset all SymbolGroup text
-  /// </summary>
   void resetGroupText() {
     for (var group in symbolGroups) {
       group.text = null;
       group.compareSymbol = null;
     }
   }
-
-  /// <summary>
+  
   /// extract symbols from the compare symbol table
-  /// </summary>
   SymbolReplacerImage? _buildCompareSymbols(List<Map<String, SymbolReplacerSymbolData>> compareSymbols) {
     if (compareSymbols.isEmpty || compareSymbols.first.values.first.bytes == null) return null;
     if (_blackLevel == null || _similarityLevel == null || _gap == null) return null;
@@ -365,12 +341,10 @@ class SymbolReplacerImage {
 
     return compareSymbolImage;
   }
-
-  /// <summary>
+  
   /// Compare the symbols in the specified symbol table with the existing symbols and
   /// then assign the text to the groups
   /// return: Sum of percent match for all symbols
-  /// </summary>
   double _useCompareSymbols(SymbolReplacerImage? compareSymbolImage) {
     var percentSum = 0.0;
     if (compareSymbolImage == null || _similarityCompareLevel == null) return 0;
@@ -406,10 +380,8 @@ class SymbolReplacerImage {
     }
     return percentSum;
   }
-
-  /// <summary>
+  
   /// creates an image with frames around the symbols
-  /// </summary>
   Image.Image? _mergeBorderData() {
     if (_bmp == null) return null;
     var bmp = Image.Image(width: _bmp!.width, height: _bmp!.height);
@@ -431,17 +403,13 @@ class SymbolReplacerImage {
 
     return bmp;
   }
-
-  /// <summary>
+  
   /// Split the image into individual lines
-  /// </summary>
   void _splitToLines() {
     var emptyLineIndex = <int>[];
     if (_bmp == null || _blackLevel == null) return;
-
-    /// <summary>
+    
     /// search empty lines
-    /// </summary>
     for (int y = 0; y < _bmp!.height; y++) {
       if (_emptyRow(_bmp!, 0, _bmp!.width - 1, y, _blackLevel!)) emptyLineIndex.add(y);
     }
@@ -463,10 +431,8 @@ class SymbolReplacerImage {
       }
     }
   }
-
-  /// <summary>
+  
   /// Cut line and add to sourceLines
-  /// </summary>
   void _cutLine(int startIndex, int endIndex) {
     if (_bmp == null) return;
     var rect = Rectangle<double>(0, startIndex.toDouble(), _bmp!.width.toDouble(), (endIndex - startIndex).toDouble());
@@ -478,10 +444,8 @@ class SymbolReplacerImage {
               x: rect.left.toInt(), y: rect.top.toInt(), width: rect.width.toInt(), height: rect.height.toInt())));
     }
   }
-
-  /// <summary>
+  
   /// Group symbols together
-  /// </summary>
   void _groupSymbols() {
     if (_similarityLevel == null) return;
     for (int i = 0; i < symbols.length; i++) {
@@ -519,10 +483,8 @@ class SymbolReplacerImage {
       }
     }
   }
-
-  /// <summary>
+  
   /// it is an empty line ?
-  /// </summary>
   static bool _emptyRow(Image.Image bmp, int startColumn, int endColumn, int row, int blackLevel) {
     for (int x = startColumn; x <= endColumn; x++) {
       var pixel = bmp.getPixel(x, row);
@@ -530,17 +492,13 @@ class SymbolReplacerImage {
     }
     return true;
   }
-
-  /// <summary>
+  
   /// Pixels darker than threshold  ?
-  /// </summary>
   static bool _blackPixel(Image.Pixel pixel, int blackLevel) {
     return (pixel.luminance <= blackLevel);
   }
-
-  /// <summary>
+  
   /// Average of all symbol widths
-  /// </summary>
   static int _referenceWidth(List<Symbol> symbols) {
     int width = 0;
 
@@ -550,10 +508,8 @@ class SymbolReplacerImage {
 
     return width;
   }
-
-  /// <summary>
+  
   /// closest distance leading to symbol merging
-  /// </summary>
   double? nextMergeDistance(double? actMergeDistance) {
     double? next;
     actMergeDistance = actMergeDistance ?? _mergeDistance;
@@ -580,9 +536,7 @@ class SymbolReplacerImage {
     return next ?? _mergeDistanceSteps!.last;
   }
 
-  /// <summary>
   /// previous spacing that caused symbols to be merged
-  /// </summary>
   double? prevMergeDistance(double? actMergeDistance) {
     double? prev;
     actMergeDistance = actMergeDistance ?? _mergeDistance;
@@ -593,9 +547,7 @@ class SymbolReplacerImage {
     return prev;
   }
 
-  /// <summary>
   /// calc init merge distance
-  /// </summary>
   double? _mergeSymbolsDefault(int mergeDistance) {
     // calc possible steps
     _mergeDistanceSteps ??= _calcMergeDistances();
@@ -623,9 +575,7 @@ class SymbolReplacerImage {
     return null;
   }
 
-  /// <summary>
   /// calc possible merge distances steps
-  /// </summary>
   List<double> _calcMergeDistances() {
     var distances = <double>[0];
     for (int x = 0; x < symbols.length; x++) {
@@ -641,9 +591,7 @@ class SymbolReplacerImage {
     return distances;
   }
 
-  /// <summary>
   /// Verification and merging of all symbols
-  /// </summary>
   void _mergeSymbols(double maxDistance) {
     var rectList = <Rectangle<double>>[];
     var symbolList = <Symbol?>[];
@@ -677,9 +625,7 @@ class SymbolReplacerImage {
     } while (changed);
   }
 
-  /// <summary>
   /// Find the row that the symbol is associated with
-  /// </summary>
   _SymbolRow? _searchSymbolRow(Symbol symbol) {
     for (_SymbolRow line in lines) {
       if (line.symbols.contains(symbol)) return line;
@@ -687,9 +633,7 @@ class SymbolReplacerImage {
     return null;
   }
 
-  /// <summary>
   /// Find the SymbolGroup that the symbol is associated with
-  /// </summary>
   SymbolGroup? _searchSymbolGroup(Symbol symbol) {
     for (SymbolGroup group in symbolGroups) {
       if (group.symbols.contains(symbol)) return group;
@@ -697,9 +641,7 @@ class SymbolReplacerImage {
     return null;
   }
 
-  /// <summary>
   /// Merge symbols
-  /// </summary>
   void mergeSymbol(Symbol symbol1, Symbol symbol2, _SymbolRow? line) {
     var box = symbol1._borderRectangle().boundingBox(symbol2._borderRectangle());
 
@@ -754,9 +696,7 @@ class _SymbolRow {
     return symbolRow;
   }
 
-  /// <summary>
   /// Break line into symbols
-  /// </summary>
   void _splitLineToSymbols(int gap, int blackLevel) {
     var emptyColumnIndex = <int>[];
 
@@ -809,9 +749,7 @@ class _SymbolRow {
     return emptyColumnIndex;
   }
 
-  /// <summary>
   /// count the empty columns between symbols
-  /// </summary>
   int _countEmptyColumns(List<int> emptyColumnIndex, int startIndex) {
     var counter = 1;
     for (int i = startIndex; i < emptyColumnIndex.length - 1; i++) {
@@ -824,9 +762,7 @@ class _SymbolRow {
     return counter;
   }
 
-  /// <summary>
   /// Cut symbol and add to symbols
-  /// </summary>
   Rectangle<double> _cutSymbol(int startIndex, int endIndex, int blackLevel) {
     var rect = Rectangle<double>(startIndex.toDouble(), 0, (endIndex - startIndex).toDouble(), bmp.height.toDouble());
 
@@ -843,9 +779,7 @@ class _SymbolRow {
     return rect;
   }
 
-  /// <summary>
   /// determine the bounding rectangle for the symbol
-  /// </summary>
   Rectangle<double> _boundingBox(Image.Image bmp, Rectangle<double> rect, int blackLevel) {
     var startRow = rect.top.toInt();
     var endRow = rect.bottom.toInt() - 1;
@@ -883,9 +817,7 @@ class Symbol {
     return symbol;
   }
 
-  /// <summary>
   /// determine the minimum distance between the symbols that is greater than 0
-  /// </summary>
   double distance(Symbol symbol2) {
     return _rectangleDistance(_borderRectangle(), symbol2._borderRectangle());
   }
@@ -894,18 +826,14 @@ class Symbol {
     return Rectangle(refPoint.dx, refPoint.dy, bmp.width.toDouble(), bmp.height.toDouble());
   }
 
-  /// <summary>
   /// inflate rectangle
-  /// </summary>
   Rectangle<double> _borderRectangleWithOffset(double sizeOffset) {
     var rect = _borderRectangle();
     return Rectangle<double>(rect.left - sizeOffset, rect.top - sizeOffset, rect.right + sizeOffset,
         rect.bottom + sizeOffset); //.inflate(sizeOffset);
   }
 
-  /// <summary>
   /// determine the minimum distance between the rectangles that is greater than 0
-  /// </summary>
   static double _rectangleDistance(Rectangle<double> rect1, Rectangle<double> rect2) {
     var m1 = Offset(rect1.left + rect1.width / 2.0, rect1.top + rect1.height / 2.0); //center;
     var m2 = Offset(rect2.left + rect2.width / 2.0, rect2.top + rect2.height / 2.0); //center;;
@@ -989,20 +917,16 @@ Future<List<Map<String, SymbolReplacerSymbolData>>?> searchSymbolTable(
   return Future.value(maxPercentSymbolTable);
 }
 
-/// <summary>
 /// Contains a variety of methods useful in generating image hashes for image comparison
 /// and recognition.
 ///
 /// Credit for the AverageHash implementation to David Oftedal of the University of Oslo.
-/// </summary>
 class ImageHashing {
   /// Private constants and utility methods
-  /// <summary>
   /// Bitcounts array used for BitCount method (used in Similarity comparisons).
   /// Don't try to read this or understand it, I certainly don't. Credit goes to
   /// David Oftedal of the University of Oslo, Norway for this.
   /// http://folk.uio.no/davidjo/computing.php
-  /// </summary>
   static final _bitCounts = Uint8List.fromList([
     0,
     1,
@@ -1262,13 +1186,11 @@ class ImageHashing {
     8
   ]);
 
-  /// <summary>
   /// Counts bits (duh). Utility function for similarity.
   /// I wouldn't try to understand this. I just copy-pasta'd it
   /// from Oftedal's implementation. It works.
-  /// </summary>
   /// <param name="num">The hash we are counting.</param>
-  /// <returns>The total bit count.</returns>
+  /// Returns The total bit count.
   static int _BitCount(int num) {
     int count = 0;
     for (; num > 0; num >>= 8) {
@@ -1278,12 +1200,10 @@ class ImageHashing {
   }
 
   /// source: https://github.com/jforshee/ImageHashing/blob/master/ImageHashing/ImageHashing.cs
-  /// <summary>
   /// Computes the average hash of an image according to the algorithm given by Dr. Neal Krawetz
   /// on his blog: http://www.hackerfactor.com/blog/index.php?/archives/432-Looks-Like-It.html.
-  /// </summary>
   /// <param name="image">The image to hash.</param>
-  /// <returns>The hash of the image.</returns>
+  /// Returns The hash of the image.
   static int AverageHash(Image.Image image) {
     // Squeeze the image into an 8x8 canvas
     Image.Image squeezed = Image.copyResize(image, width: 8, height: 8, interpolation: Image.Interpolation.nearest);
@@ -1314,24 +1234,20 @@ class ImageHashing {
     return hash;
   }
 
-  /// <summary>
   /// Returns a percentage-based similarity value between the two given hashes. The higher
   /// the percentage, the closer the hashes are to being identical.
-  /// </summary>
   /// <param name="hash1">The first hash.</param>
   /// <param name="hash2">The second hash.</param>
-  /// <returns>The similarity percentage.</returns>
+  /// Returns The similarity percentage.
   static double Similarity(int hash1, int hash2) {
     return ((64 - _BitCount(hash1 ^ hash2)) * 100) / 64.0;
   }
 
-  /// <summary>
   /// Returns a percentage-based similarity value between the two given images. The higher
   /// the percentage, the closer the images are to being identical.
-  /// </summary>
   /// <param name="image1">The first image.</param>
   /// <param name="image2">The second image.</param>
-  /// <returns>The similarity percentage.</returns>
+  /// Returns The similarity percentage.
   static double SimilarityImage(Image.Image image1, Image.Image image2) {
     int hash1 = AverageHash(image1);
     int hash2 = AverageHash(image2);

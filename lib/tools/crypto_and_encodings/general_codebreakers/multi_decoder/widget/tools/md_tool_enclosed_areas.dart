@@ -11,23 +11,19 @@ const MDT_ENCLOSEDAREAS_OPTION_WITHOUT4 = 'enclosedareas_without4';
 
 class MultiDecoderToolEnclosedAreas extends AbstractMultiDecoderTool {
   MultiDecoderToolEnclosedAreas(
-      {Key? key,
-      required int id,
-      required String name,
-      required Map<String, Object?> options,
+      {super.key,
+      required super.id,
+      required super.name,
+      required super.options,
       required BuildContext context})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_ENCLOSEDAREAS,
             onDecode: (String input, String key) {
               return decodeEnclosedAreas(input,
                   with4: checkStringFormatOrDefaultOption(
                           MDT_INTERNALNAMES_ENCLOSEDAREAS, options, MDT_ENCLOSEDAREAS_OPTION_MODE) ==
                       MDT_ENCLOSEDAREAS_OPTION_WITH4);
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolEnclosedAreasState();
 }

@@ -20,7 +20,7 @@ import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_containe
 class SegmentDisplay extends StatefulWidget {
   final SegmentDisplayType type;
 
-  const SegmentDisplay({Key? key, required this.type}) : super(key: key);
+  const SegmentDisplay({super.key, required this.type});
 
   @override
   _SegmentDisplayState createState() => _SegmentDisplayState();

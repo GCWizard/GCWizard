@@ -181,9 +181,9 @@ List<String> _getAnswers(int i, String line, String lineBefore, List<WherigoVari
     line.split('or').forEach((element) {
       hashvalue = int.parse(element.replaceAll('D+', ''));
       results.add(hashvalue.toString() +
-          '\x01' +
+          '\u0001' +
           breakUrwigoHash(hashvalue, HASH.ALPHABETICAL).toString() +
-          '\x01' +
+          '\u0001' +
           breakUrwigoHash(hashvalue, HASH.NUMERIC).toString());
     });
 
@@ -210,11 +210,11 @@ List<String> _getAnswers(int i, String line, String lineBefore, List<WherigoVari
     line = line.split(' or ').map((element) {
       return element.trim();
     }).join('\n');
-    line = removeWWB(line);
+    line = _removeWWB(line);
     // check if variable then provide information
     for (int i = 0; i < variables.length; i++) {
       if (line == variables[i].VariableLUAName) {
-        line = variables[i].VariableName + '\x01' + line;
+        line = variables[i].VariableName + '\u0001' + line;
         i = variables.length;
       }
     }

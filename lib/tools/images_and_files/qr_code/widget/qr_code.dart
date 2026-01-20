@@ -23,7 +23,7 @@ import 'package:gc_wizard/utils/ui_dependent_utils/image_utils/image_utils.dart'
 class QrCode extends StatefulWidget {
   final GCWFile? file;
 
-  const QrCode({Key? key, this.file}) : super(key: key);
+  const QrCode({super.key, this.file});
 
   @override
   _QrCodeState createState() => _QrCodeState();

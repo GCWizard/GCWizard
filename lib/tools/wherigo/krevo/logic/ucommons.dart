@@ -16,9 +16,9 @@ int RSHash(String string) {
 
   for (var i = 0; i < string.length; i++) {
     hash = hash * a + string.codeUnits[i];
-    hash = hash % 65535;
-    a = a * b;
-    a = a % 65535;
+    hash %= 65535;
+    a *=  b;
+    a %= 65535;
   }
 
   return hash;

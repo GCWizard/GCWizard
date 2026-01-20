@@ -14,14 +14,13 @@ class LogicalBoard extends StatefulWidget {
   final Logical board;
   final void Function(int, int) onTapped;
 
-  const LogicalBoard({Key? key, required this.onChanged, required this.board, required this.onTapped})
-      : super(key: key);
+  const LogicalBoard({super.key, required this.onChanged, required this.board, required this.onTapped});
 
   @override
-  LogicalBoardState createState() => LogicalBoardState();
+  _LogicalBoardState createState() => _LogicalBoardState();
 }
 
-class LogicalBoardState extends State<LogicalBoard> {
+class _LogicalBoardState extends State<LogicalBoard> {
   late TextEditingController _currentInputController;
   final _currentValueFocusNode = FocusNode();
 

@@ -12,7 +12,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/_common/logic
 import 'package:gc_wizard/utils/collection_utils.dart';
 
 class NumeralWordsLists extends StatefulWidget {
-  const NumeralWordsLists({Key? key}) : super(key: key);
+  const NumeralWordsLists({super.key});
 
   @override
   _NumeralWordsListsState createState() => _NumeralWordsListsState();

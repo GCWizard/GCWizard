@@ -12,15 +12,12 @@ const MDT_VANITY_NUMBERSEARCH_OPTION_LANGUAGE = 'multidecoder_tool_vanity_number
 
 class MultiDecoderToolVanityWordsTextSearch extends AbstractMultiDecoderTool {
   MultiDecoderToolVanityWordsTextSearch(
-      {Key? key,
-      required int id,
-      required String name,
-      required Map<String, Object?> options,
+      {super.key,
+      required super.id,
+      required super.name,
+      required super.options,
       required BuildContext context})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_VANITY_NUMBERSEARCH,
             onDecode: (String input, String key) {
               var language = _parseStringToEnum(stringNullableTypeCheck(options[MDT_VANITY_NUMBERSEARCH_OPTION_LANGUAGE], null));
@@ -30,8 +27,7 @@ class MultiDecoderToolVanityWordsTextSearch extends AbstractMultiDecoderTool {
               var output = buildVanityWordSearchOutputString(detailedOutput, context);
               if (output.replaceAll(' ', '').replaceAll('.', '').isEmpty) return null;
               return output;
-            },
-            options: options);
+            });
 
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolVanityMultitapState();

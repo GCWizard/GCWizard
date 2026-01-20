@@ -21,17 +21,12 @@ double _relativeY(Size size, double y) {
 }
 
 class _ShadoksNumbersSegmentDisplay extends NSegmentDisplay {
-  _ShadoksNumbersSegmentDisplay(
-      {Key? key,
-      required Map<String, bool> segments,
-      bool readOnly = false,
-      void Function(Map<String, bool>)? onChanged})
+  _ShadoksNumbersSegmentDisplay({
+      required super.segments,
+      super.readOnly,
+      super.onChanged})
       : super(
-            key: key,
             initialSegments: _INITIAL_SEGMENTS,
-            segments: segments,
-            readOnly: readOnly,
-            onChanged: onChanged,
             aspectRatio: _SHADOKS_RELATIVE_DISPLAY_WIDTH / _SHADOKS_RELATIVE_DISPLAY_HEIGHT,
             type: SegmentDisplayType.CUSTOM,
             customPaint: (GCWTouchCanvas canvas, Size size, Map<String, bool> currentSegments, Function setSegmentState,

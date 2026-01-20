@@ -13,7 +13,7 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/w
 import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/widget/segmentdisplay_output.dart';
 
 class MayaNumbers extends StatefulWidget {
-  const MayaNumbers({Key? key}) : super(key: key);
+  const MayaNumbers({super.key});
 
   @override
   _MayaNumbersState createState() => _MayaNumbersState();

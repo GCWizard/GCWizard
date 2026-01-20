@@ -61,7 +61,7 @@ String encryptRailFence(String input, int key, {int? offset, String? password}) 
 
   password = _sanitizePassword(password, key);
 
-  input = '\x00' * offset + input;
+  input = '\u0000' * offset + input;
 
   var matrix = _fillMatrix(input, key);
   matrix = _applyPasswordToMatrix(matrix, password);
@@ -73,7 +73,7 @@ String encryptRailFence(String input, int key, {int? offset, String? password}) 
     }
   }
 
-  return out.replaceAll('\x00', '');
+  return out.replaceAll('\u0000', '');
 }
 
 String decryptRailFence(String input, int key, {int? offset, String? password}) {
@@ -85,7 +85,7 @@ String decryptRailFence(String input, int key, {int? offset, String? password}) 
 
   password = _sanitizePassword(password, key);
 
-  var mapMatrix = _fillMatrix('\x01' * offset + '\x00' * input.length, key);
+  var mapMatrix = _fillMatrix('\u0001' * offset + '\u0000' * input.length, key);
   mapMatrix = _applyPasswordToMatrix(mapMatrix, password);
 
   var matrix = List<List<String>>.from(mapMatrix);
@@ -93,7 +93,7 @@ String decryptRailFence(String input, int key, {int? offset, String? password}) 
   int i = 0;
   mapMatrix.asMap().forEach((rowIndex, row) {
     row.asMap().forEach((columnIndex, cell) {
-      if (cell == '\x00') matrix[rowIndex][columnIndex] = input[i++];
+      if (cell == '\u0000') matrix[rowIndex][columnIndex] = input[i++];
     });
   });
 
@@ -104,5 +104,5 @@ String decryptRailFence(String input, int key, {int? offset, String? password}) 
     }
   }
 
-  return out.replaceAll('\x01', '');
+  return out.replaceAll('\u0001', '');
 }

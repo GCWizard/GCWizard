@@ -9,8 +9,7 @@ class GCWUnitPrefixDropDown extends StatefulWidget {
   final UnitPrefix value;
   final bool onlyShowSymbols;
 
-  const GCWUnitPrefixDropDown({Key? key, required this.onChanged, required this.value, required this.onlyShowSymbols})
-      : super(key: key);
+  const GCWUnitPrefixDropDown({super.key, required this.onChanged, required this.value, required this.onlyShowSymbols});
 
   @override
   _GCWUnitPrefixDropDownState createState() => _GCWUnitPrefixDropDownState();

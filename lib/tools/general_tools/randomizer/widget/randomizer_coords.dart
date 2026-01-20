@@ -20,7 +20,7 @@ import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/leng
 import 'package:latlong2/latlong.dart';
 
 class RandomizerCoordinates extends StatefulWidget {
-  const RandomizerCoordinates({Key? key}) : super(key: key);
+  const RandomizerCoordinates({super.key});
 
   @override
   _RandomizerCoordinatesState createState() => _RandomizerCoordinatesState();

@@ -14,9 +14,14 @@ class GCWKeyValueInput extends StatefulWidget {
   late int? valueFlex;
   late void Function()? onSetState;
 
+  final bool Function(String)? validateAddedKey;
+  final bool Function(String)? validateAddedValue;
+
   GCWKeyValueInput({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+    this.validateAddedKey,
+    this.validateAddedValue
+  });
 
   @override
   GCWKeyValueInputState createState() => GCWKeyValueInputState();
@@ -133,6 +138,13 @@ class GCWKeyValueInputState extends State<GCWKeyValueInput> {
   }
 
   void addEntry(KeyValueBase entry, {bool clearInput = true}) {
+    if (widget.validateAddedKey != null && widget.validateAddedKey!(entry.key) == false) {
+      return;
+    }
+    if (widget.validateAddedValue != null && widget.validateAddedValue!(entry.value) == false) {
+      return;
+    }
+
     if (widget.onAddEntry == null) {
       widget.entries.add(entry);
     } else {

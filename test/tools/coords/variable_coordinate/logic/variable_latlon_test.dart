@@ -4,6 +4,7 @@ import 'package:gc_wizard/tools/coords/variable_coordinate/logic/variable_latlon
 import 'package:gc_wizard/tools/coords/variable_coordinate/persistence/model.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit_category.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart';
+import 'package:gc_wizard/utils/variable_string_expander.dart';
 import 'package:latlong2/latlong.dart';
 
 void main() {
@@ -142,6 +143,79 @@ void main() {
           expect(true, equalsLatLng(actualCoord.coordinate, _expectedLeftPadCoords[index].coordinate));
           expect(actualCoord.variables, _expectedCoords[index].variables);
         });
+      });
+    }
+  });
+
+  group("Parser.variableLatLon.expandVariables:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'values': {'x': ''}, 'expectedOutput': <String?>[null]},
+      {'values': {'x': '1'}, 'expectedOutput': ['1']},
+      {'values': {'x': '1-3'}, 'expectedOutput': ['1', '2', '3']},
+      {'values': {'x': '1,2,3'}, 'expectedOutput': ['1', '2', '3']},
+      {'values': {'x': '1-3#2'}, 'expectedOutput': ['1', '3']},
+      {'values': {'x': '4,1-3#2'}, 'expectedOutput': ['4','1', '3']},
+      {'values': {'x': '1-3#'}, 'expectedOutput': <String?>[null]},
+      {'values': {'x': '-'}, 'expectedOutput': <String?>[null]},
+      {'values': {'x': '#'}, 'expectedOutput': <String?>[null]},
+      {'values': {'x': ','}, 'expectedOutput': <String?>[null]},
+      {'values': {'x': '1-'}, 'expectedOutput': <String?>[null]},
+      {'values': {'x': '-1'}, 'expectedOutput': <String?>[null]},
+      {'values': {'x': '1-#'}, 'expectedOutput': <String?>[null]},
+      {'values': {'x': '1-#,'}, 'expectedOutput': <String?>[null]},
+      {'values': {'x': '1-2#,'}, 'expectedOutput': <String?>[null]},
+      {'values': {'x': '1-2-3,'}, 'expectedOutput': <String?>[null]},
+      {'values': {'x': '1-2#3,'}, 'expectedOutput': <String?>[null]},
+      {'values': {'x': '1#2-1'}, 'expectedOutput': <String?>[null]},
+      {'values': {'x': '1-2#3,4'}, 'expectedOutput': ['1','4']},
+      {'values': {'x': '1-2#3,4-8#1'}, 'expectedOutput': ['1','4','5','6','7','8']},
+      {'values': {'x': '   1-2  #   3 ,4-  8#   1  '}, 'expectedOutput': ['1','4','5','6','7','8']},
+      {'values': {'x': '   1-2  #   3 ,4-  8#   1  , '}, 'expectedOutput': <String?>[null]},
+      {'values': {'x': '1-2#3,4-8#1,'}, 'expectedOutput': <String?>[null]},
+      {'values': {'x': '1-2-3,4-8#1'}, 'expectedOutput': <String?>[null]},
+      {'values': {'x': '1-2-3,4-8#1'}, 'expectedOutput': <String?>[null]},
+      {'values': {'x': '12-3,4-8#3'}, 'expectedOutput': ['12','11','10','9','8','7','6','5','4','3','4','7']},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('values: ${elem['values']}}', () {
+        var _actual = VariableStringExpander('x', elem['values'] as Map<String, String>, orderAndUnique: false)
+            .run()
+            .map((e) => e.variables?.values.first)
+            .toList();
+
+        var expected = elem['expectedOutput'] as List<String?>;
+
+        expect(_actual.length, expected.length);
+        for (int i = 0; i < _actual.length; i++) {
+          expect(_actual[i], expected[i]);
+        }
+      });
+    }
+  });
+
+  group("Parser.variableLatLon.expandVariablesWithOrderAndUnique:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'values': {'x': '3,3'}, 'expectedOutput': ['3']},
+      {'values': {'x': '3,2,1'}, 'expectedOutput': ['1','2','3']},
+      {'values': {'x': '4,3,3,1,1'}, 'expectedOutput': ['1','3','4']},
+      {'values': {'x': '12-3,4-8#3'}, 'expectedOutput': ['3','4','5','6','7','8','9','10','11','12']},
+      {'values': {'x': '10,9,1'}, 'expectedOutput': ['1','9','10']},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('values: ${elem['values']}}', () {
+        var _actual = VariableStringExpander('x', elem['values'] as Map<String, String>, orderAndUnique: true)
+            .run()
+            .map((e) => e.variables?.values.first)
+            .toList();
+
+        var expected = elem['expectedOutput'] as List<String?>;
+
+        expect(_actual.length, expected.length);
+        for (int i = 0; i < _actual.length; i++) {
+          expect(_actual[i], expected[i]);
+        }
       });
     }
   });

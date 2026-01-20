@@ -17,17 +17,12 @@ const _SEMAPHORE_RELATIVE_DISPLAY_WIDTH = 360; //110;
 const _SEMAPHORE_RELATIVE_DISPLAY_HEIGHT = 260; //100;
 
 class _SemaphoreSegmentDisplay extends NSegmentDisplay {
-  _SemaphoreSegmentDisplay(
-      {Key? key,
-      required Map<String, bool> segments,
-      bool readOnly = false,
-      void Function(Map<String, bool>)? onChanged})
+  _SemaphoreSegmentDisplay({
+      required super.segments,
+      super.readOnly,
+      super.onChanged})
       : super(
-            key: key,
             initialSegments: _INITIAL_SEGMENTS,
-            segments: segments,
-            readOnly: readOnly,
-            onChanged: onChanged,
             type: SegmentDisplayType.CUSTOM,
             customPaint: (GCWTouchCanvas canvas, Size size, Map<String, bool> currentSegments, Function setSegmentState,
                 Color segment_color_on, Color segment_color_off) {

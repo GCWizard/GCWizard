@@ -22,11 +22,11 @@ class GCWPasteButton extends StatefulWidget {
   final Widget? customIcon;
   final Color? backgroundColor;
   final bool? isTextSelectionToolBarButton;
-  final EdgeInsets? textSelectionToolBarButtonPadding;
+  final EdgeInsetsGeometry? textSelectionToolBarButtonPadding;
   final String? textSelectionToolBarButtonLabel;
 
   const GCWPasteButton(
-      {Key? key,
+      {super.key,
       required this.onSelected,
       this.onBeforePressed,
       this.iconSize,
@@ -34,8 +34,7 @@ class GCWPasteButton extends StatefulWidget {
       this.backgroundColor,
       this.isTextSelectionToolBarButton = false,
       this.textSelectionToolBarButtonPadding,
-      this.textSelectionToolBarButtonLabel})
-      : super(key: key);
+      this.textSelectionToolBarButtonLabel});
 
   @override
   _GCWPasteButtonState createState() => _GCWPasteButtonState();

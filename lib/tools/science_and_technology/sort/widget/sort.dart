@@ -14,7 +14,7 @@ import 'package:gc_wizard/utils/string_utils.dart';
 enum _SortType{CHARACTERS, WORDS, LINES, CHARS_IN_WORDS}
 
 class Sort extends StatefulWidget {
-  const Sort({Key? key}) : super(key: key);
+  const Sort({super.key});
 
   @override
   _SortState createState() => _SortState();

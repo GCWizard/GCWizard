@@ -10,14 +10,13 @@ class NumberPyramidBoard extends StatefulWidget {
   final NumberPyramid board;
 
   const NumberPyramidBoard(
-      {Key? key, required this.onChanged, required this.board, this.type = NumberPyramidFillType.CALCULATED})
-      : super(key: key);
+      {super.key, required this.onChanged, required this.board, this.type = NumberPyramidFillType.CALCULATED});
 
   @override
-  NumberPyramidBoardState createState() => NumberPyramidBoardState();
+  _NumberPyramidBoardState createState() => _NumberPyramidBoardState();
 }
 
-class NumberPyramidBoardState extends State<NumberPyramidBoard> {
+class _NumberPyramidBoardState extends State<NumberPyramidBoard> {
   int? _currentValue;
   late TextEditingController _currentInputController;
   late GCWIntegerTextInputFormatter _integerInputFormatter;

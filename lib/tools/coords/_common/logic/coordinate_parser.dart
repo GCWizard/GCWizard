@@ -14,7 +14,7 @@ List<BaseCoordinate> parseCoordinates(String text, {bool wholeString = false}) {
     for (var format
         in allCoordinateFormatDefinitions.whereNot((format) => standardCoordinateFormatDefinitions.contains(format))) {
       coord = (wholeString ? format.parseCoordinateWholeString(text) : format.parseCoordinate(text));
-      if (coord != null) coords.add(coord);
+      if (coord != null && coord.stateCode == StateCode.OK) coords.add(coord);
     }
   } catch (e) {}
 
@@ -26,7 +26,7 @@ List<BaseCoordinate> parseCoordinates(String text, {bool wholeString = false}) {
 BaseCoordinate? parseStandardFormats(String text, {bool wholeString = false}) {
   for (var format in standardCoordinateFormatDefinitions) {
     var coord = (wholeString ? format.parseCoordinateWholeString(text) : format.parseCoordinate(text));
-    if (coord != null) return coord;
+    if (coord != null && coord.stateCode == StateCode.OK) return coord;
   }
 
   return null;

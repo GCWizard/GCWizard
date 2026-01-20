@@ -1,11 +1,11 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
-import 'dart:ui';
 
 import 'package:code_text_field/code_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
@@ -16,7 +16,6 @@ import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
-import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -37,7 +36,7 @@ import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
 
 class GCWizardScript extends StatefulWidget {
-  const GCWizardScript({Key? key}) : super(key: key);
+  const GCWizardScript({super.key});
 
   @override
   GCWizardScriptState createState() => GCWizardScriptState();
@@ -153,14 +152,14 @@ class GCWizardScriptState extends State<GCWizardScript> {
         ),
         if (_loadFile)
           GCWOpenFile(
-            onLoaded: (_file) {
-              if (_file == null) {
+            onLoaded: (GCWFile? value) {
+              if (value == null) {
                 showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
                 _loadFile = !_loadFile;
                 return;
               }
 
-              _currentProgram = String.fromCharCodes(_file.bytes);
+              _currentProgram = String.fromCharCodes(value.bytes);
               _programController.text = _currentProgram;
               _loadFile = !_loadFile;
               setState(() {});
@@ -341,23 +340,30 @@ class GCWizardScriptState extends State<GCWizardScript> {
           ),
           GCWOutputText(
             style: gcwMonotypeTextStyle(),
-            text: i18n(context, _currentOutput.ErrorMessage) +
-                '\n' +
-                i18n(context, 'gcwizard_script_error_position') +
-                ': ' +
-                _currentOutput.ErrorPosition.toString() +
-                '\n' +
-                i18n(context, 'gcwizard_script_error_line') +
-                ': ' +
-                _printFaultyLine(_currentProgram, _currentOutput.ErrorPosition) +
-                '\n' +
-                '=> ' +
-                _printFaultyProgram(_currentProgram, _currentOutput.ErrorPosition),
+            text: _errorMessage(),
             isMonotype: true,
           ),
         ],
       );
     }
+  }
+
+  String _errorMessage(){
+    String errorPosition = i18n(context, 'gcwizard_script_error_position');
+    String errorLine = i18n(context, 'gcwizard_script_error_line');
+
+    if (errorLine.length > errorPosition.length) {
+      errorPosition = errorPosition.padRight(errorLine.length, ' ');
+    } else {
+      errorLine = errorLine.padRight(errorPosition.length, ' ');
+    }
+
+    String errorHint = '=>'.padLeft(errorPosition.length, ' ');
+
+    return i18n(context, _currentOutput.ErrorMessage) + '\n' +
+        errorPosition + ': ' + _currentOutput.ErrorPosition.toString() + '\n' +
+        errorLine + ': ' + _printFaultyLine(_currentProgram, _currentOutput.ErrorPosition) + '\n' +
+        errorHint + '  ' + _printFaultyProgram(_currentProgram, _currentOutput.ErrorPosition, errorHint.length - 1);
   }
 
   Future<GCWAsyncExecuterParameters?> _buildInterpreterJobData() async {
@@ -451,19 +457,18 @@ class GCWizardScriptState extends State<GCWizardScript> {
     int pc = position >= program.length ? program.length - 1 : position;
     if (program.isNotEmpty) {
       while (pc > 0 && program[pc] != '\n') {
-        line = program[pc] + line;
         pc--;
       }
-      pc = position + 1;
-      while (pc < program.length && program[pc] != '\n') {
-        line = line + program[pc];
-        pc++;
+      pc--;
+      while (pc > 0 && program[pc] != '\n') {
+        line = program[pc] + line;
+        pc--;
       }
     }
     return line;
   }
 
-  String _printFaultyProgram(String program, int position) {
+  String _printFaultyProgram(String program, int position, int padding) {
     String result = '';
 
     if (program.isNotEmpty) {
@@ -471,10 +476,10 @@ class GCWizardScriptState extends State<GCWizardScript> {
         result = (position < program.length) ? program[position - 1] : program[program.length - 1];
       }
       for (int i = position; (i < program.length && i < position + 6); i++) {
-        result = result + program[i];
+        result += program[i];
       }
     }
-    return result.replaceAll('\n', '↩') + '\n' + '   ^';
+    return result.replaceAll('\n', '↩') + '\n' + '   ^'.padLeft(4 + padding, ' ');
   }
 
   void _showDialogBoxInput(BuildContext context, String text) {
@@ -654,7 +659,7 @@ class GCWizardScriptState extends State<GCWizardScript> {
             ..isAntiAlias = paint.isAntiAlias
             ..style = PaintingStyle.stroke
             ..strokeWidth = paint.strokeWidth;
-            canvas.drawPoints(PointMode.points, [Offset(double.parse(graphicCommand[1]), double.parse(graphicCommand[2]))], _paint);
+            canvas.drawPoints(ui.PointMode.points, [Offset(double.parse(graphicCommand[1]), double.parse(graphicCommand[2]))], _paint);
           break;
         case 'COLOR':
           paint.color = Color.fromARGB(

@@ -4,7 +4,7 @@ class _GCWColorCMYK extends StatefulWidget {
   final void Function(CMYK) onChanged;
   final CMYK? color;
 
-  const _GCWColorCMYK({Key? key, required this.onChanged, this.color}) : super(key: key);
+  const _GCWColorCMYK({required this.onChanged, this.color});
 
   @override
   _GCWColorCMYKState createState() => _GCWColorCMYKState();

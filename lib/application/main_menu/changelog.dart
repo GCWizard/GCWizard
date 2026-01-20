@@ -6,12 +6,19 @@ import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:intl/intl.dart';
 
 final CHANGELOG = {
+  '3.6.0': DateTime(2026, 1, 2), //Android Studio 2025.2.2, Android SDK 36.1.0, Flutter 3.38.5
+  '3.5.0': DateTime(2025, 8, 25), //Android Studio 2025.1.2, Android SDK 35.0.0-rc4, Flutter 3.32.8
+  '3.4.1': DateTime(2025, 7, 12), //Android Studio 2025.1.1, Android SDK 35.0.0-rc4, Flutter 3.32.5
+  '3.4.0': DateTime(2025, 5, 6), //Android Studio 2024.3.1 Patch 2, Android SDK 35.0.0-rc4, Flutter 3.27.4
+  '3.3.2': DateTime(2025, 2, 10),
+  '3.3.1': DateTime(2025, 1, 27),
+  '3.3.0': DateTime(2025, 1, 7),
   '3.2.3': DateTime(2024, 11, 22),
-  '3.2.2': DateTime(2024, 11, 4),
+  '3.2.2': DateTime(2024, 11, 04),
   '3.2.1': DateTime(2024, 10, 22),
   '3.2.0': DateTime(2024, 9, 15),
-  '3.1.1': DateTime(2024, 7, 2),
-  '3.1.0': DateTime(2024, 5, 1),
+  '3.1.1': DateTime(2024, 7, 02),
+  '3.1.0': DateTime(2024, 5, 01),
   '3.0.3': DateTime(2023, 12, 8),
   '3.0.2': DateTime(2023, 10, 29),
   '3.0.1': DateTime(2023, 10, 27),
@@ -48,7 +55,7 @@ final CHANGELOG = {
 };
 
 class Changelog extends StatefulWidget {
-  const Changelog({Key? key}) : super(key: key);
+  const Changelog({super.key});
 
   @override
   _ChangelogState createState() => _ChangelogState();

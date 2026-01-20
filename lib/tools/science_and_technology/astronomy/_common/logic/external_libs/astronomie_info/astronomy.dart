@@ -20,15 +20,17 @@
  *
  */
 
-///
-/// Astronomical Calculations and and helper Classes
-///
-/// java Source code based on the javascript by Arnold Barmettler, www.astronomie.info / www.CalSky.com
-/// based on algorithms by Peter Duffett-Smith's great and easy book 'Practical Astronomy with your Calculator'.
-///
-/// @author Helmut Lehmeyer
-/// @date 15.05.2012
-/// @version 0.1
+/*
+ Astronomical Calculations and and helper Classes
+
+ java Source code based on the javascript by Arnold Barmettler, www.astronomie.info / www.CalSky.com
+ based on algorithms by Peter Duffett-Smith's great and easy book 'Practical Astronomy with your Calculator'.
+
+ @author Helmut Lehmeyer
+ @date 15.05.2012
+ @version 0.1
+*/
+
 import 'dart:math';
 
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';

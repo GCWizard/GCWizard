@@ -1,4 +1,4 @@
-/***********************************************************************
+/*
     Dart port of Java implementation of
     ======================
     GeographicLib
@@ -8,8 +8,7 @@
  * under the MIT/X11 License.  For more information, see
  * https://geographiclib.sourceforge.io/
  * https://sourceforge.net/projects/geographiclib/
-
- **********************************************************************/
+*/
 part of 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
 
 /*
@@ -22,7 +21,7 @@ part of 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geogr
  * Geodesic#Direct(double, double, double, double) Geodesic.Direct} and {@link
  * Geodesic#Inverse(double, double, double, double) Geodesic.Inverse} and it
  * always includes the field <i>a12</i>.
- **********************************************************************/
+*/
 class GeodesicData {
   /*
    * latitude of point 1 (degrees).

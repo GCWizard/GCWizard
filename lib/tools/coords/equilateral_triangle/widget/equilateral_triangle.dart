@@ -14,7 +14,7 @@ import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:latlong2/latlong.dart';
 
 class EquilateralTriangle extends StatefulWidget {
-  const EquilateralTriangle({Key? key}) : super(key: key);
+  const EquilateralTriangle({super.key});
 
   @override
   _EquilateralTriangleState createState() => _EquilateralTriangleState();

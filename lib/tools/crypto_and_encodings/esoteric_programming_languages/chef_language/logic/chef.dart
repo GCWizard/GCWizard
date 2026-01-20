@@ -23,118 +23,7 @@ class _Chef {
     bool refrigerateFound = false;
     bool titleFound = false;
 
-    // remove blank lines at start and trim lines
-    List<String> recipe = readRecipe.split('\n');
-    while (recipe[0].isEmpty) {
-      for (int i = 1; i < recipe.length; i++) {
-        recipe[i - 1] = recipe[i].trim();
-      }
-    }
-
-    // remove blank lines at end
-    while (recipe[recipe.length - 1].isEmpty) {
-      recipe.removeAt(recipe.length - 1);
-    }
-
-    // trim lines
-    for (int i = 1; i < recipe.length; i++) {
-      recipe[i] = recipe[i].trim();
-      // add blank lines before aux recipes
-      if (recipe[i].endsWith('.')) {
-        //recipe[i] = '\n' + recipe[i];
-      }
-    }
-    readRecipe = recipe.join('\n');
-
-    // check and add missing title
-    if (readRecipe.startsWith('ingredients') || readRecipe.startsWith('zutaten')) {
-      readRecipe = 'nouvelle cuisine\n\n' + readRecipe;
-    }
-
-    // check and repair recipe regarding blank lines, whitespace
-    recipe = readRecipe.split('\n');
-
-    // remove blank lines inside sections ingredients, methods
-    bool ingredientSection = false;
-    bool methodSection = false;
-    bool auxRecipe = false;
-
-    for (int i = 0; i < recipe.length - 1; i++) {
-      if (recipe[i].startsWith("ingredients") || recipe[i].startsWith("zutaten")) ingredientSection = true;
-
-      if (recipe[i].startsWith("cooking time") ||
-          recipe[i].startsWith("garzeit") ||
-          recipe[i].startsWith("pre-heat oven") ||
-          recipe[i].startsWith("pre heat oven") ||
-          recipe[i].startsWith("ofen auf") ||
-          recipe[i].startsWith("method") ||
-          recipe[i].startsWith("zubereitung")) {
-        ingredientSection = false;
-      }
-
-      if (recipe[i].startsWith("method") || recipe[i].startsWith("zubereitung")) methodSection = true;
-
-      if (recipe[i].startsWith("serves") || recipe[i].startsWith("portionen")) {
-        methodSection = false;
-        auxRecipe = true;
-      }
-
-      if ((recipe[i].isEmpty || recipe[i] == '\n') && ingredientSection) {
-        if (recipe[i + 1].startsWith('method') ||
-            recipe[i + 1].startsWith('zubereitung') ||
-            recipe[i + 1].startsWith("cooking time") ||
-            recipe[i + 1].startsWith("garzeit") ||
-            recipe[i + 1].startsWith("pre-heat oven") ||
-            recipe[i + 1].startsWith("pre heat oven") ||
-            recipe[i + 1].startsWith("ofen auf") ||
-            recipe[i + 1].startsWith("serves") ||
-            recipe[i + 1].startsWith("portionen")) {
-        } else {
-          recipe.removeAt(i);
-        }
-      }
-
-      if ((recipe[i] == '' || recipe[i] == '\n') && methodSection) {
-        if (recipe[i + 1].startsWith('method') ||
-            recipe[i + 1].startsWith('zubereitung') ||
-            recipe[i + 1].startsWith("cooking time") ||
-            recipe[i + 1].startsWith("garzeit") ||
-            recipe[i + 1].startsWith("pre-heat oven") ||
-            recipe[i + 1].startsWith("pre heat oven") ||
-            recipe[i + 1].startsWith("ofen auf") ||
-            recipe[i + 1].startsWith("serves") ||
-            recipe[i + 1].startsWith("portionen") ||
-            _isMethod(recipe[i + 1])) {
-        } else {
-          if (!auxRecipe) recipe.removeAt(i);
-        }
-      }
-    }
-    recipe = recipe.join('\n').split('\n');
-
-    // add blank lines to build the necessary sections
-    String s0 = recipe[0];
-    for (int i = 1; i < recipe.length; i++) {
-      if (recipe[i].startsWith("ingredients") ||
-          recipe[i].startsWith("zutaten") ||
-          recipe[i].startsWith("cooking time") ||
-          recipe[i].startsWith("garzeit") ||
-          recipe[i].startsWith("pre-heat oven") ||
-          recipe[i].startsWith("pre heat oven") ||
-          recipe[i].startsWith("ofen auf") ||
-          recipe[i].startsWith("method") ||
-          recipe[i].startsWith("zubereitung") ||
-          recipe[i].startsWith("serves") ||
-          recipe[i].startsWith("portionen")) {
-        if (s0.isNotEmpty) {
-          recipe[i] = '\n' + recipe[i];
-        }
-      }
-      s0 = recipe[i];
-    }
-    readRecipe = recipe.join('\n');
-    readRecipe = readRecipe.replaceAll(RegExp(r'\n(\n)+'), '\n\n');
-    recipe = readRecipe.split("\n\n");
+    List<String> recipe = readRecipe.split("\n\n");
     for (int i = 0; i < recipe.length; i++) {
       line = recipe[i];
       if (line.startsWith("ingredients") || line.startsWith("zutaten")) {
@@ -247,6 +136,7 @@ class _Chef {
         ''
       ]);
     }
+
     if (!ingredientsFound) {
       valid = false;
       error.addAll([
@@ -255,6 +145,7 @@ class _Chef {
         ''
       ]);
     }
+
     if (!methodsFound) {
       valid = false;
       error.addAll([

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/registry.dart';
-import 'package:gc_wizard/common_widgets/gcw_selection.dart';
 import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/application/tools/widget/gcw_toollist.dart';
+import 'package:gc_wizard/common_widgets/gcw_selection.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/bcd/bcd1of10/widget/bcd1of10.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/bcd/bcd20f5postnet/widget/bcd20f5postnet.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/bcd/bcd2of5/widget/bcd2of5.dart';
@@ -22,7 +22,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/bcd/bcdtompkins/widget/bcdt
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class BCDSelection extends GCWSelection {
-  const BCDSelection({Key? key}) : super(key: key);
+  const BCDSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

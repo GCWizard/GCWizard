@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/vigenere/logic/vigenere.dar
 import 'package:gc_wizard/utils/alphabets.dart';
 
 class Rot123 extends StatefulWidget {
-  const Rot123({Key? key}) : super(key: key);
+  const Rot123({super.key});
 
   @override
   _Rot123State createState() => _Rot123State();

@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:gc_wizard/utils/ui_dependent_utils/textinputformatter_utils.dart';
 
 class GCWIntegerTextInputFormatter extends TextInputFormatter {
   late RegExp _exp;
@@ -18,11 +19,7 @@ class GCWIntegerTextInputFormatter extends TextInputFormatter {
     }
 
     if (_checkBounds(newSanitized)) {
-      return TextEditingValue(
-        text: newSanitized, selection: TextSelection.fromPosition(
-          TextPosition(offset: newSanitized.length),
-        ),
-      );
+      return newValueEditingValue(newValue, newSanitized);
     } else {
       return oldValue;
     }

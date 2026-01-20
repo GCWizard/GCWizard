@@ -1,5 +1,6 @@
 import 'package:diacritic/diacritic.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
+
 part 'package:gc_wizard/tools/crypto_and_encodings/major_system/logic/major_system_data.dart';
 
 

@@ -9,7 +9,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/prime_alphabet/logic/prime_
 import 'package:gc_wizard/tools/science_and_technology/primes/_common/logic/primes_list.dart';
 
 class PrimeAlphabet extends StatefulWidget {
-  const PrimeAlphabet({Key? key}) : super(key: key);
+  const PrimeAlphabet({super.key});
 
   @override
   _PrimeAlphabetState createState() => _PrimeAlphabetState();

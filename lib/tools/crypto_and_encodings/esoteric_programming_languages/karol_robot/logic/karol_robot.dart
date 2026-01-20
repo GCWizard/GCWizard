@@ -344,16 +344,16 @@ String KarolRobotOutputDecode(String program) {
         }
         switch (direction) {
           case _KAROL_DIRECTION.NORTH:
-            y = y - count;
+            y -= count;
             break;
           case _KAROL_DIRECTION.SOUTH:
-            y = y + count;
+            y += count;
             break;
           case _KAROL_DIRECTION.WEST:
-            x = x - count;
+            x -= count;
             break;
           case _KAROL_DIRECTION.EAST:
-            x = x + count;
+            x += count;
             break;
         }
         if (x > maxX) maxX = x;
@@ -385,16 +385,16 @@ String KarolRobotOutputDecode(String program) {
           if (_SET_MOVE.contains(element)) {
             switch (direction) {
               case _KAROL_DIRECTION.NORTH:
-                y = y - 1;
+                y -= 1;
                 break;
               case _KAROL_DIRECTION.SOUTH:
-                y = y + 1;
+                y += 1;
                 break;
               case _KAROL_DIRECTION.WEST:
-                x = x - 1;
+                x -= 1;
                 break;
               case _KAROL_DIRECTION.EAST:
-                x = x + 1;
+                x += 1;
                 break;
             }
             if (x > maxX) maxX = x;

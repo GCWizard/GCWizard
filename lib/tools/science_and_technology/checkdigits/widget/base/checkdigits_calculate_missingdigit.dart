@@ -11,9 +11,9 @@ import 'package:gc_wizard/tools/science_and_technology/checkdigits/logic/checkdi
 class CheckDigitsCalculateMissingDigits extends StatefulWidget {
   final CheckDigitsMode mode;
   const CheckDigitsCalculateMissingDigits({
-    Key? key,
+    super.key,
     required this.mode,
-  }) : super(key: key);
+  });
 
   @override
   CheckDigitsCalculateMissingDigitsState createState() => CheckDigitsCalculateMissingDigitsState();

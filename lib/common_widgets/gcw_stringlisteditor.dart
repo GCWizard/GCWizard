@@ -11,8 +11,7 @@ class GCWStringlistEditor extends StatefulWidget {
   final void Function() onChanged;
 
   const GCWStringlistEditor(
-      {Key? key, required this.list, required this.controllers, required this.onChanged})
-      : super(key: key);
+      {super.key, required this.list, required this.controllers, required this.onChanged});
 
   @override
   _GCWStringlistEditorState createState() => _GCWStringlistEditorState();

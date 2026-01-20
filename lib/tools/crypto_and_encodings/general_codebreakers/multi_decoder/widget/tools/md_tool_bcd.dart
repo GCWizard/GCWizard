@@ -29,19 +29,15 @@ const Map<String, BCDType> _BCD_TYPES = {
 
 class MultiDecoderToolBCD extends AbstractMultiDecoderTool {
   MultiDecoderToolBCD(
-      {Key? key,
-      required int id,
-      required String name,
-      required Map<String, Object?> options})
+      {super.key,
+      required super.id,
+      required super.name,
+      required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_BCD,
             onDecode: (String input, String key) {
               return decodeBCD(input, _BCD_TYPES[_getBCDTypeKey(options, MDT_BCD_OPTION_BCDFUNCTION)]!);
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolBCDState();
 }

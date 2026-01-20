@@ -26,16 +26,12 @@ const _INITIAL_SEGMENTS = <String, bool>{
 
 class _CistercianNumbersSegmentDisplay extends NSegmentDisplay {
   _CistercianNumbersSegmentDisplay(
-      {Key? key,
-      required Map<String, bool> segments,
+      {required super.segments,
       bool readOnly = false,
-      void Function(Map<String, bool>)? onChanged})
+      super.onChanged})
       : super(
-            key: key,
             initialSegments: _INITIAL_SEGMENTS,
-            segments: segments,
             readOnly: false,
-            onChanged: onChanged,
             type: SegmentDisplayType.CUSTOM,
             customPaint: (GCWTouchCanvas canvas, Size size, Map<String, bool> currentSegments, Function setSegmentState,
                 Color segment_color_on, Color segment_color_off) {

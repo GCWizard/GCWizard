@@ -17,7 +17,7 @@ class GCWIconButton extends StatelessWidget {
   final bool? noBorder;
 
   GCWIconButton(
-      {Key? key,
+      {super.key,
       required this.onPressed,
       this.icon,
       this.customIcon,
@@ -26,8 +26,7 @@ class GCWIconButton extends StatelessWidget {
       this.iconColor,
       this.backgroundColor,
       this.rotateDegrees,
-      this.noBorder})
-      : super(key: key) {
+      this.noBorder}) {
     if (icon == null && customIcon == null) {
       throw Exception('No icon defined');
     }

@@ -8,7 +8,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/combinatorics/combination/logic/combination.dart';
 
 class Combination extends StatefulWidget {
-  const Combination({Key? key}) : super(key: key);
+  const Combination({super.key});
 
   @override
   _CombinationState createState() => _CombinationState();

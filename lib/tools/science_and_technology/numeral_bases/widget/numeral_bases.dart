@@ -11,7 +11,7 @@ import 'package:gc_wizard/tools/science_and_technology/numeral_bases/widget/nume
 List<int> _COMMON_BASES = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 60];
 
 class NumeralBases extends StatefulWidget {
-  const NumeralBases({Key? key}) : super(key: key);
+  const NumeralBases({super.key});
 
   @override
   _NumeralBasesState createState() => _NumeralBasesState();
@@ -92,7 +92,8 @@ class _NumeralBasesState extends State<NumeralBases> {
 
     var calculateableToBases = _currentToMode == GCWSwitchPosition.left ? _COMMON_BASES : [_currentToKey];
     List<String> values = calculateableToBases.map((toBase) {
-      return _currentInput.split(RegExp(r'[.,\-;\s]+')).where((element) => element.isNotEmpty).map((value) {
+      return _currentInput.split(RegExp(r'[\-;\s]+')).where((element) => element.isNotEmpty).map((value) {
+        // handle ',' and '.' as decimalpoint and not as a separator of numbers
         if (value.startsWith('-') && _currentFromKey < 0) {
           return i18n(context, 'common_notdefined');
         }

@@ -29,7 +29,7 @@ WherigoCharacterData _analyzeAndExtractCharacterSectionData(List<String> lines) 
   String media = '';
   String icon = '';
   String location = '';
-  WherigoZonePoint zonePoint = WHERIGO_NULLPOINT;
+  WherigoZonePoint zonePoint = _WHERIGO_NULLPOINT;
   String type = '';
   String gender = '';
 
@@ -38,19 +38,19 @@ WherigoCharacterData _analyzeAndExtractCharacterSectionData(List<String> lines) 
   for (int i = 0; i < lines.length; i++) {
     lines[i] = lines[i].trim();
     if (RegExp(r'( Wherigo.ZCharacter\()').hasMatch(lines[i])) {
-      LUAname = getLUAName(lines[i]);
-      container = getContainer(lines[i]);
+      LUAname = _getLUAName(lines[i]);
+      container = _getContainer(lines[i]);
     }
     if (lines[i].startsWith(LUAname + '.Container =')) {
-      container = getContainer(lines[i]);
+      container = _getContainer(lines[i]);
     }
 
     if (lines[i].startsWith(LUAname + '.Id')) {
-      id = getLineData(lines[i], LUAname, 'Id', _obfuscatorFunction, _obfuscatorTable);
+      id = _getLineData(lines[i], LUAname, 'Id', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.Name')) {
-      name = getLineData(lines[i], LUAname, 'Name', _obfuscatorFunction, _obfuscatorTable);
+      name = _getLineData(lines[i], LUAname, 'Name', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.Description')) {
@@ -65,19 +65,19 @@ WherigoCharacterData _analyzeAndExtractCharacterSectionData(List<String> lines) 
         lines[i] = lines[i].trim();
       } while (_sectionDescription);
       description = description.replaceAll('[[', '').replaceAll(']]', '').replaceAll('<BR>', '\n');
-      description = getLineData(description, LUAname, 'Description', _obfuscatorFunction, _obfuscatorTable);
+      description = _getLineData(description, LUAname, 'Description', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.Visible')) {
-      visible = getLineData(lines[i], LUAname, 'Visible', _obfuscatorFunction, _obfuscatorTable);
+      visible = _getLineData(lines[i], LUAname, 'Visible', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.Media')) {
-      media = getLineData(lines[i], LUAname, 'Media', _obfuscatorFunction, _obfuscatorTable).trim();
+      media = _getLineData(lines[i], LUAname, 'Media', _obfuscatorFunction, _obfuscatorTable).trim();
     }
 
     if (lines[i].startsWith(LUAname + '.Icon')) {
-      icon = getLineData(lines[i], LUAname, 'Icon', _obfuscatorFunction, _obfuscatorTable);
+      icon = _getLineData(lines[i], LUAname, 'Icon', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].trim().startsWith(LUAname + '.ObjectLocation')) {
@@ -92,16 +92,16 @@ WherigoCharacterData _analyzeAndExtractCharacterSectionData(List<String> lines) 
             Altitude: double.parse(location.split(',')[2]));
         location = 'ZonePoint';
       } else {
-        location = getLineData(lines[i], LUAname, 'ObjectLocation', _obfuscatorFunction, _obfuscatorTable);
+        location = _getLineData(lines[i], LUAname, 'ObjectLocation', _obfuscatorFunction, _obfuscatorTable);
       }
     }
 
     if (lines[i].startsWith(LUAname + '.Gender')) {
-      gender = getLineData(lines[i], LUAname, 'Gender', _obfuscatorFunction, _obfuscatorTable).toLowerCase().trim();
+      gender = _getLineData(lines[i], LUAname, 'Gender', _obfuscatorFunction, _obfuscatorTable).toLowerCase().trim();
     }
 
     if (lines[i].startsWith(LUAname + '.Type')) {
-      type = getLineData(lines[i], LUAname, 'Type', _obfuscatorFunction, _obfuscatorTable);
+      type = _getLineData(lines[i], LUAname, 'Type', _obfuscatorFunction, _obfuscatorTable);
     }
   }
   return WherigoCharacterData(

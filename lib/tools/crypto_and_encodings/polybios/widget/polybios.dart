@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_alphabetdropdown.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_alphabetmodification_dropdown.dart';
+import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_multiple_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
@@ -13,7 +15,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/_common/logic/crypt_alphabe
 import 'package:gc_wizard/tools/crypto_and_encodings/polybios/logic/polybios.dart';
 
 class Polybios extends StatefulWidget {
-  const Polybios({Key? key}) : super(key: key);
+  const Polybios({super.key});
 
   @override
   _PolybiosState createState() => _PolybiosState();
@@ -21,11 +23,15 @@ class Polybios extends StatefulWidget {
 
 class _PolybiosState extends State<Polybios> {
   late TextEditingController _inputController;
-  late TextEditingController _keyController;
+  late TextEditingController _rowLabelController;
+  late TextEditingController _colLabelController;
   late TextEditingController _alphabetController;
+  late TextEditingController _passwordController;
 
   String _currentInput = '';
-  String _currentKey = '12345';
+  String _currentRowLabel = '12345';
+  String _currentColLabel = '12345';
+  String _currentPassword = '';
 
   PolybiosMode _currentPolybiosMode = PolybiosMode.AZ09;
   String _currentAlphabet = '';
@@ -38,15 +44,19 @@ class _PolybiosState extends State<Polybios> {
   void initState() {
     super.initState();
     _inputController = TextEditingController(text: _currentInput);
-    _keyController = TextEditingController(text: _currentKey);
+    _rowLabelController = TextEditingController(text: _currentRowLabel);
+    _colLabelController = TextEditingController(text: _currentColLabel);
     _alphabetController = TextEditingController(text: _currentAlphabet);
+    _passwordController = TextEditingController(text: _currentPassword);
   }
 
   @override
   void dispose() {
     _inputController.dispose();
-    _keyController.dispose();
+    _rowLabelController.dispose();
+    _colLabelController.dispose();
     _alphabetController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -78,61 +88,145 @@ class _PolybiosState extends State<Polybios> {
             });
           },
         ),
-        GCWTextDivider(text: i18n(context, 'common_key')),
-        GCWTextField(
-          hintText: i18n(context, 'common_key'),
-          maxLength: 6,
-          controller: _keyController,
-          onChanged: (text) {
-            setState(() {
-              _currentKey = text;
-            });
-          },
-        ),
-        GCWTextDivider(text: i18n(context, 'common_alphabet')),
-        GCWAlphabetDropDown<PolybiosMode>(
-          value: _currentPolybiosMode,
-          items: polybiosModeItems,
-          customModeKey: PolybiosMode.CUSTOM,
-          textFieldController: _alphabetController,
-          onChanged: (value) {
-            setState(() {
-              _currentPolybiosMode = value;
-            });
-          },
-          onCustomAlphabetChanged: (text) {
-            setState(() {
-              _currentAlphabet = text;
-            });
-          },
-        ),
-        _currentKey.length < 6
-            ? GCWAlphabetModificationDropDown(
-                value: _currentModificationMode,
-                onChanged: (value) {
-                  setState(() {
-                    _currentModificationMode = value;
-                  });
-                },
-              )
-            : Container(),
+        _buildOptions(polybiosModeItems),
         _buildOutput(context)
       ],
     );
   }
 
+  Widget _buildOptions(Map<PolybiosMode, String> polybiosModeItems) {
+    return GCWExpandableTextDivider(
+      text: i18n(context, 'common_options'),
+      expanded: false,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    GCWTextField(
+                      title: i18n(context, 'polybios_row_labels'),
+                      maxLength: 6,
+                      controller: _rowLabelController,
+                      onChanged: (text) {
+                        setState(() {
+                          _currentRowLabel = text;
+                        });
+                      },
+                    ),
+                    GCWTextField(
+                      title: i18n(context, 'polybios_column_lables'),
+                      hintText: _currentRowLabel,
+                      maxLength: 6,
+                      controller: _colLabelController,
+                      onChanged: (text) {
+                        setState(() {
+                          _currentColLabel = text;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              _buildSwapButton(),
+            ],
+          ),
+          GCWTextDivider(text: '${i18n(context, 'common_key')} / ${i18n(context, 'common_alphabet')}'),
+          GCWTextField(
+              hintText: i18n(context, 'polybios_optional_passwort'),
+              controller: _passwordController,
+              onChanged: (text) {
+                setState(() {
+                  _currentPassword = text;
+                  if (_currentPassword.isNotEmpty) {
+                    _currentPolybiosMode = PolybiosMode.CUSTOM;
+                    _currentAlphabet = _currentPassword;
+                  } else {
+                    _currentPolybiosMode = PolybiosMode.AZ09;
+                    _currentAlphabet = '';
+                  }
+                });
+              }),
+          (_currentPassword.isNotEmpty)
+            ? Container()
+            : GCWAlphabetDropDown<PolybiosMode>(
+              value: _currentPolybiosMode,
+              items: polybiosModeItems,
+              customModeKey: PolybiosMode.CUSTOM,
+              textFieldController: _alphabetController,
+              onChanged: (value) {
+                setState(() {
+                  _currentPolybiosMode = value;
+                  if (value != PolybiosMode.CUSTOM) {
+                    _currentPassword = '';
+                    _passwordController.text = '';
+                  } else {
+                    if (_passwordController.text.isNotEmpty) {
+                      _currentAlphabet = _passwordController.text;
+                    } else {
+                      _currentAlphabet = _alphabetController.text;
+                    }
+                  }
+                });
+              },
+              onCustomAlphabetChanged: (text) {
+                setState(() {
+                  _currentAlphabet = text;
+                });
+              },
+            ),
+          _currentRowLabel.length < 6
+              ? GCWAlphabetModificationDropDown(
+                  value: _currentModificationMode,
+                  onChanged: (value) {
+                    setState(() {
+                      _currentModificationMode = value;
+                    });
+                  },
+                )
+              : Container(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSwapButton() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: GCWIconButton(
+          icon: Icons.swap_vert,
+          onPressed: () {
+            setState(() {
+              var tempLabel = _currentRowLabel;
+              _currentRowLabel = _currentColLabel;
+              _currentColLabel = tempLabel;
+
+              _rowLabelController.text = _currentRowLabel;
+              _colLabelController.text = _currentColLabel;
+            });
+          }),
+    );
+  }
+
   Widget _buildOutput(BuildContext context) {
-    if (_currentInput.isEmpty || ![5, 6].contains(_currentKey.length)) {
+    if (_currentInput.isEmpty || ![5, 6].contains(_currentRowLabel.length)) {
       return const GCWDefaultOutput(); // TODO: Exception
     }
 
     PolybiosOutput? _currentOutput;
     if (_currentMode == GCWSwitchPosition.left) {
-      _currentOutput = encryptPolybios(_currentInput, _currentKey,
-          mode: _currentPolybiosMode, modificationMode: _currentModificationMode, fillAlphabet: _currentAlphabet);
+      _currentOutput = encryptPolybios(_currentInput, _currentRowLabel,
+          colIndexes: _currentColLabel,
+          mode: _currentPolybiosMode,
+          modificationMode: _currentModificationMode,
+          fillAlphabet: _currentAlphabet);
     } else {
-      _currentOutput = decryptPolybios(_currentInput, _currentKey,
-          mode: _currentPolybiosMode, modificationMode: _currentModificationMode, fillAlphabet: _currentAlphabet);
+      _currentOutput = decryptPolybios(_currentInput, _currentRowLabel,
+          colIndexes: _currentColLabel,
+          mode: _currentPolybiosMode,
+          modificationMode: _currentModificationMode,
+          fillAlphabet: _currentAlphabet);
     }
 
     if (_currentOutput == null || _currentOutput.output.isEmpty) {

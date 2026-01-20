@@ -28,8 +28,8 @@ class OutputConvertToNumber extends OutputConvertBase {
   final int number;
 
   OutputConvertToNumber(
-      {required this.number, required String numbersystem, required String title, required String error})
-      : super(numbersystem: numbersystem, nameOfNumberSystem: title, error: error);
+      {required this.number, required super.numbersystem, required String title, required super.error})
+      : super(nameOfNumberSystem: title);
 }
 
 class OutputConvertToNumeralWord extends OutputConvertBase {

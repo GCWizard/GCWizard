@@ -21,8 +21,7 @@ class GCWFilesOutput extends StatefulWidget {
   final bool suppressHiddenDataMessage;
   final Set<GCWImageViewButtons>? suppressedButtons;
 
-  const GCWFilesOutput({Key? key, required this.files, this.suppressHiddenDataMessage = false, this.suppressedButtons})
-      : super(key: key);
+  const GCWFilesOutput({super.key, required this.files, this.suppressHiddenDataMessage = false, this.suppressedButtons});
 
   @override
   _GCWFilesOutputState createState() => _GCWFilesOutputState();

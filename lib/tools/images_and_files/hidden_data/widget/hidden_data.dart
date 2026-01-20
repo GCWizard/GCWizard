@@ -3,13 +3,13 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_divider.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
-import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_files_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
@@ -23,7 +23,7 @@ import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
 class HiddenData extends StatefulWidget {
   final GCWFile? file;
 
-  const HiddenData({Key? key, this.file}) : super(key: key);
+  const HiddenData({super.key, this.file});
 
   @override
   _HiddenDataState createState() => _HiddenDataState();
@@ -86,14 +86,14 @@ class _HiddenDataState extends State<HiddenData> {
           title: i18n(context, 'hiddendata_openpublicfile'),
           file: _publicFile,
           suppressGallery: false,
-          onLoaded: (_openedFile) {
-            if (_openedFile == null) {
+          onLoaded: (GCWFile? value) {
+            if (value == null) {
               showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
               return;
             }
 
             setState(() {
-              _publicFile = _openedFile;
+              _publicFile = value;
             });
           },
         ),
@@ -119,14 +119,14 @@ class _HiddenDataState extends State<HiddenData> {
         if (_currentHideMode == GCWSwitchPosition.right)
           GCWOpenFile(
             file: _secretFile,
-            onLoaded: (_openedFile) {
-              if (_openedFile == null) {
+            onLoaded: (GCWFile? value) {
+              if (value == null) {
                 showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
                 return;
               }
 
               setState(() {
-                _secretFile = _openedFile;
+                _secretFile = value;
               });
             },
           ),
@@ -160,14 +160,14 @@ class _HiddenDataState extends State<HiddenData> {
         GCWOpenFile(
           file: _unHideFile,
           suppressGallery: false,
-          onLoaded: (_openedFile) {
-            if (_openedFile == null) {
+          onLoaded: (GCWFile? value) {
+            if (value == null) {
               showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
               return;
             }
 
             setState(() {
-              _unHideFile = _openedFile;
+              _unHideFile = value;
             });
           },
         ),

@@ -12,7 +12,7 @@ import 'package:gc_wizard/tools/science_and_technology/vanity/_common/logic/vani
 import 'package:tuple/tuple.dart';
 
 class VanityMultitap extends StatefulWidget {
-  const VanityMultitap({Key? key}) : super(key: key);
+  const VanityMultitap({super.key});
 
   @override
   _VanityMultitapState createState() => _VanityMultitapState();

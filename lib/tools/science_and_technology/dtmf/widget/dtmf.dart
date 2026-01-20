@@ -1,5 +1,5 @@
-import 'package:flutter_dtmf/dtmf.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dtmf/dtmf.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
@@ -13,7 +13,7 @@ import 'package:gc_wizard/tools/science_and_technology/dtmf/logic/dtmf.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/text_widget_utils.dart';
 
 class DTMF extends StatefulWidget {
-  const DTMF({Key? key}) : super(key: key);
+  const DTMF({super.key});
 
   @override
   _DTMFState createState() => _DTMFState();

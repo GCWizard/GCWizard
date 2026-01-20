@@ -9,7 +9,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rail_fence/logic/rail_fence.dart';
 
 class RailFence extends StatefulWidget {
-  const RailFence({Key? key}) : super(key: key);
+  const RailFence({super.key});
 
   @override
   _RailFenceState createState() => _RailFenceState();

@@ -8,7 +8,7 @@ import 'package:gc_wizard/tools/science_and_technology/date_and_time/day_calcula
 import 'package:gc_wizard/utils/complex_return_types.dart';
 
 class DayCalculator extends StatefulWidget {
-  const DayCalculator({Key? key}) : super(key: key);
+  const DayCalculator({super.key});
 
   @override
   _DayCalculatorState createState() => _DayCalculatorState();

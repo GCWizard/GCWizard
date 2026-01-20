@@ -1,6 +1,6 @@
 # **HOWTO Raspberry Pi Server**
 
-<img src="C:\Users\thoma\OneDrive - EDV-Beratung und Softwareentwicklung\HOWTO raspi-Dateien\raspi-final.jpg" style="zoom:80%;" />
+<img src="raspi-final.jpg" style="zoom:80%;" />
 
 
 
@@ -18,7 +18,7 @@
 
 Das Raspberry Pi 4 Model B ist mit einem Broadcom 2711, Quad-core CortexA72 64-bit SoC @ 1.5GHz sowie 8 GB SDRAM ausgestattet.
 
-<img src="C:\Users\thoma\OneDrive - EDV-Beratung und Softwareentwicklung\HOWTO raspi-Dateien\image003.png" style="zoom:75%;" />
+<img src="image003.png" style="zoom:75%;" />
 
 Weitere Details sind:
 
@@ -58,7 +58,7 @@ The Argon ONE M.2 Case ups the ante by providing the following:
 
 - Integrated M.2 SATA SSD support
 
-  ![](C:\Users\thoma\OneDrive - EDV-Beratung und Softwareentwicklung\HOWTO raspi-Dateien\image006.jpg)
+  ![](image006.jpg)
 
   Argon ONE M.2 Case extended support for M.2 SATA SSDs allows you to maximize the true potential speeds of your Raspberry Pi 4. You will now be able to boot via an M.2 SATA SSD for faster boot times and larger storage capacity compared to the traditional microSD Card.
 
@@ -76,6 +76,7 @@ The Argon ONE M.2 Case ups the ante by providing the following:
 
 - [How to Boot a Raspberry Pi From SSD and Use It for Permanent Storage (makeuseof.com)](https://www.makeuseof.com/how-to-boot-raspberry-pi-ssd-permanent-storage/)
 - [Raspberry Pi OS – Raspberry Pi](https://www.raspberrypi.com/software/)
+- [Raspberry Pi 4: Eine SSD-Festplatte anstelle SD-Karte verwenden!](https://www.veuhoff.net/raspberry-pi-4-wie-eine-ssd-anstelle-von-einer-sd-karte-verwendet-werden-kann/)
 
 
 
@@ -86,12 +87,12 @@ You will need the following items to enable SSD boot on Raspberry Pi.
 - Raspberry Pi (4, 400, 3, Zero W, or Zero 2W model)
 - microSD card (1GB minimum, 64GB maximum)
 - microSD card reader
-- Keyboard and mouse (both wireless or wired will work)—not required     if you want to enable SSD boot on a Raspberry Pi 4 or Pi 400
+- Keyboard and mouse (both wireless or wired will work)—not required if you want to enable SSD boot on a Raspberry Pi 4 or Pi 400
 - Any type of external SSD (such as M.2, SATA, or NVMe/PCIe)
 
 
 
-## Boot Raspberry Pi 4 from SSD
+## Boot Raspberry Pi 4 from SD Card
 
 To boot Raspberry Pi 4 or Raspberry Pi 400 from SSD, you must enable USB boot:
 
@@ -101,9 +102,9 @@ To boot Raspberry Pi 4 or Raspberry Pi 400 from SSD, you must enable USB boot:
 4. Click the Choose Storage button and select the microSD card connected to your system.
 5. Click Write and wait for the flash process to complete. It will take a few seconds only.
 6. After the flash process, the microSD card is auto-ejected. Disconnect the microSD card from the system and insert it into the microSD slot of your Raspberry Pi 4 or 400.
-7. Connect the power supply to the Raspberry Pi to turn it on. The Pi will automatically read and flash the USB bootloader from the connected     microSD card. This takes a few seconds.
+7. Connect the power supply to the Raspberry Pi to turn it on. The Pi will automatically read and flash the USB bootloader from the connected microSD card. This takes a few seconds.
 8. When the flash is successful, the green LED light on the Raspberry Pi starts blinking steadily. To confirm further, connect the HDMI port to a display. If the display shows a green screen, it indicates that the flash process is complete.
-9. Turn off the Raspberry Pi and disconnect or remove the microSD     card.
+9. Turn off the Raspberry Pi and disconnect or remove the microSD card.
 
 
 
@@ -111,7 +112,7 @@ To boot Raspberry Pi 4 or Raspberry Pi 400 from SSD, you must enable USB boot:
 
 To boot the Raspberry Pi via SSD, you must install an operating system, such as Raspberry Pi OS on the SSD by using Raspberry Pi Imager. After writing the OS, you can connect the SSD to the Raspberry Pi via a USB port and boot the OS from the SSD. To prepare the SSD for boot, follow these steps:
 
-1. Launch the Raspberry Pi Imager tool and connect your external SSD     to the system via a USB port.
+1. Launch the Raspberry Pi Imager tool and connect your external SSD to the system via a USB port.
 2. Click Choose OS to select the desired OS from the list. If you want to flash a downloaded OS image, you can use the file by     clicking on the Custom option and then selecting the OS file from your system.
 3. Click Choose Storage to select the connected SSD storage media.
 4. Click the Write button.
@@ -123,13 +124,51 @@ To boot the Raspberry Pi via SSD, you must install an operating system, such as 
 
 ## Raspberry PI Imager
 
-<img src="C:\Users\thoma\OneDrive - EDV-Beratung und Softwareentwicklung\HOWTO raspi-Dateien\image007.png" style="zoom:50%;" />
+<img src="image007.png" style="zoom:50%;" />
 
-| Auswahlmöglichkeit |                                                              |
-| ------------------ | ------------------------------------------------------------ |
-| Betriebssystem     | RASPBERRY PI OS LITE (64-BIT)                                |
-| SD-Karte           | SSD-Karte                                                    |
-| Einstellungen      | WLAN aktivieren<br />SSH aktivieren<br />Passwort setzen<br />Tastaturlayout DE |
+| Auswahlmöglichkeit  |                                                              |
+| ------------------- | ------------------------------------------------------------ |
+| Raspberry Pi Modell | Raspberry Pi 4                                               |
+| Betriebssystem      | Untermenü: Raspberry Pi OS (other)<br />Raspberry Pi OS (Legacy, 64-bit) Lite |
+| SD-Karte            | SSD-Karte                                                    |
+
+<img src="image007-01.png"/>
+
+## Überprüfen der Einstellungen
+
+### Allgemein
+
+| Feld                          | Wert          |
+| ----------------------------- | ------------- |
+| Hostname                      | raspberry     |
+| Benutzername                  | pi            |
+| Passwort                      | <PASSWORT>    |
+| Wifi einrichten               |               |
+| SSID                          | <SSID>        |
+| Passwort                      | <PASSWORT>    |
+| Wifi-Land                     | DE            |
+| Spracheinstellungen festlegen |               |
+| Zeitzone                      | Europa/Berlin |
+| Tastaturlayout                | de            |
+
+
+
+### Dienste
+
+| Feld                                     | Wert |
+| ---------------------------------------- | ---- |
+| SSH aktivieren                           | X    |
+| Passwort zur Authentifizierung verwenden | X    |
+
+
+
+### Optionen
+
+| Feld                             | Wert |
+| -------------------------------- | ---- |
+| Tonsignal nach Beenden abspielen | X    |
+| Medien nach Beenden auswerfen    | X    |
+| Telemetrie akivieren             | X    |
 
 
 
@@ -149,7 +188,7 @@ To boot the Raspberry Pi via SSD, you must install an operating system, such as 
 sudo raspi-config
 ```
 
-<img src="C:\Users\thoma\OneDrive - EDV-Beratung und Softwareentwicklung\HOWTO raspi-Dateien\image009.png" style="zoom:50%;" />
+<img src="image009.png" style="zoom:50%;" />
 
 Alternativ
 
@@ -160,12 +199,23 @@ sudo systemctl start ssh
 
 
 
-# Update Raspberry PiOS
+# Update Raspberry Pi OS
+
+Zunächst einmal ergänzen und aktualisieren wir die Paketlisten mit folgendem Befehl
 
 ```
-sudo apt update
-sudo apt full-upgrade
+sudo nano /etc/apt/sources.list
 ```
+
+D.h. wie löschen die Kommentarbefehle, damit alle Sources zur Verfügung stehen. Dann erfolgt das Update
+
+`sudo apt update`
+
+und dann das Upgrade
+
+`sudo apt full-upgrade`
+
+Die Konfigurationsdateien werden dabei nicht durch die Maintainer-Version überschrieben.
 
 
 
@@ -181,7 +231,7 @@ Hinweis: immer als root ausführen
 sudo mc
 ```
 
-<img src="C:\Users\thoma\OneDrive - EDV-Beratung und Softwareentwicklung\HOWTO raspi-Dateien\image011.png" style="zoom:50%;" />
+<img src="image011.png" style="zoom:50%;" />
 
 
 
@@ -205,17 +255,33 @@ sudo apt-get install apache2
 
 ## Konfiguration
 
-Nach der Installation lauscht der Webserver Apache 2 auf dem Port 80.  Eine Änderung erolgt in der Datei $/etc/apache2/ports.conf$ mit dem Befehl `listen  to`
+Nach der Installation lauscht der Webserver Apache 2 auf dem Port 80.  Eine Änderung erfolgt in der Datei $/etc/apache2/ports.conf$ mit dem Befehl `listen`
 
 ```
 sudo nano /etc/apache2/ports.conf
 ```
+
+
+
+Gemäß Hinweis in der ports.conf ist analog anzupassen der Eintrag <VirtualHost *:>
+
+`sudo nano /etc/apache2/sites-enabled/000-default.conf`
+
+
 
 Anschließend ist die Änderung der Konfiguration zu laden und der Webserver neu zu starten.
 
 ```
 sudo systemctl reload apache2
 ```
+
+
+
+Wenn alles stimmt, ist beim Aufruf des Webserver 
+
+`http:\\IP-ADRESSE:PORT`
+
+die Startseite zu sehen.
 
 
 
@@ -246,8 +312,7 @@ Perform these steps to install the pre-requisite packages.
 
 ```
 sudo apt-get update
-sudo apt-get install -y autoconf gcc libc6 make wget unzip apache2 apache2-utils php libgd-dev
-sudo apt-get install openssl libssl-dev
+sudo apt-get install -y autoconf gcc libc6 make wget unzip apache2 apache2-utils php libgd-dev openssl libssl-dev
 ```
 
  
@@ -347,14 +412,16 @@ sudo a2enmod cgi
 
 ### **Configure Firewall**
 
-You need to allow port 80 inbound traffic on the local firewall so you can reach the Nagios Core web interface.
+You need to allow port 80 and 1417 inbound traffic on the local firewall so you can reach the Nagios Core web interface.
 
 ```
-sudo iptables -I INPUT -p tcp --destination-port 80 -j ACCEPT
 sudo apt-get install -y iptables-persistent
 ```
 
 Answer yes to saving existing rules
+
+`sudo iptables -I INPUT -p tcp --destination-port 80 -j ACCEPT`
+`sudo iptables -I INPUT -p tcp --destination-port 1417 -j ACCEPT`
 
  
 
@@ -398,7 +465,7 @@ sudo systemctl start nagios.service
 
 Nagios is now running, to confirm this you need to log into the Nagios Web Interface.
 
-Point your web browser to the ip address or FQDN of your Nagios Core server, for example *`http://192.168.xxx.yyy/nagios`* 
+Point your web browser to the ip address or FQDN of your Nagios Core server, for example *`http://192.168.xxx.yyy:port/nagios`* 
 
 You will be prompted for a username and password. The username is nagiosadmin (you created it in a previous step) and the password is what you provided earlier.
 
@@ -501,6 +568,8 @@ Die Konfigurationsdateien sind zu finden unter `/usr/local/nagios/etc` sowie  `/
 
 Ergänzen der Port-Nummer des Apache-Webservers
 
+`sudo nano /usr/local/nagios/etc/objects/localhost.cfg`
+
 ```
 define service{
     use                    local-service
@@ -528,14 +597,12 @@ define service{
 
 2. ```
    cd /usr/local/nagios/libexec/
-   sudo nano ./check_tomcat.pl
+   sudo nano ./check_tomcat
    ```
 
-   
+   Make the plugin executable.
 
-3. Rename the plugin from `check_tomcat.pl` to `check_tomcat`and make it executable.
-
-4. Just to be on the safe side, install a XML dependency that is used by the tomcat plugin using
+3. Just to be on the safe side, install a XML dependency that is used by the tomcat plugin using
 
    ```
    sudo apt-get install libxml-xpath-perl
@@ -543,7 +610,9 @@ define service{
 
    
 
-5. Append the following lines in the file `/usr/local/nagios/etc/objects/commands.cfg`
+4. Append the following lines in the file /usr/local/nagios/etc/objects/commands.cfg
+
+   `sudo nano /usr/local/nagios/etc/objects/commands.cfg`
 
    ```
    # check_tomcat command definition
@@ -555,7 +624,7 @@ define service{
 
    
 
-6. Add the following service definition in the host that you want to check if Tomcat is running. In our case we will use localhost. 
+5. Add the following service definition in the host that you want to check if Tomcat is running. In our case we will use localhost. 
 
    ```
    sudo nano /usr/local/nagios/etc/objects/localhost.cfg
@@ -573,9 +642,11 @@ define service{
    }
    ```
 
+   ACHTUNG: user und password anpassen!
+
    
 
-7. Finally, restart nagios using
+6. Finally, restart nagios using
 
    ```
    sudo systemctl restart nagios.service
@@ -653,7 +724,7 @@ sudo apt install mailutils postfix
 To configure our Postfix server for relaying emails through *smtp.example.de*, we run
 
 ```
-sudo postconf -e 'relayhost = smtp.example.de'
+sudo postconf -e 'relayhost = smtp.example.de'y
 sudo postconf -e 'smtp_sasl_auth_enable = yes'
 sudo postconf -e 'smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd'
 sudo postconf -e 'smtp_sasl_security_options ='
@@ -705,7 +776,7 @@ All that is left to do is restart Postfix:
 ## Konfiguration überprüfen
 
 ```
-/usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
+sudo /usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
 ```
 
 
@@ -734,7 +805,19 @@ Wir installieren auch nur die Runtime (JRE), da wir auf diesem Pi nichts entwick
 
 ## Installation
 
-Zunächst einmal aktualisieren wir die Paketlisten mit folgendem Befehl
+Zunächst einmal ergänzen und aktualisieren wir die Paketlisten mit folgendem Befehl
+
+```
+sudo nano /etc/apt/sources.list
+```
+
+Danach fügen wir am Ende ein
+
+```
+deb http://deb.debian.org/debian unstable main non-free contrib
+```
+
+Und laden die Source-List erneut
 
 ```
 sudo apt-get update
@@ -746,13 +829,15 @@ Danach installieren wir das OpenJDK mit
 sudo apt-get install openjdk-11-jre
 ```
 
+Die Konfigurationsdateien werden dabei nicht durch die Maintainer-Version überschrieben.
+
 Nun legen wir einen symbolischen Link *`/usr/lib/jvm/java`* an, der auf dieses Verzeichnis zeigt und den wir später in anderen Programmen oder Diensten, z. B. im Tomcat, nutzen können.
 
 ```
 sudo ln -s /usr/lib/jvm/java-11-openjdk-arm64 /usr/lib/jvm/java
 ```
 
-Nun müssen wir die Umgebungsvariable  *`JAVA_HOME`*  so konfigurieren, dass Java-Anwendungen das Java-Installationsverzeichnis finden können. Tomcat benötigt eine JAVA_HOME-Umgebung, um korrekt eingerichtet zu werden. Hierzu ist in der Umgebungsdatei /etc/environments die JAVA_HOME-Umgebung zu ergänzen.
+Nun müssen wir die Umgebungsvariable  *`JAVA_HOME`*  so konfigurieren, dass Java-Anwendungen das Java-Installationsverzeichnis finden können. Tomcat benötigt eine JAVA_HOME-Umgebung, um korrekt eingerichtet zu werden. Hierzu ist in der Umgebungsdatei /etc/environment die JAVA_HOME-Umgebung zu ergänzen.
 
 ```
 sudo nano /etc/environment
@@ -773,7 +858,8 @@ sudo nano ~/.bashrc
 Fügen Sie am Ende der Datei die untenstehende Konfiguration ein:
 
 ```
-export JAVA_HOME=/usr/lib/jvm/java-8-oracle/jre
+# export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-arm64
+export JAVA_HOME=/usr/lib/jvm/java
 export PATH=$JAVA_HOME/bin:$PATH
 ```
 
@@ -822,14 +908,13 @@ Wir wechseln in das Temp-Verzeichnis und laden uns die Zip-Datei des aktuellen T
 
 ```
 cd /tmp
-wget https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.10/bin/apache-tomcat-10.1.10.zip
-
+wget https://archive.apache.org/dist/tomcat/tomcat-10/v10.1.10/bin/apache-tomcat-10.1.10.zip
 unzip apache-tomcat-*.zip
 sudo mkdir -p /opt/tomcat
 sudo mv apache-tomcat-10.1.10 /opt/tomcat/
 sudo rm apache-tomcat-10.1.10.zip
 sudo ln -s /opt/tomcat/apache-tomcat-10.1.10 /opt/tomcat/home
-sudo chown -R tomcat: /opt/tomcat
+sudo chown -R tomcat /opt/tomcat
 sudo sh -c 'chmod +x /opt/tomcat/home/bin/*.sh'
 ```
 
@@ -885,6 +970,29 @@ sudo systemctl enable tomcat
 
  
 
+Bearbeiten Sie anschließend die .bashrc-Datei und fügen Sie Zeilen hinzu, um die CATALINA-Umgebungsvariablen zu exportieren:
+
+```
+sudo nano ~/.bashrc
+```
+
+Fügen Sie am Ende der Datei die untenstehende Konfiguration ein:
+
+```
+export CATALINA_HOME=/opt/tomcat/home
+export CATALINA_BASE=/opt/tomcat/home
+```
+
+Speichern und beenden Sie die Datei und laden Sie dann die.bashrc-Datei neu.
+
+```
+source ~/.bashrc
+```
+
+
+
+
+
 ## Umgebungsvariable "Produktion" setzen
 
 Da der Webserver als (private) Produktionsumgebung dient, auf der unsere Programme nach Fertigstellung laufen, erhält dieser eine entsprechende Umgebungsvariable. Wer diese in seinem Programm ausgibt, sieht in welcher Umgebung er sich gerade befindet.
@@ -903,7 +1011,7 @@ und fügen das folgende unter den "GlobalNamingResources" ein:
 <Environment description="Umgebung" name="UMGEBUNG" type="java.lang.String" value="Produktion"/>
 ```
 
-![](C:\Users\thoma\OneDrive - EDV-Beratung und Softwareentwicklung\HOWTO raspi-Dateien\image014.jpg)
+![](image014.jpg)
 
  
 
@@ -944,17 +1052,13 @@ sudo nano /opt/tomcat/home/webapps/manager/META-INF/context.xml
 
 Dort tragen wir getrennt durch "|" die IP-Adressen der Rechner ein, die auch Zugriff auf die Manager-App haben sollen. 
 
-![](C:\Users\thoma\OneDrive - EDV-Beratung und Softwareentwicklung\HOWTO raspi-Dateien\image018.jpg)
+![](image018.jpg)
+
+Für den Zugriff auf die Dokumentation ist analog auch die Datei der Document-App zu ergänzen.
+
+`sudo nano /opt/tomcat/home/webapps/docs/META-INF/context.xml`
 
 
-
-#### Wir starten nun den Tomcat neu, damit die Änderungen wirksam werden
-
-```
-sudo systemctl restart tomcat
-```
-
- 
 
 ## Changing Default Port
 
@@ -971,6 +1075,20 @@ Anzupassender Inhalt
 ```
 <Connector port="xxxx" protocol=“http/1.1“ …/>
 ```
+
+
+
+#### Wir starten nun den Tomcat neu, damit die Änderungen wirksam werden
+
+```
+sudo systemctl restart tomcat
+```
+
+ 
+
+## Testen
+
+`http:\\\DEINE-IP-ADRESSE:PORT`
 
 
 
@@ -1065,6 +1183,8 @@ https://stackoverflow.com/questions/66711660/tomcat-10-x-throws-java-lang-noclas
 
 `<Loader jakartaConverter="TOMCAT" />` in "tomcat/conf/context.xml"
 
+`sudo nano /opt/tomcat/home/conf/context.xml`
+
 
 
 # GCWizardDecompiler Servlet
@@ -1081,7 +1201,7 @@ Therefor the servlet
 
 ## Quellcode
 
-GitHub [GCWizard/external_helpers/decompiler_rest_api at 2.3.0 · S-Man42/GCWizard (github.com)](https://github.com/GCWizard/GCWizard/tree/2.3.0/external_helpers/decompiler_rest_api)
+GitHub [GCWizard/external_helpers/decompiler_rest_api at 2.3.0 · S-Man42/GCWizard (github.com)](https://github.com/S-Man42/GCWizard/tree/2.3.0/external_helpers/decompiler_rest_api)
 
 
 
@@ -1118,7 +1238,7 @@ curl -F file=@<path_to_luac_file> <server_url>
 
 
 
-Two versions of Python come preinstalled on Raspberry Pi OS: Python 2 and Python 3. To find the exact version number, use the command line `python –version` and `python3 –version`.
+Two versions of Python come preinstalled on Raspberry Pi OS: Python 2 and Python 3. To find the exact version number, use the command line `python –-version` and `python3 –-version`.
 
 The easiest way to find the latest Python release available is to go to the official Python website. On the download page, the latest versions are listed with their release date and maintenance status.
 
@@ -1135,19 +1255,19 @@ cd /tmp
 Download the latest Python file with
 
 ```
-wget https://www.python.org/ftp/python/3.9.15/Python-3.9.15.tgz
+wget https://www.python.org/ftp/python/3.12.4/Python-3.12.4.tgz
 ```
 
 Extract the files with
 
 ```
-tar -zxvf Python-3.9.15.tgz
+tar -zxvf Python-3.12.4.tgz
 ```
 
 Move to the folder containing the extracted files
 
 ```
-cd Python-3.9.15
+cd Python-3.12.4
 ```
 
 Run the configuration command
@@ -1167,7 +1287,7 @@ Make Python the default version on Raspberry Pi OS
 ```
 cd /usr/bin
 sudo rm python
-sudo ln -s /usr/local/bin/python3.9 python
+sudo ln -s /usr/local/bin/python3.12 python
 python --version
 ```
 
@@ -1184,7 +1304,8 @@ sudo apt-get install python3-pip
 ## Installation des Paketes smbus
 
 ```
-sudo pip install smbus2 --system
+sudo apt-get install python3-smbus
+sudo apt-get install python3-smbus2
 ```
 
 
@@ -1192,7 +1313,7 @@ sudo pip install smbus2 --system
 ## Installation des Paketes gpiozero
 
 ```
-sudo pip install gpiozero --system
+sudo apt-get install python3-gpiozero
 ```
 
 
@@ -1206,281 +1327,6 @@ sudo pip install gpiozero --system
 ```
 sudo apt install git
 ```
-
-
-
-# Installation flutter-pi
-
-## Quellen
-
-[ardera/flutter-pi: A light-weight Flutter Engine Embedder for Raspberry Pi that runs without X. (github.com)](https://github.com/ardera/flutter-pi)
-
-
-
-## Installieren
-
-### Install
-
-```
-sudo apt install cmake libgl1-mesa-dev libgles2-mesa-dev libegl1-mesa-dev libdrm-dev libgbm-dev ttf-mscorefonts-installer fontconfig libsystemd-dev libinput-dev libudev-dev  libxkbcommon-dev
-```
-
-
-
-### Update system fonts
-
-```
-sudo fc-cache
-```
-
-
-
-### Clone flutter-pi
-
-```
-git clone https://github.com/ardera/flutter-pi
-cd flutter-pi
-```
-
-
-
-### Compile
-
-```
-mkdir build && cd build
-cmake ..
-make -j`nproc`
-```
-
-Install
-
-```
-sudo make install
-```
-
-
-
-## Raspberry konfigurieren
-
-Open raspi-config:
-
-```
-sudo raspi-config
-```
-
-Switch to 1 System Options -> Boot / Auto Login and select Console or Console (Autologin).
-
-Switch to 4 Performance Options and configure the GPU memory Performance Options -> GPU Memory and enter 64.
-
-Leave raspi-config.
-
-Finish and reboot.
-
-
-
-## App erzeugen
-
-### LINUX
-
-#### One-time setup
-
-1. Make sure you've installed the flutter SDK. Only flutter SDK >= 3.10.5 is supported for the new method at the moment.
-
-2. Install the flutterpi_tool: Run flutter pub global activate flutterpi_tool (One time only)
-
-3. If running flutterpi_tool directly doesn't work, follow https://dart.dev/tools/pub/cmd/pub-global#running-a-script-from-your-path to add the dart global bin directory to your path.
-
-   Alternatively, you can launch the tool via: flutter pub global run flutterpi_tool ...
-
-#### Building the app bundle
-
-1. Open terminal or commandline and cd into your app directory.
-
-2. Run `flutterpi_tool build` to build the app.
-
-   - This will build the app for ARM 32-bit debug mode.
-
-   - `flutterpi_tool build --help` gives more usage information.
-
-   - For example, to build for 64-bit ARM, release mode, with a Raspberry Pi 4 tuned engine, use:
-
-     ```
-     flutterpi_tool build --arch=arm64 --cpu=pi4 --release
-     ```
-
-     
-
-3. Deploy the bundle to the Raspberry Pi using rsync or scp:
-
-   - Using rsync (available on linux and macOS or on Windows when using WSL)
-
-     ```
-     rsync -a --info=progress2 ./build/flutter_assets/ pi@raspberrypi:/home/pi/my_apps_flutter_assets
-     ```
-
-     
-
-   - Using scp (available on linux, macOS and Windows) 
-
-     ```
-     scp -r ./build/flutter_assets/ pi@raspberrypi:/home/pi/my_apps_flutter_assets
-     ```
-
-
-
-
-### Windows
-
-Build the asset bundle
-
-```
-flutter build bundle`
-```
-
-Build the kernel snapshot. (Replace `my_app_name` with the name of your app)
-
-```
-C:\flutter\bin\cache\dart-sdk\bin\dart.exe ^
-  C:\flutter\bin\cache\dart-sdk\bin\snapshots\frontend_server.dart.snapshot ^
-  --sdk-root C:\flutter\bin\cache\artifacts\engine\common\flutter_patched_sdk_product ^
-  --target=flutter ^
-  --aot ^
-  --tfa ^
-  -Ddart.vm.product=true ^
-  --packages .dart_tool\package_config.json ^
-  --output-dill build\kernel_snapshot.dill ^
-  --verbose ^
-  --depfile build\kernel_snapshot.d ^
-  package:my_app_name/main.dart
-```
-
-**Hint**
-
-- In versions prior to Flutter 3.3.0 the `--packages` argument should be set to `.packages`. In versions greater than or equal to 3.3.0 the `--packages` argument should be set to `.dart_tool\package_config.json`.
-
-Fetch the latest `gen_snapshot_linux_x64_release` I provide in the [engine binaries repo](https://github.com/ardera/flutter-engine-binaries-for-arm).
-
-The following steps must be executed on a linux x64 machine. If you're on windows, you can use [WSL](https://docs.microsoft.com/de-de/windows/wsl/install-win10). If you're on macOS, you can use a linux VM.
-
-Build the `app.so`. If you're building for *arm64*, you need to omit the `--sim-use-hardfp` flag.
-
-```
-gen_snapshot_linux_x64_release \
-  --deterministic \
-  --snapshot_kind=app-aot-elf \
-  --elf=build/flutter_assets/app.so \
-  --strip \
-  --sim-use-hardfp \
-  build/kernel_snapshot.dill
-```
-
-Now you can switch to your normal OS again.
-
-Deploy the bundle to the Raspberry Pi using rsync or scp:
-
-- Using rsync (available on linux and macOS or on Windows when using WSL)
-
-  ```
-  rsync -a --info=progress2 ./build/flutter_assets/ pi@raspberrypi:/home/pi/my_apps_flutter_assets
-  ```
-
-  
-
-- Using scp (available on linux, macOS and Windows) 
-
-  ```
-  scp -r ./build/flutter_assets/ pi@raspberrypi:/home/pi/my_apps_flutter_assets
-  ```
-
-
-
-Done. You can now launch the app in release mode using 
-
-```
-flutter-pi --release /home/pi/my_app
-```
-
-`
-
-
-
-## Hilfeseiten flutter-pi
-
-```
-USAGE:
-  flutter-pi [options] <bundle path> [flutter engine options]
-
-OPTIONS:
-  --release                  Run the app in release mode. The AOT snapshot
-                             of the app must be located inside the bundle directory.
-                             This also requires a libflutter_engine.so that was
-                             built with --runtime-mode=release.
-
-  --profile                  Run the app in profile mode. The AOT snapshot
-                             of the app must be located inside the bundle directory.
-                             This also requires a libflutter_engine.so that was
-                             built with --runtime-mode=profile.
-
-  --vulkan                   Use vulkan for rendering.
-
-  -o, --orientation <orientation>  Start the app in this orientation. Valid
-                             for <orientation> are: portrait_up, landscape_left,
-                             portrait_down, landscape_right.
-                             For more information about this orientation, see
-                             the flutter docs for the "DeviceOrientation"
-                             enum.
-                             Only one of the --orientation and --rotation
-                             options can be specified.
-
-  -r, --rotation <degrees>   Start the app with this rotation. This is just an
-                             alternative, more intuitive way to specify the
-                             startup orientation. The angle is in degrees and
-                             clock-wise.
-                             Valid values are 0, 90, 180 and 270.
-
-  -d, --dimensions "width_mm,height_mm" The width & height of your display in
-                             millimeters. Useful if your GPU doesn't provide
-                             valid physical dimensions for your display.
-                             The physical dimensions of your display are used
-                             to calculate the flutter device-pixel-ratio, which
-                             in turn basically "scales" the UI.
-
-  --pixelformat <format>     Selects the pixel format to use for the framebuffers.
-                             If this is not specified, a good pixel format will
-                             be selected automatically.
-                             Available pixel formats: RGB565, ARGB4444, XRGB4444, ARGB1555, XRGB1555, ARGB8888, XRGB8888, BGRA8888, BGRX8888, RGBA8888, RGBX8888, 
-  --videomode widthxheight
-  --videomode widthxheight@hz  Uses an output videomode that satisfies the argument.
-                             If no hz value is given, the highest possible refreshrate
-                             will be used.
-
-  -h, --help                 Show this help and exit.
-
-EXAMPLES:
-  flutter-pi ~/hello_world_app
-  flutter-pi --release ~/hello_world_app
-  flutter-pi -o portrait_up ./my_app
-  flutter-pi -r 90 ./my_app
-  flutter-pi -d "155, 86" ./my_app
-  flutter-pi --videomode 1920x1080 ./my_app
-  flutter-pi --videomode 1280x720@60 ./my_app
-
-SEE ALSO:
-  Author:  Hannes Winkler, a.k.a ardera
-  Source:  https://github.com/ardera/flutter-pi
-  License: MIT
-
-  For instructions on how to build an asset bundle or an AOT snapshot
-    of your app, please see the linked github repository.
-  For a list of options you can pass to the flutter engine, look here:
-    https://github.com/flutter/engine/blob/main/shell/common/switches.h
-```
-
-
-
-## discord
-
-There a `#custom-embedders` channel on the [flutter discord](https://github.com/flutter/flutter/wiki/Chat) which you can use if you have any questions regarding flutter-pi or generally, anything related to embedding the engine for which you don't want to open issue about or write an email.
 
 
 
@@ -1518,9 +1364,9 @@ There a `#custom-embedders` channel on the [flutter discord](https://github.com/
 
 ## Hardware
 
-| Bild                                                         | Beschreibung                                                 |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![](C:\Users\thoma\OneDrive - EDV-Beratung und Softwareentwicklung\HOWTO raspi-Dateien\image020.jpg) | Note that the 8.4V interface is the charging port. You can plug the 8.4V/2A charger provided for charging the batteries.<br/> The switch is the power switch, you can turn it into ON/OFF to turn on/off Jetson Nano Developer Kit.<br/> WARNING LED are the indicators of batteries, they turn on if you reverse batteries.<br/> Note 1: Please check the WARNING LED when you install batteries, make sure that you set all the batteries in the correct way. Don't charge batteries if you reverse them.<br/> Note 2: The board may not work when you install the batteries for the first time, you need to charge the batteries for a while to activate them.<br/> Note 3: Please use the charger provided, the module may be destroyed by other unsuitable power adapters/chargers. |
+| Bild              | Beschreibung                                                 |
+| ----------------- | ------------------------------------------------------------ |
+| ![](image020.jpg) | Note that the 8.4V interface is the charging port. You can plug the 8.4V/2A charger provided for charging the batteries.<br/> The switch is the power switch, you can turn it into ON/OFF to turn on/off Jetson Nano Developer Kit.<br/> WARNING LED are the indicators of batteries, they turn on if you reverse batteries.<br/> Note 1: Please check the WARNING LED when you install batteries, make sure that you set all the batteries in the correct way. Don't charge batteries if you reverse them.<br/> Note 2: The board may not work when you install the batteries for the first time, you need to charge the batteries for a while to activate them.<br/> Note 3: Please use the charger provided, the module may be destroyed by other unsuitable power adapters/chargers. |
 
 
 
@@ -1544,6 +1390,7 @@ Open a terminal and run the following commands:
 
 ```
 sudo apt-get install p7zip
+cd /tmp
 wget https://www.waveshare.com/w/upload/d/d9/UPS_HAT.7z
 7zr x UPS_HAT.7z -r -o./UPS_HAT
 cd UPS_HAT
@@ -1558,6 +1405,22 @@ Obviously two errors could occur:
 Hence you have to install python3 and the smbus module.
 
 
+
+## Enable GPIO Interface
+
+Open the terminal of Raspberry Pi, and enter the following commands for the configuration interface:
+
+```
+sudo raspi-config
+```
+
+Select Interfacing Options -> I8 Remote GPIO -> yes to enable
+
+Starte den pigpio-Dämon
+
+`sudo pigpiod` 
+
+​		
 
 ## Gehäuse
 
@@ -1575,7 +1438,7 @@ Druckplan liegt als TMZ.stl vor.
 sudo nano /usr/local/nagios/libexec/check_ups_hat
 ```
 
-
+Inhalt siehe python-script in der Anlage.
 
 ### Die Datei ausführbar machen
 
@@ -1592,8 +1455,8 @@ sudo visudo
 ```
 
 ```
-nagios ALL=NOPASSWD: /sur/bin/python
-nagios ALL=NOPASSWD: /sur/bin/python3
+nagios ALL=NOPASSWD: /usr/bin/python
+nagios ALL=NOPASSWD: /usr/bin/python3
 nagios ALL=NOPASSWD: /usr/local/nagios/libexec/check_ups_hat
 ```
 
@@ -1681,6 +1544,14 @@ sudo visudo
 nagios ALL=NOPASSWD: /usr/local/nagios/libexec/check_temp
 ```
 
+alternativ
+
+```
+sudo nano /etc/sudoers.d/020_nagios
+```
+
+die Befehlszeile hinzufügen und den Datei-Modus ändern.
+
 
 
 ### Befehl in der Datei `commands.cfg` erstellen
@@ -1725,6 +1596,25 @@ sudo systemctl restart nagios.service
 
 
 
+
+
+# FTP-Server
+
+Für einen einfachen Zugriff auf den Raspberry Pi via ist keine zusätzliche Installation nötig. Der Raspberry Pi verfügt standardmäßig über einen sFTP-Server. Dieser ist verschlüsselt und kann direkt ohne weitere Einrichtung genutzt werden.
+
+Um auf den sFTP-Server zuzugreifen, verwende einfach die Benutzerdaten:
+
+| Feld              | Wert       |
+| ----------------- | ---------- |
+| Host              | IP-ADRESSE |
+| Port              | 22         |
+| Benutzer Name     | pi         |
+| Benutzer Kennwort | PASSWORT   |
+
+
+
+
+
 # Konfigurationsdaten
 
 ## Raspberry
@@ -1738,13 +1628,15 @@ sudo systemctl restart nagios.service
 
 ## Tomcat
 
-| Schlüssel                                      | Wert                                                    |
-| ---------------------------------------------- | ------------------------------------------------------- |
-| Port                                           | 7323                                                    |
-| Benutzer Name                                  | GCWizardDecompiler                                      |
-| Benutzer Kennwort                              |                                                         |
-| IP-Adresse für den Zugriff auf die manager-GUI | 192.168.178.45<br />192.168.178.93<br />192.168.178.194 |
-| Servlet-Verzeichnis                            | /GCW_Unluac                                             |
+| Schlüssel                                      | Wert                                                         |
+| ---------------------------------------------- | ------------------------------------------------------------ |
+| Port                                           | 7323                                                         |
+| Benutzer Name                                  | GCWizardDecompiler                                           |
+| Benutzer Kennwort                              |                                                              |
+| IP-Adresse für den Zugriff auf die manager-GUI | 192.168.178.45<br />192.168.178.93<br />192.168.178.194<br />192.168.178.153 |
+| Servlet-Verzeichnis                            | /GCW_Unluac                                                  |
+
+
 
 ## nagios
 
@@ -1769,7 +1661,7 @@ sudo systemctl restart nagios.service
 
 ### check_ups_hat
 
-| /usr/local/nagios/libexec                         | check_ups_hat.pl generieren                                  |
+| /usr/local/nagios/libexec                         | check_ups_hat generieren                                     |
 | ------------------------------------------------- | ------------------------------------------------------------ |
 | /usr/local/nagios/etc/objects/<br />commands.cfg  | define command{<br/>       command_name  check_ups_hat<br/>       command_line      echo <PASSWORD> \| sudo -S /usr/bin/python3 /usr/local/nagios/libexec/check_ups_hat<br/>} |
 | /usr/local/nagios/etc/objects/<br />localhost.cfg | define service{<br />        use                              local-service<br />        host_name                 localhost<br />        service_description  UPS_HAT <br />       check_command        check_ups_hat<br /> } |
@@ -2370,7 +2262,8 @@ UNKNOWN = 3
 cpu = CPUTemperature()
 print(str(cpu.temperature)+"°C")
 
-if (cpu.temperature > 80.0): sys.exit(CRITICAL)
-if (cpu.temperature > 80.0): sys.exit(WARNING)
+if (cpu.temperature > 80.0): os.system("shutdown /s /t 1")
+if (cpu.temperature > 70.0): sys.exit(CRITICAL)
+if (cpu.temperature > 60.0): sys.exit(WARNING)
 ```
 

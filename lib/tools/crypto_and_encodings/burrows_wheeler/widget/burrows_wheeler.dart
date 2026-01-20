@@ -12,7 +12,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/burrows_wheeler/logic/burrows_wheeler.dart';
 
 class BurrowsWheeler extends StatefulWidget {
-  const BurrowsWheeler({Key? key}) : super(key: key);
+  const BurrowsWheeler({super.key});
 
   @override
   _BurrowsWheelerState createState() => _BurrowsWheelerState();

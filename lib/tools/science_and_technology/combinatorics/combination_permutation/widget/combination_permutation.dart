@@ -10,7 +10,7 @@ import 'package:gc_wizard/tools/science_and_technology/combinatorics/combination
 import 'package:gc_wizard/tools/science_and_technology/combinatorics/permutation/logic/permutation.dart';
 
 class CombinationPermutation extends StatefulWidget {
-  const CombinationPermutation({Key? key}) : super(key: key);
+  const CombinationPermutation({super.key});
 
   @override
   _CombinationPermutationState createState() => _CombinationPermutationState();

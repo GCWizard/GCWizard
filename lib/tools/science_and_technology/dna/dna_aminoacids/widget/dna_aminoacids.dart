@@ -8,7 +8,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/dna/logic/dna.dart';
 
 class DNAAminoAcids extends StatefulWidget {
-  const DNAAminoAcids({Key? key}) : super(key: key);
+  const DNAAminoAcids({super.key});
 
   @override
   _DNAAminoAcidsState createState() => _DNAAminoAcidsState();

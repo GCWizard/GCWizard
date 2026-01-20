@@ -50,17 +50,12 @@ const _NOTES_RELATIVE_DISPLAY_WIDTH_OUTPUT = 160;
 const _NOTES_RELATIVE_DISPLAY_HEIGHT = 445;
 
 class _NotesSegmentDisplay extends NSegmentDisplay {
-  _NotesSegmentDisplay(
-      {Key? key,
-      required Map<String, bool> segments,
-      bool readOnly = false,
-      void Function(Map<String, bool>)? onChanged})
+  _NotesSegmentDisplay({
+      required super.segments,
+      super.readOnly,
+      super.onChanged})
       : super(
-            key: key,
             initialSegments: _INITIAL_SEGMENTS,
-            segments: segments,
-            readOnly: readOnly,
-            onChanged: onChanged,
             aspectRatio: readOnly
                 ? _NOTES_RELATIVE_DISPLAY_WIDTH_OUTPUT / _NOTES_RELATIVE_DISPLAY_HEIGHT
                 : SEGMENTS_RELATIVE_DISPLAY_WIDTH / SEGMENTS_RELATIVE_DISPLAY_HEIGHT,
@@ -74,7 +69,7 @@ class _NotesSegmentDisplay extends NSegmentDisplay {
               var LINE_OFFSET_Y = size.height / _NOTES_RELATIVE_DISPLAY_HEIGHT * 20.0;
               var LINE_DISTANCE = size.height / _NOTES_RELATIVE_DISPLAY_HEIGHT * 30.0;
 
-              var lines = [
+              const lines = [
                 helpLine5,
                 helpLine4,
                 helpLine3,
@@ -149,7 +144,7 @@ class _NotesSegmentDisplay extends NSegmentDisplay {
                     SEGMENTS_COLOR_OFF);
               }
 
-              var notePositions = [105, 35, -35, -105];
+              const notePositions = [105, 35, -35, -105];
               counter = 0;
               for (var key in notePosition) {
                 var offsetX = size.width /

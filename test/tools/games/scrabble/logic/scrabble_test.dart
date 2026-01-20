@@ -1,6 +1,6 @@
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/games/scrabble/logic/scrabble_sets.dart';
-import 'package:gc_wizard/tools/games/scrabble/scrabble/logic/scrabble.dart';
+import 'package:gc_wizard/tools/games/scrabble/logic/scrabble.dart';
 
 void main() {
   group("Scrabble.textToLetterValues:", () {
@@ -22,21 +22,21 @@ void main() {
       {'input' : 'mtlhmt', 'scrabbleVersion': scrabbleID_KLINGON, 'expectedOutput' : [2,8,2,4]},
       {'input' : 'mtlhmtl', 'scrabbleVersion': scrabbleID_KLINGON, 'expectedOutput' : [2,8,2,4,3]},
       {'input' : 'mtlhmtlh', 'scrabbleVersion': scrabbleID_KLINGON, 'expectedOutput' : [2,8,2,8]},
-      {'input' : 'mg', 'scrabbleVersion': scrabbleID_KLINGON, 'expectedOutput' : [2,0]},
+      {'input' : 'mg', 'scrabbleVersion': scrabbleID_KLINGON, 'expectedOutput' : [2,null]},
       {'input' : 'mgh', 'scrabbleVersion': scrabbleID_KLINGON, 'expectedOutput' : [2,3]},
       {'input' : 'mght', 'scrabbleVersion': scrabbleID_KLINGON, 'expectedOutput' : [2,3,4]},
       {'input' : 'mghtl', 'scrabbleVersion': scrabbleID_KLINGON, 'expectedOutput' : [2,3,4,3]},
       {'input' : 'mghtlh', 'scrabbleVersion': scrabbleID_KLINGON, 'expectedOutput' : [2,3,8]},
-      {'input' : 'mghtlhg', 'scrabbleVersion': scrabbleID_KLINGON, 'expectedOutput' : [2,3,8,0]},
+      {'input' : 'mghtlhg', 'scrabbleVersion': scrabbleID_KLINGON, 'expectedOutput' : [2,3,8,null]},
       {'input' : 'mghtlhgh', 'scrabbleVersion': scrabbleID_KLINGON, 'expectedOutput' : [2,3,8,3]},
 
       {'input' : 'A', 'scrabbleVersion': scrabbleID_D_Gender, 'expectedOutput' : [1]},
-      {'input' : 'A*', 'scrabbleVersion': scrabbleID_D_Gender, 'expectedOutput' : [1, 0]},
-      {'input' : 'A*I', 'scrabbleVersion': scrabbleID_D_Gender, 'expectedOutput' : [1, 0, 1]},
+      {'input' : 'A*', 'scrabbleVersion': scrabbleID_D_Gender, 'expectedOutput' : [1, null]},
+      {'input' : 'A*I', 'scrabbleVersion': scrabbleID_D_Gender, 'expectedOutput' : [1, null, 1]},
       {'input' : 'A*IN', 'scrabbleVersion': scrabbleID_D_Gender, 'expectedOutput' : [1, 10]},
       {'input' : 'A*INA', 'scrabbleVersion': scrabbleID_D_Gender, 'expectedOutput' : [1, 10, 1]},
-      {'input' : 'A*IN*', 'scrabbleVersion': scrabbleID_D_Gender, 'expectedOutput' : [1, 10, 0]},
-      {'input' : 'A*IN*I', 'scrabbleVersion': scrabbleID_D_Gender, 'expectedOutput' : [1, 10, 0, 1]},
+      {'input' : 'A*IN*', 'scrabbleVersion': scrabbleID_D_Gender, 'expectedOutput' : [1, 10, null]},
+      {'input' : 'A*IN*I', 'scrabbleVersion': scrabbleID_D_Gender, 'expectedOutput' : [1, 10, null, 1]},
       {'input' : 'A*IN*IN', 'scrabbleVersion': scrabbleID_D_Gender, 'expectedOutput' : [1, 10, 10]},
 
     ];

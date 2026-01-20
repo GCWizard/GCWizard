@@ -10,13 +10,31 @@ class MathematicalConstant {
 }
 
 const Map<String, MathematicalConstant> MATHEMATICAL_CONSTANTS = {
+  'mathematical_constants_sophomoresdream_1': MathematicalConstant(
+      value: '1.29128 59970 62663 54040 72825 90595 60054 ...',
+  ),
+  'mathematical_constants_sophomoresdream_2': MathematicalConstant(
+      value: '0.78343 05107 12134 40705 92643 86526 97546 ...',
+  ),
+  'mathematical_constants_ramanujan': MathematicalConstant(
+    value: '1729',
+    additional_names: ['mathematical_constants_hardyramanujan']
+  ),
+  'mathematical_constants_hardyramanujan': MathematicalConstant(
+    value: '1729',
+    additional_names: ['mathematical_constants_ramanujan']
+  ),
+  'mathematical_constants_kaprekar': MathematicalConstant(
+    value: '6174',
+  ),
+  'mathematical_constants_xkcdrandomnumber': MathematicalConstant(
+    value: '4',
+  ),
   'mathematical_constants_zero': MathematicalConstant(
-    symbol: '0',
     value: '0',
   ),
   'mathematical_constants_one': MathematicalConstant(
-    symbol: '1',
-    value: '0',
+    value: '1',
     additional_names: ['mathematical_constants_unity'],
   ),
   'mathematical_constants_i': MathematicalConstant(
@@ -56,6 +74,7 @@ const Map<String, MathematicalConstant> MATHEMATICAL_CONSTANTS = {
       tool: 'sqrt3'),
   'mathematical_constants_sqrt5':
       MathematicalConstant(symbol: '\u221a5', value: '2.23606 79774 99789 69640 91736 68731 27623 ...', tool: 'sqrt5'),
+  'mathematical_constants_grothendieckprime': MathematicalConstant(value: '57'),
   'mathematical_constants_hitchhiker': MathematicalConstant(value: '42'),
   'mathematical_constants_sheldonprime': MathematicalConstant(value: '73'),
   'mathematical_constants_eulermascheroni': MathematicalConstant(

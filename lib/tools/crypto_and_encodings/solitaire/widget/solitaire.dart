@@ -10,7 +10,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/solitaire/logic/solitaire.dart';
 
 class Solitaire extends StatefulWidget {
-  const Solitaire({Key? key}) : super(key: key);
+  const Solitaire({super.key});
 
   @override
   _SolitaireState createState() => _SolitaireState();

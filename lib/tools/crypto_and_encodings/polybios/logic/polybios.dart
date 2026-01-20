@@ -65,7 +65,6 @@ String? createPolybiosAlphabet(int gridDimension,
           fillAlphabet = fillAlphabet.replaceAll('Q', '');
           break;
       }
-
       break;
     case 6:
       var alphabetAZ = alphabet_AZ.keys.toList();
@@ -136,21 +135,26 @@ String polybiosGridCharacterByCoordinate(Map<String, List<int>> grid, int row, i
   return grid.entries.firstWhere((entry) => entry.value[0] == row && entry.value[1] == column).key;
 }
 
-PolybiosOutput? encryptPolybios(String input, String key,
-    {PolybiosMode mode = PolybiosMode.AZ09,
+PolybiosOutput? encryptPolybios(String input, String rowIndexes,
+    {String? colIndexes,
+    PolybiosMode mode = PolybiosMode.AZ09,
     String? fillAlphabet,
     String? firstLetters,
     AlphabetModificationMode? modificationMode = AlphabetModificationMode.J_TO_I}) {
   modificationMode ??= AlphabetModificationMode.J_TO_I;
 
-  int dim = key.length;
-  if (dim != 5 && dim != 6) return null; //TODO Exception
+  colIndexes = (colIndexes == null || colIndexes.isEmpty) ? rowIndexes : colIndexes;
+
+  rowIndexes = rowIndexes.toUpperCase();
+  colIndexes = colIndexes.toUpperCase();
+
+  int dim = rowIndexes.length;
+  if (dim != 5 && dim != 6) return null; // TODO: Exception
 
   var alphabet = createPolybiosAlphabet(dim,
       mode: mode, fillAlphabet: fillAlphabet, firstLetters: firstLetters, modificationMode: modificationMode);
-  if (alphabet == null) return null; //TODO Exception
+  if (alphabet == null) return null; // TODO: Exception
 
-  key = key.toUpperCase();
   input = input.toUpperCase();
 
   if (dim == 5) {
@@ -161,62 +165,70 @@ PolybiosOutput? encryptPolybios(String input, String key,
 
   var output = input.split('').where((character) => alphabet.contains(character)).map((character) {
     var coords = grid[character];
-    if (coords == null || coords.length < 2) return '';
-
-    return '${key[coords[0]]}${key[coords[1]]}';
+    if (coords == null || coords.length < 2 || colIndexes!.length != rowIndexes.length) return '';
+    var row = rowIndexes[coords[0]];
+    var col = colIndexes[coords[1]];
+    return '$row$col';
   }).join(' ');
 
-  return PolybiosOutput(output, polybiosGridToString(grid, key));
+  return PolybiosOutput(output, polybiosGridToString(grid, colIndexes, rowIndexes));
 }
 
-PolybiosOutput? decryptPolybios(String input, String key,
-    {PolybiosMode mode = PolybiosMode.AZ09,
+PolybiosOutput? decryptPolybios(String input, String rowIndexes,
+    {String? colIndexes,
+    PolybiosMode mode = PolybiosMode.AZ09,
     String? fillAlphabet,
     String? firstLetters,
     AlphabetModificationMode? modificationMode = AlphabetModificationMode.J_TO_I}) {
   modificationMode ??= AlphabetModificationMode.J_TO_I;
+  colIndexes = (colIndexes == null || colIndexes.isEmpty) ? rowIndexes : colIndexes;
 
-  int dim = key.length;
-  if (dim != 5 && dim != 6) return null; //TODO Exception
+  rowIndexes = rowIndexes.toUpperCase();
+  colIndexes = colIndexes.toUpperCase();
+
+  int dim = rowIndexes.length;
+  if (dim != 5 && dim != 6) return null;
 
   var alphabet = createPolybiosAlphabet(dim,
       mode: mode, fillAlphabet: fillAlphabet, firstLetters: firstLetters, modificationMode: modificationMode);
   if (alphabet == null) return null;
 
-  key = key.toUpperCase();
-  input = input.split('').map((character) => key.contains(character) ? character : '').join();
+  input = input.toUpperCase().replaceAll(RegExp('[^${colIndexes + rowIndexes}]'), '');
 
   if (input.length % 2 != 0) input = input.substring(0, input.length - 1);
-
-  if (input.isEmpty) return null; //TODO: Exception
+  if (input.isEmpty) return null;
 
   var grid = createPolybiosGrid(alphabet, dim);
-
   String out = '';
 
-  int i = 0;
-  while (i < input.length - 1) {
-    var x = key.indexOf(input[i]);
-    var y = key.indexOf(input[i + 1]);
-
-    out += polybiosGridCharacterByCoordinate(grid, x, y);
-    i += 2;
+  for (int i = 0; i < input.length - 1; i += 2) {
+    int row = rowIndexes.indexOf(input[i]);
+    int col = colIndexes.indexOf(input[i + 1]);
+    if (row == -1 || col == -1) continue;
+    out += polybiosGridCharacterByCoordinate(grid, row, col);
   }
 
-  return PolybiosOutput(out, polybiosGridToString(grid, key));
+  return PolybiosOutput(out, polybiosGridToString(grid, colIndexes, rowIndexes));
 }
 
-String polybiosGridToString(Map<String, List<int>> grid, String key) {
-  var currentRow = -1;
-  var output = '  | ' + key.split('').join(' ');
-  output += '\n--+' + '-' * key.length * 2;
+String polybiosGridToString(Map<String, List<int>> grid, String colIndexes, String rowIndexes) {
+  var output = '  | ' + colIndexes.split('').join(' ');
+  output += '\n--+' + '-' * (colIndexes.length * 2);
 
-  for (var entry in grid.entries) {
-    if (entry.value[0] > currentRow) {
-      currentRow++;
-      output += '\n' + key[currentRow] + ' |';
+  for (int row = 0; row < rowIndexes.length; row++) {
+    output += '\n' + rowIndexes[row] + ' |';
+
+    for (int col = 0; col < colIndexes.length; col++) {
+      String? characterAtPosition;
+      for (var entry in grid.entries) {
+        var coords = entry.value;
+        if (coords[0] == row && coords[1] == col) {
+          characterAtPosition = entry.key;
+          break;
+        }
+      }
+      output += ' ' + (characterAtPosition ?? ' ');
     }
-    output += ' ' + entry.key;
   }
 
   return output;

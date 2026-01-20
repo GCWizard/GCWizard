@@ -34,15 +34,15 @@ WherigoTaskData _analyzeAndExtractTaskSectionData(List<String> lines) {
     lines[i] = lines[i].trim();
 
     if (RegExp(r'( Wherigo.ZTask\()').hasMatch(lines[i])) {
-      LUAname = getLUAName(lines[i]);
+      LUAname = _getLUAName(lines[i]);
     }
 
     if (lines[i].startsWith(LUAname + '.Id')) {
-      id = getLineData(lines[i], LUAname, 'Id', _obfuscatorFunction, _obfuscatorTable);
+      id = _getLineData(lines[i], LUAname, 'Id', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.Name')) {
-      name = getLineData(lines[i], LUAname, 'Name', _obfuscatorFunction, _obfuscatorTable);
+      name = _getLineData(lines[i], LUAname, 'Name', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.Description')) {
@@ -58,31 +58,31 @@ WherigoTaskData _analyzeAndExtractTaskSectionData(List<String> lines) {
         lines[i] = lines[i].trim();
       } while (_sectionDescription);
       description = description.replaceAll('[[', '').replaceAll(']]', '').replaceAll('<BR>', '\n');
-      description = getLineData(description, LUAname, 'Description', _obfuscatorFunction, _obfuscatorTable);
+      description = _getLineData(description, LUAname, 'Description', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.Visible')) {
-      visible = getLineData(lines[i], LUAname, 'Visible', _obfuscatorFunction, _obfuscatorTable);
+      visible = _getLineData(lines[i], LUAname, 'Visible', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.Media')) {
-      media = getLineData(lines[i], LUAname, 'Media', _obfuscatorFunction, _obfuscatorTable).trim();
+      media = _getLineData(lines[i], LUAname, 'Media', _obfuscatorFunction, _obfuscatorTable).trim();
     }
 
     if (lines[i].startsWith(LUAname + '.Icon')) {
-      icon = getLineData(lines[i], LUAname, 'Icon', _obfuscatorFunction, _obfuscatorTable);
+      icon = _getLineData(lines[i], LUAname, 'Icon', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.Active')) {
-      active = getLineData(lines[i], LUAname, 'Active', _obfuscatorFunction, _obfuscatorTable);
+      active = _getLineData(lines[i], LUAname, 'Active', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.CorrectState')) {
-      correctstate = getLineData(lines[i], LUAname, 'CorrectState', _obfuscatorFunction, _obfuscatorTable);
+      correctstate = _getLineData(lines[i], LUAname, 'CorrectState', _obfuscatorFunction, _obfuscatorTable);
     }
 
     if (lines[i].startsWith(LUAname + '.Complete')) {
-      complete = getLineData(lines[i], LUAname, 'Complete', _obfuscatorFunction, _obfuscatorTable);
+      complete = _getLineData(lines[i], LUAname, 'Complete', _obfuscatorFunction, _obfuscatorTable);
     }
   }
   return WherigoTaskData(

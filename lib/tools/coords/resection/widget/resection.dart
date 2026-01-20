@@ -19,7 +19,7 @@ import 'package:gc_wizard/utils/constants.dart';
 import 'package:latlong2/latlong.dart';
 
 class Resection extends StatefulWidget {
-  const Resection({Key? key}) : super(key: key);
+  const Resection({super.key});
 
   @override
   _ResectionState createState() => _ResectionState();

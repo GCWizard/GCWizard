@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_checknumber.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_containsdigits.dart';
@@ -7,26 +6,26 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequenceWeirdNumbersCheckNumber extends NumberSequenceCheckNumber {
-  const NumberSequenceWeirdNumbersCheckNumber({Key? key})
-      : super(key: key, mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 34);
+  const NumberSequenceWeirdNumbersCheckNumber({super.key})
+      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 10000);
 }
 
 class NumberSequenceWeirdNumbersDigits extends NumberSequenceDigits {
-  const NumberSequenceWeirdNumbersDigits({Key? key})
-      : super(key: key, mode: NumberSequencesMode.WEIRD_NUMBERS, maxDigits: 5);
+  const NumberSequenceWeirdNumbersDigits({super.key})
+      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxDigits: 7);
 }
 
 class NumberSequenceWeirdNumbersRange extends NumberSequenceRange {
-  const NumberSequenceWeirdNumbersRange({Key? key})
-      : super(key: key, mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 34);
+  const NumberSequenceWeirdNumbersRange({super.key})
+      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 10000);
 }
 
 class NumberSequenceWeirdNumbersNthNumber extends NumberSequenceNthNumber {
-  const NumberSequenceWeirdNumbersNthNumber({Key? key})
-      : super(key: key, mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 34);
+  const NumberSequenceWeirdNumbersNthNumber({super.key})
+      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 10000);
 }
 
 class NumberSequenceWeirdNumbersContainsDigits extends NumberSequenceContainsDigits {
-  const NumberSequenceWeirdNumbersContainsDigits({Key? key})
-      : super(key: key, mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 34);
+  const NumberSequenceWeirdNumbersContainsDigits({super.key})
+      : super(mode: NumberSequencesMode.WEIRD_NUMBERS, maxIndex: 10000);
 }

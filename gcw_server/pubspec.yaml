@@ -4,11 +4,16 @@ version: 0.1.0
 publish_to: none
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=3.5.0 <4.0.0"
 
 dependencies:
+  flutter:
+    sdk: flutter
   shelf: ^1.4.0
   gc_wizard:
     path: ./../
+
+dependency_overrides:
+  meta: ^1.15.0
 
 

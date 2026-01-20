@@ -20,7 +20,7 @@ import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/image_utils/image_utils.dart';
 
 class KarolRobot extends StatefulWidget {
-  const KarolRobot({Key? key}) : super(key: key);
+  const KarolRobot({super.key});
 
   @override
   _KarolRobotState createState() => _KarolRobotState();

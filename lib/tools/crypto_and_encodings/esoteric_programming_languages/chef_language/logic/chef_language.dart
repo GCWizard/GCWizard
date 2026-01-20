@@ -13,6 +13,13 @@ part 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_language
 part 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/chef_language/logic/method.dart';
 part 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/chef_language/logic/recipe.dart';
 
+class CHEFOutputInterpret {
+  final List<String> output;
+  final String recipe;
+
+  CHEFOutputInterpret({required this.output, required this.recipe});
+}
+
 List<String> _getAuxiliaryRecipe(
     String name, int value, List<String> ingredientOne, List<String> ingredientTwo, String language) {
   List<String> output = <String>[];
@@ -329,18 +336,19 @@ bool isValid(String input) {
   return flag;
 }
 
-List<String> interpretChef(String language, String? recipe, String? input) {
-  if (recipe == null || recipe.isEmpty) return <String>[];
-
+CHEFOutputInterpret interpretChef(String language, String? recipe, String? input) {
+  if (recipe == null || recipe.isEmpty) return CHEFOutputInterpret(output: <String>[], recipe: '');
   return _decodeChef(language, normalizeUmlauts(recipe.toLowerCase().replaceAll(RegExp(r' +'), ' ')), input ?? '');
 }
 
-List<String> _decodeChef(String language, String recipe, String additionalIngredients) {
-  _Chef interpreter = _Chef(recipe, language);
+CHEFOutputInterpret _decodeChef(String language, String recipe, String additionalIngredients) {
+  recipe = _adjustRecipe(recipe);
+
+ _Chef interpreter = _Chef(recipe, language);
   List<String> result = [];
+
   if (interpreter.valid) {
     interpreter.bake(language, additionalIngredients);
-
     if (interpreter.valid) {
       result.addAll(interpreter.meal);
 
@@ -359,15 +367,158 @@ List<String> _decodeChef(String language, String recipe, String additionalIngred
           result.add('» Schüssel in eine Servierschale stürzen. «');
         }
       }
-      return result;
+      return CHEFOutputInterpret(output: result, recipe: recipe);
     } else {
       // runtime error
-      return interpreter.error;
+      return CHEFOutputInterpret(output: interpreter.error, recipe: recipe);
     }
   } else {
     // invalid recipe
-    return interpreter.error;
+    return CHEFOutputInterpret(output: interpreter.error, recipe: recipe);
   }
+}
+
+String _adjustRecipe(String readRecipe){
+  // remove blank lines at start and trim lines
+  List<String> recipe = readRecipe.toLowerCase().split('\n');
+  while (recipe[0].isEmpty) {
+    for (int i = 1; i < recipe.length; i++) {
+      recipe[i - 1] = recipe[i].trim();
+    }
+  }
+
+  // remove blank lines at end
+  while (recipe[recipe.length - 1].isEmpty) {
+    recipe.removeAt(recipe.length - 1);
+  }
+
+  // trim lines
+  for (int i = 0; i < recipe.length; i++) {
+    recipe[i] = recipe[i].trim();
+    // add dot at end of line where necessary
+    if (recipe[i].isNotEmpty && !recipe[i].endsWith('.') && !recipe[i].endsWith(':')) {
+      recipe[i] = recipe[i] + '.';
+    }
+  }
+  readRecipe = recipe.join('\n');
+
+  // check and add missing title if necessary
+  if (readRecipe.startsWith('ingredients') || readRecipe.startsWith('zutaten')) {
+    readRecipe = 'nouvelle cuisine.\n\n' + readRecipe;
+  }
+  // check and repair recipe regarding blank lines, whitespace
+  recipe = readRecipe.split('\n');
+
+  // remove blank lines inside sections ingredients, methods
+  bool ingredientSection = false;
+  bool methodSection = false;
+  bool auxRecipe = false;
+
+  for (int i = 0; i < recipe.length - 1; i++) {
+    if (recipe[i].startsWith("ingredients") || recipe[i].startsWith("zutaten")) ingredientSection = true;
+
+    if (recipe[i].startsWith("cooking time") ||
+        recipe[i].startsWith("garzeit") ||
+        recipe[i].startsWith("pre-heat oven") ||
+        recipe[i].startsWith("pre heat oven") ||
+        recipe[i].startsWith("ofen auf") ||
+        recipe[i].startsWith("method") ||
+        recipe[i].startsWith("zubereitung")) {
+      ingredientSection = false;
+    }
+
+    if (recipe[i].startsWith("method") || recipe[i].startsWith("zubereitung")) methodSection = true;
+
+    if (recipe[i].startsWith("serves") || recipe[i].startsWith("portionen")) {
+      methodSection = false;
+      auxRecipe = true;
+    }
+
+    if ((recipe[i].isEmpty || recipe[i] == '\n') && ingredientSection) {
+      if (recipe[i + 1].startsWith('method') ||
+          recipe[i + 1].startsWith('zubereitung') ||
+          recipe[i + 1].startsWith("cooking time") ||
+          recipe[i + 1].startsWith("garzeit") ||
+          recipe[i + 1].startsWith("pre-heat oven") ||
+          recipe[i + 1].startsWith("pre heat oven") ||
+          recipe[i + 1].startsWith("ofen auf") ||
+          recipe[i + 1].startsWith("serves") ||
+          recipe[i + 1].startsWith("portionen")) {
+      } else {
+        recipe.removeAt(i);
+      }
+    }
+
+    if ((recipe[i] == '' || recipe[i] == '\n') && methodSection) {
+      if (recipe[i + 1].startsWith('method') ||
+          recipe[i + 1].startsWith('zubereitung') ||
+          recipe[i + 1].startsWith("cooking time") ||
+          recipe[i + 1].startsWith("garzeit") ||
+          recipe[i + 1].startsWith("pre-heat oven") ||
+          recipe[i + 1].startsWith("pre heat oven") ||
+          recipe[i + 1].startsWith("ofen auf") ||
+          recipe[i + 1].startsWith("serves") ||
+          recipe[i + 1].startsWith("portionen") ||
+          _isMethod(recipe[i + 1])) {
+      } else {
+        if (!auxRecipe) recipe.removeAt(i);
+      }
+    }
+  }
+  recipe = recipe.join('\n').split('\n');
+
+  // add blank lines to build the necessary sections
+  String s0 = recipe[0];
+  for (int i = 1; i < recipe.length; i++) {
+    if (recipe[i].startsWith("ingredients") ||
+        recipe[i].startsWith("zutaten") ||
+        recipe[i].startsWith("cooking time") ||
+        recipe[i].startsWith("garzeit") ||
+        recipe[i].startsWith("pre-heat oven") ||
+        recipe[i].startsWith("pre heat oven") ||
+        recipe[i].startsWith("ofen auf") ||
+        recipe[i].startsWith("method") ||
+        recipe[i].startsWith("zubereitung") ||
+        recipe[i].startsWith("serves") ||
+        recipe[i].startsWith("portionen")) {
+      if (s0.isNotEmpty) {
+        recipe.insert(i, '\n');
+        i++;
+        //recipe[i] = '\n' + recipe[i];
+      }
+    }
+    s0 = recipe[i];
+  }
+
+  // remove unnecessary sections like cooking time and oven temperature
+  int endIngredientSection = 0;
+  methodSection = false;
+  for (int i = 0; i < recipe.length; i++) {
+    if (recipe[i].startsWith("ingredients") ||
+        recipe[i].startsWith("zutaten")) {
+      ingredientSection = true;
+    }
+    if (ingredientSection && (recipe[i].length == 1 || recipe[i].isEmpty)) {
+      endIngredientSection = i;
+      ingredientSection = false;
+    }
+  }
+
+  int i = endIngredientSection + 1;
+  while (!methodSection) {
+    if (recipe[i].startsWith("method") ||
+        recipe[i].startsWith("zubereitung")) {
+      methodSection = true;
+    } else {
+      recipe.removeAt(i);
+    }
+  }
+
+  // handle ' und '
+  readRecipe = recipe.join('\n');
+  readRecipe = readRecipe.replaceAll(' und ', '. ').replaceAll(RegExp(r'\n\n(\n)+'), '\n\n');
+
+  return readRecipe;
 }
 
 bool _isMethod(String testString) {
@@ -380,3 +531,5 @@ bool _isMethod(String testString) {
   }
   return result;
 }
+
+

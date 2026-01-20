@@ -1,0 +1,9 @@
+[new] Coord Format: Hebi63
+[new] Gade derivates (Edag, Lowe, EWOL)
+[new] NVA Codes (Juno, Jupiter, Zebra)
+[new] RegEx
+[new] Wordoku
+[new] Game of life generator
+[new] Animated Gif generator
+[chg] Verbal Arithemtic output
+[fix] Many bug fixes

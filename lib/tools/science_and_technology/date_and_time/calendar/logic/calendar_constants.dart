@@ -13,8 +13,10 @@ enum CalendarSystem {
   UNIXTIMESTAMP,
 }
 
-const JD_UNIX_START = 2440587.5;
+const MIN_JD = 0.0;
+const MAX_JD = 99999999.9;
 
+const JD_UNIX_START = 2440587.5;
 const JD_EXCEL_START = 2415020.5;
 
 const Map<CalendarSystem, Map<int, String>> MONTH_NAMES = {
@@ -39,6 +41,7 @@ const Map<int, String> MONTH_ISLAMIC = {
   11: 'Dhu l-Kada',
   12: 'Dhu l-Hidjdja'
 };
+
 const Map<int, String> MONTH_PERSIAN = {
   1: 'Farwardin',
   2: 'Ordibehescht',
@@ -53,6 +56,7 @@ const Map<int, String> MONTH_PERSIAN = {
   11: 'Bahman',
   12: 'Esfand'
 };
+
 const Map<int, String> MONTH_COPTIC = {
   1: 'Thoth',
   2: 'Paophi',
@@ -67,6 +71,7 @@ const Map<int, String> MONTH_COPTIC = {
   11: 'Epiphi',
   12: 'Mesori'
 };
+
 const Map<int, String> MONTH_HEBREW = {
   1: 'Tishri',
   2: 'Heshvan',
@@ -82,6 +87,7 @@ const Map<int, String> MONTH_HEBREW = {
   12: 'Av',
   13: 'Elul'
 };
+
 const Map<int, String> MONTH_POTRZEBIE = {
   1: 'Tales',
   2: 'Calculated',
@@ -94,6 +100,7 @@ const Map<int, String> MONTH_POTRZEBIE = {
   9: 'Jugular',
   10: 'Vein',
 };
+
 const Map<int, String> WEEKDAY_ISLAMIC = {
   1: 'yaum al-ahad',
   2: 'yaum al-ithnayna',

@@ -14,7 +14,7 @@ import 'package:gc_wizard/tools/coords/centroid/centroid_center_of_gravity/logic
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 
 class CentroidArithmeticMean extends StatefulWidget {
-  const CentroidArithmeticMean({Key? key}) : super(key: key);
+  const CentroidArithmeticMean({super.key});
 
   @override
   _CentroidArithmeticMeanState createState() => _CentroidArithmeticMeanState();

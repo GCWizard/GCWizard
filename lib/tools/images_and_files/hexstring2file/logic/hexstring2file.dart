@@ -30,7 +30,7 @@ Uint8List? _hexString2bytes(String input) {
   String hex = input.toUpperCase().replaceAll(RegExp('[^0-9A-F]'), '');
   if (hex.isEmpty) return null;
 
-  for (var i = 0; i < hex.length; i = i + 2) {
+  for (var i = 0; i < hex.length; i += 2) {
     var valueString = hex.substring(i, min(i + 2, hex.length - 1));
     if (valueString.isNotEmpty) {
       var converted = convertBase(valueString, 16, 10);
@@ -55,7 +55,7 @@ Uint8List? _binaryString2bytes(String input) {
   String binary = input.replaceAll(RegExp('[^01]'), '');
   if (binary.isEmpty) return null;
 
-  for (var i = 0; i < binary.length; i = i + 8) {
+  for (var i = 0; i < binary.length; i += 8) {
     var valueString = binary.substring(i, min(i + 8, binary.length - 1));
     if (valueString.isNotEmpty) {
       var converted = convertBase(valueString, 2, 10);

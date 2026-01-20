@@ -107,6 +107,12 @@ void main() {
         '8399000110005',
         '9399000110004'
       ]},
+      {'number': '431199735?721514', 'expectedOutput': ['4311997359721514']},
+      {'number': '601123594579?532', 'expectedOutput': ['6011235945798532']},
+      {'number': '44597?5226343159', 'expectedOutput': ['4459735226343159']},
+      {'number': '52019905?5347521', 'expectedOutput': ['5201990565347521']},
+      {'number': '42462?3983142695', 'expectedOutput': ['4246273983142695']},
+      {'number': '51?0524573746364', 'expectedOutput': ['5110524573746364']},
     ];
 
     for (var elem in _inputsToExpected) {

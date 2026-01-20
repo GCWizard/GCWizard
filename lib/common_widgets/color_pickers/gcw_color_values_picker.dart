@@ -4,7 +4,7 @@ class _GCWColorValuesPicker extends StatefulWidget {
   final void Function(GCWColorValue) onChanged;
   final GCWColorValue colorsValue;
 
-  const _GCWColorValuesPicker({Key? key, required this.onChanged, required this.colorsValue}) : super(key: key);
+  const _GCWColorValuesPicker({required this.onChanged, required this.colorsValue});
 
   @override
   _GCWColorValuesPickerState createState() => _GCWColorValuesPickerState();

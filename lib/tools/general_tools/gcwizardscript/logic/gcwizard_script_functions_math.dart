@@ -410,7 +410,7 @@ double _sum(
   } else {
     for (int i = 0; i < (list as _GCWList).length(); i++) {
       Object element = list.getIndex(i);
-      if (_isANumber(element)) result = result + (element as num);
+      if (_isANumber(element)) result += (element as num);
     }
     return result;
   }

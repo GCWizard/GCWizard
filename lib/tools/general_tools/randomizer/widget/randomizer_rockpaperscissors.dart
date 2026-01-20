@@ -9,7 +9,7 @@ import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/tools/general_tools/randomizer/logic/randomizer_rockpaperscissors.dart';
 
 class RandomizerRockPaperScissors extends StatefulWidget {
-  const RandomizerRockPaperScissors({Key? key}) : super(key: key);
+  const RandomizerRockPaperScissors({super.key});
 
   @override
   _RandomizerRockPaperScissorsState createState() => _RandomizerRockPaperScissorsState();

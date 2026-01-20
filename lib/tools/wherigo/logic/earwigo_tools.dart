@@ -44,7 +44,7 @@ String _gsub_wig_obfuscation(String text) {
       p = p - jump;
       c = rot_palette[p - 1];
     }
-    result = result + c;
+    result += c;
   }
 
   return result;
@@ -62,15 +62,15 @@ String _wwb_deobf_obfuscation(String str) {
   int plen = rot_palette.length;
 
   const magic = {
-    ["\x01"]: "B",
-    ["\x02"]: "R",
-    ["\x03"]: ""
+    '\u0001': 'B',
+    '\u0002': 'R',
+    '\u0003': ''
   };
 
   str = str
-      .replaceAll(String.fromCharCode(4), '<')
-      .replaceAll(String.fromCharCode(5), '>')
-      .replaceAll(String.fromCharCode(6), '&');
+      .replaceAll('\u0004', '<')
+      .replaceAll('\u0005', '>')
+      .replaceAll('\u0006', '&');
 
   String? x = '';
   int d = 0;
@@ -91,15 +91,15 @@ String _wwb_deobf_obfuscation(String str) {
     if (c.codeUnitAt(0) > 127) {
       d++;
     }
-    result = result + c;
+    result += c;
   }
   result = result
-      .replaceAll(String.fromCharCode(4), '<')
-      .replaceAll(String.fromCharCode(5), '>')
-      .replaceAll(String.fromCharCode(6), '&')
-      .replaceAll(String.fromCharCode(10), '\\n')
-      .replaceAll(String.fromCharCode(3), '\\003')
-      .replaceAll(String.fromCharCode(2), '\\002')
-      .replaceAll(String.fromCharCode(1), '\\001');
+      .replaceAll('\u0004', '<')
+      .replaceAll('\u0005', '>')
+      .replaceAll('\u0006', '&')
+      .replaceAll('\u0010', '\\n')
+      .replaceAll('\u0003', '\\003')
+      .replaceAll('\u0002', '\\002')
+      .replaceAll('\u0001', '\\001');
   return result;
 }

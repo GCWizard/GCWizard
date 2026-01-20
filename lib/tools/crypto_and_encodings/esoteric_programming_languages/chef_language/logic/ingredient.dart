@@ -10,7 +10,6 @@ class _Ingredient {
   final _errorList = <String>[];
 
   _Ingredient(String ingredient) {
-    //var tokens = ingredient.replaceAll('-', ' ').split(' ');
     var tokens = ingredient.trim().split(' ');
     int i = 0;
     _state = _State.Dry;
@@ -43,6 +42,8 @@ class _Ingredient {
       _name = _name! + tokens[i] + (i == tokens.length - 1 ? '' : ' ');
       i++;
     }
+
+    _name = _name!.substring(0, _name!.length - 1);
     _name = _name!
         .replaceAll('teaspoons', '')
         .replaceAll('teaspoon', '')
@@ -68,6 +69,10 @@ class _Ingredient {
         .replaceAll('pinch', '')
         .replaceAll('prisen', '')
         .replaceAll('prise', '')
+        //.replaceAll('stück', '')
+        //.replaceAll('stücke', '')
+        //.replaceAll('pieces', '')
+        //.replaceAll('piece', '')
         .trim();
     if (_name!.isEmpty) {
       _name = 'INVALID';

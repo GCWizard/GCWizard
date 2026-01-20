@@ -110,7 +110,7 @@ class GCWTool extends StatefulWidget {
   String indexedSearchStrings = '';
 
   GCWTool(
-      {Key? key,
+      {super.key,
       required this.tool,
       this.toolName,
       this.defaultLanguageToolName,
@@ -127,8 +127,7 @@ class GCWTool extends StatefulWidget {
       this.suppressAppBarButtons = false,
       this.deeplinkAlias,
       this.licenses,
-      this.toolBarItemList = const []})
-      : super(key: key) {
+      this.toolBarItemList = const []}) {
     longId = className(tool) + '_' + (id);
 
     if (iconPath != null) {
@@ -186,12 +185,16 @@ class _GCWToolState extends State<GCWTool> {
             menuItemBuilder: (context) => _buildToolBarItems(),
           ) : Container()
         ]),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).requestFocus(_focusNode),
-        child: Focus(
-          focusNode: _focusNode,
-          child: _buildBody(),
-        ),
+      body: SafeArea(
+        bottom: true,
+        top: false,
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).requestFocus(_focusNode),
+          child: Focus(
+            focusNode: _focusNode,
+            child: _buildBody(),
+          ),
+        )
       ),
     );
   }

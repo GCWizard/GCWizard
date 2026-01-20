@@ -8,7 +8,7 @@ import 'package:gc_wizard/tools/science_and_technology/uic_wagoncode/logic/uic_w
 enum _GCWWagonCodesCountryCodesSortBy {NUMBER_CODE, LETTER_CODE, NAME}
 
 class UICWagonCodeCountryCodes extends StatefulWidget {
-  const UICWagonCodeCountryCodes({Key? key}) : super(key: key);
+  const UICWagonCodeCountryCodes({super.key});
 
   @override
   _UICWagonCodeCountryCodesState createState() => _UICWagonCodeCountryCodesState();

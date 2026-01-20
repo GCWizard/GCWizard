@@ -15,7 +15,7 @@ import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/unit
 import 'package:intl/intl.dart';
 
 class WetBulbTemperature extends StatefulWidget {
-  const WetBulbTemperature({Key? key}) : super(key: key);
+  const WetBulbTemperature({super.key});
 
   @override
   _WetBulbTemperatureState createState() => _WetBulbTemperatureState();

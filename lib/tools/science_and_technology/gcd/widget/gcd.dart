@@ -4,7 +4,7 @@ import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/utils/math_utils.dart';
 
 class GCD extends StatefulWidget {
-  const GCD({Key? key}) : super(key: key);
+  const GCD({super.key});
 
   @override
   _GCDState createState() => _GCDState();

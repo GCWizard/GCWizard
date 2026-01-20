@@ -15,8 +15,7 @@ class GeneralCharsetValues extends StatefulWidget {
   final String Function(List<int>) decode;
   final String charsetName;
 
-  const GeneralCharsetValues({Key? key, required this.encode, required this.decode, required this.charsetName})
-      : super(key: key);
+  const GeneralCharsetValues({super.key, required this.encode, required this.decode, required this.charsetName});
 
   @override
   _GeneralCharsetValuesState createState() => _GeneralCharsetValuesState();
@@ -150,10 +149,18 @@ class _GeneralCharsetValuesState extends State<GeneralCharsetValues> {
 
   Widget _buildCrossTotals() {
     if (_currentMode == GCWSwitchPosition.left) {
-      return CrosstotalOutput(text: _currentEncodeInput, values: widget.encode(_currentEncodeInput));
+      return CrosstotalOutput(
+          text: _currentEncodeInput,
+          values: widget.encode(_currentEncodeInput),
+          suppressWordMode: true,
+      );
     } else {
       var _decoded = _calculateDecoded();
-      return CrosstotalOutput(text: _decoded.text, values: _decoded.value);
+      return CrosstotalOutput(
+          text: _decoded.text,
+          values: _decoded.value,
+          suppressWordMode: true,
+      );
     }
   }
 

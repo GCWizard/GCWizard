@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/multi_decoder/widget/multi_decoder.dart';
-import 'package:gc_wizard/tools/crypto_and_encodings/tapir/logic/tapir.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/nva_substitution_tables/tapir/logic/tapir.dart';
 
 const MDT_INTERNALNAMES_TAPIR = 'multidecoder_tool_tapir_title';
 
 class MultiDecoderToolTapir extends AbstractMultiDecoderTool {
-  MultiDecoderToolTapir({Key? key, required int id, required String name, required Map<String, Object?> options})
+  MultiDecoderToolTapir({super.key, required super.id, required super.name, required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_TAPIR,
             onDecode: (String input, String key) {
               return decryptTapir(input, key);
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolTapirState();
 }

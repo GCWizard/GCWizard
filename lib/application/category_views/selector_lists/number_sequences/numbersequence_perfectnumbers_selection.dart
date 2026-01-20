@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/registry.dart';
-import 'package:gc_wizard/common_widgets/gcw_selection.dart';
 import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/application/tools/widget/gcw_toollist.dart';
+import 'package:gc_wizard/common_widgets/gcw_selection.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/perfect_numbers/widget/perfect_numbers.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class NumberSequencePerfectNumbersSelection extends GCWSelection {
-  const NumberSequencePerfectNumbersSelection({Key? key}) : super(key: key);
+  const NumberSequencePerfectNumbersSelection({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -28,7 +28,7 @@ class GCWColors extends StatefulWidget {
   final void Function(GCWColorValue) onChanged;
   final GCWColorValue colorsValue;
 
-  const GCWColors({Key? key, required this.onChanged, required this.colorsValue}) : super(key: key);
+  const GCWColors({super.key, required this.onChanged, required this.colorsValue});
 
   @override
   _GCWColorsState createState() => _GCWColorsState();

@@ -1894,8 +1894,8 @@ String encodeTeletypewriter(String input, TeletypewriterCodebook language) {
     case TeletypewriterCodebook.CCITT_ITA1_1929:
     case TeletypewriterCodebook.CCITT_ITA1_EU:
     case TeletypewriterCodebook.CCITT_ITA1_UK:
-      input = input.toUpperCase().replaceAll('\u00C9', String.fromCharCode(0));
-      input = removeAccents(input).replaceAll(String.fromCharCode(0), '\u00C9'); // keep É as only accent
+      input = input.toUpperCase().replaceAll('\u00C9', '\u0000');
+      input = removeAccents(input).replaceAll('\u0000', '\u00C9'); // keep É as only accent
 
       var cachedSpace = false;
       input.split('').forEach((character) {

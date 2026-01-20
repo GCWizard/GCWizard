@@ -16,7 +16,7 @@ class GCWDoubleTextField extends StatefulWidget {
   final int? numberDecimalDigits;
 
   const GCWDoubleTextField(
-      {Key? key,
+      {super.key,
       required this.onChanged,
       this.controller,
       this.textInputFormatter,
@@ -24,8 +24,7 @@ class GCWDoubleTextField extends StatefulWidget {
       this.min,
       this.max,
       this.focusNode,
-      this.numberDecimalDigits})
-      : super(key: key);
+      this.numberDecimalDigits});
 
   @override
   _GCWDoubleTextFieldState createState() => _GCWDoubleTextFieldState();

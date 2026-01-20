@@ -5,6 +5,7 @@ import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
+import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -14,15 +15,15 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 class NumberSequenceRange extends StatefulWidget {
   final NumberSequencesMode mode;
   final int maxIndex;
-  const NumberSequenceRange({Key? key, required this.mode, required this.maxIndex}) : super(key: key);
+  const NumberSequenceRange({super.key, required this.mode, required this.maxIndex});
 
   @override
   _NumberSequenceRangeState createState() => _NumberSequenceRangeState();
 }
 
 class _NumberSequenceRangeState extends State<NumberSequenceRange> {
-  int _currentInputStop = 0;
-  int _currentInputStart = 0;
+  int _currentInputStop = 1;
+  int _currentInputStart = 1;
 
   Widget _currentOutput = const GCWDefaultOutput();
   late TextEditingController _stopController;
@@ -46,7 +47,6 @@ class _NumberSequenceRangeState extends State<NumberSequenceRange> {
       children: <Widget>[
         GCWTextDivider(
           text: i18n(context, NUMBERSEQUENCE_TITLE[widget.mode]!),
-          style: const TextStyle(fontSize: 20),
         ),
         Text(
           i18n(context, 'numbersequence_maxindex') + ' = ' + widget.maxIndex.toString(),
@@ -54,7 +54,7 @@ class _NumberSequenceRangeState extends State<NumberSequenceRange> {
         GCWIntegerSpinner(
           title: i18n(context, 'numbersequence_inputstart'),
           value: _currentInputStart,
-          min: 0,
+          min: 1,
           max: widget.maxIndex,
           onChanged: (value) {
             setState(() {
@@ -77,8 +77,15 @@ class _NumberSequenceRangeState extends State<NumberSequenceRange> {
           },
         ),
         GCWSubmitButton(onPressed: () {
+          int countLines = (_currentInputStop - _currentInputStart).abs();
           setState(() {
-            _calculateRange();
+            showGCWAlertDialog(
+                context,
+                i18n(context, 'numbersequence_range_hint_title'),
+                i18n(context, 'numbersequence_range_hint_description',parameters: [countLines]),
+                    () async {
+                      _calculateRange();
+                }, cancelButton: true);
           });
         }),
         _currentOutput
@@ -108,16 +115,17 @@ class _NumberSequenceRangeState extends State<NumberSequenceRange> {
   }
 
   Future<GCWAsyncExecuterParameters?> _buildJobData() async {
-    return GCWAsyncExecuterParameters(GetNumberRangeJobData(sequence: widget.mode, start: _currentInputStart, stop: _currentInputStop));
+    return GCWAsyncExecuterParameters(GetNumberRangeJobData(sequence: widget.mode, start: _currentInputStart - 1, stop: _currentInputStop - 1));
   }
 
   void _showOutput(List<BigInt> output) {
-    List<List<String>> columnData = [];
-    for (BigInt element in output) {
-      columnData.add([element.toString()]);
+    List<List<String>> columnData = [['n', i18n(context, 'common_element')]];
+    for (int i = 0; i < output.length; i++) {
+      BigInt element = output[i];
+      columnData.add([(i + _currentInputStart).toString(), element.toString()]);
     }
 
-    _currentOutput = GCWDefaultOutput(child: GCWColumnedMultilineOutput(data: columnData));
+    _currentOutput = GCWDefaultOutput(child: GCWColumnedMultilineOutput(data: columnData, flexValues: [1, 5], hasHeader: true,));
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {});

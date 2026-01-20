@@ -11,19 +11,19 @@ import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/images_and_files/stegano/logic/stegano.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
-import 'package:gc_wizard/utils/file_utils/gcw_file.dart' as local;
+import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 
 class Stegano extends StatefulWidget {
-  final local.GCWFile? file;
+  final GCWFile? file;
 
-  const Stegano({Key? key, this.file}) : super(key: key);
+  const Stegano({super.key, this.file});
 
   @override
   _SteganoState createState() => _SteganoState();
 }
 
 class _SteganoState extends State<Stegano> {
-  local.GCWFile? _file;
+  GCWFile? _file;
   Uint8List? _bytesSource;
   String _currentInput = '';
   String _currentKey = '';
@@ -94,11 +94,11 @@ class _SteganoState extends State<Stegano> {
         GCWOpenFile(
           supportedFileTypes: SUPPORTED_IMAGE_TYPES,
           suppressGallery: false,
-          onLoaded: (file) {
-            if (file == null) return;
+          onLoaded: (GCWFile? value) {
+            if (value == null) return;
             setState(() {
-              _file = file;
-              _bytesSource = file.bytes;
+              _file = value;
+              _bytesSource = value.bytes;
               // clear previous decoded text
               _encodedPictureData = null;
               _decodedText = null;
@@ -187,7 +187,7 @@ class _SteganoState extends State<Stegano> {
 
     setState(() {
       _encoding = false;
-      _encodedPictureData = (bytes != null) ? GCWImageViewData(local.GCWFile(bytes: bytes)) : null;
+      _encodedPictureData = (bytes != null) ? GCWImageViewData(GCWFile(bytes: bytes)) : null;
       _encodingErrorText = _error;
       _error2Text = _error2;
       _filenameTarget = (_file?.name != null) ? changeExtension(_file!.name!, _extensionTarget) : null;

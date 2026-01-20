@@ -19,7 +19,7 @@ import 'package:gc_wizard/tools/science_and_technology/teletypewriter/punchtape_
 import 'package:gc_wizard/tools/science_and_technology/teletypewriter/punchtape_segment_display/widget/punchtape_segmentdisplay_output.dart';
 
 class TeletypewriterPunchTape extends StatefulWidget {
-  const TeletypewriterPunchTape({Key? key}) : super(key: key);
+  const TeletypewriterPunchTape({super.key});
 
   @override
   _TeletypewriterPunchTapeState createState() => _TeletypewriterPunchTapeState();
@@ -67,8 +67,10 @@ class _TeletypewriterPunchTapeState extends State<TeletypewriterPunchTape> {
         },
         items: ALL_CODES_CODEBOOK.entries.map((mode) {
           return GCWDropDownMenuItem(
-              value: mode.key, child: i18n(context, mode.value.title),
-              subtitle: i18n(context, mode.value.subtitle) + (mode.value.schema != null ? '\n' + mode.value.schema! : ''));
+              value: mode.key,
+              child: i18n(context, mode.value.title),
+              subtitle:
+                  i18n(context, mode.value.subtitle) + (mode.value.schema != null ? '\n' + mode.value.schema! : ''));
         }).toList(),
       ),
       GCWTwoOptionsSwitch(
@@ -131,7 +133,7 @@ class _TeletypewriterPunchTapeState extends State<TeletypewriterPunchTape> {
                   GCWTextField(
                     controller: _decodeInputController,
                     inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'[ 01]')),
+                      FilteringTextInputFormatter.allow(RegExp(r'[ 01\s]')),
                     ],
                     onChanged: (text) {
                       setState(() {
@@ -143,7 +145,7 @@ class _TeletypewriterPunchTapeState extends State<TeletypewriterPunchTape> {
                   GCWTextField(
                     controller: _decodeInputController,
                     inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'[ 0123456789]')),
+                      FilteringTextInputFormatter.allow(RegExp(r'[ 0123456789\s]')),
                     ],
                     onChanged: (text) {
                       setState(() {
@@ -417,9 +419,9 @@ String _segments2binary(List<String> segments2convert, TeletypewriterCodebook la
   String result = '';
   for (int i = 1; i < 9; i++) {
     if (segments.contains(i.toString())) {
-      result = result + '1';
+      result += '1';
     } else {
-      result = result + '0';
+      result += '0';
     }
   }
   result = result.substring(0, BINARY_LENGTH[language]);

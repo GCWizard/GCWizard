@@ -1,6 +1,6 @@
 part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/logic/wherigo_analyze.dart';
 
-String getLUAName(String line) {
+String _getLUAName(String line) {
   String result = '';
   int i = 0;
   line = line.trim();
@@ -11,7 +11,7 @@ String getLUAName(String line) {
   return result;
 }
 
-String getLineData(String analyseLine, String LUAname, String type, List<String> obfuscator, List<String> dtable) {
+String _getLineData(String analyseLine, String LUAname, String type, List<String> obfuscator, List<String> dtable) {
   String result = analyseLine.replaceAll(LUAname + '.' + type + ' = ', '');
   for (int i = 0; i < obfuscator.length; i++) {
     if (result.startsWith(obfuscator[i])) {
@@ -24,16 +24,14 @@ String getLineData(String analyseLine, String LUAname, String type, List<String>
     }
   }
 
-  return normalizeWIGText(result).trim();
+  return _normalizeWIGText(result).trim();
 }
 
-String getStructData(String analyseLine, String type) {
+String _getStructData(String analyseLine, String type) {
   return analyseLine.trimLeft().replaceAll(type + ' = ', '').replaceAll('"', '').replaceAll(',', '');
 }
 
-String getTextData(
-  String analyseLine,
-) {
+String _getTextData(String analyseLine,) {
   String result = analyseLine
       .trimLeft()
       .replaceAll('Text = ', '')
@@ -64,10 +62,10 @@ String getTextData(
     result = result.replaceAll('gsub_wig()', '');
   }
 
-  return normalizeWIGText(result);
+  return _normalizeWIGText(result);
 }
 
-List<String> getChoicesSingleLine(String choicesLine, String LUAname, List<String> obfuscator, List<String> dtable) {
+List<String> _getChoicesSingleLine(String choicesLine, String LUAname, List<String> obfuscator, List<String> dtable) {
   List<String> result = [];
   choicesLine
       .replaceAll(LUAname + '.Choices = {', '')
@@ -80,10 +78,10 @@ List<String> getChoicesSingleLine(String choicesLine, String LUAname, List<Strin
   return result;
 }
 
-String normalizeWIGText(String text) {
-  if (RegExp(r'(WWB_multiplatform_string)').hasMatch(text)) text = removeWWB(text);
+String _normalizeWIGText(String text) {
+  if (RegExp(r'(WWB_multiplatform_string)').hasMatch(text)) text = _removeWWB(text);
   return text
-      .replaceAll(String.fromCharCode(92) + '"', "'")
+      .replaceAll('\u005C' + '"', "'")
       .replaceAll('"', '')
       .replaceAll('),', '')
       .replaceAll('&nbsp;', ' ')
@@ -91,12 +89,12 @@ String normalizeWIGText(String text) {
       .replaceAll('&gt;', '>')
       .replaceAll('&lt;', '<')
       .replaceAll('<BR>', '\n')
-      .replaceAll(String.fromCharCode(92) + 'n', '\n')
+      .replaceAll('\u005C' + 'n', '\n')
       .replaceAll('{PocketPC = 1}', '')
       .replaceAll('{PocketPC = 1', '');
 }
 
-String getContainer(String line) {
+String _getContainer(String line) {
   RegExp re = RegExp(r'(Container = )');
   String result = '';
   if (re.hasMatch(line)) {
@@ -109,13 +107,13 @@ String getContainer(String line) {
   return result;
 }
 
-String removeWWB(String wwb) {
+String _removeWWB(String wwb) {
   if (wwb.endsWith(')')) wwb = wwb.substring(0, wwb.length - 2);
   if (wwb.endsWith('),')) wwb = wwb.substring(0, wwb.length - 3);
   return wwb.replaceAll('WWB_multiplatform_string(', '').replaceAll('WWB_multiplatform_string', '');
 }
 
-String deObfuscateText(String text, String obfuscatorFunction, String obfuscatorTable) {
+String _deObfuscateText(String text, String obfuscatorFunction, String obfuscatorTable) {
   text = text.replaceAll(obfuscatorFunction + '("', '').replaceAll('")', '');
 
   if (obfuscatorFunction == 'WWB_deobf') {
@@ -127,7 +125,7 @@ String deObfuscateText(String text, String obfuscatorFunction, String obfuscator
   }
 }
 
-List<String> addExceptionErrorMessage(int lineNumber, String section, Object exception) {
+List<String> _addExceptionErrorMessage(int lineNumber, String section, Object exception) {
   return [
     'wherigo_error_runtime',
     'wherigo_error_runtime_exception',

@@ -56,7 +56,7 @@ const String _apiSpecification = '''
 ''';
 
 class Caesar extends GCWWebStatefulWidget {
-  Caesar({Key? key}) : super(key: key, apiSpecification: _apiSpecification);
+  Caesar({super.key}) : super(apiSpecification: _apiSpecification);
 
   @override
   _CaesarState createState() => _CaesarState();

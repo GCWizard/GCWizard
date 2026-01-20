@@ -17,31 +17,52 @@ void main() {
     _inputsToExpected.addAll(inputsToExpectedDMS);
 
     _inputsToExpected
-      .where((elem) => elem['expectedOutput'] != null)  // the NULL tests are only for the specific DEC/DEG/DMS tests
-      .forEach((elem) {
-        test('text: ${elem['text']}', () {
-          var _actual = parseCoordinates(elem['text'] as String);
-          expect(_actual.first.format.type, (elem['expectedOutput'] as Map<String, Object>)['format']);
-          expect((_actual.first.toLatLng()!.latitude - ((elem['expectedOutput'] as Map<String, Object>)['coordinate'] as LatLng).latitude).abs() < 1e-8, true);
-          expect((_actual.first.toLatLng()!.longitude - ((elem['expectedOutput'] as Map<String, Object>)['coordinate'] as LatLng).longitude).abs() < 1e-8, true);
-          expect(_actual.where((coords) => standardCoordinateFormatDefinitions.map((e) => e.type).contains(coords.format.type)).length, 1);
-        });
+        .where((elem) => elem['expectedOutput'] != null)  // the NULL tests are only for the specific DEC/DEG/DMS tests
+        .forEach((elem) {
+      test('text: ${elem['text']}', () {
+        var _actual = parseCoordinates(elem['text'] as String);
+        expect(_actual.elementAt(0).format.type, (elem['expectedOutput'] as Map<String, Object>)['format']);
+        expect((_actual.elementAt(0).toLatLng()!.latitude - ((elem['expectedOutput'] as Map<String, Object>)['coordinate'] as LatLng).latitude).abs() < 1e-8, true);
+        expect((_actual.elementAt(0).toLatLng()!.longitude - ((elem['expectedOutput'] as Map<String, Object>)['coordinate'] as LatLng).longitude).abs() < 1e-8, true);
+        expect(_actual.first.format.type, (elem['expectedOutput'] as Map<String, Object>)['format']);
+        expect((_actual.first.toLatLng()!.latitude - ((elem['expectedOutput'] as Map<String, Object>)['coordinate'] as LatLng).latitude).abs() < 1e-8, true);
+        expect((_actual.first.toLatLng()!.longitude - ((elem['expectedOutput'] as Map<String, Object>)['coordinate'] as LatLng).longitude).abs() < 1e-8, true);
+        expect(_actual.where((coords) => standardCoordinateFormatDefinitions.map((e) => e.type).contains(coords.format.type)).length, 1);
       });
+    });
+  });
+
+  group("Coordinates.parseCoordinates:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'text': "104181 924569 248105", 'expectedOutput': {'format': CoordinateFormatKey.REVERSE_WIG_WALDMEISTER}},
+      {'text': '720598 545963 823979', 'expectedOutput': {'format': CoordinateFormatKey.REVERSE_WIG_10Y_WALDMEISTER}},
+      {'text': "580498 850012 847837", 'expectedOutput': {'format': CoordinateFormatKey.XYZ}},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('text: ${elem['text']}', () {
+        var _actual = parseCoordinates(elem['text'] as String);
+        if (elem['expectedOutput'] == null) {
+          expect(_actual, elem['expectedOutput']);
+        } else {
+          expect(_actual.first.format.type, (elem['expectedOutput'] as Map<String, Object>)['format']);
+        }
+      });
+    }
   });
 
 
   group("Coordinates.parseStandardFormats", ()  {
 
     List<Map<String, Object?>> _inputsToExpected = [
-
-      {'input': "N 50° 59.403' E 011° 02.693", 'expectedOutput': DMMCoordinate},
-      {'input': "500162 191310 948307", 'expectedOutput': null},
-      {'input': "52.12312 N 20.12312 E", 'expectedOutput': DECCoordinate},
+      {'text': "N 50° 59.403' E 011° 02.693", 'expectedOutput': DMMCoordinate},
+      {'text': "500162 191310 948307", 'expectedOutput': null},
+      {'text': "52.12312 N 20.12312 E", 'expectedOutput': DECCoordinate},
     ];
 
     for (var elem in _inputsToExpected) {
-      test('input: ${elem['input']}', () {
-        var _actual = parseStandardFormats(elem['input'] as String);
+      test('text: ${elem['text']}', () {
+        var _actual = parseStandardFormats(elem['text'] as String);
 
         expect(_actual?.runtimeType, elem['expectedOutput']);
       });

@@ -14,14 +14,14 @@ class GCWPopupMenu extends StatefulWidget {
   final Color? iconColor;
   final Color? backgroundColor;
   final bool isTextSelectionToolBarButton;
-  final EdgeInsets? textSelectionToolBarButtonPadding;
+  final EdgeInsetsGeometry? textSelectionToolBarButtonPadding;
   final String? textSelectionToolBarButtonLabel;
   final bool? buttonNoBorder;
 
   final Function? onBeforePressed;
 
   const GCWPopupMenu({
-    Key? key,
+    super.key,
     required this.menuItemBuilder,
     this.icon,
     this.customIcon,
@@ -34,7 +34,7 @@ class GCWPopupMenu extends StatefulWidget {
     this.textSelectionToolBarButtonPadding,
     this.textSelectionToolBarButtonLabel,
     this.buttonNoBorder,
-  }) : super(key: key);
+  });
 
   @override
   _GCWPopupMenuState createState() => _GCWPopupMenuState();

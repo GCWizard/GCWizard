@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:archive/archive.dart';
 import 'package:archive/archive_io.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/logic/symbol_table_data_specialsorts.dart';
 import 'package:gc_wizard/utils/data_type_utils/object_type_utils.dart';
@@ -175,10 +175,10 @@ class SymbolTableData {
 
   Future<void> _initializeImages(BuildContext context, bool importEncryption) async {
     //AssetManifest.json holds the information about all asset files
-    final manifestContent = await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
-    final manifestMap = asJsonMap(json.decode(manifestContent));
+    final manifestContent = await AssetManifest.loadFromAssetBundle(rootBundle);
+    final assets = manifestContent.listAssets();
 
-    final imageArchivePaths = manifestMap.keys
+    final imageArchivePaths = assets
         .where((String key) => key.contains(_pathKey()))
         .where((String key) => SymbolTableConstants.ARCHIVE_SUFFIX.hasMatch(key))
         .toList();

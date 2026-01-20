@@ -6,11 +6,8 @@ const MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_COW = 'cow_title';
 
 class MultiDecoderToolEsotericLanguageCow extends AbstractMultiDecoderTool {
   MultiDecoderToolEsotericLanguageCow(
-      {Key? key, required int id, required String name, required Map<String, Object?> options})
+      {super.key, required super.id, required super.name, required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_COW,
             optionalKey: true,
             onDecode: (String input, String key) {
@@ -19,8 +16,7 @@ class MultiDecoderToolEsotericLanguageCow extends AbstractMultiDecoderTool {
                 if (output.error.isEmpty) return output.output.isEmpty ? null : output.output;
               } catch (e) {}
               return null;
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolEsotericLanguageCowState();
 }

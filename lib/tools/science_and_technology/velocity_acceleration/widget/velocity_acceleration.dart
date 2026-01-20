@@ -18,7 +18,7 @@ import 'package:gc_wizard/tools/science_and_technology/velocity_acceleration/log
 import 'package:intl/intl.dart';
 
 class VelocityAcceleration extends StatefulWidget {
-  const VelocityAcceleration({Key? key}) : super(key: key);
+  const VelocityAcceleration({super.key});
 
   @override
   _VelocityAccelerationState createState() => _VelocityAccelerationState();

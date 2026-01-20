@@ -42,7 +42,7 @@ class VariableCoordinateFormula extends FormulaBase {
   ProjectionData? projection;
   List<FormulaValue> values = [];
 
-  VariableCoordinateFormula(String name) : super(name);
+  VariableCoordinateFormula(super.name);
 
   @override
   Map<String, Object?> toMap() => {

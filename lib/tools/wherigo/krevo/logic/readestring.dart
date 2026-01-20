@@ -12,30 +12,39 @@ String gsub_wig(String str) {
   String rot_palette = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@.-~";
   int plen = rot_palette.length;
   const magic = {
-    ["\x01"]: "B",
-    ["\x02"]: "R",
-    ["\x03"]: ""
+    '\u0001': 'B',
+    '\u0002': 'R',
+    '\u0003': ''
   };
   String? x;
 
-  str = str.replaceAll('\\001', '\x01').replaceAll('\\002', '\x02').replaceAll('\\003', '\x03');
-  str = str.replaceAll('nbsp;', ' ').replaceAll('&lt;', '\x04').replaceAll('&gt;', '\x05').replaceAll('&amp;', '\x06');
+  str = str
+      .replaceAll('\\001', '\u0001')
+      .replaceAll('\\002', '\u0002')
+      .replaceAll('\\003', '\u0003')
+      .replaceAll('nbsp;', ' ')
+      .replaceAll('&lt;', '\u0004')
+      .replaceAll('&gt;', '\u0005')
+      .replaceAll('&amp;', '\u0006');
 
   for (int i = 0; i < str.length; i++) {
     String c = str[i];
     int p = find(rot_palette, c);
     if (p != -1) {
       int jump = (i % 8) + 9;
-      p = p + jump;
+      p += jump;
       if (plen < p) p = p - plen;
       c = rot_palette[p - 1];
     } else {
       x = magic[c];
       if (x != null) c = x;
     }
-    result = result + c;
+    result += c;
   }
-  result = result.replaceAll('\x04', '&lt;').replaceAll('\x05', '&gt;').replaceAll('\x06', '&amp;');
+  result = result
+      .replaceAll('\u0004', '&lt;')
+      .replaceAll('\u0005', '&gt;')
+      .replaceAll('\u0006', '&amp;');
   return result;
 }
 
@@ -46,15 +55,18 @@ String wwb_deobf(String str) {
   String rot_palette = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@.-~";
   int plen = rot_palette.length;
   const magic = {
-    ["\\001"]: "B",
-    ["\\002"]: "R",
-    ["\\003"]: ""
+    '\\001': 'B',
+    '\\002': 'R',
+    '\\003': ''
   };
   String? x = '';
   int d = 0;
   int jump = 0;
 
-  str = str.replaceAll('<', '\\004').replaceAll('>', '\\005').replaceAll('&', '\\006');
+  str = str
+      .replaceAll('<', '\\004')
+      .replaceAll('>', '\\005')
+      .replaceAll('&', '\\006');
   str = luaStringToString(str);
 
   for (int i = 0; i < str.length; i++) {
@@ -62,7 +74,7 @@ String wwb_deobf(String str) {
     int p = find(rot_palette, c);
     if (p != -1) {
       jump = (d % 8) + 9;
-      p = p - jump;
+      p -= jump;
       if (p < 1) p = p + plen;
       c = rot_palette[p - 1];
     } else {
@@ -71,8 +83,11 @@ String wwb_deobf(String str) {
     }
     d++;
     if (c.codeUnitAt(0) > 127) d++;
-    result = result + c;
+    result += c;
   }
-  result = result.replaceAll('\\004', '<').replaceAll('\\005', '>').replaceAll('\\006', '&');
+  result = result
+      .replaceAll('\\004', '<')
+      .replaceAll('\\005', '>')
+      .replaceAll('\\006', '&');
   return result;
 }

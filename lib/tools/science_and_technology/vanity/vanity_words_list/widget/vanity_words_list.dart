@@ -7,7 +7,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/numeral_words/_common/logic
 import 'package:gc_wizard/tools/science_and_technology/vanity/_common/logic/vanity_words.dart';
 
 class VanityWordsList extends StatefulWidget {
-  const VanityWordsList({Key? key}) : super(key: key);
+  const VanityWordsList({super.key});
 
   @override
   _VanityWordsListState createState() => _VanityWordsListState();

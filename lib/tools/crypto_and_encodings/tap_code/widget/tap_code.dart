@@ -8,7 +8,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/_common/logic/crypt_alphabe
 import 'package:gc_wizard/tools/crypto_and_encodings/tap_code/logic/tap_code.dart';
 
 class TapCode extends StatefulWidget {
-  const TapCode({Key? key}) : super(key: key);
+  const TapCode({super.key});
 
   @override
   _TapCodeState createState() => _TapCodeState();

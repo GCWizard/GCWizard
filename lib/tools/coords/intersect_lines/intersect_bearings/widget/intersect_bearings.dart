@@ -16,7 +16,7 @@ import 'package:gc_wizard/utils/constants.dart';
 import 'package:latlong2/latlong.dart';
 
 class IntersectBearings extends StatefulWidget {
-  const IntersectBearings({Key? key}) : super(key: key);
+  const IntersectBearings({super.key});
 
   @override
   _IntersectBearingsState createState() => _IntersectBearingsState();

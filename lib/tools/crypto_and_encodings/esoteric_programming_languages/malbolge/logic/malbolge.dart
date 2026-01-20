@@ -66,7 +66,7 @@ const _o = [
 int _opr(int x, int y) {
   int i = 0;
   for (int j = 0; j < 5; j++) {
-    i = i + _o[(y ~/ _p9[j]) % 9][(x ~/ _p9[j]) % 9] * _p9[j];
+    i += _o[(y ~/ _p9[j]) % 9][(x ~/ _p9[j]) % 9] * _p9[j];
   }
   return i;
 }

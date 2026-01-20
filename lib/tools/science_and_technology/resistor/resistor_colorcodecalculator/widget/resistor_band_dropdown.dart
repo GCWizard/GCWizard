@@ -7,8 +7,7 @@ class _ResistorBandDropDown extends StatefulWidget {
   final ResistorBandColor color;
 
   const _ResistorBandDropDown(
-      {Key? key, required this.color, required this.type, required this.numberBands, required this.onChanged})
-      : super(key: key);
+      {required this.color, required this.type, required this.numberBands, required this.onChanged});
 
   @override
   _ResistorBandDropDownState createState() => _ResistorBandDropDownState();

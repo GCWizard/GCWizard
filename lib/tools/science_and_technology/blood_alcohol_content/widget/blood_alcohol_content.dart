@@ -16,7 +16,7 @@ import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/volu
 import 'package:intl/intl.dart';
 
 class BloodAlcoholContent extends StatefulWidget {
-  const BloodAlcoholContent({Key? key}) : super(key: key);
+  const BloodAlcoholContent({super.key});
 
   @override
   _BloodAlcoholContentState createState() => _BloodAlcoholContentState();

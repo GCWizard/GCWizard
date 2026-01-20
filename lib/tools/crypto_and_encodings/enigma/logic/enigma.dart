@@ -99,8 +99,6 @@ const List<EnigmaRotor> allEnigmaRotors = [
   EnigmaRotor('II, Enigma Swiss-K', 'SLVGBTFXJQOHEWIRZYAMKPCNDU', turnovers: 'E'),
   EnigmaRotor('III, Enigma Swiss-K', 'CJGDPSHKTURAWZXFMYNQOBVLIE', turnovers: 'N'),
   EnigmaRotor('UKW, Enigma Swiss-K', 'IMETCGFRAYSQBZXWLHKDVUPOJN', type: EnigmaRotorType.REFLECTOR),
-  EnigmaRotor('UKW, Enigma Swiss-K', 'IMETCGFRAYSQBZXWLHKDVUPOJN', type: EnigmaRotorType.REFLECTOR),
-  EnigmaRotor('UKW, Enigma Swiss-K', 'IMETCGFRAYSQBZXWLHKDVUPOJN', type: EnigmaRotorType.REFLECTOR),
 ];
 
 EnigmaRotor getEnigmaRotorByName(String name) {

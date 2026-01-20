@@ -8,8 +8,7 @@ class GCWDefaultOutput extends StatefulWidget {
   final String? copyText;
   final Widget? trailing;
 
-  const GCWDefaultOutput({Key? key, this.child, this.suppressCopyButton = false, this.copyText, this.trailing})
-      : super(key: key);
+  const GCWDefaultOutput({super.key, this.child, this.suppressCopyButton = false, this.copyText, this.trailing});
 
   @override
   _GCWDefaultOutputState createState() => _GCWDefaultOutputState();

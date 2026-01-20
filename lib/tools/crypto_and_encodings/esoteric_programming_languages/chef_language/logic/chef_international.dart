@@ -92,21 +92,25 @@ final List<RegExp> _CHEF_matchersDEU = [
   RegExp(r'^alle festen zutaten(( (zu)?(( )?de)?(r)?)?( (\d+)(ten))? (ruehr)?schuessel)? hinzugeben$'),
   RegExp(
       r'^(den |die |das )?([a-z0-9 -]+?)( (zu |mit |aus |in (der |die )?)((\d+)(te(n)?) )?(ruehr)?schuessel)?( )?(dazugeben|hinzufuegen|abschoepfen|entfernen|kombinieren|teilen)$'),
+  // 5
   RegExp(
-      r'^inhalt(e)? der ((\d+)(ten) )?(ruehr)?schuessel( auf dem stoevchen)?( erhitzen| zerlassen| schmelzen| verfluessigen)$'),
+      r'^inhalt(e)? der ((\d+)(ten) )?(ruehr)?schuessel( auf dem stoevchen)?( erhitzen| zerlassen| schmelzen| verfluessigen| koecheln)$'),
   RegExp(r'^(den |die |das )?([a-z0-9 -]+)( erhitzen| zerlassen| schmelzen| verfluessigen)$'),
   RegExp(r'^((die )?((\d+)(te ))?(ruehr)?schuessel )?fuer (\d+) minute(n)? umruehren$'),
   RegExp(r'^(das |die |den )?([a-z0-9 -]+) (in (die )?((\d+)(te) )?(ruehr)?schuessel )?unterruehren$'),
   RegExp(r'^inhalt der ((\d+)(ten ))?(ruehr)?schuessel gut verruehren$'),
+  // 10
   RegExp(r'^((\d+)(te) )?(ruehr)?schuessel (abwaschen|saeubern)$'),
   RegExp(
-      r'^(inhalt(e)?( der)?( (\d+)(te(n)?))? )?(ruehr)?schuessel( auf| in)( die| das| den| ein(e)?(n)?)?( (\d+)(te(n)?))? (servier(schale|platte)|teller|backblech) (giessen|stuerzen|schuetten)$'),
+      r'^(inhalt(e)?( der)?( (\d+)(te(n)?))? )?(ruehr)?schuessel( auf| in)( die| das| den| ein(e)?(n)?)?( (\d+)(te(n)?))? (grossen )?(servier(schale|platte)|teller|backblech|topf) (giessen|stuerzen|schuetten|heben)$'),
   RegExp(r'^(zur seite stellen|stelle beiseite)'),
   RegExp(r'^(einfrieren|gefriere)( fuer (\d+) stunde(n)?)?$'),
   RegExp(r'^serviere mit (dem |einem )?([a-z0-9 ]+)$'),
   RegExp(r'^vorschlag: (.*)$'),
+  RegExp(r'^(.*)(servieren)$'), // sonderfall von kryptoggrafie.de
+  RegExp(r'^(.*)(koecheln)(.*)$'), // sonderfall von kryptoggrafie.de
   RegExp(r'^solange ([a-z0-9]+) bis ((das |den |die )?([a-z0-9 -]+))? zur weiterarbeitung bereit$'),
-  RegExp(r'^(das |den |die )?([a-z0-9]+) ([a-z0-9 ]+)$')
+  RegExp(r'^(das |den |die )?([a-z0-9]+) ([a-z0-9 ]+)$'),
 ];
 
 final RegExp _CHEF_MeasureType = RegExp(r'^heaped$|^level$|^gestrichen$|^gehaeuft$');

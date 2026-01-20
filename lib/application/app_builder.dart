@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class AppBuilder extends StatefulWidget {
   final MaterialApp Function(BuildContext) builder;
 
-  const AppBuilder({Key? key, required this.builder}) : super(key: key);
+  const AppBuilder({super.key, required this.builder});
 
   @override
   _AppBuilderState createState() => _AppBuilderState();

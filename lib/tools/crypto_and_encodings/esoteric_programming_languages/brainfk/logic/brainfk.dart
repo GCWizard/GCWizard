@@ -78,7 +78,7 @@ String interpretBrainfk(String code, {String? input}) {
     i++;
   }
 
-  return out.replaceAll('\x00', '');
+  return out.replaceAll('\u0000', '');
 }
 
 // Dart port/fork of https://github.com/anars/BrainJuck/blob/master/source/com/anars/brainjuck/Generator.java

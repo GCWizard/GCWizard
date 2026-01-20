@@ -11,23 +11,19 @@ const MDT_ROMANNUMBERS_OPTION_MODE_ADDITION = 'multidecoder_tool_romannumbers_op
 
 class MultiDecoderToolRomanNumbers extends AbstractMultiDecoderTool {
   MultiDecoderToolRomanNumbers(
-      {Key? key,
-      required int id,
-      required String name,
-      required Map<String, Object?> options})
+      {super.key,
+      required super.id,
+      required super.name,
+      required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_ROMANNUMBERS,
             onDecode: (String input, String key) {
               var type = options[MDT_ROMANNUMBERS_OPTION_MODE] == MDT_ROMANNUMBERS_OPTION_MODE_SUBTRACTION
                   ? RomanNumberType.USE_SUBTRACTION_RULE
                   : RomanNumberType.ONLY_ADDITION;
 
-              return decodeRomanNumbers(input, type: type);
-            },
-            options: options);
+              return decodeRomanInput(input, type);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolRomanNumbersState();
 }

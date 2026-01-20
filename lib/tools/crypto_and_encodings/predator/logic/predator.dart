@@ -93,10 +93,10 @@ SegmentsChars decodePredator(List<String>? inputs) {
     var char = '';
 
     if (CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()] == null) {
-      char = char + UNKNOWN_ELEMENT;
+      char += UNKNOWN_ELEMENT;
     } else {
       var charH = CODEBOOK.map((key, value) => MapEntry(key.join(), value.toString()))[input.split('').join()];
-      char = char + (charH ?? '');
+      char += (charH ?? '');
     }
 
     return char;

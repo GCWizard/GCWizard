@@ -90,7 +90,7 @@ class GCWBearing extends StatefulWidget {
   final void Function(DoubleText) onChanged;
   final String? hintText;
 
-  const GCWBearing({Key? key, required this.onChanged, this.hintText}) : super(key: key);
+  const GCWBearing({super.key, required this.onChanged, this.hintText});
 
   @override
   _GCWBearingState createState() => _GCWBearingState();

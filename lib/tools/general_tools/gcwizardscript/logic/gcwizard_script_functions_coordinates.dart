@@ -56,6 +56,17 @@ _GCWList _convertTo(Object target) {
 
   switch (target) {
     case _COORD_DMM: //= 1;
+      // DMM = Degree Minute.Minute
+      // [0] => Coordinate as String
+      // [1] => Latitude
+      // [2] => N/S
+      // [3] => degree as integer
+      // [4] => minute as double
+      // [5] => Longitude
+      // [6] => E/W
+      // [7] => degree as integer
+      // [8] => minute as double
+
       DMMCoordinate result = DMMCoordinate.fromLatLon(coord);
 
       _listAdd(
@@ -66,11 +77,11 @@ _GCWList _convertTo(Object target) {
               '° ' +
               result.dmmLatitude.minutes.toStringAsFixed(3) +
               "' " +
-              _latSign(result.dmmLongitude.sign) +
+              _lonSign(result.dmmLongitude.sign) +
               ' ' +
               result.dmmLongitude.degrees.toString() +
               '° ' +
-              result.dmmLatitude.minutes.toStringAsFixed(3) +
+              result.dmmLongitude.minutes.toStringAsFixed(3) +
               "'");
       _listAdd(
           targetData,
@@ -97,6 +108,18 @@ _GCWList _convertTo(Object target) {
       break;
 
     case _COORD_DMS: //= 2;
+      // DMM = Degree Minute Seconds
+      // [0] => Coordinate as String
+      // [1] => Latitude
+      // [2] => N/S
+      // [3] => degree as integer
+      // [4] => minute as integer
+      // [5] => seconds as double
+      // [6] => Longitude
+      // [7] => E/W
+      // [8] => degree as integer
+      // [9] => minute as integer
+      // [10] => seconds as double
       DMSCoordinate result = DMSCoordinate.fromLatLon(coord);
 
       _listAdd(
@@ -105,14 +128,15 @@ _GCWList _convertTo(Object target) {
               ' ' +
               result.dmsLatitude.degrees.toString() +
               '° ' +
-              result.dmsLatitude.minutes.toStringAsFixed(3) +
+              result.dmsLatitude.minutes.toStringAsFixed(0) +
               "' " +
               result.dmsLatitude.seconds.toStringAsFixed(3) +
-              _latSign(result.dmsLongitude.sign) +
+              '" ' +
+              _lonSign(result.dmsLongitude.sign) +
               ' ' +
               result.dmsLongitude.degrees.toString() +
               '° ' +
-              result.dmsLatitude.minutes.toStringAsFixed(3) +
+              result.dmsLongitude.minutes.toStringAsFixed(0) +
               "' " +
               result.dmsLongitude.seconds.toStringAsFixed(3) +
               '"');
@@ -122,7 +146,7 @@ _GCWList _convertTo(Object target) {
               ' ' +
               result.dmsLatitude.degrees.toString() +
               '° ' +
-              result.dmsLatitude.minutes.toStringAsFixed(3) +
+              result.dmsLatitude.minutes.toStringAsFixed(0) +
               "' " +
               result.dmsLatitude.seconds.toStringAsFixed(3) +
               '"');
@@ -136,7 +160,7 @@ _GCWList _convertTo(Object target) {
               ' ' +
               result.dmsLongitude.degrees.toString() +
               '° ' +
-              result.dmsLongitude.minutes.toStringAsFixed(3) +
+              result.dmsLongitude.minutes.toStringAsFixed(0) +
               "' " +
               result.dmsLongitude.seconds.toStringAsFixed(3) +
               '"');
@@ -831,7 +855,7 @@ String _dectodmm(Object? dec) {
 
   result = ((dec as double).truncate()).toString() + '° ';
   ms = (dec - dec.truncate()) * 60;
-  result = result + ms.toStringAsFixed(3) + "' ";
+  result += ms.toStringAsFixed(3) + "' ";
 
   return result;
 }
@@ -843,10 +867,10 @@ String _dectodms(Object? dec) {
 
   result = ((dec as double).truncate()).toString() + '° ';
   ms = (dec - dec.truncate()) * 60;
-  result = result + ms.truncate().toString() + "' ";
+  result += ms.truncate().toString() + "' ";
 
   ms = (ms - ms.truncate()) * 60;
-  result = result + ms.toStringAsFixed(3) + '"';
+  result += ms.toStringAsFixed(3) + '"';
 
   return result;
 }

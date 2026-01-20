@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_checknumber.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_containsdigits.dart';
@@ -7,26 +6,26 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequenceLuckyNumbersCheckNumber extends NumberSequenceCheckNumber {
-  const NumberSequenceLuckyNumbersCheckNumber({Key? key})
-      : super(key: key, mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71917);
+  const NumberSequenceLuckyNumbersCheckNumber({super.key})
+      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 100000);
 }
 
 class NumberSequenceLuckyNumbersDigits extends NumberSequenceDigits {
-  const NumberSequenceLuckyNumbersDigits({Key? key})
-      : super(key: key, mode: NumberSequencesMode.LUCKY_NUMBERS, maxDigits: 6);
+  const NumberSequenceLuckyNumbersDigits({super.key})
+      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxDigits: 7);
 }
 
 class NumberSequenceLuckyNumbersRange extends NumberSequenceRange {
-  const NumberSequenceLuckyNumbersRange({Key? key})
-      : super(key: key, mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71917);
+  const NumberSequenceLuckyNumbersRange({super.key})
+      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 100000);
 }
 
 class NumberSequenceLuckyNumbersNthNumber extends NumberSequenceNthNumber {
-  const NumberSequenceLuckyNumbersNthNumber({Key? key})
-      : super(key: key, mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71917);
+  const NumberSequenceLuckyNumbersNthNumber({super.key})
+      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 100000);
 }
 
 class NumberSequenceLuckyNumbersContainsDigits extends NumberSequenceContainsDigits {
-  const NumberSequenceLuckyNumbersContainsDigits({Key? key})
-      : super(key: key, mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 71917);
+  const NumberSequenceLuckyNumbersContainsDigits({super.key})
+      : super(mode: NumberSequencesMode.LUCKY_NUMBERS, maxIndex: 100000);
 }

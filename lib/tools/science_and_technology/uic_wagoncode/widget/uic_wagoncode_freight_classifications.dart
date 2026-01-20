@@ -11,7 +11,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/uic_wagoncode/logic/uic_wagoncode.dart';
 
 class UICWagonCodeFreightClassifications extends StatefulWidget {
-  const UICWagonCodeFreightClassifications({Key? key}) : super(key: key);
+  const UICWagonCodeFreightClassifications({super.key});
 
   @override
   _UICWagonCodeFreightClassificationsState createState() => _UICWagonCodeFreightClassificationsState();

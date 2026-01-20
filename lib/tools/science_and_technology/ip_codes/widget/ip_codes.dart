@@ -7,7 +7,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/tools/science_and_technology/ip_codes/logic/ip_codes.dart';
 
 class IPCodes extends StatefulWidget {
-  const IPCodes({Key? key}) : super(key: key);
+  const IPCodes({super.key});
 
   @override
   _IPCodesState createState() => _IPCodesState();

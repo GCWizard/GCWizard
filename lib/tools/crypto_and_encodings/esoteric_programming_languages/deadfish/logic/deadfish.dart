@@ -62,7 +62,7 @@ String decodeDeadfish(String text) {
     }
   });
 
-  if (isASCII) return String.fromCharCodes(ascii).replaceAll('\x00', '');
+  if (isASCII) return String.fromCharCodes(ascii).replaceAll('\u0000', '');
 
   return ascii.join(' ');
 }

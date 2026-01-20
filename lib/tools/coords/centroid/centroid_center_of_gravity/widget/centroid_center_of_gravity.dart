@@ -13,7 +13,7 @@ import 'package:gc_wizard/tools/coords/centroid/centroid_center_of_gravity/logic
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 
 class CentroidCenterOfGravity extends StatefulWidget {
-  const CentroidCenterOfGravity({Key? key}) : super(key: key);
+  const CentroidCenterOfGravity({super.key});
 
   @override
   _CentroidCenterOfGravityState createState() => _CentroidCenterOfGravityState();

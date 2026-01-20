@@ -4,10 +4,10 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/navigation/no_animation_material_page_route.dart';
+import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
-import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
@@ -28,7 +28,7 @@ import 'package:latlong2/latlong.dart';
 class ExifReader extends StatefulWidget {
   final GCWFile? file;
 
-  const ExifReader({Key? key, this.file}) : super(key: key);
+  const ExifReader({super.key, this.file});
 
   @override
   _ExifReaderState createState() => _ExifReaderState();
@@ -62,13 +62,13 @@ class _ExifReaderState extends State<ExifReader> {
         GCWOpenFile(
           supportedFileTypes: SUPPORTED_IMAGE_TYPES,
           suppressGallery: false,
-          onLoaded: (_file) {
-            if (_file == null) {
+          onLoaded: (GCWFile? value) {
+            if (value == null) {
               showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
               return;
             }
 
-            _readFile(_file);
+            _readFile(value);
           },
         ),
         Container(),

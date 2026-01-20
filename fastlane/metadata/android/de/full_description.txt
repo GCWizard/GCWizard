@@ -1,0 +1,61 @@
+Der GC Wizard ist eine Open-Source Toolsammlung.
+
+Er wurde ursprünglich nur für Geocacher entwicklet, um sie beim Lösen von Rätseln im Feld zu unterstützen. Deshalb enthält der GC Wizard zahlreiche Tools für einfache Kryptografie, geografische und wissenschaftl.
+
+Inzwischen ist das Projekt sehr groß geworden und kann für viele Anwendungsfälle außerhalb von Geocaching hilfreich sein.
+
+Übersetzungen: 🇬🇧 🇩🇪 🇫🇷 🇰🇷
+
+<b>Highlights</b>
+
+<b>Allgemein</b>
+• Formelrechner: Zur Verwaltung von Variablen bei Multi-Caches
+• Multi-Dekodierer: Zahlreiche Tools können einen unbekannten Code gleichzeitig testen
+• Mehr als 200 Symboltabellen: Direktes Umwandeln von Symbolen in Zeichen; Speichern eigener Kodierungen als Bild
+• Online-Hilfe: Jedes Tool hat seine eigene Hilfeseite; Übersetzungen: 🇬🇧 🇩🇪 🇫🇷
+
+<b>Kryptografie und Codes</b>
+• Buchstabenwerte (A = 1, B = 2, ...): Konfigurierbare Alphabete für sprachspezifische Sonderzeichenbehandlung
+• Braille: Tippe die Punkte direkt in eine grafische Eingabe; mehrere Sprachen unterstützt
+Zeile + Buchstabe oder Absatz + Zeile + Wortnummer), Berücksichtigung von Sonderzeichen + Leerzeilen
+• Enigma: Voll funktionsfähiger Enigma-Simulator mit  zahlreichen Einstellungen
+• Esoterische Programmiersprachen: Interpreter und Generatoren für bspw.
+• Morse
+• Zahlwörter: Liste wichtiger Zahlen für viele Sprachen; für EN + DE gibt es einen Parser für komplexe Zahlen
+• Textersetzungen und Vigenère-Codeknacker: Versucht den Code ohne Schlüssel zu knacken
+• Klassische Codes: Playfair, Polybios, Lattenzaun, ...
+• Historische Codes: Caesar, Vigenère, Telegrafen-Codes, ...
+• Militärische Codes: ADFGX, Chiffrierscheibe, Tapir, ...
+• Technische Codierungen: BCD, CCITT, Hashes (inkl. Brute-Force Hash-Suche), RSA, ...
+
+<b>Koordinaten</b>
+• Hochpräzise Koordinatenberechnungen, auch über sehr große Distanzen unter Berücksichtigung der Erdkrümmung (Ellipsoid)
+• Unterstützung vieler Ellipsoiden, sogar andere Planeten
+• Koordinatenformate: Unterstützung von UTM, MGRS, XYZ, SwissGrid, NAC, PlusCode, Geohash, ...
+• Wegpunktprojektion ("Peilung"): Inkl.
+• Freie Karte: Setze eigene Punkte und Linien, Vermessung von Pfaden, Export und Import von GPX/KML; OpenStreetMap und Satellitenansicht
+• Variable Koordinate: Interpolatiert Koordinatenformeln wenn Teile der Koordinaten fehlen. Anzeige auf der Karte
+• Kreuzpeilung, Mittelpunkt von zwei und drei Koordinaten, verschiedene Schnittpunkte von Linien und Kreisen
+
+<b>Wissenschaft und Technik</b>
+• Astronomie: Berechne die Position von Sonne und Mond zu einem bestimmten Zeitpunkt
+• Farbraumkonverter: Wandle Farbwerte zwischen RGB, HSL, Hex, CMYK, ...
+• Länder: ISO-Codes, Vorwahlen und Autokennzeichen, Flaggen
+• Datums- und Zeitfunktionen: Wochentage, Zeitdifferenzen, ...
+• Irrationale Zahlen: π, φ and e: Anzeige und Suche in > 1 Mio. Nachkommastellen
+• Zahlenfolgen: Fakultät, Fibonacci und Co.
+• Zahlensysteme: Konvertiert Dezimal, Binär, Hexadezimal, ...
+• Periodensystem der Elemente: Interaktive Ansicht; Nach beliebigen Kriterien geordnete Elementlisten
+• Telefontasten: Wandelt klassische Telefontasten in Buchstaben um. Unterstützt spezifische Handymodelle
+• Primzahlen: Durchsuche Primzahlen bis zur 1 Mio.
+• Segmentanzeige: Grafische Eingabe zum Kodieren von 7 bis 16-Segmentanzeigen
+• Einheiten umrechnen: Länge, Volumen, Druck, Kraft uvm; rechnet gängige Einheiten inkl. Vorsilben wie Mikro oder Kilo um
+• DTMF, Gefühlte Temperatur, Projektile, Quersumme, Tastaturlayouts, Widerstandscodes
+
+<b>Bilder und Dateien</b>
+• Hex-Ansicht
+• Exif/Metadaten-Ansicht
+• Analyse von Animierten Bildern
+• Farbkorrekturen: Anpassen von Kontrast, Sättigung, Kantenerkennung, ...
+• Suche nach versteckten Daten oder Archiven
+• Lesen von QR/Barcodes aus Bildern, erstellen von solchen Codes aus binären Eingaben

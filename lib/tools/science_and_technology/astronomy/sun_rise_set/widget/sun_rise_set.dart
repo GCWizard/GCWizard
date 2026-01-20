@@ -11,7 +11,7 @@ import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/datetime_utils.dart';
 
 class SunRiseSet extends StatefulWidget {
-  const SunRiseSet({Key? key}) : super(key: key);
+  const SunRiseSet({super.key});
 
   @override
   _SunRiseSetState createState() => _SunRiseSetState();

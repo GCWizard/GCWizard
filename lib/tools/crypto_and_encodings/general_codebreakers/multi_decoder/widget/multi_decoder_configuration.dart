@@ -222,17 +222,9 @@ class _MultiDecoderConfigurationState extends State<_MultiDecoderConfiguration> 
                           padding: const EdgeInsets.only(left: DEFAULT_DESCRIPTION_MARGIN),
                           child: GCWText(
                             text: tool.options.entries.map((entry) {
-                              var value = entry.value.toString();
+                              var result = _optionNameKey(entry.value.toString(), tool.internalToolName);
 
-                              if (tool.internalToolName == MDT_INTERNALNAMES_COORDINATEFORMATS) {
-                                var widgetInfo = coordinateWidgetInfoByByPersistenceKey(value);
-                                value = widgetInfo?.name ?? UNKNOWN_ELEMENT;
-                              } else if ([MDT_INTERNALNAMES_BASE, MDT_INTERNALNAMES_BCD]
-                                  .contains(tool.internalToolName)) {
-                                value += '_title';
-                              }
-
-                              return '${i18n(context, entry.key)}: ${i18n(context, value.toString(), ifTranslationNotExists: value)}';
+                              return '${i18n(context, entry.key)}: ${i18n(context, result.toString(), ifTranslationNotExists: result)}';
                             }).join('\n'),
                             style: gcwDescriptionTextStyle(),
                           ),
@@ -332,4 +324,18 @@ Column createMultiDecoderToolConfiguration(BuildContext context, Map<String, Wid
       ],
     );
   }).toList());
+}
+
+String _optionNameKey(String key, String internalToolName) {
+  switch (internalToolName) {
+    case MDT_INTERNALNAMES_COORDINATEFORMATS:
+      var widgetInfo = coordinateWidgetInfoByByPersistenceKey(key);
+      key = widgetInfo?.name ?? UNKNOWN_ELEMENT;
+      break;
+    case MDT_INTERNALNAMES_BASE:
+    case MDT_INTERNALNAMES_BCD:
+      key += '_title';
+      break;
+  }
+  return key;
 }

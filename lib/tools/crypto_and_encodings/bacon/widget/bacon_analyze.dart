@@ -11,7 +11,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/bacon/logic/bacon.dart';
 
 class BaconAnalyze extends StatefulWidget {
-  const BaconAnalyze({Key? key}) : super(key: key);
+  const BaconAnalyze({super.key});
 
   @override
   _BaconAnalyzeState createState() => _BaconAnalyzeState();

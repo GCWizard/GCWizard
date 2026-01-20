@@ -79,20 +79,6 @@ class _Kitchen {
         ]);
         return null;
       }
-      // else {
-      //   if (ingredients[m.ingredient] == null) {
-      //     valid = false;
-      //     error.addAll([
-      //       _CHEF_Messages[language]?['common_programming_error_runtime'] ?? '',
-      //       _CHEF_Messages[language]?['chef_error_runtime_method_step'] ?? '',
-      //       m.n.toString() + ' : ' + m.type.toString(),
-      //       _CHEF_Messages[language]?['chef_error_runtime_ingredient_not_found'] ?? '',
-      //       m.ingredient ?? '',
-      //       ''
-      //     ]);
-      //     return null;
-      //   }
-      // }
       switch (m.type) {
         case _CHEF_Method.Take:
         case _CHEF_Method.Nehmen:
@@ -223,6 +209,7 @@ class _Kitchen {
         case _CHEF_Method.LiquefyBowl:
         case _CHEF_Method.SchuesselErhitzen:
           mixingbowls[m.mixingbowl!].liquefy();
+          bakingdishes[m.mixingbowl!].liquefy();
           liquefyMissing = false;
           break;
 
@@ -340,7 +327,6 @@ class _Kitchen {
             loops.removeAt(0);
             continue methodloop;
           }
-
         case _CHEF_Method.Serve:
         case _CHEF_Method.Servieren:
           if (recipes[m.auxrecipe!.toLowerCase()] == null) {

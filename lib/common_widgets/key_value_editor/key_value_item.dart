@@ -12,16 +12,15 @@ class GCWKeyValueItem extends StatefulWidget {
   late void Function(KeyValueBase)? onUpdateEntry;
   late void Function()? onSetState;
 
+  final bool Function(String)? validateEditedKey;
   final bool Function(String)? validateEditedValue;
-  final String? invalidEditedValueMessage;
 
   GCWKeyValueItem(
-      {Key? key,
+      {super.key,
       required this.keyValueEntry,
       required this.odd,
-      this.validateEditedValue,
-      this.invalidEditedValueMessage})
-      : super(key: key);
+      this.validateEditedKey,
+      this.validateEditedValue});
 
   @override
   GCWKeyValueItemState createState() => GCWKeyValueItemState();
@@ -145,10 +144,11 @@ class GCWKeyValueItemState extends State<GCWKeyValueItem> {
         ? GCWIconButton(
             icon: Icons.check,
             onPressed: () {
+              if (widget.validateEditedKey != null && !widget.validateEditedKey!(_currentKey)) {
+                _currentKey = widget.keyValueEntry.key;
+                return;
+              }
               if (widget.validateEditedValue != null && !widget.validateEditedValue!(currentValue)) {
-                if (widget.invalidEditedValueMessage != null && widget.invalidEditedValueMessage!.isNotEmpty) {
-                  showSnackBar(widget.invalidEditedValueMessage!, context);
-                }
                 return;
               }
 

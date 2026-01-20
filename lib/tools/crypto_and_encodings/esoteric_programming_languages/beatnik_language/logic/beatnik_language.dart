@@ -7,7 +7,7 @@
 
 import 'dart:math';
 
-import 'package:gc_wizard/tools/games/scrabble/scrabble/logic/scrabble.dart';
+import 'package:gc_wizard/tools/games/scrabble/logic/scrabble.dart';
 
 class BeatnikOutput {
   final List<String> output;
@@ -220,7 +220,6 @@ BeatnikOutput interpretBeatnik(String ScrabbleVersion, String sourcecode, String
     return BeatnikOutput([''], [''], [''], [''], [DebugOutput('', '', '', '')]);
   }
 
-  var _currentValues = <int>[];
   int value = 0;
 
   List<int> assembler = <int>[];
@@ -241,11 +240,10 @@ BeatnikOutput interpretBeatnik(String ScrabbleVersion, String sourcecode, String
 
   for (int i = 0; i < program.length; i++) {
     if (!normalized) {
-      _currentValues = scrabbleTextToLetterValues(program[i], ScrabbleVersion);
-      value = 0;
-      for (int j = 0; j < _currentValues.length; j++) {
-        value = value + _currentValues[j];
-      }
+      value = scrabbleTextToLetterValues(program[i], ScrabbleVersion)
+          .whereType<int>()
+          .toList()
+          .fold(0, (previousValue, element) => previousValue + element);
     } else {
       value = int.tryParse(program[i]) ?? 0;
     }

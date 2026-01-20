@@ -33,7 +33,7 @@ class GCWSymbolTableTextToSymbols extends StatefulWidget {
   final bool specialEncryption;
 
   const GCWSymbolTableTextToSymbols(
-      {Key? key,
+      {super.key,
       required this.text,
       required this.ignoreUnknown,
       required this.data,
@@ -41,8 +41,7 @@ class GCWSymbolTableTextToSymbols extends StatefulWidget {
       this.showExportButton = true,
       this.borderWidth,
       required this.specialEncryption,
-      this.fixed = false})
-      : super(key: key);
+      this.fixed = false});
 
   @override
   _GCWSymbolTableTextToSymbolsState createState() => _GCWSymbolTableTextToSymbolsState();

@@ -2423,7 +2423,7 @@ List<String> _stringToSegment(String input) {
   int j = 0;
   for (int i = 0; i < input.length / 2; i++) {
     result.add(input[j] + input[j + 1]);
-    j = j + 2;
+    j += 2;
   }
   return result;
 }

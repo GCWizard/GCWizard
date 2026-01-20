@@ -216,8 +216,8 @@ int countElements(List<int> list) {
   return list.length;
 }
 
-int countDistinctCharacters(List<int> list) {
-  return list.toSet().length;
+int countDistinctCharacters(String text) {
+  return text.split('').toSet().length;
 }
 
 int countLetters(String text) {

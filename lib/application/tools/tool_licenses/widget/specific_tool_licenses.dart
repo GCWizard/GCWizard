@@ -27,8 +27,8 @@ class _SpecificToolLicenses {
       author: 'Charles Karney',
       title: 'GeographicLib',
       licenseType: ToolLicenseType.MIT,
-      licenseUrl: 'https://github.com/GCWizard/geographiclib/blob/23bd797bf2b1fa894ca30b69a9cf998e00f4a663/LICENSE.txt',
-      sourceUrl: 'https://github.com/GCWizard/geographiclib/tree/23bd797bf2b1fa894ca30b69a9cf998e00f4a663'
+      licenseUrl: 'https://web.archive.org/web/20250404015636/https://github.com/geographiclib/geographiclib/blob/main/LICENSE.txt',
+      sourceUrl: 'https://web.archive.org/web/20250510161411/https://github.com/geographiclib/geographiclib/'
     );
   }
 
@@ -38,8 +38,8 @@ class _SpecificToolLicenses {
       author: 'Legion of the Bouncy Castle Inc',
       title: 'Flutter Library: Pointy Castle',
       licenseType: ToolLicenseType.MIT,
-      licenseUrl: 'https://github.com/GCWizard/pc-dart/blob/c7009dbf7785f4ff865ddb4eefdaed8c18ef3baa/LICENSE',
-      sourceUrl: 'https://github.com/GCWizard/pc-dart/tree/c7009dbf7785f4ff865ddb4eefdaed8c18ef3baa'
+      licenseUrl: 'https://web.archive.org/web/20250630140019/https://github.com/bcgit/pc-dart/blob/master/LICENSE',
+      sourceUrl: 'https://web.archive.org/web/20250619103609/https://github.com/bcgit/pc-dart'
     );
   }
 
@@ -59,8 +59,26 @@ class _SpecificToolLicenses {
       author: 'The MITRE Corporation',
       title: 'Geodetic Library',
       licenseType: ToolLicenseType.APACHE2,
-      licenseUrl: 'https://github.com/GCWizard/geodetic_library/blob/e2fd776eec8f7591d98022682137de0f74a4a0d7/LICENSE',
-      sourceUrl: 'https://github.com/GCWizard/geodetic_library/tree/e2fd776eec8f7591d98022682137de0f74a4a0d7'
+      licenseUrl: 'https://web.archive.org/web/20250630140518/https://github.com/mitre/geodetic_library/blob/main/LICENSE',
+      sourceUrl: 'https://web.archive.org/web/20250630140323/https://github.com/mitre/geodetic_library'
+    );
+  }
+
+  ToolLicenseEntry get _toolLicenseGCMuseum {
+    return ToolLicenseOfflineArticle(
+        context: _context,
+        author: 'Museum of Geocaching',
+        title: 'Museum of Geocaching (GC75CX3)',
+    );
+  }
+
+  ToolLicenseEntry get _toolLicenseNinasSchmierblock {
+    return ToolLicenseOnlineArticle(
+      context: _context,
+      author: 'Nina Geiger',
+      title: 'Geocaching Mysteries lösen (Ninas, Schmierblo(g)ck)',
+      sourceUrl: 'https://web.archive.org/web/20240510134622/https://www.justchaos.de/blog/ninas_schmierblogck_mysteries_loesen_als.pdf',
+      licenseType: ToolLicenseType.PRIVATE_PERMISSION
     );
   }
 
@@ -249,6 +267,22 @@ class _SpecificToolLicenses {
     return ToolLicenseOfflineArticle(context: context,
       author: 'UIC - Union Internationale des Chemins de fer',
       title: 'UIC 438-X'
+    );
+  }
+
+  ToolLicenseEntry get _toolLicenseElementsOfGeocachingGeocacherMagazine {
+    return ToolLicenseOfflineArticle(context: context,
+      author: 'Geocacher Magazine',
+      year: 2010,
+      title: 'Elements of Geocaching'
+    );
+  }
+
+  ToolLicenseEntry get _toolLicenseElementsOfGeocachingGeocachenBE {
+    return ToolLicenseOnlineArticle(context: context,
+        author: 'geocachen.be',
+        title: 'Elements of Geocaching',
+        sourceUrl: 'https://web.archive.org/web/20241103163521/https://geocachen.be/geocaching/geocache-puzzels-oplossen/elements-of-geocaching/'
     );
   }
 }

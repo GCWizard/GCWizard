@@ -23,7 +23,7 @@ class GCWDoubleSpinner extends StatefulWidget {
   final bool suppressOverflow;
 
   GCWDoubleSpinner(
-      {Key? key,
+      {super.key,
       required this.onChanged,
       this.title,
       required this.value,
@@ -33,8 +33,7 @@ class GCWDoubleSpinner extends StatefulWidget {
       this.controller,
       this.layout = SpinnerLayout.HORIZONTAL,
       this.focusNode,
-      this.suppressOverflow = false})
-      : super(key: key);
+      this.suppressOverflow = false});
 
   @override
   _GCWDoubleSpinnerState createState() => _GCWDoubleSpinnerState();

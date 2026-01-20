@@ -11,7 +11,7 @@ class GCWCoordsPasteButton extends StatefulWidget {
   final void Function(List<BaseCoordinate>) onPasted;
   final IconButtonSize size;
 
-  const GCWCoordsPasteButton({Key? key, required this.onPasted, required this.size}) : super(key: key);
+  const GCWCoordsPasteButton({super.key, required this.onPasted, required this.size});
 
   @override
   _GCWCoordsPasteButtonState createState() => _GCWCoordsPasteButtonState();

@@ -1,9 +1,13 @@
 import 'dart:collection';
 
 String substitution(String input, Map<String, String> substitutions, {bool caseSensitive = true}) {
+
   if (input.isEmpty) return '';
 
   if (!caseSensitive) {
+    // ('ß').toUpperCase() => 'SS' which is deprecated according to https://en.wikipedia.org/wiki/%C3%9F
+    // As of 2024, when writing in capital letters, ⟨ẞ⟩ or '\u1e9e' is preferred
+    // input = input.replaceAll('ß', '\u1e9e').toUpperCase();
     input = input.toUpperCase();
   }
 
@@ -43,7 +47,7 @@ String substitution(String input, Map<String, String> substitutions, {bool caseS
       var index = input.indexOf(key, i);
       replacements.putIfAbsent(index, () => key);
 
-      input = input.replaceRange(index, index + key.length, String.fromCharCode(0) * key.length);
+      input = input.replaceRange(index, index + key.length, '\u0000' * key.length);
 
       i = index + key.length;
     }
@@ -52,7 +56,7 @@ String substitution(String input, Map<String, String> substitutions, {bool caseS
   //Unconsidered elements are put into the index map and the substitution map
   //The will be replaced by themselves.
   input.split('').asMap().forEach((index, character) {
-    if (character != String.fromCharCode(0)) {
+    if (character != '\u0000') {
       replacements.putIfAbsent(index, () => character);
       substCopy.putIfAbsent(character, () => character);
     }
@@ -62,6 +66,5 @@ String substitution(String input, Map<String, String> substitutions, {bool caseS
   for (var entry in replacements.entries) {
     if (substCopy.containsKey(entry.value)) output += substCopy[entry.value]!;
   }
-
   return output;
 }

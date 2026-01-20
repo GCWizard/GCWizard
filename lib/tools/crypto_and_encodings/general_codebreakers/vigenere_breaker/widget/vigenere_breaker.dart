@@ -18,7 +18,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/vigenere_breaker/logic/vigenere_breaker.dart';
 
 class VigenereBreaker extends StatefulWidget {
-  const VigenereBreaker({Key? key}) : super(key: key);
+  const VigenereBreaker({super.key});
 
   @override
   _VigenereBreakerState createState() => _VigenereBreakerState();

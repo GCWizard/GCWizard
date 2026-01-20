@@ -6,16 +6,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
-import 'package:gc_wizard/tools/coords/_common/formats/mapcode/logic/mapcode.dart';
-import 'package:gc_wizard/tools/coords/_common/formats/mapcode/logic/external_libs/mapcode.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
-import 'package:gc_wizard/tools/coords/centerpoint/center_two_points/logic/center_two_points.dart';
-import 'package:gc_wizard/tools/coords/centerpoint/logic/centerpoint_distance.dart';
-import 'package:gc_wizard/tools/coords/centroid/centroid_arithmetic_mean/logic/centroid_arithmetic_mean.dart';
-import 'package:gc_wizard/tools/coords/centroid/centroid_center_of_gravity/logic/centroid_center_of_gravity.dart';
-import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dmm/logic/dmm.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dms/logic/dms.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/dutchgrid/logic/dutchgrid.dart';
@@ -26,6 +16,8 @@ import 'package:gc_wizard/tools/coords/_common/formats/geohex/logic/geohex.dart'
 import 'package:gc_wizard/tools/coords/_common/formats/lambert/logic/lambert.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/maidenhead/logic/maidenhead.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/makaney/logic/makaney.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/mapcode/logic/external_libs/mapcode.dart';
+import 'package:gc_wizard/tools/coords/_common/formats/mapcode/logic/mapcode.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/mercator/logic/mercator.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/mgrs_utm/logic/mgrs.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/natural_area_code/logic/natural_area_code.dart';
@@ -37,6 +29,14 @@ import 'package:gc_wizard/tools/coords/_common/formats/slippymap/logic/slippy_ma
 import 'package:gc_wizard/tools/coords/_common/formats/swissgrid/logic/swissgrid.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/utm/logic/utm.dart';
 import 'package:gc_wizard/tools/coords/_common/formats/xyz/logic/xyz.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/tools/coords/centerpoint/center_two_points/logic/center_two_points.dart';
+import 'package:gc_wizard/tools/coords/centerpoint/logic/centerpoint_distance.dart';
+import 'package:gc_wizard/tools/coords/centroid/centroid_arithmetic_mean/logic/centroid_arithmetic_mean.dart';
+import 'package:gc_wizard/tools/coords/centroid/centroid_center_of_gravity/logic/centroid_center_of_gravity.dart';
+import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/_common/logic/crypt_alphabet_modification.dart';
@@ -71,7 +71,6 @@ import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/stack.dart' as datastack;
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
-
 
 part 'package:gc_wizard/tools/general_tools/gcwizardscript/logic/gcwizard_script_classes.dart';
 part 'package:gc_wizard/tools/general_tools/gcwizardscript/logic/gcwizard_script_consts.dart';
@@ -411,10 +410,9 @@ class _GCWizardSCriptInterpreter {
 
   void getDATA() {
     state.script.split('\n').forEach((line) {
-      line = line.trim();
-      if (line.substring(0, line.length > 5 ? 5 : line.length).toUpperCase() ==
-          'DATA ') {
-        line.substring(5).split(',').forEach((data) {
+      line = line.trim().toUpperCase();
+      if (line.contains('DATA ')) {
+        line.split('DATA ')[1].split(',').forEach((data) {
           data = data.trim().replaceAll('"', '');
           if (int.tryParse(data) != null) {
             state.listDATA.add(int.parse(data));
@@ -2117,7 +2115,7 @@ class _GCWizardSCriptInterpreter {
     result = evaluateExpressionUnaryFunctionOperator();
 
     while (
-        (op = state.token[0]) == '→' || op == '←' || op == '&' || op == '|') {
+        (op = state.token[0]) == '→' || op == '←' || op == '&' || op == '|' || op == '@') {
       getToken();
       partialResult = evaluateExpressionUnaryFunctionOperator();
       if (_isNotAInt(partialResult) && _isNotAInt(result)) {
@@ -2135,6 +2133,9 @@ class _GCWizardSCriptInterpreter {
             break;
           case '|': // or
             result = (result as int) | (partialResult as int);
+            break;
+          case '@': // xor
+            result = (result as int) ^ (partialResult as int);
             break;
         }
       }
@@ -2401,7 +2402,7 @@ class _GCWizardSCriptInterpreter {
   }
 
   bool isDelimiter(String c) {
-    if ((" \n\r,;<>+-/*%^=()&|←→~".contains(c))) return true;
+    if ((" \n\r,;<>+-/*%^=()&|←→~@".contains(c))) return true;
     return false;
   }
 

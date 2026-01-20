@@ -4,7 +4,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.d
 import 'package:gc_wizard/tools/science_and_technology/dna/logic/dna.dart';
 
 class DNAAminoAcidsTable extends StatefulWidget {
-  const DNAAminoAcidsTable({Key? key}) : super(key: key);
+  const DNAAminoAcidsTable({super.key});
 
   @override
   _DNAAminoAcidsTableState createState() => _DNAAminoAcidsTableState();

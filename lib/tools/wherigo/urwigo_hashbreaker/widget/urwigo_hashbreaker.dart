@@ -10,7 +10,7 @@ import 'package:gc_wizard/tools/wherigo/krevo/logic/ucommons.dart';
 import 'package:gc_wizard/tools/wherigo/logic/urwigo_tools.dart';
 
 class UrwigoHashBreaker extends StatefulWidget {
-  const UrwigoHashBreaker({Key? key}) : super(key: key);
+  const UrwigoHashBreaker({super.key});
 
   @override
   _UrwigoHashBreakerState createState() => _UrwigoHashBreakerState();

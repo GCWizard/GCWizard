@@ -4,21 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
+import 'package:gc_wizard/common_widgets/dialogs/gcw_dialog.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
 import 'package:gc_wizard/common_widgets/gcw_painter_container.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
+import 'package:gc_wizard/common_widgets/gcw_text_export.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
+import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/text_input_formatters/wrapper_for_masktextinputformatter.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/games/game_of_life/logic/game_of_life.dart';
+import 'package:gc_wizard/tools/games/game_of_life/logic/game_of_life_rle_generate.dart';
 import 'package:gc_wizard/tools/games/game_of_life/widget/game_of_life_board.dart';
+import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 
 class GameOfLife extends StatefulWidget {
-  const GameOfLife({Key? key}) : super(key: key);
+  const GameOfLife({super.key});
 
   @override
   _GameOfLifeState createState() => _GameOfLifeState();
@@ -38,12 +44,19 @@ class _GameOfLifeState extends State<GameOfLife> {
 
   final _maskInputFormatter = GCWMaskTextInputFormatter(mask: '*********', filter: {"*": RegExp(r'[012345678]')});
 
+  GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
+  String _currentInput = '';
+  late TextEditingController _inputController;
+
+  String _currentRLE = '';
+
   @override
   void initState() {
     super.initState();
 
     _currentCustomSurviveController = TextEditingController(text: _currentCustomSurvive);
     _currentCustomBirthController = TextEditingController(text: _currentCustomBirth);
+    _inputController = TextEditingController(text: _currentInput);
 
     _allRules = List<GameOfLifeRules>.from(DEFAULT_GAME_OF_LIFE_RULES);
     _allRules.add(const GameOfLifeRules(key: KEY_CUSTOM_RULES));
@@ -55,6 +68,7 @@ class _GameOfLifeState extends State<GameOfLife> {
   void dispose() {
     _currentCustomSurviveController.dispose();
     _currentCustomBirthController.dispose();
+    _inputController.dispose();
 
     super.dispose();
   }
@@ -63,26 +77,44 @@ class _GameOfLifeState extends State<GameOfLife> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        GCWTwoOptionsSwitch(
+          value: _currentMode,
+          onChanged: (value) {
+            setState(() {
+              _currentMode = value;
+            });
+          },
+        ),
+        _currentMode == GCWSwitchPosition.right
+            ? _buildWidgetDecode()
+            : _buildWidgetEncode(),
+      ],
+    );
+  }
+
+  Widget _buildWidgetDecode() {
+    return Column(
+      children: [
         GCWOpenFile(
-          title: i18n(context, 'common_import') + ' RLE',
-          onLoaded: (GCWFile? value) {
-            if (value == null) {
-              showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
-            } else {
-              var __board = importRLE(value);
-              if (__board != null) {
-                if (max(__board.size.x, __board.size.y) > MAX_SIZE) {
-                  showSnackBar(i18n(context, 'gameoflife_size_too_large', parameters: [MAX_SIZE]), context);
-                } else {
-                  _board = __board;
-                  _currentSize = _board.size;
-                }
-              } else {
+            title: i18n(context, 'common_import') + ' RLE',
+            onLoaded: (GCWFile? value) {
+              if (value == null) {
                 showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
+              } else {
+                var __board = importRLE(value);
+                if (__board != null) {
+                  if (max(__board.size.x, __board.size.y) > MAX_SIZE) {
+                    showSnackBar(i18n(context, 'gameoflife_size_too_large', parameters: [MAX_SIZE]), context);
+                  } else {
+                    _board = __board;
+                    _currentSize = _board.size;
+                  }
+                } else {
+                  showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
+                }
               }
-            }
-            setState(() {});
-        }),
+              setState(() {});
+            }),
         const SizedBox(height: 10),
         _buildSize(),
         _buildRules(),
@@ -111,7 +143,8 @@ class _GameOfLifeState extends State<GameOfLife> {
               },
             ),
             GCWIconButton(
-              icon: Icons.arrow_back_ios,
+              icon: Icons.arrow_forward_ios,
+              rotateDegrees: 180,
               onPressed: () {
                 setState(() {
                   _backwards();
@@ -122,8 +155,8 @@ class _GameOfLifeState extends State<GameOfLife> {
               child: GCWText(
                   align: Alignment.center,
                   text:
-                      i18n(context, 'gameoflife_step') + ': ' + _board.step.toString() + '\n' +
-                          i18n(context, 'gameoflife_livingcells', parameters: [_board.countCells()])
+                  i18n(context, 'gameoflife_step') + ': ' + _board.step.toString() + '\n' +
+                      i18n(context, 'gameoflife_livingcells', parameters: [_board.countCells()])
               ),
             ),
             GCWIconButton(
@@ -150,8 +183,8 @@ class _GameOfLifeState extends State<GameOfLife> {
           text: _board.rules.key == KEY_CUSTOM_RULES
               ? (_currentCustomInverse ? i18n(context, 'gameoflife_fillall') : i18n(context, 'gameoflife_clearall'))
               : (_board.rules.isInverse
-                  ? i18n(context, 'gameoflife_fillall')
-                  : i18n(context, 'gameoflife_clearall')),
+              ? i18n(context, 'gameoflife_fillall')
+              : i18n(context, 'gameoflife_clearall')),
           onPressed: () {
             setState(() {
               var isInverse = (_board.rules.key == KEY_CUSTOM_RULES && _currentCustomInverse) ||
@@ -166,8 +199,63 @@ class _GameOfLifeState extends State<GameOfLife> {
               _board.reset();
             });
           },
+        )      ],
+    );
+  }
+
+  Widget _buildWidgetEncode() {
+    return Column(
+      children: [
+        GCWTextField(
+          title: i18n(context, 'gameoflife_input_to_generate'),
+          controller: _inputController,
+          hintText: i18n(context, 'common_programming_hint_output'),
+          onChanged: (text) {
+            setState(() {
+              _currentInput = text;
+            });
+          },
+        ),
+        _widgetGenerateButton(context),
+        GCWDefaultOutput(
+          trailing: _widgetSaveButton(context),
+          child: _currentRLE,
+          copyText: _currentRLE,
         )
       ],
+    );
+  }
+
+  Widget _widgetSaveButton(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          showGCWDialog(
+            context,
+            i18n(context, 'gameoflife_generate_rle'),
+            GCWTextExport(
+              text: _currentRLE,
+              saveFileTypeText: FileType.RLE,
+              saveFilenamePrefix: 'conway',
+            ),
+            [
+              GCWDialogButton(
+                text: i18n(context, 'common_cancel'),
+              )
+            ],
+            cancelButton: false);
+            setState(() {});
+        },
+        icon: Icon(Icons.save))
+    ;
+  }
+
+  Widget _widgetGenerateButton(BuildContext context) {
+    return GCWButton(
+      text: i18n(context, 'gameoflife_generate_rle'),
+      onPressed: () {
+        _currentRLE = generate_rle(_currentInput);
+        setState(() {});
+      },
     );
   }
 
@@ -182,8 +270,9 @@ class _GameOfLifeState extends State<GameOfLife> {
             max: MAX_SIZE,
             value: _currentSize.x,
             onChanged: (value) {
+              var size = max<int>(2, value);
               setState(() {
-                _currentSize = differentSize ? Point<int>(value, _currentSize.y) : Point<int>(value, value);
+                _currentSize = differentSize ? Point<int>(size, _currentSize.y) : Point<int>(size, size);
                 _board = GameOfLifeData(_currentSize, _board.rules, content: _board.currentBoard);
                 _board.reset();
               });
@@ -203,8 +292,9 @@ class _GameOfLifeState extends State<GameOfLife> {
                     max: MAX_SIZE,
                     value: _currentSize.y,
                     onChanged: (value) {
+                      var size = max<int>(2, value);
                       setState(() {
-                        _currentSize = differentSize ? Point<int>(_currentSize.x, value) : Point<int>(value, value);
+                        _currentSize = differentSize ? Point<int>(_currentSize.x, size) : Point<int>(size, size);
                         _board = GameOfLifeData(_currentSize, _board.rules, content: _board.currentBoard);
                         _board.reset();
                       });

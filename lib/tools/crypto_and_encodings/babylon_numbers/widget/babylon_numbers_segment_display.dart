@@ -31,18 +31,14 @@ double _relativeY(Size size, double y) {
 const _TRANSPARENT_COLOR = Color.fromARGB(0, 0, 0, 0);
 
 class _BabylonNumbersSegmentDisplay extends NSegmentDisplay {
-  _BabylonNumbersSegmentDisplay(
-      {Key? key,
-      required Map<String, bool> segments,
+  _BabylonNumbersSegmentDisplay({
+      required super.segments,
       bool readOnly = false,
-      void Function(Map<String, bool>)? onChanged})
+      super.onChanged})
       : super(
-            key: key,
             initialSegments: _INITIAL_SEGMENTS,
             aspectRatio: _BABYLON_RELATIVE_DISPLAY_WIDTH / _BABYLON_RELATIVE_DISPLAY_HEIGHT,
-            segments: segments,
             readOnly: false,
-            onChanged: onChanged,
             type: SegmentDisplayType.CUSTOM,
             customPaint: (GCWTouchCanvas canvas, Size size, Map<String, bool> currentSegments, Function setSegmentState,
                 Color segment_color_on, Color segment_color_off) {

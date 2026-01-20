@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:gc_wizard/tools/science_and_technology/colors/logic/colors_rgb.dart';
 
 String colorToHexString(Color color) {
-  return HexCode.fromRGB(RGB(color.r, color.g, color.b)).toString();
+  return HexCode.fromRGB(RGB(color.r * 255, color.g * 255, color.b * 255)).toString();
 }
 
 Color hexStringToColor(String hex) {

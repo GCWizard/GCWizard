@@ -15,7 +15,7 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/w
 part 'package:gc_wizard/tools/crypto_and_encodings/predator/widget/predator_segment_display.dart';
 
 class Predator extends StatefulWidget {
-  const Predator({Key? key}) : super(key: key);
+  const Predator({super.key});
 
   @override
   _PredatorState createState() => _PredatorState();

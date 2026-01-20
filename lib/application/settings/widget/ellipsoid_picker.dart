@@ -3,7 +3,7 @@ part of 'package:gc_wizard/application/settings/widget/settings_coordinates.dart
 class _EllipsoidPicker extends StatefulWidget {
   final void Function(Ellipsoid) onChanged;
 
-  const _EllipsoidPicker({Key? key, required this.onChanged}) : super(key: key);
+  const _EllipsoidPicker({required this.onChanged});
 
   @override
   _EllipsoidPickerState createState() => _EllipsoidPickerState();

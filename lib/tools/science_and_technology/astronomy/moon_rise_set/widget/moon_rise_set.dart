@@ -11,7 +11,7 @@ import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/datetime_utils.dart';
 
 class MoonRiseSet extends StatefulWidget {
-  const MoonRiseSet({Key? key}) : super(key: key);
+  const MoonRiseSet({super.key});
 
   @override
   _MoonRiseSetState createState() => _MoonRiseSetState();

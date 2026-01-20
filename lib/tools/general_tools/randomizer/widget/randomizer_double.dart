@@ -11,7 +11,7 @@ import 'package:gc_wizard/tools/general_tools/randomizer/logic/randomizer.dart';
 import 'package:intl/intl.dart';
 
 class RandomizerDouble extends StatefulWidget {
-  const RandomizerDouble({Key? key}) : super(key: key);
+  const RandomizerDouble({super.key});
 
   @override
   _RandomizerDoubleState createState() => _RandomizerDoubleState();

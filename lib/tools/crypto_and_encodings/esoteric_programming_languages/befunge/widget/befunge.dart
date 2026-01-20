@@ -14,7 +14,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/esoteric_programming_languages/befunge/logic/befunge.dart';
 
 class Befunge extends StatefulWidget {
-  const Befunge({Key? key}) : super(key: key);
+  const Befunge({super.key});
 
   @override
   _BefungeState createState() => _BefungeState();

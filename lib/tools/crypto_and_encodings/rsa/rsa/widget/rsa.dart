@@ -12,7 +12,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rsa/logic/rsa.dart';
 
 class RSA extends StatefulWidget {
-  const RSA({Key? key}) : super(key: key);
+  const RSA({super.key});
 
   @override
   _RSAState createState() => _RSAState();

@@ -18,7 +18,7 @@ import 'package:gc_wizard/tools/science_and_technology/segment_display/_common/w
 part 'package:gc_wizard/tools/crypto_and_encodings/cistercian_numbers/widget/cistercian_numbers_segment_display.dart';
 
 class CistercianNumbers extends StatefulWidget {
-  const CistercianNumbers({Key? key}) : super(key: key);
+  const CistercianNumbers({super.key});
 
   @override
   _CistercianNumbersState createState() => _CistercianNumbersState();

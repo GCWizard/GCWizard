@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_checknumber.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_containsdigits.dart';
@@ -7,26 +6,26 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/widget/numbersequences_range.dart';
 
 class NumberSequencePrimaryPseudoPerfectNumbersCheckNumber extends NumberSequenceCheckNumber {
-  const NumberSequencePrimaryPseudoPerfectNumbersCheckNumber({Key? key})
-      : super(key: key, mode: NumberSequencesMode.PRIMARY_PSEUDOPERFECT_NUMBERS, maxIndex: 7);
+  const NumberSequencePrimaryPseudoPerfectNumbersCheckNumber({super.key})
+      : super(mode: NumberSequencesMode.PRIMARY_PSEUDOPERFECT_NUMBERS, maxIndex: 8);
 }
 
 class NumberSequencePrimaryPseudoPerfectNumbersDigits extends NumberSequenceDigits {
-  const NumberSequencePrimaryPseudoPerfectNumbersDigits({Key? key})
-      : super(key: key, mode: NumberSequencesMode.PRIMARY_PSEUDOPERFECT_NUMBERS, maxDigits: 35);
+  const NumberSequencePrimaryPseudoPerfectNumbersDigits({super.key})
+      : super(mode: NumberSequencesMode.PRIMARY_PSEUDOPERFECT_NUMBERS, maxDigits: 31);
 }
 
 class NumberSequencePrimaryPseudoPerfectNumbersRange extends NumberSequenceRange {
-  const NumberSequencePrimaryPseudoPerfectNumbersRange({Key? key})
-      : super(key: key, mode: NumberSequencesMode.PRIMARY_PSEUDOPERFECT_NUMBERS, maxIndex: 7);
+  const NumberSequencePrimaryPseudoPerfectNumbersRange({super.key})
+      : super(mode: NumberSequencesMode.PRIMARY_PSEUDOPERFECT_NUMBERS, maxIndex: 8);
 }
 
 class NumberSequencePrimaryPseudoPerfectNumbersNthNumber extends NumberSequenceNthNumber {
-  const NumberSequencePrimaryPseudoPerfectNumbersNthNumber({Key? key})
-      : super(key: key, mode: NumberSequencesMode.PRIMARY_PSEUDOPERFECT_NUMBERS, maxIndex: 7);
+  const NumberSequencePrimaryPseudoPerfectNumbersNthNumber({super.key})
+      : super(mode: NumberSequencesMode.PRIMARY_PSEUDOPERFECT_NUMBERS, maxIndex: 8);
 }
 
 class NumberSequencePrimaryPseudoPerfectNumbersContainsDigits extends NumberSequenceContainsDigits {
-  const NumberSequencePrimaryPseudoPerfectNumbersContainsDigits({Key? key})
-      : super(key: key, mode: NumberSequencesMode.PRIMARY_PSEUDOPERFECT_NUMBERS, maxIndex: 7);
+  const NumberSequencePrimaryPseudoPerfectNumbersContainsDigits({super.key})
+      : super(mode: NumberSequencesMode.PRIMARY_PSEUDOPERFECT_NUMBERS, maxIndex: 8);
 }

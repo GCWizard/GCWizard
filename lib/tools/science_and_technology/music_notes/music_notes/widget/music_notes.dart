@@ -23,7 +23,7 @@ import 'package:gc_wizard/utils/constants.dart';
 part 'package:gc_wizard/tools/science_and_technology/music_notes/music_notes/widget/music_notes_segment_display.dart';
 
 class MusicNotes extends StatefulWidget {
-  const MusicNotes({Key? key}) : super(key: key);
+  const MusicNotes({super.key});
 
   @override
   _MusicNotesState createState() => _MusicNotesState();

@@ -10,7 +10,7 @@ import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/affine/logic/affine.dart';
 
 class Affine extends StatefulWidget {
-  const Affine({Key? key}) : super(key: key);
+  const Affine({super.key});
 
   @override
   _AffineState createState() => _AffineState();

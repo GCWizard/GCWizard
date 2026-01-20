@@ -12,11 +12,11 @@ class GCWCoordsFormatSelector extends StatefulWidget {
   final bool input;
 
   const GCWCoordsFormatSelector({
-    Key? key,
+    super.key,
     required this.onChanged,
     required this.format,
     required this.input,
-  }) : super(key: key);
+  });
 
   @override
   _GCWCoordsFormatSelectorState createState() => _GCWCoordsFormatSelectorState();

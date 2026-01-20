@@ -14,14 +14,13 @@ class GCWOutputText extends StatefulWidget {
   final String? copyText;
 
   const GCWOutputText(
-      {Key? key,
+      {super.key,
       this.text,
       this.align = Alignment.centerLeft,
       this.isMonotype = false,
       this.style,
       this.suppressCopyButton = false,
-      this.copyText})
-      : super(key: key);
+      this.copyText});
 
   @override
   _GCWOutputTextState createState() => _GCWOutputTextState();

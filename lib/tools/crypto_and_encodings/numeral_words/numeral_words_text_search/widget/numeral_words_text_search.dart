@@ -17,7 +17,7 @@ import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
 class NumeralWordsTextSearch extends StatefulWidget {
-  const NumeralWordsTextSearch({Key? key}) : super(key: key);
+  const NumeralWordsTextSearch({super.key});
 
   @override
   _NumeralWordsTextSearchState createState() => _NumeralWordsTextSearchState();

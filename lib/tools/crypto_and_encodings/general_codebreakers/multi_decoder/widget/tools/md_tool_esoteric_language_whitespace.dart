@@ -6,11 +6,8 @@ const MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_WHITESPACE = 'whitespace_language_titl
 
 class MultiDecoderToolEsotericLanguageWhitespace extends AbstractMultiDecoderTool {
   MultiDecoderToolEsotericLanguageWhitespace(
-      {Key? key, required int id, required String name, required Map<String, Object?> options})
+      {super.key, required super.id, required super.name, required super.options})
       : super(
-            key: key,
-            id: id,
-            name: name,
             internalToolName: MDT_INTERNALNAMES_ESOTERIC_LANGUAGE_WHITESPACE,
             optionalKey: true,
             onDecode: (String input, String key) {
@@ -19,8 +16,7 @@ class MultiDecoderToolEsotericLanguageWhitespace extends AbstractMultiDecoderToo
                 return outputFuture.then((output) => (output.error || output.output.isEmpty) ? null : output.output);
               } catch (e) {}
               return null;
-            },
-            options: options);
+            });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolEsotericLanguageWhitespaceState();
 }
