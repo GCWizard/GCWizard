@@ -24,3 +24,28 @@ Angles? triangleAnglesXY(XYPoint A, XYPoint B, XYPoint C,){
   }
 }
 
+/// Berechnet den Winkel am Punkt A im sphärischen Dreieck ABC
+double sphericalAngle(Vec3 a, Vec3 b, Vec3 c) {
+  // Projektion von b und c in die Tangentialebene bei a
+  final ab = b - a * a.dot(b);
+  final ac = c - a * a.dot(c);
+
+  final cosAngle = ab.dot(ac) / (ab.norm() * ac.norm());
+  return acos(cosAngle);
+}
+
+Angles? triangleAnglesMap(LatLng _AMap, LatLng _BMap, LatLng _CMap){
+  final a = latLngToVec3(_AMap);
+  final b = latLngToVec3(_BMap);
+  final c = latLngToVec3(_CMap);
+
+  final angleA = sphericalAngle(a, b, c);
+  final angleB = sphericalAngle(b, a, c);
+  final angleC = sphericalAngle(c, a, b);
+
+  return Angles(
+    alpha: angleA * 180 / pi,
+    beta: angleB * 180 / pi,
+    gamma: angleC * 180 / pi,
+  );
+}

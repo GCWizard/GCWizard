@@ -8,3 +8,10 @@ Sides triangleSidesXY(XYPoint A, XYPoint B, XYPoint C,){
   );
 }
 
+Sides? triangleSidesMap(LatLng _AMap, LatLng _BMap, LatLng _CMap){
+  return Sides(
+    a: distanceBearing(_BMap, _CMap, defaultEllipsoid).distance,
+    b: distanceBearing(_AMap, _CMap, defaultEllipsoid).distance,
+    c: distanceBearing(_BMap, _AMap, defaultEllipsoid).distance,
+  );
+}

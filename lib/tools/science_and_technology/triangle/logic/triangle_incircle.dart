@@ -20,3 +20,42 @@ XYCircle triangleInCircleXY(XYPoint A, XYPoint B, XYPoint C,){
   );
 }
 
+
+/// Winkel (Seitenlänge) zwischen zwei Einheitsvektoren in Radiant
+double _sideAngle(Vec3 u, Vec3 v) {
+  final d = u.dot(v).clamp(-1.0, 1.0);
+  return acos(d);
+}
+
+
+/// Sphärischer Inkreismittelpunkt eines Dreiecks ABC
+XYCircle triangleInCircleMap(LatLng A, LatLng B, LatLng C) {
+  const R = 6371000.0;
+
+  final aVec = latLngToVec3(A);
+  final bVec = latLngToVec3(B);
+  final cVec = latLngToVec3(C);
+
+  // Seitenlängen (Winkel) gegenüber den Eckpunkten
+  final a = _sideAngle(bVec, cVec);
+  final b = _sideAngle(aVec, cVec);
+  final c = _sideAngle(aVec, bVec);
+
+  // Incenter als gewichtete Summe der Eckvektoren
+  final incenterVec = (aVec * a + bVec * b + cVec * c).normalized();
+  final center = vec3ToLatLng(incenterVec);
+
+  // Normale einer Seite, z.B. BC
+  final n = bVec.cross(cVec).normalized();
+
+  // Winkelabstand Incenter → Seite
+  final r = asin((incenterVec.dot(n)).abs()); // in Radiant
+
+  final radius = R * r; // Meter
+
+  return XYCircle(
+      x: vec3ToLatLng(incenterVec).latitude,
+      y: vec3ToLatLng(incenterVec).longitude,
+      r: radius,
+  );
+}

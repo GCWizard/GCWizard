@@ -6664,7 +6664,7 @@
   "triangle_input_xy": "XY-Geometry",
   "triangle_input_coordinate": "Coordinates",
   "triangle_input_map_orthodrome": "Orthodrome",
-  "triangle_input_map_loxoodrome": "Loxodrome",
+  "triangle_input_map_loxodrome": "Loxodrome",
   "triangle_output_x": "X",
   "triangle_output_y": "Y",
   "triangle_output_r": "r",
