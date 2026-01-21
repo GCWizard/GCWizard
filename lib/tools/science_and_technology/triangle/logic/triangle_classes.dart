@@ -31,6 +31,9 @@ class XYPoint{
 
   XYPoint operator +(XYPoint other) => XYPoint(x: x + other.x, y: y + other.y);
   XYPoint operator /(double s) => XYPoint(x: x / s, y: y / s);
+  XYPoint operator -(XYPoint other) => XYPoint(x: x - other.x, y: y - other.y);
+  XYPoint operator *(double s) => XYPoint(x: x * s, y: y * s);
+
 
   PolarPoint toPolarPoint(){
     // https://mathepedia.de/Kugelkoordinaten.html
@@ -48,6 +51,25 @@ class XYPoint{
     return LatLng(x, y);
   }
 
+}
+
+/// LatLng → lokale XY-Koordinaten (Meter) relativ zu origin
+XYPoint _toXY(LatLng p, LatLng origin) {
+  const double R = 6371000.0;
+  final dLat = (p.latitude - origin.latitude) * pi / 180;
+  final dLng = (p.longitude - origin.longitude) * pi / 180;
+
+  final x = dLng * R * cos(origin.latitude * pi / 180);
+  final y = dLat * R;
+  return XYPoint(x: x, y: y);
+}
+
+/// XY → LatLng zurück
+LatLng _toLatLng(XYPoint p, LatLng origin) {
+  const double R = 6371000.0;
+  final lat = origin.latitude + (p.y / R) * 180 / pi;
+  final lng = origin.longitude + (p.x / (R * cos(origin.latitude * pi / 180))) * 180 / pi;
+  return LatLng(lat, lng);
 }
 
 class Sides{

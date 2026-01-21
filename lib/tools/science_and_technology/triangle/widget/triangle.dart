@@ -523,8 +523,8 @@ class TriangleState extends State<Triangle> {
     _gergonne = triangleGergonne(_A, _B, _C);
     _lemoine = triangleLemoine(_A, _B, _C);
     _nagel = triangleNagel(_A, _B, _C);
-    _napoleon1 = triangleNapoleonOuter(_A, _B, _C);
-    _napoleon2 = triangleNapoleonInner(_A, _B, _C);
+    _napoleon1 = triangleNapoleonOuterXY(_A, _B, _C);
+    _napoleon2 = triangleNapoleonInnerXY(_A, _B, _C);
     _spieker = triangleSpieker(_A, _B, _C);
     _feuerbach = triangleFeuerbach(_A, _B, _C);
     _mitten = triangleMitten(_A, _B, _C);
@@ -788,16 +788,22 @@ class TriangleState extends State<Triangle> {
     _points.add(GCWMapPoint(point: _sidesMidPointMap[2], markerText: i18n(context, 'triangle_output_sidesmidpoint') + ' b', color: Colors.green));
 
     _centroidMap = triangleCentroidMap(_AMap, _BMap, _CMap)!;
-
     _points.add(GCWMapPoint(point: _centroidMap, markerText: i18n(context, 'triangle_output_centroid'), color: Colors.red));
 
     _outercircleMap = triangleCircumCircleMap(_AMap, _BMap, _CMap);
-
     _points.add(GCWMapPoint(point: LatLng(_outercircleMap.x, _outercircleMap.y), markerText: i18n(context, 'triangle_output_circumcenter'), color: Colors.lightBlue, circle: GCWMapCircle(centerPoint: LatLng(_outercircleMap.x, _outercircleMap.y), radius: _outercircleMap.r)));
 
     _innercircleMap = triangleInCircleMap(_AMap, _BMap, _CMap);
-
     _points.add(GCWMapPoint(point: LatLng(_innercircleMap.x, _innercircleMap.y), markerText: i18n(context, 'triangle_output_incenter'), color: Colors.lightBlue, circle: GCWMapCircle(centerPoint: LatLng(_innercircleMap.x, _innercircleMap.y), radius: _innercircleMap.r)));
+
+    _orthocenterMap = triangleOrthocenterMap(_AMap, _BMap, _CMap);
+    _points.add(GCWMapPoint(point: _orthocenterMap, markerText: i18n(context, 'triangle_output_altitude'), color: Colors.orange));
+
+    _napoleon1Map = triangleNapoleonOuterMap(_AMap, _BMap, _CMap);
+    _points.add(GCWMapPoint(point: _napoleon1Map, markerText: i18n(context, 'triangle_output_napoleon_outer'), color: Colors.red));
+
+    _napoleon2Map = triangleNapoleonInnerMap(_AMap, _BMap, _CMap);
+    _points.add(GCWMapPoint(point: _napoleon2Map, markerText: i18n(context, 'triangle_output_napoleon_inner'), color: Colors.red));
 
     _outputBasicData = [
       [
@@ -832,6 +838,9 @@ class TriangleState extends State<Triangle> {
       ['X01 ' + i18n(context, 'triangle_output_incenter'), buildCoordinate(_currentCoordsC.format, LatLng(_innercircleMap.x, _innercircleMap.y), defaultEllipsoid).toString(6).replaceAll('\n', '   '),],
       ['X02 ' + i18n(context, 'triangle_output_centroid'), buildCoordinate(_currentCoordsC.format, _centroidMap, defaultEllipsoid).toString(6).replaceAll('\n', '   '),],
       ['X03 ' + i18n(context, 'triangle_output_circumcenter'), buildCoordinate(_currentCoordsC.format, LatLng(_outercircleMap.x, _outercircleMap.y), defaultEllipsoid).toString(6).replaceAll('\n', '   '),],
+      ['X04 ' + i18n(context, 'triangle_output_altitude'), buildCoordinate(_currentCoordsC.format, _orthocenterMap, defaultEllipsoid).toString(6).replaceAll('\n', '   '),],
+      ['X17 ' + i18n(context, 'triangle_output_napoleon_outer'), buildCoordinate(_currentCoordsC.format, _napoleon1Map, defaultEllipsoid).toString(6).replaceAll('\n', '   '),],
+      ['X18 ' + i18n(context, 'triangle_output_napoleon_inner'), buildCoordinate(_currentCoordsC.format, _napoleon2Map, defaultEllipsoid).toString(6).replaceAll('\n', '   '),],
     ];
 
     _outputCircles = [

@@ -1,8 +1,13 @@
 import 'dart:math';
 
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_constants.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/centroid/centroid_center_of_gravity/logic/centroid_center_of_gravity.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
+import 'package:gc_wizard/tools/coords/equilateral_triangle/logic/equilateral_triangle.dart';
+import 'package:gc_wizard/tools/coords/intersect_lines/intersect_four_points/logic/intersect_four_points.dart';
 import 'package:gc_wizard/tools/coords/segment_line/logic/segment_line.dart';
 import 'package:latlong2/latlong.dart';
 import 'dart:typed_data';

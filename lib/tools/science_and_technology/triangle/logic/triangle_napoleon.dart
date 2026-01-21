@@ -24,7 +24,7 @@ XYPoint multiplyWithOmega2(XYPoint p) {
 }
 
 /// Innerer Napoleonpunkt
-XYPoint triangleNapoleonInner(XYPoint a, XYPoint b, XYPoint c) {
+XYPoint triangleNapoleonInnerXY(XYPoint a, XYPoint b, XYPoint c) {
   final bOmega = multiplyWithOmega(b);
   final cOmega2 = multiplyWithOmega2(c);
 
@@ -32,10 +32,58 @@ XYPoint triangleNapoleonInner(XYPoint a, XYPoint b, XYPoint c) {
 }
 
 /// Äußerer Napoleonpunkt
-XYPoint triangleNapoleonOuter(XYPoint a, XYPoint b, XYPoint c) {
+XYPoint triangleNapoleonOuterXY(XYPoint a, XYPoint b, XYPoint c) {
   // ω und ω² werden vertauscht
   final bOmega2 = multiplyWithOmega2(b);
   final cOmega = multiplyWithOmega(c);
 
   return (a + bOmega2 + cOmega) / 3.0;
 }
+
+Map<String, LatLng> _napoleonPoints(LatLng A, LatLng B, LatLng C) {
+  List<LatLng> pointsA = equilateralTriangle(B, C, defaultEllipsoid);
+  List<LatLng> pointsB = equilateralTriangle(C, A, defaultEllipsoid);
+  print(buildCoordinate(CoordinateFormat(CoordinateFormatKey.DMM), pointsA[0], defaultEllipsoid).toString().replaceAll('\n', '   '));
+  print(buildCoordinate(CoordinateFormat(CoordinateFormatKey.DMM), pointsA[1], defaultEllipsoid).toString().replaceAll('\n', '   '));
+  print(buildCoordinate(CoordinateFormat(CoordinateFormatKey.DMM), pointsB[0], defaultEllipsoid).toString().replaceAll('\n', '   '));
+  print(buildCoordinate(CoordinateFormat(CoordinateFormatKey.DMM), pointsB[1], defaultEllipsoid).toString().replaceAll('\n', '   '));
+
+
+  LatLng NACout;
+  LatLng NACin;
+  LatLng NBCout;
+  LatLng NBCin;
+
+  if (distanceBearing(A, pointsA[0], defaultEllipsoid).distance >
+      distanceBearing(A, pointsA[1], defaultEllipsoid).distance) {
+    NBCout = centroidCenterOfGravity([B, C, pointsA[0]])!;
+    NBCin = centroidCenterOfGravity([B, C, pointsA[1]])!;
+  } else {
+    NBCout = centroidCenterOfGravity([B, C, pointsA[1]])!;
+    NBCin = centroidCenterOfGravity([B, C, pointsA[0]])!;
+  }
+
+  if (distanceBearing(B, pointsB[0], defaultEllipsoid).distance >
+      distanceBearing(B, pointsB[1], defaultEllipsoid).distance) {
+    NACout = centroidCenterOfGravity([A, C, pointsB[0]])!;
+    NACin = centroidCenterOfGravity([A, C, pointsB[1]])!;
+  } else {
+    NACout = centroidCenterOfGravity([A, C, pointsB[1]])!;
+    NACin = centroidCenterOfGravity([A, C, pointsB[0]])!;
+  }
+
+  return {
+    'inner' : intersectFourPoints(NACin, B, NBCin, A, defaultEllipsoid),
+    'outer': intersectFourPoints(NACout, B, NBCout, A, defaultEllipsoid),
+  };
+}
+
+
+LatLng triangleNapoleonInnerMap(LatLng A, LatLng B, LatLng C) {
+  return _napoleonPoints(A, B, C)['inner']!;
+}
+
+LatLng triangleNapoleonOuterMap(LatLng A, LatLng B, LatLng C) {
+    return _napoleonPoints(A, B, C)["outer"]!;
+}
+
