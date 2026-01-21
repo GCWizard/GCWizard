@@ -10,7 +10,10 @@ import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
+import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:gc_wizard/tools/science_and_technology/triangle/logic/triangle.dart';
 
@@ -22,6 +25,13 @@ class Triangle extends StatefulWidget {
 }
 
 class TriangleState extends State<Triangle> {
+
+  GCWSwitchPosition _currentMode = GCWSwitchPosition.left;
+  GCWSwitchPosition _currentMapMode = GCWSwitchPosition.left;
+
+  var _currentCoordsA = defaultBaseCoordinate;
+  var _currentCoordsB = defaultBaseCoordinate;
+  var _currentCoordsC = defaultBaseCoordinate;
 
   late TextEditingController _AxController;
   late TextEditingController _AyController;
@@ -70,7 +80,8 @@ class TriangleState extends State<Triangle> {
 
   Uint8List _triangleImage = Uint8List.fromList([]);
 
-  bool _isCalculatedData = false;
+  bool _isCalculatedDataXY = false;
+  bool _isCalculatedDataMap = false;
   bool _isCalculatedImage = false;
 
   int _sidesAnglesData = 0;
@@ -100,13 +111,25 @@ class TriangleState extends State<Triangle> {
   @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
-      _buildInputWidgetABC(),
+      GCWTwoOptionsSwitch(
+        leftValue: i18n(context, 'triangle_input_xy'),
+        rightValue: i18n(context, 'triangle_input_coordinate'),
+        value: _currentMode,
+          onChanged: (value) {
+            setState(() {
+              _currentMode = value;
+            });
+          },
+      ),
+      _currentMode == GCWSwitchPosition.left
+      ? _buildInputWidgetABC()
+      : _buildInputWidgetMap(),
       GCWSubmitButton(
         onPressed: () {
           setState(() {
             if (_allBasicDataAvailable()) {
               _createAdditionalData();
-              _isCalculatedData = true;
+              _isCalculatedDataXY = true;
               _isCalculatedImage = false;
             }
           });
@@ -115,6 +138,56 @@ class TriangleState extends State<Triangle> {
       GCWTextDivider(text: i18n(context, 'common_output')),
       _buildOutput(context)
     ]);
+  }
+
+  Widget _buildInputWidgetMap(){
+    return Column(
+      children: [
+        GCWCoords(
+          title: i18n(context, 'A'),
+          coordsFormat: _currentCoordsA.format,
+          onChanged: (ret) {
+            setState(() {
+              if (ret != null) {
+                _currentCoordsA = ret;
+              }
+            });
+          },
+        ),
+        GCWCoords(
+          title: i18n(context, 'B'),
+          coordsFormat: _currentCoordsA.format,
+          onChanged: (ret) {
+            setState(() {
+              if (ret != null) {
+                _currentCoordsA = ret;
+              }
+            });
+          },
+        ),
+        GCWCoords(
+          title: i18n(context, 'C'),
+          coordsFormat: _currentCoordsA.format,
+          onChanged: (ret) {
+            setState(() {
+              if (ret != null) {
+                _currentCoordsA = ret;
+              }
+            });
+          },
+        ),
+        GCWTwoOptionsSwitch(
+          leftValue: i18n(context, 'triangle_input_map_orthodrome'),
+          rightValue: i18n(context, 'triangle_input_map_loxodrome'),
+          value: _currentMapMode,
+          onChanged: (value) {
+            setState(() {
+              _currentMapMode = value;
+            });
+          },
+        ),
+      ],
+    );
   }
 
   Widget _buildInputWidgetABC() {
@@ -254,7 +327,25 @@ class TriangleState extends State<Triangle> {
   }
 
   Widget _buildOutput(BuildContext context) {
-    if (_isCalculatedData) {
+    if (_currentMode == GCWSwitchPosition.left) {
+      return _buildOutputXY(context);
+    } else {
+      return _buildOutputMap(context);
+    }
+  }
+
+  Widget _buildOutputMap(BuildContext context) {
+    if (_isCalculatedDataMap) {
+      return Container();
+    }  else {
+      return GCWOutputText(
+        text: i18n(context, 'triangle_hint_data_missing'),
+      );
+    }
+  }
+
+  Widget _buildOutputXY(BuildContext context) {
+    if (_isCalculatedDataXY) {
       return Column(children: <Widget>[
         Column(
           children: <Widget>[
@@ -309,16 +400,16 @@ class TriangleState extends State<Triangle> {
       y: double.parse(_currentCyInput),
     );
 
-    _angles = triangleAngles(_A, _B, _C)!;
-    _sides = triangleSides(_A, _B, _C);
-    _medians = triangleMedians(_A, _B, _C);
-    _altitudes = triangleAltitudes(_A, _B, _C);
-    _anglebisector = triangleAngleBiSectors(_A, _B, _C);
-    _centroid = triangleCentroid(_A, _B, _C);
-    _orthocenter = triangleOrthocenter(_A, _B, _C);
-    _innercircle = triangleInCircle(_A, _B, _C);
-    _outercircle = triangleCircumCircle(_A, _B, _C);
-    _feuerbachcircle = triangleFeuerbachCircle(_A, _B, _C);
+    _angles = triangleAnglesXY(_A, _B, _C)!;
+    _sides = triangleSidesXY(_A, _B, _C);
+    _medians = triangleMediansXY(_A, _B, _C);
+    _altitudes = triangleAltitudesXY(_A, _B, _C);
+    _anglebisector = triangleAngleBiSectorsXY(_A, _B, _C);
+    _centroid = triangleCentroidXY(_A, _B, _C);
+    _orthocenter = triangleOrthocenterXY(_A, _B, _C);
+    _innercircle = triangleInCircleXY(_A, _B, _C);
+    _outercircle = triangleCircumCircleXY(_A, _B, _C);
+    _feuerbachcircle = triangleFeuerbachCircleXY(_A, _B, _C);
     _gergonne = triangleGergonne(_A, _B, _C);
     _lemoine = triangleLemoine(_A, _B, _C);
     _nagel = triangleNagel(_A, _B, _C);
@@ -327,9 +418,9 @@ class TriangleState extends State<Triangle> {
     _spieker = triangleSpieker(_A, _B, _C);
     _feuerbach = triangleFeuerbach(_A, _B, _C);
     _mitten = triangleMitten(_A, _B, _C);
-    _exCircle = triangleExCircles(_A, _B, _C);
-    _sidesMidPoint = triangleSidesMidPoints(_A, _B, _C);
-    _altitudesBasePoint = triangleAltitudesBasePoints(_A, _B, _C);
+    _exCircle = triangleExCirclesXY(_A, _B, _C);
+    _sidesMidPoint = triangleSidesMidPointsXY(_A, _B, _C);
+    _altitudesBasePoint = triangleAltitudesBasePointsXY(_A, _B, _C);
 
     _outputBasicData = [
       [
@@ -364,11 +455,11 @@ class TriangleState extends State<Triangle> {
       ],
       [
         i18n(context, 'triangle_output_circumference'),
-        triangleCircumference(_A, _B, _C).toStringAsFixed(3),
+        triangleCircumferenceXY(_A, _B, _C).toStringAsFixed(3),
         null,
         null
       ],
-      [i18n(context, 'triangle_output_area'), triangleArea(_A, _B, _C).toStringAsFixed(3), null, null],
+      [i18n(context, 'triangle_output_area'), triangleAreaXY(_A, _B, _C).toStringAsFixed(3), null, null],
     ];
     _outputDataPointsSidesMidPoint = [
       [null, i18n(context, 'triangle_output_x'), i18n(context, 'triangle_output_y'), null],
@@ -506,8 +597,8 @@ class TriangleState extends State<Triangle> {
       alpha: _angles.alpha,
       beta: _angles.beta,
       gamma: _angles.gamma,
-      area: triangleArea(_A, _B, _C),
-      circumference: triangleCircumference(_A, _B, _C),
+      area: triangleAreaXY(_A, _B, _C),
+      circumference: triangleCircumferenceXY(_A, _B, _C),
       CG: _centroid,
       F: _feuerbach,
       L: _lemoine,
@@ -570,7 +661,7 @@ class TriangleState extends State<Triangle> {
           GCWSubmitButton(
             onPressed: () {
               setState(() {
-                if (_isCalculatedData) {
+                if (_isCalculatedDataXY) {
                   _createGraphicOutput();
                   _isCalculatedImage = true;
                 }

@@ -3,7 +3,7 @@ part of 'package:gc_wizard/tools/science_and_technology/triangle/logic/triangle.
 XYPoint triangleGergonne(XYPoint A, XYPoint B, XYPoint C){
   // https://de.wikipedia.org/wiki/Gergonne-Punkt
   // https://mathworld.wolfram.com/GergonnePoint.html
-  XYCircle MC = triangleInCircle(A, B, C);
+  XYCircle MC = triangleInCircleXY(A, B, C);
   XYPoint M = XYPoint(x: MC.x, y: MC.y);
   XYPoint X = intersectVectors(
       XYLine(P1: B, P2: _vectorAB(B, C)),

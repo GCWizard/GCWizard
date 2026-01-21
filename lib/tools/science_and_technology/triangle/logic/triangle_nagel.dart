@@ -3,7 +3,7 @@ part of 'package:gc_wizard/tools/science_and_technology/triangle/logic/triangle.
 XYPoint triangleNagel(XYPoint A, XYPoint B, XYPoint C){
   // https://de.wikipedia.org/wiki/Nagel-Punkt
 
-  Sides sides = triangleSides(A, B, C);
+  Sides sides = triangleSidesXY(A, B, C);
 
   double ac = (sides.a - sides.b + sides.c) / 2;
   double ab = (sides.a + sides.b - sides.c) / 2;

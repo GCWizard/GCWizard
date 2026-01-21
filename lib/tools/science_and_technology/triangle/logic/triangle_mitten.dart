@@ -4,8 +4,8 @@ XYPoint triangleMitten(XYPoint A, XYPoint B, XYPoint C){
   // https://de.wikipedia.org/wiki/Mittenpunkt
   // https://mathworld.wolfram.com/Mittenpunkt.html
 
-  List<XYPoint> sidesmidpoint = triangleSidesMidPoints(A, B, C);
-  List<XYCircle> excircles = triangleExCircles(A, B, C);
+  List<XYPoint> sidesmidpoint = triangleSidesMidPointsXY(A, B, C);
+  List<XYCircle> excircles = triangleExCirclesXY(A, B, C);
 
   XYPoint M = intersectVectors(
       XYLine(

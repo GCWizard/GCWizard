@@ -40,6 +40,12 @@ Future<Uint8List > triangleData2Image({
   const BOUNDS = 100.0;
   const SCALE = 100.0;
 
+  const POINT = 2.0;
+  const LINE = 2.0;
+
+  const LABELLENGTH = 30;
+  const DIST = '     ';
+
   double minX = 0;
   double maxX = 0;
   double minY = 0;
@@ -103,7 +109,7 @@ Future<Uint8List > triangleData2Image({
   final paint = Paint()
     ..color = Colors.white
     ..style = PaintingStyle.fill
-    ..strokeWidth = 2.0;
+    ..strokeWidth = LINE;
 
   canvas.drawRect(Rect.fromLTWH(0, 0, width, height), paint);
 
@@ -152,14 +158,16 @@ Future<Uint8List > triangleData2Image({
     i++;
   }
 
-  // draw sides a bc
-  paint.color = Colors.orange.shade900;
+  // colors according to https://de.wikipedia.org/wiki/Ausgezeichnete_Punkte_im_Dreieck#/media/Datei:Linien_am_Dreieck.svg
+
+  // draw sides a b c
+  paint.color = Colors.blueAccent;
   canvas.drawLine(Offset(A.x * SCALE + offsetX, A.y * SCALE + offsetY), Offset(B.x * SCALE + offsetX, B.y * SCALE + offsetY), paint);
   canvas.drawLine(Offset(B.x * SCALE + offsetX, B.y * SCALE + offsetY), Offset(C.x * SCALE + offsetX, C.y * SCALE + offsetY), paint);
   canvas.drawLine(Offset(C.x * SCALE + offsetX, C.y * SCALE + offsetY), Offset(A.x * SCALE + offsetX, A.y * SCALE + offsetY), paint);
 
-  // draw altitudes
-  paint.color = Colors.orange.shade700;
+  // draw altitudes ha hb hc
+  paint.color = Colors.orange;
   canvas.drawLine(Offset(A.x * SCALE + offsetX, A.y * SCALE + offsetY), Offset(AA.x * SCALE + offsetX, AA.y * SCALE + offsetY), paint);
   canvas.drawLine(Offset(B.x * SCALE + offsetX, B.y * SCALE + offsetY), Offset(AB.x * SCALE + offsetX, AB.y * SCALE + offsetY), paint);
   canvas.drawLine(Offset(C.x * SCALE + offsetX, C.y * SCALE + offsetY), Offset(AC.x * SCALE + offsetX, AC.y * SCALE + offsetY), paint);
@@ -172,47 +180,47 @@ Future<Uint8List > triangleData2Image({
 
   // draw Special Points
   paint.style = PaintingStyle.stroke;
-  paint.color = Colors.blue;
-  canvas.drawCircle(Offset(F.x * SCALE + offsetX, F.y * SCALE + offsetY), 1.0, paint);
-  canvas.drawCircle(Offset(G.x * SCALE + offsetX, G.y * SCALE + offsetY), 1.0, paint);
-  canvas.drawCircle(Offset(S.x * SCALE + offsetX, S.y * SCALE + offsetY), 1.0, paint);
-  canvas.drawCircle(Offset(O.x * SCALE + offsetX, O.y * SCALE + offsetY), 1.0, paint);
-  canvas.drawCircle(Offset(L.x * SCALE + offsetX, L.y * SCALE + offsetY), 1.0, paint);
-  canvas.drawCircle(Offset(M.x * SCALE + offsetX, M.y * SCALE + offsetY), 1.0, paint);
-  canvas.drawCircle(Offset(N.x * SCALE + offsetX, N.y * SCALE + offsetY), 1.0, paint);
-  canvas.drawCircle(Offset(N1.x * SCALE + offsetX, N1.y * SCALE + offsetY), 1.0, paint);
-  canvas.drawCircle(Offset(N2.x * SCALE + offsetX, N2.y * SCALE + offsetY), 1.0, paint);
-  canvas.drawCircle(Offset(CG.x * SCALE + offsetX, CG.y * SCALE + offsetY), 1.0, paint);
+  paint.color = Colors.red;
+  canvas.drawCircle(Offset(F.x * SCALE + offsetX, F.y * SCALE + offsetY), POINT, paint);
+  canvas.drawCircle(Offset(G.x * SCALE + offsetX, G.y * SCALE + offsetY), POINT, paint);
+  canvas.drawCircle(Offset(S.x * SCALE + offsetX, S.y * SCALE + offsetY), POINT, paint);
+  canvas.drawCircle(Offset(O.x * SCALE + offsetX, O.y * SCALE + offsetY), POINT, paint);
+  canvas.drawCircle(Offset(L.x * SCALE + offsetX, L.y * SCALE + offsetY), POINT, paint);
+  canvas.drawCircle(Offset(M.x * SCALE + offsetX, M.y * SCALE + offsetY), POINT, paint);
+  canvas.drawCircle(Offset(N.x * SCALE + offsetX, N.y * SCALE + offsetY), POINT, paint);
+  canvas.drawCircle(Offset(N1.x * SCALE + offsetX, N1.y * SCALE + offsetY), POINT, paint);
+  canvas.drawCircle(Offset(N2.x * SCALE + offsetX, N2.y * SCALE + offsetY), POINT, paint);
+  canvas.drawCircle(Offset(CG.x * SCALE + offsetX, CG.y * SCALE + offsetY), POINT, paint);
 
   // draw Mid side base Points
   paint.color = Colors.green.shade700;
-  canvas.drawCircle(Offset(MSA.x * SCALE + offsetX, MSA.y * SCALE + offsetY), 1.0, paint);
-  canvas.drawCircle(Offset(MSB.x * SCALE + offsetX, MSB.y * SCALE + offsetY), 1.0, paint);
-  canvas.drawCircle(Offset(MSC.x * SCALE + offsetX, MSC.y * SCALE + offsetY), 1.0, paint);
+  canvas.drawCircle(Offset(MSA.x * SCALE + offsetX, MSA.y * SCALE + offsetY), POINT, paint);
+  canvas.drawCircle(Offset(MSB.x * SCALE + offsetX, MSB.y * SCALE + offsetY), POINT, paint);
+  canvas.drawCircle(Offset(MSC.x * SCALE + offsetX, MSC.y * SCALE + offsetY), POINT, paint);
 
   // draw Altitude base Points
-  paint.color = Colors.green.shade500;
-  canvas.drawCircle(Offset(AA.x * SCALE + offsetX, AA.y * SCALE + offsetY), 1.0, paint);
-  canvas.drawCircle(Offset(AB.x * SCALE + offsetX, AB.y * SCALE + offsetY), 1.0, paint);
-  canvas.drawCircle(Offset(AC.x * SCALE + offsetX, AC.y * SCALE + offsetY), 1.0, paint);
+  paint.color = Colors.orange;
+  canvas.drawCircle(Offset(AA.x * SCALE + offsetX, AA.y * SCALE + offsetY), POINT, paint);
+  canvas.drawCircle(Offset(AB.x * SCALE + offsetX, AB.y * SCALE + offsetY), POINT, paint);
+  canvas.drawCircle(Offset(AC.x * SCALE + offsetX, AC.y * SCALE + offsetY), POINT, paint);
 
   // draw Circles
   paint.color = Colors.red.shade900;
-  canvas.drawCircle(Offset(IC.x * SCALE + offsetX, IC.y * SCALE + offsetY), 1.0, paint);
+  canvas.drawCircle(Offset(IC.x * SCALE + offsetX, IC.y * SCALE + offsetY), POINT, paint);
   canvas.drawCircle(Offset(IC.x * SCALE + offsetX, IC.y * SCALE + offsetY), IC.r * SCALE, paint);
   paint.color = Colors.red.shade600;
-  canvas.drawCircle(Offset(CC.x * SCALE + offsetX, CC.y * SCALE + offsetY), 1.0, paint);
+  canvas.drawCircle(Offset(CC.x * SCALE + offsetX, CC.y * SCALE + offsetY), POINT, paint);
   canvas.drawCircle(Offset(CC.x * SCALE + offsetX, CC.y * SCALE + offsetY), CC.r * SCALE, paint);
   paint.color = Colors.red.shade400;
-  canvas.drawCircle(Offset(EA.x * SCALE + offsetX, EA.y * SCALE + offsetY), 1.0, paint);
+  canvas.drawCircle(Offset(EA.x * SCALE + offsetX, EA.y * SCALE + offsetY), POINT, paint);
   canvas.drawCircle(Offset(EA.x * SCALE + offsetX, EA.y * SCALE + offsetY), EA.r * SCALE, paint);
-  canvas.drawCircle(Offset(EB.x * SCALE + offsetX, EB.y * SCALE + offsetY), 1.0, paint);
+  canvas.drawCircle(Offset(EB.x * SCALE + offsetX, EB.y * SCALE + offsetY), POINT, paint);
   canvas.drawCircle(Offset(EB.x * SCALE + offsetX, EB.y * SCALE + offsetY), EB.r * SCALE, paint);
-  canvas.drawCircle(Offset(EC.x * SCALE + offsetX, EC.y * SCALE + offsetY), 1.0, paint);
+  canvas.drawCircle(Offset(EC.x * SCALE + offsetX, EC.y * SCALE + offsetY), POINT, paint);
   canvas.drawCircle(Offset(EC.x * SCALE + offsetX, EC.y * SCALE + offsetY), EC.r * SCALE, paint);
 
   paint.color = Colors.purple;
-  canvas.drawCircle(Offset(FC.x * SCALE + offsetX, FC.y * SCALE + offsetY), 1.0, paint);
+  canvas.drawCircle(Offset(FC.x * SCALE + offsetX, FC.y * SCALE + offsetY), POINT, paint);
   canvas.drawCircle(Offset(FC.x * SCALE + offsetX, FC.y * SCALE + offsetY), FC.r * SCALE, paint);
 
   // draw legend
@@ -220,35 +228,45 @@ Future<Uint8List > triangleData2Image({
   final paragraphBuilder = ui.ParagraphBuilder(paragraphStyle)
     ..pushStyle(textStyle)
     ..addText(
-                'A'.padLeft(20, ' ') + ' (' + A.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + A.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                'B'.padLeft(20, ' ') + ' (' + B.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + B.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                'C'.padLeft(20, ' ') + ' (' + C.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + C.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                labels[0].padLeft(20, ' ') + ' ' + a.toStringAsFixed(2) + ', ' + b.toStringAsFixed(2) + ', ' + c.toStringAsFixed(2) + '\n' +
-                labels[1].padLeft(20, ' ') + ' ' +  alpha.toStringAsFixed(2) + ', ' + beta.toStringAsFixed(2) + ', ' + gamma.toStringAsFixed(2) + '\n' +
-                labels[2].padLeft(20, ' ') + ' ' +  area.toStringAsFixed(2) + '\n' +
-                labels[3].padLeft(20, ' ') + ' ' +  circumference.toStringAsFixed(2) + '\n' +
+                'A'.padLeft(LABELLENGTH, ' ') + DIST + '(' + A.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + A.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                'B'.padLeft(LABELLENGTH, ' ') + DIST + '(' + B.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + B.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                'C'.padLeft(LABELLENGTH, ' ') + DIST + '(' + C.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + C.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
                 '\n' +
-                (labels[4] + ' a').padLeft(20, ' ') + ' (' + MSA.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + MSA.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                (labels[4] + ' b').padLeft(20, ' ') + ' (' + MSB.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + MSB.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                (labels[4] + ' c').padLeft(20, ' ') + ' (' + MSC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + MSC.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                labels[0] + '\n' +
+                    'a'.padLeft(LABELLENGTH, ' ') + DIST +  a.toStringAsFixed(2) + '\n' +
+                    'b'.padLeft(LABELLENGTH, ' ') + DIST +  b.toStringAsFixed(2) + '\n' +
+                    'c'.padLeft(LABELLENGTH, ' ') + DIST +  c.toStringAsFixed(2) + '\n' +
+                labels[1] + '\n' +
+                    'α'.padLeft(LABELLENGTH, ' ') + DIST +  alpha.toStringAsFixed(2) + '\n' +
+                    'β'.padLeft(LABELLENGTH, ' ') + DIST +  beta.toStringAsFixed(2) + '\n' +
+                    'γ'.padLeft(LABELLENGTH, ' ') + DIST +  gamma.toStringAsFixed(2) + '\n' +
                 '\n' +
-                (labels[5] + ' a').padLeft(20, ' ') + ' (' + AA.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + AA.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                (labels[5] + ' b').padLeft(20, ' ') + ' (' + AB.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + AB.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                (labels[5] + ' c').padLeft(20, ' ') + ' (' + AC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + AC.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                labels[2].padLeft(LABELLENGTH, ' ') + DIST +   area.toStringAsFixed(2) + '\n' +
+                labels[3].padLeft(LABELLENGTH, ' ') + DIST +   circumference.toStringAsFixed(2) + '\n' +
                 '\n' +
-                labels[6].padLeft(20, ' ') + ' (' + CG.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + CG.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                labels[7].padLeft(20, ' ') + ' (' + O.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + O.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                labels[4] + '\n' +
+                    'a'.padLeft(LABELLENGTH, ' ') + DIST + '(' + MSA.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + MSA.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                    'b'.padLeft(LABELLENGTH, ' ') + DIST + '(' + MSB.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + MSB.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                    'c'.padLeft(LABELLENGTH, ' ') + DIST + '(' + MSC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + MSC.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
                 '\n' +
-                labels[8].padLeft(20, ' ') + ' (' + L.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + L.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                labels[9].padLeft(20, ' ') + ' (' + G.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + G.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                labels[10].padLeft(20, ' ') + ' (' + N.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + N.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                labels[11].padLeft(20, ' ') + ' (' + N1.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + N1.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                labels[12].padLeft(20, ' ') + ' (' + N2.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + N2.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                labels[13].padLeft(20, ' ') + ' (' + M.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + M.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                labels[14].padLeft(20, ' ') + ' (' + S.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + S.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                labels[15].padLeft(20, ' ') + ' (' + F.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + F.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                labels[16].padLeft(20, ' ') + ' (' + IC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + IC.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                labels[17].padLeft(20, ' ') + ' (' + CC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + CC.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                labels[5] + '\n' +
+                    'a'.padLeft(LABELLENGTH, ' ') + DIST + '(' + AA.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + AA.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                    'b'.padLeft(LABELLENGTH, ' ') + DIST + '(' + AB.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + AB.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                    'c'.padLeft(LABELLENGTH, ' ') + DIST + '(' + AC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + AC.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                '\nClark Kimberling, Encyclopedia of Triangle Centers\n' +
+                (labels[16] + ' X01').padLeft(LABELLENGTH, ' ') + DIST + '(' + IC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + IC.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                (labels[6] + ' X02').padLeft(LABELLENGTH, ' ') + DIST + '(' + CG.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + CG.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                (labels[17] + ' X03').padLeft(LABELLENGTH, ' ') + DIST + '(' + CC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + CC.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                (labels[7] + ' X04').padLeft(LABELLENGTH, ' ') + DIST + '(' + O.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + O.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                (labels[21] + ' X05').padLeft(LABELLENGTH, ' ') + DIST + '(' + FC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + FC.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                (labels[8] + ' X06').padLeft(LABELLENGTH, ' ') + DIST + '(' + L.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + L.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                (labels[9] + ' X07').padLeft(LABELLENGTH, ' ') + DIST + '(' + G.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + G.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                (labels[10] + ' X08').padLeft(LABELLENGTH, ' ') + DIST + '(' + N.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + N.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                (labels[13] + ' X09').padLeft(LABELLENGTH, ' ') + DIST + '(' + M.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + M.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                (labels[14] + ' X10').padLeft(LABELLENGTH, ' ') + DIST + '(' + S.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + S.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                (labels[15] + ' X11').padLeft(LABELLENGTH, ' ') + DIST + '(' + F.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + F.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                (labels[11] + ' X17').padLeft(LABELLENGTH, ' ') + DIST + '(' + N1.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + N1.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                (labels[12] + ' X18').padLeft(LABELLENGTH, ' ') + DIST + '(' + N2.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + N2.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
                 '\n' +
                     ''
     );

@@ -3,8 +3,8 @@ part of 'package:gc_wizard/tools/science_and_technology/triangle/logic/triangle.
 XYPoint triangleFeuerbach(XYPoint A, XYPoint B, XYPoint C){
   // https://de.wikipedia.org/wiki/Feuerbachkreis
 
-  XYCircle incircle = triangleInCircle(A, B, C);
-  XYCircle feuerbachcircle = triangleFeuerbachCircle(A, B, C);
+  XYCircle incircle = triangleInCircleXY(A, B, C);
+  XYCircle feuerbachcircle = triangleFeuerbachCircleXY(A, B, C);
 
   List<XYPoint> feuerbachpoints = intersectTwoCircles(incircle, feuerbachcircle);
 
