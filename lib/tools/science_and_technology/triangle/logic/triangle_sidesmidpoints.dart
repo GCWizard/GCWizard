@@ -15,14 +15,3 @@ List<XYPoint> triangleSidesMidPointsXY(XYPoint A, XYPoint B, XYPoint C,){
 
   return sidesMidpoint;
 }
-
-
-List<LatLng> triangleSidesMidPointsMap(LatLng A, LatLng B, LatLng C){
-  List<LatLng> sidesMidPoint = [];
-
-  sidesMidPoint.add(segmentLine(A, B, 2, defaultEllipsoid).points[0]);
-  sidesMidPoint.add(segmentLine(C, B, 2, defaultEllipsoid).points[0]);
-  sidesMidPoint.add(segmentLine(A, C, 2, defaultEllipsoid).points[0]);
-
-  return sidesMidPoint;
-}

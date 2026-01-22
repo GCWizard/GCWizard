@@ -149,6 +149,7 @@ import 'package:gc_wizard/tools/coords/rhumb_line/widget/rhumbline_waypoint_proj
 import 'package:gc_wizard/tools/coords/segment_bearings/widget/segment_bearings.dart';
 import 'package:gc_wizard/tools/coords/segment_line/widget/segment_line.dart';
 import 'package:gc_wizard/tools/coords/triangles/napoleon/widget/napoleon.dart';
+import 'package:gc_wizard/tools/coords/triangles/sidesmidpoint/widget/sidesmidpoint.dart';
 import 'package:gc_wizard/tools/coords/variable_coordinate/widget/variable_coordinate_formulas.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/widget/waypoint_projection_geodetic.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/abaddon/widget/abaddon.dart';
@@ -3955,7 +3956,13 @@ void initializeRegistry(BuildContext context) {
           'triangle',
         ],
         ),
-
+    GCWTool(
+      tool: const SideMidPoints(),
+      id: 'triangle_point_sidesmidpoint',
+      searchKeys: const [
+        'triangle',
+      ],
+    ),
 
     //Easter Selection ***************************************************************************************
     GCWTool(

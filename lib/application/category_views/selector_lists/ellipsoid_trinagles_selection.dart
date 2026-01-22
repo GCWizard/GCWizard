@@ -4,6 +4,7 @@ import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/application/tools/widget/gcw_toollist.dart';
 import 'package:gc_wizard/common_widgets/gcw_selection.dart';
 import 'package:gc_wizard/tools/coords/triangles/napoleon/widget/napoleon.dart';
+import 'package:gc_wizard/tools/coords/triangles/sidesmidpoint/widget/sidesmidpoint.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class EllipsoidTrianglePointsSelection extends GCWSelection {
@@ -14,7 +15,7 @@ class EllipsoidTrianglePointsSelection extends GCWSelection {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
         className(NapoleonPoints()),
-
+        className(SideMidPoints()),
       ].contains(className(element.tool));
     }).toList();
 
