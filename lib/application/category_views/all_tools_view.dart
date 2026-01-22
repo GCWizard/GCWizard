@@ -842,7 +842,7 @@ void _initStaticToolList() {
       className(const TomTomSelection()),
       className(const TowerOfHanoi()),
       className(const TupperFormula()),
-      className(const Triangle()),
+      className(const EuclidicTriangle()),
       className(const Trifid()),
       className(const Trithemius()),
       className(const TTS()),

@@ -1,41 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
-
 import 'package:gc_wizard/application/theme/theme.dart';
-import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:gc_wizard/common_widgets/gcw_toolbar.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
-import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
-import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
-import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
-import 'package:gc_wizard/tools/coords/map_view/widget/gcw_mapview.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:gc_wizard/tools/science_and_technology/triangle/logic/triangle.dart';
-import 'package:latlong2/latlong.dart';
 
-class Triangle extends StatefulWidget {
-  const Triangle({super.key});
+class EuclidicTriangle extends StatefulWidget {
+  const EuclidicTriangle({super.key});
 
   @override
-  TriangleState createState() => TriangleState();
+  EuclidicTriangleState createState() => EuclidicTriangleState();
 }
 
-class TriangleState extends State<Triangle> {
-  GCWSwitchPosition _currentMode = GCWSwitchPosition.left;
-
-  var _currentCoordsA = defaultBaseCoordinate;
-  var _currentCoordsB = defaultBaseCoordinate;
-  var _currentCoordsC = defaultBaseCoordinate;
+class EuclidicTriangleState extends State<EuclidicTriangle> {
 
   late TextEditingController _AxController;
   late TextEditingController _AyController;
@@ -82,38 +67,9 @@ class TriangleState extends State<Triangle> {
   late List<XYPoint> _sidesMidPoint;
   late List<XYPoint> _altitudesBasePoint;
 
-  late Angles _anglesMap;
-  late Sides _sidesMap;
-  late Sides _mediansMap;
-  late Sides _altitudesMap;
-  late Sides _anglebisectorMap;
-  late LatLng _AMap;
-  late LatLng _BMap;
-  late LatLng _CMap;
-  late LatLng _centroidMap;
-  late LatLng _orthocenterMap;
-  late XYCircle _innercircleMap;
-  late XYCircle _outercircleMap;
-  late XYCircle _feuerbachcircleMap;
-  late LatLng _gergonneMap;
-  late LatLng _lemoineMap;
-  late LatLng _nagelMap;
-  late LatLng _napoleon1Map;
-  late LatLng _napoleon2Map;
-  late LatLng _spiekerMap;
-  late LatLng _feuerbachMap;
-  late LatLng _mittenMap;
-  late List<XYCircle> _exCircleMap;
-  late List<LatLng> _sidesMidPointMap;
-  late List<LatLng> _altitudesBasePointMap;
-
-  late List<GCWMapPoint> _points;
-  late List<GCWMapPolyline> _polylines;
-
   Uint8List _triangleImage = Uint8List.fromList([]);
 
   bool _isCalculatedDataXY = false;
-  bool _isCalculatedDataMap = false;
   bool _isCalculatedImage = false;
 
   @override
@@ -141,19 +97,7 @@ class TriangleState extends State<Triangle> {
   @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
-      GCWTwoOptionsSwitch(
-        leftValue: i18n(context, 'triangle_input_xy'),
-        rightValue: i18n(context, 'triangle_input_coordinate'),
-        value: _currentMode,
-        onChanged: (value) {
-          setState(() {
-            _currentMode = value;
-          });
-        },
-      ),
-      _currentMode == GCWSwitchPosition.left
-          ? _buildInputWidgetABC()
-          : _buildInputWidgetMap(),
+      _buildInputWidgetABC(),
       GCWSubmitButton(
         onPressed: () {
           setState(() {
@@ -167,46 +111,6 @@ class TriangleState extends State<Triangle> {
       GCWTextDivider(text: i18n(context, 'common_output')),
       _buildOutput(context)
     ]);
-  }
-
-  Widget _buildInputWidgetMap() {
-    return Column(
-      children: [
-        GCWCoords(
-          title: 'A',
-          coordsFormat: _currentCoordsA.format,
-          onChanged: (ret) {
-            setState(() {
-              if (ret != null) {
-                _currentCoordsA = ret;
-              }
-            });
-          },
-        ),
-        GCWCoords(
-          title: 'B',
-          coordsFormat: _currentCoordsB.format,
-          onChanged: (ret) {
-            setState(() {
-              if (ret != null) {
-                _currentCoordsB = ret;
-              }
-            });
-          },
-        ),
-        GCWCoords(
-          title: 'C',
-          coordsFormat: _currentCoordsC.format,
-          onChanged: (ret) {
-            setState(() {
-              if (ret != null) {
-                _currentCoordsC = ret;
-              }
-            });
-          },
-        ),
-      ],
-    );
   }
 
   Widget _buildInputWidgetABC() {
@@ -349,79 +253,6 @@ class TriangleState extends State<Triangle> {
   }
 
   Widget _buildOutput(BuildContext context) {
-    if (_currentMode == GCWSwitchPosition.left) {
-      return _buildOutputXY(context);
-    } else {
-      return _buildOutputMap(context);
-    }
-  }
-
-  Widget _buildOutputMap(BuildContext context) {
-    if (_isCalculatedDataMap) {
-      return Column(children: <Widget>[
-        GCWColumnedMultilineOutput(
-            data: [
-              ['A', buildCoordinate(_currentCoordsA.format, _AMap, defaultEllipsoid).toString(6).replaceAll('\n', '   '),],
-              ['B', buildCoordinate(_currentCoordsB.format, _BMap, defaultEllipsoid).toString(6).replaceAll('\n', '   '),],
-              ['C', buildCoordinate(_currentCoordsC.format, _CMap, defaultEllipsoid).toString(6).replaceAll('\n', '   '),],
-            ],
-            flexValues: const [2, 6],
-            copyAll: true),
-        GCWColumnedMultilineOutput(
-            data: _outputBasicData,
-            flexValues: const [2, 1, 1, 1],
-            copyAll: true),
-        GCWTextDivider(
-            suppressTopSpace: false,
-            text: i18n(context, 'triangle_output_sidesmidpoint')),
-        GCWColumnedMultilineOutput(
-            data: _outputDataPointsSidesMidPoint,
-            flexValues: const [4, 6],
-            copyAll: true),
-        GCWExpandableTextDivider(
-          text: i18n(context, 'triangle_output_points'),
-          suppressTopSpace: false,
-          child: GCWColumnedMultilineOutput(
-              data: _outputPoints,
-              flexValues: const [4, 6],
-              copyAll: true),
-        ),
-        GCWExpandableTextDivider(
-          text: i18n(context, 'triangle_output_circles'),
-          suppressTopSpace: false,
-          child: GCWColumnedMultilineOutput(
-              data: _outputCircles,
-              flexValues: const [4, 6, 2],
-              copyAll: true),
-        ),
-        GCWToolBar(
-          children: [
-            GCWButton(
-              text: i18n(context, 'coords_show_on_map'),
-              onPressed: () {
-                openInMap(context, List<GCWMapPoint>.from(_points),
-                    mapPolylines: List<GCWMapPolyline>.from(_polylines));
-              },
-            ),
-            GCWButton(
-              text: i18n(context, 'coords_show_on_openmap'),
-              onPressed: () {
-                openInMap(context, List<GCWMapPoint>.from(_points),
-                    isCommonMap: true,
-                    mapPolylines: List<GCWMapPolyline>.from(_polylines));
-              },
-            )
-          ],
-        )
-      ]);
-    } else {
-      return GCWOutputText(
-        text: i18n(context, 'triangle_hint_data_missing'),
-      );
-    }
-  }
-
-  Widget _buildOutputXY(BuildContext context) {
     if (_isCalculatedDataXY) {
       return Column(children: <Widget>[
         Column(
@@ -472,29 +303,15 @@ class TriangleState extends State<Triangle> {
   }
 
   bool _allBasicDataAvailable() {
-    if (_currentMode == GCWSwitchPosition.left) {
       return (double.tryParse(_currentAxInput) != null &&
           double.tryParse(_currentAyInput) != null &&
           double.tryParse(_currentBxInput) != null &&
           double.tryParse(_currentByInput) != null &&
           double.tryParse(_currentCxInput) != null &&
           double.tryParse(_currentCyInput) != null);
-    } else {
-      return (_currentCoordsA != defaultBaseCoordinate &&
-          _currentCoordsB != defaultBaseCoordinate &&
-          _currentCoordsC != defaultBaseCoordinate);
-    }
   }
 
   void _createAdditionalData() {
-    if (_currentMode == GCWSwitchPosition.left) {
-      _createAdditionalDataXY();
-    } else {
-      _createAdditionalDataMap();
-    }
-  }
-
-  void _createAdditionalDataXY() {
     _isCalculatedDataXY = true;
 
     _A = XYPoint(
@@ -757,96 +574,6 @@ class TriangleState extends State<Triangle> {
         _exCircle[2].y.toStringAsFixed(3),
         _exCircle[2].r.toStringAsFixed(3),
       ],
-    ];
-  }
-
-  void _createAdditionalDataMap() {
-    _isCalculatedDataMap = true;
-    _points = [];
-    _polylines = [];
-
-    _AMap = _currentCoordsA.toLatLng()!;
-    _BMap = _currentCoordsB.toLatLng()!;
-    _CMap = _currentCoordsC.toLatLng()!;
-
-    _points.add(GCWMapPoint(point: _AMap, markerText: 'A', color: Colors.red));
-    _points.add(GCWMapPoint(point: _BMap, markerText: 'B', color: Colors.red));
-    _points.add(GCWMapPoint(point: _CMap, markerText: 'C', color: Colors.red));
-
-    _sidesMap = triangleSidesMap(_AMap, _BMap, _CMap)!;
-
-    _polylines.add(GCWMapPolyline(points: [GCWMapPoint(point: _AMap), GCWMapPoint(point: _BMap)], color: Colors.blueAccent));
-    _polylines.add(GCWMapPolyline(points: [GCWMapPoint(point: _AMap), GCWMapPoint(point: _CMap)], color: Colors.blueAccent));
-    _polylines.add(GCWMapPolyline(points: [GCWMapPoint(point: _CMap), GCWMapPoint(point: _BMap)], color: Colors.blueAccent));
-
-    _anglesMap = triangleAnglesMap(_AMap, _BMap, _CMap)!;
-
-    _sidesMidPointMap = triangleSidesMidPointsMap(_AMap, _BMap, _CMap);
-
-    _points.add(GCWMapPoint(point: _sidesMidPointMap[0], markerText: i18n(context, 'triangle_output_sidesmidpoint') + ' c', color: Colors.green));
-    _points.add(GCWMapPoint(point: _sidesMidPointMap[1], markerText: i18n(context, 'triangle_output_sidesmidpoint') + ' a', color: Colors.green));
-    _points.add(GCWMapPoint(point: _sidesMidPointMap[2], markerText: i18n(context, 'triangle_output_sidesmidpoint') + ' b', color: Colors.green));
-
-    _centroidMap = triangleCentroidMap(_AMap, _BMap, _CMap)!;
-    _points.add(GCWMapPoint(point: _centroidMap, markerText: i18n(context, 'triangle_output_centroid'), color: Colors.red));
-
-    _outercircleMap = triangleCircumCircleMap(_AMap, _BMap, _CMap);
-    _points.add(GCWMapPoint(point: LatLng(_outercircleMap.x, _outercircleMap.y), markerText: i18n(context, 'triangle_output_circumcenter'), color: Colors.lightBlue, circle: GCWMapCircle(centerPoint: LatLng(_outercircleMap.x, _outercircleMap.y), radius: _outercircleMap.r)));
-
-    _innercircleMap = triangleInCircleMap(_AMap, _BMap, _CMap);
-    _points.add(GCWMapPoint(point: LatLng(_innercircleMap.x, _innercircleMap.y), markerText: i18n(context, 'triangle_output_incenter'), color: Colors.lightBlue, circle: GCWMapCircle(centerPoint: LatLng(_innercircleMap.x, _innercircleMap.y), radius: _innercircleMap.r)));
-
-    _orthocenterMap = triangleOrthocenterMap(_AMap, _BMap, _CMap);
-    _points.add(GCWMapPoint(point: _orthocenterMap, markerText: i18n(context, 'triangle_output_altitude'), color: Colors.orange));
-
-    _napoleon1Map = triangleNapoleonOuterMap(_AMap, _BMap, _CMap);
-    _points.add(GCWMapPoint(point: _napoleon1Map, markerText: i18n(context, 'triangle_output_napoleon_outer'), color: Colors.red));
-
-    _napoleon2Map = triangleNapoleonInnerMap(_AMap, _BMap, _CMap);
-    _points.add(GCWMapPoint(point: _napoleon2Map, markerText: i18n(context, 'triangle_output_napoleon_inner'), color: Colors.red));
-
-    _outputBasicData = [
-      [
-        i18n(context, 'triangle_output_sides'),
-        _sidesMap.a.toStringAsFixed(3),
-        _sidesMap.b.toStringAsFixed(3),
-        _sidesMap.c.toStringAsFixed(3)
-      ],
-      [
-        i18n(context, 'triangle_output_angles'),
-        _anglesMap.alpha.toStringAsFixed(3),
-        _anglesMap.beta.toStringAsFixed(3),
-        _anglesMap.gamma.toStringAsFixed(3)
-      ],
-      [
-        i18n(context, 'triangle_output_circumference'),
-        triangleCircumferenceMap(_AMap, _BMap, _CMap).toStringAsFixed(3), null, null, null
-      ],
-      [
-        i18n(context, 'triangle_output_area'),
-        triangleAreaMap(_AMap, _BMap, _CMap).toStringAsFixed(3), null, null, null
-      ],
-    ];
-
-    _outputDataPointsSidesMidPoint = [
-      ['a', buildCoordinate(_currentCoordsC.format, _sidesMidPointMap[1], defaultEllipsoid).toString(6).replaceAll('\n', '   '),],
-      ['b', buildCoordinate(_currentCoordsC.format, _sidesMidPointMap[2], defaultEllipsoid).toString(6).replaceAll('\n', '   '),],
-      ['c', buildCoordinate(_currentCoordsC.format, _sidesMidPointMap[0], defaultEllipsoid).toString(6).replaceAll('\n', '   '),]
-    ];
-
-    _outputPoints = [
-      ['X01 ' + i18n(context, 'triangle_output_incenter'), buildCoordinate(_currentCoordsC.format, LatLng(_innercircleMap.x, _innercircleMap.y), defaultEllipsoid).toString(6).replaceAll('\n', '   '),],
-      ['X02 ' + i18n(context, 'triangle_output_centroid'), buildCoordinate(_currentCoordsC.format, _centroidMap, defaultEllipsoid).toString(6).replaceAll('\n', '   '),],
-      ['X03 ' + i18n(context, 'triangle_output_circumcenter'), buildCoordinate(_currentCoordsC.format, LatLng(_outercircleMap.x, _outercircleMap.y), defaultEllipsoid).toString(6).replaceAll('\n', '   '),],
-      ['X04 ' + i18n(context, 'triangle_output_altitude'), buildCoordinate(_currentCoordsC.format, _orthocenterMap, defaultEllipsoid).toString(6).replaceAll('\n', '   '),],
-      ['X17 ' + i18n(context, 'triangle_output_napoleon_outer'), buildCoordinate(_currentCoordsC.format, _napoleon1Map, defaultEllipsoid).toString(6).replaceAll('\n', '   '),],
-      ['X18 ' + i18n(context, 'triangle_output_napoleon_inner'), buildCoordinate(_currentCoordsC.format, _napoleon2Map, defaultEllipsoid).toString(6).replaceAll('\n', '   '),],
-    ];
-
-    _outputCircles = [
-      [i18n(context, 'triangle_output_circumscribedcircle'), buildCoordinate(_currentCoordsC.format, LatLng(_outercircleMap.x, _outercircleMap.y), defaultEllipsoid).toString(6).replaceAll('\n', '   '),_outercircleMap.r.toStringAsFixed(3)],
-      [i18n(context, 'triangle_output_incircle'), buildCoordinate(_currentCoordsC.format, LatLng(_innercircleMap.x, _innercircleMap.y), defaultEllipsoid).toString(6).replaceAll('\n', '   '),_innercircleMap.r.toStringAsFixed(3)],
-
     ];
   }
 

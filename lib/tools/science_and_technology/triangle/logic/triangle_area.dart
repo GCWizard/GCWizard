@@ -9,18 +9,3 @@ double triangleAreaXY(XYPoint A, XYPoint B, XYPoint C,){
 }
 
 
-/// Fläche eines sphärischen Dreiecks in m²
-double triangleAreaMap(LatLng A, LatLng B, LatLng C) {
-  const R = 6371000.0; // Erdradius in Metern
-
-  final a = latLngToVec3(A);
-  final b = latLngToVec3(B);
-  final c = latLngToVec3(C);
-
-  final angleA = sphericalAngle(a, b, c);
-  final angleB = sphericalAngle(b, a, c);
-  final angleC = sphericalAngle(c, a, b);
-
-  final sphericalExcess = angleA + angleB + angleC - pi; // in Radiant
-  return sphericalExcess * R * R;
-}

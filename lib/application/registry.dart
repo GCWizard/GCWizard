@@ -30,6 +30,7 @@ import 'package:gc_wizard/application/category_views/selector_lists/dna_selectio
 import 'package:gc_wizard/application/category_views/selector_lists/e_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/easter_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/elements_of_geocaching_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/ellipsoid_trinagles_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/esoteric_programminglanguages_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/games_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/general_codebreakers_selection.dart';
@@ -147,6 +148,7 @@ import 'package:gc_wizard/tools/coords/rhumb_line/widget/rhumbline_distancebeari
 import 'package:gc_wizard/tools/coords/rhumb_line/widget/rhumbline_waypoint_projection.dart';
 import 'package:gc_wizard/tools/coords/segment_bearings/widget/segment_bearings.dart';
 import 'package:gc_wizard/tools/coords/segment_line/widget/segment_line.dart';
+import 'package:gc_wizard/tools/coords/triangles/napoleon/widget/napoleon.dart';
 import 'package:gc_wizard/tools/coords/variable_coordinate/widget/variable_coordinate_formulas.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/widget/waypoint_projection_geodetic.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/abaddon/widget/abaddon.dart';
@@ -944,6 +946,16 @@ void initializeRegistry(BuildContext context) {
           'elementsofgeocaching',
         ]),
     GCWTool(
+        tool: const EllipsoidTrianglePointsSelection(),
+        id: 'triangle_ellipsoid_selection',
+        iconPath: 'lib/tools/coords/_common/assets/icons/icon_triangle_points.png',
+        categories: const [
+          ToolCategory.COORDINATES
+        ],
+        searchKeys: const [
+          'esotericprogramminglanguage',
+        ]),
+    GCWTool(
         tool: const EnclosedAreas(),
         id: 'enclosedareas',
         categories: const [
@@ -1002,6 +1014,11 @@ void initializeRegistry(BuildContext context) {
         searchKeys: const [
           'esotericprogramminglanguage',
         ]),
+    GCWTool(tool: const EuclidicTriangle(), id: 'triangle_euclidic', categories: const [
+      ToolCategory.SCIENCE_AND_TECHNOLOGY,
+    ], searchKeys: const [
+      'triangle',
+    ]),
     GCWTool(
       tool: const ExifReader(),
       id: 'exif',
@@ -2148,11 +2165,6 @@ void initializeRegistry(BuildContext context) {
           ),
         ]
     ),
-    GCWTool(tool: const Triangle(), id: 'triangle', categories: const [
-      ToolCategory.SCIENCE_AND_TECHNOLOGY,
-    ], searchKeys: const [
-      'triangle',
-    ]),
     GCWTool(tool: const Trifid(), id: 'trifid', categories: const [
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
@@ -3934,6 +3946,16 @@ void initializeRegistry(BuildContext context) {
         stl._toolLicenseElementsOfGeocachingGeocacherMagazine,
         stl._toolLicenseElementsOfGeocachingGeocachenBE,
       ],),
+
+    // EllipsoidTrianglePointsSelection ***************************************************
+    GCWTool(
+        tool: const NapoleonPoints(),
+        id: 'triangle_point_napoleon',
+        searchKeys: const [
+          'triangle',
+        ],
+        ),
+
 
     //Easter Selection ***************************************************************************************
     GCWTool(
