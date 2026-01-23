@@ -26,3 +26,8 @@ Sides calculateEllipsoidTriangleSides(LatLng A, LatLng B, LatLng C) {
       b: distanceBearing(A, C, defaultEllipsoid).distance,
       c: distanceBearing(A, B, defaultEllipsoid).distance);
 }
+
+double calculateEllipsoidTriangleCircumference(LatLng A, LatLng B, LatLng C) {
+  var sides = calculateEllipsoidTriangleSides(A, B, C);
+  return sides.a + sides.b + sides.c;
+}

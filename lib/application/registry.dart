@@ -148,6 +148,8 @@ import 'package:gc_wizard/tools/coords/rhumb_line/widget/rhumbline_distancebeari
 import 'package:gc_wizard/tools/coords/rhumb_line/widget/rhumbline_waypoint_projection.dart';
 import 'package:gc_wizard/tools/coords/segment_bearings/widget/segment_bearings.dart';
 import 'package:gc_wizard/tools/coords/segment_line/widget/segment_line.dart';
+import 'package:gc_wizard/tools/coords/triangles/centerofgravity/widget/centerofgravity.dart';
+import 'package:gc_wizard/tools/coords/triangles/incircle/widget/incircle.dart';
 import 'package:gc_wizard/tools/coords/triangles/napoleon/widget/napoleon.dart';
 import 'package:gc_wizard/tools/coords/triangles/sidesmidpoint/widget/sidesmidpoint.dart';
 import 'package:gc_wizard/tools/coords/variable_coordinate/widget/variable_coordinate_formulas.dart';
@@ -3959,6 +3961,20 @@ void initializeRegistry(BuildContext context) {
     GCWTool(
       tool: const SideMidPoints(),
       id: 'triangle_point_sidesmidpoint',
+      searchKeys: const [
+        'triangle',
+      ],
+    ),
+    GCWTool(
+      tool: const Incircle(),
+      id: 'triangle_point_incircle',
+      searchKeys: const [
+        'triangle',
+      ],
+    ),
+    GCWTool(
+      tool: const CenterOfGravity(),
+      id: 'triangle_point_centerofgravity',
       searchKeys: const [
         'triangle',
       ],
