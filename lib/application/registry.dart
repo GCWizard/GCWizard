@@ -149,8 +149,10 @@ import 'package:gc_wizard/tools/coords/rhumb_line/widget/rhumbline_waypoint_proj
 import 'package:gc_wizard/tools/coords/segment_bearings/widget/segment_bearings.dart';
 import 'package:gc_wizard/tools/coords/segment_line/widget/segment_line.dart';
 import 'package:gc_wizard/tools/coords/triangles/centerofgravity/widget/centerofgravity.dart';
+import 'package:gc_wizard/tools/coords/triangles/circumcircle/widget/circumcircle.dart';
 import 'package:gc_wizard/tools/coords/triangles/incircle/widget/incircle.dart';
 import 'package:gc_wizard/tools/coords/triangles/napoleon/widget/napoleon.dart';
+import 'package:gc_wizard/tools/coords/triangles/orthocenter/widget/orthocenter.dart';
 import 'package:gc_wizard/tools/coords/triangles/sidesmidpoint/widget/sidesmidpoint.dart';
 import 'package:gc_wizard/tools/coords/variable_coordinate/widget/variable_coordinate_formulas.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/widget/waypoint_projection_geodetic.dart';
@@ -3973,8 +3975,22 @@ void initializeRegistry(BuildContext context) {
       ],
     ),
     GCWTool(
+      tool: const CircumCircle(),
+      id: 'triangle_point_circumcircle',
+      searchKeys: const [
+        'triangle',
+      ],
+    ),
+    GCWTool(
       tool: const CenterOfGravity(),
       id: 'triangle_point_centerofgravity',
+      searchKeys: const [
+        'triangle',
+      ],
+    ),
+    GCWTool(
+      tool: const Orthocenter(),
+      id: 'triangle_point_orthocenter',
       searchKeys: const [
         'triangle',
       ],

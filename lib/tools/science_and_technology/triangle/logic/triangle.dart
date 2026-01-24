@@ -6,7 +6,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter/material.dart';
 
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
-import 'package:gc_wizard/tools/coords/centroid/centroid_center_of_gravity/logic/centroid_center_of_gravity.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/utils/collection_utils.dart';
 

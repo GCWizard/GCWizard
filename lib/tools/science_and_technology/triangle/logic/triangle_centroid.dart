@@ -8,6 +8,3 @@ XYPoint triangleCentroidXY(XYPoint A, XYPoint B, XYPoint C,){
   );
 }
 
-LatLng? triangleCentroidMap(LatLng A, LatLng B, LatLng C,){
-  return centroidCenterOfGravity([A, B, C]);
-}
