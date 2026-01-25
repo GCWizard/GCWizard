@@ -6676,6 +6676,8 @@
   "triangle_point_orthocenter_description": "Calculates the Orthocenter of a Triangle on a map",
   "triangle_point_excircles_title": "Excircles",
   "triangle_point_excircles_description": "Calculates the excircles of a Triangle on a map",
+  "triangle_point_gergonne_title": "Gergonne Point",
+  "triangle_point_gergonne_description": "Calculates the Gergonne Point of a Triangle on a map",
   "triangle_hint_data_missing": "HINT: Data missing",
   "triangle_input_xy": "XY-Geometry",
   "triangle_input_coordinate": "Coordinates",
