@@ -124,10 +124,13 @@ Future<Uint8List > triangleData2Image({
     fontSize: 16.0,
     fontFamily: 'Courier',
   );
-  final paragraphStyle = ui.ParagraphStyle(
+  var paragraphStyle = ui.ParagraphStyle(
     textDirection: ui.TextDirection.ltr,
+    textAlign: TextAlign.center,
   );
-  const constraints = ui.ParagraphConstraints(width: 600);
+  const constraints600 = ui.ParagraphConstraints(width: 600);
+  const constraintsAxisX = ui.ParagraphConstraints(width: 50);
+  const constraintsAxisY = ui.ParagraphConstraints(width: 50);
 
   int i = 1;
   while (offsetX + i * SCALE < width - BOUNDS) {
@@ -137,18 +140,22 @@ Future<Uint8List > triangleData2Image({
       ..pushStyle(textStyle)
       ..addText(i.toString());
     final paragraphPos = paragraphBuilderPos.build();
-    paragraphPos.layout(constraints);
+    paragraphPos.layout(constraintsAxisX);
     final paragraphBuilderNeg = ui.ParagraphBuilder(paragraphStyle)
       ..pushStyle(textStyle)
       ..addText((-i).toString());
     final paragraphNeg = paragraphBuilderNeg.build();
-    paragraphNeg.layout(constraints);
-    canvas.drawParagraph(paragraphPos, Offset(offsetX + i * SCALE, offsetY - 20));
-    canvas.drawParagraph(paragraphNeg, Offset(offsetX - i * SCALE, offsetY - 20));
+    paragraphNeg.layout(constraintsAxisX);
+    canvas.drawParagraph(paragraphPos, Offset(offsetX + i * SCALE - constraintsAxisX.width / 2, offsetY - 20));
+    canvas.drawParagraph(paragraphNeg, Offset(offsetX - i * SCALE - constraintsAxisX.width / 2, offsetY - 20));
     i++;
   }
 
   // draw measurement y axis
+  paragraphStyle = ui.ParagraphStyle(
+    textDirection: ui.TextDirection.ltr,
+    textAlign: TextAlign.right,
+  );
   i = 1;
   while (offsetY + i * SCALE < height - BOUNDS) {
     canvas.drawLine(Offset(offsetX, offsetY  + i * SCALE), Offset(offsetX + 10, offsetY + i * SCALE), paint);
@@ -157,14 +164,14 @@ Future<Uint8List > triangleData2Image({
       ..pushStyle(textStyle)
       ..addText(i.toString());
     final paragraphPos = paragraphBuilderPos.build();
-    paragraphPos.layout(constraints);
+    paragraphPos.layout(constraintsAxisY);
     final paragraphBuilderNeg = ui.ParagraphBuilder(paragraphStyle)
       ..pushStyle(textStyle)
       ..addText((-i).toString());
     final paragraphNeg = paragraphBuilderNeg.build();
-    paragraphNeg.layout(constraints);
-    canvas.drawParagraph(paragraphNeg, Offset(offsetX - 20, offsetY  + i * SCALE - 10));
-    canvas.drawParagraph(paragraphPos, Offset(offsetX - 20, offsetY  - i * SCALE - 10));
+    paragraphNeg.layout(constraintsAxisY);
+    canvas.drawParagraph(paragraphNeg, Offset(offsetX - 10 - constraintsAxisY.width, offsetY  + i * SCALE - 10));
+    canvas.drawParagraph(paragraphPos, Offset(offsetX - 10 - constraintsAxisY.width, offsetY  - i * SCALE - 10));
     i++;
   }
 
@@ -172,66 +179,66 @@ Future<Uint8List > triangleData2Image({
 
   // draw sides a b c
   paint.color = Colors.blueAccent;
-  canvas.drawLine(Offset(A.x * SCALE + offsetX, A.y * SCALE + offsetY), Offset(B.x * SCALE + offsetX, B.y * SCALE + offsetY), paint);
-  canvas.drawLine(Offset(B.x * SCALE + offsetX, B.y * SCALE + offsetY), Offset(C.x * SCALE + offsetX, C.y * SCALE + offsetY), paint);
-  canvas.drawLine(Offset(C.x * SCALE + offsetX, C.y * SCALE + offsetY), Offset(A.x * SCALE + offsetX, A.y * SCALE + offsetY), paint);
+  canvas.drawLine(Offset(A.x * SCALE + offsetX, offsetY - A.y * SCALE), Offset(B.x * SCALE + offsetX, offsetY - B.y * SCALE), paint);
+  canvas.drawLine(Offset(B.x * SCALE + offsetX, offsetY - B.y * SCALE), Offset(C.x * SCALE + offsetX, offsetY - C.y * SCALE), paint);
+  canvas.drawLine(Offset(C.x * SCALE + offsetX, offsetY - C.y * SCALE), Offset(A.x * SCALE + offsetX, offsetY - A.y * SCALE), paint);
 
   // draw altitudes ha hb hc
   paint.color = Colors.orange;
-  canvas.drawLine(Offset(A.x * SCALE + offsetX, A.y * SCALE + offsetY), Offset(AA.x * SCALE + offsetX, AA.y * SCALE + offsetY), paint);
-  canvas.drawLine(Offset(B.x * SCALE + offsetX, B.y * SCALE + offsetY), Offset(AB.x * SCALE + offsetX, AB.y * SCALE + offsetY), paint);
-  canvas.drawLine(Offset(C.x * SCALE + offsetX, C.y * SCALE + offsetY), Offset(AC.x * SCALE + offsetX, AC.y * SCALE + offsetY), paint);
+  canvas.drawLine(Offset(A.x * SCALE + offsetX, offsetY - A.y * SCALE), Offset(AA.x * SCALE + offsetX, offsetY - AA.y * SCALE), paint);
+  canvas.drawLine(Offset(B.x * SCALE + offsetX, offsetY - B.y * SCALE), Offset(AB.x * SCALE + offsetX, offsetY - AB.y * SCALE), paint);
+  canvas.drawLine(Offset(C.x * SCALE + offsetX, offsetY - C.y * SCALE), Offset(AC.x * SCALE + offsetX, offsetY - AC.y * SCALE), paint);
 
   // draw mid sides
   paint.color = Colors.orange.shade500;
-  canvas.drawLine(Offset(A.x * SCALE + offsetX, A.y * SCALE + offsetY), Offset(MSA.x * SCALE + offsetX, MSA.y * SCALE + offsetY), paint);
-  canvas.drawLine(Offset(B.x * SCALE + offsetX, B.y * SCALE + offsetY), Offset(MSB.x * SCALE + offsetX, MSB.y * SCALE + offsetY), paint);
-  canvas.drawLine(Offset(C.x * SCALE + offsetX, C.y * SCALE + offsetY), Offset(MSC.x * SCALE + offsetX, MSC.y * SCALE + offsetY), paint);
+  canvas.drawLine(Offset(A.x * SCALE + offsetX, offsetY - A.y * SCALE), Offset(MSA.x * SCALE + offsetX, offsetY - MSA.y * SCALE), paint);
+  canvas.drawLine(Offset(B.x * SCALE + offsetX, offsetY - B.y * SCALE), Offset(MSB.x * SCALE + offsetX, offsetY - MSB.y * SCALE), paint);
+  canvas.drawLine(Offset(C.x * SCALE + offsetX, offsetY - C.y * SCALE), Offset(MSC.x * SCALE + offsetX, offsetY - MSC.y * SCALE), paint);
 
   // draw Special Points
   paint.style = PaintingStyle.stroke;
   paint.color = Colors.red;
-  canvas.drawCircle(Offset(F.x * SCALE + offsetX, F.y * SCALE + offsetY), POINT, paint);
-  canvas.drawCircle(Offset(G.x * SCALE + offsetX, G.y * SCALE + offsetY), POINT, paint);
-  canvas.drawCircle(Offset(S.x * SCALE + offsetX, S.y * SCALE + offsetY), POINT, paint);
-  canvas.drawCircle(Offset(O.x * SCALE + offsetX, O.y * SCALE + offsetY), POINT, paint);
-  canvas.drawCircle(Offset(L.x * SCALE + offsetX, L.y * SCALE + offsetY), POINT, paint);
-  canvas.drawCircle(Offset(M.x * SCALE + offsetX, M.y * SCALE + offsetY), POINT, paint);
-  canvas.drawCircle(Offset(N.x * SCALE + offsetX, N.y * SCALE + offsetY), POINT, paint);
-  canvas.drawCircle(Offset(N1.x * SCALE + offsetX, N1.y * SCALE + offsetY), POINT, paint);
-  canvas.drawCircle(Offset(N2.x * SCALE + offsetX, N2.y * SCALE + offsetY), POINT, paint);
-  canvas.drawCircle(Offset(CG.x * SCALE + offsetX, CG.y * SCALE + offsetY), POINT, paint);
+  canvas.drawCircle(Offset(F.x * SCALE + offsetX, offsetY - F.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(G.x * SCALE + offsetX, offsetY - G.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(S.x * SCALE + offsetX, offsetY - S.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(O.x * SCALE + offsetX, offsetY - O.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(L.x * SCALE + offsetX, offsetY - L.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(M.x * SCALE + offsetX, offsetY - M.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(N.x * SCALE + offsetX, offsetY - N.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(N1.x * SCALE + offsetX, offsetY - N1.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(N2.x * SCALE + offsetX, offsetY - N2.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(CG.x * SCALE + offsetX, offsetY - CG.y * SCALE), POINT, paint);
 
   // draw Mid side base Points
   paint.color = Colors.green.shade700;
-  canvas.drawCircle(Offset(MSA.x * SCALE + offsetX, MSA.y * SCALE + offsetY), POINT, paint);
-  canvas.drawCircle(Offset(MSB.x * SCALE + offsetX, MSB.y * SCALE + offsetY), POINT, paint);
-  canvas.drawCircle(Offset(MSC.x * SCALE + offsetX, MSC.y * SCALE + offsetY), POINT, paint);
+  canvas.drawCircle(Offset(MSA.x * SCALE + offsetX, offsetY - MSA.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(MSB.x * SCALE + offsetX, offsetY - MSB.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(MSC.x * SCALE + offsetX, offsetY - MSC.y * SCALE), POINT, paint);
 
   // draw Altitude base Points
   paint.color = Colors.orange;
-  canvas.drawCircle(Offset(AA.x * SCALE + offsetX, AA.y * SCALE + offsetY), POINT, paint);
-  canvas.drawCircle(Offset(AB.x * SCALE + offsetX, AB.y * SCALE + offsetY), POINT, paint);
-  canvas.drawCircle(Offset(AC.x * SCALE + offsetX, AC.y * SCALE + offsetY), POINT, paint);
+  canvas.drawCircle(Offset(AA.x * SCALE + offsetX, offsetY - AA.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(AB.x * SCALE + offsetX, offsetY - AB.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(AC.x * SCALE + offsetX, offsetY - AC.y * SCALE), POINT, paint);
 
   // draw Circles
   paint.color = Colors.red.shade900;
-  canvas.drawCircle(Offset(IC.x * SCALE + offsetX, IC.y * SCALE + offsetY), POINT, paint);
-  canvas.drawCircle(Offset(IC.x * SCALE + offsetX, IC.y * SCALE + offsetY), IC.r * SCALE, paint);
+  canvas.drawCircle(Offset(IC.x * SCALE + offsetX, offsetY - IC.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(IC.x * SCALE + offsetX, offsetY - IC.y * SCALE), IC.r * SCALE, paint);
   paint.color = Colors.red.shade600;
-  canvas.drawCircle(Offset(CC.x * SCALE + offsetX, CC.y * SCALE + offsetY), POINT, paint);
-  canvas.drawCircle(Offset(CC.x * SCALE + offsetX, CC.y * SCALE + offsetY), CC.r * SCALE, paint);
+  canvas.drawCircle(Offset(CC.x * SCALE + offsetX, offsetY - CC.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(CC.x * SCALE + offsetX, offsetY - CC.y * SCALE), CC.r * SCALE, paint);
   paint.color = Colors.red.shade400;
-  canvas.drawCircle(Offset(EA.x * SCALE + offsetX, EA.y * SCALE + offsetY), POINT, paint);
-  canvas.drawCircle(Offset(EA.x * SCALE + offsetX, EA.y * SCALE + offsetY), EA.r * SCALE, paint);
-  canvas.drawCircle(Offset(EB.x * SCALE + offsetX, EB.y * SCALE + offsetY), POINT, paint);
-  canvas.drawCircle(Offset(EB.x * SCALE + offsetX, EB.y * SCALE + offsetY), EB.r * SCALE, paint);
-  canvas.drawCircle(Offset(EC.x * SCALE + offsetX, EC.y * SCALE + offsetY), POINT, paint);
-  canvas.drawCircle(Offset(EC.x * SCALE + offsetX, EC.y * SCALE + offsetY), EC.r * SCALE, paint);
+  canvas.drawCircle(Offset(EA.x * SCALE + offsetX, offsetY - EA.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(EA.x * SCALE + offsetX, offsetY - EA.y * SCALE), EA.r * SCALE, paint);
+  canvas.drawCircle(Offset(EB.x * SCALE + offsetX, offsetY - EB.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(EB.x * SCALE + offsetX, offsetY - EB.y * SCALE), EB.r * SCALE, paint);
+  canvas.drawCircle(Offset(EC.x * SCALE + offsetX, offsetY - EC.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(EC.x * SCALE + offsetX, offsetY - EC.y * SCALE), EC.r * SCALE, paint);
 
   paint.color = Colors.purple;
-  canvas.drawCircle(Offset(FC.x * SCALE + offsetX, FC.y * SCALE + offsetY), POINT, paint);
-  canvas.drawCircle(Offset(FC.x * SCALE + offsetX, FC.y * SCALE + offsetY), FC.r * SCALE, paint);
+  canvas.drawCircle(Offset(FC.x * SCALE + offsetX, offsetY - FC.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(FC.x * SCALE + offsetX, offsetY - FC.y * SCALE), FC.r * SCALE, paint);
 
   // draw legend
   paint.color = Colors.black;
@@ -281,7 +288,7 @@ Future<Uint8List > triangleData2Image({
                     ''
     );
   final paragraph = paragraphBuilder.build();
-  paragraph.layout(constraints);
+  paragraph.layout(constraints600);
   canvas.drawParagraph(paragraph, Offset(BOUNDS, BOUNDS));
 
   final img = await canvasRecorder.endRecording().toImage(width.floor(), height.floor());
