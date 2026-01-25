@@ -5,6 +5,7 @@ import 'package:gc_wizard/application/tools/widget/gcw_toollist.dart';
 import 'package:gc_wizard/common_widgets/gcw_selection.dart';
 import 'package:gc_wizard/tools/coords/triangles/centerofgravity/widget/centerofgravity.dart';
 import 'package:gc_wizard/tools/coords/triangles/circumcircle/widget/circumcircle.dart';
+import 'package:gc_wizard/tools/coords/triangles/excircles/widget/excircles.dart';
 import 'package:gc_wizard/tools/coords/triangles/incircle/widget/incircle.dart';
 import 'package:gc_wizard/tools/coords/triangles/napoleon/widget/napoleon.dart';
 import 'package:gc_wizard/tools/coords/triangles/orthocenter/widget/orthocenter.dart';
@@ -24,6 +25,7 @@ class EllipsoidTrianglePointsSelection extends GCWSelection {
         className(const Incircle()),
         className(const CircumCircle()),
         className(const Orthocenter()),
+        className(const Excircles()),
       ].contains(className(element.tool));
     }).toList();
 

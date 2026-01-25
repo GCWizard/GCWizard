@@ -30,7 +30,7 @@ import 'package:gc_wizard/application/category_views/selector_lists/dna_selectio
 import 'package:gc_wizard/application/category_views/selector_lists/e_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/easter_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/elements_of_geocaching_selection.dart';
-import 'package:gc_wizard/application/category_views/selector_lists/ellipsoid_trinagles_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/ellipsoid_triangles_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/esoteric_programminglanguages_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/games_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/general_codebreakers_selection.dart';
@@ -150,6 +150,7 @@ import 'package:gc_wizard/tools/coords/segment_bearings/widget/segment_bearings.
 import 'package:gc_wizard/tools/coords/segment_line/widget/segment_line.dart';
 import 'package:gc_wizard/tools/coords/triangles/centerofgravity/widget/centerofgravity.dart';
 import 'package:gc_wizard/tools/coords/triangles/circumcircle/widget/circumcircle.dart';
+import 'package:gc_wizard/tools/coords/triangles/excircles/widget/excircles.dart';
 import 'package:gc_wizard/tools/coords/triangles/incircle/widget/incircle.dart';
 import 'package:gc_wizard/tools/coords/triangles/napoleon/widget/napoleon.dart';
 import 'package:gc_wizard/tools/coords/triangles/orthocenter/widget/orthocenter.dart';
@@ -3991,6 +3992,13 @@ void initializeRegistry(BuildContext context) {
     GCWTool(
       tool: const Orthocenter(),
       id: 'triangle_point_orthocenter',
+      searchKeys: const [
+        'triangle',
+      ],
+    ),
+    GCWTool(
+      tool: const Excircles(),
+      id: 'triangle_point_excircles',
       searchKeys: const [
         'triangle',
       ],
