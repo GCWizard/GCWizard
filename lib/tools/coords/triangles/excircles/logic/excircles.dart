@@ -4,74 +4,6 @@ import 'package:gc_wizard/tools/science_and_technology/triangle/logic/triangle.d
 import 'package:latlong2/latlong.dart';
 
 
-
-class Excircle2 {
-  final XYPoint center;
-  final double radius;
-  const Excircle2(this.center, this.radius);
-}
-
-class Excircles2 {
-  final Excircle2 oppositeA;
-  final Excircle2 oppositeB;
-  final Excircle2 oppositeC;
-  const Excircles2(this.oppositeA, this.oppositeB, this.oppositeC);
-}
-
-Excircles2 excirclesPlanar(XYPoint A, XYPoint B, XYPoint C) {
-  // a = |BC|, b = |CA|, c = |AB|
-  final sides = triangleSidesXY(A, B, C);
-  final a = sides.a;
-  final b = sides.b;
-  final c = sides.c;
-
-  final s = (a + b + c) / 2.0;
-  final area = triangleAreaXY(A, B, C);
-
-  final rA = area / (s - a);
-  final rB = area / (s - b);
-  final rC = area / (s - c);
-
-  final denomA = (b + c - a);
-  final denomB = (a + c - b);
-  final denomC = (a + b - c);
-
-  final IA = XYPoint(
-    x: (-a * A.x + b * B.x + c * C.x) / denomA,
-    y: (-a * A.y + b * B.y + c * C.y) / denomA,
-  );
-
-  final IB = XYPoint(
-    x: (a * A.x - b * B.x + c * C.x) / denomB,
-    y: (a * A.y - b * B.y + c * C.y) / denomB,
-  );
-
-  final IC = XYPoint(
-    x: (a * A.x + b * B.x - c * C.x) / denomC,
-    y: (a * A.y + b * B.y - c * C.y) / denomC,
-  );
-
-  return Excircles2(
-    Excircle2(IA, rA),
-    Excircle2(IB, rB),
-    Excircle2(IC, rC),
-  );
-}
-
-class EllipticExcircle {
-  final double latDeg;
-  final double lonDeg;
-  final double radiusMeters; // geodätischer Radius (s.u.)
-  const EllipticExcircle(this.latDeg, this.lonDeg, this.radiusMeters);
-}
-
-class EllipticExcircles {
-  final EllipticExcircle oppositeA;
-  final EllipticExcircle oppositeB;
-  final EllipticExcircle oppositeC;
-  const EllipticExcircles(this.oppositeA, this.oppositeB, this.oppositeC);
-}
-
 double _distancePointToGeodesicSegment(
     GeodesicWgs84 geod,
     double latP, double lonP,
@@ -108,7 +40,7 @@ double _distancePointToGeodesicSegment(
 }
 
 
-EllipticExcircles excirclesEllipsoid({
+List<Circle> _excirclesEllipsoid({
   required GeodesicWgs84 geod,
   required double latA,
   required double lonA,
@@ -127,10 +59,10 @@ EllipticExcircles excirclesEllipsoid({
   final B2 = gnom.forward(lat0, lon0, latB, lonB);
   final C2 = gnom.forward(lat0, lon0, latC, lonC);
 
-  final planar = excirclesPlanar(XYPoint(x: A2.x, y: A2.y), XYPoint(x: B2.x, y: B2.y), XYPoint(x: C2.x, y: C2.y));
+  final planar = triangleExCirclesXY(XYPoint(x: A2.x, y: A2.y), XYPoint(x: B2.x, y: B2.y), XYPoint(x: C2.x, y: C2.y));
 
   // Exzentrum gegenüber A (Seite BC)
-  final IA_ll = gnom.reverse(lat0, lon0, planar.oppositeA.center.x, planar.oppositeA.center.y);
+  final IA_ll = gnom.reverse(lat0, lon0, planar[0].x, planar[0].y);
   final latIA = IA_ll.x;
   final lonIA = ((IA_ll.y + 180.0) % 360.0 + 360.0) % 360.0 - 180.0;
   final rA = _distancePointToGeodesicSegment(
@@ -138,7 +70,7 @@ EllipticExcircles excirclesEllipsoid({
   );
 
   // Exzentrum gegenüber B (Seite CA)
-  final IB_ll = gnom.reverse(lat0, lon0, planar.oppositeB.center.x, planar.oppositeB.center.y);
+  final IB_ll = gnom.reverse(lat0, lon0, planar[1].x, planar[1].y);
   final latIB = IB_ll.x;
   final lonIB = ((IB_ll.y + 180.0) % 360.0 + 360.0) % 360.0 - 180.0;
   final rB = _distancePointToGeodesicSegment(
@@ -146,29 +78,25 @@ EllipticExcircles excirclesEllipsoid({
   );
 
   // Exzentrum gegenüber C (Seite AB)
-  final IC_ll = gnom.reverse(lat0, lon0, planar.oppositeC.center.x, planar.oppositeC.center.y);
+  final IC_ll = gnom.reverse(lat0, lon0, planar[2].x, planar[2].y);
   final latIC = IC_ll.x;
   final lonIC = ((IC_ll.y + 180.0) % 360.0 + 360.0) % 360.0 - 180.0;
   final rC = _distancePointToGeodesicSegment(
     geod, latIC, lonIC, latA, lonA, latB, lonB,
   );
 
-  return EllipticExcircles(
-    EllipticExcircle(latIA, lonIA, rA),
-    EllipticExcircle(latIB, lonIB, rB),
-    EllipticExcircle(latIC, lonIC, rC),
-  );
+  return [
+    Circle(LatLng(latIA, lonIA), rA),
+    Circle(LatLng(latIB, lonIB), rB),
+    Circle(LatLng(latIC, lonIC), rC),
+  ];
 }
 
 List<Circle> calculateEllipsoidTriangleExCircles(LatLng A, LatLng B, LatLng C){
-  final result = excirclesEllipsoid(
+  final result = _excirclesEllipsoid(
       geod: GeodesicWgs84(defaultEllipsoid.a, defaultEllipsoid.f, defaultEllipsoid.b),
       latA: A.latitude, lonA: A.longitude,
       latB: B.latitude, lonB: B.longitude,
       latC: C.latitude, lonC: C.longitude);
-  return [
-    Circle(LatLng(result.oppositeA.latDeg, result.oppositeA.lonDeg), result.oppositeA.radiusMeters),
-    Circle(LatLng(result.oppositeB.latDeg, result.oppositeB.lonDeg), result.oppositeB.radiusMeters),
-    Circle(LatLng(result.oppositeC.latDeg, result.oppositeC.lonDeg), result.oppositeC.radiusMeters),
-  ];
+  return result;
 }
