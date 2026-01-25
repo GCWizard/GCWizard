@@ -8,6 +8,7 @@ class TriLinearPoint{
   TriLinearPoint({this.x = 0.0, this.y = 0.0, this.z = 0.0});
 }
 
+
 class PolarPoint{
   final double r;
   final double phi;
@@ -22,6 +23,7 @@ class PolarPoint{
     );
   }
 }
+
 
 class XYPoint{
   final double x;

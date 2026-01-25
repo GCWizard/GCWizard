@@ -5,27 +5,41 @@ List<XYCircle> triangleExCirclesXY(XYPoint A, XYPoint B, XYPoint C,){
   // https://en.wikipedia.org/wiki/Incircle_and_excircles_of_a_triangle
   List<XYCircle> exCircle = [];
 
-  Sides sides = triangleSidesXY(A, B, C);
-  double area = triangleAreaXY(A, B, C);
+  final Sides sides = triangleSidesXY(A, B, C);
+  final double area = triangleAreaXY(A, B, C);
 
-  double ra = area / ((sides.a + sides.b + sides.c) / 2 - sides.a);
-  double rb = area / ((sides.a + sides.b + sides.c) / 2 - sides.b);
-  double rc = area / ((sides.a + sides.b + sides.c) / 2 - sides.c);
+  final a = sides.a;
+  final b = sides.b;
+  final c = sides.c;
 
-  double ac = (sides.a - sides.b + sides.c) / 2;
-  double ab = (sides.a + sides.b - sides.c) / 2;
+  final s = (a + b + c) / 2;
 
-  XYPoint BexC = _vectorAdd(A, _vectorMult(_vectorNormalize(_vectorAB(A, B)), ac));
-  XYPoint BexB = _vectorAdd(A, _vectorMult(_vectorNormalize(_vectorAB(A, C)), ab));
-  XYPoint BexA = _vectorAdd(C, _vectorMult(_vectorNormalize(_vectorAB(C, B)), ac));
+  final rA = area / (s - a);
+  final rB = area / (s - b);
+  final rC = area / (s - c);
 
-  XYPoint MexC = _vectorAdd(BexC, _vectorMult(_vectorNormalize(_vectorNorm(_vectorAB(A, B))), rc));
-  XYPoint MexB = _vectorAdd(BexB, _vectorMult(_vectorNormalize(_vectorNorm(_vectorAB(C, A))), rb));
-  XYPoint MexA = _vectorAdd(BexA, _vectorMult(_vectorNormalize(_vectorNorm(_vectorAB(B, C))), ra));
+  final denomA = (b + c - a);
+  final denomB = (a + c - b);
+  final denomC = (a + b - c);
 
-  exCircle.add(XYCircle(x: MexA.x, y: MexA.y, r: ra));
-  exCircle.add(XYCircle(x: MexB.x, y: MexB.y, r: rb));
-  exCircle.add(XYCircle(x: MexC.x, y: MexC.y, r: rc));
+  final IA = XYPoint(
+    x: (-a * A.x + b * B.x + c * C.x) / denomA,
+    y: (-a * A.y + b * B.y + c * C.y) / denomA,
+  );
+
+  final IB = XYPoint(
+    x: (a * A.x - b * B.x + c * C.x) / denomB,
+    y: (a * A.y - b * B.y + c * C.y) / denomB,
+  );
+
+  final IC = XYPoint(
+    x: (a * A.x + b * B.x - c * C.x) / denomC,
+    y: (a * A.y + b * B.y - c * C.y) / denomC,
+  );
+
+  exCircle.add(XYCircle(x: IA.x, y: IA.y, r: rA));
+  exCircle.add(XYCircle(x: IB.x, y: IB.y, r: rB));
+  exCircle.add(XYCircle(x: IC.x, y: IC.y, r: rC));
 
   return exCircle;
 }

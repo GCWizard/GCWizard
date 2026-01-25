@@ -632,10 +632,12 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
         i18n(context, 'triangle_output_feuerbach'), // 15
         i18n(context, 'triangle_output_incenter'), // 16
         i18n(context, 'triangle_output_circumcenter'), // 17
-        i18n(context, 'triangle_output_incircle'), // 18
-        i18n(context, 'triangle_output_excircle'), // 19
-        i18n(context, 'triangle_output_circumscribedcircle'), // 20
-        i18n(context, 'triangle_output_feuerbachcircle'), // 21
+        i18n(context, 'triangle_output_circles'), // 18
+        i18n(context, 'triangle_output_incircle'), // 19
+        i18n(context, 'triangle_output_excircle'), // 20
+        i18n(context, 'triangle_output_circumscribedcircle'), // 21
+        i18n(context, 'triangle_output_feuerbachcircle'), // 22
+        i18n(context, 'gcwizard_script_help_coordinates'), // 23
       ],
     ).then((value) {
       setState(() {

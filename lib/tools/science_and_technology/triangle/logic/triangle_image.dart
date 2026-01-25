@@ -190,7 +190,7 @@ Future<Uint8List > triangleData2Image({
   canvas.drawLine(Offset(C.x * SCALE + offsetX, offsetY - C.y * SCALE), Offset(AC.x * SCALE + offsetX, offsetY - AC.y * SCALE), paint);
 
   // draw mid sides
-  paint.color = Colors.orange.shade500;
+  paint.color = Colors.orange.shade700;
   canvas.drawLine(Offset(A.x * SCALE + offsetX, offsetY - A.y * SCALE), Offset(MSA.x * SCALE + offsetX, offsetY - MSA.y * SCALE), paint);
   canvas.drawLine(Offset(B.x * SCALE + offsetX, offsetY - B.y * SCALE), Offset(MSB.x * SCALE + offsetX, offsetY - MSB.y * SCALE), paint);
   canvas.drawLine(Offset(C.x * SCALE + offsetX, offsetY - C.y * SCALE), Offset(MSC.x * SCALE + offsetX, offsetY - MSC.y * SCALE), paint);
@@ -222,13 +222,13 @@ Future<Uint8List > triangleData2Image({
   canvas.drawCircle(Offset(AC.x * SCALE + offsetX, offsetY - AC.y * SCALE), POINT, paint);
 
   // draw Circles
-  paint.color = Colors.red.shade900;
+  paint.color = Colors.green.shade900;
   canvas.drawCircle(Offset(IC.x * SCALE + offsetX, offsetY - IC.y * SCALE), POINT, paint);
   canvas.drawCircle(Offset(IC.x * SCALE + offsetX, offsetY - IC.y * SCALE), IC.r * SCALE, paint);
-  paint.color = Colors.red.shade600;
+  paint.color = Colors.green.shade900;
   canvas.drawCircle(Offset(CC.x * SCALE + offsetX, offsetY - CC.y * SCALE), POINT, paint);
   canvas.drawCircle(Offset(CC.x * SCALE + offsetX, offsetY - CC.y * SCALE), CC.r * SCALE, paint);
-  paint.color = Colors.red.shade400;
+  paint.color = Colors.green;
   canvas.drawCircle(Offset(EA.x * SCALE + offsetX, offsetY - EA.y * SCALE), POINT, paint);
   canvas.drawCircle(Offset(EA.x * SCALE + offsetX, offsetY - EA.y * SCALE), EA.r * SCALE, paint);
   canvas.drawCircle(Offset(EB.x * SCALE + offsetX, offsetY - EB.y * SCALE), POINT, paint);
@@ -241,25 +241,31 @@ Future<Uint8List > triangleData2Image({
   canvas.drawCircle(Offset(FC.x * SCALE + offsetX, offsetY - FC.y * SCALE), FC.r * SCALE, paint);
 
   // draw legend
+  paint.color = Colors.grey.shade50;
+  paint.style = PaintingStyle.fill;
+  const LINES = 50;
+  canvas.drawRect(Rect.fromLTWH(BOUNDS, BOUNDS, BOUNDS + 600, BOUNDS + LINES * 20), paint);
   paint.color = Colors.black;
   final paragraphBuilder = ui.ParagraphBuilder(paragraphStyle)
     ..pushStyle(textStyle)
     ..addText(
+                labels[23] + '\n' +
                 'A'.padLeft(LABELLENGTH, ' ') + DIST + '(' + A.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + A.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
                 'B'.padLeft(LABELLENGTH, ' ') + DIST + '(' + B.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + B.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
                 'C'.padLeft(LABELLENGTH, ' ') + DIST + '(' + C.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + C.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
                 '\n' +
                 labels[0] + '\n' +
-                    'a'.padLeft(LABELLENGTH, ' ') + DIST +  a.toStringAsFixed(2) + '\n' +
-                    'b'.padLeft(LABELLENGTH, ' ') + DIST +  b.toStringAsFixed(2) + '\n' +
-                    'c'.padLeft(LABELLENGTH, ' ') + DIST +  c.toStringAsFixed(2) + '\n' +
-                labels[1] + '\n' +
-                    'α'.padLeft(LABELLENGTH, ' ') + DIST +  alpha.toStringAsFixed(2) + '\n' +
-                    'β'.padLeft(LABELLENGTH, ' ') + DIST +  beta.toStringAsFixed(2) + '\n' +
-                    'γ'.padLeft(LABELLENGTH, ' ') + DIST +  gamma.toStringAsFixed(2) + '\n' +
+                    'a'.padLeft(LABELLENGTH, ' ') + DIST +  a.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                    'b'.padLeft(LABELLENGTH, ' ') + DIST +  b.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                    'c'.padLeft(LABELLENGTH, ' ') + DIST +  c.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
                 '\n' +
-                labels[2].padLeft(LABELLENGTH, ' ') + DIST +   area.toStringAsFixed(2) + '\n' +
-                labels[3].padLeft(LABELLENGTH, ' ') + DIST +   circumference.toStringAsFixed(2) + '\n' +
+                labels[1] + '\n' +
+                    'α'.padLeft(LABELLENGTH, ' ') + DIST +  alpha.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                    'β'.padLeft(LABELLENGTH, ' ') + DIST +  beta.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                    'γ'.padLeft(LABELLENGTH, ' ') + DIST +  gamma.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                '\n' +
+                labels[2].padLeft(LABELLENGTH, ' ') + DIST +   area.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                labels[3].padLeft(LABELLENGTH, ' ') + DIST +   circumference.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
                 '\n' +
                 labels[4] + '\n' +
                     'a'.padLeft(LABELLENGTH, ' ') + DIST + '(' + MSA.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + MSA.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
@@ -284,12 +290,18 @@ Future<Uint8List > triangleData2Image({
                 (labels[15] + ' X11').padLeft(LABELLENGTH, ' ') + DIST + '(' + F.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + F.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
                 (labels[11] + ' X17').padLeft(LABELLENGTH, ' ') + DIST + '(' + N1.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + N1.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
                 (labels[12] + ' X18').padLeft(LABELLENGTH, ' ') + DIST + '(' + N2.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + N2.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                '\n' +
-                    ''
+                '\n' + labels[18] + '\n' +
+                (labels[19]).padLeft(LABELLENGTH, ' ') + DIST + '(' + IC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + IC.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + IC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                (labels[21]).padLeft(LABELLENGTH, ' ') + DIST + '(' + CC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + CC.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + CC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                (labels[22]).padLeft(LABELLENGTH, ' ') + DIST + '(' + FC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + FC.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + FC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                (labels[20] + 'a').padLeft(LABELLENGTH, ' ') + DIST + '(' + EA.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + EA.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + EA.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                (labels[20] + 'b').padLeft(LABELLENGTH, ' ') + DIST + '(' + EB.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + EB.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + EB.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                (labels[20] + 'c').padLeft(LABELLENGTH, ' ') + DIST + '(' + EC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + EC.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + EC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                ''
     );
   final paragraph = paragraphBuilder.build();
   paragraph.layout(constraints600);
-  canvas.drawParagraph(paragraph, Offset(BOUNDS, BOUNDS));
+  canvas.drawParagraph(paragraph, Offset(BOUNDS, BOUNDS + 60));
 
   final img = await canvasRecorder.endRecording().toImage(width.floor(), height.floor());
   final data = await img.toByteData(format: ui.ImageByteFormat.png);
