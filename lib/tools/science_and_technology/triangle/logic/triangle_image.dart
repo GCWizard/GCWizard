@@ -129,32 +129,42 @@ Future<Uint8List > triangleData2Image({
   );
   const constraints = ui.ParagraphConstraints(width: 600);
 
-  int i = 0;
+  int i = 1;
   while (offsetX + i * SCALE < width - BOUNDS) {
-    canvas.drawLine(Offset(offsetX + i * SCALE, offsetY - 10), Offset(offsetX + i * SCALE, offsetY - 10), paint);
-    canvas.drawLine(Offset(offsetX - i * SCALE, offsetY - 10), Offset(offsetX - i * SCALE, offsetY - 10), paint);
-    final paragraphBuilder = ui.ParagraphBuilder(paragraphStyle)
+    canvas.drawLine(Offset(offsetX + i * SCALE, offsetY), Offset(offsetX + i * SCALE, offsetY + 10), paint);
+    canvas.drawLine(Offset(offsetX - i * SCALE, offsetY), Offset(offsetX - i * SCALE, offsetY + 10), paint);
+    final paragraphBuilderPos = ui.ParagraphBuilder(paragraphStyle)
       ..pushStyle(textStyle)
       ..addText(i.toString());
-    final paragraph = paragraphBuilder.build();
-    paragraph.layout(constraints);
-    canvas.drawParagraph(paragraph, Offset(offsetX + i * SCALE, offsetY - 20));
-    canvas.drawParagraph(paragraph, Offset(offsetX - i * SCALE, offsetY - 20));
+    final paragraphPos = paragraphBuilderPos.build();
+    paragraphPos.layout(constraints);
+    final paragraphBuilderNeg = ui.ParagraphBuilder(paragraphStyle)
+      ..pushStyle(textStyle)
+      ..addText((-i).toString());
+    final paragraphNeg = paragraphBuilderNeg.build();
+    paragraphNeg.layout(constraints);
+    canvas.drawParagraph(paragraphPos, Offset(offsetX + i * SCALE, offsetY - 20));
+    canvas.drawParagraph(paragraphNeg, Offset(offsetX - i * SCALE, offsetY - 20));
     i++;
   }
 
   // draw measurement y axis
-  i = 0;
+  i = 1;
   while (offsetY + i * SCALE < height - BOUNDS) {
-    canvas.drawLine(Offset(offsetX - 10, offsetY  + i * SCALE), Offset(offsetX + 10, offsetY + i * SCALE), paint);
-    canvas.drawLine(Offset(offsetX - 10, offsetY  - i * SCALE), Offset(offsetX + 10, offsetY - i * SCALE), paint);
-    final paragraphBuilder = ui.ParagraphBuilder(paragraphStyle)
+    canvas.drawLine(Offset(offsetX, offsetY  + i * SCALE), Offset(offsetX + 10, offsetY + i * SCALE), paint);
+    canvas.drawLine(Offset(offsetX, offsetY  - i * SCALE), Offset(offsetX + 10, offsetY - i * SCALE), paint);
+    final paragraphBuilderPos = ui.ParagraphBuilder(paragraphStyle)
       ..pushStyle(textStyle)
       ..addText(i.toString());
-    final paragraph = paragraphBuilder.build();
-    paragraph.layout(constraints);
-    canvas.drawParagraph(paragraph, Offset(offsetX - 20, offsetY  + i * SCALE - 10));
-    canvas.drawParagraph(paragraph, Offset(offsetX - 20, offsetY  - i * SCALE - 10));
+    final paragraphPos = paragraphBuilderPos.build();
+    paragraphPos.layout(constraints);
+    final paragraphBuilderNeg = ui.ParagraphBuilder(paragraphStyle)
+      ..pushStyle(textStyle)
+      ..addText((-i).toString());
+    final paragraphNeg = paragraphBuilderNeg.build();
+    paragraphNeg.layout(constraints);
+    canvas.drawParagraph(paragraphNeg, Offset(offsetX - 20, offsetY  + i * SCALE - 10));
+    canvas.drawParagraph(paragraphPos, Offset(offsetX - 20, offsetY  - i * SCALE - 10));
     i++;
   }
 
