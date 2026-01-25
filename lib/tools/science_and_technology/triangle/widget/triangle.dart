@@ -21,7 +21,6 @@ class EuclidicTriangle extends StatefulWidget {
 }
 
 class EuclidicTriangleState extends State<EuclidicTriangle> {
-
   late TextEditingController _AxController;
   late TextEditingController _AyController;
   late TextEditingController _BxController;
@@ -40,6 +39,7 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
   late List<List<Object?>> _outputDataPointsSidesMidPoint;
   late List<List<Object?>> _outputDataPointsAltitudeBasePoints;
   late List<List<Object?>> _outputPoints;
+  late List<List<Object?>> _outputTouchPoints;
   late List<List<Object?>> _outputCircles;
 
   late Angles _angles;
@@ -66,6 +66,7 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
   late List<XYCircle> _exCircle;
   late List<XYPoint> _sidesMidPoint;
   late List<XYPoint> _altitudesBasePoint;
+  late List<XYPoint> _exCircleTouchpoints;
 
   Uint8List _triangleImage = Uint8List.fromList([]);
 
@@ -275,6 +276,13 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
                 data: _outputDataPointsAltitudeBasePoints,
                 flexValues: const [2, 1, 1, 1],
                 copyAll: true),
+            GCWTextDivider(
+                suppressTopSpace: false,
+                text: i18n(context, 'triangle_output_touchpoint')),
+            GCWColumnedMultilineOutput(
+                data: _outputTouchPoints,
+                flexValues: const [2, 1, 1, 1],
+                copyAll: true),
           ],
         ),
         GCWExpandableTextDivider(
@@ -303,12 +311,12 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
   }
 
   bool _allBasicDataAvailable() {
-      return (double.tryParse(_currentAxInput) != null &&
-          double.tryParse(_currentAyInput) != null &&
-          double.tryParse(_currentBxInput) != null &&
-          double.tryParse(_currentByInput) != null &&
-          double.tryParse(_currentCxInput) != null &&
-          double.tryParse(_currentCyInput) != null);
+    return (double.tryParse(_currentAxInput) != null &&
+        double.tryParse(_currentAyInput) != null &&
+        double.tryParse(_currentBxInput) != null &&
+        double.tryParse(_currentByInput) != null &&
+        double.tryParse(_currentCxInput) != null &&
+        double.tryParse(_currentCyInput) != null);
   }
 
   void _createAdditionalData() {
@@ -348,6 +356,7 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
     _exCircle = triangleExCirclesXY(_A, _B, _C);
     _sidesMidPoint = triangleSidesMidPointsXY(_A, _B, _C);
     _altitudesBasePoint = triangleAltitudesBasePointsXY(_A, _B, _C);
+    _exCircleTouchpoints = triangleTouchPointsExcircleXY(_A, _B, _C);
 
     _outputBasicData = [
       [
@@ -443,6 +452,32 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
         _altitudesBasePoint[2].x.toStringAsFixed(3),
         _altitudesBasePoint[2].y.toStringAsFixed(3),
         null,
+      ],
+    ];
+    _outputTouchPoints = [
+      [
+        null,
+        i18n(context, 'triangle_output_x'),
+        i18n(context, 'triangle_output_y'),
+        null
+      ],
+      [
+        i18n(context, 'triangle_output_excircle').replaceAll('\$1', 'a'),
+        _exCircleTouchpoints[0].x.toStringAsFixed(3),
+        _exCircleTouchpoints[0].y.toStringAsFixed(3),
+        null
+      ],
+      [
+        i18n(context, 'triangle_output_excircle').replaceAll('\$1', 'b'),
+        _exCircleTouchpoints[1].x.toStringAsFixed(3),
+        _exCircleTouchpoints[1].y.toStringAsFixed(3),
+        null
+      ],
+      [
+        i18n(context, 'triangle_output_excircle').replaceAll('\$1', 'c'),
+        _exCircleTouchpoints[2].x.toStringAsFixed(3),
+        _exCircleTouchpoints[2].y.toStringAsFixed(3),
+        null
       ],
     ];
     _outputPoints = [
@@ -613,6 +648,9 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
       EA: _exCircle[0],
       EB: _exCircle[1],
       EC: _exCircle[2],
+      ETA: _exCircleTouchpoints[0],
+      ETB: _exCircleTouchpoints[1],
+      ETC: _exCircleTouchpoints[2],
       labels: [
         i18n(context, 'triangle_output_sides'), // 0
         i18n(context, 'triangle_output_angles'), // 1
@@ -638,6 +676,7 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
         i18n(context, 'triangle_output_circumscribedcircle'), // 21
         i18n(context, 'triangle_output_feuerbachcircle'), // 22
         i18n(context, 'gcwizard_script_help_coordinates'), // 23
+        i18n(context, 'triangle_output_touchpoint'), // 24
       ],
     ).then((value) {
       setState(() {

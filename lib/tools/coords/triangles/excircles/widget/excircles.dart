@@ -99,7 +99,13 @@ class _ExcirclesState extends State<Excircles> {
     var excircles = calculateEllipsoidTriangleExCircles(
         _currentCoords1.toLatLng()!,
         _currentCoords2.toLatLng()!,
-        _currentCoords3.toLatLng()!);
+        _currentCoords3.toLatLng()!
+    );
+    var touchPoints = calculateEllipsoidTriangleExCirclesTouchPoints(
+        _currentCoords1.toLatLng()!,
+        _currentCoords2.toLatLng()!,
+        _currentCoords3.toLatLng()!
+    );
 
     _currentOutput = [
       [
@@ -114,6 +120,10 @@ class _ExcirclesState extends State<Excircles> {
         buildCoordinate(_currentOutputFormat, excircles[2].center).toString().replaceAll('\n', '   ') as Object,
         '${i18n(context, 'common_radius')}: ${doubleFormat.format(_currentOutputUnit.fromMeter(excircles[2].radius))} ${_currentOutputUnit.symbol}' as Object
       ].join('   '),
+      buildCoordinate(_currentOutputFormat, touchPoints[0]).toString().replaceAll('\n', '   ') as Object,
+      buildCoordinate(_currentOutputFormat, touchPoints[1]).toString().replaceAll('\n', '   ') as Object,
+      buildCoordinate(_currentOutputFormat, touchPoints[2]).toString().replaceAll('\n', '   ') as Object,
+
     ];
 
     var mapPointCurrentCoords1 = GCWMapPoint(
@@ -155,6 +165,21 @@ class _ExcirclesState extends State<Excircles> {
           centerPoint: excircles[2].center, radius: excircles[2].radius),
       circleColorSameAsPointColor: true,
     );
+    var mapTouchpointA = GCWMapPoint(
+        point: touchPoints[0],
+        color: COLOR_MAP_CALCULATEDPOINT,
+        markerText: i18n(context, 'triangle_output_touchpoint') + ' a',
+        coordinateFormat: _currentCoords3.format);
+    var mapTouchpointB = GCWMapPoint(
+        point: touchPoints[1],
+        color: COLOR_MAP_CALCULATEDPOINT,
+        markerText: i18n(context, 'triangle_output_touchpoint') + ' b',
+        coordinateFormat: _currentCoords3.format);
+    var mapTouchpointC = GCWMapPoint(
+        point: touchPoints[2],
+        color: COLOR_MAP_CALCULATEDPOINT,
+        markerText: i18n(context, 'triangle_output_touchpoint') + ' c',
+        coordinateFormat: _currentCoords3.format);
 
     _currentMapPoints = [
       mapPointCurrentCoords1,
@@ -163,6 +188,9 @@ class _ExcirclesState extends State<Excircles> {
       mapPointExcircleA,
       mapPointExcircleB,
       mapPointExcircleC,
+      mapTouchpointA,
+      mapTouchpointB,
+      mapTouchpointC,
     ];
 
     _currentMapPolylines = [

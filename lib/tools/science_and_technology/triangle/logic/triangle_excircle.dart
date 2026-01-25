@@ -43,3 +43,32 @@ List<XYCircle> triangleExCirclesXY(XYPoint A, XYPoint B, XYPoint C,){
 
   return exCircle;
 }
+
+XYPoint _footOnLine(XYPoint P, XYPoint B, XYPoint C) {
+  final v = C - B;
+  final w = P - B;
+  final denom = _dot(v, v);
+  if (denom == 0) return B; // degeneriert
+  final t = _dot(w, v) / denom;
+  return B + v * t;
+}
+
+double _dot(XYPoint a, XYPoint b) => a.x * b.x + a.y * b.y;
+
+List<XYPoint> triangleTouchPointsExcircleXY(XYPoint A, XYPoint B, XYPoint C){
+  final ex = triangleExCirclesXY(A, B, C);
+
+  // Ankreis gegenüber A berührt Seite BC
+     final IA = XYPoint(x: ex[0].x, y: ex[0].y);
+     final HA = _footOnLine(IA, B, C);
+
+  // Ankreis gegenüber B berührt Seite CA
+     final IB = XYPoint(x: ex[1].x, y: ex[1].y);
+     final HB = _footOnLine(IB, C, A);
+
+  // Ankreis gegenüber C berührt Seite AB
+     final IC = XYPoint(x: ex[2].x, y: ex[2].y);
+     final HC = _footOnLine(IC, A, B);
+
+  return [HA, HB, HC,];
+}

@@ -34,6 +34,9 @@ Future<Uint8List > triangleData2Image({
   required XYCircle EA, // ex circle a
   required XYCircle EB, // ex circle b
   required XYCircle EC, // ex circle c
+  required XYPoint ETA, // touchpoint ex circle a
+  required XYPoint ETB, // touchpoint ex circle b
+  required XYPoint ETC, // touchpoint ex circle c
   required List<String> labels, // labels for the points/circles
 }) async {
 
@@ -209,6 +212,12 @@ Future<Uint8List > triangleData2Image({
   canvas.drawCircle(Offset(N2.x * SCALE + offsetX, offsetY - N2.y * SCALE), POINT, paint);
   canvas.drawCircle(Offset(CG.x * SCALE + offsetX, offsetY - CG.y * SCALE), POINT, paint);
 
+  // draw Touchpoints exCircles
+  paint.color = Colors.green.shade700;
+  canvas.drawCircle(Offset(ETA.x * SCALE + offsetX, offsetY - ETA.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(ETB.x * SCALE + offsetX, offsetY - ETB.y * SCALE), POINT, paint);
+  canvas.drawCircle(Offset(ETC.x * SCALE + offsetX, offsetY - ETC.y * SCALE), POINT, paint);
+
   // draw Mid side base Points
   paint.color = Colors.green.shade700;
   canvas.drawCircle(Offset(MSA.x * SCALE + offsetX, offsetY - MSA.y * SCALE), POINT, paint);
@@ -276,6 +285,12 @@ Future<Uint8List > triangleData2Image({
                     'a'.padLeft(LABELLENGTH, ' ') + DIST + '(' + AA.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + AA.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
                     'b'.padLeft(LABELLENGTH, ' ') + DIST + '(' + AB.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + AB.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
                     'c'.padLeft(LABELLENGTH, ' ') + DIST + '(' + AC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + AC.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                '\n' +
+                labels[24] + '\n' +
+                    labels[20].replaceAll('\$1', 'a').padLeft(LABELLENGTH, ' ') + DIST + '(' + ETA.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + ETA.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                    labels[20].replaceAll('\$1', 'b').padLeft(LABELLENGTH, ' ') + DIST + '(' + ETB.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + ETB.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                    labels[20].replaceAll('\$1', 'c').padLeft(LABELLENGTH, ' ') + DIST + '(' + ETC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + ETC.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+
                 '\nClark Kimberling, Encyclopedia of Triangle Centers\n' +
                 (labels[16] + ' X01').padLeft(LABELLENGTH, ' ') + DIST + '(' + IC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + IC.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
                 (labels[6] + ' X02').padLeft(LABELLENGTH, ' ') + DIST + '(' + CG.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + CG.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
@@ -294,9 +309,9 @@ Future<Uint8List > triangleData2Image({
                 (labels[19]).padLeft(LABELLENGTH, ' ') + DIST + '(' + IC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + IC.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + IC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
                 (labels[21]).padLeft(LABELLENGTH, ' ') + DIST + '(' + CC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + CC.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + CC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
                 (labels[22]).padLeft(LABELLENGTH, ' ') + DIST + '(' + FC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + FC.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + FC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
-                (labels[20] + 'a').padLeft(LABELLENGTH, ' ') + DIST + '(' + EA.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + EA.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + EA.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
-                (labels[20] + 'b').padLeft(LABELLENGTH, ' ') + DIST + '(' + EB.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + EB.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + EB.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
-                (labels[20] + 'c').padLeft(LABELLENGTH, ' ') + DIST + '(' + EC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + EC.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + EC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                labels[20].replaceAll('\$1', 'a').padLeft(LABELLENGTH, ' ') + DIST + '(' + EA.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + EA.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + EA.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                labels[20].replaceAll('\$1', 'b').padLeft(LABELLENGTH, ' ') + DIST + '(' + EB.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + EB.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + EB.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                labels[20].replaceAll('\$1', 'c').padLeft(LABELLENGTH, ' ') + DIST + '(' + EC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + EC.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + EC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
                 ''
     );
   final paragraph = paragraphBuilder.build();

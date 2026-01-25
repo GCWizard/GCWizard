@@ -100,3 +100,88 @@ List<Circle> calculateEllipsoidTriangleExCircles(LatLng A, LatLng B, LatLng C){
       latC: C.latitude, lonC: C.longitude);
   return result;
 }
+
+
+LatLng _footOnGeodesicSegment(
+    GeodesicWgs84 geod,
+    double latE, double lonE,   // Exzentrum
+    double lat1, double lon1,   // Seitenendpunkt 1
+    double lat2, double lon2,   // Seitenendpunkt 2
+    ) {
+  final inv12 = geod.inverse(lat1, lon1, lat2, lon2);
+  final s12 = inv12.s12;
+  final azi12 = inv12.azi1;
+
+  double tL = 0.0, tR = 1.0;
+  for (int i = 0; i < 40; i++) {
+    final t1 = (2 * tL + tR) / 3.0;
+    final t2 = (tL + 2 * tR) / 3.0;
+
+    final p1 = geod.direct(lat1, lon1, azi12, s12 * t1);
+    final p2 = geod.direct(lat1, lon1, azi12, s12 * t2);
+
+    final d1 = geod.inverse(latE, lonE, p1.lat2, p1.lon2).s12;
+    final d2 = geod.inverse(latE, lonE, p2.lat2, p2.lon2).s12;
+
+    if (d1 < d2) {
+      tR = t2;
+    } else {
+      tL = t1;
+    }
+  }
+
+  final tBest = (tL + tR) / 2.0;
+  final pBest = geod.direct(lat1, lon1, azi12, s12 * tBest);
+  final lonNorm = ((pBest.lon2 + 180.0) % 360.0 + 360.0) % 360.0 - 180.0;
+  return LatLng(pBest.lat2, lonNorm);
+}
+
+List<LatLng> _excircleTouchPointsEllipsoid({
+  required GeodesicWgs84 geod,
+  required List<Circle> exc,
+  required double latA,
+  required double lonA,
+  required double latB,
+  required double lonB,
+  required double latC,
+  required double lonC,
+}) {
+  // Ankreis gegenüber A → Seite BC
+  final EA = exc[0];
+  final HA = _footOnGeodesicSegment(
+    geod,
+    EA.center.latitude, EA.center.longitude,
+    latB, lonB,
+    latC, lonC,
+  );
+
+  // Ankreis gegenüber B → Seite CA
+  final EB = exc[1];
+  final HB = _footOnGeodesicSegment(
+    geod,
+    EB.center.latitude, EB.center.longitude,
+    latC, lonC,
+    latA, lonA,
+  );
+
+  // Ankreis gegenüber C → Seite AB
+  final EC = exc[2];
+  final HC = _footOnGeodesicSegment(
+    geod,
+    EC.center.latitude, EC.center.longitude,
+    latA, lonA,
+    latB, lonB,
+  );
+
+  return [HA, HB, HC];
+}
+
+List<LatLng> calculateEllipsoidTriangleExCirclesTouchPoints(LatLng A, LatLng B, LatLng C){
+  return _excircleTouchPointsEllipsoid(
+    geod: GeodesicWgs84(defaultEllipsoid.a, defaultEllipsoid.f, defaultEllipsoid.b),
+    exc: calculateEllipsoidTriangleExCircles(A, B, C),
+    latA: A.latitude, lonA: A.longitude,
+    latB: B.latitude, lonB: B.longitude,
+    latC: C.latitude, lonC: C.longitude,
+  );
+}
