@@ -7168,7 +7168,7 @@ void initializeRegistry(BuildContext context) {
     ], licenses: [
       ToolLicenseOnlineArticle(
           context: context,
-          author: 'aquaria.fandom.com)',
+          author: '452 (aquaria.fandom.com)',
           title: 'Aquarian alphabet',
           licenseUrl:
           'https://web.archive.org/web/20260201193206/https://aquaria.fandom.com/wiki/Alphabet',
