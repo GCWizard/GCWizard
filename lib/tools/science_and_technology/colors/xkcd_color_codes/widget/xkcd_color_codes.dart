@@ -112,7 +112,7 @@ class _XKCDColorCodesState extends State<XKCDColorCodes> {
 
   Widget _buildColorToRALOutput() {
     var rgb = convertColorSpace(_currentInput, ColorSpaceKey.RGB);
-    var similarRALs = findSimilarRALColors(rgb.toRGB());
+    var similarRALs = findSimilarXKCDColors(rgb.toRGB());
 
     if (similarRALs.isEmpty) {
       return GCWDefaultOutput(
