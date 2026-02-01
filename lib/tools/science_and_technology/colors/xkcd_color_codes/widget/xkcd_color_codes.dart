@@ -139,7 +139,8 @@ class _XKCDColorCodesState extends State<XKCDColorCodes> {
 
     List<Widget> children = [
       GCWColumnedMultilineOutput(data: [
-        ['Name', i18n(context, name)],
+        ['Name', i18n(context, name) == '' ? name : i18n(context, name)],
+        if (name.contains('ralcolor')) ['RAL', name.split('_')[3]],
         ['Hex Color Code', _currentValue.value.colorcode],
         ['RGB', rgbColor.toRBGString()],
         ['CMYK', CMYK.fromRGB(rgbColor).toCMYKString()],
