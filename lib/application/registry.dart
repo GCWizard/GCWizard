@@ -7163,6 +7163,19 @@ void initializeRegistry(BuildContext context) {
               'https://web.archive.org/web/20220609042351/https://stargate.fandom.com/wiki/Ancient_language?file=Ancient_alpahabet.png',
           licenseType: ToolLicenseType.CCBYSA3)
     ]),
+    GCWSymbolTableTool(symbolKey: 'aquaria', symbolSearchStrings: const [
+      'symbol_aquaria',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'aquaria.fandom.com)',
+          title: 'Aquarian alphabet',
+          licenseUrl:
+          'https://web.archive.org/web/20260201193206/https://aquaria.fandom.com/wiki/Alphabet',
+          sourceUrl:
+          'https://web.archive.org/web/20260201193206/https://aquaria.fandom.com/wiki/Alphabet',
+          licenseType: ToolLicenseType.CCBYSA)
+    ]),
     GCWSymbolTableTool(
         symbolKey: 'arabic_indian_numerals',
         symbolSearchStrings: const [
