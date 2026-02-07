@@ -1,6 +1,18 @@
 part of 'package:gc_wizard/tools/wherigo/wherigo_analyze/logic/wherigo_analyze.dart';
 
 String _normalizeLUAmultiLineText(String LUA) {
+  if (LUA.contains('replace_uml')) {
+    LUA = LUA
+        .replaceAll('~a', 'ä')
+        .replaceAll('~A', 'Ä')
+        .replaceAll('~o', 'ö')
+        .replaceAll('~O', 'Ö')
+        .replaceAll('~u', 'ü')
+        .replaceAll('~U', 'Ü')
+        .replaceAll('~s', 'ß')
+        .replaceAll('))', '')
+        .replaceAll('replace_uml("', '"');
+  }
   return LUA
       .replaceAll('[[\n', '[[')
       .replaceAll('<BR>\n', '<BR>')
@@ -29,7 +41,9 @@ WherigoZonePoint _getPoint(String line) {
       .replaceAll(' ', '')
       .split(',');
   return WherigoZonePoint(
-      Latitude: double.parse(data[0]), Longitude: double.parse(data[1]), Altitude: double.parse(data[2]));
+      Latitude: double.parse(data[0]),
+      Longitude: double.parse(data[1]),
+      Altitude: double.parse(data[2]));
 }
 
 bool _isMessageActionElement(String line) {
@@ -53,53 +67,76 @@ WherigoActionMessageElementData _handleAnswerLine(String line) {
   line = line.trim();
   if (line.startsWith('Wherigo.PlayAudio')) {
     return WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: line);
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: line);
   } else if (line.startsWith('Wherigo.ShowScreen')) {
     return WherigoActionMessageElementData(
         ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
-        ActionMessageContent: line.replaceAll('Wherigo.', '').replaceAll('(', ' ').replaceAll(')', ''));
+        ActionMessageContent: line
+            .replaceAll('Wherigo.', '')
+            .replaceAll('(', ' ')
+            .replaceAll(')', ''));
   } else if (line.startsWith('Wherigo.GetInput')) {
     return WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: line);
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: line);
   } else if (line.startsWith('Text = ')) {
     return WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT, ActionMessageContent: _getTextData(line));
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.TEXT,
+        ActionMessageContent: _getTextData(line));
   } else if (line.startsWith('Media = ')) {
     return WherigoActionMessageElementData(
         ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.IMAGE,
-        ActionMessageContent: line.replaceAll('Media = ', '').replaceAll(',', ''));
+        ActionMessageContent:
+            line.replaceAll('Media = ', '').replaceAll(',', ''));
   } else if (line.startsWith('Buttons = ')) {
     if (line.endsWith('}') || line.endsWith('},')) {
       // single line
       return WherigoActionMessageElementData(
           ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.BUTTON,
-          ActionMessageContent:
-              _getTextData(line.replaceAll('Buttons = {', '').replaceAll('},', '').replaceAll('}', '')));
+          ActionMessageContent: _getTextData(line
+              .replaceAll('Buttons = {', '')
+              .replaceAll('},', '')
+              .replaceAll('}', '')));
     }
-  } else if (line.startsWith('if ') || line.startsWith('elseif ') || line.startsWith('else')) {
+  } else if (line.startsWith('if ') ||
+      line.startsWith('elseif ') ||
+      line.startsWith('else')) {
     return WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.CASE, ActionMessageContent: line);
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.CASE,
+        ActionMessageContent: line);
   } else {
     String actionLine = '';
     actionLine = line.trimLeft();
     actionLine = actionLine.replaceAll('<BR>', '\n').replaceAll(']],', '');
 
     return WherigoActionMessageElementData(
-        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND, ActionMessageContent: actionLine);
+        ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.COMMAND,
+        ActionMessageContent: actionLine);
   }
-  return WherigoActionMessageElementData(ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.NONE, ActionMessageContent: '');
+  return WherigoActionMessageElementData(
+      ActionMessageType: WHERIGO_ACTIONMESSAGETYPE.NONE,
+      ActionMessageContent: '');
 }
 
 String _getVariable(String line) {
-  if (line.trim().endsWith('= input')) line = line.trim().replaceAll(' = input', '').replaceAll(' ', '');
+  if (line.trim().endsWith('= input')) {
+    line = line.trim().replaceAll(' = input', '').replaceAll(' ', '');
+  }
   if (line.trim().endsWith('~= nil then')) {
-    line = line.trim().replaceAll('if', '').replaceAll(' ~= nil then', '').replaceAll(' ', '');
+    line = line
+        .trim()
+        .replaceAll('if', '')
+        .replaceAll(' ~= nil then', '')
+        .replaceAll(' ', '');
   }
   return line;
 }
 
 String _normalizeDate(String dateString) {
-  if (dateString.isEmpty || dateString == '1/1/0001 12:00:00 AM') return WHERIGO_NULLDATE;
+  if (dateString.isEmpty || dateString == '1/1/0001 12:00:00 AM') {
+    return WHERIGO_NULLDATE;
+  }
 
   List<String> dateTime = dateString.split(' ');
   List<String> date = dateTime[0].split('/');
@@ -109,18 +146,27 @@ String _normalizeDate(String dateString) {
           int.parse(date[2]),
           int.parse(date[0]),
           int.parse(date[1]),
-          (dateTime.length == 3 && dateTime[2] == 'PM') ? int.parse(time[0]) + 12 : int.parse(time[0]),
+          (dateTime.length == 3 && dateTime[2] == 'PM')
+              ? int.parse(time[0]) + 12
+              : int.parse(time[0]),
           int.parse(time[1]),
           int.parse(time[2]))
       .toString();
 }
 
 bool isInvalidLUASourcecode(String header) {
-  return (!header.replaceAll('(', ' ').replaceAll(')', '').startsWith('require "Wherigo"'));
+  return (!header
+      .replaceAll('(', ' ')
+      .replaceAll(')', '')
+      .startsWith('require "Wherigo"'));
 }
 
-WherigoCartridgeLUA _faultyWherigoCartridgeLUA(String _LUAFile, WHERIGO_ANALYSE_RESULT_STATUS resultStatus,
-    List<String> _http_code_http, int _httpCode, String _httpMessage) {
+WherigoCartridgeLUA _faultyWherigoCartridgeLUA(
+    String _LUAFile,
+    WHERIGO_ANALYSE_RESULT_STATUS resultStatus,
+    List<String> _http_code_http,
+    int _httpCode,
+    String _httpMessage) {
   return WherigoCartridgeLUA(
       CartridgeLUAName: '',
       CartridgeGUID: '',
