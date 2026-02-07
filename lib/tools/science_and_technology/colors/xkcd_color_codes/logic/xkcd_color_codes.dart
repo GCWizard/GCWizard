@@ -926,7 +926,7 @@ const Map<String, XKCDColor> XKCD_COLOR_CODES = {
 'peach': XKCDColor(colorcode: '#ffb07c', name: 'peach'),
 'pale-green': XKCDColor(colorcode: '#c7fdb5', name: 'pale green'),
 'light-brown': XKCDColor(colorcode: '#ad8150', name: 'common_color_light_brown'),
-'hot-pink': XKCDColor(colorcode: '#ff028d', name: 'hot pinkt'),
+'hot-pink': XKCDColor(colorcode: '#ff028d', name: 'hot pink'),
 'black': XKCDColor(colorcode: '#000000', name: 'common_color_black'),
 'lilac': XKCDColor(colorcode: '#cea2fd', name: 'lilac'),
 'navy-blue': XKCDColor(colorcode: '#001146', name: 'navy blue'),
