@@ -14,15 +14,6 @@ class XKCDColor {
 }
 
 const Map<String, XKCDColor> XKCD_COLOR_CODES = {
-  // RAL 1000 done
-  // RAL 2000 done
-  // RAL 3000 done
-  // RAL 4000 done
-  // RAL 5000 done
-  // RAL 6000 done
-  // RAL 7000 done
-  // RAL 8000
-  // RAL 9000
   'cloudy-blue': XKCDColor(colorcode: '#acc2d9', name: 'cloudy blue'),
   'dark-pastel-green': XKCDColor(colorcode: '#56ae57', name: ''),
   'dust': XKCDColor(colorcode: '#b2996e', name: ''),
@@ -203,7 +194,7 @@ const Map<String, XKCDColor> XKCD_COLOR_CODES = {
   'grapefruit': XKCDColor(colorcode: '#fd5956', name: ''),
   'sand-yellow':
       XKCDColor(colorcode: '#fce166', name: 'ralcolorcodes_color_name_1002'),
-  'clay-brown': XKCDColor(colorcode: '#b2713d', name: ''),
+  'clay-brown': XKCDColor(colorcode: '#b2713d', name: 'ralcolorcodes_color_name_8003'),
   'dark-blue-grey': XKCDColor(colorcode: '#1f3b4d', name: ''),
   'flat-green': XKCDColor(colorcode: '#699d4c', name: ''),
   'light-green-blue': XKCDColor(colorcode: '#56fca2', name: ''),
@@ -542,7 +533,7 @@ const Map<String, XKCDColor> XKCD_COLOR_CODES = {
   'very-light-purple': XKCDColor(colorcode: '#f6cefc', name: ''),
   'light-navy': XKCDColor(colorcode: '#155084', name: ''),
   'pink-red': XKCDColor(colorcode: '#f5054f', name: ''),
-  'olive-brown': XKCDColor(colorcode: '#645403', name: ''),
+  'olive-brown': XKCDColor(colorcode: '#645403', name: 'ralcolorcodes_color_name_8008'),
   'poop-brown': XKCDColor(colorcode: '#7a5901', name: ''),
   'mustard-green': XKCDColor(colorcode: '#a8b504', name: ''),
   'ocean-green': XKCDColor(colorcode: '#3d9973', name: ''),
@@ -687,15 +678,15 @@ const Map<String, XKCDColor> XKCD_COLOR_CODES = {
   'faded-purple': XKCDColor(colorcode: '#916e99', name: 'faded purple'),
   'apricot': XKCDColor(colorcode: '#ffb16d', name: ''),
   'dark-olive-green': XKCDColor(colorcode: '#3c4d03', name: ''),
-  'grey-brown': XKCDColor(colorcode: '#7f7053', name: ''),
+  'grey-brown': XKCDColor(colorcode: '#7f7053', name: 'ralcolorcodes_color_name_8019'),
   'green-grey': XKCDColor(colorcode: '#77926f', name: 'ralcolorcodes_color_name_7009'),
   'true-blue': XKCDColor(colorcode: '#010fcc', name: ''),
   'pale-violet': XKCDColor(colorcode: '#ceaefa', name: ''),
   'periwinkle-blue': XKCDColor(colorcode: '#8f99fb', name: ''),
   'light-sky-blue': XKCDColor(colorcode: '#c6fcff', name: ''),
   'blurple': XKCDColor(colorcode: '#5539cc', name: ''),
-  'green-brown': XKCDColor(colorcode: '#544e03', name: ''),
-  'bluegreen': XKCDColor(colorcode: '#017a79', name: 'bluegreen'),
+  'green-brown': XKCDColor(colorcode: '#544e03', name: 'ralcolorcodes_color_name_8000'),
+  'bluegreen': XKCDColor(colorcode: '#017a79', name: 'ralcolorcodes_color_name_6004'),
   'bright-teal': XKCDColor(colorcode: '#01f9c6', name: ''),
   'brownish-yellow': XKCDColor(colorcode: '#c9b003', name: ''),
   'pea-soup': XKCDColor(colorcode: '#929901', name: ''),
@@ -730,7 +721,7 @@ const Map<String, XKCDColor> XKCD_COLOR_CODES = {
   'denim': XKCDColor(colorcode: '#3b638c', name: ''),
   'yellow-brown': XKCDColor(colorcode: '#b79400', name: ''),
   'dull-purple': XKCDColor(colorcode: '#84597e', name: ''),
-  'chocolate-brown': XKCDColor(colorcode: '#411900', name: ''),
+  'chocolate-brown': XKCDColor(colorcode: '#411900', name: 'ralcolorcodes_color_name_8017'),
   'wine-red':
       XKCDColor(colorcode: '#7b0323', name: 'ralcolorcodes_color_name_3005'),
   'neon-blue': XKCDColor(colorcode: '#04d9ff', name: ''),
@@ -762,7 +753,7 @@ const Map<String, XKCDColor> XKCD_COLOR_CODES = {
   'mud': XKCDColor(colorcode: '#735c12', name: ''),
   'brownish': XKCDColor(colorcode: '#9c6d57', name: ''),
   'emerald-green': XKCDColor(colorcode: '#028f1e', name: 'ralcolorcodes_color_name_6001'),
-  'pale-brown': XKCDColor(colorcode: '#b1916e', name: ''),
+  'pale-brown': XKCDColor(colorcode: '#b1916e', name: 'ralcolorcodes_color_name_8025'),
   'dull-blue': XKCDColor(colorcode: '#49759c', name: ''),
   'burnt-umber': XKCDColor(colorcode: '#a0450e', name: ''),
   'medium-green': XKCDColor(colorcode: '#39ad48', name: 'medium green'),
@@ -789,7 +780,7 @@ const Map<String, XKCDColor> XKCD_COLOR_CODES = {
   'dirty-yellow': XKCDColor(colorcode: '#cdc50a', name: ''),
   'orange-red': XKCDColor(colorcode: '#fd411e', name: ''),
   'deep-red': XKCDColor(colorcode: '#9a0200', name: ''),
-  'orange-brown': XKCDColor(colorcode: '#be6400', name: ''),
+  'orange-brown': XKCDColor(colorcode: '#be6400', name: 'ralcolorcodes_color_name_8023'),
   'cobalt-blue': XKCDColor(colorcode: '#030aa7', name: 'ralcolorcodes_color_name_5013'),
   'neon-pink': XKCDColor(colorcode: '#fe019a', name: ''),
   'rose-pink': XKCDColor(colorcode: '#f7879a', name: ''),
@@ -800,7 +791,7 @@ const Map<String, XKCDColor> XKCD_COLOR_CODES = {
       XKCDColor(colorcode: '#fe7b7c', name: 'ralcolorcodes_color_name_3022'),
   'tangerine': XKCDColor(colorcode: '#ff9408', name: 'tangerine'),
   'brownish-green': XKCDColor(colorcode: '#6a6e09', name: 'brownish green'),
-  'red-brown': XKCDColor(colorcode: '#8b2e16', name: ''),
+  'red-brown': XKCDColor(colorcode: '#8b2e16', name: 'ralcolorcodes_color_name_8012'),
   'greenish-brown': XKCDColor(colorcode: '#696112', name: ''),
   'pumpkin': XKCDColor(colorcode: '#e17701', name: ''),
   'pine-green': XKCDColor(colorcode: '#0a481e', name: 'ralcolorcodes_color_name_6028'),
@@ -869,7 +860,7 @@ const Map<String, XKCDColor> XKCD_COLOR_CODES = {
   'greenish': XKCDColor(colorcode: '#40a368', name: 'greenish'),
   'ocean-blue': XKCDColor(colorcode: '#03719c', name: 'ralcolorcodes_color_name_5020'),
   'coral': XKCDColor(colorcode: '#fc5a50', name: ''),
-  'cream': XKCDColor(colorcode: '#ffffc2', name: ''),
+  'cream': XKCDColor(colorcode: '#ffffc2', name: 'ralcolorcodes_color_name_9001'),
   'reddish-brown': XKCDColor(colorcode: '#7f2b0a', name: ''),
   'burnt-sienna': XKCDColor(colorcode: '#b04e0f', name: ''),
   'brick': XKCDColor(colorcode: '#a03623', name: ''),
