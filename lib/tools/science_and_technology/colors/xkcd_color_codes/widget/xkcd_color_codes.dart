@@ -135,7 +135,10 @@ class _XKCDColorCodesState extends State<XKCDColorCodes> {
     var rgbColor = HexCode(_currentValue.value.colorcode).toRGB();
 
     var name = _currentValue.value.name;
-    if (name.isEmpty) name = 'common_unknown';
+    // if (name.isEmpty) {name = 'common_unknown';}
+    if (name.isEmpty) {
+      name = _currentValue.key.replaceAll('-', ' ');
+    }
 
     List<Widget> children = [
       GCWColumnedMultilineOutput(data: [
