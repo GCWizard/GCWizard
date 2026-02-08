@@ -40,4 +40,22 @@ part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/tri
 part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_feuerbachcircle.dart';
 part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_excircle.dart';
 
+Map<int, String> SIDE_ANGLE_TYPES = {
+  0: "triangle_euclidic_sss",
+  1: "triangle_euclidic_ssw",
+  2: "triangle_euclidic_sws",
+  3: "triangle_euclidic_sws",
+  4: "triangle_euclidic_wws",
+  5: "triangle_euclidic_wsw",
+  6: "triangle_euclidic_sww",
+};
 
+Map<int, List<String>> triangleSWText = {
+  0: ['triangle_euclidic_s', 'triangle_euclidic_s', 'triangle_euclidic_s'],
+  1: ['triangle_euclidic_s', 'triangle_euclidic_s', 'triangle_euclidic_w'],
+  2: ['triangle_euclidic_s', 'triangle_euclidic_w', 'triangle_euclidic_s'],
+  3: ['triangle_euclidic_w', 'triangle_euclidic_s', 'triangle_euclidic_s'],
+  4: ['triangle_euclidic_w', 'triangle_euclidic_w', 'triangle_euclidic_s'],
+  5: ['triangle_euclidic_w', 'triangle_euclidic_s', 'triangle_euclidic_w'],
+  6: ['triangle_euclidic_s', 'triangle_euclidic_w', 'triangle_euclidic_w'],
+};

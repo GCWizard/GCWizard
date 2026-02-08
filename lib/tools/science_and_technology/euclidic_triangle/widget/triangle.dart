@@ -1,17 +1,22 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
+import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
+import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
+import 'package:gc_wizard/utils/math_utils.dart';
 
 class EuclidicTriangle extends StatefulWidget {
   const EuclidicTriangle({super.key});
@@ -28,6 +33,10 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
   late TextEditingController _CxController;
   late TextEditingController _CyController;
 
+  late TextEditingController _SWController1;
+  late TextEditingController _SWController2;
+  late TextEditingController _SWController3;
+
   var _currentAxInput = '';
   var _currentAyInput = '';
   var _currentBxInput = '';
@@ -35,6 +44,11 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
   var _currentCxInput = '';
   var _currentCyInput = '';
 
+  var _currentSWInput1 = '';
+  var _currentSWInput2 = '';
+  var _currentSWInput3 = '';
+
+  late List<List<Object?>> _outputPointData;
   late List<List<Object?>> _outputBasicData;
   late List<List<Object?>> _outputDataPointsSidesMidPoint;
   late List<List<Object?>> _outputDataPointsAltitudeBasePoints;
@@ -73,6 +87,9 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
   bool _isCalculatedDataXY = false;
   bool _isCalculatedImage = false;
 
+  GCWSwitchPosition _currentMode = GCWSwitchPosition.left;
+  int _currentSWMode = 0;
+
   @override
   void initState() {
     super.initState();
@@ -82,6 +99,10 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
     _ByController = TextEditingController(text: _currentByInput);
     _CxController = TextEditingController(text: _currentCxInput);
     _CyController = TextEditingController(text: _currentCyInput);
+
+    _SWController1 = TextEditingController(text: _currentSWInput1);
+    _SWController2 = TextEditingController(text: _currentSWInput2);
+    _SWController3 = TextEditingController(text: _currentSWInput3);
   }
 
   @override
@@ -92,17 +113,37 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
     _ByController.dispose();
     _CxController.dispose();
     _CyController.dispose();
+
+    _SWController1.dispose();
+    _SWController2.dispose();
+    _SWController3.dispose();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
-      _buildInputWidgetABC(),
+      GCWTwoOptionsSwitch(
+        leftValue: i18n(context, 'triangle_euclidic_mode_poi'),
+        rightValue: i18n(context, 'triangle_euclidic_mode_ssw'),
+        value: _currentMode,
+        onChanged: (value) {
+          setState(() {
+            _currentMode = value;
+          });
+        },
+      ),
+      _currentMode == GCWSwitchPosition.left
+          ? _buildInputWidgetABC()
+          : _buildInputWidgetSW(),
       GCWSubmitButton(
         onPressed: () {
           setState(() {
             if (_allBasicDataAvailable()) {
+              if (_currentMode == GCWSwitchPosition.right) {
+                _calculateABC();
+              }
               _createAdditionalData();
               _isCalculatedImage = false;
             }
@@ -112,6 +153,89 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
       GCWTextDivider(text: i18n(context, 'common_output')),
       _buildOutput(context)
     ]);
+  }
+
+  Widget _buildInputWidgetSW() {
+    return Column(
+      children: [
+        GCWDropDown<int>(
+          value: _currentSWMode,
+          items: SIDE_ANGLE_TYPES.entries.map((entry) {
+            return GCWDropDownMenuItem(
+              value: entry.key,
+              child: i18n(context, entry.value),
+            );
+          }).toList(),
+          onChanged: (value) {
+            setState(() {
+              _currentSWMode = value;
+            });
+          },
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.only(right: DEFAULT_MARGIN),
+                child: Column(
+                  children: [
+                    GCWText(
+                      text: i18n(context, triangleSWText[_currentSWMode]![0]),
+                    ),
+                    GCWTextField(
+                      controller: _SWController1,
+                      onChanged: (text) {
+                        setState(() {
+                          _currentSWInput1 = text;
+                        });
+                      },
+                    )
+                  ],
+                )),
+            ),
+            Expanded(
+              child: Container(
+                  padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
+                  child: Column(
+                    children: [
+                      GCWText(
+                        text: i18n(context, triangleSWText[_currentSWMode]![1]),
+                      ),
+                      GCWTextField(
+                        controller: _SWController2,
+                        onChanged: (text) {
+                          setState(() {
+                            _currentSWInput2 = text;
+                          });
+                        },
+                      )
+                    ],
+                  )),
+            ),
+            Expanded(
+              child: Container(
+                  padding: const EdgeInsets.only(left: DEFAULT_MARGIN),
+                  child: Column(
+                    children: [
+                      GCWText(
+                        text: i18n(context, triangleSWText[_currentSWMode]![2]),
+                      ),
+                      GCWTextField(
+                        controller: _SWController3,
+                        onChanged: (text) {
+                          setState(() {
+                            _currentSWInput3 = text;
+                          });
+                        },
+                      )
+                    ],
+                  )),
+            ),
+          ],
+        ),
+      ],
+    );
+    return Container();
   }
 
   Widget _buildInputWidgetABC() {
@@ -258,6 +382,12 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
       return Column(children: <Widget>[
         Column(
           children: <Widget>[
+            _currentMode == GCWSwitchPosition.right
+            ? GCWColumnedMultilineOutput(
+                data: _outputPointData,
+                flexValues: const [2, 1, 1, 1],
+                copyAll: true)
+            : Container(),
             GCWColumnedMultilineOutput(
                 data: _outputBasicData,
                 flexValues: const [2, 1, 1, 1],
@@ -311,34 +441,137 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
   }
 
   bool _allBasicDataAvailable() {
-    return (double.tryParse(_currentAxInput) != null &&
-        double.tryParse(_currentAyInput) != null &&
-        double.tryParse(_currentBxInput) != null &&
-        double.tryParse(_currentByInput) != null &&
-        double.tryParse(_currentCxInput) != null &&
-        double.tryParse(_currentCyInput) != null);
+    bool result = false;
+    if (_currentMode == GCWSwitchPosition.left) {
+      result = (double.tryParse(_currentAxInput) != null &&
+          double.tryParse(_currentAyInput) != null &&
+          double.tryParse(_currentBxInput) != null &&
+          double.tryParse(_currentByInput) != null &&
+          double.tryParse(_currentCxInput) != null &&
+          double.tryParse(_currentCyInput) != null);
+    } else {
+      result = (double.tryParse(_currentSWInput1) != null &&
+          double.tryParse(_currentSWInput2) != null &&
+          double.tryParse(_currentSWInput3) != null);
+    }
+    return result;
+  }
+
+  void _calculateABC() {
+    // https://www.arndt-bruenner.de/mathe/scripts/Dreiecksberechnung.htm
+    double a = 0.0;
+    double b = 0.0;
+    double c = 0.0;
+    double alpha = 0.0;
+    double beta = 0.0;
+    double gamma = 0.0;
+
+    switch (_currentSWMode) {
+      case 0: // sss => calculate www
+        a = double.parse(_currentSWInput1);
+        b = double.parse(_currentSWInput2);
+        c = double.parse(_currentSWInput3);
+
+        alpha = radianToDegrees(acos((b * b + c * c - a * a) / (2 * b * c)));
+        beta = radianToDegrees(acos((a * a + c * c - b * b) / (2 * c * a)));
+        gamma = radianToDegrees(acos((b * b + a * a - c * c) / (2 * a * b)));
+        break;
+      case 1: // ssw => calculate wws
+        a = double.parse(_currentSWInput1);
+        b = double.parse(_currentSWInput2);
+        gamma = double.parse(_currentSWInput3);
+
+        break;
+      case 2: // sws => calculate wsw
+        a = double.parse(_currentSWInput1);
+        beta = double.parse(_currentSWInput2);
+        c = double.parse(_currentSWInput3);
+
+        break;
+      case 3: // wss => calculate wsw
+        a = double.parse(_currentSWInput1);
+        beta = double.parse(_currentSWInput2);
+        c = double.parse(_currentSWInput3);
+
+        break;
+      case 4: // wws => calculate ssw
+        alpha = double.parse(_currentSWInput1);
+        beta = double.parse(_currentSWInput2);
+        c = double.parse(_currentSWInput3);
+
+        break;
+      case 5: // wsw => calculate sws
+        alpha = double.parse(_currentSWInput1);
+        b = double.parse(_currentSWInput2);
+        gamma = double.parse(_currentSWInput3);
+
+        break;
+      case 6: // sww => calculate sws
+        alpha = double.parse(_currentSWInput1);
+        b = double.parse(_currentSWInput2);
+        gamma = double.parse(_currentSWInput3);
+
+        break;
+    }
+
+    double hc = a * sin(degreesToRadian(beta));
+
+    _A = XYPoint(x: 0.0, y: 0.0);
+    _B = XYPoint(x: c, y: 0.0);
+    _C = XYPoint(x: sqrt(b * b - hc * hc), y: hc);
+
+    _angles = Angles(alpha: alpha, beta: beta, gamma: gamma);
+    _sides = Sides(a: a, b: b, c: c);
+
+    _outputPointData = [
+      [
+        null,
+        i18n(context, 'triangle_output_x'),
+        i18n(context, 'triangle_output_y'),
+        null
+      ],
+      [
+        'A',
+        _A.x.toStringAsFixed(3),
+        _A.y.toStringAsFixed(3),
+        null,
+      ],
+      [
+        'B',
+        _B.x.toStringAsFixed(3),
+        _B.y.toStringAsFixed(3),
+        null,
+      ],
+      [
+        'C',
+        _C.x.toStringAsFixed(3),
+        _C.y.toStringAsFixed(3),
+        null,
+      ],
+    ];
   }
 
   void _createAdditionalData() {
     _isCalculatedDataXY = true;
 
-    _A = XYPoint(
-      x: double.parse(_currentAxInput),
-      y: double.parse(_currentAyInput),
-    );
-    _B = XYPoint(
-      x: double.parse(_currentBxInput),
-      y: double.parse(_currentByInput),
-    );
-    _C = XYPoint(
-      x: double.parse(_currentCxInput),
-      y: double.parse(_currentCyInput),
-    );
-
-    _angles = triangleAnglesXY(_A, _B, _C)!;
-    _sides = triangleSidesXY(_A, _B, _C);
-    _medians = triangleMediansXY(_A, _B, _C);
+    if (_currentMode == GCWSwitchPosition.left) {
+      _A = XYPoint(
+        x: double.parse(_currentAxInput),
+        y: double.parse(_currentAyInput),
+      );
+      _B = XYPoint(
+        x: double.parse(_currentBxInput),
+        y: double.parse(_currentByInput),
+      );
+      _C = XYPoint(
+        x: double.parse(_currentCxInput),
+        y: double.parse(_currentCyInput),
+      );
+      _angles = triangleAnglesXY(_A, _B, _C)!;
+      _sides = triangleSidesXY(_A, _B, _C);
+    }
     _altitudes = triangleAltitudesXY(_A, _B, _C);
+    _medians = triangleMediansXY(_A, _B, _C);
     _anglebisector = triangleAngleBiSectorsXY(_A, _B, _C);
     _centroid = triangleCentroidXY(_A, _B, _C);
     _orthocenter = triangleOrthocenterXY(_A, _B, _C);
