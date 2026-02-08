@@ -10,16 +10,16 @@ import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coor
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/triangles/gergonne/logic/gergonne.dart';
 
-class GergonnePoint extends StatefulWidget {
-  const GergonnePoint({
+class TriangleGergonnePoint extends StatefulWidget {
+  const TriangleGergonnePoint({
     super.key,
   });
 
   @override
-  _GergonnePointState createState() => _GergonnePointState();
+  _TriangleGergonnePointState createState() => _TriangleGergonnePointState();
 }
 
-class _GergonnePointState extends State<GergonnePoint> {
+class _TriangleGergonnePointState extends State<TriangleGergonnePoint> {
   var _currentCoords1 = defaultBaseCoordinate;
   var _currentCoords2 = defaultBaseCoordinate;
   var _currentCoords3 = defaultBaseCoordinate;

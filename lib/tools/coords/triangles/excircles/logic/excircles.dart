@@ -1,6 +1,6 @@
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/triangles/orthocenter/logic/orthocenter.dart';
-import 'package:gc_wizard/tools/science_and_technology/triangle/logic/triangle.dart';
+import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 import 'package:latlong2/latlong.dart';
 
 

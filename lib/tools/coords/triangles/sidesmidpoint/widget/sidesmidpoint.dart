@@ -10,16 +10,16 @@ import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coor
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/triangles/sidesmidpoint/logic/sidesmidpoint.dart';
 
-class SideMidPoints extends StatefulWidget {
-  const SideMidPoints({
+class TriangleSideMidPoints extends StatefulWidget {
+  const TriangleSideMidPoints({
     super.key,
   });
 
   @override
-  _SideMidPointsState createState() => _SideMidPointsState();
+  _TriangleSideMidPointsState createState() => _TriangleSideMidPointsState();
 }
 
-class _SideMidPointsState extends State<SideMidPoints> {
+class _TriangleSideMidPointsState extends State<TriangleSideMidPoints> {
   var _currentCoords1 = defaultBaseCoordinate;
   var _currentCoords2 = defaultBaseCoordinate;
   var _currentCoords3 = defaultBaseCoordinate;

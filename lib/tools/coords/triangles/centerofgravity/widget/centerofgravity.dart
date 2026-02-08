@@ -10,16 +10,16 @@ import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coor
 import 'package:gc_wizard/tools/coords/centroid/centroid_center_of_gravity/logic/centroid_center_of_gravity.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 
-class CenterOfGravity extends StatefulWidget {
-  const CenterOfGravity({
+class TriangleCenterOfGravity extends StatefulWidget {
+  const TriangleCenterOfGravity({
     super.key,
   });
 
   @override
-  _CenterOfGravityState createState() => _CenterOfGravityState();
+  _TriangleCenterOfGravityState createState() => _TriangleCenterOfGravityState();
 }
 
-class _CenterOfGravityState extends State<CenterOfGravity> {
+class _TriangleCenterOfGravityState extends State<TriangleCenterOfGravity> {
   var _currentCoords1 = defaultBaseCoordinate;
   var _currentCoords2 = defaultBaseCoordinate;
   var _currentCoords3 = defaultBaseCoordinate;

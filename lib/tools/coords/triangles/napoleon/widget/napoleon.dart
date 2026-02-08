@@ -10,16 +10,16 @@ import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coor
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/triangles/napoleon/logic/napoleon.dart';
 
-class NapoleonPoints extends StatefulWidget {
-  const NapoleonPoints({
+class TriangleNapoleonPoints extends StatefulWidget {
+  const TriangleNapoleonPoints({
     super.key,
   });
 
   @override
-  _NapoleonPointsState createState() => _NapoleonPointsState();
+  _TriangleNapoleonPointsState createState() => _TriangleNapoleonPointsState();
 }
 
-class _NapoleonPointsState extends State<NapoleonPoints> {
+class _TriangleNapoleonPointsState extends State<TriangleNapoleonPoints> {
   var _currentCoords1 = defaultBaseCoordinate;
   var _currentCoords2 = defaultBaseCoordinate;
   var _currentCoords3 = defaultBaseCoordinate;

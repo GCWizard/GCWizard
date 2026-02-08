@@ -13,16 +13,16 @@ import 'package:gc_wizard/tools/coords/triangles/circumcircle/logic/circumcircle
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/default_units_getter.dart';
 import 'package:gc_wizard/utils/constants.dart';
 
-class CircumCircle extends StatefulWidget {
-  const CircumCircle({
+class TriangleCircumCircle extends StatefulWidget {
+  const TriangleCircumCircle({
     super.key,
   });
 
   @override
-  _CircumCircleState createState() => _CircumCircleState();
+  _TriangleCircumCircleState createState() => _TriangleCircumCircleState();
 }
 
-class _CircumCircleState extends State<CircumCircle> {
+class _TriangleCircumCircleState extends State<TriangleCircumCircle> {
   var _currentCoords1 = defaultBaseCoordinate;
   var _currentCoords2 = defaultBaseCoordinate;
   var _currentCoords3 = defaultBaseCoordinate;

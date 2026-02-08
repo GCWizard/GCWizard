@@ -81,6 +81,14 @@ import 'package:gc_wizard/tools/coords/map_view/widget/map_view.dart';
 import 'package:gc_wizard/tools/coords/resection/widget/resection.dart';
 import 'package:gc_wizard/tools/coords/rhumb_line/widget/rhumbline_distancebearing.dart';
 import 'package:gc_wizard/tools/coords/rhumb_line/widget/rhumbline_waypoint_projection.dart';
+import 'package:gc_wizard/tools/coords/triangles/centerofgravity/widget/centerofgravity.dart';
+import 'package:gc_wizard/tools/coords/triangles/circumcircle/widget/circumcircle.dart';
+import 'package:gc_wizard/tools/coords/triangles/excircles/widget/excircles.dart';
+import 'package:gc_wizard/tools/coords/triangles/gergonne/widget/gergonne.dart';
+import 'package:gc_wizard/tools/coords/triangles/incircle/widget/incircle.dart';
+import 'package:gc_wizard/tools/coords/triangles/napoleon/widget/napoleon.dart';
+import 'package:gc_wizard/tools/coords/triangles/orthocenter/widget/orthocenter.dart';
+import 'package:gc_wizard/tools/coords/triangles/sidesmidpoint/widget/sidesmidpoint.dart';
 import 'package:gc_wizard/tools/coords/variable_coordinate/widget/variable_coordinate_formulas.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/widget/waypoint_projection_geodetic.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/abaddon/widget/abaddon.dart';
@@ -317,7 +325,7 @@ import 'package:gc_wizard/tools/science_and_technology/teletypewriter/punchtape/
 import 'package:gc_wizard/tools/science_and_technology/teletypewriter/tts/widget/tts.dart';
 import 'package:gc_wizard/tools/science_and_technology/teletypewriter/z22/widget/z22.dart';
 import 'package:gc_wizard/tools/science_and_technology/teletypewriter/zc1/widget/zc1.dart';
-import 'package:gc_wizard/tools/science_and_technology/triangle/widget/triangle.dart';
+import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/widget/triangle.dart';
 import 'package:gc_wizard/tools/science_and_technology/ufi/widget/ufi.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/widget/unit_converter.dart';
 import 'package:gc_wizard/tools/science_and_technology/velocity_acceleration/widget/velocity_acceleration.dart';
@@ -666,6 +674,7 @@ void _initStaticToolList() {
       className(const ExifReader()),
       className(const EquilateralTriangle()),
       className(const ESelection()),
+      className(const EuclidicTriangle()),
       className(const FormatConverter()),
       className(FormulaSolverFormulaGroups()),
       className(const FourteenSegments()),
@@ -842,7 +851,14 @@ void _initStaticToolList() {
       className(const TomTomSelection()),
       className(const TowerOfHanoi()),
       className(const TupperFormula()),
-      className(const EuclidicTriangle()),
+      className(const TriangleCenterOfGravity()),
+      className(const TriangleCircumCircle()),
+      className(const TriangleExcircles()),
+      className(const TriangleGergonnePoint()),
+      className(const TriangleIncircle()),
+      className(const TriangleNapoleonPoints()),
+      className(const TriangleOrthocenter()),
+      className(const TriangleSideMidPoints()),
       className(const Trifid()),
       className(const Trithemius()),
       className(const TTS()),

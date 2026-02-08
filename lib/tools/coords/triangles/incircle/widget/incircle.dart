@@ -13,16 +13,16 @@ import 'package:gc_wizard/tools/coords/triangles/incircle/logic/incircle.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/default_units_getter.dart';
 import 'package:gc_wizard/utils/constants.dart';
 
-class Incircle extends StatefulWidget {
-  const Incircle({
+class TriangleIncircle extends StatefulWidget {
+  const TriangleIncircle({
     super.key,
   });
 
   @override
-  _IncircleState createState() => _IncircleState();
+  _TriangleIncircleState createState() => _TriangleIncircleState();
 }
 
-class _IncircleState extends State<Incircle> {
+class _TriangleIncircleState extends State<TriangleIncircle> {
   var _currentCoords1 = defaultBaseCoordinate;
   var _currentCoords2 = defaultBaseCoordinate;
   var _currentCoords3 = defaultBaseCoordinate;

@@ -533,7 +533,7 @@ import 'package:gc_wizard/tools/science_and_technology/teletypewriter/punchtape/
 import 'package:gc_wizard/tools/science_and_technology/teletypewriter/tts/widget/tts.dart';
 import 'package:gc_wizard/tools/science_and_technology/teletypewriter/z22/widget/z22.dart';
 import 'package:gc_wizard/tools/science_and_technology/teletypewriter/zc1/widget/zc1.dart';
-import 'package:gc_wizard/tools/science_and_technology/triangle/widget/triangle.dart';
+import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/widget/triangle.dart';
 import 'package:gc_wizard/tools/science_and_technology/ufi/widget/ufi.dart';
 import 'package:gc_wizard/tools/science_and_technology/uic_wagoncode/widget/uic_wagoncode.dart';
 import 'package:gc_wizard/tools/science_and_technology/uic_wagoncode/widget/uic_wagoncode_countrycodes.dart';
@@ -3956,56 +3956,56 @@ void initializeRegistry(BuildContext context) {
 
     // EllipsoidTrianglePointsSelection ***************************************************
     GCWTool(
-        tool: const NapoleonPoints(),
+        tool: const TriangleNapoleonPoints(),
         id: 'triangle_point_napoleon',
         searchKeys: const [
           'triangle',
         ],
         ),
     GCWTool(
-      tool: const SideMidPoints(),
+      tool: const TriangleSideMidPoints(),
       id: 'triangle_point_sidesmidpoint',
       searchKeys: const [
         'triangle',
       ],
     ),
     GCWTool(
-      tool: const Incircle(),
+      tool: const TriangleIncircle(),
       id: 'triangle_point_incircle',
       searchKeys: const [
         'triangle',
       ],
     ),
     GCWTool(
-      tool: const CircumCircle(),
+      tool: const TriangleCircumCircle(),
       id: 'triangle_point_circumcircle',
       searchKeys: const [
         'triangle',
       ],
     ),
     GCWTool(
-      tool: const CenterOfGravity(),
+      tool: const TriangleCenterOfGravity(),
       id: 'triangle_point_centerofgravity',
       searchKeys: const [
         'triangle',
       ],
     ),
     GCWTool(
-      tool: const Orthocenter(),
+      tool: const TriangleOrthocenter(),
       id: 'triangle_point_orthocenter',
       searchKeys: const [
         'triangle',
       ],
     ),
     GCWTool(
-      tool: const Excircles(),
+      tool: const TriangleExcircles(),
       id: 'triangle_point_excircles',
       searchKeys: const [
         'triangle',
       ],
     ),
     GCWTool(
-      tool: const GergonnePoint(),
+      tool: const TriangleGergonnePoint(),
       id: 'triangle_point_gergonne',
       searchKeys: const [
         'triangle',

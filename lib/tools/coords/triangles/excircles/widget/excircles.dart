@@ -12,16 +12,16 @@ import 'package:gc_wizard/tools/coords/triangles/excircles/logic/excircles.dart'
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/default_units_getter.dart';
 import 'package:gc_wizard/utils/constants.dart';
 
-class Excircles extends StatefulWidget {
-  const Excircles({
+class TriangleExcircles extends StatefulWidget {
+  const TriangleExcircles({
     super.key,
   });
 
   @override
-  _ExcirclesState createState() => _ExcirclesState();
+  _TriangleExcirclesState createState() => _TriangleExcirclesState();
 }
 
-class _ExcirclesState extends State<Excircles> {
+class _TriangleExcirclesState extends State<TriangleExcircles> {
   var _currentCoords1 = defaultBaseCoordinate;
   var _currentCoords2 = defaultBaseCoordinate;
   var _currentCoords3 = defaultBaseCoordinate;

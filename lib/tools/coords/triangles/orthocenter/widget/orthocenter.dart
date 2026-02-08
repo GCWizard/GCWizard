@@ -10,16 +10,16 @@ import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coor
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/triangles/orthocenter/logic/orthocenter.dart';
 
-class Orthocenter extends StatefulWidget {
-  const Orthocenter({
+class TriangleOrthocenter extends StatefulWidget {
+  const TriangleOrthocenter({
     super.key,
   });
 
   @override
-  _OrthocenterState createState() => _OrthocenterState();
+  _TriangleOrthocenterState createState() => _TriangleOrthocenterState();
 }
 
-class _OrthocenterState extends State<Orthocenter> {
+class _TriangleOrthocenterState extends State<TriangleOrthocenter> {
   var _currentCoords1 = defaultBaseCoordinate;
   var _currentCoords2 = defaultBaseCoordinate;
   var _currentCoords3 = defaultBaseCoordinate;
