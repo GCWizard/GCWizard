@@ -176,26 +176,27 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
           children: [
             Expanded(
               child: Container(
-                padding: const EdgeInsets.only(right: DEFAULT_MARGIN),
-                child: Column(
-                  children: [
-                    GCWText(
-                      text: i18n(context, triangleSWText[_currentSWMode]![0]),
-                    ),
-                    GCWTextField(
-                      controller: _SWController1,
-                      onChanged: (text) {
-                        setState(() {
-                          _currentSWInput1 = text;
-                        });
-                      },
-                    )
-                  ],
-                )),
+                  padding: const EdgeInsets.only(right: DEFAULT_MARGIN),
+                  child: Column(
+                    children: [
+                      GCWText(
+                        text: i18n(context, triangleSWText[_currentSWMode]![0]),
+                      ),
+                      GCWTextField(
+                        controller: _SWController1,
+                        onChanged: (text) {
+                          setState(() {
+                            _currentSWInput1 = text;
+                          });
+                        },
+                      )
+                    ],
+                  )),
             ),
             Expanded(
               child: Container(
-                  padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
+                  padding: const EdgeInsets.only(
+                      left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
                   child: Column(
                     children: [
                       GCWText(
@@ -383,11 +384,11 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
         Column(
           children: <Widget>[
             _currentMode == GCWSwitchPosition.right
-            ? GCWColumnedMultilineOutput(
-                data: _outputPointData,
-                flexValues: const [2, 1, 1, 1],
-                copyAll: true)
-            : Container(),
+                ? GCWColumnedMultilineOutput(
+                    data: _outputPointData,
+                    flexValues: const [2, 1, 1, 1],
+                    copyAll: true)
+                : Container(),
             GCWColumnedMultilineOutput(
                 data: _outputBasicData,
                 flexValues: const [2, 1, 1, 1],
