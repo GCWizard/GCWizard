@@ -487,6 +487,9 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
         beta = double.parse(_currentSWInput2);
         c = double.parse(_currentSWInput3);
 
+        b = b = sqrt(a * a + c * c - 2 * a * c * cos(degreesToRadian(beta)));
+        alpha = radianToDegrees(acos((b * b + c * c - a * a) / (2 * b * c)));
+        gamma = radianToDegrees(acos((b * b + a * a - c * c) / (2 * a * b)));
         break;
       case 3: // wss => calculate wsw
         a = double.parse(_currentSWInput1);
@@ -499,18 +502,27 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
         beta = double.parse(_currentSWInput2);
         c = double.parse(_currentSWInput3);
 
+        gamma = 180 - alpha - beta;
+        a = c * sin(degreesToRadian(alpha)) / sin(degreesToRadian(gamma));
+        b = c * sin(degreesToRadian(beta)) / sin(degreesToRadian(gamma));
         break;
       case 5: // wsw => calculate sws
         alpha = double.parse(_currentSWInput1);
         b = double.parse(_currentSWInput2);
         gamma = double.parse(_currentSWInput3);
 
+        beta = 180 - alpha - gamma;
+        a = b * sin(degreesToRadian(alpha)) / sin(degreesToRadian(beta));
+        c = b * sin(degreesToRadian(gamma)) / sin(degreesToRadian(beta));
         break;
       case 6: // sww => calculate sws
-        alpha = double.parse(_currentSWInput1);
-        b = double.parse(_currentSWInput2);
+        a = double.parse(_currentSWInput1);
+        beta = double.parse(_currentSWInput2);
         gamma = double.parse(_currentSWInput3);
 
+        alpha = 180 - beta - gamma;
+        b = a * sin(degreesToRadian(beta)) / sin(degreesToRadian(alpha));
+        c = a * sin(degreesToRadian(gamma)) / sin(degreesToRadian(alpha));
         break;
     }
 
