@@ -122,16 +122,18 @@ Future<Uint8List > triangleData2Image({
   canvas.drawLine(Offset(offsetX, BOUNDS), Offset(offsetX, height - BOUNDS), paint);
 
   // draw measurement x axis
+  const fontSize = 16.0;
   final textStyle = ui.TextStyle(
     color: paint.color,
-    fontSize: 16.0,
+    fontSize: fontSize,
     fontFamily: 'Courier',
   );
   var paragraphStyle = ui.ParagraphStyle(
     textDirection: ui.TextDirection.ltr,
     textAlign: TextAlign.center,
   );
-  const constraints600 = ui.ParagraphConstraints(width: 600);
+  const widthLegend = 550.0;
+  const constraintsLegend = ui.ParagraphConstraints(width: widthLegend + BOUNDS);
   const constraintsAxisX = ui.ParagraphConstraints(width: 50);
   const constraintsAxisY = ui.ParagraphConstraints(width: 50);
 
@@ -252,8 +254,8 @@ Future<Uint8List > triangleData2Image({
   // draw legend
   paint.color = Colors.grey.shade50;
   paint.style = PaintingStyle.fill;
-  const LINES = 50;
-  canvas.drawRect(Rect.fromLTWH(BOUNDS, BOUNDS, BOUNDS + 600, BOUNDS + LINES * 20), paint);
+  const LINES = 55;
+  canvas.drawRect(Rect.fromLTWH(BOUNDS, BOUNDS, widthLegend + BOUNDS / 2, BOUNDS + LINES * (fontSize + 1.6)), paint);
   paint.color = Colors.black;
   final paragraphBuilder = ui.ParagraphBuilder(paragraphStyle)
     ..pushStyle(textStyle)
@@ -315,8 +317,8 @@ Future<Uint8List > triangleData2Image({
                 ''
     );
   final paragraph = paragraphBuilder.build();
-  paragraph.layout(constraints600);
-  canvas.drawParagraph(paragraph, Offset(BOUNDS, BOUNDS + 60));
+  paragraph.layout(constraintsLegend);
+  canvas.drawParagraph(paragraph, Offset(0, BOUNDS + 25));
 
   final img = await canvasRecorder.endRecording().toImage(width.floor(), height.floor());
   final data = await img.toByteData(format: ui.ImageByteFormat.png);
