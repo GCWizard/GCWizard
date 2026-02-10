@@ -31,6 +31,7 @@ import 'package:gc_wizard/tools/coords/_common/logic/coordinate_parser.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/geo_json_import.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/gpx_kml_gpx_import.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_export_dialog.dart';
@@ -839,7 +840,8 @@ class _GCWMapViewState extends State<GCWMapView> {
         child: iconedGCWPopupMenuItem(context, Icons.drive_folder_upload, i18n(context, 'coords_openmap_loaddata')),
         action: (index) {
           setState(() {
-            showOpenFileDialog(context, [FileType.GPX, FileType.KML, FileType.KMZ, FileType.JSON, FileType.ZIP], _loadCoordinatesFile);
+            showOpenFileDialog(context, [FileType.GPX, FileType.KML, FileType.KMZ, FileType.JSON,
+              FileType.GEOJSON, FileType.ZIP], _loadCoordinatesFile);
           });
         },
       ),
@@ -1184,8 +1186,8 @@ class _GCWMapViewState extends State<GCWMapView> {
   }
 
   bool _importGpxKml(String xml) {
-    var viewData = parseCoordinatesFile(xml);
-    viewData ??= parseCoordinatesFile(xml, kmlFormat: true);
+    var viewData = parseCoordinatesFile(xml, FileType.GPX);
+    viewData ??= parseCoordinatesFile(xml, FileType.KML);
 
     if (viewData != null) {
       setState(() {
@@ -1205,14 +1207,27 @@ class _GCWMapViewState extends State<GCWMapView> {
       var type = fileTypeByFilename(file.name!);
       switch (type) {
         case FileType.JSON:
+        case FileType.GEOJSON:
           var json = convertBytesToString(file.bytes);
           setState(() {
-            if (!(_persistanceAdapter?.setJsonMapViewData(json) ?? false)) return;
+            var isJsonHandled = false;
+            if (type == FileType.JSON) {
+              isJsonHandled = _persistanceAdapter?.setJsonMapViewData(json) ?? false;
+            }
+            if (!isJsonHandled) {
+              // extension json or geojson
+              var viewData = GeoJsonReader().parse(json);
+              if (viewData != null) {
+                isJsonHandled = true;
+                _persistanceAdapter?.addViewData(viewData);
+              }
+            }
+            if (!isJsonHandled) return;
             _mapController.fitCamera(_getBounds());
           });
           break;
         default:
-          await importCoordinatesFile(file).then((viewData) {
+          importCoordinatesFile(file).then((viewData) {
             if (viewData == null) return false;
             setState(() {
               _isPolylineDrawing = false;

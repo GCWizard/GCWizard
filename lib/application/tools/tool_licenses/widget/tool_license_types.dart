@@ -23,6 +23,7 @@ enum ToolLicenseType {
   CCBYSA4, // Creative Commons CC BY-SA 4.0
   CCBYSA3, // Creative Commons CC BY-SA 3.0
   CCBYSA2, // Creative Commons CC BY-SA 2.0
+  CCBYSA, // Creative Commons CC BY-SA
   CCNC30, // Creative Commons CC NC 3.0
   CCNC25, // Creative Commons CC NC 2.5
   CCBYNCND40, // Creative Commons BY-NC-ND 4.0
@@ -66,6 +67,7 @@ String _licenseType(BuildContext context, ToolLicenseType licenseType) {
     case ToolLicenseType.CCBYSA4: return 'Creative Commons CC BY-SA 4.0';
     case ToolLicenseType.CCBYSA3: return 'Creative Commons CC BY-SA 3.0';
     case ToolLicenseType.CCBYSA2: return 'Creative Commons CC BY-SA 2.0';
+    case ToolLicenseType.CCBYSA: return 'Creative Commons CC BY-SA';
     case ToolLicenseType.CCNC30: return 'Creative Commons CC NC 3.0';
     case ToolLicenseType.CCNC25: return 'Creative Commons CC NC 2.5';
     case ToolLicenseType.CCBYNCND20: return 'Creative Commons CC BY-NC-ND 2.0';

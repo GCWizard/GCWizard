@@ -6,7 +6,7 @@ const List<String> _ABOUT_DEVELOPMENT = [
   'Mike \'MikeBi\' B.', 'Thomas \'TMZ\' Z.', 'Mark \'S-Man42\' Lorenz', 'Olli \'Rinser\''
 ];
 
-const List<String> _ABOUT_CREATOR = ['Mark \'S-Man42\' Lorenz'];
+const List<String> _ABOUT_CREATOR = ['Thomas \'TMZ\' Z.'];
 
 const List<String> _ABOUT_SPECIALTHANKS = ['Daniel \'Eisbehr\' K. (Maintainer GCC)'];
 

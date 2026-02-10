@@ -128,6 +128,7 @@ flutter:
     - lib/tools/symbol_tables/_common/assets/alphabetum_gothicum/
     - lib/tools/symbol_tables/_common/assets/angerthas_cirth/
     - lib/tools/symbol_tables/_common/assets/antiker/
+    - lib/tools/symbol_tables/_common/assets/aquaria/
     - lib/tools/symbol_tables/_common/assets/arabic_indian_numerals/
     - lib/tools/symbol_tables/_common/assets/arcadian/
     - lib/tools/symbol_tables/_common/assets/ath/

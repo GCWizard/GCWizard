@@ -8,28 +8,31 @@ import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/map_view/persistence/mapview_persistence_adapter.dart';
 import 'package:gc_wizard/tools/coords/map_view/persistence/model.dart';
 import 'package:gc_wizard/utils/constants.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:xml/xml.dart';
+
+import 'geo_json_import.dart';
 
 Future<MapViewDAO?> importCoordinatesFile(GCWFile file) async {
   var type = fileTypeByFilename(file.name!);
   switch (type) {
     case FileType.GPX:
       var xml = convertBytesToString(file.bytes);
-      return parseCoordinatesFile(xml);
+      return parseCoordinatesFile(xml, type!);
     case FileType.KML:
       var xml = convertBytesToString(file.bytes);
-      return parseCoordinatesFile(xml, kmlFormat: true);
+      return parseCoordinatesFile(xml, type!);
     case FileType.ZIP:
       // Decode the Zip file
       final archive = extractZipArchive(file.bytes);
       if (archive.isNotEmpty) {
         var file = archive.first;
-        if (getFileExtension(file.name.toLowerCase()) == '.gpx') {
+        if (getFileExtension(file.name.toLowerCase()) == '.' + fileExtension(FileType.GPX).toLowerCase()) {
           var xml = convertBytesToString(file.content);
-          return parseCoordinatesFile(xml);
+          return parseCoordinatesFile(xml, FileType.GPX);
         }
       }
       break;
@@ -40,9 +43,12 @@ Future<MapViewDAO?> importCoordinatesFile(GCWFile file) async {
       if (archive.isNotEmpty) {
         var file = archive.first;
         var xml = convertBytesToString(file.content);
-        return parseCoordinatesFile(xml, kmlFormat: true);
+        return parseCoordinatesFile(xml, type!);
       }
       break;
+    case FileType.GEOJSON:
+      var data = convertBytesToString(file.bytes);
+      return parseCoordinatesFile(data, type!);
     default:
       break;
   }
@@ -50,14 +56,17 @@ Future<MapViewDAO?> importCoordinatesFile(GCWFile file) async {
   return null;
 }
 
-MapViewDAO? parseCoordinatesFile(String xml, {bool kmlFormat = false}) {
+MapViewDAO? parseCoordinatesFile(String data, FileType fileType) {
   MapViewDAO? result;
   try {
-    var xmlDoc = XmlDocument.parse(xml);
-    if (kmlFormat) {
+    if (fileType == FileType.KML) {
+      var xmlDoc = XmlDocument.parse(data);
       result = _KmlReader()._parse(xmlDoc);
-    } else {
+    } else if (fileType == FileType.GPX) {
+      var xmlDoc = XmlDocument.parse(data);
       result = _GpxReader()._parse(xmlDoc);
+    } else if (fileType == FileType.GEOJSON) {
+      result = GeoJsonReader().parse(data);
     }
   } catch (e) {
     return null;
@@ -127,7 +136,7 @@ class _GpxReader {
       });
 
       _restoreCircles(points, lines);
-      return _convertToMapViewDAO(points, lines);
+      return convertToMapViewDAO(points, lines);
     }
     return null;
   }
@@ -192,10 +201,10 @@ class _KmlReader {
           lines.addAll(points);
         });
 
-        _restorePoints(points, lines);
+        restorePoints(points, lines);
         _restoreCircles(points, lines);
 
-        return _convertToMapViewDAO(points, lines);
+        return convertToMapViewDAO(points, lines);
       }
     }
     return null;
@@ -303,17 +312,6 @@ class _KmlReader {
     return point;
   }
 
-  void _restorePoints(List<GCWMapPoint> points, List<GCWMapPolyline> lines) {
-    for (int i = lines.length - 1; i >= 0; i--) {
-      points.addAll(lines[i].points);
-      if (lines[i].points.length == 1) {
-        lines.removeAt(i);
-      } else {
-        lines[i].color = lines[i].points[0].color;
-      }
-    }
-  }
-
   Color _ColorCode(String color) {
     if (color.length == 8) {
       color = color.substring(0, 2) +
@@ -325,9 +323,20 @@ class _KmlReader {
   }
 }
 
+void restorePoints(List<GCWMapPoint> points, List<GCWMapPolyline> lines) {
+  for (int i = lines.length - 1; i >= 0; i--) {
+    points.addAll(lines[i].points);
+    if (lines[i].points.length == 1) {
+      lines.removeAt(i);
+    } else {
+      lines[i].color = lines[i].points[0].color;
+    }
+  }
+}
+
 void _restoreCircles(List<GCWMapPoint> points, List<GCWMapPolyline> lines) {
   for (int i = lines.length - 1; i >= 0; i--) {
-    if (_isClosedLine(lines[i]) && _completeCircle(lines[i], points)) {
+    if (isClosedLine(lines[i]) && _completeCircle(lines[i], points)) {
       for (var point in lines[i].points) {
         points.remove(point);
       }
@@ -336,11 +345,8 @@ void _restoreCircles(List<GCWMapPoint> points, List<GCWMapPolyline> lines) {
   }
 }
 
-bool _isClosedLine(GCWMapPolyline line) {
-  return ((line.points.first.point.latitude - line.points.last.point.latitude) <
-          practical_epsilon) &&
-      ((line.points.first.point.longitude - line.points.last.point.longitude) <
-          practical_epsilon);
+bool isClosedLine(GCWMapPolyline line) {
+  return equalsLatLng(line.points.first.point, line.points.last.point, tolerance: practical_epsilon);
 }
 
 bool _completeCircle(GCWMapPolyline line, List<GCWMapPoint> points) {
@@ -384,7 +390,7 @@ bool _completeCircle(GCWMapPolyline line, List<GCWMapPoint> points) {
   return true;
 }
 
-MapViewDAO _convertToMapViewDAO(
+MapViewDAO convertToMapViewDAO(
     List<GCWMapPoint> points, List<GCWMapPolyline> lines) {
   var daoPoints = <MapPointDAO>[];
   var daoLines = <MapPolylineDAO>[];
@@ -394,8 +400,7 @@ MapViewDAO _convertToMapViewDAO(
   }
 
   for (var line in lines) {
-    daoLines
-        .add(MapViewPersistenceAdapter.gcwMapPolylineToMapPolylineDAO(line));
+    daoLines.add(MapViewPersistenceAdapter.gcwMapPolylineToMapPolylineDAO(line));
   }
 
   return MapViewDAO(daoPoints, daoLines);

@@ -6,10 +6,11 @@ import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:xml/xml.dart';
 
+import 'geo_json_export.dart';
+
 Future<bool> exportCoordinates(BuildContext context, List<GCWMapPoint> points, List<GCWMapPolyline> polylines,
-    {bool kmlFormat = false}) async {
-  String data;
-  FileType fileType;
+    FileType fileType) async {
+  String data = '';
 
   var defaultName = points.first.markerText;
   if (defaultName == null || defaultName.isEmpty) {
@@ -20,14 +21,15 @@ Future<bool> exportCoordinates(BuildContext context, List<GCWMapPoint> points, L
     return false;
   }
 
-  if (kmlFormat) {
+  if (fileType == FileType.KML) {
     data = _KmlWriter().asString(defaultName, points, polylines);
-    fileType = FileType.KML;
-  } else {
+  } else if (fileType == FileType.GPX) {
     data = _GpxWriter().asString(defaultName, points, polylines);
-    fileType = FileType.GPX;
+  } else if (fileType == FileType.GEOJSON) {
+    data = geoJsonWriter().toJson(points, polylines);
   }
 
+  if (data.isEmpty) return false;
   try {
     var fileName = buildFileNameWithDate('coords_', fileType);
     return saveStringToFile(context, data, fileName);

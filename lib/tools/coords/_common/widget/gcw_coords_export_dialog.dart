@@ -29,9 +29,17 @@ void showCoordinatesExportDialog(BuildContext context, List<GCWMapPoint> points,
           )
         : Container(),
     GCWDialogButton(
+      text: 'geoJson',
+      onPressed: () async {
+        coordinatesExport.exportCoordinates(context, points, polylines, FileType.GEOJSON).then((bool value) {
+          _showExportedFileDialog(context, FileType.GEOJSON);
+        });
+      },
+    ),
+    GCWDialogButton(
       text: 'GPX',
       onPressed: () async {
-        coordinatesExport.exportCoordinates(context, points, polylines).then((bool value) {
+        coordinatesExport.exportCoordinates(context, points, polylines, FileType.GPX).then((bool value) {
           _showExportedFileDialog(context, FileType.GPX);
         });
       },
@@ -39,7 +47,7 @@ void showCoordinatesExportDialog(BuildContext context, List<GCWMapPoint> points,
     GCWDialogButton(
       text: 'KML',
       onPressed: () async {
-        coordinatesExport.exportCoordinates(context, points, polylines, kmlFormat: true).then((bool value) {
+        coordinatesExport.exportCoordinates(context, points, polylines, FileType.KML).then((bool value) {
           if (value) _showExportedFileDialog(context, FileType.KML);
         });
       },

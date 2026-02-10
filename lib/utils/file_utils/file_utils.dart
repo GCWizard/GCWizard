@@ -47,6 +47,7 @@ enum FileType {
   GWC,
   LUA,
   RLE,
+  GEOJSON
 }
 
 enum FileClass { IMAGE, ARCHIVE, SOUND, DATA, TEXT, BINARY }
@@ -290,6 +291,10 @@ const Map<FileType, FileTypeInfo> _FILE_TYPES = {
   FileType.JSON: FileTypeInfo(
       extensions: ['json'], magic_bytes: <List<int>>[], mime_types: ['text/plain'], file_class: FileClass.TEXT),
 
+  FileType.GEOJSON: FileTypeInfo(
+      extensions: ['geojson', 'json'],
+      magic_bytes: <List<int>>[], mime_types: ['text/plain'], file_class: FileClass.TEXT),
+
   FileType.PDF: FileTypeInfo(extensions: [
     'pdf'
   ], magic_bytes: <List<int>>[
@@ -373,7 +378,7 @@ FileType? fileTypeByFilename(String fileName) {
   }
 
   return _FILE_TYPES.keys.firstWhereOrNull((type) {
-    return _FILE_TYPES[type]!.extensions.contains(fileName);
+    return _FILE_TYPES[type]!.extensions.contains(fileName.toLowerCase());
   });
 }
 
