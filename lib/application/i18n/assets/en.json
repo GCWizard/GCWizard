@@ -3608,6 +3608,8 @@
   "midi_percussion": "Percussion",
   "midi_instruments": "Instruments",
   "midi_notes": "Notes",
+  "midi_program": "Program",
+  "midi_volume": "Volume",
   "midi_load_error": "Failed to initialize MIDI",
   "midi_coding_title": "MIDI coding",
   "midi_coding_description": "En/Decoding using MIDI notes",
