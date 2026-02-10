@@ -121,7 +121,7 @@ class _TriangleCircumCircleState extends State<TriangleCircumCircle> {
         point: _currentCoords3.toLatLng()!,
         markerText: i18n(context, 'coords_centerthreepoints_coordc'),
         coordinateFormat: _currentCoords3.format);
-    var mapPointInCenter = GCWMapPoint(
+    var mapPointCircumCircleCenter = GCWMapPoint(
       point: CircumCenterPoint.center,
       color: COLOR_MAP_CALCULATEDPOINT,
       markerText: i18n(context, 'triangle_output_incenter'),
@@ -134,7 +134,7 @@ class _TriangleCircumCircleState extends State<TriangleCircumCircle> {
       mapPointCurrentCoords1,
       mapPointCurrentCoords2,
       mapPointCurrentCoords3,
-      mapPointInCenter,
+      mapPointCircumCircleCenter,
     ];
 
     _currentMapPolylines = [

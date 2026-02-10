@@ -112,7 +112,7 @@ class _TriangleCenterOfGravityState extends State<TriangleCenterOfGravity> {
         point: _currentCoords3.toLatLng()!,
         markerText: i18n(context, 'coords_centerthreepoints_coordc'),
         coordinateFormat: _currentCoords3.format);
-    var mapPointInCenter = GCWMapPoint(
+    var mapPointCenterOfGravity = GCWMapPoint(
       point: centerOfGravity,
       color: COLOR_MAP_CALCULATEDPOINT,
       markerText: i18n(context, 'triangle_output_centroid'),
@@ -124,7 +124,7 @@ class _TriangleCenterOfGravityState extends State<TriangleCenterOfGravity> {
       mapPointCurrentCoords1,
       mapPointCurrentCoords2,
       mapPointCurrentCoords3,
-      mapPointInCenter,
+      mapPointCenterOfGravity,
     ];
 
     _currentMapPolylines = [

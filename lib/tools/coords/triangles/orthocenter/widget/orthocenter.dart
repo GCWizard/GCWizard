@@ -112,7 +112,7 @@ class _TriangleOrthocenterState extends State<TriangleOrthocenter> {
         point: _currentCoords3.toLatLng()!,
         markerText: i18n(context, 'coords_centerthreepoints_coordc'),
         coordinateFormat: _currentCoords3.format);
-    var mapPointNapoleonI = GCWMapPoint(
+    var mapPointOrthocenter = GCWMapPoint(
       point: orthocenter,
       color: COLOR_MAP_CALCULATEDPOINT,
       markerText: i18n(context, 'triangle_output_altitude'),
@@ -125,7 +125,7 @@ class _TriangleOrthocenterState extends State<TriangleOrthocenter> {
       mapPointCurrentCoords1,
       mapPointCurrentCoords2,
       mapPointCurrentCoords3,
-      mapPointNapoleonI,
+      mapPointOrthocenter,
     ];
 
     _currentMapPolylines = [
