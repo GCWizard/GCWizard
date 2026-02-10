@@ -48,9 +48,6 @@ class _MIDIState extends State<MIDI> {
   int _currentVolume = 100;
   int _currentMIDINote = 0;
   final String _ASSET_PATH =
-      //'lib/tools/science_and_technology/midi/assets/VelocityGrandPiano.sf2';
-      //'lib/tools/science_and_technology/midi/assets/TimGM6mb.sf2';
-      //'lib/tools/science_and_technology/midi/assets/FluidR3Mono_GM.sf3';
       'lib/tools/science_and_technology/midi/assets/piano.sf2';
 
   Future<void> _initializeMidi() async {
