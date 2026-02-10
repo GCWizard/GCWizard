@@ -1521,11 +1521,18 @@ void initializeRegistry(BuildContext context) {
       ),
       ToolLicenseCodeLibrary(
           context: context,
-          author: 'Nick Fox-Gieg,',
-          title: 'RKhive Velocity Grand Piano',
-          sourceUrl: 'https://web.archive.org/web/20260104152502/https://rkhive.com/rk-download/piano/velocity_grand_piano.zip',
-          licenseType: ToolLicenseType.CC0_1,
-          licenseUrl: 'https://web.archive.org/web/20260104153234/https://rkhive.com/legal.html',
+          author: 'Zanderjaz',
+          title: 'Free piano soundfonts',
+          sourceUrl: 'https://www.zanderjaz.com/soundfonts/pianos/Piano.SF2',
+          licenseType: ToolLicenseType.PERSONAL_USE,
+          licenseUrl: 'https://www.zanderjaz.com/terms/',
+      ),
+      ToolLicenseCodeLibrary(
+        context: context,
+        author: 'Brewnbeer',
+        title: 'flutter_midi_engine',
+        sourceUrl: 'https://pub.dev/packages/flutter_midi_engine',
+        licenseType: ToolLicenseType.MIT,
       ),
     ]
     ),
