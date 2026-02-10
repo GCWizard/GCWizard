@@ -74,6 +74,21 @@ void main() async {
         ],
         'expectedOutput': '{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[13.0,52.0]},"properties":{"name":"1"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[13.1,52.0]},"properties":{}},{"type":"Feature","geometry":{"type":"Point","coordinates":[13.1,52.1]},"properties":{"name":"3"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[13.0,52.1]},"properties":{}},{"type":"Feature","geometry":{"type":"LineString","coordinates":[[13.0,52.3],[13.1,52.0]]},"properties":{}},{"type":"Feature","geometry":{"type":"LineString","coordinates":[[13.0,52.5],[13.1,52.04]]},"properties":{}}]}',
       },
+      {
+        'inputPoints': <GCWMapPoint>[],
+        'inputLines': <GCWMapPolyline>[
+          GCWMapPolyline(
+            points: <GCWMapPoint>[
+              GCWMapPoint(point: LatLng(52.30, 13.00)),
+              GCWMapPoint(point: LatLng(52.00, 13.10)),
+              GCWMapPoint(point: LatLng(52.30, 13.10)),
+              GCWMapPoint(point: LatLng(52.30, 13.00)),
+            ],
+          ),
+        ],
+        'expectedOutput':
+        '{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[13.0,52.3],[13.1,52.0],[13.1,52.3],[13.0,52.3]]]},"properties":{}}]}',
+      },
     ];
 
     for (var elem in _inputsToExpected) {

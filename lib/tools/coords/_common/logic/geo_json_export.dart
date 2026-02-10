@@ -49,18 +49,20 @@ class geoJsonWriter {
 
   Map<String, Object> _toJsonPolylineGeometry(GCWMapPolyline line) {
     var list = <String, Object>{};
+    var isPolygon = false;
     if (line.points.length == 1) {
       return _toJsonPointGeometry(line.points.first);
     } else if (line.points.length == 2) {
       list.addAll({geoJsonLabel.type.name: geoJsonLabelTypes.LineString.name});
     } else if (line.points.length > 2) {
       if (isClosedLine(line)) {
+        isPolygon = true;
         list.addAll({geoJsonLabel.type.name: geoJsonLabelTypes.Polygon.name});
       } else {
         list.addAll({geoJsonLabel.type.name: geoJsonLabelTypes.LineString.name});
       }
     }
-    list.addAll({geoJsonLabel.coordinates.name: [_toJsonPoints(line.points)]});
+    list.addAll({geoJsonLabel.coordinates.name: isPolygon ? [_toJsonPoints(line.points)] : _toJsonPoints(line.points)});
     return list;
   }
 
