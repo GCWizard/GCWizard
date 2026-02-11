@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
+import 'package:latlong2/latlong.dart';
 String toString(dynamic o) {
   if (o is XYPoint) {
     return '(${o.x}, ${o.y})';
@@ -58,5 +59,19 @@ void anglesTest(Angles? a1, Angles? a2) {
     expect(a1.alpha, a2.alpha);
     expect(a1.beta, a2.beta);
     expect(a1.gamma, a2.gamma);
+  }
+}
+
+void circlesTest(XYCircle? a1, XYCircle? a2) {
+  if (a1 == null || a2 == null) {
+    return expect(a1, a2);
+  } else if (a1.x.isNaN || a1.y.isNaN || a1.r.isNaN) {
+    expect(a1.x.isNaN, a2.x.isNaN);
+    expect(a1.y.isNaN, a2.y.isNaN);
+    expect(a1.r.isNaN, a2.r.isNaN);
+  } else {
+    expect(a1.x, a2.x);
+    expect(a1.y, a2.y);
+    expect(a1.r, a2.r);
   }
 }
