@@ -1,23 +1,28 @@
-part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
-XYPoint TriLinearToXYPoint(TriLinearPoint P, XYPoint A, XYPoint B, XYPoint C) {
-  // https://mathworld.wolfram.com/TrilinearCoordinates.html
+import 'triangle_tests.dart';
 
-  Sides s = triangleSidesXY(A, B, C);
-  XYPoint av = _vectorNormalize(_vectorAB(B, C));
-  double a1 = av.x;
-  double a2 = av.y;
-  XYPoint cv = _vectorNormalize(_vectorAB(A, B));
-  double c1= cv.x;
-  double c2 = cv.y;
-  double a = P.x;
-  double c = P.z;
-  double k = 2 * triangleAreaXY(A, B, C) / (P.x * s.a + P.y * s.b + P.z * s.c);
-  double lc = (k * a - c * k * (a1 * c1 + a2 * c2) + a2 * (A.x - C.x) + a1 * (C.y - A.y)) / (a1 * c2 - a2 * c1);
+void main() {
+  group("triagle.TriLinearToXYPoint:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'inputP': TriLinearPoint(),
+        'inputA': XYPoint(x: 0, y: 0), 'inputB': XYPoint(x: 0, y: 0), 'inputC': XYPoint(x: 0, y: 0),
+        'expectedOutput': XYPoint(x: double.nan, y: double.nan)},
+      {'inputP': TriLinearPoint(),
+        'inputA': XYPoint(x: 1, y: 1), 'inputB': XYPoint(x: 1, y: 1), 'inputC': XYPoint(x: 1, y: 1),
+        'expectedOutput': XYPoint(x: double.nan, y: double.nan)},
+      {'inputP': TriLinearPoint(x: 1, y: 1, z: 1),
+        'inputA': XYPoint(x: 1, y: 1), 'inputB': XYPoint(x: 1, y: 1), 'inputC': XYPoint(x: 1, y: 1),
+        'expectedOutput': XYPoint(x: double.nan, y: double.nan)},
+    ];
 
-  return XYPoint(
-      x: A.x + lc * c1 - k * P.z * c2,
-      y: A.y + lc * c2 + k * P.z * c1
-  );
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['inputP']} ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
+        var _actual = TriLinearToXYPoint(elem['inputP'] as TriLinearPoint, elem['inputA'] as XYPoint, elem['inputB'] as XYPoint, elem['inputC'] as XYPoint);
+        pointTest(_actual, elem['expectedOutput'] as XYPoint);
+      });
+    }
+  });
 }
 
