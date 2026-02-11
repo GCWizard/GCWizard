@@ -1,5 +1,22 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
+String toString(dynamic o) {
+  if (o is XYPoint) {
+    return '(${o.x}, ${o.y})';
+  } else if (o is Sides) {
+    return '(${o.a}, ${o.b}, ${o.c})';
+  } else if (o is Angles) {
+    return '(${o.alpha}, ${o.beta}, ${o.gamma})';
+  } else if (o is TriLinearPoint) {
+    return '(${o.x}, ${o.y}, ${o.z})';
+  } else if (o is XYLine) {
+    return '(P1 (${o.P1.x}, ${o.P1.y}), P2 (${o.P2.x}, ${o.P2.y}))';
+  } else if (o is XYCircle) {
+    return '(${o.x}, ${o.y}, ${o.r})';
+  }
+  return o?.toString() ?? 'null';
+}
+
 
 void pointTest(XYPoint p1, XYPoint p2) {
   if (p1.x.isNaN || p1.y.isNaN) {
@@ -30,8 +47,10 @@ void sidesTest(Sides s1, Sides s2) {
   }
 }
 
-void anglesTest(Angles a1, Angles a2) {
-  if (a1.alpha.isNaN || a1.beta.isNaN || a1.gamma.isNaN) {
+void anglesTest(Angles? a1, Angles? a2) {
+  if (a1 == null || a2 == null) {
+    return expect(a1, a2);
+  } else if (a1.alpha.isNaN || a1.beta.isNaN || a1.gamma.isNaN) {
     expect(a1.alpha.isNaN, a2.alpha.isNaN);
     expect(a1.beta.isNaN, a2.beta.isNaN);
     expect(a1.gamma.isNaN, a2.gamma.isNaN);

@@ -15,7 +15,7 @@ void main() {
     ];
 
     for (var elem in _inputsToExpected) {
-      test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
+      test('input: ${toString(elem['inputA'])} ${toString(elem['inputB'])} ${toString(elem['inputC'])}', () {
         var _actual = triangleAltitudesXY(elem['inputA'] as XYPoint, elem['inputB'] as XYPoint, elem['inputC'] as XYPoint);
         sidesTest(_actual, elem['expectedOutput'] as Sides);
       });

@@ -4,20 +4,20 @@ import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/t
 import 'triangle_tests.dart';
 
 void main() {
-  group("triagle.triangleAltitudesBasePointsXY:", () {
+  group("triagle.triangleAnglesXY:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'inputA': XYPoint(x: 0, y: 0), 'inputB': XYPoint(x: 0, y: 0), 'inputC': XYPoint(x: 0, y: 0),
-        'expectedOutput': <XYPoint>[XYPoint(x: double.nan, y:double.nan), XYPoint(x: double.nan, y: double.nan), XYPoint(x: double.nan, y: double.nan)]},
+        'expectedOutput': Angles(alpha: double.nan, beta: double.nan, gamma: double.nan)},
       {'inputA': XYPoint(x: 1, y: 1), 'inputB': XYPoint(x: 1, y: 1), 'inputC': XYPoint(x: 1, y: 1),
-        'expectedOutput': <XYPoint>[XYPoint(x: double.nan, y:double.nan), XYPoint(x: double.nan, y: double.nan), XYPoint(x: double.nan, y: double.nan)]},
+        'expectedOutput': Angles(alpha: double.nan, beta: double.nan, gamma: double.nan)},
       {'inputA': XYPoint(x: 1, y: 1), 'inputB': XYPoint(x: 2, y: 2), 'inputC': XYPoint(x: 3, y: 3),
-        'expectedOutput': <XYPoint>[XYPoint(x: double.nan, y:double.nan), XYPoint(x: double.nan, y: double.nan), XYPoint(x: double.nan, y: double.nan)]},
+        'expectedOutput': Angles(alpha: 8.537736462515939e-7, beta: 179.99999914622634, gamma: 8.537736462515939e-7)},
     ];
 
     for (var elem in _inputsToExpected) {
       test('input: ${toString(elem['inputA'])} ${toString(elem['inputB'])} ${toString(elem['inputC'])}', () {
-        var _actual = triangleAltitudesBasePointsXY(elem['inputA'] as XYPoint, elem['inputB'] as XYPoint, elem['inputC'] as XYPoint);
-        pointListTest(_actual, elem['expectedOutput'] as List<XYPoint>);
+        var _actual = triangleAnglesXY(elem['inputA'] as XYPoint, elem['inputB'] as XYPoint, elem['inputC'] as XYPoint);
+        anglesTest(_actual, elem['expectedOutput'] as Angles?);
       });
     }
   });

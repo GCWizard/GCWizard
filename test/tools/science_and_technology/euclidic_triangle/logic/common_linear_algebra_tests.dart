@@ -21,7 +21,7 @@ void main() {
     ];
 
     for (var elem in _inputsToExpected) {
-      test('input: ${elem['inputL1']}  ${elem['inputL2']}', () {
+      test('input: ${toString(elem['inputL1'])}  ${toString(elem['inputL2'])}', () {
         var _actual = intersectVectors(elem['inputL1'] as XYLine, elem['inputL2'] as XYLine);
           pointTest(_actual, elem['expectedOutput'] as XYPoint);
       });
@@ -55,7 +55,7 @@ void main() {
     ];
 
     for (var elem in _inputsToExpected) {
-      test('input: ${elem['inputC1']}  ${elem['inputC2']}', () {
+      test('input: ${toString(elem['inputC1'])}  ${toString(elem['inputC2'])}', () {
         var _actual = intersectTwoCircles(elem['inputC1'] as XYCircle, elem['inputC2'] as XYCircle);
         pointListTest(_actual, elem['expectedOutput'] as List<XYPoint>);
       });
