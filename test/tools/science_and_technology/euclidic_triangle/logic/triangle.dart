@@ -1,9 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:latlong2/latlong.dart';
+
 String toString(dynamic o) {
   if (o is XYPoint) {
     return '(${o.x}, ${o.y})';
+  } else if (o is List<XYPoint>) {
+    return o.map((e) => toString(e)).join(', ');
   } else if (o is Sides) {
     return '(${o.a}, ${o.b}, ${o.c})';
   } else if (o is Angles) {
@@ -14,6 +18,10 @@ String toString(dynamic o) {
     return '(P1 (${o.P1.x}, ${o.P1.y}), P2 (${o.P2.x}, ${o.P2.y}))';
   } else if (o is XYCircle) {
     return '(${o.x}, ${o.y}, ${o.r})';
+  } else if (o is List<XYCircle>) {
+    return o.map((e) => toString(e)).join(', ');
+  } else if (o is Vec3) {
+    return '(${o.x}, ${o.y}, ${o.z})';
   }
   return o?.toString() ?? 'null';
 }
@@ -73,5 +81,33 @@ void circlesTest(XYCircle? a1, XYCircle? a2) {
     expect(a1.x, a2.x);
     expect(a1.y, a2.y);
     expect(a1.r, a2.r);
+  }
+}
+
+void circlesListTest(List<XYCircle> cL1, List<XYCircle> cL2) {
+  expect(cL1.length, cL2.length);
+  for(var i = 0; i < cL1.length; i++) {
+    circlesTest(cL1[i], cL2[i]);
+  }
+}
+
+void latLngTest(LatLng a, LatLng b) {
+  if (a.latitude.isNaN || a.longitude.isNaN) {
+    expect(a.latitude.isNaN, b.latitude.isNaN);
+    expect(a.longitude.isNaN, b.longitude.isNaN);
+  } else {
+    expect(true, equalsLatLng(a, b));
+  }
+}
+
+void vec3Test(Vec3 a1, Vec3 a2) {
+  if (a1.x.isNaN || a1.y.isNaN || a1.z.isNaN) {
+    expect(a1.x.isNaN, a2.x.isNaN);
+    expect(a1.y.isNaN, a2.y.isNaN);
+    expect(a1.z.isNaN, a2.z.isNaN);
+  } else {
+    expect(a1.x, a2.x);
+    expect(a1.y, a2.y);
+    expect(a1.z, a2.z);
   }
 }

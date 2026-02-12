@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
-import 'triangle_tests.dart';
+import 'triangle.dart';
 
 void main() {
-  group("triagle.intersectVectors:", () {
+  group("triangle.intersectVectors:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'inputL1': XYLine(P1: XYPoint(x: 0, y: 0), P2: XYPoint(x: 0, y: 0)),
         'inputL2': XYLine(P1: XYPoint(x: 0, y: 0), P2: XYPoint(x: 0, y: 0)),
@@ -29,7 +29,7 @@ void main() {
   });
 
 
-  group("triagle.intersectTwoCircles:", () {
+  group("triangle.intersectTwoCircles:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'inputC1': XYCircle(),
         'inputC2': XYCircle(),

@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
-import 'triangle_tests.dart';
+import 'triangle.dart';
 
 void main() {
-  group("triagle.triangleAltitudesBasePointsXY:", () {
+  group("triangle.triangleAltitudesBasePointsXY:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'inputA': XYPoint(x: 0, y: 0), 'inputB': XYPoint(x: 0, y: 0), 'inputC': XYPoint(x: 0, y: 0),
         'expectedOutput': <XYPoint>[XYPoint(x: double.nan, y:double.nan), XYPoint(x: double.nan, y: double.nan), XYPoint(x: double.nan, y: double.nan)]},
@@ -12,6 +12,8 @@ void main() {
         'expectedOutput': <XYPoint>[XYPoint(x: double.nan, y:double.nan), XYPoint(x: double.nan, y: double.nan), XYPoint(x: double.nan, y: double.nan)]},
       {'inputA': XYPoint(x: 1, y: 1), 'inputB': XYPoint(x: 2, y: 2), 'inputC': XYPoint(x: 3, y: 3),
         'expectedOutput': <XYPoint>[XYPoint(x: double.nan, y:double.nan), XYPoint(x: double.nan, y: double.nan), XYPoint(x: double.nan, y: double.nan)]},
+      {'inputA': XYPoint(x: 0, y: 0), 'inputB': XYPoint(x: 0, y: 3), 'inputC': XYPoint(x: 4, y: 0),
+        'expectedOutput': <XYPoint>[XYPoint(x: double.nan, y: double.nan), XYPoint(x: 0, y: 0), XYPoint(x: 0, y: 0)]},
     ];
 
     for (var elem in _inputsToExpected) {
