@@ -22,6 +22,8 @@ String toString(dynamic o) {
     return o.map((e) => toString(e)).join(', ');
   } else if (o is Vec3) {
     return '(${o.x}, ${o.y}, ${o.z})';
+  } else if (o is Circle) {
+    return '(${o.center.toString()}, ${o.radius})';
   }
   return o?.toString() ?? 'null';
 }
@@ -98,6 +100,11 @@ void latLngTest(LatLng a, LatLng b) {
   } else {
     expect(true, equalsLatLng(a, b));
   }
+}
+
+void circleTest(Circle a1, Circle a2) {
+  latLngTest(a1.center, a2.center);
+  expect(a1.radius, a2.radius);
 }
 
 void vec3Test(Vec3 a1, Vec3 a2) {
