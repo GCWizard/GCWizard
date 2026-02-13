@@ -24,6 +24,8 @@ String toString(dynamic o) {
     return '(${o.x}, ${o.y}, ${o.z})';
   } else if (o is Circle) {
     return '(${o.center.toString()}, ${o.radius})';
+  } else if (o is List<Circle>) {
+    return o.map((e) => toString(e)).join(', ');
   }
   return o?.toString() ?? 'null';
 }
@@ -102,9 +104,27 @@ void latLngTest(LatLng a, LatLng b) {
   }
 }
 
+void latLngListTest(List<LatLng> aL1, List<LatLng> bL2) {
+  expect(aL1.length, bL2.length);
+  for(var i = 0; i < aL1.length; i++) {
+    latLngTest(aL1[i], bL2[i]);
+  }
+}
+
 void circleTest(Circle a1, Circle a2) {
   latLngTest(a1.center, a2.center);
-  expect(a1.radius, a2.radius);
+  if (a1.radius.isNaN) {
+    expect(a1.radius.isNaN, a2.radius.isNaN);
+  } else {
+    expect(a1.radius, a2.radius);
+  }
+}
+
+void circleListTest(List<Circle> cL1, List<Circle> cL2) {
+  expect(cL1.length, cL2.length);
+  for(var i = 0; i < cL1.length; i++) {
+    circleTest(cL1[i], cL2[i]);
+  }
 }
 
 void vec3Test(Vec3 a1, Vec3 a2) {
