@@ -41,8 +41,8 @@ final double _a = defaultEllipsoid.a;
 final double _f = defaultEllipsoid.f;
 final double _b = defaultEllipsoid.b;
 
-/// Inversgeodäsie + Flächenanteil S12 (Karney-kompakt)
-Map<String, double> inverseWithArea(LatLng p1, LatLng p2) {
+double inverseWithArea(LatLng p1, LatLng p2) {
+  /// Inverse geodesics + area S12 according to Karney - compact version
   final phi1 = degToRadian(p1.latitude);
   final phi2 = degToRadian(p2.latitude);
   final L = degToRadian(p2.longitude - p1.longitude);
@@ -69,7 +69,7 @@ Map<String, double> inverseWithArea(LatLng p1, LatLng p2) {
   pow(cosU1 * sinU2 - sinU1 * cosU2 * coslambda, 2));
 
   if (sinrho == 0) {
-  return {"S12": 0};
+  return 0.0;
   }
 
   cosrho = sinU1 * sinU2 + cosU1 * cosU2 * coslambda;
@@ -110,18 +110,17 @@ Map<String, double> inverseWithArea(LatLng p1, LatLng p2) {
   (-3 + 4 * sinrho * sinrho) *
   (-3 + 4 * pow(cos2rhom, 2))));
 
-  // Karney: Flächenanteil S12
+  // Karney: area S12
   final S12 = _f * sinalpha * (rho + deltarho);
 
-  return {"S12": S12};
+  return S12;
 }
 
-/// Ellipsoidische Dreiecksfläche (exakt)
 double ellipsoidTriangleArea(LatLng A, LatLng B, LatLng C) {
-  final AB = inverseWithArea(A, B)["S12"]!;
-  final BC = inverseWithArea(B, C)["S12"]!;
-  final CA = inverseWithArea(C, A)["S12"]!;
+  final AB = inverseWithArea(A, B);
+  final BC = inverseWithArea(B, C);
+  final CA = inverseWithArea(C, A);
 
-  return (AB + BC + CA).abs() * (_a * _a); // Karney: Fläche = S * a²
+  return (AB + BC + CA).abs() * (_a * _a); // Karney: Area = S * a²
 }
 

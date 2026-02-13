@@ -1,19 +1,19 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
-XYPoint triangleNagel(XYPoint A, XYPoint B, XYPoint C){
+XYPoint triangleNagel(XYPoint a, XYPoint b, XYPoint c){
   // https://de.wikipedia.org/wiki/Nagel-Punkt
 
-  Sides sides = triangleSidesXY(A, B, C);
+  Sides sides = triangleSidesXY(a, b, c);
 
   double ac = (sides.a - sides.b + sides.c) / 2;
   double ab = (sides.a + sides.b - sides.c) / 2;
 
-  XYPoint BexB = _vectorAdd(A, _vectorMult(_vectorNormalize(_vectorAB(A, C)), ab));
-  XYPoint BexA = _vectorAdd(C, _vectorMult(_vectorNormalize(_vectorAB(C, B)), ac));
+  XYPoint bExB = _vectorAdd(a, _vectorMult(_vectorNormalize(_vectorAB(a, c)), ab));
+  XYPoint bExA = _vectorAdd(c, _vectorMult(_vectorNormalize(_vectorAB(c, b)), ac));
 
   XYPoint N = intersectVectors(
-      XYLine(P1: A, P2: BexA),
-      XYLine(P1: B, P2: BexB)
+      XYLine(P1: a, P2: bExA),
+      XYLine(P1: b, P2: bExB)
   );
   return N;
 }

@@ -1,97 +1,92 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
-XYPoint _vectorAB(XYPoint A, XYPoint B) {
-  return XYPoint(x: B.x - A.x, y: B.y - A.y);
+XYPoint _vectorAB(XYPoint a, XYPoint b) {
+  return XYPoint(x: b.x - a.x, y: b.y - a.y);
 }
 
-XYPoint _vectorAdd(XYPoint A, XYPoint B) {
+XYPoint _vectorAdd(XYPoint a, XYPoint b) {
   return XYPoint(
-    x: A.x + B.x,
-    y: A.y + B.y,
+    x: a.x + b.x,
+    y: a.y + b.y,
   );
 }
 
-XYPoint _vectorDiv(XYPoint A, double s) {
+XYPoint _vectorDiv(XYPoint a, double s) {
   return XYPoint(
-    x: A.x / s,
-    y: A.y / s,
+    x: a.x / s,
+    y: a.y / s,
   );
 }
 
-XYPoint _vectorMult(XYPoint A, double s) {
+XYPoint _vectorMult(XYPoint a, double s) {
   return XYPoint(
-    x: A.x * s,
-    y: A.y * s,
+    x: a.x * s,
+    y: a.y * s,
   );
 }
 
-double _vectorProductDot(XYPoint A, XYPoint B) {
-  return A.x * B.x + A.y * B.y;
+double _vectorProductDot(XYPoint a, XYPoint b) {
+  return a.x * b.x + a.y * b.y;
 }
 
-bool _vectorEqual(XYPoint A, XYPoint B) {
-  A = _vectorNormalize(A);
-  B = _vectorNormalize(B);
-  return (A.x == B.x && B.y == B.y);
+bool _vectorEqual(XYPoint a, XYPoint b) {
+  a = _vectorNormalize(a);
+  b = _vectorNormalize(b);
+  return (a.x == b.x && a.y == b.y);
 }
 
-double _vectorLength(XYPoint V) {
-  return sqrt(V.x * V.x + V.y * V.y);
+double _vectorLength(XYPoint v) {
+  return sqrt(v.x * v.x + v.y * v.y);
 }
 
-XYPoint _vectorNorm(XYPoint A) {
+XYPoint _vectorNorm(XYPoint a) {
   return XYPoint(
-    x: -A.y,
-    y: A.x,
+    x: -a.y,
+    y: a.x,
   );
 }
 
-XYPoint _vectorNormalize(XYPoint V) {
-  double factor = _vectorLength(V);
+XYPoint _vectorNormalize(XYPoint v) {
+  double factor = _vectorLength(v);
   return XYPoint(
-    x: V.x / factor,
-    y: V.y / factor,
+    x: v.x / factor,
+    y: v.y / factor,
   );
 }
 
-XYPoint intersectVectors(XYLine L1, XYLine L2){
-  if (_vectorEqual(L1.P2, L2.P2)) {
+XYPoint intersectVectors(XYLine l1, XYLine l2){
+  if (_vectorEqual(l1.P2, l2.P2)) {
     return XYPoint(x: 0, y: 0);
   }
 
-  // return
-  // XYPoint(
-  //   x: (L2.a - L1.a) / (L1.m - L2.m),
-  //   y: L1.m * (L2.a - L1.a) / (L1.m - L2.m) + L1.a
-  // );
 
   try {
-    double m = (L1.P1.y * L2.P2.x - L2.P1.y * L2.P2.x - L1.P1.x * L2.P2.y + L2.P1.x * L2.P2.y) / (L1.P2.x * L2.P2.y - L1.P2.y * L2.P2.x);
+    double m = (l1.P1.y * l2.P2.x - l2.P1.y * l2.P2.x - l1.P1.x * l2.P2.y + l2.P1.x * l2.P2.y) / (l1.P2.x * l2.P2.y - l1.P2.y * l2.P2.x);
 
     return
       XYPoint(
-          x: L1.P1.x + m * L1.P2.x,
-          y: L1.P1.y + m * L1.P2.y
+          x: l1.P1.x + m * l1.P2.x,
+          y: l1.P1.y + m * l1.P2.y
       );
   } catch (e) {
     return XYPoint(x:0, y:0);
   }
 }
 
-List<XYPoint> intersectTwoCircles(XYCircle A, XYCircle B){
-  double AB0 = B.x - A.x;
-  double AB1 = B.y - A.y;
-  double c = sqrt(AB0 * AB0 + AB1* AB1);
+List<XYPoint> intersectTwoCircles(XYCircle a, XYCircle b){
+  double ab0 = b.x - a.x;
+  double ab1 = b.y - a.y;
+  double c = sqrt(ab0 * ab0 + ab1* ab1);
 
-  double a = A.r;
-  double b = B.r;
+  double ar = a.r;
+  double br = b.r;
 
   if (c ==  0) {
     return [];
   }
 
-  double x = (a * a + c * c - b * b) / (2 * c);
-  double y = a * a - x * x;
+  double x = (ar * ar + c * c - br * br) / (2 * c);
+  double y = ar * ar - x * x;
   if (y < 0) {
     // no intersection
     return [];
@@ -100,26 +95,26 @@ List<XYPoint> intersectTwoCircles(XYCircle A, XYCircle B){
   if (y > 0) y = sqrt( y );
 
   // compute unit vectors ex and ey
-  double ex0 = AB0 / c;
-  double ex1 = AB1 / c;
+  double ex0 = ab0 / c;
+  double ex1 = ab1 / c;
   double ey0 = -ex1;
   double ey1 =  ex0;
-  double Q1x = A.x + x * ex0;
-  double Q1y = A.y + x * ex1;
+  double q1x = a.x + x * ex0;
+  double q1y = a.y + x * ex1;
 
   if (y == 0) {
     // one touch point
-    return [XYPoint(x: Q1x, y: Q1y)];
+    return [XYPoint(x: q1x, y: q1y)];
   }
 
   // two intersections
-  double Q2x = Q1x - y * ey0;
-  double Q2y = Q1y - y * ey1;
-  Q1x += y * ey0;
-  Q1y += y * ey1;
+  double q2x = q1x - y * ey0;
+  double q2y = q1y - y * ey1;
+  q1x += y * ey0;
+  q1y += y * ey1;
   return [
-    XYPoint(x: Q1x, y: Q1y),
-    XYPoint(x: Q2x, y: Q2y)
+    XYPoint(x: q1x, y: q1y),
+    XYPoint(x: q2x, y: q2y)
   ];
 
 }

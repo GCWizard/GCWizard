@@ -1,7 +1,5 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
-
-/// Multipliziert eine komplexe Zahl (x + i*y) mit ω = e^(2πi/3)
 XYPoint multiplyWithOmega(XYPoint p) {
   const double real = -0.5;
   final double imag = sqrt(3) / 2;
@@ -12,7 +10,6 @@ XYPoint multiplyWithOmega(XYPoint p) {
   );
 }
 
-/// Multipliziert eine komplexe Zahl (x + i*y) mit ω² = e^(4πi/3)
 XYPoint multiplyWithOmega2(XYPoint p) {
   const double real = -0.5;
   double imag = -sqrt(3) / 2;
@@ -23,7 +20,7 @@ XYPoint multiplyWithOmega2(XYPoint p) {
   );
 }
 
-/// Innerer Napoleonpunkt
+/// Inner Napoleonpoint
 XYPoint triangleNapoleonInnerXY(XYPoint a, XYPoint b, XYPoint c) {
   final bOmega = multiplyWithOmega(b);
   final cOmega2 = multiplyWithOmega2(c);
@@ -31,9 +28,9 @@ XYPoint triangleNapoleonInnerXY(XYPoint a, XYPoint b, XYPoint c) {
   return (a + bOmega + cOmega2) / 3.0;
 }
 
-/// Äußerer Napoleonpunkt
+/// Outer Napoleonpoint
 XYPoint triangleNapoleonOuterXY(XYPoint a, XYPoint b, XYPoint c) {
-  // ω und ω² werden vertauscht
+  // ω and ω² are changed
   final bOmega2 = multiplyWithOmega2(b);
   final cOmega = multiplyWithOmega(c);
 

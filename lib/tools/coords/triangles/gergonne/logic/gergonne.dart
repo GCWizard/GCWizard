@@ -3,23 +3,23 @@ import 'package:gc_wizard/tools/coords/triangles/orthocenter/logic/orthocenter.d
 import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 import 'package:latlong2/latlong.dart';
 
-XYPoint _gergonnePlanar(XYPoint A, XYPoint B, XYPoint C) {
+XYPoint _gergonnePlanar(XYPoint a, XYPoint b, XYPoint c) {
   // a = |BC|, b = |CA|, c = |AB|
-  final sides = triangleSidesXY(A, B, C);
-  final a = sides.a;
-  final b = sides.b;
-  final c = sides.c;
+  final sides = triangleSidesXY(a, b, c);
+  final as = sides.a;
+  final bs = sides.b;
+  final cs = sides.c;
 
-  final s = (a + b + c) / 2.0;
+  final s = (as + bs + cs) / 2.0;
 
-  final wa = 1.0 / (s - a);
-  final wb = 1.0 / (s - b);
-  final wc = 1.0 / (s - c);
+  final wa = 1.0 / (s - as);
+  final wb = 1.0 / (s - bs);
+  final wc = 1.0 / (s - cs);
 
   final wSum = wa + wb + wc;
 
-  final x = (wa * A.x + wb * B.x + wc * C.x) / wSum;
-  final y = (wa * A.y + wb * B.y + wc * C.y) / wSum;
+  final x = (wa * a.x + wb * b.x + wc * c.x) / wSum;
+  final y = (wa * a.y + wb * b.y + wc * c.y) / wSum;
 
   return XYPoint(x: x, y: y);
 }
@@ -39,31 +39,31 @@ LatLng _gergonneOnEllipsoid({
 
   final gnom = GnomonicWgs84(geod);
 
-  final A2 = gnom.forward(lat0, lon0, latA, lonA);
-  final B2 = gnom.forward(lat0, lon0, latB, lonB);
-  final C2 = gnom.forward(lat0, lon0, latC, lonC);
+  final a2 = gnom.forward(lat0, lon0, latA, lonA);
+  final b2 = gnom.forward(lat0, lon0, latB, lonB);
+  final c2 = gnom.forward(lat0, lon0, latC, lonC);
 
-  final G2 = _gergonnePlanar(
-      XYPoint(x: A2.x, y: A2.y),
-      XYPoint(x: B2.x, y: B2.y),
-      XYPoint(x: C2.x, y: C2.y));
+  final g2 = _gergonnePlanar(
+      XYPoint(x: a2.x, y: a2.y),
+      XYPoint(x: b2.x, y: b2.y),
+      XYPoint(x: c2.x, y: c2.y));
 
-  final Gll = gnom.reverse(lat0, lon0, G2.x, G2.y);
+  final gll = gnom.reverse(lat0, lon0, g2.x, g2.y);
 
-  final lonNorm = ((Gll.y + 180.0) % 360.0 + 360.0) % 360.0 - 180.0;
-  return LatLng(Gll.x, lonNorm);
+  final lonNorm = ((gll.y + 180.0) % 360.0 + 360.0) % 360.0 - 180.0;
+  return LatLng(gll.x, lonNorm);
 }
 
-LatLng calculateEllipsoidTriangleGergonnePoint(LatLng A, LatLng B, LatLng C){
+LatLng calculateEllipsoidTriangleGergonnePoint(LatLng a, LatLng b, LatLng c){
   return _gergonneOnEllipsoid(
       geod: GeodesicWgs84(
         defaultEllipsoid.a,
           defaultEllipsoid.f,
           defaultEllipsoid.b
       ),
-      latA: A.latitude, lonA: A.longitude,
-      latB: B.latitude, lonB: B.longitude,
-      latC: C.latitude, lonC: C.longitude,
+      latA: a.latitude, lonA: a.longitude,
+      latB: b.latitude, lonB: b.longitude,
+      latC: c.latitude, lonC: c.longitude,
 
   );
 }

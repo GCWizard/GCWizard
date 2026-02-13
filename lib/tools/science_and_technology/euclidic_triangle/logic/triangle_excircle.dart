@@ -1,74 +1,74 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
-List<XYCircle> triangleExCirclesXY(XYPoint A, XYPoint B, XYPoint C,){
+List<XYCircle> triangleExCirclesXY(XYPoint a, XYPoint b, XYPoint c,){
   // https://de.wikipedia.org/wiki/Ankreis
   // https://en.wikipedia.org/wiki/Incircle_and_excircles_of_a_triangle
   List<XYCircle> exCircle = [];
 
-  final Sides sides = triangleSidesXY(A, B, C);
-  final double area = triangleAreaXY(A, B, C);
+  final Sides sides = triangleSidesXY(a, b, c);
+  final double area = triangleAreaXY(a, b, c);
 
-  final a = sides.a;
-  final b = sides.b;
-  final c = sides.c;
+  final as = sides.a;
+  final bs = sides.b;
+  final cs = sides.c;
 
-  final s = (a + b + c) / 2;
+  final s = (as + bs + cs) / 2;
 
-  final rA = area / (s - a);
-  final rB = area / (s - b);
-  final rC = area / (s - c);
+  final rA = area / (s - as);
+  final rB = area / (s - bs);
+  final rC = area / (s - cs);
 
-  final denomA = (b + c - a);
-  final denomB = (a + c - b);
-  final denomC = (a + b - c);
+  final denomA = (bs + cs - as);
+  final denomB = (as + cs - bs);
+  final denomC = (as + bs - cs);
 
-  final IA = XYPoint(
-    x: (-a * A.x + b * B.x + c * C.x) / denomA,
-    y: (-a * A.y + b * B.y + c * C.y) / denomA,
+  final iA = XYPoint(
+    x: (-as * a.x + bs * b.x + cs * c.x) / denomA,
+    y: (-as * a.y + bs * b.y + cs * c.y) / denomA,
   );
 
-  final IB = XYPoint(
-    x: (a * A.x - b * B.x + c * C.x) / denomB,
-    y: (a * A.y - b * B.y + c * C.y) / denomB,
+  final iB = XYPoint(
+    x: (as * a.x - bs * b.x + cs * c.x) / denomB,
+    y: (as * a.y - bs * b.y + cs * c.y) / denomB,
   );
 
-  final IC = XYPoint(
-    x: (a * A.x + b * B.x - c * C.x) / denomC,
-    y: (a * A.y + b * B.y - c * C.y) / denomC,
+  final iC = XYPoint(
+    x: (as * a.x + bs * b.x - cs * c.x) / denomC,
+    y: (as * a.y + bs * b.y - cs * c.y) / denomC,
   );
 
-  exCircle.add(XYCircle(x: IA.x, y: IA.y, r: rA));
-  exCircle.add(XYCircle(x: IB.x, y: IB.y, r: rB));
-  exCircle.add(XYCircle(x: IC.x, y: IC.y, r: rC));
+  exCircle.add(XYCircle(x: iA.x, y: iA.y, r: rA));
+  exCircle.add(XYCircle(x: iB.x, y: iB.y, r: rB));
+  exCircle.add(XYCircle(x: iC.x, y: iC.y, r: rC));
 
   return exCircle;
 }
 
-XYPoint _footOnLine(XYPoint P, XYPoint B, XYPoint C) {
-  final v = C - B;
-  final w = P - B;
+XYPoint _footOnLine(XYPoint p, XYPoint b, XYPoint c) {
+  final v = c - b;
+  final w = p - b;
   final denom = _dot(v, v);
-  if (denom == 0) return B; // degeneriert
+  if (denom == 0) return b; // degenerated
   final t = _dot(w, v) / denom;
-  return B + v * t;
+  return b + v * t;
 }
 
 double _dot(XYPoint a, XYPoint b) => a.x * b.x + a.y * b.y;
 
-List<XYPoint> triangleTouchPointsExcircleXY(XYPoint A, XYPoint B, XYPoint C){
-  final ex = triangleExCirclesXY(A, B, C);
+List<XYPoint> triangleTouchPointsExcircleXY(XYPoint a, XYPoint b, XYPoint c){
+  final ex = triangleExCirclesXY(a, b, c);
 
-  // Ankreis gegenüber A berührt Seite BC
-     final IA = XYPoint(x: ex[0].x, y: ex[0].y);
-     final HA = _footOnLine(IA, B, C);
+  // Excircle in opposite A touches side BC
+     final iA = XYPoint(x: ex[0].x, y: ex[0].y);
+     final hA = _footOnLine(iA, b, c);
 
-  // Ankreis gegenüber B berührt Seite CA
-     final IB = XYPoint(x: ex[1].x, y: ex[1].y);
-     final HB = _footOnLine(IB, C, A);
+  // Excircle in opposite B touches side CA
+     final iB = XYPoint(x: ex[1].x, y: ex[1].y);
+     final hB = _footOnLine(iB, c, a);
 
-  // Ankreis gegenüber C berührt Seite AB
-     final IC = XYPoint(x: ex[2].x, y: ex[2].y);
-     final HC = _footOnLine(IC, A, B);
+  // Excircle in opposite C touches side AB
+     final iC = XYPoint(x: ex[2].x, y: ex[2].y);
+     final hC = _footOnLine(iC, a, b);
 
-  return [HA, HB, HC,];
+  return [hA, hB, hC,];
 }

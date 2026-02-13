@@ -8,8 +8,8 @@ final double _f = defaultEllipsoid.f; // Abplattung
 final double _b = defaultEllipsoid.b; // Polradius
 
 /// ------------------------------------------------------------
-///  Inverses Problem nach Karney (vereinfachte Form)
-///  Liefert: Distanz s (m)
+///  Inverses geodesic according to Karney (simplified)
+///  calculates  Distance s (m)
 /// ------------------------------------------------------------
 double _geodesicDistance(
     double lat1Deg, double lon1Deg,

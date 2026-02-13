@@ -1,13 +1,13 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
-XYPoint triangleMitten(XYPoint A, XYPoint B, XYPoint C){
+XYPoint triangleMitten(XYPoint a, XYPoint b, XYPoint c){
   // https://de.wikipedia.org/wiki/Mittenpunkt
   // https://mathworld.wolfram.com/Mittenpunkt.html
 
-  List<XYPoint> sidesmidpoint = triangleSidesMidPointsXY(A, B, C);
-  List<XYCircle> excircles = triangleExCirclesXY(A, B, C);
+  List<XYPoint> sidesmidpoint = triangleSidesMidPointsXY(a, b, c);
+  List<XYCircle> excircles = triangleExCirclesXY(a, b, c);
 
-  XYPoint M = intersectVectors(
+  XYPoint m = intersectVectors(
       XYLine(
           P1: XYPoint(
             x: excircles[1].x,
@@ -21,5 +21,5 @@ XYPoint triangleMitten(XYPoint A, XYPoint B, XYPoint C){
           ),
           P2: sidesmidpoint[0])
   );
-  return M;
+  return m;
 }

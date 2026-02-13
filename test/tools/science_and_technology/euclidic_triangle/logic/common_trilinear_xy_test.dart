@@ -22,7 +22,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${toString(elem['inputP'])} ${toString(elem['inputA'])} ${toString(elem['inputB'])} ${toString(elem['inputC'])}', () {
-        var _actual = TriLinearToXYPoint(elem['inputP'] as TriLinearPoint, elem['inputA'] as XYPoint, elem['inputB'] as XYPoint, elem['inputC'] as XYPoint);
+        var _actual = triLinearToXYPoint(elem['inputP'] as TriLinearPoint, elem['inputA'] as XYPoint, elem['inputB'] as XYPoint, elem['inputC'] as XYPoint);
         pointTest(_actual, elem['expectedOutput'] as XYPoint);
       });
     }

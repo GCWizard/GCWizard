@@ -8,28 +8,28 @@ import 'package:gc_wizard/tools/coords/triangles/_common/triangles.dart';
 import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 import 'package:latlong2/latlong.dart';
 
-Circle calculateEllipsoidTriangleInCircle(LatLng A, LatLng B, LatLng C) {
-  var dist = calculateEllipsoidTriangleCircumference(A, B, C);
+Circle calculateEllipsoidTriangleInCircle(LatLng a, LatLng b, LatLng c) {
+  var dist = calculateEllipsoidTriangleCircumference(a, b, c);
   var p1 = segmentBearings(
-      A,
-      distanceBearing(A, C, defaultEllipsoid).bearingAToB,
-      distanceBearing(A, B, defaultEllipsoid).bearingAToB,
+      a,
+      distanceBearing(a, c, defaultEllipsoid).bearingAToB,
+      distanceBearing(a, b, defaultEllipsoid).bearingAToB,
       dist,
       2,
       defaultEllipsoid);
   var p2 = segmentBearings(
-      B,
-      distanceBearing(B, C, defaultEllipsoid).bearingAToB,
-      distanceBearing(B, A, defaultEllipsoid).bearingAToB,
+      b,
+      distanceBearing(b, c, defaultEllipsoid).bearingAToB,
+      distanceBearing(b, a, defaultEllipsoid).bearingAToB,
       dist,
       2,
       defaultEllipsoid);
-  var incircle = intersectFourPoints(A, p1.points.first, B, p2.points.first, defaultEllipsoid);
+  var incircle = intersectFourPoints(a, p1.points.first, b, p2.points.first, defaultEllipsoid);
 
   // calculations provided by Gemini
   // Normale einer Seite, z.B. BC
-  final bVec = latLngToVec3(B);
-  final cVec = latLngToVec3(C);
+  final bVec = latLngToVec3(b);
+  final cVec = latLngToVec3(c);
   final n = bVec.cross(cVec).normalized();
 
   // Winkelabstand Incenter → Seite

@@ -5,35 +5,45 @@ import 'package:gc_wizard/tools/coords/equilateral_triangle/logic/equilateral_tr
 import 'package:gc_wizard/tools/coords/intersect_lines/intersect_four_points/logic/intersect_four_points.dart';
 import 'package:latlong2/latlong.dart';
 
-List<LatLng> calculateEllipsoidTriangleNapoleonPoints(LatLng A, LatLng B, LatLng C) {
-  List<LatLng> pointsA = equilateralTriangle(B, C, defaultEllipsoid);
-  List<LatLng> pointsB = equilateralTriangle(C, A, defaultEllipsoid);
+List<LatLng> calculateEllipsoidTriangleNapoleonPoints(LatLng a, LatLng b, LatLng c) {
 
-  LatLng NACout;
-  LatLng NACin;
-  LatLng NBCout;
-  LatLng NBCin;
-
-  if (distanceBearing(A, pointsA[0], defaultEllipsoid).distance >
-      distanceBearing(A, pointsA[1], defaultEllipsoid).distance) {
-    NBCout = centroidCenterOfGravity([B, C, pointsA[0]])!;
-    NBCin = centroidCenterOfGravity([B, C, pointsA[1]])!;
-  } else {
-    NBCout = centroidCenterOfGravity([B, C, pointsA[1]])!;
-    NBCin = centroidCenterOfGravity([B, C, pointsA[0]])!;
+  if (distanceBearing(a, b, defaultEllipsoid).distance == 0.0 ||
+      distanceBearing(a, b, defaultEllipsoid).distance == 0.0 ||
+      distanceBearing(a, b, defaultEllipsoid).distance == 0.0)   {
+    return [
+      LatLng(double.nan, double.nan), LatLng(double.nan, double.nan),
+    ];
   }
 
-  if (distanceBearing(B, pointsB[0], defaultEllipsoid).distance >
-      distanceBearing(B, pointsB[1], defaultEllipsoid).distance) {
-    NACout = centroidCenterOfGravity([A, C, pointsB[0]])!;
-    NACin = centroidCenterOfGravity([A, C, pointsB[1]])!;
+  List<LatLng> pointsA = equilateralTriangle(b, c, defaultEllipsoid);
+  List<LatLng> pointsB = equilateralTriangle(c, a, defaultEllipsoid);
+
+  LatLng nacOut;
+  LatLng nacIn;
+  LatLng nbcOut;
+  LatLng nbcIn;
+
+
+  if (distanceBearing(a, pointsA[0], defaultEllipsoid).distance >
+      distanceBearing(a, pointsA[1], defaultEllipsoid).distance) {
+    nbcOut = centroidCenterOfGravity([b, c, pointsA[0]])!;
+    nbcIn = centroidCenterOfGravity([b, c, pointsA[1]])!;
   } else {
-    NACout = centroidCenterOfGravity([A, C, pointsB[1]])!;
-    NACin = centroidCenterOfGravity([A, C, pointsB[0]])!;
+    nbcOut = centroidCenterOfGravity([b, c, pointsA[1]])!;
+    nbcIn = centroidCenterOfGravity([b, c, pointsA[0]])!;
+  }
+
+  if (distanceBearing(b, pointsB[0], defaultEllipsoid).distance >
+      distanceBearing(b, pointsB[1], defaultEllipsoid).distance) {
+    nacOut = centroidCenterOfGravity([a, c, pointsB[0]])!;
+    nacIn = centroidCenterOfGravity([a, c, pointsB[1]])!;
+  } else {
+    nacOut = centroidCenterOfGravity([a, c, pointsB[1]])!;
+    nacIn = centroidCenterOfGravity([a, c, pointsB[0]])!;
   }
 
   return [
-    intersectFourPoints(NACout, B, NBCout, A, defaultEllipsoid),
-    intersectFourPoints(NACin, B, NBCin, A, defaultEllipsoid),
+    intersectFourPoints(nacOut, b, nbcOut, a, defaultEllipsoid),
+    intersectFourPoints(nacIn, b, nbcIn, a, defaultEllipsoid),
   ];
 }

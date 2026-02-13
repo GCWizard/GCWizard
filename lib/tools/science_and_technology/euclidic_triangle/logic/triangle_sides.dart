@@ -1,17 +1,17 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
-Sides triangleSidesXY(XYPoint A, XYPoint B, XYPoint C,){
+Sides triangleSidesXY(XYPoint a, XYPoint b, XYPoint c){
   return Sides(
-    c: _vectorLength(_vectorAB(A, B)),
-    b: _vectorLength(_vectorAB(A, C)),
-    a: _vectorLength(_vectorAB(B, C)),
+    c: _vectorLength(_vectorAB(a, b)),
+    b: _vectorLength(_vectorAB(a, c)),
+    a: _vectorLength(_vectorAB(b, c)),
   );
 }
 
-Sides? triangleSidesMap(LatLng _AMap, LatLng _BMap, LatLng _CMap){
+Sides? triangleSidesMap(LatLng aMap, LatLng bMap, LatLng cMap){
   return Sides(
-    a: distanceBearing(_BMap, _CMap, defaultEllipsoid).distance,
-    b: distanceBearing(_AMap, _CMap, defaultEllipsoid).distance,
-    c: distanceBearing(_BMap, _AMap, defaultEllipsoid).distance,
+    a: distanceBearing(bMap, cMap, defaultEllipsoid).distance,
+    b: distanceBearing(aMap, cMap, defaultEllipsoid).distance,
+    c: distanceBearing(bMap, aMap, defaultEllipsoid).distance,
   );
 }

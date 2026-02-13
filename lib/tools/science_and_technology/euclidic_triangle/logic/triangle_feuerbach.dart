@@ -1,10 +1,10 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
-XYPoint triangleFeuerbach(XYPoint A, XYPoint B, XYPoint C){
+XYPoint triangleFeuerbach(XYPoint a, XYPoint b, XYPoint c){
   // https://de.wikipedia.org/wiki/Feuerbachkreis
 
-  XYCircle incircle = triangleInCircleXY(A, B, C);
-  XYCircle feuerbachcircle = triangleFeuerbachCircleXY(A, B, C);
+  XYCircle incircle = triangleInCircleXY(a, b, c);
+  XYCircle feuerbachcircle = triangleFeuerbachCircleXY(a, b, c);
 
   List<XYPoint> feuerbachpoints = intersectTwoCircles(incircle, feuerbachcircle);
 
