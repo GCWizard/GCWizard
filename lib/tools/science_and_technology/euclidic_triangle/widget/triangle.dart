@@ -236,7 +236,6 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
         ),
       ],
     );
-    return Container();
   }
 
   Widget _buildInputWidgetABC() {

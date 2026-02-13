@@ -27,7 +27,6 @@ void main() async {
     for (var elem in _inputsToExpected) {
       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
         var _actual = calculateEllipsoidTriangleAngles(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng);
-        print(toString(_actual));
         anglesTest(_actual, elem['expectedOutput'] as Angles);
       });
     }
@@ -50,7 +49,6 @@ void main() async {
     for (var elem in _inputsToExpected) {
       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
         var _actual = calculateEllipsoidTriangleSides(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng);
-      print(toString(_actual));
         sidesTest(_actual, elem['expectedOutput'] as Sides);
       });
     }
@@ -81,22 +79,21 @@ void main() async {
   group("triangle.inverseWithArea:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 0),
-        'expectedOutput': <String, double>{'S12': 0.0}},
+        'expectedOutput': 0.0},
       {'inputA': LatLng(1, 1), 'inputB': LatLng(1, 1),
-        'expectedOutput': <String, double>{'S12': 0.0}},
+        'expectedOutput': 0.0},
       {'inputA': LatLng(1, 1), 'inputB': LatLng(2, 2),
-        'expectedOutput': <String, double>{'S12': 0.000058721793375566885}},
+        'expectedOutput': 0.000058721793375566885},
       {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 3),
-        'expectedOutput': <String, double>{'S12': double.nan}},
+        'expectedOutput': double.nan},
       {'inputA': LatLng(40, 9), 'inputB': LatLng(42, 9),
-        'expectedOutput': <String, double>{'S12': 0.0}},
+        'expectedOutput': 0.0},
     ];
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['inputA']} ${elem['inputB']}', () {
         var _actual = inverseWithArea(elem['inputA'] as LatLng, elem['inputB'] as LatLng);
-        print(_actual);
-        expect(_actual.toString(), elem['expectedOutput'].toString());
+        _actual.isNaN ? expect(_actual.toString(), elem['expectedOutput'].toString()) : expect(_actual, elem['expectedOutput']);
       });
     }
   });

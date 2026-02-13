@@ -26,7 +26,6 @@ void main() async {
     for (var elem in _inputsToExpected) {
       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
         var _actual = calculateEllipsoidTriangleSideMidPoints(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng);
-        _actual.forEach((e) => print(e.latitude.toString() + ', ' + e.longitude.toString()));
         latLngListTest(_actual, elem['expectedOutput'] as List<LatLng>);
       });
     }
