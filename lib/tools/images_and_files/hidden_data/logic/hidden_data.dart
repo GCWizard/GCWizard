@@ -8,7 +8,6 @@ import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:image/image.dart' as Image;
-import 'package:tuple/tuple.dart';
 
 part 'package:gc_wizard/tools/images_and_files/hidden_data/logic/file_size.dart';
 
@@ -20,10 +19,10 @@ var _soundCheckCounter = 0;
 Future<List<GCWFile>> hiddenData(GCWFile data) async {
   data.children = null;
   _soundCheckCounter = 0;
-  return Future.value((await _hiddenData(data, 0)).item1);
+  return Future.value((await _hiddenData(data, 0)).data);
 }
 
-Future<Tuple2<List<GCWFile>, int>> _hiddenData(GCWFile data, int fileIndexCounter) async {
+Future<({List<GCWFile> data, int fileIndexCounter})> _hiddenData(GCWFile data, int fileIndexCounter) async {
   var result = await _splitFile(data, fileIndexCounter);
   var childrenList = <GCWFile>[];
 
@@ -35,40 +34,40 @@ Future<Tuple2<List<GCWFile>, int>> _hiddenData(GCWFile data, int fileIndexCounte
     _addFiles(childrenList, children);
   }
   // first add all children blocks
-  _addFiles(childrenList, result.item1);
+  _addFiles(childrenList, result.data);
 
   // check for empty children (backup)
   _addChildren(data, childrenList);
 
   // recursive search in the children
   await Future.forEach(childrenList, (GCWFile data) async {
-    result = await _hiddenData(data, result.item2);
+    result = await _hiddenData(data, result.fileIndexCounter);
   });
 
   // search for magic bytes (hidden files) in the parent block (e.g. thumbnails) (if not a archive)
   if (data.fileClass != FileClass.ARCHIVE) {
     // new file with correct size
     var dataClone = GCWFile(name: data.name, bytes: Uint8List.fromList(data.bytes.sublist(0, _fileSize(data.bytes))));
-    result = await _searchMagicBytesHeader(dataClone, result.item2);
+    result = await _searchMagicBytesHeader(dataClone, result.fileIndexCounter);
     _addChildren(data, dataClone.children);
 
     if (dataClone.children != null && dataClone.children!.isNotEmpty) {
       // check for hidden archives (other types are checked)
       await Future.forEach(dataClone.children!, (GCWFile data) async {
         if (data.fileClass == FileClass.ARCHIVE) {
-          result = await _hiddenData(data, result.item2);
+          result = await _hiddenData(data, result.fileIndexCounter);
         }
       });
     }
   }
 
-  return Future.value(Tuple2<List<GCWFile>, int>([data], result.item2));
+  return Future.value((data: [data], fileIndexCounter: result.fileIndexCounter));
 }
 
 /// split file into separate files
 /// default is that the first block is not returned (only attachments) (ignored with onlyParent)
 /// with checking whether it is a valid block
-Future<Tuple2<List<GCWFile>, int>> _splitFile(GCWFile data, int fileIndexCounter, {bool onlyParent = false}) async {
+Future<({List<GCWFile> data, int fileIndexCounter})> _splitFile(GCWFile data, int fileIndexCounter, {bool onlyParent = false}) async {
   Uint8List? bytes = data.bytes;
   var resultList = <GCWFile>[];
   var parent = !onlyParent;
@@ -99,15 +98,15 @@ Future<Tuple2<List<GCWFile>, int>> _splitFile(GCWFile data, int fileIndexCounter
     parent = false;
   }
 
-  return Future.value(Tuple2<List<GCWFile>, int>(resultList, fileIndexCounter));
+  return Future.value((data: resultList, fileIndexCounter: fileIndexCounter));
 }
 
 /// search on any position magic bytes
-Future<Tuple2<List<GCWFile>, int>> _searchMagicBytesHeader(GCWFile data, int fileIndexCounter) async {
+Future<({List<GCWFile> data, int fileIndexCounter})> _searchMagicBytesHeader(GCWFile data, int fileIndexCounter) async {
   var result = await _searchMagicBytes(data, _fileSizeCalculationAviable(), fileIndexCounter);
-  _addChildren(data, result.item1);
+  _addChildren(data, result.data);
 
-  return Future.value(Tuple2<List<GCWFile>, int>([data], result.item2));
+  return Future.value((data: [data], fileIndexCounter: result.fileIndexCounter));
 }
 
 void _addChildren(GCWFile data, List<GCWFile>? children) {
@@ -126,7 +125,7 @@ void _addFiles(List<GCWFile> list, List<GCWFile>? files) {
 }
 
 /// search on any position (>0) magic bytes
-Future<Tuple2<List<GCWFile>, int>> _searchMagicBytes(
+Future<({List<GCWFile> data, int fileIndexCounter})> _searchMagicBytes(
     GCWFile data, List<FileType> fileTypeList, int fileIndexCounter) async {
   var resultList = <GCWFile>[];
   var bytes = data.bytes;
@@ -152,9 +151,9 @@ Future<Tuple2<List<GCWFile>, int>> _searchMagicBytes(
               var result =
                   await _splitFile(GCWFile(bytes: data.bytes.sublist(bytesOffset)), fileIndexCounter, onlyParent: true);
               // append file as result, if it is a valid file
-              _addFiles(resultList, result.item1);
+              _addFiles(resultList, result.data);
 
-              fileIndexCounter = result.item2;
+              fileIndexCounter = result.fileIndexCounter;
             }
           }
         }
@@ -162,7 +161,7 @@ Future<Tuple2<List<GCWFile>, int>> _searchMagicBytes(
     });
   });
 
-  return Future.value(Tuple2<List<GCWFile>, int>(resultList, fileIndexCounter));
+  return Future.value((data: resultList, fileIndexCounter: fileIndexCounter));
 }
 
 /// check, are the data a valid (complete) file or sound

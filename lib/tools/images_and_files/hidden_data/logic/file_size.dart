@@ -285,16 +285,16 @@ int? _rarFileSize(Uint8List? data) {
 
     var dataSizeAdd = 0;
     var headerSize = __rarVint(data, offset);
-    offset += headerSize.item2;
+    offset += headerSize.index;
     var headerTypePos = offset;
 
     var headerType = __rarVint(data, offset);
-    offset += headerType.item2;
+    offset += headerType.index;
 
     var headerFlags = __rarVint(data, offset);
-    offset += headerFlags.item2;
+    offset += headerFlags.index;
 
-    switch (headerType.item1) {
+    switch (headerType.value) {
       case 1: // Main archive header
         archiveBlockFound = true;
         break;
@@ -302,63 +302,63 @@ int? _rarFileSize(Uint8List? data) {
       case 3: // service header
         archiveBlockFound = true;
 
-        if ((headerFlags.item1 & 0x01) != 0) offset += __rarVint(data, offset).item2; // Extra area size
+        if ((headerFlags.value & 0x01) != 0) offset += __rarVint(data, offset).index; // Extra area size
 
-        if ((headerFlags.item1 & 0x02) != 0) {
+        if ((headerFlags.value & 0x02) != 0) {
           var dataSize = __rarVint(data, offset); // Data size
-          offset += dataSize.item2;
-          dataSizeAdd = dataSize.item1;
+          offset += dataSize.index;
+          dataSizeAdd = dataSize.value;
         }
 
-        offset += __rarVint(data, offset).item2; // File flags
-        offset += __rarVint(data, offset).item2; // unpacked size
-        offset += __rarVint(data, offset).item2; // attributes
-        if ((headerFlags.item1 & 0x02) != 0) offset += 4; // mtime
-        if ((headerFlags.item1 & 0x04) != 0) offset += 4; // data CRC32
-        offset += __rarVint(data, offset).item2; // Compression information
-        offset += __rarVint(data, offset).item2; // Host OS
+        offset += __rarVint(data, offset).index; // File flags
+        offset += __rarVint(data, offset).index; // unpacked size
+        offset += __rarVint(data, offset).index; // attributes
+        if ((headerFlags.value & 0x02) != 0) offset += 4; // mtime
+        if ((headerFlags.value & 0x04) != 0) offset += 4; // data CRC32
+        offset += __rarVint(data, offset).index; // Compression information
+        offset += __rarVint(data, offset).index; // Host OS
 
         var nameLength = __rarVint(data, offset); // Name length
-        offset += nameLength.item2;
+        offset += nameLength.index;
 
-        var nameArray = data.sublist(offset, offset + nameLength.item1);
+        var nameArray = data.sublist(offset, offset + nameLength.value);
         var name = utf8.decode(nameArray);
         if (name.isNotEmpty) fileNames.add(name);
-        offset += nameLength.item1; //Name
+        offset += nameLength.value; //Name
 
         break;
       case 4: // Archive encryption header
         archiveBlockFound = true;
 
-        offset += __rarVint(data, offset).item2; // Encryption version
-        offset += __rarVint(data, offset).item2; // Encryption flags
+        offset += __rarVint(data, offset).index; // Encryption version
+        offset += __rarVint(data, offset).index; // Encryption flags
         offset += 1; // KDF count
         offset += 16; // Salt
         offset += 12; // Check value
 
         break;
       case 5: // End of archive header
-        offset += __rarVint(data, offset).item2; // End of archive flags
+        offset += __rarVint(data, offset).index; // End of archive flags
 
         break;
     }
-    offset = headerTypePos + headerSize.item1 + dataSizeAdd;
+    offset = headerTypePos + headerSize.value + dataSizeAdd;
   } while (archiveBlockFound);
 
   return offset;
 }
 
-Tuple2<int, int> __rarVint(Uint8List data, int offset) {
+({int value, int index}) __rarVint(Uint8List data, int offset) {
   var index = 0;
   var value = 0;
-  if (offset >= data.length) return const Tuple2<int, int>(0, 0);
+  if (offset >= data.length) return const (value: 0, index: 0);
 
   do {
     value |= ((data[offset + index] & 0x7F) << index * 7);
     index++;
   } while (((offset + index) < data.length) & ((data[offset + index - 1] & 0x80) != 0));
 
-  return Tuple2<int, int>(value, index);
+  return (value: value, index: index);
 }
 
 int? _mp3FileSize(Uint8List? data) {
