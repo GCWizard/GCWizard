@@ -865,75 +865,80 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
 
   void _createGraphicOutput() {
     _triangleImage = Uint8List.fromList([]);
-    triangleData2Image(
-      A: _A,
-      B: _B,
-      C: _C,
-      a: _sides.a,
-      b: _sides.b,
-      c: _sides.c,
-      alpha: _angles.alpha,
-      beta: _angles.beta,
-      gamma: _angles.gamma,
-      area: triangleAreaXY(_A, _B, _C),
-      circumference: triangleCircumferenceXY(_A, _B, _C),
-      CG: _centroid,
-      F: _feuerbach,
-      L: _lemoine,
-      M: _mitten,
-      N: _nagel,
-      N1: _napoleon1,
-      N2: _napoleon2,
-      S: _spieker,
-      O: _orthocenter,
-      G: _gergonne,
-      AA: _altitudesBasePoint[0],
-      AB: _altitudesBasePoint[1],
-      AC: _altitudesBasePoint[2],
-      MSA: _sidesMidPoint[0],
-      MSB: _sidesMidPoint[1],
-      MSC: _sidesMidPoint[2],
-      CC: _outercircle,
-      IC: _innercircle,
-      FC: _feuerbachcircle,
-      EA: _exCircle[0],
-      EB: _exCircle[1],
-      EC: _exCircle[2],
-      ETA: _exCircleTouchpoints[0],
-      ETB: _exCircleTouchpoints[1],
-      ETC: _exCircleTouchpoints[2],
-      labels: [
-        i18n(context, 'triangle_output_sides'), // 0
-        i18n(context, 'triangle_output_angles'), // 1
-        i18n(context, 'triangle_output_area'), // 2
-        i18n(context, 'triangle_output_circumference'), // 3
-        i18n(context, 'triangle_output_sidesmidpoint'), // 4
-        i18n(context, 'triangle_output_altitudesbasepoint'), // 5
-        i18n(context, 'triangle_output_centroid'), // 6
-        i18n(context, 'triangle_output_altitude'), // 7
-        i18n(context, 'triangle_output_lemoine'), // 8
-        i18n(context, 'triangle_output_gergonne'), // 9
-        i18n(context, 'triangle_output_nagel'), // 10
-        i18n(context, 'triangle_output_napoleon_outer'), // 11
-        i18n(context, 'triangle_output_napoleon_inner'), // 12
-        i18n(context, 'triangle_output_mitten'), // 13
-        i18n(context, 'triangle_output_spieker'), // 14
-        i18n(context, 'triangle_output_feuerbach'), // 15
-        i18n(context, 'triangle_output_incenter'), // 16
-        i18n(context, 'triangle_output_circumcenter'), // 17
-        i18n(context, 'triangle_output_circles'), // 18
-        i18n(context, 'triangle_output_incircle'), // 19
-        i18n(context, 'triangle_output_excircle'), // 20
-        i18n(context, 'triangle_output_circumscribedcircle'), // 21
-        i18n(context, 'triangle_output_feuerbachcircle'), // 22
-        i18n(context, 'gcwizard_script_help_coordinates'), // 23
-        i18n(context, 'triangle_output_touchpoint'), // 24
-      ],
-    ).then((value) {
-      setState(() {
-        _triangleImage = value;
-      });
-    });
+//    renderTriangleToPngBytes(Triangle(_A, _B, _C)).then((value) {
+//      setState(() {
+//        _triangleImage = value;
+//        });
+//    });
+     triangleData2Image(
+       A: _A,
+       B: _B,
+       C: _C,
+       a: _sides.a,
+       b: _sides.b,
+       c: _sides.c,
+       alpha: _angles.alpha,
+       beta: _angles.beta,
+       gamma: _angles.gamma,
+       area: triangleAreaXY(_A, _B, _C),
+       circumference: triangleCircumferenceXY(_A, _B, _C),
+       CG: _centroid,
+       F: _feuerbach,
+       L: _lemoine,
+       M: _mitten,
+       N: _nagel,
+       N1: _napoleon1,
+       N2: _napoleon2,
+       S: _spieker,
+       O: _orthocenter,
+       G: _gergonne,
+       AA: _altitudesBasePoint[0],
+       AB: _altitudesBasePoint[1],
+       AC: _altitudesBasePoint[2],
+       MSA: _sidesMidPoint[0],
+       MSB: _sidesMidPoint[1],
+       MSC: _sidesMidPoint[2],
+       CC: _outercircle,
+       IC: _innercircle,
+       FC: _feuerbachcircle,
+       EA: _exCircle[0],
+       EB: _exCircle[1],
+       EC: _exCircle[2],
+       ETA: _exCircleTouchpoints[0],
+       ETB: _exCircleTouchpoints[1],
+       ETC: _exCircleTouchpoints[2],
+       labels: [
+         i18n(context, 'triangle_output_sides'), // 0
+         i18n(context, 'triangle_output_angles'), // 1
+         i18n(context, 'triangle_output_area'), // 2
+         i18n(context, 'triangle_output_circumference'), // 3
+         i18n(context, 'triangle_output_sidesmidpoint'), // 4
+         i18n(context, 'triangle_output_altitudesbasepoint'), // 5
+         i18n(context, 'triangle_output_centroid'), // 6
+         i18n(context, 'triangle_output_altitude'), // 7
+         i18n(context, 'triangle_output_lemoine'), // 8
+         i18n(context, 'triangle_output_gergonne'), // 9
+         i18n(context, 'triangle_output_nagel'), // 10
+         i18n(context, 'triangle_output_napoleon_outer'), // 11
+         i18n(context, 'triangle_output_napoleon_inner'), // 12
+         i18n(context, 'triangle_output_mitten'), // 13
+         i18n(context, 'triangle_output_spieker'), // 14
+         i18n(context, 'triangle_output_feuerbach'), // 15
+         i18n(context, 'triangle_output_incenter'), // 16
+         i18n(context, 'triangle_output_circumcenter'), // 17
+         i18n(context, 'triangle_output_circles'), // 18
+         i18n(context, 'triangle_output_incircle'), // 19
+         i18n(context, 'triangle_output_excircle'), // 20
+         i18n(context, 'triangle_output_circumscribedcircle'), // 21
+         i18n(context, 'triangle_output_feuerbachcircle'), // 22
+         i18n(context, 'gcwizard_script_help_coordinates'), // 23
+         i18n(context, 'triangle_output_touchpoint'), // 24
+       ],
+     ).then((value) {
+       setState(() {
+         _triangleImage = value;
+       });
+     });
   }
 
   Widget _buildGraphicOutput() {

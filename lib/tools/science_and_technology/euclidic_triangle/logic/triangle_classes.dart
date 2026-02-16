@@ -36,6 +36,7 @@ class XYPoint{
   XYPoint operator -(XYPoint other) => XYPoint(x: x - other.x, y: y - other.y);
   XYPoint operator *(double s) => XYPoint(x: x * s, y: y * s);
 
+  double get r => sqrt(x * x + y * y);
 
   PolarPoint toPolarPoint(){
     // https://mathepedia.de/Kugelkoordinaten.html
