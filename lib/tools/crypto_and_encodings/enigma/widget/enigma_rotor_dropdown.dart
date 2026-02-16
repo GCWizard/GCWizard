@@ -1,7 +1,7 @@
 part of 'package:gc_wizard/tools/crypto_and_encodings/enigma/widget/enigma.dart';
 
 class EnigmaRotorDropDown extends StatefulWidget {
-  final void Function(Tuple2<int, EnigmaRotorConfiguration>) onChanged;
+  final void Function(({int position, EnigmaRotorConfiguration enigmaRotorConfiguration})) onChanged;
   final EnigmaRotorType type;
   final int position;
 
@@ -94,9 +94,9 @@ class _EnigmaRotorDropDownState extends State<EnigmaRotorDropDown> {
   }
 
   void _setCurrentValueAndEmitOnChange() {
-    widget.onChanged(Tuple2<int, EnigmaRotorConfiguration>(
-        widget.position,
-        EnigmaRotorConfiguration(getEnigmaRotorByName(_currentRotor),
+    widget.onChanged((
+    position: widget.position,
+    enigmaRotorConfiguration: EnigmaRotorConfiguration(getEnigmaRotorByName(_currentRotor),
             offset: _currentOffset, setting: _currentSetting)));
   }
 }

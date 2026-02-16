@@ -14,7 +14,6 @@ import 'package:gc_wizard/common_widgets/text_input_formatters/wrapper_for_maskt
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/enigma/logic/enigma.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
-import 'package:tuple/tuple.dart';
 
 part 'package:gc_wizard/tools/crypto_and_encodings/enigma/widget/enigma_rotor_dropdown.dart';
 
@@ -103,7 +102,7 @@ class _EnigmaState extends State<Enigma> {
                         position: 0, //ToDo NullSafety corect ? undefinied
                         onChanged: (value) {
                           setState(() {
-                            _currentReflector = value.item2;
+                            _currentReflector = value.enigmaRotorConfiguration;
                           });
                         },
                       )
@@ -145,7 +144,7 @@ class _EnigmaState extends State<Enigma> {
                         position: 0, //ToDo NullSafety corect ? undefinied
                         onChanged: (value) {
                           setState(() {
-                            _currentEntryRotor = value.item2;
+                            _currentEntryRotor = value.enigmaRotorConfiguration;
                           });
                         },
                       )
@@ -232,9 +231,9 @@ class _EnigmaState extends State<Enigma> {
     while (_currentRotors.length < _currentNumberRotors) {
       _currentRotors.add(EnigmaRotorDropDown(
         position: _currentRotors.length,
-        onChanged: (Tuple2<int, EnigmaRotorConfiguration> value) {
+        onChanged: (({int position, EnigmaRotorConfiguration enigmaRotorConfiguration}) value) {
           setState(() {
-            _currentRotorsConfigurations[value.item1] = value.item2;
+            _currentRotorsConfigurations[value.position] = value.enigmaRotorConfiguration;
           });
         },
       ));
