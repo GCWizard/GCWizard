@@ -4,7 +4,6 @@ import 'dart:math';
 
 import 'package:gc_wizard/tools/crypto_and_encodings/substitution/logic/substitution.dart';
 import 'package:gc_wizard/tools/science_and_technology/numeral_bases/logic/numeral_bases.dart';
-import 'package:tuple/tuple.dart';
 
 // ported from https://github.com/adapap/whitespace-interpreter/blob/master/whitespace_interpreter.py#L1
 // decoder with debug https://naokikp.github.io/wsi/whitespace.html
@@ -308,16 +307,16 @@ class _Stack {
 
     if (_command == 'push_num') {
       var parameter = _num_parameter();
-      var index = parameter.item1;
-      var item = parameter.item2;
+      var index = parameter.index;
+      var item = parameter.item;
       if (!_loading) {
         _push_num(item);
       }
       _pos = index + 1;
     } else if (_command == 'duplicate_nth') {
       var parameter = _num_parameter();
-      var index = parameter.item1;
-      var item = parameter.item2;
+      var index = parameter.index;
+      var item = parameter.item;
       if (!_loading) {
         _dbgOutput(_command, item.toString());
         _duplicate_nth(item);
@@ -325,8 +324,8 @@ class _Stack {
       _pos = index + 1;
     } else if (_command == 'discard_n') {
       var parameter = _num_parameter();
-      var index = parameter.item1;
-      var item = parameter.item2;
+      var index = parameter.index;
+      var item = parameter.item;
       if (!_loading) {
         _dbgOutput(_command, item.toString());
         _discard_n(item);
@@ -520,8 +519,8 @@ class _FlowControl {
       }
     } else if (_command == 'mark_label') {
       var parameter = _label_parameter();
-      var index = parameter.item1;
-      var label = parameter.item2;
+      var index = parameter.index;
+      var label = parameter.name;
       if (_loading) {
         _dbgOutput(_command, _clean(label) + ' index:' + index.toString());
         _mark_label(label);
@@ -531,8 +530,8 @@ class _FlowControl {
       _pos = index;
     } else if (_command == 'jump') {
       var parameter = _label_parameter();
-      var index = parameter.item1;
-      var label = parameter.item2;
+      var index = parameter.index;
+      var label = parameter.name;
       if (!_loading) {
         _dbgOutput(_command, _clean(label));
         _jump(label);
@@ -541,8 +540,8 @@ class _FlowControl {
       }
     } else if (_command == 'jump_zero') {
       var parameter = _label_parameter();
-      var index = parameter.item1;
-      var label = parameter.item2;
+      var index = parameter.index;
+      var label = parameter.name;
       if (!_loading) {
         _dbgOutput(_command, _clean(label));
         var num = _stack_pop();
@@ -556,8 +555,8 @@ class _FlowControl {
       }
     } else if (_command == 'jump_lt_zero') {
       var parameter = _label_parameter();
-      var index = parameter.item1;
-      var label = parameter.item2;
+      var index = parameter.index;
+      var label = parameter.name;
       if (!_loading) {
         _dbgOutput(_command, _clean(label));
         var num = _stack_pop();
@@ -580,8 +579,8 @@ class _FlowControl {
       }
     } else if (_command == 'call_subroutine') {
       var parameter = _label_parameter();
-      var index = parameter.item1;
-      var label = parameter.item2;
+      var index = parameter.index;
+      var label = parameter.name;
       _pos = index;
       if (!_loading) {
         _dbgOutput(_command, _clean(label));
@@ -819,7 +818,7 @@ void _get_command(Map<String, String> imp) {
 }
 
 /// Retrieves the next number in the sequence.
-Tuple2<int, int> _num_parameter() {
+({int index, int item}) _num_parameter() {
   /*Format of a number:
   sign - binary - terminator
   sign: [space] + / [tab] -
@@ -836,7 +835,7 @@ Tuple2<int, int> _num_parameter() {
   }
 
   var item = _whitespaceToInt(_code.substring(_pos, index));
-  return Tuple2<int, int>(index, item);
+  return (index: index, item: item);
 }
 
 /// Converts the Whitespace representation of a number to an integer.
@@ -867,7 +866,7 @@ String _IntToWhitespace(int value) {
 }
 
 /// Sets a label in the sequence if possible.
-Tuple2<int, String> _label_parameter() {
+({int index, String name}) _label_parameter() {
   /*Format of a label:
   name - terminator
   *name: any number of [space] and [tab]
@@ -880,7 +879,7 @@ Tuple2<int, String> _label_parameter() {
   }
   // Empty string is a valid label
   var name = _code.substring(_pos, index);
-  return Tuple2<int, String>(index, name);
+  return (index: index, name: name);
 }
 
 void _dbgOutput(String command, String? label) {
