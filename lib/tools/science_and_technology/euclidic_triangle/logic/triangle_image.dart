@@ -41,13 +41,20 @@ Future<Uint8List > triangleData2Image({
 }) async {
 
   const BOUNDS = 100.0;
-  const SCALE = 100.0;
+  const SCALE = 5.0;
 
   const POINT = 2.0;
-  const LINE = 2.0;
+  const LINE = 1.0;
+
+  const FONTSIZE = 10.0;
+  const WIDTHLEGEND = 330.0;
 
   const LABELLENGTH = 30;
   const DIST = '     ';
+
+  const constraintsLegend = ui.ParagraphConstraints(width: WIDTHLEGEND + BOUNDS);
+  const constraintsAxisX = ui.ParagraphConstraints(width: 50);
+  const constraintsAxisY = ui.ParagraphConstraints(width: 50);
 
   double minX = 0;
   double maxX = 0;
@@ -118,29 +125,34 @@ Future<Uint8List > triangleData2Image({
 
   // draw axis
   paint.color = Colors.black;
+  paint.strokeWidth = 0.5;
+
   canvas.drawLine(Offset(BOUNDS, offsetY), Offset(width - BOUNDS, offsetY), paint);
   canvas.drawLine(Offset(offsetX, BOUNDS), Offset(offsetX, height - BOUNDS), paint);
 
   // draw measurement x axis
-  const fontSize = 16.0;
   final textStyle = ui.TextStyle(
     color: paint.color,
-    fontSize: fontSize,
+    fontSize: FONTSIZE,
     fontFamily: 'Courier',
   );
   var paragraphStyle = ui.ParagraphStyle(
     textDirection: ui.TextDirection.ltr,
     textAlign: TextAlign.center,
   );
-  const widthLegend = 550.0;
-  const constraintsLegend = ui.ParagraphConstraints(width: widthLegend + BOUNDS);
-  const constraintsAxisX = ui.ParagraphConstraints(width: 50);
-  const constraintsAxisY = ui.ParagraphConstraints(width: 50);
 
   int i = 1;
   while (offsetX + i * SCALE < width - BOUNDS) {
-    canvas.drawLine(Offset(offsetX + i * SCALE, offsetY), Offset(offsetX + i * SCALE, offsetY + 10), paint);
-    canvas.drawLine(Offset(offsetX - i * SCALE, offsetY), Offset(offsetX - i * SCALE, offsetY + 10), paint);
+    if (i % 10 == 0) {
+      canvas.drawLine(Offset(offsetX + i * SCALE, offsetY), Offset(offsetX + i * SCALE, offsetY + 6), paint);
+      canvas.drawLine(Offset(offsetX - i * SCALE, offsetY), Offset(offsetX - i * SCALE, offsetY + 6), paint);
+    } else if (i % 5 == 0){
+      canvas.drawLine(Offset(offsetX + i * SCALE, offsetY), Offset(offsetX + i * SCALE, offsetY + 3), paint);
+      canvas.drawLine(Offset(offsetX - i * SCALE, offsetY), Offset(offsetX - i * SCALE, offsetY + 3), paint);
+    } else {
+      canvas.drawLine(Offset(offsetX + i * SCALE, offsetY), Offset(offsetX + i * SCALE, offsetY + 1.5), paint);
+      canvas.drawLine(Offset(offsetX - i * SCALE, offsetY), Offset(offsetX - i * SCALE, offsetY + 1.5), paint);
+    }
     final paragraphBuilderPos = ui.ParagraphBuilder(paragraphStyle)
       ..pushStyle(textStyle)
       ..addText(i.toString());
@@ -151,8 +163,10 @@ Future<Uint8List > triangleData2Image({
       ..addText((-i).toString());
     final paragraphNeg = paragraphBuilderNeg.build();
     paragraphNeg.layout(constraintsAxisX);
-    canvas.drawParagraph(paragraphPos, Offset(offsetX + i * SCALE - constraintsAxisX.width / 2, offsetY - 20));
-    canvas.drawParagraph(paragraphNeg, Offset(offsetX - i * SCALE - constraintsAxisX.width / 2, offsetY - 20));
+    if (i % 10 == 0) {
+      canvas.drawParagraph(paragraphPos, Offset(offsetX + i * SCALE - constraintsAxisX.width / 2, offsetY + 5));
+      canvas.drawParagraph(paragraphNeg, Offset(offsetX - i * SCALE - constraintsAxisX.width / 2, offsetY + 5));
+    }
     i++;
   }
 
@@ -163,8 +177,16 @@ Future<Uint8List > triangleData2Image({
   );
   i = 1;
   while (offsetY + i * SCALE < height - BOUNDS) {
-    canvas.drawLine(Offset(offsetX, offsetY  + i * SCALE), Offset(offsetX + 10, offsetY + i * SCALE), paint);
-    canvas.drawLine(Offset(offsetX, offsetY  - i * SCALE), Offset(offsetX + 10, offsetY - i * SCALE), paint);
+    if (i % 10 == 0) {
+      canvas.drawLine(Offset(offsetX - 6, offsetY  + i * SCALE), Offset(offsetX, offsetY + i * SCALE), paint);
+      canvas.drawLine(Offset(offsetX - 6, offsetY  - i * SCALE), Offset(offsetX, offsetY - i * SCALE), paint);
+    } else if (i % 5 == 0) {
+      canvas.drawLine(Offset(offsetX - 3, offsetY  + i * SCALE), Offset(offsetX, offsetY + i * SCALE), paint);
+      canvas.drawLine(Offset(offsetX - 3, offsetY  - i * SCALE), Offset(offsetX, offsetY - i * SCALE), paint);
+    } else {
+      canvas.drawLine(Offset(offsetX - 1.5, offsetY  + i * SCALE), Offset(offsetX, offsetY + i * SCALE), paint);
+      canvas.drawLine(Offset(offsetX - 1.5, offsetY  - i * SCALE), Offset(offsetX, offsetY - i * SCALE), paint);
+    }
     final paragraphBuilderPos = ui.ParagraphBuilder(paragraphStyle)
       ..pushStyle(textStyle)
       ..addText(i.toString());
@@ -175,8 +197,10 @@ Future<Uint8List > triangleData2Image({
       ..addText((-i).toString());
     final paragraphNeg = paragraphBuilderNeg.build();
     paragraphNeg.layout(constraintsAxisY);
-    canvas.drawParagraph(paragraphNeg, Offset(offsetX - 10 - constraintsAxisY.width, offsetY  + i * SCALE - 10));
-    canvas.drawParagraph(paragraphPos, Offset(offsetX - 10 - constraintsAxisY.width, offsetY  - i * SCALE - 10));
+    if (i % 10 == 0) {
+      canvas.drawParagraph(paragraphNeg, Offset(offsetX - 10 - constraintsAxisY.width, offsetY  + i * SCALE - 10));
+      canvas.drawParagraph(paragraphPos, Offset(offsetX - 10 - constraintsAxisY.width, offsetY  - i * SCALE - 10));
+    }
     i++;
   }
 
@@ -255,15 +279,15 @@ Future<Uint8List > triangleData2Image({
   paint.color = Colors.grey.shade50;
   paint.style = PaintingStyle.fill;
   const LINES = 55;
-  canvas.drawRect(Rect.fromLTWH(BOUNDS, BOUNDS, widthLegend + BOUNDS / 2, BOUNDS + LINES * (fontSize + 1.6)), paint);
+  canvas.drawRect(Rect.fromLTWH(BOUNDS, BOUNDS, WIDTHLEGEND + BOUNDS / 2, BOUNDS + LINES * FONTSIZE), paint);
   paint.color = Colors.black;
   final paragraphBuilder = ui.ParagraphBuilder(paragraphStyle)
     ..pushStyle(textStyle)
     ..addText(
                 labels[23] + '\n' +
-                'A'.padLeft(LABELLENGTH, ' ') + DIST + '(' + A.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + A.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                'B'.padLeft(LABELLENGTH, ' ') + DIST + '(' + B.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + B.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                'C'.padLeft(LABELLENGTH, ' ') + DIST + '(' + C.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + C.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                'A'.padLeft(LABELLENGTH, ' ') + DIST + '(' + A.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + A.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                'B'.padLeft(LABELLENGTH, ' ') + DIST + '(' + B.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + B.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                'C'.padLeft(LABELLENGTH, ' ') + DIST + '(' + C.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + C.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
                 '\n' +
                 labels[0] + '\n' +
                     'a'.padLeft(LABELLENGTH, ' ') + DIST +  a.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
@@ -279,49 +303,52 @@ Future<Uint8List > triangleData2Image({
                 labels[3].padLeft(LABELLENGTH, ' ') + DIST +   circumference.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
                 '\n' +
                 labels[4] + '\n' +
-                    'a'.padLeft(LABELLENGTH, ' ') + DIST + '(' + MSA.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + MSA.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                    'b'.padLeft(LABELLENGTH, ' ') + DIST + '(' + MSB.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + MSB.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                    'c'.padLeft(LABELLENGTH, ' ') + DIST + '(' + MSC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + MSC.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                    'a'.padLeft(LABELLENGTH, ' ') + DIST + '(' + MSA.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + MSA.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                    'b'.padLeft(LABELLENGTH, ' ') + DIST + '(' + MSB.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + MSB.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                    'c'.padLeft(LABELLENGTH, ' ') + DIST + '(' + MSC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + MSC.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
                 '\n' +
                 labels[5] + '\n' +
-                    'a'.padLeft(LABELLENGTH, ' ') + DIST + '(' + AA.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + AA.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                    'b'.padLeft(LABELLENGTH, ' ') + DIST + '(' + AB.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + AB.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                    'c'.padLeft(LABELLENGTH, ' ') + DIST + '(' + AC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + AC.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                    'a'.padLeft(LABELLENGTH, ' ') + DIST + '(' + AA.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + AA.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                    'b'.padLeft(LABELLENGTH, ' ') + DIST + '(' + AB.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + AB.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                    'c'.padLeft(LABELLENGTH, ' ') + DIST + '(' + AC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + AC.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
                 '\n' +
                 labels[24] + '\n' +
-                    labels[20].replaceAll('\$1', 'a').padLeft(LABELLENGTH, ' ') + DIST + '(' + ETA.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + ETA.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                    labels[20].replaceAll('\$1', 'b').padLeft(LABELLENGTH, ' ') + DIST + '(' + ETB.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + ETB.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                    labels[20].replaceAll('\$1', 'c').padLeft(LABELLENGTH, ' ') + DIST + '(' + ETC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + ETC.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                    labels[20].replaceAll('\$1', 'a').padLeft(LABELLENGTH, ' ') + DIST + '(' + ETA.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + ETA.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                    labels[20].replaceAll('\$1', 'b').padLeft(LABELLENGTH, ' ') + DIST + '(' + ETB.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + ETB.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                    labels[20].replaceAll('\$1', 'c').padLeft(LABELLENGTH, ' ') + DIST + '(' + ETC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + ETC.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
 
                 '\nClark Kimberling, Encyclopedia of Triangle Centers\n' +
-                (labels[16] + ' X01').padLeft(LABELLENGTH, ' ') + DIST + '(' + IC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + IC.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                (labels[6] + ' X02').padLeft(LABELLENGTH, ' ') + DIST + '(' + CG.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + CG.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                (labels[17] + ' X03').padLeft(LABELLENGTH, ' ') + DIST + '(' + CC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + CC.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                (labels[7] + ' X04').padLeft(LABELLENGTH, ' ') + DIST + '(' + O.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + O.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                (labels[21] + ' X05').padLeft(LABELLENGTH, ' ') + DIST + '(' + FC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + FC.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                (labels[8] + ' X06').padLeft(LABELLENGTH, ' ') + DIST + '(' + L.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + L.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                (labels[9] + ' X07').padLeft(LABELLENGTH, ' ') + DIST + '(' + G.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + G.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                (labels[10] + ' X08').padLeft(LABELLENGTH, ' ') + DIST + '(' + N.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + N.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                (labels[13] + ' X09').padLeft(LABELLENGTH, ' ') + DIST + '(' + M.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + M.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                (labels[14] + ' X10').padLeft(LABELLENGTH, ' ') + DIST + '(' + S.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + S.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                (labels[15] + ' X11').padLeft(LABELLENGTH, ' ') + DIST + '(' + F.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + F.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                (labels[11] + ' X17').padLeft(LABELLENGTH, ' ') + DIST + '(' + N1.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + N1.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
-                (labels[12] + ' X18').padLeft(LABELLENGTH, ' ') + DIST + '(' + N2.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + N2.y.toStringAsFixed(2).padLeft(6, ' ') + ')\n' +
+                (labels[16] + ' X01').padLeft(LABELLENGTH, ' ') + DIST + '(' + IC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + IC.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels[6] + ' X02').padLeft(LABELLENGTH, ' ') + DIST + '(' + CG.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + CG.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels[17] + ' X03').padLeft(LABELLENGTH, ' ') + DIST + '(' + CC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + CC.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels[7] + ' X04').padLeft(LABELLENGTH, ' ') + DIST + '(' + O.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + O.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels[21] + ' X05').padLeft(LABELLENGTH, ' ') + DIST + '(' + FC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + FC.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels[8] + ' X06').padLeft(LABELLENGTH, ' ') + DIST + '(' + L.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + L.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels[9] + ' X07').padLeft(LABELLENGTH, ' ') + DIST + '(' + G.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + G.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels[10] + ' X08').padLeft(LABELLENGTH, ' ') + DIST + '(' + N.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + N.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels[13] + ' X09').padLeft(LABELLENGTH, ' ') + DIST + '(' + M.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + M.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels[14] + ' X10').padLeft(LABELLENGTH, ' ') + DIST + '(' + S.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + S.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels[15] + ' X11').padLeft(LABELLENGTH, ' ') + DIST + '(' + F.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + F.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels[11] + ' X17').padLeft(LABELLENGTH, ' ') + DIST + '(' + N1.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + N1.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels[12] + ' X18').padLeft(LABELLENGTH, ' ') + DIST + '(' + N2.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + N2.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
                 '\n' + labels[18] + '\n' +
-                (labels[19]).padLeft(LABELLENGTH, ' ') + DIST + '(' + IC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + IC.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + IC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
-                (labels[21]).padLeft(LABELLENGTH, ' ') + DIST + '(' + CC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + CC.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + CC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
-                (labels[22]).padLeft(LABELLENGTH, ' ') + DIST + '(' + FC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + FC.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + FC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
-                labels[20].replaceAll('\$1', 'a').padLeft(LABELLENGTH, ' ') + DIST + '(' + EA.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + EA.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + EA.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
-                labels[20].replaceAll('\$1', 'b').padLeft(LABELLENGTH, ' ') + DIST + '(' + EB.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + EB.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + EB.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
-                labels[20].replaceAll('\$1', 'c').padLeft(LABELLENGTH, ' ') + DIST + '(' + EC.x.toStringAsFixed(2).padLeft(6, ' ') + '|' + EC.y.toStringAsFixed(2).padLeft(6, ' ') + '), r = ' + EC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                (labels[19]).padLeft(LABELLENGTH, ' ') + DIST + '(' + IC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + IC.y.toStringAsFixed(2).padLeft(7, ' ') + '), r = ' + IC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                (labels[21]).padLeft(LABELLENGTH, ' ') + DIST + '(' + CC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + CC.y.toStringAsFixed(2).padLeft(7, ' ') + '), r = ' + CC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                (labels[22]).padLeft(LABELLENGTH, ' ') + DIST + '(' + FC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + FC.y.toStringAsFixed(2).padLeft(7, ' ') + '), r = ' + FC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                labels[20].replaceAll('\$1', 'a').padLeft(LABELLENGTH, ' ') + DIST + '(' + EA.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + EA.y.toStringAsFixed(2).padLeft(7, ' ') + '), r = ' + EA.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                labels[20].replaceAll('\$1', 'b').padLeft(LABELLENGTH, ' ') + DIST + '(' + EB.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + EB.y.toStringAsFixed(2).padLeft(7, ' ') + '), r = ' + EB.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                labels[20].replaceAll('\$1', 'c').padLeft(LABELLENGTH, ' ') + DIST + '(' + EC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + EC.y.toStringAsFixed(2).padLeft(7, ' ') + '), r = ' + EC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
                 ''
     );
   final paragraph = paragraphBuilder.build();
   paragraph.layout(constraintsLegend);
-  canvas.drawParagraph(paragraph, Offset(0, BOUNDS + 25));
+  canvas.drawParagraph(paragraph, Offset(15, BOUNDS + 25));
+  try {
+    final img = await canvasRecorder.endRecording().toImage(width.floor(), height.floor());
+    final data = await img.toByteData(format: ui.ImageByteFormat.png);
 
-  final img = await canvasRecorder.endRecording().toImage(width.floor(), height.floor());
-  final data = await img.toByteData(format: ui.ImageByteFormat.png);
-
-  return trimNullBytes(data!.buffer.asUint8List());
+    return trimNullBytes(data!.buffer.asUint8List());
+  } catch (e) {
+    return Uint8List.fromList([]);
+  }
 }

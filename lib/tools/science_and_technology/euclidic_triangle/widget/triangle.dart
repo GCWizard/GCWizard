@@ -865,11 +865,6 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
 
   void _createGraphicOutput() {
     _triangleImage = Uint8List.fromList([]);
-//    renderTriangleToPngBytes(Triangle(_A, _B, _C)).then((value) {
-//      setState(() {
-//        _triangleImage = value;
-//        });
-//    });
      triangleData2Image(
        A: _A,
        B: _B,
@@ -958,10 +953,14 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
             },
           ),
           _isCalculatedImage
-              ? GCWImageView(
-                  imageData: GCWImageViewData(GCWFile(bytes: _triangleImage)),
-                  suppressOpenInTool: const {GCWImageViewOpenInTools.METADATA},
-                )
+              ?  _triangleImage.isEmpty
+                  ? GCWOutputText(
+                      text: i18n(context, 'triangle_error'),
+                    )
+                  : GCWImageView(
+                      imageData: GCWImageViewData(GCWFile(bytes: _triangleImage)),
+                      suppressOpenInTool: const {GCWImageViewOpenInTools.METADATA},
+                    )
               : Container(),
         ],
       ),
