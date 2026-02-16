@@ -18,6 +18,10 @@ void main() {
   group("piet.interpretPiet:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'image' : 'hw1-11.gif', 'input' : null, 'expectedOutput' : 'Hello, world!\n'},
+      {'image' : 'Piet_hello_big.png', 'input' : null, 'expectedOutput' : 'Hello world!'},
+      {'image' : 'hanoibig.gif', 'input' : null, 'expectedOutput' : '-52-6 0'},
+      {'image' : 'primetest2big.png', 'input' : '5', 'expectedOutput' : '5is\x13\x14\x19prime'},
+      {'image' : 'primetest2big.png', 'input' : '20', 'expectedOutput' : '20is"#(prime'},
     ];
 
     for (var elem in _inputsToExpected) {
