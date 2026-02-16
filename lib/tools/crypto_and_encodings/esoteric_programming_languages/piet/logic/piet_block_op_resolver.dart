@@ -10,15 +10,13 @@ class _PietBlockOpResolver {
   /// <param name="block2">The ingress block</param>
   /// Returns An operation
   _PietOps resolve(_PietBlock block1, _PietBlock block2) {
-    var ret1 = _tryResolveColor(block1.color);
-    var ret2 = _tryResolveColor(block2.color);
-    var color1 = ret1.item2;
-    var color2 = ret2.item2;
-    if (ret1.item1 && ret2.item1) {
-      int lightShift = color2.item2.index - color1.item2.index;
+    var color1 = _tryResolveColor(block1.color);
+    var color2 = _tryResolveColor(block2.color);
+    if (color1.valid && color2.valid) {
+      int lightShift = color2.darkness.index - color1.darkness.index;
       if (lightShift < 0) lightShift += 3;
 
-      int colourShift = color2.item1.index - color1.item1.index;
+      int colourShift = color2.hueColor.index - color1.hueColor.index;
       if (colourShift < 0) colourShift += 6;
 
       var comparePoint = Point<int>(colourShift, lightShift);
@@ -65,14 +63,12 @@ class _PietBlockOpResolver {
     return _PietOps.Noop;
   }
 
-  Tuple2<bool, Tuple2<_HueColor, _Darkness>> _tryResolveColor(int color) {
+  ({bool valid, _HueColor hueColor, _Darkness darkness}) _tryResolveColor(int color) {
     var index = _knownColors.indexOf(color);
     if (index >= 0 && index < 18) {
-      return Tuple2<bool, Tuple2<_HueColor, _Darkness>>(
-          true, Tuple2<_HueColor, _Darkness>(_HueColor.values[index ~/ 3 % 6], _Darkness.values[index % 3]));
+      return (valid: true, hueColor:  _HueColor.values[index ~/ 3 % 6], darkness: _Darkness.values[index % 3]);
     } else {
-      return const Tuple2<bool, Tuple2<_HueColor, _Darkness>>(
-          false, Tuple2<_HueColor, _Darkness>(_HueColor.Red, _Darkness.Light)); // default
+      return (valid:  false, hueColor: _HueColor.Red, darkness: _Darkness.Light); // default
     }
   }
 }
