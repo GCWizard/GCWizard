@@ -1,6 +1,5 @@
 import 'package:gc_wizard/tools/science_and_technology/vanity/_common/logic/phone_models.dart';
 import 'package:gc_wizard/utils/constants.dart';
-import 'package:tuple/tuple.dart';
 
 PhoneCaseMode? _getModeFromState(String? state) {
   if (state == null) return null;
@@ -57,7 +56,7 @@ String? _getNewState(Map<String, Map<String, String>> stateModel, String state, 
   return stateModel[state]?['x'];
 }
 
-Tuple2<PhoneCaseMode?, String>? decodeVanityMultitap(String input, PhoneModel model, PhoneInputLanguage inputLanguage) {
+({PhoneCaseMode? mode, String text})? decodeVanityMultitap(String input, PhoneModel model, PhoneInputLanguage inputLanguage) {
   var stateModel = model.defaultCaseStateModel;
 
   if (model.specificCaseStateModels != null && model.specificCaseStateModels![inputLanguage] != null) {
@@ -70,7 +69,7 @@ Tuple2<PhoneCaseMode?, String>? decodeVanityMultitap(String input, PhoneModel mo
   var currentMode = _getModeFromState(currentState);
 
   if (input.trim().isEmpty || currentMode == null) {
-    return Tuple2<PhoneCaseMode?, String>(currentMode, '');
+    return (mode: currentMode, text: '');
   }
 
   var languageIndex = model.languages.indexWhere((langList) => langList.contains(inputLanguage));
@@ -78,7 +77,7 @@ Tuple2<PhoneCaseMode?, String>? decodeVanityMultitap(String input, PhoneModel mo
   var currentCharmap = _getCharMap(languageCharmap, currentMode);
 
   List<String> inputBlocks = _sanitizeDecodeInput(input);
-  if (inputBlocks.isEmpty) return Tuple2<PhoneCaseMode?, String>(currentMode, '');
+  if (inputBlocks.isEmpty) return (mode: currentMode, text: '');
 
   var output = '';
   for (int i = 0; i < inputBlocks.length; i++) {
@@ -120,7 +119,7 @@ Tuple2<PhoneCaseMode?, String>? decodeVanityMultitap(String input, PhoneModel mo
     }
   }
 
-  return Tuple2<PhoneCaseMode?, String>(currentMode, output);
+  return (mode: currentMode, text: output);
 }
 
 String _sanitizeEncodeInput(String input, Map<PhoneCaseMode, Map<String, String>> languageCharMap) {
@@ -128,7 +127,7 @@ String _sanitizeEncodeInput(String input, Map<PhoneCaseMode, Map<String, String>
   return input.split('').where((character) => availableCharacters.contains(character)).join();
 }
 
-Tuple2<String, String>? _findStateForCharacter(Map<String, Map<String, String>> stateModel, String currentState,
+({String transitions, String state})? _findStateForCharacter(Map<String, Map<String, String>> stateModel, String currentState,
     Map<PhoneCaseMode, Map<String, String>> languageCharMap, String character, int numberHops, String transitions) {
   if (numberHops > 3) return null;
 
@@ -136,7 +135,7 @@ Tuple2<String, String>? _findStateForCharacter(Map<String, Map<String, String>> 
   if (mode == null) return null;
   var availableCharactersForMode = _getCharMap(languageCharMap, mode).values.join();
 
-  if (availableCharactersForMode.contains(character)) return Tuple2<String, String>(transitions, currentState);
+  if (availableCharactersForMode.contains(character)) return (transitions: transitions, state: currentState);
 
   for (String transitionCharacter in ['0', '*', '#']) {
     var newState = stateModel[currentState]![transitionCharacter];
@@ -155,7 +154,7 @@ String _getInputForCharacter(Map<String, String> charMap, String character) {
   return entry.key * (entry.value.indexOf(character) + 1);
 }
 
-Tuple2<PhoneCaseMode?, String>? encodeVanityMultitap(
+({PhoneCaseMode? mode, String text})? encodeVanityMultitap(
     String input, PhoneModel model, PhoneInputLanguage? inputLanguage) {
   if (inputLanguage == null) return null;
 
@@ -168,13 +167,13 @@ Tuple2<PhoneCaseMode?, String>? encodeVanityMultitap(
   var currentState = stateModel[PHONE_STATEMODEL_START]!.values.first;
   var currentMode = _getModeFromState(currentState);
 
-  if (input.isEmpty || currentMode == null) return Tuple2<PhoneCaseMode?, String>(currentMode, '');
+  if (input.isEmpty || currentMode == null) return (mode: currentMode, text: '');
 
   var languageIndex = model.languages.indexWhere((langList) => langList.contains(inputLanguage));
   var languageCharmap = model.characterMap[languageIndex];
 
   input = _sanitizeEncodeInput(input, languageCharmap);
-  if (input.isEmpty) return Tuple2<PhoneCaseMode?, String>(currentMode, '');
+  if (input.isEmpty) return (mode: currentMode, text: '');
 
   List<String> output = [];
 
@@ -185,9 +184,9 @@ Tuple2<PhoneCaseMode?, String>? encodeVanityMultitap(
       return;
     }
 
-    if (newState.item1.isNotEmpty) output.add(newState.item1);
+    if (newState.transitions.isNotEmpty) output.add(newState.transitions);
 
-    currentState = newState.item2;
+    currentState = newState.state;
     currentMode = _getModeFromState(currentState);
 
     var currentCharmap = _getCharMap(languageCharmap, currentMode!);
@@ -196,14 +195,14 @@ Tuple2<PhoneCaseMode?, String>? encodeVanityMultitap(
     currentState = _getNewState(stateModel, currentState, character)!;
   });
 
-  return Tuple2<PhoneCaseMode?, String>(_getModeFromState(currentState), output.join(' '));
+  return (mode: _getModeFromState(currentState), text: output.join(' '));
 }
 
 String encodeVanitySingletap(String input, PhoneModel model) {
   if (input.isEmpty) return '';
 
   return encodeVanityMultitap(input, model, PhoneInputLanguage.UNSPECIFIED)!
-      .item2
+      .text
       .split(' ')
       .map((group) => group.isEmpty ? '' : group[0])
       .join();

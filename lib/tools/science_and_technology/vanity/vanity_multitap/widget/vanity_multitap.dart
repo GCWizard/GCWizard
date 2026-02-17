@@ -9,7 +9,6 @@ import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/vanity/_common/logic/phone_models.dart';
 import 'package:gc_wizard/tools/science_and_technology/vanity/_common/logic/vanity.dart';
-import 'package:tuple/tuple.dart';
 
 class VanityMultitap extends StatefulWidget {
   const VanityMultitap({super.key});
@@ -244,7 +243,7 @@ class _VanityMultitapState extends State<VanityMultitap> {
   }
 
   Widget _buildOutput() {
-    Tuple2<PhoneCaseMode?, String>? output;
+    ({PhoneCaseMode? mode, String text})? output;
 
     if (_currentSimpleMode == GCWSwitchPosition.left) {
       if (_currentMode == GCWSwitchPosition.left) {
@@ -256,7 +255,7 @@ class _VanityMultitapState extends State<VanityMultitap> {
 
       if (output == null) return const GCWDefaultOutput();
 
-      return GCWDefaultOutput(child: output.item2);
+      return GCWDefaultOutput(child: output.text);
     } else {
       if (_currentMode == GCWSwitchPosition.left) {
         output =
@@ -271,11 +270,11 @@ class _VanityMultitapState extends State<VanityMultitap> {
       return GCWDefaultOutput(
         child: Column(children: [
           GCWOutputText(
-            text: output.item2,
+            text: output.text,
           ),
           GCWOutput(
             title: i18n(context, 'vanity_multitap_inputmode'),
-            child: output.item1 == null ? null : _getModeString(output.item1!),
+            child: output.mode == null ? null : _getModeString(output.mode!),
           )
         ]),
       );
