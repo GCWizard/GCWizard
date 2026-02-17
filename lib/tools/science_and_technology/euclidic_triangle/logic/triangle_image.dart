@@ -56,6 +56,7 @@ Future<Uint8List > triangleData2Image({
   const constraintsAxisX = ui.ParagraphConstraints(width: 50);
   const constraintsAxisY = ui.ParagraphConstraints(width: 50);
 
+
   double minX = 0;
   double maxX = 0;
   double minY = 0;
@@ -110,6 +111,7 @@ Future<Uint8List > triangleData2Image({
   double width = BOUNDS + 2 * max(minX.abs(), maxX.abs()) * SCALE + BOUNDS;
   double height = BOUNDS + 2 * max(minY.abs(), maxY.abs()) * SCALE + BOUNDS;
 
+  print('----- width $width height $height');
   double offsetX = width / 2;
   double offsetY = height / 2;
 

@@ -118,3 +118,9 @@ List<XYPoint> intersectTwoCircles(XYCircle a, XYCircle b){
   ];
 
 }
+
+double distance(XYPoint p, XYPoint q) {
+  final dx = p.x - q.x;
+  final dy = p.y - q.y;
+  return sqrt(dx * dx + dy * dy);
+}

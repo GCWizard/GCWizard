@@ -1,5 +1,14 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
+class Triangle{
+  final XYPoint a;
+  final XYPoint b;
+  final XYPoint c;
+
+  const Triangle(this.a, this.b, this.c);
+
+}
+
 class TriLinearPoint{
   final double x;
   final double y;
@@ -36,7 +45,49 @@ class XYPoint{
   XYPoint operator -(XYPoint other) => XYPoint(x: x - other.x, y: y - other.y);
   XYPoint operator *(double s) => XYPoint(x: x * s, y: y * s);
 
+  XYPoint scale(double t) => XYPoint(x: x * t, y: y * t);
+  double norm() => sqrt(x * x + y * y);
+
   double get r => sqrt(x * x + y * y);
+
+  bool equals(XYPoint other) => x == other.x && y == other.y;
+
+  XYPoint normalized() {
+    final n = norm();
+    return XYPoint(x: x / n, y: y / n);
+  }
+
+  XYPoint fromBary(Triangle T, double alpha, double beta, double gamma) {
+    final s = alpha + beta + gamma;
+    return XYPoint(
+      x: (alpha * T.a.x + beta * T.a.x + gamma * T.c.x) / s,
+      y: (alpha * T.a.y + beta * T.b.y + gamma * T.c.y) / s,
+    );
+  }
+
+  XYPoint fromTriLinear(Triangle t, TriLinearPoint p, ) {
+    // https://mathworld.wolfram.com/TrilinearCoordinates.html
+
+    Sides s = triangleSidesXY(t.a, t.b, t.c);
+
+    XYPoint av = _vectorNormalize(_vectorAB(t.b, t.c));
+    double a1 = av.x;
+    double a2 = av.y;
+
+    XYPoint cv = _vectorNormalize(_vectorAB(t.a, t.b));
+    double c1= cv.x;
+    double c2 = cv.y;
+
+    double apx = p.x;
+    double cpz = p.z;
+    double k = 2 * triangleAreaXY(t.a, t.b, t.c) / (p.x * s.a + p.y * s.b + p.z * s.c);
+    double lc = (k * apx - cpz * k * (a1 * c1 + a2 * c2) + a2 * (t.a.x - t.c.x) + a1 * (t.c.y - t.a.y)) / (a1 * c2 - a2 * c1);
+
+    return XYPoint(
+        x: t.a.x + lc * c1 - k * p.z * c2,
+        y: t.a.y + lc * c2 + k * p.z * c1
+    );
+  }
 
   PolarPoint toPolarPoint(){
     // https://mathepedia.de/Kugelkoordinaten.html
@@ -75,6 +126,8 @@ LatLng _toLatLng(XYPoint p, LatLng origin) {
   return LatLng(lat, lng);
 }
 
+
+
 class Sides{
   final double a;
   final double b;
@@ -103,6 +156,8 @@ class XYLine{
   }
 }
 
+
+
 class XYCircle{
   final double x;
   final double y;
@@ -110,6 +165,8 @@ class XYCircle{
 
   XYCircle({this.x = 0.0, this.y = 0.0, this.r = 0.0});
 }
+
+
 
 class Vec3 {
   final double x, y, z;

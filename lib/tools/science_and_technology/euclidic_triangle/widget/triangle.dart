@@ -8,6 +8,7 @@ import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
+import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/image_viewers/gcw_imageview.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
@@ -47,6 +48,8 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
   var _currentSWInput1 = '';
   var _currentSWInput2 = '';
   var _currentSWInput3 = '';
+
+  var _currentDegenerated = false;
 
   late List<List<Object?>> _outputPointData;
   late List<List<Object?>> _outputBasicData;
@@ -143,9 +146,27 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
             if (_allBasicDataAvailable()) {
               if (_currentMode == GCWSwitchPosition.right) {
                 _calculateABC();
+              } else {
+                _A = XYPoint(
+                  x: double.parse(_currentAxInput),
+                  y: double.parse(_currentAyInput),
+                );
+                _B = XYPoint(
+                  x: double.parse(_currentBxInput),
+                  y: double.parse(_currentByInput),
+                );
+                _C = XYPoint(
+                  x: double.parse(_currentCxInput),
+                  y: double.parse(_currentCyInput),
+                );
               }
-              _createAdditionalData();
-              _isCalculatedImage = false;
+              if (_degeneratedTriangle(_A, _B, _C)) {
+                _currentDegenerated = true;
+                showSnackBar(i18n(context, 'triangle_error_invalid'), context);
+              } else {
+                _createAdditionalData();
+                _isCalculatedImage = false;
+              }
             }
           });
         },
@@ -573,18 +594,6 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
     _isCalculatedDataXY = true;
 
     if (_currentMode == GCWSwitchPosition.left) {
-      _A = XYPoint(
-        x: double.parse(_currentAxInput),
-        y: double.parse(_currentAyInput),
-      );
-      _B = XYPoint(
-        x: double.parse(_currentBxInput),
-        y: double.parse(_currentByInput),
-      );
-      _C = XYPoint(
-        x: double.parse(_currentCxInput),
-        y: double.parse(_currentCyInput),
-      );
       _angles = triangleAnglesXY(_A, _B, _C)!;
       _sides = triangleSidesXY(_A, _B, _C);
     }
@@ -965,5 +974,12 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
         ],
       ),
     );
+  }
+
+  bool _degeneratedTriangle(XYPoint a, XYPoint b, XYPoint c) {
+    a = a.normalized();
+    b = b.normalized();
+    c = c.normalized();
+    return (a.equals(b) && a.equals(c));
   }
 }

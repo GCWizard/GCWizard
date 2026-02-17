@@ -6726,6 +6726,8 @@
   "triangle_output_feuerbach": "Feuerbach Point",
   "triangle_output_touchpoint": "Touchpoint",
   "triangle_error": "ERROR: Size of image exceeds hardware capabilities",
+  "triangle_output_undefined": "Undefined - not to calculate",
+  "triangle_error_invalid": "ERROR - invalid triangle",
   "trifid_title": "Trifid Cipher",
   "trifid_description": "Encryption based on three 3x3 Squares",
   "trifid_example": "HELLO → BQBRO",
