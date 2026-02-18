@@ -38,7 +38,6 @@ import 'package:gc_wizard/tools/symbol_tables/symbol_replacer/widget/symbol_repl
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:gc_wizard/utils/method_limiter.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
-import 'package:tuple/tuple.dart';
 
 class SymbolReplacer extends StatefulWidget {
   final GCWFile? platformFile;
@@ -532,8 +531,7 @@ class _SymbolReplacerState extends State<SymbolReplacer> {
     }));
 
 
-    return GCWAsyncExecuterParameters(
-        Tuple2<SymbolReplacerImage, List<List<Map<String, SymbolReplacerSymbolData>>>>(_symbolImage!, list));
+    return GCWAsyncExecuterParameters((image: _symbolImage!, compareSymbols: list));
   }
 
   void _showJobDataSearchSymbolTableOutput(List<Map<String, SymbolReplacerSymbolData>>? output) {

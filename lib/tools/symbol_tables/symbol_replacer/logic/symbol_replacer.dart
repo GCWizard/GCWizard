@@ -9,7 +9,6 @@ import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/image_utils.dart';
 import 'package:image/image.dart' as Image;
-import 'package:tuple/tuple.dart';
 
 class ReplaceSymbolsInput {
   final Uint8List image;
@@ -870,12 +869,14 @@ class SymbolGroup {
 }
 
 Future<List<Map<String, SymbolReplacerSymbolData>>?> searchSymbolTableAsync(GCWAsyncExecuterParameters? jobData) async {
-  if (jobData?.parameters is! Tuple2<SymbolReplacerImage, List<List<Map<String, SymbolReplacerSymbolData>>>>) {
+  if (jobData?.parameters is! ({SymbolReplacerImage image, List<List<Map<String,
+      SymbolReplacerSymbolData>>> compareSymbols})) {
     return null;
   }
 
-  var data = jobData!.parameters as Tuple2<SymbolReplacerImage, List<List<Map<String, SymbolReplacerSymbolData>>>>;
-  var output = await searchSymbolTable(data.item1, data.item2, sendAsyncPort: jobData.sendAsyncPort);
+  var data = jobData!.parameters as ({SymbolReplacerImage image, List<List<Map<String,
+      SymbolReplacerSymbolData>>> compareSymbols});
+  var output = await searchSymbolTable(data.image, data.compareSymbols, sendAsyncPort: jobData.sendAsyncPort);
 
   jobData.sendAsyncPort?.send(output);
 
