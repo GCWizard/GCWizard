@@ -2,7 +2,6 @@ import 'dart:core';
 
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/constants.dart';
-import 'package:tuple/tuple.dart';
 import 'package:utility/utility.dart';
 
 enum SegmentDisplayType {
@@ -896,9 +895,9 @@ SegmentsText decodeSegment(String input, SegmentDisplayType segmentType) {
 
   for (int i = 0; i < input.length; i++) {
     var splitResult = _splitSegment(input, i, baseSegments);
-    i = splitResult.item2;
+    i = splitResult.i;
 
-    if (!baseSegments.containsValue(splitResult.item1)) {
+    if (!baseSegments.containsValue(splitResult.segment)) {
       if (currentDisplay != null) {
         currentDisplay.sort();
         displays.add(currentDisplay.toSet().toList());
@@ -910,7 +909,7 @@ SegmentsText decodeSegment(String input, SegmentDisplayType segmentType) {
 
     currentDisplay ??= [];
 
-    currentDisplay.add(splitResult.item1);
+    currentDisplay.add(splitResult.segment);
   }
 
   if (currentDisplay != null) {
@@ -1025,8 +1024,8 @@ Map<String, String> _detectVariant(String input, Iterable<Map<String, String>> v
     countSegments = 0;
     for (int i = 0; i < input.length; i++) {
       var splitResult = _splitSegment(input, i, baseSegments);
-      i = splitResult.item2;
-      if (baseSegments.containsValue(splitResult.item1)) countSegments++;
+      i = splitResult.i;
+      if (baseSegments.containsValue(splitResult.segment)) countSegments++;
     }
     if (countSegments > maxCountSegments) {
       maxCountSegments = countSegments;
@@ -1036,7 +1035,7 @@ Map<String, String> _detectVariant(String input, Iterable<Map<String, String>> v
   return variant;
 }
 
-Tuple2<String, int> _splitSegment(String input, int i, Map<String, String> baseSegments) {
+({String segment, int i}) _splitSegment(String input, int i, Map<String, String> baseSegments) {
   var segment = input[i];
 
   if (i + 2 < input.length && segment + input[i + 1] + input[i + 2] == 'dp1' && baseSegments.containsKey('dp1')) {
@@ -1051,8 +1050,8 @@ Tuple2<String, int> _splitSegment(String input, int i, Map<String, String> baseS
   }
 
   if (baseSegments.containsKey(segment)) {
-    return Tuple2<String, int>(baseSegments[segment]!, i);
+    return (segment: baseSegments[segment]!, i: i);
   } else {
-    return Tuple2<String, int>('', i);
+    return (segment: '', i: i);
   }
 }
