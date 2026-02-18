@@ -26,6 +26,8 @@ class Triangle {
     return sqrt(s * (s - a) * (s - b) * (s - c));
   }
 
+  double get circumference => a + b + c;
+
   // X1 – Incenter
   XYPoint get X1 {
     final p = a + b + c;
@@ -90,7 +92,7 @@ class Triangle {
     );
   }
 
-  // X7 – Gergonne point (vereinfachte baryzentrische Form)
+  // X7 – Gergonne point (simplified baryzentrische Form)
   XYPoint get X7 {
     final s = (a + b + c) / 2;
     return _bary(1 / (s - a), 1 / (s - b), 1 / (s - c));
@@ -108,7 +110,7 @@ class Triangle {
   // X10 – Spieker center
   XYPoint get X10 => _bary(a, b, c);
 
-  // X11–X19 – klassische baryzentrische Varianten
+  // X11–X19 – classic barycentric Variants
   XYPoint get X11 => _bary(a, b, c);
   XYPoint get X12 => _bary(1 / a, 1 / b, 1 / c);
   XYPoint get X13 => _bary(a * a, b * b, c * c);

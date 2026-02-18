@@ -9,34 +9,31 @@ class Triangle{
 
 }
 
-class TriLinearPoint{
-  final double x;
-  final double y;
-  final double z;
-
-  TriLinearPoint({this.x = 0.0, this.y = 0.0, this.z = 0.0});
-}
-
-
 class PolarPoint{
   final double r;
   final double phi;
 
   PolarPoint({this.r = 0.0, this.phi = 0.0});
 
-  XYPoint toXYZPoint() {
+  XYPoint toXYPoint() {
     // https://mathepedia.de/Kugelkoordinaten.html
     return XYPoint(
       x: r * cos(phi),
       y: r * sin(phi),
     );
   }
+
+  void fromXYPoint() {
+    // https://mathepedia.de/Kugelkoordinaten.html
+    r: 0;
+    phi: 0;
+  }
 }
 
 
 class XYPoint{
-  final double x;
-  final double y;
+  double x;
+  double y;
 
   XYPoint({this.x = 0.0, this.y = 0.0});
 
@@ -57,15 +54,13 @@ class XYPoint{
     return XYPoint(x: x / n, y: y / n);
   }
 
-  XYPoint fromBary(Triangle T, double alpha, double beta, double gamma) {
+  void fromBarycentric(Triangle T, double alpha, double beta, double gamma) {
     final s = alpha + beta + gamma;
-    return XYPoint(
-      x: (alpha * T.a.x + beta * T.a.x + gamma * T.c.x) / s,
-      y: (alpha * T.a.y + beta * T.b.y + gamma * T.c.y) / s,
-    );
+    x = (alpha * T.a.x + beta * T.a.x + gamma * T.c.x) / s;
+    y = (alpha * T.a.y + beta * T.b.y + gamma * T.c.y) / s;
   }
 
-  XYPoint fromTriLinear(Triangle t, TriLinearPoint p, ) {
+  void fromTriLinear(Triangle t, TriLinearPoint p, ) {
     // https://mathworld.wolfram.com/TrilinearCoordinates.html
 
     Sides s = triangleSidesXY(t.a, t.b, t.c);
@@ -83,10 +78,9 @@ class XYPoint{
     double k = 2 * triangleAreaXY(t.a, t.b, t.c) / (p.x * s.a + p.y * s.b + p.z * s.c);
     double lc = (k * apx - cpz * k * (a1 * c1 + a2 * c2) + a2 * (t.a.x - t.c.x) + a1 * (t.c.y - t.a.y)) / (a1 * c2 - a2 * c1);
 
-    return XYPoint(
-        x: t.a.x + lc * c1 - k * p.z * c2,
-        y: t.a.y + lc * c2 + k * p.z * c1
-    );
+
+    x = t.a.x + lc * c1 - k * p.z * c2;
+    y = t.a.y + lc * c2 + k * p.z * c1;
   }
 
   PolarPoint toPolarPoint(){
@@ -97,12 +91,22 @@ class XYPoint{
     );
   }
 
-  XYPoint fromLatLon(LatLng coords){
-    return XYPoint(x: coords.latitude, y: coords.longitude);
+  /// LatLng → lokale XY-Koordinaten (Meter) relativ zu origin
+  void fromLatLng(LatLng p, LatLng origin) {
+    const double R = 6371000.0;
+    final dLat = (p.latitude - origin.latitude) * pi / 180;
+    final dLng = (p.longitude - origin.longitude) * pi / 180;
+
+    x = dLng * R * cos(origin.latitude * pi / 180);
+    y = dLat * R;
   }
 
-  LatLng toLatLon(){
-    return LatLng(x, y);
+  /// XY → LatLng zurück
+  LatLng toLatLng(XYPoint p, LatLng origin) {
+    const double R = 6371000.0;
+    final lat = origin.latitude + (p.y / R) * 180 / pi;
+    final lng = origin.longitude + (p.x / (R * cos(origin.latitude * pi / 180))) * 180 / pi;
+    return LatLng(lat, lng);
   }
 
 }

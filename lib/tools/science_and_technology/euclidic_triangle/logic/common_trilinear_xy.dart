@@ -1,5 +1,13 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
+class TriLinearPoint{
+  final double x;
+  final double y;
+  final double z;
+
+  TriLinearPoint({this.x = 0.0, this.y = 0.0, this.z = 0.0});
+}
+
 XYPoint triLinearToXYPoint(TriLinearPoint p, XYPoint a, XYPoint b, XYPoint c) {
   // https://mathworld.wolfram.com/TrilinearCoordinates.html
 
