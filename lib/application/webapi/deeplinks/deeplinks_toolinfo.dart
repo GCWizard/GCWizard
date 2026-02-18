@@ -12,23 +12,23 @@ Widget _buildApiInfo(String apiInfo) {
 }
 
 Widget _toolInfo(BuildContext context, GCWTool tool) {
-  return FutureBuilder<Tuple2<String, String>>(
+  return FutureBuilder<({String id, String apiInfo})>(
       future: _toolInfoText(tool),
-      builder: (BuildContext context, AsyncSnapshot<Tuple2<String, String>> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<({String id, String apiInfo})> snapshot) {
         return Column(
           children: [
             GCWColumnedMultilineOutput(data: [
               [i18n(context, 'webapi_deeplink_toolsapi_toolinfo_toolname'), toolName(context, tool)],
               [
                 i18n(context, 'webapi_deeplink_toolsapi_toolinfo_apipath'),
-                i18n(context, 'about_webversion_url') + '#/' + (snapshot.data?.item1 ?? '')
+                i18n(context, 'about_webversion_url') + '#/' + (snapshot.data?.id ?? '')
               ],
             ]),
-            ((snapshot.data?.item2 ?? '').isNotEmpty)
+            ((snapshot.data?.apiInfo ?? '').isNotEmpty)
                 ? GCWExpandableTextDivider(
                     text: 'OpenAPI 3.0.0 ' + i18n(context, 'webapi_deeplink_toolsapi_toolinfo_specification'),
                     expanded: true,
-                    child: _buildApiInfo(snapshot.data?.item2 ?? ''))
+                    child: _buildApiInfo(snapshot.data?.apiInfo ?? ''))
                 : Container()
           ],
         );
@@ -44,12 +44,12 @@ GCWTool _infoTool(BuildContext context, GCWTool tool) {
   );
 }
 
-Future<Tuple2<String, String>> _toolInfoText(GCWTool tool) async {
+Future<({String id, String apiInfo})> _toolInfoText(GCWTool tool) async {
   var id = deeplinkToolId(tool);
   var apiInfo = '';
   if (_hasAPISpecification(tool)) {
     apiInfo = (tool.tool as GCWWebStatefulWidget).apiSpecification!;
   }
 
-  return Tuple2<String, String>(id, apiInfo);
+  return (id: id, apiInfo: apiInfo);
 }
