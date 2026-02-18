@@ -61,7 +61,6 @@ dependencies:
   scrollable_positioned_list: ^0.3.7
   shared_preferences: ^2.5.4
   touchable: ^1.0.2
-  tuple: ^2.0.1
   universal_html: ^2.3.0
   unrar_file:
     git:
