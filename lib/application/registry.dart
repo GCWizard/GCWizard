@@ -433,7 +433,6 @@ import 'package:gc_wizard/tools/science_and_technology/maya_calendar/widget/maya
 import 'package:gc_wizard/tools/science_and_technology/midi/midi_coding/widget/midi_coding.dart';
 import 'package:gc_wizard/tools/science_and_technology/midi/midi_overview/widget/midi_overview.dart';
 import 'package:gc_wizard/tools/science_and_technology/music_notes/music_notes/widget/music_notes.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/Harshad/widget/Harshad_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/bell/widget/bell.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/busybeaver/widget/busybeaver.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/carmichael/widget/carmichael_numbers.dart';
@@ -442,6 +441,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/factoria
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/fermat/widget/fermat.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/fibonacci/widget/fibonacci.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/happy_numbers/widget/happy_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/harshad/widget/harshad_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsthal/widget/jacobsthal.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsthal_lucas/widget/jacobsthal_lucas.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsthal_oblong/widget/jacobsthal_oblong.dart';
