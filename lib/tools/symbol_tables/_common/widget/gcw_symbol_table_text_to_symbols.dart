@@ -20,7 +20,6 @@ import 'package:gc_wizard/tools/symbol_tables/special_encryption_painters/symbol
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/file_widget_utils.dart';
-import 'package:tuple/tuple.dart';
 
 class GCWSymbolTableTextToSymbols extends StatefulWidget {
   final String? text;
@@ -80,9 +79,9 @@ class _GCWSymbolTableTextToSymbolsState extends State<GCWSymbolTableTextToSymbol
                 text: i18n(context, 'common_exportfile_saveoutput'),
                 onPressed: () {
                   _exportEncryption(widget.countColumns, _data.isCaseSensitive()).then((value) {
-                    if (value.item1 == false) return;
+                    if (value.ok == false) return;
 
-                    var content = value.item2 != null ? imageContent(context, value.item2!) : null;
+                    var content = value.bytes != null ? imageContent(context, value.bytes!) : null;
                     showExportedFileDialog(context, contentWidget: content);
                   });
                 },
@@ -178,7 +177,7 @@ class _GCWSymbolTableTextToSymbolsState extends State<GCWSymbolTableTextToSymbol
     }
   }
 
-  Future<Tuple2<bool, Uint8List?>> _exportEncryption(int countColumns, bool isCaseSensitive) async {
+  Future<({bool ok, Uint8List? bytes})> _exportEncryption(int countColumns, bool isCaseSensitive) async {
     var imageIndexes = _getImageIndexes(isCaseSensitive);
 
     var countRows = (imageIndexes.length / countColumns).floor();
@@ -204,9 +203,9 @@ class _GCWSymbolTableTextToSymbolsState extends State<GCWSymbolTableTextToSymbol
     final data = await img.toByteData(format: ui.ImageByteFormat.png);
 
     var bytes = data?.buffer.asUint8List();
-    if (bytes == null) return const Tuple2<bool, Uint8List?>(false, null);
+    if (bytes == null) return Future.value(const (ok: false, bytes: null));
     bytes = trimNullBytes(bytes);
-    return Tuple2<bool, Uint8List?>(
-        await saveByteDataToFile(context, bytes, buildFileNameWithDate('img_', FileType.PNG)), bytes);
+    return Future.value((ok: await saveByteDataToFile(context, bytes, buildFileNameWithDate('img_', FileType.PNG)),
+        bytes: bytes));
   }
 }
