@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/utils/datetime_utils.dart';
-import 'package:tuple/tuple.dart';
 
 enum GroupType { MAIN_GROUP, SUB_GROUP }
 
@@ -99,10 +98,10 @@ class PeriodicTableElement {
       this.halfLife, //German: Halbwertszeit
       {this.comments = const []}) {
     var group = iupacGroupToMainSubGroup(iupacGroup);
-    if (group?.item1 == GroupType.MAIN_GROUP) {
-      mainGroup = group?.item2;
+    if (group?.type == GroupType.MAIN_GROUP) {
+      mainGroup = group?.value;
     } else {
-      subGroup = group?.item2;
+      subGroup = group?.value;
     }
 
     if (boilingPoint == -double.infinity && meltingPoint == -double.infinity) {
@@ -163,7 +162,7 @@ class PeriodicTableElement {
   }
 }
 
-Tuple2<GroupType, int>? iupacGroupToMainSubGroup(int iupacGroup) {
+({GroupType type, int value})? iupacGroupToMainSubGroup(int iupacGroup) {
   int value;
   GroupType type;
 
@@ -186,7 +185,7 @@ Tuple2<GroupType, int>? iupacGroupToMainSubGroup(int iupacGroup) {
     return null;
   }
 
-  return Tuple2<GroupType, int>(type, value);
+  return (type: type, value: value);
 }
 
 final List<PeriodicTableElement> allPeriodicTableElements = [
