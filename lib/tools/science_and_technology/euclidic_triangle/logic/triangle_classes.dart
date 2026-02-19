@@ -1,14 +1,5 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
-class Triangle{
-  final XYPoint a;
-  final XYPoint b;
-  final XYPoint c;
-
-  const Triangle(this.a, this.b, this.c);
-
-}
-
 class PolarPoint{
   final double r;
   final double phi;
@@ -56,31 +47,31 @@ class XYPoint{
 
   void fromBarycentric(Triangle T, double alpha, double beta, double gamma) {
     final s = alpha + beta + gamma;
-    x = (alpha * T.a.x + beta * T.a.x + gamma * T.c.x) / s;
-    y = (alpha * T.a.y + beta * T.b.y + gamma * T.c.y) / s;
+    x = (alpha * T.A.x + beta * T.A.x + gamma * T.C.x) / s;
+    y = (alpha * T.A.y + beta * T.B.y + gamma * T.C.y) / s;
   }
 
   void fromTriLinear(Triangle t, TriLinearPoint p, ) {
     // https://mathworld.wolfram.com/TrilinearCoordinates.html
 
-    Sides s = triangleSidesXY(t.a, t.b, t.c);
+    Sides s = triangleSidesXY(t.A, t.B, t.C);
 
-    XYPoint av = _vectorNormalize(_vectorAB(t.b, t.c));
+    XYPoint av = _vectorNormalize(_vectorAB(t.B, t.C));
     double a1 = av.x;
     double a2 = av.y;
 
-    XYPoint cv = _vectorNormalize(_vectorAB(t.a, t.b));
+    XYPoint cv = _vectorNormalize(_vectorAB(t.A, t.B));
     double c1= cv.x;
     double c2 = cv.y;
 
     double apx = p.x;
     double cpz = p.z;
-    double k = 2 * triangleAreaXY(t.a, t.b, t.c) / (p.x * s.a + p.y * s.b + p.z * s.c);
-    double lc = (k * apx - cpz * k * (a1 * c1 + a2 * c2) + a2 * (t.a.x - t.c.x) + a1 * (t.c.y - t.a.y)) / (a1 * c2 - a2 * c1);
+    double k = 2 * triangleAreaXY(t.A, t.B, t.C) / (p.x * s.a + p.y * s.b + p.z * s.c);
+    double lc = (k * apx - cpz * k * (a1 * c1 + a2 * c2) + a2 * (t.A.x - t.C.x) + a1 * (t.C.y - t.A.y)) / (a1 * c2 - a2 * c1);
 
 
-    x = t.a.x + lc * c1 - k * p.z * c2;
-    y = t.a.y + lc * c2 + k * p.z * c1;
+    x = t.A.x + lc * c1 - k * p.z * c2;
+    y = t.A.y + lc * c2 + k * p.z * c1;
   }
 
   PolarPoint toPolarPoint(){

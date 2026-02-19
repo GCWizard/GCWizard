@@ -49,7 +49,7 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
   var _currentSWInput2 = '';
   var _currentSWInput3 = '';
 
-  var _currentDegenerated = false;
+  var _currentTriangle = Triangle(XYPoint(x: 0.0, y: 0.0), XYPoint(x: 0.0, y: 0.0), XYPoint(x: 0.0, y: 0.0));
 
   late List<List<Object?>> _outputPointData;
   late List<List<Object?>> _outputBasicData;
@@ -59,31 +59,33 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
   late List<List<Object?>> _outputTouchPoints;
   late List<List<Object?>> _outputCircles;
 
-  late Angles _angles;
-  late Sides _sides;
-  late Sides _medians;
-  late Sides _altitudes;
-  late Sides _anglebisector;
   late XYPoint _A;
   late XYPoint _B;
   late XYPoint _C;
-  late XYPoint _centroid;
-  late XYPoint _orthocenter;
-  late XYCircle _innercircle;
-  late XYCircle _outercircle;
-  late XYCircle _feuerbachcircle;
-  late XYPoint _gergonne;
-  late XYPoint _lemoine;
-  late XYPoint _nagel;
-  late XYPoint _napoleon1;
-  late XYPoint _napoleon2;
-  late XYPoint _spieker;
-  late XYPoint _feuerbach;
-  late XYPoint _mitten;
-  late List<XYCircle> _exCircle;
-  late List<XYPoint> _sidesMidPoint;
-  late List<XYPoint> _altitudesBasePoint;
-  late List<XYPoint> _exCircleTouchpoints;
+  // late Angles _angles;
+  // late Sides _sides;
+  // late Sides _medians;
+  // late Sides _altitudes;
+  // late Sides _anglebisector;
+  // late XYPoint _centroid;
+  // late XYPoint _orthocenter;
+  // late XYCircle _innercircle;
+  // late XYCircle _outercircle;
+  // late XYCircle _feuerbachcircle;
+  // late XYPoint _gergonne;
+  // late XYPoint _lemoine;
+  // late XYPoint _nagel;
+  // late XYPoint _napoleon1;
+  // late XYPoint _napoleon2;
+  // late XYPoint _spieker;
+  // late XYPoint _feuerbach;
+  // late XYPoint _mitten;
+  // late List<XYCircle> _exCircle;
+  // late List<XYPoint> _sidesMidPoint;
+  // late List<XYPoint> _altitudesBasePoint;
+  // late List<XYPoint> _exCircleTouchpoints;
+
+  late Map<String, String> _currentLabels;
 
   Uint8List _triangleImage = Uint8List.fromList([]);
 
@@ -106,6 +108,8 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
     _SWController1 = TextEditingController(text: _currentSWInput1);
     _SWController2 = TextEditingController(text: _currentSWInput2);
     _SWController3 = TextEditingController(text: _currentSWInput3);
+
+    _currentLabels = _translateLabels(TRIANGLE_LABLES);
   }
 
   @override
@@ -161,9 +165,9 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
                 );
               }
               if (_degeneratedTriangle(_A, _B, _C)) {
-                _currentDegenerated = true;
                 showSnackBar(i18n(context, 'triangle_error_invalid'), context);
               } else {
+                _currentTriangle = Triangle(_A, _B, _C);
                 _createAdditionalData();
                 _isCalculatedImage = false;
               }
@@ -201,7 +205,7 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
                   child: Column(
                     children: [
                       GCWText(
-                        text: i18n(context, triangleSWText[_currentSWMode]![0]),
+                        text: i18n(context, TRIANGLES_SW_TEXT[_currentSWMode]![0]),
                       ),
                       GCWTextField(
                         controller: _SWController1,
@@ -221,7 +225,7 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
                   child: Column(
                     children: [
                       GCWText(
-                        text: i18n(context, triangleSWText[_currentSWMode]![1]),
+                        text: i18n(context, TRIANGLES_SW_TEXT[_currentSWMode]![1]),
                       ),
                       GCWTextField(
                         controller: _SWController2,
@@ -240,7 +244,7 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
                   child: Column(
                     children: [
                       GCWText(
-                        text: i18n(context, triangleSWText[_currentSWMode]![2]),
+                        text: i18n(context, TRIANGLES_SW_TEXT[_currentSWMode]![2]),
                       ),
                       GCWTextField(
                         controller: _SWController3,
@@ -559,9 +563,6 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
     _B = XYPoint(x: c, y: 0.0);
     _C = XYPoint(x: sqrt(b * b - hc * hc), y: hc);
 
-    _angles = Angles(alpha: alpha, beta: beta, gamma: gamma);
-    _sides = Sides(a: a, b: b, c: c);
-
     _outputPointData = [
       [
         null,
@@ -593,71 +594,71 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
   void _createAdditionalData() {
     _isCalculatedDataXY = true;
 
-    if (_currentMode == GCWSwitchPosition.left) {
-      _angles = triangleAnglesXY(_A, _B, _C)!;
-      _sides = triangleSidesXY(_A, _B, _C);
-    }
-    _altitudes = triangleAltitudesXY(_A, _B, _C);
-    _medians = triangleMediansXY(_A, _B, _C);
-    _anglebisector = triangleAngleBiSectorsXY(_A, _B, _C);
-    _centroid = triangleCentroidXY(_A, _B, _C);
-    _orthocenter = triangleOrthocenterXY(_A, _B, _C);
-    _innercircle = triangleInCircleXY(_A, _B, _C);
-    _outercircle = triangleCircumCircleXY(_A, _B, _C);
-    _feuerbachcircle = triangleFeuerbachCircleXY(_A, _B, _C);
-    _gergonne = triangleGergonne(_A, _B, _C);
-    _lemoine = triangleLemoine(_A, _B, _C);
-    _nagel = triangleNagel(_A, _B, _C);
-    _napoleon1 = triangleNapoleonOuterXY(_A, _B, _C);
-    _napoleon2 = triangleNapoleonInnerXY(_A, _B, _C);
-    _spieker = triangleSpieker(_A, _B, _C);
-    _feuerbach = triangleFeuerbach(_A, _B, _C);
-    _mitten = triangleMitten(_A, _B, _C);
-    _exCircle = triangleExCirclesXY(_A, _B, _C);
-    _sidesMidPoint = triangleSidesMidPointsXY(_A, _B, _C);
-    _altitudesBasePoint = triangleAltitudesBasePointsXY(_A, _B, _C);
-    _exCircleTouchpoints = triangleTouchPointsExcircleXY(_A, _B, _C);
+    // if (_currentMode == GCWSwitchPosition.left) {
+    //   _angles = triangleAnglesXY(_A, _B, _C)!;
+    //   _sides = triangleSidesXY(_A, _B, _C);
+    // }
+    // _altitudes = triangleAltitudesXY(_A, _B, _C);
+    // _medians = triangleMediansXY(_A, _B, _C);
+    // _anglebisector = triangleAngleBiSectorsXY(_A, _B, _C);
+    // _centroid = triangleCentroidXY(_A, _B, _C);
+    // _orthocenter = triangleOrthocenterXY(_A, _B, _C);
+    // _innercircle = triangleInCircleXY(_A, _B, _C);
+    // _outercircle = triangleCircumCircleXY(_A, _B, _C);
+    // _feuerbachcircle = triangleFeuerbachCircleXY(_A, _B, _C);
+    // _gergonne = triangleGergonne(_A, _B, _C);
+    // _lemoine = triangleLemoine(_A, _B, _C);
+    // _nagel = triangleNagel(_A, _B, _C);
+    // _napoleon1 = triangleNapoleonOuterXY(_A, _B, _C);
+    // _napoleon2 = triangleNapoleonInnerXY(_A, _B, _C);
+    // _spieker = triangleSpieker(_A, _B, _C);
+    // _feuerbach = triangleFeuerbach(_A, _B, _C);
+    // _mitten = triangleMitten(_A, _B, _C);
+    // _exCircle = triangleExCirclesXY(_A, _B, _C);
+    // _sidesMidPoint = triangleSidesMidPointsXY(_A, _B, _C);
+    // _altitudesBasePoint = triangleAltitudesBasePointsXY(_A, _B, _C);
+    // _exCircleTouchpoints = triangleTouchPointsExcircleXY(_A, _B, _C);
 
     _outputBasicData = [
       [
         i18n(context, 'triangle_output_sides'),
-        _sides.a.toStringAsFixed(3),
-        _sides.b.toStringAsFixed(3),
-        _sides.c.toStringAsFixed(3)
+        _currentTriangle.sides.a.toStringAsFixed(3),
+        _currentTriangle.sides.b.toStringAsFixed(3),
+        _currentTriangle.sides.c.toStringAsFixed(3)
       ],
       [
         i18n(context, 'triangle_output_angles'),
-        _angles.alpha.toStringAsFixed(3),
-        _angles.beta.toStringAsFixed(3),
-        _angles.gamma.toStringAsFixed(3)
+        _currentTriangle.angles.alpha.toStringAsFixed(3),
+        _currentTriangle.angles.beta.toStringAsFixed(3),
+        _currentTriangle.angles.gamma.toStringAsFixed(3)
       ],
       [
         i18n(context, 'triangle_output_altitudes'),
-        _altitudes.a.toStringAsFixed(3),
-        _altitudes.b.toStringAsFixed(3),
-        _altitudes.c.toStringAsFixed(3)
+        _currentTriangle.altitudes.a.toStringAsFixed(3),
+        _currentTriangle.altitudes.b.toStringAsFixed(3),
+        _currentTriangle.altitudes.c.toStringAsFixed(3)
       ],
       [
         i18n(context, 'triangle_output_medians'),
-        _medians.a.toStringAsFixed(3),
-        _medians.b.toStringAsFixed(3),
-        _medians.c.toStringAsFixed(3)
+        _currentTriangle.medians.a.toStringAsFixed(3),
+        _currentTriangle.medians.b.toStringAsFixed(3),
+        _currentTriangle.medians.c.toStringAsFixed(3)
       ],
       [
         i18n(context, 'triangle_output_anglebisector'),
-        _anglebisector.a.toStringAsFixed(3),
-        _anglebisector.b.toStringAsFixed(3),
-        _anglebisector.c.toStringAsFixed(3)
+        _currentTriangle.anglebisector.a.toStringAsFixed(3),
+        _currentTriangle.anglebisector.b.toStringAsFixed(3),
+        _currentTriangle.anglebisector.c.toStringAsFixed(3)
       ],
       [
         i18n(context, 'triangle_output_circumference'),
-        triangleCircumferenceXY(_A, _B, _C).toStringAsFixed(3),
+        _currentTriangle.circumference.toStringAsFixed(3),
         null,
         null
       ],
       [
         i18n(context, 'triangle_output_area'),
-        triangleAreaXY(_A, _B, _C).toStringAsFixed(3),
+        _currentTriangle.area.toStringAsFixed(3),
         null,
         null
       ],
@@ -671,20 +672,20 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
       ],
       [
         'a',
-        _sidesMidPoint[0].x.toStringAsFixed(3),
-        _sidesMidPoint[0].y.toStringAsFixed(3),
+        _currentTriangle.sidesMidPoint[0].x.toStringAsFixed(3),
+        _currentTriangle.sidesMidPoint[0].y.toStringAsFixed(3),
         null,
       ],
       [
         'b',
-        _sidesMidPoint[1].x.toStringAsFixed(3),
-        _sidesMidPoint[1].y.toStringAsFixed(3),
+        _currentTriangle.sidesMidPoint[1].x.toStringAsFixed(3),
+        _currentTriangle.sidesMidPoint[1].y.toStringAsFixed(3),
         null,
       ],
       [
         'c',
-        _sidesMidPoint[2].x.toStringAsFixed(3),
-        _sidesMidPoint[2].y.toStringAsFixed(3),
+        _currentTriangle.sidesMidPoint[2].x.toStringAsFixed(3),
+        _currentTriangle.sidesMidPoint[2].y.toStringAsFixed(3),
         null,
       ],
     ];
@@ -697,20 +698,20 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
       ],
       [
         'a',
-        _altitudesBasePoint[0].x.toStringAsFixed(3),
-        _altitudesBasePoint[0].y.toStringAsFixed(3),
+        _currentTriangle.altitudesBasePoint[0].x.toStringAsFixed(3),
+        _currentTriangle.altitudesBasePoint[0].y.toStringAsFixed(3),
         null,
       ],
       [
         'b',
-        _altitudesBasePoint[1].x.toStringAsFixed(3),
-        _altitudesBasePoint[1].y.toStringAsFixed(3),
+        _currentTriangle.altitudesBasePoint[1].x.toStringAsFixed(3),
+        _currentTriangle.altitudesBasePoint[1].y.toStringAsFixed(3),
         null,
       ],
       [
         'c',
-        _altitudesBasePoint[2].x.toStringAsFixed(3),
-        _altitudesBasePoint[2].y.toStringAsFixed(3),
+        _currentTriangle.altitudesBasePoint[2].x.toStringAsFixed(3),
+        _currentTriangle.altitudesBasePoint[2].y.toStringAsFixed(3),
         null,
       ],
     ];
@@ -875,69 +876,71 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
   void _createGraphicOutput() {
     _triangleImage = Uint8List.fromList([]);
      triangleData2Image(
-       A: _A,
-       B: _B,
-       C: _C,
-       a: _sides.a,
-       b: _sides.b,
-       c: _sides.c,
-       alpha: _angles.alpha,
-       beta: _angles.beta,
-       gamma: _angles.gamma,
-       area: triangleAreaXY(_A, _B, _C),
-       circumference: triangleCircumferenceXY(_A, _B, _C),
-       CG: _centroid,
-       F: _feuerbach,
-       L: _lemoine,
-       M: _mitten,
-       N: _nagel,
-       N1: _napoleon1,
-       N2: _napoleon2,
-       S: _spieker,
-       O: _orthocenter,
-       G: _gergonne,
-       AA: _altitudesBasePoint[0],
-       AB: _altitudesBasePoint[1],
-       AC: _altitudesBasePoint[2],
-       MSA: _sidesMidPoint[0],
-       MSB: _sidesMidPoint[1],
-       MSC: _sidesMidPoint[2],
-       CC: _outercircle,
-       IC: _innercircle,
-       FC: _feuerbachcircle,
-       EA: _exCircle[0],
-       EB: _exCircle[1],
-       EC: _exCircle[2],
-       ETA: _exCircleTouchpoints[0],
-       ETB: _exCircleTouchpoints[1],
-       ETC: _exCircleTouchpoints[2],
-       labels: [
-         i18n(context, 'triangle_output_sides'), // 0
-         i18n(context, 'triangle_output_angles'), // 1
-         i18n(context, 'triangle_output_area'), // 2
-         i18n(context, 'triangle_output_circumference'), // 3
-         i18n(context, 'triangle_output_sidesmidpoint'), // 4
-         i18n(context, 'triangle_output_altitudesbasepoint'), // 5
-         i18n(context, 'triangle_output_centroid'), // 6
-         i18n(context, 'triangle_output_altitude'), // 7
-         i18n(context, 'triangle_output_lemoine'), // 8
-         i18n(context, 'triangle_output_gergonne'), // 9
-         i18n(context, 'triangle_output_nagel'), // 10
-         i18n(context, 'triangle_output_napoleon_outer'), // 11
-         i18n(context, 'triangle_output_napoleon_inner'), // 12
-         i18n(context, 'triangle_output_mitten'), // 13
-         i18n(context, 'triangle_output_spieker'), // 14
-         i18n(context, 'triangle_output_feuerbach'), // 15
-         i18n(context, 'triangle_output_incenter'), // 16
-         i18n(context, 'triangle_output_circumcenter'), // 17
-         i18n(context, 'triangle_output_circles'), // 18
-         i18n(context, 'triangle_output_incircle'), // 19
-         i18n(context, 'triangle_output_excircle'), // 20
-         i18n(context, 'triangle_output_circumscribedcircle'), // 21
-         i18n(context, 'triangle_output_feuerbachcircle'), // 22
-         i18n(context, 'gcwizard_script_help_coordinates'), // 23
-         i18n(context, 'triangle_output_touchpoint'), // 24
-       ],
+       triangle: _currentTriangle,
+       labels: _currentLabels,
+       // A: _A,
+       // B: _B,
+       // C: _C,
+       // a: _sides.a,
+       // b: _sides.b,
+       // c: _sides.c,
+       // alpha: _angles.alpha,
+       // beta: _angles.beta,
+       // gamma: _angles.gamma,
+       // area: triangleAreaXY(_A, _B, _C),
+       // circumference: triangleCircumferenceXY(_A, _B, _C),
+       // CG: _centroid,
+       // F: _feuerbach,
+       // L: _lemoine,
+       // M: _mitten,
+       // N: _nagel,
+       // N1: _napoleon1,
+       // N2: _napoleon2,
+       // S: _spieker,
+       // O: _orthocenter,
+       // G: _gergonne,
+       // AA: _altitudesBasePoint[0],
+       // AB: _altitudesBasePoint[1],
+       // AC: _altitudesBasePoint[2],
+       // MSA: _sidesMidPoint[0],
+       // MSB: _sidesMidPoint[1],
+       // MSC: _sidesMidPoint[2],
+       // CC: _outercircle,
+       // IC: _innercircle,
+       // FC: _feuerbachcircle,
+       // EA: _exCircle[0],
+       // EB: _exCircle[1],
+       // EC: _exCircle[2],
+       // ETA: _exCircleTouchpoints[0],
+       // ETB: _exCircleTouchpoints[1],
+       // ETC: _exCircleTouchpoints[2],
+       // labels: [
+       //   i18n(context, 'triangle_output_sides'), // 0
+       //   i18n(context, 'triangle_output_angles'), // 1
+       //   i18n(context, 'triangle_output_area'), // 2
+       //   i18n(context, 'triangle_output_circumference'), // 3
+       //   i18n(context, 'triangle_output_sidesmidpoint'), // 4
+       //   i18n(context, 'triangle_output_altitudesbasepoint'), // 5
+       //   i18n(context, 'triangle_output_centroid'), // 6
+       //   i18n(context, 'triangle_output_altitude'), // 7
+       //   i18n(context, 'triangle_output_lemoine'), // 8
+       //   i18n(context, 'triangle_output_gergonne'), // 9
+       //   i18n(context, 'triangle_output_nagel'), // 10
+       //   i18n(context, 'triangle_output_napoleon_outer'), // 11
+       //   i18n(context, 'triangle_output_napoleon_inner'), // 12
+       //   i18n(context, 'triangle_output_mitten'), // 13
+       //   i18n(context, 'triangle_output_spieker'), // 14
+       //   i18n(context, 'triangle_output_feuerbach'), // 15
+       //   i18n(context, 'triangle_output_incenter'), // 16
+       //   i18n(context, 'triangle_output_circumcenter'), // 17
+       //   i18n(context, 'triangle_output_circles'), // 18
+       //   i18n(context, 'triangle_output_incircle'), // 19
+       //   i18n(context, 'triangle_output_excircle'), // 20
+       //   i18n(context, 'triangle_output_circumscribedcircle'), // 21
+       //   i18n(context, 'triangle_output_feuerbachcircle'), // 22
+       //   i18n(context, 'gcwizard_script_help_coordinates'), // 23
+       //   i18n(context, 'triangle_output_touchpoint'), // 24
+       // ],
      ).then((value) {
        setState(() {
          _triangleImage = value;
@@ -981,5 +984,13 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
     b = b.normalized();
     c = c.normalized();
     return (a.equals(b) && a.equals(c));
+  }
+
+  Map<String, String> _translateLabels(Map<String, String> labels){
+    Map<String, String> result = {};
+    for (String key in labels.keys) {
+      result[key] = i18n(context, labels[key]!);
+    }
+    return result;
   }
 }

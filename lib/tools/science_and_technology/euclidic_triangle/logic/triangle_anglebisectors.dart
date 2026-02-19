@@ -1,7 +1,7 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
 Sides triangleAngleBiSectorsXY(XYPoint a, XYPoint b, XYPoint c,){
-  Angles angles = triangleAnglesXY(a, b, c)!;
+  Angles angles = triangleAnglesXY(a, b, c);
   Sides sides = triangleSidesXY(a, b, c);
 
   return Sides(

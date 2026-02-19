@@ -1,43 +1,44 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
 Future<Uint8List > triangleData2Image({
-  required XYPoint A,
-  required XYPoint B,
-  required XYPoint C,
-  required double a,
-  required double b,
-  required double c,
-  required double alpha,
-  required double beta,
-  required double gamma,
-  required double area,
-  required double circumference,
-  required XYPoint O, // orthocenter
-  required XYPoint L, // lemoine
-  required XYPoint CG, // centroid
-  required XYPoint S, // spieker
-  required XYPoint M, // mitten
-  required XYPoint F, //feuerbach
-  required XYPoint N, // nagel
-  required XYPoint N1, // napoleon I
-  required XYPoint N2, // napoleon II
-  required XYPoint G, // gergonne
-  required XYPoint MSA, // mid side a
-  required XYPoint MSB, // mid side b
-  required XYPoint MSC, // mid side c
-  required XYPoint AA, // altitude base a
-  required XYPoint AB, // altitude base b
-  required XYPoint AC, // altitude base c
-  required XYCircle IC, // inner circle
-  required XYCircle CC, // circum circle
-  required XYCircle FC, // feuerbach circle
-  required XYCircle EA, // ex circle a
-  required XYCircle EB, // ex circle b
-  required XYCircle EC, // ex circle c
-  required XYPoint ETA, // touchpoint ex circle a
-  required XYPoint ETB, // touchpoint ex circle b
-  required XYPoint ETC, // touchpoint ex circle c
-  required List<String> labels, // labels for the points/circles
+  required Triangle triangle,
+  required Map<String, String> labels,
+  // required XYPoint A,
+  // required XYPoint B,
+  // required XYPoint C,
+  // required double a,
+  // required double b,
+  // required double c,
+  // required double alpha,
+  // required double beta,
+  // required double gamma,
+  // required double area,
+  // required double circumference,
+  // required XYPoint O, // orthocenter
+  // required XYPoint L, // lemoine
+  // required XYPoint CG, // centroid
+  // required XYPoint S, // spieker
+  // required XYPoint M, // mitten
+  // required XYPoint F, //feuerbach
+  // required XYPoint N, // nagel
+  // required XYPoint N1, // napoleon I
+  // required XYPoint N2, // napoleon II
+  // required XYPoint G, // gergonne
+  // required XYPoint MSA, // mid side a
+  // required XYPoint MSB, // mid side b
+  // required XYPoint MSC, // mid side c
+  // required XYPoint AA, // altitude base a
+  // required XYPoint AB, // altitude base b
+  // required XYPoint AC, // altitude base c
+  // required XYCircle IC, // inner circle
+  // required XYCircle CC, // circum circle
+  // required XYCircle FC, // feuerbach circle
+  // required XYCircle EA, // ex circle a
+  // required XYCircle EB, // ex circle b
+  // required XYCircle EC, // ex circle c
+  // required XYPoint ETA, // touchpoint ex circle a
+  // required XYPoint ETB, // touchpoint ex circle b
+  // required XYPoint ETC, // touchpoint ex circle c
 }) async {
 
   const BOUNDS = 100.0;
@@ -62,9 +63,9 @@ Future<Uint8List > triangleData2Image({
   double minY = 0;
   double maxY = 0;
 
-  if (A.x < minX) minX = A.x; if (A.x > maxX) maxX = A.x;
-  if (B.x < minX) minX = B.x; if (B.x > maxX) maxX = B.x;
-  if (C.x < minX) minX = C.x; if (C.x > maxX) maxX = C.x;
+  if (triangle.A.x < minX) minX = triangle.A.x; if (triangle.A.x > maxX) maxX = triangle.A.x;
+  if (triangle.B.x < minX) minX = triangle.B.x; if (triangle.B.x > maxX) maxX = triangle.B.x;
+  if (triangle.C.x < minX) minX = triangle.C.x; if (triangle.C.x > maxX) maxX = triangle.C.x;
   if (O.x < minX) minX = O.x; if (O.x > maxX) maxX = O.x;
   if (G.x < minX) minX = G.x; if (G.x > maxX) maxX = G.x;
   if (L.x < minX) minX = L.x; if (L.x > maxX) maxX = L.x;
@@ -85,9 +86,9 @@ Future<Uint8List > triangleData2Image({
   if (EB.x - EB.r < minX) minX = EB.x - EB.r; if (EB.x + EB.r > maxX) maxX = EB.x + EB.r;
   if (EC.x - EC.r < minX) minX = EC.x - EC.r; if (EC.x + EC.r > maxX) maxX = EC.x + EC.r;
 
-  if (A.y < minY) minY = A.y; if (A.y > maxY) maxY = A.x;
-  if (B.y < minY) minY = B.y; if (B.y > maxY) maxY = B.y;
-  if (C.y < minY) minY = C.y; if (C.y > maxY) maxY = C.y;
+  if (triangle.A.y < minY) minY = triangle.A.y; if (triangle.A.y > maxY) maxY = triangle.A.x;
+  if (triangle.B.y < minY) minY = triangle.B.y; if (triangle.B.y > maxY) maxY = triangle.B.y;
+  if (triangle.C.y < minY) minY = triangle.C.y; if (triangle.C.y > maxY) maxY = triangle.C.y;
   if (O.y < minY) minY = O.y; if (O.y > maxY) maxY = O.y;
   if (G.y < minY) minY = G.y; if (G.y > maxY) maxY = G.y;
   if (L.y < minY) minY = L.y; if (L.y > maxY) maxY = L.y;
@@ -210,21 +211,21 @@ Future<Uint8List > triangleData2Image({
 
   // draw sides a b c
   paint.color = Colors.blueAccent;
-  canvas.drawLine(Offset(A.x * SCALE + offsetX, offsetY - A.y * SCALE), Offset(B.x * SCALE + offsetX, offsetY - B.y * SCALE), paint);
-  canvas.drawLine(Offset(B.x * SCALE + offsetX, offsetY - B.y * SCALE), Offset(C.x * SCALE + offsetX, offsetY - C.y * SCALE), paint);
-  canvas.drawLine(Offset(C.x * SCALE + offsetX, offsetY - C.y * SCALE), Offset(A.x * SCALE + offsetX, offsetY - A.y * SCALE), paint);
+  canvas.drawLine(Offset(triangle.A.x * SCALE + offsetX, offsetY - triangle.A.y * SCALE), Offset(triangle.B.x * SCALE + offsetX, offsetY - triangle.B.y * SCALE), paint);
+  canvas.drawLine(Offset(triangle.B.x * SCALE + offsetX, offsetY - triangle.B.y * SCALE), Offset(triangle.C.x * SCALE + offsetX, offsetY - triangle.C.y * SCALE), paint);
+  canvas.drawLine(Offset(triangle.C.x * SCALE + offsetX, offsetY - triangle.C.y * SCALE), Offset(triangle.A.x * SCALE + offsetX, offsetY - triangle.A.y * SCALE), paint);
 
   // draw altitudes ha hb hc
   paint.color = Colors.orange;
-  canvas.drawLine(Offset(A.x * SCALE + offsetX, offsetY - A.y * SCALE), Offset(AA.x * SCALE + offsetX, offsetY - AA.y * SCALE), paint);
-  canvas.drawLine(Offset(B.x * SCALE + offsetX, offsetY - B.y * SCALE), Offset(AB.x * SCALE + offsetX, offsetY - AB.y * SCALE), paint);
-  canvas.drawLine(Offset(C.x * SCALE + offsetX, offsetY - C.y * SCALE), Offset(AC.x * SCALE + offsetX, offsetY - AC.y * SCALE), paint);
+  canvas.drawLine(Offset(triangle.A.x * SCALE + offsetX, offsetY - triangle.A.y * SCALE), Offset(AA.x * SCALE + offsetX, offsetY - AA.y * SCALE), paint);
+  canvas.drawLine(Offset(triangle.B.x * SCALE + offsetX, offsetY - triangle.B.y * SCALE), Offset(AB.x * SCALE + offsetX, offsetY - AB.y * SCALE), paint);
+  canvas.drawLine(Offset(triangle.C.x * SCALE + offsetX, offsetY - triangle.C.y * SCALE), Offset(AC.x * SCALE + offsetX, offsetY - AC.y * SCALE), paint);
 
   // draw mid sides
   paint.color = Colors.orange.shade700;
-  canvas.drawLine(Offset(A.x * SCALE + offsetX, offsetY - A.y * SCALE), Offset(MSA.x * SCALE + offsetX, offsetY - MSA.y * SCALE), paint);
-  canvas.drawLine(Offset(B.x * SCALE + offsetX, offsetY - B.y * SCALE), Offset(MSB.x * SCALE + offsetX, offsetY - MSB.y * SCALE), paint);
-  canvas.drawLine(Offset(C.x * SCALE + offsetX, offsetY - C.y * SCALE), Offset(MSC.x * SCALE + offsetX, offsetY - MSC.y * SCALE), paint);
+  canvas.drawLine(Offset(triangle.A.x * SCALE + offsetX, offsetY - triangle.A.y * SCALE), Offset(MSA.x * SCALE + offsetX, offsetY - MSA.y * SCALE), paint);
+  canvas.drawLine(Offset(triangle.B.x * SCALE + offsetX, offsetY - triangle.B.y * SCALE), Offset(MSB.x * SCALE + offsetX, offsetY - MSB.y * SCALE), paint);
+  canvas.drawLine(Offset(triangle.C.x * SCALE + offsetX, offsetY - triangle.C.y * SCALE), Offset(MSC.x * SCALE + offsetX, offsetY - MSC.y * SCALE), paint);
 
   // draw Special Points
   paint.style = PaintingStyle.stroke;
@@ -286,23 +287,23 @@ Future<Uint8List > triangleData2Image({
   final paragraphBuilder = ui.ParagraphBuilder(paragraphStyle)
     ..pushStyle(textStyle)
     ..addText(
-                labels[23] + '\n' +
-                'A'.padLeft(LABELLENGTH, ' ') + DIST + '(' + A.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + A.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
-                'B'.padLeft(LABELLENGTH, ' ') + DIST + '(' + B.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + B.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
-                'C'.padLeft(LABELLENGTH, ' ') + DIST + '(' + C.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + C.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                labels['COORDINATES']! + '\n' +
+                'A'.padLeft(LABELLENGTH, ' ') + DIST + '(' + triangle.A.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + triangle.A.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                'B'.padLeft(LABELLENGTH, ' ') + DIST + '(' + triangle.B.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + triangle.B.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                'C'.padLeft(LABELLENGTH, ' ') + DIST + '(' + triangle.C.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + triangle.C.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
                 '\n' +
-                labels[0] + '\n' +
-                    'a'.padLeft(LABELLENGTH, ' ') + DIST +  a.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
-                    'b'.padLeft(LABELLENGTH, ' ') + DIST +  b.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
-                    'c'.padLeft(LABELLENGTH, ' ') + DIST +  c.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                labels['SIDES']! + '\n' +
+                    'a'.padLeft(LABELLENGTH, ' ') + DIST +  triangle.sides.a.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                    'b'.padLeft(LABELLENGTH, ' ') + DIST +  triangle.sides.b.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                    'c'.padLeft(LABELLENGTH, ' ') + DIST +  triangle.sides.c.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
                 '\n' +
-                labels[1] + '\n' +
-                    'α'.padLeft(LABELLENGTH, ' ') + DIST +  alpha.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
-                    'β'.padLeft(LABELLENGTH, ' ') + DIST +  beta.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
-                    'γ'.padLeft(LABELLENGTH, ' ') + DIST +  gamma.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                labels['ANGLES']! + '\n' +
+                    'α'.padLeft(LABELLENGTH, ' ') + DIST +  triangle.angles.alpha.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                    'β'.padLeft(LABELLENGTH, ' ') + DIST +  triangle.angles.beta.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                    'γ'.padLeft(LABELLENGTH, ' ') + DIST +  triangle.angles.gamma.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
                 '\n' +
-                labels[2].padLeft(LABELLENGTH, ' ') + DIST +   area.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
-                labels[3].padLeft(LABELLENGTH, ' ') + DIST +   circumference.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                labels['AREA']!.padLeft(LABELLENGTH, ' ') + DIST +   triangle.area.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                labels['CIRCUMFERENCE']!.padLeft(LABELLENGTH, ' ') + DIST +   triangle.circumference.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
                 '\n' +
                 labels[4] + '\n' +
                     'a'.padLeft(LABELLENGTH, ' ') + DIST + '(' + MSA.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + MSA.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +

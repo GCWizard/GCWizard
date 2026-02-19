@@ -4,7 +4,7 @@ XYCircle triangleCircumCircleXY(XYPoint a, XYPoint b, XYPoint c){
   // https://de.wikipedia.org/wiki/Umkreis
 
   Sides sides = triangleSidesXY(a, b, c);
-  Angles angles = triangleAnglesXY(a, b, c)!;
+  Angles angles = triangleAnglesXY(a, b, c);
 
   XYPoint SB =  _vectorAdd(a, _vectorMult(_vectorNormalize(_vectorAB(a, c)), sides.b / 2));
   XYPoint SA =  _vectorAdd(b, _vectorMult(_vectorNormalize(_vectorAB(b, c)), sides.a / 2));

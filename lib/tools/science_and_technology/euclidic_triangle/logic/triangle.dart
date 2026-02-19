@@ -50,7 +50,7 @@ Map<int, String> SIDE_ANGLE_TYPES = {
   6: "triangle_euclidic_sww",
 };
 
-Map<int, List<String>> triangleSWText = {
+Map<int, List<String>> TRIANGLES_SW_TEXT = {
   0: ['triangle_euclidic_s', 'triangle_euclidic_s', 'triangle_euclidic_s'],
   1: ['triangle_euclidic_s', 'triangle_euclidic_s', 'triangle_euclidic_w'],
   2: ['triangle_euclidic_s', 'triangle_euclidic_w', 'triangle_euclidic_s'],
@@ -59,3 +59,70 @@ Map<int, List<String>> triangleSWText = {
   5: ['triangle_euclidic_w', 'triangle_euclidic_s', 'triangle_euclidic_w'],
   6: ['triangle_euclidic_s', 'triangle_euclidic_w', 'triangle_euclidic_w'],
 };
+
+Map<String, String> TRIANGLE_LABLES = {
+  "AREA": "triangle_output_area",
+  "CIRCUMFERENCE": "triangle_output_circumference",
+  "COORDINATES": "gcwizard_script_help_coordinates",
+  "SIDES": "triangle_output_sides",
+  "ANGLES": "triangle_output_angles",
+  "SIDESMIDPOINTS": "triangle_output_sidesmidpoint",
+  "ALTITUDESBASEPOINTS": "triangle_output_altitudesbasepoint",
+  "X1": "triangle_output_incenter",
+  "X2": "triangle_output_centroid",
+  "X3": "triangle_output_circumcenter",
+  "X4": "triangle_output_altitude",
+  "X5": "triangle_output_ninepointcenter",
+  "X6": "triangle_output_lemoine",
+  "X7": "triangle_output_gergonne",
+  "X8": "triangle_output_nagel",
+  "X9": "triangle_output_mitten",
+  "X10": "triangle_output_spieker",
+  "X11": "triangle_output_feuerbach",
+  "X12": "triangle_output_",
+  "X13": "triangle_output_fermat_torricelli",
+  "X14": "triangle_output_2ndisogonic",
+  "X15": "triangle_output_1stisodynamic",
+  "X16": "triangle_output_2ndisodynamic",
+  "X17": "triangle_output_napoleon_outer",
+  "X18": "triangle_output_napoleon_inner",
+  "X19": "triangle_output_",
+  "TOUCHPOINT": "triangle_output_touchpoint",
+  "INCIRCLE": "triangle_output_incircle",
+  "EXCIRCLE": "triangle_output_excircle",
+  "FEUERBACHCIRCLE": "triangle_output_feuerbachcircle",
+};
+
+class Triangle{
+  final XYPoint A;
+  final XYPoint B;
+  final XYPoint C;
+
+  const Triangle(this.A, this.B, this.C);
+
+  double get area {
+    final sd = sides;
+    final s = (sd.a + sd.b + sd.c) / 2;
+    return sqrt(s * (s - sd.a) * (s - sd.b) * (s - sd.c));
+  }
+
+  Sides get sides => triangleSidesXY(A, B, C);
+
+  Angles get angles => triangleAnglesXY(A, B, C);
+
+  double get circumference {
+    final sd = sides;
+    return (sd.a + sd.b + sd.c);
+  }
+
+    Sides get altitudes => triangleAltitudesXY(A, B, C);
+
+    Sides get medians => triangleMediansXY(A, B, C);
+
+    Sides get anglebisector => triangleAngleBiSectorsXY(A, B, C);
+
+    List<XYPoint> get sidesMidPoint => triangleSidesMidPointsXY(A, B, C);
+
+    List<XYPoint> get altitudesBasePoint => triangleAltitudesBasePointsXY(A, B, C);
+
+}
