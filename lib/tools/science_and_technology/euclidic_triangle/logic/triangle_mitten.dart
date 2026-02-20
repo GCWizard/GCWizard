@@ -1,6 +1,6 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
-XYPoint triangleMitten(XYPoint a, XYPoint b, XYPoint c){
+XYPoint triangleMittenPointXY(XYPoint a, XYPoint b, XYPoint c){
   // https://de.wikipedia.org/wiki/Mittenpunkt
   // https://mathworld.wolfram.com/Mittenpunkt.html
 

@@ -45,13 +45,14 @@ class XYPoint{
     return XYPoint(x: x / n, y: y / n);
   }
 
-  void fromBarycentric(Triangle T, double alpha, double beta, double gamma) {
-    final s = alpha + beta + gamma;
-    x = (alpha * T.A.x + beta * T.A.x + gamma * T.C.x) / s;
-    y = (alpha * T.A.y + beta * T.B.y + gamma * T.C.y) / s;
+  static XYPoint fromBarycentric(Triangle t, double a, double b, double c) {
+    final s = a + b + c;
+    double x = (a * t.A.x + b * t.A.x + c * t.C.x) / s;
+    double y = (a * t.A.y + b * t.B.y + c * t.C.y) / s;
+    return XYPoint(x: x, y: y);
   }
 
-  void fromTriLinear(Triangle t, TriLinearPoint p, ) {
+  XYPoint fromTriLinear(Triangle t, TriLinearPoint p, ) {
     // https://mathworld.wolfram.com/TrilinearCoordinates.html
 
     Sides s = triangleSidesXY(t.A, t.B, t.C);
@@ -72,6 +73,8 @@ class XYPoint{
 
     x = t.A.x + lc * c1 - k * p.z * c2;
     y = t.A.y + lc * c2 + k * p.z * c1;
+
+    return XYPoint(x: x, y: y);
   }
 
   PolarPoint toPolarPoint(){

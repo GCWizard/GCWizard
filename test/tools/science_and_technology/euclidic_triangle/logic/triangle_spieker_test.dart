@@ -18,7 +18,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${toString(elem['inputA'])} ${toString(elem['inputB'])} ${toString(elem['inputC'])}', () {
-        var _actual = triangleSpieker(elem['inputA'] as XYPoint, elem['inputB'] as XYPoint, elem['inputC'] as XYPoint);
+        var _actual = triangleSpiekerPointXY(elem['inputA'] as XYPoint, elem['inputB'] as XYPoint, elem['inputC'] as XYPoint);
         pointTest(_actual, elem['expectedOutput'] as XYPoint);
       });
     }

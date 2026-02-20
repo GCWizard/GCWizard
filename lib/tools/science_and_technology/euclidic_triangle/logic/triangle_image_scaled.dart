@@ -122,11 +122,11 @@ class Triangle {
       _bary(1 / (a * (b + c - a)), 1 / (b * (c + a - b)), 1 / (c * (a + b - c)));
   XYPoint get X19 => _bary(a * (b - c), b * (c - a), c * (a - b));
 
-  XYPoint _bary(double alpha, double beta, double gamma) {
-  final s = alpha + beta + gamma;
+  XYPoint _bary(double a, double b, double c) {
+  final s = a + b + c;
   return XYPoint(
-  x: (alpha * A.x + beta * B.x + gamma * C.x) / s,
-  y: (alpha * A.y + beta * B.y + gamma * C.y) / s,
+  x: (a * A.x + b * B.x + c * C.x) / s,
+  y: (a * A.y + b * B.y + c * C.y) / s,
   );
   }
 

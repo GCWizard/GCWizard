@@ -1,6 +1,6 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
-XYPoint triangleFeuerbach(XYPoint a, XYPoint b, XYPoint c){
+XYPoint triangleFeuerbachPointXY(XYPoint a, XYPoint b, XYPoint c){
   // https://de.wikipedia.org/wiki/Feuerbachkreis
 
   XYCircle incircle = triangleInCircleXY(a, b, c);

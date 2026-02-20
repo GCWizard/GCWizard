@@ -3,42 +3,6 @@ part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/
 Future<Uint8List > triangleData2Image({
   required Triangle triangle,
   required Map<String, String> labels,
-  // required XYPoint A,
-  // required XYPoint B,
-  // required XYPoint C,
-  // required double a,
-  // required double b,
-  // required double c,
-  // required double alpha,
-  // required double beta,
-  // required double gamma,
-  // required double area,
-  // required double circumference,
-  // required XYPoint O, // orthocenter
-  // required XYPoint L, // lemoine
-  // required XYPoint CG, // centroid
-  // required XYPoint S, // spieker
-  // required XYPoint M, // mitten
-  // required XYPoint F, //feuerbach
-  // required XYPoint N, // nagel
-  // required XYPoint N1, // napoleon I
-  // required XYPoint N2, // napoleon II
-  // required XYPoint G, // gergonne
-  // required XYPoint MSA, // mid side a
-  // required XYPoint MSB, // mid side b
-  // required XYPoint MSC, // mid side c
-  // required XYPoint AA, // altitude base a
-  // required XYPoint AB, // altitude base b
-  // required XYPoint AC, // altitude base c
-  // required XYCircle IC, // inner circle
-  // required XYCircle CC, // circum circle
-  // required XYCircle FC, // feuerbach circle
-  // required XYCircle EA, // ex circle a
-  // required XYCircle EB, // ex circle b
-  // required XYCircle EC, // ex circle c
-  // required XYPoint ETA, // touchpoint ex circle a
-  // required XYPoint ETB, // touchpoint ex circle b
-  // required XYPoint ETC, // touchpoint ex circle c
 }) async {
 
   const BOUNDS = 100.0;
@@ -57,11 +21,54 @@ Future<Uint8List > triangleData2Image({
   const constraintsAxisX = ui.ParagraphConstraints(width: 50);
   const constraintsAxisY = ui.ParagraphConstraints(width: 50);
 
-
   double minX = 0;
   double maxX = 0;
   double minY = 0;
   double maxY = 0;
+
+  XYPoint A = triangle.A;
+  XYPoint B = triangle.B;
+  XYPoint C = triangle.C;
+  double a = triangle.sides.a;
+  double b = triangle.sides.b;
+  double c = triangle.sides.c;
+  double alpha = triangle.angles.alpha;
+  double beta = triangle.angles.beta;
+  double gamma = triangle.angles.gamma;
+  double area = triangle.area;
+  double circumference = triangle.circumference;
+  XYCircle IC = triangle.X1; // inner circle
+  XYPoint CG= triangle.X2; // centroid
+  XYCircle CC = triangle.X3; // circum circle
+  XYPoint O = triangle.X4; // orthocenter
+  XYPoint NP = triangle.X5; // nine point center
+  XYPoint L = triangle.X6; // lemoine
+  XYPoint G = triangle.X7; // gergonne
+  XYPoint N = triangle.X8; // nagel
+  XYPoint M = triangle.X9; // mitten
+  XYPoint S = triangle.X10; // spieker
+  XYPoint X11 = triangle.X11; //
+  XYPoint F = triangle.X12; //feuerbach
+  XYPoint X13 = triangle.X13; //
+  XYPoint X14 = triangle.X14; //
+  XYPoint X15 = triangle.X15; //
+  XYPoint X16 = triangle.X16; //
+  XYPoint N1 = triangle.X17; // napoleon I
+  XYPoint N2 = triangle.X18; // napoleon II
+  XYPoint X19 = triangle.X19; //
+  XYPoint MSA = triangle.sidesMidPoint[0]; // mid side a
+  XYPoint MSB = triangle.sidesMidPoint[1]; // mid side b
+  XYPoint MSC = triangle.sidesMidPoint[2]; // mid side c
+  XYPoint AA = triangle.altitudesBasePoint[0]; // altitude base a
+  XYPoint AB = triangle.altitudesBasePoint[1]; // altitude base b
+  XYPoint AC = triangle.altitudesBasePoint[2]; // altitude base c
+  XYCircle FC = triangle.feuerbachCircle; // feuerbach circle
+  XYCircle EA = triangle.exCircles[0]; // ex circle a
+  XYCircle EB = triangle.exCircles[1]; // ex circle b
+  XYCircle EC = triangle.exCircles[2]; // ex circle c
+  XYPoint ETA = triangle.exCirclesTouchPoints[0]; // touchpoint ex circle a
+  XYPoint ETB = triangle.exCirclesTouchPoints[1]; // touchpoint ex circle b
+  XYPoint ETC = triangle.exCirclesTouchPoints[2]; // touchpoint ex circle c
 
   if (triangle.A.x < minX) minX = triangle.A.x; if (triangle.A.x > maxX) maxX = triangle.A.x;
   if (triangle.B.x < minX) minX = triangle.B.x; if (triangle.B.x > maxX) maxX = triangle.B.x;
@@ -288,59 +295,60 @@ Future<Uint8List > triangleData2Image({
     ..pushStyle(textStyle)
     ..addText(
                 labels['COORDINATES']! + '\n' +
-                'A'.padLeft(LABELLENGTH, ' ') + DIST + '(' + triangle.A.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + triangle.A.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
-                'B'.padLeft(LABELLENGTH, ' ') + DIST + '(' + triangle.B.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + triangle.B.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
-                'C'.padLeft(LABELLENGTH, ' ') + DIST + '(' + triangle.C.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + triangle.C.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                'A'.padLeft(LABELLENGTH, ' ') + DIST + '(' + A.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + A.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                'B'.padLeft(LABELLENGTH, ' ') + DIST + '(' + B.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + B.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                'C'.padLeft(LABELLENGTH, ' ') + DIST + '(' + A.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + C.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
                 '\n' +
                 labels['SIDES']! + '\n' +
-                    'a'.padLeft(LABELLENGTH, ' ') + DIST +  triangle.sides.a.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
-                    'b'.padLeft(LABELLENGTH, ' ') + DIST +  triangle.sides.b.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
-                    'c'.padLeft(LABELLENGTH, ' ') + DIST +  triangle.sides.c.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                    'a'.padLeft(LABELLENGTH, ' ') + DIST +  a.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                    'b'.padLeft(LABELLENGTH, ' ') + DIST +  b.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                    'c'.padLeft(LABELLENGTH, ' ') + DIST +  c.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
                 '\n' +
                 labels['ANGLES']! + '\n' +
-                    'α'.padLeft(LABELLENGTH, ' ') + DIST +  triangle.angles.alpha.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
-                    'β'.padLeft(LABELLENGTH, ' ') + DIST +  triangle.angles.beta.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
-                    'γ'.padLeft(LABELLENGTH, ' ') + DIST +  triangle.angles.gamma.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                    'α'.padLeft(LABELLENGTH, ' ') + DIST +  alpha.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                    'β'.padLeft(LABELLENGTH, ' ') + DIST +  beta.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                    'γ'.padLeft(LABELLENGTH, ' ') + DIST +  gamma.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
                 '\n' +
-                labels['AREA']!.padLeft(LABELLENGTH, ' ') + DIST +   triangle.area.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
-                labels['CIRCUMFERENCE']!.padLeft(LABELLENGTH, ' ') + DIST +   triangle.circumference.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                labels['AREA']!.padLeft(LABELLENGTH, ' ') + DIST +   area.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
+                labels['CIRCUMFERENCE']!.padLeft(LABELLENGTH, ' ') + DIST +   circumference.toStringAsFixed(2).padLeft(15, ' ') + '\n' +
                 '\n' +
-                labels[4] + '\n' +
+                labels['SIDESMIDPOINTS']! + '\n' +
                     'a'.padLeft(LABELLENGTH, ' ') + DIST + '(' + MSA.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + MSA.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
                     'b'.padLeft(LABELLENGTH, ' ') + DIST + '(' + MSB.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + MSB.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
                     'c'.padLeft(LABELLENGTH, ' ') + DIST + '(' + MSC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + MSC.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
                 '\n' +
-                labels[5] + '\n' +
+                labels['ALTITUDESBASEPOINTS']! + '\n' +
                     'a'.padLeft(LABELLENGTH, ' ') + DIST + '(' + AA.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + AA.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
                     'b'.padLeft(LABELLENGTH, ' ') + DIST + '(' + AB.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + AB.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
                     'c'.padLeft(LABELLENGTH, ' ') + DIST + '(' + AC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + AC.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
                 '\n' +
-                labels[24] + '\n' +
-                    labels[20].replaceAll('\$1', 'a').padLeft(LABELLENGTH, ' ') + DIST + '(' + ETA.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + ETA.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
-                    labels[20].replaceAll('\$1', 'b').padLeft(LABELLENGTH, ' ') + DIST + '(' + ETB.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + ETB.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
-                    labels[20].replaceAll('\$1', 'c').padLeft(LABELLENGTH, ' ') + DIST + '(' + ETC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + ETC.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                labels['TOUCHPOINTS']! + '\n' +
+                    labels['EXCIRCLE']!.replaceAll('\$1', 'a').padLeft(LABELLENGTH, ' ') + DIST + '(' + ETA.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + ETA.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                    labels['EXCIRCLE']!.replaceAll('\$1', 'b').padLeft(LABELLENGTH, ' ') + DIST + '(' + ETB.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + ETB.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                    labels['EXCIRCLE']!.replaceAll('\$1', 'c').padLeft(LABELLENGTH, ' ') + DIST + '(' + ETC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + ETC.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
 
                 '\nClark Kimberling, Encyclopedia of Triangle Centers\n' +
-                (labels[16] + ' X01').padLeft(LABELLENGTH, ' ') + DIST + '(' + IC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + IC.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
-                (labels[6] + ' X02').padLeft(LABELLENGTH, ' ') + DIST + '(' + CG.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + CG.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
-                (labels[17] + ' X03').padLeft(LABELLENGTH, ' ') + DIST + '(' + CC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + CC.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
-                (labels[7] + ' X04').padLeft(LABELLENGTH, ' ') + DIST + '(' + O.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + O.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
-                (labels[21] + ' X05').padLeft(LABELLENGTH, ' ') + DIST + '(' + FC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + FC.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
-                (labels[8] + ' X06').padLeft(LABELLENGTH, ' ') + DIST + '(' + L.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + L.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
-                (labels[9] + ' X07').padLeft(LABELLENGTH, ' ') + DIST + '(' + G.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + G.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
-                (labels[10] + ' X08').padLeft(LABELLENGTH, ' ') + DIST + '(' + N.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + N.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
-                (labels[13] + ' X09').padLeft(LABELLENGTH, ' ') + DIST + '(' + M.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + M.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
-                (labels[14] + ' X10').padLeft(LABELLENGTH, ' ') + DIST + '(' + S.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + S.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
-                (labels[15] + ' X11').padLeft(LABELLENGTH, ' ') + DIST + '(' + F.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + F.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
-                (labels[11] + ' X17').padLeft(LABELLENGTH, ' ') + DIST + '(' + N1.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + N1.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
-                (labels[12] + ' X18').padLeft(LABELLENGTH, ' ') + DIST + '(' + N2.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + N2.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
-                '\n' + labels[18] + '\n' +
-                (labels[19]).padLeft(LABELLENGTH, ' ') + DIST + '(' + IC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + IC.y.toStringAsFixed(2).padLeft(7, ' ') + '), r = ' + IC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
-                (labels[21]).padLeft(LABELLENGTH, ' ') + DIST + '(' + CC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + CC.y.toStringAsFixed(2).padLeft(7, ' ') + '), r = ' + CC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
-                (labels[22]).padLeft(LABELLENGTH, ' ') + DIST + '(' + FC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + FC.y.toStringAsFixed(2).padLeft(7, ' ') + '), r = ' + FC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
-                labels[20].replaceAll('\$1', 'a').padLeft(LABELLENGTH, ' ') + DIST + '(' + EA.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + EA.y.toStringAsFixed(2).padLeft(7, ' ') + '), r = ' + EA.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
-                labels[20].replaceAll('\$1', 'b').padLeft(LABELLENGTH, ' ') + DIST + '(' + EB.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + EB.y.toStringAsFixed(2).padLeft(7, ' ') + '), r = ' + EB.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
-                labels[20].replaceAll('\$1', 'c').padLeft(LABELLENGTH, ' ') + DIST + '(' + EC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + EC.y.toStringAsFixed(2).padLeft(7, ' ') + '), r = ' + EC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                (labels['X1']! + ' X01').padLeft(LABELLENGTH, ' ') + DIST + '(' + IC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + IC.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels['X2']! + ' X02').padLeft(LABELLENGTH, ' ') + DIST + '(' + CG.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + CG.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels['X3']! + ' X03').padLeft(LABELLENGTH, ' ') + DIST + '(' + CC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + CC.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels['X4']! + ' X04').padLeft(LABELLENGTH, ' ') + DIST + '(' + O.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + O.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels['X5']! + ' X05').padLeft(LABELLENGTH, ' ') + DIST + '(' + FC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + FC.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels['X6']! + ' X06').padLeft(LABELLENGTH, ' ') + DIST + '(' + L.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + L.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels['X7']! + ' X07').padLeft(LABELLENGTH, ' ') + DIST + '(' + G.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + G.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels['X8']! + ' X08').padLeft(LABELLENGTH, ' ') + DIST + '(' + N.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + N.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels['X9']! + ' X09').padLeft(LABELLENGTH, ' ') + DIST + '(' + M.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + M.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels['X10']! + ' X10').padLeft(LABELLENGTH, ' ') + DIST + '(' + S.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + S.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels['X11']! + ' X11').padLeft(LABELLENGTH, ' ') + DIST + '(' + F.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + F.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels['X17']! + ' X17').padLeft(LABELLENGTH, ' ') + DIST + '(' + N1.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + N1.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                (labels['X18']! + ' X18').padLeft(LABELLENGTH, ' ') + DIST + '(' + N2.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + N2.y.toStringAsFixed(2).padLeft(7, ' ') + ')\n' +
+                '\n' + labels['']! + '\n' +
+                labels['INCIRCLE']!.padLeft(LABELLENGTH, ' ') + DIST + '(' + IC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + IC.y.toStringAsFixed(2).padLeft(7, ' ') + '), r = ' + IC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                labels['CIRCUMCIRCLE']!.padLeft(LABELLENGTH, ' ') + DIST + '(' + CC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + CC.y.toStringAsFixed(2).padLeft(7, ' ') + '), r = ' + CC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                labels['FEUERBACHCIRCLE']!.padLeft(LABELLENGTH, ' ') + DIST + '(' + FC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + FC.y.toStringAsFixed(2).padLeft(7, ' ') + '), r = ' + FC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                '\n' + labels['EXCIRCLE']! + '\n' +
+                ('a').padLeft(LABELLENGTH, ' ') + DIST + '(' + EA.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + EA.y.toStringAsFixed(2).padLeft(7, ' ') + '), r = ' + EA.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                ('b').padLeft(LABELLENGTH, ' ') + DIST + '(' + EB.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + EB.y.toStringAsFixed(2).padLeft(7, ' ') + '), r = ' + EB.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
+                ('c').padLeft(LABELLENGTH, ' ') + DIST + '(' + EC.x.toStringAsFixed(2).padLeft(7, ' ') + '|' + EC.y.toStringAsFixed(2).padLeft(7, ' ') + '), r = ' + EC.r.toStringAsFixed(2).padLeft(6, ' ') + '\n' +
                 ''
     );
   final paragraph = paragraphBuilder.build();

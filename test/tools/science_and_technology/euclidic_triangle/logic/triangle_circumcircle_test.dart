@@ -18,7 +18,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${toString(elem['inputA'])} ${toString(elem['inputB'])} ${toString(elem['inputC'])}', () {
-        var _actual = triangleCircumCircleXY(elem['inputA'] as XYPoint, elem['inputB'] as XYPoint, elem['inputC'] as XYPoint);
+        var _actual = triangleCircumscribedCircleXY(elem['inputA'] as XYPoint, elem['inputB'] as XYPoint, elem['inputC'] as XYPoint);
         circlesTest(_actual, elem['expectedOutput'] as XYCircle);
       });
     }

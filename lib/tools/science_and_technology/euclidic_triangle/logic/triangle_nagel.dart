@@ -1,6 +1,6 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
-XYPoint triangleNagel(XYPoint a, XYPoint b, XYPoint c){
+XYPoint triangleNagelPointXY(XYPoint a, XYPoint b, XYPoint c){
   // https://de.wikipedia.org/wiki/Nagel-Punkt
 
   Sides sides = triangleSidesXY(a, b, c);

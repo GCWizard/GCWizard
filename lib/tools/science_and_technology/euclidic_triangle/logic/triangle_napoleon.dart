@@ -21,7 +21,7 @@ XYPoint multiplyWithOmega2(XYPoint p) {
 }
 
 /// Inner Napoleonpoint
-XYPoint triangleNapoleonInnerXY(XYPoint a, XYPoint b, XYPoint c) {
+XYPoint triangleNapoleonInnerPointXY(XYPoint a, XYPoint b, XYPoint c) {
   final bOmega = multiplyWithOmega(b);
   final cOmega2 = multiplyWithOmega2(c);
 
@@ -29,7 +29,7 @@ XYPoint triangleNapoleonInnerXY(XYPoint a, XYPoint b, XYPoint c) {
 }
 
 /// Outer Napoleonpoint
-XYPoint triangleNapoleonOuterXY(XYPoint a, XYPoint b, XYPoint c) {
+XYPoint triangleNapoleonOuterPointXY(XYPoint a, XYPoint b, XYPoint c) {
   // ω and ω² are changed
   final bOmega2 = multiplyWithOmega2(b);
   final cOmega = multiplyWithOmega(c);
