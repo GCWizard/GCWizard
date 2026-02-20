@@ -62,28 +62,6 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
   late XYPoint _A;
   late XYPoint _B;
   late XYPoint _C;
-  // late Angles _angles;
-  // late Sides _sides;
-  // late Sides _medians;
-  // late Sides _altitudes;
-  // late Sides _anglebisector;
-  // late XYPoint _centroid;
-  // late XYPoint _orthocenter;
-  // late XYCircle _innercircle;
-  // late XYCircle _outercircle;
-  // late XYCircle _feuerbachcircle;
-  // late XYPoint _gergonne;
-  // late XYPoint _lemoine;
-  // late XYPoint _nagel;
-  // late XYPoint _napoleon1;
-  // late XYPoint _napoleon2;
-  // late XYPoint _spieker;
-  // late XYPoint _feuerbach;
-  // late XYPoint _mitten;
-  // late List<XYCircle> _exCircle;
-  // late List<XYPoint> _sidesMidPoint;
-  // late List<XYPoint> _altitudesBasePoint;
-  // late List<XYPoint> _exCircleTouchpoints;
 
   late Map<String, String> _currentLabels;
 
@@ -91,6 +69,7 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
 
   bool _isCalculatedDataXY = false;
   bool _isCalculatedImage = false;
+  bool _isTranslated = false;
 
   GCWSwitchPosition _currentMode = GCWSwitchPosition.left;
   int _currentSWMode = 0;
@@ -108,8 +87,6 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
     _SWController1 = TextEditingController(text: _currentSWInput1);
     _SWController2 = TextEditingController(text: _currentSWInput2);
     _SWController3 = TextEditingController(text: _currentSWInput3);
-
-    _currentLabels = _translateLabels(TRIANGLE_LABLES);
   }
 
   @override
@@ -130,6 +107,10 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
 
   @override
   Widget build(BuildContext context) {
+    if (!_isTranslated) {
+      _currentLabels = _translateLabels(TRIANGLE_LABLES);
+      _isTranslated = true;
+    }
     return Column(children: <Widget>[
       GCWTwoOptionsSwitch(
         leftValue: i18n(context, 'triangle_euclidic_mode_poi'),
@@ -594,31 +575,6 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
   void _createAdditionalData() {
     _isCalculatedDataXY = true;
 
-    // if (_currentMode == GCWSwitchPosition.left) {
-    //   _angles = triangleAnglesXY(_A, _B, _C)!;
-    //   _sides = triangleSidesXY(_A, _B, _C);
-    // }
-    // _altitudes = triangleAltitudesXY(_A, _B, _C);
-    // _medians = triangleMediansXY(_A, _B, _C);
-    // _anglebisector = triangleAngleBiSectorsXY(_A, _B, _C);
-    // _centroid = triangleCentroidXY(_A, _B, _C);
-    // _orthocenter = triangleOrthocenterXY(_A, _B, _C);
-    // _innercircle = triangleInCircleXY(_A, _B, _C);
-    // _outercircle = triangleCircumCircleXY(_A, _B, _C);
-    // _feuerbachcircle = triangleFeuerbachCircleXY(_A, _B, _C);
-    // _gergonne = triangleGergonne(_A, _B, _C);
-    // _lemoine = triangleLemoine(_A, _B, _C);
-    // _nagel = triangleNagel(_A, _B, _C);
-    // _napoleon1 = triangleNapoleonOuterXY(_A, _B, _C);
-    // _napoleon2 = triangleNapoleonInnerXY(_A, _B, _C);
-    // _spieker = triangleSpieker(_A, _B, _C);
-    // _feuerbach = triangleFeuerbach(_A, _B, _C);
-    // _mitten = triangleMitten(_A, _B, _C);
-    // _exCircle = triangleExCirclesXY(_A, _B, _C);
-    // _sidesMidPoint = triangleSidesMidPointsXY(_A, _B, _C);
-    // _altitudesBasePoint = triangleAltitudesBasePointsXY(_A, _B, _C);
-    // _exCircleTouchpoints = triangleTouchPointsExcircleXY(_A, _B, _C);
-
     _outputBasicData = [
       [
         i18n(context, 'triangle_output_sides'),
@@ -723,19 +679,19 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
         null
       ],
       [
-        i18n(context, 'triangle_output_excircle').replaceAll('\$1', 'a'),
+        i18n(context, 'triangle_output_excircle') + ' a',
         _currentTriangle.exCirclesTouchPoints[0].x.toStringAsFixed(3),
         _currentTriangle.exCirclesTouchPoints[0].y.toStringAsFixed(3),
         null
       ],
       [
-        i18n(context, 'triangle_output_excircle').replaceAll('\$1', 'b'),
+        i18n(context, 'triangle_output_excircle') + ' b',
         _currentTriangle.exCirclesTouchPoints[1].x.toStringAsFixed(3),
         _currentTriangle.exCirclesTouchPoints[1].y.toStringAsFixed(3),
         null
       ],
       [
-        i18n(context, 'triangle_output_excircle').replaceAll('\$1', 'c'),
+        i18n(context, 'triangle_output_excircle') + ' c',
         _currentTriangle.exCirclesTouchPoints[2].x.toStringAsFixed(3),
         _currentTriangle.exCirclesTouchPoints[2].y.toStringAsFixed(3),
         null
@@ -749,115 +705,115 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
         null
       ],
       [
-        i18n(context, 'triangle_output_incenter'),
+        'X1  ' + i18n(context, 'triangle_output_incenter'),
         _currentTriangle.X1.x.toStringAsFixed(3),
         _currentTriangle.X1.y.toStringAsFixed(3),
         null
       ],
       [
-        i18n(context, 'triangle_output_centroid'),
+        'X2  ' + i18n(context, 'triangle_output_centroid'),
         _currentTriangle.X2.x.toStringAsFixed(3),
         _currentTriangle.X2.y.toStringAsFixed(3),
         null
       ],
       [
-        i18n(context, 'triangle_output_circumcenter'),
+        'X3  ' + i18n(context, 'triangle_output_circumcenter'),
         _currentTriangle.X3.x.toStringAsFixed(3),
         _currentTriangle.X3.y.toStringAsFixed(3),
         null
       ],
       [
-        i18n(context, 'triangle_output_altitude'),
+        'X4  ' + i18n(context, 'triangle_output_altitude'),
         _currentTriangle.X4.x.toStringAsFixed(3),
         _currentTriangle.X4.y.toStringAsFixed(3),
         null
       ],
       [
-        i18n(context, 'triangle_output_lemoine'),
+        'X5  ' + i18n(context, 'triangle_output_ninepointcenter'),
         _currentTriangle.X5.x.toStringAsFixed(3),
         _currentTriangle.X5.y.toStringAsFixed(3),
         null
       ],
       [
-        i18n(context, 'triangle_output_lemoine'),
+        'X6  ' + i18n(context, 'triangle_output_lemoine'),
         _currentTriangle.X6.x.toStringAsFixed(3),
         _currentTriangle.X6.y.toStringAsFixed(3),
         null
       ],
       [
-        i18n(context, 'triangle_output_gergonne'),
+        'X7  ' + i18n(context, 'triangle_output_gergonne'),
         _currentTriangle.X7.x.toStringAsFixed(3),
         _currentTriangle.X7.y.toStringAsFixed(3),
         null
       ],
       [
-        i18n(context, 'triangle_output_nagel'),
+        'X8  ' + i18n(context, 'triangle_output_nagel'),
         _currentTriangle.X8.x.toStringAsFixed(3),
         _currentTriangle.X8.y.toStringAsFixed(3),
         null
       ],
       [
-        i18n(context, 'triangle_output_mitten'),
+        'X9  ' + i18n(context, 'triangle_output_mitten'),
         _currentTriangle.X9.x.toStringAsFixed(3),
         _currentTriangle.X9.y.toStringAsFixed(3),
         null
       ],
       [
-        i18n(context, 'triangle_output_spieker'),
+        'X10 ' + i18n(context, 'triangle_output_spieker'),
         _currentTriangle.X10.x.toStringAsFixed(3),
         _currentTriangle.X10.y.toStringAsFixed(3),
         null
       ],
       [
-        i18n(context, 'triangle_output_lemoine'),
+        'X11 ' + i18n(context, 'triangle_output_feuerbach'),
         _currentTriangle.X11.x.toStringAsFixed(3),
         _currentTriangle.X11.y.toStringAsFixed(3),
         null
       ],
       [
-        i18n(context, 'triangle_output_harmonic_conjugate_x11'),
+        'X12 ' + i18n(context, 'triangle_output_harmonic_conjugate_x11'),
         _currentTriangle.X12.x.toStringAsFixed(3),
         _currentTriangle.X12.y.toStringAsFixed(3),
         null
       ],
       [
-        i18n(context, 'triangle_output_fermat_torricelli'),
+        'X13 ' + i18n(context, 'triangle_output_fermat_torricelli'),
         _currentTriangle.X13.x.toStringAsFixed(3),
         _currentTriangle.X13.y.toStringAsFixed(3),
         null
       ],
       [
-        i18n(context, 'triangle_output_2ndisogonic'),
+        'X14 ' + i18n(context, 'triangle_output_2ndisogonic'),
         _currentTriangle.X14.x.toStringAsFixed(3),
         _currentTriangle.X14.y.toStringAsFixed(3),
         null
       ],
       [
-        i18n(context, 'triangle_output_1stdisodynamic'),
+        'X15 ' + i18n(context, 'triangle_output_1stisodynamic'),
         _currentTriangle.X15.x.toStringAsFixed(3),
         _currentTriangle.X15.y.toStringAsFixed(3),
         null
       ],
       [
-        i18n(context, 'triangle_output_2ndisodynamic'),
+        'X16 ' + i18n(context, 'triangle_output_2ndisodynamic'),
         _currentTriangle.X16.x.toStringAsFixed(3),
         _currentTriangle.X16.y.toStringAsFixed(3),
         null
       ],
       [
-        i18n(context, 'triangle_output_napoleon_outer'),
+        'X17 ' + i18n(context, 'triangle_output_napoleon_outer'),
         _currentTriangle.X17.x.toStringAsFixed(3),
         _currentTriangle.X17.y.toStringAsFixed(3),
         null
       ],
       [
-        i18n(context, 'triangle_output_napoleon_inner'),
+        'X18 ' + i18n(context, 'triangle_output_napoleon_inner'),
         _currentTriangle.X18.x.toStringAsFixed(3),
         _currentTriangle.X18.y.toStringAsFixed(3),
         null
       ],
       [
-        i18n(context, 'triangle_output_clawson'),
+        'X19 ' + i18n(context, 'triangle_output_clawson'),
         _currentTriangle.X19.x.toStringAsFixed(3),
         _currentTriangle.X19.y.toStringAsFixed(3),
         null
@@ -889,19 +845,19 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
         _currentTriangle.feuerbachCircle.r.toStringAsFixed(3),
       ],
       [
-        i18n(context, 'triangle_output_excircle').replaceAll('\$1', 'a'),
+        i18n(context, 'triangle_output_excircle') + ' a',
         _currentTriangle.exCircles[0].x.toStringAsFixed(3),
         _currentTriangle.exCircles[0].y.toStringAsFixed(3),
         _currentTriangle.exCircles[0].r.toStringAsFixed(3),
       ],
       [
-        i18n(context, 'triangle_output_excircle').replaceAll('\$1', 'b'),
+        i18n(context, 'triangle_output_excircle') +' b',
         _currentTriangle.exCircles[1].x.toStringAsFixed(3),
         _currentTriangle.exCircles[1].y.toStringAsFixed(3),
         _currentTriangle.exCircles[1].r.toStringAsFixed(3),
       ],
       [
-        i18n(context, 'triangle_output_excircle').replaceAll('\$1', 'c'),
+        i18n(context, 'triangle_output_excircle')+ ' c',
         _currentTriangle.exCircles[2].x.toStringAsFixed(3),
         _currentTriangle.exCircles[2].y.toStringAsFixed(3),
         _currentTriangle.exCircles[2].r.toStringAsFixed(3),
