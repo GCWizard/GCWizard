@@ -136,7 +136,7 @@ Future<Uint8List> triangleData2Image({
   const LINE = 1.0;
 
   const FONTSIZE = 10.0;
-  const WIDTHLEGEND = 390.0;
+  const WIDTHLEGEND = 600.0;
 
   const LABELLENGTH = 30;
   const DIST = '     ';
@@ -366,9 +366,9 @@ Future<Uint8List> triangleData2Image({
   var paragraphBuilderLegend = ui.ParagraphBuilder(paragraphStyle);
   paragraphBuilderLegend.pushStyle(textStyle);
   paragraphBuilderLegend.addText(
-      labels['LEGEND']! + (' ').padRight(26, '-') + '\n' +
+      labels['LEGEND']! + (' ').padRight(38, '-') + '\n' +
           '\n' +
-      labels['COORDINATES']! + (' ').padRight(26, '-') +
+      labels['COORDINATES']! + (' ').padRight(38, '-') +
           '\n' +
           'A'.padLeft(LABELLENGTH, ' ') +
           DIST +
@@ -376,62 +376,62 @@ Future<Uint8List> triangleData2Image({
           A.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           A.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           'B'.padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           B.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           B.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           'C'.padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           C.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           C.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           '\n' +
-          labels['SIDES']! + (' ').padRight(26, '-') +
+          labels['SIDES']! + (' ').padRight(38, '-') +
           '\n' +
           'a'.padLeft(LABELLENGTH, ' ') +
           DIST +
           a.toStringAsFixed(2).padLeft(21, ' ') +
-          '\n' +
+          '           |\n' +
           'b'.padLeft(LABELLENGTH, ' ') +
           DIST +
           b.toStringAsFixed(2).padLeft(21, ' ') +
-          '\n' +
+          '           |\n' +
           'c'.padLeft(LABELLENGTH, ' ') +
           DIST +
           c.toStringAsFixed(2).padLeft(21, ' ') +
+          '           |\n' +
           '\n' +
-          '\n' +
-          labels['ANGLES']! + (' ').padRight(26, '-') +
+          labels['ANGLES']! + (' ').padRight(38, '-') +
           '\n' +
           'α'.padLeft(LABELLENGTH, ' ') +
           DIST +
           alpha.toStringAsFixed(2).padLeft(21, ' ') +
-          '\n' +
+          '           |\n' +
           'β'.padLeft(LABELLENGTH, ' ') +
           DIST +
           beta.toStringAsFixed(2).padLeft(21, ' ') +
-          '\n' +
+          '           |\n' +
           'γ'.padLeft(LABELLENGTH, ' ') +
           DIST +
           gamma.toStringAsFixed(2).padLeft(21, ' ') +
-          '\n' +
+          '           |\n' +
           '\n' +
           labels['AREA']!.padLeft(LABELLENGTH, ' ') +
           DIST +
           area.toStringAsFixed(2).padLeft(21, ' ') +
-          '\n' +
+          '           |\n' +
           labels['CIRCUMFERENCE']!.padLeft(LABELLENGTH, ' ') +
           DIST +
           circumference.toStringAsFixed(2).padLeft(21, ' ') +
+          '           |\n' +
           '\n' +
-          '\n' +
-          labels['SIDESMIDPOINTS']! + (' ').padRight(26, '-') +
+          labels['SIDESMIDPOINTS']! + (' ').padRight(38, '-') +
           '\n' +
           'a'.padLeft(LABELLENGTH, ' ') +
           DIST +
@@ -439,23 +439,23 @@ Future<Uint8List> triangleData2Image({
           MSA.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           MSA.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           'b'.padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           MSB.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           MSB.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           'c'.padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           MSC.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           MSC.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           '\n' +
-          labels['ALTITUDESBASEPOINTS']! + (' ').padRight(26, '-') +
+          labels['ALTITUDESBASEPOINTS']! + (' ').padRight(38, '-') +
           '\n' +
           'a'.padLeft(LABELLENGTH, ' ') +
           DIST +
@@ -463,23 +463,23 @@ Future<Uint8List> triangleData2Image({
           AA.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           AA.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           'b'.padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           AB.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           AB.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           'c'.padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           AC.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           AC.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           '\n' +
-          labels['TOUCHPOINTS']! + (' ').padRight(26, '-') +
+          labels['TOUCHPOINTS']! + (' ').padRight(38, '-') +
           '\n' +
           (labels['EXCIRCLE']! + ' a').padLeft(LABELLENGTH, ' ') +
           DIST +
@@ -487,157 +487,158 @@ Future<Uint8List> triangleData2Image({
           ETA.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           ETA.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           (labels['EXCIRCLE']! + ' b').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           ETB.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           ETB.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           (labels['EXCIRCLE']! + ' c').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           ETC.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           ETC.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
-          '\nClark Kimberling, Encyclopedia of Triangle Centers\n' +
+          ')           |\n' +
+          '\nClark Kimberling, Encyclopedia of Triangle Centers' + (' ').padRight(38, '-') +
+          '\n' +
           (labels['X1']! + ' X01').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           IC.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           IC.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           (labels['X2']! + ' X02').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           CG.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           CG.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           (labels['X3']! + ' X03').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           CC.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           CC.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           (labels['X4']! + ' X04').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           O.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           O.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           (labels['X5']! + ' X05').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           FC.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           FC.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           (labels['X6']! + ' X06').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           L.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           L.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           (labels['X7']! + ' X07').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           G.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           G.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           (labels['X8']! + ' X08').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           N.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           N.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           (labels['X9']! + ' X09').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           M.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           M.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           (labels['X10']! + ' X10').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           S.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           S.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           (labels['X11']! + ' X11').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           X11.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           X11.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           (labels['X12']! + ' X12').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           F.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           F.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           (labels['X13']! + ' X13').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           X13.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           X13.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           (labels['X14']! + ' X14').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           X14.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           X14.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           (labels['X15']! + ' X15').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           X15.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           X15.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           (labels['X16']! + ' X16').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           X16.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           X16.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           (labels['X17']! + ' X17').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           N1.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           N1.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           (labels['X18']! + ' X18').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           N2.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           N2.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           (labels['X19']! + ' X19').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           X19.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           X19.y.toStringAsFixed(2).padLeft(9, ' ') +
-          ')\n' +
+          ')           |\n' +
           '\n' +
-          labels['CIRCLES']! + (' ').padRight(26, '-') +
+          labels['CIRCLES']! + (' ').padRight(38, '-') +
           '\n' +
           labels['INCIRCLE']!.padLeft(LABELLENGTH, ' ') +
           DIST +

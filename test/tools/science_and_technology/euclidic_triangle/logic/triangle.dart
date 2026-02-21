@@ -13,7 +13,7 @@ String toString(dynamic o) {
   } else if (o is Angles) {
     return '(${o.alpha}, ${o.beta}, ${o.gamma})';
   } else if (o is TriLinearPoint) {
-    return '(${o.x}, ${o.y}, ${o.z})';
+    return '(${o.a}, ${o.b}, ${o.c})';
   } else if (o is XYLine) {
     return '(P1 (${o.P1.x}, ${o.P1.y}), P2 (${o.P2.x}, ${o.P2.y}))';
   } else if (o is XYCircle) {
