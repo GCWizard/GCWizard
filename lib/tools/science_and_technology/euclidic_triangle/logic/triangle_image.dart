@@ -52,7 +52,7 @@ double _niceNumber(double range, {bool round = false}) {
 void _drawLabel(Canvas canvas, Offset pos, String text) {
   final builder = ParagraphBuilder(
     ParagraphStyle(
-      fontSize: 12,
+      fontSize: 10,
       textAlign: TextAlign.center,
     ),
   )..addText(text);
@@ -60,7 +60,7 @@ void _drawLabel(Canvas canvas, Offset pos, String text) {
   final paragraph = builder.build()
     ..layout(const ParagraphConstraints(width: 40));
 
-  canvas.drawParagraph(paragraph, Offset(pos.dx - 20, pos.dy + 2));
+  canvas.drawParagraph(paragraph, Offset(pos.dx - 20, pos.dy + 5));
 }
 
 void _drawAxesWithAutoTicks(
@@ -129,14 +129,14 @@ Future<Uint8List> triangleData2Image({
 }) async {
   const BOUNDS = 20.0;
 
-  const MAXWIDTH = 5940.0;
-  const MAXHEIGHT = 4200.0;
+  const MAXWIDTH = 5350.0;
+  const MAXHEIGHT = 6000.0;
 
   const POINT = 2.0;
   const LINE = 1.0;
 
-  const FONTSIZE = 10.0;
-  const WIDTHLEGEND = 600.0;
+  const FONTSIZE = 12.0;
+  const WIDTHLEGEND = 650.0;
 
   const LABELLENGTH = 30;
   const DIST = '     ';
@@ -198,9 +198,7 @@ Future<Uint8List> triangleData2Image({
     triangle.A,
     triangle.B,
     triangle.C,
-    XYPoint(x: triangle.X1.x, y: triangle.X1.y),
     triangle.X2,
-    XYPoint(x: triangle.X3.x, y: triangle.X3.y),
     triangle.X4,
     triangle.X5,
     triangle.X6,
@@ -217,13 +215,25 @@ Future<Uint8List> triangleData2Image({
     triangle.X17,
     triangle.X18,
     triangle.X19,
-    XYPoint(x: triangle.feuerbachCircle.x, y: triangle.feuerbachCircle.y),
-  ];
+    ];
   points.addAll(triangle.sidesMidPoint);
   points.addAll(triangle.altitudesBasePoint);
   points.addAll(triangle.exCirclesTouchPoints);
-  for (XYCircle circle in triangle.exCircles) {
-    points.add(XYPoint(x: circle.x, y: circle.y));
+
+  List<XYCircle> circles = [
+    triangle.X1,
+    triangle.X3,
+    triangle.feuerbachCircle,
+    triangle.exCircles[0],
+    triangle.exCircles[1],
+    triangle.exCircles[2],
+  ];
+
+  for (XYCircle circle in circles) {
+    if (circle.x - circle.r < minX) minX = (circle.x - circle.r);
+    if (circle.x + circle.r > maxX) maxX = (circle.x + circle.r);
+    if (circle.y - circle.r < minY) minY = (circle.y - circle.r);
+    if (circle.y + circle.r > maxY) maxY = (circle.y + circle.r);
   }
 
   for (XYPoint point in points) {
@@ -291,6 +301,15 @@ Future<Uint8List> triangleData2Image({
   canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint);
 
   // draw points
+  // draw Triangle points
+  paint.color = Colors.blueAccent;
+  p1 = _transformPoint(A, vp);  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'A');
+  p1 = _transformPoint(B, vp);  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'B');
+  p1 = _transformPoint(C, vp);  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'C');
+
   // draw Touchpoints exCircles
   paint.color = Colors.green.shade700;
   p1 = _transformPoint(ETA, vp);  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
@@ -299,8 +318,11 @@ Future<Uint8List> triangleData2Image({
 
   // draw exCircles center points
   p1 = _transformPoint(XYPoint(x: EA.x, y: EA.y), vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'xA');
   p1 = _transformPoint(XYPoint(x: EB.x, y: EB.y), vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'xB');
   p1 = _transformPoint(XYPoint(x: EC.x, y: EC.y), vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'xC');
 
   // draw Mid side base Points
   paint.color = Colors.orange;
@@ -320,24 +342,61 @@ Future<Uint8List> triangleData2Image({
   // draw Clark Kimberling points
   paint.color = Colors.red;
   p1 = _transformPoint(XYPoint(x: IC.x, y: IC.y), vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'X1');
+
   p1 = _transformPoint(CG, vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'X2');
+
   p1 = _transformPoint(XYPoint(x: CC.x, y: CC.y), vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'X3');
+
   p1 = _transformPoint(O, vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'X4');
+
   p1 = _transformPoint(NP, vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'X5');
+
   p1 = _transformPoint(L, vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'X6');
+
   p1 = _transformPoint(G, vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'X7');
+
   p1 = _transformPoint(M, vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'X8');
+
   p1 = _transformPoint(N, vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'X9');
+
   p1 = _transformPoint(S, vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'X10');
+
   p1 = _transformPoint(X11, vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'X11');
+
   p1 = _transformPoint(F, vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'X12');
+
   p1 = _transformPoint(X13, vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'X13');
+
   p1 = _transformPoint(X14, vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'X14');
+
   p1 = _transformPoint(X15, vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'X15');
+
   p1 = _transformPoint(X16, vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'X16');
+
   p1 = _transformPoint(N1, vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'X17');
+
   p1 = _transformPoint(N2, vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'X18');
+
   p1 = _transformPoint(X19, vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'X19');
 
   // draw Circles
   paint.color = Colors.green.shade900;
@@ -352,6 +411,10 @@ Future<Uint8List> triangleData2Image({
   p1 = _transformPoint(XYPoint(x: FC.x, y: FC.y), vp); canvas.drawCircle(Offset(p1.x, p1.y), _transformRadius(FC, vp), paint);
 
   // draw legend
+  paint.color = Colors.white;
+  paint.style = PaintingStyle.fill;
+  canvas.drawRect(Rect.fromLTWH(0, 0, WIDTHLEGEND, 62 * FONTSIZE * 1.2), paint);
+
   paint.color = Colors.black;
   final textStyle = ui.TextStyle(
     color: paint.color,
@@ -640,7 +703,7 @@ Future<Uint8List> triangleData2Image({
           '\n' +
           labels['CIRCLES']! + (' ').padRight(38, '-') +
           '\n' +
-          labels['INCIRCLE']!.padLeft(LABELLENGTH, ' ') +
+          (labels['INCIRCLE']! + ' X1').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           IC.x.toStringAsFixed(2).padLeft(9, ' ') +
@@ -649,7 +712,7 @@ Future<Uint8List> triangleData2Image({
           '), r = ' +
           IC.r.toStringAsFixed(2).padLeft(6, ' ') +
           '\n' +
-          labels['CIRCUMCIRCLE']!.padLeft(LABELLENGTH, ' ') +
+          (labels['CIRCUMCIRCLE']! + ' X3').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           CC.x.toStringAsFixed(2).padLeft(9, ' ') +
@@ -658,7 +721,7 @@ Future<Uint8List> triangleData2Image({
           '), r = ' +
           CC.r.toStringAsFixed(2).padLeft(6, ' ') +
           '\n' +
-          labels['FEUERBACHCIRCLE']!.padLeft(LABELLENGTH, ' ') +
+          (labels['FEUERBACHCIRCLE']! + ' X5').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           FC.x.toStringAsFixed(2).padLeft(9, ' ') +
@@ -667,7 +730,7 @@ Future<Uint8List> triangleData2Image({
           '), r = ' +
           FC.r.toStringAsFixed(2).padLeft(6, ' ') +
           '\n' +
-          (labels['EXCIRCLE']! + ' a').padLeft(LABELLENGTH, ' ') +
+          (labels['EXCIRCLE']! + ' xA').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           EA.x.toStringAsFixed(2).padLeft(9, ' ') +
@@ -676,7 +739,7 @@ Future<Uint8List> triangleData2Image({
           '), r = ' +
           EA.r.toStringAsFixed(2).padLeft(6, ' ') +
           '\n' +
-          (labels['EXCIRCLE']! + ' b').padLeft(LABELLENGTH, ' ') +
+          (labels['EXCIRCLE']! + ' xB').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           EB.x.toStringAsFixed(2).padLeft(9, ' ') +
@@ -685,7 +748,7 @@ Future<Uint8List> triangleData2Image({
           '), r = ' +
           EB.r.toStringAsFixed(2).padLeft(6, ' ') +
           '\n' +
-          (labels['EXCIRCLE']! + ' c').padLeft(LABELLENGTH, ' ') +
+          (labels['EXCIRCLE']! + ' xC').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           EC.x.toStringAsFixed(2).padLeft(9, ' ') +

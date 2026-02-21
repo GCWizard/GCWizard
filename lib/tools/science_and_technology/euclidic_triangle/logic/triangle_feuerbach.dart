@@ -1,16 +1,21 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
 XYPoint triangleFeuerbachPointXY(XYPoint a, XYPoint b, XYPoint c){
-  // https://de.wikipedia.org/wiki/Feuerbachkreis
+  // https://en.wikipedia.org/wiki/Feuerbach_point
+  final sa = _sideLength(b, c);
+  final sb = _sideLength(c, a);
+  final sc = _sideLength(a, b);
 
-  XYCircle incircle = triangleInCircleXY(a, b, c);
-  XYCircle feuerbachcircle = triangleFeuerbachCircleXY(a, b, c);
+  final s = (sa + sb + sc) / 2;
 
-  List<XYPoint> feuerbachpoints = intersectTwoCircles(incircle, feuerbachcircle);
+  final u = (s - sa) * pow(sb - sc, 2);
+  final v = (s - sb) * pow(sc - sa, 2);
+  final w = (s - sc) * pow(sa - sb, 2);
 
-  if (feuerbachpoints.isNotEmpty) {
-    return feuerbachpoints[0];
-  } else {
-    return XYPoint(x: 0, y: 0);
-  }
+  return XYPoint.fromBarycentric(
+    Triangle(a, b, c),
+    u,
+    v,
+    w
+  );
 }

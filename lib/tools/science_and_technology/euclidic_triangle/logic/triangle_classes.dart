@@ -30,10 +30,11 @@ class PolarPoint{
     );
   }
 
-  void fromXYPoint() {
+  static PolarPoint fromXYPoint(XYPoint p) {
     // https://mathepedia.de/Kugelkoordinaten.html
-    r: 0;
-    phi: 0;
+    return PolarPoint(
+      r: sqrt(p.x * p.x + p.y * p.y),
+      phi: atan2(p.y, p.x));
   }
 }
 
@@ -88,7 +89,7 @@ class XYPoint{
 
   static XYPoint fromBarycentric(Triangle t, double a, double b, double c) {
     final s = a + b + c;
-    double x = (a * t.A.x + b * t.A.x + c * t.C.x) / s;
+    double x = (a * t.A.x + b * t.B.x + c * t.C.x) / s;
     double y = (a * t.A.y + b * t.B.y + c * t.C.y) / s;
     return XYPoint(x: x, y: y);
   }

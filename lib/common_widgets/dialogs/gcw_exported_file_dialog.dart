@@ -26,6 +26,11 @@ void showExportedFileDialog(BuildContext context, {Widget? contentWidget}) {
 Widget imageContent(BuildContext context, Uint8List data) {
   return Container(
       margin: const EdgeInsets.only(top: 25),
-      decoration: BoxDecoration(border: Border.all(color: themeColors().dialogText())),
-      child: Image.memory(data));
+      decoration:
+          BoxDecoration(border: Border.all(color: themeColors().dialogText())),
+      child: Image(
+          image: ResizeImage(
+        MemoryImage(data),
+        width: MediaQuery.widthOf(context) ~/ 2, // Half of the screen's width.
+      )));
 }

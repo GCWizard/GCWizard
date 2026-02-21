@@ -2,6 +2,22 @@ part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/
 
 XYPoint triangleFermatTorricelliPointXY(XYPoint a, XYPoint b, XYPoint c) {
   Triangle t = Triangle(a, b, c);
-  return XYPoint.fromBarycentric(t, t.sides.a * t.sides.a,
-      t.sides.b * t.sides.b, t.sides.c * t.sides.c);
+  Angles angles = triangleAnglesXY(a, b, c);
+
+  double csc(double x) => 1.0 / sin(x);
+
+  final sa = _sideLength(b, c);
+  final sb = _sideLength(c, a);
+  final sc = _sideLength(a, b);
+
+  final u = sa * csc(degToRadian(angles.alpha) + pi / 3); // +60°
+  final v = sb * csc(degToRadian(angles.beta) + pi / 3);
+  final w = sc * csc(degToRadian(angles.gamma) + pi / 3);
+
+  return XYPoint.fromBarycentric(
+      t,
+      u,
+      v,
+      w,
+  );
 }

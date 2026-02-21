@@ -144,8 +144,8 @@ class Triangle{
     XYPoint get X8 => triangleNagelPointXY(A, B, C);
     XYPoint get X9 => triangleMittenPointXY(A, B, C);
     XYPoint get X10 => triangleSpiekerPointXY(A, B, C);
-    XYPoint get X11 => triangleConjugateX11PointXY(A, B, C);
-    XYPoint get X12 => triangleFeuerbachPointXY(A, B, C);
+    XYPoint get X11 => triangleFeuerbachPointXY(A, B, C);
+    XYPoint get X12 => triangleConjugateX11PointXY(A, B, C);
     XYPoint get X13 => triangleFermatTorricelliPointXY(A, B, C);
     XYPoint get X14 => triangleIsogonicPointXY(A, B, C);
     XYPoint get X15 => triangleIsoDynamic1PointXY(A, B, C);
