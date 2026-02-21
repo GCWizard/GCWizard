@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'dart:ui';
 
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:latlong2/latlong.dart';
@@ -10,7 +11,6 @@ import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 
 part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/common_linear_algebra.dart';
-part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/common_trilinear_xy.dart';
 part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_classes.dart';
 part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_vector.dart';
 part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_image.dart';
@@ -47,13 +47,13 @@ part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/tri
 part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_conjugatex11.dart';
 
 Map<int, String> SIDE_ANGLE_TYPES = {
-  0: "triangle_euclidic_sss",
-  1: "triangle_euclidic_ssw",
-  2: "triangle_euclidic_sws",
-  3: "triangle_euclidic_sws",
-  4: "triangle_euclidic_wws",
-  5: "triangle_euclidic_wsw",
-  6: "triangle_euclidic_sww",
+  0: 'triangle_euclidic_sss',
+  1: 'triangle_euclidic_ssw',
+  2: 'triangle_euclidic_sws',
+  3: 'triangle_euclidic_sws',
+  4: 'triangle_euclidic_wws',
+  5: 'triangle_euclidic_wsw',
+  6: 'triangle_euclidic_sww',
 };
 
 Map<int, List<String>> TRIANGLES_SW_TEXT = {
@@ -67,38 +67,39 @@ Map<int, List<String>> TRIANGLES_SW_TEXT = {
 };
 
 Map<String, String> TRIANGLE_LABLES = {
-  "COORDINATES": "gcwizard_script_help_coordinates",
-  "SIDES": "triangle_output_sides",
-  "ANGLES": "triangle_output_angles",
-  "AREA": "triangle_output_area",
-  "CIRCUMFERENCE": "triangle_output_circumference",
-  "SIDESMIDPOINTS": "triangle_output_sidesmidpoint",
-  "ALTITUDESBASEPOINTS": "triangle_output_altitudesbasepoint",
-  "TOUCHPOINTS": "triangle_output_touchpoint",
-  "EXCIRCLE": "triangle_output_excircle",
-  "X1": "triangle_output_incenter",
-  "X2": "triangle_output_centroid",
-  "X3": "triangle_output_circumcenter",
-  "X4": "triangle_output_altitude",
-  "X5": "triangle_output_ninepointcenter",
-  "X6": "triangle_output_lemoine",
-  "X7": "triangle_output_gergonne",
-  "X8": "triangle_output_nagel",
-  "X9": "triangle_output_mitten",
-  "X10": "triangle_output_spieker",
-  "X11": "triangle_output_feuerbach",
-  "X12": "triangle_output_harmonic_conjugate_x11",
-  "X13": "triangle_output_fermat_torricelli",
-  "X14": "triangle_output_2ndisogonic",
-  "X15": "triangle_output_1stisodynamic",
-  "X16": "triangle_output_2ndisodynamic",
-  "X17": "triangle_output_napoleon_outer",
-  "X18": "triangle_output_napoleon_inner",
-  "X19": "triangle_output_clawson",
-  "INCIRCLE": "triangle_output_incircle",
-  "CIRCUMCIRCLE": "triangle_output_circumscribedcircle",
-  "FEUERBACHCIRCLE": "triangle_output_feuerbachcircle",
-  "CIRCLES": "triangle_output_circles",
+  'LEGEND': 'triangle_output_legend',
+  'COORDINATES': 'gcwizard_script_help_coordinates',
+  'SIDES': 'triangle_output_sides',
+  'ANGLES': 'triangle_output_angles',
+  'AREA': 'triangle_output_area',
+  'CIRCUMFERENCE': 'triangle_output_circumference',
+  'SIDESMIDPOINTS': 'triangle_output_sidesmidpoint',
+  'ALTITUDESBASEPOINTS': 'triangle_output_altitudesbasepoint',
+  'TOUCHPOINTS': 'triangle_output_touchpoint',
+  'EXCIRCLE': 'triangle_output_excircle',
+  'X1': 'triangle_output_incenter',
+  'X2': 'triangle_output_centroid',
+  'X3': 'triangle_output_circumcenter',
+  'X4': 'triangle_output_altitude',
+  'X5': 'triangle_output_ninepointcenter',
+  'X6': 'triangle_output_lemoine',
+  'X7': 'triangle_output_gergonne',
+  'X8': 'triangle_output_nagel',
+  'X9': 'triangle_output_mitten',
+  'X10': 'triangle_output_spieker',
+  'X11': 'triangle_output_feuerbach',
+  'X12': 'triangle_output_harmonic_conjugate_x11',
+  'X13': 'triangle_output_fermat_torricelli',
+  'X14': 'triangle_output_2ndisogonic',
+  'X15': 'triangle_output_1stisodynamic',
+  'X16': 'triangle_output_2ndisodynamic',
+  'X17': 'triangle_output_napoleon_outer',
+  'X18': 'triangle_output_napoleon_inner',
+  'X19': 'triangle_output_clawson',
+  'INCIRCLE': 'triangle_output_incircle',
+  'CIRCUMCIRCLE': 'triangle_output_circumscribedcircle',
+  'FEUERBACHCIRCLE': 'triangle_output_feuerbachcircle',
+  'CIRCLES': 'triangle_output_circles',
 };
 
 class Triangle{

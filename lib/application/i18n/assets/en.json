@@ -6697,6 +6697,7 @@
   "triangle_output_x": "X",
   "triangle_output_y": "Y",
   "triangle_output_r": "r",
+  "triangle_output_legend": "Legend",
   "triangle_output_sides": "Sides",
   "triangle_output_sidesmidpoint": "Sides Midpoint",
   "triangle_output_medians": "Medians",
