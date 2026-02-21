@@ -206,6 +206,7 @@ void _initDefaultSettings(PreferencesInitMode mode, {String reinitSinglePreferen
       'Rot13_rotation_rot13',
       'SymbolTableSelection_symboltables_selection',
       'WaypointProjection_coords_waypointprojection',
+      'coords_formatconverter'
     ]);
   }
 

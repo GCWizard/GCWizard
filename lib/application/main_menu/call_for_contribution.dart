@@ -98,7 +98,7 @@ class _CallForContributionState extends State<CallForContribution> {
             launchUrl(Uri.parse(i18n(context, 'common_support_link')));
           },
         ),
-        const GCWDivider(),
+        const GCWDivider(suppressTopSpace: true, suppressBottomSpace: true),
         content
       ],
     ));

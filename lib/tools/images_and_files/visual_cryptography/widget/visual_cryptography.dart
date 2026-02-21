@@ -215,7 +215,7 @@ class _VisualCryptographyState extends State<VisualCryptography> {
                     });
                   },
                 ),
-                const GCWDivider()
+                const GCWDivider(suppressTopSpace: true, suppressBottomSpace: true)
               ],
             )
           : Container(),

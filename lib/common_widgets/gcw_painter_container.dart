@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
-import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
+import 'package:gc_wizard/common_widgets/dividers/gcw_divider.dart';
 
 class GCWPainterContainer extends StatefulWidget {
   final void Function(double)? onChanged;
@@ -36,8 +36,7 @@ class _GCWPainterContainerState extends State<GCWPainterContainer> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      GCWTextDivider(
-          text: '',
+      GCWDivider(
           suppressTopSpace: widget.suppressTopSpace,
           suppressBottomSpace: widget.suppressBottomSpace,
           trailing: Row(children: <Widget>[

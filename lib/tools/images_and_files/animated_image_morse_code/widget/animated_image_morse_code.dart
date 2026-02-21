@@ -7,6 +7,7 @@ import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart'
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
+import 'package:gc_wizard/common_widgets/dividers/gcw_divider.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
@@ -224,8 +225,7 @@ class _AnimatedImageMorseCodeState extends State<AnimatedImageMorseCode> {
           });
         },
       ),
-      GCWTextDivider(
-        text: '',
+      GCWDivider(
         trailing: Row(children: <Widget>[
           GCWIconButton(
             icon: Icons.delete,

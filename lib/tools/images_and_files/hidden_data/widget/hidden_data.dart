@@ -131,7 +131,7 @@ class _HiddenDataState extends State<HiddenData> {
             },
           ),
         Container(height: 15),
-        const GCWDivider(),
+        const GCWDivider(suppressTopSpace: true, suppressBottomSpace: true),
         GCWButton(
           text: i18n(context, 'hiddendata_hideandsave'),
           onPressed: () {

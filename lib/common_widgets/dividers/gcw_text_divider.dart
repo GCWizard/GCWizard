@@ -31,8 +31,8 @@ class _GCWTextDividerState extends State<GCWTextDivider> {
             constraints: BoxConstraints(maxWidth: screenWidth - minDividerWidth),
             child: Text(widget.text.isNotEmpty ? '${widget.text}:' : '', style: widget.style ?? gcwTextStyle()),
           ),
-          Expanded(child: GCWDivider(color: widget.style?.color ?? gcwTextStyle().color)),
-          widget.trailing ?? Container()
+          Expanded(child: GCWDivider(color: widget.style?.color ?? gcwTextStyle().color,
+              suppressTopSpace: true, suppressBottomSpace: true, trailing: widget.trailing))
         ]));
   }
 }

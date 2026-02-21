@@ -13,7 +13,6 @@ import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/dialogs/gcw_exported_file_dialog.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_divider.dart';
-import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
@@ -180,7 +179,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
 
   Widget _buildDurationOutput(List<List<Object>> durations) {
     return Column(children: <Widget>[
-      const GCWDivider(),
+      const GCWDivider(suppressTopSpace: true, suppressBottomSpace: true),
       GCWOutput(
           child: GCWColumnedMultilineOutput(data: durations, flexValues: const [1, 2], hasHeader: true, copyAll: true)),
     ]);
@@ -261,9 +260,7 @@ class _AnimatedImageState extends State<AnimatedImage> {
           });
         },
       ),
-      GCWTextDivider(
-        text: ''
-      ),
+      GCWDivider(),
       buildEncodeGallery(_encodeImageData, setState),
       _buildEncodeOptions(),
       buildEncodeList(setState, _encodeDurations, _encodeImageData, _textEditingController, _loopDuration),

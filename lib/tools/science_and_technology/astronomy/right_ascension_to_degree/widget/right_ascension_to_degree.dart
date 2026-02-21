@@ -3,7 +3,7 @@ import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_paste_button.dart';
-import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
+import 'package:gc_wizard/common_widgets/dividers/gcw_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_sign_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_datetime_picker.dart';
@@ -146,8 +146,7 @@ class _RightAscensionToDegreeState extends State<RightAscensionToDegree> {
         ),
         _currentMode == GCWSwitchPosition.left
             ? Container()
-            : GCWTextDivider(
-                text: '',
+            : GCWDivider(
                 trailing: GCWPasteButton(
                   iconSize: IconButtonSize.SMALL,
                   onSelected: (text) {

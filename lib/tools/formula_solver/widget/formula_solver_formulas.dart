@@ -566,7 +566,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                                             ]),
                                   ],
                                 ),
-                                if (index < output.results.length - 1) const GCWDivider()
+                                if (index < output.results.length - 1) const GCWDivider(suppressTopSpace: true, suppressBottomSpace: true)
                               ]));
 
                           //return GCWText(text: result.result);

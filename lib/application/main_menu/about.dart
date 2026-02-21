@@ -56,14 +56,14 @@ class _AboutState extends State<About> {
     var content = Column(
       children: <Widget>[
         Text(GCWPackageInfo.getInstance().appName, style: gcwTextStyle().copyWith(fontWeight: FontWeight.bold, fontSize: defaultFontSize() + 5)),
-        const GCWDivider(),
+        const GCWDivider(suppressTopSpace: true, suppressBottomSpace: true),
         Container(
             padding: _PADDING_CONTAINER,
             child: Row(children: <Widget>[
               Expanded(flex: 2, child: GCWText(text: i18n(context, 'about_version'))),
               Expanded(flex: 3, child: GCWText(text: '${_packageInfo.version} (Build: ${_packageInfo.buildNumber})'))
             ])),
-        const GCWDivider(),
+        const GCWDivider(suppressTopSpace: true, suppressBottomSpace: true),
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(children: [
@@ -81,7 +81,7 @@ class _AboutState extends State<About> {
                 _buildTeamEntries('about_misc', _ABOUT_MISC),
               ],
             )),
-        const GCWDivider(),
+        const GCWDivider(suppressTopSpace: true, suppressBottomSpace: true),
         Container(
           padding: _PADDING_CONTAINER,
           child: Column(
@@ -90,26 +90,26 @@ class _AboutState extends State<About> {
             ]
           ),
         ),
-        const GCWDivider(),
+        const GCWDivider(suppressTopSpace: true, suppressBottomSpace: true),
         Container(
           padding: _PADDING_CONTAINER,
           child:
           GCWText(align: Alignment.center, textAlign: TextAlign.center, text: '🏳️‍🌈  ' + i18n(context, 'about_notfornazis') + '  🏳️‍🌈'),
         ),
-        const GCWDivider(),
+        const GCWDivider(suppressTopSpace: true, suppressBottomSpace: true),
         _buildUrl('contact_email'),
         _buildUrl('manual'),
         _buildUrl('faq'),
         _buildUrl('blog'),
         _buildUrl('mastodon'),
         _buildUrl('webversion'),
-        const GCWDivider(),
+        const GCWDivider(suppressTopSpace: true, suppressBottomSpace: true),
         _buildUrl('license'),
         _buildUrl('github'),
         _buildUrl('crowdin'),
-        const GCWDivider(),
+        const GCWDivider(suppressTopSpace: true, suppressBottomSpace: true),
         _buildUrl('privacypolicy'),
-        const GCWDivider(),
+        const GCWDivider(suppressTopSpace: true, suppressBottomSpace: true),
         InkWell(
           child: Container(
             padding: _PADDING_CONTAINER,

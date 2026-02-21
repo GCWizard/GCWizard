@@ -9,7 +9,7 @@ import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/clipboard/gcw_clipboard.dart';
-import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
+import 'package:gc_wizard/common_widgets/dividers/gcw_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_popup_menu.dart';
 import 'package:gc_wizard/common_widgets/gcw_snackbar.dart';
 import 'package:intl/intl.dart';
@@ -77,18 +77,15 @@ List<GCWPopupMenuItem> _buildPasteClipboardMenuItems(BuildContext context, void 
       },
     ),
     GCWPopupMenuItem(
-        child: GCWTextDivider(
-          style: gcwTextStyle().copyWith(color: themeColors().dialogText()),
+        child: GCWDivider(
+          color: themeColors().dialogText(),
           suppressTopSpace: true,
           trailing: GCWIconButton(
             icon: Icons.settings,
             size: IconButtonSize.SMALL,
             iconColor: themeColors().dialogText(),
             onPressed: () => _openClipboardEditor(),
-          ),
-          text:
-          '', // TODO: A GCWTextDivider without any text is a simple GCWDivider, but the GCWDivider currently does not support 'suppressTopSpace' and 'trailing'; Move both attributes to GCWDivider
-        ),
+          )),
         action: (index) {
           _openClipboardEditor();
         })

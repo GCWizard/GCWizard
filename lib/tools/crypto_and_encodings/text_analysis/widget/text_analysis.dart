@@ -76,7 +76,7 @@ class _TextAnalysisState extends State<TextAnalysis> {
         _currentOptions
             ? Column(
                 children: [
-                  const GCWDivider(),
+                  const GCWDivider(suppressTopSpace: true, suppressBottomSpace: true),
                   GCWOnOffSwitch(
                     value: _currentCaseSensitive,
                     title: i18n(context, 'common_case_sensitive'),
@@ -131,7 +131,7 @@ class _TextAnalysisState extends State<TextAnalysis> {
                       });
                     },
                   ),
-                  const GCWDivider()
+                  const GCWDivider(suppressTopSpace: true, suppressBottomSpace: true)
                 ],
               )
             : Container(),

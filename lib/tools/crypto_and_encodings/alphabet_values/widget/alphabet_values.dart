@@ -370,7 +370,7 @@ class _AlphabetValuesState extends State<AlphabetValues> {
           onCreateInput: (Key? key) => _AlphabetValuesKeyValueInput(key: key),
           onCreateNewItem: (entry, odd) => _createNewItem(entry, odd),
         ),
-        const GCWDivider()
+        const GCWDivider(suppressTopSpace: true, suppressBottomSpace: true)
       ],
     );
   }
@@ -399,7 +399,7 @@ class _AlphabetValuesState extends State<AlphabetValues> {
             });
           },
         ),
-        const GCWDivider()
+        const GCWDivider(suppressTopSpace: true, suppressBottomSpace: true)
       ],
     );
   }

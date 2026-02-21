@@ -691,6 +691,7 @@
   "teletypewriter": "teleprinter teletypewriter",
   "textanalysis": "textanalysis textanalyzer textanalyser countwords countingwords numberwords whitespaces controlcharacters controllingcharacters total specialcharacters letters digits numbers lettercount wordcount",
   "textanalysis_letterfrequencies": "cryptoanalysis cryptographicanalysis letteranalysis lettersfrequencies letterfrequencies letterfrequency letterfrequencies characterfrequencies characterfrequency frequenciesanalysis frequencyanalysis",
+  "time" : "weeks days hours minutes seconds time converter",
   "tomtom": "",
   "tower_of_hanoi": "tower puzzle patience game",
   "triangle": "triangles points circles angles sides altitudes mid incircle excircles bisector",

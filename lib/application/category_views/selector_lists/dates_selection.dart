@@ -11,6 +11,7 @@ import 'package:gc_wizard/tools/science_and_technology/date_and_time/epoch_time/
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/epoch_time/unix_time/widget/unix_time.dart';
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/time_calculator/widget/time_calculator.dart';
 import 'package:gc_wizard/tools/science_and_technology/date_and_time/weekday/widget/weekday.dart';
+import 'package:gc_wizard/tools/science_and_technology/time_converter/widget/time_converter.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class DatesSelection extends GCWSelection {
@@ -24,6 +25,7 @@ class DatesSelection extends GCWSelection {
         className(const TimeCalculator()),
         className(const Weekday()),
         className(const DayOfTheYear()),
+        className(const TimeConverter()),
         className(const Calendar()),
         className(const UnixTime()),
         className(const ExcelTime()),

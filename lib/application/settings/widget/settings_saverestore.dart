@@ -113,7 +113,7 @@ class _SaveRestoreSettingsState extends State<SaveRestoreSettings> {
             });
           },
         ),
-        const GCWDivider(),
+        const GCWDivider(suppressTopSpace: true, suppressBottomSpace: true),
         Container(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Row(
@@ -128,7 +128,7 @@ class _SaveRestoreSettingsState extends State<SaveRestoreSettings> {
             )),
 
         // always on bottom
-        Container(margin: const EdgeInsets.only(top: 50.0), child: const GCWDivider()),
+        Container(margin: const EdgeInsets.only(top: 50.0), child: const GCWDivider(suppressTopSpace: true, suppressBottomSpace: true)),
         InkWell(
           child: const Icon(Icons.more_horiz, size: 20.0),
           onTap: () {

@@ -118,7 +118,7 @@ class _GCWFilesOutputState extends State<GCWFilesOutput> {
             Container(
               child: _buildFileTree(file.children ?? [], newParents, level: level + 1),
             ),
-          if (level == 0 && isFirst) const GCWDivider(),
+          if (level == 0 && isFirst) const GCWDivider(suppressTopSpace: true, suppressBottomSpace: true),
           if (!widget.suppressHiddenDataMessage)
             if (files.length <= 1 && level == 0 && !hasChildren)
               GCWText(text: i18n(context, 'hiddendata_nohiddendatafound'))
