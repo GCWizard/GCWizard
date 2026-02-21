@@ -89,7 +89,7 @@ Future<Uint8List> triangleData2Image({
   if (X15.x > maxX) maxX = X15.x;
   if (X16.x < minX) minX = X16.x;
   if (X16.x > maxX) maxX = X16.x;
-  if (X19.x.abs().toString() != 'Infinity') if (X19.x > maxX) maxX = X19.x;
+  if (X19.x > maxX) maxX = X19.x;
   if (O.x < minX) minX = O.x;
   if (O.x > maxX) maxX = O.x;
   if (G.x < minX) minX = G.x;
@@ -146,7 +146,7 @@ Future<Uint8List> triangleData2Image({
   if (X16.y < minX) minX = X16.y;
   if (X16.y > maxX) maxX = X16.y;
   if (X19.y < minX) minX = X19.y;
-  if (X19.y.abs().toString() != 'Infinity') if (X19.y > maxX) maxX = X19.y;
+  if (X19.y > maxX) maxX = X19.y;
   if (O.y < minY) minY = O.y;
   if (O.y > maxY) maxY = O.y;
   if (G.y < minY) minY = G.y;
@@ -186,15 +186,36 @@ Future<Uint8List> triangleData2Image({
   if (EC.y - EC.r < minY) minY = EC.y - EC.r;
   if (EC.y + EC.r > maxY) maxY = EC.y + EC.r;
 
-  double width = BOUNDS + 2 * max(minX.abs(), maxX.abs()) * SCALE + BOUNDS;
-  double height = BOUNDS + 2 * max(minY.abs(), maxY.abs()) * SCALE + BOUNDS;
+  final bounds = Bounds(-minX, maxX, minY, maxY);
+  final vp = computeViewport(bounds, MAXWIDTH - WIDTHLEGEND, MAXHEIGHT);
+
+  final canvasRecorder = ui.PictureRecorder();
+  final canvas =
+  ui.Canvas(canvasRecorder, ui.Rect.fromLTWH(0, 0, MAXWIDTH, MAXHEIGHT));
+
+  final paint = Paint()
+    ..color = Colors.white
+    ..style = PaintingStyle.fill
+    ..strokeWidth = LINE;
+
+  canvas.drawRect(Rect.fromLTWH(0, 0, MAXWIDTH, MAXHEIGHT), paint);
+  
+  /*
+  print('X: $minX .. $maxX   Y: $minY .. $maxY');
+  double width = BOUNDS + (minX.abs() + maxX.abs()) * SCALE + BOUNDS;
+  double height = BOUNDS + (minY.abs() + maxY.abs()) * SCALE + BOUNDS;
+  print('$width $height');
 
   SCALE = min(MAXHEIGHT / height, MAXWIDTH / width);
+  print('$SCALE');
+
   width = width * SCALE;
   height = height * SCALE;
+print('$width $height');
 
-  double offsetX = width / 2;
-  double offsetY = height / 2;
+  double offsetX = BOUNDS + minX.abs() * SCALE;
+  double offsetY = BOUNDS + maxY.abs() * SCALE;
+  print('$offsetX $offsetY');
 
   final canvasRecorder = ui.PictureRecorder();
   final canvas =
@@ -232,34 +253,45 @@ Future<Uint8List> triangleData2Image({
     if (i % 10 == 0) {
       canvas.drawLine(Offset(offsetX + i * SCALE, offsetY),
           Offset(offsetX + i * SCALE, offsetY + 6), paint);
-      canvas.drawLine(Offset(offsetX - i * SCALE, offsetY),
-          Offset(offsetX - i * SCALE, offsetY + 6), paint);
     } else if (i % 5 == 0) {
       canvas.drawLine(Offset(offsetX + i * SCALE, offsetY),
           Offset(offsetX + i * SCALE, offsetY + 3), paint);
-      canvas.drawLine(Offset(offsetX - i * SCALE, offsetY),
-          Offset(offsetX - i * SCALE, offsetY + 3), paint);
     } else {
       canvas.drawLine(Offset(offsetX + i * SCALE, offsetY),
           Offset(offsetX + i * SCALE, offsetY + 1.5), paint);
-      canvas.drawLine(Offset(offsetX - i * SCALE, offsetY),
-          Offset(offsetX - i * SCALE, offsetY + 1.5), paint);
     }
     final paragraphBuilderPos = ui.ParagraphBuilder(paragraphStyle)
       ..pushStyle(textStyle)
       ..addText(i.toString());
     final paragraphPos = paragraphBuilderPos.build();
     paragraphPos.layout(constraintsAxisX);
+    if (i % 10 == 0) {
+      canvas.drawParagraph(
+          paragraphPos,
+          Offset(
+              offsetX + i * SCALE - constraintsAxisX.width / 2, offsetY + 5));
+    }
+    i++;
+  }
+
+  i = 1;
+  while (offsetX - i * SCALE > BOUNDS) {
+    if (i % 10 == 0) {
+      canvas.drawLine(Offset(offsetX - i * SCALE, offsetY),
+          Offset(offsetX - i * SCALE, offsetY + 6), paint);
+    } else if (i % 5 == 0) {
+      canvas.drawLine(Offset(offsetX - i * SCALE, offsetY),
+          Offset(offsetX - i * SCALE, offsetY + 3), paint);
+    } else {
+      canvas.drawLine(Offset(offsetX - i * SCALE, offsetY),
+          Offset(offsetX - i * SCALE, offsetY + 1.5), paint);
+    }
     final paragraphBuilderNeg = ui.ParagraphBuilder(paragraphStyle)
       ..pushStyle(textStyle)
       ..addText((-i).toString());
     final paragraphNeg = paragraphBuilderNeg.build();
     paragraphNeg.layout(constraintsAxisX);
     if (i % 10 == 0) {
-      canvas.drawParagraph(
-          paragraphPos,
-          Offset(
-              offsetX + i * SCALE - constraintsAxisX.width / 2, offsetY + 5));
       canvas.drawParagraph(
           paragraphNeg,
           Offset(
@@ -273,29 +305,19 @@ Future<Uint8List> triangleData2Image({
     textDirection: ui.TextDirection.ltr,
     textAlign: TextAlign.right,
   );
+
   i = 1;
   while (offsetY + i * SCALE < height - BOUNDS) {
     if (i % 10 == 0) {
       canvas.drawLine(Offset(offsetX - 6, offsetY + i * SCALE),
           Offset(offsetX, offsetY + i * SCALE), paint);
-      canvas.drawLine(Offset(offsetX - 6, offsetY - i * SCALE),
-          Offset(offsetX, offsetY - i * SCALE), paint);
     } else if (i % 5 == 0) {
       canvas.drawLine(Offset(offsetX - 3, offsetY + i * SCALE),
           Offset(offsetX, offsetY + i * SCALE), paint);
-      canvas.drawLine(Offset(offsetX - 3, offsetY - i * SCALE),
-          Offset(offsetX, offsetY - i * SCALE), paint);
     } else {
       canvas.drawLine(Offset(offsetX - 1.5, offsetY + i * SCALE),
           Offset(offsetX, offsetY + i * SCALE), paint);
-      canvas.drawLine(Offset(offsetX - 1.5, offsetY - i * SCALE),
-          Offset(offsetX, offsetY - i * SCALE), paint);
     }
-    final paragraphBuilderPos = ui.ParagraphBuilder(paragraphStyle)
-      ..pushStyle(textStyle)
-      ..addText(i.toString());
-    final paragraphPos = paragraphBuilderPos.build();
-    paragraphPos.layout(constraintsAxisY);
     final paragraphBuilderNeg = ui.ParagraphBuilder(paragraphStyle)
       ..pushStyle(textStyle)
       ..addText((-i).toString());
@@ -306,6 +328,28 @@ Future<Uint8List> triangleData2Image({
           paragraphNeg,
           Offset(
               offsetX - 10 - constraintsAxisY.width, offsetY + i * SCALE - 10));
+    }
+    i++;
+  }
+
+  i = 1;
+  while (offsetY - i * SCALE > BOUNDS) {
+    if (i % 10 == 0) {
+      canvas.drawLine(Offset(offsetX - 6, offsetY - i * SCALE),
+          Offset(offsetX, offsetY - i * SCALE), paint);
+    } else if (i % 5 == 0) {
+      canvas.drawLine(Offset(offsetX - 3, offsetY - i * SCALE),
+          Offset(offsetX, offsetY - i * SCALE), paint);
+    } else {
+      canvas.drawLine(Offset(offsetX - 1.5, offsetY - i * SCALE),
+          Offset(offsetX, offsetY - i * SCALE), paint);
+    }
+    final paragraphBuilderPos = ui.ParagraphBuilder(paragraphStyle)
+      ..pushStyle(textStyle)
+      ..addText(i.toString());
+    final paragraphPos = paragraphBuilderPos.build();
+    paragraphPos.layout(constraintsAxisY);
+    if (i % 10 == 0) {
       canvas.drawParagraph(
           paragraphPos,
           Offset(
@@ -456,7 +500,7 @@ Future<Uint8List> triangleData2Image({
   var paragraphBuilderLegend = ui.ParagraphBuilder(paragraphStyle);
     paragraphBuilderLegend.pushStyle(textStyle);
   paragraphBuilderLegend.addText(
-      labels['COORDINATES']! + (' ').padRight(21, ' ') +
+      labels['COORDINATES']! + (' ').padRight(26, '-') +
           '\n' +
           'A'.padLeft(LABELLENGTH, ' ') +
           DIST +
@@ -480,7 +524,7 @@ Future<Uint8List> triangleData2Image({
           C.y.toStringAsFixed(2).padLeft(9, ' ') +
           ')\n' +
           '\n' +
-        labels['SIDES']! + (' ').padRight(21, ' ') +
+        labels['SIDES']! + (' ').padRight(26, '-') +
           '\n' +
           'a'.padLeft(LABELLENGTH, ' ') +
           DIST +
@@ -495,7 +539,7 @@ Future<Uint8List> triangleData2Image({
           c.toStringAsFixed(2).padLeft(21, ' ') +
           '\n' +
           '\n' +
-          labels['ANGLES']! + (' ').padRight(21, ' ') +
+          labels['ANGLES']! + (' ').padRight(26, '-') +
           '\n' +
           'α'.padLeft(LABELLENGTH, ' ') +
           DIST +
@@ -519,7 +563,7 @@ Future<Uint8List> triangleData2Image({
           circumference.toStringAsFixed(2).padLeft(21, ' ') +
           '\n' +
           '\n' +
-          labels['SIDESMIDPOINTS']! + (' ').padRight(19, ' ') +
+          labels['SIDESMIDPOINTS']! + (' ').padRight(26, '-') +
           '\n' +
           'a'.padLeft(LABELLENGTH, ' ') +
           DIST +
@@ -543,7 +587,7 @@ Future<Uint8List> triangleData2Image({
           MSC.y.toStringAsFixed(2).padLeft(9, ' ') +
           ')\n' +
           '\n' +
-          labels['ALTITUDESBASEPOINTS']! + (' ').padRight(19, ' ') +
+          labels['ALTITUDESBASEPOINTS']! + (' ').padRight(26, '-') +
           '\n' +
           'a'.padLeft(LABELLENGTH, ' ') +
           DIST +
@@ -567,7 +611,7 @@ Future<Uint8List> triangleData2Image({
           AC.y.toStringAsFixed(2).padLeft(9, ' ') +
           ')\n' +
           '\n' +
-          labels['TOUCHPOINTS']! + (' ').padRight(19, ' ') +
+          labels['TOUCHPOINTS']! + (' ').padRight(26, '-') +
           '\n' +
           (labels['EXCIRCLE']! + ' a').padLeft(LABELLENGTH, ' ') +
           DIST +
@@ -725,7 +769,7 @@ Future<Uint8List> triangleData2Image({
           X19.y.toStringAsFixed(2).padLeft(9, ' ') +
           ')\n' +
           '\n' +
-         // labels['CIRCLES']! + (' ').padRight(19, ' ')
+          labels['CIRCLES']! + (' ').padRight(26, '-') +
           '\n' +
           labels['INCIRCLE']!.padLeft(LABELLENGTH, ' ') +
           DIST +
@@ -786,11 +830,12 @@ Future<Uint8List> triangleData2Image({
   final paragraphLegend = paragraphBuilderLegend.build();
   paragraphLegend.layout(constraintsLegend);
   canvas.drawParagraph(paragraphLegend, Offset(15, BOUNDS + 25));
-
+*/
   try {
     final img = await canvasRecorder
         .endRecording()
-        .toImage(width.floor(), height.floor());
+        //.toImage(width.floor(), height.floor());
+        .toImage(MAXWIDTH.floor(), MAXHEIGHT.floor());
     final data = await img.toByteData(format: ui.ImageByteFormat.png);
 
     return trimNullBytes(data!.buffer.asUint8List());
