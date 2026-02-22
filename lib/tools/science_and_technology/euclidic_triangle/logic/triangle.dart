@@ -48,7 +48,6 @@ part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/tri
 part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_exeter.dart';
 part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_schiffler.dart';
 part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_longchamps.dart';
-part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_farout.dart';
 part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_kinds.dart';
 
 Map<int, String> SIDE_ANGLE_TYPES = {
@@ -169,7 +168,7 @@ class Triangle{
     XYPoint get X17 => triangleNapoleonOuterPointXY(A, B, C);
     XYPoint get X18 => triangleNapoleonInnerPointXY(A, B, C);
     XYPoint get X19 => triangleClawsonPointXY(A, B, C);
-    XYPoint? get X20 => triangleLongchampsPointXY(A, B, C);
-    XYPoint? get X21 => triangleSchifflerPointXY(A, B, C);
+    XYPoint get X20 => triangleLongchampsPointXY(A, B, C);
+    XYPoint get X21 => triangleSchifflerPointXY(A, B, C);
     XYPoint get X22 => triangleExeterPointXY(A, B, C);
   }

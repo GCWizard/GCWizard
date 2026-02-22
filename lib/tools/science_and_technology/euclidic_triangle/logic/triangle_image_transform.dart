@@ -6,7 +6,7 @@ class _Bounds {
   const _Bounds(this.minX, this.maxX, this.minY, this.maxY);
 
   bool contains(XYPoint p) {
-    return minX <= p.x && p.x <= maxX && minY <= p.y && p.y <= maxY;
+    return minX.floor() <= p.x && p.x <= maxX.ceil() && minY.floor() <= p.y && p.y <= maxY.ceil();
   }
 }
 

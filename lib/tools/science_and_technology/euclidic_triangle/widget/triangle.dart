@@ -854,6 +854,24 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
         _currentTriangle.X19.y.toStringAsFixed(3),
         null
       ],
+      [
+        'X20 ' + i18n(context, 'triangle_output_longchamps'),
+        _currentTriangle.X20!.x.toStringAsFixed(3),
+        _currentTriangle.X20!.y.toStringAsFixed(3),
+        null
+      ],
+      [
+        'X21 ' + i18n(context, 'triangle_output_schiffler'),
+        _currentTriangle.X21!.x.toStringAsFixed(3),
+        _currentTriangle.X21!.y.toStringAsFixed(3),
+        null
+      ],
+      [
+        'X22 ' + i18n(context, 'triangle_output_exeter'),
+        _currentTriangle.X22.x.toStringAsFixed(3),
+        _currentTriangle.X22.y.toStringAsFixed(3),
+        null
+      ],
     ];
     _outputCircles = [
       [
