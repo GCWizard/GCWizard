@@ -5,15 +5,10 @@ XYPoint triangleNagelPointXY(XYPoint a, XYPoint b, XYPoint c){
 
   Sides sides = triangleSidesXY(a, b, c);
 
-  double ac = (sides.a - sides.b + sides.c) / 2;
-  double ab = (sides.a + sides.b - sides.c) / 2;
-
-  XYPoint bExB = _vectorAdd(a, _vectorMult(_vectorNormalize(_vectorAB(a, c)), ab));
-  XYPoint bExA = _vectorAdd(c, _vectorMult(_vectorNormalize(_vectorAB(c, b)), ac));
-
-  XYPoint N = intersectVectors(
-      XYLine(P1: a, P2: bExA),
-      XYLine(P1: b, P2: bExB)
+  return XYPoint.fromBarycentric(
+      Triangle(a, b, c),
+    sides.b + sides.c - sides.a,
+    sides.a + sides.c - sides.b,
+    sides.a + sides.b - sides.c,
   );
-  return N;
 }

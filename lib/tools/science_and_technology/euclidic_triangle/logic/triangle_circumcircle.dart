@@ -6,13 +6,13 @@ XYCircle triangleCircumscribedCircleXY(XYPoint a, XYPoint b, XYPoint c){
   Sides sides = triangleSidesXY(a, b, c);
   Angles angles = triangleAnglesXY(a, b, c);
 
-  XYPoint SB =  _vectorAdd(a, _vectorMult(_vectorNormalize(_vectorAB(a, c)), sides.b / 2));
-  XYPoint SA =  _vectorAdd(b, _vectorMult(_vectorNormalize(_vectorAB(b, c)), sides.a / 2));
+  final S = XYPoint.fromBarycentric(
+    Triangle(a, b, c),
+      sin(degToRadian(angles.alpha * 2)),
+      sin(degToRadian(angles.beta * 2)),
+      sin(degToRadian(angles.gamma * 2)),
+    );
 
-  XYPoint S = intersectVectors(
-      XYLine(P1: SA, P2: _vectorNorm(_vectorAB(b, c))),
-      XYLine(P1: SB, P2: _vectorNorm(_vectorAB(a, c)))
-  );
   return XYCircle(
     x: S.x,
     y: S.y,

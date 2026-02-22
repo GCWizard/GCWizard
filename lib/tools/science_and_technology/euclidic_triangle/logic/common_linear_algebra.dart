@@ -54,34 +54,39 @@ XYPoint _vectorNormalize(XYPoint v) {
   );
 }
 
-XYPoint intersectVectors(XYLine l1, XYLine l2){
-  if (_vectorEqual(l1.P2, l2.P2)) {
-    return XYPoint(x: 0, y: 0);
-  }
+XYPoint? intersectVectors(XYLine l1, XYLine l2) {
+  final p1 = l1.P1;
+  final p2 = l1.P2;
+  final p3 = l2.P1;
+  final p4 = l2.P2;
 
+  final x1 = p1.x, y1 = p1.y;
+  final x2 = p2.x, y2 = p2.y;
+  final x3 = p3.x, y3 = p3.y;
+  final x4 = p4.x, y4 = p4.y;
 
-  try {
-    double m = (l1.P1.y * l2.P2.x - l2.P1.y * l2.P2.x - l1.P1.x * l2.P2.y + l2.P1.x * l2.P2.y) / (l1.P2.x * l2.P2.y - l1.P2.y * l2.P2.x);
+  final denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+  if (denom.abs() < 1e-12) return null; // parallel
 
-    return
-      XYPoint(
-          x: l1.P1.x + m * l1.P2.x,
-          y: l1.P1.y + m * l1.P2.y
-      );
-  } catch (e) {
-    return XYPoint(x:0, y:0);
-  }
+  final px =
+      ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) /
+          denom;
+  final py =
+      ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) /
+          denom;
+
+  return XYPoint(x: px, y: py);
 }
 
-List<XYPoint> intersectTwoCircles(XYCircle a, XYCircle b){
+List<XYPoint> intersectTwoCircles(XYCircle a, XYCircle b) {
   double ab0 = b.x - a.x;
   double ab1 = b.y - a.y;
-  double c = sqrt(ab0 * ab0 + ab1* ab1);
+  double c = sqrt(ab0 * ab0 + ab1 * ab1);
 
   double ar = a.r;
   double br = b.r;
 
-  if (c ==  0) {
+  if (c == 0) {
     return [];
   }
 
@@ -92,13 +97,13 @@ List<XYPoint> intersectTwoCircles(XYCircle a, XYCircle b){
     return [];
   }
 
-  if (y > 0) y = sqrt( y );
+  if (y > 0) y = sqrt(y);
 
   // compute unit vectors ex and ey
   double ex0 = ab0 / c;
   double ex1 = ab1 / c;
   double ey0 = -ex1;
-  double ey1 =  ex0;
+  double ey1 = ex0;
   double q1x = a.x + x * ex0;
   double q1y = a.y + x * ex1;
 
@@ -112,11 +117,7 @@ List<XYPoint> intersectTwoCircles(XYCircle a, XYCircle b){
   double q2y = q1y - y * ey1;
   q1x += y * ey0;
   q1y += y * ey1;
-  return [
-    XYPoint(x: q1x, y: q1y),
-    XYPoint(x: q2x, y: q2y)
-  ];
-
+  return [XYPoint(x: q1x, y: q1y), XYPoint(x: q2x, y: q2y)];
 }
 
 double distance(XYPoint p, XYPoint q) {

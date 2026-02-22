@@ -49,6 +49,64 @@ double _niceNumber(double range, {bool round = false}) {
   return niceFraction * pow(10, exponent);
 }
 
+List<Offset> _intersectLineWithRect(
+    XYPoint p1,
+    XYPoint p2,
+    _Bounds bounds,
+    _Viewport v) {
+  final List<Offset> pts = [];
+
+  // Kanten des Rechtecks
+  final edges = [
+    [XYPoint(x: bounds.minX,  y: bounds.maxY),    XYPoint(x: bounds.maxX, y: bounds.maxY)],    // top
+    [XYPoint(x: bounds.maxX, y: bounds.maxY),    XYPoint(x: bounds.maxX, y: bounds.minY)], // right
+    [XYPoint(x: bounds.maxX, y: bounds.minY), XYPoint(x: bounds.minX,  y: bounds.minY)], // bottom
+    [XYPoint(x: bounds.minX,  y: bounds.minY), XYPoint(x: bounds.minX,  y: bounds.maxY)],    // left
+  ];
+
+  for (final edge in edges) {
+    final ip = intersectVectors(XYLine(P1: p1, P2: p2), XYLine(P1: edge[0], P2: edge[1]));
+    if (ip != null) {
+      final c = _transformPoint(ip, v);
+      if (bounds.contains(ip)) pts.add(Offset(c.x, c.y));
+    }
+  }
+  return pts;
+}
+
+void _drawEulerLine(Canvas canvas, XYPoint X2, XYPoint X4, _Bounds b, _Viewport v){
+
+    final paint = Paint()
+      ..color = Colors.red
+      ..strokeWidth = 1.0;
+
+    if ((X2.x - X4.x).abs() < 1e-9 && (X2.y - X4.y).abs() < 1e-9) {
+      final p = _transformPoint(X2, v);
+      canvas.drawCircle(Offset(p.x, p.y), 6, paint);
+      return;
+    }
+
+    final dx = X4.x - X2.x;
+    final dy = X4.y - X2.y;
+
+     final intersections = _intersectLineWithRect(
+      X2,
+      X4,
+      //XYPoint(x: X2.x + dx, y: X2.y + dy),
+      b,
+      v
+    );
+
+    if (intersections.length == 2) {
+      canvas.drawLine(intersections[0], intersections[1], paint);
+    } else {
+      // Fallback: sehr kleiner oder degenerierter Fall
+      final p1 = _transformPoint(X2, v);
+      final p2 = _transformPoint(X4, v);
+      canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint);
+    }
+  }
+
 void _drawLabel(Canvas canvas, Offset pos, String text) {
   final builder = ParagraphBuilder(
     ParagraphStyle(
@@ -409,6 +467,11 @@ Future<Uint8List> triangleData2Image({
 
   paint.color = Colors.purple;
   p1 = _transformPoint(XYPoint(x: FC.x, y: FC.y), vp); canvas.drawCircle(Offset(p1.x, p1.y), _transformRadius(FC, vp), paint);
+
+  // draw Euler line
+  if (!triangle.isEquilateral()) {
+    _drawEulerLine(canvas, CG, O, bounds, vp);
+  }
 
   // draw legend
   paint.color = Colors.white;

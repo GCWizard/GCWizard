@@ -4,6 +4,10 @@ part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/
 class _Bounds {
   final double minX, maxX, minY, maxY;
   const _Bounds(this.minX, this.maxX, this.minY, this.maxY);
+
+  bool contains(XYPoint p) {
+    return minX <= p.x && p.x <= maxX && minY <= p.y && p.y <= maxY;
+  }
 }
 
 

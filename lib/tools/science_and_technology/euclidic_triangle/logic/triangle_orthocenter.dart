@@ -1,13 +1,15 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
 XYPoint triangleOrthocenterXY(XYPoint a, XYPoint b, XYPoint c){
-
   // https://de.wikipedia.org/wiki/H%C3%B6henschnittpunkt
-  XYPoint result = intersectVectors(
-    XYLine(P1: a, P2: _vectorNorm(_vectorAB(b, c))),
-    XYLine(P1: b, P2: _vectorNorm(_vectorAB(a, c))),
+  final sides = triangleSidesXY(a, b, c);
+
+  return XYPoint.fromBarycentric(
+    Triangle(a, b, c),
+    1 / (sides.b * sides.b + sides.c * sides.c - sides.a * sides.a),
+    1 / (sides.c * sides.c + sides.a * sides.a - sides.b * sides.b),
+    1 / (sides.a * sides.a + sides.b * sides.b - sides.c * sides.c)
   );
-  return result;
 }
 
 

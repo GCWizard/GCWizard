@@ -45,6 +45,7 @@ part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/tri
 part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_isogonic.dart';
 part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_fermat_torricelli.dart';
 part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_conjugatex11.dart';
+part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_kinds.dart';
 
 Map<int, String> SIDE_ANGLE_TYPES = {
   0: 'triangle_euclidic_sss',
@@ -108,6 +109,12 @@ class Triangle{
   final XYPoint C;
 
   Triangle(this.A, this.B, this.C);
+
+  bool isEquilateral() => triangleIsEquilateral(sides.a, sides.b, sides.c);
+  bool isIsosceles() => triangleIsIsosceles(sides.a, sides.b, sides.c);
+  bool isRightTriangle() => triangleIsRightTriangle(sides.a, sides.b, sides.c);
+  bool isAcuteTriangle() => triangleIsAcuteTriangle(sides.a, sides.b, sides.c);
+  bool isObtuseTriangle() => triangleIsObtuseTriangle(sides.a, sides.b, sides.c);
 
   double get area {
     final sd = sides;
