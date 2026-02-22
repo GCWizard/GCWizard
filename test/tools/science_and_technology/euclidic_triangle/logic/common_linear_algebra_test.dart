@@ -175,4 +175,28 @@ void main() {
           });
     }
   });
+
+  group("triangle.distance", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {
+        'inputP1': XYPoint(x: 1, y: 1),
+        'inputP2': XYPoint(x: 1, y: 1),
+        'expectedOutput': 0.0
+      },
+      {
+        'inputP1': XYPoint(x: 1, y: 1),
+        'inputP2': XYPoint(x: 1, y: -1),
+        'expectedOutput': 2.0
+      },
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${toString(elem['inputC1'])}  ${toString(elem['inputP'])}',
+              () {
+            var _actual = distance(
+                elem['inputP1'] as XYPoint, elem['inputP2'] as XYPoint);
+            expect(_actual, elem['expectedOutput'] as double);
+          });
+    }
+  });
 }

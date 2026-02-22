@@ -45,6 +45,10 @@ part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/tri
 part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_isogonic.dart';
 part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_fermat_torricelli.dart';
 part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_conjugatex11.dart';
+part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_exeter.dart';
+part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_schiffler.dart';
+part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_longchamps.dart';
+part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_farout.dart';
 part 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle_kinds.dart';
 
 Map<int, String> SIDE_ANGLE_TYPES = {
@@ -97,6 +101,9 @@ Map<String, String> TRIANGLE_LABLES = {
   'X17': 'triangle_output_napoleon_outer',
   'X18': 'triangle_output_napoleon_inner',
   'X19': 'triangle_output_clawson',
+  'X20': 'triangle_output_longchamps',
+  'X21': 'triangle_output_schiffler',
+  'X22': 'triangle_output_exeter',
   'INCIRCLE': 'triangle_output_incircle',
   'CIRCUMCIRCLE': 'triangle_output_circumscribedcircle',
   'FEUERBACHCIRCLE': 'triangle_output_feuerbachcircle',
@@ -162,4 +169,7 @@ class Triangle{
     XYPoint get X17 => triangleNapoleonOuterPointXY(A, B, C);
     XYPoint get X18 => triangleNapoleonInnerPointXY(A, B, C);
     XYPoint get X19 => triangleClawsonPointXY(A, B, C);
+    XYPoint? get X20 => triangleLongchampsPointXY(A, B, C);
+    XYPoint? get X21 => triangleSchifflerPointXY(A, B, C);
+    XYPoint get X22 => triangleExeterPointXY(A, B, C);
   }

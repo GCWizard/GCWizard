@@ -179,6 +179,9 @@ Future<Uint8List> triangleData2Image({
   XYPoint N1 = triangle.X17; // napoleon I
   XYPoint N2 = triangle.X18; // napoleon II
   XYPoint X19 = triangle.X19; //
+  XYPoint? X20 = triangle.X20; //
+  XYPoint? X21 = triangle.X21; //
+  XYPoint X22 = triangle.X22; //
   XYPoint MSA = triangle.sidesMidPoint[0]; // mid side a
   XYPoint MSB = triangle.sidesMidPoint[1]; // mid side b
   XYPoint MSC = triangle.sidesMidPoint[2]; // mid side c
@@ -412,6 +415,21 @@ Future<Uint8List> triangleData2Image({
 
   p1 = _transformPoint(X19, vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
   _drawLabel(canvas, Offset(p1.x, p1.y), 'X19');
+
+  if (X20 != null) {
+    p1 = _transformPoint(X20, vp);
+    canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+    _drawLabel(canvas, Offset(p1.x, p1.y), 'X20');
+  }
+
+  if (X21!= null) {
+    p1 = _transformPoint(X21, vp);
+    canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+    _drawLabel(canvas, Offset(p1.x, p1.y), 'X21');
+  }
+
+  p1 = _transformPoint(X22, vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'X22');
 
   // draw Circles
   paint.color = Colors.green.shade900;
@@ -762,6 +780,27 @@ Future<Uint8List> triangleData2Image({
           X19.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           X19.y.toStringAsFixed(2).padLeft(9, ' ') +
+          ')           |\n' +
+          (labels['X20']! + ' X20').padLeft(LABELLENGTH, ' ') +
+          DIST +
+          '(' +
+          X20!.x.toStringAsFixed(2).padLeft(9, ' ') +
+          '|' +
+          X20.y.toStringAsFixed(2).padLeft(9, ' ') +
+          ')           |\n' +
+          (labels['X21']! + ' X21').padLeft(LABELLENGTH, ' ') +
+          DIST +
+          '(' +
+          X21!.x.toStringAsFixed(2).padLeft(9, ' ') +
+          '|' +
+          X21.y.toStringAsFixed(2).padLeft(9, ' ') +
+          ')           |\n' +
+          (labels['X22']! + ' X22').padLeft(LABELLENGTH, ' ') +
+          DIST +
+          '(' +
+          X22.x.toStringAsFixed(2).padLeft(9, ' ') +
+          '|' +
+          X22.y.toStringAsFixed(2).padLeft(9, ' ') +
           ')           |\n' +
           '\n' +
           labels['CIRCLES']! + (' ').padRight(38, '-') +
