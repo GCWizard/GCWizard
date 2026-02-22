@@ -2,9 +2,9 @@ part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/
 
 XYPoint triangleFeuerbachPointXY(XYPoint a, XYPoint b, XYPoint c){
   // https://en.wikipedia.org/wiki/Feuerbach_point
-  final sa = _sideLength(b, c);
-  final sb = _sideLength(c, a);
-  final sc = _sideLength(a, b);
+  final sa = b.distanceToPoint(c);
+  final sb = c.distanceToPoint(a);
+  final sc = a.distanceToPoint(b);
 
   final s = (sa + sb + sc) / 2;
 

@@ -6,9 +6,9 @@ XYPoint triangleConjugateX11PointXY(XYPoint a, XYPoint b, XYPoint c){
   // a 260,  b 134.536, c236.186
   // 𝑋(12) ≈ (84.9 , 51.0)
 
-  final sa = _sideLength(b, c);
-  final sb = _sideLength(c, a);
-  final sc = _sideLength(a, b);
+  final sa = b.distanceToPoint(c);
+  final sb = c.distanceToPoint(a);
+  final sc = a.distanceToPoint(b);
   final s = (sa + sb + sc) /2;
 
   final u = pow(sb + sc, 2) / (s - sa);

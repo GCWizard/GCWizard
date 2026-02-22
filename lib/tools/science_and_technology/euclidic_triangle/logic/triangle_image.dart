@@ -49,64 +49,6 @@ double _niceNumber(double range, {bool round = false}) {
   return niceFraction * pow(10, exponent);
 }
 
-List<Offset> _intersectLineWithRect(
-    XYPoint p1,
-    XYPoint p2,
-    _Bounds bounds,
-    _Viewport v) {
-  final List<Offset> pts = [];
-
-  // Kanten des Rechtecks
-  final edges = [
-    [XYPoint(x: bounds.minX,  y: bounds.maxY),    XYPoint(x: bounds.maxX, y: bounds.maxY)],    // top
-    [XYPoint(x: bounds.maxX, y: bounds.maxY),    XYPoint(x: bounds.maxX, y: bounds.minY)], // right
-    [XYPoint(x: bounds.maxX, y: bounds.minY), XYPoint(x: bounds.minX,  y: bounds.minY)], // bottom
-    [XYPoint(x: bounds.minX,  y: bounds.minY), XYPoint(x: bounds.minX,  y: bounds.maxY)],    // left
-  ];
-
-  for (final edge in edges) {
-    final ip = intersectVectors(XYLine(P1: p1, P2: p2), XYLine(P1: edge[0], P2: edge[1]));
-    if (ip != null) {
-      final c = _transformPoint(ip, v);
-      if (bounds.contains(ip)) pts.add(Offset(c.x, c.y));
-    }
-  }
-  return pts;
-}
-
-void _drawEulerLine(Canvas canvas, XYPoint X2, XYPoint X4, _Bounds b, _Viewport v){
-
-    final paint = Paint()
-      ..color = Colors.red
-      ..strokeWidth = 1.0;
-
-    if ((X2.x - X4.x).abs() < 1e-9 && (X2.y - X4.y).abs() < 1e-9) {
-      final p = _transformPoint(X2, v);
-      canvas.drawCircle(Offset(p.x, p.y), 6, paint);
-      return;
-    }
-
-    final dx = X4.x - X2.x;
-    final dy = X4.y - X2.y;
-
-     final intersections = _intersectLineWithRect(
-      X2,
-      X4,
-      //XYPoint(x: X2.x + dx, y: X2.y + dy),
-      b,
-      v
-    );
-
-    if (intersections.length == 2) {
-      canvas.drawLine(intersections[0], intersections[1], paint);
-    } else {
-      // Fallback: sehr kleiner oder degenerierter Fall
-      final p1 = _transformPoint(X2, v);
-      final p2 = _transformPoint(X4, v);
-      canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint);
-    }
-  }
-
 void _drawLabel(Canvas canvas, Offset pos, String text) {
   final builder = ParagraphBuilder(
     ParagraphStyle(
@@ -250,6 +192,12 @@ Future<Uint8List> triangleData2Image({
   XYPoint ETA = triangle.exCirclesTouchPoints[0]; // touchpoint ex circle a
   XYPoint ETB = triangle.exCirclesTouchPoints[1]; // touchpoint ex circle b
   XYPoint ETC = triangle.exCirclesTouchPoints[2]; // touchpoint ex circle c
+  XYPoint ITA = triangle.inCirclesTouchPoints[0]; // touchpoint in circle a
+  XYPoint ITB = triangle.inCirclesTouchPoints[1]; // touchpoint in circle b
+  XYPoint ITC = triangle.inCirclesTouchPoints[2]; // touchpoint in circle c
+  XYPoint FTA = triangle.inFeuerbachCircleTouchPoints[0]; // touchpoint feuerbach circle a
+  XYPoint FTB = triangle.inFeuerbachCircleTouchPoints[1]; // touchpoint in feuerbach b
+  XYPoint FTC = triangle.inFeuerbachCircleTouchPoints[2]; // touchpoint in feuerbach c
 
   // calculating minX, mxX, minY, maxY for bounds and viewport
   List<XYPoint> points = [
@@ -274,9 +222,6 @@ Future<Uint8List> triangleData2Image({
     triangle.X18,
     triangle.X19,
     ];
-  points.addAll(triangle.sidesMidPoint);
-  points.addAll(triangle.altitudesBasePoint);
-  points.addAll(triangle.exCirclesTouchPoints);
 
   List<XYCircle> circles = [
     triangle.X1,
@@ -369,18 +314,30 @@ Future<Uint8List> triangleData2Image({
   _drawLabel(canvas, Offset(p1.x, p1.y), 'C');
 
   // draw Touchpoints exCircles
-  paint.color = Colors.green.shade700;
+  paint.color = Colors.green;
   p1 = _transformPoint(ETA, vp);  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
   p1 = _transformPoint(ETB, vp);  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
   p1 = _transformPoint(ETC, vp);  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
 
+  // draw Touchpoints inCircles
+  paint.color = Colors.green.shade900;
+  p1 = _transformPoint(ITA, vp);  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  p1 = _transformPoint(ITB, vp);  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  p1 = _transformPoint(ITC, vp);  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+
+  // draw Touchpoints FeuerbachCircle
+  paint.color = Colors.purple;
+  p1 = _transformPoint(FTA, vp);  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  p1 = _transformPoint(FTB, vp);  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  p1 = _transformPoint(FTC, vp);  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+
   // draw exCircles center points
   p1 = _transformPoint(XYPoint(x: EA.x, y: EA.y), vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'xA');
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'exA');
   p1 = _transformPoint(XYPoint(x: EB.x, y: EB.y), vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'xB');
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'exB');
   p1 = _transformPoint(XYPoint(x: EC.x, y: EC.y), vp); canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'xC');
+  _drawLabel(canvas, Offset(p1.x, p1.y), 'exC');
 
   // draw Mid side base Points
   paint.color = Colors.orange;
@@ -460,6 +417,7 @@ Future<Uint8List> triangleData2Image({
   paint.color = Colors.green.shade900;
   p1 = _transformPoint(XYPoint(x: IC.x, y: IC.y), vp); canvas.drawCircle(Offset(p1.x, p1.y), _transformRadius(IC, vp), paint);
   p1 = _transformPoint(XYPoint(x: CC.x, y: CC.y), vp); canvas.drawCircle(Offset(p1.x, p1.y), _transformRadius(CC, vp), paint);
+
   paint.color = Colors.green;
   p1 = _transformPoint(XYPoint(x: EA.x, y: EA.y), vp); canvas.drawCircle(Offset(p1.x, p1.y), _transformRadius(EA, vp), paint);
   p1 = _transformPoint(XYPoint(x: EB.x, y: EB.y), vp); canvas.drawCircle(Offset(p1.x, p1.y), _transformRadius(EB, vp), paint);
@@ -470,7 +428,7 @@ Future<Uint8List> triangleData2Image({
 
   // draw Euler line
   if (!triangle.isEquilateral()) {
-    _drawEulerLine(canvas, CG, O, bounds, vp);
+    //_drawEulerLine(canvas, CG, O, bounds, vp);
   }
 
   // draw legend
@@ -614,19 +572,61 @@ Future<Uint8List> triangleData2Image({
           '|' +
           ETA.y.toStringAsFixed(2).padLeft(9, ' ') +
           ')           |\n' +
-          (labels['EXCIRCLE']! + ' b').padLeft(LABELLENGTH, ' ') +
+          (' b').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           ETB.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           ETB.y.toStringAsFixed(2).padLeft(9, ' ') +
           ')           |\n' +
-          (labels['EXCIRCLE']! + ' c').padLeft(LABELLENGTH, ' ') +
+          (' c').padLeft(LABELLENGTH, ' ') +
           DIST +
           '(' +
           ETC.x.toStringAsFixed(2).padLeft(9, ' ') +
           '|' +
           ETC.y.toStringAsFixed(2).padLeft(9, ' ') +
+          ')           |\n' +
+          (labels['INCIRCLE']! + ' a').padLeft(LABELLENGTH, ' ') +
+          DIST +
+          '(' +
+          ITA.x.toStringAsFixed(2).padLeft(9, ' ') +
+          '|' +
+          ITA.y.toStringAsFixed(2).padLeft(9, ' ') +
+          ')           |\n' +
+          (' b').padLeft(LABELLENGTH, ' ') +
+          DIST +
+          '(' +
+          ITB.x.toStringAsFixed(2).padLeft(9, ' ') +
+          '|' +
+          ITB.y.toStringAsFixed(2).padLeft(9, ' ') +
+          ')           |\n' +
+          (' c').padLeft(LABELLENGTH, ' ') +
+          DIST +
+          '(' +
+          ITC.x.toStringAsFixed(2).padLeft(9, ' ') +
+          '|' +
+          ITC.y.toStringAsFixed(2).padLeft(9, ' ') +
+          ')           |\n' +
+          (labels['FEUERBACHCIRCLE']! + ' a').padLeft(LABELLENGTH, ' ') +
+          DIST +
+          '(' +
+          FTA.x.toStringAsFixed(2).padLeft(9, ' ') +
+          '|' +
+          FTA.y.toStringAsFixed(2).padLeft(9, ' ') +
+          ')           |\n' +
+          (' b').padLeft(LABELLENGTH, ' ') +
+          DIST +
+          '(' +
+          FTB.x.toStringAsFixed(2).padLeft(9, ' ') +
+          '|' +
+          FTB.y.toStringAsFixed(2).padLeft(9, ' ') +
+          ')           |\n' +
+          (' c').padLeft(LABELLENGTH, ' ') +
+          DIST +
+          '(' +
+          FTC.x.toStringAsFixed(2).padLeft(9, ' ') +
+          '|' +
+          FTC.y.toStringAsFixed(2).padLeft(9, ' ') +
           ')           |\n' +
           '\nClark Kimberling, Encyclopedia of Triangle Centers' + (' ').padRight(38, '-') +
           '\n' +

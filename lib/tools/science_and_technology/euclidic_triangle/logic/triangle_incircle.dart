@@ -18,3 +18,31 @@ XYCircle triangleInCircleXY(XYPoint a, XYPoint b, XYPoint c,){
     r: sqrt((s - sides.a) * (s -sides.b) * (s - sides.c) / s),
   );
 }
+
+List<XYPoint> triangleTouchPointsIncircleXY(XYPoint a, XYPoint b, XYPoint c){
+  final I = triangleInCircleXY(a, b, c);
+
+  // Ta auf BC
+  final Ta = _footOfPerpendicular(XYPoint(x: I.x, y: I.y), b, c);
+
+  // Tb auf CA
+  final Tb = _footOfPerpendicular(XYPoint(x: I.x, y: I.y), c, a);
+
+  // Tc auf AB
+  final Tc = _footOfPerpendicular(XYPoint(x: I.x, y: I.y), a, b);
+
+  return [Ta, Tb, Tc];
+}
+
+
+XYPoint _footOfPerpendicular(XYPoint p, XYPoint a, XYPoint b) {
+  final ab = b - a;
+  final ap = p - a;
+  final denom = ab.dot(ab);
+  if (denom == 0) return a; // degenerierte Seite
+  final t = ap.dot(ab) / denom;
+  final r = a + ab.scale(t);
+  return XYPoint(x: r.x, y: r.y);
+}
+
+

@@ -138,6 +138,8 @@ class Triangle{
     List<XYPoint> get altitudesBasePoint => triangleAltitudesBasePointsXY(A, B, C);
     List<XYCircle> get exCircles => triangleExCirclesXY(A, B, C);
     List<XYPoint> get exCirclesTouchPoints => triangleTouchPointsExcircleXY(A, B, C);
+    List<XYPoint> get inCirclesTouchPoints => triangleTouchPointsIncircleXY(A, B, C);
+    List<XYPoint> get inFeuerbachCircleTouchPoints => triangleTouchpointsFeuerbachCircleXY(A, B, C);
     XYCircle get inCircle => triangleInCircleXY(A, B, C);
     XYCircle get circumscribedCircle => triangleCircumscribedCircleXY(A, B, C);
     XYCircle get feuerbachCircle => triangleFeuerbachCircleXY(A, B, C);

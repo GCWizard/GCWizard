@@ -55,73 +55,26 @@ XYPoint _vectorNormalize(XYPoint v) {
 }
 
 XYPoint? intersectVectors(XYLine l1, XYLine l2) {
-  final p1 = l1.P1;
-  final p2 = l1.P2;
-  final p3 = l2.P1;
-  final p4 = l2.P2;
-
-  final x1 = p1.x, y1 = p1.y;
-  final x2 = p2.x, y2 = p2.y;
-  final x3 = p3.x, y3 = p3.y;
-  final x4 = p4.x, y4 = p4.y;
-
-  final denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
-  if (denom.abs() < 1e-12) return null; // parallel
-
-  final px =
-      ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) /
-          denom;
-  final py =
-      ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) /
-          denom;
-
-  return XYPoint(x: px, y: py);
+  return l1.intersectLine(l2);
 }
 
-List<XYPoint> intersectTwoCircles(XYCircle a, XYCircle b) {
-  double ab0 = b.x - a.x;
-  double ab1 = b.y - a.y;
-  double c = sqrt(ab0 * ab0 + ab1 * ab1);
+bool vectorContainsPoint(XYLine l, XYPoint p) {
+  return l.containsPoint(p);
+}
 
-  double ar = a.r;
-  double br = b.r;
 
-  if (c == 0) {
-    return [];
-  }
+List<XYPoint>? intersectTwoCircles(XYCircle a, XYCircle b) {
+  return a.intersectCircle(b);
+}
 
-  double x = (ar * ar + c * c - br * br) / (2 * c);
-  double y = ar * ar - x * x;
-  if (y < 0) {
-    // no intersection
-    return [];
-  }
+bool circleContainsPoint(XYCircle c, XYPoint p) {
+  return c.containsPoint(p);
+}
 
-  if (y > 0) y = sqrt(y);
-
-  // compute unit vectors ex and ey
-  double ex0 = ab0 / c;
-  double ex1 = ab1 / c;
-  double ey0 = -ex1;
-  double ey1 = ex0;
-  double q1x = a.x + x * ex0;
-  double q1y = a.y + x * ex1;
-
-  if (y == 0) {
-    // one touch point
-    return [XYPoint(x: q1x, y: q1y)];
-  }
-
-  // two intersections
-  double q2x = q1x - y * ey0;
-  double q2y = q1y - y * ey1;
-  q1x += y * ey0;
-  q1y += y * ey1;
-  return [XYPoint(x: q1x, y: q1y), XYPoint(x: q2x, y: q2y)];
+bool onCircumference(XYCircle c, XYPoint p) {
+  return c.onCircumference(p);
 }
 
 double distance(XYPoint p, XYPoint q) {
-  final dx = p.x - q.x;
-  final dy = p.y - q.y;
-  return sqrt(dx * dx + dy * dy);
+  return p.distanceToPoint(q);
 }

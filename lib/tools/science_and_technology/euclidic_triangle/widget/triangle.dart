@@ -696,6 +696,42 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
         _currentTriangle.exCirclesTouchPoints[2].y.toStringAsFixed(3),
         null
       ],
+      [
+        i18n(context, 'triangle_output_incircle') + ' a',
+        _currentTriangle.inCirclesTouchPoints[0].x.toStringAsFixed(3),
+        _currentTriangle.inCirclesTouchPoints[0].y.toStringAsFixed(3),
+        null
+      ],
+      [
+        i18n(context, 'triangle_output_incircle') + ' b',
+        _currentTriangle.inCirclesTouchPoints[1].x.toStringAsFixed(3),
+        _currentTriangle.inCirclesTouchPoints[1].y.toStringAsFixed(3),
+        null
+      ],
+      [
+        i18n(context, 'triangle_output_incircle') + ' c',
+        _currentTriangle.inCirclesTouchPoints[2].x.toStringAsFixed(3),
+        _currentTriangle.inCirclesTouchPoints[2].y.toStringAsFixed(3),
+        null
+      ],
+      [
+        i18n(context, 'triangle_output_feuerbachcircle') + ' a',
+        _currentTriangle.inFeuerbachCircleTouchPoints[0].x.toStringAsFixed(3),
+        _currentTriangle.inFeuerbachCircleTouchPoints[0].y.toStringAsFixed(3),
+        null
+      ],
+      [
+        i18n(context, 'triangle_output_feuerbachcircle') + ' b',
+        _currentTriangle.inFeuerbachCircleTouchPoints[1].x.toStringAsFixed(3),
+        _currentTriangle.inFeuerbachCircleTouchPoints[1].y.toStringAsFixed(3),
+        null
+      ],
+      [
+        i18n(context, 'triangle_output_feuerbachcircle') + ' c',
+        _currentTriangle.inFeuerbachCircleTouchPoints[2].x.toStringAsFixed(3),
+        _currentTriangle.inFeuerbachCircleTouchPoints[2].y.toStringAsFixed(3),
+        null
+      ],
     ];
     _outputPoints = [
       [

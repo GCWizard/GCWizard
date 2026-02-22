@@ -5,10 +5,9 @@ XYPoint triangleFermatTorricelliPointXY(XYPoint a, XYPoint b, XYPoint c) {
   Angles angles = triangleAnglesXY(a, b, c);
 
   double csc(double x) => 1.0 / sin(x);
-
-  final sa = _sideLength(b, c);
-  final sb = _sideLength(c, a);
-  final sc = _sideLength(a, b);
+  final sa = b.distanceToPoint(c);
+  final sb = c.distanceToPoint(a);
+  final sc = a.distanceToPoint(b);
 
   final u = sa * csc(degToRadian(angles.alpha) + pi / 3); // +60°
   final v = sb * csc(degToRadian(angles.beta) + pi / 3);
