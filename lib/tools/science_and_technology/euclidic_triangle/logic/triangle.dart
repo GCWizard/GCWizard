@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 import 'dart:ui';
 
 import 'package:gc_wizard/utils/collection_utils.dart';
+import 'package:gc_wizard/utils/constants.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter/material.dart';
 
@@ -76,6 +77,8 @@ Map<String, String> TRIANGLE_LABLES = {
   'SIDES': 'triangle_output_sides',
   'ANGLES': 'triangle_output_angles',
   'AREA': 'triangle_output_area',
+  'TYPE': 'common_type',
+  'DESCRIPTION': 'triangle_kind_common',
   'CIRCUMFERENCE': 'triangle_output_circumference',
   'SIDESMIDPOINTS': 'triangle_output_sidesmidpoint',
   'ALTITUDESBASEPOINTS': 'triangle_output_altitudesbasepoint',
@@ -116,11 +119,7 @@ class Triangle{
 
   Triangle(this.A, this.B, this.C);
 
-  bool isEquilateral() => triangleIsEquilateral(sides.a, sides.b, sides.c);
-  bool isIsosceles() => triangleIsIsosceles(sides.a, sides.b, sides.c);
-  bool isRightTriangle() => triangleIsRightTriangle(sides.a, sides.b, sides.c);
-  bool isAcuteTriangle() => triangleIsAcuteTriangle(sides.a, sides.b, sides.c);
-  bool isObtuseTriangle() => triangleIsObtuseTriangle(sides.a, sides.b, sides.c);
+  String get description => triangleDescription(sides.a, sides.b, sides.c);
 
   double get area {
     final sd = sides;

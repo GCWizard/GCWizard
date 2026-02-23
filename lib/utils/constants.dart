@@ -30,6 +30,8 @@ enum CryptMode { encrypt, decrypt }
 
 const UNKNOWN_ELEMENT = '\u25a1';
 
+const NBSP = '\u00a0';
+
 final RegExp REGEXP_SPLIT_STRINGLIST = RegExp(r'[\s,]+');
 
 const double LOW_LOCATION_ACCURACY = 20.0;

@@ -150,6 +150,8 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
               } else {
                 _currentTriangle = Triangle(_A, _B, _C);
                 _createAdditionalData();
+                TRIANGLE_LABLES['DESCRIPTION'] = _currentTriangle.description;
+                _currentLabels = _translateLabels(TRIANGLE_LABLES);
                 _isCalculatedImage = false;
               }
             }
@@ -613,6 +615,12 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
         null
       ],
       [
+        i18n(context, 'common_type'),
+        i18n(context, _currentTriangle.description),
+        null,
+        null
+      ],
+      [
         i18n(context, 'triangle_output_area'),
         _currentTriangle.area.toStringAsFixed(3),
         null,
@@ -856,14 +864,14 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
       ],
       [
         'X20 ' + i18n(context, 'triangle_output_longchamps'),
-        _currentTriangle.X20!.x.toStringAsFixed(3),
-        _currentTriangle.X20!.y.toStringAsFixed(3),
+        _currentTriangle.X20.x.toStringAsFixed(3),
+        _currentTriangle.X20.y.toStringAsFixed(3),
         null
       ],
       [
         'X21 ' + i18n(context, 'triangle_output_schiffler'),
-        _currentTriangle.X21!.x.toStringAsFixed(3),
-        _currentTriangle.X21!.y.toStringAsFixed(3),
+        _currentTriangle.X21.x.toStringAsFixed(3),
+        _currentTriangle.X21.y.toStringAsFixed(3),
         null
       ],
       [
@@ -966,7 +974,7 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
     a = a.normalized();
     b = b.normalized();
     c = c.normalized();
-    return (a.equals(b) && a.equals(c));
+    return (a.equals(b) || a.equals(c) || b.equals(c));
   }
 
   Map<String, String> _translateLabels(Map<String, String> labels){

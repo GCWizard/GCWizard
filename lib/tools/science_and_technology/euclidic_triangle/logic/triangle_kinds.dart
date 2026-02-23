@@ -16,7 +16,7 @@ bool triangleIsIsosceles(double a, double b, double c, {double eps = 1e-6}) {
 // ------------------------------------------------------------
 // RECHTWINKLIG
 // ------------------------------------------------------------
-bool triangleIsRightTriangle(double a, double b, double c, {double eps = 1e-6}) {
+bool triangleIsRight(double a, double b, double c, {double eps = 1e-6}) {
   final a2 = a * a;
   final b2 = b * b;
   final c2 = c * c;
@@ -29,7 +29,7 @@ bool triangleIsRightTriangle(double a, double b, double c, {double eps = 1e-6}) 
 // ------------------------------------------------------------
 // SPITZWINKLIG
 // ------------------------------------------------------------
-bool triangleIsAcuteTriangle(double a, double b, double c, {double eps = 1e-6}) {
+bool triangleIsAcute(double a, double b, double c, {double eps = 1e-6}) {
   final a2 = a * a;
   final b2 = b * b;
   final c2 = c * c;
@@ -42,7 +42,7 @@ bool triangleIsAcuteTriangle(double a, double b, double c, {double eps = 1e-6}) 
 // ------------------------------------------------------------
 // STUMPFWINKLIG
 // ------------------------------------------------------------
-bool triangleIsObtuseTriangle(double a, double b, double c, {double eps = 1e-6}) {
+bool triangleIsObtuse(double a, double b, double c, {double eps = 1e-6}) {
   final a2 = a * a;
   final b2 = b * b;
   final c2 = c * c;
@@ -50,4 +50,20 @@ bool triangleIsObtuseTriangle(double a, double b, double c, {double eps = 1e-6})
   return a2 + b2 < c2 - eps ||
       b2 + c2 < a2 - eps ||
       c2 + a2 < b2 - eps;
+}
+
+String triangleDescription(double a, double b, double c, {double eps = 1e-6}){
+  if (triangleIsEquilateral(a, b, c)) {
+    return 'triangle_kind_equilateral';
+  } else if (triangleIsIsosceles(a, b, c)) {
+    return 'triangle_kind_isosceles';
+  } else if (triangleIsAcute(a, b, c)) {
+    return 'triangle_kind_acute';
+  } else if (triangleIsObtuse(a, b, c)) {
+    return 'triangle_kind_obtuse';
+  } else if (triangleIsRight(a, b, c)) {
+    return 'triangle_kind_right';
+  } else{
+    return 'triangle_kind_common';
+  }
 }
