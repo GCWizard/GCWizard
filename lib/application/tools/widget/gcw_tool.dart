@@ -153,11 +153,15 @@ class _GCWToolState extends State<GCWTool> {
   late String _toolName;
   late String _defaultLanguageToolName;
   late FocusNode _focusNode;
+  late ScrollController _scrollController;
 
   @override
   void initState() {
     _setToolCount(widget.longId);
     _focusNode = FocusNode();
+
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
 
     super.initState();
   }
@@ -165,7 +169,14 @@ class _GCWToolState extends State<GCWTool> {
   @override
   void dispose() {
     _focusNode.dispose();
+
+    _scrollController.dispose();
+
     super.dispose();
+  }
+
+  void _scrollListener() {
+    print('AAAA');
   }
 
   @override
@@ -311,6 +322,7 @@ class _GCWToolState extends State<GCWTool> {
 
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
+      controller: _scrollController,
       primary: true,
       child: tool,
     );
