@@ -1,6 +1,6 @@
 import 'dart:math';
 
-String zalgo_text(String text, int intensity) {
+String encodeZalgoText(String text, int intensity) {
   final Random rnd = Random();
   final StringBuffer result = StringBuffer();
 
@@ -15,6 +15,10 @@ String zalgo_text(String text, int intensity) {
   return result.toString();
 }
 
-void main() {
-  print(zalgo_text("Hello, World!", 8));
+String decodeZalgoText(String text) {
+
+  for (int i = 768; i <= 880; i++) {
+    text = text.replaceAll(String.fromCharCode(i), '');
+  }
+  return text;
 }
