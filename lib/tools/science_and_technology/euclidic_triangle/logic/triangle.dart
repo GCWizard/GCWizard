@@ -5,6 +5,7 @@ import 'dart:ui';
 
 import 'package:gc_wizard/utils/collection_utils.dart';
 import 'package:gc_wizard/utils/constants.dart';
+import 'package:gc_wizard/utils/data_type_utils/double_type_utils.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter/material.dart';
 

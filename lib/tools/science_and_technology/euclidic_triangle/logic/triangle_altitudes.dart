@@ -9,12 +9,4 @@ Sides triangleAltitudesXY(XYPoint a, XYPoint b, XYPoint c){
     b: 2 * area / sides.b,
     c: 2 * area / sides.c,
   );
-
-  // alternative
-  // final Ha = foot(a, b, c); final Hb = foot(b, a, c); final Hc = foot(c, a, b);
-  // return Sides(
-  //     a: distance(a, Ha),
-  //     b: distance(b, Hb),
-  //     c: distance(c, Hc)
-  //   );
 }

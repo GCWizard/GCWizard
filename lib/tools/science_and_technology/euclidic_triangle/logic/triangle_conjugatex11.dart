@@ -2,10 +2,6 @@ part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/
 
 XYPoint triangleConjugateX11PointXY(XYPoint a, XYPoint b, XYPoint c){
 
-  // A(10, 50)  B(200, -90)  C(100, 150)
-  // a 260,  b 134.536, c236.186
-  // 𝑋(12) ≈ (84.9 , 51.0)
-
   final sa = b.distanceToPoint(c);
   final sb = c.distanceToPoint(a);
   final sc = a.distanceToPoint(b);

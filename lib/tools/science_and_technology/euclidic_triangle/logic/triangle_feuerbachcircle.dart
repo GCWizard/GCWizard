@@ -21,9 +21,8 @@ List<XYPoint> triangleTouchpointsFeuerbachCircleXY(XYPoint a, XYPoint b, XYPoint
 
   double ra = t.exCircles[0].r;
   double rb = t.exCircles[1].r;
-  double rc = t.exCircles[2].r; // Ankreisradien
+  double rc = t.exCircles[2].r;
 
- // Feuerbachkreis
   Vec2 N = Vec2(t.feuerbachCircle.x, t.feuerbachCircle.y);
   double R9 = t.feuerbachCircle.r;
 

@@ -89,7 +89,7 @@ void _drawEulerLine(
     ..color = Colors.red
     ..strokeWidth = 1.0;
 
-  if ((X2.x - X4.x).abs() < 1e-9 && (X2.y - X4.y).abs() < 1e-9) {
+  if (doubleEquals(X2.x, X4.x) && doubleEquals(X2.y, X4.y)) {
     final p = _transformPoint(X2, v);
     canvas.drawCircle(Offset(p.x, p.y), 6, paint);
     return;
@@ -205,10 +205,10 @@ Future<Uint8List> triangleData2Image({
   const constraintsLegend =
       ui.ParagraphConstraints(width: WIDTHLEGEND);
 
-  double minX = 0;
-  double maxX = 0;
-  double minY = 0;
-  double maxY = 0;
+  double minX = double.maxFinite;
+  double maxX = -1.0 * double.maxFinite;
+  double minY = double.maxFinite;
+  double maxY = -1.0 * double.maxFinite;
 
   XYPoint A = triangle.A;
   XYPoint B = triangle.B;

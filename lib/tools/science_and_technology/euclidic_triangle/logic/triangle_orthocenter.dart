@@ -18,7 +18,6 @@ XYPoint triangleOrthocenterXY(XYPoint a, XYPoint b, XYPoint c){
 LatLng triangleOrthocenterMap(LatLng a, LatLng b, LatLng c) {
 
   XYPoint _orthocenterXY(XYPoint A, XYPoint B, XYPoint C) {
-    // Orthocenter im ebenen Dreieck ABC in XY
     final dxBC = C.x - B.x;
     final dyBC = C.y - B.y;
     final dxAC = C.x - A.x;
@@ -39,9 +38,6 @@ LatLng triangleOrthocenterMap(LatLng a, LatLng b, LatLng c) {
     final c2 = B.y - mHb * B.x;
 
     final det = a1 * b2 - a2 * b1;
-    if (det.abs() < 1e-12) {
-      throw Exception("Dreieck ist entartet – kein eindeutiger Höhenschnittpunkt.");
-    }
 
     final x = (b1 * c2 - b2 * c1) / det;
     final y = (c1 * a2 - c2 * a1) / det;
