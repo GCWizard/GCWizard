@@ -314,7 +314,7 @@ Future<Uint8List> triangleData2Image({
   }
 
   final bounds =
-      _Bounds(minX - BOUNDS, maxX + BOUNDS, minY - BOUNDS, maxY + BOUNDS);
+      _Bounds(minX, maxX, minY, maxY);
   final vp =
       _computeViewport(bounds, MAXWIDTH - WIDTHLEGEND, MAXHEIGHT - 2 * BOUNDS);
 
@@ -328,6 +328,7 @@ Future<Uint8List> triangleData2Image({
     ..style = PaintingStyle.fill
     ..strokeWidth = LINE;
 
+  int element = 8;
   // draw background
   canvas.drawRect(Rect.fromLTWH(0, 0, MAXWIDTH, MAXHEIGHT), paint);
 
@@ -337,9 +338,14 @@ Future<Uint8List> triangleData2Image({
   // draw triangle
   // colors according to https://de.wikipedia.org/wiki/Ausgezeichnete_Punkte_im_Dreieck#/media/Datei:Linien_am_Dreieck.svg
   paint.style = PaintingStyle.stroke;
+  paint.strokeWidth = 2 * LINE;
 
   // draw sides a b c
   paint.color = Colors.blueAccent;
+  element = 8;
+  canvas.drawCircle(Offset(MAXWIDTH - , BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  paint.strokeWidth = LINE;
+
   var p1 = _transformPoint(triangle.A, vp);
   var p2 = _transformPoint(triangle.B, vp);
   canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint);

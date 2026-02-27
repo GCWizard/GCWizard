@@ -971,10 +971,8 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
   }
 
   bool _degeneratedTriangle(XYPoint a, XYPoint b, XYPoint c) {
-    a = a.normalized();
-    b = b.normalized();
-    c = c.normalized();
-    return (a.equals(b) || a.equals(c) || b.equals(c));
+
+    return XYPoint.vectorParallel(XYPoint.vector(a, b), XYPoint.vector(a, c));
   }
 
   Map<String, String> _translateLabels(Map<String, String> labels){
