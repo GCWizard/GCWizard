@@ -29,11 +29,9 @@ _Viewport _computeViewport(
 }) {
   final w = b.maxX - b.minX;
   final h = b.maxY - b.minY;
-  print('width $w higeht $h');
 
   final scaleX = (canvasWidth - 2 * padding) / w;
   final scaleY = (canvasHeight - 2 * padding) / h;
-  print('scale $scaleX, $scaleY');
 
   // equal scaling in x-axis and y-axis (no distortion)
   final scale = min(scaleX, scaleY);

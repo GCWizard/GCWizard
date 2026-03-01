@@ -8,7 +8,7 @@ class _TickInfo {
 }
 
 _TickInfo _computeNiceTicks(double minVal, double maxVal, int maxTicks) {
-  final range = _niceNumber(maxVal - minVal, round: false);
+  final range = _niceNumber(maxVal - minVal, round: true);
   final step = _niceNumber(range / (maxTicks - 1), round: true);
 
   final start = (minVal / step).floor() * step;
@@ -167,7 +167,7 @@ void _drawAxesWithAutoTicks(
 
     if (minX <= x && x <= maxX) {
       (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
-      labelPos != null ? _drawLabel(canvas, Offset(labelPos.x, labelPos.y + 4), x.toString()) : null;
+      labelPos != null ? _drawLabel(canvas, Offset(labelPos.x, labelPos.y + 4), x.toStringAsFixed(2)) : null;
     }
   }
 
@@ -204,7 +204,8 @@ Future<Uint8List> triangleData2Image({
   const WIDTHLEGEND = 700.0;
 
   const LABELLENGTH = 30;
-  const DIST = '     ';
+  const DIST = '      ';
+  const DIST3 = NBSP + NBSP + NBSP;
 
   const constraintsLegend =
       ui.ParagraphConstraints(width: WIDTHLEGEND);
@@ -332,7 +333,6 @@ Future<Uint8List> triangleData2Image({
     ..style = PaintingStyle.fill
     ..strokeWidth = LINE;
 
-  int element = 8;
   // draw background
   canvas.drawRect(Rect.fromLTWH(0, 0, MAXWIDTH, MAXHEIGHT), paint);
 
@@ -582,39 +582,74 @@ Future<Uint8List> triangleData2Image({
 
   // draw color legend
   paint.style = PaintingStyle.fill;
+  // sides
   paint.color = Colors.blueAccent;
-  element = 8;
-  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 109), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 122), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 135), 2 * POINT, paint);
+  //midsides
   paint.color = Colors.orange.shade700;
-  element = 25;
-  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 310), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 323), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 336), 2 * POINT, paint);
+  // altitudes
   paint.color = Colors.orange;
-  element = 30;
-  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 375), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 388), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 401), 2 * POINT, paint);
+  // touchpoints exCircle
   paint.color = Colors.green;
-  element = 37;
-  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 440), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 453), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 466), 2 * POINT, paint);
+  // touchpoints inCircle
   paint.color = Colors.green.shade900;
-  element = 40;
-  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 480), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 493), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 506), 2 * POINT, paint);
+  // touchpoints feuerbach circle
   paint.color = Colors.purple;
-  element = 43;
-  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 518), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 531), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 544), 2 * POINT, paint);
+  // clark kimberling points
   paint.color = Colors.red;
-  element = 47;
-  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 583), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 596), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 610), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 623), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 635), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 648), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 661), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 675), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 688), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 700), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 713), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 726), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 739), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 752), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 765), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 778), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 791), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 804), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 817), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 830), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 843), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 856), 2 * POINT, paint);
+  // inCircle
   paint.color = Colors.green.shade900;
-  element = 75;
-  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 895), 2 * POINT, paint);
+  // circumscribed circle
   paint.color = Colors.green;
-  element = 76;
-  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 908), 2 * POINT, paint);
+  // Feuerbach circle
   paint.color = Colors.purple;
-  element = 77;
-  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 920), 2 * POINT, paint);
+  // exCircles
   paint.color = Colors.green;
-  element = 78;
-  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 935), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 947), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 960), 2 * POINT, paint);
 
 
   paint.color = Colors.black;
@@ -628,16 +663,14 @@ Future<Uint8List> triangleData2Image({
     textAlign: TextAlign.right,
   );
 
-  // draw color legend
-
   var paragraphBuilderLegend = ui.ParagraphBuilder(paragraphStyle);
   paragraphBuilderLegend.pushStyle(textStyle);
   paragraphBuilderLegend.addText(labels['LEGEND']! +
-      (' ').padRight(38, '-') +
+      DIST3.padRight(38, '-') +
       '\n' +
       '\n' +
       labels['COORDINATES']! +
-      (' ').padRight(38, '-') +
+      DIST3.padRight(38, '-') +
       '\n' +
       'A'.padLeft(LABELLENGTH, ' ') +
       DIST +
@@ -662,7 +695,7 @@ Future<Uint8List> triangleData2Image({
       ')           ' + NBSP + '\n' +
       '\n' +
       labels['SIDES']! +
-      (' ').padRight(38, '-') +
+      DIST3.padRight(38, '-') +
       '\n' +
       'a'.padLeft(LABELLENGTH, ' ') +
       DIST +
@@ -678,7 +711,7 @@ Future<Uint8List> triangleData2Image({
       '           ' + NBSP + '\n' +
       '\n' +
       labels['ANGLES']! +
-      (' ').padRight(38, '-') +
+      DIST3.padRight(38, '-') +
       '\n' +
       'α'.padLeft(LABELLENGTH, ' ') +
       DIST +
@@ -708,7 +741,7 @@ Future<Uint8List> triangleData2Image({
       '           ' + NBSP + '\n' +
       '\n' +
       labels['SIDESMIDPOINTS']! +
-      (' ').padRight(38, '-') +
+      DIST3.padRight(38, '-') +
       '\n' +
       'a'.padLeft(LABELLENGTH, ' ') +
       DIST +
@@ -733,7 +766,7 @@ Future<Uint8List> triangleData2Image({
       ')           ' + NBSP + '\n' +
       '\n' +
       labels['ALTITUDESBASEPOINTS']! +
-      (' ').padRight(38, '-') +
+      DIST3.padRight(38, '-') +
       '\n' +
       'a'.padLeft(LABELLENGTH, ' ') +
       DIST +
@@ -758,7 +791,7 @@ Future<Uint8List> triangleData2Image({
       ')           ' + NBSP + '\n' +
       '\n' +
       labels['TOUCHPOINTS']! +
-      (' ').padRight(38, '-') +
+      DIST3.padRight(38, '-') +
       '\n' +
       (labels['EXCIRCLE']! + ' a').padLeft(LABELLENGTH, ' ') +
       DIST +
@@ -824,7 +857,7 @@ Future<Uint8List> triangleData2Image({
       FTC.y.toStringAsFixed(2).padLeft(9, ' ') +
       ')           ' + NBSP + '\n' +
       '\nClark Kimberling, Encyclopedia of Triangle Centers' +
-      (' ').padRight(38, '-') +
+      DIST3.padRight(38, '-') +
       '\n' +
       (labels['X1']! + ' X01').padLeft(LABELLENGTH, ' ') +
       DIST +
@@ -982,7 +1015,7 @@ Future<Uint8List> triangleData2Image({
       ')           ' + NBSP + '\n' +
       '\n' +
       labels['CIRCLES']! +
-      (' ').padRight(38, '-') +
+      DIST3.padRight(38, '-') +
       '\n' +
       (labels['INCIRCLE']! + ' X1').padLeft(LABELLENGTH, ' ') +
       DIST +
