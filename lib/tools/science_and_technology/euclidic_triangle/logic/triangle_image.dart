@@ -194,8 +194,8 @@ Future<Uint8List> triangleData2Image({
 }) async {
   const BOUNDS = 50.0;
 
-  const MAXWIDTH = 5300.0;
-  const MAXHEIGHT = 6000.0;
+  const MAXWIDTH = 4096.0;
+  const MAXHEIGHT = 4069.0;
 
   const POINT = 2.0;
   const LINE = 1.0;
@@ -346,16 +346,26 @@ Future<Uint8List> triangleData2Image({
 
   // draw sides a b c
   paint.color = Colors.blueAccent;
-  element = 8;
-  canvas.drawCircle(Offset(MAXWIDTH, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
-  paint.strokeWidth = LINE;
-
   var p1 = _transformPoint(triangle.A, vp);
   var p2 = _transformPoint(triangle.B, vp);
   (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
   p2 = _transformPoint(triangle.C, vp);
   (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
   p1 = _transformPoint(triangle.B, vp);
+  (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
+
+  paint.strokeWidth = LINE;
+
+  // draw mid sides
+  paint.color = Colors.orange.shade700;
+  p1 = _transformPoint(triangle.A, vp);
+  p2 = _transformPoint(MSA, vp);
+  (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
+  p1 = _transformPoint(triangle.B, vp);
+  p2 = _transformPoint(MSB, vp);
+  (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
+  p1 = _transformPoint(triangle.C, vp);
+  p2 = _transformPoint(MSC, vp);
   (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
 
   // draw altitudes ha hb hc
@@ -368,18 +378,6 @@ Future<Uint8List> triangleData2Image({
   (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
   p1 = _transformPoint(triangle.C, vp);
   p2 = _transformPoint(AC, vp);
-  (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
-
-  // draw mid sides
-  paint.color = Colors.orange.shade700;
-  p1 = _transformPoint(triangle.A, vp);
-  p2 = _transformPoint(MSA, vp);
-  (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
-  p1 = _transformPoint(triangle.B, vp);
-  p2 = _transformPoint(MSB, vp);
-  (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
-  p1 = _transformPoint(triangle.C, vp);
-  p2 = _transformPoint(MSC, vp);
   (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
 
   // draw points
@@ -423,6 +421,7 @@ Future<Uint8List> triangleData2Image({
   p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
 
   // draw exCircles center points
+  paint.color = Colors.green;
   p1 = _transformPoint(XYPoint(x: EA.x, y: EA.y), vp);
   p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
   p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'exA') : null;
@@ -434,7 +433,7 @@ Future<Uint8List> triangleData2Image({
   p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'exC') : null;
 
   // draw Mid side base Points
-  paint.color = Colors.orange;
+  paint.color = Colors.orange.shade700;
   p1 = _transformPoint(MSA, vp);
   p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
   p1 = _transformPoint(MSB, vp);
@@ -443,6 +442,7 @@ Future<Uint8List> triangleData2Image({
   p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
 
   // draw Altitude base Points
+  paint.color = Colors.orange;
   p1 = _transformPoint(AA, vp);
   p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
   p1 = _transformPoint(AB, vp);
@@ -580,6 +580,43 @@ Future<Uint8List> triangleData2Image({
   paint.style = PaintingStyle.fill;
   canvas.drawRect(Rect.fromLTWH(0, 0, WIDTHLEGEND, 62 * FONTSIZE * 1.2), paint);
 
+  // draw color legend
+  paint.style = PaintingStyle.fill;
+  paint.color = Colors.blueAccent;
+  element = 8;
+  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  paint.color = Colors.orange.shade700;
+  element = 25;
+  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  paint.color = Colors.orange;
+  element = 30;
+  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  paint.color = Colors.green;
+  element = 37;
+  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  paint.color = Colors.green.shade900;
+  element = 40;
+  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  paint.color = Colors.purple;
+  element = 43;
+  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  paint.color = Colors.red;
+  element = 47;
+  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  paint.color = Colors.green.shade900;
+  element = 75;
+  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  paint.color = Colors.green;
+  element = 76;
+  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  paint.color = Colors.purple;
+  element = 77;
+  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+  paint.color = Colors.green;
+  element = 78;
+  canvas.drawCircle(Offset(MAXWIDTH - FONTSIZE * 26, BOUNDS + FONTSIZE * element), 2 * POINT, paint);
+
+
   paint.color = Colors.black;
   final textStyle = ui.TextStyle(
     color: paint.color,
@@ -590,6 +627,8 @@ Future<Uint8List> triangleData2Image({
     textDirection: ui.TextDirection.ltr,
     textAlign: TextAlign.right,
   );
+
+  // draw color legend
 
   var paragraphBuilderLegend = ui.ParagraphBuilder(paragraphStyle);
   paragraphBuilderLegend.pushStyle(textStyle);
