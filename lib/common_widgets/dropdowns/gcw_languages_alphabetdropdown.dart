@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_alphabetdropdown.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
+import 'package:gc_wizard/utils/string_utils.dart';
 import 'package:gc_wizard/utils/ui_dependent_utils/common_widget_utils.dart';
 
 class GCWLanguagesAlphabetDropDown extends StatefulWidget {
@@ -98,7 +99,7 @@ class _GCWLanguagesAlphabetDropDownState extends State<GCWLanguagesAlphabetDropD
       onCustomAlphabetChanged: (String text) {
         _CUSTOM_ALPHABET.alphabet.clear();
         for (int i = 0; i < text.length; i++) {
-          _CUSTOM_ALPHABET.alphabet.putIfAbsent(text[i].toUpperCase(), () => (i + 1).toString());
+          _CUSTOM_ALPHABET.alphabet.putIfAbsent(toUpperCaseWithSZ(text[i]), () => (i + 1).toString());
         }
         _currentAlphabet = _CUSTOM_ALPHABET;
         _subtitles[_CUSTOM_ALPHABET] = _CUSTOM_ALPHABET.alphabet.keys.join();

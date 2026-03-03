@@ -458,4 +458,26 @@ void main() {
       });
     }
   });
+
+  group("StringUtils.toUpperCaseWithSZ:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '', 'expectedOutput' : ''},
+      {'input' : '123', 'expectedOutput' : '123'},
+      {'input' : 'A', 'expectedOutput' : 'A'},
+      {'input' : 'Aaa', 'expectedOutput' : 'AAA'},
+      {'input' : 'ß', 'expectedOutput' : 'ẞ'},
+      {'input' : 'ßẞ', 'expectedOutput' : 'ẞẞ'},
+      {'input' : 'außer', 'expectedOutput' : 'AUẞER'},
+      {'input' : 'xyzäöüß', 'expectedOutput' : 'XYZÄÖÜẞ'},
+      {'input' : 'XYZÄÖÜẞABC', 'expectedOutput' : 'XYZÄÖÜẞABC'},
+      {'input' : 'XYZÄÖÜ123ßABC', 'expectedOutput' : 'XYZÄÖÜ123ẞABC'},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}', () {
+        var _actual = toUpperCaseWithSZ(elem['input'] as String);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
 }

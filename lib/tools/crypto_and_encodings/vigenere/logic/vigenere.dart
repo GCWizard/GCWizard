@@ -1,5 +1,6 @@
 import 'package:gc_wizard/tools/crypto_and_encodings/rotation/logic/rotation.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
+import 'package:gc_wizard/utils/string_utils.dart';
 
 class _KeyOutput {
   String key;
@@ -11,7 +12,7 @@ class _KeyOutput {
 _KeyOutput? _getKey(String key, int aValue, String alphabet) {
   if (key.isEmpty) return null;
 
-  var keyLetters = key.toUpperCase().replaceAll(RegExp(r'[^' + alphabet + ']'), '');
+  var keyLetters = toUpperCaseWithSZ(key).replaceAll(RegExp(r'[^' + alphabet + ']'), '');
   if (keyLetters.isNotEmpty) {
     return _KeyOutput('letters', keyLetters);
   }
@@ -39,9 +40,10 @@ _KeyOutput? _getKey(String key, int aValue, String alphabet) {
 
 String encryptVigenere(String input, String key, bool autoKey, {int aValue = 0, bool ignoreNonLetters = true, Alphabet? alphabet}) {
   if (input.isEmpty) return '';
+
   alphabet ??= alphabetAZ;
   var _alphabet = <String, int>{};
-  var _letters = alphabetAZ.alphabet.keys.join().toUpperCase();
+  var _letters = toUpperCaseWithSZ(alphabet.alphabet.keys.join());
   for (int i = 0; i < _letters.length; i++) {
     _alphabet.putIfAbsent(_letters[i], () => (i + 1));
   }
@@ -55,7 +57,7 @@ String encryptVigenere(String input, String key, bool autoKey, {int aValue = 0, 
   String output = '';
 
   if (autoKey) {
-    key += input.toUpperCase().replaceAll(RegExp(r'[^' + _letters + ']'), '');
+    key += toUpperCaseWithSZ(input).replaceAll(RegExp(r'[^' + _letters + ']'), '');
   } else {
     while (key.length < input.length) {
       key += key;
@@ -65,7 +67,7 @@ String encryptVigenere(String input, String key, bool autoKey, {int aValue = 0, 
   int keyOffset = 0;
 
   for (int i = 0; i < input.length; ++i) {
-    if (ignoreNonLetters && !_alphabet.containsKey(input[i].toUpperCase())) {
+    if (ignoreNonLetters && !_alphabet.containsKey(toUpperCaseWithSZ(input[i]))) {
       keyOffset++;
       output += input[i];
 
@@ -87,7 +89,7 @@ String decryptVigenere(String input, String key, bool autoKey, {int aValue = 0, 
   if (input.isEmpty) return '';
   alphabet ??= alphabetAZ;
   var _alphabet = <String, int>{};
-  var _letters = alphabetAZ.alphabet.keys.join().toUpperCase();
+  var _letters = toUpperCaseWithSZ(alphabet.alphabet.keys.join());
   for (int i = 0; i < _letters.length; i++) {
     _alphabet.putIfAbsent(_letters[i], () => (i + 1));
   }
@@ -112,7 +114,7 @@ String decryptVigenere(String input, String key, bool autoKey, {int aValue = 0, 
   int keyOffset = 0;
 
   for (int i = 0; i < input.length; ++i) {
-    if (ignoreNonLetters && !_alphabet.containsKey(input[i].toUpperCase())) {
+    if (ignoreNonLetters && !_alphabet.containsKey(toUpperCaseWithSZ(input[i]))) {
       keyOffset++;
       output += input[i];
 
@@ -121,7 +123,7 @@ String decryptVigenere(String input, String key, bool autoKey, {int aValue = 0, 
 
     int position;
     if (autoKey) {
-      String s = originalKey + output.toUpperCase().replaceAll(RegExp(r'[^' + _letters + ']'), '');
+      String s = originalKey + toUpperCaseWithSZ(output).replaceAll(RegExp(r'[^' + _letters + ']'), '');
 
       if (i - keyOffset >= s.length) break;
 

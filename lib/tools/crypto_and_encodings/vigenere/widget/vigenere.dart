@@ -208,6 +208,7 @@ class _VigenereState extends State<Vigenere> {
         _currentAutokey,
         aValue: _currentAValue,
         ignoreNonLetters: _currentAutokey ? true : _currentNonLetters,
+        alphabet: _currentAlphabet
       );
     } else {
       output = decryptVigenere(
@@ -216,6 +217,7 @@ class _VigenereState extends State<Vigenere> {
         _currentAutokey,
         aValue: _currentAValue,
         ignoreNonLetters: _currentAutokey ? true : _currentNonLetters,
+        alphabet: _currentAlphabet
       );
     }
 
