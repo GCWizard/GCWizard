@@ -1,3 +1,4 @@
+import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/logic/substitution_logic_aggregator.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rotation/logic/rotation.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/vigenere/logic/vigenere.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
@@ -19,7 +20,7 @@ String _digitsToAlpha(String input, {int? aValue = 0, bool? removeNonDigits = tr
 
   removeNonDigits ??= false;
 
-  final letters = Rotator().rotate(Rotator.defaultAlphabetAlpha, aValue);
+  final letters = Rotator().rotate(DEFAULT_ALPHABET.toUpperCase(), aValue);
 
   return input.split('').map((character) {
     var value = alphabet_09[character];

@@ -8,10 +8,10 @@ class _KeyOutput {
   _KeyOutput(this.type, this.key);
 }
 
-_KeyOutput? _getKey(String key, int aValue) {
+_KeyOutput? _getKey(String key, int aValue, String alphabet) {
   if (key.isEmpty) return null;
 
-  var keyLetters = key.toUpperCase().replaceAll(RegExp(r'[^A-Z]'), '');
+  var keyLetters = key.toUpperCase().replaceAll(RegExp(r'[^' + alphabet + ']'), '');
   if (keyLetters.isNotEmpty) {
     return _KeyOutput('letters', keyLetters);
   }
@@ -37,19 +37,25 @@ _KeyOutput? _getKey(String key, int aValue) {
   return null;
 }
 
-String encryptVigenere(String input, String key, bool autoKey, {int aValue = 0, bool ignoreNonLetters = true}) {
+String encryptVigenere(String input, String key, bool autoKey, {int aValue = 0, bool ignoreNonLetters = true, Alphabet? alphabet}) {
   if (input.isEmpty) return '';
+  alphabet ??= alphabetAZ;
+  var _alphabet = <String, int>{};
+  var _letters = alphabetAZ.alphabet.keys.join().toUpperCase();
+  for (int i = 0; i < _letters.length; i++) {
+    _alphabet.putIfAbsent(_letters[i], () => (i + 1));
+  }
 
-  var checkedKey = _getKey(key, aValue);
+  var checkedKey = _getKey(key, aValue, _letters);
   if (checkedKey == null) return input;
 
   key = checkedKey.key;
-  var aOffset = (alphabet_AZ['A'] ?? 0) - aValue;
+  var aOffset = 1 - aValue;
 
   String output = '';
 
   if (autoKey) {
-    key += input.toUpperCase().replaceAll(RegExp(r'[^A-Z]'), '');
+    key += input.toUpperCase().replaceAll(RegExp(r'[^' + _letters + ']'), '');
   } else {
     while (key.length < input.length) {
       key += key;
@@ -59,7 +65,7 @@ String encryptVigenere(String input, String key, bool autoKey, {int aValue = 0, 
   int keyOffset = 0;
 
   for (int i = 0; i < input.length; ++i) {
-    if (ignoreNonLetters && !alphabet_AZ.containsKey(input[i].toUpperCase())) {
+    if (ignoreNonLetters && !_alphabet.containsKey(input[i].toUpperCase())) {
       keyOffset++;
       output += input[i];
 
@@ -68,25 +74,31 @@ String encryptVigenere(String input, String key, bool autoKey, {int aValue = 0, 
 
     if (i - keyOffset >= key.length) break;
 
-    var rotator = alphabet_AZ[key[i - keyOffset]] ?? 0;
+    var rotator = _alphabet[key[i - keyOffset]] ?? 0;
     if (checkedKey.type == 'letters') rotator -= aOffset;
 
-    output += Rotator().rotate(input[i], rotator);
+    output += Rotator(alphabet: _letters).rotate(input[i], rotator);
   }
 
   return output;
 }
 
-String decryptVigenere(String input, String key, bool autoKey, {int aValue = 0, bool ignoreNonLetters = true}) {
+String decryptVigenere(String input, String key, bool autoKey, {int aValue = 0, bool ignoreNonLetters = true, Alphabet? alphabet}) {
   if (input.isEmpty) return '';
+  alphabet ??= alphabetAZ;
+  var _alphabet = <String, int>{};
+  var _letters = alphabetAZ.alphabet.keys.join().toUpperCase();
+  for (int i = 0; i < _letters.length; i++) {
+    _alphabet.putIfAbsent(_letters[i], () => (i + 1));
+  }
 
-  var checkedKey = _getKey(key, aValue);
+  var checkedKey = _getKey(key, aValue, _letters);
   if (checkedKey == null) return input;
 
   key = checkedKey.key;
 
   var aOffset = 1;
-  if (checkedKey.type == 'letters') aOffset = (alphabet_AZ['A'] ?? 0) - aValue;
+  if (checkedKey.type == 'letters') aOffset -= aValue;
 
   String originalKey = key;
   String output = '';
@@ -100,7 +112,7 @@ String decryptVigenere(String input, String key, bool autoKey, {int aValue = 0, 
   int keyOffset = 0;
 
   for (int i = 0; i < input.length; ++i) {
-    if (ignoreNonLetters && !alphabet_AZ.containsKey(input[i].toUpperCase())) {
+    if (ignoreNonLetters && !_alphabet.containsKey(input[i].toUpperCase())) {
       keyOffset++;
       output += input[i];
 
@@ -109,21 +121,21 @@ String decryptVigenere(String input, String key, bool autoKey, {int aValue = 0, 
 
     int position;
     if (autoKey) {
-      String s = originalKey + output.toUpperCase().replaceAll(RegExp(r'[^A-Z]'), '');
+      String s = originalKey + output.toUpperCase().replaceAll(RegExp(r'[^' + _letters + ']'), '');
 
       if (i - keyOffset >= s.length) break;
 
-      position = alphabet_AZ[s[i - keyOffset]] ?? 0;
+      position = _alphabet[s[i - keyOffset]] ?? 0;
     } else {
       if (i - keyOffset >= key.length) break;
 
-      position = alphabet_AZ[key[i - keyOffset]] ?? 0;
+      position = _alphabet[key[i - keyOffset]] ?? 0;
     }
 
     var rotator = -position;
     if (checkedKey.type == 'letters') rotator += aOffset;
 
-    output += Rotator().rotate(input[i], rotator);
+    output += Rotator(alphabet: _letters).rotate(input[i], rotator);
   }
 
   return output;

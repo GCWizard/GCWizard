@@ -1,13 +1,13 @@
+import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/logic/substitution_logic_aggregator.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
 class Rotator {
-  static const defaultAlphabetAlpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   static const defaultAlphabetDigits = '0123456789';
 
   late String alphabet;
 
-  Rotator({String? alphabet = defaultAlphabetAlpha}) {
-    this.alphabet = alphabet ?? '';
+  Rotator({String? alphabet = DEFAULT_ALPHABET}) {
+    this.alphabet = (alphabet ?? '').toUpperCase();
   }
 
   String rotate(String input, int key, {bool removeUnknownCharacters = false, bool ignoreCase = true}) {
@@ -46,7 +46,7 @@ class Rotator {
   }
 
   String rot13(String input) {
-    alphabet = defaultAlphabetAlpha;
+    alphabet = DEFAULT_ALPHABET.toUpperCase();
     return rotate(input, 13);
   }
 
@@ -57,7 +57,7 @@ class Rotator {
 
   String rot18(String input) {
     return input.split('').map((char) {
-      if (defaultAlphabetAlpha.contains(char.toUpperCase())) {
+      if (DEFAULT_ALPHABET.toUpperCase().contains(char.toUpperCase())) {
         return rot13(char);
       } else if (defaultAlphabetDigits.contains(char)) {
         return rot5(char);
