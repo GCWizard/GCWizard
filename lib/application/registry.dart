@@ -155,6 +155,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/affine/widget/affine.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/alphabet_values/widget/alphabet_values.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/amsco/widget/amsco.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/atbash/widget/atbash.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/autokey/widget/autokey.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/avemaria/widget/avemaria.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/babylon_numbers/widget/babylon_numbers.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/bacon/widget/bacon.dart';
@@ -274,6 +275,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rot18/widget/rot18
 import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rot47/widget/rot47.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rot5/widget/rot5.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rotation_general/widget/rotation_general.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rotxyz/widget/rotxyz.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rsa/rsa/widget/rsa.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rsa/rsa_d_calculator/widget/rsa_d_calculator.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rsa/rsa_d_checker/widget/rsa_d_checker.dart';
@@ -648,6 +650,16 @@ void initializeRegistry(BuildContext context) {
         'atbash',
       ],
       deeplinkAlias: const ['atbasch'],
+    ),
+    GCWTool(
+        tool: const Autokey(),
+        id: 'autokey',
+        categories: const [
+          ToolCategory.CRYPTOGRAPHY
+        ],
+        searchKeys: const [
+          'autokey',
+        ]
     ),
     GCWTool(tool: const AveMaria(), id: 'avemaria', categories: const [
       ToolCategory.CRYPTOGRAPHY
@@ -6721,6 +6733,10 @@ void initializeRegistry(BuildContext context) {
     GCWTool(tool: const Rot123(), id: 'rotation_rot123', searchKeys: const [
       'rotation',
       'rotation_rot123',
+    ]),
+    GCWTool(tool: const RotXYZ(), id: 'rotation_rotxyz', searchKeys: const [
+      'rotation',
+      'rotation_rotxyz',
     ]),
     GCWTool(tool: RotationGeneral(), id: 'rotation_general', searchKeys: const [
       'rotation',

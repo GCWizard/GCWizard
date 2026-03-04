@@ -86,9 +86,10 @@ void main() {
       {'input' : 'AbCDeF', 'key': '12 13', 'autoKey': false, 'aValue': 1, 'expectedOutput' : 'MoOQqS'},
       {'input' : 'AbCDeF', 'key': '12    13', 'autoKey': false, 'aValue': 13, 'expectedOutput' : 'MoOQqS'},
       {'input' : 'AbCDeF', 'key': '12 ,13', 'autoKey': true, 'aValue': 1, 'expectedOutput' : 'MoDFhJ'},
-      {'input' : 'AbCDeF', 'key': '12, -13', 'autoKey': true, 'aValue': 13, 'expectedOutput' : 'MoDFhJ'},
+      {'input' : 'AbCDeF', 'key': '12, -13', 'autoKey': true, 'aValue': 13, 'expectedOutput' : 'MoPRtV'},
 
       {'input' : 'Unter', 'key': '1 17 24 16 0', 'autoKey': false, 'aValue': 13, 'expectedOutput' : 'Verur'},
+      {'input' : 'AbcxyZ', 'key': '1 2,3,,,4 5; 6', 'autoKey': false, 'aValue': 1, 'expectedOutput' : 'BdfbdF'},
     ];
 
     for (var elem in _inputsToExpected) {
@@ -104,6 +105,7 @@ void main() {
       {'input' : 'ABC', 'key': 'MNO', 'autoKey': false, 'aValue': 0, 'alphabet': 'ZYXWVUTSRQPONMLKJIHGFEDCBA', 'expectedOutput' : 'NPR'},
       {'input' : 'ABC', 'key': 'MNO', 'autoKey': false, 'aValue': 0, 'alphabet': 'QWERTZUIOPASDFGHJKLYXCVBNM', 'expectedOutput' : 'PCR'},
       {'input' : 'ß', 'key': 'ß', 'autoKey': false, 'aValue': 0, 'alphabet': 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß', 'expectedOutput' : 'ü'},
+      {'input' : 'ß', 'key': '29', 'autoKey': false, 'aValue': 0, 'alphabet': 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß', 'expectedOutput' : 'ü'},
       {'input' : 'ß', 'key': 'ẞ', 'autoKey': false, 'aValue': 0, 'alphabet': 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß', 'expectedOutput' : 'ü'},
       {'input' : 'ẞ', 'key': 'ß', 'autoKey': false, 'aValue': 0, 'alphabet': 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß', 'expectedOutput' : 'Ü'},
       {'input' : 'ẞ', 'key': 'ẞ', 'autoKey': false, 'aValue': 0, 'alphabet': 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß', 'expectedOutput' : 'Ü'},
@@ -115,6 +117,8 @@ void main() {
       {'input' : 'ß', 'key': 'ß', 'autoKey': false, 'aValue': -52, 'alphabet': 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜẞ', 'expectedOutput' : 'g'},
       {'input' : 'Außer Spesen nicht gewährt', 'key': 'Xvxcß', 'autoKey': true, 'aValue': -2, 'alphabet': 'ZYXWVUTSRQPONMLKJIHGFEDCBAÄÖÜẞ', 'expectedOutput' : 'Asßnu Zmhäöi ftüsj ßtbndaa'},
       {'input' : 'Außer Spesen nicht gewährt', 'key': 'Xvxcß', 'autoKey': false, 'aValue': -2, 'alphabet': 'ZYXWVUTSRQPONMLKJIHGFEDCBAÄÖÜẞ', 'expectedOutput' : 'Asßnu Sneühn lilkt eebchpt'},
+      {'input' : 'Außer Spesen nicht gewährt', 'key': '0 2 0, 21 27', 'autoKey': false, 'aValue': -2, 'alphabet': 'ZYXWVUTSRQPONMLKJIHGFEDCBAÄÖÜẞ', 'expectedOutput' : 'Asßnu Sneühn lilkt eebchpt'},
+      {'input' : 'Außer Spesen nicht gewährt', 'key': '0 2 0, 21 27', 'autoKey': true, 'aValue': -2, 'alphabet': 'ZYXWVUTSRQPONMLKJIHGFEDCBAÄÖÜẞ', 'expectedOutput' : 'Asßnu Zmhäöi ftüsj ßtbndaa'},
       {'input' : 'ABC', 'key': 'abc', 'autoKey': false, 'aValue': -2, 'alphabet': 'abcd', 'expectedOutput' : 'CAC'},
     ];
 
@@ -131,6 +135,31 @@ void main() {
             elem['input'] as String, elem['key'] as String, elem['autoKey'] as bool, aValue: elem['aValue'] as int, alphabet: alphabet);
         expect(_actual, elem['expectedOutput']);
 
+      });
+    }
+  });
+
+  group("Vigenere.encryptUnrepeatedKey:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'input' : '', 'key': '', 'autoKey': false, 'aValue': 1, 'expectedOutput' : '', 'repeatKey' : true},
+      {'input' : '', 'key': '', 'autoKey': false, 'aValue': 1, 'expectedOutput' : '', 'repeatKey' : false},
+      {'input' : 'ABCDE', 'key': '', 'autoKey': false, 'aValue': 1, 'expectedOutput' : 'ABCDE', 'repeatKey' : true},
+      {'input' : 'ABCDE', 'key': '', 'autoKey': false, 'aValue': 1, 'expectedOutput' : 'ABCDE', 'repeatKey' : false},
+      {'input' : '', 'key': 'AB', 'autoKey': false, 'aValue': 1, 'expectedOutput' : '', 'repeatKey' : true},
+      {'input' : '', 'key': 'AB', 'autoKey': false, 'aValue': 1, 'expectedOutput' : '', 'repeatKey' : false},
+
+      {'input' : 'ABCDE', 'key': 'AB', 'autoKey': false, 'aValue': 1, 'expectedOutput' : 'BDDFF', 'repeatKey' : true},
+      {'input' : 'ABCDE', 'key': 'AB', 'autoKey': false, 'aValue': 1, 'expectedOutput' : 'BDCDE', 'repeatKey' : false},
+      {'input' : 'ABCDE', 'key': 'ABCDE', 'autoKey': false, 'aValue': 1, 'expectedOutput' : 'BDFHJ', 'repeatKey' : true},
+      {'input' : 'ABCDE', 'key': 'ABCDE', 'autoKey': false, 'aValue': 1, 'expectedOutput' : 'BDFHJ', 'repeatKey' : false},
+      {'input' : 'ABCDE', 'key': 'ABCDEF', 'autoKey': false, 'aValue': 1, 'expectedOutput' : 'BDFHJ', 'repeatKey' : true},
+      {'input' : 'ABCDE', 'key': 'ABCDEF', 'autoKey': false, 'aValue': 1, 'expectedOutput' : 'BDFHJ', 'repeatKey' : false},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}, key: ${elem['key']}, aValue: ${elem['aValue']}, autoKey: ${elem['autoKey']}, repeatKey: ${elem['repeatKey']}', () {
+        var _actual = encryptVigenere(elem['input'] as String, elem['key'] as String, elem['autoKey'] as bool, aValue: elem['aValue'] as int, repeatKey: elem['repeatKey'] as bool);
+        expect(_actual, elem['expectedOutput']);
       });
     }
   });
@@ -165,7 +194,7 @@ void main() {
       {'expectedOutput' : 'AbCDeF', 'key': 'MN', 'autoKey': false, 'aValue': -26, 'input' : 'MoOQqS'},
       {'expectedOutput' : 'AbCDeF', 'key': 'MN', 'autoKey': false, 'aValue': -27, 'input' : 'LnNPpR'},
       {'expectedOutput' : 'AbCDeF', 'key': 'MN', 'autoKey': false, 'aValue': -52, 'input' : 'MoOQqS'},
-      {'expectedOutput' : 'AbCDeF', 'key': 'mn', 'autoKey': true, 'aValue': 1, 'input' : 'NpDFhJ'},
+      {'expectedOutput' : 'AbCDeF', 'key': 'mn', 'autoKey': true, 'aValue': 1, 'input' : 'NpDFhJ'}, // ABCDEFGIHJKLMNOPQRSTUVWXYZ
       {'expectedOutput' : 'AbCDeF', 'key': 'mn', 'autoKey': true, 'aValue': 13, 'input' : 'ZbPRtV'},
       {'expectedOutput' : 'AbCDeF', 'key': 'mn', 'autoKey': true, 'aValue': 26, 'input' : 'MoCEgI'},
       {'expectedOutput' : 'AbCDeF', 'key': 'mn', 'autoKey': true, 'aValue': 27, 'input' : 'NpDFhJ'},
@@ -216,9 +245,10 @@ void main() {
       {'expectedOutput' : 'AbCDeF', 'key': '12 13', 'autoKey': false, 'aValue': 1, 'input' : 'MoOQqS'},
       {'expectedOutput' : 'AbCDeF', 'key': '12    13', 'autoKey': false, 'aValue': 13, 'input' : 'MoOQqS'},
       {'expectedOutput' : 'AbCDeF', 'key': '12 ,13', 'autoKey': true, 'aValue': 1, 'input' : 'MoDFhJ'},
-      {'expectedOutput' : 'AbCDeF', 'key': '12, -13', 'autoKey': true, 'aValue': 13, 'input' : 'MoDFhJ'},
+      {'expectedOutput' : 'AbCDeF', 'key': '12, -13', 'autoKey': true, 'aValue': 13, 'input' : 'MoPRtV'},
 
       {'expectedOutput' : 'Unter', 'key': '1 17 24 16 0', 'autoKey': false, 'aValue': 13, 'input' : 'Verur'},
+      {'expectedOutput' : 'AbcxyZ', 'key': '1 2,3,,,4 5; 6', 'autoKey': false, 'aValue': 1, 'input' : 'BdfbdF'},
     ];
 
     for (var elem in _inputsToExpected) {
@@ -234,6 +264,7 @@ void main() {
       {'expectedOutput' : 'ABC', 'key': 'MNO', 'autoKey': false, 'aValue': 0, 'alphabet': 'ZYXWVUTSRQPONMLKJIHGFEDCBA', 'input' : 'NPR'},
       {'expectedOutput' : 'ABC', 'key': 'MNO', 'autoKey': false, 'aValue': 0, 'alphabet': 'QWERTZUIOPASDFGHJKLYXCVBNM', 'input' : 'PCR'},
       {'expectedOutput' : 'ß', 'key': 'ß', 'autoKey': false, 'aValue': 0, 'alphabet': 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß', 'input' : 'ü'},
+      {'expectedOutput' : 'ß', 'key': '29', 'autoKey': false, 'aValue': 0, 'alphabet': 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß', 'input' : 'ü'},
       {'expectedOutput' : 'ß', 'key': 'ẞ', 'autoKey': false, 'aValue': 0, 'alphabet': 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß', 'input' : 'ü'},
       {'expectedOutput' : 'ẞ', 'key': 'ß', 'autoKey': false, 'aValue': 0, 'alphabet': 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß', 'input' : 'Ü'},
       {'expectedOutput' : 'ẞ', 'key': 'ẞ', 'autoKey': false, 'aValue': 0, 'alphabet': 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß', 'input' : 'Ü'},
@@ -245,6 +276,8 @@ void main() {
       {'expectedOutput' : 'ß', 'key': 'ß', 'autoKey': false, 'aValue': -52, 'alphabet': 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜẞ', 'input' : 'g'},
       {'expectedOutput' : 'Außer Spesen nicht gewährt', 'key': 'Xvxcß', 'autoKey': true, 'aValue': -2, 'alphabet': 'ZYXWVUTSRQPONMLKJIHGFEDCBAÄÖÜẞ', 'input' : 'Asßnu Zmhäöi ftüsj ßtbndaa'},
       {'expectedOutput' : 'Außer Spesen nicht gewährt', 'key': 'Xvxcß', 'autoKey': false, 'aValue': -2, 'alphabet': 'ZYXWVUTSRQPONMLKJIHGFEDCBAÄÖÜẞ', 'input' : 'Asßnu Sneühn lilkt eebchpt'},
+      {'expectedOutput' : 'Außer Spesen nicht gewährt', 'key': '0 2 0, 21 27', 'autoKey': false, 'aValue': -2, 'alphabet': 'ZYXWVUTSRQPONMLKJIHGFEDCBAÄÖÜẞ', 'input' : 'Asßnu Sneühn lilkt eebchpt'},
+      {'expectedOutput' : 'Außer Spesen nicht gewährt', 'key': '0 2 0, 21 27', 'autoKey': true, 'aValue': -2, 'alphabet': 'ZYXWVUTSRQPONMLKJIHGFEDCBAÄÖÜẞ', 'input' : 'Asßnu Zmhäöi ftüsj ßtbndaa'},
       {'expectedOutput' : 'ABC', 'key': 'abc', 'autoKey': false, 'aValue': -2, 'alphabet': 'abcd', 'input' : 'CAC'},
     ];
 
@@ -259,6 +292,31 @@ void main() {
 
         var _actual = decryptVigenere(
             elem['input'] as String, elem['key'] as String, elem['autoKey'] as bool, aValue: elem['aValue'] as int, alphabet: alphabet);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
+
+  group("Vigenere.decryptUnrepeatedKey:", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'expectedOutput' : '', 'key': '', 'autoKey': false, 'aValue': 1, 'input' : '', 'repeatKey' : true},
+      {'expectedOutput' : '', 'key': '', 'autoKey': false, 'aValue': 1, 'input' : '', 'repeatKey' : false},
+      {'expectedOutput' : 'ABCDE', 'key': '', 'autoKey': false, 'aValue': 1, 'input' : 'ABCDE', 'repeatKey' : true},
+      {'expectedOutput' : 'ABCDE', 'key': '', 'autoKey': false, 'aValue': 1, 'input' : 'ABCDE', 'repeatKey' : false},
+      {'expectedOutput' : '', 'key': 'AB', 'autoKey': false, 'aValue': 1, 'input' : '', 'repeatKey' : true},
+      {'expectedOutput' : '', 'key': 'AB', 'autoKey': false, 'aValue': 1, 'input' : '', 'repeatKey' : false},
+
+      {'expectedOutput' : 'ABCDE', 'key': 'AB', 'autoKey': false, 'aValue': 1, 'input' : 'BDDFF', 'repeatKey' : true},
+      {'expectedOutput' : 'ABCDE', 'key': 'AB', 'autoKey': false, 'aValue': 1, 'input' : 'BDCDE', 'repeatKey' : false},
+      {'expectedOutput' : 'ABCDE', 'key': 'ABCDE', 'autoKey': false, 'aValue': 1, 'input' : 'BDFHJ', 'repeatKey' : true},
+      {'expectedOutput' : 'ABCDE', 'key': 'ABCDE', 'autoKey': false, 'aValue': 1, 'input' : 'BDFHJ', 'repeatKey' : false},
+      {'expectedOutput' : 'ABCDE', 'key': 'ABCDEF', 'autoKey': false, 'aValue': 1, 'input' : 'BDFHJ', 'repeatKey' : true},
+      {'expectedOutput' : 'ABCDE', 'key': 'ABCDEF', 'autoKey': false, 'aValue': 1, 'input' : 'BDFHJ', 'repeatKey' : false},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('input: ${elem['input']}, key: ${elem['key']}, aValue: ${elem['aValue']}, autoKey: ${elem['autoKey']}, repeatKey: ${elem['repeatKey']}', () {
+        var _actual = decryptVigenere(elem['input'] as String, elem['key'] as String, elem['autoKey'] as bool, aValue: elem['aValue'] as int, repeatKey: elem['repeatKey'] as bool);
         expect(_actual, elem['expectedOutput']);
       });
     }

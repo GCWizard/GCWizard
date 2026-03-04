@@ -70,7 +70,9 @@ const String _apiSpecification = '''
 ''';
 
 class Vigenere extends GCWWebStatefulWidget {
-  Vigenere({super.key}) : super(apiSpecification: _apiSpecification);
+  final bool autoKey;
+
+  Vigenere({this.autoKey = false, super.key}) : super(apiSpecification: _apiSpecification);
 
   @override
   _VigenereState createState() => _VigenereState();
@@ -107,6 +109,8 @@ class _VigenereState extends State<Vigenere> {
       widget.webParameter = null;
     }
 
+    _currentAutokey = widget.autoKey;
+
     _inputController = TextEditingController(text: _currentInput);
     _keyController = TextEditingController(text: _currentKey);
   }
@@ -120,6 +124,11 @@ class _VigenereState extends State<Vigenere> {
 
   @override
   Widget build(BuildContext context) {
+    var firstLetter = 'A';
+    if (_currentAlphabet.alphabet.isNotEmpty) {
+      firstLetter = _currentAlphabet.alphabet.keys.first;
+    }
+
     return Column(
       children: <Widget>[
         GCWTextField(
@@ -146,7 +155,7 @@ class _VigenereState extends State<Vigenere> {
           child: Column(
             children: [
               GCWIntegerSpinner(
-                title: 'A',
+                title: firstLetter,
                 value: _currentAValue,
                 onChanged: (value) {
                   setState(() {
