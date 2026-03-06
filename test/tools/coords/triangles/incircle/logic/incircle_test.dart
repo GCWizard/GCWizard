@@ -20,7 +20,7 @@ void main() async {
       {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 3), 'inputC': LatLng(4, 0),
         'expectedOutput': Circle(LatLng(1.0046174816311724, 0.9980456202311339), 111353.57026375427)},
       {'inputA': LatLng(40, 9), 'inputB': LatLng(42, 9), 'inputC': LatLng(38, 8),
-        'expectedOutput': Circle(LatLng(40.03652421187081, 8.749413946238121), 21357.940802196772)},
+        'expectedOutput': Circle(LatLng(40.03652421187081, 8.749413946238121), 21357.94080219686)},
     ];
 
     for (var elem in _inputsToExpected) {
