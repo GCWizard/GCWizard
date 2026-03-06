@@ -8,6 +8,9 @@ void main() {
       {'input' : '', 'key': '', 'autoKey': false, 'aValue': 0, 'expectedOutput' : ''},
       {'input' : '', 'key': 'ABC', 'autoKey': false, 'aValue': 0, 'expectedOutput' : ''},
       {'input' : 'ABC', 'key': '', 'autoKey': false, 'aValue': 0, 'expectedOutput' : 'ABC'},
+      {'input' : '', 'key': '', 'autoKey': true, 'aValue': 0, 'expectedOutput' : ''},
+      {'input' : '', 'key': 'ABC', 'autoKey': true, 'aValue': 0, 'expectedOutput' : ''},
+      {'input' : 'ABC', 'key': '', 'autoKey': true, 'aValue': 0, 'expectedOutput' : 'ABC'},
 
       {'input' : 'ABC', 'key': 'MNO', 'autoKey': false, 'aValue': 0, 'expectedOutput' : 'MOQ'},
       {'input' : 'ABCDEF', 'key': 'MN', 'autoKey': false, 'aValue': 0, 'expectedOutput' : 'MOOQQS'},
@@ -171,6 +174,9 @@ void main() {
       {'input' : '', 'key': '', 'autoKey': false, 'aValue': 0, 'expectedOutput' : ''},
       {'input' : '', 'key': 'ABC', 'autoKey': false, 'aValue': 0, 'expectedOutput' : ''},
       {'input' : 'ABC', 'key': '', 'autoKey': false, 'aValue': 0, 'expectedOutput' : 'ABC'},
+      {'input' : '', 'key': '', 'autoKey': true, 'aValue': 0, 'expectedOutput' : ''},
+      {'input' : '', 'key': 'ABC', 'autoKey': true, 'aValue': 0, 'expectedOutput' : ''},
+      {'input' : 'ABC', 'key': '', 'autoKey': true, 'aValue': 0, 'expectedOutput' : 'ABC'},
 
       {'input' : 'MOQ', 'key': 'MNO', 'autoKey': false, 'aValue': 0, 'expectedOutput' : 'ABC'},
       {'input' : 'MOOQQS', 'key': 'MN', 'autoKey': false, 'aValue': 0, 'expectedOutput' : 'ABCDEF'},

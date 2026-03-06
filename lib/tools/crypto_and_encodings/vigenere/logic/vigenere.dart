@@ -12,10 +12,6 @@ List<int> _toValueList(String text, String alphabet, int aValue) {
 
 List<int> _getKey(String input, String key, int aValue, String alphabet, bool autokey, bool repeatKey) {
   if (key.isEmpty) {
-    if (autokey) {
-      return _toValueList(input, alphabet, aValue);
-    }
-
     return <int>[];
   }
 
@@ -52,10 +48,6 @@ List<int> _getKey(String input, String key, int aValue, String alphabet, bool au
     }
 
     return out;
-  }
-
-  if (autokey) {
-    return _toValueList(input, alphabet, aValue);
   }
 
   return <int>[];
