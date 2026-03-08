@@ -2680,6 +2680,8 @@
   "gccode_novalidgcode": "No valid GC Code",
   "gcwizard_script_title" : "GCW Script",
   "gcwizard_script_description" : "Simple Scripting Engine like BASIC",
+  "gcwizard_script_exit_title": "Leaving GC Wizard Script",
+  "gcwizard_script_exit_message": "Do you really want to leave GC Wizard Script?",
   "gcwizard_script_hint_program" : "Script",
   "gcwizard_script_code": "Code",
   "gcwizard_script_interpret": "Run",
