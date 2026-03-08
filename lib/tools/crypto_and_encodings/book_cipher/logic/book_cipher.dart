@@ -117,7 +117,7 @@ String decodeFindWord(String input, String positions, searchFormat format,
   var splittedResult = _wordList(input);
   var wordList = splittedResult.wordList;
   var rowList = splittedResult.rowList;
-  var sectionList = splittedResult.sectionList;
+  var sectionList = splittedResult.rowList;
 
   while (i < positionList.length) {
     switch (format) {
