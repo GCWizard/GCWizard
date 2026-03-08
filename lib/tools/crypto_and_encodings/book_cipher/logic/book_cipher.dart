@@ -51,8 +51,7 @@ String decodeSearchWord(
       azOn: azOn,
       numbersOn: numbersOn);
 
-  var splittedResult = _wordList(input);
-  var wordList = splittedResult.wordList;
+  var wordList = _wordList(input).wordList;
   word = word.toUpperCase();
 
   var out = wordList.where((e) => e.text.toUpperCase() == word).map((e) {
@@ -495,10 +494,9 @@ int _globalCharacterPosition(_wordClass word, int characterPosition, List<_wordC
   return (entry: outWord, position: outLetterPosition);
 }
 
-({List<_wordClass> wordList, List<_wordClass> rowList, List<_wordClass> sectionList}) _wordList(String input) {
+({List<_wordClass> wordList, List<_wordClass> rowList}) _wordList(String input) {
   var wordList = <_wordClass>[];
   var rowList = <_wordClass>[];
-  var sectionList = <_wordClass>[];
   int sectionIndex = 0;
   int rowIndex = 0;
   int wordIndex = 0;
@@ -507,14 +505,13 @@ int _globalCharacterPosition(_wordClass word, int characterPosition, List<_wordC
     sectionIndex += 1;
     rowIndex = 0;
     wordIndex = 0;
-    sectionList.add(_wordClass(sectionIndex, rowIndex, wordIndex, section));
 
     section.split(RegExp(r"\n")).forEach((row) {
       rowIndex += 1;
       wordIndex = 0;
       rowList.add(_wordClass(sectionIndex, rowIndex, wordIndex, row));
 
-      row.split(RegExp(r"[\s]|[\.]|[,]|[!]|[\?]|[\\]")).forEach((word) {
+      row.split(RegExp(r"[\s]|[.]|[,]|[!]|[?]|[\\]")).forEach((word) {
         if (word.isNotEmpty) {
           wordIndex += 1;
           wordList.add(_wordClass(sectionIndex, rowIndex, wordIndex, word));
@@ -523,7 +520,7 @@ int _globalCharacterPosition(_wordClass word, int characterPosition, List<_wordC
     });
   });
 
-  return (wordList: wordList, rowList: rowList, sectionList: sectionList);
+  return (wordList: wordList, rowList: rowList);
 }
 
 String _filterInput(String input,
