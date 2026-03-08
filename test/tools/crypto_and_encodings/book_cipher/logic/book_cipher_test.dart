@@ -3,7 +3,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/book_cipher/logic/book_ciph
 
 void main() {
 
-  var text1 = "Und 'wieder' - schneit‘s zur Weihnachtszeit.\n"
+  var text1 = "Und 'wieder' - schneit‘s zur Weihnachtszeit.\n" //34
       "Ja wieder mal. ist es so weit.\n"
       "Der Opa holt vom Abstellraum\n"
       "wie jedes Jahr den Plastikbaum.\n\n"
@@ -11,7 +11,6 @@ void main() {
       "und freut sich auf den Weihnachtsmann.\n"
       "Der Christbaum-schmuck wird angebracht.\n"
       "Schon strahlt der Plastikbaum voll Pracht.";
-  
 
   var test2 = "A b (c)\n"
       "D e f\n"
@@ -29,6 +28,27 @@ void main() {
       "und freut sich auf den Weihnachtsmann.\n"
       "Der Christbaum-schmuck wird angebracht.\n"
       "Schon strahlt der Plastikbaum voll Pracht.";
+
+  var text3 = "Auferstanden aus Ruinen\r\n"
+      "und der Zukunft zugewandt,\r\n"
+      "laß uns dir zum Guten dienen,\r\n"
+      "Deutschland, einig Vaterland.\r\n"
+      "Alte Not gilt es zu zwingen,\r\n"
+      "und wir zwingen sie vereint,\r\n"
+      "denn es muß uns doch gelingen,\r\n"
+      "daß die Sonne schön wie nie\r\n"
+      "über Deutschland scheint. \r\n"
+      "\r\n"
+      "\r\n"
+      "Glück und Friede sei beschieden \r\n"
+      "Deutschland, unserm Vaterland. \r\n"
+      "Alle Welt sehnt sich nach Frieden, \r\n"
+      "reicht den Völkern eure Hand. \r\n"
+      "Wenn wir brüderlich uns einen, \r\n"
+      "schlagen wir des Volkes Feind. \r\n"
+      "Laßt das Licht des Friedens scheinen, \r\n"
+      "daß nie eine Mutter mehr \r\n"
+      "ihren Sohn beweint. \r\n";
 
   group("book_cipher.encodeText:", () {
     List<Map<String, Object?>> _inputsToExpected = [
@@ -188,6 +208,8 @@ ist es mit allem einmal schluß.
 
       {'input' : 'Helmut Schickart (1931–1993).', 'positions' : ' 1,21; ', 'searchFormat' : searchFormat.SectionCharacter, 'expectedOutput' : '3', 'spacesOn' : true, 'emptyLinesOn' : true, 'ignoreSymbols' : '', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
 
+      {'input' : text1, 'positions' : '1.1 1.2 1.3 1.4 1.5 1.6 1.7 1.8 1.9 1.10 1.11 1.12 1.13 1.14 1.15 1.16 1.17 1.18 1.19 1.20 1.21 1.22 1.23 1.24 1.25 1.26 1.27 1.28 1.29 1.30 1.31 1.32 1.33 1.34 1.35 1.36 1.37 1.38 1.39 1.40 1.41 1.42', 'searchFormat' : searchFormat.SectionCharacter, 'expectedOutput' : 'UNDWIEDERSCHNEITSZURWEIHNACHTSZEITJAWIEDER', 'spacesOn' : false, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/\\', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
+      {'input' : text3, 'positions' : '1.7 1.73 1.26 1.92 1.7 1.26 1.16 2.28 2.57 2.67', 'searchFormat' : searchFormat.SectionCharacter, 'expectedOutput' : 'THEATERDES', 'spacesOn' : false, 'emptyLinesOn' : true, 'ignoreSymbols' : '.;+-:!?\'"‘&(){}[]/,\\', 'diacriticsOn' : true, 'azOn' : true, 'numbersOn' : true, 'onlyFirstWordLetter' : false},
     ];
 
     for (var elem in _inputsToExpected) {
