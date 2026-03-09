@@ -11612,7 +11612,7 @@ void initializeRegistry(BuildContext context) {
         licenses: [
           ToolLicenseOfflineBook(
               context: context,
-              author: 'Königl. Pruess. Telegraphendirection',
+              author: 'Königl. Preuss. Telegraphendirection',
               title:
                   'Classe 5.2 Wörterbuch für die Telegraphisten-Correspondenz\nInstruction. Erster Abschnitt. Die Behandlung des Apparates.\nInstruction. Zweiter Abschnitt. Das Telegraphieren.',
               privatePermission: ToolLicensePrivatePermission(
@@ -11989,7 +11989,33 @@ void initializeRegistry(BuildContext context) {
       'symbol_planets',
       'symbol_zodiacsigns',
       'symbol_zodiacsigns_latin',
-    ], licenses: const []),
+      'zodiac'
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'en.wikipedia.org and contributors',
+          title: 'Astrological sign',
+          licenseType: ToolLicenseType.CCBYSA4,
+          sourceUrl:
+          'https://en.wikipedia.org/w/index.php?title=Astrological_sign&oldid=1340252037'),
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Jeremy B. Tatum',
+          title: 'The Signs and Constellations of the Zodiac',
+          publisher: 'NASA Astrophysics Data System',
+          month: 6,
+          year: 2010,
+          sourceUrl:
+          'https://web.archive.org/web/20240604232721/https://articles.adsabs.harvard.edu/cgi-bin/nph-iarticle_query?bibcode=2010JRASC.104..103T&db_key=AST&page_ind=0&data_type=GIF&type=SCREEN_VIEW&classic=YES'),
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Manon Bischoff',
+          title: 'Ihr Sternzeichen ist falsch - hier finden Sie das richtige',
+          publisher: 'Spektrum.de',
+          sourceUrl:
+          'https://web.archive.org/web/20260228143540/https://www.spektrum.de/kolumne/horoskop-und-astrologie-ihr-sternzeichen-ist-falsch/2309632'),
+
+    ]),
   ].map((toolWidget) {
     toolWidget.toolName = i18n(context, toolWidget.id + '_title');
     toolWidget.defaultLanguageToolName =

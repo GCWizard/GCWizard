@@ -198,6 +198,7 @@
   "astronomy_signs_capricorn": "♑ Capricorn (Goat)",
   "astronomy_signs_aquarius": "♒ Aquarius (Water-bearer)",
   "astronomy_signs_pisces": "♓ Pisces (Fish)",
+  "astronomy_signs_ophiuchus": "Ophiuchus (Serpent-bearer)",
   "astronomy_moonphase_newmoon": "New Moon",
   "astronomy_moonphase_increasingcrescent": "Increasing Crescent",
   "astronomy_moonphase_firstquarter": "First Quarter",
@@ -1528,6 +1529,7 @@
   "common_exportfile_selectfolder": "Save file to this folder",
   "common_exportfile_selectfolder_title": "Save to folder",
   "common_exportfile_couldntwrite": "Could not write file.",
+  "common_footnotes": "Footnotes",
   "common_further_information": "Further information",
   "common_loadfile_showopen": "Open File",
   "common_loadfile_openfrom": "From",
@@ -8206,10 +8208,14 @@
   "zodiac_attribute_quality": "Quality",
   "zodiac_attribute_polarity": "Polarity",
   "zodiac_attribute_planet": "Planet",
+  "zodiac_attribute_astronomicaldate": "Astronomical Date Range",
   "zodiac_attribute_planet_additional": "Other Sources",
   "zodiac_attribute_polarity_masculine": "Masculine",
   "zodiac_attribute_polarity_feminine": "Feminine",
   "zodiac_attribute_quality_cardinal": "Cardinal",
   "zodiac_attribute_quality_fixed": "Fixed",
-  "zodiac_attribute_quality_mutable": "Mutable"
+  "zodiac_attribute_quality_mutable": "Mutable",
+  "zodiac_additionalsign": "Additional Sign (Astronomical)",
+  "zodiac_footnotes_daterange": "Astrological, commonly used for horoscopes",
+  "zodiac_footnotes_astronomicaldaterange": "Real astronomical date ranges; ±2 days depending on location and timezone"
 }
