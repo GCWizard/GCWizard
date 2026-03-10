@@ -330,7 +330,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                                   child: iconedGCWPopupMenuItem(
                                       context, Icons.edit, 'formulasolver_formulas_modifyformula'),
                                   action: (index) => setState(() {
-                                        _showFormulaReplaceDialog(context, [parserResult.formula],
+                                        showFormulaReplaceDialog(context, [parserResult.formula],
                                             onOkPressed: (List<Formula> value) {
                                           if (parserResult.formula.formula == value.first.formula) return;
 
@@ -445,7 +445,7 @@ class _FormulaSolverFormulasState extends State<_FormulaSolverFormulas> {
                               child:
                                   iconedGCWPopupMenuItem(context, Icons.edit, 'formulasolver_formulas_modifyformulas'),
                               action: (index) => setState(() {
-                                    _showFormulaReplaceDialog(context, widget.group.formulas,
+                                    showFormulaReplaceDialog(context, widget.group.formulas,
                                         onOkPressed: (List<Formula> value) {
                                       for (int i = 0; i < widget.group.formulas.length; i++) {
                                         if (widget.group.formulas[i].formula != value[i].formula) {

@@ -2,7 +2,7 @@ part of 'package:gc_wizard/tools/formula_solver/widget/formula_solver_formulagro
 
 List<String> _newFormulas = [];
 
-void _showFormulaReplaceDialog(BuildContext context, List<Formula> formulas,
+void showFormulaReplaceDialog(BuildContext context, List<Formula> formulas,
     {required void Function(List<Formula>) onOkPressed}) {
   var _output = formulas.map((formula) => Formula.fromFormula(formula)).toList();
 

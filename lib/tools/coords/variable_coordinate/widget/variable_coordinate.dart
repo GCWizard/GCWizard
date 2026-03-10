@@ -26,6 +26,7 @@ import 'package:gc_wizard/tools/coords/variable_coordinate/logic/variable_latlon
 import 'package:gc_wizard/tools/coords/variable_coordinate/persistence/json_provider.dart';
 import 'package:gc_wizard/tools/coords/variable_coordinate/persistence/model.dart';
 import 'package:gc_wizard/tools/formula_solver/persistence/model.dart' as formula_base;
+import 'package:gc_wizard/tools/formula_solver/widget/formula_solver_formulagroups.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/default_units_getter.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/length.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
@@ -149,6 +150,20 @@ class _VariableCoordinateState extends State<VariableCoordinate> {
               icon: _isOnLocationAccess ? Icons.refresh : Icons.location_on,
               onPressed: () {
                 _setUserLocationCoords();
+              },
+            ),
+            GCWIconButton(
+              icon: Icons.edit,
+              onPressed: () {
+                var modifiedFormula = formula_base.Formula(widget.formula.formula);
+
+                showFormulaReplaceDialog(context, [modifiedFormula],
+                    onOkPressed: (List<formula_base.Formula> value) {
+
+                      widget.formula.formula = value.first.formula;
+                      _inputController.text = widget.formula.formula;
+                      setState(() {});
+                    });
               },
             ),
           ],
