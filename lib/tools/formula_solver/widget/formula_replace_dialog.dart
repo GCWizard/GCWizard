@@ -57,7 +57,7 @@ class _FormulaReplaceState extends State<_FormulaReplace> {
             text: i18n(context, 'formulasolver_formulas_modifiedformula') +
                 ' ' +
                 i18n(context, 'formulasolver_formula') +
-                ' ${widget.formulas[_currentFormulaIndex].id}',
+                ' ${widget.formulas[_currentFormulaIndex].id ?? ""}',
             style: textStyle,
             suppressTopSpace: true,
             trailing: widget.formulas.length <= 1
