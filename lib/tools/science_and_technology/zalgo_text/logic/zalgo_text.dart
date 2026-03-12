@@ -1,6 +1,6 @@
 import 'dart:math';
 
-final const _ranges = [
+const _ranges = [
   [0x0300, 0x036F], //default range
   [0x1AB0, 0x1AFF],
   [0x1DC0, 0x1DFF],
