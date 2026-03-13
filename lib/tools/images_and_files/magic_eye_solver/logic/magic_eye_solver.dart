@@ -11,7 +11,6 @@ import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/math_utils.dart';
 import 'package:image/image.dart' as Image;
-import 'package:tuple/tuple.dart';
 
 enum TextureType { GREYDOTS, COLORDOTS, BITMAP }
 
@@ -33,25 +32,23 @@ late Uint32List _pixels;
 late Uint8List _texturePixels;
 late Uint8List _depthBytes;
 
-Future<Tuple3<Image.Image, Uint8List, int>?> decodeImageAsync(GCWAsyncExecuterParameters? jobData) async {
-  if (jobData?.parameters is! Tuple3<Uint8List, Image.Image?, int?>) return null;
+Future<({Image.Image imageData, Uint8List outputImage, int displacement})?>
+    decodeImageAsync(GCWAsyncExecuterParameters? jobData) async {
+  if (jobData?.parameters is! ({Uint8List image, Image.Image? imageData, int? displacement})) return null;
 
-  var data = jobData!.parameters as Tuple3<Uint8List, Image.Image?, int?>;
-  Uint8List image = data.item1;
-  Image.Image? imageData = data.item2;
-  int? displacement = data.item3;
+  var data = jobData!.parameters as ({Uint8List image, Image.Image? imageData, int? displacement});
 
-  return decodeImage(image, imageData, displacement, sendAsyncPort: jobData.sendAsyncPort);
+  return decodeImage(data.image, data.imageData, data.displacement, sendAsyncPort: jobData.sendAsyncPort);
 }
 
-Future<Tuple3<Image.Image, Uint8List, int>?> decodeImage(Uint8List image, Image.Image? imageData, int? displacement,
-    {SendPort? sendAsyncPort}) async {
+Future<({Image.Image imageData, Uint8List outputImage, int displacement})?>
+    decodeImage(Uint8List image, Image.Image? imageData, int? displacement, {SendPort? sendAsyncPort}) async {
   imageData ??= Image.decodeImage(image);
   if (imageData == null) return null;
   displacement ??= _magicEyeSolver(imageData);
 
   var outputImage = _createResultImage(imageData, displacement);
-  var result = Tuple3<Image.Image, Uint8List, int>(imageData, outputImage, displacement);
+  var result = (imageData: imageData, outputImage: outputImage, displacement: displacement);
 
   sendAsyncPort?.send(result);
 
@@ -143,23 +140,20 @@ Uint8List _createResultImage(Image.Image image, int displacement) {
   return encodeTrimmedPng(bitmap);
 }
 
-Future<Tuple2<Uint8List?, MagicEyeErrorCode>?> generateImageAsync(GCWAsyncExecuterParameters? jobData) async {
-  if (jobData?.parameters is! Tuple3<Uint8List?, Uint8List?, TextureType?>) return null;
+Future<({Uint8List? image, MagicEyeErrorCode errorCode})?> generateImageAsync(GCWAsyncExecuterParameters? jobData) async {
+  if (jobData?.parameters is! ({Uint8List? hiddenImage, Uint8List? textureImage, TextureType? textureType})) return null;
 
-  var data = jobData!.parameters as Tuple3<Uint8List?, Uint8List?, TextureType?>;
-  Uint8List? hiddenImage = data.item1;
-  Uint8List? textureImage = data.item2;
-  TextureType? textureType = data.item3;
+  var data = jobData!.parameters as ({Uint8List? hiddenImage, Uint8List? textureImage, TextureType? textureType});
 
-  if (hiddenImage == null) return null;
-  var outputData = _generateImage(hiddenImage, textureImage, textureType);
+  if (data.hiddenImage == null) return null;
+  var outputData = _generateImage(data.hiddenImage!, data.textureImage, data.textureType);
 
   jobData.sendAsyncPort?.send(outputData);
 
   return Future.value(outputData);
 }
 
-Tuple2<Uint8List?, MagicEyeErrorCode>? _generateImage(
+({Uint8List? image, MagicEyeErrorCode errorCode})? _generateImage(
     Uint8List hiddenDataImage, Uint8List? textureImage, TextureType? textureType,
     {SendPort? sendAsyncPort}) {
   var bInterpolateDepthmap = true;
@@ -177,7 +171,7 @@ Tuple2<Uint8List?, MagicEyeErrorCode>? _generateImage(
   var resolutionY = depthmap.height;
 
   if (resolutionX < 3 * _separation) {
-    return const Tuple2<Uint8List?, MagicEyeErrorCode>(null, MagicEyeErrorCode.IMAGE_TOO_SMALL);
+    return const (image: null, errorCode: MagicEyeErrorCode.IMAGE_TOO_SMALL);
   }
 
   if (((textureType == TextureType.BITMAP) || (textureType == null)) && (textureImage != null)) {
@@ -256,7 +250,7 @@ Tuple2<Uint8List?, MagicEyeErrorCode>? _generateImage(
     bmStereogram = Image.copyResize(bmStereogram, width: resolutionX, height: resolutionY);
   }
 
-  return Tuple2<Uint8List, MagicEyeErrorCode>(encodeTrimmedPng(bmStereogram), MagicEyeErrorCode.OK);
+  return (image: encodeTrimmedPng(bmStereogram), errorCode: MagicEyeErrorCode.OK);
 }
 
 late List<int> centreOut;

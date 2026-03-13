@@ -18,7 +18,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, language: ${elem['language']}', () {
-        var _actual = encodeSpellingAlphabets(elem['input'] as String, elem['language'] as SPELLING,);
+        var _actual = encodeSpellingAlphabets(elem['input'] as String, elem['language'] as SPELLING);
         expect(_actual, elem['expectedOutput']);
       });
     }
@@ -39,7 +39,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, language: ${elem['language']}', () {
-        var _actual = decodeSpellingAlphabets(elem['input'] as String, elem['language'] as SPELLING,);
+        var _actual = decodeSpellingAlphabets(elem['input'] as String, elem['language'] as SPELLING);
         expect(_actual, elem['expectedOutput']);
       });
     }

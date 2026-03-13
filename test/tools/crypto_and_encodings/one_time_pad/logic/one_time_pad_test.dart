@@ -25,6 +25,8 @@ void main() {
       {'input' : 'AbcxyZ', 'key': 'huijkl', 'keyOffset': -1,  'expectedOutput' : 'HVKGIK'},
       {'input' : 'AbcxyZ', 'key': 'abcdefgh', 'keyOffset': 1,  'expectedOutput' : 'CEGCEG'},
       {'input' : 'AbcxyZ', 'key': 'abc', 'keyOffset': 10,  'expectedOutput' : 'LNPXYZ'},
+
+      {'input' : 'AbcxyZ', 'key': '1 2,3,,,4 5; 6', 'expectedOutput' : 'BDFBDF'},
     ];
 
     for (var elem in _inputsToExpected) {
@@ -65,6 +67,8 @@ void main() {
       {'expectedOutput' : 'ABCXYZ', 'key': 'huijkl', 'keyOffset': -1,  'input' : 'HVKGIK'},
       {'expectedOutput' : 'ABCXYZ', 'key': 'abcdefgh', 'keyOffset': 1,  'input' : 'CegceG'},
       {'expectedOutput' : 'ABCXYZ', 'key': 'abc', 'keyOffset': 10,  'input' : 'LNPXYZ'},
+
+      {'expectedOutput' : 'ABCXYZ', 'key': '1 2,3,,,4 5; 6', 'input' : 'bdfbdf'},
     ];
 
     for (var elem in _inputsToExpected) {

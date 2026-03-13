@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:gc_wizard/utils/alphabets.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
-import 'package:tuple/tuple.dart';
 
 const int _JOKER_A = 53;
 const int _JOKER_B = 54;
@@ -43,9 +42,9 @@ SolitaireOutput? _solitaireBase(String input, String key, bool encrypt) {
   }
 
   var deck = createDeck();
-  var tuple = createKeyStream(input, key, deck, alphabet);
-  var keyStream = tuple.item1;
-  deck = tuple.item2;
+  var result = createKeyStream(input, key, deck, alphabet);
+  var keyStream = result.streamLetters;
+  deck = result.deck;
   String output;
   if (encrypt) {
     output = _createEncryptOutput(input, keyStream, alphabet);
@@ -85,7 +84,7 @@ List<int> createDeck() {
   return deck;
 }
 
-Tuple2<String, List<int>> createKeyStream(String input, String key, List<int> deck, Map<String, int> alphabet) {
+({String streamLetters, List<int> deck}) createKeyStream(String input, String key, List<int> deck, Map<String, int> alphabet) {
   var streamLetters = '';
   int issueCard;
 
@@ -110,7 +109,7 @@ Tuple2<String, List<int>> createKeyStream(String input, String key, List<int> de
     streamLetters += _chr(issueCard, alphabet) ?? '';
   }
 
-  return Tuple2<String, List<int>>(streamLetters, deck);
+  return (streamLetters: streamLetters, deck: deck);
 }
 
 String? _chr(int letter, Map<String, int> alphabet) {

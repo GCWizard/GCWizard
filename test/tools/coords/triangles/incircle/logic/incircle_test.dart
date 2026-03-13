@@ -5,6 +5,7 @@ import 'package:prefs/prefs.dart';
 
 import '../../../../science_and_technology/euclidic_triangle/logic/triangle.dart';
 
+
 void main() async {
   SharedPreferences.setMockInitialValues({});
   await Prefs.init();

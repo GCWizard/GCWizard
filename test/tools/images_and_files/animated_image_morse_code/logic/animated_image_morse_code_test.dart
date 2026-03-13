@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/tools/images_and_files/animated_image_morse_code/logic/animated_image_morse_code.dart';
 import 'package:path/path.dart' as path;
-import 'package:tuple/tuple.dart';
 
 var testDirPath = 'test/tools/images_and_files/animated_image_morse_code/resources/';
 
@@ -14,79 +13,79 @@ Uint8List _getFileData(String name) {
 }
 
 void main() {
-  var signal1 = <Tuple2<bool, int>>[
-      const Tuple2<bool, int>(true, 400),
-      const Tuple2<bool, int>(true, 400),
-      const Tuple2<bool, int>(true, 400),
-      const Tuple2<bool, int>(true, 1000),
-      const Tuple2<bool, int>(true, 1000),
-      const Tuple2<bool, int>(true, 1000),
-      const Tuple2<bool, int>(false, 400),
-      const Tuple2<bool, int>(false, 400),
-      const Tuple2<bool, int>(false, 400),
-      const Tuple2<bool, int>(false, 1000),
-      const Tuple2<bool, int>(false, 1000),
-      const Tuple2<bool, int>(false, 1000),
-      const Tuple2<bool, int>(false, 1000),
-      const Tuple2<bool, int>(false, 1500),
-      const Tuple2<bool, int>(false, 1500)];
+  var signal1 = <({bool on, int duration})>[
+      const (on: true, duration: 400),
+      const (on: true, duration: 400),
+      const (on: true, duration: 400),
+      const (on: true, duration: 1000),
+      const (on: true, duration: 1000),
+      const (on: true, duration: 1000),
+      const (on: false, duration: 400),
+      const (on: false, duration: 400),
+      const (on: false, duration: 400),
+      const (on: false, duration: 1000),
+      const (on: false, duration: 1000),
+      const (on: false, duration: 1000),
+      const (on: false, duration: 1000),
+      const (on: false, duration: 1500),
+      const (on: false, duration: 1500)];
 
-  var signal2 = <Tuple2<bool, int>>[
-      const Tuple2<bool, int>(true, 400),
-      const Tuple2<bool, int>(true, 400),
-      const Tuple2<bool, int>(true, 1000),
-      const Tuple2<bool, int>(true, 400),
-      const Tuple2<bool, int>(true, 1000),
-      const Tuple2<bool, int>(true, 1000),
-      const Tuple2<bool, int>(false, 1500),
-      const Tuple2<bool, int>(false, 1500),
-      const Tuple2<bool, int>(false, 400),
-      const Tuple2<bool, int>(false, 400),
-      const Tuple2<bool, int>(false, 1000),
-      const Tuple2<bool, int>(false, 1000),
-      const Tuple2<bool, int>(false, 400),
-      const Tuple2<bool, int>(false, 1000),
-      const Tuple2<bool, int>(false, 1000)];
+  var signal2 = <({bool on, int duration})>[
+      const (on: true, duration: 400),
+      const (on: true, duration: 400),
+      const (on: true, duration: 1000),
+      const (on: true, duration: 400),
+      const (on: true, duration: 1000),
+      const (on: true, duration: 1000),
+      const (on: false, duration: 1500),
+      const (on: false, duration: 1500),
+      const (on: false, duration: 400),
+      const (on: false, duration: 400),
+      const (on: false, duration: 1000),
+      const (on: false, duration: 1000),
+      const (on: false, duration: 400),
+      const (on: false, duration: 1000),
+      const (on: false, duration: 1000)];
 
-  var signal3 = <Tuple2<bool, int>>[
-      const Tuple2<bool, int>(true, 380),
-      const Tuple2<bool, int>(true, 400),
-      const Tuple2<bool, int>(true, 1050),
-      const Tuple2<bool, int>(true, 420),
-      const Tuple2<bool, int>(true, 950),
-      const Tuple2<bool, int>(true, 1000),
-      const Tuple2<bool, int>(false, 1500),
-      const Tuple2<bool, int>(false, 1500),
-      const Tuple2<bool, int>(false, 400),
-      const Tuple2<bool, int>(false, 380),
-      const Tuple2<bool, int>(false, 950),
-      const Tuple2<bool, int>(false, 1020),
-      const Tuple2<bool, int>(false, 420),
-      const Tuple2<bool, int>(false, 1000),
-      const Tuple2<bool, int>(false, 1000)];
+  var signal3 = <({bool on, int duration})>[
+      const (on: true, duration: 380),
+      const (on: true, duration: 400),
+      const (on: true, duration: 1050),
+      const (on: true, duration: 420),
+      const (on: true, duration: 950),
+      const (on: true, duration: 1000),
+      const (on: false, duration: 1500),
+      const (on: false, duration: 1500),
+      const (on: false, duration: 400),
+      const (on: false, duration: 380),
+      const (on: false, duration: 950),
+      const (on: false, duration: 1020),
+      const (on: false, duration: 420),
+      const (on: false, duration: 1000),
+      const (on: false, duration: 1000)];
 
-  var signal4 = <Tuple2<bool, int>>[
-      const Tuple2<bool, int>(true, 400),
-      const Tuple2<bool, int>(false, 400)];
+  var signal4 = <({bool on, int duration})>[
+      const (on: true, duration: 400),
+      const (on: false, duration: 400)];
 
-  var signal5 = <Tuple2<bool, int>>[
-      const Tuple2<bool, int>(true, 400),
-      const Tuple2<bool, int>(false, 400),
-      const Tuple2<bool, int>(false, 600)];
+  var signal5 = <({bool on, int duration})>[
+      const (on: true, duration: 400),
+      const (on: false, duration: 400),
+      const (on: false, duration: 600)];
 
 
   group("animated_image_morse_code.foundSignalTimes:", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      {'input' : signal1, 'expectedOutput' : const Tuple3<int, int, int>(700, 700, 1250 )},
-      {'input' : signal2, 'expectedOutput' : const Tuple3<int, int, int>(700, 700, 1250 )},
-      {'input' : signal3, 'expectedOutput' : const Tuple3<int, int, int>(685, 685, 1260 )},
-      {'input' : signal4, 'expectedOutput' : const Tuple3<int, int, int>(400, 400, 400 )},
-      {'input' : signal5, 'expectedOutput' : const Tuple3<int, int, int>(400, 500, 500 )},
+      {'input' : signal1, 'expectedOutput' : const (ditLevel: 700, dahLevel: 700, spaceLevel: 1250 )},
+      {'input' : signal2, 'expectedOutput' : const (ditLevel: 700, dahLevel: 700, spaceLevel: 1250 )},
+      {'input' : signal3, 'expectedOutput' : const (ditLevel: 685, dahLevel: 685, spaceLevel: 1260 )},
+      {'input' : signal4, 'expectedOutput' : const (ditLevel: 400, dahLevel: 400, spaceLevel: 400 )},
+      {'input' : signal5, 'expectedOutput' : const (ditLevel: 400, dahLevel: 500, spaceLevel: 500 )},
     ];
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = foundSignalTimes(elem['input'] as List<Tuple2<bool, int>>);
+        var _actual = foundSignalTimes(elem['input'] as List<({bool on, int duration})>);
         expect(_actual, elem['expectedOutput']);
       });
     }

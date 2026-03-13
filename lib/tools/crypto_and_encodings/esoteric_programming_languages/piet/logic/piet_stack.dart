@@ -11,7 +11,7 @@ class _PietStack {
   }
 
   int? pop() {
-    return tryPop().item2;
+    return tryPop().value;
   }
 
   int add() {
@@ -47,8 +47,8 @@ class _PietStack {
 
   int not() {
     var ret = tryPop();
-    var result = ret.item2;
-    if (!ret.item1) return 0; //null;
+    var result = ret.value;
+    if (!ret.valid) return 0; //null;
 
     result = result == 0 ? 1 : 0;
     push(result);
@@ -61,19 +61,17 @@ class _PietStack {
 
   void duplicate() {
     var ret = tryPop();
-    var result = ret.item2;
-    if (!ret.item1 || (result == null)) return;
-    push(result);
-    push(result);
+    if (!ret.valid || (ret.value == null)) return;
+    push(ret.value);
+    push(ret.value);
   }
 
   int _applyTernary(int? Function(int, int) operatorFunc) {
     var ret = tryPop2();
-    var stackResults = ret.item2;
-    if (!ret.item1) return 0; //null
+    if (!ret.valid) return 0; //null
 
-    var top = stackResults.item1;
-    var second = stackResults.item2;
+    var top = ret.value1;
+    var second = ret.value2;
     if (top == null || second == null) return 0; //null
 
     var result = operatorFunc(top, second);
@@ -85,11 +83,10 @@ class _PietStack {
 
   bool _applyTernaryIf(int Function(int, int) operatorFunc, bool Function(int, int) conditionalFunc) {
     var ret = tryPop2();
-    var stackResults = ret.item2;
-    if (!ret.item1) return false;
+    if (!ret.valid) return false;
 
-    var top = stackResults.item1;
-    var second = stackResults.item2;
+    var top = ret.value1;
+    var second = ret.value2;
     if (top == null || second == null) return false; //null
 
     if (!conditionalFunc(top, second)) return false;
@@ -102,11 +99,10 @@ class _PietStack {
 
   void roll() {
     var ret = tryPop2();
-    var stackResults = ret.item2;
-    if (!ret.item1) return;
+    if (!ret.valid) return;
 
-    var numberOfRolls = stackResults.item1;
-    var depthOfRoll = stackResults.item2;
+    var numberOfRolls = ret.value1;
+    var depthOfRoll = ret.value2;
 
     if (numberOfRolls == null || depthOfRoll == null) return;
     int absNumberOfRolls = numberOfRolls.abs();
@@ -118,19 +114,19 @@ class _PietStack {
     }
   }
 
-  Tuple2<bool, int?> tryPop() {
-    if (_stack.isEmpty) return const Tuple2<bool, int?>(false, null); //null
+  ({bool valid, int? value}) tryPop() {
+    if (_stack.isEmpty) return const (valid: false, value: null); //null
 
     var result = _stack.last;
     _stack.removeLast();
 
-    return Tuple2<bool, int?>(true, result);
+    return (valid: true, value: result);
   }
 
-  Tuple2<bool, Tuple2<int?, int?>> tryPop2() {
-    if (_stack.length < 2) return const Tuple2<bool, Tuple2<int?, int?>>(false, Tuple2<int, int>(0, 0));
+  ({bool valid, int? value1, int? value2}) tryPop2() {
+    if (_stack.length < 2) return const (valid: false, value1: 0, value2: 0);
 
-    return Tuple2<bool, Tuple2<int?, int?>>(true, Tuple2<int?, int?>(pop(), pop()));
+    return (valid: true, value1: pop(), value2: pop());
   }
 
   bool RotateRight(int depth, int iterations) {

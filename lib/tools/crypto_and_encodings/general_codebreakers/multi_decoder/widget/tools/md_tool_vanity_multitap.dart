@@ -39,7 +39,7 @@ class MultiDecoderToolVanityMultitap extends AbstractMultiDecoderTool {
                   break;
               }
 
-              return decodeVanityMultitap(input, model, PhoneInputLanguage.UNSPECIFIED)?.item2;
+              return decodeVanityMultitap(input, model, PhoneInputLanguage.UNSPECIFIED)?.text;
             });
   @override
   State<StatefulWidget> createState() => _MultiDecoderToolVanityMultitapState();

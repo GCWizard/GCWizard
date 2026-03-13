@@ -1,3 +1,4 @@
+import 'dart:core';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/coords/triangles/_common/triangles.dart';
 import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
@@ -5,6 +6,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:prefs/prefs.dart';
 
 import '../../../science_and_technology/euclidic_triangle/logic/triangle.dart';
+
 
 void main() async {
   SharedPreferences.setMockInitialValues({});

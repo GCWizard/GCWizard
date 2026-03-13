@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
+import 'package:gc_wizard/common_widgets/gcw_text.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_columned_multiline_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_dropdown_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/tools/uncategorized/zodiac/logic/zodiac.dart';
@@ -12,6 +14,7 @@ import 'package:intl/intl.dart';
 
 enum _ZODIACSIGNS_ATTRIBUTES {
   date,
+  astronomicaldate,
   house,
   element,
   quality,
@@ -101,13 +104,17 @@ class _ZodiacState extends State<Zodiac> {
   }
 
   Widget _buildOutput() {
+    var ophiuchusName = ZODIACSIGNS_REALZODIAC_OPHIUCHUS.keys.first;
+    var ophiuchusVisibleDate = ZODIACSIGNS_REALZODIAC_OPHIUCHUS.values.first;
+
     if (_currentMode == GCWSwitchPosition.left) {
       var zodiacSignKey = ZODIACSIGNS.keys.toList()[_currentZodiacSign];
       var zodiacSign = ZODIACSIGNS[zodiacSignKey];
       if (zodiacSign == null) return Container();
 
-      return GCWColumnedMultilineOutput(data: [
-        [i18n(context, _attributeName(_ZODIACSIGNS_ATTRIBUTES.date)), _createDateOutput(zodiacSign.date)],
+      var children = <Widget>[GCWColumnedMultilineOutput(data: [
+        [i18n(context, _attributeName(_ZODIACSIGNS_ATTRIBUTES.date)) + '\u00b9', _createDateOutput(zodiacSign.date)],
+        [i18n(context, _attributeName(_ZODIACSIGNS_ATTRIBUTES.astronomicaldate)) + '\u00b2', _createDateOutput(zodiacSign.astronomicaldate)],
         [i18n(context, _attributeName(_ZODIACSIGNS_ATTRIBUTES.planet)), _createPlanetOutput(zodiacSign.planet)],
         [i18n(context, _attributeName(_ZODIACSIGNS_ATTRIBUTES.element)), i18n(context, zodiacSign.element)],
         [i18n(context, _attributeName(_ZODIACSIGNS_ATTRIBUTES.house)), zodiacSign.house],
@@ -116,15 +123,44 @@ class _ZodiacState extends State<Zodiac> {
       ], flexValues: const [
         1,
         2
-      ]);
+      ])];
+
+      if (_currentZodiacSign == 7) {
+        children.add(
+          GCWOutput(
+              title: i18n(context, 'zodiac_additionalsign'),
+              child: GCWColumnedMultilineOutput(data: [
+                  [i18n(context, 'common_name'), i18n(context, ophiuchusName)],
+                  [i18n(context, _attributeName(_ZODIACSIGNS_ATTRIBUTES.astronomicaldate)), _createDateOutput(zodiacSign.astronomicaldate)]
+                ], flexValues: const [1, 2]
+              )
+          )
+        );
+      }
+
+      children.add(
+        GCWOutput(
+          title: i18n(context, 'common_footnotes'),
+          child: GCWText(text:
+            '\u00b9 ' + i18n(context, 'zodiac_footnotes_daterange') + '\n'
+            '\u00b2 ' + i18n(context, 'zodiac_footnotes_astronomicaldaterange') + '\n'
+          )
+        )
+      );
+
+      return Column(
+        children: children
+      );
     } else {
-      return GCWColumnedMultilineOutput(
-        data: ZODIACSIGNS
-            .map((key, value) {
+      var output = ZODIACSIGNS
+          .map((key, value) {
               String output = '';
               switch (_currentAttribute) {
                 case _ZODIACSIGNS_ATTRIBUTES.date:
                   output = _createDateOutput(value.date);
+                  break;
+                case _ZODIACSIGNS_ATTRIBUTES.astronomicaldate:
+                  output = _createDateOutput(value.astronomicaldate);
                   break;
                 case _ZODIACSIGNS_ATTRIBUTES.planet:
                   output = _createPlanetOutput(value.planet);
@@ -145,9 +181,31 @@ class _ZodiacState extends State<Zodiac> {
 
               return MapEntry(key, [i18n(context, key), output]);
             })
-            .values
-            .toList(),
-      );
+          .values
+          .toList();
+
+      if (_currentAttribute == _ZODIACSIGNS_ATTRIBUTES.astronomicaldate) {
+        output.insert(8, [i18n(context, ophiuchusName), _createDateOutput(ophiuchusVisibleDate)]);
+      }
+
+      var children = <Widget>[
+        GCWColumnedMultilineOutput(
+          data: output
+        )
+      ];
+
+      if (_currentAttribute == _ZODIACSIGNS_ATTRIBUTES.astronomicaldate) {
+        children.add(
+          GCWOutput(
+            title: i18n(context, 'common_footnotes'),
+            child: GCWText(text:
+              i18n(context, 'zodiac_footnotes_astronomicaldaterange') + '\n'
+            )
+          )
+        );
+      }
+
+      return Column(children: children);
     }
   }
 

@@ -1,13 +1,17 @@
+import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/substitution_breaker/logic/substitution_logic_aggregator.dart';
 import 'package:gc_wizard/utils/string_utils.dart';
 
 class Rotator {
-  static const defaultAlphabetAlpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   static const defaultAlphabetDigits = '0123456789';
 
   late String alphabet;
 
-  Rotator({String? alphabet = defaultAlphabetAlpha}) {
-    this.alphabet = alphabet ?? '';
+  Rotator({String? alphabet}) {
+    if (alphabet == null) {
+      this.alphabet = DEFAULT_ALPHABET.toUpperCase();
+    } else {
+      this.alphabet = alphabet;
+    }
   }
 
   String rotate(String input, int key, {bool removeUnknownCharacters = false, bool ignoreCase = true}) {
@@ -30,11 +34,11 @@ class Rotator {
   }
 
   String _rotateIgnoreCase(String input, int key, bool removeUnknownChars) {
-    alphabet = alphabet.toUpperCase();
+    alphabet = toUpperCaseWithSZ(alphabet);
     var alphabetLength = alphabet.length;
 
     return input.split('').map((char) {
-      var index = alphabet.indexOf(char.toUpperCase());
+      var index = alphabet.indexOf(toUpperCaseWithSZ(char));
 
       if (index >= 0) {
         var newIndex = (index + key) % alphabetLength;
@@ -46,7 +50,7 @@ class Rotator {
   }
 
   String rot13(String input) {
-    alphabet = defaultAlphabetAlpha;
+    alphabet = DEFAULT_ALPHABET.toUpperCase();
     return rotate(input, 13);
   }
 
@@ -57,7 +61,7 @@ class Rotator {
 
   String rot18(String input) {
     return input.split('').map((char) {
-      if (defaultAlphabetAlpha.contains(char.toUpperCase())) {
+      if (DEFAULT_ALPHABET.toUpperCase().contains(char.toUpperCase())) {
         return rot13(char);
       } else if (defaultAlphabetDigits.contains(char)) {
         return rot5(char);

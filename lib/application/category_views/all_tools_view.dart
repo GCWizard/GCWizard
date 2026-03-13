@@ -97,6 +97,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/affine/widget/affine.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/alphabet_values/widget/alphabet_values.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/amsco/widget/amsco.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/atbash/widget/atbash.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/autokey/widget/autokey.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/avemaria/widget/avemaria.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/bacon/widget/bacon.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/bacon/widget/bacon_analyze.dart';
@@ -178,6 +179,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rot18/widget/rot18
 import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rot47/widget/rot47.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rot5/widget/rot5.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rotation_general/widget/rotation_general.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rotxyz/widget/rotxyz.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/skytale/widget/skytale.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/slash_and_pipe/widget/slash_and_pipe.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/solitaire/widget/solitaire.dart';
@@ -591,6 +593,7 @@ void _initStaticToolList() {
       className(const Antipodes()),
       className(const ASCIIValues()),
       className(Atbash()),
+      className(const Autokey()),
       className(const AtomicNumbersToText()),
       className(const AveMaria()),
       className(const BabylonNumbersSelection()),
@@ -810,6 +813,7 @@ void _initStaticToolList() {
       className(Rot18()),
       className(Rot5()),
       className(Rot47()),
+      className(RotXYZ()),
       className(RotationGeneral()),
       className(const RSASelection()),
       className(const SchillingCanstattTelegraph()),

@@ -170,7 +170,7 @@ class _UICWagonCodeFreightClassificationsState extends State<UICWagonCodeFreight
               Column(
                 children: [
                   GCWTextDivider(text: i18n(context, 'common_details')),
-                  GCWColumnedMultilineOutput(data: classificationData, flexValues: const [1, 4],)
+                  GCWColumnedMultilineOutput(data: classificationData, flexValues: const [1, 4])
                 ],
               )
             ],

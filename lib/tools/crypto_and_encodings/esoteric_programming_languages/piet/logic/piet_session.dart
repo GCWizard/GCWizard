@@ -96,8 +96,8 @@ class _PietSession {
   void _step() {
     Point<int> result;
     var ret = _navigator.tryNavigate(_currentBlock);
-    if (!ret.item1) _running = false;
-    result = ret.item2;
+    if (!ret.valid) _running = false;
+    result = ret.nextStep;
 
     var newBlock = _builder._getBlockAt(result.x, result.y);
     var opCode = _opsResolver.resolve(_currentBlock, newBlock);

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/common_widgets/dropdowns/gcw_languages_alphabetdropdown.dart';
+import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_web_statefulwidget.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
@@ -7,6 +9,7 @@ import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/vigenere/logic/vigenere.dart';
+import 'package:gc_wizard/utils/alphabets.dart';
 
 const String _apiSpecification = '''
 {
@@ -67,7 +70,9 @@ const String _apiSpecification = '''
 ''';
 
 class Vigenere extends GCWWebStatefulWidget {
-  Vigenere({super.key}) : super(apiSpecification: _apiSpecification);
+  final bool autoKey;
+
+  Vigenere({this.autoKey = false, super.key}) : super(apiSpecification: _apiSpecification);
 
   @override
   _VigenereState createState() => _VigenereState();
@@ -83,6 +88,8 @@ class _VigenereState extends State<Vigenere> {
   GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
   bool _currentAutokey = false;
   bool _currentNonLetters = true;
+
+  Alphabet _currentAlphabet = alphabetAZ;
 
   @override
   void initState() {
@@ -102,6 +109,8 @@ class _VigenereState extends State<Vigenere> {
       widget.webParameter = null;
     }
 
+    _currentAutokey = widget.autoKey;
+
     _inputController = TextEditingController(text: _currentInput);
     _keyController = TextEditingController(text: _currentKey);
   }
@@ -115,6 +124,11 @@ class _VigenereState extends State<Vigenere> {
 
   @override
   Widget build(BuildContext context) {
+    var firstLetter = 'A';
+    if (_currentAlphabet.alphabet.isNotEmpty) {
+      firstLetter = _currentAlphabet.alphabet.keys.first;
+    }
+
     return Column(
       children: <Widget>[
         GCWTextField(
@@ -134,35 +148,52 @@ class _VigenereState extends State<Vigenere> {
             });
           },
         ),
-        GCWIntegerSpinner(
-          title: 'A',
-          value: _currentAValue,
-          onChanged: (value) {
-            setState(() {
-              _currentAValue = value;
-            });
-          },
-        ),
-        GCWOnOffSwitch(
-          title: i18n(context, 'vigenere_autokey'),
-          value: _currentAutokey,
-          onChanged: (value) {
-            setState(() {
-              _currentAutokey = value;
-            });
-          },
-        ),
-        _currentAutokey == false
-            ? GCWOnOffSwitch(
-                title: i18n(context, 'vigenere_ignorenonletters'),
-                value: _currentNonLetters,
+        GCWExpandableTextDivider(
+          text: i18n(context, 'common_options'),
+          suppressTopSpace: false,
+          expanded: false,
+          child: Column(
+            children: [
+              GCWIntegerSpinner(
+                title: firstLetter,
+                value: _currentAValue,
                 onChanged: (value) {
                   setState(() {
-                    _currentNonLetters = value;
+                    _currentAValue = value;
                   });
                 },
-              )
-            : Container(),
+              ),
+              GCWLanguagesAlphabetDropDown(
+                value: _currentAlphabet,
+                onChanged: (Alphabet value) {
+                  setState(() {
+                    _currentAlphabet = value;
+                  });
+                }
+              ),
+              GCWOnOffSwitch(
+                title: i18n(context, 'vigenere_autokey'),
+                value: _currentAutokey,
+                onChanged: (value) {
+                  setState(() {
+                    _currentAutokey = value;
+                  });
+                },
+              ),
+              _currentAutokey == false
+                  ? GCWOnOffSwitch(
+                      title: i18n(context, 'vigenere_ignorenonletters'),
+                      value: _currentNonLetters,
+                      onChanged: (value) {
+                        setState(() {
+                          _currentNonLetters = value;
+                        }
+                          );
+                      },
+                    ) : Container(),
+            ],
+          ),
+        ),
         GCWTwoOptionsSwitch(
           value: _currentMode,
           onChanged: (value) {
@@ -186,6 +217,7 @@ class _VigenereState extends State<Vigenere> {
         _currentAutokey,
         aValue: _currentAValue,
         ignoreNonLetters: _currentAutokey ? true : _currentNonLetters,
+        alphabet: _currentAlphabet
       );
     } else {
       output = decryptVigenere(
@@ -194,6 +226,7 @@ class _VigenereState extends State<Vigenere> {
         _currentAutokey,
         aValue: _currentAValue,
         ignoreNonLetters: _currentAutokey ? true : _currentNonLetters,
+        alphabet: _currentAlphabet
       );
     }
 

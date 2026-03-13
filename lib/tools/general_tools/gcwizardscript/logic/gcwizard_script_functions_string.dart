@@ -89,7 +89,7 @@ String _subst(Object text, Object x, Object y, Object caseSensitive) {
   return substitution(text as String, substitutions, caseSensitive: ((caseSensitive as int) == 1));
 }
 
-String _padleft(Object text, Object char, Object width,){
+String _padleft(Object text, Object char, Object width){
   if (_isNotAString(text) || _isNotAString(char) || _isNotAInt(width)) {
     _handleError(_INVALIDTYPECAST);
     return '';
@@ -98,7 +98,7 @@ String _padleft(Object text, Object char, Object width,){
   return result;
 }
 
-String _padright(Object text, Object char, Object width,){
+String _padright(Object text, Object char, Object width){
   if (_isNotAString(text) || _isNotAString(char) || _isNotAInt(width)) {
     _handleError(_INVALIDTYPECAST);
     return '';
@@ -106,7 +106,7 @@ String _padright(Object text, Object char, Object width,){
   return (text as String).padRight(width as int, char as String);
 }
 
-String _padcenter(Object text, Object char, Object width,){
+String _padcenter(Object text, Object char, Object width){
   if (_isNotAString(text) || _isNotAString(char) || _isNotAInt(width)) {
     _handleError(_INVALIDTYPECAST);
     return '';

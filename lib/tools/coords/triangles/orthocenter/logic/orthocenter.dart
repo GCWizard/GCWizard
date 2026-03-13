@@ -78,11 +78,9 @@ class GeodesicWgs84 {
     }
 
     final uSq = cosSqAlpha * (_a * _a - _b * _b) / (_b * _b);
-    final A = 1 +
-        uSq / 16384 *
-            (4096 + uSq * (-768 + uSq * (320 - 175 * uSq)));
-    final B = uSq / 1024 *
-        (256 + uSq * (-128 + uSq * (74 - 47 * uSq)));
+    final A = 1 + uSq / 16384 * (4096 + uSq * (-768 + uSq * (320 - 175 * uSq)));
+    final B = uSq / 1024 * (256 + uSq * (-128 + uSq * (74 - 47 * uSq)));
+
 
     final deltaSigma = B *
         sinSigma *
@@ -132,14 +130,11 @@ class GeodesicWgs84 {
     final cosSqAlpha = 1 - sinAlpha * sinAlpha;
 
     final uSq = cosSqAlpha * (_a * _a - _b * _b) / (_b * _b);
-    final A = 1 +
-        uSq / 16384 *
-            (4096 + uSq * (-768 + uSq * (320 - 175 * uSq)));
-    final B = uSq / 1024 *
-        (256 + uSq * (-128 + uSq * (74 - 47 * uSq)));
 
-    final sigma1 = atan2(
-        tan(U1), cosAlpha1);
+    final A = 1 + uSq / 16384 * (4096 + uSq * (-768 + uSq * (320 - 175 * uSq)));
+    final B = uSq / 1024 * (256 + uSq * (-128 + uSq * (74 - 47 * uSq)));
+
+    final sigma1 = atan2(tan(U1), cosAlpha1);
 
     double sigma = s12 / (_b * A);
     double sigmaPrev;
@@ -191,9 +186,8 @@ class GeodesicWgs84 {
 
     final lon2 = lon1 + L;
 
-    final alpha2 = atan2(
-        sinAlpha,
-        -tmp);
+    final alpha2 = atan2(sinAlpha, -tmp);
+
 
     final lat2Deg = _radToDeg(lat2);
     final lon2Deg = _normLon(_radToDeg(lon2));

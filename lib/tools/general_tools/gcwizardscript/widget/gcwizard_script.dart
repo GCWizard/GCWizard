@@ -5,6 +5,7 @@ import 'package:code_text_field/code_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
+import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/application/tools/widget/gcw_tool.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
@@ -79,106 +80,142 @@ class GCWizardScriptState extends State<GCWizardScript> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        GCWCodeTextField(
-          lineNumbers: false,
-          lineNumberStyle: const GCWCodeTextFieldLineNumberStyle(width: 48),
-          controller: _programController,
-          language: CodeHighlightingLanguage.BASIC,
-          readOnly: false,
-          onChanged: (text) {
-            setState(() {
-              _currentProgram = text;
-            });
-          },
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            GCWIconButton(
-              icon: Icons.run_circle_outlined,
-              size: IconButtonSize.SMALL,
-              onPressed: () {
-                _currentInput = '';
-                _currentOutput.continueState = null;
-                _interpretGCWScriptAsync();
-              },
-            ),
-            GCWIconButton(
-              icon: Icons.file_open,
-              size: IconButtonSize.SMALL,
-              onPressed: () {
-                setState(() {
-                  _loadFile = !_loadFile;
-                });
-              },
-            ),
-            GCWIconButton(
-              icon: Icons.save,
-              size: IconButtonSize.SMALL,
-              onPressed: () {
-                _exportFile(context, Uint8List.fromList(_currentProgram.codeUnits), GCWizardScriptFileType.PROGRAM);
-              },
-            ),
-            GCWIconButton(
-              icon: Icons.clear,
-              size: IconButtonSize.SMALL,
-              onPressed: () {
-                setState(() {
-                  _programController.text = '';
-                  _currentProgram = '';
-                  _currentOutput = GCWizardScriptOutput.empty();
-                });
-              },
-            ),
-            GCWIconButton(
-              icon: Icons.help_outline,
-              size: IconButtonSize.SMALL,
-              onPressed: () {
-                _openHelpWidget(context);
-              },
-            ),
-            GCWIconButton(
-              icon: Icons.location_on,
-              size: IconButtonSize.SMALL,
-              onPressed: () {
-                setState(() {
-                  _loadCoords = !_loadCoords;
-                });
-              },
-            ),
-          ],
-        ),
-        if (_loadFile)
-          GCWOpenFile(
-            onLoaded: (GCWFile? value) {
-              if (value == null) {
-                showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
-                _loadFile = !_loadFile;
-                return;
-              }
-
-              _currentProgram = String.fromCharCodes(value.bytes);
-              _programController.text = _currentProgram;
-              _loadFile = !_loadFile;
-              setState(() {});
-            },
-          ),
-        if (_loadCoords)
-          GCWCoords(
-            title: i18n(context, 'gcwizard_script_coords'),
-            coordsFormat: _currentCoords.format,
-            onChanged: (ret) {
+    // https://www.kindacode.com/article/flutter-ask-for-confirmation-when-back-button-pressed/
+    // https://stackoverflow.com/questions/77500680/willpopscope-is-deprecated-after-flutter-3-12
+    // https://api.flutter.dev/flutter/widgets/PopScope-class.html
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        // show the confirm dialog
+        if (didPop) {
+          return;
+        } else {
+          showDialog<bool>(
+              context: context,
+              builder: (_) => AlertDialog(
+                title: Text(i18n(context, 'gcwizard_script_exit_title')),
+                titleTextStyle: const TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold),
+                content: Text(i18n(context, 'gcwizard_script_exit_message')),
+                contentTextStyle: const TextStyle(color: Colors.black, fontSize: 16.0),
+                backgroundColor: themeColors().dialog(),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
+                      child: Text(i18n(context, 'common_yes'))),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(i18n(context, 'common_no')))
+                ],
+              ));
+          return;
+        }
+      },
+      child: Column(
+        children: <Widget>[
+          GCWCodeTextField(
+            lineNumbers: false,
+            lineNumberStyle: const GCWCodeTextFieldLineNumberStyle(width: 48),
+            controller: _programController,
+            language: CodeHighlightingLanguage.BASIC,
+            readOnly: false,
+            onChanged: (text) {
               setState(() {
-                if (ret != null) {
-                  _currentCoords = ret;
-                }
+                _currentProgram = text;
               });
             },
           ),
-        _buildOutput(context),
-      ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              GCWIconButton(
+                icon: Icons.run_circle_outlined,
+                size: IconButtonSize.SMALL,
+                onPressed: () {
+                  _currentInput = '';
+                  _currentOutput.continueState = null;
+                  _interpretGCWScriptAsync();
+                },
+              ),
+              GCWIconButton(
+                icon: Icons.file_open,
+                size: IconButtonSize.SMALL,
+                onPressed: () {
+                  setState(() {
+                    _loadFile = !_loadFile;
+                  });
+                },
+              ),
+              GCWIconButton(
+                icon: Icons.save,
+                size: IconButtonSize.SMALL,
+                onPressed: () {
+                  _exportFile(context, Uint8List.fromList(_currentProgram.codeUnits), GCWizardScriptFileType.PROGRAM);
+                },
+              ),
+              GCWIconButton(
+                icon: Icons.clear,
+                size: IconButtonSize.SMALL,
+                onPressed: () {
+                  setState(() {
+                    _programController.text = '';
+                    _currentProgram = '';
+                    _currentOutput = GCWizardScriptOutput.empty();
+                  });
+                },
+              ),
+              GCWIconButton(
+                icon: Icons.help_outline,
+                size: IconButtonSize.SMALL,
+                onPressed: () {
+                  _openHelpWidget(context);
+                },
+              ),
+              GCWIconButton(
+                icon: Icons.location_on,
+                size: IconButtonSize.SMALL,
+                onPressed: () {
+                  setState(() {
+                    _loadCoords = !_loadCoords;
+                  });
+                },
+              ),
+            ],
+          ),
+          if (_loadFile)
+            GCWOpenFile(
+              onLoaded: (GCWFile? value) {
+                if (value == null) {
+                  showSnackBar(i18n(context, 'common_loadfile_exception_notloaded'), context);
+                  _loadFile = !_loadFile;
+                  return;
+                }
+
+                _currentProgram = String.fromCharCodes(value.bytes);
+                _programController.text = _currentProgram;
+                _loadFile = !_loadFile;
+                setState(() {});
+              },
+            ),
+          if (_loadCoords)
+            GCWCoords(
+              title: i18n(context, 'gcwizard_script_coords'),
+              coordsFormat: _currentCoords.format,
+              onChanged: (ret) {
+                setState(() {
+                  if (ret != null) {
+                    _currentCoords = ret;
+                  }
+                });
+              },
+            ),
+          _buildOutput(context),
+        ],
+      ),
     );
   }
 

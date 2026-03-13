@@ -125,7 +125,7 @@ class _NumberSequenceRangeState extends State<NumberSequenceRange> {
       columnData.add([(i + _currentInputStart).toString(), element.toString()]);
     }
 
-    _currentOutput = GCWDefaultOutput(child: GCWColumnedMultilineOutput(data: columnData, flexValues: [1, 5], hasHeader: true,));
+    _currentOutput = GCWDefaultOutput(child: GCWColumnedMultilineOutput(data: columnData, flexValues: [1, 5], hasHeader: true));
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {});

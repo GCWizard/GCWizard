@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
+import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
@@ -24,7 +25,6 @@ class GCWSoundPlayer extends StatefulWidget {
 }
 
 class _GCWSoundPlayerState extends State<GCWSoundPlayer> {
-  AudioCache audioCache = AudioCache();
   late AudioPlayer advancedPlayer;
 
   late StreamSubscription<Duration> _onPositionChangedStream;
@@ -46,14 +46,6 @@ class _GCWSoundPlayerState extends State<GCWSoundPlayer> {
     super.initState();
 
     advancedPlayer = AudioPlayer(playerId: const Uuid().v4());
-
-    if (kIsWeb) {
-      // Calls to Platform.isIOS fails on web
-      return;
-    }
-    if (Platform.isIOS) {
-      //audioCache.fixedPlayer?.notificationService.startHeadlessService();
-    }
 
     _onDurationChangedStream = advancedPlayer.onDurationChanged.listen((Duration d) {
       setState(() {
@@ -85,7 +77,7 @@ class _GCWSoundPlayerState extends State<GCWSoundPlayer> {
     var byteData = widget.file.bytes;
 
     if (kIsWeb) {
-      // do nothing - web does not support local filö or byte array
+      // do nothing - web does not support local file or byte array
     } else {
       _audioFile = await _writeToFile(ByteData.sublistView(byteData)); // <= returns File
     }
@@ -190,7 +182,6 @@ class _GCWSoundPlayerState extends State<GCWSoundPlayer> {
           var newPosition = (_totalDurationInMS! * _currentSliderPosition).floor();
           await advancedPlayer.seek(Duration(milliseconds: newPosition));
         }
-
         await advancedPlayer.resume();
       } else {
         await advancedPlayer.play(DeviceFileSource(_audioFile.path));
@@ -213,7 +204,9 @@ class _GCWSoundPlayerState extends State<GCWSoundPlayer> {
     final buffer = data.buffer;
     Directory tempDir = await getApplicationDocumentsDirectory();
     String tempPath = tempDir.path;
-    var filePath = tempPath + '/${advancedPlayer.playerId}.tmp';
+    String suffix = fileExtension((widget.file.fileType));
+    var filePath = tempPath + '/${advancedPlayer.playerId}.$suffix';
+
     return File(filePath).writeAsBytes(buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
   }
 

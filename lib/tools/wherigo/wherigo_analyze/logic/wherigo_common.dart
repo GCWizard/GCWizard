@@ -31,7 +31,7 @@ String _getStructData(String analyseLine, String type) {
   return analyseLine.trimLeft().replaceAll(type + ' = ', '').replaceAll('"', '').replaceAll(',', '');
 }
 
-String _getTextData(String analyseLine,) {
+String _getTextData(String analyseLine) {
   String result = analyseLine
       .trimLeft()
       .replaceAll('Text = ', '')

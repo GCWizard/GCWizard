@@ -16,7 +16,6 @@ import 'package:gc_wizard/tools/images_and_files/magic_eye_solver/logic/magic_ey
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:image/image.dart' as Image;
-import 'package:tuple/tuple.dart';
 
 class MagicEyeSolver extends StatefulWidget {
   const MagicEyeSolver({super.key});
@@ -109,13 +108,13 @@ class _MagicEyeSolverState extends State<MagicEyeSolver> {
 
   GCWAsyncExecuterParameters _buildJobDataDecode() {
     return GCWAsyncExecuterParameters(
-        Tuple3<Uint8List, Image.Image?, int?>(_decodeImage!.bytes, _decodeImageData, _displacement));
+        (image: _decodeImage!.bytes, imageData: _decodeImageData, displacement: _displacement));
   }
 
-  void _saveOutputDecode(Tuple3<Image.Image, Uint8List, int>? output) {
-    _decodeImageData = output?.item1;
-    _decodeOutData = output?.item2;
-    _displacement = output?.item3;
+  void _saveOutputDecode(({Image.Image imageData, Uint8List outputImage, int displacement})? output) {
+    _decodeImageData = output?.imageData;
+    _decodeOutData = output?.outputImage;
+    _displacement = output?.displacement;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {});
@@ -202,11 +201,11 @@ class _MagicEyeSolverState extends State<MagicEyeSolver> {
   }
 
   Future<GCWAsyncExecuterParameters> _buildJobDataEncode() async {
-    return GCWAsyncExecuterParameters(Tuple3<Uint8List?, Uint8List?, TextureType?>(
-        _encodeHiddenDataImage?.bytes, _encodeTextureImage?.bytes, _currentEncodeTextureType));
+    return GCWAsyncExecuterParameters((hiddenImage: _encodeHiddenDataImage?.bytes,
+        textureImage: _encodeTextureImage?.bytes, textureType: _currentEncodeTextureType));
   }
 
-  void _saveOutputEncode(Tuple2<Uint8List?, MagicEyeErrorCode>? output) {
+  void _saveOutputEncode(({Uint8List? image, MagicEyeErrorCode errorCode})? output) {
     if (output == null) {
       _encodeOutData = null;
       return;
@@ -214,8 +213,8 @@ class _MagicEyeSolverState extends State<MagicEyeSolver> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        _encodeOutData = output.item1;
-        if (output.item2 == MagicEyeErrorCode.IMAGE_TOO_SMALL) {
+        _encodeOutData = output.image;
+        if (output.errorCode == MagicEyeErrorCode.IMAGE_TOO_SMALL) {
           showSnackBar(i18n(context, 'magic_eye_image_too_small'), context);
         }
       });
@@ -236,7 +235,7 @@ class _MagicEyeSolverState extends State<MagicEyeSolver> {
           child: SizedBox(
             height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
             width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
-            child: GCWAsyncExecuter<Tuple2<Uint8List?, MagicEyeErrorCode>?>(
+            child: GCWAsyncExecuter<({Uint8List? image, MagicEyeErrorCode errorCode})?>(
               isolatedFunction: generateImageAsync,
               parameter: _buildJobDataEncode,
               onReady: (data) => _saveOutputEncode(data),

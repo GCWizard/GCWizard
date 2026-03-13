@@ -11,7 +11,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeAveMaria(encodeAveMaria(elem['input'] as String,));
+        var _actual = decodeAveMaria(encodeAveMaria(elem['input'] as String));
         expect(_actual, elem['expectedOutput']);
       });
     }
@@ -28,11 +28,9 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}', () {
-        var _actual = decodeAveMaria(elem['input'] as String,);
+        var _actual = decodeAveMaria(elem['input'] as String);
         expect(_actual, elem['expectedOutput']);
       });
     }
   });
-
-
 }

@@ -25,7 +25,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, innerKey: ${elem['innerKey']}, outerKey: ${elem['outerKey']}, type: ${elem['type']}', () {
-        NEMAOutput _actual = nema(elem['input'] as String, elem['type'] as NEMA_TYPE, elem['innerKey'] as String, elem['outerKey'] as String,);
+        NEMAOutput _actual = nema(elem['input'] as String, elem['type'] as NEMA_TYPE, elem['innerKey'] as String, elem['outerKey'] as String);
         expect(_actual.output, elem['expectedOutput']);
       });
     }
@@ -53,7 +53,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, innerKey: ${elem['innerKey']}, outerKey: ${elem['outerKey']}, type: ${elem['type']}', () {
-        NEMAOutput _actual = nema(elem['input'] as String, elem['type'] as NEMA_TYPE, elem['innerKey'] as String, elem['outerKey'] as String,);
+        NEMAOutput _actual = nema(elem['input'] as String, elem['type'] as NEMA_TYPE, elem['innerKey'] as String, elem['outerKey'] as String);
         expect(_actual.output, elem['expectedOutput']);
       });
     }
@@ -75,7 +75,7 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['input']}, innerKey: ${elem['innerKey']}, outerKey: ${elem['outerKey']}, type: ${elem['type']}', () {
-        NEMAOutput _actual = nema(elem['input'] as String, elem['type'] as NEMA_TYPE, elem['innerKey'] as String, elem['outerKey'] as String,);
+        NEMAOutput _actual = nema(elem['input'] as String, elem['type'] as NEMA_TYPE, elem['innerKey'] as String, elem['outerKey'] as String);
         expect(_actual.output, elem['expectedOutput']);
       });
     }

@@ -178,13 +178,13 @@ class _UICWagonCodeState extends State<UICWagonCode> {
 
           heatingSystemOutput = Column(
             children: [
-              GCWColumnedMultilineOutput(data: heatingSystems, hasHeader: true, copyColumn: 0, flexValues: const [3,1,1,1],),
+              GCWColumnedMultilineOutput(data: heatingSystems, hasHeader: true, copyColumn: 0, flexValues: const [3,1,1,1]),
               Container(height: 8 * DOUBLE_DEFAULT_MARGIN),
               GCWColumnedMultilineOutput(data: [
                 ['D', i18n(context, 'uic_passenger_heatingsystem_onlydomestic')],
                 ['I', i18n(context, 'uic_passenger_heatingsystem_onlyinternational')],
                 ['*', i18n(context, 'uic_passenger_heatingsystem_voltage1000blablubb')],
-              ], suppressCopyButtons: true, fontSize: fontSizeSmall(), flexValues: const [1,5],),
+              ], suppressCopyButtons: true, fontSize: fontSizeSmall(), flexValues: const [1,5]),
             ],
           );
         }

@@ -88,7 +88,7 @@ Iterable<int> iterateText(String text, String alphabet, {bool ignoreNonLetters =
 ///             Used to quickly update the plaintext when two characters of the key are
 ///             swapped.
 /// :return: tuple of the max_fitness and the number of keys evaluated
-Tuple2<int, int> _hill_climbing(List<int> key, List<int> cipher_bin, List<List<int>> char_positions) {
+({int max_fitness, int nbr_keys}) _hill_climbing(List<int> key, List<int> cipher_bin, List<List<int>> char_positions) {
   var plaintext = <int>[];
   for (var idx in cipher_bin) {
     plaintext.add(key.indexOf(idx));
@@ -134,7 +134,7 @@ Tuple2<int, int> _hill_climbing(List<int> key, List<int> cipher_bin, List<List<i
       }
     }
   }
-  return Tuple2<int, int>(max_fitness, nbr_keys);
+  return (max_fitness: max_fitness, nbr_keys: nbr_keys);
 }
 
 /// Breaks a given cipher text
@@ -191,8 +191,8 @@ BreakerResult break_cipher(Quadgrams quadgrams, String ciphertext, {int maxRound
     key.shuffle();
 
     var tuple = _hill_climbing(key, cipher_bin, char_positions);
-    var fitness = tuple.item1;
-    nbr_keys += tuple.item2;
+    var fitness = tuple.max_fitness;
+    nbr_keys += tuple.nbr_keys;
 
     if (fitness > local_maximum) {
       local_maximum = fitness;

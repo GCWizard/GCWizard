@@ -28,7 +28,7 @@ class _PietNavigator {
   var _currentPoint = const Point<int>(0, 0);
   Point<int> get currentPoint => _currentPoint;
 
-  Tuple2<bool, Point<int>> tryNavigate(_PietBlock block) {
+  ({bool valid, Point<int> nextStep}) tryNavigate(_PietBlock block) {
     Point<int> result;
     int failureCount = 0;
 
@@ -103,7 +103,7 @@ class _PietNavigator {
       if (!isBlocked) {
         _currentPoint = nextStep;
         result = nextStep;
-        return Tuple2<bool, Point<int>>(true, result);
+        return (valid: true, nextStep: result);
       }
 
       _currentPoint = exitPoint;
@@ -117,8 +117,7 @@ class _PietNavigator {
       failureCount++;
     }
 
-    result = const Point<int>(0, 0);
-    return Tuple2<bool, Point<int>>(false, result);
+    return (valid: false, nextStep: const Point<int>(0, 0));
   }
 
   bool _stillInBlock(Point<int> exitPoint, _PietBlock block) {

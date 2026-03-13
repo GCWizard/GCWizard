@@ -21,7 +21,6 @@ import 'package:gc_wizard/tools/images_and_files/visual_cryptography/logic/visua
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 import 'package:gc_wizard/utils/file_utils/gcw_file.dart';
 import 'package:image/image.dart' as img;
-import 'package:tuple/tuple.dart';
 
 class VisualCryptography extends StatefulWidget {
   const VisualCryptography({super.key});
@@ -46,7 +45,7 @@ class _VisualCryptographyState extends State<VisualCryptography> {
   var _encodeOffsetsX = 0;
   var _encodeOffsetsY = 0;
 
-  Tuple2<Uint8List, Uint8List?>? _encodeOutputImages;
+  ({Uint8List image1, Uint8List? image2})? _encodeOutputImages;
 
   int? _currentImageWidth;
   int? _currentImageHeight;
@@ -356,7 +355,7 @@ class _VisualCryptographyState extends State<VisualCryptography> {
 
     return Column(children: <Widget>[
       GCWImageView(
-        imageData: GCWImageViewData(GCWFile(bytes: _encodeOutputImages?.item1 ?? Uint8List(0))),
+        imageData: GCWImageViewData(GCWFile(bytes: _encodeOutputImages?.image1 ?? Uint8List(0))),
         toolBarRight: true,
         fileName: buildFileNameWithDate('img1_', null),
       ),
@@ -366,7 +365,7 @@ class _VisualCryptographyState extends State<VisualCryptography> {
               children: [
                 Container(height: 5),
                 GCWImageView(
-                  imageData: GCWImageViewData(GCWFile(bytes: _encodeOutputImages?.item2 ?? Uint8List(0))),
+                  imageData: GCWImageViewData(GCWFile(bytes: _encodeOutputImages?.image2 ?? Uint8List(0))),
                   toolBarRight: true,
                   fileName: buildFileNameWithDate('img2_', null),
                 ),
@@ -399,8 +398,8 @@ class _VisualCryptographyState extends State<VisualCryptography> {
   }
 
   Future<GCWAsyncExecuterParameters> _buildJobDataDecode() async {
-    return GCWAsyncExecuterParameters(Tuple4<Uint8List, Uint8List, int, int>(
-        _decodeImage1?.bytes ?? Uint8List(0), _decodeImage2?.bytes ?? Uint8List(0), _decodeOffsetsX, _decodeOffsetsY));
+    return GCWAsyncExecuterParameters((image1: _decodeImage1?.bytes ?? Uint8List(0),
+        image12: _decodeImage2?.bytes ?? Uint8List(0), offsetX: _decodeOffsetsX, offsetY: _decodeOffsetsY));
   }
 
   void _saveOutputDecode(Uint8List? output) {
@@ -487,7 +486,7 @@ class _VisualCryptographyState extends State<VisualCryptography> {
             child: SizedBox(
               height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
               width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
-              child: GCWAsyncExecuter<Tuple2<Uint8List, Uint8List?>?>(
+              child: GCWAsyncExecuter<({Uint8List image1, Uint8List? image2})?>(
                 isolatedFunction: encodeImagesAsync,
                 parameter: _buildJobDataEncode,
                 onReady: (data) => _saveOutputEncode(data),
@@ -501,16 +500,16 @@ class _VisualCryptographyState extends State<VisualCryptography> {
   }
 
   Future<GCWAsyncExecuterParameters> _buildJobDataEncode() async {
-    return GCWAsyncExecuterParameters(Tuple6<Uint8List, Uint8List?, int, int, int, int>(
-        _encodeImage?.bytes ?? Uint8List(0),
-        _currentEncryptionWithKeyMode ? _encodeKeyImage?.bytes ?? Uint8List(0) : null,
-        _encodeOffsetsX,
-        _encodeOffsetsY,
-        _currentEncryptionWithKeyMode ? 100 : _encodeScale,
-        _currentEncryptionWithKeyMode ? 1 : _pixelSize));
+    return GCWAsyncExecuterParameters((
+        image: _encodeImage?.bytes ?? Uint8List(0),
+        keyImage: _currentEncryptionWithKeyMode ? _encodeKeyImage?.bytes ?? Uint8List(0) : null,
+        offsetX: _encodeOffsetsX,
+        offsetY: _encodeOffsetsY,
+        scale: _currentEncryptionWithKeyMode ? 100 : _encodeScale,
+        pixelSize: _currentEncryptionWithKeyMode ? 1 : _pixelSize));
   }
 
-  void _saveOutputEncode(Tuple2<Uint8List, Uint8List?>? output) {
+  void _saveOutputEncode(({Uint8List image1, Uint8List? image2})? output) {
     _encodeOutputImages = output;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {

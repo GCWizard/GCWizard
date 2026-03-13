@@ -12,7 +12,6 @@ import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/science_and_technology/guitar_strings/logic/guitar_strings.dart';
-import 'package:tuple/tuple.dart';
 
 class GuitarStrings extends StatefulWidget {
   const GuitarStrings({super.key});
@@ -30,7 +29,7 @@ class _GuitarStringsState extends State<GuitarStrings> {
   int _currentString = 0;
   int _currentFret = 0;
 
-  var _currentTones = <Tuple2<GuitarStringName, int>>[];
+  var _currentTones = <({GuitarStringName string, int fret})>[];
 
   @override
   void initState() {
@@ -87,8 +86,8 @@ class _GuitarStringsState extends State<GuitarStrings> {
   }
 
   Widget _buildDecryption() {
-    var tabs = List<Tuple2<GuitarStringName, int>>.from(_currentTones);
-    tabs.add(Tuple2(_stringNameFromIndex(_currentString), _currentFret));
+    var tabs = List<({GuitarStringName string, int fret})>.from(_currentTones);
+    tabs.add((string: _stringNameFromIndex(_currentString), fret: _currentFret));
 
     return Column(
       children: [
@@ -136,7 +135,7 @@ class _GuitarStringsState extends State<GuitarStrings> {
             onPressed: () {
               setState(() {
                 var stringName = _stringNameFromIndex(_currentString);
-                _currentTones.add(Tuple2(stringName, _currentFret));
+                _currentTones.add((string: stringName, fret: _currentFret));
               });
             },
           ),
@@ -173,15 +172,15 @@ class _GuitarStringsState extends State<GuitarStrings> {
   }
 
   String _buildDecryptionOutput() {
-    var outputTones = List<Tuple2<GuitarStringName, int>>.from(_currentTones);
-    outputTones.add(Tuple2(_stringNameFromIndex(_currentString), _currentFret));
+    var outputTones = List<({GuitarStringName string, int fret})>.from(_currentTones);
+    outputTones.add((string: _stringNameFromIndex(_currentString), fret: _currentFret));
 
     return outputTones.map((tone) {
       return i18n(context, GUITAR_STRING_NOTES[tone]!);
     }).join(' ');
   }
 
-  Widget _buildASCIITabs(List<Tuple2<GuitarStringName, int>?> tabs, String title) {
+  Widget _buildASCIITabs(List<({GuitarStringName string, int fret})?> tabs, String title) {
     var out = {
       GuitarStringName.E4: 'E |-',
       GuitarStringName.H3: '${_bOrH().toUpperCase()} |-',
@@ -193,8 +192,8 @@ class _GuitarStringsState extends State<GuitarStrings> {
 
     tabs.where((tone) => tone != null).forEach((tone) {
       for (var outItem in out.keys) {
-        if (outItem == tone!.item1) {
-          out[outItem] = out[outItem]! + tone.item2.toString().padRight(2, '-') + '-';
+        if (outItem == tone!.string) {
+          out[outItem] = out[outItem]! + tone.fret.toString().padRight(2, '-') + '-';
         } else {
           out[outItem] = out[outItem]! + '---';
         }

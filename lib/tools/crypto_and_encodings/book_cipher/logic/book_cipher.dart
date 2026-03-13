@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:diacritic/diacritic.dart';
-import 'package:tuple/tuple.dart';
 
 class _wordClass {
   int sectionIndex;
@@ -52,8 +51,7 @@ String decodeSearchWord(
       azOn: azOn,
       numbersOn: numbersOn);
 
-  var splittedResult = _wordList(input);
-  var wordList = splittedResult.item1;
+  var wordList = _wordList(input).wordList;
   word = word.toUpperCase();
 
   var out = wordList.where((e) => e.text.toUpperCase() == word).map((e) {
@@ -116,9 +114,9 @@ String decodeFindWord(String input, String positions, searchFormat format,
       numbersOn: numbersOn);
 
   var splittedResult = _wordList(input);
-  var wordList = splittedResult.item1;
-  var rowList = splittedResult.item2;
-  var sectionList = splittedResult.item2;
+  var wordList = splittedResult.wordList;
+  var rowList = splittedResult.rowList;
+  var sectionList = splittedResult.rowList;
 
   while (i < positionList.length) {
     switch (format) {
@@ -232,9 +230,9 @@ String encodeText(String input, String text, encodeOutFormat format,
 
   var out = '';
   var splittedResult = _wordList(input);
-  var wordList = splittedResult.item1;
-  var sectionList = splittedResult.item2;
-  var positionList = <Tuple2<_wordClass?, int>>[];
+  var wordList = splittedResult.wordList;
+  var sectionList = splittedResult.rowList;
+  var positionList = <({_wordClass? entry, int position})>[];
 
   if (onlyFirstWordLetter) {
     for (var element in wordList) {
@@ -251,13 +249,13 @@ String encodeText(String input, String text, encodeOutFormat format,
   });
 
   for (var element in positionList) {
-    var e = element.item1;
+    var e = element.entry;
     switch (format) {
       case encodeOutFormat.SectionRowWordCharacter:
         if (e == null) {
           out += _createOutElement(true, -1, -1, -1, -1);
         } else {
-          out += _createOutElement(false, e.sectionIndex, e.rowIndex, e.wordIndex, element.item2);
+          out += _createOutElement(false, e.sectionIndex, e.rowIndex, e.wordIndex, element.position);
         }
         break;
 
@@ -265,7 +263,7 @@ String encodeText(String input, String text, encodeOutFormat format,
         if (e == null) {
           out += _createOutElement(true, 0, -1, -1, -1);
         } else {
-          out += _createOutElement(false, 0, _findRowIndex(e, wordList), e.wordIndex, element.item2);
+          out += _createOutElement(false, 0, _findRowIndex(e, wordList), e.wordIndex, element.position);
         }
         break;
 
@@ -273,7 +271,7 @@ String encodeText(String input, String text, encodeOutFormat format,
         if (e == null) {
           out += _createOutElement(true, 0, 0, -1, -1);
         } else {
-          out += _createOutElement(false, 0, 0, _findWordIndex(e, wordList), element.item2);
+          out += _createOutElement(false, 0, 0, _findWordIndex(e, wordList), element.position);
         }
         break;
 
@@ -281,7 +279,7 @@ String encodeText(String input, String text, encodeOutFormat format,
         if (e == null) {
           out += _createOutElement(true, 0, 0, 0, -1);
         } else {
-          out += _createOutElement(false, 0, 0, 0, _globalCharacterPosition(e, element.item2, sectionList));
+          out += _createOutElement(false, 0, 0, 0, _globalCharacterPosition(e, element.position, sectionList));
         }
         break;
     }
@@ -458,7 +456,7 @@ int _globalCharacterPosition(_wordClass word, int characterPosition, List<_wordC
   return text.length + characterPosition;
 }
 
-Tuple2<_wordClass?, int> _selectRandomLetterPosition(String letter, List<_wordClass> wordList) {
+({_wordClass? entry, int position}) _selectRandomLetterPosition(String letter, List<_wordClass> wordList) {
   var letterCount = 0;
   var letterCountTmp = 0;
   var letterWordList = <_wordClass>[];
@@ -493,13 +491,12 @@ Tuple2<_wordClass?, int> _selectRandomLetterPosition(String letter, List<_wordCl
       });
     }
   }
-  return Tuple2<_wordClass?, int>(outWord, outLetterPosition);
+  return (entry: outWord, position: outLetterPosition);
 }
 
-Tuple3<List<_wordClass>, List<_wordClass>, List<_wordClass>> _wordList(String input) {
+({List<_wordClass> wordList, List<_wordClass> rowList}) _wordList(String input) {
   var wordList = <_wordClass>[];
   var rowList = <_wordClass>[];
-  var sectionList = <_wordClass>[];
   int sectionIndex = 0;
   int rowIndex = 0;
   int wordIndex = 0;
@@ -508,14 +505,13 @@ Tuple3<List<_wordClass>, List<_wordClass>, List<_wordClass>> _wordList(String in
     sectionIndex += 1;
     rowIndex = 0;
     wordIndex = 0;
-    sectionList.add(_wordClass(sectionIndex, rowIndex, wordIndex, section));
 
     section.split(RegExp(r"\n")).forEach((row) {
       rowIndex += 1;
       wordIndex = 0;
       rowList.add(_wordClass(sectionIndex, rowIndex, wordIndex, row));
 
-      row.split(RegExp(r"[\s]|[\.]|[,]|[!]|[\?]|[\\]")).forEach((word) {
+      row.split(RegExp(r"[\s]|[.]|[,]|[!]|[?]|[\\]")).forEach((word) {
         if (word.isNotEmpty) {
           wordIndex += 1;
           wordList.add(_wordClass(sectionIndex, rowIndex, wordIndex, word));
@@ -524,7 +520,7 @@ Tuple3<List<_wordClass>, List<_wordClass>, List<_wordClass>> _wordList(String in
     });
   });
 
-  return Tuple3<List<_wordClass>, List<_wordClass>, List<_wordClass>>(wordList, rowList, sectionList);
+  return (wordList: wordList, rowList: rowList);
 }
 
 String _filterInput(String input,

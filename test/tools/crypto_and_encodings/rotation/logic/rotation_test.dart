@@ -31,9 +31,9 @@ void main() {
       {'alphabet': 'BGH/&%ROla3v1', 'input' : '1jO7G3aBbR', 'key' : 10, 'removeUnknownCharacters' : false, 'ignoreCase': false, 'expectedOutput' : 'aj&7vOR3b/'},
       {'alphabet': 'BGH/&%ROla3v1', 'input' : 'aj&7vOR3b/', 'key' : -10, 'removeUnknownCharacters' : false, 'ignoreCase': false, 'expectedOutput' : '1jO7G3aBbR'},
 
-      {'alphabet': null, 'input' : 'ABMNYZ', 'key' : 13, 'removeUnknownCharacters' : false, 'ignoreCase': true, 'expectedOutput' : 'ABMNYZ'},
+      {'alphabet': null, 'input' : 'ABMNYZ', 'key' : 13, 'removeUnknownCharacters' : false, 'ignoreCase': true, 'expectedOutput' : 'NOZALM'},
       {'alphabet': '', 'input' : 'ABMNYZ', 'key' : 13, 'removeUnknownCharacters' : false, 'ignoreCase': true, 'expectedOutput' : 'ABMNYZ'},
-      {'alphabet': null, 'input' : 'ABMNYZ', 'key' : 13, 'removeUnknownCharacters' : true, 'ignoreCase': true, 'expectedOutput' : ''},
+      {'alphabet': null, 'input' : 'ABMNYZ', 'key' : 13, 'removeUnknownCharacters' : true, 'ignoreCase': true, 'expectedOutput' : 'NOZALM'},
       {'alphabet': '', 'input' : 'ABMNYZ', 'key' : 13, 'removeUnknownCharacters' : true, 'ignoreCase': true, 'expectedOutput' : ''},
 
       {'alphabet': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'input' : '', 'key' : 13, 'removeUnknownCharacters' : false, 'ignoreCase': false, 'expectedOutput' : ''},
@@ -41,6 +41,10 @@ void main() {
 
       {'alphabet': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'input' : 'ABMNYZ', 'key' : null, 'removeUnknownCharacters' : false, 'ignoreCase': false, 'expectedOutput' : 'ABMNYZ'},
       {'alphabet': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'input' : 'ABMNYZ', 'key' : null, 'removeUnknownCharacters' : false, 'ignoreCase': true, 'expectedOutput' : 'ABMNYZ'},
+
+      {'alphabet': 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜẞ', 'input' : 'außerü', 'key' : 1, 'removeUnknownCharacters' : false, 'ignoreCase': true, 'expectedOutput' : 'bvafsß'},
+      {'alphabet': 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜẞ', 'input' : 'AUẞERÜ', 'key' : 1, 'removeUnknownCharacters' : false, 'ignoreCase': false, 'expectedOutput' : 'BVAFSẞ'},
+      {'alphabet': 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜẞ', 'input' : 'außerü', 'key' : 1, 'removeUnknownCharacters' : false, 'ignoreCase': false, 'expectedOutput' : 'außerü'},
     ];
 
     for (var elem in _inputsToExpected) {

@@ -248,7 +248,7 @@ Object _bifid(Object text, Object key, Object mode, Object polybiosMode, Object 
   return output.output;
 }
 
-Object _trifid(Object text, Object blockSize, Object mode, Object polybiosMode, Object alphabet,) {
+Object _trifid(Object text, Object blockSize, Object mode, Object polybiosMode, Object alphabet) {
   if (_isNotAInt(mode) || _isNotAInt(blockSize) || _isNotAInt(polybiosMode) ||
       _isNotAString(text) || _isNotAString(alphabet)) {
     _handleError(_INVALIDTYPECAST);
@@ -264,10 +264,10 @@ Object _trifid(Object text, Object blockSize, Object mode, Object polybiosMode, 
 
   if ((mode as int) == _DECODE) {
     output = decryptTrifid(
-      text as String, blockSize as int, mode: _PolybiosMode[polybiosMode]!, alphabet: alphabet as String,);
+      text as String, blockSize as int, mode: _PolybiosMode[polybiosMode]!, alphabet: alphabet as String);
   } else {
     output = encryptTrifid(
-      text as String, blockSize as int, mode: _PolybiosMode[polybiosMode]!, alphabet: alphabet as String,);
+      text as String, blockSize as int, mode: _PolybiosMode[polybiosMode]!, alphabet: alphabet as String);
   }
 
   return output.output;

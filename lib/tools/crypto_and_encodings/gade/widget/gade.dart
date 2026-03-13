@@ -177,7 +177,7 @@ class _GadeState extends State<Gade> {
         setState(() {
           _currentType = value;
         });
-      },);
+      });
   }
 
   Widget _buildWidgetInputOptions(){

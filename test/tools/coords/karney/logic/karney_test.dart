@@ -176,7 +176,7 @@ void main() {
               GeodesicData karneyA = geodeticDirect(coord2, karneyAzi2, karney.s12, ellipsoid);
               LatLng calcA = LatLng(karneyA.lat2, karneyA.lon2);
 
-              if (!utils.equalsLatLng(calcB, coord2, tolerance: 1e-5))
+              if (!utils.equalsLatLng(calcB, coord2, tolerance: 1e-7))
               {
                 countErrors++;
                 print('A -> B ==============================');
@@ -196,7 +196,7 @@ void main() {
                 print(coord2);
               }
 
-              if (!utils.equalsLatLng(calcA, coord1, tolerance: 1e-5))
+              if (!utils.equalsLatLng(calcA, coord1, tolerance: 1e-7))
               {
                 countErrors++;
                 print('B -> A ==============================');
@@ -255,7 +255,7 @@ void main() {
         GeodesicData karneyA = geodeticDirect(coord2, karneyAzi2, karney.s12, ellipsoid);
         LatLng calcA = LatLng(karneyA.lat2, karneyA.lon2);
 
-        if (!utils.equalsLatLng(calcB, coord2, tolerance: 1e-5)) {
+        if (!utils.equalsLatLng(calcB, coord2, tolerance: 1e-7)) {
           countErrors++;
           print('A -> B ==============================');
           print('A:');
@@ -274,7 +274,7 @@ void main() {
           print(coord2);
         }
 
-        if (!utils.equalsLatLng(calcA, coord1, tolerance: 1e-5)) {
+        if (!utils.equalsLatLng(calcA, coord1, tolerance: 1e-7)) {
           countErrors++;
           print('B -> A ==============================');
           print('A:');

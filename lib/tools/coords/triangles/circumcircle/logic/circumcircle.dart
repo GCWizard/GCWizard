@@ -152,11 +152,3 @@ Circle calculateEllipsoidTriangleCircumCircle(LatLng A, LatLng B, LatLng C) {
       latB: B.latitude, lonB: B.longitude,
       latC: C.latitude, lonC: C.longitude);
 }
-
-
-
-
-
-
-
-

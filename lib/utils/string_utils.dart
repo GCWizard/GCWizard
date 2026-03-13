@@ -94,6 +94,17 @@ bool isUpperCase(String letter) {
   return (letter.toUpperCase() == letter);
 }
 
+String toUpperCaseWithSZ(String text) {
+  var out = '';
+  for (int i = 0; i < text.length; i++) {
+    var char = text[i];
+    // automatic 'ß'.toUpperCase() gives SS and this could end up in a mess, i.e. if text length counts
+    if (char == 'ß') char = 'ẞ'; // make capital ß manually
+    out += char;
+  }
+  return out.toUpperCase();
+}
+
 String removeDuplicateCharacters(String input) {
   return input.split('').toSet().join();
 }

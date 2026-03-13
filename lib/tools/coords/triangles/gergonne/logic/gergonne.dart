@@ -64,6 +64,5 @@ LatLng calculateEllipsoidTriangleGergonnePoint(LatLng a, LatLng b, LatLng c){
       latA: a.latitude, lonA: a.longitude,
       latB: b.latitude, lonB: b.longitude,
       latC: c.latitude, lonC: c.longitude,
-
   );
 }

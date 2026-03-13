@@ -177,7 +177,7 @@ class _ChappeTelegraphState extends State<FoyBreguetTelegraph> {
   Widget _buildOutput() {
     if (_currentMode == GCWSwitchPosition.left) {
       //encode
-      var segments = encodeFoyBreguet(_currentEncodeInput,);
+      var segments = encodeFoyBreguet(_currentEncodeInput);
       return Column(
         children: <Widget>[
           _buildDigitalOutput(segments),

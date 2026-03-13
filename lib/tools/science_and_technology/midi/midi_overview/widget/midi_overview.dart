@@ -139,7 +139,7 @@ class _MIDIState extends State<MIDI> {
               setState(() {
                 _currentMIDIData = position;
               });
-            },),
+            }),
         if (_currentMIDIData == 0) _buildInputMIDINotes(),
         GCWDefaultOutput(child: _buildOutput()),
       ],

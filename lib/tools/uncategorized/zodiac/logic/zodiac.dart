@@ -34,6 +34,7 @@ class ZodiacDate {
 
 class ZodiacSign {
   final ZodiacDate date;
+  final ZodiacDate astronomicaldate;
   final List<String> planet;
   final int house;
   final String element;
@@ -42,6 +43,7 @@ class ZodiacSign {
 
   const ZodiacSign(
       {required this.date,
+      required this.astronomicaldate,
       required this.planet,
       required this.house,
       required this.element,
@@ -57,6 +59,12 @@ const Map<String, ZodiacSign> ZODIACSIGNS = {
         end_month: 4,
         end_day: 20,
       ),
+      astronomicaldate: ZodiacDate(
+        start_month: 4,
+        start_day: 20,
+        end_month: 5,
+        end_day: 14,
+      ),
       planet: [_ZODIACSIGNS_ATTRIBUTE_PLANET_VALUE_MARS],
       house: 1,
       element: _ZODIACSIGNS_ATTRIBUTE_ELEMENT_VALUE_FIRE,
@@ -69,6 +77,12 @@ const Map<String, ZodiacSign> ZODIACSIGNS = {
         end_month: 5,
         end_day: 20,
       ),
+      astronomicaldate: ZodiacDate(
+        start_month: 5,
+        start_day: 15,
+        end_month: 6,
+        end_day: 22,
+      ),
       planet: [_ZODIACSIGNS_ATTRIBUTE_PLANET_VALUE_VENUS],
       house: 2,
       element: _ZODIACSIGNS_ATTRIBUTE_ELEMENT_VALUE_EARTH,
@@ -79,6 +93,12 @@ const Map<String, ZodiacSign> ZODIACSIGNS = {
         start_month: 5,
         start_day: 21,
         end_month: 6,
+        end_day: 21,
+      ),
+      astronomicaldate: ZodiacDate(
+        start_month: 6,
+        start_day: 23,
+        end_month: 7,
         end_day: 21,
       ),
       planet: [_ZODIACSIGNS_ATTRIBUTE_PLANET_VALUE_MERCURY],
@@ -93,6 +113,12 @@ const Map<String, ZodiacSign> ZODIACSIGNS = {
         end_month: 7,
         end_day: 22,
       ),
+      astronomicaldate: ZodiacDate(
+        start_month: 7,
+        start_day: 22,
+        end_month: 8,
+        end_day: 11,
+      ),
       planet: [_ZODIACSIGNS_ATTRIBUTE_PLANET_VALUE_MOON],
       house: 4,
       element: _ZODIACSIGNS_ATTRIBUTE_ELEMENT_VALUE_WATER,
@@ -104,6 +130,12 @@ const Map<String, ZodiacSign> ZODIACSIGNS = {
         start_day: 23,
         end_month: 8,
         end_day: 23,
+      ),
+      astronomicaldate: ZodiacDate(
+        start_month: 8,
+        start_day: 12,
+        end_month: 9,
+        end_day: 17,
       ),
       planet: [_ZODIACSIGNS_ATTRIBUTE_PLANET_VALUE_SUN],
       house: 5,
@@ -117,6 +149,12 @@ const Map<String, ZodiacSign> ZODIACSIGNS = {
         end_month: 9,
         end_day: 23,
       ),
+      astronomicaldate: ZodiacDate(
+        start_month: 9,
+        start_day: 18,
+        end_month: 11,
+        end_day: 1,
+      ),
       planet: [_ZODIACSIGNS_ATTRIBUTE_PLANET_VALUE_MERCURY, _ZODIACSIGNS_ATTRIBUTE_PLANET_VALUE_CHIRON],
       house: 6,
       element: _ZODIACSIGNS_ATTRIBUTE_ELEMENT_VALUE_EARTH,
@@ -128,6 +166,12 @@ const Map<String, ZodiacSign> ZODIACSIGNS = {
         start_day: 24,
         end_month: 10,
         end_day: 23,
+      ),
+      astronomicaldate: ZodiacDate(
+        start_month: 11,
+        start_day: 2,
+        end_month: 11,
+        end_day: 24,
       ),
       planet: [_ZODIACSIGNS_ATTRIBUTE_PLANET_VALUE_VENUS],
       house: 7,
@@ -141,6 +185,12 @@ const Map<String, ZodiacSign> ZODIACSIGNS = {
         end_month: 11,
         end_day: 22,
       ),
+      astronomicaldate: ZodiacDate(
+        start_month: 11,
+        start_day: 25,
+        end_month: 11,
+        end_day: 30,
+      ),
       planet: [_ZODIACSIGNS_ATTRIBUTE_PLANET_VALUE_PLUTO, _ZODIACSIGNS_ATTRIBUTE_PLANET_VALUE_JUPITER],
       house: 8,
       element: _ZODIACSIGNS_ATTRIBUTE_ELEMENT_VALUE_WATER,
@@ -152,6 +202,12 @@ const Map<String, ZodiacSign> ZODIACSIGNS = {
         start_day: 23,
         end_month: 12,
         end_day: 21,
+      ),
+      astronomicaldate: ZodiacDate(
+        start_month: 12,
+        start_day: 19,
+        end_month: 1,
+        end_day: 20,
       ),
       planet: [_ZODIACSIGNS_ATTRIBUTE_PLANET_VALUE_JUPITER],
       house: 9,
@@ -165,6 +221,12 @@ const Map<String, ZodiacSign> ZODIACSIGNS = {
         end_month: 1,
         end_day: 20,
       ),
+      astronomicaldate: ZodiacDate(
+        start_month: 1,
+        start_day: 21,
+        end_month: 2,
+        end_day: 16,
+      ),
       planet: [_ZODIACSIGNS_ATTRIBUTE_PLANET_VALUE_SATURN],
       house: 10,
       element: _ZODIACSIGNS_ATTRIBUTE_ELEMENT_VALUE_EARTH,
@@ -176,6 +238,12 @@ const Map<String, ZodiacSign> ZODIACSIGNS = {
         start_day: 21,
         end_month: 2,
         end_day: 19,
+      ),
+      astronomicaldate: ZodiacDate(
+        start_month: 2,
+        start_day: 17,
+        end_month: 3,
+        end_day: 12,
       ),
       planet: [_ZODIACSIGNS_ATTRIBUTE_PLANET_VALUE_URANUS, _ZODIACSIGNS_ATTRIBUTE_PLANET_VALUE_SATURN],
       house: 11,
@@ -189,9 +257,23 @@ const Map<String, ZodiacSign> ZODIACSIGNS = {
         end_month: 3,
         end_day: 20,
       ),
+      astronomicaldate: ZodiacDate(
+        start_month: 3,
+        start_day: 13,
+        end_month: 4,
+        end_day: 19,
+      ),
       planet: [_ZODIACSIGNS_ATTRIBUTE_PLANET_VALUE_NEPTUNE, _ZODIACSIGNS_ATTRIBUTE_PLANET_VALUE_JUPITER],
       house: 12,
       element: _ZODIACSIGNS_ATTRIBUTE_ELEMENT_VALUE_WATER,
       polarity: _ZODIACSIGNS_ATTRIBUTE_POLARITY_VALUE_FEMININE,
       quality: _ZODIACSIGNS_ATTRIBUTE_QUALITY_VALUE_MUTABLE),
 };
+
+const ZODIACSIGNS_REALZODIAC_OPHIUCHUS = {
+  'astronomy_signs_ophiuchus': ZodiacDate(
+    start_month: 12,
+    start_day: 1,
+    end_month: 12,
+    end_day: 18,
+  )};

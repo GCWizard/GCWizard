@@ -471,8 +471,9 @@ class _GeoMath {
   static double atan2d(double y, double x) {
     // In order to minimize round-off errors, this function rearranges the
     // arguments so that result of atan2 is in the range [-pi/4, pi/4] before
-    // converting it to degrees and mapping the result to the correct
-    // quadrant.
+    // converting it to degrees and mapping the result to the correct quadrant.
+    // With mpreal we could use T(mpfr::atan2u(y, x, td)); but we're not ready
+    // for this yet.
     int q = 0;
     if (y.abs() > x.abs()) {
       double _h = x;
@@ -485,7 +486,9 @@ class _GeoMath {
       ++q;
     }
     // here x >= 0 and x >= abs(y), so angle is in [-pi/4, pi/4]
-    double ang = atan2(y, x) / degree();
+    // Replace atan2(y, x) / degree<T>() by this to ensure that special values
+    // (45, 90, etc.) are returned.
+    double ang = (atan2(y, x) / pi()) * hd;
     switch (q) {
       // Note that atan2d(-0.0, 1.0) will return -0.  However, we expect that
       // atan2d will not be called with y = -0.  If need be, include
@@ -528,7 +531,12 @@ class _GeoMath {
     double r = s / c; // special values from F.10.1.14
     // With C++17 this becomes clamp(s / c, -overflow, overflow);
     // Use max/min here (instead of fmax/fmin) to preserve NaN
-    return min(max(r, -overflow), overflow);
+    return clamp(r, -overflow, overflow);
+  }
+
+  static double clamp(double x, double a, double b) {
+    // Use max/min here (instead of fmax/fmin) to preserve NaN
+    return min(max(x, a), b);
   }
 
   static double eatanhe(double x, double es) {

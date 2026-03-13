@@ -164,6 +164,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/affine/widget/affine.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/alphabet_values/widget/alphabet_values.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/amsco/widget/amsco.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/atbash/widget/atbash.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/autokey/widget/autokey.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/avemaria/widget/avemaria.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/babylon_numbers/widget/babylon_numbers.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/bacon/widget/bacon.dart';
@@ -283,6 +284,7 @@ import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rot18/widget/rot18
 import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rot47/widget/rot47.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rot5/widget/rot5.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rotation_general/widget/rotation_general.dart';
+import 'package:gc_wizard/tools/crypto_and_encodings/rotation/rotxyz/widget/rotxyz.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rsa/rsa/widget/rsa.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rsa/rsa_d_calculator/widget/rsa_d_calculator.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/rsa/rsa_d_checker/widget/rsa_d_checker.dart';
@@ -549,6 +551,7 @@ import 'package:gc_wizard/tools/science_and_technology/vanity/vanity_words_list/
 import 'package:gc_wizard/tools/science_and_technology/vanity/vanity_words_search/widget/vanity_words_search.dart';
 import 'package:gc_wizard/tools/science_and_technology/velocity_acceleration/widget/velocity_acceleration.dart';
 import 'package:gc_wizard/tools/science_and_technology/weather_symbols/widget/weather_symbols.dart';
+import 'package:gc_wizard/tools/science_and_technology/zalgo_text/widget/zalgo_text.dart';
 import 'package:gc_wizard/tools/symbol_tables/_common/widget/gcw_symbol_table_tool.dart';
 import 'package:gc_wizard/tools/symbol_tables/symbol_replacer/widget/symbol_replacer.dart';
 import 'package:gc_wizard/tools/symbol_tables/symbol_tables_examples_select/widget/symbol_tables_examples_select.dart';
@@ -658,6 +661,16 @@ void initializeRegistry(BuildContext context) {
         'atbash',
       ],
       deeplinkAlias: const ['atbasch'],
+    ),
+    GCWTool(
+        tool: const Autokey(),
+        id: 'autokey',
+        categories: const [
+          ToolCategory.CRYPTOGRAPHY
+        ],
+        searchKeys: const [
+          'autokey',
+        ]
     ),
     GCWTool(tool: const AveMaria(), id: 'avemaria', categories: const [
       ToolCategory.CRYPTOGRAPHY
@@ -1169,7 +1182,7 @@ void initializeRegistry(BuildContext context) {
               'https://web.archive.org/web/20251207183924/https://scz.bplaced.net/',
               sourceUrl:
               'https://web.archive.org/web/20251207183113/https://scz.bplaced.net/m.html'),
-        ],),
+        ]),
     GCWTool(tool: const Grid(), id: 'grid', categories: const [
       ToolCategory.GAMES
     ], searchKeys: const [
@@ -1270,7 +1283,7 @@ void initializeRegistry(BuildContext context) {
             'https://web.archive.org/web/20251207183924/https://scz.bplaced.net/',
             sourceUrl:
             'https://web.archive.org/web/20251207183113/https://scz.bplaced.net/m.html'),
-      ],),
+      ]),
     GCWTool(tool: const IATAICAOSearch(), id: 'iataicao', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
     ], searchKeys: const [
@@ -1354,7 +1367,7 @@ void initializeRegistry(BuildContext context) {
             'https://web.archive.org/web/20251207183924/https://scz.bplaced.net/',
             sourceUrl:
             'https://web.archive.org/web/20251207183113/https://scz.bplaced.net/m.html'),
-        ],),
+        ]),
     GCWTool(
         tool: Jupiter(),
         id: 'jupiter',
@@ -1370,7 +1383,7 @@ void initializeRegistry(BuildContext context) {
             'https://web.archive.org/web/20251207183924/https://scz.bplaced.net/',
             sourceUrl:
             'https://web.archive.org/web/20251207183113/https://scz.bplaced.net/m.html'),
-        ],),
+        ]),
     GCWTool(tool: const Kamasutra(), id: 'kamasutra', categories: const [
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
@@ -1396,7 +1409,7 @@ void initializeRegistry(BuildContext context) {
           title: "Kaprekar's routine",
           sourceUrl:
           'https://en.wikipedia.org/w/index.php?title=Kaprekar%27s_routine&oldid=1274436905')
-    ],),
+    ]),
     GCWTool(tool: const Kenny(), id: 'kenny', categories: const [
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
@@ -1855,7 +1868,7 @@ void initializeRegistry(BuildContext context) {
           sourceUrl:
           'https://web.archive.org/web/20250508131535/https://numbergenerator.org/numberlist/prime-numbers/1-10000000#',
         ),
-      ],),
+      ]),
     GCWTool(tool: const Projectiles(), id: 'projectiles', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
     ], searchKeys: const [
@@ -2368,6 +2381,11 @@ void initializeRegistry(BuildContext context) {
     ], searchKeys: const [
       'z22',
     ]),
+    GCWTool(tool: const ZalgoText(), id: 'zalgo_text', categories: const [
+      ToolCategory.SCIENCE_AND_TECHNOLOGY
+    ], searchKeys: const [
+      'zalgo_text',
+    ]),
     GCWTool(
         tool: ZamonianNumbers(),
         autoScroll: false,
@@ -2398,7 +2416,7 @@ void initializeRegistry(BuildContext context) {
             'https://web.archive.org/web/20251207183924/https://scz.bplaced.net/',
             sourceUrl:
             'https://web.archive.org/web/20251207183113/https://scz.bplaced.net/m.html'),
-        ],),
+        ]),
     GCWTool(
         tool: const ZodiacSelection(),
         id: 'zodiac_selection',
@@ -3957,14 +3975,72 @@ void initializeRegistry(BuildContext context) {
     ], licenses: [
       stl._toolLicenseElementsOfGeocachingGeocacherMagazine,
       stl._toolLicenseElementsOfGeocachingGeocachenBE,
-    ],),
+    ]),
     GCWTool(tool: const ElementsOfGeocachingDataView(atomicNumber: 1), id: 'elementsofgeocaching_dataview',
         searchKeys: const [
       'elementsofgeocaching_dataview',
     ], licenses: [
         stl._toolLicenseElementsOfGeocachingGeocacherMagazine,
         stl._toolLicenseElementsOfGeocachingGeocachenBE,
-      ],),
+      ]),
+
+    // EllipsoidTrianglePointsSelection ***************************************************
+    GCWTool(
+        tool: const TriangleNapoleonPoints(),
+        id: 'triangle_point_napoleon',
+        searchKeys: const [
+          'triangle',
+        ],
+        ),
+    GCWTool(
+      tool: const TriangleSideMidPoints(),
+      id: 'triangle_point_sidesmidpoint',
+      searchKeys: const [
+        'triangle',
+      ],
+    ),
+    GCWTool(
+      tool: const TriangleIncircle(),
+      id: 'triangle_point_incircle',
+      searchKeys: const [
+        'triangle',
+      ],
+    ),
+    GCWTool(
+      tool: const TriangleCircumCircle(),
+      id: 'triangle_point_circumcircle',
+      searchKeys: const [
+        'triangle',
+      ],
+    ),
+    GCWTool(
+      tool: const TriangleCenterOfGravity(),
+      id: 'triangle_point_centerofgravity',
+      searchKeys: const [
+        'triangle',
+      ],
+    ),
+    GCWTool(
+      tool: const TriangleOrthocenter(),
+      id: 'triangle_point_orthocenter',
+      searchKeys: const [
+        'triangle',
+      ],
+    ),
+    GCWTool(
+      tool: const TriangleExcircles(),
+      id: 'triangle_point_excircles',
+      searchKeys: const [
+        'triangle',
+      ],
+    ),
+    GCWTool(
+      tool: const TriangleGergonnePoint(),
+      id: 'triangle_point_gergonne',
+      searchKeys: const [
+        'triangle',
+      ],
+    ),
 
     // EllipsoidTrianglePointsSelection ***************************************************
     GCWTool(
@@ -5145,7 +5221,7 @@ void initializeRegistry(BuildContext context) {
           sourceUrl:
           'https://web.archive.org/web/20250508131535/https://numbergenerator.org/numberlist/prime-numbers/1-10000000#',
         ),
-      ],),
+      ]),
     GCWTool(
         tool: const NumberSequenceMersenneExponentsSelection(),
         id: 'numbersequence_mersenneexponents',
@@ -5163,7 +5239,7 @@ void initializeRegistry(BuildContext context) {
           sourceUrl:
           'https://web.archive.org/web/20250505191859/https://www.mersenne.org/primes/',
         ),
-      ],),
+      ]),
     GCWTool(
         tool: const NumberSequenceMersenneFermatSelection(),
         id: 'numbersequence_mersennefermat',
@@ -5357,7 +5433,7 @@ void initializeRegistry(BuildContext context) {
           sourceUrl:
           'https://web.archive.org/web/20231206110849/https://www.dnull.com/bells/bell1000.html',
         ),
-      ],),
+      ]),
     GCWTool(
         tool: const NumberSequencePellSelection(),
         id: 'numbersequence_pell',
@@ -6804,6 +6880,10 @@ void initializeRegistry(BuildContext context) {
     GCWTool(tool: const Rot123(), id: 'rotation_rot123', searchKeys: const [
       'rotation',
       'rotation_rot123',
+    ]),
+    GCWTool(tool: const RotXYZ(), id: 'rotation_rotxyz', searchKeys: const [
+      'rotation',
+      'rotation_rotxyz',
     ]),
     GCWTool(tool: RotationGeneral(), id: 'rotation_general', searchKeys: const [
       'rotation',
@@ -9361,7 +9441,7 @@ void initializeRegistry(BuildContext context) {
         title: 'Unscrambling Codes: From Hieroglyphs to Market News',
         sourceUrl:
         'https://web.archive.org/web/20250117200927/https://www.researchgate.net/publication/359543315_Unscrambling_Codes_From_Hieroglyphs_to_Market_News',
-        customComment: 'DOI:10.2139/ssrn.4049797',)
+        customComment: 'DOI:10.2139/ssrn.4049797')
     ]),
     GCWSymbolTableTool(symbolKey: 'mary_stuart_castelnau', symbolSearchStrings: const [
       'symbol_mary_stuart',
@@ -11596,7 +11676,7 @@ void initializeRegistry(BuildContext context) {
         licenses: [
           ToolLicenseOfflineBook(
               context: context,
-              author: 'Königl. Pruess. Telegraphendirection',
+              author: 'Königl. Preuss. Telegraphendirection',
               title:
                   'Classe 5.2 Wörterbuch für die Telegraphisten-Correspondenz\nInstruction. Erster Abschnitt. Die Behandlung des Apparates.\nInstruction. Zweiter Abschnitt. Das Telegraphieren.',
               privatePermission: ToolLicensePrivatePermission(
@@ -11973,7 +12053,33 @@ void initializeRegistry(BuildContext context) {
       'symbol_planets',
       'symbol_zodiacsigns',
       'symbol_zodiacsigns_latin',
-    ], licenses: const []),
+      'zodiac'
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'en.wikipedia.org and contributors',
+          title: 'Astrological sign',
+          licenseType: ToolLicenseType.CCBYSA4,
+          sourceUrl:
+          'https://en.wikipedia.org/w/index.php?title=Astrological_sign&oldid=1340252037'),
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Jeremy B. Tatum',
+          title: 'The Signs and Constellations of the Zodiac',
+          publisher: 'NASA Astrophysics Data System',
+          month: 6,
+          year: 2010,
+          sourceUrl:
+          'https://web.archive.org/web/20240604232721/https://articles.adsabs.harvard.edu/cgi-bin/nph-iarticle_query?bibcode=2010JRASC.104..103T&db_key=AST&page_ind=0&data_type=GIF&type=SCREEN_VIEW&classic=YES'),
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: 'Manon Bischoff',
+          title: 'Ihr Sternzeichen ist falsch - hier finden Sie das richtige',
+          publisher: 'Spektrum.de',
+          sourceUrl:
+          'https://web.archive.org/web/20260228143540/https://www.spektrum.de/kolumne/horoskop-und-astrologie-ihr-sternzeichen-ist-falsch/2309632'),
+
+    ]),
   ].map((toolWidget) {
     toolWidget.toolName = i18n(context, toolWidget.id + '_title');
     toolWidget.defaultLanguageToolName =

@@ -57,7 +57,7 @@ class _GCWGalleryState extends State<GCWGallery> {
               },
             ),
           ),
-          //Expanded(child: Container(),)
+          //Expanded(child: Container())
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: GCWImageView(

@@ -1,4 +1,3 @@
-import 'package:tuple/tuple.dart';
 import 'package:week_of_year/week_of_year.dart';
 
 int _isoWeek(DateTime date) {
@@ -42,7 +41,7 @@ int calendarWeek(DateTime date, {bool iso = true}) {
   }
 }
 
-Tuple2<DateTime, DateTime> datesForCalendarWeek(int year, int calendarWeek, {bool iso = true}) {
+({DateTime start, DateTime end}) datesForCalendarWeek(int year, int calendarWeek, {bool iso = true}) {
   DateTime? start;
   DateTime? end;
   DateTime _dateToCheck = DateTime.utc(year, calendarWeek < 10 ? 1 : 2, 1);
@@ -67,5 +66,5 @@ Tuple2<DateTime, DateTime> datesForCalendarWeek(int year, int calendarWeek, {boo
 
   start = end.add(const Duration(days: -6));
 
-  return Tuple2(start, end);
+  return (start: start, end: end);
 }

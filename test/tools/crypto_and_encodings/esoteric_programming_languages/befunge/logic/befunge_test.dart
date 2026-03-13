@@ -273,7 +273,7 @@ v                                    >
 
   group("Befunge.interpretBefunge.Error", () {
     List<Map<String, Object?>> _inputsToExpected = [
-      {'code' : '', 'input' : '', 'expectedOutput' : BefungeOutput(Output: '', Error: '', BefungeStack: [], PC: [], Command: [], Mnemonic: [], Iteration: '', curPosX: '', curPosY: '',)},
+      {'code' : '', 'input' : '', 'expectedOutput' : BefungeOutput(Output: '', Error: '', BefungeStack: [], PC: [], Command: [], Mnemonic: [], Iteration: '', curPosX: '', curPosY: '')},
       {'code' : 'ABC123;', 'input' : '', 'expectedOutput' : BefungeOutput(Output: '', Error: 'befunge_error_invalid_command', BefungeStack: [], PC: [], Command: [], Mnemonic: [], Iteration: '', curPosX: '', curPosY: '')},
 
       // https://en.wikipedia.org/wiki/Befunge

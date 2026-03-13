@@ -7,7 +7,6 @@ import 'package:gc_wizard/tools/crypto_and_encodings/morse/logic/morse.dart';
 import 'package:gc_wizard/tools/images_and_files/animated_image/logic/animated_image.dart' as animated_image;
 import 'package:gc_wizard/tools/images_and_files/animated_image/logic/animated_image.dart';
 import 'package:image/image.dart' as Image;
-import 'package:tuple/tuple.dart';
 
 class AnimatedImageMorseOutput extends AnimatedImageOutput {
   List<List<int>> imagesFiltered;
@@ -56,10 +55,10 @@ Future<AnimatedImageMorseOutput?> analyseImageMorseCode(Uint8List bytes, {SendPo
 }
 
 Future<Uint8List?> createImageAsync(GCWAsyncExecuterParameters? jobData) async {
-  if (jobData?.parameters is! Tuple4<Uint8List, Uint8List, String, int>) return null;
+  if (jobData?.parameters is! ({Uint8List highImage, Uint8List lowImage, String input, int ditDuration})) return null;
 
-  var data = jobData!.parameters as Tuple4<Uint8List, Uint8List, String, int>;
-  var output = await _createImage(data.item1, data.item2, data.item3, data.item4, sendAsyncPort: jobData.sendAsyncPort);
+  var data = jobData!.parameters as ({Uint8List highImage, Uint8List lowImage, String input, int ditDuration});
+  var output = await _createImage(data.highImage, data.lowImage, data.input, data.ditDuration, sendAsyncPort: jobData.sendAsyncPort);
 
   jobData.sendAsyncPort?.send(output);
 
@@ -164,11 +163,11 @@ MorseCodeOutput? decodeMorseCode(List<int> durations, List<bool> onSignal) {
 
   var out = '';
   for (var element in timeList) {
-    if (element.item1) {
-      out += (element.item2 > signalTimes.item1) ? '-' : '.'; //2
-    } else if (element.item2 > signalTimes.item3) {
+    if (element.on) {
+      out += (element.duration > signalTimes.ditLevel) ? '-' : '.'; //2
+    } else if (element.duration > signalTimes.spaceLevel) {
       out += String.fromCharCode(8195) + "|" + String.fromCharCode(8195);
-    } else if (element.item2 > signalTimes.item2) {
+    } else if (element.duration > signalTimes.dahLevel) {
       out += " ";
     }
   }
@@ -176,26 +175,26 @@ MorseCodeOutput? decodeMorseCode(List<int> durations, List<bool> onSignal) {
   return MorseCodeOutput(out, decodeMorse(out));
 }
 
-List<Tuple2<bool, int>> _buildTimeList(List<int> durations, List<bool> onSignal) {
-  var timeList = <Tuple2<bool, int>>[];
+List<({bool on, int duration})> _buildTimeList(List<int> durations, List<bool> onSignal) {
+  var timeList = <({bool on, int duration})>[];
   var i = 0;
 
   if (durations.length != onSignal.length) return timeList;
 
   if (durations.isEmpty) return timeList;
 
-  timeList.add(Tuple2<bool, int>(onSignal[i], durations[i]));
+  timeList.add((on: onSignal[i], duration: durations[i]));
   for (i = 1; i < durations.length; i++) {
     if (onSignal[i - 1] != onSignal[i]) {
-      timeList.add(Tuple2<bool, int>(onSignal[i], durations[i]));
+      timeList.add((on: onSignal[i], duration: durations[i]));
     } else {
-      timeList.last = Tuple2<bool, int>(onSignal[i], timeList.last.item2 + durations[i]);
+      timeList.last = (on: onSignal[i], duration: timeList.last.duration + durations[i]);
     }
   }
   return timeList;
 }
 
-Tuple3<int, int, int>? foundSignalTimes(List<Tuple2<bool, int>> timeList) {
+({int ditLevel, int dahLevel, int spaceLevel})? foundSignalTimes(List<({bool on, int duration})> timeList) {
   if (timeList.isEmpty) return null;
 
   const toler = 1.2;
@@ -203,10 +202,10 @@ Tuple3<int, int, int>? foundSignalTimes(List<Tuple2<bool, int>> timeList) {
   var offl = <int>[];
 
   for (var element in timeList) {
-    if (element.item1) {
-      onl.add(element.item2);
+    if (element.on) {
+      onl.add(element.duration);
     } else {
-      offl.add(element.item2);
+      offl.add(element.duration);
     }
   }
   onl.sort();
@@ -238,7 +237,7 @@ Tuple3<int, int, int>? foundSignalTimes(List<Tuple2<bool, int>> timeList) {
   }
 
   // item1 ./-; item2 ''; item3 ' '
-  return Tuple3<int, int, int>(t1, t2, t3);
+  return (ditLevel: t1, dahLevel: t2, spaceLevel: t3);
 }
 
 List<List<int>> _searchHighSignalImage(List<Image.Image> frames, List<List<int>> filteredList) {
@@ -257,10 +256,10 @@ List<List<int>> _searchHighSignalImage(List<Image.Image> frames, List<List<int>>
 Image.Image _searchBrightestImage(Image.Image image1, Image.Image image2) {
   var images = _maskedImages(image1, image2);
 
-  return _imageLuminance(images.item1) > _imageLuminance(images.item2) ? image1 : image2;
+  return _imageLuminance(images.maskedImage1) > _imageLuminance(images.maskedImage2) ? image1 : image2;
 }
 
-Tuple2<Image.Image, Image.Image> _maskedImages(Image.Image image1, Image.Image image2) {
+({Image.Image maskedImage1, Image.Image maskedImage2}) _maskedImages(Image.Image image1, Image.Image image2) {
   var clone1 = image1.clone();
   var clone2 = image2.clone();
   for (var x = 0; x < min(image1.width, image2.width); x++) {
@@ -271,7 +270,7 @@ Tuple2<Image.Image, Image.Image> _maskedImages(Image.Image image1, Image.Image i
       }
     }
   }
-  return Tuple2<Image.Image, Image.Image>(clone1, clone2);
+  return (maskedImage1: clone1, maskedImage2: clone2);
 }
 
 /// Returns a single number representing the difference between two RGB pixels

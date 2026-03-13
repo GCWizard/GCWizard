@@ -164,7 +164,7 @@ class _RandomizerLetterState extends State<RandomizerLetter> {
       output.add(Container(height: DOUBLE_DEFAULT_MARGIN));
     }
     output.add(GCWOutput(child: outText));
-    output.add(CrosstotalOutput(text: outText, values: outValues, suppressWordMode: true,));
+    output.add(CrosstotalOutput(text: outText, values: outValues, suppressWordMode: true));
 
     _currentOutput = GCWDefaultOutput(
       child: Column(

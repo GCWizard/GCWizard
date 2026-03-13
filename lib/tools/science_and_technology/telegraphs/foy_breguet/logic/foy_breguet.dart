@@ -31,7 +31,7 @@ const Map<String, List<String>> _CODEBOOK_FOYBREGUET = {
   'Z': ['10', '1l', '50', '5b'],
 };
 
-Segments encodeFoyBreguet(String input,) {
+Segments encodeFoyBreguet(String input) {
   List<String> inputs = input.toUpperCase().split('');
   List<List<String>> result = [];
 
@@ -45,7 +45,7 @@ Segments encodeFoyBreguet(String input,) {
   return Segments(displays: result);
 }
 
-SegmentsText decodeVisualFoyBreguet(List<String>? inputs,) {
+SegmentsText decodeVisualFoyBreguet(List<String>? inputs) {
   if (inputs == null || inputs.isEmpty) return SegmentsText(displays: [], text: '');
 
   var displays = <List<String>>[];
