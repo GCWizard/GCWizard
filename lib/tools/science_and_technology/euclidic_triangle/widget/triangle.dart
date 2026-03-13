@@ -149,7 +149,7 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
                 showSnackBar(i18n(context, 'triangle_error_invalid'), context);
               } else {
                 _currentTriangle = Triangle(_A, _B, _C);
-                _createAdditionalData();
+                _calculateAdditionalData();
                 TRIANGLE_LABLES['DESCRIPTION'] = _currentTriangle.description;
                 _currentLabels = _translateLabels(TRIANGLE_LABLES);
                 _isCalculatedImage = false;
@@ -574,7 +574,7 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
     ];
   }
 
-  void _createAdditionalData() {
+  void _calculateAdditionalData() {
     _isCalculatedDataXY = true;
 
     _outputBasicData = [
