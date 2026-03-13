@@ -6681,17 +6681,10 @@
   "tower_of_hanoi_towers": "Towers",
   "tower_of_hanoi_to_many_moves": "Too many moves to display",
   "tower_of_hanoi_moves": "Moves",
-<<<<<<< HEAD
   "triangle_ellipsoid_selection_title": "Ellipsoidic triangles",
   "triangle_ellipsoid_selection_description": "Calculate specific points and circles of Triangles on an ellipsoid",
   "triangle_euclidic_title": "Euclidic triangle",
   "triangle_euclidic_description": "Calculates specific points, angles and circles of a given euclidic triangle",
-=======
-  "triangle_ellipsoid_selection_title": "Ellipsoidic Triangles",
-  "triangle_ellipsoid_selection_description": "Calculate specific points and circles of Triangles on an ellipsoid",
-  "triangle_euclidic_title": "Euclidic Triangle",
-  "triangle_euclidic_description": "Calculates specific points, angles and circles of Euclidic Triangles",
->>>>>>> 915ebcc2636635bf7c12b79740209872162849ac
   "triangle_euclidic_sss": "Side, Side, Side",
   "triangle_euclidic_ssw": "Side, Side, Angle",
   "triangle_euclidic_sws": "Side, Angle, Side",
