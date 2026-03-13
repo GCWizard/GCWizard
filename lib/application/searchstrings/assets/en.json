@@ -319,6 +319,7 @@
   "numbersequence_weirdnumbersselection": "weirdnumbers",
   "numbersequence_sphenicnumbersselection": "sphenicnumbers",
   "numbersequence_lonelynumbersselection": "lonelynumbers",
+  "numbersequence_look_and_saynumbersselection": "lookandsaynumbers",
   "numbersequence_palindromeprimesselection": "palindromeprimes palindromes",
   "numbersequence_suitablenumbersselection": "suitablenumbers convienientnumbers ideonealnumbers",
   "numeralbases": "hexadecimal octal octenary numeral systems",

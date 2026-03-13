@@ -11,6 +11,7 @@ import 'package:gc_wizard/application/category_views/selector_lists/number_seque
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_jacobsthallucas_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_jacobsthaloblong_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_lonelynumbers_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_look_and_say_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_lucas_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_luckynumbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_lychrel_selection.dart';
@@ -82,6 +83,7 @@ class NumberSequenceSelection extends GCWSelection {
         className(const NumberSequenceLonelyNumbersSelection()),
         className(const NumberSequencePalindromePrimesSelection()),
         className(const NumberSequenceSuitableNumbersSelection()),
+        className(const NumberSequenceLookAndSaySelection()),
       ].contains(className(element.tool));
     }).toList();
 

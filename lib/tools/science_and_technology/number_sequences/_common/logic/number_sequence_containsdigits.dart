@@ -251,6 +251,26 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
         index++;
       }
     }
+  } else if (sequence == NumberSequencesMode.LOOK_AND_SAY) {
+    List<int> recamanSequence = <int>[];
+    int index = 0;
+    int maxIndex = 30;
+    var numberString = '';
+    while (index <= maxIndex) {
+      if (index == 0) {
+        numberString = '1';
+      } else {
+        numberString = lookAndSay(numberString);
+      }
+      if (expr.hasMatch(numberString)) {
+        int j = 0;
+        while (!numberString.substring(j).startsWith(check)) {
+          j++;
+        }
+        return PositionOfSequenceOutput(numberString, index + 1, j + 1);
+      }
+      index++;
+    }
   } else {
     switch (sequence) {
       case NumberSequencesMode.PRIMES:

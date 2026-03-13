@@ -101,6 +101,12 @@ List<BigInt> numberSequencesGetNumbersWithNDigits(NumberSequencesMode sequence, 
       if (number.toString().length == digits) numberList.add(number);
       index = index + One;
     }
+  } else if (sequence == NumberSequencesMode.LOOK_AND_SAY) {
+    var numberString = '1';
+    while (numberString.length < digits + 1) {
+      if (numberString.length == digits) numberList.add(BigInt.parse(numberString));
+      numberString = lookAndSay(numberString);
+    }
   } else {
     switch (sequence) {
       case NumberSequencesMode.PRIMES:

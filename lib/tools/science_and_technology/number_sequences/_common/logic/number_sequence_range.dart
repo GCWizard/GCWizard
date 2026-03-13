@@ -140,6 +140,18 @@ Future<List<BigInt>> calculateRange(GetNumberRangeJobData data,
       if (index >= data.start) numberList.add(number);
       index++;
     }
+  } else if (data.sequence == NumberSequencesMode.LOOK_AND_SAY) {
+    var numberString = '';
+    int index = 0;
+    while (index < data.stop + 1) {
+      if (index == 0) {
+        numberString = '1';
+      } else {
+        numberString = lookAndSay(numberString);
+      }
+      if (index >= data.start) numberList.add(BigInt.parse(numberString));
+      index++;
+    }
   } else {
     switch (data.sequence) {
       case NumberSequencesMode.PRIMES:

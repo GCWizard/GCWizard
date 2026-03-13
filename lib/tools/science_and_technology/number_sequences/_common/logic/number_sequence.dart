@@ -47,6 +47,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/carmicha
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/happy_numbers/logic/list_happy_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/harshad/logic/list_harshad_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lonely_numbers/logic/list_lonely_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/look_and_say/logic/look_and_say.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucky_numbers/logic/list_lucky_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lychrel/logic/list_lychrel_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/memorable_primes/logic/list_permutable_primes.dart';
@@ -107,6 +108,7 @@ const Map<NumberSequencesMode, String> NUMBERSEQUENCE_TITLE = {
   NumberSequencesMode.LONELY: 'numbersequence_lonelynumbers_title',
   NumberSequencesMode.PALINDROME_PRIMES: 'numbersequence_palindromeprimes_title',
   NumberSequencesMode.SUITABLE_NUMBERS: 'numbersequence_suitablenumbers_title',
+  NumberSequencesMode.LOOK_AND_SAY: 'numbersequence_look_and_saynumbers_title',
 };
 
 class PositionOfSequenceOutput {
@@ -153,6 +155,7 @@ enum NumberSequencesMode {
   LONELY,
   PALINDROME_PRIMES,
   SUITABLE_NUMBERS,
+  LOOK_AND_SAY
 }
 
 final Zero = BigInt.zero;

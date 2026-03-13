@@ -57,6 +57,7 @@ import 'package:gc_wizard/application/category_views/selector_lists/number_seque
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_jacobsthallucas_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_jacobsthaloblong_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_lonelynumbers_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_look_and_say_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_lucas_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_luckynumbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_lychrel_selection.dart';
@@ -458,6 +459,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsth
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsthal_lucas/widget/jacobsthal_lucas.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsthal_oblong/widget/jacobsthal_oblong.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lonely_numbers/widget/lonely_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/look_and_say/widget/look_and_say.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucas/widget/lucas.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucky_numbers/widget/lucky_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lychrel/widget/lychrel.dart';
@@ -5613,7 +5615,14 @@ void initializeRegistry(BuildContext context) {
             'https://web.archive.org/web/20251105212042/https://www.spektrum.de/kolumne/das-geheimnis-um-geeignete-zahlen/2283662',
           ),
         ]),
-
+    GCWTool(
+        tool: const NumberSequenceLookAndSaySelection(),
+        id: 'numbersequence_look_and_saynumbers',
+        searchKeys: const [
+          'numbers',
+          'numbersequence',
+          'numbersequence_look_and_saynumbersselection',
+        ]),
     //NumberSequenceSelection SuitableNumbers ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceSuitableNumbersNthNumber(),
@@ -5696,7 +5705,7 @@ void initializeRegistry(BuildContext context) {
         id_prefix: 'busy_beaver_',
         searchKeys: const []),
 
-    //NumberSequenceSelection Carmichael NUmbers ****************************************************************************************
+    //NumberSequenceSelection Carmichael Numbers ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceCarmichaelNumbersNthNumber(),
         id: 'numbersequence_nth',
@@ -5723,7 +5732,7 @@ void initializeRegistry(BuildContext context) {
         id_prefix: 'carmichaelnumbers_',
         searchKeys: const []),
 
-    //NumberSequenceSelection Sphenic NUmbers ****************************************************************************************
+    //NumberSequenceSelection Sphenic Numbers ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceSphenicNumbersNthNumber(),
         id: 'numbersequence_nth',
@@ -6599,6 +6608,33 @@ void initializeRegistry(BuildContext context) {
         tool: const NumberSequencePrimesContainsDigits(),
         id: 'numbersequence_containsdigits',
         id_prefix: 'primes_',
+        searchKeys: const []),
+
+    //NumberSequenceSelection Look and Say ****************************************************************************************
+    GCWTool(
+        tool: const NumberSequenceLookAndSayNthNumber(),
+        id: 'numbersequence_nth',
+        id_prefix: 'lookandsay_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceLookAndSayRange(),
+        id: 'numbersequence_range',
+        id_prefix: 'lookandsay_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceLookAndSayCheckNumber(),
+        id: 'numbersequence_check',
+        id_prefix: 'lookandsay_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceLookAndSayDigits(),
+        id: 'numbersequence_digits',
+        id_prefix: 'lookandsay_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceLookAndSayContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        id_prefix: 'lookandsay_',
         searchKeys: const []),
 
     //PeriodicTableSelection ***************************************************************************************
