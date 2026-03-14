@@ -149,7 +149,7 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
                 showSnackBar(i18n(context, 'triangle_error_invalid'), context);
               } else {
                 _currentTriangle = Triangle(_A, _B, _C);
-                _createAdditionalData();
+                _calculateAdditionalData();
                 TRIANGLE_LABLES['DESCRIPTION'] = _currentTriangle.description;
                 _currentLabels = _translateLabels(TRIANGLE_LABLES);
                 _isCalculatedImage = false;
@@ -574,7 +574,7 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
     ];
   }
 
-  void _createAdditionalData() {
+  void _calculateAdditionalData() {
     _isCalculatedDataXY = true;
 
     _outputBasicData = [
@@ -971,10 +971,8 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
   }
 
   bool _degeneratedTriangle(XYPoint a, XYPoint b, XYPoint c) {
-    a = a.normalized();
-    b = b.normalized();
-    c = c.normalized();
-    return (a.equals(b) || a.equals(c) || b.equals(c));
+
+    return XYPoint.vectorParallel(XYPoint.vector(a, b), XYPoint.vector(a, c));
   }
 
   Map<String, String> _translateLabels(Map<String, String> labels){

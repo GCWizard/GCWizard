@@ -8,7 +8,7 @@ class _TickInfo {
 }
 
 _TickInfo _computeNiceTicks(double minVal, double maxVal, int maxTicks) {
-  final range = _niceNumber(maxVal - minVal, round: false);
+  final range = _niceNumber(maxVal - minVal, round: true);
   final step = _niceNumber(range / (maxTicks - 1), round: true);
 
   final start = (minVal / step).floor() * step;
@@ -77,7 +77,11 @@ List<Offset> _intersectLineWithRect(
         XYLine(P1: p1, P2: p2), XYLine(P1: edge[0], P2: edge[1]));
     if (ip != null) {
       final c = _transformPoint(ip, v);
-      if (bounds.contains(ip)) pts.add(Offset(c.x, c.y));
+      if (bounds.contains(ip)) {
+        if (c != null) {
+          pts.add(Offset(c.x, c.y));
+        }
+      }
     }
   }
   return pts;
@@ -91,7 +95,7 @@ void _drawEulerLine(
 
   if (doubleEquals(X2.x, X4.x) && doubleEquals(X2.y, X4.y)) {
     final p = _transformPoint(X2, v);
-    canvas.drawCircle(Offset(p.x, p.y), 6, paint);
+    p != null ? canvas.drawCircle(Offset(p.x, p.y), 6, paint) : null;
     return;
   }
 
@@ -102,7 +106,7 @@ void _drawEulerLine(
   } else {
     final p1 = _transformPoint(X2, v);
     final p2 = _transformPoint(X4, v);
-    canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint);
+    (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
   }
 }
 
@@ -145,11 +149,11 @@ void _drawAxesWithAutoTicks(
   // draw axis
   final xStart = _transformPoint(XYPoint(x: minX, y: axisY), v);
   final xEnd = _transformPoint(XYPoint(x: maxX, y: axisY), v);
-  canvas.drawLine(Offset(xStart.x, xStart.y), Offset(xEnd.x, xEnd.y), paint);
+  (xEnd != null && xStart != null) ? canvas.drawLine(Offset(xStart.x, xStart.y), Offset(xEnd.x, xEnd.y), paint) : null;
 
   final yStart = _transformPoint(XYPoint(x: axisX, y: minY), v);
   final yEnd = _transformPoint(XYPoint(x: axisX, y: maxY), v);
-  canvas.drawLine(Offset(yStart.x, yStart.y), Offset(yEnd.x, yEnd.y), paint);
+  (yEnd != null && yStart != null) ? canvas.drawLine(Offset(yStart.x, yStart.y), Offset(yEnd.x, yEnd.y), paint): null;
 
   // ---- Ticks X ----
   final xt = _computeNiceTicks(minX, maxX, maxTicks);
@@ -162,8 +166,8 @@ void _drawAxesWithAutoTicks(
     final labelPos = _transformPoint(XYPoint(x: x, y: axisY), v);
 
     if (minX <= x && x <= maxX) {
-      canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint);
-      _drawLabel(canvas, Offset(labelPos.x, labelPos.y + 4), x.toString());
+      (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
+      labelPos != null ? _drawLabel(canvas, Offset(labelPos.x, labelPos.y + 4), x.toStringAsFixed(2)) : null;
     }
   }
 
@@ -178,8 +182,8 @@ void _drawAxesWithAutoTicks(
     final labelPos = _transformPoint(XYPoint(x: axisX, y: y), v);
 
     if (minY <= y && y <= maxY) {
-      canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint);
-      _drawLabel(canvas, Offset(labelPos.x - 20, labelPos.y - 6), y.toString());
+      (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
+      labelPos != null ? _drawLabel(canvas, Offset(labelPos.x - 20, labelPos.y - 6), y.toString()) : null;
     }
   }
 }
@@ -190,8 +194,8 @@ Future<Uint8List> triangleData2Image({
 }) async {
   const BOUNDS = 50.0;
 
-  const MAXWIDTH = 5300.0;
-  const MAXHEIGHT = 6000.0;
+  const MAXWIDTH = 4096.0;
+  const MAXHEIGHT = 4069.0;
 
   const POINT = 2.0;
   const LINE = 1.0;
@@ -200,7 +204,8 @@ Future<Uint8List> triangleData2Image({
   const WIDTHLEGEND = 700.0;
 
   const LABELLENGTH = 30;
-  const DIST = '     ';
+  const DIST = '      ';
+  const DIST3 = NBSP + NBSP + NBSP;
 
   const constraintsLegend =
       ui.ParagraphConstraints(width: WIDTHLEGEND);
@@ -314,7 +319,7 @@ Future<Uint8List> triangleData2Image({
   }
 
   final bounds =
-      _Bounds(minX - BOUNDS, maxX + BOUNDS, minY - BOUNDS, maxY + BOUNDS);
+      _Bounds(minX, maxX, minY, maxY);
   final vp =
       _computeViewport(bounds, MAXWIDTH - WIDTHLEGEND, MAXHEIGHT - 2 * BOUNDS);
 
@@ -337,222 +342,233 @@ Future<Uint8List> triangleData2Image({
   // draw triangle
   // colors according to https://de.wikipedia.org/wiki/Ausgezeichnete_Punkte_im_Dreieck#/media/Datei:Linien_am_Dreieck.svg
   paint.style = PaintingStyle.stroke;
+  paint.strokeWidth = 2 * LINE;
 
   // draw sides a b c
   paint.color = Colors.blueAccent;
   var p1 = _transformPoint(triangle.A, vp);
   var p2 = _transformPoint(triangle.B, vp);
-  canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint);
+  (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
   p2 = _transformPoint(triangle.C, vp);
-  canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint);
+  (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
   p1 = _transformPoint(triangle.B, vp);
-  canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint);
+  (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
 
-  // draw altitudes ha hb hc
-  paint.color = Colors.orange;
-  p1 = _transformPoint(triangle.A, vp);
-  p2 = _transformPoint(AA, vp);
-  canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint);
-  p1 = _transformPoint(triangle.B, vp);
-  p2 = _transformPoint(AB, vp);
-  canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint);
-  p1 = _transformPoint(triangle.C, vp);
-  p2 = _transformPoint(AC, vp);
-  canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint);
+  paint.strokeWidth = LINE;
 
   // draw mid sides
   paint.color = Colors.orange.shade700;
   p1 = _transformPoint(triangle.A, vp);
   p2 = _transformPoint(MSA, vp);
-  canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint);
+  (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
   p1 = _transformPoint(triangle.B, vp);
   p2 = _transformPoint(MSB, vp);
-  canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint);
+  (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
   p1 = _transformPoint(triangle.C, vp);
   p2 = _transformPoint(MSC, vp);
-  canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint);
+  (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
+
+  // draw altitudes ha hb hc
+  paint.color = Colors.orange;
+  p1 = _transformPoint(triangle.A, vp);
+  p2 = _transformPoint(AA, vp);
+  (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
+  p1 = _transformPoint(triangle.B, vp);
+  p2 = _transformPoint(AB, vp);
+  (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
+  p1 = _transformPoint(triangle.C, vp);
+  p2 = _transformPoint(AC, vp);
+  (p1 != null && p2 != null) ? canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), paint) : null;
 
   // draw points
   // draw Triangle points
   paint.color = Colors.blueAccent;
   p1 = _transformPoint(A, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'A');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'A') : null;
   p1 = _transformPoint(B, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'B');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'B') : null;
   p1 = _transformPoint(C, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'C');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'C') : null;
 
   // draw Touchpoints exCircles
   paint.color = Colors.green;
   p1 = _transformPoint(ETA, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
   p1 = _transformPoint(ETB, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
   p1 = _transformPoint(ETC, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
 
   // draw Touchpoints inCircles
   paint.color = Colors.green.shade900;
   p1 = _transformPoint(ITA, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
   p1 = _transformPoint(ITB, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
   p1 = _transformPoint(ITC, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
 
   // draw Touchpoints FeuerbachCircle
   paint.color = Colors.purple;
   p1 = _transformPoint(FTA, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
   p1 = _transformPoint(FTB, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
   p1 = _transformPoint(FTC, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
 
   // draw exCircles center points
+  paint.color = Colors.green;
   p1 = _transformPoint(XYPoint(x: EA.x, y: EA.y), vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'exA');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'exA') : null;
   p1 = _transformPoint(XYPoint(x: EB.x, y: EB.y), vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'exB');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'exB') : null;
   p1 = _transformPoint(XYPoint(x: EC.x, y: EC.y), vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'exC');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'exC') : null;
 
   // draw Mid side base Points
-  paint.color = Colors.orange;
+  paint.color = Colors.orange.shade700;
   p1 = _transformPoint(MSA, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
   p1 = _transformPoint(MSB, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
   p1 = _transformPoint(MSC, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
 
   // draw Altitude base Points
+  paint.color = Colors.orange;
   p1 = _transformPoint(AA, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
   p1 = _transformPoint(AB, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
   p1 = _transformPoint(AC, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
 
   // draw Feuerbach circle center point
   paint.color = Colors.purple;
   p1 = _transformPoint(XYPoint(x: FC.x, y: FC.y), vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
 
   // draw Clark Kimberling points
   paint.color = Colors.red;
   p1 = _transformPoint(XYPoint(x: IC.x, y: IC.y), vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X1');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X1') : null;
 
   p1 = _transformPoint(CG, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X2');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X2') : null;
 
   p1 = _transformPoint(XYPoint(x: CC.x, y: CC.y), vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X3');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X3') : null;
 
   p1 = _transformPoint(O, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X4');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X4') : null;
 
   p1 = _transformPoint(NP, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X5');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X5') : null;
 
   p1 = _transformPoint(L, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X6');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X6') : null;
 
   p1 = _transformPoint(G, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X7');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X7') : null;
 
   p1 = _transformPoint(M, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X8');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X8') : null;
 
   p1 = _transformPoint(N, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X9');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X9') : null;
 
   p1 = _transformPoint(S, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X10');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X10') : null;
 
   p1 = _transformPoint(X11, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X11');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X11') : null;
 
   p1 = _transformPoint(F, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X12');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X12') : null;
 
   p1 = _transformPoint(X13, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X13');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X13') : null;
 
   p1 = _transformPoint(X14, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X14');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X14') : null;
 
   p1 = _transformPoint(X15, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X15');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X15') : null;
 
   p1 = _transformPoint(X16, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X16');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X16') : null;
 
   p1 = _transformPoint(N1, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X17');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X17') : null;
 
   p1 = _transformPoint(N2, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X18');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X18') : null;
 
   p1 = _transformPoint(X19, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X19');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X19') : null;
 
   p1 = _transformPoint(X20, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X20');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X20') : null;
 
   p1 = _transformPoint(X21, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X21');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X21') : null;
 
   p1 = _transformPoint(X22, vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint);
-  _drawLabel(canvas, Offset(p1.x, p1.y), 'X22');
+  p1 != null ? canvas.drawCircle(Offset(p1.x, p1.y), POINT, paint) : null;
+  p1 != null ? _drawLabel(canvas, Offset(p1.x, p1.y), 'X22') : null;
 
   // draw Circles
   paint.color = Colors.green.shade900;
   p1 = _transformPoint(XYPoint(x: IC.x, y: IC.y), vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), _transformRadius(IC, vp), paint);
+  var r = _transformRadius(IC, vp);
+  (p1 != null && r != null) ? canvas.drawCircle(Offset(p1.x, p1.y), r, paint) : null;
   p1 = _transformPoint(XYPoint(x: CC.x, y: CC.y), vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), _transformRadius(CC, vp), paint);
+  r = _transformRadius(CC, vp);
+  (p1 != null && r != null) ? canvas.drawCircle(Offset(p1.x, p1.y), r, paint) : null;
 
   paint.color = Colors.green;
   p1 = _transformPoint(XYPoint(x: EA.x, y: EA.y), vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), _transformRadius(EA, vp), paint);
+  r = _transformRadius(EA, vp);
+  (p1 != null && r != null) ? canvas.drawCircle(Offset(p1.x, p1.y), r, paint) : null;
   p1 = _transformPoint(XYPoint(x: EB.x, y: EB.y), vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), _transformRadius(EB, vp), paint);
+  r = _transformRadius(EB, vp);
+  (p1 != null && r != null) ? canvas.drawCircle(Offset(p1.x, p1.y), r, paint) : null;
   p1 = _transformPoint(XYPoint(x: EC.x, y: EC.y), vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), _transformRadius(EC, vp), paint);
+  r = _transformRadius(EC, vp);
+  (p1 != null && r != null) ? canvas.drawCircle(Offset(p1.x, p1.y), r, paint) : null;
 
   paint.color = Colors.purple;
   p1 = _transformPoint(XYPoint(x: FC.x, y: FC.y), vp);
-  canvas.drawCircle(Offset(p1.x, p1.y), _transformRadius(FC, vp), paint);
+  r = _transformRadius(FC, vp);
+  (p1 != null && r != null) ? canvas.drawCircle(Offset(p1.x, p1.y), r, paint) : null;
 
   // draw Euler line
   if (!triangleIsEquilateral(a, b, c)) {
@@ -563,6 +579,78 @@ Future<Uint8List> triangleData2Image({
   paint.color = Colors.white;
   paint.style = PaintingStyle.fill;
   canvas.drawRect(Rect.fromLTWH(0, 0, WIDTHLEGEND, 62 * FONTSIZE * 1.2), paint);
+
+  // draw color legend
+  paint.style = PaintingStyle.fill;
+  // sides
+  paint.color = Colors.blueAccent;
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 109), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 122), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 135), 2 * POINT, paint);
+  //midsides
+  paint.color = Colors.orange.shade700;
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 310), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 323), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 336), 2 * POINT, paint);
+  // altitudes
+  paint.color = Colors.orange;
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 375), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 388), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 401), 2 * POINT, paint);
+  // touchpoints exCircle
+  paint.color = Colors.green;
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 440), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 453), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 466), 2 * POINT, paint);
+  // touchpoints inCircle
+  paint.color = Colors.green.shade900;
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 480), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 493), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 506), 2 * POINT, paint);
+  // touchpoints feuerbach circle
+  paint.color = Colors.purple;
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 518), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 531), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 544), 2 * POINT, paint);
+  // clark kimberling points
+  paint.color = Colors.red;
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 583), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 596), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 610), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 623), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 635), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 648), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 661), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 675), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 688), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 700), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 713), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 726), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 739), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 752), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 765), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 778), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 791), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 804), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 817), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 830), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 843), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 856), 2 * POINT, paint);
+  // inCircle
+  paint.color = Colors.green.shade900;
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 895), 2 * POINT, paint);
+  // circumscribed circle
+  paint.color = Colors.green;
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 908), 2 * POINT, paint);
+  // Feuerbach circle
+  paint.color = Colors.purple;
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 920), 2 * POINT, paint);
+  // exCircles
+  paint.color = Colors.green;
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 935), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 947), 2 * POINT, paint);
+  canvas.drawCircle(Offset(MAXWIDTH - 312, BOUNDS + 960), 2 * POINT, paint);
+
 
   paint.color = Colors.black;
   final textStyle = ui.TextStyle(
@@ -578,11 +666,11 @@ Future<Uint8List> triangleData2Image({
   var paragraphBuilderLegend = ui.ParagraphBuilder(paragraphStyle);
   paragraphBuilderLegend.pushStyle(textStyle);
   paragraphBuilderLegend.addText(labels['LEGEND']! +
-      (' ').padRight(38, '-') +
+      DIST3.padRight(38, '-') +
       '\n' +
       '\n' +
       labels['COORDINATES']! +
-      (' ').padRight(38, '-') +
+      DIST3.padRight(38, '-') +
       '\n' +
       'A'.padLeft(LABELLENGTH, ' ') +
       DIST +
@@ -607,7 +695,7 @@ Future<Uint8List> triangleData2Image({
       ')           ' + NBSP + '\n' +
       '\n' +
       labels['SIDES']! +
-      (' ').padRight(38, '-') +
+      DIST3.padRight(38, '-') +
       '\n' +
       'a'.padLeft(LABELLENGTH, ' ') +
       DIST +
@@ -623,7 +711,7 @@ Future<Uint8List> triangleData2Image({
       '           ' + NBSP + '\n' +
       '\n' +
       labels['ANGLES']! +
-      (' ').padRight(38, '-') +
+      DIST3.padRight(38, '-') +
       '\n' +
       'α'.padLeft(LABELLENGTH, ' ') +
       DIST +
@@ -653,7 +741,7 @@ Future<Uint8List> triangleData2Image({
       '           ' + NBSP + '\n' +
       '\n' +
       labels['SIDESMIDPOINTS']! +
-      (' ').padRight(38, '-') +
+      DIST3.padRight(38, '-') +
       '\n' +
       'a'.padLeft(LABELLENGTH, ' ') +
       DIST +
@@ -678,7 +766,7 @@ Future<Uint8List> triangleData2Image({
       ')           ' + NBSP + '\n' +
       '\n' +
       labels['ALTITUDESBASEPOINTS']! +
-      (' ').padRight(38, '-') +
+      DIST3.padRight(38, '-') +
       '\n' +
       'a'.padLeft(LABELLENGTH, ' ') +
       DIST +
@@ -703,7 +791,7 @@ Future<Uint8List> triangleData2Image({
       ')           ' + NBSP + '\n' +
       '\n' +
       labels['TOUCHPOINTS']! +
-      (' ').padRight(38, '-') +
+      DIST3.padRight(38, '-') +
       '\n' +
       (labels['EXCIRCLE']! + ' a').padLeft(LABELLENGTH, ' ') +
       DIST +
@@ -769,7 +857,7 @@ Future<Uint8List> triangleData2Image({
       FTC.y.toStringAsFixed(2).padLeft(9, ' ') +
       ')           ' + NBSP + '\n' +
       '\nClark Kimberling, Encyclopedia of Triangle Centers' +
-      (' ').padRight(38, '-') +
+      DIST3.padRight(38, '-') +
       '\n' +
       (labels['X1']! + ' X01').padLeft(LABELLENGTH, ' ') +
       DIST +
@@ -927,7 +1015,7 @@ Future<Uint8List> triangleData2Image({
       ')           ' + NBSP + '\n' +
       '\n' +
       labels['CIRCLES']! +
-      (' ').padRight(38, '-') +
+      DIST3.padRight(38, '-') +
       '\n' +
       (labels['INCIRCLE']! + ' X1').padLeft(LABELLENGTH, ' ') +
       DIST +
@@ -991,7 +1079,6 @@ Future<Uint8List> triangleData2Image({
   try {
     final img = await canvasRecorder
         .endRecording()
-        //.toImage(width.floor(), height.floor());
         .toImage(MAXWIDTH.floor(), MAXHEIGHT.floor());
     final data = await img.toByteData(format: ui.ImageByteFormat.png);
 

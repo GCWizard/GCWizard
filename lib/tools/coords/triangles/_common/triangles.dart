@@ -93,7 +93,7 @@ double inverseWithArea(LatLng p1, LatLng p2) {
   }
 
   final uSq = cos2alpha * (_a * _a - _b * _b) / (_b * _b);
-  //final A = 1 + uSq / 16384 * (4096 + uSq * (-768 + uSq * (320 - 175 * uSq)));
+
   final b = uSq / 1024 * (256 + uSq * (-128 + uSq * (74 - 47 * uSq)));
 
   final deltarho = b *

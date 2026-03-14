@@ -5,11 +5,7 @@ XYPoint triangleLongchampsPointXY(XYPoint a, XYPoint b, XYPoint c) {
 
   final bary = _longchampsBarycentricFromAngles(t.angles.alpha, t.angles.beta, t.angles.gamma);
 
-  return XYPoint.fromBarycentric(t,
-      bary.a,
-      bary.b,
-      bary.c
-      );
+  return XYPoint.fromBarycentric(t, bary.a, bary.b, bary.c);
 }
 
 BarycentricPoint _longchampsBarycentricFromAngles(

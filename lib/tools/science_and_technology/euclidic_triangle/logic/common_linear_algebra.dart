@@ -29,6 +29,12 @@ double _vectorProductDot(XYPoint a, XYPoint b) {
   return a.x * b.x + a.y * b.y;
 }
 
+// bool _vectorParallel(XYPoint a, XYPoint b) {
+//   a = _vectorNormalize(a);
+//   b = _vectorNormalize(b);
+//   return (a.x.abs() == b.x.abs() && a.y.abs() == b.y.abs());
+// }
+
 // bool _vectorEqual(XYPoint a, XYPoint b) {
 //   a = _vectorNormalize(a);
 //   b = _vectorNormalize(b);

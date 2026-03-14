@@ -431,7 +431,7 @@ class MapViewPersistenceAdapter {
       "(\",isVisible\":true})": "}",
       "(\"isEditable\":false,)": "",
       "(\",isEditable\":false})": "}",
-      "(\"type\":geodetic,)": "",
+      "(\"type\":geodetic) {": "",
       "(\",type\":geodetic})": "}",
       "(\"circleColorSameAsColor\":true,)": "",
       "(\"circleColor\":\"#000000\",)": "",

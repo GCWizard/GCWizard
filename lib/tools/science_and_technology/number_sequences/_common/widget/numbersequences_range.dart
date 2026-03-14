@@ -115,7 +115,8 @@ class _NumberSequenceRangeState extends State<NumberSequenceRange> {
   }
 
   Future<GCWAsyncExecuterParameters?> _buildJobData() async {
-    return GCWAsyncExecuterParameters(GetNumberRangeJobData(sequence: widget.mode, start: _currentInputStart - 1, stop: _currentInputStop - 1));
+    return GCWAsyncExecuterParameters(GetNumberRangeJobData(sequence: widget.mode, start: _currentInputStart - 1,
+        stop: _currentInputStop - 1));
   }
 
   void _showOutput(List<BigInt> output) {
@@ -125,11 +126,11 @@ class _NumberSequenceRangeState extends State<NumberSequenceRange> {
       columnData.add([(i + _currentInputStart).toString(), element.toString()]);
     }
 
-    _currentOutput = GCWDefaultOutput(child: GCWColumnedMultilineOutput(data: columnData, flexValues: [1, 5], hasHeader: true));
+    _currentOutput = GCWDefaultOutput(child: GCWColumnedMultilineOutput(data: columnData, flexValues: [1, 5],
+        hasHeader: true));
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {});
     });
   }
-
 }

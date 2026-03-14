@@ -69,6 +69,14 @@ class XYPoint {
 
   bool equals(XYPoint other) => x == other.x && y == other.y;
 
+  static XYPoint vector(XYPoint a, XYPoint b) => XYPoint(x: b.x - a.x, y: b.y - a.y);
+
+  static bool vectorParallel(XYPoint a, XYPoint b) {
+    a = _vectorNormalize(a);
+    b = _vectorNormalize(b);
+    return (a.x.abs() == b.x.abs() && a.y.abs() == b.y.abs());
+  }
+
   XYPoint normalized() {
     final n = norm();
     return XYPoint(x: x / n, y: y / n);

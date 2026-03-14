@@ -1,6 +1,6 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
-List<XYCircle> triangleExCirclesXY(XYPoint a, XYPoint b, XYPoint c){
+List<XYCircle> triangleExCirclesXY(XYPoint a, XYPoint b, XYPoint c) {
   // https://de.wikipedia.org/wiki/Ankreis
   // https://en.wikipedia.org/wiki/Incircle_and_excircles_of_a_triangle
   List<XYCircle> exCircle = [];

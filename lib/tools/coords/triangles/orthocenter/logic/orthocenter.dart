@@ -81,6 +81,7 @@ class GeodesicWgs84 {
     final A = 1 + uSq / 16384 * (4096 + uSq * (-768 + uSq * (320 - 175 * uSq)));
     final B = uSq / 1024 * (256 + uSq * (-128 + uSq * (74 - 47 * uSq)));
 
+
     final deltaSigma = B *
         sinSigma *
         (cos2SigmaM +
@@ -129,6 +130,7 @@ class GeodesicWgs84 {
     final cosSqAlpha = 1 - sinAlpha * sinAlpha;
 
     final uSq = cosSqAlpha * (_a * _a - _b * _b) / (_b * _b);
+
     final A = 1 + uSq / 16384 * (4096 + uSq * (-768 + uSq * (320 - 175 * uSq)));
     final B = uSq / 1024 * (256 + uSq * (-128 + uSq * (74 - 47 * uSq)));
 
@@ -185,6 +187,7 @@ class GeodesicWgs84 {
     final lon2 = lon1 + L;
 
     final alpha2 = atan2(sinAlpha, -tmp);
+
 
     final lat2Deg = _radToDeg(lat2);
     final lon2Deg = _normLon(_radToDeg(lon2));

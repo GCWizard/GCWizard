@@ -1,6 +1,6 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
-List<XYPoint> triangleAltitudesBasePointsXY(XYPoint a, XYPoint b, XYPoint c) {
+List<XYPoint> triangleAltitudesBasePointsXY(XYPoint a, XYPoint b, XYPoint c){
   List<XYPoint> result = [];
 
   result.add(foot(a, b, c));

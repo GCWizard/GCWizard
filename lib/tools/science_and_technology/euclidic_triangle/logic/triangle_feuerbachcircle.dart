@@ -1,7 +1,7 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
 
-XYCircle triangleFeuerbachCircleXY(XYPoint a, XYPoint b, XYPoint c){
+XYCircle triangleFeuerbachCircleXY(XYPoint a, XYPoint b, XYPoint c) {
   // https://de.wikipedia.org/wiki/Feuerbachkreis
   List<XYPoint> sidemidpoints = triangleSidesMidPointsXY(a, b, c);
   XYCircle F = triangleCircumscribedCircleXY(
@@ -12,7 +12,7 @@ XYCircle triangleFeuerbachCircleXY(XYPoint a, XYPoint b, XYPoint c){
   return F;
 }
 
-List<XYPoint> triangleTouchpointsFeuerbachCircleXY(XYPoint a, XYPoint b, XYPoint c){
+List<XYPoint> triangleTouchpointsFeuerbachCircleXY(XYPoint a, XYPoint b, XYPoint c) {
   Triangle t = Triangle(a, b, c);
 
   Vec2 Ia = Vec2(t.exCircles[0].x, t.exCircles[0].y);

@@ -1,15 +1,16 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
-
 class _Bounds {
   final double minX, maxX, minY, maxY;
   const _Bounds(this.minX, this.maxX, this.minY, this.maxY);
 
   bool contains(XYPoint p) {
-    return minX.floor() <= p.x && p.x <= maxX.ceil() && minY.floor() <= p.y && p.y <= maxY.ceil();
+    return minX.floor() <= p.x &&
+        p.x <= maxX.ceil() &&
+        minY.floor() <= p.y &&
+        p.y <= maxY.ceil();
   }
 }
-
 
 class _Viewport {
   final double scale;
@@ -21,11 +22,11 @@ class _Viewport {
 }
 
 _Viewport _computeViewport(
-    _Bounds b,
-    double canvasWidth,
-    double canvasHeight, {
-      double padding = 20,
-    }) {
+  _Bounds b,
+  double canvasWidth,
+  double canvasHeight, {
+  double padding = 20,
+}) {
   final w = b.maxX - b.minX;
   final h = b.maxY - b.minY;
 
@@ -42,24 +43,28 @@ _Viewport _computeViewport(
   return _Viewport(scale, offsetX, offsetY, canvasHeight);
 }
 
-
-XYPoint _transformPoint(XYPoint p, _Viewport v) {
+XYPoint? _transformPoint(XYPoint p, _Viewport v) {
+  if (p.x.isNaN || p.y.isNaN) {
+    return null;
+  }
   return XYPoint(
     x: p.x * v.scale + v.offsetX,
     y: v.canvasHeight - (p.y * v.scale + v.offsetY),
   );
 }
 
-double _transformRadius(XYCircle c, _Viewport v) {
-  final pCenter = _transformPoint(XYPoint(x: c.x, y:c.y), v);
-  final pRight  = _transformPoint(XYPoint(x: c.x + c.r, y: c.y), v);
+double? _transformRadius(XYCircle c, _Viewport v) {
+  if (c.x.isNaN || c.y.isNaN) {
+    return null;
+  }
+  final pCenter = _transformPoint(XYPoint(x: c.x, y: c.y), v);
+  final pRight = _transformPoint(XYPoint(x: c.x + c.r, y: c.y), v);
 
-  final dx = pRight.x - pCenter.x;
+  final dx = pRight!.x - pCenter!.x;
   final dy = pRight.y - pCenter.y;
 
   return sqrt(dx * dx + dy * dy);
 }
-
 
 // Assumed,your coordinate system ranges from
 // in X: − 100  … 300
@@ -73,6 +78,3 @@ double _transformRadius(XYCircle c, _Viewport v) {
 //
 // final p = XYPoint(x: 0, y: 100);
 // final mapped = transform(p, vp);
-
-
-
