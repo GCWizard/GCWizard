@@ -460,6 +460,7 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsth
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsthal_oblong/widget/jacobsthal_oblong.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lonely_numbers/widget/lonely_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/look_and_say/widget/look_and_say.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/look_and_say/widget/look_and_say_text.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucas/widget/lucas.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucky_numbers/widget/lucky_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lychrel/widget/lychrel.dart';
@@ -6636,7 +6637,14 @@ void initializeRegistry(BuildContext context) {
         id: 'numbersequence_containsdigits',
         id_prefix: 'lookandsay_',
         searchKeys: const []),
-
+    GCWTool(
+        tool: const LookAndSayText(),
+        id: 'look_and_say',
+        searchKeys: const [
+          'numbers',
+          'numbersequence',
+          'numbersequence_look_and_saynumbersselection'
+        ]),
     //PeriodicTableSelection ***************************************************************************************
     GCWTool(
         tool: const PeriodicTable(),
