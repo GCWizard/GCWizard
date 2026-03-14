@@ -1,0 +1,83 @@
+import 'package:flutter/material.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
+import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
+import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
+import 'package:gc_wizard/tools/science_and_technology/punycode/logic/punycode.dart';
+
+class Punycode extends StatefulWidget {
+  const Punycode({super.key});
+
+  @override
+  PunycodeState createState() => PunycodeState();
+}
+
+class PunycodeState extends State<Punycode> {
+  late TextEditingController _decodeController;
+  late TextEditingController _encodeController;
+
+  String _currentEncodeInput = '';
+  String _currentDecodeInput = '';
+
+  GCWSwitchPosition _currentMode = GCWSwitchPosition.right;
+
+  @override
+  void initState() {
+    super.initState();
+    _decodeController = TextEditingController(text: _currentEncodeInput);
+    _encodeController = TextEditingController(text: _currentDecodeInput);
+  }
+
+  @override
+  void dispose() {
+    _decodeController.dispose();
+    _encodeController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        _currentMode == GCWSwitchPosition.left
+          ? GCWTextField(
+              controller: _encodeController,
+              onChanged: (text) {
+                setState(() {
+                  _currentEncodeInput = text;
+                  _calculateOutput();
+                });
+              },
+            )
+          : GCWTextField(
+              controller: _decodeController,
+              onChanged: (text) {
+                setState(() {
+                  _currentDecodeInput = text;
+                  _calculateOutput();
+                });
+              },
+            ),
+        GCWTwoOptionsSwitch(
+          value: _currentMode,
+          onChanged: (value) {
+            setState(() {
+              _currentMode = value;
+              _calculateOutput();
+            });
+          },
+        ),
+        GCWDefaultOutput(child: _calculateOutput())
+      ],
+    );
+  }
+
+  String _calculateOutput() {
+    if (_currentMode == GCWSwitchPosition.left) {
+      var output = encodeDomainPunycode(_currentEncodeInput);
+      return (output.errorText != '') ? output.errorText : output.output;
+    } else {
+      var output = decodeDomainPunycode(_currentDecodeInput);
+      return (output.errorText != '') ? output.errorText : output.output;
+    }
+  }
+}
