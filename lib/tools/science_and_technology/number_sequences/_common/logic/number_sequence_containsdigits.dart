@@ -252,7 +252,6 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
       }
     }
   } else if (sequence == NumberSequencesMode.LOOK_AND_SAY) {
-    List<int> recamanSequence = <int>[];
     int index = 0;
     int maxIndex = 30;
     var numberString = '';
