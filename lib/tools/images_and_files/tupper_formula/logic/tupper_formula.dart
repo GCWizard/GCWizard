@@ -54,7 +54,7 @@ String _kToImageCustom(String kString, int width, int height, int colors){
     }
   }
 
-  binary = imageBinary.reversed.join('');
+  binary = imageBinary.join('');
   for (int i = 0; i < height; i++) {
     imageBinaryRotaded.add(binary.substring(0, width));
     binary = binary.substring(width);

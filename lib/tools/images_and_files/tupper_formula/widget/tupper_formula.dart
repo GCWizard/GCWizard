@@ -187,6 +187,7 @@ class _TupperFormulaState extends State<TupperFormula> {
             width: _currentWidth,
             height: _currentHeight,
             colors: TUPPER_COLOR_NUMBERS[_currentColorIndex]!,
+            currentColor: _currentColor,
             state: _board.currentBoard,
             onChanged: (newBoard) {
               setState(() {
@@ -195,7 +196,9 @@ class _TupperFormulaState extends State<TupperFormula> {
             },
           ),
         ),
-        _buildWidgetColorSet(),
+        (_currentFormulaMode == GCWSwitchPosition.right) // custom
+            ? _buildWidgetColorSet()
+            : Container(),
         Row(children: [
           Expanded(
             child: GCWIconButton(
@@ -234,11 +237,12 @@ class _TupperFormulaState extends State<TupperFormula> {
 
   Widget _buildWidgetColorSet(){
     List<Widget> colorFields = [];
-
-    //return Row(children: _GRID_COLORS[_currentColors]!.keys.map((color) => _buildColorField(color)).toList());
-    //Map<_GridPaintColor, Color> colors = _GRID_COLORS[_currentColors]!;
-    List<_GridPaintColor> colors = _GRID_COLORS[_currentColors]!.keys.toList();
-    for (int i = 0; i < _currentColors; i++) {
+    List<_GridPaintColor> colors = [];
+    Map<_GridPaintColor, Color> colorMap = _GRID_COLORS[TUPPER_COLOR_NUMBERS[_currentColorIndex]]!;
+    for (var col in colorMap.keys) {
+      colors.add(col);
+    }
+    for (int i = 0; i < TUPPER_COLOR_NUMBERS[_currentColorIndex]!; i++) {
       colorFields.add(_buildColorField(colors[i]));
     }
     return Row(children: colorFields);
@@ -266,10 +270,10 @@ class _TupperFormulaState extends State<TupperFormula> {
   BoxDecoration _getColorDecoration(_GridPaintColor color) {
     return _currentColor == color
         ? BoxDecoration(
-        color: (_GRID_COLORS[_currentColors]![color] ?? Colors.black),
+        color: (_GRID_COLORS[TUPPER_COLOR_NUMBERS[_currentColorIndex]]![color] ?? Colors.black),
         border: Border.all(color: themeColors().secondary(), width: 5))
         : BoxDecoration(
-        color: (_GRID_COLORS[_currentColors]![color] ?? Colors.black),
+        color: (_GRID_COLORS[TUPPER_COLOR_NUMBERS[_currentColorIndex]]![color] ?? Colors.black),
         border: Border.all(color: themeColors().mainFont(), width: 1.0));
   }
 
@@ -315,6 +319,7 @@ class _TupperFormulaState extends State<TupperFormula> {
     var image = binary2Image(
       kToImage(_currentInput, _currentFormulaMode == GCWSwitchPosition.left,
           _currentWidth, _currentHeight, _currentColors),
+      colors: _colorMapTupper
     );
     if (image == null) return;
     input2Image(image).then((value) {
