@@ -1,9 +1,4 @@
-import 'dart:math';
-
-import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/theme/theme_colors.dart';
-import 'package:gc_wizard/tools/images_and_files/tupper_formula/logic/tupper_formula.dart';
-import 'package:touchable/touchable.dart';
+part of 'package:gc_wizard/tools/images_and_files/tupper_formula/widget/tupper_formula.dart';
 
 class TupperFormulaBoard extends StatefulWidget {
   final void Function(List<List<int>>) onChanged;
