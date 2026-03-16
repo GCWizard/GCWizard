@@ -164,3 +164,63 @@ final Two = BigInt.two;
 final Three = BigInt.from(3);
 final sqrt5 = sqrt(5);
 final sqrt2 = sqrt(2);
+
+abstract class BaseNumberSequence {
+
+  static PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
+    return PositionOfSequenceOutput('-1', 0, 0);
+  }
+
+  static BigInt containsDigits(int n) {
+    return BigInt.from(-1);
+  }
+
+  static List<BigInt> getNumbersWithNDigits(int digits) {
+    return <BigInt>[];
+  }
+
+  static Future<BigInt> calculateNumberAt(NumberSequencesMode sequence, int n, {SendPort? sendAsyncPort}) async {
+    List<BigInt> result = await calculateRange(GetNumberRangeJobData(sequence: sequence, start: n, stop: n));
+
+    return Future.value(result.isEmpty ? BigInt.from(-1): result[0]);
+  }
+
+  static Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
+    return Future.value(<BigInt>[]);
+  }
+}
+
+List<BigInt> getNumbersWithNDigitsBaseFunction(int digits, BigInt Function(int) numberSequenceFunction) {
+  var numberList = <BigInt>[];
+  BigInt number;
+
+  int index = 0;
+  number = Two;
+  while (number.toString().length < digits + 1) {
+    number = numberSequenceFunction(index);
+    if (number.toString().length == digits) numberList.add(number);
+    index = index + 1;
+  }
+  return numberList;
+}
+
+PositionOfSequenceOutput getFirstPositionOfSequenceBaseFunction(String check, int maxIndex,
+    BigInt Function(int) numberSequenceFunction) {
+  BigInt number;
+  int index = 0;
+  String numberString = '';
+
+  while (index <= maxIndex) {
+    number = numberSequenceFunction(index);
+    numberString = number.toString();
+    if (numberString.contains(check)) {
+      int j = 0;
+      while (!numberString.substring(j).startsWith(check)) {
+        j++;
+      }
+      return PositionOfSequenceOutput(numberString, index + 1, (j + 1));
+    }
+    index++;
+  }
+  return PositionOfSequenceOutput('-1', 0, 0);
+}

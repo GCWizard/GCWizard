@@ -107,55 +107,9 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
       index++;
     }
   } else if (sequence == NumberSequencesMode.FIBONACCI) {
-    pn0 = Zero;
-    pn1 = One;
-    number = pn1;
-    if (check == Zero.toString()) {
-      return PositionOfSequenceOutput('0', 0, 1);
-    } else if (check == One.toString()) {
-      return PositionOfSequenceOutput('1', 1, 1);
-    } else {
-      index = 2;
-      while (index <= maxIndex) {
-        number = pn1 + pn0;
-        pn0 = pn1;
-        pn1 = number;
-        numberString = number.toString();
-        if (expr.hasMatch(numberString)) {
-          int j = 0;
-          while (!numberString.substring(j).startsWith(check)) {
-            j++;
-          }
-          return PositionOfSequenceOutput(numberString, index + 1, j + 1);
-        }
-        index++;
-      }
-    }
+
   } else if (sequence == NumberSequencesMode.PELL) {
-    pn0 = Zero;
-    pn1 = One;
-    number = pn1;
-    if (check == Zero.toString()) {
-      return PositionOfSequenceOutput('0', 0, 1);
-    } else if (check == One.toString()) {
-      return PositionOfSequenceOutput('1', 1, 1);
-    } else {
-      index = 2;
-      while (index <= maxIndex) {
-        number = Two * pn1 + pn0;
-        pn0 = pn1;
-        pn1 = number;
-        numberString = number.toString();
-        if (expr.hasMatch(numberString)) {
-          int j = 0;
-          while (!numberString.substring(j).startsWith(check)) {
-            j++;
-          }
-          return PositionOfSequenceOutput(numberString, index + 1, j + 1);
-        }
-        index++;
-      }
-    }
+
   } else if (sequence == NumberSequencesMode.PELL_LUCAS) {
     if (check == Two.toString()) {
       return PositionOfSequenceOutput('2', 0, 1);
