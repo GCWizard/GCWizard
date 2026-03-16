@@ -1884,8 +1884,7 @@ void initializeRegistry(BuildContext context) {
         context: context,
         author: '',
         title: 'IDNA Punycode',
-        sourceUrl:
-        'https://web.archive.org/web/20260312003021/https://www.rfc-editor.org/rfc/rfc3492.html#page-35')
+        sourceUrl: 'https://web.archive.org/web/20260312003021/https://www.rfc-editor.org/rfc/rfc3492.html#page-35')
       ]),
     GCWTool(tool: const QrCode(), id: 'qr_code', categories: const [
       ToolCategory.IMAGES_AND_FILES
