@@ -60,7 +60,7 @@ String _kToImageCustom(String kString, int width, int height, int colors){
     binary = binary.substring(width);
   }
 
-  return imageBinaryRotaded.join('\n');
+  return imageBinaryRotaded.reversed.join('\n');
 }
 
 String kToImage(String kString, bool original, int width, int height, int colors) {
