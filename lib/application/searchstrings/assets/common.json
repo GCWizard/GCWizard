@@ -361,7 +361,7 @@
   "primes_primeindex": "index",
   "predator": "predators",
   "projectiles": "",
-  "punycode": "ascii unicode",
+  "punycode": "ascii unicode RFC 3492 idna internationalizingdomainnamesinapplications",
   "quadraticequation": "",
   "rabbit": "",
   "railfence": "zigzag transposition",
