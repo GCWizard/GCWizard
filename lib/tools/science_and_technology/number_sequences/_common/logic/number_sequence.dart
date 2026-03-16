@@ -153,6 +153,7 @@ enum NumberSequencesMode {
   LONELY,
   PALINDROME_PRIMES,
   SUITABLE_NUMBERS,
+  LOOK_AND_SAY
 }
 
 final Zero = BigInt.zero;

@@ -37,3 +37,9 @@ List<LatLng> arcArcIntercept(LatLng center1, double radius1, LatLng center2, dou
 
   return out;
 }
+
+LatLng perpendicularIntercept(LatLng point, LatLng start, double azimuth, Ellipsoid ellipsoid) {
+  var result = _projectToGeo(_LLPoint.fromLatLng(start), degToRadian(azimuth), _LLPoint.fromLatLng(point), _TOL, ellipsoid);
+
+  return result.pt2.toLatLng();
+}

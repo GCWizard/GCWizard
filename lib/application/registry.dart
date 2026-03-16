@@ -143,6 +143,7 @@ import 'package:gc_wizard/tools/coords/intersect_three_circles/widget/intersect_
 import 'package:gc_wizard/tools/coords/intersect_two_circles/widget/intersect_two_circles.dart';
 import 'package:gc_wizard/tools/coords/intersection/widget/intersection.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/map_view.dart';
+import 'package:gc_wizard/tools/coords/orthogonal_projection/widget/orthogonal_projection.dart';
 import 'package:gc_wizard/tools/coords/resection/widget/resection.dart';
 import 'package:gc_wizard/tools/coords/rhumb_line/widget/rhumbline_distancebearing.dart';
 import 'package:gc_wizard/tools/coords/rhumb_line/widget/rhumbline_waypoint_projection.dart';
@@ -3674,6 +3675,18 @@ void initializeRegistry(BuildContext context) {
           'coordinates_antipodes',
         ],
         licenses: const []),
+    GCWTool(
+        tool: const OrthogonalProjection(),
+        id: 'coords_orthogonalprojection',
+        iconPath: 'lib/tools/coords/_common/assets/icons/icon_orthogonalprojection.png',
+        categories: const [
+          ToolCategory.COORDINATES
+        ],
+        searchKeys: const [
+          'coordinates',
+          'coordinates_orthogonalprojection',
+        ],
+        licenses: [stl._toolLicenseMitre]),
     GCWTool(
         tool: const Intersection(),
         id: 'coords_intersection',

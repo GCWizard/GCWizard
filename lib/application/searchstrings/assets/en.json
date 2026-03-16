@@ -126,6 +126,7 @@
   "coordinates_segmentline": "segments segmentlines  regularly bisectors",
   "coordinates_variablecoordinateformulas": "waypoints flex varcoords variablecoordinates variablesinterpolation",
   "coordinates_waypointprojection": "angles waypointprojections bearings cardinaldirections reverse projections",
+  "coordinates_orthogonalprojection": "orthogonally nearestpoint raising perpendiculars",
   "countries": "countries country nations states internationals",
   "countries_callingcodes": "callingcodes prefixes areacodes preselection",
   "countries_embassycodes_ger": "embassies embassy diplomatics diplomatists licenseplates licenseplatenumbers germany",
