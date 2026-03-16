@@ -299,6 +299,7 @@ import 'package:gc_wizard/tools/science_and_technology/physical_constants/widget
 import 'package:gc_wizard/tools/science_and_technology/piano/widget/piano.dart';
 import 'package:gc_wizard/tools/science_and_technology/postcode/widget/postcode.dart';
 import 'package:gc_wizard/tools/science_and_technology/projectiles/widget/projectiles.dart';
+import 'package:gc_wizard/tools/science_and_technology/punycode/widget/punycode.dart';
 import 'package:gc_wizard/tools/science_and_technology/quadratic_equation/widget/quadratic_equation.dart';
 import 'package:gc_wizard/tools/science_and_technology/recycling/widget/recycling.dart';
 import 'package:gc_wizard/tools/science_and_technology/regex/widget/regex.dart';
@@ -791,6 +792,7 @@ void _initStaticToolList() {
       className(const PrimeAlphabet()),
       className(const PrimesSelection()),
       className(const Projectiles()),
+      className(const Punycode()),
       className(const PrussiaTelegraph()),
       className(const QrCode()),
       className(const QuadraticEquation()),

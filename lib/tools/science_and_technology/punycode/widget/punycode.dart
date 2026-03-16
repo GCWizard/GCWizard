@@ -9,10 +9,10 @@ class Punycode extends StatefulWidget {
   const Punycode({super.key});
 
   @override
-  PunycodeState createState() => PunycodeState();
+  _PunycodeState createState() => _PunycodeState();
 }
 
-class PunycodeState extends State<Punycode> {
+class _PunycodeState extends State<Punycode> {
   late TextEditingController _decodeController;
   late TextEditingController _encodeController;
 
