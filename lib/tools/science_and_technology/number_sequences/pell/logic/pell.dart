@@ -7,7 +7,7 @@ class PellNumberSequence extends BaseNumberSequence {
     BigInt pn0 = Zero;
     BigInt pn1 = One;
     BigInt number = pn1;
-    int index = 0;
+    int index = 2;
     String numberString = '';
 
     if (check == Zero.toString()) {
@@ -15,7 +15,6 @@ class PellNumberSequence extends BaseNumberSequence {
     } else if (check == One.toString()) {
       return PositionOfSequenceOutput('1', 1, 1);
     } else {
-      index = 2;
       while (index <= maxIndex) {
         number = Two * pn1 + pn0;
         pn0 = pn1;

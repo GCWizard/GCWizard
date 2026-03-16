@@ -4,7 +4,25 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/
 class LookAndSayNumberSequence extends BaseNumberSequence {
 
   static PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
+    int index = 0;
+    String numberString = '';
 
+    while (index <= maxIndex) {
+      if (index == 0) {
+        numberString = '1';
+      } else {
+        numberString = lookAndSay(numberString);
+      }
+      if (expr.hasMatch(numberString)) {
+        int j = 0;
+        while (!numberString.substring(j).startsWith(check)) {
+          j++;
+        }
+        return PositionOfSequenceOutput(numberString, index + 1, j + 1);
+      }
+      index++;
+    }
+    return PositionOfSequenceOutput('-1', 0, 0);
   }
 
   static BigInt containsDigits(int n) {

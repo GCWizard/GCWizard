@@ -111,119 +111,15 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
   } else if (sequence == NumberSequencesMode.PELL) {
 
   } else if (sequence == NumberSequencesMode.PELL_LUCAS) {
-    if (check == Two.toString()) {
-      return PositionOfSequenceOutput('2', 0, 1);
-    }
-    pn0 = Two;
-    pn1 = Two;
-    number = pn1;
-    index = 2;
-    while (index <= maxIndex) {
-      number = Two * pn1 + pn0;
-      pn0 = pn1;
-      pn1 = number;
-      numberString = number.toString();
-      if (expr.hasMatch(numberString)) {
-        int j = 0;
-        while (!numberString.substring(j).startsWith(check)) {
-          j++;
-        }
-        return PositionOfSequenceOutput(numberString, index + 1, j + 1);
-      }
-      index++;
-    }
+
   } else if (sequence == NumberSequencesMode.LUCAS) {
-    pn0 = Two;
-    pn1 = One;
-    if (check == Two.toString()) {
-      return PositionOfSequenceOutput('2', 0, 1);
-    } else if (check == One.toString()) {
-      return PositionOfSequenceOutput('1', 1, 1);
-    } else {
-      index = 1;
-      number = Three;
-      while (index <= maxIndex) {
-        numberString = number.toString();
-        if (expr.hasMatch(numberString)) {
-          int j = 0;
-          while (!numberString.substring(j).startsWith(check)) {
-            j++;
-          }
-          return PositionOfSequenceOutput(numberString, index + 1, j + 1);
-        }
-        index++;
-        number = pn1 + pn0;
-        pn0 = pn1;
-        pn1 = number;
-      }
-    }
+
   } else if (sequence == NumberSequencesMode.RECAMAN) {
-    List<int> recamanSequence = <int>[];
-    int index = 0;
-    int maxIndex = 111111;
-    int pn0 = 0;
-    int number = 0;
-    recamanSequence.add(0);
-    while (index <= maxIndex) {
-      if (index == 0) {
-        number = 0;
-      } else if ((pn0 - index) > 0 && !recamanSequence.contains(pn0 - index)) {
-        number = pn0 - index;
-      } else {
-        number = pn0 + index;
-      }
-      recamanSequence.add(number);
-      pn0 = number;
-      numberString = number.toString();
-      if (expr.hasMatch(numberString)) {
-        int j = 0;
-        while (!numberString.substring(j).startsWith(check)) {
-          j++;
-        }
-        return PositionOfSequenceOutput(numberString, index + 1, j + 1);
-      }
-      index++;
-    }
+
   } else if (sequence == NumberSequencesMode.FACTORIAL) {
-    number = One;
-    if (check == Zero.toString()) {
-      return PositionOfSequenceOutput('0', 0, 1);
-    } else if (check == One.toString()) {
-      return PositionOfSequenceOutput('1', 1, 1);
-    } else {
-      index = 2;
-      while (index <= maxIndex) {
-        number = number * BigInt.from(index);
-        numberString = number.toString();
-        if (expr.hasMatch(numberString)) {
-          int j = 0;
-          while (!numberString.substring(j).startsWith(check)) {
-            j++;
-          }
-          return PositionOfSequenceOutput(numberString, index + 1, j + 1);
-        }
-        index++;
-      }
-    }
+
   } else if (sequence == NumberSequencesMode.LOOK_AND_SAY) {
-    int index = 0;
-    int maxIndex = 30;
-    var numberString = '';
-    while (index <= maxIndex) {
-      if (index == 0) {
-        numberString = '1';
-      } else {
-        numberString = lookAndSay(numberString);
-      }
-      if (expr.hasMatch(numberString)) {
-        int j = 0;
-        while (!numberString.substring(j).startsWith(check)) {
-          j++;
-        }
-        return PositionOfSequenceOutput(numberString, index + 1, j + 1);
-      }
-      index++;
-    }
+
   } else {
     switch (sequence) {
       case NumberSequencesMode.PRIMES:
