@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_twooptions_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
@@ -72,12 +73,12 @@ class PunycodeState extends State<Punycode> {
   }
 
   String _calculateOutput() {
+    ({String output, String errorText}) output;
     if (_currentMode == GCWSwitchPosition.left) {
-      var output = encodeDomainPunycode(_currentEncodeInput);
-      return (output.errorText != '') ? output.errorText : output.output;
+      output = encodeDomainPunycode(_currentEncodeInput);
     } else {
-      var output = decodeDomainPunycode(_currentDecodeInput);
-      return (output.errorText != '') ? output.errorText : output.output;
+      output = decodeDomainPunycode(_currentDecodeInput);
     }
+    return (output.errorText == '') ? output.output : i18n(context, "common_error") + ': ' + output.errorText;
   }
 }

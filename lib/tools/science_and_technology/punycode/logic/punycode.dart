@@ -223,12 +223,3 @@ int _decodeDigit(int cp) {
   }
   return _base; // invalid
 }
-
-
-void main() {
-  print(encodeDomainPunycode('müller.de').output); // xn--mller-kva.de
-  print(decodeDomainPunycode('xn--mller-kva.de').output);// müller.de
-
-  print(encodePunycode('bücher').output); // bcher-kva
-  print(decodePunycode('bcher-kva').output); // bücher
-}
