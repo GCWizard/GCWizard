@@ -13,7 +13,7 @@ class PermutablePrimesNumberSequence extends BaseNumberSequence {
   }
 
   static List<BigInt> getNumbersWithNDigits(int digits) {
-
+    return getNumbersWithNDigitsBase(digits, permutable_primes);
   }
 
   static Future<BigInt> calculateNumberAt(NumberSequencesMode sequence, int n, {SendPort? sendAsyncPort}) async {

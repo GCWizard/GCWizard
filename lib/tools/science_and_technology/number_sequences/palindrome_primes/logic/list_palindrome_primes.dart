@@ -13,7 +13,7 @@ class PalindromePrimesNumberSequence extends BaseNumberSequence {
   }
 
   static List<BigInt> getNumbersWithNDigits(int digits) {
-
+    return getNumbersWithNDigitsBase(digits, palindrome_primes);
   }
 
   static Future<BigInt> calculateNumberAt(NumberSequencesMode sequence, int n, {SendPort? sendAsyncPort}) async {

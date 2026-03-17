@@ -13,7 +13,7 @@ class PerfectNumbersNumberSequence extends BaseNumberSequence {
   }
 
   static List<BigInt> getNumbersWithNDigits(int digits) {
-
+    return getNumbersWithNDigitsBase(digits, perfect_numbers);
   }
 
   static Future<BigInt> calculateNumberAt(NumberSequencesMode sequence, int n, {SendPort? sendAsyncPort}) async {

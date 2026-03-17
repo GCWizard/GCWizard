@@ -13,7 +13,7 @@ class MersennePrimesNumberSequence extends BaseNumberSequence {
   }
 
   static List<BigInt> getNumbersWithNDigits(int digits) {
-
+    return getNumbersWithNDigitsBase(digits, mersenne_primes);
   }
 
   static Future<BigInt> calculateNumberAt(NumberSequencesMode sequence, int n, {SendPort? sendAsyncPort}) async {

@@ -190,6 +190,18 @@ abstract class BaseNumberSequence {
   }
 }
 
+List<BigInt> getNumbersWithNDigitsBase(int digits, List<String> sequenceList) {
+  var numberList = <BigInt>[];
+
+  for (int i = 0; i < sequenceList.length; i++) {
+    if (sequenceList[i].length == digits) {
+      var value = BigInt.tryParse(sequenceList[i]);
+      if (value != null) numberList.add(value);
+    }
+  }
+  return numberList;
+}
+
 List<BigInt> getNumbersWithNDigitsBaseFunction(int digits, BigInt Function(int) numberSequenceFunction) {
   var numberList = <BigInt>[];
   BigInt number;
@@ -237,3 +249,4 @@ PositionOfSequenceOutput getFirstPositionOfSequenceBase(String check, RegExp exp
   }
   return PositionOfSequenceOutput('-1', 0, 0);
 }
+
