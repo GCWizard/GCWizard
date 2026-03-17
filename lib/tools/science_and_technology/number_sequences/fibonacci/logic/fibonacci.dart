@@ -4,7 +4,9 @@ import 'dart:isolate';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 
 class FibonacciNumberSequence extends BaseNumberSequence {
+  const FibonacciNumberSequence();
 
+  @override
   static PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
     BigInt pn0 = Zero;
     BigInt pn1 = One;
@@ -35,10 +37,12 @@ class FibonacciNumberSequence extends BaseNumberSequence {
     return PositionOfSequenceOutput('-1', 0, 0);
   }
 
+  @override
   static BigInt containsDigits(int n) {
 
   }
 
+  @override
   static List<BigInt> getNumbersWithNDigits(int digits) {
     var numberList = <BigInt>[];
     BigInt number;
@@ -59,6 +63,7 @@ class FibonacciNumberSequence extends BaseNumberSequence {
     return numberList;
   }
 
+  @override
   static Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
 
   }

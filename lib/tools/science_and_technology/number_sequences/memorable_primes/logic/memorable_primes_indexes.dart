@@ -2,12 +2,12 @@ import 'dart:isolate';
 
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 
-class BusyBeaverNumberSequence extends BaseNumberSequence {
-  const BusyBeaverNumberSequence();
+class MemorablePrimesIndexesNumberSequence extends BaseNumberSequence {
+  const MemorablePrimesIndexesNumberSequence();
 
   @override
   static PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return getFirstPositionOfSequenceBase(check, expr, busy_beaver_numbers);
+    return getFirstPositionOfSequenceBase(check, expr, memorable_primes_indexes);
   }
 
   @override
@@ -17,7 +17,7 @@ class BusyBeaverNumberSequence extends BaseNumberSequence {
 
   @override
   static List<BigInt> getNumbersWithNDigits(int digits) {
-    return getNumbersWithNDigitsBase(digits, busy_beaver_numbers);
+    return getNumbersWithNDigitsBase(digits, memorable_primes_indexes);
   }
 
   @override
@@ -33,10 +33,9 @@ class BusyBeaverNumberSequence extends BaseNumberSequence {
   }
 }
 
-const List<String> busy_beaver_numbers = [
-  '1',
-  '6',
-  '21',
-  '107',
-  '47176870',
+
+const List<String> memorable_primes_indexes = [
+  '10',
+  '2446',
 ];
+

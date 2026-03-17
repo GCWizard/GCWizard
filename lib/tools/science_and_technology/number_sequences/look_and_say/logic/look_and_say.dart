@@ -4,7 +4,9 @@ import 'dart:isolate';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 
 class LookAndSayNumberSequence extends BaseNumberSequence {
+  const LookAndSayNumberSequence();
 
+  @override
   static PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
     int index = 0;
     String numberString = '';
@@ -27,10 +29,12 @@ class LookAndSayNumberSequence extends BaseNumberSequence {
     return PositionOfSequenceOutput('-1', 0, 0);
   }
 
+  @override
   static BigInt containsDigits(int n) {
 
   }
 
+  @override
   static List<BigInt> getNumbersWithNDigits(int digits) {
     var numberList = <BigInt>[];
 
@@ -42,6 +46,7 @@ class LookAndSayNumberSequence extends BaseNumberSequence {
     return numberList;
   }
 
+  @override
   static Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
 
   }
