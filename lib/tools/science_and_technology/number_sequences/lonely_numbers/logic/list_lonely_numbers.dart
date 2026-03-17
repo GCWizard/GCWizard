@@ -1,3 +1,30 @@
+import 'dart:isolate';
+
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
+
+class LonelyNumberSequence extends BaseNumberSequence {
+
+  static PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
+    return getFirstPositionOfSequenceBase(check, expr, lonely_numbers);
+  }
+
+  static BigInt containsDigits(int n) {
+
+  }
+
+  static List<BigInt> getNumbersWithNDigits(int digits) {
+
+  }
+
+  static Future<BigInt> calculateNumberAt(NumberSequencesMode sequence, int n, {SendPort? sendAsyncPort}) async {
+
+  }
+
+  static Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
+
+  }
+}
+
 const List<String> lonely_numbers = [
   '0',
   '23',

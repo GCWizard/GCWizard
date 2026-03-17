@@ -224,3 +224,16 @@ PositionOfSequenceOutput getFirstPositionOfSequenceBaseFunction(String check, in
   }
   return PositionOfSequenceOutput('-1', 0, 0);
 }
+
+PositionOfSequenceOutput getFirstPositionOfSequenceBase(String check, RegExp expr, List<String> sequenceList) {
+  for (int i = 0; i < sequenceList.length; i++) {
+    if (expr.hasMatch(sequenceList[i])) {
+      int j = 0;
+      while (!sequenceList[i].substring(j).startsWith(check)) {
+        j++;
+      }
+      return PositionOfSequenceOutput(sequenceList[i], i + 1, j + 1);
+    }
+  }
+  return PositionOfSequenceOutput('-1', 0, 0);
+}

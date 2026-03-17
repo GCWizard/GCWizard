@@ -1,4 +1,6 @@
 
+import 'dart:isolate';
+
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 
 class FactorialNumberSequence extends BaseNumberSequence {
