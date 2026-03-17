@@ -1,10 +1,7 @@
 
-import 'dart:isolate';
-
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 
 class PellLucasNumberSequence extends BaseNumberSequence {
-  const PellLucasNumberSequence();
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
@@ -34,10 +31,6 @@ class PellLucasNumberSequence extends BaseNumberSequence {
     return PositionOfSequenceOutput('-1', 0, 0);
   }
 
-  @override
-  BigInt containsDigits(int n) {
-
-  }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
@@ -61,7 +54,26 @@ class PellLucasNumberSequence extends BaseNumberSequence {
   }
 
   @override
-  Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
+  List<BigInt> calculateRange(int start, int stop) {
+    var numberList = <BigInt>[];
+    BigInt number;
+    BigInt pn0 = Two;
+    BigInt pn1 = Two;
+    int index = 0;
 
+    while (index < stop + 1) {
+      if (index == 0) {
+        number = pn0;
+      } else if (index == 1) {
+        number = pn1;
+      } else {
+        number = Two * pn1 + pn0;
+        pn0 = pn1;
+        pn1 = number;
+      }
+      if (index >= start) numberList.add(number);
+      index = index + 1;
+    }
+    return numberList;
   }
 }

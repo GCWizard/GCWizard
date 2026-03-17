@@ -1,10 +1,7 @@
 
-import 'dart:isolate';
-
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 
 class RecamanNumberSequence extends BaseNumberSequence {
-  const RecamanNumberSequence();
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
@@ -40,11 +37,6 @@ class RecamanNumberSequence extends BaseNumberSequence {
   }
 
   @override
-  BigInt containsDigits(int n) {
-
-  }
-
-  @override
   List<BigInt> getNumbersWithNDigits(int digits) {
     var numberList = <BigInt>[];
     BigInt number;
@@ -67,7 +59,28 @@ class RecamanNumberSequence extends BaseNumberSequence {
   }
 
   @override
-  Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
+  List<BigInt> calculateRange(int start, int stop) {
+    var numberList = <BigInt>[];
+    List<BigInt> recamanSequence = <BigInt>[];
+    BigInt number;
+    BigInt pn0 = Zero;
+    BigInt index = Zero;
+    recamanSequence.add(Zero);
+    index = Zero;
 
+    while (index < BigInt.from(stop) + One) {
+      if (index == Zero) {
+        number = pn0;
+      } else if ((pn0 - index) > Zero && !recamanSequence.contains(pn0 - index)) {
+        number = pn0 - index;
+      } else {
+        number = pn0 + index;
+      }
+      recamanSequence.add(number);
+      pn0 = number;
+      if (index >= BigInt.from(start)) numberList.add(number);
+      index = index + One;
+    }
+    return numberList;
   }
 }

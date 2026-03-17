@@ -1,19 +1,11 @@
-import 'dart:isolate';
-import 'dart:math';
 
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 
 class CatalanNumberSequence extends BaseNumberSequence {
-  const CatalanNumberSequence();
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
     return getFirstPositionOfSequenceBaseFunction(check, maxIndex, _getCatalan);
-  }
-
-  @override
-  BigInt containsDigits(int n) {
-
   }
 
   @override
@@ -22,11 +14,10 @@ class CatalanNumberSequence extends BaseNumberSequence {
   }
 
   @override
-  Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
-
+  List<BigInt> calculateRange(int start, int stop) {
+    return calculateRangeBaseFunction(start, stop, _getCatalan);
   }
 
-  @override
   static BigInt _getCatalan(int n) {
     if (n == 0) return BigInt.one;
 
@@ -37,7 +28,6 @@ class CatalanNumberSequence extends BaseNumberSequence {
     }
   }
 
-  @override
   static BigInt _getBinomialCoefficient(int n, int k) {
     if (n == k) {
       return Zero;

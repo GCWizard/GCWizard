@@ -1,18 +1,11 @@
-import 'dart:isolate';
 
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 
 class MersenneFermatNumberSequence extends BaseNumberSequence {
-  const MersenneFermatNumberSequence();
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
     return getFirstPositionOfSequenceBaseFunction(check, maxIndex, _getMersenneFermat);
-  }
-
-  @override
-  BigInt containsDigits(int n) {
-
   }
 
   @override
@@ -21,11 +14,10 @@ class MersenneFermatNumberSequence extends BaseNumberSequence {
   }
 
   @override
-  Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
-
+  List<BigInt> calculateRange(int start, int stop) {
+    return calculateRangeBaseFunction(start, stop, _getMersenneFermat);
   }
 
-  @override
   static BigInt _getMersenneFermat(int n) {
     return Two.pow(n) + One;
   }

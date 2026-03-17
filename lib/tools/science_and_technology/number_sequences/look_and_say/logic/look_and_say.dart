@@ -1,10 +1,7 @@
 
-import 'dart:isolate';
-
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 
 class LookAndSayNumberSequence extends BaseNumberSequence {
-  const LookAndSayNumberSequence();
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
@@ -30,11 +27,6 @@ class LookAndSayNumberSequence extends BaseNumberSequence {
   }
 
   @override
-  BigInt containsDigits(int n) {
-
-  }
-
-  @override
   List<BigInt> getNumbersWithNDigits(int digits) {
     var numberList = <BigInt>[];
 
@@ -47,8 +39,20 @@ class LookAndSayNumberSequence extends BaseNumberSequence {
   }
 
   @override
-  Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
-
+  List<BigInt> calculateRange(int start, int stop) {
+    var numberList = <BigInt>[];
+    var numberString = '';
+    int index = 0;
+    while (index < stop + 1) {
+      if (index == 0) {
+        numberString = '1';
+      } else {
+        numberString = lookAndSay(numberString);
+      }
+      if (index >= start) numberList.add(BigInt.parse(numberString));
+      index++;
+    }
+    return numberList;
   }
 }
 

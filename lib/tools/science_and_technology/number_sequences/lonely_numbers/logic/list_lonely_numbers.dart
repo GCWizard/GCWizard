@@ -1,18 +1,11 @@
-import 'dart:isolate';
 
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 
 class LonelyNumberSequence extends BaseNumberSequence {
-  const LonelyNumberSequence();
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
     return getFirstPositionOfSequenceBase(check, expr, lonely_numbers);
-  }
-
-  @override
-  BigInt containsDigits(int n) {
-
   }
 
   @override
@@ -21,13 +14,8 @@ class LonelyNumberSequence extends BaseNumberSequence {
   }
 
   @override
-  Future<BigInt> calculateNumberAt(NumberSequencesMode sequence, int n, {SendPort? sendAsyncPort}) async {
-
-  }
-
-  @override
-  Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
-
+  List<BigInt> calculateRange(int start, int stop) {
+    return calculateRangeBase(start, stop, lonely_numbers);
   }
 }
 

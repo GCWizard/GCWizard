@@ -1,10 +1,7 @@
 
-import 'dart:isolate';
-
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence.dart';
 
 class FibonacciNumberSequence extends BaseNumberSequence {
-  const FibonacciNumberSequence();
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
@@ -38,11 +35,6 @@ class FibonacciNumberSequence extends BaseNumberSequence {
   }
 
   @override
-  BigInt containsDigits(int n) {
-
-  }
-
-  @override
   List<BigInt> getNumbersWithNDigits(int digits) {
     var numberList = <BigInt>[];
     BigInt number;
@@ -64,7 +56,26 @@ class FibonacciNumberSequence extends BaseNumberSequence {
   }
 
   @override
-  Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
+  List<BigInt> calculateRange(int start, int stop) {
+    var numberList = <BigInt>[];
+    BigInt number;
+    BigInt pn0 = Zero;
+    BigInt pn1 = One;
+    int index = 0;
 
+    while (index < stop + 1) {
+      if (index == 0) {
+        number = Zero;
+      } else if (index == 1) {
+        number = One;
+      } else {
+        number = pn0 + pn1;
+        pn0 = pn1;
+        pn1 = number;
+      }
+      if (index >= start) numberList.add(number);
+      index = index + 1;
+    }
+    return numberList;
   }
 }

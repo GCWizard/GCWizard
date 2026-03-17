@@ -185,22 +185,18 @@ abstract class BaseNumberSequence {
     return PositionOfSequenceOutput('-1', 0, 0);
   }
 
-  BigInt containsDigits(int n) {
-    return BigInt.from(-1);
-  }
-
   List<BigInt> getNumbersWithNDigits(int digits) {
     return <BigInt>[];
   }
 
-  Future<BigInt> calculateNumberAt(NumberSequencesMode sequence, int n, {SendPort? sendAsyncPort}) async {
-    List<BigInt> result = await calculateRange(GetNumberRangeJobData(sequence: sequence, start: n, stop: n));
+  BigInt calculateNumberAt(NumberSequencesMode sequence, int n) {
+    List<BigInt> result = calculateRange(n, n);
 
-    return Future.value(result.isEmpty ? BigInt.from(-1): result[0]);
+    return result.isEmpty ? BigInt.from(-1): result[0];
   }
 
-  Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
-    return Future.value(<BigInt>[]);
+  List<BigInt> calculateRange(int start, int stop) {
+    return <BigInt>[];
   }
 }
 
@@ -262,5 +258,23 @@ PositionOfSequenceOutput getFirstPositionOfSequenceBase(String check, RegExp exp
     }
   }
   return PositionOfSequenceOutput('-1', 0, 0);
+}
+
+List<BigInt> calculateRangeBase(int start, int stop, List<String> sequenceList) {
+  var numberList = <BigInt>[];
+
+  for (int i = start; i <= stop; i++) {
+    numberList.add(BigInt.parse(sequenceList[i]));
+  }
+  return numberList;
+}
+
+List<BigInt> calculateRangeBaseFunction(int start, int stop, BigInt Function(int) numberSequenceFunction) {
+  var numberList = <BigInt>[];
+
+  for (int i = start; i <= stop; i++) {
+    numberList.add(numberSequenceFunction(i));
+  }
+  return numberList;
 }
 
