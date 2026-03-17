@@ -7,7 +7,7 @@ class FactorialNumberSequence extends BaseNumberSequence {
   const FactorialNumberSequence();
 
   @override
-  static PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
+  PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
     BigInt number = One;
     int index = 2;
     String numberString = '';
@@ -34,12 +34,12 @@ class FactorialNumberSequence extends BaseNumberSequence {
   }
 
   @override
-  static BigInt containsDigits(int n) {
+  BigInt containsDigits(int n) {
 
   }
 
   @override
-  static List<BigInt> getNumbersWithNDigits(int digits) {
+  List<BigInt> getNumbersWithNDigits(int digits) {
     var numberList = <BigInt>[];
     BigInt number;
 
@@ -59,7 +59,7 @@ class FactorialNumberSequence extends BaseNumberSequence {
   }
 
   @override
-  static Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
+  Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
 
   }
 }

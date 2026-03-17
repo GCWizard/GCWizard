@@ -85,7 +85,7 @@ part 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/lo
 part 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence_nthnumber.dart';
 part 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence_range.dart';
 
-const Map<NumberSequencesMode, ({String title, BaseNumberSequence sequence})> NUMBERSEQUENCES = {
+Map<NumberSequencesMode, ({String title, BaseNumberSequence sequence})> NUMBERSEQUENCES = {
   NumberSequencesMode.LUCAS: (title: 'numbersequence_lucas_title', sequence: LucasNumberSequence()),
   NumberSequencesMode.FIBONACCI: (title: 'numbersequence_fibonacci_title', sequence: FibonacciNumberSequence()),
   NumberSequencesMode.PRIMES: (title: 'numbersequence_primes_title', sequence: PrimesNumberSequence()),
@@ -180,27 +180,26 @@ final sqrt5 = sqrt(5);
 final sqrt2 = sqrt(2);
 
 abstract class BaseNumberSequence {
-  const BaseNumberSequence();
 
-  static PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
+  PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
     return PositionOfSequenceOutput('-1', 0, 0);
   }
 
-  static BigInt containsDigits(int n) {
+  BigInt containsDigits(int n) {
     return BigInt.from(-1);
   }
 
-  static List<BigInt> getNumbersWithNDigits(int digits) {
+  List<BigInt> getNumbersWithNDigits(int digits) {
     return <BigInt>[];
   }
 
-  static Future<BigInt> calculateNumberAt(NumberSequencesMode sequence, int n, {SendPort? sendAsyncPort}) async {
+  Future<BigInt> calculateNumberAt(NumberSequencesMode sequence, int n, {SendPort? sendAsyncPort}) async {
     List<BigInt> result = await calculateRange(GetNumberRangeJobData(sequence: sequence, start: n, stop: n));
 
     return Future.value(result.isEmpty ? BigInt.from(-1): result[0]);
   }
 
-  static Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
+  Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
     return Future.value(<BigInt>[]);
   }
 }

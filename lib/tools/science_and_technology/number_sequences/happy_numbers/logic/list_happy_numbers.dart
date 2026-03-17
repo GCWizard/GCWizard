@@ -6,29 +6,29 @@ class HappyNumbersNumberSequence extends BaseNumberSequence {
   const HappyNumbersNumberSequence();
 
   @override
-  static PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
+  PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
     return getFirstPositionOfSequenceBase(check, expr, happy_numbers);
   }
 
   @override
-  static BigInt containsDigits(int n) {
+  BigInt containsDigits(int n) {
 
   }
 
   @override
-  static List<BigInt> getNumbersWithNDigits(int digits) {
+  List<BigInt> getNumbersWithNDigits(int digits) {
     return getNumbersWithNDigitsBase(digits, happy_numbers);
   }
 
   @override
-  static Future<BigInt> calculateNumberAt(NumberSequencesMode sequence, int n, {SendPort? sendAsyncPort}) async {
+  Future<BigInt> calculateNumberAt(NumberSequencesMode sequence, int n, {SendPort? sendAsyncPort}) async {
     List<BigInt> result = await calculateRange(GetNumberRangeJobData(sequence: sequence, start: n, stop: n));
 
 
   }
 
   @override
-  static Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
+  Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
 
   }
 }

@@ -78,6 +78,14 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
     return PositionOfSequenceOutput('-1', 0, 0);
   }
 
+  RegExp expr = RegExp(r'(' + check + ')');
+
+  if (checkMode) {
+    expr = RegExp(r'(^' + check + '\$)');
+  }
+
+  return NUMBERSEQUENCES[sequence]!.sequence.getFirstPositionOfSequence(check, maxIndex, expr);
+
   BigInt number = Zero;
 
   BigInt pn0 = Zero;
@@ -86,11 +94,7 @@ PositionOfSequenceOutput numberSequencesGetFirstPositionOfSequence(
   String numberString = '';
   List<String> sequenceList = <String>[];
 
-  RegExp expr = RegExp(r'(' + check + ')');
 
-  if (checkMode) {
-    expr = RegExp(r'(^' + check + '\$)');
-  }
 
   var numberSequenceFunction = _getNumberSequenceFunction(sequence);
   if (numberSequenceFunction != null) {

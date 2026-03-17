@@ -6,22 +6,22 @@ class MersenneNumberSequence extends BaseNumberSequence {
   const MersenneNumberSequence();
 
   @override
-  static PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
+  PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
     return getFirstPositionOfSequenceBaseFunction(check, maxIndex, _getMersenne);
   }
 
   @override
-  static BigInt containsDigits(int n) {
+  BigInt containsDigits(int n) {
 
   }
 
   @override
-  static List<BigInt> getNumbersWithNDigits(int digits) {
+  List<BigInt> getNumbersWithNDigits(int digits) {
     return getNumbersWithNDigitsBaseFunction(digits, _getMersenne);
   }
 
   @override
-  static Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
+  Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
 
   }
 

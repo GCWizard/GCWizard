@@ -7,7 +7,7 @@ class RecamanNumberSequence extends BaseNumberSequence {
   const RecamanNumberSequence();
 
   @override
-  static PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
+  PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
     int pn0 = 0;
     int number = 0;
     int index = 0;
@@ -40,12 +40,12 @@ class RecamanNumberSequence extends BaseNumberSequence {
   }
 
   @override
-  static BigInt containsDigits(int n) {
+  BigInt containsDigits(int n) {
 
   }
 
   @override
-  static List<BigInt> getNumbersWithNDigits(int digits) {
+  List<BigInt> getNumbersWithNDigits(int digits) {
     var numberList = <BigInt>[];
     BigInt number;
 
@@ -67,7 +67,7 @@ class RecamanNumberSequence extends BaseNumberSequence {
   }
 
   @override
-  static Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
+  Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
 
   }
 }

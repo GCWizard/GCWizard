@@ -3,6 +3,7 @@ part of 'package:gc_wizard/tools/science_and_technology/number_sequences/_common
 List<BigInt> numberSequencesGetNumbersWithNDigits(NumberSequencesMode sequence, int? digits) {
   if (digits == null) return [];
 
+  return NUMBERSEQUENCES[sequence]!.sequence.getNumbersWithNDigits(digits);
   BigInt number;
 
   var numberList = <BigInt>[];

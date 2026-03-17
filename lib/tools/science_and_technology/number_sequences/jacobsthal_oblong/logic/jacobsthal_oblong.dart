@@ -7,22 +7,22 @@ class JacobsthalOblongNumberSequence extends BaseNumberSequence {
   const JacobsthalOblongNumberSequence();
 
   @override
-  static PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
+  PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
     return getFirstPositionOfSequenceBaseFunction(check, maxIndex, _getJacobsthalOblong);
   }
 
   @override
-  static BigInt containsDigits(int n) {
+  BigInt containsDigits(int n) {
 
   }
 
   @override
-  static List<BigInt> getNumbersWithNDigits(int digits) {
+  List<BigInt> getNumbersWithNDigits(int digits) {
     return getNumbersWithNDigitsBaseFunction(digits, _getJacobsthalOblong);
   }
 
   @override
-  static Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
+  Future<List<BigInt>> calculateRange(GetNumberRangeJobData data, {SendPort? sendAsyncPort}) async {
 
   }
 
