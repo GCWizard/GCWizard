@@ -37,6 +37,7 @@
 // https://oeis.org/A008336   RecamánII           a(n+1) = a(n)/n if n|a(n) else a(n)*n, a(1) = 1.
 // https://oeis.org/A000058   Sylvester           a(n) = 1 + a(0)*a(1)*...*a(n-1)
 
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/bell/logic/bell.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/busybeaver/logic/busybeaver.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/carmichael/logic/carmichael_numbers.dart';
@@ -167,10 +168,6 @@ enum NumberSequencesMode {
   SUITABLE_NUMBERS,
   LOOK_AND_SAY
 }
-
-
-// final sqrt5 = sqrt(5);
-// final sqrt2 = sqrt(2);
 
 abstract class BaseNumberSequence {
   static var Zero = BigInt.zero;
