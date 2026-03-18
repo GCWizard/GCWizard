@@ -6,17 +6,17 @@ class JacobsthalOblongNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return getFirstPositionOfSequenceBaseFunction(check, maxIndex, _getJacobsthalOblong);
+    return BaseNumberSequence.getFirstPositionOfSequenceBaseFunction(check, maxIndex, _getJacobsthalOblong);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return getNumbersWithNDigitsBaseFunction(digits, _getJacobsthalOblong);
+    return BaseNumberSequence.getNumbersWithNDigitsBaseFunction(digits, _getJacobsthalOblong);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return calculateRangeBaseFunction(start, stop, _getJacobsthalOblong);
+    return BaseNumberSequence.calculateRangeBaseFunction(start, stop, _getJacobsthalOblong);
   }
 
   static BigInt _getJacobsthalOblong(int n) {

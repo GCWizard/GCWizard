@@ -5,15 +5,15 @@ class FibonacciNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    BigInt pn0 = Zero;
-    BigInt pn1 = One;
+    BigInt pn0 = BaseNumberSequence.Zero;
+    BigInt pn1 = BaseNumberSequence.One;
     BigInt number = pn1;
     int index = 2;
     String numberString = '';
 
-    if (check == Zero.toString()) {
+    if (check == BaseNumberSequence.Zero.toString()) {
       return PositionOfSequenceOutput('0', 0, 1);
-    } else if (check == One.toString()) {
+    } else if (check == BaseNumberSequence.One.toString()) {
       return PositionOfSequenceOutput('1', 1, 1);
     } else {
       while (index <= maxIndex) {
@@ -39,8 +39,8 @@ class FibonacciNumberSequence extends BaseNumberSequence {
     var numberList = <BigInt>[];
     BigInt number;
 
-    BigInt pn0 = Zero;
-    BigInt pn1 = One;
+    BigInt pn0 = BaseNumberSequence.Zero;
+    BigInt pn1 = BaseNumberSequence.One;
     if (digits == 1) {
       numberList.add(pn0);
       numberList.add(pn1);
@@ -59,15 +59,15 @@ class FibonacciNumberSequence extends BaseNumberSequence {
   List<BigInt> calculateRange(int start, int stop) {
     var numberList = <BigInt>[];
     BigInt number;
-    BigInt pn0 = Zero;
-    BigInt pn1 = One;
+    BigInt pn0 = BaseNumberSequence.Zero;
+    BigInt pn1 = BaseNumberSequence.One;
     int index = 0;
 
     while (index < stop + 1) {
       if (index == 0) {
-        number = Zero;
+        number = BaseNumberSequence.Zero;
       } else if (index == 1) {
-        number = One;
+        number = BaseNumberSequence.One;
       } else {
         number = pn0 + pn1;
         pn0 = pn1;

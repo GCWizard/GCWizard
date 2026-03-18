@@ -7,20 +7,20 @@ class FermatNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return getFirstPositionOfSequenceBaseFunction(check, maxIndex, _getFermat);
+    return BaseNumberSequence.getFirstPositionOfSequenceBaseFunction(check, maxIndex, _getFermat);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return getNumbersWithNDigitsBaseFunction(digits, _getFermat);
+    return BaseNumberSequence.getNumbersWithNDigitsBaseFunction(digits, _getFermat);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return calculateRangeBaseFunction(start, stop, _getFermat);
+    return BaseNumberSequence.calculateRangeBaseFunction(start, stop, _getFermat);
   }
 
   static BigInt _getFermat(int n) {
-    return Two.pow(pow(2, n) as int) + One;
+    return BaseNumberSequence.Two.pow(pow(2, n) as int) + BaseNumberSequence.One;
   }
 }

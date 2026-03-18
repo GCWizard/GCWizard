@@ -5,17 +5,17 @@ class PermutablePrimesNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return getFirstPositionOfSequenceBase(check, expr, permutable_primes);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, permutable_primes);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return getNumbersWithNDigitsBase(digits, permutable_primes);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, permutable_primes);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return calculateRangeBase(start, stop, permutable_primes);
+    return BaseNumberSequence.calculateRangeBase(start, stop, permutable_primes);
   }
 }
 

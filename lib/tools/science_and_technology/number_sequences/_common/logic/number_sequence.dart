@@ -37,47 +37,43 @@
 // https://oeis.org/A008336   RecamánII           a(n+1) = a(n)/n if n|a(n) else a(n)*n, a(1) = 1.
 // https://oeis.org/A000058   Sylvester           a(n) = 1 + a(0)*a(1)*...*a(n-1)
 
-import 'dart:isolate';
-import 'dart:math';
-
-import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/bell/logic/list_bell_numbers.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/busybeaver/logic/list_busy_beaver_numbers.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/carmichael/logic/list_carmichael_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/bell/logic/bell.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/busybeaver/logic/busybeaver.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/carmichael/logic/carmichael_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/catalan/catalan/catalan.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/factorial/logic/factorial.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/fermat/logic/fermat.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/fibonacci/logic/fibonacci.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/happy_numbers/logic/list_happy_numbers.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/harshad/logic/list_harshad_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/happy_numbers/logic/happy_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/harshad/logic/harshad_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsthal/logic/jacobsthal.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsthal_lucas/logic/jacobsthal_lucas.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsthal_oblong/logic/jacobsthal_oblong.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/lonely_numbers/logic/list_lonely_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/lonely_numbers/logic/lonely_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/look_and_say/logic/look_and_say.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucas/logic/lucas.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucky_numbers/logic/list_lucky_numbers.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/lychrel/logic/list_lychrel_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucky_numbers/logic/lucky_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/lychrel/logic/lychrel.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/memorable_primes/logic/memorable_primes.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/memorable_primes/logic/memorable_primes_indexes.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersenne/logic/mersenne.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersenne_exponents/logic/list_mersenne_exponents.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersenne_primes/logic/list_mersenne_primes.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersenne_exponents/logic/mersenne_exponents.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersenne_primes/logic/mersenne_primes.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/mersennefermat/logic/mersennefermat.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/palindrome_primes/logic/list_palindrome_primes.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/palindrome_primes/logic/palindrome_primes.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/pell/logic/pell.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/pell_lucas/logic/pell_lucas.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/perfect_numbers/logic/list_perfect_numbers.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/permutable_primes/logic/list_permutable_primes.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/primarypseudoperfect_numbers/logic/list_primary_pseudo_perfect_numbers.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/primes/logic/list_primes.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/perfect_numbers/logic/perfect_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/permutable_primes/logic/permutable_primes.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/primarypseudoperfect_numbers/logic/primarypseudoperfect_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/primes/logic/primes.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/recaman/logic/recaman.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/sphenic_numbers/logic/list_sphenic_numbers.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/sublime_numbers/logic/list_sublime_numbers.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/suitable_numbers/logic/list_suitable_numbers.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/superperfect_numbers/logic/list_super_perfect_numbers.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/taxicab/logic/list_taxicab_numbers.dart';
-import 'package:gc_wizard/tools/science_and_technology/number_sequences/weird_numbers/logic/list_weird_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/sphenic_numbers/logic/sphenic_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/sublime_numbers/logic/sublime_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/suitable_numbers/logic/suitable_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/superperfect_numbers/logic/superperfect_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/taxicab/logic/taxicab_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/weird_numbers/logic/weird_numbers.dart';
 
 part 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence_checknumber.dart';
 part 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence_containsdigits.dart';
@@ -85,7 +81,7 @@ part 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/lo
 part 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence_nthnumber.dart';
 part 'package:gc_wizard/tools/science_and_technology/number_sequences/_common/logic/number_sequence_range.dart';
 
-Map<NumberSequencesMode, ({String title, BaseNumberSequence sequence})> NUMBERSEQUENCES = {
+final Map<NumberSequencesMode, ({String title, BaseNumberSequence sequence})> NUMBERSEQUENCES = {
   NumberSequencesMode.LUCAS: (title: 'numbersequence_lucas_title', sequence: LucasNumberSequence()),
   NumberSequencesMode.FIBONACCI: (title: 'numbersequence_fibonacci_title', sequence: FibonacciNumberSequence()),
   NumberSequencesMode.PRIMES: (title: 'numbersequence_primes_title', sequence: PrimesNumberSequence()),
@@ -172,14 +168,15 @@ enum NumberSequencesMode {
   LOOK_AND_SAY
 }
 
-final Zero = BigInt.zero;
-final One = BigInt.one;
-final Two = BigInt.two;
-final Three = BigInt.from(3);
-final sqrt5 = sqrt(5);
-final sqrt2 = sqrt(2);
+
+// final sqrt5 = sqrt(5);
+// final sqrt2 = sqrt(2);
 
 abstract class BaseNumberSequence {
+  static var Zero = BigInt.zero;
+  static var One = BigInt.one;
+  static var Two = BigInt.two;
+  static var Three = BigInt.from(3);
 
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
     return PositionOfSequenceOutput('-1', 0, 0);
@@ -198,83 +195,82 @@ abstract class BaseNumberSequence {
   List<BigInt> calculateRange(int start, int stop) {
     return <BigInt>[];
   }
-}
 
-List<BigInt> getNumbersWithNDigitsBase(int digits, List<String> sequenceList) {
-  var numberList = <BigInt>[];
+  static List<BigInt> getNumbersWithNDigitsBase(int digits, List<String> sequenceList) {
+    var numberList = <BigInt>[];
 
-  for (int i = 0; i < sequenceList.length; i++) {
-    if (sequenceList[i].length == digits) {
-      var value = BigInt.tryParse(sequenceList[i]);
-      if (value != null) numberList.add(value);
-    }
-  }
-  return numberList;
-}
-
-List<BigInt> getNumbersWithNDigitsBaseFunction(int digits, BigInt Function(int) numberSequenceFunction) {
-  var numberList = <BigInt>[];
-  BigInt number;
-
-  int index = 0;
-  number = Two;
-  while (number.toString().length < digits + 1) {
-    number = numberSequenceFunction(index);
-    if (number.toString().length == digits) numberList.add(number);
-    index = index + 1;
-  }
-  return numberList;
-}
-
-PositionOfSequenceOutput getFirstPositionOfSequenceBaseFunction(String check, int maxIndex,
-    BigInt Function(int) numberSequenceFunction) {
-  BigInt number;
-  int index = 0;
-  String numberString = '';
-
-  while (index <= maxIndex) {
-    number = numberSequenceFunction(index);
-    numberString = number.toString();
-    if (numberString.contains(check)) {
-      int j = 0;
-      while (!numberString.substring(j).startsWith(check)) {
-        j++;
+    for (int i = 0; i < sequenceList.length; i++) {
+      if (sequenceList[i].length == digits) {
+        var value = BigInt.tryParse(sequenceList[i]);
+        if (value != null) numberList.add(value);
       }
-      return PositionOfSequenceOutput(numberString, index + 1, (j + 1));
     }
-    index++;
+    return numberList;
   }
-  return PositionOfSequenceOutput('-1', 0, 0);
-}
 
-PositionOfSequenceOutput getFirstPositionOfSequenceBase(String check, RegExp expr, List<String> sequenceList) {
-  for (int i = 0; i < sequenceList.length; i++) {
-    if (expr.hasMatch(sequenceList[i])) {
-      int j = 0;
-      while (!sequenceList[i].substring(j).startsWith(check)) {
-        j++;
+  static List<BigInt> getNumbersWithNDigitsBaseFunction(int digits, BigInt Function(int) numberSequenceFunction) {
+    var numberList = <BigInt>[];
+    BigInt number;
+
+    int index = 0;
+    number = Two;
+    while (number.toString().length < digits + 1) {
+      number = numberSequenceFunction(index);
+      if (number.toString().length == digits) numberList.add(number);
+      index = index + 1;
+    }
+    return numberList;
+  }
+
+  static PositionOfSequenceOutput getFirstPositionOfSequenceBase(String check, RegExp expr, List<String> sequenceList) {
+    for (int i = 0; i < sequenceList.length; i++) {
+      if (expr.hasMatch(sequenceList[i])) {
+        int j = 0;
+        while (!sequenceList[i].substring(j).startsWith(check)) {
+          j++;
+        }
+        return PositionOfSequenceOutput(sequenceList[i], i + 1, j + 1);
       }
-      return PositionOfSequenceOutput(sequenceList[i], i + 1, j + 1);
     }
+    return PositionOfSequenceOutput('-1', 0, 0);
   }
-  return PositionOfSequenceOutput('-1', 0, 0);
-}
 
-List<BigInt> calculateRangeBase(int start, int stop, List<String> sequenceList) {
-  var numberList = <BigInt>[];
+  static PositionOfSequenceOutput getFirstPositionOfSequenceBaseFunction(String check, int maxIndex,
+      BigInt Function(int) numberSequenceFunction) {
+    BigInt number;
+    int index = 0;
+    String numberString = '';
 
-  for (int i = start; i <= stop; i++) {
-    numberList.add(BigInt.parse(sequenceList[i]));
+    while (index <= maxIndex) {
+      number = numberSequenceFunction(index);
+      numberString = number.toString();
+      if (numberString.contains(check)) {
+        int j = 0;
+        while (!numberString.substring(j).startsWith(check)) {
+          j++;
+        }
+        return PositionOfSequenceOutput(numberString, index + 1, (j + 1));
+      }
+      index++;
+    }
+    return PositionOfSequenceOutput('-1', 0, 0);
   }
-  return numberList;
-}
 
-List<BigInt> calculateRangeBaseFunction(int start, int stop, BigInt Function(int) numberSequenceFunction) {
-  var numberList = <BigInt>[];
+  static List<BigInt> calculateRangeBase(int start, int stop, List<String> sequenceList) {
+    var numberList = <BigInt>[];
 
-  for (int i = start; i <= stop; i++) {
-    numberList.add(numberSequenceFunction(i));
+    for (int i = start; i <= stop; i++) {
+      numberList.add(BigInt.parse(sequenceList[i]));
+    }
+    return numberList;
   }
-  return numberList;
-}
 
+  static List<BigInt> calculateRangeBaseFunction(int start, int stop, BigInt Function(int) numberSequenceFunction) {
+    var numberList = <BigInt>[];
+
+    for (int i = start; i <= stop; i++) {
+      numberList.add(numberSequenceFunction(i));
+    }
+    return numberList;
+  }
+}

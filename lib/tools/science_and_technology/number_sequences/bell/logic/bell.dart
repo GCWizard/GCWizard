@@ -5,17 +5,17 @@ class BellNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return getFirstPositionOfSequenceBase(check, expr, bell_numbers);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, bell_numbers);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return getNumbersWithNDigitsBase(digits, bell_numbers);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, bell_numbers);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return calculateRangeBase(start, stop, bell_numbers);
+    return BaseNumberSequence.calculateRangeBase(start, stop, bell_numbers);
   }
 }
 

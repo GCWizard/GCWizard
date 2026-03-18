@@ -5,20 +5,20 @@ class MersenneFermatNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return getFirstPositionOfSequenceBaseFunction(check, maxIndex, _getMersenneFermat);
+    return BaseNumberSequence.getFirstPositionOfSequenceBaseFunction(check, maxIndex, _getMersenneFermat);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return getNumbersWithNDigitsBaseFunction(digits, _getMersenneFermat);
+    return BaseNumberSequence.getNumbersWithNDigitsBaseFunction(digits, _getMersenneFermat);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return calculateRangeBaseFunction(start, stop, _getMersenneFermat);
+    return BaseNumberSequence.calculateRangeBaseFunction(start, stop, _getMersenneFermat);
   }
 
   static BigInt _getMersenneFermat(int n) {
-    return Two.pow(n) + One;
+    return BaseNumberSequence.Two.pow(n) + BaseNumberSequence.One;
   }
 }

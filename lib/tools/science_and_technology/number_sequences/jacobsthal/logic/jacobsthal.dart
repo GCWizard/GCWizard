@@ -5,20 +5,20 @@ class JacobsthalNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return getFirstPositionOfSequenceBaseFunction(check, maxIndex, getJacobsthal);
+    return BaseNumberSequence.getFirstPositionOfSequenceBaseFunction(check, maxIndex, getJacobsthal);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return getNumbersWithNDigitsBaseFunction(digits, getJacobsthal);
+    return BaseNumberSequence.getNumbersWithNDigitsBaseFunction(digits, getJacobsthal);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return calculateRangeBaseFunction(start, stop, getJacobsthal);
+    return BaseNumberSequence.calculateRangeBaseFunction(start, stop, getJacobsthal);
   }
 
   static BigInt getJacobsthal(int n) {
-    return (Two.pow(n) - BigInt.from(-1).pow(n)) ~/ Three;
+    return (BaseNumberSequence.Two.pow(n) - BigInt.from(-1).pow(n)) ~/ BaseNumberSequence.Three;
   }
 }

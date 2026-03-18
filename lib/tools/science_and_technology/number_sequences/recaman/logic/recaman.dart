@@ -41,12 +41,12 @@ class RecamanNumberSequence extends BaseNumberSequence {
     var numberList = <BigInt>[];
     BigInt number;
 
-    BigInt pn0 = Zero;
+    BigInt pn0 = BaseNumberSequence.Zero;
     List<BigInt> recamanSequence = <BigInt>[];
     for (int index = 0; index < 11111; index++) {
       if (index == 0) {
-        number = Zero;
-      } else if ((pn0 - BigInt.from(index)) > Zero && !recamanSequence.contains(pn0 - BigInt.from(index))) {
+        number = BaseNumberSequence.Zero;
+      } else if ((pn0 - BigInt.from(index)) > BaseNumberSequence.Zero && !recamanSequence.contains(pn0 - BigInt.from(index))) {
         number = pn0 - BigInt.from(index);
       } else {
         number = pn0 + BigInt.from(index);
@@ -63,15 +63,15 @@ class RecamanNumberSequence extends BaseNumberSequence {
     var numberList = <BigInt>[];
     List<BigInt> recamanSequence = <BigInt>[];
     BigInt number;
-    BigInt pn0 = Zero;
-    BigInt index = Zero;
-    recamanSequence.add(Zero);
-    index = Zero;
+    BigInt pn0 = BaseNumberSequence.Zero;
+    BigInt index = BaseNumberSequence.Zero;
+    recamanSequence.add(BaseNumberSequence.Zero);
+    index = BaseNumberSequence.Zero;
 
-    while (index < BigInt.from(stop) + One) {
-      if (index == Zero) {
+    while (index < BigInt.from(stop) + BaseNumberSequence.One) {
+      if (index == BaseNumberSequence.Zero) {
         number = pn0;
-      } else if ((pn0 - index) > Zero && !recamanSequence.contains(pn0 - index)) {
+      } else if ((pn0 - index) > BaseNumberSequence.Zero && !recamanSequence.contains(pn0 - index)) {
         number = pn0 - index;
       } else {
         number = pn0 + index;
@@ -79,7 +79,7 @@ class RecamanNumberSequence extends BaseNumberSequence {
       recamanSequence.add(number);
       pn0 = number;
       if (index >= BigInt.from(start)) numberList.add(number);
-      index = index + One;
+      index = index + BaseNumberSequence.One;
     }
     return numberList;
   }

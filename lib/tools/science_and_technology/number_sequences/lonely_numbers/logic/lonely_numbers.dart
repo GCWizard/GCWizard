@@ -5,17 +5,17 @@ class LonelyNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return getFirstPositionOfSequenceBase(check, expr, lonely_numbers);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, lonely_numbers);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return getNumbersWithNDigitsBase(digits, lonely_numbers);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, lonely_numbers);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return calculateRangeBase(start, stop, lonely_numbers);
+    return BaseNumberSequence.calculateRangeBase(start, stop, lonely_numbers);
   }
 }
 

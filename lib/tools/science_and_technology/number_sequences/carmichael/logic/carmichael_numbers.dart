@@ -5,17 +5,17 @@ class CarmichaelNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return getFirstPositionOfSequenceBase(check, expr, carmichael_numbers);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, carmichael_numbers);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return getNumbersWithNDigitsBase(digits, carmichael_numbers);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, carmichael_numbers);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return calculateRangeBase(start, stop, carmichael_numbers);
+    return BaseNumberSequence.calculateRangeBase(start, stop, carmichael_numbers);
   }
 }
 

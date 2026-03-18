@@ -5,15 +5,15 @@ class LucasNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    BigInt pn0 = Two;
-    BigInt pn1 = One;
-    BigInt number = Three;
+    BigInt pn0 = BaseNumberSequence.Two;
+    BigInt pn1 = BaseNumberSequence.One;
+    BigInt number = BaseNumberSequence.Three;
     int index = 1;
     String numberString = '';
 
-    if (check == Two.toString()) {
+    if (check == BaseNumberSequence.Two.toString()) {
       return PositionOfSequenceOutput('2', 0, 1);
-    } else if (check == One.toString()) {
+    } else if (check == BaseNumberSequence.One.toString()) {
       return PositionOfSequenceOutput('1', 1, 1);
     } else {
       while (index <= maxIndex) {
@@ -39,8 +39,8 @@ class LucasNumberSequence extends BaseNumberSequence {
     var numberList = <BigInt>[];
     BigInt number;
 
-    BigInt pn0 = Two;
-    BigInt pn1 = One;
+    BigInt pn0 = BaseNumberSequence.Two;
+    BigInt pn1 = BaseNumberSequence.One;
     if (digits == 1) {
       numberList.add(pn0);
       numberList.add(pn1);
@@ -59,8 +59,8 @@ class LucasNumberSequence extends BaseNumberSequence {
   List<BigInt> calculateRange(int start, int stop) {
     var numberList = <BigInt>[];
     BigInt number;
-    BigInt pn0 = Two;
-    BigInt pn1 = One;
+    BigInt pn0 = BaseNumberSequence.Two;
+    BigInt pn1 = BaseNumberSequence.One;
     int index = 0;
 
     while (index <= stop) {

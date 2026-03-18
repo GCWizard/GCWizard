@@ -5,17 +5,17 @@ class HappyNumbersNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return getFirstPositionOfSequenceBase(check, expr, happy_numbers);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, happy_numbers);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return getNumbersWithNDigitsBase(digits, happy_numbers);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, happy_numbers);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return calculateRangeBase(start, stop, happy_numbers);
+    return BaseNumberSequence.calculateRangeBase(start, stop, happy_numbers);
   }
 }
 

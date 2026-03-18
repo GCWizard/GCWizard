@@ -5,18 +5,18 @@ class BusyBeaverNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return getFirstPositionOfSequenceBase(check, expr, busy_beaver_numbers);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, busy_beaver_numbers);
   }
 
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return getNumbersWithNDigitsBase(digits, busy_beaver_numbers);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, busy_beaver_numbers);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return calculateRangeBase(start, stop, busy_beaver_numbers);
+    return BaseNumberSequence.calculateRangeBase(start, stop, busy_beaver_numbers);
   }
 }
 

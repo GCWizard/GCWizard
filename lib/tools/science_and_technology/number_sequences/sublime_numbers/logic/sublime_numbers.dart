@@ -5,17 +5,17 @@ class SublimeNumbersNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return getFirstPositionOfSequenceBase(check, expr, sublime_number);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, sublime_number);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return getNumbersWithNDigitsBase(digits, sublime_number);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, sublime_number);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return calculateRangeBase(start, stop, sublime_number);
+    return BaseNumberSequence.calculateRangeBase(start, stop, sublime_number);
   }
 }
 

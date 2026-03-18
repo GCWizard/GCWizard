@@ -5,17 +5,17 @@ class PrimesNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return getFirstPositionOfSequenceBase(check, expr, prime_numbers);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, prime_numbers);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return getNumbersWithNDigitsBase(digits, prime_numbers);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, prime_numbers);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return calculateRangeBase(start, stop, prime_numbers);
+    return BaseNumberSequence.calculateRangeBase(start, stop, prime_numbers);
   }
 }
 

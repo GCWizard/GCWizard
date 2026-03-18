@@ -5,17 +5,17 @@ class MersenneExponentsNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return getFirstPositionOfSequenceBase(check, expr, mersenne_exponents);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, mersenne_exponents);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return getNumbersWithNDigitsBase(digits, mersenne_exponents);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, mersenne_exponents);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return calculateRangeBase(start, stop, mersenne_exponents);
+    return BaseNumberSequence.calculateRangeBase(start, stop, mersenne_exponents);
   }
 }
 

@@ -5,17 +5,17 @@ class MemorablePrimesNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return getFirstPositionOfSequenceBase(check, expr, memorable_primes);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, memorable_primes);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return getNumbersWithNDigitsBase(digits, memorable_primes);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, memorable_primes);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return calculateRangeBase(start, stop, memorable_primes);
+    return BaseNumberSequence.calculateRangeBase(start, stop, memorable_primes);
   }
 }
 

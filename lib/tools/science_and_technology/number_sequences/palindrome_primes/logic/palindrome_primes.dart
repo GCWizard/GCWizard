@@ -5,17 +5,17 @@ class PalindromePrimesNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return getFirstPositionOfSequenceBase(check, expr, palindrome_primes);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, palindrome_primes);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return getNumbersWithNDigitsBase(digits, palindrome_primes);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, palindrome_primes);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return calculateRangeBase(start, stop, palindrome_primes);
+    return BaseNumberSequence.calculateRangeBase(start, stop, palindrome_primes);
   }
 }
 
