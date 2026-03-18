@@ -34,8 +34,8 @@ class FactorialNumberSequence extends BaseNumberSequence {
   List<BigInt> getNumbersWithNDigits(int digits) {
     var numberList = <BigInt>[];
     BigInt number;
-
     BigInt index = BigInt.from(4);
+
     if (digits == 1) {
       numberList.add(BaseNumberSequence.One);
       numberList.add(BaseNumberSequence.Two);

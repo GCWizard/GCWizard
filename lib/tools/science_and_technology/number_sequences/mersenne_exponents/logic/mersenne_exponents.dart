@@ -5,21 +5,21 @@ class MersenneExponentsNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, mersenne_exponents);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, _mersenne_exponents);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, mersenne_exponents);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, _mersenne_exponents);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return BaseNumberSequence.calculateRangeBase(start, stop, mersenne_exponents);
+    return BaseNumberSequence.calculateRangeBase(start, stop, _mersenne_exponents);
   }
 }
 
-const List<String> mersenne_exponents = [
+const List<String> _mersenne_exponents = [
   '2',
   '3',
   '5',

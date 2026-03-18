@@ -38,9 +38,9 @@ class FibonacciNumberSequence extends BaseNumberSequence {
   List<BigInt> getNumbersWithNDigits(int digits) {
     var numberList = <BigInt>[];
     BigInt number;
-
     BigInt pn0 = BaseNumberSequence.Zero;
     BigInt pn1 = BaseNumberSequence.One;
+
     if (digits == 1) {
       numberList.add(pn0);
       numberList.add(pn1);

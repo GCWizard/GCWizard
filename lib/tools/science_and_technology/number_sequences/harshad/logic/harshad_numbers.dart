@@ -5,21 +5,21 @@ class HarshadNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, harshad_numbers);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, _harshad_numbers);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, harshad_numbers);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, _harshad_numbers);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return BaseNumberSequence.calculateRangeBase(start, stop, harshad_numbers);
+    return BaseNumberSequence.calculateRangeBase(start, stop, _harshad_numbers);
   }
 }
 
-const List<String> harshad_numbers = [
+const List<String> _harshad_numbers = [
   '1',
   '2',
   '3',

@@ -5,21 +5,21 @@ class BellNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, bell_numbers);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, _bell_numbers);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, bell_numbers);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, _bell_numbers);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return BaseNumberSequence.calculateRangeBase(start, stop, bell_numbers);
+    return BaseNumberSequence.calculateRangeBase(start, stop, _bell_numbers);
   }
 }
 
-const List<String> bell_numbers = [
+const List<String> _bell_numbers = [
   '1',
   '1',
   '2',

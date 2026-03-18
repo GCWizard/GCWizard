@@ -29,8 +29,8 @@ class LookAndSayNumberSequence extends BaseNumberSequence {
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
     var numberList = <BigInt>[];
-
     var numberString = '1';
+
     while (numberString.length < digits + 1) {
       if (numberString.length == digits) numberList.add(BigInt.parse(numberString));
       numberString = lookAndSay(numberString);
@@ -43,6 +43,7 @@ class LookAndSayNumberSequence extends BaseNumberSequence {
     var numberList = <BigInt>[];
     var numberString = '';
     int index = 0;
+
     while (index < stop + 1) {
       if (index == 0) {
         numberString = '1';

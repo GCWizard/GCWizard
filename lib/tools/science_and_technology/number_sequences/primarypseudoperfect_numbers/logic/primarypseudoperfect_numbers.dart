@@ -5,21 +5,21 @@ class PrimaryPseudoPerfectNumbersNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, primary_pseudo_perfect_numbers);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, _primary_pseudo_perfect_numbers);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, primary_pseudo_perfect_numbers);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, _primary_pseudo_perfect_numbers);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return BaseNumberSequence.calculateRangeBase(start, stop, primary_pseudo_perfect_numbers);
+    return BaseNumberSequence.calculateRangeBase(start, stop, _primary_pseudo_perfect_numbers);
   }
 }
 
-const List<String> primary_pseudo_perfect_numbers = [
+const List<String> _primary_pseudo_perfect_numbers = [
   '2',
   '6',
   '42',

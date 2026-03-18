@@ -5,21 +5,21 @@ class HappyNumbersNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, happy_numbers);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, _happy_numbers);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, happy_numbers);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, _happy_numbers);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return BaseNumberSequence.calculateRangeBase(start, stop, happy_numbers);
+    return BaseNumberSequence.calculateRangeBase(start, stop, _happy_numbers);
   }
 }
 
-const List<String> happy_numbers = [
+const List<String> _happy_numbers = [
 '1',
 '7',
 '10',

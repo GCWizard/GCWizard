@@ -5,21 +5,21 @@ class WeirdNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, weird_numbers);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, _weird_numbers);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, weird_numbers);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, _weird_numbers);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return BaseNumberSequence.calculateRangeBase(start, stop, weird_numbers);
+    return BaseNumberSequence.calculateRangeBase(start, stop, _weird_numbers);
   }
 }
 
-const List<String> weird_numbers = [
+const List<String> _weird_numbers = [
   '70',
   '836',
   '4030',

@@ -5,21 +5,21 @@ class LonelyNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, lonely_numbers);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, _lonely_numbers);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, lonely_numbers);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, _lonely_numbers);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return BaseNumberSequence.calculateRangeBase(start, stop, lonely_numbers);
+    return BaseNumberSequence.calculateRangeBase(start, stop, _lonely_numbers);
   }
 }
 
-const List<String> lonely_numbers = [
+const List<String> _lonely_numbers = [
   '0',
   '23',
   '53',

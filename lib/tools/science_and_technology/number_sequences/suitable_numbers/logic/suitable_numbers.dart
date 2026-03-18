@@ -5,21 +5,21 @@ class SuitableNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, suitable_numbers);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, _suitable_numbers);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, suitable_numbers);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, _suitable_numbers);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return BaseNumberSequence.calculateRangeBase(start, stop, suitable_numbers);
+    return BaseNumberSequence.calculateRangeBase(start, stop, _suitable_numbers);
   }
 }
 
-const List<String> suitable_numbers = [
+const List<String> _suitable_numbers = [
   '1',
   '2',
   '3',

@@ -5,21 +5,21 @@ class LychrelNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, lychrel_numbers);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, _lychrel_numbers);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, lychrel_numbers);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, _lychrel_numbers);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return BaseNumberSequence.calculateRangeBase(start, stop, lychrel_numbers);
+    return BaseNumberSequence.calculateRangeBase(start, stop, _lychrel_numbers);
   }
 }
 
-const List<String> lychrel_numbers = [
+const List<String> _lychrel_numbers = [
   '196',
   '295',
   '394',

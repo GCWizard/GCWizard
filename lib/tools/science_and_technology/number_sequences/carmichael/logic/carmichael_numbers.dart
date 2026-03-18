@@ -5,21 +5,21 @@ class CarmichaelNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, carmichael_numbers);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, _carmichael_numbers);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, carmichael_numbers);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, _carmichael_numbers);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return BaseNumberSequence.calculateRangeBase(start, stop, carmichael_numbers);
+    return BaseNumberSequence.calculateRangeBase(start, stop, _carmichael_numbers);
   }
 }
 
-const List<String> carmichael_numbers = [
+const List<String> _carmichael_numbers = [
   '561',
   '1105',
   '1729',

@@ -5,21 +5,21 @@ class PalindromePrimesNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, palindrome_primes);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, _palindrome_primes);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, palindrome_primes);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, _palindrome_primes);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return BaseNumberSequence.calculateRangeBase(start, stop, palindrome_primes);
+    return BaseNumberSequence.calculateRangeBase(start, stop, _palindrome_primes);
   }
 }
 
-const List<String> palindrome_primes = [
+const List<String> _palindrome_primes = [
   '2',
   '3',
   '5',

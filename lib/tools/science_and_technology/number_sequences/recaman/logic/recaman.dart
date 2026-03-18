@@ -40,9 +40,9 @@ class RecamanNumberSequence extends BaseNumberSequence {
   List<BigInt> getNumbersWithNDigits(int digits) {
     var numberList = <BigInt>[];
     BigInt number;
-
     BigInt pn0 = BaseNumberSequence.Zero;
     List<BigInt> recamanSequence = <BigInt>[];
+
     for (int index = 0; index < 11111; index++) {
       if (index == 0) {
         number = BaseNumberSequence.Zero;

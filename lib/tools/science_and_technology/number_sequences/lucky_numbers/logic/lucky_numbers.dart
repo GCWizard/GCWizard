@@ -5,21 +5,21 @@ class LuckyNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, lucky_numbers);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, _lucky_numbers);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, lucky_numbers);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, _lucky_numbers);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return BaseNumberSequence.calculateRangeBase(start, stop, lucky_numbers);
+    return BaseNumberSequence.calculateRangeBase(start, stop, _lucky_numbers);
   }
 }
 
-const List<String> lucky_numbers = [
+const List<String> _lucky_numbers = [
 '1',
 '3',
 '7',

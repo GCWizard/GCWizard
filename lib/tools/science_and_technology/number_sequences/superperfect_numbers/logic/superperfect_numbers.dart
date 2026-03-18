@@ -5,21 +5,21 @@ class SuperPerfectNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, superperfect_numbers);
+    return BaseNumberSequence.getFirstPositionOfSequenceBase(check, expr, _superperfect_numbers);
   }
 
   @override
   List<BigInt> getNumbersWithNDigits(int digits) {
-    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, superperfect_numbers);
+    return BaseNumberSequence.getNumbersWithNDigitsBase(digits, _superperfect_numbers);
   }
 
   @override
   List<BigInt> calculateRange(int start, int stop) {
-    return BaseNumberSequence.calculateRangeBase(start, stop, superperfect_numbers);
+    return BaseNumberSequence.calculateRangeBase(start, stop, _superperfect_numbers);
   }
 }
 
-const List<String> superperfect_numbers = [
+const List<String> _superperfect_numbers = [
   '2',
   '4',
   '16',
