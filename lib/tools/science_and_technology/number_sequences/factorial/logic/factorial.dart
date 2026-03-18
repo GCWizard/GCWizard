@@ -5,13 +5,13 @@ class FactorialNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    BigInt number = One;
+    BigInt number = BaseNumberSequence.One;
     int index = 2;
     String numberString = '';
 
-    if (check == Zero.toString()) {
+    if (check == BaseNumberSequence.Zero.toString()) {
       return PositionOfSequenceOutput('0', 0, 1);
-    } else if (check == One.toString()) {
+    } else if (check == BaseNumberSequence.One.toString()) {
       return PositionOfSequenceOutput('1', 1, 1);
     } else {
       while (index <= maxIndex) {
@@ -37,15 +37,15 @@ class FactorialNumberSequence extends BaseNumberSequence {
 
     BigInt index = BigInt.from(4);
     if (digits == 1) {
-      numberList.add(One);
-      numberList.add(Two);
+      numberList.add(BaseNumberSequence.One);
+      numberList.add(BaseNumberSequence.Two);
       numberList.add(BigInt.from(6));
     }
     number = BigInt.from(6);
     while (number.toString().length < digits + 1) {
       number = number * index;
       if (number.toString().length == digits) numberList.add(number);
-      index = index + One;
+      index = index + BaseNumberSequence.One;
     }
     return numberList;
   }
@@ -58,9 +58,9 @@ class FactorialNumberSequence extends BaseNumberSequence {
 
     while (index < stop + 1) {
       if (index == 0) {
-        number = One;
+        number = BaseNumberSequence.One;
       } else if (index == 1) {
-        number = One;
+        number = BaseNumberSequence.One;
       } else {
         number = number * BigInt.from(index);
       }

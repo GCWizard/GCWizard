@@ -5,17 +5,17 @@ class PellLucasNumberSequence extends BaseNumberSequence {
 
   @override
   PositionOfSequenceOutput getFirstPositionOfSequence(String check, int maxIndex, RegExp expr) {
-    BigInt pn0 = Two;
-    BigInt pn1 = Two;
+    BigInt pn0 = BaseNumberSequence.Two;
+    BigInt pn1 = BaseNumberSequence.Two;
     BigInt number = pn1;
     int index = 2;
     String numberString = '';
 
-    if (check == Two.toString()) {
+    if (check == BaseNumberSequence.Two.toString()) {
       return PositionOfSequenceOutput('2', 0, 1);
     }
     while (index <= maxIndex) {
-      number = Two * pn1 + pn0;
+      number = BaseNumberSequence.Two * pn1 + pn0;
       pn0 = pn1;
       pn1 = number;
       numberString = number.toString();
@@ -37,15 +37,15 @@ class PellLucasNumberSequence extends BaseNumberSequence {
     var numberList = <BigInt>[];
     BigInt number;
 
-    BigInt pn0 = Two;
-    BigInt pn1 = Two;
+    BigInt pn0 = BaseNumberSequence.Two;
+    BigInt pn1 = BaseNumberSequence.Two;
     if (digits == 1) {
       numberList.add(pn0);
       numberList.add(pn1);
     }
     number = pn1;
     while (number.toString().length < digits + 1) {
-      number = Two * pn1 + pn0;
+      number = BaseNumberSequence.Two * pn1 + pn0;
       pn0 = pn1;
       pn1 = number;
       if (number.toString().length == digits) numberList.add(number);
@@ -57,8 +57,8 @@ class PellLucasNumberSequence extends BaseNumberSequence {
   List<BigInt> calculateRange(int start, int stop) {
     var numberList = <BigInt>[];
     BigInt number;
-    BigInt pn0 = Two;
-    BigInt pn1 = Two;
+    BigInt pn0 = BaseNumberSequence.Two;
+    BigInt pn1 = BaseNumberSequence.Two;
     int index = 0;
 
     while (index < stop + 1) {
@@ -67,7 +67,7 @@ class PellLucasNumberSequence extends BaseNumberSequence {
       } else if (index == 1) {
         number = pn1;
       } else {
-        number = Two * pn1 + pn0;
+        number = BaseNumberSequence.Two * pn1 + pn0;
         pn0 = pn1;
         pn1 = number;
       }
