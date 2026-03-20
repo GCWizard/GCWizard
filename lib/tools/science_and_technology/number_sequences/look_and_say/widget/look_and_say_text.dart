@@ -67,9 +67,11 @@ class _LookAndSayTextState extends State<LookAndSayText> {
     var look_and_say = _currentInput;
     List<List<String>> columnData = [];
 
-    for (var i = 0; i < _count; i++) {
-      look_and_say = lookAndSay(look_and_say);
-      columnData.add([look_and_say]);
+    if (_currentInput.isNotEmpty) {
+      for (var i = 0; i < _count; i++) {
+        look_and_say = lookAndSay(look_and_say);
+        columnData.add([look_and_say]);
+      }
     }
 
     _currentOutput = GCWDefaultOutput(child: GCWColumnedMultilineOutput(data: columnData));

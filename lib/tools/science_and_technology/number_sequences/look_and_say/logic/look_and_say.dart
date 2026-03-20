@@ -1,11 +1,7 @@
 
-import 'dart:math';
-
 import 'package:utility/utility.dart';
 
 String lookAndSay(String input) {
-  if (input.isEmpty) return '';
-
   final regex = RegExp(r'(.)\1*');
   return input.replaceAllMapped(regex, (match) {
     final seq = match.group(0)!;
