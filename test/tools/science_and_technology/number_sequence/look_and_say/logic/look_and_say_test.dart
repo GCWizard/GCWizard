@@ -5,8 +5,8 @@ void main() {
   group("look_and_say.lookAndSayReverse:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'input' : '', 'expectedOutput' : ''},
-      {'input' : 'aa', 'expectedOutput' : 'invalid input'},
-      {'input' : '4a3bcc', 'expectedOutput' : 'invalid input'},
+      {'input' : 'aa', 'expectedOutput' : null},
+      {'input' : '4a3bcc', 'expectedOutput' : null},
 
       {'input' : '1211', 'expectedOutput' : '1'},
       {'input' : '111321', 'expectedOutput' : '111'},

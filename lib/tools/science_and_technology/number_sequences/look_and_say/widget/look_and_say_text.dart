@@ -77,10 +77,10 @@ class _LookAndSayTextState extends State<LookAndSayText> {
   }
 
   void _buildOutput() {
-    var look_and_say = _currentInput;
     if (_currentReverse) {
-      _currentOutput = GCWDefaultOutput(child: lookAndSayReverse(look_and_say));
+      _currentOutput = GCWDefaultOutput(child: (lookAndSayReverse(_currentInput) ?? i18n(context, 'common_count')));
     } else {
+      var look_and_say = _currentInput;
       List<List<String>> columnData = [];
 
       if (_currentInput.isNotEmpty) {

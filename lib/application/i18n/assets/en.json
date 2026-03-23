@@ -1054,6 +1054,7 @@
   "common_index": "Index",
   "common_input": "Input",
   "common_invalid": "Invalid",
+  "common_invalid_input": "Invalid input",
   "common_key": "Key",
   "common_landscape": "Landscape",
   "common_left": "Left",
