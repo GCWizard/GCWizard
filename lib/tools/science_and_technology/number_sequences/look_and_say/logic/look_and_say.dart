@@ -39,20 +39,3 @@ String? _lookAndSayReverseHelper(String input) {
   }
   return result;
 }
-
-
-
-void main() {
-  // 1211  1
-  // 111321 111
-  // 1412211512 2222122222
-  // 22 22
-  // 1113122113121113222112311311222113 11123
- print(lookAndSayReverse("1211"));
- print(lookAndSayReverse("111321"));
- print(lookAndSayReverse("1412211512"));
- print(lookAndSayReverse("22"));
- print(lookAndSayReverse("1113122113121113222112311311222113"));
- print(lookAndSayReverse("3a"));
- print(lookAndSayReverse("aa"));
-}
