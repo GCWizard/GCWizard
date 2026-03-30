@@ -10,22 +10,20 @@ class GetNumberAtJobData {
   });
 }
 
-  Future<BigInt> calculateNumberAtAsync(GCWAsyncExecuterParameters? jobData) async {
-    if (jobData?.parameters is! GetNumberAtJobData) return BigInt.from(-1);
+Future<BigInt> calculateNumberAtAsync(GCWAsyncExecuterParameters? jobData) async {
+  if (jobData?.parameters is! GetNumberAtJobData) return BigInt.from(-1);
 
-    var data = jobData!.parameters as GetNumberAtJobData;
-    var output = await _calculateNumberAt(data.sequence, data.n, sendAsyncPort: jobData.sendAsyncPort);
+  var data = jobData!.parameters as GetNumberAtJobData;
+  var output = _calculateNumberAt(data.sequence, data.n);
 
-    jobData.sendAsyncPort?.send(output);
+  jobData.sendAsyncPort?.send(output);
 
-    return output;
-  }
+  return output;
+}
 
-  Future<BigInt> _calculateNumberAt(NumberSequencesMode sequence, int n,
-      {SendPort? sendAsyncPort}) async {
+BigInt _calculateNumberAt(NumberSequencesMode sequence, int n) {
 
-    List<BigInt> result = await calculateRange(GetNumberRangeJobData(sequence: sequence, start: n, stop: n));
+  List<BigInt> result = NUMBERSEQUENCES[sequence]!.sequence.calculateRange(n, n);
 
-   return result[0];
-  }
-
+  return result[0];
+}

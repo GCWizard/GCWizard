@@ -33,7 +33,7 @@ class _NumberSequenceDigitsState extends State<NumberSequenceDigits> {
     return Column(
       children: <Widget>[
         GCWTextDivider(
-          text: i18n(context, NUMBERSEQUENCE_TITLE[widget.mode]!),
+          text: i18n(context, NUMBERSEQUENCES[widget.mode]!.title),
         ),
         GCWIntegerSpinner(
           title: i18n(context, 'numbersequence_inputd'),

@@ -4,12 +4,10 @@ int numberSequencesCheckNumber(NumberSequencesMode sequence, BigInt? checkNumber
   if (checkNumber == null) {
     return -1;
   } else if (numberSequencesGetFirstPositionOfSequence(sequence, checkNumber.toString(), maxIndex, checkMode: true)
-          .positionSequence ==
-      -1) {
+          .positionSequence == -1) {
     return -1;
   } else if (numberSequencesGetFirstPositionOfSequence(sequence, checkNumber.toString(), maxIndex, checkMode: true)
-          .positionDigits ==
-      1) {
+          .positionDigits == 1) {
     return numberSequencesGetFirstPositionOfSequence(sequence, checkNumber.toString(), maxIndex, checkMode: true)
         .positionSequence;
   } else {
