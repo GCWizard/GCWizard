@@ -10,9 +10,10 @@ String lookAndSay(String input) {
   });
 }
 
-String? lookAndSayReverse(String input) {
-  var current = input;
-  if (input.length % 2 != 0) return null;
+List<String>? lookAndSayReverse(String input) {
+  var current = input.trim();
+  var result = <String>[];
+  if (current.length % 2 != 0) return null;
 
   while (true) {
     if (current.length % 2 != 0) break;
@@ -20,11 +21,12 @@ String? lookAndSayReverse(String input) {
     var next = _lookAndSayReverseHelper(current);
     if (next == null) return null;
 
-    if (lookAndSay(next) != current) return current;
+    if (lookAndSay(next) != current) return result;
     if (next == current) break;
     current = next;
+    result.add(current);
   }
-  return current;
+  return result;
 }
 
 String? _lookAndSayReverseHelper(String input) {

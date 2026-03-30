@@ -55,6 +55,7 @@ class _LookAndSayTextState extends State<LookAndSayText> {
           onChanged: (value) {
             setState(() {
               _currentReverse = value;
+              _buildOutput();
             });
           },
         ),
@@ -77,11 +78,12 @@ class _LookAndSayTextState extends State<LookAndSayText> {
   }
 
   void _buildOutput() {
+    List<List<String>> columnData = [];
     if (_currentReverse) {
-      _currentOutput = GCWDefaultOutput(child: (lookAndSayReverse(_currentInput) ?? i18n(context, 'common_count')));
+      var result = lookAndSayReverse(_currentInput) ?? [i18n(context, 'common_invalid_input')];
+      columnData = result.map((e) => [e]).toList();
     } else {
       var look_and_say = _currentInput;
-      List<List<String>> columnData = [];
 
       if (_currentInput.isNotEmpty) {
         for (var i = 0; i < _count; i++) {
@@ -89,7 +91,7 @@ class _LookAndSayTextState extends State<LookAndSayText> {
           columnData.add([look_and_say]);
         }
       }
-      _currentOutput = GCWDefaultOutput(child: GCWColumnedMultilineOutput(data: columnData));
-    }
+     }
+    _currentOutput = GCWDefaultOutput(child: GCWColumnedMultilineOutput(data: columnData));
   }
 }
