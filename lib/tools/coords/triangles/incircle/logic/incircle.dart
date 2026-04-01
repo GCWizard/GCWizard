@@ -38,5 +38,5 @@ Circle calculateEllipsoidTriangleInCircle(LatLng a, LatLng b, LatLng c) {
 
   final radius = defaultEllipsoid.a * r; // Meter
 
-  return Circle(incircle, radius,);
+  return Circle(incircle, radius);
 }

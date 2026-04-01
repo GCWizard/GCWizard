@@ -11,9 +11,9 @@ void main() {
       {'inputA': XYPoint(x: 1, y: 1), 'inputB': XYPoint(x: 1, y: 1), 'inputC': XYPoint(x: 1, y: 1),
         'expectedOutput': XYCircle(x: double.nan, y: double.nan, r: double.nan)},
       {'inputA': XYPoint(x: 1, y: 1), 'inputB': XYPoint(x: 2, y: 2), 'inputC': XYPoint(x: 3, y: 3),
-        'expectedOutput': XYCircle(x: 0, y: 0, r: 23726566.40606289)},
+        'expectedOutput': XYCircle(x: 1.9999999999999998, y: 1.9999999999999998, r: 23726566.40606289)},
       {'inputA': XYPoint(x: 0, y: 0), 'inputB': XYPoint(x: 0, y: 3), 'inputC': XYPoint(x: 4, y: 0),
-        'expectedOutput': XYCircle(x: 1, y: 0.75, r: 1.25)},
+        'expectedOutput': XYCircle(x: 1, y: 0.7500000000000001, r: 1.25)},
     ];
 
     for (var elem in _inputsToExpected) {

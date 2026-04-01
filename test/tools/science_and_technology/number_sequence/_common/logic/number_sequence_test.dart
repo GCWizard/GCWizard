@@ -81,7 +81,7 @@ void main() {
     for (var elem in _inputsToExpected) {
       test('sequence: ${elem['sequence']}, start: ${elem['start']}, stop: ${elem['stop']}', () async {
         //var _actual = numberSequencesGetNumbersInRange(elem['sequence'] as NumberSequencesMode, elem['start'] as int?, elem['stop'] as int?);
-        var _actual = await calculateRange(GetNumberRangeJobData(sequence: elem['sequence'] as NumberSequencesMode, start: elem['start'] as int, stop: elem['stop'] as int));
+        var _actual = calculateRange(elem['sequence'] as NumberSequencesMode, elem['start'] as int, elem['stop'] as int);
         var length = (elem['expectedOutput'] as List<int>).length;
         for (int i = 0; i < length; i++) {
           expect(_actual[i], BigInt.from((elem['expectedOutput'] as List<int>)[i]));
@@ -167,6 +167,4 @@ void main() {
       });
     }
   });
-
-
 }

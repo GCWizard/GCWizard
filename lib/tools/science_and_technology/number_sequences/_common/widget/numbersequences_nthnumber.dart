@@ -36,7 +36,7 @@ class _NumberSequenceNthNumberState extends State<NumberSequenceNthNumber> {
     return Column(
       children: <Widget>[
         GCWTextDivider(
-          text: i18n(context, NUMBERSEQUENCE_TITLE[widget.mode]!),
+          text: i18n(context, NUMBERSEQUENCES[widget.mode]!.title),
         ),
         Text(
           i18n(context, 'numbersequence_maxindex') + ' = ' + widget.maxIndex.toString(),

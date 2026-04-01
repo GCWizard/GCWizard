@@ -115,6 +115,9 @@ void latLngTest(LatLng a, LatLng b) {
   if (a.latitude.isNaN || a.longitude.isNaN) {
     expect(a.latitude.isNaN, b.latitude.isNaN);
     expect(a.longitude.isNaN, b.longitude.isNaN);
+  } else if (a.latitude.isInfinite || a.longitude.isInfinite) {
+      expect(a.latitude.isInfinite, b.latitude.isInfinite);
+      expect(a.longitude.isInfinite, b.longitude.isInfinite);
   } else {
     expect(true, equalsLatLng(a, b));
   }

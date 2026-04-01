@@ -1,40 +1,6 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
 import 'package:gc_wizard/tools/science_and_technology/numeral_bases/logic/numeral_bases.dart';
-
-const Map<int, int> TUPPER_COLOR_NUMBERS = {
-  0: 2,
-  1: 4,
-  2: 8,
-  3: 16,
-};
-
-const _BLACK = Color(0xff000000);
-const _WHITE = Color(0xffffffff);
-const _CYAN = Color(0xff00aaaa);
-const _MAGENTA = Color(0xffaa00aa);
-const _LIGHTGREY = Color(0xffaaaaaa);
-const _BLUE = Color(0xff0000aa);
-const _GREEN = Color(0xff00aa00);
-const _RED = Color(0xffaa0000);
-const _YELLOW = Color(0xffaaaa00);
-const _DARKGREY = Color(0xff555555);
-const _LIGHTBLUE = Color(0xff0000ff);
-const _LIGHTGREEN = Color(0xff00ff00);
-const _LIGHTCYAN = Color(0xff00ffff);
-const _LIGHTRED = Color(0xffff0000);
-const _LIGHTMAGENTA = Color(0xffff00ff);
-const _LIGHTYELLOW = Color(0xffffff00);
-const _ORANGE = Colors.orange;
-
-const Map<int, List<Color>> TUPPER_COLORS = {
-  2: [_WHITE, _BLACK],
-  4: [_WHITE, _CYAN, _MAGENTA, _BLACK, ],
-  8: [_WHITE, _LIGHTBLUE, _LIGHTRED, _LIGHTYELLOW, _GREEN, _LIGHTGREY, _ORANGE, _BLACK],
-  16: [_WHITE, _BLUE, _GREEN, _CYAN, _RED, _MAGENTA, _YELLOW, _LIGHTGREY,
-        _DARKGREY, _LIGHTBLUE, _LIGHTGREEN, _LIGHTCYAN, _LIGHTRED, _LIGHTMAGENTA, _LIGHTYELLOW, _BLACK]
-};
 
 String _kToImageOriginal(String kString){
   List<String> imageBinary = [];
@@ -88,13 +54,13 @@ String _kToImageCustom(String kString, int width, int height, int colors){
     }
   }
 
-  binary = imageBinary.reversed.join('');
+  binary = imageBinary.join('');
   for (int i = 0; i < height; i++) {
     imageBinaryRotaded.add(binary.substring(0, width));
     binary = binary.substring(width);
   }
 
-  return imageBinaryRotaded.join('\n');
+  return imageBinaryRotaded.reversed.join('\n');
 }
 
 String kToImage(String kString, bool original, int width, int height, int colors) {

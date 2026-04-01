@@ -1,9 +1,4 @@
-import 'dart:math';
-
-import 'package:flutter/material.dart';
-import 'package:gc_wizard/application/theme/theme_colors.dart';
-import 'package:gc_wizard/tools/images_and_files/tupper_formula/logic/tupper_formula.dart';
-import 'package:touchable/touchable.dart';
+part of 'package:gc_wizard/tools/images_and_files/tupper_formula/widget/tupper_formula.dart';
 
 class TupperFormulaBoard extends StatefulWidget {
   final void Function(List<List<int>>) onChanged;
@@ -11,6 +6,7 @@ class TupperFormulaBoard extends StatefulWidget {
   final int width;
   final int height;
   final int colors;
+  final _GridPaintColor currentColor;
 
   const TupperFormulaBoard(
       {super.key,
@@ -18,14 +14,19 @@ class TupperFormulaBoard extends StatefulWidget {
       required this.state,
       required this.width,
       required this.height,
-      required this.colors});
-
+      required this.colors,
+      required this.currentColor});
 
   @override
   _TupperFormulaBoardState createState() => _TupperFormulaBoardState();
 }
 
 class _TupperFormulaBoardState extends State<TupperFormulaBoard> {
+  int color(int colors, _GridPaintColor currentColor){
+    List<_GridPaintColor> colorList = _GRID_COLORS[colors]!.keys.toList();
+    return colorList.indexOf(currentColor);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -44,16 +45,14 @@ class _TupperFormulaBoardState extends State<TupperFormulaBoard> {
                       widget.state,
                       (int x, int y) {
                         setState(() {
-                          widget.state[x][y] = widget.state[x][y] + 1;
-                          if (widget.state[x][y] == widget.colors) {
-                            widget.state[x][y] = 0;
-                          }
+                          widget.state[x][y] = color(widget.colors, widget.currentColor);
                           widget.onChanged(widget.state);
                         });
                       },
                       widget.width,
                       widget.height,
                       widget.colors,
+                      widget.currentColor,
                     ));
                   },
                 )))
@@ -69,9 +68,10 @@ class TupperFormulaBoardPainter extends CustomPainter {
   final int width;
   final int height;
   final int colors;
+  final _GridPaintColor currentColor;
 
   TupperFormulaBoardPainter(this.context, this.state, this.onInvertCell,
-      this.width, this.height, this.colors);
+      this.width, this.height, this.colors, this.currentColor);
 
   @override
   void paint(Canvas canvas, Size size) {

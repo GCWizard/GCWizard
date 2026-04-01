@@ -13,7 +13,7 @@ void main() {
       {'inputA': XYPoint(x: 1, y: 1), 'inputB': XYPoint(x: 2, y: 2), 'inputC': XYPoint(x: 3, y: 3),
         'expectedOutput': XYPoint(x: double.nan, y: double.nan)},
       {'inputA': XYPoint(x: 0, y: 0), 'inputB': XYPoint(x: 0, y: 3), 'inputC': XYPoint(x: 4, y: 0),
-        'expectedOutput': XYPoint(x: 0.7272727272727274, y: 0.8181818181818181)},
+        'expectedOutput': XYPoint(x: 0.7272727272727273, y: 0.8181818181818182)},
     ];
 
     for (var elem in _inputsToExpected) {

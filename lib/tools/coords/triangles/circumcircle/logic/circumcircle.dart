@@ -146,9 +146,9 @@ Circle _circumcenterOnEllipsoid({
   return Circle(LatLng(lat, lon), radius);
 }
 
-Circle calculateEllipsoidTriangleCircumCircle(LatLng A, LatLng B, LatLng C) {
+Circle calculateEllipsoidTriangleCircumCircle(LatLng a, LatLng b, LatLng c) {
   return _circumcenterOnEllipsoid(
-      latA: A.latitude, lonA: A.longitude,
-      latB: B.latitude, lonB: B.longitude,
-      latC: C.latitude, lonC: C.longitude);
+      latA: a.latitude, lonA: a.longitude,
+      latB: b.latitude, lonB: b.longitude,
+      latC: c.latitude, lonC: c.longitude);
 }

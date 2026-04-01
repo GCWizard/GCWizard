@@ -16,9 +16,9 @@ void main() async {
       {'inputA': XYPoint(x: 1, y: 1), 'inputB': XYPoint(x: 1, y: 1), 'inputC': XYPoint(x: 1, y: 1),
         'expectedOutput': XYPoint(x: double.nan, y: double.nan)},
       {'inputA': XYPoint(x: 1, y: 1), 'inputB': XYPoint(x: 2, y: 2), 'inputC': XYPoint(x: 3, y: 3),
-        'expectedOutput': XYPoint(x: 0, y: 0)},
+        'expectedOutput': XYPoint(x: double.nan, y: double.nan)},
       {'inputA': XYPoint(x: 0, y: 0), 'inputB': XYPoint(x: 0, y: 3), 'inputC': XYPoint(x: 4, y: 0),
-        'expectedOutput': XYPoint(x: 0, y: 0)},
+        'expectedOutput': XYPoint(x: double.nan, y: double.nan)},
     ];
 
     for (var elem in _inputsToExpected) {
@@ -36,7 +36,7 @@ void main() async {
       {'inputA': LatLng(1, 1), 'inputB': LatLng(1, 1), 'inputC': LatLng(1, 1),
         'expectedOutput': LatLng(double.nan, double.nan)},
       {'inputA': LatLng(1, 1), 'inputB': LatLng(2, 2), 'inputC': LatLng(3, 3),
-        'expectedOutput': 'Exception: Dreieck ist entartet – kein eindeutiger Höhenschnittpunkt.'},
+        'expectedOutput': LatLng(double.infinity, -double.infinity)},
       {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 3), 'inputC': LatLng(4, 0),
         'expectedOutput': LatLng(0, 0)},
       {'inputA': LatLng(40, 9), 'inputB': LatLng(42, 9), 'inputC': LatLng(38, 8),

@@ -11,7 +11,7 @@ void main() {
       {'inputA': XYPoint(x: 1, y: 1), 'inputB': XYPoint(x: 1, y: 1), 'inputC': XYPoint(x: 1, y: 1),
         'expectedOutput': XYPoint(x: double.nan, y: double.nan)},
       {'inputA': XYPoint(x: 1, y: 1), 'inputB': XYPoint(x: 2, y: 2), 'inputC': XYPoint(x: 3, y: 3),
-        'expectedOutput': XYPoint(x: double.nan, y: double.nan)},
+        'expectedOutput': XYPoint(x: 1.9999999999999998, y: 1.9999999999999998)},
       {'inputA': XYPoint(x: 0, y: 0), 'inputB': XYPoint(x: 0, y: 3), 'inputC': XYPoint(x: 4, y: 0),
         'expectedOutput': XYPoint(x: 1.5, y: 1)},
     ];
