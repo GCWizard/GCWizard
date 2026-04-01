@@ -78,7 +78,8 @@ import 'package:gc_wizard/tools/coords/intersect_three_circles/widget/intersect_
 import 'package:gc_wizard/tools/coords/intersect_two_circles/widget/intersect_two_circles.dart';
 import 'package:gc_wizard/tools/coords/intersection/widget/intersection.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/map_view.dart';
-import 'package:gc_wizard/tools/coords/orthogonal_projection/widget/orthogonal_projection.dart';
+import 'package:gc_wizard/tools/coords/orthogonal_projection/widget/orthogonal_projection_bearing.dart';
+import 'package:gc_wizard/tools/coords/orthogonal_projection/widget/orthogonal_projection_twopoints.dart';
 import 'package:gc_wizard/tools/coords/resection/widget/resection.dart';
 import 'package:gc_wizard/tools/coords/rhumb_line/widget/rhumbline_distancebearing.dart';
 import 'package:gc_wizard/tools/coords/rhumb_line/widget/rhumbline_waypoint_projection.dart';
@@ -767,7 +768,8 @@ void _initStaticToolList() {
       className(const OhlsenTelegraph()),
       className(OneTimePad()),
       className(Ook()),
-      className(const OrthogonalProjection()),
+      className(const OrthogonalProjectionBearing()),
+      className(const OrthogonalProjectionTwoPoints()),
       className(const PantoneColorCodes()),
       className(const PaperFormats()),
       className(const PasleyTelegraph()),

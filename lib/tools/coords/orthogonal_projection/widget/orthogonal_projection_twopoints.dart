@@ -5,28 +5,26 @@ import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
-import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_bearing.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/orthogonal_projection/logic/orthogonal_projection.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
-import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/utils/data_type_utils/double_type_utils.dart';
 import 'package:latlong2/latlong.dart';
 
-class OrthogonalProjection extends StatefulWidget {
-  const OrthogonalProjection({super.key});
+class OrthogonalProjectionTwoPoints extends StatefulWidget {
+  const OrthogonalProjectionTwoPoints({super.key});
 
   @override
-  _OrthogonalProjectionState createState() => _OrthogonalProjectionState();
+  _OrthogonalProjectionTwoPointsState createState() => _OrthogonalProjectionTwoPointsState();
 }
 
-class _OrthogonalProjectionState extends State<OrthogonalProjection> {
+class _OrthogonalProjectionTwoPointsState extends State<OrthogonalProjectionTwoPoints> {
   var _currentCoord = defaultBaseCoordinate;
-  var _currentStart = defaultBaseCoordinate;
-  var _currentBearing = defaultDoubleText;
+  var _currentA = defaultBaseCoordinate;
+  var _currentB = defaultBaseCoordinate;
 
   var _currentValues = <LatLng>[];
   var _currentMapPoints = <GCWMapPoint>[];
@@ -52,20 +50,23 @@ class _OrthogonalProjectionState extends State<OrthogonalProjection> {
         ),
         GCWCoords(
           title: i18n(context, 'coords_orthogonalprojection_start'),
-          coordsFormat: _currentStart.format,
+          coordsFormat: _currentA.format,
           onChanged: (ret) {
             setState(() {
               if (ret != null) {
-                _currentStart = ret;
+                _currentA = ret;
               }
             });
           },
         ),
-        GCWBearing(
-          hintText: i18n(context, 'coords_orthogonalprojection_bearing'),
-          onChanged: (value) {
+        GCWCoords(
+          title: i18n(context, 'coords_orthogonalprojection_end'),
+          coordsFormat: _currentB.format,
+          onChanged: (ret) {
             setState(() {
-              _currentBearing = value;
+              if (ret != null) {
+                _currentB = ret;
+              }
             });
           },
         ),
@@ -94,9 +95,7 @@ class _OrthogonalProjectionState extends State<OrthogonalProjection> {
   }
 
   void _calculateOutput() {
-    _currentValues = [orthogonalProjection(_currentCoord.toLatLng()!, _currentStart.toLatLng()!, _currentBearing.value, defaultEllipsoid)];
-
-    var distBear = distanceBearing(_currentStart.toLatLng()!, _currentValues.first, defaultEllipsoid);
+    _currentValues = [orthogonalProjectionTwoPoints(_currentCoord.toLatLng()!, _currentA.toLatLng()!, _currentB.toLatLng()!, defaultEllipsoid)];
 
     _currentMapPoints = [
       GCWMapPoint(
@@ -104,8 +103,12 @@ class _OrthogonalProjectionState extends State<OrthogonalProjection> {
           markerText: i18n(context, 'coords_orthogonalprojection_point'),
           coordinateFormat: _currentCoord.format),
       GCWMapPoint(
-          point: _currentStart.toLatLng()!,
+          point: _currentA.toLatLng()!,
           markerText: i18n(context, 'coords_orthogonalprojection_start'),
+          coordinateFormat: _currentCoord.format),
+      GCWMapPoint(
+          point: _currentB.toLatLng()!,
+          markerText: i18n(context, 'coords_orthogonalprojection_end'),
           coordinateFormat: _currentCoord.format),
       GCWMapPoint(
           point: _currentValues[0],
@@ -114,15 +117,23 @@ class _OrthogonalProjectionState extends State<OrthogonalProjection> {
           coordinateFormat: _currentOutputFormat),
     ];
 
+    var distBearCalc = distanceBearing(_currentA.toLatLng()!, _currentValues.first, defaultEllipsoid);
+    var distBearAB = distanceBearing(_currentA.toLatLng()!, _currentB.toLatLng()!, defaultEllipsoid);
 
-    var endPoint = projection(_currentStart.toLatLng()!, distBear.bearingAToB, distBear.distance * 1.5, defaultEllipsoid);
-    _currentMapPoints.add(GCWMapPoint(point: endPoint, isVisible: false));
-    _currentMapPolylines = [GCWMapPolyline(points: [_currentMapPoints[1], _currentMapPoints[3]])];
+    _currentMapPolylines = [GCWMapPolyline(points: [_currentMapPoints[1], _currentMapPoints[2]])];
 
-    if (!doubleEquals(_currentBearing.value, distBear.bearingAToB, tolerance: 5)) {
-      var endPoint2 = projection(_currentStart.toLatLng()!, _currentBearing.value, distBear.distance * 0.5, defaultEllipsoid);
+    if (doubleEquals(distBearAB.bearingAToB, distBearCalc.bearingAToB, tolerance: 5)) {
+      if (distBearAB.distance < distBearCalc.distance) {
+        var length = distBearAB.distance + 2 * (distBearCalc.distance - distBearAB.distance);
+        var endPoint2 = projection(_currentA.toLatLng()!, distBearCalc.bearingAToB, length, defaultEllipsoid);
+        _currentMapPoints.add(GCWMapPoint(point: endPoint2, isVisible: false));
+        _currentMapPolylines.add(GCWMapPolyline(points: [_currentMapPoints[1], _currentMapPoints[4]]));
+      }
+    } else {
+      var length = distBearAB.distance + 2 * distBearCalc.distance;
+      var endPoint2 = projection(_currentB.toLatLng()!, distBearAB.bearingBToA, length, defaultEllipsoid);
       _currentMapPoints.add(GCWMapPoint(point: endPoint2, isVisible: false));
-      _currentMapPolylines.add(GCWMapPolyline(points: [_currentMapPoints[1], _currentMapPoints[4]]));
+      _currentMapPolylines.add(GCWMapPolyline(points: [_currentMapPoints[2], _currentMapPoints[4]]));
     }
 
     _currentOutput = _currentValues.map((LatLng coord) {
