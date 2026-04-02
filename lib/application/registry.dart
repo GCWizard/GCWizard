@@ -4081,64 +4081,6 @@ void initializeRegistry(BuildContext context) {
       ],
     ),
 
-    // EllipsoidTrianglePointsSelection ***************************************************
-    GCWTool(
-        tool: const TriangleNapoleonPoints(),
-        id: 'triangle_point_napoleon',
-        searchKeys: const [
-          'triangle',
-        ],
-        ),
-    GCWTool(
-      tool: const TriangleSideMidPoints(),
-      id: 'triangle_point_sidesmidpoint',
-      searchKeys: const [
-        'triangle',
-      ],
-    ),
-    GCWTool(
-      tool: const TriangleIncircle(),
-      id: 'triangle_point_incircle',
-      searchKeys: const [
-        'triangle',
-      ],
-    ),
-    GCWTool(
-      tool: const TriangleCircumCircle(),
-      id: 'triangle_point_circumcircle',
-      searchKeys: const [
-        'triangle',
-      ],
-    ),
-    GCWTool(
-      tool: const TriangleCenterOfGravity(),
-      id: 'triangle_point_centerofgravity',
-      searchKeys: const [
-        'triangle',
-      ],
-    ),
-    GCWTool(
-      tool: const TriangleOrthocenter(),
-      id: 'triangle_point_orthocenter',
-      searchKeys: const [
-        'triangle',
-      ],
-    ),
-    GCWTool(
-      tool: const TriangleExcircles(),
-      id: 'triangle_point_excircles',
-      searchKeys: const [
-        'triangle',
-      ],
-    ),
-    GCWTool(
-      tool: const TriangleGergonnePoint(),
-      id: 'triangle_point_gergonne',
-      searchKeys: const [
-        'triangle',
-      ],
-    ),
-
     //Easter Selection ***************************************************************************************
     GCWTool(
         tool: const EasterDate(),

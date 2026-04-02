@@ -20,12 +20,12 @@ class EllipsoidTrianglePointsSelection extends GCWSelection {
   Widget build(BuildContext context) {
     final List<GCWTool> _toolList = registeredTools.where((element) {
       return [
-        className(const TriangleNapoleonPoints()),
-        className(const TriangleSideMidPoints()),
         className(const TriangleCenterOfGravity()),
         className(const TriangleIncircle()),
         className(const TriangleCircumCircle()),
         className(const TriangleOrthocenter()),
+        className(const TriangleNapoleonPoints()),
+        className(const TriangleSideMidPoints()),
         className(const TriangleExcircles()),
         className(const TriangleGergonnePoint()),
       ].contains(className(element.tool));
