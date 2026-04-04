@@ -100,7 +100,7 @@ class _TriangleIncircleState extends State<TriangleIncircle> {
     var inCenterPoint = calculateEllipsoidTriangleInCircle(
         _currentCoords1.toLatLng()!,
         _currentCoords2.toLatLng()!,
-        _currentCoords3.toLatLng()!);
+        _currentCoords3.toLatLng()!, defaultEllipsoid);
 
     _currentOutput = [buildCoordinate(_currentOutputFormat, inCenterPoint.center) as Object];
     _currentOutput.add(GCWOutputText(

@@ -94,7 +94,7 @@ class _TriangleOrthocenterState extends State<TriangleOrthocenter> {
     var orthocenter = calculateEllipsoidTriangleOrthocenter(
         _currentCoords1.toLatLng()!,
         _currentCoords2.toLatLng()!,
-        _currentCoords3.toLatLng()!);
+        _currentCoords3.toLatLng()!, defaultEllipsoid);
 
     _currentOutput = [
       buildCoordinate(_currentOutputFormat, orthocenter) as Object,

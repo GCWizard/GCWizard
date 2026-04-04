@@ -94,7 +94,7 @@ class _TriangleNapoleonPointsState extends State<TriangleNapoleonPoints> {
     var napoleonPoints = calculateEllipsoidTriangleNapoleonPoints(
         _currentCoords1.toLatLng()!,
         _currentCoords2.toLatLng()!,
-        _currentCoords3.toLatLng()!);
+        _currentCoords3.toLatLng()!, defaultEllipsoid);
 
     _currentOutput = [
       buildCoordinate(_currentOutputFormat, napoleonPoints[0]) as Object,

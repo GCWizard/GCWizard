@@ -26,6 +26,8 @@ part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geograph
 part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/pair.dart';
 part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/rhumb.dart';
 part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/transverse_mercator.dart';
+part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/polygon_area.dart';
+part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/accumulator.dart';
 
 GeodesicData geodeticInverse(LatLng coords1, LatLng coords2, Ellipsoid ellipsoid) {
   return _Geodesic(ellipsoid.a, ellipsoid.f).inverse(coords1.latitude, coords1.longitude, coords2.latitude, coords2.longitude);
@@ -138,4 +140,15 @@ LatLng reverseAzimuthalProjection(LatLng coord, double bearing, double distance,
   } while (++cnt <= 20 && delta.abs() > 1e-10);
 
   return LatLng(_lat2, _lon2);
+}
+
+double polygonArea(List<LatLng> coords, Ellipsoid ellipsoid) {
+  var polygonArea = _PolygonArea(earth: _Geodesic(ellipsoid.a, ellipsoid.f));
+  for (var coord in coords) {
+    polygonArea._AddPoint(coord.latitude, coord.longitude);
+  }
+
+  var result = polygonArea._Compute();
+
+  return result.area;
 }

@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/triangles/napoleon/logic/napoleon.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:prefs/prefs.dart';
@@ -25,7 +26,7 @@ void main() async {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
-        var _actual = calculateEllipsoidTriangleNapoleonPoints(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng);
+        var _actual = calculateEllipsoidTriangleNapoleonPoints(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
         latLngListTest(_actual, elem['expectedOutput'] as List<LatLng>);
       });
     }

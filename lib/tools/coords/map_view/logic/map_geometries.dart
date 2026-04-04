@@ -74,7 +74,7 @@ class GCWMapLine extends GCWMapSimpleGeometry {
     shape.add(start.point);
     switch (type) {
       case GCWMapLineType.GEODETIC:
-        _calculateGeodeticShape();
+          _calculateGeodeticShape();
         break;
       case GCWMapLineType.RHUMB:
         _calculateRhumbShape();
@@ -87,7 +87,7 @@ class GCWMapLine extends GCWMapSimpleGeometry {
   }
 
   void _calculateGeodeticShape() {
-    _calculateLineShape(projectionVincenty, geodetic.distanceBearingVincenty, 5000.0);
+    _calculateLineShape(projectionVincenty, geodetic.distanceBearing, 3000.0);
   }
 
   void _calculateLineShape(LatLng Function(LatLng, double, double, Ellipsoid) projection,
@@ -159,7 +159,7 @@ class GCWMapCircle extends GCWMapSimpleGeometry {
       return;
     }
 
-    var _degrees = 0.5;
+    var _degrees = 0.25;
 
     double? _prevLongitude;
     bool shouldSort = false;

@@ -1,5 +1,7 @@
 import 'dart:core';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
 import 'package:gc_wizard/tools/coords/triangles/_common/triangles.dart';
 import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 import 'package:latlong2/latlong.dart';
@@ -28,7 +30,7 @@ void main() async {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
-        var _actual = calculateEllipsoidTriangleAngles(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng);
+        var _actual = calculateEllipsoidTriangleAngles(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
         anglesTest(_actual, elem['expectedOutput'] as Angles);
       });
     }
@@ -50,7 +52,7 @@ void main() async {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
-        var _actual = calculateEllipsoidTriangleSides(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng);
+        var _actual = calculateEllipsoidTriangleSides(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
         sidesTest(_actual, elem['expectedOutput'] as Sides);
       });
     }
@@ -72,7 +74,7 @@ void main() async {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
-        var _actual = calculateEllipsoidTriangleCircumference(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng);
+        var _actual = calculateEllipsoidTriangleCircumference(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
         expect(_actual, elem['expectedOutput']);
       });
     }
@@ -94,7 +96,7 @@ void main() async {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['inputA']} ${elem['inputB']}', () {
-        var _actual = inverseWithArea(elem['inputA'] as LatLng, elem['inputB'] as LatLng);
+        var _actual = inverseWithArea(elem['inputA'] as LatLng, elem['inputB'] as LatLng, Ellipsoid.WGS84);
         _actual.isNaN ? expect(_actual.toString(), elem['expectedOutput'].toString()) : expect(_actual, elem['expectedOutput']);
       });
     }
@@ -116,7 +118,7 @@ void main() async {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
-        var _actual = ellipsoidTriangleArea(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng);
+        var _actual = polygonArea([elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng], Ellipsoid.WGS84);
         _actual.isNaN ? expect(_actual.toString(), elem['expectedOutput'].toString()) : expect(_actual, elem['expectedOutput']);
       });
     }

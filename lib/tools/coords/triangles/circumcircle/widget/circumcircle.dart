@@ -8,8 +8,8 @@ import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat_distance.dart';
+import 'package:gc_wizard/tools/coords/centerpoint/center_three_points/logic/center_three_points.dart';
 import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
-import 'package:gc_wizard/tools/coords/triangles/circumcircle/logic/circumcircle.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/default_units_getter.dart';
 import 'package:gc_wizard/utils/constants.dart';
 
@@ -97,15 +97,15 @@ class _TriangleCircumCircleState extends State<TriangleCircumCircle> {
   }
 
   void _calculateOutput() {
-    var CircumCenterPoint = calculateEllipsoidTriangleCircumCircle(
+    var centerPoint = centerPointThreePoints(
         _currentCoords1.toLatLng()!,
         _currentCoords2.toLatLng()!,
-        _currentCoords3.toLatLng()!);
+        _currentCoords3.toLatLng()!, defaultEllipsoid);
 
-    _currentOutput = [buildCoordinate(_currentOutputFormat, CircumCenterPoint.center) as Object];
+    _currentOutput = [buildCoordinate(_currentOutputFormat, centerPoint.centerPoint) as Object];
     _currentOutput.add(GCWOutputText(
-      text: '${i18n(context, 'common_radius')}: ${doubleFormat.format(_currentOutputUnit.fromMeter(CircumCenterPoint.radius))} ${_currentOutputUnit.symbol}',
-      copyText: _currentOutputUnit.fromMeter(CircumCenterPoint.radius).toString(),
+      text: '${i18n(context, 'common_radius')}: ${doubleFormat.format(_currentOutputUnit.fromMeter(centerPoint.distance))} ${_currentOutputUnit.symbol}',
+      copyText: _currentOutputUnit.fromMeter(centerPoint.distance).toString(),
     ) as Object
     );
 
@@ -122,11 +122,11 @@ class _TriangleCircumCircleState extends State<TriangleCircumCircle> {
         markerText: i18n(context, 'coords_centerthreepoints_coordc'),
         coordinateFormat: _currentCoords3.format);
     var mapPointCircumCircleCenter = GCWMapPoint(
-      point: CircumCenterPoint.center,
+      point: centerPoint.centerPoint,
       color: COLOR_MAP_CALCULATEDPOINT,
       markerText: i18n(context, 'triangle_output_incenter'),
       coordinateFormat: _currentOutputFormat,
-      circle: GCWMapCircle(centerPoint: CircumCenterPoint.center, radius: CircumCenterPoint.radius),
+      circle: GCWMapCircle(centerPoint: centerPoint.centerPoint, radius: centerPoint.distance),
       circleColorSameAsPointColor: true,
     );
 

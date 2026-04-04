@@ -92,3 +92,29 @@ double _sinh(double angle) {
 double _cosh(double angle) {
   return (exp(angle) + exp(-angle)) / 2;
 }
+
+/**
+ * The error-free sum of two numbers.
+ *
+ * @tparam T the type of the argument and the returned value.
+ * @param[in] u
+ * @param[in] v
+ * @param[out] t the exact error given by (\e u + \e v) - \e s.
+ * @return \e s = round(\e u + \e v).
+ *
+ * See D. E. Knuth, TAOCP, Vol 2, 4.2.2, Theorem B.
+ *
+ * \note \e t can be the same as one of the first two arguments.
+ **********************************************************************/
+void _sum(_Pair p, double u, double v) {
+  double s = u + v;
+  double up = s - v;
+  double vpp = s - up;
+  up -= u;
+  vpp -= v;
+  double t = s != 0 ? 0.0 - (up + vpp) : s;
+  // u + v =       s      + t
+  //       = round(u + v) + t
+  p.first = s; p.second = t;
+}
+

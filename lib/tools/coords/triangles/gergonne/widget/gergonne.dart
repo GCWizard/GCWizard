@@ -94,7 +94,7 @@ class _TriangleGergonnePointState extends State<TriangleGergonnePoint> {
     var gergonnePoint = calculateEllipsoidTriangleGergonnePoint(
         _currentCoords1.toLatLng()!,
         _currentCoords2.toLatLng()!,
-        _currentCoords3.toLatLng()!);
+        _currentCoords3.toLatLng()!, defaultEllipsoid);
 
     _currentOutput = [
       buildCoordinate(_currentOutputFormat, gergonnePoint),

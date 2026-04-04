@@ -94,7 +94,7 @@ class _TriangleSideMidPointsState extends State<TriangleSideMidPoints> {
     var sideMidPoints = calculateEllipsoidTriangleSideMidPoints(
         _currentCoords1.toLatLng()!,
         _currentCoords2.toLatLng()!,
-        _currentCoords3.toLatLng()!);
+        _currentCoords3.toLatLng()!, defaultEllipsoid);
 
     _currentOutput = [
       buildCoordinate(_currentOutputFormat, sideMidPoints[0]) as Object,

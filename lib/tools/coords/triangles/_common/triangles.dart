@@ -1,19 +1,20 @@
 import 'dart:math';
 
-import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 import 'package:latlong2/latlong.dart';
 
-Angles calculateEllipsoidTriangleAngles(LatLng a, LatLng b, LatLng c) {
-  var aAngle = (distanceBearing(a, c, defaultEllipsoid).bearingAToB -
-          distanceBearing(a, b, defaultEllipsoid).bearingAToB)
+Angles calculateEllipsoidTriangleAngles(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
+  var aAngle = (distanceBearing(a, c, ellipsoid).bearingAToB -
+          distanceBearing(a, b, ellipsoid).bearingAToB)
       .abs();
-  var bAngle = (distanceBearing(b, c, defaultEllipsoid).bearingAToB -
-          distanceBearing(b, a, defaultEllipsoid).bearingAToB)
+  var bAngle = (distanceBearing(b, c, ellipsoid).bearingAToB -
+          distanceBearing(b, a, ellipsoid).bearingAToB)
       .abs();
-  var cAngle = (distanceBearing(c, a, defaultEllipsoid).bearingAToB -
-          distanceBearing(c, b, defaultEllipsoid).bearingAToB)
+  var cAngle = (distanceBearing(c, a, ellipsoid).bearingAToB -
+          distanceBearing(c, b, ellipsoid).bearingAToB)
       .abs();
   return Angles(
     alpha: aAngle > 180 ? 360 - aAngle : aAngle,
@@ -22,24 +23,24 @@ Angles calculateEllipsoidTriangleAngles(LatLng a, LatLng b, LatLng c) {
   );
 }
 
-Sides calculateEllipsoidTriangleSides(LatLng a, LatLng b, LatLng c) {
+Sides calculateEllipsoidTriangleSides(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
   return Sides(
-      a: distanceBearing(b, c, defaultEllipsoid).distance,
-      b: distanceBearing(a, c, defaultEllipsoid).distance,
-      c: distanceBearing(a, b, defaultEllipsoid).distance);
+      a: distanceBearing(b, c, ellipsoid).distance,
+      b: distanceBearing(a, c, ellipsoid).distance,
+      c: distanceBearing(a, b, ellipsoid).distance);
 }
 
-double calculateEllipsoidTriangleCircumference(LatLng a, LatLng b, LatLng c) {
-  var sides = calculateEllipsoidTriangleSides(a, b, c);
+double calculateEllipsoidTriangleCircumference(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
+  var sides = calculateEllipsoidTriangleSides(a, b, c, ellipsoid);
   return sides.a + sides.b + sides.c;
 }
 
-// WGS‑84
-final double _a = defaultEllipsoid.a;
-final double _f = defaultEllipsoid.f;
-final double _b = defaultEllipsoid.b;
+double inverseWithArea(LatLng p1, LatLng p2, Ellipsoid ellipsoid) {
+  // WGS‑84
+  final double _a = ellipsoid.a;
+  final double _f = ellipsoid.f;
+  final double _b = ellipsoid.b;
 
-double inverseWithArea(LatLng p1, LatLng p2) {
   /// Inverse geodesics + area S12 according to Karney - compact version
   final phi1 = degToRadian(p1.latitude);
   final phi2 = degToRadian(p2.latitude);
@@ -114,10 +115,6 @@ double inverseWithArea(LatLng p1, LatLng p2) {
   return S12;
 }
 
-double ellipsoidTriangleArea(LatLng a, LatLng b, LatLng c) {
-  final ab = inverseWithArea(a, b);
-  final bc = inverseWithArea(b, c);
-  final ca = inverseWithArea(c, a);
-
-  return (ab + bc + ca).abs() * (_a * _a); // Karney: Area = S * a²
+double ellipsoidTriangleArea(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
+  return polygonArea([a, b, c], ellipsoid);
 }

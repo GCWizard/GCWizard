@@ -172,3 +172,17 @@ double matrixDeterminant(List<List<double>> matrix) {
   }
   return result;
 }
+
+num ieeeRemainder(num x, num y) {
+  // Handle special IEEE cases
+  if (x.isNaN || y.isNaN) return double.nan;
+  if (y == 0.0) return double.nan;
+  if (x.isInfinite && y.isFinite) return double.nan;
+  if (y.isInfinite) return x;
+
+  // Compute nearest integer to x / y (ties to even)
+  double n = x / y;
+  double nRounded = n.roundToDouble();
+
+  return x - nRounded * y;
+}
