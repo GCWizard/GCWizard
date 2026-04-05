@@ -7,7 +7,7 @@ bool _isNearPole(double lat) {
   return lat.abs() > 90 - 1e-5;
 }
 
-DistanceBearingData distanceBearing(LatLng coords1, LatLng coords2, Ellipsoid ellipsoid) {
+DistanceBearingData distanceBearingRhumbline(LatLng coords1, LatLng coords2, Ellipsoid ellipsoid) {
   RhumbInverseReturn data =
       Rhumb(ellipsoid.a, ellipsoid.f).inverse(coords1.latitude, coords1.longitude, coords2.latitude, coords2.longitude);
 
@@ -28,7 +28,7 @@ DistanceBearingData distanceBearing(LatLng coords1, LatLng coords2, Ellipsoid el
   return result;
 }
 
-LatLng projection(LatLng coord, double bearingDeg, double distance, Ellipsoid ellipsoid) {
+LatLng projectionRhumbline(LatLng coord, double bearingDeg, double distance, Ellipsoid ellipsoid) {
   if (distance == 0.0) return coord;
 
   bearingDeg = normalizeBearing(bearingDeg);
@@ -45,6 +45,6 @@ LatLng projection(LatLng coord, double bearingDeg, double distance, Ellipsoid el
   return LatLng(lat, lon);
 }
 
-LatLng reverseProjection(LatLng coord, double bearing, double distance, Ellipsoid ellipsoid) {
-  return projection(coord, normalizeBearing(bearing + 180.0), distance, ellipsoid);
+LatLng reverseProjectionRhumbline(LatLng coord, double bearing, double distance, Ellipsoid ellipsoid) {
+  return projectionRhumbline(coord, normalizeBearing(bearing + 180.0), distance, ellipsoid);
 }

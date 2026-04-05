@@ -6,12 +6,13 @@ import 'package:gc_wizard/tools/coords/intersect_lines/intersect_bearings/logic/
 import 'package:gc_wizard/tools/coords/intersect_lines/intersect_four_points/logic/intersect_four_points.dart';
 import 'package:gc_wizard/tools/coords/orthogonal_projection/logic/orthogonal_projection.dart';
 import 'package:gc_wizard/tools/coords/segment_bearings/logic/segment_bearings.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/triangles.dart';
 import 'package:latlong2/latlong.dart';
 
 class Excircle{
   Circle circle;
   LatLng touchpoint;
-  
+
   Excircle(this.circle, this.touchpoint);
 }
 
@@ -46,9 +47,19 @@ Excircle _calcExCircleOfAOnBC(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid)
 }
 
 List<Excircle> calculateEllipsoidTriangleExCircles(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid){
-  var circle1 = _calcExCircleOfAOnBC(a, b, c, ellipsoid);
-  var circle2 = _calcExCircleOfAOnBC(b, a, c, ellipsoid);
-  var circle3 = _calcExCircleOfAOnBC(c, a, b, ellipsoid);
+  var clockwiseOrdered = orderTrianglePointsClockwise(a, b, c, ellipsoid);
+  var _a = clockwiseOrdered[0];
+  var _b = clockwiseOrdered[1];
+  var _c = clockwiseOrdered[2];
 
-  return [circle1, circle2, circle3];
+  var circle1 = _calcExCircleOfAOnBC(_a, _b, _c, ellipsoid);
+  var circle2 = _calcExCircleOfAOnBC(_b, _a, _c, ellipsoid);
+  var circle3 = _calcExCircleOfAOnBC(_c, _a, _b, ellipsoid);
+
+  if (_b == b) {
+    // if points were ordered clockwise originally
+    return [circle1, circle2, circle3];
+  } else {
+    return [circle1, circle3, circle2];
+  }
 }

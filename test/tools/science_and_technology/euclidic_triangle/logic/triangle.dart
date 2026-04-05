@@ -3,11 +3,11 @@ import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/t
 import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:latlong2/latlong.dart';
 
-String toString(dynamic o) {
+String toTriangleObjectString(Object? o) {
   if (o is XYPoint) {
     return '(${o.x}, ${o.y})';
   } else if (o is List<XYPoint>) {
-    return o.map((e) => toString(e)).join(', ');
+    return o.map((e) => toTriangleObjectString(e)).join(', ');
   } else if (o is Sides) {
     return '(${o.a}, ${o.b}, ${o.c})';
   } else if (o is Angles) {
@@ -19,13 +19,13 @@ String toString(dynamic o) {
   } else if (o is XYCircle) {
     return '(${o.x}, ${o.y}, ${o.r})';
   } else if (o is List<XYCircle>) {
-    return o.map((e) => toString(e)).join(', ');
+    return o.map((e) => toTriangleObjectString(e)).join(', ');
   } else if (o is Vec3) {
     return '(${o.x}, ${o.y}, ${o.z})';
   } else if (o is Circle) {
     return '(${o.center.toString()}, ${o.radius})';
   } else if (o is List<Circle>) {
-    return o.map((e) => toString(e)).join(', ');
+    return o.map((e) => toTriangleObjectString(e)).join(', ');
   }
   return o?.toString() ?? 'null';
 }

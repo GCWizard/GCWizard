@@ -7,7 +7,7 @@ import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_definition.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
-import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
+import 'package:gc_wizard/tools/coords/map_view/widget/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/map_view/persistence/json_provider.dart';
 import 'package:gc_wizard/tools/coords/map_view/persistence/model.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/gcw_mapview.dart';
@@ -352,7 +352,7 @@ class MapViewPersistenceAdapter {
 
   bool _isMergeableDistance(LatLng a, LatLng b) {
     // below 2 meters, there's nearly no visible difference of points
-    return distanceBearing(a, b, defaultEllipsoid).distance < 1.8;
+    return distanceBearingRhumbline(a, b, defaultEllipsoid).distance < 1.8;
   }
 
   void mergePoints() {

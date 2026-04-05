@@ -16,13 +16,14 @@ SegmentedAngle segmentBearings(
   }
 
   var angles = <double>[];
-  angles.add(angle1);
-  if (angle1 != angle2) angles.add(angle2);
+  var _angle1 = normalizeBearing(angle1);
+  var _angle2 = normalizeBearing(angle2);
+  if (_angle1 >= _angle2) {
+    _angle2 += 360.0;
+  }
 
-  angles.sort();
-
-  if (angles.isEmpty) angles.add(0.0);
-  if (angles.length == 1) angles.add(angles.first + 360.0);
+  angles.add(_angle1);
+  angles.add(_angle2);
 
   var segmentAngle = (angles.last - angles.first) / countSegments;
   var points = <LatLng>[];

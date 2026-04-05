@@ -22,7 +22,7 @@ void main() async {
     ];
 
     for (var elem in _inputsToExpected) {
-      test('input: ${toString(elem['inputA'])} ${toString(elem['inputB'])} ${toString(elem['inputC'])}', () {
+      test('input: ${toTriangleObjectString(elem['inputA'])} ${toTriangleObjectString(elem['inputB'])} ${toTriangleObjectString(elem['inputC'])}', () {
         var _actual = triangleCircumferenceXY(elem['inputA'] as XYPoint, elem['inputB'] as XYPoint, elem['inputC'] as XYPoint);
         expect(_actual, elem['expectedOutput']);
       });

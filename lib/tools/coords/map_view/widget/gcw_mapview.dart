@@ -35,7 +35,7 @@ import 'package:gc_wizard/tools/coords/_common/logic/geo_json_import.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/gpx_kml_gpx_import.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_export_dialog.dart';
-import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
+import 'package:gc_wizard/tools/coords/map_view/widget/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/map_view/persistence/mapview_persistence_adapter.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/mappoint_editor.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/mappolyline_editor.dart';
@@ -57,7 +57,7 @@ part 'package:gc_wizard/tools/coords/map_view/widget/scalebar/gcw_mapview_scaleb
 
 enum MapMarkerIcon {CROSSLINES, LOCATION}
 
-enum _LayerType { OPENSTREETMAP_MAPNIK, MAPBOX_SATELLITE }
+enum _LayerType {OPENSTREETMAP_MAPNIK, MAPBOX_SATELLITE}
 
 const _OSM_TEXT = 'coords_mapview_osm';
 const _OSM_URL = 'coords_mapview_osm_url';
@@ -105,6 +105,7 @@ class _GCWMapViewState extends State<GCWMapView> {
   MapViewPersistenceAdapter? _persistanceAdapter;
 
   late Length defaultLengthUnitGCWMapView;
+  late MapPrecision _currentMapPrecision;
 
   CameraFit _getBounds() {
     if (widget.points.isEmpty) return CameraFit.bounds(bounds: _DEFAULT_BOUNDS);
@@ -131,6 +132,7 @@ class _GCWMapViewState extends State<GCWMapView> {
 
     defaultLengthUnitGCWMapView = defaultLengthUnit;
     _markerIcon = _mapMarkerIconFromString(Prefs.getString(PREFERENCE_MAPVIEW_MARKER_ICON));
+    _currentMapPrecision = getMapPrecision();
   }
 
   @override
@@ -199,6 +201,16 @@ class _GCWMapViewState extends State<GCWMapView> {
 
   String _formatBearingOutput(double bearing) {
     return NumberFormat('0.00').format(bearing) + ' °';
+  }
+
+  void _updateGeometries() {
+    for (var point in widget.points) {
+      point.update(precision: _currentMapPrecision);
+    }
+
+    for (var polyline in widget.polylines) {
+      polyline.update(precision: _currentMapPrecision);
+    }
   }
 
   @override
@@ -871,6 +883,20 @@ class _GCWMapViewState extends State<GCWMapView> {
       GCWPopupMenuItem(
         isDivider: true,
         action: (index) {}
+      ),
+      GCWPopupMenuItem(
+        child: iconedGCWPopupMenuItem(context,
+            _currentMapPrecision == MapPrecision.LOW ? Icons.arrow_upward : Icons.arrow_downward,
+            _currentMapPrecision == MapPrecision.LOW ? i18n(context, 'coords_openmap_mapprecision_increase') : i18n(context, 'coords_openmap_mapprecision_decrease')),
+        action: (index) {
+          setState(() {
+            switch (_currentMapPrecision) {
+              case MapPrecision.LOW: _currentMapPrecision = MapPrecision.HIGH; break;
+              case MapPrecision.HIGH: _currentMapPrecision = MapPrecision.LOW; break;
+            }
+            _updateGeometries();
+          });
+        },
       ),
       GCWPopupMenuItem(
           child: iconedGCWPopupMenuItem(context, Icons.layers,

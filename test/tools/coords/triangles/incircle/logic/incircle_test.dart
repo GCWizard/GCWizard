@@ -2,14 +2,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/triangles/incircle/logic/incircle.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:prefs/prefs.dart';
 
 import '../../../../science_and_technology/euclidic_triangle/logic/triangle.dart';
 
 
 // void main() async {
-//   SharedPreferences.setMockInitialValues({});
-//   await Prefs.init();
 //
 //   group("triangle.calculateEllipsoidTriangleInCircle:", () {
 //     List<Map<String, Object?>> _inputsToExpected = [
@@ -35,9 +32,6 @@ import '../../../../science_and_technology/euclidic_triangle/logic/triangle.dart
 // }
 
 void main() async {
-  SharedPreferences.setMockInitialValues({});
-  await Prefs.init();
-
   group("triangle.calculateEllipsoidTriangleInCircle:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 0), 'inputC': LatLng(0, 0),

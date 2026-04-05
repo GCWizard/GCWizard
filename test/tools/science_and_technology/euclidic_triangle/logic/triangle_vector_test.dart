@@ -42,7 +42,7 @@ void main() {
     ];
 
     for (var elem in _inputsToExpected) {
-      test('input: ${toString(elem['inputA'])}', () {
+      test('input: ${toTriangleObjectString(elem['inputA'])}', () {
         var _actual = vec3ToLatLng(elem['inputA'] as Vec3);
         latLngTest(_actual, elem['expectedOutput'] as LatLng);
       });

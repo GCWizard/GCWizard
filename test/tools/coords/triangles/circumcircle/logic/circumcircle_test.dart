@@ -3,14 +3,10 @@ import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/centerpoint/center_three_points/logic/center_three_points.dart';
 import 'package:gc_wizard/tools/coords/centerpoint/logic/centerpoint_distance.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:prefs/prefs.dart';
 
 import '../../../../science_and_technology/euclidic_triangle/logic/triangle.dart';
 
 void main() async {
-  SharedPreferences.setMockInitialValues({});
-  await Prefs.init();
-
   group("triangle.calculateEllipsoidTriangleCircumCircle:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 0), 'inputC': LatLng(0, 0),

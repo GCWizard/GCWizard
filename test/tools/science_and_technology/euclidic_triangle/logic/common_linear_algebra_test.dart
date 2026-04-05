@@ -29,7 +29,7 @@ void main() {
     ];
 
     for (var elem in _inputsToExpected) {
-      test('input: ${toString(elem['inputL1'])}  ${toString(elem['inputL2'])}',
+      test('input: ${toTriangleObjectString(elem['inputL1'])}  ${toTriangleObjectString(elem['inputL2'])}',
           () {
         var _actual = intersectVectors(
             elem['inputL1'] as XYLine, elem['inputL2'] as XYLine);
@@ -85,7 +85,7 @@ void main() {
     ];
 
     for (var elem in _inputsToExpected) {
-      test('input: ${toString(elem['inputC1'])}  ${toString(elem['inputC2'])}',
+      test('input: ${toTriangleObjectString(elem['inputC1'])}  ${toTriangleObjectString(elem['inputC2'])}',
           () {
         var _actual = intersectTwoCircles(
             elem['inputC1'] as XYCircle, elem['inputC2'] as XYCircle);
@@ -109,7 +109,7 @@ void main() {
     ];
 
     for (var elem in _inputsToExpected) {
-      test('input: ${toString(elem['inputL1'])}  ${toString(elem['inputP'])}',
+      test('input: ${toTriangleObjectString(elem['inputL1'])}  ${toTriangleObjectString(elem['inputP'])}',
               () {
             var _actual = vectorContainsPoint(
                 elem['inputL1'] as XYLine, elem['inputP'] as XYPoint);
@@ -138,7 +138,7 @@ void main() {
     ];
 
     for (var elem in _inputsToExpected) {
-      test('input: ${toString(elem['inputC1'])}  ${toString(elem['inputP'])}',
+      test('input: ${toTriangleObjectString(elem['inputC1'])}  ${toTriangleObjectString(elem['inputP'])}',
               () {
             var _actual = circleContainsPoint(
                 elem['inputC1'] as XYCircle, elem['inputP'] as XYPoint);
@@ -167,7 +167,7 @@ void main() {
     ];
 
     for (var elem in _inputsToExpected) {
-      test('input: ${toString(elem['inputC1'])}  ${toString(elem['inputP'])}',
+      test('input: ${toTriangleObjectString(elem['inputC1'])}  ${toTriangleObjectString(elem['inputP'])}',
               () {
             var _actual = onCircumference(
                 elem['inputC1'] as XYCircle, elem['inputP'] as XYPoint);
@@ -191,7 +191,7 @@ void main() {
     ];
 
     for (var elem in _inputsToExpected) {
-      test('input: ${toString(elem['inputC1'])}  ${toString(elem['inputP'])}',
+      test('input: ${toTriangleObjectString(elem['inputC1'])}  ${toTriangleObjectString(elem['inputP'])}',
               () {
             var _actual = distance(
                 elem['inputP1'] as XYPoint, elem['inputP2'] as XYPoint);

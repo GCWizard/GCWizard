@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gc_wizard/application/settings/logic/preferences.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
@@ -8,7 +9,15 @@ import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_b
 import 'package:gc_wizard/tools/coords/rhumb_line/logic/rhumb_line.dart' as rhumbline;
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:prefs/prefs.dart';
 import 'package:uuid/uuid.dart';
+
+enum MapPrecision {LOW, HIGH}
+
+MapPrecision getMapPrecision() {
+  var prefMapPrecision = Prefs.getString(PREFERENCE_COORD_MAP_DEFAULT_PRECISION_GEOMETRIES);
+  return MapPrecision.values.firstWhere((e) => e.toString() == prefMapPrecision);
+}
 
 class GCWMapPoint {
   String? uuid;
@@ -40,13 +49,13 @@ class GCWMapPoint {
     return circle != null && circle!.radius > 0.0;
   }
 
-  void update() {
+  void update({MapPrecision? precision}) {
     if (circle != null) {
       circle!.centerPoint = point;
 
       if (circleColorSameAsPointColor) circle!.color = color;
 
-      circle!._update();
+      circle!._update(precision: precision);
     }
   }
 }
@@ -65,16 +74,18 @@ class GCWMapLine extends GCWMapSimpleGeometry {
 
   List<LatLng> shape = [];
 
-  GCWMapLine({required this.parent, required this.start, this.end, this.type = GCWMapLineType.GEODETIC}) {
+  GCWMapLine({required this.parent, required this.start, this.end, this.type = GCWMapLineType.GEODETIC, MapPrecision? precision}) {
     if (end == null) {
       shape.add(start.point);
       return;
     }
 
+    var _precision = precision ?? getMapPrecision();
+
     shape.add(start.point);
     switch (type) {
       case GCWMapLineType.GEODETIC:
-          _calculateGeodeticShape();
+          _calculateGeodeticShape(_precision);
         break;
       case GCWMapLineType.RHUMB:
         _calculateRhumbShape();
@@ -83,11 +94,15 @@ class GCWMapLine extends GCWMapSimpleGeometry {
   }
 
   void _calculateRhumbShape() {
-    _calculateLineShape(rhumbline.projection, rhumbline.distanceBearing, 10000.0);
+    _calculateLineShape(rhumbline.projectionRhumbline, rhumbline.distanceBearingRhumbline, 10000.0);
   }
 
-  void _calculateGeodeticShape() {
-    _calculateLineShape(projectionVincenty, geodetic.distanceBearing, 3000.0);
+  void _calculateGeodeticShape(MapPrecision precision) {
+    _calculateLineShape(
+        precision == MapPrecision.LOW ? projectionVincenty : projection,
+        precision == MapPrecision.LOW ? geodetic.distanceBearingVincenty : geodetic.distanceBearing,
+        precision == MapPrecision.LOW ? 5000.0 : 500.0
+    );
   }
 
   void _calculateLineShape(LatLng Function(LatLng, double, double, Ellipsoid) projection,
@@ -124,7 +139,7 @@ class GCWMapPolyline {
     update();
   }
 
-  void update() {
+  void update({MapPrecision? precision}) {
     lines = [];
 
     if (points.isEmpty) {
@@ -132,12 +147,12 @@ class GCWMapPolyline {
     }
 
     if (points.length == 1) {
-      lines.add(GCWMapLine(parent: this, start: points[0], type: type));
+      lines.add(GCWMapLine(parent: this, start: points[0], type: type, precision: precision));
       return;
     }
 
     for (int i = 1; i < points.length; i++) {
-      lines.add(GCWMapLine(parent: this, start: points[i - 1], end: points[i], type: type));
+      lines.add(GCWMapLine(parent: this, start: points[i - 1], end: points[i], type: type, precision: precision));
     }
   }
 }
@@ -153,13 +168,14 @@ class GCWMapCircle extends GCWMapSimpleGeometry {
     _update();
   }
 
-  void _update() {
+  void _update({MapPrecision? precision}) {
     if (radius <= 0.0) {
       shape = [];
       return;
     }
 
-    var _degrees = 0.25;
+    var _precision = precision ?? getMapPrecision();
+    var _degrees = _precision == MapPrecision.LOW ? 0.5 : 0.1;
 
     double? _prevLongitude;
     bool shouldSort = false;

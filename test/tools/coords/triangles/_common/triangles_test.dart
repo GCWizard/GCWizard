@@ -5,15 +5,11 @@ import 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geogra
 import 'package:gc_wizard/tools/coords/triangles/_common/triangles.dart';
 import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:prefs/prefs.dart';
 
 import '../../../science_and_technology/euclidic_triangle/logic/triangle.dart';
 
 
 void main() async {
-  SharedPreferences.setMockInitialValues({});
-  await Prefs.init();
-
   group("triangle.calculateEllipsoidTriangleAngles:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 0), 'inputC': LatLng(0, 0),
@@ -76,28 +72,6 @@ void main() async {
       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
         var _actual = calculateEllipsoidTriangleCircumference(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
         expect(_actual, elem['expectedOutput']);
-      });
-    }
-  });
-
-  group("triangle.inverseWithArea:", () {
-    List<Map<String, Object?>> _inputsToExpected = [
-      {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 0),
-        'expectedOutput': 0.0},
-      {'inputA': LatLng(1, 1), 'inputB': LatLng(1, 1),
-        'expectedOutput': 0.0},
-      {'inputA': LatLng(1, 1), 'inputB': LatLng(2, 2),
-        'expectedOutput': 0.000058721793375566885},
-      {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 3),
-        'expectedOutput': double.nan},
-      {'inputA': LatLng(40, 9), 'inputB': LatLng(42, 9),
-        'expectedOutput': 0.0},
-    ];
-
-    for (var elem in _inputsToExpected) {
-      test('input: ${elem['inputA']} ${elem['inputB']}', () {
-        var _actual = inverseWithArea(elem['inputA'] as LatLng, elem['inputB'] as LatLng, Ellipsoid.WGS84);
-        _actual.isNaN ? expect(_actual.toString(), elem['expectedOutput'].toString()) : expect(_actual, elem['expectedOutput']);
       });
     }
   });
