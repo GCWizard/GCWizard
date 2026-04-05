@@ -2092,7 +2092,7 @@
   "coords_segmentline_numbersegments": "Number Segments",
   "coords_segmentline_segmentdistance": "Segment Length",
   "coords_segmentbearings_title": "Segment Bearings",
-  "coords_segmentbearings_description": "Adds lines with regularly spread angles between two given bearings",
+  "coords_segmentbearings_description": "Adds lines with regularly spread angles between two given bearings in clockwise direction",
   "coords_segmentbearings_start": "Start Point",
   "coords_segmentbearings_end1": "End Point 1",
   "coords_segmentbearings_end2": "End Point 2",
