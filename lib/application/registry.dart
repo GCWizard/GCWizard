@@ -57,6 +57,7 @@ import 'package:gc_wizard/application/category_views/selector_lists/number_seque
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_jacobsthallucas_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_jacobsthaloblong_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_lonelynumbers_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_look_and_say_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_lucas_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_luckynumbers_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/number_sequences/numbersequence_lychrel_selection.dart';
@@ -143,6 +144,8 @@ import 'package:gc_wizard/tools/coords/intersect_three_circles/widget/intersect_
 import 'package:gc_wizard/tools/coords/intersect_two_circles/widget/intersect_two_circles.dart';
 import 'package:gc_wizard/tools/coords/intersection/widget/intersection.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/map_view.dart';
+import 'package:gc_wizard/tools/coords/orthogonal_projection/widget/orthogonal_projection_bearing.dart';
+import 'package:gc_wizard/tools/coords/orthogonal_projection/widget/orthogonal_projection_twopoints.dart';
 import 'package:gc_wizard/tools/coords/resection/widget/resection.dart';
 import 'package:gc_wizard/tools/coords/rhumb_line/widget/rhumbline_distancebearing.dart';
 import 'package:gc_wizard/tools/coords/rhumb_line/widget/rhumbline_waypoint_projection.dart';
@@ -458,6 +461,8 @@ import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsth
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsthal_lucas/widget/jacobsthal_lucas.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/jacobsthal_oblong/widget/jacobsthal_oblong.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lonely_numbers/widget/lonely_numbers.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/look_and_say/widget/look_and_say.dart';
+import 'package:gc_wizard/tools/science_and_technology/number_sequences/look_and_say/widget/look_and_say_text.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucas/widget/lucas.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lucky_numbers/widget/lucky_numbers.dart';
 import 'package:gc_wizard/tools/science_and_technology/number_sequences/lychrel/widget/lychrel.dart';
@@ -497,6 +502,7 @@ import 'package:gc_wizard/tools/science_and_technology/primes/primes_nearestprim
 import 'package:gc_wizard/tools/science_and_technology/primes/primes_nthprime/widget/primes_nthprime.dart';
 import 'package:gc_wizard/tools/science_and_technology/primes/primes_primeindex/widget/primes_primeindex.dart';
 import 'package:gc_wizard/tools/science_and_technology/projectiles/widget/projectiles.dart';
+import 'package:gc_wizard/tools/science_and_technology/punycode/widget/punycode.dart';
 import 'package:gc_wizard/tools/science_and_technology/quadratic_equation/widget/quadratic_equation.dart';
 import 'package:gc_wizard/tools/science_and_technology/recycling/widget/recycling.dart';
 import 'package:gc_wizard/tools/science_and_technology/regex/widget/regex.dart';
@@ -966,16 +972,6 @@ void initializeRegistry(BuildContext context) {
         searchKeys: const [
           'periodictable',
           'elementsofgeocaching',
-        ]),
-    GCWTool(
-        tool: const EllipsoidTrianglePointsSelection(),
-        id: 'triangle_ellipsoid_selection',
-        iconPath: 'lib/tools/coords/_common/assets/icons/icon_triangle_points.png',
-        categories: const [
-          ToolCategory.COORDINATES
-        ],
-        searchKeys: const [
-          'esotericprogramminglanguage',
         ]),
     GCWTool(
         tool: const EnclosedAreas(),
@@ -1714,8 +1710,7 @@ void initializeRegistry(BuildContext context) {
               context: context,
               author: 'Dennis \'dennistreysa\' P.',
               title: 'Py-Ramid',
-              sourceUrl:
-                  'https://web.archive.org/web/20240819161342/https://github.com/dennistreysa/Py-Ramid',
+              sourceUrl: 'https://web.archive.org/web/20240819161342/https://github.com/dennistreysa/Py-Ramid',
               licenseType: ToolLicenseType.GPL3,
               licenseUrl:
                   'https://web.archive.org/web/20240819161613/https://github.com/dennistreysa/Py-Ramid?tab=GPL-3.0-1-ov-file'),
@@ -1782,8 +1777,7 @@ void initializeRegistry(BuildContext context) {
           context: context,
           author: 'de.wikipedia.org and contributors',
           title: 'Zielcode',
-          sourceUrl:
-              'https://de.wikipedia.org/w/index.php?title=Zielcode&oldid=246247471')
+          sourceUrl: 'https://de.wikipedia.org/w/index.php?title=Zielcode&oldid=246247471')
     ]),
     GCWTool(tool: const PiSelection(), id: 'pi_selection', categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY
@@ -1800,8 +1794,7 @@ void initializeRegistry(BuildContext context) {
           context: context,
           author: 'Physical Measurement Laboratory of NIST',
           title: 'Fundamental Physical Constants',
-          sourceUrl:
-          'https://web.archive.org/web/20240926130440/https://physics.nist.gov/cuu/Constants/index.html',
+          sourceUrl: 'https://web.archive.org/web/20240926130440/https://physics.nist.gov/cuu/Constants/index.html',
           licenseType: ToolLicenseType.PUBLIC_DOMAIN),
     ]),
     GCWTool(tool: Playfair(), id: 'playfair', categories: const [
@@ -1874,6 +1867,18 @@ void initializeRegistry(BuildContext context) {
     ], searchKeys: const [
       'projectiles',
     ], licenses: const []),
+    GCWTool(tool: const Punycode(), id: 'punycode', categories: const [
+      ToolCategory.SCIENCE_AND_TECHNOLOGY
+    ], searchKeys: const [
+      'punycode',
+    ], licenses: [
+      ToolLicenseOnlineArticle(
+          context: context,
+          author: '',
+          title: 'IDNA Punycode',
+          sourceUrl: 'https://web.archive.org/web/20260316201152/https://datatracker.ietf.org/doc/html/rfc3492',
+          licenseUrl: 'https://web.archive.org/web/20260312003021/https://www.rfc-editor.org/rfc/rfc3492.html#page-35')
+    ]),
     GCWTool(tool: const QrCode(), id: 'qr_code', categories: const [
       ToolCategory.IMAGES_AND_FILES
     ], searchKeys: const [
@@ -3675,6 +3680,30 @@ void initializeRegistry(BuildContext context) {
         ],
         licenses: const []),
     GCWTool(
+        tool: const OrthogonalProjectionBearing(),
+        id: 'coords_orthogonalprojection_bearing',
+        iconPath: 'lib/tools/coords/_common/assets/icons/icon_orthogonalprojection_bearing.png',
+        categories: const [
+          ToolCategory.COORDINATES
+        ],
+        searchKeys: const [
+          'coordinates',
+          'coordinates_orthogonalprojection',
+        ],
+        licenses: [stl._toolLicenseMitre]),
+    GCWTool(
+        tool: const OrthogonalProjectionTwoPoints(),
+        id: 'coords_orthogonalprojection_twopoints',
+        iconPath: 'lib/tools/coords/_common/assets/icons/icon_orthogonalprojection_twopoints.png',
+        categories: const [
+          ToolCategory.COORDINATES
+        ],
+        searchKeys: const [
+          'coordinates',
+          'coordinates_orthogonalprojection',
+        ],
+        licenses: [stl._toolLicenseMitre]),
+    GCWTool(
         tool: const Intersection(),
         id: 'coords_intersection',
         iconPath: 'lib/tools/coords/_common/assets/icons/icon_intersection.png',
@@ -3756,7 +3785,16 @@ void initializeRegistry(BuildContext context) {
           'coordinates_ellipsoidtransform',
         ],
         licenses: const []),
-
+    GCWTool(
+        tool: const EllipsoidTrianglePointsSelection(),
+        id: 'triangle_ellipsoid_selection',
+        iconPath: 'lib/tools/coords/_common/assets/icons/icon_triangle_points.png',
+        categories: const [
+          ToolCategory.COORDINATES
+        ],
+        searchKeys: const [
+          'esotericprogramminglanguage',
+        ]),
     //Countries Selection ******************************************************************************************
 
     GCWTool(
@@ -3983,64 +4021,6 @@ void initializeRegistry(BuildContext context) {
         stl._toolLicenseElementsOfGeocachingGeocacherMagazine,
         stl._toolLicenseElementsOfGeocachingGeocachenBE,
       ]),
-
-    // EllipsoidTrianglePointsSelection ***************************************************
-    GCWTool(
-        tool: const TriangleNapoleonPoints(),
-        id: 'triangle_point_napoleon',
-        searchKeys: const [
-          'triangle',
-        ],
-        ),
-    GCWTool(
-      tool: const TriangleSideMidPoints(),
-      id: 'triangle_point_sidesmidpoint',
-      searchKeys: const [
-        'triangle',
-      ],
-    ),
-    GCWTool(
-      tool: const TriangleIncircle(),
-      id: 'triangle_point_incircle',
-      searchKeys: const [
-        'triangle',
-      ],
-    ),
-    GCWTool(
-      tool: const TriangleCircumCircle(),
-      id: 'triangle_point_circumcircle',
-      searchKeys: const [
-        'triangle',
-      ],
-    ),
-    GCWTool(
-      tool: const TriangleCenterOfGravity(),
-      id: 'triangle_point_centerofgravity',
-      searchKeys: const [
-        'triangle',
-      ],
-    ),
-    GCWTool(
-      tool: const TriangleOrthocenter(),
-      id: 'triangle_point_orthocenter',
-      searchKeys: const [
-        'triangle',
-      ],
-    ),
-    GCWTool(
-      tool: const TriangleExcircles(),
-      id: 'triangle_point_excircles',
-      searchKeys: const [
-        'triangle',
-      ],
-    ),
-    GCWTool(
-      tool: const TriangleGergonnePoint(),
-      id: 'triangle_point_gergonne',
-      searchKeys: const [
-        'triangle',
-      ],
-    ),
 
     // EllipsoidTrianglePointsSelection ***************************************************
     GCWTool(
@@ -5671,6 +5651,14 @@ void initializeRegistry(BuildContext context) {
             'https://web.archive.org/web/20251105212042/https://www.spektrum.de/kolumne/das-geheimnis-um-geeignete-zahlen/2283662',
           ),
         ]),
+    GCWTool(
+        tool: const NumberSequenceLookAndSaySelection(),
+        id: 'numbersequence_look_and_saynumbers',
+        searchKeys: const [
+          'numbers',
+          'numbersequence',
+          'numbersequence_look_and_saynumbersselection',
+        ]),
 
     //NumberSequenceSelection SuitableNumbers ****************************************************************************************
     GCWTool(
@@ -5754,7 +5742,7 @@ void initializeRegistry(BuildContext context) {
         id_prefix: 'busy_beaver_',
         searchKeys: const []),
 
-    //NumberSequenceSelection Carmichael NUmbers ****************************************************************************************
+    //NumberSequenceSelection Carmichael Numbers ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceCarmichaelNumbersNthNumber(),
         id: 'numbersequence_nth',
@@ -5781,7 +5769,7 @@ void initializeRegistry(BuildContext context) {
         id_prefix: 'carmichaelnumbers_',
         searchKeys: const []),
 
-    //NumberSequenceSelection Sphenic NUmbers ****************************************************************************************
+    //NumberSequenceSelection Sphenic Numbers ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceSphenicNumbersNthNumber(),
         id: 'numbersequence_nth',
@@ -6658,6 +6646,41 @@ void initializeRegistry(BuildContext context) {
         id: 'numbersequence_containsdigits',
         id_prefix: 'primes_',
         searchKeys: const []),
+
+    //NumberSequenceSelection Look and Say ****************************************************************************************
+    GCWTool(
+        tool: const NumberSequenceLookAndSayNthNumber(),
+        id: 'numbersequence_nth',
+        id_prefix: 'lookandsay_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceLookAndSayRange(),
+        id: 'numbersequence_range',
+        id_prefix: 'lookandsay_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceLookAndSayCheckNumber(),
+        id: 'numbersequence_check',
+        id_prefix: 'lookandsay_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceLookAndSayDigits(),
+        id: 'numbersequence_digits',
+        id_prefix: 'lookandsay_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const NumberSequenceLookAndSayContainsDigits(),
+        id: 'numbersequence_containsdigits',
+        id_prefix: 'lookandsay_',
+        searchKeys: const []),
+    GCWTool(
+        tool: const LookAndSayText(),
+        id: 'look_and_say',
+        searchKeys: const [
+          'numbers',
+          'numbersequence',
+          'numbersequence_look_and_saynumbersselection'
+        ]),
 
     //PeriodicTableSelection ***************************************************************************************
     GCWTool(
