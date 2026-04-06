@@ -75,3 +75,22 @@ bool equalsBearing(double a, double b, {double tolerance = 1e-10}) {
 
   return false;
 }
+
+// Calculates Angle (-360 <= angle <= 360) between two bearings.
+// If bearingB >= bearingA -> Angle is Clockwise, Result is >= 0
+// If bearingA > bearingB -> Angle is Counterclockwise, Result is < 0
+double normalizedAngleBetweenBearings(double bearingA, double bearingB) {
+  var _bearingA = normalizeBearing(bearingA);
+  var _bearingB = normalizeBearing(bearingB);
+  var angle = _bearingB - _bearingA;
+
+  while (angle > 360) {
+    angle -= 360;
+  }
+
+  while (angle < -360) {
+    angle += 360;
+  }
+
+  return angle;
+}

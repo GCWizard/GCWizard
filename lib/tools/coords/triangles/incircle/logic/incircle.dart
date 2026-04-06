@@ -9,7 +9,7 @@ import 'package:gc_wizard/tools/coords/triangles/_common/triangles.dart';
 import 'package:latlong2/latlong.dart';
 
 Circle calculateEllipsoidTriangleInCircle(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
-  var clockwiseOrdered = orderTrianglePointsClockwise(a, b, c, ellipsoid);
+  var clockwiseOrdered = orderEllipsoidTrianglePointsClockwise(a, b, c, ellipsoid);
   var _a = clockwiseOrdered[0];
   var _b = clockwiseOrdered[1];
   var _c = clockwiseOrdered[2];

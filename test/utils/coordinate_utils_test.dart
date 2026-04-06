@@ -195,4 +195,52 @@ void main() {
       });
     }
   });
+
+  group('CoordinateUtils.normalizedAngleBetweenBearings:', () {
+    List<Map<String, double>> _inputsToExpected = [
+      {'bearingA' : 0.0, 'bearingB': 0.0,'expectedOutput': 0.0},
+      {'bearingA' : -0.0, 'bearingB': 0.0,'expectedOutput': 0.0},
+      {'bearingA' : -0.0, 'bearingB': -0.0,'expectedOutput': 0.0},
+      {'bearingA' : 0.0, 'bearingB': -0.0,'expectedOutput': -0.0},
+
+      {'bearingA' : 360.0, 'bearingB': 0.0,'expectedOutput': -360.0},
+      {'bearingA' : 0.0, 'bearingB': 360.0,'expectedOutput': 360.0},
+      {'bearingA' : 350.0, 'bearingB': -10.0,'expectedOutput': -360.0},
+      {'bearingA' : -10.0, 'bearingB': 350.0,'expectedOutput': 360.0},
+      {'bearingA' : 370.0, 'bearingB': 10.0,'expectedOutput': -360.0},
+      {'bearingA' : 10.0, 'bearingB': 370.0,'expectedOutput': 360.0},
+      {'bearingA' : -10.0, 'bearingB': -10.0,'expectedOutput': 0.0},
+      {'bearingA' : 370.0, 'bearingB': 370.0,'expectedOutput': 0.0},
+      {'bearingA' : -370.0, 'bearingB': -370.0,'expectedOutput': 0.0},
+      {'bearingA' : -370.0, 'bearingB': -10.0,'expectedOutput': 360.0},
+      {'bearingA' : -10.0, 'bearingB': -370.0,'expectedOutput': -360.0},
+      {'bearingA' : -360.0, 'bearingB': -360.0,'expectedOutput': 0.0},
+      {'bearingA' : -360.0, 'bearingB': 0.0,'expectedOutput': 360.0},
+      {'bearingA' : -360.0, 'bearingB': -0.0,'expectedOutput': 360.0},
+      {'bearingA' : 0.0, 'bearingB': -360.0,'expectedOutput': -360.0},
+      {'bearingA' : -0.0, 'bearingB': -360.0,'expectedOutput': -360.0},
+      {'bearingA' : 360.0, 'bearingB': 720.0,'expectedOutput': 360.0},
+      {'bearingA' : 720.0, 'bearingB': 360.0,'expectedOutput': -360.0},
+      {'bearingA' : 730.0, 'bearingB': 360.0,'expectedOutput': -370.0},
+      {'bearingA' : 730.0, 'bearingB': 370.0,'expectedOutput': -360.0},
+      {'bearingA' : 370.0, 'bearingB': 730.0,'expectedOutput': 360.0},
+      {'bearingA' : 710.0, 'bearingB': 350.0,'expectedOutput': -360.0},
+      {'bearingA' : 350.0, 'bearingB': 710.0,'expectedOutput': 360.0},
+      {'bearingA' : 710.0, 'bearingB': 710.0,'expectedOutput': 0.0},
+      {'bearingA' : 730.0, 'bearingB': 730.0,'expectedOutput': 0.0},
+      {'bearingA' : -730.0, 'bearingB': -730.0,'expectedOutput': 0.0},
+
+      {'bearingA' : 10.0, 'bearingB': 5.0,'expectedOutput': 5.0},
+      {'bearingA' : 5.0, 'bearingB': 10.0,'expectedOutput': 5.0},
+      {'bearingA' : 10.0, 'bearingB': 350.0,'expectedOutput': 340.0},
+      {'bearingA' : 350.0, 'bearingB': 10.0,'expectedOutput': -340.0},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('bearingA: ${elem['bearingA']}, bearingB: ${elem['bearingB']}', () {
+        var _actual = normalizedAngleBetweenBearings(elem['bearingA'] as double, elem['bearingB'] as double);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
 }

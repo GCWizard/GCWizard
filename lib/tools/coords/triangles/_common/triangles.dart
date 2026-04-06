@@ -4,10 +4,13 @@ import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_b
 import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 import 'package:latlong2/latlong.dart';
 
-List<LatLng> orderTrianglePointsClockwise(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
+List<LatLng> orderEllipsoidTrianglePointsClockwise(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
+  // kompletter quatsch. Nutze normalizedAngleBetweenBearings...
+
   var distBearAB = distanceBearing(a, b, ellipsoid);
   var distBearBC = distanceBearing(b, c, ellipsoid);
   var distBearCA = distanceBearing(c, a, ellipsoid);
+
 
   var directionABC = distBearAB.bearingAToB + distBearBC.bearingAToB + distBearCA.bearingAToB;
   var directionACB = distBearCA.bearingBToA + distBearBC.bearingBToA + distBearAB.bearingBToA;
@@ -20,9 +23,12 @@ List<LatLng> orderTrianglePointsClockwise(LatLng a, LatLng b, LatLng c, Ellipsoi
 }
 
 Angles calculateEllipsoidTriangleAngles(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
-  var aAngle = (distanceBearing(a, c, ellipsoid).bearingAToB -
-          distanceBearing(a, b, ellipsoid).bearingAToB)
-      .abs();
+  var clockwiseOrdered = orderEllipsoidTrianglePointsClockwise(a, b, c, ellipsoid);
+  var _a = clockwiseOrdered[0];
+  var _b = clockwiseOrdered[1];
+  var _c = clockwiseOrdered[2];
+
+  var aAngle = (distanceBearing(a, c, ellipsoid).bearingAToB - distanceBearing(a, b, ellipsoid).bearingAToB).abs();
   var bAngle = (distanceBearing(b, c, ellipsoid).bearingAToB -
           distanceBearing(b, a, ellipsoid).bearingAToB)
       .abs();

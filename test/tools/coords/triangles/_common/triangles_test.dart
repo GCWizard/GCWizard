@@ -8,6 +8,75 @@ import 'package:latlong2/latlong.dart';
 
 import '../../../science_and_technology/euclidic_triangle/logic/triangle.dart';
 
+List<Map<String, Object?>> ellipsoidicTriangleTestInputs = [
+  //All On Same Point
+  {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 0), 'inputC': LatLng(0, 0)},
+  {'inputA': LatLng(1, 1), 'inputB': LatLng(1, 1), 'inputC': LatLng(1, 1)},
+  {'inputA': LatLng(52, 13), 'inputB': LatLng(52, 13), 'inputC': LatLng(52, 13)},
+  {'inputA': LatLng(90, 0), 'inputB': LatLng(90, 0), 'inputC': LatLng(90, 0)},
+  {'inputA': LatLng(90, 0), 'inputB': LatLng(90, 0), 'inputC': LatLng(90, 100)},
+  {'inputA': LatLng(-90, 0), 'inputB': LatLng(-90, 0), 'inputC': LatLng(-90, 0)},
+  {'inputA': LatLng(-90, 0), 'inputB': LatLng(-90, 0), 'inputC': LatLng(-90, 100)},
+
+  //Two On Same Point
+  {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 0), 'inputC': LatLng(52,13)},
+  {'inputA': LatLng(52,13), 'inputB': LatLng(0, 0), 'inputC': LatLng(0, 0)},
+  {'inputA': LatLng(90, 0), 'inputB': LatLng(90, 10), 'inputC': LatLng(52,13)},
+  {'inputA': LatLng(-90, 0), 'inputB': LatLng(-90, 10), 'inputC': LatLng(52,13)},
+  {'inputA': LatLng(-90, 0), 'inputB': LatLng(52,13), 'inputC': LatLng(-90, 10)},
+  {'inputA': LatLng(52,13), 'inputB': LatLng(-90, 0), 'inputC': LatLng(-90, 10)},
+
+  //(Nearly) Same Line
+  {'inputA': LatLng(70, 0), 'inputB': LatLng(13.56832726660199, 74.33418761525557), 'inputC': LatLng(38.59552460733987, 62.72751487512538)},
+  {'inputA': LatLng(90, 100), 'inputB': LatLng(0,0), 'inputC': LatLng(-90,50)},
+  {'inputA': LatLng(1, 1), 'inputB': LatLng(2, 2), 'inputC': LatLng(3, 3)}, // NOT SAME LINE IN GEODETICS!
+
+  //Poles
+  {'inputA': LatLng(90, 0), 'inputB': LatLng(90, 1), 'inputC': LatLng(90, -1)},
+  {'inputA': LatLng(-90, 0), 'inputB': LatLng(-90, 1), 'inputC': LatLng(-90, -1)},
+  {'inputA': LatLng(90, 0), 'inputB': LatLng(0,0), 'inputC': LatLng(0, 90)},
+
+  //Antipodes
+  {'inputA': LatLng(-90, 0), 'inputB': LatLng(90, 0), 'inputC': LatLng(-90, 1)},
+  {'inputA': LatLng(-90, 0), 'inputB': LatLng(90, 0), 'inputC': LatLng(0, 0)},
+  {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 180), 'inputC': LatLng(1, 1)},
+  {'inputA': LatLng(1, 1), 'inputB': LatLng(-1, -179), 'inputC': LatLng(-1, -1)},
+
+  //Around Poles
+  {'inputA': LatLng(89.999, 0), 'inputB': LatLng(89.999, 120), 'inputC': LatLng(89.999, -120)},
+  {'inputA': LatLng(-89.999, 0), 'inputB': LatLng(-89.999, 120), 'inputC': LatLng(-89.999, -120)},
+
+  //Equator
+  {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 120), 'inputC': LatLng(0, -120)},
+  {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 1), 'inputC': LatLng(0, 2)},
+  {'inputA': LatLng(0, 0), 'inputB': LatLng(0, -1), 'inputC': LatLng(0, 1)},
+
+  //Around 0/0
+  {'inputA': LatLng(-0.01, 0), 'inputB': LatLng(0.01, -0.01), 'inputC': LatLng(0.01, 0.01)},
+  {'inputA': LatLng(-0.01, 0), 'inputB': LatLng(0.01, 0.01), 'inputC': LatLng(0.01, -0.01)},
+  {'inputA': LatLng(0.01, 0), 'inputB': LatLng(-0.01, -0.01), 'inputC': LatLng(-0.01, 0.01)},
+  {'inputA': LatLng(0.01, 0), 'inputB': LatLng(-0.01, 0.01), 'inputC': LatLng(-0.01, -0.01)},
+
+  //Left and Right from 0 meridian
+  {'inputA': LatLng(50, 0), 'inputB': LatLng(60, -20), 'inputC': LatLng(40, 30)},
+  {'inputA': LatLng(50, 0), 'inputB': LatLng(60, 20), 'inputC': LatLng(40, -30)},
+  {'inputA': LatLng(50, 0), 'inputB': LatLng(60, -20), 'inputC': LatLng(-40, 30)},
+  {'inputA': LatLng(50, 0), 'inputB': LatLng(60, 20), 'inputC': LatLng(-40, -30)},
+  {'inputA': LatLng(50, 0), 'inputB': LatLng(-60, 20), 'inputC': LatLng(40, -30)},
+  {'inputA': LatLng(50, 0), 'inputB': LatLng(-60, -20), 'inputC': LatLng(40, 30)},
+  {'inputA': LatLng(50, 10), 'inputB': LatLng(-60, -20), 'inputC': LatLng(40, 30)},
+  {'inputA': LatLng(50, -10), 'inputB': LatLng(-60, -20), 'inputC': LatLng(40, 30)},
+
+  //Huge Triangle
+  {'inputA': LatLng(49, -156), 'inputB': LatLng(-31, -37), 'inputC': LatLng(67, 5)},
+  {'inputA': LatLng(49, -156), 'inputB': LatLng(67, 5), 'inputC': LatLng(-31, -37)},
+
+  //Misc
+  {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 3), 'inputC': LatLng(4, 0)},
+  {'inputA': LatLng(40, 9), 'inputB': LatLng(42, 9), 'inputC': LatLng(38, 8)},
+  {'inputA': LatLng(40, 9), 'inputB': LatLng(38, 8), 'inputC': LatLng(42, 9)},
+  {'inputA': LatLng(4, -173), 'inputB': LatLng(2, -174), 'inputC': LatLng(0, -9)},
+];
 
 void main() async {
   group("triangle.calculateEllipsoidTriangleAngles:", () {

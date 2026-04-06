@@ -7,6 +7,7 @@ import 'package:gc_wizard/tools/science_and_technology/astronomy/sun_position/lo
 import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/math_utils.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 
 class ShadowLength {
   final double length;
@@ -28,7 +29,7 @@ ShadowLength shadowLength(
   var shadowLen =
       objectHeight * cos(degreesToRadian(sunPosition.altitude)) / sin(degreesToRadian(sunPosition.altitude));
   // Sun is in one Direction, so shadow is the opposite direction
-  var shadowAzimuth = normalizeBearing(sunPosition.azimuth + 180.0);
+  var shadowAzimuth = utils.normalizeBearing(sunPosition.azimuth + 180.0);
 
   var _currentPosition = projection(coords, shadowAzimuth, shadowLen, ells);
 

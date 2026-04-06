@@ -8,6 +8,7 @@ import 'package:gc_wizard/tools/coords/orthogonal_projection/logic/orthogonal_pr
 import 'package:gc_wizard/tools/coords/segment_bearings/logic/segment_bearings.dart';
 import 'package:gc_wizard/tools/coords/triangles/_common/triangles.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 
 class Excircle{
   Circle circle;
@@ -36,7 +37,7 @@ Excircle _calcExCircleOfAOnBC(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid)
 
   var bearingA = distanceBearing(a, intersectionAOnBC, ellipsoid).bearingAToB;
   var bearingB = distanceBearing(b, intersectionBOnAC, ellipsoid).bearingAToB;
-  bearingB = normalizeBearing(bearingB + 90);
+  bearingB = utils.normalizeBearing(bearingB + 90);
 
   var centerPoint = intersectBearings(a, bearingA, b, bearingB, ellipsoid);
 
@@ -47,7 +48,7 @@ Excircle _calcExCircleOfAOnBC(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid)
 }
 
 List<Excircle> calculateEllipsoidTriangleExCircles(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid){
-  var clockwiseOrdered = orderTrianglePointsClockwise(a, b, c, ellipsoid);
+  var clockwiseOrdered = orderEllipsoidTrianglePointsClockwise(a, b, c, ellipsoid);
   var _a = clockwiseOrdered[0];
   var _b = clockwiseOrdered[1];
   var _c = clockwiseOrdered[2];
