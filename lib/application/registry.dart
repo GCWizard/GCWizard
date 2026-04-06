@@ -974,16 +974,6 @@ void initializeRegistry(BuildContext context) {
           'elementsofgeocaching',
         ]),
     GCWTool(
-        tool: const EllipsoidTrianglePointsSelection(),
-        id: 'triangle_ellipsoid_selection',
-        iconPath: 'lib/tools/coords/_common/assets/icons/icon_triangle_points.png',
-        categories: const [
-          ToolCategory.COORDINATES
-        ],
-        searchKeys: const [
-          'esotericprogramminglanguage',
-        ]),
-    GCWTool(
         tool: const EnclosedAreas(),
         id: 'enclosedareas',
         categories: const [
@@ -1883,12 +1873,12 @@ void initializeRegistry(BuildContext context) {
       'punycode',
     ], licenses: [
       ToolLicenseOnlineArticle(
-        context: context,
-        author: '',
-        title: 'IDNA Punycode',
-        sourceUrl: 'https://web.archive.org/web/20260316201152/https://datatracker.ietf.org/doc/html/rfc3492',
-        licenseUrl: 'https://web.archive.org/web/20260312003021/https://www.rfc-editor.org/rfc/rfc3492.html#page-35')
-      ]),
+          context: context,
+          author: '',
+          title: 'IDNA Punycode',
+          sourceUrl: 'https://web.archive.org/web/20260316201152/https://datatracker.ietf.org/doc/html/rfc3492',
+          licenseUrl: 'https://web.archive.org/web/20260312003021/https://www.rfc-editor.org/rfc/rfc3492.html#page-35')
+    ]),
     GCWTool(tool: const QrCode(), id: 'qr_code', categories: const [
       ToolCategory.IMAGES_AND_FILES
     ], searchKeys: const [
@@ -3795,7 +3785,16 @@ void initializeRegistry(BuildContext context) {
           'coordinates_ellipsoidtransform',
         ],
         licenses: const []),
-
+    GCWTool(
+        tool: const EllipsoidTrianglePointsSelection(),
+        id: 'triangle_ellipsoid_selection',
+        iconPath: 'lib/tools/coords/_common/assets/icons/icon_triangle_points.png',
+        categories: const [
+          ToolCategory.COORDINATES
+        ],
+        searchKeys: const [
+          'esotericprogramminglanguage',
+        ]),
     //Countries Selection ******************************************************************************************
 
     GCWTool(
@@ -5660,6 +5659,7 @@ void initializeRegistry(BuildContext context) {
           'numbersequence',
           'numbersequence_look_and_saynumbersselection',
         ]),
+
     //NumberSequenceSelection SuitableNumbers ****************************************************************************************
     GCWTool(
         tool: const NumberSequenceSuitableNumbersNthNumber(),
@@ -6681,6 +6681,7 @@ void initializeRegistry(BuildContext context) {
           'numbersequence',
           'numbersequence_look_and_saynumbersselection'
         ]),
+
     //PeriodicTableSelection ***************************************************************************************
     GCWTool(
         tool: const PeriodicTable(),

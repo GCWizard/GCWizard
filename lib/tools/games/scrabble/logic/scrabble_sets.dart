@@ -63,7 +63,6 @@ class ScrabbleSet {
   }
 }
 
-// TODO Better as class type?
 const Map<String, ScrabbleSet> scrabbleSets = {
   scrabbleID_EN: ScrabbleSet(scrabbleID_EN, 'common_language_english', {
     ' ': _LetterAttribute(0, 2),

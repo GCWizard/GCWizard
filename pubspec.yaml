@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   archive: ^4.0.9
+  audio_decoder: ^0.7.4
   audioplayers: ^6.5.1
   auto_size_text: ^3.0.0
   base32: ^2.2.0
@@ -79,7 +80,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   #flutter_launcher_icons: 0.13.1
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 flutter:
   fonts:

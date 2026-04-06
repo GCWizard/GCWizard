@@ -12,8 +12,8 @@ const int _delimiter = 0x2D; // '-'
   var result = domain.split('.')
       .map((label) {
     if (_needsPunycode(label)) {
-      var _ = encodePunycode(label);
-      return (output: 'xn--' + _.output, errorText: _.errorText);
+      var punycode = encodePunycode(label);
+      return (output: 'xn--' + punycode.output, errorText: punycode.errorText);
     } else {
       return (output: label, errorText: '');
     }

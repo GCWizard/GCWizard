@@ -28,7 +28,7 @@ class DebugOutput {
   DebugOutput(this.pc, this.command, this.stack, this.output);
 }
 
-BeatnikOutput generateBeatnik(var ScrabbleVersion, String output) {
+BeatnikOutput generateBeatnik(String scrabbleVersion, String output) {
   var random = Random();
   int number = 0;
   int h = 0;
@@ -215,7 +215,7 @@ bool _checkNormalize(List<String> instructions) {
   return result;
 }
 
-BeatnikOutput interpretBeatnik(String ScrabbleVersion, String sourcecode, String input) {
+BeatnikOutput interpretBeatnik(String scrabbleVersion, String sourcecode, String input) {
   if (sourcecode.isEmpty) {
     return BeatnikOutput([''], [''], [''], [''], [DebugOutput('', '', '', '')]);
   }
@@ -240,7 +240,7 @@ BeatnikOutput interpretBeatnik(String ScrabbleVersion, String sourcecode, String
 
   for (int i = 0; i < program.length; i++) {
     if (!normalized) {
-      value = scrabbleTextToLetterValues(program[i], ScrabbleVersion)
+      value = scrabbleTextToLetterValues(program[i], scrabbleVersion)
           .whereType<int>()
           .toList()
           .fold(0, (previousValue, element) => previousValue + element);
