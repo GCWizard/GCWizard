@@ -30,6 +30,8 @@ void main() {
       {'expectedOutput' : 'AEINRS..', 'input' : '01234 59090'},
       {'expectedOutput' : 'NORD453...', 'input' : '38147 38944 45553 33899 09090'},
       {'expectedOutput' : 'NACHRICHTNEGATIV.', 'input' : '65966 61390'},
+      {'expectedOutput' : 'FINALBEI123456.', 'input' : '74230 79711 28911 12223 33444 55566 68990'},
+      {'expectedOutput' : 'FINALBEI123UND456CODE789', 'input' : '74230 79711 28911 12223 33898 73738 94445 55666 89728 17318 97778 88999'},
 
       // https://scz.bplaced.net/m.html#kurras
       {'input' : '71286 86195 81452 72768 67112 81427 52307 96541 90781 23181 42752 30791 57276 27278 13903 87423 76079 86909 09090', 'expectedOutput' : 'BITTEVORSICHTBEIORIGINALMATERIAL.KEINEORIGINALESCHICKEN.NURINHALT....'},

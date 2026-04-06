@@ -131,10 +131,8 @@ String _decodeJuno(String input) {
 
   int i = 0;
   while (i < input.length) {
-    print('whil i $i < ${input.length}');
     String? character;
     var code = input.substring(i, i + 1);
-    print(' code $code');
     if (isLetterMode) {
       if (code == _CODE_FOLLOW) {
         if (i + 4 < input.length) {
