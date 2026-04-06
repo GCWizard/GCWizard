@@ -1032,7 +1032,9 @@ void initializeRegistry(BuildContext context) {
         searchKeys: const [
           'esotericprogramminglanguage',
         ]),
-    GCWTool(tool: const EuclidicTriangle(), id: 'triangle_euclidic', categories: const [
+    GCWTool(tool: const EuclidicTriangle(), id: 'triangle_euclidic',
+        isBeta: true,
+        categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY,
     ], searchKeys: const [
       'triangle',

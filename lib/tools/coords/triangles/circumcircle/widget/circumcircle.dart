@@ -124,7 +124,7 @@ class _TriangleCircumCircleState extends State<TriangleCircumCircle> {
     var mapPointCircumCircleCenter = GCWMapPoint(
       point: CircumCenterPoint.center,
       color: COLOR_MAP_CALCULATEDPOINT,
-      markerText: i18n(context, 'triangle_output_incenter'),
+      markerText: i18n(context, 'triangle_output_circumcenter'),
       coordinateFormat: _currentOutputFormat,
       circle: GCWMapCircle(centerPoint: CircumCenterPoint.center, radius: CircumCenterPoint.radius),
       circleColorSameAsPointColor: true,

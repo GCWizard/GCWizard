@@ -56,20 +56,18 @@ const Map<int, String> SIDE_ANGLE_TYPES = {
   0: 'triangle_euclidic_sss',
   1: 'triangle_euclidic_ssw',
   2: 'triangle_euclidic_sws',
-  3: 'triangle_euclidic_sws',
-  4: 'triangle_euclidic_wws',
-  5: 'triangle_euclidic_wsw',
-  6: 'triangle_euclidic_sww',
+  3: 'triangle_euclidic_wws',
+  4: 'triangle_euclidic_wsw',
+  5: 'triangle_euclidic_sww',
 };
 
 const Map<int, List<String>> TRIANGLES_SW_TEXT = {
   0: ['triangle_euclidic_s', 'triangle_euclidic_s', 'triangle_euclidic_s'],
   1: ['triangle_euclidic_s', 'triangle_euclidic_s', 'triangle_euclidic_w'],
   2: ['triangle_euclidic_s', 'triangle_euclidic_w', 'triangle_euclidic_s'],
-  3: ['triangle_euclidic_w', 'triangle_euclidic_s', 'triangle_euclidic_s'],
-  4: ['triangle_euclidic_w', 'triangle_euclidic_w', 'triangle_euclidic_s'],
-  5: ['triangle_euclidic_w', 'triangle_euclidic_s', 'triangle_euclidic_w'],
-  6: ['triangle_euclidic_s', 'triangle_euclidic_w', 'triangle_euclidic_w'],
+  3: ['triangle_euclidic_w', 'triangle_euclidic_w', 'triangle_euclidic_s'],
+  4: ['triangle_euclidic_w', 'triangle_euclidic_s', 'triangle_euclidic_w'],
+  5: ['triangle_euclidic_s', 'triangle_euclidic_w', 'triangle_euclidic_w'],
 };
 
 const Map<String, String> TRIANGLE_LABLES = {

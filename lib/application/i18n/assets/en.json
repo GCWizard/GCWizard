@@ -6707,6 +6707,7 @@
   "triangle_euclidic_sws": "Side, Angle, Side",
   "triangle_euclidic_wws": "Angle, Angle, Side",
   "triangle_euclidic_wsw": "Angle, Side, Angle",
+  "triangle_euclidic_sww": "Side, Angle, Angle",
   "triangle_euclidic_s": "Side",
   "triangle_euclidic_w": "Angle",
   "triangle_euclidic_mode_ssw": "Sides/Angles",
