@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 import 'package:latlong2/latlong.dart';
 
-import 'triangle.dart';
+import 'triangle_test_utils.dart';
 
 void main() {
   group("triangle.latLngToVec3:", () {

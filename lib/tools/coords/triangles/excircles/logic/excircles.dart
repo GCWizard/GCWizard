@@ -29,7 +29,7 @@ Excircle _calcExCircleOfAOnBC(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid)
 
   var distance = max(distBearAB.distance, max(distBearAC.distance, distBearBC.distance));
 
-  var segmentA = segmentBearings(a, bearingAB, bearingAC, distance, 2, ellipsoid);
+  var segmentA = segmentBearings(a, bearingAC, bearingAB, distance, 2, ellipsoid);
   var segmentB = segmentBearings(b, bearingBA, bearingBC, distance, 2, ellipsoid);
 
   var intersectionAOnBC = intersectFourPoints(a, segmentA.points.first, b, c, ellipsoid);

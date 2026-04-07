@@ -58,11 +58,33 @@ void main() {
       {'a': const LatLng(60, 179.9999999999999), 'b': const LatLng(60, -179.9999999999999), 'expectedOutput': true},
       {'a': const LatLng(60, 178.9999999999999), 'b': const LatLng(60, -179.9999999999999), 'expectedOutput': false},
       {'a': const LatLng(60, 179.9999999999999), 'b': const LatLng(-60, -179.9999999999999), 'expectedOutput': false},
+
+      {'a': const LatLng(60, 181), 'b': const LatLng(60, -179), 'expectedOutput': true},
+      {'a': const LatLng(88, 1), 'b': const LatLng(92, -179), 'expectedOutput': true},
     ];
 
     for (var elem in _inputsToExpected) {
       test('a: ${elem['a']}, b:  ${elem['b']}', () {
         var _actual = equalsLatLng(elem['a'] as LatLng, elem['b'] as LatLng);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
+
+  group('CoordinateUtils.equalsLatLngList:', () {
+    List<Map<String, Object>> _inputsToExpected = [
+      {'a': <LatLng>[], 'b': <LatLng>[], 'expectedOutput': true},
+      {'a': <LatLng>[const LatLng(41,21)], 'b': <LatLng>[], 'expectedOutput': false},
+      {'a': <LatLng>[], 'b': <LatLng>[const LatLng(41,21)], 'expectedOutput': false},
+
+      {'a': <LatLng>[const LatLng(41,21)], 'b': <LatLng>[const LatLng(41,21)], 'expectedOutput': true},
+      {'a': <LatLng>[const LatLng(41,21), const LatLng(42,22)], 'b': <LatLng>[const LatLng(41,21)], 'expectedOutput': false},
+      {'a': <LatLng>[const LatLng(41,21), const LatLng(42,22)], 'b': <LatLng>[const LatLng(41,21), const LatLng(42,22)], 'expectedOutput': true},
+      {'a': <LatLng>[const LatLng(41,21)], 'b': <LatLng>[const LatLng(41,21), const LatLng(42,22)], 'expectedOutput': false},    ];
+
+    for (var elem in _inputsToExpected) {
+      test('a: ${elem['a']}, b:  ${elem['b']}', () {
+        var _actual = equalsLatLngList(elem['a'] as List<LatLng>, elem['b'] as List<LatLng>);
         expect(_actual, elem['expectedOutput']);
       });
     }
@@ -221,7 +243,7 @@ void main() {
       {'bearingA' : -0.0, 'bearingB': -360.0,'expectedOutput': -360.0},
       {'bearingA' : 360.0, 'bearingB': 720.0,'expectedOutput': 360.0},
       {'bearingA' : 720.0, 'bearingB': 360.0,'expectedOutput': -360.0},
-      {'bearingA' : 730.0, 'bearingB': 360.0,'expectedOutput': -370.0},
+      {'bearingA' : 730.0, 'bearingB': 360.0,'expectedOutput': -10.0},
       {'bearingA' : 730.0, 'bearingB': 370.0,'expectedOutput': -360.0},
       {'bearingA' : 370.0, 'bearingB': 730.0,'expectedOutput': 360.0},
       {'bearingA' : 710.0, 'bearingB': 350.0,'expectedOutput': -360.0},
@@ -229,8 +251,12 @@ void main() {
       {'bearingA' : 710.0, 'bearingB': 710.0,'expectedOutput': 0.0},
       {'bearingA' : 730.0, 'bearingB': 730.0,'expectedOutput': 0.0},
       {'bearingA' : -730.0, 'bearingB': -730.0,'expectedOutput': 0.0},
+      {'bearingA' : -730.0, 'bearingB': 0.0,'expectedOutput': 10.0},
+      {'bearingA' : 730.0, 'bearingB': 0.0,'expectedOutput': -10.0},
+      {'bearingA' : 0.0, 'bearingB': 730.0,'expectedOutput': 10.0},
+      {'bearingA' : 0.0, 'bearingB': -730.0,'expectedOutput': -10.0},
 
-      {'bearingA' : 10.0, 'bearingB': 5.0,'expectedOutput': 5.0},
+      {'bearingA' : 10.0, 'bearingB': 5.0,'expectedOutput': -5.0},
       {'bearingA' : 5.0, 'bearingB': 10.0,'expectedOutput': 5.0},
       {'bearingA' : 10.0, 'bearingB': 350.0,'expectedOutput': 340.0},
       {'bearingA' : 350.0, 'bearingB': 10.0,'expectedOutput': -340.0},

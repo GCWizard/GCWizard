@@ -3,7 +3,7 @@ part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/
 List<XYPoint> triangleSymmediandPointsXY(XYPoint a, XYPoint b, XYPoint c){
 
   List<XYPoint> sidesMidpoint = [];
-  Sides sides = triangleSidesXY(a, b, c);
+  TriangleSides sides = triangleSidesXY(a, b, c);
 
   XYPoint mA = _vectorAdd(b, _vectorMult(_vectorNormalize(_vectorNormalize(_vectorAB(b, c))), sides.a / 2));
   XYPoint mB = _vectorAdd(a, _vectorMult(_vectorNormalize(_vectorNormalize(_vectorAB(a, c))), sides.b / 2));

@@ -128,18 +128,18 @@ class Triangle{
     return sqrt(s * (s - sd.a) * (s - sd.b) * (s - sd.c));
   }
 
-  Sides get sides => triangleSidesXY(A, B, C);
+  TriangleSides get sides => triangleSidesXY(A, B, C);
 
-  Angles get angles => triangleAnglesXY(A, B, C);
+  TriangleInteriorAngles get angles => triangleAnglesXY(A, B, C);
 
   double get circumference {
     final sd = sides;
     return (sd.a + sd.b + sd.c);
   }
 
-    Sides get altitudes => triangleAltitudesXY(A, B, C);
-    Sides get medians => triangleMediansXY(A, B, C);
-    Sides get anglebisector => triangleAngleBiSectorsXY(A, B, C);
+    TriangleSides get altitudes => triangleAltitudesXY(A, B, C);
+    TriangleSides get medians => triangleMediansXY(A, B, C);
+    TriangleSides get anglebisector => triangleAngleBiSectorsXY(A, B, C);
     List<XYPoint> get sidesMidPoint => triangleSidesMidPointsXY(A, B, C);
     List<XYPoint> get altitudesBasePoint => triangleAltitudesBasePointsXY(A, B, C);
     List<XYCircle> get exCircles => triangleExCirclesXY(A, B, C);

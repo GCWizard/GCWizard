@@ -3,21 +3,40 @@ import 'package:gc_wizard/utils/math_utils.dart';
 import 'package:latlong2/latlong.dart';
 
 bool equalsLatLng(LatLng a, LatLng b, {double tolerance = 1e-10}) {
-  if (doubleEquals(a.latitude.abs(), 90.0) &&
-      doubleEquals(b.latitude.abs(), 90.0) &&
-      a.latitude.sign == b.latitude.sign) {
+  var _a = normalizeLatLon(a.latitude, a.longitude);
+  var _b = normalizeLatLon(b.latitude, b.longitude);
+
+  if (doubleEquals(_a.latitude.abs(), 90.0) &&
+      doubleEquals(_b.latitude.abs(), 90.0) &&
+      _a.latitude.sign == _b.latitude.sign) {
     return true;
   }
 
-  if ((a.latitude - b.latitude).abs() <= tolerance) {
-    if (doubleEquals(a.longitude.abs(), 180.0) && doubleEquals(b.longitude.abs(), 180.0)) return true;
+  if ((_a.latitude - _b.latitude).abs() <= tolerance) {
+    if (doubleEquals(_a.longitude.abs(), 180.0) && doubleEquals(_b.longitude.abs(), 180.0)) return true;
 
-    if ((a.longitude - b.longitude).abs() <= tolerance) return true;
+    if ((_a.longitude - _b.longitude).abs() <= tolerance) return true;
 
-    if ((180.0 - a.longitude.abs()) <= tolerance && (180.0 - b.longitude.abs()) <= tolerance) return true;
+    if ((180.0 - _a.longitude.abs()) <= tolerance && (180.0 - _b.longitude.abs()) <= tolerance) return true;
   }
 
   return false;
+}
+
+bool equalsLatLngList(List<LatLng> a, List<LatLng> b, {double tolerance = 1e-10}) {
+  if (a.length != b.length) {
+    return false;
+  }
+
+  for(var i = 0; i < a.length; i++) {
+    if (equalsLatLng(a[i], b[i], tolerance: tolerance)) {
+      continue;
+    } else {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 double normalizeBearing(double bearing) {
@@ -80,9 +99,7 @@ bool equalsBearing(double a, double b, {double tolerance = 1e-10}) {
 // If bearingB >= bearingA -> Angle is Clockwise, Result is >= 0
 // If bearingA > bearingB -> Angle is Counterclockwise, Result is < 0
 double normalizedAngleBetweenBearings(double bearingA, double bearingB) {
-  var _bearingA = normalizeBearing(bearingA);
-  var _bearingB = normalizeBearing(bearingB);
-  var angle = _bearingB - _bearingA;
+  var angle = bearingB - bearingA;
 
   while (angle > 360) {
     angle -= 360;

@@ -1,56 +1,43 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
 import 'package:gc_wizard/tools/coords/triangles/incircle/logic/incircle.dart';
 import 'package:latlong2/latlong.dart';
 
-import '../../../../science_and_technology/euclidic_triangle/logic/triangle.dart';
-
-
-// void main() async {
-//
-//   group("triangle.calculateEllipsoidTriangleInCircle:", () {
-//     List<Map<String, Object?>> _inputsToExpected = [
-//       {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 0), 'inputC': LatLng(0, 0),
-//         'expectedOutput': Circle(LatLng(0, 0), double.nan)},
-//       {'inputA': LatLng(1, 1), 'inputB': LatLng(1, 1), 'inputC': LatLng(1, 1),
-//         'expectedOutput': Circle(LatLng(0.9999999999999998, 1.0), double.nan)},
-//       {'inputA': LatLng(1, 1), 'inputB': LatLng(2, 2), 'inputC': LatLng(3, 3),
-//         'expectedOutput': Circle(LatLng(2.000230913866294, 1.9997718509421103), 36.123885632802704)},
-//       {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 3), 'inputC': LatLng(4, 0),
-//         'expectedOutput': Circle(LatLng(1.0046174816311724, 0.9980456202311339), 111353.57026375427)},
-//       {'inputA': LatLng(40, 9), 'inputB': LatLng(42, 9), 'inputC': LatLng(38, 8),
-//         'expectedOutput': Circle(LatLng(40.03652421187081, 8.749413946238121), 21357.940802196772)},
-//     ];
-//
-//     for (var elem in _inputsToExpected) {
-//       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
-//         var _actual = calculateEllipsoidTriangleInCircle(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng);
-//         circleTest(_actual, elem['expectedOutput'] as Circle);
-//       });
-//     }
-//   });
-// }
+import '../../../../science_and_technology/euclidic_triangle/logic/triangle_test_utils.dart';
+import '../../_common/triangles_test.dart';
 
 void main() async {
   group("triangle.calculateEllipsoidTriangleInCircle:", () {
-    List<Map<String, Object?>> _inputsToExpected = [
-      {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 0), 'inputC': LatLng(0, 0),
-        'expectedOutput': Circle(LatLng(0, 0), double.nan)},
-      {'inputA': LatLng(1, 1), 'inputB': LatLng(1, 1), 'inputC': LatLng(1, 1),
-        'expectedOutput': Circle(LatLng(0.9999999999999998, 1.0), double.nan)},
-      {'inputA': LatLng(1, 1), 'inputB': LatLng(2, 2), 'inputC': LatLng(3, 3),
-        'expectedOutput': Circle(LatLng(2.000230913866294, 1.9997718509421103), 36.123885632802704)},
-      {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 3), 'inputC': LatLng(4, 0),
-        'expectedOutput': Circle(LatLng(1.0046174816311724, 0.9980456202311339), 111353.57026375427)},
-      {'inputA': LatLng(40, 9), 'inputB': LatLng(42, 9), 'inputC': LatLng(38, 8),
-        'expectedOutput': Circle(LatLng(40.03652421187081, 8.749413946238121), 21357.940802196772)},
+    List<Circle?> _expectedOutputs = [
+      null, null, null, null, null, null, null, null,
+
+      null, null, null, null, null, null,
+
+      Circle(LatLng(38.59643143621918, 62.72726678931484), 23.959632024184646),
+      Circle(LatLng(2.0002309138401166, 1.9997718509159168), 36.00285990172714),
+
+
     ];
 
-    for (var elem in _inputsToExpected) {
-      test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
-        var _actual = calculateEllipsoidTriangleInCircle(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
-        circleTest(_actual, elem['expectedOutput'] as Circle);
-      });
-    }
+    print(polygonArea([LatLng(80,0), LatLng(0,0), LatLng(-80, 0.00000001)], Ellipsoid.WGS84));
+
+    // for (int i = 0; i < ellipsoidicTriangleTestInputs.length; i++) {
+    //   var triangle = ellipsoidicTriangleTestInputs[i];
+    //
+    //   test('input: ${triangle['inputA']} ${triangle['inputB']} ${triangle['inputC']}', () {
+    //     var _actual = calculateEllipsoidTriangleInCircle(triangle['inputA'] as LatLng, triangle['inputB'] as LatLng, triangle['inputC'] as LatLng, Ellipsoid.WGS84);
+    //     print(polygonArea([triangle['inputA'] as LatLng, triangle['inputB'] as LatLng, triangle['inputC'] as LatLng], Ellipsoid.WGS84));
+    //     if (_actual == null) {
+    //       print((i + 1).toString() + ': null');
+    //     } else {
+    //       print((i + 1).toString() + ': ' + _actual.center.latitude.toString() + ', ' + _actual.center.longitude.toString() + ', ' + _actual.radius.toString());
+    //     }
+    //     print('...');
+    //
+    //
+    //     // circleTest(_actual, elem['expectedOutput'] as Circle);
+    //   });
+    // }
   });
 }

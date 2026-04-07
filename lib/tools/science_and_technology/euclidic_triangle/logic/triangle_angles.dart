@@ -1,8 +1,8 @@
 part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
-Angles triangleAnglesXY(XYPoint a, XYPoint b, XYPoint c) {
+TriangleInteriorAngles triangleAnglesXY(XYPoint a, XYPoint b, XYPoint c) {
   // https://de.wikipedia.org/wiki/Dreieck#Berechnung_eines_beliebigen_Dreiecks Kosinussatz
-  return Angles(
+  return TriangleInteriorAngles(
       alpha: 180 /
           pi *
           acos(_vectorProductDot(_vectorAB(a, b), _vectorAB(a, c)) /

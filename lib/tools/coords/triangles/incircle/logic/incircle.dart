@@ -6,9 +6,14 @@ import 'package:gc_wizard/tools/coords/intersect_lines/intersect_four_points/log
 import 'package:gc_wizard/tools/coords/orthogonal_projection/logic/orthogonal_projection.dart';
 import 'package:gc_wizard/tools/coords/segment_bearings/logic/segment_bearings.dart';
 import 'package:gc_wizard/tools/coords/triangles/_common/triangles.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:latlong2/latlong.dart';
 
-Circle calculateEllipsoidTriangleInCircle(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
+Circle? calculateEllipsoidTriangleInCircle(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
+  if (equalsLatLng(a, b) || equalsLatLng(b, c) || equalsLatLng(c, a)) {
+    return null;
+  }
+
   var clockwiseOrdered = orderEllipsoidTrianglePointsClockwise(a, b, c, ellipsoid);
   var _a = clockwiseOrdered[0];
   var _b = clockwiseOrdered[1];
@@ -26,7 +31,7 @@ Circle calculateEllipsoidTriangleInCircle(LatLng a, LatLng b, LatLng c, Ellipsoi
   var distance = max(distBearAB.distance, max(distBearAC.distance, distBearBC.distance));
 
   var segmentA = segmentBearings(_a, bearingAB, bearingAC, distance, 2, ellipsoid);
-  var segmentB = segmentBearings(_b, bearingBA, bearingBC, distance, 2, ellipsoid);
+  var segmentB = segmentBearings(_b, bearingBC, bearingBA, distance, 2, ellipsoid);
 
   var intersection = intersectFourPoints(_a, segmentA.points.first, _b, segmentB.points.first, ellipsoid);
   var project = orthogonalProjectionTwoPoints(intersection, _a, _b, ellipsoid);

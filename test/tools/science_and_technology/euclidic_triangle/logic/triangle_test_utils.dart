@@ -8,9 +8,9 @@ String toTriangleObjectString(Object? o) {
     return '(${o.x}, ${o.y})';
   } else if (o is List<XYPoint>) {
     return o.map((e) => toTriangleObjectString(e)).join(', ');
-  } else if (o is Sides) {
+  } else if (o is TriangleSides) {
     return '(${o.a}, ${o.b}, ${o.c})';
-  } else if (o is Angles) {
+  } else if (o is TriangleInteriorAngles) {
     return '(${o.alpha}, ${o.beta}, ${o.gamma})';
   } else if (o is TriLinearPoint) {
     return '(${o.a}, ${o.b}, ${o.c})';
@@ -64,7 +64,7 @@ void pointListTest(List<XYPoint>? pL1, List<XYPoint>? pL2) {
   }
   }
 
-void sidesTest(Sides s1, Sides s2) {
+void sidesTest(TriangleSides s1, TriangleSides s2) {
   if (s1.a.isNaN || s1.b.isNaN || s1.c.isNaN) {
     expect(s1.a.isNaN, s2.a.isNaN);
     expect(s1.b.isNaN, s2.b.isNaN);
@@ -76,7 +76,7 @@ void sidesTest(Sides s1, Sides s2) {
   }
 }
 
-void anglesTest(Angles? a1, Angles? a2) {
+void anglesTest(TriangleInteriorAngles? a1, TriangleInteriorAngles? a2) {
   if (a1 == null || a2 == null) {
     return expect(a1, a2);
   } else if (a1.alpha.isNaN || a1.beta.isNaN || a1.gamma.isNaN) {
@@ -112,22 +112,11 @@ void circlesListTest(List<XYCircle> cL1, List<XYCircle> cL2) {
 }
 
 void latLngTest(LatLng a, LatLng b) {
-  if (a.latitude.isNaN || a.longitude.isNaN) {
-    expect(a.latitude.isNaN, b.latitude.isNaN);
-    expect(a.longitude.isNaN, b.longitude.isNaN);
-  } else if (a.latitude.isInfinite || a.longitude.isInfinite) {
-      expect(a.latitude.isInfinite, b.latitude.isInfinite);
-      expect(a.longitude.isInfinite, b.longitude.isInfinite);
-  } else {
-    expect(true, equalsLatLng(a, b));
-  }
+  expect(true, equalsLatLng(a, b));
 }
 
 void latLngListTest(List<LatLng> aL1, List<LatLng> bL2) {
-  expect(aL1.length, bL2.length);
-  for(var i = 0; i < aL1.length; i++) {
-    latLngTest(aL1[i], bL2[i]);
-  }
+  expect(true, equalsLatLngList(aL1, bL2));
 }
 
 void circleTest(Circle a1, Circle a2) {

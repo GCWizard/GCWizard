@@ -4,7 +4,7 @@ import 'package:gc_wizard/tools/coords/centerpoint/center_three_points/logic/cen
 import 'package:gc_wizard/tools/coords/centerpoint/logic/centerpoint_distance.dart';
 import 'package:latlong2/latlong.dart';
 
-import '../../../../science_and_technology/euclidic_triangle/logic/triangle.dart';
+import '../../../../science_and_technology/euclidic_triangle/logic/triangle_test_utils.dart';
 
 void main() async {
   group("triangle.calculateEllipsoidTriangleCircumCircle:", () {

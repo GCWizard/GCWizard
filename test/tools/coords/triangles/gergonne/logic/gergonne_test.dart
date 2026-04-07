@@ -3,7 +3,7 @@ import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/triangles/gergonne/logic/gergonne.dart';
 import 'package:latlong2/latlong.dart';
 
-import '../../../../science_and_technology/euclidic_triangle/logic/triangle.dart';
+import '../../../../science_and_technology/euclidic_triangle/logic/triangle_test_utils.dart';
 
 void main() async {
   group("triangle.calculateEllipsoidTriangleGergonnePoint:", () {

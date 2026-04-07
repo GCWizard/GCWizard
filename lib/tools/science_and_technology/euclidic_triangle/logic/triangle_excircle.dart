@@ -5,7 +5,7 @@ List<XYCircle> triangleExCirclesXY(XYPoint a, XYPoint b, XYPoint c) {
   // https://en.wikipedia.org/wiki/Incircle_and_excircles_of_a_triangle
   List<XYCircle> exCircle = [];
 
-  final Sides sides = triangleSidesXY(a, b, c);
+  final TriangleSides sides = triangleSidesXY(a, b, c);
   final double area = triangleAreaXY(a, b, c);
 
   final as = sides.a;
