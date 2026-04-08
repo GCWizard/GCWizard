@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:audio_decoder/audio_decoder.dart';
+import 'package:gc_wizard/tools/images_and_files/waveform/logic/waveform_rms_image.dart';
 import 'package:gc_wizard/utils/file_utils/file_utils.dart';
 
 part 'package:gc_wizard/tools/images_and_files/waveform/logic/waveform_classes.dart';
