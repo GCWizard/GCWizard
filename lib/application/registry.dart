@@ -356,6 +356,7 @@ import 'package:gc_wizard/tools/images_and_files/qr_code/widget/qr_code.dart';
 import 'package:gc_wizard/tools/images_and_files/stegano/widget/stegano.dart';
 import 'package:gc_wizard/tools/images_and_files/tupper_formula/widget/tupper_formula.dart';
 import 'package:gc_wizard/tools/images_and_files/visual_cryptography/widget/visual_cryptography.dart';
+import 'package:gc_wizard/tools/images_and_files/waveform/widget/waveform.dart';
 import 'package:gc_wizard/tools/science_and_technology/alcohol_mass/widget/alcohol_mass.dart';
 import 'package:gc_wizard/tools/science_and_technology/alphabet_number_systems/hebrew/widget/hebrew_number_system.dart';
 import 'package:gc_wizard/tools/science_and_technology/alphabet_number_systems/milesian/widget/milesian_number_system.dart';
@@ -2360,6 +2361,11 @@ void initializeRegistry(BuildContext context) {
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
       'wasd',
+    ]),
+    GCWTool(tool: const WaveForm(), id: 'waveform', categories: const [
+      ToolCategory.IMAGES_AND_FILES
+    ], searchKeys: const [
+      'waveform',
     ]),
     GCWTool(
         tool: const WherigoSelection(),
