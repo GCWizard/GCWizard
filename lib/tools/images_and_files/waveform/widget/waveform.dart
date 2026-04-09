@@ -17,6 +17,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_double_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
+import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_threeoptionsswitch.dart';
 import 'package:gc_wizard/tools/images_and_files/hex_viewer/widget/hex_viewer.dart';
 import 'package:gc_wizard/tools/images_and_files/waveform/logic/waveform.dart';
@@ -52,6 +53,7 @@ class WaveFormState extends State<WaveForm> {
   bool _parseError = false;
   bool _spectrumCreated = false;
   bool _fileLoaded = false;
+  bool _currentExpertMode = false;
 
   int _currentSmoothingWindow = 5;
   double _currentThresholdFactor = 4.0;
@@ -74,6 +76,24 @@ class WaveFormState extends State<WaveForm> {
     _bytes = bytes;
   }
 
+  void _resetData() {
+    _decodedMorseCode = '';
+    _decodedMorseText = '';
+    _currentError = '';
+
+    _parseError = false;
+    _spectrumCreated = false;
+    _fileLoaded = false;
+    _currentExpertMode = false;
+
+    _currentSmoothingWindow = 5;
+    _currentThresholdFactor = 4.0;
+    _currentMinRunLength = 3;
+    _currentUnitTolerance = 0.40;
+
+    _currentMode = 1;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -88,15 +108,21 @@ class WaveFormState extends State<WaveForm> {
             }
             setState(() {
               _setData(_file.bytes);
+              _resetData();
               _fileLoaded = true;
             });
-            _audioInfo = await getSoundfileAudioInfo(_bytes);
+            getSoundfileAudioInfo(_bytes).then((value) {
+              setState(() {
+                _audioInfo = value;
+              });
+            });
           },
         ),
         _fileLoaded ? _buildOutputSoundPlayer() : Container(),
         _fileLoaded ? _buildOutputCalculateButton() : Container(),
         _spectrumCreated ? _buildOutputWaveFormImage() : Container(),
-        _fileLoaded ? _buildOutputDecodingParameter() : Container(),
+        _fileLoaded ? _buildExpertMode() : Container(),
+        _currentExpertMode ? _buildOutputDecodingParameter() : Container(),
         _spectrumCreated ? _buildOutputWaveFormMorse() : Container(),
         _fileLoaded ? _buildOutputWaveFormInfo() : Container(),
         _fileLoaded ? _buildOutputHexView() : Container(),
@@ -135,6 +161,18 @@ class WaveFormState extends State<WaveForm> {
         },
       ),
     ]);
+  }
+
+  Widget _buildExpertMode() {
+    return GCWOnOffSwitch(
+      value: _currentExpertMode,
+      title: i18n(context, 'waveform_expertmode'),
+      onChanged: (value) {
+        setState(() {
+          _currentExpertMode = value;
+        });
+      },
+    );
   }
 
   Widget _buildOutputDecodingParameter() {
@@ -333,7 +371,6 @@ class WaveFormState extends State<WaveForm> {
   }
 
   void _showOutput(WaveformAndMorseResult output) {
-
     if (output.status == PARSE_STATUS.ERROR) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {
@@ -344,17 +381,13 @@ class WaveFormState extends State<WaveForm> {
       });
     } else {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-
         _soundfilePNGImage = output.pngBytes;
         _decodedMorseCode = output.morse;
         _decodedMorseText = output.text;
         _spectrumCreated = true;
         _parseError = false;
-        setState(() {
-
-        });
+        setState(() {});
       });
     }
-
   }
 }
