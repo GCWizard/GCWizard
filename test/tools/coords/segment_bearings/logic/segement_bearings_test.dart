@@ -50,6 +50,8 @@ void main() {
       {'coord': LatLng(0,0), 'bearing1': 359.0, 'bearing2': 358.0, 'distance': 1000.0, 'countSegments': 2, 'expectedOutput': SegmentedAngle([LatLng(-0.009040595721398335, 0.00023515152950415738)], 179.5)},
       {'coord': LatLng(0,0), 'bearing1': 359.0, 'bearing2': 1.0, 'distance': 1000.0, 'countSegments': 2, 'expectedOutput': SegmentedAngle([LatLng(0.009043694769749644, 0.0)], 1.0)},
       {'coord': LatLng(0,0), 'bearing1': 1.0, 'bearing2': 359.0, 'distance': 1000.0, 'countSegments': 2, 'expectedOutput': SegmentedAngle([LatLng(-0.009043694769749644, 0.0)], 179.0)},
+      {'coord': LatLng(0,0), 'bearing1': 358.0, 'bearing2': 0.0, 'distance': 1000.0, 'countSegments': 2, 'expectedOutput': SegmentedAngle([LatLng(0.009042317371220963, -0.00015677763576604775)], 1.0)},
+      {'coord': LatLng(0,180), 'bearing1': 358.0, 'bearing2': 0.0, 'distance': 1000.0, 'countSegments': 2, 'expectedOutput': SegmentedAngle([LatLng(0.009042317371220963, 179.99984322236423)], 1.0)},
     ];
 
     for (var elem in _inputsToExpected) {

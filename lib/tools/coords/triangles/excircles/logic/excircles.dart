@@ -6,7 +6,7 @@ import 'package:gc_wizard/tools/coords/intersect_lines/intersect_bearings/logic/
 import 'package:gc_wizard/tools/coords/intersect_lines/intersect_four_points/logic/intersect_four_points.dart';
 import 'package:gc_wizard/tools/coords/orthogonal_projection/logic/orthogonal_projection.dart';
 import 'package:gc_wizard/tools/coords/segment_bearings/logic/segment_bearings.dart';
-import 'package:gc_wizard/tools/coords/triangles/_common/triangles.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangles.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 

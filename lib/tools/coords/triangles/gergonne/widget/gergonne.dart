@@ -96,6 +96,10 @@ class _TriangleGergonnePointState extends State<TriangleGergonnePoint> {
         _currentCoords2.toLatLng()!,
         _currentCoords3.toLatLng()!, defaultEllipsoid);
 
+    if (gergonnePoint == null) {
+      return;
+    }
+
     _currentOutput = [
       buildCoordinate(_currentOutputFormat, gergonnePoint),
     ];

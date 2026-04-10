@@ -23,7 +23,7 @@ void main() async {
     for (var elem in _inputsToExpected) {
       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
         var _actual = calculateEllipsoidTriangleGergonnePoint(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
-        latLngTest(_actual, elem['expectedOutput'] as LatLng);
+        latLngTest(_actual!, elem['expectedOutput'] as LatLng);
       });
     }
   });

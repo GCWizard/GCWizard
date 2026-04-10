@@ -102,6 +102,10 @@ class _TriangleIncircleState extends State<TriangleIncircle> {
         _currentCoords2.toLatLng()!,
         _currentCoords3.toLatLng()!, defaultEllipsoid);
 
+    if (inCenterPoint == null) {
+      return;
+    }
+
     _currentOutput = [buildCoordinate(_currentOutputFormat, inCenterPoint.center) as Object];
     _currentOutput.add(GCWOutputText(
       text: '${i18n(context, 'common_radius')}: ${doubleFormat.format(_currentOutputUnit.fromMeter(inCenterPoint.radius))} ${_currentOutputUnit.symbol}',
