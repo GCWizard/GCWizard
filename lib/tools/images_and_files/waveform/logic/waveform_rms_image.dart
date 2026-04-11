@@ -1,8 +1,12 @@
+import 'dart:isolate';
 import 'dart:math' as math;
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'dart:ui' as ui;
 import 'dart:async';
+
+import 'package:gc_wizard/tools/images_and_files/waveform/logic/waveform.dart';
 
 enum PARSE_STATUS { OK, ERROR }
 
@@ -64,7 +68,6 @@ class _SampleResult {
 class WavParser {
   static Future<WavData> parse(Uint8List bytes) async {
     final bd = ByteData.sublistView(bytes);
-
     // simple RIFF/WAVE-Check
     if (bytes.length < 44) {
       return WavData(
@@ -764,12 +767,13 @@ Future<WaveformAndMorseResult> renderAndAnalyzeWav({
   Color backgroundColor = Colors.black,
   Color waveformColor = Colors.orange,
   double strokeWidth = 1.0,
-  MorseParams params = const MorseParams(
+  MorseParams morseParams = const MorseParams(
     smoothingWindow: 5,
     thresholdFactor: 4.0,
     minRunLength: 3,
     unitTolerance: 0.40,
   ),
+  SendPort? sendAsyncPort
 }) async {
   final wavData = await WavParser.parse(wavBytes);
 
@@ -833,7 +837,7 @@ Future<WaveformAndMorseResult> renderAndAnalyzeWav({
   }
   final pngBytes = pngData.buffer.asUint8List();
 
-  final morse = await analyzeMorseFromWavBytes(wavBytes, params: params);
+  final morse = await analyzeMorseFromWavBytes(wavBytes, params: morseParams);
 
   return WaveformAndMorseResult(
     // rgbaBytes: rgbaBytes,
@@ -846,4 +850,29 @@ Future<WaveformAndMorseResult> renderAndAnalyzeWav({
     status: PARSE_STATUS.OK,
     error: '',
   );
+}
+
+Future<WaveformAndMorseResult> analyseSoundfileAsync(GCWAsyncExecuterParameters? jobData) async {
+  if (jobData?.parameters is! WaveformJobData) {
+    return Future.value(
+      WaveformAndMorseResult(
+          pngBytes: Uint8List.fromList([]),
+          width: 0,
+          height: 0,
+          bits: '',
+          morse: '',
+          text: '',
+          status: PARSE_STATUS.ERROR,
+          error: ''));
+  }
+  var params = jobData!.parameters as WaveformJobData;
+  var output = await renderAndAnalyzeWav(
+      sendAsyncPort: jobData.sendAsyncPort,
+      wavBytes: params.jobDataBytes,
+      height: params.jobHeight,
+      morseParams: params.jobMorseParams,
+  );
+
+  jobData.sendAsyncPort?.send(output);
+  return output;
 }
