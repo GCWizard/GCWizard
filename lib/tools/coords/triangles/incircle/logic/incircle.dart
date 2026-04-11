@@ -6,88 +6,146 @@ import 'package:gc_wizard/tools/coords/intersect_lines/intersect_bearings/logic/
 import 'package:gc_wizard/tools/coords/orthogonal_projection/logic/orthogonal_projection.dart';
 import 'package:gc_wizard/tools/coords/segment_bearings/logic/segment_bearings.dart';
 import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangles.dart';
+import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 
-import 'package:latlong2/latlong.dart';
+double _distanceToGeodesic(LatLng point, LatLng lineStart, LatLng lineEnd, Ellipsoid ellipsoid) {
+  var project = orthogonalProjectionTwoPoints(point, lineStart, lineEnd, ellipsoid);
+  return distanceBearing(point, project, ellipsoid).distance;
+}
 
-Circle? calculateEllipsoidTriangleInCircle(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
+const double _TARGET_PRECISION = 1e-10;
+const int _MAX_ITERATIONS = 5000;
+
+/// Hauptfunktion
+Circle? calculateEllipsoidTriangleIncircle(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
   if (!isValidEllipsoidTriangle(a, b, c, ellipsoid)) {
     return null;
   }
 
+  LatLng _a = utils.normalizeLatLon(a.latitude, a.longitude);
+  LatLng _b = utils.normalizeLatLon(b.latitude, b.longitude);
+  LatLng _c = utils.normalizeLatLon(c.latitude, c.longitude);
+
+  double dAB = distanceBearing(_a, _b, ellipsoid).distance;
+  double dBC = distanceBearing(_b, _c, ellipsoid).distance;
+  double dCA = distanceBearing(_c, _a, ellipsoid).distance;
+
+  LatLng initialGuess = _guessStartpointByIntersectBisectors(_a, _b, _c, ellipsoid)!.center;
+
+  return _optimizeIncenter(initialGuess, _a, _b, _c, dAB, dBC, dCA, ellipsoid);
+}
+
+/// Optimiert den Punkt auf dem Ellipsoid durch Minimierung der Abstands-Varianz
+Circle _optimizeIncenter(LatLng startPoint, LatLng a, LatLng b, LatLng c, double dAB, double dBC, double dCA, Ellipsoid ellipsoid) {
+  LatLng currentPoint = startPoint;
+
+  // DYNAMISCHER START-STEP: Max. 25% der längsten Seite, gedeckelt auf 100km.
+  // Das verhindert das Verschwenden von Iterationen bei kleinen Dreiecken.
+  double maxSide = max(dAB, max(dBC, dCA));
+  double stepSize = min(100000.0, maxSide / 4.0);
+  if (stepSize < 1.0) stepSize = 1.0; // Absolutes Minimum für den Start
+
+  double currentCost = _costFunction(currentPoint, a, b, c, ellipsoid);
+  List<double> searchAzimuths = [0, 45, 90, 135, 180, 225, 270, 315];
+  int iterations = 0;
+
+  while (stepSize > _TARGET_PRECISION && iterations < _MAX_ITERATIONS) {
+    bool foundBetter = false;
+
+    for (double az in searchAzimuths) {
+      LatLng testPoint = projection(currentPoint, az, stepSize, ellipsoid);
+      double testCost = _costFunction(testPoint, a, b, c, ellipsoid);
+
+      if (testCost < currentCost) {
+        currentPoint = testPoint;
+        currentCost = testCost;
+        foundBetter = true;
+
+        // MOMENTUM (Beschleuniger): Wenn die Richtung gut ist, geh direkt noch einen Schritt!
+        // Das rettet uns bei extrem flachen/langen Dreiecken massiv Iterationen.
+        LatLng accelPoint = projection(currentPoint, az, stepSize, ellipsoid);
+        double accelCost = _costFunction(accelPoint, a, b, c, ellipsoid);
+        if (accelCost < currentCost) {
+          currentPoint = accelPoint;
+          currentCost = accelCost;
+        }
+        break; // Azimut-Schleife abbrechen, vom neuen Punkt weiterarbeiten
+      }
+    }
+
+    if (!foundBetter) {
+      // Suchraster verfeinern
+      stepSize /= 2.0;
+    }
+    iterations++;
+  }
+
+  var projectA = orthogonalProjectionTwoPoints(currentPoint, b, c, ellipsoid);
+  var projectB = orthogonalProjectionTwoPoints(currentPoint, a, c, ellipsoid);
+  var projectC = orthogonalProjectionTwoPoints(currentPoint, a, b, ellipsoid);
+
+  var radius = (distanceBearing(currentPoint, projectA, ellipsoid).distance
+    + distanceBearing(currentPoint, projectB, ellipsoid).distance
+    + distanceBearing(currentPoint, projectC, ellipsoid).distance) / 3;
+
+  return Circle(currentPoint, radius);
+}
+
+/// Die Kostenfunktion: Minimiert die Varianz (Unterschiede) der drei Lote
+double _costFunction(LatLng p, LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
+  double d1 = _distanceToGeodesic(p, a, b, ellipsoid);
+  double d2 = _distanceToGeodesic(p, b, c, ellipsoid);
+  double d3 = _distanceToGeodesic(p, c, a, ellipsoid);
+
+  double mean = (d1 + d2 + d3) / 3.0;
+
+  // Summe der quadratischen Abweichungen (Varianz)
+  return pow(d1 - mean, 2) + pow(d2 - mean, 2) + pow(d3 - mean, 2).toDouble();
+}
+
+Circle? _guessStartpointByIntersectBisectors(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
   var clockwiseOrdered = orderEllipsoidTrianglePointsClockwise(a, b, c, ellipsoid);
   var _a = clockwiseOrdered[0];
   var _b = clockwiseOrdered[1];
   var _c = clockwiseOrdered[2];
-
-  print(clockwiseOrdered);
 
   var distBearAB = distanceBearing(_a, _b, ellipsoid);
   var distBearAC = distanceBearing(_a, _c, ellipsoid);
   var distBearBC = distanceBearing(_b, _c, ellipsoid);
 
   var bearingAB = distBearAB.bearingAToB;
-  print('bearingAB: ' + bearingAB.toString());
   var bearingAC = distBearAC.bearingAToB;
-  print('bearingAC: ' + bearingAC.toString());
   var bearingBA = distBearAB.bearingBToA;
-  print('bearingBA: ' + bearingBA.toString());
   var bearingBC = distBearBC.bearingAToB;
-  print('bearingBC: ' + bearingBC.toString());
   var bearingCA = distBearAC.bearingBToA;
-  print('bearingCA: ' + bearingCA.toString());
   var bearingCB = distBearBC.bearingBToA;
-  print('bearingCB: ' + bearingCB.toString());
 
   var distance = max(distBearAB.distance, max(distBearAC.distance, distBearBC.distance));
-  print(distance);
 
   var segmentA = segmentBearings(_a, bearingAB, bearingAC, distance, 2, ellipsoid);
-  print(segmentA.points.first.latitude.toString() + ', ' + segmentA.points.first.longitude.toString() + ', ' + segmentA.segmentAngle.toString());
-
   var segmentB = segmentBearings(_b, bearingBC, bearingBA, distance, 2, ellipsoid);
-  print(segmentB.points.first.latitude.toString() + ', ' + segmentB.points.first.longitude.toString() + ', ' + segmentB.segmentAngle.toString());
-
   var segmentC = segmentBearings(_c, bearingCA, bearingCB, distance, 2, ellipsoid);
-  print(segmentC.points.first.latitude.toString() + ', ' + segmentC.points.first.longitude.toString() + ', ' + segmentC.segmentAngle.toString());
 
   var segmentedBearingA = utils.normalizeBearing(bearingAB + segmentA.segmentAngle);
   var segmentedBearingB = utils.normalizeBearing(bearingBC + segmentB.segmentAngle);
   var segmentedBearingC = utils.normalizeBearing(bearingCA + segmentC.segmentAngle);
-  print('SegA: ' + segmentedBearingA.toString());
-  print('SegB: ' + segmentedBearingB.toString());
-  print('SegC: ' + segmentedBearingC.toString());
 
-  var intersection = intersectBearings(_a, segmentedBearingA, _b, segmentedBearingB, ellipsoid);
-  print('Int1: ' + intersection.latitude.toString() + ', ' + intersection.longitude.toString());
-  print('AP1: ' + distanceBearing(_a, intersection, ellipsoid).bearingAToB.toString());
-  print('BP1: ' + distanceBearing(_b, intersection, ellipsoid).bearingAToB.toString());
-  print('CP1: ' + distanceBearing(_c, intersection, ellipsoid).bearingAToB.toString());
-
+  var intersection1 = intersectBearings(_a, segmentedBearingA, _b, segmentedBearingB, ellipsoid);
   var intersection2 = intersectBearings(_a, segmentedBearingA, _c, segmentedBearingC, ellipsoid);
-  print('Int2: ' + intersection2.latitude.toString() + ', ' + intersection2.longitude.toString());
-  print('AP2: ' + distanceBearing(_a, intersection2, ellipsoid).bearingAToB.toString());
-  print('BP2: ' + distanceBearing(_b, intersection2, ellipsoid).bearingAToB.toString());
-  print('CP2: ' + distanceBearing(_c, intersection2, ellipsoid).bearingAToB.toString());
+  var intersection3 = intersectBearings(_b, segmentedBearingB, _c, segmentedBearingC, ellipsoid);
 
-  var project = orthogonalProjectionTwoPoints(intersection, _a, _b, ellipsoid);
-  var project2 = orthogonalProjectionTwoPoints(intersection2, _a, _c, ellipsoid);
+  var projPToAB1 = orthogonalProjectionTwoPoints(intersection1, a, b, Ellipsoid.WGS84);
+  var projPToBC1 = orthogonalProjectionTwoPoints(intersection1, b, c, Ellipsoid.WGS84);
+  var projPToAC1 = orthogonalProjectionTwoPoints(intersection1, a, c, Ellipsoid.WGS84);
+  var distAB1 = distanceBearing(intersection1, projPToAB1, Ellipsoid.WGS84).distance;
+  var distBC1 = distanceBearing(intersection1, projPToBC1, Ellipsoid.WGS84).distance;
+  var distAC1 = distanceBearing(intersection1, projPToAC1, Ellipsoid.WGS84).distance;
 
-  var radius = distanceBearing(intersection, project, ellipsoid).distance;
-  var radius2 = distanceBearing(intersection2, project2, ellipsoid).distance;
-  print('Radius1: ' + radius.toString());
-  print('Radius2: ' + radius2.toString());
-
-  var projPToAB = orthogonalProjectionTwoPoints(intersection, a, b, Ellipsoid.WGS84);
-  var projPToBC = orthogonalProjectionTwoPoints(intersection, b, c, Ellipsoid.WGS84);
-  var projPToAC = orthogonalProjectionTwoPoints(intersection, a, c, Ellipsoid.WGS84);
-  var distAB = distanceBearing(intersection, projPToAB, Ellipsoid.WGS84).distance;
-  var distBC = distanceBearing(intersection, projPToBC, Ellipsoid.WGS84).distance;
-  var distAC = distanceBearing(intersection, projPToAC, Ellipsoid.WGS84).distance;
-
-  var dists = [distAB, distBC, distAC];
-  dists.sort();
-  print(dists);
+  var dists1 = [distAB1, distBC1, distAC1];
+  dists1.sort();
+  var diff1 = dists1[2] - dists1[0];
 
   var projPToAB2 = orthogonalProjectionTwoPoints(intersection2, a, b, Ellipsoid.WGS84);
   var projPToBC2 = orthogonalProjectionTwoPoints(intersection2, b, c, Ellipsoid.WGS84);
@@ -98,7 +156,34 @@ Circle? calculateEllipsoidTriangleInCircle(LatLng a, LatLng b, LatLng c, Ellipso
 
   var dists2 = [distAB2, distBC2, distAC2];
   dists2.sort();
-  print(dists2);
+  var diff2 = dists2[2] - dists2[0];
 
-  return Circle(intersection2, radius2);
+  var projPToAB3 = orthogonalProjectionTwoPoints(intersection3, a, b, Ellipsoid.WGS84);
+  var projPToBC3 = orthogonalProjectionTwoPoints(intersection3, b, c, Ellipsoid.WGS84);
+  var projPToAC3 = orthogonalProjectionTwoPoints(intersection3, a, c, Ellipsoid.WGS84);
+  var distAB3 = distanceBearing(intersection3, projPToAB3, Ellipsoid.WGS84).distance;
+  var distBC3 = distanceBearing(intersection3, projPToBC3, Ellipsoid.WGS84).distance;
+  var distAC3 = distanceBearing(intersection3, projPToAC3, Ellipsoid.WGS84).distance;
+
+  var dists3 = [distAB3, distBC3, distAC3];
+  dists3.sort();
+  var diff3 = dists3[2] - dists3[0];
+
+  var radius1 = (dists1[0] + dists1[1] + dists1[2]) / 3;
+  var radius2 = (dists2[0] + dists2[1] + dists2[2]) / 3;
+  var radius3 = (dists3[0] + dists3[1] + dists3[2]) / 3;
+
+  if (diff1 <= diff2) {
+    if (diff1 <= diff3) {
+      return Circle(intersection1, radius1);
+    } else {
+      return Circle(intersection3, radius3);
+    }
+  } else {
+    if (diff2 <= diff3) {
+      return Circle(intersection2, radius2);
+    } else {
+      return Circle(intersection3, radius3);
+    }
+  }
 }

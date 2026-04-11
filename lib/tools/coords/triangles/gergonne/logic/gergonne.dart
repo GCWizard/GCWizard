@@ -10,7 +10,7 @@ LatLng? calculateEllipsoidTriangleGergonnePoint(LatLng a, LatLng b, LatLng c, El
     return null;
   }
 
-  var inc = calculateEllipsoidTriangleInCircle(a, b, c, ellipsoid)!.center;
+  var inc = calculateEllipsoidTriangleIncircle(a, b, c, ellipsoid)!.center;
   var projA = orthogonalProjectionTwoPoints(inc, b, c, ellipsoid);
   var projB = orthogonalProjectionTwoPoints(inc, a, c, ellipsoid);
 

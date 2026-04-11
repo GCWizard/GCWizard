@@ -97,7 +97,7 @@ class _TriangleIncircleState extends State<TriangleIncircle> {
   }
 
   void _calculateOutput() {
-    var inCenterPoint = calculateEllipsoidTriangleInCircle(
+    var inCenterPoint = calculateEllipsoidTriangleIncircle(
         _currentCoords1.toLatLng()!,
         _currentCoords2.toLatLng()!,
         _currentCoords3.toLatLng()!, defaultEllipsoid);
