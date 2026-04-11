@@ -1,7 +1,7 @@
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/intersect_lines/intersect_four_points/logic/intersect_four_points.dart';
 import 'package:gc_wizard/tools/coords/orthogonal_projection/logic/orthogonal_projection.dart';
-import 'package:gc_wizard/tools/coords/triangles/incircle/logic/incircle.dart';
+import 'package:gc_wizard/tools/coords/triangles/circles/_common/logic/circles.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:latlong2/latlong.dart';
 

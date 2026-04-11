@@ -1,3 +1,6 @@
+import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
+import 'package:gc_wizard/tools/coords/orthogonal_projection/logic/orthogonal_projection.dart';
 import 'package:gc_wizard/utils/data_type_utils/double_type_utils.dart';
 import 'package:gc_wizard/utils/math_utils.dart';
 import 'package:latlong2/latlong.dart';
@@ -110,4 +113,32 @@ double normalizedAngleBetweenBearings(double bearingA, double bearingB) {
   }
 
   return angle;
+}
+
+bool isOnGeodesic(LatLng point, LatLng start, LatLng end, Ellipsoid ellipsoid) {
+  var _point = normalizeLatLon(point.latitude, point.longitude);
+  var _start = normalizeLatLon(start.latitude, start.longitude);
+  var _end = normalizeLatLon(end.latitude, end.longitude);
+
+  var projected = orthogonalProjectionTwoPoints(_point, _start, _end, ellipsoid);
+  var distance = distanceBearing(projected, _point, ellipsoid).distance;
+
+  return distance < 1e-8;
+}
+
+bool isOnSegment(LatLng point, LatLng start, LatLng end, Ellipsoid ellipsoid) {
+  var isOnGeod = isOnGeodesic(point, start, end, ellipsoid);
+  if (!isOnGeod) {
+    return false;
+  }
+
+  var _point = normalizeLatLon(point.latitude, point.longitude);
+  var _start = normalizeLatLon(start.latitude, start.longitude);
+  var _end = normalizeLatLon(end.latitude, end.longitude);
+
+  var distStartP = distanceBearing(_start, _point, ellipsoid).distance;
+  var distPEnd = distanceBearing(_point, _end, ellipsoid).distance;
+  var distStartEnd = distanceBearing(_start, _end, ellipsoid).distance;
+
+  return ((distStartP + distPEnd) - distStartEnd).abs() < 1e-8;
 }

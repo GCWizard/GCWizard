@@ -1,4 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
+import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -265,6 +268,62 @@ void main() {
     for (var elem in _inputsToExpected) {
       test('bearingA: ${elem['bearingA']}, bearingB: ${elem['bearingB']}', () {
         var _actual = normalizedAngleBetweenBearings(elem['bearingA'] as double, elem['bearingB'] as double);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
+
+  group('CoordinateUtils.isOnGeodesic:', () {
+    List<Map<String, Object>> _inputsToExpected = [
+      {'point': LatLng(0,0), 'start': LatLng(0,0), 'end': LatLng(0,0), 'expectedOutput': true},
+      {'point': LatLng(0,0), 'start': LatLng(90,0), 'end': LatLng(-90,0), 'expectedOutput': true},
+      {'point': LatLng(90,0), 'start': LatLng(90,1), 'end': LatLng(90,2), 'expectedOutput': true},
+      {'point': LatLng(0,0), 'start': LatLng(0,0), 'end': LatLng(0,0), 'expectedOutput': true},
+
+      {'point': LatLng(2,2), 'start': LatLng(1,1), 'end': LatLng(3,3), 'expectedOutput': false},
+      {'start': LatLng(70, 0), 'end': LatLng(13.56832726660199, 74.33418761525557), 'point': LatLng(38.59652460733987, 62.72751487512538), 'expectedOutput': false},
+      {'point': LatLng(70, 0), 'start': LatLng(13.56832726660199, 74.33418761525557), 'end': LatLng(38.59652460733987, 62.72751487512538), 'expectedOutput': false},
+
+      {'point': LatLng(68.36526802265838, 2.0716426033747704), 'start': LatLng(70, 0), 'end': LatLng(52, 13), 'expectedOutput': true},
+      {'start': LatLng(68.36526802265838, 2.0716426033747704), 'point': LatLng(70, 0), 'end': LatLng(52, 13), 'expectedOutput': true},
+      {'point': LatLng(68.36526802265838, 2.0716436033747704), 'start': LatLng(70, 0), 'end': LatLng(52, 13), 'expectedOutput': false},
+    ];
+
+
+    for (var elem in _inputsToExpected) {
+      test('point: ${elem['point']}, start:  ${elem['start']}, end:  ${elem['end']}', () {
+        var db = distanceBearing(LatLng(70, 0), LatLng(52, 13), Ellipsoid.WGS84).bearingAToB;
+        var dc = projection(LatLng(70, 0), db, 200000, Ellipsoid.WGS84);
+
+        var _actual = isOnGeodesic(elem['point'] as LatLng, elem['start'] as LatLng, elem['end'] as LatLng, Ellipsoid.WGS84);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
+
+  group('CoordinateUtils.isOnSegment:', () {
+    List<Map<String, Object>> _inputsToExpected = [
+      {'point': LatLng(0,0), 'start': LatLng(0,0), 'end': LatLng(0,0), 'expectedOutput': true},
+      {'point': LatLng(0,0), 'start': LatLng(90,0), 'end': LatLng(-90,0), 'expectedOutput': true},
+      {'point': LatLng(90,0), 'start': LatLng(90,1), 'end': LatLng(90,2), 'expectedOutput': true},
+      {'point': LatLng(0,0), 'start': LatLng(0,0), 'end': LatLng(0,0), 'expectedOutput': true},
+
+      {'point': LatLng(2,2), 'start': LatLng(1,1), 'end': LatLng(3,3), 'expectedOutput': false},
+      {'start': LatLng(70, 0), 'end': LatLng(13.56832726660199, 74.33418761525557), 'point': LatLng(38.59652460733987, 62.72751487512538), 'expectedOutput': false},
+      {'point': LatLng(70, 0), 'start': LatLng(13.56832726660199, 74.33418761525557), 'end': LatLng(38.59652460733987, 62.72751487512538), 'expectedOutput': false},
+
+      {'point': LatLng(68.36526802265838, 2.0716426033747704), 'start': LatLng(70, 0), 'end': LatLng(52, 13), 'expectedOutput': true},
+      {'start': LatLng(68.36526802265838, 2.0716426033747704), 'point': LatLng(70, 0), 'end': LatLng(52, 13), 'expectedOutput': false},
+      {'point': LatLng(68.36526802265838, 2.0716436033747704), 'start': LatLng(70, 0), 'end': LatLng(52, 13), 'expectedOutput': false},
+    ];
+
+
+    for (var elem in _inputsToExpected) {
+      test('point: ${elem['point']}, start:  ${elem['start']}, end:  ${elem['end']}', () {
+        var db = distanceBearing(LatLng(70, 0), LatLng(52, 13), Ellipsoid.WGS84).bearingAToB;
+        var dc = projection(LatLng(70, 0), db, 200000, Ellipsoid.WGS84);
+
+        var _actual = isOnSegment(elem['point'] as LatLng, elem['start'] as LatLng, elem['end'] as LatLng, Ellipsoid.WGS84);
         expect(_actual, elem['expectedOutput']);
       });
     }

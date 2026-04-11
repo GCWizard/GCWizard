@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
-import 'package:gc_wizard/tools/coords/triangles/excircles/logic/excircles.dart';
+import 'package:gc_wizard/tools/coords/triangles/circles/_common/logic/circles.dart';
 import 'package:latlong2/latlong.dart';
 
-import '../../../../science_and_technology/euclidic_triangle/logic/triangle_test_utils.dart';
+import '../../../../../science_and_technology/euclidic_triangle/logic/triangle_test_utils.dart';
 
 void main() async {
   group("triangle.calculateEllipsoidTriangleExCircles:", () {
@@ -22,8 +22,10 @@ void main() async {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
-        var _actual = calculateEllipsoidTriangleExCircles(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
-        circleListTest(_actual.map((Excircle ec) => ec.circle).toList(), elem['expectedOutput'] as List<Circle>);
+        var _actual = calculateEllipsoidTriangleExcircles(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
+        expect(_actual != null, true);
+
+        circleListTest(_actual!.map((Excircle ec) => ec.circle).toList(), elem['expectedOutput'] as List<Circle>);
       });
     }
   });
@@ -44,10 +46,12 @@ void main() async {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
-        var _actual = calculateEllipsoidTriangleExCircles(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
+        var _actual = calculateEllipsoidTriangleExcircles(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
+        expect(_actual != null, true);
+
         var _exp = elem['expectedOutput'] as List<LatLng>;
         print('Old: ' + _exp[0].toString() + ', '+ _exp[1].toString() + ', '+ _exp[02].toString());
-        print('New: ' + _actual[0].touchpoint.toString() + ', '+ _actual[1].touchpoint.toString() + ', '+ _actual[02].touchpoint.toString());
+        print('New: ' + _actual![0].touchpoint.toString() + ', '+ _actual[1].touchpoint.toString() + ', '+ _actual[02].touchpoint.toString());
         latLngListTest(_actual.map((Excircle ec) => ec.touchpoint).toList(), elem['expectedOutput'] as List<LatLng>);
       });
     }

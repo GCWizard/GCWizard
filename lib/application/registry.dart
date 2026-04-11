@@ -152,10 +152,10 @@ import 'package:gc_wizard/tools/coords/rhumb_line/widget/rhumbline_waypoint_proj
 import 'package:gc_wizard/tools/coords/segment_bearings/widget/segment_bearings.dart';
 import 'package:gc_wizard/tools/coords/segment_line/widget/segment_line.dart';
 import 'package:gc_wizard/tools/coords/triangles/centerofgravity/widget/centerofgravity.dart';
+import 'package:gc_wizard/tools/coords/triangles/circles/excircles/widget/excircles.dart';
+import 'package:gc_wizard/tools/coords/triangles/circles/incircle/widget/incircle.dart';
 import 'package:gc_wizard/tools/coords/triangles/circumcircle/widget/circumcircle.dart';
-import 'package:gc_wizard/tools/coords/triangles/excircles/widget/excircles.dart';
 import 'package:gc_wizard/tools/coords/triangles/gergonne/widget/gergonne.dart';
-import 'package:gc_wizard/tools/coords/triangles/incircle/widget/incircle.dart';
 import 'package:gc_wizard/tools/coords/triangles/napoleon/widget/napoleon.dart';
 import 'package:gc_wizard/tools/coords/triangles/orthocenter/widget/orthocenter.dart';
 import 'package:gc_wizard/tools/coords/triangles/sidesmidpoint/widget/sidesmidpoint.dart';
