@@ -95,8 +95,8 @@ void main() async {
         var triangle = ELlipsoidTriangle(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
         var _actual = polygonAreaEdges(
           triangle.a,
-          [triangle.bearingAB, triangle.bearingBC, triangle.bearingCA],
           [triangle.distanceAB, triangle.distanceBC, triangle.distanceAC],
+          [triangle.bearingAB, triangle.bearingBC, triangle.bearingCA],
           Ellipsoid.WGS84
         );
         _actual.isNaN ? expect(_actual.toString(), elem['expectedOutput'].toString()) : expect(_actual, elem['expectedOutput']);

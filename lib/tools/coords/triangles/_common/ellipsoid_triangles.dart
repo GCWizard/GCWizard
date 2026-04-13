@@ -39,10 +39,12 @@ bool isValidEllipsoidTriangle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
   var dists = [triangle.distanceAB, triangle.distanceAC, triangle.distanceBC];
   dists.sort();
 
-  if (dists[2] >= dists[0] + dists[1]) {
+  if ((dists[2] - dists[0] - dists[1]).abs() < 1e-3) {
     return false;
   }
 
+  var x = _ellipsoidTriangleAreaWithValidInput(triangle, ellipsoid);
+  print(x);
   if (_ellipsoidTriangleAreaWithValidInput(triangle, ellipsoid) < 0.001) {
     return false;
   }
@@ -53,8 +55,8 @@ bool isValidEllipsoidTriangle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
 bool isClockwiseOrderedEllipsoidTriangle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
   var area = polygonAreaEdges(
     triangle.a,
-    [triangle.bearingAB, triangle.bearingBC, triangle.bearingCA],
     [triangle.distanceAB, triangle.distanceBC, triangle.distanceAC],
+    [triangle.bearingAB, triangle.bearingBC, triangle.bearingCA],
     ellipsoid
   );
   return area < 0;
@@ -99,8 +101,8 @@ double ellipsoidTriangleCircumference(ELlipsoidTriangle triangle, Ellipsoid elli
 double _ellipsoidTriangleAreaWithValidInput(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
   return polygonAreaEdges(
       triangle.a,
-      [triangle.bearingAB, triangle.bearingBC, triangle.bearingCA],
       [triangle.distanceAB, triangle.distanceBC, triangle.distanceAC],
+      [triangle.bearingAB, triangle.bearingBC, triangle.bearingCA],
       ellipsoid
   ).abs();
 }
@@ -111,4 +113,31 @@ double ellipsoidTriangleArea(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
   }
 
   return _ellipsoidTriangleAreaWithValidInput(triangle, ellipsoid);
+}
+
+
+bool triangleIsMeridianCircle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+  var isHalf = polygonAreaIsHalfEllipsoid(
+    triangle.a,
+    [triangle.distanceAB, triangle.distanceBC, triangle.distanceAC],
+    [triangle.bearingAB, triangle.bearingBC, triangle.bearingCA],
+    ellipsoid
+  );
+
+  if (!isHalf) return false;
+
+  return (triangle.a.latitude != 0) || (triangle.b.latitude != 0) || (triangle.c.latitude != 0);
+}
+
+bool triangleIsEquatorCircle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+  var isHalf = polygonAreaIsHalfEllipsoid(
+      triangle.a,
+      [triangle.distanceAB, triangle.distanceBC, triangle.distanceAC],
+      [triangle.bearingAB, triangle.bearingBC, triangle.bearingCA],
+      ellipsoid
+  );
+
+  if (!isHalf) return false;
+
+  return (triangle.a.latitude == 0) && (triangle.b.latitude == 0) && (triangle.c.latitude == 0);
 }

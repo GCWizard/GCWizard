@@ -76,8 +76,8 @@ class ELlipsoidTriangle {
 
   @override
   String toString() {
-    return 'A: ' + a.latitude.toString() + ", " + a.longitude.toString() + '|'
-        'B: ' + b.latitude.toString() + ", " + b.longitude.toString() + '|'
+    return 'A: ' + a.latitude.toString() + ", " + a.longitude.toString() + ' | '
+        'B: ' + b.latitude.toString() + ", " + b.longitude.toString() + ' | '
         'C: ' + c.latitude.toString() + ", " + c.longitude.toString();
   }
 }

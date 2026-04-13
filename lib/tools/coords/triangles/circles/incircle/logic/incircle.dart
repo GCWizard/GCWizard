@@ -1,47 +1,43 @@
 part of 'package:gc_wizard/tools/coords/triangles/circles/_common/logic/circles.dart';
 
 Circle? calculateEllipsoidTriangleIncircle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
-  if (!isValidEllipsoidTriangle(triangle, ellipsoid)) {
+  if (!triangle.isValid || triangleIsMeridianCircle(triangle, ellipsoid)) {
     return null;
   }
 
-  LatLng initialGuess = _guessStartpointByIntersectBisectors(triangle, ellipsoid)!.center;
-
-  return _optimizeCircle(initialGuess, triangle, _CircleType.INCIRCLE, ellipsoid);
-}
-
-Circle? _guessStartpointByIntersectBisectors(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
-  var clockwiseOrdered = orderEllipsoidTrianglePointsClockwise(triangle, ellipsoid);
-
-  var _a = triangle.a;
-  var _b = triangle.b;
-  var _c = triangle.c;
   var _triangle = triangle;
 
   if (!triangle.isClockwise) {
     _triangle = orderEllipsoidTrianglePointsClockwise(triangle, ellipsoid);
-    _a = _triangle.a;
-    _b = _triangle.b;
-    _c = _triangle.c;
   }
 
-  var distance = max(_triangle.distanceAB, max(_triangle.distanceAC, _triangle.distanceBC));
+  LatLng initialGuess = _guessStartpointByIntersectBisectors(_triangle, ellipsoid)!.center;
 
-  var segmentA = segmentBearings(_a, _triangle.bearingAB, _triangle.bearingAC, distance, 2, ellipsoid);
-  var segmentB = segmentBearings(_b, _triangle.bearingBC, _triangle.bearingBA, distance, 2, ellipsoid);
-  var segmentC = segmentBearings(_c, _triangle.bearingCA, _triangle.bearingCB, distance, 2, ellipsoid);
+  return _optimizeCircle(initialGuess, _triangle, _CircleType.INCIRCLE, ellipsoid);
+}
 
-  var segmentedBearingA = utils.normalizeBearing(_triangle.bearingAB + segmentA.segmentAngle);
-  var segmentedBearingB = utils.normalizeBearing(_triangle.bearingBC + segmentB.segmentAngle);
-  var segmentedBearingC = utils.normalizeBearing(_triangle.bearingCA + segmentC.segmentAngle);
+Circle? _guessStartpointByIntersectBisectors(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+  var _a = triangle.a;
+  var _b = triangle.b;
+  var _c = triangle.c;
+
+  var distance = max(triangle.distanceAB, max(triangle.distanceAC, triangle.distanceBC));
+
+  var segmentA = segmentBearings(_a, triangle.bearingAB, triangle.bearingAC, distance, 2, ellipsoid);
+  var segmentB = segmentBearings(_b, triangle.bearingBC, triangle.bearingBA, distance, 2, ellipsoid);
+  var segmentC = segmentBearings(_c, triangle.bearingCA, triangle.bearingCB, distance, 2, ellipsoid);
+
+  var segmentedBearingA = utils.normalizeBearing(triangle.bearingAB + segmentA.segmentAngle);
+  var segmentedBearingB = utils.normalizeBearing(triangle.bearingBC + segmentB.segmentAngle);
+  var segmentedBearingC = utils.normalizeBearing(triangle.bearingCA + segmentC.segmentAngle);
 
   var intersection1 = intersectBearings(_a, segmentedBearingA, _b, segmentedBearingB, ellipsoid);
   var intersection2 = intersectBearings(_a, segmentedBearingA, _c, segmentedBearingC, ellipsoid);
   var intersection3 = intersectBearings(_b, segmentedBearingB, _c, segmentedBearingC, ellipsoid);
 
-  var projPToAB1 = orthogonalProjectionTwoPoints(intersection1, _a, _b, Ellipsoid.WGS84);
-  var projPToBC1 = orthogonalProjectionTwoPoints(intersection1, _b, _c, Ellipsoid.WGS84);
-  var projPToAC1 = orthogonalProjectionTwoPoints(intersection1, _a, _c, Ellipsoid.WGS84);
+  var projPToAB1 = orthogonalProjectionBearing(intersection1, _a, triangle.bearingAB, Ellipsoid.WGS84);
+  var projPToBC1 = orthogonalProjectionBearing(intersection1, _b, triangle.bearingBC, Ellipsoid.WGS84);
+  var projPToAC1 = orthogonalProjectionBearing(intersection1, _c, triangle.bearingCA, Ellipsoid.WGS84);
   var distAB1 = distanceBearing(intersection1, projPToAB1, Ellipsoid.WGS84).distance;
   var distBC1 = distanceBearing(intersection1, projPToBC1, Ellipsoid.WGS84).distance;
   var distAC1 = distanceBearing(intersection1, projPToAC1, Ellipsoid.WGS84).distance;
@@ -50,9 +46,9 @@ Circle? _guessStartpointByIntersectBisectors(ELlipsoidTriangle triangle, Ellipso
   dists1.sort();
   var diff1 = dists1[2] - dists1[0];
 
-  var projPToAB2 = orthogonalProjectionTwoPoints(intersection2, _a, _b, Ellipsoid.WGS84);
-  var projPToBC2 = orthogonalProjectionTwoPoints(intersection2, _b, _c, Ellipsoid.WGS84);
-  var projPToAC2 = orthogonalProjectionTwoPoints(intersection2, _a, _c, Ellipsoid.WGS84);
+  var projPToAB2 = orthogonalProjectionBearing(intersection2, _a, triangle.bearingAB, Ellipsoid.WGS84);
+  var projPToBC2 = orthogonalProjectionBearing(intersection2, _b, triangle.bearingBC, Ellipsoid.WGS84);
+  var projPToAC2 = orthogonalProjectionBearing(intersection2, _c, triangle.bearingCA, Ellipsoid.WGS84);
   var distAB2 = distanceBearing(intersection2, projPToAB2, Ellipsoid.WGS84).distance;
   var distBC2 = distanceBearing(intersection2, projPToBC2, Ellipsoid.WGS84).distance;
   var distAC2 = distanceBearing(intersection2, projPToAC2, Ellipsoid.WGS84).distance;
@@ -61,9 +57,9 @@ Circle? _guessStartpointByIntersectBisectors(ELlipsoidTriangle triangle, Ellipso
   dists2.sort();
   var diff2 = dists2[2] - dists2[0];
 
-  var projPToAB3 = orthogonalProjectionTwoPoints(intersection3, _a, _b, Ellipsoid.WGS84);
-  var projPToBC3 = orthogonalProjectionTwoPoints(intersection3, _b, _c, Ellipsoid.WGS84);
-  var projPToAC3 = orthogonalProjectionTwoPoints(intersection3, _a, _c, Ellipsoid.WGS84);
+  var projPToAB3 = orthogonalProjectionBearing(intersection3, _a, triangle.bearingAB, Ellipsoid.WGS84);
+  var projPToBC3 = orthogonalProjectionBearing(intersection3, _b, triangle.bearingBC, Ellipsoid.WGS84);
+  var projPToAC3 = orthogonalProjectionBearing(intersection3, _c, triangle.bearingCA, Ellipsoid.WGS84);
   var distAB3 = distanceBearing(intersection3, projPToAB3, Ellipsoid.WGS84).distance;
   var distBC3 = distanceBearing(intersection3, projPToBC3, Ellipsoid.WGS84).distance;
   var distAC3 = distanceBearing(intersection3, projPToAC3, Ellipsoid.WGS84).distance;

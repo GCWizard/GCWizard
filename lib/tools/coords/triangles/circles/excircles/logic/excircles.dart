@@ -38,7 +38,7 @@ Excircle _calcExcircleOfAOnBC(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
 }
 
 List<Excircle>? calculateEllipsoidTriangleExcircles(ELlipsoidTriangle triangle, Ellipsoid ellipsoid){
-  if (!isValidEllipsoidTriangle(triangle, ellipsoid)) {
+  if (!triangle.isValid) {
     return null;
   }
 
