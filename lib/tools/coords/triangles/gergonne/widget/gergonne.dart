@@ -8,6 +8,7 @@ import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/map_geometries.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangle.dart';
 import 'package:gc_wizard/tools/coords/triangles/gergonne/logic/gergonne.dart';
 
 class TriangleGergonnePoint extends StatefulWidget {
@@ -91,10 +92,16 @@ class _TriangleGergonnePointState extends State<TriangleGergonnePoint> {
   }
 
   void _calculateOutput() {
-    var gergonnePoint = calculateEllipsoidTriangleGergonnePoint(
+    var triangle = ELlipsoidTriangle(
         _currentCoords1.toLatLng()!,
         _currentCoords2.toLatLng()!,
-        _currentCoords3.toLatLng()!, defaultEllipsoid);
+        _currentCoords3.toLatLng()!,
+        defaultEllipsoid
+    );
+
+    if (!triangle.isValid) return;
+
+    var gergonnePoint = calculateEllipsoidTriangleGergonnePoint(triangle, defaultEllipsoid);
 
     if (gergonnePoint == null) {
       return;

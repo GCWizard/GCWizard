@@ -9,6 +9,7 @@ import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat_distance.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/map_geometries.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangle.dart';
 import 'package:gc_wizard/tools/coords/triangles/circles/_common/logic/circles.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/default_units_getter.dart';
 import 'package:gc_wizard/utils/constants.dart';
@@ -97,10 +98,16 @@ class _TriangleIncircleState extends State<TriangleIncircle> {
   }
 
   void _calculateOutput() {
-    var inCenterPoint = calculateEllipsoidTriangleIncircle(
+    var triangle = ELlipsoidTriangle(
         _currentCoords1.toLatLng()!,
         _currentCoords2.toLatLng()!,
-        _currentCoords3.toLatLng()!, defaultEllipsoid);
+        _currentCoords3.toLatLng()!,
+        defaultEllipsoid
+    );
+
+    if (!triangle.isValid) return;
+
+    var inCenterPoint = calculateEllipsoidTriangleIncircle(triangle, defaultEllipsoid);
 
     if (inCenterPoint == null) {
       return;
