@@ -1,57 +1,47 @@
 part of 'package:gc_wizard/tools/coords/triangles/circles/_common/logic/circles.dart';
 
-Circle? calculateEllipsoidTriangleIncircle(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
-  if (!isValidEllipsoidTriangle(a, b, c, ellipsoid)) {
+Circle? calculateEllipsoidTriangleIncircle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+  if (!isValidEllipsoidTriangle(triangle, ellipsoid)) {
     return null;
   }
 
-  LatLng _a = utils.normalizeLatLon(a.latitude, a.longitude);
-  LatLng _b = utils.normalizeLatLon(b.latitude, b.longitude);
-  LatLng _c = utils.normalizeLatLon(c.latitude, c.longitude);
+  LatLng initialGuess = _guessStartpointByIntersectBisectors(triangle, ellipsoid)!.center;
 
-  double dAB = distanceBearing(_a, _b, ellipsoid).distance;
-  double dBC = distanceBearing(_b, _c, ellipsoid).distance;
-  double dCA = distanceBearing(_c, _a, ellipsoid).distance;
-
-  LatLng initialGuess = _guessStartpointByIntersectBisectors(_a, _b, _c, ellipsoid)!.center;
-
-  return _optimizeCircle(initialGuess, _a, _b, _c, dAB, dBC, dCA, _CircleType.INCIRCLE, ellipsoid);
+  return _optimizeCircle(initialGuess, triangle, _CircleType.INCIRCLE, ellipsoid);
 }
 
-Circle? _guessStartpointByIntersectBisectors(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
-  var clockwiseOrdered = orderEllipsoidTrianglePointsClockwise(a, b, c, ellipsoid);
-  var _a = clockwiseOrdered[0];
-  var _b = clockwiseOrdered[1];
-  var _c = clockwiseOrdered[2];
+Circle? _guessStartpointByIntersectBisectors(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+  var clockwiseOrdered = orderEllipsoidTrianglePointsClockwise(triangle, ellipsoid);
 
-  var distBearAB = distanceBearing(_a, _b, ellipsoid);
-  var distBearAC = distanceBearing(_a, _c, ellipsoid);
-  var distBearBC = distanceBearing(_b, _c, ellipsoid);
+  var _a = triangle.a;
+  var _b = triangle.b;
+  var _c = triangle.c;
+  var _triangle = triangle;
 
-  var bearingAB = distBearAB.bearingAToB;
-  var bearingAC = distBearAC.bearingAToB;
-  var bearingBA = distBearAB.bearingBToA;
-  var bearingBC = distBearBC.bearingAToB;
-  var bearingCA = distBearAC.bearingBToA;
-  var bearingCB = distBearBC.bearingBToA;
+  if (!triangle.isClockwise) {
+    _triangle = orderEllipsoidTrianglePointsClockwise(triangle, ellipsoid);
+    _a = _triangle.a;
+    _b = _triangle.b;
+    _c = _triangle.c;
+  }
 
-  var distance = max(distBearAB.distance, max(distBearAC.distance, distBearBC.distance));
+  var distance = max(_triangle.distanceAB, max(_triangle.distanceAC, _triangle.distanceBC));
 
-  var segmentA = segmentBearings(_a, bearingAB, bearingAC, distance, 2, ellipsoid);
-  var segmentB = segmentBearings(_b, bearingBC, bearingBA, distance, 2, ellipsoid);
-  var segmentC = segmentBearings(_c, bearingCA, bearingCB, distance, 2, ellipsoid);
+  var segmentA = segmentBearings(_a, _triangle.bearingAB, _triangle.bearingAC, distance, 2, ellipsoid);
+  var segmentB = segmentBearings(_b, _triangle.bearingBC, _triangle.bearingBA, distance, 2, ellipsoid);
+  var segmentC = segmentBearings(_c, _triangle.bearingCA, _triangle.bearingCB, distance, 2, ellipsoid);
 
-  var segmentedBearingA = utils.normalizeBearing(bearingAB + segmentA.segmentAngle);
-  var segmentedBearingB = utils.normalizeBearing(bearingBC + segmentB.segmentAngle);
-  var segmentedBearingC = utils.normalizeBearing(bearingCA + segmentC.segmentAngle);
+  var segmentedBearingA = utils.normalizeBearing(_triangle.bearingAB + segmentA.segmentAngle);
+  var segmentedBearingB = utils.normalizeBearing(_triangle.bearingBC + segmentB.segmentAngle);
+  var segmentedBearingC = utils.normalizeBearing(_triangle.bearingCA + segmentC.segmentAngle);
 
   var intersection1 = intersectBearings(_a, segmentedBearingA, _b, segmentedBearingB, ellipsoid);
   var intersection2 = intersectBearings(_a, segmentedBearingA, _c, segmentedBearingC, ellipsoid);
   var intersection3 = intersectBearings(_b, segmentedBearingB, _c, segmentedBearingC, ellipsoid);
 
-  var projPToAB1 = orthogonalProjectionTwoPoints(intersection1, a, b, Ellipsoid.WGS84);
-  var projPToBC1 = orthogonalProjectionTwoPoints(intersection1, b, c, Ellipsoid.WGS84);
-  var projPToAC1 = orthogonalProjectionTwoPoints(intersection1, a, c, Ellipsoid.WGS84);
+  var projPToAB1 = orthogonalProjectionTwoPoints(intersection1, _a, _b, Ellipsoid.WGS84);
+  var projPToBC1 = orthogonalProjectionTwoPoints(intersection1, _b, _c, Ellipsoid.WGS84);
+  var projPToAC1 = orthogonalProjectionTwoPoints(intersection1, _a, _c, Ellipsoid.WGS84);
   var distAB1 = distanceBearing(intersection1, projPToAB1, Ellipsoid.WGS84).distance;
   var distBC1 = distanceBearing(intersection1, projPToBC1, Ellipsoid.WGS84).distance;
   var distAC1 = distanceBearing(intersection1, projPToAC1, Ellipsoid.WGS84).distance;
@@ -60,9 +50,9 @@ Circle? _guessStartpointByIntersectBisectors(LatLng a, LatLng b, LatLng c, Ellip
   dists1.sort();
   var diff1 = dists1[2] - dists1[0];
 
-  var projPToAB2 = orthogonalProjectionTwoPoints(intersection2, a, b, Ellipsoid.WGS84);
-  var projPToBC2 = orthogonalProjectionTwoPoints(intersection2, b, c, Ellipsoid.WGS84);
-  var projPToAC2 = orthogonalProjectionTwoPoints(intersection2, a, c, Ellipsoid.WGS84);
+  var projPToAB2 = orthogonalProjectionTwoPoints(intersection2, _a, _b, Ellipsoid.WGS84);
+  var projPToBC2 = orthogonalProjectionTwoPoints(intersection2, _b, _c, Ellipsoid.WGS84);
+  var projPToAC2 = orthogonalProjectionTwoPoints(intersection2, _a, _c, Ellipsoid.WGS84);
   var distAB2 = distanceBearing(intersection2, projPToAB2, Ellipsoid.WGS84).distance;
   var distBC2 = distanceBearing(intersection2, projPToBC2, Ellipsoid.WGS84).distance;
   var distAC2 = distanceBearing(intersection2, projPToAC2, Ellipsoid.WGS84).distance;
@@ -71,9 +61,9 @@ Circle? _guessStartpointByIntersectBisectors(LatLng a, LatLng b, LatLng c, Ellip
   dists2.sort();
   var diff2 = dists2[2] - dists2[0];
 
-  var projPToAB3 = orthogonalProjectionTwoPoints(intersection3, a, b, Ellipsoid.WGS84);
-  var projPToBC3 = orthogonalProjectionTwoPoints(intersection3, b, c, Ellipsoid.WGS84);
-  var projPToAC3 = orthogonalProjectionTwoPoints(intersection3, a, c, Ellipsoid.WGS84);
+  var projPToAB3 = orthogonalProjectionTwoPoints(intersection3, _a, _b, Ellipsoid.WGS84);
+  var projPToBC3 = orthogonalProjectionTwoPoints(intersection3, _b, _c, Ellipsoid.WGS84);
+  var projPToAC3 = orthogonalProjectionTwoPoints(intersection3, _a, _c, Ellipsoid.WGS84);
   var distAB3 = distanceBearing(intersection3, projPToAB3, Ellipsoid.WGS84).distance;
   var distBC3 = distanceBearing(intersection3, projPToBC3, Ellipsoid.WGS84).distance;
   var distAC3 = distanceBearing(intersection3, projPToAC3, Ellipsoid.WGS84).distance;

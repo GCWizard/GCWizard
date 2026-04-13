@@ -142,10 +142,16 @@ LatLng reverseAzimuthalProjection(LatLng coord, double bearing, double distance,
   return LatLng(_lat2, _lon2);
 }
 
-double polygonArea(List<LatLng> coords, Ellipsoid ellipsoid) {
+double polygonAreaEdges(LatLng start, List<double> distances, List<double> bearings, Ellipsoid ellipsoid) {
+  if (distances.length != bearings.length) {
+    return 0.0;
+  }
+
   var polygonArea = _PolygonArea(earth: _Geodesic(ellipsoid.a, ellipsoid.f));
-  for (var coord in coords) {
-    polygonArea._AddPoint(coord.latitude, coord.longitude);
+  polygonArea._AddPoint(start.latitude, start.longitude);
+
+  for (int i = 0; i < distances.length; i++) {
+    polygonArea._AddEdge(bearings[i], distances[i]);
   }
 
   var result = polygonArea._Compute();

@@ -1,11 +1,15 @@
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangle.dart';
 import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart';
-import 'package:latlong2/latlong.dart';
 
-bool isValidEllipsoidTriangle(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
+bool isValidEllipsoidTriangle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+  var a = triangle.a;
+  var b = triangle.b;
+  var c = triangle.c;
+
   if (a.latitude.isNaN || a.longitude.isNaN
     || b.latitude.isNaN || b.longitude.isNaN
     || c.latitude.isNaN || c.longitude.isNaN
@@ -20,61 +24,58 @@ bool isValidEllipsoidTriangle(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid)
     return false;
   }
 
-  var _a = normalizeLatLon(a.latitude, a.longitude);
-  var _b = normalizeLatLon(b.latitude, b.longitude);
-  var _c = normalizeLatLon(c.latitude, c.longitude);
-
-  if (equalsLatLng(_a, _b) || equalsLatLng(_a, _c) || equalsLatLng(_b, _c)) {
+  if (equalsLatLng(a, b) || equalsLatLng(a, c) || equalsLatLng(b, c)) {
     return false;
   }
 
   if (
-    (_a.latitude.abs() == 90 && _b.latitude.abs() == 90 && _a.latitude.sign == _b.latitude.sign)
-    || (_b.latitude.abs() == 90 && _c.latitude.abs() == 90 && _b.latitude.sign == _c.latitude.sign)
-    || (_c.latitude.abs() == 90 && _a.latitude.abs() == 90 && _c.latitude.sign == _a.latitude.sign)
+    (a.latitude.abs() == 90 && b.latitude.abs() == 90 && a.latitude.sign == b.latitude.sign)
+    || (b.latitude.abs() == 90 && c.latitude.abs() == 90 && b.latitude.sign == c.latitude.sign)
+    || (c.latitude.abs() == 90 && a.latitude.abs() == 90 && c.latitude.sign == a.latitude.sign)
   ) {
     return false;
   }
 
-  var distAB = distanceBearing(_a, _b, ellipsoid).distance;
-  var distAC = distanceBearing(_a, _c, ellipsoid).distance;
-  var distBC = distanceBearing(_b, _c, ellipsoid).distance;
-
-  var dists = [distAB, distAC, distBC];
+  var dists = [triangle.distanceAB, triangle.distanceAC, triangle.distanceBC];
   dists.sort();
 
   if (dists[2] >= dists[0] + dists[1]) {
     return false;
   }
 
-  if (_ellipsoidTriangleAreaWithValidInput(_a, _b, _c, ellipsoid) < 0.001) {
+  if (_ellipsoidTriangleAreaWithValidInput(triangle, ellipsoid) < 0.001) {
     return false;
   }
 
   return true;
 }
 
-bool _isClockwiseOrderedPolygon(List<LatLng> coords, Ellipsoid ellipsoid) {
-  var area = polygonArea(coords, ellipsoid);
+bool isClockwiseOrderedEllipsoidTriangle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+  var area = polygonAreaEdges(
+    triangle.a,
+    [triangle.bearingAB, triangle.bearingBC, triangle.bearingCA],
+    [triangle.distanceAB, triangle.distanceBC, triangle.distanceAC],
+    ellipsoid
+  );
   return area < 0;
 }
 
-List<LatLng> orderEllipsoidTrianglePointsClockwise(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
-  if (_isClockwiseOrderedPolygon([a, b, c], ellipsoid)) {
-    return [a, b, c];
+ELlipsoidTriangle orderEllipsoidTrianglePointsClockwise(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+  if (isClockwiseOrderedEllipsoidTriangle(triangle, ellipsoid)) {
+    return triangle;
   } else {
-    return [a, c, b];
+    return ELlipsoidTriangle(triangle.a, triangle.c, triangle.b, ellipsoid);
   }
 }
 
-TriangleInteriorAngles ellipsoidTriangleAngles(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
-  if (!isValidEllipsoidTriangle(a, b, c, ellipsoid)) {
+TriangleInteriorAngles ellipsoidTriangleAngles(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+  if (!isValidEllipsoidTriangle(triangle, ellipsoid)) {
     return TriangleInteriorAngles(alpha: 0.0, beta: 0.0, gamma: 0.0);
   }
 
-  var _a = normalizeLatLon(a.latitude, a.longitude);
-  var _b = normalizeLatLon(b.latitude, b.longitude);
-  var _c = normalizeLatLon(c.latitude, c.longitude);
+  var _a = triangle.a;
+  var _b = triangle.b;
+  var _c = triangle.c;
 
   var aAngle = (distanceBearing(_a, _c, ellipsoid).bearingAToB - distanceBearing(_a, _b, ellipsoid).bearingAToB).abs();
   var bAngle = (distanceBearing(_b, _c, ellipsoid).bearingAToB - distanceBearing(_b, _a, ellipsoid).bearingAToB).abs();
@@ -87,47 +88,27 @@ TriangleInteriorAngles ellipsoidTriangleAngles(LatLng a, LatLng b, LatLng c, Ell
   );
 }
 
-TriangleSides ellipsoidTriangleSides(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
-  if (!isValidEllipsoidTriangle(a, b, c, ellipsoid)) {
-    return TriangleSides(a: 0.0, b: 0.0, c: 0.0);
-  }
-
-  var _a = normalizeLatLon(a.latitude, a.longitude);
-  var _b = normalizeLatLon(b.latitude, b.longitude);
-  var _c = normalizeLatLon(c.latitude, c.longitude);
-
-  return TriangleSides(
-      a: distanceBearing(_b, _c, ellipsoid).distance,
-      b: distanceBearing(_a, _c, ellipsoid).distance,
-      c: distanceBearing(_a, _b, ellipsoid).distance);
-}
-
-double ellipsoidTriangleCircumference(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
-  if (!isValidEllipsoidTriangle(a, b, c, ellipsoid)) {
+double ellipsoidTriangleCircumference(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+  if (!isValidEllipsoidTriangle(triangle, ellipsoid)) {
     return 0.0;
   }
 
-  var sides = ellipsoidTriangleSides(
-      normalizeLatLon(a.latitude, a.longitude),
-      normalizeLatLon(b.latitude, b.longitude),
-      normalizeLatLon(c.latitude, c.longitude),
+  return triangle.distanceAB + triangle.distanceAC + triangle.distanceBC;
+}
+
+double _ellipsoidTriangleAreaWithValidInput(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+  return polygonAreaEdges(
+      triangle.a,
+      [triangle.bearingAB, triangle.bearingBC, triangle.bearingCA],
+      [triangle.distanceAB, triangle.distanceBC, triangle.distanceAC],
       ellipsoid
-  );
-  return sides.a + sides.b + sides.c;
+  ).abs();
 }
 
-double _ellipsoidTriangleAreaWithValidInput(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
-  return polygonArea([
-    normalizeLatLon(a.latitude, a.longitude),
-    normalizeLatLon(b.latitude, b.longitude),
-    normalizeLatLon(c.latitude, c.longitude),
-  ], ellipsoid).abs();
-}
-
-double ellipsoidTriangleArea(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
-  if (!isValidEllipsoidTriangle(a, b, c, ellipsoid)) {
+double ellipsoidTriangleArea(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+  if (!isValidEllipsoidTriangle(triangle, ellipsoid)) {
     return 0.0;
   }
 
-  return _ellipsoidTriangleAreaWithValidInput(a, b, c, ellipsoid);
+  return _ellipsoidTriangleAreaWithValidInput(triangle, ellipsoid);
 }

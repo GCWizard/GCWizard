@@ -314,12 +314,12 @@ class _Geodesic {
    * prolate ellipsoid, an additional condition is necessary for a shortest
    * path: the longitudinal extent must not exceed of 180&deg;.)
    **********************************************************************/
-  GeodesicData direct(double lat1, double lon1, double azi1, bool arcmode, double s12) {
-    return _direct(lat1, lon1, azi1, arcmode, s12,
-        _GeodesicMask.LATITUDE | _GeodesicMask.LONGITUDE | _GeodesicMask.AZIMUTH |
-        _GeodesicMask.REDUCEDLENGTH | _GeodesicMask.GEODESICSCALE | _GeodesicMask.AREA |
-        _GeodesicMask.DISTANCE
-    );
+  GeodesicData direct(double lat1, double lon1, double azi1, bool arcmode, double s12, {int? outmask}) {
+    outmask ??=  _GeodesicMask.LATITUDE | _GeodesicMask.LONGITUDE | _GeodesicMask.AZIMUTH |
+    _GeodesicMask.REDUCEDLENGTH | _GeodesicMask.GEODESICSCALE | _GeodesicMask.AREA |
+    _GeodesicMask.DISTANCE;
+
+    return _direct(lat1, lon1, azi1, arcmode, s12, outmask);
   }
 
   /*

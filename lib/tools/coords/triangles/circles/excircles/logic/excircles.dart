@@ -7,17 +7,17 @@ class Excircle{
   Excircle(this.circle, this.touchpoint);
 }
 
-Excircle _calcExcircleOfAOnBC(LatLng a, LatLng b, LatLng c, double dAB, double dBC, double dCA, Ellipsoid ellipsoid) {
-  var distBearAB = distanceBearing(a, b, ellipsoid);
-  var distBearAC = distanceBearing(a, c, ellipsoid);
-  var distBearBC = distanceBearing(b, c, ellipsoid);
+Excircle _calcExcircleOfAOnBC(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+  var a = triangle.a;
+  var b = triangle.b;
+  var c = triangle.c;
 
-  var bearingAB = distBearAB.bearingAToB;
-  var bearingAC = distBearAC.bearingAToB;
-  var bearingBC = distBearBC.bearingAToB;
-  var bearingBA = distBearAB.bearingBToA;
+  var bearingAB = triangle.bearingAB;
+  var bearingAC = triangle.bearingAC;
+  var bearingBC = triangle.bearingBC;
+  var bearingBA = triangle.bearingBA;
 
-  var distance = max(distBearAB.distance, max(distBearAC.distance, distBearBC.distance));
+  var distance = max(triangle.distanceAB, max(triangle.distanceAC, triangle.distanceBC));
 
   var segmentA = segmentBearings(a, bearingAC, bearingAB, distance, 2, ellipsoid);
   var segmentB = segmentBearings(b, bearingBA, bearingBC, distance, 2, ellipsoid);
@@ -31,36 +31,28 @@ Excircle _calcExcircleOfAOnBC(LatLng a, LatLng b, LatLng c, double dAB, double d
 
   var centerPoint = intersectBearings(a, bearingA, b, bearingB, ellipsoid);
 
-  var circle = _optimizeCircle(centerPoint, a, b, c, dAB, dBC, dCA, _CircleType.EXCIRCLE, ellipsoid);
+  var circle = _optimizeCircle(centerPoint, triangle, _CircleType.EXCIRCLE, ellipsoid);
   var projectCenterOnBC = orthogonalProjectionTwoPoints(circle.center, b, c, ellipsoid);
 
   return Excircle(circle, projectCenterOnBC);
 }
 
-List<Excircle>? calculateEllipsoidTriangleExcircles(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid){
-  if (!isValidEllipsoidTriangle(a, b, c, ellipsoid)) {
+List<Excircle>? calculateEllipsoidTriangleExcircles(ELlipsoidTriangle triangle, Ellipsoid ellipsoid){
+  if (!isValidEllipsoidTriangle(triangle, ellipsoid)) {
     return null;
   }
 
-  LatLng _a = utils.normalizeLatLon(a.latitude, a.longitude);
-  LatLng _b = utils.normalizeLatLon(b.latitude, b.longitude);
-  LatLng _c = utils.normalizeLatLon(c.latitude, c.longitude);
+  var _triangle = triangle;
 
-  var clockwiseOrdered = orderEllipsoidTrianglePointsClockwise(_a, _b, _c, ellipsoid);
-  _a = clockwiseOrdered[0];
-  _b = clockwiseOrdered[1];
-  _c = clockwiseOrdered[2];
+  if (!triangle.isClockwise) {
+    _triangle = orderEllipsoidTrianglePointsClockwise(triangle, ellipsoid);
+  }
 
-  double dAB = distanceBearing(_a, _b, ellipsoid).distance;
-  double dBC = distanceBearing(_b, _c, ellipsoid).distance;
-  double dCA = distanceBearing(_c, _a, ellipsoid).distance;
+  var circle1 = _calcExcircleOfAOnBC(_triangle, ellipsoid);
+  var circle2 = _calcExcircleOfAOnBC(_triangle, ellipsoid);
+  var circle3 = _calcExcircleOfAOnBC(_triangle, ellipsoid);
 
-  var circle1 = _calcExcircleOfAOnBC(_a, _b, _c, dAB, dBC, dCA, ellipsoid);
-  var circle2 = _calcExcircleOfAOnBC(_b, _a, _c, dAB, dCA, dBC, ellipsoid);
-  var circle3 = _calcExcircleOfAOnBC(_c, _a, _b, dCA, dAB, dBC, ellipsoid);
-
-  if (_b == b) {
-    // if points were ordered clockwise originally
+  if (triangle.isClockwise) {
     return [circle1, circle2, circle3];
   } else {
     return [circle1, circle3, circle2];

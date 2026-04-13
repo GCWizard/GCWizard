@@ -320,10 +320,31 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('point: ${elem['point']}, start:  ${elem['start']}, end:  ${elem['end']}', () {
-        var db = distanceBearing(LatLng(70, 0), LatLng(52, 13), Ellipsoid.WGS84).bearingAToB;
-        var dc = projection(LatLng(70, 0), db, 200000, Ellipsoid.WGS84);
-
         var _actual = isOnSegment(elem['point'] as LatLng, elem['start'] as LatLng, elem['end'] as LatLng, Ellipsoid.WGS84);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
+
+  group('CoordinateUtils.isAntipode:', () {
+    List<Map<String, Object>> _inputsToExpected = [
+      {'point': LatLng(0,0), 'pointToCheck': LatLng(180,0), 'expectedOutput': true},
+      {'point': LatLng(0,0), 'pointToCheck': LatLng(-180,0), 'expectedOutput': true},
+      {'point': LatLng(90,0), 'pointToCheck': LatLng(-90,0), 'expectedOutput': true},
+      {'point': LatLng(90,10), 'pointToCheck': LatLng(-90,0), 'expectedOutput': true},
+      {'point': LatLng(90,0), 'pointToCheck': LatLng(-90,-100), 'expectedOutput': true},
+      {'point': LatLng(52,13), 'pointToCheck': LatLng(-52.0, -167.0), 'expectedOutput': true},
+
+      {'point': LatLng(52,13), 'pointToCheck': LatLng(-52.0, -168.0), 'expectedOutput': false},
+      {'point': LatLng(52,13), 'pointToCheck': LatLng(-53.0, -167.0), 'expectedOutput': false},
+      {'point': LatLng(52,13), 'pointToCheck': LatLng(-52,-167.000000001), 'expectedOutput': false},
+      {'point': LatLng(52,13), 'pointToCheck': LatLng(-51.9999999999,-167), 'expectedOutput': false},
+    ];
+
+
+    for (var elem in _inputsToExpected) {
+      test('point: ${elem['point']}, pointToCheck:  ${elem['pointToCheck']}}', () {
+        var _actual = isAntipode(elem['point'] as LatLng, elem['pointToCheck'] as LatLng);
         expect(_actual, elem['expectedOutput']);
       });
     }

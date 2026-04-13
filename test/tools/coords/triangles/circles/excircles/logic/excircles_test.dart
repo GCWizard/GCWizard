@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangle.dart';
 import 'package:gc_wizard/tools/coords/triangles/circles/_common/logic/circles.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -22,7 +23,8 @@ void main() async {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
-        var _actual = calculateEllipsoidTriangleExcircles(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
+        var triangle = ELlipsoidTriangle(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
+        var _actual = calculateEllipsoidTriangleExcircles(triangle, Ellipsoid.WGS84);
         expect(_actual != null, true);
 
         circleListTest(_actual!.map((Excircle ec) => ec.circle).toList(), elem['expectedOutput'] as List<Circle>);
@@ -46,7 +48,8 @@ void main() async {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
-        var _actual = calculateEllipsoidTriangleExcircles(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
+        var triangle = ELlipsoidTriangle(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
+        var _actual = calculateEllipsoidTriangleExcircles(triangle, Ellipsoid.WGS84);
         expect(_actual != null, true);
 
         var _exp = elem['expectedOutput'] as List<LatLng>;

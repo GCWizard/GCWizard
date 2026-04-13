@@ -1,4 +1,5 @@
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/tools/coords/antipodes/logic/antipodes.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/coords/orthogonal_projection/logic/orthogonal_projection.dart';
 import 'package:gc_wizard/utils/data_type_utils/double_type_utils.dart';
@@ -20,7 +21,7 @@ bool equalsLatLng(LatLng a, LatLng b, {double tolerance = 1e-10}) {
 
     if ((_a.longitude - _b.longitude).abs() <= tolerance) return true;
 
-    if ((180.0 - _a.longitude.abs()) <= tolerance && (180.0 - _b.longitude.abs()) <= tolerance) return true;
+    if (((180.0 - _a.longitude.abs()) <= tolerance) && ((180.0 - _b.longitude.abs()) <= tolerance)) return true;
   }
 
   return false;
@@ -141,4 +142,9 @@ bool isOnSegment(LatLng point, LatLng start, LatLng end, Ellipsoid ellipsoid) {
   var distStartEnd = distanceBearing(_start, _end, ellipsoid).distance;
 
   return ((distStartP + distPEnd) - distStartEnd).abs() < 1e-8;
+}
+
+bool isAntipode(LatLng point, LatLng pointToCheck) {
+  var compare = antipodes(point);
+  return equalsLatLng(compare, pointToCheck);
 }

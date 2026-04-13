@@ -6,6 +6,7 @@ import 'package:gc_wizard/tools/coords/intersect_lines/intersect_bearings/logic/
 import 'package:gc_wizard/tools/coords/intersect_lines/intersect_four_points/logic/intersect_four_points.dart';
 import 'package:gc_wizard/tools/coords/orthogonal_projection/logic/orthogonal_projection.dart';
 import 'package:gc_wizard/tools/coords/segment_bearings/logic/segment_bearings.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangle.dart';
 import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangles.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:latlong2/latlong.dart';
@@ -25,8 +26,16 @@ const double _TARGET_PRECISION = 1e-10;
 const int _MAX_ITERATIONS = 5000;
 
 /// Optimiert den Punkt auf dem Ellipsoid durch Minimierung der Abstands-Varianz
-Circle _optimizeCircle(LatLng startPoint, LatLng a, LatLng b, LatLng c, double dAB, double dBC, double dCA, _CircleType type, Ellipsoid ellipsoid) {
+Circle _optimizeCircle(LatLng startPoint, ELlipsoidTriangle triangle, _CircleType type, Ellipsoid ellipsoid) {
   LatLng currentPoint = startPoint;
+
+  var dAB = triangle.distanceAB;
+  var dBC = triangle.distanceBC;
+  var dCA = triangle.distanceAC;
+
+  var a = triangle.a;
+  var b = triangle.b;
+  var c = triangle.c;
 
   // DYNAMISCHER START-STEP: Max. 25% der längsten Seite, gedeckelt auf 100km.
   // Das verhindert das Verschwenden von Iterationen bei kleinen Dreiecken.

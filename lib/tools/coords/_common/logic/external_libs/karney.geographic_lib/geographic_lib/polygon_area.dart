@@ -156,6 +156,28 @@ class _PolygonArea {
     ++_num;
   }
 
+  /**
+   * Add an edge to the polygon or polyline.
+   * <p>
+   * @param azi azimuth at current point (degrees).
+   * @param s distance from current point to next point (meters).
+   * <p>
+   * This does nothing if no points have been added yet.  Use
+   * PolygonArea.CurrentPoint to determine the position of the new vertex.
+   **********************************************************************/
+  void _AddEdge(double azi, double s) {
+    if (_num > 0) {             // Do nothing if _num is zero
+      GeodesicData g = _earth.direct(_lat1, _lon1, azi, false, s, outmask: _mask);
+      _perimetersum._Add(g.s12);
+      if (!_polyline) {
+        _areasum._Add(g.S12);
+        _crossings += _transitdirect(_lon1, g.lon2);
+      }
+      _lat1 = g.lat2; _lon1 = g.lon2;
+      ++_num;
+    }
+  }
+
   int _transit(double lon1, double lon2) {
     // Return 1 or -1 if crossing prime meridian in east or west direction.
     // Otherwise return zero.  longitude = +/-0 considered to be positive.
@@ -179,6 +201,17 @@ class _PolygonArea {
     //    return
     //      lon1 <= 0 && lon2 > 0 && lon12 > 0 ? 1 :
     //      (lon2 <= 0 && lon1 > 0 && lon12 < 0 ? -1 : 0);
+  }
+
+  // an alternate version of transit to deal with longitudes in the direct
+  // problem.
+  int _transitdirect(double lon1, double lon2) {
+    // We want to compute exactly
+    //   int(floor(lon2 / 360)) - int(floor(lon1 / 360))
+    lon1 = ieeeRemainder(lon1, 720.0).toDouble();
+    lon2 = ieeeRemainder(lon2, 720.0).toDouble();
+    return ( (lon2 >= 0 && lon2 < 360 ? 0 : 1) -
+        (lon1 >= 0 && lon1 < 360 ? 0 : 1) );
   }
 
   /**

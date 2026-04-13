@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/coords/orthogonal_projection/logic/orthogonal_projection.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangle.dart';
 import 'package:gc_wizard/tools/coords/triangles/circles/_common/logic/circles.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
@@ -9,20 +10,18 @@ import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 import '../../../_common/ellipsoid_triangles_test_utils.dart';
 
 void main() async {
-  group("triangle.calculateEllipsoidTriangleInCircle:", () {
+  group("triangle.calculateEllipsoidTriangleIncircle:", () {
     for (int i = 0; i < validEllipsoidTrianglesForTests.length; i++) {
-      var triangle = validEllipsoidTrianglesForTests[i];
+      var triangleTest = validEllipsoidTrianglesForTests[i];
 
-      var a = triangle['inputA'] as LatLng;
-      var b = triangle['inputB'] as LatLng;
-      var c = triangle['inputC'] as LatLng;
+      var triangle = ELlipsoidTriangle(triangleTest['inputA'] as LatLng, triangleTest['inputB'] as LatLng, triangleTest['inputC'] as LatLng, Ellipsoid.WGS84);
 
-      test('input: $a $b $c', () {
-        var _actual = calculateEllipsoidTriangleIncircle(a, b, c, Ellipsoid.WGS84);
+      test('input: $triangle', () {
+        var _actual = calculateEllipsoidTriangleIncircle(triangle, Ellipsoid.WGS84);
 
-        LatLng _a = utils.normalizeLatLon(a.latitude, a.longitude);
-        LatLng _b = utils.normalizeLatLon(b.latitude, b.longitude);
-        LatLng _c = utils.normalizeLatLon(c.latitude, c.longitude);
+        var _a = triangle.a;
+        var _b = triangle.b;
+        var _c = triangle.c;
 
         var projPToAB = orthogonalProjectionTwoPoints(_actual!.center, _a, _b, Ellipsoid.WGS84);
         var projPToBC = orthogonalProjectionTwoPoints(_actual.center, _b, _c, Ellipsoid.WGS84);
@@ -34,9 +33,6 @@ void main() async {
         var dists = [distAB, distBC, distAC];
         dists.sort();
         expect(((dists[2] + dists[0]) / 2 - _actual.radius).abs() < 1e-8, true);
-        print(projPToAB);
-        print(_a); print(_b);
-        print(distanceBearing(_a, _b, Ellipsoid.WGS84).bearingAToB);
         expect(utils.isOnSegment(projPToAB, _a, _b, Ellipsoid.WGS84), true);
         expect(utils.isOnSegment(projPToBC, _b, _c, Ellipsoid.WGS84), true);
         expect(utils.isOnSegment(projPToAC, _a, _c, Ellipsoid.WGS84), true);
