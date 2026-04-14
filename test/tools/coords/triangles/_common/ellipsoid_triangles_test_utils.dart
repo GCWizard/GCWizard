@@ -12,13 +12,16 @@ List<Map<String, Object?>> validEllipsoidTrianglesForTests = [
   //
   // //Poles
   // {'inputA': LatLng(90, 0), 'inputB': LatLng(0,0), 'inputC': LatLng(0, 90)},
+  // {'inputA': LatLng(-90, 0), 'inputB': LatLng(0,0), 'inputC': LatLng(0, 90)},
+  // {'inputA': LatLng(90, 0), 'inputB': LatLng(0,0), 'inputC': LatLng(0, -90)},
+  // {'inputA': LatLng(-90, 0), 'inputB': LatLng(0,0), 'inputC': LatLng(0, -90)},
   //
   // //Antipodes
-  // {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 180), 'inputC': LatLng(1, 1)},
-  // {'inputA': LatLng(1, 1), 'inputB': LatLng(-1, -179), 'inputC': LatLng(-1, -1)},
+  {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 180), 'inputC': LatLng(1, 1)},
+  {'inputA': LatLng(1, 1), 'inputB': LatLng(-1, -179), 'inputC': LatLng(-1, -1)},
   // {'inputA': LatLng(-1, -1), 'inputB': LatLng(1, 179), 'inputC': LatLng(1, 1)},
-  {'inputA': LatLng(-1, 1), 'inputB': LatLng(1, -179), 'inputC': LatLng(1, 1)},
-  // {'inputA': LatLng(1, -1), 'inputB': LatLng(-1, 179), 'inputC': LatLng(1, 1)},
+  // {'inputA': LatLng(-1, 1), 'inputB': LatLng(1, -179), 'inputC': LatLng(1, 1)},
+  {'inputA': LatLng(1, -1), 'inputB': LatLng(-1, 179), 'inputC': LatLng(1, 1)},
   //
   // //Around Poles
   // {'inputA': LatLng(89.999, 0), 'inputB': LatLng(89.999, 120), 'inputC': LatLng(89.999, -120)},

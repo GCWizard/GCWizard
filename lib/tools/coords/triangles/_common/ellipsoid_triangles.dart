@@ -43,8 +43,6 @@ bool isValidEllipsoidTriangle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
     return false;
   }
 
-  var x = _ellipsoidTriangleAreaWithValidInput(triangle, ellipsoid);
-  print(x);
   if (_ellipsoidTriangleAreaWithValidInput(triangle, ellipsoid) < 0.001) {
     return false;
   }
@@ -63,7 +61,7 @@ bool isClockwiseOrderedEllipsoidTriangle(ELlipsoidTriangle triangle, Ellipsoid e
 }
 
 ELlipsoidTriangle orderEllipsoidTrianglePointsClockwise(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
-  if (isClockwiseOrderedEllipsoidTriangle(triangle, ellipsoid)) {
+  if (triangle.isClockwise) {
     return triangle;
   } else {
     return ELlipsoidTriangle(triangle.a, triangle.c, triangle.b, ellipsoid);

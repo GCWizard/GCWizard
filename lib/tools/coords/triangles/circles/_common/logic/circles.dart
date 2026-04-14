@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/tools/coords/antipodes/logic/antipodes.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/coords/intersect_lines/intersect_bearings/logic/intersect_bearing.dart';
 import 'package:gc_wizard/tools/coords/intersect_lines/intersect_four_points/logic/intersect_four_points.dart';
@@ -15,7 +16,7 @@ import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 part 'package:gc_wizard/tools/coords/triangles/circles/incircle/logic/incircle.dart';
 part 'package:gc_wizard/tools/coords/triangles/circles/excircles/logic/excircles.dart';
 
-enum _CircleType {INCIRCLE, CIRCUMCIRCLE, EXCIRCLE}
+enum _CircleType {INCIRCLE, EXCIRCLE_A, EXCIRCLE_B, EXCIRCLE_C}
 
 double _distanceToGeodesic(LatLng point, LatLng lineStart, double bearing, Ellipsoid ellipsoid) {
   var project = orthogonalProjectionBearing(point, lineStart, bearing, ellipsoid);
@@ -27,6 +28,8 @@ const int _MAX_ITERATIONS = 5000;
 
 /// Optimiert den Punkt auf dem Ellipsoid durch Minimierung der Abstands-Varianz
 Circle _optimizeCircle(LatLng startPoint, ELlipsoidTriangle triangle, _CircleType type, Ellipsoid ellipsoid) {
+  print(startPoint.latitude.toString() + ', ' + startPoint.longitude.toString());
+
   LatLng currentPoint = startPoint;
 
   var dAB = triangle.distanceAB;
@@ -48,6 +51,7 @@ Circle _optimizeCircle(LatLng startPoint, ELlipsoidTriangle triangle, _CircleTyp
   int iterations = 0;
 
   while (stepSize > _TARGET_PRECISION && iterations < _MAX_ITERATIONS) {
+    // print('$iterations: ' + currentPoint.latitude.toString() + ', ' + currentPoint.longitude.toString() + ', $currentCost');
     bool foundBetter = false;
 
     for (double az in searchAzimuths) {
@@ -78,9 +82,11 @@ Circle _optimizeCircle(LatLng startPoint, ELlipsoidTriangle triangle, _CircleTyp
     iterations++;
   }
 
-  var projectA = orthogonalProjectionTwoPoints(currentPoint, b, c, ellipsoid);
-  var projectB = orthogonalProjectionTwoPoints(currentPoint, a, c, ellipsoid);
-  var projectC = orthogonalProjectionTwoPoints(currentPoint, a, b, ellipsoid);
+  print(iterations);
+
+  var projectA = orthogonalProjectionBearing(currentPoint, b, triangle.bearingBC, ellipsoid);
+  var projectB = orthogonalProjectionBearing(currentPoint, c, triangle.bearingCA, ellipsoid);
+  var projectC = orthogonalProjectionBearing(currentPoint, a, triangle.bearingAB, ellipsoid);
 
   var radius = (distanceBearing(currentPoint, projectA, ellipsoid).distance
       + distanceBearing(currentPoint, projectB, ellipsoid).distance
@@ -91,17 +97,48 @@ Circle _optimizeCircle(LatLng startPoint, ELlipsoidTriangle triangle, _CircleTyp
 
 /// Die Kostenfunktion: Minimiert die Varianz (Unterschiede) der drei Lote
 double _costFunction(LatLng p, ELlipsoidTriangle triangle, _CircleType type, Ellipsoid ellipsoid) {
-  // 1. Topologische Prüfung
-  bool inside = _isPointInside(p, triangle, ellipsoid);
+  var a = triangle.a;
+  var b = triangle.b;
+  var c = triangle.c;
 
-  // Wenn wir einen Inkreis suchen, der Punkt aber draußen ist -> Mauer!
-  if (type == _CircleType.INCIRCLE && !inside) {
-    return double.maxFinite; // Unendlich hohe Kosten
+  // 1. Topologische Prüfung: Auf welcher Seite der Linien liegen wir?
+  // Wir nutzen die Vorzeichen der Azimut-Differenz (isRightOf)
+  bool sideAB = _isRightOf(p, a, b, c.latitude >= 0, ellipsoid); // Liegt P rechts von AB?
+  bool sideBC = _isRightOf(p, b, c, a.latitude >= 0, ellipsoid); // Liegt P rechts von BC?
+  bool sideCA = _isRightOf(p, c, a, b.latitude >= 0, ellipsoid); // Liegt P rechts von CA?
+
+  // Referenzwerte: Wo liegen die Ecken selbst?
+  bool cVsAB = _isRightOf(c, a, b, c.latitude >= 0, ellipsoid);
+  bool aVsBC = _isRightOf(a, b, c, a.latitude >= 0, ellipsoid);
+  bool bVsCA = _isRightOf(b, c, a, b.latitude >= 0, ellipsoid);
+
+  bool isValidRegion = false;
+
+  // print('$type, $sideAB = $cVsAB,  $sideBC = $aVsBC, $sideCA = $bVsCA');
+
+  switch (type) {
+    case _CircleType.INCIRCLE:
+    // Alle Seiten müssen mit der Innenseite übereinstimmen
+      isValidRegion = (sideAB && sideBC && sideCA) || (!sideAB && !sideBC && !sideCA);
+      break;
+    case _CircleType.EXCIRCLE_A:
+    // Gegenüber von A: Seite BC muss "falsch" sein, andere "richtig"
+      isValidRegion = (sideBC != aVsBC) && (sideAB == cVsAB) && (sideCA == bVsCA);
+      isValidRegion |= (sideCA != bVsCA) && (sideAB == cVsAB) && (sideBC == aVsBC);
+      isValidRegion |= (sideAB != cVsAB) && (sideBC == aVsBC) && (sideCA == bVsCA);
+      break;
+    case _CircleType.EXCIRCLE_B:
+    // Gegenüber von B: Seite AC muss "falsch" sein, andere "richtig"
+      isValidRegion = (sideCA != bVsCA) && (sideAB == cVsAB) && (sideBC == aVsBC);
+      break;
+    case _CircleType.EXCIRCLE_C:
+    // Gegenüber von C: Seite AB muss "falsch" sein, andere "richtig"
+      isValidRegion = (sideAB != cVsAB) && (sideBC == aVsBC) && (sideCA == bVsCA);
+      break;
   }
 
-  // Wenn wir einen Ankreis suchen, der Punkt aber drinnen ist -> Mauer!
-  if (type == _CircleType.EXCIRCLE && inside) {
-    return double.maxFinite;
+  if (!isValidRegion) {
+    return double.maxFinite; // Die "Mauer"
   }
 
   double d1 = _distanceToGeodesic(p, triangle.a, triangle.bearingAB, ellipsoid);
@@ -114,40 +151,21 @@ double _costFunction(LatLng p, ELlipsoidTriangle triangle, _CircleType type, Ell
   return pow(d1 - mean, 2) + pow(d2 - mean, 2) + pow(d3 - mean, 2).toDouble();
 }
 
-/// Prüft, ob Punkt P innerhalb des Dreiecks ABC liegt.
-bool _isPointInside(LatLng p, ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
-  // Hilfsfunktion: Liegt P rechts von der gerichteten Linie Start->Ende?
-  bool isRightOf(LatLng start, LatLng end, bool isNorth, LatLng point) {
-    // 1. Azimut von Start nach Ende
-    double azLine;
-    if (utils.isAntipode(start, end)) {
-      azLine = isNorth ? 0.0 : 180.0;
-    } else {
-      azLine = distanceBearing(start, end, ellipsoid).bearingAToB;
-    }
-    // 2. Azimut von Start nach P
-    double azPoint = distanceBearing(start, point, ellipsoid).bearingAToB;
-
-    // Winkeldifferenz berechnen (-180 bis +180)
-    double diff = (azPoint - azLine) % 360;
-    if (diff > 180) diff -= 360;
-    if (diff < -180) diff += 360;
-
-    return diff > 0; // Positiv bedeutet rechts (im Uhrzeigersinn abweichend)
+bool _isRightOf(LatLng point, LatLng start, LatLng end, bool isNorth, Ellipsoid ellipsoid) {
+  // 1. Azimut von Start nach Ende
+  double azLine;
+  if (utils.isAntipode(start, end)) {
+    azLine = isNorth ? 0.0 : 180.0;
+  } else {
+    azLine = distanceBearing(start, end, ellipsoid).bearingAToB;
   }
+  // 2. Azimut von Start nach P
+  double azPoint = distanceBearing(start, point, ellipsoid).bearingAToB;
 
-  var a = triangle.a;
-  var b = triangle.b;
-  var c = triangle.c;
+  // Winkeldifferenz berechnen (-180 bis +180)
+  double diff = (azPoint - azLine) % 360;
+  if (diff > 180) diff -= 360;
+  if (diff < -180) diff += 360;
 
-  bool rightAB = isRightOf(a, b, c.latitude >= 0, p);
-  bool rightBC = isRightOf(b, c, a.latitude >= 0, p);
-  bool rightCA = isRightOf(c, a, b.latitude >= 0, p);
-
-  bool leftAB = !rightAB;
-  bool leftBC = !rightBC;
-  bool leftCA = !rightCA;
-
-  // P ist im Dreieck, wenn es bei allen Linien auf der gleichen Seite liegt.
-  return (rightAB && rightBC && rightCA) || (leftAB && leftBC && leftCA);
+  return diff > 0; // Positiv bedeutet rechts (im Uhrzeigersinn abweichend)
 }

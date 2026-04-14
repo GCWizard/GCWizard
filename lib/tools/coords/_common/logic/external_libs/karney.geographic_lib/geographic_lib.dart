@@ -167,6 +167,6 @@ double polygonAreaEdges(LatLng start, List<double> distances, List<double> beari
 bool polygonAreaIsHalfEllipsoid(LatLng start, List<double> distances, List<double> bearings, Ellipsoid ellipsoid) {
   var polygonArea = _createPolygonEdges(start, distances, bearings, ellipsoid);
 
-  var result1 = polygonArea._Compute();
-  return (result1.area * 2 - polygonArea._area0).abs() <= 1e-3;
+  var result = polygonArea._Compute();
+  return (result.area * 2 - polygonArea._area0).abs() <= 1e-3;
 }

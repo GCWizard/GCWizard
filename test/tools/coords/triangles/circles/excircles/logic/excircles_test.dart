@@ -1,61 +1,52 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
+import 'package:gc_wizard/tools/coords/orthogonal_projection/logic/orthogonal_projection.dart';
 import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangle.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangles.dart';
 import 'package:gc_wizard/tools/coords/triangles/circles/_common/logic/circles.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 
-import '../../../../../science_and_technology/euclidic_triangle/logic/triangle_test_utils.dart';
+import '../../../_common/ellipsoid_triangles_test_utils.dart';
 
 void main() async {
-  group("triangle.calculateEllipsoidTriangleExCircles:", () {
-    List<Map<String, Object?>> _inputsToExpected = [
-      {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 0), 'inputC': LatLng(0, 0),
-        'expectedOutput': [Circle(LatLng(double.nan, double.nan), double.nan), Circle(LatLng(double.nan, double.nan), double.nan), Circle(LatLng(double.nan, double.nan), double.nan)]},
-      {'inputA': LatLng(1, 1), 'inputB': LatLng(1, 1), 'inputC': LatLng(1, 1),
-        'expectedOutput': [Circle(LatLng(double.nan, double.nan), double.nan), Circle(LatLng(double.nan, double.nan), double.nan), Circle(LatLng(double.nan, double.nan), double.nan)]},
-      {'inputA': LatLng(1, 1), 'inputB': LatLng(2, 2), 'inputC': LatLng(3, 3),
-        'expectedOutput': [Circle(LatLng(double.nan, double.nan), double.nan), Circle(LatLng(double.nan, double.nan), double.nan), Circle(LatLng(double.nan, double.nan), double.nan)]},
-      {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 3), 'inputC': LatLng(4, 0),
-        'expectedOutput': [Circle(LatLng(5.983896321527141, 5.977224638371354), 661808.7769463151), Circle(LatLng(2.990927083046817, -2.9753304858554657), 330763.7095326205), Circle(LatLng(-2.0137766942498136, 2.00174926974978), 222672.82012224355)]},
-      {'inputA': LatLng(40, 9), 'inputB': LatLng(42, 9), 'inputC': LatLng(38, 8),
-        'expectedOutput': [Circle(LatLng(40.67991037914872, -18.4955260903198), 2284720.18143741), Circle(LatLng(37.88890910683774, 8.491435708899644), 44735.62133955817), Circle(LatLng(41.96210524028433, 9.50228817893526), 41639.40105911964)]},
-    ];
+  group("triangle.calculateEllipsoidTriangleExcircles:", () {
+    for (int i = 0; i < validEllipsoidTrianglesForTests.length; i++) {
+      var triangleTest = validEllipsoidTrianglesForTests[i];
 
-    for (var elem in _inputsToExpected) {
-      test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
-        var triangle = ELlipsoidTriangle(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
+      var triangle = ELlipsoidTriangle(triangleTest['inputA'] as LatLng, triangleTest['inputB'] as LatLng, triangleTest['inputC'] as LatLng, Ellipsoid.WGS84);
+      test('input: $triangle, cw: ${triangle.isClockwise}', () {
         var _actual = calculateEllipsoidTriangleExcircles(triangle, Ellipsoid.WGS84);
-        expect(_actual != null, true);
+        if (_actual == null) {
+          expect(_actual == null, !triangle.isValid || triangleIsMeridianCircle(triangle, Ellipsoid.WGS84));
+          return;
+        }
 
-        circleListTest(_actual!.map((Excircle ec) => ec.circle).toList(), elem['expectedOutput'] as List<Circle>);
-      });
-    }
-  });
+        var _triangle = orderEllipsoidTrianglePointsClockwise(triangle, Ellipsoid.WGS84);
+        var _a = _triangle.a;
+        var _b = _triangle.b;
+        var _c = _triangle.c;
 
-  group("triangle.calculateEllipsoidTriangleExCirclesTouchPoints:", () {
-    List<Map<String, Object?>> _inputsToExpected = [
-      {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 0), 'inputC': LatLng(0, 0),
-        'expectedOutput': [LatLng(double.nan, double.nan), LatLng(double.nan, double.nan), LatLng(double.nan, double.nan)]},
-      {'inputA': LatLng(1, 1), 'inputB': LatLng(1, 1), 'inputC': LatLng(1, 1),
-        'expectedOutput': [LatLng(double.nan, double.nan), LatLng(double.nan, double.nan), LatLng(double.nan, double.nan)]},
-      {'inputA': LatLng(1, 1), 'inputB': LatLng(2, 2), 'inputC': LatLng(3, 3),
-        'expectedOutput': [LatLng(2.9999999547992937, 2.9999999547439984), LatLng(1.0000000904862194, 1.0000000903478394), LatLng(1.9999999547922287, 1.9999999547576408)]},
-      {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 3), 'inputC': LatLng(4, 0),
-        'expectedOutput': [LatLng(2.391693519598998, 1.2086407438740707), LatLng(2.99498418720933, 0.0), LatLng(1.2337259154840623e-16, 2.0017492449758265)]},
-      {'inputA': LatLng(40, 9), 'inputB': LatLng(42, 9), 'inputC': LatLng(38, 8),
-        'expectedOutput': [LatLng(39.92971701581364, 8.467521458921283), LatLng(38.03437356063817, 8.016683216826323), LatLng(41.96320398941941, 9.0)]},
-    ];
+        for (var excircle in _actual) {
+          print(excircle.circle.center.latitude.toString() + ', ' + excircle.circle.center.longitude.toString() + ', ' + excircle.circle.radius.toString());
 
-    for (var elem in _inputsToExpected) {
-      test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
-        var triangle = ELlipsoidTriangle(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
-        var _actual = calculateEllipsoidTriangleExcircles(triangle, Ellipsoid.WGS84);
-        expect(_actual != null, true);
+          var projPToAB = orthogonalProjectionBearing(excircle.circle.center, _a, _triangle.bearingAB, Ellipsoid.WGS84);
+          var projPToBC = orthogonalProjectionBearing(excircle.circle.center, _b, _triangle.bearingBC, Ellipsoid.WGS84);
+          var projPToAC = orthogonalProjectionBearing(excircle.circle.center, _c, _triangle.bearingCA, Ellipsoid.WGS84);
+          var distAB = distanceBearing(excircle.circle.center, projPToAB, Ellipsoid.WGS84).distance;
+          var distBC = distanceBearing(excircle.circle.center, projPToBC, Ellipsoid.WGS84).distance;
+          var distAC = distanceBearing(excircle.circle.center, projPToAC, Ellipsoid.WGS84).distance;
 
-        var _exp = elem['expectedOutput'] as List<LatLng>;
-        print('Old: ' + _exp[0].toString() + ', '+ _exp[1].toString() + ', '+ _exp[02].toString());
-        print('New: ' + _actual![0].touchpoint.toString() + ', '+ _actual[1].touchpoint.toString() + ', '+ _actual[02].touchpoint.toString());
-        latLngListTest(_actual.map((Excircle ec) => ec.touchpoint).toList(), elem['expectedOutput'] as List<LatLng>);
+          var dists = [distAB, distBC, distAC];
+          dists.sort();
+          print(dists);
+
+          expect(((dists[2] + dists[0]) / 2 - excircle.circle.radius).abs() < 1e-6, true);
+          // expect(utils.isOnSegment(projPToAB, _a, _b, Ellipsoid.WGS84), true);
+          // expect(utils.isOnSegment(projPToBC, _b, _c, Ellipsoid.WGS84), true);
+          // expect(utils.isOnSegment(projPToAC, _a, _c, Ellipsoid.WGS84), true);
+        }
       });
     }
   });

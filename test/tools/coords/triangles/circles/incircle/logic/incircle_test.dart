@@ -16,7 +16,7 @@ void main() async {
       var triangleTest = validEllipsoidTrianglesForTests[i];
 
       var triangle = ELlipsoidTriangle(triangleTest['inputA'] as LatLng, triangleTest['inputB'] as LatLng, triangleTest['inputC'] as LatLng, Ellipsoid.WGS84);
-      test('input: $triangle', () {
+      test('input: $triangle, cw: ${triangle.isClockwise}', () {
         var _actual = calculateEllipsoidTriangleIncircle(triangle, Ellipsoid.WGS84);
         if (_actual == null) {
           expect(_actual == null, !triangle.isValid || triangleIsMeridianCircle(triangle, Ellipsoid.WGS84));
