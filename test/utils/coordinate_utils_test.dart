@@ -64,6 +64,23 @@ void main() {
 
       {'a': const LatLng(60, 181), 'b': const LatLng(60, -179), 'expectedOutput': true},
       {'a': const LatLng(88, 1), 'b': const LatLng(92, -179), 'expectedOutput': true},
+
+      {'a': const LatLng(90,0), 'b': const LatLng(90,0), 'expectedOutput': true},
+      {'a': const LatLng(0,0), 'b': const LatLng(0,0), 'expectedOutput': true},
+      {'a': const LatLng(-90,0), 'b': const LatLng(-90,0), 'expectedOutput': true},
+
+      {'a': const LatLng(-90,180), 'b': const LatLng(-90,0), 'expectedOutput': true},
+      {'a': const LatLng(-90,100), 'b': const LatLng(-90,0), 'expectedOutput': true},
+      {'a': const LatLng(90,100), 'b': const LatLng(90,0), 'expectedOutput': true},
+      {'a': const LatLng(0,180), 'b': const LatLng(0,-180), 'expectedOutput': true},
+      {'a': const LatLng(10,180), 'b': const LatLng(10,-180), 'expectedOutput': true},
+      {'a': const LatLng(-10,180), 'b': const LatLng(-10,-180), 'expectedOutput': true},
+
+      {'a': const LatLng(-90,179), 'b': const LatLng(-90,-179), 'expectedOutput': true},
+      {'a': const LatLng(-80,179), 'b': const LatLng(-80,-179), 'expectedOutput': false},
+
+      {'a': const LatLng(52.0000000000001, 12.999999999999), 'b': LatLng(52,13), 'expectedOutput': true},
+      {'a': const LatLng(52.000001, 12.999999), 'b': const LatLng(52,13), 'expectedOutput': false},
     ];
 
     for (var elem in _inputsToExpected) {
@@ -345,6 +362,48 @@ void main() {
     for (var elem in _inputsToExpected) {
       test('point: ${elem['point']}, pointToCheck:  ${elem['pointToCheck']}}', () {
         var _actual = isAntipode(elem['point'] as LatLng, elem['pointToCheck'] as LatLng);
+        expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
+
+  group('CoordinateUtils.isNearPole:', () {
+    List<Map<String, Object>> _inputsToExpected = [
+      {'coord': LatLng(90,0), 'expectedOutput': true},
+      {'coord': LatLng(90,180), 'expectedOutput': true},
+      {'coord': LatLng(90,-180), 'expectedOutput': true},
+      {'coord': LatLng(-90,-180), 'expectedOutput': true},
+      {'coord': LatLng(-90,0), 'expectedOutput': true},
+
+      {'coord': LatLng(89,0), 'expectedOutput': false},
+      {'coord': LatLng(-89,0), 'expectedOutput': false},
+      {'coord': LatLng(89.9,0), 'expectedOutput': false},
+      {'coord': LatLng(-89.9,0), 'expectedOutput': false},
+      {'coord': LatLng(-89.9,180), 'expectedOutput': false},
+      {'coord': LatLng(-89.9,-180), 'expectedOutput': false},
+      {'coord': LatLng(89.9,-180), 'expectedOutput': false},
+      {'coord': LatLng(89.9,180), 'expectedOutput': false},
+
+      {'coord': LatLng(89.99,0), 'expectedOutput': false},
+      {'coord': LatLng(-89.99,0), 'expectedOutput': false},
+      {'coord': LatLng(-89.99,180), 'expectedOutput': false},
+      {'coord': LatLng(-89.99,-180), 'expectedOutput': false},
+      {'coord': LatLng(89.99,-180), 'expectedOutput': false},
+      {'coord': LatLng(89.99,180), 'expectedOutput': false},
+
+      {'coord': LatLng(89.999,0), 'expectedOutput': true},
+      {'coord': LatLng(89.999,180), 'expectedOutput': true},
+      {'coord': LatLng(89.999,-180), 'expectedOutput': true},
+      {'coord': LatLng(-89.999,0), 'expectedOutput': true},
+      {'coord': LatLng(-89.999,180), 'expectedOutput': true},
+      {'coord': LatLng(-89.999,-180), 'expectedOutput': true},
+      {'coord': LatLng(-89.9999,-180), 'expectedOutput': true},
+    ];
+
+
+    for (var elem in _inputsToExpected) {
+      test('coord: ${elem['coord']}', () {
+        var _actual = isNearPole(elem['coord'] as LatLng);
         expect(_actual, elem['expectedOutput']);
       });
     }

@@ -1,10 +1,8 @@
 import 'dart:math';
 
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
-import 'package:gc_wizard/tools/coords/antipodes/logic/antipodes.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/coords/intersect_lines/intersect_bearings/logic/intersect_bearing.dart';
-import 'package:gc_wizard/tools/coords/intersect_lines/intersect_four_points/logic/intersect_four_points.dart';
 import 'package:gc_wizard/tools/coords/orthogonal_projection/logic/orthogonal_projection.dart';
 import 'package:gc_wizard/tools/coords/segment_bearings/logic/segment_bearings.dart';
 import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangle.dart';
@@ -16,7 +14,7 @@ import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 part 'package:gc_wizard/tools/coords/triangles/circles/incircle/logic/incircle.dart';
 part 'package:gc_wizard/tools/coords/triangles/circles/excircles/logic/excircles.dart';
 
-enum _CircleType {INCIRCLE, EXCIRCLE_A, EXCIRCLE_B, EXCIRCLE_C}
+enum _CircleType {INCIRCLE, EXCIRCLE_A}
 
 double _distanceToGeodesic(LatLng point, LatLng lineStart, double bearing, Ellipsoid ellipsoid) {
   var project = orthogonalProjectionBearing(point, lineStart, bearing, ellipsoid);
@@ -24,11 +22,11 @@ double _distanceToGeodesic(LatLng point, LatLng lineStart, double bearing, Ellip
 }
 
 const double _TARGET_PRECISION = 1e-10;
-const int _MAX_ITERATIONS = 5000;
+const int _MAX_ITERATIONS = 500;
 
 /// Optimiert den Punkt auf dem Ellipsoid durch Minimierung der Abstands-Varianz
 Circle _optimizeCircle(LatLng startPoint, ELlipsoidTriangle triangle, _CircleType type, Ellipsoid ellipsoid) {
-  print(startPoint.latitude.toString() + ', ' + startPoint.longitude.toString());
+  // print(startPoint.latitude.toString() + ', ' + startPoint.longitude.toString());
 
   LatLng currentPoint = startPoint;
 
@@ -51,6 +49,8 @@ Circle _optimizeCircle(LatLng startPoint, ELlipsoidTriangle triangle, _CircleTyp
   int iterations = 0;
 
   while (stepSize > _TARGET_PRECISION && iterations < _MAX_ITERATIONS) {
+    // print('------------------');
+    // print('$stepSize | $iterations | ${stepSize < _TARGET_PRECISION}');
     // print('$iterations: ' + currentPoint.latitude.toString() + ', ' + currentPoint.longitude.toString() + ', $currentCost');
     bool foundBetter = false;
 
@@ -92,6 +92,8 @@ Circle _optimizeCircle(LatLng startPoint, ELlipsoidTriangle triangle, _CircleTyp
       + distanceBearing(currentPoint, projectB, ellipsoid).distance
       + distanceBearing(currentPoint, projectC, ellipsoid).distance) / 3;
 
+  print('finalCircle: ' + currentPoint.latitude.toString() + ', ' + currentPoint.longitude.toString() + ', ' + radius.toString());
+
   return Circle(currentPoint, radius);
 }
 
@@ -123,17 +125,7 @@ double _costFunction(LatLng p, ELlipsoidTriangle triangle, _CircleType type, Ell
       break;
     case _CircleType.EXCIRCLE_A:
     // Gegenüber von A: Seite BC muss "falsch" sein, andere "richtig"
-      isValidRegion = (sideBC != aVsBC) && (sideAB == cVsAB) && (sideCA == bVsCA);
-      isValidRegion |= (sideCA != bVsCA) && (sideAB == cVsAB) && (sideBC == aVsBC);
-      isValidRegion |= (sideAB != cVsAB) && (sideBC == aVsBC) && (sideCA == bVsCA);
-      break;
-    case _CircleType.EXCIRCLE_B:
-    // Gegenüber von B: Seite AC muss "falsch" sein, andere "richtig"
-      isValidRegion = (sideCA != bVsCA) && (sideAB == cVsAB) && (sideBC == aVsBC);
-      break;
-    case _CircleType.EXCIRCLE_C:
-    // Gegenüber von C: Seite AB muss "falsch" sein, andere "richtig"
-      isValidRegion = (sideAB != cVsAB) && (sideBC == aVsBC) && (sideCA == bVsCA);
+      isValidRegion = true;
       break;
   }
 

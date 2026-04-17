@@ -37,7 +37,7 @@ GeodesicData geodeticDirect(LatLng coord, double bearing, double distance, Ellip
   return _Geodesic(ellipsoid.a, ellipsoid.f).direct(coord.latitude, coord.longitude, bearing, arcmode, distance);
 }
 
-LatLng intersectGeodesics(LatLng coord1, double azimuth1, LatLng coord2, double azimuth2, Ellipsoid ellipsoid) {
+LatLng intersectGeodesics(LatLng coord1, double azimuth1, LatLng coord2, double azimuth2, Ellipsoid ellipsoid, {bool strict = false}) {
   var intersect = _Intersect(ellipsoid.a, ellipsoid.f);
   var distances = intersect.closest(coord1.latitude, coord1.longitude, azimuth1, coord2.latitude, coord2.longitude, azimuth2);
 
@@ -45,7 +45,70 @@ LatLng intersectGeodesics(LatLng coord1, double azimuth1, LatLng coord2, double 
   var projected1 = geodesic.direct(coord1.latitude, coord1.longitude, azimuth1, false, distances.first);
   var projected2 = geodesic.direct(coord2.latitude, coord2.longitude, azimuth2, false, distances.second);
 
-  return LatLng((projected1.lat2 + projected2.lat2) / 2, (projected1.lon2 + projected2.lon2) / 2);
+  var latlng = LatLng((projected1.lat2 + projected2.lat2) / 2, (projected1.lon2 + projected2.lon2) / 2);
+
+  if (strict) {
+    var aziToPoint1 = utils.normalizeBearing(geodeticInverse(coord1, latlng, ellipsoid).azi1);
+    var aziToPoint2 = utils.normalizeBearing(geodeticInverse(coord2, latlng, ellipsoid).azi1);
+    var aziShould1 = azimuth1;
+    var aziShould2 = azimuth2;
+
+    var helpPoint1 = coord1;
+    var helpPoint2 = coord2;
+
+    const tol = 1e-5;
+    const step = 5000.0 * 1000; //10k km
+    while (!doubleEquals(aziToPoint1, aziShould1, tolerance: tol)
+        || !doubleEquals(aziToPoint2, aziShould2, tolerance: tol) ) {
+
+      print('----------------');
+      print('$aziToPoint1, $aziShould1, ' + doubleEquals(aziToPoint1, aziShould1, tolerance: tol).toString());
+      print('$aziToPoint2, $aziShould2, ' + doubleEquals(aziToPoint2, aziShould2, tolerance: tol).toString());
+      print('----------------');
+
+      if (!doubleEquals(aziToPoint1, aziShould1, tolerance: tol)) {
+        var gD = geodeticDirect(helpPoint1, aziShould1, step, ellipsoid);
+        helpPoint1 = LatLng(gD.lat2, gD.lon2);
+        aziShould1 = utils.normalizeBearing(gD.azi2);
+      }
+
+      if (!doubleEquals(aziToPoint2, aziShould2, tolerance: tol)) {
+        var gD = geodeticDirect(helpPoint2, aziShould2, step, ellipsoid);
+        helpPoint2 = LatLng(gD.lat2, gD.lon2);
+        aziShould2 = utils.normalizeBearing(gD.azi2);
+      }
+
+      // print('S1: ' + helpPoint1.latitude.toString() + ', ' + helpPoint1.longitude.toString() + ', ' + aziShould1.toString());
+      // print('S2: ' + helpPoint2.latitude.toString() + ', ' + helpPoint2.longitude.toString() + ', ' + aziShould2.toString());
+
+      distances = intersect.closest(helpPoint1.latitude, helpPoint1.longitude, aziShould1, helpPoint2.latitude, helpPoint2.longitude, aziShould2);
+
+      projected1 = geodesic.direct(helpPoint1.latitude, helpPoint1.longitude, aziShould1, false, distances.first);
+      projected2 = geodesic.direct(helpPoint2.latitude, helpPoint2.longitude, aziShould2, false, distances.second);
+
+      latlng = LatLng((projected1.lat2 + projected2.lat2) / 2, (projected1.lon2 + projected2.lon2) / 2);
+      // print('I: ' + latlng.latitude.toString() + ', ' + latlng.longitude.toString());
+
+      aziToPoint1 = utils.normalizeBearing(geodeticInverse(helpPoint1, latlng, ellipsoid).azi1);
+      aziToPoint2 = utils.normalizeBearing(geodeticInverse(helpPoint2, latlng, ellipsoid).azi1);
+    }
+  }
+
+  return latlng;
+}
+
+void main() {
+  var coord1 = LatLng(1, 1);
+  var coord2 = LatLng(0,0);
+  var azimuth1 = 309.5807866804913;
+  var azimuth2 = 225.91625021143145;
+
+  var nonStrict = intersectGeodesics(coord1, azimuth1, coord2, azimuth2, Ellipsoid.WGS84);
+  print(nonStrict);
+  print('...');
+
+  var strict =  intersectGeodesics(coord1, azimuth1, coord2, azimuth2, Ellipsoid.WGS84, strict: true);
+  print(strict);
 }
 
 LatLng azimuthalEquidistantReverse(LatLng projectionCenter, Point<double> point, Ellipsoid ellipsoid) {

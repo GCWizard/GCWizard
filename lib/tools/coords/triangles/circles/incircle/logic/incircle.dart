@@ -26,6 +26,9 @@ Circle? _guessStartpointByIntersectBisectors(ELlipsoidTriangle triangle, Ellipso
   var segmentA = segmentBearings(_a, triangle.bearingAB, triangle.bearingAC, distance, 2, ellipsoid);
   var segmentB = segmentBearings(_b, triangle.bearingBC, triangle.bearingBA, distance, 2, ellipsoid);
   var segmentC = segmentBearings(_c, triangle.bearingCA, triangle.bearingCB, distance, 2, ellipsoid);
+  print(segmentA.segmentAngle * 2);
+  print(segmentB.segmentAngle * 2);
+  print(segmentC.segmentAngle * 2);
 
   var segmentedBearingA = utils.normalizeBearing(triangle.bearingAB + segmentA.segmentAngle);
   var segmentedBearingB = utils.normalizeBearing(triangle.bearingBC + segmentB.segmentAngle);

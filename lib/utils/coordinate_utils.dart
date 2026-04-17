@@ -10,18 +10,20 @@ bool equalsLatLng(LatLng a, LatLng b, {double tolerance = 1e-10}) {
   var _a = normalizeLatLon(a.latitude, a.longitude);
   var _b = normalizeLatLon(b.latitude, b.longitude);
 
-  if (doubleEquals(_a.latitude.abs(), 90.0) &&
-      doubleEquals(_b.latitude.abs(), 90.0) &&
+  if (doubleEquals(_a.latitude.abs(), 90.0, tolerance: tolerance) &&
+      doubleEquals(_b.latitude.abs(), 90.0, tolerance: tolerance) &&
       _a.latitude.sign == _b.latitude.sign) {
     return true;
   }
 
-  if ((_a.latitude - _b.latitude).abs() <= tolerance) {
-    if (doubleEquals(_a.longitude.abs(), 180.0) && doubleEquals(_b.longitude.abs(), 180.0)) return true;
+  if (doubleEquals(_a.latitude, _b.latitude, tolerance: tolerance)) {
 
-    if ((_a.longitude - _b.longitude).abs() <= tolerance) return true;
+    if (doubleEquals(_a.longitude.abs(), 180.0, tolerance: tolerance)
+        && doubleEquals(_b.longitude.abs(), tolerance: tolerance, 180.0)) {
+      return true;
+    }
 
-    if (((180.0 - _a.longitude.abs()) <= tolerance) && ((180.0 - _b.longitude.abs()) <= tolerance)) return true;
+    if (doubleEquals(_a.longitude, _b.longitude, tolerance: tolerance)) return true;
   }
 
   return false;
@@ -147,4 +149,11 @@ bool isOnSegment(LatLng point, LatLng start, LatLng end, Ellipsoid ellipsoid) {
 bool isAntipode(LatLng point, LatLng pointToCheck) {
   var compare = antipodes(point);
   return equalsLatLng(compare, pointToCheck);
+}
+
+bool isNearPole(LatLng coord, {double tolerance = 1e-2}) {
+  var isNorth = equalsLatLng(coord, LatLng(90.0, 0), tolerance: tolerance);
+  var isSouth = equalsLatLng(coord, LatLng(-90.0, 0), tolerance: tolerance);
+
+  return isNorth || isSouth;
 }

@@ -18,33 +18,29 @@ Excircle _calcExcircleOfAOnBC(ELlipsoidTriangle triangle, _CircleType type, Elli
   var segmentA = segmentBearings(a, triangle.bearingAB, triangle.bearingAC, distance, 2, ellipsoid);
   var segmentB = segmentBearings(b, triangle.bearingBC, triangle.bearingBA, distance, 2, ellipsoid);
   var segmentC = segmentBearings(c, triangle.bearingCA, triangle.bearingCB, distance, 2, ellipsoid);
+  print('Winkel: ' + [segmentA.segmentAngle, segmentB.segmentAngle, segmentC.segmentAngle].toString());
+  print('Winkel1/2: ' + [
+    utils.normalizeBearing(triangle.bearingAB + segmentA.segmentAngle),
+    utils.normalizeBearing(triangle.bearingBC + segmentB.segmentAngle),
+    utils.normalizeBearing(triangle.bearingCA + segmentC.segmentAngle)
+  ].toString());
 
   var segmentedBearingA = utils.normalizeBearing(triangle.bearingAB + segmentA.segmentAngle);
   var segmentedBearingB = utils.normalizeBearing(triangle.bearingBC + segmentB.segmentAngle - 90);
   var segmentedBearingC = utils.normalizeBearing(triangle.bearingCA + segmentC.segmentAngle + 90);
-  print([segmentedBearingA, segmentedBearingB, segmentedBearingC]);
+  print('Koorigiert: ' + [segmentedBearingA, segmentedBearingB, segmentedBearingC].toString());
 
-  var aIsRightOfBC = _isRightOf(a, b, c, a.latitude >= 0, ellipsoid);
-  var intersectionIsRightOfBC = aIsRightOfBC;
-
-  var intersection1 = intersectBearings(a, segmentedBearingA, b, segmentedBearingB, ellipsoid);
-  intersectionIsRightOfBC = _isRightOf(intersection1, b, c, a.latitude >= 0, ellipsoid);
-  if (aIsRightOfBC == intersectionIsRightOfBC) {
-    intersection1 = antipodes(intersection1);
-  }
-  var intersection2 = intersectBearings(b, segmentedBearingB, c, segmentedBearingC, ellipsoid);
-  intersectionIsRightOfBC = _isRightOf(intersection2, b, c, a.latitude >= 0, ellipsoid);
-  if (aIsRightOfBC == intersectionIsRightOfBC) {
-    intersection2 = antipodes(intersection2);
-  }
-  var intersection3 = intersectBearings(c, segmentedBearingC, a, segmentedBearingA, ellipsoid);
-  intersectionIsRightOfBC = _isRightOf(intersection3, b, c, a.latitude >= 0, ellipsoid);
-  if (aIsRightOfBC == intersectionIsRightOfBC) {
-    intersection3 = antipodes(intersection3);
-  }
+  var strict = true;
+  var intersection1 = intersectBearings(a, segmentedBearingA, b, segmentedBearingB, ellipsoid, strict: strict);
+  var intersection2 = intersectBearings(b, segmentedBearingB, c, segmentedBearingC, ellipsoid, strict: strict);
+  var intersection3 = intersectBearings(c, segmentedBearingC, a, segmentedBearingA, ellipsoid, strict: strict);
 
   var intersections = [intersection1, intersection2, intersection3];
-  print(intersections);
+  print('IntX: '
+      + intersection1.latitude.toString() + ', ' + intersection1.longitude.toString() + ' | '
+      + intersection2.latitude.toString() + ', ' + intersection2.longitude.toString() + ' | '
+      + intersection3.latitude.toString() + ', ' + intersection3.longitude.toString() + ' | '
+  );
 
   var minDiff = double.infinity;
   Circle circle = Circle(LatLng(double.nan, double.nan), double.nan);
@@ -70,6 +66,8 @@ Excircle _calcExcircleOfAOnBC(ELlipsoidTriangle triangle, _CircleType type, Elli
     }
   }
 
+  print('StartCircle: ' +  circle.center.latitude.toString() + ', ' + circle.center.longitude.toString() + ', ' + circle.radius.toString());
+
   circle = _optimizeCircle(circle.center, triangle, type, ellipsoid);
   var projectCenterOnBC = orthogonalProjectionBearing(circle.center, b, triangle.bearingBC, ellipsoid);
 
@@ -89,11 +87,17 @@ List<Excircle>? calculateEllipsoidTriangleExcircles(ELlipsoidTriangle triangle, 
 
   var circle1 = _calcExcircleOfAOnBC(_triangle, _CircleType.EXCIRCLE_A, ellipsoid);
 
+  print('---------');
+
   var _triangleBCA = ELlipsoidTriangle(_triangle.b, _triangle.c, _triangle.a, ellipsoid);
   var circle2 = _calcExcircleOfAOnBC(_triangleBCA, _CircleType.EXCIRCLE_A, ellipsoid);
 
+  print('----------');
+
   var _triangleCAB = ELlipsoidTriangle(_triangle.c, _triangle.a, _triangle.b, ellipsoid);
   var circle3 = _calcExcircleOfAOnBC(_triangleCAB, _CircleType.EXCIRCLE_A, ellipsoid);
+
+  print('===========');
 
   if (triangle.isClockwise) {
     return [circle1, circle2, circle3];

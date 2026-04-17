@@ -13,6 +13,7 @@ void main() {
       {'a' : 52.1231554889286231, 'b': 52.1231554889286231, 'tolerance': 1e-10, 'expectedOutput' : true},
       {'a' : 52.123, 'b': 52.132, 'tolerance': 1e-2, 'expectedOutput' : true},
       {'a' : 52.123, 'b': 52.133, 'tolerance': 1e-2, 'expectedOutput' : false},
+      {'a' : 52.123, 'b': -52.123, 'tolerance': 1e-10, 'expectedOutput' : false},
     ];
 
     for (var elem in _inputsToExpected) {
