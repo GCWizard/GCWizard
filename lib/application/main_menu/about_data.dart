@@ -94,6 +94,7 @@ const List<String> _ABOUT_TESTER = [
   'hermannslaender',
   'hwi',
   'Isidore S.',
+  'j2kun'
   'JanRei',
   'Johannes C.',
   'Jonas M.',
