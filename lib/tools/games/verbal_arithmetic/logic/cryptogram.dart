@@ -14,6 +14,7 @@ Future<VerbalArithmeticOutput?> solveCryptogramAsync(GCWAsyncExecuterParameters 
   var data = jobData.parameters as VerbalArithmeticJobData;
 
   var output = solveCryptogram(data.equations, data.allSolutions, sendAsyncPort: jobData.sendAsyncPort);
+  output?.advancedOutputInput = data.advancedOutputInput;
 
   if (jobData.sendAsyncPort != null) jobData.sendAsyncPort!.send(output);
 
