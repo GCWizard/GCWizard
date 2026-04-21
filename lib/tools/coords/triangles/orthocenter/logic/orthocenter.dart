@@ -1,8 +1,8 @@
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/intersect_lines/intersect_four_points/logic/intersect_four_points.dart';
 import 'package:gc_wizard/tools/coords/orthogonal_projection/logic/orthogonal_projection.dart';
-import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangle.dart';
-import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangles.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangle.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangles.dart';
 
 SpecialPointsOfEllipsoidTriangle calculateEllipsoidTriangleOrthocenter(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
   var _triangle = triangle.getClockwised();

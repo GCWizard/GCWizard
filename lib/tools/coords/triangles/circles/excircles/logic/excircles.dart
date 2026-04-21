@@ -1,13 +1,6 @@
 part of 'package:gc_wizard/tools/coords/triangles/circles/_common/logic/circles.dart';
 
-class Excircle{
-  Circle circle;
-  LatLng touchpoint;
-
-  Excircle(this.circle, this.touchpoint);
-}
-
-Excircle _calcExcircleOfAOnBC(ELlipsoidTriangle triangle, _CircleType type, Ellipsoid ellipsoid) {
+EllipsoidTriangleCircle _calcExcircleOfAOnBC(ELlipsoidTriangle triangle, _CircleType type, Ellipsoid ellipsoid) {
   var a = triangle.a;
   var b = triangle.b;
   var c = triangle.c;
@@ -52,13 +45,10 @@ Excircle _calcExcircleOfAOnBC(ELlipsoidTriangle triangle, _CircleType type, Elli
     }
   }
 
-  circle = _optimizeCircle(circle.center, triangle, type, ellipsoid);
-  var projectCenterOnBC = orthogonalProjectionBearing(circle.center, b, triangle.bearingBC, ellipsoid);
-
-  return Excircle(circle, projectCenterOnBC);
+  return _optimizeCircle(circle.center, triangle, type, ellipsoid);
 }
 
-List<Excircle>? calculateEllipsoidTriangleExcircles(ELlipsoidTriangle triangle, Ellipsoid ellipsoid){
+List<EllipsoidTriangleCircle>? calculateEllipsoidTriangleExcircles(ELlipsoidTriangle triangle, Ellipsoid ellipsoid){
   if (!triangle.isValid || triangleIsMeridianCircle(triangle, ellipsoid)) {
     return null;
   }

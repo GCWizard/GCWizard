@@ -5,8 +5,8 @@ import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_b
 import 'package:gc_wizard/tools/coords/intersect_lines/intersect_bearings/logic/intersect_bearing.dart';
 import 'package:gc_wizard/tools/coords/orthogonal_projection/logic/orthogonal_projection.dart';
 import 'package:gc_wizard/tools/coords/segment_bearings/logic/segment_bearings.dart';
-import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangle.dart';
-import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangles.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangle.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangles.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
@@ -15,6 +15,13 @@ part 'package:gc_wizard/tools/coords/triangles/circles/incircle/logic/incircle.d
 part 'package:gc_wizard/tools/coords/triangles/circles/excircles/logic/excircles.dart';
 
 enum _CircleType {INCIRCLE, EXCIRCLE}
+
+class EllipsoidTriangleCircle{
+  Circle circle;
+  List<LatLng> touchpoints;
+
+  EllipsoidTriangleCircle(this.circle, this.touchpoints);
+}
 
 double _distanceToGeodesic(LatLng point, LatLng lineStart, double bearing, Ellipsoid ellipsoid) {
   var project = orthogonalProjectionBearing(point, lineStart, bearing, ellipsoid);
@@ -25,7 +32,7 @@ const double _TARGET_PRECISION = 1e-10;
 const int _MAX_ITERATIONS = 1000;
 
 /// Optimiert den Punkt auf dem Ellipsoid durch Minimierung der Abstands-Varianz
-Circle _optimizeCircle(LatLng startPoint, ELlipsoidTriangle triangle, _CircleType type, Ellipsoid ellipsoid) {
+EllipsoidTriangleCircle _optimizeCircle(LatLng startPoint, ELlipsoidTriangle triangle, _CircleType type, Ellipsoid ellipsoid) {
   LatLng currentPoint = startPoint;
 
   var dAB = triangle.distanceAB;
@@ -95,7 +102,7 @@ Circle _optimizeCircle(LatLng startPoint, ELlipsoidTriangle triangle, _CircleTyp
       + distanceBearing(currentPoint, projectB, ellipsoid).distance
       + distanceBearing(currentPoint, projectC, ellipsoid).distance) / 3;
 
-  return Circle(currentPoint, radius);
+  return EllipsoidTriangleCircle(Circle(currentPoint, radius), [projectA, projectB, projectC]);
 }
 
 /// Die Kostenfunktion: Minimiert die Varianz (Unterschiede) der drei Lote

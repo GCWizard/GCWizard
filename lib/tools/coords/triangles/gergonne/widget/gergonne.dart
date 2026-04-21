@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/map_geometries.dart';
-import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangle.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangle.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/widget/ellipsoid_triangles.dart';
 import 'package:gc_wizard/tools/coords/triangles/gergonne/logic/gergonne.dart';
 
 class TriangleGergonnePoint extends StatefulWidget {
@@ -26,7 +28,7 @@ class _TriangleGergonnePointState extends State<TriangleGergonnePoint> {
   var _currentCoords3 = defaultBaseCoordinate;
 
   var _currentOutputFormat = defaultCoordinateFormat;
-  List<Object> _currentOutput = [];
+  Widget _currentOutput = GCWDefaultOutput();
 
   var _currentMapPoints = <GCWMapPoint>[];
   var _currentMapPolylines = <GCWMapPolyline>[];
@@ -83,10 +85,7 @@ class _TriangleGergonnePointState extends State<TriangleGergonnePoint> {
             });
           },
         ),
-        GCWCoordsOutput(
-            outputs: _currentOutput,
-            points: _currentMapPoints,
-            polylines: _currentMapPolylines),
+        _currentOutput
       ],
     );
   }
@@ -99,59 +98,15 @@ class _TriangleGergonnePointState extends State<TriangleGergonnePoint> {
         defaultEllipsoid
     );
 
-    if (!triangle.isValid) return;
-
-    var gergonnePoint = calculateEllipsoidTriangleGergonnePoint(triangle, defaultEllipsoid);
-
-    if (gergonnePoint == null) {
+    if (!triangle.isValid) {
+      _currentOutput = GCWDefaultOutput(
+        child: i18n(context, 'coords_triangles_invalidtriangle'),
+      );
       return;
     }
 
-    _currentOutput = [
-      buildCoordinate(_currentOutputFormat, gergonnePoint),
-    ];
+    var specialPoint = calculateEllipsoidTriangleGergonnePoint(triangle, defaultEllipsoid);
 
-    var mapPointCurrentCoords1 = GCWMapPoint(
-        point: _currentCoords1.toLatLng()!,
-        markerText: i18n(context, 'coords_centerthreepoints_coorda'),
-        coordinateFormat: _currentCoords1.format);
-    var mapPointCurrentCoords2 = GCWMapPoint(
-        point: _currentCoords2.toLatLng()!,
-        markerText: i18n(context, 'coords_centerthreepoints_coordb'),
-        coordinateFormat: _currentCoords2.format);
-    var mapPointCurrentCoords3 = GCWMapPoint(
-        point: _currentCoords3.toLatLng()!,
-        markerText: i18n(context, 'coords_centerthreepoints_coordc'),
-        coordinateFormat: _currentCoords3.format);
-    var mapPointGergonne = GCWMapPoint(
-      point: gergonnePoint,
-      color: COLOR_MAP_CALCULATEDPOINT,
-      markerText: i18n(context, 'triangle_output_gergonne'),
-      coordinateFormat: _currentOutputFormat,
-      circleColorSameAsPointColor: false,
-    );
-
-    _currentMapPoints = [
-      mapPointCurrentCoords1,
-      mapPointCurrentCoords2,
-      mapPointCurrentCoords3,
-      mapPointGergonne,
-    ];
-
-    _currentMapPolylines = [
-      GCWMapPolyline(
-          points: [mapPointCurrentCoords1, mapPointCurrentCoords2],
-          color: Colors.black),
-      GCWMapPolyline(
-          points: [mapPointCurrentCoords2, mapPointCurrentCoords3],
-          color: Colors.black),
-      GCWMapPolyline(
-          points: [mapPointCurrentCoords3, mapPointCurrentCoords1],
-          color: Colors.black),
-    ];
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {});
-    });
+    _currentOutput = ellipsoidTriangleSpecialPointOutput(triangle, specialPoint);
   }
 }

@@ -1,6 +1,6 @@
 part of 'package:gc_wizard/tools/coords/triangles/circles/_common/logic/circles.dart';
 
-Circle? calculateEllipsoidTriangleIncircle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+EllipsoidTriangleCircle? calculateEllipsoidTriangleIncircle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
   if (!triangle.isValid || triangleIsMeridianCircle(triangle, ellipsoid)) {
     return null;
   }

@@ -21,6 +21,7 @@ class GCWCoordsOutput extends StatefulWidget {
   final bool? mapButtonTop;
   final String? title;
   late final Ellipsoid ellipsoid;
+  final bool suppressButtons;
 
   GCWCoordsOutput(
       {super.key,
@@ -29,7 +30,7 @@ class GCWCoordsOutput extends StatefulWidget {
       List<GCWMapPolyline>? polylines,
       this.mapButtonTop = false,
       this.title,
-      Ellipsoid? ellipsoid}) {
+      Ellipsoid? ellipsoid, this.suppressButtons = false}) {
     this.points = points ?? [];
     this.polylines = polylines ?? [];
     this.ellipsoid = ellipsoid ?? defaultEllipsoid;
@@ -51,10 +52,10 @@ class _GCWCoordsOutputState extends State<GCWCoordsOutput> {
                 padding: const EdgeInsets.only(bottom: 15),
                 child: GCWOutput(
                   child: output is BaseCoordinate
-                      ? _formatedCoordOutput(output)
+                      ? _formattedCoordOutput(output)
                       : output,
                     copyText: output is BaseCoordinate
-                        ? _formatedCoordOutput(output, false).replaceAll('\n', ' ')
+                        ? _formattedCoordOutput(output, false).replaceAll('\n', ' ')
                         : ((output is String) || (output is int) || (output is double) ? output.toString() : null)
                 ),
               ));
@@ -66,7 +67,7 @@ class _GCWCoordsOutputState extends State<GCWCoordsOutput> {
     );
 
     var _hasOutput = widget.outputs.isNotEmpty && widget.points.isNotEmpty;
-    var _button = Visibility(
+    var _button = widget.suppressButtons ? Container() : Visibility(
         visible: _hasOutput,
         child: GCWToolBar(
           children: [
@@ -111,7 +112,7 @@ class _GCWCoordsOutputState extends State<GCWCoordsOutput> {
         children: _children);
   }
 
-  String _formatedCoordOutput(BaseCoordinate output, [bool defaultPrecision = true]) {
+  String _formattedCoordOutput(BaseCoordinate output, [bool defaultPrecision = true]) {
     var latLng = output.toLatLng();
     return latLng == null ? '' : formatCoordOutput(latLng, output.format, widget.ellipsoid, defaultPrecision);
   }

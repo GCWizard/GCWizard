@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
-import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
+import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat_distance.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/map_geometries.dart';
-import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangle.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangle.dart';
 import 'package:gc_wizard/tools/coords/triangles/circles/_common/logic/circles.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/default_units_getter.dart';
 import 'package:gc_wizard/utils/constants.dart';
@@ -31,10 +32,10 @@ class _TriangleIncircleState extends State<TriangleIncircle> {
   var _currentOutputFormat = defaultCoordinateFormat;
   var _currentOutputUnit = defaultLengthUnit;
 
-  List<Object> _currentOutput = [];
-
   var _currentMapPoints = <GCWMapPoint>[];
   var _currentMapPolylines = <GCWMapPolyline>[];
+
+  Widget _currentOutput = GCWDefaultOutput();
 
   @override
   Widget build(BuildContext context) {
@@ -89,15 +90,13 @@ class _TriangleIncircleState extends State<TriangleIncircle> {
             });
           },
         ),
-        GCWCoordsOutput(
-            outputs: _currentOutput,
-            points: _currentMapPoints,
-            polylines: _currentMapPolylines),
+        _currentOutput
       ],
     );
   }
 
   void _calculateOutput() {
+
     var triangle = ELlipsoidTriangle(
         _currentCoords1.toLatLng()!,
         _currentCoords2.toLatLng()!,
@@ -105,63 +104,82 @@ class _TriangleIncircleState extends State<TriangleIncircle> {
         defaultEllipsoid
     );
 
-    if (!triangle.isValid) return;
-
-    var inCenterPoint = calculateEllipsoidTriangleIncircle(triangle, defaultEllipsoid);
-
-    if (inCenterPoint == null) {
+    if (!triangle.isValid) {
+      _currentOutput = GCWDefaultOutput(
+        child: i18n(context, 'coords_triangles_invalidtriangle'),
+      );
       return;
     }
 
-    _currentOutput = [buildCoordinate(_currentOutputFormat, inCenterPoint.center) as Object];
-    _currentOutput.add(GCWOutputText(
-      text: '${i18n(context, 'common_radius')}: ${doubleFormat.format(_currentOutputUnit.fromMeter(inCenterPoint.radius))} ${_currentOutputUnit.symbol}',
-      copyText: _currentOutputUnit.fromMeter(inCenterPoint.radius).toString(),
-    ) as Object
+    var incircle = calculateEllipsoidTriangleIncircle(triangle, defaultEllipsoid);
+
+    if (incircle == null) {
+      _currentOutput = GCWDefaultOutput(
+        child: i18n(context, 'coords_triangles_incircle_noresult'),
+      );
+      return;
+    }
+
+    var _mapPointA = GCWMapPoint(
+      point: _currentCoords1.toLatLng()!,
+      markerText: i18n(context, 'coords_centerthreepoints_coorda'),
     );
 
-    var mapPointCurrentCoords1 = GCWMapPoint(
-        point: _currentCoords1.toLatLng()!,
-        markerText: i18n(context, 'coords_centerthreepoints_coorda'),
-        coordinateFormat: _currentCoords1.format);
-    var mapPointCurrentCoords2 = GCWMapPoint(
-        point: _currentCoords2.toLatLng()!,
-        markerText: i18n(context, 'coords_centerthreepoints_coordb'),
-        coordinateFormat: _currentCoords2.format);
-    var mapPointCurrentCoords3 = GCWMapPoint(
-        point: _currentCoords3.toLatLng()!,
-        markerText: i18n(context, 'coords_centerthreepoints_coordc'),
-        coordinateFormat: _currentCoords3.format);
-    var mapPointInCenter = GCWMapPoint(
-      point: inCenterPoint.center,
-      color: COLOR_MAP_CALCULATEDPOINT,
-      markerText: i18n(context, 'triangle_output_incenter'),
-      coordinateFormat: _currentOutputFormat,
-      circle: GCWMapCircle(centerPoint: inCenterPoint.center, radius: inCenterPoint.radius),
-      circleColorSameAsPointColor: true,
+    var _mapPointB = GCWMapPoint(
+      point: _currentCoords2.toLatLng()!,
+      markerText: i18n(context, 'coords_centerthreepoints_coordb'),
+    );
+
+    var _mapPointC = GCWMapPoint(
+      point: _currentCoords3.toLatLng()!,
+      markerText: i18n(context, 'coords_centerthreepoints_coordc'),
     );
 
     _currentMapPoints = [
-      mapPointCurrentCoords1,
-      mapPointCurrentCoords2,
-      mapPointCurrentCoords3,
-      mapPointInCenter,
+      _mapPointA, _mapPointB, _mapPointC,
+      GCWMapPoint(
+        point: incircle.circle.center,
+        circle: GCWMapCircle(
+          centerPoint: incircle.circle.center,
+          radius: incircle.circle.radius,
+          color: COLOR_MAP_CALCULATEDPOINT
+        ),
+        color: COLOR_MAP_CALCULATEDPOINT,
+        markerText: i18n(context, 'coords_triangles_center')
+      )
     ];
 
     _currentMapPolylines = [
-      GCWMapPolyline(
-          points: [mapPointCurrentCoords1, mapPointCurrentCoords2],
-          color: Colors.black),
-      GCWMapPolyline(
-          points: [mapPointCurrentCoords2, mapPointCurrentCoords3],
-          color: Colors.black),
-      GCWMapPolyline(
-          points: [mapPointCurrentCoords3, mapPointCurrentCoords1],
-          color: Colors.black),
+      GCWMapPolyline(points: [_mapPointA, _mapPointB]),
+      GCWMapPolyline(points: [_mapPointB, _mapPointC]),
+      GCWMapPolyline(points: [_mapPointC, _mapPointA]),
     ];
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {});
-    });
+    for (int i = 0; i < incircle.touchpoints.length; i++) {
+      _currentMapPoints.add(
+        GCWMapPoint(
+          point: incircle.touchpoints[i],
+          color: COLOR_MAP_CALCULATEDPOINT,
+          markerText: i18n(context, 'coords_triangles_touchpoint')
+        )
+      );
+    }
+
+    _currentOutput = GCWCoordsOutput(
+      outputs: [
+        GCWTextDivider(text: i18n(context, 'coords_triangles_incircle_center')),
+        incircle.circle.center,
+        GCWOutput(
+          child: '${i18n(context, 'coords_center_distance')}: ${doubleFormat.format(_currentOutputUnit.fromMeter(incircle.circle.radius))} ${_currentOutputUnit.symbol}',
+          copyText: _currentOutputUnit.fromMeter(incircle.circle.radius).toString(),
+        ),
+        GCWTextDivider(text: i18n(context, 'coords_triangles_touchpoints')),
+        incircle.touchpoints[0],
+        incircle.touchpoints[1],
+        incircle.touchpoints[2],
+      ],
+      points: _currentMapPoints,
+      polylines: _currentMapPolylines,
+    );
   }
 }
