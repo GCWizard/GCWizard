@@ -23,7 +23,9 @@ class ELlipsoidTriangle {
   late bool isValid;
   late bool isClockwise;
 
-  ELlipsoidTriangle(LatLng a, LatLng b, LatLng c, Ellipsoid ellipsoid) {
+  late Ellipsoid ellipsoid;
+
+  ELlipsoidTriangle(LatLng a, LatLng b, LatLng c, this.ellipsoid) {
     try {
       this.a = utils.normalizeLatLon(a.latitude, a.longitude);
       this.b = utils.normalizeLatLon(b.latitude, b.longitude);
@@ -72,6 +74,10 @@ class ELlipsoidTriangle {
     } catch (e) {
       isValid = false;
     }
+  }
+
+  ELlipsoidTriangle getClockwised() {
+    return orderEllipsoidTrianglePointsClockwise(this, ellipsoid);
   }
 
   @override

@@ -28,9 +28,9 @@ void main() async {
         var _b = _triangle.b;
         var _c = _triangle.c;
 
-        for (var excircle in _actual) {
-          print(excircle.circle.center.latitude.toString() + ', ' + excircle.circle.center.longitude.toString() + ', ' + excircle.circle.radius.toString());
+        var incircle = calculateEllipsoidTriangleIncircle(triangle, Ellipsoid.WGS84);
 
+        for (var excircle in _actual) {
           var projPToAB = orthogonalProjectionBearing(excircle.circle.center, _a, _triangle.bearingAB, Ellipsoid.WGS84);
           var projPToBC = orthogonalProjectionBearing(excircle.circle.center, _b, _triangle.bearingBC, Ellipsoid.WGS84);
           var projPToAC = orthogonalProjectionBearing(excircle.circle.center, _c, _triangle.bearingCA, Ellipsoid.WGS84);
@@ -40,12 +40,11 @@ void main() async {
 
           var dists = [distAB, distBC, distAC];
           dists.sort();
-          print(dists);
 
           expect(((dists[2] + dists[0]) / 2 - excircle.circle.radius).abs() < 1e-6, true);
-          // expect(utils.isOnSegment(projPToAB, _a, _b, Ellipsoid.WGS84), true);
-          // expect(utils.isOnSegment(projPToBC, _b, _c, Ellipsoid.WGS84), true);
-          // expect(utils.isOnSegment(projPToAC, _a, _c, Ellipsoid.WGS84), true);
+
+          // Not an Incircle
+          expect(utils.equalsLatLng(excircle.circle.center, incircle!.center, tolerance: 1e-6), false);
         }
       });
     }

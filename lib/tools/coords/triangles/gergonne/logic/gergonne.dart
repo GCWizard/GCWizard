@@ -2,17 +2,24 @@ import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/intersect_lines/intersect_four_points/logic/intersect_four_points.dart';
 import 'package:gc_wizard/tools/coords/orthogonal_projection/logic/orthogonal_projection.dart';
 import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangle.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangles.dart';
 import 'package:gc_wizard/tools/coords/triangles/circles/_common/logic/circles.dart';
-import 'package:latlong2/latlong.dart';
 
-LatLng? calculateEllipsoidTriangleGergonnePoint(ELlipsoidTriangle triangle, Ellipsoid ellipsoid){
+SpecialPointsOfEllipsoidTriangle calculateEllipsoidTriangleGergonnePoint(ELlipsoidTriangle triangle, Ellipsoid ellipsoid){
   if (!triangle.isValid) {
-    return null;
+    return SpecialPointsOfEllipsoidTriangle([], ellipsoid);
   }
 
-  var inc = calculateEllipsoidTriangleIncircle(triangle, ellipsoid)!.center;
-  var projA = orthogonalProjectionTwoPoints(inc, triangle.b, triangle.c, ellipsoid);
-  var projB = orthogonalProjectionTwoPoints(inc, triangle.a, triangle.c, ellipsoid);
+  var _triangle = triangle.getClockwised();
 
-  return intersectFourPoints(triangle.a, projA, triangle.b, projB, ellipsoid);
+  var inc = calculateEllipsoidTriangleIncircle(_triangle, ellipsoid)!.center;
+  var projA = orthogonalProjectionBearing(inc, _triangle.b, _triangle.bearingBC, ellipsoid);
+  var projB = orthogonalProjectionBearing(inc, _triangle.c, _triangle.bearingCA, ellipsoid);
+  var projC = orthogonalProjectionBearing(inc, _triangle.a, _triangle.bearingAB, ellipsoid);
+
+  var intersectAB = intersectFourPoints(projA, _triangle.a, projB, _triangle.b, ellipsoid);
+  var intersectBC = intersectFourPoints(projB, _triangle.b, projC, _triangle.c, ellipsoid);
+  var intersectAC = intersectFourPoints(projC, _triangle.c, projA, _triangle.a, ellipsoid);
+
+  return SpecialPointsOfEllipsoidTriangle([intersectAB, intersectBC, intersectAC], ellipsoid);
 }

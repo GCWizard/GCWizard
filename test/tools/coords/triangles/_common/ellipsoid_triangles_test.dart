@@ -37,11 +37,11 @@ void main() async {
       {'inputA': LatLng(1, 1), 'inputB': LatLng(1, 1), 'inputC': LatLng(1, 1),
         'expectedOutput': TriangleInteriorAngles(alpha: 0, beta: 0, gamma: 0)},
       {'inputA': LatLng(1, 1), 'inputB': LatLng(2, 2), 'inputC': LatLng(3, 3),
-        'expectedOutput': TriangleInteriorAngles(alpha: 0.02630127667657689, beta: 179.94740561118152, gamma: 0.026309127099466423)},
+        'expectedOutput': TriangleInteriorAngles(alpha: 0.02630127667657689, beta: 179.9474056111815, gamma: 0.026309127099466423)},
       {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 3), 'inputC': LatLng(4, 0),
         'expectedOutput': TriangleInteriorAngles(alpha: 90, beta: 53.00282576179586, gamma: 37.10196090365815)},
       {'inputA': LatLng(40, 9), 'inputB': LatLng(42, 9), 'inputC': LatLng(38, 8),
-        'expectedOutput': TriangleInteriorAngles(alpha: 158.3703675865121, beta: 11.207315582928572, gamma: 10.43608068564481)},
+        'expectedOutput': TriangleInteriorAngles(alpha: 158.3703675865121, beta: 11.207315582928572, gamma: 10.436080685644791)},
     ];
 
     for (var elem in _inputsToExpected) {
@@ -62,7 +62,7 @@ void main() async {
       {'inputA': LatLng(1, 1), 'inputB': LatLng(2, 2), 'inputC': LatLng(3, 3),
         'expectedOutput': 627410.9239872629},
       {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 3), 'inputC': LatLng(4, 0),
-        'expectedOutput': 1330321.7081104128},
+        'expectedOutput': 1330321.708110413},
       {'inputA': LatLng(40, 9), 'inputB': LatLng(42, 9), 'inputC': LatLng(38, 8),
         'expectedOutput': 912697.7805313733},
     ];
@@ -83,11 +83,11 @@ void main() async {
       {'inputA': LatLng(1, 1), 'inputB': LatLng(1, 1), 'inputC': LatLng(1, 1),
         'expectedOutput': 0},
       {'inputA': LatLng(1, 1), 'inputB': LatLng(2, 2), 'inputC': LatLng(3, 3),
-        'expectedOutput': 2666.187396349551},
+        'expectedOutput': 11294866.872074127},
       {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 3), 'inputC': LatLng(4, 0),
         'expectedOutput': double.nan},
       {'inputA': LatLng(40, 9), 'inputB': LatLng(42, 9), 'inputC': LatLng(38, 8),
-        'expectedOutput': 42186895.0235761},
+        'expectedOutput': 9760996057.401123},
     ];
 
     for (var elem in _inputsToExpected) {

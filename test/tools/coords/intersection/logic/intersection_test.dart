@@ -23,10 +23,8 @@ void main() {
           if (actual[i] == null) {
             expect(null, expected[i]);
           } else {
-            print(actual[i]!.latitude.toString() + ', ' + actual[i]!.longitude.toString());
             expect(equalsLatLng(actual[i]!, expected[i], tolerance: 1e-5), true);
           }
-
         }
       });
     }

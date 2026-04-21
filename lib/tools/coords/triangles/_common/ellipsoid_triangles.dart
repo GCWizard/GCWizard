@@ -1,9 +1,42 @@
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
+import 'package:gc_wizard/tools/coords/centerpoint/center_three_points/logic/center_three_points.dart';
+import 'package:gc_wizard/tools/coords/centerpoint/center_two_points/logic/center_two_points.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/coords/triangles/_common/ellipsoid_triangle.dart';
 import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
+
+class SpecialPointsOfEllipsoidTriangle {
+  List<LatLng> points = [];
+  late LatLng centerpoint;
+  late double accuracy;
+
+  SpecialPointsOfEllipsoidTriangle(this.points, Ellipsoid ellipsoid) {
+    switch (points.length) {
+      case 0:
+        centerpoint = LatLng(double.nan, double.nan);
+        accuracy = double.nan;
+        break;
+      case 1:
+        centerpoint = points.first;
+        accuracy = 0.0;
+        break;
+      case 2:
+        var center = centerPointTwoPoints(points[0], points[1], ellipsoid);
+        centerpoint = center.centerPoint;
+        accuracy = center.distance;
+        break;
+      default:
+        var center = centerPointThreePoints(points[0], points[1], points[2], ellipsoid);
+        centerpoint = center.centerPoint;
+        accuracy = center.distance;
+        break;
+    }
+  }
+}
 
 bool isValidEllipsoidTriangle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
   var a = triangle.a;
@@ -25,14 +58,6 @@ bool isValidEllipsoidTriangle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
   }
 
   if (equalsLatLng(a, b) || equalsLatLng(a, c) || equalsLatLng(b, c)) {
-    return false;
-  }
-
-  if (
-    (a.latitude.abs() == 90 && b.latitude.abs() == 90 && a.latitude.sign == b.latitude.sign)
-    || (b.latitude.abs() == 90 && c.latitude.abs() == 90 && b.latitude.sign == c.latitude.sign)
-    || (c.latitude.abs() == 90 && a.latitude.abs() == 90 && c.latitude.sign == a.latitude.sign)
-  ) {
     return false;
   }
 
@@ -138,4 +163,21 @@ bool triangleIsEquatorCircle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
   if (!isHalf) return false;
 
   return (triangle.a.latitude == 0) && (triangle.b.latitude == 0) && (triangle.c.latitude == 0);
+}
+
+bool isPointRightOfSideAB(LatLng point, LatLng startA, LatLng endB, bool isCNorth, Ellipsoid ellipsoid) {
+  double azLine;
+  if (utils.isAntipode(startA, endB)) {
+    azLine = isCNorth ? 0.0 : 180.0;
+  } else {
+    azLine = distanceBearing(startA, endB, ellipsoid).bearingAToB;
+  }
+
+  double azPoint = distanceBearing(startA, point, ellipsoid).bearingAToB;
+
+  double diff = (azPoint - azLine) % 360;
+  if (diff > 180) diff -= 360;
+  if (diff < -180) diff += 360;
+
+  return diff > 0;
 }

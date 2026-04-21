@@ -19,16 +19,17 @@ List<Map<String, Object?>> validEllipsoidTrianglesForTests = [
   //Antipodes
   {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 180), 'inputC': LatLng(1, 1)},
   {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 180),'inputC': LatLng(89.9, 90)},
+  {'inputA': LatLng(1, 0), 'inputB': LatLng(1, 180),'inputC': LatLng(89.9, 90)},
+  {'inputA': LatLng(70, 0), 'inputB': LatLng(70, 180),'inputC': LatLng(89.9, 90)},
+  {'inputA': LatLng(88, 0), 'inputB': LatLng(88, 180),'inputC': LatLng(89.9, 90)},
   {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 180),'inputC': LatLng(89.9, 89.99)},
-  {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 180),'inputC': LatLng(90, 89.9)},
+  {'inputA': LatLng(70, 0), 'inputB': LatLng(70, 180),'inputC': LatLng(89.9, 89.99)},
   {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 180),'inputC': LatLng(89.99, 89.9)},
-  {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 180),'inputC': LatLng(-90, 89.9)},
   {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 180),'inputC': LatLng(-89.99, 89.9)},
   {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 180),'inputC': LatLng(-89.9, 90)},
   {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 180),'inputC': LatLng(-89.9, 89.99)},
   {'inputA': LatLng(1, 1), 'inputB': LatLng(-1, -179), 'inputC': LatLng(-1, -1)},
   {'inputA': LatLng(-1, -1), 'inputB': LatLng(1, 179), 'inputC': LatLng(1, 1)},
-  {'inputA': LatLng(-1, 1), 'inputB': LatLng(1, -179), 'inputC': LatLng(1, 1)},
   {'inputA': LatLng(1, -1), 'inputB': LatLng(-1, 179), 'inputC': LatLng(1, 1)},
 
   //Around Poles
@@ -119,6 +120,9 @@ List<Map<String, Object?>> invalidEllipsoidTrianglesForTests = [
   //Antipodes
   {'inputA': LatLng(-90, 0), 'inputB': LatLng(90, 0), 'inputC': LatLng(-90, 1)},
   {'inputA': LatLng(-90, 0), 'inputB': LatLng(90, 0), 'inputC': LatLng(0, 0)},
+  {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 180),'inputC': LatLng(90, 89.9)},
+  {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 180),'inputC': LatLng(-90, 89.9)},
+  {'inputA': LatLng(-1, 1), 'inputB': LatLng(1, -179), 'inputC': LatLng(1, 1)},
 
   //Equator
   {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 1), 'inputC': LatLng(0, 2)},
