@@ -8,18 +8,18 @@ import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangle.dart';
 import 'package:gc_wizard/tools/coords/triangles/_common/widget/ellipsoid_triangles.dart';
-import 'package:gc_wizard/tools/coords/triangles/special_points/napoleon/logic/napoleon.dart';
+import 'package:gc_wizard/tools/coords/triangles/special_points/napoleon/logic/ellipsoidtriangle_napoleon.dart';
 
-class TriangleNapoleonPoints extends StatefulWidget {
-  const TriangleNapoleonPoints({
+class EllipsoidTriangleNapoleonPoints extends StatefulWidget {
+  const EllipsoidTriangleNapoleonPoints({
     super.key,
   });
 
   @override
-  _TriangleNapoleonPointsState createState() => _TriangleNapoleonPointsState();
+  _EllipsoidTriangleNapoleonPointsState createState() => _EllipsoidTriangleNapoleonPointsState();
 }
 
-class _TriangleNapoleonPointsState extends State<TriangleNapoleonPoints> {
+class _EllipsoidTriangleNapoleonPointsState extends State<EllipsoidTriangleNapoleonPoints> {
   var _currentCoords1 = defaultBaseCoordinate;
   var _currentCoords2 = defaultBaseCoordinate;
   var _currentCoords3 = defaultBaseCoordinate;

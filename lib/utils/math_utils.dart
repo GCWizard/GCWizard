@@ -1,5 +1,31 @@
 import 'dart:math';
 
+class Vector3 {
+  final double x, y, z;
+  Vector3(this.x, this.y, this.z);
+
+  Vector3 operator -(Vector3 other) => Vector3(x - other.x, y - other.y, z - other.z);
+  Vector3 operator +(Vector3 other) => Vector3(x + other.x, y + other.y, z + other.z);
+  Vector3 operator *(double scalar) => Vector3(x * scalar, y * scalar, z * scalar);
+
+  double get length => sqrt(x * x + y * y + z * z);
+
+  Vector3 normalized() {
+    double len = length;
+    return len > 0 ? this * (1.0 / len) : Vector3(0, 0, 1);
+  }
+
+  Vector3 cross(Vector3 other) {
+    return Vector3(
+        y * other.z - z * other.y,
+        z * other.x - x * other.z,
+        x * other.y - y * other.x
+    );
+  }
+
+  double dot(Vector3 other) => x * other.x + y * other.y + z * other.z;
+}
+
 double degreesToRadian(double degrees) {
   return degrees * pi / 180.0;
 }

@@ -11,10 +11,10 @@ import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart
 import 'package:latlong2/latlong.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 
-part 'package:gc_wizard/tools/coords/triangles/circles/incircle/logic/incircle.dart';
-part 'package:gc_wizard/tools/coords/triangles/circles/excircles/logic/excircles.dart';
+part 'package:gc_wizard/tools/coords/triangles/circles/incircle/logic/ellipsoidtriangle_incircle.dart';
+part 'package:gc_wizard/tools/coords/triangles/circles/excircles/logic/ellipsoidtriangle_excircles.dart';
 
-enum _CircleType {INCIRCLE, EXCIRCLE}
+enum EllipsoidTriangleCircleType {INCIRCLE, EXCIRCLE, CIRCUMCIRCLE}
 
 class EllipsoidTriangleCircle{
   Circle circle;
@@ -28,11 +28,8 @@ double _distanceToGeodesic(LatLng point, LatLng lineStart, double bearing, Ellip
   return distanceBearing(point, project, ellipsoid).distance;
 }
 
-const double _TARGET_PRECISION = 1e-10;
-const int _MAX_ITERATIONS = 1000;
-
 /// Optimiert den Punkt auf dem Ellipsoid durch Minimierung der Abstands-Varianz
-EllipsoidTriangleCircle _optimizeCircle(LatLng startPoint, EllipsoidTriangle triangle, _CircleType type, Ellipsoid ellipsoid) {
+EllipsoidTriangleCircle optimizeEllipsoidTriangleCircle(LatLng startPoint, EllipsoidTriangle triangle, EllipsoidTriangleCircleType type, Ellipsoid ellipsoid) {
   LatLng currentPoint = startPoint;
 
   var dAB = triangle.distanceAB;
@@ -42,6 +39,9 @@ EllipsoidTriangleCircle _optimizeCircle(LatLng startPoint, EllipsoidTriangle tri
   var a = triangle.a;
   var b = triangle.b;
   var c = triangle.c;
+
+  const double _TARGET_PRECISION = 1e-10;
+  int _MAX_ITERATIONS = (type == EllipsoidTriangleCircleType.CIRCUMCIRCLE) ? 5000 : 1000;
 
   // DYNAMISCHER START-STEP: Max. 25% der längsten Seite, gedeckelt auf 100km.
   // Das verhindert das Verschwenden von Iterationen bei kleinen Dreiecken.
@@ -94,19 +94,27 @@ EllipsoidTriangleCircle _optimizeCircle(LatLng startPoint, EllipsoidTriangle tri
     iterations++;
   }
 
-  var projectA = orthogonalProjectionBearing(currentPoint, b, triangle.bearingBC, ellipsoid);
-  var projectB = orthogonalProjectionBearing(currentPoint, c, triangle.bearingCA, ellipsoid);
-  var projectC = orthogonalProjectionBearing(currentPoint, a, triangle.bearingAB, ellipsoid);
+  if (type == EllipsoidTriangleCircleType.CIRCUMCIRCLE) {
+    var radius = (distanceBearing(currentPoint, a, ellipsoid).distance
+        + distanceBearing(currentPoint, b, ellipsoid).distance
+        + distanceBearing(currentPoint, c, ellipsoid).distance) / 3;
 
-  var radius = (distanceBearing(currentPoint, projectA, ellipsoid).distance
-      + distanceBearing(currentPoint, projectB, ellipsoid).distance
-      + distanceBearing(currentPoint, projectC, ellipsoid).distance) / 3;
+    return EllipsoidTriangleCircle(Circle(currentPoint, radius), []);
+  } else {
+    var projectA = orthogonalProjectionBearing(currentPoint, b, triangle.bearingBC, ellipsoid);
+    var projectB = orthogonalProjectionBearing(currentPoint, c, triangle.bearingCA, ellipsoid);
+    var projectC = orthogonalProjectionBearing(currentPoint, a, triangle.bearingAB, ellipsoid);
 
-  return EllipsoidTriangleCircle(Circle(currentPoint, radius), [projectA, projectB, projectC]);
+    var radius = (distanceBearing(currentPoint, projectA, ellipsoid).distance
+        + distanceBearing(currentPoint, projectB, ellipsoid).distance
+        + distanceBearing(currentPoint, projectC, ellipsoid).distance) / 3;
+
+    return EllipsoidTriangleCircle(Circle(currentPoint, radius), [projectA, projectB, projectC]);
+  }
 }
 
 /// Die Kostenfunktion: Minimiert die Varianz (Unterschiede) der drei Lote
-double _costFunction(LatLng p, EllipsoidTriangle triangle, _CircleType type, Ellipsoid ellipsoid) {
+double _costFunction(LatLng p, EllipsoidTriangle triangle, EllipsoidTriangleCircleType type, Ellipsoid ellipsoid) {
   var a = triangle.a;
   var b = triangle.b;
   var c = triangle.c;
@@ -118,11 +126,11 @@ double _costFunction(LatLng p, EllipsoidTriangle triangle, _CircleType type, Ell
   bool isValidRegion = false;
 
   switch (type) {
-    case _CircleType.INCIRCLE:
-    // Alle Seiten müssen mit der Innenseite übereinstimmen
+    case EllipsoidTriangleCircleType.INCIRCLE:
+      // Alle Seiten müssen mit der Innenseite übereinstimmen
       isValidRegion = (sideAB && sideBC && sideCA) || (!sideAB && !sideBC && !sideCA);
       break;
-    case _CircleType.EXCIRCLE:
+    default:
       isValidRegion = true;
       break;
   }
@@ -131,9 +139,19 @@ double _costFunction(LatLng p, EllipsoidTriangle triangle, _CircleType type, Ell
     return double.maxFinite;
   }
 
-  double d1 = _distanceToGeodesic(p, triangle.a, triangle.bearingAB, ellipsoid);
-  double d2 = _distanceToGeodesic(p, triangle.b, triangle.bearingBC, ellipsoid);
-  double d3 = _distanceToGeodesic(p, triangle.c, triangle.bearingCA, ellipsoid);
+  double d1;
+  double d2;
+  double d3;
+
+  if (type == EllipsoidTriangleCircleType.CIRCUMCIRCLE) {
+    d1 = distanceBearing(p, triangle.a, ellipsoid).distance;
+    d2 = distanceBearing(p, triangle.b, ellipsoid).distance;
+    d3 = distanceBearing(p, triangle.c, ellipsoid).distance;
+  } else {
+    d1 = _distanceToGeodesic(p, triangle.a, triangle.bearingAB, ellipsoid);
+    d2 = _distanceToGeodesic(p, triangle.b, triangle.bearingBC, ellipsoid);
+    d3 = _distanceToGeodesic(p, triangle.c, triangle.bearingCA, ellipsoid);
+  }
 
   double mean = (d1 + d2 + d3) / 3.0;
 

@@ -112,6 +112,7 @@ void circlesListTest(List<XYCircle> cL1, List<XYCircle> cL2) {
 }
 
 void latLngTest(LatLng a, LatLng b) {
+  print(a); print(b);
   expect(true, equalsLatLng(a, b));
 }
 

@@ -3,7 +3,7 @@ import 'package:gc_wizard/tools/coords/intersect_lines/intersect_four_points/log
 import 'package:gc_wizard/tools/coords/orthogonal_projection/logic/orthogonal_projection.dart';
 import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangle.dart';
 import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangles.dart';
-import 'package:gc_wizard/tools/coords/triangles/circles/_common/logic/circles.dart';
+import 'package:gc_wizard/tools/coords/triangles/circles/_common/logic/ellipsoidtriangle_circles.dart';
 
 SpecialPointsOfEllipsoidTriangle calculateEllipsoidTriangleGergonnePoint(EllipsoidTriangle triangle, Ellipsoid ellipsoid){
   if (!triangle.isValid) {

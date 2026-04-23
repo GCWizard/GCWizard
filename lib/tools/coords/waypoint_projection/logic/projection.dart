@@ -14,7 +14,7 @@ LatLng projection(LatLng coord, double bearingDeg, double distance, Ellipsoid el
 
   GeodesicData projected = geodeticDirect(coord, bearingDeg, distance, ellipsoid);
 
-  return LatLng(projected.lat2, projected.lon2);
+  return utils.normalizeLatLon(projected.lat2, projected.lon2);
 }
 
 LatLng projectionRadian(LatLng coord, double bearingRad, double distance, Ellipsoid ellipsoid) {
@@ -26,8 +26,9 @@ LatLng projectionVincenty(LatLng coord, double bearing, double distance, Ellipso
   if (distance == 0.0) return coord;
 
   bearing = utils.normalizeBearing(bearing);
+  var direct = vincentyDirect(coord, bearing, distance, ellipsoid);
 
-  return vincentyDirect(coord, bearing, distance, ellipsoid);
+  return utils.normalizeLatLon(direct.latitude, direct.longitude);
 }
 
 class _ReverseProjectionCalculator extends IntervalCalculator {

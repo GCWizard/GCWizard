@@ -4,7 +4,7 @@ import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_b
 import 'package:gc_wizard/tools/coords/orthogonal_projection/logic/orthogonal_projection.dart';
 import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangle.dart';
 import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangles.dart';
-import 'package:gc_wizard/tools/coords/triangles/circles/_common/logic/circles.dart';
+import 'package:gc_wizard/tools/coords/triangles/circles/_common/logic/ellipsoidtriangle_circles.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 

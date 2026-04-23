@@ -1,30 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
+import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
+import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat.dart';
+import 'package:gc_wizard/tools/coords/centroid/centroid_center_of_gravity/logic/centroid_center_of_gravity.dart';
+import 'package:gc_wizard/tools/coords/map_view/widget/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangle.dart';
-import 'package:gc_wizard/tools/coords/triangles/_common/widget/ellipsoid_triangles.dart';
-import 'package:gc_wizard/tools/coords/triangles/special_points/gergonne/logic/gergonne.dart';
 
-class TriangleGergonnePoint extends StatefulWidget {
-  const TriangleGergonnePoint({
+class EllipsoidTriangleCenterOfGravity extends StatefulWidget {
+  const EllipsoidTriangleCenterOfGravity({
     super.key,
   });
 
   @override
-  _TriangleGergonnePointState createState() => _TriangleGergonnePointState();
+  _EllipsoidTriangleCenterOfGravityState createState() => _EllipsoidTriangleCenterOfGravityState();
 }
 
-class _TriangleGergonnePointState extends State<TriangleGergonnePoint> {
+class _EllipsoidTriangleCenterOfGravityState extends State<EllipsoidTriangleCenterOfGravity> {
   var _currentCoords1 = defaultBaseCoordinate;
   var _currentCoords2 = defaultBaseCoordinate;
   var _currentCoords3 = defaultBaseCoordinate;
 
   var _currentOutputFormat = defaultCoordinateFormat;
   Widget _currentOutput = GCWDefaultOutput();
+
+  var _currentMapPoints = <GCWMapPoint>[];
+  var _currentMapPolylines = <GCWMapPolyline>[];
 
   @override
   Widget build(BuildContext context) {
@@ -98,8 +104,55 @@ class _TriangleGergonnePointState extends State<TriangleGergonnePoint> {
       return;
     }
 
-    var specialPoint = calculateEllipsoidTriangleGergonnePoint(triangle, defaultEllipsoid);
+    var centerOfGravity = centroidCenterOfGravity(
+        [_currentCoords1.toLatLng()!,
+        _currentCoords2.toLatLng()!,
+        _currentCoords3.toLatLng()!]);
 
-    _currentOutput = ellipsoidTriangleSpecialPointOutput(context, _currentOutputFormat, triangle, specialPoint);
+
+    var mapPointCurrentCoords1 = GCWMapPoint(
+        point: _currentCoords1.toLatLng()!,
+        markerText: i18n(context, 'coords_centerthreepoints_coorda'),
+        coordinateFormat: _currentCoords1.format);
+    var mapPointCurrentCoords2 = GCWMapPoint(
+        point: _currentCoords2.toLatLng()!,
+        markerText: i18n(context, 'coords_centerthreepoints_coordb'),
+        coordinateFormat: _currentCoords2.format);
+    var mapPointCurrentCoords3 = GCWMapPoint(
+        point: _currentCoords3.toLatLng()!,
+        markerText: i18n(context, 'coords_centerthreepoints_coordc'),
+        coordinateFormat: _currentCoords3.format);
+    var mapPointCenterOfGravity = GCWMapPoint(
+      point: centerOfGravity!,
+      color: COLOR_MAP_CALCULATEDPOINT,
+      markerText: i18n(context, 'triangle_output_centroid'),
+      coordinateFormat: _currentOutputFormat,
+      circleColorSameAsPointColor: false,
+    );
+
+    _currentMapPoints = [
+      mapPointCurrentCoords1,
+      mapPointCurrentCoords2,
+      mapPointCurrentCoords3,
+      mapPointCenterOfGravity,
+    ];
+
+    _currentMapPolylines = [
+      GCWMapPolyline(
+          points: [mapPointCurrentCoords1, mapPointCurrentCoords2],
+          color: Colors.black),
+      GCWMapPolyline(
+          points: [mapPointCurrentCoords2, mapPointCurrentCoords3],
+          color: Colors.black),
+      GCWMapPolyline(
+          points: [mapPointCurrentCoords3, mapPointCurrentCoords1],
+          color: Colors.black),
+    ];
+
+    _currentOutput = GCWCoordsOutput(
+      outputs: [buildCoordinate(_currentOutputFormat, centerOfGravity)],
+      points: _currentMapPoints,
+      polylines: _currentMapPolylines,
+    );
   }
 }

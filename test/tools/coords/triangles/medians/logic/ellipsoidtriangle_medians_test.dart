@@ -1,31 +1,31 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangle.dart';
-import 'package:gc_wizard/tools/coords/triangles/special_points/gergonne/logic/gergonne.dart';
+import 'package:gc_wizard/tools/coords/triangles/medians/logic/ellipsoidtriangle_medians.dart';
 import 'package:latlong2/latlong.dart';
 
-import '../../../../../science_and_technology/euclidic_triangle/logic/triangle_test_utils.dart';
+import '../../../../science_and_technology/euclidic_triangle/logic/triangle_test_utils.dart';
 
 void main() async {
-  group("triangle.calculateEllipsoidTriangleGergonnePoint:", () {
+  group("triangle.calculateEllipsoidTriangleSideMidPoints:", () {
     List<Map<String, Object?>> _inputsToExpected = [
       {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 0), 'inputC': LatLng(0, 0),
-        'expectedOutput': LatLng(double.nan, double.nan)},
+        'expectedOutput': []},
       {'inputA': LatLng(1, 1), 'inputB': LatLng(1, 1), 'inputC': LatLng(1, 1),
-        'expectedOutput': LatLng(double.nan, double.nan)},
+        'expectedOutput': []},
       {'inputA': LatLng(1, 1), 'inputB': LatLng(2, 2), 'inputC': LatLng(3, 3),
-        'expectedOutput': LatLng(double.nan, double.nan)},
+        'expectedOutput': [LatLng(1.5000586225465693, 1.4998865008673827), LatLng(2.500097624104694, 2.4998107563440044), LatLng(2.0003125707038807, 1.9993944677402233)]},
       {'inputA': LatLng(0, 0), 'inputB': LatLng(0, 3), 'inputC': LatLng(4, 0),
-        'expectedOutput': LatLng(0.7317379990783085, 0.8157721928407682)},
+        'expectedOutput': [LatLng(0.0, 1.5000000000000002), LatLng(2.000714087234115, 1.5018173974963898), LatLng(2.0000244413426267, 0.0)]},
       {'inputA': LatLng(40, 9), 'inputB': LatLng(42, 9), 'inputC': LatLng(38, 8),
-        'expectedOutput': LatLng(40.0025888794003, 8.98268272877226)},
+        'expectedOutput': [LatLng(41.000087018378245, 9.0), LatLng(40.00142361541297, 8.485406198746787), LatLng(39.00115707578199, 8.492961037465818)]},
     ];
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
         var triangle = EllipsoidTriangle(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
-        var _actual = calculateEllipsoidTriangleGergonnePoint(triangle, Ellipsoid.WGS84);
-        latLngTest(_actual.centerpoint, elem['expectedOutput'] as LatLng);
+        var _actual = calculateEllipsoidTriangleMedians(triangle, Ellipsoid.WGS84);
+        latLngListTest(_actual, elem['expectedOutput'] as List<LatLng>);
       });
     }
   });

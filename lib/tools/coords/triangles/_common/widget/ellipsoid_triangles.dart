@@ -55,7 +55,7 @@ Widget ellipsoidTriangleSpecialPointOutput(BuildContext context, CoordinateForma
         GCWMapPoint(
           point: intersection,
           color: COLOR_MAP_CALCULATEDPOINT,
-          markerText: i18n(context, 'coords_triangles_intersection'),
+          markerText: i18n(context, 'coords_common_intersection'),
         )
       );
     }
@@ -72,7 +72,7 @@ Widget ellipsoidTriangleSpecialPointOutput(BuildContext context, CoordinateForma
       GCWMapPoint(
         point: specialPoint.centerpoint,
         color: COLOR_MAP_CALCULATEDPOINT,
-        markerText: i18n(context, 'coords_triangles_intersection')
+        markerText: i18n(context, 'coords_common_intersection')
       )
     );
   }
@@ -105,7 +105,7 @@ Widget ellipsoidTriangleSpecialPointOutput(BuildContext context, CoordinateForma
 
   return GCWCoordsOutput(
     title: specialPoint.accuracy <= _MIN_ACCURACY
-        ? i18n(context, 'coords_triangles_intersection')
+        ? i18n(context, 'coords_common_intersection')
         : i18n(context, 'coords_triangles_specialpoint_interpolatedcenter'),
     outputs: [
       buildCoordinate(coordinateformat, specialPoint.centerpoint),

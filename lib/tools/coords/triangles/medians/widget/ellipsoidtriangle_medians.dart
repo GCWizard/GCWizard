@@ -2,30 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/fixed_colors.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
+import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat.dart';
-import 'package:gc_wizard/tools/coords/centroid/centroid_center_of_gravity/logic/centroid_center_of_gravity.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/map_geometries.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangle.dart';
+import 'package:gc_wizard/tools/coords/triangles/medians/logic/ellipsoidtriangle_medians.dart';
 
-class TriangleCenterOfGravity extends StatefulWidget {
-  const TriangleCenterOfGravity({
+class EllipsoidTriangleMedians extends StatefulWidget {
+  const EllipsoidTriangleMedians({
     super.key,
   });
 
   @override
-  _TriangleCenterOfGravityState createState() => _TriangleCenterOfGravityState();
+  _EllipsoidTriangleMediansState createState() => _EllipsoidTriangleMediansState();
 }
 
-class _TriangleCenterOfGravityState extends State<TriangleCenterOfGravity> {
+class _EllipsoidTriangleMediansState extends State<EllipsoidTriangleMedians> {
   var _currentCoords1 = defaultBaseCoordinate;
   var _currentCoords2 = defaultBaseCoordinate;
   var _currentCoords3 = defaultBaseCoordinate;
 
   var _currentOutputFormat = defaultCoordinateFormat;
-  List<Object> _currentOutput = [];
+  Widget _currentOutput = GCWDefaultOutput();
 
   var _currentMapPoints = <GCWMapPoint>[];
   var _currentMapPolylines = <GCWMapPolyline>[];
@@ -82,23 +84,27 @@ class _TriangleCenterOfGravityState extends State<TriangleCenterOfGravity> {
             });
           },
         ),
-        GCWCoordsOutput(
-            outputs: _currentOutput,
-            points: _currentMapPoints,
-            polylines: _currentMapPolylines),
+        _currentOutput
       ],
     );
   }
 
   void _calculateOutput() {
-    var centerOfGravity = centroidCenterOfGravity(
-        [_currentCoords1.toLatLng()!,
+    var triangle = EllipsoidTriangle(
+        _currentCoords1.toLatLng()!,
         _currentCoords2.toLatLng()!,
-        _currentCoords3.toLatLng()!]);
+        _currentCoords3.toLatLng()!,
+        defaultEllipsoid
+    );
 
-    _currentOutput = [
-      buildCoordinate(_currentOutputFormat, centerOfGravity!) as Object
-    ];
+    if (!triangle.isValid) {
+      _currentOutput = GCWDefaultOutput(
+        child: i18n(context, 'coords_triangles_invalidtriangle'),
+      );
+      return;
+    }
+
+    var sideMidPoints = calculateEllipsoidTriangleMedians(triangle, defaultEllipsoid);
 
     var mapPointCurrentCoords1 = GCWMapPoint(
         point: _currentCoords1.toLatLng()!,
@@ -112,10 +118,24 @@ class _TriangleCenterOfGravityState extends State<TriangleCenterOfGravity> {
         point: _currentCoords3.toLatLng()!,
         markerText: i18n(context, 'coords_centerthreepoints_coordc'),
         coordinateFormat: _currentCoords3.format);
-    var mapPointCenterOfGravity = GCWMapPoint(
-      point: centerOfGravity,
+    var mapPointSideMidPoint1 = GCWMapPoint(
+      point: sideMidPoints[0],
       color: COLOR_MAP_CALCULATEDPOINT,
-      markerText: i18n(context, 'triangle_output_centroid'),
+      markerText: i18n(context, 'triangle_output_sidesmidpoint') + ' c',
+      coordinateFormat: _currentOutputFormat,
+      circleColorSameAsPointColor: false,
+    );
+    var mapPointSideMidPoint2 = GCWMapPoint(
+      point: sideMidPoints[1],
+      color: COLOR_MAP_CALCULATEDPOINT,
+      markerText: i18n(context, 'triangle_output_sidesmidpoint') + ' a',
+      coordinateFormat: _currentOutputFormat,
+      circleColorSameAsPointColor: false,
+    );
+    var mapPointSideMidPoint3 = GCWMapPoint(
+      point: sideMidPoints[2],
+      color: COLOR_MAP_CALCULATEDPOINT,
+      markerText: i18n(context, 'triangle_output_sidesmidpoint') + ' b',
       coordinateFormat: _currentOutputFormat,
       circleColorSameAsPointColor: false,
     );
@@ -124,7 +144,9 @@ class _TriangleCenterOfGravityState extends State<TriangleCenterOfGravity> {
       mapPointCurrentCoords1,
       mapPointCurrentCoords2,
       mapPointCurrentCoords3,
-      mapPointCenterOfGravity,
+      mapPointSideMidPoint1,
+      mapPointSideMidPoint2,
+      mapPointSideMidPoint3,
     ];
 
     _currentMapPolylines = [
@@ -139,8 +161,14 @@ class _TriangleCenterOfGravityState extends State<TriangleCenterOfGravity> {
           color: Colors.black),
     ];
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {});
-    });
+    _currentOutput = GCWCoordsOutput(
+      outputs: [
+        buildCoordinate(_currentOutputFormat, sideMidPoints[0]) as Object,
+        buildCoordinate(_currentOutputFormat, sideMidPoints[1]) as Object,
+        buildCoordinate(_currentOutputFormat, sideMidPoints[2]) as Object,
+      ],
+      points: _currentMapPoints,
+      polylines: _currentMapPolylines,
+    );
   }
 }

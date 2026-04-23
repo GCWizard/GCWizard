@@ -1,4 +1,4 @@
-part of 'package:gc_wizard/tools/coords/triangles/circles/_common/logic/circles.dart';
+part of 'package:gc_wizard/tools/coords/triangles/circles/_common/logic/ellipsoidtriangle_circles.dart';
 
 EllipsoidTriangleCircle? calculateEllipsoidTriangleIncircle(EllipsoidTriangle triangle, Ellipsoid ellipsoid) {
   if (!triangle.isValid || triangleIsMeridianCircle(triangle, ellipsoid)) {
@@ -9,7 +9,7 @@ EllipsoidTriangleCircle? calculateEllipsoidTriangleIncircle(EllipsoidTriangle tr
 
   LatLng initialGuess = _guessStartpointByIntersectBisectors(_triangle, ellipsoid)!.center;
 
-  return _optimizeCircle(initialGuess, _triangle, _CircleType.INCIRCLE, ellipsoid);
+  return optimizeEllipsoidTriangleCircle(initialGuess, _triangle, EllipsoidTriangleCircleType.INCIRCLE, ellipsoid);
 }
 
 Circle? _guessStartpointByIntersectBisectors(EllipsoidTriangle triangle, Ellipsoid ellipsoid) {

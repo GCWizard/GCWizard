@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
+import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
+import 'package:gc_wizard/common_widgets/units/gcw_unit_dropdown.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
-import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangle.dart';
-import 'package:gc_wizard/tools/coords/triangles/_common/widget/ellipsoid_triangles.dart';
-import 'package:gc_wizard/tools/coords/triangles/special_points/orthocenter/logic/orthocenter.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangles.dart';
+import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/area.dart';
+import 'package:gc_wizard/utils/constants.dart';
 
-class TriangleOrthocenter extends StatefulWidget {
-  const TriangleOrthocenter({
+class EllipsoidTriangleArea extends StatefulWidget {
+  const EllipsoidTriangleArea({
     super.key,
   });
 
   @override
-  _TriangleOrthocenterState createState() => _TriangleOrthocenterState();
+  _EllipsoidTriangleAreaState createState() => _EllipsoidTriangleAreaState();
 }
 
-class _TriangleOrthocenterState extends State<TriangleOrthocenter> {
+class _EllipsoidTriangleAreaState extends State<EllipsoidTriangleArea> {
   var _currentCoords1 = defaultBaseCoordinate;
   var _currentCoords2 = defaultBaseCoordinate;
   var _currentCoords3 = defaultBaseCoordinate;
 
-  var _currentOutputFormat = defaultCoordinateFormat;
+  Area _currentOutputUnit = AREA_SQUAREMETER;
   Widget _currentOutput = GCWDefaultOutput();
 
   @override
@@ -63,11 +65,16 @@ class _TriangleOrthocenterState extends State<TriangleOrthocenter> {
             });
           },
         ),
-        GCWCoordsOutputFormat(
-          coordFormat: _currentOutputFormat,
+        GCWTextDivider(
+          text: i18n(context, 'coords_triangles_area_outputunit'),
+        ),
+        GCWUnitDropDown<Area>(
+          value: _currentOutputUnit,
+          unitList: areas,
+          onlyShowSymbols: false,
           onChanged: (value) {
             setState(() {
-              _currentOutputFormat = value;
+              _currentOutputUnit = value;
             });
           },
         ),
@@ -98,8 +105,11 @@ class _TriangleOrthocenterState extends State<TriangleOrthocenter> {
       return;
     }
 
-    var specialPoint = calculateEllipsoidTriangleOrthocenter(triangle, defaultEllipsoid);
+    var area = ellipsoidTriangleArea(triangle, defaultEllipsoid);
 
-    _currentOutput = ellipsoidTriangleSpecialPointOutput(context, _currentOutputFormat, triangle, specialPoint);
+    _currentOutput = GCWDefaultOutput(
+      child: doubleFormat.format(_currentOutputUnit.fromSquareMeter(area)) + ' ' + _currentOutputUnit.symbol,
+      copyText: _currentOutputUnit.fromSquareMeter(area).toString(),
+    );
   }
 }
