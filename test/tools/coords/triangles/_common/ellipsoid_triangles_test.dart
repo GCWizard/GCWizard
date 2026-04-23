@@ -15,7 +15,7 @@ void main() async {
 
     for (var elem in validEllipsoidTrianglesForTests) {
       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
-        var triangle = ELlipsoidTriangle(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
+        var triangle = EllipsoidTriangle(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
         var _actual = isValidEllipsoidTriangle(triangle, Ellipsoid.WGS84);
         expect(_actual, true);
       });
@@ -23,7 +23,7 @@ void main() async {
 
     for (var elem in invalidEllipsoidTrianglesForTests) {
       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
-        var triangle = ELlipsoidTriangle(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
+        var triangle = EllipsoidTriangle(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
         var _actual = isValidEllipsoidTriangle(triangle, Ellipsoid.WGS84);
         expect(_actual, false);
       });
@@ -46,7 +46,7 @@ void main() async {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
-        var triangle = ELlipsoidTriangle(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
+        var triangle = EllipsoidTriangle(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
         var _actual = ellipsoidTriangleAngles(triangle, Ellipsoid.WGS84);
         anglesTest(_actual, elem['expectedOutput'] as TriangleInteriorAngles);
       });
@@ -69,7 +69,7 @@ void main() async {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
-        var triangle = ELlipsoidTriangle(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
+        var triangle = EllipsoidTriangle(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
         var _actual = ellipsoidTriangleCircumference(triangle, Ellipsoid.WGS84);
         expect(_actual, elem['expectedOutput']);
       });
@@ -92,7 +92,7 @@ void main() async {
 
     for (var elem in _inputsToExpected) {
       test('input: ${elem['inputA']} ${elem['inputB']} ${elem['inputC']}', () {
-        var triangle = ELlipsoidTriangle(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
+        var triangle = EllipsoidTriangle(elem['inputA'] as LatLng, elem['inputB'] as LatLng, elem['inputC'] as LatLng, Ellipsoid.WGS84);
         var _actual = polygonAreaEdges(
           triangle.a,
           [triangle.distanceAB, triangle.distanceBC, triangle.distanceAC],

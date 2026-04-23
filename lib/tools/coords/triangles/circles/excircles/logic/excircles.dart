@@ -1,6 +1,6 @@
 part of 'package:gc_wizard/tools/coords/triangles/circles/_common/logic/circles.dart';
 
-EllipsoidTriangleCircle _calcExcircleOfAOnBC(ELlipsoidTriangle triangle, _CircleType type, Ellipsoid ellipsoid) {
+EllipsoidTriangleCircle _calcExcircleOfAOnBC(EllipsoidTriangle triangle, _CircleType type, Ellipsoid ellipsoid) {
   var a = triangle.a;
   var b = triangle.b;
   var c = triangle.c;
@@ -48,7 +48,7 @@ EllipsoidTriangleCircle _calcExcircleOfAOnBC(ELlipsoidTriangle triangle, _Circle
   return _optimizeCircle(circle.center, triangle, type, ellipsoid);
 }
 
-List<EllipsoidTriangleCircle>? calculateEllipsoidTriangleExcircles(ELlipsoidTriangle triangle, Ellipsoid ellipsoid){
+List<EllipsoidTriangleCircle>? calculateEllipsoidTriangleExcircles(EllipsoidTriangle triangle, Ellipsoid ellipsoid){
   if (!triangle.isValid || triangleIsMeridianCircle(triangle, ellipsoid)) {
     return null;
   }
@@ -56,9 +56,9 @@ List<EllipsoidTriangleCircle>? calculateEllipsoidTriangleExcircles(ELlipsoidTria
   var _triangle = triangle.getClockwised();
 
   var circle1 = _calcExcircleOfAOnBC(_triangle, _CircleType.EXCIRCLE, ellipsoid);
-  var _triangleBCA = ELlipsoidTriangle(_triangle.b, _triangle.c, _triangle.a, ellipsoid);
+  var _triangleBCA = EllipsoidTriangle(_triangle.b, _triangle.c, _triangle.a, ellipsoid);
   var circle2 = _calcExcircleOfAOnBC(_triangleBCA, _CircleType.EXCIRCLE, ellipsoid);
-  var _triangleCAB = ELlipsoidTriangle(_triangle.c, _triangle.a, _triangle.b, ellipsoid);
+  var _triangleCAB = EllipsoidTriangle(_triangle.c, _triangle.a, _triangle.b, ellipsoid);
   var circle3 = _calcExcircleOfAOnBC(_triangleCAB, _CircleType.EXCIRCLE, ellipsoid);
 
   if (triangle.isClockwise) {

@@ -1,7 +1,7 @@
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
-import 'package:gc_wizard/tools/coords/centerpoint/center_three_points/logic/center_three_points.dart';
 import 'package:gc_wizard/tools/coords/centerpoint/center_two_points/logic/center_two_points.dart';
+import 'package:gc_wizard/tools/coords/centroid/centroid_center_of_gravity/logic/centroid_center_of_gravity.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangle.dart';
 import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
@@ -9,12 +9,20 @@ import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 
+class SpecialPointConstructionLine {
+  final LatLng start;
+  final LatLng end;
+
+  SpecialPointConstructionLine(this.start, this.end);
+}
+
 class SpecialPointsOfEllipsoidTriangle {
   List<LatLng> points = [];
+  List<SpecialPointConstructionLine> constructionLines = [];
   late LatLng centerpoint;
   late double accuracy;
 
-  SpecialPointsOfEllipsoidTriangle(this.points, Ellipsoid ellipsoid) {
+  SpecialPointsOfEllipsoidTriangle(this.points, this.constructionLines, Ellipsoid ellipsoid) {
     switch (points.length) {
       case 0:
         centerpoint = LatLng(double.nan, double.nan);
@@ -30,15 +38,21 @@ class SpecialPointsOfEllipsoidTriangle {
         accuracy = center.distance;
         break;
       default:
-        var center = centerPointThreePoints(points[0], points[1], points[2], ellipsoid);
-        centerpoint = center.centerPoint;
-        accuracy = center.distance;
+        var center = centroidCenterOfGravity([points[0], points[1], points[2]]);
+        if (center == null) break;
+
+        var distACenter = distanceBearing(points[0], center, ellipsoid).distance;
+        var distBCenter = distanceBearing(points[1], center, ellipsoid).distance;
+        var distCCenter = distanceBearing(points[2], center, ellipsoid).distance;
+
+        centerpoint = center;
+        accuracy = (distACenter + distBCenter + distCCenter) / 3.0;
         break;
     }
   }
 }
 
-bool isValidEllipsoidTriangle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+bool isValidEllipsoidTriangle(EllipsoidTriangle triangle, Ellipsoid ellipsoid) {
   var a = triangle.a;
   var b = triangle.b;
   var c = triangle.c;
@@ -75,7 +89,7 @@ bool isValidEllipsoidTriangle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
   return true;
 }
 
-bool isClockwiseOrderedEllipsoidTriangle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+bool isClockwiseOrderedEllipsoidTriangle(EllipsoidTriangle triangle, Ellipsoid ellipsoid) {
   var area = polygonAreaEdges(
     triangle.a,
     [triangle.distanceAB, triangle.distanceBC, triangle.distanceAC],
@@ -85,15 +99,15 @@ bool isClockwiseOrderedEllipsoidTriangle(ELlipsoidTriangle triangle, Ellipsoid e
   return area < 0;
 }
 
-ELlipsoidTriangle orderEllipsoidTrianglePointsClockwise(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+EllipsoidTriangle orderEllipsoidTrianglePointsClockwise(EllipsoidTriangle triangle, Ellipsoid ellipsoid) {
   if (triangle.isClockwise) {
     return triangle;
   } else {
-    return ELlipsoidTriangle(triangle.a, triangle.c, triangle.b, ellipsoid);
+    return EllipsoidTriangle(triangle.a, triangle.c, triangle.b, ellipsoid);
   }
 }
 
-TriangleInteriorAngles ellipsoidTriangleAngles(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+TriangleInteriorAngles ellipsoidTriangleAngles(EllipsoidTriangle triangle, Ellipsoid ellipsoid) {
   if (!isValidEllipsoidTriangle(triangle, ellipsoid)) {
     return TriangleInteriorAngles(alpha: 0.0, beta: 0.0, gamma: 0.0);
   }
@@ -113,7 +127,7 @@ TriangleInteriorAngles ellipsoidTriangleAngles(ELlipsoidTriangle triangle, Ellip
   );
 }
 
-double ellipsoidTriangleCircumference(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+double ellipsoidTriangleCircumference(EllipsoidTriangle triangle, Ellipsoid ellipsoid) {
   if (!isValidEllipsoidTriangle(triangle, ellipsoid)) {
     return 0.0;
   }
@@ -121,7 +135,7 @@ double ellipsoidTriangleCircumference(ELlipsoidTriangle triangle, Ellipsoid elli
   return triangle.distanceAB + triangle.distanceAC + triangle.distanceBC;
 }
 
-double _ellipsoidTriangleAreaWithValidInput(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+double _ellipsoidTriangleAreaWithValidInput(EllipsoidTriangle triangle, Ellipsoid ellipsoid) {
   return polygonAreaEdges(
       triangle.a,
       [triangle.distanceAB, triangle.distanceBC, triangle.distanceAC],
@@ -130,7 +144,7 @@ double _ellipsoidTriangleAreaWithValidInput(ELlipsoidTriangle triangle, Ellipsoi
   ).abs();
 }
 
-double ellipsoidTriangleArea(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+double ellipsoidTriangleArea(EllipsoidTriangle triangle, Ellipsoid ellipsoid) {
   if (!isValidEllipsoidTriangle(triangle, ellipsoid)) {
     return 0.0;
   }
@@ -139,7 +153,7 @@ double ellipsoidTriangleArea(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
 }
 
 
-bool triangleIsMeridianCircle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+bool triangleIsMeridianCircle(EllipsoidTriangle triangle, Ellipsoid ellipsoid) {
   var isHalf = polygonAreaIsHalfEllipsoid(
     triangle.a,
     [triangle.distanceAB, triangle.distanceBC, triangle.distanceAC],
@@ -152,7 +166,7 @@ bool triangleIsMeridianCircle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
   return (triangle.a.latitude != 0) || (triangle.b.latitude != 0) || (triangle.c.latitude != 0);
 }
 
-bool triangleIsEquatorCircle(ELlipsoidTriangle triangle, Ellipsoid ellipsoid) {
+bool triangleIsEquatorCircle(EllipsoidTriangle triangle, Ellipsoid ellipsoid) {
   var isHalf = polygonAreaIsHalfEllipsoid(
       triangle.a,
       [triangle.distanceAB, triangle.distanceBC, triangle.distanceAC],

@@ -32,7 +32,7 @@ const double _TARGET_PRECISION = 1e-10;
 const int _MAX_ITERATIONS = 1000;
 
 /// Optimiert den Punkt auf dem Ellipsoid durch Minimierung der Abstands-Varianz
-EllipsoidTriangleCircle _optimizeCircle(LatLng startPoint, ELlipsoidTriangle triangle, _CircleType type, Ellipsoid ellipsoid) {
+EllipsoidTriangleCircle _optimizeCircle(LatLng startPoint, EllipsoidTriangle triangle, _CircleType type, Ellipsoid ellipsoid) {
   LatLng currentPoint = startPoint;
 
   var dAB = triangle.distanceAB;
@@ -106,7 +106,7 @@ EllipsoidTriangleCircle _optimizeCircle(LatLng startPoint, ELlipsoidTriangle tri
 }
 
 /// Die Kostenfunktion: Minimiert die Varianz (Unterschiede) der drei Lote
-double _costFunction(LatLng p, ELlipsoidTriangle triangle, _CircleType type, Ellipsoid ellipsoid) {
+double _costFunction(LatLng p, EllipsoidTriangle triangle, _CircleType type, Ellipsoid ellipsoid) {
   var a = triangle.a;
   var b = triangle.b;
   var c = triangle.c;

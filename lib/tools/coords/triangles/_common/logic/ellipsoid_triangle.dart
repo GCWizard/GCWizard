@@ -4,7 +4,7 @@ import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangl
 import 'package:latlong2/latlong.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 
-class ELlipsoidTriangle {
+class EllipsoidTriangle {
   late LatLng a;
   late LatLng b;
   late LatLng c;
@@ -25,7 +25,7 @@ class ELlipsoidTriangle {
 
   late Ellipsoid ellipsoid;
 
-  ELlipsoidTriangle(LatLng a, LatLng b, LatLng c, this.ellipsoid) {
+  EllipsoidTriangle(LatLng a, LatLng b, LatLng c, this.ellipsoid) {
     try {
       this.a = utils.normalizeLatLon(a.latitude, a.longitude);
       this.b = utils.normalizeLatLon(b.latitude, b.longitude);
@@ -76,7 +76,7 @@ class ELlipsoidTriangle {
     }
   }
 
-  ELlipsoidTriangle getClockwised() {
+  EllipsoidTriangle getClockwised() {
     return orderEllipsoidTrianglePointsClockwise(this, ellipsoid);
   }
 

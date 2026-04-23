@@ -15,7 +15,7 @@ void main() async {
     for (int i = 0; i < validEllipsoidTrianglesForTests.length; i++) {
       var triangleTest = validEllipsoidTrianglesForTests[i];
 
-      var triangle = ELlipsoidTriangle(triangleTest['inputA'] as LatLng, triangleTest['inputB'] as LatLng, triangleTest['inputC'] as LatLng, Ellipsoid.WGS84);
+      var triangle = EllipsoidTriangle(triangleTest['inputA'] as LatLng, triangleTest['inputB'] as LatLng, triangleTest['inputC'] as LatLng, Ellipsoid.WGS84);
       test('input: $triangle, cw: ${triangle.isClockwise}', () {
         var _actual = calculateEllipsoidTriangleIncircle(triangle, Ellipsoid.WGS84);
         if (_actual == null) {
@@ -28,19 +28,19 @@ void main() async {
         var _b = _triangle.b;
         var _c = _triangle.c;
 
-        var projPToAB = orthogonalProjectionBearing(_actual.center, _a, _triangle.bearingAB, Ellipsoid.WGS84);
-        var projPToBC = orthogonalProjectionBearing(_actual.center, _b, _triangle.bearingBC, Ellipsoid.WGS84);
-        var projPToCA = orthogonalProjectionBearing(_actual.center, _c, _triangle.bearingCA, Ellipsoid.WGS84);
-        var distAB = distanceBearing(_actual.center, projPToAB, Ellipsoid.WGS84).distance;
-        var distBC = distanceBearing(_actual.center, projPToBC, Ellipsoid.WGS84).distance;
-        var distCA = distanceBearing(_actual.center, projPToCA, Ellipsoid.WGS84).distance;
+        var projPToAB = orthogonalProjectionBearing(_actual.circle.center, _a, _triangle.bearingAB, Ellipsoid.WGS84);
+        var projPToBC = orthogonalProjectionBearing(_actual.circle.center, _b, _triangle.bearingBC, Ellipsoid.WGS84);
+        var projPToCA = orthogonalProjectionBearing(_actual.circle.center, _c, _triangle.bearingCA, Ellipsoid.WGS84);
+        var distAB = distanceBearing(_actual.circle.center, projPToAB, Ellipsoid.WGS84).distance;
+        var distBC = distanceBearing(_actual.circle.center, projPToBC, Ellipsoid.WGS84).distance;
+        var distCA = distanceBearing(_actual.circle.center, projPToCA, Ellipsoid.WGS84).distance;
 
         var dists = [distAB, distBC, distCA];
         dists.sort();
 
-        expect(((dists[2] + dists[0]) / 2 - _actual.radius).abs() < 1e-8, true);
-        if (!utils.isNearPole(_actual.center, tolerance: 0.1)) {
-          // Some strange behaviour happens near poles. Accepted Risk.
+        expect(((dists[2] + dists[0]) / 2 - _actual.circle.radius).abs() < 1e-8, true);
+        if (!utils.isNearPole(_actual.circle.center, tolerance: 0.1)) {
+          // Some strange behaviour happens near poles. Accepted Risk. (SMan, 04/2026)
           expect(utils.isOnSegment(projPToAB, _a, _b, Ellipsoid.WGS84), true);
           expect(utils.isOnSegment(projPToBC, _b, _c, Ellipsoid.WGS84), true);
           expect(utils.isOnSegment(projPToCA, _a, _c, Ellipsoid.WGS84), true);

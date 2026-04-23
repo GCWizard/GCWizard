@@ -21,7 +21,8 @@ class GCWCoordsOutput extends StatefulWidget {
   final bool? mapButtonTop;
   final String? title;
   late final Ellipsoid ellipsoid;
-  final bool suppressButtons;
+  final bool suppressMapButtons;
+  final bool suppressTitle;
 
   GCWCoordsOutput(
       {super.key,
@@ -30,7 +31,10 @@ class GCWCoordsOutput extends StatefulWidget {
       List<GCWMapPolyline>? polylines,
       this.mapButtonTop = false,
       this.title,
-      Ellipsoid? ellipsoid, this.suppressButtons = false}) {
+      Ellipsoid? ellipsoid,
+      this.suppressMapButtons = false,
+      this.suppressTitle = false
+      }) {
     this.points = points ?? [];
     this.polylines = polylines ?? [];
     this.ellipsoid = ellipsoid ?? defaultEllipsoid;
@@ -67,7 +71,7 @@ class _GCWCoordsOutputState extends State<GCWCoordsOutput> {
     );
 
     var _hasOutput = widget.outputs.isNotEmpty && widget.points.isNotEmpty;
-    var _button = widget.suppressButtons ? Container() : Visibility(
+    var _button = widget.suppressMapButtons ? Container() : Visibility(
         visible: _hasOutput,
         child: GCWToolBar(
           children: [
@@ -99,6 +103,7 @@ class _GCWCoordsOutputState extends State<GCWCoordsOutput> {
 
     return GCWMultipleOutput(
         title: widget.title,
+        suppressDefaultTitle: widget.suppressTitle,
         trailing: GCWIconButton(
           icon: Icons.save,
           size: IconButtonSize.SMALL,

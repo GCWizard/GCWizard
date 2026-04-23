@@ -5,6 +5,7 @@ import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_default_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
@@ -97,7 +98,7 @@ class _TriangleIncircleState extends State<TriangleIncircle> {
 
   void _calculateOutput() {
 
-    var triangle = ELlipsoidTriangle(
+    var triangle = EllipsoidTriangle(
         _currentCoords1.toLatLng()!,
         _currentCoords2.toLatLng()!,
         _currentCoords3.toLatLng()!,
@@ -150,9 +151,9 @@ class _TriangleIncircleState extends State<TriangleIncircle> {
     ];
 
     _currentMapPolylines = [
-      GCWMapPolyline(points: [_mapPointA, _mapPointB]),
-      GCWMapPolyline(points: [_mapPointB, _mapPointC]),
-      GCWMapPolyline(points: [_mapPointC, _mapPointA]),
+      GCWMapPolyline(points: [_mapPointA, _mapPointB], color: COLOR_MAP_POLYLINE_TRIANGLE),
+      GCWMapPolyline(points: [_mapPointB, _mapPointC], color: COLOR_MAP_POLYLINE_TRIANGLE),
+      GCWMapPolyline(points: [_mapPointC, _mapPointA], color: COLOR_MAP_POLYLINE_TRIANGLE),
     ];
 
     for (int i = 0; i < incircle.touchpoints.length; i++) {
@@ -168,15 +169,15 @@ class _TriangleIncircleState extends State<TriangleIncircle> {
     _currentOutput = GCWCoordsOutput(
       outputs: [
         GCWTextDivider(text: i18n(context, 'coords_triangles_incircle_center')),
-        incircle.circle.center,
+        buildCoordinate(_currentOutputFormat, incircle.circle.center),
         GCWOutput(
-          child: '${i18n(context, 'coords_center_distance')}: ${doubleFormat.format(_currentOutputUnit.fromMeter(incircle.circle.radius))} ${_currentOutputUnit.symbol}',
+          child: '${i18n(context, 'common_radius')}: ${doubleFormat.format(_currentOutputUnit.fromMeter(incircle.circle.radius))} ${_currentOutputUnit.symbol}',
           copyText: _currentOutputUnit.fromMeter(incircle.circle.radius).toString(),
         ),
         GCWTextDivider(text: i18n(context, 'coords_triangles_touchpoints')),
-        incircle.touchpoints[0],
-        incircle.touchpoints[1],
-        incircle.touchpoints[2],
+        buildCoordinate(_currentOutputFormat, incircle.touchpoints[0]),
+        buildCoordinate(_currentOutputFormat, incircle.touchpoints[1]),
+        buildCoordinate(_currentOutputFormat, incircle.touchpoints[2]),
       ],
       points: _currentMapPoints,
       polylines: _currentMapPolylines,
