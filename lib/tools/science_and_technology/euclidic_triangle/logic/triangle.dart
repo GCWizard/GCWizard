@@ -72,7 +72,7 @@ const Map<int, List<String>> TRIANGLES_SW_TEXT = {
   6: ['triangle_euclidic_s', 'triangle_euclidic_w', 'triangle_euclidic_w'],
 };
 
-const Map<String, String> TRIANGLE_LABLES = {
+Map<String, String> TRIANGLE_LABLES = {
   'LEGEND': 'triangle_output_legend',
   'COORDINATES': 'gcwizard_script_help_coordinates',
   'SIDES': 'triangle_output_sides',

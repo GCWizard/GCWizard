@@ -6803,6 +6803,8 @@
   "triangle_kind_acute": "Triangle is acute",
   "triangle_kind_obtuse": "Triangle is obtuse",
   "triangle_kind_common": "Triangle is a common triangle",
+  "triangle_image_generateimage": "Generate Image",
+  "triangle_image_noimagegenerated": "No image generated",
   "trifid_title": "Trifid Cipher",
   "trifid_description": "Encryption based on three 3x3 Squares",
   "trifid_example": "HELLO → BQBRO",
