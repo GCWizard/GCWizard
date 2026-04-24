@@ -156,7 +156,7 @@ class MapViewPersistenceAdapter {
     return _mapViewDAO.polylines.firstWhere((polyline) => polyline.uuid == uuid);
   }
 
-  void updateMapPoint(GCWMapPoint mapPoint) {
+  void updateMapPoint(GCWMapPoint mapPoint, MapPrecision precision) {
     mapPoint.update();
 
     var mapPointDAO = _mapPointDAOByUUID(mapPoint.uuid!);
@@ -176,11 +176,11 @@ class MapViewPersistenceAdapter {
 
     _mapWidget.polylines
         .where((polyline) => polyline.points.contains(mapPoint))
-        .forEach((polyline) => updateMapPolyline(polyline));
+        .forEach((polyline) => updateMapPolyline(polyline, precision));
   }
 
-  void updateMapPolyline(GCWMapPolyline polyline) {
-    polyline.update();
+  void updateMapPolyline(GCWMapPolyline polyline, MapPrecision precision) {
+    polyline.update(precision: precision);
 
     var mapPolylineDAO = _mapPolylineDAOByUUID(polyline.uuid!);
     mapPolylineDAO.pointUUIDs = polyline.points.map((GCWMapPoint point) => point.uuid!).toList();

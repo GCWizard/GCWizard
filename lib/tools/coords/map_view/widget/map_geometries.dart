@@ -140,6 +140,7 @@ class GCWMapPolyline {
   }
 
   void update({MapPrecision? precision}) {
+    print(precision);
     lines = [];
 
     if (points.isEmpty) {

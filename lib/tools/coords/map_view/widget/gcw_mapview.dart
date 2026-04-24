@@ -453,7 +453,7 @@ class _GCWMapViewState extends State<GCWMapView> {
                   setState(() {
                     Navigator.pop(context);
                     if (widget.isEditable && _persistanceAdapter != null) {
-                      _persistanceAdapter!.updateMapPolyline(child.parent);
+                      _persistanceAdapter!.updateMapPolyline(child.parent, _currentMapPrecision);
                     }
                   });
                 });
@@ -463,12 +463,12 @@ class _GCWMapViewState extends State<GCWMapView> {
                     context,
                     NoAnimationMaterialPageRoute<GCWTool>(
                         builder: (context) => GCWTool(
-                            tool: MapPointEditor(mapPoint: mapPoint, lengthUnit: defaultLengthUnitGCWMapView),
+                            tool: MapPointEditor(mapPoint: mapPoint, lengthUnit: defaultLengthUnitGCWMapView, precision: _currentMapPrecision),
                             toolName: i18n(context, 'coords_openmap_title') + ': ' + i18n(context, 'coords_openmap_pointeditor_title'),
                             id: 'coords_openmap_pointeditor'))).whenComplete(() {
                   setState(() {
                     if (widget.isEditable && _persistanceAdapter != null) {
-                      _persistanceAdapter!.updateMapPoint(mapPoint);
+                      _persistanceAdapter!.updateMapPoint(mapPoint, _currentMapPrecision);
                     }
                     _mapController.move(mapPoint.point, _mapController.camera.zoom);
                   });
@@ -518,7 +518,7 @@ class _GCWMapViewState extends State<GCWMapView> {
                   var mapPoint = widget.points.firstWhere((element) => element.circle == child);
                   mapPoint.circle = null;
                   if (widget.isEditable && _persistanceAdapter != null) {
-                    _persistanceAdapter!.updateMapPoint(mapPoint);
+                    _persistanceAdapter!.updateMapPoint(mapPoint, _currentMapPrecision);
                   }
                   _isPolylineDrawing = false;
                 });
@@ -590,8 +590,10 @@ class _GCWMapViewState extends State<GCWMapView> {
     return GestureDetector(
       onVerticalDragStart: (details) => _onPanStart(details, point),
       onVerticalDragUpdate: (details) => _onPanUpdate(details, point),
+      onVerticalDragEnd: (details) => _onPanEnd(details, point),
       onHorizontalDragStart: (details) => _onPanStart(details, point),
       onHorizontalDragUpdate: (details) => _onPanUpdate(details, point),
+      onHorizontalDragEnd: (details) => _onPanEnd(details, point),
       child: icon,
     );
   }
@@ -614,7 +616,15 @@ class _GCWMapViewState extends State<GCWMapView> {
 
     setState(() {
       if (widget.isEditable && _persistanceAdapter != null) {
-        _persistanceAdapter!.updateMapPoint(point);
+        _persistanceAdapter!.updateMapPoint(point, MapPrecision.LOW); // LOW to increase operations to move Points
+      }
+    });
+  }
+
+  void _onPanEnd(DragEndDetails details, GCWMapPoint point) {
+    setState(() {
+      if (widget.isEditable && _persistanceAdapter != null) {
+        _persistanceAdapter!.updateMapPoint(point, _currentMapPrecision); // LOW to increase operations to move Points
       }
     });
   }
@@ -717,7 +727,7 @@ class _GCWMapViewState extends State<GCWMapView> {
               NoAnimationMaterialPageRoute<GCWTool>(
                   builder: (context) => GCWTool(
                       tool: MapPointEditor(
-                          mapPoint: mapPoint, lengthUnit: defaultLengthUnitGCWMapView),
+                          mapPoint: mapPoint, lengthUnit: defaultLengthUnitGCWMapView, precision: _currentMapPrecision,),
                       toolName: i18n(context, 'coords_openmap_title') + ': ' + i18n(context, 'coords_openmap_pointeditor_title'),
                       id: 'coords_openmap_pointeditor'))).whenComplete(() {
                 setState(() {
@@ -1107,7 +1117,7 @@ class _GCWMapViewState extends State<GCWMapView> {
                                 NoAnimationMaterialPageRoute<GCWTool>(
                                     builder: (context) => GCWTool(
                                         tool: MapPointEditor(
-                                            mapPoint: point, lengthUnit: defaultLengthUnitGCWMapView),
+                                            mapPoint: point, lengthUnit: defaultLengthUnitGCWMapView, precision: _currentMapPrecision,),
                                         toolName: i18n(context, 'coords_openmap_title') + ': ' + i18n(context, 'coords_openmap_pointeditor_title'),
                                         id: 'coords_openmap_pointeditor'))).whenComplete(() {
                               setState(() {
@@ -1171,7 +1181,7 @@ class _GCWMapViewState extends State<GCWMapView> {
 
   void _updateMapPoint(GCWMapPoint mapPoint) {
     if (widget.isEditable && _persistanceAdapter != null) {
-      _persistanceAdapter!.updateMapPoint(mapPoint);
+      _persistanceAdapter!.updateMapPoint(mapPoint, _currentMapPrecision);
     }
     _mapController.move(mapPoint.point, _mapController.camera.zoom);
   }
