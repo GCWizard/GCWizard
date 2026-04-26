@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'dart:ui';
 
 class BingoCall {
   final int number;
@@ -13,29 +12,24 @@ class BingoCall {
   });
 }
 
-enum BINGOCALLS_LANGUAGES { DE, EN }
+enum BINGOCALLS_LANGUAGES { EN, DE, }
 
 const Map<BINGOCALLS_LANGUAGES, String> BINGOCALLS_LANGUAGE_LIST = {
-  //BINGOCALLS_LANGUAGES.DE: "common_language_german",
+  BINGOCALLS_LANGUAGES.DE: "common_language_german",
   BINGOCALLS_LANGUAGES.EN: "common_language_english",
 };
 
-final Map<Locale, BINGOCALLS_LANGUAGES> SUPPORTED_SPELLING_LOCALES = {
-  //const Locale('de'): BINGOCALLS_LANGUAGES.DE,
-  const Locale('en'): BINGOCALLS_LANGUAGES.EN,
-};
-
 const Map<BINGOCALLS_LANGUAGES, Map<String, BingoCall>> BINGO_CALLS = {
-  //BINGOCALLS_LANGUAGES.DE: BINGO_CALLS_DE,
+  BINGOCALLS_LANGUAGES.DE: BINGO_CALLS_DE,
   BINGOCALLS_LANGUAGES.EN: BINGO_CALLS_EN,
 };
 
 // TMZ (6/2025): for the time beeing there exists only an english version
+// and a german translation
 // if there exists Bingo calls in other languages the following maps should be enhanced:
 // - BINGOCALLS_LANGUAGE_LIST
-// - SUPPORTED_SPELLING_LOCALES
 // - BINGO_CALLS
-/*
+
 const Map<String, BingoCall> BINGO_CALLS_DE = {
   // https://gamblingngo.com/de/guides/bingo-calls/
   '1': BingoCall(
@@ -56,17 +50,17 @@ const Map<String, BingoCall> BINGO_CALLS_DE = {
   '4': BingoCall(
     number: 4,
     title: ['Klopfe an die tür'],
-    description: 'vier, an die Tür klopfen, ein weiterer Reim',
+    description: 'vier, an die Tür klopfen, ein weiterer Reim im Englischen ',
   ),
   '5': BingoCall(
     number: 5,
     title: ['Man Alive'],
-    description: 'fünf Reime mit lebendig',
+    description: 'fünf reimt sich im Englischen mit lebendig',
   ),
   '6': BingoCall(
     number: 6,
     title: ['Tom Mix', 'Halbes Dutzend'],
-    description: 'ein Verweis auf einen US-Westernfilmstar Tom Mix, der sich auf sechs reimt; Ein halbes Dutzend ist sechs',
+    description: 'ein Verweis auf einen US-Westernfilmstar Tom Mix, der sich im Englischen auf sechs reimt; Ein halbes Dutzend ist sechs',
   ),
   '7': BingoCall(
     number: 7,
@@ -76,7 +70,7 @@ const Map<String, BingoCall> BINGO_CALLS_DE = {
   '8': BingoCall(
     number: 8,
     title: ['Garden Gate'],
-    description: 'gate reimt sich auf acht, aber es gibt eine Legende von einem Gartentor, das eine verschlüsselte Nachricht ist',
+    description: 'gate reimt sich im Englischen auf acht, aber es gibt eine Legende von einem Gartentor, das eine verschlüsselte Nachricht ist',
   ),
   '9': BingoCall(
     number: 9,
@@ -90,7 +84,7 @@ const Map<String, BingoCall> BINGO_CALLS_DE = {
   ),
   '11': BingoCall(
     number: 11,
-    title: ['Beine 11 '],
+    title: ['Beine'],
     description: '11 sieht aus wie ein Paar schlanke Beine, am liebsten eine Frau mit Absätzen',
   ),
   '12': BingoCall(
@@ -111,7 +105,7 @@ const Map<String, BingoCall> BINGO_CALLS_DE = {
   '15': BingoCall(
     number: 15,
     title: ['Jung und scharf '],
-    description: 'fünfzehn Reime mit scharf',
+    description: 'fünfzehn reimt sich im Englischen mit übermütig',
   ),
   '16': BingoCall(
     number: 16,
@@ -130,13 +124,13 @@ const Map<String, BingoCall> BINGO_CALLS_DE = {
   ),
   '19': BingoCall(
     number: 19,
-    title: ['Auf Wiedersehen Teenager '],
+    title: ['Auf Wiedersehen Teenager'],
     description: 'das letzte Teenagerjahr',
   ),
   '20': BingoCall(
     number: 20,
     title: ['Ein Ergebnis', 'viel bekommen'],
-    description: '20 Einheiten in einer Partitur / mit zwanzig viele Reime bekommen',
+    description: '20 Einheiten in einer Partitur / viel bekommen reimt sich im Englischen auf zwanzig',
   ),
   '21': BingoCall(
     number: 21,
@@ -161,7 +155,7 @@ const Map<String, BingoCall> BINGO_CALLS_DE = {
   '25': BingoCall(
     number: 25,
     title: ['Ente und Tauche'],
-    description: '2 ist eine Ente, fünf Reime mit Tauchen',
+    description: '2 ist eine Ente, fünf reimt sich im Englischen mit Tauchen',
   ),
   '26': BingoCall(
     number: 26,
@@ -181,7 +175,7 @@ const Map<String, BingoCall> BINGO_CALLS_DE = {
   '29': BingoCall(
     number: 29,
     title: ['Rise and Shine'],
-    description: 'Rise and Shine reimt sich auf neunundzwanzig',
+    description: 'Rise and Shine reimt sich im Englischen auf neunundzwanzig',
   ),
   '30': BingoCall(
     number: 30,
@@ -191,12 +185,12 @@ const Map<String, BingoCall> BINGO_CALLS_DE = {
   '31': BingoCall(
     number: 31,
     title: ['Steh auf und lauf'],
-    description: 'der Ausdruck reimt sich auf die Zahl einunddreißig',
+    description: 'der Ausdruck reimt sich im Englischen auf die Zahl einunddreißig',
   ),
   '32': BingoCall(
     number: 32,
     title: ['Schnalle meinen Schuh'],
-    description: 'der Ausdruck reimt sich auf die Zahl zweiunddreißig',
+    description: 'der Ausdruck reimt sich im Englischen auf die Zahl zweiunddreißig',
   ),
   '33': BingoCall(
     number: 33,
@@ -206,31 +200,31 @@ const Map<String, BingoCall> BINGO_CALLS_DE = {
   '34': BingoCall(
     number: 34,
     title: ['Frage nach mehr'],
-    description: 'der Ausdruck reimt sich auf vierunddreißig',
+    description: 'der Ausdruck reimt sich im Englischen auf vierunddreißig',
   ),
   '35': BingoCall(
     number: 35,
     title: ['Springen und Jive'],
-    description: 'ein Reim mit der Zahl fünfunddreißig',
+    description: 'Im Englischen ein Reim mit der Zahl fünfunddreißig',
   ),
   '36': BingoCall(
     number: 36,
     title: ['Drei Dutzend'],
-    description: '12 ist ein Dutzend, 36 ist drei Dutzend',
+    description: '12 ist ein Dutzend, 36 sind drei Dutzend',
   ),
   '37': BingoCall(
     number: 37,
     title: ['Mehr als 11'],
-    description: 'ein Satz, der sich auf siebenunddreißig reimt',
+    description: 'ein Ausdruck, der sich im Englischen auf siebenunddreißig reimt',
   ),
   '38': BingoCall(
     number: 38,
     title: ['Christmas Cake'],
-    description: 'ein Satz, der sich auf achtunddreißig reimt',
+    description: 'ein Ausdruck, der sich im Englischen auf achtunddreißig reimt',
   ),
   '39': BingoCall(
     number: 39,
-    title: ['39 Schritte'],
+    title: ['39 Stufen'],
     description: 'eine Anspielung auf den berühmten Alfred-Hitchcock-Film „Die 39 Stufen“',
   ),
   '40': BingoCall(
@@ -241,7 +235,7 @@ const Map<String, BingoCall> BINGO_CALLS_DE = {
   '41': BingoCall(
     number: 41,
     title: ['Zeit für Spaß'],
-    description: 'ein Satz, der sich auf einundvierzig reimt',
+    description: 'ein Ausdruck, der sich im Englischen auf einundvierzig reimt',
   ),
   '42': BingoCall(
     number: 42,
@@ -266,37 +260,37 @@ const Map<String, BingoCall> BINGO_CALLS_DE = {
   '46': BingoCall(
     number: 46,
     title: ['Bis hin zu Tricks'],
-    description: '',
+    description: 'Eine Phrase, die sich im Englischen auf die Zahl sechsundvierzig reimt',
   ),
   '47': BingoCall(
     number: 47,
-    title: [''],
-    description: '',
+    title: ['Vier und Sieben'],
+    description: 'Einfach ausgedrückt, ein Bezug auf die Zahl siebenundvierzig',
   ),
   '48': BingoCall(
     number: 48,
     title: ['Vier Dutzend'],
-    description: '12 ist ein Dutzend, 48 ist vier Dutzend',
+    description: '12 ist ein Dutzend, 48 sind vier Dutzend',
   ),
   '49': BingoCall(
     number: 49,
-    title: [''],
-    description: '',
+    title: ['PC'],
+    description: 'Eine Anspielung auf die alte Fernsehsendung "Die Abenteuer von PC 49“',
   ),
   '50': BingoCall(
     number: 50,
-    title: [''],
-    description: '',
+    title: ['Ein halbes Jahrhundert'],
+    description: 'Ein Bezug auf 50 Jahre oder ein halbes Jahrhundert',
   ),
   '51': BingoCall(
     number: 51,
-    title: [''],
-    description: '',
+    title: ['Zwicken des Daumens'],
+    description: 'Eine Phrase, die sich im Englischen auf die Zahl einundfünfzig reimt',
   ),
   '52': BingoCall(
     number: 52,
-    title: [''],
-    description: '',
+    title: ['Danny La Rue'],
+    description: 'Eine Anspielung auf den irischen Sänger und Crossdresser Danny La Rue',
   ),
   '53': BingoCall(
     number: 53,
@@ -305,18 +299,18 @@ const Map<String, BingoCall> BINGO_CALLS_DE = {
   ),
   '54': BingoCall(
     number: 54,
-    title: [''],
-    description: '',
+    title: ['Reinigen Sie den Boden'],
+    description: 'Ein Ausdruck, der sich im Englischen auf vierundfünfzig reimt',
   ),
   '55': BingoCall(
     number: 55,
     title: ['lebende Schlangen'],
-    description: 'eine Anspielung auf die Fünfer, die wie zusammengerollte Schlangen aussehen',
+    description: 'eine Anspielung auf die zwei Fünfer, die wie zusammengerollte Schlangen aussehen',
   ),
   '56': BingoCall(
     number: 56,
-    title: [''],
-    description: '',
+    title: ['War sie es wert?'],
+    description: 'Auf die Kosten einer Heiratsurkunde in den 1959er Jahren, die fünf Schilling und sechs Pence betrugen, antwortet das Publikum meist mit "jeden Penny!“',
   ),
   '57': BingoCall(
     number: 57,
@@ -325,13 +319,13 @@ const Map<String, BingoCall> BINGO_CALLS_DE = {
   ),
   '58': BingoCall(
     number: 58,
-    title: [''],
-    description: '',
+    title: ['Lass sie warten'],
+    description: 'Der Satz reimt sich im Englischen auf die Zahl achtundfünfzig',
   ),
   '59': BingoCall(
     number: 59,
-    title: [''],
-    description: '',
+    title: ['Brighton-Linie'],
+    description: 'Die Zugfahrt von Brighton nach London dauert 59 Minuten',
   ),
   '60': BingoCall(
     number: 60,
@@ -340,23 +334,23 @@ const Map<String, BingoCall> BINGO_CALLS_DE = {
   ),
   '61': BingoCall(
     number: 61,
-    title: [''],
-    description: '',
+    title: ['Bäckerbrötchen'],
+    description: 'Der Ausdruck reimt sich im Englischen auf einundsechzig',
   ),
   '62': BingoCall(
     number: 62,
-    title: [''],
-    description: '',
+    title: ['Drehen Sie die Schraube'],
+    description: 'Der Ausdruck reimt sich im Englischen auf zweiundsechzig',
   ),
   '63': BingoCall(
     number: 63,
-    title: [''],
-    description: '',
+    title: ['Tickle Me'],
+    description: 'Der Ausdruck reimt sich im Englischen auf dreiundsechzig',
   ),
   '64': BingoCall(
     number: 64,
-    title: [''],
-    description: '',
+    title: ['Rot roh'],
+    description: 'Eine Phrase, die sich im Englischen auf 8 quadrat reimt.',
   ),
   '65': BingoCall(
     number: 65,
@@ -365,58 +359,58 @@ const Map<String, BingoCall> BINGO_CALLS_DE = {
   ),
   '66': BingoCall(
     number: 66,
-    title: [''],
-    description: '',
+    title: ['Klickety-Klick'],
+    description: 'Eine Redewendung, die das Geräusch eines dampfenden Zuges auf den Gleisen beschreibt, reimt sich im Englischen ebenfalls auf sechsundsechzig',
   ),
   '67': BingoCall(
     number: 67,
-    title: [''],
-    description: '',
+    title: ['Treppe zum Himmel'],
+    description: 'Eine Phrase, die sich im Englischen auf siebenundsechzig reimt',
   ),
   '68': BingoCall(
     number: 68,
-    title: [''],
-    description: '',
+    title: ['Saving Grace'],
+    description: 'Eine Phrase, die sich im Englischen auf achtundsechzig reimt',
   ),
   '69': BingoCall(
     number: 69,
-    title: [''],
-    description: '',
+    title: ['So oder so nach oben'],
+    description: 'Ein Hinweis darauf, dass die 69 in beiden Fällen gleich aussieht',
   ),
   '70': BingoCall(
     number: 70,
-    title: [''],
-    description: '',
+    title: ['Drei Punkte und 10'],
+    description: 'Eine mathematische Referenz für die Summe von drei Punkten und zehn (3×20+10=70)',
   ),
   '71': BingoCall(
     number: 71,
-    title: [''],
-    description: '',
+    title: ['Schlag auf die Trommel'],
+    description: 'Ein Satz, der sich im Englischen auf die Zahl einundsiebzig reimt',
   ),
   '72': BingoCall(
     number: 72,
     title: ['Sechs Dutzend'],
-    description: '12 ist ein Dutzend, 72 ist sechs Dutzend',
+    description: '12 ist ein Dutzend, 72 sind sechs Dutzend',
   ),
   '73': BingoCall(
     number: 73,
-    title: [''],
-    description: '',
+    title: ['Bienenkönigin'],
+    description: 'Eine Anspielung auf die Bienenkönigin, eine Phrase, die sich im Englischen auf dreiundsiebzig reimt',
   ),
   '74': BingoCall(
     number: 74,
-    title: [''],
-    description: '',
+    title: ['Süßwarenladen', 'Hit the Floor'],
+    description: 'Beide Ausdrücke reimen sich im Englischen auf vierundsiebzig',
   ),
   '75': BingoCall(
     number: 75,
-    title: [''],
-    description: '',
+    title: ['Strebe und strebe'],
+    description: 'Eine Referenz, die ein volles Haus anstrebt',
   ),
   '76': BingoCall(
     number: 76,
-    title: [''],
-    description: '',
+    title: ['Posaunen'],
+    description: 'Eine Anspielung auf das Lied „76 Trombones“ aus dem Musical The Music Man',
   ),
   '77': BingoCall(
     number: 77,
@@ -424,54 +418,54 @@ const Map<String, BingoCall> BINGO_CALLS_DE = {
     description: 'ein Verweis auf die TV-Serie „77, Sunset Strip“',
   ),
   '78': BingoCall(
-    number: 7,
-    title: [''],
-    description: '',
+    number: 78,
+    title: ['Himmelstor'],
+    description: 'Ein Satz, der sich im Englischen auf achtundsiebzig reimt',
   ),
   '79': BingoCall(
     number: 79,
-    title: [''],
-    description: '',
+    title: ['One More Time'],
+    description: 'Ein Satz, der sich im Englischen auf neunundsiebzig reimt',
   ),
   '80': BingoCall(
     number: 80,
-    title: [''],
-    description: '',
+    title: ['Acht und leer','Gandhis Frühstück'],
+    description: 'Acht und null; ein lautmalerisches Wortspiel im Englischen in Anspielung auf Gandhis Frühstück – er „acht nichts“',
   ),
   '81': BingoCall(
     number: 81,
-    title: [''],
-    description: '',
+    title: ['Stoppen und rennen'],
+    description: 'Ein Ausdruck, der sich im Englischen auf einundachtzig reimt',
   ),
   '82': BingoCall(
     number: 82,
-    title: [''],
-    description: '',
+    title: ['Geradeaus durch'],
+    description: 'Ein Ausdruck, der sich im Englischen auf zweiundachtzig reimt',
   ),
   '83': BingoCall(
     number: 83,
-    title: [''],
-    description: '',
+    title: ['Zeit für Tee'],
+    description: 'Eine Anspielung auf die britische Liebe zum Tee, außerdem reimt sich der Ausdruck im Englischen auf dreiundachtzig',
   ),
   '84': BingoCall(
     number: 84,
     title: ['Sieben Dutzend'],
-    description: '21 ist ein Dutzend, 84 ist sieben Dutzend',
+    description: '21 ist ein Dutzend, 84 sind sieben Dutzend',
   ),
   '85': BingoCall(
     number: 85,
-    title: [''],
-    description: '',
+    title: ['Staying Alive'],
+    description: 'Ein Satz, der sich im Englischen auf fünfundachtzig reimt',
   ),
   '86': BingoCall(
     number: 86,
-    title: [''],
-    description: '',
+    title: ['Zwischen den Stöcken'],
+    description: 'Es ist eine Anspielung auf die Zahl 86, da der Torwart das Spiel zwischen den Pfosten verbringt, und außerdem reimt sich die Phrase auf die Zahl 86',
   ),
   '87': BingoCall(
     number: 87,
-    title: [''],
-    description: '',
+    title: ['Torquay in Devon', 'Oma ist im Himmel'],
+    description: 'Es ist eine Anspielung auf eine Stadt in Devon, der Satz reimt sich im Englischen auf die Zahl 87, eine Anspielung auf den Tod der Großmutter',
   ),
   '88': BingoCall(
     number: 88,
@@ -489,7 +483,7 @@ const Map<String, BingoCall> BINGO_CALLS_DE = {
     description: 'ein Hinweis auf die höchste oder letzte Zahl im Bingo',
   ),
 };
-
+/*
 const Map<String, BingoCall> BINGO_CALLS_ = {
   '1': BingoCall(
     number: 1,
