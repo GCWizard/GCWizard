@@ -25,6 +25,8 @@ void main() {
 
       {'expectedOutput' : 'AEINRS..', 'input' : '01234 59090'},
       {'expectedOutput' : 'NORD453...', 'input' : '38147 38944 45553 33899 09090'},
+      {'expectedOutput' : 'FINALBEI123456.', 'input' : '74230 79711 28911 12223 33444 55566 68990'},
+      {'expectedOutput' : 'FINALBEI123UND456CODE789', 'input' : '74230 79711 28911 12223 33898 73738 94445 55666 89728 17318 97778 88999'},
       {'expectedOutput' : 'NACHRICHTNEGATIV.', 'input' : '65966 61390'},
     ];
 

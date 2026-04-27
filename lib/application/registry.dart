@@ -358,6 +358,7 @@ import 'package:gc_wizard/tools/images_and_files/qr_code/widget/qr_code.dart';
 import 'package:gc_wizard/tools/images_and_files/stegano/widget/stegano.dart';
 import 'package:gc_wizard/tools/images_and_files/tupper_formula/widget/tupper_formula.dart';
 import 'package:gc_wizard/tools/images_and_files/visual_cryptography/widget/visual_cryptography.dart';
+import 'package:gc_wizard/tools/images_and_files/waveform/widget/waveform.dart';
 import 'package:gc_wizard/tools/science_and_technology/alcohol_mass/widget/alcohol_mass.dart';
 import 'package:gc_wizard/tools/science_and_technology/alphabet_number_systems/hebrew/widget/hebrew_number_system.dart';
 import 'package:gc_wizard/tools/science_and_technology/alphabet_number_systems/milesian/widget/milesian_number_system.dart';
@@ -976,16 +977,6 @@ void initializeRegistry(BuildContext context) {
           'elementsofgeocaching',
         ]),
     GCWTool(
-        tool: const EllipsoidTrianglePointsSelection(),
-        id: 'triangle_ellipsoid_selection',
-        iconPath: 'lib/tools/coords/_common/assets/icons/icon_triangle_points.png',
-        categories: const [
-          ToolCategory.COORDINATES
-        ],
-        searchKeys: const [
-          'triangle'
-        ]),
-    GCWTool(
         tool: const EnclosedAreas(),
         id: 'enclosedareas',
         categories: const [
@@ -1044,7 +1035,9 @@ void initializeRegistry(BuildContext context) {
         searchKeys: const [
           'esotericprogramminglanguage',
         ]),
-    GCWTool(tool: const EuclidicTriangle(), id: 'triangle_euclidic', categories: const [
+    GCWTool(tool: const EuclidicTriangle(), id: 'triangle_euclidic',
+        isBeta: true,
+        categories: const [
       ToolCategory.SCIENCE_AND_TECHNOLOGY,
     ], searchKeys: const [
       'triangle',
@@ -2370,6 +2363,11 @@ void initializeRegistry(BuildContext context) {
       ToolCategory.CRYPTOGRAPHY
     ], searchKeys: const [
       'wasd',
+    ]),
+    GCWTool(tool: const WaveForm(), id: 'waveform', categories: const [
+      ToolCategory.IMAGES_AND_FILES
+    ], searchKeys: const [
+      'waveform',
     ]),
     GCWTool(
         tool: const WherigoSelection(),
@@ -3797,7 +3795,16 @@ void initializeRegistry(BuildContext context) {
           'coordinates_ellipsoidtransform',
         ],
         licenses: const []),
-
+    GCWTool(
+        tool: const EllipsoidTrianglePointsSelection(),
+        id: 'triangle_ellipsoid_selection',
+        iconPath: 'lib/tools/coords/_common/assets/icons/icon_triangle_points.png',
+        categories: const [
+          ToolCategory.COORDINATES
+        ],
+        searchKeys: const [
+          'esotericprogramminglanguage',
+        ]),
     //Countries Selection ******************************************************************************************
 
     GCWTool(
@@ -4075,7 +4082,7 @@ void initializeRegistry(BuildContext context) {
       tool: const EllipsoidTriangleOrthocenter(),
       id: 'triangle_point_orthocenter',
       searchKeys: const [
-        'triangle',
+        'triangle_point_orthocenter',
       ],
     ),
     GCWTool(

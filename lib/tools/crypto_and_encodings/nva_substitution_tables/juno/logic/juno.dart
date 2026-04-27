@@ -133,59 +133,71 @@ String _decodeJuno(String input) {
   while (i < input.length) {
     String? character;
     var code = input.substring(i, i + 1);
-    if (code == _CODE_FOLLOW) {
-      if (i + 4 < input.length) {
-        code = input.substring(i + 1, i + 4);
-        character = CodeToTITANZ[code];
-        out += character ?? UNKNOWN_ELEMENT;
-        i += 4;
-        continue;
+    if (isLetterMode) {
+      if (code == _CODE_FOLLOW) {
+        if (i + 4 < input.length) {
+          code = input.substring(i + 1, i + 4);
+          character = CodeToTITANZ[code];
+          out += character ?? UNKNOWN_ELEMENT;
+          i += 4;
+          continue;
+        } else {
+          out += UNKNOWN_ELEMENT;
+          i++;
+          continue;
+        }
       } else {
-        out += UNKNOWN_ELEMENT;
-        i++;
-        continue;
+        if (i + 1 < input.length) {
+          code = input.substring(i, i + 2);
+          if (code == _LETTERS_NUMBER_SWITCH) {
+            isLetterMode = !isLetterMode;
+            i += 2;
+            continue;
+          } else {
+            if (isLetterMode) {
+              character = _JunoToAZ[code];
+              if (character != null) {
+                out += character;
+                i += 2;
+                continue;
+              } else {
+                code = input.substring(i, i + 1);
+                character = _JunoToAZ[code];
+                if (character != null) {
+                  out += character;
+                  i += 1;
+                  continue;
+                }
+              }
+            }
+          }
+        } else {
+          out += UNKNOWN_ELEMENT;
+          i++;
+          continue;
+        }
       }
     } else {
       if (i + 1 < input.length) {
         code = input.substring(i, i + 2);
         if (code == _LETTERS_NUMBER_SWITCH) {
           isLetterMode = !isLetterMode;
-          i += 2;
+          i+= 2;
+          continue;
+        }
+      }
+      if (i + 2 < input.length) {
+        code = input.substring(i, i + 3);
+        character = _JunoToNumbers[code];
+        if (character != null) {
+          out += character;
+          i += 3;
           continue;
         } else {
-          if (isLetterMode) {
-            character = _JunoToAZ[code];
-            if (character != null) {
-              out += character;
-              i += 2;
-              continue;
-            } else {
-              code = input.substring(i, i + 1);
-              character = _JunoToAZ[code];
-              if (character != null) {
-                out += character;
-                i += 1;
-                continue;
-              }
-            }
-          } else {
-            code = input.substring(i, i + 3);
-            character = _JunoToNumbers[code];
-            if (character != null) {
-              out += character;
-              i += 3;
-              continue;
-            } else {
-              out += UNKNOWN_ELEMENT;
-              i += 2;
-              continue;
-            }
-          }
+          out += UNKNOWN_ELEMENT;
+          i+= 3;
+          continue;
         }
-      } else {
-        out += UNKNOWN_ELEMENT;
-        i++;
-        continue;
       }
     }
   }

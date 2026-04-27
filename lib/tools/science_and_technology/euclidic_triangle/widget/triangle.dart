@@ -395,33 +395,33 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
                 ? GCWColumnedMultilineOutput(
                     data: _outputPointData,
                     flexValues: const [2, 1, 1, 1],
-                    copyAll: true)
+                suppressCopyButtons: true)
                 : Container(),
             GCWColumnedMultilineOutput(
                 data: _outputBasicData,
                 flexValues: const [2, 1, 1, 1],
-                copyAll: true),
+                suppressCopyButtons: true),
             GCWTextDivider(
                 suppressTopSpace: false,
                 text: i18n(context, 'triangle_output_sidesmidpoint')),
             GCWColumnedMultilineOutput(
                 data: _outputDataPointsSidesMidPoint,
                 flexValues: const [2, 1, 1, 1],
-                copyAll: true),
+                suppressCopyButtons: true),
             GCWTextDivider(
                 suppressTopSpace: false,
                 text: i18n(context, 'triangle_output_altitudesbasepoint')),
             GCWColumnedMultilineOutput(
                 data: _outputDataPointsAltitudeBasePoints,
                 flexValues: const [2, 1, 1, 1],
-                copyAll: true),
+                suppressCopyButtons: true),
             GCWTextDivider(
                 suppressTopSpace: false,
                 text: i18n(context, 'triangle_output_touchpoint')),
             GCWColumnedMultilineOutput(
                 data: _outputTouchPoints,
                 flexValues: const [2, 1, 1, 1],
-                copyAll: true),
+                suppressCopyButtons: true),
           ],
         ),
         GCWExpandableTextDivider(
@@ -430,7 +430,7 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
           child: GCWColumnedMultilineOutput(
               data: _outputPoints,
               flexValues: const [2, 1, 1, 1],
-              copyAll: true),
+              suppressCopyButtons: true),
         ),
         GCWExpandableTextDivider(
           text: i18n(context, 'triangle_output_circles'),
@@ -438,7 +438,7 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
           child: GCWColumnedMultilineOutput(
               data: _outputCircles,
               flexValues: const [2, 1, 1, 1],
-              copyAll: true),
+              suppressCopyButtons: true),
         ),
         _buildGraphicOutput(),
       ]);

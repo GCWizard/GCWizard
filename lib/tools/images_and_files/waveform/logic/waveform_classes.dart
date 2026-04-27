@@ -22,3 +22,11 @@ class AudioInfo {
       required this.error,
       required this.status});
 }
+
+class WaveformJobData {
+  final Uint8List jobDataBytes;
+  final MorseParams jobMorseParams;
+  final double jobHeight;
+
+  WaveformJobData({required this.jobDataBytes, this.jobMorseParams = const MorseParams(), this.jobHeight = 400});
+}

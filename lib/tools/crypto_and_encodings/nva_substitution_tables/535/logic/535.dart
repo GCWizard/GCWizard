@@ -83,7 +83,7 @@ String _decode535(String input) {
     String? character;
     var code = input.substring(i, i + 1);
     if (code == _CODE_FOLLOW) {
-      if (i + 4 < input.length) {
+      if (i + 4 <= input.length) {
         code = input.substring(i + 1, i + 4);
         character = CodeToTITANZ[code];
         out += character ?? UNKNOWN_ELEMENT;
@@ -110,7 +110,23 @@ String _decode535(String input) {
             out += character;
             i += 1;
             continue;
+          } else {
+            out += UNKNOWN_ELEMENT;
+            i++;
+            continue;
           }
+        }
+      } else {
+        code = input.substring(i, i + 1);
+        character = _535ToAZ[code];
+        if (character != null) {
+          out += character;
+          i += 1;
+          continue;
+        } else {
+          out += UNKNOWN_ELEMENT;
+          i++;
+          continue;
         }
       }
     }
@@ -126,6 +142,5 @@ String decrypt535(String input, String? keyOneTimePad) {
   if (keyOneTimePad != null && keyOneTimePad.isNotEmpty) {
     input = subtractOneTimePad(input, keyOneTimePad);
   }
-
   return _decode535(input);
 }

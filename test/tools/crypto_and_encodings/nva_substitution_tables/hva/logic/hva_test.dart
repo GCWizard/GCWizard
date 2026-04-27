@@ -39,6 +39,7 @@ void main() {
       {'input' : '', 'expectedOutput' : ''},
 
       {'expectedOutput' : 'RINSTE..', 'input' : '10265 83838'},
+      {'expectedOutput': 'FINALBEI123UND456.', 'input': '94029 14696 80351 11222 33335 75298 35444 55566 63538'},
       {'expectedOutput' : 'BERICHTBESTÄTIGENTREFFNORD456OST123', 'input' : '92453 62491 98354 44555 66635 49653 51112 22333'},
     ];
 

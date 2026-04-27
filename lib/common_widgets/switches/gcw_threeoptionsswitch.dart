@@ -14,12 +14,12 @@ class GCWThreeOptionsSwitch extends StatefulWidget {
 
   const GCWThreeOptionsSwitch(
       {super.key,
-        this.title,
-        required this.labels,
-        required this.position,
-        required this.onChanged,
-        this.alternativeColor = false,
-        this.notitle = false});
+      this.title,
+      required this.labels,
+      required this.position,
+      required this.onChanged,
+      this.alternativeColor = false,
+      this.notitle = false});
 
   @override
   _GCWThreeOptionsSwitchState createState() => _GCWThreeOptionsSwitchState();
@@ -67,18 +67,18 @@ class _GCWThreeOptionsSwitchState extends State<GCWThreeOptionsSwitch> {
                 widget.onChanged(_currentValue);
               },
               style: _currentStatus[0] ? _activeStyle() : _inActiveStyle(),
-              child: Text(
-                widget.labels[0],
-                textAlign: TextAlign.center,
-                style:
-                gcwTextStyle().copyWith(color: themeColors().dialogText()),
-              ),
+              child: Text(widget.labels[0],
+                  textAlign: TextAlign.center,
+                  style: _currentStatus[0]
+                      ? gcwTextStyle().copyWith(color: themeColors().dialogText())
+                      : gcwTextStyle().copyWith(color: themeColors().checkBoxActiveColor())),
             ),
           ),
         ),
         Expanded(
           child: Container(
-            padding: const EdgeInsets.only(left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
+            padding: const EdgeInsets.only(
+                left: DEFAULT_MARGIN, right: DEFAULT_MARGIN),
             child: ElevatedButton(
               onPressed: () {
                 _currentStatus = [false, true, false];
@@ -86,12 +86,11 @@ class _GCWThreeOptionsSwitchState extends State<GCWThreeOptionsSwitch> {
                 widget.onChanged(_currentValue);
               },
               style: _currentStatus[1] ? _activeStyle() : _inActiveStyle(),
-              child: Text(
-                widget.labels[1],
-                textAlign: TextAlign.center,
-                style:
-                gcwTextStyle().copyWith(color: themeColors().dialogText()),
-              ),
+              child: Text(widget.labels[1],
+                  textAlign: TextAlign.center,
+                  style: _currentStatus[1]
+                      ? gcwTextStyle().copyWith(color: themeColors().dialogText())
+                      : gcwTextStyle().copyWith(color: themeColors().checkBoxActiveColor())),
             ),
           ),
         ),
@@ -105,16 +104,14 @@ class _GCWThreeOptionsSwitchState extends State<GCWThreeOptionsSwitch> {
                 widget.onChanged(_currentValue);
               },
               style: _currentStatus[2] ? _activeStyle() : _inActiveStyle(),
-              child: Text(
-                widget.labels[2],
-                textAlign: TextAlign.center,
-                style:
-                gcwTextStyle().copyWith(color: themeColors().dialogText()),
-              ),
+              child: Text(widget.labels[2],
+                  textAlign: TextAlign.center,
+                  style: _currentStatus[2]
+                      ? gcwTextStyle().copyWith(color: themeColors().dialogText())
+                      : gcwTextStyle().copyWith(color: themeColors().checkBoxActiveColor())),
             ),
           ),
         ),
-
       ],
     );
   }
@@ -134,9 +131,9 @@ class _GCWThreeOptionsSwitchState extends State<GCWThreeOptionsSwitch> {
       widget.notitle
           ? Container()
           : GCWText(
-        text: (widget.title ?? i18n(context, 'common_mode')) + ':',
-        style: textStyle,
-      ),
+              text: (widget.title ?? i18n(context, 'common_mode')) + ':',
+              style: textStyle,
+            ),
       Container(
           padding: const EdgeInsets.symmetric(vertical: DOUBLE_DEFAULT_MARGIN),
           child: Row(children: <Widget>[

@@ -2,11 +2,12 @@
 // could build not recursive
 // https://oeis.org/A000225   Mersenne
 // https://oeis.org/A000051   Mersenne-like with Fermat-numbers
-// https://oeis.org/A000251   Fermat
+// https://oeis.org/A000215   Fermat
 // https://oeis.org/A000108   Catalan
 // https://oeis.org/A001045   Jacobsthal
 // https://oeis.org/A014551   Jacobsthal-Lucas
 // https://oeis.org/A084175   Jacobsthal-Oblong
+// https://oeis.org/A005150   Look-and-say
 // should be build recursive
 // https://oeis.org/A000032   Lucas
 // https://oeis.org/A000045   Fibonacci

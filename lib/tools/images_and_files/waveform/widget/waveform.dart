@@ -2,7 +2,10 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme_colors.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer.dart';
+import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_iconbutton.dart';
+import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/gcw_expandable.dart';
 import 'package:gc_wizard/common_widgets/gcw_openfile.dart';
@@ -14,6 +17,7 @@ import 'package:gc_wizard/common_widgets/outputs/gcw_output.dart';
 import 'package:gc_wizard/common_widgets/outputs/gcw_output_text.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_double_spinner.dart';
 import 'package:gc_wizard/common_widgets/spinners/gcw_integer_spinner.dart';
+import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/common_widgets/switches/gcw_threeoptionsswitch.dart';
 import 'package:gc_wizard/tools/images_and_files/hex_viewer/widget/hex_viewer.dart';
 import 'package:gc_wizard/tools/images_and_files/waveform/logic/waveform.dart';
@@ -48,6 +52,8 @@ class WaveFormState extends State<WaveForm> {
 
   bool _parseError = false;
   bool _spectrumCreated = false;
+  bool _fileLoaded = false;
+  bool _currentExpertMode = false;
 
   int _currentSmoothingWindow = 5;
   double _currentThresholdFactor = 4.0;
@@ -70,6 +76,24 @@ class WaveFormState extends State<WaveForm> {
     _bytes = bytes;
   }
 
+  void _resetData() {
+    _decodedMorseCode = '';
+    _decodedMorseText = '';
+    _currentError = '';
+
+    _parseError = false;
+    _spectrumCreated = false;
+    _fileLoaded = false;
+    _currentExpertMode = false;
+
+    _currentSmoothingWindow = 5;
+    _currentThresholdFactor = 4.0;
+    _currentMinRunLength = 3;
+    _currentUnitTolerance = 0.40;
+
+    _currentMode = 1;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -82,74 +106,73 @@ class WaveFormState extends State<WaveForm> {
                   context);
               return;
             }
-            _setData(_file.bytes);
-            _audioInfo = await getSoundfileAudioInfo(_bytes);
-            renderAndAnalyzeWav(
-                    wavBytes: _audioInfo.bytes,
-                    height: 400,
-                    params: MorseParams())
-                .then((value) {
-              if (value.status == PARSE_STATUS.ERROR) {
-                setState(() {
-                  _spectrumCreated = false;
-                  _parseError = true;
-                  _currentError = value.error;
-                });
-              } else {
-                setState(() {
-                  _soundfilePNGImage = value.pngBytes;
-                  _decodedMorseCode = value.morse;
-                  _decodedMorseText = value.text;
-                  _spectrumCreated = true;
-                  _parseError = false;
-                });
-              }
+            setState(() {
+              _setData(_file.bytes);
+              _resetData();
+              _fileLoaded = true;
+            });
+            getSoundfileAudioInfo(_bytes).then((value) {
+              setState(() {
+                _audioInfo = value;
+              });
             });
           },
         ),
-        GCWSoundPlayer(
-          file: GCWFile(bytes: _bytes),
-        ),
-        _buildOutputWaveFormImage(),
-        _buildOutputDecodingParameter(),
-        _buildOutputWaveFormMorse(),
-        _buildOutputWaveFormInfo(),
-        GCWOutput(
-          title: i18n(context, 'waveform_output_hexview'),
-          child: i18n(context, 'waveform_output_hexview_hint'),
-          suppressCopyButton: true,
-          trailing: Row(children: <Widget>[
-            GCWIconButton(
-              iconColor: themeColors().mainFont(),
-              size: IconButtonSize.SMALL,
-              icon: Icons.input,
-              onPressed: () {
-                openInHexViewer(context, GCWFile(bytes: _bytes));
-              },
-            ),
-          ]),
-        )
+        _fileLoaded ? _buildOutputSoundPlayer() : Container(),
+        _fileLoaded ? _buildOutputCalculateButton() : Container(),
+        _spectrumCreated ? _buildOutputWaveFormImage() : Container(),
+        _fileLoaded ? _buildExpertMode() : Container(),
+        _currentExpertMode ? _buildOutputDecodingParameter() : Container(),
+        _spectrumCreated ? _buildOutputWaveFormMorse() : Container(),
+        _fileLoaded ? _buildOutputWaveFormInfo() : Container(),
+        _fileLoaded ? _buildOutputHexView() : Container(),
       ],
+    );
+  }
+
+  Widget _buildOutputSoundPlayer() {
+    return GCWSoundPlayer(
+      file: GCWFile(bytes: _bytes),
+    );
+  }
+
+  Widget _buildOutputCalculateButton() {
+    return GCWSubmitButton(
+      onPressed: () {
+        setState(() {
+          _analyseSoundfileAsync();
+        });
+      },
     );
   }
 
   Widget _buildOutputWaveFormImage() {
     return Column(children: [
-      GCWTextDivider(text: i18n(context, 'waveform_output_amplitudes_graph'),
-      suppressTopSpace: false,),
-      (_spectrumCreated)
-          ? GCWImageView(
-              imageData: GCWImageViewData(GCWFile(bytes: _soundfilePNGImage)),
-              suppressOpenInTool: const {
-                GCWImageViewOpenInTools.COLORCORRECTIONS,
-                GCWImageViewOpenInTools.HIDDENDATA,
-                GCWImageViewOpenInTools.FLIPROTATE
-              },
-            )
-          : GCWOutputText(
-              text: _errorText('waveform_error_image_no_data'),
-            ),
+      GCWTextDivider(
+        text: i18n(context, 'waveform_output_amplitudes_graph'),
+        suppressTopSpace: false,
+      ),
+      GCWImageView(
+        imageData: GCWImageViewData(GCWFile(bytes: _soundfilePNGImage)),
+        suppressOpenInTool: const {
+          GCWImageViewOpenInTools.COLORCORRECTIONS,
+          GCWImageViewOpenInTools.HIDDENDATA,
+          GCWImageViewOpenInTools.FLIPROTATE
+        },
+      ),
     ]);
+  }
+
+  Widget _buildExpertMode() {
+    return GCWOnOffSwitch(
+      value: _currentExpertMode,
+      title: i18n(context, 'waveform_expertmode'),
+      onChanged: (value) {
+        setState(() {
+          _currentExpertMode = value;
+        });
+      },
+    );
   }
 
   Widget _buildOutputDecodingParameter() {
@@ -184,32 +207,6 @@ class WaveFormState extends State<WaveForm> {
               onChanged: (position) {
                 setState(() {
                   _currentMode = position;
-                  renderAndAnalyzeWav(
-                      wavBytes: _audioInfo.bytes,
-                      height: 400,
-                      params: MorseParams(
-                          smoothingWindow: _currentSmoothingWindow,
-                          thresholdFactor: _currentThresholdFactor,
-                          minRunLength: _currentMinRunLength,
-                          unitTolerance: _currentUnitTolerance,
-                          mode: morseUnitModeMap[_currentMode]!))
-                      .then((value) {
-                    if (value.status == PARSE_STATUS.ERROR) {
-                      setState(() {
-                        _spectrumCreated = false;
-                        _parseError = true;
-                        _currentError = value.error;
-                      });
-                    } else {
-                      setState(() {
-                        _soundfilePNGImage = value.pngBytes;
-                        _decodedMorseCode = value.morse;
-                        _decodedMorseText = value.text;
-                        _spectrumCreated = true;
-                        _parseError = false;
-                      });
-                    }
-                  });
                 });
               }),
           GCWIntegerSpinner(
@@ -220,32 +217,6 @@ class WaveFormState extends State<WaveForm> {
               onChanged: (value) {
                 setState(() {
                   _currentSmoothingWindow = value;
-                  renderAndAnalyzeWav(
-                          wavBytes: _audioInfo.bytes,
-                          height: 400,
-                          params: MorseParams(
-                              smoothingWindow: _currentSmoothingWindow,
-                              thresholdFactor: _currentThresholdFactor,
-                              minRunLength: _currentMinRunLength,
-                              unitTolerance: _currentUnitTolerance,
-                              mode: morseUnitModeMap[_currentMode]!))
-                      .then((value) {
-                    if (value.status == PARSE_STATUS.ERROR) {
-                      setState(() {
-                        _spectrumCreated = false;
-                        _parseError = true;
-                        _currentError = value.error;
-                      });
-                    } else {
-                      setState(() {
-                        _soundfilePNGImage = value.pngBytes;
-                        _decodedMorseCode = value.morse;
-                        _decodedMorseText = value.text;
-                        _spectrumCreated = true;
-                        _parseError = false;
-                      });
-                    }
-                  });
                 });
               }),
           GCWDoubleSpinner(
@@ -256,32 +227,6 @@ class WaveFormState extends State<WaveForm> {
               onChanged: (value) {
                 setState(() {
                   _currentThresholdFactor = value;
-                  renderAndAnalyzeWav(
-                          wavBytes: _audioInfo.bytes,
-                          height: 400,
-                          params: MorseParams(
-                              smoothingWindow: _currentSmoothingWindow,
-                              thresholdFactor: _currentThresholdFactor,
-                              minRunLength: _currentMinRunLength,
-                              unitTolerance: _currentUnitTolerance,
-                              mode: morseUnitModeMap[_currentMode]!))
-                      .then((value) {
-                    if (value.status == PARSE_STATUS.ERROR) {
-                      setState(() {
-                        _spectrumCreated = false;
-                        _parseError = true;
-                        _currentError = value.error;
-                      });
-                    } else {
-                      setState(() {
-                        _soundfilePNGImage = value.pngBytes;
-                        _decodedMorseCode = value.morse;
-                        _decodedMorseText = value.text;
-                        _spectrumCreated = true;
-                        _parseError = false;
-                      });
-                    }
-                  });
                 });
               }),
           GCWIntegerSpinner(
@@ -292,32 +237,6 @@ class WaveFormState extends State<WaveForm> {
               onChanged: (value) {
                 setState(() {
                   _currentMinRunLength = value;
-                  renderAndAnalyzeWav(
-                          wavBytes: _audioInfo.bytes,
-                          height: 400,
-                          params: MorseParams(
-                              smoothingWindow: _currentSmoothingWindow,
-                              thresholdFactor: _currentThresholdFactor,
-                              minRunLength: _currentMinRunLength,
-                              unitTolerance: _currentUnitTolerance,
-                              mode: morseUnitModeMap[_currentMode]!))
-                      .then((value) {
-                    if (value.status == PARSE_STATUS.ERROR) {
-                      setState(() {
-                        _spectrumCreated = false;
-                        _parseError = true;
-                        _currentError = value.error;
-                      });
-                    } else {
-                      setState(() {
-                        _soundfilePNGImage = value.pngBytes;
-                        _decodedMorseCode = value.morse;
-                        _decodedMorseText = value.text;
-                        _spectrumCreated = true;
-                        _parseError = false;
-                      });
-                    }
-                  });
                 });
               }),
           GCWDoubleSpinner(
@@ -328,31 +247,6 @@ class WaveFormState extends State<WaveForm> {
               onChanged: (value) {
                 setState(() {
                   _currentUnitTolerance = value;
-                  renderAndAnalyzeWav(
-                          wavBytes: _audioInfo.bytes,
-                          height: 400,
-                          params: MorseParams(
-                              smoothingWindow: _currentSmoothingWindow,
-                              thresholdFactor: _currentThresholdFactor,
-                              minRunLength: _currentMinRunLength,
-                              unitTolerance: _currentUnitTolerance))
-                      .then((value) {
-                    if (value.status == PARSE_STATUS.ERROR) {
-                      setState(() {
-                        _spectrumCreated = false;
-                        _parseError = true;
-                        _currentError = value.error;
-                      });
-                    } else {
-                      setState(() {
-                        _soundfilePNGImage = value.pngBytes;
-                        _decodedMorseCode = value.morse;
-                        _decodedMorseText = value.text;
-                        _spectrumCreated = true;
-                        _parseError = false;
-                      });
-                    }
-                  });
                 });
               }),
         ],
@@ -378,6 +272,24 @@ class WaveFormState extends State<WaveForm> {
               text: _errorText('waveform_error_png_not_created'),
             ),
     ]);
+  }
+
+  Widget _buildOutputHexView() {
+    return GCWOutput(
+      title: i18n(context, 'waveform_output_hexview'),
+      child: i18n(context, 'waveform_output_hexview_hint'),
+      suppressCopyButton: true,
+      trailing: Row(children: <Widget>[
+        GCWIconButton(
+          iconColor: themeColors().mainFont(),
+          size: IconButtonSize.SMALL,
+          icon: Icons.input,
+          onPressed: () {
+            openInHexViewer(context, GCWFile(bytes: _bytes));
+          },
+        ),
+      ]),
+    );
   }
 
   String _errorText(String text) {
@@ -420,7 +332,62 @@ class WaveFormState extends State<WaveForm> {
       ],
       [i18n(context, 'waveform_output_metadata_format'), _audioInfo.format],
     ];
-    return GCWColumnedMultilineOutput(data: data);
+    return GCWOutput(
+        title: i18n(context, 'common_details'),
+        child: GCWColumnedMultilineOutput(data: data));
   }
 
+  void _analyseSoundfileAsync() async {
+    await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Center(
+          child: SizedBox(
+            height: GCW_ASYNC_EXECUTER_INDICATOR_HEIGHT,
+            width: GCW_ASYNC_EXECUTER_INDICATOR_WIDTH,
+            child: GCWAsyncExecuter<WaveformAndMorseResult>(
+              isolatedFunction: analyseSoundfileAsync,
+              parameter: _buildJobData,
+              onReady: (data) => _showOutput(data),
+              isOverlay: true,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<GCWAsyncExecuterParameters?> _buildJobData() async {
+    return GCWAsyncExecuterParameters(WaveformJobData(
+      jobDataBytes: _audioInfo.bytes,
+      jobMorseParams: MorseParams(
+          smoothingWindow: _currentSmoothingWindow,
+          thresholdFactor: _currentThresholdFactor,
+          minRunLength: _currentMinRunLength,
+          unitTolerance: _currentUnitTolerance),
+      jobHeight: 400,
+    ));
+  }
+
+  void _showOutput(WaveformAndMorseResult output) {
+    if (output.status == PARSE_STATUS.ERROR) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          _spectrumCreated = false;
+          _parseError = true;
+          _currentError = output.error;
+        });
+      });
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _soundfilePNGImage = output.pngBytes;
+        _decodedMorseCode = output.morse;
+        _decodedMorseText = output.text;
+        _spectrumCreated = true;
+        _parseError = false;
+        setState(() {});
+      });
+    }
+  }
 }
