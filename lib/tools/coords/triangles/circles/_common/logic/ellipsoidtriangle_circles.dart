@@ -28,7 +28,7 @@ double _distanceToGeodesic(LatLng point, LatLng lineStart, double bearing, Ellip
   return distanceBearing(point, project, ellipsoid).distance;
 }
 
-/// Optimiert den Punkt auf dem Ellipsoid durch Minimierung der Abstands-Varianz
+/// optimizes point on ellipsoid by minimize distances variance
 EllipsoidTriangleCircle optimizeEllipsoidTriangleCircle(LatLng startPoint, EllipsoidTriangle triangle, EllipsoidTriangleCircleType type, Ellipsoid ellipsoid) {
   LatLng currentPoint = startPoint;
 
@@ -43,11 +43,10 @@ EllipsoidTriangleCircle optimizeEllipsoidTriangleCircle(LatLng startPoint, Ellip
   const double _TARGET_PRECISION = 1e-10;
   int _MAX_ITERATIONS = (type == EllipsoidTriangleCircleType.CIRCUMCIRCLE) ? 5000 : 1000;
 
-  // DYNAMISCHER START-STEP: Max. 25% der längsten Seite, gedeckelt auf 100km.
-  // Das verhindert das Verschwenden von Iterationen bei kleinen Dreiecken.
+  // Max 25 % of longest side, max 100km - is good for small triangles
   double maxSide = max(dAB, max(dBC, dCA));
   double stepSize = min(100 * 1000, maxSide / 4.0);
-  if (stepSize < 1.0) stepSize = 1.0; // Absolutes Minimum für den Start
+  if (stepSize < 1.0) stepSize = 1.0;
 
   double currentCost = _costFunction(currentPoint, triangle, type, ellipsoid);
 
@@ -74,8 +73,8 @@ EllipsoidTriangleCircle optimizeEllipsoidTriangleCircle(LatLng startPoint, Ellip
         currentCost = testCost;
         foundBetter = true;
 
-        // MOMENTUM (Beschleuniger): Wenn die Richtung gut ist, geh noch einen Schritt!
-        // Gut für extrem flache/lange Dreiecke
+        // MOMENTUM (Accelerator): If direction seems good, go another step
+        // For long and plane triangles
         LatLng accelPoint = projection(currentPoint, az, stepSize, ellipsoid);
         double accelCost = _costFunction(accelPoint, triangle, type, ellipsoid);
         if (accelCost < currentCost) {
@@ -86,7 +85,6 @@ EllipsoidTriangleCircle optimizeEllipsoidTriangleCircle(LatLng startPoint, Ellip
     }
 
     if (!foundBetter || countInc >= 3) {
-      // Suchraster verfeinern
       stepSize /= 2.0;
       countInc = 0;
     }
@@ -113,21 +111,20 @@ EllipsoidTriangleCircle optimizeEllipsoidTriangleCircle(LatLng startPoint, Ellip
   }
 }
 
-/// Die Kostenfunktion: Minimiert die Varianz (Unterschiede) der drei Lote
 double _costFunction(LatLng p, EllipsoidTriangle triangle, EllipsoidTriangleCircleType type, Ellipsoid ellipsoid) {
   var a = triangle.a;
   var b = triangle.b;
   var c = triangle.c;
 
-  bool sideAB = isPointRightOfSideAB(p, a, b, c.latitude >= 0, ellipsoid); // Liegt P rechts von AB?
-  bool sideBC = isPointRightOfSideAB(p, b, c, a.latitude >= 0, ellipsoid); // Liegt P rechts von BC?
-  bool sideCA = isPointRightOfSideAB(p, c, a, b.latitude >= 0, ellipsoid); // Liegt P rechts von CA?
+  bool sideAB = isPointRightOfSideAB(p, a, b, c.latitude >= 0, ellipsoid); // P right of AB?
+  bool sideBC = isPointRightOfSideAB(p, b, c, a.latitude >= 0, ellipsoid); // P right of BC?
+  bool sideCA = isPointRightOfSideAB(p, c, a, b.latitude >= 0, ellipsoid); // P right of CA?
 
   bool isValidRegion = false;
 
   switch (type) {
     case EllipsoidTriangleCircleType.INCIRCLE:
-      // Alle Seiten müssen mit der Innenseite übereinstimmen
+      // for all sides P lies on the same side
       isValidRegion = (sideAB && sideBC && sideCA) || (!sideAB && !sideBC && !sideCA);
       break;
     default:

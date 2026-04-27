@@ -37,12 +37,12 @@ Circle? _guessStartpointByIntersectBisectors(EllipsoidTriangle triangle, Ellipso
   Circle circle = Circle(LatLng(double.nan, double.nan), double.nan);
 
   for (var intersection in intersections) {
-    var projPToAB = orthogonalProjectionBearing(intersection, _a, triangle.bearingAB, Ellipsoid.WGS84);
-    var projPToBC = orthogonalProjectionBearing(intersection, _b, triangle.bearingBC, Ellipsoid.WGS84);
-    var projPToAC = orthogonalProjectionBearing(intersection, _c, triangle.bearingCA, Ellipsoid.WGS84);
-    var distAB = distanceBearing(intersection, projPToAB, Ellipsoid.WGS84).distance;
-    var distBC = distanceBearing(intersection, projPToBC, Ellipsoid.WGS84).distance;
-    var distAC = distanceBearing(intersection, projPToAC, Ellipsoid.WGS84).distance;
+    var projPToAB = orthogonalProjectionBearing(intersection, _a, triangle.bearingAB, ellipsoid);
+    var projPToBC = orthogonalProjectionBearing(intersection, _b, triangle.bearingBC, ellipsoid);
+    var projPToAC = orthogonalProjectionBearing(intersection, _c, triangle.bearingCA, ellipsoid);
+    var distAB = distanceBearing(intersection, projPToAB, ellipsoid).distance;
+    var distBC = distanceBearing(intersection, projPToBC, ellipsoid).distance;
+    var distAC = distanceBearing(intersection, projPToAC, ellipsoid).distance;
 
     var dists = [distAB, distBC, distAC];
     dists.sort();

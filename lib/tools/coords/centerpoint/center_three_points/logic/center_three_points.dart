@@ -29,18 +29,18 @@ CenterPointDistance centerPointThreePoints(LatLng coord1, LatLng coord2, LatLng 
   return CenterPointDistance(circle.circle.center, circle.circle.radius);
 }
 
-/// Berechnet den mathematischen Umkreismittelpunkt auf einer idealen Kugel
+/// Calculates the mathematical circumcenter centerpoint on a sphere
 LatLng _getSphericalStartPoint(LatLng p1, LatLng p2, LatLng p3) {
   Vector3 a = _toCartesian(p1);
   Vector3 b = _toCartesian(p2);
   Vector3 c = _toCartesian(p3);
 
-  // Normalenvektor der Ebene durch die drei Punkte
+  // normal vector on a plane through all three points
   Vector3 v1 = b - a;
   Vector3 v2 = c - a;
   Vector3 n = v1.cross(v2);
 
-  // Falls Punkte fast kollinear sind (1/1, 2/2, 3/3), ist n fast Null.
+  // If point collinear (1/1, 2/2, 3/3), n is nearly zero.
   if (n.length < 1e-15) {
     // In diesem Fall nehmen wir einen Punkt 90° versetzt zur Linie
     n = a.cross(Vector3(0, 0, 1));
@@ -49,8 +49,8 @@ LatLng _getSphericalStartPoint(LatLng p1, LatLng p2, LatLng p3) {
 
   Vector3 centerV = n.normalized();
 
-  // Es gibt zwei Durchstoßpunkte durch die Kugel (v und -v).
-  // Wir wählen denjenigen, der dem Schwerpunkt der Punkte näher liegt.
+  // there a two points on sphere (v and -v).
+  // choose the one which lies closer to center of gravity
   LatLng candidate1 = _toLatLng(centerV);
   LatLng candidate2 = _toLatLng(centerV * -1.0);
 
@@ -59,14 +59,12 @@ LatLng _getSphericalStartPoint(LatLng p1, LatLng p2, LatLng p3) {
       (p1.longitude + p2.longitude + p3.longitude) / 3.0
   );
 
-  // Einfacher euklidischer Check für die richtige Hemisphäre
+  // check for right hemisphere
   double d1 = pow(candidate1.latitude - centroid.latitude, 2) + pow(candidate1.longitude - centroid.longitude, 2).toDouble();
   double d2 = pow(candidate2.latitude - centroid.latitude, 2) + pow(candidate2.longitude - centroid.longitude, 2).toDouble();
 
   return d1 < d2 ? candidate1 : candidate2;
 }
-
-// --- Hilfsfunktionen für Koordinaten-Transformation ---
 
 Vector3 _toCartesian(LatLng loc) {
   double latRad = loc.latitude * pi / 180.0;

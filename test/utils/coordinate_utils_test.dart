@@ -1,7 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
-import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
-import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -309,9 +307,6 @@ void main() {
 
     for (var elem in _inputsToExpected) {
       test('point: ${elem['point']}, start:  ${elem['start']}, end:  ${elem['end']}', () {
-        var db = distanceBearing(LatLng(70, 0), LatLng(52, 13), Ellipsoid.WGS84).bearingAToB;
-        var dc = projection(LatLng(70, 0), db, 200000, Ellipsoid.WGS84);
-
         var _actual = isOnGeodesic(elem['point'] as LatLng, elem['start'] as LatLng, elem['end'] as LatLng, Ellipsoid.WGS84);
         expect(_actual, elem['expectedOutput']);
       });

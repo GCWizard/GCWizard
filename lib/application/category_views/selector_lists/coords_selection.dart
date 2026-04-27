@@ -9,13 +9,9 @@ class CoordsSelection extends GCWSelection {
 
   @override
   Widget build(BuildContext context) {
-    final List<GCWTool> toolList = [
-      ...registeredTools.where((element) => element.categories.contains(ToolCategory.COORDINATES) &&
-          element.id != 'triangle_ellipsoid_selection'),
+    final List<GCWTool> _toolList =
+    registeredTools.where((element) => element.categories.contains(ToolCategory.COORDINATES)).toList();
 
-      ...registeredTools.where((element) => element.id == 'triangle_ellipsoid_selection'),
-    ];
-
-    return GCWToolList(toolList: toolList);
+    return GCWToolList(toolList: _toolList);
   }
 }

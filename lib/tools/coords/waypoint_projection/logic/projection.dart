@@ -5,7 +5,6 @@ import 'package:gc_wizard/tools/coords/_common/logic/intervals/coordinate_cell.d
 import 'package:gc_wizard/tools/coords/_common/logic/intervals/interval_calculator.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 import 'package:latlong2/latlong.dart';
-import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 
 LatLng projection(LatLng coord, double bearingDeg, double distance, Ellipsoid ellipsoid) {
   if (distance == 0.0) return coord;
