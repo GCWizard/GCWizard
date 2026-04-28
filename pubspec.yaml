@@ -16,7 +16,7 @@ dependencies:
   code_text_field: ^1.1.0
   collection: ^1.19.0
   #dart_numerics: DO NOT USE! CURRENT VERSION 0.0.6 NOT WEB COMPATIBLE (02/2024)
-  device_info_plus: ^13.1.0
+  device_info_plus: ^12.3.0
   diacritic: ^0.1.6
   encrypt: ^5.0.3
   exif: ^3.1.4
