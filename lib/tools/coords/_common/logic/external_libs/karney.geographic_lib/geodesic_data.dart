@@ -26,50 +26,50 @@ class GeodesicData {
   /*
    * latitude of point 1 (degrees).
    **********************************************************************/
-  late double lat1;
+  double lat1 = double.nan;
   /*
    * longitude of point 1 (degrees).
    **********************************************************************/
-  late double lon1;
+  double lon1 = double.nan;
   /*
    * azimuth at point 1 (degrees).
    **********************************************************************/
-  late double azi1;
+  double azi1 = double.nan;
   /*
    * latitude of point 2 (degrees).
    **********************************************************************/
-  late double lat2;
+  double lat2 = double.nan;
   /*
    * longitude of point 2 (degrees).
    **********************************************************************/
-  late double lon2;
+  double lon2 = double.nan;
   /*
    * azimuth at point 2 (degrees).
    **********************************************************************/
-  late double azi2;
+  double azi2 = double.nan;
   /*
    * distance between point 1 and point 2 (meters).
    **********************************************************************/
-  late double s12;
+  double s12 = double.nan;
   /*
    * arc length on the auxiliary sphere between point 1 and point 2
    *   (degrees).
    **********************************************************************/
-  late double a12;
+  double a12 = double.nan;
   /*
    * reduced length of geodesic (meters).
    **********************************************************************/
-  late double m12;
+  double m12 = double.nan;
   /*
    * geodesic scale of point 2 relative to point 1 (dimensionless).
    **********************************************************************/
-  late double M12;
+  double M12 = double.nan;
   /*
    * geodesic scale of point 1 relative to point 2 (dimensionless).
    **********************************************************************/
-  late double M21;
+  double M21 = double.nan;
   /*
    * area under the geodesic (meters<sup>2</sup>).
    **********************************************************************/
-  late double S12;
+  double S12 = double.nan;
 }

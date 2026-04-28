@@ -9,11 +9,11 @@ import 'package:latlong2/latlong.dart';
 LatLng projection(LatLng coord, double bearingDeg, double distance, Ellipsoid ellipsoid) {
   if (distance == 0.0) return coord;
 
-  bearingDeg = normalizeBearing(bearingDeg);
+  bearingDeg = utils.normalizeBearing(bearingDeg);
 
   GeodesicData projected = geodeticDirect(coord, bearingDeg, distance, ellipsoid);
 
-  return LatLng(projected.lat2, projected.lon2);
+  return utils.normalizeLatLon(projected.lat2, projected.lon2);
 }
 
 LatLng projectionRadian(LatLng coord, double bearingRad, double distance, Ellipsoid ellipsoid) {
@@ -24,9 +24,10 @@ LatLng projectionRadian(LatLng coord, double bearingRad, double distance, Ellips
 LatLng projectionVincenty(LatLng coord, double bearing, double distance, Ellipsoid ellipsoid) {
   if (distance == 0.0) return coord;
 
-  bearing = normalizeBearing(bearing);
+  bearing = utils.normalizeBearing(bearing);
+  var direct = vincentyDirect(coord, bearing, distance, ellipsoid);
 
-  return vincentyDirect(coord, bearing, distance, ellipsoid);
+  return utils.normalizeLatLon(direct.latitude, direct.longitude);
 }
 
 class _ReverseProjectionCalculator extends IntervalCalculator {
@@ -61,7 +62,7 @@ class _ReverseProjectionCalculator extends IntervalCalculator {
 //     available to catch the edge cases. Combined together the both approaches
 //     give a good, but not perfect result.
 List<LatLng> _reverseProjectionInterval(LatLng coord, double bearing, double distance, Ellipsoid ellipsoid) {
-  bearing = normalizeBearing(bearing);
+  bearing = utils.normalizeBearing(bearing);
 
   return _ReverseProjectionCalculator(_ReverseProjectionIntervalParameters(coord, bearing, distance), ellipsoid).check();
 }

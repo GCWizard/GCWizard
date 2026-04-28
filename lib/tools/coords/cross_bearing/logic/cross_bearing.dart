@@ -7,6 +7,7 @@ import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_b
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:gc_wizard/utils/constants.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 
 class CrossBearingJobData {
   final LatLng coord1;
@@ -42,8 +43,8 @@ Future<LatLng?> crossBearingsAsync(GCWAsyncExecuterParameters? jobData) async {
 // although there is always such a point between to geodetics (e.g. at the back side of the sphere)
 
 LatLng? crossBearings(LatLng coord1, double az13, LatLng coord2, double az23, Ellipsoid ells) {
-  az13 = normalizeBearing(az13);
-  az23 = normalizeBearing(az23);
+  az13 = utils.normalizeBearing(az13);
+  az23 = utils.normalizeBearing(az23);
 
   var _centerCalc = centerPointTwoPoints(coord1, coord2, ells);
   LatLng calculatedPoint = _centerCalc.centerPoint;

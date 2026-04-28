@@ -114,7 +114,7 @@ class XYPoint {
   ) {
     // https://mathworld.wolfram.com/TrilinearCoordinates.html
 
-    Sides s = triangleSidesXY(t.A, t.B, t.C);
+    TriangleSides s = triangleSidesXY(t.A, t.B, t.C);
 
     XYPoint av = _vectorNormalize(_vectorAB(t.B, t.C));
     double a1 = av.x;
@@ -196,20 +196,20 @@ LatLng _toLatLng(XYPoint p, LatLng origin) {
   return LatLng(lat, lng);
 }
 
-class Sides {
+class TriangleSides {
   final double a;
   final double b;
   final double c;
 
-  Sides({this.a = 0.0, this.b = 0.0, this.c = 0.0});
+  TriangleSides({this.a = 0.0, this.b = 0.0, this.c = 0.0});
 }
 
-class Angles {
+class TriangleInteriorAngles {
   final double alpha;
   final double beta;
   final double gamma;
 
-  Angles({this.alpha = 0.0, this.beta = 0.0, this.gamma = 0.0});
+  TriangleInteriorAngles({this.alpha = 0.0, this.beta = 0.0, this.gamma = 0.0});
 }
 
 class XYLine {

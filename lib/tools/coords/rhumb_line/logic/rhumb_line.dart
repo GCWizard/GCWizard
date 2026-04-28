@@ -1,13 +1,14 @@
-import 'package:gc_wizard/tools/coords/_common/logic/distance_bearing.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/distance_bearing_data.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 import 'package:latlong2/latlong.dart';
 
 bool _isNearPole(double lat) {
   return lat.abs() > 90 - 1e-5;
 }
 
-DistanceBearingData distanceBearing(LatLng coords1, LatLng coords2, Ellipsoid ellipsoid) {
+DistanceBearingData distanceBearingRhumbline(LatLng coords1, LatLng coords2, Ellipsoid ellipsoid) {
   RhumbInverseReturn data =
       Rhumb(ellipsoid.a, ellipsoid.f).inverse(coords1.latitude, coords1.longitude, coords2.latitude, coords2.longitude);
 
@@ -22,16 +23,16 @@ DistanceBearingData distanceBearing(LatLng coords1, LatLng coords2, Ellipsoid el
 
   DistanceBearingData result = DistanceBearingData();
   result.distance = distance;
-  result.bearingAToB = normalizeBearing(bearing);
-  result.bearingBToA = normalizeBearing(bearing + 180.0);
+  result.bearingAToB = utils.normalizeBearing(bearing);
+  result.bearingBToA = utils.normalizeBearing(bearing + 180.0);
 
   return result;
 }
 
-LatLng projection(LatLng coord, double bearingDeg, double distance, Ellipsoid ellipsoid) {
+LatLng projectionRhumbline(LatLng coord, double bearingDeg, double distance, Ellipsoid ellipsoid) {
   if (distance == 0.0) return coord;
 
-  bearingDeg = normalizeBearing(bearingDeg);
+  bearingDeg = utils.normalizeBearing(bearingDeg);
 
   RhumbDirectReturn projected =
       Rhumb(ellipsoid.a, ellipsoid.f).direct(coord.latitude, coord.longitude, bearingDeg, distance);
@@ -45,6 +46,6 @@ LatLng projection(LatLng coord, double bearingDeg, double distance, Ellipsoid el
   return LatLng(lat, lon);
 }
 
-LatLng reverseProjection(LatLng coord, double bearing, double distance, Ellipsoid ellipsoid) {
-  return projection(coord, normalizeBearing(bearing + 180.0), distance, ellipsoid);
+LatLng reverseProjectionRhumbline(LatLng coord, double bearing, double distance, Ellipsoid ellipsoid) {
+  return projectionRhumbline(coord, utils.normalizeBearing(bearing + 180.0), distance, ellipsoid);
 }

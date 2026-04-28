@@ -2,8 +2,8 @@ part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/
 
 XYPoint triangleIsoDynamic1PointXY(XYPoint a, XYPoint b, XYPoint c) {
   Triangle t = Triangle(a, b, c);
-  Angles angles = t.angles;
-  Sides sides = t.sides;
+  TriangleInteriorAngles angles = t.angles;
+  TriangleSides sides = t.sides;
   double alpha = angles.alpha;
   double beta = angles.beta;
   double gamma = angles.gamma;
@@ -20,8 +20,8 @@ XYPoint triangleIsoDynamic1PointXY(XYPoint a, XYPoint b, XYPoint c) {
 
 XYPoint triangleIsoDynamic2PointXY(XYPoint a, XYPoint b, XYPoint c) {
   Triangle t = Triangle(a, b, c);
-  Angles angles = t.angles;
-  Sides sides = t.sides;
+  TriangleInteriorAngles angles = t.angles;
+  TriangleSides sides = t.sides;
   double alpha = angles.alpha;
   double beta = angles.beta;
   double gamma = angles.gamma;

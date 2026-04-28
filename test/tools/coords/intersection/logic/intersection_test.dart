@@ -25,7 +25,6 @@ void main() {
           } else {
             expect(equalsLatLng(actual[i]!, expected[i], tolerance: 1e-5), true);
           }
-
         }
       });
     }

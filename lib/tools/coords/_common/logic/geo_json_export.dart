@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:gc_wizard/tools/coords/_common/logic/geo_json_import.dart';
-import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
+import 'package:gc_wizard/tools/coords/map_view/widget/map_geometries.dart';
 
 
 import 'gpx_kml_gpx_import.dart';

@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 import 'package:latlong2/latlong.dart';
 
-import 'triangle.dart';
+import 'triangle_test_utils.dart';
 
 void main() {
   group("triangle.latLngToVec3:", () {
@@ -42,7 +42,7 @@ void main() {
     ];
 
     for (var elem in _inputsToExpected) {
-      test('input: ${toString(elem['inputA'])}', () {
+      test('input: ${toTriangleObjectString(elem['inputA'])}', () {
         var _actual = vec3ToLatLng(elem['inputA'] as Vec3);
         latLngTest(_actual, elem['expectedOutput'] as LatLng);
       });

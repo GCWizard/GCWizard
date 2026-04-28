@@ -1,80 +1,83 @@
 import 'dart:math';
 
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
-import 'package:gc_wizard/tools/coords/antipodes/logic/antipodes.dart';
 import 'package:gc_wizard/tools/coords/centerpoint/logic/centerpoint_distance.dart';
-import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
-import 'package:gc_wizard/utils/constants.dart';
+import 'package:gc_wizard/tools/coords/segment_line/logic/segment_line.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangle.dart';
+import 'package:gc_wizard/tools/coords/triangles/circles/_common/logic/ellipsoidtriangle_circles.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart';
+import 'package:gc_wizard/utils/math_utils.dart';
 import 'package:latlong2/latlong.dart';
 
-// ported from http://web.archive.org/web/20240909104633/https://gis.stackexchange.com/revisions/63083/4 by @Kirk Kuykendall and @cffk (Charles Karney)
-
 CenterPointDistance centerPointThreePoints(LatLng coord1, LatLng coord2, LatLng coord3, Ellipsoid ellipsoid) {
-
-  int maxIterations = 15;
-  var aeCenter = const LatLng(0, 90);
-  var maxDiff = MAX_DOUBLE;
-  for (int i = 0; i < maxIterations; i++) {
-    var c = _findCircleCenter(_project(coord1, aeCenter, ellipsoid), _project(coord2, aeCenter, ellipsoid), _project(coord3, aeCenter, ellipsoid), ellipsoid);
-    aeCenter = azimuthalEquidistantReverse(aeCenter, Point(c[0], c[1]), ellipsoid);
-    var distA = distanceBearing(aeCenter, coord1, ellipsoid).distance;
-    var distB = distanceBearing(aeCenter, coord2, ellipsoid).distance;
-    var distC = distanceBearing(aeCenter, coord3, ellipsoid).distance;
-    var diffAB = (distA - distB).abs();
-    var diffBC = (distB - distC).abs();
-    var diffAC = (distA - distC).abs();
-    maxDiff = max(max(diffAB, diffBC), diffAC);
-
-    if (maxDiff < 0.000001) {
-      var earthRadius = ellipsoid.b;
-      if (distA > earthRadius * pi / 2.0) {
-        aeCenter = antipodes(aeCenter);
-      } else {
-        return CenterPointDistance(aeCenter, distA);
-      }
-    }
+  if (equalsLatLng(coord1, coord2) && equalsLatLng(coord1, coord3)) {
+    return CenterPointDistance(coord1, 0.0);
   }
 
-  return CenterPointDistance(aeCenter, maxDiff);
-}
-
-List<double> _findCircleCenter(List<double> a, List<double> b, List<double> c, Ellipsoid ellipsoid) {
-  // from http://blog.csharphelper.com/2011/11/08/draw-a-circle-through-three-points-in-c.aspx
-  // Get the perpendicular bisector of (x1, y1) and (x2, y2).
-  var x1 = (b[0] + a[0]) / 2;
-  var y1 = (b[1] + a[1]) / 2;
-  var dy1 = b[0] - a[0];
-  var dx1 = -(b[1] - a[1]);
-
-  // Get the perpendicular bisector of (x2, y2) and (x3, y3).
-  var x2 = (c[0] + b[0]) / 2;
-  var y2 = (c[1] + b[1]) / 2;
-  var dy2 = c[0] - b[0];
-  var dx2 = -(c[1] - b[1]);
-
-  // See where the lines intersect.
-  var cx = (y1 * dx1 * dx2 + x2 * dx1 * dy2 - x1 * dy1 * dx2 - y2 * dx1 * dx2)
-      / (dx1 * dy2 - dy1 * dx2);
-  var cy = (cx - x1) * dy1 / dx1 + y1;
-
-  // make sure the intersection point falls
-  // within the projection.
-  var earthRadius = ellipsoid.b;
-
-  // distance is from center of projection
-  var dist = sqrt((cx * cx) + (cy * cy));
-  double factor = 1.0;
-  if (dist > earthRadius * pi) {
-    // apply a factor so we don't fall off the edge
-    // of the projection
-    factor = earthRadius / dist;
+  if (equalsLatLng(coord1, coord2) || equalsLatLng(coord2, coord3)) {
+    var segment = segmentLine(coord1, coord3, 2, ellipsoid);
+    return CenterPointDistance(segment.points.first, segment.segmentLength);
   }
-  var outPoint = [cx * factor, cy* factor];
-  return outPoint;
+
+  if (equalsLatLng(coord1, coord3)) {
+    var segment = segmentLine(coord1, coord2, 2, ellipsoid);
+    return CenterPointDistance(segment.points.first, segment.segmentLength);
+  }
+
+  var start = _getSphericalStartPoint(coord1, coord2, coord3);
+  var circle = optimizeEllipsoidTriangleCircle(start, EllipsoidTriangle(coord1, coord2, coord3, ellipsoid), EllipsoidTriangleCircleType.CIRCUMCIRCLE, ellipsoid);
+  return CenterPointDistance(circle.circle.center, circle.circle.radius);
 }
 
-List<double> _project(LatLng pnt, LatLng center, Ellipsoid ellipsoid) {
-  var projected = azimuthalEquidistantForward(center, pnt, ellipsoid);
-  return [projected.x, projected.y];
+/// Calculates the mathematical circumcenter centerpoint on a sphere
+LatLng _getSphericalStartPoint(LatLng p1, LatLng p2, LatLng p3) {
+  Vector3 a = _toCartesian(p1);
+  Vector3 b = _toCartesian(p2);
+  Vector3 c = _toCartesian(p3);
+
+  // normal vector on a plane through all three points
+  Vector3 v1 = b - a;
+  Vector3 v2 = c - a;
+  Vector3 n = v1.cross(v2);
+
+  // If point collinear (1/1, 2/2, 3/3), n is nearly zero.
+  if (n.length < 1e-15) {
+    // In diesem Fall nehmen wir einen Punkt 90° versetzt zur Linie
+    n = a.cross(Vector3(0, 0, 1));
+    if (n.length < 1e-15) n = a.cross(Vector3(0, 1, 0));
+  }
+
+  Vector3 centerV = n.normalized();
+
+  // there a two points on sphere (v and -v).
+  // choose the one which lies closer to center of gravity
+  LatLng candidate1 = _toLatLng(centerV);
+  LatLng candidate2 = _toLatLng(centerV * -1.0);
+
+  LatLng centroid = LatLng(
+      (p1.latitude + p2.latitude + p3.latitude) / 3.0,
+      (p1.longitude + p2.longitude + p3.longitude) / 3.0
+  );
+
+  // check for right hemisphere
+  double d1 = pow(candidate1.latitude - centroid.latitude, 2) + pow(candidate1.longitude - centroid.longitude, 2).toDouble();
+  double d2 = pow(candidate2.latitude - centroid.latitude, 2) + pow(candidate2.longitude - centroid.longitude, 2).toDouble();
+
+  return d1 < d2 ? candidate1 : candidate2;
+}
+
+Vector3 _toCartesian(LatLng loc) {
+  double latRad = loc.latitude * pi / 180.0;
+  double lonRad = loc.longitude * pi / 180.0;
+  return Vector3(
+      cos(latRad) * cos(lonRad),
+      cos(latRad) * sin(lonRad),
+      sin(latRad)
+  );
+}
+
+LatLng _toLatLng(Vector3 v) {
+  double lat = asin(v.z) * 180.0 / pi;
+  double lon = atan2(v.y, v.x) * 180.0 / pi;
+  return LatLng(lat, lon);
 }

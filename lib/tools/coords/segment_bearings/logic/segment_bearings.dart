@@ -1,5 +1,6 @@
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
 import 'package:latlong2/latlong.dart';
 
 class SegmentedAngle {
@@ -10,27 +11,28 @@ class SegmentedAngle {
 }
 
 SegmentedAngle segmentBearings(
-    LatLng coord, double angle1, double angle2, double distance, int countSegments, Ellipsoid ells) {
+    LatLng coord, double bearing1, double bearing2, double distance, int countSegments, Ellipsoid ells) {
   if (countSegments < 1) {
     countSegments = 1;
   }
 
-  var angles = <double>[];
-  angles.add(angle1);
-  if (angle1 != angle2) angles.add(angle2);
+  var bearings = <double>[];
+  var _bearing1 = utils.normalizeBearing(bearing1);
+  var _bearing2 = utils.normalizeBearing(bearing2);
+  if (_bearing1 >= _bearing2) {
+    _bearing2 += 360.0;
+  }
 
-  angles.sort();
+  bearings.add(_bearing1);
+  bearings.add(_bearing2);
 
-  if (angles.isEmpty) angles.add(0.0);
-  if (angles.length == 1) angles.add(angles.first + 360.0);
-
-  var segmentAngle = (angles.last - angles.first) / countSegments;
+  var segmentAngle = (bearings.last - bearings.first) / countSegments;
   var points = <LatLng>[];
 
   var i = 0;
   while (i < countSegments - 1) {
     i++;
-    points.add(projection(coord, (i * segmentAngle) + angles.first, distance, ells));
+    points.add(projection(coord, (i * segmentAngle) + bearings.first, distance, ells));
   }
 
   return SegmentedAngle(points, segmentAngle);

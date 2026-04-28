@@ -1,5 +1,6 @@
 import "package:flutter_test/flutter_test.dart";
 import 'package:gc_wizard/utils/constants.dart';
+import 'package:gc_wizard/utils/data_type_utils/double_type_utils.dart';
 import 'package:gc_wizard/utils/math_utils.dart';
 
 void main() {
@@ -202,6 +203,41 @@ void main() {
       test('m: ${elem['m']}', () {
         var _actual = matrixInvert(elem['m'] as List<List<double>>);
         expect(_actual, elem['expectedOutput']);
+      });
+    }
+  });
+
+  group("MathUtils.ieeeRemainder", () {
+    List<Map<String, Object?>> _inputsToExpected = [
+      {'x': 3, 'y': 2, 'expectedOutput': -1},
+      {'x': 4, 'y': 2, 'expectedOutput': 0},
+      {'x': 10, 'y': 3, 'expectedOutput': 1},
+      {'x': 11, 'y': 3, 'expectedOutput': -1},
+      {'x': 27, 'y': 4, 'expectedOutput': -1},
+      {'x': 28, 'y': 5, 'expectedOutput': -2},
+      {'x': 17.8, 'y': 4, 'expectedOutput': 1.8},
+      {'x': 17.8, 'y': 4.1, 'expectedOutput': 1.4},
+      {'x': -16.3, 'y': 4.1, 'expectedOutput': 0.09999999999999787},
+      {'x': 17.8, 'y': -4.1, 'expectedOutput': 1.4},
+      {'x': -17.8, 'y': -4.1, 'expectedOutput': -1.4},
+      {'x': 5.1, 'y': 3.0, 'expectedOutput': -0.9},
+      {'x': -5.1, 'y': 3.0, 'expectedOutput': 0.9},
+      {'x': 5.1, 'y': -3.0, 'expectedOutput': -0.9},
+      {'x': -5.1, 'y': -3.0, 'expectedOutput': 0.9},
+      {'x': -0.0, 'y': 1.0, 'expectedOutput': -0.0},
+      {'x': 5.1, 'y': double.infinity, 'expectedOutput': 5.1},
+      {'x': 5.1, 'y': 0.0, 'expectedOutput': double.nan},
+    ];
+
+    for (var elem in _inputsToExpected) {
+      test('x: ${elem['x']}, y: ${elem['y']}', () {
+        var _actual = ieeeRemainder(elem['x'] as num, elem['y'] as num);
+        var _expected = (elem['expectedOutput'] as num).toDouble();
+        if (_expected.isNaN) {
+          expect(true, _actual.isNaN);
+        } else {
+          expect(true, doubleEquals(_actual.toDouble(), _expected, tolerance: 1e-5));
+        }
       });
     }
   });

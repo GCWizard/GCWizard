@@ -1,5 +1,5 @@
 import 'package:gc_wizard/common_widgets/async_executer/gcw_async_executer_parameters.dart';
-import 'package:gc_wizard/tools/coords/_common/logic/distance_bearing.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/distance_bearing_data.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
 import 'package:gc_wizard/tools/coords/intersect_lines/intersect_bearings/logic/intersect_bearing.dart';

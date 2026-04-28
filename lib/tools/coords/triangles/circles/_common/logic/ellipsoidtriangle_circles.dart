@@ -1,0 +1,156 @@
+import 'dart:math';
+
+import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
+import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
+import 'package:gc_wizard/tools/coords/intersect_lines/intersect_bearings/logic/intersect_bearing.dart';
+import 'package:gc_wizard/tools/coords/orthogonal_projection/logic/orthogonal_projection.dart';
+import 'package:gc_wizard/tools/coords/segment_bearings/logic/segment_bearings.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangle.dart';
+import 'package:gc_wizard/tools/coords/triangles/_common/logic/ellipsoid_triangles.dart';
+import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:gc_wizard/utils/coordinate_utils.dart' as utils;
+
+part 'package:gc_wizard/tools/coords/triangles/circles/incircle/logic/ellipsoidtriangle_incircle.dart';
+part 'package:gc_wizard/tools/coords/triangles/circles/excircles/logic/ellipsoidtriangle_excircles.dart';
+
+enum EllipsoidTriangleCircleType {INCIRCLE, EXCIRCLE, CIRCUMCIRCLE}
+
+class EllipsoidTriangleCircle{
+  Circle circle;
+  List<LatLng> touchpoints;
+
+  EllipsoidTriangleCircle(this.circle, this.touchpoints);
+}
+
+double _distanceToGeodesic(LatLng point, LatLng lineStart, double bearing, Ellipsoid ellipsoid) {
+  var project = orthogonalProjectionBearing(point, lineStart, bearing, ellipsoid);
+  return distanceBearing(point, project, ellipsoid).distance;
+}
+
+/// optimizes point on ellipsoid by minimize distances variance
+EllipsoidTriangleCircle optimizeEllipsoidTriangleCircle(LatLng startPoint, EllipsoidTriangle triangle, EllipsoidTriangleCircleType type, Ellipsoid ellipsoid) {
+  LatLng currentPoint = startPoint;
+
+  var dAB = triangle.distanceAB;
+  var dBC = triangle.distanceBC;
+  var dCA = triangle.distanceAC;
+
+  var a = triangle.a;
+  var b = triangle.b;
+  var c = triangle.c;
+
+  const double _TARGET_PRECISION = 1e-10;
+  int _MAX_ITERATIONS = (type == EllipsoidTriangleCircleType.CIRCUMCIRCLE) ? 5000 : 1000;
+
+  // Max 25 % of longest side, max 100km - is good for small triangles
+  double maxSide = max(dAB, max(dBC, dCA));
+  double stepSize = min(100 * 1000, maxSide / 4.0);
+  if (stepSize < 1.0) stepSize = 1.0;
+
+  double currentCost = _costFunction(currentPoint, triangle, type, ellipsoid);
+
+
+  List<double> searchAzimuths = [];
+  double i = 0;
+  final _step = 45;
+  while (i < 360) {
+    searchAzimuths.add(i);
+    i += _step;
+  }
+
+  int iterations = 0;
+  var countInc = 0;
+  while (stepSize > _TARGET_PRECISION && iterations < _MAX_ITERATIONS) {
+    bool foundBetter = false;
+
+    for (double az in searchAzimuths) {
+      LatLng testPoint = projection(currentPoint, az, stepSize, ellipsoid);
+      double testCost = _costFunction(testPoint, triangle, type, ellipsoid);
+
+      if (testCost < currentCost) {
+        currentPoint = testPoint;
+        currentCost = testCost;
+        foundBetter = true;
+
+        // MOMENTUM (Accelerator): If direction seems good, go another step
+        // For long and plane triangles
+        LatLng accelPoint = projection(currentPoint, az, stepSize, ellipsoid);
+        double accelCost = _costFunction(accelPoint, triangle, type, ellipsoid);
+        if (accelCost < currentCost) {
+          currentPoint = accelPoint;
+          currentCost = accelCost;
+        }
+      }
+    }
+
+    if (!foundBetter || countInc >= 3) {
+      stepSize /= 2.0;
+      countInc = 0;
+    }
+
+    iterations++;
+  }
+
+  if (type == EllipsoidTriangleCircleType.CIRCUMCIRCLE) {
+    var radius = (distanceBearing(currentPoint, a, ellipsoid).distance
+        + distanceBearing(currentPoint, b, ellipsoid).distance
+        + distanceBearing(currentPoint, c, ellipsoid).distance) / 3;
+
+    return EllipsoidTriangleCircle(Circle(currentPoint, radius), []);
+  } else {
+    var projectA = orthogonalProjectionBearing(currentPoint, b, triangle.bearingBC, ellipsoid);
+    var projectB = orthogonalProjectionBearing(currentPoint, c, triangle.bearingCA, ellipsoid);
+    var projectC = orthogonalProjectionBearing(currentPoint, a, triangle.bearingAB, ellipsoid);
+
+    var radius = (distanceBearing(currentPoint, projectA, ellipsoid).distance
+        + distanceBearing(currentPoint, projectB, ellipsoid).distance
+        + distanceBearing(currentPoint, projectC, ellipsoid).distance) / 3;
+
+    return EllipsoidTriangleCircle(Circle(currentPoint, radius), [projectA, projectB, projectC]);
+  }
+}
+
+double _costFunction(LatLng p, EllipsoidTriangle triangle, EllipsoidTriangleCircleType type, Ellipsoid ellipsoid) {
+  var a = triangle.a;
+  var b = triangle.b;
+  var c = triangle.c;
+
+  bool sideAB = isPointRightOfSideAB(p, a, b, c.latitude >= 0, ellipsoid); // P right of AB?
+  bool sideBC = isPointRightOfSideAB(p, b, c, a.latitude >= 0, ellipsoid); // P right of BC?
+  bool sideCA = isPointRightOfSideAB(p, c, a, b.latitude >= 0, ellipsoid); // P right of CA?
+
+  bool isValidRegion = false;
+
+  switch (type) {
+    case EllipsoidTriangleCircleType.INCIRCLE:
+      // for all sides P lies on the same side
+      isValidRegion = (sideAB && sideBC && sideCA) || (!sideAB && !sideBC && !sideCA);
+      break;
+    default:
+      isValidRegion = true;
+      break;
+  }
+
+  if (!isValidRegion) {
+    return double.maxFinite;
+  }
+
+  double d1;
+  double d2;
+  double d3;
+
+  if (type == EllipsoidTriangleCircleType.CIRCUMCIRCLE) {
+    d1 = distanceBearing(p, triangle.a, ellipsoid).distance;
+    d2 = distanceBearing(p, triangle.b, ellipsoid).distance;
+    d3 = distanceBearing(p, triangle.c, ellipsoid).distance;
+  } else {
+    d1 = _distanceToGeodesic(p, triangle.a, triangle.bearingAB, ellipsoid);
+    d2 = _distanceToGeodesic(p, triangle.b, triangle.bearingBC, ellipsoid);
+    d3 = _distanceToGeodesic(p, triangle.c, triangle.bearingCA, ellipsoid);
+  }
+
+  double mean = (d1 + d2 + d3) / 3.0;
+
+  return pow(d1 - mean, 2) + pow(d2 - mean, 2) + pow(d3 - mean, 2).toDouble();
+}

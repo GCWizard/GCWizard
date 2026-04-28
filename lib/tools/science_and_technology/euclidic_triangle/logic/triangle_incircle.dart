@@ -4,7 +4,7 @@ XYCircle triangleInCircleXY(XYPoint a, XYPoint b, XYPoint c) {
   // https://de.wikipedia.org/wiki/Inkreis
   // https://en.wikipedia.org/wiki/Incircle_and_excircles_of_a_triangle
 
-  Sides sides = triangleSidesXY(a, b, c);
+  TriangleSides sides = triangleSidesXY(a, b, c);
   double s = (sides.a + sides.b + sides.c) / 2;
   final iS = XYPoint.fromBarycentric(
   Triangle(a, b, c),

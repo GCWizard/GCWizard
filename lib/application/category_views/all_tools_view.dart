@@ -83,14 +83,15 @@ import 'package:gc_wizard/tools/coords/orthogonal_projection/widget/orthogonal_p
 import 'package:gc_wizard/tools/coords/resection/widget/resection.dart';
 import 'package:gc_wizard/tools/coords/rhumb_line/widget/rhumbline_distancebearing.dart';
 import 'package:gc_wizard/tools/coords/rhumb_line/widget/rhumbline_waypoint_projection.dart';
-import 'package:gc_wizard/tools/coords/triangles/centerofgravity/widget/centerofgravity.dart';
-import 'package:gc_wizard/tools/coords/triangles/circumcircle/widget/circumcircle.dart';
-import 'package:gc_wizard/tools/coords/triangles/excircles/widget/excircles.dart';
-import 'package:gc_wizard/tools/coords/triangles/gergonne/widget/gergonne.dart';
-import 'package:gc_wizard/tools/coords/triangles/incircle/widget/incircle.dart';
-import 'package:gc_wizard/tools/coords/triangles/napoleon/widget/napoleon.dart';
-import 'package:gc_wizard/tools/coords/triangles/orthocenter/widget/orthocenter.dart';
-import 'package:gc_wizard/tools/coords/triangles/sidesmidpoint/widget/sidesmidpoint.dart';
+import 'package:gc_wizard/tools/coords/triangles/area/widget/ellipsoidtriangle_area.dart';
+import 'package:gc_wizard/tools/coords/triangles/special_points/centerofgravity/widget/ellipsoidtriangle_centerofgravity.dart';
+import 'package:gc_wizard/tools/coords/triangles/circles/excircles/widget/ellipsoidtriangle_excircles.dart';
+import 'package:gc_wizard/tools/coords/triangles/circles/incircle/widget/ellipsoidtriangle_incircle.dart';
+import 'package:gc_wizard/tools/coords/triangles/circles/circumcircle/widget/circumcircle.dart';
+import 'package:gc_wizard/tools/coords/triangles/special_points/gergonne/widget/ellipsoidtriangle_gergonne.dart';
+import 'package:gc_wizard/tools/coords/triangles/special_points/napoleon/widget/ellipsoidtriangle_napoleon.dart';
+import 'package:gc_wizard/tools/coords/triangles/special_points/orthocenter/widget/ellipsoidtriangle_orthocenter.dart';
+import 'package:gc_wizard/tools/coords/triangles/medians/widget/ellipsoidtriangle_medians.dart';
 import 'package:gc_wizard/tools/coords/variable_coordinate/widget/variable_coordinate_formulas.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/widget/waypoint_projection_geodetic.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/abaddon/widget/abaddon.dart';
@@ -676,6 +677,15 @@ void _initStaticToolList() {
       className(const ElementsOfGeocaching()),
       className(const ElementsOfGeocachingDataView(atomicNumber: 1)),
       className(const EllipsoidTransform()),
+      className(const EllipsoidTriangleCenterOfGravity()),
+      className(const EllipsoidTriangleCircumCircle()),
+      className(const EllipsoidTriangleExcircles()),
+      className(const EllipsoidTriangleGergonnePoint()),
+      className(const EllipsoidTriangleIncircle()),
+      className(const EllipsoidTriangleNapoleonPoints()),
+      className(const EllipsoidTriangleOrthocenter()),
+      className(const EllipsoidTriangleMedians()),
+      className(const EllipsoidTriangleArea()),
       className(const EnclosedAreas()),
       className(const Enigma()),
       className(const ExcelTime()),
@@ -864,14 +874,6 @@ void _initStaticToolList() {
       className(const TomTomSelection()),
       className(const TowerOfHanoi()),
       className(const TupperFormula()),
-      className(const TriangleCenterOfGravity()),
-      className(const TriangleCircumCircle()),
-      className(const TriangleExcircles()),
-      className(const TriangleGergonnePoint()),
-      className(const TriangleIncircle()),
-      className(const TriangleNapoleonPoints()),
-      className(const TriangleOrthocenter()),
-      className(const TriangleSideMidPoints()),
       className(const Trifid()),
       className(const Trithemius()),
       className(const TTS()),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gc_wizard/application/i18n/logic/app_localizations.dart';
 import 'package:gc_wizard/application/theme/theme.dart';
+import 'package:gc_wizard/common_widgets/buttons/gcw_button.dart';
 import 'package:gc_wizard/common_widgets/buttons/gcw_submit_button.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
@@ -945,7 +946,8 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
       text: i18n(context, 'common_image'),
       child: Column(
         children: [
-          GCWSubmitButton(
+          GCWButton(
+            text: i18n(context, 'triangle_image_generateimage'),
             onPressed: () {
               setState(() {
                 if (_isCalculatedDataXY) {
@@ -964,7 +966,7 @@ class EuclidicTriangleState extends State<EuclidicTriangle> {
                       imageData: GCWImageViewData(GCWFile(bytes: _triangleImage)),
                       suppressOpenInTool: const {GCWImageViewOpenInTools.METADATA},
                     )
-              : Container(),
+              : GCWOutputText(text: i18n(context, 'triangle_image_noimagegenerated'))
         ],
       ),
     );

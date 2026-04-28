@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:gc_wizard/tools/coords/_common/formats/dec/logic/dec.dart';
-import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
+import 'package:gc_wizard/tools/coords/map_view/widget/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/map_view/persistence/model.dart';
 import 'package:gc_wizard/utils/constants.dart';
 import 'package:gc_wizard/utils/coordinate_utils.dart';

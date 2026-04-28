@@ -3,7 +3,7 @@ import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/t
 import 'package:latlong2/latlong.dart';
 import 'package:prefs/prefs.dart';
 
-import 'triangle.dart';
+import 'triangle_test_utils.dart';
 
 void main() async {
   SharedPreferences.setMockInitialValues({});
@@ -22,7 +22,7 @@ void main() async {
     ];
 
     for (var elem in _inputsToExpected) {
-      test('input: ${toString(elem['inputA'])} ${toString(elem['inputB'])} ${toString(elem['inputC'])}', () {
+      test('input: ${toTriangleObjectString(elem['inputA'])} ${toTriangleObjectString(elem['inputB'])} ${toTriangleObjectString(elem['inputC'])}', () {
         var _actual = triangleOrthocenterXY(elem['inputA'] as XYPoint, elem['inputB'] as XYPoint, elem['inputC'] as XYPoint);
         pointTest(_actual, elem['expectedOutput'] as XYPoint);
       });

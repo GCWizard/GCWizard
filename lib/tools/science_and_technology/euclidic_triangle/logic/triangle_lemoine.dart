@@ -4,7 +4,7 @@ XYPoint triangleLemoinePointXY(XYPoint a, XYPoint b, XYPoint c) {
   // https://de.wikipedia.org/wiki/Lemoinepunkt
   // https://mathematikgarten.hpage.com/get_file.php?id=33910985&vnr=826595
 
-  Sides sides = triangleSidesXY(a, b, c);
+  TriangleSides sides = triangleSidesXY(a, b, c);
   return XYPoint.fromBarycentric(
     Triangle(a, b, c),
       sides.a * sides.a,

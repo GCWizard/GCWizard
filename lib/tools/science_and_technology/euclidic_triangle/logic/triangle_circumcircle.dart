@@ -3,8 +3,8 @@ part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/
 XYCircle triangleCircumscribedCircleXY(XYPoint a, XYPoint b, XYPoint c) {
   // https://de.wikipedia.org/wiki/Umkreis
 
-  Sides sides = triangleSidesXY(a, b, c);
-  Angles angles = triangleAnglesXY(a, b, c);
+  TriangleSides sides = triangleSidesXY(a, b, c);
+  TriangleInteriorAngles angles = triangleAnglesXY(a, b, c);
 
   final S = XYPoint.fromBarycentric(
     Triangle(a, b, c),

@@ -26,6 +26,8 @@ part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geograph
 part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/pair.dart';
 part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/rhumb.dart';
 part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/transverse_mercator.dart';
+part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/polygon_area.dart';
+part 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib/accumulator.dart';
 
 GeodesicData geodeticInverse(LatLng coords1, LatLng coords2, Ellipsoid ellipsoid) {
   return _Geodesic(ellipsoid.a, ellipsoid.f).inverse(coords1.latitude, coords1.longitude, coords2.latitude, coords2.longitude);
@@ -35,7 +37,7 @@ GeodesicData geodeticDirect(LatLng coord, double bearing, double distance, Ellip
   return _Geodesic(ellipsoid.a, ellipsoid.f).direct(coord.latitude, coord.longitude, bearing, arcmode, distance);
 }
 
-LatLng intersectGeodesics(LatLng coord1, double azimuth1, LatLng coord2, double azimuth2, Ellipsoid ellipsoid) {
+LatLng intersectGeodesics(LatLng coord1, double azimuth1, LatLng coord2, double azimuth2, Ellipsoid ellipsoid, {bool strict = false}) {
   var intersect = _Intersect(ellipsoid.a, ellipsoid.f);
   var distances = intersect.closest(coord1.latitude, coord1.longitude, azimuth1, coord2.latitude, coord2.longitude, azimuth2);
 
@@ -43,7 +45,66 @@ LatLng intersectGeodesics(LatLng coord1, double azimuth1, LatLng coord2, double 
   var projected1 = geodesic.direct(coord1.latitude, coord1.longitude, azimuth1, false, distances.first);
   var projected2 = geodesic.direct(coord2.latitude, coord2.longitude, azimuth2, false, distances.second);
 
-  return LatLng((projected1.lat2 + projected2.lat2) / 2, (projected1.lon2 + projected2.lon2) / 2);
+  var latlng = LatLng((projected1.lat2 + projected2.lat2) / 2, (projected1.lon2 + projected2.lon2) / 2);
+
+  if (strict) {
+    var aziToPoint1 = utils.normalizeBearing(geodeticInverse(coord1, latlng, ellipsoid).azi1);
+    var aziToPoint2 = utils.normalizeBearing(geodeticInverse(coord2, latlng, ellipsoid).azi1);
+    var aziShould1 = azimuth1;
+    var aziShould2 = azimuth2;
+
+    const tol = 1e-5;
+
+    if (doubleEquals(aziToPoint1, aziShould1, tolerance: tol)
+        && doubleEquals(aziToPoint2, aziShould2, tolerance: tol)) {
+      return latlng;
+    }
+
+    var helpPoint1 = coord1;
+    var helpPoint2 = coord2;
+
+    const step = 5000.0 * 1000; //5k km
+
+    var helpPoints1 = [coord1];
+    var helpPoints2 = [coord2];
+    var aziShoulds1 = [aziShould1];
+    var aziShoulds2 = [aziShould2];
+
+    for (int i = 0; i < 5; i++) {
+      var gD = geodeticDirect(helpPoint1, aziShould1, step, ellipsoid);
+      helpPoint1 = LatLng(gD.lat2, gD.lon2);
+      aziShould1 = utils.normalizeBearing(gD.azi2);
+      helpPoints1.add(helpPoint1);
+      aziShoulds1.add(aziShould1);
+
+      gD = geodeticDirect(helpPoint2, aziShould2, step, ellipsoid);
+      helpPoint2 = LatLng(gD.lat2, gD.lon2);
+      aziShould2 = utils.normalizeBearing(gD.azi2);
+      helpPoints2.add(helpPoint2);
+      aziShoulds2.add(aziShould2);
+    }
+
+    for (int i = 0; i < helpPoints1.length; i++) {
+      for (int j = 0; j < helpPoints2.length; j++) {
+        distances = intersect.closest(helpPoints1[i].latitude, helpPoints1[i].longitude, aziShoulds1[i], helpPoints2[j].latitude, helpPoints2[j].longitude, aziShoulds2[j]);
+
+        projected1 = geodesic.direct(helpPoints1[i].latitude, helpPoints1[i].longitude, aziShoulds1[i], false, distances.first);
+        projected2 = geodesic.direct(helpPoints2[j].latitude, helpPoints2[j].longitude, aziShoulds2[j], false, distances.second);
+
+        latlng = LatLng((projected1.lat2 + projected2.lat2) / 2, (projected1.lon2 + projected2.lon2) / 2);
+
+        aziToPoint1 = utils.normalizeBearing(geodeticInverse(helpPoints1[i], latlng, ellipsoid).azi1);
+        aziToPoint2 = utils.normalizeBearing(geodeticInverse(helpPoints2[j], latlng, ellipsoid).azi1);
+
+        if (doubleEquals(aziToPoint1, aziShoulds1[i], tolerance: tol)
+            && doubleEquals(aziToPoint2, aziShoulds2[j], tolerance: tol)) {
+          return latlng;
+        }
+      }
+    }
+  }
+
+  return latlng;
 }
 
 LatLng azimuthalEquidistantReverse(LatLng projectionCenter, Point<double> point, Ellipsoid ellipsoid) {
@@ -138,4 +199,33 @@ LatLng reverseAzimuthalProjection(LatLng coord, double bearing, double distance,
   } while (++cnt <= 20 && delta.abs() > 1e-10);
 
   return LatLng(_lat2, _lon2);
+}
+
+_PolygonArea _createPolygonEdges(LatLng start, List<double> distances, List<double> bearings, Ellipsoid ellipsoid) {
+  var polygonArea = _PolygonArea(earth: _Geodesic(ellipsoid.a, ellipsoid.f));
+  polygonArea._AddPoint(start.latitude, start.longitude);
+
+  for (int i = 0; i < distances.length - 1; i++) {
+    polygonArea._AddEdge(bearings[i], distances[i]);
+  }
+
+  return polygonArea;
+}
+
+double polygonAreaEdges(LatLng start, List<double> distances, List<double> bearings, Ellipsoid ellipsoid) {
+  if (distances.length != bearings.length) {
+    return 0.0;
+  }
+
+  var polygonArea = _createPolygonEdges(start, distances, bearings, ellipsoid);
+
+  var result = polygonArea._Compute();
+  return result.area;
+}
+
+bool polygonAreaIsHalfEllipsoid(LatLng start, List<double> distances, List<double> bearings, Ellipsoid ellipsoid) {
+  var polygonArea = _createPolygonEdges(start, distances, bearings, ellipsoid);
+
+  var result = polygonArea._Compute();
+  return (result.area * 2 - polygonArea._area0).abs() <= 1e-3;
 }

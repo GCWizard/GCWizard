@@ -2,7 +2,7 @@ part of 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/
 
 XYPoint triangleFermatTorricelliPointXY(XYPoint a, XYPoint b, XYPoint c) {
   Triangle t = Triangle(a, b, c);
-  Angles angles = triangleAnglesXY(a, b, c);
+  TriangleInteriorAngles angles = triangleAnglesXY(a, b, c);
 
   double csc(double x) => 1.0 / sin(x);
   final sa = b.distanceToPoint(c);

@@ -11,7 +11,7 @@ import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/coordinate_text_formatter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_export_dialog.dart';
-import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
+import 'package:gc_wizard/tools/coords/map_view/widget/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/gcw_mapview.dart';
 
 class GCWCoordsOutput extends StatefulWidget {
@@ -21,6 +21,8 @@ class GCWCoordsOutput extends StatefulWidget {
   final bool? mapButtonTop;
   final String? title;
   late final Ellipsoid ellipsoid;
+  final bool suppressMapButtons;
+  final bool suppressTitle;
 
   GCWCoordsOutput(
       {super.key,
@@ -29,7 +31,10 @@ class GCWCoordsOutput extends StatefulWidget {
       List<GCWMapPolyline>? polylines,
       this.mapButtonTop = false,
       this.title,
-      Ellipsoid? ellipsoid}) {
+      Ellipsoid? ellipsoid,
+      this.suppressMapButtons = false,
+      this.suppressTitle = false
+      }) {
     this.points = points ?? [];
     this.polylines = polylines ?? [];
     this.ellipsoid = ellipsoid ?? defaultEllipsoid;
@@ -51,10 +56,10 @@ class _GCWCoordsOutputState extends State<GCWCoordsOutput> {
                 padding: const EdgeInsets.only(bottom: 15),
                 child: GCWOutput(
                   child: output is BaseCoordinate
-                      ? _formatedCoordOutput(output)
+                      ? _formattedCoordOutput(output)
                       : output,
                     copyText: output is BaseCoordinate
-                        ? _formatedCoordOutput(output, false).replaceAll('\n', ' ')
+                        ? _formattedCoordOutput(output, false).replaceAll('\n', ' ')
                         : ((output is String) || (output is int) || (output is double) ? output.toString() : null)
                 ),
               ));
@@ -66,7 +71,7 @@ class _GCWCoordsOutputState extends State<GCWCoordsOutput> {
     );
 
     var _hasOutput = widget.outputs.isNotEmpty && widget.points.isNotEmpty;
-    var _button = Visibility(
+    var _button = widget.suppressMapButtons ? Container() : Visibility(
         visible: _hasOutput,
         child: GCWToolBar(
           children: [
@@ -98,6 +103,7 @@ class _GCWCoordsOutputState extends State<GCWCoordsOutput> {
 
     return GCWMultipleOutput(
         title: widget.title,
+        suppressDefaultTitle: widget.suppressTitle,
         trailing: GCWIconButton(
           icon: Icons.save,
           size: IconButtonSize.SMALL,
@@ -111,7 +117,7 @@ class _GCWCoordsOutputState extends State<GCWCoordsOutput> {
         children: _children);
   }
 
-  String _formatedCoordOutput(BaseCoordinate output, [bool defaultPrecision = true]) {
+  String _formattedCoordOutput(BaseCoordinate output, [bool defaultPrecision = true]) {
     var latLng = output.toLatLng();
     return latLng == null ? '' : formatCoordOutput(latLng, output.format, widget.ellipsoid, defaultPrecision);
   }

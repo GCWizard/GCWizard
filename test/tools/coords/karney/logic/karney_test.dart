@@ -4,7 +4,7 @@
 import 'dart:math';
 
 import "package:flutter_test/flutter_test.dart";
-import 'package:gc_wizard/tools/coords/_common/logic/distance_bearing.dart';
+import 'package:gc_wizard/tools/coords/_common/logic/distance_bearing_data.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/external_libs/karney.geographic_lib/geographic_lib.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/external_libs/pkohut.geoformulas/geoformulas.dart';

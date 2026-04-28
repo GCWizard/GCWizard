@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
-import 'triangle.dart';
+import 'triangle_test_utils.dart';
 
 void main() {
   group("triangle.multiplyWithOmega:", () {
@@ -17,7 +17,7 @@ void main() {
     ];
 
     for (var elem in _inputsToExpected) {
-      test('input: ${toString(elem['inputA'])}', () {
+      test('input: ${toTriangleObjectString(elem['inputA'])}', () {
         var _actual = multiplyWithOmega(elem['inputA'] as XYPoint);
         pointTest(_actual, elem['expectedOutput'] as XYPoint);
       });
@@ -37,7 +37,7 @@ void main() {
     ];
 
     for (var elem in _inputsToExpected) {
-      test('input: ${toString(elem['inputA'])}', () {
+      test('input: ${toTriangleObjectString(elem['inputA'])}', () {
         var _actual = multiplyWithOmega2(elem['inputA'] as XYPoint);
         pointTest(_actual, elem['expectedOutput'] as XYPoint);
       });
@@ -57,7 +57,7 @@ void main() {
     ];
 
     for (var elem in _inputsToExpected) {
-      test('input: ${toString(elem['inputA'])} ${toString(elem['inputB'])} ${toString(elem['inputC'])}', () {
+      test('input: ${toTriangleObjectString(elem['inputA'])} ${toTriangleObjectString(elem['inputB'])} ${toTriangleObjectString(elem['inputC'])}', () {
         var _actual = triangleNapoleonInnerPointXY(elem['inputA'] as XYPoint, elem['inputB'] as XYPoint, elem['inputC'] as XYPoint);
         pointTest(_actual, elem['expectedOutput'] as XYPoint);
       });
@@ -77,7 +77,7 @@ void main() {
     ];
 
     for (var elem in _inputsToExpected) {
-      test('input: ${toString(elem['inputA'])} ${toString(elem['inputB'])} ${toString(elem['inputC'])}', () {
+      test('input: ${toTriangleObjectString(elem['inputA'])} ${toTriangleObjectString(elem['inputB'])} ${toTriangleObjectString(elem['inputC'])}', () {
         var _actual = triangleNapoleonOuterPointXY(elem['inputA'] as XYPoint, elem['inputB'] as XYPoint, elem['inputC'] as XYPoint);
         pointTest(_actual, elem['expectedOutput'] as XYPoint);
       });

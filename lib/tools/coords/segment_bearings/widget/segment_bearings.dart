@@ -15,7 +15,7 @@ import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_output.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_output/gcw_coords_outputformat.dart';
 import 'package:gc_wizard/tools/coords/distance_and_bearing/logic/distance_and_bearing.dart';
-import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
+import 'package:gc_wizard/tools/coords/map_view/widget/map_geometries.dart';
 import 'package:gc_wizard/tools/coords/segment_bearings/logic/segment_bearings.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/logic/projection.dart';
 import 'package:gc_wizard/utils/constants.dart';
@@ -47,7 +47,7 @@ class _SegmentBearingsState extends State<SegmentBearings> {
   var _currentOutputFormat = defaultCoordinateFormat;
 
   List<BaseCoordinate> _currentOutputs = [];
-  Widget _currentBearingOutput = Container();
+  Widget _currentOutput = Container();
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +80,8 @@ class _SegmentBearingsState extends State<SegmentBearings> {
         _currentInput1Mode == GCWSwitchPosition.left
             ? GCWDoubleSpinner(
                 value: _currentBearing1,
+                min: 0.0,
+                max: 360.0,
                 onChanged: (value) {
                   setState(() {
                     _currentBearing1 = value;
@@ -112,6 +114,8 @@ class _SegmentBearingsState extends State<SegmentBearings> {
         _currentInput2Mode == GCWSwitchPosition.left
             ? GCWDoubleSpinner(
                 value: _currentBearing2,
+                min: 0.0,
+                max: 360.0,
                 onChanged: (value) {
                   setState(() {
                     _currentBearing2 = value;
@@ -131,7 +135,7 @@ class _SegmentBearingsState extends State<SegmentBearings> {
         GCWTextDivider(text: i18n(context, 'coords_segmentbearings_numbersegments')),
         GCWIntegerSpinner(
           value: _currentSegmentCount,
-          min: 2,
+          min: 1,
           overflow: SpinnerOverflowType.SUPPRESS_OVERFLOW,
           onChanged: (value) {
             setState(() {
@@ -163,12 +167,7 @@ class _SegmentBearingsState extends State<SegmentBearings> {
             });
           },
         ),
-        _currentBearingOutput,
-        GCWCoordsOutput(
-          outputs: _currentOutputs,
-          points: _currentMapPoints,
-          polylines: _currentMapPolylines,
-        ),
+        _currentOutput
       ],
     );
   }
@@ -249,9 +248,19 @@ class _SegmentBearingsState extends State<SegmentBearings> {
     }).toList());
 
     var bearingOutput = doubleFormat.format(segments.segmentAngle);
-    _currentBearingOutput = GCWDefaultOutput(
-      child: i18n(context, 'coords_segmentbearings_segmentangle') + ': ' + bearingOutput,
-      copyText: bearingOutput,
+
+    _currentOutput = Column(
+      children: [
+        GCWDefaultOutput(
+          child: i18n(context, 'coords_segmentbearings_segmentangle') + ': ' + bearingOutput,
+          copyText: bearingOutput,
+        ),
+        segments.points.isNotEmpty ? GCWCoordsOutput(
+          outputs: _currentOutputs,
+          points: _currentMapPoints,
+          polylines: _currentMapPolylines,
+        ) : Container(),
+      ],
     );
   }
 }

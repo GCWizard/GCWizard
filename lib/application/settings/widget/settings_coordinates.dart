@@ -19,6 +19,7 @@ import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords_formatselector.dart';
+import 'package:gc_wizard/tools/coords/map_view/widget/map_geometries.dart';
 import 'package:gc_wizard/utils/complex_return_types.dart';
 import 'package:gc_wizard/utils/constants.dart';
 import 'package:prefs/prefs.dart';
@@ -37,6 +38,7 @@ class _CoordinatesSettingsState extends State<CoordinatesSettings> {
   var _currentDefaultHemisphereLatitude = Prefs.getString(PREFERENCE_COORD_DEFAULT_HEMISPHERE_LATITUDE);
   var _currentDefaultHemisphereLongitude = Prefs.getString(PREFERENCE_COORD_DEFAULT_HEMISPHERE_LONGITUDE);
   Ellipsoid _currentDefaultEllipsoid = defaultEllipsoid;
+  var _currentMapPrecision = Prefs.getString(PREFERENCE_COORD_MAP_DEFAULT_PRECISION_GEOMETRIES);
 
   @override
   void initState() {
@@ -107,6 +109,28 @@ class _CoordinatesSettingsState extends State<CoordinatesSettings> {
           onChanged: (int value) {
             setState(() {
               Prefs.setInt(PREFERENCE_COORD_PRECISION_DMM_COPY, value);
+            });
+          },
+        ),
+        GCWTextDivider(
+          text: i18n(context, 'settings_coordinates_map_precision'),
+        ),
+        GCWDropDown<String>(
+          value: _currentMapPrecision,
+          items: [
+            GCWDropDownMenuItem(
+              value: MapPrecision.LOW.toString(),
+              child: i18n(context, 'settings_coordinates_map_precision_low'),
+            ),
+            GCWDropDownMenuItem(
+              value: MapPrecision.HIGH.toString(),
+              child: i18n(context, 'settings_coordinates_map_precision_high'),
+            ),
+          ],
+          onChanged: (String newValue) {
+            setState(() {
+              _currentMapPrecision = newValue;
+              Prefs.setString(PREFERENCE_COORD_MAP_DEFAULT_PRECISION_GEOMETRIES, _currentMapPrecision.toString());
             });
           },
         ),

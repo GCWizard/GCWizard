@@ -30,7 +30,9 @@ import 'package:gc_wizard/application/category_views/selector_lists/dna_selectio
 import 'package:gc_wizard/application/category_views/selector_lists/e_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/easter_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/elements_of_geocaching_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/ellipsoid_triangles_circles_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/ellipsoid_triangles_selection.dart';
+import 'package:gc_wizard/application/category_views/selector_lists/ellipsoid_triangles_specialpoints_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/esoteric_programminglanguages_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/games_selection.dart';
 import 'package:gc_wizard/application/category_views/selector_lists/general_codebreakers_selection.dart';
@@ -151,14 +153,14 @@ import 'package:gc_wizard/tools/coords/rhumb_line/widget/rhumbline_distancebeari
 import 'package:gc_wizard/tools/coords/rhumb_line/widget/rhumbline_waypoint_projection.dart';
 import 'package:gc_wizard/tools/coords/segment_bearings/widget/segment_bearings.dart';
 import 'package:gc_wizard/tools/coords/segment_line/widget/segment_line.dart';
-import 'package:gc_wizard/tools/coords/triangles/centerofgravity/widget/centerofgravity.dart';
-import 'package:gc_wizard/tools/coords/triangles/circumcircle/widget/circumcircle.dart';
-import 'package:gc_wizard/tools/coords/triangles/excircles/widget/excircles.dart';
-import 'package:gc_wizard/tools/coords/triangles/gergonne/widget/gergonne.dart';
-import 'package:gc_wizard/tools/coords/triangles/incircle/widget/incircle.dart';
-import 'package:gc_wizard/tools/coords/triangles/napoleon/widget/napoleon.dart';
-import 'package:gc_wizard/tools/coords/triangles/orthocenter/widget/orthocenter.dart';
-import 'package:gc_wizard/tools/coords/triangles/sidesmidpoint/widget/sidesmidpoint.dart';
+import 'package:gc_wizard/tools/coords/triangles/area/widget/ellipsoidtriangle_area.dart';
+import 'package:gc_wizard/tools/coords/triangles/circles/circumcircle/widget/circumcircle.dart';
+import 'package:gc_wizard/tools/coords/triangles/circles/excircles/widget/ellipsoidtriangle_excircles.dart';
+import 'package:gc_wizard/tools/coords/triangles/circles/incircle/widget/ellipsoidtriangle_incircle.dart';
+import 'package:gc_wizard/tools/coords/triangles/medians/widget/ellipsoidtriangle_medians.dart';
+import 'package:gc_wizard/tools/coords/triangles/special_points/centerofgravity/widget/ellipsoidtriangle_centerofgravity.dart';
+import 'package:gc_wizard/tools/coords/triangles/special_points/napoleon/widget/ellipsoidtriangle_napoleon.dart';
+import 'package:gc_wizard/tools/coords/triangles/special_points/orthocenter/widget/ellipsoidtriangle_orthocenter.dart';
 import 'package:gc_wizard/tools/coords/variable_coordinate/widget/variable_coordinate_formulas.dart';
 import 'package:gc_wizard/tools/coords/waypoint_projection/widget/waypoint_projection_geodetic.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/abaddon/widget/abaddon.dart';
@@ -4032,59 +4034,69 @@ void initializeRegistry(BuildContext context) {
 
     // EllipsoidTrianglePointsSelection ***************************************************
     GCWTool(
-        tool: const TriangleNapoleonPoints(),
+        tool: const EllipsoidTrianglePointsCirclesSelection(),
+        id: 'triangle_ellipsoid_circles_selection',
+        searchKeys: const [
+        ]),
+    GCWTool(
+        tool: const EllipsoidTrianglePointsSpecialPointsSelection(),
+        id: 'triangle_ellipsoid_specialpoints_selection',
+        searchKeys: const [
+        ]),
+    GCWTool(
+        tool: const EllipsoidTriangleNapoleonPoints(),
         id: 'triangle_point_napoleon',
         searchKeys: const [
-          'triangle',
+          'triangle_point_napoleon'
         ],
         ),
     GCWTool(
-      tool: const TriangleSideMidPoints(),
+      tool: const EllipsoidTriangleMedians(),
       id: 'triangle_point_sidesmidpoint',
       searchKeys: const [
-        'triangle',
+        'triangle_point_sidesmidpoint',
       ],
     ),
     GCWTool(
-      tool: const TriangleIncircle(),
+      tool: const EllipsoidTriangleIncircle(),
       id: 'triangle_point_incircle',
       searchKeys: const [
-        'triangle',
+        'triangle_point_incircle',
       ],
     ),
     GCWTool(
-      tool: const TriangleCircumCircle(),
+      tool: const EllipsoidTriangleCircumCircle(),
       id: 'triangle_point_circumcircle',
       searchKeys: const [
-        'triangle',
+        'triangle_point_circumcircle',
       ],
     ),
     GCWTool(
-      tool: const TriangleCenterOfGravity(),
+      tool: const EllipsoidTriangleCenterOfGravity(),
       id: 'triangle_point_centerofgravity',
       searchKeys: const [
-        'triangle',
+        'triangle_point_centerofgravity',
       ],
     ),
     GCWTool(
-      tool: const TriangleOrthocenter(),
+      tool: const EllipsoidTriangleOrthocenter(),
       id: 'triangle_point_orthocenter',
       searchKeys: const [
-        'triangle',
+        'triangle_point_orthocenter',
       ],
     ),
     GCWTool(
-      tool: const TriangleExcircles(),
+      tool: const EllipsoidTriangleExcircles(),
       id: 'triangle_point_excircles',
       searchKeys: const [
-        'triangle',
+        'triangle_point_excircles',
       ],
     ),
     GCWTool(
-      tool: const TriangleGergonnePoint(),
-      id: 'triangle_point_gergonne',
+      tool: const EllipsoidTriangleArea(),
+      id: 'triangle_area',
       searchKeys: const [
-        'triangle',
+        'triangle_area',
       ],
     ),
 

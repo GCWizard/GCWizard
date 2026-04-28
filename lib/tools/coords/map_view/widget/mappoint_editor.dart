@@ -7,16 +7,17 @@ import 'package:gc_wizard/common_widgets/switches/gcw_onoff_switch.dart';
 import 'package:gc_wizard/common_widgets/textfields/gcw_textfield.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/default_coord_getter.dart';
 import 'package:gc_wizard/tools/coords/_common/widget/gcw_coords.dart';
-import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
+import 'package:gc_wizard/tools/coords/map_view/widget/map_geometries.dart';
 import 'package:gc_wizard/tools/science_and_technology/unit_converter/logic/length.dart';
 
 double _DEFAULT_RADIUS = 161.0;
 
 class MapPointEditor extends StatefulWidget {
   final GCWMapPoint mapPoint;
+  final MapPrecision precision;
   Length lengthUnit;
 
-  MapPointEditor({super.key, required this.mapPoint, required this.lengthUnit});
+  MapPointEditor({super.key, required this.mapPoint, required this.lengthUnit, required this.precision});
 
   @override
   _MapPointEditorState createState() => _MapPointEditorState();
@@ -62,7 +63,7 @@ class _MapPointEditorState extends State<MapPointEditor> {
         controller: _nameController,
         onChanged: (text) {
           widget.mapPoint.markerText = text;
-          widget.mapPoint.update();
+          widget.mapPoint.update(precision: widget.precision);
         },
       ),
       GCWCoords(
@@ -108,7 +109,7 @@ class _MapPointEditorState extends State<MapPointEditor> {
               widget.mapPoint.circle = null;
             }
 
-            widget.mapPoint.update();
+            widget.mapPoint.update(precision: widget.precision);
           });
         },
       ),
@@ -121,7 +122,7 @@ class _MapPointEditorState extends State<MapPointEditor> {
                   onChanged: (value) {
                     _currentRadius = value;
                     widget.mapPoint.circle!.radius = _currentRadius;
-                    widget.mapPoint.update();
+                    widget.mapPoint.update(precision: widget.precision);
                   },
                 ),
                 GCWOnOffSwitch(
@@ -130,7 +131,7 @@ class _MapPointEditorState extends State<MapPointEditor> {
                   onChanged: (value) {
                     setState(() {
                       widget.mapPoint.circleColorSameAsPointColor = value;
-                      widget.mapPoint.update();
+                      widget.mapPoint.update(precision: widget.precision);
                     });
                   },
                 ),

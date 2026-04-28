@@ -10,6 +10,7 @@ import 'package:gc_wizard/tools/coords/_common/logic/coordinate_format_definitio
 import 'package:gc_wizard/tools/coords/_common/logic/coordinates.dart';
 import 'package:gc_wizard/tools/coords/_common/logic/ellipsoid.dart';
 import 'package:gc_wizard/tools/coords/map_view/widget/gcw_mapview.dart';
+import 'package:gc_wizard/tools/coords/map_view/widget/map_geometries.dart';
 import 'package:gc_wizard/tools/crypto_and_encodings/general_codebreakers/multi_decoder/persistence/json_provider.dart';
 import 'package:gc_wizard/tools/formula_solver/persistence/json_provider.dart';
 import 'package:gc_wizard/tools/science_and_technology/maya_calendar/logic/maya_calendar.dart';
@@ -168,6 +169,13 @@ void _initDefaultSettings(PreferencesInitMode mode, {String reinitSinglePreferen
       Prefs.get(PREFERENCE_COORD_DEFAULT_HEMISPHERE_LONGITUDE) == null ||
       Prefs.getString(PREFERENCE_COORD_DEFAULT_HEMISPHERE_LONGITUDE).isEmpty) {
     Prefs.setString(PREFERENCE_COORD_DEFAULT_HEMISPHERE_LONGITUDE, HemisphereLongitude.East.toString());
+  }
+
+  if (reinitSinglePreference == PREFERENCE_COORD_MAP_DEFAULT_PRECISION_GEOMETRIES ||
+      _reinitAll ||
+      Prefs.get(PREFERENCE_COORD_MAP_DEFAULT_PRECISION_GEOMETRIES) == null ||
+      Prefs.getString(PREFERENCE_COORD_MAP_DEFAULT_PRECISION_GEOMETRIES).isEmpty) {
+    Prefs.setString(PREFERENCE_COORD_MAP_DEFAULT_PRECISION_GEOMETRIES, MapPrecision.LOW.toString());
   }
 
   if (reinitSinglePreference == PREFERENCE_COORD_PRECISION_DMM_COPY ||

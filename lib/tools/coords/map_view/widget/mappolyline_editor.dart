@@ -5,7 +5,7 @@ import 'package:gc_wizard/common_widgets/color_pickers/gcw_colorpicker.dart';
 import 'package:gc_wizard/common_widgets/dividers/gcw_text_divider.dart';
 import 'package:gc_wizard/common_widgets/dropdowns/gcw_dropdown.dart';
 import 'package:gc_wizard/common_widgets/gcw_text.dart';
-import 'package:gc_wizard/tools/coords/map_view/logic/map_geometries.dart';
+import 'package:gc_wizard/tools/coords/map_view/widget/map_geometries.dart';
 
 class MapPolylineEditor extends StatefulWidget {
   final GCWMapPolyline polyline;

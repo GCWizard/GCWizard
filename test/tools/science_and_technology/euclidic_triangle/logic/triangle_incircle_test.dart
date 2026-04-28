@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gc_wizard/tools/science_and_technology/euclidic_triangle/logic/triangle.dart';
 
-import 'triangle.dart';
+import 'triangle_test_utils.dart';
 
 void main() {
   group("triangle.triangleInCircleXY:", () {
@@ -17,7 +17,7 @@ void main() {
     ];
 
     for (var elem in _inputsToExpected) {
-      test('input: ${toString(elem['inputA'])} ${toString(elem['inputB'])} ${toString(elem['inputC'])}', () {
+      test('input: ${toTriangleObjectString(elem['inputA'])} ${toTriangleObjectString(elem['inputB'])} ${toTriangleObjectString(elem['inputC'])}', () {
         var _actual = triangleInCircleXY(elem['inputA'] as XYPoint, elem['inputB'] as XYPoint, elem['inputC'] as XYPoint);
         circlesTest(_actual, elem['expectedOutput'] as XYCircle);
       });
