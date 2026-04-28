@@ -428,7 +428,7 @@ Future<Uint8ListText> _downloadWithProxyStream(Uri uri, SendPort? sendAsyncPort)
 /// Returns null if nothing was selected.
 Future<GCWFile?> openFileExplorer({List<FileType>? allowedFileTypes}) async {
   try {
-     var files = (await filePicker.FilePicker.platform.pickFiles(
+     var files = (await filePicker.FilePicker.pickFiles(
             type: filePicker.FileType.any,
             allowMultiple: false
          ))?.files;
