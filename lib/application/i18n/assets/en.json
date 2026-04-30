@@ -7544,7 +7544,7 @@
   "visual_cryptography_simple": "Simple",
   "waveform_title": "Waveform/Soundfile analysis",
   "waveform_description": "Visual representation and analysis of WAV, MP3, OGG-Soundfiles",
-  "waveform_expertmode" : "Export mode for decoding morse",
+  "waveform_expertmode" : "Expert mode for decoding morse",
   "waveform_settings": "SettingpParameter for decoding",
   "waveform_settings_mode_cluster": "Clustering",
   "waveform_settings_mode_tolerant": "Tolerant",
