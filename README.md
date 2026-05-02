@@ -1,3 +1,6 @@
+# ARCHIVED! MOVED TO CODEBERG!!!
+https://codeberg.org/GCWizard/GCWizard
+
 # GC Wizard
 
 <p align="center">
